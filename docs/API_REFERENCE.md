@@ -97,6 +97,47 @@ def design_doubly_reinforced(
 | `is_safe` | bool | True if design is valid |
 | `error_message` | str | Details if unsafe |
 
+---
+
+## 3. Shear Module (`M07_Shear` / `shear.py`)
+
+*(See existing documentation)*
+
+---
+
+## 4. Ductile Detailing Module (`M10_Ductile` / `ductile.py`)
+
+### 4.1 Check Beam Ductility
+Performs comprehensive checks for IS 13920:2016 compliance (geometry, min/max steel, confinement spacing).
+
+**Python:**
+```python
+def check_beam_ductility(
+    b: float, 
+    D: float, 
+    d: float, 
+    fck: float, 
+    fy: float, 
+    min_long_bar_dia: float
+) -> DuctileBeamResult
+```
+
+**Return Type (`DuctileBeamResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `is_geometry_valid` | bool | True if b >= 200 and b/D >= 0.3 |
+| `min_pt` | float | Min tension steel % (Cl 6.2.1) |
+| `max_pt` | float | Max tension steel % (2.5%) |
+| `confinement_spacing` | float | Max hoop spacing in plastic hinge zone (mm) |
+| `remarks` | str | Compliance status or error details |
+
+### 4.2 Helper Functions
+- `check_geometry(b, D)`
+- `get_min_tension_steel_percentage(fck, fy)`
+- `calculate_confinement_spacing(d, min_long_bar_dia)`
+
+---
+
 ### 2.5 Calculate Limiting Moment (Flanged)
 Calculates the limiting moment of resistance for a T-beam section.
 

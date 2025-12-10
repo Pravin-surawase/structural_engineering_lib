@@ -79,6 +79,12 @@ When working on tasks, specify which agent role to use:
   - Built wheel/sdist to `Python/dist/`
   - Pytest passing (17 tests) with flanged/doubly included
 
+- [x] **TASK-012**: IS 13920 ductile detailing (v1.0)
+  - Implemented `ductile.py` (Python) and `M10_Ductile.bas` (VBA)
+  - Checks: Geometry (b >= 200, b/D >= 0.3), Min/Max Steel, Confinement Spacing
+  - Added unit tests `test_ductile.py`
+  - Updated API Reference
+
 ---
 
 ## 🟡 In Progress
@@ -89,12 +95,15 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-012**: IS 13920 ductile detailing (v1.0)
+- [ ] **TASK-013**: Final Release Preparation (v1.0)
+  - Final code review
+  - Full documentation pass
+  - Release tagging
 
 ---
 
 ## Notes
 
-- **Current Version**: v0.3.0 (active)
-- **Last Updated**: 2025-12-10
+- **Current Version**: v1.0.0 (candidate)
+- **Last Updated**: 2025-12-11
 - **Active Branch**: main
