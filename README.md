@@ -105,6 +105,15 @@ End Sub
 - **[IS 456 Quick Reference](docs/IS456_QUICK_REFERENCE.md)** — Formulas cheat sheet for quick lookup
 - **[Known Pitfalls](docs/KNOWN_PITFALLS.md)** — Common traps (units, tables, limits)
 
+## Testing
+
+- Python: `python3 -m pytest Python/tests -q`
+- VBA: manual/Rubberduck tests planned for later iteration
+
+## Packaging
+
+- Python: `cd Python && python3 -m build` (outputs to `Python/dist/`)
+
 ## References
 
 - IS 456:2000 — Plain and Reinforced Concrete — Code of Practice

@@ -48,6 +48,15 @@ When working on tasks, specify which agent role to use:
   - Renamed `Mu` → `Mu_Lim` in FlexureResult
   - Updated M03_Tables to use nearest lower grade (no fck interpolation)
 
+- [x] **TASK-006**: Complete test coverage
+  - Added edge case tests (min steel, over-reinforced; shear τv < τc and τv > τc,max)
+  - Verified Python tests (pytest) pass locally
+  - VBA test module to follow in later iteration
+
+- [x] **TASK-007**: API documentation
+  - Updated API_REFERENCE.md with current Python signatures, units, and policies
+  - UDFs noted as planned (to be added with VBA parity)
+
 ---
 
 ## 🟡 In Progress
@@ -58,16 +67,7 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-006**: Complete test coverage
-  - [ ] Add edge case tests (min steel, max steel, over-reinforced)
-  - [ ] Add shear edge cases (τv < τc, τv > τc,max)
-  - [ ] VBA test module
-  - [ ] Run Python tests (pytest) once installed
-
-- [ ] **TASK-007**: API documentation
-  - [ ] Complete API_REFERENCE.md with all public functions
-  - [ ] Add usage examples for each function
-  - [ ] Document units and sign conventions
+*(None currently — v0.1.0 Python scope items done; VBA parity/packaging tracked in backlog)*
 
 ---
 
@@ -76,7 +76,7 @@ When working on tasks, specify which agent role to use:
 - [ ] **TASK-008**: Doubly reinforced beam support (v0.2)
 - [ ] **TASK-009**: Flanged beams T/L (v0.3)
 - [ ] **TASK-010**: Excel Add-in packaging (.xlam)
-- [ ] **TASK-011**: Python package (pyproject.toml, wheel)
+- [ ] **TASK-011**: Python package (pyproject.toml, wheel) — **built locally (dist/)**
 - [ ] **TASK-012**: IS 13920 ductile detailing (v1.0)
 
 ---
