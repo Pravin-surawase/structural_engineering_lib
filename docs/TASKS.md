@@ -75,7 +75,7 @@ When working on tasks, specify which agent role to use:
 
 - [ ] **TASK-008**: Doubly reinforced beam support (v0.2)
 - [ ] **TASK-009**: Flanged beams T/L (v0.3)
-- [ ] **TASK-010**: Excel Add-in packaging (.xlam)
+- [ ] **TASK-010**: Excel Add-in packaging (.xlam) — *See `docs/EXCEL_ADDIN_GUIDE.md`*
 - [ ] **TASK-011**: Python package (pyproject.toml, wheel) — **built locally (dist/)**
 - [ ] **TASK-012**: IS 13920 ductile detailing (v1.0)
 
