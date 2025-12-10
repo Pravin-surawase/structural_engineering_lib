@@ -63,6 +63,11 @@ When working on tasks, specify which agent role to use:
   - Updated `FlexureResult` to include `Asc_Required`
   - Added tests for doubly reinforced logic
 
+- [x] **TASK-009**: Flanged beams T/L (v0.3)
+  - Implemented `calculate_mu_lim_flanged` and `design_flanged_beam` in Python & VBA
+  - Handles Neutral Axis in Flange (Rectangular), Web (Singly T), and Doubly Reinforced T
+  - Added tests for all 3 cases
+
 ---
 
 ## 🟡 In Progress
@@ -73,7 +78,6 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-009**: Flanged beams T/L (v0.3)
 - [ ] **TASK-010**: Excel Add-in packaging (.xlam) — *See `docs/EXCEL_ADDIN_GUIDE.md`*
 - [ ] **TASK-011**: Python package (pyproject.toml, wheel) — **built locally (dist/)**
 - [ ] **TASK-012**: IS 13920 ductile detailing (v1.0)

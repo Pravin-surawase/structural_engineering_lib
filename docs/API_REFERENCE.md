@@ -97,6 +97,39 @@ def design_doubly_reinforced(
 | `is_safe` | bool | True if design is valid |
 | `error_message` | str | Details if unsafe |
 
+### 2.5 Calculate Limiting Moment (Flanged)
+Calculates the limiting moment of resistance for a T-beam section.
+
+**Python:**
+```python
+def calculate_mu_lim_flanged(
+    bw: float, 
+    bf: float, 
+    d: float, 
+    Df: float, 
+    fck: float, 
+    fy: float
+) -> float
+```
+
+### 2.6 Design Flanged Beam
+Designs a flanged beam (T-beam). Handles neutral axis in flange (rectangular behavior), neutral axis in web (singly reinforced T), and doubly reinforced T-beams.
+
+**Python:**
+```python
+def design_flanged_beam(
+    bw: float, 
+    bf: float, 
+    d: float, 
+    Df: float, 
+    d_total: float, 
+    mu_knm: float, 
+    fck: float, 
+    fy: float,
+    d_dash: float = 50.0
+) -> FlexureResult
+```
+
 ---
 
 ## 3. Shear Module (`M07_Shear` / `shear.py`)

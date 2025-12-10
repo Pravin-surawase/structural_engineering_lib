@@ -202,15 +202,188 @@ Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, B
     Design_Doubly_Reinforced = res
 End Function
 
-        ' 6. Calculate Pt
-        res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
-        
-        ' 7. Calculate actual Xu
-        ' Xu = (0.87 * fy * Ast) / (0.36 * fck * b)
-        res.Xu = (0.87 * fy * res.Ast_Required) / (0.36 * fck * b)
+' Calculate Limiting Moment of Resistance for Flanged Beam (T-Beam)
+Public Function Calculate_Mu_Lim_Flanged(ByVal bw As Double, ByVal bf As Double, ByVal d As Double, ByVal Df As Double, ByVal fck As Double, ByVal fy As Double) As Double
+    Dim xu_max As Double
+    xu_max = M05_Materials.Get_XuMax_d(fy) * d
+    
+    Dim yf As Double
+    If (Df / d) <= 0.2 Then
+        yf = Df
+    Else
+        yf = 0.15 * xu_max + 0.65 * Df
+        If yf > Df Then yf = Df
     End If
     
-    Design_Singly_Reinforced = res
+    Dim Mu_web_kNm As Double
+    Mu_web_kNm = Calculate_Mu_Lim(bw, d, fck, fy)
+    
+    Dim C_flange As Double
+    C_flange = 0.45 * fck * (bf - bw) * yf
+    
+    Dim M_flange_Nmm As Double
+    M_flange_Nmm = C_flange * (d - yf / 2#)
+    
+    Calculate_Mu_Lim_Flanged = Mu_web_kNm + (M_flange_Nmm / 1000000#)
+End Function
+
+' Design Flanged Beam (T-Beam)
+Public Function Design_Flanged_Beam(ByVal bw As Double, ByVal bf As Double, ByVal d As Double, ByVal Df As Double, ByVal D_total As Double, ByVal Mu_kNm As Double, ByVal fck As Double, ByVal fy As Double, Optional ByVal d_dash As Double = 50#) As FlexureResult
+    Dim res As FlexureResult
+    Dim Mu_abs As Double
+    Mu_abs = Abs(Mu_kNm)
+    
+    ' 1. Check if Neutral Axis is in Flange
+    Dim Mu_capacity_at_Df_Nmm As Double
+    Mu_capacity_at_Df_Nmm = 0.36 * fck * bf * Df * (d - 0.42 * Df)
+    
+    Dim Mu_capacity_at_Df As Double
+    Mu_capacity_at_Df = Mu_capacity_at_Df_Nmm / 1000000#
+    
+    If Mu_abs <= Mu_capacity_at_Df Then
+        Design_Flanged_Beam = Design_Singly_Reinforced(bf, d, D_total, Mu_kNm, fck, fy)
+        Exit Function
+    End If
+    
+    ' 2. Neutral Axis in Web
+    Dim Mu_lim_T As Double
+    Mu_lim_T = Calculate_Mu_Lim_Flanged(bw, bf, d, Df, fck, fy)
+    
+    Dim xu_max As Double
+    xu_max = M05_Materials.Get_XuMax_d(fy) * d
+    
+    If Mu_abs > Mu_lim_T Then
+        ' Doubly Reinforced T-Beam
+        Dim yf As Double
+        If (Df / d) <= 0.2 Then
+            yf = Df
+        Else
+            yf = 0.15 * xu_max + 0.65 * Df
+            If yf > Df Then yf = Df
+        End If
+        
+        Dim C_flange As Double
+        C_flange = 0.45 * fck * (bf - bw) * yf
+        
+        Dim M_flange_Nmm As Double
+        M_flange_Nmm = C_flange * (d - yf / 2#)
+        
+        Dim Mu_web_target As Double
+        Mu_web_target = Mu_abs - (M_flange_Nmm / 1000000#)
+        
+        Dim web_res As FlexureResult
+        web_res = Design_Doubly_Reinforced(bw, d, d_dash, D_total, Mu_web_target, fck, fy)
+        
+        Dim Ast_flange As Double
+        Ast_flange = C_flange / (0.87 * fy)
+        
+        res = web_res
+        res.Mu_Lim = Mu_lim_T
+        res.Ast_Required = web_res.Ast_Required + Ast_flange
+        res.Pt_Provided = (res.Ast_Required * 100#) / (bw * d)
+        res.SectionType = OverReinforced
+        
+        Design_Flanged_Beam = res
+        Exit Function
+    End If
+    
+    ' 3. Singly Reinforced T-Beam
+    ' Solver for Xu
+    Dim low As Double, high As Double, mid As Double
+    low = Df
+    high = xu_max
+    
+    Dim Mu_target_Nmm As Double
+    Mu_target_Nmm = Mu_abs * 1000000#
+    
+    Dim xu_sol As Double
+    xu_sol = high
+    
+    Dim i As Integer
+    Dim M_mid As Double
+    Dim yf_mid As Double
+    Dim C_web As Double, M_web As Double
+    Dim C_flange_mid As Double, M_flange_mid As Double
+    
+    For i = 1 To 50
+        mid = (low + high) / 2#
+        
+        ' Calculate Moment at mid
+        If (Df / d) <= 0.2 Then
+            yf_mid = Df
+        Else
+            yf_mid = 0.15 * mid + 0.65 * Df
+            If yf_mid > Df Then yf_mid = Df
+        End If
+        
+        C_web = 0.36 * fck * bw * mid
+        M_web = C_web * (d - 0.42 * mid)
+        
+        C_flange_mid = 0.45 * fck * (bf - bw) * yf_mid
+        M_flange_mid = C_flange_mid * (d - yf_mid / 2#)
+        
+        M_mid = M_web + M_flange_mid
+        
+        If Abs(M_mid - Mu_target_Nmm) < 1000# Then
+            xu_sol = mid
+            Exit For
+        End If
+        
+        If M_mid < Mu_target_Nmm Then
+            low = mid
+        Else
+            high = mid
+        End If
+    Next i
+    
+    If i > 50 Then xu_sol = (low + high) / 2#
+    
+    ' Calculate Ast
+    Dim yf_sol As Double
+    If (Df / d) <= 0.2 Then
+        yf_sol = Df
+    Else
+        yf_sol = 0.15 * xu_sol + 0.65 * Df
+        If yf_sol > Df Then yf_sol = Df
+    End If
+    
+    Dim C_total As Double
+    C_total = (0.36 * fck * bw * xu_sol) + (0.45 * fck * (bf - bw) * yf_sol)
+    
+    Dim Ast_req As Double
+    Ast_req = C_total / (0.87 * fy)
+    
+    ' Min Steel
+    Dim Ast_min As Double
+    Ast_min = 0.85 * bw * d / fy
+    
+    If Ast_req < Ast_min Then
+        res.Ast_Required = Ast_min
+        res.ErrorMessage = "Minimum steel provided."
+    Else
+        res.Ast_Required = Ast_req
+    End If
+    
+    ' Max Steel
+    Dim Area_gross As Double
+    Area_gross = (bw * D_total) + ((bf - bw) * Df)
+    Dim Ast_max As Double
+    Ast_max = 0.04 * Area_gross
+    
+    res.IsSafe = True
+    If res.Ast_Required > Ast_max Then
+        res.IsSafe = False
+        res.ErrorMessage = "Ast exceeds maximum limit."
+    End If
+    
+    res.Mu_Lim = Mu_lim_T
+    res.Pt_Provided = (res.Ast_Required * 100#) / (bw * d)
+    res.SectionType = UnderReinforced
+    res.Xu = xu_sol
+    res.Xu_max = xu_max
+    res.Asc_Required = 0
+    
+    Design_Flanged_Beam = res
 End Function
 
 
