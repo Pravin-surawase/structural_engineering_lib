@@ -32,7 +32,7 @@ structural_engineering_lib/
 │   ├── Modules/            ← Core .bas modules (import into Excel)
 │   └── Tests/
 ├── Python/
-│   ├── structural_lib/     ← Python package (flexure/shear WIP)
+│   ├── structural_lib/     ← Python package (rectangular + flanged flexure, shear)
 │   └── tests/
 ├── Excel/                  ← Flagship workbook (placeholder)
 ├── docs/
@@ -109,7 +109,7 @@ More worked examples in `VBA/Examples/Example_Usage.bas`.
 
 ## Testing
 
-- Python: `python3 -m pytest Python/tests -q` (flanged/doubly tests are skipped until implemented)
+- Python: `python3 -m pytest Python/tests -q`
 - VBA: manual/Rubberduck tests planned for later iteration
 
 ## Packaging

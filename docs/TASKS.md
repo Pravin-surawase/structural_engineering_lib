@@ -74,6 +74,11 @@ When working on tasks, specify which agent role to use:
   - Updated `M08_API.bas` version to 0.3.0
   - See `docs/EXCEL_ADDIN_GUIDE.md` for assembly instructions
 
+- [x] **TASK-011**: Python package (pyproject.toml, wheel)
+  - Added packaging metadata (`pyproject.toml`, `setup.cfg`, `Python/LICENSE`)
+  - Built wheel/sdist to `Python/dist/`
+  - Pytest passing (17 tests) with flanged/doubly included
+
 ---
 
 ## 🟡 In Progress
@@ -84,13 +89,12 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-011**: Python package (pyproject.toml, wheel) — **built locally (dist/)**
 - [ ] **TASK-012**: IS 13920 ductile detailing (v1.0)
 
 ---
 
 ## Notes
 
-- **Current Version**: v0.1.0 (in development)
+- **Current Version**: v0.3.0 (active)
 - **Last Updated**: 2025-12-10
 - **Active Branch**: main

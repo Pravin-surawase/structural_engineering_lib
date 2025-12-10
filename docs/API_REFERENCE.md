@@ -1,8 +1,8 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.1 (in development)  
+**Document Version:** 0.3.0  
 **Last Updated:** December 10, 2025  
-**Scope:** Public APIs for current Python implementation and planned VBA parity (signatures, inputs/outputs, units, status codes).
+**Scope:** Public APIs for current Python/VBA implementations (signatures, inputs/outputs, units, status codes).
 
 ---
 
