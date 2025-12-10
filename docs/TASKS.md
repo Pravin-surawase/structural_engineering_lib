@@ -68,6 +68,12 @@ When working on tasks, specify which agent role to use:
   - Handles Neutral Axis in Flange (Rectangular), Web (Singly T), and Doubly Reinforced T
   - Added tests for all 3 cases
 
+- [x] **TASK-010**: Excel Add-in packaging (.xlam)
+  - Updated `M09_UDFs.bas` with wrappers for Doubly Reinforced and Flanged Beam design
+  - Added `IS456_Design_Rectangular` and `IS456_Design_Flanged` returning dynamic arrays
+  - Updated `M08_API.bas` version to 0.3.0
+  - See `docs/EXCEL_ADDIN_GUIDE.md` for assembly instructions
+
 ---
 
 ## 🟡 In Progress
@@ -78,7 +84,6 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-010**: Excel Add-in packaging (.xlam) — *See `docs/EXCEL_ADDIN_GUIDE.md`*
 - [ ] **TASK-011**: Python package (pyproject.toml, wheel) — **built locally (dist/)**
 - [ ] **TASK-012**: IS 13920 ductile detailing (v1.0)
 

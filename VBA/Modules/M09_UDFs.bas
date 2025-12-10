@@ -49,6 +49,67 @@ ErrHandler:
     IS456_ShearSpacing = CVErr(xlErrValue)
 End Function
 
+' Wrapper for Flanged Mu_lim (Returns kN-m)
+Public Function IS456_MuLim_Flanged(ByVal bw As Double, ByVal bf As Double, ByVal d As Double, ByVal Df As Double, ByVal fck As Double, ByVal fy As Double) As Variant
+    On Error GoTo ErrHandler
+    IS456_MuLim_Flanged = M06_Flexure.Calculate_Mu_Lim_Flanged(bw, bf, d, Df, fck, fy)
+    Exit Function
+ErrHandler:
+    IS456_MuLim_Flanged = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Rectangular Beam Design (Singly or Doubly)
+' Returns 1x4 Array: [Ast_Req, Asc_Req, Xu, Status_String]
+Public Function IS456_Design_Rectangular(ByVal b As Double, ByVal d As Double, ByVal d_dash As Double, ByVal D_total As Double, ByVal Mu_kNm As Double, ByVal fck As Double, ByVal fy As Double) As Variant
+    On Error GoTo ErrHandler
+    Dim res As FlexureResult
+    res = M06_Flexure.Design_Doubly_Reinforced(b, d, d_dash, D_total, Mu_kNm, fck, fy)
+    
+    Dim output(1 To 4) As Variant
+    If res.IsSafe Then
+        output(1) = res.Ast_Required
+        output(2) = res.Asc_Required
+        output(3) = res.Xu
+        output(4) = "Safe"
+    Else
+        output(1) = 0
+        output(2) = 0
+        output(3) = res.Xu
+        output(4) = res.ErrorMessage
+    End If
+    
+    IS456_Design_Rectangular = output
+    Exit Function
+ErrHandler:
+    IS456_Design_Rectangular = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Flanged Beam Design
+' Returns 1x4 Array: [Ast_Req, Asc_Req, Xu, Status_String]
+Public Function IS456_Design_Flanged(ByVal bw As Double, ByVal bf As Double, ByVal d As Double, ByVal Df As Double, ByVal D_total As Double, ByVal Mu_kNm As Double, ByVal fck As Double, ByVal fy As Double, Optional ByVal d_dash As Double = 50) As Variant
+    On Error GoTo ErrHandler
+    Dim res As FlexureResult
+    res = M06_Flexure.Design_Flanged_Beam(bw, bf, d, Df, D_total, Mu_kNm, fck, fy, d_dash)
+    
+    Dim output(1 To 4) As Variant
+    If res.IsSafe Then
+        output(1) = res.Ast_Required
+        output(2) = res.Asc_Required
+        output(3) = res.Xu
+        output(4) = "Safe"
+    Else
+        output(1) = 0
+        output(2) = 0
+        output(3) = res.Xu
+        output(4) = res.ErrorMessage
+    End If
+    
+    IS456_Design_Flanged = output
+    Exit Function
+ErrHandler:
+    IS456_Design_Flanged = CVErr(xlErrValue)
+End Function
+
 ' Wrapper for Tc (Table 19)
 Public Function IS456_Tc(ByVal fck As Double, ByVal pt As Double) As Variant
     On Error GoTo ErrHandler

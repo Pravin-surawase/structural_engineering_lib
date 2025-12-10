@@ -1,5 +1,6 @@
 import pytest
 import math
+
 from structural_lib.flexure import design_flanged_beam, calculate_mu_lim_flanged, design_singly_reinforced
 from structural_lib.types import DesignSectionType
 
@@ -86,4 +87,3 @@ def test_flanged_beam_doubly_reinforced():
     assert res.asc_required > 0.0
     assert res.ast_required > 0.0
     assert res.xu == pytest.approx(res.xu_max, rel=1e-4)
-
