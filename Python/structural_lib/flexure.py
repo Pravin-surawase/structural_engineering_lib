@@ -51,8 +51,8 @@ def design_singly_reinforced(b: float, d: float, d_total: float, mu_knm: float, 
     # Check if Doubly Reinforced Needed
     if abs(mu_knm) > mu_lim:
         return FlexureResult(
-            mu=mu_lim,
-            asc_required=0.0,
+            mu_lim=mu_lim,
+            ast_required=0.0,
             pt_provided=0.0,
             section_type=DesignSectionType.OVER_REINFORCED,
             xu=xu_max,
@@ -88,8 +88,8 @@ def design_singly_reinforced(b: float, d: float, d_total: float, mu_knm: float, 
     xu = (0.87 * fy * ast_final) / (0.36 * fck * b)
     
     return FlexureResult(
-        mu=mu_lim,
-        asc_required=ast_final,
+        mu_lim=mu_lim,
+        ast_required=ast_final,
         pt_provided=pt_provided,
         section_type=DesignSectionType.UNDER_REINFORCED,
         xu=xu,
@@ -97,4 +97,3 @@ def design_singly_reinforced(b: float, d: float, d_total: float, mu_knm: float, 
         is_safe=is_safe,
         error_message=error_msg
     )
-

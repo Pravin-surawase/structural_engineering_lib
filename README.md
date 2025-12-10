@@ -4,7 +4,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-✅ **v1.0.0** — Implementation Complete.
+🔬 **In Development (v0.1 planned)** — Core flexure/shear logic in progress for VBA + Python.
 
 ## Features
 
@@ -19,34 +19,28 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 | Version | Features |
 |---------|----------|
-| **v1.0** (Current) | Rectangular beams, singly reinforced flexure, shear design |
-| v1.1 | Doubly reinforced flexure |
-| v1.2 | Flanged beams (T, L) |
-| v2.0 | IS 13920 ductile detailing |
+| **v0.1** (Planned) | Rectangular beams, singly reinforced flexure, shear design |
+| v0.2 | Doubly reinforced flexure |
+| v0.3 | Flanged beams (T, L) |
+| v1.0 | IS 13920 ductile detailing |
 
-## Directory Structure
+## Directory Structure (current)
 
 ```
 structural_engineering_lib/
 ├── VBA/
-│   ├── Modules/            ← Core .bas modules (Import these into Excel)
-│   │   ├── M01_Constants.bas
-│   │   ├── M02_Types.bas
-│   │   ├── M03_Tables.bas
-│   │   ├── M04_Utilities.bas
-│   │   ├── M05_Materials.bas
-│   │   ├── M06_Flexure.bas
-│   │   ├── M07_Shear.bas
-│   │   ├── M08_API.bas
-│   │   └── M09_UDFs.bas    ← Excel UDF wrappers
-│   └── Tests/              ← VBA test modules
+│   ├── Modules/            ← Core .bas modules (import into Excel)
+│   └── Tests/
 ├── Python/
-│   ├── structural_lib/     ← Python package
-│   └── tests/              ← Unit tests
+│   ├── structural_lib/     ← Python package (flexure/shear WIP)
+│   └── tests/
 ├── docs/
-│   ├── RESEARCH_AND_FINDINGS.md    ← Comprehensive research document
-│   ├── DEVELOPMENT_GUIDE.md        ← Coding standards and guidelines
-│   └── IS456_QUICK_REFERENCE.md    ← Formulas cheat sheet
+│   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
+│   ├── RESEARCH_AND_FINDINGS.md
+│   ├── DEVELOPMENT_GUIDE.md
+│   ├── API_REFERENCE.md
+│   └── IS456_QUICK_REFERENCE.md
+├── CHANGELOG.md
 └── README.md
 ```
 
@@ -63,22 +57,22 @@ structural_engineering_lib/
 ## Using the Python Library
 
 ```python
-from structural_lib import flexure, shear
+from structural_lib import flexure
 
-# Design a beam
 result = flexure.design_singly_reinforced(
-    b=230, d=450, d_total=500, 
-    mu_knm=100, fck=20, fy=415
+    b=230,
+    d=450,
+    d_total=500,
+    mu_knm=100,
+    fck=20,
+    fy=415,
 )
 
 if result.is_safe:
-    print(f"Ast Required: {result.asc_required} mm2")
+    print(f"Ast Required: {result.ast_required:.1f} mm²")
+else:
+    print(f"Design not safe: {result.error_message}")
 ```
-
-2. Press `Alt + F11` to open VBA Editor
-3. Right-click on VBA Project → **Import File...**
-4. Select all `.bas` files from `VBA/Modules/`
-5. Save workbook as `.xlsm`
 
 ### Method 2: Excel Add-in (Recommended for Distribution)
 
@@ -102,7 +96,9 @@ End Sub
 
 ## Documentation
 
+- **[Project Overview](docs/PROJECT_OVERVIEW.md)** — High-level scope, architecture, and workflows
 - **[Research and Findings](docs/RESEARCH_AND_FINDINGS.md)** — Complete research document with formulas, tables, and API design
+- **[API Reference](docs/API_REFERENCE.md)** — Public function signatures, inputs/outputs, units
 - **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** — Coding standards, naming conventions, testing guidelines
 - **[IS 456 Quick Reference](docs/IS456_QUICK_REFERENCE.md)** — Formulas cheat sheet for quick lookup
 

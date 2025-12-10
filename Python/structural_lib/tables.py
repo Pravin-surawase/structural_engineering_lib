@@ -43,29 +43,23 @@ def _get_tc_for_grade(grade: int, pt: float) -> float:
 def get_tc_value(fck: float, pt: float) -> float:
     """
     Get Design Shear Strength (Tc) from Table 19.
-    Interpolates for both Pt and Fck.
+    Interpolates in pt, uses nearest lower grade column (no fck interpolation).
     """
-    if fck >= 40:
-        return _get_tc_for_grade(40, pt)
-    elif fck <= 15:
-        return _get_tc_for_grade(15, pt)
+    grades = sorted(_TC_COLUMNS.keys())
+
+    if fck <= grades[0]:
+        grade = grades[0]
+    elif fck >= grades[-1]:
+        grade = grades[-1]
     else:
-        # Find bounding grades
-        if fck < 20:
-            lower, upper = 15, 20
-        elif fck < 25:
-            lower, upper = 20, 25
-        elif fck < 30:
-            lower, upper = 25, 30
-        elif fck < 35:
-            lower, upper = 30, 35
-        else:
-            lower, upper = 35, 40
-            
-        tc1 = _get_tc_for_grade(lower, pt)
-        tc2 = _get_tc_for_grade(upper, pt)
-        
-        return utilities.linear_interp(fck, float(lower), tc1, float(upper), tc2)
+        grade = grades[0]
+        for g in grades:
+            if fck >= g:
+                grade = g
+            else:
+                break
+
+    return _get_tc_for_grade(grade, pt)
 
 # ------------------------------------------------------------------------------
 # Table 20: Maximum Shear Stress (Tc_max)
@@ -94,4 +88,3 @@ def get_tc_max_value(fck: float) -> float:
             x1, y1, x2, y2 = 35, 3.7, 40, 4.0
             
         return utilities.linear_interp(fck, float(x1), y1, float(x2), y2)
-

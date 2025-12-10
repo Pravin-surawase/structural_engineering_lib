@@ -1,7 +1,7 @@
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
-Version:      1.0.0
+Version:      0.1.0 (in development)
 License:      MIT
 """
 

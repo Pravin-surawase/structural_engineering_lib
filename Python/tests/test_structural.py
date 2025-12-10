@@ -33,8 +33,8 @@ class TestStructuralLib(unittest.TestCase):
         # Fck Interpolation: M22.5 (mid of 20 and 25), pt=0.5
         # M20, pt=0.5 -> 0.48
         # M25, pt=0.5 -> 0.49
-        # Expected: 0.485
-        self.assertAlmostEqual(tables.get_tc_value(22.5, 0.5), 0.485)
+        # No fck interpolation: use lower grade column (M20) -> 0.48
+        self.assertAlmostEqual(tables.get_tc_value(22.5, 0.5), 0.48)
 
     def test_flexure_mulim(self):
         # M20, Fe415, b=230, d=450
@@ -57,13 +57,13 @@ class TestStructuralLib(unittest.TestCase):
         
         self.assertTrue(res.is_safe)
         self.assertEqual(res.section_type, types.DesignSectionType.UNDER_REINFORCED)
-        self.assertTrue(res.asc_required > 0)
+        self.assertTrue(res.ast_required > 0)
         
         # Check Ast calc manually
         # Mu/bd^2 = 100e6 / (230*450^2) = 2.147
         # Pt formula or Ast formula...
         # Approx Ast: Mu / (0.87 * fy * 0.9 * d) = 100e6 / (0.87*415*0.9*450) = 683 mm2
-        self.assertTrue(650 < res.asc_required < 750)
+        self.assertTrue(650 < res.ast_required < 750)
         
     def test_shear_design(self):
         # M20, Fe415

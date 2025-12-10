@@ -19,8 +19,8 @@ class DesignSectionType(Enum):
 
 @dataclass
 class FlexureResult:
-    mu: float            # Moment of Resistance (kN-m)
-    asc_required: float  # Area of steel required (mm^2)
+    mu_lim: float        # Limiting moment of resistance (kN-m)
+    ast_required: float  # Area of tension steel required/provided (mm^2)
     pt_provided: float   # Percentage of steel provided
     section_type: DesignSectionType
     xu: float            # Depth of neutral axis (mm)
