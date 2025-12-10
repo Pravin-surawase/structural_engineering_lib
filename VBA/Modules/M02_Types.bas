@@ -4,9 +4,13 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M02_Types
 ' Description:  Custom Data Types (UDTs) and Enums
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
+
+Public Function GetVersion() As String
+    GetVersion = "M02_Types v1.0.01"
+End Function
 
 ' ------------------------------------------------------------------------------
 ' Enums
@@ -52,3 +56,10 @@ Public Type ShearResult
     IsSafe As Boolean       ' True if section is safe in shear (Tv < Tc_max)
     Remarks As String       ' Design remarks (e.g., "Min Shear Reinforcement")
 End Type
+
+' ------------------------------------------------------------------------------
+' Version
+' ------------------------------------------------------------------------------
+Public Function GetVersion() As String
+    GetVersion = "M02_Types v1.0.01"
+End Function

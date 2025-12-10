@@ -23,12 +23,45 @@ Run this once from a blank workbook:
 ```vba
 Sub ImportAllModules()
     Const folder As String = "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/VBA/Modules/"
-    Dim file As String
-    file = Dir(folder & "*.bas")
-    Do While file <> ""
-        Application.VBE.ActiveVBProject.VBComponents.Import folder & file
-        file = Dir
-    Loop
+    Const testFolder As String = "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/VBA/Tests/"
+    
+    ' Remove existing library modules (M01–M10) and tests if present to avoid duplicates
+    Dim comp As Object
+    For Each comp In Application.VBE.ActiveVBProject.VBComponents
+        If comp.Name Like "M0?_Constants" _
+        Or comp.Name Like "M0?_Types" _
+        Or comp.Name Like "M0?_Tables" _
+        Or comp.Name Like "M0?_Utilities" _
+        Or comp.Name Like "M0?_Materials" _
+        Or comp.Name Like "M0?_Flexure" _
+        Or comp.Name Like "M0?_Shear" _
+        Or comp.Name Like "M0?_API" _
+        Or comp.Name Like "M0?_UDFs" _
+        Or comp.Name Like "M1?_Ductile" _
+        Or comp.Name = "M10_Ductile" _
+        Or comp.Name = "Test_Structural" Then
+            Application.VBE.ActiveVBProject.VBComponents.Remove comp
+        End If
+    Next comp
+    
+    ' IMPORTANT: Import M02_Types FIRST (other modules depend on UDT definitions)
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M02_Types.bas"
+    
+    ' Import remaining modules in order
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M01_Constants.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M03_Tables.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M04_Utilities.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M05_Materials.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M06_Flexure.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M07_Shear.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M08_API.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M09_UDFs.bas"
+    Application.VBE.ActiveVBProject.VBComponents.Import folder & "M10_Ductile.bas"
+    
+    ' Import test file
+    Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Structural.bas"
+    
+    MsgBox "All modules imported successfully! Version info will be displayed when you run RunAllTests.", vbInformation
 End Sub
 ```
 
