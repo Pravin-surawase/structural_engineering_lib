@@ -1,0 +1,78 @@
+"""
+Module:       shear
+Description:  Shear design and analysis functions
+"""
+
+from . import tables
+from .types import ShearResult
+
+def calculate_tv(vu_kn: float, b: float, d: float) -> float:
+    """Calculate Nominal Shear Stress (N/mm^2)"""
+    if b * d == 0:
+        return 0.0
+    return (abs(vu_kn) * 1000.0) / (b * d)
+
+def design_shear(vu_kn: float, b: float, d: float, fck: float, fy: float, asv: float, pt: float) -> ShearResult:
+    """
+    Main Shear Design Function
+    """
+    # 1. Calculate Tv
+    tv = calculate_tv(vu_kn, b, d)
+    
+    # 2. Get Tc_max
+    tc_max = tables.get_tc_max_value(fck)
+    
+    # Check Safety
+    if tv > tc_max:
+        return ShearResult(
+            tv=tv,
+            tc=0.0,
+            tc_max=tc_max,
+            vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            remarks="Shear stress exceeds Tc_max. Redesign section."
+        )
+        
+    # 3. Get Tc
+    tc = tables.get_tc_value(fck, pt)
+    
+    # 4. Calculate Vus and Spacing
+    vu_n = abs(vu_kn) * 1000.0
+    vc_n = tc * b * d
+    
+    if tv <= tc:
+        # Nominal shear < Design strength
+        vus = 0.0
+        remarks = "Nominal shear < Tc. Provide minimum shear reinforcement."
+        
+        # Spacing for min reinforcement (Cl. 26.5.1.6)
+        spacing_calc = (0.87 * fy * asv) / (0.4 * b)
+    else:
+        # Design for shear
+        vus = (vu_n - vc_n) / 1000.0 # kN
+        remarks = "Shear reinforcement required."
+        
+        # sv = (0.87 * fy * Asv * d) / Vus_N
+        spacing_calc = (0.87 * fy * asv * d) / (vus * 1000.0)
+        
+    # 5. Apply Max Spacing Limits (Cl. 26.5.1.5)
+    max_spacing_1 = 0.75 * d
+    max_spacing_2 = 300.0
+    max_spacing_min_reinf = (0.87 * fy * asv) / (0.4 * b)
+    
+    spacing = spacing_calc
+    if spacing > max_spacing_1: spacing = max_spacing_1
+    if spacing > max_spacing_2: spacing = max_spacing_2
+    if spacing > max_spacing_min_reinf: spacing = max_spacing_min_reinf
+    
+    return ShearResult(
+        tv=tv,
+        tc=tc,
+        tc_max=tc_max,
+        vus=vus,
+        spacing=spacing,
+        is_safe=True,
+        remarks=remarks
+    )
+
