@@ -68,17 +68,34 @@ def design_singly_reinforced(
 ) -> FlexureResult
 ```
 
+### 2.4 Design Doubly Reinforced Beam
+Designs a beam that can be singly or doubly reinforced. If `Mu > Mu_lim`, calculates compression steel (`Asc`) and additional tension steel.
+
+**Python:**
+```python
+def design_doubly_reinforced(
+    b: float, 
+    d: float, 
+    d_dash: float, 
+    d_total: float, 
+    mu_knm: float, 
+    fck: float, 
+    fy: float
+) -> FlexureResult
+```
+
 **Return Type (`FlexureResult`):**
 | Field | Type | Description |
 |-------|------|-------------|
 | `mu_lim` | float | Limiting moment capacity (kN·m) |
 | `ast_required` | float | Required tension steel area (mm²) |
-| `pt_provided` | float | Percentage of steel provided |
+| `asc_required` | float | Required compression steel area (mm²) |
+| `pt_provided` | float | Percentage of tension steel provided |
 | `section_type` | Enum | `UNDER_REINFORCED`, `BALANCED`, `OVER_REINFORCED` |
 | `xu` | float | Actual neutral axis depth (mm) |
 | `xu_max` | float | Max neutral axis depth (mm) |
 | `is_safe` | bool | True if design is valid |
-| `error_message` | str | Details if unsafe (e.g., "Mu exceeds Mu_lim") |
+| `error_message` | str | Details if unsafe |
 
 ---
 
@@ -169,3 +186,23 @@ Sub TestBeam()
     End If
 End Sub
 ```
+
+### 5.3 Worked Examples (Reference Values)
+
+Use these to sanity-check outputs (within typical rounding tolerance: ±0.5 kN·m for moments, ±1% for areas/stresses, spacing capped to code limits).
+
+1) **Flexure — singly reinforced**
+- Inputs: b=230 mm, d=450 mm, D=500 mm, Mu=150 kN·m, fck=25, fy=500.
+- Expected: Mu_lim ≈ 163 kN·m; Ast_required ≈ 1040–1100 mm²; Pt ≈ 1.0–1.1%; xu_max = 0.46d.
+
+2) **Shear — stirrups required**
+- Inputs: b=230 mm, d=450 mm, Vu=100 kN, fck=20, fy_stirrup=415, pt=1.0%, 2-legged 8 mm stirrups (Asv≈100.5 mm²).
+- Expected: τv ≈ 0.97 N/mm²; τc (M20, pt=1.0%) = 0.62 N/mm²; τv < τc,max=2.8; Vus ≈ 35–36 kN; spacing governed by max limits → 300 mm.
+
+3) **Shear — unsafe section**
+- Inputs: b=230 mm, d=450 mm, Vu=300 kN, fck=20, fy_stirrup=415, pt=1.0%, Asv=100.5 mm².
+- Expected: τv ≈ 2.9 N/mm² > τc,max=2.8 → DesignStatus/remarks indicate section inadequate (increase b or d).
+
+4) **Flexure — minimum steel governed**
+- Inputs: b=230 mm, d=450 mm, D=500 mm, Mu=5 kN·m, fck=20, fy=415.
+- Expected: Ast_min = 0.85*b*d/fy ≈ 212 mm²; result should return Ast = Ast_min with a “Minimum steel” note.

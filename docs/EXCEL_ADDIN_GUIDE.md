@@ -4,6 +4,15 @@ This guide explains how to package the VBA library into a reusable Excel Add-in 
 
 ---
 
+## Quickstart (TL;DR)
+1) Import all modules from `VBA/Modules/` into a blank workbook.  
+2) Set VBA project name to `StructEngLib`.  
+3) Save as **Excel Add-in (*.xlam)** (e.g., in a shared folder).  
+4) Excel → Options → Add-ins → Manage Add-ins → Browse… → select `StructEngLib.xlam`.  
+5) In your beam workbook, reference/call `StructEngLib.Ast_singly_IS456(...)`.
+
+---
+
 ## 1. What is an Add-in?
 
 In Excel/VBA terms:
@@ -26,12 +35,9 @@ Your beam workbook (`BEAM_IS456_CORE.xlsm`) will use those functions instead of 
 1. Open Excel → New blank workbook.
 2. Open VBA editor (`Alt+F11`).
 3. In the Project Explorer, remove any default modules/sheets you don’t need.
-4. Add a standard module:
-   - Right-click project → Insert → Module.
-   - Name it `mod_SE_Lib_IS456` (or similar).
-5. Paste/move your structural functions into this module:
-   - All the pure calc stuff: effective depth, Ast, tau_v, tau_c, Vuc, stirrups spacing, etc.
-   - **No sheet access, no MsgBox, no UI stuff in this file.**
+4. Import modules from `VBA/Modules/`:
+   - `M01_Constants.bas`, `M02_Types.bas`, `M03_Tables.bas`, `M04_Utilities.bas`, `M05_Materials.bas`, `M06_Flexure.bas`, `M07_Shear.bas`, `M08_API.bas`.
+   - **No sheet access, no MsgBox, no UI stuff in these files.**
 
 ### Step 2: Give the VBA project a proper name
 Still in the VBA editor:
@@ -79,7 +85,7 @@ Now open your beam workbook: `BEAM_IS456_CORE.xlsm`.
 
 ### Step 4.1: Remove duplicate library modules
 In the beam workbook’s VBA project:
-- Delete any modules that contain the same structural library functions (`mod_SE_Lib_IS456` or similar).
+- Delete any modules that contain the same structural library functions (M01–M08).
 - Leave only:
   - `mod_Main`
   - `mod_BeamCalc`
@@ -165,3 +171,28 @@ Right now you can:
 - then move it out to `.xlam` once the IS 456 core feels solid.
 
 The add-in architecture only starts paying off once the library is relatively stable and used by multiple tools.
+
+---
+
+## 8. Testing and Validation
+- Run VBA tests (manual/Rubberduck) in a workbook that references the add-in to confirm functions behave identically to the module version.
+- Cross-check against Python tests/values for key cases (see `docs/API_REFERENCE.md` worked examples).
+- Keep unit conventions consistent (kN·m, kN, mm, N/mm²) and table policies (pt clamped 0.15–3.0, no fck interpolation for Table 19) aligned with the library code.
+
+---
+
+## 9. Troubleshooting
+- **Add-in not visible in References:** Ensure it’s loaded via Add-ins dialog; re-open Tools → References and check `StructEngLib`.
+- **Old logic still used:** User has an older `.xlam` copy. Confirm path/version; centralize the add-in location.
+- **Name conflicts:** Prefix calls with `StructEngLib.`; avoid duplicate module names in workbooks.
+
+---
+
+## 10. Release Checklist (Add-in)
+1. Export fresh `.bas` modules from source control.
+2. Import into add-in workbook; set project name/version constant (M01_Constants).
+3. Run VBA tests; sanity-check against worked examples.
+4. Save as `.xlam` to the distribution path.
+5. Update changelog/version in README/docs if behavior changed.
+
+---

@@ -96,6 +96,8 @@ Sub DesignBeam()
 End Sub
 ```
 
+More worked examples in `VBA/Examples/Example_Usage.bas`.
+
 ## Documentation
 
 - **[Project Overview](docs/PROJECT_OVERVIEW.md)** — High-level scope, architecture, and workflows

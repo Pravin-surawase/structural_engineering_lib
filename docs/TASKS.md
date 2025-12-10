@@ -57,6 +57,12 @@ When working on tasks, specify which agent role to use:
   - Updated API_REFERENCE.md with current Python signatures, units, and policies
   - UDFs noted as planned (to be added with VBA parity)
 
+- [x] **TASK-008**: Doubly reinforced beam support (v0.2)
+  - Implemented `fsc` lookup/calculation (stress in compression steel)
+  - Added `Design_Doubly_Reinforced` in Python and VBA
+  - Updated `FlexureResult` to include `Asc_Required`
+  - Added tests for doubly reinforced logic
+
 ---
 
 ## 🟡 In Progress
@@ -67,13 +73,6 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-*(None currently — v0.1.0 Python scope items done; VBA parity/packaging tracked in backlog)*
-
----
-
-## 📋 Backlog (Future Versions)
-
-- [ ] **TASK-008**: Doubly reinforced beam support (v0.2)
 - [ ] **TASK-009**: Flanged beams T/L (v0.3)
 - [ ] **TASK-010**: Excel Add-in packaging (.xlam) — *See `docs/EXCEL_ADDIN_GUIDE.md`*
 - [ ] **TASK-011**: Python package (pyproject.toml, wheel) — **built locally (dist/)**

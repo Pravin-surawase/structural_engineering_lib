@@ -48,12 +48,43 @@ Public Sub RunAllTests()
     Test_Shear_Design
     Test_Shear_Unsafe
     Test_Shear_MinReinf
+    Test_Doubly_Reinforced
     Debug.Print "--- Tests Completed ---"
 End Sub
 
 ' ==============================================================================
 ' Test Cases
 ' ==============================================================================
+
+Public Sub Test_Doubly_Reinforced()
+    Dim res As FlexureResult
+    Dim b As Double, d As Double, d_dash As Double, D_total As Double
+    Dim fck As Double, fy As Double
+    
+    b = 230: d = 450: d_dash = 40: D_total = 500
+    fck = 25: fy = 415
+    
+    Dim Mu_lim As Double
+    Mu_lim = M06_Flexure.Calculate_Mu_Lim(b, d, fck, fy)
+    
+    ' Case 1: Singly Reinforced Fallback (Mu < Mu_lim)
+    res = M06_Flexure.Design_Doubly_Reinforced(b, d, d_dash, D_total, 0.8 * Mu_lim, fck, fy)
+    AssertTrue res.IsSafe, "Doubly_Fallback_Safe"
+    AssertAlmostEqual res.Asc_Required, 0, , "Doubly_Fallback_AscZero"
+    
+    ' Case 2: Doubly Reinforced Needed (Mu > Mu_lim)
+    res = M06_Flexure.Design_Doubly_Reinforced(b, d, d_dash, D_total, 1.5 * Mu_lim, fck, fy)
+    AssertTrue res.IsSafe, "Doubly_Needed_Safe"
+    AssertTrue (res.Asc_Required > 0), "Doubly_Needed_AscPositive"
+    AssertTrue (res.Ast_Required > 0), "Doubly_Needed_AstPositive"
+    AssertTrue (res.SectionType = OverReinforced), "Doubly_Needed_Type"
+    
+    ' Case 3: Steel Stress Check (Fe415)
+    ' Strain 0.00144 -> 288.7
+    AssertAlmostEqual M05_Materials.Get_Steel_Stress(0.00144, 415), 288.7, , "SteelStress_Fe415_Point1"
+    ' Strain 0.005 -> 360.9 (Yield)
+    AssertAlmostEqual M05_Materials.Get_Steel_Stress(0.005, 415), 360.9, , "SteelStress_Fe415_Yield"
+End Sub
 
 Public Sub Test_Materials()
     AssertAlmostEqual M05_Materials.Get_XuMax_d(250), 0.53, , "Materials_XuMax_250"

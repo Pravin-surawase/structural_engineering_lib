@@ -98,6 +98,110 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
             res.ErrorMessage = "Ast exceeds maximum limit (4% bD)."
         End If
         
+        ' Calculate Pt
+        res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
+        
+        ' Calculate actual Xu
+        res.Xu = (0.87 * fy * res.Ast_Required) / (0.36 * fck * b)
+        
+        res.Asc_Required = 0 ' Explicitly set to 0
+    End If
+    
+    Design_Singly_Reinforced = res
+End Function
+
+' Main Design Function for Doubly Reinforced Beam (or Singly if Mu <= Mu_lim)
+Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, ByVal d_dash As Double, ByVal D_total As Double, ByVal Mu_kNm As Double, ByVal fck As Double, ByVal fy As Double) As FlexureResult
+    Dim res As FlexureResult
+    Dim Mu_abs As Double
+    Mu_abs = Abs(Mu_kNm)
+    
+    ' 1. Calculate Mu_lim
+    Dim Mu_lim As Double
+    Mu_lim = Calculate_Mu_Lim(b, d, fck, fy)
+    res.Mu_Lim = Mu_lim
+    res.Xu_max = M05_Materials.Get_XuMax_d(fy) * d
+    
+    ' Case 1: Singly Reinforced
+    If Mu_abs <= Mu_lim Then
+        res = Design_Singly_Reinforced(b, d, D_total, Mu_kNm, fck, fy)
+        res.Asc_Required = 0
+        Design_Doubly_Reinforced = res
+        Exit Function
+    End If
+    
+    ' Case 2: Doubly Reinforced
+    res.SectionType = OverReinforced ' Using OverReinforced enum to signify Doubly Reinforced need
+    
+    ' 1. Calculate Mu2
+    Dim Mu2_kNm As Double
+    Mu2_kNm = Mu_abs - Mu_lim
+    
+    Dim Mu2_Nmm As Double
+    Mu2_Nmm = Mu2_kNm * 1000000#
+    
+    ' 2. Calculate Strain in Compression Steel
+    ' strain_sc = 0.0035 * (1 - d'/xu_max)
+    Dim strain_sc As Double
+    strain_sc = 0.0035 * (1# - d_dash / res.Xu_max)
+    
+    ' 3. Calculate Stress in Compression Steel (fsc)
+    Dim fsc As Double
+    fsc = M05_Materials.Get_Steel_Stress(strain_sc, fy)
+    
+    ' 4. Calculate Stress in Concrete at level of compression steel (fcc)
+    Dim fcc As Double
+    fcc = 0.446 * fck
+    
+    ' 5. Calculate Asc
+    ' Mu2 = Asc * (fsc - fcc) * (d - d')
+    Dim denom As Double
+    denom = (fsc - fcc) * (d - d_dash)
+    
+    If denom <= 0 Then
+        res.IsSafe = False
+        res.ErrorMessage = "Invalid section geometry for doubly reinforced design."
+        Design_Doubly_Reinforced = res
+        Exit Function
+    End If
+    
+    res.Asc_Required = Mu2_Nmm / denom
+    
+    ' 6. Calculate Total Ast
+    ' Ast1 (for Mu_lim)
+    Dim Ast1 As Double
+    Ast1 = Calculate_Ast_Required(b, d, Mu_lim, fck, fy)
+    
+    ' Ast2 (for Mu2)
+    ' Ast2 * 0.87 * fy = Asc * (fsc - fcc)
+    Dim Ast2 As Double
+    Ast2 = (res.Asc_Required * (fsc - fcc)) / (0.87 * fy)
+    
+    res.Ast_Required = Ast1 + Ast2
+    
+    ' 7. Check Max Steel (Cl. 26.5.1.2)
+    Dim Ast_max As Double
+    Ast_max = 0.04 * b * D_total
+    
+    res.IsSafe = True
+    
+    If res.Ast_Required > Ast_max Then
+        res.IsSafe = False
+        res.ErrorMessage = "Total Ast exceeds maximum limit (4% bD)."
+    End If
+    
+    If res.Asc_Required > Ast_max Then
+        res.IsSafe = False
+        res.ErrorMessage = res.ErrorMessage & " Asc exceeds maximum limit."
+    End If
+    
+    ' Calculate Pt
+    res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
+    res.Xu = res.Xu_max
+    
+    Design_Doubly_Reinforced = res
+End Function
+
         ' 6. Calculate Pt
         res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
         

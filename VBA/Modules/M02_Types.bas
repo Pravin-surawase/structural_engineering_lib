@@ -32,6 +32,7 @@ End Enum
 Public Type FlexureResult
     Mu_Lim As Double        ' Limiting Moment of Resistance (kN-m)
     Ast_Required As Double  ' Area of steel required (mm^2)
+    Asc_Required As Double  ' Area of compression steel required (mm^2)
     Pt_Provided As Double   ' Percentage of steel provided
     SectionType As DesignSectionType
     Xu As Double            ' Depth of neutral axis (mm)

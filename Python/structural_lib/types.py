@@ -26,6 +26,7 @@ class FlexureResult:
     xu: float            # Depth of neutral axis (mm)
     xu_max: float        # Max depth of neutral axis (mm)
     is_safe: bool        # True if design is valid
+    asc_required: float = 0.0 # Area of compression steel required (mm^2)
     error_message: str = ""
 
 @dataclass
