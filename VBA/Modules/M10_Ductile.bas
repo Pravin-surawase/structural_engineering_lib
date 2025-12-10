@@ -78,11 +78,11 @@ Public Function Calculate_Confinement_Spacing(ByVal d As Double, ByVal min_long_
 End Function
 
 ' Main check function
-Public Function Check_Beam_Ductility(ByVal b As Double, ByVal D As Double, ByVal d As Double, ByVal fck As Double, ByVal fy As Double, ByVal min_long_bar_dia As Double) As DuctileBeamResult
+Public Function Check_Beam_Ductility(ByVal b As Double, ByVal D_overall As Double, ByVal d As Double, ByVal fck As Double, ByVal fy As Double, ByVal min_long_bar_dia As Double) As DuctileBeamResult
     Dim res As DuctileBeamResult
     Dim msg As String
     
-    res.IsGeometryValid = Check_Geometry(b, D, msg)
+    res.IsGeometryValid = Check_Geometry(b, D_overall, msg)
     res.MinPt = Get_Min_Tension_Steel_Percentage(fck, fy)
     res.MaxPt = Get_Max_Tension_Steel_Percentage()
     res.ConfinementSpacing = Calculate_Confinement_Spacing(d, min_long_bar_dia)

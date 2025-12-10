@@ -67,8 +67,9 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
         res.SectionType = OverReinforced
         res.IsSafe = False
         res.ErrorMessage = "Mu exceeds Mu_lim. Doubly reinforced section required."
-        res.Ast_Required = 0
-        res.Pt_Provided = 0
+        res.Ast_Required = 0#
+        res.Asc_Required = 0#
+        res.Pt_Provided = 0#
         res.Xu = res.Xu_max ' Limiting depth
     Else
         res.SectionType = UnderReinforced
@@ -385,5 +386,4 @@ Public Function Design_Flanged_Beam(ByVal bw As Double, ByVal bf As Double, ByVa
     
     Design_Flanged_Beam = res
 End Function
-
 

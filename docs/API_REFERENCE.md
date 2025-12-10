@@ -1,8 +1,8 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.3.0  
+**Document Version:** 1.0.0  
 **Last Updated:** December 10, 2025  
-**Scope:** Public APIs for current Python/VBA implementations (signatures, inputs/outputs, units, status codes).
+**Scope:** Public APIs for current Python/VBA implementations (flexure, shear, ductile detailing).
 
 ---
 
@@ -245,6 +245,75 @@ if result.is_safe:
 else:
     print(f"Design Failed: {result.error_message}")
 ```
+
+---
+
+## 6. Ductile Detailing (IS 13920:2016) — `ductile.py` / `M10_Ductile.bas`
+
+### 6.1 Geometry Check
+**Python:**
+```python
+check_geometry(b: float, D: float) -> Tuple[bool, str]
+```
+- Valid if b ≥ 200 mm and b/D ≥ 0.3.
+
+**VBA:**
+```vba
+Public Function Check_Geometry(b As Double, D As Double, ByRef ErrorMsg As String) As Boolean
+```
+
+### 6.2 Minimum/Maximum Tension Steel
+**Python:**
+```python
+get_min_tension_steel_percentage(fck: float, fy: float) -> float  # returns %
+get_max_tension_steel_percentage() -> float  # 2.5%
+```
+
+**VBA:**
+```vba
+Public Function Get_Min_Tension_Steel_Percentage(fck As Double, fy As Double) As Double
+Public Function Get_Max_Tension_Steel_Percentage() As Double
+```
+
+### 6.3 Confinement Spacing (Plastic Hinge Zones)
+**Python:**
+```python
+calculate_confinement_spacing(d: float, min_long_bar_dia: float) -> float  # mm
+```
+Spacing = min(d/4, 8*db_min, 100 mm).
+
+**VBA:**
+```vba
+Public Function Calculate_Confinement_Spacing(d As Double, min_long_bar_dia As Double) As Double
+```
+
+### 6.4 Aggregate Check
+**Python:**
+```python
+check_beam_ductility(
+    b: float, D: float, d: float,
+    fck: float, fy: float,
+    min_long_bar_dia: float
+) -> DuctileBeamResult
+```
+
+**VBA:**
+```vba
+Public Function Check_Beam_Ductility( _
+    b As Double, D As Double, d As Double, _
+    fck As Double, fy As Double, _
+    min_long_bar_dia As Double _
+) As DuctileBeamResult
+```
+
+**DuctileBeamResult Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `is_geometry_valid` | bool | Geometry check result |
+| `min_pt` | float | Minimum tension steel (%) |
+| `max_pt` | float | Maximum tension steel (%) |
+| `confinement_spacing` | float | Max hoop spacing in hinge zone (mm) |
+| `remarks` | str | "Compliant" or reason for failure |
 
 ### 5.2 VBA Example
 ```vba

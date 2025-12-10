@@ -4,7 +4,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.3.0)** — Core flexure (Singly, Doubly, Flanged) and shear logic implemented in VBA + Python.
+🚀 **Active (v1.0.0)** — Flexure (singly, doubly, flanged), shear, and ductile detailing implemented in VBA + Python.
 
 ## Features
 
@@ -22,7 +22,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 | **v0.1** | Rectangular beams, singly reinforced flexure, shear design | ✅ Completed |
 | **v0.2** | Doubly reinforced flexure | ✅ Completed |
 | **v0.3** | Flanged beams (T, L) | ✅ Completed |
-| **v1.0** | IS 13920 ductile detailing | 📅 Planned |
+| **v1.0** | IS 13920 ductile detailing | ✅ Completed |
 
 ## Directory Structure (current)
 

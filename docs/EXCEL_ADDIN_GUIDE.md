@@ -4,12 +4,33 @@ This guide explains how to package the VBA library into a reusable Excel Add-in 
 
 ---
 
-## Quickstart (TL;DR)
-1) Import all modules from `VBA/Modules/` into a blank workbook.  
-2) Set VBA project name to `StructEngLib`.  
-3) Save as **Excel Add-in (*.xlam)** (e.g., in a shared folder).  
-4) Excel → Options → Add-ins → Manage Add-ins → Browse… → select `StructEngLib.xlam`.  
-5) In your beam workbook, reference/call `StructEngLib.Ast_singly_IS456(...)`.
+## Quickstart (Beginner-Friendly)
+1) Open a new blank Excel workbook.  
+2) Press `Alt + F11` to open the VBA editor.  
+3) Import all `.bas` files from `VBA/Modules/` (Right-click project → Import File).  
+4) In the Properties window (F4), set the project Name to `StructEngLib`.  
+5) Save the workbook as **Excel Add-In (*.xlam)** (e.g., `StructEngLib.xlam`).  
+6) In Excel: File → Options → Add-ins → Manage: Excel Add-ins → Go → Browse… → select `StructEngLib.xlam` → OK.  
+7) In your beam workbook, add a reference (Tools → References… → check `StructEngLib`) and call functions, e.g., `StructEngLib.Ast_singly_IS456(...)`.
+
+### Bulk import macro (if your Import dialog doesn’t support multi-select)
+Enable “Trust access to the VBA project object model” (Excel Trust Center). Paths differ by platform:
+- **Windows:** File → Options → Trust Center → Trust Center Settings… → Macro Settings → check “Trust access to the VBA project object model”.
+- **Mac:** Excel → Preferences → Security → enable “Trust access to the VBA project object model”.
+
+Run this once from a blank workbook:
+
+```vba
+Sub ImportAllModules()
+    Const folder As String = "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/VBA/Modules/"
+    Dim file As String
+    file = Dir(folder & "*.bas")
+    Do While file <> ""
+        Application.VBE.ActiveVBProject.VBComponents.Import folder & file
+        file = Dir
+    Loop
+End Sub
+```
 
 ---
 
@@ -84,13 +105,9 @@ You (and later your users) need to load this add-in once per machine.
 Now open your beam workbook: `BEAM_IS456_CORE.xlsm`.
 
 ### Step 4.1: Remove duplicate library modules
-In the beam workbook’s VBA project:
-- Delete any modules that contain the same structural library functions (M01–M08).
-- Leave only:
-  - `mod_Main`
-  - `mod_BeamCalc`
-  - `mod_Utils`
-  - etc.
+If your beam workbook already has copies of the library modules, delete them. The add-in already contains M01–M10.
+- Remove any imported M01_Constants … M10_Ductile from the workbook.
+- Keep only your workbook-specific code (e.g., your own macros, UI/orchestration modules) that call into `StructEngLib`.
 
 **Idea:**
 - Beam workbook = UI + engine orchestration
@@ -111,6 +128,33 @@ Now, in your beam code, you can explicitly call:
 ' Pseudo-code style:
 AstReq = StructEngLib.Ast_singly_IS456(Mu, b, d, fck, fy)
 ```
+
+### Quick sanity tests after referencing
+Run these from your workbook (or from `VBA/Examples/Example_Usage.bas`) to confirm the add-in is working:
+
+```vba
+Sub Test_Addin_Basic()
+    Dim res As FlexureResult
+    res = StructEngLib.Design_Singly_Reinforced(230, 450, 500, 150, 25, 500)
+    Debug.Print "Mu_lim (kN·m):"; res.Mu_Lim
+    Debug.Print "Ast (mm^2):"; res.Ast_Required   ' Expect ~1040–1100
+End Sub
+
+Sub Test_Addin_Shear()
+    Dim s As ShearResult
+    s = StructEngLib.Design_Shear(100, 230, 450, 20, 415, 100.5, 1)
+    Debug.Print "Tv (N/mm^2):"; s.Tv              ' ~0.97
+    Debug.Print "Tc (N/mm^2):"; s.Tc              ' 0.62
+    Debug.Print "Spacing (mm):"; s.Spacing        ' Capped at 300
+End Sub
+
+Sub Test_Addin_Ductile()
+    Dim dres As DuctileBeamResult
+    dres = StructEngLib.Check_Beam_Ductility(230, 450, 410, 25, 500, 12)
+    Debug.Print "Geo OK:"; dres.IsGeometryValid; " MinPt:"; dres.MinPt; " MaxPt:"; dres.MaxPt; " Spacing:"; dres.ConfinementSpacing
+End Sub
+```
+Compare outputs to `docs/API_REFERENCE.md` worked examples (flexure/shear) and ductile checks (spacing = min(d/4, 8*db_min, 100)).
 
 If you don’t add the reference, you can often still call `Ast_singly_IS456` directly (because the add-in is in global scope), but namespacing with `StructEngLib.` is cleaner and avoids name conflicts.
 

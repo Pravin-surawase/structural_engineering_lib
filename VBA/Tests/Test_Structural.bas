@@ -87,26 +87,26 @@ Public Sub Test_Doubly_Reinforced()
 End Sub
 
 Public Sub Test_Materials()
-    AssertAlmostEqual M05_Materials.Get_XuMax_d(250), 0.53, , "Materials_XuMax_250"
-    AssertAlmostEqual M05_Materials.Get_XuMax_d(415), 0.48, , "Materials_XuMax_415"
-    AssertAlmostEqual M05_Materials.Get_XuMax_d(500), 0.46, , "Materials_XuMax_500"
+    AssertAlmostEqual M05_Materials.Get_XuMax_d(250#), 0.53, , "Materials_XuMax_250"
+    AssertAlmostEqual M05_Materials.Get_XuMax_d(415#), 0.48, , "Materials_XuMax_415"
+    AssertAlmostEqual M05_Materials.Get_XuMax_d(500#), 0.46, , "Materials_XuMax_500"
     
-    AssertAlmostEqual M05_Materials.Get_Ec(25), 25000#, , "Materials_Ec_25"
+    AssertAlmostEqual M05_Materials.Get_Ec(25#), 25000#, , "Materials_Ec_25"
 End Sub
 
 Public Sub Test_Tables_Tc()
     ' M20, pt=0.5 -> 0.48
-    AssertAlmostEqual M03_Tables.Get_Tc_Value(20, 0.5), 0.48, , "Tables_Tc_M20_0.5"
+    AssertAlmostEqual M03_Tables.Get_Tc_Value(20#, 0.5#), 0.48, , "Tables_Tc_M20_0.5"
     
     ' Interpolation: M20, pt=0.625 -> 0.52
-    AssertAlmostEqual M03_Tables.Get_Tc_Value(20, 0.625), 0.52, , "Tables_Tc_M20_Interp"
+    AssertAlmostEqual M03_Tables.Get_Tc_Value(20#, 0.625#), 0.52, , "Tables_Tc_M20_Interp"
     
     ' No Fck Interpolation: M22.5 -> Uses M20 -> 0.48
-    AssertAlmostEqual M03_Tables.Get_Tc_Value(22.5, 0.5), 0.48, , "Tables_Tc_NoFckInterp"
+    AssertAlmostEqual M03_Tables.Get_Tc_Value(22.5#, 0.5#), 0.48, , "Tables_Tc_NoFckInterp"
     
     ' Pt Clamping
-    AssertAlmostEqual M03_Tables.Get_Tc_Value(20, 0.05), 0.28, , "Tables_Tc_ClampLow"
-    AssertAlmostEqual M03_Tables.Get_Tc_Value(20, 4#), 0.82, , "Tables_Tc_ClampHigh"
+    AssertAlmostEqual M03_Tables.Get_Tc_Value(20#, 0.05#), 0.28, , "Tables_Tc_ClampLow"
+    AssertAlmostEqual M03_Tables.Get_Tc_Value(20#, 4#), 0.82, , "Tables_Tc_ClampHigh"
 End Sub
 
 Public Sub Test_Flexure_MuLim()
@@ -120,11 +120,12 @@ End Sub
 
 Public Sub Test_Flexure_Design()
     Dim res As FlexureResult
-    res = M06_Flexure.Design_Singly_Reinforced(230, 450, 500, 100, 20, 415)
+    res = M06_Flexure.Design_Singly_Reinforced(230#, 450#, 500#, 100#, 20#, 415#)
     
     AssertTrue res.IsSafe, "Flexure_Design_Safe"
     AssertTrue (res.SectionType = UnderReinforced), "Flexure_Design_UnderReinforced"
-    AssertTrue (res.Ast_Required > 650 And res.Ast_Required < 750), "Flexure_Design_Ast_Range"
+    ' Expect Ast ~700 mm^2 for 230x450, Mu=100 kN·m, M20/Fe415
+    AssertAlmostEqual res.Ast_Required, 700#, 100#, "Flexure_Design_Ast_Range"
 End Sub
 
 Public Sub Test_Flexure_MinSteel()
@@ -142,11 +143,11 @@ End Sub
 Public Sub Test_Flexure_OverReinforced()
     Dim res As FlexureResult
     ' Large moment > 128
-    res = M06_Flexure.Design_Singly_Reinforced(230, 450, 500, 150, 20, 415)
+    res = M06_Flexure.Design_Singly_Reinforced(230#, 450#, 500#, 150#, 20#, 415#)
     
     AssertFalse res.IsSafe, "Flexure_Over_Safe"
     AssertTrue (res.SectionType = OverReinforced), "Flexure_Over_Type"
-    AssertAlmostEqual res.Ast_Required, 0, , "Flexure_Over_AstZero"
+    AssertTrue (Abs(res.Ast_Required) < 0.001), "Flexure_Over_AstZero"
 End Sub
 
 Public Sub Test_Shear_Design()

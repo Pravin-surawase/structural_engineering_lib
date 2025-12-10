@@ -1,7 +1,7 @@
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
-Version:      0.1.0 (in development)
+Version:      1.0.0
 License:      MIT
 """
 
@@ -13,4 +13,5 @@ from . import utilities
 from . import materials
 from . import flexure
 from . import shear
+from . import ductile
 from . import api

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2025-12-12
+### Added
+- **IS 13920 Ductile Detailing (Beams):**
+  - Geometry checks (b ≥ 200 mm, b/D ≥ 0.3), min/max tension steel, confinement spacing.
+  - `ductile.py` (Python) and `M10_Ductile.bas` (VBA) with `DuctileBeamResult`.
+  - Tests (`test_ductile.py`); API reference updated.
+- **Packaging:** Python package metadata bumped to v1.0.0; license included in builds.
+
 ## [0.3.0] - 2025-12-11
 ### Added
 - **Flanged Beam Design (T/L Beams)**:
