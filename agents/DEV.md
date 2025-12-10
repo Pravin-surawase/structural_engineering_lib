@@ -76,3 +76,4 @@ minimum shear reinforcement spacing per IS 456 Cl. 26.5.1.6.
 ---
 
 **Reference:** See `docs/DEVELOPMENT_GUIDE.md` for full coding standards.
+Use `docs/PROJECT_OVERVIEW.md` for scope/architecture context when prompting AI.

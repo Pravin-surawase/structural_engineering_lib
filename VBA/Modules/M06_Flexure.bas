@@ -58,7 +58,7 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
     ' 1. Calculate Mu_lim
     Dim Mu_lim As Double
     Mu_lim = Calculate_Mu_Lim(b, d, fck, fy)
-    res.Mu = Mu_lim ' We return Mu_lim as the capacity limit
+    res.Mu_Lim = Mu_lim ' We return Mu_lim as the capacity limit
     
     res.Xu_max = M05_Materials.Get_XuMax_d(fy) * d
     
@@ -67,7 +67,7 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
         res.SectionType = OverReinforced
         res.IsSafe = False
         res.ErrorMessage = "Mu exceeds Mu_lim. Doubly reinforced section required."
-        res.Asc_Required = 0
+        res.Ast_Required = 0
         res.Pt_Provided = 0
         res.Xu = res.Xu_max ' Limiting depth
     Else
@@ -83,29 +83,30 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
         Ast_min = 0.85 * b * d / fy
         
         If Ast_calc < Ast_min Then
-            res.Asc_Required = Ast_min
+            res.Ast_Required = Ast_min
             res.ErrorMessage = "Minimum steel provided."
         Else
-            res.Asc_Required = Ast_calc
+            res.Ast_Required = Ast_calc
         End If
         
         ' 5. Check Maximum Steel (Cl. 26.5.1.2)
         Dim Ast_max As Double
         Ast_max = 0.04 * b * D_total
         
-        If res.Asc_Required > Ast_max Then
+        If res.Ast_Required > Ast_max Then
             res.IsSafe = False
             res.ErrorMessage = "Ast exceeds maximum limit (4% bD)."
         End If
         
         ' 6. Calculate Pt
-        res.Pt_Provided = (res.Asc_Required * 100#) / (b * d)
+        res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
         
         ' 7. Calculate actual Xu
         ' Xu = (0.87 * fy * Ast) / (0.36 * fck * b)
-        res.Xu = (0.87 * fy * res.Asc_Required) / (0.36 * fck * b)
+        res.Xu = (0.87 * fy * res.Ast_Required) / (0.36 * fck * b)
     End If
     
     Design_Singly_Reinforced = res
 End Function
+
 

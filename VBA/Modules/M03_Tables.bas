@@ -74,39 +74,30 @@ Private Function Get_Tc_For_Grade(ByVal Grade As Integer, ByVal pt As Double) As
 End Function
 
 ' Public Function to get Tc (Table 19)
-' Interpolates for both Pt and Fck
+' Interpolates for Pt only. Uses nearest lower grade for Fck (conservative).
 Public Function Get_Tc_Value(ByVal fck As Double, ByVal pt As Double) As Double
-    ' 1. Handle Fck interpolation
+    ' 1. Handle Fck (No interpolation, use nearest lower grade)
     ' Available columns: 15, 20, 25, 30, 35, 40
     
+    Dim gradeToUse As Integer
+    
     If fck >= 40 Then
-        Get_Tc_Value = Get_Tc_For_Grade(40, pt)
-    ElseIf fck <= 15 Then
-        Get_Tc_Value = Get_Tc_For_Grade(15, pt)
+        gradeToUse = 40
+    ElseIf fck >= 35 Then
+        gradeToUse = 35
+    ElseIf fck >= 30 Then
+        gradeToUse = 30
+    ElseIf fck >= 25 Then
+        gradeToUse = 25
+    ElseIf fck >= 20 Then
+        gradeToUse = 20
     Else
-        ' Find bounding grades
-        Dim lowerGrade As Integer
-        Dim upperGrade As Integer
-        
-        If fck < 20 Then
-            lowerGrade = 15: upperGrade = 20
-        ElseIf fck < 25 Then
-            lowerGrade = 20: upperGrade = 25
-        ElseIf fck < 30 Then
-            lowerGrade = 25: upperGrade = 30
-        ElseIf fck < 35 Then
-            lowerGrade = 30: upperGrade = 35
-        Else
-            lowerGrade = 35: upperGrade = 40
-        End If
-        
-        Dim tc1 As Double, tc2 As Double
-        tc1 = Get_Tc_For_Grade(lowerGrade, pt)
-        tc2 = Get_Tc_For_Grade(upperGrade, pt)
-        
-        Get_Tc_Value = M04_Utilities.LinearInterp(fck, CDbl(lowerGrade), tc1, CDbl(upperGrade), tc2)
+        gradeToUse = 15 ' Minimum or fallback
     End If
+    
+    Get_Tc_Value = Get_Tc_For_Grade(gradeToUse, pt)
 End Function
+
 
 ' ------------------------------------------------------------------------------
 ' Table 20: Maximum Shear Stress (Tc_max)

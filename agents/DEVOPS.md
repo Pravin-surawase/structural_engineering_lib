@@ -37,6 +37,7 @@ structural_engineering_lib/
 │   └── BeamDesign.xlsm
 ├── docs/                 ← All documentation
 ├── agents/               ← Role documents for AI
+├── Excel/                ← Flagship workbook (future)
 ├── .gitignore
 ├── CHANGELOG.md
 ├── LICENSE
@@ -83,7 +84,7 @@ v1.0.0 — production ready with ductile detailing
 
 | Task | Tool | Status |
 |------|------|--------|
-| Python tests | pytest | ✅ Ready |
+| Python tests | pytest | 🔜 Pending (install pytest/CI) |
 | VBA tests | Manual / Rubberduck | 🔜 Planned |
 | Python lint | ruff/black | 🔜 Planned |
 | Build .xlam | Manual export | 🔜 Planned |
@@ -99,6 +100,11 @@ When acting as DEVOPS agent, provide:
 3. **Automation scripts** — Shell/Python scripts if needed
 4. **Checklists** — Pre-release verification steps
 
+## Environment Targets
+- Excel/VBA: Office 2016+ (Win/Mac), 64-bit preferred.
+- Python: 3.9–3.12.
+- Avoid platform-specific paths; keep builds reproducible.
+
 ---
 
 ## Example Prompt
@@ -111,4 +117,4 @@ tests to run, docs to update, and git commands.
 
 ---
 
-**Reference:** See `docs/DEVELOPMENT_GUIDE.md` Section 16 for release checklist.
+**Reference:** See `docs/PROJECT_OVERVIEW.md` (context) and `docs/DEVELOPMENT_GUIDE.md` Section 16 (release checklist).

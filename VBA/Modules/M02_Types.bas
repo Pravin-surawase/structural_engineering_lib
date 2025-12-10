@@ -30,8 +30,8 @@ End Enum
 
 ' Result type for Flexure Analysis
 Public Type FlexureResult
-    Mu As Double            ' Moment of Resistance (kN-m)
-    Asc_Required As Double  ' Area of steel required (mm^2)
+    Mu_Lim As Double        ' Limiting Moment of Resistance (kN-m)
+    Ast_Required As Double  ' Area of steel required (mm^2)
     Pt_Provided As Double   ' Percentage of steel provided
     SectionType As DesignSectionType
     Xu As Double            ' Depth of neutral axis (mm)
@@ -39,6 +39,7 @@ Public Type FlexureResult
     IsSafe As Boolean       ' True if design is valid
     ErrorMessage As String  ' Error description if any
 End Type
+
 
 ' Result type for Shear Analysis
 Public Type ShearResult

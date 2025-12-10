@@ -34,12 +34,14 @@ structural_engineering_lib/
 ├── Python/
 │   ├── structural_lib/     ← Python package (flexure/shear WIP)
 │   └── tests/
+├── Excel/                  ← Flagship workbook (placeholder)
 ├── docs/
 │   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
 │   ├── RESEARCH_AND_FINDINGS.md
 │   ├── DEVELOPMENT_GUIDE.md
 │   ├── API_REFERENCE.md
 │   └── IS456_QUICK_REFERENCE.md
+├── agents/                 ← Role docs for AI prompts
 ├── CHANGELOG.md
 └── README.md
 ```

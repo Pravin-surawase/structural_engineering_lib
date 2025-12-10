@@ -70,6 +70,7 @@ When acting as TESTER agent, provide:
 2. **Source/reference** — Where the expected value comes from
 3. **Edge case rationale** — Why this case matters
 4. **Suggested assertions** — What to check
+5. **Table 19 policy:** No fck interpolation; clamp pt to 0.15–3.0 and use nearest lower grade column.
 
 ---
 

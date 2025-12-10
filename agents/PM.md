@@ -102,4 +102,4 @@ fits v0.1 scope and recommend when to add it.
 
 ---
 
-**Reference:** See `docs/TASKS.md` for current task board.
+**Reference:** Use `docs/PROJECT_OVERVIEW.md` for scope/architecture context. (Task board TBD)

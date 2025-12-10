@@ -43,6 +43,24 @@ When working on tasks, specify which agent role to use:
   - Stirrup spacing with limits
   - VBA + Python implementations
 
+- [x] **TASK-005**: Sync VBA with Python refinements
+  - Renamed `Asc_Required` → `Ast_Required` in VBA types
+  - Renamed `Mu` → `Mu_Lim` in FlexureResult
+  - Updated M03_Tables to use nearest lower grade (no fck interpolation)
+
+---
+
+## 🟡 In Progress
+
+*(None currently)*
+
+---
+
+## 🔴 Up Next
+
+- [ ] **TASK-006**: Complete test coverage
+
+
 
 ---
 
