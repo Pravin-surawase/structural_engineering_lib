@@ -1,138 +1,232 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.1 (stub)  
+**Document Version:** 1.0.0  
 **Last Updated:** December 10, 2025  
 **Scope:** Public APIs for VBA and Python implementations (signatures, inputs/outputs, units, status codes).
 
 ---
 
 ## 1. Conventions
-- Units: `Mu` in kN·m, `Vu` in kN, lengths in mm, stresses in N/mm², areas in mm².
-- Inputs validated at API boundary; functions use absolute values for moments/shears (UI handles sign).
-- Return values: VBA uses UDTs for main APIs; Python uses dataclasses. Simple helpers return scalars.
+- **Units:**
+  - Moments (`Mu`, `Mu_Lim`): **kN·m**
+  - Shear Forces (`Vu`, `Vus`): **kN**
+  - Dimensions (`b`, `d`, `D`): **mm**
+  - Areas (`Ast`, `Asv`): **mm²**
+  - Stresses (`fck`, `fy`, `Tv`, `Tc`): **N/mm²** (MPa)
+  - Percentages (`pt`): **%** (e.g., 1.2 for 1.2%)
+- **Sign Conventions:**
+  - Inputs are generally treated as absolute values for design checks.
+  - UI/Application layer is responsible for handling signs before calling these libraries.
+- **Return Values:**
+  - VBA functions return User Defined Types (UDTs) for complex results, or simple types (`Double`) for helpers.
+  - Python functions return `dataclasses` or simple types (`float`).
+  - Excel UDFs return `Variant` (Value or Error String).
 
 ---
 
-## 2. Flexure API
+## 2. Flexure Module (`M06_Flexure` / `flexure.py`)
 
-### 2.1 VBA
+### 2.1 Calculate Limiting Moment (`Mu_Lim`)
+Calculates the maximum moment a singly reinforced section can resist.
+
+**VBA:**
 ```vba
-Public Function IS456_FlexureDesign( _
-    Mu_kNm As Double, _
-    b_mm As Double, _
-    d_mm As Double, _
-    D_mm As Double, _
-    fck As Double, _
-    fy As Double _
+Public Function Calculate_Mu_Lim( _
+    ByVal b As Double, _
+    ByVal d As Double, _
+    ByVal fck As Double, _
+    ByVal fy As Double _
+) As Double
+```
+
+**Python:**
+```python
+def calculate_mu_lim(
+    b: float, 
+    d: float, 
+    fck: float, 
+    fy: float
+) -> float
+```
+
+### 2.2 Calculate Required Steel (`Ast_Required`)
+Calculates tension steel area for a given moment. Returns `-1` if `Mu > Mu_Lim`.
+
+**VBA:**
+```vba
+Public Function Calculate_Ast_Required( _
+    ByVal b As Double, _
+    ByVal d As Double, _
+    ByVal Mu_kNm As Double, _
+    ByVal fck As Double, _
+    ByVal fy As Double _
+) As Double
+```
+
+**Python:**
+```python
+def calculate_ast_required(
+    b: float, 
+    d: float, 
+    mu_knm: float, 
+    fck: float, 
+    fy: float
+) -> float
+```
+
+### 2.3 Design Singly Reinforced Beam
+Performs full design check including under/over-reinforced status, min/max steel checks, and deflection control (Xu).
+
+**VBA:**
+```vba
+Public Function Design_Singly_Reinforced( _
+    ByVal b As Double, _
+    ByVal d As Double, _
+    ByVal D_total As Double, _
+    ByVal Mu_kNm As Double, _
+    ByVal fck As Double, _
+    ByVal fy As Double _
 ) As FlexureResult
 ```
-- **Purpose:** Singly reinforced rectangular beam design per IS 456 Cl. 38.1.
-- **Inputs:** Mu (kN·m, factored), b (mm), d (effective mm), D (overall mm), fck (N/mm²), fy (N/mm²).
-- **Returns:** `FlexureResult` (see Section 6). `DesignStatus` = `OK` or `DOUBLY_REQUIRED`/`ERROR`.
 
-### 2.2 Python
+**Python:**
 ```python
-def flexure_design(
-    mu_knm: float,
-    b_mm: float,
-    d_mm: float,
-    D_mm: float,
-    fck: float,
-    fy: float,
-) -> FlexureResult:
-    ...
+def design_singly_reinforced(
+    b: float, 
+    d: float, 
+    d_total: float, 
+    mu_knm: float, 
+    fck: float, 
+    fy: float
+) -> FlexureResult
 ```
-- Same behavior, units, and status semantics as VBA.
+
+**Return Type (`FlexureResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `Mu_Lim` | Double | Limiting moment capacity (kN·m) |
+| `Ast_Required` | Double | Required steel area (mm²) |
+| `Pt_Provided` | Double | Percentage of steel provided |
+| `SectionType` | Enum | `UnderReinforced` (0) or `OverReinforced` (1) |
+| `Xu` | Double | Actual neutral axis depth (mm) |
+| `Xu_max` | Double | Max neutral axis depth (mm) |
+| `IsSafe` | Boolean | True if design is valid |
+| `ErrorMessage` | String | Details if unsafe (e.g., "Mu > Mu_lim") |
 
 ---
 
-## 3. Shear API
+## 3. Shear Module (`M07_Shear` / `shear.py`)
 
-### 3.1 VBA
+### 3.1 Calculate Nominal Shear Stress (`Tv`)
+Calculates $\tau_v = \frac{V_u}{bd}$.
+
+**VBA:**
 ```vba
-Public Function IS456_ShearDesign( _
-    Vu_kN As Double, _
-    b_mm As Double, _
-    d_mm As Double, _
-    fck As Double, _
-    fy_stirrup As Double, _
-    Ast_provided_mm2 As Double, _
-    Optional stirrup_dia_mm As Double = 8, _
-    Optional stirrup_legs As Long = 2 _
+Public Function Calculate_Tv( _
+    ByVal Vu_kN As Double, _
+    ByVal b As Double, _
+    ByVal d As Double _
+) As Double
+```
+
+**Python:**
+```python
+def calculate_tv(
+    vu_kn: float, 
+    b: float, 
+    d: float
+) -> float
+```
+
+### 3.2 Design Shear Reinforcement
+Performs full shear design: checks $\tau_v$ vs $\tau_{c,max}$, calculates concrete capacity $\tau_c$, and determines stirrup spacing.
+
+**VBA:**
+```vba
+Public Function Design_Shear( _
+    ByVal Vu_kN As Double, _
+    ByVal b As Double, _
+    ByVal d As Double, _
+    ByVal fck As Double, _
+    ByVal fy As Double, _
+    ByVal Asv As Double, _
+    ByVal pt As Double _
 ) As ShearResult
 ```
-- **Purpose:** Shear design with vertical stirrups per IS 456 Cl. 40 and Tables 19/20.
-- **Returns:** `ShearResult` (see Section 6). `DesignStatus` = `SECTION_INADEQUATE`, `MIN_SHEAR_ONLY`, or `OK`.
 
-### 3.2 Python
+**Python:**
 ```python
-def shear_design(
-    vu_kn: float,
-    b_mm: float,
-    d_mm: float,
-    fck: float,
-    fy_stirrup: float,
-    ast_provided_mm2: float,
-    stirrup_dia_mm: float = 8.0,
-    stirrup_legs: int = 2,
-) -> ShearResult:
-    ...
+def design_shear(
+    vu_kn: float, 
+    b: float, 
+    d: float, 
+    fck: float, 
+    fy: float, 
+    asv: float, 
+    pt: float
+) -> ShearResult
 ```
-- Same behavior, units, and status semantics as VBA.
+
+**Return Type (`ShearResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `Tv` | Double | Nominal shear stress (N/mm²) |
+| `Tc` | Double | Design shear strength of concrete (N/mm²) |
+| `Tc_max` | Double | Max shear stress limit (N/mm²) |
+| `Vus` | Double | Shear force to be resisted by stirrups (kN) |
+| `Spacing` | Double | Required stirrup spacing (mm) |
+| `IsSafe` | Boolean | True if $\tau_v \le \tau_{c,max}$ |
+| `Remarks` | String | Design status (e.g., "Shear reinforcement required") |
 
 ---
 
-## 4. Helper Functions (VBA/Python parity)
-- `d_effective(D_mm, cover_mm, dia_main_mm, dia_stirrup_mm) -> d_mm`
-- `pt_from_Ast(Ast_mm2, b_mm, d_mm) -> pt_percent`
-- `Ast_min_IS456(b_mm, d_mm, fy) -> mm2` (Cl. 26.5.1.1)
-- `Ast_max_IS456(b_mm, D_mm) -> mm2` (Cl. 26.5.1.2)
-- `tau_v(Vu_kN, b_mm, d_mm) -> N/mm2`
-- `tau_c_IS456(fck, pt_percent) -> N/mm2` (Table 19, clamped 0.15–3.0%)
-- `tau_cmax_IS456(fck) -> N/mm2` (Table 20)
-- `StirrupSpacing_IS456(Vus_kN, dia_stirrup_mm, legs, fy, d_mm, sv_max_mm) -> mm`
+## 4. Excel User Defined Functions (UDFs)
+These functions are exposed directly to Excel cells via `M09_UDFs.bas`.
+
+| Function Name | Arguments | Returns | Description |
+|---------------|-----------|---------|-------------|
+| `IS456_MuLim` | `b, d, fck, fy` | `Double` | Limiting moment (kN·m) |
+| `IS456_AstRequired` | `b, d, Mu, fck, fy` | `Double` or `String` | Ast (mm²) or "Over-Reinforced" |
+| `IS456_ShearSpacing` | `Vu, b, d, fck, fy, Asv, pt` | `Double` or `String` | Spacing (mm) or Error Message |
+| `IS456_Tc` | `fck, pt` | `Double` | $\tau_c$ from Table 19 |
+| `IS456_TcMax` | `fck` | `Double` | $\tau_{c,max}$ from Table 20 |
 
 ---
 
-## 5. Table Lookup Data
-- Table 19 (τc vs. pt% and fck) stored once and interpolated linearly in pt; clamp pt% to [0.15, 3.0].
-- Table 20 (τc,max vs. fck) stored as constants, no interpolation between grades.
-- Neutral axis ratios (Annex G.1.1): Fe250=0.53, Fe415=0.48, Fe500=0.46.
+## 5. Usage Examples
 
----
+### 5.1 Python Example
+```python
+from structural_lib.flexure import design_singly_reinforced
 
-## 6. Result Types
+# Design a beam for 150 kNm moment
+result = design_singly_reinforced(
+    b=230, 
+    d=450, 
+    d_total=500, 
+    mu_knm=150.0, 
+    fck=25, 
+    fy=500
+)
 
-### 6.1 FlexureResult
-- `Ast_required` (mm²), `Ast_min` (mm²), `Ast_max` (mm²)
-- `xu` (mm), `xu_max` (mm), `Mu_lim` (kN·m)
-- `IsDoublyReinforced` (bool), `DesignStatus` (string), `ErrorMessage` (string)
+if result.is_safe:
+    print(f"Ast Required: {result.ast_required:.2f} mm²")
+    print(f"Pt Provided: {result.pt_provided:.2f}%")
+else:
+    print(f"Design Failed: {result.error_message}")
+```
 
-### 6.2 ShearResult
-- `tau_v` (N/mm²), `tau_c` (N/mm²), `tau_cmax` (N/mm²)
-- `Vus_required` (kN), `sv_provided` (mm), `sv_max` (mm)
-- `DesignStatus` (string), `ErrorMessage` (string)
-
----
-
-## 7. Status and Error Codes
-- `DesignStatus` (flexure): `OK`, `DOUBLY_REQUIRED`, `ERROR`
-- `DesignStatus` (shear): `OK`, `MIN_SHEAR_ONLY`, `SECTION_INADEQUATE`, `ERROR`
-- `IS456_ErrorCode` enum (VBA): `ERR_NONE`, `ERR_NEGATIVE_DIMENSION`, `ERR_ZERO_DIMENSION`, `ERR_INVALID_CONCRETE_GRADE`, `ERR_INVALID_STEEL_GRADE`, `ERR_MOMENT_EXCEEDS_LIMIT`, `ERR_SHEAR_EXCEEDS_MAX`, `ERR_INVALID_REINFORCEMENT_RATIO`, `ERR_COVER_EXCEEDS_DEPTH`, `ERR_NEGATIVE_MOMENT`, `ERR_CALCULATION_FAILED`
-
----
-
-## 8. Examples (to be expanded with code)
-- Flexure: design of 300×500 beam, Mu=150 kN·m, M25/Fe415 → expected Ast ≈ 1050 mm².
-- Shear: same beam with Vu=150 kN, pt=1.0% → τv vs. τc lookup and stirrup spacing.
-
----
-
-## 9. Notes and Assumptions
-- Moments/shears provided as factored design values.
-- Library uses absolute values for design; caller handles sign conventions.
-- Single layer of tension steel assumed for effective depth calculation; adjust when compression steel added in future versions.
-
----
-
-**End of API Reference (stub)**
+### 5.2 VBA Example
+```vba
+Sub TestBeam()
+    Dim res As FlexureResult
+    ' Design for 150 kNm
+    res = Design_Singly_Reinforced(230, 450, 500, 150, 25, 500)
+    
+    If res.IsSafe Then
+        Debug.Print "Ast Required: " & res.Ast_Required
+    Else
+        Debug.Print "Design Failed: " & res.ErrorMessage
+    End If
+End Sub
+```

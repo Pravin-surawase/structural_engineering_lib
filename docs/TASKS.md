@@ -54,19 +54,10 @@ When working on tasks, specify which agent role to use:
   - Created VBA test module `Test_Structural.bas`
   - Verified with Python tests
 
----
-
-## 🟡 In Progress
-
-*(None currently)*
-
----
-
-## 🔴 Up Next
-
-- [ ] **TASK-007**: API documentation
-
-
+- [x] **TASK-007**: API documentation
+  - Complete API_REFERENCE.md with all public functions
+  - Add usage examples for each function
+  - Document units and sign conventions
 
 ---
 
@@ -78,21 +69,7 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-005**: Sync VBA with Python refinements
-  - [ ] Rename `Asc_Required` → `Ast_Required` in VBA types
-  - [ ] Rename `Mu` → `Mu_Lim` in FlexureResult
-  - [ ] Update M03_Tables to use floor(fck) for grade lookup (no fck interpolation)
-  - [ ] Run VBA tests to verify
-
-- [ ] **TASK-006**: Complete test coverage
-  - [ ] Add edge case tests (min steel, max steel, over-reinforced)
-  - [ ] Add shear edge cases (τv < τc, τv > τc,max)
-  - [ ] VBA test module
-
-- [ ] **TASK-007**: API documentation
-  - [ ] Complete API_REFERENCE.md with all public functions
-  - [ ] Add usage examples for each function
-  - [ ] Document units and sign conventions
+*(None currently - v0.1.0 Scope Complete)*
 
 ---
 
