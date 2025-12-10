@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M04_Utilities
 ' Description:  Helper functions (Interpolation, Rounding, Validation)
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
 

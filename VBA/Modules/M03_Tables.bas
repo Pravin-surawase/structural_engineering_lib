@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M03_Tables
 ' Description:  Data tables from IS 456:2000 (Table 19, Table 20, etc.)
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
 
@@ -130,4 +130,3 @@ Public Function Get_TcMax_Value(ByVal fck As Double) As Double
         Get_TcMax_Value = M04_Utilities.LinearInterp(fck, x1, y1, x2, y2)
     End If
 End Function
-

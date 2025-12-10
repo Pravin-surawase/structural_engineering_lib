@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M05_Materials
 ' Description:  Material properties and derived constants (fck, fy related)
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
 
@@ -102,4 +102,3 @@ Public Function Get_Steel_Stress(ByVal strain As Double, ByVal fy As Double) As 
     ' 3. Yield plateau
     Get_Steel_Stress = f(5)
 End Function
-

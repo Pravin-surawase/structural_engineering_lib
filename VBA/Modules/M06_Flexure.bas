@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M06_Flexure
 ' Description:  Flexural design and analysis functions (Singly/Doubly reinforced)
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
 
@@ -18,7 +18,8 @@ Public Function Calculate_Mu_Lim(ByVal b As Double, ByVal d As Double, ByVal fck
     k = 0.36 * xu_max_d * (1 - 0.42 * xu_max_d)
     
     Dim Mu_lim_Nmm As Double
-    Mu_lim_Nmm = k * fck * b * d * d
+    ' Force Double arithmetic for safety
+    Mu_lim_Nmm = k * CDbl(fck) * CDbl(b) * CDbl(d) * CDbl(d)
     
     Calculate_Mu_Lim = Mu_lim_Nmm / 1000000# ' Convert back to kN-m
 End Function
@@ -43,12 +44,12 @@ Public Function Calculate_Ast_Required(ByVal b As Double, ByVal d As Double, ByV
     term1 = 0.5 * fck / fy
     
     Dim term2 As Double
-    term2 = (4.6 * Mu_Nmm) / (fck * b * d * d)
+    term2 = (4.6 * Mu_Nmm) / (CDbl(fck) * CDbl(b) * CDbl(d) * CDbl(d))
     
     ' Safety clamp for precision issues when Mu ~= Mu_lim
     If term2 > 1# Then term2 = 1#
     
-    Calculate_Ast_Required = term1 * (1# - Sqr(1# - term2)) * b * d
+    Calculate_Ast_Required = term1 * (1# - Sqr(1# - term2)) * CDbl(b) * CDbl(d)
 End Function
 
 ' Main Design Function for Singly Reinforced Beam
@@ -81,7 +82,7 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
         
         ' 4. Check Minimum Steel (Cl. 26.5.1.1)
         Dim Ast_min As Double
-        Ast_min = 0.85 * b * d / fy
+        Ast_min = 0.85 * CDbl(b) * CDbl(d) / CDbl(fy)
         
         If Ast_calc < Ast_min Then
             res.Ast_Required = Ast_min
@@ -92,7 +93,7 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
         
         ' 5. Check Maximum Steel (Cl. 26.5.1.2)
         Dim Ast_max As Double
-        Ast_max = 0.04 * b * D_total
+        Ast_max = 0.04 * CDbl(b) * CDbl(D_total)
         
         If res.Ast_Required > Ast_max Then
             res.IsSafe = False
@@ -100,10 +101,10 @@ Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, B
         End If
         
         ' Calculate Pt
-        res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
+        res.Pt_Provided = (res.Ast_Required * 100#) / (CDbl(b) * CDbl(d))
         
         ' Calculate actual Xu
-        res.Xu = (0.87 * fy * res.Ast_Required) / (0.36 * fck * b)
+        res.Xu = (0.87 * CDbl(fy) * res.Ast_Required) / (0.36 * CDbl(fck) * CDbl(b))
         
         res.Asc_Required = 0 ' Explicitly set to 0
     End If
@@ -152,7 +153,7 @@ Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, B
     
     ' 4. Calculate Stress in Concrete at level of compression steel (fcc)
     Dim fcc As Double
-    fcc = 0.446 * fck
+    fcc = 0.446 * CDbl(fck)
     
     ' 5. Calculate Asc
     ' Mu2 = Asc * (fsc - fcc) * (d - d')
@@ -176,13 +177,13 @@ Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, B
     ' Ast2 (for Mu2)
     ' Ast2 * 0.87 * fy = Asc * (fsc - fcc)
     Dim Ast2 As Double
-    Ast2 = (res.Asc_Required * (fsc - fcc)) / (0.87 * fy)
+    Ast2 = (res.Asc_Required * (fsc - fcc)) / (0.87 * CDbl(fy))
     
     res.Ast_Required = Ast1 + Ast2
     
     ' 7. Check Max Steel (Cl. 26.5.1.2)
     Dim Ast_max As Double
-    Ast_max = 0.04 * b * D_total
+    Ast_max = 0.04 * CDbl(b) * CDbl(D_total)
     
     res.IsSafe = True
     
@@ -197,7 +198,7 @@ Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, B
     End If
     
     ' Calculate Pt
-    res.Pt_Provided = (res.Ast_Required * 100#) / (b * d)
+    res.Pt_Provided = (res.Ast_Required * 100#) / (CDbl(b) * CDbl(d))
     res.Xu = res.Xu_max
     
     Design_Doubly_Reinforced = res
@@ -386,4 +387,3 @@ Public Function Design_Flanged_Beam(ByVal bw As Double, ByVal bf As Double, ByVa
     
     Design_Flanged_Beam = res
 End Function
-

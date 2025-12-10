@@ -4,16 +4,16 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M07_Shear
 ' Description:  Shear design and analysis functions
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
 
 ' Calculate Nominal Shear Stress (N/mm^2)
 Public Function Calculate_Tv(ByVal Vu_kN As Double, ByVal b As Double, ByVal d As Double) As Double
-    If b * d = 0 Then
+    If CDbl(b) * CDbl(d) = 0 Then
         Calculate_Tv = 0
     Else
-        Calculate_Tv = (Abs(Vu_kN) * 1000#) / (b * d)
+        Calculate_Tv = (Abs(Vu_kN) * 1000#) / (CDbl(b) * CDbl(d))
     End If
 End Function
 
@@ -54,7 +54,7 @@ Public Function Design_Shear(ByVal Vu_kN As Double, ByVal b As Double, ByVal d A
     Vu_N = Abs(Vu_kN) * 1000#
     
     Dim Vc_N As Double
-    Vc_N = res.Tc * b * d
+    Vc_N = res.Tc * CDbl(b) * CDbl(d)
     
     Dim Spacing_Calc As Double
     
@@ -73,7 +73,7 @@ Public Function Design_Shear(ByVal Vu_kN As Double, ByVal b As Double, ByVal d A
         res.Remarks = "Shear reinforcement required."
         
         ' sv = (0.87 * fy * Asv * d) / Vus_N
-        Spacing_Calc = (0.87 * fy * Asv * d) / (res.Vus * 1000#)
+        Spacing_Calc = (0.87 * CDbl(fy) * CDbl(Asv) * CDbl(d)) / (res.Vus * 1000#)
     End If
     
     ' 5. Apply Max Spacing Limits (Cl. 26.5.1.5)
@@ -86,7 +86,7 @@ Public Function Design_Shear(ByVal Vu_kN As Double, ByVal b As Double, ByVal d A
     ' Also check Min Reinforcement Spacing Limit again (as a cap)
     ' The min reinforcement formula gives a max spacing allowed to satisfy min reinf.
     Dim Max_Spacing_MinReinf As Double
-    Max_Spacing_MinReinf = (0.87 * fy * Asv) / (0.4 * b)
+    Max_Spacing_MinReinf = (0.87 * CDbl(fy) * CDbl(Asv)) / (0.4 * CDbl(b))
     
     ' Final Spacing is Min of all
     res.Spacing = Spacing_Calc
@@ -103,4 +103,3 @@ Public Function Design_Shear(ByVal Vu_kN As Double, ByVal b As Double, ByVal d A
     
     Design_Shear = res
 End Function
-

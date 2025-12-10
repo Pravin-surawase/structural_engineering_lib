@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M01_Constants
 ' Description:  Global constants for IS 456:2000 implementation
-' Version:      1.0.0
+' Version:      1.0.01
 ' License:      MIT
 ' ==============================================================================
 
