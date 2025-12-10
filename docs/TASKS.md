@@ -4,6 +4,21 @@
 
 ---
 
+## Multi-Agent Workflow
+
+When working on tasks, specify which agent role to use:
+
+| Role | Doc | Use For |
+|------|-----|---------|
+| **DEV** | `agents/DEV.md` | Implementation, refactoring, architecture |
+| **TESTER** | `agents/TESTER.md` | Test design, edge cases, validation |
+| **DEVOPS** | `agents/DEVOPS.md` | Repo structure, automation, releases |
+| **PM** | `agents/PM.md` | Scope, prioritization, changelog |
+
+**Example prompt:** "Use `PROJECT_OVERVIEW.md` as context. Act as DEV agent. Implement TASK-005."
+
+---
+
 ## 🟢 Done
 
 - [x] **TASK-001**: Project scaffold
@@ -27,6 +42,7 @@
   - τv, τc, τc,max calculations
   - Stirrup spacing with limits
   - VBA + Python implementations
+
 
 ---
 
