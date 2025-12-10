@@ -109,7 +109,7 @@ More worked examples in `VBA/Examples/Example_Usage.bas`.
 
 ## Testing
 
-- Python: `python3 -m pytest Python/tests -q`
+- Python: `python3 -m pytest Python/tests -q` (flanged/doubly tests are skipped until implemented)
 - VBA: manual/Rubberduck tests planned for later iteration
 
 ## Packaging

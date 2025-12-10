@@ -2,35 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.0] - 2025-12-11
-### Added
-- **Flanged Beam Design (T/L Beams)**:
-  - `calculate_mu_lim_flanged`: Calculates limiting moment for T-sections.
-  - `design_flanged_beam`: Handles Neutral Axis in Flange (Rectangular), Web (Singly Reinforced), and Web (Doubly Reinforced).
-  - Full parity between Python and VBA implementations.
-  - Comprehensive tests for all three flanged beam design cases.
+## [Unreleased]
+- Initial scaffolding and documentation (research, development guide, quick reference, API reference updates).
+- Python package metadata added (pyproject.toml, setup.cfg); builds (wheel/sdist) succeed.
+- Tests expanded for flexure/shear edge cases; flanged/doubly tests marked as skipped (future scope). Pytest passes (10 passed, 2 skipped).
+- Excel add-in guide improved (quickstart, testing, troubleshooting, release checklist).
+- Worked examples added to API reference and VBA examples.
+- Packaging warnings reduced (license handling); `Python/LICENSE` added for builds.
 
-## [0.2.0] - 2025-12-11
-### Added
-- **Doubly Reinforced Beam Design**:
-  - `design_doubly_reinforced`: Logic to handle `Mu > Mu_lim` by adding compression steel.
-  - `get_steel_stress`: Non-linear stress-strain curve implementation for Fe415/Fe500 (IS 456 Figure 23).
-  - Updated `FlexureResult` to include `asc_required`.
-
-## [0.1.0] - 2025-12-10
-### Added
-- **Core Flexure Module**:
-  - Singly reinforced rectangular beam design (`design_singly_reinforced`).
-  - Limiting moment calculation (`calculate_mu_lim`).
-  - Steel area calculation (`calculate_ast_required`).
-- **Shear Module**:
-  - Shear capacity calculation (`calculate_shear_capacity`).
-  - Stirrup design (`design_shear_reinforcement`).
-  - Table 19 (Tc) and Table 20 (Tc_max) lookups.
-- **Infrastructure**:
-  - Dual implementation in Python and VBA.
-  - Unit tests for Python (`pytest`).
-  - Documentation structure (`API_REFERENCE.md`, `TASKS.md`).
+## [0.1.0] - 2025-12-10 (Planned)
+- Placeholder for first implementation release (rectangular beams, flexure + shear, VBA/Python parity).
 
 ---
 
