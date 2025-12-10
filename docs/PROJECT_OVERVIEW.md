@@ -107,6 +107,21 @@ Workflow: specify role and context (“Use PROJECT_OVERVIEW.md and agents/DEV.md
 
 ---
 
+## 9. Choosing Agent Roles (VS Code AI)
+- **PM:** Scope/prioritization, roadmap, changelog, “does this fit v0.1?”.
+- **DEVOPS:** Repo layout, exports, packaging, CI, version bumps, release checklists.
+- **DEV:** Implement/refactor core/app/UI code, align with clauses/units, fix logic bugs.
+- **TESTER:** Design/expand tests, expected values/tolerances, edge/benchmark cases.
+
+Suggested flow:
+- New feature/bug: PM (scope) → DEV (code) → TESTER (cases) → DEVOPS (run/report).
+- Docs/API: PM (confirm scope) → DEV (fill signatures/units) → TESTER (validate examples).
+- Release: DEVOPS (checklist/CI) → PM (notes).
+
+Use this with `agents/*.md` for prompts.
+
+---
+
 **How to use this doc:**  
 Reference it when prompting AI: e.g., “Use PROJECT_OVERVIEW.md as context. Act as DEV agent and design the detailed function list for the structural library,” or “Using PROJECT_OVERVIEW.md and TESTER role, propose a test matrix for v0 beams.”
 

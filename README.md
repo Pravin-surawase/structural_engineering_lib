@@ -103,6 +103,7 @@ End Sub
 - **[API Reference](docs/API_REFERENCE.md)** — Public function signatures, inputs/outputs, units
 - **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** — Coding standards, naming conventions, testing guidelines
 - **[IS 456 Quick Reference](docs/IS456_QUICK_REFERENCE.md)** — Formulas cheat sheet for quick lookup
+- **[Known Pitfalls](docs/KNOWN_PITFALLS.md)** — Common traps (units, tables, limits)
 
 ## References
 
