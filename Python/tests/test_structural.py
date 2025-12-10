@@ -95,5 +95,90 @@ class TestStructuralLib(unittest.TestCase):
         self.assertEqual(res.spacing, 300.0)
         self.assertTrue(res.vus > 0)
 
+    # --------------------------------------------------------------------------
+    # TASK-006: Edge Case Tests
+    # --------------------------------------------------------------------------
+
+    def test_flexure_min_steel(self):
+        """Test that minimum steel is provided when Mu is very small."""
+        b, d, D = 230, 450, 500
+        fck, fy = 20, 415
+        mu_small = 5 # Very small moment
+        
+        res = flexure.design_singly_reinforced(b, d, D, mu_small, fck, fy)
+        
+        # Ast_min = 0.85 * b * d / fy
+        ast_min = 0.85 * 230 * 450 / 415
+        # = 212.0 mm2
+        
+        self.assertTrue(res.is_safe)
+        self.assertAlmostEqual(res.ast_required, ast_min, places=1)
+        self.assertIn("Minimum steel", res.error_message)
+
+    def test_flexure_over_reinforced(self):
+        """Test that section is flagged as over-reinforced when Mu > Mu_lim."""
+        b, d, D = 230, 450, 500
+        fck, fy = 20, 415
+        
+        # Mu_lim for this section is ~128 kNm (from previous test)
+        mu_large = 150 # > 128
+        
+        res = flexure.design_singly_reinforced(b, d, D, mu_large, fck, fy)
+        
+        self.assertFalse(res.is_safe)
+        self.assertEqual(res.section_type, types.DesignSectionType.OVER_REINFORCED)
+        self.assertEqual(res.ast_required, 0.0)
+
+    def test_shear_unsafe_section(self):
+        """Test that section fails if Tv > Tc_max."""
+        b, d = 230, 450
+        fck, fy = 20, 415
+        asv, pt = 100.5, 1.0
+        
+        # Tc_max for M20 is 2.8 N/mm2
+        # Need Tv > 2.8
+        # Vu > 2.8 * 230 * 450 / 1000 = 289.8 kN
+        vu_unsafe = 300
+        
+        res = shear.design_shear(vu_unsafe, b, d, fck, fy, asv, pt)
+        
+        self.assertFalse(res.is_safe)
+        self.assertIn("exceeds Tc_max", res.remarks)
+
+    def test_shear_min_reinforcement(self):
+        """Test that min shear reinforcement spacing is calculated when Tv < Tc."""
+        b, d = 230, 450
+        fck, fy = 20, 415
+        asv, pt = 100.5, 1.0
+        
+        # Tc for M20, 1.0% is 0.62 N/mm2
+        # Need Tv < 0.62
+        # Vu < 0.62 * 230 * 450 / 1000 = 64.17 kN
+        vu_small = 50
+        
+        res = shear.design_shear(vu_small, b, d, fck, fy, asv, pt)
+        
+        self.assertTrue(res.is_safe)
+        self.assertEqual(res.vus, 0.0)
+        self.assertIn("minimum shear reinforcement", res.remarks)
+        
+        # Check spacing for min reinf:
+        # s = (0.87 * fy * Asv) / (0.4 * b)
+        # s = (0.87 * 415 * 100.5) / (0.4 * 230) = 36286 / 92 = 394.4 mm
+        # But max spacing limit is 0.75d = 337.5 or 300.
+        # So expected spacing is 300.
+        self.assertEqual(res.spacing, 300.0)
+
+    def test_tables_pt_clamping(self):
+        """Test that pt is clamped to 0.15 and 3.0 for Tc lookup."""
+        # Low pt (< 0.15) -> should use 0.15 value
+        # M20, pt=0.05 -> use pt=0.15 -> 0.28
+        self.assertAlmostEqual(tables.get_tc_value(20, 0.05), 0.28)
+        
+        # High pt (> 3.0) -> should use 3.0 value
+        # M20, pt=4.0 -> use pt=3.0 -> 0.82
+        self.assertAlmostEqual(tables.get_tc_value(20, 4.0), 0.82)
+
+
 if __name__ == '__main__':
     unittest.main()

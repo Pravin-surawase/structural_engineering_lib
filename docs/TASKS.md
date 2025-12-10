@@ -48,6 +48,12 @@ When working on tasks, specify which agent role to use:
   - Renamed `Mu` → `Mu_Lim` in FlexureResult
   - Updated M03_Tables to use nearest lower grade (no fck interpolation)
 
+- [x] **TASK-006**: Complete test coverage
+  - Added edge case tests (min steel, max steel, over-reinforced)
+  - Added shear edge cases (τv < τc, τv > τc,max)
+  - Created VBA test module `Test_Structural.bas`
+  - Verified with Python tests
+
 ---
 
 ## 🟡 In Progress
@@ -58,7 +64,7 @@ When working on tasks, specify which agent role to use:
 
 ## 🔴 Up Next
 
-- [ ] **TASK-006**: Complete test coverage
+- [ ] **TASK-007**: API documentation
 
 
 
