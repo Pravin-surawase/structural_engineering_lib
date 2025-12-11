@@ -62,7 +62,6 @@ Public Const LAYER_REBAR_STIRRUP As String = "REBAR_STIRRUP"
 Public Const LAYER_DIMENSIONS As String = "DIMENSIONS"
 Public Const LAYER_TEXT_CALLOUT As String = "TEXT_CALLOUT"
 Public Const LAYER_CENTERLINE As String = "CENTERLINE"
-Public Const LAYER_CONCRETE_HATCH As String = "CONCRETE_HATCH"
 Public Const LAYER_COVER_LINE As String = "COVER_LINE"
 
 ' Drawing Scale (1 unit = 1 mm)
@@ -156,6 +155,10 @@ Public Sub DXF_Close()
     ' Close file
     Close #m_Context.FileNum
     m_Context.IsOpen = False
+    
+    ' Note: DXF R12 doesn't support re-writing header after entities.
+    ' Extents are tracked in m_Context.MinX/Y, MaxX/Y for reference.
+    ' For proper extents, use DXF R2000+ format or post-process the file.
 End Sub
 
 '@Description: Write DXF header section
@@ -255,7 +258,7 @@ End Sub
 Private Sub WriteLayerTable()
     Call WriteLine(GC_ENTITY_TYPE, "TABLE")
     Call WriteLine(2, "LAYER")
-    Call WriteLine(70, "8")  ' Number of layers
+    Call WriteLine(70, "7")  ' Number of layers (0 + 6 structural)
     
     ' Layer 0 (default)
     Call WriteLayerDef "0", ACI_WHITE, "CONTINUOUS"
@@ -647,35 +650,60 @@ Public Function Draw_BeamSection(ByVal filePath As String, _
     ' Draw bottom bars
     nBottom = UBound(bottomBars) - LBound(bottomBars) + 1
     If nBottom > 0 Then
-        spacing = (B - 2 * effectiveCover - bottomBars(LBound(bottomBars))) / (nBottom - 1)
-        If nBottom = 1 Then
-            X = originX + B / 2
-        Else
-            X = originX + effectiveCover + bottomBars(LBound(bottomBars)) / 2
-        End If
         Y = originY + effectiveCover + bottomBars(LBound(bottomBars)) / 2
         
-        For i = LBound(bottomBars) To UBound(bottomBars)
-            Call DXF_RebarSection(X, Y, bottomBars(i), True)
-            X = X + spacing
-        Next i
+        If nBottom = 1 Then
+            ' Single bar: center it
+            X = originX + B / 2
+            Call DXF_RebarSection(X, Y, bottomBars(LBound(bottomBars)), True)
+        Else
+            ' Multiple bars: calculate correct spacing
+            ' Available width = B - 2*effectiveCover - sum of half-bars at edges
+            Dim totalBarDiaBottom As Double
+            totalBarDiaBottom = 0
+            For i = LBound(bottomBars) To UBound(bottomBars)
+                totalBarDiaBottom = totalBarDiaBottom + bottomBars(i)
+            Next i
+            
+            ' Spacing = (B - 2*effectiveCover - totalBarDia) / (n-1) + avg_bar_dia
+            ' Simplified: edge-to-edge spacing between bar centers
+            Dim availableWidthBottom As Double
+            availableWidthBottom = B - 2 * effectiveCover
+            spacing = availableWidthBottom / (nBottom - 1)
+            
+            X = originX + effectiveCover + bottomBars(LBound(bottomBars)) / 2
+            For i = LBound(bottomBars) To UBound(bottomBars)
+                Call DXF_RebarSection(X, Y, bottomBars(i), True)
+                If i < UBound(bottomBars) Then
+                    X = X + spacing
+                End If
+            Next i
+        End If
     End If
     
     ' Draw top bars
     nTop = UBound(topBars) - LBound(topBars) + 1
     If nTop > 0 Then
-        spacing = (B - 2 * effectiveCover - topBars(LBound(topBars))) / (nTop - 1)
-        If nTop = 1 Then
-            X = originX + B / 2
-        Else
-            X = originX + effectiveCover + topBars(LBound(topBars)) / 2
-        End If
         Y = originY + D - effectiveCover - topBars(LBound(topBars)) / 2
         
-        For i = LBound(topBars) To UBound(topBars)
-            Call DXF_RebarSection(X, Y, topBars(i), True)
-            X = X + spacing
-        Next i
+        If nTop = 1 Then
+            ' Single bar: center it
+            X = originX + B / 2
+            Call DXF_RebarSection(X, Y, topBars(LBound(topBars)), True)
+        Else
+            ' Multiple bars: calculate correct spacing
+            Dim availableWidthTop As Double
+            availableWidthTop = B - 2 * effectiveCover
+            spacing = availableWidthTop / (nTop - 1)
+            
+            X = originX + effectiveCover + topBars(LBound(topBars)) / 2
+            For i = LBound(topBars) To UBound(topBars)
+                Call DXF_RebarSection(X, Y, topBars(i), True)
+                If i < UBound(topBars) Then
+                    X = X + spacing
+                End If
+            Next i
+        End If
     End If
     
     ' Add dimensions
@@ -804,21 +832,30 @@ Public Function Draw_BeamDetailing(ByVal filePath As String, _
     Dim topBars() As Double
     Dim bottomBars() As Double
     Dim i As Long
+    Dim nTop As Long, nBottom As Long
     
     ' Initialize DXF file
     success = DXF_Initialize(filePath)
     If Not success Then GoTo ErrorHandler
     
-    ' Prepare bar arrays
-    ReDim topBars(0 To result.TopBars.Count_n - 1)
-    ReDim bottomBars(0 To result.BottomBars.Count_n - 1)
+    ' Use mid-span bars for section view (typical for sagging moment section)
+    nTop = result.top_mid.count
+    nBottom = result.bottom_mid.count
     
-    For i = 0 To result.TopBars.Count_n - 1
-        topBars(i) = result.TopBars.Dia_mm
+    ' Guard against zero bars
+    If nTop < 1 Then nTop = 1
+    If nBottom < 1 Then nBottom = 1
+    
+    ' Prepare bar arrays
+    ReDim topBars(0 To nTop - 1)
+    ReDim bottomBars(0 To nBottom - 1)
+    
+    For i = 0 To nTop - 1
+        topBars(i) = result.top_mid.diameter
     Next i
     
-    For i = 0 To result.BottomBars.Count_n - 1
-        bottomBars(i) = result.BottomBars.Dia_mm
+    For i = 0 To nBottom - 1
+        bottomBars(i) = result.bottom_mid.diameter
     Next i
     
     ' Origin for section view
@@ -827,23 +864,25 @@ Public Function Draw_BeamDetailing(ByVal filePath As String, _
     secY = 400
     
     ' Draw section view
-    Call DrawSectionAtPoint(secX, secY, result.B_mm, result.D_mm, _
-                           result.Cover_mm, topBars, bottomBars, _
-                           result.Stirrups.Dia_mm)
+    Call DrawSectionAtPoint(secX, secY, result.b, result.D, _
+                           result.cover, topBars, bottomBars, _
+                           result.stirrup_mid.diameter)
     
     ' Origin for longitudinal view
     Dim longX As Double, longY As Double
     longX = 50
     longY = 50
     
-    ' Draw longitudinal view (assume 3m span for display)
-    Call DrawLongitudinalAtPoint(longX, longY, 3000, result.D_mm, _
-                                result.Cover_mm, result.TopBars.Dia_mm, _
-                                result.BottomBars.Dia_mm, result.Stirrups.Dia_mm, _
-                                result.Stirrups.Spacing_mm)
+    ' Use actual span from result (or default if not set)
+    Dim actualSpan As Double
+    actualSpan = result.span
+    If actualSpan <= 0 Then actualSpan = 3000  ' Default fallback
     
-    ' Add bar schedule
-    Call DrawBarSchedule(secX + result.B_mm + 100, secY, result)
+    ' Draw longitudinal view with actual span and zoned stirrups
+    Call DrawLongitudinalWithZones(longX, longY, actualSpan, result)
+    
+    ' Add bar schedule using actual zones
+    Call DrawBarScheduleFromResult(secX + result.b + 100, secY, result)
     
     ' Close file
     Call DXF_Close
@@ -890,37 +929,47 @@ Private Sub DrawSectionAtPoint(ByVal originX As Double, ByVal originY As Double,
     ' Draw bottom bars
     nBottom = UBound(bottomBars) - LBound(bottomBars) + 1
     If nBottom > 0 Then
-        If nBottom = 1 Then
-            spacing = 0
-            X = originX + B / 2
-        Else
-            spacing = (B - 2 * effectiveCover - bottomBars(LBound(bottomBars))) / (nBottom - 1)
-            X = originX + effectiveCover + bottomBars(LBound(bottomBars)) / 2
-        End If
         Y = originY + effectiveCover + bottomBars(LBound(bottomBars)) / 2
         
-        For i = LBound(bottomBars) To UBound(bottomBars)
-            Call DXF_RebarSection(X, Y, bottomBars(i))
-            If nBottom > 1 Then X = X + spacing
-        Next i
+        If nBottom = 1 Then
+            ' Single bar: center it
+            X = originX + B / 2
+            Call DXF_RebarSection(X, Y, bottomBars(LBound(bottomBars)))
+        Else
+            ' Multiple bars: correct spacing calculation
+            Dim availWidthBot As Double
+            availWidthBot = B - 2 * effectiveCover
+            spacing = availWidthBot / (nBottom - 1)
+            
+            X = originX + effectiveCover + bottomBars(LBound(bottomBars)) / 2
+            For i = LBound(bottomBars) To UBound(bottomBars)
+                Call DXF_RebarSection(X, Y, bottomBars(i))
+                If i < UBound(bottomBars) Then X = X + spacing
+            Next i
+        End If
     End If
     
     ' Draw top bars
     nTop = UBound(topBars) - LBound(topBars) + 1
     If nTop > 0 Then
-        If nTop = 1 Then
-            spacing = 0
-            X = originX + B / 2
-        Else
-            spacing = (B - 2 * effectiveCover - topBars(LBound(topBars))) / (nTop - 1)
-            X = originX + effectiveCover + topBars(LBound(topBars)) / 2
-        End If
         Y = originY + D - effectiveCover - topBars(LBound(topBars)) / 2
         
-        For i = LBound(topBars) To UBound(topBars)
-            Call DXF_RebarSection(X, Y, topBars(i))
-            If nTop > 1 Then X = X + spacing
-        Next i
+        If nTop = 1 Then
+            ' Single bar: center it
+            X = originX + B / 2
+            Call DXF_RebarSection(X, Y, topBars(LBound(topBars)))
+        Else
+            ' Multiple bars: correct spacing calculation
+            Dim availWidthTop As Double
+            availWidthTop = B - 2 * effectiveCover
+            spacing = availWidthTop / (nTop - 1)
+            
+            X = originX + effectiveCover + topBars(LBound(topBars)) / 2
+            For i = LBound(topBars) To UBound(topBars)
+                Call DXF_RebarSection(X, Y, topBars(i))
+                If i < UBound(topBars) Then X = X + spacing
+            Next i
+        End If
     End If
     
     ' Add dimensions
@@ -989,9 +1038,191 @@ Private Sub DrawLongitudinalAtPoint(ByVal originX As Double, ByVal originY As Do
     Call DXF_Text(originX, originY - 65, 12, "Scale 1:10", LAYER_TEXT_CALLOUT)
 End Sub
 
-'@Description: Draw bar schedule table
+'@Description: Draw longitudinal view with zoned stirrups
+Private Sub DrawLongitudinalWithZones(ByVal originX As Double, ByVal originY As Double, _
+                                     ByVal span As Double, _
+                                     ByRef result As BeamDetailingResult)
+    
+    Dim i As Long
+    Dim X As Double, Y As Double
+    Dim effectiveCover As Double
+    Dim scale As Double
+    
+    scale = 0.1  ' 1:10 scale
+    effectiveCover = result.cover + result.stirrup_mid.diameter
+    
+    Dim sLength As Double, sD As Double
+    sLength = span * scale
+    sD = result.D * scale
+    
+    ' Draw beam outline
+    Call DXF_Rectangle(originX, originY, sLength, sD, LAYER_BEAM_OUTLINE)
+    
+    ' Draw top bar (use maximum of start/mid/end)
+    Dim topDia As Double
+    topDia = result.top_mid.diameter
+    If result.top_start.diameter > topDia Then topDia = result.top_start.diameter
+    If result.top_end.diameter > topDia Then topDia = result.top_end.diameter
+    
+    Y = originY + sD - (effectiveCover + topDia / 2) * scale
+    Call DXF_Line(originX + result.cover * scale, Y, originX + sLength - result.cover * scale, Y, LAYER_REBAR_MAIN)
+    
+    ' Draw bottom bar
+    Dim botDia As Double
+    botDia = result.bottom_mid.diameter
+    If result.bottom_start.diameter > botDia Then botDia = result.bottom_start.diameter
+    If result.bottom_end.diameter > botDia Then botDia = result.bottom_end.diameter
+    
+    Y = originY + (effectiveCover + botDia / 2) * scale
+    Call DXF_Line(originX + result.cover * scale, Y, originX + sLength - result.cover * scale, Y, LAYER_REBAR_MAIN)
+    
+    ' Draw stirrups in zones
+    Dim zoneStartX As Double, zoneEndX As Double
+    Dim nStirrups As Long
+    
+    ' Start zone (typically 20% of span)
+    zoneStartX = originX + result.cover * scale
+    zoneEndX = originX + result.stirrup_start.zone_length * scale
+    If result.stirrup_start.spacing > 0 Then
+        X = zoneStartX
+        Do While X <= zoneEndX
+            Call DXF_Line(X, originY + result.cover * scale, X, originY + sD - result.cover * scale, LAYER_REBAR_STIRRUP)
+            X = X + result.stirrup_start.spacing * scale
+        Loop
+    End If
+    
+    ' Mid zone (typically 60% of span)
+    zoneStartX = zoneEndX
+    zoneEndX = zoneStartX + result.stirrup_mid.zone_length * scale
+    If result.stirrup_mid.spacing > 0 Then
+        X = zoneStartX
+        Do While X <= zoneEndX
+            Call DXF_Line(X, originY + result.cover * scale, X, originY + sD - result.cover * scale, LAYER_REBAR_STIRRUP)
+            X = X + result.stirrup_mid.spacing * scale
+        Loop
+    End If
+    
+    ' End zone (typically 20% of span)
+    zoneStartX = zoneEndX
+    zoneEndX = originX + sLength - result.cover * scale
+    If result.stirrup_end.spacing > 0 Then
+        X = zoneStartX
+        Do While X <= zoneEndX
+            Call DXF_Line(X, originY + result.cover * scale, X, originY + sD - result.cover * scale, LAYER_REBAR_STIRRUP)
+            X = X + result.stirrup_end.spacing * scale
+        Loop
+    End If
+    
+    ' Draw center line
+    Call DXF_Line(originX - 15, originY + sD / 2, originX + sLength + 15, originY + sD / 2, LAYER_CENTERLINE)
+    
+    ' Add dimensions
+    Call DXF_Dimension(originX, originY, originX + sLength, originY, -25)
+    
+    ' Add stirrup callouts for each zone
+    Dim calloutY As Double
+    calloutY = originY + sD + 15
+    
+    ' Start zone callout
+    Call DXF_Text(originX + result.stirrup_start.zone_length * scale * 0.3, calloutY, 10, _
+                 result.stirrup_start.diameter & "T@" & result.stirrup_start.spacing, LAYER_TEXT_CALLOUT)
+    
+    ' Mid zone callout
+    Call DXF_Text(originX + (result.stirrup_start.zone_length + result.stirrup_mid.zone_length * 0.4) * scale, calloutY, 10, _
+                 result.stirrup_mid.diameter & "T@" & result.stirrup_mid.spacing, LAYER_TEXT_CALLOUT)
+    
+    ' End zone callout
+    Call DXF_Text(originX + (result.stirrup_start.zone_length + result.stirrup_mid.zone_length + result.stirrup_end.zone_length * 0.3) * scale, calloutY, 10, _
+                 result.stirrup_end.diameter & "T@" & result.stirrup_end.spacing, LAYER_TEXT_CALLOUT)
+    
+    ' Add title
+    Call DXF_Text(originX, originY - 45, 20, "LONGITUDINAL SECTION", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX, originY - 65, 12, "Span: " & span & " mm  Scale 1:10", LAYER_TEXT_CALLOUT)
+End Sub
+
+'@Description: Draw bar schedule table using actual BeamDetailingResult
+Private Sub DrawBarScheduleFromResult(ByVal originX As Double, ByVal originY As Double, _
+                                     ByRef result As BeamDetailingResult)
+    
+    Dim Y As Double
+    Dim rowHeight As Double
+    Dim colWidths(0 To 4) As Double
+    
+    rowHeight = 25
+    colWidths(0) = 60   ' Mark
+    colWidths(1) = 50   ' Dia
+    colWidths(2) = 50   ' No.
+    colWidths(3) = 80   ' Zone
+    colWidths(4) = 100  ' Shape
+    
+    Dim totalWidth As Double
+    totalWidth = colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + colWidths(4)
+    
+    ' Title
+    Call DXF_Text(originX, originY + rowHeight * 8, 18, "BAR SCHEDULE", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX, originY + rowHeight * 7.3, 12, "Beam: " & result.beam_id & " (" & result.b & "x" & result.D & ")", LAYER_TEXT_CALLOUT)
+    
+    Y = originY + rowHeight * 6
+    
+    ' Header row
+    Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + 5, Y + 5, 12, "MARK", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "DIA", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, "NO.", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "ZONE", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "SHAPE", LAYER_TEXT_CALLOUT)
+    
+    ' Bottom bars - mid-span (main tension)
+    Y = Y - rowHeight
+    Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + 5, Y + 5, 12, "A", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.bottom_mid.diameter, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.bottom_mid.count), LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "MID", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STRAIGHT", LAYER_TEXT_CALLOUT)
+    
+    ' Top bars - support (main tension at supports)
+    Y = Y - rowHeight
+    Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + 5, Y + 5, 12, "B", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.top_start.diameter, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.top_start.count), LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "START", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STRAIGHT", LAYER_TEXT_CALLOUT)
+    
+    ' Top bars - end support
+    Y = Y - rowHeight
+    Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + 5, Y + 5, 12, "C", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.top_end.diameter, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.top_end.count), LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "END", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STRAIGHT", LAYER_TEXT_CALLOUT)
+    
+    ' Stirrups - start zone
+    Y = Y - rowHeight
+    Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + 5, Y + 5, 12, "D", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.stirrup_start.diameter, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.stirrup_start.legs) & "L", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "@" & result.stirrup_start.spacing, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STIRRUP", LAYER_TEXT_CALLOUT)
+    
+    ' Stirrups - mid zone
+    Y = Y - rowHeight
+    Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + 5, Y + 5, 12, "E", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.stirrup_mid.diameter, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.stirrup_mid.legs) & "L", LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "@" & result.stirrup_mid.spacing, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STIRRUP", LAYER_TEXT_CALLOUT)
+End Sub
+
+'@Description: Draw bar schedule table (legacy - for simple input)
 Private Sub DrawBarSchedule(ByVal originX As Double, ByVal originY As Double, _
-                           ByRef result As BeamDetailingResult)
+                           ByVal topDia As Double, ByVal topCount As Long, _
+                           ByVal botDia As Double, ByVal botCount As Long, _
+                           ByVal stirrupDia As Double, ByVal stirrupSpacing As Double)
     
     Dim Y As Double
     Dim rowHeight As Double
@@ -1026,8 +1257,8 @@ Private Sub DrawBarSchedule(ByVal originX As Double, ByVal originY As Double, _
     ' Top bars
     Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + 5, Y + 5, 12, "A", LAYER_TEXT_CALLOUT)
-    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.TopBars.Dia_mm, LAYER_TEXT_CALLOUT)
-    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.TopBars.Count_n), LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & topDia, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(topCount), LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "-", LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STRAIGHT", LAYER_TEXT_CALLOUT)
     
@@ -1036,8 +1267,8 @@ Private Sub DrawBarSchedule(ByVal originX As Double, ByVal originY As Double, _
     ' Bottom bars
     Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + 5, Y + 5, 12, "B", LAYER_TEXT_CALLOUT)
-    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.BottomBars.Dia_mm, LAYER_TEXT_CALLOUT)
-    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(result.BottomBars.Count_n), LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & botDia, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, CStr(botCount), LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "-", LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STRAIGHT", LAYER_TEXT_CALLOUT)
     
@@ -1046,9 +1277,9 @@ Private Sub DrawBarSchedule(ByVal originX As Double, ByVal originY As Double, _
     ' Stirrups
     Call DXF_Rectangle(originX, Y, totalWidth, rowHeight, LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + 5, Y + 5, 12, "C", LAYER_TEXT_CALLOUT)
-    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & result.Stirrups.Dia_mm, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + 5, Y + 5, 12, "T" & stirrupDia, LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + colWidths(0) + colWidths(1) + 5, Y + 5, 12, "-", LAYER_TEXT_CALLOUT)
-    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "@" & result.Stirrups.Spacing_mm, LAYER_TEXT_CALLOUT)
+    Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + 5, Y + 5, 12, "@" & stirrupSpacing, LAYER_TEXT_CALLOUT)
     Call DXF_Text(originX + colWidths(0) + colWidths(1) + colWidths(2) + colWidths(3) + 5, Y + 5, 12, "STIRRUP", LAYER_TEXT_CALLOUT)
 End Sub
 

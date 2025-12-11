@@ -339,18 +339,44 @@ Public Sub IS456_ExportBeamDXF()
     If filePath = "False" Then Exit Sub
     
     ' Read beam data from worksheet (expected cells)
-    ' Assumes standard layout: B2=Width, B3=Depth, B4=Cover, B5=TopDia, B6=TopCount, etc.
+    ' Row 2: B2=BeamID, B3=Width, B4=Depth, B5=Span, B6=Cover
+    ' Row 7-9: Bottom bars (start/mid/end): count, dia
+    ' Row 10-12: Top bars (start/mid/end): count, dia
+    ' Row 13-15: Stirrups (start/mid/end): dia, spacing, legs, zone_length
     With result
-        .B_mm = ws.Range("B2").Value
-        .D_mm = ws.Range("B3").Value
-        .Cover_mm = ws.Range("B4").Value
-        .TopBars.Dia_mm = ws.Range("B5").Value
-        .TopBars.Count_n = ws.Range("B6").Value
-        .BottomBars.Dia_mm = ws.Range("B7").Value
-        .BottomBars.Count_n = ws.Range("B8").Value
-        .Stirrups.Dia_mm = ws.Range("B9").Value
-        .Stirrups.Spacing_mm = ws.Range("B10").Value
-        .Stirrups.Legs = ws.Range("B11").Value
+        .beam_id = ws.Range("B2").Value
+        .b = ws.Range("B3").Value
+        .D = ws.Range("B4").Value
+        .span = ws.Range("B5").Value
+        .cover = ws.Range("B6").Value
+        
+        ' Bottom bars - using mid-span as primary
+        .bottom_mid.count = ws.Range("B7").Value
+        .bottom_mid.diameter = ws.Range("C7").Value
+        .bottom_start.count = .bottom_mid.count
+        .bottom_start.diameter = .bottom_mid.diameter
+        .bottom_end.count = .bottom_mid.count
+        .bottom_end.diameter = .bottom_mid.diameter
+        
+        ' Top bars - using start as primary (support moment)
+        .top_start.count = ws.Range("B8").Value
+        .top_start.diameter = ws.Range("C8").Value
+        .top_mid.count = 2  ' Nominal at mid
+        .top_mid.diameter = .top_start.diameter
+        .top_end.count = .top_start.count
+        .top_end.diameter = .top_start.diameter
+        
+        ' Stirrups - all zones use same for simplicity
+        .stirrup_mid.diameter = ws.Range("B9").Value
+        .stirrup_mid.spacing = ws.Range("C9").Value
+        .stirrup_mid.legs = ws.Range("D9").Value
+        .stirrup_mid.zone_length = .span * 0.6
+        
+        .stirrup_start = .stirrup_mid
+        .stirrup_start.zone_length = .span * 0.2
+        
+        .stirrup_end = .stirrup_mid
+        .stirrup_end.zone_length = .span * 0.2
     End With
     
     ' Generate DXF

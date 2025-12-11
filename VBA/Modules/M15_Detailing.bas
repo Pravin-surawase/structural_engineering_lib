@@ -482,8 +482,43 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
     result.is_valid = True
     result.remarks = "OK"
     
-    ' Check spacing validity
+    ' Check spacing validity for ALL zones and layers
+    Dim spacingOK As Boolean
+    spacingOK = True
+    Dim spacingWarnings As String
+    spacingWarnings = ""
+    
+    ' Bottom bars - all zones
+    If Not Check_Min_Spacing(result.bottom_start.spacing, result.bottom_start.diameter) Then
+        spacingOK = False
+        spacingWarnings = spacingWarnings & "Bottom-Start; "
+    End If
     If Not Check_Min_Spacing(result.bottom_mid.spacing, result.bottom_mid.diameter) Then
-        result.remarks = "Warning: Bar spacing tight"
+        spacingOK = False
+        spacingWarnings = spacingWarnings & "Bottom-Mid; "
+    End If
+    If Not Check_Min_Spacing(result.bottom_end.spacing, result.bottom_end.diameter) Then
+        spacingOK = False
+        spacingWarnings = spacingWarnings & "Bottom-End; "
+    End If
+    
+    ' Top bars - all zones
+    If Not Check_Min_Spacing(result.top_start.spacing, result.top_start.diameter) Then
+        spacingOK = False
+        spacingWarnings = spacingWarnings & "Top-Start; "
+    End If
+    If Not Check_Min_Spacing(result.top_mid.spacing, result.top_mid.diameter) Then
+        spacingOK = False
+        spacingWarnings = spacingWarnings & "Top-Mid; "
+    End If
+    If Not Check_Min_Spacing(result.top_end.spacing, result.top_end.diameter) Then
+        spacingOK = False
+        spacingWarnings = spacingWarnings & "Top-End; "
+    End If
+    
+    ' Set validity based on spacing
+    If Not spacingOK Then
+        result.is_valid = False
+        result.remarks = "Spacing violation: " & spacingWarnings
     End If
 End Sub

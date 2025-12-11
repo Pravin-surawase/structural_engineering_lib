@@ -232,18 +232,42 @@ Private Sub Test_DXF_FullDetailing()
     Dim testFile As String
     testFile = GetTestFilePath("test_beam_detail.dxf")
     
-    ' Create BeamDetailingResult
+    ' Create BeamDetailingResult with correct field names
     Dim result As BeamDetailingResult
-    result.B_mm = 300
-    result.D_mm = 450
-    result.Cover_mm = 40
-    result.TopBars.Dia_mm = 16
-    result.TopBars.Count_n = 3
-    result.BottomBars.Dia_mm = 20
-    result.BottomBars.Count_n = 4
-    result.Stirrups.Dia_mm = 8
-    result.Stirrups.Spacing_mm = 150
-    result.Stirrups.Legs = 2
+    result.beam_id = "B1"
+    result.b = 300
+    result.D = 450
+    result.span = 4000
+    result.cover = 40
+    
+    ' Bottom bars (mid-span tension)
+    result.bottom_mid.count = 4
+    result.bottom_mid.diameter = 20
+    result.bottom_mid.spacing = 70
+    result.bottom_start = result.bottom_mid
+    result.bottom_end = result.bottom_mid
+    
+    ' Top bars (support tension)
+    result.top_start.count = 3
+    result.top_start.diameter = 16
+    result.top_start.spacing = 90
+    result.top_mid.count = 2
+    result.top_mid.diameter = 16
+    result.top_mid.spacing = 150
+    result.top_end = result.top_start
+    
+    ' Stirrups
+    result.stirrup_start.diameter = 8
+    result.stirrup_start.spacing = 100
+    result.stirrup_start.legs = 2
+    result.stirrup_start.zone_length = 800
+    
+    result.stirrup_mid.diameter = 8
+    result.stirrup_mid.spacing = 150
+    result.stirrup_mid.legs = 2
+    result.stirrup_mid.zone_length = 2400
+    
+    result.stirrup_end = result.stirrup_start
     
     ' Test 19: Generate full detailing drawing
     Dim success As Boolean
@@ -274,20 +298,44 @@ Public Sub Generate_Sample_DXF()
     
     If filePath = "False" Then Exit Sub
     
-    ' Create realistic beam detailing
+    ' Create realistic beam detailing with correct field names
     Dim result As BeamDetailingResult
-    result.B_mm = 300
-    result.D_mm = 450
-    result.Cover_mm = 40
-    result.TopBars.Dia_mm = 16
-    result.TopBars.Count_n = 3
-    result.TopBars.Ast_mm2 = 603   ' 3 x 201 mm²
-    result.BottomBars.Dia_mm = 20
-    result.BottomBars.Count_n = 4
-    result.BottomBars.Ast_mm2 = 1257  ' 4 x 314 mm²
-    result.Stirrups.Dia_mm = 8
-    result.Stirrups.Spacing_mm = 150
-    result.Stirrups.Legs = 2
+    result.beam_id = "B1-Sample"
+    result.b = 300
+    result.D = 450
+    result.span = 4000
+    result.cover = 40
+    
+    ' Bottom bars - mid-span (main tension)
+    result.bottom_mid.count = 4
+    result.bottom_mid.diameter = 20
+    result.bottom_mid.area_provided = 1257  ' 4 x 314 mm²
+    result.bottom_mid.spacing = 70
+    result.bottom_start = result.bottom_mid
+    result.bottom_end = result.bottom_mid
+    
+    ' Top bars - supports (hogging moment)
+    result.top_start.count = 3
+    result.top_start.diameter = 16
+    result.top_start.area_provided = 603  ' 3 x 201 mm²
+    result.top_start.spacing = 90
+    result.top_mid.count = 2
+    result.top_mid.diameter = 16
+    result.top_mid.spacing = 150
+    result.top_end = result.top_start
+    
+    ' Stirrups - zoned
+    result.stirrup_start.diameter = 8
+    result.stirrup_start.spacing = 100
+    result.stirrup_start.legs = 2
+    result.stirrup_start.zone_length = 800
+    
+    result.stirrup_mid.diameter = 8
+    result.stirrup_mid.spacing = 150
+    result.stirrup_mid.legs = 2
+    result.stirrup_mid.zone_length = 2400
+    
+    result.stirrup_end = result.stirrup_start
     
     ' Generate
     Dim success As Boolean
@@ -299,9 +347,9 @@ Public Sub Generate_Sample_DXF()
                "Open in AutoCAD, DraftSight, or any DXF viewer to verify:" & vbCrLf & _
                "- Layer colors are correct" & vbCrLf & _
                "- Section shows 3T16 top, 4T20 bottom" & vbCrLf & _
-               "- Longitudinal shows 8T@150 c/c stirrups" & vbCrLf & _
+               "- Longitudinal shows zoned stirrups" & vbCrLf & _
                "- Dimensions are accurate" & vbCrLf & _
-               "- Bar schedule is present", _
+               "- Bar schedule shows all zones", _
                vbInformation, "DXF Generated"
     Else
         MsgBox "Failed to generate DXF.", vbExclamation, "Error"
