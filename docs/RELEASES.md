@@ -6,6 +6,19 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ---
 
+## v0.6.0 (In Progress)
+**Target:** Integration & Reporting
+**Branch:** `feat/v0.6-integration-reporting`
+**Mindset:** Transitioning from "Core Logic" (v0.5) to "Usability" (v0.6).
+*   **Integration:** Bridging the gap between analysis software (ETABS) and our design engine.
+*   **Reporting:** Converting raw design data into professional deliverables (Beam Schedules).
+*   **Strategy:** We are using a consolidated feature branch because these features are tightly coupled (Import -> Design -> Schedule) and represent a single "Usability" milestone.
+**Key Features:**
+- ETABS CSV Import (`M13_Integration.bas`)
+- Beam Schedule Generation (`M14_Reporting.bas`)
+- Robustness Refactoring (Dynamic Columns, Sorting)
+- Governance Docs (`GIT_GOVERNANCE.md`, `MISSION_AND_PRINCIPLES.md`)
+
 ## v0.5.0 (Current)
 **Date:** 2025-12-11
 **Status:** ✅ Locked & Verified

@@ -24,7 +24,8 @@ The next phase focuses on getting data *in* (from ETABS) and *out* (to Drawings)
 - **[ ] TASK-017: Data Integration (ETABS/CSV)**
   - **Agent:** INTEGRATION
   - **Goal:** Allow users to import ETABS output (CSV) directly into `tbl_BeamInput`.
-  - **Challenge:** Mapping variable ETABS column names to our fixed schema.
+  - **Current:** `Import_ETABS_Data` supports CSV with header aliases/signs preserved and falls back to built-in sample rows (B1–B3) if no CSV is provided; sample ETABS-style CSV at `tests/ETABS_BeamForces_Example.csv`.
+  - **Challenge:** Mapping variable ETABS column names/units to our fixed schema; add in-code sorting and unit handling.
 
 - **[ ] TASK-018: Beam Schedule Generation**
   - **Agent:** UI / DEV

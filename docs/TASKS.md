@@ -25,15 +25,19 @@ When working on tasks, specify which agent role to use:
 ## � In Progress
 - [ ] **TASK-018: Beam Schedule Generation**
   - **Agent:** UI / DEV
-  - **Status:** `M14_Reporting` created. `M99_Setup` updated for schedule table.
-  - **Pending:** Testing with real design data.
+  - **Status:** Code Complete (`M14_Reporting`). Refactored for robustness.
+  - **Pending:** Manual verification in Excel (Sort/Group logic).
 - [ ] **TASK-017: Data Integration (ETABS/CSV)**
-  - **Agent:** TESTER
-  - **Status:** Code & UI complete. Sample CSV created (`tests/fixtures/ETABS_Sample_Export.csv`).
-  - **Pending:** Manual verification in Excel.
-  - **Research:** Documented in `docs/RESEARCH_AND_FINDINGS.md` (Section 15).
+  - **Agent:** TESTER / INTEGRATION
+  - **Status:** Code Complete (`M13_Integration`). Fixture created.
+  - **Pending:** Manual verification in Excel (Import logic).
 
-## �🟢 Done
+## 🟢 Done
+
+- [x] **Governance & Docs**
+  - Created `docs/GIT_GOVERNANCE.md`
+  - Created `docs/MISSION_AND_PRINCIPLES.md`
+  - Updated `docs/RELEASES.md` with v0.6 strategy
 
 - [x] **TASK-001**: Project scaffold
   - Created folder structure (VBA/Modules, Python/structural_lib)
@@ -149,6 +153,7 @@ When working on tasks, specify which agent role to use:
 - [ ] **TASK-017**: Data Integration (ETABS/CSV)
   - Define schema mapping for ETABS output
   - Implement `Import_CSV` in `M12_UI.bas`
+  - Current: `Import_ETABS_Data` supports CSV import (header aliases, sign preserved) and falls back to built-in sample rows (B1–B3) if no CSV is provided. Sample ETABS-style CSV available at `tests/ETABS_BeamForces_Example.csv`.
 
 - [ ] **TASK-018**: Beam Schedule Generation
   - Transform `BEAM_DESIGN` results into `BEAM_SCHEDULE` format
