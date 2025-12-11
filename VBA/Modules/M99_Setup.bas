@@ -138,9 +138,10 @@ Private Sub Setup_Design_Sheet(ws As Worksheet)
     ws.Range("A1").Font.Size = 16
     ws.Range("A1").Font.Bold = True
     
-    ' Headers (Input + Output)
+    ' Headers (Full Input Mirror + Results)
     Dim headers As Variant
-    headers = Array("ID", "Story", "Span", "b", "D", "d_eff", "Mu_Lim", "Status", "Ast_Req", "Pt_Prov", "Asc_Req", "Tv", "Tc", "Shear_Sts", "Stirrups", "Remarks")
+    headers = Array("ID", "Story", "Span", "b", "D", "Cover", "fck", "fy", "Mu", "Vu", "Flanged?", "Df", "bf", _
+                    "d_eff", "Mu_Lim", "Status", "Ast_Req", "Pt_Prov", "Asc_Req", "Tv", "Tc", "Shear_Sts", "Stirrups", "Remarks")
     
     ws.Range("A3").Resize(1, UBound(headers) + 1).Value = headers
     

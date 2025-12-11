@@ -32,6 +32,9 @@ The PM is responsible for dispatching work to the specialist team:
 | **DEV** | Ready to write implementation code ("Build the logic."). |
 | **TESTER** | Feature is complete and needs verification ("Break this code."). |
 | **DEVOPS** | Preparing for release or fixing repo structure ("Package it up."). |
+| **DOCS** | Docs/release notes/API need updates or drift correction. |
+| **INTEGRATION** | Table schema or ETABS/CSV mapping needs definition/changes. |
+| **SUPPORT** | Troubleshooting/pitfall updates after issues or fixes. |
 
 **Workflow Example:**
 1. PM asks **CLIENT**: "Do we need a 'Clear' button?"
@@ -90,11 +93,18 @@ The PM is responsible for dispatching work to the specialist team:
 
 ### Changed
 - (None)
+```
 
-### **Orchestration Plan** — Which agents need to be involved?
-2.  **Scope Assessment** — Does this fit the current version goals?
-3.  **Decision Log** — Record why a feature was added or cut.
-4.  **Next Steps** — Clear hand-off to the next agent (e.g., "Handing off to UI agent for layout").
+### Orchestration Plan (after writing changelog)
+1. Which agents need to be involved?
+2. Scope Assessment — Does this fit the current version goals?
+3. Decision Log — Why was a feature added or cut?
+4. Next Steps — Clear hand-off (e.g., "Handing off to UI agent for layout").
+
+## Typical Flows
+- **Feature:** PM → CLIENT (requirements) → RESEARCHER (clauses/constraints) → UI (layout) → DEV (build) → TESTER (verify) → DEVOPS (package) → DOCS (update API/notes) → PM (ledger) → SUPPORT (troubleshooting if needed).
+- **Bug:** PM triage → DEV/RESEARCHER (root cause) → TESTER (repro/regression) → DEV (fix) → TESTER (verify) → DEVOPS (ship) → DOCS/SUPPORT (notes) → PM (ledger if release-worthy).
+- **Release:** PM sets scope/go/no-go → DEVOPS runs tests/builds/tags → DOCS drafts CHANGELOG/RELEASES/API updates → PM appends to `docs/RELEASES.md` (immutable) → SUPPORT/TROUBLESHOOTING refreshed → announce.
 
 ---
 
@@ -129,3 +139,5 @@ fits v0.1 scope and recommend when to add it.
 ---
 
 **Reference:** Use `docs/PROJECT_OVERVIEW.md` for scope/architecture context. (Task board TBD)
+
+See also: `agents/README.md` for quick agent prompt templates.

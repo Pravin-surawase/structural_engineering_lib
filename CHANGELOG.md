@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2025-12-11
+### Added
+- **Excel Integration**:
+  - `M11_AppLayer.bas`: Application controller linking Excel Tables to Core Library.
+  - `M12_UI.bas`: UI event handlers for "Run Design" and "Clear Results".
+  - `M99_Setup.bas`: Scaffolding script to generate the v0.5 Workbook structure.
+- **Governance**:
+  - Added `DOCS`, `INTEGRATION`, and `SUPPORT` agent roles.
+  - Formalized Feature/Bug/Release workflows in `PM.md` and `PROJECT_OVERVIEW.md`.
+- **Documentation**:
+  - Added `docs/specs/v0.5_EXCEL_SPEC.md`.
+  - Updated `EXCEL_ADDIN_GUIDE.md` with dynamic path handling.
+
 ## [0.4.0] - 2025-12-11
 ### Added
 - **Ductile Detailing (IS 13920:2016)**:

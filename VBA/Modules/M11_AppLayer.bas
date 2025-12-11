@@ -67,6 +67,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
     Dim shearRes As ShearResult
     Dim status As String
     Dim remarks As String
+    Dim calcNotes As String
     
     On Error GoTo RowError
     
@@ -88,19 +89,39 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
     End With
     
     ' --- Calculations ---
-    ' Note: 'Cover' input is assumed to be Effective Cover (to center of reinforcement).
-    ' If user provides Clear Cover, they must add (Stirrup + Bar/2) manually before inputting.
-    d_eff = D - Cover
+    ' Treat Cover as clear cover; add stirrup/main bar allowances to reach effective covers.
+    Dim stirrupDia As Double
+    Dim barDiaTension As Double
+    Dim barDiaCompression As Double
+    stirrupDia = GetOptionalValue(rowIn.Range, 14, 8#)         ' mm, defaults to 8mm stirrup
+    barDiaTension = GetOptionalValue(rowIn.Range, 15, 16#)     ' mm, defaults to 16mm main bar
+    barDiaCompression = GetOptionalValue(rowIn.Range, 16, barDiaTension) ' mm, default mirror tension bar
+    
+    Dim tensionCoverEff As Double
+    Dim compressionCoverEff As Double
+    tensionCoverEff = Cover + stirrupDia + (barDiaTension / 2#)
+    compressionCoverEff = Cover + stirrupDia + (barDiaCompression / 2#)
+    
+    d_eff = D - tensionCoverEff
     
     ' 1. Flexure Design
     ' Note: Library expects Mu in kN-m (based on M06_Flexure signatures)
     ' Design_Doubly_Reinforced(b, d, d_dash, D_total, Mu_kNm, fck, fy)
     ' Design_Flanged_Beam(bw, bf, d, Df, D_total, Mu_kNm, fck, fy, d_dash)
     
-    ' Assumption: Compression reinforcement depth (d') is equal to tension effective cover.
-    ' This ignores differences in bar diameters between top and bottom steel.
     Dim d_dash As Double
-    d_dash = Cover
+    d_dash = compressionCoverEff
+    
+    ' Guards for bad geometry inputs
+    calcNotes = ""
+    If d_eff <= 0 Then
+        d_eff = D - Cover   ' fallback to legacy effective cover assumption
+        calcNotes = calcNotes & "Adjusted d using input cover only; clear cover + bars exceeded depth. "
+    End If
+    If d_dash >= D Then
+        d_dash = Cover
+        calcNotes = calcNotes & "Compression cover capped at input cover. "
+    End If
     
     If isFlanged Then
         flexRes = M06_Flexure.Design_Flanged_Beam(b, bf, d_eff, Df, D, Mu, fck, fy, d_dash)
@@ -175,7 +196,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         End If
         
         ' Remarks
-        remarks = ""
+        remarks = calcNotes
         If flexRes.SectionType = OverReinforced Then remarks = remarks & "Doubly Reinforced. "
         If Not flexRes.IsSafe Then remarks = remarks & "Flexure: " & flexRes.ErrorMessage & " "
         If Not shearRes.IsSafe Then remarks = remarks & "Shear: " & shearRes.Remarks & " "
@@ -203,3 +224,14 @@ Public Sub Clear_Results()
     End If
     MsgBox "Results Cleared.", vbInformation
 End Sub
+
+Private Function GetOptionalValue(rowRange As Range, colIndex As Long, defaultValue As Double) As Double
+    ' Safely read an optional column from the table; returns defaultValue if missing/blank.
+    If colIndex <= rowRange.Columns.Count Then
+        If Len(Trim(CStr(rowRange.Cells(1, colIndex).Value))) > 0 Then
+            GetOptionalValue = rowRange.Cells(1, colIndex).Value
+            Exit Function
+        End If
+    End If
+    GetOptionalValue = defaultValue
+End Function

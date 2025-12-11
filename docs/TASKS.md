@@ -120,24 +120,32 @@ When working on tasks, specify which agent role to use:
   - Status bar updates
   - Logging mechanism to `LOG` sheet
 
----
-
-## 🟡 In Progress
-
-- [ ] **TASK-016**: Integration Testing
+- [x] **TASK-016**: Integration Testing
   - Verify end-to-end flow from Input Table -> Design Table
   - Check performance for 100+ beams
 
 ---
 
-## 🔴 Up Next (v0.6 - Drafting & Reporting)
+## 🟡 In Progress
 
 *(None currently)*
 
 ---
 
+## 🔴 Up Next (v0.6 - Drafting & Reporting)
+
+- [ ] **TASK-017**: Data Integration (ETABS/CSV)
+  - Define schema mapping for ETABS output
+  - Implement `Import_CSV` in `M12_UI.bas`
+
+- [ ] **TASK-018**: Beam Schedule Generation
+  - Transform `BEAM_DESIGN` results into `BEAM_SCHEDULE` format
+  - Grouping logic (Same size/reinforcement)
+
+---
+
 ## Notes
 
-- **Current Version**: v0.4.0
+- **Current Version**: v0.5.0
 - **Last Updated**: 2025-12-11
 - **Active Branch**: main

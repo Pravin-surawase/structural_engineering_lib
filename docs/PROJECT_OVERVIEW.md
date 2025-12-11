@@ -37,7 +37,7 @@ Principles:
 - UX: usable by another engineer without author guidance; failure rows clearly marked; inline “how to use” notes.
 
 ### 2.3 Structural Library Scope
-- Pure IS 456 logic for rectangular beams (geometry helpers, flexure, shear).
+- Pure IS 456 logic for rectangular and flanged beams (flexure, shear, ductile detailing).
 - VBA first, isolated in its own modules (no Excel sheet/UI/file references).
 - Designed to mirror in Python with the same conceptual API.
 
@@ -63,9 +63,10 @@ Goals:
 
 Function groups (conceptual):
 1) Geometry/reinforcement helpers: effective depth; pt from Ast,b,d; Ast min/max per IS 456.  
-2) Flexure helpers: Ast for singly reinforced; limiting moment; flag when Mu > Mu_lim; (future) doubly reinforced helper.  
+2) Flexure helpers: singly, doubly, and flanged (T/L) beams; limiting moment; flag when Mu > Mu_lim; compression steel and flange checks.  
 3) Shear helpers: τv from Vu,b,d; τc from Table 19 (with pt clamp and interpolation in pt); Vc; Vus; stirrup capacity/spacing with code limits.  
-4) Validation/error conventions: detect impossible inputs (negative dims, cover ≥ D, invalid grades); return clear status codes/flags, no UI.
+4) Ductile detailing (IS 13920): geometry limits, min/max steel, confinement spacing.  
+5) Validation/error conventions: detect impossible inputs (negative dims, cover ≥ D, invalid grades); return clear status codes/flags, no UI.
 
 The AI should refine names, inputs/outputs, and ensure logic consistency without duplication.
 
@@ -128,3 +129,13 @@ Reference it when prompting AI: e.g., “Use PROJECT_OVERVIEW.md as context. Act
 ---
 
 **End of Project Overview**
+
+---
+
+## Agent Workflow (Cheat Sheet)
+- **Feature:** PM → CLIENT (requirements) → RESEARCHER (clauses/constraints) → UI (layout) → DEV (build) → TESTER (verify) → DEVOPS (package) → DOCS (update notes/API) → PM (ledger) → SUPPORT (troubleshooting if needed).
+- **Bug:** PM triage → DEV/RESEARCHER (root cause) → TESTER (repro/regression) → DEV (fix) → TESTER (verify) → DEVOPS (ship) → DOCS/SUPPORT (notes) → PM (ledger).
+- **Data/Integration change:** PM → INTEGRATION (schema/mapping/validation) → DEV (implement) → TESTER (data-path cases) → DEVOPS (import/export workflow) → DOCS (schema reference) → PM.
+- **Release:** PM sets scope/go/no-go → DEVOPS runs tests/builds/tags → DOCS drafts CHANGELOG/RELEASES/API updates → PM appends to `docs/RELEASES.md` (immutable) → SUPPORT/TROUBLESHOOTING refreshed → announce.
+
+Reference: `agents/README.md` for agent prompt templates.

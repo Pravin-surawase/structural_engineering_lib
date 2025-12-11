@@ -22,35 +22,50 @@ Run this once from a blank workbook:
 
 ```vba
 Sub ImportAllModules()
-    ' Use ThisWorkbook.Path to find the repo root relative to this file
-    ' Assumes this workbook is saved in the repo or you adjust the path accordingly
+    ' Robust bulk importer for M01–M10 (and optional tests).
+    On Error GoTo Fail
+    
+    If Len(ThisWorkbook.Path) = 0 Then
+        MsgBox "Save this workbook first, then re-run.", vbExclamation
+        Exit Sub
+    End If
+    
+    Const INCLUDE_TESTS As Boolean = True  ' Set False to skip importing tests
     Dim repoRoot As String
-    repoRoot = ThisWorkbook.Path & "/../" ' Adjust if needed
-    
     Dim folder As String
-    folder = repoRoot & "VBA/Modules/"
-    
     Dim testFolder As String
-    testFolder = repoRoot & "VBA/Tests/"
+    
+    repoRoot = EnsureTrailingSlash(ThisWorkbook.Path)
+    folder = FindFolder(repoRoot, "VBA" & Application.PathSeparator & "Modules" & Application.PathSeparator)
+    testFolder = FindFolder(repoRoot, "VBA" & Application.PathSeparator & "Tests" & Application.PathSeparator)
+    
+    If folder = "" Then
+        folder = PromptFolder("Enter full path to VBA/Modules (e.g., /path/to/structural_engineering_lib/VBA/Modules/):")
+        If folder = "" Then Exit Sub
+    End If
+    
+    If INCLUDE_TESTS And testFolder = "" Then
+        testFolder = PromptFolder("Enter full path to VBA/Tests (or Cancel to skip tests):")
+        If testFolder = "" Then
+            MsgBox "Tests will be skipped (folder not provided).", vbInformation
+        End If
+    End If
     
     ' Remove existing library modules (M01–M10) and tests if present to avoid duplicates
-    Dim comp As Object
-    For Each comp In Application.VBE.ActiveVBProject.VBComponents
-        If comp.Name Like "M0?_Constants" _
-        Or comp.Name Like "M0?_Types" _
-        Or comp.Name Like "M0?_Tables" _
-        Or comp.Name Like "M0?_Utilities" _
-        Or comp.Name Like "M0?_Materials" _
-        Or comp.Name Like "M0?_Flexure" _
-        Or comp.Name Like "M0?_Shear" _
-        Or comp.Name Like "M0?_API" _
-        Or comp.Name Like "M0?_UDFs" _
-        Or comp.Name Like "M1?_Ductile" _
-        Or comp.Name = "M10_Ductile" _
-        Or comp.Name = "Test_Structural" Then
-            Application.VBE.ActiveVBProject.VBComponents.Remove comp
-        End If
-    Next comp
+    RemoveIfExists "M0?_Constants"
+    RemoveIfExists "M0?_Types"
+    RemoveIfExists "M0?_Tables"
+    RemoveIfExists "M0?_Utilities"
+    RemoveIfExists "M0?_Materials"
+    RemoveIfExists "M0?_Flexure"
+    RemoveIfExists "M0?_Shear"
+    RemoveIfExists "M0?_API"
+    RemoveIfExists "M0?_UDFs"
+    RemoveIfExists "M1?_Ductile"
+    RemoveIfExists "M10_Ductile"
+    RemoveIfExists "Test_Structural"
+    RemoveIfExists "Test_Flanged"
+    RemoveIfExists "Test_Ductile"
     
     ' IMPORTANT: Import M02_Types FIRST (other modules depend on UDT definitions)
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M02_Types.bas"
@@ -66,10 +81,77 @@ Sub ImportAllModules()
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M09_UDFs.bas"
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M10_Ductile.bas"
     
-    ' Import test file
-    Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Structural.bas"
+    ' Import test files (optional; remove if you do not want tests in the add-in project)
+    If INCLUDE_TESTS And Dir(testFolder, vbDirectory) <> "" Then
+        Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Structural.bas"
+        Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Flanged.bas"
+        Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Ductile.bas"
+    End If
     
-    MsgBox "All modules imported successfully! Version info will be displayed when you run RunAllTests.", vbInformation
+    MsgBox "Modules imported from:" & vbCrLf & folder & vbCrLf & IIf(INCLUDE_TESTS And Dir(testFolder, vbDirectory) <> "", "Tests imported from:" & vbCrLf & testFolder, "Tests skipped (folder missing or disabled)."), vbInformation
+    Exit Sub
+Fail:
+    MsgBox "Import failed: " & Err.Description, vbCritical
+End Sub
+
+Private Function EnsureTrailingSlash(pathStr As String) As String
+    If Len(pathStr) = 0 Then Exit Function
+    If Right(pathStr, 1) <> Application.PathSeparator Then
+        EnsureTrailingSlash = pathStr & Application.PathSeparator
+    Else
+        EnsureTrailingSlash = pathStr
+    End If
+End Function
+
+Private Function ParentFolder(pathStr As String) As String
+    Dim p As String
+    p = pathStr
+    If Right(p, 1) = Application.PathSeparator Then p = Left(p, Len(p) - 1)
+    Dim pos As Long
+    pos = InStrRev(p, Application.PathSeparator)
+    If pos > 0 Then ParentFolder = Left(p, pos)
+End Function
+
+Private Function FindFolder(repoRoot As String, subPath As String) As String
+    Dim candidate As String
+    candidate = EnsureTrailingSlash(repoRoot) & subPath
+    If Dir(candidate, vbDirectory) <> "" Then
+        FindFolder = candidate
+        Exit Function
+    End If
+    
+    Dim parent As String
+    parent = ParentFolder(repoRoot)
+    If Len(parent) > 0 Then
+        candidate = EnsureTrailingSlash(parent) & subPath
+        If Dir(candidate, vbDirectory) <> "" Then
+            FindFolder = candidate
+            Exit Function
+        End If
+    End If
+End Function
+
+Private Function PromptFolder(prompt As String) As String
+    Dim pathStr As String
+    pathStr = InputBox(prompt, "Locate folder")
+    If Len(pathStr) = 0 Then Exit Function
+    pathStr = EnsureTrailingSlash(pathStr)
+    If Dir(pathStr, vbDirectory) = "" Then
+        MsgBox "Folder not found: " & pathStr, vbCritical
+        Exit Function
+    End If
+    PromptFolder = pathStr
+End Function
+
+Private Sub RemoveIfExists(pattern As String)
+    On Error Resume Next
+    Dim comp As Object
+    For Each comp In Application.VBE.ActiveVBProject.VBComponents
+        If comp.Name Like pattern Then
+            Application.VBE.ActiveVBProject.VBComponents.Remove comp
+        End If
+    Next comp
+    On Error GoTo 0
 End Sub
 ```
 

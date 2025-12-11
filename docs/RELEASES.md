@@ -6,7 +6,18 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ---
 
-## v0.4.0 (Current)
+## v0.5.0 (Current)
+**Date:** 2025-12-11
+**Status:** ✅ Locked & Verified
+**Commit Hash:** (Pending Push)
+**Key Features:**
+- Excel Workbook Integration (`StructEng_BeamDesign_v0.5.xlsm`)
+- Application Layer (`M11_AppLayer.bas`) for Table-to-Library orchestration
+- UI Layer (`M12_UI.bas`) with "Run Design" and "Clear" controls
+- Setup Script (`M99_Setup.bas`) for automated workbook scaffolding
+- Governance: Added DOCS, INTEGRATION, and SUPPORT agents
+
+## v0.4.0
 **Date:** 2025-12-11
 **Status:** ✅ Locked & Verified
 **Commit Hash:** 1e1d3ce45be5e003f7d233ff7c94f9cfc7c9011a
