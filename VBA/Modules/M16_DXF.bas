@@ -660,18 +660,12 @@ Public Function Draw_BeamSection(ByVal filePath As String, _
             X = originX + B / 2
             Call DXF_RebarSection(X, Y, bottomBars(LBound(bottomBars)), True)
         Else
-            ' Multiple bars: calculate correct spacing
-            ' Available width = B - 2*effectiveCover - sum of half-bars at edges
-            Dim totalBarDiaBottom As Double
-            totalBarDiaBottom = 0
-            For i = LBound(bottomBars) To UBound(bottomBars)
-                totalBarDiaBottom = totalBarDiaBottom + bottomBars(i)
-            Next i
-            
-            ' Spacing = (B - 2*effectiveCover - totalBarDia) / (n-1) + avg_bar_dia
-            ' Simplified: edge-to-edge spacing between bar centers
+            ' Multiple bars: correct spacing = (B - 2*effectiveCover - bar_dia) / (n - 1)
+            ' This gives center-to-center spacing with first/last bar at half-dia from cover
+            Dim avgBarDiaBottom As Double
+            avgBarDiaBottom = bottomBars(LBound(bottomBars))  ' Use first bar diameter
             Dim availableWidthBottom As Double
-            availableWidthBottom = B - 2 * effectiveCover
+            availableWidthBottom = B - 2 * effectiveCover - avgBarDiaBottom
             spacing = availableWidthBottom / (nBottom - 1)
             
             X = originX + effectiveCover + bottomBars(LBound(bottomBars)) / 2
@@ -694,9 +688,11 @@ Public Function Draw_BeamSection(ByVal filePath As String, _
             X = originX + B / 2
             Call DXF_RebarSection(X, Y, topBars(LBound(topBars)), True)
         Else
-            ' Multiple bars: calculate correct spacing
+            ' Multiple bars: correct spacing = (B - 2*effectiveCover - bar_dia) / (n - 1)
+            Dim avgBarDiaTop As Double
+            avgBarDiaTop = topBars(LBound(topBars))  ' Use first bar diameter
             Dim availableWidthTop As Double
-            availableWidthTop = B - 2 * effectiveCover
+            availableWidthTop = B - 2 * effectiveCover - avgBarDiaTop
             spacing = availableWidthTop / (nTop - 1)
             
             X = originX + effectiveCover + topBars(LBound(topBars)) / 2
@@ -784,15 +780,18 @@ Public Function Draw_BeamLongitudinal(ByVal filePath As String, _
     Y = originY + (effectiveCover + bottomBarDia / 2) * scale
     Call DXF_Line(originX + cover * scale, Y, originX + sLength - cover * scale, Y, LAYER_REBAR_MAIN)
     
-    ' Draw stirrups
-    nStirrups = Int((length - 2 * cover) / stirrupSpacing)
-    X = originX + cover * scale
-    
-    For i = 0 To nStirrups
-        Call DXF_Line(X, originY + cover * scale, X, originY + sD - cover * scale, LAYER_REBAR_STIRRUP)
-        X = X + stirrupSpacing * scale
-        If X > originX + sLength - cover * scale Then Exit For
-    Next i
+    ' Draw stirrups (with guard against zero/small spacing)
+    If stirrupSpacing >= 25 Then
+        nStirrups = Int((length - 2 * cover) / stirrupSpacing)
+        If nStirrups > 500 Then nStirrups = 500  ' Safety cap
+        X = originX + cover * scale
+        
+        For i = 0 To nStirrups
+            Call DXF_Line(X, originY + cover * scale, X, originY + sD - cover * scale, LAYER_REBAR_STIRRUP)
+            X = X + stirrupSpacing * scale
+            If X > originX + sLength - cover * scale Then Exit For
+        Next i
+    End If
     
     ' Draw center line
     Call DXF_Line(originX - 20, originY + sD / 2, originX + sLength + 20, originY + sD / 2, LAYER_CENTERLINE)
@@ -1024,15 +1023,18 @@ Private Sub DrawLongitudinalAtPoint(ByVal originX As Double, ByVal originY As Do
     Y = originY + (effectiveCover + bottomBarDia / 2) * scale
     Call DXF_Line(originX + cover * scale, Y, originX + sLength - cover * scale, Y, LAYER_REBAR_MAIN)
     
-    ' Draw stirrups
-    nStirrups = Int((length - 2 * cover) / stirrupSpacing)
-    X = originX + cover * scale
-    
-    For i = 0 To nStirrups
-        Call DXF_Line(X, originY + cover * scale, X, originY + sD - cover * scale, LAYER_REBAR_STIRRUP)
-        X = X + stirrupSpacing * scale
-        If X > originX + sLength - cover * scale Then Exit For
-    Next i
+    ' Draw stirrups (with guard against zero/small spacing)
+    If stirrupSpacing >= 25 Then
+        nStirrups = Int((length - 2 * cover) / stirrupSpacing)
+        If nStirrups > 500 Then nStirrups = 500  ' Safety cap
+        X = originX + cover * scale
+        
+        For i = 0 To nStirrups
+            Call DXF_Line(X, originY + cover * scale, X, originY + sD - cover * scale, LAYER_REBAR_STIRRUP)
+            X = X + stirrupSpacing * scale
+            If X > originX + sLength - cover * scale Then Exit For
+        Next i
+    End If
     
     ' Draw center line
     Call DXF_Line(originX - 15, originY + sD / 2, originX + sLength + 15, originY + sD / 2, LAYER_CENTERLINE)

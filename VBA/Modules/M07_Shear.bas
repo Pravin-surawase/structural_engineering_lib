@@ -73,7 +73,12 @@ Public Function Design_Shear(ByVal Vu_kN As Double, ByVal b As Double, ByVal d A
         res.Remarks = "Shear reinforcement required."
         
         ' sv = (0.87 * fy * Asv * d) / Vus_N
-        Spacing_Calc = (0.87 * CDbl(fy) * CDbl(Asv) * CDbl(d)) / (res.Vus * 1000#)
+        ' Guard against very small Vus (near-zero division)
+        If res.Vus < 0.001 Then
+            Spacing_Calc = (0.87 * fy * Asv) / (0.4 * b)  ' Use min reinf formula
+        Else
+            Spacing_Calc = (0.87 * CDbl(fy) * CDbl(Asv) * CDbl(d)) / (res.Vus * 1000#)
+        End If
     End If
     
     ' 5. Apply Max Spacing Limits (Cl. 26.5.1.5)
