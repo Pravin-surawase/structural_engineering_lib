@@ -6,6 +6,36 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ---
 
+## v0.7.0
+**Date:** 2025-12-11
+**Status:** ✅ Locked & Verified
+**Commit Hash:** 8f64d93
+**Mindset:** Transitioning from "Usability" (v0.6) to "Deliverables" (v0.7).
+*   **Detailing:** Pure-function calculations for IS 456 reinforcement detailing (Ld, lap, spacing).
+*   **DXF Export:** CAD-ready drawing generation for shop drawings.
+*   **Integration:** CSV/JSON batch processing with CLI for automation.
+*   **Strategy:** Python-first implementation with optional ezdxf dependency for DXF generation.
+**Key Features:**
+- Reinforcement Detailing (`detailing.py`)
+  - Development length (Ld) per IS 456 Cl 26.2.1
+  - Lap length with zone multipliers (1.5× tension)
+  - Bar spacing validation per IS 456 Cl 26.3.2
+  - Automatic bar arrangement selection
+- DXF Export (`dxf_export.py`)
+  - DXF R2010 format with standard layers
+  - Beam elevation and section views
+  - Automatic dimensioning and callouts
+- Excel Integration (`excel_integration.py`)
+  - CSV/JSON parsing with flexible key mapping
+  - Batch DXF generation with progress tracking
+  - Detailing schedule export
+  - CLI: `python -m structural_lib.excel_integration`
+- Documentation:
+  - `docs/specs/v0.7_DATA_MAPPING.md`
+  - `docs/RESEARCH_DETAILING.md`
+  - `docs/AGENT_WORKFLOW.md`
+- Tests: 67 passing (31 detailing + 15 integration + 21 original)
+
 ## v0.6.0
 **Date:** 2025-12-11
 **Status:** ✅ Locked & Verified

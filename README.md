@@ -4,7 +4,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.6.0)** — ETABS integration and Beam Schedule generation complete. Full design workflow: Import CSV → Design Beams → Generate Schedule. Flexure (singly/doubly/flanged), shear, ductile detailing (IS 13920) implemented in VBA + Python.
+🚀 **Active (v0.7.0)** — Detailing & DXF export complete. Full workflow: Import CSV → Design Beams → Generate Schedule → Export DXF. Flexure (singly/doubly/flanged), shear, ductile detailing (IS 13920), reinforcement detailing (Ld, lap, spacing), and DXF drawing generation implemented in Python. 67 tests passing.
 
 ## Features
 
@@ -28,6 +28,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 | **v0.4** | IS 13920 ductile detailing, packaging | ✅ Completed |
 | **v0.5** | Excel workbook integration | ✅ Completed |
 | **v0.6** | ETABS Integration, Beam Schedule Generation | ✅ Completed |
+| **v0.7** | Reinforcement Detailing, DXF Export | ✅ Completed |
 
 ## Directory Structure (current)
 
