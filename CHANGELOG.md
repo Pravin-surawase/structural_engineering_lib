@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- Integration test harness (`Integration_TestHarness.bas`) to auto-populate BEAM_INPUT and run end-to-end design scenarios (singly, flanged, high Mu, high Vu/Tcmax).
+- Mac-friendly `ImportAllModules` macro with path prompts and optional test imports.
+
+### Changed
+- Application layer now computes effective/compression covers from clear cover + bar/stirrup inputs for more realistic depth handling.
+
 ## [0.5.0] - 2025-12-11
 ### Added
 - **Excel Integration**:

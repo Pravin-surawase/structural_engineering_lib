@@ -121,8 +121,9 @@ When working on tasks, specify which agent role to use:
   - Logging mechanism to `LOG` sheet
 
 - [x] **TASK-016**: Integration Testing
-  - Verify end-to-end flow from Input Table -> Design Table
-  - Check performance for 100+ beams
+  - Verified end-to-end flow from Input Table -> Design Table via `M11_AppLayer.Run_BeamDesign`.
+  - Added `Integration_TestHarness.bas` to auto-populate representative cases (singly, flanged, high Mu, high Vu/Tcmax).
+  - Manual sanity on Mac add-in: sample row returned status OK, Ast ~1026 mm², shear reinforcement callout produced.
 
 ---
 

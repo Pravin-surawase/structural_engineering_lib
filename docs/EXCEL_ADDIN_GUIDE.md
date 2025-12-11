@@ -221,6 +221,12 @@ You (and later your users) need to load this add-in once per machine.
 - The project `StructEngLib` (and its modules) are in memory and callable.
 - You usually don’t see the add-in workbook – it stays hidden in the background.
 
+### macOS Install Quick-Checklist
+- Use a local path (e.g., `~/StructEngLib/StructEngLib.xlam`), not iCloud/OneDrive.
+- Excel → Preferences → Security: enable “Trust access to the VBA project object model”; set macros to “Enable” or “Disable with notification”.
+- Tools → Add-ins… → Browse… → select the .xlam → ensure it’s checked. If disabled, re-enable from Disabled Items.
+- In the VBA editor: set a unique project Name for the add-in (e.g., `StructEngLibAddIn`) and a different Name for your workbook to avoid reference conflicts.
+- Tools → References… in your workbook: uncheck any `MISSING:` entries; check `StructEngLibAddIn`.
 ---
 
 ## 4. How your Beam Workbook uses the Library

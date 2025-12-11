@@ -16,6 +16,7 @@ Entries here represent "locked" versions that have been verified and approved.
 - UI Layer (`M12_UI.bas`) with "Run Design" and "Clear" controls
 - Setup Script (`M99_Setup.bas`) for automated workbook scaffolding
 - Governance: Added DOCS, INTEGRATION, and SUPPORT agents
+- Verification: Sample run (B1, 230x450, Mu=150 kN·m, Vu=100 kN, M25/Fe500) returned Ast ≈ 1026 mm², Status OK, shear reinforcement required, stirrups "2L-8mm @ 300 mm", remarks "Doubly Reinforced" as expected.
 
 ## v0.4.0
 **Date:** 2025-12-11
