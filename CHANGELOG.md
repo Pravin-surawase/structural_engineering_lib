@@ -3,12 +3,29 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [0.6.0] - 2025-12-11
 ### Added
-- Integration test harness (`Integration_TestHarness.bas`) to auto-populate BEAM_INPUT and run end-to-end design scenarios (singly, flanged, high Mu, high Vu/Tcmax).
-- Mac-friendly `ImportAllModules` macro with path prompts and optional test imports.
+- **ETABS Integration (`M13_Integration.bas`)**:
+  - `Import_ETABS_Data`: Mac/Windows file picker with fallback to sample data.
+  - `Process_ETABS_CSV`: Robust CSV parser handling quoted values and header aliases.
+  - `Generate_Sample_ETABS_CSV`: Creates sample ETABS-style CSV for testing.
+  - Dictionary-based grouping for unsorted CSV input.
+  - Bucket aggregation (Start 0-20%, Mid 20-80%, End 80-100%) with sign preservation.
+- **Beam Schedule Generation (`M14_Reporting.bas`)**:
+  - `Generate_Beam_Schedule`: Transforms design output to drafting-ready format.
+  - Dynamic column lookup for robustness against schema changes.
+  - Auto-sorting by Story/ID before grouping.
+  - `Get_Bar_Pattern`: Converts steel area to practical bar notation (e.g., "3-16").
+- **Governance Documentation**:
+  - `docs/GIT_GOVERNANCE.md`: Branching, commits, versioning, release process.
+  - `docs/MISSION_AND_PRINCIPLES.md`: Project philosophy and design principles.
+- **Test Fixtures**:
+  - `tests/ETABS_BeamForces_Example.csv`: Sample ETABS export (10 rows, B1/B2).
 
 ### Changed
-- Application layer now computes effective/compression covers from clear cover + bar/stirrup inputs for more realistic depth handling.
+- Integration test harness (`Integration_TestHarness.bas`) to auto-populate BEAM_INPUT and run end-to-end design scenarios.
+- Application layer now computes effective/compression covers from clear cover + bar/stirrup inputs.
 
 ## [0.5.0] - 2025-12-11
 ### Added
