@@ -945,3 +945,66 @@ $$A_{st,max} = 0.04 \cdot b \cdot D$$
 ---
 
 **End of Research Document**
+
+## 15. ETABS Integration Research
+
+### 15.1 Objective
+To import beam forces (Mu, Vu) and geometry from ETABS into `tbl_BeamInput` for design verification.
+
+### 15.2 Target Data (tbl_BeamInput)
+We need to populate these columns for each beam:
+*   **ID:** Beam Label (e.g., B1)
+*   **Span:** Length (mm)
+*   **Width (b):** mm
+*   **Depth (D):** mm
+*   **Mu (Start, Mid, End):** kN·m (Hogging/Sagging)
+*   **Vu (Start, Mid, End):** kN
+
+### 15.3 Source Data (ETABS CSV Export)
+We recommend users export the **"Frame Assignments - Summary"** (for geometry) and **"Element Forces - Frames"** (for forces). However, a simpler approach for v0.6 is to use a single **"Beam Design Forces"** custom table or a specific standard table.
+
+#### Recommended Standard Export: "Element Forces - Frames"
+*   **Filter:** Select Design Combinations (e.g., 1.5(DL+LL)) or Envelope.
+*   **Columns:**
+    *   `Story`: Story Level (e.g., Story1)
+    *   `Label`: Beam Name (e.g., B1)
+    *   `Unique Name`: Unique ID (useful for joining, but Label is more user-friendly)
+    *   `Station`: Distance from start (m or mm)
+    *   `Output Case`: Load Combination
+    *   `P`: Axial Force (kN) - *Ignore for pure beam design unless significant*
+    *   `V2`: Major Shear (kN) - *Critical*
+    *   `M3`: Major Moment (kN·m) - *Critical*
+
+#### Geometry Source: "Frame Section Assignments"
+*   **Columns:**
+    *   `Story`
+    *   `Label`
+    *   `Analysis Section`: Section Property Name (e.g., "B230x450")
+    *   `Length`: Clear span or center-to-center
+
+### 15.4 Mapping Challenges & Logic
+1.  **Station Mapping:** ETABS gives results at multiple stations (0, 0.5, 1.0, etc.).
+    *   *Logic:*
+        *   **Start:** Station = 0 (or min station)
+        *   **End:** Station = Length (or max station)
+        *   **Mid:** Station ≈ Length / 2
+2.  **Sign Convention:**
+    *   ETABS M3: Sagging is usually positive (check local axes).
+    *   Our Lib: Sagging (+), Hogging (-).
+    *   *Action:* User must confirm sign convention or we detect it.
+3.  **Section Parsing:**
+    *   ETABS Section Name: "B230x450" or "230x450 M25".
+    *   *Logic:* Regex parse `(\d+)x(\d+)` to extract `b` and `D`.
+
+### 15.5 Proposed CSV Schema (Intermediate Format)
+To simplify the VBA parser, we can ask the user to prepare a "Cleaned CSV" or handle the raw export if it follows a strict template.
+
+**Decision:** Support **Raw ETABS "Element Forces" CSV** but require the user to map headers in a config sheet or use standard ETABS header names.
+
+**Standard ETABS Headers (v0.6 target):**
+*   `Story`
+*   `Label`
+*   `Station`
+*   `Output Case`
+*   `V2`
+*   `M3`

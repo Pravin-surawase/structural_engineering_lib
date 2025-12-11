@@ -92,6 +92,7 @@ Desktop.ini
 # Build artifacts
 *.xlam
 !VBA/Build/*.xlam
+Excel/BeamDesignApp.xlsm
 
 # Local config (if any)
 .env

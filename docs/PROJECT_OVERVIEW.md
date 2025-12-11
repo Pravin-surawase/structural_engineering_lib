@@ -2,11 +2,14 @@
 
 **Purpose:** Give a concise, layer-aware guide so any contributor (human or AI) knows what we are building, why, and how.  
 **Use:** Treat this as shared context for VS Code AI or other tooling. No code here — just goals and approach.
+**See also:** 
+- [MISSION_AND_PRINCIPLES.md](MISSION_AND_PRINCIPLES.md) for the deeper "why" and product philosophy.
+- [GIT_GOVERNANCE.md](GIT_GOVERNANCE.md) for version control and contribution rules.
 
 ---
 
 ## 1. Mission
-Build a structural engineering automation stack starting with a robust, reusable RC beam design engine (IS 456) plus a flagship Excel workbook, backed by a structural library that can become an open-source Python/VBA package.
+Build the **definitive, professional-grade** structural engineering automation stack starting with a robust, reusable RC beam design engine (IS 456) plus a flagship Excel workbook, backed by a structural library that can become an open-source Python/VBA package.
 
 Principles:
 - Engineering-first: every calculation traceable to IS 456 clauses/assumptions.

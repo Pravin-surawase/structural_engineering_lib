@@ -22,7 +22,18 @@ When working on tasks, specify which agent role to use:
 
 ---
 
-## 🟢 Done
+## � In Progress
+- [ ] **TASK-018: Beam Schedule Generation**
+  - **Agent:** UI / DEV
+  - **Status:** `M14_Reporting` created. `M99_Setup` updated for schedule table.
+  - **Pending:** Testing with real design data.
+- [ ] **TASK-017: Data Integration (ETABS/CSV)**
+  - **Agent:** TESTER
+  - **Status:** Code & UI complete. Sample CSV created (`tests/fixtures/ETABS_Sample_Export.csv`).
+  - **Pending:** Manual verification in Excel.
+  - **Research:** Documented in `docs/RESEARCH_AND_FINDINGS.md` (Section 15).
+
+## �🟢 Done
 
 - [x] **TASK-001**: Project scaffold
   - Created folder structure (VBA/Modules, Python/structural_lib)

@@ -33,7 +33,15 @@ End Sub
 ' Button: [Import Data] on HOME Sheet
 ' ------------------------------------------------------------------------------------------
 Public Sub Import_CSV()
-    MsgBox "Import CSV functionality is coming in v0.6!", vbInformation, "Feature Not Available"
+    ' Call the Integration Layer
+    M13_Integration.Import_ETABS_Data
+End Sub
+
+' ------------------------------------------------------------------------------------------
+' Button: [Generate Schedule] on BEAM_DESIGN Sheet (or HOME)
+' ------------------------------------------------------------------------------------------
+Public Sub Main_GenerateSchedule()
+    M14_Reporting.Generate_Beam_Schedule
 End Sub
 
 ' ------------------------------------------------------------------------------------------

@@ -30,7 +30,10 @@ Public Sub Setup_Workbook()
     ' 4. Setup BEAM_DESIGN Table
     Setup_Design_Sheet wb.Sheets("BEAM_DESIGN")
     
-    ' 5. Setup LOG Sheet
+    ' 5. Setup BEAM_SCHEDULE Table
+    Setup_Schedule_Sheet wb.Sheets("BEAM_SCHEDULE")
+    
+    ' 6. Setup LOG Sheet
     Setup_Log_Sheet wb.Sheets("LOG")
     
     ' Cleanup
@@ -84,8 +87,9 @@ Private Sub Setup_Home_Sheet(ws As Worksheet)
     ' Instructions
     ws.Range("B10").Value = "Instructions:"
     ws.Range("B11").Value = "1. Go to BEAM_INPUT sheet and enter beam geometry/loads."
-    ws.Range("B12").Value = "2. Click 'Run Design' (Macro: Main_RunDesign)."
-    ws.Range("B13").Value = "3. Check BEAM_DESIGN for detailed results."
+    ws.Range("B12").Value = "   (Or click 'Import ETABS' to load from CSV)."
+    ws.Range("B13").Value = "2. Click 'Run Design' (Macro: Main_RunDesign)."
+    ws.Range("B14").Value = "3. Check BEAM_DESIGN for detailed results."
     
     ws.Columns("A").ColumnWidth = 2
     ws.Columns("B:E").ColumnWidth = 20
@@ -160,6 +164,37 @@ Private Sub Setup_Design_Sheet(ws As Worksheet)
     tbl.TableStyle = "TableStyleLight9"
     tbl.DataBodyRange.Interior.Color = RGB(242, 242, 242) ' Output Color
     
+    ws.Columns.AutoFit
+End Sub
+
+Private Sub Setup_Schedule_Sheet(ws As Worksheet)
+    ws.Cells.Clear
+    ws.Range("A1").Value = "Beam Schedule (Drafting View)"
+    ws.Range("A1").Font.Size = 16
+    ws.Range("A1").Font.Bold = True
+    
+    ' Headers
+    Dim headers As Variant
+    headers = Array("Story", "Beam ID", "Size", _
+                    "Bot (L)", "Bot (M)", "Bot (R)", _
+                    "Top (L)", "Top (M)", "Top (R)", _
+                    "Stirrups (L)", "Stirrups (M)", "Stirrups (R)")
+    
+    ws.Range("A3").Resize(1, UBound(headers) + 1).Value = headers
+    
+    ' Create Table
+    Dim tbl As ListObject
+    On Error Resume Next
+    Set tbl = ws.ListObjects("tbl_BeamSchedule")
+    On Error GoTo 0
+    
+    If tbl Is Nothing Then
+        Set tbl = ws.ListObjects.Add(xlSrcRange, ws.Range("A3").Resize(2, UBound(headers) + 1), , xlYes)
+        tbl.Name = "tbl_BeamSchedule"
+    End If
+    
+    ' Formatting
+    tbl.TableStyle = "TableStyleMedium9"
     ws.Columns.AutoFit
 End Sub
 

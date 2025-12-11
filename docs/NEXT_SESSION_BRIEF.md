@@ -15,8 +15,8 @@ We successfully completed **v0.5.0**, which integrated the Core Structural Libra
 
 ## 2. Current State
 - **Version:** v0.5.0 (Locked in `docs/RELEASES.md`).
-- **Test Status:** Integration test passed (B1 230x450 beam designed successfully in Excel).
-- **Documentation:** All docs (`TASKS`, `CHANGELOG`, `RELEASES`) are up to date.
+- **Test Status:** Python suite passes (21/21). Excel integration test passed (B1 230x450 beam). Integration harness added for multi-case runs + CSV export.
+- **Documentation:** `TASKS`, `CHANGELOG`, `RELEASES`, add-in guide (mac checklist), and agent docs are current.
 
 ## 3. Immediate Goals (v0.6 - Drafting & Reporting)
 The next phase focuses on getting data *in* (from ETABS) and *out* (to Drawings).
@@ -31,11 +31,24 @@ The next phase focuses on getting data *in* (from ETABS) and *out* (to Drawings)
   - **Goal:** Transform the detailed `BEAM_DESIGN` results into a simplified "Drafting View" on the `BEAM_SCHEDULE` sheet.
   - **Logic:** Grouping similar beams, formatting output strings (e.g., "2-16 + 1-12").
 
+- **[ ] TASK-019: Regression Snapshots (Excel)**
+  - **Agent:** DEVOPS / TESTER
+  - **Goal:** Use `Run_And_Export_Integration_Snapshot` to capture BEAM_DESIGN CSV for a standard test set; store under `logs/` for diffing.
+
+- **[ ] TASK-020: Py/VBA Parity Tests**
+  - **Agent:** TESTER / DEV
+  - **Goal:** Add pytest cases mirroring integration harness scenarios (flanged, high-shear, Tcmax edge); document expected outputs vs Excel snapshot.
+
+- **[ ] TASK-021: Documentation Depth Pass**
+  - **Agent:** DOCS
+  - **Goal:** Expand API examples with worked values per function; add Mac install one-pager with screenshots and cross-links.
+
 ## 4. Key Files to Reference
 - `docs/PROJECT_OVERVIEW.md`: Master architecture and Agent Workflow cheat sheet.
 - `docs/TASKS.md`: The active task board.
 - `VBA/Modules/M11_AppLayer.bas`: The application controller (modify this for new logic).
-- `agents/INTEGRATION.md`: Role doc for the next task.
+- `agents/INTEGRATION.md`: Role doc for data import tasks.
+- `VBA/Tests/Integration_TestHarness.bas`: Populate/run/export harness for regression snapshots.
 
 ## 5. Suggested Starter Prompt
 > "Use `docs/NEXT_SESSION_BRIEF.md` as context. Act as PM agent. We are starting v0.6. Let's review the requirements for TASK-017 (Data Integration) and brief the INTEGRATION agent."

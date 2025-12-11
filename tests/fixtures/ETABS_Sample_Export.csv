@@ -1,0 +1,11 @@
+Story,Label,Unique Name,Output Case,Station,P,V2,M3
+Story1,B1,1,1.5(DL+LL),0,0,100,-50
+Story1,B1,1,1.5(DL+LL),500,0,75,-10
+Story1,B1,1,1.5(DL+LL),1000,0,50,40
+Story1,B1,1,1.5(DL+LL),2000,0,0,150
+Story1,B1,1,1.5(DL+LL),3000,0,-50,40
+Story1,B1,1,1.5(DL+LL),3500,0,-75,-10
+Story1,B1,1,1.5(DL+LL),4000,0,-100,-50
+Story1,B2,2,1.5(DL+LL),0,0,80,-40
+Story1,B2,2,1.5(DL+LL),1500,0,0,100
+Story1,B2,2,1.5(DL+LL),3000,0,-80,-40

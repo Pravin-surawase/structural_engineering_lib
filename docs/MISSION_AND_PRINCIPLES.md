@@ -20,9 +20,9 @@ We want to build tools that:
 
 ---
 
-## 2. Our mission
+## 2. Our Mission
 
-To build an open, transparent, and reusable structural design core that makes everyday RC design (starting with beams) more robust, auditable, and easy to automate – especially for Indian and similar code environments.
+To build the **definitive, professional-grade** open structural design core that becomes the **standard for everyday RC design** (starting with beams) – robust, auditable, and easy to automate for **every structural engineer**, especially in Indian and similar code environments.
 
 Concretely, our mission includes:
 
@@ -52,10 +52,10 @@ Concretely, our mission includes:
 
 If we’re successful, this is what the world looks like:
 
-*   There is a widely-known “structural core library” (starting with IS 456 beams, later walls, columns, slabs, other codes) that:
+*   There is a **universal** “structural core library” (starting with IS 456 beams, later walls, columns, slabs, other codes) that:
     *   has a clear API,
     *   is open-source or semi-open,
-    *   is trusted for everyday RC design tasks.
+    *   is **the default choice** for everyday RC design tasks used by **every structural engineer**.
 
 *   A typical workflow in a small or mid-size office:
     1.  Model in ETABS.
