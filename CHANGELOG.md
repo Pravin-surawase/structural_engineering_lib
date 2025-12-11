@@ -3,11 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.3.0] - 2025-12-11
-### Added (VBA)
+### Added (VBA & Python)
 - **Flanged Beam Design (T/L Beams)**:
-  - `Calculate_Mu_Lim_Flanged`: Calculates limiting moment for T-sections.
-  - `Design_Flanged_Beam`: Handles Neutral Axis in Flange, Web (Singly), and Web (Doubly).
-  - `Test_Flanged.bas`: Comprehensive unit tests for all three cases.
+  - `Calculate_Mu_Lim_Flanged` / `calculate_mu_lim_flanged`: Calculates limiting moment for T-sections.
+  - `Design_Flanged_Beam` / `design_flanged_beam`: Handles Neutral Axis in Flange, Web (Singly), and Web (Doubly).
+  - `Test_Flanged.bas` / `test_flanged_beam.py`: Comprehensive unit tests for all three cases.
 
 ## [0.2.1] - 2025-12-11
 ### Fixed (Mac VBA Compatibility)

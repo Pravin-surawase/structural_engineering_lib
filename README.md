@@ -4,13 +4,13 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.2.1)** — Flexure (singly, doubly) and shear implemented in VBA + Python. Mac VBA compatible.
+🚀 **Active (v0.3.0)** — Flexure (singly, doubly, flanged) and shear implemented in VBA + Python. Mac VBA compatible.
 
 ## Features
 
 - ✅ **Pure functions** — No UI dependencies (no MsgBox, no worksheet access)
 - ✅ **Limit state design** — As per IS 456:2000
-- ✅ **Flexural design** — Singly and Doubly reinforced rectangular beams
+- ✅ **Flexural design** — Singly, Doubly, and Flanged (T/L) beams
 - ✅ **Shear design** — Stirrup design with Table 19/20 lookup
 - ✅ **Dual implementation** — VBA (Excel) + Python with identical API
 - ✅ **Mac Compatible** — Hardened against Mac VBA stack corruption issues
@@ -21,7 +21,8 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 |---------|----------|--------|
 | **v0.1** | Rectangular beams, singly reinforced flexure, shear design | ✅ Completed |
 | **v0.2** | Doubly reinforced flexure | ✅ Completed |
-| **v0.3** | Flanged beams (T, L) | 📋 Planned |
+| **v0.3** | Flanged beams (T, L) | ✅ Completed |
+| **v0.4** | Excel workbook integration | 📋 Planned |
 | **v1.0** | IS 13920 ductile detailing | 📋 Planned |
 
 ## Directory Structure (current)

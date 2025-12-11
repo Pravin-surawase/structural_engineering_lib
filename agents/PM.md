@@ -26,7 +26,7 @@ Use PM agent when:
 |---------|-------|--------|
 | **v0.1** | Rectangular beams, singly reinforced flexure, shear design | ✅ Done |
 | **v0.2** | Doubly reinforced flexure | ✅ Done |
-| v0.3 | Flanged beams (T, L) | 🟡 In Progress |
+| **v0.3** | Flanged beams (T, L) | ✅ Done |
 | v0.4 | Excel workbook integration | 📋 Planned |
 | v1.0 | IS 13920 ductile detailing, production ready | 📋 Future |
 
@@ -34,13 +34,12 @@ Use PM agent when:
 
 ## Scope Rules
 
-### In Scope for v0.2
-- ✅ Doubly reinforced beams (Design & Analysis)
-- ✅ Mac VBA compatibility hardening
-- ✅ Comprehensive unit tests for all flexure cases
+### In Scope for v0.3
+- ✅ Flanged beams (T, L sections)
+- ✅ Python parity for all flexure cases
+- ✅ Comprehensive unit tests
 
-### Out of Scope for v0.2
-- ❌ Flanged beams (T, L sections)
+### Out of Scope for v0.3
 - ❌ Deflection or crack width checks
 - ❌ IS 13920 ductile detailing
 - ❌ ETABS API integration

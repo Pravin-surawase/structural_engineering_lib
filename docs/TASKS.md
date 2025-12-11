@@ -48,6 +48,21 @@ When working on tasks, specify which agent role to use:
   - Renamed `Mu` → `Mu_Lim` in FlexureResult
   - Updated M03_Tables to use nearest lower grade (no fck interpolation)
 
+- [x] **TASK-006**: Doubly Reinforced Flexure (v0.2)
+  - Implemented `Design_Doubly_Reinforced` in VBA & Python
+  - Added `Get_Steel_Stress` for non-linear stress-strain curve
+  - Verified against manual calculations
+
+- [x] **TASK-007**: Mac VBA Hardening (v0.2.1)
+  - Fixed "Runtime Error 6: Overflow" using Safe Assertion Pattern
+  - Wrapped dimension math in `CDbl()`
+  - Removed nested UDT returns
+
+- [x] **TASK-008**: Flanged Beams (v0.3)
+  - Implemented T/L beam logic (NA in flange, NA in web singly/doubly)
+  - Added iterative bisection solver for NA in web
+  - Full Python parity and test coverage
+
 - [x] **TASK-006**: Complete test coverage
   - Added edge case tests (min steel, over-reinforced; shear τv < τc and τv > τc,max)
   - Verified Python tests (pytest) pass locally
