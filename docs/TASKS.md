@@ -103,12 +103,17 @@ When working on tasks, specify which agent role to use:
 
 ## 🔵 Backlog (v0.8+)
 
+- [ ] **TASK-033: VBA Detailing Module (M15)**
+  - **Agent:** DEV
+  - **Goal:** Port `detailing.py` to `M15_Detailing.bas`
+  - **Note:** v0.7 was Python-only; VBA port deferred to v0.8
+
+- [ ] **TASK-034**: Bar Bending Schedule (BBS)
+- [ ] **TASK-035**: Section Cuts in DXF
+- [ ] **TASK-036**: Multi-beam Layout
 - [ ] **TASK-019**: Regression Snapshots (Excel)
 - [ ] **TASK-020**: Py/VBA Parity Tests
 - [ ] **TASK-021**: Documentation Depth Pass
-- [ ] **TASK-033**: Bar Bending Schedule (BBS)
-- [ ] **TASK-034**: Section Cuts in DXF
-- [ ] **TASK-035**: Multi-beam Layout
 
 ---
 
@@ -150,6 +155,11 @@ When working on tasks, specify which agent role to use:
 
 ## Notes
 
-- **Current Version**: v0.6.0
+- **Current Version**: v0.7.0
 - **Last Updated**: 2025-12-11
-- **Active Branch**: feat/v0.7-detailing
+- **Active Branch**: main
+
+### v0.7 Implementation Notes
+- **Python:** Full implementation (detailing, DXF, integration) - 67 tests
+- **VBA:** Not implemented in v0.7 (deferred to v0.8 as TASK-033)
+- **DXF Dependency:** `pip install .[dxf]` for ezdxf support

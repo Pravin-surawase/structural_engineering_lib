@@ -25,3 +25,4 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = ["pytest", "black", "mypy"]
+dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
