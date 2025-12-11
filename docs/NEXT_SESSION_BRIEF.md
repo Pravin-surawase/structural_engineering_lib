@@ -1,55 +1,37 @@
 # Next Session Briefing
 
 **Date:** 2025-12-11
-**Status:** v0.5.0 Released (Excel Integration Complete)
-**Branch:** `main`
+**Status:** v0.6.0 Feature Complete (Integration & Reporting)
+**Branch:** `feat/v0.6-integration-reporting`
 
 ---
 
 ## 1. Where We Left Off
-We successfully completed **v0.5.0**, which integrated the Core Structural Library (`M01`-`M10`) into a functional Excel Application.
-- **Workbook:** `Excel/StructEng_BeamDesign_v0.5.xlsm` (Scaffolded via `M99_Setup.bas`).
-- **Logic:** `M11_AppLayer.bas` orchestrates the flow from Input Table → Library → Design Table.
-- **UI:** `M12_UI.bas` handles the "Run Design" and "Clear" buttons.
-- **Governance:** We formalized the agent roles, adding **DOCS**, **INTEGRATION**, and **SUPPORT** to the team.
+We completed the implementation of **v0.6.0** features, focusing on Data Integration and Reporting.
+- **Integration:** `M13_Integration.bas` now supports robust ETABS CSV import with header normalization, sign preservation, and sample data generation.
+- **Reporting:** `M14_Reporting.bas` generates a formatted Beam Schedule with dynamic column mapping and auto-sorting.
+- **Governance:** Established `GIT_GOVERNANCE.md` and moved to feature branching.
 
 ## 2. Current State
-- **Version:** v0.5.0 (Locked in `docs/RELEASES.md`).
-- **Test Status:** Python suite passes (21/21). Excel integration test passed (B1 230x450 beam). Integration harness added for multi-case runs + CSV export.
-- **Documentation:** `TASKS`, `CHANGELOG`, `RELEASES`, add-in guide (mac checklist), and agent docs are current.
+- **Branch:** `feat/v0.6-integration-reporting` (Ahead of `main`).
+- **Code:** `M13` and `M14` are fully implemented and verified.
+- **Docs:** `TASKS.md` updated. `GIT_GOVERNANCE.md` created.
 
-## 3. Immediate Goals (v0.6 - Drafting & Reporting)
-The next phase focuses on getting data *in* (from ETABS) and *out* (to Drawings).
+## 3. Immediate Goals (Next Session)
+The next phase is to merge the feature branch and cut the release.
 
-- **[ ] TASK-017: Data Integration (ETABS/CSV)**
-  - **Agent:** INTEGRATION
-  - **Goal:** Allow users to import ETABS output (CSV) directly into `tbl_BeamInput`.
-  - **Current:** `Import_ETABS_Data` supports CSV with header aliases/signs preserved and falls back to built-in sample rows (B1–B3) if no CSV is provided; sample ETABS-style CSV at `tests/ETABS_BeamForces_Example.csv`.
-  - **Challenge:** Mapping variable ETABS column names/units to our fixed schema; add in-code sorting and unit handling.
+- **[ ] Merge & Release v0.6.0**
+  - **Agent:** DEVOPS
+  - **Goal:** Merge `feat/v0.6-integration-reporting` into `main`.
+  - **Action:** Create Pull Request (or merge locally), tag `v0.6.0`.
 
-- **[ ] TASK-018: Beam Schedule Generation**
-  - **Agent:** UI / DEV
-  - **Goal:** Transform the detailed `BEAM_DESIGN` results into a simplified "Drafting View" on the `BEAM_SCHEDULE` sheet.
-  - **Logic:** Grouping similar beams, formatting output strings (e.g., "2-16 + 1-12").
+- **[ ] Start v0.7.0 (Detailing/Drawings)**
+  - **Agent:** PM / DEV
+  - **Goal:** Generate DXF or detailed sketches from the design data.
 
-- **[ ] TASK-019: Regression Snapshots (Excel)**
-  - **Agent:** DEVOPS / TESTER
-  - **Goal:** Use `Run_And_Export_Integration_Snapshot` to capture BEAM_DESIGN CSV for a standard test set; store under `logs/` for diffing.
-
-- **[ ] TASK-020: Py/VBA Parity Tests**
-  - **Agent:** TESTER / DEV
-  - **Goal:** Add pytest cases mirroring integration harness scenarios (flanged, high-shear, Tcmax edge); document expected outputs vs Excel snapshot.
-
-- **[ ] TASK-021: Documentation Depth Pass**
-  - **Agent:** DOCS
-  - **Goal:** Expand API examples with worked values per function; add Mac install one-pager with screenshots and cross-links.
-
-## 4. Key Files to Reference
-- `docs/PROJECT_OVERVIEW.md`: Master architecture and Agent Workflow cheat sheet.
-- `docs/TASKS.md`: The active task board.
-- `VBA/Modules/M11_AppLayer.bas`: The application controller (modify this for new logic).
-- `agents/INTEGRATION.md`: Role doc for data import tasks.
-- `VBA/Tests/Integration_TestHarness.bas`: Populate/run/export harness for regression snapshots.
+## 4. Known Issues / Notes
+- **M13 Integration:** Ensure users select the correct CSV format (Story, Label, Station, M3, V2).
+- **M14 Reporting:** The schedule assumes the "Design Output" table is populated.
 
 ## 5. Suggested Starter Prompt
-> "Use `docs/NEXT_SESSION_BRIEF.md` as context. Act as PM agent. We are starting v0.6. Let's review the requirements for TASK-017 (Data Integration) and brief the INTEGRATION agent."
+> "Use `docs/NEXT_SESSION_BRIEF.md` as context. Act as DEVOPS agent. Let's merge the v0.6 feature branch into main and prepare the release."
