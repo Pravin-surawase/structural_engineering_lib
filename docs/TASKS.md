@@ -103,10 +103,14 @@ When working on tasks, specify which agent role to use:
 
 ## 🔵 Backlog (v0.8+)
 
-- [ ] **TASK-033: VBA Detailing Module (M15)**
+- [x] **TASK-033: VBA Detailing Module (M15)**
   - **Agent:** DEV
-  - **Goal:** Port `detailing.py` to `M15_Detailing.bas`
-  - **Note:** v0.7 was Python-only; VBA port deferred to v0.8
+  - **Status:** ✅ Complete
+  - **Output:** `VBA/Modules/M15_Detailing.bas`
+  - Functions: Ld, lap length, bar spacing, bar selection, callouts
+  - UDTs: BarArrangement, StirrupArrangement, BeamDetailingResult
+  - UDFs: IS456_Ld, IS456_LapLength, IS456_BondStress, etc.
+  - Tests: `VBA/Tests/Test_Detailing.bas` (25 test cases)
 
 - [ ] **TASK-034**: Bar Bending Schedule (BBS)
 - [ ] **TASK-035**: Section Cuts in DXF
@@ -161,5 +165,5 @@ When working on tasks, specify which agent role to use:
 
 ### v0.7 Implementation Notes
 - **Python:** Full implementation (detailing, DXF, integration) - 67 tests
-- **VBA:** Not implemented in v0.7 (deferred to v0.8 as TASK-033)
+- **VBA:** Full implementation (M15_Detailing.bas) - 25 test cases
 - **DXF Dependency:** `pip install .[dxf]` for ezdxf support

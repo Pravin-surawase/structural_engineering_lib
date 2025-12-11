@@ -141,3 +141,87 @@ ErrHandler:
     IS456_Check_Ductility = CVErr(xlErrValue)
 End Function
 
+
+' ==============================================================================
+' Detailing UDFs (v0.7+)
+' ==============================================================================
+
+' Wrapper for Development Length (Ld)
+' Returns mm
+Public Function IS456_Ld(ByVal bar_dia As Double, ByVal fck As Double, ByVal fy As Double, Optional ByVal bar_type As String = "deformed") As Variant
+    On Error GoTo ErrHandler
+    IS456_Ld = M15_Detailing.Calculate_Development_Length(bar_dia, fck, fy, bar_type)
+    Exit Function
+ErrHandler:
+    IS456_Ld = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Lap Length
+' Returns mm
+Public Function IS456_LapLength(ByVal bar_dia As Double, ByVal fck As Double, ByVal fy As Double, Optional ByVal is_seismic As Boolean = False, Optional ByVal in_tension As Boolean = True) As Variant
+    On Error GoTo ErrHandler
+    IS456_LapLength = M15_Detailing.Calculate_Lap_Length(bar_dia, fck, fy, "deformed", 50, is_seismic, in_tension)
+    Exit Function
+ErrHandler:
+    IS456_LapLength = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Bond Stress (τbd)
+' Returns N/mm²
+Public Function IS456_BondStress(ByVal fck As Double, Optional ByVal bar_type As String = "deformed") As Variant
+    On Error GoTo ErrHandler
+    IS456_BondStress = M15_Detailing.Get_Bond_Stress(fck, bar_type)
+    Exit Function
+ErrHandler:
+    IS456_BondStress = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Bar Spacing
+' Returns mm
+Public Function IS456_BarSpacing(ByVal b As Double, ByVal cover As Double, ByVal stirrup_dia As Double, ByVal bar_dia As Double, ByVal bar_count As Long) As Variant
+    On Error GoTo ErrHandler
+    IS456_BarSpacing = M15_Detailing.Calculate_Bar_Spacing(b, cover, stirrup_dia, bar_dia, bar_count)
+    Exit Function
+ErrHandler:
+    IS456_BarSpacing = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Minimum Spacing Check
+' Returns TRUE if spacing is adequate
+Public Function IS456_CheckSpacing(ByVal spacing As Double, ByVal bar_dia As Double, Optional ByVal agg_size As Double = 20) As Variant
+    On Error GoTo ErrHandler
+    IS456_CheckSpacing = M15_Detailing.Check_Min_Spacing(spacing, bar_dia, agg_size)
+    Exit Function
+ErrHandler:
+    IS456_CheckSpacing = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Bar Count calculation
+' Returns number of bars needed
+Public Function IS456_BarCount(ByVal ast_required As Double, ByVal bar_dia As Double) As Variant
+    On Error GoTo ErrHandler
+    IS456_BarCount = M15_Detailing.Calculate_Bar_Count(ast_required, bar_dia)
+    Exit Function
+ErrHandler:
+    IS456_BarCount = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Bar Callout formatting
+' Returns string like "3-16φ"
+Public Function IS456_BarCallout(ByVal count As Long, ByVal diameter As Double) As Variant
+    On Error GoTo ErrHandler
+    IS456_BarCallout = M15_Detailing.Format_Bar_Callout(count, diameter)
+    Exit Function
+ErrHandler:
+    IS456_BarCallout = CVErr(xlErrValue)
+End Function
+
+' Wrapper for Stirrup Callout formatting
+' Returns string like "2L-8φ@150 c/c"
+Public Function IS456_StirrupCallout(ByVal legs As Long, ByVal diameter As Double, ByVal spacing As Double) As Variant
+    On Error GoTo ErrHandler
+    IS456_StirrupCallout = M15_Detailing.Format_Stirrup_Callout(legs, diameter, spacing)
+    Exit Function
+ErrHandler:
+    IS456_StirrupCallout = CVErr(xlErrValue)
+End Function

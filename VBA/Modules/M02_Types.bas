@@ -53,3 +53,59 @@ Public Type ShearResult
     IsSafe As Boolean       ' True if section is safe in shear (Tv < Tc_max)
     Remarks As String       ' Design remarks (e.g., "Min Shear Reinforcement")
 End Type
+
+
+' ------------------------------------------------------------------------------
+' Detailing Types (v0.7+)
+' ------------------------------------------------------------------------------
+
+' Bar arrangement for a single zone/location
+Public Type BarArrangement
+    count As Long           ' Number of bars
+    diameter As Double      ' Bar diameter (mm)
+    area_provided As Double ' Total area provided (mm^2)
+    spacing As Double       ' Center-to-center spacing (mm)
+    layers As Long          ' Number of layers (1 or 2)
+End Type
+
+' Stirrup arrangement for a zone
+Public Type StirrupArrangement
+    diameter As Double      ' Stirrup diameter (mm)
+    legs As Long            ' Number of legs (2, 4, 6)
+    spacing As Double       ' Spacing (mm)
+    zone_length As Double   ' Length of zone (mm)
+End Type
+
+' Complete beam detailing result
+Public Type BeamDetailingResult
+    beam_id As String       ' Beam identifier
+    story As String         ' Story identifier
+    b As Double             ' Beam width (mm)
+    D As Double             ' Beam depth (mm)
+    span As Double          ' Span length (mm)
+    cover As Double         ' Clear cover (mm)
+    
+    ' Bottom bars (tension at mid-span)
+    bottom_start As BarArrangement
+    bottom_mid As BarArrangement
+    bottom_end As BarArrangement
+    
+    ' Top bars (tension at supports / compression at mid)
+    top_start As BarArrangement
+    top_mid As BarArrangement
+    top_end As BarArrangement
+    
+    ' Stirrups
+    stirrup_start As StirrupArrangement
+    stirrup_mid As StirrupArrangement
+    stirrup_end As StirrupArrangement
+    
+    ' Detailing parameters
+    ld_tension As Double    ' Development length for tension bars (mm)
+    ld_compression As Double ' Development length for compression bars (mm)
+    lap_length As Double    ' Lap splice length (mm)
+    
+    ' Validity
+    is_valid As Boolean
+    remarks As String
+End Type
