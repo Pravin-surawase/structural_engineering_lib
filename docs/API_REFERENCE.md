@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 1.0.0  
-**Last Updated:** December 10, 2025  
+**Document Version:** 0.4.0  
+**Last Updated:** December 11, 2025  
 **Scope:** Public APIs for current Python/VBA implementations (flexure, shear, ductile detailing).
 
 ---
@@ -219,7 +219,19 @@ def design_shear(
 ---
 
 ## 4. Excel User Defined Functions (UDFs)
-Planned in `M09_UDFs.bas` to wrap core functions for worksheet use. Align signatures/units with helpers above (TBD).
+Implemented in `M09_UDFs.bas` for direct worksheet use.
+
+| Function | Description | Returns |
+|----------|-------------|---------|
+| `IS456_MuLim(b, d, fck, fy)` | Limiting Moment of Resistance | kN·m |
+| `IS456_AstRequired(b, d, Mu, fck, fy)` | Required Tension Steel | mm² or "Over-Reinforced" |
+| `IS456_ShearSpacing(Vu, b, d, fck, fy, Asv, pt)` | Stirrup Spacing | mm or "Unsafe..." |
+| `IS456_MuLim_Flanged(bw, bf, d, Df, fck, fy)` | Limiting Moment (T-Beam) | kN·m |
+| `IS456_Design_Rectangular(...)` | Full Design (Singly/Doubly) | Array [Ast, Asc, Xu, Status] |
+| `IS456_Design_Flanged(...)` | Full Design (T-Beam) | Array [Ast, Asc, Xu, Status] |
+| `IS456_Check_Ductility(b, D, d, fck, fy, db)` | IS 13920 Compliance Check | "Compliant" or Error Msg |
+| `IS456_Tc(fck, pt)` | Table 19 Shear Strength | N/mm² |
+| `IS456_TcMax(fck)` | Table 20 Max Shear Stress | N/mm² |
 
 ---
 

@@ -19,7 +19,7 @@
 9. [Documentation Standards](#9-documentation-standards)
 10. [Testing Guidelines](#10-testing-guidelines)
 11. [Version Control and Git Workflow](#11-version-control-and-git-workflow)
-12. [Versioning and Changelog](#12-versioning-and-changelog)
+12. [Versioning and Governance](#12-versioning-and-governance)
 13. [Packaging and Distribution](#13-packaging-and-distribution)
 14. [Code Review Checklist](#14-code-review-checklist)
 15. [Common Pitfalls to Avoid](#15-common-pitfalls-to-avoid)
@@ -79,19 +79,20 @@ structural_engineering_lib/
 │
 ├── VBA/
 │   ├── Modules/                    ← Core library (.bas files)
-│   │   ├── IS456_Constants.bas
-│   │   ├── IS456_Types.bas
-│   │   ├── IS456_Tables.bas
-│   │   ├── IS456_Utilities.bas
-│   │   ├── IS456_Materials.bas
-│   │   ├── IS456_Flexure.bas
-│   │   ├── IS456_Shear.bas
-│   │   ├── IS456_API.bas
-│   │   └── IS456_UDFs.bas          ← Worksheet function wrappers
+│   │   ├── M01_Constants.bas
+│   │   ├── M02_Types.bas
+│   │   ├── M03_Tables.bas
+│   │   ├── M04_Utilities.bas
+│   │   ├── M05_Materials.bas
+│   │   ├── M06_Flexure.bas
+│   │   ├── M07_Shear.bas
+│   │   ├── M08_API.bas
+│   │   ├── M09_UDFs.bas
+│   │   └── M10_Ductile.bas
 │   ├── Examples/
 │   │   └── Example_Usage.bas
 │   └── Tests/
-│       └── IS456_Tests.bas
+│       └── Test_Structural.bas
 │
 ├── Python/
 │   ├── structural_lib/
@@ -103,13 +104,13 @@ structural_engineering_lib/
 │   │   ├── materials.py
 │   │   ├── flexure.py
 │   │   ├── shear.py
+│   │   ├── ductile.py
 │   │   └── api.py
 │   ├── tests/
-│   │   ├── test_flexure.py
-│   │   ├── test_shear.py
-│   │   └── test_tables.py
+│   │   ├── test_structural.py
+│   │   ├── test_ductile.py
+│   │   └── ...
 │   ├── examples/
-│   │   └── beam_design_example.py
 │   ├── pyproject.toml
 │   ├── setup.cfg
 │   └── requirements.txt
@@ -123,15 +124,16 @@ structural_engineering_lib/
 
 | Module | Responsibility |
 |--------|----------------|
-| `Constants` | Version info, unit conversion constants, code limits |
-| `Types` | User-Defined Types (FlexureResult, ShearResult, enums) |
-| `Tables` | Table 19, Table 20 data; lookup and interpolation functions |
-| `Utilities` | Validation, linear interpolation, clamping, unit conversion |
-| `Materials` | Concrete/steel grade validation and properties |
-| `Flexure` | Flexural design calculations (Mu_limit, Ast, etc.) |
-| `Shear` | Shear design calculations (tau_v, tau_c, stirrups, etc.) |
-| `API` | Public façade functions that orchestrate internal modules |
-| `UDFs` | Worksheet function wrappers (VBA only) |
+| `M01_Constants` | Version info, unit conversion constants, code limits |
+| `M02_Types` | User-Defined Types (FlexureResult, ShearResult, enums) |
+| `M03_Tables` | Table 19, Table 20 data; lookup and interpolation functions |
+| `M04_Utilities` | Validation, linear interpolation, clamping, unit conversion |
+| `M05_Materials` | Concrete/steel grade validation and properties |
+| `M06_Flexure` | Flexural design calculations (Mu_limit, Ast, etc.) |
+| `M07_Shear` | Shear design calculations (tau_v, tau_c, stirrups, etc.) |
+| `M08_API` | Public façade functions that orchestrate internal modules |
+| `M09_UDFs` | Worksheet function wrappers (VBA only) |
+| `M10_Ductile` | IS 13920 Ductile Detailing checks |
 
 ---
 
@@ -975,7 +977,7 @@ Consider using a tool like [vba-blocks](https://github.com/vba-blocks/vba-blocks
 
 ---
 
-## 12. Versioning and Changelog
+## 12. Versioning and Governance
 
 ### 12.1 Semantic Versioning
 
@@ -987,7 +989,13 @@ Format: `MAJOR.MINOR.PATCH`
 
 Pre-1.0: `0.x.y` — API may change between minor versions.
 
-### 12.2 Version Constants
+### 12.2 Governance Rules
+To prevent history revisionism and ensure stability:
+1.  **Immutable History:** Never edit past entries in `CHANGELOG.md` or `docs/RELEASES.md`.
+2.  **Release Ledger:** `docs/RELEASES.md` is the single source of truth for locked versions.
+3.  **Explicit Bumps:** Version numbers are only incremented with explicit user approval.
+
+### 12.3 Version Constants
 
 ```vba
 ' IS456_Constants.bas

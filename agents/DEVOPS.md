@@ -35,9 +35,9 @@ structural_engineering_lib/
 │   └── examples/         ← Example scripts
 ├── Excel/                ← Flagship workbook (future)
 │   └── BeamDesign.xlsm
+├── logs/                 ← Session logs
 ├── docs/                 ← All documentation
 ├── agents/               ← Role documents for AI
-├── Excel/                ← Flagship workbook (future)
 ├── .gitignore
 ├── CHANGELOG.md
 ├── LICENSE

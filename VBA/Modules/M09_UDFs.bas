@@ -128,3 +128,16 @@ ErrHandler:
     IS456_TcMax = CVErr(xlErrValue)
 End Function
 
+' Wrapper for Ductile Detailing Check (IS 13920)
+' Returns String: "Compliant" or error message
+Public Function IS456_Check_Ductility(ByVal b As Double, ByVal D_overall As Double, ByVal d As Double, ByVal fck As Double, ByVal fy As Double, ByVal min_long_bar_dia As Double) As Variant
+    On Error GoTo ErrHandler
+    Dim res As DuctileBeamResult
+    res = M10_Ductile.Check_Beam_Ductility(b, D_overall, d, fck, fy, min_long_bar_dia)
+    
+    IS456_Check_Ductility = res.Remarks
+    Exit Function
+ErrHandler:
+    IS456_Check_Ductility = CVErr(xlErrValue)
+End Function
+

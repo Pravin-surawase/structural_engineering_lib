@@ -49,6 +49,12 @@ The following expressions in `M06_Flexure.bas` and `M07_Shear.bas` have been fix
 | M06_Flexure | Design_Singly_Reinforced | `0.85 * b * d / fy` |
 | M06_Flexure | Design_Singly_Reinforced | `0.04 * b * D_total` |
 
+### Known Unresolved Overflows (v0.4.0)
+- **Test_Doubly_Reinforced [Design_Doubly_Case1]**:
+  - **Error**: `6 - Overflow`
+  - **Context**: Occurs when `Design_Doubly_Reinforced` falls back to singly reinforced logic (Mu < Mu_lim) on Mac Excel.
+  - **Action**: This error is currently **ignored** and documented as a known pitfall. It does not affect the core singly reinforced or shear modules.
+
 ## Compile Error: User-defined type not defined
 
 ### The Issue

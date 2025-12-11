@@ -20,12 +20,12 @@ Principles:
 ## 2. Phase 1 Deliverable (v0) — What “Done” Looks Like
 
 ### 2.1 Beam Engine Scope
-- IS 456 limit state design, rectangular RC beams only.
-- Checks: flexure and shear (no deflection/crack checks in this phase).
+- IS 456 limit state design for Rectangular and Flanged (T/L) beams.
+- Checks: Flexure (Singly/Doubly), Shear, and IS 13920 Ductile Detailing.
 - Sections per span: start, midspan, end.
-- Inputs: geometry (b, D, cover), materials (fck, fy), factored Mu and Vu at 2–3 key locations.
-- Outputs: required/provided reinforcement (top/bottom per section), shear design (Vc, Vus, spacing), beam schedule, clear status (OK/FAIL) with reasons.
-- Out of scope for v0: flanged beams, ductile detailing, API links.
+- Inputs: geometry (b, D, cover), materials (fck, fy), factored Mu and Vu.
+- Outputs: required/provided reinforcement, shear design, status (OK/FAIL).
+- Out of scope for v0: Deflection checks, Crack width checks.
 
 ### 2.2 Excel Workbook Scope
 - Sheets and roles:

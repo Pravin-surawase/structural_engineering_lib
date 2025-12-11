@@ -1,4 +1,10 @@
 import pytest
+import sys
+import os
+
+# Add parent directory to path to import structural_lib
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from structural_lib.ductile import check_geometry, get_min_tension_steel_percentage, calculate_confinement_spacing, check_beam_ductility
 
 def test_geometry_checks():

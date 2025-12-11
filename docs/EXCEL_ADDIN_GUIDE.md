@@ -22,8 +22,16 @@ Run this once from a blank workbook:
 
 ```vba
 Sub ImportAllModules()
-    Const folder As String = "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/VBA/Modules/"
-    Const testFolder As String = "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/VBA/Tests/"
+    ' Use ThisWorkbook.Path to find the repo root relative to this file
+    ' Assumes this workbook is saved in the repo or you adjust the path accordingly
+    Dim repoRoot As String
+    repoRoot = ThisWorkbook.Path & "/../" ' Adjust if needed
+    
+    Dim folder As String
+    folder = repoRoot & "VBA/Modules/"
+    
+    Dim testFolder As String
+    testFolder = repoRoot & "VBA/Tests/"
     
     ' Remove existing library modules (M01–M10) and tests if present to avoid duplicates
     Dim comp As Object

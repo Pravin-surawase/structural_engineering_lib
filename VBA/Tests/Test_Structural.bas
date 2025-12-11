@@ -59,6 +59,9 @@ Public Sub RunAllTests()
     ' Run Flanged Beam Tests (New in v0.3)
     Test_Flanged.RunFlangedTests
     
+    ' Run Ductile Detailing Tests (New in v1.0)
+    Test_Ductile.RunDuctileTests
+    
     Debug.Print "--- Tests Completed ---"
 End Sub
 

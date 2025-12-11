@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2025-12-11
+### Added
+- **Ductile Detailing (IS 13920:2016)**:
+  - `M10_Ductile.bas` / `ductile.py`: Implemented ductile detailing checks.
+  - Geometry checks: `b >= 200`, `b/D >= 0.3`.
+  - Reinforcement checks: Min/Max tension steel ratios per Cl 6.2.
+  - Confinement: Hoop spacing calculations per Cl 6.3.5.
+- **Packaging**:
+  - Python: Added `pyproject.toml`, `setup.cfg`, and build artifacts.
+  - Excel: Added `StructEngLib.xlam` add-in support.
+  - UDFs: Added `IS456_Check_Ductility` to `M09_UDFs.bas`.
+- **Documentation**:
+  - Updated `API_REFERENCE.md` to v0.4.0.
+  - Completed `TASKS.md` for v0.4 scope.
+
 ## [0.3.0] - 2025-12-11
 ### Added (VBA & Python)
 - **Flanged Beam Design (T/L Beams)**:

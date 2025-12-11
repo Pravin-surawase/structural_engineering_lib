@@ -14,6 +14,9 @@ When working on tasks, specify which agent role to use:
 | **TESTER** | `agents/TESTER.md` | Test design, edge cases, validation |
 | **DEVOPS** | `agents/DEVOPS.md` | Repo structure, automation, releases |
 | **PM** | `agents/PM.md` | Scope, prioritization, changelog |
+| **UI** | `agents/UI.md` | Excel layout, UX flow, VBA forms |
+| **CLIENT** | `agents/CLIENT.md` | Requirements, user stories, validation |
+| **RESEARCHER** | `agents/RESEARCHER.md` | IS Codes, algorithms, technical constraints |
 
 **Example prompt:** "Use `PROJECT_OVERVIEW.md` as context. Act as DEV agent. Implement TASK-005."
 
@@ -94,31 +97,47 @@ When working on tasks, specify which agent role to use:
   - Built wheel/sdist to `Python/dist/`
   - Pytest passing (17 tests) with flanged/doubly included
 
-- [x] **TASK-012**: IS 13920 ductile detailing (v1.0)
+- [x] **TASK-012**: IS 13920 ductile detailing (v0.4)
   - Implemented `ductile.py` (Python) and `M10_Ductile.bas` (VBA)
   - Checks: Geometry (b >= 200, b/D >= 0.3), Min/Max Steel, Confinement Spacing
-  - Added unit tests `test_ductile.py`
+  - Added unit tests `test_ductile.py` and `Test_Ductile.bas`
   - Updated API Reference
+
+---
+
+- [x] **TASK-013**: Excel Workbook Skeleton
+  - Create `Excel/StructEng_BeamDesign_v0.5.xlsm`
+  - Setup Sheets: `HOME`, `BEAM_INPUT`, `BEAM_DESIGN`, `BEAM_SCHEDULE`, `LOG`
+  - Define named ranges and table structures
+
+- [x] **TASK-014**: Application Layer (`M11_AppLayer.bas`)
+  - Create controller logic to map Worksheet rows -> Library calls -> Output structs
+  - Handle unit conversions (if input is m, convert to mm)
+  - Error handling for invalid rows
+
+- [x] **TASK-015**: UI/IO Layer (`M12_UI.bas`)
+  - Button handlers: `btn_RunDesign`, `btn_Clear`, `btn_Import`
+  - Status bar updates
+  - Logging mechanism to `LOG` sheet
 
 ---
 
 ## 🟡 In Progress
 
-*(None currently)*
+- [ ] **TASK-016**: Integration Testing
+  - Verify end-to-end flow from Input Table -> Design Table
+  - Check performance for 100+ beams
 
 ---
 
-## 🔴 Up Next
+## 🔴 Up Next (v0.6 - Drafting & Reporting)
 
-- [ ] **TASK-013**: Final Release Preparation (v1.0)
-  - Final code review
-  - Full documentation pass
-  - Release tagging
+*(None currently)*
 
 ---
 
 ## Notes
 
-- **Current Version**: v1.0.0 (candidate)
+- **Current Version**: v0.4.0
 - **Last Updated**: 2025-12-11
 - **Active Branch**: main
