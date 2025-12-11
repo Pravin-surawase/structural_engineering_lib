@@ -93,9 +93,11 @@ When working on tasks, specify which agent role to use:
   - **Output:** API_REFERENCE.md v0.7.0, CHANGELOG.md updated
   - Added Sections 9-11 for detailing, DXF, integration APIs
 
-- [ ] **TASK-032: Release v0.7.0**
+- [x] **TASK-032: Release v0.7.0**
   - **Agent:** DEVOPS
-  - **Goal:** Merge, tag, release
+  - **Status:** ✅ Complete
+  - **Output:** Merged to main, tagged v0.7.0
+  - Branch deleted: feat/v0.7-detailing
 
 ---
 
