@@ -76,9 +76,11 @@ When working on tasks, specify which agent role to use:
   - **Output:** `Python/structural_lib/dxf_export.py`
   - Uses ezdxf library for DXF generation
 
-- [ ] **TASK-029: Data Mapping for Detailing (v0.7)**
+- [x] **TASK-029: Data Mapping for Detailing (v0.7)**
   - **Agent:** INTEGRATION
-  - **Goal:** Define tbl_BeamDesign → DXF data flow
+  - **Status:** ✅ Complete
+  - **Output:** `docs/specs/v0.7_DATA_MAPPING.md`, `excel_integration.py`
+  - CSV/JSON parsing, batch DXF generation, schedule export
 
 - [x] **TASK-030: Test Cases for Detailing (v0.7)**
   - **Agent:** TESTER

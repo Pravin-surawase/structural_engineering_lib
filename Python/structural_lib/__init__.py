@@ -22,3 +22,6 @@ try:
     from . import dxf_export
 except ImportError:
     pass  # ezdxf not installed
+
+# Excel integration module
+from . import excel_integration
