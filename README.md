@@ -4,7 +4,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.5.0)** — Excel integration complete (`StructEng_BeamDesign_v0.5.xlsm` + `StructEngLib.xlam`), flexure (singly/doubly/flanged), shear, ductile detailing (IS 13920) implemented in VBA + Python.
+🚀 **Active (v0.6.0)** — ETABS integration and Beam Schedule generation complete. Full design workflow: Import CSV → Design Beams → Generate Schedule. Flexure (singly/doubly/flanged), shear, ductile detailing (IS 13920) implemented in VBA + Python.
 
 ## Features
 
@@ -13,6 +13,8 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 - ✅ **Flexural design** — Singly, Doubly, and Flanged (T/L) beams
 - ✅ **Shear design** — Stirrup design with Table 19/20 lookup
 - ✅ **Ductile Detailing** — IS 13920:2016 checks (Geometry, Min/Max steel, Confinement)
+- ✅ **ETABS Integration** — Import CSV from ETABS with header normalization and sign preservation
+- ✅ **Beam Schedule** — Generate drafting-ready schedules with bar patterns
 - ✅ **Dual implementation** — VBA (Excel) + Python with identical API
 - ✅ **Mac Compatible** — Hardened against Mac VBA stack corruption issues
 
@@ -25,6 +27,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 | **v0.3** | Flanged beams (T, L) | ✅ Completed |
 | **v0.4** | IS 13920 ductile detailing, packaging | ✅ Completed |
 | **v0.5** | Excel workbook integration | ✅ Completed |
+| **v0.6** | ETABS Integration, Beam Schedule Generation | ✅ Completed |
 
 ## Directory Structure (current)
 

@@ -1,8 +1,8 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.4.0  
+**Document Version:** 0.6.0  
 **Last Updated:** December 11, 2025  
-**Scope:** Public APIs for current Python/VBA implementations (flexure, shear, ductile detailing).
+**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting).
 
 ---
 
@@ -235,9 +235,94 @@ Implemented in `M09_UDFs.bas` for direct worksheet use.
 
 ---
 
-## 5. Usage Examples
+## 5. Integration Module (`M13_Integration.bas`)
 
-### 5.1 Python Example
+This module handles data import from external analysis software (ETABS) into the BEAM_INPUT table.
+
+### 5.1 Import ETABS Data
+**VBA:**
+```vba
+Public Sub Import_ETABS_Data()
+```
+- Opens file picker (Mac/Windows compatible) or falls back to InputBox.
+- Parses CSV with robust handling of quoted values and header aliases.
+- Groups data by beam (Story|Label) and aggregates forces into Start/Mid/End buckets.
+- Falls back to sample data if no file is selected.
+
+### 5.2 Generate Sample ETABS CSV
+**VBA:**
+```vba
+Public Sub Generate_Sample_ETABS_CSV()
+```
+- Creates a sample ETABS-style CSV file for testing.
+- Outputs: Story, Label, Station, M3, V2, Output Case columns.
+
+### 5.3 Header Normalization
+The module recognizes these header aliases:
+| Standard | Aliases Recognized |
+|----------|-------------------|
+| `Story` | `Story`, `Story Name` |
+| `Label` | `Label`, `Beam` |
+| `Station` | `Station`, `Dist` |
+| `M3` | `M3`, `Moment` |
+| `V2` | `V2`, `Shear` |
+| `Output Case` | `Case`, `Combo` |
+
+### 5.4 Bucket Aggregation Logic
+Forces are aggregated into three zones based on station position:
+| Zone | Station Range | Use Case |
+|------|--------------|----------|
+| Start | 0% – 20% of span | Support hogging moment |
+| Mid | 20% – 80% of span | Midspan sagging moment |
+| End | 80% – 100% of span | Support hogging moment |
+
+Within each bucket, the value with maximum absolute magnitude is selected (preserving sign).
+
+---
+
+## 6. Reporting Module (`M14_Reporting.bas`)
+
+This module generates the Beam Schedule from design output.
+
+### 6.1 Generate Beam Schedule
+**VBA:**
+```vba
+Public Sub Generate_Beam_Schedule()
+```
+- Reads from `tbl_BeamDesign` on BEAM_DESIGN sheet.
+- Writes to `tbl_BeamSchedule` on BEAM_SCHEDULE sheet.
+- Auto-sorts input by Story/ID before grouping.
+- Uses dynamic column lookup for robustness.
+
+### 6.2 Schedule Output Format
+| Column | Description |
+|--------|-------------|
+| Story | Story identifier |
+| ID | Beam identifier |
+| Size | `bxD` (e.g., "230x450") |
+| Bot-Start, Bot-Mid, Bot-End | Bottom steel pattern |
+| Top-Start, Top-Mid, Top-End | Top steel pattern |
+| Stir-Start, Stir-Mid, Stir-End | Stirrup specification |
+
+### 6.3 Bar Pattern Conversion
+`Get_Bar_Pattern(area)` converts steel area to practical notation:
+| Area Range | Bar Diameter | Example Output |
+|------------|--------------|----------------|
+| < 300 mm² | 12 mm | "3-12 (#280)" |
+| 300–800 mm² | 16 mm | "3-16 (#600)" |
+| 800–1500 mm² | 20 mm | "3-20 (#942)" |
+| > 1500 mm² | 25 mm | "4-25 (#1963)" |
+
+### 6.4 Steel Placement Logic
+Based on moment sign:
+- **Negative Mu (Hogging):** Tension at top → `Ast` placed in Top row.
+- **Positive Mu (Sagging):** Tension at bottom → `Ast` placed in Bottom row.
+
+---
+
+## 7. Usage Examples
+
+### 7.1 Python Example
 ```python
 from structural_lib.flexure import design_singly_reinforced
 
@@ -260,9 +345,9 @@ else:
 
 ---
 
-## 6. Ductile Detailing (IS 13920:2016) — `ductile.py` / `M10_Ductile.bas`
+## 8. Ductile Detailing (IS 13920:2016) — `ductile.py` / `M10_Ductile.bas`
 
-### 6.1 Geometry Check
+### 8.1 Geometry Check
 **Python:**
 ```python
 check_geometry(b: float, D: float) -> Tuple[bool, str]
@@ -274,7 +359,7 @@ check_geometry(b: float, D: float) -> Tuple[bool, str]
 Public Function Check_Geometry(b As Double, D As Double, ByRef ErrorMsg As String) As Boolean
 ```
 
-### 6.2 Minimum/Maximum Tension Steel
+### 8.2 Minimum/Maximum Tension Steel
 **Python:**
 ```python
 get_min_tension_steel_percentage(fck: float, fy: float) -> float  # returns %
@@ -287,7 +372,7 @@ Public Function Get_Min_Tension_Steel_Percentage(fck As Double, fy As Double) As
 Public Function Get_Max_Tension_Steel_Percentage() As Double
 ```
 
-### 6.3 Confinement Spacing (Plastic Hinge Zones)
+### 8.3 Confinement Spacing (Plastic Hinge Zones)
 **Python:**
 ```python
 calculate_confinement_spacing(d: float, min_long_bar_dia: float) -> float  # mm
@@ -299,7 +384,7 @@ Spacing = min(d/4, 8*db_min, 100 mm).
 Public Function Calculate_Confinement_Spacing(d As Double, min_long_bar_dia As Double) As Double
 ```
 
-### 6.4 Aggregate Check
+### 8.4 Aggregate Check
 **Python:**
 ```python
 check_beam_ductility(
@@ -327,7 +412,7 @@ Public Function Check_Beam_Ductility( _
 | `confinement_spacing` | float | Max hoop spacing in hinge zone (mm) |
 | `remarks` | str | "Compliant" or reason for failure |
 
-### 5.2 VBA Example
+### 7.2 VBA Example
 ```vba
 Sub TestBeam()
     Dim res As FlexureResult
@@ -342,7 +427,7 @@ Sub TestBeam()
 End Sub
 ```
 
-### 5.3 Worked Examples (Reference Values)
+### 7.3 Worked Examples (Reference Values)
 
 Use these to sanity-check outputs (within typical rounding tolerance: ±0.5 kN·m for moments, ±1% for areas/stresses, spacing capped to code limits).
 

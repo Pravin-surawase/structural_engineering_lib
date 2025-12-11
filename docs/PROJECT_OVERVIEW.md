@@ -86,9 +86,13 @@ AI assistance: design column sets; keep sheet I/O separate from core logic; keep
 
 ---
 
-## 6. ETABS Integration Approach
-- v0: simple — user exports ETABS tables to CSV/Excel; macro maps columns into BEAM_INPUT. Library does not care about source.  
-- Later: ETABS API or Python bridge. Current structure should make adding this layer straightforward.
+## 6. ETABS Integration (v0.6 — Implemented)
+- **M13_Integration.bas**: Robust CSV import with header normalization (Story/Story Name, Label/Beam, M3/Moment, etc.).
+- **File Picker**: Mac/Windows compatible with fallback to InputBox or built-in sample data.
+- **Grouping**: Dictionary-based grouping handles unsorted CSV; bucket aggregation (Start 0-20%, Mid 20-80%, End 80-100%).
+- **Sign Preservation**: Negative moments (hogging) and shears are preserved for correct steel placement.
+- **Sample Generator**: `Generate_Sample_ETABS_CSV` creates test data for validation.
+- **Future**: ETABS API or Python bridge. Current structure makes this straightforward.
 
 ---
 
