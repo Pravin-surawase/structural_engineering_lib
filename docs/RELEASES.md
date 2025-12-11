@@ -9,7 +9,7 @@ Entries here represent "locked" versions that have been verified and approved.
 ## v0.5.0 (Current)
 **Date:** 2025-12-11
 **Status:** ✅ Locked & Verified
-**Commit Hash:** (Pending Push)
+**Commit Hash:** be04b12b65a0e2c147ec018ea3ba7b826ac5abdc
 **Key Features:**
 - Excel Workbook Integration (`StructEng_BeamDesign_v0.5.xlsm`)
 - Application Layer (`M11_AppLayer.bas`) for Table-to-Library orchestration
