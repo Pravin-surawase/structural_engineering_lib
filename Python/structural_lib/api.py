@@ -6,7 +6,8 @@ Description:  Public facing API functions
 from . import ductile
 
 def get_library_version() -> str:
-    return "0.4.0"
+    """Return the current library version."""
+    return "0.7.0"
 
 def check_beam_ductility(b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float):
     """

@@ -390,8 +390,7 @@ def main():
     with open(args.input, "r") as f:
         data = json.load(f)
     
-    # TODO: Convert JSON to BeamDetailingResult
-    # For now, create a sample
+    # Convert JSON to BeamDetailingResult via create_beam_detailing
     from .detailing import create_beam_detailing
     
     detailing = create_beam_detailing(
