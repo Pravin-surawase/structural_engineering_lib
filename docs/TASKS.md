@@ -143,6 +143,18 @@ When working on tasks, specify which agent role to use:
   - Transform `BEAM_DESIGN` results into `BEAM_SCHEDULE` format
   - Grouping logic (Same size/reinforcement)
 
+- [ ] **TASK-019**: Regression Snapshots (Excel)
+  - Use `Run_And_Export_Integration_Snapshot` to capture BEAM_DESIGN CSV for a standard test set.
+  - Store snapshot under `logs/` for manual diff after changes.
+
+- [ ] **TASK-020**: Py/VBA Parity Tests
+  - Add pytest cases mirroring integration harness scenarios (flanged, high-shear, Tcmax edge).
+  - Document expected outputs and compare with Excel snapshot.
+
+- [ ] **TASK-021**: Documentation Depth Pass
+  - Expand `docs/API_REFERENCE.md` with worked examples (inputs/outputs) per public function.
+  - Add a one-page “Install on Mac” with screenshots; cross-link from README and EXCEL_ADDIN_GUIDE.
+
 ---
 
 ## Notes
