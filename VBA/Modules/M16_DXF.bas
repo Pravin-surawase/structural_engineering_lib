@@ -184,14 +184,17 @@ Private Sub WriteHeader()
     Call WriteLine(GC_Y1, "0.0")
     Call WriteLine(30, "0.0")
     
-    ' Drawing extents (will be updated)
+    ' Drawing extents - use generous defaults for typical beam drawings
+    ' Note: DXF R12 writes header first, so we use placeholder values.
+    ' Most CAD software will recalculate extents on file open (ZOOM EXTENTS).
+    ' For scaled 1:10 drawings of beams up to 10m span, 2000x1000 units is sufficient.
     Call WriteLine(9, "$EXTMIN")
-    Call WriteLine(GC_X1, "0.0")
-    Call WriteLine(GC_Y1, "0.0")
+    Call WriteLine(GC_X1, "-100.0")
+    Call WriteLine(GC_Y1, "-100.0")
     Call WriteLine(30, "0.0")
     
     Call WriteLine(9, "$EXTMAX")
-    Call WriteLine(GC_X1, "1000.0")
+    Call WriteLine(GC_X1, "2000.0")
     Call WriteLine(GC_Y1, "1000.0")
     Call WriteLine(30, "0.0")
     
@@ -936,9 +939,14 @@ Private Sub DrawSectionAtPoint(ByVal originX As Double, ByVal originY As Double,
             X = originX + B / 2
             Call DXF_RebarSection(X, Y, bottomBars(LBound(bottomBars)))
         Else
-            ' Multiple bars: correct spacing calculation
+            ' Multiple bars: correct spacing is center-to-center distance
+            ' Clear width between bars = B - 2*effectiveCover - sum(bar_dias)
+            ' But since we draw at centers, spacing = (B - 2*effectiveCover - bar_dia) / (n - 1)
+            ' This places first bar center at effectiveCover + bar_dia/2 from edge
+            Dim avgBarDiaBot As Double
+            avgBarDiaBot = bottomBars(LBound(bottomBars))  ' Use first bar diameter
             Dim availWidthBot As Double
-            availWidthBot = B - 2 * effectiveCover
+            availWidthBot = B - 2 * effectiveCover - avgBarDiaBot
             spacing = availWidthBot / (nBottom - 1)
             
             X = originX + effectiveCover + bottomBars(LBound(bottomBars)) / 2
@@ -959,9 +967,12 @@ Private Sub DrawSectionAtPoint(ByVal originX As Double, ByVal originY As Double,
             X = originX + B / 2
             Call DXF_RebarSection(X, Y, topBars(LBound(topBars)))
         Else
-            ' Multiple bars: correct spacing calculation
+            ' Multiple bars: correct spacing includes bar diameter deduction
+            ' spacing = (B - 2*effectiveCover - bar_dia) / (n - 1)
+            Dim avgBarDiaTop As Double
+            avgBarDiaTop = topBars(LBound(topBars))  ' Use first bar diameter
             Dim availWidthTop As Double
-            availWidthTop = B - 2 * effectiveCover
+            availWidthTop = B - 2 * effectiveCover - avgBarDiaTop
             spacing = availWidthTop / (nTop - 1)
             
             X = originX + effectiveCover + topBars(LBound(topBars)) / 2
@@ -1079,37 +1090,48 @@ Private Sub DrawLongitudinalWithZones(ByVal originX As Double, ByVal originY As 
     ' Draw stirrups in zones
     Dim zoneStartX As Double, zoneEndX As Double
     Dim nStirrups As Long
+    Dim maxIterations As Long
+    Dim iterCount As Long
+    Const MIN_SPACING As Double = 25  ' Minimum 25mm spacing to prevent infinite loops
     
-    ' Start zone (typically 20% of span)
+    maxIterations = 500  ' Safety cap
+    
+    ' Start zone (typically 20% of span) - starts at cover, ends at cover + zone_length
     zoneStartX = originX + result.cover * scale
-    zoneEndX = originX + result.stirrup_start.zone_length * scale
-    If result.stirrup_start.spacing > 0 Then
+    zoneEndX = zoneStartX + result.stirrup_start.zone_length * scale
+    If result.stirrup_start.spacing >= MIN_SPACING Then
         X = zoneStartX
-        Do While X <= zoneEndX
+        iterCount = 0
+        Do While X <= zoneEndX And iterCount < maxIterations
             Call DXF_Line(X, originY + result.cover * scale, X, originY + sD - result.cover * scale, LAYER_REBAR_STIRRUP)
             X = X + result.stirrup_start.spacing * scale
+            iterCount = iterCount + 1
         Loop
     End If
     
     ' Mid zone (typically 60% of span)
     zoneStartX = zoneEndX
     zoneEndX = zoneStartX + result.stirrup_mid.zone_length * scale
-    If result.stirrup_mid.spacing > 0 Then
+    If result.stirrup_mid.spacing >= MIN_SPACING Then
         X = zoneStartX
-        Do While X <= zoneEndX
+        iterCount = 0
+        Do While X <= zoneEndX And iterCount < maxIterations
             Call DXF_Line(X, originY + result.cover * scale, X, originY + sD - result.cover * scale, LAYER_REBAR_STIRRUP)
             X = X + result.stirrup_mid.spacing * scale
+            iterCount = iterCount + 1
         Loop
     End If
     
     ' End zone (typically 20% of span)
     zoneStartX = zoneEndX
     zoneEndX = originX + sLength - result.cover * scale
-    If result.stirrup_end.spacing > 0 Then
+    If result.stirrup_end.spacing >= MIN_SPACING Then
         X = zoneStartX
-        Do While X <= zoneEndX
+        iterCount = 0
+        Do While X <= zoneEndX And iterCount < maxIterations
             Call DXF_Line(X, originY + result.cover * scale, X, originY + sD - result.cover * scale, LAYER_REBAR_STIRRUP)
             X = X + result.stirrup_end.spacing * scale
+            iterCount = iterCount + 1
         Loop
     End If
     

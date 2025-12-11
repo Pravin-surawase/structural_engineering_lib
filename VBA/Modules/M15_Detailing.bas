@@ -344,6 +344,13 @@ Public Sub Select_Bar_Arrangement(ByVal ast_required As Double, _
         Dim bars_per_layer As Long
         bars_per_layer = Application.WorksheetFunction.Ceiling(CDbl(bar_count) / 2#, 1)
         spacing = Calculate_Bar_Spacing(b, cover, stirrup_dia, bar_dia, bars_per_layer)
+        ' Re-validate spacing after 2-layer fallback
+        is_valid = Check_Min_Spacing(spacing, bar_dia)
+        If Not is_valid Then
+            ' Still doesn't fit - could try 3 layers or larger diameter
+            ' For now, keep 2 layers and let validation flag it
+            result.layers = 2
+        End If
     End If
     
     ' Populate result
@@ -470,9 +477,13 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
     result.stirrup_end.spacing = sv_end
     result.stirrup_end.zone_length = span * 0.2  ' 20% at end
     
-    ' Calculate development and lap lengths using maximum bar diameter
-    max_dia = result.bottom_mid.diameter
+    ' Calculate development and lap lengths using maximum bar diameter across ALL zones
+    max_dia = result.bottom_start.diameter
+    If result.bottom_mid.diameter > max_dia Then max_dia = result.bottom_mid.diameter
+    If result.bottom_end.diameter > max_dia Then max_dia = result.bottom_end.diameter
     If result.top_start.diameter > max_dia Then max_dia = result.top_start.diameter
+    If result.top_mid.diameter > max_dia Then max_dia = result.top_mid.diameter
+    If result.top_end.diameter > max_dia Then max_dia = result.top_end.diameter
     
     result.ld_tension = Calculate_Development_Length(max_dia, fck, fy, "deformed", 0.87)
     result.ld_compression = Calculate_Development_Length(max_dia, fck, fy, "deformed", 0.67)
