@@ -18,6 +18,15 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 - ✅ **Dual implementation** — VBA (Excel) + Python with identical API
 - ✅ **Mac Compatible** — Hardened against Mac VBA stack corruption issues
 
+## 📚 Getting Started
+
+**New to this library?** Start here:
+
+- **[Beginner's Guide](docs/BEGINNERS_GUIDE.md)** — Complete tutorial covering Python AND Excel paths
+- **[Python Quickstart](docs/GETTING_STARTED_PYTHON.md)** — Install, run, and verify in 5 minutes
+- **[Excel Tutorial](docs/EXCEL_TUTORIAL.md)** — Step-by-step Excel/VBA guide with formulas
+- **Sample files** in `Python/examples/` — Ready-to-run scripts and CSV data
+
 ## Scope
 
 | Version | Features | Status |
