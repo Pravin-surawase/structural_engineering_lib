@@ -225,3 +225,145 @@ Public Function IS456_StirrupCallout(ByVal legs As Long, ByVal diameter As Doubl
 ErrHandler:
     IS456_StirrupCallout = CVErr(xlErrValue)
 End Function
+
+
+' ==============================================================================
+' DXF Export UDFs (v0.7+)
+' ==============================================================================
+
+' Generate beam cross-section DXF drawing
+' @Param filePath: Full path to save DXF file
+' @Param B: Beam width (mm)
+' @Param D: Beam depth (mm)
+' @Param cover: Clear cover (mm)
+' @Param topBars: Range with top bar diameters (e.g., A1:A3 with values 16,16,16)
+' @Param bottomBars: Range with bottom bar diameters
+' @Param stirrupDia: Stirrup diameter (mm)
+' @Returns: TRUE if successful, error message otherwise
+Public Function IS456_DrawSection(ByVal filePath As String, _
+                                 ByVal B As Double, ByVal D As Double, _
+                                 ByVal cover As Double, _
+                                 ByVal topBarsRange As Range, _
+                                 ByVal bottomBarsRange As Range, _
+                                 ByVal stirrupDia As Double) As Variant
+    On Error GoTo ErrHandler
+    
+    Dim topBars() As Double
+    Dim bottomBars() As Double
+    Dim i As Long, n As Long
+    
+    ' Convert top bars range to array
+    n = topBarsRange.Cells.Count
+    ReDim topBars(0 To n - 1)
+    For i = 1 To n
+        topBars(i - 1) = topBarsRange.Cells(i).Value
+    Next i
+    
+    ' Convert bottom bars range to array
+    n = bottomBarsRange.Cells.Count
+    ReDim bottomBars(0 To n - 1)
+    For i = 1 To n
+        bottomBars(i - 1) = bottomBarsRange.Cells(i).Value
+    Next i
+    
+    ' Generate DXF
+    Dim success As Boolean
+    success = M16_DXF.Draw_BeamSection(filePath, B, D, cover, topBars, bottomBars, stirrupDia)
+    
+    If success Then
+        IS456_DrawSection = True
+    Else
+        IS456_DrawSection = "Error: Failed to generate DXF"
+    End If
+    Exit Function
+    
+ErrHandler:
+    IS456_DrawSection = "Error: " & Err.Description
+End Function
+
+' Generate beam longitudinal section DXF drawing
+' @Param filePath: Full path to save DXF file
+' @Param length: Beam length (mm)
+' @Param D: Beam depth (mm)
+' @Param cover: Clear cover (mm)
+' @Param topBarDia: Top bar diameter (mm)
+' @Param bottomBarDia: Bottom bar diameter (mm)
+' @Param stirrupDia: Stirrup diameter (mm)
+' @Param stirrupSpacing: Stirrup spacing (mm)
+' @Returns: TRUE if successful, error message otherwise
+Public Function IS456_DrawLongitudinal(ByVal filePath As String, _
+                                      ByVal length As Double, _
+                                      ByVal D As Double, _
+                                      ByVal cover As Double, _
+                                      ByVal topBarDia As Double, _
+                                      ByVal bottomBarDia As Double, _
+                                      ByVal stirrupDia As Double, _
+                                      ByVal stirrupSpacing As Double) As Variant
+    On Error GoTo ErrHandler
+    
+    Dim success As Boolean
+    success = M16_DXF.Draw_BeamLongitudinal(filePath, length, D, cover, _
+                                           topBarDia, bottomBarDia, _
+                                           stirrupDia, stirrupSpacing)
+    
+    If success Then
+        IS456_DrawLongitudinal = True
+    Else
+        IS456_DrawLongitudinal = "Error: Failed to generate DXF"
+    End If
+    Exit Function
+    
+ErrHandler:
+    IS456_DrawLongitudinal = "Error: " & Err.Description
+End Function
+
+' Generate complete beam detailing DXF from design result
+' This is a macro (Sub) that reads from worksheet and generates DXF
+' Call from a button or module, not as worksheet function
+Public Sub IS456_ExportBeamDXF()
+    On Error GoTo ErrHandler
+    
+    Dim ws As Worksheet
+    Dim filePath As String
+    Dim result As BeamDetailingResult
+    
+    ' Get active worksheet
+    Set ws = ActiveSheet
+    
+    ' Prompt for save location
+    filePath = Application.GetSaveAsFilename( _
+        InitialFileName:="BeamDetailing.dxf", _
+        FileFilter:="DXF Files (*.dxf), *.dxf", _
+        Title:="Save Beam Drawing As")
+    
+    If filePath = "False" Then Exit Sub
+    
+    ' Read beam data from worksheet (expected cells)
+    ' Assumes standard layout: B2=Width, B3=Depth, B4=Cover, B5=TopDia, B6=TopCount, etc.
+    With result
+        .B_mm = ws.Range("B2").Value
+        .D_mm = ws.Range("B3").Value
+        .Cover_mm = ws.Range("B4").Value
+        .TopBars.Dia_mm = ws.Range("B5").Value
+        .TopBars.Count_n = ws.Range("B6").Value
+        .BottomBars.Dia_mm = ws.Range("B7").Value
+        .BottomBars.Count_n = ws.Range("B8").Value
+        .Stirrups.Dia_mm = ws.Range("B9").Value
+        .Stirrups.Spacing_mm = ws.Range("B10").Value
+        .Stirrups.Legs = ws.Range("B11").Value
+    End With
+    
+    ' Generate DXF
+    Dim success As Boolean
+    success = M16_DXF.Draw_BeamDetailing(filePath, result)
+    
+    If success Then
+        MsgBox "DXF exported successfully to:" & vbCrLf & filePath, vbInformation, "Export Complete"
+    Else
+        MsgBox "Failed to export DXF file.", vbExclamation, "Export Error"
+    End If
+    Exit Sub
+    
+ErrHandler:
+    MsgBox "Error: " & Err.Description, vbCritical, "Export Error"
+End Sub

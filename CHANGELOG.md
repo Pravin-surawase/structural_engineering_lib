@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added
+- **VBA DXF Export Module (`M16_DXF.bas`)**:
+  - Native DXF R12 format writer (no external dependencies).
+  - `Draw_BeamSection`: Beam cross-section with rebar arrangement.
+  - `Draw_BeamLongitudinal`: Longitudinal section with stirrup spacing.
+  - `Draw_BeamDetailing`: Complete detailing drawing with bar schedule.
+  - DXF primitives: `DXF_Line`, `DXF_Circle`, `DXF_Arc`, `DXF_Text`, `DXF_Rectangle`.
+  - Structural components: `DXF_Stirrup`, `DXF_RebarSection`, `DXF_Dimension`.
+  - Professional CAD layer system with proper colors and linetypes.
+- **DXF UDFs (M09_UDFs)**:
+  - `IS456_DrawSection`: Generate section DXF from worksheet.
+  - `IS456_DrawLongitudinal`: Generate longitudinal DXF.
+  - `IS456_ExportBeamDXF`: One-click macro for beam drawing export.
+- **Test Coverage**:
+  - `Test_DXF.bas`: 21 test cases for DXF module.
+  - `Generate_Sample_DXF`: Visual verification utility.
+
+### CAD Layer Standards (M16_DXF)
+| Layer | Color | Purpose |
+|-------|-------|---------|
+| BEAM_OUTLINE | Cyan (4) | Section boundary |
+| REBAR_MAIN | Red (1) | Main bars |
+| REBAR_STIRRUP | Green (3) | Stirrups |
+| DIMENSIONS | Yellow (2) | Dim lines |
+| TEXT_CALLOUT | White (7) | Labels |
+| CENTERLINE | Magenta (6) | Center lines |
+| COVER_LINE | Blue (5) | Cover indication |
 
 ## [0.7.0] - 2025-12-11
 ### Added
