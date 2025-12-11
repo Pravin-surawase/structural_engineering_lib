@@ -54,7 +54,7 @@ Public Function Get_Steel_Stress(ByVal strain As Double, ByVal fy As Double) As 
     ' Data from SP:16 Table A
     Dim s(1 To 5) As Double
     Dim f(1 To 5) As Double
-    Dim i As Integer
+    Dim i As Long
     
     If fy = 415 Then
         s(1) = 0.00144: f(1) = 288.7

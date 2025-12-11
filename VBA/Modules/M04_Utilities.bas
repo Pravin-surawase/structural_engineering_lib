@@ -19,6 +19,6 @@ Public Function LinearInterp(ByVal X As Double, ByVal x1 As Double, ByVal y1 As 
 End Function
 
 ' Rounding function (Standard arithmetic rounding)
-Public Function RoundTo(ByVal Value As Double, ByVal Digits As Integer) As Double
+Public Function RoundTo(ByVal Value As Double, ByVal Digits As Long) As Double
     RoundTo = Round(Value, Digits)
 End Function

@@ -85,10 +85,17 @@ v1.0.0 — production ready with ductile detailing
 | Task | Tool | Status |
 |------|------|--------|
 | Python tests | pytest | 🔜 Pending (install pytest/CI) |
-| VBA tests | Manual / Rubberduck | 🔜 Planned |
+| VBA tests | `RunAllTests` Macro | ✅ Active (Mac Compatible) |
 | Python lint | ruff/black | 🔜 Planned |
 | Build .xlam | Manual export | 🔜 Planned |
 | CI pipeline | GitHub Actions | 🔜 Future |
+
+## Mac VBA Workflow
+1. **Edit:** Edit `.bas` files in VS Code.
+2. **Import:** In Excel VBA Editor, remove old module -> Import new file.
+3. **Compile:** `Debug > Compile VBAProject`.
+4. **Test:** Run `RunAllTests` in Immediate Window.
+   - *Note:* Do not rely on `Debug.Print` during calculation steps.
 
 ---
 

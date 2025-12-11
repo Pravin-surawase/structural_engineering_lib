@@ -47,6 +47,15 @@ Use TESTER agent when:
 - Capture current outputs for key scenarios
 - Detect unintended changes after refactoring
 
+### 5. Mac VBA Specifics
+- **Safe Assertion Pattern:** Always calculate boolean conditions into a local variable before passing to `AssertTrue`.
+  ```vb
+  Dim isSafe As Boolean: isSafe = (val > 0)
+  AssertTrue isSafe, "TestName"
+  ```
+- **Overflow Diagnosis:** On Mac, `Error 6: Overflow` often means stack corruption from `Debug.Print` or inline expressions, not just integer overflow.
+- **Clean Stack:** Ensure no `Debug.Print` statements exist between calculation and assertion.
+
 ---
 
 ## Test Naming Convention

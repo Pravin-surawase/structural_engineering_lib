@@ -2,24 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0] - 2025-12-12
-### Added
-- **IS 13920 Ductile Detailing (Beams):**
-  - Geometry checks (b ≥ 200 mm, b/D ≥ 0.3), min/max tension steel, confinement spacing.
-  - `ductile.py` (Python) and `M10_Ductile.bas` (VBA) with `DuctileBeamResult`.
-  - Tests (`test_ductile.py`); API reference updated.
-- **Packaging:** Python package metadata bumped to v1.0.0; license included in builds.
-
 ## [0.3.0] - 2025-12-11
-### Added
+### Added (VBA)
 - **Flanged Beam Design (T/L Beams)**:
-  - `calculate_mu_lim_flanged`: Calculates limiting moment for T-sections.
-  - `design_flanged_beam`: Handles Neutral Axis in Flange (Rectangular), Web (Singly Reinforced), and Web (Doubly Reinforced).
-  - Full parity between Python and VBA implementations.
-  - Comprehensive tests for all three flanged beam design cases.
-- **Packaging**:
-  - Python package metadata added (`pyproject.toml`); builds (wheel/sdist) succeed.
-  - `Python/LICENSE` added for builds.
+  - `Calculate_Mu_Lim_Flanged`: Calculates limiting moment for T-sections.
+  - `Design_Flanged_Beam`: Handles Neutral Axis in Flange, Web (Singly), and Web (Doubly).
+  - `Test_Flanged.bas`: Comprehensive unit tests for all three cases.
+
+## [0.2.1] - 2025-12-11
+### Fixed (Mac VBA Compatibility)
+- **Stack Corruption:** Fixed `Runtime Error 6: Overflow` caused by passing inline boolean expressions to subroutines.
+- **Integer Overflow:** Wrapped all dimension multiplications in `CDbl()` within library modules.
+- **UDT Stability:** Removed nested UDT returns in `Design_Doubly_Reinforced` to prevent stack corruption.
+- **Test Harness:** Refactored `Test_Structural.bas` to use the "Safe Assertion Pattern" and deferred `Debug.Print`.
 
 ## [0.2.0] - 2025-12-11
 ### Added

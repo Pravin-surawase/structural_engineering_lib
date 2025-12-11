@@ -126,7 +126,52 @@ Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, B
     
     ' Case 1: Singly Reinforced
     If Mu_abs <= Mu_lim Then
-        res = Design_Singly_Reinforced(b, d, D_total, Mu_kNm, fck, fy)
+        ' Inline Singly Reinforced Logic to avoid nested UDT return stack issues on Mac
+        res.SectionType = UnderReinforced
+        res.IsSafe = True
+        
+        ' Calculate Ast (Inlined logic to avoid function call overhead)
+        Dim Ast_calc As Double
+        ' Ast = (0.5 * fck / fy) * (1 - Sqr(1 - (4.6 * Mu / (fck * b * d^2)))) * b * d
+        Dim term1_inline As Double
+        term1_inline = 0.5 * fck / fy
+        
+        Dim Mu_Nmm_inline As Double
+        Mu_Nmm_inline = Abs(Mu_kNm) * 1000000#
+        
+        Dim term2_inline As Double
+        term2_inline = (4.6 * Mu_Nmm_inline) / (CDbl(fck) * CDbl(b) * CDbl(d) * CDbl(d))
+        
+        If term2_inline > 1# Then term2_inline = 1#
+        
+        Ast_calc = term1_inline * (1# - Sqr(1# - term2_inline)) * CDbl(b) * CDbl(d)
+        
+        ' Check Minimum Steel
+        Dim Ast_min As Double
+        Ast_min = 0.85 * CDbl(b) * CDbl(d) / CDbl(fy)
+        
+        If Ast_calc < Ast_min Then
+            res.Ast_Required = Ast_min
+            res.ErrorMessage = "Minimum steel provided."
+        Else
+            res.Ast_Required = Ast_calc
+        End If
+        
+        ' Check Maximum Steel
+        Dim Ast_max As Double
+        Ast_max = 0.04 * CDbl(b) * CDbl(D_total)
+        
+        If res.Ast_Required > Ast_max Then
+            res.IsSafe = False
+            res.ErrorMessage = "Ast exceeds maximum limit (4% bD)."
+        End If
+        
+        ' Calculate Pt
+        res.Pt_Provided = (res.Ast_Required * 100#) / (CDbl(b) * CDbl(d))
+        
+        ' Calculate actual Xu
+        res.Xu = (0.87 * CDbl(fy) * res.Ast_Required) / (0.36 * CDbl(fck) * CDbl(b))
+        
         res.Asc_Required = 0
         Design_Doubly_Reinforced = res
         Exit Function
@@ -182,7 +227,6 @@ Public Function Design_Doubly_Reinforced(ByVal b As Double, ByVal d As Double, B
     res.Ast_Required = Ast1 + Ast2
     
     ' 7. Check Max Steel (Cl. 26.5.1.2)
-    Dim Ast_max As Double
     Ast_max = 0.04 * CDbl(b) * CDbl(D_total)
     
     res.IsSafe = True
@@ -301,7 +345,7 @@ Public Function Design_Flanged_Beam(ByVal bw As Double, ByVal bf As Double, ByVa
     Dim xu_sol As Double
     xu_sol = high
     
-    Dim i As Integer
+    Dim i As Long
     Dim M_mid As Double
     Dim yf_mid As Double
     Dim C_web As Double, M_web As Double
@@ -353,11 +397,17 @@ Public Function Design_Flanged_Beam(ByVal bw As Double, ByVal bf As Double, ByVa
     C_total = (0.36 * fck * bw * xu_sol) + (0.45 * fck * (bf - bw) * yf_sol)
     
     Dim Ast_req As Double
-    Ast_req = C_total / (0.87 * fy)
+    Ast_req = C_total / (0.87 * CDbl(fy))
     
-    ' Min Steel
+    res.SectionType = UnderReinforced
+    res.IsSafe = True
+    res.Mu_Lim = Mu_lim_T
+    res.Xu = xu_sol
+    res.Xu_max = xu_max
+    
+    ' Check Minimum Steel (based on web width bw)
     Dim Ast_min As Double
-    Ast_min = 0.85 * bw * d / fy
+    Ast_min = 0.85 * CDbl(bw) * CDbl(d) / CDbl(fy)
     
     If Ast_req < Ast_min Then
         res.Ast_Required = Ast_min
@@ -366,23 +416,17 @@ Public Function Design_Flanged_Beam(ByVal bw As Double, ByVal bf As Double, ByVa
         res.Ast_Required = Ast_req
     End If
     
-    ' Max Steel
-    Dim Area_gross As Double
-    Area_gross = (bw * D_total) + ((bf - bw) * Df)
+    ' Check Maximum Steel (4% of gross web area usually, but code says bD)
+    ' Using bw * D_total for T-beams is conservative/standard practice for web congestion
     Dim Ast_max As Double
-    Ast_max = 0.04 * Area_gross
+    Ast_max = 0.04 * CDbl(bw) * CDbl(D_total)
     
-    res.IsSafe = True
     If res.Ast_Required > Ast_max Then
         res.IsSafe = False
-        res.ErrorMessage = "Ast exceeds maximum limit."
+        res.ErrorMessage = "Ast exceeds maximum limit (4% bwD)."
     End If
     
-    res.Mu_Lim = Mu_lim_T
-    res.Pt_Provided = (res.Ast_Required * 100#) / (bw * d)
-    res.SectionType = UnderReinforced
-    res.Xu = xu_sol
-    res.Xu_max = xu_max
+    res.Pt_Provided = (res.Ast_Required * 100#) / (CDbl(bw) * CDbl(d))
     res.Asc_Required = 0
     
     Design_Flanged_Beam = res

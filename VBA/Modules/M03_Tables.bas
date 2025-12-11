@@ -41,7 +41,7 @@ Private Function Get_Tc_Column_M40() As Variant
 End Function
 
 ' Helper to get Tc for a specific grade (interpolating Pt)
-Private Function Get_Tc_For_Grade(ByVal Grade As Integer, ByVal pt As Double) As Double
+Private Function Get_Tc_For_Grade(ByVal Grade As Long, ByVal pt As Double) As Double
     Dim arrTc As Variant
     
     Select Case Grade
@@ -61,7 +61,7 @@ Private Function Get_Tc_For_Grade(ByVal Grade As Integer, ByVal pt As Double) As
     If pt > 3# Then pt = 3#
     
     ' Find interval
-    Dim i As Integer
+    Dim i As Long
     For i = LBound(arrPt) To UBound(arrPt) - 1
         If pt >= arrPt(i) And pt <= arrPt(i + 1) Then
             Get_Tc_For_Grade = M04_Utilities.LinearInterp(pt, CDbl(arrPt(i)), CDbl(arrTc(i)), CDbl(arrPt(i + 1)), CDbl(arrTc(i + 1)))
@@ -79,7 +79,7 @@ Public Function Get_Tc_Value(ByVal fck As Double, ByVal pt As Double) As Double
     ' 1. Handle Fck (No interpolation, use nearest lower grade)
     ' Available columns: 15, 20, 25, 30, 35, 40
     
-    Dim gradeToUse As Integer
+    Dim gradeToUse As Long
     
     If fck >= 40 Then
         gradeToUse = 40

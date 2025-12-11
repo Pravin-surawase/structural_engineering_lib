@@ -24,9 +24,9 @@ Use PM agent when:
 
 | Version | Scope | Status |
 |---------|-------|--------|
-| **v0.1** | Rectangular beams, singly reinforced flexure, shear design | 🟡 In Progress |
-| v0.2 | Doubly reinforced flexure | 📋 Planned |
-| v0.3 | Flanged beams (T, L) | 📋 Planned |
+| **v0.1** | Rectangular beams, singly reinforced flexure, shear design | ✅ Done |
+| **v0.2** | Doubly reinforced flexure | ✅ Done |
+| v0.3 | Flanged beams (T, L) | 🟡 In Progress |
 | v0.4 | Excel workbook integration | 📋 Planned |
 | v1.0 | IS 13920 ductile detailing, production ready | 📋 Future |
 
@@ -34,16 +34,12 @@ Use PM agent when:
 
 ## Scope Rules
 
-### In Scope for v0.1
-- ✅ Rectangular RC beams only
-- ✅ IS 456 limit state design
-- ✅ Flexure: singly reinforced, Mu_lim, Ast calculation
-- ✅ Shear: τv, τc, τc,max, stirrup spacing
-- ✅ VBA + Python implementations
-- ✅ Basic unit tests
+### In Scope for v0.2
+- ✅ Doubly reinforced beams (Design & Analysis)
+- ✅ Mac VBA compatibility hardening
+- ✅ Comprehensive unit tests for all flexure cases
 
-### Out of Scope for v0.1
-- ❌ Doubly reinforced beams
+### Out of Scope for v0.2
 - ❌ Flanged beams (T, L sections)
 - ❌ Deflection or crack width checks
 - ❌ IS 13920 ductile detailing
