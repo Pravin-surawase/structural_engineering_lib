@@ -39,6 +39,7 @@ Public Sub Generate_Beam_Schedule()
     Application.ScreenUpdating = False
     
     ' 2. Process Design Data
+    Call Sort_Design_Table(tblDesign)
     Call Process_Design_To_Schedule(tblDesign, tblSchedule)
     
     Application.ScreenUpdating = True
@@ -185,6 +186,21 @@ Private Sub Process_Design_To_Schedule(tblIn As ListObject, tblOut As ListObject
         Call Write_Schedule_Row(tblOut, lastID, lastStory, b, D, topSteel, botSteel, shearSteel)
     End If
     
+End Sub
+
+Private Sub Sort_Design_Table(tbl As ListObject)
+    ' Sort by Story (col 2), then ID (col 1) to ensure grouping works even if BEAM_DESIGN is out of order.
+    On Error GoTo Fail
+    With tbl.Sort
+        .SortFields.Clear
+        .SortFields.Add Key:=tbl.ListColumns(2).Range, SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortTextAsNumbers
+        .SortFields.Add Key:=tbl.ListColumns(1).Range, SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortTextAsNumbers
+        .Header = xlYes
+        .Apply
+    End With
+    Exit Sub
+Fail:
+    ' If sorting fails (e.g., protected sheet), continue without sorting.
 End Sub
 
 Private Sub Write_Schedule_Row(tbl As ListObject, ID As String, Story As String, b As Double, D As Double, top() As String, bot() As String, shear() As String)

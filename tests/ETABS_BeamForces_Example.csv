@@ -1,11 +1,14 @@
-Story,Label,Unique Name,Output Case,Station,P,V2,M3
-Story1,B1,1,1.5(DL+LL),0,0,100,-50
-Story1,B1,1,1.5(DL+LL),500,0,75,-10
-Story1,B1,1,1.5(DL+LL),1000,0,50,40
-Story1,B1,1,1.5(DL+LL),2000,0,0,150
-Story1,B1,1,1.5(DL+LL),3000,0,-50,40
-Story1,B1,1,1.5(DL+LL),3500,0,-75,-10
-Story1,B1,1,1.5(DL+LL),4000,0,-100,-50
-Story1,B2,2,1.5(DL+LL),0,0,80,-40
-Story1,B2,2,1.5(DL+LL),1500,0,0,100
-Story1,B2,2,1.5(DL+LL),3000,0,-80,-40
+Story,Label,Station,M3,V2,Output Case
+Story1,B1,0,-50,100,1.5(DL+LL)
+Story1,B1,500,-10,75,1.5(DL+LL)
+Story1,B1,1000,40,50,1.5(DL+LL)
+Story1,B1,2000,150,0,1.5(DL+LL)
+Story1,B1,3000,40,-50,1.5(DL+LL)
+Story1,B1,3500,-10,-75,1.5(DL+LL)
+Story1,B1,4000,-50,-100,1.5(DL+LL)
+Story1,B2,0,-40,80,1.5(DL+LL)
+Story1,B2,1500,100,0,1.5(DL+LL)
+Story1,B2,3000,-40,-80,1.5(DL+LL)
+Story2,B3,0,-80,150,1.5(DL+LL)
+Story2,B3,700,200,180,1.5(DL+LL)
+Story2,B3,1400,-70,140,1.5(DL+LL)
