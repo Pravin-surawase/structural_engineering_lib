@@ -66,85 +66,76 @@ Public Sub Import_ETABS_Data()
 End Sub
 
 ' ------------------------------------------------------------------------------------------
-' Core Logic: Read CSV, Group by Beam (Dictionary-like), Aggregate Forces
+' Public Macro: Generate Sample ETABS CSV
 ' ------------------------------------------------------------------------------------------
-Private Sub Process_ETABS_CSV(filePath As String, tbl As ListObject)
+Public Sub Generate_Sample_ETABS_CSV()
+    Dim filePath As String
     Dim fileNum As Integer
-    Dim lineData As String
-    Dim headers() As String
-    Dim rowData() As String
-    Dim colMap As Collection
     Dim i As Long
     
-    ' Column Indices
-    Dim idxStory As Long, idxLabel As Long, idxStation As Long
-    Dim idxM3 As Long, idxV2 As Long
+    ' Default path: Desktop or Documents
+    #If Mac Then
+        filePath = MacScript("return POSIX path of (path to desktop folder)") & "ETABS_Sample_Export.csv"
+    #Else
+        filePath = Environ("USERPROFILE") & "\Desktop\ETABS_Sample_Export.csv"
+    #End If
     
     fileNum = FreeFile
-    Open filePath For Input As #fileNum
+    Open filePath For Output As #fileNum
     
-    ' --- Read Headers ---
-    If Not EOF(fileNum) Then
-        Line Input #fileNum, lineData
-        headers = ParseCSVLine(lineData)
-        Set colMap = MapHeaders(headers)
-        
-        ' Validate Required Columns
-        If Not ValidateColumns(colMap, idxStory, idxLabel, idxStation, idxM3, idxV2) Then
-            MsgBox "Missing required columns (Story/Label/Station/M3/V2). Loading sample data instead.", vbCritical
-            Close #fileNum
-            Populate_Sample_Input tbl
-            Close #fileNum
-            Exit Sub
-        End If
-    End If
+    ' Write Header
+    Print #fileNum, "Story,Label,Unique Name,Output Case,Station,P,V2,M3"
     
-    ' --- Read Data into Memory (Grouping) ---
-    ' Key: "Story|Label", Value: Collection of Rows
-    Dim beamGroups As New Collection
-    Dim beamKeys As New Collection ' To track order/existence
-    Dim key As String
-    Dim group As Collection
+    ' Write Sample Data (B1, B2, B3)
+    ' B1: Story1, 4m span
+    Print #fileNum, "Story1,B1,1,Combo1,0,0,100,-50"
+    Print #fileNum, "Story1,B1,1,Combo1,2000,0,0,150"
+    Print #fileNum, "Story1,B1,1,Combo1,4000,0,-100,-50"
     
-    Do Until EOF(fileNum)
-        Line Input #fileNum, lineData
-        rowData = ParseCSVLine(lineData)
-        
-        If UBound(rowData) >= UBound(headers) Then
-            ' Extract Key
-            Dim sStory As String: sStory = Trim(rowData(idxStory))
-            Dim sLabel As String: sLabel = Trim(rowData(idxLabel))
-            key = sStory & "|" & sLabel
-            
-            ' Get or Create Group
-            Set group = Nothing
-            On Error Resume Next
-            Set group = beamGroups(key)
-            On Error GoTo 0
-            
-            If group Is Nothing Then
-                Set group = New Collection
-                beamGroups.Add group, key
-                beamKeys.Add key
-            End If
-            
-            ' Add Row
-            group.Add rowData
-        End If
-    Loop
+    ' B2: Story1, 3m span
+    Print #fileNum, "Story1,B2,2,Combo1,0,0,80,-40"
+    Print #fileNum, "Story1,B2,2,Combo1,1500,0,0,100"
+    Print #fileNum, "Story1,B2,2,Combo1,3000,0,-80,-40"
+    
+    ' B3: Story2, 5m span
+    Print #fileNum, "Story2,B3,3,Combo1,0,0,120,-60"
+    Print #fileNum, "Story2,B3,3,Combo1,2500,0,0,200"
+    Print #fileNum, "Story2,B3,3,Combo1,5000,0,-120,-60"
+    
     Close #fileNum
     
-    ' --- Process Groups ---
-    ' Clear Table First? Optional. Let's append for now, or clear if user wants.
-    ' For v0.6, let's clear to avoid duplicates.
-    If Not tbl.DataBodyRange Is Nothing Then tbl.DataBodyRange.Delete
+    MsgBox "Sample CSV generated at: " & vbNewLine & filePath, vbInformation
+End Sub
+
+' ------------------------------------------------------------------------------------------
+' Helper: Populate sample data (for environments without ETABS/CSV)
+' ------------------------------------------------------------------------------------------
+Private Sub Populate_Sample_Input(tbl As ListObject)
+    ' Columns: ID, Story, Span, b, D, Cover, fck, fy, Mu, Vu, Flanged?, Df, bf
+    Dim samples As Variant
+    samples = Array( _
+        Array("B1", "Story1", "Start", 230, 450, 25, 25, 500, -50, 100, "No", 0, 0), _
+        Array("B1", "Story1", "Mid", 230, 450, 25, 25, 500, 150, 0, "No", 0, 0), _
+        Array("B1", "Story1", "End", 230, 450, 25, 25, 500, -50, 100, "No", 0, 0), _
+        Array("B2", "Story1", "Start", 300, 600, 30, 30, 500, -40, 80, "Yes", 120, 800), _
+        Array("B2", "Story1", "Mid", 300, 600, 30, 30, 500, 100, 0, "Yes", 120, 800), _
+        Array("B2", "Story1", "End", 300, 600, 30, 30, 500, -40, 80, "Yes", 120, 800), _
+        Array("B3", "Story2", "Start", 230, 500, 25, 25, 500, -60, 120, "No", 0, 0), _
+        Array("B3", "Story2", "Mid", 230, 500, 25, 25, 500, 200, 0, "No", 0, 0), _
+        Array("B3", "Story2", "End", 230, 500, 25, 25, 500, -60, 120, "No", 0, 0) _
+    )
     
-    For i = 1 To beamKeys.Count
-        key = beamKeys(i)
-        Set group = beamGroups(key)
-        Call Process_Beam_Group(key, group, tbl, idxStation, idxM3, idxV2)
+    ' Clear existing rows
+    If Not tbl.DataBodyRange Is Nothing Then
+        tbl.DataBodyRange.Delete
+    End If
+    
+    Dim i As Long
+    For i = LBound(samples) To UBound(samples)
+        Dim lr As ListRow
+        Set lr = tbl.ListRows.Add
+        lr.Range.Cells(1, 1).Resize(1, 13).Value = samples(i)
     Next i
-    
 End Sub
 
 ' ------------------------------------------------------------------------------------------

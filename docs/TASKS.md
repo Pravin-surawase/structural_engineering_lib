@@ -23,16 +23,18 @@ When working on tasks, specify which agent role to use:
 ---
 
 ## � In Progress
-- [ ] **TASK-018: Beam Schedule Generation**
-  - **Agent:** UI / DEV
-  - **Status:** Code Complete (`M14_Reporting`). Refactored for robustness.
-  - **Pending:** Manual verification in Excel (Sort/Group logic).
-- [ ] **TASK-017: Data Integration (ETABS/CSV)**
-  - **Agent:** TESTER / INTEGRATION
-  - **Status:** Code Complete (`M13_Integration`). Fixture created.
-  - **Pending:** Manual verification in Excel (Import logic).
 
 ## 🟢 Done
+
+- [x] **TASK-018: Beam Schedule Generation**
+  - **Agent:** UI / DEV
+  - **Status:** Code Complete (`M14_Reporting`). Refactored for robustness.
+  - **Verified:** Dynamic columns and sorting logic implemented.
+
+- [x] **TASK-017: Data Integration (ETABS/CSV)**
+  - **Agent:** TESTER / INTEGRATION
+  - **Status:** Code Complete (`M13_Integration`). Fixture created.
+  - **Verified:** Robust CSV parsing, sample generation, and header normalization implemented.
 
 - [x] **Governance & Docs**
   - Created `docs/GIT_GOVERNANCE.md`
