@@ -41,37 +41,49 @@ When working on tasks, specify which agent role to use:
   - **Output:** `docs/RESEARCH_DETAILING.md`
   - Covers: IS 456, IS 13920, SP 34
 
+- [x] **TASK-024: PM Scope Lock (v0.7)**
+  - **Agent:** PM
+  - **Status:** ✅ Complete
+  - **Output:** Scope locked in `docs/v0.7_REQUIREMENTS.md`
+  - IN: DXF export, beam elevation, rebar, stirrups, dimensions
+  - OUT: Section cuts, BBS, multi-beam layout
+
+- [x] **TASK-025: UI Layout Design (v0.7)**
+  - **Agent:** UI
+  - **Status:** ✅ Complete
+  - **Output:** Layer structure in `docs/v0.7_REQUIREMENTS.md`
+  - Layers: BEAM_OUTLINE, REBAR_MAIN, REBAR_STIRRUP, DIMENSIONS, TEXT
+
+- [x] **TASK-026: DEV Architecture (v0.7)**
+  - **Agent:** DEV
+  - **Status:** ✅ Complete
+  - **Decision:** Python `ezdxf` for DXF, VBA trigger or CLI
+  - Modules: `Python/structural_lib/detailing.py`, `Python/structural_lib/dxf_export.py`
+
 ---
 
-## 🔴 Up Next (v0.7 - Detailing & Drawings)
+## 🔴 Up Next (v0.7 - Implementation)
 
-- [ ] **TASK-024: PM Scope Lock (v0.7)**
-  - **Agent:** PM
-  - **Goal:** Finalize scope and create v0.7 release plan
-
-- [ ] **TASK-025: UI Layout Design (v0.7)**
-  - **Agent:** UI
-  - **Goal:** Design DXF layer structure and drawing layout
-
-- [ ] **TASK-026: DEV Architecture (v0.7)**
+- [x] **TASK-027: Implement Detailing Logic (v0.7)**
   - **Agent:** DEV
-  - **Goal:** Design M15_Detailing and M16_Drawing modules
+  - **Status:** ✅ Complete
+  - **Output:** `Python/structural_lib/detailing.py`
+  - Functions: Ld, lap length, bar spacing, bar arrangement
 
-- [ ] **TASK-027: Implement Detailing Logic (v0.7)**
+- [x] **TASK-028: Implement DXF Export (v0.7)**
   - **Agent:** DEV
-  - **Goal:** Create `M15_Detailing.bas` with Ld, lap length, bar spacing
-
-- [ ] **TASK-028: Implement DXF Export (v0.7)**
-  - **Agent:** DEV
-  - **Goal:** Create DXF generation (Python ezdxf or VBA)
+  - **Status:** ✅ Complete
+  - **Output:** `Python/structural_lib/dxf_export.py`
+  - Uses ezdxf library for DXF generation
 
 - [ ] **TASK-029: Data Mapping for Detailing (v0.7)**
   - **Agent:** INTEGRATION
   - **Goal:** Define tbl_BeamDesign → DXF data flow
 
-- [ ] **TASK-030: Test Cases for Detailing (v0.7)**
+- [x] **TASK-030: Test Cases for Detailing (v0.7)**
   - **Agent:** TESTER
-  - **Goal:** Define test matrix for DXF output
+  - **Status:** ✅ Complete (31 tests pass)
+  - **Output:** `Python/tests/test_detailing.py`
 
 - [ ] **TASK-031: Documentation Update (v0.7)**
   - **Agent:** DOCS

@@ -1,7 +1,7 @@
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
-Version:      1.0.0
+Version:      0.7.0
 License:      MIT
 """
 
@@ -15,3 +15,10 @@ from . import flexure
 from . import shear
 from . import ductile
 from . import api
+from . import detailing
+
+# DXF export is optional (requires ezdxf)
+try:
+    from . import dxf_export
+except ImportError:
+    pass  # ezdxf not installed
