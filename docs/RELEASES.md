@@ -6,9 +6,10 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ---
 
-## v0.6.0 (In Progress)
-**Target:** Integration & Reporting
-**Branch:** `feat/v0.6-integration-reporting`
+## v0.6.0
+**Date:** 2025-12-11
+**Status:** ✅ Locked & Verified
+**Commit Hash:** 48c4c88
 **Mindset:** Transitioning from "Core Logic" (v0.5) to "Usability" (v0.6).
 *   **Integration:** Bridging the gap between analysis software (ETABS) and our design engine.
 *   **Reporting:** Converting raw design data into professional deliverables (Beam Schedules).
@@ -19,7 +20,7 @@ Entries here represent "locked" versions that have been verified and approved.
 - Robustness Refactoring (Dynamic Columns, Sorting)
 - Governance Docs (`GIT_GOVERNANCE.md`, `MISSION_AND_PRINCIPLES.md`)
 
-## v0.5.0 (Current)
+## v0.5.0
 **Date:** 2025-12-11
 **Status:** ✅ Locked & Verified
 **Commit Hash:** be04b12b65a0e2c147ec018ea3ba7b826ac5abdc
