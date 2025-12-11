@@ -87,9 +87,11 @@ When working on tasks, specify which agent role to use:
   - **Status:** ✅ Complete (31 tests pass)
   - **Output:** `Python/tests/test_detailing.py`
 
-- [ ] **TASK-031: Documentation Update (v0.7)**
+- [x] **TASK-031: Documentation Update (v0.7)**
   - **Agent:** DOCS
-  - **Goal:** Update API_REFERENCE, CHANGELOG for v0.7
+  - **Status:** ✅ Complete
+  - **Output:** API_REFERENCE.md v0.7.0, CHANGELOG.md updated
+  - Added Sections 9-11 for detailing, DXF, integration APIs
 
 - [ ] **TASK-032: Release v0.7.0**
   - **Agent:** DEVOPS

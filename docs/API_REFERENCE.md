@@ -1,8 +1,8 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.6.0  
+**Document Version:** 0.7.0  
 **Last Updated:** December 11, 2025  
-**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting).
+**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export).
 
 ---
 
@@ -446,3 +446,208 @@ Use these to sanity-check outputs (within typical rounding tolerance: ±0.5 kN·
 4) **Flexure — minimum steel governed**
 - Inputs: b=230 mm, d=450 mm, D=500 mm, Mu=5 kN·m, fck=20, fy=415.
 - Expected: Ast_min = 0.85*b*d/fy ≈ 212 mm²; result should return Ast = Ast_min with a “Minimum steel” note.
+---
+
+## 9. Detailing Module (`detailing.py`) — v0.7+
+
+Calculates reinforcement detailing parameters per IS 456:2000 and SP 34:1987.
+
+### 9.1 Development Length
+**Python:**
+```python
+def calculate_development_length(
+    bar_dia: float,           # mm
+    fy: float,                # N/mm² (250, 415, 500, 550)
+    fck: float,               # N/mm² (15-50)
+    bar_type: str = "deformed", # "deformed" or "plain"
+    is_compression: bool = False
+) -> float  # Returns Ld in mm
+```
+
+**Formula:** `Ld = (φ × σs) / (4 × τbd)`
+- σs = 0.87 × fy (tension) or 0.67 × fy (compression)
+- τbd from bond stress table with 60% increase for deformed bars
+
+### 9.2 Lap Length
+**Python:**
+```python
+def calculate_lap_length(
+    bar_dia: float,
+    fy: float,
+    fck: float,
+    bar_type: str = "deformed",
+    lap_zone: str = "tension"  # "tension" or "compression"
+) -> float  # Returns lap length in mm
+```
+
+**Multiplier:** 1.5× for tension zones, 1.0× for compression zones.
+
+### 9.3 Bar Spacing Check
+**Python:**
+```python
+def calculate_bar_spacing(
+    b: float,                 # Beam width (mm)
+    cover: float,             # Clear cover (mm)
+    stirrup_dia: float,       # Stirrup diameter (mm)
+    bar_dia: float,           # Main bar diameter (mm)
+    bar_count: int            # Number of bars
+) -> float  # Returns c/c spacing (mm)
+
+def check_min_spacing(
+    spacing: float,
+    bar_dia: float,
+    agg_size: float = 20.0
+) -> Tuple[bool, str]  # (is_valid, message)
+```
+
+**Minimum Spacing:** max(bar_dia, agg_size + 5mm, 25mm) per IS 456 Cl 26.3.2.
+
+### 9.4 Bar Arrangement Selection
+**Python:**
+```python
+def select_bar_arrangement(
+    ast_required: float,      # Required area (mm²)
+    b: float,                 # Beam width (mm)
+    cover: float,             # Clear cover (mm)
+    stirrup_dia: float = 8.0, # Stirrup diameter (mm)
+    preferred_dia: float = None,
+    max_layers: int = 2
+) -> BarArrangement
+```
+
+**BarArrangement Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `count` | int | Number of bars |
+| `diameter` | float | Bar diameter (mm) |
+| `area_provided` | float | Total area (mm²) |
+| `spacing` | float | C/C spacing (mm) |
+| `layers` | int | Number of layers |
+| `callout()` | method | Returns "3-16φ" format |
+
+### 9.5 Complete Beam Detailing
+**Python:**
+```python
+def create_beam_detailing(
+    beam_id: str,
+    story: str,
+    b: float, D: float, span: float, cover: float,
+    fck: float, fy: float,
+    ast_start: float, ast_mid: float, ast_end: float,
+    asc_start: float = 0, asc_mid: float = 0, asc_end: float = 0,
+    stirrup_dia: float = 8,
+    stirrup_spacing_start: float = 150,
+    stirrup_spacing_mid: float = 200,
+    stirrup_spacing_end: float = 150,
+    is_seismic: bool = False
+) -> BeamDetailingResult
+```
+
+**BeamDetailingResult Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `beam_id` | str | Beam identifier |
+| `story` | str | Story identifier |
+| `b`, `D`, `span`, `cover` | float | Geometry (mm) |
+| `top_bars` | List[BarArrangement] | [start, mid, end] |
+| `bottom_bars` | List[BarArrangement] | [start, mid, end] |
+| `stirrups` | List[StirrupArrangement] | [start, mid, end] |
+| `ld_tension` | float | Development length (mm) |
+| `ld_compression` | float | Compression Ld (mm) |
+| `lap_length` | float | Lap splice length (mm) |
+| `is_valid` | bool | Validity status |
+| `remarks` | str | Notes/warnings |
+
+---
+
+## 10. DXF Export Module (`dxf_export.py`) — v0.7+
+
+Generates CAD-ready DXF drawings from detailing results. **Requires:** `pip install ezdxf`
+
+### 10.1 Generate Beam DXF
+**Python:**
+```python
+def generate_beam_dxf(
+    result: BeamDetailingResult,
+    output_path: str,
+    scale: float = 1.0,
+    include_section: bool = True
+) -> None  # Creates DXF file at output_path
+```
+
+### 10.2 DXF Layers
+| Layer Name | Color | Content |
+|------------|-------|---------|
+| `BEAM_OUTLINE` | White (7) | Beam perimeter |
+| `REBAR_MAIN` | Red (1) | Main bars (top/bottom) |
+| `REBAR_STIRRUP` | Green (3) | Stirrup outlines |
+| `DIMENSIONS` | Cyan (4) | Dimension lines |
+| `TEXT` | Yellow (2) | Callouts, labels |
+| `CENTERLINE` | Magenta (6) | Center lines |
+
+### 10.3 Output Format
+- **DXF Version:** R2010 (AC1024) for wide compatibility
+- **Units:** mm (1:1 scale)
+- **Views:** Elevation + Cross-section
+- **Origin:** Bottom-left of beam at first support
+
+---
+
+## 11. Excel Integration Module (`excel_integration.py`) — v0.7+
+
+Bridges Excel/CSV data with detailing and DXF generation.
+
+### 11.1 Load Beam Data
+**Python:**
+```python
+def load_beam_data_from_csv(filepath: str) -> List[BeamDesignData]
+def load_beam_data_from_json(filepath: str) -> List[BeamDesignData]
+```
+
+**BeamDesignData Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `beam_id` | str | Beam identifier |
+| `story` | str | Story level |
+| `b`, `D`, `d`, `span`, `cover` | float | Geometry (mm) |
+| `fck`, `fy` | float | Material grades |
+| `Mu`, `Vu` | float | Design forces |
+| `Ast_req`, `Asc_req` | float | Steel areas (mm²) |
+| `stirrup_dia`, `stirrup_spacing` | float | Stirrup details |
+
+### 11.2 Batch Processing
+**Python:**
+```python
+def batch_generate_dxf(
+    input_file: str,          # CSV or JSON file path
+    output_folder: str,       # DXF output directory
+    is_seismic: bool = False  # Apply IS 13920
+) -> List[ProcessingResult]
+
+def generate_summary_report(
+    results: List[ProcessingResult]
+) -> str  # Text summary
+
+def generate_detailing_schedule(
+    results: List[ProcessingResult]
+) -> List[Dict]  # Schedule rows for CSV export
+```
+
+### 11.3 CLI Usage
+```bash
+# Basic usage
+python -m structural_lib.excel_integration beam_design.csv -o ./dxf_output
+
+# With seismic detailing and schedule export
+python -m structural_lib.excel_integration beam_design.csv \
+    -o ./dxf_output \
+    --seismic \
+    --schedule detailing_schedule.csv
+```
+
+### 11.4 CSV Input Format
+```csv
+BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu,Ast_req,Asc_req,Stirrup_Dia,Stirrup_Spacing,Status
+B1,Story1,300,500,4000,40,25,500,150,100,942.5,0,8,150,OK
+B2,Story1,300,450,3000,40,25,500,100,80,628.3,0,8,175,OK
+```

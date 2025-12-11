@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.7.0] - 2025-12-11
+### Added
+- **Reinforcement Detailing Module (`detailing.py`)**:
+  - `calculate_development_length`: IS 456 Cl 26.2.1 Ld calculation with bond stress lookup.
+  - `calculate_lap_length`: Lap splice length with zone multipliers (1.5× tension).
+  - `calculate_bar_spacing`: Center-to-center spacing calculation.
+  - `check_min_spacing`: IS 456 Cl 26.3.2 validation (≥ max(bar_dia, agg+5, 25mm)).
+  - `select_bar_arrangement`: Practical bar selection from standard diameters.
+  - `calculate_stirrup_legs`: Determines 2L/4L/6L based on beam width.
+  - `create_beam_detailing`: Complete beam detailing from design output.
+  - Data classes: `BarArrangement`, `StirrupArrangement`, `BeamDetailingResult`.
+- **DXF Export Module (`dxf_export.py`)**:
+  - `generate_beam_dxf`: Creates DXF R2010 drawing from detailing result.
+  - `draw_beam_elevation`: Elevation view with reinforcement.
+  - `draw_beam_section`: Cross-section view at specified location.
+  - `draw_dimensions`: Automatic dimensioning.
+  - `draw_annotations`: Bar callouts (e.g., "3-20φ BOT").
+  - Layer system: BEAM_OUTLINE, REBAR_MAIN, REBAR_STIRRUP, DIMENSIONS, TEXT.
+  - Optional dependency: `ezdxf` library.
+- **Excel Integration Module (`excel_integration.py`)**:
+  - `BeamDesignData`: Dataclass for parsing beam design rows.
+  - `load_beam_data_from_csv`: Flexible CSV parser with key normalization.
+  - `load_beam_data_from_json`: JSON parser supporting both array and object formats.
+  - `process_single_beam`: Generate detailing + optional DXF for one beam.
+  - `batch_generate_dxf`: Batch processing with progress tracking.
+  - `generate_summary_report`: Text report of batch results.
+  - `generate_detailing_schedule`: Export detailing to CSV schedule format.
+  - CLI entry point: `python -m structural_lib.excel_integration`.
+- **Documentation**:
+  - `docs/specs/v0.7_DATA_MAPPING.md`: Complete data flow specification.
+  - `docs/specs/v0.7_REQUIREMENTS.md`: CLIENT requirements for detailing.
+  - `docs/RESEARCH_DETAILING.md`: IS 456/SP 34 detailing research.
+  - `docs/AGENT_WORKFLOW.md`: Multi-agent governance system.
+- **Test Coverage**:
+  - `test_detailing.py`: 31 tests for detailing module.
+  - `test_excel_integration.py`: 15 tests for integration module.
+  - Total: 67 tests passing.
+
+### Technical Details
+- Bond stress table: M15-M50 grades with 60% increase for deformed bars.
+- Standard bar diameters: 8, 10, 12, 16, 20, 25, 32 mm.
+- DXF output: 1:1 scale (mm units), R2010 format for compatibility.
+
 ## [0.6.0] - 2025-12-11
 ### Added
 - **ETABS Integration (`M13_Integration.bas`)**:
