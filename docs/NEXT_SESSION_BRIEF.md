@@ -29,6 +29,12 @@
 - Serviceability checks (deflection, crack width) missing in Python/VBA.
 - DXF header extents not recalculated (documented limitation).
 
+#### 5. **Research Log + Dev Workflow Docs Updated** ✅
+- `docs/RESEARCH_AI_ENHANCEMENTS.md`: Added Pass 3 (source-backed research + decision matrix) and Pass 4 (notes extracted from your local Downloads snapshot).
+- `docs/_references/README.md`: Added a simple place to drop local reference files (PDFs/spreadsheets) for future benchmark extraction.
+- `.gitignore`: Prevents accidentally committing large local reference snapshots.
+- README: Added quick dev commands and contributor setup notes.
+
 ---
 
 ## 📊 Current State (v0.7.0)
@@ -175,7 +181,8 @@ Phase 4: Integration (1 session)
 
 ### Git Status
 - **Branch:** `main`
-- **Remote:** GitHub (up-to-date, 24 commits pushed)
+- **Remote:** GitHub (up-to-date)
+- **Latest Commit:** `c3b93d0`
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)
