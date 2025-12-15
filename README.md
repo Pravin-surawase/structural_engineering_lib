@@ -1,10 +1,14 @@
 # IS 456 RC Beam Design Library
 
+[![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
+
 A reusable, UI-agnostic structural engineering library for RC rectangular beam design (flexure + shear) per **IS 456:2000** (Indian Standard for Plain and Reinforced Concrete).
 
 ## Status
 
-🚀 **Active (v0.7.0)** — Detailing & DXF export complete. Full workflow: Import CSV → Design Beams → Generate Schedule → Export DXF. Flexure (singly/doubly/flanged), shear, ductile detailing (IS 13920), reinforcement detailing (Ld, lap, spacing), and DXF drawing generation implemented in Python. 67 tests passing.
+🚀 **Active (v0.7.0)** — Strength design + detailing + DXF export complete. 67 Python tests passing.
+
+**Production note:** Serviceability checks (deflection, crack width) are planned for v0.8.0. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
 
 ## Features
 
@@ -33,6 +37,23 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 - Support: [SUPPORT.md](SUPPORT.md)
 - Security: [SECURITY.md](SECURITY.md)
 
+## Install (Python)
+
+This repo is a monorepo; the Python package lives under `Python/`.
+
+```bash
+cd Python
+python3 -m pip install -e .
+```
+
+Optional dependencies:
+
+- DXF export (ezdxf):
+
+```bash
+cd Python
+python3 -m pip install -e ".[dxf]"
+```
 
 ## Scope
 
