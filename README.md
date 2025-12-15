@@ -6,9 +6,9 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.7.0)** — Strength design + detailing + DXF export complete. 74 Python tests passing.
+🚀 **Active (v0.8.0)** — Strength design + detailing + DXF export + serviceability + compliance. 158 Python tests passing.
 
-**Production note:** Serviceability checks (deflection, crack width) are planned for v0.8.0. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
+**Production note:** v0.8.0 includes Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
 
 ## Features
 
@@ -92,6 +92,7 @@ python3 -m pip install -e ".[dxf]"
 | **v0.5** | Excel workbook integration | ✅ Completed |
 | **v0.6** | ETABS Integration, Beam Schedule Generation | ✅ Completed |
 | **v0.7** | Reinforcement Detailing, DXF Export | ✅ Completed |
+| **v0.8** | Serviceability (deflection + crack width), Compliance checker | ✅ Completed |
 
 ## Directory Structure (current)
 

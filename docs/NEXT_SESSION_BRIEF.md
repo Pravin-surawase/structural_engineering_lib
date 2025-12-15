@@ -1,7 +1,7 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-15  
-**Status:** v0.7.0 complete (detail/DXF/docs), serviceability pending  
+**Status:** v0.8.0 released (serviceability + compliance added)  
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
@@ -22,9 +22,10 @@ If you want to resume quickly without re-reading the repo:
 4. **Primary reference index:** `docs/README.md`
 
 **Verified state (as of 2025-12-15):**
-- Release baseline is **v0.7.0** (strength + detailing + DXF complete).
-- Python test suite passes locally (most recent run completed with exit code 0).
-- Known gap: **serviceability = 0%** (deflection + crack width not implemented).
+- Release baseline is **v0.8.0** (strength + detailing + DXF + serviceability + compliance).
+- Python test suite passes locally (158 tests collected/passing).
+- Serviceability (Level A): **implemented** (deflection + crack width).
+- Compliance checker: **implemented** (multi-case orchestration + summary).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
 
 ---
@@ -48,9 +49,9 @@ If you want to resume quickly without re-reading the repo:
 - VBA `Get_Library_Version` updated to 0.7.0.
 - Detailing parity: max-bar Ld/lap and spacing re-validation added.
 
-#### 4. **Open Gaps (v0.8 target)** 🔴
-- Serviceability checks (deflection, crack width) missing in Python/VBA.
+#### 4. **Open Gaps (post-v0.8)** 🔴
 - DXF header extents not recalculated (documented limitation).
+- ETABS/compliance batch workflows can be deepened (see `docs/TASKS.md`).
 
 #### 5. **Research Log + Dev Workflow Docs Updated** ✅
 - `docs/RESEARCH_AI_ENHANCEMENTS.md`: Added Pass 3 (source-backed research + decision matrix) and Pass 4 (notes extracted from your local Downloads snapshot).
@@ -60,16 +61,15 @@ If you want to resume quickly without re-reading the repo:
 
 ---
 
-## 📊 Current State (v0.7.0)
+## 📊 Current State (v0.8.0)
 
 ### Version Sync ✅
 ```
-Python __init__.py  → 0.7.0
-Python api.py       → 0.7.0  (FIXED)
-Python pyproject    → 0.7.0
-VBA M08_API.bas     → 0.7.0  (FIXED)
-README.md           → v0.7.0
-CHANGELOG.md        → [0.7.0]
+Python __init__.py  → 0.8.0
+Python api.py       → 0.8.0
+Python pyproject    → 0.8.0
+README.md           → v0.8.0
+CHANGELOG.md        → [0.8.0]
 ```
 
 ### Feature Completeness
@@ -80,8 +80,9 @@ CHANGELOG.md        → [0.7.0]
 | **DXF Export** | ✅ 100% | Python (ezdxf) + VBA (native R12) |
 | **ETABS Integration** | ✅ 100% | CSV import with normalization |
 | **Documentation** | ✅ 95% | 21 docs, beginner guides added |
-| **Testing** | ✅ 85% | 74 tests passing |
-| **Serviceability** | ❌ 0% | **MISSING: Deflection + Crack** |
+| **Testing** | ✅ 90% | 158 tests collected/passing |
+| **Serviceability** | ✅ Level A | Deflection + crack width |
+| **Compliance** | ✅ MVP | Multi-case verdict + summary |
 
 ### Code Quality Metrics
 - **Folder Structure:** 9/10 (clean separation)
@@ -118,60 +119,14 @@ CHANGELOG.md        → [0.7.0]
 
 ---
 
-## 🚀 Next Steps (v0.8.0 Priority)
+## 🚀 Next Steps (post-v0.8)
 
-### Critical Path: Serviceability Checks
+### Priority candidates
+- **TASK-044:** ETABS integration improvements for compliance runs (CSV normalization + mapping docs).
+- **TASK-043:** Rebar arrangement optimizer (deterministic, buildable layouts).
+- **TASK-039 / TASK-040:** Python ↔ VBA parity vectors + VBA test automation.
 
-**Must implement before "production-ready" status:**
-
-#### 1. **Deflection Check** (🔴 Critical — 2-3 sessions)
-```python
-# IS 456 Cl. 23.2 + Annex C
-def check_deflection(
-    beam_type: str,  # 'cantilever', 'simply_supported', 'continuous'
-    span: float,
-    d: float,
-    ast: float,
-    asc: float,
-    b: float,
-    fck: float,
-    fy: float
-) -> DeflectionResult:
-    """
-    1. Span/depth ratio method (Cl. 23.2.1)
-       - Basic values: Cantilever=7, Simply=20, Continuous=26
-       - MF1: tension steel modification
-       - MF2: compression steel modification
-       - MF3: flanged beam modification
-    
-    2. Optional: Detailed method (Annex C)
-       - Short-term: Ieff calculation
-       - Long-term: shrinkage + creep multipliers
-    """
-```
-
-#### 2. **Crack Width Check** (🔴 Critical — 1-2 sessions)
-```python
-# IS 456 Annex F
-def check_crack_width(
-    b: float,
-    d: float,
-    cover: float,
-    ast: float,
-    bar_dia: float,
-    bar_spacing: float,
-    fs: float,  # service stress
-    exposure: ExposureClass
-) -> CrackResult:
-    """
-    1. Calculate wcr using Annex F formula
-    2. Compare against limits (Table 3.2):
-       - Mild: 0.3mm
-       - Moderate: 0.3mm
-       - Severe: 0.2mm
-       - Very severe: 0.2mm
-    """
-```
+**Source of truth:** `docs/TASKS.md`
 
 ### Implementation Approach
 ```
@@ -205,7 +160,7 @@ Phase 4: Integration (1 session)
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** `adfa203`
+- **Latest Commit:** `f8ac43c`
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)

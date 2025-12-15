@@ -95,3 +95,35 @@ Entries here represent "locked" versions that have been verified and approved.
 - Core Flexure (Singly Reinforced)
 - Shear Design (Table 19/20)
 - Dual Python/VBA Architecture
+
+---
+
+## v0.7.1
+**Date:** 2025-12-15
+**Status:** ✅ Locked & Verified
+**Commit Hash:** eef6c7d3212b2cc00bccee7cb8a574148157698a
+**Mindset:** Hardening the v0.7 deliverables with stronger CI/testing and DXF parity.
+**Key Features:**
+- CI/test hardening:
+  - Expanded Python edge-case coverage and DXF smoke testing.
+  - Coverage floor enforced at `--cov-fail-under=95`.
+- Packaging:
+  - Ensured `structural_lib/py.typed` is included in built distributions.
+- VBA DXF:
+  - Native DXF R12 export module (`M16_DXF.bas`) + UDF entrypoints + VBA test suite.
+
+## v0.8.0
+**Date:** 2025-12-15
+**Status:** ✅ Locked & Verified
+**Commit Hash:** 8319bc487ad8fab445b19dab00bdd169b4759ec7
+**Mindset:** Moving toward production readiness: add serviceability and an Excel-friendly compliance verdict.
+**Key Features:**
+- Serviceability (Level A):
+  - Deflection span/depth check with explicit modifiers and auditable assumptions.
+  - Crack width estimate (Annex-F-style) with exposure-driven limits.
+  - Python + VBA parity.
+- Compliance checker:
+  - Multi-case orchestration across flexure + shear (+ optional serviceability) with deterministic governing-case selection.
+  - Excel-friendly summary row output.
+- Verification:
+  - Python tests: 158 collected/passing.
