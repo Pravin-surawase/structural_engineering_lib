@@ -109,7 +109,7 @@ Public Function Check_Deflection_SpanDepth(
 
     res.IsOK = (res.LD_Ratio <= res.Allowable_LD)
     If res.IsOK Then
-        res.Remarks = "OK: L/d=" & Format$(res.LD_Ratio, "0.000") & "  allowable=" & Format$(res.Allowable_LD, "0.000")
+        res.Remarks = "OK: L/d=" & Format$(res.LD_Ratio, "0.000") & " allowable=" & Format$(res.Allowable_LD, "0.000")
     Else
         res.Remarks = "NOT OK: L/d=" & Format$(res.LD_Ratio, "0.000") & " > allowable=" & Format$(res.Allowable_LD, "0.000")
     End If
@@ -248,7 +248,7 @@ Public Function Check_CrackWidth(
 
     res.IsOK = (res.Wcr_mm <= res.Limit_mm)
     If res.IsOK Then
-        res.Remarks = "OK: wcr=" & Format$(res.Wcr_mm, "0.0000") & " mm  limit=" & Format$(res.Limit_mm, "0.0000") & " mm"
+        res.Remarks = "OK: wcr=" & Format$(res.Wcr_mm, "0.0000") & " mm limit=" & Format$(res.Limit_mm, "0.0000") & " mm"
     Else
         res.Remarks = "NOT OK: wcr=" & Format$(res.Wcr_mm, "0.0000") & " mm > limit=" & Format$(res.Limit_mm, "0.0000") & " mm"
     End If

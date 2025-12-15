@@ -13,7 +13,7 @@ Use this file as the single entrypoint for AI agents working in VS Code.
 - IS 456 RC beam design library.
 - Implementations: Python package under `Python/` + VBA modules under `VBA/`.
 - Strength design + detailing + DXF export are done (v0.7.0).
-- Serviceability (deflection/crack width) is the next big milestone (v0.8).
+- Serviceability (deflection/crack width) is implemented (v0.8).
 
 Start here for architecture and boundaries:
 - [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)

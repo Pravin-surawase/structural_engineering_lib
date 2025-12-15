@@ -87,7 +87,7 @@ CHANGELOG.md        → [0.8.0]
 ### Code Quality Metrics
 - **Folder Structure:** 9/10 (clean separation)
 - **Documentation:** 9/10 (7,200+ lines across 21 files)
-- **Testing:** 8/10 (67 Python tests, VBA manual)
+- **Testing:** 8/10 (158 Python tests, VBA manual)
 - **Packaging:** 9/10 (modern pyproject.toml)
 - **Type Hints:** 8/10 (present, could be more comprehensive)
 

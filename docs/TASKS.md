@@ -271,6 +271,6 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - **Active Branch**: main
 
 ### v0.7 Implementation Notes
-- **Python:** Full implementation (detailing, DXF, integration) - 67 tests
+- **Python:** Full implementation (detailing, DXF, integration) - 67 tests (v0.7); 158 tests collected/passing (v0.8)
 - **VBA:** Full implementation (M15_Detailing.bas) - 25 test cases
 - **DXF Dependency:** `pip install .[dxf]` for ezdxf support
