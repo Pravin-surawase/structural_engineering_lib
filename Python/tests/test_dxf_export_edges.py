@@ -140,7 +140,11 @@ def test_generate_beam_dxf_runs_with_stubbed_ezdxf(
     monkeypatch, tmp_path, include_dimensions, include_annotations
 ):
     import structural_lib.dxf_export as dxf_export
-    from structural_lib.detailing import BarArrangement, BeamDetailingResult, StirrupArrangement
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
 
     # Stub ezdxf dependency surface.
     monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
@@ -161,14 +165,26 @@ def test_generate_beam_dxf_runs_with_stubbed_ezdxf(
         span=4000,
         cover=40,
         top_bars=[
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
         ],
         bottom_bars=[
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
         ],
         stirrups=[
             StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
@@ -257,8 +273,12 @@ def test_dxf_export_cli_main_reads_json_and_writes(monkeypatch, tmp_path, capsys
         assert output_path == str(out)
         return output_path
 
-    monkeypatch.setattr(detailing, "create_beam_detailing", _fake_create_beam_detailing, raising=True)
-    monkeypatch.setattr(dxf_export, "generate_beam_dxf", _fake_generate_beam_dxf, raising=True)
+    monkeypatch.setattr(
+        detailing, "create_beam_detailing", _fake_create_beam_detailing, raising=True
+    )
+    monkeypatch.setattr(
+        dxf_export, "generate_beam_dxf", _fake_generate_beam_dxf, raising=True
+    )
 
     # Drive CLI args
     monkeypatch.setattr(

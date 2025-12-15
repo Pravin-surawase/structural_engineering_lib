@@ -56,7 +56,9 @@ def test_crack_width_computation_with_explicit_strain_and_params():
         epsilon_m=0.001,
     )
     assert res.computed["denom"] > 0
-    assert res.computed["wcr_mm"] == pytest.approx(0.15 / res.computed["denom"], rel=1e-12)
+    assert res.computed["wcr_mm"] == pytest.approx(
+        0.15 / res.computed["denom"], rel=1e-12
+    )
     assert res.is_ok is True
 
 

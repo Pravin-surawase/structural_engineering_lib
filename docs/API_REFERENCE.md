@@ -200,7 +200,52 @@ def check_crack_width(
 - `CrackWidthResult`: contains `is_ok`, `remarks`, `exposure_class`, and `inputs/computed/assumptions` payloads.
 
 ---
+## 6. Compliance Checker (`compliance.py`) (v0.8+)
 
+**Goal:** One-click verdict across checks with clear “why fail” remarks.
+
+### 6.1 Multi-Case Compliance Report
+
+**Inputs:** already-factored per-case actions.
+
+**Units:**
+- `mu_knm`: **kN·m**
+- `vu_kn`: **kN**
+- `b_mm`, `D_mm`, `d_mm`, `d_dash_mm`: **mm**
+- `fck_nmm2`, `fy_nmm2`: **N/mm²**
+
+**Python:**
+```python
+def check_compliance_report(
+        *,
+        cases: Sequence[dict],
+        b_mm: float,
+        D_mm: float,
+        d_mm: float,
+        fck_nmm2: float,
+        fy_nmm2: float,
+        d_dash_mm: float = 50.0,
+        asv_mm2: float = 100.0,
+        pt_percent: float | None = None,
+        deflection_defaults: dict | None = None,
+        crack_width_defaults: dict | None = None,
+) -> ComplianceReport
+```
+
+**Behavior (MVP):**
+- Runs flexure + shear for each case.
+- Optionally runs deflection/crack checks when the corresponding defaults/params are provided.
+- Determines a deterministic governing case using utilization ratios (demand/limit):
+    - flexure: $|Mu|/Mu_{lim}$
+    - shear: $\tau_v/\tau_{c,max}$
+    - deflection: $(L/d)/(allowable\ L/d)$
+    - crack width: $w_{cr}/w_{lim}$
+- Governing case is the case with the highest utilization vector (sorted descending). Exact ties are broken by input order.
+
+**Outputs:**
+- `ComplianceReport.summary`: compact, Excel-friendly dict containing `num_cases`, `num_failed_cases`, governing identifiers, and per-check max utilizations.
+
+---
 ### 2.5 Calculate Limiting Moment (Flanged)
 Calculates the limiting moment of resistance for a T-beam section.
 

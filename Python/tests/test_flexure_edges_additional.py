@@ -57,7 +57,9 @@ def test_design_doubly_reinforced_invalid_when_d_dash_exceeds_d():
     mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
     mu = mu_lim * 1.5
 
-    res = flexure.design_doubly_reinforced(b, d, d_dash=d + 10.0, d_total=d_total, mu_knm=mu, fck=fck, fy=fy)
+    res = flexure.design_doubly_reinforced(
+        b, d, d_dash=d + 10.0, d_total=d_total, mu_knm=mu, fck=fck, fy=fy
+    )
     assert res.is_safe is False
     assert "Invalid section geometry" in res.error_message
 
@@ -105,7 +107,9 @@ def test_design_flanged_beam_neutral_axis_in_flange_matches_rectangular_design()
         fck=fck,
         fy=fy,
     )
-    rect = flexure.design_singly_reinforced(b=bf, d=d, d_total=d_total, mu_knm=mu, fck=fck, fy=fy)
+    rect = flexure.design_singly_reinforced(
+        b=bf, d=d, d_total=d_total, mu_knm=mu, fck=fck, fy=fy
+    )
 
     assert flanged.section_type == rect.section_type
     assert flanged.ast_required == pytest.approx(rect.ast_required)
@@ -117,7 +121,9 @@ def test_calculate_mu_lim_flanged_clamps_yf_to_df_near_boundary():
     d, Df = 490, 100
     fck, fy = 25, 415
 
-    mu_lim_t = flexure.calculate_mu_lim_flanged(bw=bw, bf=bf, d=d, Df=Df, fck=fck, fy=fy)
+    mu_lim_t = flexure.calculate_mu_lim_flanged(
+        bw=bw, bf=bf, d=d, Df=Df, fck=fck, fy=fy
+    )
     assert mu_lim_t > 0
 
 
@@ -152,7 +158,9 @@ def test_design_flanged_beam_bisection_breaks_on_exact_target():
     if mu_target_knm <= mu_capacity_at_df_knm:
         mu_target_knm = mu_capacity_at_df_knm * 1.05
 
-    mu_lim_t = flexure.calculate_mu_lim_flanged(bw=bw, bf=bf, d=d, Df=Df, fck=fck, fy=fy)
+    mu_lim_t = flexure.calculate_mu_lim_flanged(
+        bw=bw, bf=bf, d=d, Df=Df, fck=fck, fy=fy
+    )
     assert mu_target_knm < mu_lim_t
 
     res = flexure.design_flanged_beam(

@@ -144,9 +144,9 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Why:** Users want a one-click verdict across multiple checks with clear “why fail” remarks.
   - **MVP Contract:** accept **already-factored** actions (Mu/Vu) for each case/combination.
   - **Checklist:**
-    - [ ] Orchestrate flexure + shear + (serviceability when available)
-    - [ ] Output: per-case results + governing case + compact summary row
-    - [ ] Add tests for governing-case stability and failure propagation
+    - [x] Orchestrate flexure + shear + (serviceability when available)
+    - [x] Output: per-case results + governing case + compact summary row
+    - [x] Add tests for governing-case stability and failure propagation
 
 - [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
   - **Agent:** INTEGRATION / DEV

@@ -34,7 +34,9 @@ _DEFAULT_CRACK_LIMITS_MM: Dict[ExposureClass, float] = {
 }
 
 
-def _normalize_support_condition(value: Union[SupportCondition, str]) -> Tuple[SupportCondition, Optional[str]]:
+def _normalize_support_condition(
+    value: Union[SupportCondition, str],
+) -> Tuple[SupportCondition, Optional[str]]:
     if isinstance(value, SupportCondition):
         return value, None
 
@@ -46,10 +48,15 @@ def _normalize_support_condition(value: Union[SupportCondition, str]) -> Tuple[S
     if normalized in {"continuous", "cont"}:
         return SupportCondition.CONTINUOUS, None
 
-    return SupportCondition.SIMPLY_SUPPORTED, f"Unknown support condition '{value}'. Defaulted to SIMPLY_SUPPORTED."
+    return (
+        SupportCondition.SIMPLY_SUPPORTED,
+        f"Unknown support condition '{value}'. Defaulted to SIMPLY_SUPPORTED.",
+    )
 
 
-def _normalize_exposure_class(value: Union[ExposureClass, str]) -> Tuple[ExposureClass, Optional[str]]:
+def _normalize_exposure_class(
+    value: Union[ExposureClass, str],
+) -> Tuple[ExposureClass, Optional[str]]:
     if isinstance(value, ExposureClass):
         return value, None
 
@@ -63,7 +70,10 @@ def _normalize_exposure_class(value: Union[ExposureClass, str]) -> Tuple[Exposur
     if normalized in {"very severe", "very_severe", "very-severe", "vs"}:
         return ExposureClass.VERY_SEVERE, None
 
-    return ExposureClass.MODERATE, f"Unknown exposure class '{value}'. Defaulted to MODERATE."
+    return (
+        ExposureClass.MODERATE,
+        f"Unknown exposure class '{value}'. Defaulted to MODERATE.",
+    )
 
 
 def check_deflection_span_depth(
@@ -98,7 +108,11 @@ def check_deflection_span_depth(
             remarks="Invalid input: span_mm and d_mm must be > 0.",
             support_condition=SupportCondition.SIMPLY_SUPPORTED,
             assumptions=["Invalid inputs provided"],
-            inputs={"span_mm": span_mm, "d_mm": d_mm, "support_condition": str(support_condition)},
+            inputs={
+                "span_mm": span_mm,
+                "d_mm": d_mm,
+                "support_condition": str(support_condition),
+            },
             computed={},
         )
 
@@ -125,7 +139,9 @@ def check_deflection_span_depth(
         assumptions.append("Assumed mf_flanged=1.0 (not provided).")
 
     ld_ratio = span_mm / d_mm
-    allowable_ld = base_allowable_ld * mf_tension_steel * mf_compression_steel * mf_flanged
+    allowable_ld = (
+        base_allowable_ld * mf_tension_steel * mf_compression_steel * mf_flanged
+    )
 
     is_ok = ld_ratio <= allowable_ld
     remarks = (
@@ -193,7 +209,9 @@ def check_crack_width(
 
     if limit_mm is None:
         limit_mm = _DEFAULT_CRACK_LIMITS_MM[exposure]
-        assumptions.append(f"Used default crack width limit for {exposure.name} (limit_mm={limit_mm}).")
+        assumptions.append(
+            f"Used default crack width limit for {exposure.name} (limit_mm={limit_mm})."
+        )
 
     if epsilon_m is None:
         if fs_service_nmm2 is None:

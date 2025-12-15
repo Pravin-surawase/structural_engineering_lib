@@ -180,14 +180,22 @@ class TestStructuralLib(unittest.TestCase):
 
         mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
 
-        res_below = flexure.design_singly_reinforced(b, d, D, mu_lim * 0.999999, fck, fy)
+        res_below = flexure.design_singly_reinforced(
+            b, d, D, mu_lim * 0.999999, fck, fy
+        )
         self.assertTrue(res_below.is_safe)
-        self.assertEqual(res_below.section_type, types.DesignSectionType.UNDER_REINFORCED)
+        self.assertEqual(
+            res_below.section_type, types.DesignSectionType.UNDER_REINFORCED
+        )
         self.assertTrue(res_below.ast_required > 0.0)
 
-        res_above = flexure.design_singly_reinforced(b, d, D, mu_lim * 1.000001, fck, fy)
+        res_above = flexure.design_singly_reinforced(
+            b, d, D, mu_lim * 1.000001, fck, fy
+        )
         self.assertFalse(res_above.is_safe)
-        self.assertEqual(res_above.section_type, types.DesignSectionType.OVER_REINFORCED)
+        self.assertEqual(
+            res_above.section_type, types.DesignSectionType.OVER_REINFORCED
+        )
 
     def test_shear_threshold_at_tc_max(self):
         """Tv == Tc_max should be treated as OK; Tv > Tc_max should fail."""
