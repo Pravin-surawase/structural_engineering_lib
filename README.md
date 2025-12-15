@@ -39,6 +39,14 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Contributing (Dev Setup)
 
+| Task | Command | Where |
+| --- | --- | --- |
+| Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` | repo root |
+| Install hooks | `pre-commit install` | repo root |
+| Run tests | `cd Python && python -m pytest` | repo root |
+| Format check | `cd Python && python -m black --check .` | repo root |
+| Type check | `cd Python && python -m mypy` | repo root |
+
 ```bash
 # Install dev dependencies
 cd Python
