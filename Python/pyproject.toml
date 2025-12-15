@@ -24,5 +24,19 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "black", "mypy"]
+dev = ["pytest", "pytest-cov", "black", "mypy", "pre-commit"]
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
+
+[tool.mypy]
+python_version = "3.9"
+files = ["structural_lib"]
+explicit_package_bases = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_return_any = false
+warn_redundant_casts = true
+no_implicit_optional = false
+check_untyped_defs = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+show_error_codes = true

@@ -6,6 +6,35 @@ on:
   pull_request:
 
 jobs:
+  lint:
+    name: Lint / Typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package (dev)
+        working-directory: Python
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Format check (black)
+        working-directory: Python
+        run: |
+          python -m black --check .
+
+      - name: Type check (mypy)
+        working-directory: Python
+        run: |
+          python -m mypy
+
   pytest:
     runs-on: ubuntu-latest
 

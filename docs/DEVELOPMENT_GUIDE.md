@@ -1088,7 +1088,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "mypy"]
+dev = ["pytest", "black", "mypy", "pre-commit"]
 ```
 
 **setup.cfg:**
@@ -1132,6 +1132,33 @@ twine upload dist/*
 - **Python:** Provide `make test` or `nox/tox` sessions for lint + tests (`pytest -q`).
 - **CI (optional):** Add GitHub Actions to run Python tests on push; attach manual VBA test log to PRs until VBA automation is wired.
 - Keep scripts in `scripts/` or `Makefile` to ensure repeatability.
+
+**Formatting (Black):**
+```bash
+cd Python
+python -m black .
+python -m black --check .
+```
+
+**Type checking (Mypy):**
+```bash
+cd Python
+python -m mypy structural_lib
+```
+
+**Pre-commit hooks (recommended):**
+```bash
+cd Python
+python -m pip install -e ".[dev]"
+
+cd ..
+pre-commit install
+pre-commit run --all-files
+```
+
+**Repo automation:**
+- Dependabot runs weekly updates (Actions + Python deps best-effort).
+- CodeQL runs weekly and on PRs.
 
 ### 13.6 Professional-grade Testing Checklist
 
