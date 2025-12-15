@@ -126,21 +126,27 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Agent:** DEV / RESEARCHER / TESTER
   - **Why:** Strength-only design is not “production-ready”; serviceability is required for professional acceptance.
   - **Scope (v0.8 Level A):**
-    - [ ] Deflection check (span/depth + mod factors)
-    - [ ] Crack-width check (exposure-driven limits)
-    - [ ] Add result types (e.g., `ServiceabilityResult`) and Excel-friendly summary fields
+    - [x] Deflection check (span/depth + explicit modifiers)
+    - [x] Crack-width check (Annex-F-style estimate + exposure-driven limits)
+    - [x] Add result types and Excel-friendly auditable payload fields
   - **Verification:**
-    - [ ] Add benchmark-style unit tests around threshold transitions
-    - [ ] Ensure assumptions are explicit in outputs (no silent defaults)
+    - [x] Add benchmark-style unit tests around threshold transitions
+    - [x] Ensure assumptions are explicit in outputs (no silent defaults)
+
+  **Outputs (implemented):**
+  - Python: `Python/structural_lib/serviceability.py`, `Python/tests/test_serviceability.py`
+  - Python types: extended `Python/structural_lib/types.py`
+  - Docs: `docs/API_REFERENCE.md`, `docs/KNOWN_PITFALLS.md`
+  - VBA parity (scaffolded): `VBA/Modules/M17_Serviceability.bas`, `VBA/Tests/Test_Serviceability.bas`, extended `VBA/Modules/M02_Types.bas`
 
 - [ ] **TASK-042: Compliance Checker (Pass/Fail + Reasons, Excel-Friendly)**
   - **Agent:** DEV / INTEGRATION / TESTER
   - **Why:** Users want a one-click verdict across multiple checks with clear “why fail” remarks.
   - **MVP Contract:** accept **already-factored** actions (Mu/Vu) for each case/combination.
   - **Checklist:**
-    - [ ] Orchestrate flexure + shear + (serviceability when available)
-    - [ ] Output: per-case results + governing case + compact summary row
-    - [ ] Add tests for governing-case stability and failure propagation
+    - [x] Orchestrate flexure + shear + (serviceability when available)
+    - [x] Output: per-case results + governing case + compact summary row
+    - [x] Add tests for governing-case stability and failure propagation
 
 - [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
   - **Agent:** INTEGRATION / DEV

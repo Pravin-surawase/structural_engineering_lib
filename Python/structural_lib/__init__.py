@@ -16,6 +16,8 @@ from . import shear
 from . import ductile
 from . import api
 from . import detailing
+from . import serviceability
+from . import compliance
 
 # DXF export is optional (requires ezdxf)
 try:

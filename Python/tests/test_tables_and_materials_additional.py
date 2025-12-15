@@ -19,10 +19,14 @@ def test_get_tc_for_grade_unknown_grade_falls_back_to_m40_column():
 
 def test_get_tc_for_grade_clamps_pt_low_and_high():
     # Below min clamps to 0.15
-    assert tables._get_tc_for_grade(20, 0.01) == pytest.approx(tables._get_tc_for_grade(20, 0.15))
+    assert tables._get_tc_for_grade(20, 0.01) == pytest.approx(
+        tables._get_tc_for_grade(20, 0.15)
+    )
 
     # Above max clamps to 3.0
-    assert tables._get_tc_for_grade(20, 99.0) == pytest.approx(tables._get_tc_for_grade(20, 3.0))
+    assert tables._get_tc_for_grade(20, 99.0) == pytest.approx(
+        tables._get_tc_for_grade(20, 3.0)
+    )
 
 
 def test_get_tc_for_grade_nan_pt_returns_last_value():
@@ -95,7 +99,9 @@ def test_ductile_geometry_failure_branches():
     assert ok is False
     assert "Width/Depth" in msg
 
-    res = ductile.check_beam_ductility(b=150, D=450, d=400, fck=25, fy=500, min_long_bar_dia=16)
+    res = ductile.check_beam_ductility(
+        b=150, D=450, d=400, fck=25, fy=500, min_long_bar_dia=16
+    )
     assert res.is_geometry_valid is False
     assert res.remarks != "Compliant"
 
@@ -115,7 +121,14 @@ def test_detailing_bar_type_plain_and_arrangement_branches():
 
     # Force 2-layer path by making a single layer spacing invalid.
     # Small width + large bar count makes spacing fail, then max_layers>1 triggers split.
-    arr2 = detailing.select_bar_arrangement(ast_required=5000.0, b=150, cover=40, stirrup_dia=10, preferred_dia=25, max_layers=2)
+    arr2 = detailing.select_bar_arrangement(
+        ast_required=5000.0,
+        b=150,
+        cover=40,
+        stirrup_dia=10,
+        preferred_dia=25,
+        max_layers=2,
+    )
     assert arr2.layers == 2
 
 
@@ -123,7 +136,9 @@ def test_detailing_select_bar_arrangement_auto_selects_25mm_dia():
     # Cover the auto-select branch where ast_required >= 2000 -> preferred_dia = 25.
     from structural_lib import detailing
 
-    arr = detailing.select_bar_arrangement(ast_required=2500.0, b=230, cover=25, max_layers=1)
+    arr = detailing.select_bar_arrangement(
+        ast_required=2500.0, b=230, cover=25, max_layers=1
+    )
     assert arr.diameter == 25
 
 
@@ -149,7 +164,9 @@ def test_flexure_singly_reinforced_hits_max_steel_exceeded():
     from structural_lib import flexure
 
     # Use inconsistent but deterministic geometry to trigger Ast_max failure.
-    res = flexure.design_singly_reinforced(b=300, d=500, d_total=10, mu_knm=0.0, fck=25, fy=500)
+    res = flexure.design_singly_reinforced(
+        b=300, d=500, d_total=10, mu_knm=0.0, fck=25, fy=500
+    )
     assert res.is_safe is False
     assert "maximum" in res.error_message.lower()
 
@@ -175,7 +192,9 @@ def test_flexure_doubly_reinforced_denom_nonpositive_path():
     d_dash = xu_max - 0.1  # keep valid geometry but make strain very small
 
     mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
-    res = flexure.design_doubly_reinforced(b, d, d_dash, d_total, mu_lim + 10.0, fck, fy)
+    res = flexure.design_doubly_reinforced(
+        b, d, d_dash, d_total, mu_lim + 10.0, fck, fy
+    )
     assert res.is_safe is False
     assert "invalid section geometry" in res.error_message.lower()
 
@@ -284,7 +303,9 @@ def test_flexure_flanged_beam_solver_hits_ast_max_exceeded_branch():
 
 def test_tables_get_tc_value_breaks_on_upper_grade_boundary():
     # fck between 20 and 25 should pick 20 (nearest lower grade), executing the break path.
-    assert tables.get_tc_value(22.0, 0.5) == pytest.approx(tables.get_tc_value(20.0, 0.5))
+    assert tables.get_tc_value(22.0, 0.5) == pytest.approx(
+        tables.get_tc_value(20.0, 0.5)
+    )
 
 
 def test_tables_get_tc_max_value_interpolation_segments():
@@ -326,14 +347,23 @@ def test_excel_integration_process_single_beam_exception_path(monkeypatch, tmp_p
         raise RuntimeError("boom")
 
     monkeypatch.setattr(excel_integration, "create_beam_detailing", boom)
-    res = excel_integration.process_single_beam(beam, str(tmp_path), is_seismic=False, generate_dxf=False)
+    res = excel_integration.process_single_beam(
+        beam, str(tmp_path), is_seismic=False, generate_dxf=False
+    )
     assert res.success is False
     assert "boom" in (res.error or "")
 
 
 def test_excel_integration_generate_detailing_schedule_handles_missing_bottom_bars():
-    from structural_lib.excel_integration import ProcessingResult, generate_detailing_schedule
-    from structural_lib.detailing import BeamDetailingResult, BarArrangement, StirrupArrangement
+    from structural_lib.excel_integration import (
+        ProcessingResult,
+        generate_detailing_schedule,
+    )
+    from structural_lib.detailing import (
+        BeamDetailingResult,
+        BarArrangement,
+        StirrupArrangement,
+    )
 
     detailing = BeamDetailingResult(
         beam_id="B1",
@@ -342,9 +372,15 @@ def test_excel_integration_generate_detailing_schedule_handles_missing_bottom_ba
         D=500,
         span=4000,
         cover=40,
-        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            )
+        ],
         bottom_bars=[],
-        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)
+        ],
         ld_tension=600,
         ld_compression=500,
         lap_length=700,
@@ -352,7 +388,16 @@ def test_excel_integration_generate_detailing_schedule_handles_missing_bottom_ba
         remarks="OK",
     )
 
-    results = [ProcessingResult(beam_id="B1", story="S1", success=True, dxf_path=None, detailing=detailing, error=None)]
+    results = [
+        ProcessingResult(
+            beam_id="B1",
+            story="S1",
+            success=True,
+            dxf_path=None,
+            detailing=detailing,
+            error=None,
+        )
+    ]
     schedule = generate_detailing_schedule(results)
     assert schedule[0]["Bottom_Main"] == "-"
 

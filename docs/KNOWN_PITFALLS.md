@@ -37,6 +37,12 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - Suffix variables with units (b_mm, Vu_kN, tau_Nmm2, ast_mm2) to avoid unit mix-ups.
 - Document inputs/outputs and clause references in headers; align naming across VBA/Python.
 
+## Serviceability (v0.8+)
+- Deflection checks use **mm/mm** ratios (L/d); do not mix mm and m.
+- Crack width calculations output **mm**; keep stresses in **N/mm²**.
+- Avoid silent defaults: if a base limit, modifier, or crack limit is assumed, record it explicitly in outputs.
+- Be strict about required parameters (especially crack width): fail with a reason rather than guessing missing geometry/state inputs.
+
 ## Platform/VBA Quirks
 - Mac/Excel/VBA quirks (overflow patterns, debug/printing pitfalls, import-order errors) are tracked in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 

@@ -5,10 +5,11 @@ Practical guide to consume, ship, and maintain the VBA side of the Structural En
 ---
 
 ## Scope & Parity
-- **Current modules:** `M01_Constants` through `M16_DXF` plus optional tests in `VBA/Tests`.
+- **Current modules:** `M01_Constants` through `M17_Serviceability` plus optional tests in `VBA/Tests`.
 - **Coverage:** Flexure, shear, ductility, integration/reporting, detailing helpers (Ld, lap length, spacing, bar/stirrup callouts), and **DXF CAD export**.
 - **Version note:** VBA project version strings (e.g., `Get_Library_Version`) should be aligned with the tagged release (v0.7.0 for detailing).
 - **Python parity:** Both Python and VBA now support detailing calculations AND DXF export. VBA uses native DXF R12 format writer.
+- **Serviceability (v0.8+):** Deflection and crack-width checks live in `M17_Serviceability` (Level A).
 
 ## Import & Project Setup
 - **Import order (clean workbook/add-in):**
@@ -19,7 +20,8 @@ Practical guide to consume, ship, and maintain the VBA side of the Structural En
   5. `M13_Integration.bas`, `M14_Reporting.bas`
   6. `M15_Detailing.bas`
   7. `M16_DXF.bas`
-  8. (Optional) `VBA/Tests/*.bas`
+  8. `M17_Serviceability.bas`
+  9. (Optional) `VBA/Tests/*.bas`
 - **Add-in packaging:** See `docs/EXCEL_ADDIN_GUIDE.md` for bulk import macro and `.xlam` packaging. Set the VBA project name to `StructEngLib` (no spaces), then save as `.xlam`.
 - **Trusted access:** Enable “Trust access to the VBA project object model” when running the bulk importer macro (Excel Trust Center).
 
@@ -28,6 +30,7 @@ Practical guide to consume, ship, and maintain the VBA side of the Structural En
 - **Detailing UDFs (M09_UDFs + M15):** `IS456_Ld`, `IS456_LapLength`, `IS456_BondStress`, `IS456_BarSpacing`, `IS456_CheckSpacing`, `IS456_BarCount`, `IS456_BarCallout`, `IS456_StirrupCallout`.
 - **DXF Export UDFs (M09_UDFs + M16):** `IS456_DrawSection`, `IS456_DrawLongitudinal`, `IS456_ExportBeamDXF` (macro).
 - **Programmatic API (M08_API/M15/M16):** Call the underlying module procedures directly (e.g., `M15_Detailing.Create_Beam_Detailing`, `M16_DXF.Draw_BeamDetailing`) for macros or other VBA projects.
+- **Serviceability API (M08_API/M17):** `Check_Deflection_SpanDepth`, `Check_CrackWidth`.
 - **Version check:** `Get_Library_Version` in `M08_API`—keep this updated during releases.
 
 ## Usage Patterns
