@@ -104,3 +104,8 @@ Excel/BeamDesignApp.xlsm
 scratch/
 temp/
 tmp/
+
+# -----------------------------------------------------------------------------
+# Local reference materials (keep out of git)
+# -----------------------------------------------------------------------------
+docs/_references/downloads_snapshot/

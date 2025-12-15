@@ -251,3 +251,46 @@ If you want Pass 3 to explicitly cite and extract notes from your local PDFs/spr
 - Copy those files into the repo under a references folder (e.g., `docs/_references/`) and then we can summarize them into a Pass 4 section.
 - Or paste a small excerpt / the key pages as text here (best if you only need a few formulas/tables).
 
+---
+
+## Research Update (Pass 4 — Extracted Local Notes from Downloads Snapshot, Dec 15, 2025)
+
+This pass incorporates *your locally saved artifacts* by summarizing their structure and what they imply for P1–P4. The raw files were copied into a local-only folder under `docs/_references/` for analysis, but are excluded from git (see `.gitignore`).
+
+### Local Artifacts Reviewed (from `docs/_references/downloads_snapshot/`)
+- `CE371.pdf` (single-page course outline/syllabus)
+- `BEAM SCHEDULE.xlsx` (beam schedule table)
+- `AST cal.xlsx` (Ast and bar-count calculation sheet)
+- `CSI API ETABS v1.txt` / `CSI API ETABS v1.pdf` (ETABS API documentation)
+- `Etabs G+2.EDB` (ETABS model file)
+- `Beam_Detailing.dxf` (beam detailing drawing)
+
+### Key Findings and How They Map to P1–P4
+
+**P1 Serviceability (Deflection + Crack Width)**
+- `CE371.pdf` confirms serviceability topics (deflection computation, creep strain) are part of typical RC design curricula. This supports making P1 a first-class module rather than an optional “nice-to-have”.
+- Practical implementation note: serviceability will need explicit conventions around sustained-load fraction and creep/shrinkage assumptions (even if the first release is a conservative “Level A” check).
+
+**P2 Rebar Arrangement Optimizer**
+- `AST cal.xlsx` suggests an engineer workflow that maps demand (moment ranges / Ast) to bar sizes and bar counts. This is a strong starting point for an optimizer that:
+   - accepts required Ast and geometry constraints,
+   - enumerates feasible bar diameter/count/layer patterns,
+   - picks the best pattern with a deterministic objective.
+- Product implication: include an “explain” output that mirrors the spreadsheet logic (Ast → area per bar → required count → rounded count → spacing feasibility).
+
+**P3 BBS/BOM Export**
+- `BEAM SCHEDULE.xlsx` shows the kind of deliverable users expect: a compact tabular schedule keyed by beam type/mark, with bottom/top steel and likely stirrup details.
+- `Beam_Detailing.dxf` indicates there is real value in exporting *both* a schedule (CSV/Excel) and a drawing artifact (DXF) or at least DXF metadata layers. Even if DXF export remains future scope, the internal data model should retain “bar marks” and groupings needed for schedules.
+
+**P4 Compliance Checker / ETABS Integration**
+- `CSI API ETABS v1.*` + `Etabs G+2.EDB` make ETABS interoperability a practical near-term integration target. Two realistic integration shapes:
+   1) **Low-friction MVP (file-based):** user exports ETABS tables to CSV/Excel → library ingests → runs compliance checks.
+   2) **Automation (API-based, Windows-first):** attach to a running ETABS instance, extract tables via API, run checks, write results back.
+- Important platform note: the CSI API documentation is heavily .NET/COM oriented. In practice, the API-based approach is likely Windows-first. The file-based approach stays cross-platform and should be the default path.
+
+### Concrete “Next” Artifacts We Can Derive from These Files
+- From `BEAM SCHEDULE.xlsx`: define a minimal schedule schema (beam mark, b, D, bottom bars, top bars, stirrups) to become the baseline CSV export format.
+- From `AST cal.xlsx`: create 5–10 deterministic unit tests for optimizer rounding and bar selection logic using representative rows (Ast → bar count).
+- From `CSI API ETABS v1.txt`: document an integration plan (no code text copied) covering “attach/connect”, “export tables”, and “map table columns to library inputs”.
+
+
