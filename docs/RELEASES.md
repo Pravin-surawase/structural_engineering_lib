@@ -144,3 +144,10 @@ Use this index as the canonical “timeline view”.
 - v0.7.0 (2025-12-11)
 - v0.7.1 (2025-12-15)
 - v0.8.0 (2025-12-15)
+
+---
+
+## Append-Only Clarification (2025-12-15)
+
+The `v0.7.1` and `v0.8.0` entries were **finalized later** and therefore **appended after** the earlier `v0.1.0`–`v0.7.0` block.
+To preserve the “immutable / append-only” rule, older entries were not reordered; use the **Chronological Index** section as the intended reading order.
