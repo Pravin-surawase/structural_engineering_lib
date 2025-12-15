@@ -2,6 +2,27 @@
 
 Welcome! This guide will walk you through using the **Structural Engineering Library** step by step — even if you've never written code before. We'll cover both **Python** and **Excel/VBA** paths.
 
+## 5-minute Python Quickstart (copy/paste)
+
+If you want to try the library immediately (before reading the full guide):
+
+```bash
+# From repo root
+python3 -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+python -m pip install --upgrade pip
+python -m pip install -e Python/.[dev]
+
+# Run a ready-made example
+python Python/examples/simple_examples.py
+
+# Run tests (sanity check)
+python -m pytest Python/tests -q
+```
+
+If you get stuck, jump to **Part A** below (it explains each step).
+
 ---
 
 ## What This Library Does
