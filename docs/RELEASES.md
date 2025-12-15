@@ -151,3 +151,24 @@ Use this index as the canonical “timeline view”.
 
 The `v0.7.1` and `v0.8.0` entries were **finalized later** and therefore **appended after** the earlier `v0.1.0`–`v0.7.0` block.
 To preserve the “immutable / append-only” rule, older entries were not reordered; use the **Chronological Index** section as the intended reading order.
+
+---
+
+## v0.8.1
+**Date:** 2025-12-16
+**Status:** ✅ Locked & Verified
+**Commit Hash:** (tag: v0.8.1)
+**Mindset:** Tooling-only hardening patch after v0.8.0.
+**Key Changes (no engineering behavior changes):**
+- Packaging:
+  - `pyproject.toml` is the single source of truth (remove duplicated metadata from `setup.cfg`).
+  - Standardize license inclusion via `project.license-files`.
+- CI quality gates:
+  - Run `ruff check` alongside black + mypy.
+  - Packaging smoke check now installs the built wheel and imports `structural_lib`.
+- Local workflow:
+  - Add `Python/scripts/pre_release_check.sh` to run the full gate locally.
+
+## Chronological Index Addendum (2025-12-16)
+
+- v0.8.1 (2025-12-16)

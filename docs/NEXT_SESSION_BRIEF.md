@@ -1,7 +1,7 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-15  
-**Status:** v0.8.0 released (serviceability + compliance added)  
+**Status:** v0.8.1 released (tooling/build-only patch after v0.8.0)  
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
@@ -22,7 +22,7 @@ If you want to resume quickly without re-reading the repo:
 4. **Primary reference index:** `docs/README.md`
 
 **Verified state (as of 2025-12-15):**
-- Release baseline is **v0.8.0** (strength + detailing + DXF + serviceability + compliance).
+- Release baseline is **v0.8.1** (tooling-only patch; features unchanged from v0.8.0).
 - Python test suite passes locally (158 tests collected/passing).
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
@@ -45,8 +45,8 @@ If you want to resume quickly without re-reading the repo:
 - README: Added "Getting Started" links.
 
 #### 3. **Version & Parity Fixes** ✅
-- Python package/version synced to 0.8.0.
-- VBA `Get_Library_Version` updated to 0.8.0.
+- Python package/version synced to 0.8.1.
+- VBA `Get_Library_Version` updated to 0.8.1.
 - Detailing parity: max-bar Ld/lap and spacing re-validation added.
 
 #### 4. **Open Gaps (post-v0.8)** 🔴
@@ -61,15 +61,15 @@ If you want to resume quickly without re-reading the repo:
 
 ---
 
-## 📊 Current State (v0.8.0)
+## 📊 Current State (v0.8.1)
 
 ### Version Sync ✅
 ```
-Python __init__.py  → 0.8.0
-Python api.py       → 0.8.0
-Python pyproject    → 0.8.0
-README.md           → v0.8.0
-CHANGELOG.md        → [0.8.0]
+Python __init__.py  → 0.8.1
+Python api.py       → 0.8.1
+Python pyproject    → 0.8.1
+README.md           → v0.8.1
+CHANGELOG.md        → [0.8.1]
 ```
 
 ### Feature Completeness

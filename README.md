@@ -6,9 +6,9 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.8.0)** — Strength design + detailing + DXF export + serviceability + compliance. 158 Python tests passing.
+🚀 **Active (v0.8.1)** — Strength design + detailing + DXF export + serviceability + compliance. 158 Python tests passing.
 
-**Production note:** v0.8.0 includes Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
+**Production note:** v0.8.0 introduced Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
 
 ## Features
 

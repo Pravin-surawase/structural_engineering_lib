@@ -1,9 +1,15 @@
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
-Version:      0.8.0
+Version:      0.8.1
 License:      MIT
 """
+
+from __future__ import annotations
+
+import importlib
+from types import ModuleType
+from typing import Optional
 
 # Expose key modules
 from . import constants
@@ -20,10 +26,11 @@ from . import serviceability
 from . import compliance
 
 # DXF export is optional (requires ezdxf)
+dxf_export: Optional[ModuleType]
 try:
-    from . import dxf_export
+    dxf_export = importlib.import_module(f"{__name__}.dxf_export")
 except ImportError:
-    dxf_export = None  # ezdxf not installed
+    dxf_export = None
 
 # Excel integration module
 from . import excel_integration

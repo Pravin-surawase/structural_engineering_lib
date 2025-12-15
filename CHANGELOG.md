@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.8.1] - 2025-12-16
+### Changed
+- **Packaging/CI tooling (no engineering behavior changes):**
+  - Remove `setup.cfg` metadata duplication (single source of truth in `pyproject.toml`).
+  - Add `ruff` to dev extras and run `ruff check` in CI.
+  - Strengthen CI packaging smoke test to install the built wheel and import `structural_lib`.
+  - Add `Python/scripts/pre_release_check.sh` for local release gating.
+
 ## [0.8.0] - 2025-12-15
 ### Added
 - **Serviceability (Level A)**:

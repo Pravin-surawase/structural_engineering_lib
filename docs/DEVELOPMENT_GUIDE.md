@@ -1302,13 +1302,19 @@ tau_c = tau_c_IS456(fck, pt_percent)
 ## 16. Release Checklist and Quality Gates
 
 Before tagging a release or distributing an add-in/wheel:
-- [ ] Version bumped in `IS456_Constants.bas`, `constants.py`, and package metadata (`pyproject.toml`/`setup.cfg`).
+- [ ] Version bumped in Python (`pyproject.toml`, `structural_lib/__init__.py`, `structural_lib/api.py`) and VBA (`M08_API.Get_Library_Version`).
 - [ ] `CHANGELOG.md` updated (add entry under release version) and `README.md`/API docs refreshed.
-- [ ] Tests green: Python automated; VBA manual/automated with run log.
-- [ ] Shear/flexure examples re-run to confirm outputs match docs.
+- [ ] Quality gates (Python):
+    - `python -m black --check .`
+    - `python -m ruff check .`
+    - `python -m mypy`
+    - `python -m pytest`
+    - `python -m build`
+    - wheel smoke test: `python -m pip install --force-reinstall dist/*.whl && python -c "import structural_lib"`
 - [ ] VBA modules exported cleanly; `.xlam` add-in rebuilt if distributing.
-- [ ] Python wheel built (`python -m build`) and optionally smoke-tested via `pip install dist/*.whl`.
-- [ ] Tag annotated (e.g., `v0.1.0`) and pushed with release notes.
+- [ ] Tag annotated (e.g., `v0.8.1`) and pushed with release notes.
+
+Tip: run the full Python gate locally with `Python/scripts/pre_release_check.sh`.
 
 ---
 
