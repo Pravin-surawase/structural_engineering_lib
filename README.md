@@ -27,6 +27,13 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 - **[Excel Tutorial](docs/EXCEL_TUTORIAL.md)** — Step-by-step Excel/VBA guide with formulas
 - **Sample files** in `Python/examples/` — Ready-to-run scripts and CSV data
 
+## Community
+
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Support: [SUPPORT.md](SUPPORT.md)
+- Security: [SECURITY.md](SECURITY.md)
+
+
 ## Scope
 
 | Version | Features | Status |

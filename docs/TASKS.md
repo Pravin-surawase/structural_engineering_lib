@@ -112,6 +112,18 @@ When working on tasks, specify which agent role to use:
   - UDFs: IS456_Ld, IS456_LapLength, IS456_BondStress, etc.
   - Tests: `VBA/Tests/Test_Detailing.bas` (25 test cases)
 
+- [ ] **TASK-037: GitHub Repo Professionalization (community + CI)**
+  - **Agent:** DEVOPS / DOCS
+  - **Goal:** Make the repository easy/safe for other engineers to use and contribute.
+  - **Checklist:**
+    - [ ] Add community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`
+    - [ ] Add PR template: `.github/pull_request_template.md`
+    - [ ] Add issue templates: `.github/ISSUE_TEMPLATE/*`
+    - [ ] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
+    - [ ] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
+    - [ ] Verify CI passes on GitHub; update badges if desired
+    - [ ] Keep scope minimal: no new features, only repo hygiene
+
 - [ ] **TASK-034**: Bar Bending Schedule (BBS)
 - [ ] **TASK-035**: Section Cuts in DXF
 - [ ] **TASK-036**: Multi-beam Layout
@@ -160,7 +172,7 @@ When working on tasks, specify which agent role to use:
 ## Notes
 
 - **Current Version**: v0.7.0
-- **Last Updated**: 2025-12-11
+- **Last Updated**: 2025-12-15
 - **Active Branch**: main
 
 ### v0.7 Implementation Notes
