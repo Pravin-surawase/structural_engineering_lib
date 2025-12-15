@@ -106,7 +106,8 @@ structural_engineering_lib/
 ├── Excel/                  ← Flagship workbook (placeholder)
 ├── docs/
 │   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
-│   ├── RESEARCH_AND_FINDINGS.md
+│   ├── README.md            ← Docs index (start here)
+│   ├── _archive/RESEARCH_AND_FINDINGS.md
 │   ├── DEVELOPMENT_GUIDE.md
 │   ├── API_REFERENCE.md
 │   └── IS456_QUICK_REFERENCE.md
@@ -169,8 +170,9 @@ More worked examples in `VBA/Examples/Example_Usage.bas`.
 
 ## Documentation
 
+- **[Docs Index](docs/README.md)** — Start here (who should read what)
 - **[Project Overview](docs/PROJECT_OVERVIEW.md)** — High-level scope, architecture, and workflows
-- **[Research and Findings](docs/RESEARCH_AND_FINDINGS.md)** — Complete research document with formulas, tables, and API design
+- **[Research and Findings (archived)](docs/_archive/RESEARCH_AND_FINDINGS.md)** — Historical research document with formulas, tables, and early API design notes
 - **[API Reference](docs/API_REFERENCE.md)** — Public function signatures, inputs/outputs, units
 - **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** — Coding standards, naming conventions, testing guidelines
 - **[IS 456 Quick Reference](docs/IS456_QUICK_REFERENCE.md)** — Formulas cheat sheet for quick lookup

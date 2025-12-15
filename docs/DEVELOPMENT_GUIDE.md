@@ -72,7 +72,9 @@ The VBA and Python implementations must:
 ```
 structural_engineering_lib/
 ├── docs/
-│   ├── RESEARCH_AND_FINDINGS.md    ← Master research document
+│   ├── README.md                   ← Docs index (start here)
+│   ├── RESEARCH_AI_ENHANCEMENTS.md ← Active research log (v0.8+)
+│   ├── _archive/RESEARCH_AND_FINDINGS.md ← Historical research/reference (archived)
 │   ├── DEVELOPMENT_GUIDE.md        ← This document
 │   ├── API_REFERENCE.md            ← Function signatures and examples
 │   └── IS456_QUICK_REFERENCE.md    ← Formulas cheat sheet
@@ -972,7 +974,7 @@ Consider using a tool like [vba-blocks](https://github.com/vba-blocks/vba-blocks
 ### 11.4 Code Ownership and Reviews
 - Minimum 1 reviewer for core changes; 2 reviewers for releases or table/formula edits.
 - Merge criteria: tests pass, changelog updated for user-visible changes, docs updated (API/quick ref) when signatures or behavior change.
-- Record non-trivial decisions in an ADR (add `docs/adr/` or log in `RESEARCH_AND_FINDINGS.md`).
+- Record non-trivial decisions in an ADR (add `docs/adr/`) or log in `RESEARCH_AI_ENHANCEMENTS.md`.
 - No merges to `main` without green tests for both VBA (manual run note acceptable) and Python.
 
 ---

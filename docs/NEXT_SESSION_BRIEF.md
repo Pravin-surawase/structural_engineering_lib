@@ -160,7 +160,7 @@ def check_crack_width(
 Phase 1: Research (1 session)
 ├── Study IS 456 Cl. 23.2, Annex C, Annex F
 ├── Create reference tables
-└── Document formulas in RESEARCH_AND_FINDINGS.md
+└── Document formulas in _archive/RESEARCH_AND_FINDINGS.md (historical) or in RESEARCH_AI_ENHANCEMENTS.md (current log)
 
 Phase 2: Python Implementation (1-2 sessions)
 ├── Create serviceability.py module
