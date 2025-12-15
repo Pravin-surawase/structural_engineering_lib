@@ -122,7 +122,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - UDFs: IS456_Ld, IS456_LapLength, IS456_BondStress, etc.
   - Tests: `VBA/Tests/Test_Detailing.bas` (25 test cases)
 
-- [ ] **TASK-041: Serviceability Module (Deflection + Crack Width)**
+- [x] **TASK-041: Serviceability Module (Deflection + Crack Width)**
   - **Agent:** DEV / RESEARCHER / TESTER
   - **Why:** Strength-only design is not “production-ready”; serviceability is required for professional acceptance.
   - **Scope (v0.8 Level A):**
@@ -137,9 +137,9 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - Python: `Python/structural_lib/serviceability.py`, `Python/tests/test_serviceability.py`
   - Python types: extended `Python/structural_lib/types.py`
   - Docs: `docs/API_REFERENCE.md`, `docs/KNOWN_PITFALLS.md`
-  - VBA parity (scaffolded): `VBA/Modules/M17_Serviceability.bas`, `VBA/Tests/Test_Serviceability.bas`, extended `VBA/Modules/M02_Types.bas`
+  - VBA parity (implemented): `VBA/Modules/M17_Serviceability.bas`, `VBA/Tests/Test_Serviceability.bas`, extended `VBA/Modules/M02_Types.bas`
 
-- [ ] **TASK-042: Compliance Checker (Pass/Fail + Reasons, Excel-Friendly)**
+- [x] **TASK-042: Compliance Checker (Pass/Fail + Reasons, Excel-Friendly)**
   - **Agent:** DEV / INTEGRATION / TESTER
   - **Why:** Users want a one-click verdict across multiple checks with clear “why fail” remarks.
   - **MVP Contract:** accept **already-factored** actions (Mu/Vu) for each case/combination.
@@ -147,6 +147,12 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [x] Orchestrate flexure + shear + (serviceability when available)
     - [x] Output: per-case results + governing case + compact summary row
     - [x] Add tests for governing-case stability and failure propagation
+
+  **Outputs (implemented):**
+  - Python: `Python/structural_lib/compliance.py`, `Python/tests/test_compliance.py`
+  - Python types: extended `Python/structural_lib/types.py`
+  - API wrapper: `Python/structural_lib/api.py`
+  - Docs: `docs/API_REFERENCE.md`
 
 - [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
   - **Agent:** INTEGRATION / DEV
