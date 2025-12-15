@@ -155,3 +155,99 @@ Prioritize deterministic, engineer-explainable constraints before any fancy obje
 - Beam scope: simply supported vs continuous (effective span rules differ).
 - Exposure classes to support first for crack limits.
 - Whether “compliance checker” should accept **factored design actions only** (simpler) or generate combos from unfactored loads (more helpful but requires clearer conventions).
+
+---
+
+## Research Update (Pass 3 — Source-Backed Research + Decision Matrix, Dec 15, 2025)
+
+This pass adds *source-backed* notes (public URLs), plus concrete decision/benchmark templates to make P1–P4 implementation-ready.
+
+### Sources Consulted (Public)
+- NPTEL (Deflection of Structures) — Moment Area Method (beam deflection fundamentals):
+   - https://archive.nptel.ac.in/content/storage2/courses/105101085/Slides/Module-4/Lecture-1/4.1_1.html
+- NPTEL (Deflection of Structures) — Bending deflection due to temperature gradient (curvature/strain → deflection):
+   - https://archive.nptel.ac.in/content/storage2/courses/105101085/Slides/Module-4/Lecture-5/4.5_2.html
+- Google OR-Tools — combinatorial optimization (LP/MIP/CP-SAT), relevant to bar-layout search and cutting-stock/waste minimization:
+   - https://developers.google.com/optimization
+- BarMate (open-source reference) — rebar cut-length, waste optimization across stock lengths, BBS generation with `pandas`, optional AutoCAD integration:
+   - https://github.com/Arishneel-Narayan/BarMate
+
+### Takeaways Mapped to P1–P4
+
+**P1 Serviceability (Deflection + Crack Width)**
+- The NPTEL material is not an IS 456 guide, but it is a clean reference for the *mechanics* of deflection computation (curvature, moment-area method, and how temperature gradients induce curvature). This supports a two-level approach:
+   - Level A (fast, IS 456-driven): span/depth + mod-factor checks (parameterized by user inputs).
+   - Level B (detailed, mechanics-driven): compute deflection via curvature integration for standard cases where sufficient inputs exist.
+- Important compliance note: IS 456/IS 2502 clause text and numeric limits are copyrighted; implement them as parameters/config and reference clause IDs in documentation without reproducing the code text.
+
+**P2 Rebar Arrangement Optimizer**
+- OR-Tools is a strong fit for deterministic search when constraints get richer than a brute-force enumeration (layering, spacing, max diameters, preferred bar counts, etc.).
+- Recommended modeling split:
+   - “Layout feasibility” as hard constraints.
+   - “Best layout” as an objective (min weight / min bar count / min congestion).
+
+**P3 BBS/BOM Export**
+- BarMate demonstrates a minimal-but-realistic baseline feature set for BBS-related automation: cut length calculation with bend deductions, waste optimization over discrete stock lengths, and schedule generation via tabular outputs.
+- Key product insight: keep BBS generation *data-first* (line items), then emit CSV/Excel formatting as separate layers.
+
+**P4 Compliance Checker + Load Combos**
+- Keep as orchestration/reporting (as stated in Pass 2), but add a strict input convention:
+   - Option A (simplest): accept already-factored Mu/Vu and only run checks.
+   - Option B: accept characteristic loads and generate combos (needs explicit IS 875/IS 1893 conventions, and is harder to test without a reference set).
+
+### Decision Matrix (P1–P4)
+
+Scores: 1 (low) → 5 (high). “Risk” is *implementation + validation risk* (higher means riskier).
+
+| Item | User Value | Effort | Risk | Depends On | Notes |
+| --- | ---: | ---: | ---: | --- | --- |
+| P1 Serviceability | 5 | 4 | 4 | none | Core for professional acceptance; needs careful assumptions + test benchmarks. |
+| P2 Optimizer | 5 | 3 | 3 | spacing rules + preferred bar sets | High value; can start with brute force, later switch to OR-Tools if needed. |
+| P3 BBS/BOM | 4 | 3 | 3 | detailing outputs | Great pairing with optimizer; keep conventions configurable. |
+| P4 Compliance wrapper | 4 | 2 | 2 | flexure/shear/serviceability | Mostly plumbing + report shape; keep strict input contract. |
+
+### Benchmark Templates (Add to Tests/Docs)
+
+These are templates intended to be filled with known reference examples (internal spreadsheets, project examples, or user-provided worked examples) without copying copyrighted clause text.
+
+**Template A — Deflection (span/depth + mod factors)**
+- Inputs:
+   - span definition (clear vs c/c vs effective)
+   - support condition (SS/continuous/cantilever)
+   - b, D, d, cover, bar dia (if needed)
+   - concrete grade, steel grade
+   - tension steel ratio and/or provided bars
+   - load case tags (short-term / sustained fraction)
+- Expected outputs:
+   - `deflection_ok` boolean
+   - governing check label (e.g., "basic L/d" or "modified L/d")
+   - computed L/d, allowable L/d
+   - remarks that list which inputs were assumed vs provided
+
+**Template B — Rebar layout feasibility & determinism**
+- Given: required Ast, beam width, cover, stirrup dia, allowed bar diameters.
+- Assertions:
+   - returns same layout each run (deterministic)
+   - spacing checks pass for the chosen layout
+   - if infeasible, returns a structured failure reason (not just `None`)
+
+**Template C — Cutting-stock / waste optimization**
+- Given: a set of cut lengths (mm) for a bar mark and candidate stock lengths (6m/7.5m/9m/12m).
+- Assertions:
+   - chosen stock length is one of allowed
+   - waste % (or total scrap length) matches expected
+   - output includes a cutting pattern breakdown (how many stock bars, what cuts per stock)
+
+**Template D — Compliance orchestration**
+- Given: a small list of combos and their Mu/Vu.
+- Assertions:
+   - the governing combo is correctly identified
+   - overall pass/fail is consistent with sub-check failures
+   - report includes “why fail” text
+
+### How to Incorporate Your Local Saved Research (Downloads)
+
+If you want Pass 3 to explicitly cite and extract notes from your local PDFs/spreadsheets (e.g., `CE371.pdf`), the most reliable workflow is:
+- Copy those files into the repo under a references folder (e.g., `docs/_references/`) and then we can summarize them into a Pass 4 section.
+- Or paste a small excerpt / the key pages as text here (best if you only need a few formulas/tables).
+
