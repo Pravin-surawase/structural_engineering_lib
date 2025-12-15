@@ -6,6 +6,7 @@ Description:  Public facing API functions
 from . import compliance
 from . import ductile
 from . import serviceability
+from . import compliance
 
 
 def get_library_version() -> str:

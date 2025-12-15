@@ -201,7 +201,6 @@ def check_crack_width(
 
 ---
 ## 6. Compliance Checker (`compliance.py`) (v0.8+)
-
 **Goal:** One-click verdict across checks with clear “why fail” remarks.
 
 ### 6.1 Multi-Case Compliance Report
@@ -246,6 +245,10 @@ def check_compliance_report(
 - `ComplianceReport.summary`: compact, Excel-friendly dict containing `num_cases`, `num_failed_cases`, governing identifiers, and per-check max utilizations.
 
 ---
+<<<<<<< HEAD
+=======
+
+>>>>>>> feat/task-042-compliance-checker
 ### 2.5 Calculate Limiting Moment (Flanged)
 Calculates the limiting moment of resistance for a T-beam section.
 
