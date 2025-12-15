@@ -11,6 +11,9 @@ python -m black --check .
 python -m ruff check .
 python -m mypy
 python -m pytest
+
+echo "NOTE: Verification pack is included in the pytest run."
+echo "      To run only pinned regression targets: python -m pytest -q tests/test_verification_pack.py"
 python -m build
 
 # Smoke-test the built wheel in the current environment.

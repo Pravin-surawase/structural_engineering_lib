@@ -1,6 +1,6 @@
 # Production Readiness Roadmap
 
-> **Current Status:** v0.8.0 — Strength design + serviceability (Level A) implemented.
+> **Current Status:** v0.8.1 — Strength design + serviceability (Level A) implemented.
 > 
 > **Production Readiness:** ~85%
 
@@ -128,10 +128,10 @@ Week 4: Integration
 - [x] Ductile — IS 13920 compliance
 - [x] Detailing — Ld, lap lengths, spacing
 
-### Serviceability Design ❌
-- [ ] Deflection — Span/depth method
+### Serviceability Design ✅ (Simplified)
+- [x] Deflection — Span/depth method
 - [ ] Deflection — Detailed calculation (optional)
-- [ ] Crack width — Annex F
+- [x] Crack width — Annex F
 
 ### Output & Reporting
 - [x] DXF drawings — Longitudinal + section
@@ -146,11 +146,12 @@ Week 4: Integration
 - [ ] SAFE integration (future)
 
 ### Quality Assurance
-- [x] Python tests (67 passing)
+- [x] Python tests (pytest)
+- [x] Verification pack (pinned regression targets)
 - [ ] VBA automated tests
 - [x] Type hints
 - [x] py.typed marker
-- [ ] mypy clean
+- [x] mypy clean
 - [ ] 80%+ code coverage
 
 ---
@@ -180,7 +181,7 @@ To use this library for **actual project submissions**, you need:
 | Version | Focus | Status |
 |---------|-------|--------|
 | v0.7.0 | Detailing + DXF | ✅ Done |
-| **v0.8.0** | **Deflection + Crack Width** | ✅ Current |
+| **v0.8.1** | **Deflection + Crack Width** | ✅ Current |
 | v0.9.0 | BBS + PDF Reports | Planned |
 | v1.0.0 | Production Release | Goal |
 
