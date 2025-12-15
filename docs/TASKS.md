@@ -103,6 +103,16 @@ When working on tasks, specify which agent role to use:
 
 ## 🔵 Backlog (v0.8+)
 
+### Mindset (v0.8+)
+
+These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) and are intended to make the library *production-ready* for real engineering workflows.
+
+- **Deterministic first:** same inputs → same outputs (no “magic”).
+- **Auditable outputs:** every check should show inputs, assumptions, and “why pass/fail”.
+- **Engineer-friendly failures:** when something can’t be checked (missing inputs / infeasible detailing), return a structured reason.
+- **Start simple, then deepen:** ship Level A checks (fast + robust), then add Level B detail once benchmarks exist.
+- **Cross-platform default:** prefer CSV/Excel import/export paths; keep any .NET/COM automation Windows-first and optional.
+
 - [x] **TASK-033: VBA Detailing Module (M15)**
   - **Agent:** DEV
   - **Status:** ✅ Complete
@@ -124,12 +134,58 @@ When working on tasks, specify which agent role to use:
     - [ ] Verify CI passes on GitHub; update badges if desired
     - [ ] Keep scope minimal: no new features, only repo hygiene
 
-- [ ] **TASK-034**: Bar Bending Schedule (BBS)
+- [ ] **TASK-041: Serviceability Module (Deflection + Crack Width)**
+  - **Agent:** DEV / RESEARCHER / TESTER
+  - **Why:** Strength-only design is not “production-ready”; serviceability is required for professional acceptance.
+  - **Scope (v0.8 Level A):**
+    - [ ] Deflection check (span/depth + mod factors)
+    - [ ] Crack-width check (exposure-driven limits)
+    - [ ] Add result types (e.g., `ServiceabilityResult`) and Excel-friendly summary fields
+  - **Verification:**
+    - [ ] Add benchmark-style unit tests around threshold transitions
+    - [ ] Ensure assumptions are explicit in outputs (no silent defaults)
+
+- [ ] **TASK-042: Compliance Checker (Pass/Fail + Reasons, Excel-Friendly)**
+  - **Agent:** DEV / INTEGRATION / TESTER
+  - **Why:** Users want a one-click verdict across multiple checks with clear “why fail” remarks.
+  - **MVP Contract:** accept **already-factored** actions (Mu/Vu) for each case/combination.
+  - **Checklist:**
+    - [ ] Orchestrate flexure + shear + (serviceability when available)
+    - [ ] Output: per-case results + governing case + compact summary row
+    - [ ] Add tests for governing-case stability and failure propagation
+
+- [ ] **TASK-043: Rebar Arrangement Optimizer (Deterministic Layout Search)**
+  - **Agent:** DEV / TESTER
+  - **Why:** Converts required Ast into a buildable rebar pattern (dia/count/layers) while respecting spacing/cover.
+  - **Approach:** start with bounded enumeration; upgrade to OR-Tools later if constraints/objectives grow.
+  - **Checklist:**
+    - [ ] Encode hard constraints (cover, stirrups, min spacing, max bars/layer, max layers)
+    - [ ] Objective toggle (min weight vs min bar count vs min congestion)
+    - [ ] Return an explanation payload (why chosen, checks passed)
+    - [ ] Add deterministic tests + “no feasible layout” structured failures
+
+- [ ] **TASK-034: Bar Bending Schedule (BBS) + BOM Export (CSV First)**
+  - **Agent:** DEV / UI / INTEGRATION
+  - **Why:** Turns detailing results into fabrication deliverables (site-friendly schedules).
+  - **Checklist:**
+    - [ ] Define a BBS line-item schema (mark, dia, shape, cut length, qty, total length/weight)
+    - [ ] Export CSV (first); Excel formatting later
+    - [ ] Optional: cutting-stock / waste optimization (6m/7.5m/9m/12m)
+    - [ ] Tests for totals (length/weight) and stable rounding rules
+
 - [ ] **TASK-035**: Section Cuts in DXF
 - [ ] **TASK-036**: Multi-beam Layout
 - [ ] **TASK-019**: Regression Snapshots (Excel)
 - [ ] **TASK-020**: Py/VBA Parity Tests
 - [ ] **TASK-021**: Documentation Depth Pass
+
+- [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
+  - **Agent:** INTEGRATION / DEV
+  - **Why:** ETABS is a real upstream source; integration should be reliable across machines.
+  - **Checklist:**
+    - [ ] Document the supported ETABS export tables + column mapping
+    - [ ] Implement/extend CSV import normalization for compliance runs
+    - [ ] Keep CSI API automation as Windows-first/optional (separate task if needed)
 
 - [ ] **TASK-038: Professional-grade Python Testing (coverage + reliability)**
   - **Agent:** TESTER / DEVOPS
