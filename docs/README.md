@@ -2,6 +2,9 @@
 
 If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience.
 
+For VS Code AI-agent work, start with:
+- [AI_CONTEXT_PACK.md](AI_CONTEXT_PACK.md)
+
 ---
 
 ## For Most Users (recommended reading order)
