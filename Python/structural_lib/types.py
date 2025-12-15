@@ -100,4 +100,3 @@ class ComplianceReport:
     governing_utilization: float
     cases: List[ComplianceCaseResult]
     summary: Dict[str, Any] = field(default_factory=dict)
-

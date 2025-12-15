@@ -1,8 +1,8 @@
 # Production Readiness Roadmap
 
-> **Current Status:** v0.7.0 — Strength design complete, serviceability checks missing.
+> **Current Status:** v0.8.0 — Strength design + serviceability (Level A) implemented.
 > 
-> **Production Readiness:** ~70%
+> **Production Readiness:** ~85%
 
 **Canonical planning docs:**
 - Task-level tracking: [TASKS.md](TASKS.md)
@@ -12,7 +12,7 @@
 
 ## 🎯 Critical Path to Production
 
-### Phase 1: Serviceability (Required for Real Projects)
+### Phase 1: Serviceability (Required for Real Projects) — ✅ Completed in v0.8.0
 
 | Task | Priority | Effort | IS 456 Reference |
 |------|----------|--------|------------------|
@@ -160,8 +160,8 @@ Week 4: Integration
 To use this library for **actual project submissions**, you need:
 
 1. ✅ Strength design (DONE)
-2. ❌ **Deflection check** (MISSING — implement span/depth method)
-3. ❌ **Crack width check** (MISSING — implement Annex F)
+2. ✅ **Deflection check** (DONE — span/depth method)
+3. ✅ **Crack width check** (DONE — Annex-F-style)
 
 **Without serviceability checks:**
 - ✅ Safe for preliminary design
@@ -179,8 +179,8 @@ To use this library for **actual project submissions**, you need:
 
 | Version | Focus | Status |
 |---------|-------|--------|
-| v0.7.0 | Detailing + DXF | ✅ Current |
-| **v0.8.0** | **Deflection + Crack Width** | 🎯 Next |
+| v0.7.0 | Detailing + DXF | ✅ Done |
+| **v0.8.0** | **Deflection + Crack Width** | ✅ Current |
 | v0.9.0 | BBS + PDF Reports | Planned |
 | v1.0.0 | Production Release | Goal |
 

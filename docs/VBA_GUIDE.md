@@ -7,7 +7,7 @@ Practical guide to consume, ship, and maintain the VBA side of the Structural En
 ## Scope & Parity
 - **Current modules:** `M01_Constants` through `M17_Serviceability` plus optional tests in `VBA/Tests`.
 - **Coverage:** Flexure, shear, ductility, integration/reporting, detailing helpers (Ld, lap length, spacing, bar/stirrup callouts), and **DXF CAD export**.
-- **Version note:** VBA project version strings (e.g., `Get_Library_Version`) should be aligned with the tagged release (v0.7.0 for detailing).
+- **Version note:** VBA project version strings (e.g., `Get_Library_Version`) should be aligned with the tagged release (currently v0.8.0).
 - **Python parity:** Both Python and VBA now support detailing calculations AND DXF export. VBA uses native DXF R12 format writer.
 - **Serviceability (v0.8+):** Deflection and crack-width checks live in `M17_Serviceability` (Level A).
 
