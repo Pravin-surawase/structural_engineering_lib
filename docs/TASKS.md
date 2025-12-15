@@ -260,7 +260,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 ## Notes
 
-- **Current Version**: v0.7.0
+- **Current Version**: v0.7.1
 - **Last Updated**: 2025-12-15
 - **Active Branch**: main
 
