@@ -3,15 +3,19 @@ Module:       api
 Description:  Public facing API functions
 """
 
+from importlib.metadata import PackageNotFoundError, version
+
 from . import compliance
 from . import ductile
 from . import serviceability
-from . import compliance
 
 
 def get_library_version() -> str:
     """Return the current library version."""
-    return "0.7.0"
+    try:
+        return version("structural-lib-is456")
+    except PackageNotFoundError:
+        return "0.7.1"
 
 
 def check_beam_ductility(

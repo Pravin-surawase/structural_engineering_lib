@@ -76,6 +76,7 @@ class CrackWidthResult:
     inputs: Dict[str, Any]
     computed: Dict[str, Any]
 
+
 @dataclass
 class ComplianceCaseResult:
     case_id: str
