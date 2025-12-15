@@ -17,8 +17,11 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 - ✅ **Flexural design** — Singly, Doubly, and Flanged (T/L) beams
 - ✅ **Shear design** — Stirrup design with Table 19/20 lookup
 - ✅ **Ductile Detailing** — IS 13920:2016 checks (Geometry, Min/Max steel, Confinement)
+- ✅ **Reinforcement detailing** — Bar patterns / drafting-ready schedules
+- ✅ **DXF export** — Drawing output for reinforcement detailing
+- ✅ **Serviceability** — Level A checks (deflection, crack width)
+- ✅ **Compliance checker** — Multi-check summary (strength + serviceability) across load cases
 - ✅ **ETABS Integration** — Import CSV from ETABS with header normalization and sign preservation
-- ✅ **Beam Schedule** — Generate drafting-ready schedules with bar patterns
 - ✅ **Dual implementation** — VBA (Excel) + Python with identical API
 - ✅ **Mac Compatible** — Hardened against Mac VBA stack corruption issues
 
