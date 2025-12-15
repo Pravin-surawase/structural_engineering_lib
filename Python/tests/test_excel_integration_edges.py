@@ -14,7 +14,11 @@ from structural_lib.excel_integration import (
     process_single_beam,
 )
 
-from structural_lib.detailing import BarArrangement, BeamDetailingResult, StirrupArrangement
+from structural_lib.detailing import (
+    BarArrangement,
+    BeamDetailingResult,
+    StirrupArrangement,
+)
 
 
 def test_beam_design_data_from_dict_unknown_keys_use_lowercase():
@@ -131,7 +135,9 @@ def test_process_single_beam_generates_dxf_when_available(monkeypatch, tmp_path)
         called["path"] = out_path
         return out_path
 
-    monkeypatch.setattr(excel_integration, "generate_beam_dxf", _fake_generate_beam_dxf, raising=True)
+    monkeypatch.setattr(
+        excel_integration, "generate_beam_dxf", _fake_generate_beam_dxf, raising=True
+    )
 
     beam = BeamDesignData.from_dict(
         {
@@ -188,7 +194,9 @@ def test_batch_generate_dxf_json_extension(monkeypatch, tmp_path, capsys):
         encoding="utf-8",
     )
 
-    def _stub_process_single_beam(beam, output_folder, is_seismic=False, generate_dxf=True):
+    def _stub_process_single_beam(
+        beam, output_folder, is_seismic=False, generate_dxf=True
+    ):
         return ProcessingResult(
             beam_id=beam.beam_id,
             story=beam.story,
@@ -198,7 +206,9 @@ def test_batch_generate_dxf_json_extension(monkeypatch, tmp_path, capsys):
             error=None,
         )
 
-    monkeypatch.setattr(excel_integration, "process_single_beam", _stub_process_single_beam)
+    monkeypatch.setattr(
+        excel_integration, "process_single_beam", _stub_process_single_beam
+    )
 
     res = batch_generate_dxf(str(p), str(tmp_path / "out"), is_seismic=False)
     assert len(res) == 1
@@ -260,7 +270,9 @@ def test_batch_generate_dxf_logs_progress(monkeypatch, tmp_path, capsys):
         encoding="utf-8",
     )
 
-    def _stub_process_single_beam(beam, output_folder, is_seismic=False, generate_dxf=True):
+    def _stub_process_single_beam(
+        beam, output_folder, is_seismic=False, generate_dxf=True
+    ):
         return ProcessingResult(
             beam_id=beam.beam_id,
             story=beam.story,
@@ -270,7 +282,9 @@ def test_batch_generate_dxf_logs_progress(monkeypatch, tmp_path, capsys):
             error=None,
         )
 
-    monkeypatch.setattr(excel_integration, "process_single_beam", _stub_process_single_beam)
+    monkeypatch.setattr(
+        excel_integration, "process_single_beam", _stub_process_single_beam
+    )
 
     res = batch_generate_dxf(str(p), str(tmp_path / "out"), is_seismic=False)
     assert len(res) == 1
@@ -315,10 +329,18 @@ def test_generate_detailing_schedule_and_export_to_csv(tmp_path):
         D=500,
         span=4000,
         cover=40,
-        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            )
+        ],
         bottom_bars=[
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
         ],
         stirrups=[
             StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
@@ -384,9 +406,19 @@ def test_generate_detailing_schedule_with_single_stirrup_uses_end_for_mid(tmp_pa
         D=500,
         span=4000,
         cover=40,
-        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
-        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1)],
-        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            )
+        ],
+        bottom_bars=[
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            )
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)
+        ],
         ld_tension=600,
         ld_compression=500,
         lap_length=700,
@@ -425,16 +457,31 @@ def test_excel_integration_cli_main_with_schedule(monkeypatch, tmp_path, capsys)
         )
     ]
 
-    monkeypatch.setattr(excel_integration, "batch_generate_dxf", lambda *_args, **_kwargs: fake_results)
-    monkeypatch.setattr(excel_integration, "generate_summary_report", lambda _r: "SUMMARY")
-    monkeypatch.setattr(excel_integration, "generate_detailing_schedule", lambda _r: [{"Story": "S1", "Beam": "B1"}])
+    monkeypatch.setattr(
+        excel_integration, "batch_generate_dxf", lambda *_args, **_kwargs: fake_results
+    )
+    monkeypatch.setattr(
+        excel_integration, "generate_summary_report", lambda _r: "SUMMARY"
+    )
+    monkeypatch.setattr(
+        excel_integration,
+        "generate_detailing_schedule",
+        lambda _r: [{"Story": "S1", "Beam": "B1"}],
+    )
 
     schedule_path = tmp_path / "schedule.csv"
 
     monkeypatch.setattr(
         __import__("sys"),
         "argv",
-        ["excel_integration", str(tmp_path / "in.csv"), "-o", str(tmp_path / "out"), "--schedule", str(schedule_path)],
+        [
+            "excel_integration",
+            str(tmp_path / "in.csv"),
+            "-o",
+            str(tmp_path / "out"),
+            "--schedule",
+            str(schedule_path),
+        ],
         raising=True,
     )
 

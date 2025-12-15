@@ -112,10 +112,14 @@ def check_compliance_case(
             assumptions.append("Computed pt_percent for shear using ast_mm2_for_shear.")
         elif flex.ast_required > 0:
             pt_percent = (flex.ast_required * 100.0) / (b_mm * d_mm)
-            assumptions.append("Computed pt_percent for shear using flexure ast_required.")
+            assumptions.append(
+                "Computed pt_percent for shear using flexure ast_required."
+            )
         else:
             pt_percent = 0.0
-            assumptions.append("pt_percent not provided; using 0.0 (tables clamp internally).")
+            assumptions.append(
+                "pt_percent not provided; using 0.0 (tables clamp internally)."
+            )
 
     sh = shear.design_shear(
         vu_kn=vu_kn,
@@ -216,8 +220,16 @@ def check_compliance_report(
 
     for c in cases:
         case_id = str(c.get("case_id", ""))
-        mu_knm = float(c.get("mu_knm"))
-        vu_kn = float(c.get("vu_kn"))
+
+        mu_raw = c.get("mu_knm")
+        vu_raw = c.get("vu_kn")
+        if mu_raw is None or vu_raw is None:
+            raise ValueError(
+                "Each case must include 'mu_knm' and 'vu_kn' (already-factored actions)."
+            )
+
+        mu_knm = float(mu_raw)
+        vu_kn = float(vu_raw)
 
         defl_params = c.get("deflection_params", deflection_defaults)
         crack_params = c.get("crack_width_params", crack_width_defaults)
@@ -236,13 +248,17 @@ def check_compliance_report(
                 d_dash_mm=d_dash_mm,
                 asv_mm2=asv_mm2,
                 pt_percent=pt_percent,
-                ast_mm2_for_shear=float(ast_for_shear) if ast_for_shear is not None else None,
+                ast_mm2_for_shear=(
+                    float(ast_for_shear) if ast_for_shear is not None else None
+                ),
                 deflection_params=defl_params,
                 crack_width_params=crack_params,
             )
         )
 
-    def _governing_key(index_and_result: tuple[int, ComplianceCaseResult]) -> tuple[float, float, float, float, int]:
+    def _governing_key(
+        index_and_result: tuple[int, ComplianceCaseResult],
+    ) -> tuple[float, float, float, float, int]:
         idx, r = index_and_result
         utils = list(r.utilizations.values())
         # Sort descending so secondary checks break ties deterministically.
@@ -251,13 +267,15 @@ def check_compliance_report(
         while len(sorted_utils) < 4:
             sorted_utils.append(float("-inf"))
         # Final deterministic tie-break: earlier case order wins.
-        return (sorted_utils[0], sorted_utils[1], sorted_utils[2], sorted_utils[3], -idx)
+        return (
+            sorted_utils[0],
+            sorted_utils[1],
+            sorted_utils[2],
+            sorted_utils[3],
+            -idx,
+        )
 
-    governing = (
-        max(enumerate(results), key=_governing_key)[1]
-        if results
-        else None
-    )
+    governing = max(enumerate(results), key=_governing_key)[1] if results else None
     governing_case_id = governing.case_id if governing else ""
     governing_util = governing.governing_utilization if governing else 0.0
 

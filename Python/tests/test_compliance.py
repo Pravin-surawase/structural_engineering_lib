@@ -15,7 +15,11 @@ def test_compliance_report_picks_governing_by_utilization():
         cases=cases,
         asv_mm2=100.0,
         **common,
-        deflection_defaults={"span_mm": 4000.0, "d_mm": 450.0, "support_condition": "simply_supported"},
+        deflection_defaults={
+            "span_mm": 4000.0,
+            "d_mm": 450.0,
+            "support_condition": "simply_supported",
+        },
     )
 
     assert report.governing_case_id == "C2"
@@ -38,7 +42,12 @@ def test_compliance_report_failure_propagation_and_governing():
     assert report.is_ok is False
     assert report.governing_case_id == "BAD_SHEAR"
     assert report.summary["num_failed_cases"] == 1
-    assert report.summary["governing_worst_check"] in {"shear", "flexure", "deflection", "crack_width"}
+    assert report.summary["governing_worst_check"] in {
+        "shear",
+        "flexure",
+        "deflection",
+        "crack_width",
+    }
 
     bad = [c for c in report.cases if c.case_id == "BAD_SHEAR"][0]
     assert bad.is_ok is False
@@ -54,7 +63,11 @@ def test_compliance_report_ok_when_all_checks_pass():
         cases=cases,
         asv_mm2=100.0,
         **common,
-        deflection_defaults={"span_mm": 4000.0, "d_mm": 450.0, "support_condition": "simply_supported"},
+        deflection_defaults={
+            "span_mm": 4000.0,
+            "d_mm": 450.0,
+            "support_condition": "simply_supported",
+        },
         crack_width_defaults={
             "exposure_class": "moderate",
             "limit_mm": 0.3,
