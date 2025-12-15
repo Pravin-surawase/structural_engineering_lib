@@ -4,6 +4,10 @@
 > 
 > **Production Readiness:** ~70%
 
+**Canonical planning docs:**
+- Task-level tracking: [TASKS.md](TASKS.md)
+- Research backing/notes: [RESEARCH_AI_ENHANCEMENTS.md](RESEARCH_AI_ENHANCEMENTS.md)
+
 ---
 
 ## 🎯 Critical Path to Production

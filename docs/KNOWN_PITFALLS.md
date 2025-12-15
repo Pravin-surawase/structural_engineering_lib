@@ -37,10 +37,8 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - Suffix variables with units (b_mm, Vu_kN, tau_Nmm2, ast_mm2) to avoid unit mix-ups.
 - Document inputs/outputs and clause references in headers; align naming across VBA/Python.
 
-## Mac VBA Specific Issues
-- **Overflow in Doubly Reinforced Design**: A known `Runtime Error 6: Overflow` occurs in `Design_Doubly_Reinforced` (specifically Case 1 fallback to singly reinforced) on Mac Excel. This is likely due to internal stack corruption or type inference issues specific to the Mac VBA environment.
-  - **Status**: Known issue, currently ignored in v0.4.0.
-  - **Workaround**: None required for Windows; Mac users should be aware of potential instability in this specific function.
+## Platform/VBA Quirks
+- Mac/Excel/VBA quirks (overflow patterns, debug/printing pitfalls, import-order errors) are tracked in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 ---
 

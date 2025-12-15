@@ -4,7 +4,7 @@
 **Use:** Treat this as shared context for VS Code AI or other tooling. No code here — just goals and approach.
 **See also:** 
 - [MISSION_AND_PRINCIPLES.md](MISSION_AND_PRINCIPLES.md) for the deeper "why" and product philosophy.
-- [GIT_GOVERNANCE.md](GIT_GOVERNANCE.md) for version control and contribution rules.
+- [docs/_internal/GIT_GOVERNANCE.md](_internal/GIT_GOVERNANCE.md) for version control and contribution rules.
 
 ---
 

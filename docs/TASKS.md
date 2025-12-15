@@ -21,7 +21,7 @@ When working on tasks, specify which agent role to use:
 | **DOCS** | `agents/DOCS.md` | API docs, guides, changelog |
 | **SUPPORT** | `agents/SUPPORT.md` | Troubleshooting, known issues |
 
-**See also:** `docs/AGENT_WORKFLOW.md` for detailed agent protocols.
+**See also:** [docs/_internal/AGENT_WORKFLOW.md](_internal/AGENT_WORKFLOW.md) for detailed agent protocols.
 
 ---
 
@@ -229,7 +229,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Output:** `M13_Integration.bas`
 
 - [x] **Governance & Docs**
-  - Created `docs/GIT_GOVERNANCE.md`
+  - Created `docs/_internal/GIT_GOVERNANCE.md` (with a small redirect stub at `docs/GIT_GOVERNANCE.md`)
   - Created `docs/MISSION_AND_PRINCIPLES.md`
   - Updated `docs/RELEASES.md`
 

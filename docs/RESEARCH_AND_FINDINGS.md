@@ -2,7 +2,13 @@
 
 **Document Version:** 1.0  
 **Last Updated:** December 10, 2025  
-**Status:** Research Phase (documentation complete; implementation pending)
+**Status:** Historical research + reference material (some early sections may be out-of-date)
+
+> Note: This file started as an early-stage “design + research” doc. The repo now has working Python/VBA implementations.
+> For current scope/architecture and how to use the library, prefer:
+> - [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
+> - [API_REFERENCE.md](API_REFERENCE.md)
+> - [TASKS.md](TASKS.md) and [NEXT_SESSION_BRIEF.md](NEXT_SESSION_BRIEF.md)
 
 ---
 
