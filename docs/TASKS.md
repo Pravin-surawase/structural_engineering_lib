@@ -122,18 +122,6 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - UDFs: IS456_Ld, IS456_LapLength, IS456_BondStress, etc.
   - Tests: `VBA/Tests/Test_Detailing.bas` (25 test cases)
 
-- [ ] **TASK-037: GitHub Repo Professionalization (community + CI)**
-  - **Agent:** DEVOPS / DOCS
-  - **Goal:** Make the repository easy/safe for other engineers to use and contribute.
-  - **Checklist:**
-    - [ ] Add community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`
-    - [ ] Add PR template: `.github/pull_request_template.md`
-    - [ ] Add issue templates: `.github/ISSUE_TEMPLATE/*`
-    - [ ] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
-    - [ ] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
-    - [ ] Verify CI passes on GitHub; update badges if desired
-    - [ ] Keep scope minimal: no new features, only repo hygiene
-
 - [ ] **TASK-041: Serviceability Module (Deflection + Crack Width)**
   - **Agent:** DEV / RESEARCHER / TESTER
   - **Why:** Strength-only design is not “production-ready”; serviceability is required for professional acceptance.
@@ -153,6 +141,14 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [ ] Orchestrate flexure + shear + (serviceability when available)
     - [ ] Output: per-case results + governing case + compact summary row
     - [ ] Add tests for governing-case stability and failure propagation
+
+- [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
+  - **Agent:** INTEGRATION / DEV
+  - **Why:** ETABS is a real upstream source; integration should be reliable across machines.
+  - **Checklist:**
+    - [ ] Document the supported ETABS export tables + column mapping
+    - [ ] Implement/extend CSV import normalization for compliance runs
+    - [ ] Keep CSI API automation as Windows-first/optional (separate task if needed)
 
 - [ ] **TASK-043: Rebar Arrangement Optimizer (Deterministic Layout Search)**
   - **Agent:** DEV / TESTER
@@ -179,13 +175,17 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - [ ] **TASK-020**: Py/VBA Parity Tests
 - [ ] **TASK-021**: Documentation Depth Pass
 
-- [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
-  - **Agent:** INTEGRATION / DEV
-  - **Why:** ETABS is a real upstream source; integration should be reliable across machines.
+- [ ] **TASK-037: GitHub Repo Professionalization (community + CI)**
+  - **Agent:** DEVOPS / DOCS
+  - **Goal:** Make the repository easy/safe for other engineers to use and contribute.
   - **Checklist:**
-    - [ ] Document the supported ETABS export tables + column mapping
-    - [ ] Implement/extend CSV import normalization for compliance runs
-    - [ ] Keep CSI API automation as Windows-first/optional (separate task if needed)
+    - [ ] Add community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`
+    - [ ] Add PR template: `.github/pull_request_template.md`
+    - [ ] Add issue templates: `.github/ISSUE_TEMPLATE/*`
+    - [ ] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
+    - [ ] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
+    - [ ] Verify CI passes on GitHub; update badges if desired
+    - [ ] Keep scope minimal: no new features, only repo hygiene
 
 - [ ] **TASK-038: Professional-grade Python Testing (coverage + reliability)**
   - **Agent:** TESTER / DEVOPS
