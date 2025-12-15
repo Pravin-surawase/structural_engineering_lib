@@ -51,7 +51,7 @@ CHANGELOG.md        → [0.7.0]
 | **DXF Export** | ✅ 100% | Python (ezdxf) + VBA (native R12) |
 | **ETABS Integration** | ✅ 100% | CSV import with normalization |
 | **Documentation** | ✅ 95% | 21 docs, beginner guides added |
-| **Testing** | ✅ 85% | 67 tests passing |
+| **Testing** | ✅ 85% | 74 tests passing |
 | **Serviceability** | ❌ 0% | **MISSING: Deflection + Crack** |
 
 ### Code Quality Metrics
@@ -189,9 +189,9 @@ docs/
 ```
 
 ### Test Coverage
-- **Python:** 67 tests passing (100% pass rate)
+- **Python:** 74 tests passing (100% pass rate)
 - **VBA:** Manual tests (Integration_TestHarness.bas, Test_*.bas)
-- **Coverage:** ~85% (core logic well-tested, UI/integration less so)
+- **Coverage:** ~84% overall (latest local run; CI uploads `coverage.xml` artifact)
 
 ---
 

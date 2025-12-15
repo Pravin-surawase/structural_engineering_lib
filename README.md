@@ -6,7 +6,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.7.0)** — Strength design + detailing + DXF export complete. 67 Python tests passing.
+🚀 **Active (v0.7.0)** — Strength design + detailing + DXF export complete. 74 Python tests passing.
 
 **Production note:** Serviceability checks (deflection, crack width) are planned for v0.8.0. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
 
