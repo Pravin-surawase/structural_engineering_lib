@@ -2,7 +2,7 @@ Attribute VB_Name = "M16_DXF"
 '@Module: M16_DXF
 '@Description: DXF File Export for Structural Drawings
 '@Reference: IS 456:2000, SP 34:1987, AutoCAD DXF Reference
-'@Version: 0.7.0
+'@Version: 0.8.0
 '@Date: 2025-12-11
 '
 ' PURPOSE:

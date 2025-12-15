@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M15_Detailing
 ' Description:  IS 456:2000 / SP 34:1987 Reinforcement Detailing
-' Version:      0.7.0
+' Version:      0.8.0
 ' License:      MIT
 ' References:   IS 456:2000 Cl 26.2-26.5, IS 13920:2016, SP 34:1987
 ' ==============================================================================

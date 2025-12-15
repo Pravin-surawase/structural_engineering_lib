@@ -1,7 +1,7 @@
 Attribute VB_Name = "Test_DXF"
 '@Module: Test_DXF
 '@Description: Test Suite for M16_DXF - DXF Export Functions
-'@Version: 0.7.0
+'@Version: 0.8.0
 '@Date: 2025-12-11
 
 Option Explicit

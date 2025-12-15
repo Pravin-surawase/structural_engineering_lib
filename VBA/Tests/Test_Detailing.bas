@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       Test_Detailing
 ' Description:  Unit Tests for M15_Detailing module
-' Version:      0.7.0
+' Version:      0.8.0
 ' License:      MIT
 ' ==============================================================================
 
