@@ -85,3 +85,73 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 ## Notes
 - Keep any AI-driven feature **transparent and overrideable**; always show the deterministic calculation path.
 - Prefer **small, deterministic search/optimization** over heavyweight ML to avoid reproducibility issues in regulated contexts.
+
+---
+
+## Research Update (Pass 2 — Repo-Aware Design Notes, Dec 15, 2025)
+
+This pass focuses on *how* the shortlisted initiatives would fit into the current codebase (Python + VBA), and what “done” should mean in terms of APIs, outputs, and tests.
+
+### Repo Scan Takeaways
+- The Python package is organized around small, testable modules (e.g., `flexure.py`, `shear.py`) with simple dataclass outputs in `types.py`.
+- The current public API surface in `api.py` is intentionally small, suggesting new features should remain **module-first** and only add API wrappers once stable.
+- Existing design functions already compute intermediate quantities useful for serviceability/compliance (e.g., `xu`, `pt_provided`, `tv/tc/tc_max`). New features should reuse these outputs rather than re-derive values in multiple places.
+
+### 1) Serviceability Module — Practical Implementation Notes
+- **Keep two levels of rigor:**
+   - Level A (fast): span/depth checks and modification-factor based deflection verification (good for Excel “quick check”).
+   - Level B (detailed): optional calculations where inputs are available (sustained loads, creep/shrinkage assumptions, cracked section behavior).
+- **Output structure:** add a `ServiceabilityResult` dataclass in `types.py` with fields like `deflection_ok`, `crack_ok`, `limit_values`, `governing_case`, and `remarks`.
+- **Avoid silent assumptions:** make any assumed values explicit (e.g., sustained load fraction, effective span definition, exposure-driven crack limits).
+- **Acceptance criteria (tests):**
+   - “No crash” tests across typical ranges.
+   - Boundary tests around $L/d$ limits and modification factor transitions.
+   - Deterministic results for representative benchmark examples (even if the benchmark values are from the standard’s worked examples or internal reference sheets).
+
+### 2) Load Combination + Compliance Checker — Minimal Useful Shape
+- Treat this as a **reporting/orchestration** layer: it should not duplicate flexure/shear math.
+- **Two outputs:**
+   - Machine-friendly: a list of per-combo results (pass/fail + controlling ratio).
+   - Excel-friendly: a compact summary row with governing combo + remarks.
+- **Design principle:** include “why fail” text (e.g., “Tv > Tc,max”, “Ast > 4% bD”, “serviceability deflection exceeds limit”).
+- **Acceptance criteria (tests):**
+   - Given known combo inputs, the governing combo is stable.
+   - Any failure in a sub-check propagates correctly to overall verdict.
+
+### 3) Rebar Arrangement Optimizer — Constraints to Encode First
+Prioritize deterministic, engineer-explainable constraints before any fancy objective function.
+
+- **Hard constraints (must-pass):**
+   - Bar diameters from a standard set.
+   - Maximum bars per layer (based on beam width, cover, stirrup dia, bar dia, min clear spacing).
+   - Min spacing checks and “constructability sanity” (avoid extreme congestion).
+   - Limit on layers (e.g., 2–3) unless user opts in.
+- **Soft objectives (choose one):** minimize steel weight, minimize bar count, or minimize congestion.
+- **Output structure:** a `RebarLayoutResult` that includes chosen diameters/counts/layers plus a list of passed/failed spacing checks.
+- **Acceptance criteria (tests):**
+   - For fixed Ast demand and geometry, solution is deterministic.
+   - If no feasible layout exists, return a structured failure with actionable reason (“insufficient width for min spacing”).
+
+### 4) BBS/BOM Export — Keep It Code-Agnostic
+- Start from **detailing outputs** (bar counts/lengths/shapes) rather than trying to infer detailing from strength design.
+- Represent BBS as a list of line-items (shape code, dia, cut length, quantity, mark) and export CSV first.
+- Add PDF/pretty Excel formatting later; keep core generation logic independent.
+- **Acceptance criteria (tests):**
+   - Known detailing input produces stable total weight and total length.
+   - Hooks/bends and length rounding rules are explicit and tested.
+
+### 5) VBA/Python Parity Guidance
+- Keep **core deterministic calculations** parity across Python/VBA (serviceability “Level A”, compliance wrapper, basic spacing checks).
+- Keep advanced helpers Python-first if they need non-trivial search/optimization; provide VBA as a consumer (call Python or use simplified VBA variant) only if required.
+
+### AI/NL Helper — Guardrails Clarified
+- If an NL assistant is added later, it should only:
+   - parse user intent → structured inputs,
+   - call the same deterministic functions as everyone else,
+   - return a calculation-sheet style explanation with clause references.
+- It must not introduce alternative computation paths.
+
+### Open Questions (Needed Before Implementation)
+- Beam scope: simply supported vs continuous (effective span rules differ).
+- Exposure classes to support first for crack limits.
+- Whether “compliance checker” should accept **factored design actions only** (simpler) or generate combos from unfactored loads (more helpful but requires clearer conventions).
