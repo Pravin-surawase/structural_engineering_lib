@@ -62,7 +62,7 @@ python -m structural_lib.excel_integration path/to/beams.csv -o ./dxf_output --s
 ```bash
 python - <<'PY'
 from structural_lib import shear
-res = shear.design_shear(Vu_kN=100, b=300, d=500, fck=25, fy=415, Asv=100, pt=0.75)
+res = shear.design_shear(vu_kn=100, b=300, d=500, fck=25, fy=415, asv=100, pt=0.75)
 print("Shear OK?", res.is_safe, "Spacing (mm):", res.spacing)
 PY
 ```

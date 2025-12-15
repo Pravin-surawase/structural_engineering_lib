@@ -214,7 +214,7 @@ Asv = legs * math.pi * (stirrup_dia/2)**2  # Area of stirrup legs
 pt = (ast_provided * 100) / (b * d)
 
 shear_result = shear.design_shear(
-    Vu_kN=Vu, b=b, d=d, fck=fck, fy=fy, Asv=Asv, pt=pt
+    vu_kn=Vu, b=b, d=d, fck=fck, fy=fy, asv=Asv, pt=pt
 )
 
 print(f"Nominal shear stress τv = {shear_result.tv:.3f} N/mm²")
@@ -305,7 +305,7 @@ def design_beam(row):
     stirrup_dia = 8
     Asv = 2 * math.pi * (stirrup_dia/2)**2
     pt = (ast_provided * 100) / (b * d)
-    shear_res = shear.design_shear(Vu_kN=Vu, b=b, d=d, fck=fck, fy=fy, Asv=Asv, pt=pt)
+    shear_res = shear.design_shear(vu_kn=Vu, b=b, d=d, fck=fck, fy=fy, asv=Asv, pt=pt)
     
     # Detailing
     ld = detailing.calculate_development_length(bar_dia, fck, fy)
