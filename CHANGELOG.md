@@ -3,11 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [0.8.0] - 2025-12-15
 ### Added
-- **Serviceability (v0.8 Level A)**:
+- **Serviceability (Level A)**:
   - Python: deflection check (span/depth with explicit modifiers) and crack width estimate (Annex-F-style), returning auditable result payloads.
   - VBA parity: serviceability module + types + test harness.
-- **Compliance Checker (v0.8+)**:
+- **Compliance Checker**:
   - Python: multi-case orchestrator across flexure + shear (+ optional serviceability), deterministic governing-case selection, and Excel-friendly summary row.
 
 ### Documentation
