@@ -150,8 +150,11 @@ def main() -> None:
         out_path = "beam_B1.dxf"
         generate_beam_dxf(det, out_path)
         print("\nDXF saved to:", out_path)
-    except ImportError:
-        print("\n(DXF skipped) To enable: pip install ezdxf")
+    except ImportError as exc:
+        print("\n(DXF skipped) Import failed:", exc)
+        print("To enable in Colab:")
+        print("  %pip install -q ezdxf")
+        print("  (then Runtime > Restart runtime, and rerun)")
 
 
 if __name__ == "__main__":

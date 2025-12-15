@@ -17,15 +17,26 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
-from typing import List, Tuple
+from typing import Any, List, Optional, Tuple
 
 try:
     import ezdxf
-    from ezdxf import units
-    from ezdxf.enums import TextEntityAlignment
+
+    try:
+        from ezdxf import units as _units  # type: ignore
+    except Exception:
+        _units = None
+
+    try:
+        from ezdxf.enums import TextEntityAlignment as _TextEntityAlignment  # type: ignore
+    except Exception:
+        _TextEntityAlignment = None
 
     EZDXF_AVAILABLE = True
-except ImportError:
+except Exception:
+    ezdxf = None  # type: ignore
+    _units = None
+    _TextEntityAlignment = None
     EZDXF_AVAILABLE = False
 
 from .detailing import BeamDetailingResult, BarArrangement, StirrupArrangement
@@ -63,6 +74,17 @@ def check_ezdxf():
         raise ImportError(
             "ezdxf library not installed. Install with: pip install ezdxf"
         )
+
+
+def _text_align(name: str) -> Any:
+    """Return a text alignment compatible with the installed ezdxf.
+
+    ezdxf's Text.set_placement() accepts either a TextEntityAlignment enum member
+    or a string (varies by ezdxf version).
+    """
+    if _TextEntityAlignment is None:
+        return name
+    return getattr(_TextEntityAlignment, name)
 
 
 def setup_layers(doc):
@@ -217,7 +239,7 @@ def draw_dimensions(msp, span: float, D: float, origin: Tuple[float, float] = (0
             "height": TEXT_HEIGHT,
         },
     ).set_placement(
-        (x0 + span / 2, y_dim - TEXT_HEIGHT), align=TextEntityAlignment.TOP_CENTER
+        (x0 + span / 2, y_dim - TEXT_HEIGHT), align=_text_align("TOP_CENTER")
     )
 
     # Depth dimension (right side)
@@ -237,7 +259,7 @@ def draw_dimensions(msp, span: float, D: float, origin: Tuple[float, float] = (0
             "rotation": 90,
         },
     ).set_placement(
-        (x_dim + TEXT_HEIGHT, y0 + D / 2), align=TextEntityAlignment.MIDDLE_CENTER
+        (x_dim + TEXT_HEIGHT, y0 + D / 2), align=_text_align("MIDDLE_CENTER")
     )
 
 
@@ -268,7 +290,7 @@ def draw_annotations(
             "layer": "TEXT",
             "height": TEXT_HEIGHT * 1.5,
         },
-    ).set_placement((x0, title_y), align=TextEntityAlignment.LEFT)
+    ).set_placement((x0, title_y), align=_text_align("LEFT"))
 
     # Bottom bar callout
     bot_callout = bottom_bars[1].callout()  # Mid span (typically governs)
@@ -279,7 +301,7 @@ def draw_annotations(
             "height": TEXT_HEIGHT,
         },
     ).set_placement(
-        (x0 + span / 2, y0 - DIM_OFFSET - 100), align=TextEntityAlignment.TOP_CENTER
+        (x0 + span / 2, y0 - DIM_OFFSET - 100), align=_text_align("TOP_CENTER")
     )
 
     # Top bar callout
@@ -291,7 +313,7 @@ def draw_annotations(
             "height": TEXT_HEIGHT,
         },
     ).set_placement(
-        (x0 + span / 2, y0 + D + 50), align=TextEntityAlignment.BOTTOM_CENTER
+        (x0 + span / 2, y0 + D + 50), align=_text_align("BOTTOM_CENTER")
     )
 
     # Stirrup callouts for each zone
@@ -305,7 +327,7 @@ def draw_annotations(
                 "layer": "TEXT",
                 "height": TEXT_HEIGHT * 0.8,
             },
-        ).set_placement((x, y0 + D / 2), align=TextEntityAlignment.MIDDLE_CENTER)
+        ).set_placement((x, y0 + D / 2), align=_text_align("MIDDLE_CENTER"))
 
     # Development length note
     note_y = y0 - DIM_OFFSET - 200
@@ -315,7 +337,7 @@ def draw_annotations(
             "layer": "TEXT",
             "height": TEXT_HEIGHT * 0.8,
         },
-    ).set_placement((x0, note_y), align=TextEntityAlignment.LEFT)
+    ).set_placement((x0, note_y), align=_text_align("LEFT"))
 
 
 # =============================================================================
@@ -345,7 +367,8 @@ def generate_beam_dxf(
 
     # Create new DXF document (R2010 for compatibility)
     doc = ezdxf.new("R2010")
-    doc.units = units.MM
+    if _units is not None:
+        doc.units = _units.MM
 
     # Setup layers
     setup_layers(doc)
