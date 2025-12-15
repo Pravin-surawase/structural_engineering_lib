@@ -57,14 +57,16 @@ Build a **reusable, UI-agnostic structural engineering library** for RC rectangu
 
 ### 2.1 Current State
 
-The workspace contains only documentation (no implementation yet). Current tree:
+The project has progressed beyond the initial research phase and is implemented in both Python and VBA.
+
+Current high-level structure (simplified):
 
 ```
 structural_engineering_lib/
-├── README.md
-└── docs/
-    ├── IS456_QUICK_REFERENCE.md
-    └── RESEARCH_AND_FINDINGS.md
+├── docs/                 # Guides, API docs, research logs
+├── Python/               # Python package + tests
+├── VBA/                  # VBA modules + tests + build artifacts
+└── Excel/                # Example workbooks/add-ins
 ```
 
 ### 2.2 Recommended Final Structure
