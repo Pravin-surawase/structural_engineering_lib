@@ -25,6 +25,20 @@ Public Enum DesignSectionType
     OverReinforced = 3
 End Enum
 
+' Serviceability (v0.8+)
+Public Enum SupportCondition
+    Cantilever = 1
+    SimplySupported = 2
+    Continuous = 3
+End Enum
+
+Public Enum ExposureClass
+    Mild = 1
+    Moderate = 2
+    Severe = 3
+    VerySevere = 4
+End Enum
+
 ' ------------------------------------------------------------------------------
 ' User Defined Types (UDTs)
 ' ------------------------------------------------------------------------------
@@ -52,6 +66,37 @@ Public Type ShearResult
     Spacing As Double       ' Calculated spacing (mm)
     IsSafe As Boolean       ' True if section is safe in shear (Tv < Tc_max)
     Remarks As String       ' Design remarks (e.g., "Min Shear Reinforcement")
+End Type
+
+'
+' Serviceability result types (v0.8+)
+'
+Public Type DeflectionResult
+    IsOK As Boolean
+    Remarks As String
+    Support As SupportCondition
+    LD_Ratio As Double
+    Allowable_LD As Double
+    BaseAllowable_LD As Double
+    MF_TensionSteel As Double
+    MF_CompressionSteel As Double
+    MF_Flanged As Double
+    Assumptions As String
+End Type
+
+Public Type CrackWidthResult
+    IsOK As Boolean
+    Remarks As String
+    Exposure As ExposureClass
+    Wcr_mm As Double
+    Limit_mm As Double
+    Acr_mm As Double
+    Cmin_mm As Double
+    h_mm As Double
+    x_mm As Double
+    Epsilon_m As Double
+    Denom As Double
+    Assumptions As String
 End Type
 
 
