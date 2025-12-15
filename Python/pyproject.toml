@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
 authors = [
-  { name = "Structural Engineering Library Project" }
+  { name = "Pravin Surawase" }
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",

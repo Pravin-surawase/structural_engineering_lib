@@ -171,4 +171,4 @@ MIT License — Free to use, modify, and distribute.
 
 ## Author
 
-Structural Engineering Library Project
+Pravin Surawase (GitHub: https://github.com/Pravin-surawase)
