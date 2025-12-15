@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- **Python Testing**:
+  - DXF export smoke test (generate + read-back).
+  - Materials/Tables edge-case tests.
+  - CI installs optional DXF dependencies (`.[dev,dxf]`) so DXF tests run in Actions.
+
+### Fixed
+- **Python Packaging**:
+  - Include `structural_lib/py.typed` in built distributions (PEP 561).
+
 - **VBA DXF Export Module (`M16_DXF.bas`)**:
   - Native DXF R12 format writer (no external dependencies).
   - `Draw_BeamSection`: Beam cross-section with rebar arrangement.
