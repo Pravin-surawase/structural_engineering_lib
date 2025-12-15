@@ -26,6 +26,8 @@ For VS Code AI-agent work, start with:
 ## For Contributors / Maintainers
 
 - Architecture & layering: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
+- Consolidated architecture/data flow: [DEEP_PROJECT_MAP.md](DEEP_PROJECT_MAP.md)
+- Testing strategy & CI setup: [TESTING_STRATEGY.md](TESTING_STRATEGY.md)
 - Development practices: [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md)
 - VBA side specifics: [VBA_GUIDE.md](VBA_GUIDE.md)
 - Packaging the add-in (`.xlam`): [EXCEL_ADDIN_GUIDE.md](EXCEL_ADDIN_GUIDE.md)
@@ -37,6 +39,7 @@ For VS Code AI-agent work, start with:
 ## Planning / Research (roadmaps, “what’s next”)
 
 - What to do next this session: [NEXT_SESSION_BRIEF.md](NEXT_SESSION_BRIEF.md)
+- v0.8 implementation playbook: [v0.8_EXECUTION_CHECKLIST.md](v0.8_EXECUTION_CHECKLIST.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
 - v0.8+ research log: [RESEARCH_AI_ENHANCEMENTS.md](RESEARCH_AI_ENHANCEMENTS.md)
 - High-level production checklist: [PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md)

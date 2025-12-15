@@ -12,6 +12,23 @@
 
 ---
 
+## ⚡ Fast Re-Onboarding (start here next session)
+
+If you want to resume quickly without re-reading the repo:
+
+1. **Whole-project map (architecture + data flow + parity hotspots):** `docs/DEEP_PROJECT_MAP.md`
+2. **v0.8 implementation playbook (serviceability Level A, tests, parity):** `docs/v0.8_EXECUTION_CHECKLIST.md`
+3. **Canonical backlog (TASK-041 for serviceability):** `docs/TASKS.md`
+4. **Primary reference index:** `docs/README.md`
+
+**Verified state (as of 2025-12-15):**
+- Release baseline is **v0.7.0** (strength + detailing + DXF complete).
+- Python test suite passes locally (most recent run completed with exit code 0).
+- Known gap: **serviceability = 0%** (deflection + crack width not implemented).
+- Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
+
+---
+
 ## 🎯 Session Summary (Dec 11-15, 2025)
 
 ### What We Accomplished

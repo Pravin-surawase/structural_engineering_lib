@@ -3,13 +3,24 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+## [0.7.1] - 2025-12-15
 ### Added
-- **Python Testing**:
-  - DXF export smoke test (generate + read-back).
-  - Materials/Tables edge-case tests.
-  - CI installs optional DXF dependencies (`.[dev,dxf]`) so DXF tests run in Actions.
+ - **Python Testing**:
+   - DXF export smoke test (generate + read-back).
+   - Materials/Tables edge-case tests.
+   - CI installs optional DXF dependencies (`.[dev,dxf]`) so DXF tests run in Actions.
+   - Extensive branch/edge coverage additions across integration, DXF, flexure, shear, tables, and materials.
+### Changed
+- **CI**:
+  - Raised Python coverage floor to `--cov-fail-under=95` (current suite is at 100%).
 
 ### Fixed
+- **Excel Integration**:
+  - `generate_detailing_schedule()` no longer fails when only one bottom bar arrangement exists.
+  - `BeamDesignData.from_dict()` now deterministically handles `d` vs `D` key collisions (legacy lowercase `d` won’t override an explicit `D`).
+- **Tables**:
+  - Simplified `get_tc_value()` grade selection loop without changing behavior (removes an effectively-unreachable branch).
+
 - **Python Packaging**:
   - Include `structural_lib/py.typed` in built distributions (PEP 561).
 

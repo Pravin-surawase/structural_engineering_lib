@@ -53,17 +53,11 @@ def get_tc_value(fck: float, pt: float) -> float:
     """
     grades = sorted(_TC_COLUMNS.keys())
 
-    if fck <= grades[0]:
-        grade = grades[0]
-    elif fck >= grades[-1]:
-        grade = grades[-1]
-    else:
-        grade = grades[0]
-        for g in grades:
-            if fck >= g:
-                grade = g
-            else:
-                break
+    # Select nearest lower grade (clamped to bounds).
+    grade = grades[0]
+    for g in grades:
+        if fck >= g:
+            grade = g
 
     return _get_tc_for_grade(grade, pt)
 

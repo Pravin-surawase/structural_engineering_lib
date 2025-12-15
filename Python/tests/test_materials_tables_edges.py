@@ -49,6 +49,18 @@ class TestTablesEdges(unittest.TestCase):
         # Above maximum grade: clamps to M40 column
         self.assertAlmostEqual(tables.get_tc_value(60, 0.15), 0.30)
 
+    def test_tc_value_grade_selection_nearest_lower(self):
+        # For fck just below 40, nearest lower grade column is M35
+        self.assertAlmostEqual(tables.get_tc_value(39.9, 0.15), 0.29)
+
+        # At 40 and above, grade column is M40
+        self.assertAlmostEqual(tables.get_tc_value(40.0, 0.15), 0.30)
+
+    def test_tc_value_exact_table_points(self):
+        # Exact pt points should return exact tabulated values (no drift)
+        self.assertAlmostEqual(tables.get_tc_value(25, 0.15), 0.29)
+        self.assertAlmostEqual(tables.get_tc_value(25, 3.0), 0.92)
+
     def test_tc_max_value_bounds_and_interpolation(self):
         self.assertEqual(tables.get_tc_max_value(10), 2.5)
         self.assertEqual(tables.get_tc_max_value(45), 4.0)

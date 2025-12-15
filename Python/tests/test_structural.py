@@ -96,6 +96,49 @@ class TestStructuralLib(unittest.TestCase):
         self.assertEqual(res.spacing, 300.0)
         self.assertTrue(res.vus > 0)
 
+    def test_flexure_negative_mu_matches_positive(self):
+        """Core flexure design should treat Mu by magnitude (sign handled in UI/app layer)."""
+        b, d, D = 230, 450, 500
+        fck, fy = 20, 415
+        mu = 100
+
+        res_pos = flexure.design_singly_reinforced(b, d, D, mu, fck, fy)
+        res_neg = flexure.design_singly_reinforced(b, d, D, -mu, fck, fy)
+
+        self.assertEqual(res_pos.is_safe, res_neg.is_safe)
+        self.assertEqual(res_pos.section_type, res_neg.section_type)
+        self.assertAlmostEqual(res_pos.ast_required, res_neg.ast_required, places=8)
+        self.assertAlmostEqual(res_pos.xu, res_neg.xu, places=8)
+
+    def test_shear_negative_vu_matches_positive(self):
+        """Core shear design should treat Vu by magnitude (sign handled in UI/app layer)."""
+        b, d = 230, 450
+        fck, fy = 20, 415
+        asv, pt = 100.5, 1.0
+        vu = 100
+
+        res_pos = shear.design_shear(vu, b, d, fck, fy, asv, pt)
+        res_neg = shear.design_shear(-vu, b, d, fck, fy, asv, pt)
+
+        self.assertEqual(res_pos.is_safe, res_neg.is_safe)
+        self.assertAlmostEqual(res_pos.tv, res_neg.tv, places=12)
+        self.assertAlmostEqual(res_pos.tc, res_neg.tc, places=12)
+        self.assertAlmostEqual(res_pos.vus, res_neg.vus, places=12)
+        self.assertAlmostEqual(res_pos.spacing, res_neg.spacing, places=12)
+
+    def test_shear_zero_vu_min_reinforcement_spacing_capped(self):
+        """Vu=0 should still trigger minimum shear reinforcement spacing caps deterministically."""
+        b, d = 230, 450
+        fck, fy = 20, 415
+        asv, pt = 100.5, 1.0
+
+        res = shear.design_shear(0.0, b, d, fck, fy, asv, pt)
+
+        self.assertTrue(res.is_safe)
+        self.assertEqual(res.vus, 0.0)
+        self.assertIn("minimum shear reinforcement", res.remarks)
+        self.assertEqual(res.spacing, 300.0)
+
     # --------------------------------------------------------------------------
     # TASK-006: Edge Case Tests
     # --------------------------------------------------------------------------
@@ -129,6 +172,39 @@ class TestStructuralLib(unittest.TestCase):
         self.assertFalse(res.is_safe)
         self.assertEqual(res.section_type, types.DesignSectionType.OVER_REINFORCED)
         self.assertEqual(res.ast_required, 0.0)
+
+    def test_flexure_threshold_near_mu_lim(self):
+        """Mu just below Mu_lim should be safe; just above should fail (threshold stability)."""
+        b, d, D = 230, 450, 500
+        fck, fy = 20, 415
+
+        mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
+
+        res_below = flexure.design_singly_reinforced(b, d, D, mu_lim * 0.999999, fck, fy)
+        self.assertTrue(res_below.is_safe)
+        self.assertEqual(res_below.section_type, types.DesignSectionType.UNDER_REINFORCED)
+        self.assertTrue(res_below.ast_required > 0.0)
+
+        res_above = flexure.design_singly_reinforced(b, d, D, mu_lim * 1.000001, fck, fy)
+        self.assertFalse(res_above.is_safe)
+        self.assertEqual(res_above.section_type, types.DesignSectionType.OVER_REINFORCED)
+
+    def test_shear_threshold_at_tc_max(self):
+        """Tv == Tc_max should be treated as OK; Tv > Tc_max should fail."""
+        b, d = 230, 450
+        fck, fy = 20, 415
+        asv, pt = 100.5, 1.0
+
+        tc_max = tables.get_tc_max_value(fck)
+        vu_at = (tc_max * b * d) / 1000.0
+
+        res_at = shear.design_shear(vu_at, b, d, fck, fy, asv, pt)
+        self.assertTrue(res_at.is_safe)
+        self.assertAlmostEqual(res_at.tv, tc_max, places=9)
+
+        res_above = shear.design_shear(vu_at + 0.1, b, d, fck, fy, asv, pt)
+        self.assertFalse(res_above.is_safe)
+        self.assertIn("exceeds Tc_max", res_above.remarks)
 
     def test_shear_unsafe_section(self):
         """Test that section fails if Tv > Tc_max."""

@@ -136,6 +136,20 @@ def design_doubly_reinforced(
     mu2_knm = mu_abs - mu_lim
     mu2_nmm = mu2_knm * 1000000.0
 
+    # Basic geometry guards: compression steel must be within the effective depth
+    # and within the compression zone used for strain calculations.
+    if d_dash >= d or d_dash >= xu_max:
+        return FlexureResult(
+            mu_lim=mu_lim,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.OVER_REINFORCED,
+            xu=xu_max,
+            xu_max=xu_max,
+            is_safe=False,
+            error_message="Invalid section geometry for doubly reinforced design (d' too large or fsc too low).",
+        )
+
     # 2. Calculate Strain in Compression Steel
     # strain_sc = 0.0035 * (1 - d'/xu_max)
     strain_sc = 0.0035 * (1.0 - d_dash / xu_max)

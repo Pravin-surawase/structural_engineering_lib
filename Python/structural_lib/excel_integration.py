@@ -95,6 +95,13 @@ class BeamDesignData:
 
         for key, value in data.items():
             mapped_key = key_map.get(key, key.lower())
+
+            # Deterministic conflict handling:
+            # - Lowercase 'd' is treated as an alias for overall depth 'D' (legacy input),
+            #   but should not overwrite an explicitly provided 'D'.
+            if key == "d" and mapped_key == "D" and "D" in normalized:
+                continue
+
             normalized[mapped_key] = value
 
         # Apply defaults
@@ -385,7 +392,12 @@ def generate_detailing_schedule(results: List[ProcessingResult]) -> List[Dict]:
         d = r.detailing
 
         # Get main bar callouts
-        bot_bars = d.bottom_bars[1] if d.bottom_bars else None  # Mid-span
+        if not d.bottom_bars:
+            bot_bars = None
+        elif len(d.bottom_bars) == 1:
+            bot_bars = d.bottom_bars[0]
+        else:
+            bot_bars = d.bottom_bars[1]  # Mid-span
         top_bars = d.top_bars[0] if d.top_bars else None  # Support
         stirrups_end = d.stirrups[0] if d.stirrups else None
         stirrups_mid = d.stirrups[1] if len(d.stirrups) > 1 else stirrups_end
