@@ -1,8 +1,8 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-15  
-**Status:** v0.7.0 Complete + Production Audit Done  
-**Branch:** `main` (24 commits ahead, pushed to GitHub)
+**Status:** v0.7.0 complete (detail/DXF/docs), serviceability pending  
+**Branch:** `main`
 
 ---
 
@@ -11,32 +11,23 @@
 ### What We Accomplished
 
 #### 1. **VBA DXF Export Complete** ✅
-- **M16_DXF.bas** (~1324 lines): Native DXF R12 writer (no dependencies)
-- **Three audit rounds**: Fixed 19+ issues (spacing, div-by-zero, zone offsets, stirrup guards)
-- **Self-audit**: Found and fixed 4 additional edge cases
-- **Final verification**: All 6 final audit items addressed
+- `M16_DXF.bas`: Native DXF R12 writer; spacing, zone offsets, and guardrails fixed.
+- Known limitation: R12 header extents are static; CAD zoom fixes on open.
 
-#### 2. **Comprehensive Beginner Documentation** ✅
-- **docs/BEGINNERS_GUIDE.md** (594 lines): Full tutorial for Python + Excel users
-- **docs/EXCEL_TUTORIAL.md** (355 lines): Step-by-step Excel/VBA guide
-- **docs/GETTING_STARTED_PYTHON.md**: Updated with sample data references
-- **Python/examples/**:
-  - `simple_examples.py`: 7 beginner-friendly examples
-  - `complete_beam_design.py`: Full workflow demonstration
-  - `sample_building_beams.csv`: 12-beam sample dataset
-- **README.md**: Added "Getting Started" section with doc links
+#### 2. **Beginner Documentation** ✅
+- `docs/BEGINNERS_GUIDE.md`: Full Python + Excel walkthroughs.
+- `docs/EXCEL_TUTORIAL.md`: Step-by-step Excel/VBA guide.
+- `docs/GETTING_STARTED_PYTHON.md`: Quickstart with examples; `Python/examples/` populated.
+- README: Added "Getting Started" links.
 
-#### 3. **Code Quality Improvements** ✅
-- Fixed Python API version drift (0.4.0 → 0.7.0)
-- Removed stale TODO comment in dxf_export.py
-- Added `py.typed` marker (PEP 561 compliance)
-- Reorganized test fixtures to `Python/examples/`
-- Added `tests/README.md` explaining folder structure
+#### 3. **Version & Parity Fixes** ✅
+- Python package/version synced to 0.7.0.
+- VBA `Get_Library_Version` updated to 0.7.0.
+- Detailing parity: max-bar Ld/lap and spacing re-validation added.
 
-#### 4. **Production Readiness Assessment** ✅
-- **Overall Score: 8.7/10** — Production-ready structure
-- **docs/PRODUCTION_ROADMAP.md**: Detailed path to v1.0
-- Identified critical gaps: Deflection + crack width checks
+#### 4. **Open Gaps (v0.8 target)** 🔴
+- Serviceability checks (deflection, crack width) missing in Python/VBA.
+- DXF header extents not recalculated (documented limitation).
 
 ---
 
@@ -65,7 +56,7 @@ CHANGELOG.md        → [0.7.0]
 
 ### Code Quality Metrics
 - **Folder Structure:** 9/10 (clean separation)
-- **Documentation:** 9/10 (6,790+ lines across 21 files)
+- **Documentation:** 9/10 (7,200+ lines across 21 files)
 - **Testing:** 8/10 (67 Python tests, VBA manual)
 - **Packaging:** 9/10 (modern pyproject.toml)
 - **Type Hints:** 8/10 (present, could be more comprehensive)
@@ -187,7 +178,7 @@ Phase 4: Integration (1 session)
 - **Remote:** GitHub (up-to-date, 24 commits pushed)
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
-### Documentation (21 files, 6,790+ lines)
+### Documentation (highlights)
 ```
 docs/
 ├── Beginner:    BEGINNERS_GUIDE, GETTING_STARTED_PYTHON, EXCEL_TUTORIAL
