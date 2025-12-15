@@ -127,3 +127,20 @@ Entries here represent "locked" versions that have been verified and approved.
   - Excel-friendly summary row output.
 - Verification:
   - Python tests: 158 collected/passing.
+
+---
+
+## Chronological Index (read in order)
+
+Note: This ledger is **append-only**, so entries may not appear in chronological order above.
+Use this index as the canonical “timeline view”.
+
+- v0.1.0 (2025-12-10)
+- v0.2.0 (2025-12-11)
+- v0.3.0 (2025-12-11)
+- v0.4.0 (2025-12-11)
+- v0.5.0 (2025-12-11)
+- v0.6.0 (2025-12-11)
+- v0.7.0 (2025-12-11)
+- v0.7.1 (2025-12-15)
+- v0.8.0 (2025-12-15)

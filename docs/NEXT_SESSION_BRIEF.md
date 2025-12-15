@@ -45,8 +45,8 @@ If you want to resume quickly without re-reading the repo:
 - README: Added "Getting Started" links.
 
 #### 3. **Version & Parity Fixes** ✅
-- Python package/version synced to 0.7.0.
-- VBA `Get_Library_Version` updated to 0.7.0.
+- Python package/version synced to 0.8.0.
+- VBA `Get_Library_Version` updated to 0.8.0.
 - Detailing parity: max-bar Ld/lap and spacing re-validation added.
 
 #### 4. **Open Gaps (post-v0.8)** 🔴
@@ -177,19 +177,17 @@ docs/
 ```
 
 ### Test Coverage
-- **Python:** 74 tests passing (100% pass rate)
+- **Python:** 158 tests collected/passing (latest local run)
 - **VBA:** Manual tests (Integration_TestHarness.bas, Test_*.bas)
-- **Coverage:** ~84% overall (latest local run; CI uploads `coverage.xml` artifact)
 
 ---
 
 ## 🎯 Goals & Priorities
 
-### Immediate (v0.8.0)
-1. 🔴 **Deflection check** — span/depth method (Cl. 23.2)
-2. 🔴 **Crack width check** — Annex F formula
-3. 🟡 Update beam workflow with serviceability flags
-4. 🟡 Release v0.8.0 as "Production MVP"
+### Immediate (post-v0.8)
+1. 🔴 **TASK-044** — ETABS integration improvements for compliance runs (CSV mapping + normalization docs)
+2. 🟡 **TASK-043** — Rebar arrangement optimizer (deterministic buildable layouts)
+3. 🟡 **TASK-039 / TASK-040** — Python ↔ VBA parity vectors + VBA test automation
 
 ### Short-term (v0.9.0)
 1. 🟡 Bar Bending Schedule (BBS) generation
@@ -225,33 +223,26 @@ docs/
 - [ ] Does output integrate seamlessly into existing workflow?
 - [ ] Is documentation clear for beginners?
 
-### Success Criteria (v0.8.0)
-- [ ] Deflection check implemented (Python + VBA)
-- [ ] Crack width check implemented (Python + VBA)
-- [ ] 20+ new tests passing
-- [ ] Updated beam schedule shows serviceability status
-- [ ] Documentation updated (BEGINNERS_GUIDE, API_REFERENCE)
-- [ ] CHANGELOG.md has v0.8.0 entry
-- [ ] README.md updated to reflect serviceability features
+### Success Criteria (post-v0.8)
+- [ ] TASK-044 scope/inputs documented (what CSV columns we support)
+- [ ] One concrete workflow improved end-to-end (ETABS CSV → compliance report)
+- [ ] One parity harness milestone completed (vectors or VBA automation)
 
 ---
 
 ## 💡 Suggested Starter Prompts
 
-### Option 1: Start Deflection Check
-> "Let's implement IS 456 deflection checks (v0.8.0). Start by reading Cl. 23.2 and creating the research document with span/depth ratios and modification factors."
+### Option 1: ETABS → Compliance mapping
+> "Implement TASK-044: document ETABS export tables + column mapping and extend the CSV normalizer so compliance runs are repeatable."
 
-### Option 2: Start Crack Width Check
-> "Let's implement IS 456 crack width checks (Annex F). Create the research doc with the formula, exposure classes, and limiting values."
+### Option 2: Rebar optimizer
+> "Implement TASK-043 MVP: deterministic bar arrangement search with clear 'no feasible layout' reasons and tests."
 
-### Option 3: Review Production Roadmap
-> "Review `docs/PRODUCTION_ROADMAP.md` and help me prioritize: Should we do deflection first, or both deflection + crack in parallel?"
-
-### Option 4: Continue Documentation
-> "Our beginner docs are good, but let's enhance the API_REFERENCE.md with more code examples for each function."
+### Option 3: Parity harness
+> "Implement TASK-039/TASK-040: create shared test vectors and a single VBA entry macro to run all tests and print a summary."
 
 ---
 
 **Last Session Achievements:** VBA DXF complete, 3 audit rounds, beginner docs, code quality fixes, production roadmap.
 
-**Next Session Focus:** Serviceability checks (deflection + crack width) for v0.8.0 production MVP.
+**Next Session Focus:** Post-v0.8 hardening (ETABS→compliance workflow + parity automation).
