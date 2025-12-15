@@ -140,7 +140,7 @@ def check_beam_ductility(
 
 ## 5. Serviceability Module (`serviceability.py`) (v0.8 Level A)
 
-**Status:** New in v0.8 (Python-first; VBA parity planned).
+**Status:** New in v0.8 (Python + VBA parity implemented).
 
 ### 5.1 Deflection Check (Span/Depth Method)
 
