@@ -138,6 +138,69 @@ def check_beam_ductility(
 
 ---
 
+## 5. Serviceability Module (`serviceability.py`) (v0.8 Level A)
+
+**Status:** New in v0.8 (Python-first; VBA parity planned).
+
+### 5.1 Deflection Check (Span/Depth Method)
+
+**Units:**
+- `span_mm`, `d_mm`: **mm**
+
+**Python:**
+```python
+def check_deflection_span_depth(
+        *,
+        span_mm: float,
+        d_mm: float,
+        support_condition: SupportCondition | str = "simply_supported",
+        base_allowable_ld: float | None = None,
+        mf_tension_steel: float | None = None,
+        mf_compression_steel: float | None = None,
+        mf_flanged: float | None = None,
+) -> DeflectionResult
+```
+
+**Behavior (Level A):**
+- Computes `L/d` and compares to `allowable L/d`.
+- `allowable L/d` is computed as:
+    $$\text{allowable} = \text{base} \times mf_{tension} \times mf_{compression} \times mf_{flanged}$$
+- If base/modifiers are not provided, the result records explicit assumptions.
+
+### 5.2 Crack Width Check (Annex-F-style Estimate)
+
+**Units:**
+- Geometry inputs: **mm**
+- `fs_service_nmm2`: **N/mm²**
+- Result crack width: **mm**
+
+**Python:**
+```python
+def check_crack_width(
+        *,
+        exposure_class: ExposureClass | str = "moderate",
+        limit_mm: float | None = None,
+        acr_mm: float | None = None,
+        cmin_mm: float | None = None,
+        h_mm: float | None = None,
+        x_mm: float | None = None,
+        epsilon_m: float | None = None,
+        fs_service_nmm2: float | None = None,
+        es_nmm2: float = 200000.0,
+) -> CrackWidthResult
+```
+
+**Behavior (Level A):**
+- Computes an Annex-F-style crack width estimate using the configured inputs.
+- If `epsilon_m` is not provided, it can be estimated as `fs_service_nmm2 / es_nmm2` and recorded as an assumption.
+- If required parameters are missing, returns `is_ok=False` with a clear remark (no guessing).
+
+**Return Types:**
+- `DeflectionResult`: contains `is_ok`, `remarks`, `support_condition`, and `inputs/computed/assumptions` payloads.
+- `CrackWidthResult`: contains `is_ok`, `remarks`, `exposure_class`, and `inputs/computed/assumptions` payloads.
+
+---
+
 ### 2.5 Calculate Limiting Moment (Flanged)
 Calculates the limiting moment of resistance for a T-beam section.
 
