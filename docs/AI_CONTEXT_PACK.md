@@ -56,6 +56,9 @@ Import order matters; see:
 - Production checklist summary: [PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md)
 - Release ledger (append-only): [RELEASES.md](RELEASES.md)
 
+Architecture decisions (short, auditable decision notes):
+- [adr/README.md](adr/README.md)
+
 Historical reference material lives here:
 - [docs/_archive/RESEARCH_AND_FINDINGS.md](_archive/RESEARCH_AND_FINDINGS.md)
 
