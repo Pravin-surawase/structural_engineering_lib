@@ -1,0 +1,310 @@
+"""Module: compliance
+
+Compliance checker (TASK-042): Orchestrates strength + serviceability checks.
+
+MVP contract:
+- Accepts already-factored actions per case (Mu in kN·m, Vu in kN).
+- Produces per-case results + a deterministic governing case.
+
+Design constraints:
+- Deterministic outputs.
+- Units explicit at the API boundary.
+- No silent defaults: when a value is assumed, it is recorded in result remarks/assumptions.
+"""
+
+from __future__ import annotations
+
+from dataclasses import asdict
+from typing import Any, Dict, List, Optional, Sequence
+
+from . import flexure, shear, serviceability
+from .types import (
+    ComplianceCaseResult,
+    ComplianceReport,
+    CrackWidthResult,
+    DeflectionResult,
+    ExposureClass,
+    FlexureResult,
+    ShearResult,
+    SupportCondition,
+)
+
+
+def _utilization_safe(numer: float, denom: float) -> float:
+    if denom <= 0:
+        return float("inf") if numer > 0 else 0.0
+    return numer / denom
+
+
+def _compute_flexure_utilization(mu_knm: float, flex: FlexureResult) -> float:
+    if flex.mu_lim <= 0:
+        return float("inf")
+    return abs(mu_knm) / flex.mu_lim
+
+
+def _compute_shear_utilization(sh: ShearResult) -> float:
+    return _utilization_safe(sh.tv, sh.tc_max)
+
+
+def _compute_deflection_utilization(defl: DeflectionResult) -> float:
+    ld_ratio = float(defl.computed.get("ld_ratio", 0.0))
+    allowable = float(defl.computed.get("allowable_ld", 0.0))
+    return _utilization_safe(ld_ratio, allowable)
+
+
+def _compute_crack_utilization(cr: CrackWidthResult) -> float:
+    wcr = float(cr.computed.get("wcr_mm", 0.0))
+    limit_mm = float(cr.computed.get("limit_mm", 0.0))
+    return _utilization_safe(wcr, limit_mm)
+
+
+def check_compliance_case(
+    *,
+    case_id: str,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    # Shear reinforcement input
+    asv_mm2: float = 100.0,
+    pt_percent: Optional[float] = None,
+    ast_mm2_for_shear: Optional[float] = None,
+    # Optional serviceability checks
+    deflection_params: Optional[Dict[str, Any]] = None,
+    crack_width_params: Optional[Dict[str, Any]] = None,
+) -> ComplianceCaseResult:
+    """Run a single compliance case.
+
+    Units:
+    - Mu: kN·m (factored)
+    - Vu: kN (factored)
+    - b_mm, D_mm, d_mm, d_dash_mm: mm
+    - fck_nmm2, fy_nmm2: N/mm²
+    - asv_mm2: mm² (area of stirrup legs)
+    - pt_percent: %
+
+    Notes:
+    - If pt_percent is not provided, it is computed from ast_mm2_for_shear when available,
+      else falls back to using flexure-required Ast (recorded as an assumption).
+    """
+
+    failed_checks: List[str] = []
+    assumptions: List[str] = []
+
+    flex = flexure.design_doubly_reinforced(
+        b=b_mm,
+        d=d_mm,
+        d_dash=d_dash_mm,
+        d_total=D_mm,
+        mu_knm=mu_knm,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
+    )
+
+    # Determine pt for shear table lookup.
+    if pt_percent is None:
+        if ast_mm2_for_shear is not None and ast_mm2_for_shear > 0:
+            pt_percent = (ast_mm2_for_shear * 100.0) / (b_mm * d_mm)
+            assumptions.append("Computed pt_percent for shear using ast_mm2_for_shear.")
+        elif flex.ast_required > 0:
+            pt_percent = (flex.ast_required * 100.0) / (b_mm * d_mm)
+            assumptions.append("Computed pt_percent for shear using flexure ast_required.")
+        else:
+            pt_percent = 0.0
+            assumptions.append("pt_percent not provided; using 0.0 (tables clamp internally).")
+
+    sh = shear.design_shear(
+        vu_kn=vu_kn,
+        b=b_mm,
+        d=d_mm,
+        fck=fck_nmm2,
+        fy=fy_nmm2,
+        asv=asv_mm2,
+        pt=pt_percent,
+    )
+
+    defl: Optional[DeflectionResult] = None
+    crack: Optional[CrackWidthResult] = None
+
+    if deflection_params is not None:
+        defl = serviceability.check_deflection_span_depth(**deflection_params)
+
+    if crack_width_params is not None:
+        crack = serviceability.check_crack_width(**crack_width_params)
+
+    # Determine pass/fail.
+    if not flex.is_safe:
+        failed_checks.append("flexure")
+    if not sh.is_safe:
+        failed_checks.append("shear")
+    if defl is not None and not defl.is_ok:
+        failed_checks.append("deflection")
+    if crack is not None and not crack.is_ok:
+        failed_checks.append("crack_width")
+
+    utilizations: Dict[str, float] = {
+        "flexure": _compute_flexure_utilization(mu_knm, flex),
+        "shear": _compute_shear_utilization(sh),
+    }
+    if defl is not None:
+        utilizations["deflection"] = _compute_deflection_utilization(defl)
+    if crack is not None:
+        utilizations["crack_width"] = _compute_crack_utilization(crack)
+
+    governing_util = max(utilizations.values()) if utilizations else 0.0
+    is_ok = len(failed_checks) == 0
+
+    remarks = "OK" if is_ok else ("FAIL: " + ", ".join(failed_checks))
+    if assumptions:
+        remarks = remarks + " | " + " | ".join(assumptions)
+
+    return ComplianceCaseResult(
+        case_id=case_id,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        flexure=flex,
+        shear=sh,
+        deflection=defl,
+        crack_width=crack,
+        is_ok=is_ok,
+        governing_utilization=governing_util,
+        utilizations=utilizations,
+        failed_checks=failed_checks,
+        remarks=remarks,
+    )
+
+
+def check_compliance_report(
+    *,
+    cases: Sequence[Dict[str, Any]],
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: Optional[float] = None,
+    # Optional global serviceability defaults (can be overridden per case)
+    deflection_defaults: Optional[Dict[str, Any]] = None,
+    crack_width_defaults: Optional[Dict[str, Any]] = None,
+) -> ComplianceReport:
+    """Run multiple cases and pick a deterministic governing case.
+
+    Governing-case rule:
+    - For each case compute per-check utilization ratios (demand/limit).
+    - Case governing utilization is max(utilizations).
+    - Report governing case as the case with the highest governing utilization.
+      Ties are broken by case order.
+
+    Each case dict must include:
+    - case_id: str
+    - mu_knm: float
+    - vu_kn: float
+
+    Optional per-case overrides:
+    - deflection_params: dict
+    - crack_width_params: dict
+    - ast_mm2_for_shear: float
+    """
+
+    results: List[ComplianceCaseResult] = []
+
+    for c in cases:
+        case_id = str(c.get("case_id", ""))
+        mu_knm = float(c.get("mu_knm"))
+        vu_kn = float(c.get("vu_kn"))
+
+        defl_params = c.get("deflection_params", deflection_defaults)
+        crack_params = c.get("crack_width_params", crack_width_defaults)
+        ast_for_shear = c.get("ast_mm2_for_shear")
+
+        results.append(
+            check_compliance_case(
+                case_id=case_id,
+                mu_knm=mu_knm,
+                vu_kn=vu_kn,
+                b_mm=b_mm,
+                D_mm=D_mm,
+                d_mm=d_mm,
+                fck_nmm2=fck_nmm2,
+                fy_nmm2=fy_nmm2,
+                d_dash_mm=d_dash_mm,
+                asv_mm2=asv_mm2,
+                pt_percent=pt_percent,
+                ast_mm2_for_shear=float(ast_for_shear) if ast_for_shear is not None else None,
+                deflection_params=defl_params,
+                crack_width_params=crack_params,
+            )
+        )
+
+    def _governing_key(index_and_result: tuple[int, ComplianceCaseResult]) -> tuple[float, float, float, float, int]:
+        idx, r = index_and_result
+        utils = list(r.utilizations.values())
+        # Sort descending so secondary checks break ties deterministically.
+        # Pad to a fixed length (max expected checks in MVP is 4).
+        sorted_utils = sorted(utils, reverse=True)
+        while len(sorted_utils) < 4:
+            sorted_utils.append(float("-inf"))
+        # Final deterministic tie-break: earlier case order wins.
+        return (sorted_utils[0], sorted_utils[1], sorted_utils[2], sorted_utils[3], -idx)
+
+    governing = (
+        max(enumerate(results), key=_governing_key)[1]
+        if results
+        else None
+    )
+    governing_case_id = governing.case_id if governing else ""
+    governing_util = governing.governing_utilization if governing else 0.0
+
+    is_ok = all(r.is_ok for r in results)
+
+    # Compact summary row (Excel/JSON friendly).
+    max_utils_by_check: Dict[str, float] = {}
+    for r in results:
+        for k, v in r.utilizations.items():
+            if k not in max_utils_by_check:
+                max_utils_by_check[k] = v
+            else:
+                max_utils_by_check[k] = max(max_utils_by_check[k], v)
+
+    worst_check = ""
+    worst_util = 0.0
+    if governing and governing.utilizations:
+        # Deterministic: sort by utilization desc, then key asc.
+        worst_check, worst_util = sorted(
+            governing.utilizations.items(), key=lambda kv: (-kv[1], kv[0])
+        )[0]
+
+    summary: Dict[str, Any] = {
+        "is_ok": is_ok,
+        "num_cases": len(results),
+        "num_failed_cases": sum(1 for r in results if not r.is_ok),
+        "governing_case_id": governing_case_id,
+        "governing_utilization": governing_util,
+        "governing_worst_check": worst_check,
+        "governing_worst_utilization": worst_util,
+        # Fixed columns (None if not evaluated anywhere).
+        "max_util_flexure": max_utils_by_check.get("flexure"),
+        "max_util_shear": max_utils_by_check.get("shear"),
+        "max_util_deflection": max_utils_by_check.get("deflection"),
+        "max_util_crack_width": max_utils_by_check.get("crack_width"),
+    }
+
+    return ComplianceReport(
+        is_ok=is_ok,
+        governing_case_id=governing_case_id,
+        governing_utilization=governing_util,
+        cases=results,
+        summary=summary,
+    )
+
+
+def report_to_dict(report: ComplianceReport) -> Dict[str, Any]:
+    """Serialize report to a JSON/Excel-friendly dict."""
+
+    return asdict(report)

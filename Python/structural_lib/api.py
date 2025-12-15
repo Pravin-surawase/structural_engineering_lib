@@ -5,6 +5,7 @@ Description:  Public facing API functions
 
 from . import ductile
 from . import serviceability
+from . import compliance
 
 
 def get_library_version() -> str:
@@ -66,4 +67,34 @@ def check_crack_width(
         epsilon_m=epsilon_m,
         fs_service_nmm2=fs_service_nmm2,
         es_nmm2=es_nmm2,
+    )
+
+
+def check_compliance_report(
+    cases,
+    b_mm,
+    D_mm,
+    d_mm,
+    fck_nmm2,
+    fy_nmm2,
+    d_dash_mm=50.0,
+    asv_mm2=100.0,
+    pt_percent=None,
+    deflection_defaults=None,
+    crack_width_defaults=None,
+):
+    """Wrapper for compliance.check_compliance_report."""
+
+    return compliance.check_compliance_report(
+        cases=cases,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        pt_percent=pt_percent,
+        deflection_defaults=deflection_defaults,
+        crack_width_defaults=crack_width_defaults,
     )

@@ -4,7 +4,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 """
 
 from enum import Enum, auto
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 
@@ -75,3 +75,28 @@ class CrackWidthResult:
     assumptions: List[str]
     inputs: Dict[str, Any]
     computed: Dict[str, Any]
+
+
+@dataclass
+class ComplianceCaseResult:
+    case_id: str
+    mu_knm: float
+    vu_kn: float
+    flexure: FlexureResult
+    shear: ShearResult
+    deflection: Optional[DeflectionResult] = None
+    crack_width: Optional[CrackWidthResult] = None
+    is_ok: bool = False
+    governing_utilization: float = 0.0
+    utilizations: Dict[str, float] = field(default_factory=dict)
+    failed_checks: List[str] = field(default_factory=list)
+    remarks: str = ""
+
+
+@dataclass
+class ComplianceReport:
+    is_ok: bool
+    governing_case_id: str
+    governing_utilization: float
+    cases: List[ComplianceCaseResult]
+    summary: Dict[str, Any] = field(default_factory=dict)
