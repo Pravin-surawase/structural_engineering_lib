@@ -1,5 +1,3 @@
-import pytest
-
 from structural_lib.compliance import check_compliance_report
 
 

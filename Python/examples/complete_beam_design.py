@@ -379,12 +379,6 @@ def main():
         print(f"\nGenerating DXF files in: {dxf_dir}")
         for r in results[:3]:  # First 3 beams as demo
             try:
-                # Parse bar info
-                n_bot = int(r.bottom_bars.split("-")[0])
-                dia_bot = int(r.bottom_bars.split("-")[1].replace("φ", ""))
-                n_top = int(r.top_bars.split("-")[0])
-                dia_top = int(r.top_bars.split("-")[1].replace("φ", ""))
-
                 # Parse size
                 b, D = map(int, r.size.replace("×", "x").split("x"))
 

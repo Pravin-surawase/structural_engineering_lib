@@ -10,7 +10,6 @@ Tests cover:
 """
 
 import pytest
-import math
 
 from structural_lib.detailing import (
     get_bond_stress,
@@ -24,7 +23,6 @@ from structural_lib.detailing import (
     format_stirrup_callout,
     create_beam_detailing,
     BarArrangement,
-    BeamDetailingResult,
 )
 
 

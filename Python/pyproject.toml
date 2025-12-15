@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,6 +9,7 @@ description = "IS 456 RC Beam Design Library (flexure, shear, ductile detailing,
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [
   { name = "Pravin Surawase" }
 ]
@@ -24,8 +25,15 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "black", "mypy", "pre-commit"]
+dev = ["pytest", "pytest-cov", "black", "mypy", "pre-commit", "ruff"]
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["F"]
 
 [tool.mypy]
 python_version = "3.9"

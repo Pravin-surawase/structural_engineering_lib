@@ -30,6 +30,11 @@ jobs:
         run: |
           python -m black --check .
 
+      - name: Lint check (ruff)
+        working-directory: Python
+        run: |
+          python -m ruff check .
+
       - name: Type check (mypy)
         working-directory: Python
         run: |

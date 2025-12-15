@@ -17,9 +17,7 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
-import math
-from typing import List, Tuple, Optional
-from dataclasses import dataclass
+from typing import List, Tuple
 
 try:
     import ezdxf

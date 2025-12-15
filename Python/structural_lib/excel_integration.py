@@ -13,7 +13,7 @@ Usage:
 import json
 import csv
 import os
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional
 from pathlib import Path
 from dataclasses import dataclass, asdict
 

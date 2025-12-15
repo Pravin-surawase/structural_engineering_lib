@@ -445,10 +445,6 @@ def create_beam_detailing(
     Returns:
         BeamDetailingResult with complete detailing information
     """
-    # Determine max bar diameter for Ld calculation
-    all_ast = [ast_start, ast_mid, ast_end, asc_start, asc_mid, asc_end]
-    max_ast = max(all_ast)
-
     # Select bar arrangements
     # Note: At supports (start/end), tension is typically top; at mid, tension is bottom
     # This simplification assumes Ast is always the tension side

@@ -23,7 +23,24 @@ from . import compliance
 try:
     from . import dxf_export
 except ImportError:
-    pass  # ezdxf not installed
+    dxf_export = None  # ezdxf not installed
 
 # Excel integration module
 from . import excel_integration
+
+__all__ = [
+    "api",
+    "compliance",
+    "constants",
+    "detailing",
+    "ductile",
+    "dxf_export",
+    "excel_integration",
+    "flexure",
+    "materials",
+    "serviceability",
+    "shear",
+    "tables",
+    "types",
+    "utilities",
+]

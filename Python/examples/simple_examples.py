@@ -151,7 +151,7 @@ def example_4_lap_length():
     print(f"Bar diameter = {bar_dia} mm")
     print(f"Normal lap length = {lap_normal:.0f} mm ({lap_normal/bar_dia:.0f}φ)")
     print(f"Seismic lap length = {lap_seismic:.0f} mm ({lap_seismic/bar_dia:.0f}φ)")
-    print(f"\nNote: Seismic lap = 1.5 × Ld (IS 13920 requirement)")
+    print("\nNote: Seismic lap = 1.5 × Ld (IS 13920 requirement)")
 
 
 def example_5_bar_spacing():
@@ -213,7 +213,7 @@ def example_6_doubly_reinforced():
     Mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
     print(f"Applied Mu = {Mu} kN·m")
     print(f"Limiting Mu_lim = {Mu_lim:.2f} kN·m")
-    print(f"Mu > Mu_lim: Doubly reinforced section required")
+    print("Mu > Mu_lim: Doubly reinforced section required")
 
     # Design
     result = flexure.design_doubly_reinforced(b, d, d_dash, D, Mu, fck, fy)
@@ -225,7 +225,7 @@ def example_6_doubly_reinforced():
     n_tension = math.ceil(result.ast_required / 314.2)  # 20mm bars
     n_compression = max(2, math.ceil(result.asc_required / 113.1))  # 12mm bars
 
-    print(f"\nProvide:")
+    print("\nProvide:")
     print(f"  Bottom (tension): {n_tension}-20φ")
     print(f"  Top (compression): {n_compression}-12φ")
 

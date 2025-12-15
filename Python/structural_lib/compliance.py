@@ -23,10 +23,8 @@ from .types import (
     ComplianceReport,
     CrackWidthResult,
     DeflectionResult,
-    ExposureClass,
     FlexureResult,
     ShearResult,
-    SupportCondition,
 )
 
 
