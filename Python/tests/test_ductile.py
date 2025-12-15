@@ -3,37 +3,45 @@ import sys
 import os
 
 # Add parent directory to path to import structural_lib
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib.ductile import check_geometry, get_min_tension_steel_percentage, calculate_confinement_spacing, check_beam_ductility
+from structural_lib.ductile import (
+    check_geometry,
+    get_min_tension_steel_percentage,
+    calculate_confinement_spacing,
+    check_beam_ductility,
+)
+
 
 def test_geometry_checks():
     # Valid
     valid, msg = check_geometry(230, 450)
     assert valid is True
     assert msg == "OK"
-    
+
     # Invalid Width
     valid, msg = check_geometry(150, 450)
     assert valid is False
     assert "Width" in msg
-    
+
     # Invalid Ratio (b/D < 0.3)
     # 200 / 700 = 0.285
     valid, msg = check_geometry(200, 700)
     assert valid is False
     assert "Width/Depth ratio" in msg
 
+
 def test_min_steel():
     # fck=25, fy=500
     # rho = 0.24 * 5 / 500 = 0.0024 -> 0.24%
     pt = get_min_tension_steel_percentage(25, 500)
     assert pt == pytest.approx(0.24, rel=1e-4)
-    
+
     # fck=30, fy=415
     # rho = 0.24 * 5.477 / 415 = 0.00316 -> 0.316%
     pt = get_min_tension_steel_percentage(30, 415)
     assert pt == pytest.approx(0.3168, rel=1e-3)
+
 
 def test_confinement_spacing():
     # d=450, min_bar=12
@@ -43,7 +51,7 @@ def test_confinement_spacing():
     # Min should be 96
     s = calculate_confinement_spacing(450, 12)
     assert s == 96
-    
+
     # d=600, min_bar=20
     # 1. 150
     # 2. 160
@@ -51,6 +59,7 @@ def test_confinement_spacing():
     # Min should be 100
     s = calculate_confinement_spacing(600, 20)
     assert s == 100
+
 
 def test_full_check():
     res = check_beam_ductility(230, 450, 410, 25, 500, 12)

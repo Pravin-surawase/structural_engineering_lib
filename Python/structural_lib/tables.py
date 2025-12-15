@@ -17,8 +17,9 @@ _TC_COLUMNS = {
     25: [0.29, 0.36, 0.49, 0.57, 0.64, 0.7, 0.74, 0.78, 0.82, 0.85, 0.88, 0.9, 0.92],
     30: [0.29, 0.37, 0.5, 0.59, 0.66, 0.71, 0.76, 0.8, 0.84, 0.88, 0.91, 0.94, 0.96],
     35: [0.29, 0.37, 0.5, 0.59, 0.67, 0.73, 0.78, 0.82, 0.86, 0.9, 0.93, 0.96, 0.99],
-    40: [0.3, 0.38, 0.51, 0.6, 0.68, 0.74, 0.79, 0.84, 0.88, 0.92, 0.95, 0.98, 1.01]
+    40: [0.3, 0.38, 0.51, 0.6, 0.68, 0.74, 0.79, 0.84, 0.88, 0.92, 0.95, 0.98, 1.01],
 }
+
 
 def _get_tc_for_grade(grade: int, pt: float) -> float:
     """Helper to get Tc for a specific grade (interpolating Pt)"""
@@ -30,15 +31,20 @@ def _get_tc_for_grade(grade: int, pt: float) -> float:
         arr_tc = _TC_COLUMNS[40]
 
     # Clamp Pt
-    if pt < 0.15: pt = 0.15
-    if pt > 3.0: pt = 3.0
+    if pt < 0.15:
+        pt = 0.15
+    if pt > 3.0:
+        pt = 3.0
 
     # Find interval
     for i in range(len(_PT_ROWS) - 1):
-        if pt >= _PT_ROWS[i] and pt <= _PT_ROWS[i+1]:
-            return utilities.linear_interp(pt, _PT_ROWS[i], arr_tc[i], _PT_ROWS[i+1], arr_tc[i+1])
-    
+        if pt >= _PT_ROWS[i] and pt <= _PT_ROWS[i + 1]:
+            return utilities.linear_interp(
+                pt, _PT_ROWS[i], arr_tc[i], _PT_ROWS[i + 1], arr_tc[i + 1]
+            )
+
     return arr_tc[-1]
+
 
 def get_tc_value(fck: float, pt: float) -> float:
     """
@@ -61,9 +67,11 @@ def get_tc_value(fck: float, pt: float) -> float:
 
     return _get_tc_for_grade(grade, pt)
 
+
 # ------------------------------------------------------------------------------
 # Table 20: Maximum Shear Stress (Tc_max)
 # ------------------------------------------------------------------------------
+
 
 def get_tc_max_value(fck: float) -> float:
     """
@@ -86,5 +94,5 @@ def get_tc_max_value(fck: float) -> float:
             x1, y1, x2, y2 = 30, 3.5, 35, 3.7
         else:
             x1, y1, x2, y2 = 35, 3.7, 40, 4.0
-            
+
         return utilities.linear_interp(fck, float(x1), y1, float(x2), y2)
