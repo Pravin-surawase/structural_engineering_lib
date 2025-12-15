@@ -8,6 +8,7 @@
 - Improved onboarding docs (README dev setup + quick commands).
 - Expanded AI/high-value enhancements research log (Pass 3 + Pass 4).
 - Added a place for local reference files (`docs/_references/`) and prevented committing large local snapshots.
+- Organized docs for VS Code AI agents: docs index + AI context pack + ADR template; moved governance docs into `docs/_internal/` and archived the long historical research doc.
 
 ---
 
@@ -187,7 +188,7 @@ Phase 4: Integration (1 session)
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** `97d5fa2`
+- **Latest Commit:** `adfa203`
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)
@@ -196,7 +197,10 @@ docs/
 ├── Beginner:    BEGINNERS_GUIDE, GETTING_STARTED_PYTHON, EXCEL_TUTORIAL
 ├── Reference:   API_REFERENCE, IS456_QUICK_REFERENCE, DEVELOPMENT_GUIDE
 ├── Project:     PROJECT_OVERVIEW, PRODUCTION_ROADMAP, TASKS
-├── Research:    RESEARCH_AND_FINDINGS, RESEARCH_DETAILING
+├── Research:    RESEARCH_AI_ENHANCEMENTS, RESEARCH_DETAILING
+├── AI start:     README, AI_CONTEXT_PACK, adr/
+├── Internal:     _internal/
+├── Archive:      _archive/
 └── v0.7 Specs:  v0.7_REQUIREMENTS, specs/v0.7_DATA_MAPPING
 ```
 
