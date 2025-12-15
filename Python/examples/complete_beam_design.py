@@ -29,13 +29,14 @@ from typing import List
 # Import library modules
 from structural_lib import flexure, shear, detailing
 
-# Check for optional DXF support
+# Optional DXF support (requires ezdxf)
 try:
-    from structural_lib.dxf_export import draw_beam_detailing
+    from structural_lib.dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
 
-    DXF_AVAILABLE = True
-except ImportError:
+    DXF_AVAILABLE = EZDXF_AVAILABLE
+except Exception:
     DXF_AVAILABLE = False
+    generate_beam_dxf = None  # type: ignore[assignment]
     print("Note: Install ezdxf for DXF export: pip install ezdxf")
 
 
@@ -186,8 +187,12 @@ def design_beam(row: dict) -> BeamDesignOutput:
     lap = detailing.calculate_lap_length(max_bar_dia, fck, fy, is_seismic=False)
 
     # Check bar spacing
-    bar_spacing = detailing.calculate_bar_spacing(b, cover, stirrup_dia, dia_bot, n_bot)
-    min_spacing = detailing.get_min_spacing(dia_bot)
+    bar_spacing_cc = detailing.calculate_bar_spacing(b, cover, stirrup_dia, dia_bot, n_bot)
+
+    # Minimum clear spacing per IS 456 Cl. 26.3.2
+    agg_size = 20
+    min_clear = max(dia_bot, agg_size + 5, 25)
+    bar_spacing_clear = bar_spacing_cc - dia_bot
 
     # =========================================
     # 4. STATUS CHECK
@@ -204,9 +209,11 @@ def design_beam(row: dict) -> BeamDesignOutput:
         is_safe = False
         remarks.append("Shear failure")
 
-    if bar_spacing < min_spacing:
+    if bar_spacing_clear < min_clear:
         is_safe = False
-        remarks.append(f"Spacing {bar_spacing:.0f}mm < min {min_spacing:.0f}mm")
+        remarks.append(
+            f"Clear spacing {bar_spacing_clear:.0f}mm < min {min_clear:.0f}mm"
+        )
 
     if not remarks:
         remarks = ["OK"]
@@ -231,7 +238,7 @@ def design_beam(row: dict) -> BeamDesignOutput:
         stirrups=stirrups,
         ld=round(ld, 0),
         lap_length=round(lap, 0),
-        bar_spacing=round(bar_spacing, 0),
+        bar_spacing=round(bar_spacing_cc, 0),
         is_safe=is_safe,
         remarks="; ".join(remarks),
     )
@@ -399,14 +406,16 @@ def main():
                     asc_mid=r.asc_required,
                     asc_end=r.asc_required,
                     stirrup_dia=8,
-                    sv_start=r.stirrup_spacing - 25,
-                    sv_mid=r.stirrup_spacing,
-                    sv_end=r.stirrup_spacing - 25,
+                    stirrup_spacing_start=r.stirrup_spacing - 25,
+                    stirrup_spacing_mid=r.stirrup_spacing,
+                    stirrup_spacing_end=r.stirrup_spacing - 25,
                     is_seismic=False,
                 )
 
                 dxf_path = os.path.join(dxf_dir, f"{r.beam_id}.dxf")
-                draw_beam_detailing(dxf_path, detail_result)
+                if generate_beam_dxf is None:
+                    raise RuntimeError("DXF export is not available (ezdxf missing)")
+                generate_beam_dxf(detail_result, dxf_path)
                 print(f"  ✓ {r.beam_id}.dxf")
             except Exception as e:
                 print(f"  ✗ {r.beam_id}: {e}")

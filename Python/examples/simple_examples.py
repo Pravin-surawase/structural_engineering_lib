@@ -171,20 +171,23 @@ def example_5_bar_spacing():
     bar_dia = 16
     bar_count = 4
 
-    # Calculate actual spacing
-    spacing = detailing.calculate_bar_spacing(b, cover, stirrup_dia, bar_dia, bar_count)
+    # calculate_bar_spacing returns center-to-center spacing
+    spacing_cc = detailing.calculate_bar_spacing(b, cover, stirrup_dia, bar_dia, bar_count)
+    spacing_clear = spacing_cc - bar_dia
 
-    # Minimum required spacing
-    min_spacing = detailing.get_min_spacing(bar_dia)
+    # Minimum clear spacing per IS 456 Cl. 26.3.2
+    agg_size = 20
+    min_clear = max(bar_dia, agg_size + 5, 25)
 
     print(f"Beam width b = {b} mm")
     print(f"Clear cover = {cover} mm")
     print(f"Stirrup = {stirrup_dia} mm")
     print(f"Main bars = {bar_count} nos. of {bar_dia}mm")
-    print(f"Calculated spacing = {spacing:.0f} mm c/c")
-    print(f"Minimum required = {min_spacing:.0f} mm")
+    print(f"Calculated spacing = {spacing_cc:.0f} mm c/c")
+    print(f"Clear spacing = {spacing_clear:.0f} mm")
+    print(f"Minimum clear required = {min_clear:.0f} mm")
 
-    if spacing >= min_spacing:
+    if spacing_clear >= min_clear:
         print("\n✓ Spacing is ADEQUATE")
     else:
         print("\n✗ Spacing is INADEQUATE - use larger section or fewer bars")
@@ -278,11 +281,15 @@ def example_7_complete_design():
     print("\n--- DETAILING ---")
     Ld = detailing.calculate_development_length(main_bar, fck, fy)
     lap = detailing.calculate_lap_length(main_bar, fck, fy)
-    spacing = detailing.calculate_bar_spacing(b, cover, stirrup_dia, main_bar, n_bars)
+
+    spacing_cc = detailing.calculate_bar_spacing(b, cover, stirrup_dia, main_bar, n_bars)
+    spacing_clear = spacing_cc - main_bar
+    agg_size = 20
+    min_clear = max(main_bar, agg_size + 5, 25)
+
     print(f"Ld = {Ld:.0f} mm, Lap = {lap:.0f} mm")
-    print(
-        f"Bar spacing = {spacing:.0f} mm (min = {detailing.get_min_spacing(main_bar):.0f} mm)"
-    )
+    print(f"Bar spacing = {spacing_cc:.0f} mm c/c (clear = {spacing_clear:.0f} mm)")
+    print(f"Minimum clear spacing = {min_clear:.0f} mm")
 
     print("\n--- SUMMARY ---")
     print(f"Beam {beam_id}: {b}×{D} mm")
