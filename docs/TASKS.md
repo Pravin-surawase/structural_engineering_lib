@@ -131,6 +131,33 @@ When working on tasks, specify which agent role to use:
 - [ ] **TASK-020**: Py/VBA Parity Tests
 - [ ] **TASK-021**: Documentation Depth Pass
 
+- [ ] **TASK-038: Professional-grade Python Testing (coverage + reliability)**
+  - **Agent:** TESTER / DEVOPS
+  - **Goal:** Make testing robust enough for external contributors and regression safety.
+  - **Checklist:**
+    - [ ] Add coverage reporting (pytest-cov) and publish in CI artifacts
+    - [ ] Establish a baseline coverage target (start informational, then enforce threshold)
+    - [ ] Add golden-reference tests for boundary cases (Mu≈Mu_lim, Vus≈0, pt clamps)
+    - [ ] Add property tests for invariants (non-negativity, monotonicity where expected)
+    - [ ] Add CLI/integration tests (CSV/JSON → detailing → DXF generation)
+
+- [ ] **TASK-039: Test Vectors + Parity Harness (Python ↔ VBA)**
+  - **Agent:** TESTER / DEV
+  - **Goal:** Ensure Python and VBA stay identical for the same inputs.
+  - **Checklist:**
+    - [ ] Create shared test vector set (CSV/JSON) with expected outputs + tolerances
+    - [ ] Python: parametrized tests load vectors and assert outputs
+    - [ ] VBA: TestHarness reads vectors and writes pass/fail summary
+    - [ ] Document tolerances (Ast, tc, spacing, Ld, lap) and units
+
+- [ ] **TASK-040: VBA Testing Automation (repeatable test runs)**
+  - **Agent:** DEVOPS / TESTER
+  - **Goal:** Make VBA tests repeatable and reviewable in PRs.
+  - **Checklist:**
+    - [ ] Add a single entrypoint macro: `RunAllTests`
+    - [ ] Standardize test output/log format (counts + failures)
+    - [ ] Provide a manual run guide + expected output in docs
+
 ---
 
 ## 🟢 Done

@@ -1,0 +1,14 @@
+[run]
+branch = True
+source = structural_lib
+
+[report]
+skip_covered = True
+show_missing = True
+omit =
+    */tests/*
+    */structural_lib_is456.egg-info/*
+    */__init__.py
+
+[html]
+directory = htmlcov

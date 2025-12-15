@@ -1133,6 +1133,30 @@ twine upload dist/*
 - **CI (optional):** Add GitHub Actions to run Python tests on push; attach manual VBA test log to PRs until VBA automation is wired.
 - Keep scripts in `scripts/` or `Makefile` to ensure repeatability.
 
+### 13.6 Professional-grade Testing Checklist
+
+**Goal:** Catch regressions, prove code intent (IS clauses), and make contributions safe.
+
+**Python (automated):**
+- Unit tests for every public function and every table lookup edge.
+- Boundary tests: Mu≈Mu_lim, pt clamp boundaries, Vus≈0, minimum spacing rules, cover/d invalid inputs.
+- Golden-reference tests: compare against hand-calculated examples with explicit tolerances.
+- Coverage reporting in CI (informational first; add a threshold once stable).
+- Packaging smoke test in CI (wheel build must succeed).
+
+**VBA (repeatable):**
+- Single macro entrypoint `RunAllTests` that runs all test modules.
+- Deterministic output: pass/fail counts + list of failures.
+- Manual run log attached to PRs until VBA CI automation exists.
+
+**Parity (Python ↔ VBA):**
+- Shared test vector file(s) (CSV/JSON) with expected outputs + tolerances.
+- Same vectors executed by Python `pytest` and the VBA harness.
+
+**Integration tests:**
+- CSV/JSON ingestion → detailing → DXF generation (smoke tests).
+- Ensure errors are clear (status + message) for invalid inputs.
+
 ---
 
 ## 14. Code Review Checklist
