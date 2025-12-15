@@ -130,27 +130,20 @@ CHANGELOG.md        → [0.8.0]
 
 ### Implementation Approach
 ```
-Phase 1: Research (1 session)
-├── Study IS 456 Cl. 23.2, Annex C, Annex F
-├── Create reference tables
-└── Document formulas in _archive/RESEARCH_AND_FINDINGS.md (historical) or in RESEARCH_AI_ENHANCEMENTS.md (current log)
+Phase 1: Define inputs (TASK-044)
+├── Confirm supported CSV columns and defaults
+└── Document mapping in docs/TASKS.md + integration notes
 
-Phase 2: Python Implementation (1-2 sessions)
-├── Create serviceability.py module
-├── Add DeflectionResult, CrackResult types
-├── Write 20+ tests with hand calculations
-└── Update api.py
+Phase 2: Implement + harden
+├── Improve CSV normalization + validation
+└── Ensure deterministic governing-case selection + clear failure reasons
 
-Phase 3: VBA Port (1 session)
-├── Create M17_Serviceability.bas
-├── Add UDTs: DeflectionResult, CrackResult
-└── Port tests to VBA
+Phase 3: Verification
+├── Add/extend Python regression tests for mapping + compliance end-to-end
+└── (Optional) add parity vectors for critical cases
 
-Phase 4: Integration (1 session)
-├── Add to beam design workflow
-├── Update beam schedule with serviceability flags
-├── Update documentation
-└── Release v0.8.0
+Phase 4: Release hygiene
+└── Update docs + release notes for next tag (v0.9.0)
 ```
 
 ---
@@ -160,7 +153,7 @@ Phase 4: Integration (1 session)
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** `f8ac43c`
+- **Latest Commit:** (run `git log -1 --oneline`)
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)

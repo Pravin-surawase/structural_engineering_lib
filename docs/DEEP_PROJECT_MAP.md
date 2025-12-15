@@ -217,25 +217,23 @@ When changing any of the above, treat it as a parity change and add/extend Pytho
 
 ---
 
-## 9) Where v0.8 serviceability should plug in (deflection + crack width)
+## 9) Where v0.8 serviceability plugs in (deflection + crack width)
 
-**Current gap:** strength + detailing + DXF are implemented; serviceability is the critical missing feature.
+**Status:** Implemented in v0.8 (Python + VBA parity).
 
-### 9.1 Python insertion points (recommended)
+### 9.1 Python insertion points (current)
 
-- Add a new core module: `Python/structural_lib/serviceability.py`
-- Add result types to `Python/structural_lib/types.py` (e.g., `DeflectionResult`, `CrackWidthResult`)
-- Keep I/O and CSV helpers out of core: if batch processing is needed, integrate in `Python/structural_lib/excel_integration.py` or examples.
+- Core module: `Python/structural_lib/serviceability.py`
+- Result types: `Python/structural_lib/types.py` (`DeflectionResult`, `CrackWidthResult`)
+- Tests: `Python/tests/test_serviceability.py`
 
-**Testing:** add `Python/tests/test_serviceability_*.py` with deterministic numeric cases and clear unit assumptions.
+### 9.2 VBA insertion points (current)
 
-### 9.2 VBA insertion points (recommended)
+- Core module: `VBA/Modules/M17_Serviceability.bas`
+- Result types: `VBA/Modules/M02_Types.bas` (UDTs)
+- Tests: `VBA/Tests/Test_Serviceability.bas`
 
-- Add new core module(s): e.g., `VBA/Modules/M17_Serviceability.bas` (or split into deflection/crack)
-- Wire into `M11_AppLayer.bas` only after the core API is stable.
-- Add worksheet UDF wrappers in `M09_UDFs.bas` (if intended for sheet usage).
-
-### 9.3 Docs updates that must accompany v0.8
+### 9.3 Docs updates that accompany v0.8
 
 - `docs/API_REFERENCE.md` — new serviceability functions and units.
 - `docs/KNOWN_PITFALLS.md` — unit traps and typical boundary cases.
