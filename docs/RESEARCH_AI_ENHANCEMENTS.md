@@ -4,6 +4,8 @@
 **Last Updated:** 2025-12-15  
 **Scope:** Identify additions that make the library materially more valuable for professional use (beyond current v0.7 strength/detailing scope).
 
+This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checking), plus longer-horizon AI/NL helper ideas.
+
 ---
 
 ## Mindset & Goals
@@ -18,7 +20,7 @@
 - **Structural health monitoring + ML**: abundant academic work (e.g., “deep learning for SHM review” queries surface review papers on vibration-based damage detection). Relevance: informs future module for post-construction monitoring, but not immediate for design library.
 - **Rebar optimization / layout automation**: industry chatter around automated detailing/rebar schedulers; most proprietary (e.g., CAD plugins) with few open-source options. Opportunity: open, transparent optimizer tied to code rules.
 - **Crack/deflection ML prediction**: some papers use ML to predict serviceability (deflection/crack) from geometry/material inputs. Relevance: a data-driven checker could complement code formulas but must remain secondary to codified checks.
-- Limitations: DuckDuckGo API returns minimal snippets; insights above are distilled from high-level search terms and known industry trends.
+- Note: This is a lightweight scan of publicly available material (not a systematic literature review). The takeaways above are synthesized from high-level search results and general domain trends.
 
 ---
 
