@@ -37,6 +37,24 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 - Support: [SUPPORT.md](SUPPORT.md)
 - Security: [SECURITY.md](SECURITY.md)
 
+## Contributing (Dev Setup)
+
+```bash
+# Install dev dependencies
+cd Python
+python3 -m pip install -e ".[dev]"
+
+# Install git hooks (recommended)
+cd ..
+pre-commit install
+
+# Run checks locally
+cd Python
+python -m pytest
+python -m black --check .
+python -m mypy
+```
+
 ## Install (Python)
 
 This repo is a monorepo; the Python package lives under `Python/`.
