@@ -293,4 +293,28 @@ This pass incorporates *your locally saved artifacts* by summarizing their struc
 - From `AST cal.xlsx`: create 5–10 deterministic unit tests for optimizer rounding and bar selection logic using representative rows (Ast → bar count).
 - From `CSI API ETABS v1.txt`: document an integration plan (no code text copied) covering “attach/connect”, “export tables”, and “map table columns to library inputs”.
 
+---
+
+## Roadmap (Action-Oriented) — v0.8 to v0.9
+
+This is a short, execution-focused plan based on the research passes above.
+
+### v0.8 (Production-Readiness Baseline)
+- **P1 Serviceability (Level A first):** implement deflection check via span/depth + modification factors; implement crack-width check with exposure-driven limits.
+- **P4 Compliance wrapper (minimal):** accept *already-factored* actions (Mu/Vu) and produce a compact pass/fail summary + “why fail” remarks.
+- **Outputs:** add `ServiceabilityResult` and a compliance summary shape that is Excel-friendly (single-row summary + per-check detail).
+- **Verification:** add representative benchmark tests around threshold transitions and “no feasible / missing input” reporting (no silent defaults).
+
+### v0.9 (Workflow Acceleration)
+- **P2 Rebar arrangement optimizer (deterministic):** start with a bounded enumeration over bar diameters/counts/layers + spacing constraints; optional objective (min weight vs min bar count).
+- **P3 BBS/BOM export (data-first):** generate schedule line-items and export CSV; add cutting-stock waste optimization as an optional step.
+- **ETABS integration (practical path):** default to file-based ETABS table export import; keep API automation as Windows-first / optional.
+
+### “Definition of Done” (Applies to Every Feature)
+- Deterministic results (same inputs → same outputs)
+- Clear assumptions surfaced in output (no hidden defaults)
+- Structured failures (actionable reasons when inputs/geometry make a check impossible)
+- Tests for at least: nominal case, boundary case, infeasible case
+
+
 
