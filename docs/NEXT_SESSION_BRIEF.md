@@ -4,6 +4,11 @@
 **Status:** v0.7.0 complete (detail/DXF/docs), serviceability pending  
 **Branch:** `main`
 
+## TL;DR (What Changed Recently)
+- Improved onboarding docs (README dev setup + quick commands).
+- Expanded AI/high-value enhancements research log (Pass 3 + Pass 4).
+- Added a place for local reference files (`docs/_references/`) and prevented committing large local snapshots.
+
 ---
 
 ## 🎯 Session Summary (Dec 11-15, 2025)
