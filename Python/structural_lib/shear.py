@@ -20,6 +20,50 @@ def design_shear(
     """
     Main Shear Design Function
     """
+    if b <= 0 or d <= 0:
+        return ShearResult(
+            tv=0.0,
+            tc=0.0,
+            tc_max=0.0,
+            vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            remarks="Invalid input: b and d must be > 0.",
+        )
+
+    if fck <= 0 or fy <= 0:
+        return ShearResult(
+            tv=0.0,
+            tc=0.0,
+            tc_max=0.0,
+            vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            remarks="Invalid input: fck and fy must be > 0.",
+        )
+
+    if asv <= 0:
+        return ShearResult(
+            tv=0.0,
+            tc=0.0,
+            tc_max=0.0,
+            vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            remarks="Invalid input: asv must be > 0.",
+        )
+
+    if pt < 0:
+        return ShearResult(
+            tv=0.0,
+            tc=0.0,
+            tc_max=0.0,
+            vus=0.0,
+            spacing=0.0,
+            is_safe=False,
+            remarks="Invalid input: pt must be >= 0.",
+        )
+
     # 1. Calculate Tv
     tv = calculate_tv(vu_kn, b, d)
 

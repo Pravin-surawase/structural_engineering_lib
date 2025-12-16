@@ -12,6 +12,9 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     """
     Calculate Limiting Moment of Resistance (kN-m)
     """
+    if b <= 0 or d <= 0 or fck <= 0 or fy <= 0:
+        return 0.0
+
     xu_max_d = materials.get_xu_max_d(fy)
 
     # Mu_lim = 0.36 * (xu_max/d) * (1 - 0.42 * (xu_max/d)) * b * d^2 * fck
@@ -29,6 +32,9 @@ def calculate_ast_required(
     Calculate Ast Required for Singly Reinforced Section (mm^2)
     Returns -1 if section is over-reinforced (Mu > Mu_lim)
     """
+    if b <= 0 or d <= 0 or fck <= 0 or fy <= 0:
+        return -1.0
+
     mu_nmm = abs(mu_knm) * 1000000.0
 
     mu_lim_knm = calculate_mu_lim(b, d, fck, fy)
@@ -53,6 +59,42 @@ def design_singly_reinforced(
     """
     Main Design Function for Singly Reinforced Beam
     """
+    if b <= 0 or d <= 0 or d_total <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: b, d, and d_total must be > 0.",
+        )
+
+    if d_total <= d:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: d_total must be > d.",
+        )
+
+    if fck <= 0 or fy <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: fck and fy must be > 0.",
+        )
+
     mu_lim = calculate_mu_lim(b, d, fck, fy)
     xu_max = materials.get_xu_max_d(fy) * d
 
@@ -120,6 +162,54 @@ def design_doubly_reinforced(
     Design a beam that can be singly or doubly reinforced.
     If Mu > Mu_lim, calculates Asc and additional Ast.
     """
+    if b <= 0 or d <= 0 or d_total <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: b, d, and d_total must be > 0.",
+        )
+
+    if d_total <= d:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: d_total must be > d.",
+        )
+
+    if fck <= 0 or fy <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: fck and fy must be > 0.",
+        )
+
+    if d_dash <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: d' must be > 0.",
+        )
+
     mu_lim = calculate_mu_lim(b, d, fck, fy)
     xu_max = materials.get_xu_max_d(fy) * d
     mu_abs = abs(mu_knm)
