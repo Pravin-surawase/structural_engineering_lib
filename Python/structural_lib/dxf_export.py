@@ -17,26 +17,34 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, Tuple
+
+ezdxf: Any = None
+_units: Any = None
+_TextEntityAlignment: Any = None
+EZDXF_AVAILABLE = False
 
 try:
-    import ezdxf
+    import ezdxf as _ezdxf
+
+    ezdxf = _ezdxf
 
     try:
-        from ezdxf import units as _units  # type: ignore
+        from ezdxf import units as _ezdxf_units
+
+        _units = _ezdxf_units
     except Exception:
         _units = None
 
     try:
-        from ezdxf.enums import TextEntityAlignment as _TextEntityAlignment  # type: ignore
+        from ezdxf.enums import TextEntityAlignment as _ezdxf_TextEntityAlignment
+
+        _TextEntityAlignment = _ezdxf_TextEntityAlignment
     except Exception:
         _TextEntityAlignment = None
 
     EZDXF_AVAILABLE = True
 except Exception:
-    ezdxf = None  # type: ignore
-    _units = None
-    _TextEntityAlignment = None
     EZDXF_AVAILABLE = False
 
 # Public aliases so tests/users can monkeypatch or introspect the optional ezdxf
@@ -317,9 +325,7 @@ def draw_annotations(
             "layer": "TEXT",
             "height": TEXT_HEIGHT,
         },
-    ).set_placement(
-        (x0 + span / 2, y0 + D + 50), align=_text_align("BOTTOM_CENTER")
-    )
+    ).set_placement((x0 + span / 2, y0 + D + 50), align=_text_align("BOTTOM_CENTER"))
 
     # Stirrup callouts for each zone
     zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]

@@ -50,7 +50,13 @@ def main() -> None:
         fy=fy_nmm2,
     )
     print("Safe?", flex.is_safe, "| Mu_lim:", round(flex.mu_lim, 2), "kN-m")
-    print("Ast_req:", round(flex.ast_required, 1), "mm2 | pt:", round(flex.pt_provided, 3), "%")
+    print(
+        "Ast_req:",
+        round(flex.ast_required, 1),
+        "mm2 | pt:",
+        round(flex.pt_provided, 3),
+        "%",
+    )
 
     # Pick bars (very simple)
     bar_area = math.pi * (main_bar_dia_mm / 2) ** 2

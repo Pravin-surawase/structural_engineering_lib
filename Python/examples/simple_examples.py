@@ -172,7 +172,9 @@ def example_5_bar_spacing():
     bar_count = 4
 
     # calculate_bar_spacing returns center-to-center spacing
-    spacing_cc = detailing.calculate_bar_spacing(b, cover, stirrup_dia, bar_dia, bar_count)
+    spacing_cc = detailing.calculate_bar_spacing(
+        b, cover, stirrup_dia, bar_dia, bar_count
+    )
     spacing_clear = spacing_cc - bar_dia
 
     # Minimum clear spacing per IS 456 Cl. 26.3.2
@@ -282,7 +284,9 @@ def example_7_complete_design():
     Ld = detailing.calculate_development_length(main_bar, fck, fy)
     lap = detailing.calculate_lap_length(main_bar, fck, fy)
 
-    spacing_cc = detailing.calculate_bar_spacing(b, cover, stirrup_dia, main_bar, n_bars)
+    spacing_cc = detailing.calculate_bar_spacing(
+        b, cover, stirrup_dia, main_bar, n_bars
+    )
     spacing_clear = spacing_cc - main_bar
     agg_size = 20
     min_clear = max(main_bar, agg_size + 5, 25)

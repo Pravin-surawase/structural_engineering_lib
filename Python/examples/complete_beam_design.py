@@ -187,7 +187,9 @@ def design_beam(row: dict) -> BeamDesignOutput:
     lap = detailing.calculate_lap_length(max_bar_dia, fck, fy, is_seismic=False)
 
     # Check bar spacing
-    bar_spacing_cc = detailing.calculate_bar_spacing(b, cover, stirrup_dia, dia_bot, n_bot)
+    bar_spacing_cc = detailing.calculate_bar_spacing(
+        b, cover, stirrup_dia, dia_bot, n_bot
+    )
 
     # Minimum clear spacing per IS 456 Cl. 26.3.2
     agg_size = 20
