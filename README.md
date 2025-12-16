@@ -10,6 +10,35 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 **Production note:** v0.8.0 introduced Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
 
+## Adoption (Early Users)
+
+This repository is public, so anyone can read the code, docs, and examples.
+
+- **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
+- **Stability note:** While in active development, prefer pinning to a release tag (example: `@v0.8.1`) rather than installing from `main`.
+
+### Install (Python) — without cloning the repo
+
+Recommended for early adopters.
+
+```bash
+python -m pip install --upgrade pip
+
+# Base install
+python -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.1#subdirectory=Python"
+
+# With DXF export support
+python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.1#subdirectory=Python"
+```
+
+### Install (Google Colab)
+
+```python
+%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@main#subdirectory=Python"
+```
+
+Then: `Runtime > Restart runtime` and rerun your notebook cells.
+
 ## Features
 
 - ✅ **Pure functions** — No UI dependencies (no MsgBox, no worksheet access)
