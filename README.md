@@ -34,7 +34,7 @@ python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin
 ### Install (Google Colab)
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@main#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.2#subdirectory=Python"
 ```
 
 Then: `Runtime > Restart runtime` and rerun your notebook cells.
