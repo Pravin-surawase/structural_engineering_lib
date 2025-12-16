@@ -245,10 +245,6 @@ def check_compliance_report(
 - `ComplianceReport.summary`: compact, Excel-friendly dict containing `num_cases`, `num_failed_cases`, governing identifiers, and per-check max utilizations.
 
 ---
-<<<<<<< HEAD
-=======
-
->>>>>>> feat/task-042-compliance-checker
 ### 2.5 Calculate Limiting Moment (Flanged)
 Calculates the limiting moment of resistance for a T-beam section.
 
