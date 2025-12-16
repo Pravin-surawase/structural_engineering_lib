@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "units": {
+    "system": "IS456",
+    "mu_knm": "kN·m",
+    "vu_kn": "kN",
+    "b_mm": "mm",
+    "D_mm": "mm",
+    "d_mm": "mm",
+    "fck_nmm2": "N/mm²",
+    "fy_nmm2": "N/mm²"
+  },
+  "common_inputs": {
+    "b_mm": 300.0,
+    "D_mm": 500.0,
+    "d_mm": 450.0,
+    "fck_nmm2": 25.0,
+    "fy_nmm2": 500.0,
+    "d_dash_mm": 50.0,
+    "asv_mm2": 100.0
+  },
+  "cases": [
+    {
+      "case_id": "G1",
+      "mu_knm": 80.0,
+      "vu_kn": 60.0,
+      "expected": {
+        "is_ok": true,
+        "flexure": {
+          "mu_lim": 202.91423399999996,
+          "ast_required": 437.20746137512276,
+          "asc_required": 0.0,
+          "is_safe": true
+        },
+        "shear": {
+          "tv": 0.4444444444444444,
+          "tc": 0.39840583697412135,
+          "tc_max": 3.1,
+          "spacing": 300.0,
+          "is_safe": true
+        }
+      }
+    },
+    {
+      "case_id": "G2",
+      "mu_knm": 120.0,
+      "vu_kn": 200.0,
+      "expected": {
+        "is_ok": true,
+        "flexure": {
+          "mu_lim": 202.91423399999996,
+          "ast_required": 682.3015393475638,
+          "asc_required": 0.0,
+          "is_safe": true
+        },
+        "shear": {
+          "tv": 1.4814814814814814,
+          "tc": 0.49173073525275585,
+          "tc_max": 3.1,
+          "spacing": 146.50153137292136,
+          "is_safe": true
+        }
+      }
+    },
+    {
+      "case_id": "G3",
+      "mu_knm": 160.0,
+      "vu_kn": 120.0,
+      "expected": {
+        "is_ok": true,
+        "flexure": {
+          "mu_lim": 202.91423399999996,
+          "ast_required": 952.0627329623244,
+          "asc_required": 0.0,
+          "is_safe": true
+        },
+        "shear": {
+          "tv": 0.8888888888888888,
+          "tc": 0.5556741292947731,
+          "tc_max": 3.1,
+          "spacing": 300.0,
+          "is_safe": true
+        }
+      }
+    }
+  ]
+}
