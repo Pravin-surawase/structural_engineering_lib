@@ -163,9 +163,10 @@ def test_flexure_calculate_ast_required_clamps_term2(monkeypatch):
 def test_flexure_singly_reinforced_hits_max_steel_exceeded():
     from structural_lib import flexure
 
-    # Use inconsistent but deterministic geometry to trigger Ast_max failure.
+    # Keep geometry valid, but use an unrealistically low fy to push Ast_min
+    # above Ast_max and cover the max-steel branch deterministically.
     res = flexure.design_singly_reinforced(
-        b=300, d=500, d_total=10, mu_knm=0.0, fck=25, fy=500
+        b=300, d=500, d_total=550, mu_knm=0.0, fck=25, fy=10
     )
     assert res.is_safe is False
     assert "maximum" in res.error_message.lower()
@@ -202,13 +203,13 @@ def test_flexure_doubly_reinforced_denom_nonpositive_path():
 def test_flexure_doubly_reinforced_hits_asc_exceeds_max_branch():
     from structural_lib import flexure
 
-    # Keep geometry valid; reduce ast_max using small d_total so asc > ast_max triggers.
+    # Keep geometry valid; drive Mu very high so Asc exceeds the 4% bD max.
     res = flexure.design_doubly_reinforced(
         b=300.0,
         d=500.0,
         d_dash=50.0,
-        d_total=10.0,
-        mu_knm=1000.0,
+        d_total=550.0,
+        mu_knm=1e6,
         fck=25.0,
         fy=415.0,
     )

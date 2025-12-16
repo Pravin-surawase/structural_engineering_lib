@@ -39,6 +39,11 @@ except Exception:
     _TextEntityAlignment = None
     EZDXF_AVAILABLE = False
 
+# Public aliases so tests/users can monkeypatch or introspect the optional ezdxf
+# surface in a stable way.
+units = _units
+TextEntityAlignment = _TextEntityAlignment
+
 from .detailing import BeamDetailingResult, BarArrangement, StirrupArrangement
 
 
@@ -82,9 +87,9 @@ def _text_align(name: str) -> Any:
     ezdxf's Text.set_placement() accepts either a TextEntityAlignment enum member
     or a string (varies by ezdxf version).
     """
-    if _TextEntityAlignment is None:
+    if TextEntityAlignment is None:
         return name
-    return getattr(_TextEntityAlignment, name)
+    return getattr(TextEntityAlignment, name)
 
 
 def setup_layers(doc):
@@ -367,8 +372,8 @@ def generate_beam_dxf(
 
     # Create new DXF document (R2010 for compatibility)
     doc = ezdxf.new("R2010")
-    if _units is not None:
-        doc.units = _units.MM
+    if units is not None:
+        doc.units = units.MM
 
     # Setup layers
     setup_layers(doc)

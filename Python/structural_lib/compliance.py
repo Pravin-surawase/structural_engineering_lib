@@ -23,8 +23,10 @@ from .types import (
     ComplianceReport,
     CrackWidthResult,
     DeflectionResult,
+    ExposureClass,
     FlexureResult,
     ShearResult,
+    SupportCondition,
 )
 
 
@@ -41,19 +43,77 @@ def _compute_flexure_utilization(mu_knm: float, flex: FlexureResult) -> float:
 
 
 def _compute_shear_utilization(sh: ShearResult) -> float:
+    if (not sh.is_safe) and sh.tc_max <= 0:
+        return float("inf")
     return _utilization_safe(sh.tv, sh.tc_max)
 
 
 def _compute_deflection_utilization(defl: DeflectionResult) -> float:
+    if not defl.is_ok:
+        allowable = float(defl.computed.get("allowable_ld", 0.0))
+        if allowable <= 0:
+            return float("inf")
     ld_ratio = float(defl.computed.get("ld_ratio", 0.0))
     allowable = float(defl.computed.get("allowable_ld", 0.0))
     return _utilization_safe(ld_ratio, allowable)
 
 
 def _compute_crack_utilization(cr: CrackWidthResult) -> float:
+    if not cr.is_ok:
+        limit_mm = float(cr.computed.get("limit_mm", 0.0))
+        if limit_mm <= 0:
+            return float("inf")
     wcr = float(cr.computed.get("wcr_mm", 0.0))
     limit_mm = float(cr.computed.get("limit_mm", 0.0))
     return _utilization_safe(wcr, limit_mm)
+
+
+def _safe_deflection_check(params: Any) -> DeflectionResult:
+    if not isinstance(params, dict):
+        return DeflectionResult(
+            is_ok=False,
+            remarks="Invalid deflection_params: expected a dict.",
+            support_condition=SupportCondition.SIMPLY_SUPPORTED,
+            assumptions=["deflection_params was not a dict"],
+            inputs={"deflection_params": params},
+            computed={"ld_ratio": 1.0, "allowable_ld": 0.0},
+        )
+
+    try:
+        return serviceability.check_deflection_span_depth(**params)
+    except Exception as exc:
+        return DeflectionResult(
+            is_ok=False,
+            remarks=f"Deflection check failed: {exc}",
+            support_condition=SupportCondition.SIMPLY_SUPPORTED,
+            assumptions=["deflection check raised an exception"],
+            inputs={"deflection_params": params},
+            computed={"ld_ratio": 1.0, "allowable_ld": 0.0},
+        )
+
+
+def _safe_crack_width_check(params: Any) -> CrackWidthResult:
+    if not isinstance(params, dict):
+        return CrackWidthResult(
+            is_ok=False,
+            remarks="Invalid crack_width_params: expected a dict.",
+            exposure_class=ExposureClass.MODERATE,
+            assumptions=["crack_width_params was not a dict"],
+            inputs={"crack_width_params": params},
+            computed={"wcr_mm": 1.0, "limit_mm": 0.0},
+        )
+
+    try:
+        return serviceability.check_crack_width(**params)
+    except Exception as exc:
+        return CrackWidthResult(
+            is_ok=False,
+            remarks=f"Crack width check failed: {exc}",
+            exposure_class=ExposureClass.MODERATE,
+            assumptions=["crack width check raised an exception"],
+            inputs={"crack_width_params": params},
+            computed={"wcr_mm": 1.0, "limit_mm": 0.0},
+        )
 
 
 def check_compliance_case(
@@ -133,10 +193,10 @@ def check_compliance_case(
     crack: Optional[CrackWidthResult] = None
 
     if deflection_params is not None:
-        defl = serviceability.check_deflection_span_depth(**deflection_params)
+        defl = _safe_deflection_check(deflection_params)
 
     if crack_width_params is not None:
-        crack = serviceability.check_crack_width(**crack_width_params)
+        crack = _safe_crack_width_check(crack_width_params)
 
     # Determine pass/fail.
     if not flex.is_safe:
@@ -216,8 +276,16 @@ def check_compliance_report(
 
     results: List[ComplianceCaseResult] = []
 
-    for c in cases:
-        case_id = str(c.get("case_id", ""))
+    if deflection_defaults is not None and not isinstance(deflection_defaults, dict):
+        raise ValueError("deflection_defaults must be a dict when provided.")
+    if crack_width_defaults is not None and not isinstance(crack_width_defaults, dict):
+        raise ValueError("crack_width_defaults must be a dict when provided.")
+
+    for i, c in enumerate(cases):
+        if not isinstance(c, dict):
+            raise ValueError("Each case must be a dict.")
+
+        case_id = str(c.get("case_id", "") or f"CASE_{i + 1}")
 
         mu_raw = c.get("mu_knm")
         vu_raw = c.get("vu_kn")
