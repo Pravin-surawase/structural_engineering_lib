@@ -1,7 +1,7 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-15  
-**Status:** v0.8.1 released (tooling/build-only patch after v0.8.0)  
+**Status:** v0.8.2 released (robustness + CI patch after v0.8.1)  
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
@@ -22,8 +22,8 @@ If you want to resume quickly without re-reading the repo:
 4. **Primary reference index:** `docs/README.md`
 
 **Verified state (as of 2025-12-15):**
-- Release baseline is **v0.8.1** (tooling-only patch; features unchanged from v0.8.0).
-- Python test suite passes locally (158 tests collected/passing).
+- Release baseline is **v0.8.2** (robustness/CI patch; features unchanged from v0.8.0).
+- Python test suite passes locally (198 tests collected/passing).
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
@@ -61,15 +61,15 @@ If you want to resume quickly without re-reading the repo:
 
 ---
 
-## 📊 Current State (v0.8.1)
+## 📊 Current State (v0.8.2)
 
 ### Version Sync ✅
 ```
-Python __init__.py  → 0.8.1
-Python api.py       → 0.8.1
-Python pyproject    → 0.8.1
-README.md           → v0.8.1
-CHANGELOG.md        → [0.8.1]
+Python __init__.py  → 0.8.2
+Python api.py       → 0.8.2
+Python pyproject    → 0.8.2
+README.md           → v0.8.2
+CHANGELOG.md        → [0.8.2]
 ```
 
 ### Feature Completeness
@@ -80,7 +80,7 @@ CHANGELOG.md        → [0.8.1]
 | **DXF Export** | ✅ 100% | Python (ezdxf) + VBA (native R12) |
 | **ETABS Integration** | ✅ 100% | CSV import with normalization |
 | **Documentation** | ✅ 95% | 21 docs, beginner guides added |
-| **Testing** | ✅ 90% | 158 tests collected/passing |
+| **Testing** | ✅ 90% | 198 tests collected/passing |
 | **Serviceability** | ✅ Level A | Deflection + crack width |
 | **Compliance** | ✅ MVP | Multi-case verdict + summary |
 

@@ -12,10 +12,10 @@ If you're sharing with a few users while the project is still evolving, this is 
 python -m pip install --upgrade pip
 
 # Pin to a released tag for stability (recommended)
-python -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.1#subdirectory=Python"
+python -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.2#subdirectory=Python"
 
 # With DXF support
-python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.1#subdirectory=Python"
+python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.8.2#subdirectory=Python"
 ```
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.

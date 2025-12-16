@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.8.2] - 2025-12-16
+### Changed
+- **Robustness + CI (no design algorithm changes):**
+  - Compliance checker hardened against malformed serviceability inputs; deterministic governing-case utilization in failure modes.
+  - DXF export optional dependency surface made more monkeypatch/type-check friendly.
+  - CI reliability fix: raise total coverage above the enforced `--cov-fail-under=95` gate.
+
 ## [0.8.1] - 2025-12-16
 ### Changed
 - **Packaging/CI tooling (no engineering behavior changes):**

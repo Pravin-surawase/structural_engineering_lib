@@ -172,3 +172,22 @@ To preserve the “immutable / append-only” rule, older entries were not reord
 ## Chronological Index Addendum (2025-12-16)
 
 - v0.8.1 (2025-12-16)
+
+---
+
+## v0.8.2
+**Date:** 2025-12-16
+**Status:** ✅ Locked & Verified
+**Commit Hash:** (tag: v0.8.2)
+**Mindset:** Robustness + CI patch after v0.8.1.
+**Key Changes:**
+- Compliance robustness:
+  - Hardened serviceability parameter handling and made failure-mode utilization deterministic.
+- DXF export robustness:
+  - Improved optional `ezdxf` surface handling for tests and type checking.
+- CI:
+  - Addressed coverage-gate failures by adding targeted regression tests to keep total coverage ≥ 95%.
+
+## Chronological Index Addendum (2025-12-16, patch)
+
+- v0.8.2 (2025-12-16)

@@ -1,6 +1,6 @@
 # Production Readiness Roadmap
 
-> **Current Status:** v0.8.1 — Strength design + serviceability (Level A) implemented.
+> **Current Status:** v0.8.2 — Strength design + serviceability (Level A) implemented.
 > 
 > **Production Readiness:** ~85%
 
@@ -181,7 +181,8 @@ To use this library for **actual project submissions**, you need:
 | Version | Focus | Status |
 |---------|-------|--------|
 | v0.7.0 | Detailing + DXF | ✅ Done |
-| **v0.8.1** | **Deflection + Crack Width** | ✅ Current |
+| v0.8.0 | Deflection + Crack Width | ✅ Done |
+| **v0.8.2** | **Robustness + CI** | ✅ Current |
 | v0.9.0 | BBS + PDF Reports | Planned |
 | v1.0.0 | Production Release | Goal |
 

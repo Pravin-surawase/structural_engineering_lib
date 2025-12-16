@@ -15,7 +15,7 @@ def get_library_version() -> str:
     try:
         return version("structural-lib-is456")
     except PackageNotFoundError:
-        return "0.8.1"
+        return "0.8.2"
 
 
 def check_beam_ductility(
