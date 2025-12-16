@@ -1,6 +1,6 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.8.1  
+**Document Version:** 0.8.2  
 **Last Updated:** December 16, 2025  
 **Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export).
 
@@ -21,6 +21,88 @@
   - VBA (planned): User Defined Types (UDTs) for complex results, or simple types (`Double`) for helpers.
   - Python: `dataclasses` or simple types (`float`).
   - Excel UDFs: wrapper functions (VBA) to expose selected helpers (TBD).
+
+---
+
+## 1A. Public Entry Points (Python) (`api.py`)
+
+These entrypoints are intended to remain stable even as internal modules evolve.
+
+### 1A.1 Single-Case Design/Check (`design_beam_is456`)
+
+**Notes:**
+- Strength checks are always run.
+- Serviceability checks run only when their params are provided.
+- `units` is **mandatory** to enforce explicit units at the API boundary.
+
+```python
+def design_beam_is456(
+    *,
+    units: str,
+    case_id: str = "CASE-1",
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    deflection_params: dict | None = None,
+    crack_width_params: dict | None = None,
+) -> ComplianceCaseResult
+```
+
+### 1A.2 Multi-Case Compliance (`check_beam_is456`)
+
+```python
+def check_beam_is456(
+    *,
+    units: str,
+    cases: Sequence[dict],
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    deflection_defaults: dict | None = None,
+    crack_width_defaults: dict | None = None,
+) -> ComplianceReport
+```
+
+### 1A.3 Detailing Output (`detail_beam_is456`)
+
+```python
+def detail_beam_is456(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    b_mm: float,
+    D_mm: float,
+    span_mm: float,
+    cover_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    ast_start_mm2: float,
+    ast_mid_mm2: float,
+    ast_end_mm2: float,
+    asc_start_mm2: float = 0.0,
+    asc_mid_mm2: float = 0.0,
+    asc_end_mm2: float = 0.0,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_start_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    stirrup_spacing_end_mm: float = 150.0,
+    is_seismic: bool = False,
+) -> BeamDetailingResult
+```
 
 ---
 
