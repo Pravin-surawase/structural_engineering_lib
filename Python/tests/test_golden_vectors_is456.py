@@ -35,18 +35,26 @@ def test_is456_golden_vectors(vector: dict):
 
     # Flexure key outputs
     assert res.flexure.is_safe is exp["flexure"]["is_safe"]
-    assert res.flexure.mu_lim == pytest.approx(exp["flexure"]["mu_lim"], rel=1e-12, abs=1e-12)
+    assert res.flexure.mu_lim == pytest.approx(
+        exp["flexure"]["mu_lim"], rel=1e-12, abs=1e-12
+    )
     assert res.flexure.ast_required == pytest.approx(
         exp["flexure"]["ast_required"], rel=1e-12, abs=1e-9
     )
-    assert res.flexure.asc_required == pytest.approx(exp["flexure"]["asc_required"], abs=1e-12)
+    assert res.flexure.asc_required == pytest.approx(
+        exp["flexure"]["asc_required"], abs=1e-12
+    )
 
     # Shear key outputs
     assert res.shear.is_safe is exp["shear"]["is_safe"]
     assert res.shear.tv == pytest.approx(exp["shear"]["tv"], rel=1e-12, abs=1e-12)
     assert res.shear.tc == pytest.approx(exp["shear"]["tc"], rel=1e-12, abs=1e-12)
-    assert res.shear.tc_max == pytest.approx(exp["shear"]["tc_max"], rel=1e-12, abs=1e-12)
-    assert res.shear.spacing == pytest.approx(exp["shear"]["spacing"], rel=1e-12, abs=1e-9)
+    assert res.shear.tc_max == pytest.approx(
+        exp["shear"]["tc_max"], rel=1e-12, abs=1e-12
+    )
+    assert res.shear.spacing == pytest.approx(
+        exp["shear"]["spacing"], rel=1e-12, abs=1e-9
+    )
 
 
 def test_is456_golden_vectors_are_deterministic_on_repeat():
