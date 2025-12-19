@@ -1,8 +1,8 @@
 # Research Log — AI/High-Value Enhancements
 
-**Research Version:** v0.8-ideation  
-**Last Updated:** 2025-12-15  
-**Scope:** Identify additions that make the library materially more valuable for professional use (beyond current v0.7 strength/detailing scope).
+**Research Version:** v0.9-baseline  
+**Last Updated:** 2025-12-19  
+**Scope:** Identify additions that make the library materially more valuable for professional use (beyond current strength/detailing + v0.8 serviceability baseline).
 
 This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checking), plus longer-horizon AI/NL helper ideas.
 
@@ -53,8 +53,9 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 
 6) **Parametric Batch Runner + Sensitivity/Monte Carlo**  
    - Value: Helps engineers test robustness (cover variations, material strengths, bar sizes).  
-   - Scope: Simple API to sweep parameters and produce histograms/summaries; flags brittle designs.  
-   - Output: CSV/plots (plots optional to keep deps light).
+   - Scope: Simple file-in/file-out runner with deterministic JSON/CSV outputs; optional parameter sweeps later.
+   - Output: JSON + CSV artifacts with a fixed folder layout.
+   - Status: **Baseline implemented** (job schema + batch runner + CLI).
 
 7) **Natural-Language Assistant / Explainer (Python-first)**  
    - Value: Converts plain-language prompts (“Design 300x500 beam, M25/Fe500, Mu=150, span 4m”) into structured calls; produces “calculation sheet” style explanations.  
@@ -75,9 +76,9 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 
 ---
 
-## Proposed Next Steps (v0.8-v0.9)
-- **v0.8:** Implement P1 (deflection + crack) + baseline P4 (combination wrapper using existing design checks).  
-- **v0.9:** Add P2 (optimizer) and P3 (BBS/BOM), wire outputs to DXF/Excel schedules; explore lightweight IFC metadata.
+## Proposed Next Steps (v0.9-v0.10)
+- **v0.9 (done):** Stable IS456 entrypoints + deterministic job runner baseline.
+- **v0.10 (next):** Add P2 (deterministic rebar layout optimizer) and P3 (BBS/BOM CSV export), and wire outputs into schedules.
 - **Research follow-up:** If time permits, prototype P7 (NL assistant) as an opt-in CLI/notebook helper that emits the exact function calls used.
 
 ---

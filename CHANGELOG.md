@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.0] - 2025-12-19
+### Added
+- **Stable public API (IS456):** explicit entrypoints designed for future multi-code support.
+- **Golden vectors:** pinned regression targets for key IS456 cases.
+- **Deterministic automation runner:** job schema + batch runner + CLI producing JSON/CSV outputs.
+
+### Changed
+- Compliance report dict export hardened so results are JSON-serializable.
+
 ## [0.8.2] - 2025-12-16
 ### Changed
 - **Robustness + CI (no design algorithm changes):**

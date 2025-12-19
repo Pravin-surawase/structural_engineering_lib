@@ -15,7 +15,7 @@ def test_api_get_library_version_package_not_found(monkeypatch):
         raise api.PackageNotFoundError
 
     monkeypatch.setattr(api, "version", _raise)
-    assert api.get_library_version() == "0.8.2"
+    assert api.get_library_version() == "0.9.0"
 
 
 def test_api_wrappers_exercise_serviceability_paths():

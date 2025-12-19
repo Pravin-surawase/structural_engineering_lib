@@ -191,3 +191,19 @@ To preserve the “immutable / append-only” rule, older entries were not reord
 ## Chronological Index Addendum (2025-12-16, patch)
 
 - v0.8.2 (2025-12-16)
+
+---
+
+## v0.9.0
+**Date:** 2025-12-19
+**Status:** ✅ Locked & Verified
+**Commit Hash:** (tag: v0.9.0)
+**Mindset:** Move from library usage to automation usage: stable entrypoints + deterministic file-in/file-out runs.
+**Key Changes:**
+- Stable IS456 public entrypoints (future-proof for additional design codes).
+- Golden-vector regression tests to lock down key outputs and determinism.
+- Deterministic job schema + batch runner + CLI (JSON/CSV outputs with a fixed folder layout).
+
+## Chronological Index Addendum (2025-12-19)
+
+- v0.9.0 (2025-12-19)

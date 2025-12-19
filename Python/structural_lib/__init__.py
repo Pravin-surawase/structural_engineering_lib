@@ -1,9 +1,10 @@
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
-Version:      0.8.2
+Version:      0.9.0
 License:      MIT
 """
+
 
 from __future__ import annotations
 
