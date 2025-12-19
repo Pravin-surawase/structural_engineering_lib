@@ -20,8 +20,8 @@
 | **Crack Width Check** | 🔴 Critical | 1-2 sessions | Annex F |
 
 **Why these are mandatory:**
-- IS 456 Cl. 23.2: *"Final deflection shall not exceed span/250"*
-- Annex F: Crack width limits (0.3mm moderate, 0.2mm severe exposure)
+- IS 456 Cl. 23.2: deflection limit is enforced via span/depth method (Level A).
+- Annex F: crack width limits are exposure-driven (Level A).
 - A beam can pass strength design but fail serviceability in practice
 
 #### Deflection Check Scope
@@ -114,6 +114,22 @@ Step 3: ETABS → compliance mapping deepening (TASK-044)
 Step 4: Parity automation (TASK-039 / TASK-040)
 └── Shared vectors + repeatable VBA test entrypoint
 ```
+
+---
+
+## v0.10.0 Plan (Option A)
+
+**Goal:** Deliver fabrication-ready outputs with deterministic constructability.
+
+1) **TASK-043 — Rebar arrangement optimizer (MVP)**
+   - Inputs: required Ast + beam width/cover/stirrup + allowed bar diameters
+   - Outputs: chosen bar pattern + explicit spacing checks + “why chosen” explanation
+   - Tests: deterministic repeatability + infeasible cases with structured reasons
+
+2) **TASK-034 — BBS/BOM export (CSV first)**
+   - Inputs: detailing outputs (bar marks, lengths, quantities)
+   - Outputs: stable CSV line-item export + totals (length/weight)
+   - Tests: totals + rounding rules + schema stability
 
 ---
 

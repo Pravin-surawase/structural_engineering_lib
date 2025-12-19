@@ -332,20 +332,17 @@ This pass incorporates *your locally saved artifacts* by summarizing their struc
 
 ---
 
-## Roadmap (Action-Oriented) — v0.8 to v0.9
+## Roadmap (Action-Oriented) — v0.10 (Option A)
 
 This is a short, execution-focused plan based on the research passes above.
 
-### v0.8 (Production-Readiness Baseline)
-- **P1 Serviceability (Level A first):** implement deflection check via span/depth + modification factors; implement crack-width check with exposure-driven limits.
-- **P4 Compliance wrapper (minimal):** accept *already-factored* actions (Mu/Vu) and produce a compact pass/fail summary + “why fail” remarks.
-- **Outputs:** add `ServiceabilityResult` and a compliance summary shape that is Excel-friendly (single-row summary + per-check detail).
-- **Verification:** add representative benchmark tests around threshold transitions and “no feasible / missing input” reporting (no silent defaults).
+### v0.10 (Fabrication Deliverables)
+- **P2 Rebar arrangement optimizer (deterministic):** bounded enumeration over bar diameters/counts/layers + spacing constraints; deterministic tie-breakers; structured “no feasible layout” reasons.
+- **P3 BBS/BOM export (CSV-first):** stable line-item schema + CSV export; explicit rounding rules; tests for totals and schema stability.
 
-### v0.9 (Workflow Acceleration)
-- **P2 Rebar arrangement optimizer (deterministic):** start with a bounded enumeration over bar diameters/counts/layers + spacing constraints; optional objective (min weight vs min bar count).
-- **P3 BBS/BOM export (data-first):** generate schedule line-items and export CSV; add cutting-stock waste optimization as an optional step.
-- **ETABS integration (practical path):** default to file-based ETABS table export import; keep API automation as Windows-first / optional.
+### Follow-up (after v0.10)
+- **ETABS integration (TASK-044):** deepen CSV mapping docs + normalization and add end-to-end CSV → compliance tests.
+- **Parity automation (TASK-039 / TASK-040):** shared vectors + repeatable VBA test entrypoint.
 
 ### “Definition of Done” (Applies to Every Feature)
 - Deterministic results (same inputs → same outputs)

@@ -167,19 +167,22 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Why:** Converts required Ast into a buildable rebar pattern (dia/count/layers) while respecting spacing/cover.
   - **Approach:** start with bounded enumeration; upgrade to OR-Tools later if constraints/objectives grow.
   - **Checklist:**
-    - [ ] Encode hard constraints (cover, stirrups, min spacing, max bars/layer, max layers)
-    - [ ] Objective toggle (min weight vs min bar count vs min congestion)
-    - [ ] Return an explanation payload (why chosen, checks passed)
-    - [ ] Add deterministic tests + “no feasible layout” structured failures
+    - [ ] Define input contract (units, required params, allowed dia set)
+    - [ ] Encode hard constraints (cover, stirrups, min clear spacing, max bars/layer, max layers)
+    - [ ] Deterministic selection rule (tie-breakers) + optional objective toggle (min weight / min bar count / min congestion)
+    - [ ] Return an explanation payload (chosen pattern, checks evaluated, controlling constraint)
+    - [ ] Add deterministic tests (same inputs → same pattern)
+    - [ ] Add infeasible tests with structured reasons (e.g., “insufficient width for min spacing”)
 
 - [ ] **TASK-034: Bar Bending Schedule (BBS) + BOM Export (CSV First)**
   - **Agent:** DEV / UI / INTEGRATION
   - **Why:** Turns detailing results into fabrication deliverables (site-friendly schedules).
   - **Checklist:**
     - [ ] Define a BBS line-item schema (mark, dia, shape, cut length, qty, total length/weight)
+    - [ ] Define explicit rounding rules (length rounding + weight rounding)
     - [ ] Export CSV (first); Excel formatting later
-    - [ ] Optional: cutting-stock / waste optimization (6m/7.5m/9m/12m)
-    - [ ] Tests for totals (length/weight) and stable rounding rules
+    - [ ] Tests for totals (length/weight) + stable schema ordering
+    - [ ] Optional (later): cutting-stock / waste optimization (6m/7.5m/9m/12m)
 
 - [ ] **TASK-035**: Section Cuts in DXF
 - [ ] **TASK-036**: Multi-beam Layout
