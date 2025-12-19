@@ -5,7 +5,6 @@ Version:      0.9.0
 License:      MIT
 """
 
-
 from __future__ import annotations
 
 import importlib
