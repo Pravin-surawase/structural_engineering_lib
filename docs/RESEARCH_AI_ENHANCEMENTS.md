@@ -1,8 +1,8 @@
 # Research Log — AI/High-Value Enhancements
 
-**Research Version:** v0.9-baseline  
-**Last Updated:** 2025-12-19  
-**Scope:** Identify additions that make the library materially more valuable for professional use (beyond current strength/detailing + v0.8 serviceability baseline).
+**Research Version:** v0.9.0 baseline (+ CI hardening)  
+**Last Updated:** 2025-12-20  
+**Scope:** Identify additions that make the library materially more valuable for professional use (beyond current strength/detailing + serviceability Level A baseline).
 
 This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checking), plus longer-horizon AI/NL helper ideas.
 
@@ -69,17 +69,53 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 ---
 
 ## Prioritized Shortlist (High Impact / Moderate Effort)
-- **P1:** Serviceability module (Deflection + Crack) — prerequisite for production.
-- **P2:** Rebar arrangement optimizer — immediate user value, small search space, improves constructability/cost outcomes.
-- **P3:** BBS/BOM export — closes loop to fabrication, pairs with optimizer.
-- **P4:** Compliance checker with load combos — “one-button” pass/fail for ETABS/CSV rows.
+- **P1 (done):** Serviceability module (Deflection + Crack).
+- **P4 (done):** Compliance checker (pass/fail + reasons).
+- **P2 (next):** Rebar arrangement optimizer — immediate user value, improves constructability/cost outcomes.
+- **P3 (next):** BBS/BOM export — closes loop to fabrication, pairs with optimizer.
+- **P5 (next):** ETABS → compliance mapping docs + normalization hardening (CSV-first).
 
 ---
 
 ## Proposed Next Steps (v0.9-v0.10)
 - **v0.9 (done):** Stable IS456 entrypoints + deterministic job runner baseline.
-- **v0.10 (next):** Add P2 (deterministic rebar layout optimizer) and P3 (BBS/BOM CSV export), and wire outputs into schedules.
-- **Research follow-up:** If time permits, prototype P7 (NL assistant) as an opt-in CLI/notebook helper that emits the exact function calls used.
+- **v0.9.x (done):** CI hardening (formatting + coverage stability).
+- **v0.10 (next):** Add P2 (deterministic rebar layout optimizer) + P3 (BBS/BOM CSV export), and wire outputs into schedules.
+- **Research follow-up:** prototype P7 (NL assistant) as opt-in CLI/notebook helper that only emits deterministic calls + an auditable explanation.
+
+---
+
+## Research Update (Pass 5 — Repo Status + Plan Ahead, Dec 20, 2025)
+
+### What’s Already Implemented (so research should not re-plan it)
+- **Serviceability (Level A)** is implemented (deflection + crack width).
+- **Compliance checker** is implemented (orchestration + governing-case summary).
+- **Deterministic job runner** is implemented (file-in/file-out).
+- CI is active with lint/typecheck and a strict coverage gate.
+
+### Planning Notes (pragmatic order)
+1) **Rebar layout optimizer (TASK-043)**
+   - Start with bounded enumeration (no heavy solver dependency).
+   - Make constraints/assumptions explicit: cover, stirrup dia, min clear spacing, max layers.
+   - Output should include an explanation payload: chosen layout + why feasible.
+
+2) **BBS/BOM export (TASK-034)**
+   - Keep “BBS line items” as the core representation.
+   - Export **CSV first** (Excel formatting later).
+   - Treat bend/hook conventions as explicit parameters (no hidden defaults).
+
+3) **ETABS → compliance mapping deepening (TASK-044)**
+   - Document supported ETABS export tables/columns + normalization rules.
+   - Add at least one end-to-end test: sample CSV → compliance run → stable summary.
+
+4) **Parity harness (TASK-039 / TASK-040)**
+   - Establish shared vectors and a repeatable VBA test run entrypoint.
+   - Start with a small curated set (boundaries + typical cases), then expand.
+
+### “Drop-in References” Workflow
+- Put your personal PDFs/spreadsheets under `docs/_references/`.
+- Large local-only snapshots should go under `docs/_references/downloads_snapshot/` (ignored by git).
+- From there, convert worked examples into small benchmark vectors + tests without copying copyrighted clause text.
 
 ---
 

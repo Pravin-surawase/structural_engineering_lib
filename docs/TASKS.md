@@ -191,23 +191,31 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Agent:** DEVOPS / DOCS
   - **Goal:** Make the repository easy/safe for other engineers to use and contribute.
   - **Checklist:**
-    - [ ] Add community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`
-    - [ ] Add PR template: `.github/pull_request_template.md`
-    - [ ] Add issue templates: `.github/ISSUE_TEMPLATE/*`
-    - [ ] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
-    - [ ] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
-    - [ ] Verify CI passes on GitHub; update badges if desired
+    - [x] Add community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`
+    - [x] Add PR template: `.github/pull_request_template.md`
+    - [x] Add issue templates: `.github/ISSUE_TEMPLATE/*`
+    - [x] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
+    - [x] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
+    - [x] Verify CI passes on GitHub; update badges if desired
     - [ ] Keep scope minimal: no new features, only repo hygiene
 
 - [ ] **TASK-038: Professional-grade Python Testing (coverage + reliability)**
   - **Agent:** TESTER / DEVOPS
   - **Goal:** Make testing robust enough for external contributors and regression safety.
   - **Checklist:**
-    - [ ] Add coverage reporting (pytest-cov) and publish in CI artifacts
-    - [ ] Establish a baseline coverage target (start informational, then enforce threshold)
-    - [ ] Add golden-reference tests for boundary cases (Mu≈Mu_lim, Vus≈0, pt clamps)
+    - [x] Add coverage reporting (pytest-cov) and publish in CI artifacts
+    - [x] Establish an enforced baseline coverage target (CI gate)
+    - [x] Add targeted tests to stabilize coverage across environments
     - [ ] Add property tests for invariants (non-negativity, monotonicity where expected)
     - [ ] Add CLI/integration tests (CSV/JSON → detailing → DXF generation)
+
+- [ ] **TASK-045: Release Hygiene — Tag Post-Fix Patch Release**
+  - **Agent:** DEVOPS / DOCS
+  - **Why:** v0.9.0 tag may point to a pre-fix commit; a patch tag makes the latest green `main` state easy to consume.
+  - **Checklist:**
+    - [ ] Decide patch version (e.g., v0.9.1)
+    - [ ] Update `CHANGELOG.md` + append-only `docs/RELEASES.md`
+    - [ ] Tag + push
 
 - [ ] **TASK-039: Test Vectors + Parity Harness (Python ↔ VBA)**
   - **Agent:** TESTER / DEV
@@ -266,11 +274,11 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 ## Notes
 
-- **Current Version**: v0.8.0
-- **Last Updated**: 2025-12-15
+- **Current Version**: v0.9.0
+- **Last Updated**: 2025-12-20
 - **Active Branch**: main
 
 ### v0.7 Implementation Notes
-- **Python:** Full implementation (detailing, DXF, integration) - 67 tests (v0.7); 158 tests collected/passing (v0.8)
+- **Python:** Full implementation (detailing, DXF, integration) - 67 tests (v0.7); 212 tests passing (v0.9.x)
 - **VBA:** Full implementation (M15_Detailing.bas) - 25 test cases
 - **DXF Dependency:** `pip install .[dxf]` for ezdxf support

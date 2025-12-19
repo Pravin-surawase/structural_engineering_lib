@@ -2,7 +2,7 @@
 
 > **Current Status:** v0.9.0 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
 > 
-> **Production Readiness:** ~85%
+> **Production Readiness:** High (remaining gaps: optimizer + BBS/BOM + parity automation)
 
 **Canonical planning docs:**
 - Task-level tracking: [TASKS.md](TASKS.md)
@@ -70,8 +70,8 @@
 | **Enhanced docstrings** | 🟢 Low | 1 session |
 | **`__all__` exports** | 🟢 Low | 30 min |
 | **VBA automated tests** | 🟢 Low | 2 sessions |
-| **Type checking (mypy)** | 🟢 Low | 1 session |
-| **Code coverage report** | 🟢 Low | 30 min |
+| **Type checking (mypy)** | ✅ Done | — |
+| **CI coverage gate stability** | 🟡 Medium | ongoing |
 
 ---
 
@@ -94,26 +94,25 @@
 
 ---
 
-## 🚀 Recommended Implementation Order
+## 🚀 Recommended Implementation Order (Next)
 
 ```
-Week 1-2: Deflection Check
-├── Implement span/depth ratio method (simplified)
-├── Add modification factors (MF1, MF2, MF3)
-├── Add tests with known examples
-└── Update Python + VBA
+Step 1: Rebar arrangement optimizer (TASK-043)
+├── Deterministic layout search (bounded enumeration)
+├── Explicit spacing/cover/stirrup constraints
+└── Tests for determinism + infeasible reasons
 
-Week 3: Crack Width Check  
-├── Implement Annex F formula
-├── Add exposure class enum
-├── Add tests
-└── Update Python + VBA
+Step 2: BBS/BOM export (TASK-034)
+├── Define stable line-item schema
+├── CSV export first
+└── Tests for totals + rounding rules
 
-Week 4: Integration
-├── Add deflection/crack to design workflow
-├── Update beam schedule with serviceability status
-├── Update documentation
-└── Release v0.8.0
+Step 3: ETABS → compliance mapping deepening (TASK-044)
+├── Document supported ETABS export columns
+└── Add end-to-end CSV → compliance tests
+
+Step 4: Parity automation (TASK-039 / TASK-040)
+└── Shared vectors + repeatable VBA test entrypoint
 ```
 
 ---
@@ -152,7 +151,7 @@ Week 4: Integration
 - [x] Type hints
 - [x] py.typed marker
 - [x] mypy clean
-- [ ] 80%+ code coverage
+- [x] CI-enforced coverage threshold (95% gate)
 
 ---
 

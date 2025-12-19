@@ -1,7 +1,7 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-20  
-**Status:** v0.9.0 released (stable IS456 entrypoints + deterministic job runner)  
+**Status:** v0.9.0 released + post-release CI fixes merged (main green)  
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
@@ -9,6 +9,7 @@
 - Expanded AI/high-value enhancements research log (Pass 3 + Pass 4).
 - Added a place for local reference files (`docs/_references/`) and prevented committing large local snapshots.
 - Organized docs for VS Code AI agents: docs index + AI context pack + ADR template; moved governance docs into `docs/_internal/` and archived the long historical research doc.
+- CI is green on `main` (lint/typecheck + pytest + coverage gate).
 
 ---
 
@@ -21,9 +22,10 @@ If you want to resume quickly without re-reading the repo:
 3. **Canonical backlog (TASK-041 for serviceability):** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
 
-**Verified state (as of 2025-12-19):**
+**Verified state (as of 2025-12-20):**
 - Release baseline is **v0.9.0** (stable IS456 public entrypoints + job runner).
-- Python test suite passes locally (208 tests collected).
+- `main` has post-release CI fixes merged (formatting + coverage stability).
+- Python test suite passes locally (212 tests).
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
@@ -80,14 +82,14 @@ CHANGELOG.md        → [0.9.0]
 | **DXF Export** | ✅ 100% | Python (ezdxf) + VBA (native R12) |
 | **ETABS Integration** | ✅ 100% | CSV import with normalization |
 | **Documentation** | ✅ 95% | 21 docs, beginner guides added |
-| **Testing** | ✅ 90% | 208 tests collected/passing |
+| **Testing** | ✅ 90% | 212 tests passing |
 | **Serviceability** | ✅ Level A | Deflection + crack width |
 | **Compliance** | ✅ MVP | Multi-case verdict + summary |
 
 ### Code Quality Metrics
 - **Folder Structure:** 9/10 (clean separation)
 - **Documentation:** 9/10 (7,200+ lines across 21 files)
-- **Testing:** 8/10 (158 Python tests, VBA manual)
+- **Testing:** 8/10 (Python automated, VBA manual)
 - **Packaging:** 9/10 (modern pyproject.toml)
 - **Type Hints:** 8/10 (present, could be more comprehensive)
 
@@ -170,7 +172,7 @@ docs/
 ```
 
 ### Test Coverage
-- **Python:** 158 tests collected/passing (latest local run)
+- **Python:** 212 tests passing (latest local run)
 - **VBA:** Manual tests (Integration_TestHarness.bas, Test_*.bas)
 
 ---
@@ -182,7 +184,7 @@ docs/
 2. 🟡 **TASK-043** — Rebar arrangement optimizer (deterministic buildable layouts)
 3. 🟡 **TASK-039 / TASK-040** — Python ↔ VBA parity vectors + VBA test automation
 
-### Short-term (v0.9.0)
+### Short-term (v0.10.x)
 1. 🟡 Bar Bending Schedule (BBS) generation
 2. 🟡 PDF report generation
 3. 🟢 Enhanced docstrings with examples
