@@ -15,6 +15,7 @@ Design constraints:
 from __future__ import annotations
 
 from dataclasses import asdict
+from enum import Enum
 from typing import Any, Dict, List, Optional, Sequence
 
 from . import flexure, shear, serviceability
@@ -391,4 +392,15 @@ def check_compliance_report(
 def report_to_dict(report: ComplianceReport) -> Dict[str, Any]:
     """Serialize report to a JSON/Excel-friendly dict."""
 
-    return asdict(report)
+    def _jsonable(obj: Any) -> Any:
+        if isinstance(obj, Enum):
+            return obj.name
+        if isinstance(obj, dict):
+            return {k: _jsonable(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_jsonable(v) for v in obj]
+        if isinstance(obj, tuple):
+            return [_jsonable(v) for v in obj]
+        return obj
+
+    return _jsonable(asdict(report))
