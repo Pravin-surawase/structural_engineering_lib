@@ -180,9 +180,9 @@ docs/
 ## 🎯 Goals & Priorities
 
 ### Immediate (post-v0.8)
-1. 🔴 **TASK-044** — ETABS integration improvements for compliance runs (CSV mapping + normalization docs)
-2. 🟡 **TASK-043** — Rebar arrangement optimizer (deterministic buildable layouts)
-3. 🟡 **TASK-039 / TASK-040** — Python ↔ VBA parity vectors + VBA test automation
+1. 🔴 **TASK-043** — Rebar arrangement optimizer (deterministic buildable layouts)
+2. 🟡 **TASK-034** — BBS/BOM export (CSV-first)
+3. 🟡 **TASK-044** — ETABS integration improvements for compliance runs (CSV mapping + normalization docs)
 
 ### Short-term (v0.10.x)
 1. 🟡 Bar Bending Schedule (BBS) generation
@@ -219,22 +219,22 @@ docs/
 - [ ] Is documentation clear for beginners?
 
 ### Success Criteria (post-v0.8)
-- [ ] TASK-044 scope/inputs documented (what CSV columns we support)
-- [ ] One concrete workflow improved end-to-end (ETABS CSV → compliance report)
-- [ ] One parity harness milestone completed (vectors or VBA automation)
+- [ ] TASK-043 MVP complete (deterministic optimizer + structured failures + tests)
+- [ ] TASK-034 CSV export complete (schema + totals + tests)
+- [ ] (Optional) TASK-044 scope/inputs documented (what CSV columns we support)
 
 ---
 
 ## 💡 Suggested Starter Prompts
 
-### Option 1: ETABS → Compliance mapping
-> "Implement TASK-044: document ETABS export tables + column mapping and extend the CSV normalizer so compliance runs are repeatable."
-
-### Option 2: Rebar optimizer
+### Option 1: Rebar optimizer
 > "Implement TASK-043 MVP: deterministic bar arrangement search with clear 'no feasible layout' reasons and tests."
 
-### Option 3: Parity harness
-> "Implement TASK-039/TASK-040: create shared test vectors and a single VBA entry macro to run all tests and print a summary."
+### Option 2: BBS/BOM CSV
+> "Implement TASK-034 MVP: define BBS CSV schema, export line items, and add totals + rounding tests."
+
+### Option 3: ETABS → Compliance mapping
+> "Implement TASK-044: document ETABS export tables + column mapping and extend the CSV normalizer so compliance runs are repeatable."
 
 ---
 

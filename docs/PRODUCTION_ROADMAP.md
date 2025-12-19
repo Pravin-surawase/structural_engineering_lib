@@ -131,6 +131,23 @@ Step 4: Parity automation (TASK-039 / TASK-040)
    - Outputs: stable CSV line-item export + totals (length/weight)
    - Tests: totals + rounding rules + schema stability
 
+### Suggested Session Breakdown (2–3 sessions)
+
+**Session 1 — Optimizer MVP skeleton**
+- Define the input/output contract (units; required fields; allowed dia set; tie-break rules).
+- Implement bounded enumeration with hard constraints (cover/stirrups/min clear spacing/max layers).
+- Add tests: determinism (same inputs → same layout) + at least one infeasible structured failure.
+
+**Session 2 — Optimizer hardening + integration hook**
+- Add objective toggle (min weight / min bar count / min congestion) with deterministic tie-breakers.
+- Expand test matrix: boundary widths, multiple dia sets, and infeasible cases.
+- Expose a stable public entrypoint (module-level function; optional API wrapper after it stabilizes).
+
+**Session 3 — BBS/BOM CSV (if needed)**
+- Define BBS line-item schema + explicit rounding rules.
+- Implement CSV export and totals (length/weight).
+- Add tests for totals + schema stability.
+
 ---
 
 ## 📊 Production Readiness Checklist
