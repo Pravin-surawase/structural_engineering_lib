@@ -5,6 +5,7 @@ It demonstrates a minimal end-to-end workflow:
 - Flexure (singly reinforced)
 - Shear
 - Basic detailing checks (Ld, lap, bar spacing)
+- Job runner (job.json -> deterministic JSON/CSV outputs)
 - Optional DXF generation (requires ezdxf)
 
 Usage (local):
@@ -19,8 +20,9 @@ Usage (Google Colab):
 from __future__ import annotations
 
 import math
+from pathlib import Path
 
-from structural_lib import detailing, flexure, shear
+from structural_lib import detailing, flexure, job_runner, shear
 
 
 def main() -> None:
@@ -39,6 +41,42 @@ def main() -> None:
 
     # Effective depth (simple assumption)
     d_mm = D_mm - cover_mm - stirrup_dia_mm - main_bar_dia_mm / 2
+
+    print("=== JOB RUNNER (job.json -> outputs) ===")
+    job = {
+        "schema_version": 1,
+        "job_id": "colab_job_is456_001",
+        "code": "IS456",
+        "units": "IS456",
+        "beam": {
+            "b_mm": b_mm,
+            "D_mm": D_mm,
+            "d_mm": d_mm,
+            "d_dash_mm": cover_mm + stirrup_dia_mm + main_bar_dia_mm / 2,
+            "fck_nmm2": fck_nmm2,
+            "fy_nmm2": fy_nmm2,
+            "asv_mm2": 2 * math.pi * (stirrup_dia_mm / 2) ** 2,
+            "pt_percent": None,
+        },
+        "cases": [
+            {"case_id": "C1", "mu_knm": 80.0, "vu_kn": 60.0},
+            {"case_id": "C2", "mu_knm": Mu_knm, "vu_kn": Vu_kn},
+        ],
+    }
+
+    # In Colab, using a relative output folder is convenient.
+    out_dir = Path("./output/colab_job_is456_001")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Write a job.json and run it.
+    job_path = out_dir / "job.json"
+    job_path.write_text(
+        __import__("json").dumps(job, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    summary = job_runner.run_job(job_path=job_path, out_dir=out_dir)
+    print("Job summary:", summary)
+    print("Outputs written under:", out_dir)
 
     print("=== FLEXURE ===")
     flex = flexure.design_singly_reinforced(
