@@ -23,7 +23,9 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 *   **`main` (Protected):**
     *   The "Golden Master". Always deployable.
     *   Contains only tested, verified code.
-    *   **Rule:** No direct commits to `main` (except for documentation typos or release tags).
+*   **Rule:** No direct commits to `main`.
+        * If you need to change docs, use a PR like everything else.
+        * Release tags are created on the merge commit.
 *   **`feat/task-ID-description`:**
     *   Feature branches for specific tasks.
     *   Naming convention: `feat/task-017-etabs-import`, `fix/task-012-shear-bug`.
@@ -36,6 +38,24 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 4.  **Verify:** Run full test suite.
 5.  **Merge:** Squash and Merge into `main` (or Rebase and Merge).
 6.  **Delete:** Delete the feature branch.
+
+### 2.3 Branch Protection Baseline (GitHub Settings)
+
+This repo prefers **low-maintenance security**: enforce safety at the repo-settings layer instead of complex workflow tricks.
+
+Recommended protection rule for `main`:
+* Require a pull request before merging
+* Require status checks to pass before merging
+    * Prefer "Require branches to be up to date" (prevents merging stale PRs)
+* Do not allow force pushes
+* Do not allow deletions
+
+Solo default:
+* Leave "Include administrators" OFF to keep an emergency escape hatch
+* Skip "Restrict who can push" and "Require reviews" unless collaborating
+
+Supply-chain stance:
+* Avoid high-maintenance hardening (e.g., pinning every GitHub Action to a commit SHA) unless there is a clear need.
 
 ---
 

@@ -84,11 +84,15 @@ v1.0.0 — production ready with ductile detailing
 
 | Task | Tool | Status |
 |------|------|--------|
-| Python tests | pytest | 🔜 Pending (install pytest/CI) |
+| Python tests | GitHub Actions + pytest | ✅ Active |
 | VBA tests | `RunAllTests` Macro | ✅ Active (Mac Compatible) |
-| Python lint | ruff/black | 🔜 Planned |
+| Python lint | black + ruff + mypy (CI) | ✅ Active |
 | Build .xlam | Manual export | 🔜 Planned |
-| CI pipeline | GitHub Actions | 🔜 Future |
+| CI pipeline | GitHub Actions | ✅ Active |
+
+## GitHub Security Posture (Low Maintenance)
+- Protect `main` in GitHub settings (require PR + required checks; disallow force-push + deletion).
+- Prefer repo settings + least-privilege workflow permissions over high-maintenance action SHA pinning.
 
 ## Mac VBA Workflow
 1. **Edit:** Edit `.bas` files in VS Code.
