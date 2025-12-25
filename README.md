@@ -6,9 +6,28 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.9.1)** — Strength design + detailing + DXF export + serviceability + compliance + batch runner. Python tests passing.
+🚀 **Active (v0.9.1)** — Strength design + detailing + DXF export + serviceability + compliance + batch runner. See the CI badge above for latest status.
 
 **Production note:** v0.8.0 introduced Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
+
+## What makes it different
+
+- **End-to-end pipeline** — design → compliance → detailing → drawings (DXF)
+- **Governing-case traceability** — utilization ratios + summary per case
+- **Same API in Excel + Python** — VBA + Python with matching inputs/outputs
+
+## Outputs you get
+
+- Reinforcement schedules + bar callouts
+- DXF drawings with bar layouts
+- Compliance summary and governing case
+- Batch CSV outputs for reports or downstream tools
+
+## Who it helps
+
+- Consultants running 100+ beams from ETABS exports
+- Detailers generating DXF + schedules quickly
+- Students verifying hand calculations and code limits
 
 ## Adoption (Early Users)
 
@@ -17,7 +36,7 @@ This repository is public, so anyone can read the code, docs, and examples.
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
 - **Stability note:** While in active development, prefer pinning to a release tag (example: `@v0.9.1`) rather than installing from `main`.
 
-### Install (Python) — without cloning the repo
+### Install (Users) — without cloning the repo
 
 Recommended for early adopters.
 
@@ -38,6 +57,30 @@ python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravi
 ```
 
 Then: `Runtime > Restart runtime` and rerun your notebook cells.
+
+## 60-second demo (CSV → schedule + DXF)
+
+If you have the repo locally, use the sample CSV input; otherwise create a CSV with these columns:
+
+- `Python/examples/sample_beam_design.csv`
+- `examples/sample_beam_design.csv` (from `Python/`; from repo root this is `Python/examples/sample_beam_design.csv`)
+- Columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
+
+Run the batch integration:
+
+```bash
+cd Python
+python3 -m pip install -e ".[dxf]"  # optional, for DXF export support
+
+python3 -m structural_lib.excel_integration examples/sample_beam_design.csv \
+  -o ./out_demo --schedule schedule.csv
+```
+
+Outputs:
+- `./out_demo/*.dxf` (if `ezdxf` is installed)
+- `schedule.csv` (detailing schedule)
+
+ETABS exports can be normalized into this schema. See `docs/PROJECT_OVERVIEW.md` for the ETABS CSV import flow.
 
 ## 30-second quickstart (no repo clone)
 
@@ -123,7 +166,7 @@ python3 -m black --check .
 python3 -m mypy
 ```
 
-## Install (Python)
+## Install (Developers)
 
 This repo is a monorepo; the Python package lives under `Python/`.
 
@@ -210,7 +253,7 @@ else:
 
 ### Method 2: Excel Add-in (Recommended for Distribution)
 
-1. Install the `.xlam` add-in file
+1. Install the add-in: `Excel/StructEngLib.xlam` (or a GitHub Release asset, if published)
 2. Functions available automatically in all workbooks
 
 ### Example Usage (VBA)

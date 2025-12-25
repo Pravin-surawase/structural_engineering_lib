@@ -22,5 +22,7 @@ If you need a scratch workbook, keep it outside the repo or ensure it matches an
 
 Built add-ins are treated as build outputs.
 
+- `Excel/StructEngLib.xlam` is intentionally versioned as the default user-facing add-in artifact.
+
 - Preferred tracked location (when you intentionally version an add-in): `VBA/Build/` (allowed by `.gitignore`).
-- Anything under `Excel/*.xlam` is ignored by default.
+- Anything else under `Excel/*.xlam` is ignored by default.
