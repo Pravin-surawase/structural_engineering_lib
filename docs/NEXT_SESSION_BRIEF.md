@@ -1,16 +1,16 @@
 # Next Session Briefing
 
-**Last Updated:** 2025-12-25  
-**Status:** v0.9.1 released (patch tag for latest green main)  
+**Last Updated:** 2025-12-26  
+**Status:** v0.9.1 released (tagged release; verify CI status via GitHub Actions)  
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
-- Released v0.9.1 (versions/docs aligned; tag exists for latest green main).
+- Released v0.9.1 (versions/docs aligned; tag exists for the latest release baseline).
 - Hardened GitHub Actions workflow permissions (least-privilege; low maintenance).
 - Enabled GitHub `main` protection via Ruleset (PR-only merges + required checks + up-to-date + no force-push).
 - Reduced maintenance noise: Dependabot updates are grouped + consistently labeled.
 - Merged action updates for CI/CodeQL (keeps workflows on supported majors).
-- CI was green at last verification time (see “Verified state” and GitHub Actions for live status).
+- CI status: use GitHub Actions for the live truth.
 
 ---
 
@@ -24,7 +24,7 @@ If you want to resume quickly without re-reading the repo:
 4. **Primary reference index:** `docs/README.md`
 
 **Verified state (as of 2025-12-25):**
-- Release baseline is **v0.9.1** (patch tag for the latest green main state).
+- Release baseline tag is **v0.9.1**.
 - Version pins updated across docs + package metadata.
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
@@ -40,7 +40,7 @@ If you want to resume quickly without re-reading the repo:
 - Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
 - Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
 - Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
-- Status: secret-pattern scan of git-tracked files was clean.
+- If needed: run a secrets scan before publishing changes.
 - Status: `main` is protected via GitHub ruleset (PR required + required checks + up-to-date branches + no force pushes).
 - Status: Dependabot grouped updates are enabled (`.github/dependabot.yml`).
 
