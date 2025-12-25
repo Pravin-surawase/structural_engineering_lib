@@ -85,6 +85,26 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 
 ---
 
+## Research Update (Pass 6 - Adoption and Positioning Insights, Dec 25, 2025)
+
+This pass extracts the useful ideas from broader ecosystem research and maps
+them to repo-aligned actions. It avoids new claims and focuses on adoption
+leverage for the current IS456 design/compliance engine.
+
+### Useful ideas to keep (repo-aligned)
+- **Excel-first transparency**: keep the Excel/VBA path explicit and auditable.
+- **BBS/BOM as an adoption hook**: fabrication-ready outputs create trust and
+  immediate user value (TASK-034).
+- **ETABS mapping docs**: low-effort documentation with high adoption impact
+  (TASK-044).
+- **Determinism as brand**: same inputs -> same outputs + clause references.
+- **Job schema as platform contract**: stable interface for batch automation.
+- **Verification packs**: publish benchmark cases to convert skeptics.
+- **Scope guardrail**: do not build a new solver; focus on code compliance and
+  detailing outputs where the gap is real.
+
+---
+
 ## Research Update (Pass 5 — Repo Status + Plan Ahead, Dec 20, 2025)
 
 ### What’s Already Implemented (so research should not re-plan it)
@@ -349,6 +369,5 @@ This is a short, execution-focused plan based on the research passes above.
 - Clear assumptions surfaced in output (no hidden defaults)
 - Structured failures (actionable reasons when inputs/geometry make a check impossible)
 - Tests for at least: nominal case, boundary case, infeasible case
-
 
 
