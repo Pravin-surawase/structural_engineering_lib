@@ -199,10 +199,10 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [x] Add issue templates: `.github/ISSUE_TEMPLATE/*`
     - [x] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
     - [x] Harden CI permissions (least-privilege `GITHUB_TOKEN` in workflows)
-    - [ ] Protect `main` branch (require PR + required checks; disallow force-push + deletion)
+    - [x] Protect `main` branch (require PR + required checks; disallow force-push + deletion)
     - [x] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
     - [x] Verify CI passes on GitHub; update badges if desired
-    - [ ] Keep scope minimal: no new features, only repo hygiene
+    - [x] Keep scope minimal: no new features, only repo hygiene
 
 - [ ] **TASK-038: Professional-grade Python Testing (coverage + reliability)**
   - **Agent:** TESTER / DEVOPS
@@ -214,13 +214,13 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [ ] Add property tests for invariants (non-negativity, monotonicity where expected)
     - [ ] Add CLI/integration tests (CSV/JSON → detailing → DXF generation)
 
-- [ ] **TASK-045: Release Hygiene — Tag Post-Fix Patch Release**
+- [x] **TASK-045: Release Hygiene — Tag Post-Fix Patch Release**
   - **Agent:** DEVOPS / DOCS
   - **Why:** v0.9.0 tag points to the original release baseline; a patch tag (v0.9.1) makes the latest green `main` state easy to consume.
   - **Checklist:**
-    - [ ] Decide patch version (e.g., v0.9.1)
-    - [ ] Update `CHANGELOG.md` + append-only `docs/RELEASES.md`
-    - [ ] Tag + push
+    - [x] Decide patch version (v0.9.1)
+    - [x] Update `CHANGELOG.md` + append-only `docs/RELEASES.md`
+    - [x] Tag + push
 
 - [ ] **TASK-039: Test Vectors + Parity Harness (Python ↔ VBA)**
   - **Agent:** TESTER / DEV

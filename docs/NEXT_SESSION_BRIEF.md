@@ -5,13 +5,12 @@
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
-- Improved onboarding docs (README dev setup + quick commands).
+- Released v0.9.1 (versions/docs aligned; tag exists for latest green main).
 - Hardened GitHub Actions workflow permissions (least-privilege; low maintenance).
-- Completed a docs hygiene pass (version metadata alignment + governance consistency + index cleanup).
-- Expanded AI/high-value enhancements research log (Pass 3 + Pass 4).
-- Added a place for local reference files (`docs/_references/`) and prevented committing large local snapshots.
-- Organized docs for VS Code AI agents: docs index + AI context pack + ADR template; moved governance docs into `docs/_internal/` and archived the long historical research doc.
-- CI is green on `main` (lint/typecheck + pytest + coverage gate).
+- Enabled GitHub `main` protection via Ruleset (PR-only merges + required checks + up-to-date + no force-push).
+- Reduced maintenance noise: Dependabot updates are grouped + consistently labeled.
+- Merged action updates for CI/CodeQL (keeps workflows on supported majors).
+- CI is green on `main` (lint/typecheck + pytest matrix + coverage gate + CodeQL).
 
 ---
 
@@ -35,12 +34,26 @@ If you want to resume quickly without re-reading the repo:
 - Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
 - Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
 - Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
-- Status: secret-pattern scan of git-tracked files was clean; next action is enabling branch protection on `main` in GitHub settings.
-- Status: `main` is protected via GitHub ruleset (PR required + required checks + no force pushes).
+- Status: secret-pattern scan of git-tracked files was clean.
+- Status: `main` is protected via GitHub ruleset (PR required + required checks + up-to-date branches + no force pushes).
+- Status: Dependabot grouped updates are enabled (`.github/dependabot.yml`).
 
 ---
 
-## 🎯 Session Summary (Dec 11-15, 2025)
+## ✅ Session Summary (2025-12-25)
+
+### Repo hygiene & shipping
+- Opened/merged PRs via GitHub CLI (repeatable workflow).
+- Merged Dependabot grouping config (reduces PR churn; consistent labeling/prefix).
+- Merged a grouped Dependabot PR updating CI/CodeQL actions to current majors.
+
+### Governance & protection
+- Confirmed `main` protection is enforced via GitHub Ruleset.
+- Documented the practical implications of “Require branches to be up to date” (and how to satisfy it quickly).
+
+---
+
+## 📚 Historical Summary (Dec 11-15, 2025)
 
 ### What We Accomplished
 
@@ -153,7 +166,7 @@ Phase 3: Verification
 └── (Optional) add parity vectors for critical cases
 
 Phase 4: Release hygiene
-└── Update docs + release notes for next tag (v0.9.1)
+└── Update docs + release notes for next tag (v0.9.2+)
 ```
 
 ---
@@ -163,7 +176,7 @@ Phase 4: Release hygiene
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** `e60726a` (least-privilege CI permissions)
+- **Latest Commit:** `cb09b0a` (Dependabot: GitHub Actions group update)
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)

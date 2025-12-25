@@ -90,9 +90,18 @@ v1.0.0 — production ready with ductile detailing
 | Build .xlam | Manual export | 🔜 Planned |
 | CI pipeline | GitHub Actions | ✅ Active |
 
+### Dependabot (Low Noise)
+- Dependabot runs weekly for:
+   - GitHub Actions (`/`)
+   - Python dependencies (`/Python`)
+- Updates are grouped (to reduce PR churn), labeled `dependencies`, and use `chore(deps)` commit prefixes.
+
 ## GitHub Security Posture (Low Maintenance)
 - Protect `main` in GitHub settings (require PR + required checks; disallow force-push + deletion).
 - Prefer repo settings + least-privilege workflow permissions over high-maintenance action SHA pinning.
+
+Practical note:
+- If the repo ruleset requires PR branches to be up to date, use `gh pr update-branch <PR_NUMBER>` before merging.
 
 ## Mac VBA Workflow
 1. **Edit:** Edit `.bas` files in VS Code.

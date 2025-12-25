@@ -690,7 +690,7 @@ End Sub
 
 ## 10. Development Guidelines
 
-> **📘 Full documentation:** See **[DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md)** for comprehensive coding standards, naming conventions, testing guidelines, and packaging instructions.
+> **📘 Full documentation:** See **[DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md)** for comprehensive coding standards, naming conventions, testing guidelines, and packaging instructions.
 
 ### 10.1 Summary
 
@@ -726,7 +726,7 @@ def function_name(param1: float, param2: float) -> float:
     # Validation → Unit conversion → Calculation → Return
 ```
 
-For detailed standards on naming, error handling, testing, Git workflow, and packaging, refer to the [Development Guide](DEVELOPMENT_GUIDE.md).
+For detailed standards on naming, error handling, testing, Git workflow, and packaging, refer to the [Development Guide](../DEVELOPMENT_GUIDE.md).
 
 ---
 
