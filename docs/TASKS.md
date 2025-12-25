@@ -109,6 +109,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 - **Deterministic first:** same inputs → same outputs (no “magic”).
 - **Auditable outputs:** every check should show inputs, assumptions, and “why pass/fail”.
+- **Verification packs:** publish benchmark vectors + tests to build trust.
 - **Engineer-friendly failures:** when something can’t be checked (missing inputs / infeasible detailing), return a structured reason.
 - **Start simple, then deepen:** ship Level A checks (fast + robust), then add Level B detail once benchmarks exist.
 - **Cross-platform default:** prefer CSV/Excel import/export paths; keep any .NET/COM automation Windows-first and optional.
@@ -160,6 +161,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Checklist:**
     - [ ] Document the supported ETABS export tables + column mapping
     - [ ] Implement/extend CSV import normalization for compliance runs
+    - [ ] Add a small verification pack: sample ETABS-exported CSV → compliance run → stable summary
     - [ ] Keep CSI API automation as Windows-first/optional (separate task if needed)
 
 - [ ] **TASK-043: Rebar Arrangement Optimizer (Deterministic Layout Search)**
@@ -181,6 +183,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [ ] Define a BBS line-item schema (mark, dia, shape, cut length, qty, total length/weight)
     - [ ] Define explicit rounding rules (length rounding + weight rounding)
     - [ ] Export CSV (first); Excel formatting later
+    - [ ] Treat this as a primary adoption hook: keep outputs auditable + stable across versions
     - [ ] Tests for totals (length/weight) + stable schema ordering
     - [ ] Optional (later): cutting-stock / waste optimization (6m/7.5m/9m/12m)
 
