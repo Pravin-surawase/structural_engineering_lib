@@ -6,7 +6,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 
 ## Status
 
-🚀 **Active (v0.9.0)** — Strength design + detailing + DXF export + serviceability + compliance. 208 Python tests passing.
+🚀 **Active (v0.9.0)** — Strength design + detailing + DXF export + serviceability + compliance + batch runner. Python tests passing.
 
 **Production note:** v0.8.0 introduced Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
 
@@ -22,13 +22,13 @@ This repository is public, so anyone can read the code, docs, and examples.
 Recommended for early adopters.
 
 ```bash
-python -m pip install --upgrade pip
+python3 -m pip install --upgrade pip
 
 # Base install
-python -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
+python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
 
 # With DXF export support
-python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
 ```
 
 ### Install (Google Colab)
@@ -39,6 +39,31 @@ python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin
 
 Then: `Runtime > Restart runtime` and rerun your notebook cells.
 
+## 30-second quickstart (no repo clone)
+
+Install (with DXF support):
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+
+python3 -m pip install --upgrade pip
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
+```
+
+Run a batch compliance job (JSON in → JSON/CSV out):
+
+```bash
+python3 -c "import json,pathlib; job={'schema_version':1,'code':'IS456','units':'IS456','job_id':'demo-001','beam':{'b_mm':230,'D_mm':500,'d_mm':450,'fck_nmm2':25,'fy_nmm2':500},'cases':[{'case_id':'ULS-1','mu_knm':120,'vu_kn':90}]}; pathlib.Path('job.json').write_text(json.dumps(job,indent=2,sort_keys=True)+"\n",encoding='utf-8')"
+python3 -m structural_lib.job_cli run --job job.json --out ./out_demo
+```
+
+Generate a quick DXF (detailing JSON in → DXF out):
+
+```bash
+python3 -c "import json,pathlib; data={'beam_id':'B1','story':'S1','b':230,'D':450,'span':4000,'cover':25,'fck':25,'fy':500,'ast_start':800,'ast_mid':1200,'ast_end':800}; pathlib.Path('dxf_input.json').write_text(json.dumps(data,indent=2,sort_keys=True)+"\n",encoding='utf-8')"
+python3 -m structural_lib.dxf_export dxf_input.json -o beam_detail.dxf
+```
+
 ## Features
 
 - ✅ **Pure functions** — No UI dependencies (no MsgBox, no worksheet access)
@@ -48,6 +73,7 @@ Then: `Runtime > Restart runtime` and rerun your notebook cells.
 - ✅ **Ductile Detailing** — IS 13920:2016 checks (Geometry, Min/Max steel, Confinement)
 - ✅ **Reinforcement detailing** — Bar patterns / drafting-ready schedules
 - ✅ **DXF export** — Drawing output for reinforcement detailing
+- ✅ **Batch runner** — Deterministic file-in/file-out runner (`job.json` → JSON/CSV outputs)
 - ✅ **Serviceability** — Level A checks (deflection, crack width)
 - ✅ **Compliance checker** — Multi-check summary (strength + serviceability) across load cases
 - ✅ **ETABS Integration** — Import CSV from ETABS with header normalization and sign preservation
@@ -76,9 +102,9 @@ Then: `Runtime > Restart runtime` and rerun your notebook cells.
 | --- | --- | --- |
 | Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` | repo root |
 | Install hooks | `pre-commit install` | repo root |
-| Run tests | `cd Python && python -m pytest` | repo root |
-| Format check | `cd Python && python -m black --check .` | repo root |
-| Type check | `cd Python && python -m mypy` | repo root |
+| Run tests | `cd Python && python3 -m pytest` | repo root |
+| Format check | `cd Python && python3 -m black --check .` | repo root |
+| Type check | `cd Python && python3 -m mypy` | repo root |
 | Pre-release gate (all checks + wheel import) | `Python/scripts/pre_release_check.sh` | repo root |
 
 ```bash
@@ -92,9 +118,9 @@ pre-commit install
 
 # Run checks locally
 cd Python
-python -m pytest
-python -m black --check .
-python -m mypy
+python3 -m pytest
+python3 -m black --check .
+python3 -m mypy
 ```
 
 ## Install (Python)
@@ -127,6 +153,7 @@ python3 -m pip install -e ".[dxf]"
 | **v0.6** | ETABS Integration, Beam Schedule Generation | ✅ Completed |
 | **v0.7** | Reinforcement Detailing, DXF Export | ✅ Completed |
 | **v0.8** | Serviceability (deflection + crack width), Compliance checker | ✅ Completed |
+| **v0.9** | Batch runner (job.json → JSON/CSV), docs + QA hardening | ✅ Completed |
 
 ## Directory Structure (current)
 
