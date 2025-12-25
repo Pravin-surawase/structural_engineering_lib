@@ -93,6 +93,7 @@ Desktop.ini
 # Build artifacts
 *.xlam
 !VBA/Build/*.xlam
+!Excel/StructEngLib.xlam
 
 # Scratch workbooks created by Excel
 Excel/Book*.xlsx
