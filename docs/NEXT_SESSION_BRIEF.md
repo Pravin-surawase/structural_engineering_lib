@@ -102,14 +102,14 @@ CHANGELOG.md        → [0.9.1]
 | **Detailing** | ✅ 100% | Ld, lap, spacing, zones |
 | **DXF Export** | ✅ 100% | Python (ezdxf) + VBA (native R12) |
 | **ETABS Integration** | ✅ 100% | CSV import with normalization |
-| **Documentation** | ✅ 95% | 21 docs, beginner guides added |
-| **Testing** | ✅ 90% | 212 tests passing |
+| **Documentation** | ✅ High | See `docs/README.md` index |
+| **Testing** | ✅ High | See GitHub Actions “Python tests” + CodeQL |
 | **Serviceability** | ✅ Level A | Deflection + crack width |
 | **Compliance** | ✅ MVP | Multi-case verdict + summary |
 
 ### Code Quality Metrics
 - **Folder Structure:** 9/10 (clean separation)
-- **Documentation:** 9/10 (7,200+ lines across 21 files)
+- **Documentation:** 9/10 (broad coverage; avoid hard-coded counts)
 - **Testing:** 8/10 (Python automated, VBA manual)
 - **Packaging:** 9/10 (modern pyproject.toml)
 - **Type Hints:** 8/10 (present, could be more comprehensive)
@@ -176,7 +176,7 @@ Phase 4: Release hygiene
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** `cb09b0a` (Dependabot: GitHub Actions group update)
+- **Latest Commit:** `4903d45` (docs: capture session governance + automation)
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)
@@ -193,8 +193,19 @@ docs/
 ```
 
 ### Test Coverage
-- **Python:** 212 tests passing (latest local run)
+- **Python:** See GitHub Actions workflow checks for the latest pass/fail and test totals.
+   - Local repro: `cd Python && python -m pytest -q`
 - **VBA:** Manual tests (Integration_TestHarness.bas, Test_*.bas)
+
+---
+
+## 🔢 Refreshing “Counts” (avoid drift)
+
+When you need current numbers, prefer commands/CI over hard-coded doc stats:
+
+- Tests (local): `cd Python && python -m pytest -q`
+- Docs count (local): `find docs -name "*.md" | wc -l`
+- CI truth: check the latest `main` run and PR checks in GitHub Actions
 
 ---
 
