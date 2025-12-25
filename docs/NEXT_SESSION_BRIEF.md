@@ -10,7 +10,7 @@
 - Enabled GitHub `main` protection via Ruleset (PR-only merges + required checks + up-to-date + no force-push).
 - Reduced maintenance noise: Dependabot updates are grouped + consistently labeled.
 - Merged action updates for CI/CodeQL (keeps workflows on supported majors).
-- CI is green on `main` (lint/typecheck + pytest matrix + coverage gate + CodeQL).
+- CI was green at last verification time (see “Verified state” and GitHub Actions for live status).
 
 ---
 
@@ -29,6 +29,12 @@ If you want to resume quickly without re-reading the repo:
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
+
+**How to re-verify quickly (avoids drift):**
+- Latest commit (local): `git rev-parse --short HEAD`
+- CI truth (GitHub): https://github.com/Pravin-surawase/structural_engineering_lib/actions
+- Protection truth (GitHub): https://github.com/Pravin-surawase/structural_engineering_lib/settings/rules
+- Dependabot truth: `.github/dependabot.yml` (in-repo config)
 
 **Security posture (low maintenance):**
 - Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
@@ -176,7 +182,7 @@ Phase 4: Release hygiene
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** `4903d45` (docs: capture session governance + automation)
+- **Latest Commit:** Use `git rev-parse --short HEAD` locally or view https://github.com/Pravin-surawase/structural_engineering_lib/commits/main
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)
