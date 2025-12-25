@@ -7,6 +7,7 @@
 ## TL;DR (What Changed Recently)
 - Improved onboarding docs (README dev setup + quick commands).
 - Hardened GitHub Actions workflow permissions (least-privilege; low maintenance).
+- Completed a docs hygiene pass (version metadata alignment + governance consistency + index cleanup).
 - Expanded AI/high-value enhancements research log (Pass 3 + Pass 4).
 - Added a place for local reference files (`docs/_references/`) and prevented committing large local snapshots.
 - Organized docs for VS Code AI agents: docs index + AI context pack + ADR template; moved governance docs into `docs/_internal/` and archived the long historical research doc.
@@ -34,6 +35,7 @@ If you want to resume quickly without re-reading the repo:
 - Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
 - Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
 - Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
+- Status: secret-pattern scan of git-tracked files was clean; next action is enabling branch protection on `main` in GitHub settings.
 
 ---
 
