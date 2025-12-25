@@ -155,7 +155,7 @@ All notable changes to this project will be documented in this file.
   - `docs/GIT_GOVERNANCE.md`: Branching, commits, versioning, release process.
   - `docs/MISSION_AND_PRINCIPLES.md`: Project philosophy and design principles.
 - **Test Fixtures**:
-  - `tests/ETABS_BeamForces_Example.csv`: Sample ETABS export (10 rows, B1/B2).
+  - `Python/examples/ETABS_BeamForces_Example.csv`: Sample ETABS export.
 
 ### Changed
 - Integration test harness (`Integration_TestHarness.bas`) to auto-populate BEAM_INPUT and run end-to-end design scenarios.

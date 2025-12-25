@@ -1,10 +1,7 @@
-# Test Fixtures
+# tests/ (legacy placeholder)
 
-This folder previously contained test fixtures that have been moved to `Python/examples/`.
+This top-level folder is intentionally unused.
 
-**Current test locations:**
 - Python tests: `Python/tests/`
 - VBA tests: `VBA/Tests/`
-- Sample data: `Python/examples/`
-
-This folder can be removed or repurposed for integration tests spanning both Python and VBA.
+- Sample data / fixtures: `Python/examples/`
