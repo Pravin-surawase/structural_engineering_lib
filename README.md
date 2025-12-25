@@ -63,12 +63,16 @@ Then: `Runtime > Restart runtime` and rerun your notebook cells.
 If you have the repo locally, use the sample CSV input; otherwise create a CSV with these columns:
 
 - `Python/examples/sample_beam_design.csv`
+- `examples/sample_beam_design.csv` (from `Python/`; from repo root this is `Python/examples/sample_beam_design.csv`)
 - Columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
 
 Run the batch integration:
 
 ```bash
-python3 -m structural_lib.excel_integration Python/examples/sample_beam_design.csv \
+cd Python
+python3 -m pip install -e ".[dxf]"  # optional, for DXF export support
+
+python3 -m structural_lib.excel_integration examples/sample_beam_design.csv \
   -o ./out_demo --schedule schedule.csv
 ```
 
