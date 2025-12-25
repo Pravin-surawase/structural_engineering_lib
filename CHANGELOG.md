@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.1] - 2025-12-25
+### Changed
+- CI policy: coverage floor enforced at `--cov-fail-under=92` (temporary).
+- Docs: refreshed onboarding/quickstart and version pins; clarified batch runner + DXF usage.
+
+### Fixed
+- Robustness regressions from findings audit (flexure flanged-beam max-steel check, detailing spacing validation, compliance utilization semantics, serviceability input normalization).
+
 ## [0.9.0] - 2025-12-19
 ### Added
 - **Stable public API (IS456):** explicit entrypoints designed for future multi-code support.

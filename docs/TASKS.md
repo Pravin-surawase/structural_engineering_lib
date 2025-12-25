@@ -214,7 +214,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 - [ ] **TASK-045: Release Hygiene — Tag Post-Fix Patch Release**
   - **Agent:** DEVOPS / DOCS
-  - **Why:** v0.9.0 tag may point to a pre-fix commit; a patch tag makes the latest green `main` state easy to consume.
+  - **Why:** v0.9.0 tag points to the original release baseline; a patch tag (v0.9.1) makes the latest green `main` state easy to consume.
   - **Checklist:**
     - [ ] Decide patch version (e.g., v0.9.1)
     - [ ] Update `CHANGELOG.md` + append-only `docs/RELEASES.md`
@@ -277,8 +277,8 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 ## Notes
 
-- **Current Version**: v0.9.0
-- **Last Updated**: 2025-12-20
+- **Current Version**: v0.9.1
+- **Last Updated**: 2025-12-25
 - **Active Branch**: main
 
 ### v0.7 Implementation Notes

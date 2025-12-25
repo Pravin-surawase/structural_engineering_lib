@@ -207,3 +207,19 @@ To preserve the “immutable / append-only” rule, older entries were not reord
 ## Chronological Index Addendum (2025-12-19)
 
 - v0.9.0 (2025-12-19)
+
+---
+
+## v0.9.1
+**Date:** 2025-12-25
+**Status:** ✅ Locked & Verified
+**Commit Hash:** (tag: v0.9.1)
+**Mindset:** Patch release tagging the latest green `main` state.
+**Key Changes:**
+- CI: enforce `--cov-fail-under=92` (reduced friction while iterating).
+- Robustness fixes + regression tests (findings audit across flexure/detailing/compliance/serviceability).
+- Docs: README + quickstart pins updated; batch runner + DXF usage clarified.
+
+## Chronological Index Addendum (2025-12-25)
+
+- v0.9.1 (2025-12-25)

@@ -9,13 +9,13 @@ This guide shows how to install, run, and verify the Python library with simple,
 If you're sharing with a few users while the project is still evolving, this is the simplest path.
 
 ```bash
-python -m pip install --upgrade pip
+python3 -m pip install --upgrade pip
 
 # Pin to a released tag for stability (recommended)
-python -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
+python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
 
 # With DXF support
-python -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
 ```
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.
@@ -23,7 +23,7 @@ Engineering note: this library is a calculation aid; final responsibility for co
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.0#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -46,7 +46,7 @@ Then: `Runtime > Restart runtime` and rerun.
 
 ## 2) Run the unit tests (sanity check)
 ```bash
-python -m pytest Python/tests -q
+python3 -m pytest Python/tests -q
 ```
 All tests should pass. If `ezdxf` is missing, DXF-specific tests are skipped.
 
@@ -69,13 +69,13 @@ print("Ld (mm):", ld, " Lap length (mm):", lap)
 ```
 Run it:
 ```bash
-python example.py
+python3 example.py
 ```
 
 ## 4) Batch process CSV/JSON and (optionally) generate DXF
 The integration module can read a beam design CSV/JSON and produce detailing (and DXF if `ezdxf` is installed).
 ```bash
-python -m structural_lib.excel_integration path/to/beams.csv -o ./dxf_output --schedule schedule.csv
+python3 -m structural_lib.excel_integration path/to/beams.csv -o ./dxf_output --schedule schedule.csv
 ```
 - Input columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive).
 - Outputs:
@@ -84,7 +84,7 @@ python -m structural_lib.excel_integration path/to/beams.csv -o ./dxf_output --s
 
 ## 5) Minimal “one-liner” example (no files)
 ```bash
-python - <<'PY'
+python3 - <<'PY'
 from structural_lib import shear
 res = shear.design_shear(vu_kn=100, b=300, d=500, fck=25, fy=415, asv=100, pt=0.75)
 print("Shear OK?", res.is_safe, "Spacing (mm):", res.spacing)
@@ -92,7 +92,7 @@ PY
 ```
 
 ## 6) Packaging notes
-- Local editable install is usually enough. To build a wheel: `cd Python && python -m build`.
+- Local editable install is usually enough. To build a wheel: `cd Python && python3 -m build`.
 - Current code version is defined in `Python/structural_lib/__init__.py` (sync with `pyproject.toml` before publishing).
 
 ## 7) Troubleshooting

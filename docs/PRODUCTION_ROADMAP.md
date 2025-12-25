@@ -1,6 +1,6 @@
 # Production Readiness Roadmap
 
-> **Current Status:** v0.9.0 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
+> **Current Status:** v0.9.1 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
 > 
 > **Production Readiness:** High (remaining gaps: optimizer + BBS/BOM + parity automation)
 
@@ -215,7 +215,7 @@ To use this library for **actual project submissions**, you need:
 | v0.7.0 | Detailing + DXF | ✅ Done |
 | v0.8.0 | Deflection + Crack Width | ✅ Done |
 | v0.8.2 | Robustness + CI | ✅ Done |
-| **v0.9.0** | **Stable public API + deterministic job runner** | ✅ Current |
+| **v0.9.1** | **Stable public API + deterministic job runner (patch tag for latest green main)** | ✅ Current |
 | v0.10.0 | BBS + PDF Reports | Planned |
 | v1.0.0 | Production Release | Goal |
 

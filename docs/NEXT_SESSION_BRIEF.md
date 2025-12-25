@@ -1,7 +1,7 @@
 # Next Session Briefing
 
-**Last Updated:** 2025-12-20  
-**Status:** v0.9.0 released + post-release CI fixes merged (main green)  
+**Last Updated:** 2025-12-25  
+**Status:** v0.9.1 released (patch tag for latest green main)  
 **Branch:** `main`
 
 ## TL;DR (What Changed Recently)
@@ -22,10 +22,9 @@ If you want to resume quickly without re-reading the repo:
 3. **Canonical backlog (TASK-041 for serviceability):** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
 
-**Verified state (as of 2025-12-20):**
-- Release baseline is **v0.9.0** (stable IS456 public entrypoints + job runner).
-- `main` has post-release CI fixes merged (formatting + coverage stability).
-- Python test suite passes locally (212 tests).
+**Verified state (as of 2025-12-25):**
+- Release baseline is **v0.9.1** (patch tag for the latest green main state).
+- Version pins updated across docs + package metadata.
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
@@ -63,15 +62,15 @@ If you want to resume quickly without re-reading the repo:
 
 ---
 
-## 📊 Current State (v0.9.0)
+## 📊 Current State (v0.9.1)
 
 ### Version Sync ✅
 ```
-Python __init__.py  → 0.9.0
-Python api.py       → 0.9.0
-Python pyproject    → 0.9.0
-README.md           → v0.9.0
-CHANGELOG.md        → [0.9.0]
+Python __init__.py  → 0.9.1
+Python api.py       → 0.9.1
+Python pyproject    → 0.9.1
+README.md           → v0.9.1
+CHANGELOG.md        → [0.9.1]
 ```
 
 ### Feature Completeness
@@ -145,7 +144,7 @@ Phase 3: Verification
 └── (Optional) add parity vectors for critical cases
 
 Phase 4: Release hygiene
-└── Update docs + release notes for next tag (v0.9.0)
+└── Update docs + release notes for next tag (v0.9.1)
 ```
 
 ---
