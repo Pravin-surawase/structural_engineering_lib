@@ -127,7 +127,7 @@ All notable changes to this project will be documented in this file.
   - `docs/specs/v0.7_DATA_MAPPING.md`: Complete data flow specification.
   - `docs/specs/v0.7_REQUIREMENTS.md`: CLIENT requirements for detailing.
   - `docs/RESEARCH_DETAILING.md`: IS 456/SP 34 detailing research.
-  - `docs/AGENT_WORKFLOW.md`: Multi-agent governance system.
+  - `docs/_internal/AGENT_WORKFLOW.md`: Multi-agent governance system.
 - **Test Coverage**:
   - `test_detailing.py`: 31 tests for detailing module.
   - `test_excel_integration.py`: 15 tests for integration module.
@@ -152,7 +152,7 @@ All notable changes to this project will be documented in this file.
   - Auto-sorting by Story/ID before grouping.
   - `Get_Bar_Pattern`: Converts steel area to practical bar notation (e.g., "3-16").
 - **Governance Documentation**:
-  - `docs/GIT_GOVERNANCE.md`: Branching, commits, versioning, release process.
+  - `docs/_internal/GIT_GOVERNANCE.md`: Branching, commits, versioning, release process.
   - `docs/MISSION_AND_PRINCIPLES.md`: Project philosophy and design principles.
 - **Test Fixtures**:
   - `Python/examples/ETABS_BeamForces_Example.csv`: Sample ETABS export.

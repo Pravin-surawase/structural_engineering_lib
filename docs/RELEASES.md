@@ -326,3 +326,17 @@ It exists because this ledger is **append-only**.
 
 **Docs updates:**
 - Refreshed onboarding/version pins and clarified batch runner + DXF workflows so users can run the end-to-end pipeline without repo-specific tribal knowledge.
+
+---
+
+## Docs Layout Note (2025-12-25)
+
+To keep `docs/` cleaner, several top-level redirect stubs were removed.
+
+- Canonical governance docs:
+  - `docs/_internal/GIT_GOVERNANCE.md`
+  - `docs/_internal/AGENT_WORKFLOW.md`
+- Archived research:
+  - `docs/_archive/RESEARCH_AND_FINDINGS.md`
+
+Older release notes may reference the historical stub paths that existed at the time; prefer the canonical locations above.

@@ -254,7 +254,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Output:** `M13_Integration.bas`
 
 - [x] **Governance & Docs**
-  - Created `docs/_internal/GIT_GOVERNANCE.md` (with a small redirect stub at `docs/GIT_GOVERNANCE.md`)
+  - Created `docs/_internal/GIT_GOVERNANCE.md`
   - Created `docs/MISSION_AND_PRINCIPLES.md`
   - Updated `docs/RELEASES.md`
 
