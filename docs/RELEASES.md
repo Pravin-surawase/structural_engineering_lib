@@ -223,3 +223,106 @@ To preserve the “immutable / append-only” rule, older entries were not reord
 ## Chronological Index Addendum (2025-12-25)
 
 - v0.9.1 (2025-12-25)
+
+---
+
+## Release Notes Addendum (2025-12-25)
+
+This section **adds depth** to the existing locked entries for recent releases.
+It exists because this ledger is **append-only**.
+
+### v0.7.1 — Expanded Notes
+
+**Why it existed:** v0.7 shipped big deliverables (detailing + DXF + integration). v0.7.1 focused on making them safer to use via CI hardening and better edge coverage.
+
+**Engineering behavior:** no intentional algorithm changes; focused on robustness.
+
+**Python test/CI hardening:**
+- Added targeted regression and edge-case tests, including a DXF smoke test, so DXF behavior is exercised in CI when optional dependencies are present.
+- Introduced/raised the Python coverage gate to keep long-term safety against accidental numerical drift.
+
+**Packaging correctness:**
+- Ensured `structural_lib/py.typed` is shipped so type checkers can consume the package as typed (PEP 561).
+
+**Integration fixes:**
+- Made schedule generation resilient when a beam has only one valid bar arrangement.
+- Made `BeamDesignData.from_dict()` deterministic when both `d` and `D` keys exist (legacy lowercase `d` won’t override a provided `D`).
+
+**VBA parity (DXF):**
+- Added native VBA DXF export (`M16_DXF.bas`) and UDF/macro entrypoints so the Excel flow can generate drawings without Python.
+
+### v0.8.0 — Expanded Notes
+
+**Why it existed:** move toward “production readiness” by adding serviceability checks and an Excel-friendly compliance verdict.
+
+**Serviceability (Python + VBA parity):**
+- Deflection: span/depth check via `serviceability.check_deflection_span_depth(...)` with explicit assumptions recorded.
+- Crack width: simplified Annex-F-style workflow via `serviceability.check_crack_width(...)` with exposure-driven limits.
+
+**Compliance orchestration:**
+- Added a deterministic multi-check orchestrator (`compliance.check_compliance_report(...)`) that selects a governing case and governing utilization in a stable, auditable manner.
+- Structured outputs are designed to be consumed by Excel/reporting layers (summary payloads + clear remarks).
+
+### v0.8.1 — Expanded Notes
+
+**Why it existed:** tooling-only patch after v0.8.0 to reduce release friction and make CI “tell the truth”.
+
+**No engineering behavior changes** (design calculations intended unchanged).
+
+**Packaging / build hygiene:**
+- Consolidated packaging metadata into `Python/pyproject.toml` to avoid split-brain configuration.
+- Standardized license inclusion via `project.license-files`.
+
+**CI quality gates:**
+- Added `ruff check` alongside formatting/type checks.
+- Strengthened packaging smoke testing by installing the built wheel and importing `structural_lib`.
+
+**Local workflow:**
+- Added `Python/scripts/pre_release_check.sh` as a single “run the release gate locally” entrypoint.
+
+### v0.8.2 — Expanded Notes
+
+**Why it existed:** robustness patch to keep behavior deterministic under slightly malformed inputs and to stabilize the DXF optional-dependency surface.
+
+**Compliance robustness:**
+- Hardened serviceability parameter handling so missing/malformed fields fail fast or normalize deterministically.
+- Ensured governing-case utilization remains deterministic in failure modes (no accidental dependence on dict ordering or incidental iteration).
+
+**DXF optional dependency surface:**
+- Made `ezdxf`-optional code easier to monkeypatch/test and friendlier for type checking when DXF extras are not installed.
+
+**CI reliability:**
+- Added targeted regression tests to keep overall coverage at/above the configured threshold.
+
+### v0.9.0 — Expanded Notes
+
+**Why it existed:** “automation usage” milestone — stable entrypoints + deterministic file-in/file-out workflows.
+
+**Stable public entrypoints (IS456):**
+- `api.design_beam_is456(...)`: single-case design/check returning a structured `ComplianceCaseResult`.
+- `api.check_beam_is456(...)`: multi-case report returning `ComplianceReport` with governing-case selection.
+- `api.detail_beam_is456(...)`: wraps detailing to produce structured reinforcement outputs.
+
+**Golden vectors (regression targets):**
+- Introduced pinned numerical targets that lock key outputs and determinism across core modules.
+
+**Deterministic job runner + CLI:**
+- Job spec: [docs/specs/v0.9_JOB_SCHEMA.md](docs/specs/v0.9_JOB_SCHEMA.md).
+- Runner: `structural_lib.job_runner.run_job(...)` writes stable outputs (JSON + CSV) in a fixed folder layout.
+- CLI: `python -m structural_lib.job_cli run --job job.json --out <dir>`.
+
+### v0.9.1 — Expanded Notes
+
+**Why it existed:** patch release tagging a known-green state and capturing the “findings audit” fixes.
+
+**CI policy (temporary):**
+- Standardized the Python coverage floor at 92% to keep signal high while reducing friction during rapid iteration.
+
+**Robustness fixes (findings audit):**
+- Flexure: corrected flanged-beam max-steel behavior at edge cases.
+- Detailing: tightened spacing validation so rule violations are reported deterministically.
+- Compliance: clarified utilization semantics so summary/governing-case values are consistent.
+- Serviceability: normalized inputs so equivalent values produce identical outputs.
+
+**Docs updates:**
+- Refreshed onboarding/version pins and clarified batch runner + DXF workflows so users can run the end-to-end pipeline without repo-specific tribal knowledge.
