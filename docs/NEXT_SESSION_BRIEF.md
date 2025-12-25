@@ -36,6 +36,7 @@ If you want to resume quickly without re-reading the repo:
 - Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
 - Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
 - Status: secret-pattern scan of git-tracked files was clean; next action is enabling branch protection on `main` in GitHub settings.
+- Status: `main` is protected via GitHub ruleset (PR required + required checks + no force pushes).
 
 ---
 
