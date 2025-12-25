@@ -286,15 +286,16 @@ def test_flexure_flanged_beam_solver_hits_minimum_steel_branch_low_fck():
 def test_flexure_flanged_beam_solver_hits_ast_max_exceeded_branch():
     from structural_lib import flexure
 
-    # Force ast_max to be very small so the solver path exceeds it.
+    # Force the combined (web + flange) Ast to exceed the 4% bw*d_total cap.
+    # Keep geometry valid (d_total > d).
     res = flexure.design_flanged_beam(
-        bw=300,
-        bf=300,
-        d=1000,
-        Df=205,
-        d_total=10,
+        bw=150,
+        bf=800,
+        d=450,
+        Df=80,
+        d_total=500,
         mu_knm=600.0,
-        fck=25,
+        fck=20,
         fy=415,
     )
 

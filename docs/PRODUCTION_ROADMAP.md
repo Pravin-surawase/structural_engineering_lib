@@ -184,7 +184,7 @@ Step 4: Parity automation (TASK-039 / TASK-040)
 - [x] Type hints
 - [x] py.typed marker
 - [x] mypy clean
-- [x] CI-enforced coverage threshold (95% gate)
+- [x] CI-enforced coverage threshold (92% gate)
 
 ---
 

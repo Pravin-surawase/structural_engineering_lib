@@ -25,6 +25,7 @@ from .types import (
     CrackWidthResult,
     DeflectionResult,
     ExposureClass,
+    DesignSectionType,
     FlexureResult,
     ShearResult,
     SupportCondition,
@@ -38,9 +39,27 @@ def _utilization_safe(numer: float, denom: float) -> float:
 
 
 def _compute_flexure_utilization(mu_knm: float, flex: FlexureResult) -> float:
+    """Compute a stable, interpretable flexure utilization ratio.
+
+    For singly reinforced results, we use $|Mu|/Mu_{lim}$. For doubly reinforced
+    cases, FlexureResult does not currently expose a computed capacity, so we
+    use a conservative/acceptance-friendly convention:
+    - if the design is safe and Mu is nonzero, return 1.0
+    - if unsafe, fall back to $|Mu|/Mu_{lim}$ (typically > 1)
+    """
+
+    mu_abs = abs(mu_knm)
+    if mu_abs == 0:
+        return 0.0
+
+    if flex.section_type == DesignSectionType.OVER_REINFORCED:
+        # Doubly reinforced design path (or flagged as such): capacity isn't exposed.
+        if flex.is_safe:
+            return 1.0
+
     if flex.mu_lim <= 0:
         return float("inf")
-    return abs(mu_knm) / flex.mu_lim
+    return mu_abs / flex.mu_lim
 
 
 def _compute_shear_utilization(sh: ShearResult) -> float:

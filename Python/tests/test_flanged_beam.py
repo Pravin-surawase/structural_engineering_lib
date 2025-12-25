@@ -101,3 +101,36 @@ def test_flanged_beam_doubly_reinforced():
     assert res.asc_required > 0.0
     assert res.ast_required > 0.0
     assert res.xu == pytest.approx(res.xu_max, rel=1e-4)
+
+
+def test_flanged_beam_combined_max_steel_is_not_reported_safe():
+    # Regression for combined Ast max check in doubly-reinforced T-beams.
+    # This case produces a web design that alone can be safe, but the combined
+    # (web + flange) Ast exceeds the 4% bw*d_total cap.
+    res = design_flanged_beam(
+        150,  # bw
+        800,  # bf
+        450,  # d
+        80,  # Df
+        500,  # d_total
+        600,  # mu_knm
+        20,  # fck
+        415,  # fy
+    )
+    assert res.is_safe is False
+    assert "combined t-beam" in res.error_message.lower()
+
+
+def test_flanged_beam_invalid_geometry_fails_gracefully():
+    res = design_flanged_beam(
+        300,
+        250,  # bf < bw invalid
+        450,
+        100,
+        500,
+        200,
+        25,
+        500,
+    )
+    assert res.is_safe is False
+    assert "bf" in res.error_message.lower()

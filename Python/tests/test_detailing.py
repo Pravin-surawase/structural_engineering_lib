@@ -166,6 +166,20 @@ class TestBarArrangement:
         arr = select_bar_arrangement(1000, 300, 30)
         assert arr.area_provided >= 1000
 
+    def test_spacing_rechecked_after_layering_or_dia_change(self):
+        """If one-layer spacing fails, selection should re-check and improve."""
+        arr = select_bar_arrangement(
+            ast_required=2000,
+            b=150,
+            cover=25,
+            stirrup_dia=8,
+            preferred_dia=12,
+            max_layers=2,
+        )
+        assert arr.layers == 2
+        is_valid, _ = check_min_spacing(arr.spacing, arr.diameter)
+        assert is_valid is True
+
     def test_callout_format(self):
         """Callout should be in standard format."""
         arr = BarArrangement(3, 16, 603, 60, 1)
@@ -230,6 +244,7 @@ class TestBeamDetailingResult:
         assert len(result.top_bars) == 3
         assert len(result.bottom_bars) == 3
         assert len(result.stirrups) == 3
+        assert "0.25" in result.remarks
 
     def test_seismic_lap_longer(self):
         """Seismic detailing should have longer lap."""

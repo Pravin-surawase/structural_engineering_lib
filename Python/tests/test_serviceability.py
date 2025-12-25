@@ -38,6 +38,14 @@ def test_deflection_invalid_inputs_fail_gracefully():
     assert "Invalid input" in res.remarks
 
 
+def test_deflection_support_condition_non_string_does_not_raise():
+    res = check_deflection_span_depth(
+        span_mm=4000.0, d_mm=500.0, support_condition=None
+    )
+    assert res.is_ok is True
+    assert any("invalid support condition" in a.lower() for a in res.assumptions)
+
+
 def test_crack_width_requires_core_parameters_or_fails():
     res = check_crack_width(exposure_class=ExposureClass.MODERATE, limit_mm=0.3)
     assert res.is_ok is False
@@ -89,3 +97,33 @@ def test_crack_width_invalid_geometry_h_le_x_fails():
     )
     assert res.is_ok is False
     assert "h_mm > x_mm" in res.remarks
+
+
+def test_crack_width_exposure_class_non_string_does_not_raise():
+    res = check_crack_width(exposure_class=None, limit_mm=0.3)
+    assert res.is_ok is False
+    assert any("invalid exposure class" in a.lower() for a in res.assumptions)
+
+
+def test_deflection_support_condition_string_variants():
+    res = check_deflection_span_depth(
+        span_mm=4000.0,
+        d_mm=500.0,
+        support_condition="cant",
+    )
+    assert res.support_condition == SupportCondition.CANTILEVER
+
+    res2 = check_deflection_span_depth(
+        span_mm=4000.0,
+        d_mm=500.0,
+        support_condition="cont",
+    )
+    assert res2.support_condition == SupportCondition.CONTINUOUS
+
+
+def test_crack_width_exposure_class_string_variants():
+    res = check_crack_width(exposure_class="severe", limit_mm=0.2)
+    assert res.exposure_class == ExposureClass.SEVERE
+
+    res2 = check_crack_width(exposure_class="vs", limit_mm=0.2)
+    assert res2.exposure_class == ExposureClass.VERY_SEVERE

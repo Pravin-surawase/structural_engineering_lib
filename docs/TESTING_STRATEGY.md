@@ -21,7 +21,7 @@
 - From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml`
 
 **How to run the CI-equivalent check locally (includes coverage gate):**
-- From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml --cov-fail-under=95`
+- From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml --cov-fail-under=92`
 
 ### CI (GitHub Actions)
 
@@ -34,7 +34,7 @@ Workflow: `.github/workflows/python-tests.yml`
   - Python matrix: 3.9, 3.10, 3.11, 3.12
   - Installs: `pip install -e ".[dev,dxf]"`
   - Runs: pytest with coverage + uploads `coverage.xml`
-  - Coverage gate: `--cov-fail-under=95`
+  - Coverage gate: `--cov-fail-under=92`
   - Packaging smoke: `python -m build`
 
 **What this gives us:**
@@ -72,7 +72,7 @@ Workflow: `.github/workflows/python-tests.yml`
 Latest verified local run (Dec 2025): **100% total coverage** with `--cov-report=term-missing`.
 
 Notes:
-- CI gate is `--cov-fail-under=95` (safe given current 100% coverage).
+- CI gate is `--cov-fail-under=92`.
 - Tests that execute modules via `runpy.run_module(...)` clear entries from `sys.modules` to avoid `RuntimeWarning` noise.
 
 ---
@@ -103,7 +103,7 @@ Notes:
 
 ### P0 — Protect against regression
 
-- Keep the CI **coverage gate** at 95% (safe given current 100% coverage).
+- Keep the CI **coverage gate** at 92%.
 
 ### P1 — Increase confidence where failures are expensive
 

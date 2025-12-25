@@ -89,3 +89,19 @@ def test_compliance_report_ok_when_all_checks_pass():
     assert report.summary["max_util_shear"] is not None
     assert report.summary["max_util_deflection"] is not None
     assert report.summary["max_util_crack_width"] is not None
+
+
+def test_compliance_flexure_utilization_safe_doubly_is_one():
+    # Mu above Mu_lim triggers doubly reinforced design, which can still be safe.
+    # Utilization should not be >1 in a safe case.
+    report = check_compliance_report(
+        cases=[{"case_id": "DR", "mu_knm": 186.68109528, "vu_kn": 10.0}],
+        b_mm=230.0,
+        D_mm=500.0,
+        d_mm=450.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+        asv_mm2=100.0,
+    )
+    assert report.cases[0].flexure.is_safe is True
+    assert report.cases[0].utilizations["flexure"] == 1.0

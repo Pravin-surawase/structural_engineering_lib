@@ -294,6 +294,12 @@ def select_bar_arrangement(
             count=2, diameter=12, area_provided=226, spacing=0, layers=1
         )
 
+    if b <= 0 or cover < 0 or stirrup_dia <= 0:
+        # Keep behavior deterministic; callers can mark invalid if needed.
+        return BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=0, layers=1
+        )
+
     # Auto-select diameter based on area
     if preferred_dia is None:
         if ast_required < 400:
@@ -305,31 +311,52 @@ def select_bar_arrangement(
         else:
             preferred_dia = 25
 
-    bar_area = math.pi * (preferred_dia / 2) ** 2
-    count_float = ast_required / bar_area
-    count = max(2, math.ceil(count_float))  # Minimum 2 bars
+    # Try to satisfy min-spacing by increasing layers and/or increasing diameter.
+    # Deterministic order: start from preferred_dia, then larger standard diameters.
+    start_dia = float(preferred_dia)
+    dia_candidates = [start_dia] + [
+        float(d) for d in STANDARD_BAR_DIAMETERS if float(d) > start_dia
+    ]
 
-    area_provided = count * bar_area
+    last_count = 2
+    last_dia = float(dia_candidates[-1])
+    last_spacing = 0.0
+    last_layers = 1
 
-    # Check if single layer fits
-    spacing = calculate_bar_spacing(b, cover, stirrup_dia, preferred_dia, count)
-    is_valid, _ = check_min_spacing(spacing, preferred_dia)
+    for dia in dia_candidates:
+        dia = float(dia)
+        bar_area = math.pi * (dia / 2) ** 2
+        count_float = ast_required / bar_area
+        count = max(2, math.ceil(count_float))  # Minimum 2 bars
 
-    layers = 1
-    if not is_valid and max_layers > 1:
-        # Split into 2 layers
-        layers = 2
-        bars_per_layer = math.ceil(count / 2)
-        spacing = calculate_bar_spacing(
-            b, cover, stirrup_dia, preferred_dia, bars_per_layer
-        )
+        for layers in range(1, max_layers + 1):
+            bars_per_layer = math.ceil(count / layers)
+            spacing = calculate_bar_spacing(b, cover, stirrup_dia, dia, bars_per_layer)
+            is_valid, _ = check_min_spacing(spacing, dia)
 
+            last_count = count
+            last_dia = dia
+            last_spacing = spacing
+            last_layers = layers
+
+            if is_valid:
+                area_provided = count * bar_area
+                return BarArrangement(
+                    count=count,
+                    diameter=dia,
+                    area_provided=round(area_provided, 0),
+                    spacing=round(spacing, 0),
+                    layers=layers,
+                )
+
+    # If we cannot satisfy spacing, return the best-effort arrangement deterministically.
+    area_provided = last_count * (math.pi * (last_dia / 2) ** 2)
     return BarArrangement(
-        count=count,
-        diameter=preferred_dia,
+        count=last_count,
+        diameter=last_dia,
         area_provided=round(area_provided, 0),
-        spacing=round(spacing, 0),
-        layers=layers,
+        spacing=round(last_spacing, 0),
+        layers=last_layers,
     )
 
 
@@ -445,9 +472,26 @@ def create_beam_detailing(
     Returns:
         BeamDetailingResult with complete detailing information
     """
+    assumption_notes: List[str] = []
+
     # Select bar arrangements
     # Note: At supports (start/end), tension is typically top; at mid, tension is bottom
     # This simplification assumes Ast is always the tension side
+
+    # Note: If compression steel (Asc) is not provided, we use a heuristic 25% of Ast.
+    # This is a drafting aid only; callers should provide explicit Asc when known.
+    if asc_start <= 0 and ast_start > 0:
+        assumption_notes.append(
+            "Top steel at start defaulted to 0.25×Ast (Asc not provided)."
+        )
+    if asc_mid <= 0 and ast_mid > 0:
+        assumption_notes.append(
+            "Top steel at mid defaulted to 0.25×Ast (Asc not provided)."
+        )
+    if asc_end <= 0 and ast_end > 0:
+        assumption_notes.append(
+            "Top steel at end defaulted to 0.25×Ast (Asc not provided)."
+        )
 
     top_start = select_bar_arrangement(
         asc_start if asc_start > 0 else ast_start * 0.25, b, cover, stirrup_dia
@@ -488,6 +532,29 @@ def create_beam_detailing(
         StirrupArrangement(stirrup_dia, legs, stirrup_spacing_end, zone_length),
     ]
 
+    # Spacing sanity-check (horizontal clear spacing). Vertical layer clearance is not modeled.
+    spacing_violations: List[str] = []
+    for label, arr in [
+        ("top_start", top_start),
+        ("top_mid", top_mid),
+        ("top_end", top_end),
+        ("bot_start", bot_start),
+        ("bot_mid", bot_mid),
+        ("bot_end", bot_end),
+    ]:
+        ok, msg = check_min_spacing(arr.spacing, arr.diameter)
+        if not ok:
+            spacing_violations.append(f"{label}: {msg}")
+
+    is_valid = len(spacing_violations) == 0
+    remarks_parts: List[str] = []
+    if is_valid:
+        remarks_parts.append("Detailing complete")
+    else:
+        remarks_parts.append("Detailing has spacing violations")
+        remarks_parts.extend(spacing_violations)
+    remarks_parts.extend(assumption_notes)
+
     return BeamDetailingResult(
         beam_id=beam_id,
         story=story,
@@ -501,6 +568,6 @@ def create_beam_detailing(
         ld_tension=ld_tension,
         ld_compression=ld_compression,
         lap_length=lap_length,
-        is_valid=True,
-        remarks="Detailing complete",
+        is_valid=is_valid,
+        remarks="; ".join(remarks_parts),
     )

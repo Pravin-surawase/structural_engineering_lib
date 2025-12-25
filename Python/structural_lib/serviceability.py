@@ -35,10 +35,16 @@ _DEFAULT_CRACK_LIMITS_MM: Dict[ExposureClass, float] = {
 
 
 def _normalize_support_condition(
-    value: Union[SupportCondition, str],
+    value: Any,
 ) -> Tuple[SupportCondition, Optional[str]]:
     if isinstance(value, SupportCondition):
         return value, None
+
+    if not isinstance(value, str):
+        return (
+            SupportCondition.SIMPLY_SUPPORTED,
+            f"Invalid support condition '{value}'. Defaulted to SIMPLY_SUPPORTED.",
+        )
 
     normalized = value.strip().lower()
     if normalized in {"cantilever", "cant"}:
@@ -55,10 +61,16 @@ def _normalize_support_condition(
 
 
 def _normalize_exposure_class(
-    value: Union[ExposureClass, str],
+    value: Any,
 ) -> Tuple[ExposureClass, Optional[str]]:
     if isinstance(value, ExposureClass):
         return value, None
+
+    if not isinstance(value, str):
+        return (
+            ExposureClass.MODERATE,
+            f"Invalid exposure class '{value}'. Defaulted to MODERATE.",
+        )
 
     normalized = value.strip().lower()
     if normalized in {"mild"}:

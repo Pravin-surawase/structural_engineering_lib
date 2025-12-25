@@ -357,6 +357,66 @@ def design_flanged_beam(
     2. Neutral axis in web (Singly Reinforced T-Beam)
     3. Doubly Reinforced T-Beam (if Mu > Mu_lim_T)
     """
+    if bw <= 0 or bf <= 0 or d <= 0 or Df <= 0 or d_total <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: bw, bf, d, Df, and d_total must be > 0.",
+        )
+
+    if bf < bw:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: bf must be >= bw.",
+        )
+
+    if d_total <= d:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: d_total must be > d.",
+        )
+
+    if Df >= d:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: Df must be < d.",
+        )
+
+    if fck <= 0 or fy <= 0:
+        return FlexureResult(
+            mu_lim=0.0,
+            ast_required=0.0,
+            pt_provided=0.0,
+            section_type=DesignSectionType.UNDER_REINFORCED,
+            xu=0.0,
+            xu_max=0.0,
+            is_safe=False,
+            error_message="Invalid input: fck and fy must be > 0.",
+        )
+
     mu_abs = abs(mu_knm)
 
     # 1. Check if Neutral Axis is in Flange
@@ -408,6 +468,23 @@ def design_flanged_beam(
         # For now, using bw * d for percentage is safer/conservative for shear checks etc.)
         pt_provided = (total_ast * 100.0) / (bw * d)
 
+        # Re-check max steel for the combined T-beam steel.
+        # Keep consistent with rectangular design checks: 4% of bD (bw * d_total).
+        ast_max = 0.04 * bw * d_total
+        is_safe = web_result.is_safe
+        error_msg = web_result.error_message
+        if total_ast > ast_max:
+            is_safe = False
+            error_msg = (
+                "Total Ast exceeds maximum limit (4% bw*d_total) for combined T-beam."
+            )
+        if web_result.asc_required > ast_max:
+            is_safe = False
+            if error_msg:
+                error_msg = f"{error_msg} Asc exceeds maximum limit (4% bw*d_total)."
+            else:
+                error_msg = "Asc exceeds maximum limit (4% bw*d_total)."
+
         return FlexureResult(
             mu_lim=mu_lim_t,
             ast_required=total_ast,
@@ -415,9 +492,9 @@ def design_flanged_beam(
             section_type=DesignSectionType.OVER_REINFORCED,
             xu=xu_max,
             xu_max=xu_max,
-            is_safe=web_result.is_safe,
+            is_safe=is_safe,
             asc_required=web_result.asc_required,
-            error_message=web_result.error_message,
+            error_message=error_msg,
         )
 
     # 3. Singly Reinforced T-Beam (Df < xu <= xu_max)
