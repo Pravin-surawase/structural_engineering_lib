@@ -1001,15 +1001,15 @@ To prevent history revisionism and ensure stability:
 
 ```vba
 ' IS456_Constants.bas
-Public Const LIB_VERSION As String = "0.1.0"
-Public Const LIB_BUILD_DATE As String = "2025-12-10"
+Public Const LIB_VERSION As String = "0.9.1"
+Public Const LIB_BUILD_DATE As String = "2025-12-25"
 Public Const IS456_CODE_YEAR As String = "2000"
 ```
 
 ```python
 # constants.py
-__version__ = "0.1.0"
-LIB_BUILD_DATE = "2025-12-10"
+__version__ = "0.9.1"
+LIB_BUILD_DATE = "2025-12-25"
 IS456_CODE_YEAR = "2000"
 ```
 
@@ -1020,7 +1020,7 @@ IS456_CODE_YEAR = "2000"
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.0] - 2025-12-10
+## [0.9.1] - 2025-12-25
 
 ### Added
 - Initial release
