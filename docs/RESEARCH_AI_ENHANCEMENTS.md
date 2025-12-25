@@ -87,32 +87,21 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 
 ## Research Update (Pass 6 - Adoption and Positioning Insights, Dec 25, 2025)
 
-This pass distills actionable ideas from user-workflow research and aligns them
-to the current roadmap. It avoids new claims and focuses on adoption leverage.
+This pass extracts the useful ideas from broader ecosystem research and maps
+them to repo-aligned actions. It avoids new claims and focuses on adoption
+leverage for the current IS456 design/compliance engine.
 
-### Useful ideas to keep (aligned to current tasks)
-- **Excel-first transparency**: keep the Excel/VBA path explicit and "glass-box"
-  (auditable formulas, deterministic outputs). This builds trust for engineers
-  who rely on spreadsheets.
-- **BBS/BOM as an adoption hook**: generating fabrication-ready schedules is a
-  high-visibility win (maps to TASK-034).
-- **ETABS mapping docs**: documentation that bridges ETABS exports to your input
-  schema is low-effort, high-impact (maps to TASK-044).
-- **Determinism as brand**: "same inputs -> same outputs + clause references"
-  should remain the core positioning.
-- **Job schema as platform contract**: the public batch schema is the stable
-  interface for Excel, CLI, and future integrations.
-- **Verification packs**: publish benchmark examples to convert skeptics and
-  validate correctness at the edges.
-- **Open-core path**: keep the base library free and monetize high-value
-  automation (batch, BBS, reporting) when ready.
-
-### Suggested next actions (top 5)
-1) Document ETABS export mapping and normalization rules (TASK-044).
-2) Implement BBS/BOM CSV export with explicit rounding rules (TASK-034).
-3) Finish deterministic rebar layout optimizer with clear constraints (TASK-043).
-4) Publish a small verified example pack (5-10 beams) tied to tests.
-5) Add a short "trust and determinism" section to the README or docs index.
+### Useful ideas to keep (repo-aligned)
+- **Excel-first transparency**: keep the Excel/VBA path explicit and auditable.
+- **BBS/BOM as an adoption hook**: fabrication-ready outputs create trust and
+   immediate user value (TASK-034).
+- **ETABS mapping docs**: low-effort documentation with high adoption impact
+   (TASK-044).
+- **Determinism as brand**: same inputs -> same outputs + clause references.
+- **Job schema as platform contract**: stable interface for batch automation.
+- **Verification packs**: publish benchmark cases to convert skeptics.
+- **Scope guardrail**: do not build a new solver; focus on code compliance and
+   detailing outputs where the gap is real.
 
 ---
 
