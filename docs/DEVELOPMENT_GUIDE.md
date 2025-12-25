@@ -1132,7 +1132,10 @@ twine upload dist/*
 ### 13.5 Build/Test Automation
 - **VBA:** Use Rubberduck test explorer or a VBA script to run `RunAllTests`; export modules automatically on build (vba-blocks or custom PowerShell/VBScript).
 - **Python:** Provide `make test` or `nox/tox` sessions for lint + tests (`pytest -q`).
-- **CI (optional):** Add GitHub Actions to run Python tests on push; attach manual VBA test log to PRs until VBA automation is wired.
+- **CI (active):** GitHub Actions runs on PRs and pushes to `main`.
+    - Workflows: `.github/workflows/python-tests.yml` and `.github/workflows/codeql.yml`
+    - Policy: keep workflow `GITHUB_TOKEN` permissions least-privilege (jobs can widen only when needed).
+    - If branch ruleset requires “up to date with main”, update PR branches before merge.
 - Keep scripts in `scripts/` or `Makefile` to ensure repeatability.
 
 **Formatting (Black):**
@@ -1160,6 +1163,8 @@ pre-commit run --all-files
 
 **Repo automation:**
 - Dependabot runs weekly updates (Actions + Python deps best-effort).
+    - Grouped updates reduce PR noise (configured in `.github/dependabot.yml`).
+    - These PRs may be blocked from merge until brought “up to date” with `main` (use `gh pr update-branch`).
 - CodeQL runs weekly and on PRs.
 
 ### 13.6 Professional-grade Testing Checklist

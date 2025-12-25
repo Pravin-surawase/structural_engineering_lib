@@ -423,7 +423,9 @@ Before starting implementation:
 Before merging to main:
 - [ ] Merge happens via PR (no direct pushes to `main`; see `docs/_internal/GIT_GOVERNANCE.md`)
 - [ ] Required status checks are green (CI)
-- [ ] Branch is up to date with `main` (if branch protection requires it)
+- [ ] Branch is up to date with `main` (if ruleset requires it)
+    - Preferred: `gh pr update-branch <PR_NUMBER>`
+    - Alternative: merge/rebase `main` into the branch locally, push, and re-run checks
 - [ ] All tests pass (Python: pytest; VBA: harness)
 - [ ] DOCS updated (API, CHANGELOG, relevant guides)
 - [ ] INTEGRATION schema validated

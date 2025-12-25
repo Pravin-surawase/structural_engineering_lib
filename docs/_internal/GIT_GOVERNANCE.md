@@ -43,6 +43,10 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 
 This repo prefers **low-maintenance security**: enforce safety at the repo-settings layer instead of complex workflow tricks.
 
+Implementation note:
+* Prefer **GitHub Rulesets** (the newer UI) over legacy branch protection rules.
+* If the ruleset enables “Require branches to be up to date”, PR branches must be updated before merge.
+
 Recommended protection rule for `main`:
 * Require a pull request before merging
 * Require status checks to pass before merging
@@ -56,6 +60,15 @@ Solo default:
 
 Supply-chain stance:
 * Avoid high-maintenance hardening (e.g., pinning every GitHub Action to a commit SHA) unless there is a clear need.
+
+### 2.4 GitHub CLI (Low-Friction PR Workflow)
+
+When working from the terminal, prefer `gh` to keep the workflow repeatable and fast:
+
+* Create PR: `gh pr create --base main --head <branch>`
+* Check CI: `gh pr checks <PR_NUMBER>`
+* Update branch (when ruleset requires up-to-date): `gh pr update-branch <PR_NUMBER>`
+* Merge + delete branch: `gh pr merge <PR_NUMBER> --squash --delete-branch`
 
 ---
 
