@@ -93,7 +93,9 @@ Desktop.ini
 # Build artifacts
 *.xlam
 !VBA/Build/*.xlam
-Excel/BeamDesignApp.xlsm
+
+# Scratch workbooks created by Excel
+Excel/Book*.xlsx
 
 # Local config (if any)
 .env

@@ -165,7 +165,7 @@ structural_engineering_lib/
 ├── Python/
 │   ├── structural_lib/     ← Python package (rectangular + flanged flexure, shear)
 │   └── tests/
-├── Excel/                  ← Flagship workbook (placeholder)
+├── Excel/                  ← Excel workbooks (see Excel/README.md)
 ├── docs/
 │   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
 │   ├── README.md            ← Docs index (start here)
