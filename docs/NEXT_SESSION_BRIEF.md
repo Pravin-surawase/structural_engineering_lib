@@ -6,6 +6,7 @@
 
 ## TL;DR (What Changed Recently)
 - Improved onboarding docs (README dev setup + quick commands).
+- Hardened GitHub Actions workflow permissions (least-privilege; low maintenance).
 - Expanded AI/high-value enhancements research log (Pass 3 + Pass 4).
 - Added a place for local reference files (`docs/_references/`) and prevented committing large local snapshots.
 - Organized docs for VS Code AI agents: docs index + AI context pack + ADR template; moved governance docs into `docs/_internal/` and archived the long historical research doc.
@@ -28,6 +29,11 @@ If you want to resume quickly without re-reading the repo:
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
+
+**Security posture (low maintenance):**
+- Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
+- Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
+- Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
 
 ---
 
@@ -154,7 +160,7 @@ Phase 4: Release hygiene
 ### Git Status
 - **Branch:** `main`
 - **Remote:** GitHub (up-to-date)
-- **Latest Commit:** (run `git log -1 --oneline`)
+- **Latest Commit:** `e60726a` (least-privilege CI permissions)
 - **Repo:** https://github.com/Pravin-surawase/structural_engineering_lib
 
 ### Documentation (highlights)
@@ -210,6 +216,12 @@ docs/
 2. **Test-driven development** — write tests before implementation
 3. **Document as you go** — don't defer documentation
 4. **VBA parity** — keep Python and VBA in sync
+5. **Security without ceremony** — enforce PR-only merges + required checks via branch protection; keep CI hardening low-maintenance
+
+### Security checklist (recommended)
+- Protect `main`: require PRs, require status checks, require up-to-date branches
+- Disallow force pushes and deletion of `main`
+- (Solo default) Leave "Include administrators" OFF as an emergency escape hatch
 
 ### Questions to Ask
 - [ ] Do we have all IS 456 clauses/tables needed?

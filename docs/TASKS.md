@@ -198,6 +198,8 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [x] Add PR template: `.github/pull_request_template.md`
     - [x] Add issue templates: `.github/ISSUE_TEMPLATE/*`
     - [x] Add CI workflow: `.github/workflows/python-tests.yml` running `pytest` in `Python/`
+    - [x] Harden CI permissions (least-privilege `GITHUB_TOKEN` in workflows)
+    - [ ] Protect `main` branch (require PR + required checks; disallow force-push + deletion)
     - [x] README polish: add “Contributing / Support / Security” links; ensure install commands are correct
     - [x] Verify CI passes on GitHub; update badges if desired
     - [ ] Keep scope minimal: no new features, only repo hygiene
