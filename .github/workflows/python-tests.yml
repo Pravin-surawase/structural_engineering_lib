@@ -5,10 +5,16 @@ on:
     branches: [ main ]
   pull_request:
 
+# Default to least-privilege for the workflow. Jobs can widen if needed.
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint / Typecheck
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
@@ -42,6 +48,9 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     strategy:
       matrix:
