@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — Development Guide
 
 **Document Version:** 0.9.1  
-**Last Updated:** December 25, 2025  
+**Last Updated:** December 26, 2025  
 **Audience:** Contributors, maintainers, and developers extending the library
 
 ---
@@ -150,7 +150,7 @@ Attribute VB_Name = "IS456_ModuleName"
 '===============================================================================
 ' IS456_ModuleName.bas
 ' Part of: IS 456 RC Beam Design Library
-' Version: 0.1.0
+' Version: 0.9.1
 ' Purpose: [Brief description]
 '
 ' References: IS 456:2000, SP:16-1980
@@ -224,7 +224,7 @@ Use `Const` for fixed values; use `Public Const` in the Constants module:
 ' In IS456_Constants.bas
 Public Const kN_TO_N As Double = 1000
 Public Const kNm_TO_Nmm As Double = 1000000
-Public Const LIB_VERSION As String = "0.1.0"
+Public Const LIB_VERSION As String = "0.9.1"
 
 ' Private constants within a module
 Private Const MAX_PT_PERCENT As Double = 3#
@@ -314,7 +314,7 @@ Purpose: [Brief description]
 References: IS 456:2000, SP:16-1980
 
 Author: [Your name/team]
-Version: 0.1.0
+Version: 0.9.1
 """
 
 from __future__ import annotations
@@ -415,8 +415,8 @@ KNM_TO_NMM: float = 1_000_000.0
 M_TO_MM: float = 1000.0
 
 # Version info
-LIB_VERSION: str = "0.1.0"
-LIB_BUILD_DATE: str = "2025-12-10"
+LIB_VERSION: str = "0.9.1"
+LIB_BUILD_DATE: str = "2025-12-25"
 IS456_CODE_YEAR: str = "2000"
 
 # Code limits
@@ -1076,7 +1076,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "structural-lib-is456"
-version = "0.1.0"
+version = "0.9.1"
 description = "IS 456 RC Beam Design Library"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -1097,7 +1097,7 @@ dev = ["pytest", "black", "mypy", "pre-commit"]
 ```ini
 [metadata]
 name = structural-lib-is456
-version = 0.1.0
+version = 0.9.1
 description = IS 456 RC Beam Design Library
 long_description = file: README.md
 long_description_content_type = text/markdown
@@ -1332,7 +1332,7 @@ Attribute VB_Name = "IS456_ModuleName"
 '===============================================================================
 ' IS456_ModuleName.bas
 ' Part of: IS 456 RC Beam Design Library
-' Version: 0.1.0
+' Version: 0.9.1
 ' Purpose: [Description]
 '===============================================================================
 Option Explicit
