@@ -85,6 +85,107 @@ This log captures goals/mindset, a lightweight online-scan snapshot, and a prior
 
 ---
 
+## Research Update (Pass 6 - Adoption and Positioning Insights, Dec 25, 2025)
+
+This pass distills actionable ideas from user-workflow research and aligns them
+to the current roadmap. It avoids new claims and focuses on adoption leverage.
+
+### Useful ideas to keep (aligned to current tasks)
+- **Excel-first transparency**: keep the Excel/VBA path explicit and "glass-box"
+  (auditable formulas, deterministic outputs). This builds trust for engineers
+  who rely on spreadsheets.
+- **BBS/BOM as an adoption hook**: generating fabrication-ready schedules is a
+  high-visibility win (maps to TASK-034).
+- **ETABS mapping docs**: documentation that bridges ETABS exports to your input
+  schema is low-effort, high-impact (maps to TASK-044).
+- **Determinism as brand**: "same inputs -> same outputs + clause references"
+  should remain the core positioning.
+- **Job schema as platform contract**: the public batch schema is the stable
+  interface for Excel, CLI, and future integrations.
+- **Verification packs**: publish benchmark examples to convert skeptics and
+  validate correctness at the edges.
+- **Open-core path**: keep the base library free and monetize high-value
+  automation (batch, BBS, reporting) when ready.
+
+### Suggested next actions (top 5)
+1) Document ETABS export mapping and normalization rules (TASK-044).
+2) Implement BBS/BOM CSV export with explicit rounding rules (TASK-034).
+3) Finish deterministic rebar layout optimizer with clear constraints (TASK-043).
+4) Publish a small verified example pack (5-10 beams) tied to tests.
+5) Add a short "trust and determinism" section to the README or docs index.
+
+---
+
+## Research Update (Pass 7 — Rebar Optimizer Spec: Min Steel Weight + Longitudinal Only, Dec 26, 2025)
+
+This pass converts two product decisions into an implementation-ready spec for v0.10:
+
+- **Objective:** minimize steel weight.
+- **Scope:** start with **main longitudinal bars only** (no stirrups, no cutting lengths, no BBS yet).
+
+### 1) What “min steel weight” means (deterministic, units-explicit)
+
+For longitudinal bar selection (single beam section, no length modeling yet), “minimum steel weight” reduces to:
+
+- Minimize total steel area provided, $A_{s,prov}$, because weight per unit length is proportional to area.
+
+In code terms, this matches an objective of **minimizing `area_provided`** (mm²) for feasible layouts.
+
+### 2) Ground truth in repo (already present)
+
+The Python implementation exists as a deterministic bounded search:
+
+- `Python/structural_lib/rebar_optimizer.py` — `optimize_bar_arrangement(..., objective="min_area")`
+
+So the immediate “research-to-code” action is **productization** (docs/API/tests/parity), not inventing a new algorithm.
+
+### 3) Constraints (v0.10 “Level A constructability”)
+
+Hard constraints to enforce (must pass):
+
+- Allowed diameters: `STANDARD_BAR_DIAMETERS` (or explicit `allowed_dia_mm`).
+- Minimum bars: `min_total_bars` (default 2).
+- Maximum layers: `max_layers` (default 2).
+- Spacing feasibility: use the existing min-spacing check (same helper used by detailing) with explicit `agg_size_mm`.
+
+Notes:
+
+- Layering model is “split bars equally across layers” (via `ceil(count/layers)`), which is simple and deterministic.
+- Feasibility is horizontal spacing only (good for v0.10; vertical clear spacing and layering offsets can be a later refinement).
+
+### 4) Deterministic tie-break rules (no surprises)
+
+For `objective="min_area"`, use a fixed lexicographic score:
+
+1) `area_provided` (ascending)
+2) `layers` (ascending)
+3) `count` (ascending)
+4) `bar_dia_mm` (ascending)
+
+This is already the shape used by the Python optimizer and keeps outputs reproducible.
+
+### 5) Test/benchmark vectors (what to add before extending features)
+
+Add a small benchmark pack (5–10 vectors) that asserts:
+
+- Determinism: same inputs → identical arrangement (count/dia/layers/area_provided).
+- Feasible case: arrangement spacing passes `check_min_spacing`.
+- Infeasible case: returns a structured failure with `candidates_considered` and inputs echoed.
+
+Suggested vector fields:
+
+- `ast_required_mm2`, `b_mm`, `cover_mm`, `stirrup_dia_mm`, `agg_size_mm`, `max_layers`, `allowed_dia_mm`
+- Expected: `count`, `dia_mm`, `layers` OR expected infeasible.
+
+### 6) What is explicitly out of scope in this pass
+
+- Stirrup optimization
+- BBS/cutting lengths
+- Waste optimization / stock-length cutting plans
+- Any ML/AI-based selection
+
+---
+
 ## Research Update (Pass 5 — Repo Status + Plan Ahead, Dec 20, 2025)
 
 ### What’s Already Implemented (so research should not re-plan it)
@@ -349,6 +450,5 @@ This is a short, execution-focused plan based on the research passes above.
 - Clear assumptions surfaced in output (no hidden defaults)
 - Structured failures (actionable reasons when inputs/geometry make a check impossible)
 - Tests for at least: nominal case, boundary case, infeasible case
-
 
 
