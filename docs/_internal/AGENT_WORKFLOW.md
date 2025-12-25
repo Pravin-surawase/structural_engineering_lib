@@ -421,6 +421,9 @@ Before starting implementation:
 
 ### 6.2 Pre-Merge Gate
 Before merging to main:
+- [ ] Merge happens via PR (no direct pushes to `main`; see `docs/_internal/GIT_GOVERNANCE.md`)
+- [ ] Required status checks are green (CI)
+- [ ] Branch is up to date with `main` (if branch protection requires it)
 - [ ] All tests pass (Python: pytest; VBA: harness)
 - [ ] DOCS updated (API, CHANGELOG, relevant guides)
 - [ ] INTEGRATION schema validated
@@ -449,7 +452,7 @@ Before tagging a release:
 1. DEVOPS commits all work
 2. DOCS updates NEXT_SESSION_BRIEF.md
 3. PM updates TASKS.md
-4. DEVOPS pushes to remote
+4. DEVOPS pushes the feature branch and opens/updates the PR (preferred)
 
 ---
 

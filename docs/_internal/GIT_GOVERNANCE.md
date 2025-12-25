@@ -23,9 +23,9 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 *   **`main` (Protected):**
     *   The "Golden Master". Always deployable.
     *   Contains only tested, verified code.
-*   **Rule:** No direct commits to `main`.
-        * If you need to change docs, use a PR like everything else.
-        * Release tags are created on the merge commit.
+    *   **Rule:** No direct commits to `main`.
+        *   If you need to change docs, use a PR like everything else.
+        *   Release tags are created on the merge commit.
 *   **`feat/task-ID-description`:**
     *   Feature branches for specific tasks.
     *   Naming convention: `feat/task-017-etabs-import`, `fix/task-012-shear-bug`.
