@@ -32,7 +32,7 @@ For VS Code AI-agent work, start with:
 - VBA side specifics: [VBA_GUIDE.md](VBA_GUIDE.md)
 - Packaging the add-in (`.xlam`): [EXCEL_ADDIN_GUIDE.md](EXCEL_ADDIN_GUIDE.md)
 - Common engineering/coding traps: [KNOWN_PITFALLS.md](KNOWN_PITFALLS.md)
-- Git workflow rules: [docs/_internal/GIT_GOVERNANCE.md](_internal/GIT_GOVERNANCE.md)
+- Git workflow rules: [_internal/GIT_GOVERNANCE.md](_internal/GIT_GOVERNANCE.md)
 
 ---
 
@@ -56,5 +56,5 @@ For VS Code AI-agent work, start with:
 ## Internal (multi-agent workflow)
 
 These are mainly for the AI-agent workflow you’re using to build the repo:
-- [docs/_internal/AGENT_WORKFLOW.md](_internal/AGENT_WORKFLOW.md)
+- [_internal/AGENT_WORKFLOW.md](_internal/AGENT_WORKFLOW.md)
 - Role prompts: see [../agents/README.md](../agents/README.md)
