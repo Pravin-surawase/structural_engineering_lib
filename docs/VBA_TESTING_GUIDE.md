@@ -20,9 +20,12 @@
 ```
 ========================================
   STRUCTURAL ENGINEERING LIB - VBA TESTS
-  Version: 0.9.1
+  Version: 0.9.3
   Date: 2025-12-26 14:30:00
 ========================================
+
+NOTE: Review each suite's output for PASS/FAIL.
+      Totals are not aggregated - check for FAIL lines.
 
 >>> Suite: Structural (Flexure, Shear, Materials, Tables)
 --- Starting Tests ---
@@ -35,38 +38,37 @@ PASS: Flexure_CalcOnly_MuLim_Upper
 [PASS] FlangedBeam_NA_InFlange
 ...
 
->>> Suite: Detailing (Ld, Lap, Spacing)
 ========================================
-TEST SUITE: M15_Detailing
+  RUN COMPLETE
 ========================================
-  [PASS] Test_BondStress_M20
-...
-
-========================================
-  FINAL SUMMARY
-========================================
-  Total Passed: 75
-  Total Failed: 0
+  Suites Run: 7
+  Suite Errors: 0
   Time Elapsed: 1.23 seconds
 ========================================
-  STATUS: ALL TESTS PASSED
+  All suites executed without runtime errors.
+  >> Review output above for FAIL lines <<
 ========================================
 ```
+
+> **Important:** The test runner executes all suites but cannot aggregate
+> individual PASS/FAIL counts. Review the Immediate Window output manually
+> for any `FAIL` or `[FAIL]` lines.
 
 ---
 
 ## Test Modules
 
-| Module | File | Test Count | Coverage |
-|--------|------|------------|----------|
-| Structural | `Test_Structural.bas` | ~15 | Flexure, Shear, Materials, Tables |
-| Flanged | `Test_Flanged.bas` | ~6 | T-beam, L-beam designs |
-| Ductile | `Test_Ductile.bas` | ~8 | IS 13920 detailing rules |
-| Detailing | `Test_Detailing.bas` | ~25 | Ld, lap, spacing, stirrups |
-| DXF | `Test_DXF.bas` | ~5 | DXF R12 export |
-| Serviceability | `Test_Serviceability.bas` | ~4 | Deflection, crack width |
+| Module | File | Coverage |
+|--------|------|----------|
+| Structural | `Test_Structural.bas` | Flexure, Shear, Materials, Tables |
+| Flanged | `Test_Flanged.bas` | T-beam, L-beam designs |
+| Ductile | `Test_Ductile.bas` | IS 13920 detailing rules |
+| Detailing | `Test_Detailing.bas` | Ld, lap, spacing, stirrups |
+| DXF | `Test_DXF.bas` | DXF R12 export |
+| Serviceability | `Test_Serviceability.bas` | Deflection, crack width |
+| Parity | `Test_Parity.bas` | Python ↔ VBA verification |
 
-**Total:** ~63 test cases
+> Note: Each module prints its own pass/fail lines. Counts vary by module.
 
 ---
 

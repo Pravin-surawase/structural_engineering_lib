@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       Test_RunAll
 ' Description:  Unified Test Runner for all VBA modules
-' Version:      0.9.2
+' Version:      0.9.3
 ' License:      MIT
 ' ==============================================================================
 '
@@ -15,21 +15,24 @@ Option Explicit
 '   4. Press Enter
 '
 ' OUTPUT:
-'   Test results appear in the Immediate Window with PASS/FAIL counts.
-'   A summary is also written to the "TestLog" sheet if it exists.
+'   Test results appear in the Immediate Window.
+'   Each suite prints its own PASS/FAIL lines - review the output for failures.
+'   A run log is written to the "TestLog" sheet if it exists.
+'
+' NOTE:
+'   VBA test modules don't return counts, so this runner can't aggregate totals.
+'   Review the Immediate Window output manually for any FAIL lines.
 '
 ' ==============================================================================
 
-Private m_TotalPass As Long
-Private m_TotalFail As Long
+Private m_SuiteErrors As Long
 Private m_StartTime As Double
 
 ' ==============================================================================
 ' Main Entry Point
 ' ==============================================================================
 Public Sub RunAllVBATests()
-    m_TotalPass = 0
-    m_TotalFail = 0
+    m_SuiteErrors = 0
     m_StartTime = Timer
     
     Debug.Print ""
@@ -38,6 +41,9 @@ Public Sub RunAllVBATests()
     Debug.Print "  Version: " & Get_Library_Version()
     Debug.Print "  Date: " & Format(Now, "yyyy-mm-dd hh:nn:ss")
     Debug.Print "========================================"
+    Debug.Print ""
+    Debug.Print "NOTE: Review each suite's output for PASS/FAIL."
+    Debug.Print "      Totals are not aggregated - check for FAIL lines."
     Debug.Print ""
     
     ' --- Core Module Tests ---
@@ -61,78 +67,114 @@ Public Sub RunAllVBATests()
     
     Debug.Print ""
     Debug.Print "========================================"
-    Debug.Print "  FINAL SUMMARY"
+    Debug.Print "  RUN COMPLETE"
     Debug.Print "========================================"
-    Debug.Print "  Total Passed: " & m_TotalPass
-    Debug.Print "  Total Failed: " & m_TotalFail
+    Debug.Print "  Suites Run: 7"
+    Debug.Print "  Suite Errors: " & m_SuiteErrors
     Debug.Print "  Time Elapsed: " & Format(elapsed, "0.00") & " seconds"
     Debug.Print "========================================"
     
-    If m_TotalFail = 0 Then
-        Debug.Print "  STATUS: ALL TESTS PASSED"
+    If m_SuiteErrors = 0 Then
+        Debug.Print "  All suites executed without runtime errors."
+        Debug.Print "  >> Review output above for FAIL lines <<"
     Else
-        Debug.Print "  STATUS: " & m_TotalFail & " FAILURES - REVIEW ABOVE"
+        Debug.Print "  WARNING: " & m_SuiteErrors & " suite(s) had errors."
+        Debug.Print "  Check for missing modules or runtime issues."
     End If
     Debug.Print "========================================"
     
-    ' Optionally log to sheet
+    ' Log run to sheet
     Call LogResultsToSheet
 End Sub
 
 ' ==============================================================================
-' Suite Runners (capture pass/fail counts from each module)
+' Suite Runners
+' ==============================================================================
+' NOTE: Each suite prints its own PASS/FAIL lines to the Immediate Window.
+'       This runner can only detect if a suite fails to load/execute.
 ' ==============================================================================
 
 Private Sub RunSuite_Structural()
-    On Error Resume Next
     Debug.Print ">>> Suite: Structural (Flexure, Shear, Materials, Tables)"
-    
-    ' Test_Structural.RunAllTests outputs PASS/FAIL to Debug
-    ' We can't easily capture counts, so we run it and trust its output
+    On Error GoTo ErrHandler
     Test_Structural.RunAllTests
-    
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
 Private Sub RunSuite_Flanged()
-    On Error Resume Next
     Debug.Print ">>> Suite: Flanged Beams"
+    On Error GoTo ErrHandler
     Test_Flanged.RunFlangedTests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
 Private Sub RunSuite_Ductile()
-    On Error Resume Next
     Debug.Print ">>> Suite: Ductile Detailing (IS 13920)"
+    On Error GoTo ErrHandler
     Test_Ductile.RunDuctileTests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
 Private Sub RunSuite_Detailing()
-    On Error Resume Next
     Debug.Print ">>> Suite: Detailing (Ld, Lap, Spacing)"
+    On Error GoTo ErrHandler
     Test_Detailing.Run_All_Detailing_Tests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
 Private Sub RunSuite_DXF()
-    On Error Resume Next
     Debug.Print ">>> Suite: DXF Export"
+    On Error GoTo ErrHandler
     Test_DXF.Run_All_DXF_Tests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
 Private Sub RunSuite_Serviceability()
-    On Error Resume Next
     Debug.Print ">>> Suite: Serviceability (Deflection, Crack Width)"
+    On Error GoTo ErrHandler
     Test_Serviceability.Run_All_Serviceability_Tests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
 Private Sub RunSuite_Parity()
-    On Error Resume Next
-    Debug.Print ">>> Suite: Parity (Python ↔ VBA verification)"
+    Debug.Print ">>> Suite: Parity (Python <-> VBA verification)"
+    On Error GoTo ErrHandler
     Test_Parity.Run_All_Parity_Tests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
     Debug.Print ""
 End Sub
 
@@ -149,11 +191,13 @@ Private Sub LogResultsToSheet()
     Dim nextRow As Long
     nextRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 1
     
+    ' Log run timestamp and basic info
+    ' Note: We can't aggregate pass/fail counts from individual suites
     ws.Cells(nextRow, 1).Value = Now
     ws.Cells(nextRow, 2).Value = Get_Library_Version()
-    ws.Cells(nextRow, 3).Value = m_TotalPass
-    ws.Cells(nextRow, 4).Value = m_TotalFail
-    ws.Cells(nextRow, 5).Value = IIf(m_TotalFail = 0, "PASS", "FAIL")
+    ws.Cells(nextRow, 3).Value = "7 suites"
+    ws.Cells(nextRow, 4).Value = m_SuiteErrors & " suite errors"
+    ws.Cells(nextRow, 5).Value = IIf(m_SuiteErrors = 0, "RUN OK", "ERRORS")
 End Sub
 
 ' ==============================================================================
