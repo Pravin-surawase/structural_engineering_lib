@@ -204,19 +204,22 @@ python3 -m pip install -e ".[dxf]"
 structural_engineering_lib/
 ├── VBA/
 │   ├── Modules/            ← Core .bas modules (import into Excel)
-│   └── Tests/
+│   └── Tests/              ← VBA test suites (Test_RunAll.bas)
 ├── Python/
-│   ├── structural_lib/     ← Python package (rectangular + flanged flexure, shear)
-│   └── tests/
+│   ├── structural_lib/     ← Python package (flexure, shear, BBS, DXF, job runner)
+│   ├── tests/
+│   ├── examples/           ← Worked examples and sample data
+│   └── scripts/            ← Utility scripts (bump_version.py)
 ├── Excel/                  ← Excel workbooks (see Excel/README.md)
 ├── docs/
+│   ├── README.md           ← Docs index (start here)
 │   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
-│   ├── README.md            ← Docs index (start here)
-│   ├── _archive/RESEARCH_AND_FINDINGS.md
-│   ├── DEVELOPMENT_GUIDE.md
-│   ├── API_REFERENCE.md
-│   └── IS456_QUICK_REFERENCE.md
+│   ├── API_REFERENCE.md    ← Public function signatures
+│   ├── BEGINNERS_GUIDE.md  ← Step-by-step introduction
+│   ├── TASKS.md            ← Task backlog and status
+│   └── KNOWN_PITFALLS.md   ← Common traps and gotchas
 ├── agents/                 ← Role docs for AI prompts
+├── logs/                   ← Runtime logs
 ├── CHANGELOG.md
 └── README.md
 ```
@@ -230,26 +233,6 @@ structural_engineering_lib/
 3. Right-click on "VBAProject (YourWorkbook)" > Import File.
 4. Select all `.bas` files from `VBA/Modules/`.
 5. You can now use functions like `=IS456_MuLim(...)` directly in cells or call `Design_Singly_Reinforced` from your macros.
-
-## Using the Python Library
-
-```python
-from structural_lib import flexure
-
-result = flexure.design_singly_reinforced(
-    b=230,
-    d=450,
-    d_total=500,
-    mu_knm=100,
-    fck=20,
-    fy=415,
-)
-
-if result.is_safe:
-    print(f"Ast Required: {result.ast_required:.1f} mm²")
-else:
-    print(f"Design not safe: {result.error_message}")
-```
 
 ### Method 2: Excel Add-in (Recommended for Distribution)
 
@@ -273,6 +256,35 @@ End Sub
 
 More worked examples in `VBA/Examples/Example_Usage.bas`.
 
+## Using the Python Library
+
+```python
+from structural_lib.api import design_beam
+
+result = design_beam(
+    b=230,
+    d=450,
+    d_total=500,
+    mu_knm=100,
+    fck=20,
+    fy=415,
+)
+
+if result.is_safe:
+    print(f"Ast Required: {result.ast_required:.1f} mm²")
+else:
+    print(f"Design not safe: {result.error_message}")
+```
+
+### Additional Modules
+
+- **BBS (Bar Bending Schedule)**: `from structural_lib.bbs import generate_bbs`
+- **DXF Export**: `from structural_lib.dxf_export import generate_beam_dxf`
+- **ETABS Integration**: `from structural_lib.excel_integration import parse_etabs_export`
+- **Job Runner**: `python -m structural_lib.job_cli run job.json`
+
+See [Python examples](Python/examples/) for complete workflows.
+
 ## Documentation
 
 - **[Docs Index](docs/README.md)** — Start here (who should read what)
@@ -285,8 +297,8 @@ More worked examples in `VBA/Examples/Example_Usage.bas`.
 
 ## Testing
 
-- Python: `python3 -m pytest Python/tests -q`
-- VBA: manual/Rubberduck tests planned for later iteration
+- Python: `python3 -m pytest Python/tests -q` (1600+ tests)
+- VBA: Run `Test_RunAll.RunAllTests` in Excel VBA Editor (see `VBA/Tests/`)
 
 ## Packaging
 
