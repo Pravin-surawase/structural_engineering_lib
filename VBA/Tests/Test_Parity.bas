@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       Test_Parity
 ' Description:  Parity tests matching Python test vectors (parity_test_vectors.json)
-' Version:      0.9.2
+' Version:      0.9.3
 ' License:      MIT
 ' ==============================================================================
 '
