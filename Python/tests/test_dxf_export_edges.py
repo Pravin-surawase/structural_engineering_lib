@@ -641,3 +641,112 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
     assert beam2_x >= beam1_x + min_expected_gap, (
         f"Beam 2 x={beam2_x} should be >= beam1_x({beam1_x}) + {min_expected_gap}"
     )
+
+
+# ============================================================================
+# Q-014: Additional edge cases for DXF export
+# ============================================================================
+
+
+def test_multi_beam_layout_single_beam(monkeypatch, tmp_path):
+    """Q-014: Single beam with columns=1 should work correctly."""
+    import structural_lib.dxf_export as dxf_export
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
+
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    beam = BeamDetailingResult(
+        beam_id="B-SINGLE",
+        story="S1",
+        b=250,
+        D=450,
+        span=3500,
+        cover=35,
+        top_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
+        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=100, layers=1)],
+        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)],
+        ld_tension=500,
+        ld_compression=400,
+        lap_length=600,
+        is_valid=True,
+        remarks="Single beam test",
+    )
+
+    out = tmp_path / "single_beam.dxf"
+    dxf_export.generate_multi_beam_dxf([beam], str(out), columns=1)
+
+    doc = _FakeEzdxf.last_doc
+    assert doc is not None
+    assert doc.saved_to == str(out)
+
+    # Should have drawings for the single beam
+    texts = [t.text for t in doc._msp.texts]
+    assert any("B-SINGLE" in t for t in texts), "Should have B-SINGLE beam ID"
+
+
+def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
+    """Q-014: 12 beams in 3x4 grid should work without overlap."""
+    import structural_lib.dxf_export as dxf_export
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
+
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    beams = []
+    for i in range(12):
+        beam = BeamDetailingResult(
+            beam_id=f"B{i+1:02d}",
+            story=f"S{(i % 3) + 1}",
+            b=230 + (i * 10),  # Varying widths
+            D=400 + (i * 20),  # Varying depths
+            span=3000 + (i * 100),  # Varying spans
+            cover=40,
+            top_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
+            bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=100, layers=1)],
+            stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)],
+            ld_tension=500,
+            ld_compression=400,
+            lap_length=600,
+            is_valid=True,
+            remarks=f"Beam {i+1}",
+        )
+        beams.append(beam)
+
+    out = tmp_path / "large_grid.dxf"
+    dxf_export.generate_multi_beam_dxf(beams, str(out), columns=3)
+
+    doc = _FakeEzdxf.last_doc
+    assert doc is not None
+    assert doc.saved_to == str(out)
+
+    # Should have drawings for all 12 beams
+    texts = [t.text for t in doc._msp.texts]
+    for i in range(12):
+        beam_id = f"B{i+1:02d}"
+        assert any(beam_id in t for t in texts), f"Should have {beam_id} beam ID"
+
+    # Should have a reasonable number of lines (at least 4 rectangle lines per beam)
+    assert len(doc._msp.lines) >= 12 * 4, f"Expected at least 48 lines, got {len(doc._msp.lines)}"

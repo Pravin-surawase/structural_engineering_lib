@@ -124,3 +124,59 @@ def test_job_runner_rejects_unknown_code(tmp_path: Path):
 
     with pytest.raises(ValueError, match="Unsupported code"):
         job_runner.run_job(job_path=job_path, out_dir=tmp_path / "out")
+
+
+# ============================================================================
+# Q-013: Edge cases for malformed JSON
+# ============================================================================
+
+
+def test_job_runner_rejects_missing_job_id(tmp_path: Path):
+    """Q-013: Missing job_id should raise ValueError."""
+    job = {
+        "schema_version": 1,
+        "code": "IS456",
+        "units": "IS456",
+        # job_id missing
+        "beam": {"b_mm": 230},
+        "cases": [],
+    }
+    job_path = tmp_path / "job.json"
+    _write_job(job_path, job)
+
+    with pytest.raises(ValueError, match="job_id"):
+        job_runner.run_job(job_path=job_path, out_dir=tmp_path / "out")
+
+
+def test_job_runner_rejects_beam_not_dict(tmp_path: Path):
+    """Q-013: beam must be a dict."""
+    job = {
+        "schema_version": 1,
+        "code": "IS456",
+        "units": "IS456",
+        "job_id": "test",
+        "beam": "not_a_dict",
+        "cases": [],
+    }
+    job_path = tmp_path / "job.json"
+    _write_job(job_path, job)
+
+    with pytest.raises(ValueError, match="beam must be an object"):
+        job_runner.run_job(job_path=job_path, out_dir=tmp_path / "out")
+
+
+def test_job_runner_rejects_cases_not_list(tmp_path: Path):
+    """Q-013: cases must be a list."""
+    job = {
+        "schema_version": 1,
+        "code": "IS456",
+        "units": "IS456",
+        "job_id": "test",
+        "beam": {"b_mm": 230},
+        "cases": "not_a_list",
+    }
+    job_path = tmp_path / "job.json"
+    _write_job(job_path, job)
+
+    with pytest.raises(ValueError, match="cases must be an array"):
+        job_runner.run_job(job_path=job_path, out_dir=tmp_path / "out")
