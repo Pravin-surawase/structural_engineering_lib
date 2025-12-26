@@ -356,10 +356,68 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 ## Notes
 
 - **Current Version**: v0.9.1
-- **Last Updated**: 2025-12-25
-- **Active Branch**: main
+- **Last Updated**: 2025-12-26
+- **Active Branch**: feat/bbs-etabs-integration
 
 ### v0.7 Implementation Notes
 - **Python:** Full implementation (detailing, DXF, integration) - 67 tests (v0.7); 212 tests passing (v0.9.x)
 - **VBA:** Full implementation (M15_Detailing.bas) - 25 test cases
 - **DXF Dependency:** `pip install .[dxf]` for ezdxf support
+
+---
+
+## 🔧 Code Quality Sweep (v0.9.2)
+
+> **Goal:** Find and fix HIGH/MEDIUM priority code issues before merging to main.
+> **Approach:** Small, focused tasks. 1-2 at a time to avoid timeouts.
+
+### Phase 1: Input Validation (ZeroDivisionError Prevention)
+
+| ID | File | Issue | Severity | Status |
+|----|------|-------|----------|--------|
+| Q-001 | `ductile.py` L45 | `get_min_tension_steel_percentage` divides by `fy` | HIGH | ✅ Fixed |
+| Q-002 | `detailing.py` | Check `calculate_development_length` for `tau_bd=0` | MEDIUM | ⬜ TODO |
+| Q-003 | `materials.py` | Check all division operations | MEDIUM | ⬜ TODO |
+
+### Phase 2: Exception Handling (Stack Trace Preservation)
+
+| ID | File | Issue | Severity | Status |
+|----|------|-------|----------|--------|
+| Q-004 | `compliance.py` L104 | Exception loses stack trace | MEDIUM | ⬜ TODO |
+| Q-005 | `compliance.py` L128 | Exception loses stack trace | MEDIUM | ⬜ TODO |
+| Q-006 | `excel_integration.py` L295 | Exception loses stack trace | MEDIUM | ⬜ TODO |
+
+### Phase 3: VBA/Python Parity Check
+
+| ID | Module | Check | Status |
+|----|--------|-------|--------|
+| Q-007 | `flexure` | Compare Mu_lim, xu_max formulas | ⬜ TODO |
+| Q-008 | `shear` | Compare tau_c, tau_c_max tables | ⬜ TODO |
+| Q-009 | `ductile` | Compare all IS 13920 functions | ⬜ TODO |
+| Q-010 | `materials` | Compare xu_max_d lookup | ⬜ TODO |
+
+### Phase 4: API/Doc Drift Check
+
+| ID | Doc | Check | Status |
+|----|-----|-------|--------|
+| Q-011 | `API_REFERENCE.md` | Verify all function signatures match code | ⬜ TODO |
+| Q-012 | `README.md` | Verify examples work | ⬜ TODO |
+
+### Phase 5: Test Coverage Gaps
+
+| ID | Module | Gap | Status |
+|----|--------|-----|--------|
+| Q-013 | `job_runner.py` | Edge cases for malformed JSON | ⬜ TODO |
+| Q-014 | `bbs.py` | Negative values, empty inputs | ⬜ TODO |
+
+---
+
+### How to Work Through This
+
+1. **Pick 1-2 tasks** from the current phase
+2. **Read the specific file/lines** mentioned
+3. **Fix and add tests** if needed
+4. **Mark as ✅ Fixed** and commit
+5. Move to next task
+
+**Current focus:** Phase 1 (Input Validation) - Q-002, Q-003
