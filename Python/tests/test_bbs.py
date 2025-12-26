@@ -556,7 +556,6 @@ class TestCuttingStockOptimization:
 
     def test_simple_case_all_bars_fit_one_stock(self):
         """Simple case: all bars fit in one stock length."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         # Create line items that should fit in a single 6000mm stock
         items = [
@@ -613,7 +612,6 @@ class TestCuttingStockOptimization:
 
     def test_multiple_stock_lengths_needed(self):
         """Multiple stock lengths needed when bars don't fit in one."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         items = [
             BBSLineItem(
@@ -644,7 +642,6 @@ class TestCuttingStockOptimization:
 
     def test_bar_longer_than_stock_raises_error(self):
         """Bar longer than any stock length should raise ValueError."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         items = [
             BBSLineItem(
@@ -670,7 +667,6 @@ class TestCuttingStockOptimization:
 
     def test_waste_calculation_accuracy(self):
         """Waste calculation should be accurate."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         items = [
             BBSLineItem(
@@ -708,7 +704,6 @@ class TestCuttingStockOptimization:
 
     def test_first_fit_decreasing_order(self):
         """Algorithm should process cuts in descending order (largest first)."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         items = [
             BBSLineItem(
@@ -751,7 +746,6 @@ class TestCuttingStockOptimization:
 
     def test_kerf_handling(self):
         """Kerf (saw cut loss) should be properly accounted for."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         items = [
             BBSLineItem(
@@ -786,7 +780,6 @@ class TestCuttingStockOptimization:
 
     def test_optimal_stock_selection(self):
         """Algorithm should prefer smallest stock that fits."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         items = [
             BBSLineItem(
@@ -814,7 +807,6 @@ class TestCuttingStockOptimization:
 
     def test_empty_items_list(self):
         """Empty items list should return empty plan."""
-        from structural_lib.bbs import optimize_cutting_stock
 
         plan = optimize_cutting_stock([], stock_lengths=[6000], kerf=3.0)
 
@@ -825,7 +817,6 @@ class TestCuttingStockOptimization:
 
     def test_default_stock_lengths(self):
         """Should use default stock lengths when not specified."""
-        from structural_lib.bbs import optimize_cutting_stock, STANDARD_STOCK_LENGTHS_MM
 
         items = [
             BBSLineItem(
