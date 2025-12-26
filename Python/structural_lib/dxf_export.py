@@ -832,10 +832,10 @@ def generate_multi_beam_dxf(
 
     # Compute cumulative Y offsets for each row
     # Account for below_extent so annotations don't overlap
-    below_extent = (
+    below_extent: float = (
         DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
     )
-    row_y_offsets = [
+    row_y_offsets: List[float] = [
         below_extent
     ] * n_rows  # Start with offset for first row's bottom annotations
     for r in range(1, n_rows):
