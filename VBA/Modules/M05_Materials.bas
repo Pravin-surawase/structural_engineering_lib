@@ -9,7 +9,12 @@ Option Explicit
 ' ==============================================================================
 
 ' Get Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)
+' Returns 0 for invalid fy values (<= 0)
 Public Function Get_XuMax_d(ByVal fy As Double) As Double
+    If fy <= 0 Then
+        Get_XuMax_d = 0#
+        Exit Function
+    End If
     Select Case fy
         Case 250: Get_XuMax_d = 0.53
         Case 415: Get_XuMax_d = 0.48

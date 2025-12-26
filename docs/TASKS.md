@@ -391,10 +391,10 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 | ID | Module | Check | Status |
 |----|--------|-------|--------|
-| Q-007 | `flexure` | Compare Mu_lim, xu_max formulas | ⬜ TODO |
-| Q-008 | `shear` | Compare tau_c, tau_c_max tables | ⬜ TODO |
-| Q-009 | `ductile` | Compare all IS 13920 functions | ⬜ TODO |
-| Q-010 | `materials` | Compare xu_max_d lookup | ⬜ TODO |
+| Q-007 | `flexure` | Compare Mu_lim, xu_max formulas | ✅ Match |
+| Q-008 | `shear` | Compare tau_c, tau_c_max tables | ✅ Match |
+| Q-009 | `ductile` | Compare all IS 13920 functions | ✅ Match |
+| Q-010 | `materials` | Compare xu_max_d lookup | ✅ Fixed (added fy<=0 check to VBA) |
 
 ### Phase 4: API/Doc Drift Check
 
