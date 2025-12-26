@@ -22,13 +22,13 @@ def round_to(value: float, digits: int) -> float:
 
 def mm_to_m(value_mm: float) -> float:
     """Convert millimeters to meters.
-    
+
     Args:
         value_mm: Value in millimeters.
-        
+
     Returns:
         Value in meters.
-        
+
     Example:
         >>> mm_to_m(1500)
         1.5
@@ -38,13 +38,13 @@ def mm_to_m(value_mm: float) -> float:
 
 def m_to_mm(value_m: float) -> float:
     """Convert meters to millimeters.
-    
+
     Args:
         value_m: Value in meters.
-        
+
     Returns:
         Value in millimeters.
-        
+
     Example:
         >>> m_to_mm(1.5)
         1500.0
