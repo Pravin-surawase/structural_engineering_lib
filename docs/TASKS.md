@@ -400,8 +400,8 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 | ID | Doc | Check | Status |
 |----|-----|-------|--------|
-| Q-011 | `API_REFERENCE.md` | Verify all function signatures match code | ⬜ TODO |
-| Q-012 | `README.md` | Verify examples work | ⬜ TODO |
+| Q-011 | `API_REFERENCE.md` | Verify all function signatures match code | ✅ Verified |
+| Q-012 | `README.md` | Verify examples work | ✅ Fixed (parse_etabs_export → load_beam_data_from_csv) |
 
 ### Phase 5: Test Coverage Gaps
 

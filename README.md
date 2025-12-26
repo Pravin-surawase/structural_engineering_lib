@@ -280,7 +280,7 @@ else:
 
 - **BBS (Bar Bending Schedule)**: `from structural_lib.bbs import generate_bbs_from_detailing`
 - **DXF Export**: `from structural_lib.dxf_export import generate_beam_dxf`
-- **ETABS Integration**: `from structural_lib.excel_integration import parse_etabs_export`
+- **CSV/ETABS Import**: `from structural_lib.excel_integration import load_beam_data_from_csv`
 - **Job Runner**: `python3 -m structural_lib.job_cli run --job job.json`
 
 See [Python examples](Python/examples/) for complete workflows.
