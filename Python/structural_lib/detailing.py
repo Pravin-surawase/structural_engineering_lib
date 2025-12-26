@@ -157,10 +157,10 @@ def calculate_development_length(
     """
     if bar_dia <= 0 or fck <= 0 or fy <= 0:
         return 0.0
-    
+
     sigma_s = stress_ratio * fy
     tau_bd = get_bond_stress(fck, bar_type)
-    
+
     if tau_bd <= 0:
         return 0.0
 

@@ -12,6 +12,7 @@ from structural_lib.types import (
 
 def test_api_get_library_version_package_not_found(monkeypatch):
     """Test fallback version when package metadata is unavailable."""
+
     def _raise(_name: str):
         raise api.PackageNotFoundError
 

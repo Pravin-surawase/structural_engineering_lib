@@ -470,7 +470,9 @@ def calculate_bbs_summary(
         total_length_m=round(total_length_mm / 1000, 2),
         total_weight_kg=round(total_weight_kg, 2),
         weight_by_diameter={k: round(v, 2) for k, v in sorted(weight_by_dia.items())},
-        length_by_diameter={k: round(v / 1000, 2) for k, v in sorted(length_by_dia.items())},
+        length_by_diameter={
+            k: round(v / 1000, 2) for k, v in sorted(length_by_dia.items())
+        },
         count_by_diameter=dict(sorted(count_by_dia.items())),
     )
 
@@ -551,40 +553,44 @@ def export_bbs_to_csv(
         writer.writeheader()
 
         for item in items:
-            writer.writerow({
-                "bar_mark": item.bar_mark,
-                "member_id": item.member_id,
-                "location": item.location,
-                "zone": item.zone,
-                "shape_code": item.shape_code,
-                "diameter_mm": item.diameter_mm,
-                "no_of_bars": item.no_of_bars,
-                "cut_length_mm": item.cut_length_mm,
-                "total_length_mm": item.total_length_mm,
-                "unit_weight_kg": item.unit_weight_kg,
-                "total_weight_kg": item.total_weight_kg,
-                "remarks": item.remarks,
-            })
+            writer.writerow(
+                {
+                    "bar_mark": item.bar_mark,
+                    "member_id": item.member_id,
+                    "location": item.location,
+                    "zone": item.zone,
+                    "shape_code": item.shape_code,
+                    "diameter_mm": item.diameter_mm,
+                    "no_of_bars": item.no_of_bars,
+                    "cut_length_mm": item.cut_length_mm,
+                    "total_length_mm": item.total_length_mm,
+                    "unit_weight_kg": item.unit_weight_kg,
+                    "total_weight_kg": item.total_weight_kg,
+                    "remarks": item.remarks,
+                }
+            )
 
         if include_summary:
             summary = calculate_bbs_summary(items, "TOTAL")
             # Write blank row
             writer.writerow({fn: "" for fn in fieldnames})
             # Write summary
-            writer.writerow({
-                "bar_mark": "TOTAL",
-                "member_id": "",
-                "location": "",
-                "zone": "",
-                "shape_code": "",
-                "diameter_mm": "",
-                "no_of_bars": summary.total_bars,
-                "cut_length_mm": "",
-                "total_length_mm": summary.total_length_m * 1000,
-                "unit_weight_kg": "",
-                "total_weight_kg": summary.total_weight_kg,
-                "remarks": f"{summary.total_items} line items",
-            })
+            writer.writerow(
+                {
+                    "bar_mark": "TOTAL",
+                    "member_id": "",
+                    "location": "",
+                    "zone": "",
+                    "shape_code": "",
+                    "diameter_mm": "",
+                    "no_of_bars": summary.total_bars,
+                    "cut_length_mm": "",
+                    "total_length_mm": summary.total_length_m * 1000,
+                    "unit_weight_kg": "",
+                    "total_weight_kg": summary.total_weight_kg,
+                    "remarks": f"{summary.total_items} line items",
+                }
+            )
 
     return str(path)
 
@@ -674,14 +680,23 @@ def export_bom_summary_csv(
         writer.writerow(["Diameter (mm)", "Count (nos)", "Length (m)", "Weight (kg)"])
 
         for dia in sorted(summary.count_by_diameter.keys()):
-            writer.writerow([
-                int(dia),
-                summary.count_by_diameter.get(dia, 0),
-                summary.length_by_diameter.get(dia, 0),
-                summary.weight_by_diameter.get(dia, 0),
-            ])
+            writer.writerow(
+                [
+                    int(dia),
+                    summary.count_by_diameter.get(dia, 0),
+                    summary.length_by_diameter.get(dia, 0),
+                    summary.weight_by_diameter.get(dia, 0),
+                ]
+            )
 
         writer.writerow([])
-        writer.writerow(["TOTAL", summary.total_bars, summary.total_length_m, summary.total_weight_kg])
+        writer.writerow(
+            [
+                "TOTAL",
+                summary.total_bars,
+                summary.total_length_m,
+                summary.total_weight_kg,
+            ]
+        )
 
     return str(path)

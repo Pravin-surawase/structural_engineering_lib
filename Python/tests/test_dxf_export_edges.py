@@ -340,14 +340,26 @@ def test_section_cuts_added_when_enabled(monkeypatch, tmp_path):
         span=4000,
         cover=40,
         top_bars=[
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
         ],
         bottom_bars=[
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
         ],
         stirrups=[
             StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
@@ -371,15 +383,19 @@ def test_section_cuts_added_when_enabled(monkeypatch, tmp_path):
     )
 
     doc = _FakeEzdxf.last_doc
-    
+
     # Section cuts add circles (for rebars) and polylines (for stirrup outline)
     assert len(doc._msp.circles) > 0, "Section cuts should draw rebar circles"
     assert len(doc._msp.polylines) > 0, "Section cuts should draw stirrup polylines"
-    
+
     # Section cuts add text labels (section titles, bar callouts)
     section_texts = [t.text for t in doc._msp.texts]
-    assert any("SECTION A-A" in t for t in section_texts), "Should have Section A-A title"
-    assert any("SECTION B-B" in t for t in section_texts), "Should have Section B-B title"
+    assert any(
+        "SECTION A-A" in t for t in section_texts
+    ), "Should have Section A-A title"
+    assert any(
+        "SECTION B-B" in t for t in section_texts
+    ), "Should have Section B-B title"
 
 
 def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
@@ -411,14 +427,26 @@ def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
         span=4000,
         cover=40,
         top_bars=[
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            ),
         ],
         bottom_bars=[
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
-            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            ),
         ],
         stirrups=[
             StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
@@ -440,12 +468,20 @@ def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
         span=3500,
         cover=40,
         top_bars=[
-            BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1),
-            BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            ),
         ],
         bottom_bars=[
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=100, layers=1),
-            BarArrangement(count=2, diameter=16, area_provided=402, spacing=100, layers=1),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=100, layers=1
+            ),
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=100, layers=1
+            ),
         ],
         stirrups=[
             StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=875),
@@ -530,9 +566,19 @@ def test_multi_beam_layout_rejects_zero_columns(monkeypatch, tmp_path):
         D=500,
         span=4000,
         cover=40,
-        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
-        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1)],
-        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            )
+        ],
+        bottom_bars=[
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            )
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)
+        ],
         ld_tension=600,
         ld_compression=500,
         lap_length=700,
@@ -572,9 +618,19 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
         D=600,
         span=5000,  # Large span
         cover=40,
-        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
-        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1)],
-        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=16, area_provided=402, spacing=120, layers=1
+            )
+        ],
+        bottom_bars=[
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=110, layers=1
+            )
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)
+        ],
         ld_tension=600,
         ld_compression=500,
         lap_length=700,
@@ -589,9 +645,19 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
         D=400,
         span=3000,  # Small span
         cover=40,
-        top_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
-        bottom_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
-        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1000)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+        ],
+        bottom_bars=[
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1000)
+        ],
         ld_tension=500,
         ld_compression=400,
         lap_length=600,
@@ -626,21 +692,21 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
             beam1_title = t
         elif "B2-SMALL" in t.text:
             beam2_title = t
-    
+
     assert beam1_title is not None and beam2_title is not None
-    
+
     # Beam 1 (large) cell width with sections: span + 500 + b*2 + 200 + DIM_OFFSET + TEXT_HEIGHT + 20
     # = 5000 + 500 + 350 + 200 + 350 + 100 + 50 + 20 = 6570
     # Beam 2 should start at >= 6570 + col_spacing(500) = 7070
     beam1_x = beam1_title.placement[0][0]  # placement is ((x, y), align)
     beam2_x = beam2_title.placement[0][0]
-    
+
     # Beam 2's x origin should be significantly greater than beam 1's x origin
     # At minimum: beam1_x + large_span + section_space + col_spacing
     min_expected_gap = 5000 + 500  # span + minimal section space
-    assert beam2_x >= beam1_x + min_expected_gap, (
-        f"Beam 2 x={beam2_x} should be >= beam1_x({beam1_x}) + {min_expected_gap}"
-    )
+    assert (
+        beam2_x >= beam1_x + min_expected_gap
+    ), f"Beam 2 x={beam2_x} should be >= beam1_x({beam1_x}) + {min_expected_gap}"
 
 
 # ============================================================================
@@ -674,8 +740,16 @@ def test_multi_beam_layout_single_beam(monkeypatch, tmp_path):
         D=450,
         span=3500,
         cover=35,
-        top_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
-        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=100, layers=1)],
+        top_bars=[
+            BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+        ],
+        bottom_bars=[
+            BarArrangement(
+                count=3, diameter=16, area_provided=603, spacing=100, layers=1
+            )
+        ],
         stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)],
         ld_tension=500,
         ld_compression=400,
@@ -724,9 +798,19 @@ def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
             D=400 + (i * 20),  # Varying depths
             span=3000 + (i * 100),  # Varying spans
             cover=40,
-            top_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
-            bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=100, layers=1)],
-            stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)],
+            top_bars=[
+                BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                )
+            ],
+            bottom_bars=[
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=100, layers=1
+                )
+            ],
+            stirrups=[
+                StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=800)
+            ],
             ld_tension=500,
             ld_compression=400,
             lap_length=600,
@@ -749,4 +833,6 @@ def test_multi_beam_layout_large_grid(monkeypatch, tmp_path):
         assert any(beam_id in t for t in texts), f"Should have {beam_id} beam ID"
 
     # Should have a reasonable number of lines (at least 4 rectangle lines per beam)
-    assert len(doc._msp.lines) >= 12 * 4, f"Expected at least 48 lines, got {len(doc._msp.lines)}"
+    assert (
+        len(doc._msp.lines) >= 12 * 4
+    ), f"Expected at least 48 lines, got {len(doc._msp.lines)}"

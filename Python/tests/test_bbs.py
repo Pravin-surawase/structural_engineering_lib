@@ -205,14 +205,26 @@ class TestBBSGeneration:
             span=4000,
             cover=40,
             top_bars=[
-                BarArrangement(count=2, diameter=16, area_provided=402, spacing=180, layers=1),
-                BarArrangement(count=2, diameter=12, area_provided=226, spacing=180, layers=1),
-                BarArrangement(count=2, diameter=16, area_provided=402, spacing=180, layers=1),
+                BarArrangement(
+                    count=2, diameter=16, area_provided=402, spacing=180, layers=1
+                ),
+                BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=180, layers=1
+                ),
+                BarArrangement(
+                    count=2, diameter=16, area_provided=402, spacing=180, layers=1
+                ),
             ],
             bottom_bars=[
-                BarArrangement(count=3, diameter=16, area_provided=603, spacing=90, layers=1),
-                BarArrangement(count=4, diameter=16, area_provided=804, spacing=60, layers=1),
-                BarArrangement(count=3, diameter=16, area_provided=603, spacing=90, layers=1),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=90, layers=1
+                ),
+                BarArrangement(
+                    count=4, diameter=16, area_provided=804, spacing=60, layers=1
+                ),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=90, layers=1
+                ),
             ],
             stirrups=[
                 StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
@@ -316,16 +328,30 @@ class TestBBSSummary:
         """Summary should break down by diameter."""
         items = [
             BBSLineItem(
-                bar_mark="B1", member_id="B1", location="bottom", zone="full",
-                shape_code="A", diameter_mm=16, no_of_bars=4,
-                cut_length_mm=5000, total_length_mm=20000,
-                unit_weight_kg=7.9, total_weight_kg=31.6,
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=4,
+                cut_length_mm=5000,
+                total_length_mm=20000,
+                unit_weight_kg=7.9,
+                total_weight_kg=31.6,
             ),
             BBSLineItem(
-                bar_mark="B2", member_id="B1", location="top", zone="full",
-                shape_code="A", diameter_mm=12, no_of_bars=2,
-                cut_length_mm=4000, total_length_mm=8000,
-                unit_weight_kg=3.55, total_weight_kg=7.1,
+                bar_mark="B2",
+                member_id="B1",
+                location="top",
+                zone="full",
+                shape_code="A",
+                diameter_mm=12,
+                no_of_bars=2,
+                cut_length_mm=4000,
+                total_length_mm=8000,
+                unit_weight_kg=3.55,
+                total_weight_kg=7.1,
             ),
         ]
         summary = calculate_bbs_summary(items, "B1")
@@ -469,14 +495,26 @@ class TestDeterminism:
             span=4000,
             cover=40,
             top_bars=[
-                BarArrangement(count=2, diameter=16, area_provided=402, spacing=180, layers=1),
-                BarArrangement(count=2, diameter=16, area_provided=402, spacing=180, layers=1),
-                BarArrangement(count=2, diameter=16, area_provided=402, spacing=180, layers=1),
+                BarArrangement(
+                    count=2, diameter=16, area_provided=402, spacing=180, layers=1
+                ),
+                BarArrangement(
+                    count=2, diameter=16, area_provided=402, spacing=180, layers=1
+                ),
+                BarArrangement(
+                    count=2, diameter=16, area_provided=402, spacing=180, layers=1
+                ),
             ],
             bottom_bars=[
-                BarArrangement(count=3, diameter=16, area_provided=603, spacing=90, layers=1),
-                BarArrangement(count=3, diameter=16, area_provided=603, spacing=90, layers=1),
-                BarArrangement(count=3, diameter=16, area_provided=603, spacing=90, layers=1),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=90, layers=1
+                ),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=90, layers=1
+                ),
+                BarArrangement(
+                    count=3, diameter=16, area_provided=603, spacing=90, layers=1
+                ),
             ],
             stirrups=[
                 StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),

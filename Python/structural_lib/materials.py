@@ -9,7 +9,7 @@ import math
 def get_xu_max_d(fy: float) -> float:
     """
     Get Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)
-    
+
     Returns 0.0 for invalid fy values (<= 0).
     """
     if fy <= 0:

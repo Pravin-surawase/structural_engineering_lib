@@ -69,18 +69,21 @@ def test_flexure_singly(vector):
 
     # Check Mu,lim if expected
     if "mu_lim_knm" in exp:
-        assert within_tolerance(result.mu_lim, exp["mu_lim_knm"], "mu_knm"), \
-            f"Mu,lim mismatch: {result.mu_lim} vs {exp['mu_lim_knm']}"
+        assert within_tolerance(
+            result.mu_lim, exp["mu_lim_knm"], "mu_knm"
+        ), f"Mu,lim mismatch: {result.mu_lim} vs {exp['mu_lim_knm']}"
 
     # Check Ast
     if "ast_required_mm2" in exp:
-        assert within_tolerance(result.ast_required, exp["ast_required_mm2"], "ast_mm2"), \
-            f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
+        assert within_tolerance(
+            result.ast_required, exp["ast_required_mm2"], "ast_mm2"
+        ), f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
 
     # Check section type
     if "section_type" in exp:
-        assert result.section_type.name == exp["section_type"], \
-            f"Section type mismatch: {result.section_type.name} vs {exp['section_type']}"
+        assert (
+            result.section_type.name == exp["section_type"]
+        ), f"Section type mismatch: {result.section_type.name} vs {exp['section_type']}"
 
 
 # =============================================================================
@@ -111,12 +114,14 @@ def test_flexure_doubly(vector):
     assert result.is_safe == exp["is_safe"]
 
     if "ast_required_mm2" in exp:
-        assert within_tolerance(result.ast_required, exp["ast_required_mm2"], "ast_mm2"), \
-            f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
+        assert within_tolerance(
+            result.ast_required, exp["ast_required_mm2"], "ast_mm2"
+        ), f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
 
     if "asc_required_mm2" in exp:
-        assert within_tolerance(result.asc_required, exp["asc_required_mm2"], "asc_mm2"), \
-            f"Asc mismatch: {result.asc_required} vs {exp['asc_required_mm2']}"
+        assert within_tolerance(
+            result.asc_required, exp["asc_required_mm2"], "asc_mm2"
+        ), f"Asc mismatch: {result.asc_required} vs {exp['asc_required_mm2']}"
 
 
 # =============================================================================
@@ -148,8 +153,9 @@ def test_flexure_flanged(vector):
     assert result.is_safe == exp["is_safe"]
 
     if "ast_required_mm2" in exp:
-        assert within_tolerance(result.ast_required, exp["ast_required_mm2"], "ast_mm2"), \
-            f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
+        assert within_tolerance(
+            result.ast_required, exp["ast_required_mm2"], "ast_mm2"
+        ), f"Ast mismatch: {result.ast_required} vs {exp['ast_required_mm2']}"
 
 
 # =============================================================================
@@ -180,16 +186,19 @@ def test_shear(vector):
     assert result.is_safe == exp["is_safe"]
 
     if "tv_nmm2" in exp:
-        assert within_tolerance(result.tv, exp["tv_nmm2"], "stress_nmm2"), \
-            f"τv mismatch: {result.tv} vs {exp['tv_nmm2']}"
+        assert within_tolerance(
+            result.tv, exp["tv_nmm2"], "stress_nmm2"
+        ), f"τv mismatch: {result.tv} vs {exp['tv_nmm2']}"
 
     if "tc_nmm2" in exp:
-        assert within_tolerance(result.tc, exp["tc_nmm2"], "stress_nmm2"), \
-            f"τc mismatch: {result.tc} vs {exp['tc_nmm2']}"
+        assert within_tolerance(
+            result.tc, exp["tc_nmm2"], "stress_nmm2"
+        ), f"τc mismatch: {result.tc} vs {exp['tc_nmm2']}"
 
     if "spacing_mm" in exp:
-        assert within_tolerance(result.spacing, exp["spacing_mm"], "spacing_mm"), \
-            f"Spacing mismatch: {result.spacing} vs {exp['spacing_mm']}"
+        assert within_tolerance(
+            result.spacing, exp["spacing_mm"], "spacing_mm"
+        ), f"Spacing mismatch: {result.spacing} vs {exp['spacing_mm']}"
 
 
 # =============================================================================
@@ -214,13 +223,18 @@ def test_development_length(vector):
         bar_type=inp.get("bar_type", "deformed"),
     )
 
-    assert within_tolerance(ld, exp["ld_mm"], "length_mm"), \
-        f"Ld mismatch: {ld} vs {exp['ld_mm']}"
+    assert within_tolerance(
+        ld, exp["ld_mm"], "length_mm"
+    ), f"Ld mismatch: {ld} vs {exp['ld_mm']}"
 
 
 @pytest.mark.parametrize(
     "vector",
-    [v for v in VECTORS.get("detailing", []) if "lap_length_mm" in v.get("expected", {})],
+    [
+        v
+        for v in VECTORS.get("detailing", [])
+        if "lap_length_mm" in v.get("expected", {})
+    ],
     ids=lambda v: v["id"],
 )
 def test_lap_length(vector):
@@ -237,8 +251,9 @@ def test_lap_length(vector):
         in_tension=inp.get("in_tension", True),
     )
 
-    assert within_tolerance(lap, exp["lap_length_mm"], "length_mm"), \
-        f"Lap length mismatch: {lap} vs {exp['lap_length_mm']}"
+    assert within_tolerance(
+        lap, exp["lap_length_mm"], "length_mm"
+    ), f"Lap length mismatch: {lap} vs {exp['lap_length_mm']}"
 
 
 @pytest.mark.parametrize(
@@ -259,8 +274,9 @@ def test_bar_spacing(vector):
         bar_count=inp["bar_count"],
     )
 
-    assert within_tolerance(spacing, exp["spacing_mm"], "spacing_mm"), \
-        f"Spacing mismatch: {spacing} vs {exp['spacing_mm']}"
+    assert within_tolerance(
+        spacing, exp["spacing_mm"], "spacing_mm"
+    ), f"Spacing mismatch: {spacing} vs {exp['spacing_mm']}"
 
 
 # =============================================================================
@@ -270,7 +286,11 @@ def test_bar_spacing(vector):
 
 @pytest.mark.parametrize(
     "vector",
-    [v for v in VECTORS.get("serviceability", []) if "ld_ratio" in v.get("expected", {})],
+    [
+        v
+        for v in VECTORS.get("serviceability", [])
+        if "ld_ratio" in v.get("expected", {})
+    ],
     ids=lambda v: v["id"],
 )
 def test_deflection_span_depth(vector):
@@ -287,8 +307,9 @@ def test_deflection_span_depth(vector):
     assert result.is_ok == exp["is_ok"]
 
     if "ld_ratio" in exp:
-        assert within_tolerance(result.computed["ld_ratio"], exp["ld_ratio"], "ratio"), \
-            f"L/d ratio mismatch: {result.computed['ld_ratio']} vs {exp['ld_ratio']}"
+        assert within_tolerance(
+            result.computed["ld_ratio"], exp["ld_ratio"], "ratio"
+        ), f"L/d ratio mismatch: {result.computed['ld_ratio']} vs {exp['ld_ratio']}"
 
 
 @pytest.mark.parametrize(
@@ -334,8 +355,9 @@ def test_bar_weight(vector):
         length_mm=inp["length_mm"],
     )
 
-    assert abs(weight - exp["weight_kg"]) < 0.02, \
-        f"Weight mismatch: {weight} vs {exp['weight_kg']}"
+    assert (
+        abs(weight - exp["weight_kg"]) < 0.02
+    ), f"Weight mismatch: {weight} vs {exp['weight_kg']}"
 
 
 @pytest.mark.parametrize(
@@ -355,8 +377,9 @@ def test_stirrup_cut_length(vector):
         stirrup_dia_mm=inp["stirrup_dia_mm"],
     )
 
-    assert within_tolerance(cut_length, exp["cut_length_mm"], "length_mm"), \
-        f"Cut length mismatch: {cut_length} vs {exp['cut_length_mm']}"
+    assert within_tolerance(
+        cut_length, exp["cut_length_mm"], "length_mm"
+    ), f"Cut length mismatch: {cut_length} vs {exp['cut_length_mm']}"
 
 
 # =============================================================================

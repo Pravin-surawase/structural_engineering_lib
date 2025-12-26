@@ -197,16 +197,24 @@ def draw_beam_elevation(
     # 3. Draw reinforcement lines (simplified as horizontal lines)
     # Bottom bars (continuous line with circles at ends)
     mid_idx = len(bottom_bars) // 2 if bottom_bars else 0
-    bot_bar = bottom_bars[mid_idx] if bottom_bars else BarArrangement(
-        count=2, diameter=16, area_provided=402, spacing=100, layers=1
+    bot_bar = (
+        bottom_bars[mid_idx]
+        if bottom_bars
+        else BarArrangement(
+            count=2, diameter=16, area_provided=402, spacing=100, layers=1
+        )
     )
     y_bot = y0 + cover + bot_bar.diameter / 2
     msp.add_line((x0, y_bot), (x0 + span, y_bot), dxfattribs={"layer": "REBAR_MAIN"})
 
     # Top bars
     top_mid_idx = len(top_bars) // 2 if top_bars else 0
-    top_bar = top_bars[top_mid_idx] if top_bars else BarArrangement(
-        count=2, diameter=12, area_provided=226, spacing=100, layers=1
+    top_bar = (
+        top_bars[top_mid_idx]
+        if top_bars
+        else BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        )
     )
     y_top = y0 + D - cover - top_bar.diameter / 2
     msp.add_line((x0, y_top), (x0 + span, y_top), dxfattribs={"layer": "REBAR_MAIN"})
@@ -215,7 +223,7 @@ def draw_beam_elevation(
     # Handle varying number of stirrup zones
     if not stirrups:
         return
-    
+
     n_zones = len(stirrups)
     if n_zones == 1:
         # Single zone - uniform spacing
@@ -226,12 +234,12 @@ def draw_beam_elevation(
     elif n_zones == 2:
         # Two zones - split at midspan
         zone_1_end = span * 0.5
-        
+
         x = x0 + stirrups[0].spacing / 2
         while x < x0 + zone_1_end:
             draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
             x += stirrups[0].spacing
-        
+
         while x < x0 + span:
             draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
             x += stirrups[1].spacing
@@ -363,7 +371,9 @@ def draw_annotations(
                 "layer": "TEXT",
                 "height": TEXT_HEIGHT,
             },
-        ).set_placement((x0 + span / 2, y0 + D + 50), align=_text_align("BOTTOM_CENTER"))
+        ).set_placement(
+            (x0 + span / 2, y0 + D + 50), align=_text_align("BOTTOM_CENTER")
+        )
 
     # Stirrup callouts for each zone (handle varying zone counts)
     if stirrups:
@@ -374,7 +384,7 @@ def draw_annotations(
             zone_x = [x0 + span * 0.25, x0 + span * 0.75]
         else:
             zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
-        
+
         for stir, x in zip(stirrups, zone_x):
             msp.add_text(
                 stir.callout(),
@@ -563,7 +573,10 @@ def draw_section_cut(
             "height": TEXT_HEIGHT * 0.5 * scale,
         },
     ).set_placement(
-        (x0 + b_scaled / 2, y0 + D_scaled - cover_scaled - stirrup_dia - dia_top - 10 * scale),
+        (
+            x0 + b_scaled / 2,
+            y0 + D_scaled - cover_scaled - stirrup_dia - dia_top - 10 * scale,
+        ),
         align=_text_align("TOP_CENTER"),
     )
 
@@ -644,15 +657,23 @@ def generate_beam_dxf(
     if include_section_cuts:
         # Section A-A at support (uses first zone bars)
         section_x_offset = detailing.span + 500  # 500mm gap from elevation
-        
+
         # Get bar arrangements for support (first zone)
-        top_bar_support = detailing.top_bars[0] if detailing.top_bars else BarArrangement(
-            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        top_bar_support = (
+            detailing.top_bars[0]
+            if detailing.top_bars
+            else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
         )
-        bottom_bar_support = detailing.bottom_bars[0] if detailing.bottom_bars else BarArrangement(
-            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        bottom_bar_support = (
+            detailing.bottom_bars[0]
+            if detailing.bottom_bars
+            else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
         )
-        
+
         draw_section_cut(
             msp,
             b=detailing.b,
@@ -660,8 +681,12 @@ def generate_beam_dxf(
             cover=detailing.cover,
             top_bars=top_bar_support,
             bottom_bars=bottom_bar_support,
-            stirrup=detailing.stirrups[0] if detailing.stirrups else StirrupArrangement(
-                diameter=8, legs=2, spacing=150, zone_length=1000
+            stirrup=(
+                detailing.stirrups[0]
+                if detailing.stirrups
+                else StirrupArrangement(
+                    diameter=8, legs=2, spacing=150, zone_length=1000
+                )
             ),
             origin=(section_x_offset, 0),
             scale=1.0,
@@ -670,17 +695,25 @@ def generate_beam_dxf(
 
         # Section B-B at midspan (uses middle zone bars)
         section_b_offset = section_x_offset + detailing.b + 200
-        
+
         # Get bar arrangements for midspan (middle zone)
         mid_idx = len(detailing.top_bars) // 2 if detailing.top_bars else 0
-        top_bar_mid = detailing.top_bars[mid_idx] if detailing.top_bars else BarArrangement(
-            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        top_bar_mid = (
+            detailing.top_bars[mid_idx]
+            if detailing.top_bars
+            else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
         )
-        bottom_bar_mid = detailing.bottom_bars[mid_idx] if detailing.bottom_bars else BarArrangement(
-            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        bottom_bar_mid = (
+            detailing.bottom_bars[mid_idx]
+            if detailing.bottom_bars
+            else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
         )
         stirrup_mid_idx = len(detailing.stirrups) // 2 if detailing.stirrups else 0
-        
+
         draw_section_cut(
             msp,
             b=detailing.b,
@@ -688,8 +721,12 @@ def generate_beam_dxf(
             cover=detailing.cover,
             top_bars=top_bar_mid,
             bottom_bars=bottom_bar_mid,
-            stirrup=detailing.stirrups[stirrup_mid_idx] if detailing.stirrups else StirrupArrangement(
-                diameter=8, legs=2, spacing=200, zone_length=2000
+            stirrup=(
+                detailing.stirrups[stirrup_mid_idx]
+                if detailing.stirrups
+                else StirrupArrangement(
+                    diameter=8, legs=2, spacing=200, zone_length=2000
+                )
             ),
             origin=(section_b_offset, 0),
             scale=1.0,
@@ -740,7 +777,7 @@ def generate_multi_beam_dxf(
 
     if not detailings:
         raise ValueError("At least one beam detailing result is required")
-    
+
     if columns < 1:
         raise ValueError("columns must be >= 1")
 
@@ -759,45 +796,51 @@ def generate_multi_beam_dxf(
     # This ensures beams in the same column/row don't overlap
     n_beams = len(detailings)
     n_rows = (n_beams + columns - 1) // columns  # Ceiling division
-    
+
     # Calculate cell width for each column (max of all beams in that column)
     col_widths = [0.0] * columns
     row_heights = [0.0] * n_rows
-    
+
     for idx, detailing in enumerate(detailings):
         col = idx % columns
         row = idx // columns
-        
+
         # Calculate beam cell width (including section cuts if enabled)
         cell_width = detailing.span
         if include_section_cuts:
             cell_width += 500 + detailing.b + 200 + detailing.b  # sections
         # Always add space for right-side depth dimension + text
         cell_width += DIM_OFFSET + TEXT_HEIGHT + 20  # dim line + rotated text
-        
+
         # Update column max width
         col_widths[col] = max(col_widths[col], cell_width)
-        
+
         # Calculate row height based on annotation extents
         # Above beam: title at y0 + D + 150 with height TEXT_HEIGHT*1.5
         # Below beam: Ld note at y0 - DIM_OFFSET - 200 with height TEXT_HEIGHT*0.8
         above_extent = 150 + TEXT_HEIGHT * 1.5 if include_annotations else 100
-        below_extent = DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
+        below_extent = (
+            DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
+        )
         cell_height = detailing.D + above_extent + below_extent
         row_heights[row] = max(row_heights[row], cell_height)
-    
+
     # Compute cumulative X offsets for each column
     col_x_offsets = [0.0] * columns
     for c in range(1, columns):
         col_x_offsets[c] = col_x_offsets[c - 1] + col_widths[c - 1] + col_spacing
-    
+
     # Compute cumulative Y offsets for each row
     # Account for below_extent so annotations don't overlap
-    below_extent = DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
-    row_y_offsets = [below_extent] * n_rows  # Start with offset for first row's bottom annotations
+    below_extent = (
+        DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
+    )
+    row_y_offsets = [
+        below_extent
+    ] * n_rows  # Start with offset for first row's bottom annotations
     for r in range(1, n_rows):
         row_y_offsets[r] = row_y_offsets[r - 1] + row_heights[r - 1] + row_spacing
-    
+
     # --- Draw each beam at its computed position ---
     for idx, detailing in enumerate(detailings):
         # Calculate row and column
@@ -823,7 +866,9 @@ def generate_multi_beam_dxf(
 
         # Add dimensions
         if include_dimensions:
-            draw_dimensions(msp, detailing.span, detailing.D, origin=(x_origin, y_origin))
+            draw_dimensions(
+                msp, detailing.span, detailing.D, origin=(x_origin, y_origin)
+            )
 
         # Add annotations
         if include_annotations:
@@ -847,11 +892,19 @@ def generate_multi_beam_dxf(
             section_x_offset = x_origin + detailing.span + 500
 
             # Get bar arrangements for support (first zone)
-            top_bar_support = detailing.top_bars[0] if detailing.top_bars else BarArrangement(
-                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            top_bar_support = (
+                detailing.top_bars[0]
+                if detailing.top_bars
+                else BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                )
             )
-            bottom_bar_support = detailing.bottom_bars[0] if detailing.bottom_bars else BarArrangement(
-                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            bottom_bar_support = (
+                detailing.bottom_bars[0]
+                if detailing.bottom_bars
+                else BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                )
             )
 
             draw_section_cut(
@@ -861,8 +914,12 @@ def generate_multi_beam_dxf(
                 cover=detailing.cover,
                 top_bars=top_bar_support,
                 bottom_bars=bottom_bar_support,
-                stirrup=detailing.stirrups[0] if detailing.stirrups else StirrupArrangement(
-                    diameter=8, legs=2, spacing=150, zone_length=1000
+                stirrup=(
+                    detailing.stirrups[0]
+                    if detailing.stirrups
+                    else StirrupArrangement(
+                        diameter=8, legs=2, spacing=150, zone_length=1000
+                    )
                 ),
                 origin=(section_x_offset, y_origin),
                 scale=1.0,
@@ -872,11 +929,19 @@ def generate_multi_beam_dxf(
             # Section B-B at midspan
             section_b_offset = section_x_offset + detailing.b + 200
             mid_idx = len(detailing.top_bars) // 2 if detailing.top_bars else 0
-            top_bar_mid = detailing.top_bars[mid_idx] if detailing.top_bars else BarArrangement(
-                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            top_bar_mid = (
+                detailing.top_bars[mid_idx]
+                if detailing.top_bars
+                else BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                )
             )
-            bottom_bar_mid = detailing.bottom_bars[mid_idx] if detailing.bottom_bars else BarArrangement(
-                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            bottom_bar_mid = (
+                detailing.bottom_bars[mid_idx]
+                if detailing.bottom_bars
+                else BarArrangement(
+                    count=2, diameter=12, area_provided=226, spacing=100, layers=1
+                )
             )
             stirrup_mid_idx = len(detailing.stirrups) // 2 if detailing.stirrups else 0
 
@@ -887,8 +952,12 @@ def generate_multi_beam_dxf(
                 cover=detailing.cover,
                 top_bars=top_bar_mid,
                 bottom_bars=bottom_bar_mid,
-                stirrup=detailing.stirrups[stirrup_mid_idx] if detailing.stirrups else StirrupArrangement(
-                    diameter=8, legs=2, spacing=200, zone_length=2000
+                stirrup=(
+                    detailing.stirrups[stirrup_mid_idx]
+                    if detailing.stirrups
+                    else StirrupArrangement(
+                        diameter=8, legs=2, spacing=200, zone_length=2000
+                    )
                 ),
                 origin=(section_b_offset, y_origin),
                 scale=1.0,

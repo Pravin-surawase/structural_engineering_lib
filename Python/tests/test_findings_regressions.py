@@ -71,10 +71,11 @@ def test_flanged_beam_invalid_d_total_le_d_fails():
 # Q-002, Q-003: Input validation edge cases
 # ============================================================================
 
+
 def test_development_length_invalid_inputs():
     """Q-002: calculate_development_length returns 0 for invalid inputs."""
     from structural_lib.detailing import calculate_development_length
-    
+
     assert calculate_development_length(bar_dia=0, fck=25, fy=500) == 0.0
     assert calculate_development_length(bar_dia=16, fck=0, fy=500) == 0.0
     assert calculate_development_length(bar_dia=16, fck=25, fy=0) == 0.0
@@ -84,6 +85,6 @@ def test_development_length_invalid_inputs():
 def test_xu_max_d_invalid_fy():
     """Q-003: get_xu_max_d returns 0 for invalid fy."""
     from structural_lib.materials import get_xu_max_d
-    
+
     assert get_xu_max_d(0) == 0.0
     assert get_xu_max_d(-500) == 0.0
