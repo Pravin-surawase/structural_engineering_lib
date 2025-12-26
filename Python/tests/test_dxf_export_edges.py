@@ -612,12 +612,32 @@ def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
     doc = _FakeEzdxf.last_doc
     assert doc is not None
 
-    # Get all line X coordinates to verify no overlap
-    # The second beam should start AFTER the first beam's full extent
-    # First beam width with sections: 5000 + 500 + 350 + 200 + 350 = 6400
-    # So second beam should start at >= 6400 + 500 = 6900
-    
     # Check that we have drawings for both beams
     texts = [t.text for t in doc._msp.texts]
     assert any("B1-LARGE" in t for t in texts), "Should have B1-LARGE"
     assert any("B2-SMALL" in t for t in texts), "Should have B2-SMALL"
+
+    # --- Geometry overlap check ---
+    # Find title text positions to verify no overlap between beams
+    beam1_title = None
+    beam2_title = None
+    for t in doc._msp.texts:
+        if "B1-LARGE" in t.text:
+            beam1_title = t
+        elif "B2-SMALL" in t.text:
+            beam2_title = t
+    
+    assert beam1_title is not None and beam2_title is not None
+    
+    # Beam 1 (large) cell width with sections: span + 500 + b*2 + 200 + DIM_OFFSET + TEXT_HEIGHT + 20
+    # = 5000 + 500 + 350 + 200 + 350 + 100 + 50 + 20 = 6570
+    # Beam 2 should start at >= 6570 + col_spacing(500) = 7070
+    beam1_x = beam1_title.placement[0][0]  # placement is ((x, y), align)
+    beam2_x = beam2_title.placement[0][0]
+    
+    # Beam 2's x origin should be significantly greater than beam 1's x origin
+    # At minimum: beam1_x + large_span + section_space + col_spacing
+    min_expected_gap = 5000 + 500  # span + minimal section space
+    assert beam2_x >= beam1_x + min_expected_gap, (
+        f"Beam 2 x={beam2_x} should be >= beam1_x({beam1_x}) + {min_expected_gap}"
+    )

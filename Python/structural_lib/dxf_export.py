@@ -764,9 +764,6 @@ def generate_multi_beam_dxf(
     col_widths = [0.0] * columns
     row_heights = [0.0] * n_rows
     
-    # Dimension offset for right-side depth dimension
-    dim_offset = 100  # From DIM_OFFSET constant
-    
     for idx, detailing in enumerate(detailings):
         col = idx % columns
         row = idx // columns
@@ -775,14 +772,18 @@ def generate_multi_beam_dxf(
         cell_width = detailing.span
         if include_section_cuts:
             cell_width += 500 + detailing.b + 200 + detailing.b  # sections
-        else:
-            cell_width += dim_offset  # Space for right-side dimension
+        # Always add space for right-side depth dimension + text
+        cell_width += DIM_OFFSET + TEXT_HEIGHT + 20  # dim line + rotated text
         
         # Update column max width
         col_widths[col] = max(col_widths[col], cell_width)
         
-        # Calculate row height (beam depth + annotations space)
-        cell_height = detailing.D + 200  # 200 for annotations above/below
+        # Calculate row height based on annotation extents
+        # Above beam: title at y0 + D + 150 with height TEXT_HEIGHT*1.5
+        # Below beam: Ld note at y0 - DIM_OFFSET - 200 with height TEXT_HEIGHT*0.8
+        above_extent = 150 + TEXT_HEIGHT * 1.5 if include_annotations else 100
+        below_extent = DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
+        cell_height = detailing.D + above_extent + below_extent
         row_heights[row] = max(row_heights[row], cell_height)
     
     # Compute cumulative X offsets for each column
@@ -791,7 +792,9 @@ def generate_multi_beam_dxf(
         col_x_offsets[c] = col_x_offsets[c - 1] + col_widths[c - 1] + col_spacing
     
     # Compute cumulative Y offsets for each row
-    row_y_offsets = [0.0] * n_rows
+    # Account for below_extent so annotations don't overlap
+    below_extent = DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
+    row_y_offsets = [below_extent] * n_rows  # Start with offset for first row's bottom annotations
     for r in range(1, n_rows):
         row_y_offsets[r] = row_y_offsets[r - 1] + row_heights[r - 1] + row_spacing
     
