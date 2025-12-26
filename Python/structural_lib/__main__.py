@@ -360,6 +360,12 @@ def cmd_dxf(args: argparse.Namespace) -> int:
         print(f"Error: Input file not found: {input_path}", file=sys.stderr)
         return 1
 
+    # Check if dxf_export module is available
+    if dxf_export is None:
+        print("Error: dxf_export module not available", file=sys.stderr)
+        print("Install with: pip install ezdxf", file=sys.stderr)
+        return 1
+
     # Check if ezdxf is available
     if not dxf_export.EZDXF_AVAILABLE:
         print("Error: ezdxf library not installed", file=sys.stderr)
