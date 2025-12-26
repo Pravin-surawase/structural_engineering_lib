@@ -60,11 +60,10 @@ Then: `Runtime > Restart runtime` and rerun your notebook cells.
 
 ## 60-second demo (CSV → schedule + DXF)
 
-If you have the repo locally, use the sample CSV input; otherwise create a CSV with these columns:
+Use the sample CSV input from the repo:
 
 - `Python/examples/sample_beam_design.csv`
-- `examples/sample_beam_design.csv` (from `Python/`; from repo root this is `Python/examples/sample_beam_design.csv`)
-- Columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
+- Required columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
 
 Run the batch integration:
 
@@ -243,13 +242,14 @@ structural_engineering_lib/
 
 ```vba
 Sub DesignBeam()
-    Dim result As FlexureResult
+    Dim result As Variant
     
-    ' Design a beam: Mu = 150 kN·m, 300x500 section, M25/Fe415
-    result = IS456_FlexureDesign(150, 300, 450, 500, 25, 415)
+    ' Design a beam: b=300, d=450, d'=50, D=500, Mu=150 kN·m, M25/Fe415
+    result = IS456_Design_Rectangular(300, 450, 50, 500, 150, 25, 415)
     
-    If result.DesignStatus = "OK" Then
-        Debug.Print "Ast required: " & result.Ast_required & " mm²"
+    ' result is an array: [status, Ast, Asc, design_type, message]
+    If result(0) = "OK" Then
+        Debug.Print "Ast required: " & result(1) & " mm²"
     End If
 End Sub
 ```
@@ -259,9 +259,9 @@ More worked examples in `VBA/Examples/Example_Usage.bas`.
 ## Using the Python Library
 
 ```python
-from structural_lib.api import design_beam
+from structural_lib import flexure
 
-result = design_beam(
+result = flexure.design_singly_reinforced(
     b=230,
     d=450,
     d_total=500,
@@ -278,10 +278,10 @@ else:
 
 ### Additional Modules
 
-- **BBS (Bar Bending Schedule)**: `from structural_lib.bbs import generate_bbs`
+- **BBS (Bar Bending Schedule)**: `from structural_lib.bbs import generate_bbs_from_detailing`
 - **DXF Export**: `from structural_lib.dxf_export import generate_beam_dxf`
 - **ETABS Integration**: `from structural_lib.excel_integration import parse_etabs_export`
-- **Job Runner**: `python -m structural_lib.job_cli run job.json`
+- **Job Runner**: `python3 -m structural_lib.job_cli run --job job.json`
 
 See [Python examples](Python/examples/) for complete workflows.
 
