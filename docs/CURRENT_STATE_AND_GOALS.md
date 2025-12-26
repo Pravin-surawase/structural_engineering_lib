@@ -1,16 +1,17 @@
 # IS 456 RC Beam Design Library - Current State and Goals
 
-Last updated: 2025-12-25
-Current release tag: v0.9.1
+Last updated: 2025-12-26
+Current release tag: v0.9.3
 Document status: Active
 
 ## 0) Executive summary
 
 This repository is a professional-grade, UI-agnostic RC beam design library
 targeting IS 456:2000. It currently provides strength design, detailing, DXF
-output, Level A serviceability, and compliance checking, with a deterministic
-batch runner and CSV integration. The implementation exists in both Python and
-VBA with parity intent, and is supported by a strong Python test suite and CI.
+output, Level A serviceability, compliance checking, and Bar Bending Schedule
+(BBS) generation, with a deterministic batch runner and CSV integration. The
+implementation exists in both Python and VBA with parity intent, and is
+supported by 1638 Python tests and CI.
 
 This document is a systematic overview of what exists today, how it is
 structured, what gaps remain, and what the next priorities are. It is intended

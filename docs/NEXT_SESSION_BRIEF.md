@@ -1,16 +1,16 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-26  
-**Status:** v0.9.1 released; PR #21 pending review (BBS + ETABS + Parity)  
-**Branch:** `feat/bbs-etabs-integration` (awaiting merge to `main`)
+**Status:** v0.9.3 released and merged to `main`  
+**Branch:** `main` (all PRs merged)
 
 ## TL;DR (What Changed Recently)
-- **BBS Module** (`bbs.py`): Bar Bending Schedule generation with CSV/JSON export. 29 tests.
-- **ETABS Integration Docs** (`docs/specs/ETABS_INTEGRATION.md`): Complete mapping guide.
-- **Parity Test Vectors** (`tests/data/parity_test_vectors.json`): 20 vectors covering all modules.
-- **Verification Examples** (`docs/VERIFICATION_EXAMPLES.md`): Benchmark calculations.
-- **Test count:** 289 tests passing (up from 269).
-- PR #21 batches: TASK-034 (BBS), TASK-044 (ETABS), TASK-039 (parity vectors Python side).
+- **v0.9.3 Released:** Code Quality Sweep complete (14 fixes across 5 phases)
+- **BBS Module** (`bbs.py`): Bar Bending Schedule generation with CSV/JSON export
+- **Version Management:** Simplified to 3 files only (pyproject.toml, api.py, M08_API.bas)
+- **Parity Tests:** 19 Python/VBA verification vectors
+- **Test count:** 1638 tests passing
+- PR #21 merged: BBS, ETABS docs, parity vectors, code quality sweep
 
 ---
 
@@ -19,25 +19,23 @@
 If you want to resume quickly without re-reading the repo:
 
 1. **Whole-project map (architecture + data flow + parity hotspots):** `docs/DEEP_PROJECT_MAP.md`
-2. **v0.8 implementation playbook (serviceability Level A, tests, parity):** `docs/v0.8_EXECUTION_CHECKLIST.md`
-3. **Canonical backlog (TASK-041 for serviceability):** `docs/TASKS.md`
+2. **Version management:** `docs/_internal/VERSION_STRATEGY.md`
+3. **Canonical backlog:** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
 
 **Verified state (as of 2025-12-26):**
-- Release baseline tag is **v0.9.1**.
-- PR #21 pending with BBS, ETABS docs, parity vectors.
+- Release version is **v0.9.3** (merged to main).
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - BBS Module: **implemented** (cut lengths, weights, CSV/JSON export).
-- Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
+- Code Quality Sweep: **complete** (14/14 tasks).
 
 **How to re-verify quickly (avoids drift):**
 - Latest commit (local): `git rev-parse --short HEAD`
 - CI truth (GitHub): https://github.com/Pravin-surawase/structural_engineering_lib/actions
-- Protection truth (GitHub): https://github.com/Pravin-surawase/structural_engineering_lib/settings/rules
-- Dependabot truth: `.github/dependabot.yml` (in-repo config)
+- Version: `python -c "from structural_lib import api; print(api.get_library_version())"`
 
-**Security posture (low maintenance):**
+**Next priorities:**
 - Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
 - Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
 - Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
