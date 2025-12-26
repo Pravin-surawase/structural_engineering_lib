@@ -200,7 +200,15 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 - [ ] **TASK-035**: Section Cuts in DXF
 - [ ] **TASK-036**: Multi-beam Layout
-- [ ] **TASK-019**: Regression Snapshots (Excel)
+- [x] **TASK-019: Regression Snapshots (Excel)**
+  - **Agent:** TESTER
+  - **Status:** ✅ Complete — baseline snapshots created.
+  - **Outputs:**
+    - `Excel/snapshots/README.md` — snapshot usage guide
+    - `Excel/snapshots/baseline_beam_design_v0.9.1.csv` — reference output
+  - **Checklist:**
+    - [x] Create baseline CSV with expected outputs
+    - [x] Document comparison workflow
 - [x] **TASK-020: Py/VBA Parity Tests**
   - **Agent:** TESTER / DEV
   - **Status:** ✅ Complete — VBA parity harness created.
