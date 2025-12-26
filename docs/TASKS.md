@@ -355,10 +355,10 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 ## Notes
 
-- **Current Version**: v0.9.3
+- **Current Version**: v0.9.4
 - **Last Updated**: 2025-12-26
 - **Active Branch**: main (all PRs merged)
-- **Tests**: 1638 passed, 93 skipped
+- **Tests**: 1638+ passed
 
 ### v0.7 Implementation Notes
 - **Python:** Full implementation (detailing, DXF, integration) - 1638 tests passing
@@ -372,13 +372,13 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 > **Goal:** Move from "feature-complete alpha" to "production-ready v1.0"
 > **Focus:** VBA parity completion, cutting-stock optimization, CLI polish
 
-### Priority 1: VBA Parity Completion (HIGH)
+### Priority 1: VBA Parity Completion (DONE ✅)
 
 | ID | Task | Agent | Est. | Details |
 |----|------|-------|------|---------|
-| **TASK-046** | VBA Parity Test Harness | TESTER | 2h | VBA `Test_Parity.bas` should read `parity_test_vectors.json` and write pass/fail CSV. Currently Python side done, VBA side pending. |
-| **TASK-047** | VBA BBS Module | DEV | 4h | Port `bbs.py` to VBA (`M18_BBS.bas`). Cut lengths, weights, totals. No optimization yet. |
-| **TASK-048** | VBA Compliance Checker | DEV | 3h | Port `compliance.py` to VBA (`M19_Compliance.bas`). Multi-case orchestration. |
+| **TASK-046** | VBA Parity Test Harness | TESTER | 2h | ✅ VBA `Test_Parity.bas` implemented. |
+| **TASK-047** | VBA BBS Module | DEV | 4h | ✅ Completed — `M18_BBS.bas` + `Test_BBS.bas`. |
+| **TASK-048** | VBA Compliance Checker | DEV | 3h | ✅ Completed — `M19_Compliance.bas` + `Test_Compliance.bas`. |
 
 **Why first:** VBA parity is a non-negotiable for Excel users. Python/VBA drift undermines trust.
 
@@ -417,12 +417,12 @@ def optimize_cutting_stock(
 
 ---
 
-### Priority 3: CLI Polish (MEDIUM)
+### Priority 3: CLI Polish (IN PROGRESS)
 
 | ID | Task | Agent | Est. | Details |
 |----|------|-------|------|---------|
-| **TASK-050** | Unified CLI Entrypoint | DEV | 2h | Single `python -m structural_lib` with subcommands: `design`, `bbs`, `dxf`, `job`. |
-| **TASK-051** | CLI Integration Tests | TESTER | 2h | End-to-end tests: CSV → design → DXF + BBS output. |
+| **TASK-050** | Unified CLI Entrypoint | DEV | 2h | ⏳ In progress — dispatched to coding agent (PR pending). |
+| **TASK-051** | CLI Integration Tests | TESTER | 2h | Part of TASK-050 PR. |
 
 **Why:** Currently multiple entry points (`excel_integration.py`, `job_cli.py`, `dxf_export.py`). Confusing for users.
 

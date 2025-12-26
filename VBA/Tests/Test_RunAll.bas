@@ -4,7 +4,7 @@ Option Explicit
 ' ==============================================================================
 ' Module:       Test_RunAll
 ' Description:  Unified Test Runner for all VBA modules
-' Version:      0.9.3
+' Version:      0.9.4
 ' License:      MIT
 ' ==============================================================================
 '
@@ -58,6 +58,10 @@ Public Sub RunAllVBATests()
     ' --- v0.8+ Module Tests ---
     Call RunSuite_Serviceability
     
+    ' --- v0.9+ Module Tests ---
+    Call RunSuite_BBS
+    Call RunSuite_Compliance
+    
     ' --- Parity Tests (Python ↔ VBA) ---
     Call RunSuite_Parity
     
@@ -69,7 +73,7 @@ Public Sub RunAllVBATests()
     Debug.Print "========================================"
     Debug.Print "  RUN COMPLETE"
     Debug.Print "========================================"
-    Debug.Print "  Suites Run: 7"
+    Debug.Print "  Suites Run: 9"
     Debug.Print "  Suite Errors: " & m_SuiteErrors
     Debug.Print "  Time Elapsed: " & Format(elapsed, "0.00") & " seconds"
     Debug.Print "========================================"
@@ -158,6 +162,30 @@ Private Sub RunSuite_Serviceability()
     Debug.Print ">>> Suite: Serviceability (Deflection, Crack Width)"
     On Error GoTo ErrHandler
     Test_Serviceability.Run_All_Serviceability_Tests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
+    Debug.Print ""
+End Sub
+
+Private Sub RunSuite_BBS()
+    Debug.Print ">>> Suite: BBS (Bar Bending Schedule)"
+    On Error GoTo ErrHandler
+    Test_BBS.RunBBSTests
+    Debug.Print ""
+    Exit Sub
+ErrHandler:
+    Debug.Print "  [ERROR] Suite failed: " & Err.Description
+    m_SuiteErrors = m_SuiteErrors + 1
+    Debug.Print ""
+End Sub
+
+Private Sub RunSuite_Compliance()
+    Debug.Print ">>> Suite: Compliance (Multi-check orchestration)"
+    On Error GoTo ErrHandler
+    Test_Compliance.RunComplianceTests
     Debug.Print ""
     Exit Sub
 ErrHandler:
