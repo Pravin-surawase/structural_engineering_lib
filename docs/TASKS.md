@@ -355,14 +355,126 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 ## Notes
 
-- **Current Version**: v0.9.1
+- **Current Version**: v0.9.3
 - **Last Updated**: 2025-12-26
-- **Active Branch**: feat/bbs-etabs-integration
+- **Active Branch**: main (all PRs merged)
+- **Tests**: 1638 passed, 93 skipped
 
 ### v0.7 Implementation Notes
-- **Python:** Full implementation (detailing, DXF, integration) - 67 tests (v0.7); 212 tests passing (v0.9.x)
+- **Python:** Full implementation (detailing, DXF, integration) - 1638 tests passing
 - **VBA:** Full implementation (M15_Detailing.bas) - 25 test cases
 - **DXF Dependency:** `pip install .[dxf]` for ezdxf support
+
+---
+
+## 🎯 Next Session Priorities (v1.0 Roadmap)
+
+> **Goal:** Move from "feature-complete alpha" to "production-ready v1.0"
+> **Focus:** VBA parity completion, cutting-stock optimization, CLI polish
+
+### Priority 1: VBA Parity Completion (HIGH)
+
+| ID | Task | Agent | Est. | Details |
+|----|------|-------|------|---------|
+| **TASK-046** | VBA Parity Test Harness | TESTER | 2h | VBA `Test_Parity.bas` should read `parity_test_vectors.json` and write pass/fail CSV. Currently Python side done, VBA side pending. |
+| **TASK-047** | VBA BBS Module | DEV | 4h | Port `bbs.py` to VBA (`M18_BBS.bas`). Cut lengths, weights, totals. No optimization yet. |
+| **TASK-048** | VBA Compliance Checker | DEV | 3h | Port `compliance.py` to VBA (`M19_Compliance.bas`). Multi-case orchestration. |
+
+**Why first:** VBA parity is a non-negotiable for Excel users. Python/VBA drift undermines trust.
+
+**How to start:**
+```
+1. Read Python/tests/data/parity_test_vectors.json
+2. Open VBA/Tests/Test_Parity.bas
+3. Implement LoadVectorsFromJSON() helper
+4. Run tests, fix any drift
+```
+
+---
+
+### Priority 2: Cutting-Stock Optimization (MEDIUM)
+
+| ID | Task | Agent | Est. | Details |
+|----|------|-------|------|---------|
+| **TASK-049** | BBS Cutting-Stock Optimizer | DEV | 4h | Minimize waste when cutting from standard lengths (6m/7.5m/9m/12m). First-fit-decreasing algorithm. |
+
+**Why:** Major value-add for fabricators. Reduces steel waste 5-15%.
+
+**Input:** BBS line items (mark, dia, cut_length, quantity)
+**Output:** Cutting plan (which bars from which stock length) + waste %
+
+**Implementation notes:**
+```python
+# In bbs.py, add:
+def optimize_cutting_stock(
+    line_items: List[BBSLineItem],
+    stock_lengths: List[float] = [6000, 7500, 9000, 12000],  # mm
+    kerf: float = 3.0,  # saw cut loss mm
+) -> CuttingPlan:
+    """First-fit-decreasing bin packing."""
+    ...
+```
+
+---
+
+### Priority 3: CLI Polish (MEDIUM)
+
+| ID | Task | Agent | Est. | Details |
+|----|------|-------|------|---------|
+| **TASK-050** | Unified CLI Entrypoint | DEV | 2h | Single `python -m structural_lib` with subcommands: `design`, `bbs`, `dxf`, `job`. |
+| **TASK-051** | CLI Integration Tests | TESTER | 2h | End-to-end tests: CSV → design → DXF + BBS output. |
+
+**Why:** Currently multiple entry points (`excel_integration.py`, `job_cli.py`, `dxf_export.py`). Confusing for users.
+
+**Target interface:**
+```bash
+python -m structural_lib design input.csv -o results.json
+python -m structural_lib bbs results.json -o bbs.csv
+python -m structural_lib dxf results.json -o drawings.dxf
+python -m structural_lib job job.json -o output/
+```
+
+---
+
+### Priority 4: Documentation for v1.0 (LOW)
+
+| ID | Task | Agent | Est. | Details |
+|----|------|-------|------|---------|
+| **TASK-052** | User Guide (Getting Started) | DOCS | 3h | Step-by-step for first-time users: install, run, interpret results. |
+| **TASK-053** | Validation Pack | DOCS | 2h | Publish hand-calc verification for 3-5 benchmark beams with IS 456 references. |
+| **TASK-054** | API Stability Commitment | PM | 1h | Document which functions are "stable API" vs "internal". Semantic versioning policy. |
+
+---
+
+### Priority 5: Advanced Features (BACKLOG)
+
+| ID | Task | Agent | Est. | Details |
+|----|------|-------|------|---------|
+| **TASK-055** | Level B Serviceability | DEV | 6h | Full deflection calc (not just span/depth), long-term factors, cracking moment. |
+| **TASK-056** | Column Design Module | DEV | 8h | Axial + biaxial bending. IS 456 interaction curves. |
+| **TASK-057** | Slab Design Module | DEV | 6h | One-way and two-way slabs. Moment coefficients per IS 456 Table 26. |
+| **TASK-058** | ETABS API Integration | INTEGRATION | 4h | CSI OAPI for direct model access (Windows only). |
+
+---
+
+## Quick Reference: Starting Next Session
+
+```bash
+# 1. Verify state
+cd Python && python -m pytest -q  # Should show 1638 passed
+
+# 2. Check version
+python -c "from structural_lib import api; print(api.get_library_version())"  # 0.9.3
+
+# 3. Pick a task from Priority 1 (VBA Parity)
+# Open VBA/Tests/Test_Parity.bas
+# Implement JSON loading for parity vectors
+```
+
+**Files to read first:**
+- `docs/NEXT_SESSION_BRIEF.md` — session context
+- `Python/tests/data/parity_test_vectors.json` — shared test vectors
+- `VBA/Tests/Test_Parity.bas` — current VBA test harness
 
 ---
 
