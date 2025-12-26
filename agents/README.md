@@ -22,6 +22,12 @@ The role docs in this folder can guide **GitHub Copilot Coding Agent** when you 
 
 **Example issue title:** `Fix shear interpolation for pt < 0.25% in M04_Tables`
 
+**Known limitations:**
+- Coding agent may not run formatters (black, ruff) — you may need to fix formatting manually or approve auto-fix
+- First PR from coding agent requires workflow approval (GitHub security feature)
+- Agent works best with small, well-scoped tasks (one function or one bug)
+- Complex multi-file refactors may need human guidance
+
 ---
 
 ## PM
