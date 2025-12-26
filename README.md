@@ -7,9 +7,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**Production-grade RC beam design library per IS 456:2000**
+**Run 500 ETABS beams → get compliant rebar + DXF + schedules in minutes.**
 
-[Quick Start](#30-second-quickstart-no-repo-clone) • [Documentation](docs/README.md) • [Examples](Python/examples/) • [API Reference](docs/API_REFERENCE.md)
+[Quick Start](#30-second-user-demo-no-clone-required) • [Documentation](docs/README.md) • [Examples](Python/examples/) • [API Reference](docs/API_REFERENCE.md)
 
 </div>
 
@@ -62,6 +62,22 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 - Consultants running 100+ beams from ETABS exports
 - Detailers generating DXF + schedules quickly
 - Students verifying hand calculations and code limits
+
+## Trust & Verification
+
+| Aspect | Status |
+|--------|--------|
+| **Determinism** | Same input → same output (JSON/CSV/DXF) across runs and machines |
+| **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
+| **Test coverage** | 1680+ Python tests, 92%+ line coverage, CI-enforced |
+| **Clause traceability** | Every formula references IS 456 clause/table |
+| **Verification pack** | Benchmark examples in [`Python/examples/`](Python/examples/) |
+
+## What this is NOT
+
+- ❌ **Not a full building design tool** — beams only (columns, slabs, foundations are out of scope)
+- ❌ **Not a replacement for engineer judgment** — final responsibility remains with the qualified engineer
+- ❌ **Not yet on PyPI** — install from GitHub tag (PyPI publishing planned)
 
 ## Adoption (Early Users)
 
@@ -392,8 +408,13 @@ See [Python examples](Python/examples/) for complete workflows.
 
 | Platform | Command | Coverage |
 |----------|---------|----------|
-| Python | `python3 -m pytest Python/tests -q` | 1680+ tests |
+| Python | `python3 -m pytest Python/tests -q` | 1680+ tests, 92%+ coverage |
 | VBA | `Test_RunAll.RunAllTests` in Excel VBA Editor | 9 test suites |
+
+Run the full suite locally to verify:
+```bash
+cd Python && python3 -m pytest --cov=structural_lib --cov-fail-under=92
+```
 
 ## Packaging
 
