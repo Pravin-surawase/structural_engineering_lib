@@ -12,7 +12,6 @@ Invariants tested:
 """
 
 import pytest
-import math
 from structural_lib import flexure, shear, detailing, materials, tables
 
 

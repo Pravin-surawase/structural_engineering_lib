@@ -10,7 +10,6 @@ Tests cover:
 """
 
 import pytest
-import math
 import tempfile
 import csv
 import json
@@ -18,7 +17,6 @@ from pathlib import Path
 
 from structural_lib.bbs import (
     # Constants
-    STEEL_DENSITY_KG_M3,
     UNIT_WEIGHTS_KG_M,
     # Weight calculations
     calculate_bar_weight,
@@ -31,14 +29,11 @@ from structural_lib.bbs import (
     # BBS generation
     generate_bbs_from_detailing,
     calculate_bbs_summary,
-    generate_bbs_document,
-    # Export
     export_bbs_to_csv,
     export_bbs_to_json,
     export_bom_summary_csv,
     # Data classes
     BBSLineItem,
-    BBSummary,
     BBSDocument,
 )
 from structural_lib.detailing import (
