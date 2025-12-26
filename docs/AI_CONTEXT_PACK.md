@@ -2,6 +2,9 @@
 
 Use this file as the single entrypoint for AI agents working in VS Code.
 
+**Current version:** v0.9.4  
+**Test count:** 1680+ Python tests, 9 VBA test suites
+
 ## 0) Golden rule
 - Prefer small, deterministic changes.
 - Keep Python + VBA parity (same formulas, same units, same edge-case behavior).
@@ -12,8 +15,8 @@ Use this file as the single entrypoint for AI agents working in VS Code.
 ## 1) What this repo is
 - IS 456 RC beam design library.
 - Implementations: Python package under `Python/` + VBA modules under `VBA/`.
-- Strength design + detailing + DXF export are done (v0.7.0).
-- Serviceability (deflection/crack width) is implemented (v0.8).
+- Strength design + detailing + DXF export + serviceability + compliance + BBS done (v0.8+).
+- **v0.9.4 adds:** Unified CLI (`python -m structural_lib`), cutting-stock optimizer, VBA BBS/Compliance parity.
 
 Start here for architecture and boundaries:
 - [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)

@@ -1,17 +1,17 @@
 # IS 456 RC Beam Design Library - Current State and Goals
 
-Last updated: 2025-12-26
-Current release tag: v0.9.3
+Last updated: 2025-12-27
+Current release tag: v0.9.4
 Document status: Active
 
 ## 0) Executive summary
 
 This repository is a professional-grade, UI-agnostic RC beam design library
 targeting IS 456:2000. It currently provides strength design, detailing, DXF
-output, Level A serviceability, compliance checking, and Bar Bending Schedule
-(BBS) generation, with a deterministic batch runner and CSV integration. The
-implementation exists in both Python and VBA with parity intent, and is
-supported by 1638 Python tests and CI.
+output, Level A serviceability, compliance checking, Bar Bending Schedule
+(BBS) generation, **unified CLI**, and **cutting-stock optimization**, with a 
+deterministic batch runner and CSV integration. The implementation exists in 
+both Python and VBA with parity intent, and is supported by **1680+ Python tests** and CI.
 
 This document is a systematic overview of what exists today, how it is
 structured, what gaps remain, and what the next priorities are. It is intended
@@ -107,8 +107,10 @@ Compliance and orchestration:
 
 I/O and batch automation:
 - `Python/structural_lib/excel_integration.py`: CSV/JSON parsing and schedule.
-- `Python/structural_lib/job_cli.py`: CLI runner.
+- `Python/structural_lib/job_cli.py`: Legacy CLI runner.
 - `Python/structural_lib/job_runner.py`: deterministic job outputs.
+- `Python/structural_lib/__main__.py`: **Unified CLI entrypoint** (v0.9.4).
+- `Python/structural_lib/rebar_optimizer.py`: **Cutting-stock optimizer** (v0.9.4).
 
 ## 7) VBA module map (current state)
 
@@ -123,6 +125,10 @@ Core calculation modules:
 Detailing and DXF:
 - `VBA/Modules/M15_Detailing.bas`
 - `VBA/Modules/M16_DXF.bas`
+
+BBS and Compliance (v0.9.4):
+- `VBA/Modules/M18_BBS.bas`: Bar bending schedule per IS 2502.
+- `VBA/Modules/M19_Compliance.bas`: Multi-check compliance orchestration.
 
 UI and orchestration:
 - `VBA/Modules/M11_AppLayer.bas`
@@ -197,7 +203,7 @@ Tracked gaps:
 - Serviceability is Level A only (detailed deflection not implemented).
 - VBA automated testing is not implemented.
 - Batch job schema is single-beam (multi-beam is future).
-- BBS cutting-stock optimization not implemented (standard lengths only).
+- ~~BBS cutting-stock optimization~~ ✅ **Implemented in v0.9.4** (`rebar_optimizer.py`).
 
 ## 12) Goals and priorities (next 1-3 releases)
 
