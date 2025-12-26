@@ -11,6 +11,8 @@ References:
 - IS 1786:2008 (High Strength Deformed Steel Bars)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import List, Dict
 import csv
@@ -19,6 +21,7 @@ from pathlib import Path
 import math
 
 from .detailing import BeamDetailingResult
+from .types import CuttingAssignment, CuttingPlan
 
 
 # =============================================================================
@@ -518,7 +521,7 @@ def optimize_cutting_stock(
     line_items: List[BBSLineItem],
     stock_lengths: List[float] = None,
     kerf: float = 3.0,
-) -> "CuttingPlan":
+) -> CuttingPlan:
     """
     First-fit-decreasing bin packing for rebar cutting optimization.
 
@@ -554,8 +557,6 @@ def optimize_cutting_stock(
         >>> print(f"Stock bars needed: {plan.total_stock_used}")
         >>> print(f"Waste: {plan.waste_percentage:.1f}%")
     """
-    from .types import CuttingAssignment, CuttingPlan
-
     # Default stock lengths per module constant
     if stock_lengths is None:
         stock_lengths = STANDARD_STOCK_LENGTHS_MM.copy()
