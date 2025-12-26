@@ -392,11 +392,11 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 ---
 
-### Priority 2: Cutting-Stock Optimization (MEDIUM)
+### Priority 2: Cutting-Stock Optimization (DONE ✅)
 
 | ID | Task | Agent | Est. | Details |
 |----|------|-------|------|---------|
-| **TASK-049** | BBS Cutting-Stock Optimizer | DEV | 4h | Minimize waste when cutting from standard lengths (6m/7.5m/9m/12m). First-fit-decreasing algorithm. |
+| **TASK-049** | BBS Cutting-Stock Optimizer | DEV | 4h | ✅ Completed via PR #30. First-fit-decreasing algorithm implemented. |
 
 **Why:** Major value-add for fabricators. Reduces steel waste 5-15%.
 
