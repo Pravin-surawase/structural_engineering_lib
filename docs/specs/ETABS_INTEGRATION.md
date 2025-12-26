@@ -54,12 +54,16 @@ Or via **Export (typical):**
 | `Output Case` / `Load Case/Combo` | Load combination name | — | `case_id` |
 | `Station` | Location along beam (output station) | mm or m | `station` (optional) |
 | `P` | Axial force | kN | (usually 0 for beams) |
-| `V2` | Shear force (major axis) | kN | `vu_kn` |
-| `M3` | Bending moment (major axis) | kN·m | `mu_knm` |
+| `V2` | Shear in the 1-2 plane (local 2) | kN | `vu_kn` |
+| `M3` | Bending in the 1-2 plane (about local 3) | kN·m | `mu_knm` |
 
 **Sign Convention:**
 - ETABS reports `M3` and `V2` using the member local axes and the i/j end. Sign depends on local 2/3 orientation.
 - For strength envelopes in this workflow we use `abs(M3)` and `abs(V2)`. For top/bottom steel, map signs using local axes and beam "up" direction.
+- Before assuming "vertical bending = M3", confirm the beam local 2 axis is vertical in your model (local axes can be reassigned).
+ 
+**Extra Columns:**
+- ETABS force tables often include additional fields (e.g., Case Type, Step, or Envelope). Ignore unknown columns in the normalizer.
 
 ### 2.2 Geometry Table: Frame Sections (Optional but Recommended)
 
@@ -90,10 +94,13 @@ Export to map each frame object to its assigned section property:
 **Typical table labels (version-dependent):**
 - `Frame Assignments - Section Properties`
 - `Frame Section Assignments`
+ETABS exports commonly include `Frame Assignments - Section Properties` in this family.
 
 ### 2.4 Material Table: Concrete Properties
 
 **ETABS Menu Path:** `Define -> Materials`
+**Typical table labels (version-dependent):**
+- `Material Properties - Concrete Data`
 
 | ETABS Column | Description | Library Mapping |
 |--------------|-------------|-----------------|
@@ -103,6 +110,8 @@ Export to map each frame object to its assigned section property:
 ### 2.5 Material Table: Rebar Properties
 
 **ETABS Menu Path:** `Define -> Materials`
+**Typical table labels (version-dependent):**
+- `Material Properties - Rebar Data`
 
 | ETABS Column | Description | Library Mapping |
 |--------------|-------------|-----------------|
@@ -136,7 +145,7 @@ Transform ETABS output to library input:
 
 ### 3.3 Material Mapping
 
-Concrete grades (from **Material Properties - Concrete**):
+Concrete grades (from **Material Properties - Concrete Data**):
 
 | ETABS Material | `fck_nmm2` | Notes |
 |----------------|------------|-------|
@@ -146,12 +155,14 @@ Concrete grades (from **Material Properties - Concrete**):
 | M35 | 35 | |
 | M40 | 40 | |
 
-Rebar grades (from **Material Properties - Rebar**):
+Rebar grades (from **Material Properties - Rebar Data**):
 
 | ETABS Material | `fy_nmm2` | Notes |
 |----------------|-----------|-------|
 | Fe415 | 415 | |
 | Fe500 | 500 | Most common |
+
+If the rebar table is not exported, `fy_nmm2` may come from ETABS default/design preferences.
 
 ---
 
@@ -166,8 +177,8 @@ Rebar grades (from **Material Properties - Rebar**):
    - ✅ `Element Forces - Beams` (required)
    - ✅ `Frame Section Definitions` (recommended)
    - ✅ `Frame Assignments - Section Properties` (recommended)
-   - ✅ `Material Properties - Concrete` (recommended)
-   - ✅ `Material Properties - Rebar` (recommended if you need fy)
+   - ✅ `Material Properties - Concrete Data` (recommended)
+   - ✅ `Material Properties - Rebar Data` (recommended if you need fy)
 5. Save to your working folder
 
 ### 4.2 Prepare Input CSV
