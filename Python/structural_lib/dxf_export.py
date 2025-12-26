@@ -352,6 +352,169 @@ def draw_annotations(
 
 
 # =============================================================================
+# Section Cut Drawing
+# =============================================================================
+
+
+def draw_section_cut(
+    msp,
+    b: float,
+    D: float,
+    cover: float,
+    top_bars: BarArrangement,
+    bottom_bars: BarArrangement,
+    stirrup: StirrupArrangement,
+    origin: Tuple[float, float] = (0, 0),
+    scale: float = 1.0,
+    title: str = "SECTION A-A",
+):
+    """
+    Draw a cross-section view of the beam.
+
+    Args:
+        msp: Modelspace to draw on
+        b: Beam width (mm)
+        D: Beam total depth (mm)
+        cover: Clear cover (mm)
+        top_bars: Top bar arrangement at this section
+        bottom_bars: Bottom bar arrangement at this section
+        stirrup: Stirrup arrangement at this section
+        origin: Bottom-left corner of section
+        scale: Drawing scale (1.0 = 1:1)
+        title: Section title text
+    """
+    x0, y0 = origin
+    b_scaled = b * scale
+    D_scaled = D * scale
+    cover_scaled = cover * scale
+
+    # Beam outline
+    draw_rectangle(msp, x0, y0, x0 + b_scaled, y0 + D_scaled, "BEAM_OUTLINE")
+
+    # Stirrup (inner rectangle with rounded corners represented as rectangle)
+    stirrup_dia = stirrup.diameter * scale
+    inner_x1 = x0 + cover_scaled
+    inner_y1 = y0 + cover_scaled
+    inner_x2 = x0 + b_scaled - cover_scaled
+    inner_y2 = y0 + D_scaled - cover_scaled
+
+    msp.add_lwpolyline(
+        [
+            (inner_x1, inner_y1),
+            (inner_x2, inner_y1),
+            (inner_x2, inner_y2),
+            (inner_x1, inner_y2),
+            (inner_x1, inner_y1),
+        ],
+        dxfattribs={"layer": "REBAR_STIRRUP"},
+    )
+
+    # Bottom bars (circles)
+    n_bottom = bottom_bars.count
+    dia_bottom = bottom_bars.diameter * scale
+    if n_bottom > 0:
+        # Calculate spacing
+        available_width = b_scaled - 2 * cover_scaled - 2 * stirrup_dia - dia_bottom
+        if n_bottom > 1:
+            spacing = available_width / (n_bottom - 1)
+        else:
+            spacing = 0
+
+        bar_y = y0 + cover_scaled + stirrup_dia + dia_bottom / 2
+        start_x = x0 + cover_scaled + stirrup_dia + dia_bottom / 2
+
+        for i in range(n_bottom):
+            cx = start_x + i * spacing
+            msp.add_circle(
+                (cx, bar_y),
+                dia_bottom / 2,
+                dxfattribs={"layer": "REBAR_MAIN"},
+            )
+
+    # Top bars (circles)
+    n_top = top_bars.count
+    dia_top = top_bars.diameter * scale
+    if n_top > 0:
+        available_width = b_scaled - 2 * cover_scaled - 2 * stirrup_dia - dia_top
+        if n_top > 1:
+            spacing = available_width / (n_top - 1)
+        else:
+            spacing = 0
+
+        bar_y = y0 + D_scaled - cover_scaled - stirrup_dia - dia_top / 2
+        start_x = x0 + cover_scaled + stirrup_dia + dia_top / 2
+
+        for i in range(n_top):
+            cx = start_x + i * spacing
+            msp.add_circle(
+                (cx, bar_y),
+                dia_top / 2,
+                dxfattribs={"layer": "REBAR_MAIN"},
+            )
+
+    # Section title
+    msp.add_text(
+        title,
+        dxfattribs={
+            "layer": "TEXT",
+            "height": TEXT_HEIGHT * 0.8 * scale,
+        },
+    ).set_placement(
+        (x0 + b_scaled / 2, y0 - 50 * scale), align=_text_align("TOP_CENTER")
+    )
+
+    # Dimension: width
+    msp.add_text(
+        f"{int(b)}",
+        dxfattribs={
+            "layer": "DIMENSIONS",
+            "height": TEXT_HEIGHT * 0.6 * scale,
+        },
+    ).set_placement(
+        (x0 + b_scaled / 2, y0 - 20 * scale), align=_text_align("TOP_CENTER")
+    )
+
+    # Dimension: depth
+    msp.add_text(
+        f"{int(D)}",
+        dxfattribs={
+            "layer": "DIMENSIONS",
+            "height": TEXT_HEIGHT * 0.6 * scale,
+            "rotation": 90,
+        },
+    ).set_placement(
+        (x0 + b_scaled + 20 * scale, y0 + D_scaled / 2),
+        align=_text_align("MIDDLE_CENTER"),
+    )
+
+    # Bar callouts
+    bot_text = f"{n_bottom}-T{int(bottom_bars.diameter)}"
+    top_text = f"{n_top}-T{int(top_bars.diameter)}"
+
+    msp.add_text(
+        bot_text,
+        dxfattribs={
+            "layer": "TEXT",
+            "height": TEXT_HEIGHT * 0.5 * scale,
+        },
+    ).set_placement(
+        (x0 + b_scaled / 2, y0 + cover_scaled + stirrup_dia + dia_bottom + 10 * scale),
+        align=_text_align("BOTTOM_CENTER"),
+    )
+
+    msp.add_text(
+        top_text,
+        dxfattribs={
+            "layer": "TEXT",
+            "height": TEXT_HEIGHT * 0.5 * scale,
+        },
+    ).set_placement(
+        (x0 + b_scaled / 2, y0 + D_scaled - cover_scaled - stirrup_dia - dia_top - 10 * scale),
+        align=_text_align("TOP_CENTER"),
+    )
+
+
+# =============================================================================
 # Main Export Function
 # =============================================================================
 
@@ -361,6 +524,7 @@ def generate_beam_dxf(
     output_path: str,
     include_dimensions: bool = True,
     include_annotations: bool = True,
+    include_section_cuts: bool = True,
 ) -> str:
     """
     Generate a DXF file from beam detailing result.
@@ -370,6 +534,7 @@ def generate_beam_dxf(
         output_path: Path to save DXF file
         include_dimensions: Add dimension lines
         include_annotations: Add text annotations
+        include_section_cuts: Add cross-section views (A-A at support, B-B at midspan)
 
     Returns:
         Path to generated DXF file
@@ -419,6 +584,62 @@ def generate_beam_dxf(
             ld=detailing.ld_tension,
             lap=detailing.lap_length,
             origin=(0, 0),
+        )
+
+    # Add section cuts (positioned to the right of elevation)
+    if include_section_cuts:
+        # Section A-A at support (uses first zone bars)
+        section_x_offset = detailing.span + 500  # 500mm gap from elevation
+        
+        # Get bar arrangements for support (first zone)
+        top_bar_support = detailing.top_bars[0] if detailing.top_bars else BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        )
+        bottom_bar_support = detailing.bottom_bars[0] if detailing.bottom_bars else BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        )
+        
+        draw_section_cut(
+            msp,
+            b=detailing.b,
+            D=detailing.D,
+            cover=detailing.cover,
+            top_bars=top_bar_support,
+            bottom_bars=bottom_bar_support,
+            stirrup=detailing.stirrups[0] if detailing.stirrups else StirrupArrangement(
+                diameter=8, legs=2, spacing=150, zone_length=1000
+            ),
+            origin=(section_x_offset, 0),
+            scale=1.0,
+            title="SECTION A-A (SUPPORT)",
+        )
+
+        # Section B-B at midspan (uses middle zone bars)
+        section_b_offset = section_x_offset + detailing.b + 200
+        
+        # Get bar arrangements for midspan (middle zone)
+        mid_idx = len(detailing.top_bars) // 2 if detailing.top_bars else 0
+        top_bar_mid = detailing.top_bars[mid_idx] if detailing.top_bars else BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        )
+        bottom_bar_mid = detailing.bottom_bars[mid_idx] if detailing.bottom_bars else BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=100, layers=1
+        )
+        stirrup_mid_idx = len(detailing.stirrups) // 2 if detailing.stirrups else 0
+        
+        draw_section_cut(
+            msp,
+            b=detailing.b,
+            D=detailing.D,
+            cover=detailing.cover,
+            top_bars=top_bar_mid,
+            bottom_bars=bottom_bar_mid,
+            stirrup=detailing.stirrups[stirrup_mid_idx] if detailing.stirrups else StirrupArrangement(
+                diameter=8, legs=2, spacing=200, zone_length=2000
+            ),
+            origin=(section_b_offset, 0),
+            scale=1.0,
+            title="SECTION B-B (MIDSPAN)",
         )
 
     # Save file

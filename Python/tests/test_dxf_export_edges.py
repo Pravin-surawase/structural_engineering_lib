@@ -16,6 +16,8 @@ class _FakeModelspace:
     def __init__(self):
         self.lines = []
         self.texts = []
+        self.polylines = []
+        self.circles = []
 
     def add_line(self, start, end, dxfattribs=None):
         self.lines.append((start, end, dxfattribs or {}))
@@ -25,6 +27,14 @@ class _FakeModelspace:
         ent = _FakeText(text=text, dxfattribs=dxfattribs or {})
         self.texts.append(ent)
         return ent
+
+    def add_lwpolyline(self, points, dxfattribs=None):
+        self.polylines.append((points, dxfattribs or {}))
+        return None
+
+    def add_circle(self, center, radius, dxfattribs=None):
+        self.circles.append((center, radius, dxfattribs or {}))
+        return None
 
 
 class _FakeLayers:
@@ -204,6 +214,7 @@ def test_generate_beam_dxf_runs_with_stubbed_ezdxf(
         str(out),
         include_dimensions=include_dimensions,
         include_annotations=include_annotations,
+        include_section_cuts=False,  # Disable section cuts for clean text assertions
     )
 
     assert returned == str(out)
@@ -299,3 +310,73 @@ def test_dxf_export_cli_main_reads_json_and_writes(monkeypatch, tmp_path, capsys
     captured = capsys.readouterr().out
     assert "DXF generated:" in captured
     assert str(out) in captured
+
+
+def test_section_cuts_added_when_enabled(monkeypatch, tmp_path):
+    """Test that section cut views are added when include_section_cuts=True."""
+    import structural_lib.dxf_export as dxf_export
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
+
+    # Stub ezdxf dependency surface.
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    detailing = BeamDetailingResult(
+        beam_id="B1",
+        story="S1",
+        b=300,
+        D=500,
+        span=4000,
+        cover=40,
+        top_bars=[
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+        ],
+        bottom_bars=[
+            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=2000),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
+        ],
+        ld_tension=600,
+        ld_compression=500,
+        lap_length=700,
+        is_valid=True,
+        remarks="OK",
+    )
+
+    out = tmp_path / "beam_with_sections.dxf"
+    dxf_export.generate_beam_dxf(
+        detailing,
+        str(out),
+        include_dimensions=False,
+        include_annotations=False,
+        include_section_cuts=True,
+    )
+
+    doc = _FakeEzdxf.last_doc
+    
+    # Section cuts add circles (for rebars) and polylines (for stirrup outline)
+    assert len(doc._msp.circles) > 0, "Section cuts should draw rebar circles"
+    assert len(doc._msp.polylines) > 0, "Section cuts should draw stirrup polylines"
+    
+    # Section cuts add text labels (section titles, bar callouts)
+    section_texts = [t.text for t in doc._msp.texts]
+    assert any("SECTION A-A" in t for t in section_texts), "Should have Section A-A title"
+    assert any("SECTION B-B" in t for t in section_texts), "Should have Section B-B title"

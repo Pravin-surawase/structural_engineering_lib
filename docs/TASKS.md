@@ -198,7 +198,22 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [x] Tests for totals (length/weight) + stable schema ordering
     - [ ] Optional (later): cutting-stock / waste optimization (6m/7.5m/9m/12m)
 
-- [ ] **TASK-035**: Section Cuts in DXF
+- [x] **TASK-035**: Section Cuts in DXF
+  - **Agent:** DEV
+  - **Status:** ✅ Complete — section cut views added to DXF export.
+  - **Outputs:**
+    - Updated `dxf_export.py` with `draw_section_cut()` function
+    - Section A-A (support) and Section B-B (midspan) views
+    - Cross-section with beam outline, stirrup, rebar circles
+    - Bar callouts and dimension annotations
+  - **Checklist:**
+    - [x] Draw beam cross-section rectangle (b × D)
+    - [x] Draw stirrup outline polyline
+    - [x] Draw rebar circles at correct positions
+    - [x] Add dimension annotations (b, D)
+    - [x] Add bar callout text (n-Tdia)
+    - [x] Position section cuts to right of elevation view
+    - [x] Add test coverage for section cuts
 - [ ] **TASK-036**: Multi-beam Layout
 - [x] **TASK-019: Regression Snapshots (Excel)**
   - **Agent:** TESTER
