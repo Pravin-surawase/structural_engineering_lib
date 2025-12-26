@@ -204,9 +204,10 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - [ ] **TASK-020**: Py/VBA Parity Tests
 - [ ] **TASK-021**: Documentation Depth Pass
 
-- [ ] **TASK-037: GitHub Repo Professionalization (community + CI)**
+- [x] **TASK-037: GitHub Repo Professionalization (community + CI)**
   - **Agent:** DEVOPS / DOCS
   - **Goal:** Make the repository easy/safe for other engineers to use and contribute.
+  - **Status:** ✅ Complete
   - **Checklist:**
     - [x] Add community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`
     - [x] Add PR template: `.github/pull_request_template.md`
@@ -251,14 +252,17 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [ ] VBA: TestHarness reads vectors and writes pass/fail summary
     - [x] Document tolerances (Ast, tc, spacing, Ld, lap) and units
 
-- [ ] **TASK-040: VBA Testing Automation (repeatable test runs)**
+- [x] **TASK-040: VBA Testing Automation (repeatable test runs)**
   - **Agent:** DEVOPS / TESTER
   - **Goal:** Make VBA tests repeatable and reviewable in PRs.
-  - **Status:** ⚠️ Overdue — `RunAllTests` exists but not wired/documented.
+  - **Status:** ✅ Complete — unified runner + documentation created.
+  - **Outputs:**
+    - `VBA/Tests/Test_RunAll.bas` — single entrypoint macro
+    - `docs/VBA_TESTING_GUIDE.md` — run guide + expected output
   - **Checklist:**
-    - [ ] Add a single entrypoint macro: `RunAllTests`
-    - [ ] Standardize test output/log format (counts + failures)
-    - [ ] Provide a manual run guide + expected output in docs
+    - [x] Add a single entrypoint macro: `RunAllVBATests`
+    - [x] Standardize test output/log format (counts + failures)
+    - [x] Provide a manual run guide + expected output in docs
 
 ---
 
