@@ -1,16 +1,16 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-26  
-**Status:** v0.9.1 released (tagged release; verify CI status via GitHub Actions)  
-**Branch:** `main`
+**Status:** v0.9.1 released; PR #21 pending review (BBS + ETABS + Parity)  
+**Branch:** `feat/bbs-etabs-integration` (awaiting merge to `main`)
 
 ## TL;DR (What Changed Recently)
-- Released v0.9.1 (versions/docs aligned; tag exists for the latest release baseline).
-- Hardened GitHub Actions workflow permissions (least-privilege; low maintenance).
-- Enabled GitHub `main` protection via Ruleset (PR-only merges + required checks + up-to-date + no force-push).
-- Reduced maintenance noise: Dependabot updates are grouped + consistently labeled.
-- Merged action updates for CI/CodeQL (keeps workflows on supported majors).
-- CI status: use GitHub Actions for the live truth.
+- **BBS Module** (`bbs.py`): Bar Bending Schedule generation with CSV/JSON export. 29 tests.
+- **ETABS Integration Docs** (`docs/specs/ETABS_INTEGRATION.md`): Complete mapping guide.
+- **Parity Test Vectors** (`tests/data/parity_test_vectors.json`): 20 vectors covering all modules.
+- **Verification Examples** (`docs/VERIFICATION_EXAMPLES.md`): Benchmark calculations.
+- **Test count:** 289 tests passing (up from 269).
+- PR #21 batches: TASK-034 (BBS), TASK-044 (ETABS), TASK-039 (parity vectors Python side).
 
 ---
 
@@ -23,11 +23,12 @@ If you want to resume quickly without re-reading the repo:
 3. **Canonical backlog (TASK-041 for serviceability):** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
 
-**Verified state (as of 2025-12-25):**
+**Verified state (as of 2025-12-26):**
 - Release baseline tag is **v0.9.1**.
-- Version pins updated across docs + package metadata.
+- PR #21 pending with BBS, ETABS docs, parity vectors.
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
+- BBS Module: **implemented** (cut lengths, weights, CSV/JSON export).
 - Known DXF limitation: VBA DXF R12 header extents are static (CAD re-zooms on open).
 
 **How to re-verify quickly (avoids drift):**

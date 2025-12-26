@@ -6,6 +6,22 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ---
 
+## v0.9.3
+**Date:** 2025-12-26
+**Status:** ✅ Locked & Verified
+**Mindset:** Code quality hardening before feature expansion.
+**Key Changes:**
+- **Code Quality Sweep:** 14 targeted fixes across 5 phases:
+  - Phase 1: Input validation guards (ZeroDivisionError prevention)
+  - Phase 2: Logging for stack trace preservation
+  - Phase 3: VBA/Python parity verified + VBA guards added
+  - Phase 4: API/doc drift fixed
+  - Phase 5: Edge case tests for job_runner and dxf_export
+- **Tests:** 1638 passed, 93 skipped
+- **VBA:** Guards added to M05_Materials.bas and M10_Ductile.bas
+
+---
+
 ## v0.7.0
 **Date:** 2025-12-11
 **Status:** ✅ Locked & Verified

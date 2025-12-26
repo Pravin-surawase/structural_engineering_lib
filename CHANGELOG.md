@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.3] - 2025-12-26
+### Added
+- **Code Quality Sweep:** 14-task hardening across 5 phases.
+- Edge case tests for `job_runner` (malformed JSON) and `dxf_export` (single beam, large grids).
+
+### Fixed
+- Input validation guards to prevent `ZeroDivisionError`:
+  - `get_min_tension_steel_percentage` (fy=0)
+  - `calculate_development_length` (tau_bd=0)
+  - `get_xu_max_d` (fy<=0)
+- VBA parity: added matching guards to `M05_Materials.bas` and `M10_Ductile.bas`.
+- Exception handlers now log stack traces via `logging.exception()` while preserving graceful degradation.
+- README import example fixed (`parse_etabs_export` → `load_beam_data_from_csv`).
+- DXF layout: row height calculation, column width sizing, geometry overlap assertions.
+
 ## [0.9.1] - 2025-12-25
 ### Changed
 - CI policy: coverage floor enforced at `--cov-fail-under=92` (temporary).

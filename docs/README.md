@@ -28,6 +28,7 @@ For VS Code AI-agent work, start with:
 - Architecture & layering: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
 - Consolidated architecture/data flow: [DEEP_PROJECT_MAP.md](DEEP_PROJECT_MAP.md)
 - Testing strategy & CI setup: [TESTING_STRATEGY.md](TESTING_STRATEGY.md)
+- VBA testing guide: [VBA_TESTING_GUIDE.md](VBA_TESTING_GUIDE.md)
 - Development practices: [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md)
 - VBA side specifics: [VBA_GUIDE.md](VBA_GUIDE.md)
 - Packaging the add-in (`.xlam`): [EXCEL_ADDIN_GUIDE.md](EXCEL_ADDIN_GUIDE.md)

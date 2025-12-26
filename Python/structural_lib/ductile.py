@@ -41,7 +41,11 @@ def get_min_tension_steel_percentage(fck: float, fy: float) -> float:
     Clause 6.2.1 (b): Min tension steel ratio
     rho_min = 0.24 * sqrt(fck) / fy
     Returns percentage (0-100)
+
+    Returns 0.0 if inputs are invalid (fck <= 0 or fy <= 0).
     """
+    if fck <= 0 or fy <= 0:
+        return 0.0
     rho = 0.24 * math.sqrt(fck) / fy
     return rho * 100.0
 

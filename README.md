@@ -60,11 +60,10 @@ Then: `Runtime > Restart runtime` and rerun your notebook cells.
 
 ## 60-second demo (CSV → schedule + DXF)
 
-If you have the repo locally, use the sample CSV input; otherwise create a CSV with these columns:
+Use the sample CSV input from the repo:
 
 - `Python/examples/sample_beam_design.csv`
-- `examples/sample_beam_design.csv` (from `Python/`; from repo root this is `Python/examples/sample_beam_design.csv`)
-- Columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
+- Required columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
 
 Run the batch integration:
 
@@ -204,19 +203,22 @@ python3 -m pip install -e ".[dxf]"
 structural_engineering_lib/
 ├── VBA/
 │   ├── Modules/            ← Core .bas modules (import into Excel)
-│   └── Tests/
+│   └── Tests/              ← VBA test suites (Test_RunAll.bas)
 ├── Python/
-│   ├── structural_lib/     ← Python package (rectangular + flanged flexure, shear)
-│   └── tests/
+│   ├── structural_lib/     ← Python package (flexure, shear, BBS, DXF, job runner)
+│   ├── tests/
+│   ├── examples/           ← Worked examples and sample data
+│   └── scripts/            ← Utility scripts (bump_version.py)
 ├── Excel/                  ← Excel workbooks (see Excel/README.md)
 ├── docs/
+│   ├── README.md           ← Docs index (start here)
 │   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
-│   ├── README.md            ← Docs index (start here)
-│   ├── _archive/RESEARCH_AND_FINDINGS.md
-│   ├── DEVELOPMENT_GUIDE.md
-│   ├── API_REFERENCE.md
-│   └── IS456_QUICK_REFERENCE.md
+│   ├── API_REFERENCE.md    ← Public function signatures
+│   ├── BEGINNERS_GUIDE.md  ← Step-by-step introduction
+│   ├── TASKS.md            ← Task backlog and status
+│   └── KNOWN_PITFALLS.md   ← Common traps and gotchas
 ├── agents/                 ← Role docs for AI prompts
+├── logs/                   ← Runtime logs
 ├── CHANGELOG.md
 └── README.md
 ```
@@ -230,6 +232,29 @@ structural_engineering_lib/
 3. Right-click on "VBAProject (YourWorkbook)" > Import File.
 4. Select all `.bas` files from `VBA/Modules/`.
 5. You can now use functions like `=IS456_MuLim(...)` directly in cells or call `Design_Singly_Reinforced` from your macros.
+
+### Method 2: Excel Add-in (Recommended for Distribution)
+
+1. Install the add-in: `Excel/StructEngLib.xlam` (or a GitHub Release asset, if published)
+2. Functions available automatically in all workbooks
+
+### Example Usage (VBA)
+
+```vba
+Sub DesignBeam()
+    Dim result As Variant
+    
+    ' Design a beam: b=300, d=450, d'=50, D=500, Mu=150 kN·m, M25/Fe415
+    result = IS456_Design_Rectangular(300, 450, 50, 500, 150, 25, 415)
+    
+    ' result is an array: [status, Ast, Asc, design_type, message]
+    If result(0) = "OK" Then
+        Debug.Print "Ast required: " & result(1) & " mm²"
+    End If
+End Sub
+```
+
+More worked examples in `VBA/Examples/Example_Usage.bas`.
 
 ## Using the Python Library
 
@@ -251,27 +276,14 @@ else:
     print(f"Design not safe: {result.error_message}")
 ```
 
-### Method 2: Excel Add-in (Recommended for Distribution)
+### Additional Modules
 
-1. Install the add-in: `Excel/StructEngLib.xlam` (or a GitHub Release asset, if published)
-2. Functions available automatically in all workbooks
+- **BBS (Bar Bending Schedule)**: `from structural_lib.bbs import generate_bbs_from_detailing`
+- **DXF Export**: `from structural_lib.dxf_export import generate_beam_dxf`
+- **CSV/ETABS Import**: `from structural_lib.excel_integration import load_beam_data_from_csv`
+- **Job Runner**: `python3 -m structural_lib.job_cli run --job job.json`
 
-### Example Usage (VBA)
-
-```vba
-Sub DesignBeam()
-    Dim result As FlexureResult
-    
-    ' Design a beam: Mu = 150 kN·m, 300x500 section, M25/Fe415
-    result = IS456_FlexureDesign(150, 300, 450, 500, 25, 415)
-    
-    If result.DesignStatus = "OK" Then
-        Debug.Print "Ast required: " & result.Ast_required & " mm²"
-    End If
-End Sub
-```
-
-More worked examples in `VBA/Examples/Example_Usage.bas`.
+See [Python examples](Python/examples/) for complete workflows.
 
 ## Documentation
 
@@ -285,8 +297,8 @@ More worked examples in `VBA/Examples/Example_Usage.bas`.
 
 ## Testing
 
-- Python: `python3 -m pytest Python/tests -q`
-- VBA: manual/Rubberduck tests planned for later iteration
+- Python: `python3 -m pytest Python/tests -q` (1600+ tests)
+- VBA: Run `Test_RunAll.RunAllTests` in Excel VBA Editor (see `VBA/Tests/`)
 
 ## Packaging
 

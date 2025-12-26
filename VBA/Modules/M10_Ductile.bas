@@ -47,6 +47,11 @@ End Function
 ' Clause 6.2.1 (b): Min tension steel percentage
 Public Function Get_Min_Tension_Steel_Percentage(ByVal fck As Double, ByVal fy As Double) As Double
     ' rho_min = 0.24 * sqrt(fck) / fy
+    ' Returns 0 if inputs are invalid
+    If fck <= 0 Or fy <= 0 Then
+        Get_Min_Tension_Steel_Percentage = 0#
+        Exit Function
+    End If
     Dim rho As Double
     rho = 0.24 * Sqr(fck) / fy
     Get_Min_Tension_Steel_Percentage = rho * 100#

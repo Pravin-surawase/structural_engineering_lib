@@ -192,20 +192,23 @@ Planned “trust artifacts” (publishable):
 ## 11) Known limitations and gaps
 
 Tracked gaps:
-- BBS/BOM export is not implemented.
 - PDF report generation is not implemented.
 - Serviceability is Level A only (detailed deflection not implemented).
-- ETABS -> compliance mapping docs are incomplete (TASK-044).
 - VBA automated testing is not implemented.
 - Batch job schema is single-beam (multi-beam is future).
+- BBS cutting-stock optimization not implemented (standard lengths only).
 
 ## 12) Goals and priorities (next 1-3 releases)
 
+Completed (v0.10):
+1) ✅ Rebar arrangement optimizer (TASK-043).
+2) ✅ BBS/BOM export (TASK-034) — `bbs.py` with CSV/JSON export.
+3) ✅ ETABS mapping docs (TASK-044) — `docs/specs/ETABS_INTEGRATION.md`.
+
 Near-term priorities:
-1) Rebar arrangement optimizer (TASK-043).
-2) BBS/BOM export (TASK-034).
-3) ETABS mapping docs + normalization for compliance runs (TASK-044).
-4) Python <-> VBA parity automation (TASK-039/040).
+1) Python <-> VBA parity automation (TASK-039/040).
+2) BBS VBA parity.
+3) Verification examples pack.
 
 ### 12.1 Release artifacts (what each release should ship)
 

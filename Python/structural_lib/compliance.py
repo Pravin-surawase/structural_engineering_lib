@@ -14,9 +14,12 @@ Design constraints:
 
 from __future__ import annotations
 
+import logging
 from dataclasses import asdict
 from enum import Enum
 from typing import Any, Dict, List, Optional, Sequence
+
+_logger = logging.getLogger(__name__)
 
 from . import flexure, shear, serviceability
 from .types import (
@@ -102,6 +105,7 @@ def _safe_deflection_check(params: Any) -> DeflectionResult:
     try:
         return serviceability.check_deflection_span_depth(**params)
     except Exception as exc:
+        _logger.exception("Deflection check failed for params=%s", params)
         return DeflectionResult(
             is_ok=False,
             remarks=f"Deflection check failed: {exc}",
@@ -126,6 +130,7 @@ def _safe_crack_width_check(params: Any) -> CrackWidthResult:
     try:
         return serviceability.check_crack_width(**params)
     except Exception as exc:
+        _logger.exception("Crack width check failed for params=%s", params)
         return CrackWidthResult(
             is_ok=False,
             remarks=f"Crack width check failed: {exc}",

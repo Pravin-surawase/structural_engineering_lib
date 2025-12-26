@@ -439,5 +439,69 @@ This is a short, execution-focused plan based on the research passes above.
 - Clear assumptions surfaced in output (no hidden defaults)
 - Structured failures (actionable reasons when inputs/geometry make a check impossible)
 - Tests for at least: nominal case, boundary case, infeasible case
+---
 
+## Research Update (Pass 8 — "Wow Factor" Feature Candidates, Dec 26, 2025)
+
+This pass identifies high-visibility features that showcase the library's capabilities and accelerate adoption.
+
+### Candidate Ideas (ranked by impact/effort)
+
+| Idea | Wow Factor | Effort | Notes |
+|------|:----------:|:------:|-------|
+| **1. One-Line Full Design** | ⭐⭐⭐⭐⭐ | Low | A single `full_beam_design(...)` call that chains flexure → optimizer → detailing → DXF → compliance summary. "Give me moments, get a complete deliverable." |
+| **2. Interactive HTML Report** | ⭐⭐⭐⭐ | Medium | Export a self-contained HTML (no server) with collapsible sections: design summary, clause references, bar schedule, embedded SVG of cross-section. |
+| **3. 3D Rebar Preview (glTF/Jupyter)** | ⭐⭐⭐⭐ | Medium | Generate a 3D wireframe of the beam + bars as glTF or inline Jupyter `pythreejs` widget. Visual for presentations/reviews. |
+| **4. Natural Language Prompt → Design** | ⭐⭐⭐⭐⭐ | Medium | "Design 300×600 M25/Fe500 beam for Mu=250 kNm, span 5m" → structured call → complete output + calc sheet. (No LLM dependency—regex/template parsing.) |
+| **5. Instant QR Code to Calc Sheet** | ⭐⭐⭐ | Low | Embed a QR in the DXF/PDF that links to a hosted calc sheet or encodes a verification URL. Site teams scan → see design params. |
+
+### Recommended First: One-Line Full Design (`full_beam_design`)
+
+**Why:** Fastest "wow" with highest leverage—showcases every module in one call:
+
+```python
+from structural_lib import full_beam_design
+
+result = full_beam_design(
+    b=300, D=600, cover=40, fck=25, fy=500,
+    Mu_top=180, Mu_bottom=250, Vu=120,
+    span=5000, support="continuous",
+    output_dxf="beam1.dxf"
+)
+print(result.summary)  # pass/fail + bar schedule + file paths
+```
+
+**Deliverables in one call:**
+- Flexure design (singly or doubly, auto-detected)
+- Optimal bar arrangement (via rebar optimizer)
+- Shear/stirrup design
+- Serviceability checks
+- Compliance verdict with clause references
+- DXF drawing generated
+
+**Implementation:** orchestration wrapper in `api.py` that calls existing modules; no new math.
+
+---
+
+## Task Audit Summary (Dec 26, 2025)
+
+Quick audit of TASKS.md status vs. actual codebase:
+
+### Most Overdue (high impact)
+- **TASK-044** (ETABS mapping docs + normalization + verification pack): code exists in VBA, but mapping docs for compliance/batch use are still missing.
+- **TASK-034** (BBS/BOM CSV export): no code found for BBS; still open.
+- **TASK-039/040** (Python↔VBA parity harness + VBA automation): no shared vectors or parity harness yet; `RunAllTests` exists but not wired/documented.
+
+### Likely Out of Sync
+- **TASK-043** is still open in TASKS.md, but the optimizer exists and is tested in `rebar_optimizer.py` + `test_rebar_optimizer.py`. Looks done or nearly done—update task board.
+
+### Partially Done
+- **TASK-038** mentions CLI/integration tests; `test_job_cli.py` and `test_job_runner_is456.py` exist, but no end-to-end CSV → detailing → DXF tests yet.
+
+### Suggested Finish Order (fastest impact)
+1. **TASK-044** — ETABS mapping docs + verification pack
+2. **TASK-034** — BBS/BOM CSV export
+3. **TASK-039** — parity vectors + harness
+4. **TASK-040** — VBA test automation docs + output format
+5. **TASK-038** — expand integration tests (CSV/JSON → detailing → DXF)
 

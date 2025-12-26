@@ -43,6 +43,25 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - Avoid silent defaults: if a base limit, modifier, or crack limit is assumed, record it explicitly in outputs.
 - Be strict about required parameters (especially crack width): fail with a reason rather than guessing missing geometry/state inputs.
 
+## Bar Bending Schedule (v0.10+)
+- Steel density: Use IS 1786 value of 7850 kg/m³ (not 7860 or 7800).
+- Length rounding: Round cut lengths to nearest 10mm per IS 2502.
+- Weight rounding: Round weights to 0.01 kg.
+- Stirrup hook allowance: 10φ per hook (20φ total for 2 hooks).
+- Stirrup corner bends: Use 0.57×hook_diameter per corner (4 corners).
+
+## ETABS Integration
+- ETABS uses **M3** for major axis moment (typically Mu) and **V2** for major axis shear (Vu).
+- Station values in ETABS are relative distances along element; normalize to absolute positions if needed.
+- ETABS sign convention may differ from IS 456 (compression positive vs tension positive).
+- Always verify units: ETABS can export in kN-m or kip-ft; ensure CSV headers indicate units.
+
+## Parity (Python ↔ VBA)
+- Tolerances: Ast ±1 mm², stress ±0.01 N/mm², length ±1 mm, ratio ±0.0001.
+- Function signatures differ: Python uses snake_case, VBA uses PascalCase.
+- Ensure both platforms use identical Table 19/20 interpolation logic.
+- When updating one platform, update the other and run parity tests.
+
 ## Platform/VBA Quirks
 - Mac/Excel/VBA quirks (overflow patterns, debug/printing pitfalls, import-order errors) are tracked in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
