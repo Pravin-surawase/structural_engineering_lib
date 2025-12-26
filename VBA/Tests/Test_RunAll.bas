@@ -52,6 +52,9 @@ Public Sub RunAllVBATests()
     ' --- v0.8+ Module Tests ---
     Call RunSuite_Serviceability
     
+    ' --- Parity Tests (Python ↔ VBA) ---
+    Call RunSuite_Parity
+    
     ' --- Summary ---
     Dim elapsed As Double
     elapsed = Timer - m_StartTime
@@ -123,6 +126,13 @@ Private Sub RunSuite_Serviceability()
     On Error Resume Next
     Debug.Print ">>> Suite: Serviceability (Deflection, Crack Width)"
     Test_Serviceability.Run_All_Serviceability_Tests
+    Debug.Print ""
+End Sub
+
+Private Sub RunSuite_Parity()
+    On Error Resume Next
+    Debug.Print ">>> Suite: Parity (Python ↔ VBA verification)"
+    Test_Parity.Run_All_Parity_Tests
     Debug.Print ""
 End Sub
 

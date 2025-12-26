@@ -201,7 +201,14 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - [ ] **TASK-035**: Section Cuts in DXF
 - [ ] **TASK-036**: Multi-beam Layout
 - [ ] **TASK-019**: Regression Snapshots (Excel)
-- [ ] **TASK-020**: Py/VBA Parity Tests
+- [x] **TASK-020: Py/VBA Parity Tests**
+  - **Agent:** TESTER / DEV
+  - **Status:** ✅ Complete — VBA parity harness created.
+  - **Outputs:**
+    - `VBA/Tests/Test_Parity.bas` — 14 parity test cases matching Python vectors
+  - **Checklist:**
+    - [x] VBA: TestHarness reads vectors and writes pass/fail summary
+    - [x] Tests: flexure, shear, detailing, serviceability
 - [ ] **TASK-021**: Documentation Depth Pass
 
 - [x] **TASK-037: GitHub Repo Professionalization (community + CI)**
