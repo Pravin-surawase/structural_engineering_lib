@@ -43,6 +43,14 @@ def test_min_steel():
     assert pt == pytest.approx(0.3168, rel=1e-3)
 
 
+def test_min_steel_invalid_inputs():
+    """Edge case: invalid inputs should return 0.0 (no crash)."""
+    assert get_min_tension_steel_percentage(0, 500) == 0.0
+    assert get_min_tension_steel_percentage(25, 0) == 0.0
+    assert get_min_tension_steel_percentage(-25, 500) == 0.0
+    assert get_min_tension_steel_percentage(25, -500) == 0.0
+
+
 def test_confinement_spacing():
     # d=450, min_bar=12
     # 1. d/4 = 112.5
