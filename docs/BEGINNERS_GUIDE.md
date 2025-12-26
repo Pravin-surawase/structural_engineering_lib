@@ -276,7 +276,33 @@ print("=" * 60)
 
 ---
 
-## Step 5: Batch Processing Multiple Beams
+## Step 5: Using the Command-Line Interface (CLI)
+
+The easiest way to process beams is using the unified CLI (v0.9.4+):
+
+```bash
+# Design beams from CSV
+python -m structural_lib design my_beams.csv -o results.json
+
+# Generate bar bending schedule
+python -m structural_lib bbs results.json -o schedule.csv
+
+# Generate DXF drawings (requires ezdxf)
+python -m structural_lib dxf results.json -o drawings.dxf
+
+# Run a complete job from JSON spec
+python -m structural_lib job job.json -o ./output
+```
+
+Get help on any command:
+```bash
+python -m structural_lib --help
+python -m structural_lib design --help
+```
+
+---
+
+## Step 6: Batch Processing Multiple Beams (Python Script)
 
 Create a CSV file `my_beams.csv`:
 

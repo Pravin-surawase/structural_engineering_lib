@@ -1,8 +1,32 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.10.0  
-**Last Updated:** December 26, 2025  
-**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS).
+**Document Version:** 0.11.0  
+**Last Updated:** December 27, 2025  
+**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI).
+
+---
+
+## 0. Unified CLI (v0.9.4+)
+
+The library provides a unified command-line interface:
+
+```bash
+# Design beams from CSV/JSON input
+python -m structural_lib design input.csv -o results.json
+
+# Generate bar bending schedule
+python -m structural_lib bbs results.json -o schedule.csv
+
+# Generate DXF drawings (requires ezdxf)
+python -m structural_lib dxf results.json -o drawings.dxf
+
+# Run complete job from spec file
+python -m structural_lib job job.json -o ./output
+
+# Get help
+python -m structural_lib --help
+python -m structural_lib design --help
+```
 
 ---
 

@@ -1,16 +1,17 @@
 # Next Session Briefing
 
-**Last Updated:** 2025-12-26  
-**Status:** v0.9.3 released and merged to `main`  
+**Last Updated:** 2025-12-27  
+**Status:** v0.9.4 released and merged to `main`  
 **Branch:** `main` (all PRs merged)
 
 ## TL;DR (What Changed Recently)
-- **v0.9.3 Released:** Code Quality Sweep complete (14 fixes across 5 phases)
-- **BBS Module** (`bbs.py`): Bar Bending Schedule generation with CSV/JSON export
-- **Version Management:** Simplified to 3 files only (pyproject.toml, api.py, M08_API.bas)
-- **Parity Tests:** 19 Python/VBA verification vectors
-- **Test count:** 1638 tests passing
-- PR #21 merged: BBS, ETABS docs, parity vectors, code quality sweep
+- **v0.9.4 Released:** Unified CLI + Cutting-Stock + VBA BBS/Compliance parity
+- **Unified CLI** (`__main__.py`): `python -m structural_lib design|bbs|dxf|job`
+- **Cutting-Stock Optimizer** (`rebar_optimizer.py`): First-fit-decreasing bin packing
+- **VBA BBS Module** (`M18_BBS.bas`): Bar weights, cut lengths, stirrup lengths
+- **VBA Compliance Module** (`M19_Compliance.bas`): Multi-check orchestration
+- **Test count:** 1680+ tests passing (including 27 new CLI tests, 32 new VBA tests)
+- PRs merged: #30 (cutting-stock), #31 (CLI), #32 (VBA BBS/Compliance)
 
 ---
 
@@ -23,8 +24,11 @@ If you want to resume quickly without re-reading the repo:
 3. **Canonical backlog:** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
 
-**Verified state (as of 2025-12-26):**
-- Release version is **v0.9.3** (merged to main).
+**Verified state (as of 2025-12-27):**
+- Release version is **v0.9.4** (merged to main).
+- Unified CLI: **implemented** (`python -m structural_lib design|bbs|dxf|job`).
+- Cutting-stock optimizer: **implemented** (first-fit-decreasing bin packing).
+- VBA BBS + Compliance: **implemented** (parity with Python modules).
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - BBS Module: **implemented** (cut lengths, weights, CSV/JSON export).
@@ -42,6 +46,18 @@ If you want to resume quickly without re-reading the repo:
 - If needed: run a secrets scan before publishing changes.
 - Status: `main` is protected via GitHub ruleset (PR required + required checks + up-to-date branches + no force pushes).
 - Status: Dependabot grouped updates are enabled (`.github/dependabot.yml`).
+
+---
+
+## ✅ Session Summary (2025-12-27)
+
+### v0.9.4 Features
+- **Unified CLI:** `python -m structural_lib` with `design`, `bbs`, `dxf`, `job` subcommands.
+- **Cutting-Stock Optimizer:** `optimize_cutting_stock()` with first-fit-decreasing algorithm.
+- **VBA BBS Module:** `M18_BBS.bas` with 20 test cases.
+- **VBA Compliance Module:** `M19_Compliance.bas` with 12 test cases.
+- **Issues closed:** #26 (VBA BBS), #27 (VBA Compliance), #28 (Cutting-Stock), #29 (CLI).
+- **PRs merged:** #30, #31, #32.
 
 ---
 

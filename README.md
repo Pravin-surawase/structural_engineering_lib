@@ -1,27 +1,61 @@
 # IS 456 RC Beam Design Library
 
-[![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
+<div align="center">
 
-A reusable, UI-agnostic structural engineering library for RC rectangular beam design (flexure + shear) per **IS 456:2000** (Indian Standard for Plain and Reinforced Concrete).
+[![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+**Production-grade RC beam design library per IS 456:2000**
+
+[Quick Start](#30-second-quickstart-no-repo-clone) • [Documentation](docs/README.md) • [Examples](Python/examples/) • [API Reference](docs/API_REFERENCE.md)
+
+</div>
+
+---
 
 ## Status
 
-🚀 **Active (v0.9.1)** — Strength design + detailing + DXF export + serviceability + compliance + batch runner. See the CI badge above for latest status.
+🚀 **Active (v0.9.4)** — Unified CLI + strength design + detailing + DXF export + serviceability + compliance + batch runner + cutting-stock optimizer.
 
-**Production note:** v0.8.0 introduced Level A serviceability (deflection, crack width) and the compliance checker. See [docs/PRODUCTION_ROADMAP.md](docs/PRODUCTION_ROADMAP.md).
+**What's new in v0.9.4:**
+- `python -m structural_lib` — Unified CLI with `design`, `bbs`, `dxf`, `job` subcommands
+- Cutting-stock optimizer for rebar nesting (minimize waste)
+- VBA parity: BBS + Compliance modules
+
+See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
 ## What makes it different
 
-- **End-to-end pipeline** — design → compliance → detailing → drawings (DXF)
-- **Governing-case traceability** — utilization ratios + summary per case
-- **Same API in Excel + Python** — VBA + Python with matching inputs/outputs
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         IS 456 DESIGN PIPELINE                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   CSV/JSON ──► Design ──► Compliance ──► Detailing ──► DXF/Schedule    │
+│      │           │            │             │              │            │
+│   ETABS      Flexure      Strength      Bar Layout     Drawings        │
+│   Import      Shear     Serviceability   Stirrups       BBS            │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+| Feature | Description |
+|---------|-------------|
+| **End-to-end pipeline** | Design → Compliance → Detailing → Drawings (DXF) |
+| **Governing-case traceability** | Utilization ratios + summary per load case |
+| **Dual implementation** | VBA + Python with matching inputs/outputs |
+| **Unified CLI** | Single command interface for all operations |
 
 ## Outputs you get
 
-- Reinforcement schedules + bar callouts
-- DXF drawings with bar layouts
-- Compliance summary and governing case
-- Batch CSV outputs for reports or downstream tools
+| Output | Format | Description |
+|--------|--------|-------------|
+| Reinforcement schedules | CSV/JSON | Bar callouts with weights |
+| Detail drawings | DXF | CAD-ready bar layouts |
+| Compliance reports | JSON | Strength + serviceability checks |
+| Bar bending schedules | CSV | Per IS 2502 with cutting lengths |
 
 ## Who it helps
 
@@ -34,7 +68,7 @@ A reusable, UI-agnostic structural engineering library for RC rectangular beam d
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release tag (example: `@v0.9.1`) rather than installing from `main`.
+- **Stability note:** While in active development, prefer pinning to a release tag (example: `@v0.9.4`) rather than installing from `main`.
 
 ### Install (Users) — without cloning the repo
 
@@ -44,16 +78,16 @@ Recommended for early adopters.
 python3 -m pip install --upgrade pip
 
 # Base install
-python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 
-# With DXF export support
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+# With DXF export support (recommended)
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 ```
 
 ### Install (Google Colab)
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 ```
 
 Then: `Runtime > Restart runtime` and rerun your notebook cells.
@@ -65,19 +99,26 @@ Use the sample CSV input from the repo:
 - `Python/examples/sample_beam_design.csv`
 - Required columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
 
-Run the batch integration:
+Run the unified CLI:
 
 ```bash
 cd Python
 python3 -m pip install -e ".[dxf]"  # optional, for DXF export support
 
-python3 -m structural_lib.excel_integration examples/sample_beam_design.csv \
-  -o ./out_demo --schedule schedule.csv
+# Design beams from CSV
+python3 -m structural_lib design examples/sample_beam_design.csv -o results.json
+
+# Generate bar bending schedule
+python3 -m structural_lib bbs results.json -o schedule.csv
+
+# Generate DXF drawings (requires ezdxf)
+python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 
 Outputs:
-- `./out_demo/*.dxf` (if `ezdxf` is installed)
-- `schedule.csv` (detailing schedule)
+- `results.json` — Design results with compliance status
+- `schedule.csv` — Bar bending schedule per IS 2502
+- `drawings.dxf` — CAD-ready reinforcement drawings
 
 ETABS exports can be normalized into this schema. See `docs/PROJECT_OVERVIEW.md` for the ETABS CSV import flow.
 
@@ -89,38 +130,58 @@ Install (with DXF support):
 python3 -m venv .venv && source .venv/bin/activate
 
 python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 ```
 
 Run a batch compliance job (JSON in → JSON/CSV out):
 
 ```bash
-python3 -c "import json,pathlib; job={'schema_version':1,'code':'IS456','units':'IS456','job_id':'demo-001','beam':{'b_mm':230,'D_mm':500,'d_mm':450,'fck_nmm2':25,'fy_nmm2':500},'cases':[{'case_id':'ULS-1','mu_knm':120,'vu_kn':90}]}; pathlib.Path('job.json').write_text(json.dumps(job,indent=2,sort_keys=True)+"\n",encoding='utf-8')"
-python3 -m structural_lib.job_cli run --job job.json --out ./out_demo
+# Create a sample job file
+python3 -c "import json,pathlib; job={'schema_version':1,'code':'IS456','units':'IS456','job_id':'demo-001','beam':{'b_mm':230,'D_mm':500,'d_mm':450,'fck_nmm2':25,'fy_nmm2':500},'cases':[{'case_id':'ULS-1','mu_knm':120,'vu_kn':90}]}; pathlib.Path('job.json').write_text(json.dumps(job,indent=2,sort_keys=True)+'\n',encoding='utf-8')"
+
+# Run the job
+python3 -m structural_lib job job.json -o ./out_demo
 ```
 
 Generate a quick DXF (detailing JSON in → DXF out):
 
 ```bash
-python3 -c "import json,pathlib; data={'beam_id':'B1','story':'S1','b':230,'D':450,'span':4000,'cover':25,'fck':25,'fy':500,'ast_start':800,'ast_mid':1200,'ast_end':800}; pathlib.Path('dxf_input.json').write_text(json.dumps(data,indent=2,sort_keys=True)+"\n",encoding='utf-8')"
-python3 -m structural_lib.dxf_export dxf_input.json -o beam_detail.dxf
+# Create detailing input
+python3 -c "import json,pathlib; data={'beam_id':'B1','story':'S1','b':230,'D':450,'span':4000,'cover':25,'fck':25,'fy':500,'ast_start':800,'ast_mid':1200,'ast_end':800}; pathlib.Path('dxf_input.json').write_text(json.dumps(data,indent=2,sort_keys=True)+'\n',encoding='utf-8')"
+
+# Generate DXF drawing
+python3 -m structural_lib dxf dxf_input.json -o beam_detail.dxf
 ```
 
 ## Features
 
-- ✅ **Pure functions** — No UI dependencies (no MsgBox, no worksheet access)
-- ✅ **Limit state design** — As per IS 456:2000
-- ✅ **Flexural design** — Singly, Doubly, and Flanged (T/L) beams
-- ✅ **Shear design** — Stirrup design with Table 19/20 lookup
-- ✅ **Ductile Detailing** — IS 13920:2016 checks (Geometry, Min/Max steel, Confinement)
-- ✅ **Reinforcement detailing** — Bar patterns / drafting-ready schedules
-- ✅ **DXF export** — Drawing output for reinforcement detailing
-- ✅ **Batch runner** — Deterministic file-in/file-out runner (`job.json` → JSON/CSV outputs)
-- ✅ **Serviceability** — Level A checks (deflection, crack width)
-- ✅ **Compliance checker** — Multi-check summary (strength + serviceability) across load cases
-- ✅ **ETABS Integration** — Import CSV from ETABS with header normalization and sign preservation
-- ✅ **Dual implementation** — VBA (Excel) + Python with identical API
-- ✅ **Mac Compatible** — Hardened against Mac VBA stack corruption issues
+### Core Design
+| Feature | Description |
+|---------|-------------|
+| ✅ **Limit state design** | As per IS 456:2000 |
+| ✅ **Flexural design** | Singly, Doubly, and Flanged (T/L) beams |
+| ✅ **Shear design** | Stirrup design with Table 19/20 lookup |
+| ✅ **Ductile Detailing** | IS 13920:2016 checks (Geometry, Min/Max steel, Confinement) |
+| ✅ **Serviceability** | Level A checks (deflection, crack width) |
+
+### Output Generation
+| Feature | Description |
+|---------|-------------|
+| ✅ **Reinforcement detailing** | Bar patterns / drafting-ready schedules |
+| ✅ **DXF export** | CAD drawings for reinforcement detailing |
+| ✅ **Bar bending schedule** | Per IS 2502 with weights and cut lengths |
+| ✅ **Cutting-stock optimizer** | Rebar nesting to minimize waste |
+
+### Integration & Tooling
+| Feature | Description |
+|---------|-------------|
+| ✅ **Unified CLI** | `python -m structural_lib` with design/bbs/dxf/job subcommands |
+| ✅ **Batch runner** | Deterministic file-in/file-out (`job.json` → JSON/CSV) |
+| ✅ **Compliance checker** | Multi-check summary (strength + serviceability) across load cases |
+| ✅ **ETABS Integration** | Import CSV with header normalization and sign preservation |
+| ✅ **Dual implementation** | VBA (Excel) + Python with identical API |
+| ✅ **Pure functions** | No UI dependencies (no MsgBox, no worksheet access) |
+| ✅ **Mac Compatible** | Hardened against Mac VBA stack corruption issues |
 
 ## 📚 Getting Started
 
@@ -196,6 +257,7 @@ python3 -m pip install -e ".[dxf]"
 | **v0.7** | Reinforcement Detailing, DXF Export | ✅ Completed |
 | **v0.8** | Serviceability (deflection + crack width), Compliance checker | ✅ Completed |
 | **v0.9** | Batch runner (job.json → JSON/CSV), docs + QA hardening | ✅ Completed |
+| **v0.9.4** | Unified CLI, cutting-stock optimizer, VBA BBS/Compliance parity | ✅ Completed |
 
 ## Directory Structure (current)
 
@@ -276,12 +338,24 @@ else:
     print(f"Design not safe: {result.error_message}")
 ```
 
-### Additional Modules
+### CLI Commands
 
-- **BBS (Bar Bending Schedule)**: `from structural_lib.bbs import generate_bbs_from_detailing`
-- **DXF Export**: `from structural_lib.dxf_export import generate_beam_dxf`
-- **CSV/ETABS Import**: `from structural_lib.excel_integration import load_beam_data_from_csv`
-- **Job Runner**: `python3 -m structural_lib.job_cli run --job job.json`
+```bash
+# Full pipeline
+python3 -m structural_lib design input.csv -o results.json
+python3 -m structural_lib bbs results.json -o schedule.csv
+python3 -m structural_lib dxf results.json -o drawings.dxf
+python3 -m structural_lib job job.json -o ./output
+```
+
+### Python API
+
+| Module | Import | Purpose |
+|--------|--------|--------|
+| BBS | `from structural_lib.bbs import generate_bbs_from_detailing` | Bar bending schedule |
+| DXF | `from structural_lib.dxf_export import generate_beam_dxf` | CAD drawings |
+| CSV Import | `from structural_lib.excel_integration import load_beam_data_from_csv` | ETABS/CSV import |
+| Optimizer | `from structural_lib.rebar_optimizer import optimize_cutting` | Cutting-stock nesting |
 
 See [Python examples](Python/examples/) for complete workflows.
 
@@ -297,8 +371,10 @@ See [Python examples](Python/examples/) for complete workflows.
 
 ## Testing
 
-- Python: `python3 -m pytest Python/tests -q` (1600+ tests)
-- VBA: Run `Test_RunAll.RunAllTests` in Excel VBA Editor (see `VBA/Tests/`)
+| Platform | Command | Coverage |
+|----------|---------|----------|
+| Python | `python3 -m pytest Python/tests -q` | 1680+ tests |
+| VBA | `Test_RunAll.RunAllTests` in Excel VBA Editor | 9 test suites |
 
 ## Packaging
 

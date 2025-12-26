@@ -12,10 +12,10 @@ If you're sharing with a few users while the project is still evolving, this is 
 python3 -m pip install --upgrade pip
 
 # Pin to a released tag for stability (recommended)
-python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 
 # With DXF support
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 ```
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.
@@ -23,7 +23,7 @@ Engineering note: this library is a calculation aid; final responsibility for co
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.1#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
@@ -72,15 +72,26 @@ Run it:
 python3 example.py
 ```
 
-## 4) Batch process CSV/JSON and (optionally) generate DXF
-The integration module can read a beam design CSV/JSON and produce detailing (and DXF if `ezdxf` is installed).
+## 4) Batch process CSV/JSON using the unified CLI
+The library provides a unified CLI for all operations:
 ```bash
-python3 -m structural_lib.excel_integration path/to/beams.csv -o ./dxf_output --schedule schedule.csv
+# Design beams from CSV
+python3 -m structural_lib design path/to/beams.csv -o results.json
+
+# Generate bar bending schedule
+python3 -m structural_lib bbs results.json -o schedule.csv
+
+# Generate DXF drawings (requires ezdxf)
+python3 -m structural_lib dxf results.json -o drawings.dxf
+
+# Run complete job from spec file
+python3 -m structural_lib job job.json -o ./output
 ```
 - Input columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive).
 - Outputs:
-  - DXF files in `./dxf_output` (if `ezdxf` available).
-  - `schedule.csv` if `--schedule` is provided.
+  - `results.json` — Design results with compliance status.
+  - `schedule.csv` — Bar bending schedule per IS 2502.
+  - DXF files (if `ezdxf` available).
 
 ## 5) Minimal “one-liner” example (no files)
 ```bash

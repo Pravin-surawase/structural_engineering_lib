@@ -1,7 +1,16 @@
 # Docs Index (Start Here)
 
 If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience.
+**Current version:** v0.9.4
 
+## Quick CLI Reference (v0.9.4+)
+
+```bash
+python -m structural_lib design input.csv -o results.json
+python -m structural_lib bbs results.json -o schedule.csv
+python -m structural_lib dxf results.json -o drawings.dxf
+python -m structural_lib job job.json -o ./output
+```
 For VS Code AI-agent work, start with:
 - [AI_CONTEXT_PACK.md](AI_CONTEXT_PACK.md)
 
