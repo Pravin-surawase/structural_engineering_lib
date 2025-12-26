@@ -18,3 +18,35 @@ def round_to(value: float, digits: int) -> float:
     Standard rounding function
     """
     return round(value, digits)
+
+
+def mm_to_m(value_mm: float) -> float:
+    """Convert millimeters to meters.
+    
+    Args:
+        value_mm: Value in millimeters.
+        
+    Returns:
+        Value in meters.
+        
+    Example:
+        >>> mm_to_m(1500)
+        1.5
+    """
+    return value_mm / 1000.0
+
+
+def m_to_mm(value_m: float) -> float:
+    """Convert meters to millimeters.
+    
+    Args:
+        value_m: Value in meters.
+        
+    Returns:
+        Value in millimeters.
+        
+    Example:
+        >>> m_to_mm(1.5)
+        1500.0
+    """
+    return value_m * 1000.0
