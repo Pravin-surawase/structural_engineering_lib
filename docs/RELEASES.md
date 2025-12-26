@@ -6,6 +6,57 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ---
 
+## Release Process
+
+### For maintainers: How to publish a new release
+
+1. **Update version** in 3 files:
+   - `Python/pyproject.toml` → `version = "X.Y.Z"`
+   - `Python/structural_lib/api.py` → `__version__ = "X.Y.Z"`
+   - `VBA/Modules/M08_API.bas` → `VERSION = "X.Y.Z"`
+
+2. **Update CHANGELOG.md** with release notes
+
+3. **Create and push tag:**
+   ```bash
+   git tag -a vX.Y.Z -m "vX.Y.Z - Short description"
+   git push origin vX.Y.Z
+   ```
+
+4. **Automatic publishing:**
+   - GitHub Actions builds wheel + sdist
+   - Publishes to PyPI via Trusted Publishing
+   - Creates GitHub Release with assets
+
+5. **Verify installation:**
+   ```bash
+   pip install structural-lib-is456==X.Y.Z
+   python -c "from structural_lib import api; print(api.get_library_version())"
+   ```
+
+### TestPyPI (for testing before release)
+
+Use workflow_dispatch with `testpypi` target:
+1. Go to Actions → Publish to PyPI → Run workflow
+2. Select `testpypi` and run
+3. Test: `pip install -i https://test.pypi.org/simple/ structural-lib-is456`
+
+---
+
+## v0.9.4
+**Date:** 2025-12-27
+**Status:** ✅ Locked & Verified
+**Mindset:** Unified CLI + VBA parity + Cutting-stock optimizer
+**Key Changes:**
+- **Unified CLI:** `python -m structural_lib design|bbs|dxf|job`
+- **Cutting-Stock Optimizer:** First-fit-decreasing bin packing for rebar nesting
+- **VBA BBS Module:** `M18_BBS.bas` — bar weights, cut lengths, stirrup lengths
+- **VBA Compliance Module:** `M19_Compliance.bas` — multi-check orchestration
+- **Tests:** 1680+ passed, 9 VBA test suites
+- **Docs:** Professional README with pipeline diagram, trust section
+
+---
+
 ## v0.9.3
 **Date:** 2025-12-26
 **Status:** ✅ Locked & Verified

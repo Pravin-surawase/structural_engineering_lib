@@ -24,6 +24,13 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
 ]
 
+[project.urls]
+Homepage = "https://github.com/Pravin-surawase/structural_engineering_lib"
+Repository = "https://github.com/Pravin-surawase/structural_engineering_lib"
+Documentation = "https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/docs"
+Changelog = "https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/CHANGELOG.md"
+Issues = "https://github.com/Pravin-surawase/structural_engineering_lib/issues"
+
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "black", "mypy", "pre-commit", "ruff"]
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
