@@ -153,10 +153,16 @@ def calculate_development_length(
         stress_ratio: σs/fy ratio (default 0.87 for limit state)
 
     Returns:
-        Development length Ld (mm)
+        Development length Ld (mm). Returns 0 if inputs are invalid.
     """
+    if bar_dia <= 0 or fck <= 0 or fy <= 0:
+        return 0.0
+    
     sigma_s = stress_ratio * fy
     tau_bd = get_bond_stress(fck, bar_type)
+    
+    if tau_bd <= 0:
+        return 0.0
 
     ld = (bar_dia * sigma_s) / (4 * tau_bd)
 

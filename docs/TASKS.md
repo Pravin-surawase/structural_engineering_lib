@@ -376,8 +376,8 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 | ID | File | Issue | Severity | Status |
 |----|------|-------|----------|--------|
 | Q-001 | `ductile.py` L45 | `get_min_tension_steel_percentage` divides by `fy` | HIGH | ✅ Fixed |
-| Q-002 | `detailing.py` | Check `calculate_development_length` for `tau_bd=0` | MEDIUM | ⬜ TODO |
-| Q-003 | `materials.py` | Check all division operations | MEDIUM | ⬜ TODO |
+| Q-002 | `detailing.py` | Check `calculate_development_length` for `tau_bd=0` | MEDIUM | ✅ Fixed |
+| Q-003 | `materials.py` | Check `get_xu_max_d` for `fy<=0` | MEDIUM | ✅ Fixed |
 
 ### Phase 2: Exception Handling (Stack Trace Preservation)
 
