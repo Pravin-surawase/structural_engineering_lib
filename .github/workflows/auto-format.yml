@@ -1,0 +1,58 @@
+name: Auto-format
+
+on:
+  pull_request:
+    paths:
+      - 'Python/**/*.py'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format:
+    name: Auto-format Python
+    runs-on: ubuntu-latest
+    # Only run on PRs from branches in this repo (not forks)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install formatters
+        run: pip install black ruff
+
+      - name: Run black
+        working-directory: Python
+        run: python -m black .
+
+      - name: Run ruff --fix
+        working-directory: Python
+        run: python -m ruff check --fix . || true
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit formatting fixes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "style: auto-format with black and ruff"
+          git push

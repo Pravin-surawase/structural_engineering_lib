@@ -19,12 +19,12 @@ IS 456 RC beam design library with **Python + VBA parity**.
 ## Coding rules
 - Don’t mix UI/I-O code into core calculation modules.
 - Add/extend tests with every behavior change (Python at minimum).
-- If you move files, keep redirect stubs to avoid breaking links.
-
+- If you move files, keep redirect stubs to avoid breaking links.- Format Python code with `black` before committing.
 ## Definition of done
 - Tests pass (at least Python).
 - Docs updated where contracts/examples changed.
 - No unrelated refactors.
+- Code formatted with `black` (run `python -m black .` in Python/ directory).
 
 ---
 
