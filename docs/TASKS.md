@@ -217,7 +217,11 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Checklist:**
     - [x] VBA: TestHarness reads vectors and writes pass/fail summary
     - [x] Tests: flexure, shear, detailing, serviceability
-- [ ] **TASK-021**: Documentation Depth Pass
+- [x] **TASK-021: Documentation Depth Pass**
+  - **Agent:** DOCS
+  - **Status:** ✅ Complete — added pitfalls for new modules.
+  - **Outputs:**
+    - Updated `KNOWN_PITFALLS.md` with BBS, ETABS, Parity sections
 
 - [x] **TASK-037: GitHub Repo Professionalization (community + CI)**
   - **Agent:** DEVOPS / DOCS
