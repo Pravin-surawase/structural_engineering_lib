@@ -155,36 +155,47 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - API wrapper: `Python/structural_lib/api.py`
   - Docs: `docs/API_REFERENCE.md`
 
-- [ ] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
+- [x] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
   - **Agent:** INTEGRATION / DEV
   - **Why:** ETABS is a real upstream source; integration should be reliable across machines.
+  - **Status:** ✅ Complete — mapping docs created.
+  - **Outputs:**
+    - `docs/specs/ETABS_INTEGRATION.md`
+    - Sample CSVs: `Python/examples/ETABS_Sample_Export.csv`, `Python/examples/ETABS_BeamForces_Example.csv`
   - **Checklist:**
-    - [ ] Document the supported ETABS export tables + column mapping
-    - [ ] Implement/extend CSV import normalization for compliance runs
-    - [ ] Add a small verification pack: sample ETABS-exported CSV → compliance run → stable summary
+    - [x] Document the supported ETABS export tables + column mapping
+    - [x] Implement/extend CSV import normalization for compliance runs
+    - [x] Add a small verification pack: sample ETABS-exported CSV → compliance run → stable summary
     - [ ] Keep CSI API automation as Windows-first/optional (separate task if needed)
 
-- [ ] **TASK-043: Rebar Arrangement Optimizer (Deterministic Layout Search)**
+- [x] **TASK-043: Rebar Arrangement Optimizer (Deterministic Layout Search)**
   - **Agent:** DEV / TESTER
   - **Why:** Converts required Ast into a buildable rebar pattern (dia/count/layers) while respecting spacing/cover.
-  - **Approach:** start with bounded enumeration; upgrade to OR-Tools later if constraints/objectives grow.
+  - **Status:** ✅ Complete — implemented in `rebar_optimizer.py` + tested in `test_rebar_optimizer.py`.
+  - **Outputs:**
+    - `Python/structural_lib/rebar_optimizer.py`
+    - `Python/tests/test_rebar_optimizer.py`
   - **Checklist:**
-    - [ ] Define input contract (units, required params, allowed dia set)
-    - [ ] Encode hard constraints (cover, stirrups, min clear spacing, max bars/layer, max layers)
-    - [ ] Deterministic selection rule (tie-breakers) + optional objective toggle (min weight / min bar count / min congestion)
-    - [ ] Return an explanation payload (chosen pattern, checks evaluated, controlling constraint)
-    - [ ] Add deterministic tests (same inputs → same pattern)
-    - [ ] Add infeasible tests with structured reasons (e.g., “insufficient width for min spacing”)
+    - [x] Define input contract (units, required params, allowed dia set)
+    - [x] Encode hard constraints (cover, stirrups, min clear spacing, max bars/layer, max layers)
+    - [x] Deterministic selection rule (tie-breakers) + optional objective toggle (min weight / min bar count / min congestion)
+    - [x] Return an explanation payload (chosen pattern, checks evaluated, controlling constraint)
+    - [x] Add deterministic tests (same inputs → same pattern)
+    - [x] Add infeasible tests with structured reasons (e.g., "insufficient width for min spacing")
 
-- [ ] **TASK-034: Bar Bending Schedule (BBS) + BOM Export (CSV First)**
+- [x] **TASK-034: Bar Bending Schedule (BBS) + BOM Export (CSV First)**
   - **Agent:** DEV / UI / INTEGRATION
   - **Why:** Turns detailing results into fabrication deliverables (site-friendly schedules).
+  - **Status:** ✅ Complete — Python BBS module implemented with tests.
+  - **Outputs:**
+    - `Python/structural_lib/bbs.py`
+    - `Python/tests/test_bbs.py` (29 tests)
   - **Checklist:**
-    - [ ] Define a BBS line-item schema (mark, dia, shape, cut length, qty, total length/weight)
-    - [ ] Define explicit rounding rules (length rounding + weight rounding)
-    - [ ] Export CSV (first); Excel formatting later
-    - [ ] Treat this as a primary adoption hook: keep outputs auditable + stable across versions
-    - [ ] Tests for totals (length/weight) + stable schema ordering
+    - [x] Define a BBS line-item schema (mark, dia, shape, cut length, qty, total length/weight)
+    - [x] Define explicit rounding rules (length rounding + weight rounding)
+    - [x] Export CSV (first); Excel formatting later
+    - [x] Treat this as a primary adoption hook: keep outputs auditable + stable across versions
+    - [x] Tests for totals (length/weight) + stable schema ordering
     - [ ] Optional (later): cutting-stock / waste optimization (6m/7.5m/9m/12m)
 
 - [ ] **TASK-035**: Section Cuts in DXF
@@ -210,6 +221,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - [ ] **TASK-038: Professional-grade Python Testing (coverage + reliability)**
   - **Agent:** TESTER / DEVOPS
   - **Goal:** Make testing robust enough for external contributors and regression safety.
+  - **Status:** 🟡 Partially done — CLI tests exist (`test_job_cli.py`, `test_job_runner_is456.py`) but no end-to-end CSV → detailing → DXF tests yet.
   - **Checklist:**
     - [x] Add coverage reporting (pytest-cov) and publish in CI artifacts
     - [x] Establish an enforced baseline coverage target (CI gate)
@@ -228,6 +240,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - [ ] **TASK-039: Test Vectors + Parity Harness (Python ↔ VBA)**
   - **Agent:** TESTER / DEV
   - **Goal:** Ensure Python and VBA stay identical for the same inputs.
+  - **Status:** ⚠️ Overdue — no shared vectors or parity harness yet.
   - **Checklist:**
     - [ ] Create shared test vector set (CSV/JSON) with expected outputs + tolerances
     - [ ] Python: parametrized tests load vectors and assert outputs
@@ -237,6 +250,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 - [ ] **TASK-040: VBA Testing Automation (repeatable test runs)**
   - **Agent:** DEVOPS / TESTER
   - **Goal:** Make VBA tests repeatable and reviewable in PRs.
+  - **Status:** ⚠️ Overdue — `RunAllTests` exists but not wired/documented.
   - **Checklist:**
     - [ ] Add a single entrypoint macro: `RunAllTests`
     - [ ] Standardize test output/log format (counts + failures)

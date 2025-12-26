@@ -1,8 +1,8 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.9.1  
-**Last Updated:** December 25, 2025  
-**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export).
+**Document Version:** 0.10.0  
+**Last Updated:** December 26, 2025  
+**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS).
 
 ---
 
@@ -839,4 +839,131 @@ python -m structural_lib.excel_integration beam_design.csv \
 BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu,Ast_req,Asc_req,Stirrup_Dia,Stirrup_Spacing,Status
 B1,Story1,300,500,4000,40,25,500,150,100,942.5,0,8,150,OK
 B2,Story1,300,450,3000,40,25,500,100,80,628.3,0,8,175,OK
+```
+
+---
+
+## 12. Bar Bending Schedule Module (`bbs.py`) — v0.10+
+
+Generates Bar Bending Schedules (BBS) and Bill of Materials (BOM) from detailing results.
+
+### 12.1 Data Types
+
+**BBSLineItem:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `bar_mark` | str | Unique identifier (e.g., "B1", "S1") |
+| `member_id` | str | Beam/element ID |
+| `location` | str | "bottom", "top", "stirrup" |
+| `zone` | str | "start", "mid", "end", "full" |
+| `shape_code` | str | Shape per IS 2502 (A, B, E, etc.) |
+| `diameter_mm` | float | Bar diameter |
+| `no_of_bars` | int | Quantity |
+| `cut_length_mm` | float | Length per bar (incl. hooks) |
+| `total_length_mm` | float | no_of_bars × cut_length |
+| `unit_weight_kg` | float | Weight per bar |
+| `total_weight_kg` | float | Total weight |
+
+**BBSummary:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `member_id` | str | Member or "PROJECT" for aggregate |
+| `total_items` | int | Number of line items |
+| `total_bars` | int | Total bar count |
+| `total_length_m` | float | Total length in meters |
+| `total_weight_kg` | float | Total weight |
+| `weight_by_diameter` | Dict[float, float] | Breakdown by dia |
+
+### 12.2 Weight Calculation
+**Python:**
+```python
+def calculate_bar_weight(diameter_mm: float, length_mm: float) -> float
+```
+Returns weight in kg (rounded to 0.01).
+
+### 12.3 Cut Length Calculations
+**Python:**
+```python
+def calculate_straight_bar_length(
+    span_mm: float,
+    cover_mm: float,
+    ld_mm: float,
+    location: str = "bottom",
+    zone: str = "full",
+) -> float
+
+def calculate_stirrup_cut_length(
+    b_mm: float,
+    D_mm: float,
+    cover_mm: float,
+    stirrup_dia_mm: float,
+    hook_length_mm: float = 0,
+) -> float
+```
+
+### 12.4 BBS Generation
+**Python:**
+```python
+def generate_bbs_from_detailing(
+    detailing: BeamDetailingResult,
+    include_hooks: bool = True,
+) -> List[BBSLineItem]
+
+def calculate_bbs_summary(
+    items: List[BBSLineItem],
+    member_id: str = "",
+) -> BBSummary
+
+def generate_bbs_document(
+    detailing_list: List[BeamDetailingResult],
+    project_name: str = "Beam BBS",
+) -> BBSDocument
+```
+
+### 12.5 Export Functions
+**Python:**
+```python
+def export_bbs_to_csv(
+    items: List[BBSLineItem],
+    output_path: str,
+    include_summary: bool = True,
+) -> str
+
+def export_bbs_to_json(
+    document: BBSDocument,
+    output_path: str,
+) -> str
+
+def export_bom_summary_csv(
+    summary: BBSummary,
+    output_path: str,
+) -> str
+```
+
+### 12.6 Example Usage
+```python
+from structural_lib.detailing import create_beam_detailing
+from structural_lib.bbs import generate_bbs_from_detailing, export_bbs_to_csv
+
+# Create detailing result
+detailing = create_beam_detailing(
+    beam_id="B1", story="Story1", b=300, D=500, span=4000, cover=40,
+    fck=25, fy=500, ast_start=600, ast_mid=800, ast_end=600,
+)
+
+# Generate BBS
+items = generate_bbs_from_detailing(detailing)
+
+# Export to CSV
+export_bbs_to_csv(items, "output/B1_bbs.csv")
+```
+
+### 12.7 CSV Output Format
+```csv
+bar_mark,member_id,location,zone,shape_code,diameter_mm,no_of_bars,cut_length_mm,total_length_mm,unit_weight_kg,total_weight_kg,remarks
+B1,B1,bottom,start,A,16,3,2600,7800,4.11,12.33,Bottom start - 3-16φ
+B2,B1,bottom,mid,A,16,4,3400,13600,5.38,21.52,Bottom mid - 4-16φ
+S1,B1,stirrup,start,E,8,11,1440,15840,0.57,6.27,Stirrup start - 2L-8φ@100
+
+TOTAL,,,,,,18,,37240,,40.12,3 line items
 ```

@@ -24,6 +24,7 @@ from . import api
 from . import detailing
 from . import serviceability
 from . import compliance
+from . import bbs
 
 # DXF export is optional (requires ezdxf)
 dxf_export: Optional[ModuleType]
@@ -37,6 +38,7 @@ from . import excel_integration
 
 __all__ = [
     "api",
+    "bbs",
     "compliance",
     "constants",
     "detailing",
