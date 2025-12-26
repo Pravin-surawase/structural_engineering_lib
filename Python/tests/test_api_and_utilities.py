@@ -26,3 +26,35 @@ def test_linear_interp_zero_div_guard():
 
 def test_round_to():
     assert utilities.round_to(1.23456, 2) == 1.23
+
+
+def test_mm_to_m_basic():
+    assert utilities.mm_to_m(1500) == 1.5
+
+
+def test_m_to_mm_basic():
+    assert utilities.m_to_mm(1.5) == 1500.0
+
+
+def test_mm_to_m_round_trip():
+    # Test round-trip conversion: m_to_mm(mm_to_m(x)) == x
+    x = 2500.0
+    assert utilities.m_to_mm(utilities.mm_to_m(x)) == pytest.approx(x)
+
+
+def test_mm_to_m_zero():
+    assert utilities.mm_to_m(0) == 0.0
+
+
+def test_m_to_mm_zero():
+    assert utilities.m_to_mm(0) == 0.0
+
+
+def test_mm_to_m_negative():
+    # Negative values should work correctly
+    assert utilities.mm_to_m(-1500) == -1.5
+
+
+def test_m_to_mm_negative():
+    # Negative values should work correctly
+    assert utilities.m_to_mm(-1.5) == -1500.0

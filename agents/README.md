@@ -2,6 +2,28 @@
 
 Use these snippets to quickly engage the right agent with the right context.
 
+---
+
+## Using with GitHub Copilot Coding Agent
+
+The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.
+
+**How it works:**
+1. Create a GitHub Issue using the `bug_report` or `feature_request` template
+2. Fill in the **Acceptance criteria** and **Files likely affected** sections
+3. Assign the issue to Copilot (or mention `@copilot` in a comment)
+4. Copilot creates a branch, implements the fix, and opens a PR
+
+**Tips for good results:**
+- Be specific about expected inputs/outputs
+- Reference IS 456 clauses when relevant
+- Mention if Python/VBA parity is required
+- Keep scope small (one function or one bug per issue)
+
+**Example issue title:** `Fix shear interpolation for pt < 0.25% in M04_Tables`
+
+---
+
 ## PM
 - Role: scope, governance, orchestration, release ledger.
 - Prompt:  
