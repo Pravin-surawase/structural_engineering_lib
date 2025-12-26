@@ -559,10 +559,10 @@ def optimize_cutting_stock(
     """
     # Default stock lengths per module constant
     if stock_lengths is None:
-        stock_lengths = STANDARD_STOCK_LENGTHS_MM.copy()
+        stock_lengths = [float(x) for x in STANDARD_STOCK_LENGTHS_MM]
 
     # Sort stock lengths ascending for efficient selection
-    stock_lengths = sorted(stock_lengths)
+    stock_lengths_sorted: List[float] = sorted(stock_lengths)
 
     # Step 1: Expand line items into individual cuts
     cuts = []  # List of (mark, cut_length) tuples
@@ -580,7 +580,7 @@ def optimize_cutting_stock(
         )
 
     # Validate all cuts can fit in available stock
-    max_stock = max(stock_lengths)
+    max_stock = max(stock_lengths_sorted)
     for mark, cut_len in cuts:
         if cut_len > max_stock:
             raise ValueError(
@@ -592,7 +592,7 @@ def optimize_cutting_stock(
     cuts.sort(key=lambda x: x[1], reverse=True)
 
     # Step 3-4: Bin packing with first-fit-decreasing heuristic
-    assignments = []  # List of CuttingAssignment
+    assignments: List[CuttingAssignment] = []
 
     for mark, cut_len in cuts:
         placed = False
@@ -622,7 +622,7 @@ def optimize_cutting_stock(
         if not placed:
             # Find smallest stock that can fit this cut + kerf
             selected_stock = None
-            for stock_len in stock_lengths:
+            for stock_len in stock_lengths_sorted:
                 if cut_len + kerf <= stock_len:
                     selected_stock = stock_len
                     break
