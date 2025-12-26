@@ -154,3 +154,33 @@ Public Type BeamDetailingResult
     is_valid As Boolean
     remarks As String
 End Type
+
+
+' ------------------------------------------------------------------------------
+' BBS Types (v0.9+)
+' ------------------------------------------------------------------------------
+
+' Single line item in a Bar Bending Schedule
+Public Type BBSLineItem
+    bar_mark As String      ' Unique identifier (e.g., "A1", "B1", "S1")
+    member_id As String     ' Beam/element ID
+    location As String      ' "bottom", "top", "stirrup"
+    zone As String          ' "start", "mid", "end", or "full"
+    shape_code As String    ' Shape per IS 2502 (A, B, C, D, E, etc.)
+    diameter_mm As Double   ' Bar diameter
+    no_of_bars As Long      ' Quantity
+    cut_length_mm As Double ' Total length including hooks/bends
+    total_length_mm As Double ' no_of_bars * cut_length
+    unit_weight_kg As Double  ' Weight per bar
+    total_weight_kg As Double ' Total weight
+    remarks As String
+End Type
+
+' Summary of Bar Bending Schedule
+Public Type BBSSummary
+    member_id As String
+    total_items As Long
+    total_bars As Long
+    total_length_m As Double  ' Total length in meters
+    total_weight_kg As Double
+End Type

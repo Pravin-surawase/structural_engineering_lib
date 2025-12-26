@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.4] - 2025-12-26
+### Added
+- **Cutting-Stock Optimization (Python):** `optimize_cutting_stock()` function with first-fit-decreasing bin packing algorithm for minimizing rebar waste.
+- **VBA BBS Module:** `M18_BBS.bas` — bar weight calculations, cut lengths, stirrup lengths, line item creation, summary aggregation.
+- **VBA Compliance Checker:** `M19_Compliance.bas` — multi-check orchestration (flexure + shear + serviceability) with utilization ratios.
+- VBA test suites: `Test_BBS.bas` (20 tests), `Test_Compliance.bas` (12 tests).
+- New types: `BBSLineItem`, `BBSSummary` in `M02_Types.bas`.
+- `CuttingPlan`, `CuttingAssignment` dataclasses in Python `types.py`.
+
+### Changed
+- Test runner now includes 9 suites (was 7).
+- TASKS.md updated with priority completion status.
+
 ## [0.9.3] - 2025-12-26
 ### Added
 - **Code Quality Sweep:** 14-task hardening across 5 phases.
