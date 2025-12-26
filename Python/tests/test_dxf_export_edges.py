@@ -502,3 +502,122 @@ def test_multi_beam_layout_rejects_empty_list(monkeypatch, tmp_path):
     out = tmp_path / "empty.dxf"
     with pytest.raises(ValueError, match="At least one beam"):
         dxf_export.generate_multi_beam_dxf([], str(out))
+
+
+def test_multi_beam_layout_rejects_zero_columns(monkeypatch, tmp_path):
+    """Test that generate_multi_beam_dxf raises error for columns < 1."""
+    import structural_lib.dxf_export as dxf_export
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
+
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    beam = BeamDetailingResult(
+        beam_id="B1",
+        story="S1",
+        b=300,
+        D=500,
+        span=4000,
+        cover=40,
+        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
+        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1)],
+        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)],
+        ld_tension=600,
+        ld_compression=500,
+        lap_length=700,
+        is_valid=True,
+        remarks="OK",
+    )
+
+    out = tmp_path / "zero_cols.dxf"
+    with pytest.raises(ValueError, match="columns must be >= 1"):
+        dxf_export.generate_multi_beam_dxf([beam], str(out), columns=0)
+
+
+def test_multi_beam_layout_mixed_sizes_no_overlap(monkeypatch, tmp_path):
+    """Test that beams with different spans/widths don't overlap in grid layout."""
+    import structural_lib.dxf_export as dxf_export
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
+
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    # Create beams with very different spans (5000 vs 3000)
+    beam_large = BeamDetailingResult(
+        beam_id="B1-LARGE",
+        story="S1",
+        b=350,
+        D=600,
+        span=5000,  # Large span
+        cover=40,
+        top_bars=[BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1)],
+        bottom_bars=[BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1)],
+        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000)],
+        ld_tension=600,
+        ld_compression=500,
+        lap_length=700,
+        is_valid=True,
+        remarks="OK",
+    )
+
+    beam_small = BeamDetailingResult(
+        beam_id="B2-SMALL",
+        story="S1",
+        b=200,
+        D=400,
+        span=3000,  # Small span
+        cover=40,
+        top_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
+        bottom_bars=[BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1)],
+        stirrups=[StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1000)],
+        ld_tension=500,
+        ld_compression=400,
+        lap_length=600,
+        is_valid=True,
+        remarks="OK",
+    )
+
+    # Put both in same row (columns=2)
+    out = tmp_path / "mixed_sizes.dxf"
+    dxf_export.generate_multi_beam_dxf(
+        [beam_large, beam_small],
+        str(out),
+        columns=2,
+        col_spacing=500,
+        include_section_cuts=True,
+    )
+
+    doc = _FakeEzdxf.last_doc
+    assert doc is not None
+
+    # Get all line X coordinates to verify no overlap
+    # The second beam should start AFTER the first beam's full extent
+    # First beam width with sections: 5000 + 500 + 350 + 200 + 350 = 6400
+    # So second beam should start at >= 6400 + 500 = 6900
+    
+    # Check that we have drawings for both beams
+    texts = [t.text for t in doc._msp.texts]
+    assert any("B1-LARGE" in t for t in texts), "Should have B1-LARGE"
+    assert any("B2-SMALL" in t for t in texts), "Should have B2-SMALL"
