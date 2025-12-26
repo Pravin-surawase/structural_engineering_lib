@@ -383,9 +383,9 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
 
 | ID | File | Issue | Severity | Status |
 |----|------|-------|----------|--------|
-| Q-004 | `compliance.py` L104 | Exception loses stack trace | MEDIUM | ⬜ TODO |
-| Q-005 | `compliance.py` L128 | Exception loses stack trace | MEDIUM | ⬜ TODO |
-| Q-006 | `excel_integration.py` L295 | Exception loses stack trace | MEDIUM | ⬜ TODO |
+| Q-004 | `compliance.py` L104 | Exception loses stack trace | MEDIUM | ✅ Fixed |
+| Q-005 | `compliance.py` L128 | Exception loses stack trace | MEDIUM | ✅ Fixed |
+| Q-006 | `excel_integration.py` L295 | Exception loses stack trace | MEDIUM | ✅ Fixed |
 
 ### Phase 3: VBA/Python Parity Check
 

@@ -12,7 +12,10 @@ Usage:
 
 import json
 import csv
+import logging
 import os
+
+_logger = logging.getLogger(__name__)
 from typing import List, Dict, Optional
 from pathlib import Path
 from dataclasses import dataclass, asdict
@@ -293,6 +296,7 @@ def process_single_beam(
         )
 
     except Exception as e:
+        _logger.exception("Failed to process beam %s/%s", beam.story, beam.beam_id)
         return ProcessingResult(
             beam_id=beam.beam_id,
             story=beam.story,
