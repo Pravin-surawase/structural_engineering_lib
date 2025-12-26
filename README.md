@@ -92,9 +92,31 @@ python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravi
 
 Then: `Runtime > Restart runtime` and rerun your notebook cells.
 
+## 30-second user demo (no clone required)
+
+Try the library immediately — no repo clone needed:
+
+```bash
+# 1. Install
+python3 -m venv .venv && source .venv/bin/activate
+pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+
+# 2. Design a beam (one-liner)
+python3 -c "
+from structural_lib import flexure
+result = flexure.design_singly_reinforced(b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500)
+print(f'Ast required: {result.ast_required:.0f} mm² | Status: {\"OK\" if result.is_safe else result.error_message}')
+"
+```
+
+Expected output:
+```
+Ast required: 942 mm² | Status: OK
+```
+
 ## 60-second demo (CSV → schedule + DXF)
 
-Use the sample CSV input from the repo:
+**For developers** — clone the repo and run the full pipeline:
 
 - `Python/examples/sample_beam_design.csv`
 - Required columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive)
@@ -120,37 +142,34 @@ Outputs:
 - `schedule.csv` — Bar bending schedule per IS 2502
 - `drawings.dxf` — CAD-ready reinforcement drawings
 
-ETABS exports can be normalized into this schema. See `docs/PROJECT_OVERVIEW.md` for the ETABS CSV import flow.
+<details>
+<summary><b>Sample BBS output (schedule.csv)</b></summary>
 
-## 30-second quickstart (no repo clone)
+```csv
+bar_mark,member_id,location,diameter_mm,no_of_bars,cut_length_mm,total_weight_kg,remarks
+B1-01,B1,bottom-start,16,3,2600,12.33,Bottom start - 3-16φ
+B1-02,B1,bottom-mid,16,4,3400,21.52,Bottom mid - 4-16φ
+B1-03,B1,top-start,12,2,2000,3.56,Top start - 2-12φ
+S1-01,B1,stirrup-start,8,11,1440,6.27,2L-8φ@100
+S1-02,B1,stirrup-mid,8,15,1440,8.54,2L-8φ@150
 
-Install (with DXF support):
-
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-
-python3 -m pip install --upgrade pip
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+SUMMARY: 5 items | Total weight: 52.22 kg
 ```
 
-Run a batch compliance job (JSON in → JSON/CSV out):
+</details>
+
+ETABS exports can be normalized into this schema. See `docs/PROJECT_OVERVIEW.md` for the ETABS CSV import flow.
+
+## Advanced: Batch job runner
+
+For automated pipelines, use the JSON job schema:
 
 ```bash
 # Create a sample job file
-python3 -c "import json,pathlib; job={'schema_version':1,'code':'IS456','units':'IS456','job_id':'demo-001','beam':{'b_mm':230,'D_mm':500,'d_mm':450,'fck_nmm2':25,'fy_nmm2':500},'cases':[{'case_id':'ULS-1','mu_knm':120,'vu_kn':90}]}; pathlib.Path('job.json').write_text(json.dumps(job,indent=2,sort_keys=True)+'\n',encoding='utf-8')"
+python3 -c "import json,pathlib; job={'schema_version':1,'code':'IS456','units':'IS456','job_id':'demo-001','beam':{'b_mm':230,'D_mm':500,'d_mm':450,'fck_nmm2':25,'fy_nmm2':500},'cases':[{'case_id':'ULS-1','mu_knm':120,'vu_kn':90}]}; pathlib.Path('job.json').write_text(json.dumps(job,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
 
 # Run the job
 python3 -m structural_lib job job.json -o ./out_demo
-```
-
-Generate a quick DXF (detailing JSON in → DXF out):
-
-```bash
-# Create detailing input
-python3 -c "import json,pathlib; data={'beam_id':'B1','story':'S1','b':230,'D':450,'span':4000,'cover':25,'fck':25,'fy':500,'ast_start':800,'ast_mid':1200,'ast_end':800}; pathlib.Path('dxf_input.json').write_text(json.dumps(data,indent=2,sort_keys=True)+'\n',encoding='utf-8')"
-
-# Generate DXF drawing
-python3 -m structural_lib dxf dxf_input.json -o beam_detail.dxf
 ```
 
 ## Features
