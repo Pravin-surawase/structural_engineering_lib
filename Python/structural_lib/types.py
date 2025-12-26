@@ -5,7 +5,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from enum import Enum, auto
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class BeamType(Enum):
@@ -100,3 +100,22 @@ class ComplianceReport:
     governing_utilization: float
     cases: List[ComplianceCaseResult]
     summary: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class CuttingAssignment:
+    """Assignment of cuts to a stock bar for cutting-stock optimization."""
+
+    stock_length: float  # mm
+    cuts: List[Tuple[str, float]]  # List of (mark, cut_length) tuples
+    waste: float  # mm remaining
+
+
+@dataclass
+class CuttingPlan:
+    """Complete cutting plan with waste statistics."""
+
+    assignments: List[CuttingAssignment]
+    total_stock_used: int  # number of bars
+    total_waste: float  # mm
+    waste_percentage: float  # %

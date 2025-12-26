@@ -18,6 +18,7 @@ from pathlib import Path
 from structural_lib.bbs import (
     # Constants
     UNIT_WEIGHTS_KG_M,
+    STANDARD_STOCK_LENGTHS_MM,
     # Weight calculations
     calculate_bar_weight,
     calculate_unit_weight_per_meter,
@@ -32,6 +33,8 @@ from structural_lib.bbs import (
     export_bbs_to_csv,
     export_bbs_to_json,
     export_bom_summary_csv,
+    # Cutting-stock optimization
+    optimize_cutting_stock,
     # Data classes
     BBSLineItem,
     BBSDocument,
@@ -541,3 +544,299 @@ class TestDeterminism:
         """Weight calculations should be deterministic."""
         results = [calculate_bar_weight(16, 5000) for _ in range(10)]
         assert len(set(results)) == 1  # All results identical
+
+
+# =============================================================================
+# Cutting-Stock Optimization Tests
+# =============================================================================
+
+
+class TestCuttingStockOptimization:
+    """Tests for cutting-stock optimization function."""
+
+    def test_simple_case_all_bars_fit_one_stock(self):
+        """Simple case: all bars fit in one stock length."""
+
+        # Create line items that should fit in a single 6000mm stock
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=2,
+                cut_length_mm=2000,
+                total_length_mm=4000,
+                unit_weight_kg=3.16,
+                total_weight_kg=6.32,
+            ),
+            BBSLineItem(
+                bar_mark="B2",
+                member_id="B1",
+                location="bottom",
+                zone="mid",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=1,
+                cut_length_mm=1500,
+                total_length_mm=1500,
+                unit_weight_kg=2.37,
+                total_weight_kg=2.37,
+            ),
+        ]
+
+        plan = optimize_cutting_stock(items, stock_lengths=[6000], kerf=3.0)
+
+        # Should use only 1 stock bar
+        assert plan.total_stock_used == 1
+        assert len(plan.assignments) == 1
+
+        # Check assignment details
+        assignment = plan.assignments[0]
+        assert assignment.stock_length == 6000
+        assert len(assignment.cuts) == 3  # 2 × 2000mm + 1 × 1500mm
+
+        # Verify cuts are present
+        cut_lengths = [c[1] for c in assignment.cuts]
+        assert cut_lengths.count(2000) == 2
+        assert cut_lengths.count(1500) == 1
+
+        # Calculate expected waste
+        # Total cut length = 2×2000 + 1×1500 = 5500
+        # Kerf loss = 3 cuts × 3mm = 9mm
+        # Waste = 6000 - 5500 - 9 = 491mm
+        expected_waste = 6000 - 5500 - 9
+        assert abs(assignment.waste - expected_waste) < 1
+
+    def test_multiple_stock_lengths_needed(self):
+        """Multiple stock lengths needed when bars don't fit in one."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=20,
+                no_of_bars=5,
+                cut_length_mm=5000,
+                total_length_mm=25000,
+                unit_weight_kg=12.33,
+                total_weight_kg=61.65,
+            ),
+        ]
+
+        plan = optimize_cutting_stock(items, stock_lengths=[6000], kerf=3.0)
+
+        # Each 5000mm bar needs its own 6000mm stock (5000 + 3 kerf = 5003)
+        assert plan.total_stock_used == 5
+        assert len(plan.assignments) == 5
+
+        # Each assignment should have 1 cut
+        for assignment in plan.assignments:
+            assert len(assignment.cuts) == 1
+            assert assignment.cuts[0][1] == 5000
+
+    def test_bar_longer_than_stock_raises_error(self):
+        """Bar longer than any stock length should raise ValueError."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=25,
+                no_of_bars=1,
+                cut_length_mm=13000,  # Longer than max stock (12000)
+                total_length_mm=13000,
+                unit_weight_kg=50.09,
+                total_weight_kg=50.09,
+            ),
+        ]
+
+        with pytest.raises(ValueError) as exc_info:
+            optimize_cutting_stock(items, stock_lengths=[6000, 9000, 12000], kerf=3.0)
+
+        assert "exceeds maximum stock length" in str(exc_info.value)
+        assert "13000" in str(exc_info.value)
+
+    def test_waste_calculation_accuracy(self):
+        """Waste calculation should be accurate."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=3,
+                cut_length_mm=3000,
+                total_length_mm=9000,
+                unit_weight_kg=4.74,
+                total_weight_kg=14.22,
+            ),
+        ]
+
+        plan = optimize_cutting_stock(items, stock_lengths=[6000, 9000], kerf=3.0)
+
+        # Algorithm uses first-fit-decreasing:
+        # - 2 cuts fit in 9000mm stock (2×3000 + 2×3 kerf = 6006mm used, 2994mm waste)
+        # - 1 remaining cut requires separate stock bar
+
+        # Total waste should be calculated correctly
+        total_cuts_length = 3 * 3000
+        total_kerf = 3 * 3.0
+        total_stock_length = sum(a.stock_length for a in plan.assignments)
+        expected_waste = total_stock_length - total_cuts_length - total_kerf
+
+        assert abs(plan.total_waste - expected_waste) < 1
+
+        # Waste percentage
+        expected_pct = expected_waste / total_stock_length * 100
+        assert abs(plan.waste_percentage - expected_pct) < 0.1
+
+    def test_first_fit_decreasing_order(self):
+        """Algorithm should process cuts in descending order (largest first)."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=2,
+                cut_length_mm=1000,  # Smaller
+                total_length_mm=2000,
+                unit_weight_kg=1.58,
+                total_weight_kg=3.16,
+            ),
+            BBSLineItem(
+                bar_mark="B2",
+                member_id="B1",
+                location="top",
+                zone="full",
+                shape_code="A",
+                diameter_mm=20,
+                no_of_bars=2,
+                cut_length_mm=4000,  # Larger
+                total_length_mm=8000,
+                unit_weight_kg=9.86,
+                total_weight_kg=19.72,
+            ),
+        ]
+
+        plan = optimize_cutting_stock(items, stock_lengths=[6000], kerf=3.0)
+
+        # First-fit-decreasing should place 4000mm cuts first
+        # Then try to fit 1000mm cuts in remaining space
+        # 6000mm stock: 4000 + 3 (kerf) + 1000 + 3 (kerf) = 5006, leaving 994
+        # So can fit 1×4000 + 1×1000 per stock
+        # Total: 2×4000 + 2×1000 = need 2 stocks
+
+        assert plan.total_stock_used == 2
+
+    def test_kerf_handling(self):
+        """Kerf (saw cut loss) should be properly accounted for."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=12,
+                no_of_bars=10,
+                cut_length_mm=500,
+                total_length_mm=5000,
+                unit_weight_kg=0.44,
+                total_weight_kg=4.4,
+            ),
+        ]
+
+        # Test with different kerf values
+        plan_no_kerf = optimize_cutting_stock(items, stock_lengths=[6000], kerf=0.0)
+        plan_with_kerf = optimize_cutting_stock(items, stock_lengths=[6000], kerf=5.0)
+
+        # With no kerf: 10×500 = 5000, fits in 1 stock (6000mm)
+        assert plan_no_kerf.total_stock_used == 1
+
+        # With 5mm kerf per cut: need to account for 10×5 = 50mm kerf
+        # 10×500 + 10×5 = 5050, still fits in 1 stock
+        assert plan_with_kerf.total_stock_used == 1
+
+        # Waste should differ by kerf amount
+        waste_diff = plan_no_kerf.total_waste - plan_with_kerf.total_waste
+        assert abs(waste_diff - 50) < 1  # 10 cuts × 5mm kerf
+
+    def test_optimal_stock_selection(self):
+        """Algorithm should prefer smallest stock that fits."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=1,
+                cut_length_mm=5500,
+                total_length_mm=5500,
+                unit_weight_kg=8.69,
+                total_weight_kg=8.69,
+            ),
+        ]
+
+        plan = optimize_cutting_stock(
+            items, stock_lengths=[6000, 7500, 9000, 12000], kerf=3.0
+        )
+
+        # 5500mm cut needs 5503mm with kerf
+        # Should select 6000mm stock (smallest that fits)
+        assert plan.assignments[0].stock_length == 6000
+
+    def test_empty_items_list(self):
+        """Empty items list should return empty plan."""
+
+        plan = optimize_cutting_stock([], stock_lengths=[6000], kerf=3.0)
+
+        assert plan.total_stock_used == 0
+        assert len(plan.assignments) == 0
+        assert plan.total_waste == 0
+        assert plan.waste_percentage == 0
+
+    def test_default_stock_lengths(self):
+        """Should use default stock lengths when not specified."""
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="full",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=1,
+                cut_length_mm=5000,
+                total_length_mm=5000,
+                unit_weight_kg=7.9,
+                total_weight_kg=7.9,
+            ),
+        ]
+
+        # Call without stock_lengths parameter
+        plan = optimize_cutting_stock(items, kerf=3.0)
+
+        # Should use default stock lengths
+        # 5000 + 3 kerf = 5003, so should select 6000mm
+        assert plan.assignments[0].stock_length in STANDARD_STOCK_LENGTHS_MM
