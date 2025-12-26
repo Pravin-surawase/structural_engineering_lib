@@ -380,3 +380,125 @@ def test_section_cuts_added_when_enabled(monkeypatch, tmp_path):
     section_texts = [t.text for t in doc._msp.texts]
     assert any("SECTION A-A" in t for t in section_texts), "Should have Section A-A title"
     assert any("SECTION B-B" in t for t in section_texts), "Should have Section B-B title"
+
+
+def test_multi_beam_layout_generates_combined_dxf(monkeypatch, tmp_path):
+    """Test that generate_multi_beam_dxf creates a combined drawing."""
+    import structural_lib.dxf_export as dxf_export
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
+
+    # Stub ezdxf dependency surface.
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    # Create two test beams
+    beam1 = BeamDetailingResult(
+        beam_id="B1",
+        story="S1",
+        b=300,
+        D=500,
+        span=4000,
+        cover=40,
+        top_bars=[
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=120, layers=1),
+        ],
+        bottom_bars=[
+            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+            BarArrangement(count=3, diameter=16, area_provided=603, spacing=110, layers=1),
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=2000),
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=1000),
+        ],
+        ld_tension=600,
+        ld_compression=500,
+        lap_length=700,
+        is_valid=True,
+        remarks="OK",
+    )
+
+    beam2 = BeamDetailingResult(
+        beam_id="B2",
+        story="S1",
+        b=250,
+        D=450,
+        span=3500,
+        cover=40,
+        top_bars=[
+            BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1),
+            BarArrangement(count=2, diameter=12, area_provided=226, spacing=100, layers=1),
+        ],
+        bottom_bars=[
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=100, layers=1),
+            BarArrangement(count=2, diameter=16, area_provided=402, spacing=100, layers=1),
+        ],
+        stirrups=[
+            StirrupArrangement(diameter=8, legs=2, spacing=100, zone_length=875),
+            StirrupArrangement(diameter=8, legs=2, spacing=150, zone_length=1750),
+        ],
+        ld_tension=550,
+        ld_compression=450,
+        lap_length=650,
+        is_valid=True,
+        remarks="OK",
+    )
+
+    out = tmp_path / "multi_beam.dxf"
+    returned = dxf_export.generate_multi_beam_dxf(
+        [beam1, beam2],
+        str(out),
+        columns=2,
+        include_section_cuts=True,
+    )
+
+    assert returned == str(out)
+
+    doc = _FakeEzdxf.last_doc
+    assert doc is not None
+    assert doc.saved_to == str(out)
+
+    # Should have drawings for both beams
+    # Each beam adds at least 4 lines for outline
+    assert len(doc._msp.lines) >= 8, "Should have lines for both beams"
+
+    # Should have circles for rebar in section cuts
+    assert len(doc._msp.circles) > 0, "Should have rebar circles from section cuts"
+
+    # Should have annotations for both beams
+    texts = [t.text for t in doc._msp.texts]
+    assert any("B1" in t for t in texts), "Should have B1 beam ID"
+    assert any("B2" in t for t in texts), "Should have B2 beam ID"
+
+
+def test_multi_beam_layout_rejects_empty_list(monkeypatch, tmp_path):
+    """Test that generate_multi_beam_dxf raises error for empty list."""
+    import structural_lib.dxf_export as dxf_export
+
+    monkeypatch.setattr(dxf_export, "EZDXF_AVAILABLE", True, raising=True)
+    monkeypatch.setattr(dxf_export, "ezdxf", _FakeEzdxf, raising=False)
+    monkeypatch.setattr(dxf_export, "units", _FakeUnits, raising=False)
+    monkeypatch.setattr(
+        dxf_export,
+        "TextEntityAlignment",
+        _FakeTextEntityAlignment,
+        raising=False,
+    )
+
+    out = tmp_path / "empty.dxf"
+    with pytest.raises(ValueError, match="At least one beam"):
+        dxf_export.generate_multi_beam_dxf([], str(out))

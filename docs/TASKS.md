@@ -214,7 +214,21 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
     - [x] Add bar callout text (n-Tdia)
     - [x] Position section cuts to right of elevation view
     - [x] Add test coverage for section cuts
-- [ ] **TASK-036**: Multi-beam Layout
+- [x] **TASK-036**: Multi-beam Layout
+  - **Agent:** DEV
+  - **Status:** ✅ Complete — multi-beam DXF layout function added.
+  - **Outputs:**
+    - Added `generate_multi_beam_dxf()` function to `dxf_export.py`
+    - Grid layout with configurable columns, row/column spacing
+    - Each beam includes elevation + section cuts (optional)
+    - Made `draw_beam_elevation()` robust for varying zone counts
+  - **Checklist:**
+    - [x] Create `generate_multi_beam_dxf()` for batch layout
+    - [x] Grid arrangement with `columns` parameter
+    - [x] Configurable `row_spacing` and `col_spacing`
+    - [x] Include all options: dimensions, annotations, section cuts
+    - [x] Handle varying stirrup zone counts (1, 2, 3+)
+    - [x] Add tests for multi-beam layout
 - [x] **TASK-019: Regression Snapshots (Excel)**
   - **Agent:** TESTER
   - **Status:** ✅ Complete — baseline snapshots created.

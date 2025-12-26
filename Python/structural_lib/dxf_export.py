@@ -196,32 +196,66 @@ def draw_beam_elevation(
 
     # 3. Draw reinforcement lines (simplified as horizontal lines)
     # Bottom bars (continuous line with circles at ends)
-    y_bot = y0 + cover + bottom_bars[1].diameter / 2
+    mid_idx = len(bottom_bars) // 2 if bottom_bars else 0
+    bot_bar = bottom_bars[mid_idx] if bottom_bars else BarArrangement(
+        count=2, diameter=16, area_provided=402, spacing=100, layers=1
+    )
+    y_bot = y0 + cover + bot_bar.diameter / 2
     msp.add_line((x0, y_bot), (x0 + span, y_bot), dxfattribs={"layer": "REBAR_MAIN"})
 
     # Top bars
-    y_top = y0 + D - cover - top_bars[1].diameter / 2
+    top_mid_idx = len(top_bars) // 2 if top_bars else 0
+    top_bar = top_bars[top_mid_idx] if top_bars else BarArrangement(
+        count=2, diameter=12, area_provided=226, spacing=100, layers=1
+    )
+    y_top = y0 + D - cover - top_bar.diameter / 2
     msp.add_line((x0, y_top), (x0 + span, y_top), dxfattribs={"layer": "REBAR_MAIN"})
 
     # 4. Draw stirrups at intervals
-    zone_1_end = span * 0.25  # First zone
-    zone_2_end = span * 0.75  # Second zone ends
+    # Handle varying number of stirrup zones
+    if not stirrups:
+        return
+    
+    n_zones = len(stirrups)
+    if n_zones == 1:
+        # Single zone - uniform spacing
+        x = x0 + stirrups[0].spacing / 2
+        while x < x0 + span:
+            draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
+            x += stirrups[0].spacing
+    elif n_zones == 2:
+        # Two zones - split at midspan
+        zone_1_end = span * 0.5
+        
+        x = x0 + stirrups[0].spacing / 2
+        while x < x0 + zone_1_end:
+            draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
+            x += stirrups[0].spacing
+        
+        while x < x0 + span:
+            draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
+            x += stirrups[1].spacing
+    else:
+        # Three or more zones - standard start/mid/end
+        zone_1_end = span * 0.25  # First zone
+        zone_2_end = span * 0.75  # Second zone ends
 
-    # Start zone stirrups
-    x = x0 + stirrups[0].spacing / 2
-    while x < x0 + zone_1_end:
-        draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
-        x += stirrups[0].spacing
+        # Start zone stirrups
+        x = x0 + stirrups[0].spacing / 2
+        while x < x0 + zone_1_end:
+            draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
+            x += stirrups[0].spacing
 
-    # Mid zone stirrups
-    while x < x0 + zone_2_end:
-        draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
-        x += stirrups[1].spacing
+        # Mid zone stirrups
+        while x < x0 + zone_2_end:
+            draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
+            x += stirrups[1].spacing
 
-    # End zone stirrups
-    while x < x0 + span:
-        draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
-        x += stirrups[2].spacing
+        # End zone stirrups
+        end_spacing = stirrups[2].spacing if n_zones > 2 else stirrups[0].spacing
+        while x < x0 + span:
+            draw_stirrup(msp, x, y0, b, D, cover, "REBAR_STIRRUP")
+            x += end_spacing
 
 
 def draw_dimensions(msp, span: float, D: float, origin: Tuple[float, float] = (0, 0)):
@@ -641,6 +675,167 @@ def generate_beam_dxf(
             scale=1.0,
             title="SECTION B-B (MIDSPAN)",
         )
+
+    # Save file
+    doc.saveas(output_path)
+
+    return output_path
+
+
+# =============================================================================
+# Multi-Beam Layout Function
+# =============================================================================
+
+
+def generate_multi_beam_dxf(
+    detailings: List[BeamDetailingResult],
+    output_path: str,
+    columns: int = 2,
+    row_spacing: float = 200.0,
+    col_spacing: float = 500.0,
+    include_dimensions: bool = True,
+    include_annotations: bool = True,
+    include_section_cuts: bool = True,
+) -> str:
+    """
+    Generate a single DXF file containing multiple beam details in a grid layout.
+
+    Args:
+        detailings: List of BeamDetailingResult objects to draw
+        output_path: Path to save DXF file
+        columns: Number of columns in the grid layout
+        row_spacing: Vertical spacing between beam rows (mm)
+        col_spacing: Horizontal spacing between beam columns (mm)
+        include_dimensions: Add dimension lines
+        include_annotations: Add text annotations
+        include_section_cuts: Add cross-section views
+
+    Returns:
+        Path to generated DXF file
+    """
+    check_ezdxf()
+
+    if not detailings:
+        raise ValueError("At least one beam detailing result is required")
+
+    # Create new DXF document (R2010 for compatibility)
+    doc = ezdxf.new("R2010")
+    if units is not None:
+        doc.units = units.MM
+
+    # Setup layers
+    setup_layers(doc)
+
+    # Get modelspace
+    msp = doc.modelspace()
+
+    # Calculate layout
+    # Each beam takes: span + 500 (gap) + section_width (for cuts)
+    # Section width = b + 200 (gap) + b = 2*b + 200
+    for idx, detailing in enumerate(detailings):
+        # Calculate row and column
+        row = idx // columns
+        col = idx % columns
+
+        # Calculate beam width for spacing (including section cuts if enabled)
+        beam_width = detailing.span
+        if include_section_cuts:
+            beam_width += 500 + detailing.b + 200 + detailing.b  # sections
+
+        # Calculate origin for this beam
+        # X: based on column position
+        x_origin = col * (beam_width + col_spacing)
+
+        # Y: based on row position (rows go upward)
+        # Each row height = max beam depth + row_spacing
+        y_origin = row * (detailing.D + row_spacing + 200)  # 200 for annotations
+
+        # Draw beam elevation
+        draw_beam_elevation(
+            msp,
+            span=detailing.span,
+            D=detailing.D,
+            b=detailing.b,
+            cover=detailing.cover,
+            top_bars=detailing.top_bars,
+            bottom_bars=detailing.bottom_bars,
+            stirrups=detailing.stirrups,
+            origin=(x_origin, y_origin),
+        )
+
+        # Add dimensions
+        if include_dimensions:
+            draw_dimensions(msp, detailing.span, detailing.D, origin=(x_origin, y_origin))
+
+        # Add annotations
+        if include_annotations:
+            draw_annotations(
+                msp,
+                span=detailing.span,
+                D=detailing.D,
+                beam_id=detailing.beam_id,
+                story=detailing.story,
+                b=detailing.b,
+                top_bars=detailing.top_bars,
+                bottom_bars=detailing.bottom_bars,
+                stirrups=detailing.stirrups,
+                ld=detailing.ld_tension,
+                lap=detailing.lap_length,
+                origin=(x_origin, y_origin),
+            )
+
+        # Add section cuts
+        if include_section_cuts:
+            section_x_offset = x_origin + detailing.span + 500
+
+            # Get bar arrangements for support (first zone)
+            top_bar_support = detailing.top_bars[0] if detailing.top_bars else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+            bottom_bar_support = detailing.bottom_bars[0] if detailing.bottom_bars else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+
+            draw_section_cut(
+                msp,
+                b=detailing.b,
+                D=detailing.D,
+                cover=detailing.cover,
+                top_bars=top_bar_support,
+                bottom_bars=bottom_bar_support,
+                stirrup=detailing.stirrups[0] if detailing.stirrups else StirrupArrangement(
+                    diameter=8, legs=2, spacing=150, zone_length=1000
+                ),
+                origin=(section_x_offset, y_origin),
+                scale=1.0,
+                title="SECTION A-A",
+            )
+
+            # Section B-B at midspan
+            section_b_offset = section_x_offset + detailing.b + 200
+            mid_idx = len(detailing.top_bars) // 2 if detailing.top_bars else 0
+            top_bar_mid = detailing.top_bars[mid_idx] if detailing.top_bars else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+            bottom_bar_mid = detailing.bottom_bars[mid_idx] if detailing.bottom_bars else BarArrangement(
+                count=2, diameter=12, area_provided=226, spacing=100, layers=1
+            )
+            stirrup_mid_idx = len(detailing.stirrups) // 2 if detailing.stirrups else 0
+
+            draw_section_cut(
+                msp,
+                b=detailing.b,
+                D=detailing.D,
+                cover=detailing.cover,
+                top_bars=top_bar_mid,
+                bottom_bars=bottom_bar_mid,
+                stirrup=detailing.stirrups[stirrup_mid_idx] if detailing.stirrups else StirrupArrangement(
+                    diameter=8, legs=2, spacing=200, zone_length=2000
+                ),
+                origin=(section_b_offset, y_origin),
+                scale=1.0,
+                title="SECTION B-B",
+            )
 
     # Save file
     doc.saveas(output_path)
