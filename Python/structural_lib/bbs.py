@@ -569,6 +569,15 @@ def optimize_cutting_stock(
         for _ in range(item.no_of_bars):
             cuts.append((item.bar_mark, item.cut_length_mm))
 
+    # Early return for empty cuts
+    if not cuts:
+        return CuttingPlan(
+            assignments=[],
+            total_stock_used=0,
+            total_waste=0.0,
+            waste_percentage=0.0,
+        )
+
     # Validate all cuts can fit in available stock
     max_stock = max(stock_lengths)
     for mark, cut_len in cuts:

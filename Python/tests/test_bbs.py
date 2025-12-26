@@ -690,12 +690,9 @@ class TestCuttingStockOptimization:
 
         plan = optimize_cutting_stock(items, stock_lengths=[6000, 9000], kerf=3.0)
 
-        # Each 3000mm cut needs 3003mm with kerf
-        # Can fit 1 cut per 6000mm stock (3000 + 3 = 3003, leaving 2997)
-        # But with 9000mm stock: can fit 2 cuts (3000 + 3 + 3000 + 3 = 6006)
-        # So optimal is: 1×9000mm + 1×6000mm OR 1×9000mm + 1×6000mm
-        # Actually: 2 cuts fit in 9000 (2×3000 + 2×3 = 6006, leaving 2994)
-        # 1 cut needs separate bar
+        # Algorithm uses first-fit-decreasing:
+        # - 2 cuts fit in 9000mm stock (2×3000 + 2×3 kerf = 6006mm used, 2994mm waste)
+        # - 1 remaining cut requires separate stock bar
 
         # Total waste should be calculated correctly
         total_cuts_length = 3 * 3000

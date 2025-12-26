@@ -5,7 +5,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from enum import Enum, auto
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class BeamType(Enum):
@@ -107,7 +107,7 @@ class CuttingAssignment:
     """Assignment of cuts to a stock bar for cutting-stock optimization."""
 
     stock_length: float  # mm
-    cuts: List[tuple]  # List of (mark, cut_length) tuples
+    cuts: List[Tuple[str, float]]  # List of (mark, cut_length) tuples
     waste: float  # mm remaining
 
 
