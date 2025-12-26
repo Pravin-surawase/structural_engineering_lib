@@ -510,6 +510,146 @@ def generate_bbs_document(
 
 
 # =============================================================================
+# Cutting-Stock Optimization
+# =============================================================================
+
+
+def optimize_cutting_stock(
+    line_items: List[BBSLineItem],
+    stock_lengths: List[float] = None,
+    kerf: float = 3.0,
+) -> "CuttingPlan":
+    """
+    First-fit-decreasing bin packing for rebar cutting optimization.
+
+    This function minimizes steel waste by optimally assigning bar cuts
+    to stock lengths. Uses first-fit-decreasing heuristic which typically
+    achieves near-optimal results for 1D bin packing problems.
+
+    Algorithm:
+    1. Expand line items: repeat each (mark, cut_length) by quantity
+    2. Sort by cut_length descending (first-fit-decreasing)
+    3. For each cut, try to fit in existing open stock bar
+    4. If no fit, open new stock bar (prefer smallest that fits)
+    5. Track assignments and waste
+
+    Args:
+        line_items: BBS line items with cut lengths and quantities
+        stock_lengths: Available stock bar lengths in mm.
+                      Defaults to [6000, 7500, 9000, 12000]
+        kerf: Saw cut loss per cut in mm (default: 3.0mm)
+
+    Returns:
+        CuttingPlan with assignments and waste statistics
+
+    Raises:
+        ValueError: If any cut length exceeds all available stock lengths
+
+    Example:
+        >>> items = [
+        ...     BBSLineItem(bar_mark="B1", ..., cut_length_mm=2500, no_of_bars=4),
+        ...     BBSLineItem(bar_mark="S1", ..., cut_length_mm=1200, no_of_bars=10),
+        ... ]
+        >>> plan = optimize_cutting_stock(items)
+        >>> print(f"Stock bars needed: {plan.total_stock_used}")
+        >>> print(f"Waste: {plan.waste_percentage:.1f}%")
+    """
+    from .types import CuttingAssignment, CuttingPlan
+
+    # Default stock lengths per module constant
+    if stock_lengths is None:
+        stock_lengths = STANDARD_STOCK_LENGTHS_MM.copy()
+
+    # Sort stock lengths ascending for efficient selection
+    stock_lengths = sorted(stock_lengths)
+
+    # Step 1: Expand line items into individual cuts
+    cuts = []  # List of (mark, cut_length) tuples
+    for item in line_items:
+        for _ in range(item.no_of_bars):
+            cuts.append((item.bar_mark, item.cut_length_mm))
+
+    # Validate all cuts can fit in available stock
+    max_stock = max(stock_lengths)
+    for mark, cut_len in cuts:
+        if cut_len > max_stock:
+            raise ValueError(
+                f"Cut length {cut_len:.0f}mm for bar {mark} exceeds "
+                f"maximum stock length {max_stock:.0f}mm"
+            )
+
+    # Step 2: Sort cuts by length descending (first-fit-decreasing)
+    cuts.sort(key=lambda x: x[1], reverse=True)
+
+    # Step 3-4: Bin packing with first-fit-decreasing heuristic
+    assignments = []  # List of CuttingAssignment
+
+    for mark, cut_len in cuts:
+        placed = False
+
+        # Try to fit in an existing open stock bar
+        for assignment in assignments:
+            # Calculate remaining space accounting for kerf
+            used_length = sum(c[1] for c in assignment.cuts)
+            num_cuts = len(assignment.cuts)
+            # Space used = sum of cuts + kerf for each cut
+            space_used = used_length + (num_cuts * kerf)
+            remaining = assignment.stock_length - space_used
+
+            # Check if cut + kerf fits in remaining space
+            # (we need kerf after this cut as well)
+            if cut_len + kerf <= remaining:
+                assignment.cuts.append((mark, cut_len))
+                # Update waste
+                new_used = used_length + cut_len
+                new_num_cuts = num_cuts + 1
+                new_space_used = new_used + (new_num_cuts * kerf)
+                assignment.waste = assignment.stock_length - new_space_used
+                placed = True
+                break
+
+        # If not placed, open new stock bar (smallest that fits)
+        if not placed:
+            # Find smallest stock that can fit this cut + kerf
+            selected_stock = None
+            for stock_len in stock_lengths:
+                if cut_len + kerf <= stock_len:
+                    selected_stock = stock_len
+                    break
+
+            # This should not happen as we validated earlier, but check anyway
+            if selected_stock is None:
+                raise ValueError(
+                    f"Cannot fit cut length {cut_len:.0f}mm in any stock length"
+                )
+
+            # Create new assignment
+            new_assignment = CuttingAssignment(
+                stock_length=selected_stock,
+                cuts=[(mark, cut_len)],
+                waste=selected_stock - cut_len - kerf,
+            )
+            assignments.append(new_assignment)
+
+    # Calculate statistics
+    total_stock_used = len(assignments)
+    total_waste = sum(a.waste for a in assignments)
+    total_stock_length = sum(a.stock_length for a in assignments)
+
+    # Waste percentage = (total waste / total stock length) × 100
+    waste_percentage = (
+        (total_waste / total_stock_length * 100) if total_stock_length > 0 else 0.0
+    )
+
+    return CuttingPlan(
+        assignments=assignments,
+        total_stock_used=total_stock_used,
+        total_waste=round(total_waste, 2),
+        waste_percentage=round(waste_percentage, 2),
+    )
+
+
+# =============================================================================
 # Export Functions
 # =============================================================================
 
