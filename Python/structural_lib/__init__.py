@@ -1,15 +1,24 @@
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library
-Version:      0.9.3
 License:      MIT
+
+Version is read dynamically from pyproject.toml via importlib.metadata.
+Use api.get_library_version() to get the current version.
 """
 
 from __future__ import annotations
 
 import importlib
+from importlib.metadata import PackageNotFoundError, version as _get_version
 from types import ModuleType
 from typing import Optional
+
+# Dynamic version from installed package metadata
+try:
+    __version__ = _get_version("structural-lib-is456")
+except PackageNotFoundError:
+    __version__ = "0.0.0-dev"  # Not installed, development mode
 
 # Expose key modules
 from . import constants
@@ -37,6 +46,7 @@ except ImportError:
 from . import excel_integration
 
 __all__ = [
+    "__version__",
     "api",
     "bbs",
     "compliance",

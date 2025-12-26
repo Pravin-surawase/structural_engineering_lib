@@ -21,48 +21,32 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 
 # Files that need version updates (relative to repo root)
+# MINIMAL SET: Only files that MUST have hardcoded versions
 VERSION_FILES = {
-    # Python source of truth
+    # Python source of truth (packaging)
     "Python/pyproject.toml": [
         (r'^version = "[^"]+"', 'version = "{version}"'),
     ],
     
-    # Python runtime
-    "Python/structural_lib/__init__.py": [
-        (r'^Version:\s+[\d.]+', 'Version:      {version}'),
-    ],
+    # Python fallback for dev mode (when package not installed)
     "Python/structural_lib/api.py": [
         (r'return "[0-9]+\.[0-9]+\.[0-9]+"', 'return "{version}"'),
     ],
     
-    # VBA runtime
+    # VBA runtime (VBA can't read external files)
     "VBA/Modules/M08_API.bas": [
-        (r"' Version:\s+[\d.]+", "' Version:      {version}"),
         (r'Get_Library_Version = "[^"]+"', 'Get_Library_Version = "{version}"'),
-    ],
-    
-    # VBA test modules (header comment only)
-    "VBA/Tests/Test_RunAll.bas": [
-        (r"' Version:\s+[\d.]+", "' Version:      {version}"),
-    ],
-    "VBA/Tests/Test_Parity.bas": [
-        (r"' Version:\s+[\d.]+", "' Version:      {version}"),
     ],
 }
 
 # Files where version should be REMOVED or made evergreen
 EVERGREEN_NOTES = """
-Files that should NOT have hardcoded versions (use "current" or remove):
-- docs/BEGINNERS_GUIDE.md (footer)
-- docs/EXCEL_TUTORIAL.md (footer)
-- docs/DEVELOPMENT_GUIDE.md (examples - these show patterns, not current version)
+Version is now managed in only 3 places:
+  - Python/pyproject.toml (source of truth)
+  - Python/api.py (dev mode fallback)
+  - VBA/M08_API.bas (VBA runtime)
 
-Files that are HISTORICAL records (don't update, add new entries):
-- CHANGELOG.md
-- docs/RELEASES.md
-
-Files that are SNAPSHOTS (version in filename is intentional):
-- Excel/snapshots/baseline_*.csv
+All other files should use dynamic version or say "see CHANGELOG".
 """
 
 
