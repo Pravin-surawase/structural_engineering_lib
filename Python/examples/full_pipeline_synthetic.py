@@ -187,6 +187,7 @@ def main() -> int:
             str(csv_path),
             "-o",
             str(results_path),
+            "--deflection",
         ],
     ):
         return 1

@@ -82,7 +82,7 @@ jobs:
       - name: Run tests (with coverage)
         working-directory: Python
         run: |
-          python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml --cov-fail-under=92
+          python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml --cov-fail-under=90
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v6

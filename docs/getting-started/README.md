@@ -11,6 +11,7 @@ Quick onboarding guides for new users.
 | [Python Quickstart](python-quickstart.md) | Python users | 5 min |
 | [Excel Quickstart](excel-quickstart.md) | Excel users | 5 min |
 | [Excel Tutorial](excel-tutorial.md) | Excel users | 15 min |
+| [Colab Workflow](colab-workflow.md) | Colab users | 15 min |
 
 ## Which guide should I read?
 
@@ -18,3 +19,4 @@ Quick onboarding guides for new users.
 - **Never used this library?** → Start with [Beginner's Guide](beginners-guide.md)
 - **Python developer, want to get running fast?** → [Python Quickstart](python-quickstart.md)
 - **Excel user, want formulas?** → [Excel Quickstart](excel-quickstart.md)
+- **Using Google Colab?** → [Colab Workflow](colab-workflow.md)

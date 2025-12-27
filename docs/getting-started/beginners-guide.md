@@ -130,6 +130,7 @@ You should get a number around 196.5 (kN-m).
 
 ## Next steps
 - Python quickstart: `docs/getting-started/python-quickstart.md`
+- Colab workflow: `docs/getting-started/colab-workflow.md`
 - Excel tutorial: `docs/getting-started/excel-tutorial.md`
 - CLI reference: `docs/cookbook/cli-reference.md`
 - API reference: `docs/reference/api.md`

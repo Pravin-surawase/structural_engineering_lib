@@ -17,7 +17,7 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
-from typing import Any, List, Tuple
+from typing import Any, List, Optional, Tuple
 
 ezdxf: Any = None
 _units: Any = None
@@ -68,12 +68,16 @@ LAYERS = {
     "TEXT": (2, "CONTINUOUS"),  # Yellow
     "CENTERLINE": (6, "CENTER"),  # Magenta
     "HIDDEN": (8, "HIDDEN"),  # Gray
+    "BORDER": (7, "CONTINUOUS"),  # White
 }
 
 # Drawing parameters
 TEXT_HEIGHT = 50  # mm (scaled for drawing)
 DIM_OFFSET = 100  # Dimension line offset from beam
 REBAR_OFFSET = 30  # Offset from beam edge for rebar line
+DEFAULT_SHEET_MARGIN = 200.0  # mm
+DEFAULT_TITLE_BLOCK_WIDTH = 900.0  # mm
+DEFAULT_TITLE_BLOCK_HEIGHT = 250.0  # mm
 
 
 # =============================================================================
@@ -115,6 +119,56 @@ def draw_rectangle(msp, x1: float, y1: float, x2: float, y2: float, layer: str):
     msp.add_line((x2, y1), (x2, y2), dxfattribs={"layer": layer})
     msp.add_line((x2, y2), (x1, y2), dxfattribs={"layer": layer})
     msp.add_line((x1, y2), (x1, y1), dxfattribs={"layer": layer})
+
+
+def _annotation_extents(include_annotations: bool) -> Tuple[float, float]:
+    """Return (above_extent, below_extent) for annotations."""
+    if include_annotations:
+        above_extent = 150 + TEXT_HEIGHT * 1.5
+        below_extent = DIM_OFFSET + 200 + TEXT_HEIGHT
+    else:
+        above_extent = 100
+        below_extent = DIM_OFFSET + 50
+    return above_extent, below_extent
+
+
+def _estimate_cell_width(
+    span_mm: float, b_mm: float, include_section_cuts: bool
+) -> float:
+    """Estimate cell width for a single beam (mm)."""
+    width = span_mm
+    if include_section_cuts:
+        width += 500 + b_mm + 200 + b_mm
+    # Space for right-side dimension + text
+    width += DIM_OFFSET + TEXT_HEIGHT + 20
+    return width
+
+
+def _draw_title_block(
+    msp,
+    origin: Tuple[float, float],
+    width: float,
+    height: float,
+    fields: List[str],
+) -> None:
+    """Draw a simple title block with a list of text lines."""
+    x1, y1 = origin
+    x2 = x1 + width
+    y2 = y1 + height
+
+    draw_rectangle(msp, x1, y1, x2, y2, "BORDER")
+
+    line_height = TEXT_HEIGHT * 0.6
+    x_text = x1 + 20
+    y_text = y2 - line_height - 15
+    for line in fields:
+        if not line:
+            continue
+        msp.add_text(
+            line,
+            dxfattribs={"layer": "TEXT", "height": line_height},
+        ).set_placement((x_text, y_text), align=_text_align("LEFT"))
+        y_text -= line_height + 5
 
 
 def draw_stirrup(
@@ -592,6 +646,11 @@ def generate_beam_dxf(
     include_dimensions: bool = True,
     include_annotations: bool = True,
     include_section_cuts: bool = True,
+    include_title_block: bool = False,
+    title_block: Optional[dict] = None,
+    sheet_margin_mm: float = DEFAULT_SHEET_MARGIN,
+    title_block_width_mm: float = DEFAULT_TITLE_BLOCK_WIDTH,
+    title_block_height_mm: float = DEFAULT_TITLE_BLOCK_HEIGHT,
 ) -> str:
     """
     Generate a DXF file from beam detailing result.
@@ -602,6 +661,11 @@ def generate_beam_dxf(
         include_dimensions: Add dimension lines
         include_annotations: Add text annotations
         include_section_cuts: Add cross-section views (A-A at support, B-B at midspan)
+        include_title_block: Draw a deliverable border + title block
+        title_block: Optional dict to override title block fields
+        sheet_margin_mm: Sheet margin for deliverable layout (mm)
+        title_block_width_mm: Title block width (mm)
+        title_block_height_mm: Title block height (mm)
 
     Returns:
         Path to generated DXF file
@@ -619,6 +683,13 @@ def generate_beam_dxf(
     # Get modelspace
     msp = doc.modelspace()
 
+    origin_x = 0.0
+    origin_y = 0.0
+    if include_title_block:
+        _, below_extent = _annotation_extents(include_annotations)
+        origin_x = sheet_margin_mm
+        origin_y = sheet_margin_mm + title_block_height_mm + below_extent
+
     # Draw beam elevation
     draw_beam_elevation(
         msp,
@@ -629,12 +700,12 @@ def generate_beam_dxf(
         top_bars=detailing.top_bars,
         bottom_bars=detailing.bottom_bars,
         stirrups=detailing.stirrups,
-        origin=(0, 0),
+        origin=(origin_x, origin_y),
     )
 
     # Add dimensions
     if include_dimensions:
-        draw_dimensions(msp, detailing.span, detailing.D, origin=(0, 0))
+        draw_dimensions(msp, detailing.span, detailing.D, origin=(origin_x, origin_y))
 
     # Add annotations
     if include_annotations:
@@ -650,13 +721,13 @@ def generate_beam_dxf(
             stirrups=detailing.stirrups,
             ld=detailing.ld_tension,
             lap=detailing.lap_length,
-            origin=(0, 0),
+            origin=(origin_x, origin_y),
         )
 
     # Add section cuts (positioned to the right of elevation)
     if include_section_cuts:
         # Section A-A at support (uses first zone bars)
-        section_x_offset = detailing.span + 500  # 500mm gap from elevation
+        section_x_offset = origin_x + detailing.span + 500  # 500mm gap from elevation
 
         # Get bar arrangements for support (first zone)
         top_bar_support = (
@@ -688,7 +759,7 @@ def generate_beam_dxf(
                     diameter=8, legs=2, spacing=150, zone_length=1000
                 )
             ),
-            origin=(section_x_offset, 0),
+            origin=(section_x_offset, origin_y),
             scale=1.0,
             title="SECTION A-A (SUPPORT)",
         )
@@ -728,10 +799,54 @@ def generate_beam_dxf(
                     diameter=8, legs=2, spacing=200, zone_length=2000
                 )
             ),
-            origin=(section_b_offset, 0),
+            origin=(section_b_offset, origin_y),
             scale=1.0,
             title="SECTION B-B (MIDSPAN)",
         )
+
+    if include_title_block:
+        above_extent, below_extent = _annotation_extents(include_annotations)
+        content_width = _estimate_cell_width(
+            detailing.span, detailing.b, include_section_cuts
+        )
+        content_height = detailing.D + above_extent + below_extent
+        sheet_width = content_width + sheet_margin_mm * 2
+        sheet_height = content_height + sheet_margin_mm * 2 + title_block_height_mm
+
+        draw_rectangle(msp, 0, 0, sheet_width, sheet_height, "BORDER")
+
+        block_width = min(
+            title_block_width_mm, max(100.0, sheet_width - 2 * sheet_margin_mm)
+        )
+        block_height = min(
+            title_block_height_mm, max(80.0, sheet_height - 2 * sheet_margin_mm)
+        )
+        block_x = sheet_width - sheet_margin_mm - block_width
+        block_y = sheet_margin_mm
+
+        title = "RC BEAM DETAIL"
+        beam_id = detailing.beam_id
+        story = detailing.story
+        span_line = f"Span: {detailing.span:.0f} mm"
+        units_note = "Units: mm, N/mm2, kN, kN-m"
+        scale_note = "Scale: 1:1"
+        if title_block:
+            title = title_block.get("title", title)
+            beam_id = title_block.get("beam_id", beam_id)
+            story = title_block.get("story", story)
+            span_line = title_block.get("span_line", span_line)
+            units_note = title_block.get("units", units_note)
+            scale_note = title_block.get("scale", scale_note)
+
+        fields = [
+            title,
+            f"Beam: {beam_id}",
+            f"Story: {story}",
+            span_line,
+            scale_note,
+            units_note,
+        ]
+        _draw_title_block(msp, (block_x, block_y), block_width, block_height, fields)
 
     # Save file
     doc.saveas(output_path)
@@ -753,6 +868,11 @@ def generate_multi_beam_dxf(
     include_dimensions: bool = True,
     include_annotations: bool = True,
     include_section_cuts: bool = True,
+    include_title_block: bool = False,
+    title_block: Optional[dict] = None,
+    sheet_margin_mm: float = DEFAULT_SHEET_MARGIN,
+    title_block_width_mm: float = DEFAULT_TITLE_BLOCK_WIDTH,
+    title_block_height_mm: float = DEFAULT_TITLE_BLOCK_HEIGHT,
 ) -> str:
     """
     Generate a single DXF file containing multiple beam details in a grid layout.
@@ -766,6 +886,11 @@ def generate_multi_beam_dxf(
         include_dimensions: Add dimension lines
         include_annotations: Add text annotations
         include_section_cuts: Add cross-section views
+        include_title_block: Draw a deliverable border + title block
+        title_block: Optional dict to override title block fields
+        sheet_margin_mm: Sheet margin for deliverable layout (mm)
+        title_block_width_mm: Title block width (mm)
+        title_block_height_mm: Title block height (mm)
 
     Returns:
         Path to generated DXF file
@@ -806,22 +931,15 @@ def generate_multi_beam_dxf(
         row = idx // columns
 
         # Calculate beam cell width (including section cuts if enabled)
-        cell_width = detailing.span
-        if include_section_cuts:
-            cell_width += 500 + detailing.b + 200 + detailing.b  # sections
-        # Always add space for right-side depth dimension + text
-        cell_width += DIM_OFFSET + TEXT_HEIGHT + 20  # dim line + rotated text
+        cell_width = _estimate_cell_width(
+            detailing.span, detailing.b, include_section_cuts
+        )
 
         # Update column max width
         col_widths[col] = max(col_widths[col], cell_width)
 
         # Calculate row height based on annotation extents
-        # Above beam: title at y0 + D + 150 with height TEXT_HEIGHT*1.5
-        # Below beam: Ld note at y0 - DIM_OFFSET - 200 with height TEXT_HEIGHT*0.8
-        above_extent = 150 + TEXT_HEIGHT * 1.5 if include_annotations else 100
-        below_extent = (
-            DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
-        )
+        above_extent, below_extent = _annotation_extents(include_annotations)
         cell_height = detailing.D + above_extent + below_extent
         row_heights[row] = max(row_heights[row], cell_height)
 
@@ -833,9 +951,7 @@ def generate_multi_beam_dxf(
     # Compute cumulative Y offsets for each row
     # Account for below_extent so annotations don't overlap
     # (reuse same calculation from loop above)
-    base_below_extent: float = (
-        DIM_OFFSET + 200 + TEXT_HEIGHT if include_annotations else DIM_OFFSET + 50
-    )
+    _, base_below_extent = _annotation_extents(include_annotations)
     row_y_offsets: List[float] = [
         base_below_extent
     ] * n_rows  # Start with offset for first row's bottom annotations
@@ -849,8 +965,10 @@ def generate_multi_beam_dxf(
         col = idx % columns
 
         # Use precomputed cell positions (guarantees no overlap)
-        x_origin = col_x_offsets[col]
-        y_origin = row_y_offsets[row]
+        base_x = sheet_margin_mm if include_title_block else 0.0
+        base_y = sheet_margin_mm + title_block_height_mm if include_title_block else 0.0
+        x_origin = base_x + col_x_offsets[col]
+        y_origin = base_y + row_y_offsets[row]
 
         # Draw beam elevation
         draw_beam_elevation(
@@ -966,6 +1084,36 @@ def generate_multi_beam_dxf(
             )
 
     # Save file
+    if include_title_block:
+        total_width = col_x_offsets[-1] + col_widths[-1]
+        total_height = row_y_offsets[-1] + row_heights[-1]
+        sheet_width = total_width + sheet_margin_mm * 2
+        sheet_height = total_height + sheet_margin_mm * 2 + title_block_height_mm
+
+        draw_rectangle(msp, 0, 0, sheet_width, sheet_height, "BORDER")
+
+        block_width = min(
+            title_block_width_mm, max(100.0, sheet_width - 2 * sheet_margin_mm)
+        )
+        block_height = min(
+            title_block_height_mm, max(80.0, sheet_height - 2 * sheet_margin_mm)
+        )
+        block_x = sheet_width - sheet_margin_mm - block_width
+        block_y = sheet_margin_mm
+
+        title = "RC BEAM DETAIL SHEET"
+        count_line = f"Beams: {len(detailings)}"
+        units_note = "Units: mm, N/mm2, kN, kN-m"
+        scale_note = "Scale: 1:1"
+        if title_block:
+            title = title_block.get("title", title)
+            count_line = title_block.get("count_line", count_line)
+            units_note = title_block.get("units", units_note)
+            scale_note = title_block.get("scale", scale_note)
+
+        fields = [title, count_line, scale_note, units_note]
+        _draw_title_block(msp, (block_x, block_y), block_width, block_height, fields)
+
     doc.saveas(output_path)
 
     return output_path

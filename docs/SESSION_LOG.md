@@ -4,6 +4,37 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-27 — CLI Serviceability Flags + Colab Workflow
+
+### Changes
+- Added serviceability status fields in canonical output (`deflection_status`, `crack_width_status`).
+- CLI `design` now supports `--deflection`, `--support-condition`, and `--crack-width-params`.
+- CLI `design` can emit a compact summary CSV via `--summary`.
+- Synthetic pipeline example now runs with deflection enabled by default.
+- New Colab workflow guide with batch pipeline + optional serviceability checks.
+
+### Docs Updated
+- `docs/cookbook/cli-reference.md` (new flags + examples)
+- `docs/getting-started/colab-workflow.md` (step-by-step Colab flow)
+- `docs/getting-started/python-quickstart.md` (flags + examples)
+- `docs/getting-started/README.md` (Colab guide link)
+- `docs/getting-started/beginners-guide.md` (Colab link)
+
+### Tests
+- `python3 -m pytest tests/test_cli.py -q` (from `Python/`)
+
+---
+
+## 2025-12-27 — DXF Title Block + Deliverable Layout
+
+### Changes
+- Added optional title block + border layout for DXF exports (single and multi-beam).
+- Added CLI flags for title block and sheet sizing in the `dxf` command.
+- Updated CLI reference and Colab workflow examples to show the title block option.
+
+### Tests
+- Not run (DXF layout change only).
+
 ## 2025-12-27 — v0.10.0 Release + Code Quality
 
 ### PRs Merged
