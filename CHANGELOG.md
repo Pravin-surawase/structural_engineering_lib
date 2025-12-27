@@ -26,6 +26,12 @@ All notable changes to this project will be documented in this file.
   - Enhanced `.pre-commit-config.yaml` with ruff linter, doc version check hooks
   - CI doc drift check step in `python-tests.yml`
 - **API Stability Document:** `docs/reference/api-stability.md` — Defines stable vs internal APIs
+- **Dedicated shear tests:** `tests/test_shear.py` with 22 unit tests for `calculate_tv` and `design_shear`
+
+### Improved
+- Added docstrings to 12 private helper functions in `serviceability.py` and `compliance.py`
+- Added return type hints to 4 `api.py` convenience wrappers
+- Test count increased to 1753 passed, 95 skipped
 
 ### Fixed
 - Doc version drift: `docs/reference/api.md` version sync
