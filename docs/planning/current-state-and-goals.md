@@ -187,7 +187,7 @@ Python testing and CI:
 VBA testing:
 - Manual tests exist; automated parity is a future priority.
 
-Reference: `docs/TESTING_STRATEGY.md`
+Reference: `docs/contributing/testing-strategy.md`
 
 ### 10.1 Validation packs (what will convince practicing engineers)
 
@@ -226,7 +226,7 @@ For every tagged release:
 - If schema changes: updated schema doc + migration notes.
 - Excel add-in (.xlam) release asset (or a clearly documented path in repo).
 
-Reference: `docs/PRODUCTION_ROADMAP.md` and `docs/TASKS.md`.
+Reference: `docs/planning/production-roadmap.md` and `docs/TASKS.md`.
 
 ## 13) Research directions (AI-assisted)
 

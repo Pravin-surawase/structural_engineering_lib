@@ -138,6 +138,6 @@ fits v0.1 scope and recommend when to add it.
 
 ---
 
-**Reference:** Use `docs/PROJECT_OVERVIEW.md` for scope/architecture context. (Task board TBD)
+**Reference:** Use `docs/architecture/project-overview.md` for scope/architecture context. (Task board TBD)
 
 See also: `agents/README.md` for quick agent prompt templates.

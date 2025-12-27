@@ -34,7 +34,7 @@ The role docs in this folder can guide **GitHub Copilot Coding Agent** when you 
 - Role: scope, governance, orchestration, release ledger.
 - Prompt:  
   ```
-  Act as PM. Use docs/PROJECT_OVERVIEW.md. Scope and plan v0.5 Excel workbook integration; list agent handoffs and risks.
+  Act as PM. Use docs/architecture/project-overview.md. Scope and plan v0.5 Excel workbook integration; list agent handoffs and risks.
   ```
 
 ## CLIENT

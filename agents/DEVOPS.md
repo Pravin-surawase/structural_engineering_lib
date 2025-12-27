@@ -137,4 +137,4 @@ tests to run, docs to update, and git commands.
 
 ---
 
-**Reference:** See `docs/PROJECT_OVERVIEW.md` (context) and `docs/DEVELOPMENT_GUIDE.md` Section 16 (release checklist).
+**Reference:** See `docs/architecture/project-overview.md` (context) and `docs/contributing/development-guide.md` Section 16 (release checklist).
