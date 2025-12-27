@@ -252,14 +252,13 @@ print("=" * 60)
 
 ld = detailing.calculate_development_length(bar_dia, fck, fy)
 lap = detailing.calculate_lap_length(bar_dia, fck, fy, is_seismic=False)
-min_spacing = detailing.get_min_spacing(bar_dia)
 actual_spacing = detailing.calculate_bar_spacing(b, cover, stirrup_dia, bar_dia, n_bars)
+spacing_ok, spacing_msg = detailing.check_min_spacing(actual_spacing, bar_dia)
 
 print(f"Development length Ld = {ld:.0f} mm ({ld/bar_dia:.0f}φ)")
 print(f"Lap length = {lap:.0f} mm ({lap/bar_dia:.0f}φ)")
-print(f"Min bar spacing = {min_spacing:.0f} mm")
 print(f"Actual bar spacing = {actual_spacing:.0f} mm")
-print(f"Spacing check: {'✓ OK' if actual_spacing >= min_spacing else '✗ Revise bars'}")
+print(f"Spacing check: {spacing_msg}")
 
 # === SUMMARY ===
 print("\n" + "=" * 60)
@@ -405,8 +404,7 @@ Generate DXF CAD Drawings
 Creates drawings for fabrication/detailing
 """
 
-from structural_lib import detailing
-from structural_lib.dxf_export import draw_beam_section, draw_beam_detailing
+from structural_lib import detailing, dxf_export
 
 # Check if ezdxf is available
 try:
@@ -425,24 +423,16 @@ result = detailing.create_beam_detailing(
     ast_start=800, ast_mid=1000, ast_end=800,
     asc_start=200, asc_mid=200, asc_end=200,
     stirrup_dia=8,
-    sv_start=100, sv_mid=150, sv_end=100,
+    stirrup_spacing_start=100,
+    stirrup_spacing_mid=150,
+    stirrup_spacing_end=100,
     is_seismic=False
 )
 
-# Generate section drawing
-draw_beam_section(
-    filepath="beam_section_B1.dxf",
-    b=300, D=500, cover=40,
-    top_bars=[12, 12],
-    bottom_bars=[16, 16, 16],
-    stirrup_dia=8
-)
-print("✓ Created: beam_section_B1.dxf")
-
 # Generate complete detailing drawing
-draw_beam_detailing(
-    filepath="beam_detailing_B1.dxf",
-    result=result
+dxf_export.generate_beam_dxf(
+    detailing=result,
+    output_path="beam_detailing_B1.dxf",
 )
 print("✓ Created: beam_detailing_B1.dxf")
 

@@ -300,6 +300,7 @@ def check_crack_width(
 - Computes an Annex-F-style crack width estimate using the configured inputs.
 - If `epsilon_m` is not provided, it can be estimated as `fs_service_nmm2 / es_nmm2` and recorded as an assumption.
 - If required parameters are missing, returns `is_ok=False` with a clear remark (no guessing).
+- `acr_mm` is the distance from the point considered to the nearest bar surface (mm).
 
 **Return Types:**
 - `DeflectionResult`: contains `is_ok`, `remarks`, `support_condition`, and `inputs/computed/assumptions` payloads.

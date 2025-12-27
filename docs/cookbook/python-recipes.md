@@ -4,11 +4,13 @@ Copy-paste snippets for common structural engineering tasks.
 
 ## Setup
 
-```python
-# Install
+```bash
 pip install structural-lib-is456
+# For DXF support:
+pip install structural-lib-is456[dxf]
+```
 
-# Import
+```python
 from structural_lib import api, flexure, shear, detailing, bbs
 ```
 
@@ -19,12 +21,16 @@ from structural_lib import api, flexure, shear, detailing, bbs
 ```python
 from structural_lib import api
 
+b_mm = 300
+D_mm = 500
+d_mm = 450
+
 result = api.design_beam_is456(
     units="IS456",
     case_id="DL+LL",
-    b_mm=300,
-    D_mm=500,
-    d_mm=450,
+    b_mm=b_mm,
+    D_mm=D_mm,
+    d_mm=d_mm,
     fck_nmm2=25,
     fy_nmm2=500,
     mu_knm=150,
@@ -33,7 +39,7 @@ result = api.design_beam_is456(
 
 print(f"Flexure: {'OK' if result.flexure.is_safe else 'FAIL'}")
 print(f"  Ast required: {result.flexure.ast_required:.1f} mm²")
-print(f"  xu/d: {result.flexure.xu / 450:.3f}")
+print(f"  xu/d: {result.flexure.xu / d_mm:.3f}")
 
 print(f"Shear: {'OK' if result.shear.is_safe else 'FAIL'}")
 print(f"  τv: {result.shear.tv:.3f} N/mm²")
@@ -64,13 +70,13 @@ report = api.check_beam_is456(
     fy_nmm2=500,
 )
 
-print(f"Overall: {'PASS' if report.passed else 'FAIL'}")
-print(f"Governing case: {report.governing_case}")
-print(f"Max utilization: {report.max_utilization:.2%}")
+print(f"Overall: {'PASS' if report.is_ok else 'FAIL'}")
+print(f"Governing case: {report.governing_case_id}")
+print(f"Max utilization: {report.governing_utilization:.2%}")
 
-for case_id, result in report.case_results.items():
+for result in report.cases:
     status = "OK" if result.is_ok else "FAIL"
-    print(f"  {case_id}: {status}")
+    print(f"  {result.case_id}: {status}")
 ```
 
 ---
@@ -82,12 +88,12 @@ for case_id, result in report.case_results.items():
 from structural_lib import flexure
 
 result = flexure.design_singly_reinforced(
-    b_mm=230,
-    d_mm=450,
-    d_total_mm=500,
+    b=230,
+    d=450,
+    d_total=500,
     mu_knm=100,
-    fck_nmm2=20,
-    fy_nmm2=415,
+    fck=20,
+    fy=415,
 )
 
 print(f"Mu,lim: {result.mu_lim:.2f} kN·m")
@@ -101,13 +107,13 @@ print(f"Section type: {result.section_type}")
 from structural_lib import flexure
 
 result = flexure.design_doubly_reinforced(
-    b_mm=300,
-    d_mm=450,
-    d_dash_mm=50,
-    d_total_mm=500,
+    b=300,
+    d=450,
+    d_dash=50,
+    d_total=500,
     mu_knm=250,
-    fck_nmm2=25,
-    fy_nmm2=500,
+    fck=25,
+    fy=500,
 )
 
 print(f"Ast: {result.ast_required:.1f} mm²")
@@ -118,19 +124,20 @@ print(f"Asc: {result.asc_required:.1f} mm²")
 ```python
 from structural_lib import flexure
 
+Df = 150
 result = flexure.design_flanged_beam(
-    bw_mm=300,
-    bf_mm=1000,
-    d_mm=500,
-    Df_mm=150,
-    d_total_mm=550,
+    bw=300,
+    bf=1000,
+    d=500,
+    Df=Df,
+    d_total=550,
     mu_knm=200,
-    fck_nmm2=25,
-    fy_nmm2=500,
+    fck=25,
+    fy=500,
 )
 
 print(f"Ast: {result.ast_required:.1f} mm²")
-print(f"NA location: {'in flange' if result.xu <= 150 else 'in web'}")
+print(f"NA location: {'in flange' if result.xu <= Df else 'in web'}")
 ```
 
 ---
@@ -146,7 +153,7 @@ result = shear.design_shear(
     d=450,
     fck=20,
     fy=415,
-    asv=100,  # 2-legged 8mm stirrup
+    asv=100,  # total leg area (mm²)
     pt=1.0,   # % tension steel
 )
 
@@ -246,6 +253,8 @@ print(f"Crack width: {result.computed['wcr_mm']:.3f} mm")
 print(f"Limit: {result.computed['limit_mm']:.2f} mm")
 print(f"Status: {'OK' if result.is_ok else 'FAIL'}")
 ```
+
+Note: `acr_mm` is the distance from the point considered to the nearest bar surface (mm).
 
 ---
 

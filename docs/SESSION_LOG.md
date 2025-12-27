@@ -61,3 +61,24 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - [ ] Remove redirect stubs (scheduled for v1.0)
 
 ---
+
+## 2025-12-27 — API/CLI Docs UX Pass (Phases 0–4)
+
+### Decisions
+
+1. **CLI is canonical:** Unified CLI (`python -m structural_lib design|bbs|dxf|job`) is the default reference; legacy CLI entrypoints are treated as legacy.
+2. **Docs must match code:** Examples are kept copy-paste runnable with real signatures and outputs.
+3. **No breaking API changes:** This pass updates docs and docstrings only.
+
+### Changes
+
+- Updated public API docstrings with args/returns/examples (`Python/structural_lib/api.py`).
+- Aligned CLI reference to actual CLI behavior (`docs/cookbook/cli-reference.md`).
+- Fixed Python recipes to use real function signatures (`docs/cookbook/python-recipes.md`).
+- Corrected DXF and spacing examples in beginners guide (`docs/getting-started/beginners-guide.md`).
+- Updated legacy CLI reference in v0.7 mapping spec (`docs/specs/v0.7_DATA_MAPPING.md`).
+
+### Status
+
+- Phase 0–4 complete.
+- Phase 5 pending (final summary check).
