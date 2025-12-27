@@ -90,7 +90,7 @@ def run_job_is456(
 
     # Validate units at application boundary (TASK-061)
     try:
-        validated_units = beam_pipeline.validate_units(units)
+        beam_pipeline.validate_units(units)
     except beam_pipeline.UnitsValidationError as e:
         raise ValueError(f"units validation failed: {e}") from e
 
