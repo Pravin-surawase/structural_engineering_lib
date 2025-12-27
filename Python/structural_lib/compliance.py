@@ -36,6 +36,10 @@ from .types import (
 
 
 def _utilization_safe(numer: float, denom: float) -> float:
+    """Compute utilization ratio with safe division.
+
+    Returns inf if denominator ≤ 0 and numerator > 0, else 0 for zero/zero.
+    """
     if denom <= 0:
         return float("inf") if numer > 0 else 0.0
     return numer / denom
@@ -66,12 +70,14 @@ def _compute_flexure_utilization(mu_knm: float, flex: FlexureResult) -> float:
 
 
 def _compute_shear_utilization(sh: ShearResult) -> float:
+    """Compute shear utilization as tv / tc_max."""
     if (not sh.is_safe) and sh.tc_max <= 0:
         return float("inf")
     return _utilization_safe(sh.tv, sh.tc_max)
 
 
 def _compute_deflection_utilization(defl: DeflectionResult) -> float:
+    """Compute deflection utilization as (L/d) / allowable_ld."""
     if not defl.is_ok:
         allowable = float(defl.computed.get("allowable_ld", 0.0))
         if allowable <= 0:
@@ -82,6 +88,7 @@ def _compute_deflection_utilization(defl: DeflectionResult) -> float:
 
 
 def _compute_crack_utilization(cr: CrackWidthResult) -> float:
+    """Compute crack width utilization as wcr / limit."""
     if not cr.is_ok:
         limit_mm = float(cr.computed.get("limit_mm", 0.0))
         if limit_mm <= 0:
@@ -92,6 +99,10 @@ def _compute_crack_utilization(cr: CrackWidthResult) -> float:
 
 
 def _safe_deflection_check(params: Any) -> DeflectionResult:
+    """Run deflection check with exception safety.
+
+    Returns a failed DeflectionResult on invalid input or exception.
+    """
     if not isinstance(params, dict):
         return DeflectionResult(
             is_ok=False,
@@ -117,6 +128,10 @@ def _safe_deflection_check(params: Any) -> DeflectionResult:
 
 
 def _safe_crack_width_check(params: Any) -> CrackWidthResult:
+    """Run crack width check with exception safety.
+
+    Returns a failed CrackWidthResult on invalid input or exception.
+    """
     if not isinstance(params, dict):
         return CrackWidthResult(
             is_ok=False,
@@ -350,6 +365,7 @@ def check_compliance_report(
     def _governing_key(
         index_and_result: tuple[int, ComplianceCaseResult],
     ) -> tuple[float, float, float, float, int]:
+        """Sort key for finding governing case by max utilization."""
         idx, r = index_and_result
         utils = list(r.utilizations.values())
         # Sort descending so secondary checks break ties deterministically.
@@ -417,6 +433,7 @@ def report_to_dict(report: ComplianceReport) -> Dict[str, Any]:
     """Serialize report to a JSON/Excel-friendly dict."""
 
     def _jsonable(obj: Any) -> Any:
+        """Recursively convert enums and nested structures to JSON-safe types."""
         if isinstance(obj, Enum):
             return obj.name
         if isinstance(obj, dict):

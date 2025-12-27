@@ -249,6 +249,13 @@ def test_design_help():
     assert exc.value.code == 0
 
 
+def test_design_missing_args_exit_code():
+    """Missing required args should exit with code 2 (argparse)."""
+    with pytest.raises(SystemExit) as exc:
+        cli_main.main(["design"])
+    assert exc.value.code == 2
+
+
 def test_design_from_csv(sample_csv_file, tmp_path):
     """Test design command with CSV input."""
     output_file = tmp_path / "results.json"
