@@ -12,8 +12,8 @@ IS 456 RC beam design library with **Python + VBA parity**.
 ## Always load this context first
 - docs/AI_CONTEXT_PACK.md
 - docs/PROJECT_OVERVIEW.md
-- docs/API_REFERENCE.md
-- docs/KNOWN_PITFALLS.md
+- docs/reference/api.md
+- docs/reference/known-pitfalls.md
 - docs/TASKS.md
 
 ## Coding rules

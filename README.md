@@ -10,7 +10,7 @@
 
 **Run 500 ETABS beams → get compliant rebar + DXF + schedules in minutes.**
 
-[Quick Start](#30-second-user-demo-no-clone-required) • [Documentation](docs/README.md) • [Examples](Python/examples/) • [API Reference](docs/API_REFERENCE.md)
+[Quick Start](#30-second-user-demo-no-clone-required) • [Documentation](docs/README.md) • [Examples](Python/examples/) • [API Reference](docs/reference/api.md)
 
 </div>
 
@@ -306,11 +306,11 @@ structural_engineering_lib/
 ├── Excel/                  ← Excel workbooks (see Excel/README.md)
 ├── docs/
 │   ├── README.md           ← Docs index (start here)
-│   ├── PROJECT_OVERVIEW.md ← High-level scope/architecture
-│   ├── API_REFERENCE.md    ← Public function signatures
-│   ├── BEGINNERS_GUIDE.md  ← Step-by-step introduction
+│   ├── reference/          ← API, formulas, troubleshooting
+│   ├── getting-started/    ← Quickstart guides
+│   ├── verification/       ← Benchmark examples
 │   ├── TASKS.md            ← Task backlog and status
-│   └── KNOWN_PITFALLS.md   ← Common traps and gotchas
+│   └── ...                 ← More folders (see docs/README.md)
 ├── agents/                 ← Role docs for AI prompts
 ├── logs/                   ← Runtime logs
 ├── CHANGELOG.md
@@ -397,10 +397,10 @@ See [Python examples](Python/examples/) for complete workflows.
 - **[Docs Index](docs/README.md)** — Start here (who should read what)
 - **[Project Overview](docs/PROJECT_OVERVIEW.md)** — High-level scope, architecture, and workflows
 - **[Research and Findings (archived)](docs/_archive/RESEARCH_AND_FINDINGS.md)** — Historical research document with formulas, tables, and early API design notes
-- **[API Reference](docs/API_REFERENCE.md)** — Public function signatures, inputs/outputs, units
+- **[API Reference](docs/reference/api.md)** — Public function signatures, inputs/outputs, units
 - **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** — Coding standards, naming conventions, testing guidelines
-- **[IS 456 Quick Reference](docs/IS456_QUICK_REFERENCE.md)** — Formulas cheat sheet for quick lookup
-- **[Known Pitfalls](docs/KNOWN_PITFALLS.md)** — Common traps (units, tables, limits)
+- **[IS 456 Quick Reference](docs/reference/is456-formulas.md)** — Formulas cheat sheet for quick lookup
+- **[Known Pitfalls](docs/reference/known-pitfalls.md)** — Common traps (units, tables, limits)
 
 ## Testing
 

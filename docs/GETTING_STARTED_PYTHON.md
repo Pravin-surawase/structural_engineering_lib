@@ -119,5 +119,5 @@ PY
 ## 9) Further Reading
 - [BEGINNERS_GUIDE.md](BEGINNERS_GUIDE.md) - Comprehensive tutorial (Python + Excel)
 - [EXCEL_TUTORIAL.md](EXCEL_TUTORIAL.md) - Step-by-step Excel guide
-- [API_REFERENCE.md](API_REFERENCE.md) - Full API documentation
-- [IS456_QUICK_REFERENCE.md](IS456_QUICK_REFERENCE.md) - IS 456 code reference
+- [reference/api.md](reference/api.md) - Full API documentation
+- [reference/is456-formulas.md](reference/is456-formulas.md) - IS 456 code reference
