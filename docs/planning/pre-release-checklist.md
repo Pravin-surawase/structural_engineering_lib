@@ -1,6 +1,6 @@
 # Pre-Release Checklist
 
-Version: 0.10.0 (beta candidate)  
+Version: 0.10.1 (beta candidate)  
 Date: 2025-12-27
 Target: Private beta with 2–3 structural engineers
 
