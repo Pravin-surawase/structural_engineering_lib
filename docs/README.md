@@ -20,9 +20,9 @@ For VS Code AI-agent work, start with:
 
 1) **Quick start (Python):** [GETTING_STARTED_PYTHON.md](GETTING_STARTED_PYTHON.md)
 2) **Excel usage tutorial:** [EXCEL_TUTORIAL.md](EXCEL_TUTORIAL.md)
-3) **Full API surface:** [API_REFERENCE.md](API_REFERENCE.md)
-4) **IS 456 formula cheat sheet:** [IS456_QUICK_REFERENCE.md](IS456_QUICK_REFERENCE.md)
-5) **Problems & fixes:** [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+3) **Full API surface:** [reference/api.md](reference/api.md)
+4) **IS 456 formula cheat sheet:** [reference/is456-formulas.md](reference/is456-formulas.md)
+5) **Problems & fixes:** [reference/troubleshooting.md](reference/troubleshooting.md)
 
 ---
 
@@ -41,7 +41,7 @@ For VS Code AI-agent work, start with:
 - Development practices: [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md)
 - VBA side specifics: [VBA_GUIDE.md](VBA_GUIDE.md)
 - Packaging the add-in (`.xlam`): [EXCEL_ADDIN_GUIDE.md](EXCEL_ADDIN_GUIDE.md)
-- Common engineering/coding traps: [KNOWN_PITFALLS.md](KNOWN_PITFALLS.md)
+- Common engineering/coding traps: [reference/known-pitfalls.md](reference/known-pitfalls.md)
 - Git workflow rules: [_internal/GIT_GOVERNANCE.md](_internal/GIT_GOVERNANCE.md)
 
 ---

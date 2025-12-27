@@ -26,9 +26,9 @@ Start here for architecture and boundaries:
 ## 2) “Load these docs first” (minimal context)
 Use these as the default context set for most tasks:
 - [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (layering + intent)
-- [API_REFERENCE.md](API_REFERENCE.md) (public API contracts)
-- [KNOWN_PITFALLS.md](KNOWN_PITFALLS.md) (units/table rules/edge cases)
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) (VBA/Mac quirks, fixes)
+- [reference/api.md](reference/api.md) (public API contracts)
+- [reference/known-pitfalls.md](reference/known-pitfalls.md) (units/table rules/edge cases)
+- [reference/troubleshooting.md](reference/troubleshooting.md) (VBA/Mac quirks, fixes)
 - [TASKS.md](TASKS.md) (canonical backlog + acceptance mindset)
 - [NEXT_SESSION_BRIEF.md](NEXT_SESSION_BRIEF.md) (where to resume quickly)
 

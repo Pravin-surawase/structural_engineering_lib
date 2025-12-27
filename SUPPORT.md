@@ -17,5 +17,5 @@ Open a GitHub issue with:
 ## Troubleshooting
 
 See:
-- `docs/TROUBLESHOOTING.md`
-- `docs/KNOWN_PITFALLS.md`
+- `docs/reference/troubleshooting.md`
+- `docs/reference/known-pitfalls.md`
