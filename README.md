@@ -84,7 +84,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.9.6`) rather than installing latest.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.10.0`) rather than installing latest.
 
 ### Install from PyPI
 
