@@ -32,7 +32,7 @@ If you don’t want to install an add-in yet:
 
 Use this if you want to build your own add-in or inspect code modules.
 
-- See the bulk importer macro in [docs/EXCEL_ADDIN_GUIDE.md](EXCEL_ADDIN_GUIDE.md)
+- See the bulk importer macro in [docs/contributing/excel-addin-guide.md](../contributing/excel-addin-guide.md)
 - VBA modules live in `VBA/Modules/`
 
 Important: the bulk importer requires enabling “Trust access to the VBA project object model” in Excel’s Trust Center.

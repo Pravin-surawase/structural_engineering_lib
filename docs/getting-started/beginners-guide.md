@@ -623,7 +623,7 @@ End Sub
 | "Module not found" (Python) | Activate venv: `source .venv/bin/activate` |
 | "ezdxf not found" | `pip install ezdxf` |
 | Excel functions not working | Enable macros, install add-in |
-| VBA compile error | Import modules in correct order (see VBA_GUIDE.md) |
+| VBA compile error | Import modules in correct order (see contributing/vba-guide.md) |
 | DXF won't open | Check file path has no special characters |
 | Results seem wrong | Verify units (mm, N/mm², kN·m) |
 
@@ -631,9 +631,9 @@ End Sub
 
 # Next Steps
 
-1. **Learn IS 456** — See `docs/IS456_QUICK_REFERENCE.md`
-2. **API Reference** — See `docs/API_REFERENCE.md`
-3. **Contribute** — See `docs/DEVELOPMENT_GUIDE.md`
+1. **Learn IS 456** — See `docs/reference/is456-formulas.md`
+2. **API Reference** — See `docs/reference/api.md`
+3. **Contribute** — See `docs/contributing/development-guide.md`
 4. **Report Issues** — Open a GitHub issue with input values and expected vs actual results
 
 ---

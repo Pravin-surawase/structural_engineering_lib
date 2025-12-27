@@ -398,7 +398,7 @@ See [Python examples](Python/examples/) for complete workflows.
 - **[Project Overview](docs/PROJECT_OVERVIEW.md)** — High-level scope, architecture, and workflows
 - **[Research and Findings (archived)](docs/_archive/RESEARCH_AND_FINDINGS.md)** — Historical research document with formulas, tables, and early API design notes
 - **[API Reference](docs/reference/api.md)** — Public function signatures, inputs/outputs, units
-- **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** — Coding standards, naming conventions, testing guidelines
+- **[Development Guide](docs/contributing/development-guide.md)** — Coding standards, naming conventions, testing guidelines
 - **[IS 456 Quick Reference](docs/reference/is456-formulas.md)** — Formulas cheat sheet for quick lookup
 - **[Known Pitfalls](docs/reference/known-pitfalls.md)** — Common traps (units, tables, limits)
 
