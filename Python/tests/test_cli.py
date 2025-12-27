@@ -326,6 +326,25 @@ def test_design_summary_csv(sample_csv_file, tmp_path):
     assert "governing_utilization" in rows[0]
 
 
+def test_design_summary_csv_default_path(sample_csv_file, tmp_path):
+    """Summary CSV with default path (next to output file)."""
+    output_file = tmp_path / "results.json"
+
+    rc = cli_main.main(
+        [
+            "design",
+            str(sample_csv_file),
+            "-o",
+            str(output_file),
+            "--summary",
+        ]
+    )
+
+    assert rc == 0
+    default_summary = tmp_path / "design_summary.csv"
+    assert default_summary.exists()
+
+
 def test_design_with_crack_width_params(sample_csv_file, tmp_path):
     """Crack width params should populate serviceability fields."""
     output_file = tmp_path / "results.json"
