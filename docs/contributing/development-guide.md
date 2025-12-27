@@ -73,11 +73,12 @@ The VBA and Python implementations must:
 structural_engineering_lib/
 ├── docs/
 │   ├── README.md                   ← Docs index (start here)
-│   ├── RESEARCH_AI_ENHANCEMENTS.md ← Active research log (v0.8+)
-│   ├── _archive/RESEARCH_AND_FINDINGS.md ← Historical research/reference (archived)
-│   ├── DEVELOPMENT_GUIDE.md        ← This document
-│   ├── API_REFERENCE.md            ← Function signatures and examples
-│   └── IS456_QUICK_REFERENCE.md    ← Formulas cheat sheet
+│   ├── getting-started/            ← Quickstart guides
+│   ├── reference/                  ← API, formulas, troubleshooting
+│   ├── contributing/               ← This document lives here
+│   ├── architecture/               ← Project structure, design decisions
+│   ├── planning/                   ← Roadmaps, research notes
+│   └── verification/               ← Test examples, benchmark data
 │
 ├── VBA/
 │   ├── Modules/                    ← Core library (.bas files)

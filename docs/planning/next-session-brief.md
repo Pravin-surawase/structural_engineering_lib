@@ -19,7 +19,7 @@
 
 If you want to resume quickly without re-reading the repo:
 
-1. **Whole-project map (architecture + data flow + parity hotspots):** `docs/DEEP_PROJECT_MAP.md`
+1. **Whole-project map (architecture + data flow + parity hotspots):** `docs/architecture/deep-project-map.md`
 2. **Version management:** `docs/_internal/VERSION_STRATEGY.md`
 3. **Canonical backlog:** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
@@ -98,7 +98,7 @@ If you want to resume quickly without re-reading the repo:
 - ETABS/compliance batch workflows can be deepened (see `docs/TASKS.md`).
 
 #### 5. **Research Log + Dev Workflow Docs Updated** ✅
-- `docs/RESEARCH_AI_ENHANCEMENTS.md`: Added Pass 3 (source-backed research + decision matrix) and Pass 4 (notes extracted from your local Downloads snapshot).
+- `docs/planning/research-ai-enhancements.md`: Added Pass 3 (source-backed research + decision matrix) and Pass 4 (notes extracted from your local Downloads snapshot).
 - `docs/_references/README.md`: Added a simple place to drop local reference files (PDFs/spreadsheets) for future benchmark extraction.
 - `.gitignore`: Prevents accidentally committing large local reference snapshots.
 - README: Added quick dev commands and contributor setup notes.

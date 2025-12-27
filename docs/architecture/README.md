@@ -7,8 +7,8 @@ Deep dives into project structure and design decisions.
 | Document | Purpose |
 |----------|---------|
 | [Project Overview](project-overview.md) | High-level scope, layers, workflows |
-| [Deep Map](deep-map.md) | Consolidated architecture and data flow |
-| [Mission](mission.md) | Core principles and non-negotiables |
+| [Deep Project Map](deep-project-map.md) | Consolidated architecture and data flow |
+| [Mission & Principles](mission-and-principles.md) | Core principles and non-negotiables |
 
 ## Quick architecture summary
 

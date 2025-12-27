@@ -6,16 +6,16 @@ Internal planning documents and research notes.
 
 | Document | Purpose |
 |----------|---------|
-| [Next Session](next-session.md) | What to work on next |
-| [Current State](current-state.md) | Where we are now |
-| [Roadmap](roadmap.md) | Production readiness checklist |
+| [Next Session Brief](next-session-brief.md) | What to work on next |
+| [Current State & Goals](current-state-and-goals.md) | Where we are now |
+| [Production Roadmap](production-roadmap.md) | Production readiness checklist |
 
 ## Research
 
 | Document | Topic |
 |----------|-------|
-| [AI Enhancements](ai-enhancements.md) | Future AI/ML integration ideas |
-| [Detailing Research](detailing.md) | Bar arrangement algorithms |
+| [AI Enhancements Research](research-ai-enhancements.md) | Future AI/ML integration ideas |
+| [Detailing Research](research-detailing.md) | Bar arrangement algorithms |
 
 ## Active priorities
 

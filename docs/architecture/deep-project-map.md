@@ -196,9 +196,9 @@ The spec mapping is explicit in `docs/specs/v0.7_DATA_MAPPING.md`:
 There are three “surfaces”:
 - Core modules called from macros.
 - Worksheet UDFs (typically via `M09_UDFs.bas`).
-- Add-in packaging (.xlam) described in `docs/EXCEL_ADDIN_GUIDE.md`.
+- Add-in packaging (.xlam) described in `docs/contributing/excel-addin-guide.md`.
 
-See `docs/VBA_GUIDE.md` for the current entry points list.
+See `docs/contributing/vba-guide.md` for the current entry points list.
 
 ---
 
@@ -235,9 +235,9 @@ When changing any of the above, treat it as a parity change and add/extend Pytho
 
 ### 9.3 Docs updates that accompany v0.8
 
-- `docs/API_REFERENCE.md` — new serviceability functions and units.
-- `docs/KNOWN_PITFALLS.md` — unit traps and typical boundary cases.
-- `docs/TASKS.md` / `docs/NEXT_SESSION_BRIEF.md` — update status and acceptance criteria.
+- `docs/reference/api.md` — new serviceability functions and units.
+- `docs/reference/known-pitfalls.md` — unit traps and typical boundary cases.
+- `docs/TASKS.md` / `docs/planning/next-session-brief.md` — update status and acceptance criteria.
 
 ---
 
@@ -253,8 +253,8 @@ When changing any of the above, treat it as a parity change and add/extend Pytho
 ## 11) Pointers (start here)
 
 - Docs index: `docs/README.md`
-- Project scope/architecture: `docs/PROJECT_OVERVIEW.md`
-- API contract: `docs/API_REFERENCE.md`
-- Pitfalls/unit rules: `docs/KNOWN_PITFALLS.md`
+- Project scope/architecture: `docs/architecture/project-overview.md`
+- API contract: `docs/reference/api.md`
+- Pitfalls/unit rules: `docs/reference/known-pitfalls.md`
 - v0.7 data mapping: `docs/specs/v0.7_DATA_MAPPING.md`
-- Next session plan: `docs/NEXT_SESSION_BRIEF.md`
+- Next session plan: `docs/planning/next-session-brief.md`

@@ -45,12 +45,12 @@ Use these as pass/fail signals for roadmap decisions:
 ## 3) Source of truth references
 
 Primary references for deeper detail:
-- Project overview: `docs/PROJECT_OVERVIEW.md`
-- Production roadmap: `docs/PRODUCTION_ROADMAP.md`
+- Project overview: `docs/architecture/project-overview.md`
+- Production roadmap: `docs/planning/production-roadmap.md`
 - Task board: `docs/TASKS.md`
 - Job schema (batch runner): `docs/specs/v0.9_JOB_SCHEMA.md`
-- Testing strategy: `docs/TESTING_STRATEGY.md`
-- Public API reference: `docs/API_REFERENCE.md`
+- Testing strategy: `docs/contributing/testing-strategy.md`
+- Public API reference: `docs/reference/api.md`
 - Docs index: `docs/README.md`
 
 ## 4) Current feature inventory (from README, normalized)
@@ -154,11 +154,11 @@ CSV integration (Python and VBA paths):
 - Input columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu,
     Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive).
 - Outputs: optional DXF folder + schedule CSV.
-Reference: `docs/GETTING_STARTED_PYTHON.md`
+Reference: `docs/getting-started/python-quickstart.md`
 
 ETABS import (Excel/VBA path):
 - CSV import with header normalization and sign preservation.
-Reference: `docs/PROJECT_OVERVIEW.md` and `docs/specs/v0.7_DATA_MAPPING.md`
+Reference: `docs/architecture/project-overview.md` and `docs/specs/v0.7_DATA_MAPPING.md`
 
 ## 9) Outputs and deliverables
 
