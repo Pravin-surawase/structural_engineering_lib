@@ -364,6 +364,44 @@ def test_design_with_crack_width_params(sample_csv_file, tmp_path):
     assert svc["crack_width_ok"] is not None
 
 
+def test_design_crack_width_params_not_found(sample_csv_file, tmp_path):
+    """Error when crack width params file does not exist."""
+    output_file = tmp_path / "results.json"
+
+    rc = cli_main.main(
+        [
+            "design",
+            str(sample_csv_file),
+            "-o",
+            str(output_file),
+            "--crack-width-params",
+            str(tmp_path / "nonexistent.json"),
+        ]
+    )
+
+    assert rc == 1
+
+
+def test_design_crack_width_params_invalid(sample_csv_file, tmp_path):
+    """Error when crack width params is not a JSON object."""
+    output_file = tmp_path / "results.json"
+    params_file = tmp_path / "invalid.json"
+    params_file.write_text('["not", "an", "object"]')
+
+    rc = cli_main.main(
+        [
+            "design",
+            str(sample_csv_file),
+            "-o",
+            str(output_file),
+            "--crack-width-params",
+            str(params_file),
+        ]
+    )
+
+    assert rc == 1
+
+
 def test_design_from_json(sample_json_beams_file, tmp_path):
     """Test design command with JSON input."""
     output_file = tmp_path / "results.json"
