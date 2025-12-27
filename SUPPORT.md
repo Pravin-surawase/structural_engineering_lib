@@ -3,9 +3,9 @@
 ## Documentation
 
 Start here:
-- `docs/BEGINNERS_GUIDE.md`
-- `docs/GETTING_STARTED_PYTHON.md`
-- `docs/EXCEL_TUTORIAL.md`
+- `docs/getting-started/beginners-guide.md`
+- `docs/getting-started/python-quickstart.md`
+- `docs/getting-started/excel-tutorial.md`
 
 ## Getting Help
 

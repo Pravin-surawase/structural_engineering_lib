@@ -18,8 +18,8 @@ For VS Code AI-agent work, start with:
 
 ## For Most Users (recommended reading order)
 
-1) **Quick start (Python):** [GETTING_STARTED_PYTHON.md](GETTING_STARTED_PYTHON.md)
-2) **Excel usage tutorial:** [EXCEL_TUTORIAL.md](EXCEL_TUTORIAL.md)
+1) **Quick start (Python):** [getting-started/python-quickstart.md](getting-started/python-quickstart.md)
+2) **Excel usage tutorial:** [getting-started/excel-tutorial.md](getting-started/excel-tutorial.md)
 3) **Full API surface:** [reference/api.md](reference/api.md)
 4) **IS 456 formula cheat sheet:** [reference/is456-formulas.md](reference/is456-formulas.md)
 5) **Problems & fixes:** [reference/troubleshooting.md](reference/troubleshooting.md)
@@ -28,7 +28,7 @@ For VS Code AI-agent work, start with:
 
 ## For Beginners (more explanation, slower pace)
 
-- [BEGINNERS_GUIDE.md](BEGINNERS_GUIDE.md) (covers both Python + Excel/VBA)
+- [getting-started/beginners-guide.md](getting-started/beginners-guide.md) (covers both Python + Excel/VBA)
 
 ---
 
