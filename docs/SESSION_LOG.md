@@ -4,6 +4,46 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-27 — v0.10.0 Release + Code Quality
+
+### PRs Merged
+
+| PR | Title | Summary |
+|----|-------|---------|
+| #62 | Level B Serviceability + CLI/AI Discoverability | Curvature-based deflection, llms.txt, CLI help |
+| #63 | PM Planning Update | Task board reorganization for v0.9.7 |
+| #64 | Release v0.10.0 | Version bumps, CHANGELOG, tagging |
+| #65 | fix: README serviceability consistency | Level A+B wording fix |
+| #66 | chore: code quality improvements | Docstrings, type hints, test_shear.py |
+
+### Code Quality Improvements (PR #66)
+
+1. **Docstrings added (12 functions):**
+   - `serviceability.py`: `_normalize_support_condition`, `_normalize_exposure_class`, `_as_dict`
+   - `compliance.py`: `_utilization_safe`, `_compute_shear_utilization`, `_compute_deflection_utilization`, `_compute_crack_utilization`, `_safe_deflection_check`, `_safe_crack_width_check`, `_governing_key`, `_jsonable`
+
+2. **Type hints added (4 wrappers):**
+   - `api.py`: `check_beam_ductility`, `check_deflection_span_depth`, `check_crack_width`, `check_compliance_report`
+
+3. **New dedicated test file:**
+   - `tests/test_shear.py`: 22 unit tests for `calculate_tv` and `design_shear`
+
+### Health Scan Results
+
+| Metric | Value |
+|--------|-------|
+| Tests passed | 1753 |
+| Tests skipped | 95 |
+| Performance | 0.02ms per full beam check |
+| Anti-patterns | 0 |
+| Missing docstrings | 1 (nested closure, acceptable) |
+
+### Releases
+
+- **v0.10.0** published to PyPI: `pip install structural-lib-is456==0.10.0`
+
+---
+
 ## 2025-12-27 — v0.9.5 Release + Docs Restructure
 
 ### Decisions
