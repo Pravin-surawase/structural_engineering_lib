@@ -63,11 +63,17 @@ B2,Story1,300,450,3000,40,25,500,100,80,628.3,0,8,175,OK
 | `fy` | N/mm² | Steel grade |
 | `Mu` | kN·m | Factored moment |
 | `Vu` | kN | Factored shear |
-| `Ast_req` | mm² | Required tension steel (can be 0 for auto-calc) |
-| `Asc_req` | mm² | Required compression steel |
+| `d` | mm | Effective depth (optional; defaults to `D - Cover` if omitted) |
+| `Ast_req` | mm² | Required tension steel (used for detailing outputs) |
+| `Asc_req` | mm² | Required compression steel (optional; defaults to 0) |
 | `Stirrup_Dia` | mm | Stirrup diameter |
 | `Stirrup_Spacing` | mm | Stirrup spacing |
 | `Status` | — | Optional status field |
+
+Notes:
+- `Ast_req` / `Asc_req` are used to generate detailing and BBS outputs. If you want
+  detailing to reflect computed design results, provide those values explicitly.
+- If `d` is not provided, it is computed as `D - Cover`.
 
 **Examples:**
 
@@ -101,7 +107,7 @@ python -m structural_lib design beams.json -o results.json
         "status": "OK",
         "xu_d": 0.23,
         "mu_lim": 185.5,
-        "section_type": "under_reinforced"
+        "section_type": 1
       },
       "shear": {
         "tau_v": 0.74,
@@ -112,7 +118,7 @@ python -m structural_lib design beams.json -o results.json
       "detailing": {
         "bottom_bars": [{"count": 3, "diameter": 16, "callout": "3-16φ"}],
         "top_bars": [{"count": 2, "diameter": 12, "callout": "2-12φ"}],
-        "stirrups": [{"diameter": 8, "spacing": 150, "callout": "8φ@150"}],
+        "stirrups": [{"diameter": 8, "spacing": 150, "callout": "2L-8φ@150"}],
         "ld_tension": 752,
         "lap_length": 564
       },
@@ -121,6 +127,8 @@ python -m structural_lib design beams.json -o results.json
   ]
 }
 ```
+
+`section_type` mapping: 1 = under-reinforced, 2 = balanced, 3 = over-reinforced.
 
 ---
 
@@ -158,7 +166,7 @@ python -m structural_lib bbs results.json
 | `member_id` | Beam identifier |
 | `location` | Position in member (top, bottom, stirrup) |
 | `zone` | Span zone (start, mid, end) |
-| `shape_code` | BS 8666 shape code |
+| `shape_code` | IS 2502 / SP 34 shape code |
 | `diameter_mm` | Bar diameter |
 | `no_of_bars` | Number of bars |
 | `cut_length_mm` | Cutting length per bar |

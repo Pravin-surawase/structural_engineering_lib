@@ -52,8 +52,8 @@ Each example includes:
 from structural_lib import flexure
 
 result = flexure.design_singly_reinforced(
-    b_mm=230, d_mm=450, d_total_mm=500,
-    mu_knm=100, fck_nmm2=20, fy_nmm2=415
+    b=230, d=450, d_total=500,
+    mu_knm=100, fck=20, fy=415
 )
 print(f"Mu,lim = {result.mu_lim:.2f} kN·m")
 print(f"Ast,req = {result.ast_required:.1f} mm²")
@@ -101,8 +101,8 @@ Since Mu (100) < Mu,lim (128.51), section is under-reinforced.
 from structural_lib import flexure
 
 result = flexure.design_doubly_reinforced(
-    b_mm=300, d_mm=450, d_dash_mm=50, d_total_mm=500,
-    mu_knm=250, fck_nmm2=25, fy_nmm2=500
+    b=300, d=450, d_dash=50, d_total=500,
+    mu_knm=250, fck=25, fy=500
 )
 print(f"Ast,req = {result.ast_required:.1f} mm²")
 print(f"Asc,req = {result.asc_required:.1f} mm²")
@@ -133,6 +133,21 @@ print(f"Asc,req = {result.asc_required:.1f} mm²")
 | Ast,req | 956.6 | ±10 mm² |
 | xu | 46.24 | ±1 mm |
 | NA Location | In flange | — |
+
+**Verification Command:**
+```python
+from structural_lib import flexure
+
+Df = 150
+result = flexure.design_flanged_beam(
+    bw=300, bf=1000, d=500, Df=Df, d_total=550,
+    mu_knm=200, fck=25, fy=500
+)
+print(f"Mu,lim = {result.mu_lim:.2f} kN·m")
+print(f"Ast,req = {result.ast_required:.1f} mm²")
+print(f"xu = {result.xu:.2f} mm")
+print(f"NA in flange: {result.xu <= Df}")
+```
 
 ---
 
@@ -380,3 +395,259 @@ def test_verification_new_case_XX():
 ```bash
 python -m pytest tests/test_verification_pack.py::test_verification_new_case_XX -v
 ```
+---
+
+## Appendix A: Detailed Worked Examples with Full IS 456 Derivations
+
+These examples show complete hand calculations matching IS 456:2000 methodology, allowing engineers to verify the library's accuracy step-by-step.
+
+### A.1 Singly Reinforced Beam — Complete Derivation
+
+**Problem:** Design a simply supported rectangular beam for a residential building.
+
+**Given:**
+- Beam size: 230 mm × 450 mm (b × D)
+- Clear cover: 40 mm, Stirrup: 8 mm diameter
+- Effective depth: d = 450 - 40 - 8 = 402 mm (use 400 mm for calculation)
+- Concrete: M20 (fck = 20 N/mm²)
+- Steel: Fe415 (fy = 415 N/mm²)
+- Factored moment: Mu = 60 kN·m
+- Factored shear: Vu = 80 kN
+
+**Step 1: Check Limiting Moment (Mu,lim)**
+
+From IS 456:2000, Annex G, Table E:
+- For Fe415: xu,max/d = 0.48
+
+```
+xu,max = 0.48 × 400 = 192 mm
+```
+
+Limiting moment of resistance (IS 456, Annex G):
+```
+Mu,lim = 0.36 × fck × b × xu,max × (d - 0.42 × xu,max)
+       = 0.36 × 20 × 230 × 192 × (400 - 0.42 × 192)
+       = 0.36 × 20 × 230 × 192 × (400 - 80.64)
+       = 0.36 × 20 × 230 × 192 × 319.36
+       = 101,540,044.8 N·mm
+       = 101.54 kN·m
+```
+
+**Check:** Mu = 60 kN·m < Mu,lim = 101.54 kN·m → **Singly reinforced section** ✓
+
+**Step 2: Calculate Neutral Axis Depth (xu)**
+
+From moment equilibrium:
+```
+Mu = 0.36 × fck × b × xu × (d - 0.42 × xu)
+```
+
+Rearranging into quadratic form:
+```
+0.36 × fck × b × 0.42 × xu² - 0.36 × fck × b × d × xu + Mu = 0
+```
+
+Substituting values:
+```
+a = 0.36 × 20 × 230 × 0.42 = 695.52
+b = -0.36 × 20 × 230 × 400 = -662,400
+c = 60 × 10⁶ = 60,000,000
+
+xu = [-b - √(b² - 4ac)] / 2a
+   = [662,400 - √(438,773,760,000 - 166,809,600,000)] / 1391.04
+   = [662,400 - √271,964,160,000] / 1391.04
+   = [662,400 - 521,501.5] / 1391.04
+   = 101.3 mm
+```
+
+**Step 3: Calculate Required Steel Area (Ast)**
+
+From force equilibrium (compression = tension):
+```
+0.36 × fck × b × xu = 0.87 × fy × Ast
+
+Ast = (0.36 × fck × b × xu) / (0.87 × fy)
+    = (0.36 × 20 × 230 × 101.3) / (0.87 × 415)
+    = 167,648.4 / 361.05
+    = 464.3 mm²
+```
+
+**Step 4: Library Verification**
+
+```python
+from structural_lib import api
+
+result = api.design_beam_is456(
+    units="IS456",
+    case_id="Example-A1",
+    b_mm=230, D_mm=450, d_mm=400,
+    fck_nmm2=20, fy_nmm2=415,
+    mu_knm=60, vu_kn=80,
+)
+
+print(f"Mu,lim = {result.flexure.mu_lim:.2f} kN·m")  # 101.54
+print(f"xu = {result.flexure.xu:.1f} mm")            # 101.2
+print(f"Ast = {result.flexure.ast_required:.1f} mm²") # 464.3
+```
+
+**Comparison:**
+| Parameter | Hand Calc | Library | Δ |
+|-----------|-----------|---------|---|
+| Mu,lim | 101.54 kN·m | 101.54 kN·m | 0% |
+| xu | 101.3 mm | 101.2 mm | 0.1% |
+| Ast | 464.3 mm² | 464.3 mm² | 0% |
+
+**Result: ✅ PASS**
+
+---
+
+### A.2 Doubly Reinforced Beam — Complete Derivation
+
+**Problem:** Design a beam where applied moment exceeds limiting moment.
+
+**Given:**
+- Beam size: 300 mm × 500 mm (b × D)
+- Effective depth: d = 450 mm
+- Compression steel depth: d' = 50 mm
+- Concrete: M25 (fck = 25 N/mm²)
+- Steel: Fe500 (fy = 500 N/mm²)
+- Factored moment: Mu = 280 kN·m
+
+**Step 1: Check Limiting Moment**
+
+From IS 456, Table E:
+- For Fe500: xu,max/d = 0.46
+
+```
+xu,max = 0.46 × 450 = 207 mm
+
+Mu,lim = 0.36 × 25 × 300 × 207 × (450 - 0.42 × 207)
+       = 0.36 × 25 × 300 × 207 × (450 - 86.94)
+       = 0.36 × 25 × 300 × 207 × 363.06
+       = 202,914,234 N·mm
+       = 202.91 kN·m
+```
+
+**Check:** Mu = 280 kN·m > Mu,lim = 202.91 kN·m → **Doubly reinforced section required** ✓
+
+**Step 2: Calculate Excess Moment (Mu2)**
+
+```
+Mu2 = Mu - Mu,lim = 280 - 202.91 = 77.09 kN·m
+```
+
+**Step 3: Calculate Compression Steel Stress (fsc)**
+
+Strain at compression steel level (from strain diagram):
+```
+εsc = 0.0035 × (1 - d'/xu,max)
+    = 0.0035 × (1 - 50/207)
+    = 0.0035 × 0.7585
+    = 0.002655
+```
+
+**Important:** For HYSD bars, stress is NOT simply Es × ε. We must use SP:16 Table A (design stress-strain curve).
+
+SP:16 Table A for Fe500:
+| Strain | Stress (N/mm²) |
+|--------|----------------|
+| 0.00174 | 347.8 |
+| 0.00195 | 369.6 |
+| 0.00226 | 391.3 |
+| 0.00277 | 413.0 |
+| 0.00380 | 434.8 |
+
+Interpolating for ε = 0.002655 (between 0.00226 and 0.00277):
+```
+fsc = 391.3 + (413.0 - 391.3) × (0.002655 - 0.00226) / (0.00277 - 0.00226)
+    = 391.3 + 21.7 × 0.000395 / 0.00051
+    = 391.3 + 16.8
+    = 408.1 N/mm² (library uses 407.89)
+```
+
+**Note:** The simplified formula fsc = min(Es × ε, 0.87 × fy) = 435 N/mm² overestimates stress. SP:16 interpolation is more accurate.
+
+**Step 4: Calculate Compression Steel Area (Asc)**
+
+Concrete stress at compression steel level:
+```
+fcc = 0.446 × fck = 0.446 × 25 = 11.15 N/mm²
+```
+
+From moment equilibrium for Mu2:
+```
+Mu2 = Asc × (fsc - fcc) × (d - d')
+
+Asc = Mu2 / [(fsc - fcc) × (d - d')]
+    = 77.09 × 10⁶ / [(407.89 - 11.15) × (450 - 50)]
+    = 77,090,000 / [396.74 × 400]
+    = 77,090,000 / 158,696
+    = 485.8 mm²
+```
+
+**Step 5: Calculate Tension Steel Area (Ast)**
+
+Ast consists of two parts:
+- Ast1: For resisting Mu,lim
+- Ast2: For balancing Asc
+
+```
+Ast1 = (0.36 × fck × b × xu,max) / (0.87 × fy)
+     = (0.36 × 25 × 300 × 207) / (0.87 × 500)
+     = 558,900 / 435
+     = 1284.8 mm²
+
+Ast2 = Asc × (fsc - fcc) / (0.87 × fy)
+     = 485.8 × 396.74 / 435
+     = 443.1 mm²
+
+Ast = Ast1 + Ast2 = 1284.8 + 443.1 = 1727.9 mm²
+```
+
+**Step 6: Library Verification**
+
+```python
+from structural_lib import api
+
+result = api.design_beam_is456(
+    units="IS456",
+    b_mm=300, D_mm=500, d_mm=450, d_dash_mm=50,
+    fck_nmm2=25, fy_nmm2=500,
+    mu_knm=280, vu_kn=120,
+)
+
+print(f"Mu,lim = {result.flexure.mu_lim:.2f} kN·m")  # 202.91
+print(f"Ast = {result.flexure.ast_required:.1f} mm²") # 1722.8
+print(f"Asc = {result.flexure.asc_required:.1f} mm²") # 485.5
+```
+
+**Comparison:**
+| Parameter | Hand Calc | Library | Δ |
+|-----------|-----------|---------|---|
+| Mu,lim | 202.91 kN·m | 202.91 kN·m | 0% |
+| Asc | 485.8 mm² | 485.5 mm² | 0.06% |
+| Ast | 1727.9 mm² | 1722.8 mm² | 0.3% |
+
+**Result: ✅ PASS**
+
+**Key Insight:** The library uses SP:16 stress-strain interpolation for HYSD bars, which is more accurate than the simplified elastic-perfectly-plastic model used in many textbooks.
+
+---
+
+### A.3 Why Library Results Differ from Simplified Textbook Formulas
+
+Some textbooks use simplified formulas that can differ by 5-10% from rigorous IS 456 calculations. The library implements the more accurate approach:
+
+| Aspect | Simplified (Textbook) | Library (IS 456 Rigorous) |
+|--------|----------------------|---------------------------|
+| **Compression steel stress (fsc)** | fsc = min(Es × ε, 0.87 × fy) | SP:16 Table A interpolation |
+| **Concrete at comp. steel** | Often ignored | fcc = 0.446 × fck deducted |
+| **xu,max/d ratios** | Approximate values | Exact IS 456 Table E values |
+| **Shear τc** | Linear interpolation | Table 19 with proper pt clamping |
+
+**Why this matters:**
+- Simplified formulas can underestimate compression steel by ~10%
+- Overestimating fsc leads to unconservative designs
+- SP:16 curves account for actual HYSD bar behavior
+
+---
