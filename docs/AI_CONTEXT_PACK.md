@@ -19,18 +19,18 @@ Use this file as the single entrypoint for AI agents working in VS Code.
 - **v0.9.4 adds:** Unified CLI (`python -m structural_lib`), cutting-stock optimizer, VBA BBS/Compliance parity.
 
 Start here for architecture and boundaries:
-- [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
+- [architecture/project-overview.md](architecture/project-overview.md)
 
 ---
 
-## 2) “Load these docs first” (minimal context)
+## 2) "Load these docs first" (minimal context)
 Use these as the default context set for most tasks:
-- [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (layering + intent)
+- [architecture/project-overview.md](architecture/project-overview.md) (layering + intent)
 - [reference/api.md](reference/api.md) (public API contracts)
 - [reference/known-pitfalls.md](reference/known-pitfalls.md) (units/table rules/edge cases)
 - [reference/troubleshooting.md](reference/troubleshooting.md) (VBA/Mac quirks, fixes)
 - [TASKS.md](TASKS.md) (canonical backlog + acceptance mindset)
-- [NEXT_SESSION_BRIEF.md](NEXT_SESSION_BRIEF.md) (where to resume quickly)
+- [planning/next-session-brief.md](planning/next-session-brief.md) (where to resume quickly)
 
 ---
 
@@ -55,8 +55,8 @@ Import order matters; see:
 ---
 
 ## 4) Planning & research (what to read)
-- Active v0.8+ research log: [RESEARCH_AI_ENHANCEMENTS.md](RESEARCH_AI_ENHANCEMENTS.md)
-- Production checklist summary: [PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md)
+- Active v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
+- Production checklist summary: [planning/production-roadmap.md](planning/production-roadmap.md)
 - Release ledger (append-only): [RELEASES.md](RELEASES.md)
 
 Architecture decisions (short, auditable decision notes):

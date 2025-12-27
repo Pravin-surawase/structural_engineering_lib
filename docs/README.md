@@ -34,8 +34,8 @@ For VS Code AI-agent work, start with:
 
 ## For Contributors / Maintainers
 
-- Architecture & layering: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
-- Consolidated architecture/data flow: [DEEP_PROJECT_MAP.md](DEEP_PROJECT_MAP.md)
+- Architecture & layering: [architecture/project-overview.md](architecture/project-overview.md)
+- Consolidated architecture/data flow: [architecture/deep-project-map.md](architecture/deep-project-map.md)
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
@@ -48,11 +48,11 @@ For VS Code AI-agent work, start with:
 
 ## Planning / Research (roadmaps, “what’s next”)
 
-- What to do next this session: [NEXT_SESSION_BRIEF.md](NEXT_SESSION_BRIEF.md)
+- What to do next this session: [planning/next-session-brief.md](planning/next-session-brief.md)
 - v0.8 implementation playbook: [v0.8_EXECUTION_CHECKLIST.md](v0.8_EXECUTION_CHECKLIST.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
-- v0.8+ research log: [RESEARCH_AI_ENHANCEMENTS.md](RESEARCH_AI_ENHANCEMENTS.md)
-- High-level production checklist: [PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md)
+- v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
+- High-level production checklist: [planning/production-roadmap.md](planning/production-roadmap.md)
 
 ---
 
