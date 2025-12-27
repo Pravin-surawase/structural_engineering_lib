@@ -174,22 +174,22 @@ def cmd_design(args: argparse.Namespace) -> int:
                 summary_path = Path(args.summary)
 
             rows = []
-            for beam in results:
+            for res in results:
                 rows.append(
                     {
-                        "beam_id": beam.beam_id,
-                        "story": beam.story,
-                        "is_ok": beam.is_ok,
-                        "governing_utilization": beam.governing_utilization,
-                        "governing_check": beam.governing_check,
-                        "util_flexure": beam.flexure.utilization,
-                        "util_shear": beam.shear.utilization,
-                        "util_deflection": beam.serviceability.deflection_utilization,
-                        "util_crack_width": beam.serviceability.crack_width_utilization,
-                        "mu_knm": beam.loads.mu_knm,
-                        "vu_kn": beam.loads.vu_kn,
-                        "ast_required_mm2": beam.flexure.ast_required_mm2,
-                        "sv_required_mm": beam.shear.sv_required_mm,
+                        "beam_id": res.beam_id,
+                        "story": res.story,
+                        "is_ok": res.is_ok,
+                        "governing_utilization": res.governing_utilization,
+                        "governing_check": res.governing_check,
+                        "util_flexure": res.flexure.utilization,
+                        "util_shear": res.shear.utilization,
+                        "util_deflection": res.serviceability.deflection_utilization,
+                        "util_crack_width": res.serviceability.crack_width_utilization,
+                        "mu_knm": res.loads.mu_knm,
+                        "vu_kn": res.loads.vu_kn,
+                        "ast_required_mm2": res.flexure.ast_required_mm2,
+                        "sv_required_mm": res.shear.sv_required_mm,
                     }
                 )
 
@@ -524,12 +524,30 @@ def cmd_dxf(args: argparse.Namespace) -> int:
 
         print("Generating DXF drawings...", file=sys.stderr)
 
+        title_block = {"title": args.title} if args.title else None
+
         if len(detailing_list) == 1:
             # Single beam - use standard function
-            dxf_export.generate_beam_dxf(detailing_list[0], str(output_path))
+            dxf_export.generate_beam_dxf(
+                detailing_list[0],
+                str(output_path),
+                include_title_block=args.title_block or args.title is not None,
+                title_block=title_block,
+                sheet_margin_mm=args.sheet_margin,
+                title_block_width_mm=args.title_block_width,
+                title_block_height_mm=args.title_block_height,
+            )
         else:
             # Multiple beams - use multi-beam layout
-            dxf_export.generate_multi_beam_dxf(detailing_list, str(output_path))
+            dxf_export.generate_multi_beam_dxf(
+                detailing_list,
+                str(output_path),
+                include_title_block=args.title_block or args.title is not None,
+                title_block=title_block,
+                sheet_margin_mm=args.sheet_margin,
+                title_block_width_mm=args.title_block_width,
+                title_block_height_mm=args.title_block_height,
+            )
 
         print(f"DXF drawings written to {output_path}", file=sys.stderr)
         print(f"DXF complete: {len(detailing_list)} beam(s) drawn", file=sys.stderr)
@@ -676,6 +694,33 @@ def _build_parser() -> argparse.ArgumentParser:
     dxf_parser.add_argument("input", help="Input JSON file with design results")
     dxf_parser.add_argument(
         "-o", "--output", required=True, help="Output DXF file path"
+    )
+    dxf_parser.add_argument(
+        "--title-block",
+        action="store_true",
+        help="Draw a deliverable border and title block.",
+    )
+    dxf_parser.add_argument(
+        "--title",
+        help="Optional title text for the title block.",
+    )
+    dxf_parser.add_argument(
+        "--sheet-margin",
+        type=float,
+        default=200.0,
+        help="Sheet margin in mm (default: 200).",
+    )
+    dxf_parser.add_argument(
+        "--title-block-width",
+        type=float,
+        default=900.0,
+        help="Title block width in mm (default: 900).",
+    )
+    dxf_parser.add_argument(
+        "--title-block-height",
+        type=float,
+        default=250.0,
+        help="Title block height in mm (default: 250).",
     )
     dxf_parser.set_defaults(func=cmd_dxf)
 
