@@ -23,6 +23,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | #40 | docs: add migration scaffold folders (Phase 1) | 7 new folders with README indexes |
 | #41 | docs: migrate verification docs (Phase 2) | Moved VERIFICATION_*.md with redirect stubs |
 | #42 | docs: migrate reference docs (Phase 3) | Moved API_REFERENCE, KNOWN_PITFALLS, IS456_QUICK_REFERENCE, TROUBLESHOOTING |
+| #43 | docs: migrate getting-started docs (Phase 4) | Moved BEGINNERS_GUIDE, GETTING_STARTED_PYTHON, EXCEL_QUICKSTART, EXCEL_TUTORIAL |
+| #44 | docs: migrate contributing docs (Phase 5) | Moved DEVELOPMENT_GUIDE, TESTING_STRATEGY, VBA_GUIDE, VBA_TESTING_GUIDE, EXCEL_ADDIN_GUIDE |
+| #45 | docs: migrate architecture + planning docs (Phase 6) | Moved PROJECT_OVERVIEW, DEEP_PROJECT_MAP, MISSION_AND_PRINCIPLES, CURRENT_STATE_AND_GOALS, NEXT_SESSION_BRIEF, PRODUCTION_ROADMAP, RESEARCH_AI_ENHANCEMENTS, RESEARCH_DETAILING |
 
 ### Releases
 
@@ -36,16 +39,17 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | 1 | Scaffold folders | ✅ PR #40 |
 | 2 | verification/ | ✅ PR #41 |
 | 3 | reference/ | ✅ PR #42 |
-| 4 | getting-started/ | Pending |
-| 5 | contributing/ | Pending |
-| 6 | architecture/ + planning/ | Pending |
+| 4 | getting-started/ | ✅ PR #43 |
+| 5 | contributing/ | ✅ PR #44 |
+| 6 | architecture/ + planning/ | ✅ PR #45 |
 
 ### Next Actions
 
-- [x] Phase 3: Migrate reference docs (API_REFERENCE, KNOWN_PITFALLS, IS456_QUICK_REFERENCE, TROUBLESHOOTING)
-- [ ] Phase 4: Migrate getting-started docs
-- [ ] Phase 5-6: Complete remaining migrations
+- [x] Phase 3: Migrate reference docs
+- [x] Phase 4: Migrate getting-started docs
+- [x] Phase 5: Migrate contributing docs
+- [x] Phase 6: Migrate architecture + planning docs
 - [ ] Create `cookbook/cli-reference.md` (new content)
-- [ ] Update `docs/README.md` index with new folder links
+- [ ] Add SP:16 benchmark examples to `verification/`
 
 ---
