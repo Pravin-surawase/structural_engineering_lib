@@ -279,6 +279,91 @@ def test_design_from_csv(sample_csv_file, tmp_path):
     assert "detailing" in data["beams"][0]
 
 
+def test_design_with_deflection(sample_csv_file, tmp_path):
+    """Deflection flag should populate serviceability fields."""
+    output_file = tmp_path / "results.json"
+
+    rc = cli_main.main(
+        ["design", str(sample_csv_file), "-o", str(output_file), "--deflection"]
+    )
+
+    assert rc == 0
+    assert output_file.exists()
+
+    with output_file.open("r") as f:
+        data = json.load(f)
+
+    svc = data["beams"][0]["serviceability"]
+    assert svc["deflection_status"] in {"ok", "fail"}
+    assert svc["deflection_ok"] is not None
+
+
+def test_design_summary_csv(sample_csv_file, tmp_path):
+    """Summary CSV should be written when requested."""
+    output_file = tmp_path / "results.json"
+    summary_file = tmp_path / "summary.csv"
+
+    rc = cli_main.main(
+        [
+            "design",
+            str(sample_csv_file),
+            "-o",
+            str(output_file),
+            "--summary",
+            str(summary_file),
+        ]
+    )
+
+    assert rc == 0
+    assert summary_file.exists()
+
+    with summary_file.open("r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    assert len(rows) == 2
+    assert "beam_id" in rows[0]
+    assert "governing_utilization" in rows[0]
+
+
+def test_design_with_crack_width_params(sample_csv_file, tmp_path):
+    """Crack width params should populate serviceability fields."""
+    output_file = tmp_path / "results.json"
+    params_file = tmp_path / "crack_width.json"
+    params_file.write_text(
+        json.dumps(
+            {
+                "acr_mm": 120.0,
+                "cmin_mm": 25.0,
+                "h_mm": 500.0,
+                "x_mm": 200.0,
+                "epsilon_m": 0.001,
+            }
+        )
+    )
+
+    rc = cli_main.main(
+        [
+            "design",
+            str(sample_csv_file),
+            "-o",
+            str(output_file),
+            "--crack-width-params",
+            str(params_file),
+        ]
+    )
+
+    assert rc == 0
+    assert output_file.exists()
+
+    with output_file.open("r") as f:
+        data = json.load(f)
+
+    svc = data["beams"][0]["serviceability"]
+    assert svc["crack_width_status"] in {"ok", "fail"}
+    assert svc["crack_width_ok"] is not None
+
+
 def test_design_from_json(sample_json_beams_file, tmp_path):
     """Test design command with JSON input."""
     output_file = tmp_path / "results.json"

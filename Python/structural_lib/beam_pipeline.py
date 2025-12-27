@@ -160,9 +160,11 @@ class ShearOutput:
 class ServiceabilityOutput:
     """Serviceability check output (optional)."""
 
+    deflection_status: str = "not_run"
     deflection_ok: Optional[bool] = None
     deflection_remarks: str = ""
     deflection_utilization: Optional[float] = None
+    crack_width_status: str = "not_run"
     crack_width_ok: Optional[bool] = None
     crack_width_remarks: str = ""
     crack_width_utilization: Optional[float] = None
@@ -379,12 +381,18 @@ def design_single_beam(
     # Extract serviceability (if available)
     serviceability = ServiceabilityOutput()
     if case_result.deflection is not None:
+        serviceability.deflection_status = (
+            "ok" if case_result.deflection.is_ok else "fail"
+        )
         serviceability.deflection_ok = case_result.deflection.is_ok
         serviceability.deflection_remarks = case_result.deflection.remarks
         serviceability.deflection_utilization = case_result.utilizations.get(
             "deflection"
         )
     if case_result.crack_width is not None:
+        serviceability.crack_width_status = (
+            "ok" if case_result.crack_width.is_ok else "fail"
+        )
         serviceability.crack_width_ok = case_result.crack_width.is_ok
         serviceability.crack_width_remarks = case_result.crack_width.remarks
         serviceability.crack_width_utilization = case_result.utilizations.get(

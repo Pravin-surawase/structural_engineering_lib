@@ -35,17 +35,22 @@ python -m structural_lib job job.json -o ./output/
 Run IS 456 beam design calculations from CSV or JSON input.
 
 ```bash
-python -m structural_lib design <input> [-o <output>]
+python -m structural_lib design <input> [-o <output>] [--deflection] [--summary [path]] [--crack-width-params params.json]
 ```
 
 | Argument | Required | Description |
 |----------|----------|-------------|
 | `input` | Yes | Input CSV or JSON file with beam parameters |
 | `-o, --output` | No | Output JSON file (prints to stdout if omitted) |
+| `--deflection` | No | Run Level A deflection check (span/depth) |
+| `--support-condition` | No | Support condition for deflection check (default: `simply_supported`) |
+| `--summary [path]` | No | Write compact CSV summary (optional path) |
+| `--crack-width-params` | No | JSON file with crack width parameters (applies to all beams) |
 
 **Outputs:**
 - `results.json` (JSON) when `-o/--output` is provided.
 - JSON to stdout when `-o/--output` is omitted.
+- `design_summary.csv` when `--summary` is used.
 
 **Input CSV format:**
 
@@ -84,6 +89,16 @@ Notes:
 ```bash
 # Design from CSV, output to file
 python -m structural_lib design examples/sample_beam_design.csv -o results.json
+
+# Design with Level A deflection check
+python -m structural_lib design examples/sample_beam_design.csv -o results.json --deflection
+
+# Design with summary CSV (default name)
+python -m structural_lib design examples/sample_beam_design.csv -o results.json --summary
+
+# Design with crack width params (JSON)
+python -m structural_lib design examples/sample_beam_design.csv -o results.json \
+  --crack-width-params crack_width_params.json
 
 # Design from CSV, print to stdout
 python -m structural_lib design beams.csv
@@ -136,12 +151,14 @@ python -m structural_lib design beams.json -o results.json
         "remarks": ""
       },
       "serviceability": {
+        "deflection_status": "ok",
         "deflection_ok": true,
         "deflection_remarks": "",
         "deflection_utilization": 0.6,
-        "crack_width_ok": true,
+        "crack_width_status": "not_run",
+        "crack_width_ok": null,
         "crack_width_remarks": "",
-        "crack_width_utilization": 0.7
+        "crack_width_utilization": null
       },
       "detailing": {
         "bottom_bars": [{"count": 3, "diameter": 16, "callout": "3-16φ"}],
@@ -159,6 +176,12 @@ python -m structural_lib design beams.json -o results.json
   "summary": {"total_beams": 1, "passed": 1, "failed": 0}
 }
 ```
+
+Notes:
+- Serviceability checks run only when parameters are provided. Use `--deflection` to enable Level A deflection checks.
+- Crack width requires explicit inputs and is not computed by default in the CLI.
+- `--crack-width-params` expects a JSON object with keys like `acr_mm`, `cmin_mm`, `h_mm`, `x_mm`,
+  and either `epsilon_m` or `fs_service_nmm2`.
 
 `section_type` values: UNDER_REINFORCED, BALANCED, OVER_REINFORCED.
 

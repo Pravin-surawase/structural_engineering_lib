@@ -4,6 +4,25 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-27 — CLI Serviceability Flags + Colab Workflow
+
+### Changes
+- Added serviceability status fields in canonical output (`deflection_status`, `crack_width_status`).
+- CLI `design` now supports `--deflection`, `--support-condition`, and `--crack-width-params`.
+- CLI `design` can emit a compact summary CSV via `--summary`.
+- Synthetic pipeline example now runs with deflection enabled by default.
+- New Colab workflow guide with batch pipeline + optional serviceability checks.
+
+### Docs Updated
+- `docs/cookbook/cli-reference.md` (new flags + examples)
+- `docs/getting-started/colab-workflow.md` (step-by-step Colab flow)
+- `docs/getting-started/python-quickstart.md` (flags + examples)
+- `docs/getting-started/README.md` (Colab guide link)
+- `docs/getting-started/beginners-guide.md` (Colab link)
+
+### Tests
+- `python3 -m pytest tests/test_cli.py -q` (from `Python/`)
+
 ## 2025-12-27 — v0.10.0 Release + Code Quality
 
 ### PRs Merged

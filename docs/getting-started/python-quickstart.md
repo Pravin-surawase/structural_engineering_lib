@@ -108,6 +108,13 @@ The unified CLI supports design, schedules, and drawings:
 # Design beams from CSV
 python3 -m structural_lib design path/to/beams.csv -o results.json
 
+# Include Level A deflection check
+python3 -m structural_lib design path/to/beams.csv -o results.json --deflection
+
+# Include crack width check (explicit params JSON)
+python3 -m structural_lib design path/to/beams.csv -o results.json \
+  --crack-width-params crack_width_params.json
+
 # Generate bar bending schedule
 python3 -m structural_lib bbs results.json -o schedule.csv
 
@@ -149,6 +156,7 @@ PY
 
 ## 10) Further Reading
 - [beginners-guide.md](beginners-guide.md) - Comprehensive tutorial (Python + Excel)
+- [colab-workflow.md](colab-workflow.md) - Step-by-step Colab workflow (full pipeline + batch)
 - [excel-tutorial.md](excel-tutorial.md) - Step-by-step Excel guide
 - [../reference/api.md](../reference/api.md) - Full API documentation
 - [../reference/is456-formulas.md](../reference/is456-formulas.md) - IS 456 code reference

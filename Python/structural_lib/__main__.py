@@ -14,6 +14,7 @@ for beam design, bar bending schedules, DXF generation, and job processing.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sys
 from pathlib import Path
@@ -25,6 +26,25 @@ from . import detailing
 from . import dxf_export
 from . import excel_integration
 from . import job_runner
+
+
+def _fmt_cell(v: object) -> str:
+    if v is None:
+        return ""
+    if isinstance(v, bool):
+        return "TRUE" if v else "FALSE"
+    if isinstance(v, float):
+        return repr(v)
+    return str(v)
+
+
+def _write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({k: _fmt_cell(row.get(k)) for k in fieldnames})
 
 
 def cmd_design(args: argparse.Namespace) -> int:
@@ -57,6 +77,24 @@ def cmd_design(args: argparse.Namespace) -> int:
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
 
+        crack_width_params = None
+        if args.crack_width_params:
+            params_path = Path(args.crack_width_params)
+            if not params_path.exists():
+                print(
+                    f"Error: crack width params file not found: {params_path}",
+                    file=sys.stderr,
+                )
+                return 1
+            with params_path.open("r", encoding="utf-8") as f:
+                crack_width_params = json.load(f)
+            if not isinstance(crack_width_params, dict):
+                print(
+                    "Error: crack width params must be a JSON object.",
+                    file=sys.stderr,
+                )
+                return 1
+
         # Process each beam using canonical pipeline
         results = []
         for beam in beams:
@@ -64,6 +102,13 @@ def cmd_design(args: argparse.Namespace) -> int:
 
             # Calculate stirrup area (2-legged)
             asv_mm2 = 3.14159 * (beam.stirrup_dia / 2) ** 2 * 2
+            deflection_params = None
+            if args.deflection:
+                deflection_params = {
+                    "span_mm": beam.span,
+                    "d_mm": beam.d,
+                    "support_condition": args.support_condition,
+                }
 
             # Use canonical pipeline for design
             result = beam_pipeline.design_single_beam(
@@ -87,6 +132,8 @@ def cmd_design(args: argparse.Namespace) -> int:
                 stirrup_spacing_start_mm=beam.stirrup_spacing,
                 stirrup_spacing_mid_mm=beam.stirrup_spacing * 1.33,
                 stirrup_spacing_end_mm=beam.stirrup_spacing,
+                deflection_params=deflection_params,
+                crack_width_params=crack_width_params,
             )
 
             results.append(result)
@@ -116,6 +163,53 @@ def cmd_design(args: argparse.Namespace) -> int:
         else:
             # Print to stdout
             print(json.dumps(output.to_dict(), indent=2))
+
+        if args.summary is not None:
+            if args.summary == "":
+                if args.output:
+                    summary_path = Path(args.output).with_name("design_summary.csv")
+                else:
+                    summary_path = Path("design_summary.csv")
+            else:
+                summary_path = Path(args.summary)
+
+            rows = []
+            for beam in results:
+                rows.append(
+                    {
+                        "beam_id": beam.beam_id,
+                        "story": beam.story,
+                        "is_ok": beam.is_ok,
+                        "governing_utilization": beam.governing_utilization,
+                        "governing_check": beam.governing_check,
+                        "util_flexure": beam.flexure.utilization,
+                        "util_shear": beam.shear.utilization,
+                        "util_deflection": beam.serviceability.deflection_utilization,
+                        "util_crack_width": beam.serviceability.crack_width_utilization,
+                        "mu_knm": beam.loads.mu_knm,
+                        "vu_kn": beam.loads.vu_kn,
+                        "ast_required_mm2": beam.flexure.ast_required_mm2,
+                        "sv_required_mm": beam.shear.sv_required_mm,
+                    }
+                )
+
+            fieldnames = [
+                "beam_id",
+                "story",
+                "is_ok",
+                "governing_utilization",
+                "governing_check",
+                "util_flexure",
+                "util_shear",
+                "util_deflection",
+                "util_crack_width",
+                "mu_knm",
+                "vu_kn",
+                "ast_required_mm2",
+                "sv_required_mm",
+            ]
+            _write_csv(summary_path, rows, fieldnames)
+            print(f"Summary written to {summary_path}", file=sys.stderr)
 
         print(f"Design complete: {len(results)} beam(s) processed", file=sys.stderr)
         return 0
@@ -516,6 +610,29 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     design_parser.add_argument(
         "-o", "--output", help="Output JSON file (if omitted, prints to stdout)"
+    )
+    design_parser.add_argument(
+        "--summary",
+        nargs="?",
+        const="",
+        help=(
+            "Write a compact CSV summary. "
+            "If no path is supplied, writes design_summary.csv next to output."
+        ),
+    )
+    design_parser.add_argument(
+        "--deflection",
+        action="store_true",
+        help="Run Level A deflection check (span/depth).",
+    )
+    design_parser.add_argument(
+        "--support-condition",
+        default="simply_supported",
+        help="Support condition for deflection check (simply_supported, continuous, cantilever).",
+    )
+    design_parser.add_argument(
+        "--crack-width-params",
+        help="JSON file with crack width parameters (applies to all beams).",
     )
     design_parser.set_defaults(func=cmd_design)
 
