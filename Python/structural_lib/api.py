@@ -51,7 +51,7 @@ def get_library_version() -> str:
 
 def check_beam_ductility(
     b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float
-):
+) -> ductile.DuctileBeamResult:
     """
     Run IS 13920 beam ductility checks for a single section.
 
@@ -72,12 +72,12 @@ def check_beam_ductility(
 def check_deflection_span_depth(
     span_mm: float,
     d_mm: float,
-    support_condition="simply_supported",
-    base_allowable_ld=None,
-    mf_tension_steel=None,
-    mf_compression_steel=None,
-    mf_flanged=None,
-):
+    support_condition: str = "simply_supported",
+    base_allowable_ld: Optional[float] = None,
+    mf_tension_steel: Optional[float] = None,
+    mf_compression_steel: Optional[float] = None,
+    mf_flanged: Optional[float] = None,
+) -> serviceability.DeflectionResult:
     """Check deflection using span/depth ratio (Level A).
 
     Args:
@@ -105,16 +105,16 @@ def check_deflection_span_depth(
 
 
 def check_crack_width(
-    exposure_class="moderate",
-    limit_mm=None,
-    acr_mm=None,
-    cmin_mm=None,
-    h_mm=None,
-    x_mm=None,
-    epsilon_m=None,
-    fs_service_nmm2=None,
-    es_nmm2=200000.0,
-):
+    exposure_class: str = "moderate",
+    limit_mm: Optional[float] = None,
+    acr_mm: Optional[float] = None,
+    cmin_mm: Optional[float] = None,
+    h_mm: Optional[float] = None,
+    x_mm: Optional[float] = None,
+    epsilon_m: Optional[float] = None,
+    fs_service_nmm2: Optional[float] = None,
+    es_nmm2: float = 200000.0,
+) -> serviceability.CrackWidthResult:
     """Check crack width using an Annex-F-style estimate.
 
     Args:
@@ -146,18 +146,18 @@ def check_crack_width(
 
 
 def check_compliance_report(
-    cases,
-    b_mm,
-    D_mm,
-    d_mm,
-    fck_nmm2,
-    fy_nmm2,
-    d_dash_mm=50.0,
-    asv_mm2=100.0,
-    pt_percent=None,
-    deflection_defaults=None,
-    crack_width_defaults=None,
-):
+    cases: Sequence[Dict[str, Any]],
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: Optional[float] = None,
+    deflection_defaults: Optional[Dict[str, Any]] = None,
+    crack_width_defaults: Optional[Dict[str, Any]] = None,
+) -> ComplianceReport:
     """Run a multi-case IS 456 compliance report.
 
     Args:

@@ -63,6 +63,27 @@ DOC_VERSION_FILES = {
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
         (r"(Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
     ],
+    "docs/reference/api.md": [
+        (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
+    ],
+    "docs/getting-started/user-guide.md": [
+        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+    ],
+    "docs/planning/pre-release-checklist.md": [
+        (r"^(Version: )[0-9]+\.[0-9]+\.[0-9]+(.*)$", r"\g<1>{version}\g<2>"),
+    ],
+    "docs/reference/api-stability.md": [
+        (r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+", "structural-lib-is456=={version}"),
+    ],
+    "docs/verification/validation-pack.md": [
+        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+    ],
+    "docs/TASKS.md": [
+        (r"^-\s+\*\*Current Version\*\*:\s+v[0-9]+\.[0-9]+\.[0-9]+", "- **Current Version**: v{version}"),
+    ],
+    "docs/planning/next-session-brief.md": [
+        (r"^\*\*Status:\*\* v[0-9]+\.[0-9]+\.[0-9]+.*$", "**Status:** v{version} (current release)"),
+    ],
 }
 
 # Documentation "Last Updated" stamps (normalized to YYYY-MM-DD).
@@ -97,6 +118,9 @@ DOC_DATE_FILES = {
     "docs/contributing/development-guide.md": [
         (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
+    ],
+    "docs/planning/pre-release-checklist.md": [
+        (r"^(Date: ).+", r"\g<1>{date}"),
     ],
 }
 

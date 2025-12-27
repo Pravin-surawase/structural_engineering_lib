@@ -1,7 +1,7 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-27  
-**Status:** v0.9.6 stable, v0.9.7 ready to release (Level B + CLI discoverability merged)  
+**Status:** v0.10.0 (current release)
 **Branch:** `main` (all PRs merged through #62)
 
 ---

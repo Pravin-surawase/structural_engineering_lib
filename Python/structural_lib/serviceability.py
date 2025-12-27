@@ -43,6 +43,11 @@ _DEFAULT_CRACK_LIMITS_MM: Dict[ExposureClass, float] = {
 def _normalize_support_condition(
     value: Any,
 ) -> Tuple[SupportCondition, Optional[str]]:
+    """Normalize support condition input to enum.
+
+    Accepts SupportCondition enum or string aliases ('cantilever', 'ss', etc.).
+    Returns tuple of (normalized_enum, warning_message_or_None).
+    """
     if isinstance(value, SupportCondition):
         return value, None
 
@@ -69,6 +74,11 @@ def _normalize_support_condition(
 def _normalize_exposure_class(
     value: Any,
 ) -> Tuple[ExposureClass, Optional[str]]:
+    """Normalize exposure class input to enum.
+
+    Accepts ExposureClass enum or string aliases ('mild', 'mod', 'vs', etc.).
+    Returns tuple of (normalized_enum, warning_message_or_None).
+    """
     if isinstance(value, ExposureClass):
         return value, None
 
@@ -351,7 +361,10 @@ def check_crack_width(
 
 
 def _as_dict(result: Union[DeflectionResult, CrackWidthResult]) -> Dict[str, Any]:
-    # Convenience: useful for Excel/JSON exports.
+    """Convert a result dataclass to a plain dictionary.
+
+    Convenience function useful for Excel/JSON exports.
+    """
     return asdict(result)
 
 
