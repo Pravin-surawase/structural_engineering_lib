@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.10.0] - 2025-12-27
 
 ### Added
 - **Level B Serviceability (TASK-055):**
@@ -14,8 +14,13 @@ All notable changes to this project will be documented in this file.
   - `get_long_term_deflection_factor()` — Creep/shrinkage per Cl 23.2.1
   - `calculate_short_term_deflection()` — Elastic analysis
   - `DeflectionLevelBResult` dataclass for structured outputs
-  - 16 new tests for Level B serviceability functions
-- **Release Automation Sprint:**
+  - 16 new tests for Level B serviceability functions (1730 total tests)
+- **CLI/AI Discoverability Sprint (TASK-069-072):**
+  - `llms.txt` — AI-friendly summary for LLM tools and indexing
+  - Enhanced CLI help text with examples and required args
+  - CLI reference synced to canonical schema v1
+  - Cross-links from README/docs to llms.txt
+- **Release Automation Sprint (TASK-065-068):**
   - `scripts/release.py` — One-command release helper with version bump and checklist
   - `scripts/check_doc_versions.py` — Doc version drift detector with auto-fix
   - Enhanced `.pre-commit-config.yaml` with ruff linter, doc version check hooks
@@ -23,8 +28,8 @@ All notable changes to this project will be documented in this file.
 - **API Stability Document:** `docs/reference/api-stability.md` — Defines stable vs internal APIs
 
 ### Fixed
-- Doc version drift: `docs/reference/api.md` was showing 0.11.0 instead of 0.9.6
-- `bump_version.py`: Added `**Document Version:**` pattern for api.md
+- Doc version drift: `docs/reference/api.md` version sync
+- `bump_version.py`: Added `**Document Version:**` pattern and `--check-docs` flag
 
 ## [0.9.6] - 2025-12-27
 ### Added

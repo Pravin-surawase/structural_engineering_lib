@@ -1,6 +1,6 @@
 # Production Readiness Roadmap
 
-> **Current Status:** v0.9.6 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
+> **Current Status:** v0.10.0 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
 > 
 > **Production Readiness:** High (remaining gaps: optimizer + BBS/BOM + parity automation)
 
