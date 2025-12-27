@@ -46,13 +46,12 @@ IS456_UNITS = {
 # Units Validation
 # =============================================================================
 
-_VALID_UNIT_STRINGS = frozenset(
+# Normalized forms for case-insensitive matching (uppercase, no spaces)
+_VALID_UNIT_NORMALIZED = frozenset(
     {
         "IS456",
-        "IS 456",
-        "is456",
-        "mm-kN-kNm-Nmm2",
-        "mm,kN,kN-m,N/mm2",
+        "MM-KN-KNM-NMM2",
+        "MM,KN,KN-M,N/MM2",
     }
 )
 
@@ -82,10 +81,12 @@ def validate_units(units: Optional[str]) -> str:
             "(mm, N/mm², kN, kN·m)."
         )
 
-    normalized = units.strip()
-    if normalized not in _VALID_UNIT_STRINGS:
+    # Case-insensitive comparison: normalize to uppercase, remove spaces
+    normalized = units.strip().upper().replace(" ", "")
+    if normalized not in _VALID_UNIT_NORMALIZED:
         raise UnitsValidationError(
-            f"Invalid units '{units}'. Expected one of: {sorted(_VALID_UNIT_STRINGS)}"
+            f"Invalid units '{units}'. Expected 'IS456', 'IS 456', "
+            "'mm-kN-kNm-Nmm2', or 'mm,kN,kN-m,N/mm2' (case-insensitive)."
         )
 
     return "IS456"  # Always return canonical form

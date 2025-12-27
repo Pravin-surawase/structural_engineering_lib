@@ -460,6 +460,25 @@ python -m structural_lib job job.json -o output/
 
 ---
 
+### Architecture Bugfixes (Post-Review)
+
+> **Source:** Architect agent review of PR #55
+> **Date:** 2025-12-27
+
+| ID | Task | Severity | Status |
+|----|------|----------|--------|
+| **TASK-062** | Fix detailing `null` crash in BBS/DXF | HIGH | ✅ Complete — Guard with `beam.get("detailing") or {}` in `_extract_beam_params_from_schema`. |
+| **TASK-063** | Use canonical units in job_runner output | MEDIUM | ✅ Complete — `validate_units()` return value now flows to output JSON. |
+| **TASK-064** | Case-insensitive units validation | LOW | ✅ Complete — `validate_units()` normalizes to uppercase for comparison. |
+
+**Implementation Details:**
+- **TASK-062:** Changed `beam.get("detailing", {})` to `beam.get("detailing") or {}` to handle explicit `null` in JSON.
+- **TASK-063:** Renamed input to `units_input`, store canonical form in `units` variable, used in downstream calls and output.
+- **TASK-064:** Added normalized comparison (`units.strip().upper().replace(" ", "")`), accepts any case variant of "IS456", "Is 456", etc.
+- **Tests added:** 4 new tests in `test_beam_pipeline.py` (mixed case), 3 new tests in `test_cli.py` (null handling).
+
+---
+
 ### Priority 4: Documentation for v1.0 (LOW)
 
 | ID | Task | Agent | Est. | Details |

@@ -18,13 +18,12 @@
 
 ## Status
 
-🚀 **Active (v0.9.5)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.9.6)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.9.5:**
-- **Published to PyPI** — `pip install structural-lib-is456`
-- Unified CLI with `design`, `bbs`, `dxf`, `job` subcommands
-- Cutting-stock optimizer for rebar nesting (minimize waste)
-- VBA modules: BBS + Compliance (unit-tested)
+**What's new in v0.9.6:**
+- Verification examples pack (appendix + textbook validations)
+- API docs UX pass (public docstrings + guide alignment)
+- Pre-release checklist and governance updates
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
@@ -71,7 +70,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 |--------|--------|
 | **Determinism** | Same input → same output (JSON/CSV/DXF) across runs and machines |
 | **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
-| **Test coverage** | 1680+ Python tests, 92%+ line coverage, CI-enforced |
+| **Test coverage** | See CI for current totals and coverage |
 | **Clause traceability** | Core design formulas reference IS 456 clause/table |
 | **Verification pack** | Benchmark examples in [`Python/examples/`](Python/examples/) |
 
@@ -85,7 +84,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.9.5`) rather than installing latest.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.9.6`) rather than installing latest.
 
 ### Install from PyPI
 
@@ -115,11 +114,11 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install "structural-lib-is456[dxf]"
 
 # 2. Design a beam (one-liner)
-python3 -c "
+python3 - <<'PY'
 from structural_lib import flexure
 result = flexure.design_singly_reinforced(b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500)
-print(f'Ast required: {result.ast_required:.0f} mm² | Status: {\"OK\" if result.is_safe else result.error_message}')
-"
+print(f"Ast required: {result.ast_required:.0f} mm² | Status: {'OK' if result.is_safe else result.error_message}")
+PY
 ```
 
 Expected output:
@@ -171,7 +170,7 @@ SUMMARY: 5 items | Total weight: 52.22 kg
 
 </details>
 
-ETABS exports can be normalized into this schema. See `docs/architecture/project-overview.md` for the ETABS CSV import flow.
+ETABS exports can be normalized into this schema. See `docs/architecture/project-overview.md` and `docs/specs/ETABS_INTEGRATION.md` for the ETABS CSV import flow.
 
 ## Advanced: Batch job runner
 
@@ -179,7 +178,24 @@ For automated pipelines, use the JSON job schema:
 
 ```bash
 # Create a sample job file
-python3 -c "import json,pathlib; job={'schema_version':1,'code':'IS456','units':'IS456','job_id':'demo-001','beam':{'b_mm':230,'D_mm':500,'d_mm':450,'fck_nmm2':25,'fy_nmm2':500},'cases':[{'case_id':'ULS-1','mu_knm':120,'vu_kn':90}]}; pathlib.Path('job.json').write_text(json.dumps(job,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
+cat > job.json <<'JSON'
+{
+  "schema_version": 1,
+  "code": "IS456",
+  "units": "IS456",
+  "job_id": "demo-001",
+  "beam": {
+    "b_mm": 230,
+    "D_mm": 500,
+    "d_mm": 450,
+    "fck_nmm2": 25,
+    "fy_nmm2": 500
+  },
+  "cases": [
+    {"case_id": "ULS-1", "mu_knm": 120, "vu_kn": 90}
+  ]
+}
+JSON
 
 # Run the job
 python3 -m structural_lib job job.json -o ./out_demo
@@ -290,6 +306,8 @@ python3 -m pip install -e ".[dxf]"
 | **v0.8** | Serviceability (deflection + crack width), Compliance checker | ✅ Completed |
 | **v0.9** | Batch runner (job.json → JSON/CSV), docs + QA hardening | ✅ Completed |
 | **v0.9.4** | Unified CLI, cutting-stock optimizer, VBA BBS/Compliance parity | ✅ Completed |
+| **v0.9.5** | PyPI publishing, docs restructure, release hardening | ✅ Completed |
+| **v0.9.6** | Verification pack, API docs UX, pre-release checklist | ✅ Completed |
 
 ## Directory Structure (current)
 
@@ -299,7 +317,7 @@ structural_engineering_lib/
 │   ├── Modules/            ← Core .bas modules (import into Excel)
 │   └── Tests/              ← VBA test suites (Test_RunAll.bas)
 ├── Python/
-│   ├── structural_lib/     ← Python package (flexure, shear, BBS, DXF, job runner)
+│   ├── structural_lib/     ← Python package (flexure, shear, compliance, serviceability, pipeline, BBS, DXF, job runner)
 │   ├── tests/
 │   ├── examples/           ← Worked examples and sample data
 │   └── scripts/            ← Utility scripts (bump_version.py)
@@ -406,7 +424,7 @@ See [Python examples](Python/examples/) for complete workflows.
 
 | Platform | Command | Coverage |
 |----------|---------|----------|
-| Python | `python3 -m pytest Python/tests -q` | 1680+ tests, 92%+ coverage |
+| Python | `python3 -m pytest Python/tests -q` | See CI for current totals and coverage |
 | VBA | `Test_RunAll.RunAllVBATests` in Excel VBA Editor | 9 test suites |
 
 Run the full suite locally to verify:

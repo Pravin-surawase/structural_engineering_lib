@@ -86,11 +86,12 @@ def run_job_is456(
     if code != "IS456":
         raise ValueError("v1 runner supports only code='IS456'")
 
-    units = str(job.get("units", "") or "")
+    units_input = str(job.get("units", "") or "")
 
     # Validate units at application boundary (TASK-061)
+    # Use canonical units in all downstream outputs
     try:
-        beam_pipeline.validate_units(units)
+        units = beam_pipeline.validate_units(units_input)
     except beam_pipeline.UnitsValidationError as e:
         raise ValueError(f"units validation failed: {e}") from e
 

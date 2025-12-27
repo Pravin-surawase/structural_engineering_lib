@@ -141,10 +141,10 @@ def _extract_beam_params_from_schema(beam: dict) -> dict:
 
     Returns normalized dict with short keys (b, D, d, fck, fy, etc.)
     """
-    geom = beam.get("geometry", {})
-    mat = beam.get("materials", {})
-    flex = beam.get("flexure", {})
-    det = beam.get("detailing", {})
+    geom = beam.get("geometry") or {}
+    mat = beam.get("materials") or {}
+    flex = beam.get("flexure") or {}
+    det = beam.get("detailing") or {}  # Guard against explicit null
 
     # Handle new schema keys (with _mm, _nmm2 suffixes)
     b = geom.get("b_mm") or geom.get("b", 300)
