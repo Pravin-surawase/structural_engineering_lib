@@ -123,9 +123,8 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Notes
 
-- **Current Version**: v0.9.6 (v0.9.7 in progress)
+- **Current Version**: v0.10.0
 - **Last Updated**: 2025-12-27
 - **Active Branch**: main
 - **Tests**: 1730 passed, 95 skipped
-- **Next Release**: v0.9.7 (Level B Serviceability + CLI discoverability)
 - **Target**: v1.0 stable release after external user validation

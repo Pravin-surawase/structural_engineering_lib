@@ -18,12 +18,12 @@
 
 ## Status
 
-🚀 **Active (v0.9.6)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.10.0)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.9.6:**
-- Verification examples pack (appendix + textbook validations)
-- API docs UX pass (public docstrings + guide alignment)
-- Pre-release checklist and governance updates
+**What's new in v0.10.0:**
+- Level B Serviceability (curvature-based deflection per IS 456 Cl 23.2 / Annex C)
+- CLI/AI Discoverability (llms.txt, enhanced CLI help)
+- Release automation (one-command release, doc drift checks)
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 

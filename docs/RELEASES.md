@@ -43,6 +43,33 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.0
+**Date:** 2025-12-27
+**Status:** ✅ Locked & Verified
+**Mindset:** Level B Serviceability + AI/CLI Discoverability + Release Automation
+**Key Changes:**
+- **Level B Serviceability (TASK-055):** Full curvature-based deflection per IS 456 Cl 23.2 / Annex C
+  - 7 new functions: cracking moment, gross/cracked/effective MOI, long-term factor, short-term deflection
+  - `DeflectionLevelBResult` dataclass for structured outputs
+- **CLI/AI Discoverability (TASK-069-072):**
+  - `llms.txt` — AI-friendly summary for LLM tools
+  - Enhanced CLI help text with examples
+  - CLI reference synced to canonical schema v1
+- **Release Automation (TASK-065-068):**
+  - `scripts/release.py` — One-command release helper
+  - `scripts/check_doc_versions.py` — Doc version drift detector
+  - CI doc drift check step
+- **Tests:** 1730 passed, 95 skipped
+
+---
+
+## v0.9.6
+**Date:** 2025-12-27
+**Status:** ✅ Locked & Verified
+**Mindset:** Verification examples + API docs UX + Pre-release checklist
+
+---
+
 ## v0.9.4
 **Date:** 2025-12-27
 **Status:** ✅ Locked & Verified
