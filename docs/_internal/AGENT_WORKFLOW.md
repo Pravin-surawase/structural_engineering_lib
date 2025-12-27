@@ -445,7 +445,7 @@ Before tagging a release:
 ## 7. Session Protocol
 
 ### 7.1 Session Start
-1. PM reads `docs/NEXT_SESSION_BRIEF.md`
+1. PM reads `docs/planning/next-session-brief.md`
 2. PM reviews `docs/TASKS.md`
 3. PM identifies next priority
 4. PM assigns agents
