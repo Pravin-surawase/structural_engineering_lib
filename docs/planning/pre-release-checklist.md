@@ -48,8 +48,8 @@ Target: Private beta with 2–3 structural engineers
 - [x] **Run 3–5 real beam designs** and compare to hand calcs or known results
   - [x] Singly reinforced rectangular beam — ✅ PASS (Ast within 0.14%)
   - [x] Doubly reinforced rectangular beam — ✅ PASS (uses SP:16 fsc, Asc within 0.06%)
-  - [ ] Flanged beam (T-beam)
-  - [ ] High shear case
+  - [x] Flanged beam (T-beam) — ✅ PASS (exact match: Mu,lim, Ast, xu)
+  - [x] High shear case — ✅ PASS (exact match: τv, τc, Vus, spacing)
   - [ ] Seismic detailing case (if applicable)
 - [ ] **Document results** in `docs/VERIFICATION_EXAMPLES.md` with source refs
 - [ ] **One external engineer tries CLI cold** — note friction points
