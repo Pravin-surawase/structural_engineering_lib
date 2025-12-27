@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.5] - 2025-12-27
+### Added
+- **Published to PyPI:** `pip install structural-lib-is456` now works.
+- Automated publish workflow using Trusted Publishing (OIDC).
+- GitHub Release auto-creation on version tags.
+
+### Changed
+- README updated with PyPI badge and simplified install instructions.
+- `project.urls` added to pyproject.toml (Homepage, Docs, Changelog, Issues).
+
 ## [0.9.4] - 2025-12-26
 ### Added
 - **Cutting-Stock Optimization (Python):** `optimize_cutting_stock()` function with first-fit-decreasing bin packing algorithm for minimizing rebar waste.

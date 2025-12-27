@@ -2,6 +2,7 @@
 
 <div align="center">
 
+[![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -17,10 +18,11 @@
 
 ## Status
 
-🚀 **Active (v0.9.4)** — Unified CLI + strength design + detailing + DXF export + serviceability + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.9.5)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.9.4:**
-- `python -m structural_lib` — Unified CLI with `design`, `bbs`, `dxf`, `job` subcommands
+**What's new in v0.9.5:**
+- **Published to PyPI** — `pip install structural-lib-is456`
+- Unified CLI with `design`, `bbs`, `dxf`, `job` subcommands
 - Cutting-stock optimizer for rebar nesting (minimize waste)
 - VBA parity: BBS + Compliance modules
 
@@ -77,33 +79,28 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
 - ❌ **Not a full building design tool** — beams only (columns, slabs, foundations are out of scope)
 - ❌ **Not a replacement for engineer judgment** — final responsibility remains with the qualified engineer
-- ❌ **Not yet on PyPI** — install from GitHub tag (PyPI publishing planned)
 
 ## Adoption (Early Users)
 
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release tag (example: `@v0.9.4`) rather than installing from `main`.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.9.5`) rather than installing latest.
 
-### Install (Users) — without cloning the repo
-
-Recommended for early adopters.
+### Install from PyPI
 
 ```bash
-python3 -m pip install --upgrade pip
-
 # Base install
-python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+pip install structural-lib-is456
 
 # With DXF export support (recommended)
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+pip install "structural-lib-is456[dxf]"
 ```
 
 ### Install (Google Colab)
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf]"
 ```
 
 Then: `Runtime > Restart runtime` and rerun your notebook cells.
@@ -115,7 +112,7 @@ Try the library immediately — no repo clone needed:
 ```bash
 # 1. Install
 python3 -m venv .venv && source .venv/bin/activate
-pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+pip install "structural-lib-is456[dxf]"
 
 # 2. Design a beam (one-liner)
 python3 -c "
