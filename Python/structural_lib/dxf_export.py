@@ -966,9 +966,7 @@ def generate_multi_beam_dxf(
 
         # Use precomputed cell positions (guarantees no overlap)
         base_x = sheet_margin_mm if include_title_block else 0.0
-        base_y = (
-            sheet_margin_mm + title_block_height_mm if include_title_block else 0.0
-        )
+        base_y = sheet_margin_mm + title_block_height_mm if include_title_block else 0.0
         x_origin = base_x + col_x_offsets[col]
         y_origin = base_y + row_y_offsets[row]
 
