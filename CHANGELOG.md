@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.9.6] - 2025-12-27
+### Added
+- **Verification Examples Pack:** Appendix A (IS 456 derivations), Appendix B (runnable commands), Appendix C (textbook examples from Pillai & Menon, Krishna Raju, Varghese, SP:16).
+- **Pre-release checklist:** Beta readiness gates with validation tracking.
+- **API docs UX pass:** Comprehensive docstrings for all public API functions.
+
+### Changed
+- Fixed function signatures in examples.md (use `b=`, `d=` not `b_mm=`, `d_mm=`).
+- Fixed `acr_mm` docstring (distance to bar surface, not area).
+- CLI reference aligned with actual behavior.
+- python-recipes.md aligned with real function signatures.
+
+### Validated
+- Singly reinforced beam: 0.14% Ast difference ✅
+- Doubly reinforced beam: 0.06% Asc difference ✅
+- Flanged beam (T-beam): exact match ✅
+- High shear design: exact match ✅
+- 5 textbook examples: all within 0.5% tolerance ✅
+
 ## [0.9.5] - 2025-12-27
 ### Added
 - **Published to PyPI:** `pip install structural-lib-is456` now works.
