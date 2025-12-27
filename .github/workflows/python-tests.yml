@@ -48,6 +48,10 @@ jobs:
 
       - name: Doc version drift check
         run: |
+          python scripts/bump_version.py --check-docs
+
+      - name: Doc version drift check
+        run: |
           python scripts/check_doc_versions.py --ci
 
   pytest:

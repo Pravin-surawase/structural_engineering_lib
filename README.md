@@ -413,6 +413,8 @@ See [Python examples](Python/examples/) for complete workflows.
 ## Documentation
 
 - **[Docs Index](docs/README.md)** — Start here (who should read what)
+- **[CLI Reference](docs/cookbook/cli-reference.md)** — Full command list, inputs/outputs, examples
+- **[AI Summary](llms.txt)** — Compact overview for tools and indexing
 - **[Project Overview](docs/architecture/project-overview.md)** — High-level scope, architecture, and workflows
 - **[Research and Findings (archived)](docs/_archive/RESEARCH_AND_FINDINGS.md)** — Historical research document with formulas, tables, and early API design notes
 - **[API Reference](docs/reference/api.md)** — Public function signatures, inputs/outputs, units

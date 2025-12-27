@@ -168,6 +168,11 @@ def main():
         action="store_true",
         help="Print the version/log update checklist",
     )
+    parser.add_argument(
+        "--check-docs",
+        action="store_true",
+        help="Fail if doc version references are out of sync",
+    )
     
     args = parser.parse_args()
     
@@ -199,6 +204,24 @@ def main():
         return 0
 
     today = date.today().isoformat()
+
+    if args.check_docs:
+        print("Checking doc version references against current version...")
+        print()
+        changes = 0
+        for rel_path, patterns in DOC_VERSION_FILES.items():
+            filepath = REPO_ROOT / rel_path
+            if update_file(
+                filepath, patterns, {"version": current, "date": today}, dry_run=True
+            ):
+                changes += 1
+        print()
+        if changes:
+            print(f"Found {changes} doc file(s) with stale version references.")
+            print("Run: python scripts/bump_version.py --sync-docs")
+            return 1
+        print("All doc version references are up to date.")
+        return 0
 
     if args.sync_docs:
         print(f"{'[DRY RUN] ' if args.dry_run else ''}Syncing docs to: {current}")
