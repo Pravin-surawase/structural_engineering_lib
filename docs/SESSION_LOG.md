@@ -80,5 +80,46 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Status
 
+- Phase 0–5 complete.
+
+---
+
+## 2025-12-27 — v0.9.6 Release (Validation + Examples)
+
+### PRs Merged
+
+| PR | Title | Summary |
+|----|-------|---------|
+| #53 | Release v0.9.6: API docs UX pass + validation examples | All validation work + docs improvements |
+
+### Key Deliverables
+
+1. **Verification Examples Pack:**
+   - Appendix A: Detailed IS 456 derivations (singly/doubly reinforced)
+   - Appendix B: Runnable manual vs library comparison commands
+   - Appendix C: Textbook examples (Pillai & Menon, Krishna Raju, Varghese, SP:16)
+
+2. **Validations Completed:**
+   - Singly reinforced beam: 0.14% Ast difference ✅
+   - Doubly reinforced beam: 0.06% Asc difference ✅
+   - Flanged beam (T-beam): exact match ✅
+   - High shear design: exact match ✅
+   - 5 textbook examples: all within 0.5% tolerance ✅
+
+3. **Documentation:**
+   - Pre-release checklist (`docs/planning/pre-release-checklist.md`)
+   - API docs UX plan (`docs/planning/api-docs-ux-plan.md`)
+   - Git governance updated with current protection rules
+
+### Release
+
+- **v0.9.6** published to PyPI
+- Tag: `v0.9.6`
+- Tests: 1686 passed, 91 skipped
+
+---
+
+### Status
+
 - Phase 0–4 complete.
 - Phase 5 pending (final summary check).

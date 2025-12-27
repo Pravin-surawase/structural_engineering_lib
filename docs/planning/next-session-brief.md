@@ -1,17 +1,17 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-27  
-**Status:** v0.9.4 released and merged to `main`  
+**Status:** v0.9.6 released and merged to `main`  
 **Branch:** `main` (all PRs merged)
 
 ## TL;DR (What Changed Recently)
-- **v0.9.4 Released:** Unified CLI + Cutting-Stock + VBA BBS/Compliance parity
-- **Unified CLI** (`__main__.py`): `python -m structural_lib design|bbs|dxf|job`
-- **Cutting-Stock Optimizer** (`rebar_optimizer.py`): First-fit-decreasing bin packing
-- **VBA BBS Module** (`M18_BBS.bas`): Bar weights, cut lengths, stirrup lengths
-- **VBA Compliance Module** (`M19_Compliance.bas`): Multi-check orchestration
-- **Test count:** 1680+ tests passing (including 27 new CLI tests, 32 new VBA tests)
-- PRs merged: #30 (cutting-stock), #31 (CLI), #32 (VBA BBS/Compliance)
+- **v0.9.6 Released:** Verification examples pack + API docs UX pass
+- **Verification Examples:** Appendix A (IS 456 derivations), B (runnable commands), C (textbook examples)
+- **Textbook Validations:** Pillai & Menon, Krishna Raju, Varghese, SP:16 — all within 0.5%
+- **API Docs:** Comprehensive docstrings for all public functions in `api.py`
+- **Pre-release Checklist:** Beta readiness gates documented (`docs/planning/pre-release-checklist.md`)
+- **Test count:** 1686 passed, 91 skipped
+- PRs merged: #53 (v0.9.6 release)
 
 ---
 
@@ -23,33 +23,78 @@ If you want to resume quickly without re-reading the repo:
 2. **Version management:** `docs/_internal/VERSION_STRATEGY.md`
 3. **Canonical backlog:** `docs/TASKS.md`
 4. **Primary reference index:** `docs/README.md`
+5. **Pre-release checklist:** `docs/planning/pre-release-checklist.md`
+6. **Git governance (branch protection):** `docs/_internal/GIT_GOVERNANCE.md`
 
 **Verified state (as of 2025-12-27):**
-- Release version is **v0.9.5** (merged to main, published to PyPI).
+- Release version is **v0.9.6** (merged to main, published to PyPI).
 - Unified CLI: **implemented** (`python -m structural_lib design|bbs|dxf|job`).
 - Cutting-stock optimizer: **implemented** (first-fit-decreasing bin packing).
 - VBA BBS + Compliance: **implemented** (parity with Python modules).
 - Serviceability (Level A): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - BBS Module: **implemented** (cut lengths, weights, CSV/JSON export).
-- Code Quality Sweep: **complete** (14/14 tasks).
+- **Validation examples:** **complete** (4 core + 5 textbook examples verified).
+- **API docs UX:** **complete** (all 6 phases).
 
 **How to re-verify quickly (avoids drift):**
 - Latest commit (local): `git rev-parse --short HEAD`
 - CI truth (GitHub): https://github.com/Pravin-surawase/structural_engineering_lib/actions
 - Version: `python -c "from structural_lib import api; print(api.get_library_version())"`
 
-**Next priorities:**
-- Keep CI workflows least-privilege (avoid broad default `GITHUB_TOKEN` permissions).
-- Prefer **repo settings** for protection (branch protection rules) over complex workflow tricks.
-- Avoid high-maintenance hardening (e.g., pinning every action to a commit SHA) unless needed.
-- If needed: run a secrets scan before publishing changes.
-- Status: `main` is protected via GitHub ruleset (PR required + required checks + up-to-date branches + no force pushes).
-- Status: Dependabot grouped updates are enabled (`.github/dependabot.yml`).
+**Branch protection (documented in `docs/_internal/GIT_GOVERNANCE.md`):**
+- `main` requires PR (no direct pushes)
+- 5 required status checks: `test`, `lint`, `type-check`, `build`, `docs`
+- Force pushes and branch deletion disabled
+- Tags trigger PyPI publish workflow
 
 ---
 
-## ✅ Session Summary (2025-12-27)
+## 🎯 What to Work on Next
+
+### High Priority (Beta Readiness)
+1. **External engineer test** — Have someone try CLI cold, note friction points
+2. **Seismic detailing validation** — Last item on pre-release checklist (optional)
+3. **VBA parity harness** — Automated comparison of Python vs VBA outputs
+
+### Medium Priority
+4. **Remove redirect stubs** — Scheduled for v1.0 (old doc paths still redirect)
+5. **Edge case documentation** — Flanged NA in web, doubly reinforced near Mu,lim
+6. **Error message review** — Check actionability for users
+
+### Low Priority (Deferred to v1.0+)
+7. **Docs restructure** — Element-centric structure (beams/, columns/) deferred
+8. **ACI 318 support** — Future code expansion
+9. **Column design module** — Future element expansion
+
+---
+
+## ✅ Session Summary (2025-12-27) — v0.9.6 Release
+
+### v0.9.6 Features (PR #53)
+- **Verification Examples Pack:**
+  - Appendix A: Detailed IS 456 derivations (singly/doubly reinforced)
+  - Appendix B: Runnable manual vs library comparison commands (6 sections)
+  - Appendix C: Textbook examples (5 sources, all verified within 0.5%)
+- **Validations Completed:**
+  - Singly reinforced: 0.14% Ast diff ✅
+  - Doubly reinforced: 0.06% Asc diff ✅
+  - Flanged beam: exact match ✅
+  - High shear: exact match ✅
+- **API Docs UX Pass:** All 6 phases complete
+  - Fixed docstrings for all public functions
+  - Updated cli-reference.md, python-recipes.md, examples.md
+- **Pre-release Checklist:** Beta gates documented
+- **Git Governance:** Branch protection rules documented in `docs/_internal/GIT_GOVERNANCE.md`
+
+### v0.9.5 Features (Earlier same day)
+- **PyPI Publishing:** Trusted Publishing (OIDC) workflow implemented
+- **Docs Restructure:** 7-folder migration (PRs #40-51)
+- Published to PyPI: `pip install structural-lib-is456`
+
+---
+
+## ✅ Session Summary (2025-12-27) — Earlier
 
 ### v0.9.4 Features
 - **Unified CLI:** `python -m structural_lib` with `design`, `bbs`, `dxf`, `job` subcommands.
@@ -105,15 +150,15 @@ If you want to resume quickly without re-reading the repo:
 
 ---
 
-## 📊 Current State (v0.9.1)
+## 📊 Current State (v0.9.6)
 
 ### Version Sync ✅
 ```
-Python __init__.py  → 0.9.1
-Python api.py       → 0.9.1
-Python pyproject    → 0.9.1
-README.md           → v0.9.1
-CHANGELOG.md        → [0.9.1]
+Python __init__.py  → 0.9.6
+Python api.py       → 0.9.6
+Python pyproject    → 0.9.6
+README.md           → v0.9.6
+CHANGELOG.md        → [0.9.6]
 ```
 
 ### Feature Completeness
