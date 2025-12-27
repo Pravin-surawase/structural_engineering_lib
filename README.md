@@ -398,6 +398,9 @@ python3 -m structural_lib dxf results.json -o drawings.dxf
 python3 -m structural_lib job job.json -o ./output
 ```
 
+For full options, inputs/outputs, and exit codes, see the [CLI Reference](docs/cookbook/cli-reference.md) or run:
+`python3 -m structural_lib --help`
+
 ### Python API
 
 | Module | Import | Purpose |

@@ -1,21 +1,21 @@
 # Python Quickstart (Beginner-Friendly)
 
-This guide shows how to install, run, and verify the Python library with simple, copy‑paste steps. No prior packaging experience required.
+This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required.
 
 > **📚 New to this?** See [beginners-guide.md](beginners-guide.md) for comprehensive step-by-step instructions with explanations.
 
-## Recommended for early adopters (no repo clone)
+## Fast install (no repo clone)
 
-If you're sharing with a few users while the project is still evolving, this is the simplest path.
+This is the easiest path for beginners.
 
 ```bash
 python3 -m pip install --upgrade pip
 
-# Pin to a released tag for stability (recommended)
-python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.0#subdirectory=Python"
+# Base install
+python3 -m pip install structural-lib-is456
 
-# With DXF support
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.0#subdirectory=Python"
+# Optional DXF support
+python3 -m pip install "structural-lib-is456[dxf]"
 ```
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.
@@ -23,35 +23,47 @@ Engineering note: this library is a calculation aid; final responsibility for co
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.0#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf]"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.
 
 ---
 
-## 1) Install Python and set up a virtual environment
-1. Ensure Python 3.9+ is installed (`python3 --version`).
-2. From the repo root:
+## 1) Create a clean workspace (recommended)
+If you are on Windows, replace `python3` with `py`.
+1. Check Python is installed: `python3 --version` (Windows: `py --version`)
+2. Create a folder and virtual environment:
    ```bash
+   mkdir structural_lib_demo
+   cd structural_lib_demo
    python3 -m venv .venv
    source .venv/bin/activate   # Windows: .venv\Scripts\activate
    ```
-3. Upgrade pip and install the library in editable mode with dev tools:
+3. Install the library:
    ```bash
-   pip install --upgrade pip
-   pip install -e Python/.[dev]
+   python3 -m pip install --upgrade pip
+   python3 -m pip install structural-lib-is456
    ```
-   - DXF export needs `ezdxf` (optional): `pip install ezdxf`
+4. Optional DXF support:
+   ```bash
+   python3 -m pip install "structural-lib-is456[dxf]"
+   ```
 
-## 2) Run the unit tests (sanity check)
+## 2) Quick sanity check (no files)
 ```bash
-python3 -m pytest Python/tests -q
+python3 - <<'PY'
+from structural_lib import flexure
+res = flexure.design_singly_reinforced(
+    b=300, d=450, d_total=500, mu_knm=150, fck=25, fy=500
+)
+print("Ast required (mm^2):", round(res.ast_required))
+print("Status:", "OK" if res.is_safe else res.error_message)
+PY
 ```
-All tests should pass. If `ezdxf` is missing, DXF-specific tests are skipped.
 
-## 3) Use the library in a script (flexure + detailing)
-Create a file `example.py` (or use a Python REPL):
+## 3) Use the library in a script (optional)
+Create a file `example.py` with this content:
 ```python
 from structural_lib import flexure, detailing
 
@@ -72,8 +84,26 @@ Run it:
 python3 example.py
 ```
 
-## 4) Batch process CSV/JSON using the unified CLI
-The library provides a unified CLI for all operations:
+## 4) No CSV? Generate synthetic inputs (batch + full pipeline)
+If you do not have ETABS or CSV inputs, generate a realistic dataset and run the full workflow.
+This step uses the repo examples folder.
+```bash
+cd Python
+python3 examples/full_pipeline_synthetic.py --count 500 --output-dir ./output/demo_500
+```
+This will create:
+- `beams_synthetic_500.csv`
+- `results.json`
+- `schedule.csv`
+- `drawings.dxf` (requires `ezdxf`)
+
+To skip DXF (faster):
+```bash
+python3 examples/full_pipeline_synthetic.py --count 500 --skip-dxf
+```
+
+## 5) Use the CLI (CSV -> JSON -> BBS/DXF)
+The unified CLI supports design, schedules, and drawings:
 ```bash
 # Design beams from CSV
 python3 -m structural_lib design path/to/beams.csv -o results.json
@@ -93,7 +123,7 @@ python3 -m structural_lib job job.json -o ./output
   - `schedule.csv` — Bar bending schedule per IS 2502.
   - DXF files (if `ezdxf` available).
 
-## 5) Minimal “one-liner” example (no files)
+## 6) Minimal “one-liner” example (no files)
 ```bash
 python3 - <<'PY'
 from structural_lib import shear
@@ -102,21 +132,22 @@ print("Shear OK?", res.is_safe, "Spacing (mm):", res.spacing)
 PY
 ```
 
-## 6) Packaging notes
-- Local editable install is usually enough. To build a wheel: `cd Python && python3 -m build`.
-- Current code version is defined in `Python/structural_lib/__init__.py` (sync with `pyproject.toml` before publishing).
+## 7) Packaging notes (contributors only)
+- Build a wheel: `cd Python && python3 -m build`.
+- Version source of truth: `Python/pyproject.toml`.
 
-## 7) Troubleshooting
-- “Module not found”: ensure the venv is activated and you ran `pip install -e Python/.`.
-- DXF generation missing: install `ezdxf` (`pip install ezdxf`).
+## 8) Troubleshooting
+- "Module not found": ensure the venv is activated and you installed `structural-lib-is456`.
+- DXF generation missing: install `structural-lib-is456[dxf]`.
 - Tests failing on path issues: run commands from the repo root.
-## 8) Sample Files & Examples
+## 9) Sample Files & Examples
 - `Python/examples/simple_examples.py` - 7 beginner examples with explanations
 - `Python/examples/complete_beam_design.py` - Full design workflow
+- `Python/examples/full_pipeline_synthetic.py` - Generates 50-500 beams and runs full CLI pipeline
 - `Python/examples/sample_beam_design.csv` - Simple 5-beam sample
 - `Python/examples/sample_building_beams.csv` - Complete 12-beam building
 
-## 9) Further Reading
+## 10) Further Reading
 - [beginners-guide.md](beginners-guide.md) - Comprehensive tutorial (Python + Excel)
 - [excel-tutorial.md](excel-tutorial.md) - Step-by-step Excel guide
 - [../reference/api.md](../reference/api.md) - Full API documentation
