@@ -210,7 +210,7 @@ python3 -m structural_lib job job.json -o ./out_demo
 | ✅ **Flexural design** | Singly, Doubly, and Flanged (T/L) beams |
 | ✅ **Shear design** | Stirrup design with Table 19/20 lookup |
 | ✅ **Ductile Detailing** | IS 13920:2016 checks (Geometry, Min/Max steel, Confinement) |
-| ✅ **Serviceability** | Level A checks (deflection, crack width) |
+| ✅ **Serviceability** | Level A (span/depth) + Level B (curvature-based deflection) |
 
 ### Output Generation
 | Feature | Description |
