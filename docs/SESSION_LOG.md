@@ -30,6 +30,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | #47 | docs: fix broken links after migration | Fixed planning/README.md, architecture/README.md, and others |
 | #48 | docs: fix remaining broken links to old root paths | Fixed TASKS.md, v0.8_EXECUTION_CHECKLIST.md, deep-project-map.md, etc. |
 | #49 | docs: update version marker to v0.9.5 | Fixed docs/README.md version display |
+| #50 | docs: update SESSION_LOG and CHANGELOG | Added docs restructure to CHANGELOG (permanent record) |
 
 ### Releases
 

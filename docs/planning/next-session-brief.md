@@ -83,9 +83,9 @@ If you want to resume quickly without re-reading the repo:
 - Known limitation: R12 header extents are static; CAD zoom fixes on open.
 
 #### 2. **Beginner Documentation** ✅
-- `docs/BEGINNERS_GUIDE.md`: Full Python + Excel walkthroughs.
-- `docs/EXCEL_TUTORIAL.md`: Step-by-step Excel/VBA guide.
-- `docs/GETTING_STARTED_PYTHON.md`: Quickstart with examples; `Python/examples/` populated.
+- `docs/getting-started/beginners-guide.md`: Full Python + Excel walkthroughs.
+- `docs/getting-started/excel-tutorial.md`: Step-by-step Excel/VBA guide.
+- `docs/getting-started/python-quickstart.md`: Quickstart with examples; `Python/examples/` populated.
 - README: Added "Getting Started" links.
 
 #### 3. **Version & Parity Fixes** ✅

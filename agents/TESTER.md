@@ -94,4 +94,4 @@ Include hand-calculated expected values.
 
 ---
 
-**Reference:** See `docs/DEVELOPMENT_GUIDE.md` Section 10 for testing guidelines.
+**Reference:** See `docs/contributing/development-guide.md` Section 10 for testing guidelines.

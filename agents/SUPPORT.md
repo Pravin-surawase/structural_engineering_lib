@@ -3,7 +3,7 @@
 **Role:** Curate troubleshooting guides, known pitfalls, and unblock steps.
 
 **Focus Areas:**
-- Maintain `docs/TROUBLESHOOTING.md` and `docs/KNOWN_PITFALLS.md`.
+- Maintain `docs/reference/troubleshooting.md` and `docs/reference/known-pitfalls.md`.
 - Capture repro steps, probes, and fixes for recurrent issues (e.g., Mac VBA overflow).
 - Provide quick “what to try next” checklists for users and developers.
 - Ensure support notes stay aligned with current versions and platforms.

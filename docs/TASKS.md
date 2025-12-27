@@ -137,7 +137,7 @@ These tasks are based on the research log (`docs/planning/research-ai-enhancemen
   **Outputs (implemented):**
   - Python: `Python/structural_lib/serviceability.py`, `Python/tests/test_serviceability.py`
   - Python types: extended `Python/structural_lib/types.py`
-  - Docs: `docs/API_REFERENCE.md`, `docs/KNOWN_PITFALLS.md`
+  - Docs: `docs/reference/api.md`, `docs/reference/known-pitfalls.md`
   - VBA parity (implemented): `VBA/Modules/M17_Serviceability.bas`, `VBA/Tests/Test_Serviceability.bas`, extended `VBA/Modules/M02_Types.bas`
 
 - [x] **TASK-042: Compliance Checker (Pass/Fail + Reasons, Excel-Friendly)**
@@ -153,7 +153,7 @@ These tasks are based on the research log (`docs/planning/research-ai-enhancemen
   - Python: `Python/structural_lib/compliance.py`, `Python/tests/test_compliance.py`
   - Python types: extended `Python/structural_lib/types.py`
   - API wrapper: `Python/structural_lib/api.py`
-  - Docs: `docs/API_REFERENCE.md`
+  - Docs: `docs/reference/api.md`
 
 - [x] **TASK-044: ETABS Integration (Keep CSV Default; API Optional)**
   - **Agent:** INTEGRATION / DEV
