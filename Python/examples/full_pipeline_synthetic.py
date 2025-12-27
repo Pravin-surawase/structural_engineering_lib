@@ -179,7 +179,15 @@ def main() -> int:
     python = sys.executable
     if not _run_cmd(
         "design",
-        [python, "-m", "structural_lib", "design", str(csv_path), "-o", str(results_path)],
+        [
+            python,
+            "-m",
+            "structural_lib",
+            "design",
+            str(csv_path),
+            "-o",
+            str(results_path),
+        ],
     ):
         return 1
 
