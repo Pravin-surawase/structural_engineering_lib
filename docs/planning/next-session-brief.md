@@ -1,8 +1,8 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-27  
-**Status:** v0.9.6 released and merged to `main`  
-**Branch:** `main` (all PRs merged)
+**Status:** v0.9.6 stable, release automation complete  
+**Branch:** `main` (all PRs merged through #59)
 
 ---
 
@@ -92,13 +92,18 @@ Output (design results, BBS, DXF drawings)
 ---
 
 ## TL;DR (What Changed Recently)
-- **v0.9.6 Released:** Verification examples pack + API docs UX pass
-- **Verification Examples:** Appendix A (IS 456 derivations), B (runnable commands), C (textbook examples)
-- **Textbook Validations:** Pillai & Menon, Krishna Raju, Varghese, SP:16 — all within 0.5%
-- **API Docs:** Comprehensive docstrings for all public functions in `api.py`
-- **Pre-release Checklist:** Beta readiness gates documented (`docs/planning/pre-release-checklist.md`)
-- **Test count:** 1686 passed, 91 skipped
-- PRs merged: #53 (v0.9.6 release)
+
+- **Release Automation Complete:** New scripts for one-command releases and version drift detection
+- **PR #55 Merged:** `beam_pipeline.py` — canonical design pipeline with schema v1
+- **PR #56 Merged:** Architecture bugfixes (null detailing guard, canonical units, case-insensitive validation)
+- **PR #57 Merged:** API stability document (`docs/reference/api-stability.md`)
+- **PR #58 Merged:** Doc version sync to v0.9.6
+- **PR #59 Merged:** Release automation sprint (4 tasks)
+- **New workflows:**
+  - `python scripts/release.py 0.9.7` — one-command release
+  - `python scripts/check_doc_versions.py --ci` — version drift check (runs in CI)
+  - Pre-commit hooks: `pip install pre-commit && pre-commit install`
+- **Test count:** 1,714 passed, 95 skipped
 
 ---
 
@@ -153,6 +158,37 @@ If you want to resume quickly without re-reading the repo:
 7. **Docs restructure** — Element-centric structure (beams/, columns/) deferred
 8. **ACI 318 support** — Future code expansion
 9. **Column design module** — Future element expansion
+
+---
+
+## ✅ Session Summary (2025-12-27) — Architecture + Automation Sprint
+
+### Architecture Review Implementation (PRs #55, #56)
+- **TASK-059:** Created `beam_pipeline.py` — canonical design pipeline (528 lines)
+- **TASK-060:** Schema v1 with `BeamDesignOutput`, `MultiBeamOutput` dataclasses
+- **TASK-061:** Units validation at application layer with `validate_units()`
+- **TASK-062:** Fixed null detailing crash in BBS/DXF (`or {}` guard)
+- **TASK-063:** Canonical units in job_runner output
+- **TASK-064:** Case-insensitive units validation
+
+### API Stability (PR #57)
+- **TASK-054:** Created `docs/reference/api-stability.md` defining stable vs internal APIs
+- Documents: flexure, shear, api, beam_pipeline as stable
+- Documents: tables, utilities, constants as internal
+
+### Release Automation Sprint (PR #59)
+- **TASK-065:** `scripts/release.py` — one-command release helper
+- **TASK-066:** `scripts/check_doc_versions.py` — doc version drift detector
+- **TASK-067:** Enhanced `.pre-commit-config.yaml` with ruff + hooks
+- **TASK-068:** CI doc drift check step in lint job
+
+### Bugs Fixed
+- `docs/reference/api.md` version drift (0.11.0 → 0.9.6)
+- `bump_version.py` missing pattern for bold Document Version
+
+### Tests
+- **Total:** 1,714 passed, 95 skipped
+- **New tests:** 31 (28 beam_pipeline + 3 CLI schema tests)
 
 ---
 

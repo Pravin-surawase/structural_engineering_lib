@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Release Automation Sprint:**
+  - `scripts/release.py` — One-command release helper with version bump and checklist
+  - `scripts/check_doc_versions.py` — Doc version drift detector with auto-fix
+  - Enhanced `.pre-commit-config.yaml` with ruff linter, doc version check hooks
+  - CI doc drift check step in `python-tests.yml`
+- **API Stability Document:** `docs/reference/api-stability.md` — Defines stable vs internal APIs
+
+### Fixed
+- Doc version drift: `docs/reference/api.md` was showing 0.11.0 instead of 0.9.6
+- `bump_version.py`: Added `**Document Version:**` pattern for api.md
+
 ## [0.9.6] - 2025-12-27
 ### Added
 - **Verification Examples Pack:** Appendix A (IS 456 derivations), Appendix B (runnable commands), Appendix C (textbook examples from Pillai & Menon, Krishna Raju, Varghese, SP:16).

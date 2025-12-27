@@ -256,3 +256,77 @@ After merging PR #55, additional review identified three bugs in the beam_pipeli
 - `docs/TASKS.md`
 - `docs/SESSION_LOG.md`
 
+---
+
+## 2025-12-27 — Release Automation Sprint (TASK-065 through TASK-068)
+
+### Background
+
+After stabilizing the beam_pipeline architecture, focus shifted to preventing future version drift and missed documentation updates during releases.
+
+### Problem
+
+- Doc version strings drift out of sync (e.g., `docs/reference/api.md` had version 0.11.0 while code was at 0.9.6)
+- No automated checks to catch stale versions before PRs merge
+- Release process relied on manual checklist with high risk of missed steps
+
+### Solution: Four-Part Automation Sprint
+
+| Task | Deliverable | Purpose |
+|------|-------------|---------|
+| **TASK-065** | `scripts/release.py` | One-command release helper with auto-bump + checklist |
+| **TASK-066** | `scripts/check_doc_versions.py` | Scans docs for version drift, auto-fix available |
+| **TASK-067** | `.pre-commit-config.yaml` | Enhanced with ruff linter + doc check hooks |
+| **TASK-068** | CI doc drift check | Added step to `python-tests.yml` lint job |
+
+### Files Changed
+
+| File | Change |
+|------|--------|
+| `scripts/release.py` | **NEW** — 157 lines, one-command release workflow |
+| `scripts/check_doc_versions.py` | **NEW** — 155 lines, version drift detector |
+| `scripts/bump_version.py` | Added `**Document Version:**` pattern for api.md |
+| `.pre-commit-config.yaml` | Added ruff, check-json, check-merge-conflict, doc version hook |
+| `.github/workflows/python-tests.yml` | Added "Doc version drift check" step |
+| `docs/reference/api.md` | Fixed version from 0.11.0 to 0.9.6 |
+| `docs/TASKS.md` | Marked TASK-065–068 complete |
+
+### New Workflows
+
+**Release a new version:**
+```bash
+python scripts/release.py 0.9.7           # Full release flow
+python scripts/release.py 0.9.7 --dry-run # Preview what would happen
+python scripts/release.py --checklist     # Show checklist only
+```
+
+**Check for doc version drift:**
+```bash
+python scripts/check_doc_versions.py          # Check for drift
+python scripts/check_doc_versions.py --ci     # Exit 1 if drift found (for CI)
+python scripts/check_doc_versions.py --fix    # Auto-fix with bump_version.py
+```
+
+**Pre-commit hooks (install once):**
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+### PR Merged
+
+| PR | Title | Status |
+|----|-------|--------|
+| #59 | feat(devops): Release automation sprint (TASK-065 through TASK-068) | ✅ Merged |
+
+### Test Results
+
+All 7 CI checks passed including the new doc drift check.
+
+### Next Actions
+
+- [ ] TASK-052: User Guide (Getting Started)
+- [ ] TASK-053: Validation Pack (publish 3-5 benchmark beams)
+- [ ] TASK-055: Level B Serviceability (full deflection calc)
+
+---
