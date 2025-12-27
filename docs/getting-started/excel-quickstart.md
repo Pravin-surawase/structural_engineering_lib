@@ -1,43 +1,57 @@
-# Excel Quickstart (5 minutes)
+# Excel Quickstart (Step by Step)
 
-This quickstart is the fastest way for Excel users to try the library.
+This is the easiest path if you prefer Excel and do not want to code.
 
-## Option A (Recommended): Use the prebuilt add-in (.xlam)
+---
 
-1) Get the add-in file:
-- If you have the repository locally: use `Excel/StructEngLib.xlam`.
-- If you received a zip from someone: extract it and locate `StructEngLib.xlam`.
+## Step 1: Get the Excel file
+Use one of these:
+- `Excel/StructEngLib.xlam` (add-in, recommended)
+- `Excel/BeamDesignApp.xlsm` (standalone workbook)
 
-2) In Excel: load the add-in
-- Excel → File → Options → Add-ins
-- At the bottom: **Manage: Excel Add-ins** → **Go…**
-- **Browse…** → select `StructEngLib.xlam` → OK
+If you received a zip or release bundle, extract it first.
 
-3) Try one function in a sheet
+---
 
-Example (flexure limiting moment, units per IS 456 library conventions):
-- `=IS456_MuLim(300, 450, 25, 500)`
+## Step 2: Enable macros (required)
+In Excel:
+1. File -> Options -> Trust Center -> Trust Center Settings
+2. Macro Settings -> Enable all macros
+3. Check "Trust access to the VBA project object model"
 
-If the add-in is loaded successfully, the formula should return a number (kN·m).
+Close and re-open Excel after changing these settings.
 
-## Option B: Use the workbook app (.xlsm)
+---
 
-If you don’t want to install an add-in yet:
+## Step 3: Load the add-in (if using .xlam)
+1. Excel -> File -> Options -> Add-ins
+2. At the bottom: Manage "Excel Add-ins" -> Go...
+3. Browse -> select `StructEngLib.xlam` -> OK
 
-1) Open `Excel/BeamDesignApp.xlsm`
-2) Enable macros when prompted
-3) Follow the workbook’s sheets / buttons (if present)
+---
 
-## Option C (Developer / power user): Bulk-import VBA modules
+## Step 4: Test one formula
+In any cell, enter:
+```
+=IS456_MuLim(300, 450, 25, 500)
+```
 
-Use this if you want to build your own add-in or inspect code modules.
+Expected result: a number around 196.5 (kN-m).
 
-- See the bulk importer macro in [docs/contributing/excel-addin-guide.md](../contributing/excel-addin-guide.md)
+---
+
+## Step 5: Try the workbook (optional)
+If you opened `BeamDesignApp.xlsm`, follow the sheet instructions and buttons (if present).
+
+---
+
+## Advanced (optional)
+If you want to build your own add-in or inspect modules:
+- See `docs/contributing/excel-addin-guide.md`
 - VBA modules live in `VBA/Modules/`
 
-Important: the bulk importer requires enabling “Trust access to the VBA project object model” in Excel’s Trust Center.
+---
 
 ## Notes
-
-- This project aims for **Python + VBA parity**. If you find a mismatch in outputs between Excel and Python for the same inputs, please report it with a minimal reproducible example.
 - Engineering note: this library is a calculation aid; final responsibility for design and detailing remains with the qualified engineer.
+- If Excel and Python results differ for the same inputs, report it with a minimal reproducible example.
