@@ -36,11 +36,11 @@ For VS Code AI-agent work, start with:
 
 - Architecture & layering: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
 - Consolidated architecture/data flow: [DEEP_PROJECT_MAP.md](DEEP_PROJECT_MAP.md)
-- Testing strategy & CI setup: [TESTING_STRATEGY.md](TESTING_STRATEGY.md)
-- VBA testing guide: [VBA_TESTING_GUIDE.md](VBA_TESTING_GUIDE.md)
-- Development practices: [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md)
-- VBA side specifics: [VBA_GUIDE.md](VBA_GUIDE.md)
-- Packaging the add-in (`.xlam`): [EXCEL_ADDIN_GUIDE.md](EXCEL_ADDIN_GUIDE.md)
+- Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
+- VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
+- Development practices: [contributing/development-guide.md](contributing/development-guide.md)
+- VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)
+- Packaging the add-in (`.xlam`): [contributing/excel-addin-guide.md](contributing/excel-addin-guide.md)
 - Common engineering/coding traps: [reference/known-pitfalls.md](reference/known-pitfalls.md)
 - Git workflow rules: [_internal/GIT_GOVERNANCE.md](_internal/GIT_GOVERNANCE.md)
 

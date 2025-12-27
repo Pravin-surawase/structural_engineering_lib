@@ -50,7 +50,7 @@ Recommended workflow:
 - VBA tests: `VBA/Tests/`
 
 Import order matters; see:
-- [VBA_GUIDE.md](VBA_GUIDE.md)
+- [contributing/vba-guide.md](contributing/vba-guide.md)
 
 ---
 
