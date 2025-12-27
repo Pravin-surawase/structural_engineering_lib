@@ -24,7 +24,7 @@
 - **Published to PyPI** — `pip install structural-lib-is456`
 - Unified CLI with `design`, `bbs`, `dxf`, `job` subcommands
 - Cutting-stock optimizer for rebar nesting (minimize waste)
-- VBA parity: BBS + Compliance modules
+- VBA modules: BBS + Compliance (unit-tested)
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
@@ -72,7 +72,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 | **Determinism** | Same input → same output (JSON/CSV/DXF) across runs and machines |
 | **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
 | **Test coverage** | 1680+ Python tests, 92%+ line coverage, CI-enforced |
-| **Clause traceability** | Every formula references IS 456 clause/table |
+| **Clause traceability** | Core design formulas reference IS 456 clause/table |
 | **Verification pack** | Benchmark examples in [`Python/examples/`](Python/examples/) |
 
 ## What this is NOT
@@ -387,7 +387,8 @@ python3 -m structural_lib job job.json -o ./output
 | BBS | `from structural_lib.bbs import generate_bbs_from_detailing` | Bar bending schedule |
 | DXF | `from structural_lib.dxf_export import generate_beam_dxf` | CAD drawings |
 | CSV Import | `from structural_lib.excel_integration import load_beam_data_from_csv` | ETABS/CSV import |
-| Optimizer | `from structural_lib.rebar_optimizer import optimize_cutting` | Cutting-stock nesting |
+| Cutting-stock | `from structural_lib.bbs import optimize_cutting_stock` | Stock-length nesting |
+| Bar layout | `from structural_lib.rebar_optimizer import optimize_bar_arrangement` | Bar selection |
 
 See [Python examples](Python/examples/) for complete workflows.
 
@@ -406,7 +407,7 @@ See [Python examples](Python/examples/) for complete workflows.
 | Platform | Command | Coverage |
 |----------|---------|----------|
 | Python | `python3 -m pytest Python/tests -q` | 1680+ tests, 92%+ coverage |
-| VBA | `Test_RunAll.RunAllTests` in Excel VBA Editor | 9 test suites |
+| VBA | `Test_RunAll.RunAllVBATests` in Excel VBA Editor | 9 test suites |
 
 Run the full suite locally to verify:
 ```bash
