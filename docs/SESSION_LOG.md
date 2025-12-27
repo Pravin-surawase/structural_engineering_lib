@@ -31,6 +31,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | #48 | docs: fix remaining broken links to old root paths | Fixed TASKS.md, v0.8_EXECUTION_CHECKLIST.md, deep-project-map.md, etc. |
 | #49 | docs: update version marker to v0.9.5 | Fixed docs/README.md version display |
 | #50 | docs: update SESSION_LOG and CHANGELOG | Added docs restructure to CHANGELOG (permanent record) |
+| #51 | docs: update remaining old path references + CLI reference | Fixed agents/*.md paths, added cookbook/cli-reference.md |
 
 ### Releases
 
@@ -54,9 +55,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - [x] Phase 4: Migrate getting-started docs
 - [x] Phase 5: Migrate contributing docs
 - [x] Phase 6: Migrate architecture + planning docs
-- [x] Fix broken links (PRs #47-49)
-- [ ] Create `cookbook/cli-reference.md` (new content)
-- [ ] Add SP:16 benchmark examples to `verification/`
+- [x] Fix broken links (PRs #47-51)
+- [x] Create `cookbook/cli-reference.md` (PR #51)
+- [ ] Add SP:16 table references to existing verification examples (optional enhancement)
 - [ ] Remove redirect stubs (scheduled for v1.0)
 
 ---
