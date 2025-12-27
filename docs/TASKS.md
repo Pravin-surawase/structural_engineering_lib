@@ -45,6 +45,18 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 - `.github/workflows/python-tests.yml` — Added doc drift check step
 - `scripts/bump_version.py` — Fixed api.md version pattern
 
+### CLI + AI Discoverability Sprint (TASK-069 through TASK-072) — ✅ COMPLETE
+
+**Goal:** Make CLI commands easy to discover for humans and AI without bloating README.
+**Plan:** `docs/planning/cli-ai-discovery-plan.md`
+
+| ID | Task | Agent | Est. | Status |
+|----|------|-------|------|--------|
+| **TASK-069** | Add `llms.txt` (AI summary + links) | DOCS | 30 min | ✅ Done |
+| **TASK-070** | CLI help pass (examples + required args) | DEV | 45 min | ✅ Done |
+| **TASK-071** | Sync CLI reference (`docs/cookbook/cli-reference.md`) | DOCS | 45 min | ✅ Done |
+| **TASK-072** | Cross-links from docs index/README (light touch) | DOCS | 15 min | ✅ Done |
+
 ---
 
 ## Up Next (v1.0 Docs/PM)
@@ -55,9 +67,14 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ---
 
+## In Progress (v0.9.7)
+
+- [ ] **TASK-055: Level B Serviceability** — Agent: DEV — Full deflection calc, long-term factors, cracking moment. *(implementation complete, awaiting PR)*
+
+---
+
 ## Backlog (Advanced)
 
-- [ ] **TASK-055: Level B Serviceability** — Agent: DEV — Full deflection calc, long-term factors, cracking moment.
 - [ ] **TASK-056: Column Design Module** — Agent: DEV — Axial + biaxial bending, IS 456 interaction curves.
 - [ ] **TASK-057: Slab Design Module** — Agent: DEV — One-way/two-way slabs, Table 26 coefficients.
 - [ ] **TASK-058: ETABS API Integration** — Agent: INTEGRATION — CSI OAPI access (Windows only).

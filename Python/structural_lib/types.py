@@ -68,6 +68,32 @@ class DeflectionResult:
 
 
 @dataclass
+class DeflectionLevelBResult:
+    """Level B deflection result with full curvature-based calculation.
+
+    IS 456 Cl 23.2 (Annex C) deflection calculation.
+    """
+
+    is_ok: bool
+    remarks: str
+    support_condition: SupportCondition
+    assumptions: List[str]
+    inputs: Dict[str, Any]
+    computed: Dict[str, Any]
+
+    # Key computed values (also in computed dict)
+    mcr_knm: float = 0.0  # Cracking moment (kN·m)
+    igross_mm4: float = 0.0  # Gross moment of inertia (mm^4)
+    icr_mm4: float = 0.0  # Cracked moment of inertia (mm^4)
+    ieff_mm4: float = 0.0  # Effective moment of inertia (mm^4)
+    delta_short_mm: float = 0.0  # Short-term (immediate) deflection (mm)
+    delta_long_mm: float = 0.0  # Long-term deflection (mm)
+    delta_total_mm: float = 0.0  # Total deflection (mm)
+    delta_limit_mm: float = 0.0  # Allowable deflection limit (mm)
+    long_term_factor: float = 1.0  # Creep/shrinkage multiplier
+
+
+@dataclass
 class CrackWidthResult:
     is_ok: bool
     remarks: str

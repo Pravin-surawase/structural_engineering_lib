@@ -119,6 +119,27 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-27 — CLI/AI Discoverability Pass
+
+### Decisions
+
+1. **CLI inventory lives outside README:** The full command list lives in `docs/cookbook/cli-reference.md`.
+2. **AI summary is standalone:** Added `llms.txt` to keep AI metadata out of README.
+3. **Help output matters:** CLI help text is treated as a public contract.
+
+### Changes
+
+- Added `llms.txt` with repo summary, install, CLI list, and links.
+- Refined CLI help descriptions and examples in `Python/structural_lib/__main__.py`.
+- Synced CLI reference output schema to the canonical pipeline schema (v1).
+- Added cross-links to `llms.txt` from `README.md` and `docs/README.md`.
+- Documented the work plan in `docs/planning/cli-ai-discovery-plan.md`.
+
+### Status
+
+- Tasks TASK-069 through TASK-072 complete.
+
+
 ### Status
 
 - Phase 0–4 complete.

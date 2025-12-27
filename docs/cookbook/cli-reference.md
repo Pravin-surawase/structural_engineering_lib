@@ -94,41 +94,69 @@ python -m structural_lib design beams.json -o results.json
 {
   "schema_version": 1,
   "code": "IS456",
+  "units": "IS456",
   "beams": [
     {
       "beam_id": "B1",
       "story": "Story1",
-      "geometry": {"b": 300, "D": 500, "d": 450, "span": 4000, "cover": 40},
-      "materials": {"fck": 25, "fy": 500},
-      "loads": {"Mu": 150, "Vu": 100},
+      "geometry": {
+        "b_mm": 300,
+        "D_mm": 500,
+        "d_mm": 450,
+        "span_mm": 4000,
+        "cover_mm": 40,
+        "d_dash_mm": 50
+      },
+      "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+      "loads": {"case_id": "Story1_B1", "mu_knm": 150, "vu_kn": 100},
       "flexure": {
-        "ast_req": 942.5,
-        "asc_req": 0,
-        "status": "OK",
-        "xu_d": 0.23,
-        "mu_lim": 185.5,
-        "section_type": 1
+        "ast_required_mm2": 942.5,
+        "asc_required_mm2": 0,
+        "xu_mm": 115.2,
+        "xu_max_mm": 207.0,
+        "mu_lim_knm": 185.5,
+        "xu_d_ratio": 0.26,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": true,
+        "utilization": 0.72,
+        "remarks": ""
       },
       "shear": {
-        "tau_v": 0.74,
-        "tau_c": 0.62,
-        "sv_req": 150,
-        "status": "OK"
+        "tau_v_nmm2": 0.74,
+        "tau_c_nmm2": 0.62,
+        "tau_c_max_nmm2": 2.8,
+        "vus_kn": 45.0,
+        "sv_required_mm": 150,
+        "is_safe": true,
+        "utilization": 0.65,
+        "remarks": ""
+      },
+      "serviceability": {
+        "deflection_ok": true,
+        "deflection_remarks": "",
+        "deflection_utilization": 0.6,
+        "crack_width_ok": true,
+        "crack_width_remarks": "",
+        "crack_width_utilization": 0.7
       },
       "detailing": {
         "bottom_bars": [{"count": 3, "diameter": 16, "callout": "3-16φ"}],
         "top_bars": [{"count": 2, "diameter": 12, "callout": "2-12φ"}],
         "stirrups": [{"diameter": 8, "spacing": 150, "callout": "2L-8φ@150"}],
-        "ld_tension": 752,
-        "lap_length": 564
+        "ld_tension_mm": 752,
+        "lap_length_mm": 564
       },
-      "status": "OK"
+      "is_ok": true,
+      "governing_utilization": 0.72,
+      "governing_check": "flexure",
+      "remarks": ""
     }
-  ]
+  ],
+  "summary": {"total_beams": 1, "passed": 1, "failed": 0}
 }
 ```
 
-`section_type` mapping: 1 = under-reinforced, 2 = balanced, 3 = over-reinforced.
+`section_type` values: UNDER_REINFORCED, BALANCED, OVER_REINFORCED.
 
 ---
 
@@ -208,7 +236,7 @@ python -m structural_lib dxf all_beams.json -o drawings.dxf
 - Longitudinal elevation with stirrups
 - Bar callouts and dimensions
 - Multi-beam grid layout (when multiple beams)
-- DXF R12 format (compatible with all CAD software)
+- DXF R2010 format (AC1024, compatible with most CAD software)
 
 ---
 
@@ -272,16 +300,19 @@ python -m structural_lib job <input> -o <output_dir>
 python -m structural_lib job examples/sample_job_is456.json -o output/
 
 # Results in output/:
-#   - summary.json (design results)
-#   - summary.csv (tabular format)
+#   - inputs/job.json
+#   - parsed/beam.json
+#   - parsed/cases.json
+#   - design/design_results.json
+#   - design/compliance_summary.csv
 ```
 
 **Output directory contents:**
 
 | File | Description |
 |------|-------------|
-| `summary.json` | Complete design results with all cases |
-| `summary.csv` | Tabular summary for spreadsheet import |
+| `design/design_results.json` | Complete design results with all cases |
+| `design/compliance_summary.csv` | Tabular summary for spreadsheet import |
 
 ---
 

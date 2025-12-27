@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Level B Serviceability (TASK-055):**
+  - `check_deflection_level_b()` — Full curvature-based deflection per IS 456 Cl 23.2 / Annex C
+  - `calculate_cracking_moment()` — Cracking moment $M_{cr}$
+  - `calculate_gross_moment_of_inertia()` — $I_{gross} = bD^3/12$
+  - `calculate_cracked_moment_of_inertia()` — $I_{cr}$ using transformed section
+  - `calculate_effective_moment_of_inertia()` — Branson's equation for $I_{eff}$
+  - `get_long_term_deflection_factor()` — Creep/shrinkage per Cl 23.2.1
+  - `calculate_short_term_deflection()` — Elastic analysis
+  - `DeflectionLevelBResult` dataclass for structured outputs
+  - 16 new tests for Level B serviceability functions
 - **Release Automation Sprint:**
   - `scripts/release.py` — One-command release helper with version bump and checklist
   - `scripts/check_doc_versions.py` — Doc version drift detector with auto-fix

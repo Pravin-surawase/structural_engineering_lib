@@ -10,7 +10,7 @@
 
 **Run 500 ETABS beams → get compliant rebar + DXF + schedules in minutes.**
 
-[Quick Start](#30-second-user-demo-no-clone-required) • [Documentation](docs/README.md) • [Examples](Python/examples/) • [API Reference](docs/reference/api.md)
+[Quick Start](#30-second-user-demo-no-clone-required) • [Documentation](docs/README.md) • [AI Summary](llms.txt) • [Examples](Python/examples/) • [API Reference](docs/reference/api.md)
 
 </div>
 

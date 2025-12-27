@@ -244,11 +244,11 @@ def check_beam_ductility(
 
 ---
 
-## 5. Serviceability Module (`serviceability.py`) (v0.8 Level A)
+## 5. Serviceability Module (`serviceability.py`) (v0.8 Level A + v0.9.7 Level B)
 
-**Status:** New in v0.8 (Python + VBA parity implemented).
+**Status:** Level A (span/depth ratio) in v0.8, Level B (curvature-based deflection) in v0.9.7.
 
-### 5.1 Deflection Check (Span/Depth Method)
+### 5.1 Deflection Check (Span/Depth Method) — Level A
 
 **Units:**
 - `span_mm`, `d_mm`: **mm**
@@ -305,7 +305,110 @@ def check_crack_width(
 **Return Types:**
 - `DeflectionResult`: contains `is_ok`, `remarks`, `support_condition`, and `inputs/computed/assumptions` payloads.
 - `CrackWidthResult`: contains `is_ok`, `remarks`, `exposure_class`, and `inputs/computed/assumptions` payloads.
+### 5.3 Deflection Check (Curvature-Based) — Level B (v0.9.7+)
 
+**Status:** New in v0.9.7. Full curvature-based deflection calculation per IS 456 Cl 23.2 / Annex C.
+
+**Units:**
+- Dimensions: **mm**
+- Moments: **kN·m**
+- Areas: **mm²**
+- Stresses: **N/mm²**
+
+**Python:**
+```python
+def check_deflection_level_b(
+    *,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    ma_service_knm: float,
+    ast_mm2: float,
+    fck_nmm2: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+    asc_mm2: float = 0.0,
+    duration_months: int = 60,
+    deflection_limit_ratio: float = 250.0,
+    es_nmm2: float = 200000.0,
+) -> DeflectionLevelBResult
+```
+
+**Behavior (Level B):**
+- Computes cracking moment $M_{cr}$ per IS 456 Annex C
+- Calculates gross moment of inertia $I_{gross} = bD^3/12$
+- Calculates cracked moment of inertia $I_{cr}$ using transformed section analysis
+- Computes effective moment of inertia $I_{eff}$ using Branson's equation:
+  $$I_{eff} = I_{cr} + (I_{gross} - I_{cr}) \cdot \left(\frac{M_{cr}}{M_a}\right)^3$$
+- Determines short-term deflection using elastic theory
+- Applies long-term factor per IS 456 Cl 23.2.1 for creep/shrinkage
+- Checks against limit $L/250$ (configurable)
+
+**Return Type:**
+- `DeflectionLevelBResult`: dataclass containing:
+  - `mcr_knm`: Cracking moment (kN·m)
+  - `igross_mm4`: Gross moment of inertia (mm⁴)
+  - `icr_mm4`: Cracked moment of inertia (mm⁴)
+  - `ieff_mm4`: Effective moment of inertia (mm⁴)
+  - `delta_short_mm`: Short-term deflection (mm)
+  - `delta_long_mm`: Long-term deflection (mm)
+  - `delta_total_mm`: Total deflection (mm)
+  - `delta_limit_mm`: Allowable deflection (mm)
+  - `long_term_factor`: Long-term multiplier
+  - `is_ok`: Whether deflection is within limit
+  - `remarks`: Status description
+
+### 5.4 Level B Helper Functions
+
+```python
+def calculate_cracking_moment(
+    *,
+    b_mm: float,
+    D_mm: float,
+    fck_nmm2: float,
+) -> float  # Returns Mcr in kN·m
+
+def calculate_gross_moment_of_inertia(
+    *,
+    b_mm: float,
+    D_mm: float,
+) -> float  # Returns Igross in mm⁴
+
+def calculate_cracked_moment_of_inertia(
+    *,
+    b_mm: float,
+    d_mm: float,
+    ast_mm2: float,
+    fck_nmm2: float,
+    asc_mm2: float = 0.0,
+    d_dash_mm: float = 50.0,
+    es_nmm2: float = 200000.0,
+) -> float  # Returns Icr in mm⁴
+
+def calculate_effective_moment_of_inertia(
+    *,
+    igross_mm4: float,
+    icr_mm4: float,
+    mcr_knm: float,
+    ma_service_knm: float,
+) -> float  # Returns Ieff in mm⁴
+
+def get_long_term_deflection_factor(
+    *,
+    duration_months: int = 60,
+    asc_mm2: float = 0.0,
+    ast_mm2: float = 0.0,
+) -> float  # Returns multiplier (typically 1.5 to 2.0)
+
+def calculate_short_term_deflection(
+    *,
+    span_mm: float,
+    ma_service_knm: float,
+    ec_nmm2: float,
+    ieff_mm4: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+) -> float  # Returns delta_short in mm
+```
 ---
 ## 6. Compliance Checker (`compliance.py`) (v0.8+)
 **Goal:** One-click verdict across checks with clear “why fail” remarks.

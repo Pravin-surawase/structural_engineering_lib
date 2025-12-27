@@ -74,3 +74,6 @@ Docs that mention CLI/API usage (primary)
   `docs/getting-started/beginners-guide.md`, `docs/getting-started/python-quickstart.md`.
 - Legacy CLI mentions: `docs/specs/ETABS_INTEGRATION.md`, `docs/specs/v0.9_JOB_SCHEMA.md`,
   `docs/RELEASES.md`, `docs/planning/current-state-and-goals.md`, `docs/TASKS.md`.
+
+Related plans
+- `docs/planning/cli-ai-discovery-plan.md` — AI-friendly CLI discovery without README bloat.
