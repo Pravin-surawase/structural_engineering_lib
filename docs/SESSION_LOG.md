@@ -196,7 +196,63 @@ Architect agent approved the implementation. PR is ready for merge once CI passe
 
 ### Next Actions
 
-- [ ] Wait for CI to pass on PR #55
-- [ ] Merge PR #55 (user approval pending)
-- [ ] Create follow-up task: Migrate job_runner to use beam_pipeline for case design
-- [ ] Create follow-up task: Extract shared units constants
+- [x] Wait for CI to pass on PR #55
+- [x] Merge PR #55 (squashed to main, commit `c77c6c7`)
+- [x] Create follow-up task: Migrate job_runner to use beam_pipeline for case design
+- [x] Create follow-up task: Extract shared units constants
+
+---
+
+## 2025-12-27 — Architecture Bugfixes (Post-Review)
+
+### Background
+
+After merging PR #55, additional review identified three bugs in the beam_pipeline implementation:
+
+| Severity | Issue | Impact |
+|----------|-------|--------|
+| HIGH | `detailing: null` in JSON crashes BBS/DXF | `AttributeError` on valid outputs |
+| MEDIUM | `validated_units` return value unused | Non-canonical units in output |
+| LOW | Mixed-case units fail validation | Poor UX for case variations |
+
+### Fixes Applied (TASK-062, 063, 064)
+
+**TASK-062 (HIGH): Fix detailing `null` crash**
+- File: `__main__.py`
+- Change: `beam.get("detailing", {})` → `beam.get("detailing") or {}`
+- Reason: `dict.get(key, default)` returns `None` if value is explicitly `null`, not the default
+
+**TASK-063 (MEDIUM): Use canonical units in output**
+- File: `job_runner.py`
+- Change: Store `validate_units()` return value, use throughout downstream code
+- Before: `units = job.get("units")` → `validate_units(units)` (discarded return)
+- After: `units_input = job.get("units")` → `units = validate_units(units_input)` (canonical form used)
+
+**TASK-064 (LOW): Case-insensitive units validation**
+- File: `beam_pipeline.py`
+- Change: Normalize to uppercase, remove spaces before comparison
+- Now accepts: `"Is456"`, `"IS 456"`, `"is 456"`, `"IS456"`, etc.
+
+### Tests Added
+
+| File | Tests Added | Purpose |
+|------|-------------|---------|
+| `test_beam_pipeline.py` | `test_validate_units_mixed_case` | Verify mixed-case variants work |
+| `test_cli.py` | `TestExtractBeamParamsFromSchema` (3 tests) | Verify null/missing handling |
+
+### Test Results
+
+```
+1714 passed, 95 skipped in 1.02s
+```
+
+### Files Changed
+
+- `Python/structural_lib/__main__.py`
+- `Python/structural_lib/job_runner.py`
+- `Python/structural_lib/beam_pipeline.py`
+- `Python/tests/test_beam_pipeline.py`
+- `Python/tests/test_cli.py`
+- `docs/TASKS.md`
+- `docs/SESSION_LOG.md`
+

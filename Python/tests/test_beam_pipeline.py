@@ -30,6 +30,13 @@ class TestUnitsValidation:
         assert beam_pipeline.validate_units("is456") == "IS456"
         assert beam_pipeline.validate_units("IS456") == "IS456"
 
+    def test_validate_units_mixed_case(self):
+        """Mixed case units should be accepted (case-insensitive fix)."""
+        assert beam_pipeline.validate_units("Is456") == "IS456"
+        assert beam_pipeline.validate_units("iS456") == "IS456"
+        assert beam_pipeline.validate_units("Is 456") == "IS456"
+        assert beam_pipeline.validate_units("is 456") == "IS456"
+
     def test_validate_units_alternate_formats(self):
         """Alternate unit format strings should work."""
         # These are accepted per the implementation

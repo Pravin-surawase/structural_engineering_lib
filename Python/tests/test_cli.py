@@ -751,3 +751,58 @@ def test_integration_multi_beam_workflow(tmp_path):
     assert "B1" in member_ids
     assert "B2" in member_ids
     assert "B3" in member_ids
+
+
+class TestExtractBeamParamsFromSchema:
+    """Tests for _extract_beam_params_from_schema helper function."""
+
+    def test_handles_detailing_none(self):
+        """Should handle explicit null detailing without crashing."""
+        # Simulates JSON with "detailing": null
+        beam = {
+            "beam_id": "B1",
+            "story": "Story1",
+            "geometry": {"b_mm": 300, "D_mm": 500, "d_mm": 450},
+            "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+            "flexure": {"ast_required_mm2": 1000},
+            "detailing": None,  # Explicit null
+        }
+
+        params = cli_main._extract_beam_params_from_schema(beam)
+
+        # Should not crash, detailing should be empty dict
+        assert params["detailing"] == {}
+        assert params["ld_tension"] is None
+        assert params["lap_length"] is None
+
+    def test_handles_detailing_missing(self):
+        """Should handle missing detailing key."""
+        beam = {
+            "beam_id": "B1",
+            "story": "Story1",
+            "geometry": {"b_mm": 300, "D_mm": 500, "d_mm": 450},
+            "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+            "flexure": {"ast_required_mm2": 1000},
+            # No detailing key
+        }
+
+        params = cli_main._extract_beam_params_from_schema(beam)
+        assert params["detailing"] == {}
+
+    def test_handles_geometry_null(self):
+        """Should handle null geometry without crashing."""
+        beam = {
+            "beam_id": "B1",
+            "story": "Story1",
+            "geometry": None,
+            "materials": None,
+            "flexure": None,
+            "detailing": None,
+        }
+
+        params = cli_main._extract_beam_params_from_schema(beam)
+
+        # Should use defaults
+        assert params["b"] == 300.0
+        assert params["D"] == 500.0
+        assert params["fck"] == 25.0
