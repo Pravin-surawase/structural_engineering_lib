@@ -45,7 +45,7 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 - `.github/workflows/python-tests.yml` — Added doc drift check step
 - `scripts/bump_version.py` — Fixed api.md version pattern
 
-### CLI + AI Discoverability Sprint (TASK-069 through TASK-072) — ⏳ IN PROGRESS
+### CLI + AI Discoverability Sprint (TASK-069 through TASK-072) — ✅ COMPLETE
 
 **Goal:** Make CLI commands easy to discover for humans and AI without bloating README.
 **Plan:** `docs/planning/cli-ai-discovery-plan.md`

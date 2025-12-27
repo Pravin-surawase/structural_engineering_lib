@@ -13,6 +13,7 @@ python -m structural_lib job job.json -o ./output
 ```
 For VS Code AI-agent work, start with:
 - [AI_CONTEXT_PACK.md](AI_CONTEXT_PACK.md)
+- [AI summary](../llms.txt)
 
 ---
 

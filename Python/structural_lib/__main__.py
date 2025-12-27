@@ -501,11 +501,13 @@ def _build_parser() -> argparse.ArgumentParser:
         "design",
         help="Run beam design from CSV/JSON input",
         description="""
-        Run beam design calculations from CSV or JSON input file.
+        Run IS456 beam design from CSV or JSON input and emit results JSON
+        (schema_version=1, units=IS456).
         
         Examples:
           python -m structural_lib design input.csv -o results.json
           python -m structural_lib design beams.json -o design_output.json
+          python -m structural_lib design input.csv  # prints JSON to stdout
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -522,11 +524,13 @@ def _build_parser() -> argparse.ArgumentParser:
         "bbs",
         help="Generate bar bending schedule from design results",
         description="""
-        Generate bar bending schedule (BBS) from design results JSON.
+        Generate bar bending schedule (BBS) from design results JSON
+        produced by the design pipeline.
         
         Examples:
           python -m structural_lib bbs results.json -o bbs.csv
           python -m structural_lib bbs results.json -o bbs.json
+          python -m structural_lib bbs results.json  # prints CSV to stdout
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -563,7 +567,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "job",
         help="Run complete job from JSON specification",
         description="""
-        Run a complete job including design, analysis, and report generation.
+        Run a complete job from JSON specification and write outputs to a folder.
         
         Examples:
           python -m structural_lib job job.json -o output/
