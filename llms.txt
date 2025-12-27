@@ -16,6 +16,7 @@ CLI (python -m structural_lib)
 - bbs     : generate bar bending schedule from results JSON
 - dxf     : generate DXF drawings from results JSON (requires ezdxf)
 - job     : run job spec JSON -> output folder
+Command discovery: run python -m structural_lib --help and python -m structural_lib <cmd> --help for full options.
 
 Docs (start here)
 - docs/README.md

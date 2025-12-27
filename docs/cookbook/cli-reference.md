@@ -43,6 +43,10 @@ python -m structural_lib design <input> [-o <output>]
 | `input` | Yes | Input CSV or JSON file with beam parameters |
 | `-o, --output` | No | Output JSON file (prints to stdout if omitted) |
 
+**Outputs:**
+- `results.json` (JSON) when `-o/--output` is provided.
+- JSON to stdout when `-o/--output` is omitted.
+
 **Input CSV format:**
 
 ```csv
@@ -173,6 +177,11 @@ python -m structural_lib bbs <input> [-o <output>]
 | `input` | Yes | Design results JSON (output from `design` command) |
 | `-o, --output` | No | Output CSV or JSON file (prints CSV to stdout if omitted) |
 
+**Outputs:**
+- `bbs.csv` (CSV) when `-o` ends with `.csv`.
+- `bbs.json` (JSON) when `-o` ends with `.json`.
+- CSV to stdout when `-o/--output` is omitted.
+
 **Examples:**
 
 ```bash
@@ -220,6 +229,9 @@ python -m structural_lib dxf <input> -o <output>
 | `input` | Yes | Design results JSON |
 | `-o, --output` | **Yes** | Output DXF file path |
 
+**Outputs:**
+- DXF file written to the path provided by `-o/--output` (R2010/AC1024).
+
 **Examples:**
 
 ```bash
@@ -252,6 +264,14 @@ python -m structural_lib job <input> -o <output_dir>
 |----------|----------|-------------|
 | `input` | Yes | Job specification JSON file |
 | `-o, --output` | **Yes** | Output directory for all results |
+
+**Outputs:**
+- Output directory with deterministic structure:
+  - `inputs/job.json`
+  - `parsed/beam.json`
+  - `parsed/cases.json`
+  - `design/design_results.json`
+  - `design/compliance_summary.csv`
 
 **Job JSON format:**
 
@@ -377,6 +397,7 @@ python -m structural_lib job --help
 |------|---------|
 | 0 | Success |
 | 1 | Error (file not found, invalid input, calculation failure) |
+| 2 | CLI usage error (argparse: missing args, invalid flags) |
 
 ---
 

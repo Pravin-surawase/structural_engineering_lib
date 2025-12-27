@@ -211,8 +211,13 @@ class TestShearEdgeCases:
         grades = [20, 25, 30, 35, 40]
         for fck in grades:
             result = shear.design_shear(
-                vu_kn=100.0, b=250.0, d=450.0, fck=float(fck), fy=415.0,
-                asv=157.0, pt=0.5
+                vu_kn=100.0,
+                b=250.0,
+                d=450.0,
+                fck=float(fck),
+                fy=415.0,
+                asv=157.0,
+                pt=0.5,
             )
             assert result.tc_max > 0.0
             assert result.tc > 0.0
