@@ -296,7 +296,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Outputs:**
     - `Python/tests/data/parity_test_vectors.json` — 20 vectors covering flexure, shear, detailing, serviceability, BBS
     - `Python/tests/test_parity_vectors.py` — parametrized tests with tolerance rules
-    - `docs/VERIFICATION_EXAMPLES.md` — benchmark verification pack
+    - `docs/verification/examples.md` — benchmark verification pack
   - **Checklist:**
     - [x] Create shared test vector set (JSON) with expected outputs + tolerances
     - [x] Python: parametrized tests load vectors and assert outputs
