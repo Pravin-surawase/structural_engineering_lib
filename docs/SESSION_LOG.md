@@ -123,3 +123,80 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 - Phase 0–4 complete.
 - Phase 5 pending (final summary check).
+
+---
+
+## 2025-12-28 — Architecture Review: beam_pipeline Implementation
+
+### Background
+
+Implemented recommendations from `docs/architecture/architecture-review-2025-12-27.md`:
+- TASK-059: Canonical beam design pipeline
+- TASK-060: Schema v1 with explicit version field
+- TASK-061: Units validation at application layer
+
+### PR
+
+| PR | Title | Branch | Status |
+|----|-------|--------|--------|
+| #55 | feat: implement architecture recommendations - beam_pipeline | `feat/architecture-beam-pipeline` | Open (CI pending) |
+
+### Files Changed
+
+| File | Change |
+|------|--------|
+| `Python/structural_lib/beam_pipeline.py` | **NEW** - 528 lines, canonical pipeline |
+| `Python/structural_lib/__main__.py` | Refactored to use `beam_pipeline.design_single_beam()` |
+| `Python/structural_lib/job_runner.py` | Added units validation via `beam_pipeline.validate_units()` |
+| `Python/tests/test_beam_pipeline.py` | **NEW** - 28 tests for pipeline |
+| `Python/tests/test_cli.py` | Updated for new schema keys |
+| `docs/TASKS.md` | Added TASK-059/060/061 |
+| `docs/planning/next-session-brief.md` | Updated with architecture work |
+
+### Architect Agent Review
+
+**Reviewer:** Architect Agent (subagent invocation)  
+**Verdict:** ✅ **APPROVED**  
+**Score:** 4.5 / 5
+
+#### Strengths Identified
+
+1. **Layer boundaries respected** — `beam_pipeline.py` correctly lives in application layer, imports only from core layer, no I/O code
+2. **Single source of truth achieved** — All beam design flows through `design_single_beam()` and `design_multiple_beams()`
+3. **Canonical schema well-designed** — `SCHEMA_VERSION = 1`, structured dataclasses (`BeamDesignOutput`, `MultiBeamOutput`), explicit units dict
+4. **Units validation robust** — `validate_units()` validates at application boundary before core calculations, raises `UnitsValidationError` with clear messages
+5. **Comprehensive test coverage** — 28 tests covering units validation, schema structure, single/multi-beam design, edge cases
+
+#### Minor Concerns (Non-blocking)
+
+1. **Duplicate units constants** — `VALID_UNITS` dict appears in both `beam_pipeline.py` and `api.py` (DRY violation)
+2. **Partial migration** — `job_runner.py` still uses `api.check_beam_is456()` directly for case design instead of `beam_pipeline`
+3. **Silent error swallowing** — Detailing exceptions are caught and logged but not surfaced in output
+
+#### Recommendations for Follow-up
+
+| Priority | Recommendation |
+|----------|----------------|
+| P1 | Migrate `job_runner.py` to use `beam_pipeline.design_single_beam()` for case design |
+| P2 | Extract `VALID_UNITS` to `constants.py` as shared source |
+| P2 | Add `warnings` field to `BeamDesignOutput` for surfacing non-fatal issues |
+
+#### VBA Parity Assessment
+
+No immediate VBA changes required. `beam_pipeline.py` is Python-only orchestration layer. VBA equivalent (`M08_API.CheckBeam`) maintains its own flow.
+
+### CI Fixes Applied
+
+1. **Black formatting** — Auto-fixed by `.github/workflows/auto-format.yml` (4 files reformatted)
+2. **Ruff lint** — Fixed unused variable `validated_units` in `job_runner.py` (commit `7874ae2`)
+
+### Decision
+
+Architect agent approved the implementation. PR is ready for merge once CI passes. Minor concerns documented as future tasks.
+
+### Next Actions
+
+- [ ] Wait for CI to pass on PR #55
+- [ ] Merge PR #55 (user approval pending)
+- [ ] Create follow-up task: Migrate job_runner to use beam_pipeline for case design
+- [ ] Create follow-up task: Extract shared units constants

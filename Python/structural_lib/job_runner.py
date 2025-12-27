@@ -22,6 +22,7 @@ from typing import Any, Dict, Iterable, Mapping
 
 from . import api
 from . import compliance
+from . import beam_pipeline
 
 
 def load_job_json(path: str | Path) -> Dict[str, Any]:
@@ -86,6 +87,12 @@ def run_job_is456(
         raise ValueError("v1 runner supports only code='IS456'")
 
     units = str(job.get("units", "") or "")
+
+    # Validate units at application boundary (TASK-061)
+    try:
+        beam_pipeline.validate_units(units)
+    except beam_pipeline.UnitsValidationError as e:
+        raise ValueError(f"units validation failed: {e}") from e
 
     job_id = str(job.get("job_id", "") or "")
     if job_id.strip() == "":

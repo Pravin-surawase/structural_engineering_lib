@@ -198,6 +198,21 @@ If you want to resume quickly without re-reading the repo:
 ### Repo hygiene & shipping
 - Opened/merged PRs via GitHub CLI (repeatable workflow).
 - Merged Dependabot grouping config (reduces PR churn; consistent labeling/prefix).
+
+---
+
+## Handoff Addendum (Latest)
+
+**What changed last:** Architecture review was completed and converted into actionable tasks.  
+**Where to read:** `docs/architecture/architecture-review-2025-12-27.md`
+
+**Tasks added (see `docs/TASKS.md`):**
+- TASK-059: Shared Beam Pipeline (CLI/job/Excel use same app-layer pipeline)
+- TASK-060: Canonical Result Schema v1 (versioned JSON schema, align outputs/docs)
+- TASK-061: Units Validation at App Layer (CLI/job/Excel validation + docs)
+
+**Log entry:** `docs/SESSION_LOG.md` includes the architecture tasks addition.  
+**No code changes** were made during this addendum.
 - Merged a grouped Dependabot PR updating CI/CodeQL actions to current majors.
 
 ### Governance & protection

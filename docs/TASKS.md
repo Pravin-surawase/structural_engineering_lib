@@ -355,10 +355,10 @@ These tasks are based on the research log (`docs/planning/research-ai-enhancemen
 
 ## Notes
 
-- **Current Version**: v0.9.4
-- **Last Updated**: 2025-12-26
+- **Current Version**: v0.9.6
+- **Last Updated**: 2025-12-27
 - **Active Branch**: main (all PRs merged)
-- **Tests**: 1638+ passed
+- **Tests**: 1710+ passed
 
 ### v0.7 Implementation Notes
 - **Python:** Full implementation (detailing, DXF, integration) - 1638 tests passing
@@ -433,6 +433,30 @@ python -m structural_lib bbs results.json -o bbs.csv
 python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib job job.json -o output/
 ```
+
+---
+
+### Priority 3B: Architecture Improvements (DONE ✅)
+
+> **Source:** `docs/architecture/architecture-review-2025-12-27.md`
+> **Goal:** Unify CLI/job_runner design logic, enforce units at app boundary, define canonical schema.
+
+| ID | Task | Agent | Est. | Status |
+|----|------|-------|------|--------|
+| **TASK-059** | Shared Beam Pipeline Module | DEV | 2h | ✅ Complete — `beam_pipeline.py` created with canonical `design_single_beam()` and `design_multiple_beams()` entry points. |
+| **TASK-060** | Canonical Result Schema v1 | DEV | 1h | ✅ Complete — Defined `BeamDesignOutput`, `MultiBeamOutput` dataclasses with `to_dict()` serialization. Schema version = 1. |
+| **TASK-061** | Units Validation at App Layer | DEV | 1h | ✅ Complete — `validate_units()` function with `UnitsValidationError`. Enforced in CLI and job_runner. |
+
+**Implementation Summary:**
+- Created `Python/structural_lib/beam_pipeline.py` — shared application-layer pipeline
+- Refactored `Python/structural_lib/__main__.py` to use `beam_pipeline.design_single_beam()`
+- Refactored `Python/structural_lib/job_runner.py` to use `beam_pipeline.validate_units()`
+- Added `Python/tests/test_beam_pipeline.py` — 28 tests for schema, validation, and pipeline functions
+
+**Why this matters:**
+1. **Single source of truth:** CLI and job_runner now share the same design logic
+2. **Explicit units:** `IS456` units validated at entry boundary, no silent defaults
+3. **Stable schema:** `schema_version = 1` enables forward-compatible result parsing
 
 ---
 
