@@ -644,19 +644,85 @@ def test_integration_multi_beam_workflow(tmp_path):
     csv_path = tmp_path / "multi_beams.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "BeamID", "Story", "b", "D", "Span", "Cover", "fck", "fy",
-            "Mu", "Vu", "Ast_req", "Asc_req", "Stirrup_Dia", "Stirrup_Spacing", "Status"
-        ])
+        writer.writerow(
+            [
+                "BeamID",
+                "Story",
+                "b",
+                "D",
+                "Span",
+                "Cover",
+                "fck",
+                "fy",
+                "Mu",
+                "Vu",
+                "Ast_req",
+                "Asc_req",
+                "Stirrup_Dia",
+                "Stirrup_Spacing",
+                "Status",
+            ]
+        )
         # Small beam
-        writer.writerow(["B1", "GF", "230", "400", "3000", "40", "25", "500",
-                        "80", "50", "500", "0", "8", "150", "OK"])
+        writer.writerow(
+            [
+                "B1",
+                "GF",
+                "230",
+                "400",
+                "3000",
+                "40",
+                "25",
+                "500",
+                "80",
+                "50",
+                "500",
+                "0",
+                "8",
+                "150",
+                "OK",
+            ]
+        )
         # Medium beam
-        writer.writerow(["B2", "1F", "300", "500", "4000", "40", "25", "500",
-                        "150", "100", "900", "0", "8", "150", "OK"])
+        writer.writerow(
+            [
+                "B2",
+                "1F",
+                "300",
+                "500",
+                "4000",
+                "40",
+                "25",
+                "500",
+                "150",
+                "100",
+                "900",
+                "0",
+                "8",
+                "150",
+                "OK",
+            ]
+        )
         # Large beam
-        writer.writerow(["B3", "1F", "400", "700", "6000", "50", "30", "500",
-                        "400", "200", "2500", "500", "10", "100", "OK"])
+        writer.writerow(
+            [
+                "B3",
+                "1F",
+                "400",
+                "700",
+                "6000",
+                "50",
+                "30",
+                "500",
+                "400",
+                "200",
+                "2500",
+                "500",
+                "10",
+                "100",
+                "OK",
+            ]
+        )
 
     design_output = tmp_path / "design.json"
     bbs_output = tmp_path / "bbs.csv"
