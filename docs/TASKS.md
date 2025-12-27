@@ -27,7 +27,23 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Active
 
-_(none — pick from Up Next)_
+### Release Automation Sprint (TASK-065 through TASK-068) — ✅ COMPLETE
+
+**Goal:** Automate release workflow to prevent version drift and missed updates.
+
+| ID | Task | Agent | Est. | Status |
+|----|------|-------|------|--------|
+| **TASK-065** | Release helper script | DEVOPS | 30 min | ✅ Done |
+| **TASK-066** | Doc drift check script | DEVOPS | 30 min | ✅ Done |
+| **TASK-067** | Pre-commit hook config | DEVOPS | 15 min | ✅ Done |
+| **TASK-068** | CI release-check job | DEVOPS | 30 min | ✅ Done |
+
+**Deliverables (all merged in PR #59):**
+- `scripts/release.py` — One-command release helper
+- `scripts/check_doc_versions.py` — Validate no stale versions
+- `.pre-commit-config.yaml` — Enhanced with ruff, doc check hooks
+- `.github/workflows/python-tests.yml` — Added doc drift check step
+- `scripts/bump_version.py` — Fixed api.md version pattern
 
 ---
 

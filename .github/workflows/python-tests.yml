@@ -46,6 +46,10 @@ jobs:
         run: |
           python -m mypy
 
+      - name: Doc version drift check
+        run: |
+          python scripts/check_doc_versions.py --ci
+
   pytest:
     runs-on: ubuntu-latest
     permissions:

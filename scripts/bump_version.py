@@ -74,6 +74,7 @@ DOC_DATE_FILES = {
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/reference/api.md": [
+        (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/verification/examples.md": [

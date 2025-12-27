@@ -1,15 +1,50 @@
+# Pre-commit hooks for structural_engineering_lib
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+
 repos:
+  # General file hygiene
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
       - id: check-yaml
       - id: check-toml
+      - id: check-json
       - id: end-of-file-fixer
+        exclude: ^(VBA/|Excel/)
       - id: trailing-whitespace
+        exclude: ^(VBA/|Excel/)
       - id: mixed-line-ending
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=500']
 
+  # Python formatting
   - repo: https://github.com/psf/black
     rev: 25.9.0
     hooks:
       - id: black
         language_version: python3
+        files: ^Python/
+
+  # Python linting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        files: ^Python/
+
+  # Doc version drift check (local script, non-blocking)
+  - repo: local
+    hooks:
+      - id: check-doc-versions
+        name: Check doc version drift
+        entry: python scripts/check_doc_versions.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+
+# CI note: pre-commit hooks run locally only.
+# CI has separate lint/format checks in .github/workflows/python-tests.yml
