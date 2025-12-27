@@ -607,12 +607,15 @@ def test_integration_design_output_has_detailing(sample_csv_file, tmp_path):
         assert "bottom_bars" in det
         assert "top_bars" in det
         assert "stirrups" in det
-        assert "ld_tension" in det
-        assert "lap_length" in det
+        # Schema v1 uses _mm suffix for lengths
+        assert "ld_tension_mm" in det or "ld_tension" in det
+        assert "lap_length_mm" in det or "lap_length" in det
         # Check they have actual values
         assert len(det["bottom_bars"]) > 0
-        assert det["ld_tension"] > 0
-        assert det["lap_length"] > 0
+        ld = det.get("ld_tension_mm") or det.get("ld_tension", 0)
+        lap = det.get("lap_length_mm") or det.get("lap_length", 0)
+        assert ld > 0
+        assert lap > 0
 
 
 def test_integration_bbs_has_all_bar_types(sample_csv_file, tmp_path):

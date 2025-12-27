@@ -21,6 +21,7 @@ from typing import List
 
 from . import api
 from . import bbs
+from . import beam_pipeline
 from . import detailing
 from . import dxf_export
 from . import excel_integration
@@ -31,8 +32,8 @@ def cmd_design(args: argparse.Namespace) -> int:
     """
     Run beam design from CSV/JSON input file.
 
-    Reads beam parameters from CSV or JSON, performs IS456 design calculations,
-    and outputs design results in JSON format.
+    Reads beam parameters from CSV or JSON, performs IS456 design calculations
+    using the canonical beam_pipeline, and outputs design results in JSON format.
     """
     input_path = Path(args.input)
 
@@ -57,7 +58,7 @@ def cmd_design(args: argparse.Namespace) -> int:
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
 
-        # Process each beam and collect results
+        # Process each beam using canonical pipeline
         results = []
         for beam in beams:
             print(f"  Processing {beam.story}/{beam.beam_id}...", file=sys.stderr)
@@ -65,119 +66,44 @@ def cmd_design(args: argparse.Namespace) -> int:
             # Calculate stirrup area (2-legged)
             asv_mm2 = 3.14159 * (beam.stirrup_dia / 2) ** 2 * 2
 
-            # Run complete design using API
-            case_result = api.design_beam_is456(
+            # Use canonical pipeline for design
+            result = beam_pipeline.design_single_beam(
                 units="IS456",
-                case_id=f"{beam.story}_{beam.beam_id}",
+                beam_id=beam.beam_id,
+                story=beam.story,
                 b_mm=beam.b,
                 D_mm=beam.D,
                 d_mm=beam.d,
-                d_dash_mm=beam.cover,
+                span_mm=beam.span,
+                cover_mm=beam.cover,
                 fck_nmm2=beam.fck,
                 fy_nmm2=beam.fy,
                 mu_knm=beam.Mu,
                 vu_kn=beam.Vu,
+                case_id=f"{beam.story}_{beam.beam_id}",
+                d_dash_mm=beam.cover,
                 asv_mm2=asv_mm2,
+                include_detailing=True,
+                stirrup_dia_mm=beam.stirrup_dia,
+                stirrup_spacing_start_mm=beam.stirrup_spacing,
+                stirrup_spacing_mid_mm=beam.stirrup_spacing * 1.33,
+                stirrup_spacing_end_mm=beam.stirrup_spacing,
             )
 
-            # Create detailing
-            detailing_result = detailing.create_beam_detailing(
-                beam_id=beam.beam_id,
-                story=beam.story,
-                b=beam.b,
-                D=beam.D,
-                span=beam.span,
-                cover=beam.cover,
-                fck=beam.fck,
-                fy=beam.fy,
-                ast_start=beam.Ast_req,
-                ast_mid=beam.Ast_req,
-                ast_end=beam.Ast_req,
-                asc_start=beam.Asc_req,
-                asc_mid=beam.Asc_req,
-                asc_end=beam.Asc_req,
-                stirrup_dia=beam.stirrup_dia,
-                stirrup_spacing_start=beam.stirrup_spacing,
-                stirrup_spacing_mid=beam.stirrup_spacing * 1.33,
-                stirrup_spacing_end=beam.stirrup_spacing,
-            )
+            results.append(result)
 
-            # Compile result
-            beam_result = {
-                "beam_id": beam.beam_id,
-                "story": beam.story,
-                "geometry": {
-                    "b": beam.b,
-                    "D": beam.D,
-                    "d": beam.d,
-                    "span": beam.span,
-                    "cover": beam.cover,
-                },
-                "materials": {
-                    "fck": beam.fck,
-                    "fy": beam.fy,
-                },
-                "loads": {
-                    "Mu": beam.Mu,
-                    "Vu": beam.Vu,
-                },
-                "flexure": {
-                    "ast_req": case_result.flexure.ast_required,
-                    "asc_req": case_result.flexure.asc_required,
-                    "status": "OK" if case_result.flexure.is_safe else "FAIL",
-                    "xu_d": case_result.flexure.xu / beam.d if beam.d > 0 else 0,
-                    "mu_lim": case_result.flexure.mu_lim,
-                    "section_type": (
-                        case_result.flexure.section_type.value
-                        if hasattr(case_result.flexure.section_type, "value")
-                        else str(case_result.flexure.section_type)
-                    ),
-                },
-                "shear": {
-                    "tau_v": case_result.shear.tv,
-                    "tau_c": case_result.shear.tc,
-                    "sv_req": case_result.shear.spacing,
-                    "status": "OK" if case_result.shear.is_safe else "FAIL",
-                },
-                "detailing": {
-                    "bottom_bars": [
-                        {
-                            "count": bar.count,
-                            "diameter": bar.diameter,
-                            "callout": bar.callout(),
-                        }
-                        for bar in detailing_result.bottom_bars
-                    ],
-                    "top_bars": [
-                        {
-                            "count": bar.count,
-                            "diameter": bar.diameter,
-                            "callout": bar.callout(),
-                        }
-                        for bar in detailing_result.top_bars
-                    ],
-                    "stirrups": [
-                        {
-                            "diameter": stir.diameter,
-                            "spacing": stir.spacing,
-                            "callout": stir.callout(),
-                        }
-                        for stir in detailing_result.stirrups
-                    ],
-                    "ld_tension": detailing_result.ld_tension,
-                    "lap_length": detailing_result.lap_length,
-                },
-                "status": "OK" if case_result.is_ok else "FAIL",
-            }
-
-            results.append(beam_result)
-
-        # Prepare output
-        output_data = {
-            "schema_version": 1,
-            "code": "IS456",
-            "beams": results,
-        }
+        # Build multi-beam output using canonical schema
+        output = beam_pipeline.MultiBeamOutput(
+            schema_version=beam_pipeline.SCHEMA_VERSION,
+            code="IS456",
+            units="IS456",
+            beams=results,
+            summary={
+                "total_beams": len(results),
+                "passed": sum(1 for r in results if r.is_ok),
+                "failed": sum(1 for r in results if not r.is_ok),
+            },
+        )
 
         # Write output
         if args.output:
@@ -185,22 +111,79 @@ def cmd_design(args: argparse.Namespace) -> int:
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             with output_path.open("w", encoding="utf-8") as f:
-                json.dump(output_data, f, indent=2)
+                json.dump(output.to_dict(), f, indent=2)
 
             print(f"Design results written to {output_path}", file=sys.stderr)
         else:
             # Print to stdout
-            print(json.dumps(output_data, indent=2))
+            print(json.dumps(output.to_dict(), indent=2))
 
         print(f"Design complete: {len(results)} beam(s) processed", file=sys.stderr)
         return 0
 
+    except beam_pipeline.UnitsValidationError as e:
+        print(f"Units error: {e}", file=sys.stderr)
+        return 1
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         import traceback
 
         traceback.print_exc(file=sys.stderr)
         return 1
+
+
+def _extract_beam_params_from_schema(beam: dict) -> dict:
+    """
+    Extract beam parameters from either old or new schema format.
+    
+    Supports both:
+    - New schema (v1 canonical): geometry.b_mm, materials.fck_nmm2, etc.
+    - Old schema: geometry.b, materials.fck, etc.
+    
+    Returns normalized dict with short keys (b, D, d, fck, fy, etc.)
+    """
+    geom = beam.get("geometry", {})
+    mat = beam.get("materials", {})
+    flex = beam.get("flexure", {})
+    det = beam.get("detailing", {})
+    
+    # Handle new schema keys (with _mm, _nmm2 suffixes)
+    b = geom.get("b_mm") or geom.get("b", 300)
+    D = geom.get("D_mm") or geom.get("D", 500)
+    d = geom.get("d_mm") or geom.get("d", 450)
+    span = geom.get("span_mm") or geom.get("span", 4000)
+    cover = geom.get("cover_mm") or geom.get("cover", 40)
+    
+    fck = mat.get("fck_nmm2") or mat.get("fck", 25)
+    fy = mat.get("fy_nmm2") or mat.get("fy", 500)
+    
+    # Flexure: handle both old (ast_req) and new (ast_required_mm2) keys
+    ast = flex.get("ast_required_mm2") or flex.get("ast_req", 0)
+    asc = flex.get("asc_required_mm2") or flex.get("asc_req", 0)
+    
+    # Detailing: check for both ld_tension_mm and ld_tension
+    ld_tension = None
+    lap_length = None
+    if det:
+        ld_tension = det.get("ld_tension_mm") or det.get("ld_tension")
+        lap_length = det.get("lap_length_mm") or det.get("lap_length")
+    
+    return {
+        "beam_id": beam.get("beam_id", "BEAM"),
+        "story": beam.get("story", "STORY"),
+        "b": float(b),
+        "D": float(D),
+        "d": float(d),
+        "span": float(span),
+        "cover": float(cover),
+        "fck": float(fck),
+        "fy": float(fy),
+        "ast": float(ast),
+        "asc": float(asc),
+        "detailing": det,
+        "ld_tension": ld_tension,
+        "lap_length": lap_length,
+    }
 
 
 def cmd_bbs(args: argparse.Namespace) -> int:
@@ -235,36 +218,35 @@ def cmd_bbs(args: argparse.Namespace) -> int:
         for beam in beams:
             print(f"  Processing {beam['story']}/{beam['beam_id']}...", file=sys.stderr)
 
-            # Reconstruct detailing from design results
-            geom = beam["geometry"]
-            mat = beam["materials"]
-            det = beam["detailing"]
+            # Extract parameters using schema-agnostic helper
+            params = _extract_beam_params_from_schema(beam)
+            det = params["detailing"]
 
             # Create simplified detailing result for BBS
             detailing_result = detailing.create_beam_detailing(
-                beam_id=beam["beam_id"],
-                story=beam["story"],
-                b=geom["b"],
-                D=geom["D"],
-                span=geom["span"],
-                cover=geom["cover"],
-                fck=mat["fck"],
-                fy=mat["fy"],
-                ast_start=beam["flexure"]["ast_req"],
-                ast_mid=beam["flexure"]["ast_req"],
-                ast_end=beam["flexure"]["ast_req"],
-                asc_start=beam["flexure"].get("asc_req", 0),
-                asc_mid=beam["flexure"].get("asc_req", 0),
-                asc_end=beam["flexure"].get("asc_req", 0),
-                stirrup_dia=det["stirrups"][0]["diameter"] if det["stirrups"] else 8,
+                beam_id=params["beam_id"],
+                story=params["story"],
+                b=params["b"],
+                D=params["D"],
+                span=params["span"],
+                cover=params["cover"],
+                fck=params["fck"],
+                fy=params["fy"],
+                ast_start=params["ast"],
+                ast_mid=params["ast"],
+                ast_end=params["ast"],
+                asc_start=params["asc"],
+                asc_mid=params["asc"],
+                asc_end=params["asc"],
+                stirrup_dia=det["stirrups"][0]["diameter"] if det.get("stirrups") else 8,
                 stirrup_spacing_start=(
-                    det["stirrups"][0]["spacing"] if det["stirrups"] else 150
+                    det["stirrups"][0]["spacing"] if det.get("stirrups") else 150
                 ),
                 stirrup_spacing_mid=(
-                    det["stirrups"][1]["spacing"] if len(det["stirrups"]) > 1 else 200
+                    det["stirrups"][1]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 1 else 200
                 ),
                 stirrup_spacing_end=(
-                    det["stirrups"][2]["spacing"] if len(det["stirrups"]) > 2 else 150
+                    det["stirrups"][2]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 2 else 150
                 ),
             )
 
@@ -391,34 +373,34 @@ def cmd_dxf(args: argparse.Namespace) -> int:
         for beam in beams:
             print(f"  Processing {beam['story']}/{beam['beam_id']}...", file=sys.stderr)
 
-            geom = beam["geometry"]
-            mat = beam["materials"]
-            det = beam["detailing"]
+            # Extract parameters using schema-agnostic helper
+            params = _extract_beam_params_from_schema(beam)
+            det = params["detailing"]
 
             detailing_result = detailing.create_beam_detailing(
-                beam_id=beam["beam_id"],
-                story=beam["story"],
-                b=geom["b"],
-                D=geom["D"],
-                span=geom["span"],
-                cover=geom["cover"],
-                fck=mat["fck"],
-                fy=mat["fy"],
-                ast_start=beam["flexure"]["ast_req"],
-                ast_mid=beam["flexure"]["ast_req"],
-                ast_end=beam["flexure"]["ast_req"],
-                asc_start=beam["flexure"].get("asc_req", 0),
-                asc_mid=beam["flexure"].get("asc_req", 0),
-                asc_end=beam["flexure"].get("asc_req", 0),
-                stirrup_dia=det["stirrups"][0]["diameter"] if det["stirrups"] else 8,
+                beam_id=params["beam_id"],
+                story=params["story"],
+                b=params["b"],
+                D=params["D"],
+                span=params["span"],
+                cover=params["cover"],
+                fck=params["fck"],
+                fy=params["fy"],
+                ast_start=params["ast"],
+                ast_mid=params["ast"],
+                ast_end=params["ast"],
+                asc_start=params["asc"],
+                asc_mid=params["asc"],
+                asc_end=params["asc"],
+                stirrup_dia=det["stirrups"][0]["diameter"] if det.get("stirrups") else 8,
                 stirrup_spacing_start=(
-                    det["stirrups"][0]["spacing"] if det["stirrups"] else 150
+                    det["stirrups"][0]["spacing"] if det.get("stirrups") else 150
                 ),
                 stirrup_spacing_mid=(
-                    det["stirrups"][1]["spacing"] if len(det["stirrups"]) > 1 else 200
+                    det["stirrups"][1]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 1 else 200
                 ),
                 stirrup_spacing_end=(
-                    det["stirrups"][2]["spacing"] if len(det["stirrups"]) > 2 else 150
+                    det["stirrups"][2]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 2 else 150
                 ),
             )
 
