@@ -96,7 +96,7 @@ def cmd_design(args: argparse.Namespace) -> int:
                 return 1
 
         # Process each beam using canonical pipeline
-        results = []
+        results: list[beam_pipeline.BeamDesignOutput] = []
         for beam in beams:
             print(f"  Processing {beam.story}/{beam.beam_id}...", file=sys.stderr)
 
