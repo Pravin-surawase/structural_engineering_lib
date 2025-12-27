@@ -87,7 +87,7 @@ def run_job_is456(
         raise ValueError("v1 runner supports only code='IS456'")
 
     units = str(job.get("units", "") or "")
-    
+
     # Validate units at application boundary (TASK-061)
     try:
         validated_units = beam_pipeline.validate_units(units)

@@ -22,16 +22,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Sequence
 
 from . import api
-from . import compliance
 from . import detailing
-from .types import (
-    ComplianceCaseResult,
-    ComplianceReport,
-    FlexureResult,
-    ShearResult,
-    DeflectionResult,
-    CrackWidthResult,
-)
 
 
 # =============================================================================
@@ -55,30 +46,33 @@ IS456_UNITS = {
 # Units Validation
 # =============================================================================
 
-_VALID_UNIT_STRINGS = frozenset({
-    "IS456",
-    "IS 456",
-    "is456",
-    "mm-kN-kNm-Nmm2",
-    "mm,kN,kN-m,N/mm2",
-})
+_VALID_UNIT_STRINGS = frozenset(
+    {
+        "IS456",
+        "IS 456",
+        "is456",
+        "mm-kN-kNm-Nmm2",
+        "mm,kN,kN-m,N/mm2",
+    }
+)
 
 
 class UnitsValidationError(ValueError):
     """Raised when units parameter is invalid or missing."""
+
     pass
 
 
 def validate_units(units: Optional[str]) -> str:
     """
     Validate units string at application boundary.
-    
+
     Args:
         units: Units specifier string.
-        
+
     Returns:
         Normalized units string ("IS456").
-        
+
     Raises:
         UnitsValidationError: If units is invalid or missing.
     """
@@ -87,13 +81,13 @@ def validate_units(units: Optional[str]) -> str:
             "units is required. Use 'IS456' for IS 456 standard units "
             "(mm, N/mm², kN, kN·m)."
         )
-    
+
     normalized = units.strip()
     if normalized not in _VALID_UNIT_STRINGS:
         raise UnitsValidationError(
             f"Invalid units '{units}'. Expected one of: {sorted(_VALID_UNIT_STRINGS)}"
         )
-    
+
     return "IS456"  # Always return canonical form
 
 
@@ -101,35 +95,40 @@ def validate_units(units: Optional[str]) -> str:
 # Canonical Output Schema (v1)
 # =============================================================================
 
+
 @dataclass
 class BeamGeometry:
     """Beam geometry in canonical units (mm)."""
-    b_mm: float        # Width
-    D_mm: float        # Overall depth
-    d_mm: float        # Effective depth
-    span_mm: float     # Span length
-    cover_mm: float    # Clear cover
+
+    b_mm: float  # Width
+    D_mm: float  # Overall depth
+    d_mm: float  # Effective depth
+    span_mm: float  # Span length
+    cover_mm: float  # Clear cover
     d_dash_mm: float = 50.0  # Compression steel depth
 
 
 @dataclass
 class BeamMaterials:
     """Material properties in canonical units (N/mm²)."""
-    fck_nmm2: float    # Concrete characteristic strength
-    fy_nmm2: float     # Steel yield strength
+
+    fck_nmm2: float  # Concrete characteristic strength
+    fy_nmm2: float  # Steel yield strength
 
 
 @dataclass
 class BeamLoads:
     """Load case in canonical units (kN, kN·m)."""
+
     case_id: str
-    mu_knm: float      # Factored moment
-    vu_kn: float       # Factored shear
+    mu_knm: float  # Factored moment
+    vu_kn: float  # Factored shear
 
 
 @dataclass
 class FlexureOutput:
     """Flexure design output."""
+
     ast_required_mm2: float
     asc_required_mm2: float
     xu_mm: float
@@ -145,6 +144,7 @@ class FlexureOutput:
 @dataclass
 class ShearOutput:
     """Shear design output."""
+
     tau_v_nmm2: float
     tau_c_nmm2: float
     tau_c_max_nmm2: float
@@ -158,6 +158,7 @@ class ShearOutput:
 @dataclass
 class ServiceabilityOutput:
     """Serviceability check output (optional)."""
+
     deflection_ok: Optional[bool] = None
     deflection_remarks: str = ""
     deflection_utilization: Optional[float] = None
@@ -169,6 +170,7 @@ class ServiceabilityOutput:
 @dataclass
 class DetailingOutput:
     """Detailing output (optional)."""
+
     ld_tension_mm: float = 0.0
     lap_length_mm: float = 0.0
     bottom_bars: List[Dict[str, Any]] = field(default_factory=list)
@@ -180,45 +182,47 @@ class DetailingOutput:
 class BeamDesignOutput:
     """
     Canonical output schema for a single beam design.
-    
-    This is the unified output format used by CLI, job_runner, and 
+
+    This is the unified output format used by CLI, job_runner, and
     any other consumer. Schema version is included for forward compatibility.
     """
+
     schema_version: int
     code: str  # "IS456"
     units: str  # "IS456" = mm, N/mm², kN, kN·m
-    
+
     beam_id: str
     story: str
-    
+
     geometry: BeamGeometry
     materials: BeamMaterials
     loads: BeamLoads
-    
+
     flexure: FlexureOutput
     shear: ShearOutput
     serviceability: ServiceabilityOutput = field(default_factory=ServiceabilityOutput)
     detailing: Optional[DetailingOutput] = None
-    
+
     is_ok: bool = False
     governing_utilization: float = 0.0
     governing_check: str = ""
     remarks: str = ""
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return _dataclass_to_dict(self)
 
 
-@dataclass  
+@dataclass
 class MultiBeamOutput:
     """Output for multiple beams."""
+
     schema_version: int
     code: str
     units: str
     beams: List[BeamDesignOutput]
     summary: Dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return _dataclass_to_dict(self)
@@ -233,7 +237,7 @@ def _dataclass_to_dict(obj: Any) -> Any:
     elif isinstance(obj, dict):
         return {k: _dataclass_to_dict(v) for k, v in obj.items()}
     elif isinstance(obj, Enum):
-        return obj.value if hasattr(obj, 'value') else str(obj)
+        return obj.value if hasattr(obj, "value") else str(obj)
     else:
         return obj
 
@@ -241,6 +245,7 @@ def _dataclass_to_dict(obj: Any) -> Any:
 # =============================================================================
 # Pipeline Functions
 # =============================================================================
+
 
 def design_single_beam(
     *,
@@ -270,9 +275,9 @@ def design_single_beam(
 ) -> BeamDesignOutput:
     """
     Run complete beam design pipeline for a single beam/case.
-    
+
     This is the canonical entry point that CLI and job_runner should use.
-    
+
     Args:
         units: Units specifier (must be 'IS456' or equivalent).
         beam_id: Beam identifier.
@@ -295,16 +300,16 @@ def design_single_beam(
         stirrup_spacing_*: Stirrup spacing for zones.
         deflection_params: Deflection check parameters.
         crack_width_params: Crack width check parameters.
-        
+
     Returns:
         BeamDesignOutput with complete design results.
-        
+
     Raises:
         UnitsValidationError: If units parameter is invalid.
     """
     # Validate units at boundary
     validated_units = validate_units(units)
-    
+
     # Run design via existing API
     case_result = api.design_beam_is456(
         units=validated_units,
@@ -322,7 +327,7 @@ def design_single_beam(
         deflection_params=deflection_params,
         crack_width_params=crack_width_params,
     )
-    
+
     # Build canonical output
     geometry = BeamGeometry(
         b_mm=b_mm,
@@ -332,18 +337,18 @@ def design_single_beam(
         cover_mm=cover_mm,
         d_dash_mm=d_dash_mm,
     )
-    
+
     materials = BeamMaterials(
         fck_nmm2=fck_nmm2,
         fy_nmm2=fy_nmm2,
     )
-    
+
     loads = BeamLoads(
         case_id=case_id,
         mu_knm=mu_knm,
         vu_kn=vu_kn,
     )
-    
+
     # Extract flexure output
     flexure = FlexureOutput(
         ast_required_mm2=case_result.flexure.ast_required,
@@ -357,7 +362,7 @@ def design_single_beam(
         utilization=case_result.utilizations.get("flexure", 0.0),
         remarks=case_result.flexure.error_message,
     )
-    
+
     # Extract shear output
     shear = ShearOutput(
         tau_v_nmm2=case_result.shear.tv,
@@ -369,18 +374,22 @@ def design_single_beam(
         utilization=case_result.utilizations.get("shear", 0.0),
         remarks=case_result.shear.remarks,
     )
-    
+
     # Extract serviceability (if available)
     serviceability = ServiceabilityOutput()
     if case_result.deflection is not None:
         serviceability.deflection_ok = case_result.deflection.is_ok
         serviceability.deflection_remarks = case_result.deflection.remarks
-        serviceability.deflection_utilization = case_result.utilizations.get("deflection")
+        serviceability.deflection_utilization = case_result.utilizations.get(
+            "deflection"
+        )
     if case_result.crack_width is not None:
         serviceability.crack_width_ok = case_result.crack_width.is_ok
         serviceability.crack_width_remarks = case_result.crack_width.remarks
-        serviceability.crack_width_utilization = case_result.utilizations.get("crack_width")
-    
+        serviceability.crack_width_utilization = case_result.utilizations.get(
+            "crack_width"
+        )
+
     # Generate detailing if requested
     detailing_output = None
     if include_detailing:
@@ -405,34 +414,48 @@ def design_single_beam(
                 stirrup_spacing_mid=stirrup_spacing_mid_mm,
                 stirrup_spacing_end=stirrup_spacing_end_mm,
             )
-            
+
             detailing_output = DetailingOutput(
                 ld_tension_mm=detailing_result.ld_tension,
                 lap_length_mm=detailing_result.lap_length,
                 bottom_bars=[
-                    {"count": bar.count, "diameter": bar.diameter, "callout": bar.callout()}
+                    {
+                        "count": bar.count,
+                        "diameter": bar.diameter,
+                        "callout": bar.callout(),
+                    }
                     for bar in detailing_result.bottom_bars
                 ],
                 top_bars=[
-                    {"count": bar.count, "diameter": bar.diameter, "callout": bar.callout()}
+                    {
+                        "count": bar.count,
+                        "diameter": bar.diameter,
+                        "callout": bar.callout(),
+                    }
                     for bar in detailing_result.top_bars
                 ],
                 stirrups=[
-                    {"diameter": stir.diameter, "spacing": stir.spacing, "callout": stir.callout()}
+                    {
+                        "diameter": stir.diameter,
+                        "spacing": stir.spacing,
+                        "callout": stir.callout(),
+                    }
                     for stir in detailing_result.stirrups
                 ],
             )
         except Exception:
             # Detailing is optional; don't fail the whole design
             pass
-    
+
     # Determine governing check
     governing_check = ""
     if case_result.failed_checks:
         governing_check = case_result.failed_checks[0]
     elif case_result.utilizations:
-        governing_check = max(case_result.utilizations, key=case_result.utilizations.get)
-    
+        governing_check = max(
+            case_result.utilizations, key=case_result.utilizations.get
+        )
+
     return BeamDesignOutput(
         schema_version=SCHEMA_VERSION,
         code="IS456",
@@ -461,21 +484,21 @@ def design_multiple_beams(
 ) -> MultiBeamOutput:
     """
     Design multiple beams and return unified output.
-    
+
     Args:
         units: Units specifier.
         beams: List of beam parameter dicts.
         include_detailing: Generate detailing for each beam.
-        
+
     Returns:
         MultiBeamOutput with all beam results.
     """
     validated_units = validate_units(units)
-    
+
     results = []
     pass_count = 0
     fail_count = 0
-    
+
     for beam_params in beams:
         result = design_single_beam(
             units=validated_units,
@@ -497,12 +520,12 @@ def design_multiple_beams(
             stirrup_dia_mm=float(beam_params.get("stirrup_dia_mm", 8)),
         )
         results.append(result)
-        
+
         if result.is_ok:
             pass_count += 1
         else:
             fail_count += 1
-    
+
     return MultiBeamOutput(
         schema_version=SCHEMA_VERSION,
         code="IS456",
@@ -519,9 +542,9 @@ def design_multiple_beams(
 
 def _section_type_str(section_type) -> str:
     """Convert section type enum to string."""
-    if hasattr(section_type, 'name'):
+    if hasattr(section_type, "name"):
         return section_type.name
-    elif hasattr(section_type, 'value'):
+    elif hasattr(section_type, "value"):
         return str(section_type.value)
     else:
         return str(section_type)

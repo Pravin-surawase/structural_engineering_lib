@@ -19,7 +19,6 @@ import sys
 from pathlib import Path
 from typing import List
 
-from . import api
 from . import bbs
 from . import beam_pipeline
 from . import detailing
@@ -135,39 +134,39 @@ def cmd_design(args: argparse.Namespace) -> int:
 def _extract_beam_params_from_schema(beam: dict) -> dict:
     """
     Extract beam parameters from either old or new schema format.
-    
+
     Supports both:
     - New schema (v1 canonical): geometry.b_mm, materials.fck_nmm2, etc.
     - Old schema: geometry.b, materials.fck, etc.
-    
+
     Returns normalized dict with short keys (b, D, d, fck, fy, etc.)
     """
     geom = beam.get("geometry", {})
     mat = beam.get("materials", {})
     flex = beam.get("flexure", {})
     det = beam.get("detailing", {})
-    
+
     # Handle new schema keys (with _mm, _nmm2 suffixes)
     b = geom.get("b_mm") or geom.get("b", 300)
     D = geom.get("D_mm") or geom.get("D", 500)
     d = geom.get("d_mm") or geom.get("d", 450)
     span = geom.get("span_mm") or geom.get("span", 4000)
     cover = geom.get("cover_mm") or geom.get("cover", 40)
-    
+
     fck = mat.get("fck_nmm2") or mat.get("fck", 25)
     fy = mat.get("fy_nmm2") or mat.get("fy", 500)
-    
+
     # Flexure: handle both old (ast_req) and new (ast_required_mm2) keys
     ast = flex.get("ast_required_mm2") or flex.get("ast_req", 0)
     asc = flex.get("asc_required_mm2") or flex.get("asc_req", 0)
-    
+
     # Detailing: check for both ld_tension_mm and ld_tension
     ld_tension = None
     lap_length = None
     if det:
         ld_tension = det.get("ld_tension_mm") or det.get("ld_tension")
         lap_length = det.get("lap_length_mm") or det.get("lap_length")
-    
+
     return {
         "beam_id": beam.get("beam_id", "BEAM"),
         "story": beam.get("story", "STORY"),
@@ -238,15 +237,21 @@ def cmd_bbs(args: argparse.Namespace) -> int:
                 asc_start=params["asc"],
                 asc_mid=params["asc"],
                 asc_end=params["asc"],
-                stirrup_dia=det["stirrups"][0]["diameter"] if det.get("stirrups") else 8,
+                stirrup_dia=(
+                    det["stirrups"][0]["diameter"] if det.get("stirrups") else 8
+                ),
                 stirrup_spacing_start=(
                     det["stirrups"][0]["spacing"] if det.get("stirrups") else 150
                 ),
                 stirrup_spacing_mid=(
-                    det["stirrups"][1]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 1 else 200
+                    det["stirrups"][1]["spacing"]
+                    if det.get("stirrups") and len(det["stirrups"]) > 1
+                    else 200
                 ),
                 stirrup_spacing_end=(
-                    det["stirrups"][2]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 2 else 150
+                    det["stirrups"][2]["spacing"]
+                    if det.get("stirrups") and len(det["stirrups"]) > 2
+                    else 150
                 ),
             )
 
@@ -392,15 +397,21 @@ def cmd_dxf(args: argparse.Namespace) -> int:
                 asc_start=params["asc"],
                 asc_mid=params["asc"],
                 asc_end=params["asc"],
-                stirrup_dia=det["stirrups"][0]["diameter"] if det.get("stirrups") else 8,
+                stirrup_dia=(
+                    det["stirrups"][0]["diameter"] if det.get("stirrups") else 8
+                ),
                 stirrup_spacing_start=(
                     det["stirrups"][0]["spacing"] if det.get("stirrups") else 150
                 ),
                 stirrup_spacing_mid=(
-                    det["stirrups"][1]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 1 else 200
+                    det["stirrups"][1]["spacing"]
+                    if det.get("stirrups") and len(det["stirrups"]) > 1
+                    else 200
                 ),
                 stirrup_spacing_end=(
-                    det["stirrups"][2]["spacing"] if det.get("stirrups") and len(det["stirrups"]) > 2 else 150
+                    det["stirrups"][2]["spacing"]
+                    if det.get("stirrups") and len(det["stirrups"]) > 2
+                    else 150
                 ),
             )
 
