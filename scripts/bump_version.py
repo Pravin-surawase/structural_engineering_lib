@@ -67,20 +67,17 @@ DOC_VERSION_FILES = {
 
 # Documentation "Last Updated" stamps (normalized to YYYY-MM-DD).
 DOC_DATE_FILES = {
-    "docs/contributing/development-guide.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
-    ],
     "docs/planning/research-ai-enhancements.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/planning/next-session-brief.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/reference/api.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/verification/examples.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/TASKS.md": [
         (r"^- \*\*Last Updated\*\*: .+", "- **Last Updated**: {date}"),
@@ -94,11 +91,11 @@ DOC_DATE_FILES = {
         (r"(Last Updated: ).+", r"\g<1>{date}"),
     ],
     "docs/contributing/vba-testing-guide.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
     "docs/contributing/development-guide.md": [
         (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}  "),
     ],
 }
 
