@@ -26,6 +26,10 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | #43 | docs: migrate getting-started docs (Phase 4) | Moved BEGINNERS_GUIDE, GETTING_STARTED_PYTHON, EXCEL_QUICKSTART, EXCEL_TUTORIAL |
 | #44 | docs: migrate contributing docs (Phase 5) | Moved DEVELOPMENT_GUIDE, TESTING_STRATEGY, VBA_GUIDE, VBA_TESTING_GUIDE, EXCEL_ADDIN_GUIDE |
 | #45 | docs: migrate architecture + planning docs (Phase 6) | Moved PROJECT_OVERVIEW, DEEP_PROJECT_MAP, MISSION_AND_PRINCIPLES, CURRENT_STATE_AND_GOALS, NEXT_SESSION_BRIEF, PRODUCTION_ROADMAP, RESEARCH_AI_ENHANCEMENTS, RESEARCH_DETAILING |
+| #46 | docs: update SESSION_LOG with completed migration phases | Session log bookkeeping |
+| #47 | docs: fix broken links after migration | Fixed planning/README.md, architecture/README.md, and others |
+| #48 | docs: fix remaining broken links to old root paths | Fixed TASKS.md, v0.8_EXECUTION_CHECKLIST.md, deep-project-map.md, etc. |
+| #49 | docs: update version marker to v0.9.5 | Fixed docs/README.md version display |
 
 ### Releases
 
@@ -49,7 +53,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - [x] Phase 4: Migrate getting-started docs
 - [x] Phase 5: Migrate contributing docs
 - [x] Phase 6: Migrate architecture + planning docs
+- [x] Fix broken links (PRs #47-49)
 - [ ] Create `cookbook/cli-reference.md` (new content)
 - [ ] Add SP:16 benchmark examples to `verification/`
+- [ ] Remove redirect stubs (scheduled for v1.0)
 
 ---
