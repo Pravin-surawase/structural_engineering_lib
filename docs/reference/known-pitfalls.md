@@ -67,4 +67,4 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 
 ---
 
-Use this sheet alongside `docs/contributing/development-guide.md` and `docs/PROJECT_OVERVIEW.md` when coding, testing, or reviewing.
+Use this sheet alongside `docs/contributing/development-guide.md` and `docs/architecture/project-overview.md` when coding, testing, or reviewing.

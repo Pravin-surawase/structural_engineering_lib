@@ -171,7 +171,7 @@ SUMMARY: 5 items | Total weight: 52.22 kg
 
 </details>
 
-ETABS exports can be normalized into this schema. See `docs/PROJECT_OVERVIEW.md` for the ETABS CSV import flow.
+ETABS exports can be normalized into this schema. See `docs/architecture/project-overview.md` for the ETABS CSV import flow.
 
 ## Advanced: Batch job runner
 
@@ -395,7 +395,7 @@ See [Python examples](Python/examples/) for complete workflows.
 ## Documentation
 
 - **[Docs Index](docs/README.md)** — Start here (who should read what)
-- **[Project Overview](docs/PROJECT_OVERVIEW.md)** — High-level scope, architecture, and workflows
+- **[Project Overview](docs/architecture/project-overview.md)** — High-level scope, architecture, and workflows
 - **[Research and Findings (archived)](docs/_archive/RESEARCH_AND_FINDINGS.md)** — Historical research document with formulas, tables, and early API design notes
 - **[API Reference](docs/reference/api.md)** — Public function signatures, inputs/outputs, units
 - **[Development Guide](docs/contributing/development-guide.md)** — Coding standards, naming conventions, testing guidelines
