@@ -7,7 +7,7 @@ Task-focused recipes for common workflows.
 | Recipe | Status | Use case |
 |--------|--------|----------|
 | [CLI Reference](cli-reference.md) | ✅ | All command-line options with examples |
-| [Python Recipes](python-recipes.md) | 🔜 | Copy-paste snippets for common tasks |
+| [Python Recipes](python-recipes.md) | ✅ | Copy-paste snippets for common tasks |
 
 ## Quick CLI examples
 

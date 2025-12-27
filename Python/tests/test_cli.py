@@ -584,3 +584,167 @@ def test_help_via_subprocess():
     assert "bbs" in result.stdout
     assert "dxf" in result.stdout
     assert "job" in result.stdout
+
+
+# =============================================================================
+# End-to-End Integration Tests (CSV/JSON → detailing → outputs)
+# =============================================================================
+
+
+def test_integration_design_output_has_detailing(sample_csv_file, tmp_path):
+    """Test that design output includes detailing information."""
+    output_file = tmp_path / "results.json"
+
+    rc = cli_main.main(["design", str(sample_csv_file), "-o", str(output_file)])
+    assert rc == 0
+
+    with output_file.open("r") as f:
+        data = json.load(f)
+
+    for beam in data["beams"]:
+        det = beam.get("detailing", {})
+        # Check detailing fields are present and populated
+        assert "bottom_bars" in det
+        assert "top_bars" in det
+        assert "stirrups" in det
+        assert "ld_tension" in det
+        assert "lap_length" in det
+        # Check they have actual values
+        assert len(det["bottom_bars"]) > 0
+        assert det["ld_tension"] > 0
+        assert det["lap_length"] > 0
+
+
+def test_integration_bbs_has_all_bar_types(sample_csv_file, tmp_path):
+    """Test that BBS output includes main bars and stirrups."""
+    design_output = tmp_path / "design.json"
+    bbs_output = tmp_path / "bbs.csv"
+
+    # Design first
+    rc1 = cli_main.main(["design", str(sample_csv_file), "-o", str(design_output)])
+    assert rc1 == 0
+
+    # Generate BBS
+    rc2 = cli_main.main(["bbs", str(design_output), "-o", str(bbs_output)])
+    assert rc2 == 0
+
+    # Check BBS content
+    with bbs_output.open("r") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    # Should have multiple bar types
+    locations = {row["location"] for row in rows}
+    assert len(locations) >= 2  # At least bottom + stirrup or top + stirrup
+
+
+def test_integration_multi_beam_workflow(tmp_path):
+    """Test complete workflow with multiple beams of different sizes."""
+    # Create CSV with diverse beams
+    csv_path = tmp_path / "multi_beams.csv"
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(
+            [
+                "BeamID",
+                "Story",
+                "b",
+                "D",
+                "Span",
+                "Cover",
+                "fck",
+                "fy",
+                "Mu",
+                "Vu",
+                "Ast_req",
+                "Asc_req",
+                "Stirrup_Dia",
+                "Stirrup_Spacing",
+                "Status",
+            ]
+        )
+        # Small beam
+        writer.writerow(
+            [
+                "B1",
+                "GF",
+                "230",
+                "400",
+                "3000",
+                "40",
+                "25",
+                "500",
+                "80",
+                "50",
+                "500",
+                "0",
+                "8",
+                "150",
+                "OK",
+            ]
+        )
+        # Medium beam
+        writer.writerow(
+            [
+                "B2",
+                "1F",
+                "300",
+                "500",
+                "4000",
+                "40",
+                "25",
+                "500",
+                "150",
+                "100",
+                "900",
+                "0",
+                "8",
+                "150",
+                "OK",
+            ]
+        )
+        # Large beam
+        writer.writerow(
+            [
+                "B3",
+                "1F",
+                "400",
+                "700",
+                "6000",
+                "50",
+                "30",
+                "500",
+                "400",
+                "200",
+                "2500",
+                "500",
+                "10",
+                "100",
+                "OK",
+            ]
+        )
+
+    design_output = tmp_path / "design.json"
+    bbs_output = tmp_path / "bbs.csv"
+
+    # Step 1: Design all beams
+    rc1 = cli_main.main(["design", str(csv_path), "-o", str(design_output)])
+    assert rc1 == 0
+
+    with design_output.open("r") as f:
+        data = json.load(f)
+    assert len(data["beams"]) == 3
+
+    # Step 2: Generate BBS
+    rc2 = cli_main.main(["bbs", str(design_output), "-o", str(bbs_output)])
+    assert rc2 == 0
+
+    with bbs_output.open("r") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    # Check all beams are in BBS
+    member_ids = {row["member_id"] for row in rows}
+    assert "B1" in member_ids
+    assert "B2" in member_ids
+    assert "B3" in member_ids
