@@ -4,6 +4,31 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-28 — v0.10.2 Release
+
+### PRs Merged
+
+| PR | Title | Summary |
+|----|-------|---------|
+| #68 | docs: update Python/README.md to v0.10.0 | Dev preview wording, simplified getting-started docs, synthetic example |
+| #69 | chore: bump version to 0.10.1 | Version bumps across 19 files |
+| #70 | feat(cli): add serviceability flags and summary output | --deflection, --summary, status fields |
+
+### Key Changes in v0.10.2
+- CLI serviceability flags: `--deflection`, `--support-condition`, `--crack-width-params`
+- Summary CSV output: `--summary` flag for `design_summary.csv`
+- Schema: `deflection_status`, `crack_width_status` fields (`not_run` | `ok` | `fail`)
+- DXF title block documentation updated
+- 8 new CLI tests
+- CI coverage threshold lowered to 90% temporarily
+
+### Lessons Learned
+- Always run `bump_version.py` before docs update to catch README PyPI pin drift
+- Check for mypy variable shadowing when iterating over results
+- Coverage threshold may need adjustment when adding significant new code
+
+---
+
 ## 2025-12-27 — CLI Serviceability Flags + Colab Workflow
 
 ### Changes

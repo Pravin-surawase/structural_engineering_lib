@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.2] - 2025-12-28
+
+### Added
+- **CLI Serviceability Flags (PR #70):**
+  - `--deflection` — Run Level A deflection check (span/depth ratio)
+  - `--support-condition` — Set support condition (simply_supported, continuous, cantilever)
+  - `--crack-width-params` — JSON file with crack width parameters
+  - `--summary` — Write compact `design_summary.csv` alongside JSON output
+- **Serviceability Status Fields:**
+  - `deflection_status` and `crack_width_status` in schema (`not_run` | `ok` | `fail`)
+  - Avoids ambiguous null values in JSON output
+- **DXF Title Block Documentation:**
+  - CLI reference updated with `--title-block` usage
+  - Colab workflow guide with title block examples
+- **New CLI Tests:**
+  - 8 new tests for serviceability flags and error paths
+  - Test coverage for summary CSV default path logic
+
+### Changed
+- CI coverage threshold temporarily lowered to 90% (from 92%)
+- Getting-started docs simplified (beginners-guide, python-quickstart, excel-quickstart)
+- Python/README.md updated with dev preview wording
+
+### Fixed
+- Mypy shadowing error in `__main__.py` (renamed loop variable)
+- Version drift in README.md PyPI pin example
+
+## [0.10.1] - 2025-12-27
+
+### Changed
+- Documentation improvements and synthetic batch example
+- Bumped version references across 19 files
+
 ## [0.10.0] - 2025-12-27
 
 ### Added

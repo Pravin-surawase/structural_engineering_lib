@@ -2,7 +2,7 @@
 
 Use this file as the single entrypoint for AI agents working in VS Code.
 
-**Current version:** v0.10.1  
+**Current version:** v0.10.2  
 **Test count:** See CI for current totals
 
 ## 0) Golden rule

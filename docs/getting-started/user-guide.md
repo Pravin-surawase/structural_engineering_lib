@@ -1,6 +1,6 @@
 # User Guide — Complete Workflow
 
-**Version:** 0.10.1  
+**Version:** 0.10.2  
 **Time to complete:** 10–15 minutes
 
 This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see [Beginner's Guide](beginners-guide.md).

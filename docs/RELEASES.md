@@ -43,6 +43,41 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.2
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** CLI Serviceability + DXF Title Block + Documentation Polish
+**Key Changes:**
+- **CLI Serviceability Flags (PR #70):**
+  - `--deflection` — Level A deflection check (span/depth)
+  - `--support-condition` — Support condition option
+  - `--crack-width-params` — JSON file for crack width parameters
+  - `--summary` — Compact CSV summary output
+- **Schema Improvements:**
+  - `deflection_status` and `crack_width_status` fields (`not_run` | `ok` | `fail`)
+- **DXF Title Block Documentation:**
+  - `--title-block` usage documented in CLI reference
+- **Getting-Started Simplification:**
+  - beginners-guide.md reduced from 631 to 137 lines
+  - Python/README.md with dev preview wording
+- **New Tests:** 8 CLI tests for serviceability and error paths
+- **CI:** Coverage threshold lowered to 90%
+
+**Test Results:** 1760+ passed, 91 skipped
+**PyPI:** `pip install structural-lib-is456==0.10.2`
+
+---
+
+## v0.10.1
+**Date:** 2025-12-27
+**Status:** ✅ Locked & Verified
+**Mindset:** Documentation improvements and version sync
+**Key Changes:**
+- Bumped version references across 19 files
+- Fixed README.md PyPI pin example
+
+---
+
 ## v0.10.0
 **Date:** 2025-12-27
 **Status:** ✅ Locked & Verified
