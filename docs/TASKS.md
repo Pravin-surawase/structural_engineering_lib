@@ -27,61 +27,84 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Active
 
+*(Nothing currently in progress)*
+
+---
+
+## Recently Completed (v0.9.7-dev)
+
+### Level B Serviceability + CLI/AI Discoverability (PR #62) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-055** | Level B Serviceability (curvature-based deflection) | DEV | ✅ Done |
+| **TASK-069** | Add `llms.txt` (AI summary) | DOCS | ✅ Done |
+| **TASK-070** | CLI help pass | DEV | ✅ Done |
+| **TASK-071** | Sync CLI reference | DOCS | ✅ Done |
+| **TASK-072** | Cross-links from docs | DOCS | ✅ Done |
+
+**Deliverables:**
+- 7 new Level B functions in `serviceability.py`
+- `DeflectionLevelBResult` dataclass
+- 16 new tests (1730 total passing)
+- `llms.txt` for AI discovery
+- Enhanced CLI help text
+
 ### Release Automation Sprint (TASK-065 through TASK-068) — ✅ COMPLETE
 
-**Goal:** Automate release workflow to prevent version drift and missed updates.
-
-| ID | Task | Agent | Est. | Status |
-|----|------|-------|------|--------|
-| **TASK-065** | Release helper script | DEVOPS | 30 min | ✅ Done |
-| **TASK-066** | Doc drift check script | DEVOPS | 30 min | ✅ Done |
-| **TASK-067** | Pre-commit hook config | DEVOPS | 15 min | ✅ Done |
-| **TASK-068** | CI release-check job | DEVOPS | 30 min | ✅ Done |
-
-**Deliverables (all merged in PR #59):**
+**Deliverables (PR #59):**
 - `scripts/release.py` — One-command release helper
 - `scripts/check_doc_versions.py` — Validate no stale versions
 - `.pre-commit-config.yaml` — Enhanced with ruff, doc check hooks
-- `.github/workflows/python-tests.yml` — Added doc drift check step
-- `scripts/bump_version.py` — Fixed api.md version pattern
-
-### CLI + AI Discoverability Sprint (TASK-069 through TASK-072) — ✅ COMPLETE
-
-**Goal:** Make CLI commands easy to discover for humans and AI without bloating README.
-**Plan:** `docs/planning/cli-ai-discovery-plan.md`
-
-| ID | Task | Agent | Est. | Status |
-|----|------|-------|------|--------|
-| **TASK-069** | Add `llms.txt` (AI summary + links) | DOCS | 30 min | ✅ Done |
-| **TASK-070** | CLI help pass (examples + required args) | DEV | 45 min | ✅ Done |
-| **TASK-071** | Sync CLI reference (`docs/cookbook/cli-reference.md`) | DOCS | 45 min | ✅ Done |
-| **TASK-072** | Cross-links from docs index/README (light touch) | DOCS | 15 min | ✅ Done |
+- CI doc drift check step
 
 ---
 
-## Up Next (v1.0 Docs/PM)
+## Up Next (v0.9.7 Release Sprint)
 
-- [x] **TASK-052: User Guide (Getting Started)** — Agent: DOCS — `docs/getting-started/user-guide.md` — Complete workflow guide.
-- [x] **TASK-053: Validation Pack** — Agent: DOCS — `docs/verification/validation-pack.md` — 5 benchmark beams with IS 456 references.
-- [x] **TASK-054: API Stability Commitment** — `docs/reference/api-stability.md` — Defines stable vs internal APIs.
+**Goal:** Prepare for v0.9.7 release with Level B serviceability + polish.
 
----
-
-## In Progress (v0.9.7)
-
-- [ ] **TASK-055: Level B Serviceability** — Agent: DEV — Full deflection calc, long-term factors, cracking moment. *(implementation complete, awaiting PR)*
-
----
-
-## Backlog (Advanced)
-
-- [ ] **TASK-056: Column Design Module** — Agent: DEV — Axial + biaxial bending, IS 456 interaction curves.
-- [ ] **TASK-057: Slab Design Module** — Agent: DEV — One-way/two-way slabs, Table 26 coefficients.
-- [ ] **TASK-058: ETABS API Integration** — Agent: INTEGRATION — CSI OAPI access (Windows only).
+| ID | Task | Agent | Est. | Priority |
+|----|------|-------|------|----------|
+| **TASK-073** | Update CHANGELOG for v0.9.7 | PM | 15 min | 🔴 High |
+| **TASK-074** | Bump version to 0.9.7 | DEVOPS | 10 min | 🔴 High |
+| **TASK-075** | Update next-session-brief | DOCS | 15 min | 🟡 Medium |
+| **TASK-076** | Tag and release v0.9.7 | DEVOPS | 15 min | 🔴 High |
 
 ---
 
-## Recently Completed (v0.9.6)
+## Up Next (v1.0 Readiness)
+
+**Goal:** Complete beta gates and prepare for v1.0 stable release.
+
+| ID | Task | Agent | Est. | Priority |
+|----|------|-------|------|----------|
+| **TASK-077** | External user CLI test | CLIENT | 1 hr | 🔴 Critical |
+| **TASK-078** | Seismic detailing validation | TESTER | 45 min | 🟡 Medium |
+| **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium |
+| **TASK-080** | Error message review | SUPPORT | 30 min | 🟢 Low |
+
+**v1.0 Beta Gates (from pre-release-checklist):**
+- [x] 5 real beam validations documented
+- [ ] One external engineer tries CLI cold
+- [ ] All tests pass (currently: 1730 passed, 95 skipped)
+- [ ] VBA parity verified
+
+---
+
+## Backlog (Post-v1.0)
+
+| ID | Task | Agent | Description |
+|----|------|-------|-------------|
+| **TASK-056** | Column Design Module | DEV | Axial + biaxial bending, IS 456 interaction curves |
+| **TASK-057** | Slab Design Module | DEV | One-way/two-way slabs, Table 26 coefficients |
+| **TASK-058** | ETABS API Integration | INTEGRATION | CSI OAPI access (Windows only) |
+| **TASK-081** | Level C Serviceability | DEV | Shrinkage + creep deflection (Annex C full) |
+| **TASK-082** | VBA Parity Automation | DEVOPS | Automated Python vs VBA comparison harness |
+
+---
+
+## Completed (v0.9.6)
 
 - [x] **TASK-059: Shared Beam Pipeline Module** — `beam_pipeline.py` — PR #55
 - [x] **TASK-060: Canonical Result Schema v1** — `BeamDesignOutput`, `MultiBeamOutput` — PR #55
@@ -100,7 +123,9 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Notes
 
-- **Current Version**: v0.9.6
+- **Current Version**: v0.9.6 (v0.9.7 in progress)
 - **Last Updated**: 2025-12-27
 - **Active Branch**: main
-- **Tests**: See CI for current totals and coverage
+- **Tests**: 1730 passed, 95 skipped
+- **Next Release**: v0.9.7 (Level B Serviceability + CLI discoverability)
+- **Target**: v1.0 stable release after external user validation

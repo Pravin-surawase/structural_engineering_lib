@@ -51,6 +51,7 @@ Status
 - 2025-12-27: Phase 3 complete (python-recipes aligned with real signatures).
 - 2025-12-27: Phase 4 complete (docs examples synced to real functions).
 - 2025-12-27: Phase 5 complete (session log updated).
+- 2025-12-27: CLI/AI discoverability pass complete (llms.txt, CLI help, CLI reference sync).
 
 Phase 0 Inventory
 CLI entrypoints

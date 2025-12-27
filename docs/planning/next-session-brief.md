@@ -1,8 +1,23 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-27  
-**Status:** v0.9.6 stable, release automation complete  
-**Branch:** `main` (all PRs merged through #59)
+**Status:** v0.9.6 stable, v0.9.7 ready to release (Level B + CLI discoverability merged)  
+**Branch:** `main` (all PRs merged through #62)
+
+---
+
+## 🎯 Immediate Priority: v0.9.7 Release
+
+**What's new in v0.9.7:**
+- Level B Serviceability (curvature-based deflection per IS 456 Cl 23.2 / Annex C)
+- `llms.txt` for AI discoverability
+- Enhanced CLI help text
+- CLI reference synced to canonical schema v1
+
+**To release v0.9.7:**
+```bash
+python scripts/release.py 0.9.7
+```
 
 ---
 
