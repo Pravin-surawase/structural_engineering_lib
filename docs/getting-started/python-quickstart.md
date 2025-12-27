@@ -119,7 +119,7 @@ python3 -m structural_lib design path/to/beams.csv -o results.json \
 python3 -m structural_lib bbs results.json -o schedule.csv
 
 # Generate DXF drawings (requires ezdxf)
-python3 -m structural_lib dxf results.json -o drawings.dxf
+python3 -m structural_lib dxf results.json -o drawings.dxf --title-block --title "Beam Sheet"
 
 # Run complete job from spec file
 python3 -m structural_lib job job.json -o ./output

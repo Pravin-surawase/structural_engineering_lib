@@ -244,13 +244,18 @@ Generate DXF reinforcement drawings from design results.
 > **Note:** Requires `ezdxf` library. Install with: `pip install ezdxf`
 
 ```bash
-python -m structural_lib dxf <input> -o <output>
+python -m structural_lib dxf <input> -o <output> [--title-block] [--title "Sheet Title"]
 ```
 
 | Argument | Required | Description |
 |----------|----------|-------------|
 | `input` | Yes | Design results JSON |
 | `-o, --output` | **Yes** | Output DXF file path |
+| `--title-block` | No | Draw a deliverable border + title block |
+| `--title` | No | Optional title text for the title block |
+| `--sheet-margin` | No | Sheet margin in mm (default: 200) |
+| `--title-block-width` | No | Title block width in mm (default: 900) |
+| `--title-block-height` | No | Title block height in mm (default: 250) |
 
 **Outputs:**
 - DXF file written to the path provided by `-o/--output` (R2010/AC1024).
@@ -260,6 +265,9 @@ python -m structural_lib dxf <input> -o <output>
 ```bash
 # Single beam drawing
 python -m structural_lib dxf results.json -o beam_detail.dxf
+
+# Single beam drawing with title block
+python -m structural_lib dxf results.json -o beam_detail.dxf --title-block --title "Beam Detail"
 
 # Multiple beams (auto-layout in grid)
 python -m structural_lib dxf all_beams.json -o drawings.dxf
@@ -271,6 +279,7 @@ python -m structural_lib dxf all_beams.json -o drawings.dxf
 - Longitudinal elevation with stirrups
 - Bar callouts and dimensions
 - Multi-beam grid layout (when multiple beams)
+- Optional deliverable border + title block (use `--title-block`)
 - DXF R2010 format (AC1024, compatible with most CAD software)
 
 ---

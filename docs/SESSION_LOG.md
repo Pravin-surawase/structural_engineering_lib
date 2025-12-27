@@ -23,6 +23,18 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ### Tests
 - `python3 -m pytest tests/test_cli.py -q` (from `Python/`)
 
+---
+
+## 2025-12-27 — DXF Title Block + Deliverable Layout
+
+### Changes
+- Added optional title block + border layout for DXF exports (single and multi-beam).
+- Added CLI flags for title block and sheet sizing in the `dxf` command.
+- Updated CLI reference and Colab workflow examples to show the title block option.
+
+### Tests
+- Not run (DXF layout change only).
+
 ## 2025-12-27 — v0.10.0 Release + Code Quality
 
 ### PRs Merged

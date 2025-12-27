@@ -90,7 +90,7 @@ Run the full pipeline:
 ```python
 !python -m structural_lib design beams_small.csv -o results_small.json --deflection
 !python -m structural_lib bbs results_small.json -o schedule_small.csv
-!python -m structural_lib dxf results_small.json -o drawings_small.dxf
+!python -m structural_lib dxf results_small.json -o drawings_small.dxf --title-block --title "Beam Sheet"
 ```
 
 Optional crack width (requires explicit inputs):
@@ -177,7 +177,7 @@ Run the batch:
 
 Optional (DXF for 500 beams can be heavy):
 ```python
-!python -m structural_lib dxf results_500.json -o drawings_500.dxf
+!python -m structural_lib dxf results_500.json -o drawings_500.dxf --title-block --title "Beam Sheet"
 ```
 
 ---
