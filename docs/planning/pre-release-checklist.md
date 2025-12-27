@@ -51,7 +51,7 @@ Target: Private beta with 2–3 structural engineers
   - [x] Flanged beam (T-beam) — ✅ PASS (exact match: Mu,lim, Ast, xu)
   - [x] High shear case — ✅ PASS (exact match: τv, τc, Vus, spacing)
   - [ ] Seismic detailing case (if applicable)
-- [ ] **Document results** in `docs/VERIFICATION_EXAMPLES.md` with source refs
+- [x] **Document results** in `docs/verification/validation-pack.md` with source refs
 - [ ] **One external engineer tries CLI cold** — note friction points
 - [ ] **All tests pass** (run `pytest` in Python/ directory)
 

@@ -49,8 +49,8 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Up Next (v1.0 Docs/PM)
 
-- [ ] **TASK-052: User Guide (Getting Started)** — Agent: DOCS — Step-by-step for install, run, interpret results.
-- [ ] **TASK-053: Validation Pack** — Agent: DOCS — Publish 3-5 benchmark beams with IS 456 references.
+- [x] **TASK-052: User Guide (Getting Started)** — Agent: DOCS — `docs/getting-started/user-guide.md` — Complete workflow guide.
+- [x] **TASK-053: Validation Pack** — Agent: DOCS — `docs/verification/validation-pack.md` — 5 benchmark beams with IS 456 references.
 - [x] **TASK-054: API Stability Commitment** — `docs/reference/api-stability.md` — Defines stable vs internal APIs.
 
 ---
