@@ -7,6 +7,7 @@ This script updates version numbers across the codebase from ONE location.
 USAGE:
     python scripts/bump_version.py 0.9.2
     python scripts/bump_version.py 0.10.0 --dry-run
+    python scripts/bump_version.py --sync-docs
 
 The single source of truth is Python/pyproject.toml.
 This script updates all other files that need the version.
@@ -15,6 +16,7 @@ This script updates all other files that need the version.
 import argparse
 import re
 import sys
+from datetime import date
 from pathlib import Path
 
 # Root of the repository
@@ -22,6 +24,7 @@ REPO_ROOT = Path(__file__).parent.parent
 
 # Files that need version updates (relative to repo root)
 # MINIMAL SET: Only files that MUST have hardcoded versions
+# Core version pins (required)
 VERSION_FILES = {
     # Python source of truth (packaging)
     "Python/pyproject.toml": [
@@ -39,14 +42,74 @@ VERSION_FILES = {
     ],
 }
 
+# Documentation references that should track the library version.
+DOC_VERSION_FILES = {
+    "docs/README.md": [
+        (r"^\*\*Current version:\*\* v[0-9]+\.[0-9]+\.[0-9]+", "**Current version:** v{version}"),
+    ],
+    "docs/AI_CONTEXT_PACK.md": [
+        (r"^\*\*Current version:\*\* v[0-9]+\.[0-9]+\.[0-9]+", "**Current version:** v{version}"),
+    ],
+    "docs/planning/production-roadmap.md": [
+        (r"^(> \*\*Current Status:\*\* )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
+    ],
+    "docs/planning/current-state-and-goals.md": [
+        (r"^(Current release tag: )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
+    ],
+    "docs/getting-started/python-quickstart.md": [
+        (r"@v[0-9]+\.[0-9]+\.[0-9]+", "@v{version}"),
+    ],
+    "docs/contributing/vba-testing-guide.md": [
+        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+        (r"(Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
+    ],
+}
+
+# Documentation "Last Updated" stamps (normalized to YYYY-MM-DD).
+DOC_DATE_FILES = {
+    "docs/contributing/development-guide.md": [
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+    "docs/planning/research-ai-enhancements.md": [
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+    "docs/planning/next-session-brief.md": [
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+    "docs/reference/api.md": [
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+    "docs/verification/examples.md": [
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+    "docs/TASKS.md": [
+        (r"^- \*\*Last Updated\*\*: .+", "- **Last Updated**: {date}"),
+    ],
+    "docs/getting-started/beginners-guide.md": [
+        (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
+        (r"(Last Updated: ).+", r"\g<1>{date}"),
+    ],
+    "docs/getting-started/excel-tutorial.md": [
+        (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
+        (r"(Last Updated: ).+", r"\g<1>{date}"),
+    ],
+    "docs/contributing/vba-testing-guide.md": [
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+    "docs/contributing/development-guide.md": [
+        (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
+    ],
+}
+
 # Files where version should be REMOVED or made evergreen
 EVERGREEN_NOTES = """
-Version is now managed in only 3 places:
+Version is managed in these files:
   - Python/pyproject.toml (source of truth)
   - Python/api.py (dev mode fallback)
   - VBA/M08_API.bas (VBA runtime)
 
-All other files should use dynamic version or say "see CHANGELOG".
+Doc references are synced via: python scripts/bump_version.py --sync-docs
 """
 
 
@@ -60,7 +123,9 @@ def read_current_version() -> str:
     raise ValueError("Could not find version in pyproject.toml")
 
 
-def update_file(filepath: Path, patterns: list, new_version: str, dry_run: bool) -> bool:
+def update_file(
+    filepath: Path, patterns: list, format_kwargs: dict, dry_run: bool
+) -> bool:
     """Update version patterns in a file. Returns True if changes made."""
     if not filepath.exists():
         print(f"  SKIP (not found): {filepath}")
@@ -70,7 +135,7 @@ def update_file(filepath: Path, patterns: list, new_version: str, dry_run: bool)
     original = content
     
     for pattern, replacement in patterns:
-        replacement_str = replacement.format(version=new_version)
+        replacement_str = replacement.format(**format_kwargs)
         content = re.sub(pattern, replacement_str, content, flags=re.MULTILINE)
     
     if content != original:
@@ -90,6 +155,21 @@ def main():
     parser.add_argument("version", nargs="?", help="New version (e.g., 0.9.2)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would change")
     parser.add_argument("--current", action="store_true", help="Show current version")
+    parser.add_argument(
+        "--sync-docs",
+        action="store_true",
+        help="Sync doc version references to the current version",
+    )
+    parser.add_argument(
+        "--sync-dates",
+        action="store_true",
+        help="Sync doc 'Last Updated' stamps to today's date",
+    )
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Print the version/log update checklist",
+    )
     
     args = parser.parse_args()
     
@@ -97,6 +177,70 @@ def main():
     
     if args.current:
         print(f"Current version: {current}")
+        return 0
+
+    if args.report:
+        print("Version update checklist")
+        print()
+        print("Core version pins:")
+        for rel_path in VERSION_FILES:
+            print(f"  - {rel_path}")
+        print()
+        print("Doc version references:")
+        for rel_path in DOC_VERSION_FILES:
+            print(f"  - {rel_path}")
+        print()
+        print("Doc last-updated stamps:")
+        for rel_path in DOC_DATE_FILES:
+            print(f"  - {rel_path}")
+        print()
+        print("Release logs (manual):")
+        print("  - CHANGELOG.md")
+        print("  - docs/RELEASES.md")
+        print("  - docs/SESSION_LOG.md")
+        return 0
+
+    today = date.today().isoformat()
+
+    if args.sync_docs:
+        print(f"{'[DRY RUN] ' if args.dry_run else ''}Syncing docs to: {current}")
+        print()
+        changes = 0
+        for rel_path, patterns in DOC_VERSION_FILES.items():
+            filepath = REPO_ROOT / rel_path
+            if update_file(
+                filepath, patterns, {"version": current, "date": today}, args.dry_run
+            ):
+                changes += 1
+        for rel_path, patterns in DOC_DATE_FILES.items():
+            filepath = REPO_ROOT / rel_path
+            if update_file(
+                filepath, patterns, {"version": current, "date": today}, args.dry_run
+            ):
+                changes += 1
+        print()
+        if args.dry_run:
+            print(f"Would update {changes} doc file(s)")
+        else:
+            print(f"Updated {changes} doc file(s)")
+        print(EVERGREEN_NOTES)
+        return 0
+
+    if args.sync_dates:
+        print(f"{'[DRY RUN] ' if args.dry_run else ''}Syncing doc dates to: {today}")
+        print()
+        changes = 0
+        for rel_path, patterns in DOC_DATE_FILES.items():
+            filepath = REPO_ROOT / rel_path
+            if update_file(
+                filepath, patterns, {"version": current, "date": today}, args.dry_run
+            ):
+                changes += 1
+        print()
+        if args.dry_run:
+            print(f"Would update {changes} doc file(s)")
+        else:
+            print(f"Updated {changes} doc file(s)")
         return 0
     
     if not args.version:
@@ -119,14 +263,32 @@ def main():
     changes = 0
     for rel_path, patterns in VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
-        if update_file(filepath, patterns, new_version, args.dry_run):
+        if update_file(
+            filepath, patterns, {"version": new_version, "date": today}, args.dry_run
+        ):
             changes += 1
     
+    doc_changes = 0
+    for rel_path, patterns in DOC_VERSION_FILES.items():
+        filepath = REPO_ROOT / rel_path
+        if update_file(
+            filepath, patterns, {"version": new_version, "date": today}, args.dry_run
+        ):
+            doc_changes += 1
+    for rel_path, patterns in DOC_DATE_FILES.items():
+        filepath = REPO_ROOT / rel_path
+        if update_file(
+            filepath, patterns, {"version": new_version, "date": today}, args.dry_run
+        ):
+            doc_changes += 1
+
     print()
     if args.dry_run:
-        print(f"Would update {changes} file(s)")
+        print(f"Would update {changes} core file(s)")
+        print(f"Would update {doc_changes} doc file(s)")
     else:
-        print(f"Updated {changes} file(s)")
+        print(f"Updated {changes} core file(s)")
+        print(f"Updated {doc_changes} doc file(s)")
         print("\nRemember to also:")
         print("  1. Add entry to CHANGELOG.md")
         print("  2. Update docs/RELEASES.md")

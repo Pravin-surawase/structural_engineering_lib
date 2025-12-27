@@ -12,10 +12,10 @@ If you're sharing with a few users while the project is still evolving, this is 
 python3 -m pip install --upgrade pip
 
 # Pin to a released tag for stability (recommended)
-python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.6#subdirectory=Python"
 
 # With DXF support
-python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+python3 -m pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.6#subdirectory=Python"
 ```
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.
@@ -23,7 +23,7 @@ Engineering note: this library is a calculation aid; final responsibility for co
 ## Google Colab quick install
 
 ```python
-%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.4#subdirectory=Python"
+%pip install -q "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.9.6#subdirectory=Python"
 ```
 
 Then: `Runtime > Restart runtime` and rerun.

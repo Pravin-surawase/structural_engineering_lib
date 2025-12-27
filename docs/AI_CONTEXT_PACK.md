@@ -2,8 +2,8 @@
 
 Use this file as the single entrypoint for AI agents working in VS Code.
 
-**Current version:** v0.9.4  
-**Test count:** 1680+ Python tests, 9 VBA test suites
+**Current version:** v0.9.6  
+**Test count:** See CI for current totals
 
 ## 0) Golden rule
 - Prefer small, deterministic changes.

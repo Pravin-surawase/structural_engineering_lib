@@ -6,8 +6,7 @@ Lookup documentation for API, formulas, and troubleshooting.
 
 | Document | Purpose |
 |----------|---------|
-| [API Reference](api.md) | Full Python/VBA function signatures |
-| [IS 456 Formulas](is456-formulas.md) | Quick formula cheat sheet |
+| [API Reference](api.md) | Full Python/VBA function signatures || [API Stability](api-stability.md) | What's stable vs internal, versioning policy || [IS 456 Formulas](is456-formulas.md) | Quick formula cheat sheet |
 | [Known Pitfalls](known-pitfalls.md) | Common traps and how to avoid them |
 | [Troubleshooting](troubleshooting.md) | Error messages and fixes |
 

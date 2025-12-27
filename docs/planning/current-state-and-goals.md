@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library - Current State and Goals
 
 Last updated: 2025-12-27
-Current release tag: v0.9.4
+Current release tag: v0.9.6
 Document status: Active
 
 ## 0) Executive summary
