@@ -57,7 +57,34 @@ Recommended protection rule for `main`:
 Solo default:
 * Leave "Include administrators" OFF to keep an emergency escape hatch
 * Skip "Restrict who can push" and "Require reviews" unless collaborating
+---
 
+### 2.3.1 Current Protection Rules (as of 2025-12-27)
+
+**Branch:** `main`
+
+**Rules Enabled:**
+- ✅ Changes must be made through a pull request (no direct pushes)
+- ✅ 5 required status checks must pass before merge:
+  1. `test` — Python test suite (pytest)
+  2. `lint` — Code style checks
+  3. `type-check` — Type checking (mypy/pyright)
+  4. `build` — Package build verification
+  5. `docs` — Documentation build check
+- ✅ Force pushes disabled
+- ✅ Branch deletion disabled
+
+**CI Workflow:** `.github/workflows/ci.yml`
+- Triggers on: push to `main`, pull requests to `main`
+- Python versions: 3.9, 3.10, 3.11
+- OS: ubuntu-latest
+
+**Implications:**
+- All changes go through PRs (even docs-only changes)
+- CI must pass before merge is allowed
+- Tags should be created after PR is merged to `main`
+
+---
 Supply-chain stance:
 * Avoid high-maintenance hardening (e.g., pinning every GitHub Action to a commit SHA) unless there is a clear need.
 
