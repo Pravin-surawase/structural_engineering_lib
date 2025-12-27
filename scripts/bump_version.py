@@ -44,6 +44,9 @@ VERSION_FILES = {
 
 # Documentation references that should track the library version.
 DOC_VERSION_FILES = {
+    "README.md": [
+        (r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+", "structural-lib-is456=={version}"),
+    ],
     "docs/README.md": [
         (r"^\*\*Current version:\*\* v[0-9]+\.[0-9]+\.[0-9]+", "**Current version:** v{version}"),
     ],

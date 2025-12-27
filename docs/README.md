@@ -1,7 +1,7 @@
 # Docs Index (Start Here)
 
 If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience.
-**Current version:** v0.10.1
+**Current version:** v0.10.2
 
 ## Quick CLI Reference (v0.9.4+)
 
