@@ -25,7 +25,7 @@ If you want to resume quickly without re-reading the repo:
 4. **Primary reference index:** `docs/README.md`
 
 **Verified state (as of 2025-12-27):**
-- Release version is **v0.9.4** (merged to main).
+- Release version is **v0.9.5** (merged to main, published to PyPI).
 - Unified CLI: **implemented** (`python -m structural_lib design|bbs|dxf|job`).
 - Cutting-stock optimizer: **implemented** (first-fit-decreasing bin packing).
 - VBA BBS + Compliance: **implemented** (parity with Python modules).

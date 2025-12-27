@@ -186,7 +186,7 @@ The spec mapping is explicit in `docs/specs/v0.7_DATA_MAPPING.md`:
 
 ### 7.1 Python
 
-- Public-ish functions are documented in `docs/API_REFERENCE.md`.
+- Public-ish functions are documented in `docs/reference/api.md`.
 - `Python/structural_lib/api.py` is intentionally thin; most usage is currently module-level.
 
 **Contract rule:** docs are the public contract; if code differs, either fix code or fix docs.
@@ -246,7 +246,7 @@ When changing any of the above, treat it as a parity change and add/extend Pytho
 - Python: run `pytest` in `Python/`.
 - If you change core behavior: add/adjust Python tests.
 - If you change parity-critical logic: mirror the formula in VBA (or explicitly document divergence).
-- If you change any public signature: update `docs/API_REFERENCE.md` in the same PR.
+- If you change any public signature: update `docs/reference/api.md` in the same PR.
 
 ---
 

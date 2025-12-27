@@ -283,7 +283,7 @@ Sub Test_Addin_Ductile()
     Debug.Print "Geo OK:"; dres.IsGeometryValid; " MinPt:"; dres.MinPt; " MaxPt:"; dres.MaxPt; " Spacing:"; dres.ConfinementSpacing
 End Sub
 ```
-Compare outputs to `docs/API_REFERENCE.md` worked examples (flexure/shear) and ductile checks (spacing = min(d/4, 8*db_min, 100)).
+Compare outputs to `docs/reference/api.md` worked examples (flexure/shear) and ductile checks (spacing = min(d/4, 8*db_min, 100)).
 
 If you don’t add the reference, you can often still call `Ast_singly_IS456` directly (because the add-in is in global scope), but namespacing with `StructEngLib.` is cleaner and avoids name conflicts.
 
@@ -349,7 +349,7 @@ The add-in architecture only starts paying off once the library is relatively st
 
 ## 8. Testing and Validation
 - Run VBA tests (manual/Rubberduck) in a workbook that references the add-in to confirm functions behave identically to the module version.
-- Cross-check against Python tests/values for key cases (see `docs/API_REFERENCE.md` worked examples).
+- Cross-check against Python tests/values for key cases (see `docs/reference/api.md` worked examples).
 - Keep unit conventions consistent (kN·m, kN, mm, N/mm²) and table policies (pt clamped 0.15–3.0, no fck interpolation for Table 19) aligned with the library code.
 
 ---

@@ -38,7 +38,7 @@ When working on tasks, specify which agent role to use:
 - [x] **TASK-023: IS Code Detailing Research (v0.7)**
   - **Agent:** RESEARCHER
   - **Status:** ✅ Complete
-  - **Output:** `docs/RESEARCH_DETAILING.md`
+  - **Output:** `docs/planning/research-detailing.md`
   - Covers: IS 456, IS 13920, SP 34
 
 - [x] **TASK-024: PM Scope Lock (v0.7)**
@@ -105,7 +105,7 @@ When working on tasks, specify which agent role to use:
 
 ### Mindset (v0.8+)
 
-These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) and are intended to make the library *production-ready* for real engineering workflows.
+These tasks are based on the research log (`docs/planning/research-ai-enhancements.md`) and are intended to make the library *production-ready* for real engineering workflows.
 
 - **Deterministic first:** same inputs → same outputs (no “magic”).
 - **Auditable outputs:** every check should show inputs, assumptions, and “why pass/fail”.
@@ -309,7 +309,7 @@ These tasks are based on the research log (`docs/RESEARCH_AI_ENHANCEMENTS.md`) a
   - **Status:** ✅ Complete — unified runner + documentation created.
   - **Outputs:**
     - `VBA/Tests/Test_RunAll.bas` — single entrypoint macro
-    - `docs/VBA_TESTING_GUIDE.md` — run guide + expected output
+    - `docs/contributing/vba-testing-guide.md` — run guide + expected output
   - **Checklist:**
     - [x] Add a single entrypoint macro: `RunAllVBATests`
     - [x] Standardize test output/log format (counts + failures)
@@ -472,7 +472,7 @@ python -c "from structural_lib import api; print(api.get_library_version())"  # 
 ```
 
 **Files to read first:**
-- `docs/NEXT_SESSION_BRIEF.md` — session context
+- `docs/planning/next-session-brief.md` — session context
 - `Python/tests/data/parity_test_vectors.json` — shared test vectors
 - `VBA/Tests/Test_Parity.bas` — current VBA test harness
 

@@ -801,7 +801,7 @@ Mu_lim_kNm = Mu_lim_Nmm * Nmm_TO_kNm  ' Convert to kN·m for output
 
 ### 9.3 API Reference Document
 
-Maintain `docs/API_REFERENCE.md` with:
+Maintain `docs/reference/api.md` with:
 - All public function signatures
 - Input/output descriptions with units
 - IS 456 clause references

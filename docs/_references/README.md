@@ -10,7 +10,7 @@ This folder is intended for **local** reference materials you want to cite/summa
 ## How it’s used
 - These files are **not** used by the library at runtime.
 - They exist to make it easy to:
-  - extract benchmark examples into `docs/RESEARCH_AI_ENHANCEMENTS.md`
+  - extract benchmark examples into `docs/planning/research-ai-enhancements.md`
   - derive test cases in `Python/tests/`
   - document assumptions and verification steps
 
