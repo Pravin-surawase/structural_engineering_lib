@@ -4,6 +4,93 @@
 **Status:** v0.9.6 released and merged to `main`  
 **Branch:** `main` (all PRs merged)
 
+---
+
+## 🚨 STOP — READ THIS FIRST (Mandatory for New Agents)
+
+Before writing ANY code or making changes, you MUST understand this project. Failure to read context leads to:
+- Breaking Python ↔ VBA parity
+- Violating layer architecture
+- Creating code that doesn't match IS 456 requirements
+- Wasting time on already-solved problems
+
+### Step 1: Read These Documents (in order)
+
+| Priority | Document | Why |
+|----------|----------|-----|
+| **1** | `.github/copilot-instructions.md` | Layer rules, units, Mac VBA safety, testing requirements |
+| **2** | `docs/AI_CONTEXT_PACK.md` | Complete project context for AI agents |
+| **3** | `docs/architecture/deep-project-map.md` | Code structure, data flow, parity hotspots |
+| **4** | `docs/TASKS.md` | Canonical backlog — what's done, what's pending |
+| **5** | `docs/planning/pre-release-checklist.md` | Beta gates and validation status |
+
+### Step 2: Understand the Project
+
+**What this is:** IS 456 (Indian Standard) RC beam design library with Python + VBA parity.
+
+**Who uses it:**
+- Structural engineers designing RC beams
+- Excel users via VBA add-in (`Excel/StructEngLib.xlam`)
+- Python users via pip package (`pip install structural-lib-is456`)
+
+**Core workflow:**
+```
+Input (beam geometry, loads, materials)
+    ↓
+Flexure Design (Mu → Ast/Asc, neutral axis depth)
+    ↓
+Shear Design (Vu → stirrup spacing)
+    ↓
+Detailing (development length, lap length, spacing checks)
+    ↓
+Serviceability (deflection, crack width) [optional but recommended]
+    ↓
+Output (design results, BBS, DXF drawings)
+```
+
+### Step 3: Understand the Layer Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ UI/I-O Layer (reads/writes external data)                   │
+│ Python: excel_integration.py, dxf_export.py, job_cli.py     │
+│ VBA: M09_UDFs, macros                                        │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│ Application Layer (orchestrates core, no formatting)        │
+│ Python: api.py, job_runner.py, bbs.py, rebar_optimizer.py   │
+│ VBA: M08_API                                                 │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│ Core Layer (pure functions, no I/O, explicit units)         │
+│ Python: flexure.py, shear.py, detailing.py, serviceability.py│
+│         compliance.py, tables.py, ductile.py, materials.py   │
+│ VBA: M01-M07, M15-M17                                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**RULE:** Never put I/O code in Core. Never put calculations in UI.
+
+### Step 4: Understand Units Convention
+
+| Context | Units |
+|---------|-------|
+| **Inputs** | mm, N/mm², kN, kN·m |
+| **Internal** | mm, N, N·mm (convert at layer boundaries) |
+| **Outputs** | mm, N/mm², kN, kN·m |
+
+### Step 5: Before Making Changes
+
+- [ ] Run tests first: `cd Python && python -m pytest -q`
+- [ ] Check if VBA needs matching changes (parity requirement)
+- [ ] Add tests for any new behavior
+- [ ] Format with black: `cd Python && python -m black .`
+- [ ] Update docs if API/behavior changes
+
+---
+
 ## TL;DR (What Changed Recently)
 - **v0.9.6 Released:** Verification examples pack + API docs UX pass
 - **Verification Examples:** Appendix A (IS 456 derivations), B (runnable commands), C (textbook examples)
@@ -311,37 +398,113 @@ When you need current numbers, prefer commands/CI over hard-coded doc stats:
 4. **VBA parity** — keep Python and VBA in sync
 5. **Security without ceremony** — enforce PR-only merges + required checks via branch protection; keep CI hardening low-maintenance
 
+### ⚠️ Common Mistakes to Avoid
+
+| Mistake | Why It's Wrong | Correct Approach |
+|---------|---------------|------------------|
+| Adding I/O to `flexure.py` | Violates Core layer purity | Put I/O in `api.py` or UI layer |
+| Hardcoding `fck=25` | IS 456 supports M15-M80 | Always accept as parameter |
+| Ignoring `xu_max` check | Beam may be over-reinforced | Always check `xu < xu_max` |
+| Mixing units | Causes 1000x calculation errors | Convert at layer boundaries |
+| Not running tests | Breaks existing functionality | `pytest -q` before every commit |
+| Editing VBA without CDbl() | Mac Excel crashes | Always: `CDbl(b) * CDbl(d)` |
+
+### IS 456 Clauses You'll Reference Often
+
+| Clause | Topic | Used In |
+|--------|-------|---------|
+| **38.1** | Flexural design, limiting xu/d | `flexure.py` |
+| **40.4** | Shear design, τc values | `shear.py`, `tables.py` |
+| **26.2.1** | Development length | `detailing.py` |
+| **26.2.5** | Lap length | `detailing.py` |
+| **26.3** | Spacing requirements | `detailing.py` |
+| **Annex D** | Ductile detailing | `ductile.py` |
+| **Annex C** | Deflection limits | `serviceability.py` |
+
 ### Security checklist (recommended)
 - Protect `main`: require PRs, require status checks, require up-to-date branches
 - Disallow force pushes and deletion of `main`
 - (Solo default) Leave "Include administrators" OFF as an emergency escape hatch
 
-### Questions to Ask
-- [ ] Do we have all IS 456 clauses/tables needed?
-- [ ] Are formulas verified against hand calculations?
+### Questions to Ask Before Implementing
+- [ ] Which layer does this belong to? (Core/Application/UI)
+- [ ] Does VBA need matching implementation?
+- [ ] What IS 456 clause justifies this calculation?
+- [ ] What are the edge cases? (min/max values, boundaries)
 - [ ] Does output integrate seamlessly into existing workflow?
 - [ ] Is documentation clear for beginners?
 
-### Success Criteria (post-v0.8)
-- [ ] TASK-043 MVP complete (deterministic optimizer + structured failures + tests)
-- [ ] TASK-034 CSV export complete (schema + totals + tests)
-- [ ] (Optional) TASK-044 scope/inputs documented (what CSV columns we support)
+---
+
+## 📝 Code Examples (How Things Work)
+
+### Example 1: Singly Reinforced Beam Design
+```python
+from structural_lib import api
+
+result = api.design_beam_flexure(
+    b=300,           # mm - beam width
+    d=450,           # mm - effective depth
+    Mu=180,          # kN·m - factored moment
+    fck=25,          # N/mm² - concrete grade
+    fy=500           # N/mm² - steel grade
+)
+print(f"Ast = {result['Ast_mm2']:.0f} mm²")  # → ~1150 mm²
+```
+
+### Example 2: Shear Design
+```python
+result = api.design_shear(
+    b=300,           # mm
+    d=450,           # mm
+    Vu=150,          # kN - factored shear
+    fck=25,          # N/mm²
+    fy=500,          # N/mm²
+    Ast=1150         # mm² - longitudinal steel
+)
+print(f"Stirrup spacing = {result['sv_mm']:.0f} mm")
+```
+
+### Example 3: CLI Usage
+```bash
+# Single beam design
+python -m structural_lib design --b 300 --d 450 --Mu 180 --fck 25 --fy 500
+
+# Bar bending schedule
+python -m structural_lib bbs --input beam_data.csv --output bbs.csv
+
+# DXF drawing export  
+python -m structural_lib dxf --input design_result.json --output beam.dxf
+```
+
+### Example 4: VBA (Excel UDF)
+```vba
+' In Excel cell:
+=SE_Ast_Required(300, 450, 180, 25, 500)  ' Returns Ast in mm²
+
+' In VBA code:
+Dim Ast As Double
+Ast = Calc_Ast_Singly(300, 450, 180, 25, 500)
+```
 
 ---
 
 ## 💡 Suggested Starter Prompts
 
-### Option 1: Rebar optimizer
-> "Implement TASK-043 MVP: deterministic bar arrangement search with clear 'no feasible layout' reasons and tests."
+### Option 1: Continue validation work
+> "Run the seismic detailing validation from pre-release-checklist.md and document results."
 
-### Option 2: BBS/BOM CSV
-> "Implement TASK-034 MVP: define BBS CSV schema, export line items, and add totals + rounding tests."
+### Option 2: External beta prep
+> "Review error messages in api.py and make them more actionable for users who don't know IS 456."
 
-### Option 3: ETABS → Compliance mapping
-> "Implement TASK-044: document ETABS export tables + column mapping and extend the CSV normalizer so compliance runs are repeatable."
+### Option 3: VBA parity check
+> "Create a parity test that runs the same inputs through Python and VBA and compares outputs."
+
+### Option 4: Documentation improvement
+> "Add more examples to the verification pack showing edge cases: NA in web for T-beam, doubly reinforced near Mu,lim."
 
 ---
 
-**Last Session Achievements:** VBA DXF complete, 3 audit rounds, beginner docs, code quality fixes, production roadmap.
+**Last Session Achievements:** v0.9.6 release, verification examples pack (Appendix A/B/C), 5 textbook validations, API docs UX pass.
 
-**Next Session Focus:** Post-v0.8 hardening (ETABS→compliance workflow + parity automation).
+**Next Session Focus:** External beta testing, VBA parity harness, edge case documentation.
