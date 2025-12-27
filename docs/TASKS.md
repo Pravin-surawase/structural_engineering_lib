@@ -123,7 +123,7 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Notes
 
-- **Current Version**: v0.10.0
+- **Current Version**: v0.10.1
 - **Last Updated**: 2025-12-27
 - **Active Branch**: main
 - **Tests**: 1730 passed, 95 skipped

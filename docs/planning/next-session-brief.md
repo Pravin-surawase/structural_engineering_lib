@@ -1,7 +1,7 @@
 # Next Session Briefing
 
 **Last Updated:** 2025-12-27  
-**Status:** v0.10.0 (current release)
+**Status:** v0.10.1 (current release)
 **Branch:** `main` (all PRs merged through #62)
 
 ---
