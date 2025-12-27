@@ -13,6 +13,15 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - README updated with PyPI badge and simplified install instructions.
 - `project.urls` added to pyproject.toml (Homepage, Docs, Changelog, Issues).
+- **Docs restructure (6 phases):** Reorganized docs into 7 folders:
+  - `getting-started/` — Quickstart guides (4 docs)
+  - `reference/` — API, formulas, troubleshooting (4 docs)
+  - `verification/` — Test examples, benchmarks (2 docs)
+  - `contributing/` — Dev guides, testing strategy (5 docs)
+  - `architecture/` — Project structure, design decisions (3 docs)
+  - `planning/` — Roadmaps, research notes (5 docs)
+  - `cookbook/` — Recipes and patterns (scaffold)
+- Redirect stubs at old locations for backwards compatibility (will be removed in v1.0).
 
 ## [0.9.4] - 2025-12-26
 ### Added
