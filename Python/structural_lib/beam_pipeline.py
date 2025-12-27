@@ -453,7 +453,7 @@ def design_single_beam(
         governing_check = case_result.failed_checks[0]
     elif case_result.utilizations:
         governing_check = max(
-            case_result.utilizations, key=case_result.utilizations.get
+            case_result.utilizations, key=lambda k: case_result.utilizations[k]
         )
 
     return BeamDesignOutput(
