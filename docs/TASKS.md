@@ -279,7 +279,7 @@ These tasks are based on the research log (`docs/planning/research-ai-enhancemen
     - [x] Establish an enforced baseline coverage target (CI gate)
     - [x] Add targeted tests to stabilize coverage across environments
     - [x] Add property tests for invariants (non-negativity, monotonicity where expected)
-    - [ ] Add CLI/integration tests (CSV/JSON → detailing → DXF generation)
+    - [x] Add CLI/integration tests (CSV/JSON → detailing → DXF generation)
 
 - [x] **TASK-045: Release Hygiene — Tag Post-Fix Patch Release**
   - **Agent:** DEVOPS / DOCS
