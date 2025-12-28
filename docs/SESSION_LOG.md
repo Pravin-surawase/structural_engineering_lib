@@ -567,6 +567,16 @@ python3 -m pytest tests/test_ductile.py tests/test_critical_is456.py -q
 - `python3 -m pytest tests/test_dxf_export_edges.py -q`
 
 ---
+### DXF to PDF/PNG Export Workflow (TASK-084) — 2025-12-28
+
+**Changes:**
+- Added `scripts/dxf_render.py` to render DXF files to PNG/PDF using ezdxf + matplotlib.
+- Documented optional render workflow in CLI reference.
+
+**Tests:**
+- Not run (matplotlib not installed locally).
+
+---
 ### Critical Tests & Governance Documentation — 2025-12-28
 
 **Focus:** Add comprehensive IS 456 clause-specific tests and formalize agent workflow documentation.

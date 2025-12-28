@@ -279,6 +279,19 @@ python -m structural_lib dxf all_beams.json -o drawings.dxf
 - Longitudinal elevation with stirrups
 - Bar callouts and dimensions
 - Optional deliverable border + title block (includes version line)
+
+**DXF to PNG/PDF (optional):**
+
+Use the helper script if you need a shareable preview:
+
+```bash
+# Install render dependencies
+pip install "structural-lib-is456[dxf]" matplotlib
+
+# Render to PNG or PDF
+python scripts/dxf_render.py drawings.dxf -o drawings.png
+python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+```
 - Multi-beam grid layout (when multiple beams)
 - Optional deliverable border + title block (use `--title-block`)
 - DXF R2010 format (AC1024, compatible with most CAD software)

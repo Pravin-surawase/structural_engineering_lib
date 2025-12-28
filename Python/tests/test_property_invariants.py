@@ -9,6 +9,23 @@ Invariants tested:
 2. Monotonicity: More moment -> more steel required
 3. Consistency: xu <= xu_max for under-reinforced sections
 4. Bounds: pt_provided within reasonable engineering limits
+
+SKIPPED TESTS EXPLAINED (reviewed 2025-12-28):
+----------------------------------------------
+This module has ~91 intentional skips. These are NOT bugs:
+
+1. test_mu_lim_increases_with_d (90 skips):
+   - Skips when d == min(D_VALUES) because comparative tests need a
+     smaller reference value. You can't test "Mu_lim increases with d"
+     when d is already the minimum.
+   - The test runs for d = 400, 450, 500, 550, 600mm (comparing to d-50).
+
+2. test_xu_max_d_decreases_with_fy (1 skip):
+   - Skips when fy == 415 because it's the lowest fy to compare against.
+   - The test runs for Fe500 and Fe550 (comparing to Fe415).
+
+These skips are mathematically necessary for comparative invariant tests.
+No action required.
 """
 
 import pytest
