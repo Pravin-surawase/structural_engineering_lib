@@ -94,6 +94,14 @@ def cmd_design(args: argparse.Namespace) -> int:
                     file=sys.stderr,
                 )
                 return 1
+            # Warn if applying global params to multiple beams
+            if len(beams) > 1:
+                print(
+                    "Warning: --crack-width-params applies the same parameters to all "
+                    f"{len(beams)} beams. For mixed geometry/materials, consider "
+                    "per-beam crack width input.",
+                    file=sys.stderr,
+                )
 
         # Process each beam using canonical pipeline
         results: list[beam_pipeline.BeamDesignOutput] = []
