@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.10.3  
-**Last Updated:** 2025-12-28  
+**Document Version:** 0.10.3
+**Last Updated:** 2025-12-28
 **Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI).
 
 ---
@@ -138,9 +138,9 @@ Calculates the maximum moment a singly reinforced section can resist.
 **Python:**
 ```python
 def calculate_mu_lim(
-    b: float, 
-    d: float, 
-    fck: float, 
+    b: float,
+    d: float,
+    fck: float,
     fy: float
 ) -> float
 ```
@@ -151,10 +151,10 @@ Calculates tension steel area for a given moment. Returns `-1` if `Mu > Mu_Lim`.
 **Python:**
 ```python
 def calculate_ast_required(
-    b: float, 
-    d: float, 
-    mu_knm: float, 
-    fck: float, 
+    b: float,
+    d: float,
+    mu_knm: float,
+    fck: float,
     fy: float
 ) -> float
 ```
@@ -165,11 +165,11 @@ Performs full design check including under/over-reinforced status and min/max st
 **Python:**
 ```python
 def design_singly_reinforced(
-    b: float, 
-    d: float, 
-    d_total: float, 
-    mu_knm: float, 
-    fck: float, 
+    b: float,
+    d: float,
+    d_total: float,
+    mu_knm: float,
+    fck: float,
     fy: float
 ) -> FlexureResult
 ```
@@ -180,12 +180,12 @@ Designs a beam that can be singly or doubly reinforced. If `Mu > Mu_lim`, calcul
 **Python:**
 ```python
 def design_doubly_reinforced(
-    b: float, 
-    d: float, 
-    d_dash: float, 
-    d_total: float, 
-    mu_knm: float, 
-    fck: float, 
+    b: float,
+    d: float,
+    d_dash: float,
+    d_total: float,
+    mu_knm: float,
+    fck: float,
     fy: float
 ) -> FlexureResult
 ```
@@ -211,11 +211,11 @@ Calculates the limiting moment of resistance for a T-beam section.
 **Python:**
 ```python
 def calculate_mu_lim_flanged(
-    bw: float, 
-    bf: float, 
-    d: float, 
-    Df: float, 
-    fck: float, 
+    bw: float,
+    bf: float,
+    d: float,
+    Df: float,
+    fck: float,
     fy: float
 ) -> float
 ```
@@ -226,13 +226,13 @@ Designs a flanged beam (T-beam). Handles neutral axis in flange (rectangular beh
 **Python:**
 ```python
 def design_flanged_beam(
-    bw: float, 
-    bf: float, 
-    d: float, 
-    Df: float, 
-    d_total: float, 
-    mu_knm: float, 
-    fck: float, 
+    bw: float,
+    bf: float,
+    d: float,
+    Df: float,
+    d_total: float,
+    mu_knm: float,
+    fck: float,
     fy: float,
     d_dash: float = 50.0
 ) -> FlexureResult
@@ -248,8 +248,8 @@ Calculates $\tau_v = \frac{V_u}{bd}$.
 **Python:**
 ```python
 def calculate_tv(
-    vu_kn: float, 
-    b: float, 
+    vu_kn: float,
+    b: float,
     d: float
 ) -> float
 ```
@@ -262,12 +262,12 @@ Performs shear design: checks $\tau_v$ vs $\tau_{c,max}$, gets $\tau_c$ (Table 1
 **Python:**
 ```python
 def design_shear(
-    vu_kn: float, 
-    b: float, 
-    d: float, 
-    fck: float, 
-    fy: float, 
-    asv: float, 
+    vu_kn: float,
+    b: float,
+    d: float,
+    fck: float,
+    fy: float,
+    asv: float,
     pt: float
 ) -> ShearResult
 ```
@@ -293,11 +293,11 @@ Performs comprehensive checks for IS 13920:2016 compliance (geometry, min/max st
 **Python:**
 ```python
 def check_beam_ductility(
-    b: float, 
-    D: float, 
-    d: float, 
-    fck: float, 
-    fy: float, 
+    b: float,
+    D: float,
+    d: float,
+    fck: float,
+    fy: float,
     min_long_bar_dia: float
 ) -> DuctileBeamResult
 ```
@@ -440,6 +440,7 @@ def calculate_cracking_moment(
     b_mm: float,
     D_mm: float,
     fck_nmm2: float,
+    yt_mm: float | None = None,  # Distance to tension fiber; defaults to D/2
 ) -> float  # Returns Mcr in kN·m
 
 def calculate_gross_moment_of_inertia(
@@ -454,32 +455,31 @@ def calculate_cracked_moment_of_inertia(
     d_mm: float,
     ast_mm2: float,
     fck_nmm2: float,
-    asc_mm2: float = 0.0,
-    d_dash_mm: float = 50.0,
     es_nmm2: float = 200000.0,
 ) -> float  # Returns Icr in mm⁴
 
 def calculate_effective_moment_of_inertia(
     *,
+    mcr_knm: float,
+    ma_knm: float,  # Service moment
     igross_mm4: float,
     icr_mm4: float,
-    mcr_knm: float,
-    ma_service_knm: float,
 ) -> float  # Returns Ieff in mm⁴
 
 def get_long_term_deflection_factor(
     *,
     duration_months: int = 60,
     asc_mm2: float = 0.0,
-    ast_mm2: float = 0.0,
+    b_mm: float = 0.0,
+    d_mm: float = 0.0,
 ) -> float  # Returns multiplier (typically 1.5 to 2.0)
 
 def calculate_short_term_deflection(
     *,
+    ma_knm: float,  # Service moment
     span_mm: float,
-    ma_service_knm: float,
-    ec_nmm2: float,
     ieff_mm4: float,
+    fck_nmm2: float,  # Used to compute Ec internally
     support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
 ) -> float  # Returns delta_short in mm
 ```
@@ -730,7 +730,7 @@ Sub TestBeam()
     Dim res As FlexureResult
     ' Design for 150 kNm
     res = Design_Singly_Reinforced(230, 450, 500, 150, 25, 500)
-    
+
     If res.IsSafe Then
         Debug.Print "Ast Required: " & res.Ast_Required
     Else
