@@ -30,6 +30,11 @@ def check_geometry(b: float, D: float) -> Tuple[bool, str, List[DesignError]]:
     Clause 6.1: Geometry requirements
     1. b >= 200 mm
     2. b/D >= 0.3
+
+    .. deprecated:: 0.10.5
+        Return signature changed from (bool, str) to (bool, str, List[DesignError]).
+        This is a breaking change for direct callers. Use check_beam_ductility()
+        for the stable public API.
     """
     errors = []
 

@@ -18,10 +18,13 @@ class Severity(str, Enum):
     INFO = "info"  # Informational only.
 
 
-@dataclass
+@dataclass(frozen=True)
 class DesignError:
     """
     Structured error for machine-readable and human-friendly error reporting.
+
+    Note: This dataclass is frozen (immutable) to prevent accidental mutation
+    of shared error constants.
 
     Attributes:
         code: Unique error code (e.g., E_FLEXURE_001)
@@ -82,6 +85,15 @@ E_INPUT_003 = DesignError(
     message="d_total must be > d",
     field="d_total",
     hint="Ensure D > d + cover.",
+)
+
+# Note: E_INPUT_003a is for d_total <= 0, E_INPUT_003 is for d_total <= d
+E_INPUT_003a = DesignError(
+    code="E_INPUT_003a",
+    severity=Severity.ERROR,
+    message="d_total must be > 0",
+    field="d_total",
+    hint="Check overall depth input.",
 )
 
 E_INPUT_004 = DesignError(
@@ -170,6 +182,9 @@ E_SHEAR_001 = DesignError(
     clause="Cl. 40.2.3",
 )
 
+# Note: E_SHEAR_002 is reserved for future use when spacing limits are exceeded.
+# Currently, shear.py enforces max spacing internally, so this warning is not emitted.
+# It will be used when we add explicit spacing limit warnings.
 E_SHEAR_002 = DesignError(
     code="E_SHEAR_002",
     severity=Severity.WARNING,

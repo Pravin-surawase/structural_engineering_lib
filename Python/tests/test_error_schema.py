@@ -4,6 +4,7 @@ Tests for error schema compliance.
 Verifies that structured errors follow the schema defined in docs/reference/error-schema.md.
 """
 
+import pytest
 import sys
 import os
 
@@ -36,6 +37,17 @@ class TestDesignErrorDataclass:
         assert error.code == "E_TEST_001"
         assert error.severity == Severity.ERROR
         assert error.message == "Test error"
+
+    def test_frozen_immutable(self):
+        """Test that DesignError is immutable (frozen dataclass)."""
+        error = DesignError(
+            code="E_TEST_001",
+            severity=Severity.ERROR,
+            message="Test error",
+        )
+        # Attempting to modify should raise FrozenInstanceError
+        with pytest.raises(Exception):  # FrozenInstanceError is subclass of Exception
+            error.code = "E_TEST_002"
 
     def test_optional_fields_default_none(self):
         """Test that optional fields default to None."""
@@ -155,6 +167,9 @@ class TestFlexureErrorsIntegration:
         assert result.is_safe is False
         assert len(result.errors) >= 1
         assert any(e.code == "E_INPUT_001" for e in result.errors)
+        # Check dynamic error message only mentions 'b'
+        assert "b" in result.error_message
+        assert "d_total" not in result.error_message
 
     def test_invalid_d_returns_error(self):
         result = design_singly_reinforced(
@@ -162,6 +177,14 @@ class TestFlexureErrorsIntegration:
         )
         assert result.is_safe is False
         assert any(e.code == "E_INPUT_002" for e in result.errors)
+
+    def test_invalid_d_total_zero_returns_error(self):
+        """Test that d_total <= 0 returns E_INPUT_003a (not E_INPUT_003)."""
+        result = design_singly_reinforced(
+            b=230, d=450, d_total=0, mu_knm=100, fck=25, fy=415
+        )
+        assert result.is_safe is False
+        assert any(e.code == "E_INPUT_003a" for e in result.errors)
 
     def test_d_total_less_than_d_returns_error(self):
         result = design_singly_reinforced(

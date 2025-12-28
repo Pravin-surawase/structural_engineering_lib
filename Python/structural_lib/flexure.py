@@ -7,11 +7,10 @@ import math
 from . import materials
 from .types import FlexureResult, DesignSectionType
 from .errors import (
-    DesignError,
-    Severity,
     E_INPUT_001,
     E_INPUT_002,
     E_INPUT_003,
+    E_INPUT_003a,
     E_INPUT_004,
     E_INPUT_005,
     E_FLEXURE_001,
@@ -78,17 +77,12 @@ def design_singly_reinforced(
     if d <= 0:
         input_errors.append(E_INPUT_002)
     if d_total <= 0:
-        input_errors.append(
-            DesignError(
-                code="E_INPUT_003",
-                severity=Severity.ERROR,
-                message="d_total must be > 0",
-                field="d_total",
-                hint="Check overall depth input.",
-            )
-        )
+        input_errors.append(E_INPUT_003a)
 
     if input_errors:
+        # Build specific error message based on which fields failed
+        failed_fields = [e.field for e in input_errors if e.field]
+        error_message = f"Invalid input: {', '.join(failed_fields)} must be > 0."
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -97,7 +91,7 @@ def design_singly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: b, d, and d_total must be > 0.",
+            error_message=error_message,
             errors=input_errors,
         )
 

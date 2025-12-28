@@ -77,6 +77,7 @@ This document defines the standard error schema for all structural_lib errors. T
 | `E_INPUT_001` | `b` | `b must be > 0` | Check beam width input. |
 | `E_INPUT_002` | `d` | `d must be > 0` | Check effective depth input. |
 | `E_INPUT_003` | `d_total` | `d_total must be > d` | Ensure D > d + cover. |
+| `E_INPUT_003a` | `d_total` | `d_total must be > 0` | Check overall depth input. |
 | `E_INPUT_004` | `fck` | `fck must be > 0` | Use valid concrete grade (15-80 N/mm²). |
 | `E_INPUT_005` | `fy` | `fy must be > 0` | Use valid steel grade (250/415/500/550). |
 | `E_INPUT_006` | `Mu` | `Mu must be >= 0` | Check moment input sign. |
