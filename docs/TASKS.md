@@ -69,7 +69,7 @@ python -m structural_lib job job.json -o job_out
 |------|----|------|-------|--------|-------|
 | W01 | — | Scope lock + WIP rule | — | ✅ Done | Completed in docs discipline |
 | W02 | S-007 | External engineer CLI test | CLIENT | ⏳ Waiting | Resume when tester available; proceed to W03 if blocked |
-| W03 | RM-W03 | Error schema draft (code/field/hint/severity) | DOCS/DEV | ⏳ Not started | Publish in docs/reference/ |
+| W03 | RM-W03 | Error schema draft (code/field/hint/severity) | DOCS/DEV | ✅ Done | Published in docs/reference/error-schema.md |
 | W04 | RM-W04 | Implement error schema (core + tests) | DEV | ⏳ Not started | Apply to 3 core functions |
 | W05 | RM-W05 | Input validation pass (geometry/materials) | DEV | ⏳ Not started | Ensure is_safe=False with errors |
 | W06 | RM-W06 | Units boundary spec | DEV/DOCS | ⏳ Not started | Update known-pitfalls.md |
