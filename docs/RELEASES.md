@@ -43,6 +43,25 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.6
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** Complete Structured Validation
+**Key Changes:**
+- **W5 Structured Validation:**
+  - New error codes: `E_INPUT_010-016` for d_dash, min_long_bar_dia, and flanged beam inputs
+  - New `E_FLEXURE_004` for d' too large in doubly reinforced design
+  - Structured validation in `design_doubly_reinforced()` and `design_flanged_beam()`
+  - Validation in `check_beam_ductility()` for d, fck, fy, min_long_bar_dia
+- **Docs:** Solo maintainer guide, beginner learning path, improved error schema docs
+- **CLI:** Improved error messages
+
+**Note:** v0.10.5 was not published to PyPI. This release includes all v0.10.5 changes.
+
+**PRs:** #81, #94, #112, #113, #114, #115
+
+---
+
 ## v0.10.5
 **Date:** 2025-12-28
 **Status:** ✅ Locked & Verified

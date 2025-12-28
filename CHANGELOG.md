@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.6] - 2025-12-28
+
+### Added
+- **W5 Structured Validation for Doubly/Flanged Beams:**
+  - New error codes: `E_INPUT_010` (d_dash), `E_INPUT_011` (min_long_bar_dia)
+  - New error codes: `E_INPUT_012-016` for flanged beam inputs (bw, bf, Df, constraints)
+  - New error code: `E_FLEXURE_004` for d' too large in doubly reinforced design
+  - Structured validation in `design_doubly_reinforced()` with error list
+  - Structured validation in `design_flanged_beam()` with error list
+  - Validation for d, fck, fy, min_long_bar_dia in `check_beam_ductility()`
+  - 9 new tests for new error codes
+- **Documentation:**
+  - Solo maintainer operating system guide
+  - Beginner learning path with exercises
+  - Updated error-schema.md with new error codes
+
+### Changed
+- Improved CLI error messages for better user experience
+
+### Fixed
+- Error schema review findings (frozen dataclass, E_INPUT_003a, dynamic messages)
+
 ## [0.10.5] - 2025-12-28
 
 ### Added

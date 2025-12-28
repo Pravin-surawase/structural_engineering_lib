@@ -105,7 +105,7 @@ If you must use an internal module:
 ```python
 # Pin to exact version
 # requirements.txt
-structural-lib-is456==0.10.5
+structural-lib-is456==0.10.6
 
 # Or wrap with try/except
 try:
