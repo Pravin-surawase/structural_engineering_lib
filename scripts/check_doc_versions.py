@@ -23,13 +23,12 @@ BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 # Patterns to check for version drift
 VERSION_PATTERNS = [
     # Pattern, file glob, description
-    (r"\*\*Current version:\*\* v([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Current version marker"),
     (r"Document Version: ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Document Version header"),
     (r"\*\*Document Version:\*\* ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Document Version (bold)"),
     (r"\*\*Version:\*\*\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Version header"),
-    (r"\|\s*\*\*Version\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)\s*\|", "docs/AI_CONTEXT_PACK.md", "AI_CONTEXT_PACK version table"),
-    (r"\|\s*\*\*Version\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)\s*\|", "docs/TASKS.md", "TASKS version table"),
-    (r"^\s*-\s*Version:\s*v?([0-9]+\.[0-9]+\.[0-9]+)\s*$", "docs/planning/v0.20-stabilization-checklist.md", "Stabilization checklist version"),
+    (r"\|\s*\*\*Current Release\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/AI_CONTEXT_PACK.md", "AI_CONTEXT_PACK version table"),
+    (r"\|\s*\*\*Current\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/TASKS.md", "TASKS version table"),
+    (r"\|\s*\*\*Current\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/planning/next-session-brief.md", "next-session-brief version table"),
     (r"@v([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Git tag reference"),
     (r"structural-lib-is456==([0-9]+\.[0-9]+\.[0-9]+)", "**/*.md", "PyPI pin"),
 ]
