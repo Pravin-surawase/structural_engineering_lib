@@ -148,5 +148,5 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 - **Current Version**: v0.10.3
 - **Last Updated**: 2025-12-28
 - **Active Branch**: main
-- **Tests**: 1730 passed, 95 skipped
-- **Target**: v1.0 stable release after external user validation
+- **Tests**: Run `python scripts/update_test_stats.py` for current count
+- **Target**: v0.20.0 stable release (see `docs/planning/v0.20-stabilization-checklist.md`)
