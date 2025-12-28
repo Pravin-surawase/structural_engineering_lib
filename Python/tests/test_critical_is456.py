@@ -3,7 +3,7 @@ Critical IS 456 Tests
 
 This module contains critical tests covering:
 1. Clause-critical calculations (Mu_lim, xu/d ratios)
-2. T-beam singly reinforced design path  
+2. T-beam singly reinforced design path
 3. Shear capacity limits (tc_max checks)
 4. Minimum stirrup spacing compliance
 5. Effective moment of inertia edge cases
@@ -121,7 +121,7 @@ class TestTBeamSinglyReinforced:
 
     def test_t_beam_na_in_web_singly_reinforced(self):
         """When Df < xu < xu_max, singly reinforced T-beam.
-        
+
         This tests the T-beam path where NA is in web but moment
         is below Mu_lim so no compression steel needed.
         """
@@ -147,7 +147,7 @@ class TestTBeamSinglyReinforced:
 
     def test_t_beam_yf_calculation_df_over_d_check(self):
         """yf calculation depends on Df/d ratio per IS 456 Annex G.
-        
+
         Note: For T-beams with wide flanges, even moderate moments may
         have NA in flange. This test uses narrow flanges and high moments
         to ensure NA falls in web for testing yf calculation paths.
@@ -162,18 +162,18 @@ class TestTBeamSinglyReinforced:
             bw=bw, bf=bf, d=d, Df=Df_shallow, d_total=550, mu_knm=350, fck=fck, fy=fy
         )
         # For narrow flanges with high moment, NA should be in web
-        assert res_shallow.xu > Df_shallow, (
-            f"xu={res_shallow.xu} should be > Df={Df_shallow} for NA in web"
-        )
+        assert (
+            res_shallow.xu > Df_shallow
+        ), f"xu={res_shallow.xu} should be > Df={Df_shallow} for NA in web"
 
         # Case 2: Df/d > 0.2 -> yf = 0.15*xu + 0.65*Df
         Df_deep = 110  # 110/500 = 0.22 > 0.2
         res_deep = flexure.design_flanged_beam(
             bw=bw, bf=bf, d=d, Df=Df_deep, d_total=550, mu_knm=400, fck=fck, fy=fy
         )
-        assert res_deep.xu > Df_deep, (
-            f"xu={res_deep.xu} should be > Df={Df_deep} for NA in web"
-        )
+        assert (
+            res_deep.xu > Df_deep
+        ), f"xu={res_deep.xu} should be > Df={Df_deep} for NA in web"
 
 
 # =============================================================================
@@ -271,7 +271,7 @@ class TestTableBoundaries:
 
     def test_tc_between_grades_uses_lower_bound(self):
         """fck between table values uses lower bound (conservative).
-        
+
         Per IS 456 Table 19, values are given for discrete grades.
         Library uses lower-bound (conservative) approach.
         """
@@ -329,8 +329,12 @@ class TestCrackingMomentEdges:
 
     def test_mcr_scales_with_fck_sqrt(self):
         """Mcr ∝ √fck per IS 456 Cl 6.2.2."""
-        mcr_m20 = serviceability.calculate_cracking_moment(b_mm=300, D_mm=500, fck_nmm2=20)
-        mcr_m25 = serviceability.calculate_cracking_moment(b_mm=300, D_mm=500, fck_nmm2=25)
+        mcr_m20 = serviceability.calculate_cracking_moment(
+            b_mm=300, D_mm=500, fck_nmm2=20
+        )
+        mcr_m25 = serviceability.calculate_cracking_moment(
+            b_mm=300, D_mm=500, fck_nmm2=25
+        )
 
         ratio = mcr_m25 / mcr_m20
         expected_ratio = math.sqrt(25) / math.sqrt(20)
