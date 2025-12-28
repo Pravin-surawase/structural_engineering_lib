@@ -41,6 +41,7 @@ For VS Code AI-agent work, start with:
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
+- Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
 - VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)
 - Packaging the add-in (`.xlam`): [contributing/excel-addin-guide.md](contributing/excel-addin-guide.md)
 - Common engineering/coding traps: [reference/known-pitfalls.md](reference/known-pitfalls.md)

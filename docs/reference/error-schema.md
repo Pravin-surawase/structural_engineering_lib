@@ -2,7 +2,7 @@
 
 *Structured error format for machine-readable and human-friendly errors*
 
-**Status:** Draft (W03)
+**Status:** Implemented (v0.10.5)
 **Last updated:** 2025-12-28
 
 ---
@@ -13,6 +13,8 @@ This document defines the standard error schema for all structural_lib errors. T
 - **Machine-readable:** Parseable by downstream tools (JSON, CI, dashboards)
 - **Human-friendly:** Clear hints for engineers to fix issues
 - **Traceable:** Links to IS 456 clauses where applicable
+
+**Implementation:** See `structural_lib/errors.py` for the `DesignError` dataclass.
 
 ---
 

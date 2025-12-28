@@ -5,7 +5,10 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from enum import Enum, auto
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .errors import DesignError
 
 
 class BeamType(Enum):
@@ -43,7 +46,8 @@ class FlexureResult:
     xu_max: float  # Max depth of neutral axis (mm)
     is_safe: bool  # True if design is valid
     asc_required: float = 0.0  # Area of compression steel required (mm^2)
-    error_message: str = ""
+    error_message: str = ""  # Deprecated: Use errors list instead
+    errors: List["DesignError"] = field(default_factory=list)  # Structured errors
 
 
 @dataclass
@@ -54,7 +58,8 @@ class ShearResult:
     vus: float  # Shear capacity of stirrups (kN)
     spacing: float  # Calculated spacing (mm)
     is_safe: bool  # True if section is safe in shear
-    remarks: str = ""
+    remarks: str = ""  # Deprecated: Use errors list instead
+    errors: List["DesignError"] = field(default_factory=list)  # Structured errors
 
 
 @dataclass

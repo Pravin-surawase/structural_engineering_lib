@@ -5,6 +5,16 @@ Description:  Shear design and analysis functions
 
 from . import tables
 from .types import ShearResult
+from .errors import (
+    E_INPUT_001,
+    E_INPUT_002,
+    E_INPUT_004,
+    E_INPUT_005,
+    E_INPUT_008,
+    E_INPUT_009,
+    E_SHEAR_001,
+    E_SHEAR_003,
+)
 
 
 def calculate_tv(vu_kn: float, b: float, d: float) -> float:
@@ -32,7 +42,14 @@ def design_shear(
     Returns:
         ShearResult with nominal stress, design spacing, and pass/fail status.
     """
-    if b <= 0 or d <= 0:
+    # Input validation with structured errors
+    input_errors = []
+    if b <= 0:
+        input_errors.append(E_INPUT_001)
+    if d <= 0:
+        input_errors.append(E_INPUT_002)
+
+    if input_errors:
         return ShearResult(
             tv=0.0,
             tc=0.0,
@@ -41,9 +58,16 @@ def design_shear(
             spacing=0.0,
             is_safe=False,
             remarks="Invalid input: b and d must be > 0.",
+            errors=input_errors,
         )
 
-    if fck <= 0 or fy <= 0:
+    material_errors = []
+    if fck <= 0:
+        material_errors.append(E_INPUT_004)
+    if fy <= 0:
+        material_errors.append(E_INPUT_005)
+
+    if material_errors:
         return ShearResult(
             tv=0.0,
             tc=0.0,
@@ -52,6 +76,7 @@ def design_shear(
             spacing=0.0,
             is_safe=False,
             remarks="Invalid input: fck and fy must be > 0.",
+            errors=material_errors,
         )
 
     if asv <= 0:
@@ -63,6 +88,7 @@ def design_shear(
             spacing=0.0,
             is_safe=False,
             remarks="Invalid input: asv must be > 0.",
+            errors=[E_INPUT_008],
         )
 
     if pt < 0:
@@ -74,6 +100,7 @@ def design_shear(
             spacing=0.0,
             is_safe=False,
             remarks="Invalid input: pt must be >= 0.",
+            errors=[E_INPUT_009],
         )
 
     # 1. Calculate Tv
@@ -92,6 +119,7 @@ def design_shear(
             spacing=0.0,
             is_safe=False,
             remarks="Shear stress exceeds Tc_max. Redesign section.",
+            errors=[E_SHEAR_001],
         )
 
     # 3. Get Tc
@@ -100,11 +128,13 @@ def design_shear(
     # 4. Calculate Vus and Spacing
     vu_n = abs(vu_kn) * 1000.0
     vc_n = tc * b * d
+    design_errors = []
 
     if tv <= tc:
         # Nominal shear < Design strength
         vus = 0.0
         remarks = "Nominal shear < Tc. Provide minimum shear reinforcement."
+        design_errors.append(E_SHEAR_003)
 
         # Spacing for min reinforcement (Cl. 26.5.1.6)
         spacing_calc = (0.87 * fy * asv) / (0.4 * b)
@@ -137,4 +167,5 @@ def design_shear(
         spacing=spacing,
         is_safe=True,
         remarks=remarks,
+        errors=design_errors,
     )

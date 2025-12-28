@@ -6,6 +6,18 @@ Description:  Flexural design and analysis functions
 import math
 from . import materials
 from .types import FlexureResult, DesignSectionType
+from .errors import (
+    DesignError,
+    Severity,
+    E_INPUT_001,
+    E_INPUT_002,
+    E_INPUT_003,
+    E_INPUT_004,
+    E_INPUT_005,
+    E_FLEXURE_001,
+    E_FLEXURE_002,
+    E_FLEXURE_003,
+)
 
 
 def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
@@ -59,7 +71,24 @@ def design_singly_reinforced(
     """
     Main Design Function for Singly Reinforced Beam
     """
-    if b <= 0 or d <= 0 or d_total <= 0:
+    # Input validation with structured errors
+    input_errors = []
+    if b <= 0:
+        input_errors.append(E_INPUT_001)
+    if d <= 0:
+        input_errors.append(E_INPUT_002)
+    if d_total <= 0:
+        input_errors.append(
+            DesignError(
+                code="E_INPUT_003",
+                severity=Severity.ERROR,
+                message="d_total must be > 0",
+                field="d_total",
+                hint="Check overall depth input.",
+            )
+        )
+
+    if input_errors:
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -69,6 +98,7 @@ def design_singly_reinforced(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: b, d, and d_total must be > 0.",
+            errors=input_errors,
         )
 
     if d_total <= d:
@@ -81,9 +111,16 @@ def design_singly_reinforced(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: d_total must be > d.",
+            errors=[E_INPUT_003],
         )
 
-    if fck <= 0 or fy <= 0:
+    material_errors = []
+    if fck <= 0:
+        material_errors.append(E_INPUT_004)
+    if fy <= 0:
+        material_errors.append(E_INPUT_005)
+
+    if material_errors:
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -93,6 +130,7 @@ def design_singly_reinforced(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: fck and fy must be > 0.",
+            errors=material_errors,
         )
 
     mu_lim = calculate_mu_lim(b, d, fck, fy)
@@ -109,6 +147,7 @@ def design_singly_reinforced(
             xu_max=xu_max,
             is_safe=False,
             error_message="Mu exceeds Mu_lim. Doubly reinforced section required.",
+            errors=[E_FLEXURE_001],
         )
 
     # Singly Reinforced
@@ -118,9 +157,11 @@ def design_singly_reinforced(
     ast_min = 0.85 * b * d / fy
 
     error_msg = ""
+    design_errors = []
     if ast_calc < ast_min:
         ast_final = ast_min
         error_msg = "Minimum steel provided."
+        design_errors.append(E_FLEXURE_002)
     else:
         ast_final = ast_calc
 
@@ -130,6 +171,7 @@ def design_singly_reinforced(
     if ast_final > ast_max:
         is_safe = False
         error_msg = "Ast exceeds maximum limit (4% bD)."
+        design_errors.append(E_FLEXURE_003)
 
     # Calculate Pt
     pt_provided = (ast_final * 100.0) / (b * d)
@@ -146,6 +188,7 @@ def design_singly_reinforced(
         xu_max=xu_max,
         is_safe=is_safe,
         error_message=error_msg,
+        errors=design_errors,
     )
 
 

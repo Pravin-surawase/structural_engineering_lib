@@ -4,8 +4,15 @@ Description:  IS 13920:2016 Ductile Detailing checks for Beams
 """
 
 import math
-from dataclasses import dataclass
-from typing import Tuple
+from dataclasses import dataclass, field
+from typing import List, Tuple
+
+from .errors import (
+    DesignError,
+    E_DUCTILE_001,
+    E_DUCTILE_002,
+    E_DUCTILE_003,
+)
 
 
 @dataclass
@@ -14,26 +21,32 @@ class DuctileBeamResult:
     min_pt: float
     max_pt: float
     confinement_spacing: float
-    remarks: str
+    remarks: str = ""  # Deprecated: Use errors list instead
+    errors: List[DesignError] = field(default_factory=list)  # Structured errors
 
 
-def check_geometry(b: float, D: float) -> Tuple[bool, str]:
+def check_geometry(b: float, D: float) -> Tuple[bool, str, List[DesignError]]:
     """
     Clause 6.1: Geometry requirements
     1. b >= 200 mm
     2. b/D >= 0.3
     """
+    errors = []
+
     if b < 200:
-        return False, f"Width {b} mm < 200 mm (IS 13920 Cl 6.1.1)"
+        errors.append(E_DUCTILE_001)
+        return False, f"Width {b} mm < 200 mm (IS 13920 Cl 6.1.1)", errors
 
     if D <= 0:
-        return False, "Invalid depth"
+        errors.append(E_DUCTILE_003)
+        return False, "Invalid depth", errors
 
     ratio = b / D
     if ratio < 0.3:
-        return False, f"Width/Depth ratio {ratio:.2f} < 0.3 (IS 13920 Cl 6.1.2)"
+        errors.append(E_DUCTILE_002)
+        return False, f"Width/Depth ratio {ratio:.2f} < 0.3 (IS 13920 Cl 6.1.2)", errors
 
-    return True, "OK"
+    return True, "OK", errors
 
 
 def get_min_tension_steel_percentage(fck: float, fy: float) -> float:
@@ -78,7 +91,7 @@ def check_beam_ductility(
     """
     Perform comprehensive ductility checks for a beam section.
     """
-    is_geo_valid, geo_msg = check_geometry(b, D)
+    is_geo_valid, geo_msg, geo_errors = check_geometry(b, D)
 
     min_pt = get_min_tension_steel_percentage(fck, fy)
     max_pt = get_max_tension_steel_percentage()
@@ -94,4 +107,5 @@ def check_beam_ductility(
         max_pt=max_pt,
         confinement_spacing=spacing,
         remarks="; ".join(remarks) if remarks else "Compliant",
+        errors=geo_errors,
     )
