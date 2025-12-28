@@ -326,6 +326,17 @@ def test_design_summary_csv(sample_csv_file, tmp_path):
     assert "governing_utilization" in rows[0]
 
 
+def test_design_summary_default_path(sample_csv_file, tmp_path, monkeypatch):
+    """Summary CSV should default to CWD when no path provided."""
+    monkeypatch.chdir(tmp_path)
+
+    rc = cli_main.main(["design", str(sample_csv_file), "--summary"])
+
+    assert rc == 0
+    summary_path = tmp_path / "design_summary.csv"
+    assert summary_path.exists()
+
+
 def test_design_summary_csv_default_path(sample_csv_file, tmp_path):
     """Summary CSV with default path (next to output file)."""
     output_file = tmp_path / "results.json"
@@ -590,6 +601,37 @@ def test_dxf_generation(sample_design_results_file, tmp_path):
     assert rc == 0
     assert output_file.exists()
     assert output_file.stat().st_size > 0
+
+
+def test_dxf_title_block(sample_design_results_file, tmp_path):
+    """Title block option should create BORDER layer and title text."""
+    from structural_lib import dxf_export
+
+    if not dxf_export.EZDXF_AVAILABLE:
+        pytest.skip("ezdxf not installed")
+
+    output_file = tmp_path / "beam_title.dxf"
+
+    rc = cli_main.main(
+        [
+            "dxf",
+            str(sample_design_results_file),
+            "-o",
+            str(output_file),
+            "--title-block",
+            "--title",
+            "Beam Sheet",
+        ]
+    )
+
+    assert rc == 0
+    assert output_file.exists()
+
+    doc = dxf_export.ezdxf.readfile(str(output_file))
+    assert "BORDER" in doc.layers
+
+    texts = [e.dxf.text for e in doc.modelspace().query("TEXT")]
+    assert any("Beam Sheet" in text for text in texts)
 
 
 def test_dxf_without_ezdxf(sample_design_results_file, tmp_path, monkeypatch):
