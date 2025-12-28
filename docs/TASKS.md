@@ -45,7 +45,34 @@ python -m structural_lib job job.json -o job_out
 
 ---
 
-## 📋 Up Next
+## � INBOX (Triage Required)
+
+> New issues go here with severity/impact/reproducible. Review at phase gates (W13, W26, W39, W52).
+> Only P0 items can interrupt the roadmap. See `docs/planning/production-roadmap.md` for rules.
+
+| ID | Issue | Severity | Impact | Reproducible | Link |
+|----|-------|----------|--------|--------------|------|
+| *empty* | *No new issues* | — | — | — | — |
+
+**Severity guide:**
+- **P0:** Blocker (wrong result, unsafe output, install broken)
+- **P1:** Important (usability issue, missing validation, doc gap)
+- **P2:** Nice-to-have (polish, optimization, edge case)
+
+---
+
+## �📋 Up Next
+
+### Roadmap (Next 5 Weeks, WIP=1)
+
+| Week | ID | Task | Agent | Status | Notes |
+|------|----|------|-------|--------|-------|
+| W01 | — | Scope lock + WIP rule | — | ✅ Done | Completed in docs discipline |
+| W02 | S-007 | External engineer CLI test | CLIENT | ⏳ Waiting | Resume when tester available; proceed to W03 if blocked |
+| W03 | RM-W03 | Error schema draft (code/field/hint/severity) | DOCS/DEV | ⏳ Not started | Publish in docs/reference/ |
+| W04 | RM-W04 | Implement error schema (core + tests) | DEV | ⏳ Not started | Apply to 3 core functions |
+| W05 | RM-W05 | Input validation pass (geometry/materials) | DEV | ⏳ Not started | Ensure is_safe=False with errors |
+| W06 | RM-W06 | Units boundary spec | DEV/DOCS | ⏳ Not started | Update known-pitfalls.md |
 
 ### Post-v0.20.0 Polish
 
@@ -82,19 +109,19 @@ python -m structural_lib job job.json -o job_out
 
 ## 📦 Backlog (Post-v1.0)
 
-| ID | Task | Agent | Description |
-|----|------|-------|-------------|
-| TASK-081 | Level C Serviceability | DEV | Shrinkage + creep (Annex C) |
-| TASK-082 | VBA Parity Automation | DEVOPS | Python vs VBA harness (= S-050) |
-| TASK-085 | Torsion Design | DEV | Cl. 41 + closed stirrups |
-| TASK-086 | Side-Face Reinforcement | DEV | D > 750mm check (Cl. 26.5.1.3) |
-| TASK-087 | Anchorage Check | DEV | Ld at supports (Cl. 26.2) |
-| TASK-089 | Flanged Width Helper | INTEGRATION | bf from slab geometry |
-| TASK-090 | Publish JSON Schemas | INTEGRATION | Add `schemas/job.schema.json` + `schemas/result.schema.json` |
-| TASK-091 | CLI console script alias | DEVOPS | Add `structural-lib` console script in pyproject |
-| TASK-092 | Structured error payloads | DEV | Machine-readable error shape (code/field/hint) |
-| S-051 | Performance benchmarks | DEV | Track regression |
-| S-052 | Fuzz testing | TESTER | Random input testing |
+| ID | Task | Agent | Severity | Impact | Description |
+|----|------|-------|----------|--------|-------------|
+| TASK-081 | Level C Serviceability | DEV | P2 | design | Shrinkage + creep (Annex C) |
+| TASK-082 | VBA Parity Automation | DEVOPS | P2 | parity | Python vs VBA harness (= S-050) |
+| TASK-085 | Torsion Design | DEV | P2 | design | Cl. 41 + closed stirrups |
+| TASK-086 | Side-Face Reinforcement | DEV | P2 | design | D > 750mm check (Cl. 26.5.1.3) |
+| TASK-087 | Anchorage Check | DEV | P2 | design | Ld at supports (Cl. 26.2) |
+| TASK-089 | Flanged Width Helper | INTEGRATION | P2 | design | bf from slab geometry |
+| TASK-090 | Publish JSON Schemas | INTEGRATION | P1 | schema | Add `schemas/job.schema.json` + `schemas/result.schema.json` |
+| TASK-091 | CLI console script alias | DEVOPS | P2 | CLI | Add `structural-lib` console script in pyproject |
+| TASK-092 | Structured error payloads | DEV | P1 | schema | Machine-readable error shape (code/field/hint) |
+| S-051 | Performance benchmarks | DEV | P2 | stability | Track regression |
+| S-052 | Fuzz testing | TESTER | P2 | stability | Random input testing |
 
 ---
 
