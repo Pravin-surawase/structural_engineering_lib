@@ -134,6 +134,9 @@ When working on specific task types, apply these focuses:
 | Editing file without reading current content | Always read file first if there may be changes |
 | Unused variables in test code | Check with `ruff check` before commit |
 | Creating duplicate documentation | Check if doc exists first |
+| Committing unrelated staged files | Run `git status` before commit; stage only intended files |
+| Resolving merge conflicts + feature in one commit | Resolve conflicts in separate commit first, then add feature |
+| PR title/description doesn't match actual changes | List ALL changed files in PR body; update title if scope changes |
 
 ---
 
