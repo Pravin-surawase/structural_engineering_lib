@@ -78,13 +78,25 @@ def run_job_is456(
     Returns a small run summary (useful for callers/tests).
     """
 
-    schema_version = int(job.get("schema_version", 0) or 0)
-    if schema_version != 1:
-        raise ValueError(f"Unsupported schema_version: {schema_version}")
+    schema_version = job.get("schema_version")
+    if schema_version is None:
+        raise ValueError(
+            "Missing required field 'schema_version' in job file. Expected: 1."
+        )
+    try:
+        schema_version_int = int(schema_version)
+    except (ValueError, TypeError):
+        raise ValueError(
+            f"Invalid schema_version: '{schema_version}'. Expected integer (currently supported: 1)."
+        )
+    if schema_version_int != 1:
+        raise ValueError(
+            f"Unsupported schema_version: {schema_version_int}. Currently supported: 1."
+        )
 
     code = str(job.get("code", "") or "")
     if code != "IS456":
-        raise ValueError("v1 runner supports only code='IS456'")
+        raise ValueError(f"v1 runner supports only code='IS456'. Got: '{code}'.")
 
     units_input = str(job.get("units", "") or "")
 
@@ -210,8 +222,13 @@ def run_job(
     """Dispatch job runner based on job['code']."""
 
     job = load_job_json(job_path)
-    code = str(job.get("code", "") or "")
+    code = str(job.get("code", "") or "").strip()
     if code == "IS456":
         return run_job_is456(job=job, out_dir=out_dir)
 
-    raise ValueError(f"Unsupported code: {code}")
+    if not code:
+        raise ValueError(
+            "Missing required field 'code' in job file. "
+            "Currently supported: 'IS456'."
+        )
+    raise ValueError(f"Unsupported code: '{code}'. Currently supported: 'IS456'.")
