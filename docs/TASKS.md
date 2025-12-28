@@ -1,179 +1,188 @@
 # Task Board
 
-> **How to use:** Start each session here. Pick from "Up Next", move to "Active", then "Done".
-
-| Release | Version | Status |
-|---------|---------|--------|
-| **Current** | v0.10.5 | Published on PyPI |
-| **Next** | v0.20.0 | Blocked by S-007 |
+> How to use: start each session here. Pick a task from "Up Next", move it to "Active", then move to "Done" when finished.
 
 ---
 
-## 🔴 Active
+## Multi-Agent Workflow
+
+When working on tasks, specify which agent role to use:
+
+| Role | Doc | Use For |
+|------|-----|---------|
+| **DEV** | `agents/DEV.md` | Implementation, refactoring, architecture |
+| **TESTER** | `agents/TESTER.md` | Test design, edge cases, validation |
+| **DEVOPS** | `agents/DEVOPS.md` | Repo structure, automation, releases |
+| **PM** | `agents/PM.md` | Scope, prioritization, changelog |
+| **UI** | `agents/UI.md` | Excel layout, UX flow, VBA forms |
+| **CLIENT** | `agents/CLIENT.md` | Requirements, user stories, validation |
+| **RESEARCHER** | `agents/RESEARCHER.md` | IS Codes, algorithms, technical constraints |
+| **INTEGRATION** | `agents/INTEGRATION.md` | Data schemas, ETABS/CSV mapping |
+| **DOCS** | `agents/DOCS.md` | API docs, guides, changelog |
+| **SUPPORT** | `agents/SUPPORT.md` | Troubleshooting, known issues |
+
+See also: `docs/_internal/AGENT_WORKFLOW.md`
+
+---
+
+## Active
+
+*(Nothing currently in progress)*
+
+---
+
+## Recently Completed (v0.9.7-dev)
+
+### Level B Serviceability + CLI/AI Discoverability (PR #62) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| **S-007** | External engineer CLI test | CLIENT | ⏳ Waiting (requires human) |
+| **TASK-055** | Level B Serviceability (curvature-based deflection) | DEV | ✅ Done |
+| **TASK-069** | Add `llms.txt` (AI summary) | DOCS | ✅ Done |
+| **TASK-070** | CLI help pass | DEV | ✅ Done |
+| **TASK-071** | Sync CLI reference | DOCS | ✅ Done |
+| **TASK-072** | Cross-links from docs | DOCS | ✅ Done |
 
-**Context:** This is the last blocker before v0.20.0 release.
+**Deliverables:**
+- 7 new Level B functions in `serviceability.py`
+- `DeflectionLevelBResult` dataclass
+- 16 new tests (1730 total passing)
+- `llms.txt` for AI discovery
+- Enhanced CLI help text
 
-**S-007 Test Instructions (design required, full CLI optional):**
-```bash
-# Fresh environment (simulate external user)
-mkdir ~/test_structural && cd ~/test_structural
-python3 -m venv .venv && source .venv/bin/activate
-pip install structural-lib-is456
+### Release Automation Sprint (TASK-065 through TASK-068) — ✅ COMPLETE
 
-# Test CLI
-python -m structural_lib --help
+**Deliverables (PR #59):**
+- `scripts/release.py` — One-command release helper
+- `scripts/check_doc_versions.py` — Validate no stale versions
+- `.pre-commit-config.yaml` — Enhanced with ruff, doc check hooks
+- CI doc drift check step
 
-# Use correct CSV schema (all required fields)
-cat > beams.csv << 'EOF'
-BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu,Ast_req,Asc_req,Stirrup_Dia,Stirrup_Spacing,Status
-B1,Story1,300,500,4000,40,25,500,150,100,942.5,0,8,150,OK
-EOF
+### Guardrails Hardening (Local CI Parity) — ✅ COMPLETE
 
-python -m structural_lib design beams.csv -o results.json
-cat results.json
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-097** | Add local CI parity script (`scripts/ci_local.sh`) | DEVOPS | ✅ Done |
 
-# Optional: full CLI smoke test (requires DXF extras)
-pip install "structural-lib-is456[dxf]"
-python -m structural_lib bbs results.json -o schedule.csv
-python -m structural_lib dxf results.json -o drawings.dxf
-python -m structural_lib job job.json -o job_out
-```
+### Error Message Review (TASK-080) — ✅ COMPLETE
 
----
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-080** | Error message review | SUPPORT | ✅ Done |
 
-## � INBOX (Triage Required)
+### External CLI Smoke Test (TASK-077) — ✅ COMPLETE
 
-> New issues go here with severity/impact/reproducible. Review at phase gates (W13, W26, W39, W52).
-> Only P0 items can interrupt the roadmap. See `docs/planning/production-roadmap.md` for rules.
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-077** | External user CLI test | CLIENT | ✅ Done |
 
-| ID | Issue | Severity | Impact | Reproducible | Link |
-|----|-------|----------|--------|--------------|------|
-| *empty* | *No new issues* | — | — | — | — |
+### Seismic Detailing Validation (TASK-078) — ✅ COMPLETE
 
-**Severity guide:**
-- **P0:** Blocker (wrong result, unsafe output, install broken)
-- **P1:** Important (usability issue, missing validation, doc gap)
-- **P2:** Nice-to-have (polish, optimization, edge case)
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
 
----
+### VBA Parity Spot-Check (TASK-079) — ✅ COMPLETE
 
-## �📋 Up Next
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
 
-### Roadmap (Next 5 Weeks, WIP=1)
+### DXF Deliverable Layout Polish (TASK-083) — ✅ COMPLETE
 
-| Week | ID | Task | Agent | Status | Notes |
-|------|----|------|-------|--------|-------|
-| W01 | — | Scope lock + WIP rule | — | ✅ Done | Completed in docs discipline |
-| W02 | S-007 | External engineer CLI test | CLIENT | ⏳ Waiting | Resume when tester available; proceed to W03 if blocked |
-| W03 | RM-W03 | Error schema draft (code/field/hint/severity) | DOCS/DEV | ✅ Done | Published in docs/reference/error-schema.md |
-| W04 | RM-W04 | Implement error schema (core + tests) | DEV | ✅ Done | errors.py + flexure/shear/ductile integration |
-| W05 | RM-W05 | Input validation pass (geometry/materials) | DEV | ⏳ Not started | Ensure is_safe=False with errors |
-| W06 | RM-W06 | Units boundary spec | DEV/DOCS | ⏳ Not started | Update known-pitfalls.md |
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-083** | DXF deliverable layout polish | DEV | ✅ Done |
 
-### Post-v0.20.0 Polish
+### DXF to PDF/PNG Export Workflow (TASK-084) — ✅ COMPLETE
 
-| ID | Task | Agent | Est. | Notes |
-|----|------|-------|------|-------|
-| S-053 | Security audit (dependency scan) | DEVOPS | 30 min | Nice to have |
-| POLISH-001 | README badges (coverage, version) | DOCS | 15 min | Nice to have |
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | ✅ Done |
 
-### New IS 456 Feature
+### Learning Path Docs (TASK-098) — ✅ COMPLETE
 
-| ID | Task | Agent | Est. |
-|----|------|-------|------|
-| TASK-088 | Slenderness Check (L > 60b warning) | DEV | 1 hr |
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-098** | Beginner learning plan + guides | DOCS | ✅ Done |
 
-### v0.20.0 Release (after S-007 passes)
+### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
-| Step | ID | Task | Agent | Est. |
-|------|-----|------|-------|------|
-| 1 | S-007 | External CLI test | CLIENT (owner) | 15 min |
-| 2 | REL-001 | Update CHANGELOG | PM | 15 min |
-| 3 | REL-002 | Bump version to 0.20.0 | DEVOPS | 10 min |
-| 4 | REL-003 | Tag and release | DEVOPS | 15 min |
-
-### v1.0 Gates
-
-| Gate | Status | Notes |
-|------|--------|-------|
-| External CLI test | ⏳ | = S-007 (owner will do) |
-| All tests pass | ✅ | 1810 pass, 91 skip |
-| VBA parity verified | ✅ | Spot-checked |
-| 5 beam validations | ✅ | Documented |
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-090** | Add branch coverage gate + pytest timeout in CI | DEVOPS | ✅ Done |
+| **TASK-091** | Add `CODEOWNERS` | DEVOPS | ✅ Done |
+| **TASK-092** | Complete Shear section in `docs/reference/api.md` | DOCS | ✅ Done |
+| **TASK-093** | Document golden/parity vector sources | DOCS | ✅ Done |
+| **TASK-094** | Add explicit `__all__` in `api.py` | DEV | ✅ Done |
+| **TASK-095** | Remove duplicate doc drift check in CI | DEVOPS | ✅ Done |
+| **TASK-096** | Add Mu_lim clause comment + expand `design_shear` docstring | DEV | ✅ Done |
 
 ---
 
-## 📦 Backlog (Post-v1.0)
+## Up Next (v0.9.7 Release Sprint)
 
-| ID | Task | Agent | Severity | Impact | Description |
-|----|------|-------|----------|--------|-------------|
-| TASK-081 | Level C Serviceability | DEV | P2 | design | Shrinkage + creep (Annex C) |
-| TASK-082 | VBA Parity Automation | DEVOPS | P2 | parity | Python vs VBA harness (= S-050) |
-| TASK-085 | Torsion Design | DEV | P2 | design | Cl. 41 + closed stirrups |
-| TASK-086 | Side-Face Reinforcement | DEV | P2 | design | D > 750mm check (Cl. 26.5.1.3) |
-| TASK-087 | Anchorage Check | DEV | P2 | design | Ld at supports (Cl. 26.2) |
-| TASK-089 | Flanged Width Helper | INTEGRATION | P2 | design | bf from slab geometry |
-| TASK-090 | Publish JSON Schemas | INTEGRATION | P1 | schema | Add `schemas/job.schema.json` + `schemas/result.schema.json` |
-| TASK-091 | CLI console script alias | DEVOPS | P2 | CLI | Add `structural-lib` console script in pyproject |
-| TASK-092 | Structured error payloads | DEV | P1 | schema | Machine-readable error shape (code/field/hint) |
-| S-051 | Performance benchmarks | DEV | P2 | stability | Track regression |
-| S-052 | Fuzz testing | TESTER | P2 | stability | Random input testing |
+**Goal:** Prepare for v0.9.7 release with Level B serviceability + polish.
+
+| ID | Task | Agent | Est. | Priority |
+|----|------|-------|------|----------|
+| **TASK-073** | Update CHANGELOG for v0.9.7 | PM | 15 min | 🔴 High |
+| **TASK-074** | Bump version to 0.9.7 | DEVOPS | 10 min | 🔴 High |
+| **TASK-075** | Update next-session-brief | DOCS | 15 min | 🟡 Medium |
+| **TASK-076** | Tag and release v0.9.7 | DEVOPS | 15 min | 🔴 High |
 
 ---
 
-## ✅ Recently Completed
+## Up Next (v1.0 Readiness)
 
-### v0.20.0 Stabilization (PRs #89-98)
+**Goal:** Complete beta gates and prepare for v1.0 stable release.
 
-- **S-015:** Fixed 4 broken doc links + created `scripts/check_links.py`
-- **S-014:** Fixed expected output in beginners-guide (942→882)
-- **S-009:** Fixed D1 expected Ld value (752→777)
-- **S-006:** Improved job_runner error messages
-- **S-020–S-032:** Verified all High Priority items (edge cases, performance)
+| ID | Task | Agent | Est. | Priority |
+|----|------|-------|------|----------|
 
-### Earlier Sprints
-
-| Sprint | Key Deliverables |
-|--------|-----------------|
-| Level B Serviceability (PR #62) | 7 functions, `DeflectionLevelBResult`, 16 tests |
-| Release Automation (PR #59) | `release.py`, `check_doc_versions.py`, pre-commit hooks |
-| Multi-Agent Review | CODEOWNERS, API docs, `__all__` exports |
-| DXF Polish | Title blocks, PDF/PNG workflow |
-
-> Full history: `docs/_archive/`
+**v1.0 Beta Gates (from pre-release-checklist):**
+- [x] 5 real beam validations documented
+- [ ] One external engineer tries CLI cold
+- [ ] All tests pass (currently: 1730 passed, 95 skipped)
+- [x] VBA parity verified
 
 ---
 
-## 🛠️ Agent Roles
+## Backlog (Post-v1.0)
 
-| Role | Use For |
-|------|---------|
-| **DEV** | Implementation, refactoring |
-| **TESTER** | Test design, edge cases |
-| **DEVOPS** | Automation, releases |
-| **PM** | Scope, changelog |
-| **DOCS** | API docs, guides |
-| **CLIENT** | Requirements, validation |
-| **SUPPORT** | Troubleshooting |
-
-> Full list: `agents/README.md`
+| ID | Task | Agent | Description |
+|----|------|-------|-------------|
+| **TASK-081** | Level C Serviceability | DEV | Shrinkage + creep deflection (Annex C full) |
+| **TASK-082** | VBA Parity Automation | DEVOPS | Automated Python vs VBA comparison harness |
+| **TASK-085** | Torsion Design + Detailing | DEV | Equivalent shear/moment + closed stirrups (Cl. 41) |
+| **TASK-086** | Side-Face Reinforcement Check | DEV | D > 750 mm -> 0.1% web area bars (Cl. 26.5.1.3) |
+| **TASK-087** | Anchorage Space Check | DEV | Verify Ld at supports; suggest hooks/bends if short (Cl. 26.2) |
+| **TASK-088** | Slenderness/Stability Check | DEV | L > 60b or 250b^2/d warning (Cl. 23.1.2) |
+| **TASK-089** | Flanged Effective Width Helper | INTEGRATION | Compute bf from slab geometry for T/L beams |
 
 ---
 
-## 📊 Status
+## Completed (v0.9.6)
 
-| Metric | Value |
-|--------|-------|
-| **Version** | v0.10.4 |
-| **Tests** | 1810 passed, 91 skipped |
-| **Coverage** | 92% branch |
-| **Next Release** | v0.20.0 (awaiting S-007) |
-| **Updated** | 2025-12-28 |
+- [x] **TASK-059: Shared Beam Pipeline Module** — `beam_pipeline.py` — PR #55
+- [x] **TASK-060: Canonical Result Schema v1** — `BeamDesignOutput`, `MultiBeamOutput` — PR #55
+- [x] **TASK-061: Units Validation at App Layer** — `validate_units()` — PR #55
+- [x] **TASK-062: BBS/DXF Null Detailing Guard** — `or {}` guard in `__main__.py` — PR #56
+- [x] **TASK-063: Canonical Units in job_runner Output** — Use return value of `validate_units()` — PR #56
+- [x] **TASK-064: Case-Insensitive Units Validation** — Normalize to uppercase — PR #56
 
 ---
 
-*Checklist: `docs/planning/v0.20-stabilization-checklist.md`*
+## Archive
+
+- Full history: `docs/_archive/TASKS_2025-12-27.md`
+
+---
+
+## Notes
+
+- **Current Version**: v0.10.3
+- **Last Updated**: 2025-12-28
+- **Active Branch**: main
+- **Tests**: Run `python scripts/update_test_stats.py` for current count
+- **Target**: v0.20.0 stable release (see `docs/planning/v0.20-stabilization-checklist.md`)
