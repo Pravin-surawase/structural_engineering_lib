@@ -205,9 +205,83 @@ def design_doubly_reinforced(
 
 ---
 
+### 2.5 Calculate Limiting Moment (Flanged)
+Calculates the limiting moment of resistance for a T-beam section.
+
+**Python:**
+```python
+def calculate_mu_lim_flanged(
+    bw: float, 
+    bf: float, 
+    d: float, 
+    Df: float, 
+    fck: float, 
+    fy: float
+) -> float
+```
+
+### 2.6 Design Flanged Beam
+Designs a flanged beam (T-beam). Handles neutral axis in flange (rectangular behavior), neutral axis in web (singly reinforced T), and doubly reinforced T-beams.
+
+**Python:**
+```python
+def design_flanged_beam(
+    bw: float, 
+    bf: float, 
+    d: float, 
+    Df: float, 
+    d_total: float, 
+    mu_knm: float, 
+    fck: float, 
+    fy: float,
+    d_dash: float = 50.0
+) -> FlexureResult
+```
+
+---
+
 ## 3. Shear Module (`M07_Shear` / `shear.py`)
 
-*(See existing documentation)*
+### 3.1 Calculate Nominal Shear Stress (`Tv`)
+Calculates $\tau_v = \frac{V_u}{bd}$.
+
+**Python:**
+```python
+def calculate_tv(
+    vu_kn: float, 
+    b: float, 
+    d: float
+) -> float
+```
+
+### 3.2 Design Shear Reinforcement
+Performs shear design: checks $\tau_v$ vs $\tau_{c,max}$, gets $\tau_c$ (Table 19), computes $V_{us}$ and stirrup spacing with code limits.
+- Table 19 policy: clamp pt to 0.15–3.0%; use nearest lower concrete grade column (no fck interpolation).
+- Table 20: if $\tau_v > \tau_{c,max}$, section is inadequate.
+
+**Python:**
+```python
+def design_shear(
+    vu_kn: float, 
+    b: float, 
+    d: float, 
+    fck: float, 
+    fy: float, 
+    asv: float, 
+    pt: float
+) -> ShearResult
+```
+
+**Return Type (`ShearResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `tv` | float | Nominal shear stress (N/mm²) |
+| `tc` | float | Design shear strength of concrete (N/mm²) |
+| `tc_max` | float | Max shear stress limit (N/mm²) |
+| `vus` | float | Shear to be resisted by stirrups (kN) |
+| `spacing` | float | Governing stirrup spacing (mm) |
+| `is_safe` | bool | True if $\tau_v \le \tau_{c,max}$ |
+| `remarks` | str | Design status (e.g., "Shear reinforcement required") |
 
 ---
 
@@ -453,85 +527,6 @@ def check_compliance_report(
 
 **Outputs:**
 - `ComplianceReport.summary`: compact, Excel-friendly dict containing `num_cases`, `num_failed_cases`, governing identifiers, and per-check max utilizations.
-
----
-### 2.5 Calculate Limiting Moment (Flanged)
-Calculates the limiting moment of resistance for a T-beam section.
-
-**Python:**
-```python
-def calculate_mu_lim_flanged(
-    bw: float, 
-    bf: float, 
-    d: float, 
-    Df: float, 
-    fck: float, 
-    fy: float
-) -> float
-```
-
-### 2.6 Design Flanged Beam
-Designs a flanged beam (T-beam). Handles neutral axis in flange (rectangular behavior), neutral axis in web (singly reinforced T), and doubly reinforced T-beams.
-
-**Python:**
-```python
-def design_flanged_beam(
-    bw: float, 
-    bf: float, 
-    d: float, 
-    Df: float, 
-    d_total: float, 
-    mu_knm: float, 
-    fck: float, 
-    fy: float,
-    d_dash: float = 50.0
-) -> FlexureResult
-```
-
----
-
-## 3. Shear Module (`M07_Shear` / `shear.py`)
-
-### 3.1 Calculate Nominal Shear Stress (`Tv`)
-Calculates $\tau_v = \frac{V_u}{bd}$.
-
-**Python:**
-```python
-def calculate_tv(
-    vu_kn: float, 
-    b: float, 
-    d: float
-) -> float
-```
-
-### 3.2 Design Shear Reinforcement
-Performs shear design: checks $\tau_v$ vs $\tau_{c,max}$, gets $\tau_c$ (Table 19), computes $V_{us}$ and stirrup spacing with code limits.
-- Table 19 policy: clamp pt to 0.15–3.0%; use nearest lower concrete grade column (no fck interpolation).
-- Table 20: if $\tau_v > \tau_{c,max}$, section is inadequate.
-
-**Python:**
-```python
-def design_shear(
-    vu_kn: float, 
-    b: float, 
-    d: float, 
-    fck: float, 
-    fy: float, 
-    asv: float, 
-    pt: float
-) -> ShearResult
-```
-
-**Return Type (`ShearResult`):**
-| Field | Type | Description |
-|-------|------|-------------|
-| `tv` | float | Nominal shear stress (N/mm²) |
-| `tc` | float | Design shear strength of concrete (N/mm²) |
-| `tc_max` | float | Max shear stress limit (N/mm²) |
-| `vus` | float | Shear to be resisted by stirrups (kN) |
-| `spacing` | float | Governing stirrup spacing (mm) |
-| `is_safe` | bool | True if $\tau_v \le \tau_{c,max}$ |
-| `remarks` | str | Design status (e.g., "Shear reinforcement required") |
 
 ---
 

@@ -19,6 +19,18 @@ def design_shear(
 ) -> ShearResult:
     """
     Main Shear Design Function
+
+    Args:
+        vu_kn: Factored shear (kN)
+        b: Beam width (mm)
+        d: Effective depth (mm)
+        fck: Concrete strength (N/mm^2)
+        fy: Steel yield strength (N/mm^2)
+        asv: Area of shear reinforcement legs (mm^2)
+        pt: Tension steel percentage for Table 19 lookup (%)
+
+    Returns:
+        ShearResult with nominal stress, design spacing, and pass/fail status.
     """
     if b <= 0 or d <= 0:
         return ShearResult(

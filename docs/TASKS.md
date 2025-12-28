@@ -58,6 +58,18 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 - `.pre-commit-config.yaml` — Enhanced with ruff, doc check hooks
 - CI doc drift check step
 
+### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-090** | Add branch coverage gate + pytest timeout in CI | DEVOPS | ✅ Done |
+| **TASK-091** | Add `CODEOWNERS` | DEVOPS | ✅ Done |
+| **TASK-092** | Complete Shear section in `docs/reference/api.md` | DOCS | ✅ Done |
+| **TASK-093** | Document golden/parity vector sources | DOCS | ✅ Done |
+| **TASK-094** | Add explicit `__all__` in `api.py` | DEV | ✅ Done |
+| **TASK-095** | Remove duplicate doc drift check in CI | DEVOPS | ✅ Done |
+| **TASK-096** | Add Mu_lim clause comment + expand `design_shear` docstring | DEV | ✅ Done |
+
 ---
 
 ## Up Next (v0.9.7 Release Sprint)
@@ -83,6 +95,8 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 | **TASK-078** | Seismic detailing validation | TESTER | 45 min | 🟡 Medium |
 | **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium |
 | **TASK-080** | Error message review | SUPPORT | 30 min | 🟢 Low |
+| **TASK-083** | DXF deliverable layout polish | DEV | 2 hrs | 🟡 Medium |
+| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | 2 hrs | 🟡 Medium |
 
 **v1.0 Beta Gates (from pre-release-checklist):**
 - [x] 5 real beam validations documented
@@ -96,11 +110,13 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 | ID | Task | Agent | Description |
 |----|------|-------|-------------|
-| **TASK-056** | Column Design Module | DEV | Axial + biaxial bending, IS 456 interaction curves |
-| **TASK-057** | Slab Design Module | DEV | One-way/two-way slabs, Table 26 coefficients |
-| **TASK-058** | ETABS API Integration | INTEGRATION | CSI OAPI access (Windows only) |
 | **TASK-081** | Level C Serviceability | DEV | Shrinkage + creep deflection (Annex C full) |
 | **TASK-082** | VBA Parity Automation | DEVOPS | Automated Python vs VBA comparison harness |
+| **TASK-085** | Torsion Design + Detailing | DEV | Equivalent shear/moment + closed stirrups (Cl. 41) |
+| **TASK-086** | Side-Face Reinforcement Check | DEV | D > 750 mm -> 0.1% web area bars (Cl. 26.5.1.3) |
+| **TASK-087** | Anchorage Space Check | DEV | Verify Ld at supports; suggest hooks/bends if short (Cl. 26.2) |
+| **TASK-088** | Slenderness/Stability Check | DEV | L > 60b or 250b^2/d warning (Cl. 23.1.2) |
+| **TASK-089** | Flanged Effective Width Helper | INTEGRATION | Compute bf from slab geometry for T/L beams |
 
 ---
 

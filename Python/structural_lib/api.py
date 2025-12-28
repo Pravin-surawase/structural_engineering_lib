@@ -13,6 +13,17 @@ from . import ductile
 from . import serviceability
 from .types import ComplianceCaseResult, ComplianceReport
 
+__all__ = [
+    "get_library_version",
+    "check_beam_ductility",
+    "check_deflection_span_depth",
+    "check_crack_width",
+    "check_compliance_report",
+    "design_beam_is456",
+    "check_beam_is456",
+    "detail_beam_is456",
+]
+
 
 _IS456_UNITS_ALIASES = {
     "IS456",
