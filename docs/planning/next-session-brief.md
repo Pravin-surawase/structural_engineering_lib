@@ -2,7 +2,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.10.5 | Published on PyPI |
+| **Current** | v0.10.6 | Published on PyPI |
 | **Next** | v0.20.0 | Blocked by S-007 |
 
 **Date:** 2025-12-28 | **PRs:** through #107

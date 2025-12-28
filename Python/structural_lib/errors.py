@@ -144,6 +144,62 @@ E_INPUT_009 = DesignError(
     hint="Check tension steel percentage.",
 )
 
+E_INPUT_010 = DesignError(
+    code="E_INPUT_010",
+    severity=Severity.ERROR,
+    message="d_dash must be > 0",
+    field="d_dash",
+    hint="Check compression steel cover input.",
+)
+
+E_INPUT_011 = DesignError(
+    code="E_INPUT_011",
+    severity=Severity.ERROR,
+    message="min_long_bar_dia must be > 0",
+    field="min_long_bar_dia",
+    hint="Provide smallest longitudinal bar diameter.",
+)
+
+E_INPUT_012 = DesignError(
+    code="E_INPUT_012",
+    severity=Severity.ERROR,
+    message="bw must be > 0",
+    field="bw",
+    hint="Check web width input.",
+)
+
+E_INPUT_013 = DesignError(
+    code="E_INPUT_013",
+    severity=Severity.ERROR,
+    message="bf must be > 0",
+    field="bf",
+    hint="Check flange width input.",
+)
+
+E_INPUT_014 = DesignError(
+    code="E_INPUT_014",
+    severity=Severity.ERROR,
+    message="Df must be > 0",
+    field="Df",
+    hint="Check flange thickness input.",
+)
+
+E_INPUT_015 = DesignError(
+    code="E_INPUT_015",
+    severity=Severity.ERROR,
+    message="bf must be >= bw",
+    field="bf",
+    hint="Ensure flange width is not smaller than web width.",
+)
+
+E_INPUT_016 = DesignError(
+    code="E_INPUT_016",
+    severity=Severity.ERROR,
+    message="Df must be < d",
+    field="Df",
+    hint="Ensure flange thickness is less than effective depth.",
+)
+
 # Flexure Errors
 E_FLEXURE_001 = DesignError(
     code="E_FLEXURE_001",
@@ -170,6 +226,14 @@ E_FLEXURE_003 = DesignError(
     field="Ast",
     hint="Reduce steel or increase section.",
     clause="Cl. 26.5.1.2",
+)
+
+E_FLEXURE_004 = DesignError(
+    code="E_FLEXURE_004",
+    severity=Severity.ERROR,
+    message="d' too large for doubly reinforced design",
+    field="d_dash",
+    hint="Reduce compression steel cover.",
 )
 
 # Shear Errors

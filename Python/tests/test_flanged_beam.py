@@ -134,3 +134,4 @@ def test_flanged_beam_invalid_geometry_fails_gracefully():
     )
     assert res.is_safe is False
     assert "bf" in res.error_message.lower()
+    assert any(err.code == "E_INPUT_015" for err in res.errors)

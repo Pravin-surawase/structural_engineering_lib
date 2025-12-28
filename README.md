@@ -18,9 +18,9 @@
 
 ## Status
 
-🚀 **Active (v0.10.5)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.10.6)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.10.5:**
+**What's new in v0.10.6:**
 - 45 critical IS 456 clause-specific tests (Mu_lim, xu/d ratios, T-beam, shear limits)
 - Multi-agent repository review with CI improvements
 - Local CI parity script (`scripts/ci_local.sh`)
@@ -85,7 +85,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.10.5`) rather than installing latest.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.10.6`) rather than installing latest.
 
 ### Install from PyPI
 
