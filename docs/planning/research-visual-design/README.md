@@ -6,14 +6,15 @@ more intuitive without weakening correctness or traceability.
 Scope: concept ideas, data needs, and phased experiments. No code yet.
 
 **Last Updated:** 2025-12-29
-**Status:** Research complete — requires implementation decisions before coding
+**Status:** Research in progress — brainstorming and review phase
 
 > **Document Purpose:** This is research guidance, NOT an implementation spec.
 > Several decisions remain open (marked in text). Do not treat as ready-to-execute.
 >
-> **Review Feedback (2025-12-29):** Schema example corrected to match actual types.py structure.
-> Jinja2 dependency clarified. Determinism rules relaxed to semantic equivalence.
-> Phase 1 scope clarified as single-file output.
+> **Review Rounds:**
+> - R1 (2025-12-29): Schema example corrected, Jinja2 dep clarified, determinism relaxed
+> - R2 (2025-12-29): HTML escaping, ordered list guards, BBS input requirement
+> - R3 (2025-12-29): Innovation ideas reviewed, roadmap alignment assessed
 
 ---
 
@@ -478,6 +479,65 @@ class ComplianceCaseResult:
 
 7. **Phase 2 interactivity** — Collapsible sections, print CSS
 8. **User feedback** — Share with 2-3 engineers, iterate
+
+---
+
+## Part 11: Innovation Ideas (Brainstorming)
+
+> **Context:** These ideas emerged from multi-agent review. They're evaluated against
+> our actual roadmap (52-week plan, currently in Phase A, WIP=1, S-007 blocker).
+
+### 11.1 Ideas Evaluated
+
+| Idea | WOW Factor | Verdict | Blocker |
+|------|------------|---------|--------|
+| **Visual Audit Trail** | High — every number clickable, shows source + clause | ⏸️ Phase B+ | Needs `clause_ref` metadata (W08) |
+| **Diff Mode** | High — compare runs, highlight steel changes | ⏸️ Post-v1.0 | Needs schema freeze + `beam_id` contract |
+| **DXF-BBS Consistency** | High — verify marks match across outputs | ❌ v1.2+ | No shared bar-mark identity today |
+| **Constructability Score** | Medium — spacing/congestion/lap warnings | ⏸️ Backlog | Needs clause refs for each rule |
+| **AI Explain** | Medium — LLM summaries of failures | ❌ Conflicts | Non-deterministic, violates trust posture |
+| **Batch Threshold** | Low effort — <80 single file, ≥80 folder | ✅ Phase 1 | None |
+| **Critical Beam Map** | Medium — sort by utilization, heat list | ✅ Phase 1 | None |
+| **Sketch Polish** | Low effort — hatching, dimension arrows | ✅ Phase 1 | None |
+| **Verified Example Packs** | High — `verify --pack pillai_menon` | ✅ Already on roadmap | W14-W20 covers this |
+
+### 11.2 What Fits Phase 1 (v0.11.0 scope)
+
+1. **Batch threshold rule:** < 80 beams → single HTML, ≥ 80 → folder output
+2. **Critical Beam Map:** Sort beams by utilization, filter by >90%, failing, shear-critical
+3. **Sketch polish:** Hatching option, dimension arrows, status badges
+4. **`data-source` attributes:** Show JSON path (clause refs deferred to Phase 2+)
+
+### 11.3 What's Deferred and Why
+
+| Feature | Target | Reason |
+|---------|--------|--------|
+| Audit Trail with clause refs | v0.15+ | W08 adds clause tagging to schema |
+| Diff Mode | v1.1+ | Needs stable schema (W12 freeze) + beam identity contract |
+| DXF-BBS Checker | v1.2+ | Requires new bar-mark identity spec |
+| Constructability Score | v1.1+ | Each rule needs IS 456 clause citation |
+| AI Explain | Never in core | Determinism is non-negotiable |
+
+### 11.4 Review Findings on Innovation Ideas
+
+| Severity | Finding | Resolution |
+|----------|---------|------------|
+| **High** | Audit Trail needs undefined clause/formula metadata | Defer to W08; Phase 1 shows `data-source` only |
+| **Medium** | Diff Mode lacks matching rules (beam identity, tolerance) | Defer to v1.1; define `beam_id` contract first |
+| **Medium** | DXF-BBS assumes stable bar-mark identity | Defer to v1.2; needs data contract design |
+| **Medium** | Constructability Score "just rules" undermines trust | Only implement if every rule has IS 456 clause ref |
+| **Medium** | AI explain conflicts with determinism | Keep optional, clearly marked, never in default output |
+| **Medium** | Proposed sequence stacks too much before v1.0 | Accept: v1.0 is stability-focused, features are post-v1.0 |
+
+### 11.5 Strategic Value (Post-v1.0 Differentiation)
+
+The combination of **Visual Audit Trail + Diff Mode** is the competitive moat:
+- ETABS: analysis-first, not audit-focused
+- Random scripts: no trust layer
+- Excel templates: no diff, no traceability
+
+This positions us as "the only IS 456 tool where every visual traces to clause + calculation."
+But this is **post-v1.0 differentiation**, not v1.0 scope.
 
 ---
 
