@@ -140,6 +140,31 @@ When working on specific task types, apply these focuses:
 
 ---
 
+## Handoff rules (CRITICAL — run before ending session)
+
+### Pre-handoff checklist:
+```bash
+# Run this before ending any session:
+.venv/bin/python scripts/check_handoff_ready.py
+
+# If issues found, fix them:
+.venv/bin/python scripts/check_handoff_ready.py --fix
+```
+
+### What the script checks:
+- 📅 Date freshness in TASKS.md, SESSION_LOG.md, next-session-brief.md
+- 🧪 Test counts match actual (1810 passed, 91 skipped)
+- 🏷️ Version numbers are consistent
+- 📋 TASKS.md Active section has content
+- 📝 SESSION_LOG.md has entry for today
+
+### Manual handoff steps (after script passes):
+1. Update `docs/planning/next-session-brief.md` with session summary
+2. Ensure TASKS.md reflects current state
+3. Commit any uncommitted doc changes
+
+---
+
 ## Efficiency rules
 
 1. **Don't re-read files in context** — If file content is shown, use it
