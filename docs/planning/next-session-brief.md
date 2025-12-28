@@ -1,236 +1,127 @@
 # Next Session Briefing
 
-**Last Updated:** 2025-12-28
-**Status:** v0.10.3 (current release)
-**Branch:** `main` (all PRs merged through #95)
+**Version:** v0.10.3 | **Date:** 2025-12-28 | **PRs:** through #97
 
 ---
 
-## 🎯 Immediate Priority: v0.20.0 Stable Release
+## 🎯 Immediate Priority
 
-**v0.20.0 Stabilization Status:**
-- 🔴 **Critical:** 14/15 complete (only S-007 manual test remains)
-- 🟡 **High Priority:** 12/12 complete ✅
-- 🟢 **Nice to Have:** 0/4 (post v0.20.0)
+**Only 1 item blocks v0.20.0 release:**
 
-**What's blocking v0.20.0:**
-- **S-007:** One external engineer tries CLI cold (requires human tester)
+| Task | Description | Owner |
+|------|-------------|-------|
+| S-007 | External engineer tries CLI cold | Human (not automatable) |
 
-**Stabilization checklist:** `docs/planning/v0.20-stabilization-checklist.md`
-
-**To release v0.20.0 (after S-007 passes):**
+**After S-007 passes:**
 ```bash
 python scripts/release.py 0.20.0
 ```
 
----
-
-## 🚨 STOP — READ THIS FIRST (Mandatory for New Agents)
-
-Before writing ANY code or making changes, you MUST understand this project. Failure to read context leads to:
-- Breaking Python ↔ VBA parity
-- Violating layer architecture
-- Creating code that doesn't match IS 456 requirements
-- Wasting time on already-solved problems
-
-### Step 1: Read These Documents (in order)
-
-| Priority | Document | Why |
-|----------|----------|-----|
-| **1** | `.github/copilot-instructions.md` | Layer rules, units, Mac VBA safety, testing requirements |
-| **2** | `docs/AI_CONTEXT_PACK.md` | Complete project context for AI agents |
-| **3** | `docs/architecture/deep-project-map.md` | Code structure, data flow, parity hotspots |
-| **4** | `docs/TASKS.md` | Canonical backlog — what's done, what's pending |
-| **5** | `docs/planning/pre-release-checklist.md` | Beta gates and validation status |
-
-### Step 2: Understand the Project
-
-**What this is:** IS 456 (Indian Standard) RC beam design library with Python + VBA parity.
-
-**Who uses it:**
-- Structural engineers designing RC beams
-- Excel users via VBA add-in (`Excel/StructEngLib.xlam`)
-- Python users via pip package (`pip install structural-lib-is456`)
-
-**Core workflow:**
-```
-Input (beam geometry, loads, materials)
-    ↓
-Flexure Design (Mu → Ast/Asc, neutral axis depth)
-    ↓
-Shear Design (Vu → stirrup spacing)
-    ↓
-Detailing (development length, lap length, spacing checks)
-    ↓
-Serviceability (deflection, crack width) [optional but recommended]
-    ↓
-Output (design results, BBS, DXF drawings)
-```
-
-### Step 3: Understand the Layer Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ UI/I-O Layer (reads/writes external data)                   │
-│ Python: excel_integration.py, dxf_export.py, job_cli.py     │
-│ VBA: M09_UDFs, macros                                        │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────────┐
-│ Application Layer (orchestrates core, no formatting)        │
-│ Python: api.py, job_runner.py, bbs.py, rebar_optimizer.py   │
-│ VBA: M08_API                                                 │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────────┐
-│ Core Layer (pure functions, no I/O, explicit units)         │
-│ Python: flexure.py, shear.py, detailing.py, serviceability.py│
-│         compliance.py, tables.py, ductile.py, materials.py   │
-│ VBA: M01-M07, M15-M17                                        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**RULE:** Never put I/O code in Core. Never put calculations in UI.
-
-### Step 4: Understand Units Convention
-
-| Context | Units |
-|---------|-------|
-| **Inputs** | mm, N/mm², kN, kN·m |
-| **Internal** | mm, N, N·mm (convert at layer boundaries) |
-| **Outputs** | mm, N/mm², kN, kN·m |
-
-### Step 5: Before Making Changes
-
-- [ ] Run tests first: `cd Python && python -m pytest -q`
-- [ ] Check if VBA needs matching changes (parity requirement)
-- [ ] Add tests for any new behavior
-- [ ] Format with black: `cd Python && python -m black .`
-- [ ] Update docs if API/behavior changes
+**Stabilization status:** 27/31 complete — see `docs/planning/v0.20-stabilization-checklist.md`
 
 ---
 
-## TL;DR (What Changed Recently)
+## 📚 Required Reading
 
-### Latest Session (2025-12-28): Stabilization Sprint
+> ⚠️ **Do NOT skip this.** These docs contain critical rules that prevent wasted time.
 
-**PRs Merged (#89-95):**
+| Order | Document | What You'll Learn |
+|-------|----------|-------------------|
+| 1 | `.github/copilot-instructions.md` | Layer architecture, units, Mac VBA safety, git workflow |
+| 2 | `docs/AI_CONTEXT_PACK.md` | Complete project context for AI agents |
+| 3 | `docs/TASKS.md` | Current backlog — what's done, what's pending |
+| 4 | `docs/planning/v0.20-stabilization-checklist.md` | Release readiness status |
+
+**Quick project summary:**
+- IS 456 RC beam design library (Indian Standard)
+- Python + VBA with matching outputs (parity requirement)
+- CLI: `python -m structural_lib design|bbs|dxf|job`
+- PyPI: `pip install structural-lib-is456`
+
+---
+
+## ⚠️ Critical Learnings (Avoid These Mistakes)
+
+| Mistake | Why It Wastes Time | Do This Instead |
+|---------|-------------------|-----------------|
+| Skipping tests before push | CI fails, need to fix + re-push | `cd Python && .venv/bin/python -m pytest -q` |
+| Merging before CI passes | PR gets blocked or reverted | `gh pr checks <num> --watch` first |
+| Using `python` directly | May use wrong interpreter | Use `.venv/bin/python` or configure environment |
+| Hardcoding expected values in docs | Values drift from actual code | Run code, copy actual output to docs |
+| Duplicating content across docs | Creates stale contradictions | Link to canonical source instead |
+| Many micro-PRs for tiny changes | Review fatigue, CI waste | Batch related changes into one PR |
+| Editing without reading file first | Merge conflicts, overwrites | Always read current state before editing |
+
+**Performance facts (verified 2025-12-28):**
+- Tests: 1810 passed, 91 skipped, 92% branch coverage
+- Speed: 0.009ms per beam, 94,000 beams/second
+- All edge cases handled gracefully (zero/negative → `is_safe=False`)
+
+---
+
+## ✅ Last Session Summary (2025-12-28)
+
+**Focus:** Stabilization sprint — documentation quality + verification
+
 | PR | Description |
 |----|-------------|
-| #89 | S-015: Fixed 4 broken links + `scripts/check_links.py` |
-| #90 | S-014: Fixed expected output in beginners-guide (942→882mm²) |
-| #91 | S-009: Fixed D1 expected Ld value (752→777mm) |
-| #92 | S-006: Improved job_runner error messages |
-| #93 | S-020–S-032: All High Priority items verified |
-| #95 | Documentation updates for stabilization sprint |
+| #89 | Fixed 4 broken links + added `scripts/check_links.py` |
+| #90 | Fixed expected output in beginners-guide (942→882mm²) |
+| #91 | Fixed D1 expected Ld value in verification examples (752→777mm) |
+| #92 | Improved job_runner error messages |
+| #93 | Verified all High Priority items (robustness + performance) |
+| #95 | Documentation updates (SESSION_LOG, CHANGELOG, TASKS) |
+| #96 | Updated next-session-brief for handoff |
+| #97 | Cleaned up next-session-brief (625→236 lines) |
 
-**Key Deliverables:**
-- `scripts/check_links.py` — Reusable link checker (85 md files, 173 links)
-- Improved error messages in `job_runner.py`
-- All robustness + performance items verified:
-  - Edge cases: Zero/negative inputs return `is_safe=False`
-  - Performance: 0.009ms per beam, 94,000 beams/second
-  - Large batch: 1000 beams tested successfully
-
-**Test Stats:** 1810 passed, 91 skipped, 92% branch coverage
+**Outcome:** All Critical items complete except S-007. All High Priority items verified. ✅
 
 ---
 
-## ⚡ Fast Re-Onboarding (start here next session)
+## 🎯 What's Next (Priority Order)
 
-If you want to resume quickly without re-reading the repo:
-
-1. **Whole-project map (architecture + data flow + parity hotspots):** `docs/architecture/deep-project-map.md`
-2. **Version management:** `docs/_internal/VERSION_STRATEGY.md`
-3. **Canonical backlog:** `docs/TASKS.md`
-4. **Primary reference index:** `docs/README.md`
-5. **Pre-release checklist:** `docs/planning/pre-release-checklist.md`
-6. **Git governance (branch protection):** `docs/_internal/GIT_GOVERNANCE.md`
-
-**Verified state (as of 2025-12-28):**
-- Release version is **v0.10.3** (merged to main, published to PyPI).
-- **Tests:** 1810 passed, 91 skipped, 92% branch coverage
-- **Stabilization:** 26/31 items complete (see `docs/planning/v0.20-stabilization-checklist.md`)
-- Unified CLI: **implemented** (`python -m structural_lib design|bbs|dxf|job`).
-- Cutting-stock optimizer: **implemented** (first-fit-decreasing bin packing).
-- VBA BBS + Compliance: **implemented** (parity with Python modules).
-- Serviceability (Level A+B): **implemented** (deflection + crack width).
-- Compliance checker: **implemented** (multi-case orchestration + summary).
-- BBS Module: **implemented** (cut lengths, weights, CSV/JSON export).
-- **Validation examples:** **complete** (6 verification examples verified).
-- **API docs UX:** **complete** (all 6 phases).
-
-**How to re-verify quickly (avoids drift):**
-- Latest commit (local): `git rev-parse --short HEAD`
-- CI truth (GitHub): https://github.com/Pravin-surawase/structural_engineering_lib/actions
-- Version: `python -c "from structural_lib import api; print(api.get_library_version())"`
-
-**Branch protection (documented in `docs/_internal/GIT_GOVERNANCE.md`):**
-- `main` requires PR (no direct pushes)
-- 5 required status checks: `test`, `lint`, `type-check`, `build`, `docs`
-- Force pushes and branch deletion disabled
-- Tags trigger PyPI publish workflow
-
----
-
-## 🎯 What to Work on Next
-
-### High Priority (v0.20.0 Release)
-1. **S-007: External engineer test** — Have someone try CLI cold, note friction points
-   - This is the ONLY blocking item for v0.20.0
-   - Requires a human engineer (not automatable)
+### Blocking v0.20.0
+1. **S-007** — External engineer CLI test (requires human)
 
 ### After v0.20.0 (Nice to Have)
-2. **S-050: VBA parity automation** — Automated comparison of Python vs VBA outputs
-3. **S-051: Performance benchmarks** — Track regression over time
-4. **S-052: Fuzz testing** — Random input testing
-5. **S-053: Security audit** — Dependency scan
+2. **S-050** — VBA parity automation
+3. **S-051** — Performance benchmarks (track regression)
+4. **S-052** — Fuzz testing
+5. **S-053** — Security audit
 
 ### Backlog (v1.0+)
-6. **Level C Serviceability** — Shrinkage + creep deflection (Annex C full)
-7. **Torsion Design** — Equivalent shear/moment + closed stirrups (Cl. 41)
-8. **Side-Face Reinforcement** — D > 750mm check (Cl. 26.5.1.3)
-9. **Anchorage Space Check** — Verify Ld at supports (Cl. 26.2)
+See `docs/TASKS.md` for full backlog including:
+- Level C Serviceability (shrinkage + creep)
+- Torsion Design (Cl. 41)
+- Side-Face Reinforcement (Cl. 26.5.1.3)
 
 ---
 
-## ✅ Session Summary (2025-12-28) — Stabilization Sprint
+## 🔍 Quick Verification Commands
 
-### PRs Merged This Session (#89-95)
+```bash
+# Check current state
+git rev-parse --short HEAD          # Latest commit
+python -c "from structural_lib import api; print(api.get_library_version())"
 
-| PR | Task ID | Description |
-|----|---------|-------------|
-| #89 | S-015 | Fixed 4 broken internal links, added `scripts/check_links.py` |
-| #90 | S-014 | Fixed expected output in beginners-guide (942→882mm²) |
-| #91 | S-009 | Fixed D1 expected Ld value in verification examples (752→777mm) |
-| #92 | S-006 | Improved job_runner error messages for missing fields |
-| #93 | S-020–S-032 | Verified all High Priority items (robustness + performance) |
-| #95 | — | Documentation updates (SESSION_LOG, CHANGELOG, TASKS) |
+# Run tests
+cd Python && ../.venv/bin/python -m pytest -q
 
-### Key Deliverables
-- **Link checker:** `scripts/check_links.py` — validates 173 internal links across 85 markdown files
-- **Error messages:** `job_runner.py` now gives specific errors for missing `code`, `schema_version`
-- **Robustness verified:** Zero/negative inputs return `is_safe=False` with clear error messages
-- **Performance verified:** 0.009ms per beam, 94,000 beams/second batch tested
+# Check for broken links
+.venv/bin/python scripts/check_links.py
 
-### Stabilization Status After This Session
-- 🔴 Critical: 14/15 complete (only S-007 manual test remains)
-- 🟡 High Priority: 12/12 complete ✅
-- 🟢 Nice to Have: 0/4 (post v0.20.0)
-
-### Lessons Learned
-- Run `scripts/check_links.py` before releases to catch broken doc links
-- Verify expected values in examples match actual code output
-- Stateless functions = no memory leak concerns
+# Full local CI check
+./scripts/ci_local.sh
+```
 
 ---
 
-## 📜 Historical Sessions
+## 📜 History
 
-For older session summaries, see:
-- `docs/SESSION_LOG.md` — Full append-only history of all sessions
-- `docs/_archive/` — Archived planning documents
+- **Full session log:** `docs/SESSION_LOG.md`
+- **Archived docs:** `docs/_archive/`
+- **GitHub Actions:** https://github.com/Pravin-surawase/structural_engineering_lib/actions
 
 ---
 
-*End of next-session-brief.md*
+*This briefing should be ~100 lines. If it grows beyond 150, archive old sessions to SESSION_LOG.md.*
