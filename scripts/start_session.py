@@ -20,6 +20,7 @@ import subprocess
 import sys
 from datetime import date
 from pathlib import Path
+from typing import Optional
 
 REPO_ROOT = Path(__file__).parent.parent
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
@@ -72,11 +73,10 @@ def check_session_log_entry() -> tuple[bool, str]:
     """Check if SESSION_LOG.md has an entry for today."""
     today = date.today()
     today_str = today.strftime("%Y-%m-%d")
-    today_display = today.strftime("%B %d, %Y")
 
     try:
         content = SESSION_LOG.read_text()
-        if today_str in content:
+        if re.search(rf"^##\s+{re.escape(today_str)}\b", content, re.MULTILINE):
             return True, f"Entry exists for {today_str}"
         return False, f"No entry for {today_str}"
     except Exception as e:
@@ -87,23 +87,26 @@ def add_session_log_entry() -> bool:
     """Add a skeleton entry for today to SESSION_LOG.md."""
     today = date.today()
     today_str = today.strftime("%Y-%m-%d")
-    today_display = today.strftime("%B %d, %Y")
 
-    skeleton = f"""
----
-
-## Session: {today_display}
-
-**Focus:** <!-- What are you working on? -->
-
-**Completed:**
--
-
-**Notes:**
--
-
----
-"""
+    skeleton_lines = [
+        "",
+        f"## {today_str} — Session",
+        "",
+        "### Summary",
+        "-",
+        "",
+        "### PRs Merged",
+        "| PR | Summary |",
+        "|----|---------|",
+        "| #XX | - |",
+        "",
+        "### Key Deliverables",
+        "-",
+        "",
+        "### Notes",
+        "-",
+        "",
+    ]
 
     try:
         content = SESSION_LOG.read_text()
@@ -124,7 +127,7 @@ def add_session_log_entry() -> bool:
             insert_index = 5
 
         # Insert the skeleton
-        new_lines = lines[:insert_index] + skeleton.strip().split("\n") + [""] + lines[insert_index:]
+        new_lines = lines[:insert_index] + skeleton_lines + lines[insert_index:]
         SESSION_LOG.write_text("\n".join(new_lines))
         return True
     except Exception as e:
@@ -132,36 +135,60 @@ def add_session_log_entry() -> bool:
         return False
 
 
-def get_active_tasks() -> list[str]:
-    """Extract Active tasks from TASKS.md."""
+def get_active_tasks() -> list[tuple[str, str, str]]:
+    """Extract Active tasks from TASKS.md.
+
+    Returns list of (task_id, description, status_hint) tuples.
+    """
     try:
         content = TASKS_MD.read_text()
 
         # Find the Active section
         active_match = re.search(
-            r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)",
-            content,
-            re.DOTALL
+            r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL
         )
 
         if not active_match:
-            return ["No Active section found"]
+            return [("", "No Active section found", "")]
 
         active_section = active_match.group(1)
 
         # Extract task IDs and descriptions from table rows
         tasks = []
         for line in active_section.split("\n"):
-            # Match table rows like "| **S-007** | External engineer CLI test |..."
-            match = re.match(r"\|\s*\*\*([^*]+)\*\*\s*\|\s*([^|]+)", line)
+            # Match table rows like "| **S-007** | External engineer CLI test | CLIENT | ⏳ Waiting |"
+            match = re.match(
+                r"\|\s*\*\*([^*]+)\*\*\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)", line
+            )
             if match:
                 task_id = match.group(1).strip()
                 task_desc = match.group(2).strip()
-                tasks.append(f"{task_id}: {task_desc}")
+                status = match.group(4).strip()
+                # Detect if this is a blocker (requires human, waiting, etc.)
+                hint = ""
+                status_lower = status.lower()
+                if (
+                    "human" in status_lower
+                    or "waiting" in status_lower
+                    or "manual" in status_lower
+                ):
+                    hint = "BLOCKER - requires human"
+                elif "⏳" in status:
+                    hint = "waiting"
+                tasks.append((task_id, task_desc, hint))
 
-        return tasks if tasks else ["No active tasks in table"]
+        return tasks if tasks else [("", "No active tasks in table", "")]
     except Exception as e:
-        return [f"Error reading TASKS.md: {e}"]
+        return [("", f"Error reading TASKS.md: {e}", "")]
+
+
+def get_key_blocker() -> Optional[str]:
+    """Get the key blocker from active tasks (if any)."""
+    tasks = get_active_tasks()
+    for task_id, desc, hint in tasks:
+        if "BLOCKER" in hint:
+            return f"{task_id}: {desc}"
+    return None
 
 
 def run_handoff_check(skip_tests: bool = True) -> tuple[bool, str]:
@@ -183,16 +210,18 @@ def run_handoff_check(skip_tests: bool = True) -> tuple[bool, str]:
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
-            timeout=60,
+            timeout=60 if skip_tests else 240,
         )
 
+        output = (result.stdout or "") + "\n" + (result.stderr or "")
+
         # Check for pass/fail in output
-        if "All checks passed" in result.stdout:
+        if "All checks passed" in output:
             return True, "All handoff checks passed"
         else:
             # Extract issues
             issues = []
-            for line in result.stdout.split("\n"):
+            for line in output.split("\n"):
                 if "❌" in line or "⚠️" in line:
                     issues.append(line.strip())
             return False, "\n".join(issues) if issues else "Some checks failed"
@@ -202,8 +231,12 @@ def run_handoff_check(skip_tests: bool = True) -> tuple[bool, str]:
 
 def main():
     parser = argparse.ArgumentParser(description="Start a coding session")
-    parser.add_argument("--quick", action="store_true", help="Skip test count verification")
-    parser.add_argument("--no-add", action="store_true", help="Don't add SESSION_LOG entry")
+    parser.add_argument(
+        "--quick", action="store_true", help="Skip test count verification"
+    )
+    parser.add_argument(
+        "--no-add", action="store_true", help="Don't add SESSION_LOG entry"
+    )
     args = parser.parse_args()
 
     version = get_version()
@@ -236,11 +269,23 @@ def main():
                 print("  ❌ Failed to add entry")
     print()
 
-    # Show active tasks
+    # Show active tasks with blocker detection
     print("📋 Active Tasks:")
     tasks = get_active_tasks()
-    for task in tasks:
-        print(f"  • {task}")
+    for task_id, desc, hint in tasks:
+        if task_id:
+            if hint:
+                print(f"  • {task_id}: {desc} ({hint})")
+            else:
+                print(f"  • {task_id}: {desc}")
+        else:
+            print(f"  • {desc}")
+
+    # Show key blocker prominently
+    blocker = get_key_blocker()
+    if blocker:
+        print()
+        print(f"  ⚠️  Key Blocker: {blocker}")
     print()
 
     # Run handoff checks
@@ -253,8 +298,15 @@ def main():
             print(f"  {line}")
     print()
 
+    # Suggested action based on blocker
     print("=" * 60)
-    print("Ready to work! Pick a task from Active or Up Next.")
+    if blocker:
+        print(f"⚠️  Blocker detected: {blocker}")
+        print("   → Ask user to resolve, or pick from Up Next in TASKS.md")
+    else:
+        print("Ready to work! Pick a task from Active or Up Next.")
+    print()
+    print("📖 Read first: docs/AGENT_BOOTSTRAP.md or docs/AI_CONTEXT_PACK.md")
     print("=" * 60)
     print()
 

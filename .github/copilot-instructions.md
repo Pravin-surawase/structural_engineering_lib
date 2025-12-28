@@ -7,6 +7,19 @@
 
 ---
 
+## 🚀 Quick Start (First 30 Seconds)
+
+```bash
+# Run this immediately:
+.venv/bin/python scripts/start_session.py
+```
+
+This shows version, branch, active tasks, blockers, and doc freshness.
+
+**Read next:** `docs/AGENT_BOOTSTRAP.md` → `docs/AI_CONTEXT_PACK.md` → `docs/TASKS.md`
+
+---
+
 ## What this project is
 IS 456 RC beam design library with **Python + VBA parity**.
 
