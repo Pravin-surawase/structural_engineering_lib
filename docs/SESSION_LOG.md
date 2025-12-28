@@ -6,7 +6,42 @@
 
 ---
 
-## 2025-12-28 — v0.20.0 Stabilization Sprint (Latest)
+## 2025-12-28 (Evening) — v0.10.4 Release + Automation Suite
+
+### Summary
+
+Released v0.10.4 with developer automation tooling. Added session scripts, nightly QA workflow, and handoff checker.
+
+### PRs Merged
+
+| PR | Summary |
+|----|---------|
+| #99 | docs: polish core docs (TASKS, SESSION_LOG, AI_CONTEXT_PACK) |
+| #100 | docs: fix P0-P2 issues from review |
+| #101 | feat: add pre-handoff doc freshness checker |
+| #102 | feat: session start/end automation scripts |
+| #103 | chore: add nightly QA workflow |
+| #104 | chore: release v0.10.4 |
+
+### Key Deliverables
+
+- **Session automation:** `start_session.py`, `end_session.py`, `check_handoff_ready.py`
+- **Nightly QA:** Full test suite + CLI smoke test (design → bbs → dxf → job)
+- **Release v0.10.4:** Published to PyPI
+
+### Status
+
+| Metric | Value |
+|--------|-------|
+| Version | v0.10.4 |
+| Tests | 1810 passed, 91 skipped |
+| Coverage | 92% branch |
+
+**Next:** S-007 (owner CLI test) → v0.20.0 release
+
+---
+
+## 2025-12-28 — v0.20.0 Stabilization Sprint
 
 ### Summary
 
@@ -104,7 +139,7 @@ PyPI Trusted Publishing setup, docs restructure, and validation examples.
 
 ## Earlier Sessions
 
-Full history archived in `docs/_archive/SESSION_LOG_2025-12-28.md`
+Full history archived in `docs/_archive/`
 
 Previous sessions covered:
 - v0.9.4: Unified CLI, cutting-stock optimizer, VBA parity

@@ -136,7 +136,7 @@ python -m structural_lib job job.json -o job_out
 
 | Metric | Value |
 |--------|-------|
-| **Version** | v0.10.3 |
+| **Version** | v0.10.4 |
 | **Tests** | 1810 passed, 91 skipped |
 | **Coverage** | 92% branch |
 | **Next Release** | v0.20.0 (awaiting S-007) |
