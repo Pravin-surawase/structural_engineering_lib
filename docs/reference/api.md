@@ -38,6 +38,9 @@ python -m structural_lib design --help
   - Areas (`Ast`, `Asv`): **mm²**
   - Stresses (`fck`, `fy`, `Tv`, `Tc`): **N/mm²** (MPa)
   - Percentages (`pt`): **%** (e.g., 1.2 for 1.2%)
+  - Boundary conversions (public -> internal):
+    - kN -> N (×1,000)
+    - kN·m -> N·mm (×1,000,000)
 - **Sign Conventions:**
   - Inputs are generally treated as absolute values for design checks.
   - UI/Application layer is responsible for handling signs before calling these libraries.

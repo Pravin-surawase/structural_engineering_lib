@@ -9,6 +9,10 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - Do not mix kN·m with mm in the same formula; keep internal units as N, N·mm, mm.
 - Shear flow: τv = Vu / (b×d) with Vu in N; convert back to kN only for reporting.
 - Stirrup spacing formulas expect Vus in N; be explicit about conversions.
+- Boundary contract (public -> internal):
+  - kN -> N: multiply by 1,000
+  - kN·m -> N·mm: multiply by 1,000,000
+  - mm stays mm; N/mm² stays N/mm²
 
 ## Table 19/20 Usage
 - Table 19: Clamp pt to 0.15–3.0%; use nearest lower concrete grade column (no fck interpolation).

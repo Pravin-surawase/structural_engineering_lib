@@ -1,0 +1,505 @@
+# Research: Visual Layer for Beam Design
+
+Purpose: explore visual/interactive outputs that make design, loading, steel, and BBS
+more intuitive without weakening correctness or traceability.
+
+Scope: concept ideas, data needs, and phased experiments. No code yet.
+
+**Last Updated:** 2025-12-29
+**Status:** Research in review (feedback incorporated)
+
+> **Review Feedback (2025-12-29):** Schema example corrected to match actual types.py structure.
+> Jinja2 dependency clarified. Determinism rules relaxed to semantic equivalence.
+> Phase 1 scope clarified as single-file output.
+
+---
+
+## Executive Summary
+
+After analyzing the structural engineering visualization landscape, user workflows, and our library's architecture, I recommend:
+
+1. **Phase 1:** Static HTML report with SVG beam diagrams — stdlib only (no Jinja2), maximum trust
+2. **Phase 2:** Interactive HTML with collapsible details — still stdlib only
+3. **Phase 3:** Optional matplotlib/plotly for Mu/Vu diagrams — gated by `[viz]` extras
+
+**Note on dependencies:** Phase 1-2 use Python's `string.Template` (stdlib). Jinja2 is NOT required.
+Version targets (v0.11, v0.12, etc.) are indicative — actual scheduling follows production roadmap.
+
+**Key insight:** Engineers trust visuals that match hand-sketch conventions. Fancy charts add cognitive load; simple annotated diagrams add trust.
+
+---
+
+## Vision (What "visual factor" means)
+
+Make the library feel "see-and-trust":
+- Loading is visible, not just numbers.
+- Steel layout is previewable, not just a schedule.
+- BBS is connected to drawing marks.
+- Governing checks are highlighted visually.
+
+---
+
+## Part 1: Market Analysis — What Engineers Actually Use
+
+### 1.1 Existing Tools and Their Visual Approaches
+
+| Tool | Visual Style | Strengths | Weaknesses |
+|------|-------------|-----------|------------|
+| **ETABS/SAP2000** | 3D model + diagrams | Full context | Overkill for beam-only checks |
+| **SAFE** | Color-coded contours | Good for slabs | Less useful for beams |
+| **STAAD** | Wire-frame + tables | Familiar | Dated UI, hard to read |
+| **SpColumn** | Interaction diagram | Industry standard | Single-purpose |
+| **Hand sketches** | Annotated sections | Maximum trust | Not automatable |
+| **Excel sheets** | Tables + conditional formatting | Familiar | No geometry context |
+
+### 1.2 What Engineers Actually Do
+
+Based on typical consulting workflows:
+
+1. **Design review:** Engineers flip between ETABS model and Excel checks. They mentally map beam IDs to locations.
+2. **Detailing handoff:** Engineers annotate PDF drawings or DXF with bar callouts. BBS is a separate Excel.
+3. **Approval process:** Checking engineer wants to see: (a) governing loads, (b) steel provided vs required, (c) code clause compliance.
+
+**Pain points our visuals should address:**
+- "I can't see which beams are critical without opening 50 files"
+- "The BBS doesn't match the drawing marks"
+- "I trust my hand calc sketch more than software output"
+
+### 1.3 Trust Hierarchy (Most → Least Trusted)
+
+1. Hand sketches with clause references
+2. Annotated cross-sections matching SP 16 / IS 456 figures
+3. Tabular output with clear units and sources
+4. Color-coded dashboards
+5. 3D renders and animations
+
+**Implication:** Our visuals should look like engineering sketches, not marketing graphics.
+
+---
+
+## Part 2: Technical Analysis — Rendering Options
+
+### 2.1 Rendering Technology Comparison
+
+| Technology | Pros | Cons | Dependency Weight |
+|------------|------|------|-------------------|
+| **Pure SVG (inline HTML)** | Zero deps, deterministic, editable | Manual path math | None |
+| **matplotlib** | Familiar, publication quality | Heavy (50MB+), server-side only | `pip install matplotlib` |
+| **Plotly** | Interactive, modern | Heavy (30MB+), JS runtime | `pip install plotly` |
+| **ReportLab** | PDF-native | Learning curve, verbose API | `pip install reportlab` |
+| **Pillow** | Raster images | Loses vector quality | `pip install pillow` |
+| **ezdxf** | CAD-native | Already have it | Already optional |
+| **Jinja2 + HTML** | Template-based, portable | No interactivity without JS | `pip install jinja2` |
+
+### 2.2 Recommendation: SVG-in-HTML
+
+**Why SVG wins for our use case:**
+
+1. **Zero dependencies** — We generate SVG strings directly from Python
+2. **Deterministic** — Same input → identical pixel output
+3. **Editable** — Engineers can open in Inkscape/Illustrator and modify
+4. **Scalable** — Prints at any DPI without blur
+5. **Embeddable** — Works in HTML reports, PDF (via conversion), and even DXF annotation
+
+**Implementation approach:**
+```python
+def render_beam_section_svg(b_mm, D_mm, bars_top, bars_bot, stirrup_dia, cover) -> str:
+    """Return SVG string for beam cross-section."""
+    # Scale to viewBox (e.g., 300x400 pixels)
+    # Draw rectangle, bars as circles, stirrups as path
+    # Add dimension annotations
+    return f'<svg viewBox="0 0 300 400">...</svg>'
+```
+
+### 2.3 Fallback Strategy
+
+For users who want matplotlib/plotly:
+- Keep as optional extras: `pip install structural-lib-is456[viz]`
+- Provide `--format=png` or `--format=html-interactive` flags
+- Never require heavy deps for core functionality
+
+---
+
+## Part 3: Visual Design Specifications
+
+### 3.1 Beam Cross-Section (Primary Visual)
+
+```
+┌─────────────────────────────┐
+│  ●  ●  ●   [3T16 top]       │  ← Cover = 40mm
+│                             │
+│  ┌─────────────────────┐    │
+│  │                     │    │  ← Stirrup 8φ @ 150 c/c
+│  │                     │    │
+│  │                     │    │
+│  └─────────────────────┘    │
+│                             │
+│  ●  ●  ●  ●  [4T20 bottom]  │  ← d = 460mm
+└─────────────────────────────┘
+  b = 230mm, D = 500mm
+
+Status: ✓ Flexure OK (Ast_req=1200, Ast_prov=1257)
+        ✓ Shear OK (τv=0.85 < τc=1.02 N/mm²)
+```
+
+**Design rules:**
+- Proportional scaling (b:D ratio preserved)
+- Standard hatching for concrete (optional)
+- Bar circles sized relative to diameter
+- Dimension lines follow drafting conventions
+- Color: minimal (black/white with green/red status only)
+
+### 3.2 Utilization Summary (Secondary Visual)
+
+```
+Beam B1 — Governing Case: DL+LL (Case 3)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Flexure    ████████░░  78%  Mu=180 / Mu_lim=230 kN·m
+Shear      ████████████████  96%  τv=2.1 / τc_max=2.2 N/mm²  ⚠️
+Deflection ████░░░░░░  42%  L/d=12 > limit=20
+
+Governing: Shear at 96% utilization
+```
+
+**Design rules:**
+- Horizontal bar chart (familiar from project management)
+- Percentage + absolute values for traceability
+- Warning icon at >90%, error at >100%
+- Always show governing case ID
+
+### 3.3 BBS Connection Visual
+
+```
+Bar Mark │ Dia │ Count │ Length │ Weight │ Visual
+─────────┼─────┼───────┼────────┼────────┼────────────────
+   A1    │ T20 │   4   │ 5200mm │ 10.2kg │ ●━━━━━━━━━●
+   A2    │ T16 │   3   │ 4800mm │  5.7kg │ ●━━━━━━━●
+   S1    │ R8  │  35   │ 1200mm │ 14.8kg │ ⌐─────┐
+         │     │       │        │        │ │     │
+         │     │       │        │        │ └─────┘
+```
+
+**Design rules:**
+- ASCII-art preview in terminal/plain text
+- SVG version in HTML report
+- Click row → highlight in beam elevation (future interactive)
+
+### 3.4 Mu/Vu Diagram (Optional — Phase 2)
+
+```
+        Mu (kN·m)
+    180 ┤      ╭──────╮
+    150 ┤     ╱        ╲
+    120 ┤    ╱          ╲
+     90 ┤   ╱            ╲
+     60 ┤  ╱              ╲
+     30 ┤ ╱                ╲
+      0 ┼──────────────────────
+        0    1    2    3    4  (m)
+               ↑
+          Max: 180 kN·m @ 2.0m
+          Case: DL+LL (Governing)
+```
+
+**Design rules:**
+- Only show if span and load data available
+- Mark critical section location
+- Keep simple (no 3D, no animation)
+
+---
+
+## Part 4: Implementation Roadmap
+
+### Phase 1: Static HTML Report
+
+**Scope:**
+- New command: `python -m structural_lib report results.json -o report.html`
+- **Single HTML file** with inline CSS/SVG (no external deps)
+- Contents: geometry, bars, stirrups, utilization, compliance summary
+- Template: `string.Template` (stdlib) — NOT Jinja2
+- **For batch (500 beams):** One HTML with all beams in sections, not 500 files
+
+**Explicit non-goals for Phase 1:**
+- No per-beam separate files (that's Phase 2)
+- No index page (that's Phase 2)
+- No BBS linking (that's Phase 3+)
+
+**Files to create:**
+```
+Python/structural_lib/
+├── report.py              # Report generation logic (no templates folder)
+```
+
+**Effort:** 2-3 days
+
+### Phase 2: Interactive Collapsibles + Batch Index
+
+**Scope:**
+- Add vanilla JS for expand/collapse sections (inline, no external JS)
+- Add beam index page for batch runs (index.html + per-beam pages)
+- Add print-friendly CSS (@media print)
+- Still stdlib-only (no Jinja2, no external deps)
+
+**Batch handling decision:**
+- <50 beams: single HTML with collapsible sections
+- ≥50 beams: index.html + per-beam HTML files in folder
+
+**Effort:** 1-2 days
+
+### Phase 3: Optional Rich Visuals (Target: v0.15+)
+
+**Scope:**
+- `pip install structural-lib-is456[viz]` adds matplotlib
+- Mu/Vu diagrams as PNG embedded in HTML
+- Optional `--format=pdf` using weasyprint or similar
+
+**Effort:** 3-5 days
+
+### Phase 4: DXF-HTML Linking (Future — Not Scheduled)
+
+**Scope (conceptual only):**
+- DXF contains hyperlinks to HTML report sections
+- HTML report contains embedded DXF preview (via three.js or similar)
+- Click synchronization between views
+
+**Status:** Deferred. Requires additional research before scheduling.
+**Effort:** TBD after Phase 3 feedback
+
+---
+
+## Part 5: Data Schema for Visuals
+
+### 5.1 Actual Output Structure (from types.py)
+
+The visual layer consumes `ComplianceReport` output. Here's the **actual** structure:
+
+```python
+# From types.py — this is what report.py will receive
+@dataclass
+class ComplianceReport:
+    is_ok: bool
+    governing_case_id: str
+    governing_utilization: float
+    cases: List[ComplianceCaseResult]  # Per-case results
+    summary: Dict[str, Any]
+
+@dataclass
+class ComplianceCaseResult:
+    case_id: str
+    mu_knm: float
+    vu_kn: float
+    flexure: FlexureResult      # mu_lim, ast_required, xu, xu_max, is_safe
+    shear: ShearResult          # tv, tc, tc_max, spacing, is_safe
+    deflection: Optional[DeflectionResult]
+    crack_width: Optional[CrackWidthResult]
+    is_ok: bool
+    governing_utilization: float
+    utilizations: Dict[str, float]  # {"flexure": 0.78, "shear": 0.85}
+    failed_checks: List[str]
+```
+
+**Input (job spec) structure:**
+```json
+{
+  "beam": {
+    "b_mm": 300, "D_mm": 500, "d_mm": 450,
+    "fck_nmm2": 25, "fy_nmm2": 500
+  },
+  "cases": [
+    {"case_id": "DL+LL", "mu_knm": 80, "vu_kn": 60}
+  ]
+}
+```
+
+**Fields NOT in current output (would need additions):**
+- `cover_mm` — not in output, only in input
+- `span_m` — not tracked (job-level, not in ComplianceReport)
+- `reinforcement.bars_*` — BBS output, separate from compliance
+- `governing.check` — derivable from `failed_checks`
+
+**Decision:** Phase 1 renders from existing fields only. Additional fields deferred to Phase 2+.
+
+### 5.2 Optional Fields for Enhanced Visuals
+
+```json
+{
+  "loads": {
+    "udl_kn_m": 25.0,
+    "point_loads": [{"position_m": 2.0, "magnitude_kn": 50.0}]
+  },
+  "moments_at_stations": [
+    {"x_m": 0.0, "Mu_knm": 0.0},
+    {"x_m": 1.0, "Mu_knm": 120.0},
+    {"x_m": 2.0, "Mu_knm": 180.0}
+  ]
+}
+```
+
+**Decision:** Keep these optional. Most consulting workflows don't have station-by-station data readily available.
+
+---
+
+## Part 6: Design Constraints and Guardrails
+
+### 6.1 Determinism
+
+- **Rule:** Same input → semantically identical output (same visual appearance)
+- **Implementation:** No timestamps, sorted dict keys, fixed SVG viewBox sizing
+- **Test:** Semantic comparison in CI (normalize whitespace, compare DOM structure)
+- **NOT byte-for-byte:** Template whitespace changes are allowed if visual is unchanged
+- **Verification:** Render to PNG via headless browser, image diff with tolerance
+
+### 6.2 Traceability
+
+- **Phase 1 Rule:** Every number ties to a JSON field path
+- **Phase 2+ Rule:** Add IS 456 clause references where applicable
+- **Implementation:** Add `data-source="flexure.ast_required"` attributes in HTML
+- **Test:** Validate all data-source attributes exist in input dataclass
+- **Note:** Clause IDs are NOT in current output schema. Phase 1 shows values only.
+  Clause refs will be added when `DesignError.clause` fields are rendered.
+
+### 6.3 No Hidden Defaults
+
+- **Rule:** If visual assumes a value, it must be labeled
+- **Implementation:** Show "(assumed)" suffix for default values
+- **Test:** Diff output with/without optional params, verify label changes
+
+### 6.4 Performance
+
+- **Rule:** 500 beams → report in <30 seconds
+- **Implementation:** Batch SVG generation, lazy load images if any
+- **Test:** Benchmark in CI nightly job
+
+---
+
+## Part 7: Risk Analysis
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Visuals drift from calculations | Medium | High | Render only from output JSON, never from intermediate state |
+| Platform rendering differences | Low | Medium | Use SVG (vector), avoid system fonts |
+| Scope creep to "dashboard" | High | Medium | Strict phase gates, no interactivity until Phase 2 |
+| Dependency bloat | Medium | High | Zero deps in Phase 1, optional extras only |
+| Engineers don't trust visuals | Low | High | Match hand-sketch style, show clause refs |
+| Maintenance burden | Medium | Medium | Keep templates simple, version-lock schema |
+
+---
+
+## Part 8: Competitive Positioning
+
+### 8.1 What We're NOT Building
+
+- ❌ A general-purpose structural analysis visualizer
+- ❌ A 3D BIM viewer
+- ❌ A CAD replacement
+- ❌ An interactive design optimizer
+
+### 8.2 What We ARE Building
+
+- ✅ A trust-building verification layer
+- ✅ A communication bridge between design and detailing
+- ✅ A batch report generator for consultants
+- ✅ A teaching tool for IS 456 understanding
+
+### 8.3 Unique Value Proposition
+
+> "The only IS 456 beam design tool where every visual element traces directly to a code clause and calculation step."
+
+---
+
+## Part 9: Open Questions (Resolved)
+
+| Question | Resolution |
+|----------|------------|
+| CLI command or separate command? | **Separate:** `python -m structural_lib report` |
+| Optional dependency? | **Yes:** Phase 1-2 = stdlib only, Phase 3 = `[viz]` extra |
+| Which 3 visuals first? | **Cross-section, utilization bar, compliance summary** (BBS deferred to Phase 3) |
+| PDF or HTML first? | **HTML** — more portable, easier to iterate |
+| How to handle 500 beams? | **Phase 1:** Single HTML with all beams. **Phase 2:** Index + per-beam pages |
+
+### 9.1 Additional Questions from Review (2025-12-29)
+
+| Question | Resolution |
+|----------|------------|
+| Which output to consume: CLI design, job output, or both? | **Job output (`ComplianceReport`)** — it has all cases in one structure |
+| Phase 1 single HTML or folder with index? | **Single self-contained HTML** (folder is Phase 2) |
+| Clause refs now or Phase 2? | **Phase 2** — current schema has clause in `DesignError` only, not in results |
+| Tie phase targets to versions or milestones? | **Milestones** — version numbers are indicative, actual scheduling per production roadmap |
+
+---
+
+## Part 10: Recommended Next Steps
+
+### Immediate (Week 1)
+
+1. **Define visual schema** — Lock the JSON fields required for Phase 1
+2. **Create SVG generators** — `render_section_svg()`, `render_utilization_svg()`
+3. **Build Jinja2 template** — Single-beam report page
+
+### Short-term (Week 2-3)
+
+4. **Add `report` CLI command** — Wire up to job_runner
+5. **Create batch index page** — List of beams with utilization summary
+6. **Add golden file tests** — Ensure determinism
+
+### Medium-term (Month 2)
+
+7. **Phase 2 interactivity** — Collapsible sections, print CSS
+8. **User feedback** — Share with 2-3 engineers, iterate
+
+---
+
+## Appendix A: Reference Visual Styles
+
+### A.1 IS 456 / SP 16 Figure Style
+
+The figures in SP 16 use:
+- Simple line drawings
+- Dimension arrows with values
+- Hatching for concrete (45° lines)
+- Circles for reinforcement bars
+- Clean sans-serif labels
+
+**Recommendation:** Mimic this style for maximum familiarity.
+
+### A.2 Example SVG Output (Concept)
+
+```svg
+<svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Beam outline -->
+  <rect x="50" y="50" width="200" height="300"
+        fill="none" stroke="#333" stroke-width="2"/>
+
+  <!-- Top bars (3T16) -->
+  <circle cx="80" cy="80" r="8" fill="#333"/>
+  <circle cx="150" cy="80" r="8" fill="#333"/>
+  <circle cx="220" cy="80" r="8" fill="#333"/>
+
+  <!-- Bottom bars (4T20) -->
+  <circle cx="75" cy="320" r="10" fill="#333"/>
+  <circle cx="125" cy="320" r="10" fill="#333"/>
+  <circle cx="175" cy="320" r="10" fill="#333"/>
+  <circle cx="225" cy="320" r="10" fill="#333"/>
+
+  <!-- Dimensions -->
+  <text x="150" y="380" text-anchor="middle">b = 230mm</text>
+  <text x="280" y="200" text-anchor="middle" transform="rotate(90,280,200)">D = 500mm</text>
+</svg>
+```
+
+---
+
+## Appendix B: Glossary
+
+| Term | Definition |
+|------|------------|
+| **Governing case** | Load combination with highest utilization |
+| **Utilization** | Ratio of demand to capacity (0-100%) |
+| **Bar mark** | Unique identifier for a bar in BBS |
+| **Station** | Point along beam span for diagram plotting |
+| **Trust visual** | Diagram that increases engineer confidence in results |
+
+---
+
+*End of research document. Ready for implementation planning.*
