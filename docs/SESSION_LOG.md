@@ -461,7 +461,7 @@ All 7 CI checks passed including the new doc drift check.
 
 ---
 
-### Multi-Agent Review Remediation (Phase 2) — 2025-12-29
+### Multi-Agent Review Remediation (Phase 2) — 2025-12-28
 
 **Focus:** Doc accuracy + test transparency + CI cleanup.
 
@@ -482,7 +482,7 @@ All 7 CI checks passed including the new doc drift check.
 
 ---
 
-### Guardrails Hardening — 2025-12-29
+### Guardrails Hardening — 2025-12-28
 
 **Change:** Added a local CI parity script to mirror the GitHub Actions checks.
 
@@ -491,7 +491,7 @@ All 7 CI checks passed including the new doc drift check.
 
 ---
 
-### Guardrails Hardening — Follow-up (2025-12-29)
+### Guardrails Hardening — Follow-up (2025-12-28)
 
 **Fixes:**
 - `scripts/ci_local.sh` now reuses `.venv` when present and installs only the latest wheel in `Python/dist/` to avoid version conflicts.
