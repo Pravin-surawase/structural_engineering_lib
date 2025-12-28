@@ -4,7 +4,7 @@
 
 | Metric | Value |
 |--------|-------|
-| **Version** | v0.10.3 |
+| **Version** | v0.10.4 |
 | **Tests** | 1810 passed, 91 skipped |
 | **Coverage** | 92% branch |
 

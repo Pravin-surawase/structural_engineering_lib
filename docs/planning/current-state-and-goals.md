@@ -1,6 +1,6 @@
 # IS 456 RC Beam Design Library - Current State and Goals
 
-Last updated: 2025-12-27
+Last updated: 2025-12-28
 Current release tag: v0.10.4
 Document status: Active
 
@@ -11,7 +11,7 @@ targeting IS 456:2000. It currently provides strength design, detailing, DXF
 output, Level A serviceability, compliance checking, Bar Bending Schedule
 (BBS) generation, **unified CLI**, and **cutting-stock optimization**, with a
 deterministic batch runner and CSV integration. The implementation exists in
-both Python and VBA with parity intent, and is supported by **1680+ Python tests** and CI.
+both Python and VBA with parity intent, and is supported by **1810 passed tests (91 skipped)** and CI.
 
 This document is a systematic overview of what exists today, how it is
 structured, what gaps remain, and what the next priorities are. It is intended
@@ -62,7 +62,7 @@ Core engineering features:
 - Shear design: Table 19/20 lookup, stirrup spacing limits.
 - Ductile detailing checks per IS 13920.
 - Reinforcement detailing: Ld, lap length, spacing, bar callouts.
-- Serviceability Level A: deflection and crack width.
+- Serviceability: Level A (deflection + crack width) and Level B (deflection).
 - Compliance checker: multi-check summary across load cases.
 
 Output and automation features:
@@ -200,7 +200,7 @@ Planned “trust artifacts” (publishable):
 
 Tracked gaps:
 - PDF report generation is not implemented.
-- Serviceability is Level A only (detailed deflection not implemented).
+ - Serviceability Level A+B is implemented; Level C (shrinkage/creep) is not.
 - VBA automated testing is not implemented.
 - Batch job schema is single-beam (multi-beam is future).
 - ~~BBS cutting-stock optimization~~ ✅ **Implemented in v0.9.4** (`rebar_optimizer.py`).
