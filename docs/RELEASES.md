@@ -1,6 +1,6 @@
 # Release Ledger
 
-This document serves as the **immutable source of truth** for project releases. 
+This document serves as the **immutable source of truth** for project releases.
 Entries here represent "locked" versions that have been verified and approved.
 **Rule:** Agents may ONLY append to this file. Never edit or delete past entries.
 
@@ -459,7 +459,7 @@ It exists because this ledger is **append-only**.
 - Introduced pinned numerical targets that lock key outputs and determinism across core modules.
 
 **Deterministic job runner + CLI:**
-- Job spec: [docs/specs/v0.9_JOB_SCHEMA.md](docs/specs/v0.9_JOB_SCHEMA.md).
+- Job spec: [docs/specs/v0.9_JOB_SCHEMA.md](specs/v0.9_JOB_SCHEMA.md).
 - Runner: `structural_lib.job_runner.run_job(...)` writes stable outputs (JSON + CSV) in a fixed folder layout.
 - CLI: `python -m structural_lib.job_cli run --job job.json --out <dir>`.
 
