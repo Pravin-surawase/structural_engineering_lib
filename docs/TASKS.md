@@ -2,6 +2,11 @@
 
 > **How to use:** Start each session here. Pick from "Up Next", move to "Active", then "Done".
 
+| Release | Version | Status |
+|---------|---------|--------|
+| **Current** | v0.10.4 | Published on PyPI |
+| **Next** | v0.20.0 | Blocked by S-007 |
+
 ---
 
 ## 🔴 Active

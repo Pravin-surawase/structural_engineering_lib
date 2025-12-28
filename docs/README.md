@@ -1,7 +1,8 @@
 # Docs Index (Start Here)
 
 If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience.
-**Current version:** v0.10.4
+
+> **Version info:** See [TASKS.md](TASKS.md) for current/next release status.
 
 ## Quick CLI Reference (v0.9.4+)
 

@@ -4,9 +4,12 @@
 
 | Metric | Value |
 |--------|-------|
-| **Version** | v0.10.4 |
+| **Current Release** | v0.10.4 (on PyPI) |
+| **Next Milestone** | v0.20.0 (blocked by S-007) |
 | **Tests** | 1810 passed, 91 skipped |
 | **Coverage** | 92% branch |
+
+> **Status details:** See [TASKS.md](TASKS.md) for current/next release info.
 
 ---
 
