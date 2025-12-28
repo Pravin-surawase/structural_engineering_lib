@@ -52,6 +52,7 @@ except Exception:
 units = _units
 TextEntityAlignment = _TextEntityAlignment
 
+from .api import get_library_version
 from .detailing import BeamDetailingResult, BarArrangement, StirrupArrangement
 
 
@@ -158,17 +159,23 @@ def _draw_title_block(
 
     draw_rectangle(msp, x1, y1, x2, y2, "BORDER")
 
-    line_height = TEXT_HEIGHT * 0.6
+    lines = [line for line in fields if line]
+    padding = 15
+    if lines:
+        max_line_height = (height - 2 * padding) / len(lines)
+        line_height = min(TEXT_HEIGHT * 0.6, max_line_height)
+    else:
+        line_height = TEXT_HEIGHT * 0.6
+    spacing = max(2.0, line_height * 0.2)
+
     x_text = x1 + 20
-    y_text = y2 - line_height - 15
-    for line in fields:
-        if not line:
-            continue
+    y_text = y2 - line_height - padding
+    for line in lines:
         msp.add_text(
             line,
             dxfattribs={"layer": "TEXT", "height": line_height},
         ).set_placement((x_text, y_text), align=_text_align("LEFT"))
-        y_text -= line_height + 5
+        y_text -= line_height + spacing
 
 
 def draw_stirrup(
@@ -662,7 +669,8 @@ def generate_beam_dxf(
         include_annotations: Add text annotations
         include_section_cuts: Add cross-section views (A-A at support, B-B at midspan)
         include_title_block: Draw a deliverable border + title block
-        title_block: Optional dict to override title block fields
+        title_block: Optional dict to override title block fields (title, beam_id,
+            story, span_line, units, scale, project, date, drawn_by, version)
         sheet_margin_mm: Sheet margin for deliverable layout (mm)
         title_block_width_mm: Title block width (mm)
         title_block_height_mm: Title block height (mm)
@@ -830,6 +838,10 @@ def generate_beam_dxf(
         span_line = f"Span: {detailing.span:.0f} mm"
         units_note = "Units: mm, N/mm2, kN, kN-m"
         scale_note = "Scale: 1:1"
+        project = ""
+        date_line = ""
+        drawn_by = ""
+        version_line = f"Version: {get_library_version()}"
         if title_block:
             title = title_block.get("title", title)
             beam_id = title_block.get("beam_id", beam_id)
@@ -837,12 +849,20 @@ def generate_beam_dxf(
             span_line = title_block.get("span_line", span_line)
             units_note = title_block.get("units", units_note)
             scale_note = title_block.get("scale", scale_note)
+            project = title_block.get("project", project)
+            date_line = title_block.get("date", date_line)
+            drawn_by = title_block.get("drawn_by", drawn_by)
+            version_line = title_block.get("version", version_line)
 
         fields = [
             title,
+            project,
             f"Beam: {beam_id}",
             f"Story: {story}",
             span_line,
+            date_line,
+            drawn_by,
+            version_line,
             scale_note,
             units_note,
         ]
@@ -887,7 +907,8 @@ def generate_multi_beam_dxf(
         include_annotations: Add text annotations
         include_section_cuts: Add cross-section views
         include_title_block: Draw a deliverable border + title block
-        title_block: Optional dict to override title block fields
+        title_block: Optional dict to override title block fields (title, count_line,
+            units, scale, project, date, drawn_by, version)
         sheet_margin_mm: Sheet margin for deliverable layout (mm)
         title_block_width_mm: Title block width (mm)
         title_block_height_mm: Title block height (mm)
@@ -1105,13 +1126,30 @@ def generate_multi_beam_dxf(
         count_line = f"Beams: {len(detailings)}"
         units_note = "Units: mm, N/mm2, kN, kN-m"
         scale_note = "Scale: 1:1"
+        project = ""
+        date_line = ""
+        drawn_by = ""
+        version_line = f"Version: {get_library_version()}"
         if title_block:
             title = title_block.get("title", title)
             count_line = title_block.get("count_line", count_line)
             units_note = title_block.get("units", units_note)
             scale_note = title_block.get("scale", scale_note)
+            project = title_block.get("project", project)
+            date_line = title_block.get("date", date_line)
+            drawn_by = title_block.get("drawn_by", drawn_by)
+            version_line = title_block.get("version", version_line)
 
-        fields = [title, count_line, scale_note, units_note]
+        fields = [
+            title,
+            project,
+            count_line,
+            date_line,
+            drawn_by,
+            version_line,
+            scale_note,
+            units_note,
+        ]
         _draw_title_block(msp, (block_x, block_y), block_width, block_height, fields)
 
     doc.saveas(output_path)
