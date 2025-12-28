@@ -15,22 +15,35 @@ Scope: concept ideas, data needs, and phased experiments. No code yet.
 > - R1 (2025-12-29): Schema example corrected, Jinja2 dep clarified, determinism relaxed
 > - R2 (2025-12-29): HTML escaping, ordered list guards, BBS input requirement
 > - R3 (2025-12-29): Innovation ideas reviewed, roadmap alignment assessed
+> - R4 (2025-12-29): Problem-first reframe, user personas, low-effort solutions added
 
 ---
 
 ## Executive Summary
 
-After analyzing the structural engineering visualization landscape, user workflows, and our library's architecture, I recommend:
+### The Core Insight
 
-1. **Phase 1:** Static HTML report with SVG beam diagrams — stdlib only (no Jinja2), maximum trust
-2. **Phase 2:** Interactive HTML with collapsible details — still stdlib only
-3. **Phase 3:** Optional matplotlib/plotly for Mu/Vu diagrams — gated by `[viz]` extras
+**Users don't want "visuals" — they want answers faster.**
 
-**Note on dependencies:** Phase 1-2 use Python's `string.Template` (stdlib). Jinja2 is NOT required.
-Version targets (v0.11, v0.12, etc.) are indicative — actual scheduling follows production roadmap.
+The cross-section SVG is nice, but it's not the killer feature. Engineers need:
+1. "Which beams are critical?" → not 500 diagrams
+2. "Can I trust this?" → not fancy charts
+3. "What changed?" → not re-running everything
+4. "Will this build?" → not discovering problems on site
 
-**Security note:** All user-supplied values (beam IDs, labels, case names) MUST be passed through
-`html.escape()` before insertion. `string.Template` does NOT auto-escape, unlike Jinja2.
+### Recommended Phasing
+
+| Phase | Focus | Solves |
+|-------|-------|--------|
+| **Phase 1** | Trust & Audit | "Which beams?" + "Can I trust?" |
+| **Phase 2** | Change Tracking | "What changed?" |
+| **Phase 3** | Buildability | "Will it build?" |
+
+### Technical Approach
+
+- **Phase 1-2:** stdlib only (`string.Template` + `html.escape()`)
+- **Phase 3:** Optional `[viz]` extras for rich visuals
+- **All phases:** Deterministic, zero hidden defaults
 
 **Key insight:** Engineers trust visuals that match hand-sketch conventions. Fancy charts add cognitive load; simple annotated diagrams add trust.
 
@@ -43,6 +56,138 @@ Make the library feel "see-and-trust":
 - Steel layout is previewable, not just a schedule.
 - BBS is connected to drawing marks.
 - Governing checks are highlighted visually.
+
+---
+
+## Part 0: Problem-First Analysis (Added R4)
+
+> **Key Question:** What problems are we actually solving? Features are solutions —
+> we need to understand the problems first.
+
+### 0.1 Who Uses This Library?
+
+| User | Context | Primary Pain Point |
+|------|---------|--------------------|
+| **Design Engineer** | Designing 50-500 beams for a building | "Did I miss a critical beam?" |
+| **Checking Engineer** | Reviewing someone else's work | "Can I trust this without re-doing the calc?" |
+| **Detailer** | Converting design to drawings | "Does my BBS match the design intent?" |
+| **Site Engineer** | Executing on ground | "Is this bar schedule actually buildable?" |
+| **Project Manager** | Sign-off decisions | "What's the overall status? Any red flags?" |
+
+### 0.2 The Five Real Problems
+
+#### Problem 1: "I Can't See the Critical Beams"
+
+**Current state:** Run 500 beams → get 500 JSON files or one big output → scroll looking for failures.
+
+**What they actually need:** "Show me the 10 beams I should worry about, sorted by risk."
+
+**Solution:** Critical Beam List / Heatmap. Not a diagram — just a sorted table with utilization bars.
+
+**Effort:** Low. Just filter and sort existing `ComplianceReport` data.
+
+---
+
+#### Problem 2: "I Don't Trust the Numbers"
+
+**Current state:** Software says "Ast = 1200 mm²" but engineer thinks "How do I know this is right?"
+
+**What they actually need:** "Show me the calc trace so I can spot-check."
+
+**Solution:** Proof Trace — not fancy, just: Input → Formula → Clause → Result. Like a hand calc but generated.
+
+**Effort:** Medium. Needs clause metadata (W08 dependency).
+
+---
+
+#### Problem 3: "What Changed Since Last Run?"
+
+**Current state:** Model updated → re-run design → no idea what changed.
+
+**What they actually need:** "Highlight the beams where steel increased or checks flipped."
+
+**Solution:** Change Ledger / Diff Summary. Not side-by-side code — just "B12: Ast +15%, now shear-critical."
+
+**Effort:** Low. Hash inputs/outputs, compare key fields.
+
+---
+
+#### Problem 4: "Is This Buildable?"
+
+**Current state:** Design says 6T25 in 230mm beam. Site says "Won't fit."
+
+**What they actually need:** "Flag congestion before it hits drawings."
+
+**Solution:** Stability Scorecard with spacing/layer checks. Simple red flags, not a 3D render.
+
+**Effort:** Low. Deterministic rules on existing geometry + bars.
+
+---
+
+#### Problem 5: "The BBS Doesn't Match the Drawing"
+
+**Current state:** Detailer manually copies from design → typos → wrong bars on site.
+
+**What they actually need:** "Verify BBS and DXF are consistent automatically."
+
+**Solution:** Not a visual — a **consistency check** with pass/fail. Maybe a checksum stamp.
+
+**Effort:** Medium. Needs bar-mark identity contract (not yet defined).
+
+---
+
+### 0.3 What Users Actually Want in Each Context
+
+| Context | What They Want | What They DON'T Want |
+|---------|---------------|---------------------|
+| **Batch review (500 beams)** | Sorted list, utilization bars, top-N critical | 500 individual beam diagrams |
+| **Single beam deep-dive** | Cross-section sketch, proof trace | Animated 3D, color gradients |
+| **Sign-off report** | Summary table, pass/fail counts, governing cases | 50-page PDF with every calc |
+| **Checking** | Diff from last run, clause refs | Having to re-run themselves |
+| **Detailing handoff** | Consistency check result | More PDFs to print |
+
+### 0.4 Revised Priority (Problem-First)
+
+**Phase 1 — Trust & Audit (solve "which beams?" + "can I trust?"):**
+
+| Rank | Solution | Problem Solved | Effort |
+|------|----------|----------------|--------|
+| 1 | Critical Set Export (top N by utilization) | "Which beams?" | Low |
+| 2 | Input Sanity Heatmap (catch garbage early) | "Can I trust?" | Low |
+| 3 | Change Ledger (what changed) | "What changed?" | Low |
+| 4 | Stability Scorecard (buildability flags) | "Will it build?" | Low |
+| 5 | Units Sentinel (kN vs N warnings) | "Can I trust?" | Low |
+| 6 | Cross-section SVG (single beam visual) | Nice-to-have | Low |
+| 7 | Utilization bar chart | Nice-to-have | Low |
+
+**Phase 2+ — After trust is established:**
+
+| Rank | Solution | Problem Solved | Blocker |
+|------|----------|----------------|--------|
+| 8 | Proof Trace with clause refs | "Can I trust?" (deep) | W08 clause metadata |
+| 9 | DXF-BBS consistency check | "Does BBS match?" | Bar-mark identity contract |
+
+### 0.5 Low-Effort High-Impact Ideas (From R3/R4 Review)
+
+| Idea | What It Does | Effort | Impact | Phase |
+|------|--------------|--------|--------|-------|
+| **Change Ledger** | `.ledger.json` with input/output hashes + key deltas | Low | High | 1 |
+| **Stability Scorecard** | 5 boolean flags: over-reinforced, brittle shear, min ductility, spacing, layers | Low | Medium | 1 |
+| **Input Sanity Heatmap** | Table highlighting suspicious inputs (low cover, b/D outliers) | Low | High | 1 |
+| **Units Sentinel** | Auto-detect kN vs N by magnitude; warn without blocking | Low | High | 1 |
+| **Critical Set Export** | Top N beams by utilization as separate JSON/CSV | Low | High | 1 |
+| **Tolerance Overlay** | Show provided vs required as a band, not single number | Low | Medium | 1 |
+| **Spec-to-Output Manifest** | `public-api.json` for LLM/tool integration | Low | Medium | 1 |
+| **DXF Checksum Stamp** | Metadata in DXF/BBS for mismatch detection | Low | Medium | 1 |
+| **Template Themes** | 2-3 CSS-only visual presets (hand-sketch, clean, mono) | Low | Low | 2 |
+
+### 0.6 The Insight
+
+> **The SVG beam diagram is a nice-to-have for single-beam reports.**
+> **The trust/audit features (ledger, scorecard, critical set) are what engineers will actually love.**
+
+Visuals without trust are marketing. Trust without visuals is still useful.
+Build trust first, add visuals second.
 
 ---
 
@@ -593,4 +738,27 @@ The figures in SP 16 use:
 
 ---
 
-*End of research document. Ready for implementation planning.*
+## Conclusion
+
+### What We Learned
+
+1. **Users want answers, not visuals.** The question is "which beams are critical?" not "show me a pretty diagram."
+
+2. **Trust comes before beauty.** A sorted table with utilization bars beats a fancy SVG that can't be verified.
+
+3. **Low-effort features solve real problems.** Change Ledger, Stability Scorecard, and Critical Set Export are all low-effort but high-impact.
+
+4. **Visuals are Phase 1 nice-to-haves, not must-haves.** Cross-section SVG is useful for single-beam reports, but not the priority.
+
+5. **Clause refs unlock deep trust.** Proof Trace with clause refs is the long-term differentiator, but needs W08 first.
+
+### Next Steps
+
+1. Finalize Phase 1 scope: Critical Set + Ledger + Scorecard + optional SVG
+2. Define `.ledger.json` schema
+3. Define Stability Scorecard rules (with IS 456 clause refs where applicable)
+4. Prototype Critical Set Export
+
+---
+
+*End of research document. Brainstorming continues.*
