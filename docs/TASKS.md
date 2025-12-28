@@ -85,6 +85,9 @@ python -m structural_lib job job.json -o job_out
 | TASK-086 | Side-Face Reinforcement | DEV | D > 750mm check (Cl. 26.5.1.3) |
 | TASK-087 | Anchorage Check | DEV | Ld at supports (Cl. 26.2) |
 | TASK-089 | Flanged Width Helper | INTEGRATION | bf from slab geometry |
+| TASK-090 | Publish JSON Schemas | INTEGRATION | Add `schemas/job.schema.json` + `schemas/result.schema.json` |
+| TASK-091 | CLI console script alias | DEVOPS | Add `structural-lib` console script in pyproject |
+| TASK-092 | Structured error payloads | DEV | Machine-readable error shape (code/field/hint) |
 | S-051 | Performance benchmarks | DEV | Track regression |
 | S-052 | Fuzz testing | TESTER | Random input testing |
 
