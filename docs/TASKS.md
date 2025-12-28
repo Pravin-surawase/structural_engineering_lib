@@ -93,7 +93,6 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | **TASK-083** | DXF deliverable layout polish | DEV | ✅ Done |
-
 ### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |

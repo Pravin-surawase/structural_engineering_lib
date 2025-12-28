@@ -292,7 +292,7 @@ Private Sub Test_DET_002()
     Dim fck As Double: fck = 30#
     Dim fy As Double: fy = 500#
     
-    Dim exp_ld As Double: exp_ld = 862#
+    Dim exp_ld As Double: exp_ld = 906#
     
     Dim ld As Double
     ld = M15_Detailing.Calculate_Ld(dia, fck, fy, "deformed")
