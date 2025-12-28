@@ -84,6 +84,7 @@ def test_flexure_design_doubly_reinforced_rejects_nonpositive_d_dash():
     )
     assert res.is_safe is False
     assert "d'" in res.error_message.lower()
+    assert any(err.code == "E_INPUT_010" for err in res.errors)
 
 
 @pytest.mark.parametrize(
