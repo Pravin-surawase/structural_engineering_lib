@@ -43,6 +43,29 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.3
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** Multi-Agent Review Phase 1+2 + CI Improvements
+**Key Changes:**
+- **Multi-Agent Repository Review:**
+  - Branch coverage gate (`--cov-branch --cov-fail-under=85`)
+  - Pytest timeout (15 min)
+  - CODEOWNERS file added
+  - IS 456 Cl. 38.1 clause comment for Mu_lim formula
+  - `design_shear()` docstring complete
+  - `__all__` export list in api.py
+  - Golden vector source documentation
+  - Shear section complete in api.md
+  - Review document at `docs/_internal/MULTI_AGENT_REVIEW_2025-12-28.md`
+- **CLI Warning:** Warns when `--crack-width-params` used with multiple beams
+- **CI Standardization:** GitHub Actions versions unified to @v6
+
+**Test Results:** 1850+ passed
+**PyPI:** `pip install structural-lib-is456==0.10.3`
+
+---
+
 ## v0.10.2
 **Date:** 2025-12-28
 **Status:** ✅ Locked & Verified

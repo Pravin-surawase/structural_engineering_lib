@@ -224,16 +224,17 @@
 
 ### Phase 1: Quick Wins (This Week)
 - [x] Add branch coverage gate to CI
-- [ ] Add coverage.xml to .gitignore
+- [x] Add coverage.xml to .gitignore (already present)
 - [x] Create CODEOWNERS file
 - [x] Add clause comment to Mu_lim formula
 - [x] Remove duplicate doc check from CI
+- [x] Standardize action versions to @v6
 
 ### Phase 2: Important Fixes (v0.11)
 - [x] Complete Shear section in api.md
 - [x] Add Mu_lim boundary tests (already covered)
 - [x] Document golden vector sources
-- [ ] Split bbs.py into core/io
+- [ ] Split bbs.py into core/io (deferred)
 - [x] Add `__all__` to api.py
 
 ### Phase 3: Major Features (v0.12+)

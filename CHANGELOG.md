@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.3] - 2025-12-28
+
+### Added
+- **Multi-Agent Repository Review (Phase 1+2):**
+  - Branch coverage gate (`--cov-branch --cov-fail-under=85`) in CI
+  - Pytest timeout (15 min) to prevent CI hangs
+  - `.github/CODEOWNERS` file for review ownership
+  - IS 456 Cl. 38.1 clause comment added to Mu_lim formula
+  - Complete `design_shear()` docstring with Args/Returns/Units
+  - `__all__` export list in `api.py` (8 public functions)
+  - Golden vector source documentation (`tests/data/sources.md`)
+  - Shear module section completed in `docs/reference/api.md`
+  - Multi-agent review document (`docs/_internal/MULTI_AGENT_REVIEW_2025-12-28.md`)
+
+### Changed
+- **CLI Warning for Global Crack-Width Params:**
+  - Emits warning when `--crack-width-params` is used with multiple beams
+  - Alerts users that same parameters apply to all beams in batch
+- **CI Workflow Standardization:**
+  - Standardized GitHub Action versions to @v6 across all workflows
+  - Removed duplicate doc version drift check
+
 ## [0.10.2] - 2025-12-28
 
 ### Added
