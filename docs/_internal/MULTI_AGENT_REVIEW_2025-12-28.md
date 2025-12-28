@@ -1,7 +1,8 @@
 # Multi-Agent Repository Review — 2025-12-28
 
-**Version Reviewed:** v0.10.2  
-**Agents Deployed:** ARCHITECT, TESTER, DOCS, DEVOPS, DEV, CLIENT
+**Version Reviewed:** v0.10.2 → **Updated to v0.10.3**  
+**Agents Deployed:** ARCHITECT, TESTER, DOCS, DEVOPS, DEV, CLIENT  
+**Status:** ✅ Phase 1+2 Complete (v0.10.3 released)
 
 ---
 
@@ -27,7 +28,7 @@
 | 1 | **ETABS preprocessor missing** | CLIENT | Saves 30 min/project for consultants | Medium |
 | 2 | **VBA build is fully manual** | DEVOPS | No automated build, version sync risk | High |
 | 3 | **Bar selection not in output** | CLIENT | Engineers must mentally compute "use 4-16φ" | Medium |
-| 4 | **Branch coverage not enforced in CI** | TESTER | Silent logic regressions possible | 5 min |
+| 4 | ~~**Branch coverage not enforced in CI**~~ | TESTER | ✅ Fixed in v0.10.3 | Done |
 
 ---
 
@@ -36,28 +37,28 @@
 | # | Issue | Agent | Recommendation |
 |---|-------|-------|----------------|
 | 5 | BBS I/O in Application layer | ARCHITECT | Split `bbs.py` into `bbs_core.py` + `bbs_io.py` |
-| 6 | Shear section incomplete in api.md | DOCS | Complete Section 3 with full signatures |
-| 7 | `Mu ≈ Mu_lim` boundary tests missing | TESTER | Add tests at ±0.1% of Mu_lim threshold |
-| 8 | coverage.xml tracked in git | DEVOPS | Add to `.gitignore`, `git rm --cached` |
+| 6 | ~~Shear section incomplete in api.md~~ | DOCS | ✅ Completed in v0.10.3 |
+| 7 | ~~`Mu ≈ Mu_lim` boundary tests missing~~ | TESTER | ✅ Already covered in test_structural.py |
+| 8 | ~~coverage.xml tracked in git~~ | DEVOPS | ✅ Already in .gitignore |
 | 9 | T-beam Ast_max formula differs | DEV | Align Python/VBA implementations |
 | 10 | Load combination handling missing | CLIENT | Accept multiple load cases, compute envelope |
-| 11 | Missing `__all__` in api.py | ARCHITECT | Define explicit public API surface |
-| 12 | Golden vectors undocumented | TESTER | Add `tests/data/sources.md` with benchmark origins |
+| 11 | ~~Missing `__all__` in api.py~~ | ARCHITECT | ✅ Added in v0.10.3 |
+| 12 | ~~Golden vectors undocumented~~ | TESTER | ✅ Added tests/data/sources.md |
 
 ---
 
 ## 🟢 Quick Wins (< 1 hour each)
 
-| # | Task | Agent | File(s) |
-|---|------|-------|---------|
-| A | Add `--cov-branch --cov-fail-under=85` to CI | TESTER | `.github/workflows/python-tests.yml` |
-| B | Add `Python/coverage.xml` to `.gitignore` | DEVOPS | `.gitignore` |
-| C | Create `.github/CODEOWNERS` | DEVOPS | New file |
-| D | Add `timeout-minutes: 15` to pytest job | DEVOPS | `python-tests.yml` |
-| E | Add IS 456 clause comment to Mu_lim formula | DEV | `flexure.py` |
-| F | Complete docstring for `design_shear()` | DEV | `shear.py` |
-| G | Remove duplicate doc check from CI | DEVOPS | `python-tests.yml` |
-| H | Standardize action versions to `@v4` | DEVOPS | All workflow files |
+| # | Task | Agent | Status |
+|---|------|-------|--------|
+| A | ~~Add `--cov-branch --cov-fail-under=85` to CI~~ | TESTER | ✅ Done |
+| B | ~~Add `Python/coverage.xml` to `.gitignore`~~ | DEVOPS | ✅ Already present |
+| C | ~~Create `.github/CODEOWNERS`~~ | DEVOPS | ✅ Done |
+| D | ~~Add `timeout-minutes: 15` to pytest job~~ | DEVOPS | ✅ Done |
+| E | ~~Add IS 456 clause comment to Mu_lim formula~~ | DEV | ✅ Done |
+| F | ~~Complete docstring for `design_shear()`~~ | DEV | ✅ Done |
+| G | ~~Remove duplicate doc check from CI~~ | DEVOPS | ✅ Done |
+| H | ~~Standardize action versions to `@v6`~~ | DEVOPS | ✅ Done |
 
 ---
 
@@ -275,12 +276,12 @@
 
 | # | Issue | File | Notes |
 |---|-------|------|-------|
-| S3 | **Crack-width params global** | `__main__.py` | `--crack-width-params` applies to all beams; misleading for mixed batches |
+| S3 | ~~**Crack-width params global**~~ | `__main__.py` | ✅ Warning added in v0.10.3 |
 | S4 | **Title block scale fixed** | `dxf_export.py` | Always shows "Scale: 1:1" regardless of plot scale |
 
 ### 🔧 Security Quick Wins
 
-1. **Add warning for global crack-width params** — Emit note when used on multi-beam inputs
+1. ~~**Add warning for global crack-width params**~~ — ✅ Done in v0.10.3
 2. **Add optional scale field** — `--title-scale` CLI flag or metadata field
 3. **Add hosted-mode guardrails** — Optional `--output-root` sandbox + max input size check
 
@@ -290,19 +291,37 @@
 
 ---
 
-## Addendum (2025-12-29) — Tester + Security Updates
+## Addendum — v0.10.3 Release (2025-12-28)
 
-**Tester fixes completed:**
-- CI: added branch coverage gate (`--cov-branch --cov-fail-under=85`) and pytest timeout.
-- CI: removed duplicate doc drift check (kept `check_doc_versions.py`).
-- Added `CODEOWNERS` to enforce review ownership.
-- Added IS 456 clause comment for Mu_lim formula in flexure.
-- Expanded `design_shear` docstring with Table 19/20 policies.
+**Release:** v0.10.3 — Phase 1+2 complete, tag pushed to GitHub.
 
-**Documentation updates:**
-- Completed the Shear section in `docs/reference/api.md` and restored flanged flexure subsections.
-- Added `Python/tests/data/sources.md` to document golden/parity vector sources.
-- Exported explicit `__all__` in `Python/structural_lib/api.py`.
+### Tester Fixes
+- ✅ CI: added branch coverage gate (`--cov-branch --cov-fail-under=85`)
+- ✅ CI: added pytest timeout (15 min)
+- ✅ CI: removed duplicate doc drift check
+- ✅ Added `CODEOWNERS` file
+- ✅ Added IS 456 Cl. 38.1 clause comment for Mu_lim formula
+- ✅ Expanded `design_shear` docstring with Args/Returns/Units
 
-**Security notes:**
-- No new findings beyond the hosted-usage risks already listed (S1–S4).
+### Documentation Updates
+- ✅ Completed Shear section in `docs/reference/api.md`
+- ✅ Added `Python/tests/data/sources.md` for golden vector sources
+- ✅ Added explicit `__all__` in `Python/structural_lib/api.py`
+
+### CI/DevOps Improvements
+- ✅ Standardized GitHub Action versions to @v6
+- ✅ Auto-format and publish workflows updated
+
+### Security Fix
+- ✅ Added warning when `--crack-width-params` used with multiple beams
+
+### Remaining for Future Releases
+| Item | Priority | Target |
+|------|----------|--------|
+| Split bbs.py into core/io | P1 | v0.11 |
+| ETABS preprocessor command | P0 | v0.12+ |
+| Bar selection in output | P0 | v0.12+ |
+| Load combination envelope | P0 | v0.12+ |
+| VBA build automation | P1 | v0.12+ |
+| Windows CI runner | P2 | v0.12+ |
+| Title block scale option | P2 | v0.12+ |
