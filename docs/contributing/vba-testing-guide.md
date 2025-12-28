@@ -1,7 +1,7 @@
 # VBA Testing Guide
 
-**Version:** 0.10.3  
-**Last Updated:** 2025-12-28  
+**Version:** 0.10.5
+**Last Updated:** 2025-12-28
 
 ## Quick Start
 
@@ -20,7 +20,7 @@
 ```
 ========================================
   STRUCTURAL ENGINEERING LIB - VBA TESTS
-  Version: 0.10.3
+  Version: 0.10.5
   Date: 2025-12-26 14:30:00
 ========================================
 
@@ -136,18 +136,18 @@ Tests use tolerances matching Python parity:
 ```vb
 Public Sub Test_NewFeature()
     On Error GoTo ErrHandler
-    
+
     ' Arrange
     Dim input1 As Double: input1 = 100#
-    
+
     ' Act
     Dim result As Double
     result = SomeModule.SomeFunction(input1)
-    
+
     ' Assert
     AssertAlmostEqual result, 123.45, 0.01, "NewFeature_BasicCase"
     Exit Sub
-    
+
 ErrHandler:
     Debug.Print "FAIL: NewFeature_BasicCase [Error " & Err.Number & "]"
 End Sub

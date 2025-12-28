@@ -23,10 +23,12 @@ BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 # Patterns to check for version drift
 VERSION_PATTERNS = [
     # Pattern, file glob, description
-    (r"\*\*Current version:\*\* v([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Current version marker"),
     (r"Document Version: ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Document Version header"),
     (r"\*\*Document Version:\*\* ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Document Version (bold)"),
-    (r"\*\*Version:\*\* ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Version header"),
+    (r"\*\*Version:\*\*\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Version header"),
+    (r"\|\s*\*\*Current Release\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/AI_CONTEXT_PACK.md", "AI_CONTEXT_PACK version table"),
+    (r"\|\s*\*\*Current\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/TASKS.md", "TASKS version table"),
+    (r"\|\s*\*\*Current\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/planning/next-session-brief.md", "next-session-brief version table"),
     (r"@v([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Git tag reference"),
     (r"structural-lib-is456==([0-9]+\.[0-9]+\.[0-9]+)", "**/*.md", "PyPI pin"),
 ]
@@ -62,19 +64,19 @@ def should_skip(filepath: Path) -> bool:
 def find_version_drift(current_version: str) -> list:
     """Find all files with version drift."""
     issues = []
-    
+
     for pattern, glob_pattern, description in VERSION_PATTERNS:
         for filepath in REPO_ROOT.glob(glob_pattern):
             if not filepath.is_file():
                 continue
             if should_skip(filepath):
                 continue
-            
+
             try:
                 content = filepath.read_text()
             except Exception:
                 continue
-            
+
             for match in re.finditer(pattern, content):
                 found_version = match.group(1)
                 if found_version != current_version:
@@ -86,7 +88,7 @@ def find_version_drift(current_version: str) -> list:
                         "expected": current_version,
                         "line": content[:match.start()].count("\n") + 1,
                     })
-    
+
     return issues
 
 
@@ -95,13 +97,13 @@ def main():
     parser.add_argument("--fix", action="store_true", help="Auto-fix with bump_version.py --sync-docs")
     parser.add_argument("--ci", action="store_true", help="Exit with error code if drift found")
     parser.add_argument("--verbose", "-v", action="store_true", help="Show all checked patterns")
-    
+
     args = parser.parse_args()
-    
+
     current = read_current_version()
     print(f"Current version: {current}")
     print()
-    
+
     if args.verbose:
         print("Checking patterns:")
         for pattern, glob_pat, desc in VERSION_PATTERNS:
@@ -111,22 +113,22 @@ def main():
         for skip in SKIP_FILES:
             print(f"  - {skip}")
         print()
-    
+
     issues = find_version_drift(current)
-    
+
     if not issues:
         print("✓ No version drift found")
         return 0
-    
+
     print(f"✗ Found {len(issues)} version drift issue(s):")
     print()
-    
+
     for issue in issues:
         print(f"  {issue['file']}:{issue['line']}")
         print(f"    Pattern: {issue['pattern']}")
         print(f"    Found: {issue['found']} (expected: {issue['expected']})")
         print()
-    
+
     if args.fix:
         print("Attempting auto-fix with bump_version.py --sync-docs...")
         result = subprocess.run(
@@ -140,12 +142,12 @@ def main():
             print(f"✗ Auto-fix failed: {result.stderr}")
             return 1
         return 0
-    
+
     if args.ci:
         print("CI mode: failing due to version drift.")
         print("Run: python scripts/check_doc_versions.py --fix")
         return 1
-    
+
     print("To fix: python scripts/check_doc_versions.py --fix")
     print("Or run: python scripts/bump_version.py --sync-docs")
     return 0

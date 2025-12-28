@@ -7,6 +7,7 @@ Guides for developers and maintainers.
 | Guide | Audience |
 |-------|----------|
 | [Development Guide](development-guide.md) | Coding standards, PR workflow |
+| [Solo Maintainer Operating System](solo-maintainer-operating-system.md) | Solo maintainer workflow, release gates |
 | [Testing Strategy](testing-strategy.md) | Test structure, coverage goals |
 | [VBA Guide](vba-guide.md) | VBA module conventions |
 | [VBA Testing Guide](vba-testing-guide.md) | Running VBA test suites |

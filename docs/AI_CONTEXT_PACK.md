@@ -1,114 +1,155 @@
-# AI Context Pack (VS Code “Vibe Coding”)
+# AI Context Pack
 
-Use this file as the single entrypoint for AI agents working in VS Code.
+> **For AI Agents:** Use this as your single entrypoint when working in VS Code.
 
-**Current version:** v0.10.3
-**Test count:** See CI for current totals
+| Metric | Value |
+|--------|-------|
+| **Current Release** | v0.10.5 (on PyPI) |
+| **Next Milestone** | v0.20.0 (blocked by S-007) |
+| **Tests** | 1810 passed, 91 skipped |
+| **Coverage** | 92% branch |
 
-## 0) Golden rule
-- Prefer small, deterministic changes.
-- Keep Python + VBA parity (same formulas, same units, same edge-case behavior).
-- Update docs *in the same change* when behavior/API changes.
-
----
-
-## 1) What this repo is
-- IS 456 RC beam design library.
-- Implementations: Python package under `Python/` + VBA modules under `VBA/`.
-- Strength design + detailing + DXF export + serviceability + compliance + BBS done (v0.8+).
-- **v0.9.4 adds:** Unified CLI (`python -m structural_lib`), cutting-stock optimizer, VBA BBS/Compliance parity.
-
-Start here for architecture and boundaries:
-- [architecture/project-overview.md](architecture/project-overview.md)
+> **Status details:** See [TASKS.md](TASKS.md) for current/next release info.
 
 ---
 
-## 2) "Load these docs first" (minimal context)
-Use these as the default context set for most tasks:
-- [architecture/project-overview.md](architecture/project-overview.md) (layering + intent)
-- [reference/api.md](reference/api.md) (public API contracts)
-- [reference/known-pitfalls.md](reference/known-pitfalls.md) (units/table rules/edge cases)
-- [reference/troubleshooting.md](reference/troubleshooting.md) (VBA/Mac quirks, fixes)
-- [TASKS.md](TASKS.md) (canonical backlog + acceptance mindset)
-- [planning/next-session-brief.md](planning/next-session-brief.md) (where to resume quickly)
+## 🎯 Golden Rules
+
+1. **Small, deterministic changes** — no hidden defaults
+2. **Python + VBA parity** — same formulas, units, edge-case behavior
+3. **Update docs with code** — in the same PR
 
 ---
 
-## 3) When you’re implementing code
+## 📖 Required Reading
+
+Load these docs first for most tasks:
+
+| Priority | Document | Purpose |
+|----------|----------|---------|
+| 1 | `.github/copilot-instructions.md` | **CRITICAL** — rules, layers, Git workflow |
+| 2 | `docs/architecture/project-overview.md` | Architecture + intent |
+| 3 | `docs/reference/api.md` | Public API contracts |
+| 4 | `docs/reference/known-pitfalls.md` | Units, tables, edge cases |
+| 5 | `docs/TASKS.md` | Current task board |
+| 6 | `docs/planning/next-session-brief.md` | Where to resume |
+
+---
+
+## 🏗️ Project Structure
+
+```
+Python/structural_lib/     ← Python package
+Python/tests/              ← Python tests
+VBA/Modules/               ← VBA library modules
+VBA/Tests/                 ← VBA test harness
+docs/                      ← Documentation
+scripts/                   ← Automation scripts
+```
+
+### Layer Architecture
+
+| Layer | Python Files | Purpose |
+|-------|-------------|---------|
+| **Core** | `flexure.py`, `shear.py`, `detailing.py` | Pure math, no I/O |
+| **App** | `api.py`, `beam_pipeline.py`, `job_runner.py` | Orchestration |
+| **I/O** | `__main__.py`, `dxf_export.py` | CLI, file handling |
+
+---
+
+## ⚙️ Development Workflow
+
 ### Python
-- Package root: `Python/structural_lib/`
-- Tests: `Python/tests/`
+```bash
+# Run tests
+.venv/bin/python -m pytest tests/ -v
 
-Recommended workflow:
-1) Add/modify function in Python.
-2) Add/modify the matching VBA module function.
-3) Add/extend Python unit tests.
-4) (If feasible) add/update VBA test harness cases.
+# Format
+.venv/bin/python -m black Python/
+
+# Check
+.venv/bin/python -m ruff check Python/
+```
 
 ### VBA
-- Library modules: `VBA/Modules/`
-- VBA tests: `VBA/Tests/`
+- Import order matters — see `docs/contributing/vba-guide.md`
+- Mac safety: wrap dimension multiplications in `CDbl()`
 
-Import order matters; see:
-- [contributing/vba-guide.md](contributing/vba-guide.md)
+### Git
+```bash
+# Pre-commit hooks auto-format
+git commit -m "message"
 
----
+# Create PR and wait for CI
+gh pr create --title "..." --body "..."
+gh pr checks <num> --watch
 
-## 4) Planning & research (what to read)
-- Active v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
-- Production checklist summary: [planning/production-roadmap.md](planning/production-roadmap.md)
-- Release ledger (append-only): [RELEASES.md](RELEASES.md)
-
-Architecture decisions (short, auditable decision notes):
-- [adr/README.md](adr/README.md)
-
-Historical reference material lives here:
-- [docs/_archive/RESEARCH_AND_FINDINGS.md](_archive/RESEARCH_AND_FINDINGS.md)
+# Merge only after CI passes
+gh pr merge <num> --squash --delete-branch
+```
 
 ---
 
-## 5) Git & CI Rules (CRITICAL for all agents)
+## 🤖 Agent Roles
 
-**Read `.github/copilot-instructions.md` for complete rules. Summary:**
+| Role | Use For |
+|------|---------|
+| **DEV** | Implementation, refactoring |
+| **TESTER** | Test design, edge cases |
+| **DOCS** | API docs, guides |
+| **DEVOPS** | CI, releases, automation |
 
-### Before committing:
-- Pre-commit hooks auto-run `black` + `ruff` — install with `pre-commit install`
-- If hooks modify files, re-stage them before committing
-- Run tests locally: `.venv/bin/python -m pytest tests/test_<file>.py -v`
-
-### PR workflow:
-1. `git commit` → `git push` → `gh pr create`
-2. **WAIT:** `gh pr checks <num> --watch` (don't merge until CI passes!)
-3. If governance allows: `gh pr merge <num> --squash --delete-branch`
-4. If human review required: stop and notify the user
-
-### When to merge:
-- ✅ After: features, meaningful tests, doc sections
-- ❌ NOT for: single-line fixes, formatting, micro-changes (batch them)
-
-### Common mistakes to avoid:
-- Don't run `python` directly — use full venv path
-- Don't try to merge before CI completes
-- Don't create multiple micro-PRs — batch related changes
+Full list: `agents/README.md`
 
 ---
 
-## 6) Agent roles (prompt building blocks)
-Role prompt templates live here:
-- [../agents/README.md](../agents/README.md)
+## 📋 Prompt Recipes
 
-Internal governance docs (rarely needed during normal coding):
-- [docs/_internal/AGENT_WORKFLOW.md](_internal/AGENT_WORKFLOW.md)
-- [docs/_internal/GIT_GOVERNANCE.md](_internal/GIT_GOVERNANCE.md)
+### Implement a feature
+```
+Use PROJECT_OVERVIEW and API_REFERENCE as context.
+Act as DEV + TESTER.
+Implement TASK-XXX in Python and VBA with identical behavior.
+Add Python tests. Output should be deterministic.
+```
+
+### Debug a mismatch
+```
+Use KNOWN_PITFALLS + TROUBLESHOOTING.
+Act as TESTER.
+Create minimal repro, identify divergence point,
+propose smallest parity fix with tests.
+```
+
+### Update docs
+```
+Act as DOCS.
+Update API_REFERENCE examples and impacted guides.
+Keep wording precise; no claims about untested tooling.
+```
 
 ---
 
-## 7) Copy-paste prompt recipes
-### Implement a feature (Python + VBA parity)
-"Use PROJECT_OVERVIEW and API_REFERENCE as context. Act as DEV + TESTER. Implement TASK-XXX in Python and VBA with identical behavior and units. Add Python tests. Where VBA tests are practical, add at least one regression case. Output should be deterministic and auditable."
+## 📚 Additional Resources
 
-### Debug a mismatch (Python vs VBA)
-"Use KNOWN_PITFALLS + TROUBLESHOOTING. Act as TESTER. Create a minimal repro input set, identify the first divergence point, then propose the smallest parity fix with tests."
+| Category | Document |
+|----------|----------|
+| Research | `docs/planning/research-ai-enhancements.md` |
+| Releases | `docs/RELEASES.md` |
+| ADRs | `docs/adr/README.md` |
+| Archive | `docs/_archive/` |
 
-### Update docs after code change
-"Act as DOCS. Update API_REFERENCE examples and any impacted guides. Keep wording precise; no claims about tooling you didn’t run."
+---
+
+## ⚠️ Common Mistakes
+
+| Mistake | Correct |
+|---------|---------|
+| Running `python` directly | Use `.venv/bin/python` |
+| Merging before CI passes | Wait for `gh pr checks --watch` |
+| Multiple micro-PRs | Batch related changes |
+| Editing without reading | Check file content first |
+
+---
+
+*Last updated: 2025-12-28*

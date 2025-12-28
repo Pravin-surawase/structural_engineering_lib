@@ -2,9 +2,64 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.5] - 2025-12-28
+
+### Added
+- **Structured Error Schema (W03-W04):**
+  - New `structural_lib/errors.py` module with `DesignError` dataclass and `Severity` enum
+  - Machine-readable error codes: `E_INPUT_*`, `E_FLEXURE_*`, `E_SHEAR_*`, `E_DUCTILE_*`
+  - Each error includes: code, severity, message, field (optional), hint (optional), clause (optional)
+  - Pre-defined error constants for common validation failures
+  - `to_dict()` method for JSON serialization
+- **Error Schema Integration in Core Functions:**
+  - `FlexureResult` and `ShearResult` now include `errors: List[DesignError]` field
+  - `DuctileBeamResult` now includes `errors: List[DesignError]` field
+  - `design_singly_reinforced()` returns structured errors for all validation failures
+  - `design_shear()` returns structured errors for all validation failures
+  - `check_beam_ductility()` returns structured errors for geometry failures
+- **Error Schema Tests:**
+  - New `tests/test_error_schema.py` with 29 tests covering:
+    - DesignError dataclass structure and serialization
+    - Severity enum values
+    - Pre-defined error constants
+    - Integration tests for flexure, shear, and ductile modules
+    - Error code prefix conventions
+- **Documentation:**
+  - `docs/reference/error-schema.md` — Full error catalog with hints and clause references
+
+### Changed
+- `ductile.check_geometry()` now returns 3 values: `(valid, message, errors)`
+- Existing `error_message` and `remarks` fields deprecated (use `errors` list instead)
+
+## [0.10.4] - 2025-12-28
+
+### Added
+- **Session Automation Scripts:**
+  - `scripts/start_session.py` — Run at session start (shows status, adds SESSION_LOG entry, lists active tasks)
+  - `scripts/end_session.py` — Pre-handoff checks (uncommitted files, doc freshness, log completeness)
+  - `scripts/check_handoff_ready.py` — Deep check of dates, test counts, version consistency
+- **Nightly QA Workflow:**
+  - `.github/workflows/nightly.yml` — Runs tests + full CLI smoke test (design → bbs → dxf → job)
+  - Uploads artifacts and creates GitHub issue on failure
+  - Scheduled for ~11:30pm IST daily
+- **New Backlog Tasks:**
+  - TASK-090: Publish JSON Schemas
+  - TASK-091: CLI console script alias
+  - TASK-092: Structured error payloads
+
+### Changed
+- **copilot-instructions.md:**
+  - Added "Session workflow" section with start/end script usage
+  - Consolidated handoff rules
+- **.gitignore:**
+  - Added `/docs/learning/` for private owner notes
+
 ## [0.10.3] - 2025-12-28
 
 ### Added
+- **v0.20.0 Stabilization Sprint (PRs #89–93):**
+  - Link checker script (`scripts/check_links.py`) — validates 173 internal links across 85 markdown files
+  - Improved job_runner error messages for missing `code` and `schema_version` fields
 - **Multi-Agent Repository Review (Phase 1+2):**
   - Branch coverage gate (`--cov-branch --cov-fail-under=85`) in CI
   - Pytest timeout (15 min) to prevent CI hangs
@@ -30,6 +85,10 @@ All notable changes to this project will be documented in this file.
   - AI agent workflow rules in `copilot-instructions.md`
 
 ### Changed
+- **Documentation Polish:**
+  - TASKS.md refactored (209→103 lines) — cleaner sections, current status
+  - SESSION_LOG.md archived and cleaned (641→135 lines)
+  - AI_CONTEXT_PACK.md reformatted with tables and clear sections
 - **CLI Warning for Global Crack-Width Params:**
   - Emits warning when `--crack-width-params` is used with multiple beams
   - Alerts users that same parameters apply to all beams in batch

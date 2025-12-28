@@ -1,7 +1,8 @@
 # Docs Index (Start Here)
 
 If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience.
-**Current version:** v0.10.3
+
+> **Version info:** See [TASKS.md](TASKS.md) for current/next release status.
 
 ## Quick CLI Reference (v0.9.4+)
 
@@ -51,6 +52,7 @@ If you want to understand the concepts and the code step by step, start here:
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
+- Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
 - VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)
 - Packaging the add-in (`.xlam`): [contributing/excel-addin-guide.md](contributing/excel-addin-guide.md)
 - Common engineering/coding traps: [reference/known-pitfalls.md](reference/known-pitfalls.md)

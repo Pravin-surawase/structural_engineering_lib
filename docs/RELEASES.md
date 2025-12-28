@@ -43,6 +43,46 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.5
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** Structured Error Schema
+**Key Changes:**
+- **New errors.py module:** `DesignError` dataclass with code/severity/message/field/hint/clause
+- **Core integration:** Structured errors in `design_singly_reinforced()`, `design_shear()`, `check_beam_ductility()`
+- **FlexureResult/ShearResult/DuctileBeamResult:** Added `errors: List[DesignError]` field
+- **29 new tests:** Comprehensive error schema validation
+- **Error catalog:** 20+ error codes with hints and IS 456 clause references
+
+**Breaking Changes:**
+- `ductile.check_geometry()` now returns 3 values: `(valid, message, errors)`
+
+**PRs:** #106, #107, #108, #109, #110, #111, #112
+
+---
+
+## v0.10.4
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** Developer Automation & Nightly QA
+**Key Changes:**
+- **Session Automation:**
+  - `start_session.py` — Shows status, adds SESSION_LOG entry, lists active tasks
+  - `end_session.py` — Pre-handoff checks (uncommitted files, doc freshness, log completeness)
+  - `check_handoff_ready.py` — Deep doc freshness validation
+- **Nightly QA Workflow:**
+  - Full test suite + CLI smoke test (design → bbs → dxf → job)
+  - Artifact upload + auto-issue on failure
+  - Scheduled 11:30pm IST daily
+- **Docs & Tasks:**
+  - Updated copilot-instructions with session workflow
+  - Added TASK-090/091/092 to backlog
+  - Private `/docs/learning/` gitignored
+**Tests:** 1810 passed, 91 skipped
+**Coverage:** 92% branch
+
+---
+
 ## v0.10.3
 **Date:** 2025-12-28
 **Status:** ✅ Locked & Verified
@@ -60,8 +100,9 @@ Use workflow_dispatch with `testpypi` target:
   - Review document at `docs/_internal/MULTI_AGENT_REVIEW_2025-12-28.md`
 - **CLI Warning:** Warns when `--crack-width-params` used with multiple beams
 - **CI Standardization:** GitHub Actions versions unified to @v6
+- **Documentation Polish:** TASKS.md, SESSION_LOG.md, AI_CONTEXT_PACK.md cleaned and reformatted
 
-**Test Results:** 1850+ passed
+**Test Results:** 1810 passed, 91 skipped
 **PyPI:** `pip install structural-lib-is456==0.10.3`
 
 ---
