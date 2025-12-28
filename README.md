@@ -21,10 +21,10 @@
 🚀 **Active (v0.10.6)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
 **What's new in v0.10.6:**
-- 45 critical IS 456 clause-specific tests (Mu_lim, xu/d ratios, T-beam, shear limits)
-- Multi-agent repository review with CI improvements
-- Local CI parity script (`scripts/ci_local.sh`)
-- Pre-commit hooks and governance documentation
+- **Structured error schema:** Machine-readable `DesignError` with code/severity/hint/clause
+- **Full input validation:** 16+ error codes covering all design functions
+- **Doubly/flanged beam validation:** Structured errors in `design_doubly_reinforced()`, `design_flanged_beam()`
+- **Improved CLI:** Better error messages for user-facing feedback
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
