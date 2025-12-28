@@ -1,7 +1,7 @@
 # Verification Examples Pack
 
-**Version:** 1.0  
-**Last Updated:** 2025-12-28  
+**Version:** 1.0
+**Last Updated:** 2025-12-28
 **Purpose:** Build trust through traceable, verifiable benchmark calculations.
 
 ---
@@ -281,7 +281,7 @@ print(f"Status: {'OK' if result.is_ok else 'FAIL'}")
 | Result | Value | Formula |
 |--------|-------|---------|
 | τbd | 2.24 | Table 5.3 × 1.6 |
-| Ld | 752 | φ × 0.87fy / (4 × τbd) |
+| Ld | 777 | φ × 0.87fy / (4 × τbd) |
 
 **Verification Command:**
 ```python
@@ -298,7 +298,7 @@ print(f"Ld = {ld:.0f} mm")
 τbd = 1.4 × 1.6 = 2.24 N/mm² (M25, deformed bars)
 Ld = (φ × 0.87 × fy) / (4 × τbd)
    = (16 × 0.87 × 500) / (4 × 2.24)
-   = 752 mm
+   = 777 mm
 ```
 
 ---
@@ -877,7 +877,7 @@ print(f'Mu (if xu=Df) = {Mu_flange:.2f} kN·m')
 
 if Mu <= Mu_flange:
     print('NA is IN FLANGE — treat as rectangular section with bf')
-    
+
     # Calculate xu (quadratic)
     a_coef = 0.36 * fck * bf * 0.42
     b_coef = -0.36 * fck * bf * d
@@ -885,7 +885,7 @@ if Mu <= Mu_flange:
     discriminant = b_coef**2 - 4 * a_coef * c_coef
     xu = (-b_coef - math.sqrt(discriminant)) / (2 * a_coef)
     print(f'xu = {xu:.2f} mm (< Df={Df} mm ✓)')
-    
+
     # Ast from force equilibrium
     Ast = (0.36 * fck * bf * xu) / (0.87 * fy)
     print(f'Ast = {Ast:.1f} mm²')
