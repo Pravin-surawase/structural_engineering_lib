@@ -43,6 +43,24 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.5
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** Structured Error Schema
+**Key Changes:**
+- **New errors.py module:** `DesignError` dataclass with code/severity/message/field/hint/clause
+- **Core integration:** Structured errors in `design_singly_reinforced()`, `design_shear()`, `check_beam_ductility()`
+- **FlexureResult/ShearResult/DuctileBeamResult:** Added `errors: List[DesignError]` field
+- **29 new tests:** Comprehensive error schema validation
+- **Error catalog:** 20+ error codes with hints and IS 456 clause references
+
+**Breaking Changes:**
+- `ductile.check_geometry()` now returns 3 values: `(valid, message, errors)`
+
+**PRs:** #106, #107, #108, #109, #110, #111, #112
+
+---
+
 ## v0.10.4
 **Date:** 2025-12-28
 **Status:** ✅ Locked & Verified
