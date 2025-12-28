@@ -169,32 +169,29 @@ def check_test_counts(fix: bool = False) -> list[str]:
 
 def check_version_consistency(fix: bool = False) -> list[str]:
     """Check if version numbers are consistent across docs."""
-    issues = []
     root = get_project_root()
-    current_version = get_current_version()
+    checker = root / "scripts" / "check_doc_versions.py"
+    if not checker.exists():
+        return []
 
-    for doc_path in VERSION_DOCS:
-        full_path = root / doc_path
-        if not full_path.exists():
-            continue
+    cmd = [sys.executable, str(checker)]
+    if fix:
+        cmd.append("--fix")
+    cmd.append("--ci")
 
-        content = full_path.read_text()
+    result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
+    if result.returncode == 0:
+        return []
 
-        # Look for version patterns like "v0.10.3" or "Version: 0.10.3"
-        version_matches = re.findall(r"v?(\d+\.\d+\.\d+)", content)
+    output = (result.stdout or "") + "\n" + (result.stderr or "")
+    issues = []
+    for line in output.splitlines():
+        # Example line: "  docs/planning/next-session-brief.md:3"
+        match = re.match(r"\s*(docs/[^:]+\.md:\d+)\s*$", line)
+        if match:
+            issues.append(f"Version drift: {match.group(1)}")
 
-        for found_version in set(version_matches):
-            # Skip versions that are clearly examples or historical
-            if found_version.startswith("0.9.") or found_version.startswith("0.8."):
-                continue
-            if found_version.startswith("0.10.") and found_version != current_version:
-                # Only flag if it's a 0.10.x version that doesn't match current
-                if found_version > current_version:
-                    issues.append(
-                        f"{doc_path}: Has future version {found_version} (current: {current_version})"
-                    )
-
-    return issues
+    return issues or ["Version drift detected (see scripts/check_doc_versions.py output)"]
 
 
 def check_active_tasks() -> list[str]:

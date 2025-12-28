@@ -1,6 +1,6 @@
 # Next Session Briefing
 
-**Version:** v0.10.3 | **Date:** 2025-12-28 | **PRs:** through #97
+**Version:** v0.10.4 | **Date:** 2025-12-28 | **PRs:** through #104
 
 ---
 
@@ -17,7 +17,7 @@
 python scripts/release.py 0.20.0
 ```
 
-**Stabilization status:** 27/31 complete — see `docs/planning/v0.20-stabilization-checklist.md`
+**Stabilization status:** 26/31 complete — see `docs/planning/v0.20-stabilization-checklist.md`
 
 ---
 
