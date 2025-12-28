@@ -43,6 +43,28 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.4
+**Date:** 2025-12-28
+**Status:** ✅ Locked & Verified
+**Mindset:** Developer Automation & Nightly QA
+**Key Changes:**
+- **Session Automation:**
+  - `start_session.py` — Shows status, adds SESSION_LOG entry, lists active tasks
+  - `end_session.py` — Pre-handoff checks (uncommitted files, doc freshness, log completeness)
+  - `check_handoff_ready.py` — Deep doc freshness validation
+- **Nightly QA Workflow:**
+  - Full test suite + CLI smoke test (design → bbs → dxf → job)
+  - Artifact upload + auto-issue on failure
+  - Scheduled 11:30pm IST daily
+- **Docs & Tasks:**
+  - Updated copilot-instructions with session workflow
+  - Added TASK-090/091/092 to backlog
+  - Private `/docs/learning/` gitignored
+**Tests:** 1810 passed, 91 skipped
+**Coverage:** 92% branch
+
+---
+
 ## v0.10.3
 **Date:** 2025-12-28
 **Status:** ✅ Locked & Verified

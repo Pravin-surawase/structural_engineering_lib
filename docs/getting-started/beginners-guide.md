@@ -135,4 +135,4 @@ You should get a number around 196.5 (kN-m).
 - CLI reference: `docs/cookbook/cli-reference.md`
 - API reference: `docs/reference/api.md`
 
-Document Version: 0.10.3 | Last Updated: 2025-12-28
+Document Version: 0.10.4 | Last Updated: 2025-12-28

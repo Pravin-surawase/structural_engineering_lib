@@ -62,7 +62,7 @@ This calculates the tension steel area required for the given moment.
 
 **Parameters explained:**
 - `B2` = b (beam width in mm)
-- `D2` = d (effective depth in mm)  
+- `D2` = d (effective depth in mm)
 - `G2` = Mu (factored moment in kN·m)
 - `E2` = fck (concrete grade)
 - `F2` = fy (steel grade)
@@ -216,10 +216,10 @@ Sub ExportCurrentBeam()
     Dim result As BeamDetailingResult
     Dim ws As Worksheet
     Dim row As Long
-    
+
     Set ws = ActiveSheet
     row = ActiveCell.row  ' Current selected row
-    
+
     ' Read data from current row
     Call M15_Detailing.Create_Beam_Detailing( _
         beam_id:=ws.Cells(row, 1).Value, _
@@ -234,11 +234,11 @@ Sub ExportCurrentBeam()
         ast_mid:=ws.Cells(row, 12).Value, _
         ast_end:=ws.Cells(row, 12).Value, _
         result:=result)
-    
+
     ' Export DXF
     Dim filePath As String
     filePath = ThisWorkbook.Path & "\" & ws.Cells(row, 1).Value & ".dxf"
-    
+
     If M16_DXF.Draw_BeamDetailing(filePath, result) Then
         MsgBox "Exported to: " & filePath, vbInformation
     Else
@@ -352,4 +352,4 @@ NOTES:
 
 ---
 
-*Document Version: 0.10.3 | Last Updated: 2025-12-28
+*Document Version: 0.10.4 | Last Updated: 2025-12-28
