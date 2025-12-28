@@ -203,10 +203,10 @@ class TestShearCapacityLimits:
     def test_shear_fails_when_exceeding_tc_max(self):
         """Section must be redesigned if tv > tc_max."""
         # Very high shear on small section
+        # tv = 400 * 1000 / (150 * 250) = 10.67 N/mm² > tc_max (~2.8 for M20)
         result = shear.design_shear(
             vu_kn=400, b=150, d=250, fck=20, fy=415, asv=157, pt=1.0
         )
-        tv = 400 * 1000 / (150 * 250)  # 10.67 N/mm²
         assert result.is_safe is False
         assert "exceeds Tc_max" in result.remarks
 
