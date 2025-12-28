@@ -15,7 +15,7 @@ from structural_lib import flexure, shear
                 "fck": 25.0,
                 "fy": 500.0,
             },
-            "b, d",
+            "b",  # Only b is invalid, so only b should be mentioned
         ),
         (
             {
@@ -26,7 +26,7 @@ from structural_lib import flexure, shear
                 "fck": 25.0,
                 "fy": 500.0,
             },
-            "b, d",
+            "d",  # Only d is invalid, so only d should be mentioned
         ),
         (
             {

@@ -86,10 +86,16 @@ with open("beams_small.csv", "w", newline="") as f:
 print("Wrote beams_small.csv")
 ```
 
-Run the full pipeline:
+Run the full pipeline (basic):
+```python
+!python -m structural_lib design beams_small.csv -o results_small.json
+!python -m structural_lib bbs results_small.json -o schedule_small.csv
+!python -m structural_lib dxf results_small.json -o drawings_small.dxf
+```
+
+Optional: add deflection checks + title block:
 ```python
 !python -m structural_lib design beams_small.csv -o results_small.json --deflection
-!python -m structural_lib bbs results_small.json -o schedule_small.csv
 !python -m structural_lib dxf results_small.json -o drawings_small.dxf --title-block --title "Beam Sheet"
 ```
 
@@ -169,10 +175,15 @@ with open("beams_500.csv", "w", newline="") as f:
 print("Wrote beams_500.csv")
 ```
 
-Run the batch:
+Run the batch (basic):
+```python
+!python -m structural_lib design beams_500.csv -o results_500.json
+!python -m structural_lib bbs results_500.json -o schedule_500.csv
+```
+
+Optional: add deflection checks + summary CSV:
 ```python
 !python -m structural_lib design beams_500.csv -o results_500.json --deflection --summary
-!python -m structural_lib bbs results_500.json -o schedule_500.csv
 ```
 
 Optional (DXF for 500 beams can be heavy):

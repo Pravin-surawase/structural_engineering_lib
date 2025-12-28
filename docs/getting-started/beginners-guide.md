@@ -52,9 +52,9 @@ Run it:
 python3 check.py
 ```
 
-Expected output (numbers may vary slightly):
+Expected output:
 ```
-Ast required (mm^2): 942
+Ast required (mm^2): 882
 Status: OK
 ```
 
@@ -134,5 +134,6 @@ You should get a number around 196.5 (kN-m).
 - Excel tutorial: `docs/getting-started/excel-tutorial.md`
 - CLI reference: `docs/cookbook/cli-reference.md`
 - API reference: `docs/reference/api.md`
+- Learning path: `docs/learning/README.md`
 
-Document Version: 0.10.3 | Last Updated: 2025-12-28
+Document Version: 0.10.5 | Last Updated: 2025-12-28

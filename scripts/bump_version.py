@@ -55,10 +55,10 @@ DOC_VERSION_FILES = {
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+", "## New in v{version}"),
     ],
     "docs/README.md": [
-        (r"^\*\*Current version:\*\* v[0-9]+\.[0-9]+\.[0-9]+", "**Current version:** v{version}"),
+        # Now links to TASKS.md, no version to update
     ],
     "docs/AI_CONTEXT_PACK.md": [
-        (r"^\*\*Current version:\*\* v[0-9]+\.[0-9]+\.[0-9]+", "**Current version:** v{version}"),
+        (r"^\|\s*\*\*Current Release\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current Release** | v{version}"),
     ],
     "docs/planning/production-roadmap.md": [
         (r"^(> \*\*Current Status:\*\* )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
@@ -92,10 +92,13 @@ DOC_VERSION_FILES = {
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
     ],
     "docs/TASKS.md": [
-        (r"^-\s+\*\*Current Version\*\*:\s+v[0-9]+\.[0-9]+\.[0-9]+", "- **Current Version**: v{version}"),
+        (r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current** | v{version}"),
     ],
     "docs/planning/next-session-brief.md": [
-        (r"^\*\*Status:\*\* v[0-9]+\.[0-9]+\.[0-9]+.*$", "**Status:** v{version} (current release)"),
+        (r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current** | v{version}"),
+    ],
+    "docs/planning/v0.20-stabilization-checklist.md": [
+        # Now links to TASKS.md, no version to update
     ],
 }
 

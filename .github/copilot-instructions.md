@@ -7,6 +7,19 @@
 
 ---
 
+## 🚀 Quick Start (First 30 Seconds)
+
+```bash
+# Run this immediately:
+.venv/bin/python scripts/start_session.py
+```
+
+This shows version, branch, active tasks, blockers, and doc freshness.
+
+**Read next:** `docs/AGENT_BOOTSTRAP.md` → `docs/AI_CONTEXT_PACK.md` → `docs/TASKS.md`
+
+---
+
 ## What this project is
 IS 456 RC beam design library with **Python + VBA parity**.
 
@@ -43,7 +56,7 @@ IS 456 RC beam design library with **Python + VBA parity**.
 3. Run tests locally before pushing: `python -m pytest tests/test_<file>.py -v`
 
 ### PR and merge workflow:
-1. `git commit` — pre-commit hooks auto-format (may modify files; re-stage if needed)
+1. `git commit` — pre-commit hooks auto-format (may modify files; re-stage and amend if needed)
 2. `git push -u origin <branch>`
 3. `gh pr create --title "..." --body "..."`
 4. **WAIT for CI:** `gh pr checks <num> --watch` — do NOT try to merge immediately
@@ -51,6 +64,21 @@ IS 456 RC beam design library with **Python + VBA parity**.
 
 > **Note:** Merge authority depends on project governance. If branch protection
 > requires human review, stop at step 4 and notify the user.
+
+### When pre-commit modifies files:
+If pre-commit hooks fix files during commit, do NOT create a second commit:
+```bash
+git add -A && git commit --amend --no-edit   # Keep it atomic
+```
+
+### After merging a PR (sync local main):
+```bash
+# PREFERRED: safe, non-destructive
+git switch main && git pull --ff-only
+
+# AVOID: git reset --hard origin/main (destructive, can wipe local work)
+# Only use reset --hard when git status is clean AND you intend to discard changes
+```
 
 ### When to merge (batch small changes):
 - ✅ Merge after: completing features, meaningful test additions, doc section completions
@@ -134,6 +162,55 @@ When working on specific task types, apply these focuses:
 | Editing file without reading current content | Always read file first if there may be changes |
 | Unused variables in test code | Check with `ruff check` before commit |
 | Creating duplicate documentation | Check if doc exists first |
+| Committing unrelated staged files | Run `git status` before commit; stage only intended files |
+| Resolving merge conflicts + feature in one commit | Resolve conflicts in separate commit first, then add feature |
+| PR title/description doesn't match actual changes | List ALL changed files in PR body; update title if scope changes |
+| Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` instead |
+| Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
+| Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
+
+---
+
+## Session workflow (CRITICAL)
+
+### Starting a session:
+```bash
+# Run at the beginning of each session:
+.venv/bin/python scripts/start_session.py
+
+# Quick mode (skip test count check):
+.venv/bin/python scripts/start_session.py --quick
+```
+
+**What it does:**
+- Shows version, branch, uncommitted changes
+- Adds SESSION_LOG entry for today if missing
+- Shows Active tasks from TASKS.md
+- Runs doc freshness checks
+
+### Ending a session:
+```bash
+# Run before ending any session:
+.venv/bin/python scripts/end_session.py
+
+# Auto-fix issues:
+.venv/bin/python scripts/end_session.py --fix
+
+# Quick mode:
+.venv/bin/python scripts/end_session.py --quick
+```
+
+**What it checks:**
+- 📁 Uncommitted changes
+- 🔍 Handoff checks (date freshness, test counts, versions)
+- 📝 SESSION_LOG entry completeness
+- 🔗 Doc link validity
+- 📊 Today's activity summary
+
+### Manual handoff steps (if needed):
+1. Update `docs/planning/next-session-brief.md` with session summary
+2. Ensure TASKS.md reflects current state
+3. Commit any uncommitted doc changes
 
 ---
 
