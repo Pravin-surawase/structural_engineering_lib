@@ -70,42 +70,6 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 |----|------|-------|--------|
 | **TASK-080** | Error message review | SUPPORT | ✅ Done |
 
-### External CLI Smoke Test (TASK-077) — ✅ COMPLETE
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-077** | External user CLI test | CLIENT | ✅ Done |
-
-### Seismic Detailing Validation (TASK-078) — ✅ COMPLETE
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
-
-### VBA Parity Spot-Check (TASK-079) — ✅ COMPLETE
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
-
-### DXF Deliverable Layout Polish (TASK-083) — ✅ COMPLETE
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-083** | DXF deliverable layout polish | DEV | ✅ Done |
-
-### DXF to PDF/PNG Export Workflow (TASK-084) — ✅ COMPLETE
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | ✅ Done |
-
-### Learning Path Docs (TASK-098) — ✅ COMPLETE
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-098** | Beginner learning plan + guides | DOCS | ✅ Done |
-
 ### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |
@@ -139,12 +103,17 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 | ID | Task | Agent | Est. | Priority |
 |----|------|-------|------|----------|
+| **TASK-077** | External user CLI test | CLIENT | 1 hr | 🔴 Critical |
+| **TASK-078** | Seismic detailing validation | TESTER | 45 min | 🟡 Medium |
+| **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium |
+| **TASK-083** | DXF deliverable layout polish | DEV | 2 hrs | 🟡 Medium |
+| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | 2 hrs | 🟡 Medium |
 
 **v1.0 Beta Gates (from pre-release-checklist):**
 - [x] 5 real beam validations documented
 - [ ] One external engineer tries CLI cold
 - [ ] All tests pass (currently: 1730 passed, 95 skipped)
-- [x] VBA parity verified
+- [ ] VBA parity verified
 
 ---
 

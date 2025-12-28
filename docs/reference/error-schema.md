@@ -84,6 +84,13 @@ This document defines the standard error schema for all structural_lib errors. T
 | `E_INPUT_007` | `Vu` | `Vu must be >= 0` | Check shear input sign. |
 | `E_INPUT_008` | `asv` | `asv must be > 0` | Provide stirrup area. |
 | `E_INPUT_009` | `pt` | `pt must be >= 0` | Check tension steel percentage. |
+| `E_INPUT_010` | `d_dash` | `d_dash must be > 0` | Check compression steel cover input. |
+| `E_INPUT_011` | `min_long_bar_dia` | `min_long_bar_dia must be > 0` | Provide smallest longitudinal bar diameter. |
+| `E_INPUT_012` | `bw` | `bw must be > 0` | Check web width input. |
+| `E_INPUT_013` | `bf` | `bf must be > 0` | Check flange width input. |
+| `E_INPUT_014` | `Df` | `Df must be > 0` | Check flange thickness input. |
+| `E_INPUT_015` | `bf` | `bf must be >= bw` | Ensure flange width is not smaller than web width. |
+| `E_INPUT_016` | `Df` | `Df must be < d` | Ensure flange thickness is less than effective depth. |
 
 #### Flexure (`E_FLEXURE_`)
 
@@ -92,7 +99,7 @@ This document defines the standard error schema for all structural_lib errors. T
 | `E_FLEXURE_001` | `Mu` | `Mu exceeds Mu_lim` | Use doubly reinforced or increase depth. | Cl. 38.1 |
 | `E_FLEXURE_002` | `Ast` | `Ast < Ast_min` | Increase steel to meet minimum. | Cl. 26.5.1.1 |
 | `E_FLEXURE_003` | `Ast` | `Ast > Ast_max` | Reduce steel or increase section. | Cl. 26.5.1.1 |
-| `E_FLEXURE_004` | `d'` | `d' too large for doubly reinforced` | Reduce compression steel cover. | — |
+| `E_FLEXURE_004` | `d_dash` | `d' too large for doubly reinforced` | Reduce compression steel cover. | — |
 
 #### Shear (`E_SHEAR_`)
 
@@ -105,8 +112,9 @@ This document defines the standard error schema for all structural_lib errors. T
 
 | Code | Field | Message | Hint | Clause |
 |------|-------|---------|------|--------|
-| `E_DUCTILE_001` | `pt` | `pt exceeds pt_max for ductile` | Reduce tension steel. | IS 13920 Cl. 6.2.2 |
-| `E_DUCTILE_002` | `stirrup_spacing` | `Stirrup spacing exceeds ductile limit` | Use closer spacing in plastic hinge. | IS 13920 Cl. 6.3.5 |
+| `E_DUCTILE_001` | `b` | `Width < 200 mm` | Increase beam width to ≥ 200 mm. | IS 13920 Cl. 6.1.1 |
+| `E_DUCTILE_002` | `b/D` | `Width/Depth ratio < 0.3` | Increase width or reduce depth. | IS 13920 Cl. 6.1.2 |
+| `E_DUCTILE_003` | `D` | `Invalid depth` | Depth must be > 0. | IS 13920 Cl. 6.1 |
 
 #### Serviceability (`E_SERVICE_`)
 

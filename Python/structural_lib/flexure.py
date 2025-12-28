@@ -13,9 +13,16 @@ from .errors import (
     E_INPUT_003a,
     E_INPUT_004,
     E_INPUT_005,
+    E_INPUT_010,
+    E_INPUT_012,
+    E_INPUT_013,
+    E_INPUT_014,
+    E_INPUT_015,
+    E_INPUT_016,
     E_FLEXURE_001,
     E_FLEXURE_002,
     E_FLEXURE_003,
+    E_FLEXURE_004,
 )
 
 
@@ -199,7 +206,17 @@ def design_doubly_reinforced(
     Design a beam that can be singly or doubly reinforced.
     If Mu > Mu_lim, calculates Asc and additional Ast.
     """
-    if b <= 0 or d <= 0 or d_total <= 0:
+    input_errors = []
+    if b <= 0:
+        input_errors.append(E_INPUT_001)
+    if d <= 0:
+        input_errors.append(E_INPUT_002)
+    if d_total <= 0:
+        input_errors.append(E_INPUT_003a)
+
+    if input_errors:
+        failed_fields = [e.field for e in input_errors if e.field]
+        error_message = f"Invalid input: {', '.join(failed_fields)} must be > 0."
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -208,7 +225,8 @@ def design_doubly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: b, d, and d_total must be > 0.",
+            error_message=error_message,
+            errors=input_errors,
         )
 
     if d_total <= d:
@@ -221,9 +239,16 @@ def design_doubly_reinforced(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: d_total must be > d.",
+            errors=[E_INPUT_003],
         )
 
-    if fck <= 0 or fy <= 0:
+    material_errors = []
+    if fck <= 0:
+        material_errors.append(E_INPUT_004)
+    if fy <= 0:
+        material_errors.append(E_INPUT_005)
+
+    if material_errors:
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -233,6 +258,7 @@ def design_doubly_reinforced(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: fck and fy must be > 0.",
+            errors=material_errors,
         )
 
     if d_dash <= 0:
@@ -245,6 +271,7 @@ def design_doubly_reinforced(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: d' must be > 0.",
+            errors=[E_INPUT_010],
         )
 
     mu_lim = calculate_mu_lim(b, d, fck, fy)
@@ -275,6 +302,7 @@ def design_doubly_reinforced(
             xu_max=xu_max,
             is_safe=False,
             error_message="Invalid section geometry for doubly reinforced design (d' too large or fsc too low).",
+            errors=[E_FLEXURE_004],
         )
 
     # 2. Calculate Strain in Compression Steel
@@ -301,6 +329,7 @@ def design_doubly_reinforced(
             xu_max=xu_max,
             is_safe=False,
             error_message="Invalid section geometry for doubly reinforced design (d' too large or fsc too low).",
+            errors=[E_FLEXURE_004],
         )
 
     asc = mu2_nmm / denom
@@ -319,15 +348,19 @@ def design_doubly_reinforced(
     ast_max = 0.04 * b * d_total
     is_safe = True
     error_msg = ""
+    design_errors = []
 
     if ast_total > ast_max:
         is_safe = False
         error_msg = "Total Ast exceeds maximum limit (4% bD)."
+        design_errors.append(E_FLEXURE_003)
 
     # Note: We should also check Asc max limit (4% bD), but usually Ast controls.
     if asc > ast_max:
         is_safe = False
         error_msg += " Asc exceeds maximum limit."
+        if not any(err.code == E_FLEXURE_003.code for err in design_errors):
+            design_errors.append(E_FLEXURE_003)
 
     # Calculate Pt
     pt_provided = (ast_total * 100.0) / (b * d)
@@ -342,6 +375,7 @@ def design_doubly_reinforced(
         is_safe=is_safe,
         asc_required=asc,
         error_message=error_msg,
+        errors=design_errors,
     )
 
 
@@ -394,7 +428,21 @@ def design_flanged_beam(
     2. Neutral axis in web (Singly Reinforced T-Beam)
     3. Doubly Reinforced T-Beam (if Mu > Mu_lim_T)
     """
-    if bw <= 0 or bf <= 0 or d <= 0 or Df <= 0 or d_total <= 0:
+    input_errors = []
+    if bw <= 0:
+        input_errors.append(E_INPUT_012)
+    if bf <= 0:
+        input_errors.append(E_INPUT_013)
+    if d <= 0:
+        input_errors.append(E_INPUT_002)
+    if Df <= 0:
+        input_errors.append(E_INPUT_014)
+    if d_total <= 0:
+        input_errors.append(E_INPUT_003a)
+
+    if input_errors:
+        failed_fields = [e.field for e in input_errors if e.field]
+        error_message = f"Invalid input: {', '.join(failed_fields)} must be > 0."
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -403,7 +451,8 @@ def design_flanged_beam(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: bw, bf, d, Df, and d_total must be > 0.",
+            error_message=error_message,
+            errors=input_errors,
         )
 
     if bf < bw:
@@ -416,6 +465,7 @@ def design_flanged_beam(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: bf must be >= bw.",
+            errors=[E_INPUT_015],
         )
 
     if d_total <= d:
@@ -428,6 +478,7 @@ def design_flanged_beam(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: d_total must be > d.",
+            errors=[E_INPUT_003],
         )
 
     if Df >= d:
@@ -440,9 +491,16 @@ def design_flanged_beam(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: Df must be < d.",
+            errors=[E_INPUT_016],
         )
 
-    if fck <= 0 or fy <= 0:
+    material_errors = []
+    if fck <= 0:
+        material_errors.append(E_INPUT_004)
+    if fy <= 0:
+        material_errors.append(E_INPUT_005)
+
+    if material_errors:
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -452,6 +510,7 @@ def design_flanged_beam(
             xu_max=0.0,
             is_safe=False,
             error_message="Invalid input: fck and fy must be > 0.",
+            errors=material_errors,
         )
 
     mu_abs = abs(mu_knm)
@@ -510,17 +569,22 @@ def design_flanged_beam(
         ast_max = 0.04 * bw * d_total
         is_safe = web_result.is_safe
         error_msg = web_result.error_message
+        design_errors = list(web_result.errors)
         if total_ast > ast_max:
             is_safe = False
             error_msg = (
                 "Total Ast exceeds maximum limit (4% bw*d_total) for combined T-beam."
             )
+            if not any(err.code == E_FLEXURE_003.code for err in design_errors):
+                design_errors.append(E_FLEXURE_003)
         if web_result.asc_required > ast_max:
             is_safe = False
             if error_msg:
                 error_msg = f"{error_msg} Asc exceeds maximum limit (4% bw*d_total)."
             else:
                 error_msg = "Asc exceeds maximum limit (4% bw*d_total)."
+            if not any(err.code == E_FLEXURE_003.code for err in design_errors):
+                design_errors.append(E_FLEXURE_003)
 
         return FlexureResult(
             mu_lim=mu_lim_t,
@@ -532,6 +596,7 @@ def design_flanged_beam(
             is_safe=is_safe,
             asc_required=web_result.asc_required,
             error_message=error_msg,
+            errors=design_errors,
         )
 
     # 3. Singly Reinforced T-Beam (Df < xu <= xu_max)
@@ -594,9 +659,11 @@ def design_flanged_beam(
     ast_min = 0.85 * bw * d / fy
 
     error_msg = ""
+    design_errors = []
     if ast_required < ast_min:
         ast_final = ast_min
         error_msg = "Minimum steel provided."
+        design_errors.append(E_FLEXURE_002)
     else:
         ast_final = ast_required
 
@@ -610,6 +677,8 @@ def design_flanged_beam(
     if ast_final > ast_max:
         is_safe = False
         error_msg = "Ast exceeds maximum limit."
+        if not any(err.code == E_FLEXURE_003.code for err in design_errors):
+            design_errors.append(E_FLEXURE_003)
 
     pt_provided = (ast_final * 100.0) / (bw * d)
 
@@ -623,4 +692,5 @@ def design_flanged_beam(
         is_safe=is_safe,
         asc_required=0.0,
         error_message=error_msg,
+        errors=design_errors,
     )

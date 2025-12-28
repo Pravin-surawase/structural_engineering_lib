@@ -14,6 +14,13 @@ from structural_lib.errors import (
     DesignError,
     Severity,
     E_INPUT_001,
+    E_INPUT_010,
+    E_INPUT_011,
+    E_INPUT_012,
+    E_INPUT_013,
+    E_INPUT_014,
+    E_INPUT_015,
+    E_INPUT_016,
     E_FLEXURE_001,
     E_SHEAR_001,
     E_DUCTILE_001,
@@ -126,6 +133,41 @@ class TestPredefinedErrors:
         assert E_INPUT_001.severity == Severity.ERROR
         assert E_INPUT_001.field == "b"
         assert E_INPUT_001.hint is not None
+
+    def test_input_error_010(self):
+        assert E_INPUT_010.code == "E_INPUT_010"
+        assert E_INPUT_010.severity == Severity.ERROR
+        assert E_INPUT_010.field == "d_dash"
+
+    def test_input_error_011(self):
+        assert E_INPUT_011.code == "E_INPUT_011"
+        assert E_INPUT_011.severity == Severity.ERROR
+        assert E_INPUT_011.field == "min_long_bar_dia"
+
+    def test_input_error_012(self):
+        assert E_INPUT_012.code == "E_INPUT_012"
+        assert E_INPUT_012.severity == Severity.ERROR
+        assert E_INPUT_012.field == "bw"
+
+    def test_input_error_013(self):
+        assert E_INPUT_013.code == "E_INPUT_013"
+        assert E_INPUT_013.severity == Severity.ERROR
+        assert E_INPUT_013.field == "bf"
+
+    def test_input_error_014(self):
+        assert E_INPUT_014.code == "E_INPUT_014"
+        assert E_INPUT_014.severity == Severity.ERROR
+        assert E_INPUT_014.field == "Df"
+
+    def test_input_error_015(self):
+        assert E_INPUT_015.code == "E_INPUT_015"
+        assert E_INPUT_015.severity == Severity.ERROR
+        assert E_INPUT_015.field == "bf"
+
+    def test_input_error_016(self):
+        assert E_INPUT_016.code == "E_INPUT_016"
+        assert E_INPUT_016.severity == Severity.ERROR
+        assert E_INPUT_016.field == "Df"
 
     def test_flexure_error_001(self):
         assert E_FLEXURE_001.code == "E_FLEXURE_001"
