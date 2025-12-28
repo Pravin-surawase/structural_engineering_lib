@@ -502,6 +502,19 @@ All 7 CI checks passed including the new doc drift check.
 
 ---
 
+### Error Message Review — 2025-12-28
+
+**Changes:**
+- Added a small CLI error helper for consistent output + hints.
+- Improved DXF dependency guidance (`pip install "structural-lib-is456[dxf]"`).
+- Added actionable hints for missing DXF output paths and job output directories.
+- Clarified crack-width params errors with an example JSON object.
+
+**Tests:**
+- `python3 -m pytest tests/test_cli.py -q` (from `Python/`)
+
+---
+
 ### Critical Tests & Governance Documentation — 2025-12-28
 
 **Focus:** Add comprehensive IS 456 clause-specific tests and formalize agent workflow documentation.

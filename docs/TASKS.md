@@ -64,6 +64,12 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 |----|------|-------|--------|
 | **TASK-097** | Add local CI parity script (`scripts/ci_local.sh`) | DEVOPS | ✅ Done |
 
+### Error Message Review (TASK-080) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-080** | Error message review | SUPPORT | ✅ Done |
+
 ### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |
@@ -100,7 +106,6 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 | **TASK-077** | External user CLI test | CLIENT | 1 hr | 🔴 Critical |
 | **TASK-078** | Seismic detailing validation | TESTER | 45 min | 🟡 Medium |
 | **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium |
-| **TASK-080** | Error message review | SUPPORT | 30 min | 🟢 Low |
 | **TASK-083** | DXF deliverable layout polish | DEV | 2 hrs | 🟡 Medium |
 | **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | 2 hrs | 🟡 Medium |
 

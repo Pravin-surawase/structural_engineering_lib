@@ -47,6 +47,12 @@ def _write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
             writer.writerow({k: _fmt_cell(row.get(k)) for k in fieldnames})
 
 
+def _print_error(message: str, hint: str | None = None) -> None:
+    print(f"Error: {message}", file=sys.stderr)
+    if hint:
+        print(f"Hint: {hint}", file=sys.stderr)
+
+
 def cmd_design(args: argparse.Namespace) -> int:
     """
     Run beam design from CSV/JSON input file.
@@ -57,7 +63,7 @@ def cmd_design(args: argparse.Namespace) -> int:
     input_path = Path(args.input)
 
     if not input_path.exists():
-        print(f"Error: Input file not found: {input_path}", file=sys.stderr)
+        _print_error(f"Input file not found: {input_path}")
         return 1
 
     try:
@@ -69,10 +75,10 @@ def cmd_design(args: argparse.Namespace) -> int:
         elif input_path.suffix.lower() == ".json":
             beams = excel_integration.load_beam_data_from_json(str(input_path))
         else:
-            print(
-                f"Error: Unsupported file format: {input_path.suffix}", file=sys.stderr
+            _print_error(
+                f"Unsupported file format: {input_path.suffix}",
+                hint="Supported formats: .csv, .json",
             )
-            print("Supported formats: .csv, .json", file=sys.stderr)
             return 1
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
@@ -81,17 +87,14 @@ def cmd_design(args: argparse.Namespace) -> int:
         if args.crack_width_params:
             params_path = Path(args.crack_width_params)
             if not params_path.exists():
-                print(
-                    f"Error: crack width params file not found: {params_path}",
-                    file=sys.stderr,
-                )
+                _print_error(f"Crack width params file not found: {params_path}")
                 return 1
             with params_path.open("r", encoding="utf-8") as f:
                 crack_width_params = json.load(f)
             if not isinstance(crack_width_params, dict):
-                print(
-                    "Error: crack width params must be a JSON object.",
-                    file=sys.stderr,
+                _print_error(
+                    "Crack width params must be a JSON object.",
+                    hint='Example: {"acr_mm": 120, "cmin_mm": 25, "h_mm": 500}',
                 )
                 return 1
             # Warn if applying global params to multiple beams
@@ -223,10 +226,10 @@ def cmd_design(args: argparse.Namespace) -> int:
         return 0
 
     except beam_pipeline.UnitsValidationError as e:
-        print(f"Units error: {e}", file=sys.stderr)
+        _print_error(f"Units error: {e}")
         return 1
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        _print_error(str(e))
         import traceback
 
         traceback.print_exc(file=sys.stderr)
@@ -297,7 +300,7 @@ def cmd_bbs(args: argparse.Namespace) -> int:
     input_path = Path(args.input)
 
     if not input_path.exists():
-        print(f"Error: Input file not found: {input_path}", file=sys.stderr)
+        _print_error(f"Input file not found: {input_path}")
         return 1
 
     try:
@@ -309,7 +312,7 @@ def cmd_bbs(args: argparse.Namespace) -> int:
 
         beams = data.get("beams", [])
         if not beams:
-            print("Error: No beams found in input file", file=sys.stderr)
+            _print_error("No beams found in input file")
             return 1
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
@@ -429,7 +432,7 @@ def cmd_bbs(args: argparse.Namespace) -> int:
         return 0
 
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        _print_error(str(e))
         import traceback
 
         traceback.print_exc(file=sys.stderr)
@@ -446,19 +449,23 @@ def cmd_dxf(args: argparse.Namespace) -> int:
     input_path = Path(args.input)
 
     if not input_path.exists():
-        print(f"Error: Input file not found: {input_path}", file=sys.stderr)
+        _print_error(f"Input file not found: {input_path}")
         return 1
 
     # Check if dxf_export module is available
     if dxf_export is None:
-        print("Error: dxf_export module not available", file=sys.stderr)
-        print("Install with: pip install ezdxf", file=sys.stderr)
+        _print_error(
+            "DXF export module not available.",
+            hint='Install with: pip install "structural-lib-is456[dxf]"',
+        )
         return 1
 
     # Check if ezdxf is available
     if not dxf_export.EZDXF_AVAILABLE:
-        print("Error: ezdxf library not installed", file=sys.stderr)
-        print("Install with: pip install ezdxf", file=sys.stderr)
+        _print_error(
+            "ezdxf library not installed.",
+            hint='Install with: pip install "structural-lib-is456[dxf]"',
+        )
         return 1
 
     try:
@@ -470,7 +477,7 @@ def cmd_dxf(args: argparse.Namespace) -> int:
 
         beams = data.get("beams", [])
         if not beams:
-            print("Error: No beams found in input file", file=sys.stderr)
+            _print_error("No beams found in input file")
             return 1
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
@@ -521,9 +528,9 @@ def cmd_dxf(args: argparse.Namespace) -> int:
 
         # Generate DXF
         if not args.output:
-            print(
-                "Error: Output file path is required for DXF generation",
-                file=sys.stderr,
+            _print_error(
+                "Output file path is required for DXF generation.",
+                hint="Use -o <drawings.dxf>",
             )
             return 1
 
@@ -562,7 +569,7 @@ def cmd_dxf(args: argparse.Namespace) -> int:
         return 0
 
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        _print_error(str(e))
         import traceback
 
         traceback.print_exc(file=sys.stderr)
@@ -579,11 +586,14 @@ def cmd_job(args: argparse.Namespace) -> int:
     input_path = Path(args.input)
 
     if not input_path.exists():
-        print(f"Error: Input file not found: {input_path}", file=sys.stderr)
+        _print_error(f"Input file not found: {input_path}")
         return 1
 
     if not args.output:
-        print("Error: Output directory is required for job processing", file=sys.stderr)
+        _print_error(
+            "Output directory is required for job processing.",
+            hint="Use -o <output_dir>",
+        )
         return 1
 
     try:
@@ -596,7 +606,7 @@ def cmd_job(args: argparse.Namespace) -> int:
         return 0
 
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        _print_error(str(e))
         import traceback
 
         traceback.print_exc(file=sys.stderr)
@@ -623,7 +633,7 @@ def _build_parser() -> argparse.ArgumentParser:
         description="""
         Run IS456 beam design from CSV or JSON input and emit results JSON
         (schema_version=1, units=IS456).
-        
+
         Examples:
           python -m structural_lib design input.csv -o results.json
           python -m structural_lib design beams.json -o design_output.json
@@ -669,7 +679,7 @@ def _build_parser() -> argparse.ArgumentParser:
         description="""
         Generate bar bending schedule (BBS) from design results JSON
         produced by the design pipeline.
-        
+
         Examples:
           python -m structural_lib bbs results.json -o bbs.csv
           python -m structural_lib bbs results.json -o bbs.json
@@ -692,7 +702,7 @@ def _build_parser() -> argparse.ArgumentParser:
         description="""
         Generate DXF reinforcement drawings from design results JSON.
         Requires ezdxf library: pip install ezdxf
-        
+
         Examples:
           python -m structural_lib dxf results.json -o drawings.dxf
           python -m structural_lib dxf design_output.json -o beam_details.dxf
@@ -738,7 +748,7 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Run complete job from JSON specification",
         description="""
         Run a complete job from JSON specification and write outputs to a folder.
-        
+
         Examples:
           python -m structural_lib job job.json -o output/
           python -m structural_lib job project_spec.json -o results/
