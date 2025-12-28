@@ -134,5 +134,6 @@ You should get a number around 196.5 (kN-m).
 - Excel tutorial: `docs/getting-started/excel-tutorial.md`
 - CLI reference: `docs/cookbook/cli-reference.md`
 - API reference: `docs/reference/api.md`
+- Learning path: `docs/learning/README.md`
 
 Document Version: 0.10.3 | Last Updated: 2025-12-28

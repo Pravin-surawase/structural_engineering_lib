@@ -100,6 +100,12 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 |----|------|-------|--------|
 | **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | ✅ Done |
 
+### Learning Path Docs (TASK-098) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-098** | Beginner learning plan + guides | DOCS | ✅ Done |
+
 ### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |

@@ -33,6 +33,17 @@ For VS Code AI-agent work, start with:
 
 ---
 
+## Learning Path (beginner-first)
+
+If you want to understand the concepts and the code step by step, start here:
+- [learning/README.md](learning/README.md)
+- [learning/learning-plan.md](learning/learning-plan.md)
+- [learning/concepts-map.md](learning/concepts-map.md)
+- [learning/glossary.md](learning/glossary.md)
+- [learning/exercises.md](learning/exercises.md)
+
+---
+
 ## For Contributors / Maintainers
 
 - Architecture & layering: [architecture/project-overview.md](architecture/project-overview.md)

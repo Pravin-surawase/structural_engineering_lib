@@ -577,6 +577,16 @@ python3 -m pytest tests/test_ductile.py tests/test_critical_is456.py -q
 - Not run (matplotlib not installed locally).
 
 ---
+### Learning Path Docs (TASK-098) — 2025-12-28
+
+**Changes:**
+- Added a beginner learning hub with a phased plan, concepts map, glossary, exercises, and guides.
+- Linked the learning path from `docs/README.md` and the Beginner's Guide.
+
+**Audience:**
+- Structural engineer with 2 years experience and basic to medium Python/VBA.
+
+---
 ### Critical Tests & Governance Documentation — 2025-12-28
 
 **Focus:** Add comprehensive IS 456 clause-specific tests and formalize agent workflow documentation.
