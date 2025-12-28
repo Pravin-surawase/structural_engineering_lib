@@ -31,6 +31,25 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ---
 
+## Recently Completed (v0.10.6)
+
+### W03-W05: Structured Error Schema Sprint — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **W03** | Design error schema (docs/reference/error-schema.md) | DOCS | ✅ Done |
+| **W04** | Implement DesignError dataclass + integrate in core | DEV | ✅ Done |
+| **W05** | Structured validation for doubly/flanged beams | DEV | ✅ Done |
+
+**Deliverables:**
+- `errors.py` module with frozen `DesignError` dataclass
+- 16+ error codes: `E_INPUT_*`, `E_FLEXURE_*`, `E_SHEAR_*`, `E_DUCTILE_*`
+- Structured errors in all core design functions
+- 38 new tests for error schema
+- Full error catalog in docs/reference/error-schema.md
+
+---
+
 ## Recently Completed (v0.9.7-dev)
 
 ### Level B Serviceability + CLI/AI Discoverability (PR #62) — ✅ COMPLETE
