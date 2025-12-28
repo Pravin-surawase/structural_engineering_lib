@@ -278,6 +278,7 @@ python -m structural_lib dxf all_beams.json -o drawings.dxf
 - Cross-section view with bars
 - Longitudinal elevation with stirrups
 - Bar callouts and dimensions
+- Optional deliverable border + title block (includes version line)
 - Multi-beam grid layout (when multiple beams)
 - Optional deliverable border + title block (use `--title-block`)
 - DXF R2010 format (AC1024, compatible with most CAD software)

@@ -533,6 +533,40 @@ python3 -m structural_lib job examples/sample_job_is456.json -o job_out
 
 ---
 
+### Seismic Detailing Validation (TASK-078) — 2025-12-28
+
+**Tests:**
+```bash
+python3 -m pytest tests/test_ductile.py tests/test_critical_is456.py -q
+```
+
+**Result:**
+- Ductile detailing and seismic lap factor checks passed.
+
+---
+
+### VBA Parity Spot-Check (TASK-079) — 2025-12-28
+
+**Checks:**
+- Compared VBA parity expected values in `VBA/Tests/Test_Parity.bas` against `Python/tests/data/parity_test_vectors.json`.
+- Verified Python calculation for DET-002 development length.
+
+**Findings:**
+- DET-002 expected `ld_mm` was outdated (862 vs 906). Updated VBA expected value to 906 to match parity vectors.
+
+---
+
+### DXF Deliverable Layout Polish (TASK-083) — 2025-12-28
+
+**Changes:**
+- Title block now includes a version line and supports optional `project`, `date`, and `drawn_by` fields.
+- Title block text spacing scales with block height to avoid overflow.
+- CLI reference updated to note the version line.
+
+**Tests:**
+- `python3 -m pytest tests/test_dxf_export_edges.py -q`
+
+---
 ### Critical Tests & Governance Documentation — 2025-12-28
 
 **Focus:** Add comprehensive IS 456 clause-specific tests and formalize agent workflow documentation.
