@@ -58,6 +58,18 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 - `.pre-commit-config.yaml` — Enhanced with ruff, doc check hooks
 - CI doc drift check step
 
+### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-090** | Add branch coverage gate + pytest timeout in CI | DEVOPS | ✅ Done |
+| **TASK-091** | Add `CODEOWNERS` | DEVOPS | ✅ Done |
+| **TASK-092** | Complete Shear section in `docs/reference/api.md` | DOCS | ✅ Done |
+| **TASK-093** | Document golden/parity vector sources | DOCS | ✅ Done |
+| **TASK-094** | Add explicit `__all__` in `api.py` | DEV | ✅ Done |
+| **TASK-095** | Remove duplicate doc drift check in CI | DEVOPS | ✅ Done |
+| **TASK-096** | Add Mu_lim clause comment + expand `design_shear` docstring | DEV | ✅ Done |
+
 ---
 
 ## Up Next (v0.9.7 Release Sprint)

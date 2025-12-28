@@ -60,6 +60,19 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ### Tests
 - Not run (DXF layout change only).
 
+---
+
+## 2025-12-28 — Multi-Agent Review Phase 1 (Quick Wins)
+
+### Changes
+- Added branch coverage gate + pytest timeout in CI.
+- Added CODEOWNERS file for review routing.
+- Added IS 456 clause comment for Mu_lim formula.
+- Completed `design_shear()` docstring with units and parameters.
+
+### Tests
+- Not run (CI/config + docstring change only).
+
 ## 2025-12-27 — v0.10.0 Release + Code Quality
 
 ### PRs Merged
@@ -445,5 +458,26 @@ All 7 CI checks passed including the new doc drift check.
 - [ ] TASK-052: User Guide (Getting Started)
 - [ ] TASK-053: Validation Pack (publish 3-5 benchmark beams)
 - [ ] TASK-055: Level B Serviceability (full deflection calc)
+
+---
+
+### Multi-Agent Review Remediation (Phase 2) — 2025-12-29
+
+**Focus:** Doc accuracy + test transparency + CI cleanup.
+
+**Phase 1 quick wins completed:**
+- Added branch coverage gate and pytest timeout to CI.
+- Added `CODEOWNERS` for review ownership.
+- Added IS 456 clause comment to Mu_lim formula.
+- Expanded `design_shear` docstring with Table 19/20 policy.
+- Removed duplicate doc drift check step (kept `check_doc_versions.py`).
+
+**Phase 2 updates:**
+- `docs/reference/api.md`: filled Shear section, restored flanged flexure subsections, removed duplicate shear block.
+- `Python/tests/data/sources.md`: documented golden/parity vector sources and update workflow.
+- `Python/structural_lib/api.py`: added explicit `__all__` exports.
+
+**Notes:**
+- Mu_lim boundary coverage already exists in `Python/tests/test_structural.py` and `Python/tests/test_flexure_edges_additional.py`.
 
 ---

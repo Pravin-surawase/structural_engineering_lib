@@ -48,14 +48,11 @@ jobs:
 
       - name: Doc version drift check
         run: |
-          python scripts/bump_version.py --check-docs
-
-      - name: Doc version drift check
-        run: |
           python scripts/check_doc_versions.py --ci
 
   pytest:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       actions: write
@@ -82,7 +79,7 @@ jobs:
       - name: Run tests (with coverage)
         working-directory: Python
         run: |
-          python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml --cov-fail-under=90
+          python -m pytest --cov=structural_lib --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=85
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v6

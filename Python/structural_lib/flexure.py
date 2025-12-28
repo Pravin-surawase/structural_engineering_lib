@@ -17,7 +17,7 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
 
     xu_max_d = materials.get_xu_max_d(fy)
 
-    # Mu_lim = 0.36 * (xu_max/d) * (1 - 0.42 * (xu_max/d)) * b * d^2 * fck
+    # IS 456 Cl. 38.1: Mu_lim = 0.36 * (xu_max/d) * (1 - 0.42 * (xu_max/d)) * b * d^2 * fck
     k = 0.36 * xu_max_d * (1 - 0.42 * xu_max_d)
 
     mu_lim_nmm = k * fck * b * d * d
