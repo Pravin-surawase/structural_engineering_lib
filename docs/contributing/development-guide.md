@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — Development Guide
 
-**Document Version:** 0.10.3  
-**Last Updated:** 2025-12-28  
+**Document Version:** 0.10.3
+**Last Updated:** 2025-12-28
 **Audience:** Contributors, maintainers, and developers extending the library
 
 ---
@@ -253,23 +253,23 @@ Public Function FunctionName( _
     param1 As Double, _
     param2 As Double _
 ) As Double
-    
+
     ' --- Input validation ---
     If param1 <= 0 Then
         FunctionName = -1
         Exit Function
     End If
-    
+
     ' --- Unit conversion (if needed) ---
     Dim param1_internal As Double
     param1_internal = param1 * kNm_TO_Nmm
-    
+
     ' --- Core calculation ---
     ' [Formula implementation with comments]
-    
+
     ' --- Return result ---
     FunctionName = result
-    
+
 End Function
 ```
 
@@ -364,24 +364,24 @@ class FlexureResult:
 def tau_c_is456(fck: float, pt_percent: float) -> float:
     """
     Get design shear strength of concrete from IS 456 Table 19.
-    
+
     Uses linear interpolation for intermediate pt values.
     Clamps pt to valid range [0.15%, 3.0%].
-    
+
     Args:
         fck: Characteristic compressive strength of concrete (N/mm²).
             Valid values: 15, 20, 25, 30, 35, 40.
         pt_percent: Percentage of tension reinforcement (%).
-    
+
     Returns:
         Design shear strength τc (N/mm²).
-    
+
     Raises:
         ValueError: If fck is not a valid concrete grade.
-    
+
     Reference:
         IS 456:2000, Table 19
-    
+
     Example:
         >>> tau_c_is456(20, 1.0)
         0.62
@@ -517,17 +517,17 @@ Public Function Ast_singly_IS456( _
     fck As Double, _
     fy As Double _
 ) As Double
-    
+
     ' --- Convert to internal units ---
     Dim Mu_Nmm As Double
     Mu_Nmm = Mu_kNm * kNm_TO_Nmm   ' Convert kN·m to N·mm
-    
+
     ' --- All calculations in N, mm ---
     ' ... formula uses Mu_Nmm, b_mm, d_mm ...
-    
+
     ' --- Return in mm² (no conversion needed) ---
     Ast_singly_IS456 = Ast_mm2
-    
+
 End Function
 ```
 
@@ -573,27 +573,27 @@ Private Function ValidateGeometry( _
     D_mm As Double _
 ) As String
     ' Returns empty string if valid, error message if invalid
-    
+
     If b_mm <= 0 Then
         ValidateGeometry = "Width b must be positive"
         Exit Function
     End If
-    
+
     If d_mm <= 0 Then
         ValidateGeometry = "Effective depth d must be positive"
         Exit Function
     End If
-    
+
     If D_mm <= 0 Then
         ValidateGeometry = "Overall depth D must be positive"
         Exit Function
     End If
-    
+
     If d_mm >= D_mm Then
         ValidateGeometry = "Effective depth d must be less than overall depth D"
         Exit Function
     End If
-    
+
     ValidateGeometry = ""  ' Valid
 End Function
 ```
@@ -666,12 +666,12 @@ For simple numeric functions, return `-1` on error:
 ```vba
 Public Function Ast_singly_IS456(...) As Double
     ' Returns -1 if Mu exceeds limiting moment
-    
+
     If Mu_kNm > Mu_lim Then
         Ast_singly_IS456 = -1
         Exit Function
     End If
-    
+
     ' ... calculation ...
 End Function
 ```
@@ -683,7 +683,7 @@ For main API functions, populate the result type:
 ```vba
 Public Function IS456_FlexureDesign(...) As FlexureResult
     Dim result As FlexureResult
-    
+
     ' Validate inputs
     Dim errMsg As String
     errMsg = ValidateGeometry(b_mm, d_mm, D_mm)
@@ -693,9 +693,9 @@ Public Function IS456_FlexureDesign(...) As FlexureResult
         IS456_FlexureDesign = result
         Exit Function
     End If
-    
+
     ' ... design calculation ...
-    
+
     result.DesignStatus = "OK"
     result.ErrorMessage = ""
     IS456_FlexureDesign = result
@@ -840,14 +840,14 @@ Public Sub Test_Ast_singly_nominal()
     Dim Ast As Double
     Dim expected As Double
     Dim tolerance As Double
-    
+
     ' Test case: SP:16 Example
     ' b=300, d=450, fck=20, fy=415, Mu=150 kN·m
     expected = 1050  ' mm² (approximate)
     tolerance = 50   ' Allow ±50 mm² for rounding
-    
+
     Ast = Ast_singly_IS456(150, 300, 450, 20, 415)
-    
+
     Debug.Assert Abs(Ast - expected) < tolerance
     Debug.Print "Test_Ast_singly_nominal: PASSED (Ast=" & Ast & ")"
 End Sub
@@ -948,7 +948,28 @@ pytest tests/ -v
 | `feature/xxx` | Individual features |
 | `fix/xxx` | Bug fixes |
 
-### 11.2 Commit Messages
+### 11.2 Pre-Commit Hooks (Required)
+
+This project uses pre-commit hooks to enforce formatting and linting **before** commits. This prevents CI failures.
+
+**First-time setup:**
+```bash
+cd structural_engineering_lib
+pip install pre-commit   # or: pip install -e ".[dev]"
+pre-commit install
+```
+
+**What happens on `git commit`:**
+1. **black** — Auto-formats Python code
+2. **ruff** — Checks for lint errors (unused imports, variables, etc.)
+3. If issues found, commit is blocked and fixes are shown
+
+**Run manually on all files:**
+```bash
+pre-commit run --all-files
+```
+
+### 11.3 Commit Messages
 
 Format: `type(scope): description`
 
@@ -962,7 +983,7 @@ refactor(utilities): extract validation helpers
 
 Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`
 
-### 11.3 VBA Files and Git
+### 11.4 VBA Files and Git
 
 VBA `.bas` files are plain text and work well with Git. Export modules regularly:
 
@@ -972,7 +993,45 @@ VBA `.bas` files are plain text and work well with Git. Export modules regularly
 
 Consider using a tool like [vba-blocks](https://github.com/vba-blocks/vba-blocks) or [Rubberduck](https://rubberduckvba.com/) for automated export.
 
-### 11.4 Code Ownership and Reviews
+### 11.5 Pull Request and Merge Guidelines
+
+#### When to Create a PR
+- Create PRs for logical units of work (features, bug fixes, doc updates)
+- Multiple related commits can go in one PR
+- Keep PRs focused — one concern per PR
+
+#### When to Merge PRs
+
+**DO merge after:**
+- Completing a feature or significant enhancement
+- Fixing a bug with tests
+- Adding meaningful test coverage (e.g., 10+ tests)
+- Documentation updates that complete a section
+- Release preparation
+
+**DON'T merge for:**
+- Single-line typo fixes (batch with other changes)
+- Formatting-only changes (these should be caught by pre-commit)
+- WIP or incomplete work
+- Every small incremental change
+
+**Batching guideline:** Accumulate small related changes into one PR rather than creating separate PRs for each tiny edit. Example:
+- ❌ PR #1: "fix typo in README", PR #2: "fix typo in API docs", PR #3: "fix typo in guide"
+- ✅ PR #1: "docs: fix typos across documentation"
+
+#### Merge Workflow
+```bash
+# 1. Create PR
+gh pr create --title "feat: add X" --body "..."
+
+# 2. WAIT for CI — don't try to merge immediately!
+gh pr checks <num> --watch
+
+# 3. Only merge AFTER all checks pass
+gh pr merge <num> --squash --delete-branch
+```
+
+### 11.6 Code Ownership and Reviews
 - Minimum 1 reviewer for core changes; 2 reviewers for releases or table/formula edits.
 - Merge criteria: tests pass, changelog updated for user-visible changes, docs updated (API/quick ref) when signatures or behavior change.
 - Record non-trivial decisions in an ADR (add `docs/adr/`) or log in `RESEARCH_AI_ENHANCEMENTS.md`.
@@ -1378,7 +1437,7 @@ SOME_CONSTANT: float = 1.5
 def function_name(param: float) -> float:
     """
     Brief description.
-    
+
     Reference: IS 456:2000, Clause X.X
     """
     pass
