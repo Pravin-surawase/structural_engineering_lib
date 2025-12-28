@@ -40,7 +40,7 @@ repos:
     hooks:
       - id: check-doc-versions
         name: Check doc version drift
-        entry: python scripts/check_doc_versions.py
+        entry: python3 scripts/check_doc_versions.py
         language: system
         pass_filenames: false
         always_run: true

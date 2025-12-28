@@ -1,6 +1,7 @@
 # Copilot Instructions — structural_engineering_lib
 
-> **FOR AI AGENTS:** This file is auto-loaded by GitHub Copilot/VS Code in every session.
+> **FOR AI AGENTS:** This file is loaded by GitHub Copilot/VS Code when the
+> `.github/copilot-instructions.md` convention is enabled in your environment.
 > These rules are MANDATORY. Following them prevents wasted time on CI failures,
 > merge conflicts, and repeated mistakes. Read carefully before any action.
 
@@ -42,11 +43,14 @@ IS 456 RC beam design library with **Python + VBA parity**.
 3. Run tests locally before pushing: `python -m pytest tests/test_<file>.py -v`
 
 ### PR and merge workflow:
-1. `git commit` — pre-commit hooks auto-format
+1. `git commit` — pre-commit hooks auto-format (may modify files; re-stage if needed)
 2. `git push -u origin <branch>`
 3. `gh pr create --title "..." --body "..."`
 4. **WAIT for CI:** `gh pr checks <num> --watch` — do NOT try to merge immediately
 5. Only after all checks pass: `gh pr merge <num> --squash --delete-branch`
+
+> **Note:** Merge authority depends on project governance. If branch protection
+> requires human review, stop at step 4 and notify the user.
 
 ### When to merge (batch small changes):
 - ✅ Merge after: completing features, meaningful test additions, doc section completions
@@ -140,3 +144,4 @@ When working on specific task types, apply these focuses:
 3. **Check command exit codes** — Before proceeding, verify command succeeded
 4. **One terminal command at a time** — Don't run parallel terminal commands
 5. **Verify before declaring success** — Run tests, check output, confirm behavior
+6. **Read this file first** — Before starting any session, review these rules completely
