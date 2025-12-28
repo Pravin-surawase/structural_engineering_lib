@@ -71,7 +71,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 |--------|--------|
 | **Determinism** | Same input → same output (JSON/CSV/DXF) across runs and machines |
 | **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
-| **Test coverage** | See CI for current totals and coverage |
+| **Test coverage** | 1900+ tests, 92% branch coverage (see CI for live status) |
 | **Clause traceability** | Core design formulas reference IS 456 clause/table |
 | **Verification pack** | Benchmark examples in [`Python/examples/`](Python/examples/) |
 
@@ -257,7 +257,7 @@ python3 -m structural_lib job job.json -o ./out_demo
 | Run tests | `cd Python && python3 -m pytest` | repo root |
 | Format check | `cd Python && python3 -m black --check .` | repo root |
 | Type check | `cd Python && python3 -m mypy` | repo root |
-| Pre-release gate (all checks + wheel import) | `Python/scripts/pre_release_check.sh` | repo root |
+| Local CI check (all checks + wheel import) | `./scripts/ci_local.sh` | repo root |
 
 ```bash
 # Install dev dependencies
@@ -309,6 +309,8 @@ python3 -m pip install -e ".[dxf]"
 | **v0.9.4** | Unified CLI, cutting-stock optimizer, VBA BBS/Compliance parity | ✅ Completed |
 | **v0.9.5** | PyPI publishing, docs restructure, release hardening | ✅ Completed |
 | **v0.9.6** | Verification pack, API docs UX, pre-release checklist | ✅ Completed |
+| **v0.10.0** | Level B serviceability (curvature-based deflection), CLI help | ✅ Completed |
+| **v0.10.1–0.10.3** | CLI serviceability flags, 45 critical IS 456 tests, governance docs | ✅ Completed |
 
 ## Directory Structure (current)
 
@@ -323,6 +325,7 @@ structural_engineering_lib/
 │   ├── examples/           ← Worked examples and sample data
 │   └── scripts/            ← Utility scripts (bump_version.py)
 ├── Excel/                  ← Excel workbooks (see Excel/README.md)
+├── scripts/                ← Release, version sync, and CI scripts
 ├── docs/
 │   ├── README.md           ← Docs index (start here)
 │   ├── reference/          ← API, formulas, troubleshooting
@@ -430,7 +433,7 @@ See [Python examples](Python/examples/) for complete workflows.
 
 | Platform | Command | Coverage |
 |----------|---------|----------|
-| Python | `python3 -m pytest Python/tests -q` | See CI for current totals and coverage |
+| Python | `python3 -m pytest Python/tests -q` | 1900+ tests, 92% branch coverage |
 | VBA | `Test_RunAll.RunAllVBATests` in Excel VBA Editor | 9 test suites |
 
 Run the full suite locally to verify:
