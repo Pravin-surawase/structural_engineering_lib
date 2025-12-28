@@ -1,7 +1,7 @@
 # Production Readiness Roadmap
 
-> **Current Status:** v0.10.3 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
-> 
+> **Current Status:** v0.10.4 — Strength + serviceability (Level A) + stable public entrypoints + deterministic job runner.
+>
 > **Production Readiness:** High (remaining gaps: optimizer + BBS/BOM + parity automation)
 
 **Canonical planning docs:**
@@ -29,7 +29,7 @@
 1. Simplified Method (Cl. 23.2.1) - Span/depth ratios
    - Basic values: Cantilever=7, Simply supported=20, Continuous=26
    - Modification factors for tension steel, compression steel, flanged beams
-   
+
 2. Detailed Method (Annex C) - Optional
    - Short-term deflection from Ieff
    - Long-term deflection (shrinkage + creep)
@@ -154,7 +154,7 @@ Step 4: Parity automation (TASK-039 / TASK-040)
 
 ### Strength Design ✅
 - [x] Flexure — Singly reinforced
-- [x] Flexure — Doubly reinforced  
+- [x] Flexure — Doubly reinforced
 - [x] Flexure — Flanged (T/L)
 - [x] Shear — Stirrup design
 - [x] Ductile — IS 13920 compliance

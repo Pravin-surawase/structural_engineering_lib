@@ -9,7 +9,7 @@ Option Explicit
 ' ==============================================================================
 
 Public Function Get_Library_Version() As String
-    Get_Library_Version = "0.10.3"
+    Get_Library_Version = "0.10.4"
 End Function
 
 '

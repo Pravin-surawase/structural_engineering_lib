@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.4] - 2025-12-28
+
+### Added
+- **Session Automation Scripts:**
+  - `scripts/start_session.py` — Run at session start (shows status, adds SESSION_LOG entry, lists active tasks)
+  - `scripts/end_session.py` — Pre-handoff checks (uncommitted files, doc freshness, log completeness)
+  - `scripts/check_handoff_ready.py` — Deep check of dates, test counts, version consistency
+- **Nightly QA Workflow:**
+  - `.github/workflows/nightly.yml` — Runs tests + full CLI smoke test (design → bbs → dxf → job)
+  - Uploads artifacts and creates GitHub issue on failure
+  - Scheduled for ~11:30pm IST daily
+- **New Backlog Tasks:**
+  - TASK-090: Publish JSON Schemas
+  - TASK-091: CLI console script alias
+  - TASK-092: Structured error payloads
+
+### Changed
+- **copilot-instructions.md:**
+  - Added "Session workflow" section with start/end script usage
+  - Consolidated handoff rules
+- **.gitignore:**
+  - Added `/docs/learning/` for private owner notes
+
 ## [0.10.3] - 2025-12-28
 
 ### Added
