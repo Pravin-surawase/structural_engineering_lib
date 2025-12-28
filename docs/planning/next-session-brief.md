@@ -2,21 +2,25 @@
 
 **Last Updated:** 2025-12-28
 **Status:** v0.10.3 (current release)
-**Branch:** `main` (all PRs merged through #93)
+**Branch:** `main` (all PRs merged through #95)
 
 ---
 
-## 🎯 Immediate Priority: v0.9.7 Release
+## 🎯 Immediate Priority: v0.20.0 Stable Release
 
-**What's new in v0.9.7:**
-- Level B Serviceability (curvature-based deflection per IS 456 Cl 23.2 / Annex C)
-- `llms.txt` for AI discoverability
-- Enhanced CLI help text
-- CLI reference synced to canonical schema v1
+**v0.20.0 Stabilization Status:**
+- 🔴 **Critical:** 14/15 complete (only S-007 manual test remains)
+- 🟡 **High Priority:** 12/12 complete ✅
+- 🟢 **Nice to Have:** 0/4 (post v0.20.0)
 
-**To release v0.9.7:**
+**What's blocking v0.20.0:**
+- **S-007:** One external engineer tries CLI cold (requires human tester)
+
+**Stabilization checklist:** `docs/planning/v0.20-stabilization-checklist.md`
+
+**To release v0.20.0 (after S-007 passes):**
 ```bash
-python scripts/release.py 0.9.7
+python scripts/release.py 0.20.0
 ```
 
 ---
@@ -108,17 +112,27 @@ Output (design results, BBS, DXF drawings)
 
 ## TL;DR (What Changed Recently)
 
-- **Release Automation Complete:** New scripts for one-command releases and version drift detection
-- **PR #55 Merged:** `beam_pipeline.py` — canonical design pipeline with schema v1
-- **PR #56 Merged:** Architecture bugfixes (null detailing guard, canonical units, case-insensitive validation)
-- **PR #57 Merged:** API stability document (`docs/reference/api-stability.md`)
-- **PR #58 Merged:** Doc version sync to v0.9.6
-- **PR #59 Merged:** Release automation sprint (4 tasks)
-- **New workflows:**
-  - `python scripts/release.py 0.9.7` — one-command release
-  - `python scripts/check_doc_versions.py --ci` — version drift check (runs in CI)
-  - Pre-commit hooks: `pip install pre-commit && pre-commit install`
-- **Test count:** 1,714 passed, 95 skipped
+### Latest Session (2025-12-28): Stabilization Sprint
+
+**PRs Merged (#89-95):**
+| PR | Description |
+|----|-------------|
+| #89 | S-015: Fixed 4 broken links + `scripts/check_links.py` |
+| #90 | S-014: Fixed expected output in beginners-guide (942→882mm²) |
+| #91 | S-009: Fixed D1 expected Ld value (752→777mm) |
+| #92 | S-006: Improved job_runner error messages |
+| #93 | S-020–S-032: All High Priority items verified |
+| #95 | Documentation updates for stabilization sprint |
+
+**Key Deliverables:**
+- `scripts/check_links.py` — Reusable link checker (85 md files, 173 links)
+- Improved error messages in `job_runner.py`
+- All robustness + performance items verified:
+  - Edge cases: Zero/negative inputs return `is_safe=False`
+  - Performance: 0.009ms per beam, 94,000 beams/second
+  - Large batch: 1000 beams tested successfully
+
+**Test Stats:** 1810 passed, 91 skipped, 92% branch coverage
 
 ---
 
@@ -133,15 +147,17 @@ If you want to resume quickly without re-reading the repo:
 5. **Pre-release checklist:** `docs/planning/pre-release-checklist.md`
 6. **Git governance (branch protection):** `docs/_internal/GIT_GOVERNANCE.md`
 
-**Verified state (as of 2025-12-27):**
-- Release version is **v0.9.6** (merged to main, published to PyPI).
+**Verified state (as of 2025-12-28):**
+- Release version is **v0.10.3** (merged to main, published to PyPI).
+- **Tests:** 1810 passed, 91 skipped, 92% branch coverage
+- **Stabilization:** 26/31 items complete (see `docs/planning/v0.20-stabilization-checklist.md`)
 - Unified CLI: **implemented** (`python -m structural_lib design|bbs|dxf|job`).
 - Cutting-stock optimizer: **implemented** (first-fit-decreasing bin packing).
 - VBA BBS + Compliance: **implemented** (parity with Python modules).
-- Serviceability (Level A): **implemented** (deflection + crack width).
+- Serviceability (Level A+B): **implemented** (deflection + crack width).
 - Compliance checker: **implemented** (multi-case orchestration + summary).
 - BBS Module: **implemented** (cut lengths, weights, CSV/JSON export).
-- **Validation examples:** **complete** (4 core + 5 textbook examples verified).
+- **Validation examples:** **complete** (6 verification examples verified).
 - **API docs UX:** **complete** (all 6 phases).
 
 **How to re-verify quickly (avoids drift):**
@@ -159,20 +175,53 @@ If you want to resume quickly without re-reading the repo:
 
 ## 🎯 What to Work on Next
 
-### High Priority (Beta Readiness)
-1. **External engineer test** — Have someone try CLI cold, note friction points
-2. **Seismic detailing validation** — Last item on pre-release checklist (optional)
-3. **VBA parity harness** — Automated comparison of Python vs VBA outputs
+### High Priority (v0.20.0 Release)
+1. **S-007: External engineer test** — Have someone try CLI cold, note friction points
+   - This is the ONLY blocking item for v0.20.0
+   - Requires a human engineer (not automatable)
 
-### Medium Priority
-4. **Remove redirect stubs** — Scheduled for v1.0 (old doc paths still redirect)
-5. **Edge case documentation** — Flanged NA in web, doubly reinforced near Mu,lim
-6. **Error message review** — Check actionability for users
+### After v0.20.0 (Nice to Have)
+2. **S-050: VBA parity automation** — Automated comparison of Python vs VBA outputs
+3. **S-051: Performance benchmarks** — Track regression over time
+4. **S-052: Fuzz testing** — Random input testing
+5. **S-053: Security audit** — Dependency scan
 
-### Low Priority (Deferred to v1.0+)
-7. **Docs restructure** — Element-centric structure (beams/, columns/) deferred
-8. **ACI 318 support** — Future code expansion
-9. **Column design module** — Future element expansion
+### Backlog (v1.0+)
+6. **Level C Serviceability** — Shrinkage + creep deflection (Annex C full)
+7. **Torsion Design** — Equivalent shear/moment + closed stirrups (Cl. 41)
+8. **Side-Face Reinforcement** — D > 750mm check (Cl. 26.5.1.3)
+9. **Anchorage Space Check** — Verify Ld at supports (Cl. 26.2)
+
+---
+
+## ✅ Session Summary (2025-12-28) — Stabilization Sprint
+
+### PRs Merged This Session (#89-95)
+
+| PR | Task ID | Description |
+|----|---------|-------------|
+| #89 | S-015 | Fixed 4 broken internal links, added `scripts/check_links.py` |
+| #90 | S-014 | Fixed expected output in beginners-guide (942→882mm²) |
+| #91 | S-009 | Fixed D1 expected Ld value in verification examples (752→777mm) |
+| #92 | S-006 | Improved job_runner error messages for missing fields |
+| #93 | S-020–S-032 | Verified all High Priority items (robustness + performance) |
+| #95 | — | Documentation updates (SESSION_LOG, CHANGELOG, TASKS) |
+
+### Key Deliverables
+- **Link checker:** `scripts/check_links.py` — validates 173 internal links across 85 markdown files
+- **Error messages:** `job_runner.py` now gives specific errors for missing `code`, `schema_version`
+- **Robustness verified:** Zero/negative inputs return `is_safe=False` with clear error messages
+- **Performance verified:** 0.009ms per beam, 94,000 beams/second batch tested
+
+### Stabilization Status After This Session
+- 🔴 Critical: 14/15 complete (only S-007 manual test remains)
+- 🟡 High Priority: 12/12 complete ✅
+- 🟢 Nice to Have: 0/4 (post v0.20.0)
+
+### Lessons Learned
+- Run `scripts/check_links.py` before releases to catch broken doc links
+- Verify expected values in examples match actual code output
+- Stateless functions = no memory leak concerns
 
 ---
 
