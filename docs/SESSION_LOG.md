@@ -502,6 +502,37 @@ All 7 CI checks passed including the new doc drift check.
 
 ---
 
+### Error Message Review — 2025-12-28
+
+**Changes:**
+- Added a small CLI error helper for consistent output + hints.
+- Improved DXF dependency guidance (`pip install "structural-lib-is456[dxf]"`).
+- Added actionable hints for missing DXF output paths and job output directories.
+- Clarified crack-width params errors with an example JSON object.
+
+**Tests:**
+- `python3 -m pytest tests/test_cli.py -q` (from `Python/`)
+
+---
+
+### External CLI Smoke Test (TASK-077) — 2025-12-28
+
+**Commands:**
+```bash
+python3 -m structural_lib design examples/sample_beam_design.csv -o results.json
+python3 -m structural_lib bbs results.json -o schedule.csv
+python3 -m structural_lib dxf results.json -o drawings.dxf
+python3 -m structural_lib job examples/sample_job_is456.json -o job_out
+```
+
+**Results:**
+- Design: 5 beams processed; `results.json` written.
+- BBS: 274 bars, 844.19 kg; `schedule.csv` written.
+- DXF: 5 beams drawn; `drawings.dxf` written.
+- Job runner: outputs created in `job_out/` (`deliverables/`, `design/`, `inputs/`, `logs/`, `parsed/`).
+
+---
+
 ### Critical Tests & Governance Documentation — 2025-12-28
 
 **Focus:** Add comprehensive IS 456 clause-specific tests and formalize agent workflow documentation.
