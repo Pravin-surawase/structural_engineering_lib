@@ -4,6 +4,36 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-28 — v0.20.0 Stabilization Sprint
+
+### PRs Merged
+
+| PR | Title | Summary |
+|----|-------|--------|
+| #89 | S-015: Fix broken links | Fixed 4 internal links, added `scripts/check_links.py` |
+| #90 | S-014: Fix runnable examples | Corrected expected output in beginners-guide (942→882mm²) |
+| #91 | S-009: Fix verification examples | Fixed D1 expected Ld value (752→777mm) |
+| #92 | S-006: Improve error messages | Clearer job_runner errors for missing fields |
+| #93 | S-020–S-032: Verify high priority | All robustness + performance items verified |
+
+### Key Changes
+- **Link checker tool:** `scripts/check_links.py` — reusable for 85 markdown files, 173 links
+- **Error messages:** `job_runner.py` now gives specific errors for missing `code`, `schema_version`
+- **Edge case handling verified:** Zero/negative inputs return `is_safe=False` with clear errors
+- **Performance verified:** 0.009ms per beam, 94,000 beams/second batch tested
+
+### Stabilization Status After This Session
+- 🔴 Critical: 14/15 complete (only S-007 manual test remains)
+- 🟡 High Priority: 12/12 complete ✅
+- 🟢 Nice to Have: 0/4 (post v0.20.0)
+
+### Lessons Learned
+- Run `scripts/check_links.py` before releases to catch broken doc links
+- Verify expected values in examples match code output (caught 2 discrepancies)
+- Stateless functions = no memory leak concerns
+
+---
+
 ## 2025-12-28 — v0.10.2 Release
 
 ### PRs Merged

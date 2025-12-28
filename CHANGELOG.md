@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ## [0.10.3] - 2025-12-28
 
 ### Added
+- **v0.20.0 Stabilization Sprint (PRs #89–93):**
+  - Link checker script (`scripts/check_links.py`) — validates 173 internal links across 85 markdown files
+  - Improved job_runner error messages for missing `code` and `schema_version` fields
 - **Multi-Agent Repository Review (Phase 1+2):**
   - Branch coverage gate (`--cov-branch --cov-fail-under=85`) in CI
   - Pytest timeout (15 min) to prevent CI hangs
