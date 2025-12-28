@@ -52,9 +52,9 @@ Run it:
 python3 check.py
 ```
 
-Expected output (numbers may vary slightly):
+Expected output:
 ```
-Ast required (mm^2): 942
+Ast required (mm^2): 882
 Status: OK
 ```
 
