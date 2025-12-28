@@ -30,12 +30,12 @@ VERSION_FILES = {
     "Python/pyproject.toml": [
         (r'^version = "[^"]+"', 'version = "{version}"'),
     ],
-    
+
     # Python fallback for dev mode (when package not installed)
     "Python/structural_lib/api.py": [
         (r'return "[0-9]+\.[0-9]+\.[0-9]+"', 'return "{version}"'),
     ],
-    
+
     # VBA runtime (VBA can't read external files)
     "VBA/Modules/M08_API.bas": [
         (r'Get_Library_Version = "[^"]+"', 'Get_Library_Version = "{version}"'),
@@ -46,6 +46,13 @@ VERSION_FILES = {
 DOC_VERSION_FILES = {
     "README.md": [
         (r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+", "structural-lib-is456=={version}"),
+        (r"^🚀 \*\*Active \(v[0-9]+\.[0-9]+\.[0-9]+\)\*\*", "🚀 **Active (v{version})**"),
+        (r"^\*\*What's new in v[0-9]+\.[0-9]+\.[0-9]+:\*\*", "**What's new in v{version}:**"),
+    ],
+    "Python/README.md": [
+        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+        (r"@v[0-9]+\.[0-9]+\.[0-9]+", "@v{version}"),
+        (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+", "## New in v{version}"),
     ],
     "docs/README.md": [
         (r"^\*\*Current version:\*\* v[0-9]+\.[0-9]+\.[0-9]+", "**Current version:** v{version}"),
@@ -79,6 +86,9 @@ DOC_VERSION_FILES = {
         (r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+", "structural-lib-is456=={version}"),
     ],
     "docs/verification/validation-pack.md": [
+        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+    ],
+    "docs/verification/examples.md": [
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
     ],
     "docs/TASKS.md": [
@@ -155,14 +165,14 @@ def update_file(
     if not filepath.exists():
         print(f"  SKIP (not found): {filepath}")
         return False
-    
+
     content = filepath.read_text()
     original = content
-    
+
     for pattern, replacement in patterns:
         replacement_str = replacement.format(**format_kwargs)
         content = re.sub(pattern, replacement_str, content, flags=re.MULTILINE)
-    
+
     if content != original:
         if dry_run:
             print(f"  WOULD UPDATE: {filepath}")
@@ -200,11 +210,11 @@ def main():
         action="store_true",
         help="Fail if doc version references are out of sync",
     )
-    
+
     args = parser.parse_args()
-    
+
     current = read_current_version()
-    
+
     if args.current:
         print(f"Current version: {current}")
         return 0
@@ -290,24 +300,24 @@ def main():
         else:
             print(f"Updated {changes} doc file(s)")
         return 0
-    
+
     if not args.version:
         print(f"Current version: {current}")
         print("\nUsage: python scripts/bump_version.py <new_version>")
         print("Example: python scripts/bump_version.py 0.9.2")
         return 1
-    
+
     new_version = args.version
-    
+
     # Validate version format
     if not re.match(r"^\d+\.\d+\.\d+$", new_version):
         print(f"ERROR: Invalid version format: {new_version}")
         print("Expected: X.Y.Z (e.g., 0.9.2, 1.0.0)")
         return 1
-    
+
     print(f"{'[DRY RUN] ' if args.dry_run else ''}Bumping version: {current} → {new_version}")
     print()
-    
+
     changes = 0
     for rel_path, patterns in VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
@@ -315,7 +325,7 @@ def main():
             filepath, patterns, {"version": new_version, "date": today}, args.dry_run
         ):
             changes += 1
-    
+
     doc_changes = 0
     for rel_path, patterns in DOC_VERSION_FILES.items():
         filepath = REPO_ROOT / rel_path
@@ -341,9 +351,9 @@ def main():
         print("  1. Add entry to CHANGELOG.md")
         print("  2. Update docs/RELEASES.md")
         print("  3. Commit and tag: git tag v" + new_version)
-    
+
     print(EVERGREEN_NOTES)
-    
+
     return 0
 
 

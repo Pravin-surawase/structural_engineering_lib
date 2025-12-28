@@ -285,8 +285,8 @@ Implemented recommendations from `docs/architecture/architecture-review-2025-12-
 
 ### Architect Agent Review
 
-**Reviewer:** Architect Agent (subagent invocation)  
-**Verdict:** ✅ **APPROVED**  
+**Reviewer:** Architect Agent (subagent invocation)
+**Verdict:** ✅ **APPROVED**
 **Score:** 4.5 / 5
 
 #### Strengths Identified
@@ -479,5 +479,25 @@ All 7 CI checks passed including the new doc drift check.
 
 **Notes:**
 - Mu_lim boundary coverage already exists in `Python/tests/test_structural.py` and `Python/tests/test_flexure_edges_additional.py`.
+
+---
+
+### Guardrails Hardening — 2025-12-29
+
+**Change:** Added a local CI parity script to mirror the GitHub Actions checks.
+
+**Files:**
+- `scripts/ci_local.sh` — Runs black, ruff, mypy, pytest with coverage, doc drift check, and wheel smoke test.
+
+---
+
+### Guardrails Hardening — Follow-up (2025-12-29)
+
+**Fixes:**
+- `scripts/ci_local.sh` now reuses `.venv` when present and installs only the latest wheel in `Python/dist/` to avoid version conflicts.
+- `scripts/bump_version.py` now syncs versions in `README.md`, `Python/README.md`, and `docs/verification/examples.md` to eliminate manual edits.
+
+**Validation:**
+- `scripts/ci_local.sh` completed successfully (1810 passed, 91 skipped; coverage 92.41%).
 
 ---

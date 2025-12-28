@@ -58,6 +58,12 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 - `.pre-commit-config.yaml` — Enhanced with ruff, doc check hooks
 - CI doc drift check step
 
+### Guardrails Hardening (Local CI Parity) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-097** | Add local CI parity script (`scripts/ci_local.sh`) | DEVOPS | ✅ Done |
+
 ### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |
