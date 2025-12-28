@@ -2,7 +2,7 @@
 
 Use this file as the single entrypoint for AI agents working in VS Code.
 
-**Current version:** v0.10.3  
+**Current version:** v0.10.3
 **Test count:** See CI for current totals
 
 ## 0) Golden rule
@@ -67,7 +67,31 @@ Historical reference material lives here:
 
 ---
 
-## 5) Agent roles (prompt building blocks)
+## 5) Git & CI Rules (CRITICAL for all agents)
+
+**Read `.github/copilot-instructions.md` for complete rules. Summary:**
+
+### Before committing:
+- Pre-commit hooks auto-run `black` + `ruff` — install with `pre-commit install`
+- Run tests locally: `.venv/bin/python -m pytest tests/test_<file>.py -v`
+
+### PR workflow:
+1. `git commit` → `git push` → `gh pr create`
+2. **WAIT:** `gh pr checks <num> --watch` (don't merge until CI passes!)
+3. `gh pr merge <num> --squash --delete-branch`
+
+### When to merge:
+- ✅ After: features, meaningful tests, doc sections
+- ❌ NOT for: single-line fixes, formatting, micro-changes (batch them)
+
+### Common mistakes to avoid:
+- Don't run `python` directly — use full venv path
+- Don't try to merge before CI completes
+- Don't create multiple micro-PRs — batch related changes
+
+---
+
+## 6) Agent roles (prompt building blocks)
 Role prompt templates live here:
 - [../agents/README.md](../agents/README.md)
 
@@ -77,7 +101,7 @@ Internal governance docs (rarely needed during normal coding):
 
 ---
 
-## 6) Copy-paste prompt recipes
+## 7) Copy-paste prompt recipes
 ### Implement a feature (Python + VBA parity)
 "Use PROJECT_OVERVIEW and API_REFERENCE as context. Act as DEV + TESTER. Implement TASK-XXX in Python and VBA with identical behavior and units. Add Python tests. Where VBA tests are practical, add at least one regression case. Output should be deterministic and auditable."
 

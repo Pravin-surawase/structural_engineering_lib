@@ -1,5 +1,11 @@
 # Copilot Instructions — structural_engineering_lib
 
+> **FOR AI AGENTS:** This file is auto-loaded by GitHub Copilot/VS Code in every session.
+> These rules are MANDATORY. Following them prevents wasted time on CI failures,
+> merge conflicts, and repeated mistakes. Read carefully before any action.
+
+---
+
 ## What this project is
 IS 456 RC beam design library with **Python + VBA parity**.
 
