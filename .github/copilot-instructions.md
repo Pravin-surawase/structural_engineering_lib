@@ -140,25 +140,43 @@ When working on specific task types, apply these focuses:
 
 ---
 
-## Handoff rules (CRITICAL — run before ending session)
+## Session workflow (CRITICAL)
 
-### Pre-handoff checklist:
+### Starting a session:
 ```bash
-# Run this before ending any session:
-.venv/bin/python scripts/check_handoff_ready.py
+# Run at the beginning of each session:
+.venv/bin/python scripts/start_session.py
 
-# If issues found, fix them:
-.venv/bin/python scripts/check_handoff_ready.py --fix
+# Quick mode (skip test count check):
+.venv/bin/python scripts/start_session.py --quick
 ```
 
-### What the script checks:
-- 📅 Date freshness in TASKS.md, SESSION_LOG.md, next-session-brief.md
-- 🧪 Test counts match actual (1810 passed, 91 skipped)
-- 🏷️ Version numbers are consistent
-- 📋 TASKS.md Active section has content
-- 📝 SESSION_LOG.md has entry for today
+**What it does:**
+- Shows version, branch, uncommitted changes
+- Adds SESSION_LOG entry for today if missing
+- Shows Active tasks from TASKS.md
+- Runs doc freshness checks
 
-### Manual handoff steps (after script passes):
+### Ending a session:
+```bash
+# Run before ending any session:
+.venv/bin/python scripts/end_session.py
+
+# Auto-fix issues:
+.venv/bin/python scripts/end_session.py --fix
+
+# Quick mode:
+.venv/bin/python scripts/end_session.py --quick
+```
+
+**What it checks:**
+- 📁 Uncommitted changes
+- 🔍 Handoff checks (date freshness, test counts, versions)
+- 📝 SESSION_LOG entry completeness
+- 🔗 Doc link validity
+- 📊 Today's activity summary
+
+### Manual handoff steps (if needed):
 1. Update `docs/planning/next-session-brief.md` with session summary
 2. Ensure TASKS.md reflects current state
 3. Commit any uncommitted doc changes
