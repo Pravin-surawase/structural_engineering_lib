@@ -6,6 +6,43 @@
 
 ---
 
+## 2025-12-28 (Night) — v0.10.5 Error Schema Implementation
+
+### Summary
+
+Implemented structured error schema (W03-W04) with machine-readable error codes, hints, and IS 456 clause references.
+
+### PRs Merged
+
+| PR | Summary |
+|----|---------|
+| #106 | feat: add AGENT_BOOTSTRAP.md and enhance start_session.py |
+| #107 | chore: add git workflow learnings to copilot-instructions |
+| #108 | docs: clarify version messaging, reduce duplication, add VBA parity harness |
+| #109 | docs: overhaul production-roadmap.md with phases, baseline, and governance |
+| #110 | docs: align TASKS.md with roadmap (INBOX, severity, week sync) |
+| #111 | docs: add error schema v1 draft |
+| #112 | feat: implement error schema in core functions |
+
+### Key Deliverables
+
+- **errors.py module:** `DesignError` dataclass with code/severity/message/field/hint/clause
+- **Core integration:** Structured errors in `design_singly_reinforced()`, `design_shear()`, `check_beam_ductility()`
+- **Tests:** 29 new tests in `test_error_schema.py`
+- **Documentation:** Error schema doc updated to "Implemented" status
+
+### Status
+
+| Metric | Value |
+|--------|-------|
+| Version | v0.10.5 |
+| Tests | 1877 passed |
+| Coverage | 92% branch |
+
+**Next:** W05 (input validation pass) or S-007 when tester available
+
+---
+
 ## 2025-12-28 (Evening) — v0.10.4 Release + Automation Suite
 
 ### Summary

@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.5] - 2025-12-28
+
+### Added
+- **Structured Error Schema (W03-W04):**
+  - New `structural_lib/errors.py` module with `DesignError` dataclass and `Severity` enum
+  - Machine-readable error codes: `E_INPUT_*`, `E_FLEXURE_*`, `E_SHEAR_*`, `E_DUCTILE_*`
+  - Each error includes: code, severity, message, field (optional), hint (optional), clause (optional)
+  - Pre-defined error constants for common validation failures
+  - `to_dict()` method for JSON serialization
+- **Error Schema Integration in Core Functions:**
+  - `FlexureResult` and `ShearResult` now include `errors: List[DesignError]` field
+  - `DuctileBeamResult` now includes `errors: List[DesignError]` field
+  - `design_singly_reinforced()` returns structured errors for all validation failures
+  - `design_shear()` returns structured errors for all validation failures
+  - `check_beam_ductility()` returns structured errors for geometry failures
+- **Error Schema Tests:**
+  - New `tests/test_error_schema.py` with 29 tests covering:
+    - DesignError dataclass structure and serialization
+    - Severity enum values
+    - Pre-defined error constants
+    - Integration tests for flexure, shear, and ductile modules
+    - Error code prefix conventions
+- **Documentation:**
+  - `docs/reference/error-schema.md` — Full error catalog with hints and clause references
+
+### Changed
+- `ductile.check_geometry()` now returns 3 values: `(valid, message, errors)`
+- Existing `error_message` and `remarks` fields deprecated (use `errors` list instead)
+
 ## [0.10.4] - 2025-12-28
 
 ### Added

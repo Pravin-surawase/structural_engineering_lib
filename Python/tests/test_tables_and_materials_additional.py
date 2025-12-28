@@ -87,15 +87,16 @@ def test_shear_spacing_clamps_to_min_reinf_limit():
 def test_ductile_geometry_failure_branches():
     from structural_lib import ductile
 
-    ok, msg = ductile.check_geometry(150, 450)
+    ok, msg, errors = ductile.check_geometry(150, 450)
     assert ok is False
     assert "Width" in msg
+    assert len(errors) == 1
 
-    ok, msg = ductile.check_geometry(250, 0)
+    ok, msg, errors = ductile.check_geometry(250, 0)
     assert ok is False
     assert "Invalid depth" in msg
 
-    ok, msg = ductile.check_geometry(200, 1000)
+    ok, msg, errors = ductile.check_geometry(200, 1000)
     assert ok is False
     assert "Width/Depth" in msg
 
@@ -104,6 +105,7 @@ def test_ductile_geometry_failure_branches():
     )
     assert res.is_geometry_valid is False
     assert res.remarks != "Compliant"
+    assert len(res.errors) >= 1
 
 
 def test_detailing_bar_type_plain_and_arrangement_branches():

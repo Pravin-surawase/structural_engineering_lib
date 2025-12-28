@@ -15,20 +15,25 @@ from structural_lib.ductile import (
 
 def test_geometry_checks():
     # Valid
-    valid, msg = check_geometry(230, 450)
+    valid, msg, errors = check_geometry(230, 450)
     assert valid is True
     assert msg == "OK"
+    assert errors == []
 
     # Invalid Width
-    valid, msg = check_geometry(150, 450)
+    valid, msg, errors = check_geometry(150, 450)
     assert valid is False
     assert "Width" in msg
+    assert len(errors) == 1
+    assert errors[0].code == "E_DUCTILE_001"
 
     # Invalid Ratio (b/D < 0.3)
     # 200 / 700 = 0.285
-    valid, msg = check_geometry(200, 700)
+    valid, msg, errors = check_geometry(200, 700)
     assert valid is False
     assert "Width/Depth ratio" in msg
+    assert len(errors) == 1
+    assert errors[0].code == "E_DUCTILE_002"
 
 
 def test_min_steel():
