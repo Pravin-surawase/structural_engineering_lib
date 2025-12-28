@@ -59,29 +59,31 @@ Solo default:
 * Skip "Restrict who can push" and "Require reviews" unless collaborating
 ---
 
-### 2.3.1 Current Protection Rules (as of 2025-12-27)
+### 2.3.1 Current Protection Rules (as of 2025-12-28)
 
 **Branch:** `main`
 
 **Rules Enabled:**
 - ✅ Changes must be made through a pull request (no direct pushes)
-- ✅ 5 required status checks must pass before merge:
-  1. `test` — Python test suite (pytest)
-  2. `lint` — Code style checks
-  3. `type-check` — Type checking (mypy/pyright)
-  4. `build` — Package build verification
-  5. `docs` — Documentation build check
+- ✅ Required status checks must pass before merge:
+  - `Lint` — Ruff linting
+  - `pytest (3.9)` — Python 3.9 tests
+  - `pytest (3.10)` — Python 3.10 tests
+  - `pytest (3.11)` — Python 3.11 tests
+  - `pytest (3.12)` — Python 3.12 tests
+  - `CodeQL` — Security analysis
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
 
 **CI Workflow:** `.github/workflows/ci.yml`
 - Triggers on: push to `main`, pull requests to `main`
-- Python versions: 3.9, 3.10, 3.11
+- Python versions: 3.9, 3.10, 3.11, 3.12
 - OS: ubuntu-latest
 
 **Implications:**
 - All changes go through PRs (even docs-only changes)
 - CI must pass before merge is allowed
+- **Wait for CI:** Use `gh pr checks <num> --watch` before attempting merge
 - Tags should be created after PR is merged to `main`
 
 ---
@@ -93,9 +95,33 @@ Supply-chain stance:
 When working from the terminal, prefer `gh` to keep the workflow repeatable and fast:
 
 * Create PR: `gh pr create --base main --head <branch>`
-* Check CI: `gh pr checks <PR_NUMBER>`
+* **Wait for CI:** `gh pr checks <PR_NUMBER> --watch` (blocks until all checks complete)
 * Update branch (when ruleset requires up-to-date): `gh pr update-branch <PR_NUMBER>`
 * Merge + delete branch: `gh pr merge <PR_NUMBER> --squash --delete-branch`
+
+> **Critical:** Never run `gh pr merge` immediately after `gh pr create`. Always wait for CI.
+
+### 2.5 Pre-commit Hooks
+
+This repo uses pre-commit hooks to catch issues before they reach CI:
+
+```bash
+# One-time setup
+pre-commit install
+
+# Hooks run automatically on git commit
+```
+
+**Installed hooks:**
+- `black` — Python formatting
+- `ruff` — Python linting
+- `trailing-whitespace` — Remove trailing spaces
+- `end-of-file-fixer` — Ensure files end with newline
+- `mixed-line-ending` — Normalize line endings
+
+**If hooks modify files:** Re-stage and commit again.
+
+See `.github/copilot-instructions.md` for agent-specific workflow rules.
 
 ---
 
@@ -188,11 +214,14 @@ If `main` breaks:
 ## 9. Pre-Merge Checklist (Agents)
 
 - **Link to Task:** Every PR references a TASK ID and the agent role (DEV/TESTER/etc.).
-- **Tests:** Run `python3 -m pytest Python/tests -q`; for Excel, run the integration harness or note “not run” with reason.
+- **Tests:** Run `.venv/bin/python -m pytest Python/tests -q`; for Excel, run the integration harness or note "not run" with reason.
+- **Wait for CI:** Use `gh pr checks <num> --watch` — never merge until all checks pass.
 - **Docs:** Update relevant docs (README/API_REFERENCE/CHANGELOG/RELEASES/TASKS) in the same PR.
 - **Artifacts:** Do not commit `.xlsm`/`.xlam` unless structure changed; export `.bas`/`.cls` instead.
 - **Diff sanity:** Ensure no generated or local config files are included.
 - **Branch hygiene:** Keep feature branches short-lived; rebase on `main` before merge if needed.
+
+> **For AI agents:** See `.github/copilot-instructions.md` for complete workflow rules.
 
 ---
 
