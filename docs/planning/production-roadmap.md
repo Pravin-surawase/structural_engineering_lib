@@ -2,6 +2,46 @@
 
 Purpose: reach a professional-grade beam library with pandas-like reliability.
 
+---
+
+## Roadmap Baseline (v0.10.4)
+
+**Current state:** v0.10.4 published on PyPI
+**Next milestone:** v0.20.0 (Contract Lock checkpoint — includes S-007 by W06)
+**Target:** v1.0.0 in 52 weeks
+
+### Already Done (freeze these)
+- Core design functions: flexure (singly/doubly/flanged), shear, ductile
+- Detailing: Ld, lap length, spacing, bar callouts
+- Serviceability: Level A (deflection + crack width), Level B
+- CLI: `design`, `bbs`, `dxf`, `job` commands
+- DXF export, BBS generation, cutting-stock optimizer
+- Test suite: 1810 passed, 92% branch coverage
+- Docs discipline: TASKS.md, AI_CONTEXT_PACK.md, copilot-instructions.md
+
+### Core Gaps (must close for v1.0)
+- S-007: External engineer CLI test
+- Error schema with structured codes/hints
+- 10-15 verified benchmark cases with clause references
+- 10-15 Python↔VBA parity vectors passing
+- Schema versioning for job/results/schedule
+- Security scan in CI
+
+### NO Until v1.1 (explicit scope boundary)
+| Deferred | Reason |
+|----------|--------|
+| PDF report generation | Nice-to-have, not core |
+| Multi-beam schema redesign | Keep current batch outputs; do not redesign contracts until post-v1.0 |
+| Serviceability Level C (creep/shrinkage) | Specialized |
+| Full VBA automation (beyond 15 vectors) | Diminishing returns |
+| Website / docs site | Post-v1.0 adoption effort |
+| Performance regression CI guards | Basic benchmark is enough |
+| 30+ verified examples | 10-15 is sufficient for v1.0 |
+
+Note: Batch execution already exists (CSV/job runner). v1.0 will *stabilize* the current multi-beam output shape under schema v1; it will not introduce a new “multi-beam schema v2”.
+
+---
+
 Assumptions:
 - 5 to 10 hours per week, solo owner.
 - WIP limit = 1 (only one active task at a time).
@@ -14,27 +54,91 @@ Definition of "professional-grade":
 - Security scan in CI and dependency policy.
 - Python <-> VBA parity harness with tolerances.
 - Cold-start onboarding: install -> first result in < 5 minutes.
+- Traceability: every result ties to clause + governing case.
+- Reproducibility: outputs are versioned and schema-stable across releases.
 
 Non-negotiables:
 - No new feature unless it advances the current week.
 - Clear "done" criteria for every task.
 - If a week is missed, roll it forward; do not add parallel tasks.
+- S-007 is a human-dependent gate: if it is waiting on a tester, continue to the next roadmap week (WIP=1 still applies). When the tester is available, S-007 preempts the current week.
+
+---
+
+## INBOX + Interruption Rules
+
+**Rule: Incoming work goes to INBOX, not today.**
+
+New issues/features go to `docs/TASKS.md` (Backlog section) with:
+- Severity: P0 (blocker) / P1 (important) / P2 (nice-to-have)
+- Impact area: design / schema / CLI / DXF / docs / parity
+- Reproducible: yes / no
+- Link to failing case (if bug)
+
+**Only 2 things can interrupt the roadmap:**
+1. **P0 correctness:** Wrong design result, unsafe output, wrong clause reference
+2. **P0 usability blocker:** Fresh install fails, CLI broken, outputs invalid JSON/CSV
+
+Everything else waits for the next stabilization week or backlog review.
+
+---
+
+## Predictable Issue Buckets
+
+These are expected issues for this domain — plan for them, don't be surprised:
+
+| Bucket | Examples | When to address |
+|--------|----------|----------------|
+| Units + signs | ETABS kN vs N, moment sign conventions | W06 (Units boundary spec) |
+| Edge geometry | b very small, D ≈ d, cover weirdness | W22 (Edge-case coverage) |
+| T-beam flanges | NA location transitions, bf edge cases | W22 (Edge-case coverage) |
+| Table boundaries | Table 19/20 interpolation at edges | W22 (Edge-case coverage) |
+| Serviceability params | Global vs per-beam flags | W05 (Input validation) |
+| DXF determinism | Font differences, entity ordering | W36 (DXF determinism) |
+| CSV dirtiness | Blank rows, TOTAL rows, non-numeric | W05 (Input validation) |
+| Path issues | Windows/Mac/Colab path handling | W43 (Colab workflow) |
+
+---
+
+## Risk Analysis
+
+**Phase 2 (Trust & Verification) is the biggest time sink:**
+- Each verified problem needs: source reference, input extraction, expected output, tolerance, test.
+- Estimate: 2-4 hours per problem. At 20-30 problems = 60-120 hours = 6-12 weeks at solo pace.
+- Mitigation: Start with 10-15 core cases, expand only if time allows.
+
+**Phase 3 (Parity) is second-risk:**
+- VBA automation is brittle and tooling-limited.
+- Mitigation: Stage parity in batches (5 → 10 → 15 vectors), don't block on full automation.
+
+**API Freeze means:**
+- Freeze: core design functions (`design_singly_reinforced`, `design_shear`, etc.), result dataclass shapes, error schema.
+- Keep flexible: CLI flags, output formats, convenience wrappers, report templates.
 
 ---
 
 ## Milestone Gates
 
-Phase 1 (Weeks 1-13): Foundation and API freeze
-- Gate: API list frozen, error schema defined, core tests >= 90% branch.
+**Phase A — Contract Lock (Weeks 1-13)**
+- Goal: Stop breaking yourself later
+- Gate: API list frozen, error schema v1, schema versioning, core tests ≥ 90% branch
+- Stabilization: W13 is buffer week
 
-Phase 2 (Weeks 14-26): Trust and verification
-- Gate: 20 to 30 verified examples run in CI with published outputs.
+**Phase B — Trust Pack (Weeks 14-26)**
+- Goal: Engineers trust it
+- Gate: 10-15 verified examples in CI with published outputs and clause references
+- Stabilization: W26 is buffer week
 
-Phase 3 (Weeks 27-39): Stability, security, parity
-- Gate: parity harness passing on 10+ vectors; security scan clean.
+**Phase C — Stability, Security, Parity (Weeks 27-39)**
+- Goal: Enterprise-ish confidence
+- Gate: 10-15 parity vectors passing (Python↔VBA), security scan clean
+- Parity scope: 10-15 vectors for v1.0; full automation grows post-v1.0
+- Stabilization: W39 is buffer week
 
-Phase 4 (Weeks 40-52): Professional UX and v1.0
-- Gate: cold-start user test passes; CLI schema v1; v1.0 released.
+**Phase D — Professional UX and v1.0 (Weeks 40-52)**
+- Goal: Strangers succeed without you
+- Gate: Cold-start < 5 min, CLI schema v1 enforced, v1.0.0 released
+- Stabilization: W49 is buffer week
 
 ---
 
@@ -45,8 +149,9 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
   - Deliverable: add WIP=1 rule to docs/TASKS.md and docs/AI_CONTEXT_PACK.md.
   - Done when: rule visible and agreed.
 - W02: External CLI test (S-007)
-  - Deliverable: cold-start test log in docs/SESSION_LOG.md.
-  - Done when: results recorded + issues captured.
+  - Deliverable: cold-start test log in docs/SESSION_LOG.md (fresh install, run CLI, verify outputs).
+  - Done when: results recorded + issues captured + at least 3 “stranger” pain points converted to backlog items.
+  - If blocked: mark as Waiting and proceed to W03 (WIP=1 rule still applies; S-007 resumes when tester is available).
 - W03: Error schema draft
   - Deliverable: error schema doc (code, field, hint, severity).
   - Done when: schema published in docs/reference/.
@@ -62,9 +167,9 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
 - W07: API freeze v1
   - Deliverable: stable signatures in docs/reference/api.md.
   - Done when: API list labeled "frozen".
-- W08: Schema v1 draft (job + results)
-  - Deliverable: schema files in docs/specs/.
-  - Done when: sample JSON validates.
+- W08: Schema v1 draft (job + results + schedule) + clause tagging
+  - Deliverable: schema files in docs/specs/ (job/results/schedule) including a stable place for clause references.
+  - Done when: sample JSON validates and one example output contains clause tags.
 - W09: Determinism audit
   - Deliverable: tests for deterministic outputs on core pipeline.
   - Done when: repeat runs match hashes.
@@ -77,13 +182,13 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
 - W12: API freeze checkpoint tag
   - Deliverable: internal tag or release note marking API freeze.
   - Done when: recorded in docs/RELEASES.md.
-- W13: Foundation release
-  - Deliverable: v0.11.x (or internal) checkpoint release.
-  - Done when: CHANGELOG and RELEASES updated.
+- W13: Foundation release + stabilization buffer
+  - Deliverable: v0.20.x checkpoint release + fix any Phase A regressions.
+  - Done when: CHANGELOG updated, zero open Phase A issues.
 
-### Weeks 14-26: Trust and Verification
+### Weeks 14-26: Trust and Verification (Phase B)
 - W14: Golden vector selection
-  - Deliverable: list of 20 to 30 verified problems + sources.
+  - Deliverable: list of 10-15 verified problems + sources (scope reduced from 20-30).
   - Done when: list published in docs/verification/.
 - W15: Implement 5 golden vectors
   - Deliverable: tests + expected outputs for 5 cases.
@@ -91,12 +196,12 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
 - W16: Implement 5 more vectors
   - Deliverable: total 10 verified cases.
   - Done when: tests pass in CI.
-- W17: Implement 10 more vectors
-  - Deliverable: total 20 verified cases.
+- W17: Implement 5 more vectors + edge cases
+  - Deliverable: total 15 verified cases (v1.0 target met).
   - Done when: tests pass in CI.
-- W18: Clause tagging in outputs
-  - Deliverable: clause references in result payload.
-  - Done when: schema updated and example output shows tags.
+- W18: Verification case documentation
+  - Deliverable: each verified case has source reference (SP:16, textbook, hand calc) and tolerance rationale.
+  - Done when: docs/verification/README.md lists all 15 cases with citations.
 - W19: Verification runner
   - Deliverable: one command to run full verification pack.
   - Done when: CI uses the runner.
@@ -118,20 +223,21 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
 - W25: External review
   - Deliverable: 1 engineer review feedback captured.
   - Done when: issues triaged in docs/TASKS.md.
-- W26: Verification milestone
-  - Deliverable: verification pack v1.
-  - Done when: pack runs in CI and docs updated.
+- W26: Verification milestone + stabilization buffer
+  - Deliverable: verification pack v1 + fix any Phase B regressions.
+  - Done when: pack runs in CI, docs updated, zero open Phase B issues.
 
-### Weeks 27-39: Stability, Security, Parity
+### Weeks 27-39: Stability, Security, Parity (Phase C)
 - W27: Parity harness design
   - Deliverable: design doc + harness stub.
   - Done when: Python and VBA can run same vector set.
+  - Note: VBA tests run manually via `Run_All_Parity_Tests` in Excel; results compared to Python outputs. Full CI automation is post-v1.0.
 - W28: Parity vectors x5
   - Deliverable: 5 parity vectors passing within tolerance.
   - Done when: harness reports pass.
-- W29: Parity vectors x10
-  - Deliverable: 10 parity vectors passing.
-  - Done when: nightly parity job added.
+- W29: Parity vectors x10-15 (v1.0 target)
+  - Deliverable: 10-15 parity vectors passing (v1.0 scope complete).
+  - Done when: parity test in CI, full automation deferred to post-v1.0.
 - W30: Security scan in CI
   - Deliverable: dependency scan step (pip-audit or safety).
   - Done when: CI passes and report stored.
@@ -157,13 +263,13 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
   - Deliverable: release checklist updated with parity + security steps.
   - Done when: scripts/release.py docs updated.
 - W38: Stability release candidate
-  - Deliverable: v0.12.x-rc checkpoint.
+  - Deliverable: v0.30.x-rc checkpoint.
   - Done when: CI clean across all checks.
 - W39: Stabilization buffer
-  - Deliverable: fix any regressions discovered in W27-W38.
-  - Done when: zero open regressions.
+  - Deliverable: fix any Phase C regressions.
+  - Done when: zero open Phase C issues.
 
-### Weeks 40-52: Professional UX and v1.0
+### Weeks 40-52: Professional UX and v1.0 (Phase D)
 - W40: CLI schema v1 enforcement
   - Deliverable: CLI validates job/result schemas.
   - Done when: invalid inputs yield structured errors.
@@ -209,5 +315,27 @@ Phase 4 (Weeks 40-52): Professional UX and v1.0
 ## Notes
 - If actual weekly time is lower, extend the plan by adding buffer weeks between phases.
 - If actual weekly time is higher, keep WIP=1 but shorten each phase by merging low-risk weeks.
+- **Backlog review cadence:** Once per phase (W13, W26, W39, W52) — triage P1/P2 items, close stale issues, reprioritize if needed.
+- **Release mechanics (W52):** PyPI via `twine upload`, GitHub Release with `.xlam` asset, README badge update.
+
+## Current Progress (as of 2025-12-28)
+
+**Position:** Week 2 (S-007 is the gate)
+
+**Pre-completed (out of order):**
+| Week | Task | Status |
+|------|------|--------|
+| W01 | Scope lock + WIP rule | ✅ Done |
+| W27 | Parity harness stub | ✅ 10 vectors in Python |
+| W45 | Docs info architecture | ✅ project-status.md split |
+
+**Current gate:**
+- **W02 / S-007:** External engineer CLI test (requires human tester)
+- Required by W06 for the v0.20.0 checkpoint; if waiting on a tester, proceed with W03 while keeping WIP=1.
+
+**Next after S-007:**
+1. W03: Error schema draft
+2. W08: Schema v1 (job + results + schedule + clause tags)
+3. W14-W17: 10-15 verified examples
 
 Last updated: 2025-12-28
