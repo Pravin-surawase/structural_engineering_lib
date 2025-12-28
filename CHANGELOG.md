@@ -15,6 +15,19 @@ All notable changes to this project will be documented in this file.
   - Golden vector source documentation (`tests/data/sources.md`)
   - Shear module section completed in `docs/reference/api.md`
   - Multi-agent review document (`docs/_internal/MULTI_AGENT_REVIEW_2025-12-28.md`)
+- **Critical IS 456 Tests (45 new tests):**
+  - Mu_lim boundary tests for all concrete grades
+  - xu/d ratio limit tests (balanced section)
+  - T-beam flange contribution tests
+  - Shear strength boundary tests (Table 19)
+  - Serviceability and detailing edge cases
+  - Integration and determinism validation
+- **Guardrails & Governance:**
+  - Local CI parity script (`scripts/ci_local.sh`)
+  - Doc version drift checker (`scripts/check_doc_versions.py`)
+  - Pre-commit hooks documentation
+  - Updated GIT_GOVERNANCE.md with accurate CI checks
+  - AI agent workflow rules in `copilot-instructions.md`
 
 ### Changed
 - **CLI Warning for Global Crack-Width Params:**

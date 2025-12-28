@@ -18,12 +18,13 @@
 
 ## Status
 
-🚀 **Active (v0.10.0)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.10.3)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.10.0:**
-- Level B Serviceability (curvature-based deflection per IS 456 Cl 23.2 / Annex C)
-- CLI/AI Discoverability (llms.txt, enhanced CLI help)
-- Release automation (one-command release, doc drift checks)
+**What's new in v0.10.3:**
+- 45 critical IS 456 clause-specific tests (Mu_lim, xu/d ratios, T-beam, shear limits)
+- Multi-agent repository review with CI improvements
+- Local CI parity script (`scripts/ci_local.sh`)
+- Pre-commit hooks and governance documentation
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
@@ -355,10 +356,10 @@ structural_engineering_lib/
 ```vba
 Sub DesignBeam()
     Dim result As Variant
-    
+
     ' Design a beam: b=300, d=450, d'=50, D=500, Mu=150 kN·m, M25/Fe415
     result = IS456_Design_Rectangular(300, 450, 50, 500, 150, 25, 415)
-    
+
     ' result is an array: [status, Ast, Asc, design_type, message]
     If result(0) = "OK" Then
         Debug.Print "Ast required: " & result(1) & " mm²"

@@ -501,3 +501,35 @@ All 7 CI checks passed including the new doc drift check.
 - `scripts/ci_local.sh` completed successfully (1810 passed, 91 skipped; coverage 92.41%).
 
 ---
+
+### Critical Tests & Governance Documentation — 2025-12-28
+
+**Focus:** Add comprehensive IS 456 clause-specific tests and formalize agent workflow documentation.
+
+**PRs Merged:**
+
+| PR | Title | Key Changes |
+|----|-------|-------------|
+| #75 | tests: add 45 critical IS 456 tests | Mu_lim boundaries, xu/d ratios, T-beam, shear limits |
+| #76 | docs: add pre-commit and merge guidelines | Section 11.2, 11.5 in development-guide.md |
+| #77 | docs: add mandatory notice for AI agents | "FOR AI AGENTS" header in copilot-instructions.md |
+| #78 | docs: clarify governance and pre-commit behavior | GIT_GOVERNANCE.md update, governance notes |
+
+**New Tests (45 total in `test_critical_is456.py`):**
+- Mu_lim boundary tests for M15-M50 concrete grades
+- xu/d ratio limit tests (0.48 for Fe 415, 0.46 for Fe 500)
+- T-beam flange contribution validation
+- Shear strength Table 19 boundary tests
+- Serviceability span/depth ratio tests
+- Detailing minimum bar spacing tests
+- Integration and determinism validation
+
+**Documentation Updates:**
+- `.github/copilot-instructions.md`: Softened "auto-loaded" claim, added governance note
+- `docs/AI_CONTEXT_PACK.md`: Added pre-commit re-staging guidance
+- `docs/_internal/GIT_GOVERNANCE.md`: Fixed CI check names, added Section 2.5 (Pre-commit Hooks)
+- `docs/contributing/development-guide.md`: Added Sections 11.2, 11.5
+
+**Test Count:** 1901 tests (was 1856, +45 critical tests)
+
+---
