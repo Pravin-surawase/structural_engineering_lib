@@ -6,8 +6,11 @@ more intuitive without weakening correctness or traceability.
 Scope: concept ideas, data needs, and phased experiments. No code yet.
 
 **Last Updated:** 2025-12-29
-**Status:** Research in review (feedback incorporated)
+**Status:** Research complete — requires implementation decisions before coding
 
+> **Document Purpose:** This is research guidance, NOT an implementation spec.
+> Several decisions remain open (marked in text). Do not treat as ready-to-execute.
+>
 > **Review Feedback (2025-12-29):** Schema example corrected to match actual types.py structure.
 > Jinja2 dependency clarified. Determinism rules relaxed to semantic equivalence.
 > Phase 1 scope clarified as single-file output.
@@ -24,6 +27,9 @@ After analyzing the structural engineering visualization landscape, user workflo
 
 **Note on dependencies:** Phase 1-2 use Python's `string.Template` (stdlib). Jinja2 is NOT required.
 Version targets (v0.11, v0.12, etc.) are indicative — actual scheduling follows production roadmap.
+
+**Security note:** All user-supplied values (beam IDs, labels, case names) MUST be passed through
+`html.escape()` before insertion. `string.Template` does NOT auto-escape, unlike Jinja2.
 
 **Key insight:** Engineers trust visuals that match hand-sketch conventions. Fancy charts add cognitive load; simple annotated diagrams add trust.
 
@@ -170,6 +176,11 @@ Governing: Shear at 96% utilization
 
 ### 3.3 BBS Connection Visual
 
+> **Input Requirement:** BBS data is NOT in `ComplianceReport`. This visual requires:
+> - Separate detailing output (from `detailing.py` or `bbs.py`)
+> - Preprocessing step to merge compliance + detailing data
+> - **Phase 1 approach:** Skip BBS visual. Add in Phase 3 when input schema is defined.
+
 ```
 Bar Mark │ Dia │ Count │ Length │ Weight │ Visual
 ─────────┼─────┼───────┼────────┼────────┼────────────────
@@ -213,17 +224,25 @@ Bar Mark │ Dia │ Count │ Length │ Weight │ Visual
 
 ### Phase 1: Static HTML Report
 
+> **Decision Required:** Confirm Phase 1 scope before implementation.
+> This section documents the *proposed* approach, not final spec.
+
 **Scope:**
 - New command: `python -m structural_lib report results.json -o report.html`
 - **Single HTML file** with inline CSS/SVG (no external deps)
 - Contents: geometry, bars, stirrups, utilization, compliance summary
-- Template: `string.Template` (stdlib) — NOT Jinja2
+- Template: `string.Template` (stdlib) with `html.escape()` for all user-supplied values
 - **For batch (500 beams):** One HTML with all beams in sections, not 500 files
 
 **Explicit non-goals for Phase 1:**
 - No per-beam separate files (that's Phase 2)
 - No index page (that's Phase 2)
 - No BBS linking (that's Phase 3+)
+
+**Trade-off: Single file vs folder output (Decision Required)**
+- *Single file:* Easier to share, no broken links, but large for 500+ beams
+- *Folder output:* Scalable, but adds complexity (index page, relative links)
+- *Current recommendation:* Single file for Phase 1, revisit if performance issues
 
 **Files to create:**
 ```
@@ -346,6 +365,10 @@ class ComplianceCaseResult:
 
 - **Rule:** Same input → semantically identical output (same visual appearance)
 - **Implementation:** No timestamps, sorted dict keys, fixed SVG viewBox sizing
+- **Ordered lists preserved:** Do NOT sort lists where order has meaning:
+  - `start_bars`, `mid_bars`, `end_bars` — position-dependent, preserve order
+  - `cases` — may be analysis-order-dependent, preserve order
+  - Sort ONLY: dict keys, unordered sets (e.g., unique bar diameters)
 - **Test:** Semantic comparison in CI (normalize whitespace, compare DOM structure)
 - **NOT byte-for-byte:** Template whitespace changes are allowed if visual is unchanged
 - **Verification:** Render to PNG via headless browser, image diff with tolerance
@@ -426,16 +449,24 @@ class ComplianceCaseResult:
 | Phase 1 single HTML or folder with index? | **Single self-contained HTML** (folder is Phase 2) |
 | Clause refs now or Phase 2? | **Phase 2** — current schema has clause in `DesignError` only, not in results |
 | Tie phase targets to versions or milestones? | **Milestones** — version numbers are indicative, actual scheduling per production roadmap |
+| Will this doc be published in-repo or internal? | **In-repo** — serves as research record and implementation guide |
+| Should report accept CLI or job output? | **Job output** — unified structure; CLI users run job first |
 
 ---
 
 ## Part 10: Recommended Next Steps
 
-### Immediate (Week 1)
+### Before Implementation (Decision Gate)
+
+1. **Confirm schema source** — CLI design output, job output, or unified schema?
+2. **Confirm output packaging** — Single HTML (recommended) or folder structure?
+3. **Confirm Phase 1 scope** — Cross-section + utilization only, or include compliance table?
+
+### Immediate (Week 1 — after decisions locked)
 
 1. **Define visual schema** — Lock the JSON fields required for Phase 1
 2. **Create SVG generators** — `render_section_svg()`, `render_utilization_svg()`
-3. **Build Jinja2 template** — Single-beam report page
+3. **Build stdlib template** — Single-beam report page with `string.Template` + `html.escape()`
 
 ### Short-term (Week 2-3)
 
