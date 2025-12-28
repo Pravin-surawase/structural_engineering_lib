@@ -56,7 +56,7 @@ IS 456 RC beam design library with **Python + VBA parity**.
 3. Run tests locally before pushing: `python -m pytest tests/test_<file>.py -v`
 
 ### PR and merge workflow:
-1. `git commit` — pre-commit hooks auto-format (may modify files; re-stage if needed)
+1. `git commit` — pre-commit hooks auto-format (may modify files; re-stage and amend if needed)
 2. `git push -u origin <branch>`
 3. `gh pr create --title "..." --body "..."`
 4. **WAIT for CI:** `gh pr checks <num> --watch` — do NOT try to merge immediately
@@ -64,6 +64,21 @@ IS 456 RC beam design library with **Python + VBA parity**.
 
 > **Note:** Merge authority depends on project governance. If branch protection
 > requires human review, stop at step 4 and notify the user.
+
+### When pre-commit modifies files:
+If pre-commit hooks fix files during commit, do NOT create a second commit:
+```bash
+git add -A && git commit --amend --no-edit   # Keep it atomic
+```
+
+### After merging a PR (sync local main):
+```bash
+# PREFERRED: safe, non-destructive
+git switch main && git pull --ff-only
+
+# AVOID: git reset --hard origin/main (destructive, can wipe local work)
+# Only use reset --hard when git status is clean AND you intend to discard changes
+```
 
 ### When to merge (batch small changes):
 - ✅ Merge after: completing features, meaningful test additions, doc section completions
@@ -150,6 +165,9 @@ When working on specific task types, apply these focuses:
 | Committing unrelated staged files | Run `git status` before commit; stage only intended files |
 | Resolving merge conflicts + feature in one commit | Resolve conflicts in separate commit first, then add feature |
 | PR title/description doesn't match actual changes | List ALL changed files in PR body; update title if scope changes |
+| Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` instead |
+| Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
+| Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
 
 ---
 
