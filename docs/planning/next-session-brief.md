@@ -1,8 +1,8 @@
 # Next Session Briefing
 
-**Last Updated:** 2025-12-28  
+**Last Updated:** 2025-12-28
 **Status:** v0.10.3 (current release)
-**Branch:** `main` (all PRs merged through #62)
+**Branch:** `main` (all PRs merged through #93)
 
 ---
 
@@ -254,7 +254,7 @@ If you want to resume quickly without re-reading the repo:
 
 ## Handoff Addendum (Latest)
 
-**What changed last:** Architecture review was completed and converted into actionable tasks.  
+**What changed last:** Architecture review was completed and converted into actionable tasks.
 **Where to read:** `docs/architecture/architecture-review-2025-12-27.md`
 
 **Tasks added (see `docs/TASKS.md`):**
@@ -262,7 +262,7 @@ If you want to resume quickly without re-reading the repo:
 - TASK-060: Canonical Result Schema v1 (versioned JSON schema, align outputs/docs)
 - TASK-061: Units Validation at App Layer (CLI/job/Excel validation + docs)
 
-**Log entry:** `docs/SESSION_LOG.md` includes the architecture tasks addition.  
+**Log entry:** `docs/SESSION_LOG.md` includes the architecture tasks addition.
 **No code changes** were made during this addendum.
 - Merged a grouped Dependabot PR updating CI/CodeQL actions to current majors.
 
@@ -539,7 +539,7 @@ python -m structural_lib design --b 300 --d 450 --Mu 180 --fck 25 --fy 500
 # Bar bending schedule
 python -m structural_lib bbs --input beam_data.csv --output bbs.csv
 
-# DXF drawing export  
+# DXF drawing export
 python -m structural_lib dxf --input design_result.json --output beam.dxf
 ```
 

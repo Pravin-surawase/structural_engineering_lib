@@ -31,6 +31,27 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ---
 
+## Recently Completed (v0.20.0 Stabilization)
+
+### Documentation & Quality Sprint (PRs #89-93) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **S-015** | Fix broken internal links | DOCS | ✅ Done |
+| **S-014** | Fix runnable examples | DOCS | ✅ Done |
+| **S-009** | Fix verification examples | TESTER | ✅ Done |
+| **S-006** | Improve error messages | SUPPORT | ✅ Done |
+| **S-020–S-032** | Verify all High Priority items | DEV | ✅ Done |
+
+**Deliverables:**
+- `scripts/check_links.py` — reusable link checker
+- Improved `job_runner.py` error messages
+- Fixed 4 broken doc links
+- Fixed 2 incorrect expected values in examples
+- All robustness + performance items verified
+
+---
+
 ## Recently Completed (v0.9.7-dev)
 
 ### Level B Serviceability + CLI/AI Discoverability (PR #62) — ✅ COMPLETE
