@@ -93,6 +93,13 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | **TASK-083** | DXF deliverable layout polish | DEV | ✅ Done |
+
+### DXF to PDF/PNG Export Workflow (TASK-084) — ✅ COMPLETE
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | ✅ Done |
+
 ### Multi-Agent Review Remediation (Phase 1/2) — ✅ COMPLETE
 
 | ID | Task | Agent | Status |
@@ -126,7 +133,6 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 | ID | Task | Agent | Est. | Priority |
 |----|------|-------|------|----------|
-| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | 2 hrs | 🟡 Medium |
 
 **v1.0 Beta Gates (from pre-release-checklist):**
 - [x] 5 real beam validations documented
