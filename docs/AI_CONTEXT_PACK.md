@@ -73,12 +73,14 @@ Historical reference material lives here:
 
 ### Before committing:
 - Pre-commit hooks auto-run `black` + `ruff` — install with `pre-commit install`
+- If hooks modify files, re-stage them before committing
 - Run tests locally: `.venv/bin/python -m pytest tests/test_<file>.py -v`
 
 ### PR workflow:
 1. `git commit` → `git push` → `gh pr create`
 2. **WAIT:** `gh pr checks <num> --watch` (don't merge until CI passes!)
-3. `gh pr merge <num> --squash --delete-branch`
+3. If governance allows: `gh pr merge <num> --squash --delete-branch`
+4. If human review required: stop and notify the user
 
 ### When to merge:
 - ✅ After: features, meaningful tests, doc sections
