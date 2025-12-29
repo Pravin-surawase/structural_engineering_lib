@@ -692,6 +692,94 @@ def test_job_execution(sample_job_file, tmp_path):
 
 
 # =============================================================================
+# Report Command Tests
+# =============================================================================
+
+
+@pytest.fixture
+def sample_job_output_dir(tmp_path, sample_job_file):
+    """Create a job output folder by running the job command."""
+    output_dir = tmp_path / "job_output_for_report"
+    rc = cli_main.main(["job", str(sample_job_file), "-o", str(output_dir)])
+    assert rc == 0
+    assert output_dir.exists()
+    return output_dir
+
+
+def test_report_help():
+    """Test report subcommand help."""
+    with pytest.raises(SystemExit) as exc:
+        cli_main.main(["report", "--help"])
+    assert exc.value.code == 0
+
+
+def test_report_missing_output_dir(tmp_path):
+    """Test report command with missing output directory."""
+    rc = cli_main.main(["report", str(tmp_path / "nonexistent_dir")])
+    assert rc == 1
+
+
+def test_report_json_to_stdout(sample_job_output_dir, capsys):
+    """Test report command outputs JSON to stdout."""
+    rc = cli_main.main(["report", str(sample_job_output_dir), "--format=json"])
+    assert rc == 0
+
+    captured = capsys.readouterr()
+    # Should be valid JSON
+    output = json.loads(captured.out)
+    assert "job_id" in output
+    assert "is_ok" in output
+
+
+def test_report_json_to_file(sample_job_output_dir, tmp_path):
+    """Test report command writes JSON to file."""
+    out_file = tmp_path / "report.json"
+    rc = cli_main.main(
+        ["report", str(sample_job_output_dir), "--format=json", "-o", str(out_file)]
+    )
+    assert rc == 0
+    assert out_file.exists()
+
+    with out_file.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+    assert "job_id" in data
+
+
+def test_report_html_format(sample_job_output_dir, capsys):
+    """Test report command with HTML format."""
+    rc = cli_main.main(["report", str(sample_job_output_dir), "--format=html"])
+    assert rc == 0
+
+    captured = capsys.readouterr()
+    assert "<!DOCTYPE html>" in captured.out
+    assert "Beam Design Report" in captured.out
+
+
+def test_report_html_to_file(sample_job_output_dir, tmp_path):
+    """Test report command writes HTML to file."""
+    out_file = tmp_path / "report.html"
+    rc = cli_main.main(
+        ["report", str(sample_job_output_dir), "--format=html", "-o", str(out_file)]
+    )
+    assert rc == 0
+    assert out_file.exists()
+
+    content = out_file.read_text(encoding="utf-8")
+    assert "<!DOCTYPE html>" in content
+
+
+def test_report_default_format_is_json(sample_job_output_dir, capsys):
+    """Test that default format is JSON."""
+    rc = cli_main.main(["report", str(sample_job_output_dir)])
+    assert rc == 0
+
+    captured = capsys.readouterr()
+    # Should be valid JSON (default format)
+    output = json.loads(captured.out)
+    assert isinstance(output, dict)
+
+
+# =============================================================================
 # Integration Tests
 # =============================================================================
 
@@ -775,6 +863,7 @@ def test_help_via_subprocess():
     assert "bbs" in result.stdout
     assert "dxf" in result.stdout
     assert "job" in result.stdout
+    assert "report" in result.stdout
 
 
 # =============================================================================
