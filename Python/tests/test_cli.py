@@ -655,6 +655,109 @@ def test_dxf_without_ezdxf(sample_design_results_file, tmp_path, monkeypatch):
     assert rc == 1
 
 
+def test_mark_diff_missing_bbs(tmp_path):
+    """Test mark-diff command with missing BBS file."""
+    dxf_path = tmp_path / "drawings.dxf"
+    dxf_path.write_text("", encoding="utf-8")
+
+    rc = cli_main.main(
+        ["mark-diff", "--bbs", str(tmp_path / "missing.csv"), "--dxf", str(dxf_path)]
+    )
+
+    assert rc == 1
+
+
+def test_mark_diff_missing_dxf(tmp_path):
+    """Test mark-diff command with missing DXF file."""
+    bbs_path = tmp_path / "schedule.csv"
+    bbs_path.write_text("", encoding="utf-8")
+
+    rc = cli_main.main(
+        ["mark-diff", "--bbs", str(bbs_path), "--dxf", str(tmp_path / "missing.dxf")]
+    )
+
+    assert rc == 1
+
+
+def test_mark_diff_without_ezdxf(tmp_path, monkeypatch):
+    """Test mark-diff command when ezdxf is not installed."""
+    from types import SimpleNamespace
+
+    bbs_path = tmp_path / "schedule.csv"
+    dxf_path = tmp_path / "drawings.dxf"
+    bbs_path.write_text("", encoding="utf-8")
+    dxf_path.write_text("", encoding="utf-8")
+
+    monkeypatch.setattr(cli_main, "dxf_export", SimpleNamespace(EZDXF_AVAILABLE=False))
+
+    rc = cli_main.main(["mark-diff", "--bbs", str(bbs_path), "--dxf", str(dxf_path)])
+
+    assert rc == 1
+
+
+def test_mark_diff_json_output(tmp_path, monkeypatch):
+    """Test mark-diff command JSON output."""
+    from types import SimpleNamespace
+
+    bbs_path = tmp_path / "schedule.csv"
+    dxf_path = tmp_path / "drawings.dxf"
+    out_path = tmp_path / "mark_diff.json"
+    bbs_path.write_text("", encoding="utf-8")
+    dxf_path.write_text("", encoding="utf-8")
+
+    def _fake_compare(_bbs, _dxf):
+        return {"ok": True, "summary": {"beams_checked": 1}}
+
+    monkeypatch.setattr(
+        cli_main,
+        "dxf_export",
+        SimpleNamespace(EZDXF_AVAILABLE=True, compare_bbs_dxf_marks=_fake_compare),
+    )
+
+    rc = cli_main.main(
+        [
+            "mark-diff",
+            "--bbs",
+            str(bbs_path),
+            "--dxf",
+            str(dxf_path),
+            "--format",
+            "json",
+            "-o",
+            str(out_path),
+        ]
+    )
+
+    assert rc == 0
+    payload = json.loads(out_path.read_text(encoding="utf-8"))
+    assert payload["ok"] is True
+
+
+def test_mark_diff_text_fail(tmp_path, monkeypatch, capsys):
+    """Test mark-diff command text output on failure."""
+    from types import SimpleNamespace
+
+    bbs_path = tmp_path / "schedule.csv"
+    dxf_path = tmp_path / "drawings.dxf"
+    bbs_path.write_text("", encoding="utf-8")
+    dxf_path.write_text("", encoding="utf-8")
+
+    def _fake_compare(_bbs, _dxf):
+        return {"ok": False, "summary": {"beams_checked": 0}}
+
+    monkeypatch.setattr(
+        cli_main,
+        "dxf_export",
+        SimpleNamespace(EZDXF_AVAILABLE=True, compare_bbs_dxf_marks=_fake_compare),
+    )
+
+    rc = cli_main.main(["mark-diff", "--bbs", str(bbs_path), "--dxf", str(dxf_path)])
+
+    assert rc == 2
+    output = capsys.readouterr().out
+    assert "FAIL" in output
+
+
 # =============================================================================
 # Job Command Tests
 # =============================================================================
