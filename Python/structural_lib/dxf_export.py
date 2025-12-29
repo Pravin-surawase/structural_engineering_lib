@@ -54,6 +54,7 @@ TextEntityAlignment = _TextEntityAlignment
 
 from .api import get_library_version
 from .detailing import BeamDetailingResult, BarArrangement, StirrupArrangement
+from . import bbs
 
 
 # =============================================================================
@@ -120,6 +121,33 @@ def draw_rectangle(msp, x1: float, y1: float, x2: float, y2: float, layer: str):
     msp.add_line((x2, y1), (x2, y2), dxfattribs={"layer": layer})
     msp.add_line((x2, y2), (x1, y2), dxfattribs={"layer": layer})
     msp.add_line((x1, y2), (x1, y1), dxfattribs={"layer": layer})
+
+
+def _annotation_scale(span: float, depth: float) -> float:
+    """Scale text and offsets for readability across beam sizes."""
+    if span <= 0 or depth <= 0:
+        return 1.0
+    base = (span / 4000.0 + depth / 500.0) / 2.0
+    return max(0.75, min(1.4, base))
+
+
+def _zone_label(zone: str) -> str:
+    return {
+        "start": "Start",
+        "mid": "Mid",
+        "end": "End",
+        "full": "Full",
+    }.get(zone, zone.capitalize())
+
+
+def _bar_mark_map(detailing: BeamDetailingResult) -> dict:
+    """Map (location, zone) -> bar_mark using BBS generation."""
+    marks: dict = {}
+    for item in bbs.generate_bbs_from_detailing(detailing):
+        key = (item.location, item.zone)
+        if key not in marks:
+            marks[key] = item.bar_mark
+    return marks
 
 
 def _annotation_extents(include_annotations: bool) -> Tuple[float, float]:
@@ -391,6 +419,7 @@ def draw_annotations(
     stirrups: List[StirrupArrangement],
     ld: float,
     lap: float,
+    detailing: Optional[BeamDetailingResult] = None,
     origin: Tuple[float, float] = (0, 0),
 ):
     """
@@ -398,70 +427,93 @@ def draw_annotations(
     """
     x0, y0 = origin
 
+    scale = _annotation_scale(span, D)
+    text_height = TEXT_HEIGHT * scale
+    dim_offset = DIM_OFFSET * scale
+
+    mark_map = _bar_mark_map(detailing) if detailing else {}
+
     # Title
-    title_y = y0 + D + 150
+    title_y = y0 + D + 150 * scale
     msp.add_text(
         f"BEAM {beam_id} (Story: {story}) — {int(b)}x{int(D)}",
         dxfattribs={
             "layer": "TEXT",
-            "height": TEXT_HEIGHT * 1.5,
+            "height": text_height * 1.5,
         },
     ).set_placement((x0, title_y), align=_text_align("LEFT"))
 
-    # Bottom bar callout (use midspan zone if available, else first)
-    bot_idx = len(bottom_bars) // 2 if bottom_bars else 0
+    # Bottom bar callouts (zone-specific)
     if bottom_bars:
-        bot_callout = bottom_bars[bot_idx].callout()
-        msp.add_text(
-            f"Bottom: {bot_callout}",
-            dxfattribs={
-                "layer": "TEXT",
-                "height": TEXT_HEIGHT,
-            },
-        ).set_placement(
-            (x0 + span / 2, y0 - DIM_OFFSET - 100), align=_text_align("TOP_CENTER")
-        )
+        zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
+        for bar_arr, zone, x in zip(bottom_bars, ["start", "mid", "end"], zone_x):
+            if bar_arr.count <= 0:
+                continue
+            mark = mark_map.get(("bottom", zone), "")
+            mark_text = f"{mark} " if mark else ""
+            bot_callout = f"Bottom {_zone_label(zone)}: {mark_text}{bar_arr.callout()}"
+            msp.add_text(
+                bot_callout,
+                dxfattribs={
+                    "layer": "TEXT",
+                    "height": text_height,
+                },
+            ).set_placement(
+                (x, y0 - dim_offset - 100 * scale),
+                align=_text_align("TOP_CENTER"),
+            )
 
-    # Top bar callout (use midspan zone if available, else first)
-    top_idx = len(top_bars) // 2 if top_bars else 0
+    # Top bar callouts (zone-specific)
     if top_bars:
-        top_callout = top_bars[top_idx].callout()
-        msp.add_text(
-            f"Top: {top_callout}",
-            dxfattribs={
-                "layer": "TEXT",
-                "height": TEXT_HEIGHT,
-            },
-        ).set_placement(
-            (x0 + span / 2, y0 + D + 50), align=_text_align("BOTTOM_CENTER")
-        )
+        zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
+        for bar_arr, zone, x in zip(top_bars, ["start", "mid", "end"], zone_x):
+            if bar_arr.count <= 0:
+                continue
+            mark = mark_map.get(("top", zone), "")
+            mark_text = f"{mark} " if mark else ""
+            top_callout = f"Top {_zone_label(zone)}: {mark_text}{bar_arr.callout()}"
+            msp.add_text(
+                top_callout,
+                dxfattribs={
+                    "layer": "TEXT",
+                    "height": text_height,
+                },
+            ).set_placement(
+                (x, y0 + D + 50 * scale),
+                align=_text_align("BOTTOM_CENTER"),
+            )
 
     # Stirrup callouts for each zone (handle varying zone counts)
     if stirrups:
         n_stir = len(stirrups)
         if n_stir == 1:
+            zone_names = ["start"]
             zone_x = [x0 + span * 0.5]
         elif n_stir == 2:
+            zone_names = ["start", "mid"]
             zone_x = [x0 + span * 0.25, x0 + span * 0.75]
         else:
+            zone_names = ["start", "mid", "end"]
             zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
 
-        for stir, x in zip(stirrups, zone_x):
+        for stir, zone, x in zip(stirrups, zone_names, zone_x):
+            mark = mark_map.get(("stirrup", zone), "")
+            mark_text = f"{mark} " if mark else ""
             msp.add_text(
-                stir.callout(),
+                f"Stirrup {_zone_label(zone)}: {mark_text}{stir.callout()}",
                 dxfattribs={
                     "layer": "TEXT",
-                    "height": TEXT_HEIGHT * 0.8,
+                    "height": text_height * 0.8,
                 },
             ).set_placement((x, y0 + D / 2), align=_text_align("MIDDLE_CENTER"))
 
     # Development length note
-    note_y = y0 - DIM_OFFSET - 200
+    note_y = y0 - dim_offset - 200 * scale
     msp.add_text(
         f"Ld = {int(ld)} mm, Lap = {int(lap)} mm",
         dxfattribs={
             "layer": "TEXT",
-            "height": TEXT_HEIGHT * 0.8,
+            "height": text_height * 0.8,
         },
     ).set_placement((x0, note_y), align=_text_align("LEFT"))
 
@@ -729,6 +781,7 @@ def generate_beam_dxf(
             stirrups=detailing.stirrups,
             ld=detailing.ld_tension,
             lap=detailing.lap_length,
+            detailing=detailing,
             origin=(origin_x, origin_y),
         )
 
@@ -1024,6 +1077,7 @@ def generate_multi_beam_dxf(
                 stirrups=detailing.stirrups,
                 ld=detailing.ld_tension,
                 lap=detailing.lap_length,
+                detailing=detailing,
                 origin=(x_origin, y_origin),
             )
 
