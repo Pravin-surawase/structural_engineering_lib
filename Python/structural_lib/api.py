@@ -9,6 +9,7 @@ import json
 
 from typing import Any, Dict, Optional, Sequence, Union
 
+from . import bbs
 from . import beam_pipeline
 from . import compliance
 from . import detailing
@@ -21,6 +22,9 @@ __all__ = [
     "get_library_version",
     "validate_job_spec",
     "validate_design_results",
+    "compute_detailing",
+    "compute_bbs",
+    "export_bbs",
     "check_beam_ductility",
     "check_deflection_span_depth",
     "check_crack_width",
@@ -174,6 +178,224 @@ def validate_design_results(path: Union[str, Path]) -> ValidationReport:
     return ValidationReport(
         ok=not errors, errors=errors, warnings=warnings, details=details
     )
+
+
+def _extract_beam_params_from_schema(beam: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Extract beam parameters from either old or new schema format.
+
+    Supports:
+    - New schema (v1 canonical): geometry.b_mm, materials.fck_nmm2, etc.
+    - Old schema: geometry.b, materials.fck, etc.
+
+    Returns normalized dict with short keys (b, D, d, fck, fy, etc.)
+    """
+    geom = beam.get("geometry") or {}
+    mat = beam.get("materials") or {}
+    flex = beam.get("flexure") or {}
+    det = beam.get("detailing") or {}  # Guard against explicit null
+
+    b = geom.get("b_mm") or geom.get("b", 300)
+    D = geom.get("D_mm") or geom.get("D", 500)
+    d = geom.get("d_mm") or geom.get("d", 450)
+    span = geom.get("span_mm") or geom.get("span", 4000)
+    cover = geom.get("cover_mm") or geom.get("cover", 40)
+
+    fck = mat.get("fck_nmm2") or mat.get("fck", 25)
+    fy = mat.get("fy_nmm2") or mat.get("fy", 500)
+
+    ast = flex.get("ast_required_mm2") or flex.get("ast_req", 0)
+    asc = flex.get("asc_required_mm2") or flex.get("asc_req", 0)
+
+    ld_tension = None
+    lap_length = None
+    if det:
+        ld_tension = det.get("ld_tension_mm") or det.get("ld_tension")
+        lap_length = det.get("lap_length_mm") or det.get("lap_length")
+
+    return {
+        "beam_id": beam.get("beam_id", "BEAM"),
+        "story": beam.get("story", "STORY"),
+        "b": float(b),
+        "D": float(D),
+        "d": float(d),
+        "span": float(span),
+        "cover": float(cover),
+        "fck": float(fck),
+        "fy": float(fy),
+        "ast": float(ast),
+        "asc": float(asc),
+        "detailing": det,
+        "ld_tension": ld_tension,
+        "lap_length": lap_length,
+    }
+
+
+def _detailing_result_to_dict(
+    result: detailing.BeamDetailingResult,
+) -> Dict[str, Any]:
+    zones = ("start", "mid", "end")
+
+    def _bars_to_dict(bars: list[detailing.BarArrangement]) -> list[Dict[str, Any]]:
+        output = []
+        for idx, arr in enumerate(bars):
+            zone = zones[idx] if idx < len(zones) else f"zone_{idx}"
+            output.append(
+                {
+                    "zone": zone,
+                    "count": arr.count,
+                    "diameter_mm": arr.diameter,
+                    "area_provided_mm2": arr.area_provided,
+                    "spacing_mm": arr.spacing,
+                    "layers": arr.layers,
+                    "callout": arr.callout(),
+                }
+            )
+        return output
+
+    def _stirrups_to_dict(
+        stirrups: list[detailing.StirrupArrangement],
+    ) -> list[Dict[str, Any]]:
+        output = []
+        for idx, arr in enumerate(stirrups):
+            zone = zones[idx] if idx < len(zones) else f"zone_{idx}"
+            output.append(
+                {
+                    "zone": zone,
+                    "diameter_mm": arr.diameter,
+                    "legs": arr.legs,
+                    "spacing_mm": arr.spacing,
+                    "zone_length_mm": arr.zone_length,
+                    "callout": arr.callout(),
+                }
+            )
+        return output
+
+    return {
+        "beam_id": result.beam_id,
+        "story": result.story,
+        "geometry": {
+            "b_mm": result.b,
+            "D_mm": result.D,
+            "span_mm": result.span,
+            "cover_mm": result.cover,
+        },
+        "top_bars": _bars_to_dict(result.top_bars),
+        "bottom_bars": _bars_to_dict(result.bottom_bars),
+        "stirrups": _stirrups_to_dict(result.stirrups),
+        "ld_tension_mm": result.ld_tension,
+        "ld_compression_mm": result.ld_compression,
+        "lap_length_mm": result.lap_length,
+        "is_valid": result.is_valid,
+        "remarks": result.remarks,
+    }
+
+
+def compute_detailing(
+    design_results: Dict[str, Any],
+    *,
+    config: Optional[Dict[str, Any]] = None,
+) -> list[detailing.BeamDetailingResult]:
+    """Compute beam detailing results from design results JSON dict."""
+    if not isinstance(design_results, dict):
+        raise TypeError("design_results must be a dict")
+
+    units = design_results.get("units")
+    if units:
+        _require_is456_units(units)
+
+    beams = design_results.get("beams", [])
+    if not isinstance(beams, list) or not beams:
+        raise ValueError("No beams found in design results.")
+
+    cfg = config or {}
+    spacing_default = cfg.get("stirrup_spacing_mm")
+
+    detailing_list: list[detailing.BeamDetailingResult] = []
+
+    for beam in beams:
+        params = _extract_beam_params_from_schema(beam)
+        det = params["detailing"] or {}
+
+        stirrups = det.get("stirrups") if isinstance(det, dict) else []
+
+        stirrup_dia = cfg.get("stirrup_dia_mm")
+        if stirrup_dia is None and isinstance(stirrups, list) and stirrups:
+            stirrup_dia = stirrups[0].get("diameter") or stirrups[0].get("diameter_mm")
+        if stirrup_dia is None:
+            stirrup_dia = 8.0
+
+        spacing_start = cfg.get("stirrup_spacing_start_mm", spacing_default)
+        spacing_mid = cfg.get("stirrup_spacing_mid_mm", spacing_default)
+        spacing_end = cfg.get("stirrup_spacing_end_mm", spacing_default)
+
+        if isinstance(stirrups, list) and stirrups:
+            if spacing_start is None:
+                spacing_start = stirrups[0].get("spacing")
+            if spacing_mid is None and len(stirrups) > 1:
+                spacing_mid = stirrups[1].get("spacing")
+            if spacing_end is None and len(stirrups) > 2:
+                spacing_end = stirrups[2].get("spacing")
+
+        if spacing_start is None:
+            spacing_start = 150.0
+        if spacing_mid is None:
+            spacing_mid = 200.0
+        if spacing_end is None:
+            spacing_end = 150.0
+
+        detailing_result = detailing.create_beam_detailing(
+            beam_id=params["beam_id"],
+            story=params["story"],
+            b=params["b"],
+            D=params["D"],
+            span=params["span"],
+            cover=params["cover"],
+            fck=params["fck"],
+            fy=params["fy"],
+            ast_start=params["ast"],
+            ast_mid=params["ast"],
+            ast_end=params["ast"],
+            asc_start=params["asc"],
+            asc_mid=params["asc"],
+            asc_end=params["asc"],
+            stirrup_dia=float(stirrup_dia),
+            stirrup_spacing_start=float(spacing_start),
+            stirrup_spacing_mid=float(spacing_mid),
+            stirrup_spacing_end=float(spacing_end),
+            is_seismic=bool(cfg.get("is_seismic", False)),
+        )
+
+        detailing_list.append(detailing_result)
+
+    return detailing_list
+
+
+def compute_bbs(
+    detailing_list: list[detailing.BeamDetailingResult],
+    *,
+    project_name: str = "Beam BBS",
+) -> bbs.BBSDocument:
+    """Generate a bar bending schedule document from detailing results."""
+    return bbs.generate_bbs_document(detailing_list, project_name=project_name)
+
+
+def export_bbs(
+    bbs_doc: bbs.BBSDocument,
+    path: Union[str, Path],
+    *,
+    fmt: str = "csv",
+) -> Path:
+    """Export a BBS document to CSV or JSON."""
+    output_path = Path(path)
+    fmt_lower = fmt.lower()
+
+    if output_path.suffix.lower() == ".json" or fmt_lower == "json":
+        bbs.export_bbs_to_json(bbs_doc, str(output_path))
+    else:
+        bbs.export_bbs_to_csv(bbs_doc.items, str(output_path))
+
+    return output_path
 
 
 def check_beam_ductility(

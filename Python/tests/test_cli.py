@@ -548,6 +548,34 @@ def test_bbs_empty_beams(tmp_path):
 
 
 # =============================================================================
+# Detail Command Tests
+# =============================================================================
+
+
+def test_detail_to_json(sample_design_results_file, tmp_path):
+    """Test detail command with JSON output."""
+    output_file = tmp_path / "detail.json"
+
+    rc = cli_main.main(
+        ["detail", str(sample_design_results_file), "-o", str(output_file)]
+    )
+
+    assert rc == 0
+    assert output_file.exists()
+
+    data = json.loads(output_file.read_text(encoding="utf-8"))
+    assert data["beams"]
+    assert data["beams"][0]["beam_id"] == "B1"
+
+
+def test_detail_missing_input():
+    """Test detail command with missing input file."""
+    rc = cli_main.main(["detail", "nonexistent.json"])
+
+    assert rc == 1
+
+
+# =============================================================================
 # DXF Command Tests
 # =============================================================================
 

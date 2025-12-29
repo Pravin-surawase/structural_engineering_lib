@@ -106,12 +106,9 @@ dxf_export.generate_multi_beam_dxf(detailing_list, "all_beams.dxf")
 
 ---
 
-## Planned API (v0.12 Target)
+## Stable API (v0.12)
 
-These are planned library-first helpers (see `docs/planning/v0.12-plan.md`).
-They are **not available yet**, but will be stable once shipped.
-
-### Target Stable (v0.12)
+These library-first helpers are stable once released.
 
 ```python
 from structural_lib import api
@@ -119,6 +116,16 @@ from structural_lib import api
 api.compute_detailing(design_results, config=None)
 api.compute_bbs(detailing_list, project_name="Beam BBS")
 api.export_bbs(bbs_doc, path, fmt="csv")
+```
+
+## Planned API (v0.12 Target)
+
+These helpers are planned next (see `docs/planning/v0.12-plan.md`).
+They are **not available yet**, but will be stable once shipped.
+
+```python
+from structural_lib import api
+
 api.compute_dxf(detailing_list, output, multi=False)
 api.compute_report(source, format="html")
 api.compute_critical(job_out, top=10, format="csv")
@@ -182,6 +189,7 @@ The CLI interface (`python -m structural_lib`) is considered **stable**:
 # These commands are stable
 python -m structural_lib design input.csv -o results.json
 python -m structural_lib bbs results.json -o bbs.csv
+python -m structural_lib detail results.json -o detailing.json
 python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib job job.json -o output/
 python -m structural_lib validate job.json
@@ -191,12 +199,6 @@ python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 ```
 
 Output JSON schema is versioned via `schema_version` field.
-
-### Planned CLI Additions (v0.12)
-
-```bash
-python -m structural_lib detail results.json -o detailing.json
-```
 
 ---
 

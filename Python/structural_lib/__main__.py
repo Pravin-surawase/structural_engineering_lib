@@ -4,6 +4,7 @@ Unified CLI entrypoint for structural_lib.
 Usage:
     python -m structural_lib design input.csv -o results.json
     python -m structural_lib bbs results.json -o bbs.csv
+    python -m structural_lib detail results.json -o detailing.json
     python -m structural_lib dxf results.json -o drawings.dxf
     python -m structural_lib job job.json -o output/
     python -m structural_lib validate job.json
@@ -26,7 +27,6 @@ from pathlib import Path
 from typing import List
 
 from . import api
-from . import bbs
 from . import beam_pipeline
 from . import detailing
 from . import dxf_export
@@ -108,6 +108,11 @@ def _format_mark_diff_text(result: dict) -> str:
             lines.append(f"  {beam_id}: {marks}")
 
     return "\n".join(lines)
+
+
+def _extract_beam_params_from_schema(beam: dict) -> dict:
+    """Shim for tests; delegates to api helper for schema normalization."""
+    return api._extract_beam_params_from_schema(beam)
 
 
 def cmd_design(args: argparse.Namespace) -> int:
@@ -293,60 +298,6 @@ def cmd_design(args: argparse.Namespace) -> int:
         return 1
 
 
-def _extract_beam_params_from_schema(beam: dict) -> dict:
-    """
-    Extract beam parameters from either old or new schema format.
-
-    Supports both:
-    - New schema (v1 canonical): geometry.b_mm, materials.fck_nmm2, etc.
-    - Old schema: geometry.b, materials.fck, etc.
-
-    Returns normalized dict with short keys (b, D, d, fck, fy, etc.)
-    """
-    geom = beam.get("geometry") or {}
-    mat = beam.get("materials") or {}
-    flex = beam.get("flexure") or {}
-    det = beam.get("detailing") or {}  # Guard against explicit null
-
-    # Handle new schema keys (with _mm, _nmm2 suffixes)
-    b = geom.get("b_mm") or geom.get("b", 300)
-    D = geom.get("D_mm") or geom.get("D", 500)
-    d = geom.get("d_mm") or geom.get("d", 450)
-    span = geom.get("span_mm") or geom.get("span", 4000)
-    cover = geom.get("cover_mm") or geom.get("cover", 40)
-
-    fck = mat.get("fck_nmm2") or mat.get("fck", 25)
-    fy = mat.get("fy_nmm2") or mat.get("fy", 500)
-
-    # Flexure: handle both old (ast_req) and new (ast_required_mm2) keys
-    ast = flex.get("ast_required_mm2") or flex.get("ast_req", 0)
-    asc = flex.get("asc_required_mm2") or flex.get("asc_req", 0)
-
-    # Detailing: check for both ld_tension_mm and ld_tension
-    ld_tension = None
-    lap_length = None
-    if det:
-        ld_tension = det.get("ld_tension_mm") or det.get("ld_tension")
-        lap_length = det.get("lap_length_mm") or det.get("lap_length")
-
-    return {
-        "beam_id": beam.get("beam_id", "BEAM"),
-        "story": beam.get("story", "STORY"),
-        "b": float(b),
-        "D": float(D),
-        "d": float(d),
-        "span": float(span),
-        "cover": float(cover),
-        "fck": float(fck),
-        "fy": float(fy),
-        "ast": float(ast),
-        "asc": float(asc),
-        "detailing": det,
-        "ld_tension": ld_tension,
-        "lap_length": lap_length,
-    }
-
-
 def cmd_bbs(args: argparse.Namespace) -> int:
     """
     Generate bar bending schedule from design results JSON.
@@ -375,53 +326,11 @@ def cmd_bbs(args: argparse.Namespace) -> int:
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
 
         # Generate detailing results for BBS
-        detailing_list = []
-        for beam in beams:
-            print(f"  Processing {beam['story']}/{beam['beam_id']}...", file=sys.stderr)
-
-            # Extract parameters using schema-agnostic helper
-            params = _extract_beam_params_from_schema(beam)
-            det = params["detailing"]
-
-            # Create simplified detailing result for BBS
-            detailing_result = detailing.create_beam_detailing(
-                beam_id=params["beam_id"],
-                story=params["story"],
-                b=params["b"],
-                D=params["D"],
-                span=params["span"],
-                cover=params["cover"],
-                fck=params["fck"],
-                fy=params["fy"],
-                ast_start=params["ast"],
-                ast_mid=params["ast"],
-                ast_end=params["ast"],
-                asc_start=params["asc"],
-                asc_mid=params["asc"],
-                asc_end=params["asc"],
-                stirrup_dia=(
-                    det["stirrups"][0]["diameter"] if det.get("stirrups") else 8
-                ),
-                stirrup_spacing_start=(
-                    det["stirrups"][0]["spacing"] if det.get("stirrups") else 150
-                ),
-                stirrup_spacing_mid=(
-                    det["stirrups"][1]["spacing"]
-                    if det.get("stirrups") and len(det["stirrups"]) > 1
-                    else 200
-                ),
-                stirrup_spacing_end=(
-                    det["stirrups"][2]["spacing"]
-                    if det.get("stirrups") and len(det["stirrups"]) > 2
-                    else 150
-                ),
-            )
-
-            detailing_list.append(detailing_result)
+        detailing_list = api.compute_detailing(data)
 
         # Generate BBS document
         print("Generating bar bending schedule...", file=sys.stderr)
-        bbs_doc = bbs.generate_bbs_document(
+        bbs_doc = api.compute_bbs(
             detailing_list, project_name=data.get("project_name", "Beam Design BBS")
         )
 
@@ -431,10 +340,9 @@ def cmd_bbs(args: argparse.Namespace) -> int:
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             if output_path.suffix.lower() == ".json":
-                bbs.export_bbs_to_json(bbs_doc, str(output_path))
+                api.export_bbs(bbs_doc, output_path, fmt="json")
             else:
-                # Default to CSV
-                bbs.export_bbs_to_csv(bbs_doc.items, str(output_path))
+                api.export_bbs(bbs_doc, output_path, fmt="csv")
 
             print(f"Bar bending schedule written to {output_path}", file=sys.stderr)
         else:
@@ -496,6 +404,49 @@ def cmd_bbs(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_detail(args: argparse.Namespace) -> int:
+    """Generate detailing JSON from design results."""
+    input_path = Path(args.input)
+
+    if not input_path.exists():
+        _print_error(f"Input file not found: {input_path}")
+        return 1
+
+    try:
+        print(f"Loading design results from {input_path}...", file=sys.stderr)
+        with input_path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        detailing_list = api.compute_detailing(data)
+
+        output = {
+            "schema_version": data.get("schema_version", beam_pipeline.SCHEMA_VERSION),
+            "code": data.get("code", "IS456"),
+            "units": data.get("units", "IS456"),
+            "beams": [
+                api._detailing_result_to_dict(result) for result in detailing_list
+            ],
+        }
+
+        if args.output:
+            output_path = Path(args.output)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            with output_path.open("w", encoding="utf-8") as f:
+                json.dump(output, f, indent=2)
+            print(f"Detailing output written to {output_path}", file=sys.stderr)
+        else:
+            print(json.dumps(output, indent=2))
+
+        return 0
+
+    except Exception as exc:
+        _print_error(str(exc))
+        import traceback
+
+        traceback.print_exc(file=sys.stderr)
+        return 1
+
+
 def cmd_dxf(args: argparse.Namespace) -> int:
     """
     Generate DXF drawings from design results JSON.
@@ -545,7 +496,7 @@ def cmd_dxf(args: argparse.Namespace) -> int:
             print(f"  Processing {beam['story']}/{beam['beam_id']}...", file=sys.stderr)
 
             # Extract parameters using schema-agnostic helper
-            params = _extract_beam_params_from_schema(beam)
+            params = api._extract_beam_params_from_schema(beam)
             det = params["detailing"]
 
             detailing_result = detailing.create_beam_detailing(
@@ -1035,6 +986,25 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Output CSV or JSON file (if omitted, prints CSV to stdout)",
     )
     bbs_parser.set_defaults(func=cmd_bbs)
+
+    detail_parser = subparsers.add_parser(
+        "detail",
+        help="Generate detailing JSON from design results",
+        description=(
+            "Generate detailing outputs (bars, stirrups, development lengths) "
+            "from design results JSON."
+        ),
+        epilog="""
+Examples:
+  python -m structural_lib detail results.json -o detailing.json
+  python -m structural_lib detail results.json  # prints JSON to stdout
+""",
+    )
+    detail_parser.add_argument("input", help="Input JSON file with design results")
+    detail_parser.add_argument(
+        "-o", "--output", help="Output JSON file (defaults to stdout)"
+    )
+    detail_parser.set_defaults(func=cmd_detail)
 
     # DXF subcommand
     dxf_parser = subparsers.add_parser(

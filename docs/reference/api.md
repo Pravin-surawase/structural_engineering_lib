@@ -189,6 +189,9 @@ Notes:
 **Available now:**
 - `api.validate_job_spec(path)`
 - `api.validate_design_results(path)`
+- `api.compute_detailing(design_results, config=None)`
+- `api.compute_bbs(detailing_list, project_name="Beam BBS")`
+- `api.export_bbs(bbs_doc, path, fmt="csv")`
 
 **ValidationReport fields:**
 - `ok` (bool)
@@ -197,9 +200,6 @@ Notes:
 - `details` (dict)
 
 **Planned (not implemented yet):**
-- `api.compute_detailing(design_results, config=None)`
-- `api.compute_bbs(detailing_list, project_name="Beam BBS")`
-- `api.export_bbs(bbs_doc, path, fmt="csv")`
 - `api.compute_dxf(detailing_list, output, multi=False)`
 - `api.compute_report(source, format="html")`
 - `api.compute_critical(job_out, top=10, format="csv")`
