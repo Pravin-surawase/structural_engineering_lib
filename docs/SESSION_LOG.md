@@ -6,6 +6,23 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-29 — Session
 
+**Focus:** Git workflow friction + fast checks
+
+**Issues observed:**
+- PR-only rules blocked direct pushes when commits landed on `main`.
+- Local `main` diverged after PR merge, causing rebase conflicts.
+- Coverage gate in docs mismatched CI (92 vs 85).
+- Running pytest from repo root used the installed package instead of workspace code.
+
+**Fixes / plan:**
+- Added PR-only guardrails + quick check guidance in `docs/_internal/GIT_GOVERNANCE.md`.
+- Added `scripts/quick_check.sh` (code/docs/coverage modes).
+- Aligned `docs/contributing/testing-strategy.md` with the 85% branch-coverage gate.
+
+---
+
+## 2025-12-29 — Session
+
 **Focus:** DXF/BBS consistency + deliverable polish + Colab workflow update
 
 **Completed:**
