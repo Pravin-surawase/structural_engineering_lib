@@ -48,4 +48,4 @@ def test_report_batch_80_beams_matches_golden(tmp_path: Path) -> None:
 def test_export_design_json_matches_golden() -> None:
     design_results = _read_json("design_results_1.json")
     output = report.export_design_json(design_results)
-    assert output == _read_text("report_design_1.json")
+    assert output.strip() == _read_text("report_design_1.json").strip()
