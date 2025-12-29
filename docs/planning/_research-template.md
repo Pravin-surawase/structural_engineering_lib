@@ -1,7 +1,7 @@
 # Research: [Topic Name]
 
 > **Template version:** 1.0
-> Copy this file to `research-{topic}/README.md` or `research-{topic}.md`
+> Copy this file to `research-{topic}/README.md`
 
 **Last Updated:** YYYY-MM-DD
 **Status:** Draft | In Review | Decided | Archived

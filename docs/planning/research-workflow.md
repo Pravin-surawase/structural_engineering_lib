@@ -73,7 +73,7 @@
 | ... | ... | ... |
 
 ## Constraints (from PM)
-- [ ] Must fit Phase [A/B/C/D]
+- [ ] Must fit Phase [A/B/C/D/E]
 - [ ] No new required dependencies
 - [ ] Decision by: [DATE]
 - [ ] Owner: [AGENT/PERSON]
@@ -359,7 +359,8 @@ DOCS → DEV: "Here's the spec, start building"
 ## Rules
 
 1. **WIP=1 applies:** Research doesn't create parallel implementation work
-2. **Timeboxes are real:** If Stage 2 exceeds 4 hours, force a decision
+2. **Timeboxes are real:** If Stage 2 exceeds 4 hours for small/medium research, force a decision
+   (large research may iterate Stage 2 with PM approval)
 3. **Parking lot is real:** Unapproved ideas don't sneak into tasks
 4. **Decisions are final until revisited:** Don't re-debate in implementation
 5. **Each stage has a deliverable:** No "we discussed it" without documentation
