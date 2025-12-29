@@ -107,9 +107,9 @@ class TestHookAndBendLengths:
         assert hl == 128
 
     def test_hook_length_135_degree(self):
-        """135° hook (stirrup) should be 6d."""
+        """135° hook (stirrup) should be 10d (min 75mm)."""
         hl = calculate_hook_length(8, 135)
-        assert hl == 48  # 6 × 8
+        assert hl == 80  # max(10 × 8, 75)
 
     def test_bend_deduction_90(self):
         """90° bend deduction should be 0.5d."""
@@ -170,12 +170,12 @@ class TestCutLengths:
             stirrup_dia_mm=8,
             hook_length_mm=0,  # Will use default 10d = 80mm
         )
-        # Inner width = 300 - 80 = 220
-        # Inner height = 500 - 80 = 420
-        # Perimeter = 2×(220 + 420) = 1280
+        # Inner width = 300 - 2×(40 + 4) = 212
+        # Inner height = 500 - 2×(40 + 4) = 412
+        # Perimeter = 2×(212 + 412) = 1248
         # Hooks = 2 × 80 = 160
-        # Total = 1280 + 160 = 1440
-        assert cut == 1440
+        # Total = 1248 + 160 = 1408 -> rounded to 1410
+        assert cut == 1410
 
     def test_cut_length_rounded(self):
         """Cut lengths should be rounded to nearest 10mm."""
@@ -274,7 +274,14 @@ class TestBBSGeneration:
         """Total weight should equal sum of individual weights."""
         items = generate_bbs_from_detailing(sample_detailing)
         for item in items:
-            expected = round(item.unit_weight_kg * item.no_of_bars, 2)
+            expected = round(
+                calculate_bar_weight(
+                    item.diameter_mm,
+                    item.total_length_mm,
+                    round_weight=False,
+                ),
+                2,
+            )
             assert abs(item.total_weight_kg - expected) < 0.1
 
     def test_bbs_unique_marks(self, sample_detailing):
