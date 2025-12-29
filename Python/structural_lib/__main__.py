@@ -618,14 +618,15 @@ def cmd_job(args: argparse.Namespace) -> int:
 
 
 def cmd_report(args: argparse.Namespace) -> int:
-    """Generate report from job output folder.
+    """Generate report from job output folder or design results JSON.
 
-    Generates human-readable reports (JSON or HTML) from job outputs.
+    Generates human-readable reports (JSON or HTML).
     """
     output_dir = Path(args.output_dir)
+    is_file_input = output_dir.is_file()
 
     if not output_dir.exists():
-        _print_error(f"Output directory not found: {output_dir}")
+        _print_error(f"Output path not found: {output_dir}")
         return 1
 
     # Resolve optional overrides
@@ -635,6 +636,52 @@ def cmd_report(args: argparse.Namespace) -> int:
     try:
         print(f"Loading report data from {output_dir}...", file=sys.stderr)
 
+        fmt = args.format.lower()
+        if is_file_input:
+            design_results = report.load_design_results(output_dir)
+
+            if fmt == "json":
+                output = report.export_design_json(design_results)
+                if args.output:
+                    out_path = Path(args.output)
+                    out_path.parent.mkdir(parents=True, exist_ok=True)
+                    out_path.write_text(output, encoding="utf-8")
+                    print(f"Report written to {out_path}", file=sys.stderr)
+                else:
+                    print(output)
+                return 0
+
+            if fmt != "html":
+                _print_error(
+                    f"Unknown format: {fmt}",
+                    hint="Use --format=json or --format=html",
+                )
+                return 1
+
+            beams = design_results.get("beams", [])
+            if not args.output:
+                if len(beams) >= args.batch_threshold:
+                    _print_error(
+                        "Batch report requires --output for folder packaging",
+                        hint="Use -o report/ or increase --batch-threshold",
+                    )
+                    return 1
+                output = report.render_design_report_single(
+                    design_results, batch_threshold=args.batch_threshold
+                )
+                print(output)
+                return 0
+
+            out_path = Path(args.output)
+            written = report.write_design_report_package(
+                design_results,
+                output_path=out_path,
+                batch_threshold=args.batch_threshold,
+            )
+            if written:
+                print(f"Report written to {written[0]}", file=sys.stderr)
+            return 0
+
         data = report.load_report_data(
             output_dir,
             job_path=job_path,
@@ -642,7 +689,6 @@ def cmd_report(args: argparse.Namespace) -> int:
         )
 
         # Generate output based on format
-        fmt = args.format.lower()
         if fmt == "json":
             output = report.export_json(data)
         elif fmt == "html":
@@ -906,18 +952,22 @@ def _build_parser() -> argparse.ArgumentParser:
     # Report subcommand
     report_parser = subparsers.add_parser(
         "report",
-        help="Generate report from job output folder",
+        help="Generate report from job output folder or design results JSON",
         description="""
-        Generate human-readable reports (JSON or HTML) from job outputs.
+        Generate human-readable reports (JSON or HTML).
 
         Examples:
           python -m structural_lib report ./output/ --format=json
           python -m structural_lib report ./output/ --format=html -o report.html
           python -m structural_lib report ./output/ --job custom_job.json --format=json
+          python -m structural_lib report design_results.json -o report/ --batch-threshold 80
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    report_parser.add_argument("output_dir", help="Job output directory to read from")
+    report_parser.add_argument(
+        "output_dir",
+        help="Job output directory or design results JSON file",
+    )
     report_parser.add_argument(
         "--format",
         default="json",
@@ -934,6 +984,12 @@ def _build_parser() -> argparse.ArgumentParser:
     report_parser.add_argument(
         "--results",
         help="Override path to design_results.json (default: output_dir/design/design_results.json)",
+    )
+    report_parser.add_argument(
+        "--batch-threshold",
+        type=int,
+        default=80,
+        help="Batch threshold for design results HTML packaging",
     )
     report_parser.set_defaults(func=cmd_report)
 

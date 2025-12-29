@@ -12,8 +12,12 @@ import pytest
 
 from structural_lib.report import (
     load_report_data,
+    load_design_results,
     export_json,
+    export_design_json,
     export_html,
+    render_design_report_single,
+    write_design_report_package,
     get_input_sanity,
     get_stability_scorecard,
     get_units_sentinel,
@@ -89,6 +93,67 @@ SAMPLE_RESULTS = {
     },
 }
 
+SAMPLE_DESIGN_RESULTS = {
+    "schema_version": 1,
+    "code": "IS456",
+    "units": "IS456",
+    "beams": [
+        {
+            "beam_id": "B1",
+            "story": "G",
+            "geometry": {
+                "b_mm": 300,
+                "D_mm": 600,
+                "d_mm": 550,
+                "span_mm": 4000,
+                "cover_mm": 40,
+                "d_dash_mm": 50,
+            },
+            "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+            "loads": {"case_id": "G_B1", "mu_knm": 120, "vu_kn": 80},
+            "flexure": {
+                "ast_required_mm2": 900.0,
+                "section_type": "UNDER_REINFORCED",
+                "utilization": 0.7,
+            },
+            "shear": {"is_safe": True, "utilization": 0.4},
+            "serviceability": {
+                "deflection_utilization": 0.3,
+                "crack_width_utilization": 0.2,
+            },
+            "is_ok": True,
+            "governing_utilization": 0.7,
+        },
+        {
+            "beam_id": "B2",
+            "story": "G",
+            "geometry": {
+                "b_mm": 250,
+                "D_mm": 500,
+                "d_mm": 450,
+                "span_mm": 3500,
+                "cover_mm": 40,
+                "d_dash_mm": 50,
+            },
+            "materials": {"fck_nmm2": 20, "fy_nmm2": 415},
+            "loads": {"case_id": "G_B2", "mu_knm": 140, "vu_kn": 90},
+            "flexure": {
+                "ast_required_mm2": 1000.0,
+                "section_type": "UNDER_REINFORCED",
+                "utilization": 0.85,
+            },
+            "shear": {"is_safe": True, "utilization": 0.6},
+            "serviceability": {
+                "deflection_utilization": 0.4,
+                "crack_width_utilization": 0.3,
+            },
+            "is_ok": True,
+            "governing_utilization": 0.85,
+        },
+    ],
+    "summary": {"total_beams": 2, "passed": 2, "failed": 0},
+}
+
 
 @pytest.fixture
 def sample_output_dir(tmp_path: Path) -> Path:
@@ -109,6 +174,14 @@ def sample_output_dir(tmp_path: Path) -> Path:
     )
 
     return tmp_path
+
+
+@pytest.fixture
+def sample_design_results_path(tmp_path: Path) -> Path:
+    """Create a sample design results JSON file."""
+    path = tmp_path / "design_results.json"
+    path.write_text(json.dumps(SAMPLE_DESIGN_RESULTS, indent=2), encoding="utf-8")
+    return path
 
 
 class TestLoadReportData:
@@ -316,6 +389,46 @@ class TestUnitsSentinel:
 
         assert "mu_knm" in fields
         assert "vu_kn" in fields
+
+
+class TestDesignResultsReport:
+    """Tests for V08 design results reporting."""
+
+    def test_load_design_results(self, sample_design_results_path: Path) -> None:
+        data = load_design_results(sample_design_results_path)
+        assert data["code"] == "IS456"
+        assert len(data["beams"]) == 2
+
+    def test_export_design_json(self, sample_design_results_path: Path) -> None:
+        data = load_design_results(sample_design_results_path)
+        output = json.loads(export_design_json(data))
+
+        assert output["code"] == "IS456"
+        assert len(output["beams"]) == 2
+
+    def test_render_design_report_single(
+        self, sample_design_results_path: Path
+    ) -> None:
+        data = load_design_results(sample_design_results_path)
+        html = render_design_report_single(data, batch_threshold=10)
+
+        assert "<!DOCTYPE html>" in html
+        assert "Beam Index" in html
+        assert "B1" in html
+        assert "B2" in html
+
+    def test_write_design_report_package_folder(
+        self, sample_design_results_path: Path, tmp_path: Path
+    ) -> None:
+        data = load_design_results(sample_design_results_path)
+        out_dir = tmp_path / "report"
+        written = write_design_report_package(
+            data, output_path=out_dir, batch_threshold=1
+        )
+
+        assert (out_dir / "index.html") in written
+        assert (out_dir / "beams").is_dir()
+        assert (out_dir / "beams" / "G_B1.html").exists()
 
 
 class TestReportSvg:

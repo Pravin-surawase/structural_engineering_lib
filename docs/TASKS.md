@@ -40,6 +40,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **#138 (V05)** | Input Sanity Heatmap | DEV | ✅ Done |
 | **#139 (V06)** | Stability Scorecard | DEV | ✅ Done |
 | **#140 (V07)** | Units Sentinel | DEV | ✅ Done |
+| **#141 (V08)** | HTML export + batch packaging | DEV | ✅ Done |
 
 ---
 
