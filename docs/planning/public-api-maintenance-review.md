@@ -98,6 +98,22 @@ does not classify them as stable or experimental.
 
 ---
 
+### API-11 — Missing `api.py` helpers in API reference
+`docs/reference/api.md` documents `check_beam_ductility`, `check_deflection_span_depth`,
+and `check_crack_width`, but does not include `get_library_version()` or a dedicated
+public API overview section. This makes the stable surface harder to discover.
+
+**Fix:** add an "API Helpers" section in `docs/reference/api.md`.
+
+---
+
+### API-12 — Stability doc still lists non-existent deflection helper
+`api-stability.md` refers to `serviceability.check_deflection`, which does not exist.
+
+**Fix:** replace with `check_deflection_span_depth` and `check_deflection_level_b`.
+
+---
+
 ## Recommended Actions (Tasks)
 
 - Centralize unit validation on `beam_pipeline.validate_units`.
@@ -110,3 +126,4 @@ does not classify them as stable or experimental.
 - Fix serviceability function names in `api-stability.md`.
 - Classify `report`/`report_svg` stability or stop re-exporting them.
 - Document `get_library_version()` in `docs/reference/api.md`.
+- Add public API helpers overview to `docs/reference/api.md`.
