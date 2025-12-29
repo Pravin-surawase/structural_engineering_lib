@@ -4,7 +4,7 @@ If this folder feels “too big”, you’re right — most people only need a h
 
 > **Version info:** See [TASKS.md](TASKS.md) for current/next release status.
 
-## Quick CLI Reference (v0.9.4+)
+## Quick CLI Reference (v0.11.0+)
 
 ```bash
 python -m structural_lib design input.csv -o results.json
