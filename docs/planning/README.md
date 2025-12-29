@@ -85,6 +85,7 @@ Internal planning documents and research notes.
 | [v0.20 Stabilization](v0.20-stabilization-checklist.md) | Next milestone checklist |
 | [BBS + DXF Improvement Plan](bbs-dxf-improvement-plan.md) | Output contract + DXF/BBS quality plan |
 | [Library API Expansion](library-api-expansion.md) | Library-first APIs + CLI helpers |
+| [Public API Maintenance Review](public-api-maintenance-review.md) | Public API risks + fixes |
 
 ---
 
