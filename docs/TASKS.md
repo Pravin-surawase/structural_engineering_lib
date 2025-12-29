@@ -197,6 +197,16 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **TASK-116** | Fix serviceability function names in api-stability.md | DOCS | 30 min | 🟢 Low |
 | **TASK-117** | Classify `report`/`report_svg` stability or stop re-exporting | DEV | 45 min | 🟡 Medium |
 | **TASK-118** | Document `get_library_version()` in api.md | DOCS | 20 min | 🟢 Low |
+| **TASK-119** | Add public API helpers overview in api.md | DOCS | 30 min | 🟢 Low |
+
+**Proposed Fix Order (Public API Maintenance):**
+1. TASK-109 → unify units validation (prevents behavior drift).
+2. TASK-110 → fix version fallback (public API correctness).
+3. TASK-111 → align exports vs stability policy (avoids accidental public deps).
+4. TASK-112 + TASK-116 → fix stability doc naming + stable entrypoints.
+5. TASK-115 → decide beam_pipeline exposure in docs.
+6. TASK-117 → classify report/report_svg stability.
+7. TASK-118 + TASK-119 + TASK-114 → fill remaining API doc gaps.
 
 ---
 
