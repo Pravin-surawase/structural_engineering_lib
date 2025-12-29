@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "code": "IS456",
+  "units": "IS456",
+  "job_id": "example_report_001",
+  "beam": {
+    "b_mm": 230,
+    "D_mm": 500,
+    "d_mm": 450,
+    "fck_nmm2": 25,
+    "fy_nmm2": 500,
+    "cover_mm": 40
+  },
+  "cases": [
+    {"case_id": "C1", "mu_knm": 120, "vu_kn": 90},
+    {"case_id": "C2", "mu_knm": 150, "vu_kn": 110}
+  ]
+}
