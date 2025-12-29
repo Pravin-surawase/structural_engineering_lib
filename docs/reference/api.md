@@ -144,6 +144,91 @@ def detail_beam_is456(
 ) -> BeamDetailingResult
 ```
 
+### 1A.4 API Helpers
+
+```python
+def get_library_version() -> str
+def check_beam_ductility(b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float) -> DuctileBeamResult
+def check_deflection_span_depth(span_mm: float, d_mm: float, support_condition: str = "simply_supported", ...) -> DeflectionResult
+def check_crack_width(exposure_class: str = "moderate", limit_mm: float | None = None, ...) -> CrackWidthResult
+def check_compliance_report(
+    cases: Sequence[dict],
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    deflection_defaults: dict | None = None,
+    crack_width_defaults: dict | None = None,
+) -> ComplianceReport
+```
+
+Notes:
+- `check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m) and does
+  not accept a `units` argument. Use `check_beam_is456()` when you want explicit
+  unit validation at the API boundary.
+
+---
+
+## 1B. Beam Pipeline (`beam_pipeline.py`)
+
+These helpers power the CLI/job runner and return the canonical output schema
+(`BeamDesignOutput`, `MultiBeamOutput`). Use them when you want a full, structured
+pipeline without building it yourself.
+
+### 1B.1 Units Validation
+
+```python
+def validate_units(units: str) -> str
+```
+
+Returns canonical `"IS456"` or raises `UnitsValidationError`.
+
+### 1B.2 Single Beam Pipeline
+
+```python
+def design_single_beam(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    cover_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    mu_knm: float,
+    vu_kn: float,
+    case_id: str = "CASE-1",
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    include_detailing: bool = True,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_start_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    stirrup_spacing_end_mm: float = 150.0,
+    deflection_params: dict | None = None,
+    crack_width_params: dict | None = None,
+) -> BeamDesignOutput
+```
+
+### 1B.3 Multi-Beam Pipeline
+
+```python
+def design_multiple_beams(
+    *,
+    units: str,
+    beams: Sequence[dict],
+    include_detailing: bool = True,
+) -> MultiBeamOutput
+```
+
 ---
 
 ## 2. Flexure Module (`M06_Flexure` / `flexure.py`)

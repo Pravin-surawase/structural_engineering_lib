@@ -31,8 +31,7 @@ flexure.design_doubly_reinforced(b, d, d_dash, d_total, mu_knm, fck, fy, ...)
 flexure.design_flanged_beam(bf, bw, Df, d, d_total, mu_knm, fck, fy, ...)
 
 # Shear
-shear.check_shear(b, d, fck, fy, vu_kn, pt_percent, ...)
-shear.get_stirrup_spacing(b, d, fck, fy, vu_kn, pt_percent, asv_mm2, ...)
+shear.design_shear(vu_kn, b, d, fck, fy, asv, pt)
 ```
 
 ### High-Level API
@@ -40,8 +39,17 @@ shear.get_stirrup_spacing(b, d, fck, fy, vu_kn, pt_percent, asv_mm2, ...)
 ```python
 from structural_lib import api
 
+api.get_library_version()
+api.check_beam_ductility(b, D, d, fck, fy, min_long_bar_dia)
+api.check_deflection_span_depth(span_mm, d_mm, support_condition, ...)
+api.check_crack_width(exposure_class, limit_mm, ...)
+api.check_compliance_report(cases, b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, ...)
+api.design_beam_is456(units, case_id, mu_knm, vu_kn, b_mm, D_mm, d_mm, ...)
 api.check_beam_is456(
     units, cases, b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, ...
+)
+api.detail_beam_is456(
+    units, beam_id, story, b_mm, D_mm, span_mm, cover_mm, fck_nmm2, fy_nmm2, ...
 )
 ```
 
@@ -60,7 +68,8 @@ beam_pipeline.design_multiple_beams(units, beams, ...)
 ```python
 from structural_lib import serviceability
 
-serviceability.check_deflection(span_mm, d_mm, beam_type, ...)
+serviceability.check_deflection_span_depth(span_mm, d_mm, support_condition, ...)
+serviceability.check_deflection_level_b(...)
 serviceability.check_crack_width(...)
 ```
 
@@ -132,6 +141,9 @@ These modules are implementation details. Do not depend on them directly.
 | `materials.py` | Material properties | May merge with constants |
 | `types.py` | Type definitions | Dataclass fields may change |
 | `ductile.py` | Ductile detailing checks | Under development |
+| `report.py` | Report generation helpers | Experimental; subject to change |
+| `report_svg.py` | SVG rendering helpers | Experimental; subject to change |
+| `excel_integration.py` | Excel batch helpers | Under review |
 
 ### How to Use Internal Modules Safely
 
