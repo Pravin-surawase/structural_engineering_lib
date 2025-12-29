@@ -38,6 +38,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **#136 (V03)** | Critical Set Export (sorted utilization table) | DEV | ✅ Done |
 | **#137 (V04)** | report_svg.py + cross-section SVG | DEV | ✅ Done |
 | **#138 (V05)** | Input Sanity Heatmap | DEV | ✅ Done |
+| **#139 (V06)** | Stability Scorecard | DEV | ✅ Done |
 
 ---
 
