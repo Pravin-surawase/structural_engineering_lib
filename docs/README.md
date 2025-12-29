@@ -11,6 +11,8 @@ python -m structural_lib design input.csv -o results.json
 python -m structural_lib bbs results.json -o schedule.csv
 python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib job job.json -o ./output
+python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
+python -m structural_lib report ./output --format=html -o report.html
 ```
 For VS Code AI-agent work, start with:
 - [AI_CONTEXT_PACK.md](AI_CONTEXT_PACK.md)
@@ -25,6 +27,22 @@ For VS Code AI-agent work, start with:
 3) **Full API surface:** [reference/api.md](reference/api.md)
 4) **IS 456 formula cheat sheet:** [reference/is456-formulas.md](reference/is456-formulas.md)
 5) **Problems & fixes:** [reference/troubleshooting.md](reference/troubleshooting.md)
+
+---
+
+## Visual Outputs (v0.10.7+)
+
+Generate human-readable summaries from job outputs:
+
+```bash
+# Critical set table (CSV/HTML)
+python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
+
+# Report summary (HTML/JSON)
+python -m structural_lib report ./output --format=html -o report.html
+```
+
+Input for both commands is the job output folder created by `python -m structural_lib job`.
 
 ---
 
