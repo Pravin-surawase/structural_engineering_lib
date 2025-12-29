@@ -1,6 +1,6 @@
-"""Tests for report module (V01).
+"""Tests for report module (V01, V03).
 
-Tests the report data loading and export functions.
+Tests the report data loading, export functions, and critical set export.
 """
 
 from __future__ import annotations
@@ -10,7 +10,14 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.report import load_report_data, export_json, export_html
+from structural_lib.report import (
+    load_report_data,
+    export_json,
+    export_html,
+    get_critical_set,
+    export_critical_csv,
+    export_critical_html,
+)
 
 
 # Sample test data matching job output structure
@@ -247,3 +254,174 @@ class TestLoadJobSpec:
 
         with pytest.raises(ValueError, match="schema_version"):
             load_job_spec(job_file)
+
+
+# =============================================================================
+# Critical Set Tests (V03)
+# =============================================================================
+
+
+class TestGetCriticalSet:
+    """Tests for get_critical_set function."""
+
+    def test_sorts_by_utilization_descending(self, sample_output_dir: Path) -> None:
+        """Test that cases are sorted by utilization (highest first)."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+
+        assert len(critical) == 2
+        # LC2 has higher utilization (0.85) than LC1 (0.65)
+        assert critical[0].case_id == "LC2"
+        assert critical[0].utilization == 0.85
+        assert critical[1].case_id == "LC1"
+        assert critical[1].utilization == 0.65
+
+    def test_top_filter(self, sample_output_dir: Path) -> None:
+        """Test top N filter."""
+        data = load_report_data(sample_output_dir)
+
+        # Get only top 1
+        critical = get_critical_set(data, top=1)
+
+        assert len(critical) == 1
+        assert critical[0].case_id == "LC2"
+
+    def test_top_none_returns_all(self, sample_output_dir: Path) -> None:
+        """Test that top=None returns all cases."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data, top=None)
+
+        assert len(critical) == 2
+
+    def test_extracts_utilization_values(self, sample_output_dir: Path) -> None:
+        """Test that flexure and shear utilization are extracted."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+
+        lc2 = critical[0]
+        assert lc2.flexure_util == 0.85
+        assert lc2.shear_util == 0.50
+        assert lc2.is_ok is True
+
+    def test_json_path_traceability(self, sample_output_dir: Path) -> None:
+        """Test that json_path is set for traceability."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+
+        # LC2 is at index 1 in original data, but comes first after sorting
+        assert critical[0].json_path == "cases[1]"
+        assert critical[1].json_path == "cases[0]"
+
+    def test_empty_cases(self, tmp_path: Path) -> None:
+        """Test handling of empty cases array."""
+        inputs_dir = tmp_path / "inputs"
+        design_dir = tmp_path / "design"
+        inputs_dir.mkdir()
+        design_dir.mkdir()
+
+        job = {**SAMPLE_JOB}
+        results = {"is_ok": True, "cases": []}
+
+        (inputs_dir / "job.json").write_text(json.dumps(job), encoding="utf-8")
+        (design_dir / "design_results.json").write_text(
+            json.dumps(results), encoding="utf-8"
+        )
+
+        data = load_report_data(tmp_path)
+        critical = get_critical_set(data)
+
+        assert critical == []
+
+
+class TestExportCriticalCsv:
+    """Tests for export_critical_csv function."""
+
+    def test_csv_header_and_rows(self, sample_output_dir: Path) -> None:
+        """Test CSV output has correct header and rows."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        csv_output = export_critical_csv(critical)
+
+        lines = csv_output.strip().split("\n")
+        assert len(lines) == 3  # header + 2 data rows
+
+        header = lines[0]
+        assert "case_id" in header
+        assert "utilization" in header
+        assert "flexure_util" in header
+        assert "shear_util" in header
+        assert "is_ok" in header
+        assert "json_path" in header
+
+    def test_csv_values(self, sample_output_dir: Path) -> None:
+        """Test CSV values are correct."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        csv_output = export_critical_csv(critical)
+
+        # LC2 should be first row (highest utilization)
+        assert "LC2" in csv_output
+        assert "0.8500" in csv_output
+        assert "TRUE" in csv_output
+
+    def test_empty_cases_csv(self) -> None:
+        """Test CSV output for empty cases."""
+        csv_output = export_critical_csv([])
+
+        # Should have header only
+        lines = csv_output.strip().split("\n")
+        assert len(lines) == 1
+        assert "case_id" in lines[0]
+
+
+class TestExportCriticalHtml:
+    """Tests for export_critical_html function."""
+
+    def test_html_structure(self, sample_output_dir: Path) -> None:
+        """Test HTML output has correct structure."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        html = export_critical_html(critical)
+
+        assert "<!DOCTYPE html>" in html
+        assert "<table>" in html
+        assert "<thead>" in html
+        assert "<tbody>" in html
+        assert "Case ID" in html
+        assert "Utilization" in html
+
+    def test_html_data_source_attribute(self, sample_output_dir: Path) -> None:
+        """Test data-source attribute for traceability."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        html = export_critical_html(critical)
+
+        assert 'data-source="cases[1]"' in html
+        assert 'data-source="cases[0]"' in html
+
+    def test_html_utilization_bar(self, sample_output_dir: Path) -> None:
+        """Test utilization bar CSS is present."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        html = export_critical_html(critical)
+
+        assert "util-bar" in html
+        assert "width:" in html
+        assert "85.0%" in html  # LC2 utilization
+
+    def test_html_status_badges(self, sample_output_dir: Path) -> None:
+        """Test pass/fail status badges."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        html = export_critical_html(critical)
+
+        assert "✓ PASS" in html
+        assert "badge pass" in html
+
+    def test_html_custom_title(self, sample_output_dir: Path) -> None:
+        """Test custom title in HTML."""
+        data = load_report_data(sample_output_dir)
+        critical = get_critical_set(data)
+        html = export_critical_html(critical, title="Custom Title")
+
+        assert "Custom Title" in html
