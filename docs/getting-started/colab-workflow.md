@@ -296,9 +296,9 @@ job = {
         "asv_mm2": 100
     },
     "cases": [
-        {"case_id": "LC1", "mu_knm": 100, "vu_kn": 70},
-        {"case_id": "LC2", "mu_knm": 150, "vu_kn": 90},
-        {"case_id": "LC3", "mu_knm": 180, "vu_kn": 110}
+        {"case_id": "LC1", "mu_knm": 80, "vu_kn": 55},
+        {"case_id": "LC2", "mu_knm": 110, "vu_kn": 75},
+        {"case_id": "LC3", "mu_knm": 140, "vu_kn": 95}
     ]
 }
 
