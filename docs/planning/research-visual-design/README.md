@@ -1,23 +1,112 @@
 # Research: Visual Layer for Beam Design
 
-Purpose: explore visual/interactive outputs that make design, loading, steel, and BBS
-more intuitive without weakening correctness or traceability.
-
-Scope: concept ideas, data needs, and phased experiments. No code yet.
+> **Template version:** 1.0
+> Created using multi-agent research workflow
 
 **Last Updated:** 2025-12-29
-**Status:** Research in progress — brainstorming and review phase
-
-> **Document Purpose:** This is research guidance, NOT an implementation spec.
-> Several decisions remain open (marked in text). Do not treat as ready-to-execute.
->
-> **Review Rounds:**
-> - R1 (2025-12-29): Schema example corrected, Jinja2 dep clarified, determinism relaxed
-> - R2 (2025-12-29): HTML escaping, ordered list guards, BBS input requirement
-> - R3 (2025-12-29): Innovation ideas reviewed, roadmap alignment assessed
-> - R4 (2025-12-29): Problem-first reframe, user personas, low-effort solutions added
+**Status:** ✅ Decided — ready for implementation planning
+**Owner:** PM
+**Decision Date:** 2025-12-29
 
 ---
+
+## Problem Statement
+
+Engineers running batch designs (50-500 beams) struggle to identify critical beams, verify calculations are trustworthy, and track what changed between runs. Current output is JSON/tables that require manual scanning.
+
+---
+
+## Context
+
+- Current output: JSON files, CLI text, Excel cells
+- Gap: No visual trust layer, no batch summary, no change tracking
+- Trigger: User feedback "I can't see which beams are critical without opening 50 files"
+- Related: Platform research (reports need a delivery mechanism)
+
+---
+
+## Review Rounds
+
+| Round | Date | Changes |
+|-------|------|---------|
+| R1 | 2025-12-29 | Schema example corrected, Jinja2 dep clarified, determinism relaxed |
+| R2 | 2025-12-29 | HTML escaping, ordered list guards, BBS input requirement |
+| R3 | 2025-12-29 | Innovation ideas reviewed, roadmap alignment assessed |
+| R4 | 2025-12-29 | Problem-first reframe, user personas, low-effort solutions added |
+| R5 | 2025-12-29 | **Final decision** — Phase 1 scope locked, deferred items documented |
+
+---
+
+## Constraints (Non-Negotiables)
+
+- [x] Deterministic (same input → semantically identical output)
+- [x] No new required dependencies for core library (stdlib only in Phase 1-2)
+- [x] No hidden defaults (all assumptions labeled)
+- [x] Render from output JSON only (never intermediate state)
+- [x] Performance: 500 beams → report in <30 seconds
+- [ ] Clause references (Phase 2+ — needs W08 metadata)
+
+---
+
+## Success Criteria
+
+| Metric | Target |
+|--------|--------|
+| Identify critical beams | Top N by utilization in <1 second |
+| Trace any value to source | `data-source` attribute on every number |
+| Batch report generation | 500 beams in <30 seconds |
+| Zero external deps (Phase 1) | stdlib + `html.escape()` only |
+| Match hand-sketch style | SP 16 figure conventions |
+
+---
+
+## Workflow Summary
+
+**Stage 1: Initiate (CLIENT + PM)**
+- Problem: engineers need faster trust checks, not more visuals.
+- Personas: design/checking/detailing/site/PM (see Part 0.1).
+- Constraints: deterministic, stdlib-only in Phase 1-2, no hidden defaults.
+
+**Stage 2: Explore (RESEARCHER + TESTER)**
+- Options: SVG-in-HTML (stdlib), matplotlib, plotly.
+- Edge cases: 500+ beams, missing cover/span, no detailing data, unit mismatches.
+- Validation: golden files, data-source resolution, performance bounds.
+
+**Stage 3: Evaluate (DEV + Review)**
+- Outcome: SVG-in-HTML wins on trust and determinism; heavy deps deferred.
+- Risks: schema drift, batch size performance, missing clause metadata.
+- Scoring: See "Scoring (Stage 3)" section below.
+
+**Stage 4: Decide (PM + Owner)** ✅
+- **Decision Date:** 2025-12-29
+- **Phase 1 Scope (Approved):**
+  1. Critical Set Export — top N beams by utilization (sorted table)
+  2. Input Sanity Heatmap — flag suspicious inputs (low cover, b/D outliers)
+  3. Stability Scorecard — 5 boolean flags (over-reinforced, brittle shear, etc.)
+  4. Units Sentinel — auto-detect kN vs N magnitude mismatches
+  5. Cross-section SVG — optional single-beam visual
+  6. Batch threshold packaging — <80 single HTML, ≥80 folder
+  7. `data-source` attributes — trace every value to JSON path
+- **Input:** Job output (`ComplianceReport`) — unified structure
+- **Output:** stdlib HTML + inline SVG (no external deps)
+- **Deferred to Phase 2+:**
+  - Change Ledger (needs hash scope rules)
+  - Proof Trace with clause refs (needs W08 clause metadata)
+  - BBS visuals (needs bar-mark identity contract)
+  - Diff mode (needs stable beam_id + tolerances)
+  - DXF-BBS consistency (needs shared identity spec)
+
+**Stage 5: Handoff (DOCS + DEV)**
+- **Implementation tasks (create issues for):**
+  1. `report` CLI command skeleton (`python -m structural_lib report`)
+  2. Critical Set Export function (filter/sort ComplianceReport)
+  3. Input Sanity checker (geometry/material range validation)
+  4. Stability Scorecard flags (5 boolean checks)
+  5. Units Sentinel (magnitude-based warnings)
+  6. Cross-section SVG generator (`render_section_svg()`)
+  7. Batch packager (threshold logic + index.html)
+  8. Golden file tests for determinism
+- **Docs to update:** API_REFERENCE.md (new report command), CHANGELOG.md
 
 ## Executive Summary
 
@@ -368,27 +457,24 @@ Bar Mark │ Dia │ Count │ Length │ Weight │ Visual
 
 ## Part 4: Implementation Roadmap
 
-### Phase 1: Static HTML Report
-
-> **Decision Required:** Confirm Phase 1 scope before implementation.
-> This section documents the *proposed* approach, not final spec.
+### Phase 1: Static HTML Report (Batch Threshold)
 
 **Scope:**
-- New command: `python -m structural_lib report results.json -o report.html`
-- **Single HTML file** with inline CSS/SVG (no external deps)
+- New command: `python -m structural_lib report design_results.json -o report/`
+- Output packaging:
+  - <80 beams: single self-contained HTML (portable)
+  - >=80 beams: folder output with `index.html` + `beams/*.html`
 - Contents: geometry, bars, stirrups, utilization, compliance summary
 - Template: `string.Template` (stdlib) with `html.escape()` for all user-supplied values
-- **For batch (500 beams):** One HTML with all beams in sections, not 500 files
+- For batch: index summary + per-beam pages when threshold is exceeded
 
 **Explicit non-goals for Phase 1:**
-- No per-beam separate files (that's Phase 2)
-- No index page (that's Phase 2)
+- No interactive UI (beyond anchors)
 - No BBS linking (that's Phase 3+)
+- No PDF export
 
-**Trade-off: Single file vs folder output (Decision Required)**
-- *Single file:* Easier to share, no broken links, but large for 500+ beams
-- *Folder output:* Scalable, but adds complexity (index page, relative links)
-- *Current recommendation:* Single file for Phase 1, revisit if performance issues
+**Packaging decision (Phase 1):**
+- Rationale: shareable for small runs, scalable for large runs without deps
 
 **Files to create:**
 ```
@@ -407,8 +493,8 @@ Python/structural_lib/
 - Still stdlib-only (no Jinja2, no external deps)
 
 **Batch handling decision:**
-- <50 beams: single HTML with collapsible sections
-- ≥50 beams: index.html + per-beam HTML files in folder
+- <80 beams: single HTML with collapsible sections
+- >=80 beams: index.html + per-beam HTML files in folder
 
 **Effort:** 1-2 days
 
@@ -542,6 +628,81 @@ class ComplianceCaseResult:
 
 ---
 
+## Scoring (Stage 3: Evaluate)
+
+### Options Evaluated
+
+| Option | Description | Deps | Phase 1 Ready |
+|--------|-------------|------|---------------|
+| **A. Critical Set Export** | Top N beams by utilization (sorted table) | None | ✓ |
+| **B. Input Sanity Heatmap** | Flag suspicious inputs (low cover, b/D outliers) | None | ✓ |
+| **C. Stability Scorecard** | 5 boolean flags (over-reinforced, brittle shear, etc.) | None | ✓ |
+| **D. Units Sentinel** | Auto-detect kN vs N magnitude mismatches | None | ✓ |
+| **E. Cross-section SVG** | Visual beam section with bars | None | ✓ |
+| **F. Change Ledger** | Input/output hashes + key deltas | Stable schema | Phase 2 |
+| **G. Proof Trace** | Clause-linked calc steps | W08 metadata | Phase 3 |
+| **H. BBS Visuals** | Bar schedule diagrams | Bar-mark contract | Phase 3 |
+
+### Scoring Rubric Applied
+
+| Option | Trust (5) | Value (5) | Effort (5=low) | Risk (5=low) | Align (5) | Total | Rank |
+|--------|-----------|-----------|----------------|--------------|-----------|-------|------|
+| A. Critical Set Export | 5 | 5 | 5 | 5 | 5 | **25** | 🥇 1 |
+| B. Input Sanity Heatmap | 5 | 4 | 5 | 5 | 5 | **24** | 🥈 2 |
+| C. Stability Scorecard | 4 | 4 | 5 | 5 | 5 | **23** | 🥉 3 |
+| D. Units Sentinel | 5 | 4 | 5 | 5 | 4 | **23** | 🥉 3 |
+| E. Cross-section SVG | 3 | 3 | 4 | 5 | 4 | **19** | 5 |
+| F. Change Ledger | 5 | 5 | 4 | 3 | 4 | **21** | 4 (Phase 2) |
+| G. Proof Trace | 5 | 5 | 2 | 3 | 5 | **20** | Deferred |
+| H. BBS Visuals | 4 | 4 | 2 | 3 | 4 | **17** | Deferred |
+
+### Scoring Rationale
+
+**A. Critical Set Export (25/25):**
+- Trust: 5 — filters existing verified output
+- Value: 5 — directly answers "which beams are critical?"
+- Effort: 5 — just filter/sort, no new code
+- Risk: 5 — uses existing ComplianceReport
+- Align: 5 — core use case
+
+**B. Input Sanity Heatmap (24/25):**
+- Trust: 5 — flags problems before calculations
+- Value: 4 — catches garbage early
+- Effort: 5 — simple range checks
+- Risk: 5 — no new dependencies
+- Align: 5 — supports trust posture
+
+**E. Cross-section SVG (19/25):**
+- Trust: 3 — visual, not data (lower trust impact)
+- Value: 3 — nice-to-have, not critical
+- Effort: 4 — SVG generation is straightforward
+- Risk: 5 — stdlib only
+- Align: 4 — secondary to trust features
+
+### Review Findings
+
+| Severity | Finding | Option | Resolution |
+|----------|---------|--------|------------|
+| **Low** | SVG viewBox sizing needs consistent rules | E | Define fixed scaling formula |
+| **Medium** | Change Ledger needs hash scope definition | F | Defer to Phase 2 |
+| **Medium** | Proof Trace needs W08 clause metadata | G | Defer to Phase 3 |
+| **Low** | Batch threshold (80) is arbitrary | All | Document as configurable |
+| **Info** | BBS data not in ComplianceReport | H | Defer until input schema defined |
+
+### Stage 3 Summary (for Stage 4)
+
+**Scored:** 8 options with feasibility and rubric.
+
+**Top 4 (Phase 1):** Critical Set Export (25), Input Sanity Heatmap (24), Stability Scorecard (23), Units Sentinel (23).
+
+**Phase 1 also includes:** Cross-section SVG (19) as optional visual, batch packaging, data-source traces.
+
+**Deferred:** Change Ledger (Phase 2), Proof Trace (Phase 3), BBS Visuals (Phase 3).
+
+**Next stage:** PM to confirm Phase 1 scope (done in Stage 4).
+
+---
+
 ## Part 7: Risk Analysis
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -585,14 +746,14 @@ class ComplianceCaseResult:
 | Optional dependency? | **Yes:** Phase 1-2 = stdlib only, Phase 3 = `[viz]` extra |
 | Which 3 visuals first? | **Cross-section, utilization bar, compliance summary** (BBS deferred to Phase 3) |
 | PDF or HTML first? | **HTML** — more portable, easier to iterate |
-| How to handle 500 beams? | **Phase 1:** Single HTML with all beams. **Phase 2:** Index + per-beam pages |
+| How to handle 500 beams? | **Phase 1:** Threshold rule (<80 single HTML, >=80 folder). **Phase 2:** Same packaging with collapsibles + filters |
 
 ### 9.1 Additional Questions from Review (2025-12-29)
 
 | Question | Resolution |
 |----------|------------|
 | Which output to consume: CLI design, job output, or both? | **Job output (`ComplianceReport`)** — it has all cases in one structure |
-| Phase 1 single HTML or folder with index? | **Single self-contained HTML** (folder is Phase 2) |
+| Phase 1 single HTML or folder with index? | **Threshold rule** (<80 single HTML, >=80 folder) |
 | Clause refs now or Phase 2? | **Phase 2** — current schema has clause in `DesignError` only, not in results |
 | Tie phase targets to versions or milestones? | **Milestones** — version numbers are indicative, actual scheduling per production roadmap |
 | Will this doc be published in-repo or internal? | **In-repo** — serves as research record and implementation guide |
@@ -605,7 +766,7 @@ class ComplianceCaseResult:
 ### Before Implementation (Decision Gate)
 
 1. **Confirm schema source** — CLI design output, job output, or unified schema?
-2. **Confirm output packaging** — Single HTML (recommended) or folder structure?
+2. **Confirm output packaging threshold** — Keep <80 / >=80 split or adjust the cutoff?
 3. **Confirm Phase 1 scope** — Cross-section + utilization only, or include compliance table?
 
 ### Immediate (Week 1 — after decisions locked)
@@ -731,13 +892,19 @@ The figures in SP 16 use:
 
 5. **Clause refs unlock deep trust.** Proof Trace with clause refs is the long-term differentiator, but needs W08 first.
 
+### Decision Summary
+
+**Phase 1 ships:** Critical Set Export, Input Sanity Heatmap, Stability Scorecard, Units Sentinel, Cross-section SVG (optional), batch threshold packaging, `data-source` traces.
+
+**Phase 2+ deferred:** Change Ledger, Proof Trace, BBS visuals, Diff mode, DXF-BBS checks.
+
 ### Next Steps
 
-1. Finalize Phase 1 scope: Critical Beam Map + batch threshold rule + `data-source` traces + optional SVG
-2. Prototype Critical Beam Map + batch packaging
-3. Define `.ledger.json` schema (Phase 2) with stable hash rules
-4. Define Units Sentinel + Input Sanity thresholds (Phase 2)
+1. ✅ Research complete — move to implementation planning
+2. Create GitHub issues for 8 implementation tasks (see Stage 5)
+3. Target milestone: v0.9 or v0.10 (per production roadmap)
+4. Phase 2 prerequisites: W08 clause metadata, stable hash rules
 
 ---
 
-*End of research document. Brainstorming continues.*
+*Research complete. Status: Decided. Implementation planning begins.*
