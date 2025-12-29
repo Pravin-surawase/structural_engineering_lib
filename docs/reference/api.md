@@ -20,6 +20,12 @@ python -m structural_lib bbs results.json -o schedule.csv
 # Generate DXF drawings (requires ezdxf)
 python -m structural_lib dxf results.json -o drawings.dxf
 
+# Check BBS vs DXF bar mark consistency
+python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
+
+# Render DXF to PNG/PDF (optional)
+python scripts/dxf_render.py drawings.dxf -o drawings.png
+
 # Run complete job from spec file
 python -m structural_lib job job.json -o ./output
 
@@ -1004,6 +1010,25 @@ def generate_beam_dxf(
 - **Views:** Elevation + Cross-section
 - **Origin:** Bottom-left of beam at first support
 
+### 10.4 BBS/DXF Consistency Utilities
+**Python:**
+```python
+def extract_bar_marks_from_dxf(path: str) -> Dict[str, Set[str]]
+
+def compare_bbs_dxf_marks(
+    bbs_csv_path: str,
+    dxf_path: str,
+) -> Dict[str, object]  # ok + missing/extra per beam + summary counts
+```
+
+### 10.5 DXF Render Script (PNG/PDF)
+**CLI:**
+```bash
+python scripts/dxf_render.py drawings.dxf -o drawings.png
+python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+```
+Requires: `pip install "structural-lib-is456[render]"`
+
 ---
 
 ## 11. Excel Integration Module (`excel_integration.py`) — v0.7+
@@ -1164,7 +1189,21 @@ def export_bom_summary_csv(
 ) -> str
 ```
 
-### 12.6 Example Usage
+### 12.6 Bar Mark Utilities
+**Python:**
+```python
+def parse_bar_mark(mark: str) -> Optional[Dict[str, Any]]
+
+def extract_bar_marks_from_text(text: str) -> List[str]
+
+def extract_bar_marks_from_items(
+    items: List[BBSLineItem],
+) -> Dict[str, Set[str]]
+
+def extract_bar_marks_from_bbs_csv(path: str) -> Dict[str, Set[str]]
+```
+
+### 12.7 Example Usage
 ```python
 from structural_lib.detailing import create_beam_detailing
 from structural_lib.bbs import generate_bbs_from_detailing, export_bbs_to_csv
@@ -1182,7 +1221,7 @@ items = generate_bbs_from_detailing(detailing)
 export_bbs_to_csv(items, "output/B1_bbs.csv")
 ```
 
-### 12.7 CSV Output Format
+### 12.8 CSV Output Format
 ```csv
 bar_mark,member_id,location,zone,shape_code,diameter_mm,no_of_bars,cut_length_mm,total_length_mm,unit_weight_kg,total_weight_kg,remarks
 B1-B-S-D16-01,B1,bottom,start,A,16,3,2600,7800,4.11,12.33,Bottom start - 3-16φ

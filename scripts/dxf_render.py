@@ -45,7 +45,7 @@ def _require_matplotlib():
         import matplotlib  # noqa: F401
     except Exception as exc:
         raise RuntimeError(
-            "Missing matplotlib. Install with: pip install matplotlib"
+            "Missing matplotlib. Install with: pip install \"structural-lib-is456[render]\""
         ) from exc
 
 

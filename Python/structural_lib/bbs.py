@@ -19,6 +19,7 @@ import csv
 import json
 from pathlib import Path
 import math
+import re
 
 from .detailing import BeamDetailingResult
 from .types import CuttingAssignment, CuttingPlan
@@ -359,6 +360,80 @@ def _bar_mark_sort_key(item: BBSLineItem) -> tuple:
         item.shape_code,
         int(round(item.cut_length_mm)),
     )
+
+
+BAR_MARK_PATTERN = re.compile(
+    r"(?P<beam_id>[A-Z0-9]+(?:-[A-Z0-9]+)*)-"
+    r"(?P<loc>[BTS])-(?P<zone>[SMEF])-D(?P<dia>\d+)-(?P<seq>\d{2})",
+    flags=re.IGNORECASE,
+)
+
+
+def parse_bar_mark(mark: str) -> dict | None:
+    """Parse a bar mark into its components, or return None if invalid."""
+    if mark is None:
+        return None
+    cleaned = mark.strip()
+    if not cleaned:
+        return None
+    match = BAR_MARK_PATTERN.fullmatch(cleaned)
+    if not match:
+        return None
+    data = match.groupdict()
+    return {
+        "mark": cleaned.upper(),
+        "beam_id": data["beam_id"].upper(),
+        "loc": data["loc"].upper(),
+        "zone": data["zone"].upper(),
+        "dia": int(data["dia"]),
+        "seq": int(data["seq"]),
+    }
+
+
+def extract_bar_marks_from_text(text: str) -> List[str]:
+    """Extract bar marks from a free-text string."""
+    if not text:
+        return []
+    return [match.group(0).upper() for match in BAR_MARK_PATTERN.finditer(text)]
+
+
+def extract_bar_marks_from_items(
+    items: List[BBSLineItem],
+) -> Dict[str, set[str]]:
+    """Collect bar marks from BBS items, grouped by beam."""
+    marks_by_beam: Dict[str, set[str]] = {}
+    for item in items:
+        parsed = parse_bar_mark(item.bar_mark)
+        if not parsed:
+            raise ValueError(f"Invalid bar_mark in items: '{item.bar_mark}'")
+        beam_id = parsed["beam_id"]
+        marks_by_beam.setdefault(beam_id, set()).add(parsed["mark"])
+    return marks_by_beam
+
+
+def extract_bar_marks_from_bbs_csv(path: str | Path) -> Dict[str, set[str]]:
+    """Load bar marks from a BBS CSV file, grouped by beam."""
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"BBS file not found: {p}")
+
+    marks_by_beam: Dict[str, set[str]] = {}
+    with p.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        if not reader.fieldnames or "bar_mark" not in reader.fieldnames:
+            raise ValueError("BBS CSV missing required 'bar_mark' column.")
+
+        for row in reader:
+            mark_raw = (row.get("bar_mark") or "").strip()
+            if not mark_raw or mark_raw.upper() == "TOTAL":
+                continue
+            parsed = parse_bar_mark(mark_raw)
+            if not parsed:
+                raise ValueError(f"Invalid bar_mark in BBS CSV: '{mark_raw}'")
+            beam_id = parsed["beam_id"]
+            marks_by_beam.setdefault(beam_id, set()).add(parsed["mark"])
+
+    return marks_by_beam
 
 
 def assign_bar_marks(items: List[BBSLineItem]) -> List[BBSLineItem]:

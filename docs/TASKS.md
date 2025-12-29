@@ -37,6 +37,10 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **TASK-099** | Deterministic bar mark generator + wire into BBS | DEV | ✅ Done |
 | **TASK-100** | BBS cut-length + hook/bend updates + weight rules | DEV | ✅ Done |
 | **TASK-101** | DXF callouts include bar marks + zone labels | DEV | ✅ Done |
+| **TASK-102** | DXF/BBS consistency checker (mark diff) | DEV | ✅ Done |
+| **TASK-103** | DXF content tests (layers + text) | TESTER | ✅ Done |
+| **TASK-083** | DXF deliverable layout polish | DEV | ✅ Done |
+| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | ✅ Done |
 
 ## Recently Completed (Public API Maintenance)
 
@@ -183,10 +187,6 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 | ID | Task | Agent | Est. | Priority | Bundle |
 |----|------|-------|------|----------|--------|
-| **TASK-102** | DXF/BBS consistency checker (mark diff) | DEV | 4 hrs | 🟡 Medium | E |
-| **TASK-103** | DXF content tests (layers + text) | TESTER | 3 hrs | 🟡 Medium | D |
-| **TASK-083** | DXF deliverable layout polish | DEV | 2 hrs | 🟡 Medium | F |
-| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | 2 hrs | 🟡 Medium | F |
 
 ---
 

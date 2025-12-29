@@ -10,6 +10,7 @@ If this folder feels “too big”, you’re right — most people only need a h
 python -m structural_lib design input.csv -o results.json
 python -m structural_lib bbs results.json -o schedule.csv
 python -m structural_lib dxf results.json -o drawings.dxf
+python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 python -m structural_lib job job.json -o ./output
 python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
@@ -51,6 +52,19 @@ You can also generate reports from `design_results.json` with batch packaging:
 ```bash
 python -m structural_lib report results.json --format=html -o report/ --batch-threshold 80
 ```
+
+---
+
+## DXF Rendering (optional)
+
+Render DXF outputs to PNG/PDF for quick sharing:
+
+```bash
+python scripts/dxf_render.py drawings.dxf -o drawings.png
+python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+```
+
+Requires: `pip install "structural-lib-is456[render]"`
 
 ---
 
