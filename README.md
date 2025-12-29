@@ -208,6 +208,7 @@ Generate a critical set and report from the job outputs:
 python3 -m structural_lib critical ./out_demo --top 10 --format=csv -o critical.csv
 python3 -m structural_lib report ./out_demo --format=html -o report.html
 ```
+The HTML report includes a cross-section SVG and input sanity heatmap.
 
 ## Features
 

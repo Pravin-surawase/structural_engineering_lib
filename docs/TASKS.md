@@ -27,13 +27,7 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Active
 
-### Visual Layer v0.11 (CLI Reports)
-
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **#137 (V04)** | report_svg.py + cross-section SVG | DEV | 🟡 In progress |
-
-**Notes:** Depends on V03 (critical set export) and V01/V02 foundations.
+No active tasks. Pick from "Up Next" and move here when starting.
 
 ## Recently Completed (Visual v0.11)
 
@@ -42,6 +36,8 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 | **#134 (V01)** | report.py skeleton + load_job_spec helper | DEV | ✅ Done |
 | **#135 (V02)** | report subcommand in __main__.py | DEV | ✅ Done |
 | **#136 (V03)** | Critical Set Export (sorted utilization table) | DEV | ✅ Done |
+| **#137 (V04)** | report_svg.py + cross-section SVG | DEV | ✅ Done |
+| **#138 (V05)** | Input Sanity Heatmap | DEV | ✅ Done |
 
 ---
 
