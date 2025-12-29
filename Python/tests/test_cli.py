@@ -237,6 +237,13 @@ def test_cli_requires_command():
         cli_main.main([])
 
 
+def test_validate_help():
+    """Test validate subcommand help."""
+    with pytest.raises(SystemExit) as exc:
+        cli_main.main(["validate", "--help"])
+    assert exc.value.code == 0
+
+
 # =============================================================================
 # Design Command Tests
 # =============================================================================
@@ -689,6 +696,18 @@ def test_job_execution(sample_job_file, tmp_path):
 
     # Should have at least some output files
     assert len(csv_files) > 0 or len(json_files) > 0
+
+
+def test_validate_job_auto(sample_job_file):
+    """Validate job.json with auto detection."""
+    rc = cli_main.main(["validate", str(sample_job_file)])
+    assert rc == 0
+
+
+def test_validate_results_auto(sample_design_results_file):
+    """Validate results.json with auto detection."""
+    rc = cli_main.main(["validate", str(sample_design_results_file)])
+    assert rc == 0
 
 
 # =============================================================================

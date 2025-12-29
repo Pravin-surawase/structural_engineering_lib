@@ -12,6 +12,7 @@ python -m structural_lib bbs results.json -o schedule.csv
 python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 python -m structural_lib job job.json -o ./output
+python -m structural_lib validate job.json
 python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```

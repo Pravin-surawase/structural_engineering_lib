@@ -5,18 +5,22 @@ Description:  Public facing API functions
 
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
+import json
 
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Dict, Optional, Sequence, Union
 
 from . import beam_pipeline
 from . import compliance
 from . import detailing
 from . import ductile
+from . import job_runner
 from . import serviceability
-from .types import ComplianceCaseResult, ComplianceReport
+from .types import ComplianceCaseResult, ComplianceReport, ValidationReport
 
 __all__ = [
     "get_library_version",
+    "validate_job_spec",
+    "validate_design_results",
     "check_beam_ductility",
     "check_deflection_span_depth",
     "check_crack_width",
@@ -48,6 +52,128 @@ def get_library_version() -> str:
                 if line.strip().startswith("version"):
                     return line.split("=", 1)[1].strip().strip('"')
         return "0.0.0-dev"
+
+
+def validate_job_spec(path: Union[str, Path]) -> ValidationReport:
+    """Validate a job.json specification file.
+
+    Returns a ValidationReport with errors/warnings and summary details.
+    """
+    try:
+        spec = job_runner.load_job_spec(path)
+    except Exception as exc:
+        return ValidationReport(ok=False, errors=[str(exc)])
+
+    details = {
+        "schema_version": spec.get("schema_version"),
+        "job_id": spec.get("job_id"),
+        "code": spec.get("code"),
+        "units": spec.get("units"),
+        "beam_keys": sorted(spec.get("beam", {}).keys()),
+        "cases_count": len(spec.get("cases", [])),
+    }
+    return ValidationReport(ok=True, details=details)
+
+
+def _beam_has_geometry(beam: Dict[str, Any]) -> bool:
+    geom = beam.get("geometry")
+    if isinstance(geom, dict):
+        if all(k in geom for k in ("b_mm", "D_mm", "d_mm")):
+            return True
+        if all(k in geom for k in ("b", "D", "d")):
+            return True
+    return all(k in beam for k in ("b", "D", "d"))
+
+
+def _beam_has_materials(beam: Dict[str, Any]) -> bool:
+    mats = beam.get("materials")
+    if isinstance(mats, dict):
+        return any(k in mats for k in ("fck_nmm2", "fck")) and any(
+            k in mats for k in ("fy_nmm2", "fy")
+        )
+    return any(k in beam for k in ("fck_nmm2", "fck")) and any(
+        k in beam for k in ("fy_nmm2", "fy")
+    )
+
+
+def _beam_has_loads(beam: Dict[str, Any]) -> bool:
+    loads = beam.get("loads")
+    if isinstance(loads, dict):
+        return any(k in loads for k in ("mu_knm", "Mu")) and any(
+            k in loads for k in ("vu_kn", "Vu")
+        )
+    return any(k in beam for k in ("mu_knm", "Mu")) and any(
+        k in beam for k in ("vu_kn", "Vu")
+    )
+
+
+def validate_design_results(path: Union[str, Path]) -> ValidationReport:
+    """Validate a design results JSON file (single or multi-beam)."""
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except Exception as exc:
+        return ValidationReport(ok=False, errors=[str(exc)])
+
+    if not isinstance(data, dict):
+        return ValidationReport(
+            ok=False, errors=["Results file must be a JSON object."]
+        )
+
+    schema_version = data.get("schema_version")
+    if schema_version is None:
+        errors.append("Missing required field 'schema_version'.")
+    else:
+        try:
+            schema_version_int = int(schema_version)
+            if schema_version_int != beam_pipeline.SCHEMA_VERSION:
+                errors.append(
+                    f"Unsupported schema_version: {schema_version_int} "
+                    f"(expected {beam_pipeline.SCHEMA_VERSION})."
+                )
+        except (ValueError, TypeError):
+            errors.append(f"Invalid schema_version: {schema_version!r}.")
+
+    code = data.get("code")
+    if not code:
+        errors.append("Missing required field 'code'.")
+
+    units = data.get("units")
+    if not units:
+        warnings.append("Missing 'units' field (recommended for stable outputs).")
+
+    beams = data.get("beams")
+    if not isinstance(beams, list) or not beams:
+        errors.append("Missing or empty 'beams' list.")
+        beams = []
+
+    for idx, beam in enumerate(beams):
+        if not isinstance(beam, dict):
+            errors.append(f"Beam {idx}: expected object, got {type(beam).__name__}.")
+            continue
+        if not beam.get("beam_id"):
+            errors.append(f"Beam {idx}: missing 'beam_id'.")
+        if not beam.get("story"):
+            errors.append(f"Beam {idx}: missing 'story'.")
+        if not _beam_has_geometry(beam):
+            errors.append(f"Beam {idx}: missing geometry fields.")
+        if not _beam_has_materials(beam):
+            errors.append(f"Beam {idx}: missing material fields.")
+        if not _beam_has_loads(beam):
+            errors.append(f"Beam {idx}: missing load fields.")
+
+    details = {
+        "schema_version": schema_version,
+        "code": code,
+        "units": units,
+        "beams_count": len(beams),
+    }
+
+    return ValidationReport(
+        ok=not errors, errors=errors, warnings=warnings, details=details
+    )
 
 
 def check_beam_ductility(

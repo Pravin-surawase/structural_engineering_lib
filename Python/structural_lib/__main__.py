@@ -6,8 +6,10 @@ Usage:
     python -m structural_lib bbs results.json -o bbs.csv
     python -m structural_lib dxf results.json -o drawings.dxf
     python -m structural_lib job job.json -o output/
+    python -m structural_lib validate job.json
     python -m structural_lib report ./output/ --format=html
     python -m structural_lib critical ./output/ --top=10 --format=csv
+    python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 
 This module provides a unified command-line interface with subcommands
 for beam design, bar bending schedules, DXF generation, job processing,
@@ -23,6 +25,7 @@ import sys
 from pathlib import Path
 from typing import List
 
+from . import api
 from . import bbs
 from . import beam_pipeline
 from . import detailing
@@ -55,6 +58,28 @@ def _print_error(message: str, hint: str | None = None) -> None:
     print(f"Error: {message}", file=sys.stderr)
     if hint:
         print(f"Hint: {hint}", file=sys.stderr)
+
+
+def _format_validation_text(report: api.ValidationReport) -> str:
+    status = "OK" if report.ok else "FAIL"
+    lines = [f"Validation: {status}"]
+
+    if report.details:
+        lines.append("Details:")
+        for key in sorted(report.details):
+            lines.append(f"  {key}: {report.details[key]}")
+
+    if report.warnings:
+        lines.append("Warnings:")
+        for warn in report.warnings:
+            lines.append(f"  - {warn}")
+
+    if report.errors:
+        lines.append("Errors:")
+        for err in report.errors:
+            lines.append(f"  - {err}")
+
+    return "\n".join(lines)
 
 
 def _format_mark_diff_text(result: dict) -> str:
@@ -653,6 +678,61 @@ def cmd_mark_diff(args: argparse.Namespace) -> int:
     return 0 if result.get("ok") else 2
 
 
+def _guess_validation_type(data: dict) -> str:
+    if isinstance(data, dict):
+        if "beam" in data and "cases" in data:
+            return "job"
+        if "beams" in data:
+            return "results"
+    return "unknown"
+
+
+def cmd_validate(args: argparse.Namespace) -> int:
+    """Validate a job.json or design results JSON file."""
+    input_path = Path(args.input)
+    if not input_path.exists():
+        _print_error(f"Input file not found: {input_path}")
+        return 1
+
+    mode = args.type
+    if mode == "auto":
+        try:
+            data = json.loads(input_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            _print_error(str(exc))
+            return 1
+        mode = _guess_validation_type(data)
+        if mode == "unknown":
+            _print_error(
+                "Could not determine file type. Use --type job or --type results."
+            )
+            return 1
+
+    if mode == "job":
+        report = api.validate_job_spec(input_path)
+    else:
+        report = api.validate_design_results(input_path)
+
+    if args.format == "json":
+        payload = json.dumps(report.to_dict(), indent=2)
+        if args.output:
+            out_path = Path(args.output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(payload + "\n", encoding="utf-8")
+        else:
+            print(payload)
+    else:
+        text = _format_validation_text(report)
+        if args.output:
+            out_path = Path(args.output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(text + "\n", encoding="utf-8")
+        else:
+            print(text)
+
+    return 0 if report.ok else 2
+
+
 def cmd_job(args: argparse.Namespace) -> int:
     """
     Run complete job from JSON specification.
@@ -1002,6 +1082,39 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Title block height in mm (default: 250).",
     )
     dxf_parser.set_defaults(func=cmd_dxf)
+
+    # Validate subcommand
+    validate_parser = subparsers.add_parser(
+        "validate",
+        help="Validate a job.json or design results JSON file",
+        description="""
+        Validate job specs or design results for required fields and schema version.
+
+        Examples:
+          python -m structural_lib validate job.json
+          python -m structural_lib validate results.json --type results --format json
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    validate_parser.add_argument("input", help="Input JSON file to validate")
+    validate_parser.add_argument(
+        "--type",
+        default="auto",
+        choices=["auto", "job", "results"],
+        help="Validation type (default: auto)",
+    )
+    validate_parser.add_argument(
+        "--format",
+        default="text",
+        choices=["text", "json"],
+        help="Output format (default: text)",
+    )
+    validate_parser.add_argument(
+        "-o",
+        "--output",
+        help="Output file path (if omitted, prints to stdout)",
+    )
+    validate_parser.set_defaults(func=cmd_validate)
 
     # BBS/DXF consistency check
     mark_diff_parser = subparsers.add_parser(
