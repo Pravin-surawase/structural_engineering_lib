@@ -90,7 +90,9 @@ Engineers running batch designs (50-500 beams) struggle to identify critical bea
   5. Cross-section SVG — optional single-beam visual
   6. Batch threshold packaging — <80 single HTML, ≥80 folder
   7. `data-source` attributes — trace every value to JSON path
-- **Input:** Job output (`ComplianceReport`) — unified structure
+- **Input:** Job output (`ComplianceReport`) + job spec (for geometry/materials)
+  - ComplianceReport: utilization, flexure/shear results, governing case
+  - Job spec: b, D, cover, fck, fy (needed for Input Sanity, Scorecard, Units Sentinel)
 - **Output:** stdlib HTML + inline SVG (no external deps)
 - **Deferred to Phase 2+:**
   - Change Ledger (needs hash scope rules)
@@ -884,7 +886,7 @@ The figures in SP 16 use:
 
 ## Multi-Agent Review (R6 — 2025-12-29)
 
-> **All 11 agent roles reviewed this research.** Below is each agent's contribution.
+> **All 12 agent roles reviewed this research.** Below is each agent's contribution.
 
 ### 🎯 CLIENT Agent
 
@@ -1060,14 +1062,14 @@ def generate_report(compliance_reports: List[ComplianceReport],
 Generate HTML reports from compliance results:
 
 \`\`\`bash
-# Single beam
-python -m structural_lib report result.json -o report.html
+# Single beam (uses job output file)
+python -m structural_lib report design_results.json -o report.html
 
 # Batch (auto-detects threshold)
-python -m structural_lib report batch_results.json -o reports/
+python -m structural_lib report design_results.json -o reports/
 
 # Custom threshold
-python -m structural_lib report results.json -o reports/ --batch-threshold 50
+python -m structural_lib report design_results.json -o reports/ --batch-threshold 50
 \`\`\`
 ```
 
@@ -1377,11 +1379,11 @@ Items requiring input geometry/materials move to Phase 2 unless the report input
 
 ### R7 Action Items (doc-only fixes) — ✅ Resolved in R8
 
-1. ✅ Phase 1 scope matches `ComplianceReport` fields (7 features).
+1. ✅ Phase 1 scope matches `ComplianceReport` + job spec fields (7 features).
 2. ✅ Change Ledger moved to Phase 2 in sections 0.4, 0.5, 11.1.
 3. ✅ Report examples use `design_results.json` (job output).
 4. ✅ Milestone target: v0.11 (after W08 in v0.10).
-5. ✅ Agent count confirmed: 11 agents (CLIENT through Integration).
+5. ✅ Agent count confirmed: 12 agents (CLIENT through Integration).
 
 ---
 
