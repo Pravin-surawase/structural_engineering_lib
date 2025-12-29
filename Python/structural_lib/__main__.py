@@ -6,9 +6,11 @@ Usage:
     python -m structural_lib bbs results.json -o bbs.csv
     python -m structural_lib dxf results.json -o drawings.dxf
     python -m structural_lib job job.json -o output/
+    python -m structural_lib report ./output/ --format=html
 
 This module provides a unified command-line interface with subcommands
-for beam design, bar bending schedules, DXF generation, and job processing.
+for beam design, bar bending schedules, DXF generation, job processing,
+and report generation.
 """
 
 from __future__ import annotations
@@ -26,6 +28,7 @@ from . import detailing
 from . import dxf_export
 from . import excel_integration
 from . import job_runner
+from . import report
 
 
 def _fmt_cell(v: object) -> str:
@@ -613,6 +616,68 @@ def cmd_job(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_report(args: argparse.Namespace) -> int:
+    """Generate report from job output folder.
+
+    Generates human-readable reports (JSON or HTML) from job outputs.
+    """
+    output_dir = Path(args.output_dir)
+
+    if not output_dir.exists():
+        _print_error(f"Output directory not found: {output_dir}")
+        return 1
+
+    # Resolve optional overrides
+    job_path = Path(args.job) if args.job else None
+    results_path = Path(args.results) if args.results else None
+
+    try:
+        print(f"Loading report data from {output_dir}...", file=sys.stderr)
+
+        data = report.load_report_data(
+            output_dir,
+            job_path=job_path,
+            results_path=results_path,
+        )
+
+        # Generate output based on format
+        fmt = args.format.lower()
+        if fmt == "json":
+            output = report.export_json(data)
+        elif fmt == "html":
+            output = report.export_html(data)
+        else:
+            _print_error(
+                f"Unknown format: {fmt}",
+                hint="Use --format=json or --format=html",
+            )
+            return 1
+
+        # Write to file or stdout
+        if args.output:
+            out_path = Path(args.output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(output, encoding="utf-8")
+            print(f"Report written to {out_path}", file=sys.stderr)
+        else:
+            print(output)
+
+        return 0
+
+    except FileNotFoundError as e:
+        _print_error(str(e))
+        return 1
+    except ValueError as e:
+        _print_error(str(e))
+        return 1
+    except Exception as e:
+        _print_error(str(e))
+        import traceback
+
+        traceback.print_exc(file=sys.stderr)
+        return 1
+
+
 def _build_parser() -> argparse.ArgumentParser:
     """Build the main argument parser with subcommands."""
 
@@ -760,6 +825,40 @@ def _build_parser() -> argparse.ArgumentParser:
         "-o", "--output", required=True, help="Output directory for job results"
     )
     job_parser.set_defaults(func=cmd_job)
+
+    # Report subcommand
+    report_parser = subparsers.add_parser(
+        "report",
+        help="Generate report from job output folder",
+        description="""
+        Generate human-readable reports (JSON or HTML) from job outputs.
+
+        Examples:
+          python -m structural_lib report ./output/ --format=json
+          python -m structural_lib report ./output/ --format=html -o report.html
+          python -m structural_lib report ./output/ --job custom_job.json --format=json
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    report_parser.add_argument("output_dir", help="Job output directory to read from")
+    report_parser.add_argument(
+        "--format",
+        default="json",
+        choices=["json", "html"],
+        help="Output format (default: json)",
+    )
+    report_parser.add_argument(
+        "-o", "--output", help="Output file path (if omitted, prints to stdout)"
+    )
+    report_parser.add_argument(
+        "--job",
+        help="Override path to job.json (default: output_dir/inputs/job.json)",
+    )
+    report_parser.add_argument(
+        "--results",
+        help="Override path to design_results.json (default: output_dir/design/design_results.json)",
+    )
+    report_parser.set_defaults(func=cmd_report)
 
     return parser
 
