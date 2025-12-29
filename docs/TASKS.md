@@ -213,6 +213,16 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ---
 
+## Planned (Test Hardening)
+
+| ID | Task | Agent | Est. | Priority |
+|----|------|-------|------|----------|
+| **TASK-126** | Reduce property-invariant skips by tightening generators (d > d_min, paired fy inputs) | TESTER | 2 hrs | 🟡 Medium |
+| **TASK-127** | Add contract tests for units conversion boundaries at API/CLI entrypoints | TESTER | 2 hrs | 🟡 Medium |
+| **TASK-128** | Add regression fixtures for BBS/DXF mark-diff (missing marks, mismatched counts) | TESTER | 2 hrs | 🟡 Medium |
+
+---
+
 ## Planned (Public API Maintenance)
 
 **Review doc:** `docs/planning/public-api-maintenance-review.md`
