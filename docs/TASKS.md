@@ -167,6 +167,20 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ---
 
+## Planned (Library API Expansion)
+
+**Plan doc:** `docs/planning/library-api-expansion.md`
+
+| ID | Task | Agent | Est. | Priority | Bundle |
+|----|------|-------|------|----------|--------|
+| **TASK-104** | Define stable API surface + doc updates | DOCS | 2 hrs | 🔴 High | A |
+| **TASK-105** | Validation APIs + `validate` CLI subcommand | DEV | 3 hrs | 🔴 High | B |
+| **TASK-106** | Detailing + BBS APIs + `detail` CLI subcommand | DEV | 4 hrs | 🔴 High | C |
+| **TASK-107** | DXF/report/critical API wrappers (no behavior change) | DEV | 3 hrs | 🟡 Medium | D |
+| **TASK-108** | API/CLI tests + stability labels | TESTER | 3 hrs | 🟡 Medium | E |
+
+---
+
 ## Backlog (Post-v1.0)
 
 | ID | Task | Agent | Description |
