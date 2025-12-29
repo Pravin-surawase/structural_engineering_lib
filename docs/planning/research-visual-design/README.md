@@ -35,6 +35,8 @@ Engineers running batch designs (50-500 beams) struggle to identify critical bea
 | R4 | 2025-12-29 | Problem-first reframe, user personas, low-effort solutions added |
 | R5 | 2025-12-29 | **Final decision** — Phase 1 scope locked, deferred items documented |
 | R6 | 2025-12-29 | **Multi-agent review** — all 11 agents contributed (see section below) |
+| R7 | 2025-12-29 | **Consistency review** — Change Ledger→Phase 2, milestone→v0.11 |
+| R8 | 2025-12-29 | **R7 action items resolved** — all 5 fixes applied |
 
 ---
 
@@ -244,31 +246,32 @@ Make the library feel "see-and-trust":
 |------|----------|----------------|--------|
 | 1 | Critical Set Export (top N by utilization) | "Which beams?" | Low |
 | 2 | Input Sanity Heatmap (catch garbage early) | "Can I trust?" | Low |
-| 3 | Change Ledger (what changed) | "What changed?" | Low |
-| 4 | Stability Scorecard (buildability flags) | "Will it build?" | Low |
-| 5 | Units Sentinel (kN vs N warnings) | "Can I trust?" | Low |
-| 6 | Cross-section SVG (single beam visual) | Nice-to-have | Low |
-| 7 | Utilization bar chart | Nice-to-have | Low |
+| 3 | Stability Scorecard (buildability flags) | "Will it build?" | Low |
+| 4 | Units Sentinel (kN vs N warnings) | "Can I trust?" | Low |
+| 5 | Cross-section SVG (single beam visual) | Nice-to-have | Low |
+| 6 | Batch threshold packaging | Avoid huge HTML | Low |
+| 7 | `data-source` attributes | Traceability | Low |
 
 **Phase 2+ — After trust is established:**
 
 | Rank | Solution | Problem Solved | Blocker |
 |------|----------|----------------|--------|
-| 8 | Proof Trace with clause refs | "Can I trust?" (deep) | W08 clause metadata |
-| 9 | DXF-BBS consistency check | "Does BBS match?" | Bar-mark identity contract |
+| 8 | Change Ledger (what changed) | "What changed?" | Hash scope rules |
+| 9 | Proof Trace with clause refs | "Can I trust?" (deep) | W08 clause metadata |
+| 10 | DXF-BBS consistency check | "Does BBS match?" | Bar-mark identity contract |
 
 ### 0.5 Low-Effort High-Impact Ideas (From R3/R4 Review)
 
 | Idea | What It Does | Effort | Impact | Phase |
 |------|--------------|--------|--------|-------|
-| **Change Ledger** | `.ledger.json` with input/output hashes + key deltas | Low | High | 1 |
-| **Stability Scorecard** | 5 boolean flags: over-reinforced, brittle shear, min ductility, spacing, layers | Low | Medium | 1 |
+| **Critical Set Export** | Top N beams by utilization as sorted table | Low | High | 1 |
 | **Input Sanity Heatmap** | Table highlighting suspicious inputs (low cover, b/D outliers) | Low | High | 1 |
+| **Stability Scorecard** | 5 boolean flags: over-reinforced, brittle shear, min ductility, spacing, layers | Low | Medium | 1 |
 | **Units Sentinel** | Auto-detect kN vs N by magnitude; warn without blocking | Low | High | 1 |
-| **Critical Set Export** | Top N beams by utilization as separate JSON/CSV | Low | High | 1 |
-| **Tolerance Overlay** | Show provided vs required as a band, not single number | Low | Medium | 1 |
-| **Spec-to-Output Manifest** | `public-api.json` for LLM/tool integration | Low | Medium | 1 |
-| **DXF Checksum Stamp** | Metadata in DXF/BBS for mismatch detection | Low | Medium | 1 |
+| **Cross-section SVG** | Visual beam section with bars (optional) | Low | Medium | 1 |
+| **Batch threshold packaging** | <80 single HTML, ≥80 folder | Low | High | 1 |
+| **`data-source` attributes** | Trace every value to JSON path | Low | High | 1 |
+| **Change Ledger** | `.ledger.json` with input/output hashes + key deltas | Low | High | 2 |
 | **Template Themes** | 2-3 CSS-only visual presets (hand-sketch, clean, mono) | Low | Low | 2 |
 
 ### 0.6 The Insight
@@ -803,8 +806,8 @@ class ComplianceCaseResult:
 | **Sketch polish** | Hand-sketch feel improves trust quickly | Phase 1 | None |
 | **`data-source` attributes** | Trace every value to JSON path | Phase 1 | None |
 | **Change Ledger (`.ledger.json`)** | Auditable record of each run | Phase 2 | Stable schema + input/output hash rules |
-| **Units Sentinel** | Warn on likely unit mistakes | Phase 2 | Needs access to input ranges |
-| **Input Sanity Heatmap** | Surface outlier inputs in batches | Phase 2 | Needs input geometry/materials |
+| **Units Sentinel** | Warn on likely unit mistakes | Phase 1 | Needs access to input ranges |
+| **Input Sanity Heatmap** | Surface outlier inputs in batches | Phase 1 | Needs input geometry/materials |
 | **Visual Audit Trail (clause refs)** | Deep trust via clause-linked visuals | Phase 3 | Clause metadata in outputs |
 | **Diff Mode** | Compare runs and highlight changes | Post-v1.0 | Stable `beam_id` contract + tolerances |
 | **DXF-BBS Consistency** | Verify marks match across outputs | Post-v1.0 | Shared bar-mark identity spec |
@@ -1253,6 +1256,135 @@ def generate_report(
 
 ---
 
+## Multi-Agent Review (R7 — 2025-12-29, simulated)
+
+> **Note:** This is a single-author, role-based review to simulate the workflow.
+> No separate agents were run.
+
+### CLIENT Agent
+
+**Observations:**
+1. The "critical beams first" framing is right, but it must be visible in the report UI.
+2. The report should explain its input source (job output) in plain words.
+
+**Requests:**
+- Keep the top-N critical list as the first block on every report.
+- Add a one-line "what this file is" note in the header.
+
+---
+
+### PM Agent
+
+**Observations:**
+1. Phase 1 scope includes checks that need geometry/material inputs not present in `ComplianceReport`.
+2. The doc has Phase 1/Phase 2 contradictions (Change Ledger appears in Phase 1 and deferred).
+
+**Decision:** Keep Phase 1 limited to what can be derived from `ComplianceReport` only.
+Items requiring input geometry/materials move to Phase 2 unless the report input expands.
+
+---
+
+### RESEARCHER Agent
+
+**Observations:**
+1. SVG-in-HTML is still the best fit for trust + determinism.
+2. `xml.etree.ElementTree` remains a safer way to build SVG than f-strings.
+
+**Recommendation:** Use ElementTree to avoid malformed SVG and to support accessibility tags.
+
+---
+
+### TESTER Agent
+
+**Edge cases to prioritize:**
+- 0 beams (error with clear message).
+- 1 beam (single HTML).
+- 79/80 beam threshold boundary.
+- Missing utilization (render "N/A" but keep report valid).
+- Beam IDs with path separators (sanitize filenames).
+
+---
+
+### DEV Agent
+
+**Implementation notes:**
+1. Report input should be the job output (`design_results.json`), not raw design output.
+2. Add a thin adapter to accept dict input and validate required fields.
+3. Keep report logic in Application layer; file writes in I/O layer.
+
+---
+
+### Review Agent
+
+**Findings to fix before implementation:**
+1. Phase 1 scope vs available data mismatch (Input Sanity/Units/Scorecard).
+2. Change Ledger listed as Phase 1 in some sections but deferred elsewhere.
+3. CLI examples should consistently show `design_results.json`.
+4. Target milestone is inconsistent (v0.11 vs v0.9/v0.10).
+
+---
+
+### DOCS Agent
+
+**Docs to update once implementation starts:**
+- `docs/API_REFERENCE.md` (report command examples with job output file).
+- `docs/GETTING_STARTED_PYTHON.md` (report walkthrough).
+- `docs/TROUBLESHOOTING.md` (input format + batch threshold).
+
+---
+
+### ARCHITECT Agent
+
+**Notes:**
+- Keep SVG generation pure and testable.
+- Avoid embedding business logic in HTML templates.
+- Define a small internal schema for report inputs (validated at entry).
+
+---
+
+### DEVOPS Agent
+
+**CI notes:**
+- Golden-file tests should run in CI.
+- Performance test (500 beams) should be nightly, not on every PR.
+
+---
+
+### UI Agent
+
+**UI guidance:**
+- Use color-blind safe colors plus icon markers.
+- Keep layout minimal: header -> critical list -> per-beam details.
+- Print CSS should remove navigation and force black text.
+
+---
+
+### SUPPORT Agent
+
+**Support risk:**
+- Most common error will be using the wrong input file.
+- Add a clear error message: "This command expects job output (design_results.json)."
+
+---
+
+### INTEGRATION Agent
+
+**Data contract:**
+- Report consumes job output (`design_results.json`) from `job_runner`.
+- If CLI design output is used in future, create a converter and document it.
+
+---
+
+### R7 Action Items (doc-only fixes) — ✅ Resolved in R8
+
+1. ✅ Phase 1 scope matches `ComplianceReport` fields (7 features).
+2. ✅ Change Ledger moved to Phase 2 in sections 0.4, 0.5, 11.1.
+3. ✅ Report examples use `design_results.json` (job output).
+4. ✅ Milestone target: v0.11 (after W08 in v0.10).
+5. ✅ Agent count confirmed: 11 agents (CLIENT through Integration).
+
+---
+
 ## Conclusion
 
 ### What We Learned
@@ -1277,7 +1409,7 @@ def generate_report(
 
 1. ✅ Research complete — move to implementation planning
 2. Create GitHub issues for 8 implementation tasks (see Stage 5)
-3. Target milestone: v0.9 or v0.10 (per production roadmap)
+3. Target milestone: v0.11 (after W08 ships in v0.10)
 4. Phase 2 prerequisites: W08 clause metadata, stable hash rules
 
 ---
