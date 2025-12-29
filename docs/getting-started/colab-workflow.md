@@ -5,6 +5,8 @@
 This guide runs the full pipeline in Google Colab:
 install → generate inputs → design → BBS → DXF → reports → critical set.
 
+Notebook version (open in Colab): `docs/getting-started/colab-workflow.ipynb`
+
 **All CLI commands covered:**
 - `design` — Run beam design from CSV
 - `bbs` — Generate bar bending schedule
@@ -351,6 +353,13 @@ from IPython.display import HTML, display
 
 with open("report.html", "r", encoding="utf-8") as f:
     display(HTML(f.read()))
+```
+
+If the SVG or styles do not render inline, use an IFrame:
+```python
+from IPython.display import IFrame
+
+IFrame("report.html", width=900, height=600)
 ```
 
 **What's in the HTML report:**
