@@ -140,7 +140,9 @@ When working on specific task types, apply these focuses:
 ### gh CLI commands:
 - `gh pr checks <num>` may show "no checks" if CI hasn't started — wait 5-10 seconds
 - If `gh pr merge` fails with "not mergeable", CI is still running — use `gh pr checks <num> --watch`
+- If `gh pr checks --watch` times out, rerun (or increase timeout) — checks are often still running
 - Network timeouts happen — retry the command once before investigating
+- If PR is **behind** base branch, update it: `gh pr update-branch <num>` then re-check CI
 
 ### Git sync issues:
 - If push is rejected (non-fast-forward), the auto-format workflow may have pushed
@@ -168,6 +170,8 @@ When working on specific task types, apply these focuses:
 | Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` instead |
 | Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
 | Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
+| Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
+| Verifying PyPI in an existing venv | Use a fresh venv for `pip install structural-lib-is456==X.Y.Z` |
 
 ---
 

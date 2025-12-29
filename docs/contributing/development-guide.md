@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — Development Guide
 
 **Document Version:** 0.11.0
-**Last Updated:** 2025-12-29
+**Last Updated:** 2025-12-29<br>
 **Audience:** Contributors, maintainers, and developers extending the library
 
 ---
@@ -1361,6 +1361,11 @@ tau_c = 0.62  ' What if pt or fck changes?
 ' RIGHT: Call lookup function
 tau_c = tau_c_IS456(fck, pt_percent)
 ```
+
+### 15.7 Operational Friction Notes
+
+For recent “gotchas” and fixes (release script quirks, CI timeouts, PR update steps),
+see `docs/contributing/session-issues.md`.
 
 ---
 

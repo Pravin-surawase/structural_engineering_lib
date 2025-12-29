@@ -54,6 +54,7 @@ Target: Private beta with 2–3 structural engineers
 - [x] **Document results** in `docs/verification/validation-pack.md` with source refs
 - [ ] **One external engineer tries CLI cold** — note friction points
 - [ ] **All tests pass** (run `pytest` in Python/ directory)
+- [ ] **PyPI install verified in clean venv** — `pip install structural-lib-is456==X.Y.Z` + `api.get_library_version()`
 
 ### Nice-to-Have Before Beta
 
