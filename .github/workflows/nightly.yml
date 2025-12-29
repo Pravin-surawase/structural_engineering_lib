@@ -44,6 +44,9 @@ jobs:
           python -m structural_lib bbs ../artifacts/results.json -o ../artifacts/schedule.csv
           python -m structural_lib dxf ../artifacts/results.json -o ../artifacts/drawings.dxf
           python -m structural_lib job examples/sample_job_is456.json -o ../artifacts/job_out
+          python -m structural_lib critical ../artifacts/job_out --top 5 --format csv -o ../artifacts/critical.csv
+          python -m structural_lib report ../artifacts/job_out --format html -o ../artifacts/report.html
+          python -m structural_lib report ../artifacts/results.json --format html -o ../artifacts/report_design --batch-threshold 1
 
       - name: Summarize results
         run: |
@@ -76,6 +79,9 @@ jobs:
             artifacts/results.json
             artifacts/schedule.csv
             artifacts/drawings.dxf
+            artifacts/critical.csv
+            artifacts/report.html
+            artifacts/report_design
             artifacts/job_out
           if-no-files-found: warn
 

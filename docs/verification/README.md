@@ -9,6 +9,7 @@ Benchmark examples and verification packs for validating library calculations.
 | [Validation Pack](validation-pack.md) | 5 benchmark beams with IS 456 references |
 | [Examples](examples.md) | Detailed worked examples with hand calculations |
 | [Verification Pack](pack.md) | Test vectors for regression testing |
+| [External CLI Test](external-cli-test.md) | S-007 checklist for a fresh user run |
 
 ## Quick Start
 
