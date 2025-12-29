@@ -1601,3 +1601,14 @@ Documents exact keys needed from each input file for Phase 1 features.
 ---
 
 *Research complete. Status: Decided. Stage 5 handoff complete.*
+
+**Implementation status (2025-12-29):**
+- #134 (V01) merged — `report.py` skeleton + `load_job_spec()` helper
+- #135 (V02) merged — `report` CLI subcommand
+- #136 (V03) implemented — `critical` CLI subcommand exports sorted utilization tables (CSV/HTML), includes `--top` filter and `data-source` traces
+
+**CLI usage (V03):**
+```
+python -m structural_lib critical ./output/ --format=csv
+python -m structural_lib critical ./output/ --top=10 --format=html -o critical.html
+```

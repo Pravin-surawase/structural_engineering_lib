@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.10.6 (development preview)
+**Version:** 0.10.7 (development preview)
 **Status:** [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -13,10 +13,10 @@ For full project overview and usage examples, see the repository root `README.md
 
 ```bash
 # Recommended (pinned to release tag)
-pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.6#subdirectory=Python"
+pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.7#subdirectory=Python"
 
 # With DXF support (pinned)
-pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.6#subdirectory=Python"
+pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.10.7#subdirectory=Python"
 
 # PyPI (latest — may differ from pinned tag)
 pip install structural-lib-is456
@@ -66,8 +66,8 @@ report = api.check_beam_is456(
 print(f"Governing case: {report.governing_case_id}")
 ```
 
-## New in v0.10.6
+## New in v0.10.7
 
-- **Level B Serviceability:** Curvature-based deflection per IS 456 Cl 23.2 / Annex C
-- **CLI/AI Discoverability:** `llms.txt`, enhanced CLI help with examples
-- **Code quality:** Docstrings, type hints, dedicated `test_shear.py` (22 tests)
+- **Critical Set export (V03):** `python -m structural_lib critical` writes sorted utilization tables (CSV/HTML) with `--top` slicing and `data-source` traces.
+- **Report scaffolding (V01/V02):** `report.py` skeleton + `load_job_spec()` helper and `report` CLI stub to support Visual v0.11 deliverables.
+- **Docs refresh:** Version sync + context updates for the Visual v0.11 rollout.

@@ -27,7 +27,21 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Active
 
-*(Nothing currently in progress)*
+### Visual Layer v0.11 (CLI Reports)
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **#137 (V04)** | report_svg.py + cross-section SVG | DEV | 🟡 In progress |
+
+**Notes:** Depends on V03 (critical set export) and V01/V02 foundations.
+
+## Recently Completed (Visual v0.11)
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **#134 (V01)** | report.py skeleton + load_job_spec helper | DEV | ✅ Done |
+| **#135 (V02)** | report subcommand in __main__.py | DEV | ✅ Done |
+| **#136 (V03)** | Critical Set Export (sorted utilization table) | DEV | ✅ Done |
 
 ---
 
@@ -169,8 +183,8 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 ## Notes
 
-- **Current Version**: v0.10.3
-- **Last Updated**: 2025-12-28
+- **Current Version**: v0.10.7
+- **Last Updated**: 2025-12-29
 - **Active Branch**: main
 - **Tests**: Run `python scripts/update_test_stats.py` for current count
 - **Target**: v0.20.0 stable release (see `docs/planning/v0.20-stabilization-checklist.md`)

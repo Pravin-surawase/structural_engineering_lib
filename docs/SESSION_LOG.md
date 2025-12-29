@@ -4,6 +4,25 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-29 — Session
+
+### Summary
+- Released v0.10.7 (Visual v0.11 Phase 1 — Critical Set export) and synced version references across Python/VBA/docs.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #147 | Visual v0.11 V03 — `critical` CLI export for sorted utilization tables |
+
+### Key Deliverables
+- Version bump to v0.10.7 (Python, VBA, docs) using `scripts/bump_version.py`.
+- Release notes added to CHANGELOG and docs/RELEASES.
+- Docs refreshed: TASKS, AI context, next-session brief aligned to v0.10.7.
+
+### Notes
+- Visual v0.11 remaining: V04 SVG rendering.
+
+
 ## 2025-12-28 — v0.10.2 Release
 
 ### PRs Merged

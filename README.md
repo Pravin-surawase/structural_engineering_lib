@@ -18,13 +18,12 @@
 
 ## Status
 
-🚀 **Active (v0.10.6)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.10.7)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.10.6:**
-- **Structured error schema:** Machine-readable `DesignError` with code/severity/hint/clause
-- **Full input validation:** 16+ error codes covering all design functions
-- **Doubly/flanged beam validation:** Structured errors in `design_doubly_reinforced()`, `design_flanged_beam()`
-- **Improved CLI:** Better error messages for user-facing feedback
+**What's new in v0.10.7:**
+- **Critical Set export (V03):** New `critical` CLI subcommand outputs sorted utilization tables (CSV/HTML) with `--top` filtering and `data-source` traces.
+- **Report foundations (V01/V02):** `report.py` skeleton + `load_job_spec()` helper, plus `report` CLI scaffold for upcoming visuals.
+- **Docs refresh:** AI context, TASKS, and next-session brief updated for the Visual v0.11 rollout.
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
@@ -85,7 +84,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.10.6`) rather than installing latest.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.10.7`) rather than installing latest.
 
 ### Install from PyPI
 
