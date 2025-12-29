@@ -66,6 +66,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 |----|------|-------|--------|
 | **TASK-104** | Define stable API surface + doc updates | DOCS | ✅ Done |
 | **TASK-105** | Validation APIs + `validate` CLI subcommand | DEV | ✅ Done |
+| **TASK-106** | Detailing + BBS APIs + `detail` CLI subcommand | DEV | ✅ Done |
 
 ## Recently Completed (Visual v0.11)
 
@@ -203,7 +204,6 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 | ID | Task | Agent | Est. | Priority | Bundle |
 |----|------|-------|------|----------|--------|
-| **TASK-106** | Detailing + BBS APIs + `detail` CLI subcommand | DEV | 4 hrs | 🔴 High | C |
 | **TASK-107** | DXF/report/critical API wrappers (no behavior change) | DEV | 3 hrs | 🟡 Medium | D |
 | **TASK-108** | API/CLI tests + stability labels | TESTER | 3 hrs | 🟡 Medium | E |
 | **TASK-122** | v0.12 release notes (CHANGELOG + RELEASES) | DOCS | 1 hr | 🔴 High | R |
