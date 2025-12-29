@@ -1,7 +1,7 @@
 # VBA Testing Guide
 
 **Version:** 0.11.0
-**Last Updated:** 2025-12-29
+**Last Updated:** 2025-12-29<br>
 
 ## Quick Start
 
