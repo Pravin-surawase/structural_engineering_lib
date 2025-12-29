@@ -16,6 +16,7 @@ from structural_lib.report import (
     export_html,
     get_input_sanity,
     get_stability_scorecard,
+    get_units_sentinel,
     get_critical_set,
     export_critical_csv,
     export_critical_html,
@@ -51,6 +52,8 @@ SAMPLE_RESULTS = {
     "cases": [
         {
             "case_id": "LC1",
+            "mu_knm": 150.0,
+            "vu_kn": 80.0,
             "is_ok": True,
             "governing_utilization": 0.65,
             "utilizations": {"flexure": 0.65, "shear": 0.40},
@@ -64,6 +67,8 @@ SAMPLE_RESULTS = {
         },
         {
             "case_id": "LC2",
+            "mu_knm": 200.0,
+            "vu_kn": 100.0,
             "is_ok": True,
             "governing_utilization": 0.85,
             "utilizations": {"flexure": 0.85, "shear": 0.50},
@@ -214,6 +219,7 @@ class TestExportJson:
         assert "cases" in output
         assert "input_sanity" in output
         assert "stability_scorecard" in output
+        assert "units_sentinel" in output
 
 
 class TestExportHtml:
@@ -230,6 +236,7 @@ class TestExportHtml:
         assert "✓ PASS" in html  # is_ok = True
         assert "Input Sanity Heatmap" in html
         assert "Stability Scorecard" in html
+        assert "Units Sentinel" in html
         assert "<svg" in html
 
     def test_export_html_fail_status(self, sample_output_dir: Path) -> None:
@@ -292,6 +299,23 @@ class TestStabilityScorecard:
 
         status_map = {item.check: item.status for item in items}
         assert status_map["over_reinforced"] == "WARN"
+
+
+class TestUnitsSentinel:
+    """Tests for units sentinel."""
+
+    def test_units_sentinel_warns_on_large_values(
+        self, sample_output_dir: Path
+    ) -> None:
+        data = load_report_data(sample_output_dir)
+        data.results["cases"][0]["mu_knm"] = 1.0e6
+        data.results["cases"][0]["vu_kn"] = 2.0e5
+
+        alerts = get_units_sentinel(data)
+        fields = {alert.field for alert in alerts}
+
+        assert "mu_knm" in fields
+        assert "vu_kn" in fields
 
 
 class TestReportSvg:

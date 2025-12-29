@@ -101,6 +101,16 @@ class ScorecardItem:
     json_path: str
 
 
+@dataclass
+class UnitsAlert:
+    """A single units sentinel alert."""
+
+    field: str
+    status: str
+    message: str
+    json_path: str
+
+
 def load_report_data(
     output_dir: str | Path,
     *,
@@ -715,6 +725,70 @@ def get_stability_scorecard(data: ReportData) -> List[ScorecardItem]:
     return items
 
 
+def get_units_sentinel(data: ReportData) -> List[UnitsAlert]:
+    """Flag likely unit mismatches based on magnitude heuristics."""
+    cases_data = data.results.get("cases", [])
+    if not isinstance(cases_data, list) or not cases_data:
+        return []
+
+    alerts: List[UnitsAlert] = []
+
+    mu_values = []
+    vu_values = []
+    for idx, case in enumerate(cases_data):
+        if not isinstance(case, dict):
+            continue
+        mu_val = _safe_float(case.get("mu_knm"))
+        vu_val = _safe_float(case.get("vu_kn"))
+        if mu_val is not None:
+            mu_values.append((idx, mu_val))
+        if vu_val is not None:
+            vu_values.append((idx, vu_val))
+
+    # Only evaluate when values exist
+    for idx, value in mu_values:
+        if value < 5.0:
+            alerts.append(
+                UnitsAlert(
+                    field="mu_knm",
+                    status="WARN",
+                    message=f"mu_knm unusually small ({value:.2f}); check units",
+                    json_path=f"cases[{idx}].mu_knm",
+                )
+            )
+        elif value > 1.0e5:
+            alerts.append(
+                UnitsAlert(
+                    field="mu_knm",
+                    status="WARN",
+                    message=f"mu_knm unusually large ({value:.2f}); check units",
+                    json_path=f"cases[{idx}].mu_knm",
+                )
+            )
+
+    for idx, value in vu_values:
+        if value < 5.0:
+            alerts.append(
+                UnitsAlert(
+                    field="vu_kn",
+                    status="WARN",
+                    message=f"vu_kn unusually small ({value:.2f}); check units",
+                    json_path=f"cases[{idx}].vu_kn",
+                )
+            )
+        elif value > 1.0e4:
+            alerts.append(
+                UnitsAlert(
+                    field="vu_kn",
+                    status="WARN",
+                    message=f"vu_kn unusually large ({value:.2f}); check units",
+                    json_path=f"cases[{idx}].vu_kn",
+                )
+            )
+
+    return alerts
+
+
 def export_json(data: ReportData, *, indent: int = 2) -> str:
     """Export report data as JSON string.
 
@@ -744,6 +818,15 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
         }
         for item in get_stability_scorecard(data)
     ]
+    units_sentinel = [
+        {
+            "field": item.field,
+            "status": item.status,
+            "message": item.message,
+            "json_path": item.json_path,
+        }
+        for item in get_units_sentinel(data)
+    ]
     output = {
         "job_id": data.job_id,
         "code": data.code,
@@ -756,6 +839,7 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
         "summary": data.results.get("summary", {}),
         "input_sanity": input_sanity,
         "stability_scorecard": stability_scorecard,
+        "units_sentinel": units_sentinel,
     }
     return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
 
@@ -835,6 +919,39 @@ def _render_scorecard_table(items: List[ScorecardItem]) -> str:
     </table>"""
 
 
+def _render_units_table(items: List[UnitsAlert]) -> str:
+    if not items:
+        return "<p>No unit anomalies detected.</p>"
+
+    rows = []
+    for item in items:
+        status_class = "ok" if item.status == "OK" else "warn"
+        message = html.escape(item.message)
+        field = html.escape(item.field)
+        json_path = html.escape(item.json_path)
+        rows.append(
+            f"""        <tr class="units-{status_class}" data-source="{json_path}">
+            <td>{field}</td>
+            <td>{item.status}</td>
+            <td>{message}</td>
+        </tr>"""
+        )
+
+    rows_joined = "\n".join(rows)
+    return f"""<table class="units-table">
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+{rows_joined}
+        </tbody>
+    </table>"""
+
+
 def export_html(data: ReportData) -> str:
     """Export report data as HTML string (Phase 1 visuals)."""
     status = "✓ PASS" if data.is_ok else "✗ FAIL"
@@ -845,6 +962,8 @@ def export_html(data: ReportData) -> str:
     sanity_table = _render_sanity_table(sanity_items)
     scorecard_items = get_stability_scorecard(data)
     scorecard_table = _render_scorecard_table(scorecard_items)
+    units_items = get_units_sentinel(data)
+    units_table = _render_units_table(units_items)
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -855,11 +974,11 @@ def export_html(data: ReportData) -> str:
         h1, h2 {{ color: #333; }}
         .summary {{ margin-bottom: 20px; }}
         .section {{ margin: 20px 0; }}
-        .sanity-table, .scorecard-table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
-        .sanity-table th, .sanity-table td, .scorecard-table th, .scorecard-table td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
-        .sanity-table th, .scorecard-table th {{ background: #f5f5f5; font-weight: 600; }}
-        .sanity-ok, .scorecard-ok {{ background: #f7fff7; }}
-        .sanity-warn, .scorecard-warn {{ background: #fff8e1; }}
+        .sanity-table, .scorecard-table, .units-table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
+        .sanity-table th, .sanity-table td, .scorecard-table th, .scorecard-table td, .units-table th, .units-table td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
+        .sanity-table th, .scorecard-table th, .units-table th {{ background: #f5f5f5; font-weight: 600; }}
+        .sanity-ok, .scorecard-ok, .units-ok {{ background: #f7fff7; }}
+        .sanity-warn, .scorecard-warn, .units-warn {{ background: #fff8e1; }}
         .svg-wrap {{ border: 1px solid #eee; padding: 10px; display: inline-block; }}
     </style>
 </head>
@@ -882,6 +1001,10 @@ def export_html(data: ReportData) -> str:
     <div class="section">
         <h2>Stability Scorecard</h2>
         {scorecard_table}
+    </div>
+    <div class="section">
+        <h2>Units Sentinel</h2>
+        {units_table}
     </div>
     <p><em>Full report implementation in V08.</em></p>
 </body>
