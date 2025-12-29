@@ -30,7 +30,7 @@ For VS Code AI-agent work, start with:
 
 ---
 
-## Visual Outputs (v0.10.7+)
+## Visual Outputs (v0.11.0+)
 
 Generate human-readable summaries from job outputs:
 
@@ -43,7 +43,13 @@ python -m structural_lib report ./output --format=html -o report.html
 ```
 
 Input for both commands is the job output folder created by `python -m structural_lib job`.
-The HTML report includes a cross-section SVG and input sanity heatmap.
+The HTML report includes a cross-section SVG, input sanity heatmap, stability scorecard,
+and units sentinel.
+
+You can also generate reports from `design_results.json` with batch packaging:
+```bash
+python -m structural_lib report results.json --format=html -o report/ --batch-threshold 80
+```
 
 ---
 

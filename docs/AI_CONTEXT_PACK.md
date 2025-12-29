@@ -4,11 +4,11 @@
 
 | Metric | Value |
 |--------|-------|
-| **Current Release** | v0.10.7 (on PyPI) |
+| **Current Release** | v0.11.0 (on PyPI) |
 | **Next Milestone** | v0.20.0 (blocked by S-007) |
-| **Tests** | 1900+ passed, 91 skipped |
+| **Tests** | 1917 passed, 91 skipped |
 | **Coverage** | 92% branch |
-| **Visual v0.11** | V03 critical set export delivered (CLI `critical`) |
+| **Visual v0.11** | V03–V09 delivered (critical set, report HTML, batch packaging, golden tests) |
 
 > **Status details:** See [TASKS.md](TASKS.md) for current/next release info.
 

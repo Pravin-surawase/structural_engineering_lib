@@ -43,6 +43,21 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.11.0
+**Date:** 2025-12-29
+**Status:** ✅ Locked & Verified
+**Mindset:** Visual v0.11 Complete (Reports + Packaging)
+**Key Changes:**
+- **V04–V07 HTML report visuals:** Cross-section SVG, input sanity heatmap, stability scorecard, units sentinel.
+- **V08 batch packaging:** `report` supports `design_results.json` and `--batch-threshold` for folder output.
+- **V09 golden fixtures:** Deterministic HTML outputs locked by golden-file tests.
+- **Docs:** README, Colab workflow, and API reference updated for report/critical usage.
+
+**Tests:** 1917 passed, 91 skipped
+**PRs:** #151, #153, #154, #155, #156
+
+---
+
 ## v0.10.7
 **Date:** 2025-12-29
 **Status:** ✅ Locked & Verified

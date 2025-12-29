@@ -8,19 +8,27 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Summary
 - Released v0.10.7 (Visual v0.11 Phase 1 — Critical Set export) and synced version references across Python/VBA/docs.
+- Released v0.11.0 with Visual v0.11 report features (V04–V09).
 
 ### PRs Merged
 | PR | Summary |
 |----|---------|
 | #147 | Visual v0.11 V03 — `critical` CLI export for sorted utilization tables |
+| #151 | V04 SVG + V05 input sanity heatmap |
+| #153 | V06 stability scorecard |
+| #154 | V07 units sentinel |
+| #155 | V08 report batch packaging + CLI support |
+| #156 | V09 golden report fixtures/tests |
 
 ### Key Deliverables
 - Version bump to v0.10.7 (Python, VBA, docs) using `scripts/bump_version.py`.
 - Release notes added to CHANGELOG and docs/RELEASES.
 - Docs refreshed: TASKS, AI context, next-session brief aligned to v0.10.7.
+- Visual report HTML now includes SVG, sanity heatmap, scorecard, and units sentinel.
+- Report CLI supports batch packaging via `--batch-threshold`.
 
 ### Notes
-- Visual v0.11 remaining: V04 SVG rendering.
+- Visual v0.11 complete: V03–V09 delivered.
 
 
 ## 2025-12-28 — v0.10.2 Release
