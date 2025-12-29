@@ -83,6 +83,7 @@ Internal planning documents and research notes.
 | [Project Status Deep Dive](project-status-deep-dive.md) | Module maps, contracts |
 | [Pre-Release Checklist](pre-release-checklist.md) | v1.0 gates |
 | [v0.20 Stabilization](v0.20-stabilization-checklist.md) | Next milestone checklist |
+| [BBS + DXF Improvement Plan](bbs-dxf-improvement-plan.md) | Output contract + DXF/BBS quality plan |
 
 ---
 

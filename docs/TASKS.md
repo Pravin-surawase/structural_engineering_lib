@@ -150,6 +150,23 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ---
 
+## Planned (BBS + DXF Improvement Program)
+
+**Plan doc:** `docs/planning/bbs-dxf-improvement-plan.md`
+
+| ID | Task | Agent | Est. | Priority | Bundle |
+|----|------|-------|------|----------|--------|
+| **TASK-098** | Define BBS/DXF contracts + bar mark spec | DOCS | 2 hrs | 🔴 High | A |
+| **TASK-099** | Deterministic bar mark generator + wire into BBS | DEV | 3 hrs | 🔴 High | B |
+| **TASK-100** | BBS cut-length + hook/bend updates + weight rules | DEV | 4 hrs | 🔴 High | C |
+| **TASK-101** | DXF callouts include bar marks + zone labels | DEV | 4 hrs | 🟡 Medium | D |
+| **TASK-102** | DXF/BBS consistency checker (mark diff) | DEV | 4 hrs | 🟡 Medium | E |
+| **TASK-103** | DXF content tests (layers + text) | TESTER | 3 hrs | 🟡 Medium | D |
+| **TASK-083** | DXF deliverable layout polish | DEV | 2 hrs | 🟡 Medium | F |
+| **TASK-084** | DXF to PDF/PNG export workflow | DEVOPS | 2 hrs | 🟡 Medium | F |
+
+---
+
 ## Backlog (Post-v1.0)
 
 | ID | Task | Agent | Description |
