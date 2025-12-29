@@ -39,6 +39,7 @@ Engineers running batch designs (50-500 beams) struggle to identify critical bea
 | R8 | 2025-12-29 | **R7 action items resolved** — all 5 fixes applied |
 | R9 | 2025-12-29 | **External review fixes** — input expanded, agent count, CLI examples |
 | R10 | 2025-12-29 | **Implementation architecture** — corrected module layout, CLI entry point |
+| R11 | 2025-12-29 | **ARCHITECT review** — schema keys documented, `load_job_spec()` helper recommended |
 
 ---
 
@@ -1479,6 +1480,78 @@ def plot_utilization_chart(data):
 | — | `viz_plot.py` (matplotlib charts) | 4hr | matplotlib | v0.12+ |
 
 **Total Phase 1:** ~22 hours across 9 tasks
+
+### Schema Keys Required (R11)
+
+Documents exact keys needed from each input file for Phase 1 features.
+
+**From `inputs/job.json` (beam geometry):**
+
+```json
+{
+  "beam": {
+    "b_mm": 300,
+    "D_mm": 600,
+    "d_mm": 550,
+    "fck_nmm2": 25,
+    "fy_nmm2": 500,
+    "d_dash_mm": 50,
+    "asv_mm2": 100
+  }
+}
+```
+
+| Key | Used For |
+|-----|----------|
+| `b_mm`, `D_mm` | Input Sanity (b/D ratio check) |
+| `d_mm`, `d_dash_mm` | Cross-section SVG, cover checks |
+| `fck_nmm2`, `fy_nmm2` | Units Sentinel (magnitude check) |
+
+**From `design/design_results.json` (ComplianceReport):**
+
+```json
+{
+  "is_ok": true,
+  "governing_case_id": "LC1",
+  "governing_utilization": 0.85,
+  "cases": [
+    {
+      "case_id": "LC1",
+      "is_ok": true,
+      "governing_utilization": 0.85,
+      "utilizations": {
+        "flexure": 0.85,
+        "shear": 0.42
+      },
+      "flexure": { "section_type": "under_reinforced", ... },
+      "shear": { "is_safe": true, ... }
+    }
+  ],
+  "job": {
+    "job_id": "B001",
+    "code": "IS456",
+    "units": "mm_N_kNm"
+  }
+}
+```
+
+| Key | Used For |
+|-----|----------|
+| `governing_utilization` | Critical Set sorting |
+| `cases[].utilizations` | Utilization bars, heatmap |
+| `cases[].flexure.section_type` | Stability Scorecard (over-reinforced check) |
+| `cases[].shear.is_safe` | Stability Scorecard (brittle shear check) |
+| `job.units` | Units Sentinel validation |
+
+### ARCHITECT Recommendations (R11)
+
+| # | Recommendation | Priority | Status |
+|---|----------------|----------|--------|
+| 1 | Extract `load_job_spec()` from `job_runner.py` | High | Task #1 pre-req |
+| 2 | Handle missing/malformed input files gracefully | High | Task #2 |
+| 3 | Use `json.dumps(sort_keys=True)` for SVG determinism | Medium | Task #4 |
+| 4 | Add batch performance test (500 beams, <30s) | Medium | Task #9 |
+| 5 | Document report is Python-only; VBA uses CLI | Low | Docs |
 
 ---
 
