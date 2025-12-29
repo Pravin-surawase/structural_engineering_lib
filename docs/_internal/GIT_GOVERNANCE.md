@@ -125,6 +125,42 @@ See `.github/copilot-instructions.md` for agent-specific workflow rules.
 
 ---
 
+### 2.6 Local Workflow Guardrails (PR-Only Repos)
+
+These are the rules that prevent rebase pain and “why can’t I push?” surprises.
+
+**Golden rules:**
+- **Never commit on `main`.** Always branch first.
+- **If you accidentally commit on `main`:**
+  1) `git switch -c <branch>`
+  2) `git push -u origin <branch>`
+  3) Open a PR and merge it normally
+- **Sync `main` only after PR merge:** `git fetch origin` + `git rebase origin/main`
+- **Delete local branches after merge:** `git branch -d <branch>`
+
+**Why this matters:** Rulesets require PRs. Committing on `main` triggers rejected pushes and messy rebases.
+
+---
+
+### 2.7 Quick Local Checks (Before PR)
+
+Use the fast pre-flight checks below to avoid CI failures:
+
+```bash
+# Code (fast)
+./scripts/quick_check.sh
+
+# Code + coverage gate
+./scripts/quick_check.sh --cov
+
+# Docs-only
+./scripts/quick_check.sh docs
+```
+
+For a full run, use `scripts/ci_local.sh`.
+
+---
+
 ## 3. Commit Message Convention (Conventional Commits)
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/) to enable automated changelogs.

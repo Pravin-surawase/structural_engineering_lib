@@ -26,7 +26,7 @@
 - From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml`
 
 **How to run the CI-equivalent check locally (includes coverage gate):**
-- From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml --cov-fail-under=92`
+- From `Python/`: `python -m pytest --cov=structural_lib --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=85`
 
 ### CI (GitHub Actions)
 
@@ -39,7 +39,7 @@ Workflow: `.github/workflows/python-tests.yml`
   - Python matrix: 3.9, 3.10, 3.11, 3.12
   - Installs: `pip install -e ".[dev,dxf]"`
   - Runs: pytest with coverage + uploads `coverage.xml`
-  - Coverage gate: `--cov-fail-under=92`
+  - Coverage gate: `--cov-fail-under=85` (branch coverage)
   - Packaging smoke: `python -m build`
 
 **What this gives us:**
@@ -77,7 +77,7 @@ Workflow: `.github/workflows/python-tests.yml`
 Latest verified local run (Dec 2025): **100% total coverage** with `--cov-report=term-missing`.
 
 Notes:
-- CI gate is `--cov-fail-under=92`.
+- CI gate is `--cov-fail-under=85` (branch coverage).
 - Tests that execute modules via `runpy.run_module(...)` clear entries from `sys.modules` to avoid `RuntimeWarning` noise.
 
 ---
@@ -85,7 +85,7 @@ Notes:
 ## 4) Key gaps / risks (senior tester assessment)
 
 1. **Coverage gate is conservative**
-  - CI enforces a minimum total coverage of 80% to prevent silent regressions.
+  - CI enforces a minimum total branch coverage of 85% to prevent silent regressions.
   - This is intentionally low to avoid blocking feature work; raise gradually as coverage improves.
 
 2. **High-risk areas (now covered, still sensitive to change)**
@@ -108,7 +108,7 @@ Notes:
 
 ### P0 — Protect against regression
 
-- Keep the CI **coverage gate** at 92%.
+- Keep the CI **coverage gate** at 85% (current baseline).
 
 ### P1 — Increase confidence where failures are expensive
 
