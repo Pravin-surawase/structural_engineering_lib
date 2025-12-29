@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2025-12-29
+
+### Added
+- **Visual report HTML (V04–V07):**
+  - Cross-section SVG rendering
+  - Input sanity heatmap
+  - Stability scorecard
+  - Units sentinel checks
+- **Batch report packaging (V08):**
+  - `report` supports `design_results.json` input
+  - Folder output with `--batch-threshold` for large batches
+- **Golden fixtures (V09):**
+  - Deterministic HTML outputs verified via golden-file tests
+
+### Changed
+- CLI help and docs updated for `report` + `critical` workflows
+
 ## [0.10.7] - 2025-12-29
 
 ### Added

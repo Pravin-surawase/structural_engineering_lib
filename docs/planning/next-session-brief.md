@@ -2,10 +2,10 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.10.7 | Published on PyPI |
+| **Current** | v0.11.0 | Published on PyPI |
 | **Next** | v0.20.0 | Blocked by S-007 |
 
-**Date:** 2025-12-29 | **PRs:** through #116
+**Date:** 2025-12-29 | **PRs:** through #156
 
 ---
 
@@ -40,7 +40,7 @@ python scripts/release.py 0.20.0
 **Quick project summary:**
 - IS 456 RC beam design library (Indian Standard)
 - Python + VBA with matching outputs (parity requirement)
-- CLI: `python -m structural_lib design|bbs|dxf|job`
+- CLI: `python -m structural_lib design|bbs|dxf|job|critical|report`
 - PyPI: `pip install structural-lib-is456`
 
 ---
@@ -57,29 +57,26 @@ python scripts/release.py 0.20.0
 | Many micro-PRs for tiny changes | Review fatigue, CI waste | Batch related changes into one PR |
 | Editing without reading file first | Merge conflicts, overwrites | Always read current state before editing |
 
-**Performance facts (verified 2025-12-28):**
-- Tests: 1810 passed, 91 skipped, 92% branch coverage
+**Performance facts (verified 2025-12-29):**
+- Tests: 1917 passed, 91 skipped, 92% branch coverage
 - Speed: 0.009ms per beam, 94,000 beams/second
 - All edge cases handled gracefully (zero/negative → `is_safe=False`)
 
 ---
 
-## ✅ Last Session Summary (2025-12-28)
+## ✅ Last Session Summary (2025-12-29)
 
-**Focus:** Stabilization sprint — documentation quality + verification
+**Focus:** Visual v0.11 deliverables + report tooling
 
 | PR | Description |
 |----|-------------|
-| #89 | Fixed 4 broken links + added `scripts/check_links.py` |
-| #90 | Fixed expected output in beginners-guide (942→882mm²) |
-| #91 | Fixed D1 expected Ld value in verification examples (752→777mm) |
-| #92 | Improved job_runner error messages |
-| #93 | Verified all High Priority items (robustness + performance) |
-| #95 | Documentation updates (SESSION_LOG, CHANGELOG, TASKS) |
-| #96 | Updated next-session-brief for handoff |
-| #97 | Cleaned up next-session-brief (625→236 lines) |
+| #151 | V04 SVG + V05 input sanity heatmap |
+| #153 | V06 stability scorecard |
+| #154 | V07 units sentinel |
+| #155 | V08 report batch packaging + CLI support |
+| #156 | V09 golden report fixtures/tests |
 
-**Outcome:** All Critical items complete except S-007. All High Priority items verified. ✅
+**Outcome:** Visual v0.11 (V03–V09) complete and integrated. ✅
 
 ---
 
