@@ -34,6 +34,11 @@ Entries here represent "locked" versions that have been verified and approved.
    python -c "from structural_lib import api; print(api.get_library_version())"
    ```
 
+6. **Recommended: clean-venv verification**
+   ```bash
+   python scripts/verify_release.py --version X.Y.Z --source pypi
+   ```
+
 ### TestPyPI (for testing before release)
 
 Use workflow_dispatch with `testpypi` target:
