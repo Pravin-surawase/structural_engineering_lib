@@ -6,6 +6,13 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-29 — Session
 
+**Focus:** Release polish + visual report v0.11.0, handoff automation, S-007 capture
+
+**Completed:**
+- Added S-007 external CLI test script + log template and session-log paste section.
+- Extended nightly QA to build wheel + run release verification.
+- Updated docs index CLI reference label to v0.11.0+.
+
 ### Summary
 - Released v0.10.7 (Visual v0.11 Phase 1 — Critical Set export) and synced version references across Python/VBA/docs.
 - Released v0.11.0 with Visual v0.11 report features (V04–V09).

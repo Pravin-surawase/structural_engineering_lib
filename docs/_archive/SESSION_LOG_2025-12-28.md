@@ -1,6 +1,6 @@
 # Session Log
 
-Append-only record of decisions, PRs, and next actions. For detailed task tracking, see [TASKS.md](TASKS.md).
+Append-only record of decisions, PRs, and next actions. For detailed task tracking, see [TASKS.md](../TASKS.md).
 
 ---
 
