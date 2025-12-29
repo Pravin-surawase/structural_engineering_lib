@@ -710,6 +710,49 @@ def test_validate_results_auto(sample_design_results_file):
     assert rc == 0
 
 
+def test_validate_missing_input(tmp_path):
+    """Validate command with missing input file."""
+    rc = cli_main.main(["validate", str(tmp_path / "missing.json")])
+    assert rc == 1
+
+
+def test_validate_auto_unknown_type(tmp_path):
+    """Validate command with unknown JSON type."""
+    path = tmp_path / "unknown.json"
+    path.write_text(json.dumps({"foo": 1}), encoding="utf-8")
+
+    rc = cli_main.main(["validate", str(path)])
+    assert rc == 1
+
+
+def test_validate_json_output(sample_job_file, tmp_path):
+    """Validate job.json and write JSON report to file."""
+    output_path = tmp_path / "validation.json"
+
+    rc = cli_main.main(
+        ["validate", str(sample_job_file), "--format", "json", "-o", str(output_path)]
+    )
+
+    assert rc == 0
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert payload["ok"] is True
+
+
+def test_validate_results_errors_output(tmp_path, capsys):
+    """Validate results.json with errors and capture text output."""
+    path = tmp_path / "bad_results.json"
+    path.write_text(
+        json.dumps({"schema_version": 1, "code": "IS456", "beams": []}, indent=2),
+        encoding="utf-8",
+    )
+
+    rc = cli_main.main(["validate", str(path), "--type", "results"])
+
+    assert rc == 2
+    output = capsys.readouterr().out
+    assert "Errors:" in output
+
+
 # =============================================================================
 # Report Command Tests
 # =============================================================================
