@@ -105,7 +105,7 @@ If you must use an internal module:
 ```python
 # Pin to exact version
 # requirements.txt
-structural-lib-is456==0.10.7
+structural-lib-is456==0.11.0
 
 # Or wrap with try/except
 try:
@@ -140,6 +140,8 @@ python -m structural_lib design input.csv -o results.json
 python -m structural_lib bbs results.json -o bbs.csv
 python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib job job.json -o output/
+python -m structural_lib critical output/ --top 10 --format=csv -o critical.csv
+python -m structural_lib report output/ --format=html -o report.html
 ```
 
 Output JSON schema is versioned via `schema_version` field.

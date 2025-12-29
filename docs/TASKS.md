@@ -183,7 +183,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ## Notes
 
-- **Current Version**: v0.10.7
+- **Current Version**: v0.11.0
 - **Last Updated**: 2025-12-29
 - **Active Branch**: main
 - **Tests**: Run `python scripts/update_test_stats.py` for current count

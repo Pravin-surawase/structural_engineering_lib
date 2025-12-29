@@ -1,6 +1,6 @@
 # Colab Workflow (End-to-End, No ETABS Needed)
 
-> **Version:** v0.10.7 | **Updated:** 2025-12-29
+> **Version:** v0.11.0 | **Updated:** 2025-12-29
 
 This guide runs the full pipeline in Google Colab:
 install → generate inputs → design → BBS → DXF → reports → critical set.
@@ -10,12 +10,12 @@ install → generate inputs → design → BBS → DXF → reports → critical 
 - `bbs` — Generate bar bending schedule
 - `dxf` — Generate CAD drawings
 - `job` — Run full job from JSON spec
-- `report` — Generate HTML/JSON reports *(NEW in v0.10.7)*
-- `critical` — Export critical set sorted by utilization *(NEW in v0.10.7)*
+- `report` — Generate HTML/JSON reports *(NEW in v0.11.0)*
+- `critical` — Export critical set sorted by utilization *(NEW in v0.11.0)*
 
 ---
 
-## 🆕 What's New in v0.10.7 (Visual v0.11)
+## 🆕 What's New in v0.11.0 (Visual v0.11)
 
 **V01–V07 features delivered:**
 
@@ -28,12 +28,17 @@ install → generate inputs → design → BBS → DXF → reports → critical 
 | **V05** | `report --format=html` | Input sanity heatmap |
 | **V06** | `report --format=html` | Stability scorecard |
 | **V07** | `report --format=html` | Units sentinel |
+| **V08** | `report --format=html` | Batch packaging with `--batch-threshold` |
+| **V09** | — | Golden report fixtures for deterministic outputs |
 
 **Quick demo of new features:**
 ```python
 # After running job (Step 6), generate reports:
 !python -m structural_lib critical ./job_out --top=5 --format=csv
 !python -m structural_lib report ./job_out --format=html -o report.html
+
+# After Step 4 (batch), generate a packaged report from design results JSON:
+!python -m structural_lib report results_500.json --format=html -o report_500/ --batch-threshold 80
 ```
 
 ---
@@ -328,9 +333,9 @@ pd.read_csv("critical.csv")
 
 ---
 
-## Step 8: 🆕 Report Generation (V04–V06)
+## Step 8: 🆕 Report Generation (V04–V07)
 
-Generate full reports with SVG, sanity heatmap, and scorecard:
+Generate full reports with SVG, sanity heatmap, scorecard, and units sentinel:
 
 ```python
 # JSON report (machine-readable)
@@ -354,6 +359,19 @@ with open("report.html", "r", encoding="utf-8") as f:
 - Input sanity heatmap (geometry/material validation)
 - Stability scorecard (ductility, shear margin, utilization)
 - Units sentinel (magnitude-based unit checks)
+
+---
+
+## Step 8b: 🆕 Batch Report Packaging (V08)
+
+When you have a large `design_results.json`, use batch packaging so the report
+is split into an index + per-beam pages.
+
+```python
+!python -m structural_lib report results_500.json --format=html -o report_500/ --batch-threshold 80
+```
+
+Open `report_500/index.html` in Colab (or download the folder) to browse.
 
 ---
 
@@ -386,6 +404,11 @@ print("\n✓ Created colab_outputs.zip — download from file browser (left side
 | `report` | Generate report (JSON/HTML) | `report ./output/ --format=html` |
 | `critical` | Export critical set | `critical ./output/ --top=10 --format=csv` |
 
+Batch report from `design_results.json`:
+```python
+!python -m structural_lib report results.json --format=html -o report/ --batch-threshold 80
+```
+
 For help on any command:
 ```python
 !python -m structural_lib --help
@@ -407,4 +430,4 @@ For help on any command:
 
 ---
 
-*Last updated: 2025-12-29 | v0.10.7*
+*Last updated: 2025-12-29 | v0.11.0*

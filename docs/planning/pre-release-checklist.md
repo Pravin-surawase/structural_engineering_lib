@@ -1,6 +1,6 @@
 # Pre-Release Checklist
 
-Version: 0.10.7 (beta candidate)
+Version: 0.11.0 (beta candidate)
 Date: 2025-12-29
 Target: Private beta with 2–3 structural engineers
 
@@ -10,7 +10,7 @@ Target: Private beta with 2–3 structural engineers
 
 | Area | Status | Evidence |
 |------|--------|----------|
-| Test Suite | ✅ 1777 tests collected | `pytest --co` on 2025-12-27 |
+| Test Suite | ✅ 2008 tests collected | `pytest --co` on 2025-12-29 |
 | PyPI | ✅ Live | `pip install structural-lib-is456` |
 | CLI | ✅ Functional | `python -m structural_lib --help` works |
 | Excel Integration | ⚠️ Functional (not parity-verified) | CSV/JSON workflows work; VBA outputs not compared |

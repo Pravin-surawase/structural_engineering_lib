@@ -18,12 +18,13 @@
 
 ## Status
 
-🚀 **Active (v0.10.7)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.11.0)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.10.7:**
-- **Critical Set export (V03):** New `critical` CLI subcommand outputs sorted utilization tables (CSV/HTML) with `--top` filtering and `data-source` traces.
-- **Report foundations (V01/V02):** `report.py` skeleton + `load_job_spec()` helper, plus `report` CLI scaffold for upcoming visuals.
-- **Docs refresh:** AI context, TASKS, and next-session brief updated for the Visual v0.11 rollout.
+**What's new in v0.11.0:**
+- **Critical Set export (V03):** `critical` CLI subcommand outputs sorted utilization tables (CSV/HTML) with `--top` filtering and `data-source` traces.
+- **Visual reports (V04–V07):** HTML reports now include cross-section SVG, input sanity heatmap, stability scorecard, and units sentinel.
+- **Batch packaging (V08):** `report` accepts design results JSON and supports folder output with `--batch-threshold`.
+- **Golden fixtures (V09):** Report outputs are locked by golden-file tests for determinism.
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
@@ -58,7 +59,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 | Compliance reports | JSON | Strength + serviceability checks |
 | Bar bending schedules | CSV | Per IS 2502 with cutting lengths |
 | Critical set tables | CSV/HTML | Sorted utilization table from job outputs |
-| Report summaries (preview) | JSON/HTML | Human-readable summary from job outputs |
+| Visual reports | JSON/HTML | Report summary with SVG, sanity heatmap, scorecard |
 
 ## Who it helps
 
@@ -72,7 +73,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 |--------|--------|
 | **Determinism** | Same input → same output (JSON/CSV/DXF) across runs and machines |
 | **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
-| **Test coverage** | 1900+ tests, 92% branch coverage (see CI for live status) |
+| **Test coverage** | 1917 tests, 92% branch coverage (see CI for live status) |
 | **Clause traceability** | Core design formulas reference IS 456 clause/table |
 | **Verification pack** | Benchmark examples in [`Python/examples/`](Python/examples/) |
 
@@ -86,7 +87,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.10.7`) rather than installing latest.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.11.0`) rather than installing latest.
 
 ### Install from PyPI
 
@@ -208,7 +209,13 @@ Generate a critical set and report from the job outputs:
 python3 -m structural_lib critical ./out_demo --top 10 --format=csv -o critical.csv
 python3 -m structural_lib report ./out_demo --format=html -o report.html
 ```
-The HTML report includes a cross-section SVG and input sanity heatmap.
+The HTML report includes a cross-section SVG, input sanity heatmap, stability scorecard,
+and units sentinel.
+
+You can also generate reports directly from `design_results.json`:
+```bash
+python3 -m structural_lib report results.json --format=html -o report/ --batch-threshold 80
+```
 
 ## Features
 
@@ -441,7 +448,7 @@ See [Python examples](Python/examples/) for complete workflows.
 
 | Platform | Command | Coverage |
 |----------|---------|----------|
-| Python | `python3 -m pytest Python/tests -q` | 1900+ tests, 92% branch coverage |
+| Python | `python3 -m pytest Python/tests -q` | 1917 tests, 92% branch coverage |
 | VBA | `Test_RunAll.RunAllVBATests` in Excel VBA Editor | 9 test suites |
 
 Run the full suite locally to verify:

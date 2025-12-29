@@ -1,6 +1,6 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.10.7
+**Document Version:** 0.11.0
 **Last Updated:** 2025-12-29
 **Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI).
 
@@ -23,10 +23,23 @@ python -m structural_lib dxf results.json -o drawings.dxf
 # Run complete job from spec file
 python -m structural_lib job job.json -o ./output
 
+# Critical set from job outputs (sorted utilization)
+python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
+
+# Report from job outputs (JSON/HTML)
+python -m structural_lib report ./output --format=html -o report.html
+
+# Report from design results JSON (batch packaging)
+python -m structural_lib report design_results.json --format=html -o report/ --batch-threshold 80
+
 # Get help
 python -m structural_lib --help
 python -m structural_lib design --help
 ```
+
+Notes:
+- `critical` and `report` accept the job output folder created by `python -m structural_lib job`.
+- `report` can also consume a `design_results.json` file for batch packaging (`--batch-threshold`).
 
 ---
 
