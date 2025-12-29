@@ -41,6 +41,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **#139 (V06)** | Stability Scorecard | DEV | ✅ Done |
 | **#140 (V07)** | Units Sentinel | DEV | ✅ Done |
 | **#141 (V08)** | HTML export + batch packaging | DEV | ✅ Done |
+| **#142 (V09)** | Golden file tests for report module | DEV | ✅ Done |
 
 ---
 
