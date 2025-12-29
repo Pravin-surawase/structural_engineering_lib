@@ -18,10 +18,17 @@ Usage:
 
     # Generate HTML report
     html_output = report.export_html(data)
+
+    # Get critical set (sorted by utilization)
+    critical = report.get_critical_set(data, top=10)
+    csv_output = report.export_critical_csv(critical)
+    html_table = report.export_critical_html(critical)
 """
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -46,6 +53,27 @@ class ReportData:
     is_ok: bool = False
     governing_case_id: str = ""
     governing_utilization: float = 0.0
+
+
+@dataclass
+class CriticalCase:
+    """A single case entry for critical set output.
+
+    Attributes:
+        case_id: Load case identifier
+        utilization: Governing utilization ratio (0.0 to 1.0+)
+        flexure_util: Flexure utilization ratio
+        shear_util: Shear utilization ratio
+        is_ok: Whether design passes all checks
+        json_path: Source path in results JSON for traceability
+    """
+
+    case_id: str
+    utilization: float
+    flexure_util: float
+    shear_util: float
+    is_ok: bool
+    json_path: str = ""
 
 
 def load_report_data(
@@ -183,6 +211,191 @@ def export_html(data: ReportData) -> str:
     <p><strong>Status:</strong> {status}</p>
     <p><strong>Governing Utilization:</strong> {data.governing_utilization:.2%}</p>
     <p><em>Full report implementation in V08.</em></p>
+</body>
+</html>
+"""
+
+
+# =============================================================================
+# Critical Set Functions (V03)
+# =============================================================================
+
+
+def get_critical_set(
+    data: ReportData,
+    *,
+    top: Optional[int] = None,
+) -> List[CriticalCase]:
+    """Extract cases sorted by utilization (highest first).
+
+    Args:
+        data: ReportData containing design results
+        top: Limit to top N cases (None = all cases)
+
+    Returns:
+        List of CriticalCase sorted by utilization descending
+    """
+    cases_data = data.results.get("cases", [])
+    critical_cases: List[CriticalCase] = []
+
+    for idx, case in enumerate(cases_data):
+        if not isinstance(case, dict):
+            continue
+
+        case_id = str(case.get("case_id", f"case_{idx}"))
+
+        # Extract utilization values
+        utils = case.get("utilizations", {})
+        if not isinstance(utils, dict):
+            utils = {}
+
+        # Governing utilization (max of flexure and shear)
+        flexure_util = float(utils.get("flexure", 0.0))
+        shear_util = float(utils.get("shear", 0.0))
+        governing_util = float(
+            case.get("governing_utilization", max(flexure_util, shear_util))
+        )
+
+        is_ok = bool(case.get("is_ok", False))
+        json_path = f"cases[{idx}]"
+
+        critical_cases.append(
+            CriticalCase(
+                case_id=case_id,
+                utilization=governing_util,
+                flexure_util=flexure_util,
+                shear_util=shear_util,
+                is_ok=is_ok,
+                json_path=json_path,
+            )
+        )
+
+    # Sort by utilization descending (highest first)
+    critical_cases.sort(key=lambda c: c.utilization, reverse=True)
+
+    # Apply top N filter
+    if top is not None and top > 0:
+        critical_cases = critical_cases[:top]
+
+    return critical_cases
+
+
+def export_critical_csv(cases: List[CriticalCase]) -> str:
+    """Export critical set as CSV string.
+
+    Args:
+        cases: List of CriticalCase (already sorted)
+
+    Returns:
+        CSV string with header row
+    """
+    output = io.StringIO()
+    fieldnames = [
+        "case_id",
+        "utilization",
+        "flexure_util",
+        "shear_util",
+        "is_ok",
+        "json_path",
+    ]
+
+    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
+
+    for case in cases:
+        writer.writerow(
+            {
+                "case_id": case.case_id,
+                "utilization": f"{case.utilization:.4f}",
+                "flexure_util": f"{case.flexure_util:.4f}",
+                "shear_util": f"{case.shear_util:.4f}",
+                "is_ok": "TRUE" if case.is_ok else "FALSE",
+                "json_path": case.json_path,
+            }
+        )
+
+    return output.getvalue()
+
+
+def export_critical_html(
+    cases: List[CriticalCase],
+    *,
+    title: str = "Critical Set - Utilization Summary",
+) -> str:
+    """Export critical set as HTML table with utilization bars.
+
+    Args:
+        cases: List of CriticalCase (already sorted)
+        title: Table title
+
+    Returns:
+        HTML string with styled table
+    """
+    # Build table rows
+    rows_html = []
+    for case in cases:
+        # Utilization bar width (cap at 100% for display)
+        bar_width = min(case.utilization * 100, 100)
+        bar_color = "#28a745" if case.is_ok else "#dc3545"  # green or red
+
+        status_badge = (
+            '<span class="badge pass">✓ PASS</span>'
+            if case.is_ok
+            else '<span class="badge fail">✗ FAIL</span>'
+        )
+
+        row = f"""        <tr data-source="{case.json_path}">
+            <td>{case.case_id}</td>
+            <td>
+                <div class="util-bar-container">
+                    <div class="util-bar" style="width: {bar_width:.1f}%; background: {bar_color};"></div>
+                    <span class="util-value">{case.utilization:.2%}</span>
+                </div>
+            </td>
+            <td>{case.flexure_util:.2%}</td>
+            <td>{case.shear_util:.2%}</td>
+            <td>{status_badge}</td>
+        </tr>"""
+        rows_html.append(row)
+
+    rows_joined = "\n".join(rows_html)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{title}</title>
+    <style>
+        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; }}
+        h1 {{ color: #333; }}
+        table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
+        th, td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
+        th {{ background: #f5f5f5; font-weight: 600; }}
+        tr:hover {{ background: #f9f9f9; }}
+        .util-bar-container {{ position: relative; width: 120px; height: 20px; background: #eee; border-radius: 3px; }}
+        .util-bar {{ height: 100%; border-radius: 3px; }}
+        .util-value {{ position: absolute; top: 0; left: 0; right: 0; text-align: center; line-height: 20px; font-size: 12px; font-weight: 500; }}
+        .badge {{ padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 500; }}
+        .badge.pass {{ background: #d4edda; color: #155724; }}
+        .badge.fail {{ background: #f8d7da; color: #721c24; }}
+    </style>
+</head>
+<body>
+    <h1>{title}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Case ID</th>
+                <th>Utilization</th>
+                <th>Flexure</th>
+                <th>Shear</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+{rows_joined}
+        </tbody>
+    </table>
 </body>
 </html>
 """
