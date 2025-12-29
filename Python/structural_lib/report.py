@@ -223,6 +223,10 @@ def _safe_float(value: Any) -> Optional[float]:
         return None
 
 
+def _safe_dict(value: Any) -> Dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
 def _make_sanity_check(
     *,
     field: str,
@@ -1091,16 +1095,12 @@ def _build_beam_index(beams: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 def _beam_report_data_from_design(
     beam: Dict[str, Any], *, code: str, units: str
 ) -> ReportData:
-    geometry = beam.get("geometry") if isinstance(beam.get("geometry"), dict) else {}
-    materials = beam.get("materials") if isinstance(beam.get("materials"), dict) else {}
-    loads = beam.get("loads") if isinstance(beam.get("loads"), dict) else {}
-    flexure = beam.get("flexure") if isinstance(beam.get("flexure"), dict) else {}
-    shear = beam.get("shear") if isinstance(beam.get("shear"), dict) else {}
-    serviceability = (
-        beam.get("serviceability")
-        if isinstance(beam.get("serviceability"), dict)
-        else {}
-    )
+    geometry: Dict[str, Any] = _safe_dict(beam.get("geometry"))
+    materials: Dict[str, Any] = _safe_dict(beam.get("materials"))
+    loads: Dict[str, Any] = _safe_dict(beam.get("loads"))
+    flexure: Dict[str, Any] = _safe_dict(beam.get("flexure"))
+    shear: Dict[str, Any] = _safe_dict(beam.get("shear"))
+    serviceability: Dict[str, Any] = _safe_dict(beam.get("serviceability"))
 
     beam_id = str(beam.get("beam_id", "") or "")
     story = str(beam.get("story", "") or "")
