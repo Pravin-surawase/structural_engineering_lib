@@ -2,6 +2,34 @@
 
 Purpose: capture a repeatable, human-run CLI test from a fresh user.
 
+Preferred: use the automated smoke script so the output is consistent and easy to share.
+
+Automated option (recommended):
+
+1) Install (clean venv)
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install "structural-lib-is456[dxf]"
+```
+
+2) Download the script (pick one)
+
+- From this repo: `scripts/external_cli_test.py`
+- Or copy the file contents into `external_cli_test.py`
+
+3) Run it
+```bash
+python external_cli_test.py
+```
+
+Outputs:
+- A shareable log file: `external_cli_test_run/external_cli_test.log`
+- A small outputs folder: `external_cli_test_run/outputs/`
+
+Fill this template and attach it with the log:
+- `docs/verification/external-cli-test-log-template.md`
+
 ---
 
 ## Tester Info
@@ -12,6 +40,8 @@ Purpose: capture a repeatable, human-run CLI test from a fresh user.
 - **Install method:** `pip install` / `pipx` / other
 
 ## Checklist (Run in Order)
+
+If you used the automated script above, you can skip this manual checklist.
 
 1) **Install (clean venv)**
 ```bash
