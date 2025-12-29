@@ -13,6 +13,7 @@ import pytest
 import tempfile
 import csv
 import json
+from dataclasses import replace
 from pathlib import Path
 
 from structural_lib.bbs import (
@@ -281,6 +282,15 @@ class TestBBSGeneration:
         items = generate_bbs_from_detailing(sample_detailing)
         marks = [item.bar_mark for item in items]
         assert len(marks) == len(set(marks))
+
+    def test_bbs_unique_marks_across_beams(self, sample_detailing):
+        """Marks should be unique across multiple beams."""
+        detailing_b2 = replace(sample_detailing, beam_id="B2", story="Story2")
+        items = generate_bbs_from_detailing(sample_detailing)
+        items += generate_bbs_from_detailing(detailing_b2)
+        marks = [item.bar_mark for item in items]
+        assert len(marks) == len(set(marks))
+        assert all(mark.startswith(("B1-", "B2-")) for mark in marks)
 
 
 # =============================================================================

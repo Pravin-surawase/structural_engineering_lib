@@ -1076,7 +1076,7 @@ Generates Bar Bending Schedules (BBS) and Bill of Materials (BOM) from detailing
 **BBSLineItem:**
 | Field | Type | Description |
 |-------|------|-------------|
-| `bar_mark` | str | Unique identifier (e.g., "B1", "S1") |
+| `bar_mark` | str | Project-unique mark (e.g., "B1-B-S-D16-01") |
 | `member_id` | str | Beam/element ID |
 | `location` | str | "bottom", "top", "stirrup" |
 | `zone` | str | "start", "mid", "end", "full" |
@@ -1185,9 +1185,9 @@ export_bbs_to_csv(items, "output/B1_bbs.csv")
 ### 12.7 CSV Output Format
 ```csv
 bar_mark,member_id,location,zone,shape_code,diameter_mm,no_of_bars,cut_length_mm,total_length_mm,unit_weight_kg,total_weight_kg,remarks
-B1,B1,bottom,start,A,16,3,2600,7800,4.11,12.33,Bottom start - 3-16φ
-B2,B1,bottom,mid,A,16,4,3400,13600,5.38,21.52,Bottom mid - 4-16φ
-S1,B1,stirrup,start,E,8,11,1440,15840,0.57,6.27,Stirrup start - 2L-8φ@100
+B1-B-S-D16-01,B1,bottom,start,A,16,3,2600,7800,4.11,12.33,Bottom start - 3-16φ
+B1-B-M-D16-02,B1,bottom,mid,A,16,4,3400,13600,5.38,21.52,Bottom mid - 4-16φ
+B1-S-S-D8-03,B1,stirrup,start,E,8,11,1440,15840,0.57,6.27,Stirrup start - 2L-8φ@100
 
 TOTAL,,,,,,18,,37240,,40.12,3 line items
 ```

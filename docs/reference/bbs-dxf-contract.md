@@ -22,9 +22,10 @@ used in DXF callouts.
 - `seq`: 2-digit sequence number assigned deterministically.
 
 **Deterministic assignment:**
-Sort all line items by:
-`beam_id`, `loc`, `zone`, `diameter_mm`, `shape_code`, `cut_length_mm`,
-then assign `seq` in order. This guarantees stable, project-unique marks.
+For each `beam_id`, sort line items by:
+`loc`, `zone`, `diameter_mm`, `shape_code`, `cut_length_mm`,
+then assign `seq` starting at `01`. This keeps marks stable even when other
+beams are added.
 
 **Example:**
 ```
