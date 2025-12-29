@@ -47,6 +47,8 @@ with each other, without changing the current 3-layer architecture.
 - Layer names + minimum content.
 - Text labels include bar marks and zones.
 
+Contract doc: `docs/reference/bbs-dxf-contract.md`
+
 4) **Rounding rules**
 - Length rounding (mm) and weight rounding (kg).
 - Defined once, reused across code + docs.

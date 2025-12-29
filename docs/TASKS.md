@@ -29,6 +29,12 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 No active tasks. Pick from "Up Next" and move here when starting.
 
+## Recently Completed (BBS + DXF Improvement Program)
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-098** | Define BBS/DXF contracts + bar mark spec | DOCS | ✅ Done |
+
 ## Recently Completed (Public API Maintenance)
 
 | ID | Task | Agent | Status |
@@ -174,7 +180,6 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 | ID | Task | Agent | Est. | Priority | Bundle |
 |----|------|-------|------|----------|--------|
-| **TASK-098** | Define BBS/DXF contracts + bar mark spec | DOCS | 2 hrs | 🔴 High | A |
 | **TASK-099** | Deterministic bar mark generator + wire into BBS | DEV | 3 hrs | 🔴 High | B |
 | **TASK-100** | BBS cut-length + hook/bend updates + weight rules | DEV | 4 hrs | 🔴 High | C |
 | **TASK-101** | DXF callouts include bar marks + zone labels | DEV | 4 hrs | 🟡 Medium | D |
