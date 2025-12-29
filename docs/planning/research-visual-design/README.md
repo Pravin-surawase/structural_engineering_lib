@@ -627,62 +627,41 @@ class ComplianceCaseResult:
 
 ---
 
-## Part 11: Innovation Ideas (Brainstorming)
+## Part 11: Innovation Ideas (Filtered — Good Only)
 
-> **Context:** These ideas emerged from multi-agent review. They're evaluated against
-> our actual roadmap (52-week plan, currently in Phase A, WIP=1, S-007 blocker).
+> **Context:** Only ideas that strengthen trust, determinism, and auditability are listed.
+> Anything that conflicts with that posture is intentionally omitted.
 
-### 11.1 Ideas Evaluated
+### 11.1 Approved Ideas (with earliest phase)
 
-| Idea | WOW Factor | Verdict | Blocker |
-|------|------------|---------|--------|
-| **Visual Audit Trail** | High — every number clickable, shows source + clause | ⏸️ Phase B+ | Needs `clause_ref` metadata (W08) |
-| **Diff Mode** | High — compare runs, highlight steel changes | ⏸️ Post-v1.0 | Needs schema freeze + `beam_id` contract |
-| **DXF-BBS Consistency** | High — verify marks match across outputs | ❌ v1.2+ | No shared bar-mark identity today |
-| **Constructability Score** | Medium — spacing/congestion/lap warnings | ⏸️ Backlog | Needs clause refs for each rule |
-| **AI Explain** | Medium — LLM summaries of failures | ❌ Conflicts | Non-deterministic, violates trust posture |
-| **Batch Threshold** | Low effort — <80 single file, ≥80 folder | ✅ Phase 1 | None |
-| **Critical Beam Map** | Medium — sort by utilization, heat list | ✅ Phase 1 | None |
-| **Sketch Polish** | Low effort — hatching, dimension arrows | ✅ Phase 1 | None |
-| **Verified Example Packs** | High — `verify --pack pillai_menon` | ✅ Already on roadmap | W14-W20 covers this |
+| Idea | Value | Earliest Phase | Dependencies |
+|------|-------|----------------|--------------|
+| **Batch threshold rule** | Avoids huge HTML files for large batches | Phase 1 | None |
+| **Critical Beam Map** | Fast “what’s critical” view for reviewers | Phase 1 | Utilization already in output |
+| **Sketch polish** | Hand-sketch feel improves trust quickly | Phase 1 | None |
+| **`data-source` attributes** | Trace every value to JSON path | Phase 1 | None |
+| **Change Ledger (`.ledger.json`)** | Auditable record of each run | Phase 2 | Stable schema + input/output hash rules |
+| **Units Sentinel** | Warn on likely unit mistakes | Phase 2 | Needs access to input ranges |
+| **Input Sanity Heatmap** | Surface outlier inputs in batches | Phase 2 | Needs input geometry/materials |
+| **Visual Audit Trail (clause refs)** | Deep trust via clause-linked visuals | Phase 3 | Clause metadata in outputs |
+| **Diff Mode** | Compare runs and highlight changes | Post-v1.0 | Stable `beam_id` contract + tolerances |
+| **DXF-BBS Consistency** | Verify marks match across outputs | Post-v1.0 | Shared bar-mark identity spec |
 
-### 11.2 What Fits Phase 1 (v0.11.0 scope)
+### 11.2 Phase 1 Add-ons (Low Risk)
 
-1. **Batch threshold rule:** < 80 beams → single HTML, ≥ 80 → folder output
-2. **Critical Beam Map:** Sort beams by utilization, filter by >90%, failing, shear-critical
-3. **Sketch polish:** Hatching option, dimension arrows, status badges
-4. **`data-source` attributes:** Show JSON path (clause refs deferred to Phase 2+)
+1. **Batch threshold rule:** Avoid a single giant HTML file for large batches.
+2. **Critical Beam Map:** Sort by utilization, filter >90%, failing, shear-critical.
+3. **Sketch polish:** Hatching option, dimension arrows, status badges.
+4. **`data-source` attributes:** JSON path only; clause refs deferred to Phase 3.
 
-### 11.3 What's Deferred and Why
+### 11.3 Deferred (Good, but Needs Prerequisites)
 
-| Feature | Target | Reason |
-|---------|--------|--------|
-| Audit Trail with clause refs | v0.15+ | W08 adds clause tagging to schema |
-| Diff Mode | v1.1+ | Needs stable schema (W12 freeze) + beam identity contract |
-| DXF-BBS Checker | v1.2+ | Requires new bar-mark identity spec |
-| Constructability Score | v1.1+ | Each rule needs IS 456 clause citation |
-| AI Explain | Never in core | Determinism is non-negotiable |
-
-### 11.4 Review Findings on Innovation Ideas
-
-| Severity | Finding | Resolution |
-|----------|---------|------------|
-| **High** | Audit Trail needs undefined clause/formula metadata | Defer to W08; Phase 1 shows `data-source` only |
-| **Medium** | Diff Mode lacks matching rules (beam identity, tolerance) | Defer to v1.1; define `beam_id` contract first |
-| **Medium** | DXF-BBS assumes stable bar-mark identity | Defer to v1.2; needs data contract design |
-| **Medium** | Constructability Score "just rules" undermines trust | Only implement if every rule has IS 456 clause ref |
-| **Medium** | AI explain conflicts with determinism | Keep optional, clearly marked, never in default output |
-| **Medium** | Proposed sequence stacks too much before v1.0 | Accept: v1.0 is stability-focused, features are post-v1.0 |
-
-### 11.5 Strategic Value (Post-v1.0 Differentiation)
-
-The combination of **Visual Audit Trail + Diff Mode** is the competitive moat:
-- ETABS: analysis-first, not audit-focused
-- Random scripts: no trust layer
-- Excel templates: no diff, no traceability
-
-This positions us as "the only IS 456 tool where every visual traces to clause + calculation."
-But this is **post-v1.0 differentiation**, not v1.0 scope.
+- **Change Ledger:** Define hash scope + compare rules before shipping.
+- **Units Sentinel:** Needs access to inputs (geometry/materials/loads).
+- **Input Sanity Heatmap:** Needs input fields in report input.
+- **Visual Audit Trail:** Requires clause references in the schema.
+- **Diff Mode:** Needs stable beam identity + tolerance rules.
+- **DXF-BBS Consistency:** Requires a shared bar-mark identity contract.
 
 ---
 
@@ -746,7 +725,7 @@ The figures in SP 16 use:
 
 2. **Trust comes before beauty.** A sorted table with utilization bars beats a fancy SVG that can't be verified.
 
-3. **Low-effort features solve real problems.** Change Ledger, Stability Scorecard, and Critical Set Export are all low-effort but high-impact.
+3. **Low-effort features solve real problems.** Critical Beam Map, batch threshold packaging, and `data-source` traces give immediate trust.
 
 4. **Visuals are Phase 1 nice-to-haves, not must-haves.** Cross-section SVG is useful for single-beam reports, but not the priority.
 
@@ -754,10 +733,10 @@ The figures in SP 16 use:
 
 ### Next Steps
 
-1. Finalize Phase 1 scope: Critical Set + Ledger + Scorecard + optional SVG
-2. Define `.ledger.json` schema
-3. Define Stability Scorecard rules (with IS 456 clause refs where applicable)
-4. Prototype Critical Set Export
+1. Finalize Phase 1 scope: Critical Beam Map + batch threshold rule + `data-source` traces + optional SVG
+2. Prototype Critical Beam Map + batch packaging
+3. Define `.ledger.json` schema (Phase 2) with stable hash rules
+4. Define Units Sentinel + Input Sanity thresholds (Phase 2)
 
 ---
 
