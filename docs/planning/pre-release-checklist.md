@@ -1,12 +1,12 @@
 # Pre-Release Checklist
 
-Version: 0.11.0 (beta candidate)
+Version: 0.12.0 (planned)
 Date: 2025-12-29
-Target: Private beta with 2–3 structural engineers
+Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---
 
-## Current State
+## Current State (last verified 2025-12-29)
 
 | Area | Status | Evidence |
 |------|--------|----------|

@@ -371,6 +371,63 @@ IFrame("report.html", width=900, height=600)
 
 ---
 
+## Step 8c: 🆕 BBS + DXF + Mark Consistency (v0.12)
+
+Generate BBS + DXF from a small CSV and verify that bar marks match:
+
+```python
+import csv
+
+rows = [{
+    "BeamID": "B1",
+    "Story": "G",
+    "b": 230,
+    "D": 500,
+    "Span": 4000,
+    "Cover": 40,
+    "fck": 25,
+    "fy": 500,
+    "Mu": 120,
+    "Vu": 80,
+    "Ast_req": 0,
+    "Asc_req": 0,
+    "Stirrup_Dia": 8,
+    "Stirrup_Spacing": 150,
+}]
+
+with open("beams_small.csv", "w", newline="") as f:
+    w = csv.DictWriter(f, fieldnames=rows[0].keys())
+    w.writeheader()
+    w.writerows(rows)
+
+print("Wrote beams_small.csv")
+```
+
+```python
+!python -m structural_lib design beams_small.csv -o results_small.json
+!python -m structural_lib bbs results_small.json -o schedule_small.csv
+!python -m structural_lib dxf results_small.json -o drawings_small.dxf
+!python -m structural_lib mark-diff --bbs schedule_small.csv --dxf drawings_small.dxf --format json -o mark_diff.json
+```
+
+```python
+import json
+import pandas as pd
+
+with open("mark_diff.json", "r", encoding="utf-8") as f:
+    mark_diff = json.load(f)
+
+print(mark_diff)
+pd.read_csv("schedule_small.csv").head(5)
+```
+
+Optional render (PNG/PDF):
+```python
+!python scripts/dxf_render.py drawings_small.dxf -o drawings_small.png
+```
+
+---
+
 ## Step 8b: 🆕 Batch Report Packaging (V08)
 
 When you have a large `design_results.json`, use batch packaging so the report

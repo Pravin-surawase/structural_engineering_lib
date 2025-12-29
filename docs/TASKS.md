@@ -190,9 +190,9 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ---
 
-## Planned (Library API Expansion)
+## Planned (v0.12 Scope)
 
-**Plan doc:** `docs/planning/library-api-expansion.md`
+**Plan doc:** `docs/planning/v0.12-plan.md`
 
 | ID | Task | Agent | Est. | Priority | Bundle |
 |----|------|-------|------|----------|--------|
@@ -201,6 +201,10 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **TASK-106** | Detailing + BBS APIs + `detail` CLI subcommand | DEV | 4 hrs | 🔴 High | C |
 | **TASK-107** | DXF/report/critical API wrappers (no behavior change) | DEV | 3 hrs | 🟡 Medium | D |
 | **TASK-108** | API/CLI tests + stability labels | TESTER | 3 hrs | 🟡 Medium | E |
+| **TASK-122** | v0.12 release notes (CHANGELOG + RELEASES) | DOCS | 1 hr | 🔴 High | R |
+| **TASK-123** | v0.12 version bump (Python/VBA) | DEVOPS | 15 min | 🔴 High | R |
+| **TASK-124** | v0.12 session log + next-session brief | DOCS | 30 min | 🟡 Medium | R |
+| **TASK-125** | v0.12 release tag + publish | DEVOPS | 20 min | 🔴 High | R |
 
 ---
 

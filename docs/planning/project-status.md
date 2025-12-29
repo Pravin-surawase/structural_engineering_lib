@@ -2,9 +2,9 @@
 
 *Quick summary for agents and contributors*
 
-**Last updated:** 2025-07-11
-**Current release:** v0.10.4 (PyPI)
-**Next milestone:** v0.20.0 (blocked by S-007)
+**Last updated:** 2025-12-29
+**Current release:** v0.11.0 (PyPI)
+**Next milestone:** v0.12.0 (library APIs + DXF/BBS quality)
 
 ---
 
@@ -20,10 +20,10 @@ Professional-grade RC beam design library for IS 456:2000:
 
 | Metric | Value |
 |--------|-------|
-| Python tests | 1810 passed, 91 skipped |
+| Python tests | 1917 passed, 91 skipped |
 | Branch coverage | 92% |
 | VBA parity | Manual (automation planned) |
-| CLI commands | `design`, `bbs`, `dxf`, `job` |
+| CLI commands | `design`, `bbs`, `dxf`, `job`, `critical`, `report`, `mark-diff` |
 
 ## Success Criteria
 

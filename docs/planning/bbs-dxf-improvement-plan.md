@@ -3,6 +3,8 @@
 Goal: make BBS and DXF outputs fabrication-ready, deterministic, and consistent
 with each other, without changing the current 3-layer architecture.
 
+**Status:** Completed (v0.12 scope via PR #185)
+
 ---
 
 ## Scope (v1.x)
