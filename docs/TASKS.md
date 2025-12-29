@@ -34,6 +34,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | **TASK-098** | Define BBS/DXF contracts + bar mark spec | DOCS | ✅ Done |
+| **TASK-099** | Deterministic bar mark generator + wire into BBS | DEV | ✅ Done |
 
 ## Recently Completed (Public API Maintenance)
 
@@ -180,7 +181,6 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 | ID | Task | Agent | Est. | Priority | Bundle |
 |----|------|-------|------|----------|--------|
-| **TASK-099** | Deterministic bar mark generator + wire into BBS | DEV | 3 hrs | 🔴 High | B |
 | **TASK-100** | BBS cut-length + hook/bend updates + weight rules | DEV | 4 hrs | 🔴 High | C |
 | **TASK-101** | DXF callouts include bar marks + zone labels | DEV | 4 hrs | 🟡 Medium | D |
 | **TASK-102** | DXF/BBS consistency checker (mark diff) | DEV | 4 hrs | 🟡 Medium | E |

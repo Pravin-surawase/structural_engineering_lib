@@ -60,7 +60,7 @@ WEIGHT_ROUND_KG = 0.01  # Round weights to 2 decimal places
 class BBSLineItem:
     """Single line item in a Bar Bending Schedule."""
 
-    bar_mark: str  # Unique identifier (e.g., "A1", "B1", "S1")
+    bar_mark: str  # Unique identifier (e.g., "B1-B-S-D16-01")
     member_id: str  # Beam/element ID
     location: str  # "bottom", "top", "stirrup"
     zone: str  # "start", "mid", "end", or "full"
@@ -311,6 +311,70 @@ def calculate_stirrup_cut_length(
 # =============================================================================
 
 
+def _normalize_member_id(member_id: str) -> str:
+    """Normalize member IDs for deterministic bar mark formatting."""
+    if member_id is None:
+        return "UNKNOWN"
+    cleaned = []
+    for ch in str(member_id).strip().upper():
+        if ch.isalnum():
+            cleaned.append(ch)
+        elif ch in (" ", "-", "_"):
+            cleaned.append("-")
+    result = "".join(cleaned)
+    while "--" in result:
+        result = result.replace("--", "-")
+    result = result.strip("-")
+    return result if result else "UNKNOWN"
+
+
+def _bar_mark_loc_code(location: str) -> str:
+    return {
+        "bottom": "B",
+        "top": "T",
+        "stirrup": "S",
+    }.get(location, "X")
+
+
+def _bar_mark_zone_code(zone: str) -> str:
+    return {
+        "start": "S",
+        "mid": "M",
+        "end": "E",
+        "full": "F",
+    }.get(zone, "X")
+
+
+def _bar_mark_sort_key(item: BBSLineItem) -> tuple:
+    return (
+        _normalize_member_id(item.member_id),
+        _bar_mark_loc_code(item.location),
+        _bar_mark_zone_code(item.zone),
+        int(round(item.diameter_mm)),
+        item.shape_code,
+        int(round(item.cut_length_mm)),
+    )
+
+
+def assign_bar_marks(items: List[BBSLineItem]) -> List[BBSLineItem]:
+    """Assign deterministic, project-unique bar marks in-place."""
+    items_sorted = sorted(items, key=_bar_mark_sort_key)
+    seq_by_beam: Dict[str, int] = {}
+
+    for item in items_sorted:
+        beam_id = _normalize_member_id(item.member_id)
+        seq = seq_by_beam.get(beam_id, 0) + 1
+        seq_by_beam[beam_id] = seq
+
+        loc_code = _bar_mark_loc_code(item.location)
+        zone_code = _bar_mark_zone_code(item.zone)
+        dia = int(round(item.diameter_mm))
+
+        item.bar_mark = f"{beam_id}-{loc_code}-{zone_code}-D{dia}-{seq:02d}"
+
+    return items
+
+
 def generate_bbs_from_detailing(
     detailing: BeamDetailingResult,
     include_hooks: bool = True,
@@ -326,14 +390,6 @@ def generate_bbs_from_detailing(
         List of BBS line items
     """
     items = []
-    mark_counter = 1
-
-    # Helper to generate unique marks
-    def get_mark(prefix: str) -> str:
-        nonlocal mark_counter
-        mark = f"{prefix}{mark_counter}"
-        mark_counter += 1
-        return mark
 
     # Process bottom bars
     zones = ["start", "mid", "end"]
@@ -352,7 +408,7 @@ def generate_bbs_from_detailing(
 
             items.append(
                 BBSLineItem(
-                    bar_mark=get_mark("B"),
+                    bar_mark="",
                     member_id=detailing.beam_id,
                     location="bottom",
                     zone=zone,
@@ -384,7 +440,7 @@ def generate_bbs_from_detailing(
 
             items.append(
                 BBSLineItem(
-                    bar_mark=get_mark("T"),
+                    bar_mark="",
                     member_id=detailing.beam_id,
                     location="top",
                     zone=zone,
@@ -418,7 +474,7 @@ def generate_bbs_from_detailing(
 
             items.append(
                 BBSLineItem(
-                    bar_mark=get_mark("S"),
+                    bar_mark="",
                     member_id=detailing.beam_id,
                     location="stirrup",
                     zone=zone,
@@ -435,7 +491,7 @@ def generate_bbs_from_detailing(
                 )
             )
 
-    return items
+    return assign_bar_marks(items)
 
 
 def calculate_bbs_summary(
