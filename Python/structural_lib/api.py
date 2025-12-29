@@ -372,7 +372,7 @@ def detail_beam_is456(
     stirrup_spacing_mid_mm: float = 200.0,
     stirrup_spacing_end_mm: float = 150.0,
     is_seismic: bool = False,
-):
+) -> detailing.BeamDetailingResult:
     """Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups.
 
     Args:

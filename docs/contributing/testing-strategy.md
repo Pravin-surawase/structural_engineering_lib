@@ -17,6 +17,11 @@
 **How to run locally (fast):**
 - From `Python/`: `python -m pytest -q`
 
+**Fast checks before commit (pick what changed):**
+- Docs-only: from repo root, `python scripts/check_doc_versions.py`
+- Links touched: from repo root, `python scripts/check_links.py`
+- Code + tests: from `Python/`, `python -m pytest -q`
+
 **How to run with coverage:**
 - From `Python/`: `python -m pytest --cov=structural_lib --cov-report=term-missing --cov-report=xml`
 
