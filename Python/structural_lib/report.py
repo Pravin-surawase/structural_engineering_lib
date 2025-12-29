@@ -31,12 +31,32 @@ import csv
 import html
 import io
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from . import ductile
 from . import report_svg
+
+_REPORT_CSS = """
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; }
+h1, h2 { color: #333; }
+.summary { margin-bottom: 20px; }
+.section { margin: 20px 0; }
+.beam-section { margin-top: 30px; padding-top: 10px; border-top: 1px solid #e5e5e5; }
+.index-table, .sanity-table, .scorecard-table, .units-table { border-collapse: collapse; width: 100%; max-width: 900px; }
+.index-table th, .index-table td,
+.sanity-table th, .sanity-table td,
+.scorecard-table th, .scorecard-table td,
+.units-table th, .units-table td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.index-table th, .sanity-table th, .scorecard-table th, .units-table th { background: #f5f5f5; font-weight: 600; }
+.sanity-ok, .scorecard-ok, .units-ok { background: #f7fff7; }
+.sanity-warn, .scorecard-warn, .units-warn { background: #fff8e1; }
+.svg-wrap { border: 1px solid #eee; padding: 10px; display: inline-block; }
+.status-pass { color: #1b5e20; font-weight: 600; }
+.status-fail { color: #b71c1c; font-weight: 600; }
+"""
 
 
 @dataclass
@@ -201,6 +221,10 @@ def _safe_float(value: Any) -> Optional[float]:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def _safe_dict(value: Any) -> Dict[str, Any]:
+    return value if isinstance(value, dict) else {}
 
 
 def _make_sanity_check(
@@ -952,64 +976,378 @@ def _render_units_table(items: List[UnitsAlert]) -> str:
     </table>"""
 
 
-def export_html(data: ReportData) -> str:
-    """Export report data as HTML string (Phase 1 visuals)."""
-    status = "✓ PASS" if data.is_ok else "✗ FAIL"
-    job_id = html.escape(data.job_id)
-    code = html.escape(data.code)
-    svg = report_svg.render_section_svg_from_beam(data.beam)
-    sanity_items = get_input_sanity(data)
-    sanity_table = _render_sanity_table(sanity_items)
-    scorecard_items = get_stability_scorecard(data)
-    scorecard_table = _render_scorecard_table(scorecard_items)
-    units_items = get_units_sentinel(data)
-    units_table = _render_units_table(units_items)
+def _wrap_html(title: str, body_html: str) -> str:
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Beam Design Report - {job_id}</title>
-    <style>
-        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; }}
-        h1, h2 {{ color: #333; }}
-        .summary {{ margin-bottom: 20px; }}
-        .section {{ margin: 20px 0; }}
-        .sanity-table, .scorecard-table, .units-table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
-        .sanity-table th, .sanity-table td, .scorecard-table th, .scorecard-table td, .units-table th, .units-table td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
-        .sanity-table th, .scorecard-table th, .units-table th {{ background: #f5f5f5; font-weight: 600; }}
-        .sanity-ok, .scorecard-ok, .units-ok {{ background: #f7fff7; }}
-        .sanity-warn, .scorecard-warn, .units-warn {{ background: #fff8e1; }}
-        .svg-wrap {{ border: 1px solid #eee; padding: 10px; display: inline-block; }}
-    </style>
+    <title>{html.escape(title)}</title>
+    <style>{_REPORT_CSS}</style>
 </head>
 <body>
-    <h1>Beam Design Report</h1>
-    <div class="summary">
-        <p><strong>Job ID:</strong> {job_id}</p>
-        <p><strong>Code:</strong> {code}</p>
-        <p><strong>Status:</strong> {status}</p>
-        <p><strong>Governing Utilization:</strong> {data.governing_utilization:.2%}</p>
-    </div>
-    <div class="section">
-        <h2>Cross-Section SVG</h2>
-        <div class="svg-wrap">{svg}</div>
-    </div>
-    <div class="section">
-        <h2>Input Sanity Heatmap</h2>
-        {sanity_table}
-    </div>
-    <div class="section">
-        <h2>Stability Scorecard</h2>
-        {scorecard_table}
-    </div>
-    <div class="section">
-        <h2>Units Sentinel</h2>
-        {units_table}
-    </div>
-    <p><em>Full report implementation in V08.</em></p>
+{body_html}
 </body>
 </html>
 """
+
+
+def _render_report_sections(data: ReportData) -> str:
+    status = "✓ PASS" if data.is_ok else "✗ FAIL"
+    status_class = "status-pass" if data.is_ok else "status-fail"
+    job_id = html.escape(data.job_id)
+    code = html.escape(data.code)
+    svg = report_svg.render_section_svg_from_beam(data.beam)
+    sanity_table = _render_sanity_table(get_input_sanity(data))
+    scorecard_table = _render_scorecard_table(get_stability_scorecard(data))
+    units_table = _render_units_table(get_units_sentinel(data))
+
+    return f"""<div class="summary">
+    <p><strong>Job ID:</strong> {job_id}</p>
+    <p><strong>Code:</strong> {code}</p>
+    <p><strong>Status:</strong> <span class="{status_class}">{status}</span></p>
+    <p><strong>Governing Utilization:</strong> {data.governing_utilization:.2%}</p>
+</div>
+<div class="section">
+    <h2>Cross-Section SVG</h2>
+    <div class="svg-wrap">{svg}</div>
+</div>
+<div class="section">
+    <h2>Input Sanity Heatmap</h2>
+    {sanity_table}
+</div>
+<div class="section">
+    <h2>Stability Scorecard</h2>
+    {scorecard_table}
+</div>
+<div class="section">
+    <h2>Units Sentinel</h2>
+    {units_table}
+</div>"""
+
+
+def _render_beam_section(
+    data: ReportData, *, heading: str, section_id: Optional[str] = None
+) -> str:
+    anchor = f' id="{section_id}"' if section_id else ""
+    return f"""<section class="beam-section"{anchor}>
+    <h2>{html.escape(heading)}</h2>
+    {_render_report_sections(data)}
+</section>"""
+
+
+def export_html(data: ReportData) -> str:
+    """Export report data as HTML string (Phase 1 visuals)."""
+    body = f"""<h1>Beam Design Report</h1>
+{_render_report_sections(data)}
+<p><em>Full report implementation in V08.</em></p>"""
+    return _wrap_html(f"Beam Design Report - {data.job_id}", body)
+
+
+# =============================================================================
+# Design Results Reporting (V08)
+# =============================================================================
+
+
+def load_design_results(path: str | Path) -> Dict[str, Any]:
+    """Load design results JSON (multi-beam output)."""
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"Design results file not found: {p}")
+
+    try:
+        payload = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in design results: {e}") from e
+
+    if not isinstance(payload, dict):
+        raise ValueError("Design results must contain a JSON object")
+    beams = payload.get("beams")
+    if not isinstance(beams, list):
+        raise ValueError("Design results missing 'beams' array")
+    return payload
+
+
+def _safe_slug(value: str) -> str:
+    slug = re.sub(r"[^a-zA-Z0-9_-]+", "_", value.strip())
+    slug = slug.strip("_")
+    return slug or "beam"
+
+
+def _build_beam_index(beams: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    seen: Dict[str, int] = {}
+    indexed: List[Dict[str, Any]] = []
+
+    for idx, beam in enumerate(beams):
+        beam_id = str(beam.get("beam_id", "") or f"Beam_{idx + 1}")
+        story = str(beam.get("story", "") or "")
+        label = f"{story}/{beam_id}" if story else beam_id
+
+        base_slug = _safe_slug(label)
+        count = seen.get(base_slug, 0)
+        seen[base_slug] = count + 1
+        slug = base_slug if count == 0 else f"{base_slug}-{count + 1}"
+
+        indexed.append({"beam": beam, "label": label, "slug": slug})
+
+    return indexed
+
+
+def _beam_report_data_from_design(
+    beam: Dict[str, Any], *, code: str, units: str
+) -> ReportData:
+    geometry: Dict[str, Any] = _safe_dict(beam.get("geometry"))
+    materials: Dict[str, Any] = _safe_dict(beam.get("materials"))
+    loads: Dict[str, Any] = _safe_dict(beam.get("loads"))
+    flexure: Dict[str, Any] = _safe_dict(beam.get("flexure"))
+    shear: Dict[str, Any] = _safe_dict(beam.get("shear"))
+    serviceability: Dict[str, Any] = _safe_dict(beam.get("serviceability"))
+
+    beam_id = str(beam.get("beam_id", "") or "")
+    story = str(beam.get("story", "") or "")
+    job_id = f"{story}/{beam_id}" if story else beam_id
+
+    beam_info = {
+        **geometry,
+        **materials,
+        "beam_id": beam_id,
+        "story": story,
+    }
+
+    util_flexure = _safe_float(flexure.get("utilization"))
+    util_shear = _safe_float(shear.get("utilization"))
+    utilizations: Dict[str, float] = {}
+    if util_flexure is not None:
+        utilizations["flexure"] = util_flexure
+    if util_shear is not None:
+        utilizations["shear"] = util_shear
+
+    defl_util = _safe_float(serviceability.get("deflection_utilization"))
+    crack_util = _safe_float(serviceability.get("crack_width_utilization"))
+    if defl_util is not None:
+        utilizations["deflection"] = defl_util
+    if crack_util is not None:
+        utilizations["crack_width"] = crack_util
+
+    ast_required = _safe_float(flexure.get("ast_required_mm2"))
+    b_mm = _safe_float(geometry.get("b_mm"))
+    d_mm = _safe_float(geometry.get("d_mm"))
+    pt_est = None
+    if ast_required is not None and b_mm and d_mm:
+        pt_est = 100.0 * ast_required / (b_mm * d_mm)
+
+    case_id = str(loads.get("case_id", "") or beam_id or "CASE_1")
+    governing_util = _safe_float(
+        beam.get("governing_utilization")
+    ) or _case_utilization({"utilizations": utilizations})
+
+    case = {
+        "case_id": case_id,
+        "mu_knm": loads.get("mu_knm"),
+        "vu_kn": loads.get("vu_kn"),
+        "is_ok": beam.get("is_ok", False),
+        "governing_utilization": governing_util,
+        "utilizations": utilizations,
+        "flexure": {
+            "section_type": flexure.get("section_type"),
+            "pt_provided": pt_est,
+        },
+        "shear": {"is_safe": shear.get("is_safe")},
+    }
+
+    results = {
+        "is_ok": beam.get("is_ok", False),
+        "governing_case_id": case_id,
+        "governing_utilization": governing_util,
+        "cases": [case],
+        "summary": {},
+    }
+
+    return ReportData(
+        job_id=job_id,
+        code=code,
+        units=units,
+        beam=beam_info,
+        cases=[case],
+        results=results,
+        is_ok=bool(beam.get("is_ok", False)),
+        governing_case_id=case_id,
+        governing_utilization=governing_util,
+    )
+
+
+def export_design_json(design_results: Dict[str, Any], *, indent: int = 2) -> str:
+    """Export report JSON for multi-beam design results."""
+    beams = design_results.get("beams", [])
+    code = str(design_results.get("code", "") or "")
+    units = str(design_results.get("units", "") or "")
+    summary = design_results.get("summary", {})
+
+    beam_reports = []
+    for beam in beams:
+        data = _beam_report_data_from_design(beam, code=code, units=units)
+        beam_reports.append(json.loads(export_json(data)))
+
+    output = {
+        "code": code,
+        "units": units,
+        "summary": summary,
+        "beams": beam_reports,
+    }
+    return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
+
+
+def _render_batch_index_table(
+    indexed: List[Dict[str, Any]],
+    *,
+    link_prefix: str,
+    link_suffix: str = "",
+) -> str:
+    rows = []
+    for item in indexed:
+        beam = item["beam"]
+        label = html.escape(item["label"])
+        slug = item["slug"]
+        util = _safe_float(beam.get("governing_utilization")) or 0.0
+        is_ok = bool(beam.get("is_ok", False))
+        status = "PASS" if is_ok else "FAIL"
+        status_class = "status-pass" if is_ok else "status-fail"
+        rows.append(
+            f"""        <tr>
+            <td><a href="{link_prefix}{slug}{link_suffix}">{label}</a></td>
+            <td class="{status_class}">{status}</td>
+            <td>{util:.2%}</td>
+        </tr>"""
+        )
+
+    rows_joined = "\n".join(rows)
+    return f"""<table class="index-table">
+        <thead>
+            <tr>
+                <th>Beam</th>
+                <th>Status</th>
+                <th>Governing Utilization</th>
+            </tr>
+        </thead>
+        <tbody>
+{rows_joined}
+        </tbody>
+    </table>"""
+
+
+def render_design_report_single(
+    design_results: Dict[str, Any],
+    *,
+    batch_threshold: int = 80,
+) -> str:
+    """Render a single HTML report for multi-beam results."""
+    beams = design_results.get("beams", [])
+    code = str(design_results.get("code", "") or "")
+    units = str(design_results.get("units", "") or "")
+
+    indexed = _build_beam_index(beams)
+    index_table = _render_batch_index_table(
+        indexed, link_prefix="#beam-", link_suffix=""
+    )
+
+    sections = []
+    for item in indexed:
+        data = _beam_report_data_from_design(item["beam"], code=code, units=units)
+        sections.append(
+            _render_beam_section(
+                data,
+                heading=item["label"],
+                section_id=f"beam-{item['slug']}",
+            )
+        )
+
+    summary = design_results.get("summary", {})
+    total = summary.get("total_beams", len(beams))
+    passed = summary.get("passed", "")
+    failed = summary.get("failed", "")
+
+    body = f"""<h1>Beam Design Report (Batch)</h1>
+<div class="summary">
+    <p><strong>Code:</strong> {html.escape(code)}</p>
+    <p><strong>Units:</strong> {html.escape(units)}</p>
+    <p><strong>Total beams:</strong> {total} | <strong>Passed:</strong> {passed} | <strong>Failed:</strong> {failed}</p>
+</div>
+<div class="section">
+    <h2>Beam Index</h2>
+    {index_table}
+</div>
+{''.join(sections)}"""
+
+    return _wrap_html("Beam Design Report (Batch)", body)
+
+
+def write_design_report_package(
+    design_results: Dict[str, Any],
+    *,
+    output_path: Path,
+    batch_threshold: int = 80,
+) -> List[Path]:
+    """Write HTML report package for multi-beam results."""
+    beams = design_results.get("beams", [])
+    indexed = _build_beam_index(beams)
+    code = str(design_results.get("code", "") or "")
+    units = str(design_results.get("units", "") or "")
+
+    if len(beams) < batch_threshold:
+        html_output = render_design_report_single(
+            design_results, batch_threshold=batch_threshold
+        )
+        if output_path.suffix.lower() in {".html", ".htm"}:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(html_output, encoding="utf-8")
+            return [output_path]
+
+        output_path.mkdir(parents=True, exist_ok=True)
+        index_path = output_path / "index.html"
+        index_path.write_text(html_output, encoding="utf-8")
+        return [index_path]
+
+    # Folder output with index + per-beam pages
+    out_dir = output_path
+    if output_path.suffix.lower() in {".html", ".htm"}:
+        out_dir = output_path.parent / output_path.stem
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    beams_dir = out_dir / "beams"
+    beams_dir.mkdir(parents=True, exist_ok=True)
+
+    index_table = _render_batch_index_table(
+        indexed, link_prefix="beams/", link_suffix=".html"
+    )
+    summary = design_results.get("summary", {})
+    total = summary.get("total_beams", len(beams))
+    passed = summary.get("passed", "")
+    failed = summary.get("failed", "")
+
+    index_body = f"""<h1>Beam Design Report (Batch)</h1>
+<div class="summary">
+    <p><strong>Code:</strong> {html.escape(code)}</p>
+    <p><strong>Units:</strong> {html.escape(units)}</p>
+    <p><strong>Total beams:</strong> {total} | <strong>Passed:</strong> {passed} | <strong>Failed:</strong> {failed}</p>
+</div>
+<div class="section">
+    <h2>Beam Index</h2>
+    {index_table}
+</div>"""
+
+    index_path = out_dir / "index.html"
+    index_path.write_text(
+        _wrap_html("Beam Design Report (Batch)", index_body), encoding="utf-8"
+    )
+
+    written = [index_path]
+    for item in indexed:
+        data = _beam_report_data_from_design(item["beam"], code=code, units=units)
+        html_output = export_html(data)
+        beam_path = beams_dir / f"{item['slug']}.html"
+        beam_path.write_text(html_output, encoding="utf-8")
+        written.append(beam_path)
+
+    return written
 
 
 # =============================================================================
