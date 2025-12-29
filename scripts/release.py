@@ -28,7 +28,7 @@ def run_command(cmd: list, dry_run: bool = False) -> bool:
     if dry_run:
         print(f"  [DRY-RUN] Would run: {' '.join(cmd)}")
         return True
-    
+
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"  ERROR: {result.stderr}")
@@ -64,6 +64,7 @@ def print_checklist(version: str):
     print()
     print("Verification:")
     print("  [ ] Check PyPI: pip install structural-lib-is456=={}".format(version))
+    print("  [ ] Clean-venv verify: python scripts/verify_release.py --version {} --source pypi".format(version))
     print("  [ ] Check GitHub Release page")
     print()
 
@@ -83,9 +84,9 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Preview without making changes")
     parser.add_argument("--checklist", action="store_true", help="Show checklist only")
     parser.add_argument("--no-open", action="store_true", help="Don't open files in editor")
-    
+
     args = parser.parse_args()
-    
+
     if args.checklist:
         if not args.version:
             # Read current version
@@ -100,7 +101,7 @@ def main():
         else:
             print_checklist(args.version)
         return 0
-    
+
     if not args.version:
         # Show current version and usage
         result = subprocess.run(
@@ -115,16 +116,16 @@ def main():
         print("  --checklist  Show release checklist only")
         print("  --no-open    Don't open files in editor")
         return 1
-    
+
     version = args.version
     dry_run = args.dry_run
-    
+
     print()
     print("=" * 60)
     print(f"{'[DRY-RUN] ' if dry_run else ''}RELEASE v{version}")
     print("=" * 60)
     print()
-    
+
     # Step 1: Bump version
     print("Step 1: Bumping version...")
     bump_cmd = [sys.executable, str(BUMP_SCRIPT), version]
@@ -134,22 +135,22 @@ def main():
         print("ERROR: Version bump failed")
         return 1
     print()
-    
+
     # Step 2: Print checklist
     print_checklist(version)
-    
+
     # Step 3: Open files for editing
     if not args.no_open and not dry_run:
         print("Opening files for editing...")
         open_file_in_editor(REPO_ROOT / "CHANGELOG.md")
         open_file_in_editor(REPO_ROOT / "docs" / "RELEASES.md")
         print()
-    
+
     if dry_run:
         print("[DRY-RUN] No changes were made.")
     else:
         print("Done! Follow the checklist above to complete the release.")
-    
+
     return 0
 
 
