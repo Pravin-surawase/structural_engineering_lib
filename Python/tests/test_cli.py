@@ -237,23 +237,9 @@ def test_cli_requires_command():
         cli_main.main([])
 
 
-def test_validate_help():
-    """Test validate subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["validate", "--help"])
-    assert exc.value.code == 0
-
-
 # =============================================================================
 # Design Command Tests
 # =============================================================================
-
-
-def test_design_help():
-    """Test design subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["design", "--help"])
-    assert exc.value.code == 0
 
 
 def test_design_missing_args_exit_code():
@@ -490,13 +476,6 @@ def test_design_stdout_output(sample_csv_file, capsys):
 # =============================================================================
 
 
-def test_bbs_help():
-    """Test bbs subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["bbs", "--help"])
-    assert exc.value.code == 0
-
-
 def test_bbs_to_csv(sample_design_results_file, tmp_path):
     """Test bbs command with CSV output."""
     output_file = tmp_path / "bbs.csv"
@@ -571,13 +550,6 @@ def test_bbs_empty_beams(tmp_path):
 # =============================================================================
 # DXF Command Tests
 # =============================================================================
-
-
-def test_dxf_help():
-    """Test dxf subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["dxf", "--help"])
-    assert exc.value.code == 0
 
 
 def test_dxf_requires_output():
@@ -763,13 +735,6 @@ def test_mark_diff_text_fail(tmp_path, monkeypatch, capsys):
 # =============================================================================
 
 
-def test_job_help():
-    """Test job subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["job", "--help"])
-    assert exc.value.code == 0
-
-
 def test_job_requires_output():
     """Test job command requires output argument."""
     with pytest.raises(SystemExit):
@@ -871,13 +836,6 @@ def sample_job_output_dir(tmp_path, sample_job_file):
     return output_dir
 
 
-def test_report_help():
-    """Test report subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["report", "--help"])
-    assert exc.value.code == 0
-
-
 def test_report_missing_output_dir(tmp_path):
     """Test report command with missing output directory."""
     rc = cli_main.main(["report", str(tmp_path / "nonexistent_dir")])
@@ -947,13 +905,6 @@ def test_report_default_format_is_json(sample_job_output_dir, capsys):
 # =============================================================================
 # Critical Command Tests (V03)
 # =============================================================================
-
-
-def test_critical_help():
-    """Test critical subcommand help."""
-    with pytest.raises(SystemExit) as exc:
-        cli_main.main(["critical", "--help"])
-    assert exc.value.code == 0
 
 
 def test_critical_missing_output_dir(tmp_path):

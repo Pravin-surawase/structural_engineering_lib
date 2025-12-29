@@ -399,6 +399,31 @@ class TestDesignResultsReport:
         assert data["code"] == "IS456"
         assert len(data["beams"]) == 2
 
+    def test_load_design_results_missing_file(self, tmp_path: Path) -> None:
+        with pytest.raises(FileNotFoundError):
+            load_design_results(tmp_path / "missing.json")
+
+    def test_load_design_results_invalid_json(self, tmp_path: Path) -> None:
+        bad_path = tmp_path / "bad.json"
+        bad_path.write_text("{not-json}", encoding="utf-8")
+
+        with pytest.raises(ValueError, match="Invalid JSON"):
+            load_design_results(bad_path)
+
+    def test_load_design_results_non_object(self, tmp_path: Path) -> None:
+        bad_path = tmp_path / "list.json"
+        bad_path.write_text(json.dumps([1, 2, 3]), encoding="utf-8")
+
+        with pytest.raises(ValueError, match="JSON object"):
+            load_design_results(bad_path)
+
+    def test_load_design_results_missing_beams(self, tmp_path: Path) -> None:
+        bad_path = tmp_path / "missing_beams.json"
+        bad_path.write_text(json.dumps({"code": "IS456"}), encoding="utf-8")
+
+        with pytest.raises(ValueError, match="beams"):
+            load_design_results(bad_path)
+
     def test_export_design_json(self, sample_design_results_path: Path) -> None:
         data = load_design_results(sample_design_results_path)
         output = json.loads(export_design_json(data))
@@ -429,6 +454,31 @@ class TestDesignResultsReport:
         assert (out_dir / "index.html") in written
         assert (out_dir / "beams").is_dir()
         assert (out_dir / "beams" / "G_B1.html").exists()
+
+    def test_write_design_report_package_file_output(
+        self, sample_design_results_path: Path, tmp_path: Path
+    ) -> None:
+        data = load_design_results(sample_design_results_path)
+        out_file = tmp_path / "report.html"
+        written = write_design_report_package(
+            data, output_path=out_file, batch_threshold=10
+        )
+
+        assert out_file in written
+        assert out_file.exists()
+
+    def test_write_design_report_package_html_suffix_folder(
+        self, sample_design_results_path: Path, tmp_path: Path
+    ) -> None:
+        data = load_design_results(sample_design_results_path)
+        out_file = tmp_path / "report.html"
+        written = write_design_report_package(
+            data, output_path=out_file, batch_threshold=1
+        )
+
+        out_dir = tmp_path / "report"
+        assert (out_dir / "index.html") in written
+        assert (out_dir / "beams").is_dir()
 
 
 class TestReportSvg:
