@@ -181,6 +181,21 @@ No active tasks. Pick from "Up Next" and move here when starting.
 
 ---
 
+## Planned (Public API Maintenance)
+
+**Review doc:** `docs/planning/public-api-maintenance-review.md`
+
+| ID | Task | Agent | Est. | Priority |
+|----|------|-------|------|----------|
+| **TASK-109** | Centralize units validation in public API | DEV | 1 hr | 🔴 High |
+| **TASK-110** | Fix `get_library_version()` fallback | DEV | 30 min | 🟡 Medium |
+| **TASK-111** | Align `__all__` exports with stability policy | DEV | 1 hr | 🟡 Medium |
+| **TASK-112** | Document `api.py` stable entrypoints in api-stability.md | DOCS | 45 min | 🟡 Medium |
+| **TASK-113** | Add return type annotation for `detail_beam_is456()` | DEV | 15 min | 🟢 Low |
+| **TASK-114** | Clarify units for `check_compliance_report()` in docs | DOCS | 30 min | 🟢 Low |
+
+---
+
 ## Backlog (Post-v1.0)
 
 | ID | Task | Agent | Description |
