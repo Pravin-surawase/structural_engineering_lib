@@ -53,6 +53,10 @@ api.detail_beam_is456(
 )
 ```
 
+Note: `api.check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m)
+and does not perform explicit unit validation. Use `api.check_beam_is456()` when
+you want unit validation at the API boundary.
+
 ### Pipeline Functions
 
 ```python

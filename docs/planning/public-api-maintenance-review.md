@@ -130,7 +130,32 @@ classify it as stable/experimental/internal.
 
 ---
 
+## Status (2025-12-29)
+
+All findings below are resolved.
+
+| ID | Status | Resolution |
+|----|--------|------------|
+| API-01 | ✅ Done | `api.py` uses `beam_pipeline.validate_units()` |
+| API-02 | ✅ Done | `get_library_version()` reads `pyproject.toml` fallback |
+| API-03 | ✅ Done | Internal modules removed from `__all__` |
+| API-04 | ✅ Done | `api.py` entrypoints listed in `api-stability.md` |
+| API-05 | ✅ Done | `detail_beam_is456()` return type annotated |
+| API-06 | ✅ Done | Units note added to `api.md` + `api-stability.md` |
+| API-07 | ✅ Done | `beam_pipeline` documented in `api.md` |
+| API-08 | ✅ Done | Serviceability names corrected in `api-stability.md` |
+| API-09 | ✅ Done | `report`/`report_svg` marked internal + not re-exported |
+| API-10 | ✅ Done | `get_library_version()` documented in `api.md` |
+| API-11 | ✅ Done | API helpers section added in `api.md` |
+| API-12 | ✅ Done | Deflection helper names corrected |
+| API-13 | ✅ Done | Shear function names corrected |
+| API-14 | ✅ Done | `excel_integration` marked internal + not re-exported |
+
+---
+
 ## Recommended Actions (Tasks)
+
+Completed (kept here for audit).
 
 - Centralize unit validation on `beam_pipeline.validate_units`.
 - Update version fallback for `get_library_version()`.
