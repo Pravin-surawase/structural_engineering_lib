@@ -66,6 +66,38 @@ accept a `units` parameter. This is fine but needs to be explicit in docs.
 
 ---
 
+### API-07 — `beam_pipeline` marked stable but undocumented
+`api-stability.md` lists `beam_pipeline` as stable, but `docs/reference/api.md`
+does not document it, and it is not re-exported from `structural_lib`.
+
+**Fix:** either document `beam_pipeline` in `docs/reference/api.md` or remove it
+from Stable API.
+
+---
+
+### API-08 — Serviceability function name mismatch in stability doc
+`api-stability.md` references `serviceability.check_deflection`, but the module
+exposes `check_deflection_span_depth` and `check_deflection_level_b`.
+
+**Fix:** update the stability doc to the correct function names.
+
+---
+
+### API-09 — `report`/`report_svg` exported but not classified
+`__init__.__all__` exports `report` and `report_svg`, but `api-stability.md`
+does not classify them as stable or experimental.
+
+**Fix:** mark them explicitly (likely experimental) or remove from `__all__`.
+
+---
+
+### API-10 — `get_library_version` undocumented
+`api.get_library_version()` is public but missing from `docs/reference/api.md`.
+
+**Fix:** add a short entry in `docs/reference/api.md`.
+
+---
+
 ## Recommended Actions (Tasks)
 
 - Centralize unit validation on `beam_pipeline.validate_units`.
@@ -74,3 +106,7 @@ accept a `units` parameter. This is fine but needs to be explicit in docs.
 - Document stable API entrypoints in `api-stability.md`.
 - Add return type annotation for `detail_beam_is456()`.
 - Clarify units requirement for `check_compliance_report()` in docs.
+- Document or demote `beam_pipeline` in stability/docs.
+- Fix serviceability function names in `api-stability.md`.
+- Classify `report`/`report_svg` stability or stop re-exporting them.
+- Document `get_library_version()` in `docs/reference/api.md`.
