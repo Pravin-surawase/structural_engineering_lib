@@ -40,6 +40,8 @@ shear.design_shear(vu_kn, b, d, fck, fy, asv, pt)
 from structural_lib import api
 
 api.get_library_version()
+api.validate_job_spec(path)
+api.validate_design_results(path)
 api.check_beam_ductility(b, D, d, fck, fy, min_long_bar_dia)
 api.check_deflection_span_depth(span_mm, d_mm, support_condition, ...)
 api.check_crack_width(exposure_class, limit_mm, ...)
@@ -104,29 +106,20 @@ dxf_export.generate_multi_beam_dxf(detailing_list, "all_beams.dxf")
 
 ---
 
-## Planned API (Not Yet Implemented)
+## Planned API (v0.12 Target)
 
-These are planned library-first helpers (see `docs/planning/library-api-expansion.md`).
-They are **not available yet**, but this section defines stability targets.
+These are planned library-first helpers (see `docs/planning/v0.12-plan.md`).
+They are **not available yet**, but will be stable once shipped.
 
-### Target Stable (v0.12+)
+### Target Stable (v0.12)
 
 ```python
 from structural_lib import api
 
-api.validate_job_spec(path)
-api.validate_design_results(path)
 api.compute_detailing(design_results, config=None)
 api.compute_bbs(detailing_list, project_name="Beam BBS")
 api.export_bbs(bbs_doc, path, fmt="csv")
 api.compute_dxf(detailing_list, output, multi=False)
-```
-
-### Target Experimental (v0.12+)
-
-```python
-from structural_lib import api
-
 api.compute_report(source, format="html")
 api.compute_critical(job_out, top=10, format="csv")
 ```
@@ -191,11 +184,19 @@ python -m structural_lib design input.csv -o results.json
 python -m structural_lib bbs results.json -o bbs.csv
 python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib job job.json -o output/
+python -m structural_lib validate job.json
 python -m structural_lib critical output/ --top 10 --format=csv -o critical.csv
 python -m structural_lib report output/ --format=html -o report.html
+python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 ```
 
 Output JSON schema is versioned via `schema_version` field.
+
+### Planned CLI Additions (v0.12)
+
+```bash
+python -m structural_lib detail results.json -o detailing.json
+```
 
 ---
 

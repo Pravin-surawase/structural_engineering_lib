@@ -134,6 +134,24 @@ class ComplianceReport:
 
 
 @dataclass
+class ValidationReport:
+    """Validation result for job specs or design results."""
+
+    ok: bool
+    errors: List[str] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
+    details: Dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "ok": self.ok,
+            "errors": self.errors,
+            "warnings": self.warnings,
+            "details": self.details,
+        }
+
+
+@dataclass
 class CuttingAssignment:
     """Assignment of cuts to a stock bar for cutting-stock optimization."""
 

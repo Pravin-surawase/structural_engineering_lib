@@ -29,6 +29,9 @@ python scripts/dxf_render.py drawings.dxf -o drawings.png
 # Run complete job from spec file
 python -m structural_lib job job.json -o ./output
 
+# Validate inputs/results
+python -m structural_lib validate job.json
+
 # Critical set from job outputs (sorted utilization)
 python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 
@@ -154,6 +157,8 @@ def detail_beam_is456(
 
 ```python
 def get_library_version() -> str
+def validate_job_spec(path: str) -> ValidationReport
+def validate_design_results(path: str) -> ValidationReport
 def check_beam_ductility(b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float) -> DuctileBeamResult
 def check_deflection_span_depth(span_mm: float, d_mm: float, support_condition: str = "simply_supported", ...) -> DeflectionResult
 def check_crack_width(exposure_class: str = "moderate", limit_mm: float | None = None, ...) -> CrackWidthResult
@@ -176,6 +181,28 @@ Notes:
 - `check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m) and does
   not accept a `units` argument. Use `check_beam_is456()` when you want explicit
   unit validation at the API boundary.
+
+---
+
+### Library-First Wrappers (v0.12)
+
+**Available now:**
+- `api.validate_job_spec(path)`
+- `api.validate_design_results(path)`
+
+**ValidationReport fields:**
+- `ok` (bool)
+- `errors` (list[str])
+- `warnings` (list[str])
+- `details` (dict)
+
+**Planned (not implemented yet):**
+- `api.compute_detailing(design_results, config=None)`
+- `api.compute_bbs(detailing_list, project_name="Beam BBS")`
+- `api.export_bbs(bbs_doc, path, fmt="csv")`
+- `api.compute_dxf(detailing_list, output, multi=False)`
+- `api.compute_report(source, format="html")`
+- `api.compute_critical(job_out, top=10, format="csv")`
 
 ---
 
