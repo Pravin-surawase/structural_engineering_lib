@@ -57,6 +57,34 @@ def _print_error(message: str, hint: str | None = None) -> None:
         print(f"Hint: {hint}", file=sys.stderr)
 
 
+def _format_mark_diff_text(result: dict) -> str:
+    summary = result.get("summary", {})
+    ok = result.get("ok", False)
+    lines = [
+        f"BBS/DXF bar mark check: {'OK' if ok else 'FAIL'}",
+        f"Beams checked: {summary.get('beams_checked', 0)}",
+        f"BBS marks: {summary.get('bbs_marks', 0)}",
+        f"DXF marks: {summary.get('dxf_marks', 0)}",
+    ]
+
+    missing = result.get("missing_in_dxf", {}) or {}
+    extra = result.get("extra_in_dxf", {}) or {}
+
+    if missing:
+        lines.append("Missing in DXF:")
+        for beam_id in sorted(missing):
+            marks = ", ".join(missing[beam_id])
+            lines.append(f"  {beam_id}: {marks}")
+
+    if extra:
+        lines.append("Extra in DXF:")
+        for beam_id in sorted(extra):
+            marks = ", ".join(extra[beam_id])
+            lines.append(f"  {beam_id}: {marks}")
+
+    return "\n".join(lines)
+
+
 def cmd_design(args: argparse.Namespace) -> int:
     """
     Run beam design from CSV/JSON input file.
@@ -580,6 +608,51 @@ def cmd_dxf(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_mark_diff(args: argparse.Namespace) -> int:
+    """Compare bar marks between a BBS CSV and a DXF file."""
+    bbs_path = Path(args.bbs)
+    dxf_path = Path(args.dxf)
+
+    if not bbs_path.exists():
+        _print_error(f"BBS file not found: {bbs_path}")
+        return 1
+    if not dxf_path.exists():
+        _print_error(f"DXF file not found: {dxf_path}")
+        return 1
+
+    if dxf_export is None or not dxf_export.EZDXF_AVAILABLE:
+        _print_error(
+            "ezdxf library not installed.",
+            hint='Install with: pip install "structural-lib-is456[dxf]"',
+        )
+        return 1
+
+    try:
+        result = dxf_export.compare_bbs_dxf_marks(bbs_path, dxf_path)
+    except Exception as e:
+        _print_error(str(e))
+        return 1
+
+    if args.format == "json":
+        payload = json.dumps(result, indent=2)
+        if args.output:
+            out_path = Path(args.output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(payload + "\n", encoding="utf-8")
+        else:
+            print(payload)
+    else:
+        text = _format_mark_diff_text(result)
+        if args.output:
+            out_path = Path(args.output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(text + "\n", encoding="utf-8")
+        else:
+            print(text)
+
+    return 0 if result.get("ok") else 2
+
+
 def cmd_job(args: argparse.Namespace) -> int:
     """
     Run complete job from JSON specification.
@@ -929,6 +1002,34 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Title block height in mm (default: 250).",
     )
     dxf_parser.set_defaults(func=cmd_dxf)
+
+    # BBS/DXF consistency check
+    mark_diff_parser = subparsers.add_parser(
+        "mark-diff",
+        help="Check bar marks in BBS vs DXF outputs",
+        description="""
+        Compare bar marks between a BBS CSV file and a DXF file.
+
+        Examples:
+          python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
+          python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf --format json -o mark_diff.json
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    mark_diff_parser.add_argument("--bbs", required=True, help="BBS CSV file path")
+    mark_diff_parser.add_argument("--dxf", required=True, help="DXF file path")
+    mark_diff_parser.add_argument(
+        "--format",
+        default="text",
+        choices=["text", "json"],
+        help="Output format (default: text)",
+    )
+    mark_diff_parser.add_argument(
+        "-o",
+        "--output",
+        help="Output file path (if omitted, prints to stdout)",
+    )
+    mark_diff_parser.set_defaults(func=cmd_mark_diff)
 
     # Job subcommand
     job_parser = subparsers.add_parser(

@@ -84,6 +84,11 @@ cut_length_mm,total_length_mm,unit_weight_kg,total_weight_kg,remarks
 - Every DXF callout mark must exist in the BBS for that beam.
 - Ordering of callouts is deterministic (no random shuffling).
 
+**CLI check:**
+```bash
+python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
+```
+
 ## 5) Change Policy
 
 Breaking changes to this contract require:

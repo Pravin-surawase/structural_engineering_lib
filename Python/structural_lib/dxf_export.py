@@ -17,7 +17,8 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, Optional, Tuple, Dict, Union, Set
+from pathlib import Path
 
 ezdxf: Any = None
 _units: Any = None
@@ -150,6 +151,76 @@ def _bar_mark_map(detailing: BeamDetailingResult) -> dict:
     return marks
 
 
+def extract_bar_marks_from_dxf(path: Union[str, Path]) -> Dict[str, Set[str]]:
+    """Extract bar marks from a DXF file, grouped by beam."""
+    check_ezdxf()
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"DXF file not found: {p}")
+
+    doc = ezdxf.readfile(str(p))
+    msp = doc.modelspace()
+
+    marks_by_beam: Dict[str, Set[str]] = {}
+    for entity in msp.query("TEXT MTEXT"):
+        if entity.dxftype() == "TEXT":
+            text = entity.dxf.text
+        else:
+            if hasattr(entity, "plain_text"):
+                text = entity.plain_text()
+            else:
+                text = entity.text
+
+        for mark in bbs.extract_bar_marks_from_text(text):
+            parsed = bbs.parse_bar_mark(mark)
+            if not parsed:
+                continue
+            beam_id = parsed["beam_id"]
+            marks_by_beam.setdefault(beam_id, set()).add(parsed["mark"])
+
+    return marks_by_beam
+
+
+def compare_bbs_dxf_marks(
+    bbs_csv_path: Union[str, Path],
+    dxf_path: Union[str, Path],
+) -> Dict[str, object]:
+    """Compare bar marks in a BBS CSV against a DXF file."""
+    bbs_marks = bbs.extract_bar_marks_from_bbs_csv(bbs_csv_path)
+    dxf_marks = extract_bar_marks_from_dxf(dxf_path)
+
+    missing_in_dxf: Dict[str, List[str]] = {}
+    extra_in_dxf: Dict[str, List[str]] = {}
+
+    all_beams = sorted(set(bbs_marks) | set(dxf_marks))
+    for beam_id in all_beams:
+        bbs_set = bbs_marks.get(beam_id, set())
+        dxf_set = dxf_marks.get(beam_id, set())
+
+        missing = sorted(bbs_set - dxf_set)
+        extra = sorted(dxf_set - bbs_set)
+
+        if missing:
+            missing_in_dxf[beam_id] = missing
+        if extra:
+            extra_in_dxf[beam_id] = extra
+
+    summary = {
+        "beams_checked": len(all_beams),
+        "bbs_marks": sum(len(marks) for marks in bbs_marks.values()),
+        "dxf_marks": sum(len(marks) for marks in dxf_marks.values()),
+        "missing_in_dxf": sum(len(marks) for marks in missing_in_dxf.values()),
+        "extra_in_dxf": sum(len(marks) for marks in extra_in_dxf.values()),
+    }
+
+    return {
+        "ok": not missing_in_dxf and not extra_in_dxf,
+        "missing_in_dxf": missing_in_dxf,
+        "extra_in_dxf": extra_in_dxf,
+        "summary": summary,
+    }
+
+
 def _annotation_extents(include_annotations: bool) -> Tuple[float, float]:
     """Return (above_extent, below_extent) for annotations."""
     if include_annotations:
@@ -204,6 +275,36 @@ def _draw_title_block(
             dxfattribs={"layer": "TEXT", "height": line_height},
         ).set_placement((x_text, y_text), align=_text_align("LEFT"))
         y_text -= line_height + spacing
+
+
+def _format_size_line(b: float, D: float) -> str:
+    return f"Size: {int(round(b))}x{int(round(D))} mm"
+
+
+def _format_cover_line(cover: float) -> str:
+    return f"Cover: {int(round(cover))} mm"
+
+
+def _format_range_line(label: str, values: List[float]) -> str:
+    if not values:
+        return ""
+    v_min = int(round(min(values)))
+    v_max = int(round(max(values)))
+    if v_min == v_max:
+        return f"{label}: {v_min} mm"
+    return f"{label}: {v_min}-{v_max} mm"
+
+
+def _format_size_range_line(b_values: List[float], d_values: List[float]) -> str:
+    if not b_values or not d_values:
+        return ""
+    b_min = int(round(min(b_values)))
+    b_max = int(round(max(b_values)))
+    d_min = int(round(min(d_values)))
+    d_max = int(round(max(d_values)))
+    b_part = f"{b_min}" if b_min == b_max else f"{b_min}-{b_max}"
+    d_part = f"{d_min}" if d_min == d_max else f"{d_min}-{d_max}"
+    return f"Sizes: {b_part} x {d_part} mm"
 
 
 def draw_stirrup(
@@ -888,6 +989,8 @@ def generate_beam_dxf(
         title = "RC BEAM DETAIL"
         beam_id = detailing.beam_id
         story = detailing.story
+        size_line = _format_size_line(detailing.b, detailing.D)
+        cover_line = _format_cover_line(detailing.cover)
         span_line = f"Span: {detailing.span:.0f} mm"
         units_note = "Units: mm, N/mm2, kN, kN-m"
         scale_note = "Scale: 1:1"
@@ -899,6 +1002,8 @@ def generate_beam_dxf(
             title = title_block.get("title", title)
             beam_id = title_block.get("beam_id", beam_id)
             story = title_block.get("story", story)
+            size_line = title_block.get("size_line", size_line)
+            cover_line = title_block.get("cover_line", cover_line)
             span_line = title_block.get("span_line", span_line)
             units_note = title_block.get("units", units_note)
             scale_note = title_block.get("scale", scale_note)
@@ -912,6 +1017,8 @@ def generate_beam_dxf(
             project,
             f"Beam: {beam_id}",
             f"Story: {story}",
+            size_line,
+            cover_line,
             span_line,
             date_line,
             drawn_by,
@@ -1178,6 +1285,12 @@ def generate_multi_beam_dxf(
 
         title = "RC BEAM DETAIL SHEET"
         count_line = f"Beams: {len(detailings)}"
+        size_range_line = _format_size_range_line(
+            [d.b for d in detailings],
+            [d.D for d in detailings],
+        )
+        span_line = _format_range_line("Span", [d.span for d in detailings])
+        cover_line = _format_range_line("Cover", [d.cover for d in detailings])
         units_note = "Units: mm, N/mm2, kN, kN-m"
         scale_note = "Scale: 1:1"
         project = ""
@@ -1187,6 +1300,9 @@ def generate_multi_beam_dxf(
         if title_block:
             title = title_block.get("title", title)
             count_line = title_block.get("count_line", count_line)
+            size_range_line = title_block.get("size_range_line", size_range_line)
+            span_line = title_block.get("span_line", span_line)
+            cover_line = title_block.get("cover_line", cover_line)
             units_note = title_block.get("units", units_note)
             scale_note = title_block.get("scale", scale_note)
             project = title_block.get("project", project)
@@ -1198,6 +1314,9 @@ def generate_multi_beam_dxf(
             title,
             project,
             count_line,
+            size_range_line,
+            span_line,
+            cover_line,
             date_line,
             drawn_by,
             version_line,
