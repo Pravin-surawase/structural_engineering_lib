@@ -10,7 +10,32 @@ Goal: enable the next agent to resume in under 2 minutes.
    - `docs/planning/next-session-brief.md` (what changed + blockers)
    - `docs/contributing/session-issues.md` (recent pitfalls + fixes)
    - `docs/TASKS.md` (active + up next)
-3. If releasing: `./scripts/ci_local.sh` then `python scripts/verify_release.py --version X.Y.Z --source pypi`
+3. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
+
+### Quick output sample (start_session --quick)
+```
+$ .venv/bin/python scripts/start_session.py --quick
+============================================================
+🚀 SESSION START
+============================================================
+  Version:  v0.11.0
+  Branch:   main
+  Date:     2025-01-02
+  Git:      Clean working tree
+
+📝 Session Log:
+  ✅ Entry exists for 2025-01-02
+
+📋 Active Tasks:
+  • S-007: External engineer CLI test (BLOCKER - requires human)
+
+📖 Read first: docs/HANDOFF.md → docs/AGENT_BOOTSTRAP.md → docs/AI_CONTEXT_PACK.md
+============================================================
+```
+
+### Release verify (clean venv)
+- Local wheel (pre-release): `.venv/bin/python scripts/verify_release.py --source wheel --wheel-dir Python/dist`
+- PyPI (post-release): `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
 
 ## Handoff (ending)
 1. Run: `.venv/bin/python scripts/end_session.py --fix`

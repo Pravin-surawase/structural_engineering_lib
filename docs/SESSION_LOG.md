@@ -30,6 +30,18 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ### Notes
 - Visual v0.11 complete: V03–V09 delivered.
 
+### S-007 — External Engineer CLI Cold-Start Test (Paste Results Here)
+
+**Preferred (automated):**
+- Run (repo): `.venv/bin/python scripts/external_cli_test.py`
+- Run (external): `python external_cli_test.py`
+- Reference: `docs/verification/external-cli-test.md`
+- Fill-in template: `docs/verification/external-cli-test-log-template.md`
+
+**Attach / paste back:**
+- The generated log file path (default: `external_cli_test_run/external_cli_test.log`)
+- The filled template contents
+
 
 ## 2025-12-28 — v0.10.2 Release
 
