@@ -76,6 +76,7 @@ If you want to understand the concepts and the code step by step, start here:
 - Architecture & layering: [architecture/project-overview.md](architecture/project-overview.md)
 - Consolidated architecture/data flow: [architecture/deep-project-map.md](architecture/deep-project-map.md)
 - Library contract (stability promises): [reference/library-contract.md](reference/library-contract.md)
+- BBS + DXF contract: [reference/bbs-dxf-contract.md](reference/bbs-dxf-contract.md)
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
