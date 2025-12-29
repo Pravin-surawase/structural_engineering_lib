@@ -381,12 +381,119 @@ DOCS → DEV: "Here's the spec, start building"
 
 ---
 
+## Gate Checklists (Hard Gates)
+
+Each stage requires explicit approval before proceeding. **Do not advance if any gate fails.**
+
+### Gate 1: Initiate → Explore
+- [ ] Problem statement is specific (not "make it better")
+- [ ] Success criteria are measurable
+- [ ] Timebox and decision date set
+- [ ] Owner assigned
+
+### Gate 2: Explore → Evaluate
+- [ ] At least 2 options documented
+- [ ] Pros/cons for each option
+- [ ] Edge cases identified (from TESTER)
+- [ ] Constraints verification table complete
+
+### Gate 3: Evaluate → Decide
+- [ ] Feasibility assessed for all options (from DEV)
+- [ ] Scoring rubric applied
+- [ ] Review findings documented
+- [ ] No HIGH severity findings unresolved
+
+### Gate 4: Decide → Handoff
+- [ ] Decision recorded with rationale
+- [ ] Parking lot documented (rejected ideas)
+- [ ] Milestone target assigned
+- [ ] PM approval explicit
+
+### Gate 5: Handoff → Build
+- [ ] Implementation spec complete (files, functions, contracts)
+- [ ] Data schema frozen (no mid-sprint schema changes)
+- [ ] Test requirements listed
+- [ ] Back-compat impact assessed
+- [ ] TASKS.md entries created
+
+### Gate 6: Build → Release
+- [ ] All tests pass (Python + VBA if applicable)
+- [ ] Docs updated (API ref, changelog)
+- [ ] Verification examples pass
+- [ ] No regressions in golden files
+
+---
+
+## Risk Controls
+
+These rules prevent scope creep, broken contracts, and untested code.
+
+| Control | Rule | Enforcement |
+|---------|------|-------------|
+| **Data Contract Freeze** | Define input/output schema before coding | Gate 5 checklist |
+| **Scope Lock** | New ideas during build go to INBOX, not sprint | PM enforces |
+| **Test-First for Trust** | Golden files + regression tests mandatory | Gate 6 checklist |
+| **Back-Compat Rule** | Breaking changes require explicit approval + migration notes | Gate 5 checklist |
+
+### When to Invoke Risk Controls
+
+- **Data Contract Freeze:** Any feature that changes `ComplianceReport`, job spec, or API signatures
+- **Scope Lock:** When WIP=1 is active and new requests arrive
+- **Test-First:** Any calculation or validation logic
+- **Back-Compat:** Any CLI flag, function signature, or output format change
+
+---
+
+## Implementation Spec Template (Stage 5)
+
+For big features, include this in the research doc or a linked file:
+
+```markdown
+## Implementation Spec: [Feature Name]
+
+### Files to Create/Modify
+| File | Action | Purpose |
+|------|--------|---------|
+| `Python/structural_lib/xxx.py` | Create | Core logic |
+| `Python/tests/test_xxx.py` | Create | Unit tests |
+| `docs/reference/xxx.md` | Create | API documentation |
+
+### Data Contracts
+**Input:**
+- `job_spec: JobSpec` — geometry, materials
+- `results: ComplianceReport` — design output
+
+**Output:**
+- `FeatureOutput` — [define fields]
+
+### CLI Changes
+```bash
+# New command
+structural-report export --format=html design_results.json
+
+# Changed flags (back-compat)
+--old-flag → --new-flag (deprecated, will warn)
+```
+
+### Test Requirements
+- [ ] Unit tests: [list key scenarios]
+- [ ] Edge cases: [list boundary conditions]
+- [ ] Golden file: `tests/golden/xxx_expected.json`
+- [ ] Regression: existing tests still pass
+
+### Back-Compat Assessment
+- [ ] No breaking changes
+- [ ] OR: Breaking changes documented with migration notes
+```
+
+---
+
 ## Templates
 
 - Research template: [`_research-template.md`](_research-template.md)
 - Task template: See `TASKS.md` format
-- Implementation spec: Include in research doc or separate file
+- Implementation spec: Use template above or include in research doc
 
 ---
 
-*This workflow ensures research is thorough, decisions are recorded, and implementation is well-defined.*
+*This workflow ensures research is thorough, decisions are recorded, gates are enforced, and implementation is well-defined.*
