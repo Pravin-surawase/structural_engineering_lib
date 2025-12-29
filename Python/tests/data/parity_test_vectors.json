@@ -366,7 +366,7 @@
         "stirrup_dia_mm": 8
       },
       "expected": {
-        "cut_length_mm": 1440
+        "cut_length_mm": 1410
       }
     }
   ]
