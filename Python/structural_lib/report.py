@@ -248,16 +248,35 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
 
     check_positive("b_mm", b_mm, "beam.b_mm")
     check_positive("D_mm", D_mm, "beam.D_mm")
-    check_positive("d_mm", d_mm, "beam.d_mm")
 
-    # d_mm should be <= D_mm
-    if d_mm is None or D_mm is None:
+    # d_mm should be > 0 and <= D_mm
+    if d_mm is None:
+        checks.append(
+            _make_sanity_check(
+                field="d_mm",
+                value=None,
+                status="WARN",
+                message="missing value",
+                json_path="beam.d_mm",
+            )
+        )
+    elif d_mm <= 0:
         checks.append(
             _make_sanity_check(
                 field="d_mm",
                 value=d_mm,
                 status="WARN",
-                message="cannot compare d_mm to D_mm (missing value)",
+                message="must be > 0",
+                json_path="beam.d_mm",
+            )
+        )
+    elif D_mm is None:
+        checks.append(
+            _make_sanity_check(
+                field="d_mm",
+                value=d_mm,
+                status="WARN",
+                message="cannot compare to D_mm (missing D_mm)",
                 json_path="beam.d_mm",
             )
         )
@@ -277,7 +296,7 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
                 field="d_mm",
                 value=d_mm,
                 status="OK",
-                message="d_mm <= D_mm",
+                message="within expected range",
                 json_path="beam.d_mm",
             )
         )
@@ -290,7 +309,7 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
                 value=None,
                 status="WARN",
                 message="cannot compute b/D ratio",
-                json_path="beam.b_mm / beam.D_mm",
+                json_path="beam.b_mm",
             )
         )
     else:
@@ -302,7 +321,7 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
                     value=ratio,
                     status="WARN",
                     message="b/D ratio outside expected range (0.20 to 1.00)",
-                    json_path="beam.b_mm / beam.D_mm",
+                    json_path="beam.b_mm",
                 )
             )
         else:
@@ -312,7 +331,7 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
                     value=ratio,
                     status="OK",
                     message="b/D ratio within expected range",
-                    json_path="beam.b_mm / beam.D_mm",
+                    json_path="beam.b_mm",
                 )
             )
 
