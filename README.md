@@ -57,6 +57,8 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 | Detail drawings | DXF | CAD-ready bar layouts |
 | Compliance reports | JSON | Strength + serviceability checks |
 | Bar bending schedules | CSV | Per IS 2502 with cutting lengths |
+| Critical set tables | CSV/HTML | Sorted utilization table from job outputs |
+| Report summaries (preview) | JSON/HTML | Human-readable summary from job outputs |
 
 ## Who it helps
 
@@ -199,6 +201,12 @@ JSON
 
 # Run the job
 python3 -m structural_lib job job.json -o ./out_demo
+```
+
+Generate a critical set and report from the job outputs:
+```bash
+python3 -m structural_lib critical ./out_demo --top 10 --format=csv -o critical.csv
+python3 -m structural_lib report ./out_demo --format=html -o report.html
 ```
 
 ## Features

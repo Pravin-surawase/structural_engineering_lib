@@ -239,6 +239,14 @@ with open("job.json", "w") as f:
 
 ---
 
+## Step 6b: Critical set + report (from job outputs)
+```python
+!python -m structural_lib critical ./job_out --top 10 --format=csv -o critical.csv
+!python -m structural_lib report ./job_out --format=html -o report.html
+```
+
+---
+
 ## Step 7: Download outputs (optional)
 ```python
 import shutil

@@ -41,6 +41,10 @@ python -m structural_lib dxf results.json -o drawings.dxf
 
 # Run complete job from specification
 python -m structural_lib job job.json -o output/
+
+# Critical set + report from job outputs
+python -m structural_lib critical output/ --top 10 --format=csv -o critical.csv
+python -m structural_lib report output/ --format=html -o report.html
 ```
 
 Run `python -m structural_lib --help` for more options.
