@@ -190,7 +190,7 @@ def render_section_svg(
                 "fill": "#666666",
             },
         )
-        label.text = "d_dash"
+        label.text = "d'"
 
     if d_mm is not None:
         ET.SubElement(
