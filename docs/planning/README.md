@@ -16,31 +16,42 @@ Internal planning documents and research notes.
 
 ## Research Process
 
+> **Full workflow:** See [research-workflow.md](research-workflow.md) for the complete 5-stage process.
+
 ### How Features Evolve
 
 ```
-Research → Shape → Decide → Implement → Release
-   ↓         ↓        ↓         ↓          ↓
- Ideas    Scope    TASKS.md   Code      PyPI
+┌─────────────────────────────────────────────────────────────────────────┐
+│  Stage 1        Stage 2        Stage 3        Stage 4        Stage 5    │
+│  ────────       ────────       ────────       ────────       ────────   │
+│  INITIATE  →   EXPLORE    →   EVALUATE   →   DECIDE     →   HANDOFF    │
+│                                                                          │
+│  CLIENT        RESEARCHER     DEV            PM             DOCS        │
+│  PM            TESTER         Review         Owner          DEV         │
+│                               Agents                                     │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Agent Roles in Research
 
-| Agent | Role in Research |
-|-------|------------------|
-| **RESEARCHER** | Explore options, identify constraints |
-| **CLIENT** | Define user problems, validate solutions |
-| **PM** | Scope decisions, prioritize |
-| **DEV** | Feasibility, effort estimates |
-| **TESTER** | Edge cases, validation criteria |
+| Agent | Stage | Role |
+|-------|-------|------|
+| **CLIENT** | 1. Initiate | Define problems, user personas |
+| **PM** | 1. Initiate, 4. Decide | Scope, constraints, final call |
+| **RESEARCHER** | 2. Explore | Options, market analysis |
+| **TESTER** | 2. Explore | Edge cases, validation criteria |
+| **DEV** | 3. Evaluate | Feasibility, effort, architecture |
+| **Review agents** | 3. Evaluate | Critique, find gaps |
+| **DOCS** | 5. Handoff | Create tasks, update roadmap |
 
 ### Starting New Research
 
 1. Copy `_research-template.md` to `research-{topic}/README.md`
-2. Fill in Problem, Constraints, Options
-3. Score options using the rubric
-4. Make a decision (or park for later)
-5. Move approved items to `TASKS.md`
+2. **Stage 1:** CLIENT fills Problem, Personas; PM sets constraints
+3. **Stage 2:** RESEARCHER explores options; TESTER adds edge cases
+4. **Stage 3:** DEV scores feasibility; Review agents critique
+5. **Stage 4:** PM makes decision, defines parking lot
+6. **Stage 5:** DOCS creates tasks, DEV writes implementation spec
 
 ### Research Status Lifecycle
 
@@ -74,10 +85,11 @@ Research → Shape → Decide → Implement → Release
 
 ---
 
-## Templates
+## Templates & Workflow
 
-| Template | Use For |
+| Document | Use For |
 |----------|---------|
+| [research-workflow.md](research-workflow.md) | Full 5-stage process with agent handoffs |
 | [_research-template.md](_research-template.md) | New research topics |
 
 ---
