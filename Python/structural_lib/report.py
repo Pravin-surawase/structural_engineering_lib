@@ -35,6 +35,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from . import ductile
 from . import report_svg
 
 
@@ -85,6 +86,16 @@ class SanityCheck:
 
     field: str
     value: Optional[float]
+    status: str
+    message: str
+    json_path: str
+
+
+@dataclass
+class ScorecardItem:
+    """A single stability scorecard item."""
+
+    check: str
     status: str
     message: str
     json_path: str
@@ -475,6 +486,235 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
     return checks
 
 
+def _case_utilization(case: Dict[str, Any]) -> float:
+    util = case.get("governing_utilization")
+    if util is not None:
+        try:
+            return float(util)
+        except (TypeError, ValueError):
+            return 0.0
+    utils = case.get("utilizations", {})
+    if isinstance(utils, dict) and utils:
+        try:
+            return max(float(v) for v in utils.values())
+        except (TypeError, ValueError):
+            return 0.0
+    return 0.0
+
+
+def _select_governing_case(data: ReportData) -> tuple[Optional[Dict[str, Any]], int]:
+    cases_data = data.results.get("cases", [])
+    if not isinstance(cases_data, list) or not cases_data:
+        return None, -1
+
+    if data.governing_case_id:
+        for idx, case in enumerate(cases_data):
+            if str(case.get("case_id", "")) == data.governing_case_id:
+                return case, idx
+
+    # Fallback: pick highest utilization (tie -> first)
+    best_idx = 0
+    best_util = _case_utilization(cases_data[0])
+    for idx, case in enumerate(cases_data[1:], start=1):
+        util = _case_utilization(case)
+        if util > best_util:
+            best_util = util
+            best_idx = idx
+    return cases_data[best_idx], best_idx
+
+
+def get_stability_scorecard(data: ReportData) -> List[ScorecardItem]:
+    """Generate stability scorecard flags from governing case results."""
+    case, case_idx = _select_governing_case(data)
+    items: List[ScorecardItem] = []
+
+    if case is None:
+        missing = "no cases available"
+        items.extend(
+            [
+                ScorecardItem("over_reinforced", "INFO", missing, "cases[]"),
+                ScorecardItem("min_ductility", "INFO", missing, "cases[]"),
+                ScorecardItem("max_ductility", "INFO", missing, "cases[]"),
+                ScorecardItem("shear_margin", "INFO", missing, "cases[]"),
+                ScorecardItem(
+                    "governing_utilization", "INFO", missing, "governing_utilization"
+                ),
+            ]
+        )
+        return items
+
+    flexure = case.get("flexure", {}) if isinstance(case.get("flexure"), dict) else {}
+    shear = case.get("shear", {}) if isinstance(case.get("shear"), dict) else {}
+
+    section_type = str(flexure.get("section_type", "") or "")
+    section_path = f"cases[{case_idx}].flexure.section_type"
+    if not section_type:
+        items.append(
+            ScorecardItem(
+                "over_reinforced",
+                "INFO",
+                "section_type missing",
+                section_path,
+            )
+        )
+    elif section_type == "OVER_REINFORCED":
+        items.append(
+            ScorecardItem(
+                "over_reinforced",
+                "WARN",
+                "over-reinforced section",
+                section_path,
+            )
+        )
+    elif section_type == "BALANCED":
+        items.append(
+            ScorecardItem(
+                "over_reinforced",
+                "WARN",
+                "balanced section (low ductility margin)",
+                section_path,
+            )
+        )
+    else:
+        items.append(
+            ScorecardItem(
+                "over_reinforced",
+                "OK",
+                "under-reinforced section",
+                section_path,
+            )
+        )
+
+    pt_provided = _safe_float(flexure.get("pt_provided"))
+    fck_nmm2 = _safe_float(data.beam.get("fck_nmm2"))
+    fy_nmm2 = _safe_float(data.beam.get("fy_nmm2"))
+    pt_path = f"cases[{case_idx}].flexure.pt_provided"
+
+    if pt_provided is None or fck_nmm2 is None or fy_nmm2 is None:
+        items.append(
+            ScorecardItem(
+                "min_ductility",
+                "INFO",
+                "missing pt_provided/fck/fy",
+                pt_path,
+            )
+        )
+        items.append(
+            ScorecardItem(
+                "max_ductility",
+                "INFO",
+                "missing pt_provided/fck/fy",
+                pt_path,
+            )
+        )
+    else:
+        min_pt = ductile.get_min_tension_steel_percentage(fck_nmm2, fy_nmm2)
+        max_pt = ductile.get_max_tension_steel_percentage()
+
+        if pt_provided < min_pt:
+            items.append(
+                ScorecardItem(
+                    "min_ductility",
+                    "WARN",
+                    f"pt_provided {pt_provided:.2f}% < min {min_pt:.2f}%",
+                    pt_path,
+                )
+            )
+        else:
+            items.append(
+                ScorecardItem(
+                    "min_ductility",
+                    "OK",
+                    "min ductility OK",
+                    pt_path,
+                )
+            )
+
+        if pt_provided > max_pt:
+            items.append(
+                ScorecardItem(
+                    "max_ductility",
+                    "WARN",
+                    f"pt_provided {pt_provided:.2f}% > max {max_pt:.2f}%",
+                    pt_path,
+                )
+            )
+        else:
+            items.append(
+                ScorecardItem(
+                    "max_ductility",
+                    "OK",
+                    "max ductility OK",
+                    pt_path,
+                )
+            )
+
+    shear_path = f"cases[{case_idx}].shear.is_safe"
+    shear_safe = shear.get("is_safe")
+    shear_util = 0.0
+    utils = case.get("utilizations", {})
+    if isinstance(utils, dict):
+        shear_util = _safe_float(utils.get("shear")) or 0.0
+
+    if shear_safe is None:
+        items.append(
+            ScorecardItem(
+                "shear_margin",
+                "INFO",
+                "shear result missing",
+                shear_path,
+            )
+        )
+    elif not bool(shear_safe):
+        items.append(
+            ScorecardItem(
+                "shear_margin",
+                "WARN",
+                "shear check failed",
+                shear_path,
+            )
+        )
+    elif shear_util >= 0.9:
+        items.append(
+            ScorecardItem(
+                "shear_margin",
+                "WARN",
+                "shear utilization high (>= 0.90)",
+                f"cases[{case_idx}].utilizations.shear",
+            )
+        )
+    else:
+        items.append(
+            ScorecardItem(
+                "shear_margin",
+                "OK",
+                "shear margin OK",
+                shear_path,
+            )
+        )
+
+    if data.governing_utilization >= 0.9:
+        items.append(
+            ScorecardItem(
+                "governing_utilization",
+                "WARN",
+                "overall utilization high (>= 0.90)",
+                "governing_utilization",
+            )
+        )
+    else:
+        items.append(
+            ScorecardItem(
+                "governing_utilization",
+                "OK",
+                "overall utilization OK",
+                "governing_utilization",
+            )
+        )
+
+    return items
+
+
 def export_json(data: ReportData, *, indent: int = 2) -> str:
     """Export report data as JSON string.
 
@@ -495,6 +735,15 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
         }
         for item in get_input_sanity(data)
     ]
+    stability_scorecard = [
+        {
+            "check": item.check,
+            "status": item.status,
+            "message": item.message,
+            "json_path": item.json_path,
+        }
+        for item in get_stability_scorecard(data)
+    ]
     output = {
         "job_id": data.job_id,
         "code": data.code,
@@ -506,6 +755,7 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
         "cases": data.results.get("cases", []),
         "summary": data.results.get("summary", {}),
         "input_sanity": input_sanity,
+        "stability_scorecard": stability_scorecard,
     }
     return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
 
@@ -555,6 +805,36 @@ def _render_sanity_table(items: List[SanityCheck]) -> str:
     </table>"""
 
 
+def _render_scorecard_table(items: List[ScorecardItem]) -> str:
+    rows = []
+    for item in items:
+        status_class = "ok" if item.status == "OK" else "warn"
+        message = html.escape(item.message)
+        check = html.escape(item.check)
+        json_path = html.escape(item.json_path)
+        rows.append(
+            f"""        <tr class="scorecard-{status_class}" data-source="{json_path}">
+            <td>{check}</td>
+            <td>{item.status}</td>
+            <td>{message}</td>
+        </tr>"""
+        )
+
+    rows_joined = "\n".join(rows)
+    return f"""<table class="scorecard-table">
+        <thead>
+            <tr>
+                <th>Check</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+{rows_joined}
+        </tbody>
+    </table>"""
+
+
 def export_html(data: ReportData) -> str:
     """Export report data as HTML string (Phase 1 visuals)."""
     status = "✓ PASS" if data.is_ok else "✗ FAIL"
@@ -563,6 +843,8 @@ def export_html(data: ReportData) -> str:
     svg = report_svg.render_section_svg_from_beam(data.beam)
     sanity_items = get_input_sanity(data)
     sanity_table = _render_sanity_table(sanity_items)
+    scorecard_items = get_stability_scorecard(data)
+    scorecard_table = _render_scorecard_table(scorecard_items)
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -573,11 +855,11 @@ def export_html(data: ReportData) -> str:
         h1, h2 {{ color: #333; }}
         .summary {{ margin-bottom: 20px; }}
         .section {{ margin: 20px 0; }}
-        .sanity-table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
-        .sanity-table th, .sanity-table td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
-        .sanity-table th {{ background: #f5f5f5; font-weight: 600; }}
-        .sanity-ok {{ background: #f7fff7; }}
-        .sanity-warn {{ background: #fff8e1; }}
+        .sanity-table, .scorecard-table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
+        .sanity-table th, .sanity-table td, .scorecard-table th, .scorecard-table td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
+        .sanity-table th, .scorecard-table th {{ background: #f5f5f5; font-weight: 600; }}
+        .sanity-ok, .scorecard-ok {{ background: #f7fff7; }}
+        .sanity-warn, .scorecard-warn {{ background: #fff8e1; }}
         .svg-wrap {{ border: 1px solid #eee; padding: 10px; display: inline-block; }}
     </style>
 </head>
@@ -596,6 +878,10 @@ def export_html(data: ReportData) -> str:
     <div class="section">
         <h2>Input Sanity Heatmap</h2>
         {sanity_table}
+    </div>
+    <div class="section">
+        <h2>Stability Scorecard</h2>
+        {scorecard_table}
     </div>
     <p><em>Full report implementation in V08.</em></p>
 </body>

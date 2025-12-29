@@ -15,6 +15,7 @@ from structural_lib.report import (
     export_json,
     export_html,
     get_input_sanity,
+    get_stability_scorecard,
     get_critical_set,
     export_critical_csv,
     export_critical_html,
@@ -53,12 +54,26 @@ SAMPLE_RESULTS = {
             "is_ok": True,
             "governing_utilization": 0.65,
             "utilizations": {"flexure": 0.65, "shear": 0.40},
+            "flexure": {
+                "section_type": "UNDER_REINFORCED",
+                "pt_provided": 1.2,
+                "xu": 120.0,
+                "xu_max": 200.0,
+            },
+            "shear": {"is_safe": True},
         },
         {
             "case_id": "LC2",
             "is_ok": True,
             "governing_utilization": 0.85,
             "utilizations": {"flexure": 0.85, "shear": 0.50},
+            "flexure": {
+                "section_type": "UNDER_REINFORCED",
+                "pt_provided": 1.5,
+                "xu": 140.0,
+                "xu_max": 200.0,
+            },
+            "shear": {"is_safe": True},
         },
     ],
     "summary": {"total_cases": 2, "passed": 2, "failed": 0},
@@ -197,6 +212,8 @@ class TestExportJson:
         assert "governing_utilization" in output
         assert "beam" in output
         assert "cases" in output
+        assert "input_sanity" in output
+        assert "stability_scorecard" in output
 
 
 class TestExportHtml:
@@ -212,6 +229,7 @@ class TestExportHtml:
         assert "IS456" in html
         assert "✓ PASS" in html  # is_ok = True
         assert "Input Sanity Heatmap" in html
+        assert "Stability Scorecard" in html
         assert "<svg" in html
 
     def test_export_html_fail_status(self, sample_output_dir: Path) -> None:
@@ -249,6 +267,31 @@ class TestInputSanity:
         status_map = {item.field: item.status for item in items}
         assert status_map["b_mm"] == "WARN"
         assert status_map["fck_nmm2"] == "WARN"
+
+
+class TestStabilityScorecard:
+    """Tests for stability scorecard."""
+
+    def test_scorecard_has_expected_checks(self, sample_output_dir: Path) -> None:
+        data = load_report_data(sample_output_dir)
+        items = get_stability_scorecard(data)
+
+        checks = {item.check for item in items}
+        assert {
+            "over_reinforced",
+            "min_ductility",
+            "max_ductility",
+            "shear_margin",
+            "governing_utilization",
+        } == checks
+
+    def test_scorecard_warns_on_over_reinforced(self, sample_output_dir: Path) -> None:
+        data = load_report_data(sample_output_dir)
+        data.results["cases"][1]["flexure"]["section_type"] = "OVER_REINFORCED"
+        items = get_stability_scorecard(data)
+
+        status_map = {item.check: item.status for item in items}
+        assert status_map["over_reinforced"] == "WARN"
 
 
 class TestReportSvg:
