@@ -193,6 +193,10 @@ No active tasks. Pick from "Up Next" and move here when starting.
 | **TASK-112** | Document `api.py` stable entrypoints in api-stability.md | DOCS | 45 min | 🟡 Medium |
 | **TASK-113** | Add return type annotation for `detail_beam_is456()` | DEV | 15 min | 🟢 Low |
 | **TASK-114** | Clarify units for `check_compliance_report()` in docs | DOCS | 30 min | 🟢 Low |
+| **TASK-115** | Document or demote `beam_pipeline` in API docs | DOCS | 45 min | 🟡 Medium |
+| **TASK-116** | Fix serviceability function names in api-stability.md | DOCS | 30 min | 🟢 Low |
+| **TASK-117** | Classify `report`/`report_svg` stability or stop re-exporting | DEV | 45 min | 🟡 Medium |
+| **TASK-118** | Document `get_library_version()` in api.md | DOCS | 20 min | 🟢 Low |
 
 ---
 
