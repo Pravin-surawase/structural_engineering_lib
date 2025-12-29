@@ -46,7 +46,7 @@ Internal planning documents and research notes.
 
 ### Starting New Research
 
-1. Copy `_research-template.md` to `research-{topic}/README.md`
+1. Copy `_research-template.md` to `research-{topic}/README.md` (folder-only)
 2. **Stage 1:** CLIENT fills Problem, Personas; PM sets constraints
 3. **Stage 2:** RESEARCHER explores options; TESTER adds edge cases
 4. **Stage 3:** DEV scores feasibility; Review agents critique
@@ -69,6 +69,7 @@ Internal planning documents and research notes.
 | Topic | Status | Location |
 |-------|--------|----------|
 | [Visual Layer](research-visual-design/) | In Review | `research-visual-design/` |
+| [Platform Access](research-platform/) | Decided (post-v1.0) | `research-platform/` |
 | [AI Enhancements](research-ai-enhancements.md) | Draft | Single file |
 | [Detailing](research-detailing.md) | Draft | Single file |
 
