@@ -37,6 +37,8 @@ Engineers running batch designs (50-500 beams) struggle to identify critical bea
 | R6 | 2025-12-29 | **Multi-agent review** — all 11 agents contributed (see section below) |
 | R7 | 2025-12-29 | **Consistency review** — Change Ledger→Phase 2, milestone→v0.11 |
 | R8 | 2025-12-29 | **R7 action items resolved** — all 5 fixes applied |
+| R9 | 2025-12-29 | **External review fixes** — input expanded, agent count, CLI examples |
+| R10 | 2025-12-29 | **Implementation architecture** — corrected module layout, CLI entry point |
 
 ---
 
@@ -1384,6 +1386,99 @@ Items requiring input geometry/materials move to Phase 2 unless the report input
 3. ✅ Report examples use `design_results.json` (job output).
 4. ✅ Milestone target: v0.11 (after W08 in v0.10).
 5. ✅ Agent count confirmed: 12 agents (CLIENT through Integration).
+
+---
+
+## Implementation Architecture (R10)
+
+> Added after external review identified architecture issues with initial proposal.
+
+### Module Layout (Flat — No Breaking Changes)
+
+```
+structural_lib/
+├── flexure.py          # Unchanged
+├── shear.py            # Unchanged
+├── ...                 # All existing modules unchanged
+├── dxf_export.py       # Unchanged (already optional)
+├── __main__.py         # EXTEND: add `report` subcommand
+├── report.py           # NEW: report generation (stdlib only)
+├── report_svg.py       # NEW: SVG utilities (stdlib only)
+├── viz_plot.py         # NEW: matplotlib charts (optional, lazy import)
+```
+
+**Key decisions:**
+- No `core/` or `report/` subpackages — keep flat to avoid breaking imports
+- Entry point is `__main__.py` (not `job_cli.py`)
+- All new modules follow existing patterns
+
+### CLI Usage
+
+```bash
+# Report from job output folder (loads both files)
+python -m structural_lib report ./output/ --format=html
+
+# Explicit files (alternative)
+python -m structural_lib report --job ./output/inputs/job.json \
+                                --results ./output/design/design_results.json \
+                                --format=html
+```
+
+### Input Contract
+
+Report command loads two files from job output folder:
+
+| File | Content | Used For |
+|------|---------|----------|
+| `inputs/job.json` | Beam geometry, materials, cases | Input Sanity, Scorecard, Units Sentinel |
+| `design/design_results.json` | ComplianceReport + job metadata | Critical Set, utilization, results |
+
+**Why two files?** `ComplianceReport` doesn't include beam geometry. Rather than change the schema, report loads the original job spec from `inputs/job.json`.
+
+### Dependency Policy
+
+| Module | Dependencies | pyproject.toml Extra |
+|--------|--------------|---------------------|
+| `report.py` | stdlib only | — |
+| `report_svg.py` | stdlib (`xml.etree`) | — |
+| `viz_plot.py` | matplotlib | `viz = ["matplotlib>=3.5"]` |
+| `dxf_export.py` | ezdxf | `dxf = ["ezdxf>=1.0"]` (existing) |
+
+**Phase 1 is 100% stdlib.** No new extras until `viz_plot.py` is implemented.
+
+### Lazy Import Pattern
+
+```python
+# viz_plot.py
+MATPLOTLIB_AVAILABLE = False
+try:
+    import matplotlib.pyplot as plt
+    MATPLOTLIB_AVAILABLE = True
+except ImportError:
+    plt = None  # type: ignore
+
+def plot_utilization_chart(data):
+    if not MATPLOTLIB_AVAILABLE:
+        raise ImportError("matplotlib required: pip install structural-lib-is456[viz]")
+    # ... plotting code
+```
+
+### Implementation Order
+
+| # | Module/Task | Effort | Deps | Milestone |
+|---|-------------|--------|------|-----------|
+| 1 | `report.py` skeleton + JSON export | 2hr | stdlib | v0.11 |
+| 2 | `report` subcommand in `__main__.py` | 2hr | stdlib | v0.11 |
+| 3 | Critical Set Export (sorted table) | 3hr | stdlib | v0.11 |
+| 4 | `report_svg.py` + cross-section SVG | 4hr | stdlib | v0.11 |
+| 5 | Input Sanity Heatmap | 2hr | stdlib | v0.11 |
+| 6 | Stability Scorecard | 2hr | stdlib | v0.11 |
+| 7 | Units Sentinel | 2hr | stdlib | v0.11 |
+| 8 | HTML export + batch packaging | 3hr | stdlib | v0.11 |
+| 9 | Golden file tests | 2hr | stdlib | v0.11 |
+| — | `viz_plot.py` (matplotlib charts) | 4hr | matplotlib | v0.12+ |
+
+**Total Phase 1:** ~22 hours across 9 tasks
 
 ---
 
