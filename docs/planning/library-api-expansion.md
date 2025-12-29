@@ -3,6 +3,8 @@
 Goal: make the library easy to embed by exposing stable, composable functions
 and thin CLI wrappers. This is library-first, not product-first.
 
+**Status:** Planned (v0.12)
+
 ---
 
 ## Scope (v1.x)

@@ -5,6 +5,7 @@
 | Metric | Value |
 |--------|-------|
 | **Current Release** | v0.11.0 (on PyPI) |
+| **Next Planned Release** | v0.12.0 (library APIs + DXF/BBS quality) |
 | **Next Milestone** | v0.20.0 (blocked by S-007) |
 | **Tests** | 1917 passed, 91 skipped |
 | **Coverage** | 92% branch |

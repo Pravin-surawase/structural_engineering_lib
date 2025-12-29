@@ -3,26 +3,25 @@
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.11.0 | Published on PyPI |
-| **Next** | v0.20.0 | Blocked by S-007 |
+| **Next** | v0.12.0 | Planned (library APIs + DXF/BBS quality) |
 
-**Date:** 2025-12-29 | **PRs:** through #156
+**Date:** 2025-12-29 | **PRs:** through #186
 
 ---
 
 ## 🎯 Immediate Priority
 
-**Only 1 item blocks v0.20.0 release:**
+**v0.12 focus (library-first APIs + DXF/BBS quality):**
 
 | Task | Description | Owner |
 |------|-------------|-------|
-| S-007 | External engineer tries CLI cold | Human (not automatable) |
+| TASK-104 | Define stable API surface + doc updates | DOCS |
+| TASK-105 | Validation APIs + `validate` CLI subcommand | DEV |
+| TASK-106 | Detailing + BBS APIs + `detail` CLI subcommand | DEV |
+| TASK-107 | DXF/report/critical API wrappers | DEV |
+| TASK-108 | API/CLI tests + stability labels | TESTER |
 
-**After S-007 passes:**
-```bash
-python scripts/release.py 0.20.0
-```
-
-**Stabilization status:** 26/31 complete — see `docs/planning/v0.20-stabilization-checklist.md`
+**Plan doc:** `docs/planning/v0.12-plan.md`
 
 ---
 
@@ -40,7 +39,7 @@ python scripts/release.py 0.20.0
 **Quick project summary:**
 - IS 456 RC beam design library (Indian Standard)
 - Python + VBA with matching outputs (parity requirement)
-- CLI: `python -m structural_lib design|bbs|dxf|job|critical|report`
+- CLI: `python -m structural_lib design|bbs|dxf|job|critical|report|mark-diff`
 - PyPI: `pip install structural-lib-is456`
 
 ---
@@ -70,26 +69,18 @@ python scripts/release.py 0.20.0
 
 | PR | Description |
 |----|-------------|
-| #151 | V04 SVG + V05 input sanity heatmap |
-| #153 | V06 stability scorecard |
-| #154 | V07 units sentinel |
-| #155 | V08 report batch packaging + CLI support |
-| #156 | V09 golden report fixtures/tests |
+| #185 | BBS/DXF consistency check + DXF tests + title block polish |
+| #186 | Colab notebook updated for BBS/DXF workflows |
 
-**Outcome:** Visual v0.11 (V03–V09) complete and integrated. ✅
+**Outcome:** DXF/BBS quality gates complete + Colab workflow refreshed.
 
 ---
 
 ## 🎯 What's Next (Priority Order)
 
-### Blocking v0.20.0
+### Long-term milestone (v0.20.0)
 1. **S-007** — External engineer CLI test (requires human)
-
-### After v0.20.0 (Nice to Have)
-2. **S-050** — VBA parity automation
-3. **S-051** — Performance benchmarks (track regression)
-4. **S-052** — Fuzz testing
-5. **S-053** — Security audit
+2. See `docs/planning/v0.20-stabilization-checklist.md`
 
 ### Backlog (v1.0+)
 See `docs/TASKS.md` for full backlog including:

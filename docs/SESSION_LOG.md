@@ -6,6 +6,29 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-29 — Session
 
+**Focus:** DXF/BBS consistency + deliverable polish + Colab workflow update
+
+**Completed:**
+- Added BBS/DXF bar mark consistency check (CLI + API helpers).
+- Added DXF content tests (layers + required callouts).
+- Polished DXF title blocks with size/cover/span context.
+- Documented DXF render workflow (PNG/PDF) and optional dependency.
+- Extended Colab notebook with BBS/DXF + mark-diff workflow.
+- Created v0.12 planning doc and updated planning index.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #185 | BBS/DXF consistency checks, DXF tests, title block polish, render docs |
+| #186 | Colab notebook updates for BBS/DXF workflows |
+
+### Notes
+- v0.12 planning now tracked in `docs/planning/v0.12-plan.md`.
+
+---
+
+## 2025-12-29 — Session
+
 **Focus:** Release polish + visual report v0.11.0, handoff automation, S-007 capture
 
 **Completed:**

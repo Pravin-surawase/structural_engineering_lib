@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - Unreleased
+
+### Added
+- BBS/DXF bar mark consistency check (CLI + API helpers).
+- DXF content tests for required layers and callout text.
+- DXF render workflow (PNG/PDF) with optional `render` dependency.
+
+### Changed
+- DXF title block now includes size/cover/span context for deliverables.
+- Colab notebook updated with BBS/DXF + mark-diff workflow.
+
 ## [0.11.0] - 2025-12-29
 
 ### Added
