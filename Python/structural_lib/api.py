@@ -7,6 +7,7 @@ from importlib.metadata import PackageNotFoundError, version
 
 from typing import Any, Dict, Optional, Sequence
 
+from . import beam_pipeline
 from . import compliance
 from . import detailing
 from . import ductile
@@ -25,26 +26,8 @@ __all__ = [
 ]
 
 
-_IS456_UNITS_ALIASES = {
-    "IS456",
-    "IS 456",
-    "is456",
-    "mm-kN-kNm-Nmm2",
-    "mm,kN,kN-m,N/mm2",
-}
-
-
 def _require_is456_units(units: str) -> None:
-    if not isinstance(units, str) or units.strip() == "":
-        raise ValueError(
-            "units must be a non-empty string (e.g., 'IS456' or 'mm-kN-kNm-Nmm2')."
-        )
-
-    if units.strip() not in _IS456_UNITS_ALIASES:
-        raise ValueError(
-            "Invalid units for IS456 entrypoint. Expected one of: "
-            + ", ".join(sorted(_IS456_UNITS_ALIASES))
-        )
+    beam_pipeline.validate_units(units)
 
 
 def get_library_version() -> str:
