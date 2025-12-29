@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.7] - 2025-12-29
+
+### Added
+- **Visual v0.11 — Critical Set Export (V03):**
+  - New `critical` CLI subcommand outputs sorted utilization tables (CSV/HTML)
+  - `--top` flag to slice top-N critical beams
+  - `data-source` traces on each field for auditability
+- **Report foundations:** `report.py` skeleton and `load_job_spec()` helper for report pipelines
+- **CLI discoverability:** `report` CLI subcommand scaffolded for future report generation
+
+### Changed
+- Documentation refreshed for v0.10.7 (TASKS, AI context, next-session brief)
+
+### Fixed
+- Version references synced to v0.10.7 across Python, VBA, and docs
+
 ## [0.10.6] - 2025-12-28
 
 ### Added

@@ -43,6 +43,20 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.10.7
+**Date:** 2025-12-29
+**Status:** ✅ Locked & Verified
+**Mindset:** Visual Layer Phase 1 (Critical Set)
+**Key Changes:**
+- **Critical Set CLI (V03):** New `critical` subcommand exports sorted utilization tables (CSV/HTML) with `--top` filter and `data-source` traces for auditability.
+- **Report foundations:** `report.py` skeleton + `load_job_spec()` helper underpin report pipelines.
+- **CLI discoverability:** `report` subcommand scaffold added ahead of SVG/report deliverables.
+- **Docs:** AI context, TASKS, next-session brief refreshed for v0.10.7.
+
+**PRs:** #147
+
+---
+
 ## v0.10.6
 **Date:** 2025-12-28
 **Status:** ✅ Locked & Verified
