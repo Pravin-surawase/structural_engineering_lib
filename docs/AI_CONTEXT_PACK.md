@@ -139,6 +139,7 @@ Keep wording precise; no claims about untested tooling.
 | Releases | `docs/RELEASES.md` |
 | ADRs | `docs/adr/README.md` |
 | Archive | `docs/_archive/` |
+| Handoff | `docs/HANDOFF.md` |
 
 ---
 

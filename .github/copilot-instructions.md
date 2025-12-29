@@ -215,6 +215,7 @@ When working on specific task types, apply these focuses:
 1. Update `docs/planning/next-session-brief.md` with session summary
 2. Ensure TASKS.md reflects current state
 3. Commit any uncommitted doc changes
+4. Use `docs/HANDOFF.md` as the short resume template
 
 ---
 

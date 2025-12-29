@@ -43,8 +43,10 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 ## 📍 Quick Reference
 
 - **Copilot rules:** [../.github/copilot-instructions.md](../.github/copilot-instructions.md)
+- **Handoff quick start:** [HANDOFF.md](HANDOFF.md)
 - **API docs:** [reference/api.md](reference/api.md)
 - **Known pitfalls:** [reference/known-pitfalls.md](reference/known-pitfalls.md)
+- **Recent issues:** [contributing/session-issues.md](contributing/session-issues.md)
 - **Agent roles:** [../agents/README.md](../agents/README.md)
 - **Project status:** [planning/project-status.md](planning/project-status.md) (quick) or [planning/project-status-deep-dive.md](planning/project-status-deep-dive.md) (detailed)
 

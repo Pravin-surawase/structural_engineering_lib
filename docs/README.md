@@ -17,6 +17,7 @@ python -m structural_lib report ./output --format=html -o report.html
 For VS Code AI-agent work, start with:
 - [AI_CONTEXT_PACK.md](AI_CONTEXT_PACK.md)
 - [AI summary](../llms.txt)
+- [Handoff Quick Start](HANDOFF.md)
 
 ---
 
