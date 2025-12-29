@@ -114,6 +114,22 @@ public API overview section. This makes the stable surface harder to discover.
 
 ---
 
+### API-13 — Shear function names in stability doc do not match code
+`api-stability.md` lists `shear.check_shear` and `shear.get_stirrup_spacing`,
+but the module exposes `design_shear()` only.
+
+**Fix:** update stability doc to reference the correct function names.
+
+---
+
+### API-14 — `excel_integration` exported but not classified
+`structural_lib.__all__` exports `excel_integration`, but stability docs do not
+classify it as stable/experimental/internal.
+
+**Fix:** classify it explicitly or stop re-exporting it.
+
+---
+
 ## Recommended Actions (Tasks)
 
 - Centralize unit validation on `beam_pipeline.validate_units`.
@@ -127,3 +143,5 @@ public API overview section. This makes the stable surface harder to discover.
 - Classify `report`/`report_svg` stability or stop re-exporting them.
 - Document `get_library_version()` in `docs/reference/api.md`.
 - Add public API helpers overview to `docs/reference/api.md`.
+- Fix shear function names in `api-stability.md`.
+- Classify `excel_integration` stability or stop re-exporting it.
