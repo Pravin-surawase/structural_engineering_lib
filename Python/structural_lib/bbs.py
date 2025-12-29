@@ -49,6 +49,7 @@ BAR_SHAPES = {
 # Rounding rules (per SP 34 / site practice)
 LENGTH_ROUND_MM = 10  # Round cut lengths to nearest 10mm
 WEIGHT_ROUND_KG = 0.01  # Round weights to 2 decimal places
+WEIGHT_ROUND_DECIMALS = 2
 
 
 # =============================================================================
@@ -116,7 +117,11 @@ class BBSDocument:
 # =============================================================================
 
 
-def calculate_bar_weight(diameter_mm: float, length_mm: float) -> float:
+def calculate_bar_weight(
+    diameter_mm: float,
+    length_mm: float,
+    round_weight: bool = True,
+) -> float:
     """
     Calculate weight of a single bar.
 
@@ -127,7 +132,7 @@ def calculate_bar_weight(diameter_mm: float, length_mm: float) -> float:
         length_mm: Bar length (mm)
 
     Returns:
-        Weight in kg (rounded to WEIGHT_ROUND_KG)
+        Weight in kg. Rounded to WEIGHT_ROUND_KG by default.
     """
     # Convert to meters
     d_m = diameter_mm / 1000
@@ -139,7 +144,7 @@ def calculate_bar_weight(diameter_mm: float, length_mm: float) -> float:
     # Weight (kg)
     weight = area_m2 * l_m * STEEL_DENSITY_KG_M3
 
-    return round(weight, 2)
+    return round(weight, WEIGHT_ROUND_DECIMALS) if round_weight else weight
 
 
 def calculate_unit_weight_per_meter(diameter_mm: float) -> float:
@@ -198,7 +203,7 @@ def calculate_hook_length(
     elif hook_angle == 90:
         return 8 * diameter_mm  # Standard 90° hook
     elif hook_angle == 135:
-        return 6 * diameter_mm  # For stirrup hooks
+        return max(10 * diameter_mm, 75)  # Stirrups: 10d (min 75mm)
     else:
         return 4 * diameter_mm  # Minimum
 
@@ -290,16 +295,16 @@ def calculate_stirrup_cut_length(
     Returns:
         Cut length (mm)
     """
-    # Internal dimensions
-    inner_width = b_mm - 2 * cover_mm
-    inner_height = D_mm - 2 * cover_mm
+    # Internal dimensions (centerline): cover to stirrup outside + 0.5d
+    inner_width = b_mm - 2 * (cover_mm + 0.5 * stirrup_dia_mm)
+    inner_height = D_mm - 2 * (cover_mm + 0.5 * stirrup_dia_mm)
 
     # Perimeter
     perimeter = 2 * (inner_width + inner_height)
 
-    # Add hook lengths (typically 10d each, two hooks)
+    # Add hook lengths (135° hooks for stirrups)
     if hook_length_mm == 0:
-        hook_length_mm = 10 * stirrup_dia_mm
+        hook_length_mm = calculate_hook_length(stirrup_dia_mm, 135)
 
     cut_length = perimeter + 2 * hook_length_mm
 
@@ -404,7 +409,11 @@ def generate_bbs_from_detailing(
             )
 
             unit_wt = calculate_bar_weight(bar_arr.diameter, cut_length)
-            total_wt = unit_wt * bar_arr.count
+            total_wt = calculate_bar_weight(
+                bar_arr.diameter,
+                cut_length * bar_arr.count,
+                round_weight=False,
+            )
 
             items.append(
                 BBSLineItem(
@@ -418,7 +427,7 @@ def generate_bbs_from_detailing(
                     cut_length_mm=cut_length,
                     total_length_mm=cut_length * bar_arr.count,
                     unit_weight_kg=unit_wt,
-                    total_weight_kg=round(total_wt, 2),
+                    total_weight_kg=round(total_wt, WEIGHT_ROUND_DECIMALS),
                     a_mm=cut_length,
                     remarks=f"Bottom {zone} - {bar_arr.callout()}",
                 )
@@ -436,7 +445,11 @@ def generate_bbs_from_detailing(
             )
 
             unit_wt = calculate_bar_weight(bar_arr.diameter, cut_length)
-            total_wt = unit_wt * bar_arr.count
+            total_wt = calculate_bar_weight(
+                bar_arr.diameter,
+                cut_length * bar_arr.count,
+                round_weight=False,
+            )
 
             items.append(
                 BBSLineItem(
@@ -450,7 +463,7 @@ def generate_bbs_from_detailing(
                     cut_length_mm=cut_length,
                     total_length_mm=cut_length * bar_arr.count,
                     unit_weight_kg=unit_wt,
-                    total_weight_kg=round(total_wt, 2),
+                    total_weight_kg=round(total_wt, WEIGHT_ROUND_DECIMALS),
                     a_mm=cut_length,
                     remarks=f"Top {zone} - {bar_arr.callout()}",
                 )
@@ -470,7 +483,11 @@ def generate_bbs_from_detailing(
             )
 
             unit_wt = calculate_bar_weight(stirrup.diameter, cut_length)
-            total_wt = unit_wt * no_of_stirrups
+            total_wt = calculate_bar_weight(
+                stirrup.diameter,
+                cut_length * no_of_stirrups,
+                round_weight=False,
+            )
 
             items.append(
                 BBSLineItem(
@@ -484,7 +501,7 @@ def generate_bbs_from_detailing(
                     cut_length_mm=cut_length,
                     total_length_mm=cut_length * no_of_stirrups,
                     unit_weight_kg=unit_wt,
-                    total_weight_kg=round(total_wt, 2),
+                    total_weight_kg=round(total_wt, WEIGHT_ROUND_DECIMALS),
                     a_mm=detailing.b - 2 * detailing.cover,  # inner width
                     b_mm=detailing.D - 2 * detailing.cover,  # inner height
                     remarks=f"Stirrup {zone} - {stirrup.callout()}",
@@ -510,25 +527,30 @@ def calculate_bbs_summary(
     """
     total_bars = sum(item.no_of_bars for item in items)
     total_length_mm = sum(item.total_length_mm for item in items)
-    total_weight_kg = sum(item.total_weight_kg for item in items)
-
     weight_by_dia: Dict[float, float] = {}
     length_by_dia: Dict[float, float] = {}
     count_by_dia: Dict[float, int] = {}
 
     for item in items:
         dia = item.diameter_mm
-        weight_by_dia[dia] = weight_by_dia.get(dia, 0) + item.total_weight_kg
         length_by_dia[dia] = length_by_dia.get(dia, 0) + item.total_length_mm
         count_by_dia[dia] = count_by_dia.get(dia, 0) + item.no_of_bars
+
+    total_weight_kg = 0.0
+    for dia, total_len in length_by_dia.items():
+        weight = calculate_bar_weight(dia, total_len, round_weight=False)
+        weight_by_dia[dia] = weight
+        total_weight_kg += weight
 
     return BBSummary(
         member_id=member_id,
         total_items=len(items),
         total_bars=total_bars,
         total_length_m=round(total_length_mm / 1000, 2),
-        total_weight_kg=round(total_weight_kg, 2),
-        weight_by_diameter={k: round(v, 2) for k, v in sorted(weight_by_dia.items())},
+        total_weight_kg=round(total_weight_kg, WEIGHT_ROUND_DECIMALS),
+        weight_by_diameter={
+            k: round(v, WEIGHT_ROUND_DECIMALS) for k, v in sorted(weight_by_dia.items())
+        },
         length_by_diameter={
             k: round(v / 1000, 2) for k, v in sorted(length_by_dia.items())
         },

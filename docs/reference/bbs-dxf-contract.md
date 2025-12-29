@@ -48,10 +48,10 @@ cut_length_mm,total_length_mm,unit_weight_kg,total_weight_kg,remarks
 - Weights: kg
 
 **Rounding rules (v1.x target):**
-- `cut_length_mm`: round to nearest 1 mm.
+- `cut_length_mm`: round to nearest 10 mm.
 - `total_length_mm`: `no_of_bars * cut_length_mm` (mm).
 - `unit_weight_kg`: round to 0.01 kg.
-- `total_weight_kg`: `no_of_bars * unit_weight_kg`, round to 0.01 kg.
+- `total_weight_kg`: computed from total length, round to 0.01 kg.
 - Summary totals: round to 0.01 kg after summing.
 
 ## 3) DXF Contract
