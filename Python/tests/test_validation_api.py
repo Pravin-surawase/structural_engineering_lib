@@ -49,6 +49,12 @@ def test_validate_job_spec_missing_schema(tmp_path):
     assert any("schema_version" in err for err in report.errors)
 
 
+def test_validate_job_spec_missing_file(tmp_path):
+    report = api.validate_job_spec(tmp_path / "missing.json")
+    assert not report.ok
+    assert report.errors
+
+
 def test_validate_design_results_ok(tmp_path):
     results = {
         "schema_version": beam_pipeline.SCHEMA_VERSION,
@@ -92,6 +98,28 @@ def test_validate_design_results_missing_loads(tmp_path):
     report = api.validate_design_results(path)
     assert not report.ok
     assert any("missing load fields" in err for err in report.errors)
+
+
+def test_validate_design_results_missing_units(tmp_path):
+    results = {
+        "schema_version": beam_pipeline.SCHEMA_VERSION,
+        "code": "IS456",
+        "beams": [
+            {
+                "beam_id": "B1",
+                "story": "S1",
+                "geometry": {"b_mm": 230, "D_mm": 500, "d_mm": 450},
+                "materials": {"fck_nmm2": 25, "fy_nmm2": 500},
+                "loads": {"mu_knm": 120, "vu_kn": 80},
+            }
+        ],
+    }
+    path = tmp_path / "results.json"
+    _write_json(path, results)
+
+    report = api.validate_design_results(path)
+    assert report.ok
+    assert report.warnings
 
 
 def test_validate_design_results_invalid_schema_version(tmp_path):
