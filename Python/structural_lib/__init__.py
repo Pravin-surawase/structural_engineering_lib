@@ -34,6 +34,7 @@ from . import detailing
 from . import serviceability
 from . import compliance
 from . import bbs
+from . import report
 
 # DXF export is optional (requires ezdxf)
 dxf_export: Optional[ModuleType]
@@ -57,6 +58,7 @@ __all__ = [
     "excel_integration",
     "flexure",
     "materials",
+    "report",
     "serviceability",
     "shear",
     "tables",

@@ -35,6 +35,87 @@ def load_job_json(path: str | Path) -> Dict[str, Any]:
     return data
 
 
+def load_job_spec(path: str | Path) -> Dict[str, Any]:
+    """Load and validate a job spec file, returning the beam geometry and metadata.
+
+    This is used by both job_runner and report modules to load job.json.
+
+    Args:
+        path: Path to job.json file
+
+    Returns:
+        Dict with validated job spec containing:
+        - job_id: str
+        - schema_version: int
+        - code: str
+        - units: str (validated)
+        - beam: dict with geometry (b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, etc.)
+        - cases: list of load cases
+
+    Raises:
+        FileNotFoundError: If job.json doesn't exist
+        ValueError: If job.json is malformed or missing required fields
+    """
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"Job file not found: {path}")
+
+    job = load_job_json(p)
+
+    # Validate schema_version
+    schema_version = job.get("schema_version")
+    if schema_version is None:
+        raise ValueError(
+            "Missing required field 'schema_version' in job file. Expected: 1."
+        )
+    try:
+        schema_version_int = int(schema_version)
+    except (ValueError, TypeError):
+        raise ValueError(
+            f"Invalid schema_version: '{schema_version}'. Expected integer (currently supported: 1)."
+        )
+    if schema_version_int != 1:
+        raise ValueError(
+            f"Unsupported schema_version: {schema_version_int}. Currently supported: 1."
+        )
+
+    # Validate code
+    code = str(job.get("code", "") or "")
+    if not code:
+        raise ValueError("Missing required field 'code' in job file.")
+
+    # Validate job_id
+    job_id = str(job.get("job_id", "") or "")
+    if job_id.strip() == "":
+        raise ValueError("job_id is required")
+
+    # Validate beam
+    beam = job.get("beam")
+    if not isinstance(beam, dict):
+        raise ValueError("beam must be an object")
+
+    # Validate cases
+    cases = job.get("cases")
+    if not isinstance(cases, list):
+        raise ValueError("cases must be an array")
+
+    # Validate units
+    units_input = str(job.get("units", "") or "")
+    try:
+        units = beam_pipeline.validate_units(units_input)
+    except beam_pipeline.UnitsValidationError as e:
+        raise ValueError(f"units validation failed: {e}") from e
+
+    return {
+        "job_id": job_id,
+        "schema_version": schema_version_int,
+        "code": code,
+        "units": units,
+        "beam": beam,
+        "cases": cases,
+    }
+
+
 def _ensure_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
