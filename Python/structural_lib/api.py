@@ -4,6 +4,7 @@ Description:  Public facing API functions
 """
 
 from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
 
 from typing import Any, Dict, Optional, Sequence
 
@@ -40,7 +41,13 @@ def get_library_version() -> str:
     try:
         return version("structural-lib-is456")
     except PackageNotFoundError:
-        return "0.11.0"
+        pyproject = Path(__file__).resolve().parents[1] / "pyproject.toml"
+        if pyproject.exists():
+            content = pyproject.read_text(encoding="utf-8")
+            for line in content.splitlines():
+                if line.strip().startswith("version"):
+                    return line.split("=", 1)[1].strip().strip('"')
+        return "0.0.0-dev"
 
 
 def check_beam_ductility(
