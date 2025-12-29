@@ -46,6 +46,7 @@ python -m structural_lib job job.json -o output/
 python -m structural_lib critical output/ --top 10 --format=csv -o critical.csv
 python -m structural_lib report output/ --format=html -o report.html
 ```
+The HTML report includes a cross-section SVG and input sanity heatmap.
 
 Run `python -m structural_lib --help` for more options.
 

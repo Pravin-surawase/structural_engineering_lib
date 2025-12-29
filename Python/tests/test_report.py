@@ -14,10 +14,12 @@ from structural_lib.report import (
     load_report_data,
     export_json,
     export_html,
+    get_input_sanity,
     get_critical_set,
     export_critical_csv,
     export_critical_html,
 )
+from structural_lib import report_svg
 
 
 # Sample test data matching job output structure
@@ -209,6 +211,8 @@ class TestExportHtml:
         assert "TEST-001" in html
         assert "IS456" in html
         assert "✓ PASS" in html  # is_ok = True
+        assert "Input Sanity Heatmap" in html
+        assert "<svg" in html
 
     def test_export_html_fail_status(self, sample_output_dir: Path) -> None:
         """Test HTML export with failed status."""
@@ -217,6 +221,55 @@ class TestExportHtml:
         html = export_html(data)
 
         assert "✗ FAIL" in html
+
+
+class TestInputSanity:
+    """Tests for input sanity heatmap checks."""
+
+    def test_input_sanity_ok(self, sample_output_dir: Path) -> None:
+        data = load_report_data(sample_output_dir)
+        items = get_input_sanity(data)
+        status_map = {item.field: item.status for item in items}
+
+        assert status_map["b_mm"] == "OK"
+        assert status_map["D_mm"] == "OK"
+        assert status_map["d_mm"] == "OK"
+        assert status_map["b_over_D"] == "OK"
+        assert status_map["fck_nmm2"] == "OK"
+        assert status_map["fy_nmm2"] == "OK"
+        assert status_map["d_dash_mm"] == "OK"
+        assert status_map["asv_mm2"] == "OK"
+
+    def test_input_sanity_warns_on_bad_values(self, sample_output_dir: Path) -> None:
+        data = load_report_data(sample_output_dir)
+        data.beam["b_mm"] = -100
+        data.beam["fck_nmm2"] = 5
+        items = get_input_sanity(data)
+
+        status_map = {item.field: item.status for item in items}
+        assert status_map["b_mm"] == "WARN"
+        assert status_map["fck_nmm2"] == "WARN"
+
+
+class TestReportSvg:
+    """Tests for SVG rendering helpers."""
+
+    def test_render_section_svg_basic(self) -> None:
+        svg = report_svg.render_section_svg(
+            b_mm=300,
+            D_mm=600,
+            d_mm=550,
+            d_dash_mm=50,
+        )
+
+        assert svg.startswith("<svg")
+        assert "viewBox" in svg
+        assert "b = 300 mm" in svg
+        assert "D = 600 mm" in svg
+
+    def test_render_section_svg_missing_values(self) -> None:
+        svg = report_svg.render_section_svg_from_beam({"b_mm": None})
+        assert "Missing b_mm or D_mm" in svg
 
 
 class TestLoadJobSpec:

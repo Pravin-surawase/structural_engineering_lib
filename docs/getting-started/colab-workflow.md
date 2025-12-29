@@ -247,6 +247,19 @@ with open("job.json", "w") as f:
 
 ---
 
+## Step 6c: View the report in Colab (optional)
+Preview the HTML report inline and inspect the critical set CSV:
+The report includes the cross-section SVG and input sanity heatmap.
+```python
+from IPython.display import HTML, display
+import pandas as pd
+
+display(HTML(open("report.html", "r", encoding="utf-8").read()))
+pd.read_csv("critical.csv").head(10)
+```
+
+---
+
 ## Step 7: Download outputs (optional)
 ```python
 import shutil

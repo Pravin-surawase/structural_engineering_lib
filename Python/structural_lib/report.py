@@ -28,11 +28,14 @@ Usage:
 from __future__ import annotations
 
 import csv
+import html
 import io
 import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+from . import report_svg
 
 
 @dataclass
@@ -74,6 +77,17 @@ class CriticalCase:
     shear_util: float
     is_ok: bool
     json_path: str = ""
+
+
+@dataclass
+class SanityCheck:
+    """A single input sanity check result."""
+
+    field: str
+    value: Optional[float]
+    status: str
+    message: str
+    json_path: str
 
 
 def load_report_data(
@@ -161,6 +175,287 @@ def load_report_data(
     )
 
 
+def _safe_float(value: Any) -> Optional[float]:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _make_sanity_check(
+    *,
+    field: str,
+    value: Optional[float],
+    status: str,
+    message: str,
+    json_path: str,
+) -> SanityCheck:
+    return SanityCheck(
+        field=field,
+        value=value,
+        status=status,
+        message=message,
+        json_path=json_path,
+    )
+
+
+def get_input_sanity(data: ReportData) -> List[SanityCheck]:
+    """Evaluate input sanity checks for geometry/material inputs."""
+    beam = data.beam or {}
+
+    b_mm = _safe_float(beam.get("b_mm"))
+    D_mm = _safe_float(beam.get("D_mm"))
+    d_mm = _safe_float(beam.get("d_mm"))
+    d_dash_mm = _safe_float(beam.get("d_dash_mm"))
+    fck_nmm2 = _safe_float(beam.get("fck_nmm2"))
+    fy_nmm2 = _safe_float(beam.get("fy_nmm2"))
+    asv_mm2 = _safe_float(beam.get("asv_mm2"))
+
+    checks: List[SanityCheck] = []
+
+    def check_positive(field: str, value: Optional[float], json_path: str) -> None:
+        if value is None:
+            checks.append(
+                _make_sanity_check(
+                    field=field,
+                    value=None,
+                    status="WARN",
+                    message="missing value",
+                    json_path=json_path,
+                )
+            )
+            return
+        if value <= 0:
+            checks.append(
+                _make_sanity_check(
+                    field=field,
+                    value=value,
+                    status="WARN",
+                    message="must be > 0",
+                    json_path=json_path,
+                )
+            )
+        else:
+            checks.append(
+                _make_sanity_check(
+                    field=field,
+                    value=value,
+                    status="OK",
+                    message="within expected range",
+                    json_path=json_path,
+                )
+            )
+
+    check_positive("b_mm", b_mm, "beam.b_mm")
+    check_positive("D_mm", D_mm, "beam.D_mm")
+    check_positive("d_mm", d_mm, "beam.d_mm")
+
+    # d_mm should be <= D_mm
+    if d_mm is None or D_mm is None:
+        checks.append(
+            _make_sanity_check(
+                field="d_mm",
+                value=d_mm,
+                status="WARN",
+                message="cannot compare d_mm to D_mm (missing value)",
+                json_path="beam.d_mm",
+            )
+        )
+    elif d_mm > D_mm:
+        checks.append(
+            _make_sanity_check(
+                field="d_mm",
+                value=d_mm,
+                status="WARN",
+                message="d_mm should be <= D_mm",
+                json_path="beam.d_mm",
+            )
+        )
+    else:
+        checks.append(
+            _make_sanity_check(
+                field="d_mm",
+                value=d_mm,
+                status="OK",
+                message="d_mm <= D_mm",
+                json_path="beam.d_mm",
+            )
+        )
+
+    # b/D ratio sanity (b_over_D)
+    if b_mm is None or D_mm is None or D_mm == 0:
+        checks.append(
+            _make_sanity_check(
+                field="b_over_D",
+                value=None,
+                status="WARN",
+                message="cannot compute b/D ratio",
+                json_path="beam.b_mm / beam.D_mm",
+            )
+        )
+    else:
+        ratio = b_mm / D_mm
+        if ratio < 0.2 or ratio > 1.0:
+            checks.append(
+                _make_sanity_check(
+                    field="b_over_D",
+                    value=ratio,
+                    status="WARN",
+                    message="b/D ratio outside expected range (0.20 to 1.00)",
+                    json_path="beam.b_mm / beam.D_mm",
+                )
+            )
+        else:
+            checks.append(
+                _make_sanity_check(
+                    field="b_over_D",
+                    value=ratio,
+                    status="OK",
+                    message="b/D ratio within expected range",
+                    json_path="beam.b_mm / beam.D_mm",
+                )
+            )
+
+    # Material strengths
+    if fck_nmm2 is None:
+        checks.append(
+            _make_sanity_check(
+                field="fck_nmm2",
+                value=None,
+                status="WARN",
+                message="missing value",
+                json_path="beam.fck_nmm2",
+            )
+        )
+    elif fck_nmm2 < 15 or fck_nmm2 > 60:
+        checks.append(
+            _make_sanity_check(
+                field="fck_nmm2",
+                value=fck_nmm2,
+                status="WARN",
+                message="outside expected range (15 to 60)",
+                json_path="beam.fck_nmm2",
+            )
+        )
+    else:
+        checks.append(
+            _make_sanity_check(
+                field="fck_nmm2",
+                value=fck_nmm2,
+                status="OK",
+                message="within expected range",
+                json_path="beam.fck_nmm2",
+            )
+        )
+
+    if fy_nmm2 is None:
+        checks.append(
+            _make_sanity_check(
+                field="fy_nmm2",
+                value=None,
+                status="WARN",
+                message="missing value",
+                json_path="beam.fy_nmm2",
+            )
+        )
+    elif fy_nmm2 < 250 or fy_nmm2 > 600:
+        checks.append(
+            _make_sanity_check(
+                field="fy_nmm2",
+                value=fy_nmm2,
+                status="WARN",
+                message="outside expected range (250 to 600)",
+                json_path="beam.fy_nmm2",
+            )
+        )
+    else:
+        checks.append(
+            _make_sanity_check(
+                field="fy_nmm2",
+                value=fy_nmm2,
+                status="OK",
+                message="within expected range",
+                json_path="beam.fy_nmm2",
+            )
+        )
+
+    # d_dash_mm should be > 0 and < d_mm (if provided)
+    if d_dash_mm is None:
+        checks.append(
+            _make_sanity_check(
+                field="d_dash_mm",
+                value=None,
+                status="WARN",
+                message="missing value",
+                json_path="beam.d_dash_mm",
+            )
+        )
+    elif d_dash_mm <= 0:
+        checks.append(
+            _make_sanity_check(
+                field="d_dash_mm",
+                value=d_dash_mm,
+                status="WARN",
+                message="must be > 0",
+                json_path="beam.d_dash_mm",
+            )
+        )
+    elif d_mm is not None and d_dash_mm >= d_mm:
+        checks.append(
+            _make_sanity_check(
+                field="d_dash_mm",
+                value=d_dash_mm,
+                status="WARN",
+                message="d_dash_mm should be < d_mm",
+                json_path="beam.d_dash_mm",
+            )
+        )
+    else:
+        checks.append(
+            _make_sanity_check(
+                field="d_dash_mm",
+                value=d_dash_mm,
+                status="OK",
+                message="within expected range",
+                json_path="beam.d_dash_mm",
+            )
+        )
+
+    # asv_mm2 (shear reinforcement area)
+    if asv_mm2 is None:
+        checks.append(
+            _make_sanity_check(
+                field="asv_mm2",
+                value=None,
+                status="WARN",
+                message="missing value",
+                json_path="beam.asv_mm2",
+            )
+        )
+    elif asv_mm2 <= 0:
+        checks.append(
+            _make_sanity_check(
+                field="asv_mm2",
+                value=asv_mm2,
+                status="WARN",
+                message="must be > 0",
+                json_path="beam.asv_mm2",
+            )
+        )
+    else:
+        checks.append(
+            _make_sanity_check(
+                field="asv_mm2",
+                value=asv_mm2,
+                status="OK",
+                message="within expected range",
+                json_path="beam.asv_mm2",
+            )
+        )
+
+    return checks
+
+
 def export_json(data: ReportData, *, indent: int = 2) -> str:
     """Export report data as JSON string.
 
@@ -171,6 +466,16 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
     Returns:
         JSON string with sorted keys for determinism
     """
+    input_sanity = [
+        {
+            "field": item.field,
+            "value": item.value,
+            "status": item.status,
+            "message": item.message,
+            "json_path": item.json_path,
+        }
+        for item in get_input_sanity(data)
+    ]
     output = {
         "job_id": data.job_id,
         "code": data.code,
@@ -181,35 +486,98 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
         "beam": data.beam,
         "cases": data.results.get("cases", []),
         "summary": data.results.get("summary", {}),
+        "input_sanity": input_sanity,
     }
     return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
 
 
+def _format_sanity_value(item: SanityCheck) -> str:
+    if item.value is None:
+        return "NA"
+    if item.field == "b_over_D":
+        return f"{item.value:.3f}"
+    if item.field in ("fck_nmm2", "fy_nmm2"):
+        return f"{item.value:.0f}"
+    if item.field.endswith("_mm") or item.field.endswith("_mm2"):
+        return f"{item.value:.1f}"
+    return f"{item.value:.2f}"
+
+
+def _render_sanity_table(items: List[SanityCheck]) -> str:
+    rows = []
+    for item in items:
+        status_class = "ok" if item.status == "OK" else "warn"
+        value = _format_sanity_value(item)
+        message = html.escape(item.message)
+        field = html.escape(item.field)
+        json_path = html.escape(item.json_path)
+        rows.append(
+            f"""        <tr class="sanity-{status_class}" data-source="{json_path}">
+            <td>{field}</td>
+            <td>{value}</td>
+            <td>{item.status}</td>
+            <td>{message}</td>
+        </tr>"""
+        )
+
+    rows_joined = "\n".join(rows)
+    return f"""<table class="sanity-table">
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+{rows_joined}
+        </tbody>
+    </table>"""
+
+
 def export_html(data: ReportData) -> str:
-    """Export report data as HTML string.
-
-    Placeholder implementation for V08.
-
-    Args:
-        data: ReportData to export
-
-    Returns:
-        HTML string
-    """
-    # Minimal placeholder - V08 will implement full HTML
+    """Export report data as HTML string (Phase 1 visuals)."""
     status = "✓ PASS" if data.is_ok else "✗ FAIL"
+    job_id = html.escape(data.job_id)
+    code = html.escape(data.code)
+    svg = report_svg.render_section_svg_from_beam(data.beam)
+    sanity_items = get_input_sanity(data)
+    sanity_table = _render_sanity_table(sanity_items)
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Beam Design Report - {data.job_id}</title>
+    <title>Beam Design Report - {job_id}</title>
+    <style>
+        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; }}
+        h1, h2 {{ color: #333; }}
+        .summary {{ margin-bottom: 20px; }}
+        .section {{ margin: 20px 0; }}
+        .sanity-table {{ border-collapse: collapse; width: 100%; max-width: 900px; }}
+        .sanity-table th, .sanity-table td {{ border: 1px solid #ddd; padding: 8px 12px; text-align: left; }}
+        .sanity-table th {{ background: #f5f5f5; font-weight: 600; }}
+        .sanity-ok {{ background: #f7fff7; }}
+        .sanity-warn {{ background: #fff8e1; }}
+        .svg-wrap {{ border: 1px solid #eee; padding: 10px; display: inline-block; }}
+    </style>
 </head>
 <body>
     <h1>Beam Design Report</h1>
-    <p><strong>Job ID:</strong> {data.job_id}</p>
-    <p><strong>Code:</strong> {data.code}</p>
-    <p><strong>Status:</strong> {status}</p>
-    <p><strong>Governing Utilization:</strong> {data.governing_utilization:.2%}</p>
+    <div class="summary">
+        <p><strong>Job ID:</strong> {job_id}</p>
+        <p><strong>Code:</strong> {code}</p>
+        <p><strong>Status:</strong> {status}</p>
+        <p><strong>Governing Utilization:</strong> {data.governing_utilization:.2%}</p>
+    </div>
+    <div class="section">
+        <h2>Cross-Section SVG</h2>
+        <div class="svg-wrap">{svg}</div>
+    </div>
+    <div class="section">
+        <h2>Input Sanity Heatmap</h2>
+        {sanity_table}
+    </div>
     <p><em>Full report implementation in V08.</em></p>
 </body>
 </html>

@@ -35,6 +35,7 @@ from . import serviceability
 from . import compliance
 from . import bbs
 from . import report
+from . import report_svg
 
 # DXF export is optional (requires ezdxf)
 dxf_export: Optional[ModuleType]
@@ -59,6 +60,7 @@ __all__ = [
     "flexure",
     "materials",
     "report",
+    "report_svg",
     "serviceability",
     "shear",
     "tables",

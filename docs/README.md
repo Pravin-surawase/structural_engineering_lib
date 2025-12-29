@@ -43,6 +43,7 @@ python -m structural_lib report ./output --format=html -o report.html
 ```
 
 Input for both commands is the job output folder created by `python -m structural_lib job`.
+The HTML report includes a cross-section SVG and input sanity heatmap.
 
 ---
 
