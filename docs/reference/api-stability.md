@@ -79,8 +79,43 @@ detailing.create_beam_detailing(...)
 ```python
 from structural_lib import bbs, dxf_export
 
-bbs.generate_bar_bending_schedule(detailing_results)
-dxf_export.export_beam_elevation(...)
+# BBS
+doc = bbs.generate_bbs_document(detailing_list, project_name="Beam BBS")
+bbs.export_bbs_to_csv(doc.items, "schedule.csv")
+bbs.export_bbs_to_json(doc, "schedule.json")
+
+# DXF
+dxf_export.generate_beam_dxf(detailing, "beam_detail.dxf")
+dxf_export.generate_multi_beam_dxf(detailing_list, "all_beams.dxf")
+```
+
+---
+
+## Planned API (Not Yet Implemented)
+
+These are planned library-first helpers (see `docs/planning/library-api-expansion.md`).
+They are **not available yet**, but this section defines stability targets.
+
+### Target Stable (v0.12+)
+
+```python
+from structural_lib import api
+
+api.validate_job_spec(path)
+api.validate_design_results(path)
+api.compute_detailing(design_results, config=None)
+api.compute_bbs(detailing_list, project_name="Beam BBS")
+api.export_bbs(bbs_doc, path, fmt="csv")
+api.compute_dxf(detailing_list, output, multi=False)
+```
+
+### Target Experimental (v0.12+)
+
+```python
+from structural_lib import api
+
+api.compute_report(source, format="html")
+api.compute_critical(job_out, top=10, format="csv")
 ```
 
 ---
@@ -192,3 +227,4 @@ If you find a breaking change:
 ## Changelog
 
 - **2025-12-27**: Initial API stability document (v0.9.6)
+- **2025-12-29**: Added planned API targets (library-first expansion)
