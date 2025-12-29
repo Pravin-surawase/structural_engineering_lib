@@ -1578,10 +1578,26 @@ Documents exact keys needed from each input file for Phase 1 features.
 ### Next Steps
 
 1. ✅ Research complete — move to implementation planning
-2. Create GitHub issues for 8 implementation tasks (see Stage 5)
+2. ✅ GitHub issues created for 9 implementation tasks (Stage 5 complete)
 3. Target milestone: v0.11 (after W08 ships in v0.10)
 4. Phase 2 prerequisites: W08 clause metadata, stable hash rules
 
+### GitHub Issues (v0.11)
+
+| Issue | Title | Effort | Depends On |
+|-------|-------|--------|------------|
+| #134 | V01: report.py skeleton + load_job_spec helper | 2hr | — |
+| #135 | V02: report subcommand in __main__.py | 2hr | V01 |
+| #136 | V03: Critical Set Export (sorted table) | 3hr | V01, V02 |
+| #137 | V04: report_svg.py + cross-section SVG | 4hr | V01 |
+| #138 | V05: Input Sanity Heatmap | 2hr | V01 |
+| #139 | V06: Stability Scorecard | 2hr | V01 |
+| #140 | V07: Units Sentinel | 2hr | V01 |
+| #141 | V08: HTML export + batch packaging | 3hr | V03-V07 |
+| #142 | V09: Golden file tests | 2hr | V08 |
+
+**Total:** 22 hours across 9 tasks
+
 ---
 
-*Research complete. Status: Decided. Implementation planning begins.*
+*Research complete. Status: Decided. Stage 5 handoff complete.*
