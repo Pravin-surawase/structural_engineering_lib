@@ -1,7 +1,7 @@
 # VBA Testing Guide
 
-**Version:** 0.11.0
-**Last Updated:** 2025-12-29<br>
+**Version:** 0.12.0
+**Last Updated:** 2025-12-30<br>
 
 ## Quick Start
 
@@ -20,7 +20,7 @@
 ```
 ========================================
   STRUCTURAL ENGINEERING LIB - VBA TESTS
-  Version: 0.11.0
+  Version: 0.12.0
   Date: 2025-12-26 14:30:00
 ========================================
 

@@ -2,16 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.12.0] - Unreleased
+## [0.12.0] - 2025-12-30
 
 ### Added
+- Library-first API wrappers for detailing/BBS/DXF/report/critical outputs.
+- `validate` CLI + validation APIs for job/results JSON.
+- `detail` CLI to emit detailing JSON from design results.
 - BBS/DXF bar mark consistency check (CLI + API helpers).
 - DXF content tests for required layers and callout text.
 - DXF render workflow (PNG/PDF) with optional `render` dependency.
+- Wrapper test coverage for v0.12 APIs.
 
 ### Changed
 - DXF title block now includes size/cover/span context for deliverables.
 - Colab notebook updated with BBS/DXF + mark-diff workflow.
+- API reference and stability docs updated for new wrappers.
+
+### Fixed
+- Avoided import cycle in DXF wrapper initialization.
 
 ## [0.11.0] - 2025-12-29
 

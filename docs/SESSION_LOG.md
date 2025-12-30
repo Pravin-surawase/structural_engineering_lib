@@ -4,6 +4,27 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-30 — Session
+
+**Focus:** v0.12 library-first APIs + release prep
+
+**Completed:**
+- Merged validation/detail CLI and library-first wrappers (`validate`, `detail`, `compute_*`).
+- Added API wrapper tests + stability labels; fixed DXF wrapper import cycle.
+- Updated README + Colab workflow for report/critical/detail usage.
+- Prepared v0.12.0 release notes + version bump (tag pending).
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #193 | TASK-106: detail CLI + compute_detailing/compute_bbs/export_bbs wrappers |
+| #194 | README + Colab workflow refresh |
+| #195 | TASK-107: DXF/report/critical wrappers + DXF import guard |
+| #196 | TASK-108: wrapper tests + stability labels |
+
+### Notes
+- v0.12.0 release pending: tag + publish after release PR merge.
+
 ## 2025-12-29 — Session
 
 **Focus:** Git workflow friction + fast checks

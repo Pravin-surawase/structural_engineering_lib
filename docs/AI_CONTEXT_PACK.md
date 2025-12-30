@@ -4,10 +4,10 @@
 
 | Metric | Value |
 |--------|-------|
-| **Current Release** | v0.11.0 (on PyPI) |
-| **Next Planned Release** | v0.12.0 (library APIs + DXF/BBS quality) |
+| **Current Release** | v0.12.0 (on PyPI) |
+| **Next Planned Release** | v0.12.1 (test hardening + verification gates) |
 | **Next Milestone** | v0.20.0 (blocked by S-007) |
-| **Tests** | 1917 passed, 91 skipped |
+| **Tests** | 1956 passed, 91 skipped |
 | **Coverage** | 92% branch |
 | **Visual v0.11** | V03–V09 delivered (critical set, report HTML, batch packaging, golden tests) |
 
