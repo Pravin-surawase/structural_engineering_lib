@@ -49,6 +49,9 @@ Canonical sources:
 ### Docs hygiene
 - Docs index structure is enforced locally and in CI: `scripts/check_docs_index.py`.
 - Release docs consistency is enforced locally and in CI: `scripts/check_release_docs.py`.
+- Session docs consistency is enforced locally and in CI: `scripts/check_session_docs.py`.
+- API docs sync is enforced locally and in CI: `scripts/check_api_docs_sync.py`.
+- Pre-release checklist structure is enforced locally and in CI: `scripts/check_pre_release_checklist.py`.
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.
