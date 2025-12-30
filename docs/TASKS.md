@@ -24,7 +24,9 @@
 
 ## Active
 
-No active tasks. Move one item from "Up Next" when starting.
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium | In progress |
 
 ---
 
@@ -32,9 +34,6 @@ No active tasks. Move one item from "Up Next" when starting.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-129** | Reduce property-invariant skips by tightening generators (d > d_min, paired fy inputs) | TESTER | 2 hrs | 🟡 Medium | Ready |
-| **TASK-130** | Add contract tests for units conversion boundaries at API/CLI entrypoints | TESTER | 2 hrs | 🟡 Medium | Ready |
-| **TASK-131** | Add regression fixtures for BBS/DXF mark-diff (missing marks, mismatched counts) | TESTER | 2 hrs | 🟡 Medium | Ready |
 
 ---
 
@@ -45,8 +44,6 @@ No active tasks. Move one item from "Up Next" when starting.
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-077** | External user CLI test | CLIENT | 1 hr | 🔴 Critical |
-| **TASK-078** | Seismic detailing validation | TESTER | 45 min | 🟡 Medium |
-| **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium |
 
 ### Post-v1.0 (beam scope)
 
@@ -66,6 +63,10 @@ No active tasks. Move one item from "Up Next" when starting.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
+| **TASK-131** | Add regression fixtures for BBS/DXF mark-diff (missing marks, mismatched counts) | TESTER | ✅ Done |
+| **TASK-130** | Add contract tests for units conversion boundaries at API/CLI entrypoints | TESTER | ✅ Done |
+| **TASK-129** | Reduce property-invariant skips by tightening generators (d > d_min, paired fy inputs) | TESTER | ✅ Done |
 | **TASK-126** | Warn on Table 19 fck out-of-range in shear design | DEV | ✅ Done |
 | **TASK-127** | Document Table 19 range warning in known-pitfalls + error schema | DOCS | ✅ Done |
 | **TASK-128** | Add tests for Table 19 range warning | TESTER | ✅ Done |

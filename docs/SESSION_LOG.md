@@ -6,6 +6,23 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-30 — Session
 
+**Focus:** TASK-129/130/131 test hardening + start TASK-078
+
+**Completed:**
+- Reworked property-invariant comparisons to remove boundary skips (paired comparisons).
+- Added API and CLI unit-boundary contract checks (kN/kN-m conversion).
+- Added BBS/DXF mark-diff regression tests for missing/extra marks.
+- Validated seismic detailing checks (ductile + lap factor) for TASK-078.
+
+**Started:**
+- TASK-079: VBA parity spot-check (TESTER).
+
+**Tests:**
+- `cd Python && ../.venv/bin/python -m pytest tests/test_property_invariants.py tests/test_api_entrypoints_is456.py tests/test_cli.py tests/test_bbs_dxf_consistency.py`
+- `cd Python && ../.venv/bin/python -m pytest tests/test_ductile.py tests/test_detailing.py tests/test_critical_is456.py -q`
+
+## 2025-12-30 — Session
+
 **Focus:** Repo guardrails + doc consistency automation
 
 **Completed:**

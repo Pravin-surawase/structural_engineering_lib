@@ -10,22 +10,7 @@ Invariants tested:
 3. Consistency: xu <= xu_max for under-reinforced sections
 4. Bounds: pt_provided within reasonable engineering limits
 
-SKIPPED TESTS EXPLAINED (reviewed 2025-12-28):
-----------------------------------------------
-This module has ~91 intentional skips. These are NOT bugs:
-
-1. test_mu_lim_increases_with_d (90 skips):
-   - Skips when d == min(D_VALUES) because comparative tests need a
-     smaller reference value. You can't test "Mu_lim increases with d"
-     when d is already the minimum.
-   - The test runs for d = 400, 450, 500, 550, 600mm (comparing to d-50).
-
-2. test_xu_max_d_decreases_with_fy (1 skip):
-   - Skips when fy == 415 because it's the lowest fy to compare against.
-   - The test runs for Fe500 and Fe550 (comparing to Fe415).
-
-These skips are mathematically necessary for comparative invariant tests.
-No action required.
+Comparative tests use paired inputs to avoid boundary skips.
 """
 
 import pytest
@@ -43,6 +28,7 @@ class TestFlexureInvariants:
     # Typical beam dimensions
     B_VALUES = [200, 230, 250, 300, 350, 400]
     D_VALUES = [350, 400, 450, 500, 550, 600]
+    D_COMPARISONS = list(zip(D_VALUES[:-1], D_VALUES[1:]))
     FCK_VALUES = [20, 25, 30, 35, 40]
     FY_VALUES = [415, 500, 550]
 
@@ -56,17 +42,13 @@ class TestFlexureInvariants:
         assert mu_lim > 0, f"Mu_lim should be positive, got {mu_lim}"
 
     @pytest.mark.parametrize("b", B_VALUES)
-    @pytest.mark.parametrize("d", D_VALUES)
+    @pytest.mark.parametrize("d_smaller,d_larger", D_COMPARISONS)
     @pytest.mark.parametrize("fck", FCK_VALUES)
     @pytest.mark.parametrize("fy", FY_VALUES)
-    def test_mu_lim_increases_with_d(self, b, d, fck, fy):
+    def test_mu_lim_increases_with_d(self, b, d_smaller, d_larger, fck, fy):
         """Mu_lim should increase as effective depth increases."""
-        if d <= min(self.D_VALUES):
-            pytest.skip("Need d > min to compare")
-
-        d_smaller = d - 50
         mu_lim_smaller = flexure.calculate_mu_lim(b, d_smaller, fck, fy)
-        mu_lim_larger = flexure.calculate_mu_lim(b, d, fck, fy)
+        mu_lim_larger = flexure.calculate_mu_lim(b, d_larger, fck, fy)
 
         assert (
             mu_lim_larger > mu_lim_smaller
@@ -272,25 +254,24 @@ class TestDetailingInvariants:
 class TestMaterialsInvariants:
     """Property tests for materials module."""
 
-    @pytest.mark.parametrize("fy", [415, 500, 550])
+    FY_VALUES = [415, 500, 550]
+    FY_COMPARISONS = list(zip(FY_VALUES[:-1], FY_VALUES[1:]))
+
+    @pytest.mark.parametrize("fy", FY_VALUES)
     def test_xu_max_d_in_valid_range(self, fy):
         """xu_max/d ratio should be between 0 and 1."""
         xu_max_d = materials.get_xu_max_d(fy)
         assert 0 < xu_max_d < 1, f"xu_max/d should be in (0, 1), got {xu_max_d}"
 
-    @pytest.mark.parametrize("fy", [415, 500, 550])
-    def test_xu_max_d_decreases_with_fy(self, fy):
+    @pytest.mark.parametrize("fy_low,fy_high", FY_COMPARISONS)
+    def test_xu_max_d_decreases_with_fy(self, fy_low, fy_high):
         """xu_max/d should decrease as fy increases (ductility)."""
-        if fy == 415:
-            pytest.skip("Need comparison with lower fy")
-
-        # Fe415 has higher xu_max/d than Fe500/550
-        xu_max_d_415 = materials.get_xu_max_d(415)
-        xu_max_d_current = materials.get_xu_max_d(fy)
+        xu_max_d_low = materials.get_xu_max_d(fy_low)
+        xu_max_d_high = materials.get_xu_max_d(fy_high)
 
         assert (
-            xu_max_d_current < xu_max_d_415
-        ), f"xu_max/d should decrease with fy: {xu_max_d_415} > {xu_max_d_current}"
+            xu_max_d_high < xu_max_d_low
+        ), f"xu_max/d should decrease with fy: {xu_max_d_low} > {xu_max_d_high}"
 
 
 # =============================================================================
