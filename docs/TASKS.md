@@ -29,6 +29,14 @@ See also: `docs/_internal/AGENT_WORKFLOW.md`
 
 No active tasks. Pick from "Up Next" and move here when starting.
 
+## Recently Completed (Quality Hardening)
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-126** | Warn on Table 19 fck out-of-range in shear design | DEV | ✅ Done |
+| **TASK-127** | Document Table 19 range warning in known-pitfalls + error schema | DOCS | ✅ Done |
+| **TASK-128** | Add tests for Table 19 range warning | TESTER | ✅ Done |
+
 ## Recently Completed (BBS + DXF Improvement Program)
 
 | ID | Task | Agent | Status |

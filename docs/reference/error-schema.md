@@ -107,6 +107,8 @@ This document defines the standard error schema for all structural_lib errors. T
 |------|-------|---------|------|--------|
 | `E_SHEAR_001` | `tv` | `tv exceeds tc_max` | Increase section size. | Cl. 40.2.3 |
 | `E_SHEAR_002` | `spacing` | `Spacing exceeds maximum` | Reduce stirrup spacing. | Cl. 26.5.1.6 |
+| `E_SHEAR_003` | `tv` | `Nominal shear < Tc. Provide minimum shear reinforcement.` | Minimum stirrups per Cl. 26.5.1.6. | Cl. 26.5.1.6 |
+| `E_SHEAR_004` | `fck` | `fck outside Table 19 range (15-40). Using nearest bound values.` | Use fck within 15-40 or confirm conservative design. | Table 19 |
 
 #### Ductile Detailing (`E_DUCTILE_`)
 

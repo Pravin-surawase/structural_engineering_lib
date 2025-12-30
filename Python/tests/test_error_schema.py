@@ -23,6 +23,7 @@ from structural_lib.errors import (
     E_INPUT_016,
     E_FLEXURE_001,
     E_SHEAR_001,
+    E_SHEAR_004,
     E_DUCTILE_001,
     make_error,
 )
@@ -179,6 +180,11 @@ class TestPredefinedErrors:
         assert E_SHEAR_001.severity == Severity.ERROR
         assert E_SHEAR_001.clause == "Cl. 40.2.3"
 
+    def test_shear_error_004(self):
+        assert E_SHEAR_004.code == "E_SHEAR_004"
+        assert E_SHEAR_004.severity == Severity.WARNING
+        assert E_SHEAR_004.field == "fck"
+
     def test_ductile_error_001(self):
         assert E_DUCTILE_001.code == "E_DUCTILE_001"
         assert E_DUCTILE_001.severity == Severity.ERROR
@@ -274,6 +280,11 @@ class TestShearErrorsIntegration:
     def test_valid_shear_design(self):
         result = design_shear(vu_kn=50, b=230, d=450, fck=25, fy=415, asv=157, pt=0.5)
         assert result.is_safe is True
+
+    def test_fck_out_of_range_adds_warning(self):
+        result = design_shear(vu_kn=50, b=230, d=450, fck=50, fy=415, asv=157, pt=0.5)
+        assert result.is_safe is True
+        assert any(e.code == "E_SHEAR_004" for e in result.errors)
 
 
 class TestDuctileErrorsIntegration:
