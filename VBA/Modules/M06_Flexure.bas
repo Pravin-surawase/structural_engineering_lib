@@ -52,6 +52,60 @@ Public Function Calculate_Ast_Required(ByVal b As Double, ByVal d As Double, ByV
     Calculate_Ast_Required = term1 * (1# - Sqr(1# - term2)) * CDbl(b) * CDbl(d)
 End Function
 
+' Calculate Effective Flange Width (IS 456 Cl 23.1.2)
+' beam_type: "T", "L", or "RECTANGULAR"
+Public Function Calculate_Effective_Flange_Width(ByVal bw As Double, _
+                                                 ByVal span As Double, _
+                                                 ByVal df As Double, _
+                                                 ByVal overhang_left As Double, _
+                                                 ByVal overhang_right As Double, _
+                                                 ByVal beam_type As String) As Double
+    Dim bt As String
+    bt = UCase(Trim(beam_type))
+    
+    If bw <= 0# Or span <= 0# Or df <= 0# Then
+        Err.Raise vbObjectError + 513, "Calculate_Effective_Flange_Width", _
+            "bw, span, and df must be > 0."
+    End If
+    If overhang_left < 0# Or overhang_right < 0# Then
+        Err.Raise vbObjectError + 513, "Calculate_Effective_Flange_Width", _
+            "Flange overhangs must be >= 0."
+    End If
+    
+    Dim bf_geom As Double
+    bf_geom = CDbl(bw) + CDbl(overhang_left) + CDbl(overhang_right)
+    
+    If bf_geom < bw Then
+        Err.Raise vbObjectError + 513, "Calculate_Effective_Flange_Width", _
+            "Geometric flange width must be >= bw."
+    End If
+    
+    If bt = "RECTANGULAR" Or bt = "RECT" Or bt = "R" Then
+        If overhang_left > 0# Or overhang_right > 0# Then
+            Err.Raise vbObjectError + 513, "Calculate_Effective_Flange_Width", _
+                "Rectangular beam cannot have flange overhangs."
+        End If
+        Calculate_Effective_Flange_Width = bw
+        Exit Function
+    End If
+    
+    Dim bf_limit As Double
+    If bt = "T" Or bt = "FLANGED_T" Or bt = "T_BEAM" Then
+        bf_limit = CDbl(bw) + (CDbl(span) / 6#) + (6# * CDbl(df))
+    ElseIf bt = "L" Or bt = "FLANGED_L" Or bt = "L_BEAM" Then
+        bf_limit = CDbl(bw) + (CDbl(span) / 12#) + (3# * CDbl(df))
+    Else
+        Err.Raise vbObjectError + 513, "Calculate_Effective_Flange_Width", _
+            "beam_type must be T or L."
+    End If
+    
+    If bf_geom < bf_limit Then
+        Calculate_Effective_Flange_Width = bf_geom
+    Else
+        Calculate_Effective_Flange_Width = bf_limit
+    End If
+End Function
+
 ' Main Design Function for Singly Reinforced Beam
 Public Function Design_Singly_Reinforced(ByVal b As Double, ByVal d As Double, ByVal D_total As Double, ByVal Mu_kNm As Double, ByVal fck As Double, ByVal fy As Double) As FlexureResult
     Dim res As FlexureResult

@@ -372,6 +372,22 @@ def design_flanged_beam(
 ) -> FlexureResult
 ```
 
+### 2.7 Effective Flange Width Helper
+Calculates effective flange width per IS 456 Cl 23.1.2 using explicit geometry.
+
+**Python:**
+```python
+def calculate_effective_flange_width(
+    *,
+    bw_mm: float,
+    span_mm: float,
+    df_mm: float,
+    flange_overhang_left_mm: float,
+    flange_overhang_right_mm: float,
+    beam_type: BeamType | str,
+) -> float
+```
+
 ---
 
 ## 3. Shear Module (`M07_Shear` / `shear.py`)

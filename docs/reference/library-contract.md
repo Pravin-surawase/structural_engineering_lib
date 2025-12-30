@@ -21,6 +21,7 @@ Explicitly excluded until after v1.0:
 ### 2.1 Stable Core API (frozen)
 Pure functions and dataclasses with deterministic behavior:
 - `flexure.design_*`
+- `flexure.calculate_effective_flange_width`
 - `shear.design_shear`
 - `serviceability.check_deflection_span_depth`
 - `serviceability.check_deflection_level_b`

@@ -25,10 +25,56 @@ End Sub
 
 Public Sub RunFlangedTests()
     Debug.Print "--- Starting Flanged Beam Tests ---"
+    Test_Effective_Flange_Width_T
+    Test_Effective_Flange_Width_L
     Test_Flanged_NA_In_Flange
     Test_Flanged_NA_In_Web_Singly
     Test_Flanged_NA_In_Web_Doubly
     Debug.Print "--- Flanged Beam Tests Completed ---"
+End Sub
+
+' Effective flange width (T-beam) - code limit governs
+Public Sub Test_Effective_Flange_Width_T()
+    On Error GoTo ErrHandler
+    
+    Dim bw As Double: bw = 300#
+    Dim span As Double: span = 6000#
+    Dim df As Double: df = 120#
+    Dim overhang_left As Double: overhang_left = 1000#
+    Dim overhang_right As Double: overhang_right = 1000#
+    
+    Dim exp_bf As Double: exp_bf = 2020#
+    Dim bf_eff As Double
+    
+    bf_eff = M06_Flexure.Calculate_Effective_Flange_Width( _
+        bw, span, df, overhang_left, overhang_right, "T")
+    
+    AssertAlmostEqual bf_eff, exp_bf, 0.1, "Flanged_EffWidth_T_CodeLimit"
+    Exit Sub
+ErrHandler:
+    Debug.Print "FAIL: Flanged_EffWidth_T [Error " & Err.Number & "]"
+End Sub
+
+' Effective flange width (L-beam) - geometry governs
+Public Sub Test_Effective_Flange_Width_L()
+    On Error GoTo ErrHandler
+    
+    Dim bw As Double: bw = 300#
+    Dim span As Double: span = 6000#
+    Dim df As Double: df = 100#
+    Dim overhang_left As Double: overhang_left = 500#
+    Dim overhang_right As Double: overhang_right = 0#
+    
+    Dim exp_bf As Double: exp_bf = 800#
+    Dim bf_eff As Double
+    
+    bf_eff = M06_Flexure.Calculate_Effective_Flange_Width( _
+        bw, span, df, overhang_left, overhang_right, "L")
+    
+    AssertAlmostEqual bf_eff, exp_bf, 0.1, "Flanged_EffWidth_L_Geometry"
+    Exit Sub
+ErrHandler:
+    Debug.Print "FAIL: Flanged_EffWidth_L [Error " & Err.Number & "]"
 End Sub
 
 ' Case 1: Neutral Axis in Flange (Xu < Df)
