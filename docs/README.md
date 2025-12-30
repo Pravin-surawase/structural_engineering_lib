@@ -96,6 +96,7 @@ If you want to understand the concepts and the code step by step, start here:
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
+- Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
 - VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)
 - Packaging the add-in (`.xlam`): [contributing/excel-addin-guide.md](contributing/excel-addin-guide.md)
