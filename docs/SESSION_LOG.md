@@ -6,6 +6,24 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-30 — Session
 
+**Focus:** Main Branch Guard failure (direct commit detection)
+
+**Issue observed:**
+- CI job `Main Branch Guard` failed with `Direct commit to main detected (SHA...)` even though the change originated from a PR.
+
+**Cause:**
+- The merge produced a local squash commit on `main` that was **not associated with a PR** in GitHub’s API. The guard checks PR association via `listPullRequestsAssociatedWithCommit`.
+
+**Fix applied:**
+- Reverted the commit via a PR, then re-applied the changes via a fresh PR merge so the new commit is PR-associated.
+
+**Prevention:**
+- Merge PRs server-side (GitHub UI or `gh pr merge`). Avoid local commits on `main`.
+
+---
+
+## 2025-12-30 — Session
+
 **Focus:** TASK-129/130/131 test hardening + S-007 external CLI test
 
 **Completed:**
