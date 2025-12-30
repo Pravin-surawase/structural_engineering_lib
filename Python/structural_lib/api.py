@@ -15,6 +15,7 @@ from . import compliance
 from . import detailing
 from . import ductile
 from . import job_runner
+from . import report
 from . import serviceability
 from .types import ComplianceCaseResult, ComplianceReport, ValidationReport
 
@@ -25,6 +26,9 @@ __all__ = [
     "compute_detailing",
     "compute_bbs",
     "export_bbs",
+    "compute_dxf",
+    "compute_report",
+    "compute_critical",
     "check_beam_ductility",
     "check_deflection_span_depth",
     "check_crack_width",
@@ -396,6 +400,188 @@ def export_bbs(
         bbs.export_bbs_to_csv(bbs_doc.items, str(output_path))
 
     return output_path
+
+
+def compute_dxf(
+    detailing_list: list[detailing.BeamDetailingResult],
+    output: Union[str, Path],
+    *,
+    multi: bool = False,
+    include_title_block: bool = False,
+    title_block: Optional[Dict[str, Any]] = None,
+    sheet_margin_mm: float = 20.0,
+    title_block_width_mm: float = 120.0,
+    title_block_height_mm: float = 40.0,
+) -> Path:
+    """Generate DXF drawings from detailing results."""
+    from . import dxf_export as _dxf_export
+
+    if _dxf_export is None:
+        raise RuntimeError(
+            "DXF export module not available. Install with: "
+            'pip install "structural-lib-is456[dxf]"'
+        )
+    if not _dxf_export.EZDXF_AVAILABLE:
+        raise RuntimeError(
+            "ezdxf library not installed. Install with: "
+            'pip install "structural-lib-is456[dxf]"'
+        )
+    if not detailing_list:
+        raise ValueError("Detailing list is empty.")
+
+    output_path = Path(output)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    use_multi = multi or len(detailing_list) > 1
+    if use_multi:
+        _dxf_export.generate_multi_beam_dxf(
+            detailing_list,
+            str(output_path),
+            include_title_block=include_title_block,
+            title_block=title_block,
+            sheet_margin_mm=sheet_margin_mm,
+            title_block_width_mm=title_block_width_mm,
+            title_block_height_mm=title_block_height_mm,
+        )
+    else:
+        _dxf_export.generate_beam_dxf(
+            detailing_list[0],
+            str(output_path),
+            include_title_block=include_title_block,
+            title_block=title_block,
+            sheet_margin_mm=sheet_margin_mm,
+            title_block_width_mm=title_block_width_mm,
+            title_block_height_mm=title_block_height_mm,
+        )
+
+    return output_path
+
+
+def compute_report(
+    source: Union[str, Path, Dict[str, Any]],
+    *,
+    format: str = "html",
+    job_path: Optional[Union[str, Path]] = None,
+    results_path: Optional[Union[str, Path]] = None,
+    output_path: Optional[Union[str, Path]] = None,
+    batch_threshold: int = 80,
+) -> Union[str, Path, list[Path]]:
+    """Generate report output from job outputs or design results."""
+    fmt = format.lower()
+    if fmt not in {"html", "json"}:
+        raise ValueError("Unknown format. Use format='html' or format='json'.")
+
+    if isinstance(source, dict):
+        design_results = source
+        if "beams" not in design_results:
+            raise ValueError("Design results must include a 'beams' array.")
+
+        if fmt == "json":
+            output = report.export_design_json(design_results)
+            if output_path:
+                path = Path(output_path)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(output, encoding="utf-8")
+                return path
+            return output
+
+        beams = design_results.get("beams", [])
+        if not output_path:
+            if len(beams) >= batch_threshold:
+                raise ValueError(
+                    "Batch report requires output path for folder packaging."
+                )
+            return report.render_design_report_single(
+                design_results, batch_threshold=batch_threshold
+            )
+
+        path = Path(output_path)
+        return report.write_design_report_package(
+            design_results,
+            output_path=path,
+            batch_threshold=batch_threshold,
+        )
+
+    source_path = Path(source)
+    if source_path.is_file():
+        design_results = report.load_design_results(source_path)
+
+        if fmt == "json":
+            output = report.export_design_json(design_results)
+            if output_path:
+                path = Path(output_path)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(output, encoding="utf-8")
+                return path
+            return output
+
+        beams = design_results.get("beams", [])
+        if not output_path:
+            if len(beams) >= batch_threshold:
+                raise ValueError(
+                    "Batch report requires output path for folder packaging."
+                )
+            return report.render_design_report_single(
+                design_results, batch_threshold=batch_threshold
+            )
+
+        path = Path(output_path)
+        return report.write_design_report_package(
+            design_results,
+            output_path=path,
+            batch_threshold=batch_threshold,
+        )
+
+    data = report.load_report_data(
+        source_path,
+        job_path=Path(job_path) if job_path else None,
+        results_path=Path(results_path) if results_path else None,
+    )
+
+    output = report.export_json(data) if fmt == "json" else report.export_html(data)
+    if output_path:
+        path = Path(output_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(output, encoding="utf-8")
+        return path
+    return output
+
+
+def compute_critical(
+    job_out: Union[str, Path],
+    *,
+    top: int = 10,
+    format: str = "csv",
+    job_path: Optional[Union[str, Path]] = None,
+    results_path: Optional[Union[str, Path]] = None,
+    output_path: Optional[Union[str, Path]] = None,
+) -> Union[str, Path]:
+    """Generate critical set export from job outputs."""
+    fmt = format.lower()
+    if fmt not in {"csv", "html"}:
+        raise ValueError("Unknown format. Use format='csv' or format='html'.")
+
+    data = report.load_report_data(
+        Path(job_out),
+        job_path=Path(job_path) if job_path else None,
+        results_path=Path(results_path) if results_path else None,
+    )
+    top_n = top if top and top > 0 else None
+    critical_cases = report.get_critical_set(data, top=top_n)
+    if not critical_cases:
+        return ""
+
+    output = (
+        report.export_critical_csv(critical_cases)
+        if fmt == "csv"
+        else report.export_critical_html(critical_cases)
+    )
+    if output_path:
+        path = Path(output_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(output, encoding="utf-8")
+        return path
+    return output
 
 
 def check_beam_ductility(
