@@ -42,6 +42,10 @@ Canonical sources:
 - Local guardrail: pre-commit blocks commits on `main` (see `.pre-commit-config.yaml`).
 - CI guardrail: pushes to `main` must be associated with a PR (see `.github/workflows/main-branch-guard.yml`).
 
+### Task hygiene
+- TASKS format is enforced locally: `scripts/check_tasks_format.py`.
+- Keep WIP=1 and move tasks between sections (no duplicates).
+
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.
 - Link a TASK ID in the PR body.
