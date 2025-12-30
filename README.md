@@ -18,19 +18,19 @@
 
 ## Status
 
-🚀 **Active (v0.11.0)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
+🚀 **Active (v0.12.0)** — Now on PyPI! Unified CLI + strength design + detailing + DXF export + serviceability (Level A+B) + compliance + batch runner + cutting-stock optimizer.
 
-**What's new in v0.11.0:**
-- **Critical Set export (V03):** `critical` CLI subcommand outputs sorted utilization tables (CSV/HTML) with `--top` filtering and `data-source` traces.
-- **Visual reports (V04–V07):** HTML reports now include cross-section SVG, input sanity heatmap, stability scorecard, and units sentinel.
-- **Batch packaging (V08):** `report` accepts design results JSON and supports folder output with `--batch-threshold`.
-- **Golden fixtures (V09):** Report outputs are locked by golden-file tests for determinism.
+**What's new in v0.12.0:**
+- **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
+- **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.
+- **DXF/BBS quality gates:** bar mark consistency checks, DXF content tests, title block context, and render workflow.
+- **API/CLI tests:** wrapper coverage and stability labels for v0.12 endpoints.
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
-**In main (target v0.12):**
-- **Detailing JSON export:** `detail` CLI emits a stable detailing JSON (bars, stirrups, Ld/lap).
-- **Library-first wrappers:** `api.compute_detailing`, `api.compute_bbs`, `api.export_bbs`.
+**In main (target v0.12.1):**
+- **Test hardening:** contract tests for units boundaries + reduced property-invariant skips.
+- **DXF/BBS regressions:** dedicated fixtures for mark-diff edge cases.
 
 ## What makes it different
 
@@ -92,7 +92,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 This repository is public, so anyone can read the code, docs, and examples.
 
 - **Engineering note:** This library is a calculation aid. Final responsibility for code-compliant design, detailing, and drawing checks remains with the qualified engineer.
-- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.11.0`) rather than installing latest.
+- **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.12.0`) rather than installing latest.
 
 ### Install from PyPI
 

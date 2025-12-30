@@ -2,26 +2,25 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.11.0 | Published on PyPI |
-| **Next** | v0.12.0 | Planned (library APIs + DXF/BBS quality) |
+| **Current** | v0.12.0 | Published on PyPI |
+| **Next** | v0.12.1 | Planned (test hardening + verification gates) |
 
-**Date:** 2025-12-29 | **PRs:** through #186
+**Date:** 2025-12-30 | **PRs:** through #196
 
 ---
 
 ## 🎯 Immediate Priority
 
-**v0.12 focus (library-first APIs + DXF/BBS quality):**
+**v0.12 follow-up (stability + verification):**
 
 | Task | Description | Owner |
 |------|-------------|-------|
-| TASK-104 | Define stable API surface + doc updates | DOCS |
-| TASK-105 | Validation APIs + `validate` CLI subcommand | DEV |
-| TASK-106 | Detailing + BBS APIs + `detail` CLI subcommand | DEV |
-| TASK-107 | DXF/report/critical API wrappers | DEV |
-| TASK-108 | API/CLI tests + stability labels | TESTER |
+| S-007 | External engineer CLI cold-start test | CLIENT |
+| TASK-126 | Reduce property-invariant skips by tightening generators | TESTER |
+| TASK-127 | Add contract tests for units conversion boundaries | TESTER |
+| TASK-128 | Add BBS/DXF mark-diff regression fixtures | TESTER |
 
-**Plan doc:** `docs/planning/v0.12-plan.md`
+**Plan doc:** `docs/planning/bbs-dxf-improvement-plan.md`
 
 ---
 
@@ -39,7 +38,7 @@
 **Quick project summary:**
 - IS 456 RC beam design library (Indian Standard)
 - Python + VBA with matching outputs (parity requirement)
-- CLI: `python -m structural_lib design|bbs|dxf|job|critical|report|mark-diff`
+- CLI: `python -m structural_lib design|bbs|dxf|job|validate|detail|critical|report|mark-diff`
 - PyPI: `pip install structural-lib-is456`
 
 ---
@@ -56,23 +55,25 @@
 | Many micro-PRs for tiny changes | Review fatigue, CI waste | Batch related changes into one PR |
 | Editing without reading file first | Merge conflicts, overwrites | Always read current state before editing |
 
-**Performance facts (verified 2025-12-29):**
-- Tests: 1917 passed, 91 skipped, 92% branch coverage
+**Performance facts (latest CI 2025-12-30):**
+- Tests: 1956 passed, 91 skipped, 92% branch coverage
 - Speed: 0.009ms per beam, 94,000 beams/second
 - All edge cases handled gracefully (zero/negative → `is_safe=False`)
 
 ---
 
-## ✅ Last Session Summary (2025-12-29)
+## ✅ Last Session Summary (2025-12-30)
 
-**Focus:** Visual v0.11 deliverables + report tooling
+**Focus:** v0.12 library-first APIs + release prep
 
 | PR | Description |
 |----|-------------|
-| #185 | BBS/DXF consistency check + DXF tests + title block polish |
-| #186 | Colab notebook updated for BBS/DXF workflows |
+| #193 | Detail CLI + compute_detailing/compute_bbs/export_bbs wrappers |
+| #194 | README + Colab workflow refresh |
+| #195 | DXF/report/critical wrappers + DXF import guard |
+| #196 | API wrapper tests + stability labels |
 
-**Outcome:** DXF/BBS quality gates complete + Colab workflow refreshed.
+**Outcome:** v0.12 API surface finalized; docs refreshed for new CLI usage.
 
 ---
 

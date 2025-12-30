@@ -1,16 +1,16 @@
 # Pre-Release Checklist
 
 Version: 0.12.0 (planned)
-Date: 2025-12-29
+Date: 2025-12-30
 Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---
 
-## Current State (last verified 2025-12-29)
+## Current State (last verified 2025-12-30)
 
 | Area | Status | Evidence |
 |------|--------|----------|
-| Test Suite | ✅ 2008 tests collected | `pytest --co` on 2025-12-29 |
+| Test Suite | ✅ 2047 tests run (1956 passed, 91 skipped) | `pytest tests` on 2025-12-30 |
 | PyPI | ✅ Live | `pip install structural-lib-is456` |
 | CLI | ✅ Functional | `python -m structural_lib --help` works |
 | Excel Integration | ⚠️ Functional (not parity-verified) | CSV/JSON workflows work; VBA outputs not compared |
@@ -53,7 +53,7 @@ Target: Public beta with library-first APIs + DXF/BBS quality gates
   - [ ] Seismic detailing case (if applicable)
 - [x] **Document results** in `docs/verification/validation-pack.md` with source refs
 - [ ] **One external engineer tries CLI cold** — note friction points
-- [ ] **All tests pass** (run `pytest` in Python/ directory)
+- [x] **All tests pass** (`pytest tests` on 2025-12-30)
 - [ ] **PyPI install verified in clean venv** — `scripts/verify_release.py --version X.Y.Z --source pypi`
 
 ### Nice-to-Have Before Beta

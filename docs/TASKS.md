@@ -186,7 +186,7 @@ No active tasks. Pick from "Up Next" and move here when starting.
 **v1.0 Beta Gates (from pre-release-checklist):**
 - [x] 5 real beam validations documented
 - [ ] One external engineer tries CLI cold
-- [ ] All tests pass (currently: 1730 passed, 95 skipped)
+- [ ] All tests pass (currently: 1956 passed, 91 skipped)
 - [ ] VBA parity verified
 
 ---
@@ -265,7 +265,7 @@ All Public API Maintenance tasks are complete.
 ## Notes
 
 - **Current Version**: v0.11.0
-- **Last Updated**: 2025-12-29
+- **Last Updated**: 2025-12-30
 - **Active Branch**: main
 - **Tests**: Run `python scripts/update_test_stats.py` for current count
 - **Target**: v0.20.0 stable release (see `docs/planning/v0.20-stabilization-checklist.md`)

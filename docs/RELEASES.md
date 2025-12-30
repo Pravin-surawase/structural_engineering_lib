@@ -48,6 +48,19 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.12.0
+**Date:** 2025-12-30
+**Status:** ✅ Locked & Verified
+**Mindset:** Library-First API Expansion + DXF/BBS Quality
+**Key Changes:**
+- **Library-first APIs:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
+- **New CLI helpers:** `validate` and `detail` subcommands for schema checks and detailing JSON export.
+- **DXF/BBS quality:** bar mark consistency checks, DXF content tests, title block context, render workflow.
+- **Docs & examples:** README + Colab workflow refreshed for report/critical/detail usage.
+
+**Tests:** 1956 passed, 91 skipped
+**PRs:** #193, #194, #195, #196
+
 ## v0.11.0
 **Date:** 2025-12-29
 **Status:** ✅ Locked & Verified

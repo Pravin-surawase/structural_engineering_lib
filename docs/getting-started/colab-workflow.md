@@ -1,6 +1,6 @@
 # Colab Workflow (End-to-End, No ETABS Needed)
 
-> **Version:** v0.11.0 | **Updated:** 2025-12-29
+> **Version:** v0.12.0 | **Updated:** 2025-12-30
 
 This guide runs the full pipeline in Google Colab:
 install → generate inputs → design → BBS → DXF → reports → critical set.
@@ -9,15 +9,22 @@ Notebook version (open in Colab): `docs/getting-started/colab-workflow.ipynb`
 
 **All CLI commands covered:**
 - `design` — Run beam design from CSV
+- `validate` — Validate job/results JSON against schema
+- `detail` — Emit detailing JSON (bars, stirrups, Ld/lap)
 - `bbs` — Generate bar bending schedule
 - `dxf` — Generate CAD drawings
 - `job` — Run full job from JSON spec
-- `report` — Generate HTML/JSON reports *(NEW in v0.11.0)*
-- `critical` — Export critical set sorted by utilization *(NEW in v0.11.0)*
+- `report` — Generate HTML/JSON reports (Visual v0.11)
+- `critical` — Export critical set sorted by utilization (Visual v0.11)
 
 ---
 
-## 🆕 What's New in v0.11.0 (Visual v0.11)
+## 🆕 What's New in v0.12.0
+
+- `validate` and `detail` CLI helpers for schema checks and detailing JSON export.
+- Library-first API wrappers for detailing, BBS, DXF, report, and critical outputs.
+
+## Visual Features (v0.11)
 
 **V01–V07 features delivered:**
 
