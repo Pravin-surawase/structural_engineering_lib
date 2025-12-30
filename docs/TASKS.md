@@ -24,9 +24,7 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | 4 hrs | 🟡 Medium | 🔄 In Progress |
+No active tasks. Move one item from "Up Next" when starting.
 
 ---
 
@@ -60,6 +58,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | ✅ Done |
 | **TASK-089** | Flanged effective width helper | INTEGRATION | ✅ Done |
 | **TASK-077** | External user CLI test | CLIENT | ✅ Done |
 | **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
