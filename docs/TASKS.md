@@ -16,15 +16,17 @@
 
 ## Current Release
 
-- Target: v0.12.1 (maintenance)
-- Focus: test hardening + DXF/BBS regression fixtures
+- Target: v0.13.0 (insights foundation)
+- Focus: advisory insights + verification pack + safe CLI output
 - Blockers: none (update when set)
 
 ---
 
 ## Active
 
-No active tasks. Move one item from "Up Next" when starting.
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-132** | Insights module scaffolding + precheck (types, precheck.py, tests) | DEV | 1 day | 🟠 High | In progress |
 
 ---
 
@@ -32,6 +34,11 @@ No active tasks. Move one item from "Up Next" when starting.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| **TASK-133** | Sensitivity analysis + robustness scoring + tests | DEV | 1 day | 🟠 High | Not started |
+| **TASK-134** | Constructability scoring + tests (bar spacing, layers, variety) | DEV | 1 day | 🟡 Medium | Not started |
+| **TASK-135** | Verification pack: 5-10 benchmark cases + runner/tests | TESTER | 2-3 days | 🟠 High | Not started |
+| **TASK-136** | Insights JSON schema + optional CLI command | INTEGRATION | 1 day | 🟡 Medium | Not started |
+| **TASK-137** | Docs: insights guide + API references | DOCS | 1 day | 🟡 Medium | Not started |
 
 ---
 
