@@ -116,6 +116,9 @@ from structural_lib import api
 api.compute_detailing(design_results, config=None)
 api.compute_bbs(detailing_list, project_name="Beam BBS")
 api.export_bbs(bbs_doc, path, fmt="csv")
+api.compute_dxf(detailing_list, output, multi=False)
+api.compute_report(source, format="html")
+api.compute_critical(job_out, top=10, format="csv")
 ```
 
 ## Planned API (v0.12 Target)
@@ -123,13 +126,7 @@ api.export_bbs(bbs_doc, path, fmt="csv")
 These helpers are planned next (see `docs/planning/v0.12-plan.md`).
 They are **not available yet**, but will be stable once shipped.
 
-```python
-from structural_lib import api
-
-api.compute_dxf(detailing_list, output, multi=False)
-api.compute_report(source, format="html")
-api.compute_critical(job_out, top=10, format="csv")
-```
+No additional helpers are planned in this bucket yet.
 
 ---
 
