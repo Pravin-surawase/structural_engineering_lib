@@ -58,6 +58,8 @@ Colab:
 %pip install -q "structural-lib-is456[dxf]"
 ```
 
+> **Naming:** Install `structural-lib-is456` · Import `structural_lib` · CLI `python -m structural_lib`
+
 ### 2) API in 30 seconds
 
 ```bash
@@ -70,15 +72,26 @@ print(f"Ast required: {res.ast_required:.0f} mm^2 | Status: {'OK' if res.is_safe
 PY
 ```
 
-Expected output:
+Example output:
 ```
 Ast required: 942 mm^2 | Status: OK
 ```
+Exact Ast may vary slightly by version due to rounding/table refinements.
 
 ### 3) CLI pipeline (CSV -> detailing -> BBS -> DXF)
 
-Required columns (case-insensitive): `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing`
+Required for design (case-insensitive): `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu`
+Optional overrides (used by `detail` / forced detailing): `Ast_req, Asc_req, Stirrup_Dia, Stirrup_Spacing`
 
+PyPI (no clone):
+```bash
+python -m structural_lib design input.csv -o results.json
+python -m structural_lib detail results.json -o detailing.json
+python -m structural_lib bbs results.json -o schedule.csv
+python -m structural_lib dxf results.json -o drawings.dxf
+```
+
+Repo dev (editable install):
 ```bash
 cd Python
 python3 -m pip install -e ".[dxf]"
@@ -99,7 +112,9 @@ Optional schema validation:
 python3 -m structural_lib validate results.json
 ```
 
-ETABS exports can be normalized into this schema. See `docs/architecture/project-overview.md` and `docs/specs/ETABS_INTEGRATION.md`.
+Design writes per-beam status in `results.json`; failed beams are flagged with `is_safe=false` and `error_message`.
+
+ETABS exports can be normalized into this schema. See `docs/specs/ETABS_INTEGRATION.md` for the mapping rules.
 
 ---
 
@@ -156,7 +171,7 @@ See `docs/reference/api-stability.md` for stability labels and guarantees.
 |--------|--------|
 | **Determinism** | Same input -> same output (JSON/CSV/DXF) across runs |
 | **Units** | Explicit: mm, N/mm^2, kN, kN*m — converted at layer boundaries |
-| **Test coverage** | 1956 tests passed, 91 skipped, 92% branch coverage |
+| **Test coverage** | ~2,000 tests, ~92% branch coverage (see CI for current) |
 | **Clause traceability** | Core design formulas reference IS 456 clause/table |
 | **Verification pack** | Benchmark examples in `Python/examples/` |
 
