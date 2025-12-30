@@ -17,6 +17,7 @@ from structural_lib.detailing import (
     calculate_lap_length,
     calculate_bar_spacing,
     check_min_spacing,
+    check_side_face_reinforcement,
     select_bar_arrangement,
     get_stirrup_legs,
     format_bar_callout,
@@ -302,3 +303,120 @@ class TestBeamDetailingResult:
         assert result.stirrups[0].spacing == 150  # Start
         assert result.stirrups[1].spacing == 200  # Mid
         assert result.stirrups[2].spacing == 150  # End
+
+
+class TestSideFaceReinforcement:
+    """Tests for side-face reinforcement check (IS 456 Cl 26.5.1.3)."""
+
+    def test_not_required_for_small_depth(self):
+        """Side-face reinforcement not required when D ≤ 750 mm."""
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=500, b=230, cover=25
+        )
+        assert is_required is False
+        assert area == 0.0
+        assert spacing == 0.0
+
+    def test_not_required_at_threshold(self):
+        """Side-face reinforcement not required exactly at D = 750 mm."""
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=750, b=230, cover=25
+        )
+        assert is_required is False
+        assert area == 0.0
+        assert spacing == 0.0
+
+    def test_required_above_threshold(self):
+        """Side-face reinforcement required when D > 750 mm."""
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=800, b=300, cover=40
+        )
+        assert is_required is True
+        assert area > 0
+        assert spacing == 300.0
+
+    def test_area_calculation_800mm_depth(self):
+        """
+        Test area calculation for D=800mm, b=300mm, cover=40mm.
+
+        Web height = 800 - 2*40 = 720 mm
+        Web area per face = 300 * 720 = 216,000 mm²
+        Required area = 0.1% = 0.001 * 216,000 = 216 mm²
+        """
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=800, b=300, cover=40
+        )
+
+        # Expected calculation
+        web_height = 800 - 2 * 40  # 720 mm
+        web_area = 300 * web_height  # 216,000 mm²
+        expected_area = 0.001 * web_area  # 216 mm²
+
+        assert is_required is True
+        assert area == pytest.approx(expected_area, abs=0.5)
+        assert spacing == 300.0
+
+    def test_area_calculation_1000mm_depth(self):
+        """
+        Test area calculation for D=1000mm, b=400mm, cover=50mm.
+
+        Web height = 1000 - 2*50 = 900 mm
+        Web area per face = 400 * 900 = 360,000 mm²
+        Required area = 0.1% = 0.001 * 360,000 = 360 mm²
+        """
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=1000, b=400, cover=50
+        )
+
+        web_height = 1000 - 2 * 50  # 900 mm
+        web_area = 400 * web_height  # 360,000 mm²
+        expected_area = 0.001 * web_area  # 360 mm²
+
+        assert is_required is True
+        assert area == pytest.approx(expected_area, abs=0.5)
+        assert spacing == 300.0
+
+    def test_typical_beam_750mm_boundary(self):
+        """Test at exact 750mm boundary (not required)."""
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=750, b=300, cover=30
+        )
+        assert is_required is False
+
+    def test_typical_beam_751mm_just_above(self):
+        """Test just above 750mm threshold (required)."""
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=751, b=300, cover=30
+        )
+
+        web_height = 751 - 2 * 30  # 691 mm
+        web_area = 300 * web_height  # 207,300 mm²
+        expected_area = 0.001 * web_area  # 207.3 mm²
+
+        assert is_required is True
+        assert area == pytest.approx(expected_area, abs=0.5)
+        assert spacing == 300.0
+
+    def test_large_depth_beam(self):
+        """Test for a deep transfer beam (D=1500mm)."""
+        is_required, area, spacing = check_side_face_reinforcement(
+            D=1500, b=600, cover=50
+        )
+
+        web_height = 1500 - 2 * 50  # 1400 mm
+        web_area = 600 * web_height  # 840,000 mm²
+        expected_area = 0.001 * web_area  # 840 mm²
+
+        assert is_required is True
+        assert area == pytest.approx(expected_area, abs=0.5)
+        assert spacing == 300.0
+
+    def test_spacing_always_300mm_when_required(self):
+        """Maximum spacing is always 300mm per IS 456 Cl 26.5.1.3."""
+        _, _, spacing1 = check_side_face_reinforcement(D=800, b=300, cover=40)
+        _, _, spacing2 = check_side_face_reinforcement(D=1200, b=400, cover=50)
+        _, _, spacing3 = check_side_face_reinforcement(D=2000, b=600, cover=60)
+
+        assert spacing1 == 300.0
+        assert spacing2 == 300.0
+        assert spacing3 == 300.0

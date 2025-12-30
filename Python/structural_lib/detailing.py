@@ -268,6 +268,58 @@ def check_min_spacing(
         return False, f"FAIL: Spacing {spacing} mm < min {min_spacing} mm"
 
 
+def check_side_face_reinforcement(
+    D: float, b: float, cover: float
+) -> Tuple[bool, float, float]:
+    """
+    Check if side-face reinforcement is required per IS 456 Cl 26.5.1.3.
+
+    For beams with depth > 750 mm, side-face reinforcement is required
+    to control thermal and shrinkage cracks.
+
+    Requirements (IS 456 Cl 26.5.1.3):
+    - Required when D > 750 mm
+    - Area: 0.1% of web area per face
+    - Spacing: ≤ 300 mm
+
+    Args:
+        D: Overall beam depth (mm)
+        b: Beam width (mm)
+        cover: Clear cover (mm)
+
+    Returns:
+        (is_required, area_per_face_mm2, max_spacing_mm)
+        - is_required: True if D > 750 mm
+        - area_per_face_mm2: Required area per face (0 if not required)
+        - max_spacing_mm: Maximum spacing (300 mm if required, 0 otherwise)
+
+    Reference:
+        IS 456:2000, Clause 26.5.1.3
+    """
+    # Threshold depth for side-face reinforcement
+    DEPTH_THRESHOLD = 750.0  # mm
+
+    # Required percentage of web area per face
+    PERCENTAGE_WEB_AREA = 0.001  # 0.1%
+
+    # Maximum spacing limit
+    MAX_SPACING = 300.0  # mm
+
+    if D <= DEPTH_THRESHOLD:
+        return False, 0.0, 0.0
+
+    # Web height = D - 2*cover (approximate; exact depends on bar diameters)
+    web_height = D - 2 * cover
+
+    # Web area per face = width * web height
+    web_area_per_face = b * web_height
+
+    # Required steel area per face = 0.1% of web area
+    area_per_face = PERCENTAGE_WEB_AREA * web_area_per_face
+
+    return True, round(area_per_face, 1), MAX_SPACING
+
+
 # =============================================================================
 # Bar Arrangement
 # =============================================================================

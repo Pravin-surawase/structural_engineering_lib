@@ -960,9 +960,20 @@ def check_min_spacing(
     bar_dia: float,
     agg_size: float = 20.0
 ) -> Tuple[bool, str]  # (is_valid, message)
+
+def check_side_face_reinforcement(
+    D: float,             # Overall beam depth (mm)
+    b: float,             # Beam width (mm)
+    cover: float          # Clear cover (mm)
+) -> Tuple[bool, float, float]  # (is_required, area_per_face_mm2, max_spacing_mm)
 ```
 
 **Minimum Spacing:** max(bar_dia, agg_size + 5mm, 25mm) per IS 456 Cl 26.3.2.
+
+**Side-Face Reinforcement (IS 456 Cl 26.5.1.3):**
+- Required when D > 750 mm
+- Area: 0.1% of web area per face
+- Maximum spacing: 300 mm
 
 ### 9.4 Bar Arrangement Selection
 **Python:**

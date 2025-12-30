@@ -24,7 +24,9 @@
 
 ## Active
 
-No active tasks. Move one item from "Up Next" when starting.
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | 4 hrs | 🟡 Medium | 🔄 In Progress |
 
 ---
 
@@ -49,7 +51,6 @@ No active tasks. Move one item from "Up Next" when starting.
 | **TASK-081** | Level C Serviceability (creep + shrinkage) | DEV | 1-2 days | 🟡 Medium |
 | **TASK-082** | VBA parity automation harness | DEVOPS | 1-2 days | 🟡 Medium |
 | **TASK-085** | Torsion design + detailing (Cl. 41) | DEV | 2-3 days | 🟡 Medium |
-| **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | 4 hrs | 🟡 Medium |
 | **TASK-087** | Anchorage space check (Cl. 26.2) | DEV | 1 day | 🟡 Medium |
 | **TASK-088** | Slenderness/stability check (Cl. 23.1.2) | DEV | 4 hrs | 🟡 Medium |
 

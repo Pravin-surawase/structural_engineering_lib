@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Side-face reinforcement check per IS 456 Cl 26.5.1.3 (`check_side_face_reinforcement` in `detailing.py`)
+  - Required when D > 750 mm
+  - Calculates 0.1% web area per face with 300mm max spacing
+  - Comprehensive test coverage (9 test cases)
+
 ## [0.12.0] - 2025-12-30
 
 ### Added
