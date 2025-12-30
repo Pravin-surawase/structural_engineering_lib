@@ -5,7 +5,7 @@
 | **Current** | v0.12.0 | Published on PyPI |
 | **Next** | v0.12.1 | Planned (test hardening + verification gates) |
 
-**Date:** 2025-12-30 | **PRs:** through #196
+**Date:** 2025-12-30 | **PRs:** through #220
 
 ---
 
@@ -13,25 +13,25 @@
 
 <!-- HANDOFF:START -->
 - Date: 2025-12-30
-- Focus: Repo guardrails + doc consistency automation
-- Completed: Added main-branch guardrails (local pre-commit + CI PR-only enforcement).; Added doc consistency checks for TASKS, docs index, release docs, session docs, API docs, pre-release checklist, and next-session brief length.; Added CLI reference completeness check and updated CLI quick start list.
-- PRs merged: #204, #205, #206, #207, #208, #209
+- Focus: Test hardening (TASK-129/130/131) + external CLI validation (S-007) + effective flange width helper (TASK-089)
+- Completed: Removed property-invariant skips via paired comparisons; added API/CLI unit-boundary contract tests; added BBS/DXF mark-diff regression fixtures; validated seismic detailing checks; aligned VBA parity; ran external CLI smoke test (PASS); added effective flange width helper with Python/VBA parity.
+- PRs merged: #217, #218, #219, #220
 <!-- HANDOFF:END -->
 
 
 
 ## 🎯 Immediate Priority
 
-**v0.12 follow-up (stability + verification):**
+**v0.12.1 follow-up:**
 
-| Task | Description | Owner |
-|------|-------------|-------|
-| S-007 | External engineer CLI cold-start test | CLIENT |
-| TASK-126 | Reduce property-invariant skips by tightening generators | TESTER |
-| TASK-127 | Add contract tests for units conversion boundaries | TESTER |
-| TASK-128 | Add BBS/DXF mark-diff regression fixtures | TESTER |
+All immediate v0.12 follow-up tasks completed:
+- ✅ S-007 — External engineer CLI cold-start test
+- ✅ TASK-129 (was TASK-126) — Property-invariant skips reduced
+- ✅ TASK-130 (was TASK-127) — Contract tests for units boundaries
+- ✅ TASK-131 (was TASK-128) — BBS/DXF mark-diff regression fixtures
+- ✅ TASK-089 — Effective flange width helper
 
-**Plan doc:** `docs/planning/bbs-dxf-improvement-plan.md`
+**Next:** Pick from backlog in [TASKS.md](../TASKS.md) or continue stabilization work.
 
 ---
 
@@ -67,7 +67,7 @@
 | Editing without reading file first | Merge conflicts, overwrites | Always read current state before editing |
 
 **Performance facts (latest CI 2025-12-30):**
-- Tests: 1956 passed, 91 skipped, 92% branch coverage
+- Tests: 1967 passed, 0 skipped, 92% branch coverage
 - Speed: 0.009ms per beam, 94,000 beams/second
 - All edge cases handled gracefully (zero/negative → `is_safe=False`)
 
