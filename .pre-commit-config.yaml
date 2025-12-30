@@ -94,6 +94,13 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-api-doc-signatures
+        name: Check API doc signatures
+        entry: python3 scripts/check_api_doc_signatures.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
       - id: check-next-session-brief-length
         name: Check next-session brief length
         entry: python3 scripts/check_next_session_brief_length.py
