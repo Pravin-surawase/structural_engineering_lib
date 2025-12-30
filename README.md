@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**Run ETABS beam exports through IS 456 design and get compliant rebar + DXF + schedules in minutes.**
+**Run ETABS beam exports through IS 456 checks/design and get compliant rebar + DXF + schedules in minutes.**
 
 [Quick Start](#quick-start) | [Documentation](docs/README.md) | [AI Summary](llms.txt) | [Examples](Python/examples/) | [API Reference](docs/reference/api.md)
 
@@ -58,7 +58,7 @@ Colab:
 %pip install -q "structural-lib-is456[dxf]"
 ```
 
-> **Naming:** Install `structural-lib-is456` · Import `structural_lib` · CLI `python -m structural_lib`
+> **Naming:** Install `structural-lib-is456` · Import `structural_lib` · CLI `python3 -m structural_lib`
 
 ### 2) API in 30 seconds
 
@@ -76,7 +76,7 @@ Example output:
 ```
 Ast required: 942 mm^2 | Status: OK
 ```
-Exact Ast may vary slightly by version due to rounding/table refinements.
+Exact Ast (mm²) may vary slightly by version due to rounding/table refinements.
 
 ### 3) CLI pipeline (CSV -> detailing -> BBS -> DXF)
 
@@ -85,10 +85,11 @@ Optional overrides (used by `detail` / forced detailing): `Ast_req, Asc_req, Sti
 
 PyPI (no clone):
 ```bash
-python -m structural_lib design input.csv -o results.json
-python -m structural_lib detail results.json -o detailing.json
-python -m structural_lib bbs results.json -o schedule.csv
-python -m structural_lib dxf results.json -o drawings.dxf
+pip install "structural-lib-is456[dxf]"
+python3 -m structural_lib design input.csv -o results.json
+python3 -m structural_lib detail results.json -o detailing.json
+python3 -m structural_lib bbs results.json -o schedule.csv
+python3 -m structural_lib dxf results.json -o drawings.dxf
 ```
 
 Repo dev (editable install):
@@ -112,7 +113,7 @@ Optional schema validation:
 python3 -m structural_lib validate results.json
 ```
 
-Design writes per-beam status in `results.json`; failed beams are flagged with `is_safe=false` and `error_message`.
+Design writes per-beam status in `results.json`; failed beams are flagged with `is_safe=false` (plus an error message).
 
 ETABS exports can be normalized into this schema. See `docs/specs/ETABS_INTEGRATION.md` for the mapping rules.
 
