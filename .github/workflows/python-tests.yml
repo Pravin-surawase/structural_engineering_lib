@@ -58,6 +58,18 @@ jobs:
         run: |
           python scripts/check_release_docs.py
 
+      - name: Session docs consistency check
+        run: |
+          python scripts/check_session_docs.py
+
+      - name: API docs sync check
+        run: |
+          python scripts/check_api_docs_sync.py
+
+      - name: Pre-release checklist structure check
+        run: |
+          python scripts/check_pre_release_checklist.py
+
   pytest:
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -73,6 +73,27 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-session-docs
+        name: Check session docs consistency
+        entry: python3 scripts/check_session_docs.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-api-docs-sync
+        name: Check API docs sync
+        entry: python3 scripts/check_api_docs_sync.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-pre-release-checklist
+        name: Check pre-release checklist structure
+        entry: python3 scripts/check_pre_release_checklist.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
 
 # CI note: pre-commit hooks run locally only.
 # CI has separate lint/format checks in .github/workflows/python-tests.yml
