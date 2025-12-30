@@ -10,6 +10,8 @@ Purpose: reach a professional-grade beam library with pandas-like reliability.
 **Next milestone:** v0.20.0 (Contract Lock checkpoint — includes S-007 by W06)
 **Target:** v1.0.0 in 52 weeks
 
+Note: For live version/test counts, see `docs/AI_CONTEXT_PACK.md`.
+
 ### Already Done (freeze these)
 - Core design functions: flexure (singly/doubly/flanged), shear, ductile
 - Detailing: Ld, lap length, spacing, bar callouts
@@ -26,6 +28,31 @@ Purpose: reach a professional-grade beam library with pandas-like reliability.
 - 10-15 Python↔VBA parity vectors passing
 - Schema versioning for job/results/schedule
 - Security scan in CI
+
+### Near-Term Release Milestones (v0.13–v0.17)
+Beam-only focus with added visualization and UX polish.
+
+**v0.13 — Verification + Visual Trust**
+- 5–10 verified benchmark cases with clause references.
+- Report visuals: utilization bars, governing case highlight, quick pass/fail tiles.
+- Short “explain this result” blocks in reports (beam-safe, deterministic).
+
+**v0.14 — Detailing Completeness + Friendlier Errors**
+- Side-face reinforcement check (Cl. 26.5.1.3).
+- Anchorage space check (Cl. 26.2).
+- Top error hints tightened with actionable suggestions.
+
+**v0.15 — Serviceability Level C**
+- Long-term deflection (creep + shrinkage) with explicit assumptions.
+- Serviceability outputs show assumptions in report payloads.
+
+**v0.16 — Torsion Phase 1 + Reporting Flags**
+- Basic torsion checks (Cl. 41) with opt-in inputs.
+- Report flags for torsion-governed cases.
+
+**v0.17 — Parity Automation + UX Cleanup**
+- VBA parity harness (10–15 vectors).
+- UX polish pass (CLI summaries, report readability, stable layouts).
 
 ### NO Until v1.1 (explicit scope boundary)
 | Deferred | Reason |
