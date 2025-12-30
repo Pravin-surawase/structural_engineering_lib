@@ -6,6 +6,18 @@ This doc does not replace existing rules. It links to the canonical sources and 
 
 ---
 
+## 0) First-time setup
+
+```bash
+cd Python && python -m venv ../.venv && source ../.venv/bin/activate
+pip install -e ".[dev]"
+pre-commit install
+```
+
+After this, always use `.venv/bin/python` (not bare `python`).
+
+---
+
 ## 1) Non-negotiables (read first)
 
 - Beam-only scope until v1.0. Do not expand scope in the core without PM approval.
@@ -25,8 +37,8 @@ Canonical sources:
 
 ### Branching and PRs
 - Use short-lived branches: `feat/task-XXX-...`, `fix/task-XXX-...`.
-- Squash merge after CI passes.
-- Delete branches after merge.
+- Squash merge after CI passes: `gh pr merge <PR> --squash --delete-branch`.
+- Delete branches after merge (the command above does this automatically).
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.
@@ -51,11 +63,12 @@ Recommended minimal labels:
 
 | Stage | Command | Why it matters |
 | --- | --- | --- |
-| Docs-only | `python scripts/check_doc_versions.py` | Prevent version drift |
-| Links touched | `python scripts/check_links.py` | Avoid broken docs |
+| Docs-only | `.venv/bin/python scripts/check_doc_versions.py` | Prevent version drift |
+| Links touched | `.venv/bin/python scripts/check_links.py` | Avoid broken docs |
 | Fast code check | `./scripts/quick_check.sh` | Catch basic issues early |
 | Full local CI | `./scripts/ci_local.sh` | CI parity before PR |
-| Release verify | `python scripts/verify_release.py --version X.Y.Z --source pypi` | Confirm PyPI artifact |
+| External CLI test | `.venv/bin/python scripts/external_cli_test.py` | S-007 cold-start validation |
+| Release verify | `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi` | Confirm PyPI artifact |
 
 If any check modifies files, re-stage and re-commit.
 
@@ -115,6 +128,7 @@ If any check modifies files, re-stage and re-commit.
 ## 7) AI agents usage (do this, avoid that)
 
 ### Do
+- **Read `.github/copilot-instructions.md` first** — it's the single source of truth for agent rules.
 - Pick a role (DEV/TESTER/DOCS/DEVOPS) before acting.
 - Read only the docs you need, then summarize.
 - Use the handoff template in `docs/_internal/AGENT_WORKFLOW.md`.
@@ -123,6 +137,12 @@ If any check modifies files, re-stage and re-commit.
 - Editing without reading current file content.
 - Large context dumps that obscure the task.
 - Making assumptions about schema or units.
+
+### Scope boundary (do NOT add until post-v1.0)
+- Frame/slab/foundation checks
+- 3D analysis or FEA
+- PDF report generation
+- ETABS API (COM/OAPI) — CSV-only until v1.0
 
 ---
 
