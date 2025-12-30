@@ -94,6 +94,20 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-next-session-brief-length
+        name: Check next-session brief length
+        entry: python3 scripts/check_next_session_brief_length.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-cli-reference
+        name: Check CLI reference commands
+        entry: python3 scripts/check_cli_reference.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
 
 # CI note: pre-commit hooks run locally only.
 # CI has separate lint/format checks in .github/workflows/python-tests.yml
