@@ -24,9 +24,7 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-079** | VBA parity spot-check | TESTER | 1 hr | 🟡 Medium | In progress |
+No active tasks. Move one item from "Up Next" when starting.
 
 ---
 
@@ -63,6 +61,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
 | **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
 | **TASK-131** | Add regression fixtures for BBS/DXF mark-diff (missing marks, mismatched counts) | TESTER | ✅ Done |
 | **TASK-130** | Add contract tests for units conversion boundaries at API/CLI entrypoints | TESTER | ✅ Done |

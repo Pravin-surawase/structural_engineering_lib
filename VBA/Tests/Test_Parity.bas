@@ -321,7 +321,7 @@ Private Sub Test_DET_004()
     Debug.Print ">>> DET-004: Bar spacing"
     
     Dim b As Double: b = 300#
-    Dim cover As Double: cover = 25#
+    Dim cover As Double: cover = 40#
     Dim stirrup As Double: stirrup = 8#
     Dim bar_dia As Double: bar_dia = 16#
     Dim n_bars As Long: n_bars = 3
