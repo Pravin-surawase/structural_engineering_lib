@@ -1,0 +1,35 @@
+name: Main Branch Guard
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  block-direct-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require PR for main commits
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.sha;
+
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner,
+              repo,
+              commit_sha: sha,
+            });
+
+            if (!prs || prs.length === 0) {
+              core.setFailed(`Direct commit to main detected (${sha}). Use a PR.`);
+              return;
+            }
+
+            const prList = prs.map(pr => `#${pr.number}`).join(", ");
+            core.info(`Commit is associated with PR(s): ${prList}`);
