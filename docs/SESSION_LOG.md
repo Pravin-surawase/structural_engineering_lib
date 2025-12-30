@@ -6,7 +6,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-30 — Session
 
-**Focus:** TASK-129/130/131 test hardening + start TASK-078
+**Focus:** TASK-129/130/131 test hardening + S-007 external CLI test
 
 **Completed:**
 - Reworked property-invariant comparisons to remove boundary skips (paired comparisons).
@@ -14,10 +14,18 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Added BBS/DXF mark-diff regression tests for missing/extra marks.
 - Validated seismic detailing checks (ductile + lap factor) for TASK-078.
 - Aligned VBA parity DET-004 cover input to match parity vectors (spacing = 94 mm).
+- Ran external CLI smoke test (S-007) in clean venv with PyPI install; PASS.
+
+**Issues observed:**
+- Pytest from repo root used the installed package (CLI subcommands missing). Already logged on 2025-12-29; fixed by running tests from `Python/` with `../.venv/bin/python`.
 
 **Tests:**
 - `cd Python && ../.venv/bin/python -m pytest tests/test_property_invariants.py tests/test_api_entrypoints_is456.py tests/test_cli.py tests/test_bbs_dxf_consistency.py`
 - `cd Python && ../.venv/bin/python -m pytest tests/test_ductile.py tests/test_detailing.py tests/test_critical_is456.py -q`
+- `/tmp/external_cli_test_gS70FF/.venv/bin/python external_cli_test.py --include-dxf`
+
+**Notes:**
+- External CLI log: `/private/tmp/external_cli_test_gS70FF/external_cli_test_run/external_cli_test.log` (local-only).
 
 ## 2025-12-30 — Session
 
