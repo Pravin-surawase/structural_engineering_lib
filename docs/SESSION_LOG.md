@@ -13,9 +13,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Added API and CLI unit-boundary contract checks (kN/kN-m conversion).
 - Added BBS/DXF mark-diff regression tests for missing/extra marks.
 - Validated seismic detailing checks (ductile + lap factor) for TASK-078.
-
-**Started:**
-- TASK-079: VBA parity spot-check (TESTER).
+- Aligned VBA parity DET-004 cover input to match parity vectors (spacing = 94 mm).
 
 **Tests:**
 - `cd Python && ../.venv/bin/python -m pytest tests/test_property_invariants.py tests/test_api_entrypoints_is456.py tests/test_cli.py tests/test_bbs_dxf_consistency.py`
