@@ -41,7 +41,6 @@ No active tasks. Move one item from "Up Next" when starting.
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-077** | External user CLI test | CLIENT | 1 hr | 🔴 Critical |
 
 ### Post-v1.0 (beam scope)
 
@@ -61,6 +60,7 @@ No active tasks. Move one item from "Up Next" when starting.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-077** | External user CLI test | CLIENT | ✅ Done |
 | **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
 | **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
 | **TASK-131** | Add regression fixtures for BBS/DXF mark-diff (missing marks, mismatched counts) | TESTER | ✅ Done |
