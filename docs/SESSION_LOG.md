@@ -6,6 +6,31 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2025-12-30 — Session
 
+**Focus:** Repo guardrails + doc consistency automation
+
+**Completed:**
+- Added main-branch guardrails (local pre-commit + CI PR-only enforcement).
+- Added doc consistency checks for TASKS, docs index, release docs, session docs, API docs, pre-release checklist, and next-session brief length.
+- Added CLI reference completeness check and updated CLI quick start list.
+- Added API doc signature check against `api.__all__`.
+- Cleaned TASKS.md and archived full history.
+- Added Table 19 out-of-range warning (shear) + tests + docs.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #204 | Guard against commits on main (local pre-commit) |
+| #205 | CI guard: main commits must be associated with a PR |
+| #206 | Warn on Table 19 fck out-of-range + tests/docs |
+| #207 | Clean TASKS.md + archive history + format guard |
+| #208 | Docs index structure check |
+| #209 | Release docs consistency guard + backfill v0.9.5/v0.2.1 |
+| #210 | Session/API/checklist doc guards |
+| #211 | Next-session length + CLI reference guards |
+| #212 | API doc signature guard (api.__all__) |
+
+## 2025-12-30 — Session
+
 **Focus:** v0.12 library-first APIs + release prep
 
 **Completed:**
