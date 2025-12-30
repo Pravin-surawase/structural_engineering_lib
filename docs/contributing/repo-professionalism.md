@@ -48,6 +48,7 @@ Canonical sources:
 
 ### Docs hygiene
 - Docs index structure is enforced locally and in CI: `scripts/check_docs_index.py`.
+- Release docs consistency is enforced locally and in CI: `scripts/check_release_docs.py`.
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.

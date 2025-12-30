@@ -235,6 +235,17 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.9.5
+**Date:** 2025-12-27
+**Status:** ✅ Locked & Verified
+**Mindset:** PyPI launch + docs restructure + release automation
+**Key Changes:**
+- **Published to PyPI:** Trusted Publishing (OIDC) with GitHub Release auto-creation.
+- **Docs restructure:** 7 folders (getting-started, reference, verification, contributing, architecture, planning, cookbook).
+- **Project metadata:** `project.urls` added to `pyproject.toml`.
+
+---
+
 ## v0.9.4
 **Date:** 2025-12-27
 **Status:** ✅ Locked & Verified
@@ -338,6 +349,14 @@ Use workflow_dispatch with `testpypi` target:
 - Flanged Beam Design (T/L Sections)
 - Neutral Axis analysis (Flange vs Web)
 - `Test_Flanged.bas`
+
+## v0.2.1
+**Date:** 2025-12-11
+**Status:** ✅ Locked
+**Key Fixes (Mac VBA Compatibility):**
+- Stack corruption fixes for boolean pass-by-value cases.
+- Wrapped dimension multiplications in `CDbl()` to avoid overflow.
+- Safer test harness assertions in `Test_Structural.bas`.
 
 ## v0.2.0
 **Date:** 2025-12-11
