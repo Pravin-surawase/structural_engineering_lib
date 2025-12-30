@@ -1,0 +1,155 @@
+# Repo Professionalism Playbook
+
+Purpose: keep the repo reliable, predictable, and safe to publish even when work is fast or done by multiple agents.
+
+This doc does not replace existing rules. It links to the canonical sources and adds a practical "what to do next" map.
+
+---
+
+## 1) Non-negotiables (read first)
+
+- Beam-only scope until v1.0. Do not expand scope in the core without PM approval.
+- Determinism and units are mandatory (see `docs/reference/known-pitfalls.md`).
+- No direct commits to `main`. All changes go through PRs.
+- Every change links to a TASK or Issue and updates docs with code.
+
+Canonical sources:
+- Git rules: `docs/_internal/GIT_GOVERNANCE.md`
+- Dev standards: `docs/contributing/development-guide.md`
+- Test strategy: `docs/contributing/testing-strategy.md`
+- Agent workflow: `docs/_internal/AGENT_WORKFLOW.md`
+
+---
+
+## 2) GitHub hygiene and governance
+
+### Branching and PRs
+- Use short-lived branches: `feat/task-XXX-...`, `fix/task-XXX-...`.
+- Squash merge after CI passes.
+- Delete branches after merge.
+
+### PR discipline
+- Use the PR template in `.github/pull_request_template.md`.
+- Link a TASK ID in the PR body.
+- Wait for CI: `gh pr checks <PR> --watch`.
+
+### Issues and labels (keep small)
+Recommended minimal labels:
+- `type/bug`, `type/feature`, `type/docs`
+- `prio/P0`, `prio/P1`, `prio/P2`
+- `area/core`, `area/dxf`, `area/bbs`, `area/vba`, `area/docs`
+- `agent/DEV`, `agent/TESTER`, `agent/DOCS`
+
+### Releases
+- Append to `docs/RELEASES.md` and `CHANGELOG.md`.
+- Tag after merge: `git tag -a vX.Y.Z -m "vX.Y.Z"`.
+- Publish via Actions (Trusted Publishing).
+
+---
+
+## 3) Quality gates and checks
+
+| Stage | Command | Why it matters |
+| --- | --- | --- |
+| Docs-only | `python scripts/check_doc_versions.py` | Prevent version drift |
+| Links touched | `python scripts/check_links.py` | Avoid broken docs |
+| Fast code check | `./scripts/quick_check.sh` | Catch basic issues early |
+| Full local CI | `./scripts/ci_local.sh` | CI parity before PR |
+| Release verify | `python scripts/verify_release.py --version X.Y.Z --source pypi` | Confirm PyPI artifact |
+
+If any check modifies files, re-stage and re-commit.
+
+---
+
+## 4) Automation map (what is automated vs manual)
+
+### Automated now
+- Python CI tests + lint + typecheck + CodeQL
+- Doc version drift check in CI
+- Pre-commit formatting and whitespace fixes
+- Release tagging and PyPI publishing workflow
+
+### Manual now
+- VBA test runs and parity checks
+- External CLI cold-start test (S-007)
+
+### Next automation candidates
+- VBA build automation (.xlam)
+- Python <-> VBA parity harness
+- Release notes draft from PR labels
+
+---
+
+## 5) Learn from professional libraries
+
+### What they do right
+- Stable API contracts and explicit deprecation policy
+- Strict versioning and release notes
+- Deterministic outputs and golden tests
+- Clear docs with examples that run
+
+### Common mistakes to avoid
+- Silent breaking changes in schemas
+- Unit ambiguity or mixed conventions
+- Tests that are brittle or too strict
+- Docs that drift from code
+
+### How we apply it here
+- Schema versioning and library contract docs
+- Golden examples in `Python/examples/`
+- CI gates + pre-release checklist
+- API stability labels in `docs/reference/api-stability.md`
+
+---
+
+## 6) Repo structure rules
+
+- Keep the 3-layer architecture intact (core/app/io).
+- Do not refactor the core structure pre-v1.0.
+- Put public contracts in `docs/reference/`.
+- Put plans and research in `docs/planning/`.
+- Put maintainer workflows in `docs/contributing/`.
+
+---
+
+## 7) AI agents usage (do this, avoid that)
+
+### Do
+- Pick a role (DEV/TESTER/DOCS/DEVOPS) before acting.
+- Read only the docs you need, then summarize.
+- Use the handoff template in `docs/_internal/AGENT_WORKFLOW.md`.
+
+### Avoid
+- Editing without reading current file content.
+- Large context dumps that obscure the task.
+- Making assumptions about schema or units.
+
+---
+
+## 8) Confidence loop (minimal but effective)
+
+**Per-session checklist**
+1) Run `scripts/start_session.py`.
+2) Pick one TASK and finish it.
+3) Run the relevant checks (docs or code).
+4) Update `docs/SESSION_LOG.md` and `docs/TASKS.md`.
+5) Stop.
+
+**Release checklist (high level)**
+- CI green
+- Doc drift clean
+- Verification pack still passes
+- External CLI test done (S-007)
+- `docs/RELEASES.md` and `CHANGELOG.md` updated
+
+Full checklist: `docs/planning/pre-release-checklist.md`.
+
+---
+
+## 9) Quick links
+
+- Git governance: `docs/_internal/GIT_GOVERNANCE.md`
+- Development guide: `docs/contributing/development-guide.md`
+- Testing strategy: `docs/contributing/testing-strategy.md`
+- Pre-release checklist: `docs/planning/pre-release-checklist.md`
+- Agent workflow: `docs/_internal/AGENT_WORKFLOW.md`
