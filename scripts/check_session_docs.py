@@ -69,14 +69,22 @@ def main() -> int:
 
     # Check session log has matching date header.
     session_heading = f"## {date_str}"
+    first_session_line = None
     session_idx = -1
     for idx, line in enumerate(session_lines):
+        if line.startswith("## ") and first_session_line is None:
+            first_session_line = line
         if line.startswith(session_heading) and "Session" in line:
             session_idx = idx
             break
 
     if session_idx == -1:
         print(f"ERROR: SESSION_LOG.md missing session entry for {date_str}")
+        return 1
+
+    if first_session_line is not None and not first_session_line.startswith(session_heading):
+        print("ERROR: SESSION_LOG.md newest session must be at the top (append-only).")
+        print(f"Expected first session header to start with {session_heading}.")
         return 1
 
     # Ensure Focus appears near the session header.
