@@ -28,6 +28,9 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - Core calculations use absolute values of Mu/Vu; UI/app layer must handle sign and tension face.
 - Validate geometry: b > 0, d > 0, D > d, cover < D; reject impossible sections early.
 
+## Flanged Beams
+- Effective flange width helpers expect **effective span** (center-to-center) and explicit flange overhangs; do not pass a single total width without splitting left/right.
+
 ## Integer vs Floating Division (VBA)
 - Use `/` for floating division; `\` truncates (integer division) and will corrupt results.
 

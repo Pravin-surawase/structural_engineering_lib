@@ -4,8 +4,9 @@ Description:  Flexural design and analysis functions
 """
 
 import math
+from typing import Union
 from . import materials
-from .types import FlexureResult, DesignSectionType
+from .types import BeamType, FlexureResult, DesignSectionType
 from .errors import (
     E_INPUT_001,
     E_INPUT_002,
@@ -41,6 +42,76 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     mu_lim_nmm = k * fck * b * d * d
 
     return mu_lim_nmm / 1000000.0  # Convert back to kN-m
+
+
+def calculate_effective_flange_width(
+    *,
+    bw_mm: float,
+    span_mm: float,
+    df_mm: float,
+    flange_overhang_left_mm: float,
+    flange_overhang_right_mm: float,
+    beam_type: Union[BeamType, str],
+) -> float:
+    """
+    Calculate effective flange width (IS 456 Cl 23.1.2).
+
+    Args:
+        bw_mm: Web width (mm).
+        span_mm: Effective span (mm).
+        df_mm: Flange thickness (mm).
+        flange_overhang_left_mm: Flange overhang beyond web on left (mm).
+        flange_overhang_right_mm: Flange overhang beyond web on right (mm).
+        beam_type: BeamType.FLANGED_T, BeamType.FLANGED_L, or string alias ("T", "L").
+
+    Returns:
+        Effective flange width (mm).
+
+    Notes:
+        - Uses IS 456 limits:
+          T-beam: bf <= bw + span/6 + 6*df
+          L-beam: bf <= bw + span/12 + 3*df
+        - The effective width is min(geometric width, code limit).
+    """
+    if bw_mm <= 0 or span_mm <= 0 or df_mm <= 0:
+        raise ValueError("bw_mm, span_mm, and df_mm must be > 0.")
+    if flange_overhang_left_mm < 0 or flange_overhang_right_mm < 0:
+        raise ValueError("Flange overhangs must be >= 0.")
+
+    if isinstance(beam_type, BeamType):
+        beam_type_normalized = beam_type
+    elif isinstance(beam_type, str):
+        bt = beam_type.strip().upper()
+        if bt in ("T", "FLANGED_T", "T_BEAM"):
+            beam_type_normalized = BeamType.FLANGED_T
+        elif bt in ("L", "FLANGED_L", "L_BEAM"):
+            beam_type_normalized = BeamType.FLANGED_L
+        elif bt in ("RECTANGULAR", "RECT", "R"):
+            beam_type_normalized = BeamType.RECTANGULAR
+        else:
+            raise ValueError(
+                "beam_type must be 'T', 'L', or BeamType.FLANGED_T/FLANGED_L."
+            )
+    else:
+        raise ValueError("beam_type must be a string or BeamType.")
+
+    bf_geom = bw_mm + flange_overhang_left_mm + flange_overhang_right_mm
+    if bf_geom < bw_mm:
+        raise ValueError("Geometric flange width must be >= bw_mm.")
+
+    if beam_type_normalized == BeamType.RECTANGULAR:
+        if flange_overhang_left_mm > 0 or flange_overhang_right_mm > 0:
+            raise ValueError("Rectangular beam cannot have flange overhangs.")
+        return bw_mm
+
+    if beam_type_normalized == BeamType.FLANGED_T:
+        bf_limit = bw_mm + (span_mm / 6.0) + (6.0 * df_mm)
+    elif beam_type_normalized == BeamType.FLANGED_L:
+        bf_limit = bw_mm + (span_mm / 12.0) + (3.0 * df_mm)
+    else:
+        raise ValueError("beam_type must be FLANGED_T or FLANGED_L for flanged beams.")
+
+    return min(bf_geom, bf_limit)
 
 
 def calculate_ast_required(

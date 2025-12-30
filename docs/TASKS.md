@@ -52,7 +52,6 @@ No active tasks. Move one item from "Up Next" when starting.
 | **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | 4 hrs | 🟡 Medium |
 | **TASK-087** | Anchorage space check (Cl. 26.2) | DEV | 1 day | 🟡 Medium |
 | **TASK-088** | Slenderness/stability check (Cl. 23.1.2) | DEV | 4 hrs | 🟡 Medium |
-| **TASK-089** | Flanged effective width helper | INTEGRATION | 1 day | 🟡 Medium |
 
 ---
 
@@ -60,6 +59,7 @@ No active tasks. Move one item from "Up Next" when starting.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-089** | Flanged effective width helper | INTEGRATION | ✅ Done |
 | **TASK-077** | External user CLI test | CLIENT | ✅ Done |
 | **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
 | **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
