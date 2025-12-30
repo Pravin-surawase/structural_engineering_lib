@@ -59,6 +59,13 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-docs-index
+        name: Check docs index structure
+        entry: python3 scripts/check_docs_index.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
 
 # CI note: pre-commit hooks run locally only.
 # CI has separate lint/format checks in .github/workflows/python-tests.yml

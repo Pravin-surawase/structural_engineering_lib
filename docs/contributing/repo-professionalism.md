@@ -46,6 +46,9 @@ Canonical sources:
 - TASKS format is enforced locally: `scripts/check_tasks_format.py`.
 - Keep WIP=1 and move tasks between sections (no duplicates).
 
+### Docs hygiene
+- Docs index structure is enforced locally and in CI: `scripts/check_docs_index.py`.
+
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.
 - Link a TASK ID in the PR body.
