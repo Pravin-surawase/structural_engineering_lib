@@ -61,9 +61,8 @@ def get_test_counts() -> tuple[int, int]:
                 "-m",
                 "pytest",
                 "tests/",
-                "-q",
                 "--tb=no",
-                "--no-header",
+                "--disable-warnings",
             ],
             cwd=get_project_root() / "Python",
             capture_output=True,
@@ -137,9 +136,6 @@ def check_test_counts(fix: bool = False) -> list[str]:
         if found_passed:
             doc_passed = int(found_passed.group(1))
             if doc_passed != passed:
-                issues.append(
-                    f"{doc_path}: Shows {doc_passed} passed, actual is {passed}"
-                )
                 if fix:
                     content = re.sub(
                         r"(\d+)(\s*)(passed|pass)",
@@ -148,13 +144,14 @@ def check_test_counts(fix: bool = False) -> list[str]:
                     )
                     full_path.write_text(content)
                     print(f"  ✅ Fixed {doc_path}")
+                else:
+                    issues.append(
+                        f"{doc_path}: Shows {doc_passed} passed, actual is {passed}"
+                    )
 
         if found_skipped:
             doc_skipped = int(found_skipped.group(1))
             if doc_skipped != skipped:
-                issues.append(
-                    f"{doc_path}: Shows {doc_skipped} skipped, actual is {skipped}"
-                )
                 if fix:
                     content = re.sub(
                         r"(\d+)(\s*)(skipped|skip)",
@@ -163,6 +160,10 @@ def check_test_counts(fix: bool = False) -> list[str]:
                     )
                     full_path.write_text(content)
                     print(f"  ✅ Fixed {doc_path}")
+                else:
+                    issues.append(
+                        f"{doc_path}: Shows {doc_skipped} skipped, actual is {skipped}"
+                    )
 
     return issues
 
