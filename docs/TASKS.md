@@ -2,6 +2,8 @@
 
 > Single source of truth for work. Keep it short and current.
 
+**Updated:** 2025-12-30
+
 ---
 
 ## Rules (read first)

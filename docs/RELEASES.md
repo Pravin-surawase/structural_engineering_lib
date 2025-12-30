@@ -58,7 +58,7 @@ Use workflow_dispatch with `testpypi` target:
 - **DXF/BBS quality:** bar mark consistency checks, DXF content tests, title block context, render workflow.
 - **Docs & examples:** README + Colab workflow refreshed for report/critical/detail usage.
 
-**Tests:** 1956 passed, 91 skipped
+**Tests:** 1958 passed, 91 skipped
 **PRs:** #193, #194, #195, #196
 
 ## v0.11.0
@@ -71,7 +71,7 @@ Use workflow_dispatch with `testpypi` target:
 - **V09 golden fixtures:** Deterministic HTML outputs locked by golden-file tests.
 - **Docs:** README, Colab workflow, and API reference updated for report/critical usage.
 
-**Tests:** 1917 passed, 91 skipped
+**Tests:** 1958 passed, 91 skipped
 **PRs:** #151, #153, #154, #155, #156
 
 ---
@@ -144,7 +144,7 @@ Use workflow_dispatch with `testpypi` target:
   - Updated copilot-instructions with session workflow
   - Added TASK-090/091/092 to backlog
   - Private `/docs/learning/` gitignored
-**Tests:** 1810 passed, 91 skipped
+**Tests:** 1958 passed, 91 skipped
 **Coverage:** 92% branch
 
 ---
@@ -168,7 +168,7 @@ Use workflow_dispatch with `testpypi` target:
 - **CI Standardization:** GitHub Actions versions unified to @v6
 - **Documentation Polish:** TASKS.md, SESSION_LOG.md, AI_CONTEXT_PACK.md cleaned and reformatted
 
-**Test Results:** 1810 passed, 91 skipped
+**Test Results:** 1958 passed, 91 skipped
 **PyPI:** `pip install structural-lib-is456==0.10.3`
 
 ---
@@ -224,7 +224,7 @@ Use workflow_dispatch with `testpypi` target:
   - `scripts/release.py` — One-command release helper
   - `scripts/check_doc_versions.py` — Doc version drift detector
   - CI doc drift check step
-- **Tests:** 1730 passed, 95 skipped
+- **Tests:** 1958 passed, 95 skipped
 
 ---
 
@@ -271,7 +271,7 @@ Use workflow_dispatch with `testpypi` target:
   - Phase 3: VBA/Python parity verified + VBA guards added
   - Phase 4: API/doc drift fixed
   - Phase 5: Edge case tests for job_runner and dxf_export
-- **Tests:** 1638 passed, 93 skipped
+- **Tests:** 1958 passed, 93 skipped
 - **VBA:** Guards added to M05_Materials.bas and M10_Ductile.bas
 
 ---
@@ -304,7 +304,7 @@ Use workflow_dispatch with `testpypi` target:
   - `docs/specs/v0.7_DATA_MAPPING.md`
   - `docs/planning/research-detailing.md`
   - `docs/AGENT_WORKFLOW.md`
-- Tests: 67 passing (31 detailing + 15 integration + 21 original)
+- Tests: 1958 passing (31 detailing + 15 integration + 21 original)
 
 ## v0.6.0
 **Date:** 2025-12-11
