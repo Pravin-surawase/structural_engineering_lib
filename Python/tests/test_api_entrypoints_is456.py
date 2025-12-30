@@ -53,6 +53,24 @@ def test_design_beam_is456_returns_case_result_and_records_pt_assumption():
     assert "Computed pt_percent for shear" in res.remarks
 
 
+def test_design_beam_is456_converts_vu_kn_to_tv_nmm2():
+    res = api.design_beam_is456(
+        units="IS456",
+        case_id="C-TV",
+        mu_knm=50.0,
+        vu_kn=80.0,
+        b_mm=200.0,
+        D_mm=450.0,
+        d_mm=400.0,
+        fck_nmm2=25.0,
+        fy_nmm2=500.0,
+        pt_percent=1.0,
+        asv_mm2=100.0,
+    )
+
+    assert res.shear.tv == pytest.approx(1.0, rel=0.0, abs=1e-6)
+
+
 def test_check_beam_is456_runs_multi_case_report():
     cases = [
         {"case_id": "C1", "mu_knm": 80.0, "vu_kn": 60.0},

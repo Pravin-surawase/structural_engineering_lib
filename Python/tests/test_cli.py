@@ -272,6 +272,67 @@ def test_design_from_csv(sample_csv_file, tmp_path):
     assert "detailing" in data["beams"][0]
 
 
+def test_design_units_conversion_boundary(tmp_path):
+    """Design output should reflect kN/kN-m inputs at the CLI boundary."""
+    csv_path = tmp_path / "units_boundary.csv"
+    output_file = tmp_path / "results.json"
+
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(
+            [
+                "BeamID",
+                "Story",
+                "b",
+                "D",
+                "eff_d",
+                "Span",
+                "Cover",
+                "fck",
+                "fy",
+                "Mu",
+                "Vu",
+                "Ast_req",
+                "Asc_req",
+                "Stirrup_Dia",
+                "Stirrup_Spacing",
+                "Status",
+            ]
+        )
+        writer.writerow(
+            [
+                "B1",
+                "S1",
+                "200",
+                "450",
+                "400",
+                "4000",
+                "40",
+                "25",
+                "500",
+                "50",
+                "80",
+                "0",
+                "0",
+                "8",
+                "150",
+                "OK",
+            ]
+        )
+
+    rc = cli_main.main(["design", str(csv_path), "-o", str(output_file)])
+
+    assert rc == 0
+    assert output_file.exists()
+
+    payload = json.loads(output_file.read_text(encoding="utf-8"))
+    beam = payload["beams"][0]
+
+    assert beam["loads"]["mu_knm"] == 50.0
+    assert beam["loads"]["vu_kn"] == 80.0
+    assert beam["shear"]["tau_v_nmm2"] == pytest.approx(1.0, rel=0.0, abs=1e-6)
+
+
 def test_design_with_deflection(sample_csv_file, tmp_path):
     """Deflection flag should populate serviceability fields."""
     output_file = tmp_path / "results.json"
