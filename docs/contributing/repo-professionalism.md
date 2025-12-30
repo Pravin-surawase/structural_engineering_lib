@@ -55,6 +55,7 @@ Canonical sources:
 - API doc signatures are enforced locally and in CI: `scripts/check_api_doc_signatures.py`.
 - Next-session brief length is enforced locally and in CI: `scripts/check_next_session_brief_length.py`.
 - CLI reference completeness is enforced locally and in CI: `scripts/check_cli_reference.py`.
+- Docs index links are enforced locally and in CI: `scripts/check_docs_index_links.py`.
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.
