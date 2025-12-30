@@ -40,6 +40,7 @@ Canonical sources:
 - Squash merge after CI passes: `gh pr merge <PR> --squash --delete-branch`.
 - Delete branches after merge (the command above does this automatically).
 - Local guardrail: pre-commit blocks commits on `main` (see `.pre-commit-config.yaml`).
+- CI guardrail: pushes to `main` must be associated with a PR (see `.github/workflows/main-branch-guard.yml`).
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.
