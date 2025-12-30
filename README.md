@@ -28,6 +28,10 @@
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
+**In main (target v0.12):**
+- **Detailing JSON export:** `detail` CLI emits a stable detailing JSON (bars, stirrups, Ld/lap).
+- **Library-first wrappers:** `api.compute_detailing`, `api.compute_bbs`, `api.export_bbs`.
+
 ## What makes it different
 
 ```
@@ -55,6 +59,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 | Output | Format | Description |
 |--------|--------|-------------|
 | Reinforcement schedules | CSV/JSON | Bar callouts with weights |
+| Detailing output | JSON | Bars/stirrups + Ld/lap from design results |
 | Detail drawings | DXF | CAD-ready bar layouts |
 | Compliance reports | JSON | Strength + serviceability checks |
 | Bar bending schedules | CSV | Per IS 2502 with cutting lengths |
@@ -144,6 +149,9 @@ python3 -m pip install -e ".[dxf]"  # optional, for DXF export support
 
 # Design beams from CSV
 python3 -m structural_lib design examples/sample_beam_design.csv -o results.json
+
+# Generate detailing JSON
+python3 -m structural_lib detail results.json -o detailing.json
 
 # Generate bar bending schedule
 python3 -m structural_lib bbs results.json -o schedule.csv
