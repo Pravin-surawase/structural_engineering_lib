@@ -16,6 +16,7 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 
 ## Table 19/20 Usage
 - Table 19: Clamp pt to 0.15–3.0%; use nearest lower concrete grade column (no fck interpolation).
+- Table 19 range: fck is 15–40 only; values outside are clamped to bounds with a warning.
 - Table 20: If τv > τc,max, section is inadequate — do not proceed to stirrup design.
 - Test exact table points exactly; use bounds for interpolation cases.
 

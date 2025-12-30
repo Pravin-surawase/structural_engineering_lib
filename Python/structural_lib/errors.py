@@ -267,6 +267,15 @@ E_SHEAR_003 = DesignError(
     clause="Cl. 26.5.1.6",
 )
 
+E_SHEAR_004 = DesignError(
+    code="E_SHEAR_004",
+    severity=Severity.WARNING,
+    message="fck outside Table 19 range (15-40). Using nearest bound values.",
+    field="fck",
+    hint="Use fck within 15-40 for Table 19 or confirm conservative design.",
+    clause="Table 19",
+)
+
 # Ductile Detailing Errors
 E_DUCTILE_001 = DesignError(
     code="E_DUCTILE_001",

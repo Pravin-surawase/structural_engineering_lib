@@ -14,6 +14,7 @@ from .errors import (
     E_INPUT_009,
     E_SHEAR_001,
     E_SHEAR_003,
+    E_SHEAR_004,
 )
 
 
@@ -103,6 +104,10 @@ def design_shear(
             errors=[E_INPUT_009],
         )
 
+    warning_errors = []
+    if fck < 15 or fck > 40:
+        warning_errors.append(E_SHEAR_004)
+
     # 1. Calculate Tv
     tv = calculate_tv(vu_kn, b, d)
 
@@ -119,7 +124,7 @@ def design_shear(
             spacing=0.0,
             is_safe=False,
             remarks="Shear stress exceeds Tc_max. Redesign section.",
-            errors=[E_SHEAR_001],
+            errors=warning_errors + [E_SHEAR_001],
         )
 
     # 3. Get Tc
@@ -128,7 +133,7 @@ def design_shear(
     # 4. Calculate Vus and Spacing
     vu_n = abs(vu_kn) * 1000.0
     vc_n = tc * b * d
-    design_errors = []
+    design_errors = list(warning_errors)
 
     if tv <= tc:
         # Nominal shear < Design strength
