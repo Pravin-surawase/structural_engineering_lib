@@ -9,6 +9,17 @@
 
 ---
 
+## Latest Handoff (auto)
+
+<!-- HANDOFF:START -->
+- Date: 2025-12-30
+- Focus: Repo guardrails + doc consistency automation
+- Completed: Added main-branch guardrails (local pre-commit + CI PR-only enforcement).; Added doc consistency checks for TASKS, docs index, release docs, session docs, API docs, pre-release checklist, and next-session brief length.; Added CLI reference completeness check and updated CLI quick start list.
+- PRs merged: #204, #205, #206, #207, #208, #209
+<!-- HANDOFF:END -->
+
+
+
 ## 🎯 Immediate Priority
 
 **v0.12 follow-up (stability + verification):**
