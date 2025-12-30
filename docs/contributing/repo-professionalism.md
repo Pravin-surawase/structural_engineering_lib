@@ -50,6 +50,7 @@ Canonical sources:
 - Docs index structure is enforced locally and in CI: `scripts/check_docs_index.py`.
 - Release docs consistency is enforced locally and in CI: `scripts/check_release_docs.py`.
 - Session docs consistency is enforced locally and in CI: `scripts/check_session_docs.py`.
+- Handoff brief is derived from SESSION_LOG: `scripts/update_handoff.py` (or `scripts/end_session.py --fix`).
 - API docs sync is enforced locally and in CI: `scripts/check_api_docs_sync.py`.
 - Pre-release checklist structure is enforced locally and in CI: `scripts/check_pre_release_checklist.py`.
 - API doc signatures are enforced locally and in CI: `scripts/check_api_doc_signatures.py`.
@@ -170,7 +171,8 @@ If any check modifies files, re-stage and re-commit.
 2) Pick one TASK and finish it.
 3) Run the relevant checks (docs or code).
 4) Update `docs/SESSION_LOG.md` and `docs/TASKS.md`.
-5) Stop.
+5) Run `scripts/update_handoff.py` (or `scripts/end_session.py --fix`).
+6) Stop.
 
 **Release checklist (high level)**
 - CI green

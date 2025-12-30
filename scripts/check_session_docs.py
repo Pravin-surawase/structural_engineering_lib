@@ -10,6 +10,9 @@ NEXT_PATH = Path("docs/planning/next-session-brief.md")
 SESSION_PATH = Path("docs/SESSION_LOG.md")
 
 DATE_RE = re.compile(r"Date:\*\*?\s*(\d{4}-\d{2}-\d{2})")
+HANDOFF_DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
+HANDOFF_START = "<!-- HANDOFF:START -->"
+HANDOFF_END = "<!-- HANDOFF:END -->"
 
 
 def _find_heading(lines: list[str], heading: str) -> int:
@@ -26,6 +29,26 @@ def _section(lines: list[str], start_idx: int) -> list[str]:
             end_idx = idx
             break
     return lines[start_idx + 1 : end_idx]
+
+
+def _handoff_date(lines: list[str]) -> str | None:
+    start_idx = -1
+    end_idx = -1
+    for idx, line in enumerate(lines):
+        if HANDOFF_START in line:
+            start_idx = idx
+        if HANDOFF_END in line and start_idx != -1:
+            end_idx = idx
+            break
+    if start_idx == -1 or end_idx == -1 or end_idx <= start_idx:
+        return None
+
+    for line in lines[start_idx:end_idx]:
+        if line.strip().startswith("- Date:"):
+            match = HANDOFF_DATE_RE.search(line)
+            if match:
+                return match.group(1)
+    return None
 
 
 def main() -> int:
@@ -66,6 +89,15 @@ def main() -> int:
         return 1
 
     date_str = date_match.group(1)
+    handoff_date = _handoff_date(next_lines)
+    if not handoff_date:
+        print("ERROR: next-session-brief.md missing Latest Handoff block")
+        print("Run: python scripts/update_handoff.py")
+        return 1
+    if handoff_date != date_str:
+        print("ERROR: Latest Handoff date does not match next-session-brief Date field")
+        print(f"Expected {date_str}, found {handoff_date}")
+        return 1
 
     # Check session log has matching date header.
     session_heading = f"## {date_str}"

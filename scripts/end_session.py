@@ -120,6 +120,32 @@ def run_handoff_checker(fix: bool = False, skip_tests: bool = False) -> tuple[bo
         return False, f"Error: {e}"
 
 
+def run_handoff_update() -> tuple[bool, str]:
+    """Update next-session-brief.md from the latest SESSION_LOG entry."""
+    update_script = REPO_ROOT / "scripts" / "update_handoff.py"
+    if not update_script.exists():
+        return True, "Handoff updater not found (skipping)"
+
+    venv_python = REPO_ROOT / ".venv" / "bin" / "python"
+    python_exe = str(venv_python) if venv_python.exists() else sys.executable
+
+    try:
+        result = subprocess.run(
+            [python_exe, str(update_script)],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+
+        if result.returncode == 0:
+            return True, "Updated next-session-brief.md handoff block"
+        output = result.stdout.strip() or result.stderr.strip()
+        return False, output or "Handoff updater failed"
+    except Exception as e:
+        return False, f"Error: {e}"
+
+
 def check_links() -> tuple[bool, str]:
     """Run link checker if available."""
     link_script = REPO_ROOT / "scripts" / "check_links.py"
@@ -203,6 +229,17 @@ def main():
     else:
         print("  ✅ Working tree clean")
     print()
+
+    # 2. Handoff checks
+    if args.fix:
+        print("🧭 Handoff Brief:")
+        passed, msg = run_handoff_update()
+        if passed:
+            print(f"  ✅ {msg}")
+        else:
+            print(f"  ⚠️  {msg}")
+            all_passed = False
+        print()
 
     # 2. Handoff checks
     print("🔍 Handoff Checks:")
