@@ -11,7 +11,6 @@ from typing import Any, Dict, Optional, Sequence, Union
 
 from . import bbs
 from . import beam_pipeline
-from . import dxf_export
 from . import compliance
 from . import detailing
 from . import ductile
@@ -415,12 +414,14 @@ def compute_dxf(
     title_block_height_mm: float = 40.0,
 ) -> Path:
     """Generate DXF drawings from detailing results."""
-    if dxf_export is None:
+    from . import dxf_export as _dxf_export
+
+    if _dxf_export is None:
         raise RuntimeError(
             "DXF export module not available. Install with: "
             'pip install "structural-lib-is456[dxf]"'
         )
-    if not dxf_export.EZDXF_AVAILABLE:
+    if not _dxf_export.EZDXF_AVAILABLE:
         raise RuntimeError(
             "ezdxf library not installed. Install with: "
             'pip install "structural-lib-is456[dxf]"'
@@ -433,7 +434,7 @@ def compute_dxf(
 
     use_multi = multi or len(detailing_list) > 1
     if use_multi:
-        dxf_export.generate_multi_beam_dxf(
+        _dxf_export.generate_multi_beam_dxf(
             detailing_list,
             str(output_path),
             include_title_block=include_title_block,
@@ -443,7 +444,7 @@ def compute_dxf(
             title_block_height_mm=title_block_height_mm,
         )
     else:
-        dxf_export.generate_beam_dxf(
+        _dxf_export.generate_beam_dxf(
             detailing_list[0],
             str(output_path),
             include_title_block=include_title_block,
