@@ -52,6 +52,8 @@ Canonical sources:
 - Session docs consistency is enforced locally and in CI: `scripts/check_session_docs.py`.
 - API docs sync is enforced locally and in CI: `scripts/check_api_docs_sync.py`.
 - Pre-release checklist structure is enforced locally and in CI: `scripts/check_pre_release_checklist.py`.
+- Next-session brief length is enforced locally and in CI: `scripts/check_next_session_brief_length.py`.
+- CLI reference completeness is enforced locally and in CI: `scripts/check_cli_reference.py`.
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.

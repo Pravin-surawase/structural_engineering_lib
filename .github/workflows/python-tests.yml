@@ -70,6 +70,14 @@ jobs:
         run: |
           python scripts/check_pre_release_checklist.py
 
+      - name: Next-session brief length check
+        run: |
+          python scripts/check_next_session_brief_length.py
+
+      - name: CLI reference check
+        run: |
+          python scripts/check_cli_reference.py
+
   pytest:
     runs-on: ubuntu-latest
     timeout-minutes: 15

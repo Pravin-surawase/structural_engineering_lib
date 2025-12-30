@@ -24,6 +24,21 @@ python -m structural_lib dxf results.json -o drawings.dxf
 
 # Run complete job
 python -m structural_lib job job.json -o ./output/
+
+# Validate inputs/results
+python -m structural_lib validate job.json
+
+# Generate detailing JSON
+python -m structural_lib detail results.json -o detailing.json
+
+# Generate critical set table
+python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
+
+# Generate report
+python -m structural_lib report ./output --format=html -o report.html
+
+# Compare BBS and DXF marks
+python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 ```
 
 ---
