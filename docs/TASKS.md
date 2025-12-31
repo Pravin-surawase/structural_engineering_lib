@@ -16,9 +16,9 @@
 
 ## Current Release
 
-- Target: v0.13.0 (insights foundation)
-- Focus: advisory insights + verification pack + safe CLI output
-- Blockers: none (update when set)
+- Target: v0.14.0 (TBD)
+- Focus: Post-insights enhancements
+- Blockers: none
 
 ---
 

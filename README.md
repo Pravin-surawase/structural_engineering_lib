@@ -25,9 +25,9 @@
 
 ## Status
 
-🚀 **Active (v0.12.0)** — Published on PyPI. Unified CLI + design + detailing + DXF export + serviceability (Level A+B).
+🚀 **Active (v0.13.0)** — Published on PyPI. Unified CLI + design + detailing + DXF export + serviceability (Level A+B).
 
-**What's new in v0.12.0:**
+**What's new in v0.13.0:**
 - **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
 - **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.
 - **DXF/BBS quality gates:** bar mark consistency checks, DXF content tests, title block context, and render workflow.
@@ -39,7 +39,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 - **Test hardening:** contract tests for units boundaries + reduced property-invariant skips.
 - **DXF/BBS regressions:** dedicated fixtures for mark-diff edge cases.
 
-**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.12.0`).
+**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.13.0`).
 
 ## Quick Start
 

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.13.0] - 2025-12-31
+
 ### Added
 - **Insights verification pack** (`tests/test_insights_verification_pack.py`, `tests/data/insights_benchmark_cases.json`)
   - 10 benchmark cases covering precheck, sensitivity, and constructability

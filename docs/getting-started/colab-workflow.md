@@ -1,6 +1,6 @@
 # Colab Workflow (End-to-End, No ETABS Needed)
 
-> **Version:** v0.12.0 | **Updated:** 2025-12-30
+> **Version:** v0.13.0 | **Updated:** 2025-12-30
 
 This guide runs the full pipeline in Google Colab:
 install → generate inputs → design → BBS → DXF → reports → critical set.
@@ -19,7 +19,7 @@ Notebook version (open in Colab): `docs/getting-started/colab-workflow.ipynb`
 
 ---
 
-## 🆕 What's New in v0.12.0
+## 🆕 What's New in v0.13.0
 
 - `validate` and `detail` CLI helpers for schema checks and detailing JSON export.
 - Library-first API wrappers for detailing, BBS, DXF, report, and critical outputs.
