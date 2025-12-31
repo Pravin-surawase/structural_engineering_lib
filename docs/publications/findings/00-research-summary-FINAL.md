@@ -62,7 +62,9 @@ We conducted comprehensive research across three dimensions with rigorous source
 **Cell Error Rates:**
 > "For the nine studies that collected data on errors when developers worked alone, the cell error rates (CERs) averaged 1.1% to 5.6%. In general, errors seem to occur in a few percent of all cells, meaning that for large spreadsheets, the issue is how many errors there are, not whether an error exists."
 >
-> **Source:** Panko, R. R. (2008). What we know about spreadsheet errors. *Journal of Organizational and End User Computing*, 20(2), 15-30. [ResearchGate](https://www.researchgate.net/publication/228662532_What_We_Know_About_Spreadsheet_Errors)
+> **Source:** Panko, R. R. (2008). What we know about spreadsheet errors. *Journal of Organizational and End User Computing*, 20(2), 15-30. (Access-limited link: [ResearchGate](https://www.researchgate.net/publication/228662532_What_We_Know_About_Spreadsheet_Errors))
+>
+> **Related (open-access bibliography):** EuSpRIG maintains an accessible bibliography with multiple Panko spreadsheet-risk papers (useful background; does not necessarily contain the same summary tables/quotes as the JOEU article): [EuSpRIG Research and Best Practice](https://eusprig.org/research-info/research-and-best-practice/)
 
 **Field Audit Rates:**
 > "The most recent field audits, in contrast, generally used better methodologies and found errors in at least 86% of the spreadsheets audited."
@@ -130,7 +132,9 @@ EuSpRIG maintains a database of spreadsheet error cases. Selected examples:
 **🟠 ANECDOTAL - Forum discussions:**
 > "ETABS doesn't open completely 8 out of 10 times, requiring Task Manager to close it... creating uncertainty for programming."
 >
-> **Source:** [ResearchGate Discussion](https://www.researchgate.net/post/Im_using_ETABS_API_with_Excel_VBA_to_model_a_frame_When_I_run_it_from_VBA_ETABS_opens_sometimes_and_doesnt_open_at_others_Why_this_uncertainty) (single user report, 2020+)
+> **Source:** [Eng-Tips Forum](https://www.eng-tips.com/threads/etabs-api-using-excel-vba.521067/) (single user report, 2020+)
+
+> **Related (access-limited):** [ResearchGate Discussion](https://www.researchgate.net/post/Im_using_ETABS_API_with_Excel_VBA_to_model_a_frame_When_I_run_it_from_VBA_ETABS_opens_sometimes_and_doesnt_open_at_others_Why_this_uncertainty) (may require login)
 
 > "The coding requirements changed slightly between ETABS 2018 and ETABS 2019 and beyond, requiring different code versions."
 >
@@ -148,7 +152,7 @@ EuSpRIG maintains a database of spreadsheet error cases. Selected examples:
 
 > "In practice, structural engineers complete structural designs with trial-and-error, iteratively revising designs until all building codes are satisfied."
 >
-> **Source:** Chang, D., et al. (2020). Learning to simulate and design for structural engineering. *ICML Proceedings*. [PDF](http://proceedings.mlr.press/v119/chang20a/chang20a.pdf)
+> **Source:** Chang, D., et al. (2020). Learning to simulate and design for structural engineering. *ICML Proceedings*. [PMLR landing page](https://proceedings.mlr.press/v119/chang20a.html)
 >
 > **Note:** Paper describes workflow but does not quantify "majority" — softened claim to "engineers commonly use..."
 
@@ -202,7 +206,7 @@ EuSpRIG maintains a database of spreadsheet error cases. Selected examples:
    - **Finding:** Concrete tensile strength most affected first-crack force; yield point affected by residual tensile strength and reinforcement properties
 
 2. **Cost optimization (Lagrangian multipliers):**
-   - Computational Lagrangian Multiplier Method for RC beams (2018). [ResearchGate](https://www.researchgate.net/publication/328687575)
+   - Computational Lagrangian Multiplier Method for RC beams (2018). (Access-limited link: [ResearchGate](https://www.researchgate.net/publication/328687575))
    - **Finding:** Sensitivity analysis determines influence of steel-to-concrete cost ratio, formwork costs, fck, width, span
 
 3. **Long-term deflection (Polynomial chaos expansion):**

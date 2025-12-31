@@ -176,7 +176,7 @@ shap_values = explainer(X_test)  # More computation
 ```
 
 **Problems:**
-- ❌ Requires 1000+ samples (expensive to generate)
+- ❌ Typically requires a large labeled dataset (and careful validation to avoid small-sample bias)
 - ❌ Training time: 10-20 minutes
 - ❌ Non-deterministic (different runs → different results)
 - ❌ Explainability via SHAP (approximation, not exact)
@@ -234,7 +234,7 @@ result = sensitivity_analysis({
 
 | Metric | ML Approach | Classical Approach |
 |--------|-------------|---------------------|
-| Training samples | 1000+ | 0 |
+| Training samples | Often large (problem-dependent) | 0 |
 | Computation time | 10-20 min | 50 ms |
 | Deterministic | No | Yes |
 | Explainability | SHAP (approx) | Exact derivatives |
