@@ -4,7 +4,8 @@
 **Audience:** Software engineers building engineering tools, structural engineers curious about innovation
 **Estimated length:** 2000-2500 words
 **Publication date:** 2025-01-15
-**Status:** OUTLINE
+**Status:** OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
+**Evidence basis:** [00-research-summary-FINAL.md](../../findings/00-research-summary-FINAL.md)
 
 ---
 
@@ -35,7 +36,7 @@ Intelligence ≠ Machine Learning. For engineering problems with:
 ...classical methods often beat ML: faster, explainable, verifiable, and deterministic.
 
 **The Promise:**
-This post shows how we added three "smart" features to a structural design library—sensitivity analysis, predictive validation, and constructability scoring—using zero machine learning, achieving 100% accuracy against golden test vectors.
+This post shows how we added three "smart" features to a structural design library—sensitivity analysis, predictive validation, and constructability scoring—using zero machine learning. All features achieved 100% match against IS 456 golden test vectors (sample-only validation) and are fully deterministic and traceable.
 
 ---
 
@@ -57,7 +58,7 @@ This post shows how we added three "smart" features to a structural design libra
 - ❌ No warnings before full computation
 
 **Real-world impact:**
-- 10-20 iterations per beam (time waste)
+- Engineers commonly use trial-and-error workflows, iteratively revising until code-compliant (time waste)
 - Sub-optimal designs (cost waste)
 - Over-conservative safety factors (material waste)
 
@@ -94,7 +95,7 @@ Engineer: "Okay... should I increase width? depth? concrete grade? 🤷"
 - Code compliance (must cite clauses)
 - Safety-critical (black box unacceptable)
 - Determinism (same input → same output required)
-- Small data (10-15 examples, not 10,000)
+- Small data (research shows small samples cause overfitting and bias — Vabalas et al. 2019)
 
 **Engineering software needs:**
 | Requirement | ML | Classical Methods |
@@ -396,19 +397,20 @@ Constructability: 7.5/10 (GOOD)
 
 **Results:**
 
-| Feature | Test Cases | Pass | Accuracy | Performance |
-|---------|-----------|------|----------|-------------|
-| Predictive Validation | 4 | 4 | 100% | <1ms |
-| Sensitivity Analysis | 3 | 3 | 100% | ~10ms |
-| Constructability | 3 | 3 | 100% | <1ms |
+| Feature | Test Cases | Match Rate | Performance |
+|---------|-----------|------------|-------------|
+| Predictive Validation | 4 | 100% match (sample-only) | <1ms |
+| Sensitivity Analysis | 3 | 100% match (sample-only) | ~10ms |
+| Constructability | 3 | 100% match (sample-only) | <1ms |
 
 **Key findings:**
-1. ✅ All features deterministic
-2. ✅ Physically meaningful outputs (depth > width sensitivity)
-3. ✅ Traceable to engineering principles (clause references)
+1. ✅ All features fully deterministic (same inputs always produce same outputs)
+2. ✅ Physically meaningful outputs (depth > width sensitivity aligns with mechanics)
+3. ✅ Traceable to engineering principles (clause references to IS 456)
 4. ✅ Fast enough for real-time use
+5. ⚠️ Sample-only validation (3-4 test vectors from IS 456 worked examples, not field data)
 
-**No machine learning. No training data. Just good engineering.**
+**No machine learning. No training data. Deterministic and verifiable.**
 
 ---
 
@@ -479,10 +481,11 @@ outputs/
 - Insights as separate module → flexibility
 - Opt-in adoption → zero breaking changes
 
-**4. Small Data Is Enough**
-- 3 golden vectors sufficient for validation
-- 10-15 verified examples target for v1.0
-- Not all problems need 10,000 training samples
+**4. Deterministic Methods Are Data-Efficient**
+- Validated with 3-4 golden vectors from IS 456 worked examples (sample-only)
+- Deterministic methods based on physical equations require zero training data
+- ML with small samples leads to overfitting and bias (Vabalas et al. 2019 PLOS One)
+- For code-compliant design, verified test cases beat large synthetic datasets
 
 ### For Software Engineers Building Tools
 
@@ -530,11 +533,30 @@ print(pre['warnings'])  # Instant feedback!
 
 ---
 
-**Draft status:** OUTLINE COMPLETE
+**Draft status:** OUTLINE — EVIDENCE-CORRECTED
 **Next steps:**
 1. Write full draft (expand each section)
 2. Add code snippets with outputs
 3. Create diagrams (sensitivity chart, architecture diagram)
-4. Internal review
-5. Publish to Dev.to
-6. Cross-post to Medium/Hashnode
+4. Add sources/references section (below)
+5. Internal review
+6. Publish to Dev.to
+7. Cross-post to Medium/Hashnode
+
+---
+
+## Sources & References (To Add in Full Draft)
+
+### Primary Sources (Peer-Reviewed)
+- Vabalas, A., et al. (2019). Machine learning algorithm validation with a limited sample size. *PLOS One*, 14(11), e0224365.
+- Poh, P., & Chen, J. (1998). The Singapore buildable design appraisal system. *Construction Management and Economics*, 16(6), 681-692.
+- Kytinou, V.K., et al. (2021). Flexural behavior of steel fiber RC beams: Sensitivity analysis. *Applied Sciences*, 11(20), 9591.
+
+### Secondary Sources
+- Chang, D., et al. (2020). Learning to simulate and design for structural engineering. *ICML Proceedings*.
+- EuSpRIG (European Spreadsheet Risks Interest Group). Research synthesis. https://eusprig.org
+
+### Internal Documentation
+- [Research document](../../../planning/research-smart-library.md)
+- [Prototype findings](../../../planning/prototype-findings-intelligence.md)
+- [Implementation plan](../../../planning/v0.13-v0.14-implementation-plan.md)

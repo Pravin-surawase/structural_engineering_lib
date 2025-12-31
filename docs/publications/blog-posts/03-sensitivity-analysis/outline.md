@@ -4,7 +4,8 @@
 **Audience:** Structural engineers, engineering software developers
 **Estimated length:** 2500-3000 words
 **Publication date:** 2025-02-15
-**Status:** OUTLINE
+**Status:** OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
+**Evidence basis:** [00-research-summary-FINAL.md](../../findings/00-research-summary-FINAL.md)
 
 ---
 
@@ -652,11 +653,32 @@ print(robustness)     # Robustness score (0-1)
 
 ---
 
-**Draft status:** OUTLINE COMPLETE
+**Draft status:** OUTLINE — EVIDENCE-CORRECTED
 **Next steps:**
 1. Expand with detailed math derivations
 2. Add more case studies (cantilever, T-beam)
 3. Create sensitivity charts (bar charts, tornado diagrams)
 4. Add comparison table (analytical vs finite difference)
-5. Internal review by structural engineer
-6. Publish to Medium
+5. Add sources/references section (below)
+6. Internal review by structural engineer
+7. Publish to Medium
+
+---
+
+## Sources & References (To Add in Full Draft)
+
+### Primary Sources (Peer-Reviewed)
+- Kytinou, V.K., et al. (2021). Flexural behavior of steel fiber reinforced concrete beams: Sensitivity analysis. *Applied Sciences*, 11(20), 9591.
+- Computational Lagrangian Multiplier Method for RC beams (2018). ResearchGate.
+- Prediction and global sensitivity analysis of long-term deflections (2023). *PMC*.
+
+### Secondary Sources
+- Poh, P., & Chen, J. (1998). The Singapore buildable design appraisal system. *Construction Management and Economics*, 16(6), 681-692.
+
+### Standards & Codes
+- IS 456:2000 — Plain and Reinforced Concrete - Code of Practice
+- SP:16 (1980) — Design Aids for Reinforced Concrete
+
+### Internal Documentation
+- [Research document](../../../planning/research-smart-library.md)
+- [Prototype findings](../../../planning/prototype-findings-intelligence.md)

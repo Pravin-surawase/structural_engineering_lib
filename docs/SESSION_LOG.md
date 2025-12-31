@@ -4,6 +4,30 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2025-12-31 — Session
+
+**Focus:** Evidence-based research validation for publications
+
+### Summary
+- Drafted a research validation plan for tightening evidence behind blog claims.
+- Created a claim ledger + verification queue to guide follow-up research.
+- Added a source-verification note with initial primary/secondary citations.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | - |
+
+### Key Deliverables
+- `docs/planning/research-findings-validation/README.md`
+- `docs/planning/research-findings-validation/LOG.md`
+- `docs/publications/findings/04-claims-verification.md`
+- `docs/publications/findings/05-source-verification-notes.md`
+
+### Notes
+- Existing findings left unchanged pending verification.
+
+
 ## 2025-12-30 — Session
 
 **Focus:** Main Branch Guard failure (direct commit detection)
