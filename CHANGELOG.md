@@ -9,6 +9,20 @@ All notable changes to this project will be documented in this file.
   - Required when D > 750 mm
   - Calculates 0.1% web area per face with 300mm max spacing
   - Comprehensive test coverage (9 test cases)
+- **Insights module examples in Colab notebook** (`colab-workflow.ipynb`)
+  - Quick precheck demonstration
+  - Sensitivity analysis with parameter ranking
+  - Constructability scoring breakdown
+
+### Fixed
+- **Sensitivity analysis normalization bug** (`insights/sensitivity.py`)
+  - Changed from `S = Δu/Δp` to `S = (Δu/u)/(Δp/p)` for dimensionless coefficients
+  - Sensitivities now comparable across different parameter units (mm, MPa, kNm)
+- **Robustness calculation improved** (`insights/sensitivity.py`)
+  - Changed from heuristic penalty-based to margin-based calculation
+  - Now quantifies allowable parameter variation before failure
+  - Formula: `robustness = min_variation / 0.20` (normalized to 0-1)
+- Enhanced docstrings for `sensitivity_analysis()` and `calculate_robustness()` with examples
 
 ## [0.12.0] - 2025-12-30
 

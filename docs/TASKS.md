@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-132** | Insights module scaffolding + precheck (types, precheck.py, tests) | DEV | 1 day | 🟠 High | In progress |
+| **TASK-133** | Sensitivity analysis fixes + robustness scoring (normalization bug, margin-based robustness) | DEV | 1 day | 🟠 High | In progress |
 
 ---
 
@@ -34,8 +34,8 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-133** | Sensitivity analysis + robustness scoring + tests | DEV | 1 day | 🟠 High | Not started |
-| **TASK-134** | Constructability scoring + tests (bar spacing, layers, variety) | DEV | 1 day | 🟡 Medium | Not started |
+| **TASK-133b** | Comprehensive tests for sensitivity analysis (golden vectors, edge cases) | TESTER | 4 hrs | 🟠 High | Not started |
+| **TASK-134** | Constructability scoring refinement + tests (0-100 scale, missing factors) | DEV | 1 day | 🟡 Medium | Not started |
 | **TASK-135** | Verification pack: 5-10 benchmark cases + runner/tests | TESTER | 2-3 days | 🟠 High | Not started |
 | **TASK-136** | Insights JSON schema + optional CLI command | INTEGRATION | 1 day | 🟡 Medium | Not started |
 | **TASK-137** | Docs: insights guide + API references | DOCS | 1 day | 🟡 Medium | Not started |
@@ -65,6 +65,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-132** | Insights module scaffolding + precheck (types, precheck.py, tests) | DEV | ✅ Done |
 | **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | ✅ Done |
 | **TASK-089** | Flanged effective width helper | INTEGRATION | ✅ Done |
 | **TASK-077** | External user CLI test | CLIENT | ✅ Done |
