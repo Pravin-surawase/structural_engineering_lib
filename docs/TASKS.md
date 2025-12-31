@@ -24,7 +24,7 @@
 
 ## Active
 
-_No active tasks - starting TASK-133b_
+_No active tasks_
 
 ---
 
@@ -32,7 +32,6 @@ _No active tasks - starting TASK-133b_
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-136** | Insights JSON schema + optional CLI command | INTEGRATION | 1 day | 🟡 Medium | Not started |
 | **TASK-137** | Docs: insights guide + API references | DOCS | 1 day | 🟡 Medium | Not started |
 | **TASK-135** | Verification pack: 5-10 benchmark cases + runner/tests | TESTER | 2-3 days | 🟠 High | Not started |
 
@@ -61,6 +60,7 @@ _No active tasks - starting TASK-133b_
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-136** | Insights JSON schema + CLI integration (`.to_dict()` methods, `--insights` flag, 6 tests) | INTEGRATION | ✅ Done |
 | **TASK-134** | Constructability scoring refinement (0-100 scale, 7 factors, 10 comprehensive tests) | DEV | ✅ Done |
 | **TASK-133b** | Comprehensive tests for sensitivity analysis (14 tests: golden vectors, edge cases, physical validation) | TESTER | ✅ Done |
 | **TASK-133** | Sensitivity analysis fixes + robustness scoring (normalization bug, margin-based robustness) | DEV | ✅ Done |

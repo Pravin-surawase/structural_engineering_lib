@@ -9,6 +9,16 @@ All notable changes to this project will be documented in this file.
   - Required when D > 750 mm
   - Calculates 0.1% web area per face with 300mm max spacing
   - Comprehensive test coverage (9 test cases)
+- **Insights JSON serialization and CLI integration** (`insights/types.py`, `__main__.py`)
+  - Added `.to_dict()` methods to all 6 insights dataclasses for JSON export
+  - Proper enum conversion (e.g., Severity.WARNING → "warning")
+  - Nested dataclass serialization (lists, nested objects)
+  - New `--insights` flag for `design` CLI command
+  - Outputs insights to separate JSON file (e.g., `results_insights.json`)
+  - Safe error handling (insights failures don't crash main design)
+  - 6 comprehensive tests for JSON serialization (`test_insights_json.py`)
+  - Precheck, sensitivity, and robustness working in CLI
+  - Constructability deferred for future API alignment
 - **Insights module examples in Colab notebook** (`colab-workflow.ipynb`)
   - Quick precheck demonstration
   - Sensitivity analysis with parameter ranking
@@ -16,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - **Comprehensive test coverage for insights module**
   - Sensitivity analysis: 14 tests covering golden vectors, edge cases, physical validation, robustness scoring
   - Constructability scoring: 10 tests covering full design spectrum (light/typical/heavy/congested), factor-specific tests
+  - JSON serialization: 6 tests covering all insights types, round-trip validation, enum conversion
 
 ### Changed
 - **Constructability scoring upgraded to 0-100 scale** (`insights/constructability.py`)
