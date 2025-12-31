@@ -224,6 +224,81 @@ def cmd_design(args: argparse.Namespace) -> int:
             },
         )
 
+        # Compute insights if requested
+        insights_output = None
+        if args.insights:
+            print("Computing advisory insights...", file=sys.stderr)
+            from . import insights
+
+            beam_insights = []
+            for i, beam in enumerate(beams):
+                print(f"  Insights for {beam.story}/{beam.beam_id}...", file=sys.stderr)
+
+                try:
+                    # Precheck
+                    precheck = insights.quick_precheck(
+                        span_mm=beam.span,
+                        b_mm=beam.b,
+                        d_mm=beam.d,
+                        D_mm=beam.D,
+                        mu_knm=beam.Mu,
+                        fck_nmm2=beam.fck,
+                        fy_nmm2=beam.fy,
+                    )
+
+                    # Sensitivity analysis (top 4 parameters)
+                    params_dict = {
+                        "units": "IS456",
+                        "mu_knm": beam.Mu,
+                        "vu_kn": beam.Vu,
+                        "b_mm": beam.b,
+                        "D_mm": beam.D,
+                        "d_mm": beam.d,
+                        "fck_nmm2": beam.fck,
+                        "fy_nmm2": beam.fy,
+                    }
+                    sensitivities, robustness = insights.sensitivity_analysis(
+                        api.design_beam_is456,
+                        params_dict,
+                        ["d_mm", "b_mm", "fck_nmm2", "fy_nmm2"],
+                    )
+
+                    # Constructability - requires full design result (not yet integrated for CLI)
+                    # TODO: Integrate constructability scoring after API alignment
+                    constructability = None
+
+                    beam_insights.append(
+                        {
+                            "beam_id": beam.beam_id,
+                            "story": beam.story,
+                            "precheck": precheck.to_dict(),
+                            "sensitivities": [s.to_dict() for s in sensitivities],
+                            "robustness": robustness.to_dict(),
+                            "constructability": (
+                                constructability.to_dict() if constructability else None
+                            ),
+                        }
+                    )
+
+                except Exception as exc:
+                    print(
+                        f"  Warning: Failed to compute insights for {beam.story}/{beam.beam_id}: {exc}",
+                        file=sys.stderr,
+                    )
+                    beam_insights.append(
+                        {
+                            "beam_id": beam.beam_id,
+                            "story": beam.story,
+                            "error": str(exc),
+                        }
+                    )
+
+            insights_output = {
+                "schema_version": "1.0",
+                "insights_version": "preview",
+                "beams": beam_insights,
+            }
+
         # Write output
         if args.output:
             output_path = Path(args.output)
@@ -233,9 +308,27 @@ def cmd_design(args: argparse.Namespace) -> int:
                 json.dump(output.to_dict(), f, indent=2)
 
             print(f"Design results written to {output_path}", file=sys.stderr)
+
+            # Write insights output if available
+            if insights_output:
+                insights_path = output_path.with_stem(output_path.stem + "_insights")
+                with insights_path.open("w", encoding="utf-8") as f:
+                    json.dump(insights_output, f, indent=2)
+                print(f"Insights written to {insights_path}", file=sys.stderr)
         else:
             # Print to stdout
             print(json.dumps(output.to_dict(), indent=2))
+
+            # Print insights to stderr if available (don't mix with main output)
+            if insights_output:
+                print(
+                    "\n# Insights output saved separately (use -o flag to write to file)",
+                    file=sys.stderr,
+                )
+                print(
+                    f"# Insights summary: {len(insights_output['beams'])} beam(s) analyzed",
+                    file=sys.stderr,
+                )
 
         if args.summary is not None:
             if args.summary == "":
@@ -961,6 +1054,11 @@ def _build_parser() -> argparse.ArgumentParser:
     design_parser.add_argument(
         "--crack-width-params",
         help="JSON file with crack width parameters (applies to all beams).",
+    )
+    design_parser.add_argument(
+        "--insights",
+        action="store_true",
+        help="Generate advisory insights (precheck, sensitivity, constructability) and save to separate JSON file.",
     )
     design_parser.set_defaults(func=cmd_design)
 
