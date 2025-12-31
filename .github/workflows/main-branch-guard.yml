@@ -19,6 +19,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const sha = context.sha;
+            const commitMessage = context.payload.head_commit?.message || '';
 
             const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner,
@@ -26,10 +27,18 @@ jobs:
               commit_sha: sha,
             });
 
-            if (!prs || prs.length === 0) {
-              core.setFailed(`Direct commit to main detected (${sha}). Use a PR.`);
+            if (prs && prs.length > 0) {
+              const prList = prs.map(pr => `#${pr.number}`).join(", ");
+              core.info(`Commit is associated with PR(s): ${prList}`);
               return;
             }
 
-            const prList = prs.map(pr => `#${pr.number}`).join(", ");
-            core.info(`Commit is associated with PR(s): ${prList}`);
+            // Fallback: Check commit message for PR pattern (e.g., "(#123)")
+            // GitHub API can have eventual consistency delays after merge
+            const prMatch = commitMessage.match(/\(#(\d+)\)/);
+            if (prMatch) {
+              core.info(`Commit message indicates PR #${prMatch[1]} (API not yet updated)`);
+              return;
+            }
+
+            core.setFailed(`Direct commit to main detected (${sha}). Use a PR.`);
