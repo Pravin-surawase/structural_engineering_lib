@@ -130,6 +130,35 @@ No additional helpers are planned in this bucket yet.
 
 ---
 
+## Experimental API (Preview Features)
+
+These features are available for testing but API may change before v1.0.
+
+### Advisory Insights (v0.13.0+)
+
+```python
+from structural_lib.insights import (
+    quick_precheck,
+    sensitivity_analysis,
+    calculate_constructability_score,
+)
+
+# Heuristic precheck
+precheck = quick_precheck(span_mm=5000, b_mm=300, d_mm=450, ...)
+
+# Sensitivity analysis
+sensitivities, robustness = sensitivity_analysis(design_function, params, ...)
+
+# Constructability scoring
+score = calculate_constructability_score(design_result, detailing)
+```
+
+**Status:** Preview - API signatures and scoring algorithms may change.
+
+See: [Insights Guide](../getting-started/insights-guide.md), [Insights API Reference](insights-api.md)
+
+---
+
 ## Internal API (May Change Without Notice)
 
 These modules are implementation details. Do not depend on them directly.
@@ -145,6 +174,7 @@ These modules are implementation details. Do not depend on them directly.
 | `report.py` | Report generation helpers | Experimental; subject to change |
 | `report_svg.py` | SVG rendering helpers | Experimental; subject to change |
 | `excel_integration.py` | Excel batch helpers | Under review |
+| `insights/` | Advisory insights module | Preview; API may change before v1.0 |
 
 ### How to Use Internal Modules Safely
 

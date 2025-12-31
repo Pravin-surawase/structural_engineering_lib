@@ -8,6 +8,7 @@ If this folder feels “too big”, you’re right — most people only need a h
 
 ```bash
 python -m structural_lib design input.csv -o results.json
+python -m structural_lib design input.csv -o results.json --insights  # v0.13.0+
 python -m structural_lib bbs results.json -o schedule.csv
 python -m structural_lib detail results.json -o detailing.json
 python -m structural_lib dxf results.json -o drawings.dxf
