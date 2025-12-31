@@ -48,6 +48,25 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.13.0
+**Date:** 2025-12-31
+**Status:** ✅ Locked & Verified
+**Mindset:** Insights Foundation — Advisory intelligence for beam design
+**Key Changes:**
+- **Insights module:** Complete `structural_lib.insights` package with three advisory features:
+  - `quick_precheck()` — Heuristic validation before full design (~1ms)
+  - `sensitivity_analysis()` — Identify critical parameters and robustness scoring
+  - `calculate_constructability_score()` — Ease of construction assessment (0-100 scale)
+- **CLI integration:** New `--insights` flag for `design` command exports insights to JSON
+- **Verification pack:** 10 benchmark cases with JSON-driven parametrized tests
+- **Documentation:** User guide, API reference, and Colab examples for all insights features
+- **Side-face reinforcement:** IS 456 Cl 26.5.1.3 check for beams with D > 750mm
+
+**Tests:** 2019 passed
+**PRs:** #224, #226, #230, #233, #234, #235, #236
+
+---
+
 ## v0.12.0
 **Date:** 2025-12-30
 **Status:** ✅ Locked & Verified

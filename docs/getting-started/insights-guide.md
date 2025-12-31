@@ -523,4 +523,4 @@ See [insights-api.md](../reference/insights-api.md) for detailed API documentati
 ---
 
 **Last updated:** 2025-12-31
-**Version:** v0.12.0 (preview)
+**Version:** v0.13.0 (preview)
