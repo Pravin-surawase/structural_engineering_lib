@@ -13,6 +13,20 @@ All notable changes to this project will be documented in this file.
   - Quick precheck demonstration
   - Sensitivity analysis with parameter ranking
   - Constructability scoring breakdown
+- **Comprehensive test coverage for insights module**
+  - Sensitivity analysis: 14 tests covering golden vectors, edge cases, physical validation, robustness scoring
+  - Constructability scoring: 10 tests covering full design spectrum (light/typical/heavy/congested), factor-specific tests
+
+### Changed
+- **Constructability scoring upgraded to 0-100 scale** (`insights/constructability.py`)
+  - Changed from 0-10 to 0-100 for finer granularity
+  - Scaled all penalties/bonuses (10× multiplier)
+  - Updated rating thresholds: 85+ excellent, 70-84 good, 55-69 acceptable, <55 poor
+  - Added missing factors:
+    - Depth increments (50mm multiples for formwork reuse)
+    - Bar configuration simplicity (2-3 bars per layer ideal)
+  - Enhanced recommendations with impact statements (labor cost, quality, productivity)
+  - Comprehensive docstring with BDAS framework reference (Poh & Chen 1998)
 
 ### Fixed
 - **Sensitivity analysis normalization bug** (`insights/sensitivity.py`)

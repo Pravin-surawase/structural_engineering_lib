@@ -24,9 +24,7 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-133** | Sensitivity analysis fixes + robustness scoring (normalization bug, margin-based robustness) | DEV | 1 day | 🟠 High | In progress |
+_No active tasks - starting TASK-133b_
 
 ---
 
@@ -34,11 +32,9 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-133b** | Comprehensive tests for sensitivity analysis (golden vectors, edge cases) | TESTER | 4 hrs | 🟠 High | Not started |
-| **TASK-134** | Constructability scoring refinement + tests (0-100 scale, missing factors) | DEV | 1 day | 🟡 Medium | Not started |
-| **TASK-135** | Verification pack: 5-10 benchmark cases + runner/tests | TESTER | 2-3 days | 🟠 High | Not started |
 | **TASK-136** | Insights JSON schema + optional CLI command | INTEGRATION | 1 day | 🟡 Medium | Not started |
 | **TASK-137** | Docs: insights guide + API references | DOCS | 1 day | 🟡 Medium | Not started |
+| **TASK-135** | Verification pack: 5-10 benchmark cases + runner/tests | TESTER | 2-3 days | 🟠 High | Not started |
 
 ---
 
@@ -65,6 +61,9 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-134** | Constructability scoring refinement (0-100 scale, 7 factors, 10 comprehensive tests) | DEV | ✅ Done |
+| **TASK-133b** | Comprehensive tests for sensitivity analysis (14 tests: golden vectors, edge cases, physical validation) | TESTER | ✅ Done |
+| **TASK-133** | Sensitivity analysis fixes + robustness scoring (normalization bug, margin-based robustness) | DEV | ✅ Done |
 | **TASK-132** | Insights module scaffolding + precheck (types, precheck.py, tests) | DEV | ✅ Done |
 | **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | ✅ Done |
 | **TASK-089** | Flanged effective width helper | INTEGRATION | ✅ Done |
