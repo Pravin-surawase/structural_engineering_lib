@@ -1,0 +1,374 @@
+{
+  "version": "1.0",
+  "description": "Insights module benchmark cases for regression testing",
+  "metadata": {
+    "created": "2025-12-31",
+    "is456_edition": "2000 (4th revision)",
+    "sp16_edition": "1980"
+  },
+  "cases": [
+    {
+      "case_id": "precheck_normal_beam",
+      "description": "Normal beam with adequate dimensions",
+      "category": "precheck",
+      "is456_reference": "Table 23",
+      "inputs": {
+        "span_mm": 5000.0,
+        "b_mm": 300.0,
+        "d_mm": 450.0,
+        "D_mm": 500.0,
+        "mu_knm": 120.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 500.0
+      },
+      "expected": {
+        "risk_level": "LOW",
+        "warning_count": 0,
+        "recommended_action": "proceed"
+      },
+      "rationale": "span/d = 11.1, within Table 23 limits (< 26 for simply supported)"
+    },
+    {
+      "case_id": "precheck_shallow_beam",
+      "description": "Shallow beam with deflection risk",
+      "category": "precheck",
+      "is456_reference": "Table 23",
+      "inputs": {
+        "span_mm": 6000.0,
+        "b_mm": 230.0,
+        "d_mm": 250.0,
+        "D_mm": 300.0,
+        "mu_knm": 120.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 500.0
+      },
+      "expected": {
+        "risk_level": "HIGH",
+        "warning_count_min": 1,
+        "has_deflection_warning": true,
+        "recommended_action": "review_geometry"
+      },
+      "rationale": "span/d = 24.0, exceeds Table 23 basic ratio of 20 for simply supported"
+    },
+    {
+      "case_id": "precheck_narrow_beam",
+      "description": "Narrow beam with width warning",
+      "category": "precheck",
+      "is456_reference": "IS 456 Cl 23.1",
+      "inputs": {
+        "span_mm": 4000.0,
+        "b_mm": 140.0,
+        "d_mm": 400.0,
+        "D_mm": 450.0,
+        "mu_knm": 80.0,
+        "fck_nmm2": 20.0,
+        "fy_nmm2": 415.0
+      },
+      "expected": {
+        "risk_level": "MEDIUM",
+        "warning_count": 1,
+        "has_narrow_beam_warning": true,
+        "recommended_action": "review_geometry"
+      },
+      "rationale": "b < 150mm triggers width adequacy check"
+    },
+    {
+      "case_id": "sensitivity_light_loading",
+      "description": "Light loading with low utilization",
+      "category": "sensitivity",
+      "is456_reference": "IS 456 design equations",
+      "inputs": {
+        "base_params": {
+          "units": "IS456",
+          "mu_knm": 80.0,
+          "vu_kn": 50.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "parameters_to_vary": ["d_mm", "b_mm", "fck_nmm2"],
+        "perturbation": 0.10
+      },
+      "expected": {
+        "robustness": {
+          "score_min": 0.8,
+          "score_max": 1.0,
+          "rating": "excellent",
+          "base_utilization_max": 0.5
+        },
+        "sensitivities": {
+          "d_mm": {
+            "sensitivity_sign": "negative",
+            "impact": "high"
+          },
+          "b_mm": {
+            "sensitivity_sign": "negative"
+          },
+          "fck_nmm2": {
+            "sensitivity_sign": "negative"
+          }
+        }
+      },
+      "rationale": "Low utilization (~0.4) allows significant parameter variations without failure"
+    },
+    {
+      "case_id": "sensitivity_moderate_loading",
+      "description": "Moderate loading case (SP:16 Example 1 inspired)",
+      "category": "sensitivity",
+      "is456_reference": "SP:16 Example 1",
+      "inputs": {
+        "base_params": {
+          "units": "IS456",
+          "mu_knm": 120.0,
+          "vu_kn": 80.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "parameters_to_vary": ["d_mm", "b_mm", "fck_nmm2"],
+        "perturbation": 0.10
+      },
+      "expected": {
+        "robustness": {
+          "score_min": 0.8,
+          "score_max": 1.0,
+          "rating": "excellent",
+          "base_utilization_min": 0.5,
+          "base_utilization_max": 0.7
+        },
+        "sensitivities": {
+          "d_mm": {
+            "sensitivity_sign": "negative",
+            "impact": "high"
+          },
+          "b_mm": {
+            "sensitivity_sign": "negative"
+          },
+          "fck_nmm2": {
+            "sensitivity_sign": "negative"
+          }
+        }
+      },
+      "rationale": "Moderate utilization (~0.6) represents typical design with good safety margin"
+    },
+    {
+      "case_id": "sensitivity_heavy_loading",
+      "description": "Heavy loading with high utilization",
+      "category": "sensitivity",
+      "is456_reference": "IS 456 design equations",
+      "inputs": {
+        "base_params": {
+          "units": "IS456",
+          "mu_knm": 180.0,
+          "vu_kn": 120.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "parameters_to_vary": ["d_mm", "b_mm", "fck_nmm2"],
+        "perturbation": 0.10
+      },
+      "expected": {
+        "robustness": {
+          "score_min": 0.2,
+          "score_max": 0.5,
+          "rating": "poor",
+          "base_utilization_min": 0.85
+        },
+        "sensitivities": {
+          "d_mm": {
+            "sensitivity_sign": "negative"
+          }
+        }
+      },
+      "rationale": "High utilization (~0.9) leaves little margin for variations"
+    },
+    {
+      "case_id": "sensitivity_doubly_reinforced",
+      "description": "Doubly reinforced beam with compression steel",
+      "category": "sensitivity",
+      "is456_reference": "SP:16 Example 2",
+      "inputs": {
+        "base_params": {
+          "units": "IS456",
+          "mu_knm": 200.0,
+          "vu_kn": 100.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "d_dash_mm": 50.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "parameters_to_vary": ["d_mm", "b_mm", "fck_nmm2", "d_dash_mm"],
+        "perturbation": 0.10
+      },
+      "expected": {
+        "robustness": {
+          "score_min": 0.0,
+          "score_max": 0.5,
+          "rating_options": ["poor", "acceptable"]
+        },
+        "sensitivities": {
+          "d_mm": {
+            "sensitivity_sign": "negative"
+          }
+        }
+      },
+      "rationale": "Doubly reinforced case has additional critical parameter (d_dash)"
+    },
+    {
+      "case_id": "constructability_excellent",
+      "description": "Excellent constructability - light reinforcement with standard sizes",
+      "category": "constructability",
+      "is456_reference": "Singapore BDAS framework (Poh & Chen 1998)",
+      "inputs": {
+        "design_params": {
+          "units": "IS456",
+          "mu_knm": 120.0,
+          "vu_kn": 80.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "detailing": {
+          "beam_id": "TEST",
+          "story": "TEST",
+          "b": 300.0,
+          "D": 500.0,
+          "span": 5000.0,
+          "cover": 50.0,
+          "top_bars": [
+            {"count": 2, "diameter": 16.0, "area_provided": 402.0, "spacing": 140.0, "layers": 1}
+          ],
+          "bottom_bars": [
+            {"count": 3, "diameter": 16.0, "area_provided": 603.0, "spacing": 100.0, "layers": 1}
+          ],
+          "stirrups": [
+            {"diameter": 8.0, "legs": 2, "spacing": 150.0, "zone_length": 1500.0}
+          ],
+          "ld_tension": 0.0,
+          "ld_compression": 0.0,
+          "lap_length": 0.0,
+          "is_valid": true,
+          "remarks": ""
+        }
+      },
+      "expected": {
+        "constructability": {
+          "score_min": 85.0,
+          "score_max": 100.0,
+          "rating": "excellent",
+          "has_standard_sizes_bonus": true
+        }
+      },
+      "rationale": "Light reinforcement (2-3 bars), standard sizes (16mm), single layer, good spacing"
+    },
+    {
+      "case_id": "constructability_acceptable",
+      "description": "Acceptable constructability - moderate reinforcement",
+      "category": "constructability",
+      "is456_reference": "Singapore BDAS framework (Poh & Chen 1998)",
+      "inputs": {
+        "design_params": {
+          "units": "IS456",
+          "mu_knm": 120.0,
+          "vu_kn": 80.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "detailing": {
+          "beam_id": "TEST",
+          "story": "TEST",
+          "b": 300.0,
+          "D": 500.0,
+          "span": 5000.0,
+          "cover": 50.0,
+          "top_bars": [
+            {"count": 3, "diameter": 20.0, "area_provided": 942.0, "spacing": 100.0, "layers": 1}
+          ],
+          "bottom_bars": [
+            {"count": 4, "diameter": 20.0, "area_provided": 1256.0, "spacing": 73.0, "layers": 1}
+          ],
+          "stirrups": [
+            {"diameter": 10.0, "legs": 2, "spacing": 120.0, "zone_length": 1500.0}
+          ],
+          "ld_tension": 0.0,
+          "ld_compression": 0.0,
+          "lap_length": 0.0,
+          "is_valid": true,
+          "remarks": ""
+        }
+      },
+      "expected": {
+        "constructability": {
+          "score_min": 85.0,
+          "score_max": 100.0,
+          "rating": "excellent"
+        }
+      },
+      "rationale": "Moderate reinforcement (3-4 bars), tighter spacing, still manageable"
+    },
+    {
+      "case_id": "constructability_poor",
+      "description": "Poor constructability - congested reinforcement with non-standard sizes",
+      "category": "constructability",
+      "is456_reference": "Singapore BDAS framework (Poh & Chen 1998)",
+      "inputs": {
+        "design_params": {
+          "units": "IS456",
+          "mu_knm": 120.0,
+          "vu_kn": 80.0,
+          "b_mm": 300.0,
+          "D_mm": 500.0,
+          "d_mm": 450.0,
+          "fck_nmm2": 25.0,
+          "fy_nmm2": 500.0
+        },
+        "detailing": {
+          "beam_id": "TEST",
+          "story": "TEST",
+          "b": 300.0,
+          "D": 475.0,
+          "span": 5000.0,
+          "cover": 50.0,
+          "top_bars": [
+            {"count": 2, "diameter": 22.0, "area_provided": 760.0, "spacing": 140.0, "layers": 1},
+            {"count": 2, "diameter": 22.0, "area_provided": 760.0, "spacing": 140.0, "layers": 2}
+          ],
+          "bottom_bars": [
+            {"count": 3, "diameter": 22.0, "area_provided": 1140.0, "spacing": 60.0, "layers": 1},
+            {"count": 2, "diameter": 18.0, "area_provided": 509.0, "spacing": 140.0, "layers": 2}
+          ],
+          "stirrups": [
+            {"diameter": 10.0, "legs": 4, "spacing": 90.0, "zone_length": 1500.0}
+          ],
+          "ld_tension": 0.0,
+          "ld_compression": 0.0,
+          "lap_length": 0.0,
+          "is_valid": true,
+          "remarks": ""
+        }
+      },
+      "expected": {
+        "constructability": {
+          "score_max": 60.0,
+          "rating_options": ["poor", "acceptable"],
+          "has_non_standard_penalty": true
+        }
+      },
+      "rationale": "Multiple layers, non-standard sizes (22mm, 18mm), tight spacing (<60mm), mixed bar sizes"
+    }
+  ]
+}

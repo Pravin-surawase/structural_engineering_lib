@@ -96,6 +96,7 @@ If you want to understand the concepts and the code step by step, start here:
 - BBS + DXF contract: [reference/bbs-dxf-contract.md](reference/bbs-dxf-contract.md)
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
+- Insights verification pack: [verification/insights-verification-pack.md](verification/insights-verification-pack.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
