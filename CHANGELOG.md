@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Insights verification pack** (`tests/test_insights_verification_pack.py`, `tests/data/insights_benchmark_cases.json`)
+  - 10 benchmark cases covering precheck, sensitivity, and constructability
+  - JSON-driven parametrized tests for regression detection
+  - Categories: 3 precheck, 4 sensitivity, 3 constructability
+  - User documentation: `docs/verification/insights-verification-pack.md`
 - Side-face reinforcement check per IS 456 Cl 26.5.1.3 (`check_side_face_reinforcement` in `detailing.py`)
   - Required when D > 750 mm
   - Calculates 0.1% web area per face with 300mm max spacing

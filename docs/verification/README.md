@@ -7,6 +7,7 @@ Benchmark examples and verification packs for validating library calculations.
 | Document | Purpose |
 |----------|---------|
 | [Validation Pack](validation-pack.md) | 5 benchmark beams with IS 456 references |
+| [Insights Verification Pack](insights-verification-pack.md) | 10 benchmark cases for insights module (v0.12.0+) |
 | [Examples](examples.md) | Detailed worked examples with hand calculations |
 | [Verification Pack](pack.md) | Test vectors for regression testing |
 | [External CLI Test](external-cli-test.md) | S-007 checklist for a fresh user run |
