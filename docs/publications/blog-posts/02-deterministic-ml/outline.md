@@ -4,7 +4,8 @@
 **Audience:** Software engineers interested in ML alternatives, tech leads making architecture decisions
 **Estimated length:** 1800-2200 words
 **Publication date:** 2025-01-30
-**Status:** OUTLINE
+**Status:** OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
+**Evidence basis:** [00-research-summary-FINAL.md](../../findings/00-research-summary-FINAL.md)
 
 ---
 
@@ -25,7 +26,7 @@
 
 **The Contrarian View:**
 For engineering problems with:
-- Small datasets (10-100 examples, not 10,000)
+- Small datasets (research shows ML overfits and produces biased estimates — Vabalas et al. 2019)
 - Physical models (equations known)
 - Deterministic requirements (same input → same output)
 - Safety criticality (explainability required)
@@ -86,7 +87,7 @@ result = minimize(objective, x0, constraints=constraints)  # Seconds
 
 | Characteristic | ML Better | Classical Better |
 |----------------|-----------|------------------|
-| Dataset size | >1000 samples | <100 samples |
+| Dataset size | Large datasets | Small datasets (overfitting risk) |
 | Physical model | Unknown/complex | Known/tractable |
 | Explainability | Not required | Critical |
 | Determinism | Stochastic OK | Repeatability required |
@@ -94,16 +95,18 @@ result = minimize(objective, x0, constraints=constraints)  # Seconds
 | Safety criticality | Low | High |
 | Regulatory approval | Not required | Required (FDA, codes) |
 
+**Note:** "Large" vs "small" depends on problem complexity. Academic research (Vabalas et al. 2019) shows small samples lead to overfitting and biased ML performance estimates.
+
 **Engineering software characteristics:**
 
-| Factor | Structural Engineering | Typical ML Use Case |
-|--------|------------------------|---------------------|
-| Data | 10-15 verified examples | 10,000+ training samples |
-| Model | IS 456 equations | Pattern recognition |
-| Output | Must cite clauses | Probabilistic predictions |
-| Validation | 100% accuracy required | 95% accuracy acceptable |
-| Explainability | Mandatory | Nice-to-have |
-| Cost of error | Structural failure | Annoying prediction |
+| Factor | Structural Engineering (Our Use Case) | Typical ML Use Case |
+|--------|---------------------------------------|---------------------|
+| Data | Small (3-4 IS 456 golden vectors for validation) | Large (thousands+ samples) |
+| Model | IS 456 equations (known physics) | Pattern recognition (learned) |
+| Output | Must cite code clauses | Probabilistic predictions |
+| Validation | Deterministic verification against worked examples | Statistical accuracy metrics |
+| Explainability | Mandatory (traceability required) | Often nice-to-have |
+| Cost of error | Structural failure (life safety) | Varies (often lower stakes) |
 
 **Verdict: Classical methods are the right tool.**
 
@@ -511,11 +514,29 @@ ml_result = neural_network_approach(X_train, y_train)
 
 ---
 
-**Draft status:** OUTLINE COMPLETE
+**Draft status:** OUTLINE — EVIDENCE-CORRECTED
 **Next steps:**
 1. Expand with more code examples
 2. Add performance benchmarks
 3. Add decision tree diagram
-4. Internal review
-5. Publish to Dev.to
-6. Submit to HackerNews
+4. Add sources/references section (below)
+5. Internal review
+6. Publish to Dev.to
+7. Submit to HackerNews
+
+---
+
+## Sources & References (To Add in Full Draft)
+
+### Primary Sources (Peer-Reviewed)
+- Vabalas, A., et al. (2019). Machine learning algorithm validation with a limited sample size. *PLOS One*, 14(11), e0224365.
+- Figueroa, R. L., et al. (2012). Predicting sample size required for classification performance. *BMC Medical Informatics and Decision Making*, 12, 8.
+- Panko, R. R. (2008). What we know about spreadsheet errors. *Journal of Organizational and End User Computing*, 20(2), 15-30.
+
+### Secondary Sources
+- Chang, D., et al. (2020). Learning to simulate and design for structural engineering. *ICML Proceedings*.
+- Nature Scientific Reports (2025). Intelligent low carbon RC beam design via deep reinforcement learning.
+
+### Internal Documentation
+- [Research document](../../../planning/research-smart-library.md)
+- [Evidence framework](../../findings/EVIDENCE-FRAMEWORK.md)

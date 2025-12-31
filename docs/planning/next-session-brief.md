@@ -5,17 +5,16 @@
 | **Current** | v0.12.0 | Published on PyPI |
 | **Next** | v0.12.1 | Planned (test hardening + verification gates) |
 
-**Date:** 2025-12-30 | **PRs:** through #220
+**Date:** 2025-12-31 | **PRs:** through #228
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2025-12-30
-- Focus: Test hardening (TASK-129/130/131) + external CLI validation (S-007) + effective flange width helper (TASK-089)
-- Completed: Removed property-invariant skips via paired comparisons; added API/CLI unit-boundary contract tests; added BBS/DXF mark-diff regression fixtures; validated seismic detailing checks; aligned VBA parity; ran external CLI smoke test (PASS); added effective flange width helper with Python/VBA parity.
-- PRs merged: #217, #218, #219, #220
+- Date: 2025-12-31
+- Focus: Evidence-based research validation for publications
+- Completed: Drafted research validation plan; created claims verification ledger; added source verification notes; updated evidence-based research summary and blog outlines.
 <!-- HANDOFF:END -->
 
 
