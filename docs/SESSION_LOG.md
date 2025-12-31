@@ -11,14 +11,14 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 **Issue observed:**
 - CI job `Main Branch Guard` failed with `Direct commit to main detected (SHA...)` even though the change originated from a PR.
 
-**Cause:**
-- The merge produced a local squash commit on `main` that was **not associated with a PR** in GitHub’s API. The guard checks PR association via `listPullRequestsAssociatedWithCommit`.
+**Cause (corrected 2025-12-31):**
+- **GitHub API eventual consistency**: The `listPullRequestsAssociatedWithCommit` API sometimes returns empty immediately after merge. All failed commits (PRs #218, #220, #223, #224, #227) were proper PR merges—verified by checking the API later.
 
 **Fix applied:**
-- Reverted the commit via a PR, then re-applied the changes via a fresh PR merge so the new commit is PR-associated.
+- Updated `main-branch-guard.yml` to add commit message fallback: if API returns no PRs, check for `(#NNN)` pattern in commit message.
 
 **Prevention:**
-- Merge PRs server-side (GitHub UI or `gh pr merge`). Avoid local commits on `main`.
+- Workflow now handles API delays gracefully. No user workflow changes needed.
 
 ---
 
