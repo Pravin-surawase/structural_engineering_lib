@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2025-12-30
+**Updated:** 2025-12-31
 
 ---
 
@@ -49,6 +49,7 @@ _No active tasks_
 |----|------|-------|-----|----------|
 | **TASK-081** | Level C Serviceability (creep + shrinkage) | DEV | 1-2 days | 🟡 Medium |
 | **TASK-082** | VBA parity automation harness | DEVOPS | 1-2 days | 🟡 Medium |
+| **TASK-138** | ETABS tables → beam input mapping (export checklist + converter) | INTEGRATION | 1-2 days | 🟡 Medium |
 | **TASK-085** | Torsion design + detailing (Cl. 41) | DEV | 2-3 days | 🟡 Medium |
 | **TASK-087** | Anchorage space check (Cl. 26.2) | DEV | 1 day | 🟡 Medium |
 | **TASK-088** | Slenderness/stability check (Cl. 23.1.2) | DEV | 4 hrs | 🟡 Medium |

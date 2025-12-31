@@ -108,6 +108,9 @@ scratch/
 temp/
 tmp/
 
+# External user artifacts (local only)
+files from external yser/
+
 # -----------------------------------------------------------------------------
 # Local runtime logs (keep out of git)
 # -----------------------------------------------------------------------------
