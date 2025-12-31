@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — API Reference
 
 **Document Version:** 0.12.0
-**Last Updated:** 2025-12-30<br>
+**Last Updated:** 2025-12-31<br>
 **Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI).
 
 ---
@@ -13,6 +13,9 @@ The library provides a unified command-line interface:
 ```bash
 # Design beams from CSV/JSON input
 python -m structural_lib design input.csv -o results.json
+
+# Design with advisory insights (v0.13.0+)
+python -m structural_lib design input.csv -o results.json --insights
 
 # Generate bar bending schedule
 python -m structural_lib bbs results.json -o schedule.csv
@@ -1284,3 +1287,108 @@ B1-S-S-D8-03,B1,stirrup,start,E,8,11,1440,15840,0.57,6.27,Stirrup start - 2L-8φ
 
 TOTAL,,,,,,18,,37240,,40.12,3 line items
 ```
+
+---
+
+## 13. Advisory Insights Module (`insights/`) — v0.13.0+ (Preview)
+
+> **Status:** Experimental - API may change before v1.0
+
+Advisory insights provide quick heuristic assessments to help engineers make informed decisions early in the design process.
+
+**See [insights-api.md](insights-api.md) for complete documentation.**
+
+### 13.1 Quick Precheck
+
+Fast heuristic validation before detailed design.
+
+```python
+from structural_lib.insights import quick_precheck
+
+result = quick_precheck(
+    span_mm=5000,
+    b_mm=300,
+    d_mm=450,
+    D_mm=500,
+    mu_knm=140,
+    fck_nmm2=25,
+    fy_nmm2=500,
+)
+
+if result.risk_level == "HIGH":
+    print(f"Warning: {result.warnings[0].message}")
+```
+
+### 13.2 Sensitivity Analysis
+
+Identify critical design parameters using normalized sensitivity coefficients.
+
+```python
+from structural_lib.api import design_beam_is456
+from structural_lib.insights import sensitivity_analysis
+
+params = {
+    "units": "IS456",
+    "mu_knm": 140,
+    "vu_kn": 85,
+    "b_mm": 300,
+    "D_mm": 500,
+    "d_mm": 450,
+    "fck_nmm2": 25,
+    "fy_nmm2": 500,
+}
+
+sensitivities, robustness = sensitivity_analysis(
+    design_beam_is456,
+    params,
+    ["d_mm", "b_mm", "fck_nmm2"],
+)
+
+# Most critical parameter
+print(f"{sensitivities[0].parameter}: S={sensitivities[0].sensitivity:.2f}")
+print(f"Robustness: {robustness.score:.2f} ({robustness.rating})")
+```
+
+### 13.3 Constructability Scoring
+
+Assess ease of construction on 0-100 scale.
+
+```python
+from structural_lib.insights import calculate_constructability_score
+
+score = calculate_constructability_score(design, detailing)
+
+print(f"Constructability: {score.score:.0f}/100 ({score.rating})")
+for factor in score.factors:
+    if factor.penalty < 0:
+        print(f"❌ {factor.factor}: {factor.message}")
+```
+
+### 13.4 JSON Serialization
+
+All insights types provide `.to_dict()` methods for JSON export:
+
+```python
+import json
+
+precheck_json = json.dumps(precheck.to_dict(), indent=2)
+sens_json = json.dumps([s.to_dict() for s in sensitivities], indent=2)
+robust_json = json.dumps(robustness.to_dict(), indent=2)
+construct_json = json.dumps(constructability.to_dict(), indent=2)
+```
+
+### 13.5 CLI Integration
+
+```bash
+# Run design with insights
+python -m structural_lib design beams.csv -o results.json --insights
+
+# Creates two files:
+# - results.json (design results)
+# - results_insights.json (advisory insights)
+```
+
+**Further Reading:**
+- [Insights User Guide](../getting-started/insights-guide.md)
+- [Insights API Reference](insights-api.md)
+- [Sensitivity Analysis Blog Post](../publications/blog-posts/03-sensitivity-analysis/)

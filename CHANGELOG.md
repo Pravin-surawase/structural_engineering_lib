@@ -27,6 +27,14 @@ All notable changes to this project will be documented in this file.
   - Sensitivity analysis: 14 tests covering golden vectors, edge cases, physical validation, robustness scoring
   - Constructability scoring: 10 tests covering full design spectrum (light/typical/heavy/congested), factor-specific tests
   - JSON serialization: 6 tests covering all insights types, round-trip validation, enum conversion
+- **Complete insights documentation** (`docs/getting-started/insights-guide.md`, `docs/reference/insights-api.md`)
+  - User guide covering all three insight types (precheck, sensitivity, constructability)
+  - Python API and CLI usage examples with working code
+  - Risk level interpretation and sensitivity coefficient explanation
+  - Complete API reference with function signatures, parameters, complexity analysis
+  - Dataclass documentation with JSON serialization methods
+  - Best practices, limitations, and troubleshooting guidance
+  - Cross-linked to main API reference and docs index
 
 ### Changed
 - **Constructability scoring upgraded to 0-100 scale** (`insights/constructability.py`)
