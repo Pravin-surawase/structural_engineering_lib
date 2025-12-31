@@ -56,6 +56,15 @@ python -m structural_lib report results.json --format=html -o report/ --batch-th
 
 Run `python -m structural_lib --help` for more options.
 
+## Insights export (v0.13.0+)
+
+```bash
+python -m structural_lib design input.csv -o results.json --insights
+# Writes: results.json + <output_stem>_insights.json
+```
+
+Note: CLI insights currently export precheck + sensitivity + robustness; constructability may be null until CLI integration is completed.
+
 ## Quick Start: Python API
 
 ```python

@@ -8,9 +8,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**Run ETABS beam exports through IS 456 checks/design and get compliant rebar + DXF + schedules in minutes.**
+**Run ETABS beam exports through IS 456 checks/design and get compliant rebar + DXF + schedules in minutes. Now with advisory insights for design validation.**
 
-[Quick Start](#quick-start) | [Documentation](docs/README.md) | [AI Summary](llms.txt) | [Examples](Python/examples/) | [API Reference](docs/reference/api.md)
+## Quick Links
+
+📚 [Documentation](docs/README.md) • 🚀 [Quick Start](#quick-start) • 💡 [Examples](Python/examples/) • 🔧 [API Reference](docs/reference/api.md) • 📊 [Insights Guide](docs/getting-started/insights-guide.md) • 🤖 [AI Summary](llms.txt)
 
 </div>
 
@@ -18,26 +20,47 @@
 
 ## At a glance
 
-- Beam-only IS 456 RC design library (Python + VBA parity)
-- Deterministic, auditable outputs: `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
-- Batch-ready CLI + public API wrappers for validation/detailing/export
-- Visual review outputs: critical set tables and HTML reports with SVG
+- **Scope:** Beam-only IS 456 RC design library (Python + VBA parity)
+- **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
+- **Automation:** Batch-ready CLI + public API wrappers for validation/detailing/export
+- **Insights:** Advisory precheck, sensitivity analysis, constructability scoring (preview)
+
+---
+
+## Features
+
+### Core Capabilities
+- **Design & Compliance:** Flexure, shear, serviceability (deflection Level A+B, crack width) per IS 456:2000
+- **Detailing:** Bar layouts, stirrup configuration, development/lap lengths per IS 13920
+- **Bar Bending Schedule:** IS 2502-compliant CSV/JSON with weights, cut lengths, bar marks
+- **DXF Export:** CAD-ready reinforcement drawings with title blocks and annotations
+- **Batch Processing:** CSV/JSON job runner for 100+ beams, critical set reports, HTML summaries
+
+### Advisory Tools (Preview - v0.13.0+)
+- **Quick Precheck:** Heuristic validation (deflection risk, width adequacy, steel estimates) in <1ms
+- **Sensitivity Analysis:** Identify critical parameters (depth, width, fck) with normalized coefficients
+- **Constructability Scoring:** 0-100 scale based on bar spacing, stirrup spacing, layer count, standard sizes
+
+### Quality & Trust
+- **Deterministic:** Same input → same output (JSON/CSV/DXF) across runs
+- **Tested:** ~2,000 tests, ~92% branch coverage, 10 insights benchmark cases
+- **Traceable:** IS 456 clause references in design formulas
+- **Dual Implementation:** Python + VBA with matching I/O
+
+---
 
 ## Status
 
 🚀 **Active (v0.13.0)** — Published on PyPI. Unified CLI + design + detailing + DXF export + serviceability (Level A+B).
 
 **What's new in v0.13.0:**
+- **Advisory Insights Module (Preview):** `quick_precheck()`, `sensitivity_analysis()`, `calculate_constructability_score()` for design validation and parameter sensitivity. CLI: `--insights` flag.
+- **Insights Verification Pack:** 10 benchmark cases with automated regression tests for insights accuracy.
 - **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
 - **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.
-- **DXF/BBS quality gates:** bar mark consistency checks, DXF content tests, title block context, and render workflow.
-- **API/CLI tests:** wrapper coverage and stability labels for v0.12 endpoints.
+- **DXF/BBS quality gates:** bar mark consistency checks, DXF content tests, title block context.
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
-
-**In main (target v0.12.1):**
-- **Test hardening:** contract tests for units boundaries + reduced property-invariant skips.
-- **DXF/BBS regressions:** dedicated fixtures for mark-diff edge cases.
 
 **Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.13.0`).
 
@@ -113,6 +136,16 @@ Optional schema validation:
 python3 -m structural_lib validate results.json
 ```
 
+Optional insights analysis:
+```bash
+python3 -m structural_lib design input.csv -o results.json --insights
+# Creates: results.json + <output_stem>_insights.json
+# Example: -o results.json         -> results_insights.json
+# Example: -o results_insights.json -> results_insights_insights.json
+# Note: CLI insights currently export precheck + sensitivity + robustness;
+# constructability may be null until CLI integration is completed.
+```
+
 Design writes per-beam status in `results.json`; failed beams are flagged with `is_safe=false` (plus an error message).
 
 ETABS exports can be normalized into this schema. See `docs/specs/ETABS_INTEGRATION.md` for the mapping rules.
@@ -174,7 +207,8 @@ See `docs/reference/api-stability.md` for stability labels and guarantees.
 | **Units** | Explicit: mm, N/mm^2, kN, kN*m — converted at layer boundaries |
 | **Test coverage** | ~2,000 tests, ~92% branch coverage (see CI for current) |
 | **Clause traceability** | Core design formulas reference IS 456 clause/table |
-| **Verification pack** | Benchmark examples in `Python/examples/` |
+| **Verification pack** | Benchmark examples in `Python/examples/` + insights verification pack (10 cases) |
+| **Performance** | Quick precheck: <1ms, Full design: ~200-500ms/beam, Batch 100 beams: <1 min |
 
 ## Who it helps
 
@@ -243,14 +277,27 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 
 ## Documentation
 
-- **Docs Index:** `docs/README.md`
-- **CLI Reference:** `docs/cookbook/cli-reference.md`
-- **API Reference:** `docs/reference/api.md`
-- **Beginner's Guide:** `docs/getting-started/beginners-guide.md`
-- **Python Quickstart:** `docs/getting-started/python-quickstart.md`
-- **Excel Quickstart:** `docs/getting-started/excel-quickstart.md`
-- **Excel Tutorial:** `docs/getting-started/excel-tutorial.md`
-- **Known Pitfalls:** `docs/reference/known-pitfalls.md`
+**Getting Started:**
+- [Beginner's Guide](docs/getting-started/beginners-guide.md) - Start here for first-time users
+- [Python Quickstart](docs/getting-started/python-quickstart.md) - API usage examples
+- [Insights Guide](docs/getting-started/insights-guide.md) - Advisory insights (precheck, sensitivity, constructability)
+
+**Reference:**
+- [CLI Reference](docs/cookbook/cli-reference.md) - All CLI commands
+- [API Reference](docs/reference/api.md) - Function signatures and examples
+- [Insights API Reference](docs/reference/insights-api.md) - Insights module technical reference
+- [API Stability](docs/reference/api-stability.md) - Stability labels and versioning
+- [Known Pitfalls](docs/reference/known-pitfalls.md) - Common issues and solutions
+
+**Excel/VBA:**
+- [Excel Quickstart](docs/getting-started/excel-quickstart.md)
+- [Excel Tutorial](docs/getting-started/excel-tutorial.md)
+
+**Verification:**
+- [Validation Pack](docs/verification/validation-pack.md) - IS 456/SP:16 benchmark cases
+- [Insights Verification Pack](docs/verification/insights-verification-pack.md) - Insights module regression tests
+
+**Index:** [docs/README.md](docs/README.md) - Complete documentation index
 
 ## Community
 
