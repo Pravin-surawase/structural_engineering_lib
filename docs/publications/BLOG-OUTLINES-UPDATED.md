@@ -118,6 +118,9 @@ All three blog post outlines have been updated to reflect corrected, evidence-ba
 
 **Note:** Blog 03 is the most technically focused and had fewer overclaims to correct. Main update was adding proper academic sourcing for sensitivity analysis methods.
 
+**Additional correction (2025-12-31):**
+- Blog 03 hook also contained an unsupported "10-20 iterations" phrasing; now replaced with "iteratively revising until code-compliant".
+
 ---
 
 ## Evidence Levels Applied

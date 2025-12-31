@@ -103,7 +103,7 @@ Engineer: "Okay... should I increase width? depth? concrete grade? 🤷"
 | Deterministic | ❌ Stochastic | ✅ Repeatable |
 | Explainable | ❌ Black box | ✅ Traceable |
 | Verifiable | ❌ Statistical | ✅ Provable |
-| Small data | ❌ Needs 1000s | ✅ Works with 10s |
+| Data efficiency | ⚠️ Often needs larger labeled datasets (small-sample bias risk) | ✅ Can be validated with a small set of worked examples (sample-only) |
 | Code compliance | ❌ No citations | ✅ Clause-linked |
 
 **The insight:** Classical methods (perturbation analysis, heuristics, enumeration) are often superior for engineering.
@@ -198,7 +198,7 @@ def quick_precheck(span_mm, b_mm, d_mm, D_mm, mu_knm, fck_nmm2, fy_nmm2):
 | Heavy steel (Mu=160 kN·m) | ✅ PROCEED | ✅ SAFE | ✅ Correct |
 | Shallow beam (d=250mm) | ⚠ DEFLECTION RISK | ❌ FAIL | ✅ Correct |
 
-**Accuracy: 100% (4/4 cases)**
+**Match rate: 100% (4/4 cases, sample-only)**
 
 **User value:**
 - Instant feedback before computation

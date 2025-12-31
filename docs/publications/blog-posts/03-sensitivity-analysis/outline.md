@@ -29,7 +29,7 @@ You're designing a beam that just barely fails. You need to adjust something, bu
 - Upgrade concrete? (higher material cost)
 - Reduce spacing between beams? (more beams!)
 
-**Current Approach:** Trial and error (10-20 iterations)
+**Current Approach:** Trial and error (iteratively revising until code-compliant)
 
 **Better Approach:** Sensitivity analysis—quantify which parameters actually matter.
 
