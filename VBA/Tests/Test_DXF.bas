@@ -69,13 +69,66 @@ Private Sub AssertEqual(ByVal actual As Variant, ByVal expected As Variant, ByVa
 End Sub
 
 Private Function GetTestFilePath(ByVal fileName As String) As String
-    ' Returns path in user's temp folder
-    GetTestFilePath = Environ("TEMP") & "\" & fileName
+    ' Returns path in user's temp folder (cross-platform)
+    GetTestFilePath = GetTempFolderPath() & fileName
+End Function
+
+Private Function GetTempFolderPath() As String
+    Dim tmp As String
+    tmp = Environ$("TMPDIR")
+    If Len(tmp) = 0 Then tmp = Environ$("TEMP")
+    If Len(tmp) = 0 Then tmp = Environ$("TMP")
+    If Len(tmp) = 0 Then tmp = CurDir$
+
+    ' Ensure trailing separator
+    If Len(tmp) > 0 Then
+        Dim sep As String
+        If InStr(1, tmp, "/", vbBinaryCompare) > 0 Then
+            sep = "/"
+        Else
+            sep = "\\"
+        End If
+
+        If Right$(tmp, 1) <> "/" And Right$(tmp, 1) <> "\\" Then
+            tmp = tmp & sep
+        End If
+    End If
+
+    GetTempFolderPath = tmp
 End Function
 
 Private Sub CleanupTestFile(ByVal filePath As String)
     On Error Resume Next
     Kill filePath
+End Sub
+
+Private Function ReadAllText(ByVal filePath As String) As String
+    Dim fileNumber As Integer
+    fileNumber = FreeFile
+
+    Dim content As String
+    Open filePath For Binary Access Read As #fileNumber
+    content = String$(LOF(fileNumber), vbNullChar)
+    Get #fileNumber, , content
+    Close #fileNumber
+
+    ReadAllText = content
+End Function
+
+Private Sub AssertContains(ByVal haystack As String, ByVal needle As String, ByVal testName As String)
+    Call AssertTrue(InStr(1, haystack, needle, vbTextCompare) > 0, testName)
+End Sub
+
+Private Sub AssertDxfHasSection(ByVal dxfText As String, ByVal sectionName As String, ByVal testName As String)
+    Call AssertContains(dxfText, vbCrLf & "2" & vbCrLf & sectionName & vbCrLf, testName)
+End Sub
+
+Private Sub AssertDxfHasLayer(ByVal dxfText As String, ByVal layerName As String, ByVal testName As String)
+    Call AssertContains(dxfText, vbCrLf & "2" & vbCrLf & layerName & vbCrLf, testName)
+End Sub
+
+Private Sub AssertDxfHasEntity(ByVal dxfText As String, ByVal entityName As String, ByVal testName As String)
+    Call AssertContains(dxfText, vbCrLf & "0" & vbCrLf & entityName & vbCrLf, testName)
 End Sub
 
 ' ============================================================================
@@ -102,6 +155,12 @@ Private Sub Test_DXF_Initialize()
     
     ' Test 4: File exists
     Call AssertTrue(Dir(testFile) <> "", "DXF file was created")
+
+    ' Test 4b: File contains basic DXF structure
+    Dim dxfText As String
+    dxfText = ReadAllText(testFile)
+    Call AssertContains(dxfText, vbCrLf & "0" & vbCrLf & "SECTION" & vbCrLf, "DXF contains SECTION")
+    Call AssertContains(dxfText, vbCrLf & "0" & vbCrLf & "EOF" & vbCrLf, "DXF contains EOF")
     
     ' Cleanup
     Call CleanupTestFile(testFile)
@@ -141,6 +200,25 @@ Private Sub Test_DXF_Primitives()
     ' Close and verify file
     Call M16_DXF.DXF_Close
     Call AssertTrue(FileLen(testFile) > 0, "DXF file has content")
+
+    ' Content-level validation (not just size)
+    Dim dxfText As String
+    dxfText = ReadAllText(testFile)
+
+    Call AssertDxfHasSection(dxfText, "HEADER", "DXF has HEADER section")
+    Call AssertDxfHasSection(dxfText, "TABLES", "DXF has TABLES section")
+    Call AssertDxfHasSection(dxfText, "ENTITIES", "DXF has ENTITIES section")
+    Call AssertContains(dxfText, vbCrLf & "0" & vbCrLf & "EOF" & vbCrLf, "DXF ends with EOF")
+
+    Call AssertDxfHasLayer(dxfText, LAYER_BEAM_OUTLINE, "DXF defines layer: BEAM_OUTLINE")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_MAIN, "DXF defines layer: REBAR_MAIN")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_STIRRUP, "DXF defines layer: REBAR_STIRRUP")
+    Call AssertDxfHasLayer(dxfText, LAYER_TEXT_CALLOUT, "DXF defines layer: TEXT_CALLOUT")
+
+    Call AssertDxfHasEntity(dxfText, "LINE", "DXF contains LINE entity")
+    Call AssertDxfHasEntity(dxfText, "CIRCLE", "DXF contains CIRCLE entity")
+    Call AssertDxfHasEntity(dxfText, "ARC", "DXF contains ARC entity")
+    Call AssertDxfHasEntity(dxfText, "TEXT", "DXF contains TEXT entity")
     
     ' Cleanup
     Call CleanupTestFile(testFile)
@@ -200,6 +278,16 @@ Private Sub Test_DXF_BeamSection()
     
     ' Test 15: File has content
     Call AssertTrue(FileLen(testFile) > 500, "Beam section DXF has substantial content")
+
+    ' Content-level validation
+    Dim dxfText As String
+    dxfText = ReadAllText(testFile)
+    Call AssertDxfHasSection(dxfText, "ENTITIES", "Beam section DXF has ENTITIES section")
+    Call AssertDxfHasLayer(dxfText, LAYER_BEAM_OUTLINE, "Beam section DXF defines BEAM_OUTLINE")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_MAIN, "Beam section DXF defines REBAR_MAIN")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_STIRRUP, "Beam section DXF defines REBAR_STIRRUP")
+    Call AssertDxfHasLayer(dxfText, LAYER_COVER_LINE, "Beam section DXF defines COVER_LINE")
+    Call AssertDxfHasEntity(dxfText, "CIRCLE", "Beam section DXF contains CIRCLE entities")
     
     ' Cleanup
     Call CleanupTestFile(testFile)
@@ -221,6 +309,16 @@ Private Sub Test_DXF_BeamLongitudinal()
     
     ' Test 18: File has content
     Call AssertTrue(FileLen(testFile) > 500, "Longitudinal DXF has substantial content")
+
+    ' Content-level validation
+    Dim dxfText As String
+    dxfText = ReadAllText(testFile)
+    Call AssertDxfHasSection(dxfText, "ENTITIES", "Longitudinal DXF has ENTITIES section")
+    Call AssertDxfHasLayer(dxfText, LAYER_BEAM_OUTLINE, "Longitudinal DXF defines BEAM_OUTLINE")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_MAIN, "Longitudinal DXF defines REBAR_MAIN")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_STIRRUP, "Longitudinal DXF defines REBAR_STIRRUP")
+    Call AssertDxfHasLayer(dxfText, LAYER_CENTERLINE, "Longitudinal DXF defines CENTERLINE")
+    Call AssertDxfHasEntity(dxfText, "LINE", "Longitudinal DXF contains LINE entities")
     
     ' Cleanup
     Call CleanupTestFile(testFile)
@@ -279,6 +377,17 @@ Private Sub Test_DXF_FullDetailing()
     
     ' Test 21: File has substantial content (section + longitudinal + bar schedule)
     Call AssertTrue(FileLen(testFile) > 2000, "Full detailing DXF has comprehensive content")
+
+    ' Content-level validation
+    Dim dxfText As String
+    dxfText = ReadAllText(testFile)
+    Call AssertDxfHasSection(dxfText, "ENTITIES", "Full detailing DXF has ENTITIES section")
+    Call AssertDxfHasLayer(dxfText, LAYER_BEAM_OUTLINE, "Full detailing DXF defines BEAM_OUTLINE")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_MAIN, "Full detailing DXF defines REBAR_MAIN")
+    Call AssertDxfHasLayer(dxfText, LAYER_REBAR_STIRRUP, "Full detailing DXF defines REBAR_STIRRUP")
+    Call AssertDxfHasLayer(dxfText, LAYER_DIMENSIONS, "Full detailing DXF defines DIMENSIONS")
+    Call AssertDxfHasLayer(dxfText, LAYER_TEXT_CALLOUT, "Full detailing DXF defines TEXT_CALLOUT")
+    Call AssertContains(dxfText, result.beam_id, "Full detailing DXF includes beam_id text")
     
     ' Don't cleanup - keep for visual verification
     m_TestOutput = m_TestOutput & "  [INFO] Test file kept at: " & testFile & vbCrLf
