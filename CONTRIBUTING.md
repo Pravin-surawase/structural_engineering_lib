@@ -23,6 +23,11 @@ Thanks for helping improve **structural_engineering_lib**.
 - CI runs on every push — watch for failures and fix immediately
 - Rule of thumb: <20 lines and low-risk → direct push; >20 lines or risky → use PR
 
+Helper script (optional):
+- `./scripts/quick_push.sh "docs: update something"` (runs `./scripts/quick_check.sh`, then commits + pushes)
+- `./scripts/quick_push.sh "docs: update docs" docs` (docs-only checks)
+- `./scripts/quick_push.sh "test: update" --cov` (runs tests with coverage gate)
+
 ### For External Contributors (if any)
 - Fork the repository
 - Create a feature branch
