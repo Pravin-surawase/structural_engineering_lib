@@ -32,6 +32,9 @@ This tutorial walks you through using the Structural Engineering Library in Exce
 5. Click **OK**
 6. The add-in is now loaded!
 
+![Add-in Installation Dialog](../images/excel-tutorial-01-addin-install.png)
+*Figure 1: Excel Add-ins dialog showing StructEngLib.xlam loaded*
+
 ### Step 1.3: Open the Workbook (Option B)
 
 Alternatively, just open `BeamDesignApp.xlsm` directly. All functions will be available.
@@ -51,6 +54,9 @@ Set up a worksheet like this:
 | 3 | B2 | 300 | 450 | 400 | 25 | 500 | 100 | |
 | 4 | B3 | 350 | 600 | 550 | 30 | 500 | 250 | |
 
+![Input Data Table](../images/excel-tutorial-02-input-table.png)
+*Figure 2: Input table with beam geometry and loading data*
+
 ### Step 2.2: Calculate Required Steel
 
 In cell **H2**, enter:
@@ -68,6 +74,12 @@ This calculates the tension steel area required for the given moment.
 - `F2` = fy (steel grade)
 
 Copy the formula down to H3, H4, etc.
+
+![UDF Autocomplete](../images/excel-tutorial-06-udf-autocomplete.png)
+*Figure 3: Excel autocomplete showing available IS456_ functions*
+
+![Formula Result](../images/excel-tutorial-03-formula-result.png)
+*Figure 4: Calculated steel area (882 mm²) displayed in cell H2*
 
 ### Step 2.3: Check Limiting Moment
 
@@ -165,6 +177,9 @@ Result: `3-16φ` (3 nos. of 16mm bars)
 
 Result: `2L-8φ@150` (2-legged 8mm stirrups at 150mm c/c)
 
+![Bar and Stirrup Callouts](../images/excel-tutorial-05-callouts.png)
+*Figure 5: Formatted callouts for reinforcement detailing*
+
 ---
 
 ## Part 6: Complete Design Worksheet
@@ -189,6 +204,9 @@ Here's a complete sample worksheet you can recreate:
 | d | Mu_lim | Ast | Bars | sv | Stirrups | Ld | Status |
 | =C2-D2-16 | =IS456_MuLim(B2,J2,F2,G2) | =IS456_AstRequired(B2,J2,H2,F2,G2) | =IS456_BarCallout(CEILING(L2/201,1),16) | =IS456_ShearSpacing(I2,B2,J2,F2,G2,100,L2*100/(B2*J2)) | =IS456_StirrupCallout(2,8,FLOOR(N2/25,1)*25) | =IS456_Ld(16,F2,G2) | =IF(AND(L2>0,H2<=K2),"OK","Check") |
 
+![Complete Design Worksheet](../images/excel-tutorial-04-complete-table.png)
+*Figure 6: Complete design worksheet with input data (columns A-I) and calculated results (columns J-Q)*
+
 ---
 
 ## Part 7: Export to DXF
@@ -200,12 +218,18 @@ Here's a complete sample worksheet you can recreate:
 3. Click **Run**
 4. The DXF file will be saved to the workbook folder
 
+![Macro Dialog](../images/excel-tutorial-08-macro-dialog.png)
+*Figure 7: Macro dialog showing IS456_ExportBeamDXF function*
+
 ### Step 7.2: Using a Button
 
 1. Go to **Developer → Insert → Button**
 2. Draw a button on your sheet
 3. Assign the macro `IS456_ExportBeamDXF`
 4. Click the button to export
+
+![Insert Macro Button](../images/excel-tutorial-09-insert-button.png)
+*Figure 8: Creating a button to run DXF export macro*
 
 ### Step 7.3: Export VBA Code
 
@@ -326,6 +350,9 @@ NOTES:
 4. Development lengths at simple supports = Ld/3 or 12φ (whichever greater)
 =========================================================
 ```
+
+![Sample Output Report](../images/excel-tutorial-10-output-report.png)
+*Figure 9: Professional beam design schedule with formatted output*
 
 ---
 
