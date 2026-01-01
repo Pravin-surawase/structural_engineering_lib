@@ -14,6 +14,7 @@
 **Actual:** - hours
 
 **Progress:**
+- [ ] Step 0: Run session bootstrap (1 min)
 - [ ] Step 1: Create new workbook (5 min)
 - [ ] Step 2: Input columns A-I (15 min)
 - [ ] Step 3: Calculated columns J-Q (30 min)

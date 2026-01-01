@@ -17,6 +17,12 @@
 
 ## Quick Start
 
+### 0. Start Session (Every time, 30 sec)
+
+```bash
+./.venv/bin/python scripts/start_session.py
+```
+
 ### 1. Read Workflow Guide (One-time, 10 min)
 ```bash
 Open: COPILOT_WORKFLOW.md

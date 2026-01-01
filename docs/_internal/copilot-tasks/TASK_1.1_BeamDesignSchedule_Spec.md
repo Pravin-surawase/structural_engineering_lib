@@ -88,7 +88,7 @@ Apply data validation to columns B-I:
 | N | Stirrup Spacing (mm) | `=IS456_ShearSpacing(H2,B2,D2,E2,F2,100,K2*100/(B2*D2))` | Required spacing |
 | O | Stirrup Callout | `=IF(ISNUMBER(N2),IS456_StirrupCallout(2,8,FLOOR(N2/25,1)*25),"")` | e.g., "2L-8φ@150" |
 | P | Ld (mm) | `=IS456_Ld(16,E2,F2)` | Development length |
-| Q | Status | `=IF(AND(ISNUMBER(K2),G2<=J2),"✅ Safe","⚠️ Check")` | Pass/fail |
+| Q | Status | `=IF(AND(ISNUMBER(K2),G2<=J2),"Safe","Check")` | Pass/fail |
 
 **Copilot Prompt:**
 ```
@@ -116,14 +116,14 @@ Format calculated columns (J-Q):
 **Rule 1: Highlight failed beams**
 ```
 Range: Q2:Q51 (Status column)
-Condition: Cell Value = "⚠️ Check"
+Condition: Cell Value = "Check"
 Format: Red fill (RGB 255, 199, 206), Dark red text
 ```
 
 **Rule 2: Highlight safe beams**
 ```
 Range: Q2:Q51
-Condition: Cell Value = "✅ Safe"
+Condition: Cell Value = "Safe"
 Format: Green fill (RGB 198, 239, 206), Dark green text
 ```
 
@@ -138,8 +138,9 @@ Format: Orange fill, bold text
 ```
 Apply Excel conditional formatting to sheet "Design":
 1. Column Q (Status): Red fill if "⚠️ Check", Green fill if "✅ Safe"
+    (If you use the provided setup macro/module, the Status values are ASCII-safe: "Check" / "Safe".)
 2. Column K (Ast): Orange fill if text contains "Over-Reinforced"
-3. Entire row 2-51: Light yellow fill if Q cell = "⚠️ Check"
+3. Entire row 2-51: Light yellow fill if Q cell = "Check"
 ```
 
 **Manual:** Apply in Excel via Home → Conditional Formatting
@@ -187,8 +188,8 @@ Ensure formulas in columns J-Q auto-calculate.
 
 2. **Review Results (Columns J-Q)**
    - Results auto-calculate using IS 456:2000 formulas
-   - ✅ Safe = Design is valid
-   - ⚠️ Check = Review required (over-reinforced or unsafe)
+    - Safe = Design is valid
+    - Check = Review required (over-reinforced or unsafe)
 
 3. **Export to DXF**
    - Click "Export All Beams to DXF" button
@@ -240,8 +241,8 @@ Use merged cells for title, bullet lists, table formatting.
 ```
 A1: "DESIGN SUMMARY" (Title, font size 16, bold)
 A3: "Total Beams:" | B3: =COUNTA(Design!A2:A51)
-A4: "Safe Beams:" | B4: =COUNTIF(Design!Q2:Q51,"✅ Safe")
-A5: "Check Required:" | B5: =COUNTIF(Design!Q2:Q51,"⚠️ Check")
+A4: "Safe Beams:" | B4: =COUNTIF(Design!Q2:Q51,"Safe")
+A5: "Check Required:" | B5: =COUNTIF(Design!Q2:Q51,"Check")
 A6: "Success Rate:" | B6: =B4/B3 (format as percentage)
 
 A8: "MATERIAL SUMMARY"
@@ -346,7 +347,7 @@ Sub ExportAllBeamsToDXF()
             .stirrup_mid.spacing = ExtractSpacing(stirrupText)  ' Helper function
             .stirrup_mid.zone_length = 2400  ' Default
 
-            .is_valid = (ws.Cells(i, 17).Value = "✅ Safe")  ' Q (status)
+            .is_valid = (ws.Cells(i, 17).Value = "Safe")  ' Q (status)
         End With
 
         ' Export to DXF
@@ -519,7 +520,7 @@ Protect "Design" sheet with:
 ```
 1. Add beam in row 12: B11, 300, 500, 450, 25, 500, 200, 120, 40
 2. Verify formulas auto-calculate
-3. Expected: Ast ≈ 1176 mm², Status = "⚠️ Check" (doubly reinforced)
+3. Expected: Ast ≈ 1176 mm², Status = "Check" (doubly reinforced)
 ```
 
 **Test 3: Export DXF**

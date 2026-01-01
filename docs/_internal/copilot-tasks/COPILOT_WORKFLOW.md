@@ -39,6 +39,16 @@
 
 ## How to Use Task Specs
 
+### Step 0: Start Session (Every time, 30 sec)
+
+Before starting any task work, run the repo session bootstrap:
+
+```bash
+./.venv/bin/python scripts/start_session.py
+```
+
+This ensures you're aligned on current branch/state, active tasks, and doc freshness.
+
 ### Step 1: Open Task Spec
 
 Example: `TASK_1.1_BeamDesignSchedule_Spec.md`
@@ -98,8 +108,8 @@ Some tasks require manual Excel actions (Copilot can't directly manipulate Excel
 ```markdown
 **Copilot Prompt:**
 Create conditional formatting rule for column Q (Status):
-- Red fill if "⚠️ Check"
-- Green fill if "✅ Safe"
+- Red fill if "Check"
+- Green fill if "Safe"
 
 **Manual:**
 Apply in Excel via Home → Conditional Formatting → New Rule
