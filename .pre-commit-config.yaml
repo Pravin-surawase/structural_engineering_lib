@@ -38,13 +38,6 @@ repos:
   # Doc version drift check (local script, non-blocking)
   - repo: local
     hooks:
-      - id: block-commit-on-main
-        name: Block commits on main
-        entry: scripts/check_not_main.sh
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
       - id: check-doc-versions
         name: Check doc version drift
         entry: python3 scripts/check_doc_versions.py

@@ -23,13 +23,16 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 *   **`main` (Protected):**
     *   The "Golden Master". Always deployable.
     *   Contains only tested, verified code.
-    *   **Rule:** No direct commits to `main`.
-        *   If you need to change docs, use a PR like everything else.
-        *   Release tags are created on the merge commit.
+    *   **Rule (Solo Dev):** Direct pushes allowed for maintainer, but CI must pass.
+        *   Use PRs for significant changes (breaking changes, new features, risky refactors).
+        *   Use direct push for routine work (docs, fixes, tests, minor updates).
+        *   CI runs on every push — if it fails, fix immediately.
+        *   Release tags are created on the merge commit or on main after direct push.
 *   **`feat/task-ID-description`:**
     *   Feature branches for specific tasks.
     *   Naming convention: `feat/task-017-etabs-import`, `fix/task-012-shear-bug`.
     *   **Lifespan:** Short (1-2 sessions max). Merge back to `main` quickly.
+    *   **Optional** for routine changes; required for significant features/refactors.
 
 ### 2.2 Workflow
 1.  **Start:** `git checkout -b feat/task-018-schedule`
@@ -38,6 +41,55 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 4.  **Verify:** Run full test suite.
 5.  **Merge:** Squash and Merge into `main` (or Rebase and Merge).
 6.  **Delete:** Delete the feature branch.
+
+### 2.2.1 Solo Developer Workflow (Simplified)
+
+**For routine changes (docs, fixes, tests):**
+
+1.  **Option 1: Direct on main** (fastest)
+    ```bash
+    git checkout main
+    git pull
+    # make changes
+    git add .
+    git commit -m "docs: update insights guide"
+    git push
+    # CI runs automatically, watch for failures
+    ```
+
+2.  **Option 2: Feature branch** (when you want CI feedback first)
+    ```bash
+    git checkout -b fix/quick-typo
+    # make changes
+    git commit -m "fix: correct formula in docs"
+    git push -u origin fix/quick-typo
+    # Wait for CI on branch, then:
+    git checkout main
+    git merge fix/quick-typo
+    git push
+    git branch -d fix/quick-typo
+    ```
+
+**For significant changes (features, breaking changes, refactors):**
+
+1.  **Use PR workflow:**
+    ```bash
+    git checkout -b feat/task-099-new-feature
+    # make changes
+    git commit -m "feat: add new capability"
+    git push -u origin feat/task-099-new-feature
+    gh pr create --title "feat: add new capability"
+    gh pr checks --watch  # wait for CI
+    gh pr merge --squash --delete-branch
+    ```
+
+**Emergency fixes:**
+
+If CI fails on main:
+1.  `git revert HEAD` (immediate rollback)
+2.  Fix in branch, test locally, then push fix
+
+**Rule of thumb:** If change is <20 lines and low-risk → direct push. If >20 lines or risky → use PR.
 
 ### 2.3 Branch Protection Baseline (GitHub Settings)
 
@@ -59,13 +111,12 @@ Solo default:
 * Skip "Restrict who can push" and "Require reviews" unless collaborating
 ---
 
-### 2.3.1 Current Protection Rules (as of 2025-12-28)
+### 2.3.1 Current Protection Rules (as of 2026-01-01)
 
 **Branch:** `main`
 
 **Rules Enabled:**
-- ✅ Changes must be made through a pull request (no direct pushes)
-- ✅ Required status checks must pass before merge:
+- ✅ Required status checks must pass before push:
   - `Lint` — Ruff linting
   - `pytest (3.9)` — Python 3.9 tests
   - `pytest (3.10)` — Python 3.10 tests
@@ -74,17 +125,25 @@ Solo default:
   - `CodeQL` — Security analysis
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
+- ⚠️ Pull requests OPTIONAL (not required)
 
-**CI Workflow:** `.github/workflows/ci.yml`
+**CI Workflow:** `.github/workflows/python-tests.yml`
 - Triggers on: push to `main`, pull requests to `main`
 - Python versions: 3.9, 3.10, 3.11, 3.12
 - OS: ubuntu-latest
 
+**Workflow:**
+- Direct push allowed for repository maintainer
+- All commits trigger CI
+- Failed CI = immediate notification
+- PRs optional but recommended for significant changes
+
 **Implications:**
-- All changes go through PRs (even docs-only changes)
-- CI must pass before merge is allowed
-- **Wait for CI:** Use `gh pr checks <num> --watch` before attempting merge
-- Tags should be created after PR is merged to `main`
+- Fast iteration for routine work
+- CI quality gate maintained
+- Self-review available via optional PRs
+- Clean revert if CI fails
+- Tags can be created after direct push to `main` or after PR merge
 
 ---
 Supply-chain stance:

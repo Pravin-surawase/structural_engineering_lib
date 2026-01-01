@@ -15,6 +15,21 @@ Thanks for helping improve **structural_engineering_lib**.
 - VBA modules live in `VBA/Modules/`.
 - Tests live in `VBA/Tests/` and are currently **manual-run**.
 
+## Workflow
+
+### For Repository Maintainer (Pravin)
+- **Direct push** to main allowed for routine changes (docs, fixes, tests, minor updates)
+- **Use PRs** for significant features, breaking changes, or when you want self-review
+- CI runs on every push — watch for failures and fix immediately
+- Rule of thumb: <20 lines and low-risk → direct push; >20 lines or risky → use PR
+
+### For External Contributors (if any)
+- Fork the repository
+- Create a feature branch
+- Submit PR to main
+- Wait for CI to pass
+- Maintainer will review and merge
+
 ## Guidelines
 
 - Keep changes small and focused.
