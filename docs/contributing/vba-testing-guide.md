@@ -1,7 +1,7 @@
 # VBA Testing Guide
 
 **Version:** 0.13.0
-**Last Updated:** 2025-12-31<br>
+**Last Updated:** 2026-01-01<br>
 
 ## Quick Start
 
@@ -98,6 +98,35 @@ Test_Serviceability.Run_All_Serviceability_Tests
 ' Integration/end-to-end
 Integration_TestHarness.Run_Integration_TestSuite
 ```
+
+---
+
+## DXF Tests: What’s Verified
+
+The DXF suite does both:
+
+- **API-level checks:** drawing calls increase entity count (sanity check)
+- **File-level checks:** exported DXF contains expected sections, layers, and entity types
+
+The file-level checks validate key DXF text markers such as:
+
+- `SECTION` / `HEADER` / `TABLES` / `ENTITIES` / `EOF`
+- layer names like `BEAM_OUTLINE`, `REBAR_MAIN`, `REBAR_STIRRUP`, `DIMENSIONS`, `TEXT_CALLOUT`
+- entity types like `LINE`, `CIRCLE`, `ARC`, `TEXT`
+
+This is intentionally lightweight (no geometry parsing) but catches many “empty/partial DXF” regressions.
+
+---
+
+## Where DXF Test Files Go
+
+The DXF suite writes temporary files using the first available temp location:
+
+- macOS (Excel): `TMPDIR`
+- Windows (Excel): `TEMP` or `TMP`
+- Fallback: current working directory
+
+The **full detailing** test keeps its DXF output for manual viewing and prints its location in the Immediate Window.
 
 ---
 
