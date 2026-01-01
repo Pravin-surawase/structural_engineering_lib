@@ -116,16 +116,18 @@ Solo default:
 **Branch:** `main`
 
 **Rules Enabled:**
-- ✅ Required status checks must pass before push:
-  - `Lint` — Ruff linting
+- ✅ Required status checks must pass on `main` (CI runs after push):
+    - `Lint / Typecheck` — Black, Ruff, MyPy, docs checks
   - `pytest (3.9)` — Python 3.9 tests
   - `pytest (3.10)` — Python 3.10 tests
   - `pytest (3.11)` — Python 3.11 tests
   - `pytest (3.12)` — Python 3.12 tests
-  - `CodeQL` — Security analysis
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
 - ⚠️ Pull requests OPTIONAL (not required)
+
+Notes:
+- `CodeQL` runs on pushes and PRs, but is not currently configured as a required status check for `main`.
 
 **CI Workflow:** `.github/workflows/python-tests.yml`
 - Triggers on: push to `main`, pull requests to `main`
@@ -184,20 +186,20 @@ See `.github/copilot-instructions.md` for agent-specific workflow rules.
 
 ---
 
-### 2.6 Local Workflow Guardrails (PR-Only Repos)
+### 2.6 Local Workflow Guardrails (When PRs are required)
 
 These are the rules that prevent rebase pain and “why can’t I push?” surprises.
 
 **Golden rules:**
-- **Never commit on `main`.** Always branch first.
-- **If you accidentally commit on `main`:**
+- If a ruleset requires PRs for `main` (collaboration mode), **never commit on `main`**. Always branch first.
+- **If you accidentally commit on `main` under PR-required rules:**
   1) `git switch -c <branch>`
   2) `git push -u origin <branch>`
   3) Open a PR and merge it normally
 - **Sync `main` only after PR merge:** `git fetch origin` + `git rebase origin/main`
 - **Delete local branches after merge:** `git branch -d <branch>`
 
-**Why this matters:** Rulesets require PRs. Committing on `main` triggers rejected pushes and messy rebases.
+**Why this matters:** When PRs are required, committing on `main` triggers rejected pushes and messy rebases.
 
 ---
 
