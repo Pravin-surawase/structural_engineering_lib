@@ -637,9 +637,9 @@ print(robustness)     # Robustness score (0-1)
 ```
 
 **Read more:**
-- [Implementation guide](...)
-- [API reference](...)
-- [Validation cases](...)
+- [Implementation guide](../../../getting-started/insights-guide.md)
+- [API reference](../../../reference/insights-api.md)
+- [Validation cases](../../../verification/insights-verification-pack.md)
 
 ---
 
