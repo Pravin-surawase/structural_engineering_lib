@@ -22,7 +22,7 @@ from typing import Any, Dict, List, Optional, Sequence
 _logger = logging.getLogger(__name__)
 
 from . import flexure, shear, serviceability
-from .types import (
+from .data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthResult,

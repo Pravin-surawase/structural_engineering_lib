@@ -22,7 +22,7 @@ import math
 import re
 
 from .detailing import BeamDetailingResult
-from .types import CuttingAssignment, CuttingPlan
+from .data_types import CuttingAssignment, CuttingPlan
 
 
 # =============================================================================

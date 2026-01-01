@@ -6,7 +6,7 @@ Description:  Flexural design and analysis functions
 import math
 from typing import Union
 from . import materials
-from .types import BeamType, FlexureResult, DesignSectionType
+from .data_types import BeamType, FlexureResult, DesignSectionType
 from .errors import (
     E_INPUT_001,
     E_INPUT_002,

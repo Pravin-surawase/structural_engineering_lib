@@ -4,7 +4,7 @@ Description:  Shear design and analysis functions
 """
 
 from . import tables
-from .types import ShearResult
+from .data_types import ShearResult
 from .errors import (
     E_INPUT_001,
     E_INPUT_002,

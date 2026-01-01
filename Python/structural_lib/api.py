@@ -17,7 +17,7 @@ from . import ductile
 from . import job_runner
 from . import report
 from . import serviceability
-from .types import ComplianceCaseResult, ComplianceReport, ValidationReport
+from .data_types import ComplianceCaseResult, ComplianceReport, ValidationReport
 
 __all__ = [
     "get_library_version",

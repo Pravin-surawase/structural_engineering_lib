@@ -7,7 +7,7 @@ import time
 from ..errors import Severity
 from ..serviceability import check_deflection_span_depth
 from ..types import SupportCondition
-from .types import HeuristicWarning, PredictiveCheckResult
+from .data_types import HeuristicWarning, PredictiveCheckResult
 
 _HEURISTICS_VERSION = "1.0"
 

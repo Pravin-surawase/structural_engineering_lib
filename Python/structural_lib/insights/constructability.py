@@ -19,7 +19,7 @@ from typing import List
 
 from ..detailing import BeamDetailingResult
 from ..types import ComplianceCaseResult
-from .types import ConstructabilityFactor, ConstructabilityScore
+from .data_types import ConstructabilityFactor, ConstructabilityScore
 
 
 def calculate_constructability_score(

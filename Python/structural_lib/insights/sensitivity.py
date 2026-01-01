@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, Iterable, List, Tuple
 
-from .types import RobustnessScore, SensitivityResult
+from .data_types import RobustnessScore, SensitivityResult
 
 
 def _classify_impact(sensitivity: float, critical: bool = False) -> str:

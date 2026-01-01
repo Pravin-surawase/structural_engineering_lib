@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any, Dict, Optional, Tuple, Union
 
-from .types import (
+from .data_types import (
     CrackWidthResult,
     DeflectionResult,
     DeflectionLevelBResult,
