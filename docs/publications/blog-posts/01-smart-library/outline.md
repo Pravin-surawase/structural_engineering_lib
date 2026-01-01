@@ -515,9 +515,9 @@ print(pre['warnings'])  # Instant feedback!
 ```
 
 **Read more:**
-- GitHub: [structural_engineering_lib](https://github.com/...)
-- Research doc: [research-smart-library.md](...)
-- Implementation plan: [v0.13-v0.14-implementation-plan.md](...)
+- GitHub: [structural_engineering_lib](https://github.com/Pravin-surawase/structural_engineering_lib)
+- Research doc: [research-smart-library.md](../../../planning/research-smart-library.md)
+- Implementation plan: [v0.13-v0.14-implementation-plan.md](../../../planning/v0.13-v0.14-implementation-plan.md)
 
 **Questions? Comments?** Let's discuss in the comments!
 

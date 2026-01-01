@@ -497,8 +497,8 @@ ml_result = neural_network_approach(X_train, y_train)
 ```
 
 **Read more:**
-- [Optimization without ML: A Practical Guide](...)
-- [When to NOT Use Machine Learning](...)
+- Optimization without ML: A Practical Guide (draft TBD)
+- When to NOT Use Machine Learning (draft TBD)
 
 **Discuss:** What classical methods have you used successfully?
 

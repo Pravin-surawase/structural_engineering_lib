@@ -77,7 +77,8 @@ python -m structural_lib design beams.csv -o results.json --insights
 
 # Creates two files:
 # - results.json (design results)
-# - results_insights.json (advisory insights)
+# - <output_stem>_insights.json (advisory insights)
+#   Example: -o results.json -> results_insights.json
 ```
 
 ---
@@ -516,8 +517,8 @@ See [insights-api.md](../reference/insights-api.md) for detailed API documentati
 
 ## Further Reading
 
-- [Sensitivity Analysis Blog Post](../publications/blog-posts/03-sensitivity-analysis/BLOG-SENSITIVITY-ANALYSIS.md)
-- [Constructability Scoring Research](../publications/findings/CONSTRUCTABILITY_RESEARCH.md)
+- [Sensitivity Analysis Blog Post (draft)](../publications/blog-posts/03-sensitivity-analysis/draft.md)
+- [Constructability Scoring Research](../publications/findings/00-research-summary-FINAL.md)
 - [IS 456 Formula Reference](../reference/is456-formulas.md)
 
 ---
