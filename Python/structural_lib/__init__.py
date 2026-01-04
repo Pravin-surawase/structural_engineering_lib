@@ -28,6 +28,7 @@ from . import detailing
 from . import serviceability
 from . import compliance
 from . import bbs
+from . import types
 
 # DXF export is optional (requires ezdxf)
 dxf_export: Optional[ModuleType]
@@ -46,4 +47,5 @@ __all__ = [
     "flexure",
     "serviceability",
     "shear",
+    "types",
 ]
