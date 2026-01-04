@@ -6,8 +6,20 @@ This preserves imports like `structural_lib.insights.data_types`.
 
 from __future__ import annotations
 
-from . import types as _types
+from .types import (
+    ConstructabilityFactor,
+    ConstructabilityScore,
+    HeuristicWarning,
+    PredictiveCheckResult,
+    RobustnessScore,
+    SensitivityResult,
+)
 
-__all__ = [name for name in dir(_types) if not name.startswith("_")]
-
-globals().update({name: getattr(_types, name) for name in __all__})
+__all__ = [
+    "HeuristicWarning",
+    "PredictiveCheckResult",
+    "SensitivityResult",
+    "RobustnessScore",
+    "ConstructabilityFactor",
+    "ConstructabilityScore",
+]

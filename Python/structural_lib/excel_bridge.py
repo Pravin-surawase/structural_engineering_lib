@@ -33,7 +33,7 @@ from structural_lib import flexure, shear, detailing
 @xw.arg("fck", doc="Concrete grade (N/mm²)")
 @xw.arg("fy", doc="Steel grade (N/mm²)")
 @xw.ret(doc="Limiting moment of resistance (kN·m)")
-def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> float:
+def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> Union[float, str]:
     """
     Calculate limiting moment of resistance for singly reinforced beam.
 

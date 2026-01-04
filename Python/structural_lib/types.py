@@ -7,8 +7,36 @@ project transitions to `structural_lib.data_types`.
 
 from __future__ import annotations
 
-from . import data_types as _data_types
+from .data_types import (
+    BeamType,
+    ComplianceCaseResult,
+    ComplianceReport,
+    CrackWidthResult,
+    CuttingAssignment,
+    CuttingPlan,
+    DeflectionLevelBResult,
+    DeflectionResult,
+    DesignSectionType,
+    ExposureClass,
+    FlexureResult,
+    ShearResult,
+    SupportCondition,
+    ValidationReport,
+)
 
-__all__ = [name for name in dir(_data_types) if not name.startswith("_")]
-
-globals().update({name: getattr(_data_types, name) for name in __all__})
+__all__ = [
+    "BeamType",
+    "DesignSectionType",
+    "SupportCondition",
+    "ExposureClass",
+    "FlexureResult",
+    "ShearResult",
+    "DeflectionResult",
+    "DeflectionLevelBResult",
+    "CrackWidthResult",
+    "ComplianceCaseResult",
+    "ComplianceReport",
+    "ValidationReport",
+    "CuttingAssignment",
+    "CuttingPlan",
+]
