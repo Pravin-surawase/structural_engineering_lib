@@ -5,10 +5,39 @@
 
 ---
 
+## Phase 0: Foundation Setup (Prerequisites)
+
+### Task 0.1: Complete xlwings Excel Integration 🔄 IN PROGRESS
+**Status:** 50% complete (Python done; Excel UDF testing requires Windows)
+**Spec:** `TASK_0.1_xlwings_installation_COPILOT.md`
+**Estimated:** 20-35 minutes
+**Actual:** - minutes
+
+**Progress:**
+- [x] Fix types.py naming conflict (renamed to data_types.py)
+- [x] Fix excel_bridge.py function signatures
+- [x] Test Python UDFs (6/6 passing)
+- [x] Install xlwings add-in (.venv/bin/xlwings addin install)
+- [x] Identify platform constraint (macOS Excel cannot run xlwings worksheet UDFs)
+- [ ] Guide user through Excel settings (Windows)
+- [ ] Test first UDF in Excel (Windows) (=IS456_MuLim)
+- [ ] Test all 6 UDFs in Excel (Windows)
+- [ ] Document results in XLWINGS_TEST_RESULTS.md
+- [ ] Mark task complete
+
+**Deliverable:**
+- [ ] All Python UDFs working in Excel
+- [ ] Test results documented
+- [ ] Ready for Task 1.1
+
+**Assigned to:** GitHub Copilot (saving Claude credits)
+
+---
+
 ## Phase 1: User Enablement (Weeks 1-2)
 
 ### Task 1.1: Create BeamDesignSchedule.xlsm ⏸️ NOT STARTED
-**Status:** Ready to start
+**Status:** Waiting for Task 0.1 completion
 **Spec:** `TASK_1.1_BeamDesignSchedule_Spec.md`
 **Estimated:** 3 hours
 **Actual:** - hours

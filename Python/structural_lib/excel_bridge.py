@@ -33,7 +33,7 @@ from structural_lib import flexure, shear, detailing
 @xw.arg("fck", doc="Concrete grade (N/mm²)")
 @xw.arg("fy", doc="Steel grade (N/mm²)")
 @xw.ret(doc="Limiting moment of resistance (kN·m)")
-def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> float:
+def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> Union[float, str]:
     """
     Calculate limiting moment of resistance for singly reinforced beam.
 
@@ -45,8 +45,8 @@ def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> float:
     """
     try:
         # Use the actual function from flexure module
-        result = flexure.flexure_singly_reinforced(b, d, fck, fy)
-        return round(result["mu_lim_knm"], 2)
+        result = flexure.calculate_mu_lim(b, d, fck, fy)
+        return round(result, 2)
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -75,20 +75,18 @@ def IS456_AstRequired(
     """
     try:
         # Check if over-reinforced
-        mu_lim_result = flexure.calculate_mu_lim(b_mm=b, d_mm=d, fck_mpa=fck, fy_mpa=fy)
+        mu_lim = flexure.calculate_mu_lim(b, d, fck, fy)
 
-        if mu > mu_lim_result.mu_lim_knm:
+        if mu > mu_lim:
             return "Over-Reinforced"
 
         # Calculate required steel
-        result = flexure.calculate_ast_required(
-            b_mm=b, d_mm=d, mu_knm=mu, fck_mpa=fck, fy_mpa=fy
-        )
+        ast = flexure.calculate_ast_required(b, d, mu, fck, fy)
 
-        if not result.is_safe:
+        if ast < 0:  # Returns -1 if over-reinforced
             return "Over-Reinforced"
 
-        return round(result.ast_required_mm2, 2)
+        return round(ast, 2)
 
     except Exception as e:
         return f"Error: {str(e)}"
@@ -118,20 +116,17 @@ def IS456_ShearSpacing(
         =IS456_ShearSpacing(120, 300, 450, 25, 500, 8, 0.5)  -> Returns spacing in mm
     """
     try:
-        result = shear.calculate_shear_reinforcement(
-            vu_kn=vu,
-            b_mm=b,
-            d_mm=d,
-            fck_mpa=fck,
-            fy_mpa=fy,
-            dia_stirrup_mm=dia_stirrup,
-            pt_percent=pt,
-        )
+        # Calculate Asv for given stirrup diameter (2 legs)
+        import math
+
+        asv = 2 * math.pi * (dia_stirrup / 2) ** 2
+
+        result = shear.design_shear(vu, b, d, fck, fy, asv, pt)
 
         if not result.is_safe:
             return "Shear Failure"
 
-        return round(result.spacing_required_mm, 0)
+        return round(result.spacing, 0)
 
     except Exception as e:
         return f"Error: {str(e)}"
@@ -184,11 +179,8 @@ def IS456_Ld(dia: float, fck: float, fy: float) -> Union[float, str]:
         =IS456_Ld(16, 25, 500)  -> Returns development length in mm
     """
     try:
-        from structural_lib.detailing.is456 import development_length
-
-        result = development_length.calculate_ld(dia_mm=dia, fck_mpa=fck, fy_mpa=fy)
-
-        return round(result.ld_mm, 0)
+        result = detailing.calculate_development_length(dia, fck, fy)
+        return round(result, 0)
 
     except Exception as e:
         return f"Error: {str(e)}"
