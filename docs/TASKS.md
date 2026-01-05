@@ -44,6 +44,14 @@
 
 ## Backlog
 
+### Foundation & Architecture (CRITICAL for stability)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-154** | **Research: xlwings vs VBA Strategy** (Can we deprecate VBA? Migration path, xlwings limitations, Mac/Windows compatibility, deployment complexity, breaking change impact) → Save as `docs/research/xlwings-vba-strategy.md` | RESEARCHER | 4-6 hrs | 🔴 HIGH |
+| **TASK-155** | **Research: CS Best Practices Implementation Plan** (From TASK-148 audit: prioritize validation helpers, error handling standardization, deprecation enforcement, input validation decorators) → Save as `docs/research/cs-practices-implementation-plan.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+
 ### v1.0 Readiness (carryover)
 
 | ID | Task | Agent | Est | Priority |
