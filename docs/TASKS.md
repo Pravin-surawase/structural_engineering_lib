@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-139** | Cost Optimization Research (Day 1): Material/Labor models | RESEARCHER | 1 day | 🔴 High | ✅ Done |
+| — | _No active tasks_ | — | — | — | — |
 
 ---
 
@@ -34,7 +34,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-140** | Implement `costing.py` core module with `CostProfile` schema | DEV | 1 day | 🔴 High | Not-started |
 | **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | 1 day | 🟡 Medium | Not-started |
 | — | _Sprint backlog empty_ | — | — | — | — |
 
@@ -64,6 +63,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-140** | Implement Cost Optimization Feature (Python) | DEV | ✅ Done |
+| **TASK-139** | Cost Optimization Research (Day 1): Material/Labor models | RESEARCHER | ✅ Done |
 | **TASK-135** | Insights verification pack: 10 benchmark cases + JSON data + pytest module | TESTER | ✅ Done |
 | **TASK-137** | Complete insights documentation (user guide + API reference, cross-linked) | DOCS | ✅ Done |
 | **TASK-136** | Insights JSON schema + CLI integration (`.to_dict()` methods, `--insights` flag, 6 tests) | INTEGRATION | ✅ Done |

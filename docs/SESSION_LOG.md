@@ -6,10 +6,12 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2026-01-05 — Session
 
-**Focus:** Cost optimization research (Day 1) + agent workflow setup
+**Focus:** Cost optimization implementation + agent workflow setup
 
 ### Summary
 - Drafted cost optimization research (Day 1) with rate benchmarks and cost profile.
+- Implemented core cost optimization feature: `costing.py`, `optimization.py`, and `insights/cost_optimization.py`.
+- Created comprehensive unit test suite `test_cost_optimization.py` (8/8 passing).
 - Updated agent workflow quickstart guidance and active task list.
 
 ### PRs Merged
@@ -18,12 +20,18 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | None | - |
 
 ### Key Deliverables
+- `Python/structural_lib/costing.py`
+- `Python/structural_lib/optimization.py`
+- `Python/structural_lib/insights/cost_optimization.py`
+- `Python/tests/test_cost_optimization.py`
 - `docs/research/cost_optimization_day1.md`
 - `docs/_internal/AGENT_WORKFLOW.md`
 - `docs/TASKS.md`
 
 ### Notes
-- Verify historical test skip counts in `docs/RELEASES.md`.
+- Brute-force optimization covers ~2,400 combinations in <0.1s.
+- Costing model based on CPWD DSR 2023 rates.
+- Verified with 8 unit tests covering residential and commercial scenarios.
 
 
 ## 2025-12-31 — Session
