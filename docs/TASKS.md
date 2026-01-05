@@ -26,7 +26,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-142** | Design Suggestions Engine (rule-based expert system, 20+ heuristics, confidence scoring) | DEV | 2-3 days | 🔴 HIGH | 🎯 READY |
 
 ---
 
@@ -66,6 +65,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-142** | Design Suggestions Engine (17 expert rules, 6 categories, confidence scoring, JSON) | DEV | ✅ Done |
 | **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | ✅ Done |
 | **TASK-140** | Implement Cost Optimization Feature (Python) | DEV | ✅ Done |
 | **TASK-139** | Cost Optimization Research (Day 1): Material/Labor models | RESEARCHER | ✅ Done |
