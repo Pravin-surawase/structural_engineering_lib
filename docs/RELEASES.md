@@ -77,7 +77,7 @@ Use workflow_dispatch with `testpypi` target:
 - **DXF/BBS quality:** bar mark consistency checks, DXF content tests, title block context, render workflow.
 - **Docs & examples:** README + Colab workflow refreshed for report/critical/detail usage.
 
-**Tests:** 1958 passed, 0 skipped
+**Tests:** 1958 passed, 91 skipped
 **PRs:** #193, #194, #195, #196
 
 ## v0.11.0
@@ -90,7 +90,7 @@ Use workflow_dispatch with `testpypi` target:
 - **V09 golden fixtures:** Deterministic HTML outputs locked by golden-file tests.
 - **Docs:** README, Colab workflow, and API reference updated for report/critical usage.
 
-**Tests:** 1958 passed, 0 skipped
+**Tests:** 1958 passed, 91 skipped
 **PRs:** #151, #153, #154, #155, #156
 
 ---
@@ -163,7 +163,7 @@ Use workflow_dispatch with `testpypi` target:
   - Updated copilot-instructions with session workflow
   - Added TASK-090/091/092 to backlog
   - Private `/docs/learning/` gitignored
-**Tests:** 1958 passed, 0 skipped
+**Tests:** 1958 passed, 91 skipped
 **Coverage:** 92% branch
 
 ---
@@ -187,7 +187,7 @@ Use workflow_dispatch with `testpypi` target:
 - **CI Standardization:** GitHub Actions versions unified to @v6
 - **Documentation Polish:** TASKS.md, SESSION_LOG.md, AI_CONTEXT_PACK.md cleaned and reformatted
 
-**Test Results:** 1958 passed, 0 skipped
+**Test Results:** 1958 passed, 91 skipped
 **PyPI:** `pip install structural-lib-is456==0.10.3`
 
 ---
@@ -212,7 +212,7 @@ Use workflow_dispatch with `testpypi` target:
 - **New Tests:** 8 CLI tests for serviceability and error paths
 - **CI:** Coverage threshold lowered to 90%
 
-**Test Results:** 1760+ passed, 0 skipped
+**Test Results:** 1760+ passed, 91 skipped
 **PyPI:** `pip install structural-lib-is456==0.10.2`
 
 ---
@@ -243,7 +243,7 @@ Use workflow_dispatch with `testpypi` target:
   - `scripts/release.py` — One-command release helper
   - `scripts/check_doc_versions.py` — Doc version drift detector
   - CI doc drift check step
-- **Tests:** 1958 passed, 0 skipped
+- **Tests:** 1958 passed, 95 skipped
 
 ---
 
@@ -290,7 +290,7 @@ Use workflow_dispatch with `testpypi` target:
   - Phase 3: VBA/Python parity verified + VBA guards added
   - Phase 4: API/doc drift fixed
   - Phase 5: Edge case tests for job_runner and dxf_export
-- **Tests:** 1958 passed, 0 skipped
+- **Tests:** 1958 passed, 93 skipped
 - **VBA:** Guards added to M05_Materials.bas and M10_Ductile.bas
 
 ---
