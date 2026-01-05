@@ -2,7 +2,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.13.0 | Published on PyPI |
+| **Current** | v0.14.0 | Published on PyPI |
 | **Next** | v0.12.1 | Planned (test hardening + verification gates) |
 
 **Date:** 2026-01-05 | **PRs:** through #228

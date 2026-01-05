@@ -1,7 +1,7 @@
 # Research Log — AI/High-Value Enhancements
 
 **Research Version:** v0.9.1 baseline (+ CI hardening)
-**Last Updated:** 2025-12-31<br>
+**Last Updated:** 2026-01-06<br>
 **Scope:** Identify additions that make the library materially more valuable for professional use (beyond current strength/detailing + serviceability Level A baseline).
 
 This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checking), plus longer-horizon AI/NL helper ideas.

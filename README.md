@@ -51,9 +51,9 @@
 
 ## Status
 
-🚀 **Active (v0.13.0)** — Published on PyPI. Unified CLI + design + detailing + DXF export + serviceability (Level A+B).
+🚀 **Active (v0.14.0)** — Published on PyPI. Unified CLI + design + detailing + DXF export + serviceability (Level A+B).
 
-**What's new in v0.13.0:**
+**What's new in v0.14.0:**
 - **Advisory Insights Module (Preview):** `quick_precheck()`, `sensitivity_analysis()`, `calculate_constructability_score()` for design validation and parameter sensitivity. CLI: `--insights` flag.
 - **Insights Verification Pack:** 10 benchmark cases with automated regression tests for insights accuracy.
 - **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
@@ -62,7 +62,7 @@
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
-**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.13.0`).
+**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.14.0`).
 
 ## Quick Start
 

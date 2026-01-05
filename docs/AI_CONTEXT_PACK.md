@@ -4,7 +4,7 @@
 
 | Metric | Value |
 |--------|-------|
-| **Current Release** | v0.13.0 (on PyPI) |
+| **Current Release** | v0.14.0 (on PyPI) |
 | **Next Planned Release** | v0.12.1 (test hardening + verification gates) |
 | **Next Milestone** | v0.20.0 (blocked by S-007) |
 | **Tests** | 2019 passed, 0 skipped |

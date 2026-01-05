@@ -1,7 +1,7 @@
 # Pre-Release Checklist
 
-Version: 0.13.0 (planned)
-Date: 2025-12-31
+Version: 0.14.0 (planned)
+Date: 2026-01-06
 Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---
