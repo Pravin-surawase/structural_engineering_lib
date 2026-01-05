@@ -78,6 +78,13 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - **Common mistake**: Accessing `.attribute` on `Optional[Dataclass]` without checking - mypy will catch this in CI.
 - **Fix locally**: Run `python -m mypy <file>` before committing to catch type errors early.
 
+## Module Imports (Python)
+- **Avoid shadowing standard library modules** - Don't use bare imports like `from types import ModuleType` if you also have a local `types` module.
+- **Solution**: Use aliased imports: `from types import ModuleType as _ModuleType` (private convention with underscore prefix).
+- **Common mistake**: `from types import X` prevents `from . import types` from working - imports resolve to stdlib first.
+- **Symptoms**: `ModuleNotFoundError: No module named 'package.types'` even though the file exists.
+- **Prevention**: Always use descriptive module names unlikely to conflict with stdlib (e.g., `data_types.py` instead of `types.py`), or alias stdlib imports.
+
 ## Platform/VBA Quirks
 - Mac/Excel/VBA quirks (overflow patterns, debug/printing pitfalls, import-order errors) are tracked in [troubleshooting.md](troubleshooting.md).
 
