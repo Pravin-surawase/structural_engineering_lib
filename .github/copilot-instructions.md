@@ -147,10 +147,48 @@ When working on specific task types, apply these focuses:
 - Network timeouts happen — retry the command once before investigating
 - If PR is **behind** base branch, update it: `gh pr update-branch <num>` then re-check CI
 
-### Git sync issues:
-- If push is rejected (non-fast-forward), the auto-format workflow may have pushed
-- Solution: `git pull --rebase origin <branch>` then push again
-- If unstaged changes block pull: `git stash && git pull --rebase && git stash pop`
+### Git sync issues (CRITICAL - read this to avoid conflicts):
+
+**Problem:** Pre-commit hooks modify files AFTER staging, causing "ahead/behind" situations.
+
+**ALWAYS use this workflow for commits:**
+
+```bash
+# Step 1: Stage files
+git add <files>
+
+# Step 2: Commit (pre-commit hooks will modify files)
+git commit -m "message"
+
+# Step 3: If pre-commit modified files, they're now unstaged
+# Re-stage them and amend the commit:
+if git status --porcelain | grep -q '^[MARC]'; then
+  git add -A
+  git commit --amend --no-edit
+fi
+
+# Step 4: ALWAYS pull before push (use merge, not rebase)
+git pull --no-rebase origin main
+
+# Step 5: If merge conflict, keep your version (you have latest changes)
+git checkout --ours <conflicted-file>
+git add <conflicted-file>
+git commit --no-edit
+
+# Step 6: Now safe to push
+git push
+```
+
+**OR use the helper script:**
+```bash
+# Automates the entire safe-push workflow
+./scripts/safe_push.sh "your commit message"
+```
+
+**Common issues:**
+- Push rejected (non-fast-forward) → Run `git pull --no-rebase` then push
+- Merge conflict in TASKS.md → Run `git checkout --ours docs/TASKS.md && git add docs/TASKS.md`
+- Pre-commit modified files → Run `git add -A && git commit --amend --no-edit`
 
 ---
 
