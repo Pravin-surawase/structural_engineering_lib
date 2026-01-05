@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-153** | Add deprecation decorator and policy (utilities.py, CHANGELOG template) | DEV | 2-3 hrs | 🔴 HIGH | 🚧 In Progress |
+| _none_ | | | | | |
 
 ---
 
@@ -66,6 +66,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-153** | Add deprecation decorator and policy (@deprecated, deprecated_field, policy docs, CHANGELOG template) → `Python/structural_lib/utilities.py`, `docs/reference/deprecation-policy.md`, 18 tests | DEV | ✅ Done |
 | **TASK-152** | Standardize error handling (validation utilities, flexure.py refactor) → `Python/structural_lib/validation.py`, 41 tests | DEV | ✅ Done |
 | **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) → `Python/tests/test_contracts.py` | DEV | ✅ Done |
 | **TASK-150** | Research: Modern Python Tooling Evaluation (uv, Hypothesis, pytest-benchmark, mutmut for structural libraries) → `docs/research/modern-python-tooling.md` | RESEARCHER | ✅ Done |
