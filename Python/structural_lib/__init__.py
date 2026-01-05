@@ -28,6 +28,7 @@ from . import detailing
 from . import serviceability
 from . import compliance
 from . import bbs
+from . import costing
 from . import types
 
 # DXF export is optional (requires ezdxf)
@@ -42,6 +43,7 @@ __all__ = [
     "api",
     "bbs",
     "compliance",
+    "costing",
     "detailing",
     "dxf_export",
     "flexure",
