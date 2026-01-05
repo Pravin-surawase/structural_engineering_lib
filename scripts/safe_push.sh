@@ -22,6 +22,29 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Check if we're already in a merge state
+if [ -f .git/MERGE_HEAD ]; then
+  echo -e "${YELLOW}⚠️  Unfinished merge detected!${NC}"
+  echo -e "${YELLOW}Completing the merge first...${NC}"
+
+  # Check if there are conflicts
+  if git status | grep -q "Unmerged paths"; then
+    echo -e "${RED}ERROR: There are unresolved merge conflicts${NC}"
+    echo "Please resolve conflicts manually or run with --resolve flag"
+    exit 1
+  fi
+
+  # Complete the merge
+  git commit --no-edit
+  echo -e "${GREEN}Merge completed${NC}"
+
+  # Now push
+  echo -e "${YELLOW}Pushing merged changes...${NC}"
+  git push
+  echo -e "${GREEN}✅ Successfully pushed merged changes!${NC}"
+  exit 0
+fi
+
 # Check if commit message provided
 if [ -z "$1" ]; then
   echo -e "${RED}ERROR: Commit message required${NC}"

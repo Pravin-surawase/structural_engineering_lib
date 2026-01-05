@@ -149,11 +149,30 @@ When working on specific task types, apply these focuses:
 
 ### Git sync issues (CRITICAL - read this to avoid conflicts):
 
-**Problem:** Pre-commit hooks modify files AFTER staging, causing "ahead/behind" situations.
+**⚠️ RECOMMENDED: Use the automated script to prevent all issues:**
+```bash
+# This script handles everything automatically (pre-commit, pull, merge, push)
+./scripts/safe_push.sh "your commit message"
 
-**ALWAYS use this workflow for commits:**
+# The script:
+# 1. Detects unfinished merges and completes them
+# 2. Handles pre-commit hook modifications
+# 3. Pulls before pushing (prevents conflicts)
+# 4. Auto-resolves conflicts (keeps your version)
+# 5. Pushes safely
+```
+
+**If you MUST do manual workflow:**
 
 ```bash
+# ALWAYS check for unfinished merges FIRST!
+if [ -f .git/MERGE_HEAD ]; then
+  echo "Unfinished merge detected!"
+  git commit --no-edit  # Complete the merge
+  git push              # Push merged changes
+  exit 0               # Stop here, don't create new commit
+fi
+
 # Step 1: Stage files
 git add <files>
 
@@ -171,23 +190,21 @@ fi
 git pull --no-rebase origin main
 
 # Step 5: If merge conflict, keep your version (you have latest changes)
-git checkout --ours <conflicted-file>
-git add <conflicted-file>
-git commit --no-edit
+if [ -f .git/MERGE_HEAD ]; then
+  # There are conflicts
+  git checkout --ours docs/TASKS.md  # Or other conflicted files
+  git add docs/TASKS.md
+  git commit --no-edit
+fi
 
 # Step 6: Now safe to push
 git push
 ```
 
-**OR use the helper script:**
-```bash
-# Automates the entire safe-push workflow
-./scripts/safe_push.sh "your commit message"
-```
-
 **Common issues:**
+- **Unfinished merge (MERGE_HEAD exists)** → Run `git commit --no-edit` then `git push` (DON'T create new commit!)
 - Push rejected (non-fast-forward) → Run `git pull --no-rebase` then push
-- Merge conflict in TASKS.md → Run `git checkout --ours docs/TASKS.md && git add docs/TASKS.md`
+- Merge conflict in TASKS.md → Run `git checkout --ours docs/TASKS.md && git add docs/TASKS.md && git commit --no-edit`
 - Pre-commit modified files (NOT YET PUSHED) → Run `git add -A && git commit --amend --no-edit`
 - Pre-commit modified files (ALREADY PUSHED) → **NEVER AMEND!** Create new commit instead: `git add -A && git commit -m "chore: apply pre-commit fixes"`
 
@@ -196,11 +213,10 @@ git push
 - If you already pushed, make a new commit instead
 - If you accidentally amended after push: `git pull --no-rebase` then resolve merge
 
-**TASKS.md workflow in PR:**
-- **Recommended:** Include TASKS.md changes in your feature branch commits
-- TASKS.md is part of work scope, not separate metadata
-- It will merge cleanly with the PR
-- Alternative: Commit TASKS.md to main first, then create feature branch
+**Why TASKS.md conflicts happen:**
+- Multiple terminals/sessions editing TASKS.md simultaneously
+- Solution: The safe_push.sh script handles this automatically
+- Manual solution: Always pull BEFORE committing
 
 ---
 
