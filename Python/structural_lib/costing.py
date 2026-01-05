@@ -219,7 +219,9 @@ def calculate_concrete_cost(
     return volume_with_wastage * rate
 
 
-def calculate_steel_cost(weight_kg: float, grade: str, cost_profile: CostProfile) -> float:
+def calculate_steel_cost(
+    weight_kg: float, grade: str, cost_profile: CostProfile
+) -> float:
     """Calculate steel reinforcement cost including wastage.
 
     Args:
