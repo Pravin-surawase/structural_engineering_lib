@@ -188,7 +188,13 @@ git push
 **Common issues:**
 - Push rejected (non-fast-forward) → Run `git pull --no-rebase` then push
 - Merge conflict in TASKS.md → Run `git checkout --ours docs/TASKS.md && git add docs/TASKS.md`
-- Pre-commit modified files → Run `git add -A && git commit --amend --no-edit`
+- Pre-commit modified files (NOT YET PUSHED) → Run `git add -A && git commit --amend --no-edit`
+- Pre-commit modified files (ALREADY PUSHED) → **NEVER AMEND!** Create new commit instead: `git add -A && git commit -m "chore: apply pre-commit fixes"`
+
+**⚠️ CRITICAL: Never use `git commit --amend` after already pushing to remote!**
+- Amending rewrites history and causes divergence
+- If you already pushed, make a new commit instead
+- If you accidentally amended after push: `git pull --no-rebase` then resolve merge
 
 **TASKS.md workflow in PR:**
 - **Recommended:** Include TASKS.md changes in your feature branch commits
@@ -229,7 +235,8 @@ git push
 | Committing unrelated staged files | Run `git status` before commit; stage only intended files |
 | Resolving merge conflicts + feature in one commit | Resolve conflicts in separate commit first, then add feature |
 | PR title/description doesn't match actual changes | List ALL changed files in PR body; update title if scope changes |
-| Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` instead |
+| Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` **ONLY IF NOT YET PUSHED** |
+| **Using `git commit --amend` AFTER pushing** | **NEVER DO THIS!** Create new commit instead: `git add -A && git commit -m "fix: ..."` |
 | Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
 | Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
 | Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
@@ -238,6 +245,8 @@ git push
 | Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
 | CI shows old failure after auto-format fixed it | Auto-format doesn't retrigger CI; push empty commit: `git commit --allow-empty -m "chore: trigger CI"` |
 | Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
+| Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
+| **Unfinished merge (MERGE_HEAD exists)** | **Complete the merge:** `git commit --no-edit` then `git push` |
 | Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
 
 ---
