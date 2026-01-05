@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-154** | **Research: xlwings vs VBA Strategy** (Can we deprecate VBA? Migration path, xlwings limitations, Mac/Windows compatibility, deployment complexity, breaking change impact) → Save as `docs/research/xlwings-vba-strategy.md` | RESEARCHER | 4-6 hrs | 🔴 HIGH | 🚧 In Progress |
+| *(No active tasks - ready to pick from Up Next)* | | | | | |
 
 ---
 
@@ -48,7 +48,6 @@
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-155** | **Research: CS Best Practices Implementation Plan** (From TASK-148 audit: prioritize validation helpers, error handling standardization, deprecation enforcement, input validation decorators) → Save as `docs/research/cs-practices-implementation-plan.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 | **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 
 ### v1.0 Readiness (carryover)
@@ -73,6 +72,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-155** | **Research: CS Best Practices Implementation Plan** (23 tasks across 3 phases: validation utilities, error handling, mypy, docstrings, TypedDicts) → `docs/research/cs-practices-implementation-plan.md` | RESEARCHER | ✅ Done |
+| **TASK-154** | **Research: xlwings vs VBA Strategy** (Hybrid approach: deprecate VBA calculations, keep minimal UI VBA; 85% VBA reduction; 3-phase migration plan) → `docs/research/xlwings-vba-strategy.md` | RESEARCHER | ✅ Done |
 | **TASK-153** | Add deprecation decorator and policy (@deprecated, deprecated_field, policy docs, CHANGELOG template) → `Python/structural_lib/utilities.py`, `docs/reference/deprecation-policy.md`, 18 tests | DEV | ✅ Done |
 | **TASK-152** | Standardize error handling (validation utilities, flexure.py refactor) → `Python/structural_lib/validation.py`, 41 tests | DEV | ✅ Done |
 | **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) → `Python/tests/test_contracts.py` | DEV | ✅ Done |
