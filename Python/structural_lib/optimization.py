@@ -175,7 +175,9 @@ def optimize_beam_cost(
     if not valid_candidates:
         raise ValueError("No valid designs found. Check inputs or loosen constraints.")
 
-    valid_candidates.sort(key=lambda c: c.cost_breakdown.total_cost)
+    valid_candidates.sort(
+        key=lambda c: c.cost_breakdown.total_cost if c.cost_breakdown else float("inf")
+    )
 
     # Best design
     optimal = valid_candidates[0]
@@ -231,8 +233,14 @@ def optimize_beam_cost(
         )
 
     # Calculate savings
-    savings = baseline_cost_breakdown.total_cost - optimal.cost_breakdown.total_cost
-    savings_pct = 100 * savings / baseline_cost_breakdown.total_cost
+    if baseline_cost_breakdown and optimal.cost_breakdown:
+        savings = baseline_cost_breakdown.total_cost - optimal.cost_breakdown.total_cost
+        savings_pct = 100 * savings / baseline_cost_breakdown.total_cost
+        baseline_cost = baseline_cost_breakdown.total_cost
+    else:
+        savings = 0.0
+        savings_pct = 0.0
+        baseline_cost = 0.0
 
     # Top 3 alternatives
     alternatives = valid_candidates[1:4]  # Skip optimal (index 0), get next 3
@@ -241,7 +249,7 @@ def optimize_beam_cost(
 
     return CostOptimizationResult(
         optimal_candidate=optimal,
-        baseline_cost=baseline_cost_breakdown.total_cost,
+        baseline_cost=baseline_cost,
         savings_amount=round(savings, 2),
         savings_percent=round(savings_pct, 2),
         alternatives=alternatives,
