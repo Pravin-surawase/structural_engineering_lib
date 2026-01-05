@@ -6,19 +6,24 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2026-01-05 — Session
 
+**Focus:** Cost optimization research (Day 1) + agent workflow setup
+
 ### Summary
--
+- Drafted cost optimization research (Day 1) with rate benchmarks and cost profile.
+- Updated agent workflow quickstart guidance and active task list.
 
 ### PRs Merged
 | PR | Summary |
 |----|---------|
-| #XX | - |
+| None | - |
 
 ### Key Deliverables
--
+- `docs/research/cost_optimization_day1.md`
+- `docs/_internal/AGENT_WORKFLOW.md`
+- `docs/TASKS.md`
 
 ### Notes
--
+- Verify historical test skip counts in `docs/RELEASES.md`.
 
 
 ## 2025-12-31 — Session

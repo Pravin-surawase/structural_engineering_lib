@@ -11,10 +11,10 @@ Based on CPWD DSR 2023 and current market trends.
 
 | Component | Unit | Rate (INR) | Notes |
 | :--- | :--- | :--- | :--- |
-| **Concrete (M25)** | m³ | ₹6,700 | Materials + mixing + placing |
-| **Concrete (M30)** | m³ | ₹7,200 | ~₹500 premium per grade |
-| **Steel (Fe500)** | kg | ₹72 | Cutting + bending + binding |
-| **Formwork** | m² | ₹500 | Shuttering + propping + removal |
+| **Concrete (M25)** | m³ | INR 6700 | Materials + mixing + placing |
+| **Concrete (M30)** | m³ | INR 7200 | ~INR 500 premium per grade |
+| **Steel (Fe500)** | kg | INR 72 | Cutting + bending + binding |
+| **Formwork** | m² | INR 500 | Shuttering + propping + removal |
 
 ## 2. Cost Objective Function
 The total cost $C_{total}$ for a beam of length $L$:

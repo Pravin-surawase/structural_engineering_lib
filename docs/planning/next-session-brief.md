@@ -13,6 +13,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-05
+- Focus: Cost optimization research (Day 1) + agent workflow setup
+- Completed: Drafted cost optimization research note; updated tasks list; refreshed agent workflow quickstart.
 <!-- HANDOFF:END -->
 
 
@@ -64,7 +66,7 @@ All immediate v0.12 follow-up tasks completed:
 | Editing without reading file first | Merge conflicts, overwrites | Always read current state before editing |
 
 **Performance facts (latest CI 2025-12-30):**
-- Tests: 1967 passed, 0 skipped, 92% branch coverage
+- Tests: 2019 passed, 0 skipped, 92% branch coverage
 - Speed: 0.009ms per beam, 94,000 beams/second
 - All edge cases handled gracefully (zero/negative → `is_safe=False`)
 
