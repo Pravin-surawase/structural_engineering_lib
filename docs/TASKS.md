@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2025-12-31
+**Updated:** 2026-01-05
 
 ---
 
@@ -24,7 +24,9 @@
 
 ## Active
 
-_No active tasks_
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-139** | Cost Optimization Research (Day 1): Material/Labor models | RESEARCHER | 1 day | 🔴 High | ✅ Done |
 
 ---
 
@@ -32,6 +34,8 @@ _No active tasks_
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| **TASK-140** | Implement `costing.py` core module with `CostProfile` schema | DEV | 1 day | 🔴 High | Not-started |
+| **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | 1 day | 🟡 Medium | Not-started |
 | — | _Sprint backlog empty_ | — | — | — | — |
 
 ---
