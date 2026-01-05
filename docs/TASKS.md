@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| (empty — TASK-151 complete) | | | | | |
+| (empty) | | | | | |
 
 ---
 
@@ -34,7 +34,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-152** | Standardize error handling (layer-specific rules, validation utilities) | DEV | 4-6 hrs | 🔴 HIGH | ⏳ Ready |
 | **TASK-153** | Add deprecation decorator and policy (utilities.py, CHANGELOG template) | DEV | 2-3 hrs | 🔴 HIGH | ⏳ Ready |
 | **TASK-143** | Comparison & Sensitivity Enhancement (multi-design comparison, cost-aware sensitivity) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
 | **TASK-144** | Smart Library Integration (unified SmartDesigner API, dashboard output, CLI) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
@@ -68,6 +67,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-152** | Standardize error handling (validation utilities, flexure.py refactor) → `Python/structural_lib/validation.py`, 41 tests | DEV | ✅ Done |
 | **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) → `Python/tests/test_contracts.py` | DEV | ✅ Done |
 | **TASK-150** | Research: Modern Python Tooling Evaluation (uv, Hypothesis, pytest-benchmark, mutmut for structural libraries) → `docs/research/modern-python-tooling.md` | RESEARCHER | ✅ Done |
 | **TASK-149** | Research: Backward Compatibility Strategy (evaluate pytest-regressions, contract testing, semantic versioning tools, API stability safeguards) → `docs/research/backward-compatibility-strategy.md` | RESEARCHER | ✅ Done |
