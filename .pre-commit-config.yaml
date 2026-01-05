@@ -60,6 +60,18 @@ repos:
         args: [--skip, B101]
         files: ^Python/structural_lib/
 
+  # API contract testing (prevent breaking changes)
+  - repo: local
+    hooks:
+      - id: contract-tests
+        name: API contract tests (prevent breaking changes)
+        entry: bash -c "cd Python && python -m pytest tests/test_contracts.py -m contract -v --tb=short"
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: ^Python/structural_lib/(api|data_types|beam_pipeline)\.py$
+        verbose: true
+
   # Doc version drift check (local script, non-blocking)
   - repo: local
     hooks:
