@@ -16,8 +16,8 @@
 
 ## Current Release
 
-- Target: v0.14.0 (TBD)
-- Focus: Post-insights enhancements
+- Target: v0.15.0 (TBD)
+- Focus: Smart library features & comparison tools
 - Blockers: none
 
 ---

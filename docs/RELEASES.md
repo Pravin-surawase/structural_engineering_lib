@@ -48,6 +48,32 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.14.0
+**Date:** 2026-01-06
+**Status:** ✅ Locked & Verified
+**Mindset:** Foundation Hardening — Professional-grade engineering practices
+**Key Changes:**
+- **Contract testing:** Prevents accidental API breaking changes (6 tests protecting API surface)
+- **Validation utilities:** 8 reusable validators reducing code duplication by ~30%
+- **Deprecation policy:** Safe evolution with `@deprecated` decorator following NumPy/pandas patterns
+- **Error handling:** 5-layer architecture documented in CONTRIBUTING.md, 17 silent failures eliminated
+- **Type safety:** Stricter mypy checks (`warn_return_any`, `strict_optional`, `warn_redundant_casts`)
+- **Research documentation:** 5 comprehensive reports (5,800+ lines) covering CS best practices, backward compatibility, modern tooling, implementation roadmap, and VBA deprecation strategy
+- **Git workflow:** Pull-first workflow and pre-commit hooks prevent merge conflicts
+- **Test improvements:** 2200 tests (+160), 86% coverage (+2%), 10 modules at 100% coverage
+
+**Tests:** 2200 passed (up from 2040)
+**Coverage:** 86% (up from 84%)
+**PRs:** #247, #248, #249, #250
+
+**Impact:**
+- Eliminates fear of AI agents breaking existing code (contract tests)
+- Professional-grade error handling and validation patterns
+- Foundation now ready for v1.0 with safe deprecation path
+- Addresses CS knowledge gaps with comprehensive research
+
+---
+
 ## v0.13.0
 **Date:** 2025-12-31
 **Status:** ✅ Locked & Verified

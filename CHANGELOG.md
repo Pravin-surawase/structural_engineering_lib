@@ -4,6 +4,87 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-01-06
+
+### Added
+- **Contract testing for API stability** (`tests/test_contracts.py`)
+  - Prevents accidental breaking changes to public API signatures
+  - Tests for function parameters, return types, and dataclass fields
+  - Schema version tracking enforcement
+  - Units parameter backwards compatibility validation
+  - Can run standalone as pre-commit hook: `python tests/test_contracts.py`
+  - 6 comprehensive tests protecting API surface
+- **Centralized validation utilities** (`structural_lib/validation.py`)
+  - `validate_dimensions()` - beam width, depth, and geometry checks
+  - `validate_materials()` - concrete and steel strength validation
+  - `validate_cover()` - cover requirements per IS 456 with min/max checks
+  - `validate_loads()` - moment and shear validation with reasonableness checks
+  - `validate_material_grades()` - IS 456 Table 2 and Annex C grade verification
+  - `validate_reinforcement()` - steel area min/max limit enforcement
+  - `validate_span()` - beam span reasonableness validation
+  - `validate_beam_inputs()` - composite validator for full beam design inputs
+  - 78 comprehensive tests with 100% coverage
+  - Reduces code duplication by ~30% across calculation modules
+- **Deprecation policy and tools** (`structural_lib/utilities.py`, `docs/reference/deprecation-policy.md`)
+  - `@deprecated()` decorator for marking deprecated functions
+  - `deprecated_field()` helper for dataclass field deprecation
+  - Follows semantic versioning with minimum 1 minor version notice period
+  - Metadata storage for programmatic introspection (`__deprecated__` attribute)
+  - Complete policy documentation with migration guide templates
+  - 18 tests for deprecation mechanism
+  - References: PEP 387, NumPy/pandas deprecation policies
+- **Error handling strategy documentation** (`CONTRIBUTING.md`)
+  - 5-layer error handling architecture (Core, Validation, Orchestration, I/O, CLI)
+  - Clear guidelines for when to raise exceptions vs return structured errors
+  - Audit compliance script: `scripts/audit_error_handling.py`
+  - Examples for each layer with rationale
+- **Comprehensive research documentation** (`docs/research/`)
+  - `cs-best-practices-audit.md` (938 lines) - Comparison to numpy/scipy/pandas patterns
+  - `backward-compatibility-strategy.md` (1197 lines) - Contract testing, regression testing, deprecation strategy
+  - `modern-python-tooling.md` (1540 lines) - Evaluation of uv, Hypothesis, pytest-benchmark, mutmut
+  - `cs-practices-implementation-plan.md` (1575 lines) - 23 actionable tasks across 3 phases
+  - `xlwings-vba-strategy.md` (868 lines) - VBA deprecation roadmap (85% reduction target)
+- **Git workflow improvements** (`scripts/safe_push.sh`, `.pre-commit-config.yaml`)
+  - Pre-commit hook to detect unfinished merges
+  - Pull-first workflow to prevent merge conflicts
+  - Contract tests integrated as pre-commit hook
+
+### Changed
+- **Eliminated silent failures in core modules** (17 functions fixed)
+  - Functions in `flexure.py`, `shear.py`, `materials.py`, `detailing.py`, `serviceability.py`, `ductile.py`
+  - Changed from returning `0.0`/empty values to raising explicit `ValueError` with clear messages
+  - Examples: `calculate_mu_lim()`, `calculate_tv()`, `calculate_ast_required()`, `get_xu_max_d()`, `get_ec()`, `get_fcr()`, `calculate_development_length()`, `calculate_bar_spacing()`
+  - Updated 7 tests to expect exceptions with proper error messages
+  - All core calculations now fail fast with actionable error messages
+- **Strengthened mypy type checking** (`Python/pyproject.toml`)
+  - Enabled `warn_return_any = true` (catches `Dict[str, Any]` returns)
+  - Enabled `strict_optional = true` (stricter None handling)
+  - Enabled `warn_redundant_casts = true` (code quality)
+  - Added `show_error_codes = true` for better debugging
+  - Fixed 5 mypy errors across modules
+- **Pre-commit hook configuration**
+  - Fixed mypy hook to use local venv Python (`cd Python && ../.venv/bin/python -m mypy`)
+  - Contract tests run automatically before commits
+  - Removed deprecated `stages` parameter from hook configs
+- **Test infrastructure improvements**
+  - Total test count: 2200 tests (up from ~2040)
+  - Test coverage: 86% (up from 84%)
+  - 100% coverage modules: `data_types`, `errors`, `excel_integration`, `materials`, `shear`, `tables`, `utilities`, `validation`
+  - All tests passing in 3.67s
+
+### Fixed
+- **Merge conflict prevention** (fixes #246)
+  - Implemented pull-first workflow in `safe_push.sh`
+  - Added pre-commit hook to detect unfinished merges
+  - Prevents race conditions between parallel agent commits
+  - Documented in `docs/contributing/git-workflow-for-ai-agents.md`
+
+### Documentation
+- **Updated CONTRIBUTING.md** with comprehensive error handling strategy
+- **New deprecation policy** in `docs/reference/deprecation-policy.md`
+- **Research reports** (5 documents, 5,800+ lines total) in `docs/research/`
+- **Git workflow guide** for AI agents with merge conflict solutions
+
 ## [0.13.0] - 2025-12-31
 
 ### Added
