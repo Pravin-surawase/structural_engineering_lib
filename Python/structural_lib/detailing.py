@@ -152,16 +152,25 @@ def calculate_development_length(
         stress_ratio: σs/fy ratio (default 0.87 for limit state)
 
     Returns:
-        Development length Ld (mm). Returns 0 if inputs are invalid.
+        Development length Ld (mm)
+
+    Raises:
+        ValueError: If inputs are invalid (bar_dia, fck, fy <= 0)
     """
-    if bar_dia <= 0 or fck <= 0 or fy <= 0:
-        return 0.0
+    if bar_dia <= 0:
+        raise ValueError(f"bar_dia must be positive, got {bar_dia}")
+    if fck <= 0:
+        raise ValueError(f"fck must be positive, got {fck}")
+    if fy <= 0:
+        raise ValueError(f"fy must be positive, got {fy}")
 
     sigma_s = stress_ratio * fy
     tau_bd = get_bond_stress(fck, bar_type)
 
     if tau_bd <= 0:
-        return 0.0
+        raise ValueError(
+            f"Invalid bond stress tau_bd = {tau_bd} for fck={fck}, bar_type={bar_type}"
+        )
 
     ld = (bar_dia * sigma_s) / (4 * tau_bd)
 
@@ -231,9 +240,12 @@ def calculate_bar_spacing(
 
     Returns:
         Center-to-center spacing (mm)
+
+    Raises:
+        ValueError: If bar_count <= 1
     """
     if bar_count <= 1:
-        return 0.0
+        raise ValueError(f"bar_count must be > 1 to calculate spacing, got {bar_count}")
 
     # Available width = b - 2*(cover + stirrup_dia) - bar_dia
     # For n bars, we have (n-1) spaces

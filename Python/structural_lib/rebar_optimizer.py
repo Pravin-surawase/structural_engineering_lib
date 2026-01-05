@@ -52,9 +52,17 @@ def _spacing_ok(
     bars_in_layer: int,
     agg_size_mm: float,
 ) -> Tuple[bool, float, str]:
-    spacing = calculate_bar_spacing(
-        b_mm, cover_mm, stirrup_dia_mm, bar_dia_mm, bars_in_layer
-    )
+    # Single bar has no spacing constraint
+    if bars_in_layer <= 1:
+        return True, float("inf"), "OK (single bar)"
+
+    try:
+        spacing = calculate_bar_spacing(
+            b_mm, cover_mm, stirrup_dia_mm, bar_dia_mm, bars_in_layer
+        )
+    except ValueError as e:
+        return False, 0.0, str(e)
+
     ok, msg = check_min_spacing(spacing, bar_dia_mm, agg_size_mm)
     return ok, float(spacing), msg
 

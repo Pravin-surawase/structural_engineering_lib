@@ -14,9 +14,11 @@ class TestMaterialsEdges(unittest.TestCase):
         expected = 700 / (1100 + (0.87 * fy))
         self.assertAlmostEqual(materials.get_xu_max_d(fy), expected)
 
-    def test_get_ec_and_fcr_negative_fck_returns_zero(self):
-        self.assertEqual(materials.get_ec(-1), 0.0)
-        self.assertEqual(materials.get_fcr(-5), 0.0)
+    def test_get_ec_and_fcr_negative_fck_raises_error(self):
+        with self.assertRaises(ValueError):
+            materials.get_ec(-1)
+        with self.assertRaises(ValueError):
+            materials.get_fcr(-5)
 
     def test_get_steel_stress_fe250_elastoplastic(self):
         # Below yield: sigma = Es * strain

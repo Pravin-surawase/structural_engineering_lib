@@ -10,10 +10,11 @@ def get_xu_max_d(fy: float) -> float:
     """
     Get Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)
 
-    Returns 0.0 for invalid fy values (<= 0).
+    Raises:
+        ValueError: If fy <= 0
     """
     if fy <= 0:
-        return 0.0
+        raise ValueError(f"fy must be positive, got {fy}")
     if fy == 250:
         return 0.53
     elif fy == 415:
@@ -26,16 +27,24 @@ def get_xu_max_d(fy: float) -> float:
 
 
 def get_ec(fck: float) -> float:
-    """Modulus of Elasticity of Concrete (IS 456 Cl. 6.2.3.1)"""
+    """Modulus of Elasticity of Concrete (IS 456 Cl. 6.2.3.1)
+
+    Raises:
+        ValueError: If fck < 0
+    """
     if fck < 0:
-        return 0.0
+        raise ValueError(f"fck must be non-negative, got {fck}")
     return 5000 * math.sqrt(fck)
 
 
 def get_fcr(fck: float) -> float:
-    """Flexural Strength of Concrete (IS 456 Cl. 6.2.2)"""
+    """Flexural Strength of Concrete (IS 456 Cl. 6.2.2)
+
+    Raises:
+        ValueError: If fck < 0
+    """
     if fck < 0:
-        return 0.0
+        raise ValueError(f"fck must be non-negative, got {fck}")
     return 0.7 * math.sqrt(fck)
 
 

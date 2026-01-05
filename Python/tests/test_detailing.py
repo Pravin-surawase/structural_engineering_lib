@@ -122,9 +122,9 @@ class TestBarSpacing:
         assert spacing == pytest.approx(74, abs=2)
 
     def test_single_bar(self):
-        """Single bar has no spacing."""
-        spacing = calculate_bar_spacing(230, 25, 8, 16, 1)
-        assert spacing == 0
+        """Single bar should raise ValueError (can't calculate spacing)."""
+        with pytest.raises(ValueError, match="bar_count must be > 1"):
+            calculate_bar_spacing(230, 25, 8, 16, 1)
 
     def test_min_spacing_ok(self):
         """Spacing > min is valid."""

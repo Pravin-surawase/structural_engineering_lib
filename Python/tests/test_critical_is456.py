@@ -55,9 +55,11 @@ class TestMuLimCalculation:
         assert mu_lim_lib == pytest.approx(mu_lim_manual, rel=1e-6)
 
     def test_mu_lim_zero_dimensions(self):
-        """Mu_lim should be 0 for zero/invalid dimensions."""
-        assert flexure.calculate_mu_lim(0, 450, 25, 500) == 0.0
-        assert flexure.calculate_mu_lim(230, 0, 25, 500) == 0.0
+        """Mu_lim should raise ValueError for zero/invalid dimensions."""
+        with pytest.raises(ValueError, match="Beam width b must be > 0"):
+            flexure.calculate_mu_lim(0, 450, 25, 500)
+        with pytest.raises(ValueError, match="Effective depth d must be > 0"):
+            flexure.calculate_mu_lim(230, 0, 25, 500)
 
     def test_mu_lim_scales_with_section(self):
         """Mu_lim should scale approximately with b*d^2."""
