@@ -853,6 +853,121 @@ for s in report.suggestions:
 
 ---
 
+## API Integration
+
+### Using via `api.py` module
+
+The `suggest_beam_design_improvements()` function provides a high-level API wrapper:
+
+```python
+from structural_lib.api import design_beam_is456, suggest_beam_design_improvements
+
+# Design beam
+design = design_beam_is456(
+    units="IS456",
+    b_mm=300,
+    D_mm=500,
+    d_mm=450,
+    fck_nmm2=25,
+    fy_nmm2=500,
+    mu_knm=120,
+    vu_kn=80,
+    cover_mm=40,
+)
+
+# Get suggestions (returns dict, not SuggestionReport)
+result = suggest_beam_design_improvements(
+    units="IS456",
+    design=design,
+    span_mm=5000,
+    mu_knm=120,
+    vu_kn=80,
+)
+
+# Access as dictionary
+print(f"Total suggestions: {result['suggestions_count']}")
+print(f"High impact: {result['high_impact_count']}")
+
+for sug in result['suggestions']:
+    print(f"  • {sug['title']} ({sug['impact']})")
+    print(f"    {sug['estimated_benefit']}")
+```
+
+### CLI Integration
+
+Use the `suggest` subcommand for terminal-based suggestions:
+
+```bash
+# Get suggestions for a design
+python -m structural_lib.job_cli suggest \
+  --span 5000 --mu 120 --vu 80 \
+  --b 300 --D 500 --d 450 \
+  --fck 25 --fy 500 \
+  --output suggestions.json
+
+# Example output:
+# ======================================================================
+# DESIGN IMPROVEMENT SUGGESTIONS
+# ======================================================================
+#
+# 📊 Analysis Summary:
+#    Total suggestions: 3
+#    High impact:       1
+#    Medium impact:     1
+#    Low impact:        1
+#    Analysis time:     0.8ms
+#
+# 💡 Top Recommendations:
+#
+# 1. 🔴 Explore cost-optimized designs
+#    Category: cost | Impact: HIGH | Confidence: 85%
+#    Current design may not be cost-optimal
+#    💰 8-20% cost reduction typical
+#    Actions:
+#       • Run optimize_beam_cost() function
+#       • Compare with current design
+```
+
+### Batch Processing Example
+
+```python
+from structural_lib.api import design_beam_is456, suggest_beam_design_improvements
+
+# Design multiple beams
+beams = [
+    {"span": 4000, "mu": 80, "vu": 60},
+    {"span": 5000, "mu": 120, "vu": 80},
+    {"span": 6000, "mu": 180, "vu": 100},
+]
+
+for i, params in enumerate(beams):
+    # Design
+    design = design_beam_is456(
+        units="IS456",
+        b_mm=300, D_mm=500, d_mm=450,
+        fck_nmm2=25, fy_nmm2=500,
+        mu_knm=params["mu"],
+        vu_kn=params["vu"],
+        cover_mm=40,
+    )
+
+    # Suggestions
+    result = suggest_beam_design_improvements(
+        units="IS456",
+        design=design,
+        span_mm=params["span"],
+        mu_knm=params["mu"],
+        vu_kn=params["vu"],
+    )
+
+    print(f"\nBeam {i+1}: {result['high_impact_count']} high-impact suggestions")
+    if result['suggestions']:
+        top = result['suggestions'][0]
+        print(f"  Top: {top['title']} - {top['estimated_benefit']}")
+```
+
+---
+
 ## Version
 
 - **Engine version:** 1.0.0

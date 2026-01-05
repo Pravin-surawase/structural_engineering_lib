@@ -267,7 +267,9 @@ def _check_geometry_rules(
                 description=f"Depth/width ratio {D_mm/b_mm:.1f} is very high",
                 rationale=(
                     "Deep narrow beams have lateral stability issues and "
-                    "require additional bracing during construction."
+                    "require additional bracing during construction. "
+                    "IS 456:2000 doesn't mandate D/b limits, but practical "
+                    "range is 2.0-3.5 for lateral stability."
                 ),
                 estimated_benefit="+10% constructability",
                 action_steps=[
@@ -291,7 +293,9 @@ def _check_geometry_rules(
                 description=f"Depth/span ratio {d_mm/span_mm:.3f} is very low",
                 rationale=(
                     "Shallow beams relative to span will likely fail deflection "
-                    "checks and require excessive reinforcement."
+                    "checks and require excessive reinforcement. "
+                    "IS 456:2000 Cl 23.2.1 provides span/depth ratios: "
+                    "simply supported beams typically need d ≥ span/20."
                 ),
                 estimated_benefit="+20% serviceability margin",
                 action_steps=[
@@ -327,7 +331,9 @@ def _check_steel_rules(
                         description=f"Steel percentage {pt:.2f}% exceeds comfortable limit",
                         rationale=(
                             "High steel % (>2.5%) makes bar placement difficult "
-                            "and increases concrete compaction issues."
+                            "and increases concrete compaction issues. "
+                            "IS 456:2000 Cl 26.5.1.1 limits max reinforcement to 4% "
+                            "but practical limit is 2.5% for constructability."
                         ),
                         estimated_benefit="+25% constructability",
                         action_steps=[
@@ -355,7 +361,9 @@ def _check_steel_rules(
                         description=f"Very low steel percentage ({pt:.2f}%)",
                         rationale=(
                             "Very low steel may lead to excessive deflection even if "
-                            "code minimums are met."
+                            "code minimums are met. IS 456:2000 Cl 26.5.1.1 requires "
+                            "min 0.85% (Fe 250) but typical practice uses ≥0.5% for "
+                            "deflection control."
                         ),
                         estimated_benefit="+15% serviceability",
                         action_steps=[
@@ -378,7 +386,9 @@ def _check_steel_rules(
                 description="Currently using Fe 415",
                 rationale=(
                     "Fe 500 steel reduces required area by ~17% and is "
-                    "widely available in modern construction."
+                    "widely available in modern construction. "
+                    "IS 456:2000 Annex B covers Fe 415, Fe 500 grades. "
+                    "Higher grade improves economy without compromising safety."
                 ),
                 estimated_benefit="~10% steel cost reduction",
                 action_steps=[
@@ -404,7 +414,9 @@ def _check_steel_rules(
                     description=f"Stirrup spacing {sv}mm is very tight",
                     rationale=(
                         "Stirrup spacing < 100mm is difficult to achieve "
-                        "and increases labor costs significantly."
+                        "and increases labor costs significantly. "
+                        "IS 456:2000 Cl 26.5.1.5 sets min spacing (0.75d, 300mm) "
+                        "but practical limit is ~100mm for good concrete flow."
                     ),
                     estimated_benefit="+8% labor efficiency",
                     action_steps=[
@@ -510,7 +522,9 @@ def _check_constructability_rules(
                             description=f"{n} bars at {location} is excessive",
                             rationale=(
                                 "More than 6 bars in single layer increases "
-                                "congestion and placement errors."
+                                "congestion and placement errors. "
+                                "IS 456:2000 Cl 26.3 requires clear spacing ≥max(bar dia, 25mm), "
+                                "limiting practical bar count in typical widths."
                             ),
                             estimated_benefit="+12% placement efficiency",
                             action_steps=[
@@ -573,7 +587,9 @@ def _check_serviceability_rules(
                     description=f"L/d ratio {ld_ratio:.1f} is near code limit",
                     rationale=(
                         "While code-compliant, ratios near limits may show "
-                        "visible deflection or require modification factors."
+                        "visible deflection or require modification factors. "
+                        "IS 456:2000 Cl 23.2.1 allows L/d = 20 for simply supported "
+                        "beams but recommends lower ratios for visible comfort."
                     ),
                     estimated_benefit="+20% deflection margin",
                     action_steps=[
@@ -596,7 +612,9 @@ def _check_serviceability_rules(
                 description="Deflection and crack width not verified",
                 rationale=(
                     "Code compliance requires both deflection and crack width "
-                    "checks for critical exposure conditions."
+                    "checks for critical exposure conditions. "
+                    "IS 456:2000 Cl 23.2 (deflection) and Cl 35.3.2 (crack width) "
+                    "mandate serviceability verification for durability."
                 ),
                 estimated_benefit="+Full code compliance",
                 action_steps=[

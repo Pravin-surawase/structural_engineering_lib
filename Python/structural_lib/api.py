@@ -18,7 +18,7 @@ from . import job_runner
 from . import report
 from . import serviceability
 from .data_types import ComplianceCaseResult, ComplianceReport, ValidationReport
-from .insights import cost_optimization
+from .insights import cost_optimization, design_suggestions
 from .costing import CostProfile
 
 __all__ = [
@@ -39,6 +39,7 @@ __all__ = [
     "check_beam_is456",
     "detail_beam_is456",
     "optimize_beam_cost",
+    "suggest_beam_design_improvements",
 ]
 
 
@@ -1057,3 +1058,71 @@ def optimize_beam_cost(
             "computation_time_sec": result.computation_time_sec,
         },
     }
+
+
+def suggest_beam_design_improvements(
+    *,
+    units: str,
+    design: beam_pipeline.BeamDesignOutput,
+    span_mm: Optional[float] = None,
+    mu_knm: Optional[float] = None,
+    vu_kn: Optional[float] = None,
+) -> Dict[str, Any]:
+    """Get AI-driven design improvement suggestions for an IS 456:2000 beam design.
+
+    Analyzes a completed beam design and provides actionable suggestions for:
+    - Geometry optimization (oversized sections, non-standard dimensions)
+    - Steel detailing (congestion, low utilization, grade optimization)
+    - Cost reduction (optimization opportunities, material grade)
+    - Constructability (bar count, stirrup spacing)
+    - Serviceability (span/depth ratios, deflection checks)
+    - Materials (uncommon grades, upgrade opportunities)
+
+    Each suggestion includes:
+    - Category and impact level (LOW/MEDIUM/HIGH)
+    - Confidence score (0.0-1.0)
+    - Detailed rationale with IS 456 clause references
+    - Estimated benefit (quantified where possible)
+    - Concrete action steps
+
+    Args:
+        units: Units label (must be one of the IS456 aliases).
+        design: Completed beam design from design_beam_is456().
+        span_mm: Beam span (mm), optional context for better suggestions.
+        mu_knm: Factored moment (kNm), optional context.
+        vu_kn: Factored shear (kN), optional context.
+
+    Returns:
+        Dictionary with:
+            - suggestions: List of suggestion objects sorted by priority
+            - total_count: Number of suggestions
+            - high_impact_count: Number of HIGH impact suggestions
+            - medium_impact_count: Number of MEDIUM impact suggestions
+            - low_impact_count: Number of LOW impact suggestions
+            - analysis_time_ms: Time taken for analysis
+            - engine_version: Suggestion engine version
+
+    Example:
+        >>> design = design_beam_is456(...)
+        >>> suggestions = suggest_beam_design_improvements(
+        ...     units="IS456",
+        ...     design=design,
+        ...     span_mm=5000,
+        ...     mu_knm=120,
+        ...     vu_kn=80
+        ... )
+        >>> print(f"Found {suggestions['high_impact_count']} high-impact suggestions")
+        >>> for sug in suggestions['suggestions'][:3]:  # Top 3
+        ...     print(f"  • {sug['title']} (impact: {sug['impact']}, confidence: {sug['confidence']:.0%})")
+    """
+
+    _require_is456_units(units)
+
+    report = design_suggestions.suggest_improvements(
+        design=design,
+        span_mm=span_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+    )
+
+    return report.to_dict()

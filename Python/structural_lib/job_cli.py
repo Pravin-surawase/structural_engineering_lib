@@ -14,6 +14,7 @@ import json
 
 from . import job_runner
 from . import api
+from . import beam_pipeline
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -37,6 +38,29 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     optimize.add_argument("--output", "-o", help="Output JSON file (optional)")
     optimize.add_argument(
+        "--units", default="IS456", help="Units system (default: IS456)"
+    )
+
+    suggest = sub.add_parser("suggest", help="Get design improvement suggestions")
+    suggest.add_argument("--span", type=float, required=True, help="Beam span (mm)")
+    suggest.add_argument(
+        "--mu", type=float, required=True, help="Factored moment (kNm)"
+    )
+    suggest.add_argument("--vu", type=float, required=True, help="Factored shear (kN)")
+    suggest.add_argument("--b", type=float, required=True, help="Beam width (mm)")
+    suggest.add_argument("--D", type=float, required=True, help="Overall depth (mm)")
+    suggest.add_argument("--d", type=float, required=True, help="Effective depth (mm)")
+    suggest.add_argument(
+        "--fck", type=float, default=25, help="Concrete grade (N/mm², default: 25)"
+    )
+    suggest.add_argument(
+        "--fy", type=float, default=500, help="Steel grade (N/mm², default: 500)"
+    )
+    suggest.add_argument(
+        "--cover", type=int, default=40, help="Concrete cover (mm, default: 40)"
+    )
+    suggest.add_argument("--output", "-o", help="Output JSON file (optional)")
+    suggest.add_argument(
         "--units", default="IS456", help="Units system (default: IS456)"
     )
 
@@ -103,6 +127,69 @@ def main(argv: list[str] | None = None) -> int:
             with open(args.output, "w") as f:
                 json.dump(result, f, indent=2)
             print(f"✅ Results saved to {args.output}")
+
+        return 0
+
+    if args.cmd == "suggest":
+        # Design the beam first using design_single_beam
+        design = beam_pipeline.design_single_beam(
+            units=args.units,
+            beam_id="CLI-BEAM",
+            story="CLI",
+            b_mm=args.b,
+            D_mm=args.D,
+            d_mm=args.d,
+            cover_mm=args.cover,
+            span_mm=args.span,
+            mu_knm=args.mu,
+            vu_kn=args.vu,
+            fck_nmm2=args.fck,
+            fy_nmm2=args.fy,
+        )
+
+        # Get suggestions
+        suggestions = api.suggest_beam_design_improvements(
+            units=args.units,
+            design=design,
+            span_mm=args.span,
+            mu_knm=args.mu,
+            vu_kn=args.vu,
+        )
+
+        # Print results to console
+        print("\n" + "=" * 70)
+        print("DESIGN IMPROVEMENT SUGGESTIONS")
+        print("=" * 70)
+        print("\n📊 Analysis Summary:")
+        print(f"   Total suggestions: {suggestions['suggestions_count']}")
+        print(f"   High impact:       {suggestions['high_impact_count']}")
+        print(f"   Medium impact:     {suggestions['medium_impact_count']}")
+        print(f"   Low impact:        {suggestions['low_impact_count']}")
+        print(f"   Analysis time:     {suggestions['analysis_time_ms']:.1f}ms")
+
+        if suggestions["suggestions"]:
+            print("\n💡 Top Recommendations:\n")
+            for i, sug in enumerate(suggestions["suggestions"][:5], 1):  # Top 5
+                icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}[sug["impact"]]
+                print(f"{i}. {icon} {sug['title']}")
+                print(
+                    f"   Category: {sug['category']} | Impact: {sug['impact'].upper()} | Confidence: {sug['confidence']:.0%}"
+                )
+                print(f"   {sug['description']}")
+                print(f"   💰 {sug['estimated_benefit']}")
+                if sug["action_steps"]:
+                    print("   Actions:")
+                    for step in sug["action_steps"][:2]:  # First 2 steps
+                        print(f"      • {step}")
+                print()
+
+        print("=" * 70 + "\n")
+
+        # Save to JSON if requested
+        if args.output:
+            with open(args.output, "w") as f:
+                json.dump(suggestions, f, indent=2)
+            print(f"✅ Full report saved to {args.output}")
 
         return 0
 

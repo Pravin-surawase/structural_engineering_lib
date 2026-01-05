@@ -186,6 +186,14 @@ def optimize_beam_cost(
     vu_kn: float,
     cover_mm: float = 40,
 ) -> dict
+def suggest_beam_design_improvements(
+    *,
+    units: str,
+    design: BeamDesignOutput,
+    span_mm: float | None = None,
+    mu_knm: float | None = None,
+    vu_kn: float | None = None,
+) -> dict
 ```
 
 Notes:
@@ -195,6 +203,10 @@ Notes:
 - `optimize_beam_cost()` (v0.14.0+) returns a dictionary with optimal design, alternatives,
   baseline cost, savings, and metadata. Uses brute-force search over M25/M30 concrete grades
   and Fe500 steel with standard dimensions.
+- `suggest_beam_design_improvements()` (v0.14.0+) returns AI-driven design improvement
+  suggestions covering geometry, steel, cost, constructability, serviceability, and materials.
+  Each suggestion includes impact level, confidence score, IS 456 clause references, and
+  actionable steps. See [Design Suggestions Guide](../getting-started/design-suggestions-guide.md).
 
 ---
 
