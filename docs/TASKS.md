@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| (empty — all research trio tasks complete) | | | | | |
+| **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) | DEV | 4-6 hrs | 🔴 HIGH | ⏳ Ready |
 
 ---
 
@@ -34,6 +34,8 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| **TASK-152** | Standardize error handling (layer-specific rules, validation utilities) | DEV | 4-6 hrs | 🔴 HIGH | ⏳ Ready |
+| **TASK-153** | Add deprecation decorator and policy (utilities.py, CHANGELOG template) | DEV | 2-3 hrs | 🔴 HIGH | ⏳ Ready |
 | **TASK-143** | Comparison & Sensitivity Enhancement (multi-design comparison, cost-aware sensitivity) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
 | **TASK-144** | Smart Library Integration (unified SmartDesigner API, dashboard output, CLI) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
 | **TASK-145** | Visualization Stack (matplotlib/plotly, BMD/SFD, beam elevation, cross-sections) | DEV | 3-4 days | 🟡 MEDIUM | ⏳ Queued |
