@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-05
+**Updated:** 2026-01-06
 
 ---
 
@@ -26,6 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| - | (No active tasks - select from Up Next) | - | - | - | - |
 
 ---
 

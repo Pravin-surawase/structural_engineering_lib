@@ -26,13 +26,15 @@ import sys
 from pathlib import Path
 from typing import List
 
-from . import api
-from . import beam_pipeline
-from . import detailing
-from . import dxf_export
-from . import excel_integration
-from . import job_runner
-from . import report
+from . import (
+    api,
+    beam_pipeline,
+    detailing,
+    dxf_export,
+    excel_integration,
+    job_runner,
+    report,
+)
 
 
 def _fmt_cell(v: object) -> str:
@@ -275,7 +277,9 @@ def cmd_design(args: argparse.Namespace) -> int:
                             "sensitivities": [s.to_dict() for s in sensitivities],
                             "robustness": robustness.to_dict(),
                             "constructability": (
-                                constructability.to_dict() if constructability else None
+                                constructability.to_dict()
+                                if constructability is not None
+                                else None
                             ),
                         }
                     )

@@ -10,19 +10,18 @@ Usage:
     from structural_lib.excel_integration import process_beam_schedule, batch_generate_dxf
 """
 
-import json
 import csv
+import json
 import logging
 import os
 
 _logger = logging.getLogger(__name__)
-from typing import List, Dict, Optional
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from dataclasses import dataclass, asdict
+from typing import Dict, List, Optional
 
-from .detailing import create_beam_detailing, BeamDetailingResult
-from .dxf_export import generate_beam_dxf, EZDXF_AVAILABLE
-
+from .detailing import BeamDetailingResult, create_beam_detailing
+from .dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
 
 # =============================================================================
 # Data Classes

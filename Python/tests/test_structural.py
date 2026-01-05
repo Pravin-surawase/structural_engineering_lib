@@ -1,11 +1,11 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
 
 # Add parent directory to path to import structural_lib
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib import flexure, shear, tables, materials, types
+from structural_lib import flexure, materials, shear, tables, types
 
 
 class TestStructuralLib(unittest.TestCase):

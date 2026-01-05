@@ -2,22 +2,21 @@ import json
 
 import pytest
 
+from structural_lib.detailing import (
+    BarArrangement,
+    BeamDetailingResult,
+    StirrupArrangement,
+)
 from structural_lib.excel_integration import (
     BeamDesignData,
     ProcessingResult,
+    batch_generate_dxf,
     export_schedule_to_csv,
     generate_detailing_schedule,
     generate_summary_report,
     load_beam_data_from_csv,
     load_beam_data_from_json,
-    batch_generate_dxf,
     process_single_beam,
-)
-
-from structural_lib.detailing import (
-    BarArrangement,
-    BeamDetailingResult,
-    StirrupArrangement,
 )
 
 

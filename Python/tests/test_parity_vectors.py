@@ -11,11 +11,11 @@ Usage:
 """
 
 import json
-import pytest
 from pathlib import Path
 
-from structural_lib import flexure, shear, detailing, serviceability, bbs
+import pytest
 
+from structural_lib import bbs, detailing, flexure, serviceability, shear
 
 # =============================================================================
 # Load Test Vectors

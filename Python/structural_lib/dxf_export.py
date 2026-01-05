@@ -17,8 +17,8 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
-from typing import Any, List, Optional, Tuple, Dict, Union, Set
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 ezdxf: Any = None
 _units: Any = None
@@ -53,10 +53,9 @@ except Exception:
 units = _units
 TextEntityAlignment = _TextEntityAlignment
 
-from .api import get_library_version
-from .detailing import BeamDetailingResult, BarArrangement, StirrupArrangement
 from . import bbs
-
+from .api import get_library_version
+from .detailing import BarArrangement, BeamDetailingResult, StirrupArrangement
 
 # =============================================================================
 # Constants

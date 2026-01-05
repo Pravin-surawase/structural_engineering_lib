@@ -12,10 +12,9 @@ References:
 - SP 34:1987 (Handbook on Detailing)
 """
 
-from dataclasses import dataclass
-from typing import Tuple, List
 import math
-
+from dataclasses import dataclass
+from typing import List, Tuple
 
 # =============================================================================
 # Constants

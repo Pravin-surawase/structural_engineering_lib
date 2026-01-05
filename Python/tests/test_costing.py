@@ -6,12 +6,12 @@ import unittest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from structural_lib.costing import (
+    STEEL_DENSITY_KG_PER_M3,
     CostProfile,
     calculate_concrete_cost,
-    calculate_steel_cost,
     calculate_formwork_cost,
+    calculate_steel_cost,
     calculate_total_beam_cost,
-    STEEL_DENSITY_KG_PER_M3,
 )
 
 

@@ -12,18 +12,18 @@ Tests cover:
 import pytest
 
 from structural_lib.detailing import (
-    get_bond_stress,
+    BarArrangement,
+    calculate_bar_spacing,
     calculate_development_length,
     calculate_lap_length,
-    calculate_bar_spacing,
     check_min_spacing,
     check_side_face_reinforcement,
-    select_bar_arrangement,
-    get_stirrup_legs,
+    create_beam_detailing,
     format_bar_callout,
     format_stirrup_callout,
-    create_beam_detailing,
-    BarArrangement,
+    get_bond_stress,
+    get_stirrup_legs,
+    select_bar_arrangement,
 )
 
 

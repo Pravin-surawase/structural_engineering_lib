@@ -22,7 +22,6 @@ from pathlib import Path
 
 from structural_lib import flexure, shear, tables
 
-
 FIELDNAMES = [
     "BeamID",
     "Story",

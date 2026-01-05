@@ -9,43 +9,37 @@ Tests cover:
 - Summary aggregation
 """
 
-import pytest
-import tempfile
 import csv
 import json
+import tempfile
 from dataclasses import replace
 from pathlib import Path
 
-from structural_lib.bbs import (
-    # Constants
-    UNIT_WEIGHTS_KG_M,
+import pytest
+
+from structural_lib.bbs import (  # Constants; Weight calculations; Cut length calculations; BBS generation; Cutting-stock optimization; Data classes
     STANDARD_STOCK_LENGTHS_MM,
-    # Weight calculations
+    UNIT_WEIGHTS_KG_M,
+    BBSDocument,
+    BBSLineItem,
     calculate_bar_weight,
-    calculate_unit_weight_per_meter,
-    # Cut length calculations
-    calculate_hook_length,
-    calculate_bend_deduction,
-    calculate_straight_bar_length,
-    calculate_stirrup_cut_length,
-    # BBS generation
-    generate_bbs_from_detailing,
     calculate_bbs_summary,
+    calculate_bend_deduction,
+    calculate_hook_length,
+    calculate_stirrup_cut_length,
+    calculate_straight_bar_length,
+    calculate_unit_weight_per_meter,
     export_bbs_to_csv,
     export_bbs_to_json,
     export_bom_summary_csv,
-    # Cutting-stock optimization
+    generate_bbs_from_detailing,
     optimize_cutting_stock,
-    # Data classes
-    BBSLineItem,
-    BBSDocument,
 )
 from structural_lib.detailing import (
-    BeamDetailingResult,
     BarArrangement,
+    BeamDetailingResult,
     StirrupArrangement,
 )
-
 
 # =============================================================================
 # Weight Calculation Tests

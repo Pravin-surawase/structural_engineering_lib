@@ -1,11 +1,12 @@
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Add parent directory to path to import structural_lib
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib.flexure import design_doubly_reinforced, calculate_mu_lim
+from structural_lib.flexure import calculate_mu_lim, design_doubly_reinforced
 from structural_lib.materials import get_steel_stress
 
 

@@ -13,17 +13,16 @@ References:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Dict
 import csv
 import json
-from pathlib import Path
 import math
 import re
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Dict, List
 
-from .detailing import BeamDetailingResult
 from .data_types import CuttingAssignment, CuttingPlan
-
+from .detailing import BeamDetailingResult
 
 # =============================================================================
 # Constants

@@ -17,13 +17,11 @@ Schema Version: 1
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional, Sequence
 
-from . import api
-from . import detailing
-
+from . import api, detailing
 
 # =============================================================================
 # Schema Version
@@ -452,7 +450,7 @@ def design_single_beam(
                     for stir in detailing_result.stirrups
                 ],
             )
-        except Exception:
+        except Exception:  # nosec B110
             # Detailing is optional; don't fail the whole design
             pass
 

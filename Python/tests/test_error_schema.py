@@ -4,15 +4,17 @@ Tests for error schema compliance.
 Verifies that structured errors follow the schema defined in docs/reference/error-schema.md.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from structural_lib.ductile import check_beam_ductility
 from structural_lib.errors import (
-    DesignError,
-    Severity,
+    E_DUCTILE_001,
+    E_FLEXURE_001,
     E_INPUT_001,
     E_INPUT_010,
     E_INPUT_011,
@@ -21,15 +23,14 @@ from structural_lib.errors import (
     E_INPUT_014,
     E_INPUT_015,
     E_INPUT_016,
-    E_FLEXURE_001,
     E_SHEAR_001,
     E_SHEAR_004,
-    E_DUCTILE_001,
+    DesignError,
+    Severity,
     make_error,
 )
 from structural_lib.flexure import design_singly_reinforced
 from structural_lib.shear import design_shear
-from structural_lib.ductile import check_beam_ductility
 
 
 class TestDesignErrorDataclass:

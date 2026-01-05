@@ -8,7 +8,6 @@ from dataclasses import dataclass, field
 from typing import List, Tuple
 
 from .errors import (
-    DesignError,
     E_DUCTILE_001,
     E_DUCTILE_002,
     E_DUCTILE_003,
@@ -16,6 +15,7 @@ from .errors import (
     E_INPUT_004,
     E_INPUT_005,
     E_INPUT_011,
+    DesignError,
 )
 
 

@@ -15,18 +15,16 @@ module.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple
 
-import math
-
 from .detailing import (
-    BarArrangement,
     STANDARD_BAR_DIAMETERS,
+    BarArrangement,
     calculate_bar_spacing,
     check_min_spacing,
 )
-
 
 Objective = Literal["min_area", "min_bar_count", "max_spacing"]
 

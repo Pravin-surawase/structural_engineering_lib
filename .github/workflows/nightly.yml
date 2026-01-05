@@ -36,6 +36,11 @@ jobs:
         run: |
           python -m pytest -q
 
+      - name: Check documentation links
+        run: |
+          python scripts/check_links.py --fail-fast
+        continue-on-error: true  # Don't fail entire workflow on broken links
+
       - name: Smoke test CLI pipeline
         working-directory: Python
         run: |

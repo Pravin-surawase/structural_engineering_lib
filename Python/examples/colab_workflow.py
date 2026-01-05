@@ -166,6 +166,7 @@ def main() -> None:
     # Optional DXF (requires ezdxf)
     try:
         import ezdxf  # noqa: F401
+
         from structural_lib.detailing import create_beam_detailing
         from structural_lib.dxf_export import generate_beam_dxf
 

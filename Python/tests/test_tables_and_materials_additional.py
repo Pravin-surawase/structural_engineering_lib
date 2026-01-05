@@ -359,14 +359,14 @@ def test_excel_integration_process_single_beam_exception_path(monkeypatch, tmp_p
 
 
 def test_excel_integration_generate_detailing_schedule_handles_missing_bottom_bars():
+    from structural_lib.detailing import (
+        BarArrangement,
+        BeamDetailingResult,
+        StirrupArrangement,
+    )
     from structural_lib.excel_integration import (
         ProcessingResult,
         generate_detailing_schedule,
-    )
-    from structural_lib.detailing import (
-        BeamDetailingResult,
-        BarArrangement,
-        StirrupArrangement,
     )
 
     detailing = BeamDetailingResult(

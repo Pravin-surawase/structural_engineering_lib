@@ -3,9 +3,9 @@ Module:       types
 Description:  Custom Data Types (Classes/Dataclasses) and Enums
 """
 
-from enum import Enum, auto
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, TYPE_CHECKING
+from enum import Enum, auto
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
 if TYPE_CHECKING:
     from .errors import DesignError

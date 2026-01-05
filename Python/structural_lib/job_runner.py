@@ -20,9 +20,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, Mapping
 
-from . import api
-from . import compliance
-from . import beam_pipeline
+from . import api, beam_pipeline, compliance
 
 
 def load_job_json(path: str | Path) -> Dict[str, Any]:

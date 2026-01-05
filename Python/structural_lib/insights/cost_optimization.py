@@ -5,8 +5,9 @@ beam design meeting IS 456:2000 requirements.
 """
 
 from typing import Optional
+
 from structural_lib.costing import CostProfile
-from structural_lib.optimization import optimize_beam_cost, CostOptimizationResult
+from structural_lib.optimization import CostOptimizationResult, optimize_beam_cost
 
 __all__ = ["optimize_beam_design", "CostProfile", "CostOptimizationResult"]
 

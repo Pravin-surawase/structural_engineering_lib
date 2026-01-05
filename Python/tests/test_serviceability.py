@@ -134,13 +134,13 @@ def test_crack_width_exposure_class_string_variants():
 # =============================================================================
 
 from structural_lib.serviceability import (
-    calculate_cracking_moment,
-    calculate_gross_moment_of_inertia,
     calculate_cracked_moment_of_inertia,
+    calculate_cracking_moment,
     calculate_effective_moment_of_inertia,
-    get_long_term_deflection_factor,
+    calculate_gross_moment_of_inertia,
     calculate_short_term_deflection,
     check_deflection_level_b,
+    get_long_term_deflection_factor,
 )
 
 

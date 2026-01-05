@@ -241,8 +241,8 @@ def test_generate_beam_dxf_runs_with_stubbed_ezdxf(
 def test_dxf_export_cli_main_reads_json_and_writes(monkeypatch, tmp_path, capsys):
     import json
 
-    import structural_lib.dxf_export as dxf_export
     import structural_lib.detailing as detailing
+    import structural_lib.dxf_export as dxf_export
 
     # Prepare input JSON
     payload = {

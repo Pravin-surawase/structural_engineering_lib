@@ -27,11 +27,12 @@ PARITY WORKFLOW:
     3. If values differ beyond tolerance, investigate and fix
 """
 
-import pytest
 from dataclasses import dataclass
 from typing import Any
 
-from structural_lib import flexure, shear, materials, tables, detailing
+import pytest
+
+from structural_lib import detailing, flexure, materials, shear, tables
 
 
 @dataclass

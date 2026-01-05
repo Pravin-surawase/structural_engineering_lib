@@ -3,7 +3,6 @@
 from dataclasses import dataclass, field
 from typing import Dict, Optional
 
-
 STEEL_DENSITY_KG_PER_M3 = 7850.0
 DEFAULT_CONCRETE_GRADE = 25
 

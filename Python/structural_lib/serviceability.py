@@ -19,12 +19,11 @@ from typing import Any, Dict, Optional, Tuple, Union
 
 from .data_types import (
     CrackWidthResult,
-    DeflectionResult,
     DeflectionLevelBResult,
+    DeflectionResult,
     ExposureClass,
     SupportCondition,
 )
-
 
 _DEFAULT_BASE_LD: Dict[SupportCondition, float] = {
     SupportCondition.CANTILEVER: 7.0,

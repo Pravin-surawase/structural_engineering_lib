@@ -5,13 +5,17 @@ Description:  Flexural design and analysis functions
 
 import math
 from typing import Union
+
 from . import materials
-from .data_types import BeamType, FlexureResult, DesignSectionType
+from .data_types import BeamType, DesignSectionType, FlexureResult
 from .errors import (
+    E_FLEXURE_001,
+    E_FLEXURE_002,
+    E_FLEXURE_003,
+    E_FLEXURE_004,
     E_INPUT_001,
     E_INPUT_002,
     E_INPUT_003,
-    E_INPUT_003a,
     E_INPUT_004,
     E_INPUT_005,
     E_INPUT_010,
@@ -20,10 +24,7 @@ from .errors import (
     E_INPUT_014,
     E_INPUT_015,
     E_INPUT_016,
-    E_FLEXURE_001,
-    E_FLEXURE_002,
-    E_FLEXURE_003,
-    E_FLEXURE_004,
+    E_INPUT_003a,
 )
 
 

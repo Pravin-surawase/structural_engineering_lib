@@ -13,8 +13,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from structural_lib.api import design_beam_is456
-from structural_lib.insights import quick_precheck, sensitivity_analysis
 from structural_lib.errors import Severity
+from structural_lib.insights import quick_precheck, sensitivity_analysis
 
 
 def format_precheck_report(result) -> str:

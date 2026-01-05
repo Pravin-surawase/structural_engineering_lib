@@ -1,13 +1,13 @@
 import math
-import sys
 import os
+import sys
 
 import pytest
 
 # Add parent directory to path to import structural_lib
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib import flexure, shear, materials
+from structural_lib import flexure, materials, shear
 
 
 def test_calculate_tv_converts_kn_to_n():

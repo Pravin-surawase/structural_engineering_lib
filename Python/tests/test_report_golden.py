@@ -7,7 +7,6 @@ from pathlib import Path
 
 from structural_lib import report
 
-
 FIXTURES = Path(__file__).parent / "fixtures" / "report"
 
 

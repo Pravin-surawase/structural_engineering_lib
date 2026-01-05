@@ -5,6 +5,7 @@ and returns properly formatted results.
 """
 
 import pytest
+
 from structural_lib import api
 
 

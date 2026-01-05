@@ -9,8 +9,9 @@ Usage:
     python simple_examples.py
 """
 
-from structural_lib import flexure, shear, detailing
 import math
+
+from structural_lib import detailing, flexure, shear
 
 
 def example_1_basic_flexure():

@@ -12,9 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from . import job_runner
-from . import api
-from . import beam_pipeline
+from . import api, beam_pipeline, job_runner
 
 
 def _build_parser() -> argparse.ArgumentParser:

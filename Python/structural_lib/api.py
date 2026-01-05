@@ -3,23 +3,24 @@ Module:       api
 Description:  Public facing API functions
 """
 
+import json
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-import json
-
 from typing import Any, Dict, Optional, Sequence, Union
 
-from . import bbs
-from . import beam_pipeline
-from . import compliance
-from . import detailing
-from . import ductile
-from . import job_runner
-from . import report
-from . import serviceability
+from . import (
+    bbs,
+    beam_pipeline,
+    compliance,
+    detailing,
+    ductile,
+    job_runner,
+    report,
+    serviceability,
+)
+from .costing import CostProfile
 from .data_types import ComplianceCaseResult, ComplianceReport, ValidationReport
 from .insights import cost_optimization, design_suggestions
-from .costing import CostProfile
 
 __all__ = [
     "get_library_version",

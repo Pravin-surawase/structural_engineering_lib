@@ -21,13 +21,13 @@ Output:
 """
 
 import csv
-import os
 import math
+import os
 from dataclasses import dataclass
 from typing import List
 
 # Import library modules
-from structural_lib import flexure, shear, detailing
+from structural_lib import detailing, flexure, shear
 
 # Optional DXF support (requires ezdxf)
 try:

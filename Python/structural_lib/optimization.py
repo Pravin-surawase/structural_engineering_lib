@@ -2,9 +2,10 @@
 
 import time
 from dataclasses import dataclass
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
+
 from structural_lib import flexure
-from structural_lib.costing import CostProfile, CostBreakdown, calculate_beam_cost
+from structural_lib.costing import CostBreakdown, CostProfile, calculate_beam_cost
 from structural_lib.data_types import FlexureResult
 
 

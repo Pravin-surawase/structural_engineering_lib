@@ -1,14 +1,14 @@
 """Tests for design suggestions engine."""
 
 from structural_lib.beam_pipeline import design_single_beam
-from structural_lib.insights.design_suggestions import (
-    suggest_improvements,
-    SuggestionCategory,
-    ImpactLevel,
-    DesignSuggestion,
-    SuggestionReport,
-)
 from structural_lib.costing import CostProfile
+from structural_lib.insights.design_suggestions import (
+    DesignSuggestion,
+    ImpactLevel,
+    SuggestionCategory,
+    SuggestionReport,
+    suggest_improvements,
+)
 
 
 class TestSuggestionDataTypes:

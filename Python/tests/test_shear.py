@@ -9,6 +9,7 @@ Reference: IS 456:2000 Clause 40
 """
 
 import pytest
+
 from structural_lib import shear
 
 

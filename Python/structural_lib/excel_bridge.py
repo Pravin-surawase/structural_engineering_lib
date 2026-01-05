@@ -15,12 +15,12 @@ Setup:
     4. Use functions in formulas
 """
 
-import xlwings as xw
 from typing import Union
 
-# Import existing Python modules (already tested!)
-from structural_lib import flexure, shear, detailing
+import xlwings as xw
 
+# Import existing Python modules (already tested!)
+from structural_lib import detailing, flexure, shear
 
 # ============================================================================
 # FLEXURE UDFs (IS 456:2000)

@@ -8,22 +8,23 @@ Tests:
 - Schedule generation
 """
 
-import pytest
+import csv
+import json
 import os
 import tempfile
-import json
-import csv
+
+import pytest
+
 from structural_lib.excel_integration import (
     BeamDesignData,
+    batch_generate_dxf,
+    export_beam_data_to_json,
+    generate_detailing_schedule,
+    generate_summary_report,
     load_beam_data_from_csv,
     load_beam_data_from_json,
-    export_beam_data_to_json,
     process_single_beam,
-    batch_generate_dxf,
-    generate_summary_report,
-    generate_detailing_schedule,
 )
-
 
 # =============================================================================
 # Test Fixtures

@@ -14,8 +14,8 @@ Comparative tests use paired inputs to avoid boundary skips.
 """
 
 import pytest
-from structural_lib import flexure, shear, detailing, materials, tables
 
+from structural_lib import detailing, flexure, materials, shear, tables
 
 # =============================================================================
 # FLEXURE INVARIANTS

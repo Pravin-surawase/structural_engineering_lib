@@ -21,14 +21,14 @@ from typing import Any, Dict, List, Optional, Sequence
 
 _logger = logging.getLogger(__name__)
 
-from . import flexure, shear, serviceability
+from . import flexure, serviceability, shear
 from .data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthResult,
     DeflectionResult,
-    ExposureClass,
     DesignSectionType,
+    ExposureClass,
     FlexureResult,
     ShearResult,
     SupportCondition,

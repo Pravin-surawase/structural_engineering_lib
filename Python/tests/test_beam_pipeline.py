@@ -9,6 +9,7 @@ Tests cover:
 """
 
 import pytest
+
 from structural_lib import beam_pipeline
 
 

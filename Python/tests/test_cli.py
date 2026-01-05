@@ -4,8 +4,8 @@ Tests for unified CLI entrypoint (__main__.py).
 Tests cover all subcommands: design, bbs, dxf, and job.
 """
 
-import json
 import csv
+import json
 import subprocess
 import sys
 from pathlib import Path

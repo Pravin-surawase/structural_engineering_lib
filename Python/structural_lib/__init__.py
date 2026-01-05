@@ -10,7 +10,8 @@ Use api.get_library_version() to get the current version.
 from __future__ import annotations
 
 import importlib
-from importlib.metadata import PackageNotFoundError, version as _get_version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _get_version
 from types import ModuleType as _ModuleType
 from typing import Optional
 
@@ -21,15 +22,17 @@ except PackageNotFoundError:
     __version__ = "0.0.0-dev"  # Not installed, development mode
 
 # Expose key modules
-from . import flexure
-from . import shear
-from . import api
-from . import detailing
-from . import serviceability
-from . import compliance
-from . import bbs
-from . import costing
-from . import types
+from . import (
+    api,
+    bbs,
+    compliance,
+    costing,
+    detailing,
+    flexure,
+    serviceability,
+    shear,
+    types,
+)
 
 # DXF export is optional (requires ezdxf)
 dxf_export: Optional[_ModuleType]

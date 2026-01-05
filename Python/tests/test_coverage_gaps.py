@@ -1,6 +1,4 @@
-from structural_lib import api
-from structural_lib import compliance
-from structural_lib import serviceability
+from structural_lib import api, compliance, serviceability
 from structural_lib.types import (
     CrackWidthResult,
     DeflectionResult,

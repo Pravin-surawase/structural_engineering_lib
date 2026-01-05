@@ -1,7 +1,6 @@
 import json
 
-from structural_lib import api
-from structural_lib import beam_pipeline
+from structural_lib import api, beam_pipeline
 
 
 def _write_json(path, payload):

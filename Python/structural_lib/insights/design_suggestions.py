@@ -14,11 +14,11 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from ..beam_pipeline import BeamDesignOutput
-from ..detailing import BeamDetailingResult
 from ..costing import CostProfile
+from ..detailing import BeamDetailingResult
 
 
 class SuggestionCategory(Enum):

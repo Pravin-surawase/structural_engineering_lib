@@ -13,19 +13,20 @@ Each test case is documented with IS 456/SP:16 references for traceability.
 """
 
 import json
-import pytest
 from pathlib import Path
 
-from structural_lib.insights import (
-    quick_precheck,
-    sensitivity_analysis,
-    calculate_constructability_score,
-)
+import pytest
+
 from structural_lib.api import design_beam_is456
 from structural_lib.detailing import (
     BarArrangement,
     BeamDetailingResult,
     StirrupArrangement,
+)
+from structural_lib.insights import (
+    calculate_constructability_score,
+    quick_precheck,
+    sensitivity_analysis,
 )
 
 

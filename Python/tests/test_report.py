@@ -10,23 +10,22 @@ from pathlib import Path
 
 import pytest
 
+from structural_lib import report_svg
 from structural_lib.report import (
-    load_report_data,
-    load_design_results,
-    export_json,
+    export_critical_csv,
+    export_critical_html,
     export_design_json,
     export_html,
-    render_design_report_single,
-    write_design_report_package,
+    export_json,
+    get_critical_set,
     get_input_sanity,
     get_stability_scorecard,
     get_units_sentinel,
-    get_critical_set,
-    export_critical_csv,
-    export_critical_html,
+    load_design_results,
+    load_report_data,
+    render_design_report_single,
+    write_design_report_package,
 )
-from structural_lib import report_svg
-
 
 # Sample test data matching job output structure
 SAMPLE_JOB = {

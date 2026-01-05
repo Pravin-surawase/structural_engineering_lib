@@ -4,7 +4,7 @@ import sys
 # Add parent directory to path to import structural_lib
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from structural_lib import flexure, shear, serviceability, types
+from structural_lib import flexure, serviceability, shear, types
 from structural_lib.compliance import check_compliance_report
 
 
