@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| — | No active tasks (WIP = 1 limit enforced) | — | — | — | — |
+| (empty — all research trio tasks complete) | | | | | |
 
 ---
 
@@ -34,8 +34,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-149** | Research: Backward Compatibility Strategy (evaluate pytest-regressions, contract testing, semantic versioning tools, API stability safeguards) → Save to `docs/research/backward-compatibility-strategy.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH | ⏳ Ready |
-| **TASK-150** | Research: Modern Python Tooling Evaluation (deep-dive on uv, Hypothesis, pytest-benchmark, mutmut for structural libraries, pros/cons/implementation guide) → Save to `docs/research/modern-python-tooling.md` | RESEARCHER | 4-6 hrs | 🔴 HIGH | ⏳ Ready |
 | **TASK-143** | Comparison & Sensitivity Enhancement (multi-design comparison, cost-aware sensitivity) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
 | **TASK-144** | Smart Library Integration (unified SmartDesigner API, dashboard output, CLI) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
 | **TASK-145** | Visualization Stack (matplotlib/plotly, BMD/SFD, beam elevation, cross-sections) | DEV | 3-4 days | 🟡 MEDIUM | ⏳ Queued |
@@ -68,6 +66,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-150** | Research: Modern Python Tooling Evaluation (uv, Hypothesis, pytest-benchmark, mutmut for structural libraries) → `docs/research/modern-python-tooling.md` | RESEARCHER | ✅ Done |
+| **TASK-149** | Research: Backward Compatibility Strategy (evaluate pytest-regressions, contract testing, semantic versioning tools, API stability safeguards) → `docs/research/backward-compatibility-strategy.md` | RESEARCHER | ✅ Done |
 | **TASK-148** | Research: CS Best Practices Audit (review codebase against Python scientific library standards, compare to numpy/scipy/pandas patterns, identify gaps) → `docs/research/cs-best-practices-audit.md` | RESEARCHER | ✅ Done |
 | **TASK-142** | Design Suggestions Engine (17 expert rules, 6 categories, confidence scoring, JSON) | DEV | ✅ Done |
 | **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | ✅ Done |
