@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import importlib
 from importlib.metadata import PackageNotFoundError, version as _get_version
-from types import ModuleType
+from types import ModuleType as _ModuleType
 from typing import Optional
 
 # Dynamic version from installed package metadata
@@ -32,7 +32,7 @@ from . import costing
 from . import types
 
 # DXF export is optional (requires ezdxf)
-dxf_export: Optional[ModuleType]
+dxf_export: Optional[_ModuleType]
 try:
     dxf_export = importlib.import_module(f"{__name__}.dxf_export")
 except ImportError:
