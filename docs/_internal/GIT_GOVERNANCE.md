@@ -177,6 +177,16 @@ git commit -m "..."  # Pre-commit hooks auto-format
 - ✅ Push branch → CI passes without needing auto-format
 - ❌ Avoid pushing unformatted code then fighting auto-format pushes
 
+**CI Timing Issues:**
+- Auto-format workflow runs AFTER initial PR creation
+- Lint/Typecheck may fail on formatting before auto-format completes
+- If CI fails but auto-format commits fixes, CI does NOT automatically re-run
+- **Solution:** Push empty commit to trigger new CI run:
+  ```bash
+  git commit --allow-empty -m "chore: trigger CI after auto-format"
+  git push
+  ```
+
 ---
 Supply-chain stance:
 * Avoid high-maintenance hardening (e.g., pinning every GitHub Action to a commit SHA) unless there is a clear need.
@@ -312,6 +322,45 @@ git push
 ```
 
 **Prevention:** Use pre-commit hooks — they run the same formatters locally.
+
+#### Issue: CI fails on formatting but shows old commit hash
+
+**Cause:** CI ran on commit before auto-format workflow completed. Auto-format pushed fixes but didn't retrigger CI.
+
+**Solution:**
+```bash
+# Push empty commit to trigger fresh CI run
+git commit --allow-empty -m "chore: trigger CI after auto-format"
+git push
+```
+
+**Prevention:** Use pre-commit hooks to format code locally before pushing.
+
+#### Issue: mypy type errors on Optional types
+
+**Cause:** Accessing attributes on `Optional[Type]` without checking for `None`.
+
+**Example Error:** `Item "None" of "Optional[CostBreakdown]" has no attribute "total_cost"`
+
+**Solution:**
+```python
+# BAD - mypy will error
+result.cost_breakdown.total_cost
+
+# GOOD - check for None first
+if result.cost_breakdown:
+    cost = result.cost_breakdown.total_cost
+else:
+    cost = 0.0
+
+# GOOD - ternary operator
+cost = result.cost_breakdown.total_cost if result.cost_breakdown else 0.0
+
+# GOOD - when sorting
+sorted(items, key=lambda x: x.cost.total if x.cost else float('inf'))
+```
+
+**Prevention:** Run `python -m mypy <file>` locally before committing.
 
 #### Issue: Pre-commit hooks modified files
 

@@ -70,6 +70,14 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - Ensure both platforms use identical Table 19/20 interpolation logic.
 - When updating one platform, update the other and run parity tests.
 
+## Type Safety (Python/mypy)
+- **Always handle Optional types explicitly** - If a dataclass field or return type is `Optional[T]`, check for `None` before accessing attributes.
+- **Pattern**: Use `if obj and obj.attribute` or ternary `obj.attribute if obj else default`.
+- **Example**: `cost_breakdown.total_cost if cost_breakdown else 0.0`
+- **Sorting with Optional**: `sorted(items, key=lambda x: x.cost.total if x.cost else float('inf'))`
+- **Common mistake**: Accessing `.attribute` on `Optional[Dataclass]` without checking - mypy will catch this in CI.
+- **Fix locally**: Run `python -m mypy <file>` before committing to catch type errors early.
+
 ## Platform/VBA Quirks
 - Mac/Excel/VBA quirks (overflow patterns, debug/printing pitfalls, import-order errors) are tracked in [troubleshooting.md](troubleshooting.md).
 
