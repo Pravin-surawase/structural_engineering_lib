@@ -1,7 +1,15 @@
 #!/bin/bash
 # Check for unfinished merge before allowing new commits
 # This prevents creating new commits when there's a merge in progress
+# BUT allows completing the merge itself
 
+# Check if this is a merge commit (MERGE_MSG exists means we're completing a merge)
+if [ -f .git/MERGE_MSG ] && [ -f .git/MERGE_HEAD ]; then
+    # This is completing a merge - allow it
+    exit 0
+fi
+
+# Check if there's an unfinished merge AND we're trying to create a new commit
 if [ -f .git/MERGE_HEAD ]; then
     echo ""
     echo "❌ ERROR: Cannot create new commit - there's an unfinished merge!"
