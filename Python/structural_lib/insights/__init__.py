@@ -4,6 +4,13 @@ from .precheck import quick_precheck
 from .sensitivity import calculate_robustness, sensitivity_analysis
 from .constructability import calculate_constructability_score
 from .cost_optimization import optimize_beam_design, CostProfile, CostOptimizationResult
+from .design_suggestions import (
+    suggest_improvements,
+    DesignSuggestion,
+    SuggestionReport,
+    SuggestionCategory,
+    ImpactLevel,
+)
 from .data_types import (
     ConstructabilityFactor,
     ConstructabilityScore,
@@ -19,12 +26,17 @@ __all__ = [
     "quick_precheck",
     "sensitivity_analysis",
     "optimize_beam_design",
+    "suggest_improvements",
     "CostProfile",
     "CostOptimizationResult",
     "ConstructabilityFactor",
     "ConstructabilityScore",
+    "DesignSuggestion",
     "HeuristicWarning",
+    "ImpactLevel",
     "PredictiveCheckResult",
     "RobustnessScore",
     "SensitivityResult",
+    "SuggestionCategory",
+    "SuggestionReport",
 ]

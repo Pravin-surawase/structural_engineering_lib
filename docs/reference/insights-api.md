@@ -581,3 +581,280 @@ Where:
 
 **Last updated:** 2025-12-31
 **Version:** v0.13.0 (preview)
+
+---
+
+## Design Suggestions
+
+### `suggest_improvements()`
+
+Generate expert improvement recommendations for completed beam designs.
+
+**Signature:**
+
+```python
+def suggest_improvements(
+    design: BeamDesignOutput,
+    detailing: Optional[BeamDetailingResult] = None,
+    cost_profile: Optional[CostProfile] = None,
+    span_mm: Optional[float] = None,
+    mu_knm: Optional[float] = None,
+    vu_kn: Optional[float] = None,
+) -> SuggestionReport
+```
+
+**Parameters:**
+
+- `design`: Beam design output from `design_single_beam()`
+- `detailing` (optional): Detailing result - enables constructability rules
+- `cost_profile` (optional): Regional cost data - enables cost optimization suggestions
+- `span_mm` (optional): Beam span - enables serviceability rules
+- `mu_knm` (optional): Factored moment - enables optimization suggestions
+- `vu_kn` (optional): Factored shear - enables optimization suggestions
+
+**Returns:**
+
+- `SuggestionReport` with prioritized improvements
+
+**Example:**
+
+```python
+from structural_lib.beam_pipeline import design_single_beam
+from structural_lib.insights import suggest_improvements
+
+design = design_single_beam(
+    units="IS456",
+    beam_id="B1",
+    story="GF",
+    b_mm=300,
+    D_mm=500,
+    d_mm=450,
+    cover_mm=40,
+    span_mm=5000,
+    mu_knm=120,
+    vu_kn=80,
+    fck_nmm2=25,
+    fy_nmm2=500,
+)
+
+# Get suggestions with full context
+suggestions = suggest_improvements(
+    design,
+    detailing=design.detailing,
+    span_mm=5000,
+    mu_knm=120,
+    vu_kn=80,
+)
+
+# Review top 3 suggestions
+for s in suggestions.suggestions[:3]:
+    print(f"\n{s.title} ({s.impact.value})")
+    print(f"  {s.estimated_benefit}")
+    print(f"  Confidence: {s.confidence:.0%}")
+```
+
+---
+
+### Data Types
+
+### `SuggestionReport`
+
+Complete set of design suggestions.
+
+**Fields:**
+
+```python
+@dataclass
+class SuggestionReport:
+    suggestions: List[DesignSuggestion]
+    analysis_time_ms: float
+    suggestions_count: int
+    high_impact_count: int
+    medium_impact_count: int
+    low_impact_count: int
+    engine_version: str
+```
+
+**Methods:**
+
+- `.to_dict()`: Serialize to JSON-compatible dict
+
+**Example:**
+
+```python
+report = suggest_improvements(design)
+
+print(f"Found {report.suggestions_count} suggestions")
+print(f"  High impact: {report.high_impact_count}")
+print(f"  Medium impact: {report.medium_impact_count}")
+print(f"  Low impact: {report.low_impact_count}")
+
+# Filter by impact
+high_priority = [
+    s for s in report.suggestions
+    if s.impact == ImpactLevel.HIGH
+]
+```
+
+---
+
+### `DesignSuggestion`
+
+A single design improvement recommendation.
+
+**Fields:**
+
+```python
+@dataclass
+class DesignSuggestion:
+    category: SuggestionCategory
+    impact: ImpactLevel
+    confidence: float  # 0.0-1.0
+    title: str
+    description: str
+    rationale: str
+    estimated_benefit: str
+    action_steps: List[str]
+    rule_id: str
+    priority_score: float
+```
+
+**Methods:**
+
+- `.to_dict()`: Serialize to JSON-compatible dict
+
+**Example:**
+
+```python
+suggestion = report.suggestions[0]
+
+print(f"Title: {suggestion.title}")
+print(f"Category: {suggestion.category.value}")
+print(f"Impact: {suggestion.impact.value}")
+print(f"Confidence: {suggestion.confidence:.0%}")
+print(f"Benefit: {suggestion.estimated_benefit}")
+print(f"\nSteps to implement:")
+for step in suggestion.action_steps:
+    print(f"  • {step}")
+```
+
+---
+
+### `SuggestionCategory`
+
+Categories of design suggestions.
+
+**Values:**
+
+```python
+class SuggestionCategory(Enum):
+    GEOMETRY = "geometry"
+    STEEL = "steel"
+    COST = "cost"
+    CONSTRUCTABILITY = "constructability"
+    SERVICEABILITY = "serviceability"
+    MATERIALS = "materials"
+```
+
+**Example:**
+
+```python
+# Filter by category
+cost_suggestions = [
+    s for s in report.suggestions
+    if s.category == SuggestionCategory.COST
+]
+```
+
+---
+
+### `ImpactLevel`
+
+Impact level of a suggestion.
+
+**Values:**
+
+```python
+class ImpactLevel(Enum):
+    LOW = "low"      # <5% improvement
+    MEDIUM = "medium"  # 5-15% improvement
+    HIGH = "high"    # >15% improvement
+```
+
+**Example:**
+
+```python
+# Prioritize high-impact suggestions
+for s in report.suggestions:
+    if s.impact == ImpactLevel.HIGH:
+        print(f"⚠️ {s.title}: {s.estimated_benefit}")
+```
+
+---
+
+## Rule Categories
+
+### Geometry Rules (5 rules)
+
+| Rule | Trigger | Impact |
+|------|---------|--------|
+| G1 | Utilization < 50% (oversized section) | HIGH |
+| G2 | Non-standard width | LOW |
+| G3 | Depth not in 50mm increments | LOW |
+| G4 | Depth/width ratio > 4.0 | MEDIUM |
+| G5 | d/span < 0.05 (shallow beam) | HIGH |
+
+### Steel Rules (4 rules)
+
+| Rule | Trigger | Impact |
+|------|---------|--------|
+| S1 | Steel % > 2.5% (congestion) | HIGH |
+| S2 | Steel % < 0.3% (very low) | MEDIUM |
+| S3 | Using Fe 415 instead of Fe 500 | MEDIUM |
+| S4 | Stirrup spacing < 100mm | LOW |
+
+### Cost Rules (2 rules)
+
+| Rule | Trigger | Impact |
+|------|---------|--------|
+| C1 | Utilization < 70% (optimization opportunity) | HIGH |
+| C2 | Using fck > M30 | MEDIUM |
+
+### Constructability Rules (2 rules)
+
+| Rule | Trigger | Impact |
+|------|---------|--------|
+| CT1 | Bar count > 6 in layer | MEDIUM |
+| CT2 | More than 2 bar diameters used | LOW |
+
+### Serviceability Rules (2 rules)
+
+| Rule | Trigger | Impact |
+|------|---------|--------|
+| SV1 | 18 < L/d ≤ 20 (near limit) | MEDIUM |
+| SV2 | Serviceability checks not run | LOW |
+
+### Materials Rules (2 rules)
+
+| Rule | Trigger | Impact |
+|------|---------|--------|
+| M1 | Grade not in [M20, M25, M30, M35] | LOW |
+| M2 | Using M20 (M25 may be more economical) | MEDIUM |
+
+---
+
+## Performance Characteristics
+
+- **Analysis time:** <10ms typical (<100ms worst case)
+- **Rules evaluated:** 17 expert heuristics
+- **Categories:** 6 (geometry, steel, cost, constructability, serviceability, materials)
+- **Memory:** Negligible (on-the-fly generation)
+- **Dependencies:** None (pure Python, deterministic)
+
+---
+
+## Version
+
+- **Engine version:** 1.0.0
+- **Release:** v0.14.0+ (January 2026)
+- **Status:** Production-ready

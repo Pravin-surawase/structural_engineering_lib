@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| — | _Empty_ | — | — | — | — |
+| **TASK-142** | Design Suggestions Engine (rule-based expert system, 20+ heuristics, confidence scoring) | DEV | 2-3 days | 🔴 HIGH | 🎯 READY |
 
 ---
 
@@ -34,7 +34,11 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| — | _Sprint backlog empty_ | — | — | — | — |
+| **TASK-143** | Comparison & Sensitivity Enhancement (multi-design comparison, cost-aware sensitivity) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
+| **TASK-144** | Smart Library Integration (unified SmartDesigner API, dashboard output, CLI) | DEV | 1-2 days | 🔴 HIGH | ⏳ Next |
+| **TASK-145** | Visualization Stack (matplotlib/plotly, BMD/SFD, beam elevation, cross-sections) | DEV | 3-4 days | 🟡 MEDIUM | ⏳ Queued |
+| **TASK-146** | DXF Quality Polish (CAD visual QA, DWG conversion workflow) | QA | 2-3 days | 🟡 MEDIUM | ⏳ Queued |
+| **TASK-147** | Developer Documentation (10+ examples, extension points, tutorials) | DOCS | 2-3 days | 🟡 MEDIUM | ⏳ Queued |
 
 ---
 
