@@ -147,6 +147,36 @@ Notes:
 - Clean revert if CI fails
 - Tags can be created after direct push to `main` or after PR merge
 
+**Auto-Format Workflow:**
+- `.github/workflows/auto-format.yml` runs on PR creation
+- Automatically applies `black` and `ruff --fix` to Python code
+- **CRITICAL:** If formatting needed, workflow pushes a commit to your PR branch
+- **This causes non-fast-forward errors if you try to push after PR creation**
+
+**How to handle auto-format pushes:**
+```bash
+# After creating PR, if auto-format runs:
+# Option 1: Wait for auto-format, then pull
+gh pr create --title "..." --body "..."
+sleep 10  # Wait for auto-format to run
+git pull --rebase origin <branch-name>
+
+# Option 2: Pull before any additional pushes
+git pull --rebase origin <branch-name>
+git push
+
+# Option 3: Let pre-commit hooks handle formatting locally (preferred)
+# Pre-commit hooks run same formatters, so auto-format won't trigger
+git commit -m "..."  # Pre-commit hooks auto-format
+# No auto-format needed on GitHub!
+```
+
+**Best Practice:**
+- ✅ **Use pre-commit hooks** (they run `black` and `ruff` locally)
+- ✅ Commit → pre-commit hooks fix → re-stage → commit (or amend)
+- ✅ Push branch → CI passes without needing auto-format
+- ❌ Avoid pushing unformatted code then fighting auto-format pushes
+
 ---
 Supply-chain stance:
 * Avoid high-maintenance hardening (e.g., pinning every GitHub Action to a commit SHA) unless there is a clear need.
@@ -155,10 +185,35 @@ Supply-chain stance:
 
 When working from the terminal, prefer `gh` to keep the workflow repeatable and fast:
 
-* Create PR: `gh pr create --base main --head <branch>`
-* **Wait for CI:** `gh pr checks <PR_NUMBER> --watch` (blocks until all checks complete)
-* Update branch (when ruleset requires up-to-date): `gh pr update-branch <PR_NUMBER>`
-* Merge + delete branch: `gh pr merge <PR_NUMBER> --squash --delete-branch`
+```bash
+# Complete PR workflow (recommended)
+git checkout -b feat/task-142-new-feature
+# ... make changes ...
+git add -A
+git commit -m "feat: implement new feature"  # Pre-commit hooks run here
+# If pre-commit modifies files: git add -A && git commit --amend --no-edit
+git push -u origin feat/task-142-new-feature
+gh pr create --title "feat: implement new feature" --body "Implements TASK-142..."
+gh pr checks --watch  # WAIT for all CI checks (including auto-format if triggered)
+gh pr merge --squash --delete-branch  # Only after CI passes
+```
+
+**Step-by-step:**
+1. **Create branch:** `git checkout -b feat/task-142-new-feature`
+2. **Make changes & commit:** `git add -A && git commit -m "..."`
+3. **Push branch:** `git push -u origin feat/task-142-new-feature`
+4. **Create PR:** `gh pr create --title "..." --body "..."`
+5. **⚠️ CRITICAL: Wait for CI:** `gh pr checks <PR_NUMBER> --watch`
+   - This includes auto-format workflow (may push formatting fixes)
+   - Do NOT push to branch after PR creation without pulling first
+6. **Merge:** `gh pr merge <PR_NUMBER> --squash --delete-branch`
+7. **Sync local:** `git checkout main && git pull --ff-only`
+
+**Common commands:**
+* Check PR status: `gh pr checks <PR_NUMBER>`
+* Update branch (if behind): `gh pr update-branch <PR_NUMBER>`
+* View PR: `gh pr view <PR_NUMBER>`
+* List PRs: `gh pr list`
 
 > **Critical:** Never run `gh pr merge` immediately after `gh pr create`. Always wait for CI.
 
@@ -219,6 +274,93 @@ Use the fast pre-flight checks below to avoid CI failures:
 ```
 
 For a full run, use `scripts/ci_local.sh`.
+
+---
+
+### 2.8 Troubleshooting Common Git Issues
+
+#### Issue: `! [rejected] main -> main (non-fast-forward)`
+
+**Cause:** Remote has commits you don't have locally (often from auto-format workflow on PRs).
+
+**Solution:**
+```bash
+# Pull and rebase
+git pull --rebase origin main
+git push
+
+# Alternative: fetch and reset (only if you're sure local changes are safe)
+git fetch origin
+git rebase origin/main
+git push
+```
+
+**Prevention:** Always pull before pushing, especially after merging PRs.
+
+#### Issue: Auto-format workflow pushed to my PR branch
+
+**Cause:** Auto-format workflow detected formatting issues and pushed fixes.
+
+**Solution:**
+```bash
+# Pull the auto-format changes
+git pull --rebase origin <your-branch-name>
+
+# Continue working
+# ... make more changes ...
+git push
+```
+
+**Prevention:** Use pre-commit hooks — they run the same formatters locally.
+
+#### Issue: Pre-commit hooks modified files
+
+**Cause:** Hooks fixed formatting/whitespace automatically.
+
+**Solution:**
+```bash
+# Re-stage modified files and amend commit
+git add -A
+git commit --amend --no-edit
+
+# OR create new commit
+git add -A
+git commit -m "chore: apply pre-commit fixes"
+```
+
+**This is NORMAL** — hooks are doing their job!
+
+#### Issue: Merge conflicts after `git pull --rebase`
+
+**Cause:** Local and remote changes conflict.
+
+**Solution:**
+```bash
+# Fix conflicts manually, then:
+git add <conflicted-files>
+git rebase --continue
+
+# OR abort and try merge instead:
+git rebase --abort
+git pull --no-rebase origin main
+```
+
+#### Issue: Can't push — pre-commit hooks fail
+
+**Cause:** Code doesn't pass pre-commit checks (black, ruff, custom scripts).
+
+**Solution:**
+```bash
+# Read the error messages carefully
+# Fix the issues, then try again
+git add <fixed-files>
+git commit -m "..."
+
+# OR skip hooks temporarily (NOT RECOMMENDED)
+git commit --no-verify -m "..."
+```
+
+**Best Practice:** Fix the issues rather than skipping checks.
 
 ---
 
@@ -328,3 +470,82 @@ If `main` breaks:
 - Version bumps require explicit PM approval and a tag.
 - If `CHANGELOG.md` and `RELEASES.md` conflict, `RELEASES.md` wins.
 - Keep `main` deployable; if a release fails validation, revert instead of force-pushing.
+
+---
+
+## 11. Best Practices Summary
+
+### ✅ DO:
+- **Use pre-commit hooks** — Install once (`pre-commit install`), saves CI time
+- **Wait for CI before merging** — Use `gh pr checks --watch`
+- **Pull before push** — Especially after merging PRs: `git pull --ff-only`
+- **Use feature branches for significant changes** — Breaking changes, new features, risky refactors
+- **Amend commits when pre-commit modifies files** — `git add -A && git commit --amend --no-edit`
+- **Batch related changes** — One PR per feature, not micro-PRs for every tiny change
+- **Check git status before committing** — Avoid accidentally committing unrelated files
+- **Use conventional commits** — `feat:`, `fix:`, `docs:`, etc.
+- **Link PRs to tasks** — Every PR mentions TASK-XXX in title or body
+
+### ❌ DON'T:
+- **Don't merge immediately after creating PR** — Wait for CI (auto-format may push)
+- **Don't push to PR branch without pulling first** — Auto-format may have pushed
+- **Don't force-push to main** — Branch protection prevents this anyway
+- **Don't skip pre-commit hooks** — They catch issues before CI
+- **Don't commit generated files** — `.xlsm` (export `.bas`/`.cls` instead)
+- **Don't create PR without running tests** — `.venv/bin/python -m pytest -q`
+- **Don't mix unrelated changes** — Keep commits focused on one thing
+- **Don't ignore CI failures** — Fix immediately or revert
+
+### 🎯 Recommended Workflow (Solo Dev):
+
+**For routine changes (<20 lines, low-risk):**
+```bash
+git checkout main
+git pull --ff-only
+# make changes
+git add -A
+git commit -m "docs: update guide"  # Pre-commit hooks run
+# If hooks modify: git add -A && git commit --amend --no-edit
+git push
+# CI runs on main — watch for failures
+```
+
+**For significant changes (>20 lines, risky):**
+```bash
+git checkout main
+git pull --ff-only
+git checkout -b feat/task-142-new-feature
+# make changes
+git add -A
+git commit -m "feat: implement feature"  # Pre-commit hooks run
+git push -u origin feat/task-142-new-feature
+gh pr create --title "feat: implement feature" --body "Closes TASK-142"
+gh pr checks --watch  # WAIT for CI + auto-format
+gh pr merge --squash --delete-branch  # After CI passes
+git checkout main
+git pull --ff-only  # Sync local main
+```
+
+### 🚨 What to Do When Things Go Wrong:
+
+| Problem | Solution |
+|---------|----------|
+| CI fails on main | `git revert HEAD` → fix in branch → PR |
+| Can't push (non-fast-forward) | `git pull --rebase origin main` → `git push` |
+| Auto-format pushed to PR | `git pull --rebase origin <branch>` |
+| Pre-commit modified files | `git add -A && git commit --amend --no-edit` |
+| Merge conflicts | Fix manually → `git add <files>` → `git rebase --continue` |
+| Accidentally committed to main | `git checkout -b feat/fix` → push → PR |
+
+### 📋 Pre-Push Checklist:
+
+- [ ] Pre-commit hooks installed (`pre-commit install`)
+- [ ] Tests pass locally (`.venv/bin/python -m pytest -q`)
+- [ ] Commit message follows convention (`feat:`, `fix:`, `docs:`)
+- [ ] No unrelated files staged (`git status`)
+- [ ] Pulled latest changes (`git pull --ff-only` if on main)
+- [ ] For PR: Ready to wait for CI (`gh pr checks --watch`)
+
+---
+
+**Last Updated:** 2026-01-05
