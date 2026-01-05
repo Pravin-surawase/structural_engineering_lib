@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) | DEV | 4-6 hrs | 🔴 HIGH | ⏳ Ready |
+| (empty — TASK-151 complete) | | | | | |
 
 ---
 
@@ -68,6 +68,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) → `Python/tests/test_contracts.py` | DEV | ✅ Done |
 | **TASK-150** | Research: Modern Python Tooling Evaluation (uv, Hypothesis, pytest-benchmark, mutmut for structural libraries) → `docs/research/modern-python-tooling.md` | RESEARCHER | ✅ Done |
 | **TASK-149** | Research: Backward Compatibility Strategy (evaluate pytest-regressions, contract testing, semantic versioning tools, API stability safeguards) → `docs/research/backward-compatibility-strategy.md` | RESEARCHER | ✅ Done |
 | **TASK-148** | Research: CS Best Practices Audit (review codebase against Python scientific library standards, compare to numpy/scipy/pandas patterns, identify gaps) → `docs/research/cs-best-practices-audit.md` | RESEARCHER | ✅ Done |
