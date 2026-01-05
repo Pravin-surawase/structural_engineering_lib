@@ -399,8 +399,12 @@ def calculate_cracking_moment(
     """
     import math
 
-    if b_mm <= 0 or D_mm <= 0 or fck_nmm2 <= 0:
-        return 0.0
+    if b_mm <= 0:
+        raise ValueError(f"Beam width b_mm must be positive, got {b_mm}")
+    if D_mm <= 0:
+        raise ValueError(f"Overall depth D_mm must be positive, got {D_mm}")
+    if fck_nmm2 <= 0:
+        raise ValueError(f"Concrete strength fck_nmm2 must be positive, got {fck_nmm2}")
 
     fcr = 0.7 * math.sqrt(fck_nmm2)  # N/mm²
     igross = b_mm * (D_mm**3) / 12  # mm^4
@@ -409,7 +413,9 @@ def calculate_cracking_moment(
         yt_mm = D_mm / 2
 
     if yt_mm <= 0:
-        return 0.0
+        raise ValueError(
+            f"Distance to tension fiber yt_mm must be positive, got {yt_mm}"
+        )
 
     mcr_nmm = fcr * igross / yt_mm  # N·mm
     mcr_knm = mcr_nmm / 1e6  # kN·m
@@ -432,9 +438,14 @@ def calculate_gross_moment_of_inertia(
 
     Returns:
         Gross moment of inertia in mm^4
+
+    Raises:
+        ValueError: If dimensions are not positive
     """
-    if b_mm <= 0 or D_mm <= 0:
-        return 0.0
+    if b_mm <= 0:
+        raise ValueError(f"Beam width b_mm must be positive, got {b_mm}")
+    if D_mm <= 0:
+        raise ValueError(f"Overall depth D_mm must be positive, got {D_mm}")
 
     return b_mm * (D_mm**3) / 12
 
@@ -470,8 +481,14 @@ def calculate_cracked_moment_of_inertia(
     """
     import math
 
-    if b_mm <= 0 or d_mm <= 0 or ast_mm2 <= 0 or fck_nmm2 <= 0:
-        return 0.0
+    if b_mm <= 0:
+        raise ValueError(f"Beam width b_mm must be positive, got {b_mm}")
+    if d_mm <= 0:
+        raise ValueError(f"Effective depth d_mm must be positive, got {d_mm}")
+    if ast_mm2 <= 0:
+        raise ValueError(f"Steel area ast_mm2 must be positive, got {ast_mm2}")
+    if fck_nmm2 <= 0:
+        raise ValueError(f"Concrete strength fck_nmm2 must be positive, got {fck_nmm2}")
 
     ec = 5000 * math.sqrt(fck_nmm2)  # N/mm²
     m = es_nmm2 / ec  # modular ratio
@@ -487,12 +504,16 @@ def calculate_cracked_moment_of_inertia(
 
     discriminant = b_coeff**2 - 4 * a_coeff * c_coeff
     if discriminant < 0:
-        return 0.0
+        raise ValueError(
+            f"Negative discriminant in neutral axis calculation: {discriminant}"
+        )
 
     xc = (-b_coeff + math.sqrt(discriminant)) / (2 * a_coeff)
 
-    if xc <= 0 or xc >= d_mm:
-        return 0.0
+    if xc <= 0:
+        raise ValueError(f"Neutral axis depth xc must be positive, got {xc}")
+    if xc >= d_mm:
+        raise ValueError(f"Neutral axis depth xc={xc} exceeds effective depth d={d_mm}")
 
     # Icr = b × xc³ / 3 + m × Ast × (d - xc)²
     icr = b_mm * (xc**3) / 3 + m * ast_mm2 * ((d_mm - xc) ** 2)
@@ -524,6 +545,15 @@ def calculate_effective_moment_of_inertia(
         Effective moment of inertia in mm^4
     """
     ma_abs = abs(ma_knm)
+
+    if igross_mm4 <= 0:
+        raise ValueError(
+            f"Gross moment of inertia igross_mm4 must be positive, got {igross_mm4}"
+        )
+    if icr_mm4 <= 0:
+        raise ValueError(
+            f"Cracked moment of inertia icr_mm4 must be positive, got {icr_mm4}"
+        )
 
     if ma_abs <= 0:
         return igross_mm4

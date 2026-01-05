@@ -156,10 +156,15 @@ class TestCrackingMoment:
         assert mcr == pytest.approx(43.75, rel=0.01)
 
     def test_cracking_moment_zero_inputs(self):
-        """Test Mcr returns 0 for invalid inputs."""
-        assert calculate_cracking_moment(b_mm=0, D_mm=500, fck_nmm2=25) == 0.0
-        assert calculate_cracking_moment(b_mm=300, D_mm=0, fck_nmm2=25) == 0.0
-        assert calculate_cracking_moment(b_mm=300, D_mm=500, fck_nmm2=0) == 0.0
+        """Test Mcr raises ValueError for invalid inputs."""
+        with pytest.raises(ValueError, match="Beam width b_mm must be positive"):
+            calculate_cracking_moment(b_mm=0, D_mm=500, fck_nmm2=25)
+        with pytest.raises(ValueError, match="Overall depth D_mm must be positive"):
+            calculate_cracking_moment(b_mm=300, D_mm=0, fck_nmm2=25)
+        with pytest.raises(
+            ValueError, match="Concrete strength fck_nmm2 must be positive"
+        ):
+            calculate_cracking_moment(b_mm=300, D_mm=500, fck_nmm2=0)
 
 
 class TestGrossMomentOfInertia:

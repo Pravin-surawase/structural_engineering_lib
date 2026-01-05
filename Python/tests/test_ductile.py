@@ -50,11 +50,15 @@ def test_min_steel():
 
 
 def test_min_steel_invalid_inputs():
-    """Edge case: invalid inputs should return 0.0 (no crash)."""
-    assert get_min_tension_steel_percentage(0, 500) == 0.0
-    assert get_min_tension_steel_percentage(25, 0) == 0.0
-    assert get_min_tension_steel_percentage(-25, 500) == 0.0
-    assert get_min_tension_steel_percentage(25, -500) == 0.0
+    """Edge case: invalid inputs should raise ValueError."""
+    with pytest.raises(ValueError, match="Concrete strength fck must be positive"):
+        get_min_tension_steel_percentage(0, 500)
+    with pytest.raises(ValueError, match="Steel yield strength fy must be positive"):
+        get_min_tension_steel_percentage(25, 0)
+    with pytest.raises(ValueError, match="Concrete strength fck must be positive"):
+        get_min_tension_steel_percentage(-25, 500)
+    with pytest.raises(ValueError, match="Steel yield strength fy must be positive"):
+        get_min_tension_steel_percentage(25, -500)
 
 
 def test_confinement_spacing():

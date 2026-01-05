@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| *(No active tasks - ready to pick from Up Next)* | | | | | |
+| **TASK-158** | Eliminate Silent Failures in Core Modules (9/27 done: flexure, shear, materials, detailing; continuing: serviceability, compliance, ductile) | DEV | 3-4 days | 🔴 HIGH | 🚧 In Progress |
 
 ---
 
