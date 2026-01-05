@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-158** | Eliminate Silent Failures in Core Modules (9/27 done: flexure, shear, materials, detailing; continuing: serviceability, compliance, ductile) | DEV | 3-4 days | 🔴 HIGH | 🚧 In Progress |
+| *(No active tasks - ready to pick from Up Next)* | | | | | |
 
 ---
 
@@ -49,8 +49,6 @@
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-| **TASK-158** | Eliminate Silent Failures in Core Modules (replace `return 0.0`, `return ""` with explicit errors; low-level helpers raise ValueError, entry points return structured errors) | DEV | 3-4 days | 🔴 HIGH |
-| **TASK-159** | Standardize Error Handling by Layer (document strategy in CONTRIBUTING.md; core=structured errors, utils=exceptions, I/O=exceptions, CLI=catch all; audit script) | DEV+DOCS | 2-3 days | 🔴 HIGH |
 | **TASK-161** | Gradually Tighten Mypy Configuration (3-sprint plan: enable warn_return_any, check_untyped_defs, disallow_untyped_defs) | DEV | 3 days | 🔴 HIGH |
 | **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts in data_types.py for ReportOutput, DesignSummary, OptimizationResult; update function signatures) | DEV | 2-3 days | 🔴 HIGH |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
@@ -78,6 +76,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-159** | Standardize Error Handling by Layer (documented strategy in CONTRIBUTING.md with 5 layers; created audit script; 25 modules audited - all compliant) | DEV+DOCS | ✅ Done |
+| **TASK-158** | Eliminate Silent Failures in Core Modules (17 functions fixed: flexure, shear, materials, detailing, serviceability, ductile; all now raise ValueError with clear messages; 2200 tests pass) | DEV | ✅ Done |
 | **TASK-158** | Eliminate Silent Failures in Core Modules (Fixed 8 functions: calculate_mu_lim, calculate_tv, calculate_ast_required, get_xu_max_d, get_ec, get_fcr, calculate_development_length, calculate_bar_spacing - all now raise ValueError; updated 7 tests; 2200 tests passing) | DEV | ✅ Done |
 | **TASK-160** | Fix Mypy Pre-Commit Configuration (use local hook with full venv path, cd Python && mypy structural_lib/) | DEVOPS | ✅ Done |
 | **TASK-157** | Complete Validation Utilities Module (6 new validators + 37 tests: validate_cover, validate_loads, validate_material_grades, validate_reinforcement, validate_span, validate_beam_inputs) | DEV | ✅ Done |
