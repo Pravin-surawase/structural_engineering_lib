@@ -1,6 +1,6 @@
 # DXF Layer Standards & Drawing Conventions
 
-**Version:** 0.13.0
+**Version: 0.14.0
 **Module:** M16_DXF.bas
 **DXF Format:** AutoCAD R12 (maximum compatibility)
 **Reference:** IS 456:2000, SP 34:1987 (Drawing Practices for RC Structures)
@@ -450,4 +450,4 @@ The layer standards follow Indian Standard drawing practices for reinforced conc
 
 ---
 
-*Document Version: 0.13.0 | Last Updated: 2026-01-01*
+*Document Version: 0.14.0 | Last Updated: 2026-01-01*

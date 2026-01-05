@@ -1,6 +1,6 @@
 # VBA API Reference
 
-**Version:** 0.13.0
+**Version: 0.14.0
 **Module:** M09_UDFs.bas
 **Purpose:** Excel User-Defined Functions (UDFs) for worksheet calculations
 

@@ -580,7 +580,7 @@ Where:
 ---
 
 **Last updated:** 2025-12-31
-**Version:** v0.13.0 (preview)
+**Version: 0.14.0 (preview)
 
 ---
 

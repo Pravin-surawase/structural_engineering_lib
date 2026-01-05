@@ -1,6 +1,6 @@
 # Deprecation Policy
 
-**Document Version:** 0.13.0
+**Document Version: 0.14.0
 **Last Updated:** 2026-01-06
 
 ---

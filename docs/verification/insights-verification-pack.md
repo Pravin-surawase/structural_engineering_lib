@@ -1,6 +1,6 @@
 # Insights Module Verification Pack
 
-**Version:** 0.13.0
+**Version: 0.14.0
 **Purpose:** Automated regression tests for insights module accuracy
 
 This pack provides benchmark test cases for the insights module to ensure accuracy and prevent regressions. Tests are automatically run in CI on every PR.

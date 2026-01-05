@@ -1,6 +1,6 @@
 # Excel VBA - FAQ & Troubleshooting
 
-**Version:** 0.13.0
+**Version: 0.14.0
 **Platform:** Microsoft Excel 2016+ (Windows & Mac)
 
 Common issues and solutions for using the Structural Engineering Library in Excel.
@@ -545,4 +545,4 @@ Common issues and solutions for using the Structural Engineering Library in Exce
 
 ---
 
-*Document Version: 0.13.0 | Last Updated: 2026-01-01*
+*Document Version: 0.14.0 | Last Updated: 2026-01-01*
