@@ -17,6 +17,12 @@ Thanks for helping improve **structural_engineering_lib**.
 
 ## Workflow
 
+### For AI Agents (CRITICAL)
+- ⚠️ **ALWAYS use `./scripts/safe_push.sh "message"` for commits** to avoid git race conditions
+- Read the full guide: [docs/contributing/git-workflow-for-ai-agents.md](docs/contributing/git-workflow-for-ai-agents.md)
+- Pre-commit hooks modify files after staging — safe_push.sh handles this automatically
+- Never use `git push` directly after `git commit`
+
 ### For Repository Maintainer (Pravin)
 - **Direct push** to main allowed for routine changes (docs, fixes, tests, minor updates)
 - **Use PRs** for significant features, breaking changes, or when you want self-review
@@ -24,6 +30,7 @@ Thanks for helping improve **structural_engineering_lib**.
 - Rule of thumb: <20 lines and low-risk → direct push; >20 lines or risky → use PR
 
 Helper script (optional):
+- `./scripts/safe_push.sh "message"` (recommended for all commits — prevents race conditions)
 - `./scripts/quick_push.sh "docs: update something"` (runs `./scripts/quick_check.sh`, then commits + pushes)
 - `./scripts/quick_push.sh "docs: update docs" docs` (docs-only checks)
 - `./scripts/quick_push.sh "test: update" --cov` (runs tests with coverage gate)

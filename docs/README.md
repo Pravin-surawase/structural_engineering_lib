@@ -98,6 +98,7 @@ If you want to understand the concepts and the code step by step, start here:
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Insights verification pack: [verification/insights-verification-pack.md](verification/insights-verification-pack.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
+- **Git workflow for AI agents:** [contributing/git-workflow-for-ai-agents.md](contributing/git-workflow-for-ai-agents.md) ⚠️
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
 - VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)

@@ -6,6 +6,7 @@ Guides for developers and maintainers.
 
 | Guide | Audience |
 |-------|----------|
+| [**Git Workflow for AI Agents**](git-workflow-for-ai-agents.md) ⚠️ | **AI agents: MUST READ to avoid git race conditions** |
 | [Development Guide](development-guide.md) | Coding standards, PR workflow |
 | [Solo Maintainer Operating System](solo-maintainer-operating-system.md) | Solo maintainer workflow, release gates |
 | [Testing Strategy](testing-strategy.md) | Test structure, coverage goals |
