@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-157** | Complete Validation Utilities Module (expand validation.py with cover, loads, material_grades, reinforcement, span, beam_inputs validators + tests) | DEV | 2-3 days | 🔴 HIGH | ✅ Done |
+| *(No active tasks - ready to pick from Up Next)* | | | | | |
 
 ---
 
@@ -78,6 +78,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-160** | Fix Mypy Pre-Commit Configuration (use local hook with full venv path, cd Python && mypy structural_lib/) | DEVOPS | ✅ Done |
+| **TASK-157** | Complete Validation Utilities Module (6 new validators + 37 tests: validate_cover, validate_loads, validate_material_grades, validate_reinforcement, validate_span, validate_beam_inputs) | DEV | ✅ Done |
 | **TASK-155** | **Research: CS Best Practices Implementation Plan** (23 tasks across 3 phases: validation utilities, error handling, mypy, docstrings, TypedDicts) → `docs/research/cs-practices-implementation-plan.md` | RESEARCHER | ✅ Done |
 | **TASK-154** | **Research: xlwings vs VBA Strategy** (Hybrid approach: deprecate VBA calculations, keep minimal UI VBA; 85% VBA reduction; 3-phase migration plan) → `docs/research/xlwings-vba-strategy.md` | RESEARCHER | ✅ Done |
 | **TASK-153** | Add deprecation decorator and policy (@deprecated, deprecated_field, policy docs, CHANGELOG template) → `Python/structural_lib/utilities.py`, `docs/reference/deprecation-policy.md`, 18 tests | DEV | ✅ Done |
