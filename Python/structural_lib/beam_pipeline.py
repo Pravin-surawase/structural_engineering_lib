@@ -211,7 +211,8 @@ class BeamDesignOutput:
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
-        return _dataclass_to_dict(self)
+        result: Dict[str, Any] = _dataclass_to_dict(self)
+        return result
 
 
 @dataclass
@@ -226,7 +227,8 @@ class MultiBeamOutput:
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
-        return _dataclass_to_dict(self)
+        result: Dict[str, Any] = _dataclass_to_dict(self)
+        return result
 
 
 def _dataclass_to_dict(obj: Any) -> Any:
@@ -550,7 +552,8 @@ def design_multiple_beams(
 def _section_type_str(section_type) -> str:
     """Convert section type enum to string."""
     if hasattr(section_type, "name"):
-        return section_type.name
+        result: str = section_type.name
+        return result
     elif hasattr(section_type, "value"):
         return str(section_type.value)
     else:

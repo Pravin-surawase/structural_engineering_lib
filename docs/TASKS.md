@@ -49,7 +49,6 @@
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-| **TASK-161** | Gradually Tighten Mypy Configuration (3-sprint plan: enable warn_return_any, check_untyped_defs, disallow_untyped_defs) | DEV | 3 days | 🔴 HIGH |
 | **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts in data_types.py for ReportOutput, DesignSummary, OptimizationResult; update function signatures) | DEV | 2-3 days | 🔴 HIGH |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | 🔴 HIGH |
@@ -76,6 +75,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-161 Sprint 1** | Gradually Tighten Mypy Configuration - Sprint 1 (enabled warn_return_any, strict_optional; fixed 5 errors; 2200 tests pass; mypy clean) | DEV | ✅ Done |
 | **TASK-159** | Standardize Error Handling by Layer (documented strategy in CONTRIBUTING.md with 5 layers; created audit script; 25 modules audited - all compliant) | DEV+DOCS | ✅ Done |
 | **TASK-158** | Eliminate Silent Failures in Core Modules (17 functions fixed: flexure, shear, materials, detailing, serviceability, ductile; all now raise ValueError with clear messages; 2200 tests pass) | DEV | ✅ Done |
 | **TASK-158** | Eliminate Silent Failures in Core Modules (Fixed 8 functions: calculate_mu_lim, calculate_tv, calculate_ast_required, get_xu_max_d, get_ec, get_fcr, calculate_development_length, calculate_bar_spacing - all now raise ValueError; updated 7 tests; 2200 tests passing) | DEV | ✅ Done |

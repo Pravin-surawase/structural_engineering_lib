@@ -68,7 +68,7 @@ repos:
     hooks:
       - id: contract-tests
         name: API contract tests (prevent breaking changes)
-        entry: bash -c "cd Python && python -m pytest tests/test_contracts.py -m contract -v --tb=short"
+        entry: bash -c "cd Python && ../.venv/bin/python -m pytest tests/test_contracts.py -m contract -v --tb=short"
         language: system
         pass_filenames: false
         always_run: false

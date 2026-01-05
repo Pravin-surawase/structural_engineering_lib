@@ -444,4 +444,5 @@ def report_to_dict(report: ComplianceReport) -> Dict[str, Any]:
             return [_jsonable(v) for v in obj]
         return obj
 
-    return _jsonable(asdict(report))
+    result: Dict[str, Any] = _jsonable(asdict(report))
+    return result

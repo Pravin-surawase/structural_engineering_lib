@@ -1328,7 +1328,8 @@ def main(argv: List[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     # Call the appropriate command function
-    return args.func(args)
+    exit_code: int = args.func(args)
+    return exit_code
 
 
 if __name__ == "__main__":
