@@ -68,6 +68,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-149** | Research: Backward Compatibility Strategy (evaluate pytest-regressions, contract testing, semantic versioning tools, API stability safeguards) → `docs/research/backward-compatibility-strategy.md` | RESEARCHER | ✅ Done |
 | **TASK-148** | Research: CS Best Practices Audit (review codebase against Python scientific library standards, compare to numpy/scipy/pandas patterns, identify gaps) → `docs/research/cs-best-practices-audit.md` | RESEARCHER | ✅ Done |
 | **TASK-142** | Design Suggestions Engine (17 expert rules, 6 categories, confidence scoring, JSON) | DEV | ✅ Done |
 | **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | ✅ Done |
