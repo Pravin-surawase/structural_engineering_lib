@@ -79,12 +79,15 @@ def optimize_beam_cost(
     candidates: List[OptimizationCandidate] = []
 
     # Smart search ranges
+    # NOTE: Limited search space for v1.0 (most common grades/steel)
+    # Future enhancement: Add M20, M35, Fe415 for comprehensive optimization
+    # Current: ~30-50 combinations, Full spec: ~300-500 combinations
     width_options = [230, 300, 400]  # Standard widths (mm)
     depth_min = max(300, int(span_mm / 20))  # span/20 minimum
     depth_max = min(900, int(span_mm / 8))  # span/8 maximum
     depth_options = range(depth_min, depth_max + 1, 50)
-    grade_options = [25, 30]  # Most common (start with these)
-    steel_options = [500]  # Modern standard
+    grade_options = [25, 30]  # Most common (M20, M35 reserved for v2.0)
+    steel_options = [500]  # Modern standard (Fe415 reserved for v2.0)
 
     evaluated = 0
     valid = 0
@@ -178,21 +181,54 @@ def optimize_beam_cost(
     optimal = valid_candidates[0]
 
     # Calculate baseline (conservative design: span/12 depth)
+    # Try M25 first, upgrade to M30 if needed, increase depth if still failing
     baseline_D = int(span_mm / 12)
     baseline_d = baseline_D - cover_mm
+    baseline_fck = 25
     baseline_design = flexure.design_singly_reinforced(
-        b=300, d=baseline_d, d_total=baseline_D, mu_knm=mu_knm, fck=25, fy=500
+        b=300, d=baseline_d, d_total=baseline_D, mu_knm=mu_knm, fck=baseline_fck, fy=500
     )
-    baseline_pct = 100 * baseline_design.ast_required / (300 * baseline_d)
-    baseline_cost_breakdown = calculate_beam_cost(
-        b_mm=300,
-        D_mm=baseline_D,
-        span_mm=span_mm,
-        ast_mm2=baseline_design.ast_required,
-        fck_nmm2=25,
-        steel_percentage=baseline_pct,
-        cost_profile=cost_profile,
-    )
+
+    # If baseline fails with M25, try M30
+    if not baseline_design.is_safe or baseline_design.ast_required == 0:
+        baseline_fck = 30
+        baseline_design = flexure.design_singly_reinforced(
+            b=300,
+            d=baseline_d,
+            d_total=baseline_D,
+            mu_knm=mu_knm,
+            fck=baseline_fck,
+            fy=500,
+        )
+
+        # If still fails, increase depth until it works (span/10)
+        if not baseline_design.is_safe or baseline_design.ast_required == 0:
+            baseline_D = int(span_mm / 10)  # More conservative
+            baseline_d = baseline_D - cover_mm
+            baseline_design = flexure.design_singly_reinforced(
+                b=300,
+                d=baseline_d,
+                d_total=baseline_D,
+                mu_knm=mu_knm,
+                fck=baseline_fck,
+                fy=500,
+            )
+
+    # Verify baseline is actually valid before using it
+    if not baseline_design.is_safe or baseline_design.ast_required == 0:
+        # Baseline itself is infeasible - use optimal cost as baseline (no savings)
+        baseline_cost_breakdown = optimal.cost_breakdown
+    else:
+        baseline_pct = 100 * baseline_design.ast_required / (300 * baseline_d)
+        baseline_cost_breakdown = calculate_beam_cost(
+            b_mm=300,
+            D_mm=baseline_D,
+            span_mm=span_mm,
+            ast_mm2=baseline_design.ast_required,
+            fck_nmm2=baseline_fck,
+            steel_percentage=baseline_pct,
+            cost_profile=cost_profile,
+        )
 
     # Calculate savings
     savings = baseline_cost_breakdown.total_cost - optimal.cost_breakdown.total_cost
@@ -217,10 +253,11 @@ def optimize_beam_cost(
 
 def _quick_feasibility(b: float, d: float, mu_knm: float, span_mm: float) -> bool:
     """Quick check if dimensions are feasible before full design."""
-    # Check if Mu_lim > Mu (singly reinforced possible)
-    mu_lim = flexure.calculate_mu_lim(b, d, 25, 500)  # Assume M25, Fe500
+    # Check if Mu_lim > Mu for HIGHEST grade we're testing (M30)
+    # If it fails for M30, it will fail for all grades (IS 456:2000)
+    mu_lim = flexure.calculate_mu_lim(b, d, 30, 500)  # Use M30 (highest grade)
     if mu_lim < mu_knm:
-        return False  # Would need doubly reinforced
+        return False  # Would need doubly reinforced even with M30
 
     # Check practical span/depth ratio (8 to 20)
     span_d_ratio = span_mm / d

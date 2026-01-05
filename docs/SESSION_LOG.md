@@ -6,12 +6,16 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2026-01-05 — Session
 
-**Focus:** Cost optimization implementation + agent workflow setup
+**Focus:** Cost optimization implementation + bug fixes
 
 ### Summary
 - Drafted cost optimization research (Day 1) with rate benchmarks and cost profile.
 - Implemented core cost optimization feature: `costing.py`, `optimization.py`, and `insights/cost_optimization.py`.
 - Created comprehensive unit test suite `test_cost_optimization.py` (8/8 passing).
+- **Fixed 2 critical bugs** identified in code review:
+  - **Bug #1**: Feasibility check now uses M30 (highest grade) instead of hardcoded M25
+  - **Bug #2**: Baseline calculation handles over-reinforced cases (upgrades to M30, increases depth, or falls back)
+- Added 7 new tests for bug fixes (15/15 total tests passing).
 - Updated agent workflow quickstart guidance and active task list.
 
 ### PRs Merged
@@ -21,17 +25,19 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Key Deliverables
 - `Python/structural_lib/costing.py`
-- `Python/structural_lib/optimization.py`
+- `Python/structural_lib/optimization.py` (with bug fixes)
 - `Python/structural_lib/insights/cost_optimization.py`
 - `Python/tests/test_cost_optimization.py`
+- `Python/tests/test_cost_optimization_bugs.py`
 - `docs/research/cost_optimization_day1.md`
 - `docs/_internal/AGENT_WORKFLOW.md`
 - `docs/TASKS.md`
 
 ### Notes
-- Brute-force optimization covers ~2,400 combinations in <0.1s.
+- Brute-force optimization covers ~30-50 combinations in <0.1s.
 - Costing model based on CPWD DSR 2023 rates.
-- Verified with 8 unit tests covering residential and commercial scenarios.
+- Verified with 15 unit tests covering residential, commercial, and edge case scenarios.
+- Search space intentionally limited to M25/M30 and Fe500 for v1.0 (documented for v2.0 expansion).
 
 
 ## 2025-12-31 — Session
