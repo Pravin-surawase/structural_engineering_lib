@@ -13,7 +13,6 @@ from .errors import (
     E_FLEXURE_002,
     E_FLEXURE_003,
     E_FLEXURE_004,
-    E_INPUT_001,
     E_INPUT_002,
     E_INPUT_003,
     E_INPUT_004,
@@ -26,6 +25,7 @@ from .errors import (
     E_INPUT_016,
     E_INPUT_003a,
 )
+from .validation import validate_dimensions, validate_materials
 
 
 def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
@@ -149,14 +149,8 @@ def design_singly_reinforced(
     """
     Main Design Function for Singly Reinforced Beam
     """
-    # Input validation with structured errors
-    input_errors = []
-    if b <= 0:
-        input_errors.append(E_INPUT_001)
-    if d <= 0:
-        input_errors.append(E_INPUT_002)
-    if d_total <= 0:
-        input_errors.append(E_INPUT_003a)
+    # Input validation with structured errors using validation utilities
+    input_errors = validate_dimensions(b, d, d_total)
 
     if input_errors:
         # Build specific error message based on which fields failed
@@ -174,24 +168,8 @@ def design_singly_reinforced(
             errors=input_errors,
         )
 
-    if d_total <= d:
-        return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
-            pt_provided=0.0,
-            section_type=DesignSectionType.UNDER_REINFORCED,
-            xu=0.0,
-            xu_max=0.0,
-            is_safe=False,
-            error_message="Invalid input: d_total must be > d.",
-            errors=[E_INPUT_003],
-        )
-
-    material_errors = []
-    if fck <= 0:
-        material_errors.append(E_INPUT_004)
-    if fy <= 0:
-        material_errors.append(E_INPUT_005)
+    # Material validation
+    material_errors = validate_materials(fck, fy)
 
     if material_errors:
         return FlexureResult(
@@ -278,13 +256,8 @@ def design_doubly_reinforced(
     Design a beam that can be singly or doubly reinforced.
     If Mu > Mu_lim, calculates Asc and additional Ast.
     """
-    input_errors = []
-    if b <= 0:
-        input_errors.append(E_INPUT_001)
-    if d <= 0:
-        input_errors.append(E_INPUT_002)
-    if d_total <= 0:
-        input_errors.append(E_INPUT_003a)
+    # Input validation using validation utilities
+    input_errors = validate_dimensions(b, d, d_total)
 
     if input_errors:
         failed_fields = [e.field for e in input_errors if e.field]
@@ -301,24 +274,8 @@ def design_doubly_reinforced(
             errors=input_errors,
         )
 
-    if d_total <= d:
-        return FlexureResult(
-            mu_lim=0.0,
-            ast_required=0.0,
-            pt_provided=0.0,
-            section_type=DesignSectionType.UNDER_REINFORCED,
-            xu=0.0,
-            xu_max=0.0,
-            is_safe=False,
-            error_message="Invalid input: d_total must be > d.",
-            errors=[E_INPUT_003],
-        )
-
-    material_errors = []
-    if fck <= 0:
-        material_errors.append(E_INPUT_004)
-    if fy <= 0:
-        material_errors.append(E_INPUT_005)
+    # Material validation
+    material_errors = validate_materials(fck, fy)
 
     if material_errors:
         return FlexureResult(
