@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-154** | **Research: xlwings vs VBA Strategy** (Can we deprecate VBA? Migration path, xlwings limitations, Mac/Windows compatibility, deployment complexity, breaking change impact) → Save as `docs/research/xlwings-vba-strategy.md` | RESEARCHER | 4-6 hrs | 🔴 HIGH | 🚧 In Progress |
+| _none_ | | | | | |
 
 ---
 
@@ -73,6 +73,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-154** | **Research: xlwings vs VBA Strategy** (Hybrid approach: deprecate VBA calculations, keep minimal UI VBA; 85% VBA reduction; 3-phase migration plan) → `docs/research/xlwings-vba-strategy.md` | RESEARCHER | ✅ Done |
 | **TASK-153** | Add deprecation decorator and policy (@deprecated, deprecated_field, policy docs, CHANGELOG template) → `Python/structural_lib/utilities.py`, `docs/reference/deprecation-policy.md`, 18 tests | DEV | ✅ Done |
 | **TASK-152** | Standardize error handling (validation utilities, flexure.py refactor) → `Python/structural_lib/validation.py`, 41 tests | DEV | ✅ Done |
 | **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) → `Python/tests/test_contracts.py` | DEV | ✅ Done |
