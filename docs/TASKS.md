@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| *(No active tasks - ready to pick from Up Next)* | | | | | |
+| **TASK-157** | Complete Validation Utilities Module (expand validation.py with cover, loads, material_grades, reinforcement, span, beam_inputs validators + tests) | DEV | 2-3 days | 🔴 HIGH | ✅ Done |
 
 ---
 
@@ -49,6 +49,12 @@
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-158** | Eliminate Silent Failures in Core Modules (replace `return 0.0`, `return ""` with explicit errors; low-level helpers raise ValueError, entry points return structured errors) | DEV | 3-4 days | 🔴 HIGH |
+| **TASK-159** | Standardize Error Handling by Layer (document strategy in CONTRIBUTING.md; core=structured errors, utils=exceptions, I/O=exceptions, CLI=catch all; audit script) | DEV+DOCS | 2-3 days | 🔴 HIGH |
+| **TASK-161** | Gradually Tighten Mypy Configuration (3-sprint plan: enable warn_return_any, check_untyped_defs, disallow_untyped_defs) | DEV | 3 days | 🔴 HIGH |
+| **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts in data_types.py for ReportOutput, DesignSummary, OptimizationResult; update function signatures) | DEV | 2-3 days | 🔴 HIGH |
+| **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
+| **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | 🔴 HIGH |
 
 ### v1.0 Readiness (carryover)
 

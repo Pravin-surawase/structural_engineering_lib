@@ -270,3 +270,265 @@ class TestValidateAllPositive:
         """No arguments return no errors."""
         errors = validation.validate_all_positive()
         assert errors == []
+
+
+class TestValidateCover:
+    """Tests for validate_cover()."""
+
+    def test_valid_cover(self):
+        """Valid cover returns no errors."""
+        errors = validation.validate_cover(cover=30, D=500, min_cover=25)
+        assert errors == []
+
+    def test_negative_cover(self):
+        """Negative cover returns error."""
+        errors = validation.validate_cover(cover=-30, D=500)
+        assert len(errors) >= 1
+        assert any(err.code == "E_INPUT_015" for err in errors)
+
+    def test_zero_cover(self):
+        """Zero cover returns error."""
+        errors = validation.validate_cover(cover=0, D=500)
+        assert len(errors) >= 1
+
+    def test_cover_exceeds_depth(self):
+        """Cover >= D returns error."""
+        errors = validation.validate_cover(cover=500, D=500)
+        assert len(errors) >= 1
+        assert any("TOO_LARGE" in err.code for err in errors)
+
+    def test_cover_below_minimum(self):
+        """Cover < min_cover returns warning."""
+        errors = validation.validate_cover(cover=20, D=500, min_cover=25)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_COVER_MIN"
+        assert errors[0].severity.value == "warning"
+
+    def test_cover_at_minimum(self):
+        """Cover == min_cover is valid."""
+        errors = validation.validate_cover(cover=25, D=500, min_cover=25)
+        assert errors == []
+
+
+class TestValidateLoads:
+    """Tests for validate_loads()."""
+
+    def test_valid_loads(self):
+        """Positive loads return no errors."""
+        errors = validation.validate_loads(mu=120, vu=80)
+        assert errors == []
+
+    def test_negative_moment_not_allowed(self):
+        """Negative moment returns error by default."""
+        errors = validation.validate_loads(mu=-120, vu=80)
+        assert len(errors) >= 1
+        assert any("MU_NEGATIVE" in err.code for err in errors)
+
+    def test_negative_shear_not_allowed(self):
+        """Negative shear returns error by default."""
+        errors = validation.validate_loads(mu=120, vu=-80)
+        assert len(errors) >= 1
+        assert any("VU_NEGATIVE" in err.code for err in errors)
+
+    def test_negative_allowed(self):
+        """Negative loads allowed with flag."""
+        errors = validation.validate_loads(mu=-120, vu=-80, allow_negative=True)
+        # Should not have NEGATIVE errors, only check unreasonable magnitudes
+        assert not any("NEGATIVE" in err.code for err in errors)
+
+    def test_unreasonable_moment(self):
+        """Very large moment returns warning."""
+        errors = validation.validate_loads(mu=15000, vu=80, allow_negative=True)
+        assert len(errors) >= 1
+        assert any("UNREASONABLE" in err.code for err in errors)
+        assert any(err.severity.value == "warning" for err in errors)
+
+    def test_unreasonable_shear(self):
+        """Very large shear returns warning."""
+        errors = validation.validate_loads(mu=120, vu=6000, allow_negative=True)
+        assert len(errors) >= 1
+        assert any("UNREASONABLE" in err.code for err in errors)
+
+
+class TestValidateMaterialGrades:
+    """Tests for validate_material_grades()."""
+
+    def test_standard_grades(self):
+        """Standard IS 456 grades return no errors."""
+        errors = validation.validate_material_grades(fck=25, fy=415)
+        assert errors == []
+
+    def test_all_standard_fck(self):
+        """All standard fck grades are valid."""
+        for fck in [15, 20, 25, 30, 35, 40, 45, 50]:
+            errors = validation.validate_material_grades(fck=fck, fy=415)
+            assert not any("FCK_INVALID" in err.code for err in errors)
+
+    def test_all_standard_fy(self):
+        """All standard fy grades are valid."""
+        for fy in [250, 415, 500]:
+            errors = validation.validate_material_grades(fck=25, fy=fy)
+            assert not any("FY_INVALID" in err.code for err in errors)
+
+    def test_non_standard_fck(self):
+        """Non-standard fck returns warning."""
+        errors = validation.validate_material_grades(fck=27, fy=415)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_FCK_INVALID"
+        assert errors[0].severity.value == "warning"
+
+    def test_non_standard_fy(self):
+        """Non-standard fy returns warning."""
+        errors = validation.validate_material_grades(fck=25, fy=450)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_FY_INVALID"
+        assert errors[0].severity.value == "warning"
+
+    def test_both_non_standard(self):
+        """Both non-standard return two warnings."""
+        errors = validation.validate_material_grades(fck=27, fy=450)
+        assert len(errors) == 2
+
+
+class TestValidateReinforcement:
+    """Tests for validate_reinforcement()."""
+
+    def test_valid_reinforcement(self):
+        """Ast within limits returns no errors."""
+        errors = validation.validate_reinforcement(ast=1200, ast_min=850, ast_max=3000)
+        assert errors == []
+
+    def test_negative_ast(self):
+        """Negative ast returns error."""
+        errors = validation.validate_reinforcement(ast=-1200, ast_min=850, ast_max=3000)
+        assert len(errors) >= 1
+        assert any("NEGATIVE" in err.code for err in errors)
+
+    def test_ast_below_minimum(self):
+        """Ast < ast_min returns error."""
+        errors = validation.validate_reinforcement(ast=700, ast_min=850, ast_max=3000)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_AST_BELOW_MIN"
+        assert errors[0].severity.value == "error"
+
+    def test_ast_at_minimum(self):
+        """Ast == ast_min is valid."""
+        errors = validation.validate_reinforcement(ast=850, ast_min=850, ast_max=3000)
+        assert errors == []
+
+    def test_ast_above_maximum(self):
+        """Ast > ast_max returns error."""
+        errors = validation.validate_reinforcement(ast=3500, ast_min=850, ast_max=3000)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_AST_ABOVE_MAX"
+        assert errors[0].severity.value == "error"
+
+    def test_ast_at_maximum(self):
+        """Ast == ast_max is valid."""
+        errors = validation.validate_reinforcement(ast=3000, ast_min=850, ast_max=3000)
+        assert errors == []
+
+    def test_custom_field_name(self):
+        """Custom field name appears in errors."""
+        errors = validation.validate_reinforcement(
+            ast=-1200, ast_min=850, ast_max=3000, field_name="ast_compression"
+        )
+        assert len(errors) >= 1
+        assert errors[0].field == "ast_compression"
+
+
+class TestValidateSpan:
+    """Tests for validate_span()."""
+
+    def test_valid_span(self):
+        """Reasonable span returns no errors."""
+        errors = validation.validate_span(span=5000)
+        assert errors == []
+
+    def test_negative_span(self):
+        """Negative span returns error."""
+        errors = validation.validate_span(span=-5000)
+        assert len(errors) >= 1
+        assert any("POSITIVE" in err.code for err in errors)
+
+    def test_zero_span(self):
+        """Zero span returns error."""
+        errors = validation.validate_span(span=0)
+        assert len(errors) >= 1
+
+    def test_span_too_small(self):
+        """Very small span returns warning."""
+        errors = validation.validate_span(span=500, min_span=1000)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_SPAN_TOO_SMALL"
+        assert errors[0].severity.value == "warning"
+
+    def test_span_at_minimum(self):
+        """Span == min_span is valid."""
+        errors = validation.validate_span(span=1000, min_span=1000)
+        assert errors == []
+
+    def test_span_too_large(self):
+        """Very large span returns warning."""
+        errors = validation.validate_span(span=35000, max_span=30000)
+        assert len(errors) == 1
+        assert errors[0].code == "E_INPUT_SPAN_TOO_LARGE"
+        assert errors[0].severity.value == "warning"
+
+    def test_span_at_maximum(self):
+        """Span == max_span is valid."""
+        errors = validation.validate_span(span=30000, max_span=30000)
+        assert errors == []
+
+
+class TestValidateBeamInputs:
+    """Tests for validate_beam_inputs() composite validator."""
+
+    def test_all_valid(self):
+        """All valid inputs return no errors."""
+        errors = validation.validate_beam_inputs(
+            b=300, d=450, D=500, cover=25, fck=25, fy=415, mu=120, vu=80
+        )
+        # May have warnings for grade validation, but no errors
+        assert not any(err.severity.value == "error" for err in errors)
+
+    def test_with_span(self):
+        """Span validation included when provided."""
+        errors = validation.validate_beam_inputs(
+            b=300, d=450, D=500, cover=25, fck=25, fy=415, mu=120, vu=80, span=5000
+        )
+        # Should validate span too
+        assert not any(err.severity.value == "error" for err in errors)
+
+    def test_multiple_errors(self):
+        """Multiple invalid inputs return multiple errors."""
+        errors = validation.validate_beam_inputs(
+            b=-300, d=-450, D=500, cover=-25, fck=25, fy=415, mu=-120, vu=80
+        )
+        # Should have errors for b, d, cover, mu
+        error_codes = [err.code for err in errors]
+        assert len(error_codes) >= 4
+
+    def test_negative_loads_allowed(self):
+        """Negative loads allowed with flag."""
+        errors = validation.validate_beam_inputs(
+            b=300,
+            d=450,
+            D=500,
+            cover=25,
+            fck=25,
+            fy=415,
+            mu=-120,
+            vu=-80,
+            allow_negative_loads=True,
+        )
+        # Should not have NEGATIVE errors
+        assert not any("NEGATIVE" in err.code for err in errors)
+
+    def test_aggregates_all_validators(self):
+        """Composite validator runs all individual validators."""
+        errors = validation.validate_beam_inputs(
+            b=0, d=0, D=0, cover=0, fck=27, fy=450, mu=0, vu=0, span=0
+        )
+        # Should have errors from multiple validators
+        assert len(errors) >= 7  # Multiple sources of errors

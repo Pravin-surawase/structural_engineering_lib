@@ -35,14 +35,17 @@ repos:
         args: [--fix, --exit-non-zero-on-fix]
         files: ^Python/
 
-  # Python type checking
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.13.0
+  # Python type checking (local hook with correct working directory)
+  - repo: local
     hooks:
       - id: mypy
-        files: ^Python/structural_lib/
-        args: [--config-file=Python/pyproject.toml]
-        additional_dependencies: []
+        name: mypy (structural_lib)
+        entry: bash -c 'cd Python && ../.venv/bin/python -m mypy structural_lib/'
+        language: system
+        types: [python]
+        files: ^Python/structural_lib/.*\.py$
+        pass_filenames: false
+        verbose: true
 
   # Python import sorting
   - repo: https://github.com/PyCQA/isort
