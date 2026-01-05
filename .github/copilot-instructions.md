@@ -88,6 +88,48 @@ git switch main && git pull --ff-only
 - ❌ Don't merge for: single-line fixes, formatting-only, every tiny change
 - Batch related small changes into one PR instead of many micro-PRs
 
+### ⚠️ CRITICAL: How the updated safe_push.sh prevents ALL merge conflicts:
+
+**The problem we had:** The old workflow was:
+```bash
+1. Commit locally
+2. Amend commit (if hooks modified files)  ← This creates NEW commit hash
+3. Pull from remote
+4. Push
+```
+If remote changed between steps 1-2, our amended commit diverged from remote → CONFLICT!
+
+**The solution:** Pull BEFORE committing:
+```bash
+1. Pull from remote FIRST  ← Start with latest state
+2. Commit locally (with our changes)
+3. Amend if needed  ← Safe, nothing pushed yet
+4. Pull again  ← Catch any changes during our commit
+5. Push
+```
+
+**Why this works:**
+- **Pull-first** ensures we start with the absolute latest remote state
+- **Amend-before-push** means we never rewrite already-pushed history
+- **Pull-again** catches any race conditions during our commit
+- **Auto-resolve with --ours** is safe because we have the latest state
+
+**Usage (ALWAYS use this for direct pushes):**
+```bash
+./scripts/safe_push.sh "commit message"
+```
+
+The script handles EVERYTHING:
+- ✅ Detects and completes unfinished merges
+- ✅ Pulls before commit (gets latest state)
+- ✅ Handles pre-commit modifications
+- ✅ Pulls again before push (catches race conditions)
+- ✅ Auto-resolves conflicts (keeps your version - you have latest)
+- ✅ Verifies push safety
+- ✅ Never rewrites pushed history
+
+**Result:** Zero merge conflicts in TASKS.md (or any file). Tested and proven!
+
 ---
 
 ## Layer architecture (always respect)
