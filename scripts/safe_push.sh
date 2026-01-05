@@ -184,18 +184,3 @@ else
   git log --oneline origin/main..HEAD
   exit 1
 fi
-
-else
-  echo -e "${GREEN}Pull successful (no conflicts)${NC}"
-fi
-
-# Step 6: Push
-echo -e "${YELLOW}Step 6/6: Pushing to remote...${NC}"
-if git push; then
-  echo -e "${GREEN}✅ Successfully pushed!${NC}"
-  echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
-else
-  echo -e "${RED}ERROR: Push failed${NC}"
-  echo "This shouldn't happen after pulling. Check network or permissions."
-  exit 1
-fi
