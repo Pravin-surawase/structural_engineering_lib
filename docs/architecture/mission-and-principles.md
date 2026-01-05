@@ -22,7 +22,7 @@ We want to build tools that:
 
 ## 2. Our Mission
 
-To build the **definitive, professional-grade** open structural design core that becomes the **standard for everyday RC design** (starting with beams) – robust, auditable, and easy to automate for **every structural engineer**, especially in Indian and similar code environments.
+To build the **definitive, professional-grade** open structural design core with enterprise-level quality standards that becomes the **standard for everyday RC design** (starting with beams) – robust, contract-tested, auditable, and production-ready for **every structural engineer**, especially in Indian and similar code environments.
 
 Concretely, our mission includes:
 

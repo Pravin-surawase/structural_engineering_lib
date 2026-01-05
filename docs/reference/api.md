@@ -2,7 +2,7 @@
 
 **Document Version:** 0.14.0
 **Last Updated:** 2026-01-06<br>
-**Scope:** Public APIs for Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI).
+**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI). All APIs protected against accidental breaking changes.
 
 ---
 

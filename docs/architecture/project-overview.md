@@ -1,15 +1,15 @@
 # IS 456 RC Beam Design Library — Project Overview
 
-**Purpose:** Give a concise, layer-aware guide so any contributor (human or AI) knows what we are building, why, and how.  
+**Purpose:** Give a concise, layer-aware guide so any contributor (human or AI) knows what we are building, why, and how.
 **Use:** Treat this as shared context for VS Code AI or other tooling. No code here — just goals and approach.
-**See also:** 
+**See also:**
 - [mission-and-principles.md](mission-and-principles.md) for the deeper "why" and product philosophy.
 - [docs/_internal/GIT_GOVERNANCE.md](../_internal/GIT_GOVERNANCE.md) for version control and contribution rules.
 
 ---
 
 ## 1. Mission
-Build the **definitive, professional-grade** structural engineering automation stack starting with a robust, reusable RC beam design engine (IS 456) plus a flagship Excel workbook, backed by a structural library that can become an open-source Python/VBA package.
+Build the **definitive, professional-grade** structural engineering automation stack with enterprise-level quality standards — starting with a robust, contract-tested RC beam design engine (IS 456) plus a flagship Excel workbook, backed by a structural library that is now a production-ready open-source Python/VBA package.
 
 Principles:
 - Engineering-first: every calculation traceable to IS 456 clauses/assumptions.
@@ -47,9 +47,9 @@ Principles:
 ---
 
 ## 3. Architecture (Layered)
-1) Core structural library: pure calculations; inputs are numbers; outputs are numbers/structs; no Excel/UI/I/O.  
-2) Application layer (beam engine): per-row coordination — read inputs, call library, decide bar patterns and zones, set OK/FAIL with reasons; still no UI/formatting.  
-3) UI/I-O layer (Excel macros): read/write ranges, handle buttons, import ETABS CSV into BEAM_INPUT, run designs, write outputs, log messages.  
+1) Core structural library: pure calculations; inputs are numbers; outputs are numbers/structs; no Excel/UI/I/O.
+2) Application layer (beam engine): per-row coordination — read inputs, call library, decide bar patterns and zones, set OK/FAIL with reasons; still no UI/formatting.
+3) UI/I-O layer (Excel macros): read/write ranges, handle buttons, import ETABS CSV into BEAM_INPUT, run designs, write outputs, log messages.
 4) DevOps/docs: repo layout, exported VBA modules, tests/CI (later), Python port.
 
 Keep logic in the right layer. The AI should always know which layer it is editing.
@@ -65,10 +65,10 @@ Goals:
 - UI independent; portable to Python with matching behavior.
 
 Function groups (conceptual):
-1) Geometry/reinforcement helpers: effective depth; pt from Ast,b,d; Ast min/max per IS 456.  
-2) Flexure helpers: singly, doubly, and flanged (T/L) beams; limiting moment; flag when Mu > Mu_lim; compression steel and flange checks.  
-3) Shear helpers: τv from Vu,b,d; τc from Table 19 (with pt clamp and interpolation in pt); Vc; Vus; stirrup capacity/spacing with code limits.  
-4) Ductile detailing (IS 13920): geometry limits, min/max steel, confinement spacing.  
+1) Geometry/reinforcement helpers: effective depth; pt from Ast,b,d; Ast min/max per IS 456.
+2) Flexure helpers: singly, doubly, and flanged (T/L) beams; limiting moment; flag when Mu > Mu_lim; compression steel and flange checks.
+3) Shear helpers: τv from Vu,b,d; τc from Table 19 (with pt clamp and interpolation in pt); Vc; Vus; stirrup capacity/spacing with code limits.
+4) Ductile detailing (IS 13920): geometry limits, min/max steel, confinement spacing.
 5) Validation/error conventions: detect impossible inputs (negative dims, cover ≥ D, invalid grades); return clear status codes/flags, no UI.
 
 The AI should refine names, inputs/outputs, and ensure logic consistency without duplication.
@@ -76,10 +76,10 @@ The AI should refine names, inputs/outputs, and ensure logic consistency without
 ---
 
 ## 5. Workbook Behavior (User Flow)
-1) Fill BEAM_INPUT manually or via ETABS CSV import.  
-2) On HOME, click “Design Beams”.  
-3) App layer loops rows, calls library, writes BEAM_DESIGN.  
-4) Update BEAM_SCHEDULE from BEAM_DESIGN.  
+1) Fill BEAM_INPUT manually or via ETABS CSV import.
+2) On HOME, click “Design Beams”.
+3) App layer loops rows, calls library, writes BEAM_DESIGN.
+4) Update BEAM_SCHEDULE from BEAM_DESIGN.
 5) Failures are highlighted with reasons; user inspects BEAM_DESIGN for detail.
 
 AI assistance: design column sets; keep sheet I/O separate from core logic; keep macros simple and safe.
@@ -108,9 +108,9 @@ Workflow: specify role and context (“Use PROJECT_OVERVIEW.md and agents/DEV.md
 ---
 
 ## 8. AI Behavior Expectations
-- Respect layering (core vs app vs UI).  
-- Be explicit about layer, assumptions, clauses used, and limitations.  
-- Prefer small, composable functions; clear naming; comments on units and code refs.  
+- Respect layering (core vs app vs UI).
+- Be explicit about layer, assumptions, clauses used, and limitations.
+- Prefer small, composable functions; clear naming; comments on units and code refs.
 - Avoid mixing UI with structural logic, over-engineering, or inventing non-IS456 behavior.
 
 ---
@@ -130,7 +130,7 @@ Use this with `agents/*.md` for prompts.
 
 ---
 
-**How to use this doc:**  
+**How to use this doc:**
 Reference it when prompting AI: e.g., “Use PROJECT_OVERVIEW.md as context. Act as DEV agent and design the detailed function list for the structural library,” or “Using PROJECT_OVERVIEW.md and TESTER role, propose a test matrix for v0 beams.”
 
 ---
