@@ -19,9 +19,16 @@ from .errors import (
 
 
 def calculate_tv(vu_kn: float, b: float, d: float) -> float:
-    """Calculate Nominal Shear Stress (N/mm^2)"""
-    if b * d == 0:
-        return 0.0
+    """Calculate Nominal Shear Stress (N/mm^2)
+
+    Raises:
+        ValueError: If b or d <= 0
+    """
+    if b <= 0:
+        raise ValueError(f"Beam width b must be > 0, got {b}")
+    if d <= 0:
+        raise ValueError(f"Effective depth d must be > 0, got {d}")
+
     return (abs(vu_kn) * 1000.0) / (b * d)
 
 

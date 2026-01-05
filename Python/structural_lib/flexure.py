@@ -31,9 +31,18 @@ from .validation import validate_dimensions, validate_materials
 def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     """
     Calculate Limiting Moment of Resistance (kN-m)
+
+    Raises:
+        ValueError: If any parameter <= 0
     """
-    if b <= 0 or d <= 0 or fck <= 0 or fy <= 0:
-        return 0.0
+    if b <= 0:
+        raise ValueError(f"Beam width b must be > 0, got {b}")
+    if d <= 0:
+        raise ValueError(f"Effective depth d must be > 0, got {d}")
+    if fck <= 0:
+        raise ValueError(f"Concrete strength fck must be > 0, got {fck}")
+    if fy <= 0:
+        raise ValueError(f"Steel yield strength fy must be > 0, got {fy}")
 
     xu_max_d = materials.get_xu_max_d(fy)
 
@@ -120,10 +129,21 @@ def calculate_ast_required(
 ) -> float:
     """
     Calculate Ast Required for Singly Reinforced Section (mm^2)
-    Returns -1 if section is over-reinforced (Mu > Mu_lim)
+
+    Returns:
+        Required steel area in mm². Returns -1 if section is over-reinforced (Mu > Mu_lim).
+
+    Raises:
+        ValueError: If any dimension or material parameter <= 0
     """
-    if b <= 0 or d <= 0 or fck <= 0 or fy <= 0:
-        return -1.0
+    if b <= 0:
+        raise ValueError(f"Beam width b must be > 0, got {b}")
+    if d <= 0:
+        raise ValueError(f"Effective depth d must be > 0, got {d}")
+    if fck <= 0:
+        raise ValueError(f"Concrete strength fck must be > 0, got {fck}")
+    if fy <= 0:
+        raise ValueError(f"Steel yield strength fy must be > 0, got {fy}")
 
     mu_nmm = abs(mu_knm) * 1000000.0
 

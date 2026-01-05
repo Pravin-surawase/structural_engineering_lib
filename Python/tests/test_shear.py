@@ -23,10 +23,12 @@ class TestCalculateTv:
         tv = shear.calculate_tv(vu_kn=100.0, b=250.0, d=450.0)
         assert tv == pytest.approx(0.8889, rel=1e-3)
 
-    def test_zero_dimensions_returns_zero(self):
-        """Zero b or d should return 0 (not raise)."""
-        assert shear.calculate_tv(vu_kn=100.0, b=0.0, d=450.0) == 0.0
-        assert shear.calculate_tv(vu_kn=100.0, b=250.0, d=0.0) == 0.0
+    def test_zero_dimensions_raises_error(self):
+        """Zero b or d should raise ValueError (no silent failures)."""
+        with pytest.raises(ValueError, match="Beam width b must be > 0"):
+            shear.calculate_tv(vu_kn=100.0, b=0.0, d=450.0)
+        with pytest.raises(ValueError, match="Effective depth d must be > 0"):
+            shear.calculate_tv(vu_kn=100.0, b=250.0, d=0.0)
 
     def test_negative_shear_uses_absolute(self):
         """Negative shear should use absolute value."""

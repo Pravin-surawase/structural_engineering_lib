@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| *(No active tasks - ready to pick from Up Next)* | | | | | |
+| **TASK-158** | Eliminate Silent Failures in Core Modules (replace `return 0.0`, `return ""` with explicit errors; low-level helpers raise ValueError, entry points return structured errors) | DEV | 3-4 days | 🔴 HIGH | 🚧 In Progress |
 
 ---
 
