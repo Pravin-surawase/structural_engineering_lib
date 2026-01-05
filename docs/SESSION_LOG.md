@@ -4,6 +4,39 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-05 — Session (Part 2)
+
+**Focus:** Cost optimization API integration + CLI implementation
+
+### Summary
+- **Completed TASK-141:** Integrated cost optimization into public API and CLI.
+- Added `optimize_beam_cost()` function to `api.py` with dictionary serialization.
+- Implemented CLI `optimize` subcommand with formatted console output and optional JSON export.
+- Fixed syntax error in `job_cli.py` (moved optimize handler inside main() function).
+- Created comprehensive integration tests: `test_api_cost_optimization.py` (6/6 passing).
+- **Updated Quality Gaps Assessment** with cost optimization status (implemented, 21 tests passing).
+- All cost optimization tests passing: 15 unit + 6 integration = 21 total.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | Direct push (routine integration work) |
+
+### Key Deliverables
+- `Python/structural_lib/api.py` (added `optimize_beam_cost()`)
+- `Python/structural_lib/job_cli.py` (added `optimize` subcommand)
+- `Python/tests/test_api_cost_optimization.py` (6 integration tests)
+- `docs/_internal/QUALITY_GAPS_ASSESSMENT.md` (updated cost optimization status)
+- `docs/TASKS.md` (marked TASK-141 as Done)
+
+### Notes
+- CLI command: `.venv/bin/python -m structural_lib.job_cli optimize --span 5000 --mu 120 --vu 80`
+- Optional JSON export: `--output results.json`
+- Console output shows optimal design, cost breakdown, savings, and alternatives.
+- Cost optimization now fully integrated into platform: core → API → CLI.
+
+---
+
 ## 2026-01-05 — Session
 
 **Focus:** Cost optimization implementation + bug fixes

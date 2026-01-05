@@ -567,8 +567,8 @@ python test_smart_features.py
 | (Vary parameters, find optimal) | | | | |
 | **Constructability Warnings** | ✅ Implemented | 3 | Partial | High |
 | (Bar spacing, congestion, access) | | | | |
-| **Cost Optimization** | ❌ Not started | N/A | Yes | Medium |
-| (Material costs, formwork, labor) | | | | |
+| **Cost Optimization** | ✅ Implemented | 4 | No | High |
+| (Material costs, formwork, labor) | **(2026-01-06: Brute-force algorithm with M25/M30, Fe500. API + CLI integration complete. 21 tests passing.)** | | | |
 | **Multi-Objective Optimization** | ❌ Not started | N/A | Yes | Low |
 | (Cost vs strength vs constructability) | | | | |
 | **Design Suggestions** | ❌ Not started | N/A | Yes | Medium |
@@ -592,7 +592,7 @@ python test_smart_features.py
 
 | Feature | Research Questions | Data Needed | Feasibility (1-5) | Estimated Time |
 |---------|-------------------|-------------|-------------------|----------------|
-| Cost Optimization | How to model costs? Regional variations? | Material + labor rates | 3 | 3-4 weeks |
+| Cost Optimization | ~~How to model costs? Regional variations?~~ **DONE** | ~~Material + labor rates~~ **Implemented with INR defaults** | **5** ✅ | ~~3-4 weeks~~ **Complete** |
 | ML Predictions | What training data exists? What to predict? | Historical designs + failures | 2 | 4-6 weeks |
 | Design Suggestions | What makes a "good" suggestion? | Expert rules + heuristics | 3 | 2-3 weeks |
 
@@ -607,12 +607,13 @@ python test_smart_features.py
 1. Precheck quick_precheck
 2. Sensitivity analysis (design_beam_is456)
 3. Constructability scoring
+4. **Cost optimization (2026-01-06: brute-force algorithm, 21 tests passing, API + CLI integration complete)**
 
 **Research-Stage Features:** (Not production-ready)
 1. Sensitivity/constructability lack real-world validation
 2. No cost or optimization models
 
-**Missing Features:** (Not started)
+**M~~Cost optimization~~ **DONE** ✅* (Not started)
 1. Cost optimization
 2. Multi-objective optimization
 3. ML predictions / design suggestions

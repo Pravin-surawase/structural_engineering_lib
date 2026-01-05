@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| — | _No active tasks_ | — | — | — | — |
+| — | _Empty_ | — | — | — | — |
 
 ---
 
@@ -34,7 +34,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | 1 day | 🟡 Medium | Not-started |
 | — | _Sprint backlog empty_ | — | — | — | — |
 
 ---
@@ -63,6 +62,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | ✅ Done |
 | **TASK-140** | Implement Cost Optimization Feature (Python) | DEV | ✅ Done |
 | **TASK-139** | Cost Optimization Research (Day 1): Material/Labor models | RESEARCHER | ✅ Done |
 | **TASK-135** | Insights verification pack: 10 benchmark cases + JSON data + pytest module | TESTER | ✅ Done |

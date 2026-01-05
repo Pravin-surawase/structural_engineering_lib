@@ -178,12 +178,23 @@ def check_compliance_report(
     deflection_defaults: dict | None = None,
     crack_width_defaults: dict | None = None,
 ) -> ComplianceReport
+def optimize_beam_cost(
+    *,
+    units: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    cover_mm: float = 40,
+) -> dict
 ```
 
 Notes:
 - `check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m) and does
   not accept a `units` argument. Use `check_beam_is456()` when you want explicit
   unit validation at the API boundary.
+- `optimize_beam_cost()` (v0.14.0+) returns a dictionary with optimal design, alternatives,
+  baseline cost, savings, and metadata. Uses brute-force search over M25/M30 concrete grades
+  and Fe500 steel with standard dimensions.
 
 ---
 

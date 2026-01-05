@@ -18,6 +18,8 @@ from . import job_runner
 from . import report
 from . import serviceability
 from .data_types import ComplianceCaseResult, ComplianceReport, ValidationReport
+from .insights import cost_optimization
+from .costing import CostProfile
 
 __all__ = [
     "get_library_version",
@@ -36,6 +38,7 @@ __all__ = [
     "design_beam_is456",
     "check_beam_is456",
     "detail_beam_is456",
+    "optimize_beam_cost",
 ]
 
 
@@ -958,3 +961,99 @@ def detail_beam_is456(
         stirrup_spacing_end=stirrup_spacing_end_mm,
         is_seismic=is_seismic,
     )
+
+
+def optimize_beam_cost(
+    *,
+    units: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    cost_profile: Optional[CostProfile] = None,
+    cover_mm: int = 40,
+) -> Dict[str, Any]:
+    """Find the most cost-effective beam design meeting IS 456:2000.
+
+    Uses brute-force optimization to find the cheapest valid beam design
+    from a search space of standard dimensions and material grades.
+
+    Args:
+        units: Units label (must be one of the IS456 aliases).
+        span_mm: Beam span (mm).
+        mu_knm: Factored bending moment (kNm).
+        vu_kn: Factored shear force (kN).
+        cost_profile: Regional cost data (defaults to India CPWD 2023).
+        cover_mm: Concrete cover (default 40mm).
+
+    Returns:
+        Dictionary with:
+            - optimal_design: Best design (b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2)
+            - cost_breakdown: Concrete, steel, formwork, total costs
+            - baseline_cost: Conservative design cost for comparison
+            - savings_amount: Cost saved (currency units)
+            - savings_percent: Percentage saved
+            - alternatives: List of next 3 cheapest designs
+            - metadata: Candidates evaluated, computation time
+
+    Example:
+        >>> result = optimize_beam_cost(
+        ...     units="IS456",
+        ...     span_mm=5000,
+        ...     mu_knm=120,
+        ...     vu_kn=80
+        ... )
+        >>> print(f"Optimal: {result['optimal_design']['b_mm']}×{result['optimal_design']['D_mm']}mm")
+        >>> print(f"Cost: {result['cost_breakdown']['currency']}{result['cost_breakdown']['total_cost']:,.0f}")
+        >>> print(f"Savings: {result['savings_percent']:.1f}%")
+    """
+
+    _require_is456_units(units)
+
+    result = cost_optimization.optimize_beam_design(
+        span_mm=span_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        cost_profile=cost_profile,
+    )
+
+    # Convert result to dictionary
+    optimal = result.optimal_candidate
+
+    def _cost_breakdown_to_dict(breakdown):
+        if breakdown is None:
+            return None
+        return {
+            "concrete_cost": breakdown.concrete_cost,
+            "steel_cost": breakdown.steel_cost,
+            "formwork_cost": breakdown.formwork_cost,
+            "labor_adjustment": breakdown.labor_adjustment,
+            "total_cost": breakdown.total_cost,
+            "currency": breakdown.currency,
+        }
+
+    def _candidate_to_dict(candidate):
+        if candidate is None:
+            return None
+        return {
+            "b_mm": candidate.b_mm,
+            "D_mm": candidate.D_mm,
+            "d_mm": candidate.d_mm,
+            "fck_nmm2": candidate.fck_nmm2,
+            "fy_nmm2": candidate.fy_nmm2,
+            "cost_breakdown": _cost_breakdown_to_dict(candidate.cost_breakdown),
+            "is_valid": candidate.is_valid,
+            "failure_reason": candidate.failure_reason,
+        }
+
+    return {
+        "optimal_design": _candidate_to_dict(optimal),
+        "baseline_cost": result.baseline_cost,
+        "savings_amount": result.savings_amount,
+        "savings_percent": result.savings_percent,
+        "alternatives": [_candidate_to_dict(alt) for alt in result.alternatives if alt],
+        "metadata": {
+            "candidates_evaluated": result.candidates_evaluated,
+            "candidates_valid": result.candidates_valid,
+            "computation_time_sec": result.computation_time_sec,
+        },
+    }
