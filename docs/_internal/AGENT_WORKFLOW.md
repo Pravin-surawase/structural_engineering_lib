@@ -1,7 +1,7 @@
 # Agent Workflow System — Master Governance
 
-**Status:** Active  
-**Owner:** PM Agent  
+**Status:** Active
+**Owner:** PM Agent
 **Purpose:** Define clear workflows, duties, and handoff protocols for multi-agent collaboration.
 
 ---
@@ -20,6 +20,24 @@
 - **Provides requirements** (via CLIENT proxy or directly).
 - **Reviews and approves** key decisions.
 - **Can override** any agent recommendation.
+
+### 1.3 VS Code 1.107 Agent Workflow Quickstart
+- **Update VS Code** to 1.107+.
+- Run: `Cmd+Shift+P → Agent: Start Workflow Tutorial`.
+- Open **Agent HQ** to manage all agents from one panel.
+- Use **background sessions** for research so coding stays unblocked.
+
+**Recommended roles (lean setup):**
+- **Research agent:** standards + algorithms summary.
+- **Implementation agent (Copilot):** code changes and integration.
+- **QA agent:** test runs and validation.
+- **Docs agent:** update guides and change logs.
+
+**Daily orchestration loop:**
+1. Define 3-5 scoped tasks with acceptance criteria.
+2. Kick off research in the background.
+3. Review findings and convert into implementation tickets.
+4. Integrate, test, and document before close.
 
 ---
 
@@ -89,7 +107,7 @@
 
 ### 3.2 Bug Fix Workflow
 ```
-PM (Triage) → TESTER (Reproduce) → RESEARCHER (Root Cause) 
+PM (Triage) → TESTER (Reproduce) → RESEARCHER (Root Cause)
     → DEV (Fix) → TESTER (Verify) → DEVOPS (Ship) → DOCS (Update)
 ```
 
@@ -117,7 +135,7 @@ Every agent handoff MUST include:
 ### 4.2 Handoff Format
 ```markdown
 ## Handoff: [FROM_AGENT] → [TO_AGENT]
-**Task:** TASK-XXX  
+**Task:** TASK-XXX
 **Date:** YYYY-MM-DD
 
 ### Summary
@@ -497,4 +515,3 @@ When agents disagree:
 ---
 
 **End of Agent Workflow System**
-
