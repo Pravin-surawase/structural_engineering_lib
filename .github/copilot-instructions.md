@@ -190,6 +190,27 @@ git push
 - Merge conflict in TASKS.md → Run `git checkout --ours docs/TASKS.md && git add docs/TASKS.md`
 - Pre-commit modified files → Run `git add -A && git commit --amend --no-edit`
 
+**TASKS.md workflow in PR:**
+- **Recommended:** Include TASKS.md changes in your feature branch commits
+- TASKS.md is part of work scope, not separate metadata
+- It will merge cleanly with the PR
+- Alternative: Commit TASKS.md to main first, then create feature branch
+
+---
+
+## Common coding pitfalls (avoid these)
+
+### Import hygiene
+- ❌ **Don't** import classes inside functions if already imported at module level
+- ✅ **Do** import `DesignError`, `Severity` at top of module
+- 🔍 **Check** existing imports before adding new ones (ruff catches duplicates as F823)
+
+### Version drift check awareness
+- ✅ Research docs (`docs/research/`) are excluded from version checks
+- ✅ Archive docs (`docs/_archive/`) are excluded from version checks
+- 📝 These can reference external tool versions without triggering CI failure
+- 🔍 If adding new doc directories, check if they need exclusion in `scripts/check_doc_versions.py`
+
 ---
 
 ## Common mistakes to AVOID
@@ -216,6 +237,8 @@ git push
 | CI fails on formatting but auto-format hasn't run yet | Wait 30s after push for auto-format workflow; or use empty commit to retrigger |
 | Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
 | CI shows old failure after auto-format fixed it | Auto-format doesn't retrigger CI; push empty commit: `git commit --allow-empty -m "chore: trigger CI"` |
+| Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
+| Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
 
 ---
 
