@@ -51,7 +51,7 @@
 - **Comprehensive Testing:** 2270 tests, 86% coverage, 13 performance benchmarks
 - **API Stability:** Contract-tested public APIs with deprecation policy for safe evolution
 - **Error Handling:** 5-layer architecture with structured errors, zero silent failures
-- **Type Safety:** Stricter mypy checks (`warn_return_any`, `strict_optional`)
+- **Type Safety:** Modern PEP 585/604 syntax (`list[X]`, `X | None`), stricter mypy checks
 - **Deterministic:** Same input → same output (JSON/CSV/DXF) across runs
 - **Traceable:** IS 456 clause references in design formulas
 - **Dual Implementation:** Python + VBA with matching I/O
@@ -222,11 +222,12 @@ See `docs/reference/api-stability.md` for stability labels and guarantees.
 
 | Aspect | Status |
 |--------|--------|
-| **Determinism** | Sa2231+ tests, 86% overall coverage, 100% on 10 modulesDXF) across runs |
-| **Units** | Explicit: mm, N/mm^2, kN, kN*m — converted at layer boundaries |
-| **Test coverage** | ~2,000 tests, ~92% branch coverage (see CI for current) |
-| **Clause traceability** | Core design formulas reference IS 456 clause/table |
-| **Verification pack** | Benchmark examples in `Python/examples/` + insights verification pack (10 cases) |
+| **Test Coverage** | 2270 tests, 86% overall coverage, 6 modules >90% coverage |
+| **Determinism** | Same inputs → identical outputs (JSON/CSV/DXF) across runs |
+| **Units** | Explicit: mm, N/mm², kN, kN·m — converted at layer boundaries |
+| **Code Quality** | 0 ruff errors, contract-tested APIs, modern type hints (PEP 585/604) |
+| **Clause Traceability** | Core design formulas reference IS 456 clause/table |
+| **Verification Pack** | Benchmark examples in `Python/examples/` + insights verification pack (10 cases) |
 | **Performance** | Quick precheck: <1ms, Full design: ~200-500ms/beam, Batch 100 beams: <1 min |
 
 ## Who it helps
@@ -331,8 +332,11 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 | Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` | repo root |
 | Install hooks | `pre-commit install` | repo root |
 | Run tests | `cd Python && python3 -m pytest` | repo root |
+| Run benchmarks | `cd Python && python3 -m pytest --benchmark-only` | repo root |
 | Format check | `cd Python && python3 -m black --check .` | repo root |
+| Lint check | `cd Python && python3 -m ruff check .` | repo root |
 | Type check | `cd Python && python3 -m mypy` | repo root |
+| Coverage report | `cd Python && python3 -m pytest --cov --cov-report=html` | repo root |
 | Local CI check | `./scripts/ci_local.sh` | repo root |
 
 ## Directory structure
