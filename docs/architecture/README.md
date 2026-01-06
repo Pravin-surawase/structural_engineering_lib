@@ -11,6 +11,7 @@ Deep dives into project structure and design decisions.
 | [Mission & Principles](mission-and-principles.md) | Core principles and non-negotiables |
 | [Visual Architecture Diagrams](visual-architecture.md) | Mermaid diagrams for layers, module groupings, and data flow |
 | [Module Dependency Graph](dependencies.md) | Generated dependency graph for `structural_lib` |
+| [Pipeline Data Flow Diagrams](data-flow-diagrams.md) | Job runner + smart designer data flow diagrams |
 
 ## Quick architecture summary
 
