@@ -9,6 +9,8 @@ from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, Optional, TypedDict
 
+from .utilities import deprecated_field
+
 if TYPE_CHECKING:
     from .errors import DesignError
 
@@ -183,6 +185,16 @@ class FlexureResult:
     error_message: str = ""  # Deprecated: Use errors list instead
     errors: list["DesignError"] = field(default_factory=list)  # Structured errors
 
+    def __post_init__(self) -> None:
+        if self.error_message:
+            deprecated_field(
+                "FlexureResult",
+                "error_message",
+                "0.14.0",
+                "1.0.0",
+                alternative="errors",
+            )
+
 
 @dataclass
 class ShearResult:
@@ -194,6 +206,16 @@ class ShearResult:
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
     errors: list["DesignError"] = field(default_factory=list)  # Structured errors
+
+    def __post_init__(self) -> None:
+        if self.remarks:
+            deprecated_field(
+                "ShearResult",
+                "remarks",
+                "0.14.0",
+                "1.0.0",
+                alternative="errors",
+            )
 
 
 @dataclass
