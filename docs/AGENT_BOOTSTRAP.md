@@ -2,6 +2,8 @@
 
 > **Read this first.** This is the fastest path to productive work.
 
+> **👤 For users onboarding a new agent:** See [contributing/agent-onboarding-message.md](contributing/agent-onboarding-message.md) for the exact message to send.
+
 ---
 
 ## 🚀 First 30 Seconds
