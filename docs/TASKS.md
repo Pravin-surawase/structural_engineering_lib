@@ -65,7 +65,6 @@ All research tasks completed (see Recently Done).
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-187** | Standardize license headers in Python modules and align VBA header format | DEV | 1-2 days | 🔴 HIGH |
-| **TASK-188** | Publish nomenclature glossary + naming rules in `docs/contributing/development-guide.md`; update key examples to match | DOCS | 0.5 day | 🟡 MEDIUM |
 | **TASK-189** | Expand ruff rules + docstring guide; apply to high-traffic modules first (report/api/dxf) | DEV | 1-2 days | 🟡 MEDIUM |
 | **TASK-190** | Resolve dead-code findings (vulture) + TODOs in SmartDesigner/CLI and track remaining ones | DEV | 0.5-1 day | 🟡 MEDIUM |
 | **TASK-191** | Restructure tests into category subfolders; add pytest markers and README for test taxonomy | TESTER | 1-2 days | 🟡 MEDIUM |
@@ -101,6 +100,7 @@ All research tasks completed (see Recently Done).
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-188** | Publish nomenclature glossary + naming rules in `docs/contributing/development-guide.md`; update key examples to match | 2026-01-06 | DOCS |
 | **TASK-184** | Canonicalize doc sources (define single source per topic + redirect stubs) and add a `docs/README.md` canonical index map | 2026-01-06 | DOCS |
 | **TASK-175** | **Phase 2: Create Learning Paths Guide** (Map task complexity → required docs; paths: beginner/intermediate/advanced; examples: "small bug fix" → copilot-instructions + known-pitfalls; "new feature" → architecture + API + testing strategy) → `docs/contributing/learning-paths.md` | 2026-01-06 | DOCS |
 | **TASK-176** | **Phase 2: Enhance Agent Role Decision Tree** (Update agents/README.md with task type → agent role mappings; decision tree: bug fix → DEV+TESTER, new feature → PM→RESEARCHER→DEV→TESTER→DOCS, docs → DOCS, release → DEVOPS→PM) | 2026-01-06 | DOCS |
