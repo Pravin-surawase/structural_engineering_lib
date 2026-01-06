@@ -1,6 +1,6 @@
 # Automation Script Catalog
 
-> **Purpose:** Complete reference of all 42 automation scripts in this project.
+> **Purpose:** Complete reference of all 43 automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
 > **Last Updated:** 2026-01-06
 
@@ -12,13 +12,13 @@
 |----------|---------|------------------|
 | [Session Management](#session-management) | 3 | Agent onboarding and handoff |
 | [Git Workflow](#git-workflow) | 9 | Conflict-free commits and workflow decisions |
-| [Documentation Quality](#documentation-quality) | 8 | Link checking, version drift, consistency |
+| [Documentation Quality](#documentation-quality) | 9 | Link checking, version drift, consistency |
 | [Release Management](#release-management) | 4 | Version bumping, release validation |
 | [Testing & Quality](#testing--quality) | 5 | Local CI, pre-commit checks, validation |
 | [Code Quality](#code-quality) | 5 | Error handling audits, linting, coverage, license headers |
 | [Specialized](#specialized) | 8 | DXF rendering, CLI testing, VBA linting |
 
-**Total: 41 scripts** (17 shell `.sh` + 24 Python `.py`)
+**Total: 43 scripts** (17 shell `.sh` + 26 Python `.py`)
 
 ---
 
@@ -647,6 +647,33 @@ Current version: 0.14.0
 - Consistent formatting
 
 **Related:** [check_api_docs_sync.py](#17-check_api_docs_syncpy)
+
+---
+
+### 19. `check_repo_hygiene.py`
+
+**Purpose:** Ensure hygiene artifacts are not tracked in git.
+
+**When to Use:**
+- ✅ Before committing changes
+- ✅ During cleanup passes
+- ✅ Part of pre-commit hooks
+
+**Usage:**
+```bash
+python3 scripts/check_repo_hygiene.py
+```
+
+**What It Checks:**
+- Tracked `.DS_Store` files
+- Tracked `.coverage` files
+
+**Output:**
+```
+✓ No tracked hygiene artifacts found
+```
+
+**Related:** `.gitignore`
 
 ---
 
