@@ -64,6 +64,19 @@
 | **TASK-208** | **Synthesis: Create API Guidelines Document** (Consolidate all research into unified `docs/guidelines/api-design-guidelines.md`; actionable rules; code templates; review checklists) | ARCHITECT | 3-4 hrs | 🔴 HIGH |
 | **TASK-209** | **Implementation Roadmap: API Improvements** (Prioritized improvements from research; implementation sequence; migration strategies; timeline) → `docs/planning/api-improvement-roadmap.md` | PM | 2-3 hrs | 🔴 HIGH |
 
+#### Phase 4: Advanced Topics (Future-Proofing)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-220** | **Research: Multi-Code Architecture** (Support IS 456 + ACI 318 + Eurocode 2; code-agnostic vs code-specific separation; parameter mapping; configuration mechanism; testing strategy; example: `design_beam(code='IS456')` vs `design_beam(code='ACI318')`; shared utilities; code registry pattern) → `docs/research/multi-code-architecture.md` | ARCHITECT | 4-5 hrs | 🟡 MEDIUM |
+| **TASK-221** | **Research: Performance Optimization Patterns** (Caching strategies for repeated calculations; vectorization with NumPy for batch operations; lazy evaluation patterns; memoization for expensive functions; profiling and bottleneck identification; trade-offs: memory vs speed) → `docs/research/performance-optimization.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-222** | **Research: Plugin & Extension Architecture** (Plugin discovery mechanism; extension points in design pipeline; hook system for custom calculations; third-party integrations; versioning for plugins; security considerations; example: custom material models, optimization algorithms) → `docs/research/plugin-architecture.md` | ARCHITECT | 3-4 hrs | 🟢 LOW |
+| **TASK-223** | **Research: Configuration Management System** (User preferences storage; project-level defaults; code-specific configurations; environment variables; config file formats (YAML/TOML/JSON); validation; migration between config versions; example: default cover, design assumptions) → `docs/research/configuration-management.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
+| **TASK-224** | **Research: Advanced Validation Frameworks** (Schema validation with Pydantic/dataclasses; cross-parameter validation; unit validation with pint; constraint satisfaction; validation rules from code clauses; error aggregation; performance impact; example: validate entire beam config at once) → `docs/research/advanced-validation.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-225** | **Research: Domain-Specific Language (DSL) Patterns** (Fluent API for design workflows; method chaining; builder pattern; declarative vs imperative; readability vs flexibility; example: `Beam().width(300).depth(600).moment(180).design()`; symbolic math integration for documentation; code generation from DSL) → `docs/research/dsl-patterns.md` | RESEARCHER | 3-4 hrs | 🟢 LOW |
+| **TASK-226** | **Research: Internationalization & Localization** (Unit system handling (SI/Imperial/mixed); language support for messages/reports; locale-specific formatting; cultural considerations in engineering practice; translation workflow; example: US market needs Imperial units, ft-kip-psi) → `docs/research/internationalization.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
+| **TASK-227** | **Research: Code Generation & Metaprogramming** (Generate boilerplate from templates; type-safe code generation; macro systems; abstract syntax tree (AST) manipulation; reducing repetitive patterns; example: auto-generate similar functions for different codes; property-based test generation) → `docs/research/code-generation.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
+
 ### Documentation Enhancement (From Handoff Analysis)
 
 _Most tasks completed — see Recently Done._
