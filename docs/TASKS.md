@@ -75,6 +75,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-161 Sprint 2** | Gradually Tighten Mypy Configuration - Sprint 2 (enabled check_untyped_defs, no_implicit_optional; fixed 2 errors; added Optional imports; 2200 tests pass; mypy clean) | DEV | ✅ Done |
 | **TASK-161 Sprint 1** | Gradually Tighten Mypy Configuration - Sprint 1 (enabled warn_return_any, strict_optional; fixed 5 errors; 2200 tests pass; mypy clean) | DEV | ✅ Done |
 | **TASK-159** | Standardize Error Handling by Layer (documented strategy in CONTRIBUTING.md with 5 layers; created audit script; 25 modules audited - all compliant) | DEV+DOCS | ✅ Done |
 | **TASK-158** | Eliminate Silent Failures in Core Modules (17 functions fixed: flexure, shear, materials, detailing, serviceability, ductile; all now raise ValueError with clear messages; 2200 tests pass) | DEV | ✅ Done |

@@ -14,7 +14,7 @@ References:
 
 import math
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 # =============================================================================
 # Constants
@@ -341,7 +341,7 @@ def select_bar_arrangement(
     b: float,
     cover: float,
     stirrup_dia: float = 8.0,
-    preferred_dia: float = None,
+    preferred_dia: Optional[float] = None,
     max_layers: int = 2,
 ) -> BarArrangement:
     """

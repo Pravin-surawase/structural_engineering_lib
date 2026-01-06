@@ -19,7 +19,7 @@ import math
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .data_types import CuttingAssignment, CuttingPlan
 from .detailing import BeamDetailingResult
@@ -671,7 +671,7 @@ def generate_bbs_document(
 
 def optimize_cutting_stock(
     line_items: List[BBSLineItem],
-    stock_lengths: List[float] = None,
+    stock_lengths: Optional[List[float]] = None,
     kerf: float = 3.0,
 ) -> CuttingPlan:
     """
