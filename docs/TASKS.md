@@ -48,8 +48,6 @@ _No active tasks. WIP = 0._
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-179** | **Phase 3: Generate Visual Architecture Diagrams** (Create PlantUML or Mermaid diagrams for: layer architecture, module dependencies, data flows; commit to docs/architecture/) | DOCS | 2 hours | 🟢 LOW |
-| **TASK-180** | **Phase 3: Create Module Dependency Graph** (Use pydeps or similar to generate Python/structural_lib dependency graph; commit PNG to docs/architecture/dependencies.png) | DOCS | 30 min | 🟢 LOW |
 | **TASK-181** | **Phase 3: Add Data Flow Diagrams** (Create Mermaid diagrams for complex pipelines: job_runner, smart_designer; show data transformations through layers; commit to docs/architecture/) | DOCS | 2 hours | 🟢 LOW |
 | **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | DOCS | 30 min | 🟢 LOW |
 
@@ -90,6 +88,8 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed �
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-180** | **Phase 3: Create Module Dependency Graph** (Use pydeps or similar to generate Python/structural_lib dependency graph; commit PNG to docs/architecture/dependencies.png) | 2026-01-06 | DOCS |
+| **TASK-179** | **Phase 3: Generate Visual Architecture Diagrams** (Create PlantUML or Mermaid diagrams for: layer architecture, module dependencies, data flows; commit to docs/architecture/) | 2026-01-06 | DOCS |
 | **TASK-197** | Add repo hygiene artifact check (block tracked `.DS_Store`/`.coverage`; add `scripts/check_repo_hygiene.py`; pre-commit hook; documented in automation catalog) | 2026-01-06 | DEV |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | 2026-01-06 | DEV |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | 2026-01-06 | DEV |
