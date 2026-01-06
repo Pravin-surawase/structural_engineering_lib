@@ -28,9 +28,7 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL | ⚙️ In Progress |
+*No active tasks. Review Up Next queue.*
 
 ---
 
@@ -55,7 +53,6 @@
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL |
 | **TASK-203** | **Research: Result Object Design Patterns** (Dataclass vs namedtuple vs dict; essential methods: to_dict, summary; error handling in results; SciPy/sklearn examples) → `docs/guidelines/result-object-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 | **TASK-204** | **Research: Error Handling & Exception Design** (Exception hierarchy, error message quality, validation patterns, error recovery; 40+ exception examples) → `docs/guidelines/error-handling-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 
@@ -120,6 +117,7 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-202** | **Research: Function Signature Design Standards** (11 sections: core principles, parameter ordering, keyword-only patterns, type hints, defaults, unit suffixes, validation params, special cases, anti-patterns, migration guide, examples; comprehensive ~1000 line standard document with quick reference card and PR review checklist) → `docs/guidelines/function-signature-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-201** | **Research: UX Patterns for Technical APIs** (Cognitive load, discoverability, error design, "pit of success"; created docs/research/ux-patterns-for-technical-apis.md) | 2026-01-07 | RESEARCHER |
 | **TASK-215** | Update workflow to allow docs/research direct commits (no PR) with checks intact | 2026-01-07 | DEVOPS |
 | **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns) | 2026-01-07 | RESEARCHER |
