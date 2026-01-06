@@ -31,10 +31,15 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Key Deliverables
 - `Python/structural_lib/insights/smart_designer.py` (SmartDesigner module)
+- `Python/structural_lib/insights/comparison.py` (comparison & cost-aware sensitivity module)
 - `Python/structural_lib/api.py` (added `smart_analyze_design()` wrapper)
 - `Python/tests/test_smart_designer.py` (20 comprehensive tests)
+- `Python/tests/test_comparison.py` (19 comprehensive tests)
+- `Python/tests/test_rebar_optimizer.py` (31 new tests, 46 total)
 - `docs/reference/api.md` (added function signature and usage notes)
-- 3 commits: 740d4f5 (module), 49c697f (docs update), 193b0b9 (API wrapper)
+- Workflow automation: `create_task_pr.sh`, `finish_task_pr.sh`, `safe_push_v2.sh`, `test_git_workflow.sh`
+- Git workflow documentation: `docs/contributing/workflow-professional-review.md`, `docs/contributing/git-workflow-testing.md`
+- Multiple commits: f5305b9 (comparison), 740d4f5 (smart_designer), 49c697f (docs), 193b0b9 (API wrapper), 5f2a708 (workflow tools), 864195d (rebar tests)
 
 ### Next Actions
 - Consider adding user guide for SmartDesigner dashboard

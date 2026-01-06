@@ -4,14 +4,13 @@
 
 | Metric | Value |
 |--------|-------|
-| **Current Release** | v0.14.0 (on PyPI) |
-| **Next Planned Release** | v0.12.1 (test hardening + verification gates) |
-| **Next Milestone** | v0.20.0 (blocked by S-007) |
-| **Tests** | 2019 passed, 0 skipped |
-| **Coverage** | 92% branch |
-| **Visual v0.11** | V03–V09 delivered (critical set, report HTML, batch packaging, golden tests) |
+| **Current Release** | v0.14.0 (on PyPI, 2026-01-06) |
+| **Next Planned Release** | v0.15.0 (smart insights ecosystem) |
+| **Tests** | 2231+ passed, 0 skipped (as of 2026-01-06) |
+| **Coverage** | 86% overall, 100% on 10 modules |
+| **Recent Features** | SmartDesigner, comparison module, cost optimization, design suggestions |
 
-> **Status details:** See [TASKS.md](TASKS.md) for current/next release info.
+> **Status details:** See [TASKS.md](TASKS.md) and [next-session-brief.md](planning/next-session-brief.md).
 
 ---
 

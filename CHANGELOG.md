@@ -34,6 +34,12 @@ All notable changes to this project will be documented in this file.
   - Coverage: bar combinations, diameter constraints, symmetry, edge cases
   - Benchmark vectors for regression detection
   - Validates optimization logic and constraint handling
+- **Workflow automation tools** (`scripts/`)
+  - `create_task_pr.sh` and `finish_task_pr.sh` for fast PR workflow
+  - `safe_push_v2.sh` with comprehensive audit logging and conflict prevention
+  - `test_git_workflow.sh` with 31 test cases validating git operations
+  - `validate_git_state.sh` for pre-push safety checks
+  - Professional workflow review documentation (`docs/contributing/workflow-professional-review.md`)
 - **CLI scaffolding for smart command** (`smart` subcommand in `__main__.py`)
   - Command structure ready for future CLI integration
   - Configurable analysis components (--no-cost, --no-suggestions, etc.)

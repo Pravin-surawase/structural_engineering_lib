@@ -8,9 +8,13 @@ Goal: enable the next agent to resume in under 2 minutes.
 1. Run: `.venv/bin/python scripts/start_session.py`
 2. Read:
    - `docs/planning/next-session-brief.md` (what changed + blockers)
-   - `docs/contributing/session-issues.md` (recent pitfalls + fixes)
    - `docs/TASKS.md` (active + up next)
-3. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
+   - `.github/copilot-instructions.md` (CRITICAL - git workflow, layers, rules)
+3. Review recent work:
+   - **Jan 6 2026**: TASK-143 (comparison), TASK-144 (SmartDesigner), workflow automation
+   - Smart insights ecosystem now complete: dashboard, comparison, cost optimization, suggestions
+   - New workflow tools: `create_task_pr.sh`, `finish_task_pr.sh`, `test_git_workflow.sh`
+4. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
 
 ### Quick output sample (start_session --quick)
 ```
