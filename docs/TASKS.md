@@ -28,7 +28,9 @@
 
 ## Active
 
-No active tasks currently.
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-192** | Add per-module coverage report + baseline performance benchmarks (pytest-benchmark) | TESTER | 1-2 days | 🟡 MEDIUM | 🔄 In Progress |
 
 ---
 
@@ -64,7 +66,6 @@ All research tasks completed (see Recently Done).
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-196** | Add Complete Docstrings to Core Modules (flexure.py, shear.py, detailing.py) | DEV | 1-2 days | 🟡 MEDIUM |
-| **TASK-192** | Add per-module coverage report + baseline performance benchmarks (pytest-benchmark) | TESTER | 1-2 days | 🟡 MEDIUM |
 
 ### Foundation & Architecture (CRITICAL for stability)
 
