@@ -37,6 +37,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from . import ductile, report_svg
+from .data_types import BeamGeometry, LoadCase
 
 _REPORT_CSS = """
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; }
@@ -71,8 +72,8 @@ class ReportData:
     job_id: str
     code: str
     units: str
-    beam: Dict[str, Any]
-    cases: List[Dict[str, Any]]
+    beam: BeamGeometry
+    cases: List[LoadCase]
     results: Dict[str, Any]
 
     # Computed fields
@@ -209,7 +210,7 @@ def load_report_data(
         job_id=job_id,
         code=code,
         units=units,
-        beam=beam,
+        beam=beam,  # type: ignore[arg-type]  # Loaded from JSON, structurally compatible
         cases=cases,
         results=results,
         is_ok=bool(results.get("is_ok", False)),
@@ -1175,8 +1176,8 @@ def _beam_report_data_from_design(
         job_id=job_id,
         code=code,
         units=units,
-        beam=beam_info,
-        cases=[case],
+        beam=beam_info,  # type: ignore[arg-type]  # Constructed from beam dict, structurally compatible
+        cases=[case],  # type: ignore[list-item]  # Constructed case dict, structurally compatible
         results=results,
         is_ok=bool(beam.get("is_ok", False)),
         governing_case_id=case_id,

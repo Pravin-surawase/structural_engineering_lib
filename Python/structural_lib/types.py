@@ -8,6 +8,7 @@ project transitions to `structural_lib.data_types`.
 from __future__ import annotations
 
 from .data_types import (
+    BeamGeometry,
     BeamType,
     ComplianceCaseResult,
     ComplianceReport,
@@ -19,18 +20,23 @@ from .data_types import (
     DesignSectionType,
     ExposureClass,
     FlexureResult,
+    JobSpec,
+    LoadCase,
     ShearResult,
     SupportCondition,
     ValidationReport,
 )
 
 __all__ = [
+    "BeamGeometry",
     "BeamType",
     "DesignSectionType",
-    "SupportCondition",
     "ExposureClass",
     "FlexureResult",
+    "JobSpec",
+    "LoadCase",
     "ShearResult",
+    "SupportCondition",
     "DeflectionResult",
     "DeflectionLevelBResult",
     "CrackWidthResult",

@@ -8,8 +8,12 @@ Design constraints:
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
-from xml.etree import ElementTree as ET
+from typing import Any, Optional
+from xml.etree import (
+    ElementTree as ET,  # nosec B405  # SVG generation, not parsing untrusted XML
+)
+
+from .data_types import BeamGeometry
 
 
 def _fmt(value: float, decimals: int = 1) -> str:
@@ -248,7 +252,7 @@ def render_section_svg(
 
 
 def render_section_svg_from_beam(
-    beam: Dict[str, Any],
+    beam: BeamGeometry,
     *,
     width: int = 300,
     height: int = 400,

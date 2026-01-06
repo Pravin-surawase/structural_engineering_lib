@@ -94,6 +94,55 @@ class OptimizerChecks(TypedDict, total=False):
     selection: Dict[str, Any]  # Selection metadata
 
 
+class BeamGeometry(TypedDict, total=False):
+    """Beam geometry and material properties.
+
+    Required fields: b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2
+    Optional fields marked with total=False.
+
+    Units: mm for dimensions, N/mm² for stresses
+    """
+
+    # Required fields (must be present in TypedDict usage)
+    b_mm: float  # Beam width (mm)
+    D_mm: float  # Overall depth (mm)
+    d_mm: float  # Effective depth (mm)
+    fck_nmm2: float  # Characteristic compressive strength of concrete (N/mm²)
+    fy_nmm2: float  # Characteristic yield strength of steel (N/mm²)
+
+    # Optional fields
+    d_dash_mm: float  # Cover to compression steel (mm), default 50.0
+    asv_mm2: float  # Area of stirrup legs (mm²), default 100.0
+    pt_percent: Optional[float]  # Percentage of steel for deflection, optional
+    deflection_defaults: Optional[DeflectionParams]  # Deflection calculation params
+    crack_width_defaults: Optional[CrackWidthParams]  # Crack width params
+
+
+class LoadCase(TypedDict):
+    """Load case with bending moment and shear force.
+
+    All fields required.
+    """
+
+    case_id: str  # Load case identifier (e.g., "1.5(DL+LL)")
+    mu_knm: float  # Factored moment (kN·m)
+    vu_kn: float  # Factored shear (kN)
+
+
+class JobSpec(TypedDict):
+    """Complete job specification for beam design.
+
+    Schema version 1 format for job.json files.
+    """
+
+    job_id: str  # Job identifier
+    schema_version: int  # Schema version (currently 1)
+    code: str  # Design code (e.g., "IS456")
+    units: str  # Unit system (e.g., "SI-mm")
+    beam: BeamGeometry  # Beam geometry and materials
+    cases: List[LoadCase]  # List of load cases
+
+
 class BeamType(Enum):
     RECTANGULAR = 1
     FLANGED_T = 2

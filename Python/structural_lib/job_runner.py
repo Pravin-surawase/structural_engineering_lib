@@ -21,19 +21,20 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Mapping
 
 from . import api, beam_pipeline, compliance
+from .data_types import JobSpec
 
 
-def load_job_json(path: str | Path) -> Dict[str, Any]:
+def load_job_json(path: str | Path) -> JobSpec:
     """Load a job file (JSON)."""
 
     p = Path(path)
     data = json.loads(p.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError("job.json must contain a JSON object at top level")
-    return data
+    return data  # type: ignore[return-value]
 
 
-def load_job_spec(path: str | Path) -> Dict[str, Any]:
+def load_job_spec(path: str | Path) -> JobSpec:
     """Load and validate a job spec file, returning the beam geometry and metadata.
 
     This is used by both job_runner and report modules to load job.json.
@@ -42,13 +43,13 @@ def load_job_spec(path: str | Path) -> Dict[str, Any]:
         path: Path to job.json file
 
     Returns:
-        Dict with validated job spec containing:
+        JobSpec with validated job spec containing:
         - job_id: str
         - schema_version: int
         - code: str
         - units: str (validated)
-        - beam: dict with geometry (b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, etc.)
-        - cases: list of load cases
+        - beam: BeamGeometry with geometry (b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, etc.)
+        - cases: list of LoadCase
 
     Raises:
         FileNotFoundError: If job.json doesn't exist
@@ -148,7 +149,7 @@ def _write_csv(
 
 def run_job_is456(
     *,
-    job: Dict[str, Any],
+    job: JobSpec,
     out_dir: str | Path,
     copy_inputs: bool = True,
 ) -> Dict[str, Any]:
@@ -219,7 +220,7 @@ def run_job_is456(
 
     report = api.check_beam_is456(
         units=units,
-        cases=cases,
+        cases=cases,  # type: ignore[arg-type]  # LoadCase is compatible with Dict[str, Any]
         b_mm=float(beam["b_mm"]),
         D_mm=float(beam["D_mm"]),
         d_mm=float(beam["d_mm"]),
@@ -227,9 +228,7 @@ def run_job_is456(
         fy_nmm2=float(beam["fy_nmm2"]),
         d_dash_mm=float(beam.get("d_dash_mm", 50.0)),
         asv_mm2=float(beam.get("asv_mm2", 100.0)),
-        pt_percent=(
-            float(beam["pt_percent"]) if beam.get("pt_percent") is not None else None
-        ),
+        pt_percent=(float(pt) if (pt := beam.get("pt_percent")) is not None else None),
         deflection_defaults=(
             beam.get("deflection_defaults")
             if isinstance(beam.get("deflection_defaults"), dict)
