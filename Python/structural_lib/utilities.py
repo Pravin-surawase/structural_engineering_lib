@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import warnings
 from functools import wraps
-from typing import Callable, TypeVar
+from typing import Any, Callable, TypeVar
 
 F = TypeVar("F", bound=Callable)
 
@@ -114,7 +114,7 @@ def deprecated(
 
     def decorator(func: F) -> F:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             message = (
                 f"{func.__name__} is deprecated since v{version} "
                 f"and will be removed in v{remove_version}."

@@ -551,7 +551,7 @@ def design_multiple_beams(
     )
 
 
-def _section_type_str(section_type) -> str:
+def _section_type_str(section_type: object) -> str:
     """Convert section type enum to string."""
     if hasattr(section_type, "name"):
         result: str = section_type.name

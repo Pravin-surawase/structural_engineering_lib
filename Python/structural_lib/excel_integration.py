@@ -208,7 +208,7 @@ def load_beam_data_from_json(filepath: str) -> list[BeamDesignData]:
     return [BeamDesignData.from_dict(b) for b in beam_list]
 
 
-def export_beam_data_to_json(beams: list[BeamDesignData], filepath: str):
+def export_beam_data_to_json(beams: list[BeamDesignData], filepath: str) -> None:
     """Export beam data to JSON file."""
     data = {"beams": [asdict(b) for b in beams]}
     with open(filepath, "w", encoding="utf-8") as f:
@@ -425,7 +425,7 @@ def generate_detailing_schedule(results: list[ProcessingResult]) -> list[dict]:
     return schedule
 
 
-def export_schedule_to_csv(schedule: list[dict], filepath: str):
+def export_schedule_to_csv(schedule: list[dict], filepath: str) -> None:
     """Export detailing schedule to CSV file."""
     if not schedule:
         return
@@ -443,7 +443,7 @@ def export_schedule_to_csv(schedule: list[dict], filepath: str):
 # =============================================================================
 
 
-def main():
+def main() -> None:
     """Command-line interface for batch DXF generation."""
     import argparse
 

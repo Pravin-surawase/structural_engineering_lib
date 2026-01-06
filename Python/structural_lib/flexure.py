@@ -741,7 +741,7 @@ def design_flanged_beam(
     # 3. Singly Reinforced T-Beam (Df < xu <= xu_max)
     # We need to find xu such that Moment(xu) = Mu
 
-    def get_moment_t(xu_val):
+    def get_moment_t(xu_val: float) -> float:
         if (Df / d) <= 0.2:
             yf_val = Df
         else:
