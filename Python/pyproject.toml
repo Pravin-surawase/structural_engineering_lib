@@ -87,12 +87,12 @@ classmethod-decorators = ["classmethod"]
 "structural_lib/compliance.py" = ["E402"]
 "structural_lib/dxf_export.py" = ["E402"]
 "structural_lib/excel_integration.py" = ["E402"]
-# Test files with intentional naming patterns
-"tests/test_costing.py" = ["N802"]  # setUp method from unittest.TestCase
-"tests/test_validation.py" = ["N802"]  # test_*_D pattern tests parameter D
-"tests/test_tables_and_materials_additional.py" = ["N802"]  # test_*_D pattern
-"tests/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
-"tests/test_serviceability.py" = ["E402"]  # Import after section header comment
+# Test files with intentional naming patterns (updated for new test structure)
+"tests/integration/test_costing.py" = ["N802"]  # setUp method from unittest.TestCase
+"tests/unit/test_validation.py" = ["N802"]  # test_*_D pattern tests parameter D
+"tests/integration/test_tables_and_materials_additional.py" = ["N802"]  # test_*_D pattern
+"tests/unit/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
+"tests/unit/test_serviceability.py" = ["E402"]  # Import after section header comment
 
 [tool.mypy]
 python_version = "3.9"

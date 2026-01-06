@@ -32,7 +32,8 @@ from structural_lib.insights import (
 
 def _load_cases():
     """Load benchmark cases from JSON file."""
-    path = Path(__file__).parent / "data" / "insights_benchmark_cases.json"
+    # Path to tests/data/ (two levels up from tests/integration/)
+    path = Path(__file__).parent.parent / "data" / "insights_benchmark_cases.json"
     return json.loads(path.read_text())
 
 

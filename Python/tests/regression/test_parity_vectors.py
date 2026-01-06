@@ -24,7 +24,8 @@ from structural_lib import bbs, detailing, flexure, serviceability, shear
 
 def load_vectors() -> dict:
     """Load parity test vectors from JSON file."""
-    vectors_path = Path(__file__).parent / "data" / "parity_test_vectors.json"
+    # Path to tests/data/ (two levels up from tests/regression/)
+    vectors_path = Path(__file__).parent.parent / "data" / "parity_test_vectors.json"
     with open(vectors_path, encoding="utf-8") as f:
         return json.load(f)
 

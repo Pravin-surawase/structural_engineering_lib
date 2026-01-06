@@ -7,7 +7,8 @@ from pathlib import Path
 
 from structural_lib import report
 
-FIXTURES = Path(__file__).parent / "fixtures" / "report"
+# Path to tests/fixtures/ (two levels up from tests/regression/)
+FIXTURES = Path(__file__).parent.parent / "fixtures" / "report"
 
 
 def _read_text(name: str) -> str:

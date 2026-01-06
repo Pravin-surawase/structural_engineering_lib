@@ -1,0 +1,62 @@
+# Test Categorization Plan (59 files)
+
+## UNIT TESTS (Fast, isolated, single-module tests)
+- test_flexure.py
+- test_shear.py
+- test_detailing.py
+- test_serviceability.py
+- test_materials_is456.py
+- test_structural.py
+- test_validation_core.py
+- test_validation_ranges.py
+- test_error_schema.py
+- test_compliance_is456.py
+- test_compliance_output.py
+- test_tables.py (if exists)
+
+## INTEGRATION TESTS (Multi-module workflows)
+- test_api_beam.py
+- test_api_materials.py
+- test_api_simplified.py
+- test_api_structural.py
+- test_cli_basic.py
+- test_cli_features.py
+- test_cli_run.py
+- test_job_config.py
+- test_job_runner.py
+- test_report_html.py
+- test_report_markdown.py
+- test_smart_designer.py
+- test_excel_integration.py
+- test_excel_validation.py
+- test_dxf_export.py
+- test_dxf_rebar.py
+- test_dxf_validation.py
+- test_bbs_detailed.py
+- test_bbs_generator.py
+- test_cost_optimizer.py
+- test_cost_predictor.py
+- test_cost_reporting.py
+- test_insights_capacity.py
+- test_insights_constructability.py
+- test_insights_cost.py
+- test_insights_economic.py
+- test_insights_recommendations.py
+- test_insights_reliability.py
+- test_flanged_beam.py (if multi-module)
+
+## REGRESSION TESTS (Golden vectors, parity tests)
+- test_golden_vectors_is456.py
+- test_parity_vectors.py
+- test_vba_parity.py
+- test_verification_pack.py
+- test_critical_is456.py
+- test_coverage_gaps.py
+
+## PROPERTY TESTS (Property-based testing)
+- test_property_invariants.py
+
+## INTEGRATION (Contract/API tests)
+- test_contracts.py
+
+Let me verify which files actually exist...

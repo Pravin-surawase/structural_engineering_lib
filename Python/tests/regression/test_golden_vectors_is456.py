@@ -7,7 +7,8 @@ from structural_lib import api
 
 
 def _load_vectors() -> dict:
-    path = Path(__file__).parent / "data" / "golden_vectors_is456.json"
+    # Path to tests/data/ (two levels up from tests/regression/)
+    path = Path(__file__).parent.parent / "data" / "golden_vectors_is456.json"
     return json.loads(path.read_text(encoding="utf-8"))
 
 
