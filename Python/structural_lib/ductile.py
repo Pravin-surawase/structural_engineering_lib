@@ -18,6 +18,7 @@ from .errors import (
     E_INPUT_011,
     DesignError,
 )
+from .utilities import deprecated_field
 
 
 @dataclass
@@ -28,6 +29,16 @@ class DuctileBeamResult:
     confinement_spacing: float
     remarks: str = ""  # Deprecated: Use errors list instead
     errors: list[DesignError] = field(default_factory=list)  # Structured errors
+
+    def __post_init__(self) -> None:
+        if self.remarks:
+            deprecated_field(
+                "DuctileBeamResult",
+                "remarks",
+                "0.14.0",
+                "1.0.0",
+                alternative="errors",
+            )
 
 
 def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:

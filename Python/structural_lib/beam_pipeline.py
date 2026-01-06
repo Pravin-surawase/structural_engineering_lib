@@ -26,6 +26,7 @@ from typing import Any
 
 from . import api, detailing
 from .data_types import BarDict, CrackWidthParams, DeflectionParams, StirrupDict
+from .errors import DesignError
 
 # =============================================================================
 # Schema Version
@@ -365,7 +366,10 @@ def design_single_beam(
         section_type=_section_type_str(case_result.flexure.section_type),
         is_safe=case_result.flexure.is_safe,
         utilization=case_result.utilizations.get("flexure", 0.0),
-        remarks=case_result.flexure.error_message,
+        remarks=_remarks_from_errors(
+            case_result.flexure.error_message,
+            case_result.flexure.errors,
+        ),
     )
 
     # Extract shear output
@@ -377,7 +381,10 @@ def design_single_beam(
         sv_required_mm=case_result.shear.spacing,
         is_safe=case_result.shear.is_safe,
         utilization=case_result.utilizations.get("shear", 0.0),
-        remarks=case_result.shear.remarks,
+        remarks=_remarks_from_errors(
+            case_result.shear.remarks,
+            case_result.shear.errors,
+        ),
     )
 
     # Extract serviceability (if available)
@@ -560,3 +567,12 @@ def _section_type_str(section_type: object) -> str:
         return str(section_type.value)
     else:
         return str(section_type)
+
+
+def _remarks_from_errors(legacy: str, errors: Sequence[DesignError]) -> str:
+    """Return legacy remarks or synthesize from structured errors."""
+    if legacy:
+        return legacy
+    if not errors:
+        return ""
+    return "; ".join(error.message for error in errors)
