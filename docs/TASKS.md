@@ -11,6 +11,7 @@
 ## Rules (read first)
 - **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks (e.g., research + cleanup, small fix + docs). For complex features, keep WIP=1 to maintain focus.
 - Move tasks between sections; do not duplicate.
+- **Umbrella tasks:** For phased work, keep a single umbrella task in Active/Up Next and list included TASK IDs in its description; move included tasks to Recently Done when finished.
 - Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
 - Keep "Recently Done" to the last 10-20 items; older history lives in the archive.
 - Use agent roles from `agents/` and the workflow in `docs/_internal/AGENT_WORKFLOW.md`.
@@ -61,15 +62,19 @@
 | **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | DOCS | 30 min | 🟢 LOW |
 
 ### Professional Standards & Hygiene (CRITICAL for v1.0 readiness)
+All research tasks completed (see Recently Done).
+
+### Professional Standards & Hygiene Implementation (Phase 1-3)
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-165** | **Research: Project Hygiene & File Organization** (Audit: duplicate files, obsolete content, inconsistent naming, broken links, outdated docs, archive candidates; propose cleanup plan with file structure standards) → Save as `docs/research/project-hygiene-audit.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-| **TASK-166** | **Research: Nomenclature Standardization** (Audit: variable naming, function naming, file naming, module naming, documentation terms, abbreviations; create glossary; propose consistent naming standards across Python/VBA/docs) → Save as `docs/research/nomenclature-standards.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-| **TASK-167** | **Research: Professional Repository Standards** (Audit: license headers on all files, copyright notices, CODE_OF_CONDUCT.md, SECURITY.md, GitHub issue/PR templates, CITATION.cff, badges, funding info, contributor guidelines completeness) → Save as `docs/research/professional-repo-standards.md` | RESEARCHER | 2-3 hrs | 🔴 HIGH |
-| **TASK-168** | **Research: Documentation Quality & Completeness** (Audit all docs: outdated information, broken cross-references, missing examples, inconsistent formatting, clarity issues, redundant content; create improvement roadmap) → Save as `docs/research/documentation-quality-audit.md` | RESEARCHER | 4-5 hrs | 🔴 HIGH |
-| **TASK-169** | **Research: Code Style Consistency** (Audit: inconsistent formatting, missing docstrings, outdated comments, TODO/FIXME markers, dead code, magic numbers, black/ruff coverage gaps; create style cleanup plan) → Save as `docs/research/code-style-consistency.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
-| **TASK-170** | **Research: Test Organization & Coverage Gaps** (Audit: test file organization, missing test categories, integration test gaps, property test candidates, performance benchmark suite; create test improvement plan) → Save as `docs/research/test-organization-audit.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-184** | Canonicalize doc sources (define single source per topic + redirect stubs) and add a `docs/README.md` canonical index map | DOCS | 1-2 days | 🔴 HIGH |
+| **TASK-187** | Standardize license headers in Python modules and align VBA header format | DEV | 1-2 days | 🔴 HIGH |
+| **TASK-188** | Publish nomenclature glossary + naming rules in `docs/contributing/development-guide.md`; update key examples to match | DOCS | 0.5 day | 🟡 MEDIUM |
+| **TASK-189** | Expand ruff rules + docstring guide; apply to high-traffic modules first (report/api/dxf) | DEV | 1-2 days | 🟡 MEDIUM |
+| **TASK-190** | Resolve dead-code findings (vulture) + TODOs in SmartDesigner/CLI and track remaining ones | DEV | 0.5-1 day | 🟡 MEDIUM |
+| **TASK-191** | Restructure tests into category subfolders; add pytest markers and README for test taxonomy | TESTER | 1-2 days | 🟡 MEDIUM |
+| **TASK-192** | Add per-module coverage report + baseline performance benchmarks (pytest-benchmark) | TESTER | 1-2 days | 🟡 MEDIUM |
 
 ### Foundation & Architecture (CRITICAL for stability)
 
@@ -101,6 +106,15 @@
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-185** | Phase 1 hygiene umbrella (includes TASK-183, TASK-186): archive legacy planning docs (v0.10-v0.12) with redirect stubs in `docs/planning/` | 2026-01-06 | DOCS |
+| **TASK-183** | Fix broken internal links and add missing doc stubs (cost optimization guide, link repairs) | 2026-01-06 | DOCS |
+| **TASK-186** | Add repo metadata files (CITATION.cff, AUTHORS.md, FUNDING.yml, support issue template, third-party licenses summary) | 2026-01-06 | DOCS |
+| **TASK-165** | **Research: Project Hygiene & File Organization** (Audit: duplicate files, obsolete content, inconsistent naming, broken links, outdated docs, archive candidates; cleanup plan and file structure standards) → `docs/research/project-hygiene-audit.md` | 2026-01-06 | RESEARCHER |
+| **TASK-166** | **Research: Nomenclature Standardization** (Audit: naming, abbreviations; glossary + standards) → `docs/research/nomenclature-standards.md` | 2026-01-06 | RESEARCHER |
+| **TASK-167** | **Research: Professional Repository Standards** (Audit: license headers, community health files, templates, badges, metadata) → `docs/research/professional-repo-standards.md` | 2026-01-06 | RESEARCHER |
+| **TASK-168** | **Research: Documentation Quality & Completeness** (Audit: outdated info, broken links, missing examples, formatting, redundancy) → `docs/research/documentation-quality-audit.md` | 2026-01-06 | RESEARCHER |
+| **TASK-169** | **Research: Code Style Consistency** (Audit: formatting consistency, docstrings, TODOs, magic numbers) → `docs/research/code-style-consistency.md` | 2026-01-06 | RESEARCHER |
+| **TASK-170** | **Research: Test Organization & Coverage Gaps** (Audit: test structure, categories, coverage gaps, performance tests) → `docs/research/test-organization-audit.md` | 2026-01-06 | RESEARCHER |
 | **TASK-171** | **Phase 1: Create Automation Script Catalog** (Cataloged all 41 scripts: Session (3), Git (9), Doc Quality (8), Release (4), Testing (5), Code Quality (4), Specialized (8); comprehensive usage guide) → `docs/reference/automation-catalog.md` | 2026-01-06 | DOCS |
 | **TASK-172** | **Phase 1: Update AI_CONTEXT_PACK with Automation Section** (Added automation quick reference; categorized key scripts; linked to catalog) | 2026-01-06 | DOCS |
 | **TASK-173** | **Phase 1: Add Automation Links to AGENT_BOOTSTRAP** (Updated quick reference with automation catalog link; improved agent discoverability) | 2026-01-06 | DOCS |

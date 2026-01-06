@@ -810,7 +810,7 @@ Total: 4 minutes to clean handoff
   - **Docs:** check_links.py, check_doc_versions.py
   - **Release:** release.py, bump_version.py, verify_release.py
 
-  Full catalog: [automation-catalog.md](reference/automation-catalog.md)
+  Full catalog: [automation-catalog.md](../reference/automation-catalog.md)
   ```
 - **Impact:** High — Immediate visibility of key tools
 

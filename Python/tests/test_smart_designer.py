@@ -292,7 +292,7 @@ def test_smart_designer_invalid_design():
 
     design = _run_pipeline(params)
 
-    with pytest.raises(ValueError, match="valid passing design"):
+    with pytest.raises(ValueError, match="No valid designs found"):
         SmartDesigner.analyze(design=design, span_mm=5000.0, mu_knm=1000.0, vu_kn=85.0)
 
 
