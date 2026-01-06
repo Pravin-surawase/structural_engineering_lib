@@ -121,7 +121,7 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
-| **TASK-215** | Update workflow to allow docs/research direct commits (no PR) with checks intact | 2026-01-06 | DEVOPS |
+| **TASK-215** | Update workflow to allow docs/research direct commits (no PR) with checks intact | 2026-01-07 | DEVOPS |
 | **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns) | 2026-01-07 | RESEARCHER |
 | **TASK-199** | Sync Colab notebooks (root + docs) and document output review findings | 2026-01-06 | DOCS |
 | **TASK-198** | Update Colab workflow notebook for v0.15 smart design + comparison testing | 2026-01-06 | DOCS |
