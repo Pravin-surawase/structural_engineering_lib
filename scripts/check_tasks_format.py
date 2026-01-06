@@ -70,17 +70,20 @@ def main() -> int:
         print("ERROR: Headings are out of order.")
         return 1
 
-    # Rules section contains WIP rule.
+    # Rules section contains WIP rule (allow WIP = 1 or WIP = 2).
     rules_lines = _section(lines, positions[0])
-    if not any("WIP = 1" in line for line in rules_lines):
-        print("ERROR: Rules section must include 'WIP = 1'.")
+    if not any("WIP = 1" in line or "WIP = 2" in line for line in rules_lines):
+        print("ERROR: Rules section must include 'WIP = 1' or 'WIP = 2'.")
         return 1
+
+    # Determine WIP limit.
+    wip_limit = 2 if any("WIP = 2" in line for line in rules_lines) else 1
 
     # Active section WIP count.
     active_lines = _section(lines, positions[2])
     active_rows = _table_rows(active_lines)
-    if len(active_rows) > 1:
-        print("ERROR: Active section must have at most 1 task (WIP=1).")
+    if len(active_rows) > wip_limit:
+        print(f"ERROR: Active section must have at most {wip_limit} task(s) (WIP={wip_limit}).")
         return 1
 
     # Up Next table header.

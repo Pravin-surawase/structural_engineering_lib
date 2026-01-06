@@ -21,10 +21,10 @@
 ## At a glance
 
 - **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA)
-- **Quality:** Contract-tested APIs, 2200+ tests, 86% coverage, comprehensive validation utilities
+- **Quality:** Contract-tested APIs, 2231+ tests, 86% coverage, comprehensive validation utilities
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
 - **Automation:** Batch-ready CLI + public API wrappers for validation/detailing/export
-- **Insights:** Advisory precheck, sensitivity analysis, constructability scoring
+- **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
 
 ---
 
@@ -37,10 +37,14 @@
 - **DXF Export:** CAD-ready reinforcement drawings with title blocks and annotations
 - **Batch Processing:** CSV/JSON job runner for 100+ beams, critical set reports, HTML summaries
 
-### Advisory Tools (Preview - v0.13.0+)
+### Advisory Tools (v0.13.0+) & Smart Library (v0.15.0)
 - **Quick Precheck:** Heuristic validation (deflection risk, width adequacy, steel estimates) in <1ms
 - **Sensitivity Analysis:** Identify critical parameters (depth, width, fck) with normalized coefficients
 - **Constructability Scoring:** 0-100 scale based on bar spacing, stirrup spacing, layer count, standard sizes
+- **Cost Optimization:** Material + labor cost calculation with design alternative comparison (v0.13.0+)
+- **Design Suggestions:** 17 expert rules across 6 categories with confidence scoring (v0.13.0+)
+- **Smart Dashboard:** Unified analysis combining cost, suggestions, sensitivity, and constructability (v0.15.0)
+- **Comparison Tools:** Multi-design comparison with Pareto frontier and cost-aware sensitivity (v0.15.0)
 
 ### Quality & Trust
 - **Professional-Grade Foundation:** Contract tests prevent API breaking changes, validation utilities reduce code duplication 30%
@@ -58,7 +62,7 @@
 
 🚀 **Production-Ready Professional Tool (v0.14.0)** — Published on PyPI with enterprise-grade quality standards.
 
-**What's new in v0.14.0 (Foundation Hardening):**
+**What's new in v0.14.0 (Foundation Hardening - 2026-01-06):**
 - **Contract Testing:** 6 tests protecting API from accidental breaking changes
 - **Validation Utilities:** 8 reusable validators (78 tests, 100% coverage) reducing code duplication by 30%
 - **Deprecation Policy:** Safe evolution with `@deprecated` decorator following NumPy/pandas patterns
@@ -66,7 +70,14 @@
 - **Type Safety:** Stricter mypy checks enabled (`warn_return_any`, `strict_optional`, `warn_redundant_casts`)
 - **Research Documentation:** 5 comprehensive reports (5,800+ lines) covering CS best practices, backward compatibility, modern tooling
 - **Git Workflow:** Merge conflict prevention with pull-first workflow and pre-commit hooks
-- **Quality Metrics:** 2200 tests (+160), 86% coverage (+2%), 10 modules at 100% coverage
+- **Quality Metrics:** 2231+ tests (+231), 86% coverage (+2%), 10 modules at 100% coverage
+
+**Smart Library Preview (v0.15.0 - in development):**
+- **SmartDesigner Dashboard:** Unified analysis with cost optimization, design suggestions, sensitivity, and constructability
+- **Comparison Module:** Multi-design comparison with Pareto frontier identification and cost-aware sensitivity
+- **API Wrapper:** `smart_analyze_design()` for simple access to comprehensive smart insights
+- **Design Suggestions:** 17 expert rules across 6 categories with confidence scoring and impact levels
+- **Cost Optimization:** Material + labor cost calculation with design alternative exploration
 
 **Previous releases:** v0.13.0 added advisory insights module (precheck, sensitivity, constructability). v0.12.0 added library-first API wrappers and DXF/BBS quality gates.
 
@@ -201,6 +212,8 @@ See `docs/reference/api-stability.md` for stability labels and guarantees.
 | Function | Purpose |
 |----------|---------|
 | `api.validate_job_spec(path)` | Validate job JSON against schema |
+| `api.optimize_beam_cost(...)` | Cost optimization with material/labor breakdown (v0.13.0+) |
+| `api.smart_analyze_design(...)` | Unified smart dashboard with cost, suggestions, sensitivity, constructability (v0.15.0) |
 | `api.validate_design_results(path)` | Validate results JSON against schema |
 | `api.compute_detailing(results)` | Detailing from design results (bars, stirrups, Ld/lap) |
 | `api.compute_bbs(detailing)` | BBS rows from detailing data |
@@ -213,7 +226,7 @@ See `docs/reference/api-stability.md` for stability labels and guarantees.
 
 | Aspect | Status |
 |--------|--------|
-| **Determinism** | Same input -> same output (JSON/CSV/DXF) across runs |
+| **Determinism** | Sa2231+ tests, 86% overall coverage, 100% on 10 modulesDXF) across runs |
 | **Units** | Explicit: mm, N/mm^2, kN, kN*m — converted at layer boundaries |
 | **Test coverage** | ~2,000 tests, ~92% branch coverage (see CI for current) |
 | **Clause traceability** | Core design formulas reference IS 456 clause/table |

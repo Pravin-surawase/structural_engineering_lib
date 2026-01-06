@@ -7,7 +7,8 @@
 ---
 
 ## Rules (read first)
-- WIP = 1. Move tasks between sections; do not duplicate.
+- **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks (e.g., research + cleanup, small fix + docs). For complex features, keep WIP=1 to maintain focus.
+- Move tasks between sections; do not duplicate.
 - Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
 - Keep "Recently Done" to the last 10-20 items; older history lives in the archive.
 - Use agent roles from `agents/` and the workflow in `docs/_internal/AGENT_WORKFLOW.md`.
@@ -24,9 +25,7 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| _(No active tasks - ready to pick from Up Next or Backlog)_ | | | | |
+(Empty — no active tasks)
 
 ---
 
@@ -46,7 +45,6 @@
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | 🔴 HIGH |
 
@@ -69,6 +67,10 @@
 ---
 
 ## Recently Done
+
+| ID | Task | Completed | Agent |
+|----|------|-----------|-------|
+| **TASK-156** | Research: Backward Compatibility Automation (contract testing in CI, breaking change detection, API stability enforcement, mutation testing) | 2026-01-06 | RESEARCHER |
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
