@@ -48,9 +48,6 @@ _No active tasks. WIP = 0._
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-172** | **Phase 1: Update AI_CONTEXT_PACK with Automation Section** (Add automation quick reference after Development Workflow section; list key scripts by category; link to automation-catalog.md) | DOCS | 15 min | 🔴 HIGH |
-| **TASK-173** | **Phase 1: Add Automation Links to AGENT_BOOTSTRAP** (Update quick reference section with automation catalog link; ensure new agents discover automation tools immediately) | DOCS | 15 min | 🔴 HIGH |
-| **TASK-174** | **Phase 1: Test Automation Discoverability** (Test scenario: new agent needs git workflow automation; path: AI_CONTEXT_PACK → automation section → safe_push.sh; target: <30 seconds; validate all links work) | DOCS | 30 min | 🔴 HIGH |
 | **TASK-179** | **Phase 3: Generate Visual Architecture Diagrams** (Create PlantUML or Mermaid diagrams for: layer architecture, module dependencies, data flows; commit to docs/architecture/) | DOCS | 2 hours | 🟢 LOW |
 | **TASK-180** | **Phase 3: Create Module Dependency Graph** (Use pydeps or similar to generate Python/structural_lib dependency graph; commit PNG to docs/architecture/dependencies.png) | DOCS | 30 min | 🟢 LOW |
 | **TASK-181** | **Phase 3: Add Data Flow Diagrams** (Create Mermaid diagrams for complex pipelines: job_runner, smart_designer; show data transformations through layers; commit to docs/architecture/) | DOCS | 2 hours | 🟢 LOW |
@@ -70,7 +67,6 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed �
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts in data_types.py for ReportOutput, DesignSummary, OptimizationResult; update function signatures) | DEV | 2-3 days | 🔴 HIGH |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | 🔴 HIGH |
 
