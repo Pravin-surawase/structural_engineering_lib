@@ -30,7 +30,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-201** | **Research: User Experience Patterns for Technical APIs** (Cognitive load, discoverability, error experience, "pit of success" design; 30+ UX principles; pain point analysis) → `docs/research/ux-patterns-for-technical-apis.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH | 🚀 Ready |
+| **TASK-201** | **Research: User Experience Patterns for Technical APIs** (Cognitive load, discoverability, error experience, "pit of success" design; 30+ UX principles; pain point analysis) → `docs/research/ux-patterns-for-technical-apis.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH | � In Progress |
 
 ---
 
