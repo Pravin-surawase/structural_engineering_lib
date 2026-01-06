@@ -28,7 +28,9 @@
 
 ## Active
 
-*No active tasks. Review Up Next queue.*
+| ID | Task | Agent | Status | Notes |
+|----|------|-------|--------|-------|
+| **TASK-207** | **Research: API Evolution & Migration Strategies** → `docs/guidelines/api-evolution-standard.md` | RESEARCHER | 🏗️ In Progress | Deprecation, backward compatibility, versioning, migration tools |
 
 ---
 
@@ -55,9 +57,7 @@
 
 #### Phase 2: Domain Research
 
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-207** | **Research: API Evolution & Migration Strategies** (Deprecation strategies, backward compatibility, version communication, migration tools) → `docs/guidelines/api-evolution-standard.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
+*All Phase 2 tasks complete — see Recently Done.*
 
 #### Phase 3: Synthesis
 
