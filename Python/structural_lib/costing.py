@@ -3,7 +3,7 @@
 """Cost calculation utilities for structural elements."""
 
 from dataclasses import dataclass, field
-from typing import Dict, Optional
+from typing import Optional
 
 STEEL_DENSITY_KG_PER_M3 = 7850.0
 DEFAULT_CONCRETE_GRADE = 25
@@ -20,7 +20,7 @@ class CostProfile:
     currency: str = "INR"
 
     # Material costs per unit
-    concrete_costs: Dict[int, float] = field(
+    concrete_costs: dict[int, float] = field(
         default_factory=lambda: {
             20: 6200,
             25: 6700,

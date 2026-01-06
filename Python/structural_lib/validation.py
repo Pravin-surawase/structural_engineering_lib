@@ -10,7 +10,7 @@ and ensure consistent error handling across the library.
 See docs/research/cs-best-practices-audit.md for design rationale.
 """
 
-from typing import List, Optional
+from typing import Optional
 
 from .errors import (
     E_INPUT_001,
@@ -33,7 +33,7 @@ def validate_dimensions(
     D: float,
     *,
     require_d_less_than_D: bool = True,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate beam dimensions (b, d, D).
 
     Args:
@@ -50,7 +50,7 @@ def validate_dimensions(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if b <= 0:
         errors.append(E_INPUT_001)
@@ -68,7 +68,7 @@ def validate_dimensions(
     return errors
 
 
-def validate_materials(fck: float, fy: float) -> List[DesignError]:
+def validate_materials(fck: float, fy: float) -> list[DesignError]:
     """Validate material properties (fck, fy).
 
     Args:
@@ -83,7 +83,7 @@ def validate_materials(fck: float, fy: float) -> List[DesignError]:
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if fck <= 0:
         errors.append(E_INPUT_004)
@@ -98,7 +98,7 @@ def validate_positive(
     value: float,
     field_name: str,
     error_map: dict[str, DesignError],
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate that a value is positive.
 
     Args:
@@ -135,7 +135,7 @@ def validate_range(
     max_val: float,
     field_name: str,
     error: DesignError,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate that a value is within a specified range.
 
     Args:
@@ -160,7 +160,7 @@ def validate_geometry_relationship(
     d: float,
     D: float,
     cover: float,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate beam geometry relationships.
 
     Checks that D = d + cover + bar diameter allowance.
@@ -176,7 +176,7 @@ def validate_geometry_relationship(
     Example:
         >>> errors = validate_geometry_relationship(d=450, D=500, cover=40)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     # Basic checks
     if d <= 0:
@@ -201,7 +201,7 @@ def validate_geometry_relationship(
 def validate_stirrup_parameters(
     asv_mm2: float,
     spacing_mm: float,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate stirrup parameters.
 
     Args:
@@ -214,7 +214,7 @@ def validate_stirrup_parameters(
     Example:
         >>> errors = validate_stirrup_parameters(asv_mm2=100, spacing_mm=150)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if asv_mm2 <= 0:
         errors.append(E_INPUT_013)
@@ -227,7 +227,7 @@ def validate_stirrup_parameters(
 
 def validate_all_positive(
     **kwargs: float,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate that all provided values are positive.
 
     Convenience function for validating multiple parameters at once.
@@ -247,7 +247,7 @@ def validate_all_positive(
         This is a generic validator. For specific fields with dedicated
         error codes, use validate_dimensions() or validate_materials().
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     for field_name, value in kwargs.items():
         if value <= 0:
@@ -268,7 +268,7 @@ def validate_cover(
     cover: float,
     D: float,
     min_cover: float = 25.0,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate cover requirements.
 
     Args:
@@ -289,7 +289,7 @@ def validate_cover(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if cover <= 0:
         errors.append(E_INPUT_015)
@@ -325,7 +325,7 @@ def validate_loads(
     vu: float,
     *,
     allow_negative: bool = False,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate factored loads (moment, shear).
 
     Args:
@@ -341,7 +341,7 @@ def validate_loads(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if not allow_negative:
         if mu < 0:
@@ -393,7 +393,7 @@ def validate_loads(
 def validate_material_grades(
     fck: float,
     fy: float,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate material grades per IS 456 allowed values.
 
     Args:
@@ -411,7 +411,7 @@ def validate_material_grades(
         >>> errors = validate_material_grades(fck=25, fy=415)
         >>> # Returns empty list (both are valid)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     allowed_fck = [15, 20, 25, 30, 35, 40, 45, 50]
     allowed_fy = [250, 415, 500]
@@ -449,7 +449,7 @@ def validate_reinforcement(
     ast_max: float,
     *,
     field_name: str = "ast",
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate reinforcement area against min/max limits.
 
     Args:
@@ -467,7 +467,7 @@ def validate_reinforcement(
         ... )
         >>> # Returns empty (ast within limits)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if ast < 0:
         errors.append(
@@ -510,7 +510,7 @@ def validate_span(
     span: float,
     min_span: float = 1000.0,
     max_span: float = 30000.0,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate beam span.
 
     Args:
@@ -525,7 +525,7 @@ def validate_span(
         >>> errors = validate_span(span=5000)
         >>> # Returns empty (5000mm is reasonable)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     if span <= 0:
         errors.append(
@@ -572,7 +572,7 @@ def validate_beam_inputs(
     *,
     span: Optional[float] = None,
     allow_negative_loads: bool = False,
-) -> List[DesignError]:
+) -> list[DesignError]:
     """Validate all common beam design inputs.
 
     Composite validator that runs all relevant validators for typical beam design.
@@ -600,7 +600,7 @@ def validate_beam_inputs(
         >>> if errors:
         ...     return FlexureResult(..., errors=errors)
     """
-    errors: List[DesignError] = []
+    errors: list[DesignError] = []
 
     # Run all validators
     errors.extend(validate_dimensions(b, d, D))

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any, Callable
 
 from .data_types import RobustnessScore, SensitivityResult
 
@@ -23,10 +23,10 @@ def _classify_impact(sensitivity: float, critical: bool = False) -> str:
 
 def sensitivity_analysis(
     design_function: Callable[..., Any],
-    base_params: Dict[str, Any],
+    base_params: dict[str, Any],
     parameters_to_vary: Iterable[str] | None = None,
     perturbation: float = 0.10,
-) -> Tuple[List[SensitivityResult], RobustnessScore]:
+) -> tuple[list[SensitivityResult], RobustnessScore]:
     """Analyze parameter sensitivity via one-at-a-time perturbation.
 
     Uses finite difference method with normalized sensitivity coefficient:
@@ -73,7 +73,7 @@ def sensitivity_analysis(
         raise ValueError("design_function must return governing_utilization")
 
     parameters = list(parameters_to_vary or base_params.keys())
-    sensitivities: List[SensitivityResult] = []
+    sensitivities: list[SensitivityResult] = []
 
     for param in parameters:
         if param not in base_params:
@@ -131,7 +131,7 @@ def sensitivity_analysis(
 
 
 def calculate_robustness(
-    sensitivities: List[SensitivityResult],
+    sensitivities: list[SensitivityResult],
     base_utilization: float,
     failure_threshold: float = 1.0,
 ) -> RobustnessScore:

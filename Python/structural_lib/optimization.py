@@ -4,7 +4,7 @@
 
 import time
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import Optional
 
 from structural_lib import flexure
 from structural_lib.costing import CostBreakdown, CostProfile, calculate_beam_cost
@@ -39,7 +39,7 @@ class CostOptimizationResult:
     savings_percent: float
 
     # Alternatives (top 3 designs)
-    alternatives: List[OptimizationCandidate]
+    alternatives: list[OptimizationCandidate]
 
     # Metadata
     candidates_evaluated: int
@@ -79,7 +79,7 @@ def optimize_beam_cost(
     if cost_profile is None:
         cost_profile = CostProfile()
 
-    candidates: List[OptimizationCandidate] = []
+    candidates: list[OptimizationCandidate] = []
 
     # Smart search ranges
     # NOTE: Limited search space for v1.0 (most common grades/steel)
@@ -280,7 +280,7 @@ def _quick_feasibility(b: float, d: float, mu_knm: float, span_mm: float) -> boo
 
 def _check_compliance(
     design: FlexureResult, b: float, d: float, fck: int, fy: int
-) -> Tuple[bool, List[str]]:
+) -> tuple[bool, list[str]]:
     """Check if design meets IS 456 requirements."""
     violations = []
 

@@ -7,7 +7,6 @@ Description:  IS 13920:2016 Ductile Detailing checks for Beams
 
 import math
 from dataclasses import dataclass, field
-from typing import List, Tuple
 
 from .errors import (
     E_DUCTILE_001,
@@ -28,10 +27,10 @@ class DuctileBeamResult:
     max_pt: float
     confinement_spacing: float
     remarks: str = ""  # Deprecated: Use errors list instead
-    errors: List[DesignError] = field(default_factory=list)  # Structured errors
+    errors: list[DesignError] = field(default_factory=list)  # Structured errors
 
 
-def check_geometry(b: float, D: float) -> Tuple[bool, str, List[DesignError]]:
+def check_geometry(b: float, D: float) -> tuple[bool, str, list[DesignError]]:
     """
     Clause 6.1: Geometry requirements
     1. b >= 200 mm

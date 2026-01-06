@@ -7,7 +7,7 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, TypedDict
+from typing import TYPE_CHECKING, Any, Optional, TypedDict
 
 if TYPE_CHECKING:
     from .errors import DesignError
@@ -93,7 +93,7 @@ class OptimizerChecks(TypedDict, total=False):
 
     inputs: OptimizerInputs
     candidate: OptimizerCandidate
-    selection: Dict[str, Any]  # Selection metadata
+    selection: dict[str, Any]  # Selection metadata
 
 
 class BeamGeometry(TypedDict, total=False):
@@ -142,7 +142,7 @@ class JobSpec(TypedDict):
     code: str  # Design code (e.g., "IS456")
     units: str  # Unit system (e.g., "SI-mm")
     beam: BeamGeometry  # Beam geometry and materials
-    cases: List[LoadCase]  # List of load cases
+    cases: list[LoadCase]  # List of load cases
 
 
 class BeamType(Enum):
@@ -181,7 +181,7 @@ class FlexureResult:
     is_safe: bool  # True if design is valid
     asc_required: float = 0.0  # Area of compression steel required (mm^2)
     error_message: str = ""  # Deprecated: Use errors list instead
-    errors: List["DesignError"] = field(default_factory=list)  # Structured errors
+    errors: list["DesignError"] = field(default_factory=list)  # Structured errors
 
 
 @dataclass
@@ -193,7 +193,7 @@ class ShearResult:
     spacing: float  # Calculated spacing (mm)
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
-    errors: List["DesignError"] = field(default_factory=list)  # Structured errors
+    errors: list["DesignError"] = field(default_factory=list)  # Structured errors
 
 
 @dataclass
@@ -201,9 +201,9 @@ class DeflectionResult:
     is_ok: bool
     remarks: str
     support_condition: SupportCondition
-    assumptions: List[str]
-    inputs: Dict[str, Any]
-    computed: Dict[str, Any]
+    assumptions: list[str]
+    inputs: dict[str, Any]
+    computed: dict[str, Any]
 
 
 @dataclass
@@ -216,9 +216,9 @@ class DeflectionLevelBResult:
     is_ok: bool
     remarks: str
     support_condition: SupportCondition
-    assumptions: List[str]
-    inputs: Dict[str, Any]
-    computed: Dict[str, Any]
+    assumptions: list[str]
+    inputs: dict[str, Any]
+    computed: dict[str, Any]
 
     # Key computed values (also in computed dict)
     mcr_knm: float = 0.0  # Cracking moment (kN·m)
@@ -237,9 +237,9 @@ class CrackWidthResult:
     is_ok: bool
     remarks: str
     exposure_class: ExposureClass
-    assumptions: List[str]
-    inputs: Dict[str, Any]
-    computed: Dict[str, Any]
+    assumptions: list[str]
+    inputs: dict[str, Any]
+    computed: dict[str, Any]
 
 
 @dataclass
@@ -253,8 +253,8 @@ class ComplianceCaseResult:
     crack_width: Optional[CrackWidthResult] = None
     is_ok: bool = False
     governing_utilization: float = 0.0
-    utilizations: Dict[str, float] = field(default_factory=dict)
-    failed_checks: List[str] = field(default_factory=list)
+    utilizations: dict[str, float] = field(default_factory=dict)
+    failed_checks: list[str] = field(default_factory=list)
     remarks: str = ""
 
 
@@ -263,8 +263,8 @@ class ComplianceReport:
     is_ok: bool
     governing_case_id: str
     governing_utilization: float
-    cases: List[ComplianceCaseResult]
-    summary: Dict[str, Any] = field(default_factory=dict)
+    cases: list[ComplianceCaseResult]
+    summary: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -272,11 +272,11 @@ class ValidationReport:
     """Validation result for job specs or design results."""
 
     ok: bool
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    details: Dict[str, Any] = field(default_factory=dict)
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    details: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "ok": self.ok,
             "errors": self.errors,
@@ -290,7 +290,7 @@ class CuttingAssignment:
     """Assignment of cuts to a stock bar for cutting-stock optimization."""
 
     stock_length: float  # mm
-    cuts: List[Tuple[str, float]]  # List of (mark, cut_length) tuples
+    cuts: list[tuple[str, float]]  # List of (mark, cut_length) tuples
     waste: float  # mm remaining
 
 
@@ -298,7 +298,7 @@ class CuttingAssignment:
 class CuttingPlan:
     """Complete cutting plan with waste statistics."""
 
-    assignments: List[CuttingAssignment]
+    assignments: list[CuttingAssignment]
     total_stock_used: int  # number of bars
     total_waste: float  # mm
     waste_percentage: float  # %

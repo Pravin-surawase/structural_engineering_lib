@@ -9,7 +9,7 @@ import json
 from collections.abc import Sequence
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 from . import (
     bbs,
@@ -98,7 +98,7 @@ def validate_job_spec(path: Union[str, Path]) -> ValidationReport:
     return ValidationReport(ok=True, details=details)
 
 
-def _beam_has_geometry(beam: Dict[str, Any]) -> bool:
+def _beam_has_geometry(beam: dict[str, Any]) -> bool:
     geom = beam.get("geometry")
     if isinstance(geom, dict):
         if all(k in geom for k in ("b_mm", "D_mm", "d_mm")):
@@ -108,7 +108,7 @@ def _beam_has_geometry(beam: Dict[str, Any]) -> bool:
     return all(k in beam for k in ("b", "D", "d"))
 
 
-def _beam_has_materials(beam: Dict[str, Any]) -> bool:
+def _beam_has_materials(beam: dict[str, Any]) -> bool:
     mats = beam.get("materials")
     if isinstance(mats, dict):
         return any(k in mats for k in ("fck_nmm2", "fck")) and any(
@@ -119,7 +119,7 @@ def _beam_has_materials(beam: Dict[str, Any]) -> bool:
     )
 
 
-def _beam_has_loads(beam: Dict[str, Any]) -> bool:
+def _beam_has_loads(beam: dict[str, Any]) -> bool:
     loads = beam.get("loads")
     if isinstance(loads, dict):
         return any(k in loads for k in ("mu_knm", "Mu")) and any(
@@ -199,7 +199,7 @@ def validate_design_results(path: Union[str, Path]) -> ValidationReport:
     )
 
 
-def _extract_beam_params_from_schema(beam: Dict[str, Any]) -> Dict[str, Any]:
+def _extract_beam_params_from_schema(beam: dict[str, Any]) -> dict[str, Any]:
     """
     Extract beam parameters from either old or new schema format.
 
@@ -252,10 +252,10 @@ def _extract_beam_params_from_schema(beam: Dict[str, Any]) -> Dict[str, Any]:
 
 def _detailing_result_to_dict(
     result: detailing.BeamDetailingResult,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     zones = ("start", "mid", "end")
 
-    def _bars_to_dict(bars: list[detailing.BarArrangement]) -> list[Dict[str, Any]]:
+    def _bars_to_dict(bars: list[detailing.BarArrangement]) -> list[dict[str, Any]]:
         output = []
         for idx, arr in enumerate(bars):
             zone = zones[idx] if idx < len(zones) else f"zone_{idx}"
@@ -274,7 +274,7 @@ def _detailing_result_to_dict(
 
     def _stirrups_to_dict(
         stirrups: list[detailing.StirrupArrangement],
-    ) -> list[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         output = []
         for idx, arr in enumerate(stirrups):
             zone = zones[idx] if idx < len(zones) else f"zone_{idx}"
@@ -311,9 +311,9 @@ def _detailing_result_to_dict(
 
 
 def compute_detailing(
-    design_results: Dict[str, Any],
+    design_results: dict[str, Any],
     *,
-    config: Optional[Dict[str, Any]] = None,
+    config: Optional[dict[str, Any]] = None,
 ) -> list[detailing.BeamDetailingResult]:
     """Compute beam detailing results from design results JSON dict."""
     if not isinstance(design_results, dict):
@@ -423,7 +423,7 @@ def compute_dxf(
     *,
     multi: bool = False,
     include_title_block: bool = False,
-    title_block: Optional[Dict[str, Any]] = None,
+    title_block: Optional[dict[str, Any]] = None,
     sheet_margin_mm: float = 20.0,
     title_block_width_mm: float = 120.0,
     title_block_height_mm: float = 40.0,
@@ -473,7 +473,7 @@ def compute_dxf(
 
 
 def compute_report(
-    source: Union[str, Path, Dict[str, Any]],
+    source: Union[str, Path, dict[str, Any]],
     *,
     format: str = "html",
     job_path: Optional[Union[str, Path]] = None,
@@ -696,7 +696,7 @@ def check_crack_width(
 
 
 def check_compliance_report(
-    cases: Sequence[Dict[str, Any]],
+    cases: Sequence[dict[str, Any]],
     b_mm: float,
     D_mm: float,
     d_mm: float,
@@ -830,7 +830,7 @@ def design_beam_is456(
 def check_beam_is456(
     *,
     units: str,
-    cases: Sequence[Dict[str, Any]],
+    cases: Sequence[dict[str, Any]],
     b_mm: float,
     D_mm: float,
     d_mm: float,
@@ -983,7 +983,7 @@ def optimize_beam_cost(
     vu_kn: float,
     cost_profile: Optional[CostProfile] = None,
     cover_mm: int = 40,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Find the most cost-effective beam design meeting IS 456:2000.
 
     Uses brute-force optimization to find the cheapest valid beam design
@@ -1078,7 +1078,7 @@ def suggest_beam_design_improvements(
     span_mm: Optional[float] = None,
     mu_knm: Optional[float] = None,
     vu_kn: Optional[float] = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Get AI-driven design improvement suggestions for an IS 456:2000 beam design.
 
     Analyzes a completed beam design and provides actionable suggestions for:
@@ -1157,9 +1157,9 @@ def smart_analyze_design(
     include_sensitivity: bool = True,
     include_constructability: bool = True,
     cost_profile: Optional[CostProfile] = None,
-    weights: Optional[Dict[str, float]] = None,
+    weights: Optional[dict[str, float]] = None,
     output_format: str = "dict",
-) -> Union[Dict[str, Any], str]:
+) -> Union[dict[str, Any], str]:
     """Unified smart design analysis dashboard.
 
     Combines cost optimization, design suggestions, sensitivity analysis,

@@ -21,7 +21,6 @@ import math
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
 
 from .data_types import CuttingAssignment, CuttingPlan
 from .detailing import BeamDetailingResult
@@ -97,9 +96,9 @@ class BBSummary:
     total_weight_kg: float
 
     # Breakdown by diameter
-    weight_by_diameter: Dict[float, float] = field(default_factory=dict)
-    length_by_diameter: Dict[float, float] = field(default_factory=dict)
-    count_by_diameter: Dict[float, int] = field(default_factory=dict)
+    weight_by_diameter: dict[float, float] = field(default_factory=dict)
+    length_by_diameter: dict[float, float] = field(default_factory=dict)
+    count_by_diameter: dict[float, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -107,8 +106,8 @@ class BBSDocument:
     """Complete Bar Bending Schedule document."""
 
     project_name: str
-    member_ids: List[str]
-    items: List[BBSLineItem]
+    member_ids: list[str]
+    items: list[BBSLineItem]
     summary: BBSummary
     created_by: str = "structural_engineering_lib"
     version: str = "1.0"
@@ -391,7 +390,7 @@ def parse_bar_mark(mark: str) -> dict | None:
     }
 
 
-def extract_bar_marks_from_text(text: str) -> List[str]:
+def extract_bar_marks_from_text(text: str) -> list[str]:
     """Extract bar marks from a free-text string."""
     if not text:
         return []
@@ -399,10 +398,10 @@ def extract_bar_marks_from_text(text: str) -> List[str]:
 
 
 def extract_bar_marks_from_items(
-    items: List[BBSLineItem],
-) -> Dict[str, set[str]]:
+    items: list[BBSLineItem],
+) -> dict[str, set[str]]:
     """Collect bar marks from BBS items, grouped by beam."""
-    marks_by_beam: Dict[str, set[str]] = {}
+    marks_by_beam: dict[str, set[str]] = {}
     for item in items:
         parsed = parse_bar_mark(item.bar_mark)
         if not parsed:
@@ -412,13 +411,13 @@ def extract_bar_marks_from_items(
     return marks_by_beam
 
 
-def extract_bar_marks_from_bbs_csv(path: str | Path) -> Dict[str, set[str]]:
+def extract_bar_marks_from_bbs_csv(path: str | Path) -> dict[str, set[str]]:
     """Load bar marks from a BBS CSV file, grouped by beam."""
     p = Path(path)
     if not p.exists():
         raise FileNotFoundError(f"BBS file not found: {p}")
 
-    marks_by_beam: Dict[str, set[str]] = {}
+    marks_by_beam: dict[str, set[str]] = {}
     with p.open("r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         if not reader.fieldnames or "bar_mark" not in reader.fieldnames:
@@ -437,10 +436,10 @@ def extract_bar_marks_from_bbs_csv(path: str | Path) -> Dict[str, set[str]]:
     return marks_by_beam
 
 
-def assign_bar_marks(items: List[BBSLineItem]) -> List[BBSLineItem]:
+def assign_bar_marks(items: list[BBSLineItem]) -> list[BBSLineItem]:
     """Assign deterministic, project-unique bar marks in-place."""
     items_sorted = sorted(items, key=_bar_mark_sort_key)
-    seq_by_beam: Dict[str, int] = {}
+    seq_by_beam: dict[str, int] = {}
 
     for item in items_sorted:
         beam_id = _normalize_member_id(item.member_id)
@@ -459,7 +458,7 @@ def assign_bar_marks(items: List[BBSLineItem]) -> List[BBSLineItem]:
 def generate_bbs_from_detailing(
     detailing: BeamDetailingResult,
     include_hooks: bool = True,
-) -> List[BBSLineItem]:
+) -> list[BBSLineItem]:
     """
     Generate BBS line items from a BeamDetailingResult.
 
@@ -588,7 +587,7 @@ def generate_bbs_from_detailing(
 
 
 def calculate_bbs_summary(
-    items: List[BBSLineItem],
+    items: list[BBSLineItem],
     member_id: str = "",
 ) -> BBSummary:
     """
@@ -603,9 +602,9 @@ def calculate_bbs_summary(
     """
     total_bars = sum(item.no_of_bars for item in items)
     total_length_mm = sum(item.total_length_mm for item in items)
-    weight_by_dia: Dict[float, float] = {}
-    length_by_dia: Dict[float, float] = {}
-    count_by_dia: Dict[float, int] = {}
+    weight_by_dia: dict[float, float] = {}
+    length_by_dia: dict[float, float] = {}
+    count_by_dia: dict[float, int] = {}
 
     for item in items:
         dia = item.diameter_mm
@@ -635,7 +634,7 @@ def calculate_bbs_summary(
 
 
 def generate_bbs_document(
-    detailing_list: List[BeamDetailingResult],
+    detailing_list: list[BeamDetailingResult],
     project_name: str = "Beam BBS",
 ) -> BBSDocument:
     """
@@ -672,8 +671,8 @@ def generate_bbs_document(
 
 
 def optimize_cutting_stock(
-    line_items: List[BBSLineItem],
-    stock_lengths: Optional[List[float]] = None,
+    line_items: list[BBSLineItem],
+    stock_lengths: list[float] | None = None,
     kerf: float = 3.0,
 ) -> CuttingPlan:
     """
@@ -716,7 +715,7 @@ def optimize_cutting_stock(
         stock_lengths = [float(x) for x in STANDARD_STOCK_LENGTHS_MM]
 
     # Sort stock lengths ascending for efficient selection
-    stock_lengths_sorted: List[float] = sorted(stock_lengths)
+    stock_lengths_sorted: list[float] = sorted(stock_lengths)
 
     # Step 1: Expand line items into individual cuts
     cuts = []  # List of (mark, cut_length) tuples
@@ -746,7 +745,7 @@ def optimize_cutting_stock(
     cuts.sort(key=lambda x: x[1], reverse=True)
 
     # Step 3-4: Bin packing with first-fit-decreasing heuristic
-    assignments: List[CuttingAssignment] = []
+    assignments: list[CuttingAssignment] = []
 
     for mark, cut_len in cuts:
         placed = False
@@ -819,7 +818,7 @@ def optimize_cutting_stock(
 
 
 def export_bbs_to_csv(
-    items: List[BBSLineItem],
+    items: list[BBSLineItem],
     output_path: str,
     include_summary: bool = True,
 ) -> str:
