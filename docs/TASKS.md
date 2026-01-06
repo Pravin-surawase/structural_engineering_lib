@@ -28,9 +28,7 @@
 
 ## Active
 
-| ID | Task | Agent | Status | Notes |
-|----|------|-------|--------|-------|
-| **TASK-204** | **Research: Error Handling & Exception Design** → `docs/guidelines/error-handling-standard.md` | RESEARCHER | 🏗️ In Progress | Creating comprehensive standard with exception hierarchy, error messages, validation patterns |
+*No active tasks. Review Up Next queue.*
 
 ---
 
@@ -116,6 +114,7 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-204** | **Research: Error Handling & Exception Design** (12 sections: core principles, exception hierarchy, error message quality, validation patterns, error recovery, exception context, anti-patterns, testing, migration, examples, logging, performance; comprehensive ~2100 line standard with quick reference checklist and complete exception catalog) → `docs/guidelines/error-handling-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-203** | **Research: Result Object Design Patterns** (12 sections: dataclass vs namedtuple vs dict, essential methods, immutability, nested results, error handling, serialization, anti-patterns, migration; comprehensive ~950 line standard with SciPy OptimizeResult case study) → `docs/guidelines/result-object-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-202** | **Research: Function Signature Design Standards** (11 sections: core principles, parameter ordering, keyword-only patterns, type hints, defaults, unit suffixes, validation params, special cases, anti-patterns, migration guide, examples; comprehensive ~1000 line standard document with quick reference card and PR review checklist) → `docs/guidelines/function-signature-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-201** | **Research: UX Patterns for Technical APIs** (Cognitive load, discoverability, error design, "pit of success"; created docs/research/ux-patterns-for-technical-apis.md) | 2026-01-07 | RESEARCHER |
