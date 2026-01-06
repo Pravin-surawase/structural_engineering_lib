@@ -30,7 +30,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-190** | Resolve dead-code findings (vulture) + TODOs in SmartDesigner/CLI and track remaining ones | DEV | 0.5-1 day | 🟡 MEDIUM | 🔄 In Progress |
+| (None) | | | | | |
 
 ---
 
@@ -66,7 +66,6 @@ All research tasks completed (see Recently Done).
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-196** | Add Complete Docstrings to Core Modules (flexure.py, shear.py, detailing.py) | DEV | 1-2 days | 🟡 MEDIUM |
-| **TASK-190** | Resolve dead-code findings (vulture) + TODOs in SmartDesigner/CLI and track remaining ones | DEV | 0.5-1 day | 🟡 MEDIUM |
 | **TASK-191** | Restructure tests into category subfolders; add pytest markers and README for test taxonomy | TESTER | 1-2 days | 🟡 MEDIUM |
 | **TASK-192** | Add per-module coverage report + baseline performance benchmarks (pytest-benchmark) | TESTER | 1-2 days | 🟡 MEDIUM |
 
@@ -100,6 +99,7 @@ All research tasks completed (see Recently Done).
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-190** | Resolve dead-code findings + TODOs + comprehensive CI linting cleanup (removed 2 dead code items: bbs.py unused param, comparison.py unused var; updated 3 TODOs with deferral notes; created deferred-integrations.md tracking doc; fixed all 91 ruff errors: 21 auto-fixed, config updates for structural notation, test naming patterns; documented CI scope mismatch prevention; PR #268 merged; all 2270 tests pass) | 2026-01-06 | DEV |
 | **TASK-195** | Add Complete Docstrings to api.py (compute_detailing, compute_bbs, compute_dxf, compute_report; 139 lines added; Google Style with Args/Returns/Raises/Examples) | 2026-01-06 | DEV |
 | **TASK-194** | Fix Naming Convention Issues (configured ruff to allow structural engineering conventions: D, D_mm, Df, etc.; 59 naming issues resolved; per-file ignores for excel_bridge) | 2026-01-06 | DEV |
 | **TASK-193** | Type Annotation Modernization (PEP 585/604: 398 issues resolved; 25 files modified; list/dict/tuple instead of List/Dict/Tuple; all 2270 tests pass) | 2026-01-06 | DEV |
