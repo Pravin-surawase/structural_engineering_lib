@@ -5,10 +5,52 @@ Description:  Custom Data Types (Classes/Dataclasses) and Enums
 
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, TypedDict
 
 if TYPE_CHECKING:
     from .errors import DesignError
+
+
+# =============================================================================
+# TypedDicts for Structured Data
+# =============================================================================
+
+
+class BarDict(TypedDict):
+    """Bar arrangement dictionary for bottom/top bars."""
+
+    count: int
+    diameter: float
+    callout: str
+
+
+class StirrupDict(TypedDict):
+    """Stirrup arrangement dictionary."""
+
+    diameter: float
+    spacing: float
+    callout: str
+
+
+class DeflectionParams(TypedDict, total=False):
+    """Parameters for deflection calculation.
+
+    All fields are optional (total=False).
+    """
+
+    span_mm: float
+    d_mm: float
+    support_condition: str  # "CANTILEVER", "SIMPLY_SUPPORTED", "CONTINUOUS"
+
+
+class CrackWidthParams(TypedDict, total=False):
+    """Parameters for crack width calculation.
+
+    All fields are optional (total=False).
+    """
+
+    exposure: str  # Exposure class: "MILD", "MODERATE", "SEVERE", "VERY_SEVERE"
+    max_crack_width_mm: float  # Maximum allowable crack width
 
 
 class BeamType(Enum):

@@ -22,6 +22,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Sequence
 
 from . import api, detailing
+from .data_types import BarDict, CrackWidthParams, DeflectionParams, StirrupDict
 
 # =============================================================================
 # Schema Version
@@ -174,9 +175,9 @@ class DetailingOutput:
 
     ld_tension_mm: float = 0.0
     lap_length_mm: float = 0.0
-    bottom_bars: List[Dict[str, Any]] = field(default_factory=list)
-    top_bars: List[Dict[str, Any]] = field(default_factory=list)
-    stirrups: List[Dict[str, Any]] = field(default_factory=list)
+    bottom_bars: List[BarDict] = field(default_factory=list)
+    top_bars: List[BarDict] = field(default_factory=list)
+    stirrups: List[StirrupDict] = field(default_factory=list)
 
 
 @dataclass
@@ -273,8 +274,8 @@ def design_single_beam(
     stirrup_spacing_start_mm: float = 150.0,
     stirrup_spacing_mid_mm: float = 200.0,
     stirrup_spacing_end_mm: float = 150.0,
-    deflection_params: Optional[Dict[str, Any]] = None,
-    crack_width_params: Optional[Dict[str, Any]] = None,
+    deflection_params: Optional[DeflectionParams] = None,
+    crack_width_params: Optional[CrackWidthParams] = None,
 ) -> BeamDesignOutput:
     """
     Run complete beam design pipeline for a single beam/case.

@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| *(No active tasks - ready to pick from Up Next)* | | | | | |
+| **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts for common data structures) | DEV | 2-3 days | 🔴 HIGH | 🚧 In Progress |
 
 ---
 
@@ -49,7 +49,6 @@
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
 | **TASK-156** | **Research: Backward Compatibility Automation** (From TASK-149: contract testing in CI, breaking change detection, API stability enforcement, mutation testing for robustness) → Save as `docs/research/backward-compat-automation.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-| **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts in data_types.py for ReportOutput, DesignSummary, OptimizationResult; update function signatures) | DEV | 2-3 days | 🔴 HIGH |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | 🔴 HIGH |
 

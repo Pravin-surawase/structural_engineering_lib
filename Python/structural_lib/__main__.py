@@ -24,7 +24,7 @@ import csv
 import json
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, cast
 
 from . import (
     api,
@@ -35,6 +35,7 @@ from . import (
     job_runner,
     report,
 )
+from .data_types import CrackWidthParams, DeflectionParams
 
 
 def _fmt_cell(v: object) -> str:
@@ -154,13 +155,14 @@ def cmd_design(args: argparse.Namespace) -> int:
                 _print_error(f"Crack width params file not found: {params_path}")
                 return 1
             with params_path.open("r", encoding="utf-8") as f:
-                crack_width_params = json.load(f)
-            if not isinstance(crack_width_params, dict):
+                loaded_params = json.load(f)
+            if not isinstance(loaded_params, dict):
                 _print_error(
                     "Crack width params must be a JSON object.",
                     hint='Example: {"acr_mm": 120, "cmin_mm": 25, "h_mm": 500}',
                 )
                 return 1
+            crack_width_params = cast(CrackWidthParams, loaded_params)
             # Warn if applying global params to multiple beams
             if len(beams) > 1:
                 print(
@@ -179,11 +181,14 @@ def cmd_design(args: argparse.Namespace) -> int:
             asv_mm2 = 3.14159 * (beam.stirrup_dia / 2) ** 2 * 2
             deflection_params = None
             if args.deflection:
-                deflection_params = {
-                    "span_mm": beam.span,
-                    "d_mm": beam.d,
-                    "support_condition": args.support_condition,
-                }
+                deflection_params = cast(
+                    DeflectionParams,
+                    {
+                        "span_mm": beam.span,
+                        "d_mm": beam.d,
+                        "support_condition": args.support_condition,
+                    },
+                )
 
             # Use canonical pipeline for design
             result = beam_pipeline.design_single_beam(

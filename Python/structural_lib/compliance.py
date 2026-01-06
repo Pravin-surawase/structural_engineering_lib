@@ -25,7 +25,9 @@ from . import flexure, serviceability, shear
 from .data_types import (
     ComplianceCaseResult,
     ComplianceReport,
+    CrackWidthParams,
     CrackWidthResult,
+    DeflectionParams,
     DeflectionResult,
     DesignSectionType,
     ExposureClass,
@@ -172,8 +174,8 @@ def check_compliance_case(
     pt_percent: Optional[float] = None,
     ast_mm2_for_shear: Optional[float] = None,
     # Optional serviceability checks
-    deflection_params: Optional[Dict[str, Any]] = None,
-    crack_width_params: Optional[Dict[str, Any]] = None,
+    deflection_params: Optional[DeflectionParams] = None,
+    crack_width_params: Optional[CrackWidthParams] = None,
 ) -> ComplianceCaseResult:
     """Run a single compliance case.
 
@@ -292,8 +294,8 @@ def check_compliance_report(
     asv_mm2: float = 100.0,
     pt_percent: Optional[float] = None,
     # Optional global serviceability defaults (can be overridden per case)
-    deflection_defaults: Optional[Dict[str, Any]] = None,
-    crack_width_defaults: Optional[Dict[str, Any]] = None,
+    deflection_defaults: Optional[DeflectionParams] = None,
+    crack_width_defaults: Optional[CrackWidthParams] = None,
 ) -> ComplianceReport:
     """Run multiple cases and pick a deterministic governing case.
 

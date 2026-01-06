@@ -19,7 +19,13 @@ from . import (
     serviceability,
 )
 from .costing import CostProfile
-from .data_types import ComplianceCaseResult, ComplianceReport, ValidationReport
+from .data_types import (
+    ComplianceCaseResult,
+    ComplianceReport,
+    CrackWidthParams,
+    DeflectionParams,
+    ValidationReport,
+)
 from .insights import cost_optimization, design_suggestions
 
 __all__ = [
@@ -695,8 +701,8 @@ def check_compliance_report(
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
     pt_percent: Optional[float] = None,
-    deflection_defaults: Optional[Dict[str, Any]] = None,
-    crack_width_defaults: Optional[Dict[str, Any]] = None,
+    deflection_defaults: Optional[DeflectionParams] = None,
+    crack_width_defaults: Optional[CrackWidthParams] = None,
 ) -> ComplianceReport:
     """Run a multi-case IS 456 compliance report.
 
@@ -747,8 +753,8 @@ def design_beam_is456(
     asv_mm2: float = 100.0,
     pt_percent: Optional[float] = None,
     ast_mm2_for_shear: Optional[float] = None,
-    deflection_params: Optional[Dict[str, Any]] = None,
-    crack_width_params: Optional[Dict[str, Any]] = None,
+    deflection_params: Optional[DeflectionParams] = None,
+    crack_width_params: Optional[CrackWidthParams] = None,
 ) -> ComplianceCaseResult:
     """Design/check a single IS 456 beam case (strength + optional serviceability).
 
@@ -829,8 +835,8 @@ def check_beam_is456(
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
     pt_percent: Optional[float] = None,
-    deflection_defaults: Optional[Dict[str, Any]] = None,
-    crack_width_defaults: Optional[Dict[str, Any]] = None,
+    deflection_defaults: Optional[DeflectionParams] = None,
+    crack_width_defaults: Optional[CrackWidthParams] = None,
 ) -> ComplianceReport:
     """Run an IS 456 compliance report across multiple cases.
 
