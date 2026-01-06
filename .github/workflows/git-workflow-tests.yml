@@ -66,6 +66,10 @@ jobs:
         run: |
           ./scripts/verify_git_fix.sh
 
+      - name: Test workflow decision tool (should_use_pr.sh)
+        run: |
+          ./scripts/test_should_use_pr.sh
+
       - name: Run git workflow tests
         run: |
           ./scripts/test_git_workflow.sh --verbose
