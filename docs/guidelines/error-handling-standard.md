@@ -816,19 +816,372 @@ Debug details:
 
 ## 7. Anti-patterns to Avoid
 
-*(Placeholder - to be added in next step)*
+### 7.1 Silent Failures
+
+```python
+# ❌ BAD: Returns None on error, silent failure
+def calculate_ast(mu_kn_m: float, ...) -> float | None:
+    if mu_kn_m < 0:
+        return None  # Silent, user must check return value
+    ...
+
+# ✅ GOOD: Explicit exception
+def calculate_ast(mu_kn_m: float, ...) -> float:
+    if mu_kn_m < 0:
+        raise ValidationError(f"Moment Mu={mu_kn_m} kN·m cannot be negative")
+    ...
+```
+
+### 7.2 Generic Error Messages
+
+```python
+# ❌ BAD: Vague, unhelpful
+raise ValueError("Invalid input")
+raise Exception("Error in calculation")
+raise RuntimeError("Failed")
+
+# ✅ GOOD: Specific, actionable
+raise DimensionError(
+    f"Beam width b={b_mm}mm < 200mm minimum (IS 456 Cl. 26.5.1.1). "
+    f"Increase beam width to at least 200mm."
+)
+```
+
+### 7.3 Swallowing Exceptions
+
+```python
+# ❌ BAD: Catches and hides errors
+def design_beam(...):
+    try:
+        result = design_flexure(...)
+    except Exception:
+        return None  # Lost all error information!
+
+# ✅ GOOD: Let exceptions propagate or re-raise with context
+def design_beam(...):
+    try:
+        result = design_flexure(...)
+    except ValidationError as e:
+        raise ValidationError(f"Beam design failed: {str(e)}") from e
+```
+
+### 7.4 Exception for Control Flow
+
+```python
+# ❌ BAD: Using exceptions for normal control flow
+def find_bar_size(ast_req_mm2: float) -> int:
+    for dia in [12, 16, 20, 25, 32]:
+        try:
+            arrangement = try_bar_size(ast_req_mm2, dia)
+            return dia
+        except DesignError:
+            continue  # Try next size
+
+# ✅ GOOD: Use explicit return values
+def find_bar_size(ast_req_mm2: float) -> int | None:
+    for dia in [12, 16, 20, 25, 32]:
+        if can_fit_bars(ast_req_mm2, dia):
+            return dia
+    return None  # No suitable size found
+```
+
+### 7.5 Misleading Exception Types
+
+```python
+# ❌ BAD: Using ValueError for non-input errors
+def design_flexure(...):
+    if mu_kn_m > mu_lim:
+        raise ValueError("Moment exceeds capacity")  # Not a validation error!
+
+# ✅ GOOD: Use correct exception type
+def design_flexure(...):
+    if mu_kn_m > mu_lim:
+        raise DesignError(  # Design capacity issue
+            f"Moment Mu={mu_kn_m:.1f} > Mu,lim={mu_lim:.1f} kN·m. "
+            f"Requires compression reinforcement."
+        )
+```
+
+### 7.6 Bare `assert` for Validation
+
+```python
+# ❌ BAD: Assert can be disabled with python -O
+def design_beam(b_mm: float, ...):
+    assert b_mm >= 200, "Width too small"  # Disappears with -O flag!
+    ...
+
+# ✅ GOOD: Explicit validation
+def design_beam(b_mm: float, ...):
+    if b_mm < 200:
+        raise ValidationError(f"Beam width b={b_mm}mm < 200mm minimum")
+    ...
+
+# ✅ OK: Assert for internal invariants only
+def _internal_calculation(...):
+    result = complex_math(...)
+    assert result >= 0, "Bug: result should never be negative"  # Programming error
+    return result
+```
+
+### 7.7 Error Codes Instead of Types
+
+```python
+# ❌ BAD: C-style error codes
+def design_beam(...) -> tuple[BeamDesignResult | None, int]:
+    if b_mm < 200:
+        return None, ERROR_DIMENSION  # User must decode error code
+    if mu_kn_m > mu_lim:
+        return None, ERROR_CAPACITY
+    return result, SUCCESS
+
+# ✅ GOOD: Use exception types
+def design_beam(...) -> BeamDesignResult:
+    if b_mm < 200:
+        raise DimensionError("...")
+    if mu_kn_m > mu_lim:
+        raise DesignError("...")
+    return result
+```
 
 ---
 
 ## 8. Testing Exception Behavior
 
-*(Placeholder - to be added in next step)*
+### 8.1 Test Expected Exceptions
+
+```python
+import pytest
+from structural_lib.exceptions import DimensionError, MaterialError
+
+
+def test_beam_width_validation():
+    """Test that beam width below 200mm raises DimensionError."""
+    with pytest.raises(DimensionError) as exc_info:
+        design_flexure(
+            b_mm=150,  # Too small
+            d_mm=500,
+            mu_kn_m=100,
+            fck_mpa=30,
+            fy_mpa=415,
+        )
+
+    # Check error message content
+    assert "b=150mm" in str(exc_info.value)
+    assert "200mm minimum" in str(exc_info.value)
+    assert "Cl. 26.5.1.1" in str(exc_info.value)
+
+
+def test_concrete_grade_validation():
+    """Test that invalid concrete grade raises MaterialError."""
+    with pytest.raises(MaterialError, match=r"fck=.*not in standard grades"):
+        design_flexure(
+            b_mm=300,
+            d_mm=500,
+            mu_kn_m=100,
+            fck_mpa=33,  # Not a standard grade
+            fy_mpa=415,
+        )
+```
+
+### 8.2 Test Exception Attributes
+
+```python
+def test_exception_details():
+    """Test that exception includes rich debugging details."""
+    with pytest.raises(DimensionError) as exc_info:
+        design_flexure(b_mm=150, ...)
+
+    exc = exc_info.value
+    assert exc.details["b_mm"] == 150
+    assert exc.details["minimum"] == 200
+    assert exc.suggestion is not None
+    assert "200mm" in exc.suggestion
+    assert exc.clause_ref == "Cl. 26.5.1.1"
+```
+
+### 8.3 Test Exception Chaining
+
+```python
+def test_exception_chaining():
+    """Test that exceptions are chained with context."""
+    with pytest.raises(ValidationError) as exc_info:
+        design_beam_is456(b_mm=150, ...)  # Top-level function
+
+    # Check that original exception is chained
+    assert exc_info.value.__cause__ is not None
+    assert isinstance(exc_info.value.__cause__, DimensionError)
+```
+
+### 8.4 Test Error Messages Don't Break
+
+```python
+def test_error_message_formatting():
+    """Test that error messages format correctly."""
+    # Use parameterized tests for multiple cases
+    test_cases = [
+        (150, "b=150mm"),
+        (199.5, "b=199.5mm"),
+        (0, "b=0mm"),
+    ]
+
+    for b_mm, expected_in_message in test_cases:
+        with pytest.raises(DimensionError) as exc_info:
+            design_flexure(b_mm=b_mm, ...)
+
+        assert expected_in_message in str(exc_info.value)
+```
+
+### 8.5 Test Validation Flag
+
+```python
+def test_validation_flag_enabled():
+    """Test that validation=True catches invalid inputs."""
+    with pytest.raises(DimensionError):
+        design_beam_is456(b_mm=150, ..., validate=True)
+
+
+def test_validation_flag_disabled():
+    """Test that validation=False skips input validation."""
+    # This should NOT raise (though calculation may fail later)
+    # Only use for performance testing, not recommended in production
+    try:
+        result = design_beam_is456(b_mm=150, ..., validate=False)
+    except DimensionError:
+        pytest.fail("validation=False should not raise DimensionError at input check")
+```
 
 ---
 
 ## 9. Migration Strategy
 
-*(Placeholder - to be added in next step)*
+### 9.1 Phased Rollout
+
+**Phase 1: Create exception hierarchy** (v0.15.0)
+- Add new exception classes to `structural_lib/exceptions.py`
+- No breaking changes yet, old code still works
+
+```python
+# New file: structural_lib/exceptions.py
+class StructuralLibError(Exception):
+    """Base exception for structural_lib_is456."""
+    ...
+
+class ValidationError(StructuralLibError):
+    """Raised when input validation fails."""
+    ...
+```
+
+**Phase 2: Add new exceptions alongside old** (v0.16.0)
+- Start using new exceptions in new code
+- Keep old error handling for backward compatibility
+
+```python
+def design_flexure_new(...) -> FlexureResult:
+    """New function using new exceptions."""
+    if b_mm < 200:
+        raise DimensionError("...")
+    ...
+
+def design_flexure(...) -> tuple:
+    """Old function still using tuples/None."""
+    if b_mm < 200:
+        return None, "Width too small"
+    ...
+```
+
+**Phase 3: Add deprecation warnings** (v0.17.0)
+- Keep old functions but warn about deprecation
+
+```python
+import warnings
+
+def design_flexure(...) -> tuple:
+    """
+    DEPRECATED: Use design_flexure_v2() instead.
+
+    This function will be removed in v1.0.0.
+    """
+    warnings.warn(
+        "design_flexure() is deprecated and will be removed in v1.0.0. "
+        "Use design_flexure_v2() instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    ...
+```
+
+**Phase 4: Remove old code** (v1.0.0)
+- Remove deprecated functions
+- All code uses new exception system
+
+### 9.2 Wrapper for Backward Compatibility
+
+```python
+def design_beam_is456_legacy(
+    b_mm: float,
+    d_mm: float,
+    ...,
+) -> tuple[BeamDesignResult | None, str]:
+    """
+    Legacy wrapper that returns (result, error_message) tuple.
+
+    DEPRECATED: Use design_beam_is456() which raises exceptions.
+    This function will be removed in v1.0.0.
+    """
+    warnings.warn(
+        "design_beam_is456_legacy() is deprecated. "
+        "Use design_beam_is456() and handle exceptions instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
+    try:
+        result = design_beam_is456(b_mm, d_mm, ...)
+        return result, ""
+    except StructuralLibError as e:
+        return None, str(e)
+```
+
+### 9.3 Migration Checklist
+
+For each function being migrated:
+
+- [ ] Replace return tuples with exceptions
+- [ ] Add validation at function entry
+- [ ] Use appropriate exception types (ValidationError, DesignError, etc.)
+- [ ] Include units in error messages
+- [ ] Add `details` dict for debugging
+- [ ] Add `suggestion` for user guidance
+- [ ] Add `clause_ref` for IS 456 clauses
+- [ ] Update docstring with `Raises:` section
+- [ ] Add unit tests for exceptions
+- [ ] Update usage examples in docs
+- [ ] Keep old function with deprecation warning (if public API)
+- [ ] Update CHANGELOG with migration notes
+
+### 9.4 Documentation Updates
+
+Update docs to show exception-based usage:
+
+```python
+# OLD (to be removed)
+result, error = design_beam_is456(b_mm=300, d_mm=550, ...)
+if error:
+    print(f"Error: {error}")
+    return
+print(f"Steel required: {result.ast_required_mm2:.0f} mm²")
+
+# NEW (recommended)
+try:
+    result = design_beam_is456(b_mm=300, d_mm=550, ...)
+    print(f"Steel required: {result.ast_required_mm2:.0f} mm²")
+except ValidationError as e:
+    print(f"Input error: {e}")
+    print(f"Suggestion: {e.suggestion}")
+except DesignError as e:
+    print(f"Design failed: {e}")
+    print(f"Details: {e.details}")
+```
 
 ---
 
