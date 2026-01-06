@@ -30,7 +30,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL | 🚀 Ready |
+| **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL | ⚙️ In Progress |
 
 ---
 
