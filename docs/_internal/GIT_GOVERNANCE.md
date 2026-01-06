@@ -104,7 +104,7 @@ Solo default:
   - `pytest (3.12)` — Python 3.12 tests
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
-- ⚠️ Pull requests OPTIONAL (not required)
+- ✅ PR-first: required for code/CI/deps; docs-only direct commits allowed
 
 Notes:
 - `CodeQL` runs on pushes and PRs, but is not currently configured as a required status check for `main`.
@@ -115,15 +115,15 @@ Notes:
 - OS: ubuntu-latest
 
 **Workflow:**
-- Direct push allowed for repository maintainer
+- Direct push allowed only for docs-only or very small changes
 - All commits trigger CI
 - Failed CI = immediate notification
-- PRs optional but recommended for significant changes
+- PRs required for production code, CI changes, and dependencies
 
 **Implications:**
 - Fast iteration for routine work
 - CI quality gate maintained
-- Self-review available via optional PRs
+- Self-approval is blocked by GitHub; requires another reviewer or admin merge override
 - Clean revert if CI fails
 - Tags can be created after direct push to `main` or after PR merge
 

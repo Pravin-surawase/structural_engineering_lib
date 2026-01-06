@@ -157,6 +157,8 @@ vim Python/structural_lib/data_types.py
 # 3. Watch CI (fast checks, ~20-30s)
 # 4. Ask if you want to merge
 # 5. If yes: squash merge, delete branch, return to main
+
+# Note: GitHub blocks self-approval. If reviews are required, get another reviewer or use an admin merge override.
 ```
 
 ### Workflow 3: Emergency Hotfix
