@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-06
+**Updated:** 2026-01-07
 
 > **Note:** For TASK-165 to TASK-170 (Professional Standards & Hygiene), see detailed specifications in [docs/planning/hygiene-research-specs.md](planning/hygiene-research-specs.md)
 
@@ -44,25 +44,59 @@ _No active tasks. WIP = 0._
 
 ## Backlog
 
-### Documentation Enhancement (HIGH PRIORITY — From Handoff Analysis)
+### API Improvement Research (CRITICAL for v1.0 — Professional Standards)
+
+> **Full specifications:** [docs/planning/api-improvement-research-specs.md](planning/api-improvement-research-specs.md)
+> **Philosophy:** Research-first, then guidelines, then implementation.
+
+#### Phase 1: Core Research (Critical)
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
+| **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns; function signatures, return types, error handling, defaults; 50+ code examples; comparison matrix) → `docs/research/professional-api-patterns.md` | RESEARCHER | 4-5 hrs | 🔴 CRITICAL |
+| **TASK-201** | **Research: User Experience Patterns for Technical APIs** (Cognitive load, discoverability, error experience, "pit of success" design; 30+ UX principles; pain point analysis) → `docs/research/ux-patterns-for-technical-apis.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL |
+| **TASK-203** | **Research: Result Object Design Patterns** (Dataclass vs namedtuple vs dict; essential methods: to_dict, summary; error handling in results; SciPy/sklearn examples) → `docs/guidelines/result-object-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-204** | **Research: Error Handling & Exception Design** (Exception hierarchy, error message quality, validation patterns, error recovery; 40+ exception examples) → `docs/guidelines/error-handling-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+
+#### Phase 2: Domain Research
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-205** | **Research: Engineering Domain API Patterns** (Study PyNite, OpenSees, ezdxf, handcalcs, pint; unit handling, IS 456 notation, domain conventions) → `docs/research/engineering-domain-apis.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-206** | **Research: API Documentation & Discoverability** (Docstring best practices, example-driven docs, IDE integration, auto-doc tools) → `docs/guidelines/documentation-standard.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-207** | **Research: API Evolution & Migration Strategies** (Deprecation strategies, backward compatibility, version communication, migration tools) → `docs/guidelines/api-evolution-standard.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
+
+#### Phase 3: Synthesis
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-208** | **Synthesis: Create API Guidelines Document** (Consolidate all research into unified `docs/guidelines/api-design-guidelines.md`; actionable rules; code templates; review checklists) | ARCHITECT | 3-4 hrs | 🔴 HIGH |
+| **TASK-209** | **Implementation Roadmap: API Improvements** (Prioritized improvements from research; implementation sequence; migration strategies; timeline) → `docs/planning/api-improvement-roadmap.md` | PM | 2-3 hrs | 🔴 HIGH |
+
+### Documentation Enhancement (From Handoff Analysis)
+
+_Most tasks completed — see Recently Done._
 
 ### Professional Standards & Hygiene (CRITICAL for v1.0 readiness)
 All research tasks completed (see Recently Done).
 
 ### Professional Standards & Hygiene Implementation (Phase 1-3)
 
-_TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed — see Recently Done._
+_TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (type annotations, naming, docstrings) completed — see Recently Done._
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
+| **TASK-210** | Apply API Guidelines to `api.py` (After research: refactor function signatures, add keyword-only params, improve result objects) | DEV | 2-3 days | 🔴 HIGH |
+| **TASK-211** | Apply API Guidelines to core modules (flexure.py, shear.py, detailing.py based on guidelines) | DEV | 2-3 days | 🔴 HIGH |
 
 ### Foundation & Architecture (CRITICAL for stability)
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
+| **TASK-212** | Create custom exception hierarchy (BaseLibraryError, ValidationError, DesignError, ComplianceError based on research) | DEV | 1 day | 🔴 HIGH |
+| **TASK-213** | Implement error message templates (actionable, context-rich messages following research guidelines) | DEV | 1 day | 🔴 HIGH |
+| **TASK-214** | Create result object base classes (BaseResult with to_dict, summary, validate methods) | DEV | 1 day | 🔴 HIGH |
 
 ### v1.0 Readiness (carryover)
 
@@ -86,6 +120,7 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed �
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-199** | Sync Colab notebooks (root + docs) and document output review findings | 2026-01-06 | DOCS |
 | **TASK-198** | Update Colab workflow notebook for v0.15 smart design + comparison testing | 2026-01-06 | DOCS |
 | **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | 2026-01-06 | DOCS |
 | **TASK-181** | **Phase 3: Add Data Flow Diagrams** (Create Mermaid diagrams for complex pipelines: job_runner, smart_designer; show data transformations through layers; commit to docs/architecture/) | 2026-01-06 | DOCS |
