@@ -15,11 +15,26 @@
 
 ---
 
+## ⚠️ BEFORE ANYTHING ELSE: Git Workflow
+
+**NEVER use manual git commands! ONLY use:**
+
+```bash
+./scripts/safe_push.sh "commit message"
+```
+
+**DO NOT use:** `git add`, `git commit`, `git push`, `git pull` manually!
+
+See [.github/copilot-instructions.md](.github/copilot-instructions.md) for full details.
+
+---
+
 ## 🎯 Golden Rules
 
 1. **Small, deterministic changes** — no hidden defaults
 2. **Python + VBA parity** — same formulas, units, edge-case behavior
 3. **Update docs with code** — in the same PR
+4. **Git workflow:** ALWAYS use `./scripts/safe_push.sh`
 
 ---
 
