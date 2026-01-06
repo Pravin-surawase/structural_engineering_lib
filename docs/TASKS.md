@@ -28,9 +28,7 @@
 
 ## Active
 
-| ID | Task | Agent | Status | Notes |
-|----|------|-------|--------|-------|
-| **TASK-206** | **Research: API Documentation & Discoverability** → `docs/guidelines/documentation-standard.md` | RESEARCHER | 🏗️ In Progress | Docstring best practices, example-driven docs, IDE integration |
+*No active tasks. Review Up Next queue.*
 
 ---
 
@@ -114,6 +112,7 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-206** | **Research: API Documentation & Discoverability** (10 sections + 2 appendices: docstring standard (Google style), type hints & annotations, example-driven documentation, IDE integration (VSCode/PyCharm), module-level documentation, API reference generation with pdoc, error documentation, code examples best practices, documentation testing with doctest, 4 complete docstring templates; comprehensive ~1500 line standard) → `docs/guidelines/documentation-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-205** | **Research: Engineering Domain API Patterns** (10 sections: analyzed PyNite, ezdxf, pint, handcalcs, OpenSees; cross-library patterns, unit handling strategies (implicit vs explicit vs suffix-based), engineering notation conventions, recommendations; validates our current suffix-based approach as optimal; ~1000 line comprehensive analysis) → `docs/research/engineering-domain-apis.md` | 2026-01-07 | RESEARCHER |
 | **TASK-204** | **Research: Error Handling & Exception Design** (12 sections: core principles, exception hierarchy, error message quality, validation patterns, error recovery, exception context, anti-patterns, testing, migration, examples, logging, performance; comprehensive ~2100 line standard with quick reference checklist and complete exception catalog) → `docs/guidelines/error-handling-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-203** | **Research: Result Object Design Patterns** (12 sections: dataclass vs namedtuple vs dict, essential methods, immutability, nested results, error handling, serialization, anti-patterns, migration; comprehensive ~950 line standard with SciPy OptimizeResult case study) → `docs/guidelines/result-object-standard.md` | 2026-01-07 | RESEARCHER |
