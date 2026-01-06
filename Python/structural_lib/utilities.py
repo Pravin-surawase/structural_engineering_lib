@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Module:       utilities
 Description:  Helper functions (Interpolation, Rounding, Validation, Deprecation)

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Constructability scoring (advisory only).
 
 Based on Singapore Building Designers Appraisal Scheme (BDAS) framework

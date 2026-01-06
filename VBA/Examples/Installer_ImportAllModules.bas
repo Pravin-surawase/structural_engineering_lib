@@ -1,6 +1,12 @@
 Attribute VB_Name = "Installer_ImportAllModules"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' Bulk import helper for this repo.
 '
 ' Purpose:

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Cost optimization feature for beam design.
 
 This module provides AI-driven cost optimization that finds the cheapest

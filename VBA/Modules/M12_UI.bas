@@ -1,6 +1,12 @@
 Attribute VB_Name = "M12_UI"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==========================================================================================
 ' Module:       M12_UI
 ' Description:  UI Event Handlers for Buttons and Controls.
@@ -23,7 +29,7 @@ End Sub
 Public Sub Main_Clear()
     Dim answer As VbMsgBoxResult
     answer = MsgBox("Are you sure you want to clear all design results?", vbYesNo + vbQuestion, "Confirm Clear")
-    
+
     If answer = vbYes Then
         M11_AppLayer.Clear_Results
     End If

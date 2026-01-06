@@ -1,11 +1,16 @@
 Attribute VB_Name = "M18_BBS"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M18_BBS
 ' Description:  Bar Bending Schedule (BBS) Generation — IS 2502:1999 / SP 34:1987
 ' Version:      0.9.4
-' License:      MIT
 ' ==============================================================================
 '
 ' References:
@@ -53,29 +58,29 @@ Public Function BBS_CalculateBarWeight( _
     '
     ' Returns:
     '     Weight in kg (rounded to 2 decimal places)
-    
+
     Dim d_m As Double
     Dim l_m As Double
     Dim area_m2 As Double
     Dim weight As Double
     Const PI As Double = 3.14159265358979
-    
+
     ' Validate inputs
     If diameter_mm <= 0# Or length_mm <= 0# Then
         BBS_CalculateBarWeight = 0#
         Exit Function
     End If
-    
+
     ' Convert to meters (Mac-safe: use CDbl)
     d_m = CDbl(diameter_mm) / 1000#
     l_m = CDbl(length_mm) / 1000#
-    
+
     ' Cross-sectional area (m²)
     area_m2 = PI * CDbl(d_m / 2#) * CDbl(d_m / 2#)
-    
+
     ' Weight (kg)
     weight = CDbl(area_m2) * CDbl(l_m) * STEEL_DENSITY_KG_M3
-    
+
     BBS_CalculateBarWeight = Round(weight, WEIGHT_ROUND_DECIMALS)
 End Function
 
@@ -88,7 +93,7 @@ Public Function BBS_UnitWeightPerMeter(ByVal diameter_mm As Double) As Double
     '
     ' Returns:
     '     Weight in kg/m
-    
+
     BBS_UnitWeightPerMeter = BBS_CalculateBarWeight(diameter_mm, 1000#)
 End Function
 
@@ -101,7 +106,7 @@ Public Function BBS_GetStandardUnitWeight(ByVal diameter_mm As Long) As Double
     '
     ' Returns:
     '     Weight in kg/m, or 0 if not a standard diameter
-    
+
     Select Case diameter_mm
         Case 6: BBS_GetStandardUnitWeight = 0.222
         Case 8: BBS_GetStandardUnitWeight = 0.395
@@ -137,12 +142,12 @@ Public Function BBS_CalculateHookLength( _
     '
     ' Returns:
     '     Hook length (mm)
-    
+
     If diameter_mm <= 0# Then
         BBS_CalculateHookLength = 0#
         Exit Function
     End If
-    
+
     Select Case hook_angle
         Case 180#
             BBS_CalculateHookLength = CDbl(8#) * CDbl(diameter_mm)
@@ -173,12 +178,12 @@ Public Function BBS_CalculateBendDeduction( _
     '
     ' Returns:
     '     Bend deduction (mm)
-    
+
     If diameter_mm <= 0# Then
         BBS_CalculateBendDeduction = 0#
         Exit Function
     End If
-    
+
     Select Case bend_angle
         Case 180#
             BBS_CalculateBendDeduction = CDbl(4#) * CDbl(diameter_mm)
@@ -210,24 +215,24 @@ Public Function BBS_CalculateStraightBarLength( _
     '
     ' Returns:
     '     Cut length (mm), rounded to LENGTH_ROUND_MM
-    
+
     Dim base_length As Double
     Dim hook_length As Double
     Dim total As Double
-    
+
     If span_mm <= 0# Then
         BBS_CalculateStraightBarLength = 0#
         Exit Function
     End If
-    
+
     ' Bar extends from cover to cover (inside faces)
     base_length = CDbl(span_mm) - CDbl(2#) * CDbl(cover_mm)
-    
+
     ' Add hook lengths
     hook_length = CDbl(hooks) * BBS_CalculateHookLength(12#, hook_angle) ' Assume 12mm for hook calc
-    
+
     total = base_length + hook_length
-    
+
     ' Round to nearest LENGTH_ROUND_MM
     BBS_CalculateStraightBarLength = RoundToNearest(total, LENGTH_ROUND_MM)
 End Function
@@ -253,34 +258,34 @@ Public Function BBS_CalculateStirrupCutLength( _
     '
     ' Returns:
     '     Cut length (mm), rounded to LENGTH_ROUND_MM
-    
+
     Dim inner_width As Double
     Dim inner_depth As Double
     Dim perimeter As Double
     Dim hooks As Double
     Dim bends As Double
     Dim total As Double
-    
+
     If b_mm <= 0# Or D_mm <= 0# Then
         BBS_CalculateStirrupCutLength = 0#
         Exit Function
     End If
-    
+
     ' Inner dimensions (to centerline of stirrup)
     inner_width = CDbl(b_mm) - CDbl(2#) * CDbl(cover_mm)
     inner_depth = CDbl(D_mm) - CDbl(2#) * CDbl(cover_mm)
-    
+
     ' Perimeter (2 widths + 2 depths)
     perimeter = CDbl(2#) * inner_width + CDbl(2#) * inner_depth
-    
+
     ' Add hooks (2 hooks for closed stirrup)
     hooks = CDbl(2#) * BBS_CalculateHookLength(stirrup_dia_mm, hook_angle)
-    
+
     ' Subtract bend deductions (4 corners × 90°)
     bends = CDbl(4#) * BBS_CalculateBendDeduction(stirrup_dia_mm, 90#)
-    
+
     total = perimeter + hooks - bends
-    
+
     ' Round to nearest LENGTH_ROUND_MM
     BBS_CalculateStirrupCutLength = RoundToNearest(total, LENGTH_ROUND_MM)
 End Function
@@ -330,9 +335,9 @@ Public Function BBS_CreateLineItem( _
     '
     ' Returns:
     '     BBSLineItem with all fields populated
-    
+
     Dim item As BBSLineItem
-    
+
     item.bar_mark = bar_mark
     item.member_id = member_id
     item.location = location
@@ -345,7 +350,7 @@ Public Function BBS_CreateLineItem( _
     item.unit_weight_kg = BBS_CalculateBarWeight(diameter_mm, item.cut_length_mm)
     item.total_weight_kg = CDbl(no_of_bars) * item.unit_weight_kg
     item.remarks = remarks
-    
+
     BBS_CreateLineItem = item
 End Function
 
@@ -366,18 +371,18 @@ Public Function BBS_CalculateSummary( _
     '
     ' Returns:
     '     BBSSummary with totals
-    
+
     Dim summary As BBSSummary
     Dim i As Long
     Dim lowerBound As Long
     Dim upperBound As Long
-    
+
     summary.member_id = member_id
     summary.total_items = 0
     summary.total_bars = 0
     summary.total_length_m = 0#
     summary.total_weight_kg = 0#
-    
+
     ' Handle empty array
     On Error Resume Next
     lowerBound = LBound(items)
@@ -388,19 +393,19 @@ Public Function BBS_CalculateSummary( _
         Exit Function
     End If
     On Error GoTo 0
-    
+
     summary.total_items = upperBound - lowerBound + 1
-    
+
     For i = lowerBound To upperBound
         summary.total_bars = summary.total_bars + items(i).no_of_bars
         summary.total_length_m = summary.total_length_m + CDbl(items(i).total_length_mm) / 1000#
         summary.total_weight_kg = summary.total_weight_kg + items(i).total_weight_kg
     Next i
-    
+
     ' Round totals
     summary.total_length_m = Round(summary.total_length_m, 2)
     summary.total_weight_kg = Round(summary.total_weight_kg, 2)
-    
+
     BBS_CalculateSummary = summary
 End Function
 

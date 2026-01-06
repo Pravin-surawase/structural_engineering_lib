@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Dataclasses for advisory insights (precheck, sensitivity, constructability).
 

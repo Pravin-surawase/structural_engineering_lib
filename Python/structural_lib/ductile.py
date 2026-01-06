@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Module:       ductile
 Description:  IS 13920:2016 Ductile Detailing checks for Beams

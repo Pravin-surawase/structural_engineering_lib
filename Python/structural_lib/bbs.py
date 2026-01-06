@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:1987
 

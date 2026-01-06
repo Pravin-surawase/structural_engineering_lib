@@ -1,11 +1,16 @@
 Attribute VB_Name = "M05_Materials"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M05_Materials
 ' Description:  Material properties and derived constants (fck, fy related)
 ' Version:      1.0.01
-' License:      MIT
 ' ==============================================================================
 
 ' Get Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)
@@ -43,7 +48,7 @@ End Function
 Public Function Get_Steel_Stress(ByVal strain As Double, ByVal fy As Double) As Double
     Dim Es As Double
     Es = 200000# ' N/mm^2
-    
+
     If fy = 250 Then
         Dim yield_strain As Double
         yield_strain = 0.87 * fy / Es
@@ -54,13 +59,13 @@ Public Function Get_Steel_Stress(ByVal strain As Double, ByVal fy As Double) As 
         End If
         Exit Function
     End If
-    
+
     ' For HYSD bars (Fe415, Fe500)
     ' Data from SP:16 Table A
     Dim s(1 To 5) As Double
     Dim f(1 To 5) As Double
     Dim i As Long
-    
+
     If fy = 415 Then
         s(1) = 0.00144: f(1) = 288.7
         s(2) = 0.00163: f(2) = 306.7
@@ -87,15 +92,15 @@ Public Function Get_Steel_Stress(ByVal strain As Double, ByVal fy As Double) As 
         End If
         Exit Function
     End If
-    
+
     ' Interpolation Logic
-    
+
     ' 1. Elastic region check
     If strain < s(1) Then
         Get_Steel_Stress = strain * Es
         Exit Function
     End If
-    
+
     ' 2. Inelastic region interpolation
     For i = 1 To 4
         If strain >= s(i) And strain <= s(i + 1) Then
@@ -103,7 +108,7 @@ Public Function Get_Steel_Stress(ByVal strain As Double, ByVal fy As Double) As 
             Exit Function
         End If
     Next i
-    
+
     ' 3. Yield plateau
     Get_Steel_Stress = f(5)
 End Function

@@ -1,11 +1,16 @@
 Attribute VB_Name = "M03_Tables"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M03_Tables
 ' Description:  Data tables from IS 456:2000 (Table 19, Table 20, etc.)
 ' Version:      1.0.01
-' License:      MIT
 ' ==============================================================================
 
 ' ------------------------------------------------------------------------------
@@ -43,7 +48,7 @@ End Function
 ' Helper to get Tc for a specific grade (interpolating Pt)
 Private Function Get_Tc_For_Grade(ByVal Grade As Long, ByVal pt As Double) As Double
     Dim arrTc As Variant
-    
+
     Select Case Grade
         Case 15: arrTc = Get_Tc_Column_M15()
         Case 20: arrTc = Get_Tc_Column_M20()
@@ -52,14 +57,14 @@ Private Function Get_Tc_For_Grade(ByVal Grade As Long, ByVal pt As Double) As Do
         Case 35: arrTc = Get_Tc_Column_M35()
         Case Else: arrTc = Get_Tc_Column_M40() ' M40 and above
     End Select
-    
+
     Dim arrPt As Variant
     arrPt = Get_Pt_Rows()
-    
+
     ' Clamp Pt
     If pt < 0.15 Then pt = 0.15
     If pt > 3# Then pt = 3#
-    
+
     ' Find interval
     Dim i As Long
     For i = LBound(arrPt) To UBound(arrPt) - 1
@@ -68,7 +73,7 @@ Private Function Get_Tc_For_Grade(ByVal Grade As Long, ByVal pt As Double) As Do
             Exit Function
         End If
     Next i
-    
+
     ' Fallback (should not reach here due to clamp)
     Get_Tc_For_Grade = arrTc(UBound(arrTc))
 End Function
@@ -78,9 +83,9 @@ End Function
 Public Function Get_Tc_Value(ByVal fck As Double, ByVal pt As Double) As Double
     ' 1. Handle Fck (No interpolation, use nearest lower grade)
     ' Available columns: 15, 20, 25, 30, 35, 40
-    
+
     Dim gradeToUse As Long
-    
+
     If fck >= 40 Then
         gradeToUse = 40
     ElseIf fck >= 35 Then
@@ -94,7 +99,7 @@ Public Function Get_Tc_Value(ByVal fck As Double, ByVal pt As Double) As Double
     Else
         gradeToUse = 15 ' Minimum or fallback
     End If
-    
+
     Get_Tc_Value = Get_Tc_For_Grade(gradeToUse, pt)
 End Function
 
@@ -106,7 +111,7 @@ End Function
 Public Function Get_TcMax_Value(ByVal fck As Double) As Double
     ' Table 20 Data
     ' M15: 2.5, M20: 2.8, M25: 3.1, M30: 3.5, M35: 3.7, M40+: 4.0
-    
+
     If fck >= 40 Then
         Get_TcMax_Value = 4#
     ElseIf fck <= 15 Then
@@ -114,7 +119,7 @@ Public Function Get_TcMax_Value(ByVal fck As Double) As Double
     Else
         ' Interpolate
         Dim x1 As Double, y1 As Double, x2 As Double, y2 As Double
-        
+
         If fck < 20 Then
             x1 = 15: y1 = 2.5: x2 = 20: y2 = 2.8
         ElseIf fck < 25 Then
@@ -126,7 +131,7 @@ Public Function Get_TcMax_Value(ByVal fck As Double) As Double
         Else
             x1 = 35: y1 = 3.7: x2 = 40: y2 = 4#
         End If
-        
+
         Get_TcMax_Value = M04_Utilities.LinearInterp(fck, x1, y1, x2, y2)
     End If
 End Function

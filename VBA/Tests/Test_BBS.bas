@@ -1,6 +1,12 @@
 Attribute VB_Name = "Test_BBS"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       Test_BBS
 ' Description:  Unit tests for M18_BBS module
@@ -14,46 +20,46 @@ Public Sub RunBBSTests()
     ' Main test runner for BBS module.
     '
     ' Run from Immediate Window: RunBBSTests
-    
+
     g_PassCount = 0
     g_FailCount = 0
-    
+
     Debug.Print "========================================"
     Debug.Print "BBS Module Tests"
     Debug.Print "========================================"
-    
+
     ' Weight calculation tests
     Test_BarWeight_16mm_1m
     Test_BarWeight_20mm_2m
     Test_BarWeight_Zero_Diameter
     Test_BarWeight_Zero_Length
-    
+
     ' Unit weight tests
     Test_UnitWeight_Standard_Diameters
     Test_UnitWeight_Calculated
-    
+
     ' Hook length tests
     Test_HookLength_90deg
     Test_HookLength_135deg
     Test_HookLength_180deg
-    
+
     ' Bend deduction tests
     Test_BendDeduction_90deg
     Test_BendDeduction_135deg
     Test_BendDeduction_180deg
-    
+
     ' Stirrup cut length tests
     Test_StirrupCutLength_300x500
     Test_StirrupCutLength_250x450
-    
+
     ' Line item creation tests
     Test_CreateLineItem_Basic
     Test_CreateLineItem_Stirrup
-    
+
     ' Summary tests
     Test_Summary_SingleItem
     Test_Summary_MultipleItems
-    
+
     Debug.Print "========================================"
     Debug.Print "RESULTS: " & g_PassCount & " passed, " & g_FailCount & " failed"
     Debug.Print "========================================"
@@ -235,7 +241,7 @@ Private Sub Test_CreateLineItem_Basic()
     ' Create a basic straight bar line item
     Dim item As BBSLineItem
     item = BBS_CreateLineItem("A1", "B1", "bottom", "full", "A", 16, 4, 5500)
-    
+
     AssertEqual item.bar_mark, "A1", "LineItem_BarMark"
     AssertEqual item.member_id, "B1", "LineItem_MemberId"
     AssertEqual item.no_of_bars, 4, "LineItem_Count"
@@ -249,7 +255,7 @@ Private Sub Test_CreateLineItem_Stirrup()
     ' Create a stirrup line item
     Dim item As BBSLineItem
     item = BBS_CreateLineItem("S1", "B1", "stirrup", "start", "E", 8, 20, 1400)
-    
+
     AssertEqual item.bar_mark, "S1", "StirrupItem_BarMark"
     AssertEqual item.location, "stirrup", "StirrupItem_Location"
     AssertEqual item.shape_code, "E", "StirrupItem_Shape"
@@ -265,10 +271,10 @@ Private Sub Test_Summary_SingleItem()
     ' Summary with single item
     Dim items(0) As BBSLineItem
     Dim summary As BBSSummary
-    
+
     items(0) = BBS_CreateLineItem("A1", "B1", "bottom", "full", "A", 16, 4, 5500)
     summary = BBS_CalculateSummary(items, "B1")
-    
+
     AssertEqual summary.member_id, "B1", "Summary_MemberId"
     AssertEqual summary.total_items, 1, "Summary_TotalItems"
     AssertEqual summary.total_bars, 4, "Summary_TotalBars"
@@ -280,11 +286,11 @@ Private Sub Test_Summary_MultipleItems()
     ' Summary with multiple items
     Dim items(1) As BBSLineItem
     Dim summary As BBSSummary
-    
+
     items(0) = BBS_CreateLineItem("A1", "B1", "bottom", "full", "A", 16, 4, 5500)
     items(1) = BBS_CreateLineItem("S1", "B1", "stirrup", "full", "E", 8, 30, 1400)
     summary = BBS_CalculateSummary(items, "B1")
-    
+
     AssertEqual summary.total_items, 2, "MultiSummary_TotalItems"
     AssertEqual summary.total_bars, 34, "MultiSummary_TotalBars"
     AssertTrue summary.total_weight_kg > 30, "MultiSummary_TotalWeight"

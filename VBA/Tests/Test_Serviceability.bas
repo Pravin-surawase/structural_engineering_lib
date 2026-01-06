@@ -1,11 +1,16 @@
 Attribute VB_Name = "Test_Serviceability"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       Test_Serviceability
 ' Description:  Unit Tests for M17_Serviceability module
 ' Version:      0.8.0
-' License:      MIT
 ' ==============================================================================
 
 Private m_PassCount As Long

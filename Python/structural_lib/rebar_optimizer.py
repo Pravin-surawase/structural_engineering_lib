@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Rebar arrangement optimizer (deterministic).
 
 This module provides a deterministic, bounded search that converts a required

@@ -1,6 +1,12 @@
 Attribute VB_Name = "M13_Integration"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==========================================================================================
 ' Module:       M13_Integration
 ' Description:  Handles data import/export from external sources (ETABS, CSV).
@@ -25,7 +31,7 @@ Public Sub Import_ETABS_Data()
     Dim filePath As String
     Dim wsInput As Worksheet
     Dim tblInput As ListObject
-    
+
     ' 1. Select File (mac-friendly with fallback) or load sample if unavailable
     #If Mac Then
         On Error Resume Next
@@ -38,30 +44,30 @@ Public Sub Import_ETABS_Data()
         filePath = Application.GetOpenFilename("CSV Files (*.csv), *.csv")
         If filePath = "False" Then filePath = ""
     #End If
-    
+
     ' 2. Setup Target
     Set wsInput = ThisWorkbook.Sheets("BEAM_INPUT")
     On Error Resume Next
     Set tblInput = wsInput.ListObjects("tbl_BeamInput")
     On Error GoTo 0
-    
+
     If tblInput Is Nothing Then
         MsgBox "Error: tbl_BeamInput not found. Please run Setup first.", vbCritical
         Exit Sub
     End If
-    
+
     ' 3. If no file or invalid path, load sample data
     If Len(Trim$(filePath)) = 0 Or Dir(filePath) = "" Then
         Populate_Sample_Input tblInput
         MsgBox "Sample data loaded into BEAM_INPUT.", vbInformation
         Exit Sub
     End If
-    
+
     ' 4. Read & Parse CSV
     Application.ScreenUpdating = False
     Call Process_ETABS_CSV(filePath, tblInput)
     Application.ScreenUpdating = True
-    
+
     MsgBox "Import Complete!", vbInformation
 End Sub
 
@@ -72,38 +78,38 @@ Public Sub Generate_Sample_ETABS_CSV()
     Dim filePath As String
     Dim fileNum As Integer
     Dim i As Long
-    
+
     ' Default path: Desktop or Documents
     #If Mac Then
         filePath = MacScript("return POSIX path of (path to desktop folder)") & "ETABS_Sample_Export.csv"
     #Else
         filePath = Environ("USERPROFILE") & "\Desktop\ETABS_Sample_Export.csv"
     #End If
-    
+
     fileNum = FreeFile
     Open filePath For Output As #fileNum
-    
+
     ' Write Header
     Print #fileNum, "Story,Label,Unique Name,Output Case,Station,P,V2,M3"
-    
+
     ' Write Sample Data (B1, B2, B3)
     ' B1: Story1, 4m span
     Print #fileNum, "Story1,B1,1,Combo1,0,0,100,-50"
     Print #fileNum, "Story1,B1,1,Combo1,2000,0,0,150"
     Print #fileNum, "Story1,B1,1,Combo1,4000,0,-100,-50"
-    
+
     ' B2: Story1, 3m span
     Print #fileNum, "Story1,B2,2,Combo1,0,0,80,-40"
     Print #fileNum, "Story1,B2,2,Combo1,1500,0,0,100"
     Print #fileNum, "Story1,B2,2,Combo1,3000,0,-80,-40"
-    
+
     ' B3: Story2, 5m span
     Print #fileNum, "Story2,B3,3,Combo1,0,0,120,-60"
     Print #fileNum, "Story2,B3,3,Combo1,2500,0,0,200"
     Print #fileNum, "Story2,B3,3,Combo1,5000,0,-120,-60"
-    
+
     Close #fileNum
-    
+
     MsgBox "Sample CSV generated at: " & vbNewLine & filePath, vbInformation
 End Sub
 
@@ -124,12 +130,12 @@ Private Sub Populate_Sample_Input(tbl As ListObject)
         Array("B3", "Story2", "Mid", 230, 500, 25, 25, 500, 200, 0, "No", 0, 0), _
         Array("B3", "Story2", "End", 230, 500, 25, 25, 500, -60, 120, "No", 0, 0) _
     )
-    
+
     ' Clear existing rows
     If Not tbl.DataBodyRange Is Nothing Then
         tbl.DataBodyRange.Delete
     End If
-    
+
     Dim i As Long
     For i = LBound(samples) To UBound(samples)
         Dim lr As ListRow
@@ -146,7 +152,7 @@ Private Sub Process_Beam_Group(key As String, rows As Collection, tbl As ListObj
     Dim rowData As Variant
     Dim sVal As Double, mVal As Double, vVal As Double
     Dim maxStation As Double
-    
+
     ' 1. Find Length (Max Station)
     maxStation = 0
     For i = 1 To rows.Count
@@ -154,26 +160,26 @@ Private Sub Process_Beam_Group(key As String, rows As Collection, tbl As ListObj
         sVal = CDbl(Val(rowData(idxStation))) ' Val handles strings safely
         If sVal > maxStation Then maxStation = sVal
     Next i
-    
+
     If maxStation <= 0 Then Exit Sub
-    
+
     ' 2. Buckets (Store Max Magnitude with Sign)
     Dim mStart As Double, vStart As Double
     Dim mMid As Double, vMid As Double
     Dim mEnd As Double, vEnd As Double
-    
+
     ' Initialize
     mStart = 0: vStart = 0
     mMid = 0: vMid = 0
     mEnd = 0: vEnd = 0
-    
+
     ' 3. Aggregate
     For i = 1 To rows.Count
         rowData = rows(i)
         sVal = CDbl(Val(rowData(idxStation)))
         mVal = CDbl(Val(rowData(idxM3))) ' Keep Sign!
         vVal = CDbl(Val(rowData(idxV2))) ' Keep Sign!
-        
+
         ' Bucket Logic (0-20%, 20-80%, 80-100%)
         If sVal <= 0.2 * maxStation Then
             If Abs(mVal) > Abs(mStart) Then mStart = mVal
@@ -186,13 +192,13 @@ Private Sub Process_Beam_Group(key As String, rows As Collection, tbl As ListObj
             If Abs(vVal) > Abs(vMid) Then vMid = vVal
         End If
     Next i
-    
+
     ' 4. Write to Table
     Dim parts() As String
     parts = Split(key, "|")
     Dim story As String: story = parts(0)
     Dim label As String: label = parts(1)
-    
+
     AddRow tbl, label, story, "Start", mStart, vStart
     AddRow tbl, label, story, "Mid", mMid, vMid
     AddRow tbl, label, story, "End", mEnd, vEnd
@@ -201,13 +207,13 @@ End Sub
 Private Sub AddRow(tbl As ListObject, ID As String, story As String, loc As String, Mu As Double, Vu As Double)
     Dim newRow As ListRow
     Set newRow = tbl.ListRows.Add
-    
+
     ' Dynamic Column Mapping
     Dim idxID As Integer, idxStory As Integer, idxLoc As Integer
     Dim idxB As Integer, idxD As Integer, idxCover As Integer
     Dim idxFck As Integer, idxFy As Integer
     Dim idxMu As Integer, idxVu As Integer, idxFlanged As Integer
-    
+
     On Error Resume Next
     idxID = tbl.ListColumns("ID").Index
     idxStory = tbl.ListColumns("Story").Index
@@ -221,25 +227,25 @@ Private Sub AddRow(tbl As ListObject, ID As String, story As String, loc As Stri
     idxVu = tbl.ListColumns("Vu").Index
     idxFlanged = tbl.ListColumns("Flanged").Index
     On Error GoTo 0
-    
+
     If idxID = 0 Then idxID = 1
-    
+
     With newRow.Range
         If idxID > 0 Then .Cells(1, idxID).Value = ID
         If idxStory > 0 Then .Cells(1, idxStory).Value = story
         If idxLoc > 0 Then .Cells(1, idxLoc).Value = loc
-        
+
         ' Default Geometry (User must fill)
         If idxB > 0 Then .Cells(1, idxB).Value = 230
         If idxD > 0 Then .Cells(1, idxD).Value = 450
         If idxCover > 0 Then .Cells(1, idxCover).Value = 25
         If idxFck > 0 Then .Cells(1, idxFck).Value = 25
         If idxFy > 0 Then .Cells(1, idxFy).Value = 500
-        
+
         ' Forces
         If idxMu > 0 Then .Cells(1, idxMu).Value = Mu
         If idxVu > 0 Then .Cells(1, idxVu).Value = Vu
-        
+
         ' Defaults
         If idxFlanged > 0 Then .Cells(1, idxFlanged).Value = "No"
     End With
@@ -252,7 +258,7 @@ Private Function MapHeaders(headers() As String) As Collection
     Dim c As New Collection
     Dim i As Long
     Dim h As String
-    
+
     For i = LBound(headers) To UBound(headers)
         h = NormalizeHeader(headers(i))
         If h <> "" Then
@@ -267,7 +273,7 @@ End Function
 Private Function NormalizeHeader(raw As String) As String
     Dim s As String
     s = UCase(Trim(Replace(raw, """", "")))
-    
+
     ' Aliases
     If InStr(s, "STORY") > 0 Then NormalizeHeader = COL_STORY: Exit Function
     If InStr(s, "LABEL") > 0 Or InStr(s, "BEAM") > 0 Then NormalizeHeader = COL_LABEL: Exit Function
@@ -275,7 +281,7 @@ Private Function NormalizeHeader(raw As String) As String
     If InStr(s, "M3") > 0 Or InStr(s, "MOMENT") > 0 Then NormalizeHeader = COL_M3: Exit Function
     If InStr(s, "V2") > 0 Or InStr(s, "SHEAR") > 0 Then NormalizeHeader = COL_V2: Exit Function
     If InStr(s, "CASE") > 0 Or InStr(s, "COMBO") > 0 Then NormalizeHeader = COL_CASE: Exit Function
-    
+
     NormalizeHeader = ""
 End Function
 
@@ -287,7 +293,7 @@ Private Function ValidateColumns(map As Collection, ByRef iStory As Long, ByRef 
     iM3 = map(COL_M3)
     iV2 = map(COL_V2)
     On Error GoTo 0
-    
+
     ' Check if all required indices are > 0 (Collection returns Empty/Error if missing? No, Error)
     If iStory < 0 Or iLabel < 0 Or iStation < 0 Or iM3 < 0 Or iV2 < 0 Then
         ValidateColumns = False
@@ -304,12 +310,12 @@ Private Function ParseCSVLine(line As String) As String()
     Dim inQuotes As Boolean
     Dim i As Long
     Dim count As Long
-    
+
     ReDim result(0 To Len(line)) ' Max possible fields
     count = 0
     inQuotes = False
     currentField = ""
-    
+
     For i = 1 To Len(line)
         char = Mid(line, i, 1)
         If char = """" Then
@@ -322,7 +328,7 @@ Private Function ParseCSVLine(line As String) As String()
             currentField = currentField & char
         End If
     Next i
-    
+
     result(count) = currentField
     ReDim Preserve result(0 To count)
     ParseCSVLine = result
@@ -355,12 +361,12 @@ Private Sub Populate_Sample_Input(tbl As ListObject)
         Array("B3", "S3", "Mid", 250, 600, 30, 25, 415, 200, 180, "No", 0, 0), _
         Array("B3", "S3", "End", 250, 600, 30, 25, 415, -70, 140, "No", 0, 0) _
     )
-    
+
     ' Clear existing rows
     If Not tbl.DataBodyRange Is Nothing Then
         tbl.DataBodyRange.Delete
     End If
-    
+
     Dim i As Long
     For i = LBound(samples) To UBound(samples)
         Dim lr As ListRow
@@ -377,7 +383,7 @@ Public Sub Generate_Sample_ETABS_CSV()
     Dim fnum As Integer
     Dim rows As Variant
     Dim i As Long
-    
+
     rows = Array( _
         Array("S1", "B1", 0, -50, 90, "COMBO1"), _
         Array("S1", "B1", 5, 150, 120, "COMBO1"), _
@@ -389,18 +395,18 @@ Public Sub Generate_Sample_ETABS_CSV()
         Array("S3", "B3", 7, 200, 180, "COMBO1"), _
         Array("S3", "B3", 14, -70, 140, "COMBO1") _
     )
-    
+
     filePath = Application.GetSaveAsFilename("ETABS_Sample_Export.csv", "CSV Files (*.csv), *.csv", , "Save sample ETABS CSV")
     If filePath = False Then Exit Sub
-    
+
     fnum = FreeFile
     Open CStr(filePath) For Output As #fnum
     Print #fnum, "Story,Label,Station,M3,V2,Output Case"
-    
+
     For i = LBound(rows) To UBound(rows)
         Print #fnum, rows(i)(0) & "," & rows(i)(1) & "," & rows(i)(2) & "," & rows(i)(3) & "," & rows(i)(4) & "," & rows(i)(5)
     Next i
-    
+
     Close #fnum
     MsgBox "Sample ETABS CSV saved to: " & filePath, vbInformation
 End Sub

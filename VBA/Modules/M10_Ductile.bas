@@ -1,11 +1,16 @@
 Attribute VB_Name = "M10_Ductile"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M10_Ductile
 ' Description:  IS 13920:2016 Ductile Detailing checks for Beams
 ' Version:      1.0.0
-' License:      MIT
 ' ==============================================================================
 
 Public Type DuctileBeamResult
@@ -24,22 +29,22 @@ Public Function Check_Geometry(ByVal b As Double, ByVal D As Double, ByRef Error
         ErrorMsg = "Width " & b & " mm < 200 mm (IS 13920 Cl 6.1.1)"
         Exit Function
     End If
-    
+
     If D <= 0 Then
         Check_Geometry = False
         ErrorMsg = "Invalid depth"
         Exit Function
     End If
-    
+
     Dim ratio As Double
     ratio = b / D
-    
+
     If ratio < 0.3 Then
         Check_Geometry = False
         ErrorMsg = "Width/Depth ratio " & Format(ratio, "0.00") & " < 0.3 (IS 13920 Cl 6.1.2)"
         Exit Function
     End If
-    
+
     Check_Geometry = True
     ErrorMsg = "OK"
 End Function
@@ -68,17 +73,17 @@ Public Function Calculate_Confinement_Spacing(ByVal d As Double, ByVal min_long_
     ' 1. d/4
     ' 2. 8 * db_min
     ' 3. 100 mm
-    
+
     Dim s1 As Double, s2 As Double, s3 As Double
     s1 = d / 4#
     s2 = 8# * min_long_bar_dia
     s3 = 100#
-    
+
     Dim s_final As Double
     s_final = s1
     If s2 < s_final Then s_final = s2
     If s3 < s_final Then s_final = s3
-    
+
     Calculate_Confinement_Spacing = s_final
 End Function
 
@@ -86,17 +91,17 @@ End Function
 Public Function Check_Beam_Ductility(ByVal b As Double, ByVal D_overall As Double, ByVal d As Double, ByVal fck As Double, ByVal fy As Double, ByVal min_long_bar_dia As Double) As DuctileBeamResult
     Dim res As DuctileBeamResult
     Dim msg As String
-    
+
     res.IsGeometryValid = Check_Geometry(b, D_overall, msg)
     res.MinPt = Get_Min_Tension_Steel_Percentage(fck, fy)
     res.MaxPt = Get_Max_Tension_Steel_Percentage()
     res.ConfinementSpacing = Calculate_Confinement_Spacing(d, min_long_bar_dia)
-    
+
     If Not res.IsGeometryValid Then
         res.Remarks = msg
     Else
         res.Remarks = "Compliant"
     End If
-    
+
     Check_Beam_Ductility = res
 End Function

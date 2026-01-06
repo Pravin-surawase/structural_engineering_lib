@@ -1,11 +1,16 @@
 Attribute VB_Name = "M15_Detailing"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M15_Detailing
 ' Description:  IS 456:2000 / SP 34:1987 Reinforcement Detailing
 ' Version:      0.8.0
-' License:      MIT
 ' References:   IS 456:2000 Cl 26.2-26.5, IS 13920:2016, SP 34:1987
 ' ==============================================================================
 
@@ -44,7 +49,7 @@ Private Const STANDARD_STIRRUPS As String = "6,8,10,12"
 Public Function Get_Bond_Stress(ByVal fck As Double, _
                                 Optional ByVal bar_type As String = "deformed") As Double
     Dim tau_bd As Double
-    
+
     ' Select based on nearest lower grade
     Select Case True
         Case fck >= 50: tau_bd = TAU_BD_M50
@@ -56,12 +61,12 @@ Public Function Get_Bond_Stress(ByVal fck As Double, _
         Case fck >= 20: tau_bd = TAU_BD_M20
         Case Else: tau_bd = TAU_BD_M15
     End Select
-    
+
     ' Plain bars have 60% less bond stress
     If LCase(bar_type) = "plain" Then
         tau_bd = tau_bd / 1.6
     End If
-    
+
     Get_Bond_Stress = tau_bd
 End Function
 
@@ -89,12 +94,12 @@ Public Function Calculate_Development_Length(ByVal bar_dia As Double, _
     Dim sigma_s As Double
     Dim tau_bd As Double
     Dim Ld As Double
-    
+
     sigma_s = stress_ratio * fy
     tau_bd = Get_Bond_Stress(fck, bar_type)
-    
+
     Ld = (bar_dia * sigma_s) / (4# * tau_bd)
-    
+
     Calculate_Development_Length = Round(Ld, 0)
 End Function
 
@@ -125,15 +130,15 @@ Public Function Calculate_Lap_Length(ByVal bar_dia As Double, _
     Dim Ld As Double
     Dim alpha As Double
     Dim lap As Double
-    
+
     Ld = Calculate_Development_Length(bar_dia, fck, fy, bar_type)
-    
+
     ' Compression lap = Ld (no enhancement)
     If Not in_tension Then
         Calculate_Lap_Length = Round(Ld, 0)
         Exit Function
     End If
-    
+
     ' Tension lap with enhancement factor
     If is_seismic Then
         alpha = 1.5  ' IS 13920 requirement
@@ -142,9 +147,9 @@ Public Function Calculate_Lap_Length(ByVal bar_dia As Double, _
     Else
         alpha = 1#   ' 50% or less bars spliced
     End If
-    
+
     lap = alpha * Ld
-    
+
     Calculate_Lap_Length = Round(lap, 0)
 End Function
 
@@ -170,17 +175,17 @@ Public Function Calculate_Bar_Spacing(ByVal b As Double, _
                                       ByVal bar_count As Long) As Double
     Dim available As Double
     Dim spacing As Double
-    
+
     If bar_count <= 1 Then
         Calculate_Bar_Spacing = 0#
         Exit Function
     End If
-    
+
     ' Available width = b - 2*(cover + stirrup_dia) - bar_dia
     ' For n bars, we have (n-1) spaces
     available = CDbl(b) - 2# * (CDbl(cover) + CDbl(stirrup_dia)) - CDbl(bar_dia)
     spacing = available / CDbl(bar_count - 1)
-    
+
     Calculate_Bar_Spacing = Round(spacing, 0)
 End Function
 
@@ -195,11 +200,11 @@ End Function
 Public Function Get_Min_Spacing(ByVal bar_dia As Double, _
                                 Optional ByVal agg_size As Double = 20#) As Double
     Dim min_sp As Double
-    
+
     min_sp = bar_dia
     If agg_size + 5# > min_sp Then min_sp = agg_size + 5#
     If 25# > min_sp Then min_sp = 25#
-    
+
     Get_Min_Spacing = min_sp
 End Function
 
@@ -277,12 +282,12 @@ Public Function Calculate_Bar_Count(ByVal ast_required As Double, _
                                     ByVal bar_dia As Double) As Long
     Dim bar_area As Double
     Dim count As Long
-    
+
     bar_area = PI * (bar_dia / 2#) ^ 2
     count = Application.WorksheetFunction.Ceiling(ast_required / bar_area, 1)
-    
+
     If count < 2 Then count = 2  ' Minimum 2 bars
-    
+
     Calculate_Bar_Count = count
 End Function
 
@@ -317,7 +322,7 @@ Public Sub Select_Bar_Arrangement(ByVal ast_required As Double, _
     Dim bar_area As Double
     Dim spacing As Double
     Dim is_valid As Boolean
-    
+
     ' Handle zero or negative area
     If ast_required <= 0 Then
         result.count = 2
@@ -327,16 +332,16 @@ Public Sub Select_Bar_Arrangement(ByVal ast_required As Double, _
         result.layers = 1
         Exit Sub
     End If
-    
+
     ' Auto-select diameter
     bar_dia = Select_Bar_Diameter(ast_required)
     bar_area = Calculate_Bar_Area(bar_dia)
     bar_count = Calculate_Bar_Count(ast_required, bar_dia)
-    
+
     ' Calculate spacing
     spacing = Calculate_Bar_Spacing(b, cover, stirrup_dia, bar_dia, bar_count)
     is_valid = Check_Min_Spacing(spacing, bar_dia)
-    
+
     ' If single layer doesn't fit, try 2 layers
     result.layers = 1
     If Not is_valid Then
@@ -352,7 +357,7 @@ Public Sub Select_Bar_Arrangement(ByVal ast_required As Double, _
             result.layers = 2
         End If
     End If
-    
+
     ' Populate result
     result.count = bar_count
     result.diameter = bar_dia
@@ -431,10 +436,10 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
                                  Optional ByVal sv_end As Double = 150, _
                                  Optional ByVal is_seismic As Boolean = False, _
                                  ByRef result As BeamDetailingResult)
-    
+
     Dim max_dia As Double
     Dim legs As Long
-    
+
     ' Populate geometry
     result.beam_id = beam_id
     result.story = story
@@ -442,41 +447,41 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
     result.D = D
     result.span = span
     result.cover = cover
-    
+
     ' Select bar arrangements for bottom (tension at mid) and top (tension at supports)
     ' Bottom bars
     Call Select_Bar_Arrangement(ast_start, b, cover, stirrup_dia, result.bottom_start)
     Call Select_Bar_Arrangement(ast_mid, b, cover, stirrup_dia, result.bottom_mid)
     Call Select_Bar_Arrangement(ast_end, b, cover, stirrup_dia, result.bottom_end)
-    
+
     ' Top bars (use compression steel or 25% of tension as hanger bars)
     Dim top_ast_start As Double, top_ast_mid As Double, top_ast_end As Double
     top_ast_start = IIf(asc_start > 0, asc_start, ast_start * 0.25)
     top_ast_mid = IIf(asc_mid > 0, asc_mid, ast_mid * 0.25)
     top_ast_end = IIf(asc_end > 0, asc_end, ast_end * 0.25)
-    
+
     Call Select_Bar_Arrangement(top_ast_start, b, cover, stirrup_dia, result.top_start)
     Call Select_Bar_Arrangement(top_ast_mid, b, cover, stirrup_dia, result.top_mid)
     Call Select_Bar_Arrangement(top_ast_end, b, cover, stirrup_dia, result.top_end)
-    
+
     ' Stirrups
     legs = Get_Stirrup_Legs(b)
-    
+
     result.stirrup_start.diameter = stirrup_dia
     result.stirrup_start.legs = legs
     result.stirrup_start.spacing = sv_start
     result.stirrup_start.zone_length = span * 0.2  ' 20% at start
-    
+
     result.stirrup_mid.diameter = stirrup_dia
     result.stirrup_mid.legs = legs
     result.stirrup_mid.spacing = sv_mid
     result.stirrup_mid.zone_length = span * 0.6  ' 60% at mid
-    
+
     result.stirrup_end.diameter = stirrup_dia
     result.stirrup_end.legs = legs
     result.stirrup_end.spacing = sv_end
     result.stirrup_end.zone_length = span * 0.2  ' 20% at end
-    
+
     ' Calculate development and lap lengths using maximum bar diameter across ALL zones
     max_dia = result.bottom_start.diameter
     If result.bottom_mid.diameter > max_dia Then max_dia = result.bottom_mid.diameter
@@ -484,21 +489,21 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
     If result.top_start.diameter > max_dia Then max_dia = result.top_start.diameter
     If result.top_mid.diameter > max_dia Then max_dia = result.top_mid.diameter
     If result.top_end.diameter > max_dia Then max_dia = result.top_end.diameter
-    
+
     result.ld_tension = Calculate_Development_Length(max_dia, fck, fy, "deformed", 0.87)
     result.ld_compression = Calculate_Development_Length(max_dia, fck, fy, "deformed", 0.67)
     result.lap_length = Calculate_Lap_Length(max_dia, fck, fy, "deformed", 50, is_seismic, True)
-    
+
     ' Validate
     result.is_valid = True
     result.remarks = "OK"
-    
+
     ' Check spacing validity for ALL zones and layers
     Dim spacingOK As Boolean
     spacingOK = True
     Dim spacingWarnings As String
     spacingWarnings = ""
-    
+
     ' Bottom bars - all zones
     If Not Check_Min_Spacing(result.bottom_start.spacing, result.bottom_start.diameter) Then
         spacingOK = False
@@ -512,7 +517,7 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
         spacingOK = False
         spacingWarnings = spacingWarnings & "Bottom-End; "
     End If
-    
+
     ' Top bars - all zones
     If Not Check_Min_Spacing(result.top_start.spacing, result.top_start.diameter) Then
         spacingOK = False
@@ -526,7 +531,7 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
         spacingOK = False
         spacingWarnings = spacingWarnings & "Top-End; "
     End If
-    
+
     ' Set validity based on spacing
     If Not spacingOK Then
         result.is_valid = False

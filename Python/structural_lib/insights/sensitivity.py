@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Sensitivity analysis for beam designs (advisory only)."""
 
 from __future__ import annotations
