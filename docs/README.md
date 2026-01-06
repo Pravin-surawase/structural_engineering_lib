@@ -100,6 +100,7 @@ If you want to understand the concepts and the code step by step, start here:
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
 - **Git workflow for AI agents:** [contributing/git-workflow-for-ai-agents.md](contributing/git-workflow-for-ai-agents.md) ⚠️
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
+- Contributor learning paths: [contributing/learning-paths.md](contributing/learning-paths.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
 - VBA side specifics: [contributing/vba-guide.md](contributing/vba-guide.md)
 - Packaging the add-in (`.xlam`): [contributing/excel-addin-guide.md](contributing/excel-addin-guide.md)
@@ -114,6 +115,7 @@ If you want to understand the concepts and the code step by step, start here:
 - v0.8 implementation playbook: [v0.8_EXECUTION_CHECKLIST.md](v0.8_EXECUTION_CHECKLIST.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
 - v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
+- Research index: [research/README.md](research/README.md)
 - High-level production checklist: [planning/production-roadmap.md](planning/production-roadmap.md)
 
 ---
