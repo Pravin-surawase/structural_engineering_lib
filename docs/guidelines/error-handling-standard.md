@@ -368,19 +368,449 @@ raise CalculationError(
 
 ## 4. Validation Patterns
 
-*(Placeholder - to be added in next step)*
+### 4.1 Input Validation Function Pattern
+
+Create dedicated validation functions that are reusable and testable:
+
+```python
+def _validate_flexure_inputs(
+    b_mm: float,
+    d_mm: float,
+    mu_kn_m: float,
+    fck_mpa: float,
+    fy_mpa: float,
+) -> None:
+    """Validate flexure design inputs.
+
+    Raises:
+        DimensionError: If dimensions are invalid
+        MaterialError: If material grades are invalid
+        LoadError: If loads are invalid
+    """
+    # Dimension checks
+    if b_mm < 200:
+        raise DimensionError(
+            f"Beam width b={b_mm}mm < 200mm minimum (IS 456 Cl. 26.5.1.1)",
+            details={"b_mm": b_mm, "minimum": 200},
+            suggestion="Increase beam width to at least 200mm",
+            clause_ref="Cl. 26.5.1.1",
+        )
+
+    if d_mm < 150:
+        raise DimensionError(
+            f"Effective depth d={d_mm}mm < 150mm practical minimum",
+            details={"d_mm": d_mm, "minimum": 150},
+            suggestion="Increase effective depth to at least 150mm",
+        )
+
+    if d_mm > 2000:
+        raise DimensionError(
+            f"Effective depth d={d_mm}mm > 2000mm seems unrealistic. Verify input.",
+            details={"d_mm": d_mm, "maximum_typical": 2000},
+            suggestion="Check if depth was entered in wrong units (cm instead of mm?)",
+        )
+
+    # Material grade checks
+    STANDARD_GRADES_FCK = [20, 25, 30, 35, 40, 45, 50]
+    if fck_mpa not in STANDARD_GRADES_FCK:
+        raise MaterialError(
+            f"Concrete grade fck={fck_mpa}MPa not in standard grades {STANDARD_GRADES_FCK}",
+            details={"fck_mpa": fck_mpa, "valid_grades": STANDARD_GRADES_FCK},
+            suggestion="Use a standard grade from IS 456 Table 2",
+            clause_ref="Table 2",
+        )
+
+    STANDARD_GRADES_FY = [250, 415, 500, 550]
+    if fy_mpa not in STANDARD_GRADES_FY:
+        raise MaterialError(
+            f"Steel grade fy={fy_mpa}MPa not in standard grades {STANDARD_GRADES_FY}",
+            details={"fy_mpa": fy_mpa, "valid_grades": STANDARD_GRADES_FY},
+            suggestion="Use Fe250, Fe415, Fe500, or Fe550 steel",
+            clause_ref="Cl. 6.2",
+        )
+
+    # Load checks
+    if mu_kn_m < 0:
+        raise LoadError(
+            f"Factored moment Mu={mu_kn_m} kN·m cannot be negative",
+            details={"mu_kn_m": mu_kn_m},
+            suggestion="Check load combination signs. Use absolute value if needed.",
+        )
+
+    if mu_kn_m == 0:
+        raise LoadError(
+            "Zero moment - no flexural design required",
+            details={"mu_kn_m": mu_kn_m},
+            suggestion="Provide nominal reinforcement per IS 456 Cl. 26.5.1.1",
+        )
+```
+
+### 4.2 Range Validation Helper
+
+```python
+def validate_range(
+    value: float,
+    min_val: float | None = None,
+    max_val: float | None = None,
+    *,
+    name: str,
+    units: str = "",
+    clause_ref: str | None = None,
+) -> None:
+    """Validate that value is within specified range.
+
+    Args:
+        value: Value to validate
+        min_val: Minimum allowed value (None = no minimum)
+        max_val: Maximum allowed value (None = no maximum)
+        name: Parameter name for error message
+        units: Units string (e.g., "mm", "MPa")
+        clause_ref: IS 456 clause reference
+
+    Raises:
+        ValidationError: If value is out of range
+
+    Example:
+        >>> validate_range(150, 200, 600, name="b", units="mm", clause_ref="Cl. 26.5.1.1")
+        ValidationError: Beam width b=150mm < 200mm minimum (IS 456 Cl. 26.5.1.1)
+    """
+    unit_str = units if units else ""
+
+    if min_val is not None and value < min_val:
+        msg = f"{name}={value}{unit_str} < {min_val}{unit_str} minimum"
+        if clause_ref:
+            msg += f" (IS 456 {clause_ref})"
+        raise ValidationError(
+            msg,
+            details={"value": value, "minimum": min_val, "parameter": name},
+            suggestion=f"Increase {name} to at least {min_val}{unit_str}",
+            clause_ref=clause_ref,
+        )
+
+    if max_val is not None and value > max_val:
+        msg = f"{name}={value}{unit_str} > {max_val}{unit_str} maximum"
+        if clause_ref:
+            msg += f" (IS 456 {clause_ref})"
+        raise ValidationError(
+            msg,
+            details={"value": value, "maximum": max_val, "parameter": name},
+            suggestion=f"Reduce {name} to at most {max_val}{unit_str}",
+            clause_ref=clause_ref,
+        )
+```
+
+### 4.3 Optional Validation Flag Pattern
+
+Allow disabling validation for performance-critical batch operations:
+
+```python
+def design_beam_is456(
+    b_mm: float,
+    d_mm: float,
+    ...,
+    *,
+    validate: bool = True,  # ← Optional validation
+) -> BeamDesignResult:
+    """Design beam per IS 456:2000.
+
+    Args:
+        validate: If True, validate all inputs before calculation.
+                 Set to False for batch operations where inputs are pre-validated.
+                 Default: True (safe default)
+    """
+    if validate:
+        _validate_flexure_inputs(b_mm, d_mm, mu_kn_m, fck_mpa, fy_mpa)
+        _validate_shear_inputs(vu_kn, ...)
+        # ... all validation checks
+
+    # Proceed with calculations (assumes valid inputs if validate=False)
+    ...
+```
+
+**Usage:**
+
+```python
+# Single beam: validate for safety
+result = design_beam_is456(b_mm=300, d_mm=550, ..., validate=True)
+
+# Batch operation: validate once, disable per-beam
+beams = [...]  # 1000 beams
+_validate_batch_inputs(beams)  # Pre-validate entire batch
+results = [
+    design_beam_is456(**beam, validate=False)  # Skip redundant checks
+    for beam in beams
+]
+```
+
+### 4.4 Strict Mode for Extra Checks
+
+Add optional strict mode for pedantic validation:
+
+```python
+def design_beam_is456(
+    ...,
+    *,
+    validate: bool = True,
+    strict: bool = False,  # ← Extra pedantic checks
+) -> BeamDesignResult:
+    """Design beam per IS 456:2000.
+
+    Args:
+        strict: If True, apply extra pedantic checks:
+               - Warn on unusual ratios (L/d, b/d)
+               - Check for likely unit errors
+               - Validate realistic load magnitudes
+               Default: False
+    """
+    if validate:
+        _validate_flexure_inputs(b_mm, d_mm, mu_kn_m, fck_mpa, fy_mpa)
+
+    if strict:
+        _strict_validation(b_mm, d_mm, mu_kn_m, span_mm, ...)
+```
+
+### 4.5 Multiple Validation Errors
+
+Collect all errors before raising (better UX for form validation):
+
+```python
+def validate_all_inputs(...) -> None:
+    """Validate all inputs and report ALL errors at once."""
+    errors = []
+
+    # Check all conditions
+    if b_mm < 200:
+        errors.append(f"Beam width b={b_mm}mm < 200mm minimum")
+
+    if d_mm < 150:
+        errors.append(f"Effective depth d={d_mm}mm < 150mm minimum")
+
+    if fck_mpa not in [20, 25, 30, 35, 40, 45, 50]:
+        errors.append(f"Concrete grade fck={fck_mpa}MPa not standard")
+
+    # Raise with all errors
+    if errors:
+        raise ValidationError(
+            f"Found {len(errors)} validation error(s):\n" +
+            "\n".join(f"  {i+1}. {err}" for i, err in enumerate(errors))
+        )
+```
 
 ---
 
 ## 5. Error Recovery Strategies
 
-*(Placeholder - to be added in next step)*
+### 5.1 Graceful Degradation
+
+When a calculation fails, provide partial results if useful:
+
+```python
+@dataclass(frozen=True)
+class BeamDesignResult:
+    """Beam design result with success/failure tracking."""
+
+    success: bool
+    flexure: FlexureResult | None
+    shear: ShearResult | None
+    error: str | None = None
+    warnings: list[str] = field(default_factory=list)
+
+    def is_valid(self) -> bool:
+        """Check if design is valid."""
+        return self.success and self.error is None
+
+    def has_warnings(self) -> bool:
+        """Check if design has warnings."""
+        return len(self.warnings) > 0
+
+
+def design_beam_is456(...) -> BeamDesignResult:
+    """Design beam, returning partial results on failure."""
+    warnings = []
+
+    try:
+        flexure_result = design_flexure(...)
+    except DesignError as e:
+        return BeamDesignResult(
+            success=False,
+            flexure=None,
+            shear=None,
+            error=str(e),
+        )
+
+    try:
+        shear_result = design_shear(...)
+    except ComplianceError as e:
+        warnings.append(f"Shear design warning: {e}")
+        # Continue with flexure result only
+        return BeamDesignResult(
+            success=True,
+            flexure=flexure_result,
+            shear=None,
+            warnings=warnings,
+        )
+
+    return BeamDesignResult(
+        success=True,
+        flexure=flexure_result,
+        shear=shear_result,
+        warnings=warnings,
+    )
+```
+
+### 5.2 Retry with Relaxed Constraints
+
+```python
+def optimize_bar_arrangement(...) -> BarArrangement:
+    """Optimize bar arrangement, trying multiple strategies."""
+
+    # Try ideal arrangement first
+    try:
+        return _optimize_ideal(ast_req_mm2, b_mm, ...)
+    except DesignError:
+        pass  # Fall through to relaxed constraints
+
+    # Try with minimum spacing
+    try:
+        return _optimize_minimum_spacing(ast_req_mm2, b_mm, ...)
+    except DesignError:
+        pass
+
+    # Last resort: use smaller bars
+    try:
+        return _optimize_smaller_bars(ast_req_mm2, b_mm, ...)
+    except DesignError as e:
+        raise DesignError(
+            f"Cannot fit required reinforcement Ast={ast_req_mm2:.0f}mm² "
+            f"in beam width b={b_mm}mm even with minimum spacing. {str(e)}"
+        ) from e
+```
+
+### 5.3 Warning System
+
+Use warnings for non-critical issues:
+
+```python
+import warnings
+from structural_lib.types import StructuralWarning
+
+
+def check_deflection(...) -> DeflectionResult:
+    """Check deflection with warnings for borderline cases."""
+
+    span_depth_ratio = span_mm / d_mm
+    max_ratio = get_max_span_depth_ratio(support_condition, ...)
+
+    if span_depth_ratio > max_ratio:
+        # Critical: raise exception
+        raise ComplianceError(
+            f"Span/depth ratio {span_depth_ratio:.1f} > {max_ratio:.1f} maximum "
+            f"(IS 456 Cl. 23.2.1)"
+        )
+    elif span_depth_ratio > max_ratio * 0.9:
+        # Warning: close to limit
+        warnings.warn(
+            f"Span/depth ratio {span_depth_ratio:.1f} is close to limit "
+            f"{max_ratio:.1f} (90% of maximum). Consider increasing depth.",
+            StructuralWarning,
+        )
+
+    return DeflectionResult(...)
+```
 
 ---
 
 ## 6. Exception Context & Debugging
 
-*(Placeholder - to be added in next step)*
+### 6.1 Exception Chaining
+
+Use `raise ... from ...` to preserve original exception:
+
+```python
+def design_beam_is456(...) -> BeamDesignResult:
+    """Design beam with exception chaining for debugging."""
+
+    try:
+        flexure = design_flexure(b_mm, d_mm, mu_kn_m, fck_mpa, fy_mpa)
+    except ValidationError as e:
+        raise ValidationError(
+            f"Flexure design failed for beam b={b_mm}mm d={d_mm}mm: {str(e)}"
+        ) from e  # ← Preserves original exception
+```
+
+### 6.2 Rich Debug Context
+
+Add context for debugging without cluttering user message:
+
+```python
+def calculate_ast_required(...) -> float:
+    """Calculate required steel area."""
+
+    try:
+        # Complex calculation
+        k = mu_n_mm / (fck_mpa * b_mm * d_mm**2)
+        ...
+    except (ValueError, ZeroDivisionError) as e:
+        raise CalculationError(
+            f"Cannot calculate required steel area for Mu={mu_kn_m} kN·m",
+            details={
+                # Full context for debugging
+                "mu_kn_m": mu_kn_m,
+                "mu_n_mm": mu_n_mm,
+                "b_mm": b_mm,
+                "d_mm": d_mm,
+                "fck_mpa": fck_mpa,
+                "fy_mpa": fy_mpa,
+                "k": k if 'k' in locals() else None,
+                "original_error": str(e),
+            },
+            suggestion="Check that inputs are in correct units and within reasonable ranges",
+        ) from e
+```
+
+### 6.3 Traceback Enhancement
+
+Custom `__str__` method for rich exception output:
+
+```python
+class StructuralLibError(Exception):
+    """Base exception with rich debugging info."""
+
+    def __str__(self) -> str:
+        """Format exception with all context."""
+        parts = [self.message]
+
+        # Code reference
+        if self.clause_ref:
+            parts.append(f"(Ref: IS 456:2000 {self.clause_ref})")
+
+        # User guidance
+        if self.suggestion:
+            parts.append(f"Suggestion: {self.suggestion}")
+
+        # Debug details (only if non-empty)
+        if self.details:
+            parts.append("\nDebug details:")
+            for key, value in self.details.items():
+                parts.append(f"  {key} = {value}")
+
+        return "\n".join(parts)
+```
+
+**Output example:**
+
+```
+DesignError: Section capacity insufficient: Mu=250.0 > Mu,lim=180.5 kN·m (Ref: IS 456:2000 Cl. 38.1)
+Suggestion: Increase section depth or use compression reinforcement
+Debug details:
+  mu_kn_m = 250.0
+  mu_lim_kn_m = 180.5
+  xu_mm = 285.7
+  xu_max_mm = 247.5
+  b_mm = 300.0
+  d_mm = 550.0
+  fck_mpa = 30.0
+```
 
 ---
 
