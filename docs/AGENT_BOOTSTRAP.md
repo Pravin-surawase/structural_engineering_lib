@@ -45,7 +45,7 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 ## 📍 Quick Reference
 
 - **Copilot rules:** [../.github/copilot-instructions.md](../.github/copilot-instructions.md)
-- **Git workflow (CRITICAL):** [contributing/git-workflow-for-ai-agents.md](contributing/git-workflow-for-ai-agents.md) ⚠️
+- **Git workflow (CRITICAL):** [GIT_WORKFLOW_AI_AGENTS.md](GIT_WORKFLOW_AI_AGENTS.md) ⚠️
 - **Automation scripts (41):** [reference/automation-catalog.md](reference/automation-catalog.md) 🤖
 - **Handoff quick start:** [HANDOFF.md](HANDOFF.md)
 - **API docs:** [reference/api.md](reference/api.md)

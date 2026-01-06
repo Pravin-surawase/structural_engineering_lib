@@ -135,7 +135,7 @@ git commit -m "feat: implement TASK-XXX"
 
 1. **Version drift check excludes research docs** - Permanent fix in `check_doc_versions.py`
 2. **Import pattern fixed** - Module-level imports only for error classes
-3. **Git workflow documented** - Comprehensive guide in `docs/contributing/git-workflow-for-ai-agents.md`
+3. **Git workflow documented** - Comprehensive guide in `docs/GIT_WORKFLOW_AI_AGENTS.md`
 
 ### 📝 Documentation Added
 
@@ -181,4 +181,4 @@ No additional automation needed - existing pre-commit hooks and CI checks are su
 - Issue root cause: TASK-148 created research docs, TASK-152 triggered version checks
 - Fix commits: 7880272 (version drift), 3c3deb7 (validation imports)
 - PR: #254 (TASK-152 implementation)
-- Documentation: `.github/copilot-instructions.md`, `docs/contributing/git-workflow-for-ai-agents.md`
+- Documentation: `.github/copilot-instructions.md`, `docs/GIT_WORKFLOW_AI_AGENTS.md`

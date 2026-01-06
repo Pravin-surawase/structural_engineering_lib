@@ -302,7 +302,7 @@ Total: 4 minutes to clean handoff
 
 **Documentation Files:**
 1. `.github/copilot-instructions.md` (Git workflow section — 200+ lines)
-2. `docs/contributing/git-workflow-for-ai-agents.md`
+2. `docs/GIT_WORKFLOW_AI_AGENTS.md`
 3. `docs/contributing/git-workflow-quick-reference.md` (NEW — Jan 6 2026)
 4. `docs/contributing/github-workflow.md`
 5. `docs/research/git-workflow-production-stage.md` (1170 lines research)
