@@ -130,14 +130,14 @@ Added 50+ line automation section:
 
 [Categories listed with key scripts highlighted]
 
-**📚 Full Catalog:** [automation-catalog.md](reference/automation-catalog.md)
+**📚 Full Catalog:** [automation-catalog.md](../reference/automation-catalog.md)
 ```
 
 **TASK-173: Update AGENT_BOOTSTRAP**
 
 Added prominent link:
 ```markdown
-- **Automation scripts (41):** [reference/automation-catalog.md](reference/automation-catalog.md) 🤖
+- **Automation scripts (41):** [reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
 ```
 
 **TASK-174: Test Discoverability**

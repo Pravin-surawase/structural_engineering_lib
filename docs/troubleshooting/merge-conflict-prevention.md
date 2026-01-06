@@ -315,8 +315,8 @@ git push
 
 - Git History Analysis: commit 1eae536 and predecessors
 - Test Commits: 0b1a99a (validation), a6ec939 (fix)
-- Related Docs: [copilot-instructions.md](/.github/copilot-instructions.md)
-- Pre-commit Hook: [check_unfinished_merge.sh](/scripts/check_unfinished_merge.sh)
+- Related Docs: [copilot-instructions.md](../../.github/copilot-instructions.md)
+- Pre-commit Hook: [check_unfinished_merge.sh](../../scripts/check_unfinished_merge.sh)
 
 ---
 

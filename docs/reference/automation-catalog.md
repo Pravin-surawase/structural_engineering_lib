@@ -313,6 +313,13 @@ Safe for direct commit using safe_push.sh.
 ./scripts/create_task_pr.sh TASK-171 "Add automation catalog"
 ```
 
+**Preconditions:**
+- Clean working tree (no uncommitted changes).
+- If you already have changes, temporarily stash them:
+  - `git stash push -u -m "temp: create task branch"`
+  - Run `create_task_pr.sh`
+  - `git stash pop`
+
 **What It Does:**
 1. Creates branch: `task-XXX-description`
 2. Switches to new branch

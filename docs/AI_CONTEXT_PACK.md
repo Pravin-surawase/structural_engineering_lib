@@ -25,7 +25,7 @@
 **DO NOT use:** `git add`, `git commit`, `git push`, `git pull` manually!
 
 Canonical workflow: `docs/GIT_WORKFLOW_AI_AGENTS.md`
-See [.github/copilot-instructions.md](.github/copilot-instructions.md) for full rules.
+See [.github/copilot-instructions.md](../.github/copilot-instructions.md) for full rules.
 
 ---
 
