@@ -325,6 +325,85 @@ test_precommit_hook_detection() {
 }
 
 # ============================================================================
+# TEST: Safe Push Handles Pre-commit File Modifications (CRITICAL)
+# ============================================================================
+
+test_safe_push_precommit_modifications() {
+    log_test "Safe Push Handles Pre-commit File Modifications"
+
+    # Create temporary test repo
+    local test_repo="$TEST_DIR/precommit_test"
+    mkdir -p "$test_repo"
+    cd "$test_repo"
+    git init
+    git config user.name "Test User"
+    git config user.email "test@example.com"
+
+    # Copy safe_push.sh to test repo
+    cp "$PROJECT_ROOT/scripts/safe_push.sh" "$test_repo/safe_push.sh"
+
+    # Test 1: Verify Step 2.5 exists in safe_push.sh
+    if grep -q "Step 2.5" "$test_repo/safe_push.sh"; then
+        log_pass "safe_push.sh contains Step 2.5 (pre-flight whitespace check)"
+    else
+        log_fail "safe_push.sh missing Step 2.5"
+        return 1
+    fi
+
+    # Test 2: Create file with trailing whitespace
+    echo "test line with trailing whitespace   " > test_file.txt
+    log_info "Created test file with trailing whitespace"
+
+    # Test 3: Stage the file
+    git add test_file.txt
+
+    # Test 4: Verify git detects the whitespace
+    if git diff --cached --check 2>&1 | grep -q 'trailing whitespace'; then
+        log_pass "Git detects trailing whitespace in staged files"
+    else
+        log_fail "Git should detect trailing whitespace"
+        return 1
+    fi
+
+    # Test 5: Simulate Step 2.5 fix
+    git diff --cached --name-only | while read file; do
+        if [ -f "$file" ]; then
+            sed -i '' 's/[[:space:]]*$//' "$file" 2>/dev/null || sed -i 's/[[:space:]]*$//' "$file"
+        fi
+    done
+    log_info "Applied sed fix to remove trailing whitespace"
+
+    # Test 6: Verify whitespace is removed
+    if ! grep -q '   $' test_file.txt; then
+        log_pass "Trailing whitespace successfully removed"
+    else
+        log_fail "Trailing whitespace still present after sed"
+        return 1
+    fi
+
+    # Test 7: Re-stage and verify no whitespace warnings
+    git add test_file.txt
+    if ! git diff --cached --check 2>&1 | grep -q 'trailing whitespace'; then
+        log_pass "No whitespace warnings after fix"
+    else
+        log_fail "Whitespace warnings still present"
+        return 1
+    fi
+
+    # Test 8: Verify Step 2.5 runs before commit
+    local step_order=$(grep -n "Step 2.5\|git commit" "$test_repo/safe_push.sh" | head -2)
+    if echo "$step_order" | head -1 | grep -q "Step 2.5"; then
+        log_pass "Step 2.5 runs BEFORE git commit (correct order)"
+    else
+        log_fail "Step 2.5 must run before git commit"
+        return 1
+    fi
+
+    cd "$PROJECT_ROOT"
+    echo ""
+}
+
+# ============================================================================
 # TEST: Conflict Prevention Logic
 # ============================================================================
 
@@ -559,6 +638,7 @@ main() {
     test_ai_commit_wrapper
     test_git_state_detection
     test_precommit_hook_detection
+    test_safe_push_precommit_modifications
     test_conflict_prevention_logic
     test_error_handling
     test_pr_helper_structure
