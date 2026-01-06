@@ -88,13 +88,13 @@ class TestBBSDXFConsistency(unittest.TestCase):
             bbs.export_bbs_to_csv(items, bbs_path, include_summary=False)
             dxf_export.generate_beam_dxf(detailing, dxf_path)
 
-            with open(bbs_path, "r", encoding="utf-8", newline="") as f:
+            with open(bbs_path, encoding="utf-8", newline="") as f:
                 reader = csv.DictReader(f)
                 fieldnames = reader.fieldnames
                 rows = list(reader)
 
             extra_mark = f"{detailing.beam_id}-B-S-D16-99"
-            extra_row = {name: "" for name in (fieldnames or [])}
+            extra_row = dict.fromkeys(fieldnames or [], "")
             extra_row["bar_mark"] = extra_mark
             extra_row["member_id"] = detailing.beam_id
             rows.append(extra_row)
@@ -145,7 +145,7 @@ class TestBBSDXFConsistency(unittest.TestCase):
             bbs.export_bbs_to_csv(items, bbs_path, include_summary=False)
             dxf_export.generate_beam_dxf(detailing, dxf_path)
 
-            with open(bbs_path, "r", encoding="utf-8", newline="") as f:
+            with open(bbs_path, encoding="utf-8", newline="") as f:
                 reader = csv.DictReader(f)
                 fieldnames = reader.fieldnames
                 rows = list(reader)

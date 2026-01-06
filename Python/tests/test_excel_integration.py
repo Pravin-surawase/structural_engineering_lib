@@ -243,7 +243,7 @@ class TestJSONParsing:
 
         assert os.path.exists(json_path)
 
-        with open(json_path, "r") as f:
+        with open(json_path) as f:
             data = json.load(f)
 
         assert "beams" in data

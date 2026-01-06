@@ -65,12 +65,13 @@ ignore = [
 # Standard notation per IS 456:2000 and structural design practice
 ignore-names = [
   "D", "D_mm", "D_m", "D_val", "D_scaled",  # Depth parameters (total depth)
-  "Df",  # Flange depth
+  "Df", "Df_shallow", "Df_deep", "Df_mm",  # Flange depth variants
   "Mu", "Mu_lim", "Mu_knm",  # Moment parameters (factored moment)
   "Vu", "Vu_kn",  # Shear force (factored shear)
   "Ast", "Ast_prov",  # Steel area (tension reinforcement)
   "Asv",  # Stirrup area (shear reinforcement)
   "Ld",  # Development length
+  "C", "T",  # Compression/Tension forces (physics notation)
   "baseline_D", "label_D",  # Variables containing depth values
   "require_d_less_than_D",  # Boolean flag (d < D check)
   "DEPTH_THRESHOLD", "PERCENTAGE_WEB_AREA", "MAX_SPACING",  # Local constants in functions
@@ -86,6 +87,12 @@ classmethod-decorators = ["classmethod"]
 "structural_lib/compliance.py" = ["E402"]
 "structural_lib/dxf_export.py" = ["E402"]
 "structural_lib/excel_integration.py" = ["E402"]
+# Test files with intentional naming patterns
+"tests/test_costing.py" = ["N802"]  # setUp method from unittest.TestCase
+"tests/test_validation.py" = ["N802"]  # test_*_D pattern tests parameter D
+"tests/test_tables_and_materials_additional.py" = ["N802"]  # test_*_D pattern
+"tests/test_error_schema.py" = ["B017"]  # pytest.raises(Exception) is intentional for frozen dataclass test
+"tests/test_serviceability.py" = ["E402"]  # Import after section header comment
 
 [tool.mypy]
 python_version = "3.9"

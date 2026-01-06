@@ -11,7 +11,14 @@ def test_get_library_version_nonempty():
 
 
 def test_check_beam_ductility_wrapper_matches_core():
-    inputs = dict(b=300, D=500, d=450, fck=25, fy=500, min_long_bar_dia=16)
+    inputs = {
+        "b": 300,
+        "D": 500,
+        "d": 450,
+        "fck": 25,
+        "fy": 500,
+        "min_long_bar_dia": 16,
+    }
     assert api.check_beam_ductility(**inputs) == ductile.check_beam_ductility(**inputs)
 
 
