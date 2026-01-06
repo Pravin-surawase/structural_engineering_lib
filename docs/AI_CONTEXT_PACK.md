@@ -4,7 +4,7 @@
 
 | Metric | Value |
 |--------|-------|
-| **Current Release** | v0.14.0 (on PyPI, 2026-01-06) |
+| **Current Release** | v0.15.0 (on PyPI, 2026-01-06) |
 | **Next Planned Release** | v0.15.0 (smart insights ecosystem) |
 | **Tests** | 2231+ passed, 0 skipped (as of 2026-01-06) |
 | **Coverage** | 86% overall, 100% on 10 modules |
