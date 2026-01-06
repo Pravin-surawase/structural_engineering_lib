@@ -48,7 +48,6 @@ _No active tasks. WIP = 0._
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | DOCS | 30 min | ðŸŸ¢ LOW |
 
 ### Professional Standards & Hygiene (CRITICAL for v1.0 readiness)
 All research tasks completed (see Recently Done).
@@ -87,6 +86,7 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed â€
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | 2026-01-06 | DOCS |
 | **TASK-181** | **Phase 3: Add Data Flow Diagrams** (Create Mermaid diagrams for complex pipelines: job_runner, smart_designer; show data transformations through layers; commit to docs/architecture/) | 2026-01-06 | DOCS |
 | **TASK-180** | **Phase 3: Create Module Dependency Graph** (Use pydeps or similar to generate Python/structural_lib dependency graph; commit PNG to docs/architecture/dependencies.png) | 2026-01-06 | DOCS |
 | **TASK-179** | **Phase 3: Generate Visual Architecture Diagrams** (Create PlantUML or Mermaid diagrams for: layer architecture, module dependencies, data flows; commit to docs/architecture/) | 2026-01-06 | DOCS |

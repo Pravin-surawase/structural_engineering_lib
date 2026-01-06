@@ -12,7 +12,7 @@ The **Verification Pack** is a small set of **pinned regression targets** (deter
 
 Pinned cases live in:
 
-- [Python/tests/test_verification_pack.py](../../Python/tests/test_verification_pack.py)
+- [Python/tests/regression/test_verification_pack.py](../../Python/tests/regression/test_verification_pack.py)
 
 Coverage (current):
 
@@ -28,7 +28,7 @@ Coverage (current):
 
 From repo root:
 
-- `cd Python && pytest -q tests/test_verification_pack.py`
+- `cd Python && pytest -q tests/regression/test_verification_pack.py`
 
 This is also exercised as part of the full test suite (`pytest`) and therefore by the pre-release gate script.
 
@@ -36,7 +36,7 @@ This is also exercised as part of the full test suite (`pytest`) and therefore b
 
 If you intentionally change calculation logic (bug fix / standards interpretation):
 
-1. Update the expected values in [Python/tests/test_verification_pack.py](../../Python/tests/test_verification_pack.py).
+1. Update the expected values in [Python/tests/regression/test_verification_pack.py](../../Python/tests/regression/test_verification_pack.py).
 2. Add a note to `CHANGELOG.md` describing the behavior change.
 3. Consider updating/adding a worked example in docs (or Excel parity check) to justify the new baseline.
 

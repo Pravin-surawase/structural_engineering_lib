@@ -150,6 +150,9 @@ If you want to understand the concepts and the code step by step, start here:
 
 - Architecture & layering: [architecture/project-overview.md](architecture/project-overview.md)
 - Consolidated architecture/data flow: [architecture/deep-project-map.md](architecture/deep-project-map.md)
+- Visual architecture diagrams: [architecture/visual-architecture.md](architecture/visual-architecture.md)
+- Pipeline data flow diagrams: [architecture/data-flow-diagrams.md](architecture/data-flow-diagrams.md)
+- Module dependency graph: [architecture/dependencies.md](architecture/dependencies.md)
 - Library contract (stability promises): [reference/library-contract.md](reference/library-contract.md)
 - BBS + DXF contract: [reference/bbs-dxf-contract.md](reference/bbs-dxf-contract.md)
 - Testing strategy & CI setup: [contributing/testing-strategy.md](contributing/testing-strategy.md)
