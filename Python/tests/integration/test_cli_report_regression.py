@@ -6,7 +6,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-FIXTURES = Path(__file__).parent / "fixtures"
+# Path to tests/fixtures/ (two levels up from tests/integration/)
+FIXTURES = Path(__file__).parent.parent / "fixtures"
 REPORT_FIXTURES = FIXTURES / "report"
 CLI_FIXTURES = FIXTURES / "cli"
 
