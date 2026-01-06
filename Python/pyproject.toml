@@ -66,6 +66,11 @@ ignore = [
 ignore-names = [
   "D", "D_mm", "D_m", "D_val", "D_scaled",  # Depth parameters (total depth)
   "Df",  # Flange depth
+  "Mu", "Mu_lim", "Mu_knm",  # Moment parameters (factored moment)
+  "Vu", "Vu_kn",  # Shear force (factored shear)
+  "Ast", "Ast_prov",  # Steel area (tension reinforcement)
+  "Asv",  # Stirrup area (shear reinforcement)
+  "Ld",  # Development length
   "baseline_D", "label_D",  # Variables containing depth values
   "require_d_less_than_D",  # Boolean flag (d < D check)
   "DEPTH_THRESHOLD", "PERCENTAGE_WEB_AREA", "MAX_SPACING",  # Local constants in functions

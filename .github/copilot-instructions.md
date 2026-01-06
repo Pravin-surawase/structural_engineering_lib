@@ -489,6 +489,7 @@ git push
 | Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
 | Verifying PyPI in an existing venv | Use a fresh venv for `pip install structural-lib-is456==X.Y.Z` |
 | CI fails on formatting | Run `black`/`ruff` locally, commit, push |
+| **Running checks on subdirectory when CI checks everything** | **CRITICAL: Run `cd Python && python -m black --check .` (not `black --check structural_lib/`) - CI checks ALL of Python/ including examples/** |
 | Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
 | CI shows old formatting failure | Re-run checks after pushing formatting fix |
 | Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
