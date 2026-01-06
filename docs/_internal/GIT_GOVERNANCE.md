@@ -44,43 +44,23 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 
 ### 2.2.1 Solo Developer Workflow (Simplified)
 
-**For routine changes (docs, fixes, tests):**
+**For docs-only, low-risk changes:**
 
-1.  **Option 1: Direct on main** (fastest)
+1.  **Direct on main** (fastest)
     ```bash
-    git checkout main
-    git pull
     # make changes
-    git add .
-    git commit -m "docs: update insights guide"
-    git push
+    ./scripts/ai_commit.sh "docs: update guide"
     # CI runs automatically, watch for failures
     ```
 
-2.  **Option 2: Feature branch** (when you want CI feedback first)
-    ```bash
-    git checkout -b fix/quick-typo
-    # make changes
-    git commit -m "fix: correct formula in docs"
-    git push -u origin fix/quick-typo
-    # Wait for CI on branch, then:
-    git checkout main
-    git merge fix/quick-typo
-    git push
-    git branch -d fix/quick-typo
-    ```
-
-**For significant changes (features, breaking changes, refactors):**
+**For all other changes (default):**
 
 1.  **Use PR workflow:**
     ```bash
-    git checkout -b feat/task-099-new-feature
+    ./scripts/create_task_pr.sh TASK-XXX "short description"
     # make changes
-    git commit -m "feat: add new capability"
-    git push -u origin feat/task-099-new-feature
-    gh pr create --title "feat: add new capability"
-    gh pr checks --watch  # wait for CI
-    gh pr merge --squash --delete-branch
+    ./scripts/ai_commit.sh "feat: implement X"
+    ./scripts/finish_task_pr.sh TASK-XXX "short description"
     ```
 
 **Emergency fixes:**
@@ -89,7 +69,7 @@ If CI fails on main:
 1.  `git revert HEAD` (immediate rollback)
 2.  Fix in branch, test locally, then push fix
 
-**Rule of thumb:** If change is <20 lines and low-risk → direct push. If >20 lines or risky → use PR.
+**Rule of thumb:** Docs-only and tiny → direct push. Everything else → PR.
 
 ### 2.3 Branch Protection Baseline (GitHub Settings)
 
@@ -147,45 +127,14 @@ Notes:
 - Clean revert if CI fails
 - Tags can be created after direct push to `main` or after PR merge
 
-**Auto-Format Workflow:**
-- `.github/workflows/auto-format.yml` runs on PR creation
-- Automatically applies `black` and `ruff --fix` to Python code
-- **CRITICAL:** If formatting needed, workflow pushes a commit to your PR branch
-- **This causes non-fast-forward errors if you try to push after PR creation**
-
-**How to handle auto-format pushes:**
-```bash
-# After creating PR, if auto-format runs:
-# Option 1: Wait for auto-format, then pull
-gh pr create --title "..." --body "..."
-sleep 10  # Wait for auto-format to run
-git pull --rebase origin <branch-name>
-
-# Option 2: Pull before any additional pushes
-git pull --rebase origin <branch-name>
-git push
-
-# Option 3: Let pre-commit hooks handle formatting locally (preferred)
-# Pre-commit hooks run same formatters, so auto-format won't trigger
-git commit -m "..."  # Pre-commit hooks auto-format
-# No auto-format needed on GitHub!
-```
+**Format Check Workflow:**
+- `.github/workflows/auto-format.yml` now runs **check-only** on PRs
+- No auto-commits are pushed by CI
 
 **Best Practice:**
 - ✅ **Use pre-commit hooks** (they run `black` and `ruff` locally)
-- ✅ Commit → pre-commit hooks fix → re-stage → commit (or amend)
-- ✅ Push branch → CI passes without needing auto-format
-- ❌ Avoid pushing unformatted code then fighting auto-format pushes
-
-**CI Timing Issues:**
-- Auto-format workflow runs AFTER initial PR creation
-- Lint/Typecheck may fail on formatting before auto-format completes
-- If CI fails but auto-format commits fixes, CI does NOT automatically re-run
-- **Solution:** Push empty commit to trigger new CI run:
-  ```bash
-  git commit --allow-empty -m "chore: trigger CI after auto-format"
-  git push
-  ```
+- ✅ Commit → hooks fix → re-stage → commit (or amend)
+- ✅ CI only verifies formatting
 
 ---
 Supply-chain stance:
@@ -204,7 +153,7 @@ git commit -m "feat: implement new feature"  # Pre-commit hooks run here
 # If pre-commit modifies files: git add -A && git commit --amend --no-edit
 git push -u origin feat/task-142-new-feature
 gh pr create --title "feat: implement new feature" --body "Implements TASK-142..."
-gh pr checks --watch  # WAIT for all CI checks (including auto-format if triggered)
+gh pr checks --watch  # WAIT for all CI checks
 gh pr merge --squash --delete-branch  # Only after CI passes
 ```
 
@@ -214,8 +163,6 @@ gh pr merge --squash --delete-branch  # Only after CI passes
 3. **Push branch:** `git push -u origin feat/task-142-new-feature`
 4. **Create PR:** `gh pr create --title "..." --body "..."`
 5. **⚠️ CRITICAL: Wait for CI:** `gh pr checks <PR_NUMBER> --watch`
-   - This includes auto-format workflow (may push formatting fixes)
-   - Do NOT push to branch after PR creation without pulling first
 6. **Merge:** `gh pr merge <PR_NUMBER> --squash --delete-branch`
 7. **Sync local:** `git checkout main && git pull --ff-only`
 
@@ -291,7 +238,7 @@ For a full run, use `scripts/ci_local.sh`.
 
 #### Issue: `! [rejected] main -> main (non-fast-forward)`
 
-**Cause:** Remote has commits you don't have locally (often from auto-format workflow on PRs).
+**Cause:** Remote has commits you don't have locally (someone else pushed or branch updated).
 
 **Solution:**
 ```bash
@@ -307,30 +254,16 @@ git push
 
 **Prevention:** Always pull before pushing, especially after merging PRs.
 
-#### Issue: Auto-format workflow pushed to my PR branch
+#### Issue: CI fails on formatting
 
-**Cause:** Auto-format workflow detected formatting issues and pushed fixes.
-
-**Solution:**
-```bash
-# Pull the auto-format changes
-git pull --rebase origin <your-branch-name>
-
-# Continue working
-# ... make more changes ...
-git push
-```
-
-**Prevention:** Use pre-commit hooks — they run the same formatters locally.
-
-#### Issue: CI fails on formatting but shows old commit hash
-
-**Cause:** CI ran on commit before auto-format workflow completed. Auto-format pushed fixes but didn't retrigger CI.
+**Cause:** Local formatting not applied before push.
 
 **Solution:**
 ```bash
-# Push empty commit to trigger fresh CI run
-git commit --allow-empty -m "chore: trigger CI after auto-format"
+.venv/bin/python -m black Python/
+.venv/bin/python -m ruff check Python/
+git add -A
+git commit -m "style: format"
 git push
 ```
 
@@ -536,8 +469,8 @@ If `main` breaks:
 - **Link PRs to tasks** — Every PR mentions TASK-XXX in title or body
 
 ### ❌ DON'T:
-- **Don't merge immediately after creating PR** — Wait for CI (auto-format may push)
-- **Don't push to PR branch without pulling first** — Auto-format may have pushed
+- **Don't merge immediately after creating PR** — Wait for CI
+- **Don't push to PR branch without pulling first** — Always sync first
 - **Don't force-push to main** — Branch protection prevents this anyway
 - **Don't skip pre-commit hooks** — They catch issues before CI
 - **Don't commit generated files** — `.xlsm` (export `.bas`/`.cls` instead)
@@ -547,32 +480,18 @@ If `main` breaks:
 
 ### 🎯 Recommended Workflow (Solo Dev):
 
-**For routine changes (<20 lines, low-risk):**
+**For routine docs-only changes (<20 lines, low-risk):**
 ```bash
-git checkout main
-git pull --ff-only
 # make changes
-git add -A
-git commit -m "docs: update guide"  # Pre-commit hooks run
-# If hooks modify: git add -A && git commit --amend --no-edit
-git push
-# CI runs on main — watch for failures
+./scripts/ai_commit.sh "docs: update guide"
 ```
 
 **For significant changes (>20 lines, risky):**
 ```bash
-git checkout main
-git pull --ff-only
-git checkout -b feat/task-142-new-feature
+./scripts/create_task_pr.sh TASK-142 "implement feature"
 # make changes
-git add -A
-git commit -m "feat: implement feature"  # Pre-commit hooks run
-git push -u origin feat/task-142-new-feature
-gh pr create --title "feat: implement feature" --body "Closes TASK-142"
-gh pr checks --watch  # WAIT for CI + auto-format
-gh pr merge --squash --delete-branch  # After CI passes
-git checkout main
-git pull --ff-only  # Sync local main
+./scripts/ai_commit.sh "feat: implement feature"
+./scripts/finish_task_pr.sh TASK-142 "implement feature"
 ```
 
 ### 🚨 What to Do When Things Go Wrong:
@@ -581,7 +500,7 @@ git pull --ff-only  # Sync local main
 |---------|----------|
 | CI fails on main | `git revert HEAD` → fix in branch → PR |
 | Can't push (non-fast-forward) | `git pull --rebase origin main` → `git push` |
-| Auto-format pushed to PR | `git pull --rebase origin <branch>` |
+| Formatting failure | Run `black`/`ruff` locally → commit → push |
 | Pre-commit modified files | `git add -A && git commit --amend --no-edit` |
 | Merge conflicts | Fix manually → `git add <files>` → `git rebase --continue` |
 | Accidentally committed to main | `git checkout -b feat/fix` → push → PR |
@@ -597,4 +516,4 @@ git pull --ff-only  # Sync local main
 
 ---
 
-**Last Updated:** 2026-01-05
+**Last Updated:** 2026-01-06

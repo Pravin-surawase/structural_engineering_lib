@@ -2,12 +2,12 @@
 
 **Updated:** 2026-01-06 (Production Stage Guidelines)
 **Research:** See docs/research/git-workflow-production-stage.md
+**Canonical:** `docs/GIT_WORKFLOW_AI_AGENTS.md`
 
 ## 🎯 Quick Decision: Direct Commit or PR?
 
 ```bash
 # Let the tool decide for you:
-git add <files>
 ./scripts/should_use_pr.sh --explain
 ```
 
@@ -29,7 +29,7 @@ git add <files>
 
 ### How
 ```bash
-./scripts/safe_push.sh "docs: fix typo in README"
+./scripts/ai_commit.sh "docs: fix typo in README"
 ```
 
 ---
@@ -53,7 +53,7 @@ git add <files>
 ### How
 ```bash
 ./scripts/create_task_pr.sh TASK-163 "Add return type annotations"
-# Make changes, commit with safe_push.sh
+# Make changes, commit with ai_commit.sh
 ./scripts/finish_task_pr.sh TASK-163 "Add return type annotations"
 ```
 
@@ -176,11 +176,9 @@ vim Python/structural_lib/critical.py
 **Prevents:** Merge conflicts, divergence, pre-commit issues
 
 **How:**
-1. Pull latest FIRST
-2. Commit (hooks run)
-3. Amend if hooks modified files
-4. Pull AGAIN (catch race conditions)
-5. Push
+1. Stages changes and runs should_use_pr.sh
+2. Delegates to safe_push.sh
+3. safe_push.sh handles sync, commit, amend, and push
 
 **Result:** Zero merge conflicts guaranteed
 

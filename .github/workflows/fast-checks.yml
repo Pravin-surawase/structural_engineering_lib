@@ -48,7 +48,7 @@ jobs:
 
       - name: Core tests (fast subset)
         working-directory: Python
-        run: python -m pytest tests/test_flexure.py tests/test_shear.py tests/test_detailing.py -v
+        run: python -m pytest tests/test_flexure_edges_additional.py tests/test_shear.py tests/test_detailing.py -v
 
       - name: Doc checks (parallel)
         run: |

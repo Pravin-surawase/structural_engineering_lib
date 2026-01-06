@@ -1,5 +1,7 @@
 # Git Workflow Quick Reference
 
+**Canonical:** `docs/GIT_WORKFLOW_AI_AGENTS.md`
+
 **Last Updated:** 2026-01-06
 **Status:** ✅ Production Ready (tested with 13 scenarios)
 
@@ -32,9 +34,9 @@ git add <files>
 ### Commands
 ```bash
 # After staging files
-./scripts/safe_push.sh "docs: fix typo in README"
-./scripts/safe_push.sh "test: add test case for X"
-./scripts/safe_push.sh "chore: update helper script"
+./scripts/ai_commit.sh "docs: fix typo in README"
+./scripts/ai_commit.sh "test: add test case for X"
+./scripts/ai_commit.sh "chore: update helper script"
 ```
 
 ---
@@ -55,7 +57,7 @@ git add <files>
 
 # 2. Make changes and commit
 vim Python/structural_lib/flexure.py
-./scripts/safe_push.sh "feat: add calculate_xyz()"
+./scripts/ai_commit.sh "feat: add calculate_xyz()"
 
 # 3. When done, merge and cleanup
 ./scripts/finish_task_pr.sh TASK-XXX "description"
@@ -86,7 +88,7 @@ vim docs/README.md
 git add docs/README.md
 ./scripts/should_use_pr.sh --explain
 # Output: ✅ Direct commit (Documentation only)
-./scripts/safe_push.sh "docs: fix installation instructions"
+./scripts/ai_commit.sh "docs: fix installation instructions"
 ```
 
 ### 🔀 Example 2: Add Function (PR)
@@ -121,7 +123,7 @@ Only override if:
 
 **Document in commit message:**
 ```bash
-./scripts/safe_push.sh "fix: emergency hotfix for X
+./scripts/ai_commit.sh "fix: emergency hotfix for X
 
 Note: Overriding PR requirement because:
 - Production issue affecting users

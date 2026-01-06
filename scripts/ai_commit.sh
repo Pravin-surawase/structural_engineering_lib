@@ -13,6 +13,7 @@ NC='\033[0m' # No Color
 # Get the project root (where .git is)
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
+CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
 
 echo -e "${YELLOW}🤖 AI Commit Workflow${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -32,6 +33,25 @@ echo ""
 # Stage all changes
 echo "→ Staging changes..."
 git add -A
+
+# Enforce PR-first workflow decision
+SHOULD_USE_PR_SCRIPT="$PROJECT_ROOT/scripts/should_use_pr.sh"
+if [[ -f "$SHOULD_USE_PR_SCRIPT" ]]; then
+    echo ""
+    echo "→ Checking whether a PR is required..."
+    if ! "$SHOULD_USE_PR_SCRIPT" --explain; then
+        if [[ "$CURRENT_BRANCH" == "main" ]]; then
+            echo ""
+            echo -e "${RED}✗ PR required. Create a task branch first:${NC}"
+            echo "  ./scripts/create_task_pr.sh TASK-XXX \"description\""
+            exit 1
+        fi
+        echo ""
+        echo -e "${YELLOW}⚠ PR required (continuing on branch: $CURRENT_BRANCH)${NC}"
+        echo "Remember to open/finish a PR with:"
+        echo "  ./scripts/finish_task_pr.sh TASK-XXX \"description\""
+    fi
+fi
 
 # Show what will be committed
 echo ""

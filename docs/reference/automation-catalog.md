@@ -159,7 +159,7 @@ Checking handoff readiness...
 
 ### 4. `safe_push.sh` ⭐ MANDATORY
 
-**Purpose:** Conflict-free commit and push with automatic conflict resolution.
+**Purpose:** Branch-aware commit and push with conflict prevention.
 
 **When to Use:**
 - ✅ **EVERY commit** (MANDATORY — never use manual git commands)
@@ -168,25 +168,22 @@ Checking handoff readiness...
 
 **Usage:**
 ```bash
-# Stage files first
-git add <files>
-
-# Then use safe_push
+# Use safe_push directly (it stages internally)
 ./scripts/safe_push.sh "commit message"
 
 # Example
-git add docs/reference/api.md
 ./scripts/safe_push.sh "docs: update API reference with new functions"
 ```
 
-**What It Does (7 Steps):**
-1. **Pull from remote** (start with latest state)
-2. **Stage files** (git add)
-3. **Step 2.5: Pre-flight whitespace check** (detects and fixes before commit)
-4. **Commit** (runs pre-commit hooks automatically)
-5. **Pull again** (catch race conditions)
-6. **Verify safety** (check fast-forward)
-7. **Push** (conflict-free)
+**What It Does (8 Steps):**
+1. **Auto-stash local changes** (ensures clean sync)
+2. **Sync with origin/main** (ff-only on main; feature branches rebase before first push, otherwise merge main)
+3. **Stage files** (git add)
+4. **Step 2.5: Pre-flight whitespace check** (detects and fixes before commit)
+5. **Commit** (runs pre-commit hooks automatically)
+6. **Sync again** (catch race conditions)
+7. **Verify safety** (check fast-forward)
+8. **Push** (conflict-minimized)
 
 **Why It's Mandatory:**
 - ✅ Prevents 90% of merge conflicts
@@ -217,17 +214,21 @@ git push
 - ✅ Before committing (if unsure about PR requirement)
 - ✅ When changing production code
 - ✅ To understand decision reasoning
+- ✅ Works with staged or unstaged changes
 
 **Usage:**
 ```bash
-# Stage files first
-git add <files>
-
 # Check decision
 ./scripts/should_use_pr.sh
 
 # Get explanation
 ./scripts/should_use_pr.sh --explain
+
+# Optional: staged-only mode
+./scripts/should_use_pr.sh --staged-only
+
+# Optional: include untracked files
+./scripts/should_use_pr.sh --include-untracked
 ```
 
 **Exit Codes:**
@@ -432,7 +433,30 @@ Tests failed: 0
 
 ---
 
-### 12. `validate_git_state.sh`
+### 12. `recover_git_state.sh`
+
+**Purpose:** Print exact recovery commands for common broken git states.
+
+**When to Use:**
+- ✅ When merges/rebases are stuck
+- ✅ When branches are diverged
+- ✅ When unsure how to recover safely
+
+**Usage:**
+```bash
+./scripts/recover_git_state.sh
+```
+
+**What It Outputs:**
+- Specific commands for unfinished merges
+- Specific commands for divergence
+- Next safe step for clean states
+
+**Related:** [validate_git_state.sh](#13-validate_git_statesh)
+
+---
+
+### 13. `validate_git_state.sh`
 
 **Purpose:** Comprehensive git state validation before operations.
 
@@ -453,7 +477,7 @@ Tests failed: 0
 - No unfinished merges
 - No stashed changes
 
-**Related:** [check_unfinished_merge.sh](#11-check_unfinished_mergesh)
+**Related:** [check_unfinished_merge.sh](#11-check_unfinished_mergesh), [recover_git_state.sh](#12-recover_git_statesh)
 
 ---
 
@@ -1155,45 +1179,39 @@ python scripts/external_cli_test.py
 
 ### 37. `ai_commit.sh`
 
-**Purpose:** Generate commit messages using AI (experimental).
+**Purpose:** Primary entrypoint for safe commits (stages, enforces PR rules, calls safe_push.sh).
 
 **When to Use:**
-- ✅ When commit message is complex
-- ✅ For standardized messages
-- ✅ Experimental workflow
+- ✅ Default for all commits
+- ✅ Enforces PR-first workflow rules
+- ✅ Avoids manual git usage
 
 **Usage:**
 ```bash
-# Stage files first
-git add <files>
-
-# Generate and commit
-./scripts/ai_commit.sh
+./scripts/ai_commit.sh "docs: update guide"
 ```
 
 **What It Does:**
-1. Analyzes staged changes
-2. Generates commit message
-3. Shows preview
-4. Commits if approved
+1. Stages all changes
+2. Runs `should_use_pr.sh --explain`
+3. Blocks if PR is required on main; warns if on a feature branch
+4. Delegates to safe_push.sh
 
-**Note:** Still experimental, prefer manual messages for clarity.
-
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory)
+**Related:** [safe_push.sh](#4-safe_pushsh-mandatory), [should_use_pr.sh](#5-should_use_prsh)
 
 ---
 
 ### 38. `quick_push.sh`
 
-**Purpose:** Fast push without full safety checks (DEPRECATED).
+**Purpose:** Deprecated legacy script.
 
-**Status:** ⚠️ DEPRECATED — Use [safe_push.sh](#4-safe_pushsh-mandatory) instead.
+**Status:** ⚠️ BLOCKED — Use [ai_commit.sh](#37-ai_commitsh) or [safe_push.sh](#4-safe_pushsh-mandatory).
 
 **Why Deprecated:** Skipped safety checks that caused conflicts.
 
-**Migration:** Replace all `quick_push.sh` calls with `safe_push.sh`.
+**Migration:** Replace all `quick_push.sh` calls with `ai_commit.sh`.
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory)
+**Related:** [ai_commit.sh](#37-ai_commitsh), [safe_push.sh](#4-safe_pushsh-mandatory)
 
 ---
 
@@ -1266,7 +1284,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 3. ✅ Review [next-session-brief.md](../planning/next-session-brief.md)
 
 ### During Development
-1. ✅ Use [safe_push.sh](#4-safe_pushsh-mandatory) for ALL commits
+1. ✅ Use [ai_commit.sh](#37-ai_commitsh) for ALL commits
 2. ✅ Check [should_use_pr.sh](#5-should_use_prsh) if unsure about PR
 3. ✅ Run [quick_check.sh](#26-quick_checksh) before commits
 4. ✅ Use [ci_local.sh](#25-ci_localsh) before major changes
@@ -1300,9 +1318,10 @@ chmod +x scripts/*.sh
 ```
 
 ### Git Workflow Issues
-- Always use [safe_push.sh](#4-safe_pushsh-mandatory) — never manual git
+- Always use [ai_commit.sh](#37-ai_commitsh) — never manual git
 - Run [check_unfinished_merge.sh](#11-check_unfinished_mergesh) if git seems stuck
-- Use [validate_git_state.sh](#12-validate_git_statesh) to diagnose
+- Use [recover_git_state.sh](#12-recover_git_statesh) for exact recovery steps
+- Use [validate_git_state.sh](#13-validate_git_statesh) to diagnose
 
 ### Pre-commit Hook Issues
 - Run [pre_commit_check.sh](#40-pre_commit_checksh) manually to debug

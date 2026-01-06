@@ -16,15 +16,16 @@
 
 ## ⚠️ BEFORE ANYTHING ELSE: Git Workflow
 
-**NEVER use manual git commands! ONLY use:**
+**NEVER use manual git commands! Use the automation scripts:**
 
 ```bash
-./scripts/safe_push.sh "commit message"
+./scripts/ai_commit.sh "commit message"
 ```
 
 **DO NOT use:** `git add`, `git commit`, `git push`, `git pull` manually!
 
-See [.github/copilot-instructions.md](.github/copilot-instructions.md) for full details.
+Canonical workflow: `docs/GIT_WORKFLOW_AI_AGENTS.md`
+See [.github/copilot-instructions.md](.github/copilot-instructions.md) for full rules.
 
 ---
 
@@ -33,7 +34,7 @@ See [.github/copilot-instructions.md](.github/copilot-instructions.md) for full 
 1. **Small, deterministic changes** — no hidden defaults
 2. **Python + VBA parity** — same formulas, units, edge-case behavior
 3. **Update docs with code** — in the same PR
-4. **Git workflow:** ALWAYS use `./scripts/safe_push.sh`
+4. **Git workflow:** ALWAYS use `./scripts/ai_commit.sh`
 
 ---
 
@@ -93,20 +94,21 @@ scripts/                   ← Automation scripts
 
 ### Git
 ```bash
-# Pre-commit hooks auto-format
-git commit -m "message"
+# Decide PR vs direct
+./scripts/should_use_pr.sh --explain
 
-# Create PR and wait for CI
-gh pr create --title "..." --body "..."
-gh pr checks <num> --watch
+# Direct commit (docs-only)
+./scripts/ai_commit.sh "docs: update guide"
 
-# Merge only after CI passes
-gh pr merge <num> --squash --delete-branch
+# PR workflow
+./scripts/create_task_pr.sh TASK-XXX "description"
+./scripts/ai_commit.sh "feat: implement X"
+./scripts/finish_task_pr.sh TASK-XXX "description"
 ```
 
 ---
 
-## 🤖 Automation Scripts (41 Total)
+## 🤖 Automation Scripts (42 Total)
 
 **Before implementing manually, check if a script exists!**
 
@@ -117,9 +119,11 @@ gh pr merge <num> --squash --delete-branch
 - `end_session.py` — Validate handoff before ending
 - `update_handoff.py` — Auto-update handoff docs
 
-**Git Workflow (9):** ⭐ CRITICAL
-- `safe_push.sh` — MANDATORY for all commits (conflict-free)
+**Git Workflow (10):** ⭐ CRITICAL
+- `ai_commit.sh` — Primary entrypoint (enforces PR rules)
+- `safe_push.sh` — Low-level commit/push workflow
 - `should_use_pr.sh` — Decision helper (PR vs direct commit)
+- `recover_git_state.sh` — Recovery helper (prints exact fix)
 - `verify_git_fix.sh` — Validate whitespace fix (CI)
 - `test_should_use_pr.sh` — Workflow decision tests (13 scenarios)
 - `create_task_pr.sh` — Create PR for task

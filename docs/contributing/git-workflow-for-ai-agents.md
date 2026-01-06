@@ -1,6 +1,9 @@
 # Git Workflow for AI Agents — Avoiding Race Conditions
 
-**Problem:** Pre-commit hooks modify files AFTER staging, and auto-format workflows create race conditions that cause push failures and merge conflicts.
+> ⚠️ **Deprecated:** This doc is superseded by `docs/GIT_WORKFLOW_AI_AGENTS.md`.
+> Use the canonical workflow doc for current instructions.
+
+**Problem (historical):** Pre-commit hooks modify files AFTER staging. Auto-format is now check-only, so PR auto-commit races are removed.
 
 **Status:** ✅ **SOLVED** — Use the safe push workflow below
 

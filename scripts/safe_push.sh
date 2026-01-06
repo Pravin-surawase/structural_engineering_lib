@@ -1,6 +1,6 @@
 #!/bin/bash
 # Safe push workflow for AI agents - PREVENTS ALL MERGE CONFLICTS
-# This script implements a foolproof workflow that eliminates race conditions
+# This script implements a foolproof workflow that minimizes race conditions
 #
 # Usage:
 #   ./scripts/safe_push.sh "commit message"
@@ -8,20 +8,20 @@
 #
 # Critical workflow order (DO NOT REORDER):
 # 1. Check for unfinished merge (complete if exists)
-# 2. PULL FIRST (get latest remote state)
+# 2. Pull/fetch latest remote state (branch-aware)
 # 3. Stage files
 # 4. Commit (pre-commit hooks may modify files)
 # 5. Re-stage hook modifications and amend (BEFORE any push)
-# 6. Pull AGAIN (in case remote changed during commit)
+# 6. Sync again (branch-aware)
 # 7. Push safely
 #
 # Why this order matters:
-# - Pulling BEFORE commit ensures we start with latest remote
+# - Syncing BEFORE commit ensures we start with latest remote
 # - Amending BEFORE push means we never rewrite pushed history
-# - Pulling AGAIN before push catches any changes during our commit
-# - Auto-resolve conflicts with --ours (we have the latest state)
+# - Syncing AGAIN before push catches changes during commit
+# - Avoids merge commits on main by using --ff-only
 
-set -e  # Exit on error
+set -e
 
 # Colors for output
 RED='\033[0;31m'
@@ -49,6 +49,51 @@ log_message() {
 log_message "INFO" "=== Safe Push Workflow Started ==="
 log_message "INFO" "User: $(whoami)"
 log_message "INFO" "Branch: $(git branch --show-current 2>/dev/null || echo 'unknown')"
+
+CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
+DEFAULT_BRANCH="main"
+REMOTE_NAME="origin"
+AUTO_STASHED="false"
+PUSH_HAS_UPSTREAM="false"
+
+if [[ -z "$CURRENT_BRANCH" ]]; then
+  echo -e "${RED}ERROR: Detached HEAD state detected${NC}"
+  echo "Checkout a branch before committing."
+  exit 1
+fi
+
+pull_main_ff_only() {
+  git pull --ff-only "$REMOTE_NAME" "$DEFAULT_BRANCH"
+}
+
+sync_with_main_branch() {
+  git fetch "$REMOTE_NAME" "$DEFAULT_BRANCH"
+  if [[ "$CURRENT_BRANCH" == "$DEFAULT_BRANCH" ]]; then
+    pull_main_ff_only
+  else
+    if git rev-parse --abbrev-ref "@{u}" >/dev/null 2>&1; then
+      git merge --no-edit "$REMOTE_NAME/$DEFAULT_BRANCH"
+    else
+      git rebase "$REMOTE_NAME/$DEFAULT_BRANCH"
+    fi
+  fi
+}
+
+complete_sync_resolution() {
+  if [[ -d .git/rebase-merge ]] || [[ -d .git/rebase-apply ]]; then
+    git rebase --continue
+  else
+    git commit --no-edit
+  fi
+}
+
+has_upstream() {
+  git rev-parse --abbrev-ref "@{u}" >/dev/null 2>&1
+}
+
+remote_ref_exists() {
+  git show-ref --verify --quiet "refs/remotes/$REMOTE_NAME/$CURRENT_BRANCH"
+}
 
 # Check if we're already in a merge state
 if [ -f .git/MERGE_HEAD ]; then
@@ -87,17 +132,24 @@ COMMIT_MSG="$1"
 FILES="${3:-}"  # Optional files argument
 log_message "INFO" "Commit message: ${COMMIT_MSG:0:100}..." # Log first 100 chars
 
-echo -e "${GREEN}=== Safe Push Workflow (Conflict-Free) ===${NC}"
-echo -e "${BLUE}This workflow prevents merge conflicts by pulling BEFORE commit${NC}"
+echo -e "${GREEN}=== Safe Push Workflow (Conflict-Minimized) ===${NC}"
+echo -e "${BLUE}This workflow syncs safely before commit${NC}"
 echo ""
 
-# Step 1: Pull FIRST to get latest remote state
-echo -e "${YELLOW}Step 1/7: Pulling latest from remote...${NC}"
-log_message "INFO" "Step 1: Pulling from remote"
-if ! git pull --no-rebase origin main 2>&1; then
-  # Pull may have conflicts from previous uncommitted changes
+# Step 0: Auto-stash dirty changes before sync
+if [[ -n $(git status --porcelain) ]]; then
+  echo -e "${YELLOW}Step 0/7: Stashing local changes before sync...${NC}"
+  git stash push -u -m "safe_push auto-stash" >/dev/null
+  AUTO_STASHED="true"
+fi
+
+# Step 1: Sync FIRST to get latest remote state (branch-aware)
+echo -e "${YELLOW}Step 1/7: Syncing latest from remote...${NC}"
+log_message "INFO" "Step 1: Syncing from remote"
+if ! sync_with_main_branch 2>&1; then
+  # Sync may have conflicts from previous uncommitted changes
   if git status | grep -q "Unmerged paths"; then
-    echo -e "${YELLOW}Merge conflicts in existing changes. Auto-resolving...${NC}"
+    echo -e "${YELLOW}Merge conflicts detected. Auto-resolving with --ours...${NC}"
     CONFLICTS=$(git diff --name-only --diff-filter=U)
     log_message "WARN" "Conflicts detected in $(echo "$CONFLICTS" | wc -l | tr -d ' ') file(s)"
     for file in $CONFLICTS; do
@@ -106,16 +158,26 @@ if ! git pull --no-rebase origin main 2>&1; then
       git add "$file"
       log_message "INFO" "Auto-resolved conflict: $file"
     done
-    git commit --no-edit
+    complete_sync_resolution
     echo -e "${GREEN}Conflicts resolved${NC}"
     log_message "SUCCESS" "All conflicts resolved with --ours strategy"
   else
-    echo -e "${RED}ERROR: Pull failed${NC}"
+    echo -e "${RED}ERROR: Sync failed${NC}"
     git status
     exit 1
   fi
 else
   echo -e "${GREEN}Up to date with remote${NC}"
+fi
+
+# Restore auto-stashed changes after sync
+if [[ "$AUTO_STASHED" == "true" ]]; then
+  echo -e "${YELLOW}Restoring stashed changes...${NC}"
+  if ! git stash pop >/dev/null; then
+    echo -e "${RED}ERROR: Auto-stash restore failed${NC}"
+    echo "Resolve stash conflicts, then re-run safe_push.sh"
+    exit 1
+  fi
 fi
 
 # Step 2: Stage files
@@ -168,15 +230,13 @@ else
   log_message "INFO" "No pre-commit modifications detected"
 fi
 
-# Step 5: Pull AGAIN (in case remote changed during our commit)
-echo -e "${YELLOW}Step 5/7: Pulling again (catch any changes during commit)...${NC}"
-log_message "INFO" "Step 5: Pulling again (safety check)"
-if ! git pull --no-rebase origin main 2>&1; then
-  # Pull may have conflicts if someone pushed while we were committing
+# Step 5: Sync AGAIN (branch-aware)
+echo -e "${YELLOW}Step 5/7: Syncing again (catch any changes during commit)...${NC}"
+log_message "INFO" "Step 5: Syncing again (safety check)"
+if ! sync_with_main_branch 2>&1; then
   if git status | grep -q "Unmerged paths"; then
-    echo -e "${YELLOW}Remote changed during our commit. Auto-resolving conflicts...${NC}"
+    echo -e "${YELLOW}Remote changed during commit. Auto-resolving conflicts...${NC}"
 
-    # Auto-resolve conflicts by keeping our version (we have the latest state)
     CONFLICTS=$(git diff --name-only --diff-filter=U)
     for file in $CONFLICTS; do
       echo -e "  Resolving: $file (keeping your version - you have latest)"
@@ -184,11 +244,10 @@ if ! git pull --no-rebase origin main 2>&1; then
       git add "$file"
     done
 
-    # Complete the merge
-    git commit --no-edit
+    complete_sync_resolution
     echo -e "${GREEN}Conflicts resolved (kept your changes)${NC}"
   else
-    echo -e "${RED}ERROR: Pull failed but no conflicts detected${NC}"
+    echo -e "${RED}ERROR: Sync failed but no conflicts detected${NC}"
     git status
     exit 1
   fi
@@ -196,33 +255,51 @@ else
   echo -e "${GREEN}Still up to date (no remote changes during commit)${NC}"
 fi
 
+# Cache upstream availability for push behavior
+if has_upstream; then
+  PUSH_HAS_UPSTREAM="true"
+fi
+
 # Step 6: Final safety check - ensure we can push
 echo -e "${YELLOW}Step 6/7: Verifying push safety...${NC}"
 LOCAL=$(git rev-parse HEAD)
-REMOTE=$(git rev-parse origin/main)
-BASE=$(git merge-base HEAD origin/main)
+REMOTE=""
+BASE=""
+if remote_ref_exists; then
+  REMOTE=$(git rev-parse "$REMOTE_NAME/$CURRENT_BRANCH")
+  BASE=$(git merge-base HEAD "$REMOTE_NAME/$CURRENT_BRANCH")
+fi
 
-if [ "$LOCAL" = "$REMOTE" ]; then
+if [[ -n "$REMOTE" && "$LOCAL" = "$REMOTE" ]]; then
   echo -e "${GREEN}No changes to push (already synced)${NC}"
   exit 0
-elif [ "$BASE" = "$REMOTE" ]; then
+elif [[ -n "$REMOTE" && "$BASE" = "$REMOTE" ]]; then
   echo -e "${GREEN}Fast-forward push ready${NC}"
-elif [ "$BASE" = "$LOCAL" ]; then
-  echo -e "${YELLOW}Local behind remote - this shouldn't happen${NC}"
-  echo -e "${YELLOW}Re-pulling...${NC}"
-  git pull --no-rebase origin main
+elif [[ -n "$REMOTE" && "$BASE" = "$LOCAL" ]]; then
+  echo -e "${YELLOW}Local behind remote - pulling latest${NC}"
+  git pull --ff-only "$REMOTE_NAME" "$CURRENT_BRANCH"
 else
-  echo -e "${GREEN}Merge commit ready (diverged but resolved)${NC}"
+  if [[ -z "$REMOTE" ]]; then
+    echo -e "${YELLOW}No remote branch yet; will set upstream on push${NC}"
+  else
+    echo -e "${GREEN}Push ready${NC}"
+  fi
 fi
 
 # Step 7: Push
 echo -e "${YELLOW}Step 7/7: Pushing to remote...${NC}"
 log_message "INFO" "Step 7: Pushing to remote"
-if git push; then
+if [[ "$PUSH_HAS_UPSTREAM" == "true" ]]; then
+  PUSH_CMD=(git push)
+else
+  PUSH_CMD=(git push -u "$REMOTE_NAME" "$CURRENT_BRANCH")
+fi
+
+if "${PUSH_CMD[@]}"; then
   echo -e "${GREEN}✅ Successfully pushed!${NC}"
   echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
   echo ""
-  echo -e "${BLUE}No conflicts occurred - workflow succeeded!${NC}"
+  echo -e "${BLUE}Workflow succeeded${NC}"
   log_message "SUCCESS" "Push completed successfully: $(git log -1 --oneline)"
   log_message "INFO" "=== Workflow Completed Successfully ==="
 else
@@ -236,8 +313,8 @@ else
   git log --oneline -5
   echo ""
   echo "Divergence check:"
-  git log --oneline origin/main..HEAD
+  git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD
   log_message "ERROR" "Push failed after all safety checks"
-  log_message "ERROR" "Divergence: $(git log --oneline origin/main..HEAD | wc -l | tr -d ' ') commits ahead"
+  log_message "ERROR" "Divergence: $(git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD | wc -l | tr -d ' ') commits ahead"
   exit 1
 fi
