@@ -11,6 +11,7 @@
 ## Rules (read first)
 - **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks (e.g., research + cleanup, small fix + docs). For complex features, keep WIP=1 to maintain focus.
 - Move tasks between sections; do not duplicate.
+- **Umbrella tasks:** For phased work, keep a single umbrella task in Active/Up Next and list included TASK IDs in its description; move included tasks to Recently Done when finished.
 - Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
 - Keep "Recently Done" to the last 10-20 items; older history lives in the archive.
 - Use agent roles from `agents/` and the workflow in `docs/_internal/AGENT_WORKFLOW.md`.
@@ -105,7 +106,7 @@ All research tasks completed (see Recently Done).
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
-| **TASK-185** | Archive legacy planning docs (v0.10-v0.12) with redirect stubs in `docs/planning/` | 2026-01-06 | DOCS |
+| **TASK-185** | Phase 1 hygiene umbrella (includes TASK-183, TASK-186): archive legacy planning docs (v0.10-v0.12) with redirect stubs in `docs/planning/` | 2026-01-06 | DOCS |
 | **TASK-183** | Fix broken internal links and add missing doc stubs (cost optimization guide, link repairs) | 2026-01-06 | DOCS |
 | **TASK-186** | Add repo metadata files (CITATION.cff, AUTHORS.md, FUNDING.yml, support issue template, third-party licenses summary) | 2026-01-06 | DOCS |
 | **TASK-165** | **Research: Project Hygiene & File Organization** (Audit: duplicate files, obsolete content, inconsistent naming, broken links, outdated docs, archive candidates; cleanup plan and file structure standards) → `docs/research/project-hygiene-audit.md` | 2026-01-06 | RESEARCHER |

@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sys
 
 TASKS_PATH = Path("docs/TASKS.md")
+TASK_ID_RE = re.compile(r"TASK-\\d{3}", re.IGNORECASE)
 
 REQUIRED_HEADINGS = [
     "## Rules (read first)",
@@ -48,6 +50,21 @@ def _table_rows(section_lines: list[str]) -> list[str]:
             continue
         data_rows.append(line)
     return data_rows
+
+
+def _parse_row_columns(line: str) -> list[str]:
+    return [part.strip() for part in line.strip().strip("|").split("|")]
+
+
+def _extract_task_id(text: str) -> str | None:
+    match = TASK_ID_RE.search(text)
+    if match:
+        return match.group(0).upper()
+    return None
+
+
+def _task_ids_in_text(text: str) -> list[str]:
+    return [match.group(0).upper() for match in TASK_ID_RE.finditer(text)]
 
 
 def main() -> int:
@@ -97,6 +114,29 @@ def main() -> int:
     if not any("| ID | Task | Agent | Status |" in line for line in done_lines):
         print("ERROR: Recently Done table header missing or malformed.")
         return 1
+
+    # Umbrella tasks must list included TASK IDs in the description.
+    for start_idx in positions[2:6]:
+        section_lines = _section(lines, start_idx)
+        for row in _table_rows(section_lines):
+            columns = _parse_row_columns(row)
+            if len(columns) < 2:
+                continue
+            task_id = _extract_task_id(columns[0])
+            if not task_id:
+                continue
+            task_desc = columns[1]
+            if "umbrella" not in task_desc.lower():
+                continue
+            included_ids = [
+                included for included in _task_ids_in_text(task_desc) if included != task_id
+            ]
+            if not included_ids:
+                print(
+                    "ERROR: Umbrella task must list included TASK IDs in its description "
+                    f"({task_id})."
+                )
+                return 1
 
     # Archive link.
     archive_lines = _section(lines, positions[6])
