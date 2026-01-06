@@ -63,9 +63,6 @@ All research tasks completed (see Recently Done).
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-193** | Type Annotation Modernization (PEP 585/604): Use `list` instead of `List`, `T | None` instead of `Optional[T]` | DEV | 0.5-1 day | 🟡 MEDIUM |
-| **TASK-194** | Fix Naming Convention Issues: pep8-naming compliance (N803, N806, N802) | DEV | 0.5 day | 🟡 MEDIUM |
-| **TASK-195** | Add Complete Docstrings to api.py (20+ public functions, Google Style) | DEV | 1 day | 🟡 MEDIUM |
 | **TASK-196** | Add Complete Docstrings to Core Modules (flexure.py, shear.py, detailing.py) | DEV | 1-2 days | 🟡 MEDIUM |
 | **TASK-190** | Resolve dead-code findings (vulture) + TODOs in SmartDesigner/CLI and track remaining ones | DEV | 0.5-1 day | 🟡 MEDIUM |
 | **TASK-191** | Restructure tests into category subfolders; add pytest markers and README for test taxonomy | TESTER | 1-2 days | 🟡 MEDIUM |
@@ -101,6 +98,9 @@ All research tasks completed (see Recently Done).
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-195** | Add Complete Docstrings to api.py (compute_detailing, compute_bbs, compute_dxf, compute_report; 139 lines added; Google Style with Args/Returns/Raises/Examples) | 2026-01-06 | DEV |
+| **TASK-194** | Fix Naming Convention Issues (configured ruff to allow structural engineering conventions: D, D_mm, Df, etc.; 59 naming issues resolved; per-file ignores for excel_bridge) | 2026-01-06 | DEV |
+| **TASK-193** | Type Annotation Modernization (PEP 585/604: 398 issues resolved; 25 files modified; list/dict/tuple instead of List/Dict/Tuple; all 2270 tests pass) | 2026-01-06 | DEV |
 | **TASK-189** | Expand ruff rules + docstring guide (9 rule categories; Google Style guide; 17 auto-fixes; phased implementation plan; see docs/research/ruff-expansion-summary.md) | 2026-01-06 | DEV |
 | **TASK-187** | Standardize license headers in Python modules and align VBA header format (SPDX-License-Identifier: MIT, Copyright (c) 2024-2026 Pravin Surawase; 40 Python files, 33 VBA files; script: add_license_headers.py; all 2270 tests pass) | 2026-01-06 | DEV |
 | **TASK-188** | Publish nomenclature glossary + naming rules in `docs/contributing/development-guide.md`; update key examples to match | 2026-01-06 | DOCS |
