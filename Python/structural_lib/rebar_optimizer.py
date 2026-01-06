@@ -17,8 +17,9 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple
+from typing import Iterable, List, Literal, Optional, Tuple, cast
 
+from .data_types import OptimizerChecks
 from .detailing import (
     STANDARD_BAR_DIAMETERS,
     BarArrangement,
@@ -35,7 +36,7 @@ class RebarOptimizerResult:
     arrangement: Optional[BarArrangement]
     objective: Objective
     candidates_considered: int
-    checks: Dict[str, Any]
+    checks: OptimizerChecks
     remarks: str
 
 
@@ -139,7 +140,29 @@ def optimize_bar_arrangement(
             arrangement=arrangement,
             objective=objective,
             candidates_considered=1,
-            checks={"note": "ast_required_mm2 <= 0; returned minimum arrangement"},
+            checks=cast(
+                OptimizerChecks,
+                {
+                    "inputs": {
+                        "ast_required_mm2": ast_required_mm2,
+                        "b_mm": b_mm,
+                        "cover_mm": cover_mm,
+                        "stirrup_dia_mm": stirrup_dia_mm,
+                        "agg_size_mm": agg_size_mm,
+                        "max_layers": max_layers,
+                        "min_total_bars": min_total_bars,
+                        "max_bars_per_layer": max_bars_per_layer,
+                    },
+                    "candidate": {
+                        "bar_dia_mm": 12.0,
+                        "count": min_total_bars,
+                        "layers": 1,
+                        "bars_per_layer": min_total_bars,
+                        "spacing_mm": 0.0,
+                        "spacing_check": "ast_required_mm2 <= 0; returned minimum",
+                    },
+                },
+            ),
             remarks="OK",
         )
 
@@ -152,7 +175,7 @@ def optimize_bar_arrangement(
 
     candidates_considered = 0
     feasible: List[
-        Tuple[Tuple[float, float, float, float, float], BarArrangement, Dict[str, Any]]
+        Tuple[Tuple[float, float, float, float, float], BarArrangement, OptimizerChecks]
     ] = []
 
     for dia_mm in diameters:
@@ -220,26 +243,29 @@ def optimize_bar_arrangement(
             else:
                 raise ValueError(f"Unknown objective: {objective}")
 
-            checks: Dict[str, Any] = {
-                "inputs": {
-                    "ast_required_mm2": ast_required_mm2,
-                    "b_mm": b_mm,
-                    "cover_mm": cover_mm,
-                    "stirrup_dia_mm": stirrup_dia_mm,
-                    "agg_size_mm": agg_size_mm,
-                    "max_layers": max_layers,
-                    "min_total_bars": min_total_bars,
-                    "max_bars_per_layer": max_bars_per_layer,
+            checks = cast(
+                OptimizerChecks,
+                {
+                    "inputs": {
+                        "ast_required_mm2": ast_required_mm2,
+                        "b_mm": b_mm,
+                        "cover_mm": cover_mm,
+                        "stirrup_dia_mm": stirrup_dia_mm,
+                        "agg_size_mm": agg_size_mm,
+                        "max_layers": max_layers,
+                        "min_total_bars": min_total_bars,
+                        "max_bars_per_layer": max_bars_per_layer,
+                    },
+                    "candidate": {
+                        "bar_dia_mm": float(dia_mm),
+                        "count": int(count_needed),
+                        "layers": int(layers),
+                        "bars_per_layer": int(bars_per_layer),
+                        "spacing_mm": float(spacing_mm),
+                        "spacing_check": spacing_msg,
+                    },
                 },
-                "candidate": {
-                    "bar_dia_mm": float(dia_mm),
-                    "count": int(count_needed),
-                    "layers": int(layers),
-                    "bars_per_layer": int(bars_per_layer),
-                    "spacing_mm": float(spacing_mm),
-                    "spacing_check": spacing_msg,
-                },
-            }
+            )
 
             feasible.append((score, arrangement, checks))
 
@@ -249,18 +275,22 @@ def optimize_bar_arrangement(
             arrangement=None,
             objective=objective,
             candidates_considered=candidates_considered,
-            checks={
-                "inputs": {
-                    "ast_required_mm2": ast_required_mm2,
-                    "b_mm": b_mm,
-                    "cover_mm": cover_mm,
-                    "stirrup_dia_mm": stirrup_dia_mm,
-                    "agg_size_mm": agg_size_mm,
-                    "max_layers": max_layers,
-                    "min_total_bars": min_total_bars,
-                    "max_bars_per_layer": max_bars_per_layer,
-                }
-            },
+            checks=cast(
+                OptimizerChecks,
+                {
+                    "inputs": {
+                        "ast_required_mm2": ast_required_mm2,
+                        "b_mm": b_mm,
+                        "cover_mm": cover_mm,
+                        "stirrup_dia_mm": stirrup_dia_mm,
+                        "agg_size_mm": agg_size_mm,
+                        "max_layers": max_layers,
+                        "min_total_bars": min_total_bars,
+                        "max_bars_per_layer": max_bars_per_layer,
+                    },
+                    "candidate": {},  # No candidate when not feasible
+                },
+            ),
             remarks=(
                 "No feasible bar layout found within constraints "
                 f"(candidates_considered={candidates_considered})."

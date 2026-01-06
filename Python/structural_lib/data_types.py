@@ -53,6 +53,47 @@ class CrackWidthParams(TypedDict, total=False):
     max_crack_width_mm: float  # Maximum allowable crack width
 
 
+class OptimizerInputs(TypedDict, total=False):
+    """Input parameters for rebar optimizer.
+
+    All fields optional (total=False) to allow partial structures in error cases.
+    """
+
+    ast_required_mm2: float
+    b_mm: float
+    cover_mm: float
+    stirrup_dia_mm: float
+    agg_size_mm: float
+    max_layers: int
+    min_total_bars: int
+    max_bars_per_layer: int
+
+
+class OptimizerCandidate(TypedDict, total=False):
+    """Candidate solution from rebar optimizer.
+
+    All fields optional (total=False) since candidate may be empty when not feasible.
+    """
+
+    bar_dia_mm: float
+    count: int
+    layers: int
+    bars_per_layer: int
+    spacing_mm: float
+    spacing_check: str
+
+
+class OptimizerChecks(TypedDict, total=False):
+    """Rebar optimizer checks structure.
+
+    All fields optional (total=False) to allow partial structures in error cases.
+    """
+
+    inputs: OptimizerInputs
+    candidate: OptimizerCandidate
+    selection: Dict[str, Any]  # Selection metadata
+
+
 class BeamType(Enum):
     RECTANGULAR = 1
     FLANGED_T = 2
