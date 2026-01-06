@@ -47,11 +47,11 @@ jobs:
 
       - name: Contract tests (breaking change detection)
         working-directory: Python
-        run: python -m pytest tests/test_contracts.py -m contract -v
+        run: python -m pytest tests/integration/test_contracts.py -m contract -v
 
       - name: Core tests (fast subset)
         working-directory: Python
-        run: python -m pytest tests/test_flexure_edges_additional.py tests/test_shear.py tests/test_detailing.py -v
+        run: python -m pytest tests/integration/test_flexure_edges_additional.py tests/unit/test_shear.py tests/unit/test_detailing.py -v
 
       - name: Doc checks (parallel)
         run: |
