@@ -194,6 +194,27 @@ def suggest_beam_design_improvements(
     mu_knm: float | None = None,
     vu_kn: float | None = None,
 ) -> dict
+def smart_analyze_design(
+    *,
+    units: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    include_cost: bool = True,
+    include_suggestions: bool = True,
+    include_sensitivity: bool = True,
+    include_constructability: bool = True,
+    cost_profile: CostProfile | None = None,
+    weights: dict[str, float] | None = None,
+    output_format: str = "dict",
+) -> dict | str
 ```
 
 Notes:
@@ -207,6 +228,10 @@ Notes:
   suggestions covering geometry, steel, cost, constructability, serviceability, and materials.
   Each suggestion includes impact level, confidence score, IS 456 clause references, and
   actionable steps. See [Design Suggestions Guide](../getting-started/design-suggestions-guide.md).
+- `smart_analyze_design()` (v0.15.0+) returns unified smart design dashboard combining cost
+  optimization, design suggestions, sensitivity analysis, and constructability assessment.
+  Runs full design pipeline internally and returns comprehensive dashboard with overall scores,
+  ratings, and recommendations. Supports dict, JSON, or text output formats.
 
 ---
 

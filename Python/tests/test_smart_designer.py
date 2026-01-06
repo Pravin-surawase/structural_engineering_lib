@@ -2,7 +2,7 @@
 
 import pytest
 
-from structural_lib.api import design_beam_is456
+from structural_lib import beam_pipeline
 from structural_lib.insights import (
     DashboardReport,
     SmartAnalysisSummary,
@@ -15,6 +15,7 @@ def _base_params():
     """Standard beam parameters for testing."""
     return {
         "units": "IS456",
+        "span_mm": 5000.0,
         "b_mm": 300.0,
         "D_mm": 500.0,
         "d_mm": 450.0,
@@ -26,6 +27,26 @@ def _base_params():
     }
 
 
+def _run_pipeline(params):
+    """Helper to run beam pipeline and get BeamDesignOutput."""
+    return beam_pipeline.design_single_beam(
+        units=params["units"],
+        b_mm=params["b_mm"],
+        D_mm=params["D_mm"],
+        d_mm=params["d_mm"],
+        cover_mm=params["D_mm"] - params["d_mm"],  # Calculate from D and d
+        fck_nmm2=params["fck_nmm2"],
+        fy_nmm2=params["fy_nmm2"],
+        mu_knm=params["mu_knm"],
+        vu_kn=params["vu_kn"],
+        beam_id="test",
+        story="TEST",
+        span_mm=params["span_mm"],
+        d_dash_mm=params.get("d_dash_mm", 50.0),
+        asv_mm2=params.get("asv_mm2", 100.0),
+    )
+
+
 # =============================================================================
 # SmartDesigner.analyze() Tests
 # =============================================================================
@@ -34,10 +55,10 @@ def _base_params():
 def test_smart_designer_basic_analysis():
     """Test basic smart analysis with all features enabled."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -54,10 +75,10 @@ def test_smart_designer_basic_analysis():
 def test_smart_designer_minimal_analysis():
     """Test analysis with only summary (all features disabled)."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -78,11 +99,11 @@ def test_smart_designer_minimal_analysis():
 def test_smart_designer_selective_features():
     """Test analysis with selective feature inclusion."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     # Only cost and suggestions
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -101,10 +122,10 @@ def test_smart_designer_selective_features():
 def test_smart_designer_summary_structure():
     """Test summary structure and fields."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     summary = dashboard.summary
@@ -122,10 +143,10 @@ def test_smart_designer_summary_structure():
 def test_smart_designer_cost_analysis():
     """Test cost analysis component."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0, include_cost=True
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0, include_cost=True
     )
 
     cost = dashboard.cost
@@ -139,10 +160,10 @@ def test_smart_designer_cost_analysis():
 def test_smart_designer_suggestions():
     """Test design suggestions component."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -165,10 +186,10 @@ def test_smart_designer_suggestions():
 def test_smart_designer_sensitivity():
     """Test sensitivity analysis component."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -186,10 +207,10 @@ def test_smart_designer_sensitivity():
 def test_smart_designer_constructability():
     """Test constructability assessment component."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -217,10 +238,10 @@ def test_smart_designer_constructability():
 def test_smart_designer_metadata():
     """Test metadata structure."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     metadata = dashboard.metadata
@@ -235,7 +256,7 @@ def test_smart_designer_metadata():
 def test_smart_designer_custom_weights():
     """Test custom weight configuration."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     custom_weights = {
         "safety": 0.4,
@@ -245,7 +266,7 @@ def test_smart_designer_custom_weights():
     }
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -269,10 +290,10 @@ def test_smart_designer_invalid_design():
     params = _base_params()
     params["mu_knm"] = 1000.0  # Too high - will fail
 
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     with pytest.raises(ValueError, match="valid passing design"):
-        SmartDesigner.analyze(design=result, span_mm=5000.0, mu_knm=1000.0, vu_kn=85.0)
+        SmartDesigner.analyze(design=design, span_mm=5000.0, mu_knm=1000.0, vu_kn=85.0)
 
 
 # =============================================================================
@@ -283,10 +304,10 @@ def test_smart_designer_invalid_design():
 def test_dashboard_to_dict():
     """Test dashboard dictionary conversion."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     data = dashboard.to_dict()
@@ -300,10 +321,10 @@ def test_dashboard_to_dict():
 def test_dashboard_to_json(tmp_path):
     """Test dashboard JSON export."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     output_path = tmp_path / "dashboard.json"
@@ -321,10 +342,10 @@ def test_dashboard_to_json(tmp_path):
 def test_dashboard_summary_text():
     """Test dashboard text summary generation."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     text = dashboard.summary_text()
@@ -339,10 +360,10 @@ def test_dashboard_summary_text():
 def test_dashboard_summary_text_sections():
     """Test that text summary includes requested sections."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=120.0,
         vu_kn=85.0,
@@ -367,9 +388,9 @@ def test_dashboard_summary_text_sections():
 def test_quick_analysis():
     """Test quick_analysis helper function."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
-    text = quick_analysis(result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0)
+    text = quick_analysis(design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0)
 
     assert isinstance(text, str)
     assert len(text) > 0
@@ -387,14 +408,14 @@ def test_quick_analysis():
 def test_smart_designer_deterministic():
     """Test that analysis produces deterministic results."""
     params = _base_params()
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard1 = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     dashboard2 = SmartDesigner.analyze(
-        design=result, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     # Summary scores should be identical
@@ -410,17 +431,17 @@ def test_smart_designer_deterministic():
 def test_smart_designer_different_designs():
     """Test that different designs produce different analyses."""
     params1 = _base_params()
-    result1 = design_beam_is456(**params1)
+    design1 = _run_pipeline(params1)
 
-    params2 = {**_base_params(), "b_mm": 350.0, "d_mm": 500.0}
-    result2 = design_beam_is456(**params2)
+    params2 = {**_base_params(), "b_mm": 350.0, "d_mm": 500.0, "D_mm": 550.0}
+    design2 = _run_pipeline(params2)
 
     dashboard1 = SmartDesigner.analyze(
-        design=result1, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design1, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     dashboard2 = SmartDesigner.analyze(
-        design=result2, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
+        design=design2, span_mm=5000.0, mu_knm=120.0, vu_kn=85.0
     )
 
     # Different designs should have different scores
@@ -437,10 +458,12 @@ def test_smart_designer_large_span():
     params["mu_knm"] = 250.0
     params["d_mm"] = 600.0
     params["D_mm"] = 650.0
-    result = design_beam_is456(**params)
+    params["span_mm"] = 8000.0
+    params["vu_kn"] = 120.0
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result, span_mm=8000.0, mu_knm=250.0, vu_kn=120.0
+        design=design, span_mm=8000.0, mu_knm=250.0, vu_kn=120.0
     )
 
     assert isinstance(dashboard, DashboardReport)
@@ -452,10 +475,10 @@ def test_smart_designer_high_congestion():
     params = _base_params()
     params["mu_knm"] = 180.0  # Higher moment -> more steel
     params["b_mm"] = 250.0  # Narrower section -> higher steel%
-    result = design_beam_is456(**params)
+    design = _run_pipeline(params)
 
     dashboard = SmartDesigner.analyze(
-        design=result,
+        design=design,
         span_mm=5000.0,
         mu_knm=180.0,
         vu_kn=85.0,

@@ -372,15 +372,19 @@ class SmartDesigner:
             )
 
             suggestions_list = sug_result.suggestions
-            high = sum(1 for s in suggestions_list if s.impact == "HIGH")
-            medium = sum(1 for s in suggestions_list if s.impact == "MEDIUM")
-            low = sum(1 for s in suggestions_list if s.impact == "LOW")
+            high = sum(1 for s in suggestions_list if s.impact.value == "high")
+            medium = sum(1 for s in suggestions_list if s.impact.value == "medium")
+            low = sum(1 for s in suggestions_list if s.impact.value == "low")
 
             # Convert to dict format
             suggestions_dicts = [
                 {
-                    "category": s.category,
-                    "impact": s.impact,
+                    "category": (
+                        s.category.value if hasattr(s.category, "value") else s.category
+                    ),
+                    "impact": (
+                        s.impact.value if hasattr(s.impact, "value") else s.impact
+                    ),
                     "title": s.title,
                     "description": s.description,
                     "rationale": s.rationale,

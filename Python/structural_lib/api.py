@@ -47,6 +47,7 @@ __all__ = [
     "detail_beam_is456",
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
+    "smart_analyze_design",
 ]
 
 
@@ -1133,3 +1134,122 @@ def suggest_beam_design_improvements(
     )
 
     return report.to_dict()
+
+
+def smart_analyze_design(
+    *,
+    units: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    include_cost: bool = True,
+    include_suggestions: bool = True,
+    include_sensitivity: bool = True,
+    include_constructability: bool = True,
+    cost_profile: Optional[CostProfile] = None,
+    weights: Optional[Dict[str, float]] = None,
+    output_format: str = "dict",
+) -> Union[Dict[str, Any], str]:
+    """Unified smart design analysis dashboard.
+
+    Combines cost optimization, design suggestions, sensitivity analysis,
+    and constructability assessment into a comprehensive dashboard.
+
+    This function runs the full design pipeline internally to get complete
+    design context, then performs all smart analyses.
+
+    Args:
+        units: Units label (must be "IS456").
+        span_mm: Beam span (mm).
+        mu_knm: Factored bending moment (kN·m).
+        vu_kn: Factored shear (kN).
+        b_mm: Beam width (mm).
+        D_mm: Overall depth (mm).
+        d_mm: Effective depth (mm).
+        fck_nmm2: Concrete strength (N/mm²).
+        fy_nmm2: Steel yield strength (N/mm²).
+        d_dash_mm: Compression steel depth (mm, default: 50).
+        asv_mm2: Stirrup area (mm², default: 100).
+        include_cost: Include cost optimization (default: True).
+        include_suggestions: Include design suggestions (default: True).
+        include_sensitivity: Include sensitivity analysis (default: True).
+        include_constructability: Include constructability (default: True).
+        cost_profile: Custom cost profile (optional).
+        weights: Custom weights for overall score (optional).
+        output_format: Output format - "dict", "json", or "text" (default: "dict").
+
+    Returns:
+        Dashboard report as dict, JSON string, or formatted text.
+
+    Raises:
+        ValueError: If units is not IS456 or design fails.
+
+    Example:
+        >>> dashboard = smart_analyze_design(
+        ...     units="IS456",
+        ...     span_mm=5000,
+        ...     mu_knm=120,
+        ...     vu_kn=85,
+        ...     b_mm=300,
+        ...     D_mm=500,
+        ...     d_mm=450,
+        ...     fck_nmm2=25,
+        ...     fy_nmm2=500,
+        ... )
+        >>> print(f"Overall Score: {dashboard['summary']['overall_score']:.1f}/100")
+        >>> print(f"Cost Savings: {dashboard['cost']['savings_percent']:.1f}%")
+        >>> print(f"Top Suggestion: {dashboard['suggestions']['top_3'][0]['title']}")
+    """
+
+    from .insights import SmartDesigner
+
+    _require_is456_units(units)
+
+    # Run full pipeline to get BeamDesignOutput
+    pipeline_result = beam_pipeline.design_single_beam(
+        units=units,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        cover_mm=D_mm - d_mm,  # Calculate cover from D and d
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        beam_id="smart-analysis",
+        story="N/A",
+        span_mm=span_mm,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+    )
+
+    # Run smart analysis
+    dashboard = SmartDesigner.analyze(
+        design=pipeline_result,
+        span_mm=span_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        include_cost=include_cost,
+        include_suggestions=include_suggestions,
+        include_sensitivity=include_sensitivity,
+        include_constructability=include_constructability,
+        cost_profile=cost_profile,
+        weights=weights,
+    )
+
+    # Format output
+    if output_format == "text":
+        return dashboard.summary_text()
+    elif output_format == "json":
+        import json
+
+        return json.dumps(dashboard.to_dict(), indent=2)
+    else:
+        return dashboard.to_dict()
