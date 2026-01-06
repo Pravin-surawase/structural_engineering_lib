@@ -108,19 +108,44 @@ pytest -m property -v
 ### 5. Performance Tests (`performance/`)
 
 **Purpose:** Performance benchmarks and timing tests
-**Scope:** Speed regression detection
-**Speed:** Intentionally slow (multiple runs)
-**File Count:** 0 files (TODO: Add pytest-benchmark suite)
+**Scope:** Speed regression detection and baseline performance tracking
+**Speed:** Intentionally slow (multiple runs for statistical accuracy)
+**File Count:** 1 file
 
-**Future Files:**
-- `test_benchmarks.py` - Core calculation benchmarks
+**Files:**
+- `test_benchmarks.py` - Core calculation benchmarks (13 passing, 2 skipped)
+
+**Benchmark Coverage:**
+- **Core calculations** (6 benchmarks): `calculate_mu_lim`, `calculate_ast_required`, `calculate_tv`, `calculate_development_length`, `get_ec`, `get_fcr`
+- **Module functions** (3 benchmarks): `design_singly_reinforced`, `design_shear`, `check_deflection_span_depth`
+- **API functions** (3 benchmarks): `design_beam_is456`, `optimize_bar_arrangement`, `optimize_beam_cost`
+- **Batch processing** (1 benchmark): `run_job_is456` (10-beam batch)
+
+**Performance Baselines (as of v0.14.0):**
+- Core calculations: ~500ns-1µs (fast path)
+- Module functions: ~2-3µs (design logic)
+- API functions: ~10µs-200ms (full workflows)
+- Batch processing: ~2.7ms for 10 beams
 
 **Run Command:**
 ```bash
+# Run all benchmarks
 pytest tests/performance/ -v --benchmark-only
+
+# Save baseline
+pytest tests/performance/ --benchmark-only --benchmark-autosave
+
+# Compare against baseline
+pytest tests/performance/ --benchmark-only --benchmark-compare=0001
+
 # Or with marker:
-pytest -m performance -v
+pytest -m performance -v --benchmark-only
 ```
+
+**Baseline Storage:**
+- Benchmark results saved in `.benchmarks/` directory (gitignored)
+- Each run creates a timestamped JSON file
+- Use `--benchmark-compare` to detect regressions
 
 ## Pytest Markers
 
@@ -183,8 +208,52 @@ pytest tests/integration/test_api_entrypoints_is456.py -v
 
 ### Run with Coverage
 ```bash
+# Generate HTML coverage report
 pytest --cov=structural_lib --cov-report=html
 # Open htmlcov/index.html to view coverage report
+
+# Per-module coverage summary
+pytest --cov=structural_lib --cov-report=term-missing:skip-covered
+
+# Coverage by module only (concise)
+pytest --cov=structural_lib --cov-report=term
+```
+
+### Run Performance Benchmarks
+```bash
+# Run all benchmark60
+- **Coverage:** 86% (5470 statements, 778 missing)
+- **Average Speed:** ~30s for full suite (excluding benchmarks)
+- **Breakdown:**
+  - Unit: 12 files (~500 tests)
+  - Integration: 38 files (~1400 tests)
+  - Regression: 8 files (~300 tests)
+  - Property: 1 file (~70 tests)
+  - Performance: 1 file (13 benchmarks, 2 skipped)
+
+## Coverage by Module
+
+**High Coverage (>90%):**
+- `rebar_optimizer.py`: 98%
+- `detailing.py`: 97%
+- `report_svg.py`: 96%
+- `beam_pipeline.py`: 92%
+- `optimization.py`: 91%
+- `compliance.py`: 90%
+
+**Medium Coverage (80-90%):**
+- `bbs.py`: 86%, `job_runner.py`: 86%, `serviceability.py`: 86%
+- `costing.py`: 89%, `ductile.py`: 84%, `flexure.py`: 83%
+- `dxf_export.py`: 83%, `report.py`: 83%
+
+**Needs Attention (<80%):**
+- `api.py`: 73% (needs API wrapper tests)
+- `__main__.py`: 69% (CLI entry point)
+- `job_cli.py`: 35% (CLI commands)
+- `constants.py`: 0% (constants file, low priority)
+- `intelligence.py`: 0% (placeholder module
+# Run only fast benchmarks (exclude slow ones)
+pytest tests/performance/ -m "performance and not slow" --benchmark-only
 ```
 
 ### Run in Parallel (faster)
@@ -289,9 +358,17 @@ If you see `ModuleNotFoundError` after restructuring:
 - Run from project root: `python -m pytest tests/`
 
 ### Slow Tests
+6-01-06 (TASK-192: Added performance benchmarks)
+**Previous Update:** 2024-12-XX (TASK-191: Test restructuring)
+**Maintainer:** AI Agent / Project Team
+**Review Frequency:** Quarterly or when test count changes >10%
 
-If full suite is too slow:
-```bash
+---
+
+**Version History:**
+- **v0.14.0** (2026-01-06): Added performance benchmarks with pytest-benchmark
+- **v0.13.0** (2024-12-XX): Restructured tests into category subdirectories
+- **v0.12.0** (2024-11-XX): Initial test organization
 # Run only fast tests
 pytest -m "not slow"
 
