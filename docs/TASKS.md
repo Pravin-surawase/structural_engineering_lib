@@ -28,7 +28,9 @@
 
 ## Active
 
-_No active tasks_
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-190** | Resolve dead-code findings (vulture) + TODOs in SmartDesigner/CLI and track remaining ones | DEV | 0.5-1 day | 🟡 MEDIUM | 🔄 In Progress |
 
 ---
 

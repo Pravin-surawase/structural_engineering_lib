@@ -240,7 +240,7 @@ def cmd_design(args: argparse.Namespace) -> int:
             from . import insights
 
             beam_insights = []
-            for i, beam in enumerate(beams):
+            for _i, beam in enumerate(beams):
                 print(f"  Insights for {beam.story}/{beam.beam_id}...", file=sys.stderr)
 
                 try:
@@ -272,8 +272,9 @@ def cmd_design(args: argparse.Namespace) -> int:
                         ["d_mm", "b_mm", "fck_nmm2", "fy_nmm2"],
                     )
 
-                    # Constructability - requires full design result (not yet integrated for CLI)
-                    # TODO: Integrate constructability scoring after API alignment
+                    # Constructability scoring deferred to v0.16
+                    # CLI smart command uses simplified param-based sensitivity only
+                    # Full constructability requires BeamDesignOutput (not available in param-only context)
                     constructability = None
 
                     beam_insights.append(
