@@ -32,7 +32,7 @@ This script stages changes, enforces PR rules, and delegates to safe_push.sh.
 ./scripts/ai_commit.sh "feat: implement X"
 ./scripts/finish_task_pr.sh TASK-XXX "short description"
 ```
-Note: GitHub does not allow PR authors to approve their own PRs. If review is required, get another reviewer or use an admin merge override.
+Note: Reviews are not required in this repo. If reviews are enabled later, PR authors cannot self-approve.
 
 ---
 
@@ -71,7 +71,7 @@ A: No. `ai_commit.sh` and `safe_push.sh` stage changes for you.
 **Q: How do I choose PR vs direct?**
 A: Use `./scripts/should_use_pr.sh --explain`.
 
-**Q: Why can’t I approve my own PR?**
+**Q: Why can’t I approve my own PR (if reviews are enabled)?**
 A: GitHub blocks self-approval. Request another reviewer, or use an admin merge override when allowed.
 
 ---
