@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Smart design analysis dashboard** (`structural_lib.insights.smart_designer`)
+  - `SmartDesigner` class with unified `analyze()` method
+  - Combines cost optimization, design suggestions, sensitivity analysis, and constructability
+  - 6 structured dataclasses: `SmartAnalysisSummary`, `CostAnalysis`, `DesignSuggestions`, `SensitivityInsights`, `ConstructabilityInsights`, `DashboardReport`
+  - Overall design score (0-100) with customizable weights
+  - Multiple output formats: dict, JSON, formatted text
+  - Helper function `quick_analysis()` for simplified text output
+  - 19/20 comprehensive tests passing
+- **Public API wrapper for smart analysis** (`smart_analyze_design()`)
+  - Simple API accepting beam parameters (b_mm, D_mm, d_mm, fck, fy, mu, vu, span)
+  - Runs full design pipeline internally to get complete design context
+  - Returns unified dashboard with all insights
+  - Supports selective feature inclusion (cost, suggestions, sensitivity, constructability)
+  - Output formats: dict (default), JSON string, or formatted text
+  - Solves type architecture mismatch between public API and SmartDesigner
+- **CLI scaffolding for smart command** (`smart` subcommand in `__main__.py`)
+  - Command structure ready for future CLI integration
+  - Configurable analysis components (--no-cost, --no-suggestions, etc.)
+  - Text and JSON output format support
+
 ## [0.14.0] - 2026-01-06
 
 ### Added
