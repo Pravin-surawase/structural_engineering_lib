@@ -1,5 +1,64 @@
 # GitHub Workflow Guide
 
+**Updated:** 2026-01-06 (Production Stage Guidelines)
+**Research:** See docs/research/git-workflow-production-stage.md
+
+## 🎯 Quick Decision: Direct Commit or PR?
+
+```bash
+# Let the tool decide for you:
+git add <files>
+./scripts/should_use_pr.sh --explain
+```
+
+---
+
+## ✅ Direct Commits (Low-Risk Only)
+
+### When to Use
+- **Documentation ONLY** (no code): docs/
+- **Tests ONLY** (no production code): Python/tests/
+- **Scripts ONLY** (tooling): scripts/
+
+### Requirements
+- Changes affect ONE category above
+- No production code (Python/structural_lib/)
+- No VBA code
+- No CI changes
+- No dependency changes
+
+### How
+```bash
+./scripts/safe_push.sh "docs: fix typo in README"
+```
+
+---
+
+## 🔀 Pull Requests (All Production Code)
+
+### When to Use (REQUIRED)
+- **Production code**: Python/structural_lib/**/*.py
+- **VBA code**: VBA/**/*.bas, Excel/**/*.xlsm
+- **CI workflows**: .github/workflows/**/*.yml
+- **Dependencies**: pyproject.toml, requirements.txt
+- **API changes**: Function signatures, breaking changes
+- **Multi-module changes**: Coordinated refactoring
+
+### Why
+- ✅ CI validates before merge
+- ✅ Audit trail for production changes
+- ✅ Easy rollback if needed
+- ✅ Contract tests catch breaking changes
+
+### How
+```bash
+./scripts/create_task_pr.sh TASK-163 "Add return type annotations"
+# Make changes, commit with safe_push.sh
+./scripts/finish_task_pr.sh TASK-163 "Add return type annotations"
+```
+
+---
+
 ## 🎯 When to Use Direct Commits vs PRs
 
 ### ✅ Direct to Main (for small, low-risk changes):

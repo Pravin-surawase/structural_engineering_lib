@@ -79,6 +79,61 @@ IS 456 RC beam design library with **Python + VBA parity**.
 
 ---
 
+## Git workflow rules (CRITICAL - Production Stage)
+
+### 🎯 Quick Decision Tool
+
+**ALWAYS use this before committing:**
+```bash
+git add <files>
+./scripts/should_use_pr.sh --explain
+```
+
+The tool will tell you:
+- ✅ Safe for direct commit (docs/tests/scripts only)
+- 🔀 Requires PR (production code, VBA, CI, deps)
+
+### ✅ Direct Commits (Low-Risk ONLY)
+
+**Allowed for:**
+1. **Documentation ONLY** - docs/** files
+2. **Tests ONLY** - Python/tests/** (no production code)
+3. **Scripts ONLY** - scripts/** (tooling)
+
+**Command:**
+```bash
+./scripts/safe_push.sh "docs: fix typo"
+```
+
+### 🔀 Pull Requests (REQUIRED for Production Code)
+
+**Required for:**
+1. **Production code** - Python/structural_lib/**/*.py
+2. **VBA code** - VBA/**/*.bas, Excel/**/*.xlsm
+3. **CI workflows** - .github/workflows/**/*.yml
+4. **Dependencies** - pyproject.toml, requirements*.txt
+5. **API changes** - Function signatures, breaking changes
+
+**Workflow:**
+```bash
+./scripts/create_task_pr.sh TASK-XXX "description"
+# Make changes
+./scripts/safe_push.sh "feat: implement X"
+# When done
+./scripts/finish_task_pr.sh TASK-XXX "description"
+```
+
+### ⛔ NEVER Direct Commit To Main For:
+- Production code changes
+- Breaking changes
+- VBA algorithm changes
+- CI workflow modifications
+- Dependency updates
+
+**Reason:** CI validation + audit trail required for all production changes
+
+---
+
 ## Git workflow rules (CRITICAL)
 
 ### ⛔ STOP: Read This Before Any Commit
