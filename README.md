@@ -21,7 +21,7 @@
 ## At a glance
 
 - **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA)
-- **Quality:** Contract-tested APIs, 2231+ tests, 86% coverage, comprehensive validation utilities
+- **Quality:** Contract-tested APIs, 2270 tests, 86% coverage, comprehensive validation utilities
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
 - **Automation:** Batch-ready CLI + public API wrappers for validation/detailing/export
 - **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
@@ -48,7 +48,7 @@
 
 ### Quality & Trust
 - **Professional-Grade Foundation:** Contract tests prevent API breaking changes, validation utilities reduce code duplication 30%
-- **Comprehensive Testing:** 2200+ tests, 86% coverage, 10 insights benchmark cases
+- **Comprehensive Testing:** 2270 tests, 86% coverage, 13 performance benchmarks
 - **API Stability:** Contract-tested public APIs with deprecation policy for safe evolution
 - **Error Handling:** 5-layer architecture with structured errors, zero silent failures
 - **Type Safety:** Stricter mypy checks (`warn_return_any`, `strict_optional`)
@@ -60,26 +60,22 @@
 
 ## Status
 
-🚀 **Production-Ready Professional Tool (v0.14.0)** — Published on PyPI with enterprise-grade quality standards.
+🚀 **Production-Ready Professional Tool (v0.15.0)** — Published on PyPI with enterprise-grade quality standards.
 
-**What's new in v0.14.0 (Foundation Hardening - 2026-01-06):**
-- **Contract Testing:** 6 tests protecting API from accidental breaking changes
-- **Validation Utilities:** 8 reusable validators (78 tests, 100% coverage) reducing code duplication by 30%
-- **Deprecation Policy:** Safe evolution with `@deprecated` decorator following NumPy/pandas patterns
-- **Error Handling:** 5-layer architecture documented in CONTRIBUTING.md, 17 silent failures eliminated
-- **Type Safety:** Stricter mypy checks enabled (`warn_return_any`, `strict_optional`, `warn_redundant_casts`)
-- **Research Documentation:** 5 comprehensive reports (5,800+ lines) covering CS best practices, backward compatibility, modern tooling
-- **Git Workflow:** Merge conflict prevention with pull-first workflow and pre-commit hooks
-- **Quality Metrics:** 2231+ tests (+231), 86% coverage (+2%), 10 modules at 100% coverage
+**What's new in v0.15.0 (Code Quality Excellence - 2026-01-07):**
+- **SPDX License Headers:** All 73 source files with standardized copyright and MIT license identifiers (TASK-187)
+- **PEP 585/604 Type Modernization:** 398 type hints updated to modern syntax (`list[X]`, `X | None`) (TASK-193)
+- **Performance Benchmarks:** 13 comprehensive benchmarks (flexure, shear, detailing, validation, insights) with regression tracking (TASK-192)
+- **Test Organization:** Structured into 5 categories (unit/integration/regression/property/performance) with pytest markers (TASK-191)
+- **Per-Module Coverage:** 6 modules >90%, 8 modules 80-90%, detailed HTML reports (TASK-192)
+- **TypedDicts Phase 1:** Type-safe dictionaries for reinforcement data (`BarDict`, `StirrupDict`) (TASK-162)
+- **Expanded Ruff Rules:** 9 rule categories (F/E/W/I/N/UP/B/C4/PIE), 91→0 ruff errors (TASK-189)
+- **Dead Code Cleanup:** Removed obsolete code and naming convention standardization (TASK-190, TASK-194)
+- **API Documentation:** Comprehensive docstrings for all public functions (TASK-195)
+- **Architecture Docs:** Data flow diagrams, dependency graphs, component relationships
+- **Quality Metrics:** 2270 tests (+39), 86% coverage, 0 ruff errors, all benchmarks passing
 
-**Smart Library Preview (v0.15.0 - in development):**
-- **SmartDesigner Dashboard:** Unified analysis with cost optimization, design suggestions, sensitivity, and constructability
-- **Comparison Module:** Multi-design comparison with Pareto frontier identification and cost-aware sensitivity
-- **API Wrapper:** `smart_analyze_design()` for simple access to comprehensive smart insights
-- **Design Suggestions:** 17 expert rules across 6 categories with confidence scoring and impact levels
-- **Cost Optimization:** Material + labor cost calculation with design alternative exploration
-
-**Previous releases:** v0.13.0 added advisory insights module (precheck, sensitivity, constructability). v0.12.0 added library-first API wrappers and DXF/BBS quality gates.
+**Previous releases:** v0.14.0 added contract testing, validation utilities, deprecation policy (Foundation Hardening). v0.13.0 added advisory insights module (precheck, sensitivity, constructability). v0.12.0 added library-first API wrappers and DXF/BBS quality gates.
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
