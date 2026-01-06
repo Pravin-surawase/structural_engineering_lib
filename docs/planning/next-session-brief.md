@@ -26,17 +26,26 @@
 - ✅ TASK-144: SmartDesigner unified dashboard (700+ lines, 19/20 tests, API wrapper)
 - ✅ TASK-143: Comparison & Sensitivity Enhancement (392 lines, 19/19 tests)
 - ✅ Rebar optimizer test suite expansion (31 new tests, 46 total passing)
+- ✅ Phase 1 documentation hygiene completed (automation catalog, metadata, archive stubs)
 
 **Current State (Clean Slate):**
 - **No active tasks** - all recent work completed and documented
 - Smart insights ecosystem complete: SmartDesigner, comparison, cost optimization, suggestions
 - Type architecture clean with API wrapper pattern
-- Test coverage strong: 2231+ tests passing (SmartDesigner 19/20, comparison 19/19, rebar 46/46)
+- Test coverage strong: 2231+ tests passing (SmartDesigner 20/20, comparison 19/19, rebar 46/46)
+- Documentation hygiene Phase 2 is ready to start (learning paths, agent decision tree, research index, brief update)
 - Ready for v0.15.0 release or new feature work
 
 **Minor Items:**
-- One SmartDesigner test has incorrect failure expectation (not blocking)
 - CLI smart subcommand scaffolded but not fully wired (future work)
+
+## Documentation Audit Snapshot (Phase 1 Findings)
+
+- Duplicate and overlapping docs still exist; canonicalization with redirect stubs is the next high-priority fix (TASK-184).
+- Naming standards and glossary need publishing before large-scale renames (TASK-188).
+- Code style and test audits recommend quantified baselines (ruff/radon metrics, coverage breakdowns, test taxonomy).
+- Documentation gaps remain for SmartDesigner and comparison tutorials; plan new guides after canonicalization.
+- Recommendation: keep redirect stubs for moved docs and run `scripts/check_links.py` after updates.
 
 **Next:** Pick from backlog in [TASKS.md](../TASKS.md) - strong candidates: TASK-145 (visualization), TASK-163 (return type annotations), TASK-164 (error migration)
 

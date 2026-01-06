@@ -30,72 +30,88 @@ The role docs in this folder can guide **GitHub Copilot Coding Agent** when you 
 
 ---
 
+## Decision Tree: Pick the Right Agent(s)
+
+Use the smallest set of agents that covers the work. Map task type to roles:
+
+- Bug fix: TESTER (reproduce) -> RESEARCHER (root cause) -> DEV (fix) -> TESTER (verify) -> DOCS (update)
+- New feature: CLIENT (requirements) -> RESEARCHER (constraints) -> PM (scope) -> DEV (implement) -> TESTER (verify) -> DOCS (document)
+- Docs-only: DOCS (draft) -> DEV (technical review, if needed)
+- Release or CI: DEVOPS (workflow) -> PM (approval) -> DOCS (notes)
+- Data/schema integration: INTEGRATION (schema) -> DEV (implement) -> TESTER (validate)
+- UX/Excel layout: UI (design) -> DEV (implement) -> TESTER (validate)
+- Research spike: RESEARCHER (findings) -> PM (plan) -> DEV (task breakdown)
+
+If unsure, start with PM for triage and assignment.
+
+---
+
 ## PM
 - Role: scope, governance, orchestration, release ledger.
-- Prompt:  
+- Prompt:
   ```
   Act as PM. Use docs/architecture/project-overview.md. Scope and plan v0.5 Excel workbook integration; list agent handoffs and risks.
   ```
 
 ## CLIENT
 - Role: practicing engineer proxy; requirements, workflow sanity, terminology.
-- Prompt:  
+- Prompt:
   ```
   Act as CLIENT. Review planned BEAM_INPUT columns for usability and missing fields; suggest acceptance criteria.
   ```
 
 ## UI
 - Role: Excel UX; sheet layout, validation, error surfacing.
-- Prompt:  
+- Prompt:
   ```
   Act as UI. Design BEAM_INPUT and BEAM_DESIGN sheet layout, colors, validation, and buttons for v0.5.
   ```
 
 ## RESEARCHER
 - Role: clause/algorithm expert; platform constraints.
-- Prompt:  
+- Prompt:
   ```
   Act as RESEARCHER. Cite IS 456/13920 for effective flange width and neutral axis checks; give boundary conditions.
   ```
 
 ## DEV
 - Role: implementation/refactor; layer-aware, units, Mac VBA safety.
-- Prompt:  
+- Prompt:
   ```
   Act as DEV. Implement/update <function> in M06_Flexure with clause refs, units, and Mac-safe CDbl guards.
   ```
 
 ## TESTER
 - Role: test matrices, benchmarks, edge cases, regression capture.
-- Prompt:  
+- Prompt:
   ```
   Act as TESTER. Propose regression cases for Design_Doubly_Reinforced covering Mu<=Mu_lim, Mu>Mu_lim, and Mac overflow edge.
   ```
 
 ## DEVOPS
 - Role: repo/layout, import/export, build/CI, release packaging.
-- Prompt:  
+- Prompt:
   ```
   Act as DEVOPS. Draft the release checklist for v0.4: tests, xlam build/import order, tagging, ledger updates.
   ```
 
 ## DOCS
 - Role: API/README/CHANGELOG/RELEASES/TASKS alignment; release notes.
-- Prompt:  
+- Prompt:
   ```
   Act as DOCS. Update API_REFERENCE and CHANGELOG for the new flanged beam API changes; note units/examples.
   ```
 
 ## INTEGRATION
 - Role: ETABS/CSV mapping, BEAM_INPUT schema, validation.
-- Prompt:  
+- Prompt:
   ```
   Act as INTEGRATION. Define ETABS CSV -> BEAM_INPUT mapping, required headers, units, and validation rules.
   ```
 
 ## SUPPORT
 - Role: troubleshooting/known pitfalls/runbook.
-- Prompt:  
+- Prompt:
   ```
   Act as SUPPORT. Add a TROUBLESHOOTING entry for Excel add-in load failures on macOS with probes and fixes.
   ```
