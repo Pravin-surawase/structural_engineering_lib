@@ -3,6 +3,7 @@
 Quick diagrams for layers, module groupings, and data flow. For detailed narrative, see:
 - [deep-project-map.md](deep-project-map.md)
 - [project-overview.md](project-overview.md)
+- [data-flow-diagrams.md](data-flow-diagrams.md)
 
 ---
 

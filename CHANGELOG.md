@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-01-07
+
 ### Added
 - **Smart design analysis dashboard** (`structural_lib.insights.smart_designer`)
   - `SmartDesigner` class with unified `analyze()` method

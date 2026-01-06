@@ -2,7 +2,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.14.0 | Published on PyPI |
+| **Current** | v0.15.0 | Published on PyPI |
 | **Next** | v0.15.0 | In development (smart insights complete) |
 
 **Date:** 2026-01-06 | **Last commit:** 193b0b9

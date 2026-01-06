@@ -48,6 +48,34 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.15.0
+**Date:** 2026-01-07
+**Status:** ✅ Locked & Verified
+**Mindset:** Code Quality Excellence — Enterprise-grade standards with comprehensive tooling
+**Key Changes:**
+- **License Compliance:** SPDX headers on all 73 files (100% coverage)
+- **Type Safety:** PEP 585/604 modernization (398 issues resolved), `disallow_untyped_defs` enabled
+- **Code Quality:** Zero ruff errors (down from 91), 9 linting rule categories
+- **Test Organization:** 5-category structure (unit/integration/regression/property/performance), 2270 tests
+- **Performance Tracking:** 13 benchmarks baseline established with pytest-benchmark
+- **Documentation:** Complete docstrings for api.py + core modules, architecture diagrams, 450+ page automation catalog
+- **Smart Features:** SmartDesigner unified dashboard, multi-design comparison, cost-aware sensitivity
+- **Git Workflow:** PR-first enforcement, audit logging, comprehensive testing suite
+- **TypedDicts Phase 1:** BarDict and StirrupDict for type-safe reinforcement data
+
+**Tests:** 2270 passed (all categories), 13 benchmarks
+**Coverage:** 86% (6 modules >90%, 8 modules 80-90%)
+**PRs:** #256-#276, #263-#273
+
+**Impact:**
+- Industry-leading code quality (0 lint errors, modern type hints, 100% license compliance)
+- Professional test infrastructure (organized, benchmarked, comprehensive)
+- Enhanced developer experience (complete docs, automated workflows, clear standards)
+- Advanced design intelligence (smart analysis, comparison tools)
+- v1.0-ready foundation (deprecation policy, type safety, contract testing)
+
+---
+
 ## v0.14.0
 **Date:** 2026-01-06
 **Status:** ✅ Locked & Verified
