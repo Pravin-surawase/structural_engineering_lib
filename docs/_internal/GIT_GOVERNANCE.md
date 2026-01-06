@@ -91,17 +91,13 @@ Solo default:
 * Skip "Restrict who can push" and "Require reviews" unless collaborating
 ---
 
-### 2.3.1 Current Protection Rules (as of 2026-01-01)
+### 2.3.1 Current Protection Rules (as of 2026-01-06)
 
 **Branch:** `main`
 
 **Rules Enabled:**
-- ✅ Required status checks must pass on `main` (CI runs after push):
-    - `Lint / Typecheck` — Black, Ruff, MyPy, docs checks
-  - `pytest (3.9)` — Python 3.9 tests
-  - `pytest (3.10)` — Python 3.10 tests
-  - `pytest (3.11)` — Python 3.11 tests
-  - `pytest (3.12)` — Python 3.12 tests
+- ✅ Required status checks must pass on `main`:
+  - `Quick Validation (Python 3.9 only)` — fast PR checks (lint, mypy, contracts, core tests)
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
 - ✅ PR-first: required for code/CI/deps; docs-only direct commits allowed
@@ -109,21 +105,21 @@ Solo default:
 Notes:
 - `CodeQL` runs on pushes and PRs, but is not currently configured as a required status check for `main`.
 
-**CI Workflow:** `.github/workflows/python-tests.yml`
-- Triggers on: push to `main`, pull requests to `main`
-- Python versions: 3.9, 3.10, 3.11, 3.12
+**CI Workflows:**
+- `.github/workflows/fast-checks.yml` — runs on PRs and pushes to `main`
+- `.github/workflows/python-tests.yml` — full matrix runs after merge to `main`
 - OS: ubuntu-latest
 
 **Workflow:**
 - Direct push allowed only for docs-only or very small changes
-- All commits trigger CI
+- All commits trigger CI (fast checks + full tests after merge)
 - Failed CI = immediate notification
 - PRs required for production code, CI changes, and dependencies
 
 **Implications:**
 - Fast iteration for routine work
 - CI quality gate maintained
-- Self-approval is blocked by GitHub; requires another reviewer or admin merge override
+- Reviews are not required in this repo. If enabled later, GitHub blocks self-approval.
 - Clean revert if CI fails
 - Tags can be created after direct push to `main` or after PR merge
 

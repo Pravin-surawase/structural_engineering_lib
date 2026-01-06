@@ -2,6 +2,8 @@ name: Fast PR Checks
 
 on:
   pull_request:
+  push:
+    branches: [ main ]
 
 # Quick checks for PRs - run only essential validations
 # Full test matrix runs after merge to main
@@ -23,6 +25,7 @@ jobs:
         with:
           python-version: "3.9"
           cache: 'pip'
+          cache-dependency-path: Python/pyproject.toml
 
       - name: Install package (dev)
         working-directory: Python
