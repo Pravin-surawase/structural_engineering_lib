@@ -4,6 +4,8 @@
 
 **Updated:** 2026-01-06
 
+> **Note:** For TASK-165 to TASK-170 (Professional Standards & Hygiene), see detailed specifications in [docs/planning/hygiene-research-specs.md](planning/hygiene-research-specs.md)
+
 ---
 
 ## Rules (read first)
@@ -41,10 +43,22 @@
 
 ## Backlog
 
+### Professional Standards & Hygiene (CRITICAL for v1.0 readiness)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-165** | **Research: Project Hygiene & File Organization** (Audit: duplicate files, obsolete content, inconsistent naming, broken links, outdated docs, archive candidates; propose cleanup plan with file structure standards) → Save as `docs/research/project-hygiene-audit.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-166** | **Research: Nomenclature Standardization** (Audit: variable naming, function naming, file naming, module naming, documentation terms, abbreviations; create glossary; propose consistent naming standards across Python/VBA/docs) → Save as `docs/research/nomenclature-standards.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-167** | **Research: Professional Repository Standards** (Audit: license headers on all files, copyright notices, CODE_OF_CONDUCT.md, SECURITY.md, GitHub issue/PR templates, CITATION.cff, badges, funding info, contributor guidelines completeness) → Save as `docs/research/professional-repo-standards.md` | RESEARCHER | 2-3 hrs | 🔴 HIGH |
+| **TASK-168** | **Research: Documentation Quality & Completeness** (Audit all docs: outdated information, broken cross-references, missing examples, inconsistent formatting, clarity issues, redundant content; create improvement roadmap) → Save as `docs/research/documentation-quality-audit.md` | RESEARCHER | 4-5 hrs | 🔴 HIGH |
+| **TASK-169** | **Research: Code Style Consistency** (Audit: inconsistent formatting, missing docstrings, outdated comments, TODO/FIXME markers, dead code, magic numbers, black/ruff coverage gaps; create style cleanup plan) → Save as `docs/research/code-style-consistency.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-170** | **Research: Test Organization & Coverage Gaps** (Audit: test file organization, missing test categories, integration test gaps, property test candidates, performance benchmark suite; create test improvement plan) → Save as `docs/research/test-organization-audit.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
+
 ### Foundation & Architecture (CRITICAL for stability)
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
+| **TASK-162** | Replace Dict[str, Any] with TypedDicts (create TypedDicts in data_types.py for ReportOutput, DesignSummary, OptimizationResult; update function signatures) | DEV | 2-3 days | 🔴 HIGH |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | 🔴 HIGH |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | 🔴 HIGH |
 
