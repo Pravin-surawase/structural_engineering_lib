@@ -89,30 +89,46 @@ git add <files>
 ./scripts/should_use_pr.sh --explain
 ```
 
-The tool will tell you:
-- ✅ Safe for direct commit (docs/tests/scripts only)
-- 🔀 Requires PR (production code, VBA, CI, deps)
+**Philosophy:** PR-first for substantial changes, direct commit for minor edits ONLY.
 
-### ✅ Direct Commits (Low-Risk ONLY)
+The tool analyzes:
+- **File type** (production vs docs/tests/scripts)
+- **Change size** (lines added/removed)
+- **File count** (multiple files = higher impact)
+- **Complexity** (new files, substantial edits)
 
-**Allowed for:**
-1. **Documentation ONLY** - docs/** files
-2. **Tests ONLY** - Python/tests/** (no production code)
-3. **Scripts ONLY** - scripts/** (tooling)
+### ✅ Direct Commits (Minor Changes ONLY)
+
+**Criteria (ALL must be true):**
+- Low-risk files: docs/, Python/tests/, or scripts/ ONLY
+- Small scope: <50 lines changed
+- Few files: 1-2 files maximum
+- No new files (edits only)
+
+**Examples:**
+- Typo fix in single doc file
+- Small test adjustment (<50 lines)
+- Minor script tweak (<50 lines)
 
 **Command:**
 ```bash
-./scripts/safe_push.sh "docs: fix typo"
+./scripts/safe_push.sh "docs: fix typo in guide"
 ```
 
-### 🔀 Pull Requests (REQUIRED for Production Code)
+### 🔀 Pull Requests (REQUIRED - Default Workflow)
 
-**Required for:**
-1. **Production code** - Python/structural_lib/**/*.py
+**Always required for:**
+1. **Production code** - Python/structural_lib/**/*.py (NO exceptions)
 2. **VBA code** - VBA/**/*.bas, Excel/**/*.xlsm
 3. **CI workflows** - .github/workflows/**/*.yml
 4. **Dependencies** - pyproject.toml, requirements*.txt
-5. **API changes** - Function signatures, breaking changes
+
+**Also required for substantial changes even in low-risk files:**
+- **Major docs** - 500+ lines (e.g., new guides, catalogs)
+- **Substantial docs** - 150+ lines or 3+ files
+- **Medium docs** - 50-149 lines or 2 files
+- **Large tests** - 50+ lines or 2+ files
+- **Large scripts** - 50+ lines or 2+ files
 
 **Workflow:**
 ```bash
@@ -124,9 +140,15 @@ The tool will tell you:
 ```
 
 ### ⛔ NEVER Direct Commit To Main For:
-- Production code changes
-- Breaking changes
+- Production code changes (Python/structural_lib/)
 - VBA algorithm changes
+- CI workflow modifications
+- Dependency updates
+- Substantial documentation (>150 lines or 3+ files)
+- Large test suites (>50 lines or 2+ files)
+- Major script changes (>50 lines or 2+ files)
+
+**Reason:** CI validation + audit trail required for substantial changes
 - CI workflow modifications
 - Dependency updates
 
