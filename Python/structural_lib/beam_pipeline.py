@@ -22,6 +22,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Sequence
 
 from . import api, detailing
+from .data_types import BarDict, StirrupDict
 
 # =============================================================================
 # Schema Version
@@ -174,9 +175,9 @@ class DetailingOutput:
 
     ld_tension_mm: float = 0.0
     lap_length_mm: float = 0.0
-    bottom_bars: List[Dict[str, Any]] = field(default_factory=list)
-    top_bars: List[Dict[str, Any]] = field(default_factory=list)
-    stirrups: List[Dict[str, Any]] = field(default_factory=list)
+    bottom_bars: List[BarDict] = field(default_factory=list)
+    top_bars: List[BarDict] = field(default_factory=list)
+    stirrups: List[StirrupDict] = field(default_factory=list)
 
 
 @dataclass
