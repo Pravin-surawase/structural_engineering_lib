@@ -545,22 +545,477 @@ stress_node_2 = ops.nodeReaction(2)     # [Rx, Ry, M]
 
 ## 7. Cross-Library Patterns
 
-*(To be added in Step 2)*
+### 7.1 Comparison Table
+
+| Library | Unit Strategy | Naming Style | Result Type | Validation | ID System |
+|---------|--------------|--------------|-------------|------------|-----------|
+| **PyNite** | Implicit (doc only) | Textbook (E, Iy, Iz) | Method calls | Structural only | String names |
+| **ezdxf** | Unitless (drawing units) | CAD conventions | Entities | Minimal | Integer handles |
+| **pint** | Explicit (Quantity objects) | SI standard | Quantities | Dimensional | N/A |
+| **handcalcs** | Implicit (user tracks) | Symbolic (subscripts) | Formatted text | None | N/A |
+| **OpenSees** | Implicit (user choice) | Minimal (single letters) | Arrays/tuples | Solver-based | Integer tags |
+| **Our library** | **Suffix-based (b_mm)** | **IS 456 notation** | **Dataclasses** | **Explicit + validation flag** | **String IDs (future)** |
+
+### 7.2 Common Domain Patterns
+
+#### Pattern 1: Tag/ID-Based Entity References
+
+**Observation**: Structural codes use tags to reference entities:
+- PyNite: String names (`'N1'`, `'M1'`)
+- OpenSees: Integer tags (`1`, `2`, `3`)
+- ezdxf: Handles (internal integers)
+
+**Trade-offs:**
+- **Strings**: More readable, easier debugging (`'Beam_B1'` vs `147`)
+- **Integers**: Faster lookup, less memory, sequential generation
+
+**Recommendation for us**:
+- Current: No entity system (direct calculation)
+- Future (job runner): Consider string IDs for beams (`'B1'`, `'B2'`)
+
+#### Pattern 2: Method Chaining vs Functional
+
+**PyNite (method chaining):**
+```python
+model.add_node('N1', 0, 0, 0) \
+     .add_member('M1', 'N1', 'N2', E=29000) \
+     .add_load('L1', ...)
+```
+
+**Our library (functional):**
+```python
+flexure = design_singly_reinforced(b_mm, d_mm, mu_kn_m, fck_mpa, fy_mpa)
+shear = design_shear(b_mm, d_mm, vu_kn, fck_mpa, fy_mpa)
+```
+
+**Recommendation**: Keep functional style (clearer, more testable, aligns with numpy/scipy).
+
+#### Pattern 3: Coordinate Tuples vs Separate Parameters
+
+**ezdxf approach:**
+```python
+msp.add_line((0, 0), (100, 0))  # Tuple coordinates
+```
+
+**PyNite approach:**
+```python
+model.add_node('N1', x=0, y=0, z=0)  # Named parameters
+```
+
+**Recommendation for us**:
+- Geometry: Use tuples for points (`start=(x, y)`, `end=(x, y)`)
+- Properties: Use named params (`b_mm=300`, `d_mm=550`)
+
+### 7.3 Error Handling Patterns
+
+| Library | Validation Timing | Error Types | Error Messages |
+|---------|-------------------|-------------|----------------|
+| PyNite | Late (at solve) | Generic Python exceptions | Minimal context |
+| ezdxf | Save time | ezdxf.DXFError hierarchy | Detailed DXF context |
+| pint | Immediate | DimensionalityError | Shows expected vs actual dimensions |
+| handcalcs | None (documentation only) | N/A | N/A |
+| OpenSees | Solver time | Generic errors | Cryptic (Fortran heritage) |
+| **Our library** | **Early (function entry) + optional skip** | **Custom hierarchy (ValidationError, DesignError, ComplianceError)** | **Three Questions framework (what/why/how)** |
+
+**Our approach is better**: Fail fast with actionable messages.
 
 ---
 
 ## 8. Unit Handling Strategies
 
-*(To be added in Step 2)*
+### 8.1 Strategy Comparison
+
+#### Strategy A: Implicit Units (PyNite, OpenSees, handcalcs)
+
+**Approach**: Document expected units, user ensures consistency.
+
+```python
+def design_beam(b, d, M_u, f_c, f_y):
+    """
+    Args:
+        b: Beam width (mm)
+        d: Effective depth (mm)
+        M_u: Factored moment (kN·m)
+        f_c: Concrete strength (MPa)
+        f_y: Steel yield strength (MPa)
+    """
+    # Calculations assume units are correct
+    ...
+```
+
+**Pros:**
+- Simple, no overhead
+- Fast (no conversion logic)
+- Flexible (user can use any consistent system)
+
+**Cons:**
+- Easy to mix units accidentally
+- No validation
+- Errors only caught when results are wrong
+
+#### Strategy B: Explicit Quantities (pint)
+
+**Approach**: Wrap all values in Quantity objects with units.
+
+```python
+from pint import UnitRegistry
+ureg = UnitRegistry()
+
+def design_beam(b, d, M_u, f_c, f_y):
+    """
+    Args:
+        b: Beam width (Quantity with length dimension)
+        d: Effective depth (Quantity)
+        M_u: Moment (Quantity)
+        ...
+    """
+    # Convert to standard units internally
+    b_mm = b.to('mm').magnitude
+    d_mm = d.to('mm').magnitude
+    M_u_n_mm = M_u.to('N*mm').magnitude
+    ...
+    # Return with units
+    return result * ureg.mm**2
+```
+
+**Pros:**
+- Type-safe (dimensional analysis)
+- Automatic unit conversion
+- Catches unit mixing errors
+
+**Cons:**
+- 40× slower for simple operations
+- Heavyweight dependency (~100KB)
+- Verbose API (`(300 * ureg.mm)` vs `300`)
+- Over-engineering for our use case
+
+#### Strategy C: Suffix-Based (Our Current Approach)
+
+**Approach**: Encode units in parameter names, validate at boundaries.
+
+```python
+def design_beam(
+    b_mm: float,
+    d_mm: float,
+    mu_kn_m: float,
+    fck_mpa: float,
+    fy_mpa: float,
+) -> FlexureResult:
+    """Design beam per IS 456:2000.
+
+    Args:
+        b_mm: Beam width in millimeters
+        d_mm: Effective depth in millimeters
+        mu_kn_m: Factored moment in kilonewton-meters
+        fck_mpa: Characteristic concrete compressive strength in megapascals
+        fy_mpa: Characteristic steel yield strength in megapascals
+    """
+    # Units are clear from names
+    # Validation at entry point
+    if b_mm < 200:
+        raise ValidationError("b_mm must be >= 200mm per IS 456 Cl. 26.5.1.1")
+    ...
+```
+
+**Pros:**
+- Clear from name what unit is expected
+- IDE autocomplete shows units
+- No performance overhead
+- Simple validation at boundaries
+- Compatible with handcalcs rendering
+
+**Cons:**
+- User must convert before calling
+- No automatic conversion
+- Still possible to pass wrong units (but less likely)
+
+### 8.2 Hybrid Approach (Recommendation)
+
+**Use suffix-based + optional pint at API boundaries:**
+
+```python
+from typing import Union
+from pint import Quantity
+
+def design_beam(
+    b_mm: Union[float, Quantity],  # Accept both
+    d_mm: Union[float, Quantity],
+    mu_kn_m: Union[float, Quantity],
+    fck_mpa: Union[float, Quantity],
+    fy_mpa: Union[float, Quantity],
+) -> FlexureResult:
+    """Design beam (accepts floats in expected units or pint Quantities)."""
+
+    # Convert Quantity to float at boundary
+    if isinstance(b_mm, Quantity):
+        b_mm = b_mm.to('mm').magnitude
+    if isinstance(mu_kn_m, Quantity):
+        mu_kn_m = mu_kn_m.to('kN*m').magnitude
+    # ... etc
+
+    # Core calculation uses floats (fast)
+    ...
+```
+
+**Pros:**
+- Users can choose: simple floats or safe Quantities
+- Core calculations stay fast (floats internally)
+- Validation at boundary converts/checks
+
+**Cons:**
+- More complex API
+- Optional dependency (pint) needed for Quantity support
+
+**Recommendation**: Add pint support as **optional** in v1.0+ (not v0.15).
+
+### 8.3 Unit Conversion Utilities
+
+**Provide helper functions for common conversions:**
+
+```python
+# Python/structural_lib/units.py
+
+def mm_to_m(value_mm: float) -> float:
+    """Convert millimeters to meters."""
+    return value_mm / 1000.0
+
+def kn_m_to_n_mm(moment_kn_m: float) -> float:
+    """Convert kN·m to N·mm."""
+    return moment_kn_m * 1e6
+
+def mpa_to_n_mm2(stress_mpa: float) -> float:
+    """Convert MPa to N/mm²."""
+    return stress_mpa  # Already same unit
+
+# IS 456 standard unit system
+IS456_UNITS = {
+    'length': 'mm',
+    'force': 'kN',
+    'stress': 'MPa',  # = N/mm²
+    'moment': 'kN·m',
+    'area': 'mm²',
+}
+```
 
 ---
 
 ## 9. Engineering Notation Conventions
 
-*(To be added in Step 2)*
+### 9.1 IS 456 Standard Notation
+
+**Variable naming from IS 456:2000:**
+
+| Symbol | Meaning | Our naming |
+|--------|---------|------------|
+| b | Beam width | `b_mm` |
+| D | Overall depth | `D_mm` |
+| d | Effective depth | `d_mm` |
+| M | Bending moment | `mu_kn_m` (factored) |
+| V | Shear force | `vu_kn` (factored) |
+| fck | Characteristic compressive strength | `fck_mpa` |
+| fy | Characteristic yield strength | `fy_mpa` |
+| Ast | Area of tension steel | `ast_mm2` |
+| Asc | Area of compression steel | `asc_mm2` |
+| xu | Depth of neutral axis | `xu_mm` |
+| pt | Percentage tension steel | `pt_percent` |
+| ρ | Reinforcement ratio | `rho` (handcalcs) or `reinforcement_ratio` |
+
+### 9.2 Subscript Conventions
+
+**IS 456 uses subscripts extensively:**
+- `M_u` = Factored moment (ultimate)
+- `A_st` = Area of steel, tension
+- `f_ck` = Characteristic compressive strength of concrete
+- `τ_c` = Shear stress in concrete
+
+**Our approach (Python-compatible):**
+- Underscore for subscript: `mu`, `ast`, `fck`, `tau_c`
+- Full suffix for units: `mu_kn_m`, `ast_mm2`, `fck_mpa`
+
+**handcalcs rendering:**
+- `mu_kn_m` → renders as M_u
+- `ast_mm2` → renders as A_{st}
+- `fck_mpa` → renders as f_{ck}
+
+### 9.3 Abbreviation Standards
+
+**Standard engineering abbreviations (use these):**
+
+| Term | Abbreviation | Example variable |
+|------|--------------|------------------|
+| Minimum | min | `ast_min_mm2` |
+| Maximum | max | `ast_max_mm2` |
+| Required | req | `ast_req_mm2` |
+| Provided | prov | `ast_prov_mm2` |
+| Ultimate | u | `mu_kn_m`, `vu_kn` |
+| Service | s | `ms_kn_m` (rare in our code) |
+| Characteristic | k | `fck_mpa`, `fyk_mpa` |
+| Limit | lim | `mu_lim_kn_m` |
+| Effective | eff | `d_eff_mm` |
+| Clear | cl or clear | `cover_clear_mm`, `spacing_clear_mm` |
+
+**Avoid ambiguous abbreviations:**
+- ❌ `len` (length? vs Python built-in len())
+- ❌ `dia` vs `d` (diameter - use `dia_mm` for bar diameter, `d_mm` for effective depth)
+- ❌ `str` (stirrup? vs Python built-in str())
+
+### 9.4 Greek Letters (for handcalcs)
+
+**When using handcalcs rendering:**
+
+```python
+# Use spelled-out names for Greek letters
+rho = ast_mm2 / (b_mm * d_mm)        # ρ (reinforcement ratio)
+alpha = 0.85                          # α (stress block factor)
+phi = 16                              # φ (bar diameter)
+tau_c = calculate_shear_stress(...)   # τ_c (concrete shear stress)
+```
+
+**handcalcs will render these as Greek symbols automatically.**
 
 ---
 
 ## 10. Recommendations for Our Library
 
-*(To be added in Step 2)*
+### 10.1 Current Approach Validation ✅
+
+**Our current patterns are GOOD:**
+1. **Suffix-based units** (`b_mm`, `fck_mpa`) - clear, fast, IDE-friendly
+2. **Dataclass results** - better than tuples (PyNite/OpenSees return arrays)
+3. **Explicit validation with flag** - better than implicit (PyNite) or none (handcalcs)
+4. **Custom exception hierarchy** - better than generic exceptions (all others)
+5. **IS 456 notation** - matches domain textbooks and code
+
+**Areas where others are better:**
+1. **pint dimensional analysis** - but too heavyweight for our performance needs
+2. **ezdxf entity system** - but we don't need complex entity management yet
+
+### 10.2 Recommended Improvements
+
+#### Improvement 1: Add Unit Conversion Module (High Priority)
+
+**Create `Python/structural_lib/units.py`:**
+```python
+"""Unit conversion utilities for structural engineering."""
+
+def mm_to_m(mm: float) -> float:
+    """Convert millimeters to meters."""
+    return mm / 1000.0
+
+def m_to_mm(m: float) -> float:
+    """Convert meters to millimeters."""
+    return m * 1000.0
+
+def kn_m_to_n_mm(kn_m: float) -> float:
+    """Convert kN·m to N·mm."""
+    return kn_m * 1e6
+
+def n_mm_to_kn_m(n_mm: float) -> float:
+    """Convert N·mm to kN·m."""
+    return n_mm / 1e6
+
+# Add more as needed
+```
+
+#### Improvement 2: Optional pint Support (Medium Priority, v1.0+)
+
+**Add as optional dependency:**
+```python
+# pyproject.toml
+[tool.poetry.extras]
+units = ["pint>=0.23"]
+
+# In API functions:
+from typing import Union
+
+try:
+    from pint import Quantity
+    PINT_AVAILABLE = True
+except ImportError:
+    Quantity = None
+    PINT_AVAILABLE = False
+
+def design_beam(
+    b_mm: Union[float, 'Quantity'],  # Accept both
+    ...
+):
+    if PINT_AVAILABLE and isinstance(b_mm, Quantity):
+        b_mm = b_mm.to('mm').magnitude
+    # ... rest of function
+```
+
+#### Improvement 3: handcalcs Integration (Low Priority)
+
+**Add documentation wrapper:**
+```python
+# Python/structural_lib/documentation.py
+"""Documentation wrappers using handcalcs (optional dependency)."""
+
+try:
+    import handcalcs.render
+    HANDCALCS_AVAILABLE = True
+except ImportError:
+    HANDCALCS_AVAILABLE = False
+
+if HANDCALCS_AVAILABLE:
+    @handcalcs.render
+    def design_singly_reinforced_doc(b_mm, d_mm, mu_kn_m, fck_mpa, fy_mpa):
+        """Documented version showing calculation steps."""
+        result = design_singly_reinforced(b_mm, d_mm, mu_kn_m, fck_mpa, fy_mpa)
+        # Show intermediate steps for documentation
+        return locals()
+```
+
+### 10.3 Keep Current Practices
+
+**Don't change these (already good):**
+1. ✅ Suffix-based unit naming (`b_mm`, `fck_mpa`)
+2. ✅ Dataclass results with named fields
+3. ✅ Validation at function entry with optional `validate` flag
+4. ✅ Custom exception hierarchy (ValidationError, DesignError, etc.)
+5. ✅ IS 456 notation conventions
+6. ✅ Three Questions error messages (what/why/how)
+
+### 10.4 Future Considerations
+
+**Entity system (if needed for complex models):**
+- Use **string IDs** like PyNite (`'B1'`, `'B2'`) not integers
+- Only add if multi-beam optimization requires it
+- Current functional API is fine for single-beam design
+
+**Coordinate systems:**
+- Current: No coordinate system (1D beam, length only)
+- Future: If adding 2D/3D, use numpy arrays like `start=[x, y, z]`
+- Don't need UCS (User Coordinate System) like ezdxf
+
+---
+
+## Summary
+
+### Key Takeaways
+
+1. **Unit handling**: Our suffix-based approach (`b_mm`) is simpler and faster than pint, clearer than implicit. Keep it.
+2. **Naming**: IS 456 notation with underscores (`mu_kn_m`, `ast_mm2`) is compatible with handcalcs and domain textbooks. Keep it.
+3. **Results**: Dataclasses are better than tuples/arrays (used by PyNite/OpenSees). Keep it.
+4. **Validation**: Early validation with optional skip is better than late (PyNite) or none (handcalcs). Keep it.
+5. **Error messages**: Our Three Questions approach is better than generic messages. Keep it.
+
+### Optional Enhancements (Not Critical)
+
+- Add `units.py` conversion utilities (helpful, not essential)
+- Support pint Quantities as optional (v1.0+, adds flexibility)
+- Add handcalcs documentation wrappers (nice for reports, not core)
+
+### Validation Against Other Standards
+
+| Criterion | Our Approach | Industry Pattern | Assessment |
+|-----------|--------------|------------------|------------|
+| Unit clarity | Suffix-based | Implicit (PyNite) or Explicit (pint) | ✅ Good balance |
+| Performance | Fast (floats) | Fast (PyNite) or Slow (pint) | ✅ Optimal |
+| Type safety | Python types | Quantities (pint) | ⚠️ Could add optional pint |
+| Notation | IS 456 standard | Domain-specific | ✅ Matches textbooks |
+| Results | Dataclasses | Tuples/arrays | ✅ Better than others |
+| Validation | Early + optional | Late (PyNite) or None | ✅ Better than others |
+| Errors | Three Questions | Generic | ✅ Best in class |
+
+**Conclusion**: Our current approach is **well-designed** and **better than most domain libraries**. Minor enhancements possible, but no major changes needed.
