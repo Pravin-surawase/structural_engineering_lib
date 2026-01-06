@@ -28,7 +28,9 @@
 
 ## Active
 
-*No active tasks. Review Up Next queue.*
+| ID | Task | Agent | Status | Notes |
+|----|------|-------|--------|-------|
+| **TASK-204** | **Research: Error Handling & Exception Design** → `docs/guidelines/error-handling-standard.md` | RESEARCHER | 🏗️ In Progress | Creating comprehensive standard with exception hierarchy, error messages, validation patterns |
 
 ---
 
@@ -51,9 +53,7 @@
 
 #### Phase 1: Core Research (Critical)
 
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-204** | **Research: Error Handling & Exception Design** (Exception hierarchy, error message quality, validation patterns, error recovery; 40+ exception examples) → `docs/guidelines/error-handling-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+*All Phase 1 tasks complete — see Recently Done.*
 
 #### Phase 2: Domain Research
 
