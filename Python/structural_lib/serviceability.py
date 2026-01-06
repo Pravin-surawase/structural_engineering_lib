@@ -17,7 +17,7 @@ Note: This module intentionally avoids embedding copyrighted clause text.
 from __future__ import annotations
 
 from dataclasses import asdict
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any
 
 from .data_types import (
     CrackWidthResult,
@@ -27,13 +27,13 @@ from .data_types import (
     SupportCondition,
 )
 
-_DEFAULT_BASE_LD: Dict[SupportCondition, float] = {
+_DEFAULT_BASE_LD: dict[SupportCondition, float] = {
     SupportCondition.CANTILEVER: 7.0,
     SupportCondition.SIMPLY_SUPPORTED: 20.0,
     SupportCondition.CONTINUOUS: 26.0,
 }
 
-_DEFAULT_CRACK_LIMITS_MM: Dict[ExposureClass, float] = {
+_DEFAULT_CRACK_LIMITS_MM: dict[ExposureClass, float] = {
     ExposureClass.MILD: 0.3,
     ExposureClass.MODERATE: 0.3,
     ExposureClass.SEVERE: 0.2,
@@ -43,7 +43,7 @@ _DEFAULT_CRACK_LIMITS_MM: Dict[ExposureClass, float] = {
 
 def _normalize_support_condition(
     value: Any,
-) -> Tuple[SupportCondition, Optional[str]]:
+) -> tuple[SupportCondition, str | None]:
     """Normalize support condition input to enum.
 
     Accepts SupportCondition enum or string aliases ('cantilever', 'ss', etc.).
@@ -74,7 +74,7 @@ def _normalize_support_condition(
 
 def _normalize_exposure_class(
     value: Any,
-) -> Tuple[ExposureClass, Optional[str]]:
+) -> tuple[ExposureClass, str | None]:
     """Normalize exposure class input to enum.
 
     Accepts ExposureClass enum or string aliases ('mild', 'mod', 'vs', etc.).
@@ -109,11 +109,11 @@ def check_deflection_span_depth(
     *,
     span_mm: float,
     d_mm: float,
-    support_condition: Union[SupportCondition, str] = SupportCondition.SIMPLY_SUPPORTED,
-    base_allowable_ld: Optional[float] = None,
-    mf_tension_steel: Optional[float] = None,
-    mf_compression_steel: Optional[float] = None,
-    mf_flanged: Optional[float] = None,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+    base_allowable_ld: float | None = None,
+    mf_tension_steel: float | None = None,
+    mf_compression_steel: float | None = None,
+    mf_flanged: float | None = None,
 ) -> DeflectionResult:
     """Level A deflection check using span/depth ratio.
 
@@ -179,7 +179,7 @@ def check_deflection_span_depth(
         else f"NOT OK: L/d={ld_ratio:.3f} > allowable={allowable_ld:.3f}"
     )
 
-    computed: Dict[str, Any] = {
+    computed: dict[str, Any] = {
         "ld_ratio": ld_ratio,
         "allowable_ld": allowable_ld,
         "base_allowable_ld": base_allowable_ld,
@@ -204,15 +204,15 @@ def check_deflection_span_depth(
 
 def check_crack_width(
     *,
-    exposure_class: Union[ExposureClass, str] = ExposureClass.MODERATE,
-    limit_mm: Optional[float] = None,
+    exposure_class: ExposureClass | str = ExposureClass.MODERATE,
+    limit_mm: float | None = None,
     # Annex-F-style parameters
-    acr_mm: Optional[float] = None,
-    cmin_mm: Optional[float] = None,
-    h_mm: Optional[float] = None,
-    x_mm: Optional[float] = None,
-    epsilon_m: Optional[float] = None,
-    fs_service_nmm2: Optional[float] = None,
+    acr_mm: float | None = None,
+    cmin_mm: float | None = None,
+    h_mm: float | None = None,
+    x_mm: float | None = None,
+    epsilon_m: float | None = None,
+    fs_service_nmm2: float | None = None,
     es_nmm2: float = 200000.0,
 ) -> CrackWidthResult:
     """Level A crack width check.
@@ -330,7 +330,7 @@ def check_crack_width(
         else f"NOT OK: wcr={wcr_mm:.4f} mm > limit={limit_mm:.4f} mm"
     )
 
-    computed: Dict[str, Any] = {
+    computed: dict[str, Any] = {
         "wcr_mm": wcr_mm,
         "limit_mm": limit_mm,
         "acr_mm": acr_mm,
@@ -361,7 +361,7 @@ def check_crack_width(
     )
 
 
-def _as_dict(result: Union[DeflectionResult, CrackWidthResult]) -> Dict[str, Any]:
+def _as_dict(result: DeflectionResult | CrackWidthResult) -> dict[str, Any]:
     """Convert a result dataclass to a plain dictionary.
 
     Convenience function useful for Excel/JSON exports.
@@ -379,7 +379,7 @@ def calculate_cracking_moment(
     b_mm: float,
     D_mm: float,
     fck_nmm2: float,
-    yt_mm: Optional[float] = None,
+    yt_mm: float | None = None,
 ) -> float:
     """Calculate cracking moment Mcr per IS 456 Annex C.
 
@@ -638,7 +638,7 @@ def calculate_short_term_deflection(
     span_mm: float,
     ieff_mm4: float,
     fck_nmm2: float,
-    support_condition: Union[SupportCondition, str] = SupportCondition.SIMPLY_SUPPORTED,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
 ) -> float:
     """Calculate short-term (immediate) deflection using elastic analysis.
 
@@ -698,7 +698,7 @@ def check_deflection_level_b(
     ma_service_knm: float,
     ast_mm2: float,
     fck_nmm2: float,
-    support_condition: Union[SupportCondition, str] = SupportCondition.SIMPLY_SUPPORTED,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
     asc_mm2: float = 0.0,
     duration_months: int = 60,
     deflection_limit_ratio: float = 250.0,

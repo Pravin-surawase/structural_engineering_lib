@@ -9,7 +9,7 @@ analyze sensitivity with cost considerations.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable
 
 from ..data_types import ComplianceCaseResult
 from .cost_optimization import CostProfile
@@ -29,10 +29,10 @@ class DesignAlternative:
     """
 
     name: str
-    parameters: Dict[str, Any]
+    parameters: dict[str, Any]
     result: ComplianceCaseResult
-    cost: Optional[float] = None
-    cost_breakdown: Optional[Dict[str, float]] = None
+    cost: float | None = None
+    cost_breakdown: dict[str, float] | None = None
 
 
 @dataclass
@@ -49,7 +49,7 @@ class ComparisonMetrics:
     overall_score: float  # Weighted combination
 
     # Weights used for overall score
-    weights: Dict[str, float] = field(default_factory=dict)
+    weights: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -64,11 +64,11 @@ class ComparisonResult:
         trade_offs: Key trade-offs between designs
     """
 
-    alternatives: List[DesignAlternative]
-    metrics: List[ComparisonMetrics]
-    ranking: List[int]
+    alternatives: list[DesignAlternative]
+    metrics: list[ComparisonMetrics]
+    ranking: list[int]
     best_alternative_idx: int
-    trade_offs: List[str] = field(default_factory=list)
+    trade_offs: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -87,7 +87,7 @@ class CostSensitivityResult:
 
 
 def compare_designs(
-    alternatives: List[DesignAlternative],
+    alternatives: list[DesignAlternative],
     *,
     cost_weight: float = 0.3,
     safety_weight: float = 0.4,
@@ -145,7 +145,7 @@ def compare_designs(
         )
 
     # Calculate metrics for each alternative
-    metrics_list: List[ComparisonMetrics] = []
+    metrics_list: list[ComparisonMetrics] = []
 
     # Find min/max for normalization
     costs = [alt.cost for alt in alternatives if alt.cost is not None]
@@ -216,11 +216,11 @@ def compare_designs(
 
 def cost_aware_sensitivity(
     design_function: Callable[..., ComplianceCaseResult],
-    base_params: Dict[str, Any],
+    base_params: dict[str, Any],
     cost_profile: CostProfile,
-    parameters_to_vary: Optional[List[str]] = None,
+    parameters_to_vary: list[str] | None = None,
     perturbation: float = 0.10,
-) -> Tuple[List[CostSensitivityResult], float]:
+) -> tuple[list[CostSensitivityResult], float]:
     """Sensitivity analysis with cost implications.
 
     Combines standard sensitivity analysis with cost impact assessment.
@@ -267,7 +267,7 @@ def cost_aware_sensitivity(
     base_cost = _estimate_design_cost(base_params, cost_profile)
 
     # Enhance with cost information
-    cost_sensitivities: List[CostSensitivityResult] = []
+    cost_sensitivities: list[CostSensitivityResult] = []
 
     for sens in sensitivities:
         param = sens.parameter
@@ -305,7 +305,7 @@ def cost_aware_sensitivity(
 
 
 def _estimate_design_cost(
-    params: Dict[str, Any], cost_profile: CostProfile, span_mm: float = 5000.0
+    params: dict[str, Any], cost_profile: CostProfile, span_mm: float = 5000.0
 ) -> float:
     """Estimate design cost from parameters.
 
@@ -361,12 +361,12 @@ def _generate_cost_recommendation(
 
 
 def _identify_trade_offs(
-    alternatives: List[DesignAlternative],
-    metrics: List[ComparisonMetrics],
-    ranking: List[int],
-) -> List[str]:
+    alternatives: list[DesignAlternative],
+    metrics: list[ComparisonMetrics],
+    ranking: list[int],
+) -> list[str]:
     """Identify key trade-offs between design alternatives."""
-    trade_offs: List[str] = []
+    trade_offs: list[str] = []
 
     if len(alternatives) < 2:
         return trade_offs

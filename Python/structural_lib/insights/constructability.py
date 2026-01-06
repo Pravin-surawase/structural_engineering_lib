@@ -17,8 +17,6 @@ Scoring factors:
 
 from __future__ import annotations
 
-from typing import List
-
 from ..detailing import BeamDetailingResult
 from ..types import ComplianceCaseResult
 from .data_types import ConstructabilityFactor, ConstructabilityScore
@@ -49,7 +47,7 @@ def calculate_constructability_score(
     """
 
     score = 100.0
-    factors: List[ConstructabilityFactor] = []
+    factors: list[ConstructabilityFactor] = []
 
     bars = detailing.top_bars + detailing.bottom_bars
     bar_sizes = [bar.diameter for bar in bars if bar.count > 0]

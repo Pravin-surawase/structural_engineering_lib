@@ -26,7 +26,7 @@ import csv
 import json
 import sys
 from pathlib import Path
-from typing import List, cast
+from typing import cast
 
 from . import (
     api,
@@ -1489,7 +1489,7 @@ Examples:
     return parser
 
 
-def main(argv: List[str] | None = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     parser = _build_parser()
     args = parser.parse_args(argv)

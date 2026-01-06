@@ -10,7 +10,7 @@ Design constraints:
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 from xml.etree import (
     ElementTree as ET,  # nosec B405  # SVG generation, not parsing untrusted XML
 )
@@ -22,7 +22,7 @@ def _fmt(value: float, decimals: int = 1) -> str:
     return f"{value:.{decimals}f}"
 
 
-def _safe_float(value: Any) -> Optional[float]:
+def _safe_float(value: Any) -> float | None:
     try:
         return float(value)
     except (TypeError, ValueError):
@@ -78,8 +78,8 @@ def render_section_svg(
     *,
     b_mm: float,
     D_mm: float,
-    d_mm: Optional[float] = None,
-    d_dash_mm: Optional[float] = None,
+    d_mm: float | None = None,
+    d_dash_mm: float | None = None,
     width: int = 300,
     height: int = 400,
 ) -> str:

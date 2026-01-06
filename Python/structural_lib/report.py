@@ -36,7 +36,7 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from . import ductile, report_svg
 from .data_types import BeamGeometry, LoadCase
@@ -75,8 +75,8 @@ class ReportData:
     code: str
     units: str
     beam: BeamGeometry
-    cases: List[LoadCase]
-    results: Dict[str, Any]
+    cases: list[LoadCase]
+    results: dict[str, Any]
 
     # Computed fields
     is_ok: bool = False
@@ -110,7 +110,7 @@ class SanityCheck:
     """A single input sanity check result."""
 
     field: str
-    value: Optional[float]
+    value: float | None
     status: str
     message: str
     json_path: str
@@ -139,8 +139,8 @@ class UnitsAlert:
 def load_report_data(
     output_dir: str | Path,
     *,
-    job_path: Optional[str | Path] = None,
-    results_path: Optional[str | Path] = None,
+    job_path: str | Path | None = None,
+    results_path: str | Path | None = None,
 ) -> ReportData:
     """Load report data from job output folder.
 
@@ -221,21 +221,21 @@ def load_report_data(
     )
 
 
-def _safe_float(value: Any) -> Optional[float]:
+def _safe_float(value: Any) -> float | None:
     try:
         return float(value)
     except (TypeError, ValueError):
         return None
 
 
-def _safe_dict(value: Any) -> Dict[str, Any]:
+def _safe_dict(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
 
 
 def _make_sanity_check(
     *,
     field: str,
-    value: Optional[float],
+    value: float | None,
     status: str,
     message: str,
     json_path: str,
@@ -249,7 +249,7 @@ def _make_sanity_check(
     )
 
 
-def get_input_sanity(data: ReportData) -> List[SanityCheck]:
+def get_input_sanity(data: ReportData) -> list[SanityCheck]:
     """Evaluate input sanity checks for geometry/material inputs."""
     beam = data.beam or {}
 
@@ -261,9 +261,9 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
     fy_nmm2 = _safe_float(beam.get("fy_nmm2"))
     asv_mm2 = _safe_float(beam.get("asv_mm2"))
 
-    checks: List[SanityCheck] = []
+    checks: list[SanityCheck] = []
 
-    def check_positive(field: str, value: Optional[float], json_path: str) -> None:
+    def check_positive(field: str, value: float | None, json_path: str) -> None:
         if value is None:
             checks.append(
                 _make_sanity_check(
@@ -525,7 +525,7 @@ def get_input_sanity(data: ReportData) -> List[SanityCheck]:
     return checks
 
 
-def _case_utilization(case: Dict[str, Any]) -> float:
+def _case_utilization(case: dict[str, Any]) -> float:
     util = case.get("governing_utilization")
     if util is not None:
         try:
@@ -541,7 +541,7 @@ def _case_utilization(case: Dict[str, Any]) -> float:
     return 0.0
 
 
-def _select_governing_case(data: ReportData) -> tuple[Optional[Dict[str, Any]], int]:
+def _select_governing_case(data: ReportData) -> tuple[dict[str, Any] | None, int]:
     cases_data = data.results.get("cases", [])
     if not isinstance(cases_data, list) or not cases_data:
         return None, -1
@@ -562,10 +562,10 @@ def _select_governing_case(data: ReportData) -> tuple[Optional[Dict[str, Any]], 
     return cases_data[best_idx], best_idx
 
 
-def get_stability_scorecard(data: ReportData) -> List[ScorecardItem]:
+def get_stability_scorecard(data: ReportData) -> list[ScorecardItem]:
     """Generate stability scorecard flags from governing case results."""
     case, case_idx = _select_governing_case(data)
-    items: List[ScorecardItem] = []
+    items: list[ScorecardItem] = []
 
     if case is None:
         missing = "no cases available"
@@ -754,13 +754,13 @@ def get_stability_scorecard(data: ReportData) -> List[ScorecardItem]:
     return items
 
 
-def get_units_sentinel(data: ReportData) -> List[UnitsAlert]:
+def get_units_sentinel(data: ReportData) -> list[UnitsAlert]:
     """Flag likely unit mismatches based on magnitude heuristics."""
     cases_data = data.results.get("cases", [])
     if not isinstance(cases_data, list) or not cases_data:
         return []
 
-    alerts: List[UnitsAlert] = []
+    alerts: list[UnitsAlert] = []
 
     mu_values = []
     vu_values = []
@@ -885,7 +885,7 @@ def _format_sanity_value(item: SanityCheck) -> str:
     return f"{item.value:.2f}"
 
 
-def _render_sanity_table(items: List[SanityCheck]) -> str:
+def _render_sanity_table(items: list[SanityCheck]) -> str:
     rows = []
     for item in items:
         status_class = "ok" if item.status == "OK" else "warn"
@@ -918,7 +918,7 @@ def _render_sanity_table(items: List[SanityCheck]) -> str:
     </table>"""
 
 
-def _render_scorecard_table(items: List[ScorecardItem]) -> str:
+def _render_scorecard_table(items: list[ScorecardItem]) -> str:
     rows = []
     for item in items:
         status_class = "ok" if item.status == "OK" else "warn"
@@ -948,7 +948,7 @@ def _render_scorecard_table(items: List[ScorecardItem]) -> str:
     </table>"""
 
 
-def _render_units_table(items: List[UnitsAlert]) -> str:
+def _render_units_table(items: list[UnitsAlert]) -> str:
     if not items:
         return "<p>No unit anomalies detected.</p>"
 
@@ -1038,7 +1038,7 @@ def _render_report_sections(data: ReportData) -> str:
 
 
 def _render_beam_section(
-    data: ReportData, *, heading: str, section_id: Optional[str] = None
+    data: ReportData, *, heading: str, section_id: str | None = None
 ) -> str:
     anchor = f' id="{section_id}"' if section_id else ""
     return f"""<section class="beam-section"{anchor}>
@@ -1060,7 +1060,7 @@ def export_html(data: ReportData) -> str:
 # =============================================================================
 
 
-def load_design_results(path: str | Path) -> Dict[str, Any]:
+def load_design_results(path: str | Path) -> dict[str, Any]:
     """Load design results JSON (multi-beam output)."""
     p = Path(path)
     if not p.exists():
@@ -1085,9 +1085,9 @@ def _safe_slug(value: str) -> str:
     return slug or "beam"
 
 
-def _build_beam_index(beams: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    seen: Dict[str, int] = {}
-    indexed: List[Dict[str, Any]] = []
+def _build_beam_index(beams: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: dict[str, int] = {}
+    indexed: list[dict[str, Any]] = []
 
     for idx, beam in enumerate(beams):
         beam_id = str(beam.get("beam_id", "") or f"Beam_{idx + 1}")
@@ -1105,14 +1105,14 @@ def _build_beam_index(beams: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 def _beam_report_data_from_design(
-    beam: Dict[str, Any], *, code: str, units: str
+    beam: dict[str, Any], *, code: str, units: str
 ) -> ReportData:
-    geometry: Dict[str, Any] = _safe_dict(beam.get("geometry"))
-    materials: Dict[str, Any] = _safe_dict(beam.get("materials"))
-    loads: Dict[str, Any] = _safe_dict(beam.get("loads"))
-    flexure: Dict[str, Any] = _safe_dict(beam.get("flexure"))
-    shear: Dict[str, Any] = _safe_dict(beam.get("shear"))
-    serviceability: Dict[str, Any] = _safe_dict(beam.get("serviceability"))
+    geometry: dict[str, Any] = _safe_dict(beam.get("geometry"))
+    materials: dict[str, Any] = _safe_dict(beam.get("materials"))
+    loads: dict[str, Any] = _safe_dict(beam.get("loads"))
+    flexure: dict[str, Any] = _safe_dict(beam.get("flexure"))
+    shear: dict[str, Any] = _safe_dict(beam.get("shear"))
+    serviceability: dict[str, Any] = _safe_dict(beam.get("serviceability"))
 
     beam_id = str(beam.get("beam_id", "") or "")
     story = str(beam.get("story", "") or "")
@@ -1127,7 +1127,7 @@ def _beam_report_data_from_design(
 
     util_flexure = _safe_float(flexure.get("utilization"))
     util_shear = _safe_float(shear.get("utilization"))
-    utilizations: Dict[str, float] = {}
+    utilizations: dict[str, float] = {}
     if util_flexure is not None:
         utilizations["flexure"] = util_flexure
     if util_shear is not None:
@@ -1187,7 +1187,7 @@ def _beam_report_data_from_design(
     )
 
 
-def export_design_json(design_results: Dict[str, Any], *, indent: int = 2) -> str:
+def export_design_json(design_results: dict[str, Any], *, indent: int = 2) -> str:
     """Export report JSON for multi-beam design results."""
     beams = design_results.get("beams", [])
     code = str(design_results.get("code", "") or "")
@@ -1209,7 +1209,7 @@ def export_design_json(design_results: Dict[str, Any], *, indent: int = 2) -> st
 
 
 def _render_batch_index_table(
-    indexed: List[Dict[str, Any]],
+    indexed: list[dict[str, Any]],
     *,
     link_prefix: str,
     link_suffix: str = "",
@@ -1247,7 +1247,7 @@ def _render_batch_index_table(
 
 
 def render_design_report_single(
-    design_results: Dict[str, Any],
+    design_results: dict[str, Any],
     *,
     batch_threshold: int = 80,
 ) -> str:
@@ -1293,11 +1293,11 @@ def render_design_report_single(
 
 
 def write_design_report_package(
-    design_results: Dict[str, Any],
+    design_results: dict[str, Any],
     *,
     output_path: Path,
     batch_threshold: int = 80,
-) -> List[Path]:
+) -> list[Path]:
     """Write HTML report package for multi-beam results."""
     beams = design_results.get("beams", [])
     indexed = _build_beam_index(beams)
@@ -1370,8 +1370,8 @@ def write_design_report_package(
 def get_critical_set(
     data: ReportData,
     *,
-    top: Optional[int] = None,
-) -> List[CriticalCase]:
+    top: int | None = None,
+) -> list[CriticalCase]:
     """Extract cases sorted by utilization (highest first).
 
     Args:
@@ -1382,7 +1382,7 @@ def get_critical_set(
         List of CriticalCase sorted by utilization descending
     """
     cases_data = data.results.get("cases", [])
-    critical_cases: List[CriticalCase] = []
+    critical_cases: list[CriticalCase] = []
 
     for idx, case in enumerate(cases_data):
         if not isinstance(case, dict):
@@ -1426,7 +1426,7 @@ def get_critical_set(
     return critical_cases
 
 
-def export_critical_csv(cases: List[CriticalCase]) -> str:
+def export_critical_csv(cases: list[CriticalCase]) -> str:
     """Export critical set as CSV string.
 
     Args:
@@ -1464,7 +1464,7 @@ def export_critical_csv(cases: List[CriticalCase]) -> str:
 
 
 def export_critical_html(
-    cases: List[CriticalCase],
+    cases: list[CriticalCase],
     *,
     title: str = "Critical Set - Utilization Summary",
 ) -> str:

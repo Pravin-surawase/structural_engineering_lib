@@ -20,7 +20,7 @@ from __future__ import annotations
 import math
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import List, Literal, Optional, Tuple, cast
+from typing import Literal, cast
 
 from .data_types import OptimizerChecks
 from .detailing import (
@@ -36,7 +36,7 @@ Objective = Literal["min_area", "min_bar_count", "max_spacing"]
 @dataclass(frozen=True)
 class RebarOptimizerResult:
     is_feasible: bool
-    arrangement: Optional[BarArrangement]
+    arrangement: BarArrangement | None
     objective: Objective
     candidates_considered: int
     checks: OptimizerChecks
@@ -55,7 +55,7 @@ def _spacing_ok(
     bar_dia_mm: float,
     bars_in_layer: int,
     agg_size_mm: float,
-) -> Tuple[bool, float, str]:
+) -> tuple[bool, float, str]:
     # Single bar has no spacing constraint
     if bars_in_layer <= 1:
         return True, float("inf"), "OK (single bar)"
@@ -77,12 +77,12 @@ def optimize_bar_arrangement(
     b_mm: float,
     cover_mm: float,
     stirrup_dia_mm: float = 8.0,
-    allowed_dia_mm: Optional[Iterable[float]] = None,
+    allowed_dia_mm: Iterable[float] | None = None,
     max_layers: int = 2,
     objective: Objective = "min_area",
     agg_size_mm: float = 20.0,
     min_total_bars: int = 2,
-    max_bars_per_layer: Optional[int] = None,
+    max_bars_per_layer: int | None = None,
 ) -> RebarOptimizerResult:
     """Find a feasible bar arrangement.
 
@@ -169,7 +169,7 @@ def optimize_bar_arrangement(
             remarks="OK",
         )
 
-    diameters: List[float] = (
+    diameters: list[float] = (
         list(allowed_dia_mm)
         if allowed_dia_mm is not None
         else list(STANDARD_BAR_DIAMETERS)
@@ -177,8 +177,8 @@ def optimize_bar_arrangement(
     diameters = sorted({float(d) for d in diameters})
 
     candidates_considered = 0
-    feasible: List[
-        Tuple[Tuple[float, float, float, float, float], BarArrangement, OptimizerChecks]
+    feasible: list[
+        tuple[tuple[float, float, float, float, float], BarArrangement, OptimizerChecks]
     ] = []
 
     for dia_mm in diameters:

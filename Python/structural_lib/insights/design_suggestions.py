@@ -16,7 +16,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..beam_pipeline import BeamDesignOutput
 from ..costing import CostProfile
@@ -53,11 +53,11 @@ class DesignSuggestion:
     description: str
     rationale: str
     estimated_benefit: str  # e.g., "12% cost reduction", "+15% constructability"
-    action_steps: List[str]
+    action_steps: list[str]
     rule_id: str
     priority_score: float  # Combined metric for sorting
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "category": self.category.value,
@@ -77,7 +77,7 @@ class DesignSuggestion:
 class SuggestionReport:
     """Complete set of design suggestions."""
 
-    suggestions: List[DesignSuggestion]
+    suggestions: list[DesignSuggestion]
     analysis_time_ms: float
     suggestions_count: int
     high_impact_count: int
@@ -85,7 +85,7 @@ class SuggestionReport:
     low_impact_count: int
     engine_version: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "suggestions": [s.to_dict() for s in self.suggestions],
@@ -103,11 +103,11 @@ _ENGINE_VERSION = "1.0.0"
 
 def suggest_improvements(
     design: BeamDesignOutput,
-    detailing: Optional[BeamDetailingResult] = None,
-    cost_profile: Optional[CostProfile] = None,
-    span_mm: Optional[float] = None,
-    mu_knm: Optional[float] = None,
-    vu_kn: Optional[float] = None,
+    detailing: BeamDetailingResult | None = None,
+    cost_profile: CostProfile | None = None,
+    span_mm: float | None = None,
+    mu_knm: float | None = None,
+    vu_kn: float | None = None,
 ) -> SuggestionReport:
     """Generate design improvement suggestions.
 
@@ -133,7 +133,7 @@ def suggest_improvements(
         ...     print(f"{s.title} ({s.impact.value}) - {s.estimated_benefit}")
     """
     start_time = time.time()
-    suggestions: List[DesignSuggestion] = []
+    suggestions: list[DesignSuggestion] = []
 
     # Extract design parameters
     b_mm = design.geometry.b_mm
@@ -182,9 +182,9 @@ def _check_geometry_rules(
     b_mm: float,
     D_mm: float,
     d_mm: float,
-    span_mm: Optional[float],
+    span_mm: float | None,
     flexure: Any,
-) -> List[DesignSuggestion]:
+) -> list[DesignSuggestion]:
     """Check geometry-related improvement opportunities."""
     suggestions = []
 
@@ -314,7 +314,7 @@ def _check_geometry_rules(
 
 def _check_steel_rules(
     flexure: Any, shear: Any, b_mm: float, d_mm: float, fy_nmm2: float
-) -> List[DesignSuggestion]:
+) -> list[DesignSuggestion]:
     """Check steel-related improvement opportunities."""
     suggestions = []
 
@@ -436,11 +436,11 @@ def _check_steel_rules(
 
 def _check_cost_rules(
     design: BeamDesignOutput,
-    cost_profile: Optional[CostProfile],
-    span_mm: Optional[float],
-    mu_knm: Optional[float],
-    vu_kn: Optional[float],
-) -> List[DesignSuggestion]:
+    cost_profile: CostProfile | None,
+    span_mm: float | None,
+    mu_knm: float | None,
+    vu_kn: float | None,
+) -> list[DesignSuggestion]:
     """Check cost optimization opportunities."""
     suggestions = []
 
@@ -502,7 +502,7 @@ def _check_cost_rules(
 
 def _check_constructability_rules(
     detailing: BeamDetailingResult, b_mm: float, d_mm: float
-) -> List[DesignSuggestion]:
+) -> list[DesignSuggestion]:
     """Check constructability improvement opportunities."""
     suggestions = []
 
@@ -570,8 +570,8 @@ def _check_constructability_rules(
 
 
 def _check_serviceability_rules(
-    span_mm: Optional[float], d_mm: float, flexure: Any, design: BeamDesignOutput
-) -> List[DesignSuggestion]:
+    span_mm: float | None, d_mm: float, flexure: Any, design: BeamDesignOutput
+) -> list[DesignSuggestion]:
     """Check serviceability improvement opportunities."""
     suggestions = []
 
@@ -633,7 +633,7 @@ def _check_serviceability_rules(
 
 def _check_materials_rules(
     fck_nmm2: float, fy_nmm2: float, flexure: Any, shear: Any
-) -> List[DesignSuggestion]:
+) -> list[DesignSuggestion]:
     """Check materials-related improvement opportunities."""
     suggestions = []
 

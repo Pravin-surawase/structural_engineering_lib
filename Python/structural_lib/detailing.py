@@ -16,7 +16,7 @@ References:
 
 import math
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import Optional
 
 # =============================================================================
 # Constants
@@ -87,9 +87,9 @@ class BeamDetailingResult:
     cover: float  # mm
 
     # Reinforcement
-    top_bars: List[BarArrangement]  # [start, mid, end]
-    bottom_bars: List[BarArrangement]  # [start, mid, end]
-    stirrups: List[StirrupArrangement]  # [start, mid, end]
+    top_bars: list[BarArrangement]  # [start, mid, end]
+    bottom_bars: list[BarArrangement]  # [start, mid, end]
+    stirrups: list[StirrupArrangement]  # [start, mid, end]
 
     # Detailing parameters
     ld_tension: float  # Development length for tension bars (mm)
@@ -259,7 +259,7 @@ def calculate_bar_spacing(
 
 def check_min_spacing(
     spacing: float, bar_dia: float, agg_size: float = 20.0
-) -> Tuple[bool, str]:
+) -> tuple[bool, str]:
     """
     Check if bar spacing meets IS 456 Cl 26.3.2 requirements.
 
@@ -283,7 +283,7 @@ def check_min_spacing(
 
 def check_side_face_reinforcement(
     D: float, b: float, cover: float
-) -> Tuple[bool, float, float]:
+) -> tuple[bool, float, float]:
     """
     Check if side-face reinforcement is required per IS 456 Cl 26.5.1.3.
 
@@ -543,7 +543,7 @@ def create_beam_detailing(
     Returns:
         BeamDetailingResult with complete detailing information
     """
-    assumption_notes: List[str] = []
+    assumption_notes: list[str] = []
 
     # Select bar arrangements
     # Note: At supports (start/end), tension is typically top; at mid, tension is bottom
@@ -604,7 +604,7 @@ def create_beam_detailing(
     ]
 
     # Spacing sanity-check (horizontal clear spacing). Vertical layer clearance is not modeled.
-    spacing_violations: List[str] = []
+    spacing_violations: list[str] = []
     for label, arr in [
         ("top_start", top_start),
         ("top_mid", top_mid),
@@ -618,7 +618,7 @@ def create_beam_detailing(
             spacing_violations.append(f"{label}: {msg}")
 
     is_valid = len(spacing_violations) == 0
-    remarks_parts: List[str] = []
+    remarks_parts: list[str] = []
     if is_valid:
         remarks_parts.append("Detailing complete")
     else:

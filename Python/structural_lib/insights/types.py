@@ -7,7 +7,7 @@ All dataclasses provide `.to_dict()` methods for JSON serialization.
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any
 
 from ..errors import Severity
 
@@ -22,7 +22,7 @@ class HeuristicWarning:
     suggestion: str
     rule_basis: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "type": self.type,
@@ -39,11 +39,11 @@ class PredictiveCheckResult:
 
     check_time_ms: float
     risk_level: str
-    warnings: List[HeuristicWarning]
+    warnings: list[HeuristicWarning]
     recommended_action: str
     heuristics_version: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "check_time_ms": self.check_time_ms,
@@ -67,7 +67,7 @@ class SensitivityResult:
     sensitivity: float
     impact: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "parameter": self.parameter,
@@ -87,11 +87,11 @@ class RobustnessScore:
 
     score: float
     rating: str
-    vulnerable_parameters: List[str]
+    vulnerable_parameters: list[str]
     base_utilization: float
     sensitivity_count: int
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "score": self.score,
@@ -112,7 +112,7 @@ class ConstructabilityFactor:
     message: str
     recommendation: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "factor": self.factor,
@@ -129,11 +129,11 @@ class ConstructabilityScore:
 
     score: float
     rating: str
-    factors: List[ConstructabilityFactor]
+    factors: list[ConstructabilityFactor]
     overall_message: str
     version: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to JSON-serializable dict."""
         return {
             "score": self.score,

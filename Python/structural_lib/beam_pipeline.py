@@ -22,7 +22,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import asdict, dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from . import api, detailing
 from .data_types import BarDict, CrackWidthParams, DeflectionParams, StirrupDict
@@ -62,7 +62,7 @@ class UnitsValidationError(ValueError):
     """Raised when units parameter is invalid or missing."""
 
 
-def validate_units(units: Optional[str]) -> str:
+def validate_units(units: str | None) -> str:
     """
     Validate units string at application boundary.
 
@@ -161,13 +161,13 @@ class ServiceabilityOutput:
     """Serviceability check output (optional)."""
 
     deflection_status: str = "not_run"
-    deflection_ok: Optional[bool] = None
+    deflection_ok: bool | None = None
     deflection_remarks: str = ""
-    deflection_utilization: Optional[float] = None
+    deflection_utilization: float | None = None
     crack_width_status: str = "not_run"
-    crack_width_ok: Optional[bool] = None
+    crack_width_ok: bool | None = None
     crack_width_remarks: str = ""
-    crack_width_utilization: Optional[float] = None
+    crack_width_utilization: float | None = None
 
 
 @dataclass
@@ -176,9 +176,9 @@ class DetailingOutput:
 
     ld_tension_mm: float = 0.0
     lap_length_mm: float = 0.0
-    bottom_bars: List[BarDict] = field(default_factory=list)
-    top_bars: List[BarDict] = field(default_factory=list)
-    stirrups: List[StirrupDict] = field(default_factory=list)
+    bottom_bars: list[BarDict] = field(default_factory=list)
+    top_bars: list[BarDict] = field(default_factory=list)
+    stirrups: list[StirrupDict] = field(default_factory=list)
 
 
 @dataclass
@@ -204,16 +204,16 @@ class BeamDesignOutput:
     flexure: FlexureOutput
     shear: ShearOutput
     serviceability: ServiceabilityOutput = field(default_factory=ServiceabilityOutput)
-    detailing: Optional[DetailingOutput] = None
+    detailing: DetailingOutput | None = None
 
     is_ok: bool = False
     governing_utilization: float = 0.0
     governing_check: str = ""
     remarks: str = ""
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
-        result: Dict[str, Any] = _dataclass_to_dict(self)
+        result: dict[str, Any] = _dataclass_to_dict(self)
         return result
 
 
@@ -224,12 +224,12 @@ class MultiBeamOutput:
     schema_version: int
     code: str
     units: str
-    beams: List[BeamDesignOutput]
-    summary: Dict[str, Any] = field(default_factory=dict)
+    beams: list[BeamDesignOutput]
+    summary: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
-        result: Dict[str, Any] = _dataclass_to_dict(self)
+        result: dict[str, Any] = _dataclass_to_dict(self)
         return result
 
 
@@ -269,14 +269,14 @@ def design_single_beam(
     case_id: str = "CASE-1",
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
-    pt_percent: Optional[float] = None,
+    pt_percent: float | None = None,
     include_detailing: bool = True,
     stirrup_dia_mm: float = 8.0,
     stirrup_spacing_start_mm: float = 150.0,
     stirrup_spacing_mid_mm: float = 200.0,
     stirrup_spacing_end_mm: float = 150.0,
-    deflection_params: Optional[DeflectionParams] = None,
-    crack_width_params: Optional[CrackWidthParams] = None,
+    deflection_params: DeflectionParams | None = None,
+    crack_width_params: CrackWidthParams | None = None,
 ) -> BeamDesignOutput:
     """
     Run complete beam design pipeline for a single beam/case.
@@ -490,7 +490,7 @@ def design_single_beam(
 def design_multiple_beams(
     *,
     units: str,
-    beams: Sequence[Dict[str, Any]],
+    beams: Sequence[dict[str, Any]],
     include_detailing: bool = True,
 ) -> MultiBeamOutput:
     """

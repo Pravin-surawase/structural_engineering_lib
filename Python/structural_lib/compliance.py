@@ -20,7 +20,7 @@ import logging
 from collections.abc import Sequence
 from dataclasses import asdict
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 _logger = logging.getLogger(__name__)
 
@@ -174,11 +174,11 @@ def check_compliance_case(
     d_dash_mm: float = 50.0,
     # Shear reinforcement input
     asv_mm2: float = 100.0,
-    pt_percent: Optional[float] = None,
-    ast_mm2_for_shear: Optional[float] = None,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
     # Optional serviceability checks
-    deflection_params: Optional[DeflectionParams] = None,
-    crack_width_params: Optional[CrackWidthParams] = None,
+    deflection_params: DeflectionParams | None = None,
+    crack_width_params: CrackWidthParams | None = None,
 ) -> ComplianceCaseResult:
     """Run a single compliance case.
 
@@ -195,8 +195,8 @@ def check_compliance_case(
       else falls back to using flexure-required Ast (recorded as an assumption).
     """
 
-    failed_checks: List[str] = []
-    assumptions: List[str] = []
+    failed_checks: list[str] = []
+    assumptions: list[str] = []
 
     flex = flexure.design_doubly_reinforced(
         b=b_mm,
@@ -234,8 +234,8 @@ def check_compliance_case(
         pt=pt_percent,
     )
 
-    defl: Optional[DeflectionResult] = None
-    crack: Optional[CrackWidthResult] = None
+    defl: DeflectionResult | None = None
+    crack: CrackWidthResult | None = None
 
     if deflection_params is not None:
         defl = _safe_deflection_check(deflection_params)
@@ -253,7 +253,7 @@ def check_compliance_case(
     if crack is not None and not crack.is_ok:
         failed_checks.append("crack_width")
 
-    utilizations: Dict[str, float] = {
+    utilizations: dict[str, float] = {
         "flexure": _compute_flexure_utilization(mu_knm, flex),
         "shear": _compute_shear_utilization(sh),
     }
@@ -287,7 +287,7 @@ def check_compliance_case(
 
 def check_compliance_report(
     *,
-    cases: Sequence[Dict[str, Any]],
+    cases: Sequence[dict[str, Any]],
     b_mm: float,
     D_mm: float,
     d_mm: float,
@@ -295,10 +295,10 @@ def check_compliance_report(
     fy_nmm2: float,
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
-    pt_percent: Optional[float] = None,
+    pt_percent: float | None = None,
     # Optional global serviceability defaults (can be overridden per case)
-    deflection_defaults: Optional[DeflectionParams] = None,
-    crack_width_defaults: Optional[CrackWidthParams] = None,
+    deflection_defaults: DeflectionParams | None = None,
+    crack_width_defaults: CrackWidthParams | None = None,
 ) -> ComplianceReport:
     """Run multiple cases and pick a deterministic governing case.
 
@@ -319,7 +319,7 @@ def check_compliance_report(
     - ast_mm2_for_shear: float
     """
 
-    results: List[ComplianceCaseResult] = []
+    results: list[ComplianceCaseResult] = []
 
     if deflection_defaults is not None and not isinstance(deflection_defaults, dict):
         raise ValueError("deflection_defaults must be a dict when provided.")
@@ -394,7 +394,7 @@ def check_compliance_report(
     is_ok = all(r.is_ok for r in results)
 
     # Compact summary row (Excel/JSON friendly).
-    max_utils_by_check: Dict[str, float] = {}
+    max_utils_by_check: dict[str, float] = {}
     for r in results:
         for k, v in r.utilizations.items():
             if k not in max_utils_by_check:
@@ -410,7 +410,7 @@ def check_compliance_report(
             governing.utilizations.items(), key=lambda kv: (-kv[1], kv[0])
         )[0]
 
-    summary: Dict[str, Any] = {
+    summary: dict[str, Any] = {
         "is_ok": is_ok,
         "num_cases": len(results),
         "num_failed_cases": sum(1 for r in results if not r.is_ok),
@@ -434,7 +434,7 @@ def check_compliance_report(
     )
 
 
-def report_to_dict(report: ComplianceReport) -> Dict[str, Any]:
+def report_to_dict(report: ComplianceReport) -> dict[str, Any]:
     """Serialize report to a JSON/Excel-friendly dict."""
 
     def _jsonable(obj: Any) -> Any:
@@ -449,5 +449,5 @@ def report_to_dict(report: ComplianceReport) -> Dict[str, Any]:
             return [_jsonable(v) for v in obj]
         return obj
 
-    result: Dict[str, Any] = _jsonable(asdict(report))
+    result: dict[str, Any] = _jsonable(asdict(report))
     return result

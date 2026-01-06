@@ -37,7 +37,7 @@ Example:
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from ..beam_pipeline import BeamDesignOutput
 from ..costing import CostProfile
@@ -54,8 +54,8 @@ class SmartAnalysisSummary:
     constructability: float  # 0.0-1.0 (1.0 = excellent)
     robustness: float  # 0.0-1.0 (1.0 = very robust)
     overall_score: float  # 0.0-1.0 weighted combination
-    key_issues: List[str] = field(default_factory=list)
-    quick_wins: List[str] = field(default_factory=list)
+    key_issues: list[str] = field(default_factory=list)
+    quick_wins: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -65,9 +65,9 @@ class CostAnalysis:
     current_cost: float  # Current design cost (Rs)
     optimal_cost: float  # Best achievable cost (Rs)
     savings_percent: float  # Potential savings
-    baseline_alternative: Optional[Dict[str, Any]] = None
-    optimal_alternative: Optional[Dict[str, Any]] = None
-    alternatives: List[Dict[str, Any]] = field(default_factory=list)
+    baseline_alternative: Optional[dict[str, Any]] = None
+    optimal_alternative: Optional[dict[str, Any]] = None
+    alternatives: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -78,19 +78,19 @@ class DesignSuggestions:
     high_impact: int
     medium_impact: int
     low_impact: int
-    suggestions: List[Dict[str, Any]] = field(default_factory=list)
-    top_3: List[Dict[str, Any]] = field(default_factory=list)
+    suggestions: list[dict[str, Any]] = field(default_factory=list)
+    top_3: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
 class SensitivityInsights:
     """Sensitivity and robustness analysis."""
 
-    critical_parameters: List[str]  # Parameters with highest sensitivity
+    critical_parameters: list[str]  # Parameters with highest sensitivity
     robustness_score: float  # 0.0-1.0
     robustness_level: str  # "excellent", "good", "fair", "poor"
-    sensitivities: List[Dict[str, Any]] = field(default_factory=list)
-    recommendations: List[str] = field(default_factory=list)
+    sensitivities: list[dict[str, Any]] = field(default_factory=list)
+    recommendations: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -101,8 +101,8 @@ class ConstructabilityInsights:
     level: str  # "excellent", "good", "fair", "poor"
     bar_complexity: str
     congestion_risk: str
-    issues: List[str] = field(default_factory=list)
-    recommendations: List[str] = field(default_factory=list)
+    issues: list[str] = field(default_factory=list)
+    recommendations: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -129,13 +129,13 @@ class DashboardReport:
 
     summary: SmartAnalysisSummary
     design_result: BeamDesignOutput
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
     cost: Optional[CostAnalysis] = None
     suggestions: Optional[DesignSuggestions] = None
     sensitivity: Optional[SensitivityInsights] = None
     constructability: Optional[ConstructabilityInsights] = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert dashboard to dictionary for JSON serialization."""
         from dataclasses import asdict
 
@@ -278,7 +278,7 @@ class SmartDesigner:
         include_sensitivity: bool = True,
         include_constructability: bool = True,
         cost_profile: Optional[CostProfile] = None,
-        weights: Optional[Dict[str, float]] = None,
+        weights: Optional[dict[str, float]] = None,
     ) -> DashboardReport:
         """
         Perform comprehensive smart design analysis.

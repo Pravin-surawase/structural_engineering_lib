@@ -20,7 +20,7 @@ import os
 _logger = logging.getLogger(__name__)
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 from .detailing import BeamDetailingResult, create_beam_detailing
 from .dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
@@ -52,7 +52,7 @@ class BeamDesignData:
     status: str  # "OK" or "REVISE"
 
     @classmethod
-    def from_dict(cls, data: Dict) -> "BeamDesignData":
+    def from_dict(cls, data: dict) -> "BeamDesignData":
         """Create from dictionary (flexible key matching)."""
         # Normalize keys (handle both camelCase and snake_case)
         normalized = {}
@@ -162,7 +162,7 @@ class ProcessingResult:
 # =============================================================================
 
 
-def load_beam_data_from_csv(filepath: str) -> List[BeamDesignData]:
+def load_beam_data_from_csv(filepath: str) -> list[BeamDesignData]:
     """
     Load beam design data from a CSV file.
 
@@ -185,7 +185,7 @@ def load_beam_data_from_csv(filepath: str) -> List[BeamDesignData]:
     return beams
 
 
-def load_beam_data_from_json(filepath: str) -> List[BeamDesignData]:
+def load_beam_data_from_json(filepath: str) -> list[BeamDesignData]:
     """
     Load beam design data from a JSON file.
 
@@ -208,7 +208,7 @@ def load_beam_data_from_json(filepath: str) -> List[BeamDesignData]:
     return [BeamDesignData.from_dict(b) for b in beam_list]
 
 
-def export_beam_data_to_json(beams: List[BeamDesignData], filepath: str):
+def export_beam_data_to_json(beams: list[BeamDesignData], filepath: str):
     """Export beam data to JSON file."""
     data = {"beams": [asdict(b) for b in beams]}
     with open(filepath, "w", encoding="utf-8") as f:
@@ -310,7 +310,7 @@ def process_single_beam(
 
 def batch_generate_dxf(
     input_file: str, output_folder: str, is_seismic: bool = False
-) -> List[ProcessingResult]:
+) -> list[ProcessingResult]:
     """
     Batch process multiple beams from a CSV or JSON file.
 
@@ -350,7 +350,7 @@ def batch_generate_dxf(
 # =============================================================================
 
 
-def generate_summary_report(results: List[ProcessingResult]) -> str:
+def generate_summary_report(results: list[ProcessingResult]) -> str:
     """Generate a text summary of batch processing results."""
     total = len(results)
     success = sum(1 for r in results if r.success)
@@ -382,7 +382,7 @@ def generate_summary_report(results: List[ProcessingResult]) -> str:
     return "\n".join(lines)
 
 
-def generate_detailing_schedule(results: List[ProcessingResult]) -> List[Dict]:
+def generate_detailing_schedule(results: list[ProcessingResult]) -> list[dict]:
     """
     Generate a detailing schedule from processing results.
 
@@ -425,7 +425,7 @@ def generate_detailing_schedule(results: List[ProcessingResult]) -> List[Dict]:
     return schedule
 
 
-def export_schedule_to_csv(schedule: List[Dict], filepath: str):
+def export_schedule_to_csv(schedule: list[dict], filepath: str):
     """Export detailing schedule to CSV file."""
     if not schedule:
         return

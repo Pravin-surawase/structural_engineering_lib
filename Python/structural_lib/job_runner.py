@@ -21,7 +21,7 @@ import csv
 import json
 from collections.abc import Iterable, Mapping
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from . import api, beam_pipeline, compliance
 from .data_types import JobSpec
@@ -155,7 +155,7 @@ def run_job_is456(
     job: JobSpec,
     out_dir: str | Path,
     copy_inputs: bool = True,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Run a single-beam IS456 job and write outputs.
 
     Returns a small run summary (useful for callers/tests).
@@ -299,7 +299,7 @@ def run_job(
     *,
     job_path: str | Path,
     out_dir: str | Path,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Dispatch job runner based on job['code']."""
 
     job = load_job_json(job_path)

@@ -20,7 +20,7 @@ Usage:
 """
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Optional, Union
 
 ezdxf: Any = None
 _units: Any = None
@@ -152,7 +152,7 @@ def _bar_mark_map(detailing: BeamDetailingResult) -> dict:
     return marks
 
 
-def extract_bar_marks_from_dxf(path: Union[str, Path]) -> Dict[str, Set[str]]:
+def extract_bar_marks_from_dxf(path: Union[str, Path]) -> dict[str, set[str]]:
     """Extract bar marks from a DXF file, grouped by beam."""
     check_ezdxf()
     p = Path(path)
@@ -162,7 +162,7 @@ def extract_bar_marks_from_dxf(path: Union[str, Path]) -> Dict[str, Set[str]]:
     doc = ezdxf.readfile(str(p))
     msp = doc.modelspace()
 
-    marks_by_beam: Dict[str, Set[str]] = {}
+    marks_by_beam: dict[str, set[str]] = {}
     for entity in msp.query("TEXT MTEXT"):
         if entity.dxftype() == "TEXT":
             text = entity.dxf.text
@@ -185,13 +185,13 @@ def extract_bar_marks_from_dxf(path: Union[str, Path]) -> Dict[str, Set[str]]:
 def compare_bbs_dxf_marks(
     bbs_csv_path: Union[str, Path],
     dxf_path: Union[str, Path],
-) -> Dict[str, object]:
+) -> dict[str, object]:
     """Compare bar marks in a BBS CSV against a DXF file."""
     bbs_marks = bbs.extract_bar_marks_from_bbs_csv(bbs_csv_path)
     dxf_marks = extract_bar_marks_from_dxf(dxf_path)
 
-    missing_in_dxf: Dict[str, List[str]] = {}
-    extra_in_dxf: Dict[str, List[str]] = {}
+    missing_in_dxf: dict[str, list[str]] = {}
+    extra_in_dxf: dict[str, list[str]] = {}
 
     all_beams = sorted(set(bbs_marks) | set(dxf_marks))
     for beam_id in all_beams:
@@ -222,7 +222,7 @@ def compare_bbs_dxf_marks(
     }
 
 
-def _annotation_extents(include_annotations: bool) -> Tuple[float, float]:
+def _annotation_extents(include_annotations: bool) -> tuple[float, float]:
     """Return (above_extent, below_extent) for annotations."""
     if include_annotations:
         above_extent = 150 + TEXT_HEIGHT * 1.5
@@ -247,10 +247,10 @@ def _estimate_cell_width(
 
 def _draw_title_block(
     msp,
-    origin: Tuple[float, float],
+    origin: tuple[float, float],
     width: float,
     height: float,
-    fields: List[str],
+    fields: list[str],
 ) -> None:
     """Draw a simple title block with a list of text lines."""
     x1, y1 = origin
@@ -286,7 +286,7 @@ def _format_cover_line(cover: float) -> str:
     return f"Cover: {int(round(cover))} mm"
 
 
-def _format_range_line(label: str, values: List[float]) -> str:
+def _format_range_line(label: str, values: list[float]) -> str:
     if not values:
         return ""
     v_min = int(round(min(values)))
@@ -296,7 +296,7 @@ def _format_range_line(label: str, values: List[float]) -> str:
     return f"{label}: {v_min}-{v_max} mm"
 
 
-def _format_size_range_line(b_values: List[float], d_values: List[float]) -> str:
+def _format_size_range_line(b_values: list[float], d_values: list[float]) -> str:
     if not b_values or not d_values:
         return ""
     b_min = int(round(min(b_values)))
@@ -354,10 +354,10 @@ def draw_beam_elevation(
     D: float,
     b: float,
     cover: float,
-    top_bars: List[BarArrangement],
-    bottom_bars: List[BarArrangement],
-    stirrups: List[StirrupArrangement],
-    origin: Tuple[float, float] = (0, 0),
+    top_bars: list[BarArrangement],
+    bottom_bars: list[BarArrangement],
+    stirrups: list[StirrupArrangement],
+    origin: tuple[float, float] = (0, 0),
 ):
     """
     Draw beam elevation view (longitudinal section).
@@ -457,7 +457,7 @@ def draw_beam_elevation(
             x += end_spacing
 
 
-def draw_dimensions(msp, span: float, D: float, origin: Tuple[float, float] = (0, 0)):
+def draw_dimensions(msp, span: float, D: float, origin: tuple[float, float] = (0, 0)):
     """
     Add dimension annotations.
 
@@ -516,13 +516,13 @@ def draw_annotations(
     beam_id: str,
     story: str,
     b: float,
-    top_bars: List[BarArrangement],
-    bottom_bars: List[BarArrangement],
-    stirrups: List[StirrupArrangement],
+    top_bars: list[BarArrangement],
+    bottom_bars: list[BarArrangement],
+    stirrups: list[StirrupArrangement],
     ld: float,
     lap: float,
     detailing: Optional[BeamDetailingResult] = None,
-    origin: Tuple[float, float] = (0, 0),
+    origin: tuple[float, float] = (0, 0),
 ):
     """
     Add text annotations for reinforcement callouts.
@@ -633,7 +633,7 @@ def draw_section_cut(
     top_bars: BarArrangement,
     bottom_bars: BarArrangement,
     stirrup: StirrupArrangement,
-    origin: Tuple[float, float] = (0, 0),
+    origin: tuple[float, float] = (0, 0),
     scale: float = 1.0,
     title: str = "SECTION A-A",
 ):
@@ -1041,7 +1041,7 @@ def generate_beam_dxf(
 
 
 def generate_multi_beam_dxf(
-    detailings: List[BeamDetailingResult],
+    detailings: list[BeamDetailingResult],
     output_path: str,
     columns: int = 2,
     row_spacing: float = 200.0,
@@ -1134,7 +1134,7 @@ def generate_multi_beam_dxf(
     # Account for below_extent so annotations don't overlap
     # (reuse same calculation from loop above)
     _, base_below_extent = _annotation_extents(include_annotations)
-    row_y_offsets: List[float] = [
+    row_y_offsets: list[float] = [
         base_below_extent
     ] * n_rows  # Start with offset for first row's bottom annotations
     for r in range(1, n_rows):
