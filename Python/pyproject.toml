@@ -60,6 +60,28 @@ ignore = [
   "B008",  # Do not perform function call in argument defaults (common in our API)
 ]
 
+[tool.ruff.lint.pep8-naming]
+# Allow structural engineering conventions (D = total depth, D_mm = depth in mm)
+# Standard notation per IS 456:2000 and structural design practice
+ignore-names = [
+  "D", "D_mm", "D_m", "D_val", "D_scaled",  # Depth parameters (total depth)
+  "Df",  # Flange depth
+  "baseline_D", "label_D",  # Variables containing depth values
+  "require_d_less_than_D",  # Boolean flag (d < D check)
+  "DEPTH_THRESHOLD", "PERCENTAGE_WEB_AREA", "MAX_SPACING",  # Local constants in functions
+]
+
+# classmethod decorators use cls
+classmethod-decorators = ["classmethod"]
+
+[tool.ruff.lint.per-file-ignores]
+# Excel bridge uses intentional naming for UDF compatibility
+"structural_lib/excel_bridge.py" = ["N802"]
+# Compliance and dxf_export have optional imports after conditionals
+"structural_lib/compliance.py" = ["E402"]
+"structural_lib/dxf_export.py" = ["E402"]
+"structural_lib/excel_integration.py" = ["E402"]
+
 [tool.mypy]
 python_version = "3.9"
 files = ["structural_lib"]
