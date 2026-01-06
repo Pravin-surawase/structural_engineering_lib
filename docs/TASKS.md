@@ -30,7 +30,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns; function signatures, return types, error handling, defaults; 50+ code examples; comparison matrix) → `docs/research/professional-api-patterns.md` | RESEARCHER | 4-5 hrs | 🔴 CRITICAL | 🔄 In Progress |
+| **TASK-201** | **Research: User Experience Patterns for Technical APIs** (Cognitive load, discoverability, error experience, "pit of success" design; 30+ UX principles; pain point analysis) → `docs/research/ux-patterns-for-technical-apis.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH | 🚀 Ready |
 
 ---
 
@@ -53,8 +53,8 @@
 
 #### Phase 1: Core Research (Critical)
 
-| ID | Task-|-------|-----|----------|
-| **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns; function signatures, return types, error handling, defaults; 50+ code examples; comparison matrix) → `docs/research/professional-api-patterns.md` | RESEARCHER | 4-5 hrs | 🔴 CRITICAL |
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
 | **TASK-201** | **Research: User Experience Patterns for Technical APIs** (Cognitive load, discoverability, error experience, "pit of success" design; 30+ UX principles; pain point analysis) → `docs/research/ux-patterns-for-technical-apis.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 | **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL |
 | **TASK-203** | **Research: Result Object Design Patterns** (Dataclass vs namedtuple vs dict; essential methods: to_dict, summary; error handling in results; SciPy/sklearn examples) → `docs/guidelines/result-object-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
@@ -121,6 +121,7 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns) | 2026-01-07 | RESEARCHER |
 | **TASK-199** | Sync Colab notebooks (root + docs) and document output review findings | 2026-01-06 | DOCS |
 | **TASK-198** | Update Colab workflow notebook for v0.15 smart design + comparison testing | 2026-01-06 | DOCS |
 | **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | 2026-01-06 | DOCS |
