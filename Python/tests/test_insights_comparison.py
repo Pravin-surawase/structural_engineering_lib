@@ -30,12 +30,7 @@ def _base_params():
 
 def _cost_profile():
     """Standard cost profile for testing."""
-    return CostProfile(
-        concrete_per_m3=5000.0,  # Rs 5000/m³
-        steel_per_kg=50.0,  # Rs 50/kg
-        formwork_per_m2=200.0,  # Rs 200/m²
-        labor_per_hr=500.0,  # Rs 500/hr
-    )
+    return CostProfile()  # Use defaults
 
 
 # =============================================================================
@@ -50,7 +45,7 @@ def test_compare_two_designs():
     alt1 = DesignAlternative(
         name="Option A: 300x450",
         parameters=params1,
-        result=result1.cases[0],
+        result=result1,
         cost=15000.0,
     )
 
@@ -59,7 +54,7 @@ def test_compare_two_designs():
     alt2 = DesignAlternative(
         name="Option B: 350x400",
         parameters=params2,
-        result=result2.cases[0],
+        result=result2,
         cost=16000.0,
     )
 
@@ -90,9 +85,9 @@ def test_compare_three_designs():
     result3 = design_beam_is456(**params3)
 
     alternatives = [
-        DesignAlternative("A", params1, result1.cases[0], cost=15000.0),
-        DesignAlternative("B", params2, result2.cases[0], cost=15500.0),
-        DesignAlternative("C", params3, result3.cases[0], cost=16200.0),
+        DesignAlternative("A", params1, result1, cost=15000.0),
+        DesignAlternative("B", params2, result2, cost=15500.0),
+        DesignAlternative("C", params3, result3, cost=16200.0),
     ]
 
     comparison = compare_designs(alternatives)
@@ -114,7 +109,7 @@ def test_compare_designs_invalid_weights():
     """Weights not summing to 1.0 should raise ValueError."""
     params = _base_params()
     result = design_beam_is456(**params)
-    alt = DesignAlternative("Test", params, result.cases[0])
+    alt = DesignAlternative("Test", params, result)
 
     with pytest.raises(ValueError, match="must sum to 1.0"):
         compare_designs(
@@ -130,7 +125,7 @@ def test_comparison_metrics_structure():
     """Verify ComparisonMetrics structure."""
     params = _base_params()
     result = design_beam_is456(**params)
-    alt = DesignAlternative("Test", params, result.cases[0], cost=15000.0)
+    alt = DesignAlternative("Test", params, result, cost=15000.0)
 
     comparison = compare_designs([alt])
     metrics = comparison.metrics[0]
@@ -157,8 +152,8 @@ def test_comparison_without_cost():
     result1 = design_beam_is456(**params1)
     result2 = design_beam_is456(**params2)
 
-    alt1 = DesignAlternative("A", params1, result1.cases[0])  # No cost
-    alt2 = DesignAlternative("B", params2, result2.cases[0])  # No cost
+    alt1 = DesignAlternative("A", params1, result1)  # No cost
+    alt2 = DesignAlternative("B", params2, result2)  # No cost
 
     comparison = compare_designs([alt1, alt2])
 
@@ -176,8 +171,8 @@ def test_comparison_ranking_order():
     result1 = design_beam_is456(**params1)
     result2 = design_beam_is456(**params2)
 
-    alt1 = DesignAlternative("Low Load", params1, result1.cases[0], cost=14000.0)
-    alt2 = DesignAlternative("High Load", params2, result2.cases[0], cost=14000.0)
+    alt1 = DesignAlternative("Low Load", params1, result1, cost=14000.0)
+    alt2 = DesignAlternative("High Load", params2, result2, cost=14000.0)
 
     comparison = compare_designs([alt1, alt2])
 
@@ -307,12 +302,12 @@ def test_cost_sensitivity_cost_increases_with_dimensions():
     costs = _cost_profile()
 
     results, base_cost = cost_aware_sensitivity(
-        design_beam_is456, params, costs, parameters_to_vary=["d_mm", "b_mm"]
+        design_beam_is456, params, costs, parameters_to_vary=["D_mm", "b_mm"]
     )
 
-    # Both d_mm and b_mm should increase cost when increased
+    # Both D_mm and b_mm should increase cost when increased
     for result in results:
-        if result.parameter in ["d_mm", "b_mm"]:
+        if result.parameter in ["D_mm", "b_mm"]:
             # Cost sensitivity should be positive (more dimension = more cost)
             assert result.cost_sensitivity > 0
             assert result.cost_impact_per_percent > 0
@@ -334,8 +329,8 @@ def test_comparison_with_cost_sensitivity():
     costs = _cost_profile()
 
     # Compare designs
-    alt1 = DesignAlternative("A", params1, result1.cases[0], cost=15000.0)
-    alt2 = DesignAlternative("B", params2, result2.cases[0], cost=16000.0)
+    alt1 = DesignAlternative("A", params1, result1, cost=15000.0)
+    alt2 = DesignAlternative("B", params2, result2, cost=16000.0)
     comparison = compare_designs([alt1, alt2])
 
     # Analyze sensitivity for best design
@@ -360,8 +355,8 @@ def test_comparison_identifies_trade_offs():
     result1 = design_beam_is456(**params1)
     result2 = design_beam_is456(**params2)
 
-    alt1 = DesignAlternative("Conservative", params1, result1.cases[0], cost=15500.0)
-    alt2 = DesignAlternative("Economical", params2, result2.cases[0], cost=15000.0)
+    alt1 = DesignAlternative("Conservative", params1, result1, cost=15500.0)
+    alt2 = DesignAlternative("Economical", params2, result2, cost=15000.0)
 
     comparison = compare_designs([alt1, alt2])
 
@@ -383,7 +378,7 @@ def test_comparison_single_design():
     """Compare single design (degenerate case)."""
     params = _base_params()
     result = design_beam_is456(**params)
-    alt = DesignAlternative("Only Option", params, result.cases[0], cost=15000.0)
+    alt = DesignAlternative("Only Option", params, result, cost=15000.0)
 
     comparison = compare_designs([alt])
 
@@ -417,8 +412,8 @@ def test_comparison_custom_weights():
     result1 = design_beam_is456(**params1)
     result2 = design_beam_is456(**params2)
 
-    alt1 = DesignAlternative("A", params1, result1.cases[0], cost=15000.0)
-    alt2 = DesignAlternative("B", params2, result2.cases[0], cost=14000.0)
+    alt1 = DesignAlternative("A", params1, result1, cost=15000.0)
+    alt2 = DesignAlternative("B", params2, result2, cost=14000.0)
 
     # Prioritize cost heavily
     comparison_cost = compare_designs(
