@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Excel Integration Module — Bridge between Excel data and Detailing/DXF
 

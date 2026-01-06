@@ -1,11 +1,16 @@
 Attribute VB_Name = "M01_Constants"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M01_Constants
 ' Description:  Global constants for IS 456:2000 implementation
 ' Version:      1.0.01
-' License:      MIT
 ' ==============================================================================
 
 ' Mathematical Constants

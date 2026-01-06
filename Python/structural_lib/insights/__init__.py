@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Advisory insights (opt-in) for IS 456 beam designs."""
 
 from .comparison import (

@@ -1,11 +1,16 @@
 Attribute VB_Name = "M02_Types"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M02_Types
 ' Description:  Custom Data Types (UDTs) and Enums
 ' Version:      1.0.01
-' License:      MIT
 ' ==============================================================================
 
 
@@ -129,27 +134,27 @@ Public Type BeamDetailingResult
     D As Double             ' Beam depth (mm)
     span As Double          ' Span length (mm)
     cover As Double         ' Clear cover (mm)
-    
+
     ' Bottom bars (tension at mid-span)
     bottom_start As BarArrangement
     bottom_mid As BarArrangement
     bottom_end As BarArrangement
-    
+
     ' Top bars (tension at supports / compression at mid)
     top_start As BarArrangement
     top_mid As BarArrangement
     top_end As BarArrangement
-    
+
     ' Stirrups
     stirrup_start As StirrupArrangement
     stirrup_mid As StirrupArrangement
     stirrup_end As StirrupArrangement
-    
+
     ' Detailing parameters
     ld_tension As Double    ' Development length for tension bars (mm)
     ld_compression As Double ' Development length for compression bars (mm)
     lap_length As Double    ' Lap splice length (mm)
-    
+
     ' Validity
     is_valid As Boolean
     remarks As String

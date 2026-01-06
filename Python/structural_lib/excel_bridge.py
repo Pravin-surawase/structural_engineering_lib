@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Excel UDF Bridge - Exposes structural_lib functions to Excel via xlwings
 

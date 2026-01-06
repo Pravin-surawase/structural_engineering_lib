@@ -1,11 +1,16 @@
 Attribute VB_Name = "M17_Serviceability"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M17_Serviceability
 ' Description:  Serviceability checks (Deflection + Crack Width) — v0.8 Level A
 ' Version:      0.8.0
-' License:      MIT
 ' ==============================================================================
 
 ' Design constraints:

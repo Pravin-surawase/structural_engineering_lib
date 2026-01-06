@@ -1,11 +1,16 @@
 Attribute VB_Name = "M08_API"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M08_API
 ' Description:  Public facing API functions (Simplified wrappers)
 ' Version:      0.14.0
-' License:      MIT
 ' ==============================================================================
 
 Public Function Get_Library_Version() As String

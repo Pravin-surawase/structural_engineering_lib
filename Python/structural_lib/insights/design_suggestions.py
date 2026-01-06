@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Design suggestion engine for beam design optimization.
 
 This module provides rule-based expert guidance to improve beam designs

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Cost calculation utilities for structural elements."""
 
 from dataclasses import dataclass, field

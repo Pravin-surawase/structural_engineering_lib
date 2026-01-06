@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Heuristic pre-checks for quick design guidance (advisory only)."""
 
 from __future__ import annotations

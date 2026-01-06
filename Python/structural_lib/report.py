@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Report generation module for beam design results.
 
 This module generates human-readable reports from job outputs.

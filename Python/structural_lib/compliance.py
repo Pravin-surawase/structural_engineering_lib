@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Module: compliance
 
 Compliance checker (TASK-042): Orchestrates strength + serviceability checks.

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Compatibility shim for legacy imports.
 
 Use `structural_lib.insights` for new code. This module re-exports the

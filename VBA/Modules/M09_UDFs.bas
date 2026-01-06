@@ -1,11 +1,16 @@
 Attribute VB_Name = "M09_UDFs"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M09_UDFs
 ' Description:  Excel User Defined Functions (Worksheet accessible)
 ' Version:      1.0.0
-' License:      MIT
 ' ==============================================================================
 
 ' Wrapper for Mu_lim (Returns kN-m)
@@ -22,7 +27,7 @@ Public Function IS456_AstRequired(ByVal b As Double, ByVal d As Double, ByVal Mu
     On Error GoTo ErrHandler
     Dim res As Double
     res = M06_Flexure.Calculate_Ast_Required(b, d, Mu_kNm, fck, fy)
-    
+
     If res = -1 Then
         IS456_AstRequired = "Over-Reinforced"
     Else
@@ -38,7 +43,7 @@ Public Function IS456_ShearSpacing(ByVal Vu_kN As Double, ByVal b As Double, ByV
     On Error GoTo ErrHandler
     Dim res As ShearResult
     res = M07_Shear.Design_Shear(Vu_kN, b, d, fck, fy, Asv, pt)
-    
+
     If Not res.IsSafe Then
         IS456_ShearSpacing = "Unsafe: " & res.Remarks
     Else
@@ -64,7 +69,7 @@ Public Function IS456_Design_Rectangular(ByVal b As Double, ByVal d As Double, B
     On Error GoTo ErrHandler
     Dim res As FlexureResult
     res = M06_Flexure.Design_Doubly_Reinforced(b, d, d_dash, D_total, Mu_kNm, fck, fy)
-    
+
     Dim output(1 To 4) As Variant
     If res.IsSafe Then
         output(1) = res.Ast_Required
@@ -77,7 +82,7 @@ Public Function IS456_Design_Rectangular(ByVal b As Double, ByVal d As Double, B
         output(3) = res.Xu
         output(4) = res.ErrorMessage
     End If
-    
+
     IS456_Design_Rectangular = output
     Exit Function
 ErrHandler:
@@ -90,7 +95,7 @@ Public Function IS456_Design_Flanged(ByVal bw As Double, ByVal bf As Double, ByV
     On Error GoTo ErrHandler
     Dim res As FlexureResult
     res = M06_Flexure.Design_Flanged_Beam(bw, bf, d, Df, D_total, Mu_kNm, fck, fy, d_dash)
-    
+
     Dim output(1 To 4) As Variant
     If res.IsSafe Then
         output(1) = res.Ast_Required
@@ -103,7 +108,7 @@ Public Function IS456_Design_Flanged(ByVal bw As Double, ByVal bf As Double, ByV
         output(3) = res.Xu
         output(4) = res.ErrorMessage
     End If
-    
+
     IS456_Design_Flanged = output
     Exit Function
 ErrHandler:
@@ -134,7 +139,7 @@ Public Function IS456_Check_Ductility(ByVal b As Double, ByVal D_overall As Doub
     On Error GoTo ErrHandler
     Dim res As DuctileBeamResult
     res = M10_Ductile.Check_Beam_Ductility(b, D_overall, d, fck, fy, min_long_bar_dia)
-    
+
     IS456_Check_Ductility = res.Remarks
     Exit Function
 ErrHandler:
@@ -247,36 +252,36 @@ Public Function IS456_DrawSection(ByVal filePath As String, _
                                  ByVal bottomBarsRange As Range, _
                                  ByVal stirrupDia As Double) As Variant
     On Error GoTo ErrHandler
-    
+
     Dim topBars() As Double
     Dim bottomBars() As Double
     Dim i As Long, n As Long
-    
+
     ' Convert top bars range to array
     n = topBarsRange.Cells.Count
     ReDim topBars(0 To n - 1)
     For i = 1 To n
         topBars(i - 1) = topBarsRange.Cells(i).Value
     Next i
-    
+
     ' Convert bottom bars range to array
     n = bottomBarsRange.Cells.Count
     ReDim bottomBars(0 To n - 1)
     For i = 1 To n
         bottomBars(i - 1) = bottomBarsRange.Cells(i).Value
     Next i
-    
+
     ' Generate DXF
     Dim success As Boolean
     success = M16_DXF.Draw_BeamSection(filePath, B, D, cover, topBars, bottomBars, stirrupDia)
-    
+
     If success Then
         IS456_DrawSection = True
     Else
         IS456_DrawSection = "Error: Failed to generate DXF"
     End If
     Exit Function
-    
+
 ErrHandler:
     IS456_DrawSection = "Error: " & Err.Description
 End Function
@@ -300,19 +305,19 @@ Public Function IS456_DrawLongitudinal(ByVal filePath As String, _
                                       ByVal stirrupDia As Double, _
                                       ByVal stirrupSpacing As Double) As Variant
     On Error GoTo ErrHandler
-    
+
     Dim success As Boolean
     success = M16_DXF.Draw_BeamLongitudinal(filePath, length, D, cover, _
                                            topBarDia, bottomBarDia, _
                                            stirrupDia, stirrupSpacing)
-    
+
     If success Then
         IS456_DrawLongitudinal = True
     Else
         IS456_DrawLongitudinal = "Error: Failed to generate DXF"
     End If
     Exit Function
-    
+
 ErrHandler:
     IS456_DrawLongitudinal = "Error: " & Err.Description
 End Function
@@ -322,22 +327,22 @@ End Function
 ' Call from a button or module, not as worksheet function
 Public Sub IS456_ExportBeamDXF()
     On Error GoTo ErrHandler
-    
+
     Dim ws As Worksheet
     Dim filePath As String
     Dim result As BeamDetailingResult
-    
+
     ' Get active worksheet
     Set ws = ActiveSheet
-    
+
     ' Prompt for save location
     filePath = Application.GetSaveAsFilename( _
         InitialFileName:="BeamDetailing.dxf", _
         FileFilter:="DXF Files (*.dxf), *.dxf", _
         Title:="Save Beam Drawing As")
-    
+
     If filePath = "False" Then Exit Sub
-    
+
     ' Read beam data from worksheet (expected cells)
     ' Row 2: B2=BeamID, B3=Width, B4=Depth, B5=Span, B6=Cover
     ' Row 7-9: Bottom bars (start/mid/end): count, dia
@@ -349,7 +354,7 @@ Public Sub IS456_ExportBeamDXF()
         .D = ws.Range("B4").Value
         .span = ws.Range("B5").Value
         .cover = ws.Range("B6").Value
-        
+
         ' Bottom bars - using mid-span as primary
         .bottom_mid.count = ws.Range("B7").Value
         .bottom_mid.diameter = ws.Range("C7").Value
@@ -357,7 +362,7 @@ Public Sub IS456_ExportBeamDXF()
         .bottom_start.diameter = .bottom_mid.diameter
         .bottom_end.count = .bottom_mid.count
         .bottom_end.diameter = .bottom_mid.diameter
-        
+
         ' Top bars - using start as primary (support moment)
         .top_start.count = ws.Range("B8").Value
         .top_start.diameter = ws.Range("C8").Value
@@ -365,31 +370,31 @@ Public Sub IS456_ExportBeamDXF()
         .top_mid.diameter = .top_start.diameter
         .top_end.count = .top_start.count
         .top_end.diameter = .top_start.diameter
-        
+
         ' Stirrups - all zones use same for simplicity
         .stirrup_mid.diameter = ws.Range("B9").Value
         .stirrup_mid.spacing = ws.Range("C9").Value
         .stirrup_mid.legs = ws.Range("D9").Value
         .stirrup_mid.zone_length = .span * 0.6
-        
+
         .stirrup_start = .stirrup_mid
         .stirrup_start.zone_length = .span * 0.2
-        
+
         .stirrup_end = .stirrup_mid
         .stirrup_end.zone_length = .span * 0.2
     End With
-    
+
     ' Generate DXF
     Dim success As Boolean
     success = M16_DXF.Draw_BeamDetailing(filePath, result)
-    
+
     If success Then
         MsgBox "DXF exported successfully to:" & vbCrLf & filePath, vbInformation, "Export Complete"
     Else
         MsgBox "Failed to export DXF file.", vbExclamation, "Export Error"
     End If
     Exit Sub
-    
+
 ErrHandler:
     MsgBox "Error: " & Err.Description, vbCritical, "Export Error"
 End Sub
