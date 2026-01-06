@@ -1350,7 +1350,7 @@ def main():
     args = parser.parse_args()
 
     # Load detailing data from JSON
-    with open(args.input, "r") as f:
+    with open(args.input) as f:
         data = json.load(f)
 
     # Convert JSON to BeamDetailingResult via create_beam_detailing

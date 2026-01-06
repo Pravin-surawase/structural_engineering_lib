@@ -19,9 +19,10 @@ Schema Version: 1
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional
 
 from . import api, detailing
 from .data_types import BarDict, CrackWidthParams, DeflectionParams, StirrupDict
@@ -59,8 +60,6 @@ _VALID_UNIT_NORMALIZED = frozenset(
 
 class UnitsValidationError(ValueError):
     """Raised when units parameter is invalid or missing."""
-
-    pass
 
 
 def validate_units(units: Optional[str]) -> str:

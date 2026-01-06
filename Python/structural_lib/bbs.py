@@ -877,7 +877,7 @@ def export_bbs_to_csv(
         if include_summary:
             summary = calculate_bbs_summary(items, "TOTAL")
             # Write blank row
-            writer.writerow({fn: "" for fn in fieldnames})
+            writer.writerow(dict.fromkeys(fieldnames, ""))
             # Write summary
             writer.writerow(
                 {

@@ -41,7 +41,24 @@ target-version = "py39"
 line-length = 88
 
 [tool.ruff.lint]
-select = ["F"]
+# Expanded rule set for better code quality (TASK-189)
+select = [
+  "F",   # Pyflakes (errors)
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "I",   # isort (import sorting)
+  "N",   # pep8-naming
+  "UP",  # pyupgrade (Python version-specific improvements)
+  "B",   # flake8-bugbear (common bugs and design problems)
+  "C4",  # flake8-comprehensions (better list/dict/set comprehensions)
+  "PIE", # flake8-pie (misc lints including unnecessary code)
+]
+
+# Ignore specific rules that conflict with project style
+ignore = [
+  "E501",  # Line too long (handled by black)
+  "B008",  # Do not perform function call in argument defaults (common in our API)
+]
 
 [tool.mypy]
 python_version = "3.9"
