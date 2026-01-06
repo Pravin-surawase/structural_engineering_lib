@@ -54,6 +54,7 @@ CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
 DEFAULT_BRANCH="main"
 REMOTE_NAME="origin"
 AUTO_STASHED="false"
+PUSH_HAS_UPSTREAM="false"
 
 if [[ -z "$CURRENT_BRANCH" ]]; then
   echo -e "${RED}ERROR: Detached HEAD state detected${NC}"
@@ -84,6 +85,14 @@ complete_sync_resolution() {
   else
     git commit --no-edit
   fi
+}
+
+has_upstream() {
+  git rev-parse --abbrev-ref "@{u}" >/dev/null 2>&1
+}
+
+remote_ref_exists() {
+  git show-ref --verify --quiet "refs/remotes/$REMOTE_NAME/$CURRENT_BRANCH"
 }
 
 # Check if we're already in a merge state
@@ -246,12 +255,18 @@ else
   echo -e "${GREEN}Still up to date (no remote changes during commit)${NC}"
 fi
 
+# Cache upstream availability for push behavior
+if has_upstream; then
+  PUSH_HAS_UPSTREAM="true"
+fi
+
 # Step 6: Final safety check - ensure we can push
 echo -e "${YELLOW}Step 6/7: Verifying push safety...${NC}"
 LOCAL=$(git rev-parse HEAD)
-REMOTE=$(git rev-parse "$REMOTE_NAME/$CURRENT_BRANCH" 2>/dev/null || echo "")
+REMOTE=""
 BASE=""
-if [[ -n "$REMOTE" ]]; then
+if remote_ref_exists; then
+  REMOTE=$(git rev-parse "$REMOTE_NAME/$CURRENT_BRANCH")
   BASE=$(git merge-base HEAD "$REMOTE_NAME/$CURRENT_BRANCH")
 fi
 
@@ -264,13 +279,23 @@ elif [[ -n "$REMOTE" && "$BASE" = "$LOCAL" ]]; then
   echo -e "${YELLOW}Local behind remote - pulling latest${NC}"
   git pull --ff-only "$REMOTE_NAME" "$CURRENT_BRANCH"
 else
-  echo -e "${GREEN}Push ready${NC}"
+  if [[ -z "$REMOTE" ]]; then
+    echo -e "${YELLOW}No remote branch yet; will set upstream on push${NC}"
+  else
+    echo -e "${GREEN}Push ready${NC}"
+  fi
 fi
 
 # Step 7: Push
 echo -e "${YELLOW}Step 7/7: Pushing to remote...${NC}"
 log_message "INFO" "Step 7: Pushing to remote"
-if git push; then
+if [[ "$PUSH_HAS_UPSTREAM" == "true" ]]; then
+  PUSH_CMD=(git push)
+else
+  PUSH_CMD=(git push -u "$REMOTE_NAME" "$CURRENT_BRANCH")
+fi
+
+if "${PUSH_CMD[@]}"; then
   echo -e "${GREEN}✅ Successfully pushed!${NC}"
   echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
   echo ""
