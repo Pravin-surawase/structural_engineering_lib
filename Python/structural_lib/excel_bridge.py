@@ -194,7 +194,7 @@ def IS456_Ld(dia: float, fck: float, fy: float) -> Union[float, str]:
 
 
 @xw.sub
-def create_design_sheet():
+def create_design_sheet() -> None:
     """
     Create a Design sheet with headers and formulas.
 

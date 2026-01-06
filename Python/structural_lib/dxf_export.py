@@ -89,7 +89,7 @@ DEFAULT_TITLE_BLOCK_HEIGHT = 250.0  # mm
 # =============================================================================
 
 
-def check_ezdxf():
+def check_ezdxf() -> None:
     """Raise error if ezdxf is not available."""
     if not EZDXF_AVAILABLE:
         raise ImportError(
@@ -108,7 +108,7 @@ def _text_align(name: str) -> Any:
     return getattr(TextEntityAlignment, name)
 
 
-def setup_layers(doc):
+def setup_layers(doc: Any) -> None:
     """Create standard layers in the DXF document."""
     for layer_name, (color, _linetype) in LAYERS.items():
         try:
@@ -117,7 +117,9 @@ def setup_layers(doc):
             pass  # Layer already exists
 
 
-def draw_rectangle(msp, x1: float, y1: float, x2: float, y2: float, layer: str):
+def draw_rectangle(
+    msp: Any, x1: float, y1: float, x2: float, y2: float, layer: str
+) -> None:
     """Draw a rectangle using 4 lines."""
     msp.add_line((x1, y1), (x2, y1), dxfattribs={"layer": layer})
     msp.add_line((x2, y1), (x2, y2), dxfattribs={"layer": layer})
@@ -246,7 +248,7 @@ def _estimate_cell_width(
 
 
 def _draw_title_block(
-    msp,
+    msp: Any,
     origin: tuple[float, float],
     width: float,
     height: float,
@@ -309,14 +311,14 @@ def _format_size_range_line(b_values: list[float], d_values: list[float]) -> str
 
 
 def draw_stirrup(
-    msp,
+    msp: Any,
     x: float,
     y_bottom: float,
     width: float,
     height: float,
     cover: float,
     layer: str,
-):
+) -> None:
     """Draw a single stirrup (U-shape with hooks)."""
     # Outer points
     x1 = x - width / 2 + cover
@@ -349,7 +351,7 @@ def draw_stirrup(
 
 
 def draw_beam_elevation(
-    msp,
+    msp: Any,
     span: float,
     D: float,
     b: float,
@@ -358,7 +360,7 @@ def draw_beam_elevation(
     bottom_bars: list[BarArrangement],
     stirrups: list[StirrupArrangement],
     origin: tuple[float, float] = (0, 0),
-):
+) -> None:
     """
     Draw beam elevation view (longitudinal section).
 
@@ -457,7 +459,9 @@ def draw_beam_elevation(
             x += end_spacing
 
 
-def draw_dimensions(msp, span: float, D: float, origin: tuple[float, float] = (0, 0)):
+def draw_dimensions(
+    msp: Any, span: float, D: float, origin: tuple[float, float] = (0, 0)
+) -> None:
     """
     Add dimension annotations.
 
@@ -510,7 +514,7 @@ def draw_dimensions(msp, span: float, D: float, origin: tuple[float, float] = (0
 
 
 def draw_annotations(
-    msp,
+    msp: Any,
     span: float,
     D: float,
     beam_id: str,
@@ -523,7 +527,7 @@ def draw_annotations(
     lap: float,
     detailing: Optional[BeamDetailingResult] = None,
     origin: tuple[float, float] = (0, 0),
-):
+) -> None:
     """
     Add text annotations for reinforcement callouts.
     """
@@ -626,7 +630,7 @@ def draw_annotations(
 
 
 def draw_section_cut(
-    msp,
+    msp: Any,
     b: float,
     D: float,
     cover: float,
@@ -636,7 +640,7 @@ def draw_section_cut(
     origin: tuple[float, float] = (0, 0),
     scale: float = 1.0,
     title: str = "SECTION A-A",
-):
+) -> None:
     """
     Draw a cross-section view of the beam.
 
@@ -1336,7 +1340,7 @@ def generate_multi_beam_dxf(
 # =============================================================================
 
 
-def main():
+def main() -> None:
     """Command-line interface for DXF generation."""
     import argparse
     import json

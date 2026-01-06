@@ -67,7 +67,6 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed â€
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | DEV | 1-2 days | ðŸ”´ HIGH |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | DEV | 1.5 days | ðŸ”´ HIGH |
 
 ### v1.0 Readiness (carryover)
@@ -92,6 +91,7 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed â€
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | 2026-01-06 | DEV |
 | **TASK-196** | Add Complete Docstrings to Core Modules (flexure.py, shear.py, detailing.py) | 2026-01-06 | DEV |
 | **TASK-192** | Add per-module coverage report + baseline performance benchmarks (pytest-benchmark added to dev dependencies; 13 benchmarks covering core calculations, module functions, API, optimization, batch processing; 2 skipped; baseline data saved in .benchmarks/; documented current coverage: 6 modules >90%, 8 modules 80-90%, 5 modules <80%; updated Python/tests/README.md with performance testing section; PR #270 merged) | 2026-01-06 | TESTER |
 | **TASK-191** | Restructure tests into category subfolders with pytest markers (59 files â†’ 5 categories: unit/12, integration/38, regression/8, property/1, performance/0; 7 markers in pytest.ini; comprehensive Python/tests/README.md; fixed data/ and fixtures/ paths; updated CI workflow paths; removed 28 iCloud duplicate files; all 2270 tests pass; PR #269 merged) | 2026-01-06 | TESTER |

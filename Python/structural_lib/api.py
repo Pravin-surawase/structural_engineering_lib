@@ -1166,7 +1166,9 @@ def optimize_beam_cost(
     # Convert result to dictionary
     optimal = result.optimal_candidate
 
-    def _cost_breakdown_to_dict(breakdown):
+    def _cost_breakdown_to_dict(
+        breakdown: Optional[Any],
+    ) -> Optional[dict[str, Any]]:
         if breakdown is None:
             return None
         return {
@@ -1178,7 +1180,7 @@ def optimize_beam_cost(
             "currency": breakdown.currency,
         }
 
-    def _candidate_to_dict(candidate):
+    def _candidate_to_dict(candidate: Optional[Any]) -> Optional[dict[str, Any]]:
         if candidate is None:
             return None
         return {
