@@ -62,7 +62,7 @@ Use workflow_dispatch with `testpypi` target:
 - **Git workflow:** Pull-first workflow and pre-commit hooks prevent merge conflicts
 - **Test improvements:** 2200 tests (+160), 86% coverage (+2%), 10 modules at 100% coverage
 
-**Tests:** 2200 passed (up from 2040)
+**Tests:** 2269 passed (up from 2200)
 **Coverage:** 86% (up from 84%)
 **PRs:** #247, #248, #249, #250
 
@@ -88,7 +88,7 @@ Use workflow_dispatch with `testpypi` target:
 - **Documentation:** User guide, API reference, and Colab examples for all insights features
 - **Side-face reinforcement:** IS 456 Cl 26.5.1.3 check for beams with D > 750mm
 
-**Tests:** 2019 passed
+**Tests:** 2200 passed
 **PRs:** #224, #226, #230, #233, #234, #235, #236
 
 ---
