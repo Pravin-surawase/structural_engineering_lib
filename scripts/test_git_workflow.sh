@@ -396,11 +396,11 @@ test_safe_push_precommit_modifications() {
     fi
 
     # Test 8: Verify Step 2.5 runs before commit
-    local step_order=$(grep -n "Step 2.5\|git commit" "$test_repo/safe_push.sh" | head -2)
-    if echo "$step_order" | head -1 | grep -q "Step 2.5"; then
-        log_pass "Step 2.5 runs BEFORE git commit (correct order)"
+    local step_order=$(grep -n "Step 2.5/7\|Step 3/7: Committing" "$test_repo/safe_push.sh" | head -2)
+    if echo "$step_order" | head -1 | grep -q "Step 2.5/7"; then
+        log_pass "Step 2.5 runs BEFORE commit (correct order)"
     else
-        log_fail "Step 2.5 must run before git commit"
+        log_fail "Step 2.5 must run before commit"
         return 1
     fi
 
