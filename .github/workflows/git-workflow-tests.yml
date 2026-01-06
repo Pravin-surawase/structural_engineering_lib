@@ -9,6 +9,7 @@ on:
       - 'scripts/create_task_pr.sh'
       - 'scripts/finish_task_pr.sh'
       - 'scripts/test_git_workflow.sh'
+      - 'scripts/verify_git_fix.sh'
       - 'scripts/validate_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
   pull_request:
@@ -18,6 +19,7 @@ on:
       - 'scripts/create_task_pr.sh'
       - 'scripts/finish_task_pr.sh'
       - 'scripts/test_git_workflow.sh'
+      - 'scripts/verify_git_fix.sh'
       - 'scripts/validate_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
 
@@ -40,6 +42,7 @@ jobs:
       - name: Make scripts executable
         run: |
           chmod +x scripts/test_git_workflow.sh
+          chmod +x scripts/verify_git_fix.sh
           chmod +x scripts/validate_git_state.sh
           chmod +x scripts/safe_push.sh
           chmod +x scripts/ai_commit.sh
@@ -53,10 +56,15 @@ jobs:
           bash -n scripts/finish_task_pr.sh
           bash -n scripts/validate_git_state.sh
           bash -n scripts/test_git_workflow.sh
+          bash -n scripts/verify_git_fix.sh
 
       - name: Run git state validation
         run: |
           ./scripts/validate_git_state.sh
+
+      - name: CRITICAL - Verify git whitespace fix
+        run: |
+          ./scripts/verify_git_fix.sh
 
       - name: Run git workflow tests
         run: |
