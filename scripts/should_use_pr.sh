@@ -11,6 +11,8 @@
 # Usage:
 #   ./scripts/should_use_pr.sh
 #   ./scripts/should_use_pr.sh --explain
+#   ./scripts/should_use_pr.sh --staged-only
+#   ./scripts/should_use_pr.sh --include-untracked
 
 set -e
 
@@ -21,24 +23,53 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 EXPLAIN=false
-if [[ "$1" == "--explain" ]]; then
-    EXPLAIN=true
+STAGED_ONLY=false
+INCLUDE_UNTRACKED=false
+for arg in "$@"; do
+    if [[ "$arg" == "--explain" ]]; then
+        EXPLAIN=true
+    elif [[ "$arg" == "--staged-only" ]]; then
+        STAGED_ONLY=true
+    elif [[ "$arg" == "--include-untracked" ]]; then
+        INCLUDE_UNTRACKED=true
+    fi
+done
+
+# Collect files (staged, unstaged, untracked)
+STAGED_FILES=$(git diff --cached --name-only 2>/dev/null || echo "")
+UNSTAGED_FILES=$(git diff --name-only 2>/dev/null || echo "")
+UNTRACKED_FILES=""
+if [[ "$INCLUDE_UNTRACKED" == "true" ]]; then
+    UNTRACKED_FILES=$(git ls-files --others --exclude-standard 2>/dev/null || echo "")
 fi
 
-# Get staged files
-STAGED_FILES=$(git diff --cached --name-only 2>/dev/null || echo "")
+if [[ "$STAGED_ONLY" == "true" ]]; then
+    FILES="$STAGED_FILES"
+else
+    FILES=$(printf "%s\n%s\n%s\n" "$STAGED_FILES" "$UNSTAGED_FILES" "$UNTRACKED_FILES" | sed '/^$/d' | sort -u)
+fi
 
-if [[ -z "$STAGED_FILES" ]]; then
-    echo -e "${YELLOW}No staged files. Stage changes first with:${NC}"
-    echo -e "  ${BLUE}git add <files>${NC}"
+if [[ -z "$FILES" ]]; then
+    echo -e "${YELLOW}No changes detected.${NC}"
+    echo -e "  ${BLUE}Update files first, then rerun this script.${NC}"
     exit 1
 fi
 
 # Calculate change metrics
-FILE_COUNT=$(echo "$STAGED_FILES" | wc -l | tr -d ' ')
-LINES_CHANGED=$(git diff --cached --numstat | awk '{sum+=$1+$2} END {print sum+0}')
-NEW_FILES=$(git diff --cached --diff-filter=A --name-only | wc -l | tr -d ' ')
-RENAMED_FILES=$(git diff --cached --diff-filter=R --name-only | wc -l | tr -d ' ')
+FILE_COUNT=$(echo "$FILES" | wc -l | tr -d ' ')
+if [[ "$STAGED_ONLY" == "true" ]]; then
+    LINES_CHANGED=$(git diff --cached --numstat | awk '{sum+=$1+$2} END {print sum+0}')
+    NEW_FILES=$(git diff --cached --diff-filter=A --name-only | wc -l | tr -d ' ')
+    RENAMED_FILES=$(git diff --cached --diff-filter=R --name-only | wc -l | tr -d ' ')
+else
+    LINES_CHANGED=$(git diff --numstat HEAD | awk '{sum+=$1+$2} END {print sum+0}')
+    NEW_FILES=$(git diff --diff-filter=A --name-only HEAD | wc -l | tr -d ' ')
+    RENAMED_FILES=$(git diff --diff-filter=R --name-only HEAD | wc -l | tr -d ' ')
+    if [[ "$INCLUDE_UNTRACKED" == "true" ]]; then
+        UNTRACKED_COUNT=$(echo "$UNTRACKED_FILES" | sed '/^$/d' | wc -l | tr -d ' ')
+        NEW_FILES=$((NEW_FILES + UNTRACKED_COUNT))
+    fi
+fi
 
 # Thresholds for "minor" changes
 MINOR_LINES_THRESHOLD=50       # <50 lines = potentially minor
@@ -112,7 +143,7 @@ while IFS= read -r file; do
     if [[ ! "$file" =~ ^docs/ ]] && [[ ! "$file" =~ ^scripts/ ]] && [[ ! "$file" =~ ^\.github/copilot-instructions\.md$ ]]; then
         DOCS_OR_SCRIPTS=false
     fi
-done <<< "$STAGED_FILES"
+done <<< "$FILES"
 
 # Make recommendation
 echo ""
@@ -128,8 +159,13 @@ echo "  New files: $NEW_FILES"
 echo "  Renamed files: $RENAMED_FILES"
 echo ""
 
-echo -e "${YELLOW}Staged files:${NC}"
-echo "$STAGED_FILES" | sed 's/^/  /'
+if [[ "$STAGED_ONLY" == "true" ]]; then
+    echo -e "${YELLOW}Staged files:${NC}"
+    echo "$FILES" | sed 's/^/  /'
+else
+    echo -e "${YELLOW}Files (staged + unstaged + untracked):${NC}"
+    echo "$FILES" | sed 's/^/  /'
+fi
 echo ""
 
 # Decision logic - ALWAYS check production code first (highest risk)
@@ -293,7 +329,7 @@ if [[ "$DOCS_ONLY" == "true" ]]; then
         echo ""
         echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""
         exit 1
-    elif [[ "$LINES_CHANGED" -lt "$MINOR_LINES_THRESHOLD" ]] && [[ "$FILE_COUNT" -eq 1 ]] && [[ "$NEW_FILES" -eq 0 ]]; then
+    elif [[ "$LINES_CHANGED" -lt "$MINOR_LINES_THRESHOLD" ]] && [[ "$FILE_COUNT" -eq 1 ]] && [[ "$NEW_FILES" -le 1 ]]; then
         # Truly minor documentation edit
         echo -e "${GREEN}✅ RECOMMENDATION: Direct commit${NC}"
         echo -e "${GREEN}   (Minor documentation edit: $LINES_CHANGED lines, 1 file)${NC}"
@@ -327,7 +363,7 @@ fi
 
 if [[ "$DOCS_OR_SCRIPTS" == "true" ]]; then
     # Mixed docs + scripts: Apply conservative thresholds
-    if [[ "$LINES_CHANGED" -lt "$MINOR_LINES_THRESHOLD" ]] && [[ "$FILE_COUNT" -lt "$MINOR_FILES_THRESHOLD" ]]; then
+    if [[ "$LINES_CHANGED" -lt "$MINOR_LINES_THRESHOLD" ]] && [[ "$FILE_COUNT" -le "$MINOR_FILES_THRESHOLD" ]]; then
         echo -e "${GREEN}✅ RECOMMENDATION: Direct commit${NC}"
         echo -e "${GREEN}   (Minor docs+scripts: $LINES_CHANGED lines, $FILE_COUNT file(s))${NC}"
         if [[ "$EXPLAIN" == "true" ]]; then

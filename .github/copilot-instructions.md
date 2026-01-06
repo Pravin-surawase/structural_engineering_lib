@@ -12,8 +12,8 @@
 **NEVER use manual git commands for commits! ALWAYS use the automation scripts:**
 
 ```bash
-# ✅ CORRECT: Use safe_push.sh for all commits
-./scripts/safe_push.sh "commit message"
+# ✅ CORRECT: Use ai_commit.sh (preferred) or safe_push.sh
+./scripts/ai_commit.sh "commit message"
 
 # ❌ WRONG: Manual git operations
 git add .
@@ -23,15 +23,17 @@ git push
 
 **Why?**
 - Manual workflow causes merge conflicts, pre-commit hook issues, and wasted time
-- safe_push.sh handles: pre-commit hooks, pulls, conflicts, amendments automatically
+- safe_push.sh handles: pre-commit hooks, sync, conflicts, amendments automatically
 - We built this script specifically to avoid git problems - USE IT!
 
 **When committing code:**
-1. Stage your changes: Files are already modified
-2. Run: `./scripts/safe_push.sh "descriptive commit message"`
-3. Done! Script handles everything
+1. Run: `./scripts/ai_commit.sh "descriptive commit message"`
+2. Done! Script handles everything
 
-**Exceptions:** NONE. Always use safe_push.sh or ai_commit.sh for commits.
+**Exceptions:** NONE. Always use ai_commit.sh or safe_push.sh for commits.
+
+**Canonical doc:** `docs/GIT_WORKFLOW_AI_AGENTS.md`
+**Legacy note:** If you see manual git commands elsewhere, ignore them and use the scripts.
 
 ---
 
@@ -85,7 +87,6 @@ IS 456 RC beam design library with **Python + VBA parity**.
 
 **ALWAYS use this before committing:**
 ```bash
-git add <files>
 ./scripts/should_use_pr.sh --explain
 ```
 
@@ -112,7 +113,7 @@ The tool analyzes:
 
 **Command:**
 ```bash
-./scripts/safe_push.sh "docs: fix typo in guide"
+./scripts/ai_commit.sh "docs: fix typo in guide"
 ```
 
 ### 🔀 Pull Requests (REQUIRED - Default Workflow)
@@ -134,7 +135,7 @@ The tool analyzes:
 ```bash
 ./scripts/create_task_pr.sh TASK-XXX "description"
 # Make changes
-./scripts/safe_push.sh "feat: implement X"
+./scripts/ai_commit.sh "feat: implement X"
 # When done
 ./scripts/finish_task_pr.sh TASK-XXX "description"
 ```
@@ -241,12 +242,12 @@ The SOLUTION:
 
 ### Before committing Python code:
 1. Run tests locally: `pytest tests/test_<file>.py -v`
-2. Use safe_push.sh (it runs pre-commit hooks automatically)
+2. Use ai_commit.sh or safe_push.sh (pre-commit hooks run automatically)
 
 ### PR and merge workflow:
-1. `git commit` — pre-commit hooks auto-format (may modify files; re-stage and amend if needed)
-2. `git push -u origin <branch>`
-3. `gh pr create --title "..." --body "..."`
+1. `./scripts/create_task_pr.sh TASK-XXX "description"`
+2. Make changes and commit: `./scripts/ai_commit.sh "feat: ..."`
+3. `./scripts/finish_task_pr.sh TASK-XXX "description"`
 4. **WAIT for CI:** `gh pr checks <num> --watch` — do NOT try to merge immediately
 5. Only after all checks pass: `gh pr merge <num> --squash --delete-branch`
 
@@ -466,8 +467,8 @@ git push
 
 | Mistake | Correct Approach |
 |---------|------------------|
-| **Using manual git commands (git add, commit, push)** | **ALWAYS use ./scripts/safe_push.sh "message"** |
-| **Doing `git commit` then trying to fix pre-commit issues** | **Use safe_push.sh - it handles pre-commit automatically** |
+| **Using manual git commands (git add, commit, push)** | **ALWAYS use ./scripts/ai_commit.sh "message"** |
+| **Doing `git commit` then trying to fix pre-commit issues** | **Use ai_commit.sh or safe_push.sh - it handles pre-commit automatically** |
 | **Manual merge conflict resolution** | **Use safe_push.sh - it auto-resolves safely** |
 | Creating Python file → commit → CI fails on black | Create → run black locally → commit (or rely on pre-commit hooks) |
 | `gh pr create` → immediately `gh pr merge` | Create → `gh pr checks --watch` → wait → merge |
@@ -487,12 +488,12 @@ git push
 | Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
 | Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
 | Verifying PyPI in an existing venv | Use a fresh venv for `pip install structural-lib-is456==X.Y.Z` |
-| CI fails on formatting but auto-format hasn't run yet | Wait 30s after push for auto-format workflow; or use empty commit to retrigger |
+| CI fails on formatting | Run `black`/`ruff` locally, commit, push |
 | Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
-| CI shows old failure after auto-format fixed it | Auto-format doesn't retrigger CI; push empty commit: `git commit --allow-empty -m "chore: trigger CI"` |
+| CI shows old formatting failure | Re-run checks after pushing formatting fix |
 | Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
 | Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
-| **Unfinished merge (MERGE_HEAD exists)** | **Complete the merge:** `git commit --no-edit` then `git push` |
+| **Unfinished merge (MERGE_HEAD exists)** | **Run:** `./scripts/recover_git_state.sh` (or `git commit --no-edit` then `git push`) |
 | Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
 | Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` **ONLY IF NOT YET PUSHED** |
 | **Using `git commit --amend` AFTER pushing** | **NEVER DO THIS!** Create new commit instead: `git add -A && git commit -m "fix: ..."` |
@@ -500,12 +501,12 @@ git push
 | Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
 | Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
 | Verifying PyPI in an existing venv | Use a fresh venv for `pip install structural-lib-is456==X.Y.Z` |
-| CI fails on formatting but auto-format hasn't run yet | Wait 30s after push for auto-format workflow; or use empty commit to retrigger |
+| CI fails on formatting | Run `black`/`ruff` locally, commit, push |
 | Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
-| CI shows old failure after auto-format fixed it | Auto-format doesn't retrigger CI; push empty commit: `git commit --allow-empty -m "chore: trigger CI"` |
+| CI shows old formatting failure | Re-run checks after pushing formatting fix |
 | Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
 | Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
-| **Unfinished merge (MERGE_HEAD exists)** | **Complete the merge:** `git commit --no-edit` then `git push` |
+| **Unfinished merge (MERGE_HEAD exists)** | **Run:** `./scripts/recover_git_state.sh` (or `git commit --no-edit` then `git push`) |
 | Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
 
 ---

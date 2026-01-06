@@ -11,6 +11,7 @@ on:
       - 'scripts/test_git_workflow.sh'
       - 'scripts/verify_git_fix.sh'
       - 'scripts/validate_git_state.sh'
+      - 'scripts/recover_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
   pull_request:
     paths:
@@ -21,6 +22,7 @@ on:
       - 'scripts/test_git_workflow.sh'
       - 'scripts/verify_git_fix.sh'
       - 'scripts/validate_git_state.sh'
+      - 'scripts/recover_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
 
 jobs:
@@ -44,6 +46,7 @@ jobs:
           chmod +x scripts/test_git_workflow.sh
           chmod +x scripts/verify_git_fix.sh
           chmod +x scripts/validate_git_state.sh
+          chmod +x scripts/recover_git_state.sh
           chmod +x scripts/safe_push.sh
           chmod +x scripts/ai_commit.sh
 
@@ -55,6 +58,7 @@ jobs:
           bash -n scripts/create_task_pr.sh
           bash -n scripts/finish_task_pr.sh
           bash -n scripts/validate_git_state.sh
+          bash -n scripts/recover_git_state.sh
           bash -n scripts/test_git_workflow.sh
           bash -n scripts/verify_git_fix.sh
 
