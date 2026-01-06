@@ -7,7 +7,8 @@
 ---
 
 ## Rules (read first)
-- WIP = 1. Move tasks between sections; do not duplicate.
+- **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks (e.g., research + cleanup, small fix + docs). For complex features, keep WIP=1 to maintain focus.
+- Move tasks between sections; do not duplicate.
 - Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
 - Keep "Recently Done" to the last 10-20 items; older history lives in the archive.
 - Use agent roles from `agents/` and the workflow in `docs/_internal/AGENT_WORKFLOW.md`.
