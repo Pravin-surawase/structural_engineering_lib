@@ -332,8 +332,8 @@ def ast_singly_is456(
     mu_knm: float,
     b_mm: float,
     d_mm: float,
-    fck: float,
-    fy: float
+    fck_nmm2: float,
+    fy_nmm2: float
 ) -> float:
     """Calculate required tension steel for singly reinforced beam."""
     ...
@@ -433,23 +433,57 @@ MIN_PT_PERCENT: float = 0.15
 
 | Element | VBA | Python | Example |
 |---------|-----|--------|---------|
-| Module/File | `IS456_Flexure.bas` | `flexure.py` | — |
-| Public Function | `PascalCase` | `snake_case` | `Mu_limit_IS456` / `mu_limit_is456` |
-| Private Function | `camelCase` | `_snake_case` | `interpTauC` / `_interp_tau_c` |
-| Constant | `ALL_CAPS` | `ALL_CAPS` | `kN_TO_N` / `KN_TO_N` |
+| Module/File | `M06_Flexure.bas` | `flexure.py` | — |
+| Public Function | `PascalCase` | `snake_case` | `Design_Beam_IS456` / `design_beam_is456` |
+| Private Function | `PascalCase` | `_snake_case` | `Get_Tau_C` / `_get_tau_c` |
+| Constant | `ALL_CAPS` | `ALL_CAPS` | `kN_TO_N` / `kN_TO_N` |
 | Type/Class | `PascalCase` | `PascalCase` | `FlexureResult` |
 | Enum | `PascalCase` | `PascalCase` | `IS456_ErrorCode` / `ErrorCode` |
-| Variable | `camelCase` or descriptive | `snake_case` | `xu_max` / `xu_max` |
+| Variable | `camelCase` or descriptive | `snake_case` | `Mu_kNm` / `mu_knm` |
 
-### 5.2 Parameter Naming with Units
+### 5.2 Nomenclature Glossary
 
-Always suffix parameters with units:
+Use these abbreviations consistently in code and docs.
+
+| Term | Meaning | Units/Notes |
+|------|---------|-------------|
+| Mu | Factored bending moment | kN·m (input), N·mm internal |
+| Vu | Factored shear force | kN (input), N internal |
+| Ast | Area of tension reinforcement | mm² |
+| Asc | Area of compression reinforcement | mm² |
+| Asv | Area of shear reinforcement | mm² |
+| fck | Characteristic compressive strength of concrete | N/mm² |
+| fy | Yield strength of steel | N/mm² |
+| b | Beam width | mm |
+| D | Overall depth | mm |
+| d | Effective depth | mm |
+| xu / xu_max | Neutral axis depth / maximum depth | mm |
+| pt | Tension steel percentage | % |
+| tv / tc | Nominal shear stress / concrete shear capacity | N/mm² |
+| Ld | Development length | mm |
+| BBS | Bar Bending Schedule | Acronym |
+| DXF | Drawing Exchange Format | Acronym |
+
+Notes:
+- Use **IS 456** in prose; use **IS456** only in identifiers.
+- Use **kN·m** in prose; use `_knm` in identifiers (e.g., `mu_knm`).
+- Use **N/mm²** in prose; use `_nmm2` in identifiers (e.g., `fck_nmm2`).
+
+### 5.3 Parameter Naming with Units
+
+Always suffix **boundary/API** parameters with units. Core/internal helpers may omit
+suffixes if units are documented in the docstring.
+
+Unit suffix conventions:
+- `_mm`, `_kn`, `_knm`, `_nmm2`, `_mm2`, `_percent`
 
 ```vba
 ' VBA
 Mu_kNm As Double        ' Moment in kN·m
 b_mm As Double          ' Width in mm
 Vu_kN As Double         ' Shear in kN
+fck_Nmm2 As Double      ' Concrete strength in N/mm²
+fy_Nmm2 As Double       ' Steel strength in N/mm²
 tau_Nmm2 As Double      ' Stress in N/mm²
 Ast_mm2 As Double       ' Area in mm²
 ```
@@ -459,21 +493,25 @@ Ast_mm2 As Double       ' Area in mm²
 mu_knm: float           # Moment in kN·m
 b_mm: float             # Width in mm
 vu_kn: float            # Shear in kN
+fck_nmm2: float         # Concrete strength in N/mm²
+fy_nmm2: float          # Steel strength in N/mm²
 tau_nmm2: float         # Stress in N/mm²
 ast_mm2: float          # Area in mm²
 ```
 
-### 5.3 Function Naming Patterns
+### 5.4 Function Naming Patterns
 
-| Pattern | Usage | Example |
-|---------|-------|---------|
-| `noun_IS456` | Calculate/get a value | `Ast_singly_IS456`, `Mu_limit_IS456` |
-| `IS456_VerbNoun` | Main API entry point | `IS456_FlexureDesign`, `IS456_ShearDesign` |
-| `Get_noun` | Lookup/retrieve | `GetTauC`, `GetXuMaxRatio` |
-| `Is_condition` | Boolean check | `IsValidGrade`, `IsDoublyRequired` |
-| `Validate_noun` | Input validation | `ValidateGeometry`, `ValidateMaterial` |
+| Pattern | Usage | Python Example | VBA Example |
+|---------|-------|----------------|-------------|
+| `calculate_*` | Deterministic formula output | `calculate_mu_lim` | `Calculate_Mu_Lim` |
+| `check_*` | Compliance/boolean check | `check_shear_limit` | `Check_Shear_Limit` |
+| `design_*` | Full design routine | `design_beam_is456` | `Design_Beam_IS456` |
+| `compute_*` | Orchestration wrapper | `compute_detailing` | `Compute_Detailing` |
+| `get_*` | Lookup/constant retrieval | `get_tau_c` | `Get_Tau_C` |
+| `validate_*` | Input validation | `validate_geometry` | `Validate_Geometry` |
+| `export_*` / `load_*` | I/O boundaries only | `export_bbs` | `Export_BBS` |
 
-### 5.4 Avoid These Names
+### 5.5 Avoid These Names
 
 ```vba
 ' BAD: Ambiguous or too short
