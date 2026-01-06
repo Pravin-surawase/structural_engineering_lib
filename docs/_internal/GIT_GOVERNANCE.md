@@ -25,7 +25,7 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
     *   Contains only tested, verified code.
     *   **Rule (Solo Dev):** Direct pushes allowed for maintainer, but CI must pass.
         *   Use PRs for significant changes (breaking changes, new features, risky refactors).
-        *   Use direct push for routine work (docs, fixes, tests, minor updates).
+        *   Use direct push for docs/research updates (any size) and routine fixes/tests.
         *   CI runs on every push — if it fails, fix immediately.
         *   Release tags are created on the merge commit or on main after direct push.
 *   **`feat/task-ID-description`:**
@@ -44,7 +44,7 @@ We use a simplified **Trunk-Based Development** model suitable for a small, high
 
 ### 2.2.1 Solo Developer Workflow (Simplified)
 
-**For docs-only, low-risk changes:**
+**For docs-only changes (any size):**
 
 1.  **Direct on main** (fastest)
     ```bash
@@ -69,7 +69,7 @@ If CI fails on main:
 1.  `git revert HEAD` (immediate rollback)
 2.  Fix in branch, test locally, then push fix
 
-**Rule of thumb:** Docs-only and tiny → direct push. Everything else → PR.
+**Rule of thumb:** Docs-only → direct push. Everything else → PR.
 
 ### 2.3 Branch Protection Baseline (GitHub Settings)
 
@@ -111,7 +111,7 @@ Notes:
 - OS: ubuntu-latest
 
 **Workflow:**
-- Direct push allowed only for docs-only or very small changes
+- Direct push allowed for docs/research-only changes (any size)
 - All commits trigger CI (fast checks + full tests after merge)
 - Failed CI = immediate notification
 - PRs required for production code, CI changes, and dependencies
@@ -476,13 +476,13 @@ If `main` breaks:
 
 ### 🎯 Recommended Workflow (Solo Dev):
 
-**For routine docs-only changes (<20 lines, low-risk):**
+**For docs-only changes (any size):**
 ```bash
 # make changes
 ./scripts/ai_commit.sh "docs: update guide"
 ```
 
-**For significant changes (>20 lines, risky):**
+**For significant changes (code/CI/deps):**
 ```bash
 ./scripts/create_task_pr.sh TASK-142 "implement feature"
 # make changes

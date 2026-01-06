@@ -19,10 +19,11 @@ Run:
 - If it recommends a PR, use the PR workflow below.
 - If it recommends direct commit, use the direct workflow below.
 
-### 2) Direct Commit (Docs-only or very small changes)
+### 2) Direct Commit (Docs-only, any size)
 ```bash
 ./scripts/ai_commit.sh "docs: update guide"
 ```
+Docs-only (including research notebooks) go direct; PRs are reserved for code/CI/deps.
 This script stages changes, enforces PR rules, and delegates to safe_push.sh.
 
 ### 3) PR Workflow (Code/CI/Dependencies)
@@ -63,7 +64,7 @@ It prints the exact recovery command for your current state.
 ## FAQ
 
 **Q: Can I commit directly on main?**
-A: Only for very small docs-only changes. Otherwise use PR.
+A: Yes for docs/research-only changes. Otherwise use PR.
 
 **Q: Do I need to `git add` manually?**
 A: No. `ai_commit.sh` and `safe_push.sh` stage changes for you.

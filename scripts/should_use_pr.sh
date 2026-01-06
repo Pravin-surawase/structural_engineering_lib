@@ -87,6 +87,29 @@ HAS_VBA_CODE=false
 HAS_CI_CODE=false
 HAS_DEPS=false
 
+is_docs_like() {
+    local file="$1"
+    if [[ "$file" =~ ^docs/ ]]; then
+        return 0
+    fi
+    if [[ "$file" =~ \.md$ ]]; then
+        return 0
+    fi
+    if [[ "$file" =~ \.ipynb$ ]]; then
+        return 0
+    fi
+    if [[ "$file" =~ \.cff$ ]]; then
+        return 0
+    fi
+    if [[ "$file" =~ \.txt$ ]]; then
+        return 0
+    fi
+    if [[ "$file" =~ ^(LICENSE|NOTICE|COPYING)$ ]]; then
+        return 0
+    fi
+    return 1
+}
+
 while IFS= read -r file; do
     # Check if file matches production code
     if [[ "$file" =~ ^Python/structural_lib/.*\.py$ ]]; then
@@ -124,8 +147,8 @@ while IFS= read -r file; do
         DOCS_OR_SCRIPTS=false
     fi
 
-    # Check if NOT docs
-    if [[ ! "$file" =~ ^docs/ ]]; then
+    # Check if NOT docs-like
+    if ! is_docs_like "$file"; then
         DOCS_ONLY=false
     fi
 
@@ -296,69 +319,19 @@ if [[ "$SCRIPTS_ONLY" == "true" ]]; then
 fi
 
 if [[ "$DOCS_ONLY" == "true" ]]; then
-    # Documentation: Size-based decision with MORE stringent thresholds
-    # Philosophy: Major docs changes (>150 lines) → PR even if low risk
-
-    if [[ "$LINES_CHANGED" -ge "$MAJOR_LINES" ]]; then
-        # Major documentation change (500+ lines)
-        echo -e "${RED}🔀 RECOMMENDATION: Pull Request${NC}"
-        echo -e "${RED}   (MAJOR documentation change: $LINES_CHANGED lines)${NC}"
-        if [[ "$EXPLAIN" == "true" ]]; then
-            echo ""
-            echo "Reasoning:"
-            echo "- Documentation only BUT very large ($LINES_CHANGED lines)"
-            echo "- Threshold: $MAJOR_LINES+ lines = major change"
-            echo "- Review ensures completeness and accuracy"
-            echo "- May affect agent onboarding or user workflows"
-        fi
+    # Documentation and research: PRs disabled, rely on pre-commit + CI checks.
+    echo -e "${GREEN}✅ RECOMMENDATION: Direct commit${NC}"
+    echo -e "${GREEN}   (Docs-only changes: PR not required)${NC}"
+    if [[ "$EXPLAIN" == "true" ]]; then
         echo ""
-        echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""
-        exit 1
-    elif [[ "$LINES_CHANGED" -ge "$SUBSTANTIAL_LINES" ]] || [[ "$FILE_COUNT" -ge 3 ]]; then
-        # Substantial documentation change (150+ lines or 3+ files)
-        echo -e "${RED}🔀 RECOMMENDATION: Pull Request${NC}"
-        echo -e "${RED}   (Substantial documentation: $LINES_CHANGED lines, $FILE_COUNT file(s))${NC}"
-        if [[ "$EXPLAIN" == "true" ]]; then
-            echo ""
-            echo "Reasoning:"
-            echo "- Documentation only BUT substantial scope"
-            echo "- $LINES_CHANGED lines (≥$SUBSTANTIAL_LINES) or $FILE_COUNT files (≥3)"
-            echo "- Large docs changes benefit from review"
-            echo "- Catches: completeness gaps, broken links, inconsistencies"
-        fi
-        echo ""
-        echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""
-        exit 1
-    elif [[ "$LINES_CHANGED" -lt "$MINOR_LINES_THRESHOLD" ]] && [[ "$FILE_COUNT" -eq 1 ]] && [[ "$NEW_FILES" -le 1 ]]; then
-        # Truly minor documentation edit
-        echo -e "${GREEN}✅ RECOMMENDATION: Direct commit${NC}"
-        echo -e "${GREEN}   (Minor documentation edit: $LINES_CHANGED lines, 1 file)${NC}"
-        if [[ "$EXPLAIN" == "true" ]]; then
-            echo ""
-            echo "Reasoning:"
-            echo "- Single file documentation edit"
-            echo "- Very small scope ($LINES_CHANGED lines < $MINOR_LINES_THRESHOLD)"
-            echo "- Examples: typo fix, link update, small clarification"
-        fi
-        echo ""
-        echo "Use: ./scripts/safe_push.sh \"docs: <message>\""
-        exit 0
-    else
-        # Medium documentation change (50-149 lines or 2 files)
-        echo -e "${YELLOW}⚠️  RECOMMENDATION: Pull Request (medium docs change)${NC}"
-        echo -e "${YELLOW}   ($LINES_CHANGED lines, $FILE_COUNT file(s))${NC}"
-        if [[ "$EXPLAIN" == "true" ]]; then
-            echo ""
-            echo "Reasoning:"
-            echo "- Documentation change of medium size"
-            echo "- $LINES_CHANGED lines (between $MINOR_LINES_THRESHOLD and $SUBSTANTIAL_LINES)"
-            echo "- OR multiple files ($FILE_COUNT files)"
-            echo "- Better safe than sorry: use PR for review"
-        fi
-        echo ""
-        echo "Use: ./scripts/create_task_pr.sh TASK-XXX \"description\""
-        exit 1
+        echo "Reasoning:"
+        echo "- Documentation/research files only"
+        echo "- PRs disabled to reduce workflow friction"
+        echo "- Pre-commit hooks and CI still run for safety"
     fi
+    echo ""
+    echo "Use: ./scripts/safe_push.sh \"docs: <message>\""
+    exit 0
 fi
 
 if [[ "$DOCS_OR_SCRIPTS" == "true" ]]; then
