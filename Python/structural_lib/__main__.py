@@ -731,6 +731,100 @@ def cmd_mark_diff(args: argparse.Namespace) -> int:
     return 0 if result.get("ok") else 2
 
 
+def cmd_smart(args: argparse.Namespace) -> int:
+    """Run smart design analysis dashboard."""
+    input_path = Path(args.input)
+    if not input_path.exists():
+        _print_error(f"Input file not found: {input_path}")
+        return 1
+
+    try:
+        # Load design result
+        with input_path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        # Check if it's a design result or need to design first
+        if "beams" in data:
+            # Design results JSON
+            if not data["beams"]:
+                _print_error("No beams in design results")
+                return 1
+
+            # Use first beam for now (could enhance to process all)
+            beam = data["beams"][0]
+            design_result = beam  # Assume it's a ComplianceCaseResult dict
+
+            # Extract parameters from metadata or beam dict
+            span_mm = args.span or beam.get("span_mm", 5000.0)
+            mu_knm = beam.get("loads", {}).get("mu_knm", beam.get("mu_knm", 120.0))
+            vu_kn = beam.get("loads", {}).get("vu_kn", beam.get("vu_kn", 80.0))
+        else:
+            # Raw parameters - need to design first
+            from . import api as lib_api
+
+            params = {
+                "units": "IS456",
+                "b_mm": data.get("b_mm", 300.0),
+                "D_mm": data.get("D_mm", 500.0),
+                "d_mm": data.get("d_mm", 450.0),
+                "fck_nmm2": data.get("fck_nmm2", 25.0),
+                "fy_nmm2": data.get("fy_nmm2", 500.0),
+                "mu_knm": data.get("mu_knm", 120.0),
+                "vu_kn": data.get("vu_kn", 80.0),
+            }
+
+            design_result = lib_api.design_beam_is456(**params)
+            span_mm = args.span or data.get("span_mm", 5000.0)
+            mu_knm = params["mu_knm"]
+            vu_kn = params["vu_kn"]
+
+        # Import SmartDesigner
+        from .insights import SmartDesigner
+
+        # Run analysis
+        dashboard = SmartDesigner.analyze(
+            design=design_result,
+            span_mm=span_mm,
+            mu_knm=mu_knm,
+            vu_kn=vu_kn,
+            include_cost=not args.no_cost,
+            include_suggestions=not args.no_suggestions,
+            include_sensitivity=not args.no_sensitivity,
+            include_constructability=not args.no_constructability,
+        )
+
+        # Output results
+        if args.format == "json":
+            output = json.dumps(dashboard.to_dict(), indent=2)
+            if args.output:
+                out_path = Path(args.output)
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(output + "\n", encoding="utf-8")
+                print(f"Smart analysis saved to: {out_path}")
+            else:
+                print(output)
+        else:
+            # Text format (default)
+            output = dashboard.summary_text()
+            if args.output:
+                out_path = Path(args.output)
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(output + "\n", encoding="utf-8")
+                print(f"Smart analysis saved to: {out_path}")
+            else:
+                print(output)
+
+        return 0
+
+    except Exception as e:
+        import traceback
+
+        _print_error(f"Smart analysis failed: {str(e)}")
+        if args.verbose:
+            traceback.print_exc()
+        return 1
+
+
 def _guess_validation_type(data: dict) -> str:
     if isinstance(data, dict):
         if "beam" in data and "cases" in data:
@@ -1220,6 +1314,72 @@ Examples:
         help="Output file path (if omitted, prints to stdout)",
     )
     mark_diff_parser.set_defaults(func=cmd_mark_diff)
+
+    # Smart analysis subcommand
+    smart_parser = subparsers.add_parser(
+        "smart",
+        help="Run smart design analysis dashboard",
+        description="""
+        Run comprehensive smart design analysis combining:
+        - Cost optimization
+        - Design suggestions
+        - Sensitivity analysis
+        - Constructability assessment
+
+        Examples:
+          python -m structural_lib smart design_result.json --span 5000
+          python -m structural_lib smart params.json -o dashboard.txt
+          python -m structural_lib smart design.json --format json -o analysis.json
+          python -m structural_lib smart design.json --no-cost --no-sensitivity
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    smart_parser.add_argument(
+        "input",
+        help="Design result JSON or beam parameters JSON",
+    )
+    smart_parser.add_argument(
+        "--span",
+        type=float,
+        help="Beam span in mm (required if not in input JSON)",
+    )
+    smart_parser.add_argument(
+        "--format",
+        default="text",
+        choices=["text", "json"],
+        help="Output format (default: text)",
+    )
+    smart_parser.add_argument(
+        "-o",
+        "--output",
+        help="Output file path (if omitted, prints to stdout)",
+    )
+    smart_parser.add_argument(
+        "--no-cost",
+        action="store_true",
+        help="Skip cost optimization analysis",
+    )
+    smart_parser.add_argument(
+        "--no-suggestions",
+        action="store_true",
+        help="Skip design suggestions",
+    )
+    smart_parser.add_argument(
+        "--no-sensitivity",
+        action="store_true",
+        help="Skip sensitivity analysis",
+    )
+    smart_parser.add_argument(
+        "--no-constructability",
+        action="store_true",
+        help="Skip constructability assessment",
+    )
+    smart_parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Show detailed error messages",
+    )
+    smart_parser.set_defaults(func=cmd_smart)
 
     # Job subcommand
     job_parser = subparsers.add_parser(

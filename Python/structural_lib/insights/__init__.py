@@ -27,30 +27,48 @@ from .design_suggestions import (
 )
 from .precheck import quick_precheck
 from .sensitivity import calculate_robustness, sensitivity_analysis
+from .smart_designer import (
+    ConstructabilityInsights,
+    CostAnalysis,
+    DashboardReport,
+    DesignSuggestions,
+    SensitivityInsights,
+    SmartAnalysisSummary,
+    SmartDesigner,
+    quick_analysis,
+)
 
 __all__ = [
     "calculate_constructability_score",
     "calculate_robustness",
     "compare_designs",
     "cost_aware_sensitivity",
+    "quick_analysis",
     "quick_precheck",
     "sensitivity_analysis",
     "optimize_beam_design",
     "suggest_improvements",
     "ComparisonMetrics",
     "ComparisonResult",
+    "ConstructabilityInsights",
+    "CostAnalysis",
     "CostProfile",
     "CostOptimizationResult",
     "CostSensitivityResult",
     "ConstructabilityFactor",
     "ConstructabilityScore",
+    "DashboardReport",
     "DesignAlternative",
     "DesignSuggestion",
+    "DesignSuggestions",
     "HeuristicWarning",
     "ImpactLevel",
     "PredictiveCheckResult",
     "RobustnessScore",
+    "SensitivityInsights",
     "SensitivityResult",
+    "SmartAnalysisSummary",
+    "SmartDesigner",
     "SuggestionCategory",
     "SuggestionReport",
 ]
