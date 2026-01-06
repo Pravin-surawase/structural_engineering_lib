@@ -2,7 +2,13 @@ from structural_lib.compliance import check_compliance_report
 
 
 def test_compliance_report_picks_governing_by_utilization():
-    common = dict(b_mm=230.0, D_mm=500.0, d_mm=450.0, fck_nmm2=25.0, fy_nmm2=500.0)
+    common = {
+        "b_mm": 230.0,
+        "D_mm": 500.0,
+        "d_mm": 450.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 500.0,
+    }
 
     cases = [
         {"case_id": "C1", "mu_knm": 10.0, "vu_kn": 10.0},
@@ -28,7 +34,13 @@ def test_compliance_report_picks_governing_by_utilization():
 
 def test_compliance_report_failure_propagation_and_governing():
     # Make shear fail in the second case by pushing Vu high.
-    common = dict(b_mm=230.0, D_mm=500.0, d_mm=450.0, fck_nmm2=20.0, fy_nmm2=415.0)
+    common = {
+        "b_mm": 230.0,
+        "D_mm": 500.0,
+        "d_mm": 450.0,
+        "fck_nmm2": 20.0,
+        "fy_nmm2": 415.0,
+    }
 
     cases = [
         {"case_id": "OK1", "mu_knm": 20.0, "vu_kn": 10.0},
@@ -53,7 +65,13 @@ def test_compliance_report_failure_propagation_and_governing():
 
 
 def test_compliance_report_ok_when_all_checks_pass():
-    common = dict(b_mm=300.0, D_mm=500.0, d_mm=450.0, fck_nmm2=25.0, fy_nmm2=500.0)
+    common = {
+        "b_mm": 300.0,
+        "D_mm": 500.0,
+        "d_mm": 450.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 500.0,
+    }
 
     cases = [{"case_id": "SLS1", "mu_knm": 30.0, "vu_kn": 30.0}]
 

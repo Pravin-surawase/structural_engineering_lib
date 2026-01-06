@@ -480,7 +480,14 @@ class TestDeterminism:
 
     def test_flexure_deterministic(self):
         """Same inputs should give identical outputs."""
-        params = dict(b=230, d=450, d_total=500, mu_knm=100, fck=25, fy=500)
+        params = {
+            "b": 230,
+            "d": 450,
+            "d_total": 500,
+            "mu_knm": 100,
+            "fck": 25,
+            "fy": 500,
+        }
 
         res1 = flexure.design_singly_reinforced(**params)
         res2 = flexure.design_singly_reinforced(**params)
@@ -491,7 +498,15 @@ class TestDeterminism:
 
     def test_shear_deterministic(self):
         """Same inputs should give identical outputs."""
-        params = dict(vu_kn=100, b=250, d=450, fck=25, fy=415, asv=157, pt=0.5)
+        params = {
+            "vu_kn": 100,
+            "b": 250,
+            "d": 450,
+            "fck": 25,
+            "fy": 415,
+            "asv": 157,
+            "pt": 0.5,
+        }
 
         res1 = shear.design_shear(**params)
         res2 = shear.design_shear(**params)

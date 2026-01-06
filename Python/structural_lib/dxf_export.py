@@ -110,7 +110,7 @@ def _text_align(name: str) -> Any:
 
 def setup_layers(doc):
     """Create standard layers in the DXF document."""
-    for layer_name, (color, linetype) in LAYERS.items():
+    for layer_name, (color, _linetype) in LAYERS.items():
         try:
             doc.layers.add(layer_name, color=color)
         except ezdxf.DXFTableEntryError:

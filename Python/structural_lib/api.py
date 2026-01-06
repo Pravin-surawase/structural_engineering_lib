@@ -316,10 +316,10 @@ def compute_detailing(
     config: Optional[dict[str, Any]] = None,
 ) -> list[detailing.BeamDetailingResult]:
     """Compute beam detailing results from design results JSON dict.
-    
+
     Extracts beam geometry, materials, and reinforcement from design results
     and generates detailed bar schedules, stirrup layouts, and construction notes.
-    
+
     Args:
         design_results: Design results dictionary with 'beams' key containing
             list of beam designs. Must include geometry (b, D, span, cover),
@@ -330,21 +330,21 @@ def compute_detailing(
             - stirrup_spacing_mid_mm (float): Spacing at midspan (default: 200)
             - stirrup_spacing_end_mm (float): Spacing at ends (default: 150)
             - is_seismic (bool): Seismic detailing requirements (default: False)
-    
+
     Returns:
         List of BeamDetailingResult objects containing:
             - bar_schedule: List of rebar items (mark, diameter, length, count)
             - stirrup_layout: Stirrup arrangement (zones, spacing, diameter)
             - construction_notes: Detailing notes per IS 456:2000
-    
+
     Raises:
         TypeError: If design_results is not a dict
         ValueError: If no beams found in design_results
         ValueError: If units in design_results are not IS 456 standard (mm, N/mm², kN, kN·m)
-    
+
     References:
         IS 456:2000, Cl. 26 (Detailing)
-    
+
     Examples:
         >>> results = {"beams": [{"beam_id": "B1", "geometry": {...}, ...}]}
         >>> detailing_list = compute_detailing(results)
@@ -431,23 +431,23 @@ def compute_bbs(
     project_name: str = "Beam BBS",
 ) -> bbs.BBSDocument:
     """Generate a bar bending schedule (BBS) document from detailing results.
-    
+
     Consolidates reinforcement from multiple beams into a structured BBS document
     with bar marks, shapes, dimensions, and quantities for steel fabrication.
-    
+
     Args:
         detailing_list: List of BeamDetailingResult objects from compute_detailing()
         project_name: Project name for BBS document header (default: "Beam BBS")
-    
+
     Returns:
         BBSDocument object containing:
             - items: List of BBS entries (mark, shape, dimensions, count, weight)
             - summary: Total steel weight by diameter
             - project_name: Project identifier
-    
+
     References:
         IS 2502:1963 (Code of practice for bending and fixing of bars for RCC)
-    
+
     Examples:
         >>> detailing_list = compute_detailing(design_results)
         >>> bbs_doc = compute_bbs(detailing_list, project_name="Tower A")
@@ -487,10 +487,10 @@ def compute_dxf(
     title_block_height_mm: float = 40.0,
 ) -> Path:
     """Generate DXF CAD drawings from detailing results.
-    
+
     Creates AutoCAD-compatible DXF files with beam elevations, cross-sections,
     reinforcement layouts, and dimensional annotations. Requires ezdxf package.
-    
+
     Args:
         detailing_list: List of BeamDetailingResult objects from compute_detailing()
         output: Output DXF file path
@@ -505,14 +505,14 @@ def compute_dxf(
         sheet_margin_mm: Sheet margin width in mm (default: 20.0)
         title_block_width_mm: Title block width in mm (default: 120.0)
         title_block_height_mm: Title block height in mm (default: 40.0)
-    
+
     Returns:
         Path to generated DXF file
-    
+
     Raises:
         RuntimeError: If ezdxf library not installed (install with: pip install "structural-lib-is456[dxf]")
         ValueError: If detailing_list is empty
-    
+
     Examples:
         >>> detailing_list = compute_detailing(design_results)
         >>> dxf_path = compute_dxf(
@@ -577,10 +577,10 @@ def compute_report(
     batch_threshold: int = 80,
 ) -> Union[str, Path, list[Path]]:
     """Generate design report from job outputs or design results.
-    
+
     Creates HTML or JSON reports with design calculations, code checks, reinforcement
     details, and compliance summaries. Supports single-beam and batch reporting.
-    
+
     Args:
         source: Input source - one of:
             - dict: Design results dictionary (from design_beam_is456())
@@ -592,22 +592,22 @@ def compute_report(
         output_path: Output file/folder path. If None, returns string (HTML/JSON).
             For batch reports (>= batch_threshold beams), creates folder package.
         batch_threshold: Number of beams threshold for batch report mode (default: 80)
-    
+
     Returns:
         - str: HTML or JSON string if output_path is None
         - Path: Output file path if output_path provided (single report)
         - list[Path]: List of output paths if batch report with multiple files
-    
+
     Raises:
         ValueError: If format not in {"html", "json"}
         ValueError: If design results missing 'beams' key
         ValueError: If batch report (>= batch_threshold) requested without output_path
-    
+
     Examples:
         >>> # Generate HTML report from dict
         >>> results = design_beam_is456(b_mm=300, D_mm=450, ...)
         >>> html = compute_report(results, format="html")
-        
+
         >>> # Save batch HTML report to folder
         >>> report_path = compute_report(
         ...     "results/design_results.json",

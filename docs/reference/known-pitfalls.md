@@ -85,6 +85,22 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - **Symptoms**: `ModuleNotFoundError: No module named 'package.types'` even though the file exists.
 - **Prevention**: Always use descriptive module names unlikely to conflict with stdlib (e.g., `data_types.py` instead of `types.py`), or alias stdlib imports.
 
+## CI Testing (CRITICAL for Pull Requests)
+- **ALWAYS run checks exactly as CI does** - Don't check only the files you changed.
+- **CI checks ENTIRE Python/ directory** - Not just `structural_lib/`, but also `examples/`, `tests/`, `scripts/`.
+- **Local validation pattern** (run from Python/ directory):
+  ```bash
+  python -m black --check .     # NOT: black --check structural_lib/
+  python -m ruff check .        # NOT: ruff check structural_lib/
+  python -m mypy structural_lib/
+  pytest tests/
+  ```
+- **Common mistake**: Running `ruff check structural_lib/` locally (passes), but CI runs `ruff check .` (fails on examples/).
+- **Prevention**: Read `.github/workflows/fast-checks.yml` to understand what CI actually runs.
+- **Root cause**: Scope mismatch - local checks narrower scope than CI.
+- **Impact**: Wasted time, failed PRs, repeated CI runs.
+- **Solution**: Always use `.` (current directory) when running format/lint checks, not subdirectories.
+
 ## Platform/VBA Quirks
 - Mac/Excel/VBA quirks (overflow patterns, debug/printing pitfalls, import-order errors) are tracked in [troubleshooting.md](troubleshooting.md).
 

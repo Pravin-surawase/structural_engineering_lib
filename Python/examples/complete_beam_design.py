@@ -24,7 +24,6 @@ import csv
 import math
 import os
 from dataclasses import dataclass
-from typing import List
 
 # Import library modules
 from structural_lib import detailing, flexure, shear
@@ -246,7 +245,7 @@ def design_beam(row: dict) -> BeamDesignOutput:
     )
 
 
-def print_schedule(results: List[BeamDesignOutput]):
+def print_schedule(results: list[BeamDesignOutput]):
     """Print formatted beam schedule."""
     print("\n" + "=" * 100)
     print("BEAM DESIGN SCHEDULE - IS 456:2000")
@@ -271,7 +270,7 @@ def print_schedule(results: List[BeamDesignOutput]):
     print("=" * 100)
 
 
-def save_schedule_csv(results: List[BeamDesignOutput], filepath: str):
+def save_schedule_csv(results: list[BeamDesignOutput], filepath: str):
     """Save results to CSV file."""
     fieldnames = [
         "BeamID",
@@ -353,7 +352,7 @@ def main():
 
     # Read input beams
     print(f"\nReading: {input_file}")
-    with open(input_file, "r") as f:
+    with open(input_file) as f:
         reader = csv.DictReader(f)
         beams = list(reader)
 

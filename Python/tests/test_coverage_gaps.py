@@ -153,7 +153,13 @@ def test_compliance_shear_utilization_infinite_when_failed_and_tcmax_zero():
 
 
 def test_compliance_report_tie_break_by_case_order_is_deterministic():
-    common = dict(b_mm=230.0, D_mm=500.0, d_mm=450.0, fck_nmm2=25.0, fy_nmm2=500.0)
+    common = {
+        "b_mm": 230.0,
+        "D_mm": 500.0,
+        "d_mm": 450.0,
+        "fck_nmm2": 25.0,
+        "fy_nmm2": 500.0,
+    }
 
     # Same actions -> same utilizations; governing should be first case.
     report = compliance.check_compliance_report(

@@ -434,7 +434,7 @@ class TestBBSExport:
             path = Path(tmpdir) / "bbs.csv"
             export_bbs_to_csv(sample_items, str(path))
 
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 rows = list(reader)
 
@@ -448,7 +448,7 @@ class TestBBSExport:
             path = Path(tmpdir) / "bbs.csv"
             export_bbs_to_csv(sample_items, str(path), include_summary=True)
 
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 content = f.read()
 
             assert "TOTAL" in content
@@ -468,7 +468,7 @@ class TestBBSExport:
 
             assert Path(result).exists()
 
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 data = json.load(f)
 
             assert data["project_name"] == "Test Project"
@@ -484,7 +484,7 @@ class TestBBSExport:
 
             assert Path(result).exists()
 
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 content = f.read()
 
             assert "BILL OF MATERIALS" in content

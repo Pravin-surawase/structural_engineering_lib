@@ -75,7 +75,7 @@ def load_job_spec(path: str | Path) -> JobSpec:
     except (ValueError, TypeError):
         raise ValueError(
             f"Invalid schema_version: '{schema_version}'. Expected integer (currently supported: 1)."
-        )
+        ) from None
     if schema_version_int != 1:
         raise ValueError(
             f"Unsupported schema_version: {schema_version_int}. Currently supported: 1."
@@ -171,7 +171,7 @@ def run_job_is456(
     except (ValueError, TypeError):
         raise ValueError(
             f"Invalid schema_version: '{schema_version}'. Expected integer (currently supported: 1)."
-        )
+        ) from None
     if schema_version_int != 1:
         raise ValueError(
             f"Unsupported schema_version: {schema_version_int}. Currently supported: 1."
