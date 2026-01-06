@@ -108,7 +108,7 @@ fi
 
 # Step 4: Check if pre-commit modified any files
 echo -e "${YELLOW}Step 4/7: Checking if pre-commit hooks modified files...${NC}"
-if git status --porcelain | grep -q '^[MARC]'; then
+if git status --porcelain | grep -qE '^(M| M|AM)'; then
   echo -e "${YELLOW}Pre-commit hooks modified files. Re-staging and amending...${NC}"
   echo -e "${BLUE}Amending now (before any push) - safe operation${NC}"
   git add -A

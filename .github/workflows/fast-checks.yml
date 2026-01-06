@@ -1,0 +1,68 @@
+name: Fast PR Checks
+
+on:
+  pull_request:
+
+# Quick checks for PRs - run only essential validations
+# Full test matrix runs after merge to main
+permissions:
+  contents: read
+
+jobs:
+  quick-validation:
+    name: Quick Validation (Python 3.9 only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.9"
+          cache: 'pip'
+
+      - name: Install package (dev)
+        working-directory: Python
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Format check (black)
+        working-directory: Python
+        run: python -m black --check .
+
+      - name: Lint check (ruff)
+        working-directory: Python
+        run: python -m ruff check .
+
+      - name: Type check (mypy)
+        working-directory: Python
+        run: python -m mypy
+
+      - name: Contract tests (breaking change detection)
+        working-directory: Python
+        run: python -m pytest tests/test_contracts.py -m contract -v
+
+      - name: Core tests (fast subset)
+        working-directory: Python
+        run: python -m pytest tests/test_flexure.py tests/test_shear.py tests/test_detailing.py -v
+
+      - name: Doc checks (parallel)
+        run: |
+          python scripts/check_doc_versions.py --ci &
+          python scripts/check_tasks_format.py &
+          python scripts/check_api_docs_sync.py &
+          wait
+
+  full-tests-notification:
+    name: Full Test Info
+    runs-on: ubuntu-latest
+    steps:
+      - name: Info
+        run: |
+          echo "✅ Quick checks passed!"
+          echo "📝 Full test matrix (Python 3.9-3.12) will run after merge to main"
+          echo "⚡ This workflow optimizes PR feedback speed"

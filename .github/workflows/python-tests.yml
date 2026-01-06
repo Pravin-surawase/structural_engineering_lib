@@ -3,7 +3,8 @@ name: Python tests
 on:
   push:
     branches: [ main ]
-  pull_request:
+  # Note: PRs use fast-checks.yml for quick feedback
+  # Full matrix runs only on merge to main
 
 # Default to least-privilege for the workflow. Jobs can widen if needed.
 permissions:
