@@ -58,6 +58,7 @@ Canonical sources:
 - Next-session brief length is enforced locally and in CI: `scripts/check_next_session_brief_length.py`.
 - CLI reference completeness is enforced locally and in CI: `scripts/check_cli_reference.py`.
 - Docs index links are enforced locally and in CI: `scripts/check_docs_index_links.py`.
+- Repo hygiene artifacts are blocked locally: `scripts/check_repo_hygiene.py`.
 
 ### PR discipline
 - Use the PR template in `.github/pull_request_template.md`.

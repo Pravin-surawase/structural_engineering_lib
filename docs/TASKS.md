@@ -90,6 +90,7 @@ _TASK-191 (test restructuring) and TASK-192 (coverage + benchmarks) completed â€
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-197** | Add repo hygiene artifact check (block tracked `.DS_Store`/`.coverage`; add `scripts/check_repo_hygiene.py`; pre-commit hook; documented in automation catalog) | 2026-01-06 | DEV |
 | **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | 2026-01-06 | DEV |
 | **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | 2026-01-06 | DEV |
 | **TASK-196** | Add Complete Docstrings to Core Modules (flexure.py, shear.py, detailing.py) | 2026-01-06 | DEV |
