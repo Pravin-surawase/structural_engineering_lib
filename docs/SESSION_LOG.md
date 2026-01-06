@@ -4,6 +4,42 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-06 — Session (Professional Standards & Code Quality)
+
+**Focus:** Expand linting rules + establish docstring standards (TASK-189)
+
+### Summary
+- **Completed TASK-189:** Expanded ruff rules from 1 to 9 categories + comprehensive docstring style guide.
+- Expanded ruff configuration: F, E, W, I, N, UP, B, C4, PIE (9 rule categories vs 1).
+- Created `docs/contributing/docstring-style-guide.md` (300+ lines, Google Style format).
+- Applied 17 auto-fixes; 473 remaining issues documented for future sprints.
+- Created `docs/research/ruff-expansion-summary.md` documenting phased implementation plan.
+- Added follow-up tasks: TASK-193 (type modernization), TASK-194 (naming conventions), TASK-195/196 (docstrings).
+- Phased approach: Deferred major refactoring to v0.15 (type annotations) and v1.0 (complete docstrings).
+- PR #264 merged successfully after resolving TASKS.md conflict.
+
+### Key Deliverables
+- `Python/pyproject.toml` (expanded ruff.lint.select from ["F"] to 9 categories)
+- `docs/contributing/docstring-style-guide.md` (comprehensive Google Style guide with examples, migration plan)
+- `docs/research/ruff-expansion-summary.md` (current state analysis + phased implementation plan)
+- `docs/TASKS.md` (TASK-189 → Recently Done, added TASK-193-196)
+- PR #264: feat(lint): Expand ruff rules + docstring guide
+
+### Impact
+- ✅ Stricter code quality enforcement (9x more rule categories)
+- ✅ Clear docstring standards established
+- ✅ Actionable improvement plan with 4 follow-up tasks
+- ✅ 17 code quality issues resolved immediately
+- ⏭️ 473 ruff violations deferred to future sprints (non-blocking)
+
+### Next Actions
+- TASK-193: Type annotation modernization (PEP 585/604) - 398 issues
+- TASK-194: Naming convention fixes - 59 issues
+- TASK-195: Add docstrings to api.py (20+ functions)
+- TASK-196: Add docstrings to core modules (flexure, shear, detailing)
+
+---
+
 ## 2026-01-06 — Session (Smart Library Integration)
 
 **Focus:** Complete TASK-144 SmartDesigner unified dashboard with API wrapper
