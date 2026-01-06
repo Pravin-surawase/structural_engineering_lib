@@ -28,7 +28,9 @@
 
 ## Active
 
-*No active tasks. Review Up Next queue.*
+| ID | Task | Agent | Status | Notes |
+|----|------|-------|--------|-------|
+| **TASK-206** | **Research: API Documentation & Discoverability** → `docs/guidelines/documentation-standard.md` | RESEARCHER | 🏗️ In Progress | Docstring best practices, example-driven docs, IDE integration |
 
 ---
 
@@ -57,7 +59,6 @@
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-206** | **Research: API Documentation & Discoverability** (Docstring best practices, example-driven docs, IDE integration, auto-doc tools) → `docs/guidelines/documentation-standard.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
 | **TASK-207** | **Research: API Evolution & Migration Strategies** (Deprecation strategies, backward compatibility, version communication, migration tools) → `docs/guidelines/api-evolution-standard.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
 
 #### Phase 3: Synthesis
