@@ -28,9 +28,7 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-191** | Restructure tests into category subfolders; add pytest markers and README for test taxonomy | TESTER | 1-2 days | 🟡 MEDIUM | 🔄 In Progress |
+No active tasks currently.
 
 ---
 
@@ -98,6 +96,7 @@ All research tasks completed (see Recently Done).
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-191** | Restructure tests into category subfolders with pytest markers (59 files → 5 categories: unit/12, integration/38, regression/8, property/1, performance/0; 7 markers in pytest.ini; comprehensive Python/tests/README.md; fixed data/ and fixtures/ paths; updated CI workflow paths; removed 28 iCloud duplicate files; all 2270 tests pass; PR #269 merged) | 2026-01-06 | TESTER |
 | **TASK-190** | Resolve dead-code findings + TODOs + comprehensive CI linting cleanup (removed 2 dead code items: bbs.py unused param, comparison.py unused var; updated 3 TODOs with deferral notes; created deferred-integrations.md tracking doc; fixed all 91 ruff errors: 21 auto-fixed, config updates for structural notation, test naming patterns; documented CI scope mismatch prevention; PR #268 merged; all 2270 tests pass) | 2026-01-06 | DEV |
 | **TASK-195** | Add Complete Docstrings to api.py (compute_detailing, compute_bbs, compute_dxf, compute_report; 139 lines added; Google Style with Args/Returns/Raises/Examples) | 2026-01-06 | DEV |
 | **TASK-194** | Fix Naming Convention Issues (configured ruff to allow structural engineering conventions: D, D_mm, Df, etc.; 59 naming issues resolved; per-file ignores for excel_bridge) | 2026-01-06 | DEV |
