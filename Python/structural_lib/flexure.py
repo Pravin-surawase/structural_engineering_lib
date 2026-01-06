@@ -32,7 +32,19 @@ from .validation import validate_dimensions, validate_materials
 
 def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     """
-    Calculate Limiting Moment of Resistance (kN-m)
+    Calculate limiting moment of resistance for a rectangular section.
+
+    Uses IS 456 Cl. 38.1:
+    Mu_lim = 0.36 * (xu_max/d) * (1 - 0.42 * (xu_max/d)) * b * d^2 * fck
+
+    Args:
+        b: Beam width (mm).
+        d: Effective depth (mm).
+        fck: Concrete compressive strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+
+    Returns:
+        Limiting moment capacity (kN·m).
 
     Raises:
         ValueError: If any parameter <= 0
@@ -84,6 +96,9 @@ def calculate_effective_flange_width(
           T-beam: bf <= bw + span/6 + 6*df
           L-beam: bf <= bw + span/12 + 3*df
         - The effective width is min(geometric width, code limit).
+
+    Raises:
+        ValueError: If dimensions are invalid or beam_type is not supported.
     """
     if bw_mm <= 0 or span_mm <= 0 or df_mm <= 0:
         raise ValueError("bw_mm, span_mm, and df_mm must be > 0.")
@@ -130,13 +145,23 @@ def calculate_ast_required(
     b: float, d: float, mu_knm: float, fck: float, fy: float
 ) -> float:
     """
-    Calculate Ast Required for Singly Reinforced Section (mm^2)
+    Calculate required tension steel for a singly reinforced section.
+
+    Args:
+        b: Beam width (mm).
+        d: Effective depth (mm).
+        mu_knm: Factored bending moment (kN·m).
+        fck: Concrete compressive strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
 
     Returns:
-        Required steel area in mm². Returns -1 if section is over-reinforced (Mu > Mu_lim).
+        Required steel area (mm²). Returns -1.0 if Mu exceeds Mu_lim.
 
     Raises:
         ValueError: If any dimension or material parameter <= 0
+
+    Notes:
+        This is a formula-based helper and does not apply min/max steel checks.
     """
     if b <= 0:
         raise ValueError(f"Beam width b must be > 0, got {b}")
@@ -169,7 +194,22 @@ def design_singly_reinforced(
     b: float, d: float, d_total: float, mu_knm: float, fck: float, fy: float
 ) -> FlexureResult:
     """
-    Main Design Function for Singly Reinforced Beam
+    Design a singly reinforced rectangular beam section.
+
+    Args:
+        b: Beam width (mm).
+        d: Effective depth (mm).
+        d_total: Overall depth (mm).
+        mu_knm: Factored bending moment (kN·m).
+        fck: Concrete compressive strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+
+    Returns:
+        FlexureResult with mu_lim, ast_required, pt_provided, and safety status.
+
+    Notes:
+        - Applies min steel (Cl. 26.5.1.1) and max steel (Cl. 26.5.1.2) checks.
+        - Returns structured validation errors using validation utilities.
     """
     # Input validation with structured errors using validation utilities
     input_errors = validate_dimensions(b, d, d_total)
@@ -277,6 +317,22 @@ def design_doubly_reinforced(
     """
     Design a beam that can be singly or doubly reinforced.
     If Mu > Mu_lim, calculates Asc and additional Ast.
+
+    Args:
+        b: Beam width (mm).
+        d: Effective depth (mm).
+        d_dash: Compression steel depth d' (mm).
+        d_total: Overall depth (mm).
+        mu_knm: Factored bending moment (kN·m).
+        fck: Concrete compressive strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+
+    Returns:
+        FlexureResult including asc_required for doubly reinforced cases.
+
+    Notes:
+        - Uses limiting depth xu_max from IS 456.
+        - Applies max steel checks for Ast and Asc (4% of bD).
     """
     # Input validation using validation utilities
     input_errors = validate_dimensions(b, d, d_total)
@@ -434,7 +490,21 @@ def calculate_mu_lim_flanged(
     bw: float, bf: float, d: float, Df: float, fck: float, fy: float
 ) -> float:
     """
-    Calculate Limiting Moment of Resistance for Flanged Beam (T-Beam)
+    Calculate limiting moment of resistance for a flanged (T/L) section.
+
+    Args:
+        bw: Web width (mm).
+        bf: Flange width (mm).
+        d: Effective depth (mm).
+        Df: Flange thickness (mm).
+        fck: Concrete compressive strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+
+    Returns:
+        Limiting moment capacity (kN·m).
+
+    Notes:
+        Uses web contribution + flange contribution per IS 456 Cl. 23.1.2.
     """
     xu_max = materials.get_xu_max_d(fy) * d
 
@@ -478,6 +548,24 @@ def design_flanged_beam(
     1. Neutral axis in flange (Rectangular design)
     2. Neutral axis in web (Singly Reinforced T-Beam)
     3. Doubly Reinforced T-Beam (if Mu > Mu_lim_T)
+
+    Args:
+        bw: Web width (mm).
+        bf: Flange width (mm).
+        d: Effective depth (mm).
+        Df: Flange thickness (mm).
+        d_total: Overall depth (mm).
+        mu_knm: Factored bending moment (kN·m).
+        fck: Concrete compressive strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+        d_dash: Compression steel depth d' (mm).
+
+    Returns:
+        FlexureResult with flanged beam design outputs and errors.
+
+    Notes:
+        - Uses IS 456 Cl. 23.1.2 and Cl. 38.1 limits.
+        - Applies min/max steel checks and returns structured errors.
     """
     input_errors = []
     if bw <= 0:

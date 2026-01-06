@@ -116,6 +116,10 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
 
     Returns:
         τbd in N/mm²
+
+    Notes:
+        - Uses nearest lower concrete grade from IS 456 Table 5.3.
+        - "deformed" bars use the table value; "plain" bars reduce τbd by 1.6.
     """
     # Use nearest lower grade
     available_grades = sorted(BOND_STRESS_DEFORMED.keys())
@@ -158,6 +162,9 @@ def calculate_development_length(
 
     Raises:
         ValueError: If inputs are invalid (bar_dia, fck, fy <= 0)
+
+    Reference:
+        IS 456:2000, Clause 26.2.1
     """
     if bar_dia <= 0:
         raise ValueError(f"bar_dia must be positive, got {bar_dia}")
@@ -202,6 +209,9 @@ def calculate_lap_length(
 
     Returns:
         Lap length (mm)
+
+    Raises:
+        ValueError: If bar_dia, fck, or fy are invalid (via calculate_development_length).
     """
     ld = calculate_development_length(bar_dia, fck, fy, bar_type)
 
@@ -245,6 +255,9 @@ def calculate_bar_spacing(
 
     Raises:
         ValueError: If bar_count <= 1
+
+    Notes:
+        Does not validate b/cover/stirrup_dia positivity; caller should enforce.
     """
     if bar_count <= 1:
         raise ValueError(f"bar_count must be > 1 to calculate spacing, got {bar_count}")
@@ -272,6 +285,9 @@ def check_min_spacing(
 
     Returns:
         (is_valid, message)
+
+    Reference:
+        IS 456:2000, Clause 26.3.2
     """
     min_spacing = max(bar_dia, agg_size + 5, 25)
 
@@ -359,6 +375,11 @@ def select_bar_arrangement(
 
     Returns:
         BarArrangement with practical bar selection
+
+    Notes:
+        - Returns a deterministic fallback (2-12mm) for invalid inputs.
+        - Tries preferred diameter first, then larger standard diameters.
+        - Uses max_layers to satisfy spacing before increasing bar size.
     """
     if ast_required <= 0:
         return BarArrangement(
@@ -447,6 +468,9 @@ def get_stirrup_legs(b: float) -> int:
 
     Returns:
         Number of legs (2, 4, or 6)
+
+    Notes:
+        Width thresholds follow IS 456 Cl. 26.5.1.5 guidance.
     """
     if b <= 300:
         return 2
@@ -475,6 +499,9 @@ def format_bar_callout(count: int, diameter: float) -> str:
 
     Returns:
         Formatted string
+
+    Notes:
+        Diameter is formatted as an integer for standard callouts.
     """
     return f"{count}-{int(diameter)}φ"
 
@@ -492,6 +519,9 @@ def format_stirrup_callout(legs: int, diameter: float, spacing: float) -> str:
 
     Returns:
         Formatted string
+
+    Notes:
+        Diameter and spacing are formatted as integers for standard callouts.
     """
     return f"{legs}L-{int(diameter)}φ@{int(spacing)} c/c"
 
@@ -542,6 +572,11 @@ def create_beam_detailing(
 
     Returns:
         BeamDetailingResult with complete detailing information
+
+    Notes:
+        - If Asc is not provided, uses 0.25 × Ast as a drafting heuristic.
+        - Uses the maximum bar diameter for development and lap lengths.
+        - Flags spacing violations via is_valid/remarks; does not raise.
     """
     assumption_notes: list[str] = []
 

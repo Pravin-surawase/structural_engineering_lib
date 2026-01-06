@@ -21,10 +21,19 @@ from .errors import (
 
 
 def calculate_tv(vu_kn: float, b: float, d: float) -> float:
-    """Calculate Nominal Shear Stress (N/mm^2)
+    """
+    Calculate nominal shear stress (tv).
+
+    Args:
+        vu_kn: Factored shear force (kN).
+        b: Beam width (mm).
+        d: Effective depth (mm).
+
+    Returns:
+        Nominal shear stress tv (N/mm²).
 
     Raises:
-        ValueError: If b or d <= 0
+        ValueError: If b or d <= 0.
     """
     if b <= 0:
         raise ValueError(f"Beam width b must be > 0, got {b}")
@@ -51,6 +60,11 @@ def design_shear(
 
     Returns:
         ShearResult with nominal stress, design spacing, and pass/fail status.
+
+    Notes:
+        - Uses IS 456 Table 19/20 values for tc and tc_max via lookup helpers.
+        - Returns structured errors instead of raising for validation failures.
+        - Applies max spacing limits per Cl. 26.5.1.5.
     """
     # Input validation with structured errors
     input_errors = []
