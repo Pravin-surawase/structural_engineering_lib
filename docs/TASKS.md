@@ -28,7 +28,9 @@
 
 ## Active
 
-_No active tasks. WIP = 0._
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns; function signatures, return types, error handling, defaults; 50+ code examples; comparison matrix) → `docs/research/professional-api-patterns.md` | RESEARCHER | 4-5 hrs | 🔴 CRITICAL | 🔄 In Progress |
 
 ---
 
@@ -51,8 +53,7 @@ _No active tasks. WIP = 0._
 
 #### Phase 1: Core Research (Critical)
 
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
+| ID | Task-|-------|-----|----------|
 | **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns; function signatures, return types, error handling, defaults; 50+ code examples; comparison matrix) → `docs/research/professional-api-patterns.md` | RESEARCHER | 4-5 hrs | 🔴 CRITICAL |
 | **TASK-201** | **Research: User Experience Patterns for Technical APIs** (Cognitive load, discoverability, error experience, "pit of success" design; 30+ UX principles; pain point analysis) → `docs/research/ux-patterns-for-technical-apis.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 | **TASK-202** | **Research: Function Signature Design Standards** (Parameter ordering, keyword-only patterns, type hints, default values, unit suffix naming) → `docs/guidelines/function-signature-standard.md` | RESEARCHER | 3-4 hrs | 🔴 CRITICAL |
