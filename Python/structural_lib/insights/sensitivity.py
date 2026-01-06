@@ -1,8 +1,11 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Sensitivity analysis for beam designs (advisory only)."""
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, Iterable, List, Tuple
+from collections.abc import Iterable
+from typing import Any, Callable, Dict, List, Tuple
 
 from .data_types import RobustnessScore, SensitivityResult
 

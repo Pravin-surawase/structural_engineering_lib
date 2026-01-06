@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """job_runner
 
 Minimal batch/job runner for automation workflows.
@@ -17,8 +19,9 @@ from __future__ import annotations
 
 import csv
 import json
+from collections.abc import Iterable, Mapping
 from pathlib import Path
-from typing import Any, Dict, Iterable, Mapping
+from typing import Any, Dict
 
 from . import api, beam_pipeline, compliance
 from .data_types import JobSpec

@@ -1,12 +1,15 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Module:       api
 Description:  Public facing API functions
 """
 
 import json
+from collections.abc import Sequence
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Any, Dict, Optional, Sequence, Union
+from typing import Any, Dict, Optional, Union
 
 from . import (
     bbs,

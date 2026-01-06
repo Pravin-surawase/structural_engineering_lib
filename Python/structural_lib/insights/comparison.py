@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Multi-design comparison and cost-aware sensitivity analysis.
 
 This module provides tools to compare multiple design alternatives and

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Module: compliance
 
 Compliance checker (TASK-042): Orchestrates strength + serviceability checks.
@@ -15,9 +17,10 @@ Design constraints:
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from dataclasses import asdict
 from enum import Enum
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional
 
 _logger = logging.getLogger(__name__)
 

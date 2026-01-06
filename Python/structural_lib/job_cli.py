@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """job_cli
 
 Tiny CLI wrapper for the job runner and cost optimization.

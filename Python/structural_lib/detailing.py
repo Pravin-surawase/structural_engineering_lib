@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement Detailing
 

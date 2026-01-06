@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:1987
 
@@ -875,7 +877,7 @@ def export_bbs_to_csv(
         if include_summary:
             summary = calculate_bbs_summary(items, "TOTAL")
             # Write blank row
-            writer.writerow({fn: "" for fn in fieldnames})
+            writer.writerow(dict.fromkeys(fieldnames, ""))
             # Write summary
             writer.writerow(
                 {

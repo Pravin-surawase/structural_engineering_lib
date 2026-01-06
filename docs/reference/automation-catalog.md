@@ -1,6 +1,6 @@
 # Automation Script Catalog
 
-> **Purpose:** Complete reference of all 41 automation scripts in this project.
+> **Purpose:** Complete reference of all 42 automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
 > **Last Updated:** 2026-01-06
 
@@ -15,7 +15,7 @@
 | [Documentation Quality](#documentation-quality) | 8 | Link checking, version drift, consistency |
 | [Release Management](#release-management) | 4 | Version bumping, release validation |
 | [Testing & Quality](#testing--quality) | 5 | Local CI, pre-commit checks, validation |
-| [Code Quality](#code-quality) | 4 | Error handling audits, linting, coverage |
+| [Code Quality](#code-quality) | 5 | Error handling audits, linting, coverage, license headers |
 | [Specialized](#specialized) | 8 | DXF rendering, CLI testing, VBA linting |
 
 **Total: 41 scripts** (17 shell `.sh` + 24 Python `.py`)
@@ -1098,7 +1098,75 @@ Error Handling Audit:
 
 ---
 
-### 34. `check_not_main.sh`
+### 34. `add_license_headers.py`
+
+**Purpose:** Add standardized SPDX license headers to Python and VBA source files.
+
+**When to Use:**
+- ✅ After creating new modules
+- ✅ One-time standardization (TASK-187)
+- ✅ Ensuring license compliance
+
+**Usage:**
+```bash
+# Dry run (show what would change)
+.venv/bin/python scripts/add_license_headers.py --check
+
+# Apply changes
+.venv/bin/python scripts/add_license_headers.py --apply
+```
+
+**What It Does:**
+- Adds SPDX-License-Identifier: MIT header
+- Adds copyright notice (c) 2024-2026 Pravin Surawase
+- Preserves existing docstrings/comments
+- Idempotent (safe to run multiple times)
+- Handles Python (.py) and VBA (.bas) files
+
+**Python Header Format:**
+```python
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
+"""
+Module docstring
+"""
+```
+
+**VBA Header Format:**
+```vb
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+```
+
+**Output:**
+```
+License Header Standardization
+Mode: APPLY CHANGES
+
+Processing Python files...
+✅ Python/structural_lib/api.py
+✅ Python/structural_lib/flexure.py
+...
+
+Python: 40 files modified
+
+Processing VBA files...
+✅ VBA/Modules/M01_Constants.bas
+...
+
+VBA: 33 files modified
+
+Summary:
+  Total: 73 modified
+```
+
+**Related:** [professional-repo-standards.md](../research/professional-repo-standards.md), [LICENSE](../../LICENSE)
+
+---
+
+### 35. `check_not_main.sh`
 
 **Purpose:** Prevent accidental commits to main branch (when using PR workflow).
 

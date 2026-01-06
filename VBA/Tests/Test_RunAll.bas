@@ -1,11 +1,16 @@
 Attribute VB_Name = "Test_RunAll"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       Test_RunAll
 ' Description:  Unified Test Runner for all VBA modules
 ' Version:      0.9.4
-' License:      MIT
 ' ==============================================================================
 '
 ' USAGE:
@@ -34,7 +39,7 @@ Private m_StartTime As Double
 Public Sub RunAllVBATests()
     m_SuiteErrors = 0
     m_StartTime = Timer
-    
+
     Debug.Print ""
     Debug.Print "========================================"
     Debug.Print "  STRUCTURAL ENGINEERING LIB - VBA TESTS"
@@ -45,30 +50,30 @@ Public Sub RunAllVBATests()
     Debug.Print "NOTE: Review each suite's output for PASS/FAIL."
     Debug.Print "      Totals are not aggregated - check for FAIL lines."
     Debug.Print ""
-    
+
     ' --- Core Module Tests ---
     Call RunSuite_Structural
     Call RunSuite_Flanged
     Call RunSuite_Ductile
-    
+
     ' --- v0.7+ Module Tests ---
     Call RunSuite_Detailing
     Call RunSuite_DXF
-    
+
     ' --- v0.8+ Module Tests ---
     Call RunSuite_Serviceability
-    
+
     ' --- v0.9+ Module Tests ---
     Call RunSuite_BBS
     Call RunSuite_Compliance
-    
+
     ' --- Parity Tests (Python ↔ VBA) ---
     Call RunSuite_Parity
-    
+
     ' --- Summary ---
     Dim elapsed As Double
     elapsed = Timer - m_StartTime
-    
+
     Debug.Print ""
     Debug.Print "========================================"
     Debug.Print "  RUN COMPLETE"
@@ -77,7 +82,7 @@ Public Sub RunAllVBATests()
     Debug.Print "  Suite Errors: " & m_SuiteErrors
     Debug.Print "  Time Elapsed: " & Format(elapsed, "0.00") & " seconds"
     Debug.Print "========================================"
-    
+
     If m_SuiteErrors = 0 Then
         Debug.Print "  All suites executed without runtime errors."
         Debug.Print "  >> Review output above for FAIL lines <<"
@@ -86,7 +91,7 @@ Public Sub RunAllVBATests()
         Debug.Print "  Check for missing modules or runtime issues."
     End If
     Debug.Print "========================================"
-    
+
     ' Log run to sheet
     Call LogResultsToSheet
 End Sub
@@ -211,14 +216,14 @@ End Sub
 ' ==============================================================================
 Private Sub LogResultsToSheet()
     On Error Resume Next
-    
+
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Sheets("TestLog")
     If ws Is Nothing Then Exit Sub
-    
+
     Dim nextRow As Long
     nextRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 1
-    
+
     ' Log run timestamp and basic info
     ' Note: We can't aggregate pass/fail counts from individual suites
     ws.Cells(nextRow, 1).Value = Now

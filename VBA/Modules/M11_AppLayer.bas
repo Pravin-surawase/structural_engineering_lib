@@ -1,6 +1,12 @@
 Attribute VB_Name = "M11_AppLayer"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==========================================================================================
 ' Module:       M11_AppLayer
 ' Description:  Application Layer for Beam Design. Orchestrates data flow between
@@ -16,31 +22,31 @@ Public Sub Run_BeamDesign()
     Dim i As Long
     Dim rowInput As ListRow
     Dim newRow As ListRow
-    
+
     ' --- 1. Initialize ---
     On Error GoTo ErrorHandler
     Set wsInput = ThisWorkbook.Sheets("BEAM_INPUT")
     Set wsDesign = ThisWorkbook.Sheets("BEAM_DESIGN")
     Set tblInput = wsInput.ListObjects("tbl_BeamInput")
     Set tblDesign = wsDesign.ListObjects("tbl_BeamDesign")
-    
+
     Application.ScreenUpdating = False
     Application.Calculation = xlCalculationManual
-    
+
     ' --- 2. Clear Previous Results ---
     If Not tblDesign.DataBodyRange Is Nothing Then
         tblDesign.DataBodyRange.Delete
     End If
-    
+
     ' --- 3. Process Each Beam ---
     For i = 1 To tblInput.ListRows.Count
         Set rowInput = tblInput.ListRows(i)
         Set newRow = tblDesign.ListRows.Add
-        
+
         ' Process Single Row
         Call Process_Beam_Row(rowInput, newRow)
     Next i
-    
+
     MsgBox "Design Completed Successfully!", vbInformation, "Structural Engineering Lib"
 
 ExitHandler:
@@ -60,7 +66,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
     Dim fck As Double, fy As Double
     Dim Mu As Double, Vu As Double
     Dim isFlanged As Boolean, Df As Double, bf As Double
-    
+
     ' Outputs
     Dim d_eff As Double
     Dim flexRes As FlexureResult
@@ -68,9 +74,9 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
     Dim status As String
     Dim remarks As String
     Dim calcNotes As String
-    
+
     On Error GoTo RowError
-    
+
     ' --- Read Inputs ---
     With rowIn.Range
         ID = .Cells(1, 1).Value
@@ -87,7 +93,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         Df = .Cells(1, 12).Value
         bf = .Cells(1, 13).Value
     End With
-    
+
     ' --- Calculations ---
     ' Treat Cover as clear cover; add stirrup/main bar allowances to reach effective covers.
     Dim stirrupDia As Double
@@ -96,22 +102,22 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
     stirrupDia = GetOptionalValue(rowIn.Range, 14, 8#)         ' mm, defaults to 8mm stirrup
     barDiaTension = GetOptionalValue(rowIn.Range, 15, 16#)     ' mm, defaults to 16mm main bar
     barDiaCompression = GetOptionalValue(rowIn.Range, 16, barDiaTension) ' mm, default mirror tension bar
-    
+
     Dim tensionCoverEff As Double
     Dim compressionCoverEff As Double
     tensionCoverEff = Cover + stirrupDia + (barDiaTension / 2#)
     compressionCoverEff = Cover + stirrupDia + (barDiaCompression / 2#)
-    
+
     d_eff = D - tensionCoverEff
-    
+
     ' 1. Flexure Design
     ' Note: Library expects Mu in kN-m (based on M06_Flexure signatures)
     ' Design_Doubly_Reinforced(b, d, d_dash, D_total, Mu_kNm, fck, fy)
     ' Design_Flanged_Beam(bw, bf, d, Df, D_total, Mu_kNm, fck, fy, d_dash)
-    
+
     Dim d_dash As Double
     d_dash = compressionCoverEff
-    
+
     ' Guards for bad geometry inputs
     calcNotes = ""
     If d_eff <= 0 Then
@@ -122,21 +128,21 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         d_dash = Cover
         calcNotes = calcNotes & "Compression cover capped at input cover. "
     End If
-    
+
     If isFlanged Then
         flexRes = M06_Flexure.Design_Flanged_Beam(b, bf, d_eff, Df, D, Mu, fck, fy, d_dash)
     Else
         flexRes = M06_Flexure.Design_Doubly_Reinforced(b, d_eff, d_dash, D, Mu, fck, fy)
     End If
-    
+
     ' 2. Shear Design
     ' Design_Shear(Vu_kN, b, d, fck, fy, Asv, pt)
     ' Assuming 2-legged 8mm stirrups (Area = 100.53 mm2)
     Dim Asv_Default As Double
     Asv_Default = 100.53
-    
+
     shearRes = M07_Shear.Design_Shear(Vu, b, d_eff, fck, fy, Asv_Default, flexRes.Pt_Provided)
-    
+
     ' --- Write Inputs to Output Table (Mirroring) ---
     With rowOut.Range
         .Cells(1, 1).Value = ID
@@ -152,11 +158,11 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         .Cells(1, 11).Value = IIf(isFlanged, "Yes", "No")
         .Cells(1, 12).Value = Df
         .Cells(1, 13).Value = bf
-        
+
         ' --- Write Results ---
         .Cells(1, 14).Value = d_eff
         .Cells(1, 15).Value = flexRes.Mu_Lim
-        
+
         ' Status Logic
         If flexRes.IsSafe = False Or shearRes.IsSafe = False Then
             status = "FAIL"
@@ -164,14 +170,14 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
             status = "OK"
         End If
         .Cells(1, 16).Value = status
-        
+
         .Cells(1, 17).Value = flexRes.Ast_Required
         .Cells(1, 18).Value = flexRes.Pt_Provided
         .Cells(1, 19).Value = flexRes.Asc_Required
-        
+
         .Cells(1, 20).Value = shearRes.Tv
         .Cells(1, 21).Value = shearRes.Tc
-        
+
         ' Shear Status
         If shearRes.IsSafe Then
             If shearRes.Tv <= shearRes.Tc Then
@@ -182,7 +188,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         Else
             .Cells(1, 22).Value = "Unsafe"
         End If
-        
+
         ' Stirrups
         If shearRes.IsSafe Then
             If shearRes.Tv <= shearRes.Tc Then
@@ -194,7 +200,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         Else
             .Cells(1, 23).Value = "Redesign"
         End If
-        
+
         ' Remarks
         remarks = calcNotes
         If flexRes.SectionType = OverReinforced Then remarks = remarks & "Doubly Reinforced. "
@@ -202,7 +208,7 @@ Private Sub Process_Beam_Row(rowIn As ListRow, rowOut As ListRow)
         If Not shearRes.IsSafe Then remarks = remarks & "Shear: " & shearRes.Remarks & " "
         .Cells(1, 24).Value = remarks
     End With
-    
+
     Exit Sub
 
 RowError:
@@ -214,11 +220,11 @@ End Sub
 Public Sub Clear_Results()
     Dim wsDesign As Worksheet
     Dim tblDesign As ListObject
-    
+
     On Error Resume Next
     Set wsDesign = ThisWorkbook.Sheets("BEAM_DESIGN")
     Set tblDesign = wsDesign.ListObjects("tbl_BeamDesign")
-    
+
     If Not tblDesign.DataBodyRange Is Nothing Then
         tblDesign.DataBodyRange.Delete
     End If

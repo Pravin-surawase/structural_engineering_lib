@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Excel Integration Module — Bridge between Excel data and Detailing/DXF
 
@@ -170,7 +172,7 @@ def load_beam_data_from_csv(filepath: str) -> List[BeamDesignData]:
     """
     beams = []
 
-    with open(filepath, "r", encoding="utf-8-sig") as f:
+    with open(filepath, encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             try:
@@ -192,7 +194,7 @@ def load_beam_data_from_json(filepath: str) -> List[BeamDesignData]:
         or
         [{"beam_id": "B1", ...}, ...]
     """
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         data = json.load(f)
 
     # Handle both formats

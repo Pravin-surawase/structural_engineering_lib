@@ -1,11 +1,16 @@
 Attribute VB_Name = "M19_Compliance"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M19_Compliance
 ' Description:  Compliance Checker — Orchestrates Flexure + Shear + Serviceability
 ' Version:      0.9.4
-' License:      MIT
 ' ==============================================================================
 '
 ' MVP Contract:
@@ -26,13 +31,13 @@ Public Type ComplianceCaseResult
     case_id As String
     mu_knm As Double
     vu_kn As Double
-    
+
     ' Sub-results
     flexure As FlexureResult
     shear As ShearResult
     deflection As DeflectionResult
     crack As CrackWidthResult
-    
+
     ' Summary
     is_ok As Boolean
     governing_utilization As Double
@@ -77,17 +82,17 @@ Private Function ComputeFlexureUtilization(ByVal mu_knm As Double, ByRef flex As
     ' Compute flexure utilization as |Mu| / Mu_lim.
     Dim mu_abs As Double
     mu_abs = Abs(mu_knm)
-    
+
     If mu_abs = 0# Then
         ComputeFlexureUtilization = 0#
         Exit Function
     End If
-    
+
     If flex.Mu_Lim <= 0# Then
         ComputeFlexureUtilization = 9999#
         Exit Function
     End If
-    
+
     ComputeFlexureUtilization = CDbl(mu_abs) / CDbl(flex.Mu_Lim)
 End Function
 
@@ -168,20 +173,20 @@ Public Function Compliance_CheckCase( _
     '
     ' Returns:
     '     ComplianceCaseResult with all sub-checks and utilizations.
-    
+
     Dim result As ComplianceCaseResult
     Dim failed As String
     Dim assumptions As String
     Dim pt_for_shear As Double
-    
+
     result.case_id = case_id
     result.mu_knm = mu_knm
     result.vu_kn = vu_kn
-    
+
     ' ----- Flexure Check -----
     result.flexure = M06_Flexure.DesignDoublyReinforced( _
         b_mm, d_mm, d_dash_mm, D_mm, mu_knm, fck_nmm2, fy_nmm2)
-    
+
     ' ----- Determine pt for shear lookup -----
     If IsMissing(pt_percent) Or IsEmpty(pt_percent) Then
         ' Compute from flexure Ast
@@ -195,11 +200,11 @@ Public Function Compliance_CheckCase( _
     Else
         pt_for_shear = CDbl(pt_percent)
     End If
-    
+
     ' ----- Shear Check -----
     result.shear = M07_Shear.DesignShear( _
         vu_kn, b_mm, d_mm, fck_nmm2, fy_nmm2, asv_mm2, pt_for_shear)
-    
+
     ' ----- Deflection Check (optional) -----
     If check_deflection And span_mm > 0# Then
         result.deflection = M17_Serviceability.Check_Deflection_SpanDepth( _
@@ -211,7 +216,7 @@ Public Function Compliance_CheckCase( _
         result.deflection.LD_Ratio = 0#
         result.deflection.Allowable_LD = 999#
     End If
-    
+
     ' ----- Crack Width Check (optional) -----
     If check_crack Then
         result.crack = M17_Serviceability.Check_CrackWidth( _
@@ -223,17 +228,17 @@ Public Function Compliance_CheckCase( _
         result.crack.Wcr_mm = 0#
         result.crack.Limit_mm = 0.3
     End If
-    
+
     ' ----- Compute Utilizations -----
     result.util_flexure = ComputeFlexureUtilization(mu_knm, result.flexure)
     result.util_shear = ComputeShearUtilization(result.shear)
     result.util_deflection = ComputeDeflectionUtilization(result.deflection)
     result.util_crack = ComputeCrackUtilization(result.crack)
-    
+
     result.governing_utilization = MaxOf4( _
         result.util_flexure, result.util_shear, _
         result.util_deflection, result.util_crack)
-    
+
     ' ----- Determine Pass/Fail -----
     failed = ""
     If Not result.flexure.IsSafe Then
@@ -248,20 +253,20 @@ Public Function Compliance_CheckCase( _
     If check_crack And Not result.crack.IsOK Then
         failed = AddToList(failed, "crack_width")
     End If
-    
+
     result.failed_checks = failed
     result.is_ok = (Len(failed) = 0)
-    
+
     If result.is_ok Then
         result.remarks = "OK"
     Else
         result.remarks = "FAIL: " & failed
     End If
-    
+
     If Len(assumptions) > 0 Then
         result.remarks = result.remarks & " | " & assumptions
     End If
-    
+
     Compliance_CheckCase = result
 End Function
 
@@ -286,13 +291,13 @@ Public Function Compliance_CheckMultipleCases( _
     '
     ' Governing case is the one with highest utilization.
     ' Ties broken by case order (first wins).
-    
+
     Dim report As ComplianceReport
     Dim i As Long
     Dim lowerBound As Long
     Dim upperBound As Long
     Dim maxUtil As Double
-    
+
     ' Handle empty array
     On Error Resume Next
     lowerBound = LBound(cases)
@@ -306,19 +311,19 @@ Public Function Compliance_CheckMultipleCases( _
         Exit Function
     End If
     On Error GoTo 0
-    
+
     report.case_count = upperBound - lowerBound + 1
     report.cases_ok = 0
     report.cases_failed = 0
     maxUtil = -1#
-    
+
     For i = lowerBound To upperBound
         If cases(i).is_ok Then
             report.cases_ok = report.cases_ok + 1
         Else
             report.cases_failed = report.cases_failed + 1
         End If
-        
+
         ' Track governing case
         If cases(i).governing_utilization > maxUtil Then
             maxUtil = cases(i).governing_utilization
@@ -326,15 +331,15 @@ Public Function Compliance_CheckMultipleCases( _
             report.governing_utilization = maxUtil
         End If
     Next i
-    
+
     report.overall_is_ok = (report.cases_failed = 0)
-    
+
     If report.overall_is_ok Then
         report.remarks = "All " & CStr(report.cases_ok) & " cases OK"
     Else
         report.remarks = CStr(report.cases_failed) & " of " & CStr(report.case_count) & " cases failed"
     End If
-    
+
     Compliance_CheckMultipleCases = report
 End Function
 
@@ -354,7 +359,7 @@ Public Function IS456_ComplianceCheck( _
 ) As String
     ' Excel UDF: Quick compliance check.
     ' Returns "OK" or "FAIL: <reasons>"
-    
+
     Dim result As ComplianceCaseResult
     result = Compliance_CheckCase("UDF", mu_knm, vu_kn, b_mm, D_mm, d_mm, fck, fy)
     IS456_ComplianceCheck = result.remarks
@@ -372,7 +377,7 @@ Public Function IS456_Utilization( _
 ) As Double
     ' Excel UDF: Get governing utilization ratio.
     ' Returns max of all check utilizations (< 1.0 means OK).
-    
+
     Dim result As ComplianceCaseResult
     result = Compliance_CheckCase("UDF", mu_knm, vu_kn, b_mm, D_mm, d_mm, fck, fy)
     IS456_Utilization = result.governing_utilization

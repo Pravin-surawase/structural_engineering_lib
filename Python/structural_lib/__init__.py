@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Package:      structural_lib
 Description:  IS 456:2000 Structural Engineering Library

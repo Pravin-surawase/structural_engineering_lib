@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 DXF Export Module — Beam Detail Drawing Generation
 
@@ -1348,7 +1350,7 @@ def main():
     args = parser.parse_args()
 
     # Load detailing data from JSON
-    with open(args.input, "r") as f:
+    with open(args.input) as f:
         data = json.load(f)
 
     # Convert JSON to BeamDetailingResult via create_beam_detailing

@@ -1,11 +1,16 @@
 Attribute VB_Name = "M04_Utilities"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       M04_Utilities
 ' Description:  Helper functions (Interpolation, Rounding, Validation)
 ' Version:      1.0.01
-' License:      MIT
 ' ==============================================================================
 
 ' Linear Interpolation

@@ -1,11 +1,16 @@
 Attribute VB_Name = "Test_Detailing"
 Option Explicit
 
+
+' ==============================================================================
+' SPDX-License-Identifier: MIT
+' Copyright (c) 2024-2026 Pravin Surawase
+' ==============================================================================
+
 ' ==============================================================================
 ' Module:       Test_Detailing
 ' Description:  Unit Tests for M15_Detailing module
 ' Version:      0.8.0
-' License:      MIT
 ' ==============================================================================
 
 Private m_PassCount As Long
@@ -19,51 +24,51 @@ Public Sub Run_All_Detailing_Tests()
     m_PassCount = 0
     m_FailCount = 0
     m_Results = ""
-    
+
     Debug.Print "========================================"
     Debug.Print "TEST SUITE: M15_Detailing"
     Debug.Print "========================================"
-    
+
     ' Bond Stress Tests
     Call Test_BondStress_M20
     Call Test_BondStress_M25
     Call Test_BondStress_M30
     Call Test_BondStress_Plain
-    
+
     ' Development Length Tests
     Call Test_Ld_Standard
     Call Test_Ld_Fe415
     Call Test_Ld_Fe500
-    
+
     ' Lap Length Tests
     Call Test_LapLength_Tension
     Call Test_LapLength_Compression
     Call Test_LapLength_Seismic
-    
+
     ' Bar Spacing Tests
     Call Test_BarSpacing_Basic
     Call Test_BarSpacing_SingleBar
     Call Test_MinSpacing_Check
-    
+
     ' Stirrup Legs Tests
     Call Test_StirrupLegs_Narrow
     Call Test_StirrupLegs_Medium
     Call Test_StirrupLegs_Wide
-    
+
     ' Bar Selection Tests
     Call Test_SelectBarDia_Small
     Call Test_SelectBarDia_Medium
     Call Test_SelectBarDia_Large
     Call Test_BarCount
-    
+
     ' Format Tests
     Call Test_BarCallout
     Call Test_StirrupCallout
-    
+
     Debug.Print "========================================"
     Debug.Print "RESULTS: " & m_PassCount & " Passed, " & m_FailCount & " Failed"
     Debug.Print "========================================"
-    
+
     If m_FailCount > 0 Then
         Debug.Print "FAILURES:"
         Debug.Print m_Results
@@ -76,13 +81,13 @@ End Sub
 ' ------------------------------------------------------------------------------
 Private Sub AssertEqual(ByVal actual As Variant, ByVal expected As Variant, ByVal testName As String, Optional ByVal tolerance As Double = 0.01)
     Dim passed As Boolean
-    
+
     If IsNumeric(actual) And IsNumeric(expected) Then
         passed = (Abs(CDbl(actual) - CDbl(expected)) <= tolerance * Abs(CDbl(expected) + 0.001))
     Else
         passed = (actual = expected)
     End If
-    
+
     If passed Then
         m_PassCount = m_PassCount + 1
         Debug.Print "  [PASS] " & testName
@@ -222,7 +227,7 @@ Private Sub Test_MinSpacing_Check()
     Dim result As Boolean
     result = M15_Detailing.Check_Min_Spacing(94, 16, 20)
     Call AssertTrue(result, "MinSpacing_94mm_OK")
-    
+
     ' spacing=20 < 25, should fail
     result = M15_Detailing.Check_Min_Spacing(20, 16, 20)
     Call AssertFalse(result, "MinSpacing_20mm_Fail")

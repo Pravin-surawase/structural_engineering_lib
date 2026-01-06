@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """Rebar arrangement optimizer (deterministic).
 
 This module provides a deterministic, bounded search that converts a required
@@ -16,8 +18,9 @@ module.
 from __future__ import annotations
 
 import math
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable, List, Literal, Optional, Tuple, cast
+from typing import List, Literal, Optional, Tuple, cast
 
 from .data_types import OptimizerChecks
 from .detailing import (

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
 """
 Module:       tables
 Description:  Data tables from IS 456:2000 (Table 19, Table 20, etc.)
