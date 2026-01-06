@@ -28,7 +28,9 @@
 
 ## Active
 
-*No active tasks. Review Up Next queue.*
+| ID | Task | Agent | Status | Notes |
+|----|------|-------|--------|-------|
+| **TASK-205** | **Research: Engineering Domain API Patterns** → `docs/research/engineering-domain-apis.md` | RESEARCHER | 🏗️ In Progress | Studying PyNite, OpenSees, ezdxf, handcalcs, pint for domain conventions |
 
 ---
 
@@ -57,7 +59,6 @@
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-205** | **Research: Engineering Domain API Patterns** (Study PyNite, OpenSees, ezdxf, handcalcs, pint; unit handling, IS 456 notation, domain conventions) → `docs/research/engineering-domain-apis.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
 | **TASK-206** | **Research: API Documentation & Discoverability** (Docstring best practices, example-driven docs, IDE integration, auto-doc tools) → `docs/guidelines/documentation-standard.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
 | **TASK-207** | **Research: API Evolution & Migration Strategies** (Deprecation strategies, backward compatibility, version communication, migration tools) → `docs/guidelines/api-evolution-standard.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
 
