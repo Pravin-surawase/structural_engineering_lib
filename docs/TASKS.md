@@ -72,6 +72,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-144** | Smart Library Integration (SmartDesigner dashboard with analyze() method; 6 data classes; CLI integration via smart subcommand; 700+ lines; 20 tests created; needs API type alignment for full coverage) | DEV | 🟡 Partial |
 | **TASK-143** | Comparison & Sensitivity Enhancement (created comparison.py with compare_designs and cost_aware_sensitivity; 400+ lines with DesignAlternative, ComparisonMetrics, ComparisonResult, CostSensitivityResult; 19 tests; exports via insights/__init__.py; 2231 tests pass) | DEV | ✅ Done |
 | **TASK-162** | Replace Dict[str, Any] with TypedDicts (BeamGeometry, LoadCase, JobSpec created; job_runner/report/report_svg updated; 2231 tests pass; mypy clean) | DEV | ✅ Done |
 | **TASK-161 Sprint 2** | Gradually Tighten Mypy Configuration - Sprint 2 (enabled check_untyped_defs, no_implicit_optional; fixed 2 errors; added Optional imports; 2200 tests pass; mypy clean) | DEV | ✅ Done |
