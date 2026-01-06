@@ -1626,7 +1626,288 @@ Based on `Python/tests/performance/test_benchmarks.py`:
 
 ## Appendix A: Quick Reference Checklist
 
-*(Placeholder - to be added in next step)*
+### Exception Design Checklist
+
+When creating/raising an exception, verify:
+
+- [ ] **Type**: Using correct exception type (ValidationError vs DesignError vs ComplianceError)?
+- [ ] **Message**: Answers the Three Questions (what/why/how)?
+- [ ] **Units**: All values include units (mm, MPa, kN·m)?
+- [ ] **Values**: Shows both actual and expected/limit values?
+- [ ] **Details**: Includes `details` dict for debugging?
+- [ ] **Suggestion**: Provides actionable `suggestion`?
+- [ ] **Clause**: Includes IS 456 `clause_ref` if applicable?
+- [ ] **Docstring**: Documents exception in `Raises:` section?
+- [ ] **Tests**: Unit tests verify exception is raised correctly?
+- [ ] **Chaining**: Uses `raise ... from ...` if wrapping another exception?
+
+### Error Message Quality Checklist
+
+Good error messages:
+
+- [ ] State the actual value that failed
+- [ ] State the expected/limit value
+- [ ] Explain why it failed (constraint, rule, code clause)
+- [ ] Suggest how to fix it (specific actions)
+- [ ] Include units on all numerical values
+- [ ] Use domain terminology correctly
+- [ ] Avoid jargon in user-facing text
+- [ ] Keep primary message concise (<2 sentences)
+- [ ] Put debug details in `details` dict
+
+### Validation Function Checklist
+
+- [ ] Named `_validate_*` for internal functions
+- [ ] Returns `None`, raises on failure
+- [ ] Accepts `validate: bool = True` flag in caller
+- [ ] Documents all exception types in docstring
+- [ ] Groups related checks together
+- [ ] Uses helper like `validate_range()` for common patterns
+- [ ] Provides context-specific error messages
+
+### Exception Testing Checklist
+
+- [ ] Test that exception is raised for invalid input
+- [ ] Test error message content (use `match=` regex)
+- [ ] Test exception attributes (`details`, `suggestion`, `clause_ref`)
+- [ ] Test exception chaining if applicable
+- [ ] Test `validate=True` catches errors
+- [ ] Test `validate=False` skips input checks
+- [ ] Use parametrized tests for multiple failure cases
+
+---
+
+## Appendix B: Complete Exception Catalog
+
+### Exception Hierarchy Reference
+
+```python
+Exception (Python built-in)
+└── StructuralLibError                 # Base for all library errors
+    ├── ValidationError               # User input problems
+    │   ├── DimensionError           # Invalid dimensions
+    │   ├── MaterialError            # Invalid material properties
+    │   └── LoadError                # Invalid loads/forces
+    ├── DesignError                  # Design constraints violated
+    ├── ComplianceError              # Code requirements not met
+    ├── ConfigurationError           # Library setup issues
+    └── CalculationError             # Numerical problems
+```
+
+### When to Use Each Exception Type
+
+| Exception | When to Use | Examples |
+|-----------|-------------|----------|
+| **ValidationError** | Invalid user input (wrong type, out of range, not allowed) | Negative dimensions, zero values, invalid units |
+| **DimensionError** | Dimensions invalid or unrealistic | Width < 200mm, depth < 150mm, unrealistic ratios |
+| **MaterialError** | Material properties invalid | Non-standard grades, invalid combinations |
+| **LoadError** | Loads invalid or unrealistic | Negative moment, zero shear, unrealistic magnitude |
+| **DesignError** | Design requirements cannot be satisfied | Exceeds capacity, insufficient space, over-reinforced |
+| **ComplianceError** | IS 456 requirements not met | Min reinforcement, max spacing, ductility requirements |
+| **ConfigurationError** | Library misconfigured or invalid state | Missing setup, incompatible options |
+| **CalculationError** | Numerical/computational problems | Convergence failure, division by zero, NaN result |
+
+### Common Error Scenarios
+
+#### 1. Dimension Validation
+
+```python
+# Width too small
+raise DimensionError(
+    f"Beam width b={b_mm}mm < 200mm minimum (IS 456 Cl. 26.5.1.1)",
+    details={"b_mm": b_mm, "minimum": 200},
+    suggestion="Increase beam width to at least 200mm",
+    clause_ref="Cl. 26.5.1.1",
+)
+
+# Unrealistic depth
+raise DimensionError(
+    f"Effective depth d={d_mm}mm > 2000mm seems unrealistic",
+    details={"d_mm": d_mm, "typical_max": 2000},
+    suggestion="Check if depth was entered in wrong units (cm vs mm)",
+)
+
+# Invalid aspect ratio
+raise DimensionError(
+    f"Beam width/depth ratio b/d={b_mm/d_mm:.2f} is unusual (typical: 0.4-0.7)",
+    details={"b_mm": b_mm, "d_mm": d_mm, "ratio": b_mm/d_mm},
+    suggestion="Verify dimensions are correct",
+)
+```
+
+#### 2. Material Validation
+
+```python
+# Invalid concrete grade
+raise MaterialError(
+    f"Concrete grade fck={fck_mpa}MPa not in standard grades [20,25,30,35,40,45,50]",
+    details={"fck_mpa": fck_mpa, "valid_grades": [20, 25, 30, 35, 40, 45, 50]},
+    suggestion="Use a standard grade from IS 456 Table 2",
+    clause_ref="Table 2",
+)
+
+# Invalid steel grade
+raise MaterialError(
+    f"Steel grade fy={fy_mpa}MPa not in standard grades [250,415,500,550]",
+    details={"fy_mpa": fy_mpa, "valid_grades": [250, 415, 500, 550]},
+    suggestion="Use Fe250, Fe415, Fe500, or Fe550 steel",
+    clause_ref="Cl. 6.2",
+)
+
+# Incompatible material combination
+raise MaterialError(
+    f"High-strength steel (fy={fy_mpa}MPa) not allowed with low-grade concrete (fck={fck_mpa}MPa)",
+    details={"fck_mpa": fck_mpa, "fy_mpa": fy_mpa},
+    suggestion="Use fck ≥ 30 MPa with fy ≥ 500 MPa",
+)
+```
+
+#### 3. Load Validation
+
+```python
+# Negative moment
+raise LoadError(
+    f"Factored moment Mu={mu_kn_m} kN·m cannot be negative",
+    details={"mu_kn_m": mu_kn_m},
+    suggestion="Check load combination signs. Use absolute value if needed.",
+)
+
+# Zero load
+raise LoadError(
+    "Zero moment - no flexural design required",
+    details={"mu_kn_m": mu_kn_m},
+    suggestion="Provide nominal reinforcement per IS 456 Cl. 26.5.1.1",
+)
+
+# Unrealistic magnitude
+raise LoadError(
+    f"Moment Mu={mu_kn_m:.1f} kN·m seems very large for section b={b_mm}×d={d_mm}mm",
+    details={"mu_kn_m": mu_kn_m, "b_mm": b_mm, "d_mm": d_mm},
+    suggestion="Check if moment was entered in wrong units (kN·m vs N·mm)",
+)
+```
+
+#### 4. Design Capacity
+
+```python
+# Moment exceeds capacity
+raise DesignError(
+    f"Moment Mu={mu_kn_m:.1f} kN·m exceeds section capacity Mu,lim={mu_lim:.1f} kN·m. "
+    f"Requires compression reinforcement.",
+    details={
+        "mu_kn_m": mu_kn_m,
+        "mu_lim_kn_m": mu_lim,
+        "xu_mm": xu,
+        "xu_max_mm": xu_max,
+        "ratio": mu_kn_m / mu_lim,
+    },
+    suggestion="Options: (1) increase depth, (2) widen section, (3) use compression steel, (4) increase fck",
+    clause_ref="Cl. 38.1",
+)
+
+# Cannot fit reinforcement
+raise DesignError(
+    f"Cannot fit required reinforcement Ast={ast_req:.0f}mm² in width b={b_mm}mm",
+    details={"ast_req_mm2": ast_req, "b_mm": b_mm, "clear_spacing_mm": clear_spacing},
+    suggestion="Options: (1) increase beam width, (2) use smaller bar diameters, (3) use multiple layers",
+)
+```
+
+#### 5. Code Compliance
+
+```python
+# Minimum reinforcement
+raise ComplianceError(
+    f"Required steel Ast={ast_req:.0f}mm² < minimum Ast,min={ast_min:.0f}mm² (IS 456 Cl. 26.5.1.1)",
+    details={"ast_req_mm2": ast_req, "ast_min_mm2": ast_min, "shortfall_mm2": ast_min - ast_req},
+    suggestion=f"Provide minimum reinforcement {ast_min:.0f}mm²",
+    clause_ref="Cl. 26.5.1.1",
+)
+
+# Maximum spacing
+raise ComplianceError(
+    f"Stirrup spacing s={spacing:.0f}mm > maximum {max_spacing:.0f}mm (IS 456 Cl. 26.5.1.5)",
+    details={"spacing_mm": spacing, "max_spacing_mm": max_spacing, "over_by_mm": spacing - max_spacing},
+    suggestion=f"Reduce spacing to {max_spacing:.0f}mm or less",
+    clause_ref="Cl. 26.5.1.5",
+)
+
+# Ductility requirements
+raise ComplianceError(
+    f"Tension reinforcement ratio {pt:.3f}% exceeds maximum {pt_max:.3f}% for ductile behavior",
+    details={"pt_percent": pt, "pt_max_percent": pt_max},
+    suggestion="Reduce tension reinforcement or increase section size",
+    clause_ref="Annex G",
+)
+```
+
+#### 6. Numerical Issues
+
+```python
+# Convergence failure
+raise CalculationError(
+    f"Neutral axis iteration failed to converge after {max_iter} iterations",
+    details={"last_xu_mm": xu, "tolerance": tolerance, "iterations": max_iter},
+    suggestion="Check that inputs are realistic and section is not heavily over-reinforced",
+)
+
+# Division by zero
+raise CalculationError(
+    "Cannot calculate lever arm: denominator is zero",
+    details={"b_mm": b_mm, "d_mm": d_mm, "k": k},
+    suggestion="Check that dimensions and moment are non-zero",
+)
+
+# NaN result
+raise CalculationError(
+    f"Calculation produced invalid result (NaN) at step: {step_name}",
+    details={"step": step_name, "inputs": input_values},
+    suggestion="Check that all inputs are valid numbers and within physical ranges",
+)
+```
+
+### Exception Message Templates
+
+#### Template 1: Range Violation
+
+```
+{parameter}={actual_value}{units} {</>} {limit_value}{units} {minimum/maximum} {clause_ref}.
+Suggestion: {increase/decrease} {parameter} to {suggested_value}.
+```
+
+**Example:**
+```
+Beam width b=150mm < 200mm minimum (IS 456 Cl. 26.5.1.1).
+Suggestion: Increase beam width to at least 200mm.
+```
+
+#### Template 2: Capacity Exceedance
+
+```
+{load_type} {actual}={value}{units} exceeds {capacity_type} {limit}={value}{units}.
+{explanation}.
+Suggestion: Options: (1) {option1}, (2) {option2}, (3) {option3}.
+```
+
+**Example:**
+```
+Moment Mu=250.0 kN·m exceeds section capacity Mu,lim=180.5 kN·m.
+Requires compression reinforcement.
+Suggestion: Options: (1) increase depth, (2) widen section, (3) use compression steel.
+```
+
+#### Template 3: Invalid Selection
+
+```
+{parameter}={value}{units} not in {valid_set} {clause_ref}.
+Suggestion: Use {recommended_values}.
+```
+
+**Example:**
+```
+Concrete grade fck=33MPa not in standard grades [20,25,30,35,40,45,50] (IS 456 Table 2).
+Suggestion: Use a standard grade from IS 456 Table 2.
+```
 
 ---
 
