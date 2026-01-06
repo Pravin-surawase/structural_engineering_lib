@@ -20,6 +20,20 @@ All notable changes to this project will be documented in this file.
   - Supports selective feature inclusion (cost, suggestions, sensitivity, constructability)
   - Output formats: dict (default), JSON string, or formatted text
   - Solves type architecture mismatch between public API and SmartDesigner
+- **Comparison and sensitivity enhancement module** (`structural_lib.insights.comparison`)
+  - `compare_designs()` function for multi-design alternative comparison
+  - `cost_aware_sensitivity()` function combining sensitivity with cost impact
+  - 4 dataclasses: `DesignAlternative`, `ComparisonMetrics`, `ComparisonResult`, `CostSensitivityResult`
+  - Comprehensive comparison metrics: material usage, structural performance, cost efficiency
+  - Pareto frontier identification for multi-objective optimization
+  - Cost-weighted sensitivity rankings
+  - 19 comprehensive tests covering comparison logic, edge cases, and cost integration
+  - Exported via `insights/__init__.py` for public API access
+- **Rebar optimizer comprehensive test suite** (`tests/test_rebar_optimizer.py`)
+  - 31 comprehensive test cases added (46 total tests passing)
+  - Coverage: bar combinations, diameter constraints, symmetry, edge cases
+  - Benchmark vectors for regression detection
+  - Validates optimization logic and constraint handling
 - **CLI scaffolding for smart command** (`smart` subcommand in `__main__.py`)
   - Command structure ready for future CLI integration
   - Configurable analysis components (--no-cost, --no-suggestions, etc.)

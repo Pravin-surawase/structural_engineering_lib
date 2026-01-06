@@ -26,7 +26,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-144** | Smart Library Integration (unified SmartDesigner API, dashboard output, CLI) | DEV | 1-2 days | 🔴 HIGH | 🚧 In Progress |
+| _(No active tasks - ready to pick from Up Next or Backlog)_ | | | | |
 
 ---
 

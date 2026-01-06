@@ -10,12 +10,16 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Summary
 - **Completed TASK-144:** Smart library integration with unified dashboard API.
+- **Completed TASK-143 (prior):** Comparison & Sensitivity Enhancement module (392 lines, 19 tests).
 - Created `smart_designer.py` module (700+ lines) with SmartDesigner class and 6 dataclasses.
+- Created `comparison.py` module (392 lines) with `compare_designs()` and `cost_aware_sensitivity()`.
 - Solved type architecture challenge with `smart_analyze_design()` API wrapper function.
 - Wrapper runs full pipeline internally to get BeamDesignOutput, then calls SmartDesigner.
 - Fixed enum handling (ImpactLevel/SuggestionCategory) - convert to strings for JSON serialization.
 - Updated all 20 SmartDesigner tests to use `design_single_beam()` with proper parameters.
-- **19/20 tests passing** (1 test has incorrect expectation about failure case).
+- Added 31 comprehensive tests for rebar_optimizer (46 total tests passing).
+- **19/20 SmartDesigner tests passing** (1 test has incorrect expectation about failure case).
+- **19/19 comparison tests passing** (all comparison and cost-aware sensitivity tests pass).
 - Added comprehensive API documentation with signature, usage notes, and examples.
 
 ### Architecture Decision
