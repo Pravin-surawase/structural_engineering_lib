@@ -28,7 +28,9 @@
 
 ## Active
 
-*No active tasks. Review Up Next queue.*
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-203** | **Research: Result Object Design Patterns** (Dataclass vs namedtuple vs dict; essential methods: to_dict, summary; error handling in results; SciPy/sklearn examples) → `docs/guidelines/result-object-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH | ⚙️ In Progress |
 
 ---
 
@@ -53,7 +55,6 @@
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-203** | **Research: Result Object Design Patterns** (Dataclass vs namedtuple vs dict; essential methods: to_dict, summary; error handling in results; SciPy/sklearn examples) → `docs/guidelines/result-object-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 | **TASK-204** | **Research: Error Handling & Exception Design** (Exception hierarchy, error message quality, validation patterns, error recovery; 40+ exception examples) → `docs/guidelines/error-handling-standard.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
 
 #### Phase 2: Domain Research
