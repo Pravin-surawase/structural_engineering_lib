@@ -266,8 +266,12 @@ test_git_state_detection() {
     if [[ -n "$branch" ]]; then
         log_pass "Can detect current branch: $branch"
     else
-        log_fail "Cannot detect current branch"
-        return 1
+        if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+            log_info "Detached HEAD in CI (expected)"
+        else
+            log_fail "Cannot detect current branch"
+            return 1
+        fi
     fi
 
     # Test 3: Detect remote
