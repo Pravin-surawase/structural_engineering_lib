@@ -25,6 +25,64 @@ For VS Code AI-agent work, start with:
 
 ---
 
+## Canonical Sources Map
+
+Single source per topic. If you see a legacy filename, use the canonical path below.
+
+### Canonical roots (authoritative)
+
+- `AGENT_BOOTSTRAP.md`
+- `AI_CONTEXT_PACK.md`
+- `GIT_WORKFLOW_AI_AGENTS.md`
+- `HANDOFF.md`
+- `README.md`
+- `RELEASES.md`
+- `SESSION_LOG.md`
+- `TASKS.md`
+
+### Legacy root redirects (docs/ -> canonical)
+
+| Legacy file | Canonical location |
+| --- | --- |
+| `API_REFERENCE.md` | `reference/api.md` |
+| `BEGINNERS_GUIDE.md` | `getting-started/beginners-guide.md` |
+| `CURRENT_STATE_AND_GOALS.md` | `planning/current-state-and-goals.md` |
+| `DEEP_PROJECT_MAP.md` | `architecture/deep-project-map.md` |
+| `DEVELOPMENT_GUIDE.md` | `contributing/development-guide.md` |
+| `EXCEL_ADDIN_GUIDE.md` | `contributing/excel-addin-guide.md` |
+| `EXCEL_QUICKSTART.md` | `getting-started/excel-quickstart.md` |
+| `EXCEL_TUTORIAL.md` | `getting-started/excel-tutorial.md` |
+| `GETTING_STARTED_PYTHON.md` | `getting-started/python-quickstart.md` |
+| `IS456_QUICK_REFERENCE.md` | `reference/is456-formulas.md` |
+| `KNOWN_PITFALLS.md` | `reference/known-pitfalls.md` |
+| `MISSION_AND_PRINCIPLES.md` | `architecture/mission-and-principles.md` |
+| `NEXT_SESSION_BRIEF.md` | `planning/next-session-brief.md` |
+| `PRODUCTION_ROADMAP.md` | `planning/production-roadmap.md` |
+| `PROJECT_OVERVIEW.md` | `architecture/project-overview.md` |
+| `RESEARCH_AI_ENHANCEMENTS.md` | `planning/research-ai-enhancements.md` |
+| `RESEARCH_DETAILING.md` | `planning/research-detailing.md` |
+| `TESTING_STRATEGY.md` | `contributing/testing-strategy.md` |
+| `TROUBLESHOOTING.md` | `reference/troubleshooting.md` |
+| `VBA_GUIDE.md` | `contributing/vba-guide.md` |
+| `VBA_TESTING_GUIDE.md` | `contributing/vba-testing-guide.md` |
+| `VERIFICATION_EXAMPLES.md` | `verification/examples.md` |
+| `VERIFICATION_PACK.md` | `verification/pack.md` |
+
+### Legacy contributing redirects (docs/contributing -> canonical)
+
+| Legacy file | Canonical location |
+| --- | --- |
+| `contributing/git-workflow-for-ai-agents.md` | `GIT_WORKFLOW_AI_AGENTS.md` |
+
+### Archived legacy stubs
+
+| Legacy file | Archived location |
+| --- | --- |
+| `v0.7_REQUIREMENTS.md` | `_archive/v0.7_REQUIREMENTS.md` |
+| `v0.8_EXECUTION_CHECKLIST.md` | `_archive/v0.8_EXECUTION_CHECKLIST.md` |
+
+---
+
 ## For Most Users (recommended reading order)
 
 1) **Quick start (Python):** [getting-started/python-quickstart.md](getting-started/python-quickstart.md)
@@ -98,7 +156,7 @@ If you want to understand the concepts and the code step by step, start here:
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Insights verification pack: [verification/insights-verification-pack.md](verification/insights-verification-pack.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
-- **Git workflow for AI agents:** [contributing/git-workflow-for-ai-agents.md](contributing/git-workflow-for-ai-agents.md) ⚠️
+- **Git workflow for AI agents:** [GIT_WORKFLOW_AI_AGENTS.md](GIT_WORKFLOW_AI_AGENTS.md) ⚠️
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Contributor learning paths: [contributing/learning-paths.md](contributing/learning-paths.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)
