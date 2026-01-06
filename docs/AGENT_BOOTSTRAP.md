@@ -44,6 +44,7 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 
 - **Copilot rules:** [../.github/copilot-instructions.md](../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [contributing/git-workflow-for-ai-agents.md](contributing/git-workflow-for-ai-agents.md) ⚠️
+- **Automation scripts (41):** [reference/automation-catalog.md](reference/automation-catalog.md) 🤖
 - **Handoff quick start:** [HANDOFF.md](HANDOFF.md)
 - **API docs:** [reference/api.md](reference/api.md)
 - **Known pitfalls:** [reference/known-pitfalls.md](reference/known-pitfalls.md)

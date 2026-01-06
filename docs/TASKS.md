@@ -43,6 +43,23 @@
 
 ## Backlog
 
+### Documentation Enhancement (HIGH PRIORITY — From Handoff Analysis)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-171** | **Phase 1: Create Automation Script Catalog** (Catalog all 41 scripts by category: Session Management (3), Git Workflow (9), Doc Quality (8), Release (4), Testing (5), Code Quality (4), Specialized (8); for each: name, purpose, usage, when to use, examples) → Save as `docs/reference/automation-catalog.md` | DOCS | 1 hour | 🔴 HIGH |
+| **TASK-172** | **Phase 1: Update AI_CONTEXT_PACK with Automation Section** (Add automation quick reference after Development Workflow section; list key scripts by category; link to automation-catalog.md) | DOCS | 15 min | 🔴 HIGH |
+| **TASK-173** | **Phase 1: Add Automation Links to AGENT_BOOTSTRAP** (Update quick reference section with automation catalog link; ensure new agents discover automation tools immediately) | DOCS | 15 min | 🔴 HIGH |
+| **TASK-174** | **Phase 1: Test Automation Discoverability** (Test scenario: new agent needs git workflow automation; path: AI_CONTEXT_PACK → automation section → safe_push.sh; target: <30 seconds; validate all links work) | DOCS | 30 min | 🔴 HIGH |
+| **TASK-175** | **Phase 2: Create Learning Paths Guide** (Map task complexity → required docs; paths: beginner/intermediate/advanced; examples: "small bug fix" → copilot-instructions + known-pitfalls; "new feature" → architecture + API + testing strategy) → Save as `docs/contributing/learning-paths.md` | DOCS | 2 hours | 🟡 MEDIUM |
+| **TASK-176** | **Phase 2: Enhance Agent Role Decision Tree** (Update agents/README.md with task type → agent role mappings; decision tree: bug fix → DEV+TESTER, new feature → PM→RESEARCHER→DEV→TESTER→DOCS, docs → DOCS, release → DEVOPS→PM) | DOCS | 1 hour | 🟡 MEDIUM |
+| **TASK-177** | **Phase 2: Create Research Document Index** (Create docs/research/README.md; list 12+ research docs with topic tags (git, testing, tooling, CS practices, etc.); add when-to-read guidance) | DOCS | 30 min | 🟡 MEDIUM |
+| **TASK-178** | **Phase 2: Update Session Brief with Findings** (Update next-session-brief.md with documentation audit findings; add to Recently Completed in TASKS.md; summarize gaps and recommendations) | DOCS | 30 min | 🟡 MEDIUM |
+| **TASK-179** | **Phase 3: Generate Visual Architecture Diagrams** (Create PlantUML or Mermaid diagrams for: layer architecture, module dependencies, data flows; commit to docs/architecture/) | DOCS | 2 hours | 🟢 LOW |
+| **TASK-180** | **Phase 3: Create Module Dependency Graph** (Use pydeps or similar to generate Python/structural_lib dependency graph; commit PNG to docs/architecture/dependencies.png) | DOCS | 30 min | 🟢 LOW |
+| **TASK-181** | **Phase 3: Add Data Flow Diagrams** (Create Mermaid diagrams for complex pipelines: job_runner, smart_designer; show data transformations through layers; commit to docs/architecture/) | DOCS | 2 hours | 🟢 LOW |
+| **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | DOCS | 30 min | 🟢 LOW |
+
 ### Professional Standards & Hygiene (CRITICAL for v1.0 readiness)
 
 | ID | Task | Agent | Est | Priority |
@@ -84,6 +101,10 @@
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| **TASK-171** | **Phase 1: Create Automation Script Catalog** (Cataloged all 41 scripts: Session (3), Git (9), Doc Quality (8), Release (4), Testing (5), Code Quality (4), Specialized (8); comprehensive usage guide) → `docs/reference/automation-catalog.md` | 2026-01-06 | DOCS |
+| **TASK-172** | **Phase 1: Update AI_CONTEXT_PACK with Automation Section** (Added automation quick reference; categorized key scripts; linked to catalog) | 2026-01-06 | DOCS |
+| **TASK-173** | **Phase 1: Add Automation Links to AGENT_BOOTSTRAP** (Updated quick reference with automation catalog link; improved agent discoverability) | 2026-01-06 | DOCS |
+| **TASK-174** | **Phase 1: Test Automation Discoverability** (Validated new agent workflow: AI_CONTEXT_PACK → automation section → catalog; all links working; <30 second discovery confirmed) | 2026-01-06 | DOCS |
 | **TASK-156** | Research: Backward Compatibility Automation (contract testing in CI, breaking change detection, API stability enforcement, mutation testing) | 2026-01-06 | RESEARCHER |
 
 | ID | Task | Agent | Status |

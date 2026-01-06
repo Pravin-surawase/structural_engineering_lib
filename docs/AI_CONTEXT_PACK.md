@@ -106,6 +106,57 @@ gh pr merge <num> --squash --delete-branch
 
 ---
 
+## 🤖 Automation Scripts (41 Total)
+
+**Before implementing manually, check if a script exists!**
+
+### Key Scripts by Category
+
+**Session Management (3):**
+- `start_session.py` — Initialize agent (run first every session)
+- `end_session.py` — Validate handoff before ending
+- `update_handoff.py` — Auto-update handoff docs
+
+**Git Workflow (9):** ⭐ CRITICAL
+- `safe_push.sh` — MANDATORY for all commits (conflict-free)
+- `should_use_pr.sh` — Decision helper (PR vs direct commit)
+- `verify_git_fix.sh` — Validate whitespace fix (CI)
+- `test_should_use_pr.sh` — Workflow decision tests (13 scenarios)
+- `create_task_pr.sh` — Create PR for task
+- `finish_task_pr.sh` — Complete and merge PR
+
+**Documentation Quality (8):**
+- `check_links.py` — Broken link detection
+- `check_doc_versions.py` — Version drift detection
+- `check_api_docs_sync.py` — API doc synchronization
+- `check_cli_reference.py` — CLI doc completeness
+
+**Release Management (4):**
+- `release.py` — One-command release helper
+- `bump_version.py` — Version bumping
+- `verify_release.py` — Post-release validation
+- `check_pre_release_checklist.py` — Release checklist
+
+**Testing & Quality (5):**
+- `ci_local.sh` — Local CI simulation (~2-3 min)
+- `quick_check.sh` — Fast pre-commit checks (~30 sec)
+- `check_tasks_format.py` — TASKS.md validation
+- `check_session_docs.py` — Session doc consistency
+
+**Code Quality (4):**
+- `audit_error_handling.py` — Error handling compliance
+- `lint_vba.py` — VBA linting
+- `update_test_stats.py` — Test coverage tracking
+
+**Specialized (8):**
+- `dxf_render.py` — DXF visualization
+- `external_cli_test.py` — CLI testing (S-007)
+- More in full catalog...
+
+**📚 Full Catalog:** [automation-catalog.md](reference/automation-catalog.md) — Complete reference with usage, examples, when-to-use guidance for all 41 scripts.
+
+---
+
 ## 🤖 Agent Roles
 
 | Role | Use For |
