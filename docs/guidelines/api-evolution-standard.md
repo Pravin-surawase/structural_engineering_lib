@@ -713,34 +713,960 @@ ast = calculate_reinforcement(b_mm, d_mm, mu_kn_m)
 
 ## 5. Breaking Changes
 
-*(To be added in Step 2)*
+### 5.1 When Breaking Changes Are Justified
+
+**Breaking changes are acceptable when:**
+
+1. **Security/correctness**: Old API has bugs that can't be fixed compatibly
+2. **Usability**: Old API causes frequent user errors
+3. **Maintainability**: Old API blocks critical improvements
+4. **Consistency**: Old API contradicts library conventions
+
+**Examples:**
+
+```python
+# ✅ Justified: Security issue
+# v1.x: Vulnerable to injection
+def execute_query(sql: str):
+    cursor.execute(sql)  # SQL injection risk!
+
+# v2.0: Force parameterized queries
+def execute_query(sql: str, params: tuple):
+    cursor.execute(sql, params)  # Safe
+
+# ✅ Justified: Prevents common errors
+# v1.x: Silent unit mismatches
+def calculate_load(value, unit='kN'):
+    # Users often forget unit, get wrong results
+    ...
+
+# v2.0: Explicit unit in parameter name
+def calculate_load(value_kn: float):
+    # No ambiguity
+    ...
+
+# ❌ NOT justified: Just preference
+# v1.x: Works fine
+def calculate_steel(...):
+    ...
+
+# v2.0: Renaming just because
+def calculate_reinforcement(...):  # Not worth breaking!
+    ...
+```
+
+### 5.2 Making Breaking Changes Safely
+
+**Process:**
+
+```
+Step 1 (v1.5): Announce deprecation
+              ↓
+Step 2 (v1.6-1.9): Maintain both APIs, warn on old API
+              ↓
+Step 3 (v2.0-rc): Release candidate, community testing
+              ↓
+Step 4 (v2.0): Remove old API, migration guide available
+```
+
+**Example migration:**
+
+```python
+# v1.5: Announce deprecation
+@deprecated(version='1.5', removal_version='2.0')
+def calculate_steel(b_mm, d_mm, mu_kn_m):
+    """Deprecated: Use calculate_reinforcement() instead."""
+    return calculate_reinforcement(b_mm, d_mm, mu_kn_m)
+
+def calculate_reinforcement(b_mm, d_mm, mu_kn_m):
+    """Calculate required reinforcement per IS 456."""
+    # Implementation
+    ...
+
+# v1.6-1.9: Both functions work, warnings appear
+
+# v2.0: Remove old function
+# calculate_steel() no longer exists
+# Only calculate_reinforcement() remains
+```
+
+### 5.3 Breaking Change Checklist
+
+**Before making a breaking change:**
+
+- [ ] Can it be avoided with compatibility layer?
+- [ ] Is the benefit worth the user cost?
+- [ ] Have we documented the migration path?
+- [ ] Have we announced it at least 2 minor versions early?
+- [ ] Have we updated examples and tutorials?
+- [ ] Have we tested the migration on real user code?
+
+### 5.4 Batching Breaking Changes
+
+**Don't break frequently!** Save breaking changes for major releases.
+
+```
+v1.0 → v1.1 → v1.2 → ... → v1.9 → v2.0
+       ✅     ✅            ✅     🔥 ALL breaking changes here
+```
+
+**Bad practice:**
+```
+v1.0 → v1.1 → v1.2 → v1.3 → v1.4
+       🔥     ✅     🔥     🔥
+Breaking changes scattered across minor versions → user frustration
+```
+
+**Good practice:**
+```
+v1.0: Stable API
+v1.1: Add features, announce deprecations for v2.0
+v1.2: Add features, announce more deprecations
+v1.3: Add features, announce more deprecations
+...
+v1.9: API freeze, final deprecation warnings
+v2.0: Remove all deprecated items at once, clear migration guide
+```
 
 ---
 
 ## 6. Version Communication
 
-*(To be added in Step 2)*
+### 6.1 Release Notes Template
+
+**CHANGELOG.md format:**
+
+```markdown
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- (Nothing yet)
+
+### Changed
+- (Nothing yet)
+
+### Deprecated
+- (Nothing yet)
+
+### Removed
+- (Nothing yet)
+
+### Fixed
+- (Nothing yet)
+
+### Security
+- (Nothing yet)
+
+## [1.5.0] - 2026-01-15
+
+### Added
+- New function `calculate_reinforcement()` with improved parameter names
+- Optional `cover_mm` parameter in `design_beam()` (#145)
+- Support for M40 concrete grade in material tables (#148)
+
+### Changed
+- `design_beam()` now accepts `cover_mm` as optional parameter
+  (defaults to IS 456 values if not specified)
+
+### Deprecated
+- `calculate_steel()` is deprecated in favor of `calculate_reinforcement()`.
+  Will be removed in v2.0. Use `calculate_reinforcement()` instead. (#147)
+- Parameter `b_mm` in `design_beam()` is deprecated in favor of `width_mm`.
+  Will be removed in v2.0. Both names work in v1.x for backward compatibility.
+
+### Fixed
+- Fixed incorrect ast_min calculation for Fe 550 steel (#146)
+- Fixed rounding error in development length calculation (#149)
+
+### Migration Guide (for deprecated items)
+
+```python
+# Before (v1.4):
+ast = calculate_steel(b_mm=300, d_mm=550, mu_kn_m=180)
+
+# After (v1.5+):
+ast = calculate_reinforcement(b_mm=300, d_mm=550, mu_kn_m=180)
+
+# Old code still works but shows deprecation warning
+```
+
+[1.5.0]: https://github.com/owner/repo/compare/v1.4.0...v1.5.0
+```
+
+### 6.2 GitHub Release Description
+
+**For each release, create GitHub Release with:**
+
+```markdown
+## 🚀 Highlights
+
+Brief summary of major features and improvements in this release.
+
+## ✨ What's New
+
+### New Features
+- Feature 1 with brief description (#123)
+- Feature 2 with brief description (#124)
+
+### Improvements
+- Improvement 1 (#125)
+- Improvement 2 (#126)
+
+## ⚠️ Deprecations
+
+The following items are deprecated and will be removed in v2.0:
+
+- `calculate_steel()` → Use `calculate_reinforcement()` instead
+- `design_beam(b_mm=...)` → Use `design_beam(width_mm=...)` instead
+
+See [Migration Guide](link) for details.
+
+## 🐛 Bug Fixes
+
+- Fixed issue 1 (#127)
+- Fixed issue 2 (#128)
+
+## 📖 Documentation
+
+- Added tutorial for X (#129)
+- Updated API reference for Y (#130)
+
+## 🙏 Contributors
+
+Thank you to everyone who contributed to this release!
+
+- @contributor1
+- @contributor2
+
+## 📦 Installation
+
+```bash
+pip install --upgrade structural-lib-is456==1.5.0
+```
+
+**Full Changelog**: https://github.com/owner/repo/compare/v1.4.0...v1.5.0
+```
+
+### 6.3 Deprecation Warnings in Code
+
+**Make warnings actionable:**
+
+```python
+# ❌ BAD: Vague warning
+warnings.warn("This function is deprecated")
+
+# ✅ GOOD: Specific, actionable warning
+warnings.warn(
+    "calculate_steel() is deprecated since v1.5 and will be removed in v2.0. "
+    "Use calculate_reinforcement() instead. "
+    "See https://docs.example.com/migration for details.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+```
+
+**User sees:**
+```
+DeprecationWarning: calculate_steel() is deprecated since v1.5
+and will be removed in v2.0. Use calculate_reinforcement() instead.
+See https://docs.example.com/migration for details.
+  at my_code.py:42
+```
+
+### 6.4 Migration Guides
+
+**Create dedicated migration guides for major versions:**
+
+```markdown
+# Migration Guide: v1.x → v2.0
+
+This guide helps you migrate from v1.x to v2.0.
+
+## Summary of Breaking Changes
+
+v2.0 removes all items deprecated in v1.5-1.9. This includes:
+
+1. Removed functions
+2. Removed parameters
+3. Changed defaults
+4. Changed return types
+
+## Detailed Migration
+
+### 1. Function Renames
+
+#### calculate_steel() → calculate_reinforcement()
+
+**What changed:** Function was renamed for clarity.
+
+**Before (v1.x):**
+```python
+ast = calculate_steel(b_mm=300, d_mm=550, mu_kn_m=180)
+```
+
+**After (v2.0):**
+```python
+ast = calculate_reinforcement(b_mm=300, d_mm=550, mu_kn_m=180)
+```
+
+**Search & replace:**
+```bash
+# Find all occurrences
+grep -r "calculate_steel" .
+
+# Replace (GNU sed)
+sed -i 's/calculate_steel/calculate_reinforcement/g' *.py
+```
+
+### 2. Parameter Renames
+
+#### design_beam(b_mm=...) → design_beam(width_mm=...)
+
+**What changed:** Parameter renamed for explicitness.
+
+**Before (v1.x):**
+```python
+result = design_beam(b_mm=300, d_mm=550, mu_kn_m=180)
+```
+
+**After (v2.0):**
+```python
+result = design_beam(width_mm=300, d_mm=550, mu_kn_m=180)
+```
+
+### 3. Validation Now Mandatory
+
+**What changed:** `validate=False` parameter removed. All inputs are validated.
+
+**Before (v1.x):**
+```python
+# Skip validation for speed
+result = design_beam(..., validate=False)
+```
+
+**After (v2.0):**
+```python
+# Validation always runs (no flag)
+result = design_beam(...)
+
+# If you were skipping validation because inputs are pre-validated,
+# remove the validate=False parameter. Validation is fast (~13% overhead).
+```
+
+## Automated Migration Tool
+
+We provide a migration tool to automate most changes:
+
+```bash
+# Install tool
+pip install structural-lib-migrate
+
+# Run migration (creates backup)
+structural-lib-migrate v1-to-v2 my_project/
+
+# Review changes, then commit
+```
+
+## Need Help?
+
+- Read the [FAQ](link)
+- Ask on [GitHub Discussions](link)
+- Report migration issues: [GitHub Issues](link)
+```
+
+### 6.5 Communicating Pre-Release
+
+**Before v1.0 (current state):**
+
+```markdown
+# README.md
+
+## ⚠️ Pre-1.0 Notice
+
+This library is in active development (currently v0.15.x).
+
+**What this means:**
+- ✅ Core functionality is stable and tested
+- ✅ We use the library in production
+- ⚠️ API may change between 0.x versions (but we minimize this)
+- ⚠️ Follow SemVer for 1.0+, but 0.x allows breaking changes
+
+**When will 1.0 release?**
+- Target: Q2 2026
+- Requirements: Complete API review, user feedback, documentation polish
+
+**Should I use this now?**
+- Yes, if you can tolerate occasional API changes (with migration guides)
+- Pin versions in production: `structural-lib-is456>=0.15,<0.16`
+```
 
 ---
 
 ## 7. Migration Tools & Helpers
 
-*(To be added in Step 2)*
+### 7.1 Automated Migration Script
+
+**Tool to help users migrate code:**
+
+```python
+# tools/migrate_v1_to_v2.py
+"""Automated migration tool for v1.x → v2.0.
+
+Usage:
+    python migrate_v1_to_v2.py my_project/
+
+This tool automates most migration tasks:
+1. Renames deprecated functions
+2. Renames deprecated parameters
+3. Updates import statements
+4. Removes validate=False parameters
+
+Always review changes before committing!
+"""
+
+import re
+import argparse
+from pathlib import Path
+from typing import List, Tuple
+
+# Migration rules
+FUNCTION_RENAMES = {
+    'calculate_steel': 'calculate_reinforcement',
+    'design_beam_old': 'design_beam',
+}
+
+PARAMETER_RENAMES = {
+    'b_mm': 'width_mm',
+    'd_mm': 'depth_mm',
+}
+
+def migrate_function_names(content: str) -> Tuple[str, int]:
+    """Replace deprecated function names."""
+    changes = 0
+    for old, new in FUNCTION_RENAMES.items():
+        pattern = rf'\b{old}\b'
+        new_content, count = re.subn(pattern, new, content)
+        content = new_content
+        changes += count
+    return content, changes
+
+def migrate_parameter_names(content: str) -> Tuple[str, int]:
+    """Replace deprecated parameter names."""
+    changes = 0
+    for old, new in PARAMETER_RENAMES.items():
+        # Match parameter in function call: old=value
+        pattern = rf'\b{old}\s*='
+        new_content, count = re.subn(pattern, f'{new}=', content)
+        content = new_content
+        changes += count
+    return content, changes
+
+def remove_validate_false(content: str) -> Tuple[str, int]:
+    """Remove validate=False parameters."""
+    # Match validate=False (with optional spaces)
+    patterns = [
+        r',\s*validate\s*=\s*False',  # In middle of params
+        r'validate\s*=\s*False\s*,',  # At start of params
+        r'\(\s*validate\s*=\s*False\s*\)',  # Only param
+    ]
+    changes = 0
+    for pattern in patterns:
+        new_content, count = re.subn(pattern, '', content)
+        content = new_content
+        changes += count
+    return content, changes
+
+def migrate_file(filepath: Path, dry_run: bool = False) -> dict:
+    """Migrate a single Python file."""
+    content = filepath.read_text()
+    original = content
+
+    results = {
+        'functions': 0,
+        'parameters': 0,
+        'validate': 0,
+    }
+
+    # Apply migrations
+    content, results['functions'] = migrate_function_names(content)
+    content, results['parameters'] = migrate_parameter_names(content)
+    content, results['validate'] = remove_validate_false(content)
+
+    total_changes = sum(results.values())
+
+    if total_changes > 0 and not dry_run:
+        # Backup original
+        backup = filepath.with_suffix('.py.bak')
+        backup.write_text(original)
+
+        # Write migrated version
+        filepath.write_text(content)
+
+    return results
+
+def migrate_project(project_dir: Path, dry_run: bool = False):
+    """Migrate all Python files in project."""
+    python_files = list(project_dir.rglob('*.py'))
+
+    print(f"Found {len(python_files)} Python files in {project_dir}")
+    if dry_run:
+        print("DRY RUN: No files will be modified\n")
+    else:
+        print("Migrating files...\n")
+
+    total_results = {
+        'functions': 0,
+        'parameters': 0,
+        'validate': 0,
+    }
+
+    for filepath in python_files:
+        results = migrate_file(filepath, dry_run)
+        if sum(results.values()) > 0:
+            print(f"✓ {filepath.relative_to(project_dir)}")
+            print(f"  Functions: {results['functions']}")
+            print(f"  Parameters: {results['parameters']}")
+            print(f"  Validate flags: {results['validate']}")
+
+            for key in total_results:
+                total_results[key] += results[key]
+
+    print(f"\nTotal changes:")
+    print(f"  Function renames: {total_results['functions']}")
+    print(f"  Parameter renames: {total_results['parameters']}")
+    print(f"  Validate=False removed: {total_results['validate']}")
+
+    if not dry_run:
+        print(f"\n✓ Migration complete! Backup files saved as *.py.bak")
+        print(f"Review changes, test your code, then delete backups.")
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Migrate v1.x code to v2.0')
+    parser.add_argument('project_dir', type=Path, help='Project directory to migrate')
+    parser.add_argument('--dry-run', action='store_true', help='Show changes without modifying files')
+
+    args = parser.parse_args()
+
+    if not args.project_dir.is_dir():
+        print(f"Error: {args.project_dir} is not a directory")
+        exit(1)
+
+    migrate_project(args.project_dir, dry_run=args.dry_run)
+```
+
+**Usage:**
+
+```bash
+# Dry run (preview changes)
+python migrate_v1_to_v2.py my_project/ --dry-run
+
+# Actual migration
+python migrate_v1_to_v2.py my_project/
+
+# Review changes
+git diff
+
+# Test
+pytest tests/
+
+# Commit if all passes
+git commit -am "Migrate to v2.0 API"
+```
+
+### 7.2 Compatibility Shims
+
+**Provide backward compatibility layers:**
+
+```python
+# structural_lib/compat.py
+"""Backward compatibility shims for v1.x users.
+
+Import from this module to use v1.x API with v2.0 library:
+
+    from structural_lib.compat import calculate_steel
+
+This allows gradual migration without breaking existing code.
+"""
+
+import warnings
+from structural_lib import calculate_reinforcement
+
+def calculate_steel(*args, **kwargs):
+    """Compatibility shim for v1.x calculate_steel().
+
+    .. deprecated:: 2.0
+        This is a compatibility shim. Use calculate_reinforcement()
+        from the main API instead.
+    """
+    warnings.warn(
+        "Using compatibility shim for calculate_steel(). "
+        "Migrate to calculate_reinforcement() from main API. "
+        "This shim may be removed in v3.0.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return calculate_reinforcement(*args, **kwargs)
+
+# Add more shims as needed...
+```
+
+**User can import from compat module:**
+
+```python
+# v1.x code (still works in v2.0)
+from structural_lib.compat import calculate_steel
+
+ast = calculate_steel(b_mm=300, d_mm=550, mu_kn_m=180)
+# Works but shows deprecation warning
+
+# Gradual migration:
+# 1. Use compat module to unblock v2.0 upgrade
+# 2. Migrate code incrementally
+# 3. Remove compat imports before v3.0
+```
+
+### 7.3 Version Detection Helper
+
+**Help users detect version incompatibilities:**
+
+```python
+# structural_lib/__version__.py
+__version__ = '2.0.0'
+
+def require_version(min_version: str, max_version: str = None):
+    """Ensure library version is compatible.
+
+    Args:
+        min_version: Minimum required version (inclusive)
+        max_version: Maximum required version (exclusive), optional
+
+    Raises:
+        RuntimeError: If version is incompatible
+
+    Example:
+        >>> from structural_lib import require_version
+        >>> require_version('1.5', '2.0')  # Requires 1.5 ≤ version < 2.0
+    """
+    from packaging import version
+
+    current = version.parse(__version__)
+    min_ver = version.parse(min_version)
+
+    if current < min_ver:
+        raise RuntimeError(
+            f"structural_lib {__version__} is too old. "
+            f"Requires >={min_version}. "
+            f"Upgrade with: pip install --upgrade structural-lib-is456"
+        )
+
+    if max_version:
+        max_ver = version.parse(max_version)
+        if current >= max_ver:
+            raise RuntimeError(
+                f"structural_lib {__version__} is too new. "
+                f"Requires <{max_version}. "
+                f"Your code may need migration. "
+                f"See https://docs.example.com/migration"
+            )
+```
+
+**Users can add version checks:**
+
+```python
+# At top of their script
+from structural_lib import require_version
+
+# Ensure compatible version
+require_version('1.5', '2.0')  # Works with 1.5-1.x only
+
+# Rest of script uses v1.x API safely
+```
 
 ---
 
 ## 8. API Lifecycle Management
 
-*(To be added in Step 2)*
+### 8.1 API Stability Levels
+
+**Mark API stability explicitly:**
+
+```python
+# Stable API (1.0+ contract)
+def design_beam(...):
+    """Design beam section per IS 456.
+
+    **Stability: Stable** - This API is covered by semantic versioning.
+    Breaking changes will only occur in major releases.
+    """
+    ...
+
+# Experimental API (may change)
+def optimize_topology(...):
+    """Experimental topology optimization.
+
+    **Stability: Experimental** - This API may change in minor releases.
+    Not recommended for production use.
+
+    .. versionadded:: 1.5
+        Experimental feature
+    """
+    warnings.warn(
+        "optimize_topology() is experimental and may change",
+        FutureWarning,
+    )
+    ...
+
+# Internal API (no guarantees)
+def _internal_helper(...):
+    """Internal helper function.
+
+    **Stability: Internal** - This is a private API with no stability
+    guarantees. Do not use directly.
+    """
+    ...
+```
+
+### 8.2 Feature Flags
+
+**Use flags to test new behavior:**
+
+```python
+# Introduce new behavior behind flag
+def calculate_ast_required(
+    ...,
+    *,
+    use_exact_formula: bool = False,  # New behavior
+):
+    """Calculate required steel area.
+
+    Args:
+        use_exact_formula: If True, use exact iterative formula.
+            If False (default), use simplified formula.
+            **Note:** Default will change to True in v2.0.
+    """
+    if use_exact_formula:
+        # New exact formula
+        return _calculate_exact(...)
+    else:
+        # Old simplified formula
+        warnings.warn(
+            "Simplified formula is deprecated. "
+            "Set use_exact_formula=True for exact calculation. "
+            "This will become the default in v2.0.",
+            FutureWarning,
+        )
+        return _calculate_simplified(...)
+
+# v2.0: Change default
+def calculate_ast_required(..., use_exact_formula: bool = True):
+    ...
+```
+
+### 8.3 API Review Process
+
+**Before each release:**
+
+1. **API Audit**: Review all public functions for consistency
+2. **Deprecation Review**: Check deprecation timeline (ready to remove?)
+3. **Breaking Change Analysis**: Document impact of any breaks
+4. **Documentation Update**: Update all docs for changes
+5. **Migration Guide**: Write guide for major versions
+6. **Community Review**: Get feedback on breaking changes
+7. **Release Candidate**: Test in real projects
+
+**Checklist template:**
+
+```markdown
+# v2.0 Release Checklist
+
+## API Review
+- [ ] All deprecated items removed
+- [ ] All new functions documented
+- [ ] Type hints complete
+- [ ] Examples updated
+
+## Documentation
+- [ ] CHANGELOG.md updated
+- [ ] Migration guide written
+- [ ] API reference regenerated
+- [ ] Tutorials updated
+
+## Testing
+- [ ] All tests pass
+- [ ] Migration tool tested
+- [ ] Breaking changes tested
+- [ ] Release candidate published
+
+## Communication
+- [ ] Deprecation warnings clear
+- [ ] GitHub release drafted
+- [ ] Migration guide published
+- [ ] Community notified
+```
+
+### 8.4 Long-Term Support (LTS)
+
+**For critical users who can't upgrade frequently:**
+
+```
+v1.0 ────────────────────────→ v1.9 (LTS: 2 years)
+      \                              ↑
+       \                             │
+        v2.0 ──────→ v2.9 (LTS: 2 years)
+                      \
+                       \
+                        v3.0 ──→ ...
+```
+
+**LTS policy:**
+- **Regular releases**: Bug fixes for 6 months after next major
+- **LTS releases**: Bug fixes for 2 years
+- **Security fixes**: All supported versions
+
+**Example:**
+```
+v1.9 LTS released: 2026-03-01
+v2.0 released: 2026-06-01
+v1.9 support:
+  - Bug fixes: Until 2026-12-01 (6 months after v2.0)
+  - Security fixes: Until 2028-03-01 (2 years)
+```
 
 ---
 
 ## Appendix A: Quick Reference Card
 
-*(To be added in Step 2)*
+### Deprecation Checklist
+
+**When deprecating a function:**
+- [ ] Add `@deprecated()` decorator with version numbers
+- [ ] Update docstring with deprecation notice
+- [ ] Add entry to CHANGELOG.md "Deprecated" section
+- [ ] Add to deprecation timeline in docs
+- [ ] Provide clear replacement/migration instructions
+- [ ] Test that deprecation warning appears
+- [ ] Wait minimum 2 minor versions before removal
+
+### Breaking Change Checklist
+
+**When making a breaking change:**
+- [ ] Justify: Is it worth breaking user code?
+- [ ] Announce: Deprecate in advance (≥2 minor versions)
+- [ ] Document: Write migration guide
+- [ ] Automate: Provide migration script if possible
+- [ ] Communicate: Update CHANGELOG, release notes, docs
+- [ ] Test: Verify on real user code
+- [ ] Batch: Save for major release (don't scatter)
+
+### Release Checklist
+
+**For each release:**
+- [ ] Update version in `__version__.py`
+- [ ] Update CHANGELOG.md with version and date
+- [ ] Tag release in git: `git tag v1.5.0`
+- [ ] Build distributions: `python -m build`
+- [ ] Test upload: `twine upload --repository testpypi dist/*`
+- [ ] Upload to PyPI: `twine upload dist/*`
+- [ ] Create GitHub Release with notes
+- [ ] Announce on communication channels
+
+### Version Number Decision Tree
+
+```
+Is this a bug fix?
+├─ Yes → Patch bump (1.5.2 → 1.5.3)
+└─ No
+   ├─ Are we adding features (backward compatible)?
+   │  └─ Yes → Minor bump (1.5.3 → 1.6.0)
+   └─ Are we making breaking changes?
+      └─ Yes → Major bump (1.9.0 → 2.0.0)
+```
 
 ---
 
 ## Appendix B: Real-World Examples
 
-*(To be added in Step 2)*
+### Example 1: NumPy's Matrix Deprecation
+
+**Scenario:** NumPy deprecated `np.matrix` in favor of regular arrays.
+
+**Timeline:**
+- v1.15 (2018): Announced deprecation
+- v1.15-1.19: Warnings shown, still works
+- v1.20 (2021): Removed (3 years later!)
+
+**Lesson:** Long deprecation cycle (3 years) for widely-used API.
+
+### Example 2: Django's url() → path()
+
+**Scenario:** Django renamed `url()` to `path()` with simpler syntax.
+
+**Approach:**
+- Kept both functions for 2 years
+- Provided automatic conversion tool
+- Clear migration guide
+- Gradual adoption (not forced)
+
+**Lesson:** Provide both old and new, give users time.
+
+### Example 3: Pandas' append() Removal
+
+**Scenario:** Pandas removed `DataFrame.append()` (inefficient).
+
+**Approach:**
+- Deprecated in v1.4 (2022)
+- Recommended `pd.concat()` instead
+- Removed in v2.0 (2023)
+- Clear performance explanation
+
+**Lesson:** Explain WHY change is needed (performance), not just HOW to migrate.
+
+### Example 4: Requests' Stability Promise
+
+**Scenario:** Requests promised no breaking changes after 1.0.
+
+**Approach:**
+- Strict SemVer since 1.0
+- No breaking changes in 10+ years!
+- Occasional deprecations, never forced removal
+- Users trust it completely
+
+**Lesson:** Stability builds trust. Breaking rarely is better than breaking often.
+
+### Example 5: FastAPI's 0.x Development
+
+**Scenario:** FastAPI stayed 0.x for 3 years while stabilizing.
+
+**Approach:**
+- Honest about 0.x = "may change"
+- Documented breaking changes clearly
+- Planned 1.0 when API stabilized
+- Users accepted 0.x = development
+
+**Lesson:** It's OK to stay 0.x during development, just be transparent.
+
+---
+
+## Summary
+
+**Key Takeaways:**
+
+1. **Use Semantic Versioning**: Version numbers communicate impact
+2. **Deprecate Before Breaking**: Minimum 2 minor versions notice
+3. **Provide Migration Paths**: Clear instructions + automation
+4. **Batch Breaking Changes**: Save for major releases
+5. **Communicate Clearly**: CHANGELOG, warnings, migration guides
+6. **Build Trust**: Stability → user confidence → adoption
+
+**Our Commitment:**
+
+- **0.x (current)**: Iterating on API, minimizing breaks, warning first
+- **1.0 (target)**: Stability promise, strict SemVer, long deprecation cycles
+- **Future**: Breaking changes only in majors, clear migration guides always
