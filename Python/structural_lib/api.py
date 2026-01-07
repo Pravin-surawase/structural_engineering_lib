@@ -21,6 +21,13 @@ from . import (
     report,
     serviceability,
 )
+from .api_results import (
+    CostBreakdown,
+    CostOptimizationResult,
+    DesignSuggestionsResult,
+    OptimalDesign,
+    SmartAnalysisResult,
+)
 from .costing import CostProfile
 from .data_types import (
     ComplianceCaseResult,
@@ -1118,7 +1125,7 @@ def optimize_beam_cost(
     vu_kn: float,
     cost_profile: Optional[CostProfile] = None,
     cover_mm: int = 40,
-) -> dict[str, Any]:
+) -> CostOptimizationResult:
     """Find the most cost-effective beam design meeting IS 456:2000.
 
     Uses brute-force optimization to find the cheapest valid beam design
@@ -1133,14 +1140,15 @@ def optimize_beam_cost(
         cover_mm: Concrete cover (default 40mm).
 
     Returns:
-        Dictionary with:
-            - optimal_design: Best design (b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2)
-            - cost_breakdown: Concrete, steel, formwork, total costs
+        CostOptimizationResult with:
+            - optimal_design: Best design found
             - baseline_cost: Conservative design cost for comparison
             - savings_amount: Cost saved (currency units)
             - savings_percent: Percentage saved
             - alternatives: List of next 3 cheapest designs
-            - metadata: Candidates evaluated, computation time
+            - candidates_evaluated: Total candidates evaluated
+            - candidates_valid: Number of valid candidates
+            - computation_time_sec: Time taken for optimization
 
     Example:
         >>> result = optimize_beam_cost(
@@ -1149,9 +1157,10 @@ def optimize_beam_cost(
         ...     mu_knm=120,
         ...     vu_kn=80
         ... )
-        >>> print(f"Optimal: {result['optimal_design']['b_mm']}×{result['optimal_design']['D_mm']}mm")
-        >>> print(f"Cost: {result['cost_breakdown']['currency']}{result['cost_breakdown']['total_cost']:,.0f}")
-        >>> print(f"Savings: {result['savings_percent']:.1f}%")
+        >>> print(result.summary())
+        'Optimal: 300×500mm, Cost: INR45,230, Savings: 18.5%'
+        >>> print(f"Width: {result.optimal_design.b_mm}mm")
+        >>> print(f"Savings: {result.savings_percent:.1f}%")
     """
 
     _require_is456_units(units)
@@ -1163,49 +1172,49 @@ def optimize_beam_cost(
         cost_profile=cost_profile,
     )
 
-    # Convert result to dictionary
+    # Convert internal result to CostOptimizationResult
+    def _to_cost_breakdown(breakdown: Any) -> CostBreakdown:
+        """Convert internal cost breakdown to CostBreakdown."""
+        return CostBreakdown(
+            concrete_cost=breakdown.concrete_cost,
+            steel_cost=breakdown.steel_cost,
+            formwork_cost=breakdown.formwork_cost,
+            labor_adjustment=breakdown.labor_adjustment,
+            total_cost=breakdown.total_cost,
+            currency=breakdown.currency,
+        )
+
+    def _to_optimal_design(candidate: Any) -> OptimalDesign:
+        """Convert internal candidate to OptimalDesign."""
+        return OptimalDesign(
+            b_mm=candidate.b_mm,
+            D_mm=candidate.D_mm,
+            d_mm=candidate.d_mm,
+            fck_nmm2=candidate.fck_nmm2,
+            fy_nmm2=candidate.fy_nmm2,
+            cost_breakdown=_to_cost_breakdown(candidate.cost_breakdown),
+            is_valid=candidate.is_valid,
+            failure_reason=candidate.failure_reason,
+        )
+
+    # Convert optimal and alternatives
     optimal = result.optimal_candidate
+    optimal_design = _to_optimal_design(optimal)
+    
+    alternatives = [
+        _to_optimal_design(alt) for alt in result.alternatives if alt
+    ]
 
-    def _cost_breakdown_to_dict(
-        breakdown: Optional[Any],
-    ) -> Optional[dict[str, Any]]:
-        if breakdown is None:
-            return None
-        return {
-            "concrete_cost": breakdown.concrete_cost,
-            "steel_cost": breakdown.steel_cost,
-            "formwork_cost": breakdown.formwork_cost,
-            "labor_adjustment": breakdown.labor_adjustment,
-            "total_cost": breakdown.total_cost,
-            "currency": breakdown.currency,
-        }
-
-    def _candidate_to_dict(candidate: Optional[Any]) -> Optional[dict[str, Any]]:
-        if candidate is None:
-            return None
-        return {
-            "b_mm": candidate.b_mm,
-            "D_mm": candidate.D_mm,
-            "d_mm": candidate.d_mm,
-            "fck_nmm2": candidate.fck_nmm2,
-            "fy_nmm2": candidate.fy_nmm2,
-            "cost_breakdown": _cost_breakdown_to_dict(candidate.cost_breakdown),
-            "is_valid": candidate.is_valid,
-            "failure_reason": candidate.failure_reason,
-        }
-
-    return {
-        "optimal_design": _candidate_to_dict(optimal),
-        "baseline_cost": result.baseline_cost,
-        "savings_amount": result.savings_amount,
-        "savings_percent": result.savings_percent,
-        "alternatives": [_candidate_to_dict(alt) for alt in result.alternatives if alt],
-        "metadata": {
-            "candidates_evaluated": result.candidates_evaluated,
-            "candidates_valid": result.candidates_valid,
-            "computation_time_sec": result.computation_time_sec,
-        },
-    }
+    return CostOptimizationResult(
+        optimal_design=optimal_design,
+        baseline_cost=result.baseline_cost,
+        savings_amount=result.savings_amount,
+        savings_percent=result.savings_percent,
+        alternatives=alternatives,
+        candidates_evaluated=result.candidates_evaluated,
+        candidates_valid=result.candidates_valid,
+        computation_time_sec=result.computation_time_sec,
+    )
 
 
 def suggest_beam_design_improvements(
@@ -1215,7 +1224,7 @@ def suggest_beam_design_improvements(
     span_mm: Optional[float] = None,
     mu_knm: Optional[float] = None,
     vu_kn: Optional[float] = None,
-) -> dict[str, Any]:
+) -> DesignSuggestionsResult:
     """Get AI-driven design improvement suggestions for an IS 456:2000 beam design.
 
     Analyzes a completed beam design and provides actionable suggestions for:
@@ -1241,8 +1250,8 @@ def suggest_beam_design_improvements(
         vu_kn: Factored shear (kN), optional context.
 
     Returns:
-        Dictionary with:
-            - suggestions: List of suggestion objects sorted by priority
+        DesignSuggestionsResult with:
+            - suggestions: List of suggestions sorted by priority
             - total_count: Number of suggestions
             - high_impact_count: Number of HIGH impact suggestions
             - medium_impact_count: Number of MEDIUM impact suggestions
@@ -1252,16 +1261,17 @@ def suggest_beam_design_improvements(
 
     Example:
         >>> design = design_beam_is456(...)
-        >>> suggestions = suggest_beam_design_improvements(
+        >>> result = suggest_beam_design_improvements(
         ...     units="IS456",
         ...     design=design,
         ...     span_mm=5000,
         ...     mu_knm=120,
         ...     vu_kn=80
         ... )
-        >>> print(f"Found {suggestions['high_impact_count']} high-impact suggestions")
-        >>> for sug in suggestions['suggestions'][:3]:  # Top 3
-        ...     print(f"  • {sug['title']} (impact: {sug['impact']}, confidence: {sug['confidence']:.0%})")
+        >>> print(result.summary())
+        'Found 8 suggestions: 2 high, 4 medium, 2 low impact'
+        >>> for sug in result.high_impact_suggestions():
+        ...     print(f"  • [{sug.impact}] {sug.title}")
     """
 
     _require_is456_units(units)
@@ -1273,7 +1283,32 @@ def suggest_beam_design_improvements(
         vu_kn=vu_kn,
     )
 
-    return report.to_dict()
+    # Convert internal suggestion report to DesignSuggestionsResult
+    from .api_results import Suggestion
+    
+    suggestions = [
+        Suggestion(
+            category=sug.category,
+            title=sug.title,
+            impact=sug.impact,
+            confidence=sug.confidence,
+            rationale=sug.rationale,
+            estimated_benefit=sug.estimated_benefit,
+            action_steps=sug.action_steps,
+            clause_refs=sug.clause_refs,
+        )
+        for sug in report.suggestions
+    ]
+
+    return DesignSuggestionsResult(
+        suggestions=suggestions,
+        total_count=report.suggestions_count,
+        high_impact_count=report.high_impact_count,
+        medium_impact_count=report.medium_impact_count,
+        low_impact_count=report.low_impact_count,
+        analysis_time_ms=report.analysis_time_ms,
+        engine_version=report.engine_version,
+    )
 
 
 def smart_analyze_design(
@@ -1295,8 +1330,7 @@ def smart_analyze_design(
     include_constructability: bool = True,
     cost_profile: Optional[CostProfile] = None,
     weights: Optional[dict[str, float]] = None,
-    output_format: str = "dict",
-) -> Union[dict[str, Any], str]:
+) -> SmartAnalysisResult:
     """Unified smart design analysis dashboard.
 
     Combines cost optimization, design suggestions, sensitivity analysis,
@@ -1323,16 +1357,16 @@ def smart_analyze_design(
         include_constructability: Include constructability (default: True).
         cost_profile: Custom cost profile (optional).
         weights: Custom weights for overall score (optional).
-        output_format: Output format - "dict", "json", or "text" (default: "dict").
 
     Returns:
-        Dashboard report as dict, JSON string, or formatted text.
+        SmartAnalysisResult with complete dashboard data.
+        Use .to_dict(), .to_json(), or .to_text() for different formats.
 
     Raises:
         ValueError: If units is not IS456 or design fails.
 
     Example:
-        >>> dashboard = smart_analyze_design(
+        >>> result = smart_analyze_design(
         ...     units="IS456",
         ...     span_mm=5000,
         ...     mu_knm=120,
@@ -1343,9 +1377,11 @@ def smart_analyze_design(
         ...     fck_nmm2=25,
         ...     fy_nmm2=500,
         ... )
-        >>> print(f"Overall Score: {dashboard['summary']['overall_score']:.1f}/100")
-        >>> print(f"Cost Savings: {dashboard['cost']['savings_percent']:.1f}%")
-        >>> print(f"Top Suggestion: {dashboard['suggestions']['top_3'][0]['title']}")
+        >>> print(result.summary())
+        'Analysis Score: 78.5/100'
+        >>> print(result.to_json())  # JSON string
+        >>> print(result.to_text())  # Formatted text
+        >>> data = result.to_dict()  # Dictionary
     """
 
     from .insights import SmartDesigner
@@ -1384,12 +1420,14 @@ def smart_analyze_design(
         weights=weights,
     )
 
-    # Format output
-    if output_format == "text":
-        return dashboard.summary_text()
-    elif output_format == "json":
-        import json
-
-        return json.dumps(dashboard.to_dict(), indent=2)
-    else:
-        return dashboard.to_dict()
+    # Convert dashboard to SmartAnalysisResult
+    dashboard_dict = dashboard.to_dict()
+    
+    return SmartAnalysisResult(
+        summary_data=dashboard_dict.get("summary", {}),
+        metadata=dashboard_dict.get("metadata", {}),
+        cost=dashboard_dict.get("cost"),
+        suggestions=dashboard_dict.get("suggestions"),
+        sensitivity=dashboard_dict.get("sensitivity"),
+        constructability=dashboard_dict.get("constructability"),
+    )
