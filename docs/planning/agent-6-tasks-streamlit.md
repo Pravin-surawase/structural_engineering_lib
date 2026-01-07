@@ -84,6 +84,34 @@ Ready for MAIN review and push."
 # Notify MAIN agent with handoff template (see below)
 ```
 
+### Quality Gates (Non-Negotiable)
+
+Every UI change must meet these before handoff:
+
+1. **Runs cleanly**
+   - `streamlit run streamlit_app/app.py` starts without errors.
+   - No red exceptions in the browser or terminal.
+2. **UI stays usable**
+   - All inputs validate (no silent failures).
+   - Errors are shown with actionable guidance.
+3. **Docs updated**
+   - Component usage documented in `streamlit_app/docs/` or `docs/ui/`.
+4. **Tests (if present)**
+   - Run targeted tests when added: `python -m pytest streamlit_app/tests -q`.
+
+### Definition of Done (Per Component)
+- Working UI with real library data (no placeholders).
+- Validation + error state behavior verified.
+- Component doc snippet added.
+- Handoff note includes what changed + how to test.
+
+### Phase Closeout Rule
+At the end of each phase, produce a concise handoff summary:
+- What shipped (components/pages)
+- Files added/changed
+- How to test
+- Known gaps or follow-ups
+
 ### Branch Naming Convention
 
 **Pattern:** `streamlit/YYYY-MM-DD-feature-name`
@@ -157,6 +185,17 @@ class VisualizationData:
 **Who implements:** DEV agent (Agent 4)
 **Priority:** Medium (blocks beam visualizer feature)
 ```
+
+---
+
+## Ownership & Collaboration Rules
+
+**Agent 6 owns:** `streamlit_app/` and `docs/ui/` only.
+**MAIN owns:** merges, pushes, and changes to core library code.
+
+**If a change needs core API updates:**
+- Write a request to MAIN (see template above).
+- Do not implement API changes yourself.
 
 ---
 
