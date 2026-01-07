@@ -1,12 +1,13 @@
 """Integration tests for api.optimize_beam_cost() function.
 
 These tests verify the API layer correctly orchestrates cost optimization
-and returns properly formatted results.
+and returns properly formatted results as CostOptimizationResult objects.
 """
 
 import pytest
 
 from structural_lib import api
+from structural_lib.api_results import CostOptimizationResult
 
 
 def test_api_optimize_beam_cost_basic():
@@ -19,38 +20,43 @@ def test_api_optimize_beam_cost_basic():
         cover_mm=40,
     )
 
-    # Check structure
-    assert "optimal_design" in result
-    assert "alternatives" in result
-    assert "baseline_cost" in result
-    assert "savings_amount" in result
-    assert "savings_percent" in result
-    assert "metadata" in result
+    # Check return type
+    assert isinstance(result, CostOptimizationResult)
+
+    # Check attributes
+    assert result.optimal_design is not None
+    assert result.alternatives is not None
+    assert result.baseline_cost > 0
+    assert result.savings_amount >= 0
+    assert result.savings_percent >= 0
+    assert result.candidates_evaluated > 0
 
     # Check optimal design has required fields
-    opt = result["optimal_design"]
-    assert "b_mm" in opt
-    assert "D_mm" in opt
-    assert "d_mm" in opt
-    assert "fck_nmm2" in opt
-    assert "fy_nmm2" in opt
-    assert "cost_breakdown" in opt
+    opt = result.optimal_design
+    assert opt.b_mm > 0
+    assert opt.D_mm > 0
+    assert opt.d_mm > 0
+    assert opt.fck_nmm2 > 0
+    assert opt.fy_nmm2 > 0
+    assert opt.cost_breakdown is not None
 
     # Check cost breakdown
-    cost = opt["cost_breakdown"]
-    assert "total_cost" in cost
-    assert "concrete_cost" in cost
-    assert "steel_cost" in cost
-    assert "formwork_cost" in cost
-    assert "currency" in cost
-    assert cost["currency"] == "INR"
+    cost = opt.cost_breakdown
+    assert cost.total_cost > 0
+    assert cost.concrete_cost > 0
+    assert cost.steel_cost > 0
+    assert cost.formwork_cost >= 0
+    assert cost.currency == "INR"
 
-    # Check metadata
-    meta = result["metadata"]
-    assert "candidates_evaluated" in meta
-    assert "candidates_valid" in meta
-    assert "computation_time_sec" in meta
-    assert meta["candidates_evaluated"] > 0
+    # Check result object methods
+    assert result.candidates_valid > 0
+    assert result.computation_time_sec >= 0
+
+    # Test summary method
+    summary = result.summary()
+    assert "Optimal:" in summary
+    assert "Cost:" in summary
+    assert "Savings:" in summary
 
 
 def test_api_optimize_beam_cost_alternatives():
@@ -63,16 +69,15 @@ def test_api_optimize_beam_cost_alternatives():
         cover_mm=40,
     )
 
-    alternatives = result["alternatives"]
+    alternatives = result.alternatives
     assert len(alternatives) <= 3  # Should return up to 3 alternatives
 
     # Each alternative should have complete structure
     for alt in alternatives:
-        if alt:  # Some may be None if fewer than 3 alternatives exist
-            assert "b_mm" in alt
-            assert "D_mm" in alt
-            assert "cost_breakdown" in alt
-            assert alt["cost_breakdown"]["total_cost"] > 0
+        assert alt.b_mm > 0
+        assert alt.D_mm > 0
+        assert alt.cost_breakdown is not None
+        assert alt.cost_breakdown.total_cost > 0
 
 
 def test_api_optimize_beam_cost_savings_calculation():
@@ -85,10 +90,10 @@ def test_api_optimize_beam_cost_savings_calculation():
         cover_mm=40,
     )
 
-    optimal_cost = result["optimal_design"]["cost_breakdown"]["total_cost"]
-    baseline_cost = result["baseline_cost"]
-    savings_amount = result["savings_amount"]
-    savings_percent = result["savings_percent"]
+    optimal_cost = result.optimal_design.cost_breakdown.total_cost
+    baseline_cost = result.baseline_cost
+    savings_amount = result.savings_amount
+    savings_percent = result.savings_percent
 
     # Verify savings calculation
     assert pytest.approx(savings_amount, rel=0.01) == baseline_cost - optimal_cost
@@ -111,10 +116,10 @@ def test_api_optimize_beam_cost_small_span():
         cover_mm=25,
     )
 
-    opt = result["optimal_design"]
-    assert opt["b_mm"] >= 200  # Minimum width
-    assert opt["d_mm"] > 0
-    assert opt["D_mm"] > opt["d_mm"]  # Overall depth > effective depth
+    opt = result.optimal_design
+    assert opt.b_mm >= 200  # Minimum width
+    assert opt.d_mm > 0
+    assert opt.D_mm > opt.d_mm  # Overall depth > effective depth
 
 
 def test_api_optimize_beam_cost_large_moment():
@@ -127,11 +132,11 @@ def test_api_optimize_beam_cost_large_moment():
         cover_mm=40,
     )
 
-    opt = result["optimal_design"]
+    opt = result.optimal_design
     # Should produce a valid design
-    assert opt["cost_breakdown"]["total_cost"] > 0
+    assert opt.cost_breakdown.total_cost > 0
     # Higher grade likely needed
-    assert opt["fck_nmm2"] in [25, 30]
+    assert opt.fck_nmm2 in [25, 30]
 
 
 def test_api_optimize_beam_cost_custom_cover():
@@ -153,6 +158,24 @@ def test_api_optimize_beam_cost_custom_cover():
     )
 
     # Higher cover should result in higher cost (deeper beam needed)
-    cost_25 = result_25["optimal_design"]["cost_breakdown"]["total_cost"]
-    cost_50 = result_50["optimal_design"]["cost_breakdown"]["total_cost"]
+    cost_25 = result_25.optimal_design.cost_breakdown.total_cost
+    cost_50 = result_50.optimal_design.cost_breakdown.total_cost
     assert cost_50 >= cost_25
+
+
+def test_api_optimize_beam_cost_to_dict():
+    """Test that to_dict() works for backward compatibility."""
+    result = api.optimize_beam_cost(
+        units="IS456",
+        span_mm=5000,
+        mu_knm=120,
+        vu_kn=80,
+        cover_mm=40,
+    )
+
+    # Test to_dict conversion
+    result_dict = result.to_dict()
+    assert isinstance(result_dict, dict)
+    assert "optimal_design" in result_dict
+    assert "savings_percent" in result_dict
+    assert result_dict["savings_percent"] == result.savings_percent

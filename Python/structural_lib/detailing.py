@@ -18,6 +18,9 @@ import math
 from dataclasses import dataclass
 from typing import Optional
 
+from .error_messages import material_property_out_of_range
+from .errors import ComplianceError, ConfigurationError, MaterialError
+
 # =============================================================================
 # Constants
 # =============================================================================
@@ -161,24 +164,46 @@ def calculate_development_length(
         Development length Ld (mm)
 
     Raises:
-        ValueError: If inputs are invalid (bar_dia, fck, fy <= 0)
+        MaterialError: If inputs are invalid (bar_dia, fck, fy <= 0)
+        ComplianceError: If bond stress calculation fails
 
     Reference:
         IS 456:2000, Clause 26.2.1
     """
     if bar_dia <= 0:
-        raise ValueError(f"bar_dia must be positive, got {bar_dia}")
+        raise MaterialError(
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.1"
+            ),
+            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            clause_ref="Cl. 26.2.1",
+        )
     if fck <= 0:
-        raise ValueError(f"fck must be positive, got {fck}")
+        raise MaterialError(
+            material_property_out_of_range(
+                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
+            ),
+            details={"fck": fck, "minimum": 0, "maximum": 100},
+            clause_ref="Cl. 6.2",
+        )
     if fy <= 0:
-        raise ValueError(f"fy must be positive, got {fy}")
+        raise MaterialError(
+            material_property_out_of_range(
+                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
+            ),
+            details={"fy": fy, "minimum": 0, "maximum": 600},
+            clause_ref="Cl. 6.2",
+        )
 
     sigma_s = stress_ratio * fy
     tau_bd = get_bond_stress(fck, bar_type)
 
     if tau_bd <= 0:
-        raise ValueError(
-            f"Invalid bond stress tau_bd = {tau_bd} for fck={fck}, bar_type={bar_type}"
+        raise ComplianceError(
+            f"Invalid bond stress tau_bd = {tau_bd:.2f} N/mm² for fck={fck} N/mm², bar_type='{bar_type}'. "
+            "Bond stress must be positive per IS 456 Table 21. Check input parameters. [Cl. 26.2.1.1]",
+            details={"tau_bd": tau_bd, "fck": fck, "bar_type": bar_type},
+            clause_ref="Cl. 26.2.1.1",
         )
 
     ld = (bar_dia * sigma_s) / (4 * tau_bd)
@@ -254,13 +279,19 @@ def calculate_bar_spacing(
         Center-to-center spacing (mm)
 
     Raises:
-        ValueError: If bar_count <= 1
+        ConfigurationError: If bar_count <= 1
 
     Notes:
         Does not validate b/cover/stirrup_dia positivity; caller should enforce.
     """
     if bar_count <= 1:
-        raise ValueError(f"bar_count must be > 1 to calculate spacing, got {bar_count}")
+        raise ConfigurationError(
+            f"Bar count must be > 1 to calculate spacing (need at least 2 bars). Got bar_count={bar_count}. "
+            "[IS 456 Cl. 26.3.2]",
+            details={"bar_count": bar_count, "minimum": 2},
+            suggestion="Provide at least 2 bars for spacing calculation",
+            clause_ref="Cl. 26.3.2",
+        )
 
     # Available width = b - 2*(cover + stirrup_dia) - bar_dia
     # For n bars, we have (n-1) spaces

@@ -11,6 +11,7 @@ Reference: IS 456:2000 Clause 40
 import pytest
 
 from structural_lib import shear
+from structural_lib.errors import DimensionError
 
 
 class TestCalculateTv:
@@ -24,10 +25,10 @@ class TestCalculateTv:
         assert tv == pytest.approx(0.8889, rel=1e-3)
 
     def test_zero_dimensions_raises_error(self):
-        """Zero b or d should raise ValueError (no silent failures)."""
-        with pytest.raises(ValueError, match="Beam width b must be > 0"):
+        """Zero b or d should raise DimensionError (no silent failures)."""
+        with pytest.raises(DimensionError, match="beam width b"):
             shear.calculate_tv(vu_kn=100.0, b=0.0, d=450.0)
-        with pytest.raises(ValueError, match="Effective depth d must be > 0"):
+        with pytest.raises(DimensionError, match="effective depth d"):
             shear.calculate_tv(vu_kn=100.0, b=250.0, d=0.0)
 
     def test_negative_shear_uses_absolute(self):

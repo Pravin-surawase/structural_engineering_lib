@@ -2,14 +2,194 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """
 Module:       errors
-Description:  Structured error types for machine-readable, traceable errors.
+Description:  Exception hierarchy and structured error types.
 
-See docs/reference/error-schema.md for full specification.
+This module provides:
+1. Exception hierarchy for raising errors (StructuralLibError and subclasses)
+2. Structured error dataclasses for machine-readable error reporting (DesignError)
+
+See:
+- docs/guidelines/error-handling-standard.md for exception hierarchy
+- docs/reference/error-schema.md for structured error specification
+
+Related: TASK-212 (Create exception hierarchy)
 """
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
+
+# =============================================================================
+# Exception Hierarchy (for raising errors)
+# =============================================================================
+
+
+class StructuralLibError(Exception):
+    """
+    Base exception for all structural_lib_is456 errors.
+
+    All library exceptions should inherit from this class to allow users
+    to catch all library-specific errors with a single except clause.
+
+    Args:
+        message: Human-readable error description
+        details: Optional dict with additional context (values, constraints)
+        suggestion: Optional actionable guidance for fixing the error
+        clause_ref: Optional IS 456:2000 clause reference
+
+    Example:
+        >>> raise StructuralLibError(
+        ...     "Beam width too small",
+        ...     details={"b_mm": 150, "minimum": 200},
+        ...     suggestion="Increase beam width to at least 200mm",
+        ...     clause_ref="Cl. 26.5.1.1"
+        ... )
+    """
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        details: Optional[dict[str, Any]] = None,
+        suggestion: Optional[str] = None,
+        clause_ref: Optional[str] = None,
+    ):
+        super().__init__(message)
+        self.message = message
+        self.details = details or {}
+        self.suggestion = suggestion
+        self.clause_ref = clause_ref
+
+    def __str__(self) -> str:
+        """Format exception with all context."""
+        parts = [self.message]
+        if self.clause_ref:
+            parts.append(f"(Ref: IS 456:2000 {self.clause_ref})")
+        if self.suggestion:
+            parts.append(f"Suggestion: {self.suggestion}")
+        if self.details:
+            details_str = ", ".join(f"{k}={v}" for k, v in self.details.items())
+            parts.append(f"[{details_str}]")
+        return " ".join(parts)
+
+
+# -----------------------------------------------------------------------------
+# Level 1: Primary exception categories
+# -----------------------------------------------------------------------------
+
+
+class ValidationError(StructuralLibError):
+    """
+    Raised when input validation fails.
+
+    Use for: Invalid dimensions, materials, loads, or parameters provided by user.
+
+    Example:
+        >>> raise ValidationError(
+        ...     "Beam width b=150mm is below minimum 200mm",
+        ...     details={"b_mm": 150, "minimum": 200},
+        ...     clause_ref="Cl. 26.5.1.1"
+        ... )
+    """
+
+
+class DesignConstraintError(StructuralLibError):
+    """
+    Raised when design requirements cannot be satisfied within given constraints.
+
+    Use for: Capacity exceeded, insufficient space for reinforcement,
+    design not feasible with given section.
+
+    Example:
+        >>> raise DesignConstraintError(
+        ...     "Moment Mu=250 kN·m exceeds section capacity Mu,lim=200 kN·m",
+        ...     details={"mu_knm": 250, "mu_lim_knm": 200},
+        ...     suggestion="Increase section depth or use compression reinforcement"
+        ... )
+    """
+
+
+class ComplianceError(StructuralLibError):
+    """
+    Raised when IS 456:2000 code requirements are not met.
+
+    Use for: Minimum reinforcement, spacing limits, detailing requirements,
+    ductility criteria violations.
+
+    Example:
+        >>> raise ComplianceError(
+        ...     "Steel ratio below minimum 0.85/fy",
+        ...     details={"pt_actual": 0.12, "pt_min": 0.20},
+        ...     clause_ref="Cl. 26.5.1.1"
+        ... )
+    """
+
+
+class ConfigurationError(StructuralLibError):
+    """
+    Raised when library is misconfigured or in invalid state.
+
+    Use for: Missing setup, invalid configuration, incompatible options.
+
+    Example:
+        >>> raise ConfigurationError(
+        ...     "Invalid beam type specified",
+        ...     details={"beam_type": "UNKNOWN"},
+        ...     suggestion="Use 'RECTANGULAR', 'T_BEAM', or 'L_BEAM'"
+        ... )
+    """
+
+
+class CalculationError(StructuralLibError):
+    """
+    Raised when calculation cannot complete due to numerical issues.
+
+    Use for: Convergence failure, numerical instability, iteration limits exceeded.
+
+    Example:
+        >>> raise CalculationError(
+        ...     "Iterative solution did not converge",
+        ...     details={"iterations": 100, "tolerance": 0.001},
+        ...     suggestion="Check input values or increase iteration limit"
+        ... )
+    """
+
+
+# -----------------------------------------------------------------------------
+# Level 2: Specific validation failures
+# -----------------------------------------------------------------------------
+
+
+class DimensionError(ValidationError):
+    """
+    Raised when dimensions are invalid or out of range.
+
+    Use for: Negative dimensions, dimensions below code minimums,
+    incompatible dimension relationships.
+    """
+
+
+class MaterialError(ValidationError):
+    """
+    Raised when material properties are invalid.
+
+    Use for: Invalid concrete grade, invalid steel grade,
+    material properties out of range.
+    """
+
+
+class LoadError(ValidationError):
+    """
+    Raised when loads are invalid.
+
+    Use for: Negative loads (when not allowed), load combinations
+    that don't make sense.
+    """
+
+
+# =============================================================================
+# Structured Error Dataclasses (for machine-readable error reporting)
+# =============================================================================
 
 
 class Severity(str, Enum):
@@ -23,7 +203,13 @@ class Severity(str, Enum):
 @dataclass(frozen=True)
 class DesignError:
     """
-    Structured error for machine-readable and human-friendly error reporting.
+    Structured error dataclass for machine-readable error reporting.
+
+    NOTE: This is a dataclass for structured error data, NOT an exception.
+    For raising design-related exceptions, use DesignConstraintError instead.
+
+    This dataclass is used in result objects to collect errors without raising exceptions,
+    allowing batch processing and error collection.
 
     Note: This dataclass is frozen (immutable) to prevent accidental mutation
     of shared error constants.

@@ -40,6 +40,7 @@ SKIP_FILES = [
     "SESSION_LOG.md",
     "docs/_archive/",
     "docs/research/",  # Research docs reference external tool versions
+    "docs/guidelines/",  # Guidelines contain example version numbers
 ]
 
 

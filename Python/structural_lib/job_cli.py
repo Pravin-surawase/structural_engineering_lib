@@ -84,48 +84,48 @@ def main(argv: list[str] | None = None) -> int:
         )
 
         # Print results to console
-        opt = result["optimal_design"]
-        cost = opt["cost_breakdown"]
+        opt = result.optimal_design
+        cost = opt.cost_breakdown
         print("\n" + "=" * 60)
         print("COST OPTIMIZATION RESULT")
         print("=" * 60)
         print("\n✅ Optimal Design:")
-        print(f"   Dimensions: {opt['b_mm']}mm × {opt['D_mm']}mm (d = {opt['d_mm']}mm)")
-        print(f"   Materials:  M{opt['fck_nmm2']} concrete, Fe{opt['fy_nmm2']} steel")
-        print(f"\n💰 Cost Breakdown ({cost['currency']}):")
-        print(f"   Concrete:  {cost['concrete_cost']:>10,.2f}")
-        print(f"   Steel:     {cost['steel_cost']:>10,.2f}")
-        print(f"   Formwork:  {cost['formwork_cost']:>10,.2f}")
-        print(f"   Labor:     {cost['labor_adjustment']:>10,.2f}")
+        print(f"   Dimensions: {opt.b_mm}mm × {opt.D_mm}mm (d = {opt.d_mm}mm)")
+        print(f"   Materials:  M{opt.fck_nmm2} concrete, Fe{opt.fy_nmm2} steel")
+        print(f"\n💰 Cost Breakdown ({cost.currency}):")
+        print(f"   Concrete:  {cost.concrete_cost:>10,.2f}")
+        print(f"   Steel:     {cost.steel_cost:>10,.2f}")
+        print(f"   Formwork:  {cost.formwork_cost:>10,.2f}")
+        print(f"   Labor:     {cost.labor_adjustment:>10,.2f}")
         print(f"   {'-' * 25}")
-        print(f"   TOTAL:     {cost['total_cost']:>10,.2f}")
+        print(f"   TOTAL:     {cost.total_cost:>10,.2f}")
         print("\n📊 Savings vs Conservative Design:")
-        print(f"   Baseline cost: {result['baseline_cost']:>10,.2f}")
+        print(f"   Baseline cost: {result.baseline_cost:>10,.2f}")
         print(
-            f"   Savings:       {result['savings_amount']:>10,.2f} ({result['savings_percent']:.1f}%)"
+            f"   Savings:       {result.savings_amount:>10,.2f} ({result.savings_percent:.1f}%)"
         )
 
-        if result["alternatives"]:
+        if result.alternatives:
             print("\n📋 Alternative Designs (next 3 cheapest):")
-            for i, alt in enumerate(result["alternatives"], 1):
-                if alt and alt["cost_breakdown"]:
-                    alt_cost = alt["cost_breakdown"]
+            for i, alt in enumerate(result.alternatives, 1):
+                if alt and alt.cost_breakdown:
+                    alt_cost = alt.cost_breakdown
                     print(
-                        f"   {i}. {alt['b_mm']}×{alt['D_mm']}mm, M{alt['fck_nmm2']}, Fe{alt['fy_nmm2']} → {alt_cost['currency']}{alt_cost['total_cost']:,.2f}"
+                        f"   {i}. {alt.b_mm}×{alt.D_mm}mm, M{alt.fck_nmm2}, Fe{alt.fy_nmm2} → "
+                        f"{alt_cost.currency}{alt_cost.total_cost:,.2f}"
                     )
 
         print("\n⚙️  Metadata:")
-        meta = result["metadata"]
         print(
-            f"   Evaluated {meta['candidates_evaluated']} combinations, {meta['candidates_valid']} valid"
+            f"   Evaluated {result.candidates_evaluated} combinations, {result.candidates_valid} valid"
         )
-        print(f"   Computation time: {meta['computation_time_sec']:.3f}s")
+        print(f"   Computation time: {result.computation_time_sec:.3f}s")
         print("=" * 60 + "\n")
 
         # Save to JSON if requested
         if args.output:
             with open(args.output, "w") as f:
-                json.dump(result, f, indent=2)
+                json.dump(result.to_dict(), f, indent=2)
             print(f"✅ Results saved to {args.output}")
 
         return 0
@@ -161,25 +161,27 @@ def main(argv: list[str] | None = None) -> int:
         print("DESIGN IMPROVEMENT SUGGESTIONS")
         print("=" * 70)
         print("\n📊 Analysis Summary:")
-        print(f"   Total suggestions: {suggestions['suggestions_count']}")
-        print(f"   High impact:       {suggestions['high_impact_count']}")
-        print(f"   Medium impact:     {suggestions['medium_impact_count']}")
-        print(f"   Low impact:        {suggestions['low_impact_count']}")
-        print(f"   Analysis time:     {suggestions['analysis_time_ms']:.1f}ms")
+        print(f"   Total suggestions: {suggestions.total_count}")
+        print(f"   High impact:       {suggestions.high_impact_count}")
+        print(f"   Medium impact:     {suggestions.medium_impact_count}")
+        print(f"   Low impact:        {suggestions.low_impact_count}")
+        print(f"   Analysis time:     {suggestions.analysis_time_ms:.1f}ms")
 
-        if suggestions["suggestions"]:
+        if suggestions.suggestions:
             print("\n💡 Top Recommendations:\n")
-            for i, sug in enumerate(suggestions["suggestions"][:5], 1):  # Top 5
-                icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}[sug["impact"]]
-                print(f"{i}. {icon} {sug['title']}")
+            for i, sug in enumerate(suggestions.suggestions[:5], 1):  # Top 5
+                impact_key = sug.impact.lower()
+                icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}[impact_key]
+                print(f"{i}. {icon} {sug.title}")
                 print(
-                    f"   Category: {sug['category']} | Impact: {sug['impact'].upper()} | Confidence: {sug['confidence']:.0%}"
+                    f"   Category: {sug.category} | Impact: {sug.impact} | Confidence: {sug.confidence:.0%}"
                 )
-                print(f"   {sug['description']}")
-                print(f"   💰 {sug['estimated_benefit']}")
-                if sug["action_steps"]:
+                print(f"   {sug.rationale}")
+                if sug.estimated_benefit:
+                    print(f"   💰 {sug.estimated_benefit}")
+                if sug.action_steps:
                     print("   Actions:")
-                    for step in sug["action_steps"][:2]:  # First 2 steps
+                    for step in sug.action_steps[:2]:  # First 2 steps
                         print(f"      • {step}")
                 print()
 
@@ -188,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
         # Save to JSON if requested
         if args.output:
             with open(args.output, "w") as f:
-                json.dump(suggestions, f, indent=2)
+                json.dump(suggestions.to_dict(), f, indent=2)
             print(f"✅ Full report saved to {args.output}")
 
         return 0
