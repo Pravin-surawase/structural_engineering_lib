@@ -19,7 +19,6 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Optional
 
-
 # =============================================================================
 # Exception Hierarchy (for raising errors)
 # =============================================================================
@@ -93,8 +92,6 @@ class ValidationError(StructuralLibError):
         ... )
     """
 
-    pass
-
 
 class DesignConstraintError(StructuralLibError):
     """
@@ -110,8 +107,6 @@ class DesignConstraintError(StructuralLibError):
         ...     suggestion="Increase section depth or use compression reinforcement"
         ... )
     """
-
-    pass
 
 
 class ComplianceError(StructuralLibError):
@@ -129,8 +124,6 @@ class ComplianceError(StructuralLibError):
         ... )
     """
 
-    pass
-
 
 class ConfigurationError(StructuralLibError):
     """
@@ -145,8 +138,6 @@ class ConfigurationError(StructuralLibError):
         ...     suggestion="Use 'RECTANGULAR', 'T_BEAM', or 'L_BEAM'"
         ... )
     """
-
-    pass
 
 
 class CalculationError(StructuralLibError):
@@ -163,8 +154,6 @@ class CalculationError(StructuralLibError):
         ... )
     """
 
-    pass
-
 
 # -----------------------------------------------------------------------------
 # Level 2: Specific validation failures
@@ -179,8 +168,6 @@ class DimensionError(ValidationError):
     incompatible dimension relationships.
     """
 
-    pass
-
 
 class MaterialError(ValidationError):
     """
@@ -190,8 +177,6 @@ class MaterialError(ValidationError):
     material properties out of range.
     """
 
-    pass
-
 
 class LoadError(ValidationError):
     """
@@ -200,8 +185,6 @@ class LoadError(ValidationError):
     Use for: Negative loads (when not allowed), load combinations
     that don't make sense.
     """
-
-    pass
 
 
 # =============================================================================

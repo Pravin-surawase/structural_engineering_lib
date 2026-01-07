@@ -25,7 +25,7 @@ from structural_lib.detailing import (
     get_stirrup_legs,
     select_bar_arrangement,
 )
-from structural_lib.errors import ConfigurationError, MaterialError
+from structural_lib.errors import ConfigurationError
 
 
 class TestBondStress:

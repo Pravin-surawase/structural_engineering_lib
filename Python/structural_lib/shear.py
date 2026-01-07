@@ -9,7 +9,6 @@ from . import tables
 from .data_types import ShearResult
 from .error_messages import dimension_too_small
 from .errors import (
-    DimensionError,
     E_INPUT_001,
     E_INPUT_002,
     E_INPUT_004,
@@ -19,6 +18,7 @@ from .errors import (
     E_SHEAR_001,
     E_SHEAR_003,
     E_SHEAR_004,
+    DimensionError,
 )
 
 
