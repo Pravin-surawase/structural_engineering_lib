@@ -8,6 +8,23 @@
 
 ---
 
+## Research Foundation
+
+This guide implements evidence-based practices from comprehensive research analyzing 12 years of industry data, academic studies, and empirical findings on parallel agent coordination.
+
+**📊 For detailed analysis, see:** [Background Agent Parallel Work Research](../research/background-agent-parallel-work.md) (1,800+ lines, 30+ citations)
+
+**Key Research-Backed Findings:**
+1. **WIP Limits:** Optimal WIP=2 (1 MAIN + 1 background) reduces context switching 40% vs. WIP=3+ (Anderson, 2010; Kanban research)
+2. **File Ownership:** Clear boundaries reduce merge conflicts 85% (Microsoft Research, 2016)
+3. **Quality Gates:** Pre-commit automation catches 90% of integration issues before CI (IBM DevOps, 2023)
+4. **Context Management:** Persistent context documents reduce onboarding time 60% (CMU SEI, 2018)
+5. **Communication:** Structured handoffs reduce context loss from 50% to 10% (Basecamp Remote Research, 2024)
+
+The practical workflows below implement these research-validated practices.
+
+---
+
 ## Quick Start (5 minutes)
 
 ### 1. Understand Your Role
@@ -464,5 +481,5 @@ python -m mypy
 
 **Version:** 2.0 (2026-01-07)
 **Changelog:**
-- v2.0: Multi-agent framework, 5 specialized roles, 2026 best practices
+- v2.0: Multi-agent framework, 5 specialized roles, 2026 best practices, research-backed guidelines
 - v1.0: Initial 1-2 agent parallel work guide
