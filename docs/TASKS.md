@@ -21,17 +21,80 @@
 
 - **Version:** v0.15.0 ✅ Released (2026-01-07)
 - **Focus:** Code Quality Excellence - Enterprise-grade standards
-- **Next:** v1.0 (API improvement + professional requirements)
+- **Next:** v0.16.0 (Q1 2026) - Fix tests/benchmarks + implement critical research findings
+
+---
+
+## v0.16.0 Target (Q1 2026 - Week 1)
+
+**Goal:** Stabilize API refactoring foundation
+
+**Focus:** Fix all test/benchmark failures from API changes
+
+**Key Deliverables:**
+1. ✅ All tests passing (fix 8 API refactoring failures)
+2. ✅ All benchmarks passing (fix 13 signature errors)
+
+**Success Metrics:**
+- 2300+ tests passing, 0 failures
+- 86%+ coverage maintained
+- 0 ruff/mypy errors
+
+---
+
+## v0.17.0 Target (Q1 2026 - Weeks 2-4)
+
+**Goal:** Implement first professional engineering requirements
+
+**Focus:** Developer productivity + professional compliance foundation
+
+**Key Deliverables:**
+1. ✅ Interactive testing UI (Streamlit/Gradio for developer validation)
+2. ✅ Code clause database (traceability system)
+3. ✅ Security hardening baseline (input validation, dependency scanning)
+4. ✅ Professional liability framework (disclaimers, templates)
+
+**Success Metrics:**
+- Working Streamlit app for manual testing
+- Clause references traceable in code
+- Basic security scanning in CI
+- Legal protection docs in place
+- API grade: A- → A (93/100)
 
 ---
 
 ## Active
 
-*No active tasks currently.*
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-270** | Fix 8 test failures from API refactoring (exception types, validation, CLI) | TESTER | 1-2 hrs | 🔴 HIGH | ⏳ Ready |
+| **TASK-271** | Fix 13 benchmark errors from API signature changes | TESTER | 2-3 hrs | 🔴 HIGH | ⏳ Ready |
 
 ---
 
 ## Up Next
+
+### v0.17.0 Implementation
+
+#### Critical Path (Must complete for v0.17.0)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-273** | Implement Interactive Testing UI (Streamlit basic app with design validation) | DEV | 1 day | 🔴 HIGH | ⏳ Queued |
+| **TASK-272** | Implement Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates in docs/) | DOCS | 2-3 hrs | 🔴 HIGH | ⏳ Queued |
+
+### v0.18+ (Professional Features Pipeline)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-276** | Implement Input Flexibility (BeamInput dataclasses, import helpers, builder pattern) | DEV | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-277** | Implement Calculation Report Generation (Jinja2 templates, HTML/PDF reports) | DEV | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-278** | Implement Verification & Audit Trail (SHA-256 signatures, immutable audit logs) | DEV | 3-4 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-279** | Implement Engineering Testing Strategies (visual regression, property-based tests) | TESTER | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
+
+### Post-v0.16.0 (Deferred)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|

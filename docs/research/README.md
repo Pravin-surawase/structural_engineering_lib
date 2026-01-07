@@ -29,6 +29,7 @@ This index helps you find the right research document quickly. Start with the me
 | [xlwings-vba-strategy.md](xlwings-vba-strategy.md) | vba, migration | Before VBA reduction or migration planning |
 | [git-workflow-production-stage.md](git-workflow-production-stage.md) | git, workflow | When adjusting git governance rules |
 | [git-workflow-recurring-issues.md](git-workflow-recurring-issues.md) | git, troubleshooting | When diagnosing git workflow friction |
+| [background-agent-parallel-work.md](background-agent-parallel-work.md) | agents, workflow | When running 1-2 background agents in parallel |
 | [cost_optimization_day1.md](cost_optimization_day1.md) | optimization, cost | When revisiting cost optimization scope |
 
 ## In-progress research
