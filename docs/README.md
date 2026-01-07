@@ -160,6 +160,7 @@ If you want to understand the concepts and the code step by step, start here:
 - Insights verification pack: [verification/insights-verification-pack.md](verification/insights-verification-pack.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
 - **Git workflow for AI agents:** [GIT_WORKFLOW_AI_AGENTS.md](GIT_WORKFLOW_AI_AGENTS.md) ⚠️
+- Background agent guide: [contributing/background-agent-guide.md](contributing/background-agent-guide.md)
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Contributor learning paths: [contributing/learning-paths.md](contributing/learning-paths.md)
 - Solo maintainer operating system: [contributing/solo-maintainer-operating-system.md](contributing/solo-maintainer-operating-system.md)

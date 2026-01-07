@@ -48,6 +48,7 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 - **Git workflow (CRITICAL):** [GIT_WORKFLOW_AI_AGENTS.md](GIT_WORKFLOW_AI_AGENTS.md) ⚠️
 - **Automation scripts (41):** [reference/automation-catalog.md](reference/automation-catalog.md) 🤖
 - **Handoff quick start:** [HANDOFF.md](HANDOFF.md)
+- **Background agent guide:** [contributing/background-agent-guide.md](contributing/background-agent-guide.md)
 - **API docs:** [reference/api.md](reference/api.md)
 - **Known pitfalls:** [reference/known-pitfalls.md](reference/known-pitfalls.md)
 - **Recent issues:** [contributing/session-issues.md](contributing/session-issues.md)
