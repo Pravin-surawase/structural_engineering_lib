@@ -8,8 +8,8 @@
 
 | File | Purpose | When to Use |
 |------|---------|-------------|
-| **COPILOT_WORKFLOW.md** | Master guide for working with Copilot | Read first, reference always |
-| **PROGRESS_TRACKER.md** | Track completion of tasks | Update as you work |
+| **copilot-workflow.md** | Master guide for working with Copilot | Read first, reference always |
+| **progress-tracker.md** | Track completion of tasks | Update as you work |
 | **TASK_X.Y_Name_Spec.md** | Detailed implementation specs | One per task, feed to Copilot |
 | **README.md** | This file (system overview) | Orientation |
 
@@ -25,21 +25,21 @@
 
 ### 1. Read Workflow Guide (One-time, 10 min)
 ```bash
-Open: COPILOT_WORKFLOW.md
+Open: copilot-workflow.md
 Read: Sections 1-3 (System Overview, How to Use Specs, Best Practices)
 ```
 
 ### 2. Start First Task (3 hours)
 ```bash
-Open: TASK_1.1_BeamDesignSchedule_Spec.md
+Open: task-1.1-beamdesignschedule-spec.md
 Follow: Step-by-step instructions
 Use: Copilot prompts provided in spec
-Update: PROGRESS_TRACKER.md as you complete steps
+Update: progress-tracker.md as you complete steps
 ```
 
 ### 3. Mark Progress (Throughout)
 ```bash
-Open: PROGRESS_TRACKER.md
+Open: progress-tracker.md
 Check: ✅ Completed steps
 Note: Session log (time, blockers)
 ```
@@ -48,7 +48,7 @@ Note: Session log (time, blockers)
 ```bash
 Run: Acceptance criteria tests from spec
 Commit: git add . && git commit -m "feat: complete Task 1.1"
-Update: PROGRESS_TRACKER.md (mark task complete)
+Update: progress-tracker.md (mark task complete)
 ```
 
 ---
@@ -58,9 +58,9 @@ Update: PROGRESS_TRACKER.md (mark task complete)
 ```
 docs/_internal/copilot-tasks/
 ├── README.md                           (This file)
-├── COPILOT_WORKFLOW.md                 (Master workflow guide)
-├── PROGRESS_TRACKER.md                 (Task completion checklist)
-├── TASK_1.1_BeamDesignSchedule_Spec.md (First task - ready to start)
+├── copilot-workflow.md                 (Master workflow guide)
+├── progress-tracker.md                 (Task completion checklist)
+├── task-1.1-beamdesignschedule-spec.md (First task - ready to start)
 ├── TASK_1.2_QuickDesign_Spec.md        (To be created)
 ├── TASK_1.3_Compliance_Spec.md         (To be created)
 └── ...                                 (More specs as needed)
@@ -224,7 +224,7 @@ Benefits:
 ### Problem: Spec is unclear/incomplete
 
 **Solution:**
-1. Note blocker in PROGRESS_TRACKER.md
+1. Note blocker in progress-tracker.md
 2. Ask Claude: "Task 1.1 Step 5 unclear - need clarification on [issue]"
 3. Claude updates spec
 4. Resume with Copilot
@@ -234,7 +234,7 @@ Benefits:
 ### Problem: Lost track of progress
 
 **Solution:**
-1. Open PROGRESS_TRACKER.md
+1. Open progress-tracker.md
 2. Find current task
 3. Check last completed step
 4. Resume from next unchecked step
@@ -276,11 +276,11 @@ Benefits:
 
 **Ready to start?**
 
-1. ✅ Read COPILOT_WORKFLOW.md (10 min)
-2. ✅ Open TASK_1.1_BeamDesignSchedule_Spec.md
+1. ✅ Read copilot-workflow.md (10 min)
+2. ✅ Open task-1.1-beamdesignschedule-spec.md
 3. ✅ Open Excel, prepare environment
 4. ✅ Follow spec step-by-step with Copilot
-5. ✅ Update PROGRESS_TRACKER.md as you go
+5. ✅ Update progress-tracker.md as you go
 6. ✅ Test and commit when complete
 
 **Time estimate:** 3 hours for first task
@@ -291,4 +291,4 @@ Benefits:
 
 **Good luck! 🚀**
 
-*If you get stuck, check COPILOT_WORKFLOW.md or escalate to Claude.*
+*If you get stuck, check copilot-workflow.md or escalate to Claude.*

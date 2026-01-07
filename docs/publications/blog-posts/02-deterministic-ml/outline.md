@@ -5,7 +5,7 @@
 **Estimated length:** 1800-2200 words
 **Publication date:** 2025-01-30
 **Status:** OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
-**Evidence basis:** [00-research-summary-FINAL.md](../../findings/00-research-summary-FINAL.md)
+**Evidence basis:** [00-research-summary-final.md](../../findings/00-research-summary-final.md)
 
 ---
 
@@ -539,4 +539,4 @@ ml_result = neural_network_approach(X_train, y_train)
 
 ### Internal Documentation
 - [Research document](../../../planning/research-smart-library.md)
-- [Evidence framework](../../findings/EVIDENCE-FRAMEWORK.md)
+- [Evidence framework](../../findings/evidence-framework.md)

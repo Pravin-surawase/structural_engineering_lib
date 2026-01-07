@@ -5,12 +5,12 @@ This guide explains how to package the VBA library into a reusable Excel Add-in 
 ---
 
 ## Quickstart (Beginner-Friendly)
-1) Open a new blank Excel workbook.  
-2) Press `Alt + F11` to open the VBA editor.  
-3) Import all `.bas` files from `VBA/Modules/` (Right-click project → Import File).  
-4) In the Properties window (F4), set the project Name to `StructEngLib`.  
-5) Save the workbook as **Excel Add-In (*.xlam)** (e.g., `StructEngLib.xlam`).  
-6) In Excel: File → Options → Add-ins → Manage: Excel Add-ins → Go → Browse… → select `StructEngLib.xlam` → OK.  
+1) Open a new blank Excel workbook.
+2) Press `Alt + F11` to open the VBA editor.
+3) Import all `.bas` files from `VBA/Modules/` (Right-click project → Import File).
+4) In the Properties window (F4), set the project Name to `StructEngLib`.
+5) Save the workbook as **Excel Add-In (*.xlam)** (e.g., `StructEngLib.xlam`).
+6) In Excel: File → Options → Add-ins → Manage: Excel Add-ins → Go → Browse… → select `StructEngLib.xlam` → OK.
 7) In your beam workbook, add a reference (Tools → References… → check `StructEngLib`) and call functions, e.g., `StructEngLib.Ast_singly_IS456(...)`.
 
 ### Bulk import macro (if your Import dialog doesn’t support multi-select)
@@ -24,33 +24,33 @@ Run this once from a blank workbook:
 Sub ImportAllModules()
     ' Robust bulk importer for M01–M10 (and optional tests).
     On Error GoTo Fail
-    
+
     If Len(ThisWorkbook.Path) = 0 Then
         MsgBox "Save this workbook first, then re-run.", vbExclamation
         Exit Sub
     End If
-    
+
     Const INCLUDE_TESTS As Boolean = True  ' Set False to skip importing tests
     Dim repoRoot As String
     Dim folder As String
     Dim testFolder As String
-    
+
     repoRoot = EnsureTrailingSlash(ThisWorkbook.Path)
     folder = FindFolder(repoRoot, "VBA" & Application.PathSeparator & "Modules" & Application.PathSeparator)
     testFolder = FindFolder(repoRoot, "VBA" & Application.PathSeparator & "Tests" & Application.PathSeparator)
-    
+
     If folder = "" Then
         folder = PromptFolder("Enter full path to VBA/Modules (e.g., /path/to/structural_engineering_lib/VBA/Modules/):")
         If folder = "" Then Exit Sub
     End If
-    
+
     If INCLUDE_TESTS And testFolder = "" Then
         testFolder = PromptFolder("Enter full path to VBA/Tests (or Cancel to skip tests):")
         If testFolder = "" Then
             MsgBox "Tests will be skipped (folder not provided).", vbInformation
         End If
     End If
-    
+
     ' Remove existing library modules (M01–M10) and tests if present to avoid duplicates
     RemoveIfExists "M0?_Constants"
     RemoveIfExists "M0?_Types"
@@ -66,10 +66,10 @@ Sub ImportAllModules()
     RemoveIfExists "Test_Structural"
     RemoveIfExists "Test_Flanged"
     RemoveIfExists "Test_Ductile"
-    
+
     ' IMPORTANT: Import M02_Types FIRST (other modules depend on UDT definitions)
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M02_Types.bas"
-    
+
     ' Import remaining modules in order
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M01_Constants.bas"
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M03_Tables.bas"
@@ -80,14 +80,14 @@ Sub ImportAllModules()
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M08_API.bas"
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M09_UDFs.bas"
     Application.VBE.ActiveVBProject.VBComponents.Import folder & "M10_Ductile.bas"
-    
+
     ' Import test files (optional; remove if you do not want tests in the add-in project)
     If INCLUDE_TESTS And Dir(testFolder, vbDirectory) <> "" Then
         Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Structural.bas"
         Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Flanged.bas"
         Application.VBE.ActiveVBProject.VBComponents.Import testFolder & "Test_Ductile.bas"
     End If
-    
+
     MsgBox "Modules imported from:" & vbCrLf & folder & vbCrLf & IIf(INCLUDE_TESTS And Dir(testFolder, vbDirectory) <> "", "Tests imported from:" & vbCrLf & testFolder, "Tests skipped (folder missing or disabled)."), vbInformation
     Exit Sub
 Fail:
@@ -119,7 +119,7 @@ Private Function FindFolder(repoRoot As String, subPath As String) As String
         FindFolder = candidate
         Exit Function
     End If
-    
+
     Dim parent As String
     parent = ParentFolder(repoRoot)
     If Len(parent) > 0 Then

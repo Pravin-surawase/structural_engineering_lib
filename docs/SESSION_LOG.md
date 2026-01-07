@@ -123,7 +123,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - `Python/structural_lib/api.py` (added `optimize_beam_cost()`)
 - `Python/structural_lib/job_cli.py` (added `optimize` subcommand)
 - `Python/tests/test_api_cost_optimization.py` (6 integration tests)
-- `docs/_internal/QUALITY_GAPS_ASSESSMENT.md` (updated cost optimization status)
+- `docs/_internal/quality-gaps-assessment.md` (updated cost optimization status)
 - `docs/TASKS.md` (marked TASK-141 as Done)
 
 ### Notes
@@ -160,7 +160,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - `Python/tests/test_cost_optimization.py`
 - `Python/tests/test_cost_optimization_bugs.py`
 - `docs/research/cost_optimization_day1.md`
-- `docs/_internal/AGENT_WORKFLOW.md`
+- `docs/_internal/agent-workflow.md`
 - `docs/TASKS.md`
 
 ### Notes
@@ -186,7 +186,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Key Deliverables
 - `docs/planning/research-findings-validation/README.md`
-- `docs/planning/research-findings-validation/LOG.md`
+- `docs/planning/research-findings-validation/log.md`
 - `docs/publications/findings/04-claims-verification.md`
 - `docs/publications/findings/05-source-verification-notes.md`
 
@@ -295,7 +295,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Running pytest from repo root used the installed package instead of workspace code.
 
 **Fixes / plan:**
-- Added PR-only guardrails + quick check guidance in `docs/_internal/GIT_GOVERNANCE.md`.
+- Added PR-only guardrails + quick check guidance in `docs/_internal/git-governance.md`.
 - Added `scripts/quick_check.sh` (code/docs/coverage modes).
 - Aligned `docs/contributing/testing-strategy.md` with the 85% branch-coverage gate.
 
@@ -475,7 +475,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ### Releases
 
-- **v0.10.0** published to PyPI: `pip install structural-lib-is456==0.10.0`
+- **v0.15.0** published to PyPI: `pip install structural-lib-is456==0.15.0`
 
 ---
 
@@ -484,7 +484,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ### Decisions
 
 1. **PyPI Publishing:** Implemented Trusted Publishing (OIDC) workflow. No API tokens needed.
-2. **Docs restructure:** Approved 7-folder structure with redirect stubs. Files staying at root: `README.md`, `TASKS.md`, `AI_CONTEXT_PACK.md`, `RELEASES.md`, `v0.7_REQUIREMENTS.md`, `v0.8_EXECUTION_CHECKLIST.md`.
+2. **Docs restructure:** Approved 7-folder structure with redirect stubs. Files staying at root: `README.md`, `TASKS.md`, `ai-context-pack.md`, `releases.md`, `v0.7-requirements.md`, `v0.8-execution-checklist.md`.
 3. **VBA parity scope:** Limited to critical workflows (design, compliance, detailing), not every function.
 
 ### PRs Merged
@@ -503,7 +503,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | #45 | docs: migrate architecture + planning docs (Phase 6) | Moved PROJECT_OVERVIEW, DEEP_PROJECT_MAP, MISSION_AND_PRINCIPLES, CURRENT_STATE_AND_GOALS, NEXT_SESSION_BRIEF, PRODUCTION_ROADMAP, RESEARCH_AI_ENHANCEMENTS, RESEARCH_DETAILING |
 | #46 | docs: update SESSION_LOG with completed migration phases | Session log bookkeeping |
 | #47 | docs: fix broken links after migration | Fixed planning/README.md, architecture/README.md, and others |
-| #48 | docs: fix remaining broken links to old root paths | Fixed TASKS.md, v0.8_EXECUTION_CHECKLIST.md, deep-project-map.md, etc. |
+| #48 | docs: fix remaining broken links to old root paths | Fixed TASKS.md, v0.8-execution-checklist.md, deep-project-map.md, etc. |
 | #49 | docs: update version marker to v0.9.5 | Fixed docs/README.md version display |
 | #50 | docs: update SESSION_LOG and CHANGELOG | Added docs restructure to CHANGELOG (permanent record) |
 | #51 | docs: update remaining old path references + CLI reference | Fixed agents/*.md paths, added cookbook/cli-reference.md |
@@ -551,7 +551,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Aligned CLI reference to actual CLI behavior (`docs/cookbook/cli-reference.md`).
 - Fixed Python recipes to use real function signatures (`docs/cookbook/python-recipes.md`).
 - Corrected DXF and spacing examples in beginners guide (`docs/getting-started/beginners-guide.md`).
-- Updated legacy CLI reference in v0.7 mapping spec (`docs/specs/v0.7_DATA_MAPPING.md`).
+- Updated legacy CLI reference in v0.7 mapping spec (`docs/specs/v0.7-data-mapping.md`).
 
 ### Status
 
@@ -750,7 +750,7 @@ After merging PR #55, additional review identified three bugs in the beam_pipeli
 - `Python/tests/test_beam_pipeline.py`
 - `Python/tests/test_cli.py`
 - `docs/TASKS.md`
-- `docs/SESSION_LOG.md`
+- `docs/SESSION_log.md`
 
 ---
 
@@ -892,7 +892,7 @@ All 7 CI checks passed including the new doc drift check.
 | #75 | tests: add 45 critical IS 456 tests | Mu_lim boundaries, xu/d ratios, T-beam, shear limits |
 | #76 | docs: add pre-commit and merge guidelines | Section 11.2, 11.5 in development-guide.md |
 | #77 | docs: add mandatory notice for AI agents | "FOR AI AGENTS" header in copilot-instructions.md |
-| #78 | docs: clarify governance and pre-commit behavior | GIT_GOVERNANCE.md update, governance notes |
+| #78 | docs: clarify governance and pre-commit behavior | git-governance.md update, governance notes |
 
 **New Tests (45 total in `test_critical_is456.py`):**
 - Mu_lim boundary tests for M15-M50 concrete grades
@@ -905,8 +905,8 @@ All 7 CI checks passed including the new doc drift check.
 
 **Documentation Updates:**
 - `.github/copilot-instructions.md`: Softened "auto-loaded" claim, added governance note
-- `docs/AI_CONTEXT_PACK.md`: Added pre-commit re-staging guidance
-- `docs/_internal/GIT_GOVERNANCE.md`: Fixed CI check names, added Section 2.5 (Pre-commit Hooks)
+- `docs/ai-context-pack.md`: Added pre-commit re-staging guidance
+- `docs/_internal/git-governance.md`: Fixed CI check names, added Section 2.5 (Pre-commit Hooks)
 - `docs/contributing/development-guide.md`: Added Sections 11.2, 11.5
 
 **Test Count:** 1901 tests (was 1856, +45 critical tests)

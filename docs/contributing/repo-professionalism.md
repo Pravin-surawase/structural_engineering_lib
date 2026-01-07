@@ -26,10 +26,10 @@ After this, always use `.venv/bin/python` (not bare `python`).
 - Every change links to a TASK or Issue and updates docs with code.
 
 Canonical sources:
-- Git rules: `docs/_internal/GIT_GOVERNANCE.md`
+- Git rules: `docs/_internal/git-governance.md`
 - Dev standards: `docs/contributing/development-guide.md`
 - Test strategy: `docs/contributing/testing-strategy.md`
-- Agent workflow: `docs/_internal/AGENT_WORKFLOW.md`
+- Agent workflow: `docs/_internal/agent-workflow.md`
 
 ---
 
@@ -73,7 +73,7 @@ Recommended minimal labels:
 - `agent/DEV`, `agent/TESTER`, `agent/DOCS`
 
 ### Releases
-- Append to `docs/RELEASES.md` and `CHANGELOG.md`.
+- Append to `docs/releases.md` and `CHANGELOG.md`.
 - Tag after merge: `git tag -a vX.Y.Z -m "vX.Y.Z"`.
 - Publish via Actions (Trusted Publishing).
 
@@ -151,7 +151,7 @@ If any check modifies files, re-stage and re-commit.
 - **Read `.github/copilot-instructions.md` first** — it's the single source of truth for agent rules.
 - Pick a role (DEV/TESTER/DOCS/DEVOPS) before acting.
 - Read only the docs you need, then summarize.
-- Use the handoff template in `docs/_internal/AGENT_WORKFLOW.md`.
+- Use the handoff template in `docs/_internal/agent-workflow.md`.
 
 ### Avoid
 - Editing without reading current file content.
@@ -172,7 +172,7 @@ If any check modifies files, re-stage and re-commit.
 1) Run `scripts/start_session.py`.
 2) Pick one TASK and finish it.
 3) Run the relevant checks (docs or code).
-4) Update `docs/SESSION_LOG.md` and `docs/TASKS.md`.
+4) Update `docs/SESSION_log.md` and `docs/TASKS.md`.
 5) Run `scripts/update_handoff.py` (or `scripts/end_session.py --fix`).
 6) Stop.
 
@@ -181,7 +181,7 @@ If any check modifies files, re-stage and re-commit.
 - Doc drift clean
 - Verification pack still passes
 - External CLI test done (S-007)
-- `docs/RELEASES.md` and `CHANGELOG.md` updated
+- `docs/releases.md` and `CHANGELOG.md` updated
 
 Full checklist: `docs/planning/pre-release-checklist.md`.
 
@@ -189,8 +189,8 @@ Full checklist: `docs/planning/pre-release-checklist.md`.
 
 ## 9) Quick links
 
-- Git governance: `docs/_internal/GIT_GOVERNANCE.md`
+- Git governance: `docs/_internal/git-governance.md`
 - Development guide: `docs/contributing/development-guide.md`
 - Testing strategy: `docs/contributing/testing-strategy.md`
 - Pre-release checklist: `docs/planning/pre-release-checklist.md`
-- Agent workflow: `docs/_internal/AGENT_WORKFLOW.md`
+- Agent workflow: `docs/_internal/agent-workflow.md`

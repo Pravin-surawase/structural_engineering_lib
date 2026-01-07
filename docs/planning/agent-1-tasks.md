@@ -55,7 +55,7 @@
 - ✅ Create: `docs/research/blogging-strategy-research.md`
 - ✅ Create: `docs/guidelines/blog-writing-guide.md`
 - ✅ Create: `docs/planning/blog-content-calendar.md`
-- ❌ Do NOT edit: `docs/TASKS.md`, `docs/SESSION_LOG.md`
+- ❌ Do NOT edit: `docs/TASKS.md`, `docs/SESSION_log.md`
 
 ---
 
@@ -333,7 +333,7 @@ When task complete, notify MAIN agent:
 
 **❌ Do NOT Edit:**
 - `docs/TASKS.md` (MAIN agent owns this)
-- `docs/SESSION_LOG.md` (MAIN agent owns this)
+- `docs/SESSION_log.md` (MAIN agent owns this)
 - `docs/planning/next-session-brief.md` (MAIN agent owns this)
 - Production code (`Python/structural_lib/*.py`)
 - Tests (`Python/tests/*.py`)

@@ -1,7 +1,7 @@
 # IS 456 RC Beam Design Library — Development Guide
 
 **Document Version:** 0.15.0
-**Last Updated:** 2026-01-07<br>
+**Last Updated:** 2026-01-08<br>
 **Audience:** Contributors, maintainers, and developers extending the library
 
 ---
@@ -849,8 +849,8 @@ Maintain `docs/reference/api.md` with:
 ### 9.4 Keep Docs in Sync
 
 When you change:
-- A formula → Update `IS456_QUICK_REFERENCE.md`
-- A function signature → Update `API_REFERENCE.md`
+- A formula → Update `is456-quick-reference.md`
+- A function signature → Update `api-reference.md`
 - A behavior → Update both docs and code comments
 
 ---
@@ -1072,7 +1072,7 @@ gh pr merge <num> --squash --delete-branch
 ### 11.6 Code Ownership and Reviews
 - Minimum 1 reviewer for core changes; 2 reviewers for releases or table/formula edits.
 - Merge criteria: tests pass, changelog updated for user-visible changes, docs updated (API/quick ref) when signatures or behavior change.
-- Record non-trivial decisions in an ADR (add `docs/adr/`) or log in `RESEARCH_AI_ENHANCEMENTS.md`.
+- Record non-trivial decisions in an ADR (add `docs/adr/`) or log in `research-ai-enhancements.md`.
 - No merges to `main` without green tests for both VBA (manual run note acceptable) and Python.
 
 ---
@@ -1091,8 +1091,8 @@ Pre-1.0: `0.x.y` — API may change between minor versions.
 
 ### 12.2 Governance Rules
 To prevent history revisionism and ensure stability:
-1.  **Immutable History:** Never edit past entries in `CHANGELOG.md` or `docs/RELEASES.md`.
-2.  **Release Ledger:** `docs/RELEASES.md` is the single source of truth for locked versions.
+1.  **Immutable History:** Never edit past entries in `CHANGELOG.md` or `docs/releases.md`.
+2.  **Release Ledger:** `docs/releases.md` is the single source of truth for locked versions.
 3.  **Explicit Bumps:** Version numbers are only incremented with explicit user approval.
 
 ### 12.3 Version Constants
@@ -1310,7 +1310,7 @@ Before merging any code, verify:
 ### Documentation
 - [ ] IS 456 clause references in comments
 - [ ] Input/output units documented
-- [ ] API_REFERENCE.md updated if signatures changed
+- [ ] api-reference.md updated if signatures changed
 - [ ] Examples work correctly
 
 ### Testing

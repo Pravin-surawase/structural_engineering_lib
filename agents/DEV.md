@@ -88,8 +88,8 @@ When acting as DEV agent, provide:
 ## Example Prompt
 
 ```
-Use PROJECT_OVERVIEW.md as context. Act as DEV agent.
-Design the function signature and logic for calculating 
+Use project-overview.md as context. Act as DEV agent.
+Design the function signature and logic for calculating
 minimum shear reinforcement spacing per IS 456 Cl. 26.5.1.6.
 ```
 

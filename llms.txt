@@ -25,7 +25,7 @@ Docs (start here)
 - docs/getting-started/python-quickstart.md
 
 Schemas / specs
-- docs/specs/v0.9_JOB_SCHEMA.md
+- docs/specs/v0.9-job-schema.md
 - docs/cookbook/cli-reference.md (output format examples)
 
 Examples

@@ -8,7 +8,7 @@ USAGE:
 
 This script:
 1. Shows current version and branch
-2. Checks if SESSION_LOG.md has today's entry (adds skeleton if not)
+2. Checks if SESSION_log.md has today's entry (adds skeleton if not)
 3. Shows Active tasks from TASKS.md
 4. Runs handoff checks to verify docs are fresh
 5. Shows any uncommitted changes
@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Optional
 
 REPO_ROOT = Path(__file__).parent.parent
-SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
+SESSION_LOG = REPO_ROOT / "docs" / "SESSION_log.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 
@@ -70,7 +70,7 @@ def get_uncommitted_status() -> str:
 
 
 def check_session_log_entry() -> tuple[bool, str]:
-    """Check if SESSION_LOG.md has an entry for today."""
+    """Check if SESSION_log.md has an entry for today."""
     today = date.today()
     today_str = today.strftime("%Y-%m-%d")
 
@@ -84,7 +84,7 @@ def check_session_log_entry() -> tuple[bool, str]:
 
 
 def add_session_log_entry() -> bool:
-    """Add a skeleton entry for today to SESSION_LOG.md."""
+    """Add a skeleton entry for today to SESSION_log.md."""
     today = date.today()
     today_str = today.strftime("%Y-%m-%d")
 
@@ -264,7 +264,7 @@ def main():
         if not args.no_add:
             print("  📝 Adding skeleton entry...")
             if add_session_log_entry():
-                print("  ✅ Entry added to SESSION_LOG.md")
+                print("  ✅ Entry added to SESSION_log.md")
             else:
                 print("  ❌ Failed to add entry")
     print()
@@ -306,7 +306,7 @@ def main():
     else:
         print("Ready to work! Pick a task from Active or Up Next.")
     print()
-    print("📖 Read first: docs/HANDOFF.md → docs/AGENT_BOOTSTRAP.md → docs/AI_CONTEXT_PACK.md")
+    print("📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md")
     print("=" * 60)
     print()
 

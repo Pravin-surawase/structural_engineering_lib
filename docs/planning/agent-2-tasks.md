@@ -99,10 +99,10 @@ git commit -m "chore: archive old files, remove duplicates, fix links"
 **Objective:** Fix 8 broken internal links identified in project-hygiene-audit.md
 
 **Broken Links to Fix:**
-1. `docs/AI_CONTEXT_PACK.md` → `.github/copilot-instructions.md` (fix: `../.github/copilot-instructions.md`)
+1. `docs/ai-context-pack.md` → `.github/copilot-instructions.md` (fix: `../.github/copilot-instructions.md`)
 2. `docs/research/documentation-handoff-analysis.md` → `reference/automation-catalog.md` (fix: `../reference/automation-catalog.md`)
 3. `docs/research/session-2026-01-06-documentation-enhancement.md` → `reference/automation-catalog.md` (fix: `../reference/automation-catalog.md`)
-4. `docs/research/RESEARCH_METHODOLOGY.md` → "Paper title (link placeholder)" (fix: remove or add proper citation)
+4. `docs/research/research-methodology.md` → "Paper title (link placeholder)" (fix: remove or add proper citation)
 5. `docs/troubleshooting/merge-conflict-prevention.md` → `/.github/copilot-instructions.md` (fix: `../.github/copilot-instructions.md`)
 6. `docs/troubleshooting/merge-conflict-prevention.md` → `/scripts/check_unfinished_merge.sh` (fix: remove reference or create script)
 7. `docs/getting-started/design-suggestions-guide.md` → `./cost-optimization-guide.md` (fix: verify file exists or remove link)
@@ -129,7 +129,7 @@ git commit -m "chore: archive old files, remove duplicates, fix links"
 Fixed 7-8 broken internal links across docs/ directory.
 
 ### Changes
-- `docs/AI_CONTEXT_PACK.md`: Fixed relative path to copilot-instructions
+- `docs/ai-context-pack.md`: Fixed relative path to copilot-instructions
 - `docs/research/*.md`: Fixed 2 links to automation-catalog
 - `docs/troubleshooting/*.md`: Fixed paths, removed dead references
 - `docs/getting-started/*.md`: Verified/fixed file references
@@ -158,28 +158,28 @@ Fixed 7-8 broken internal links across docs/ directory.
 **Objective:** Move outdated planning docs (v0.7-v0.12) to `docs/_archive/` with redirect stubs
 
 **Files to Archive:**
-1. `docs/v0.7_REQUIREMENTS.md` → `docs/_archive/v0.7_REQUIREMENTS.md`
-2. `docs/v0.8_EXECUTION_CHECKLIST.md` → `docs/_archive/v0.8_EXECUTION_CHECKLIST.md`
+1. `docs/v0.7-requirements.md` → `docs/_archive/v0.7-requirements.md`
+2. `docs/v0.8-execution-checklist.md` → `docs/_archive/v0.8-execution-checklist.md`
 3. `docs/planning/v0.12-plan.md` → `docs/_archive/planning/v0.12-plan.md`
 4. `docs/planning/production-roadmap.md` → `docs/_archive/planning/production-roadmap-v0.10.md`
 5. `docs/planning/project-status.md` → `docs/_archive/planning/project-status-v0.11.md`
 
 **Process for Each File:**
-1. Check if file is linked from other docs: `rg -l "v0.7_REQUIREMENTS.md"`
-2. Move to archive: `git mv docs/v0.7_REQUIREMENTS.md docs/_archive/v0.7_REQUIREMENTS.md`
+1. Check if file is linked from other docs: `rg -l "v0.7-requirements.md"`
+2. Move to archive: `git mv docs/v0.7-requirements.md docs/_archive/v0.7-requirements.md`
 3. Create redirect stub at original location:
 ```markdown
 # [Original Filename]
 
 > **Note:** This document has been archived as it pertains to v0.X development.
 
-**Archived location:** [docs/_archive/original-filename.md](../_archive/original-filename.md)
+**Archived location:** docs/_archive/original-filename.md
 
 ---
 
 For current planning, see:
 - [TASKS.md](../TASKS.md)
-- [Next Session Brief](planning/next-session-brief.md)
+- Next Session Brief: next-session-brief.md
 ```
 4. Update links in referring docs
 5. Test: `scripts/check_links.py`
@@ -351,7 +351,7 @@ git worktree prune
    - **Recommendation:** Document intentional separation vs accidental duplication
 
 5. **Project overview docs:**
-   - `docs/PROJECT_OVERVIEW.md` (UPPERCASE)
+   - `docs/project-overview.md` (UPPERCASE)
    - `docs/architecture/project-overview.md` (kebab-case)
    - **Recommendation:** Canonicalize one, create redirect for other
 
@@ -379,7 +379,7 @@ git worktree prune
 ```bash
 # Example consolidation
 git mv agents/SUPPORT.md agents/SUPPORT.md.bak
-echo "See [SUPPORT.md](../SUPPORT.md)" > agents/SUPPORT.md
+echo "See SUPPORT.md at ../../SUPPORT.md" > agents/SUPPORT.md
 git add agents/SUPPORT.md
 ```
 ```
@@ -395,13 +395,13 @@ git add agents/SUPPORT.md
 **Objective:** Convert all doc filenames to kebab-case standard
 
 **Current Issues:**
-- Mixed case: `AI_CONTEXT_PACK.md`, `PROJECT_OVERVIEW.md`, `TASKS.md`
-- Inconsistent: `v0.7_REQUIREMENTS.md` vs `project-overview.md`
+- Mixed case: `ai-context-pack.md`, `project-overview.md`, `TASKS.md`
+- Inconsistent: `v0.7-requirements.md` vs `project-overview.md`
 
 **Proposed Standard:**
 - **Docs:** kebab-case (`project-overview.md`, `ai-context-pack.md`)
 - **Special files:** Keep UPPERCASE for visibility (`README.md`, `LICENSE`, `CHANGELOG.md`)
-- **Planning docs:** Keep UPPERCASE for important files (`TASKS.md`, `SESSION_LOG.md`)
+- **Planning docs:** Keep UPPERCASE for important files (`TASKS.md`, `SESSION_log.md`)
 
 **Process (Mode 1 - Audit):**
 1. List all non-standard filenames
@@ -566,7 +566,7 @@ git commit -m "chore: hygiene cleanup TASK-XXX"
 - `.coverage` (root)
 
 **Modified** (link fixes, stub creation):
-- `docs/AI_CONTEXT_PACK.md` - Fixed 1 broken link
+- `docs/ai-context-pack.md` - Fixed 1 broken link
 - `docs/old-file-1.md` - Created redirect stub
 
 ### Verification Results
@@ -621,7 +621,7 @@ du -sh .git/
 
 **❌ NEVER Edit:**
 - `docs/TASKS.md` (MAIN agent owns this)
-- `docs/SESSION_LOG.md` (MAIN agent owns this)
+- `docs/SESSION_log.md` (MAIN agent owns this)
 - `docs/planning/next-session-brief.md` (MAIN agent owns this)
 - Production code (`Python/structural_lib/*.py`)
 - Tests (`Python/tests/*.py`)
@@ -739,9 +739,9 @@ cat > docs/old-file.md << 'EOF'
 
 > **Note:** This document has been archived.
 
-**Archived location:** [docs/_archive/old-file.md](_archive/old-file.md)
+**Archived location:** docs/_archive/old-file.md
 
-For current information, see [current-file.md](current-file.md).
+For current information, see current-file.md.
 EOF
 
 # Update links in referring docs

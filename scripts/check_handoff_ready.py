@@ -19,22 +19,22 @@ from pathlib import Path
 # Docs that should have today's date when modified
 DATE_SENSITIVE_DOCS = [
     "docs/TASKS.md",
-    "docs/SESSION_LOG.md",
+    "docs/SESSION_log.md",
     "docs/planning/next-session-brief.md",
 ]
 
 # Docs that contain test counts
 TEST_COUNT_DOCS = [
     "docs/TASKS.md",
-    "docs/AI_CONTEXT_PACK.md",
+    "docs/ai-context-pack.md",
     "docs/planning/v0.20-stabilization-checklist.md",
-    "docs/RELEASES.md",
+    "docs/releases.md",
 ]
 
 # Docs that contain version numbers
 VERSION_DOCS = [
     "docs/TASKS.md",
-    "docs/AI_CONTEXT_PACK.md",
+    "docs/ai-context-pack.md",
     "docs/planning/next-session-brief.md",
 ]
 
@@ -222,16 +222,16 @@ def check_session_log_entry() -> list[str]:
     """Check if SESSION_LOG has an entry for today."""
     issues = []
     root = get_project_root()
-    log_path = root / "docs" / "SESSION_LOG.md"
+    log_path = root / "docs" / "SESSION_log.md"
     today = datetime.now().strftime("%Y-%m-%d")
 
     if not log_path.exists():
-        return ["docs/SESSION_LOG.md not found"]
+        return ["docs/SESSION_log.md not found"]
 
     content = log_path.read_text()
 
     if today not in content:
-        issues.append(f"SESSION_LOG.md: No entry for today ({today})")
+        issues.append(f"SESSION_log.md: No entry for today ({today})")
 
     return issues
 
@@ -300,7 +300,7 @@ def main():
             print(f"   ⚠️  {issue}")
 
     # Check 5: Session log
-    print("\n📝 Checking SESSION_LOG.md...")
+    print("\n📝 Checking SESSION_log.md...")
     issues = check_session_log_entry()
     all_issues.extend(issues)
     if not issues:

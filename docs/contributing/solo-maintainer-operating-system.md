@@ -46,7 +46,7 @@ During week:
 
 End of week:
 - `.venv/bin/python scripts/end_session.py`
-- Summarize in `docs/SESSION_LOG.md`.
+- Summarize in `docs/SESSION_log.md`.
 
 ---
 
@@ -74,7 +74,7 @@ End of week:
 Required before tagging:
 - `./scripts/ci_local.sh`
 - `.venv/bin/python scripts/check_doc_versions.py --ci`
-- Update `CHANGELOG.md`, `docs/RELEASES.md`, `docs/SESSION_LOG.md`
+- Update `CHANGELOG.md`, `docs/releases.md`, `docs/SESSION_log.md`
 
 If any gate fails, do not release.
 
@@ -84,7 +84,7 @@ If any gate fails, do not release.
 
 Single sources of truth:
 - `docs/TASKS.md` (work queue)
-- `docs/AI_CONTEXT_PACK.md` (agent context)
+- `docs/ai-context-pack.md` (agent context)
 - `docs/planning/production-roadmap.md` (weekly plan)
 
 If outputs or APIs change, update docs in the same PR.

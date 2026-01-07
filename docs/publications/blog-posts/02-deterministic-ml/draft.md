@@ -570,7 +570,7 @@ comparison = {
 
 **Read more:**
 - [Source code: structural_lib on GitHub](https://github.com/...) (MIT license)
-- [Research documentation](../../findings/00-research-summary-FINAL.md)
+- [Research documentation](../../findings/00-research-summary-final.md)
 - [Blog 01: Making Structural Design Intelligent](../01-smart-library/outline.md)
 
 **Discuss:** What classical methods have you used successfully? Where did ML actually beat classical for you? Let's talk in the comments.

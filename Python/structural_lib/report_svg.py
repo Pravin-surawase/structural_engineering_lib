@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Any
 from xml.etree import (
-    ElementTree as ET,  # nosec B405  # SVG generation, not parsing untrusted XML
+    ElementTree,  # nosec B405  # SVG generation, not parsing untrusted XML
 )
 
 from .data_types import BeamGeometry
@@ -34,7 +34,7 @@ def _clamp(value: float, low: float, high: float) -> float:
 
 
 def _render_error_svg(message: str, *, width: int, height: int) -> str:
-    root = ET.Element(
+    root = ElementTree.Element(
         "svg",
         attrib={
             "xmlns": "http://www.w3.org/2000/svg",
@@ -45,7 +45,7 @@ def _render_error_svg(message: str, *, width: int, height: int) -> str:
             "aria-label": "Beam section (invalid input)",
         },
     )
-    rect = ET.SubElement(
+    rect = ElementTree.SubElement(
         root,
         "rect",
         attrib={
@@ -59,7 +59,7 @@ def _render_error_svg(message: str, *, width: int, height: int) -> str:
         },
     )
     rect.set("data-note", "error-frame")
-    text = ET.SubElement(
+    text = ElementTree.SubElement(
         root,
         "text",
         attrib={
@@ -71,7 +71,7 @@ def _render_error_svg(message: str, *, width: int, height: int) -> str:
         },
     )
     text.text = message
-    return ET.tostring(root, encoding="unicode")
+    return ElementTree.tostring(root, encoding="unicode")
 
 
 def render_section_svg(
@@ -119,7 +119,7 @@ def render_section_svg(
     x_left = x0 + 0.25 * section_w
     x_right = x0 + 0.75 * section_w
 
-    root = ET.Element(
+    root = ElementTree.Element(
         "svg",
         attrib={
             "xmlns": "http://www.w3.org/2000/svg",
@@ -131,7 +131,7 @@ def render_section_svg(
         },
     )
 
-    ET.SubElement(
+    ElementTree.SubElement(
         root,
         "rect",
         attrib={
@@ -147,7 +147,7 @@ def render_section_svg(
 
     # Compression steel (top)
     for x in (x_left, x_right):
-        ET.SubElement(
+        ElementTree.SubElement(
             root,
             "circle",
             attrib={
@@ -160,7 +160,7 @@ def render_section_svg(
 
     # Tension steel (bottom)
     for x in (x_left, x_right):
-        ET.SubElement(
+        ElementTree.SubElement(
             root,
             "circle",
             attrib={
@@ -173,7 +173,7 @@ def render_section_svg(
 
     # Depth markers (d and d')
     if d_dash_mm is not None:
-        ET.SubElement(
+        ElementTree.SubElement(
             root,
             "line",
             attrib={
@@ -186,7 +186,7 @@ def render_section_svg(
                 "stroke-dasharray": "4,3",
             },
         )
-        label = ET.SubElement(
+        label = ElementTree.SubElement(
             root,
             "text",
             attrib={
@@ -199,7 +199,7 @@ def render_section_svg(
         label.text = "d'"
 
     if d_mm is not None:
-        ET.SubElement(
+        ElementTree.SubElement(
             root,
             "line",
             attrib={
@@ -212,7 +212,7 @@ def render_section_svg(
                 "stroke-dasharray": "4,3",
             },
         )
-        label = ET.SubElement(
+        label = ElementTree.SubElement(
             root,
             "text",
             attrib={
@@ -225,7 +225,7 @@ def render_section_svg(
         label.text = "d"
 
     # Dimension labels
-    label_b = ET.SubElement(
+    label_b = ElementTree.SubElement(
         root,
         "text",
         attrib={
@@ -238,7 +238,7 @@ def render_section_svg(
     )
     label_b.text = f"b = {b_mm:.0f} mm"
 
-    label_D = ET.SubElement(
+    label_D = ElementTree.SubElement(
         root,
         "text",
         attrib={
@@ -250,7 +250,7 @@ def render_section_svg(
     )
     label_D.text = f"D = {D_mm:.0f} mm"
 
-    return ET.tostring(root, encoding="unicode")
+    return ElementTree.tostring(root, encoding="unicode")
 
 
 def render_section_svg_from_beam(

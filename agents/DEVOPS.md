@@ -130,8 +130,8 @@ When acting as DEVOPS agent, provide:
 ## Example Prompt
 
 ```
-Use PROJECT_OVERVIEW.md as context. Act as DEVOPS agent.
-Design a pre-release checklist for v0.1.0 including 
+Use project-overview.md as context. Act as DEVOPS agent.
+Design a pre-release checklist for v0.1.0 including
 tests to run, docs to update, and git commands.
 ```
 

@@ -917,8 +917,8 @@ Use this checklist for all API refactoring PRs (copy from [API Guidelines Sectio
 
 1. **API Design Guidelines:** `docs/guidelines/api-design-guidelines.md`
 2. **Research Documents:** `docs/research/TASK-200` through `TASK-207`
-3. **Known Pitfalls:** `docs/KNOWN_PITFALLS.md`
-4. **Testing Strategy:** `docs/TESTING_STRATEGY.md`
+3. **Known Pitfalls:** `docs/known-pitfalls.md`
+4. **Testing Strategy:** `docs/testing-strategy.md`
 5. **SemVer Policy:** `docs/reference/deprecation-policy.md`
 
 ---

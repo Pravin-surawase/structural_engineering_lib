@@ -35,13 +35,18 @@ env/
 # pytest / coverage
 .pytest_cache/
 .coverage
+.coverage.*
 coverage.xml
 htmlcov/
 .tox/
 .nox/
+.hypothesis/
 
 # mypy
 .mypy_cache/
+
+# ruff
+.ruff_cache/
 
 # IDEs
 .idea/

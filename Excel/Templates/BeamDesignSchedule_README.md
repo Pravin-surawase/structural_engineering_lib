@@ -42,7 +42,7 @@ Notes:
 ## Next steps
 
 Follow the implementation spec:
-- `docs/_internal/copilot-tasks/TASK_1.1_BeamDesignSchedule_Spec.md`
+- `docs/_internal/copilot-tasks/task-1.1-beamdesignschedule-spec.md`
 
 Track progress here:
-- `docs/_internal/copilot-tasks/PROGRESS_TRACKER.md`
+- `docs/_internal/copilot-tasks/progress-tracker.md`

@@ -22,9 +22,9 @@ Use sequential numbering:
 ```markdown
 # ADR 000X: <title>
 
-**Date:** YYYY-MM-DD  
-**Status:** Proposed | Accepted | Superseded  
-**Owners:** <name/role>  
+**Date:** YYYY-MM-DD
+**Status:** Proposed | Accepted | Superseded
+**Owners:** <name/role>
 
 ## Context
 What problem are we solving? What constraints matter (IS clauses, units, parity, platform)?

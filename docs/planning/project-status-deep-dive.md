@@ -36,7 +36,7 @@
 | Project overview | [project-overview.md](../architecture/project-overview.md) |
 | Production roadmap | [production-roadmap.md](production-roadmap.md) |
 | Task board | [TASKS.md](../TASKS.md) |
-| Job schema | [v0.9_JOB_SCHEMA.md](../specs/v0.9_JOB_SCHEMA.md) |
+| Job schema | [v0.9-job-schema.md](../specs/v0.9-job-schema.md) |
 | Testing strategy | [testing-strategy.md](../contributing/testing-strategy.md) |
 | API reference | [api.md](../reference/api.md) |
 
@@ -173,7 +173,7 @@ Compliance summary and CSV outputs
 - Single beam per job, multiple load cases
 - Inputs: geometry, materials, cases with Mu/Vu
 - Outputs: deterministic JSON + compact CSV summaries
-- Reference: [v0.9_JOB_SCHEMA.md](../specs/v0.9_JOB_SCHEMA.md)
+- Reference: [v0.9-job-schema.md](../specs/v0.9-job-schema.md)
 
 ### CSV Integration
 
@@ -242,7 +242,7 @@ Use this prompt to keep research aligned with the codebase:
 >
 > **Inputs to reference:**
 > - Modules: `flexure.py`, `shear.py`, `ductile.py`, `serviceability.py`, `detailing.py`, `dxf_export.py`, `compliance.py`, `job_runner.py`
-> - Contracts: `docs/specs/v0.9_JOB_SCHEMA.md`, CSV column normalization rules
+> - Contracts: `docs/specs/v0.9-job-schema.md`, CSV column normalization rules
 >
 > **Research outputs required:**
 > - Competitor/workflow map (ETABS/SAFE/STAAD + Excel + AutoCAD/Tekla), and where time is lost

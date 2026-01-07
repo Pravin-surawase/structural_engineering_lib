@@ -52,7 +52,7 @@ This research consolidates 12+ years of industry practices, academic research, a
 - `docs/contributing/git-workflow-quick-reference.md` (command patterns, safety checks)
 - `docs/contributing/end-of-session-workflow.md` (handoff protocols)
 - `docs/contributing/repo-professionalism.md` (quality standards)
-- `docs/_internal/AGENT_WORKFLOW.md` (role definitions, task boundaries)
+- `docs/_internal/agent-workflow.md` (role definitions, task boundaries)
 - `docs/contributing/session-issues.md` (incident reports, lessons learned)
 
 **Industry Research (15 sources):**
@@ -120,7 +120,7 @@ This research consolidates 12+ years of industry practices, academic research, a
 
 1. **File Ownership = Communication Boundaries**
    - Agents working on separate modules require less coordination
-   - Shared files (TASKS.md, SESSION_LOG.md) require synchronous coordination
+   - Shared files (TASKS.md, SESSION_log.md) require synchronous coordination
    - Our solution: MAIN agent owns high-churn files, background agents own isolated modules
 
 2. **Role Specialization = Cleaner Interfaces**
@@ -363,9 +363,9 @@ Our preference: PRs for implementation discussion, Docs for persistent knowledge
 |----------|------------------|-------|---------|
 | `docs/planning/memory.md` | Daily | MAIN | Current state, challenges, decisions |
 | `docs/TASKS.md` | Per merge | MAIN | Work queue, priorities |
-| `docs/SESSION_LOG.md` | Per session | MAIN | Historical record, append-only |
+| `docs/SESSION_log.md` | Per session | MAIN | Historical record, append-only |
 | `docs/planning/next-session-brief.md` | Per session | MAIN | Quick resume point |
-| `docs/AI_CONTEXT_PACK.md` | Per release | DOCS | Project rules, architecture |
+| `docs/ai-context-pack.md` | Per release | DOCS | Project rules, architecture |
 
 **Measured Benefits:**
 - Time to productive work: 5 minutes (vs. 30 minutes without persistent context)
@@ -556,8 +556,8 @@ Analysis of 50,000+ repositories using pre-commit:
 Session Start (5-10K tokens):
 ├── docs/planning/memory.md (500 tokens)
 ├── docs/TASKS.md (1000 tokens)
-├── docs/AGENT_BOOTSTRAP.md (800 tokens)
-├── docs/AI_CONTEXT_PACK.md (1500 tokens)
+├── docs/agent-bootstrap.md (800 tokens)
+├── docs/ai-context-pack.md (1500 tokens)
 └── .github/copilot-instructions.md (3000 tokens)
 
 Task-Specific (10-30K tokens):
@@ -589,19 +589,19 @@ Four memory types for effective AI agent work:
    - Last 5-10 commits
    - Recent decisions and their rationale
    - Open blockers and unresolved questions
-   - Our implementation: `docs/SESSION_LOG.md` (append-only, last 20 items)
+   - Our implementation: `docs/SESSION_log.md` (append-only, last 20 items)
 
 2. **Semantic Memory (Knowledge and Rules):**
    - Project architecture and patterns
    - Code conventions and style guides
    - API contracts and stability guarantees
-   - Our implementation: `docs/AI_CONTEXT_PACK.md`, `docs/architecture/project-overview.md`
+   - Our implementation: `docs/ai-context-pack.md`, `docs/architecture/project-overview.md`
 
 3. **Procedural Memory (How-To Knowledge):**
    - Git workflow commands
    - Test execution patterns
    - Release procedures
-   - Our implementation: `docs/GIT_WORKFLOW_AI_AGENTS.md`, `docs/reference/automation-catalog.md`
+   - Our implementation: `docs/git-workflow-ai-agents.md`, `docs/reference/automation-catalog.md`
 
 4. **Contextual Memory (Current State):**
    - Active tasks and priorities
@@ -611,8 +611,8 @@ Four memory types for effective AI agent work:
 
 **Memory Decay Prevention:**
 - Update memory.md every session (MAIN agent)
-- Archive SESSION_LOG.md when > 1000 lines (prevent overflow)
-- Review AI_CONTEXT_PACK.md every release (keep current)
+- Archive SESSION_log.md when > 1000 lines (prevent overflow)
+- Review ai-context-pack.md every release (keep current)
 - Prune stale tasks from TASKS.md weekly (prevent clutter)
 
 ### 6.3 Context Drift Detection and Recovery

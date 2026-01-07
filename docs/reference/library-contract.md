@@ -51,7 +51,7 @@ May evolve faster; prefer APIs or schemas for long-term integrations:
 
 ### 3.1 Schema contracts
 Breaking changes require a `schema_version` bump and migration note.
-- Job schema: `docs/specs/v0.9_JOB_SCHEMA.md`
+- Job schema: `docs/specs/v0.9-job-schema.md`
 - Results schema: `beam_pipeline.SCHEMA_VERSION` + `docs/reference/api.md`
 - BBS CSV columns and meanings are stable.
 - DXF layer/text contract is stable (documented in DXF/BBS plan).

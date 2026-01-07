@@ -5,7 +5,7 @@
 **Estimated length:** 2000-2500 words
 **Publication date:** 2025-01-15
 **Status:** OUTLINE — EVIDENCE-CORRECTED (2025-12-31)
-**Evidence basis:** [00-research-summary-FINAL.md](../../findings/00-research-summary-FINAL.md)
+**Evidence basis:** [00-research-summary-final.md](../../findings/00-research-summary-final.md)
 
 ---
 

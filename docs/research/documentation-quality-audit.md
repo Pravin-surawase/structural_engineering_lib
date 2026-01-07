@@ -36,13 +36,13 @@ Outdated or conflicting content (examples):
 - `docs/planning/project-status.md` lists current release as v0.11.0.
 - `docs/planning/production-roadmap.md` references v0.10.4 as current.
 - `docs/getting-started/colab-workflow.md` last updated 2025-12-29 and references v0.11.
-- `docs/HANDOFF.md` sample output shows v0.11.0.
+- `docs/handoff.md` sample output shows v0.11.0.
 
 Broken links (from `scripts/check_links.py`):
-- `docs/AI_CONTEXT_PACK.md` -> `.github/copilot-instructions.md` (should be `../.github/copilot-instructions.md`).
+- `docs/ai-context-pack.md` -> `.github/copilot-instructions.md` (should be `../.github/copilot-instructions.md`).
 - `docs/research/documentation-handoff-analysis.md` -> `reference/automation-catalog.md` (missing parent).
 - `docs/research/session-2026-01-06-documentation-enhancement.md` -> `reference/automation-catalog.md` (duplicate, missing parent).
-- `docs/research/RESEARCH_METHODOLOGY.md` -> `Paper title (link placeholder)` placeholder.
+- `docs/research/research-methodology.md` -> `Paper title (link placeholder)` placeholder.
 - `docs/troubleshooting/merge-conflict-prevention.md` -> `/.github/copilot-instructions.md` (should be `../.github/copilot-instructions.md`).
 - `docs/troubleshooting/merge-conflict-prevention.md` -> `/scripts/check_unfinished_merge.sh` (file not present).
 - `docs/getting-started/design-suggestions-guide.md` -> `./cost-optimization-guide.md` (missing file).
@@ -59,7 +59,7 @@ Clarity issues:
 
 ### 4) Organization Assessment
 - Multiple doc roots exist: top-level `docs/*.md`, plus `docs/architecture`, `docs/reference`, `docs/getting-started`, etc.
-- Canonical source for a topic is not always clear (e.g., `docs/PROJECT_OVERVIEW.md` vs `docs/architecture/project-overview.md`).
+- Canonical source for a topic is not always clear (e.g., `docs/project-overview.md` vs `docs/architecture/project-overview.md`).
 - No global navigation page that maps topics to their canonical paths.
 
 ## Recommendations
@@ -74,7 +74,7 @@ Clarity issues:
 ### Quick Wins (1-2 hrs)
 - Fix the 8 broken internal links.
 - Add missing `cost-optimization-guide.md` or update the link.
-- Replace placeholder link in `RESEARCH_METHODOLOGY.md`.
+- Replace placeholder link in `research-methodology.md`.
 
 ### Medium Effort (1-2 days)
 - Consolidate duplicated docs and define canonical sources.

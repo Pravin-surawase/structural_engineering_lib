@@ -66,11 +66,11 @@
 📋 Active Tasks:
   • No active tasks (clean slate)
 
-📖 Read first: docs/HANDOFF.md → docs/AGENT_BOOTSTRAP.md → docs/AI_CONTEXT_PACK.md
+📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md
 ============================================================
 ```
 
-**Related:** [end_session.py](#2-end_sessionpy), [HANDOFF.md](../HANDOFF.md)
+**Related:** [end_session.py](#2-end_sessionpy), [handoff.md](../handoff.md)
 
 ---
 
@@ -97,7 +97,7 @@
 
 **What It Checks:**
 1. 📁 Uncommitted changes in git
-2. 🔍 Handoff document freshness (HANDOFF.md, next-session-brief.md)
+2. 🔍 Handoff document freshness (handoff.md, next-session-brief.md)
 3. 📝 SESSION_LOG entry completeness
 4. 🔗 Doc link validity
 5. 📊 Today's activity summary
@@ -111,7 +111,7 @@
 Checking handoff readiness...
 
 ✅ No uncommitted changes
-✅ HANDOFF.md is current
+✅ handoff.md is current
 ✅ next-session-brief.md updated within 7 days
 ✅ SESSION_LOG has entry for today
 ✅ TASKS.md reflects current state
@@ -718,7 +718,7 @@ python3 scripts/check_repo_hygiene.py
 **What It Checks:**
 - File length < 150 lines (target)
 - Warns if > 150 lines
-- Suggests archiving old content to SESSION_LOG.md
+- Suggests archiving old content to SESSION_log.md
 
 **Output:**
 ```
@@ -753,7 +753,7 @@ next-session-brief.md: 142 lines ✅ (target <150)
 1. Prompts for version number
 2. Runs bump_version.py
 3. Updates CHANGELOG.md
-4. Updates RELEASES.md
+4. Updates releases.md
 5. Updates documentation
 6. Commits changes
 7. Creates annotated git tag
@@ -779,7 +779,7 @@ next-session-brief.md: 142 lines ✅ (target <150)
 **What It Updates:**
 - `Python/pyproject.toml`
 - `VBA/M00_Version.bas`
-- `docs/AI_CONTEXT_PACK.md`
+- `docs/ai-context-pack.md`
 - `docs/planning/next-session-brief.md`
 - Other version references
 
@@ -835,7 +835,7 @@ next-session-brief.md: 142 lines ✅ (target <150)
 
 **What It Checks:**
 - CHANGELOG.md format correct
-- RELEASES.md updated
+- releases.md updated
 - Version numbers consistent
 - Release notes complete
 
@@ -1086,7 +1086,7 @@ Error Handling Audit:
 - Function complexity
 - Code duplication
 
-**Related:** [VBA_GUIDE.md](../VBA_GUIDE.md)
+**Related:** [vba-guide.md](../vba-guide.md)
 
 ---
 
@@ -1440,13 +1440,13 @@ chmod +x scripts/*.sh
 ## Related Documentation
 
 - [Git Workflow Quick Reference](../contributing/git-workflow-quick-reference.md)
-- [Git Workflow for AI Agents](../GIT_WORKFLOW_AI_AGENTS.md)
+- [Git Workflow for AI Agents](../git-workflow-ai-agents.md)
 - [Development Guide](../contributing/development-guide.md)
-- [HANDOFF.md](../HANDOFF.md) — Session management workflow
-- [AI_CONTEXT_PACK.md](../AI_CONTEXT_PACK.md) — Agent entrypoint
+- [handoff.md](../handoff.md) — Session management workflow
+- [ai-context-pack.md](../ai-context-pack.md) — Agent entrypoint
 
 ---
 
 **Last Updated:** 2026-01-06
 **Maintained By:** Project automation
-**Questions?** See [TROUBLESHOOTING.md](../TROUBLESHOOTING.md) or [SUPPORT.md](../../SUPPORT.md)
+**Questions?** See [troubleshooting.md](../troubleshooting.md) or [SUPPORT.md](../../SUPPORT.md)

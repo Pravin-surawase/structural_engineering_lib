@@ -25,6 +25,12 @@ pip install structural-lib-is456
 pip install "structural-lib-is456[dxf]"
 ```
 
+## Extras
+
+- `dxf`: DXF export support (`ezdxf`)
+- `render`: planned DXF render to PNG/PDF (`matplotlib`) — not implemented yet
+- `dev`: tooling for tests/formatting/linting
+
 ## Quick Start: CLI Usage
 
 The library provides a unified command-line interface:

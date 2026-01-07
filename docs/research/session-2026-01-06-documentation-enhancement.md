@@ -48,7 +48,7 @@
 **What Was Analyzed:**
 1. **Documentation Landscape** (193 files, 8 directories)
 2. **Agent Entrypoints** (AI_CONTEXT_PACK, AGENT_BOOTSTRAP, copilot-instructions)
-3. **Handoff Mechanisms** (SESSION_LOG, HANDOFF.md, next-session-brief)
+3. **Handoff Mechanisms** (SESSION_LOG, handoff.md, next-session-brief)
 4. **Architecture Documentation** (PROJECT_OVERVIEW, layer architecture)
 5. **Workflow Documentation** (Git workflow, PR vs direct commit rules)
 6. **Automation Ecosystem** (41 scripts - **GAP IDENTIFIED**)
@@ -94,8 +94,8 @@
 
 **Deliverables:**
 1. `docs/reference/automation-catalog.md` (1500+ lines)
-2. `docs/AI_CONTEXT_PACK.md` (automation section added)
-3. `docs/AGENT_BOOTSTRAP.md` (catalog link added)
+2. `docs/ai-context-pack.md` (automation section added)
+3. `docs/agent-bootstrap.md` (catalog link added)
 4. Discoverability tested and validated
 
 **TASK-171: Create Automation Catalog**
@@ -145,7 +145,7 @@ Added prominent link:
 **Test Scenario:** New agent needs git workflow automation
 
 **Test Path:**
-1. Read AI_CONTEXT_PACK.md (30 sec)
+1. Read ai-context-pack.md (30 sec)
 2. See automation section
 3. Click link to automation-catalog.md
 4. Find safe_push.sh in Git Workflow category
@@ -293,8 +293,8 @@ Reasoning:
 **Message Structure:**
 1. **🚀 FIRST:** Run `start_session.py` (immediate context)
 2. **📖 THEN:** Read 3 docs in order (~10 min)
-   - AGENT_BOOTSTRAP.md (roadmap)
-   - AI_CONTEXT_PACK.md (project context)
+   - agent-bootstrap.md (roadmap)
+   - ai-context-pack.md (project context)
    - TASKS.md (current work)
 3. **⚠️ CRITICAL:** Read copilot-instructions.md before any commit
 4. **🎯 Key principles:** safe_push.sh, should_use_pr.sh, test locally
@@ -812,7 +812,7 @@ Best collaboration happens when:
 
 ### Do These Things (High Value)
 
-1. **Read SESSION_LOG.md first**
+1. **Read SESSION_log.md first**
    - Shows what previous agents struggled with
    - Prevents repeating mistakes
    - Provides historical context

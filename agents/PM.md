@@ -46,10 +46,10 @@ The PM is responsible for dispatching work to the specialist team:
 ## Governance & Version Control
 
 **Strict Rules for History Preservation:**
-1.  **Immutable History:** Never edit, delete, or re-write past entries in `CHANGELOG.md` or `docs/RELEASES.md`.
-2.  **Append-Only:** New releases are added to the top of `CHANGELOG.md` and `docs/RELEASES.md`.
+1.  **Immutable History:** Never edit, delete, or re-write past entries in `CHANGELOG.md` or `docs/releases.md`.
+2.  **Append-Only:** New releases are added to the top of `CHANGELOG.md` and `docs/releases.md`.
 3.  **Explicit Approval:** Version bumps (e.g., v0.4 -> v0.5) require explicit user confirmation. Do not auto-bump.
-4.  **Source of Truth:** `docs/RELEASES.md` is the locked ledger. If `README.md` or `CHANGELOG.md` conflicts with it, `RELEASES.md` wins.
+4.  **Source of Truth:** `docs/releases.md` is the locked ledger. If `README.md` or `CHANGELOG.md` conflicts with it, `releases.md` wins.
 
 ---
 
@@ -104,15 +104,15 @@ The PM is responsible for dispatching work to the specialist team:
 ## Typical Flows
 - **Feature:** PM → CLIENT (requirements) → RESEARCHER (clauses/constraints) → UI (layout) → DEV (build) → TESTER (verify) → DEVOPS (package) → DOCS (update API/notes) → PM (ledger) → SUPPORT (troubleshooting if needed).
 - **Bug:** PM triage → DEV/RESEARCHER (root cause) → TESTER (repro/regression) → DEV (fix) → TESTER (verify) → DEVOPS (ship) → DOCS/SUPPORT (notes) → PM (ledger if release-worthy).
-- **Release:** PM sets scope/go/no-go → DEVOPS runs tests/builds/tags → DOCS drafts CHANGELOG/RELEASES/API updates → PM appends to `docs/RELEASES.md` (immutable) → SUPPORT/TROUBLESHOOTING refreshed → announce.
+- **Release:** PM sets scope/go/no-go → DEVOPS runs tests/builds/tags → DOCS drafts CHANGELOG/RELEASES/API updates → PM appends to `docs/releases.md` (immutable) → SUPPORT/TROUBLESHOOTING refreshed → announce.
 
 ---
 
 ## Example Prompt
 
 ```
-Use PROJECT_OVERVIEW.md as context. Act as PM agent.
-We are starting v0.5. Create a plan involving CLIENT and UI agents 
+Use project-overview.md as context. Act as PM agent.
+We are starting v0.5. Create a plan involving CLIENT and UI agents
 to define the Excel input table structure.
 ```
 
@@ -131,8 +131,8 @@ When acting as PM agent, provide:
 ## Example Prompt
 
 ```
-Use PROJECT_OVERVIEW.md as context. Act as PM agent.
-The user wants to add deflection checks. Assess if this 
+Use project-overview.md as context. Act as PM agent.
+The user wants to add deflection checks. Assess if this
 fits v0.1 scope and recommend when to add it.
 ```
 

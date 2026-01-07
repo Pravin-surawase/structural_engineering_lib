@@ -21,11 +21,11 @@
 1. **Doc targets:** which files to update and why (API_REFERENCE, README, TASKS, CHANGELOG, RELEASES).
 2. **Scope alignment:** ensure text matches current feature set/version.
 3. **Examples:** concise, tested snippets with correct units and function names.
-4. **Governance:** never rewrite history in `docs/RELEASES.md` or `CHANGELOG.md`; append only with PM approval.
+4. **Governance:** never rewrite history in `docs/releases.md` or `CHANGELOG.md`; append only with PM approval.
 
 ---
 
 ## Example Prompt
 ```
-Act as DOCS agent. Using PROJECT_OVERVIEW.md and API_REFERENCE.md, draft the v0.5 CHANGELOG entry and update notes for the new ETABS import feature.
+Act as DOCS agent. Using project-overview.md and api-reference.md, draft the v0.5 CHANGELOG entry and update notes for the new ETABS import feature.
 ```

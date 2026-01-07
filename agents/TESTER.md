@@ -86,8 +86,8 @@ When acting as TESTER agent, provide:
 ## Example Prompt
 
 ```
-Use PROJECT_OVERVIEW.md as context. Act as TESTER agent.
-Propose a test matrix for the flexure module covering 
+Use project-overview.md as context. Act as TESTER agent.
+Propose a test matrix for the flexure module covering
 singly reinforced design (normal, min steel, over-reinforced cases).
 Include hand-calculated expected values.
 ```

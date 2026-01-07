@@ -66,7 +66,7 @@ Contract doc: `docs/reference/bbs-dxf-contract.md`
 - Document DXF layer + text contract (what must appear).
 - Align docs/specs to existing modules.
 
-**Files:** `docs/reference/`, `docs/specs/v0.7_DATA_MAPPING.md`, `docs/reference/error-schema.md` (if needed for error codes)
+**Files:** `docs/reference/`, `docs/specs/v0.7-data-mapping.md`, `docs/reference/error-schema.md` (if needed for error codes)
 **Tests:** none (docs-only)
 **Done when:** contract doc + references are linked and consistent.
 

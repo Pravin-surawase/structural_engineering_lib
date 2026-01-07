@@ -548,7 +548,7 @@ v0.15.0 → v1.0.0 (major: breaking changes)
 - [ ] Update .github/copilot-instructions.md with refined rules
 - [ ] Update docs/contributing/github-workflow.md with decision tree
 - [ ] Create scripts/should_use_pr.sh helper
-- [ ] Document in SESSION_LOG.md
+- [ ] Document in SESSION_log.md
 
 ### Short-term (This Week)
 - [ ] Enhance safe_push.sh with code change warnings

@@ -114,7 +114,7 @@ Engineers running batch designs (50-500 beams) struggle to identify critical bea
   6. Cross-section SVG generator (`render_section_svg()`)
   7. Batch packager (threshold logic + index.html)
   8. Golden file tests for determinism
-- **Docs to update:** API_REFERENCE.md (new report command), CHANGELOG.md
+- **Docs to update:** api-reference.md (new report command), CHANGELOG.md
 
 ## Executive Summary
 
@@ -1053,12 +1053,12 @@ def generate_report(compliance_reports: List[ComplianceReport],
 
 | Doc | Section to Add/Update | Priority |
 |-----|----------------------|----------|
-| API_REFERENCE.md | `report` command with examples | P1 |
+| api-reference.md | `report` command with examples | P1 |
 | CHANGELOG.md | "Visual Report Generation" entry | P1 |
-| GETTING_STARTED_PYTHON.md | "Generating Reports" tutorial | P2 |
-| EXCEL_QUICKSTART.md | Note: "Reports available via Python CLI" | P3 |
+| getting-started-python.md | "Generating Reports" tutorial | P2 |
+| excel-quickstart.md | Note: "Reports available via Python CLI" | P3 |
 
-**Example for API_REFERENCE.md:**
+**Example for api-reference.md:**
 ```markdown
 ### Report Generation
 
@@ -1194,7 +1194,7 @@ compliance.py → report.py → report_svg.py
 | "Colors look wrong" | Check browser zoom; SVG scales but text may clip |
 | "Can I customize the template?" | Not in Phase 1; custom CSS in Phase 2 |
 
-**Troubleshooting section for TROUBLESHOOTING.md:**
+**Troubleshooting section for troubleshooting.md:**
 ```markdown
 ### Report Generation Issues
 
@@ -1332,9 +1332,9 @@ Items requiring input geometry/materials move to Phase 2 unless the report input
 ### DOCS Agent
 
 **Docs to update once implementation starts:**
-- `docs/API_REFERENCE.md` (report command examples with job output file).
-- `docs/GETTING_STARTED_PYTHON.md` (report walkthrough).
-- `docs/TROUBLESHOOTING.md` (input format + batch threshold).
+- `docs/api-reference.md` (report command examples with job output file).
+- `docs/getting-started-python.md` (report walkthrough).
+- `docs/troubleshooting.md` (input format + batch threshold).
 
 ---
 

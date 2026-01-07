@@ -1,6 +1,6 @@
 # Git Workflow Quick Reference
 
-**Canonical:** `docs/GIT_WORKFLOW_AI_AGENTS.md`
+**Canonical:** `docs/git-workflow-ai-agents.md`
 
 **Last Updated:** 2026-01-06
 **Status:** ✅ Production Ready (tested with 13 scenarios)

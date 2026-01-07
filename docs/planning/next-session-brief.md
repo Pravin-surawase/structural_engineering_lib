@@ -58,7 +58,7 @@
 | Order | Document | What You'll Learn |
 |-------|----------|-------------------|
 | 1 | `.github/copilot-instructions.md` | Layer architecture, units, Mac VBA safety, git workflow |
-| 2 | `docs/AI_CONTEXT_PACK.md` | Complete project context for AI agents |
+| 2 | `docs/ai-context-pack.md` | Complete project context for AI agents |
 | 3 | `docs/TASKS.md` | Current backlog — what's done, what's pending |
 | 4 | `docs/planning/v0.20-stabilization-checklist.md` | Release readiness status |
 
@@ -139,10 +139,10 @@ cd Python && ../.venv/bin/python -m pytest -q
 
 ## 📜 History
 
-- **Full session log:** `docs/SESSION_LOG.md`
+- **Full session log:** `docs/SESSION_log.md`
 - **Archived docs:** `docs/_archive/`
 - **GitHub Actions:** https://github.com/Pravin-surawase/structural_engineering_lib/actions
 
 ---
 
-*This briefing should be ~100 lines. If it grows beyond 150, archive old sessions to SESSION_LOG.md.*
+*This briefing should be ~100 lines. If it grows beyond 150, archive old sessions to SESSION_log.md.*

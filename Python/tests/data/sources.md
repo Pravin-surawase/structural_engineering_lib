@@ -25,5 +25,4 @@ intentionally stable so numerical regressions are caught early.
 2. Recompute outputs using the same inputs and capture the new expected values.
 3. Cross-check against the VBA implementation or the verification pack.
 4. Update the JSON metadata (e.g., created date) and document the change in
-   `docs/RELEASES.md` and `docs/SESSION_LOG.md`.
-
+   `docs/releases.md` and `docs/SESSION_log.md`.

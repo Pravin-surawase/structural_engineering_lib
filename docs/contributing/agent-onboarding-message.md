@@ -18,8 +18,8 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 
 📖 THEN: Read these 3 documents in order (takes ~10 minutes):
 
-1. **docs/AGENT_BOOTSTRAP.md** - Quick start guide (this is your roadmap)
-2. **docs/AI_CONTEXT_PACK.md** - Project summary, architecture, golden rules
+1. **docs/agent-bootstrap.md** - Quick start guide (this is your roadmap)
+2. **docs/ai-context-pack.md** - Project summary, architecture, golden rules
 3. **docs/TASKS.md** - Current work (Active, Up Next, Backlog)
 
 ⚠️ CRITICAL: Before ANY commit, read:
@@ -79,8 +79,8 @@ Ready to continue. What would you like to work on?
 [Runs start_session.py]
 
 I see we're working on [feature]. For testing, I'll need:
-1. docs/TESTING_STRATEGY.md - Test patterns and requirements
-2. docs/VERIFICATION_PACK.md - Benchmark test cases
+1. docs/testing-strategy.md - Test patterns and requirements
+2. docs/verification-pack.md - Benchmark test cases
 3. Python/tests/ - Existing test structure
 
 Let me review these and then propose test coverage for [feature].

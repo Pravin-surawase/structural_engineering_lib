@@ -10,7 +10,7 @@ Purpose: reach a professional-grade beam library with pandas-like reliability.
 **Next milestone:** v0.20.0 (Contract Lock checkpoint — includes S-007 by W06)
 **Target:** v1.0.0 in 52 weeks
 
-Note: For live version/test counts, see `docs/AI_CONTEXT_PACK.md`.
+Note: For live version/test counts, see `docs/ai-context-pack.md`.
 
 ### Already Done (freeze these)
 - Core design functions: flexure (singly/doubly/flanged), shear, ductile
@@ -19,7 +19,7 @@ Note: For live version/test counts, see `docs/AI_CONTEXT_PACK.md`.
 - CLI: `design`, `bbs`, `dxf`, `job` commands
 - DXF export, BBS generation, cutting-stock optimizer
 - Test suite: 1810 passed, 92% branch coverage
-- Docs discipline: TASKS.md, AI_CONTEXT_PACK.md, copilot-instructions.md
+- Docs discipline: TASKS.md, ai-context-pack.md, copilot-instructions.md
 
 ### Core Gaps (must close for v1.0)
 - S-007: External engineer CLI test
@@ -173,10 +173,10 @@ These are expected issues for this domain — plan for them, don't be surprised:
 
 ### Weeks 1-13: Foundation and API Freeze
 - W01: Scope lock and WIP rule
-  - Deliverable: add WIP=1 rule to docs/TASKS.md and docs/AI_CONTEXT_PACK.md.
+  - Deliverable: add WIP=1 rule to docs/TASKS.md and docs/ai-context-pack.md.
   - Done when: rule visible and agreed.
 - W02: External CLI test (S-007)
-  - Deliverable: cold-start test log in docs/SESSION_LOG.md (fresh install, run CLI, verify outputs).
+  - Deliverable: cold-start test log in docs/SESSION_log.md (fresh install, run CLI, verify outputs).
   - Done when: results recorded + issues captured + at least 3 “stranger” pain points converted to backlog items.
   - If blocked: mark as Waiting and proceed to W03 (WIP=1 rule still applies; S-007 resumes when tester is available).
 - W03: Error schema draft
@@ -208,7 +208,7 @@ These are expected issues for this domain — plan for them, don't be surprised:
   - Done when: policy referenced in docs/README.md.
 - W12: API freeze checkpoint tag
   - Deliverable: internal tag or release note marking API freeze.
-  - Done when: recorded in docs/RELEASES.md.
+  - Done when: recorded in docs/releases.md.
 - W13: Foundation release + stabilization buffer
   - Deliverable: v0.20.x checkpoint release + fix any Phase A regressions.
   - Done when: CHANGELOG updated, zero open Phase A issues.
@@ -311,7 +311,7 @@ These are expected issues for this domain — plan for them, don't be surprised:
   - Done when: outputs match expected.
 - W44: Cold-start onboarding test
   - Deliverable: install -> result in < 5 minutes.
-  - Done when: logged in docs/SESSION_LOG.md.
+  - Done when: logged in docs/SESSION_log.md.
 - W45: Docs information architecture
   - Deliverable: quick summary vs deep-dive split.
   - Done when: docs/README.md updated.

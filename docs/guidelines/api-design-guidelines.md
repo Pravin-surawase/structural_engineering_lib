@@ -1258,9 +1258,9 @@ pip install structural-lib-is456==2.0.0
 ```
 
 ## 📚 Documentation
-- [Migration Guide](docs/migration/v1-to-v2.md)
-- [API Reference](https://docs.structural-lib.com/api/v2)
-- [Examples](examples/)
+- Migration Guide: docs/migration/v1-to-v2.md
+- API Reference: https://docs.structural-lib.com/api/v2
+- Examples: Python/examples/
 ```
 
 ---

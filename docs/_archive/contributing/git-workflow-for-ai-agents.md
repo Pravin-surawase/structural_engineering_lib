@@ -1,6 +1,6 @@
 # Git Workflow for AI Agents — Avoiding Race Conditions
 
-> ⚠️ **Deprecated:** This doc is superseded by `docs/GIT_WORKFLOW_AI_AGENTS.md`.
+> ⚠️ **Deprecated:** This doc is superseded by `docs/git-workflow-ai-agents.md`.
 > Use the canonical workflow doc for current instructions.
 
 **Problem (historical):** Pre-commit hooks modify files AFTER staging. Auto-format is now check-only, so PR auto-commit races are removed.

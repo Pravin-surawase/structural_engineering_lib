@@ -38,7 +38,7 @@ Use RESEARCHER agent when:
 - **Stress Block:** Parabolic-rectangular stress block for concrete (Annex G).
 
 ### Technical Domain
-- **VBA (Mac/Win):** 
+- **VBA (Mac/Win):**
     - Mac has a smaller stack; avoid deep recursion or heavy nested UDTs.
     - `LongPtr` needed for 64-bit compatibility (though less relevant for pure logic).
     - `Scripting.Dictionary` is not available on Mac by default (use `Collection` or custom class).

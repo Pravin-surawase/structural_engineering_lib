@@ -4,7 +4,7 @@ This index helps you find the right research document quickly. Start with the me
 
 ## How to use this index
 
-- Read `RESEARCH_METHODOLOGY.md` first if you are creating or reviewing research.
+- Read `research-methodology.md` first if you are creating or reviewing research.
 - Use the tags to find the closest match to your task.
 - Each entry includes a "when to read" hint so you can avoid unnecessary context.
 
@@ -12,7 +12,7 @@ This index helps you find the right research document quickly. Start with the me
 
 | Doc | Tags | When to read |
 | --- | --- | --- |
-| [RESEARCH_METHODOLOGY.md](RESEARCH_METHODOLOGY.md) | process, templates | Before starting any new research |
+| [research-methodology.md](research-methodology.md) | process, templates | Before starting any new research |
 | [session-2026-01-06-documentation-enhancement.md](session-2026-01-06-documentation-enhancement.md) | docs, plan | Before executing documentation phases |
 | [documentation-handoff-analysis.md](documentation-handoff-analysis.md) | docs, workflow | When refreshing onboarding or agent docs |
 | [project-hygiene-audit.md](project-hygiene-audit.md) | hygiene, structure | Before reorganizing docs or archiving content |

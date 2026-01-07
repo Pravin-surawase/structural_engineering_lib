@@ -1,6 +1,6 @@
 # IS 456:2000 Quick Reference — RC Beam Design Formulas
 
-**For use with:** IS 456 RC Beam Design Library  
+**For use with:** IS 456 RC Beam Design Library
 **Code Reference:** IS 456:2000, SP:16-1980
 
 ---

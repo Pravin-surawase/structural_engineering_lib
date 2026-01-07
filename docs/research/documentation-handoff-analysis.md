@@ -65,16 +65,16 @@ Total Documentation: 193 markdown files
 
 **Tier 1 (CRITICAL - Read First):**
 1. `.github/copilot-instructions.md` (543 lines) - MANDATORY rules
-2. `docs/AI_CONTEXT_PACK.md` (173 lines) - Agent entrypoint
-3. `docs/AGENT_BOOTSTRAP.md` (100 lines) - Quick start
+2. `docs/ai-context-pack.md` (173 lines) - Agent entrypoint
+3. `docs/agent-bootstrap.md` (100 lines) - Quick start
 4. `docs/TASKS.md` - Current work state
 5. `docs/planning/next-session-brief.md` - Latest status
 
 **Tier 2 (Core Context):**
 6. `docs/architecture/project-overview.md` - Architecture + philosophy
 7. `docs/reference/known-pitfalls.md` - Common traps
-8. `docs/HANDOFF.md` - Resume procedures
-9. `docs/SESSION_LOG.md` (862 lines) - Historical decisions
+8. `docs/handoff.md` - Resume procedures
+9. `docs/SESSION_log.md` (862 lines) - Historical decisions
 
 **Tier 3 (Deep Dives):**
 10. `docs/contributing/` - Workflow guides
@@ -101,7 +101,7 @@ Total Documentation: 193 markdown files
 - **Discoverability:** 10/10 — Auto-loaded by tooling
 - **Currency:** ✅ Updated 2026-01-06 with latest workflow fixes
 
-**Secondary Entry:** `docs/AI_CONTEXT_PACK.md`
+**Secondary Entry:** `docs/ai-context-pack.md`
 - **Strengths:**
   - ✅ Project metrics table (version, tests, coverage)
   - ✅ Golden rules (small changes, parity, update docs)
@@ -112,7 +112,7 @@ Total Documentation: 193 markdown files
 - **Discoverability:** 9/10 — Referenced from multiple docs
 - **Minor Gap:** No automation script catalog
 
-**Tertiary Entry:** `docs/AGENT_BOOTSTRAP.md`
+**Tertiary Entry:** `docs/agent-bootstrap.md`
 - **Strengths:**
   - ✅ 30-second quick start command
   - ✅ Priority-ordered context table
@@ -127,7 +127,7 @@ Total Documentation: 193 markdown files
 ```
 1. VS Code loads: .github/copilot-instructions.md (automatic)
 2. Run: scripts/start_session.py (30 seconds)
-3. Read: AGENT_BOOTSTRAP.md → AI_CONTEXT_PACK.md → TASKS.md
+3. Read: agent-bootstrap.md → ai-context-pack.md → TASKS.md
 4. Deep dive: architecture/project-overview.md, reference/known-pitfalls.md
 5. Start work
 ```
@@ -176,7 +176,7 @@ Total Documentation: 193 markdown files
 
 ### 3.2 Handoff Documents
 
-**`docs/HANDOFF.md`**
+**`docs/handoff.md`**
 - **Strengths:**
   - ✅ 2-minute resume workflow
   - ✅ Quick output sample
@@ -196,7 +196,7 @@ Total Documentation: 193 markdown files
 - **Size:** ~200 lines (target <150, within tolerance)
 - **Currency:** ✅ Updated 2026-01-06
 
-**`docs/SESSION_LOG.md`**
+**`docs/SESSION_log.md`**
 - **Purpose:** Append-only historical record
 - **Content:** 862 lines covering 50+ sessions
 - **Format:** Date → Focus → Summary → PRs → Deliverables → Next Actions
@@ -208,9 +208,9 @@ Total Documentation: 193 markdown files
 **Resume Workflow (New Agent):**
 ```bash
 1. scripts/start_session.py              # 10 seconds
-2. Read HANDOFF.md                       # 2 minutes
+2. Read handoff.md                       # 2 minutes
 3. Read next-session-brief.md            # 3 minutes
-4. Skim SESSION_LOG.md (recent entries)  # 2 minutes
+4. Skim SESSION_log.md (recent entries)  # 2 minutes
 5. Check TASKS.md                        # 1 minute
 ---
 Total: 8 minutes to full context
@@ -259,7 +259,7 @@ Total: 4 minutes to clean handoff
 - **Discoverability:** ✅ Linked from all entrypoints
 - **Currency:** ✅ Updated regularly
 
-**`docs/MISSION_AND_PRINCIPLES.md`**
+**`docs/mission-and-principles.md`**
 - **Content:** Project philosophy, long-term vision
 - **Quality:** 10/10 — Clear, inspirational
 - **Use Case:** Understanding "why" behind decisions
@@ -281,7 +281,7 @@ Total: 4 minutes to clean handoff
 |--------|--------------|---------|
 | **Layer separation** | copilot-instructions.md, project-overview.md | ✅ 10/10 |
 | **Units convention** | known-pitfalls.md, copilot-instructions.md | ✅ 9/10 |
-| **Python/VBA parity** | All architectural docs, TESTING_STRATEGY.md | ✅ 9/10 |
+| **Python/VBA parity** | All architectural docs, testing-strategy.md | ✅ 9/10 |
 | **Error handling** | CONTRIBUTING.md, reference/error-schema.md | ✅ 9/10 |
 | **API contracts** | reference/api.md, reference/library-contract.md | ✅ 9/10 |
 | **Type safety** | known-pitfalls.md, copilot-instructions.md | ✅ 8/10 |
@@ -302,7 +302,7 @@ Total: 4 minutes to clean handoff
 
 **Documentation Files:**
 1. `.github/copilot-instructions.md` (Git workflow section — 200+ lines)
-2. `docs/GIT_WORKFLOW_AI_AGENTS.md`
+2. `docs/git-workflow-ai-agents.md`
 3. `docs/contributing/git-workflow-quick-reference.md` (NEW — Jan 6 2026)
 4. `docs/contributing/github-workflow.md`
 5. `docs/research/git-workflow-production-stage.md` (1170 lines research)
@@ -333,17 +333,17 @@ Total: 4 minutes to clean handoff
 - Setup, testing, formatting, linting
 - Quality: 8/10 — Comprehensive but could use more examples
 
-**`docs/DEVELOPMENT_GUIDE.md` (root level)**
+**`docs/development-guide.md` (root level)**
 - Similar content, some duplication
 - **Gap:** Should consolidate or redirect
 
-**`docs/TESTING_STRATEGY.md`**
+**`docs/testing-strategy.md`**
 - Test categories, coverage targets, fixtures
 - Quality: 9/10 — Excellent, clear strategy
 
 ### 5.3 Release Workflows
 
-**`docs/RELEASES.md`**
+**`docs/releases.md`**
 - Complete release history (v0.1.0 → v0.14.0)
 - Release process documented per version
 - Quality: 9/10 — Excellent historical record
@@ -362,7 +362,7 @@ Total: 4 minutes to clean handoff
 
 **Documentation:**
 - `.github/workflows/` — 10+ workflow files
-- `docs/_internal/GIT_GOVERNANCE.md` — CI policies
+- `docs/_internal/git-governance.md` — CI policies
 - `scripts/ci_local.sh` — Local CI simulation
 
 **Coverage:**
@@ -566,8 +566,8 @@ Total: 4 minutes to clean handoff
 | **Type Safety** | ✅ 9/10 | known-pitfalls.md, mypy section |
 | **VBA Quirks** | ✅ 10/10 | troubleshooting.md |
 | **API Contracts** | ✅ 9/10 | reference/api.md, error-schema.md |
-| **Testing** | ✅ 8/10 | TESTING_STRATEGY.md |
-| **CI/CD** | ✅ 8/10 | GIT_GOVERNANCE.md |
+| **Testing** | ✅ 8/10 | testing-strategy.md |
+| **CI/CD** | ✅ 8/10 | git-governance.md |
 
 **Overall:** 🟢 **EXCELLENT** — Comprehensive pitfall documentation
 
@@ -614,7 +614,7 @@ Total: 4 minutes to clean handoff
 - **Result:** ✅ **PASS** — Decision matrix + tool
 
 **Scenario 8: "What's the release process?"**
-- **Path:** RELEASES.md → Process section
+- **Path:** releases.md → Process section
 - **Time:** <2 minutes
 - **Result:** ✅ **PASS** — Step-by-step documented
 
@@ -624,7 +624,7 @@ Total: 4 minutes to clean handoff
 - **Result:** ✅ **PASS** — Multiple docs, cross-referenced
 
 **Scenario 10: "What's the project philosophy?"**
-- **Path:** MISSION_AND_PRINCIPLES.md or architecture/project-overview.md
+- **Path:** mission-and-principles.md or architecture/project-overview.md
 - **Time:** <2 minutes
 - **Result:** ✅ **PASS** — Clear mission statements
 
@@ -769,7 +769,7 @@ Total: 4 minutes to clean handoff
 - Automated release process
 - Clear deprecation policy
 - Post-release verification
-- Complete history (RELEASES.md)
+- Complete history (releases.md)
 
 ### 11.2 Competitive Advantages
 
@@ -800,7 +800,7 @@ Total: 4 minutes to clean handoff
 - **Impact:** High — Prevents agents from reinventing automation
 
 **2. Add Automation Section to AI_CONTEXT_PACK** (15 minutes)
-- **Location:** `docs/AI_CONTEXT_PACK.md`
+- **Location:** `docs/ai-context-pack.md`
 - **Content:**
   ```markdown
   ## 🤖 Automation Scripts
