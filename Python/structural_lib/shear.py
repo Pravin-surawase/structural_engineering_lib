@@ -7,7 +7,9 @@ Description:  Shear design and analysis functions
 
 from . import tables
 from .data_types import ShearResult
+from .error_messages import dimension_too_small
 from .errors import (
+    DimensionError,
     E_INPUT_001,
     E_INPUT_002,
     E_INPUT_004,
@@ -33,12 +35,20 @@ def calculate_tv(vu_kn: float, b: float, d: float) -> float:
         Nominal shear stress tv (N/mm²).
 
     Raises:
-        ValueError: If b or d <= 0.
+        DimensionError: If b or d <= 0.
     """
     if b <= 0:
-        raise ValueError(f"Beam width b must be > 0, got {b}")
+        raise DimensionError(
+            dimension_too_small("beam width b", b, 0, "Cl. 40.1"),
+            details={"b": b, "minimum": 0},
+            clause_ref="Cl. 40.1",
+        )
     if d <= 0:
-        raise ValueError(f"Effective depth d must be > 0, got {d}")
+        raise DimensionError(
+            dimension_too_small("effective depth d", d, 0, "Cl. 40.1"),
+            details={"d": d, "minimum": 0},
+            clause_ref="Cl. 40.1",
+        )
 
     return (abs(vu_kn) * 1000.0) / (b * d)
 
