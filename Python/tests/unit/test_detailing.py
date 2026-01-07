@@ -25,6 +25,7 @@ from structural_lib.detailing import (
     get_stirrup_legs,
     select_bar_arrangement,
 )
+from structural_lib.errors import ConfigurationError, MaterialError
 
 
 class TestBondStress:
@@ -122,8 +123,8 @@ class TestBarSpacing:
         assert spacing == pytest.approx(74, abs=2)
 
     def test_single_bar(self):
-        """Single bar should raise ValueError (can't calculate spacing)."""
-        with pytest.raises(ValueError, match="bar_count must be > 1"):
+        """Single bar should raise ConfigurationError (can't calculate spacing)."""
+        with pytest.raises(ConfigurationError, match="Bar count must be > 1"):
             calculate_bar_spacing(230, 25, 8, 16, 1)
 
     def test_min_spacing_ok(self):
