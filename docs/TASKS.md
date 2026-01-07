@@ -27,9 +27,7 @@
 
 ## Active
 
-| ID | Task | Status | Notes |
-|----|------|--------|-------|
-| **TASK-214** | Create result object base classes (BaseResult with to_dict/summary/validate) | 🟢 IN PROGRESS | Base classes created, tests passing |
+*No active tasks currently.*
 
 ---
 
@@ -134,6 +132,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-214** | Create result object base classes (BaseResult, CalculationResult, ComplianceResult with to_dict/summary/validate) → result_base.py + 14 tests | DEV | ✅ 2026-01-07 |
 | **TASK-207** | Research: API Evolution & Migration Strategies (SemVer, deprecation, breaking changes, migration tools) → 1700 lines | RESEARCHER | ✅ 2026-01-07 |
 | **TASK-206** | Research: API Documentation & Discoverability (docstring standards, IDE integration, API reference) → 1500 lines | RESEARCHER | ✅ 2026-01-07 |
 | **TASK-205** | Research: Engineering Domain API Patterns (PyNite, ezdxf, pint, handcalcs, unit handling) → 1000 lines | RESEARCHER | ✅ 2026-01-07 |
