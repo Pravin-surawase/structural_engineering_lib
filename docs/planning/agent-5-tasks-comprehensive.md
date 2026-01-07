@@ -102,6 +102,17 @@ git commit -m "docs: agent 5 phase 1 curriculum summary"
 ```
 Then stop and hand off to MAIN (no push).
 
+### Branch-Based Summary Workflow (Preferred)
+When a tracked summary is needed, use a short-lived branch and stop after commit:
+```bash
+git checkout main
+git pull origin main
+git checkout -b agent5/YYYY-MM-DD-phase-summary
+git add docs/planning/agent-5-*.md
+git commit -m "docs: agent 5 phase summary YYYY-MM-DD"
+```
+Do **not** push. Send MAIN the commit SHA + file list.
+
 ### Phase Closeout Checklist (Agent 5)
 - [ ] All new learning content saved in `learning-materials/`
 - [ ] Phase summary sent to MAIN
