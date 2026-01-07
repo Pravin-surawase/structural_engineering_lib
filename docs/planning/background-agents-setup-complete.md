@@ -143,9 +143,9 @@ As the MAIN agent, you handle:
 ## 📖 Research Resources to Reuse (Avoid Duplication)
 
 **Existing Research (read these first):**
-- [ai-enhancements.md](../research/ai-enhancements.md) - ML/AI for design analysis
+- [research-ai-enhancements.md](research-ai-enhancements.md) - ML/AI for design analysis
 - [background-agent-parallel-work.md](../research/background-agent-parallel-work.md) - Multi-agent coordination
-- [detailing-research.md](../research/detailing-research.md) - IS 456 detailing rules
+- [research-detailing.md](research-detailing.md) - IS 456 detailing rules
 
 **API Documentation:**
 - [api.md](../reference/api.md) - Complete API reference
@@ -220,12 +220,12 @@ As the MAIN agent, you handle:
 
 **For MAIN Agent:**
 - [Main TASKS.md](../TASKS.md) - Primary task board
-- [Git Workflow](../GIT_WORKFLOW_AI_AGENTS.md) - Git automation guide
+- [Git Workflow](../git-workflow-ai-agents.md) - Git automation guide
 - [Automation Catalog](../reference/automation-catalog.md) - All scripts
 
 **Project Context:**
-- [AI Context Pack](../AI_CONTEXT_PACK.md) - Everything you need to know
-- [Agent Bootstrap](../AGENT_BOOTSTRAP.md) - Quick start guide
+- [AI Context Pack](../ai-context-pack.md) - Everything you need to know
+- [Agent Bootstrap](../agent-bootstrap.md) - Quick start guide
 - [Next Session Brief](next-session-brief.md) - Current state
 
 ---

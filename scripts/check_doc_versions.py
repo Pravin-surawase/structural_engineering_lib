@@ -26,7 +26,7 @@ VERSION_PATTERNS = [
     (r"Document Version: ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Document Version header"),
     (r"\*\*Document Version:\*\* ([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Document Version (bold)"),
     (r"\*\*Version:\*\*\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Version header"),
-    (r"\|\s*\*\*Current Release\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/AI_CONTEXT_PACK.md", "AI_CONTEXT_PACK version table"),
+    (r"\|\s*\*\*Current Release\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/ai-context-pack.md", "AI_CONTEXT_PACK version table"),
     (r"\|\s*\*\*Current\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/TASKS.md", "TASKS version table"),
     (r"\|\s*\*\*Current\*\*\s*\|\s*v?([0-9]+\.[0-9]+\.[0-9]+)", "docs/planning/next-session-brief.md", "next-session-brief version table"),
     (r"@v([0-9]+\.[0-9]+\.[0-9]+)", "docs/**/*.md", "Git tag reference"),
@@ -36,8 +36,8 @@ VERSION_PATTERNS = [
 # Files to skip (always allowed to have old versions for historical context)
 SKIP_FILES = [
     "CHANGELOG.md",
-    "RELEASES.md",
-    "SESSION_LOG.md",
+    "releases.md",
+    "SESSION_log.md",
     "docs/_archive/",
     "docs/research/",  # Research docs reference external tool versions
     "docs/guidelines/",  # Guidelines contain example version numbers

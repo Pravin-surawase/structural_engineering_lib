@@ -73,8 +73,8 @@ Public Python API (`Python/structural_lib/api.py`)
 Docs that mention CLI/API usage (primary)
 - CLI: `docs/README.md`, `docs/reference/api.md`, `docs/cookbook/cli-reference.md`,
   `docs/getting-started/beginners-guide.md`, `docs/getting-started/python-quickstart.md`.
-- Legacy CLI mentions: `docs/specs/ETABS_INTEGRATION.md`, `docs/specs/v0.9_JOB_SCHEMA.md`,
-  `docs/RELEASES.md`, `docs/planning/current-state-and-goals.md`, `docs/TASKS.md`.
+- Legacy CLI mentions: `docs/specs/ETABS_integration.md`, `docs/specs/v0.9-job-schema.md`,
+  `docs/releases.md`, `docs/planning/current-state-and-goals.md`, `docs/TASKS.md`.
 
 Related plans
 - `docs/planning/cli-ai-discovery-plan.md` — AI-friendly CLI discovery without README bloat.

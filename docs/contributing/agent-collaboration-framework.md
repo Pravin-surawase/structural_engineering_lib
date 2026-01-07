@@ -41,7 +41,7 @@ This project uses **agent-driven maintenance** where specialized AI agents (rese
 - Communicate with user
 - Assign tasks to background agents
 - Review PRs and merge approved work
-- Maintain TASKS.md and SESSION_LOG.md
+- Maintain TASKS.md and SESSION_log.md
 - Resolve conflicts between agents
 - Make architectural decisions
 
@@ -52,7 +52,7 @@ This project uses **agent-driven maintenance** where specialized AI agents (rese
 
 **Files Owned:**
 - `docs/TASKS.md`
-- `docs/SESSION_LOG.md`
+- `docs/SESSION_log.md`
 - `docs/planning/next-session-brief.md`
 
 ---
@@ -228,7 +228,7 @@ This project uses **agent-driven maintenance** where specialized AI agents (rese
 
 **Files Owned:**
 - `docs/planning/*.md` (can commit directly)
-- `docs/RELEASES.md` (coordination with MAIN)
+- `docs/releases.md` (coordination with MAIN)
 
 **Quality Standards:**
 - Clear acceptance criteria for all tasks
@@ -522,13 +522,13 @@ docs/planning/feature-x-implementation-plan.md
 
 **Key Documents:**
 
-1. **`docs/AI_CONTEXT_PACK.md`**
+1. **`docs/ai-context-pack.md`**
    - Project overview
    - Technology stack
    - Quick reference links
    - Updated: Rarely (major changes only)
 
-2. **`docs/AGENT_BOOTSTRAP.md`**
+2. **`docs/agent-bootstrap.md`**
    - Agent onboarding guide
    - First steps for new agents
    - Tool locations
@@ -540,7 +540,7 @@ docs/planning/feature-x-implementation-plan.md
    - Backlog priorities
    - Updated: By MAIN after each session
 
-4. **`docs/SESSION_LOG.md`**
+4. **`docs/SESSION_log.md`**
    - Session-by-session progress
    - Decisions made
    - Problems encountered
@@ -555,7 +555,7 @@ docs/planning/feature-x-implementation-plan.md
 ### 4.2 Agent-Specific Context
 
 Each agent should:
-1. Read `AI_CONTEXT_PACK.md` first
+1. Read `ai-context-pack.md` first
 2. Read role-specific sections in this document
 3. Check `TASKS.md` for active work
 4. Review relevant research docs

@@ -32,7 +32,7 @@ git push
 
 **Exceptions:** NONE. Always use ai_commit.sh or safe_push.sh for commits.
 
-**Canonical doc:** `docs/GIT_WORKFLOW_AI_AGENTS.md`
+**Canonical doc:** `docs/git-workflow-ai-agents.md`
 **Legacy note:** If you see manual git commands elsewhere, ignore them and use the scripts.
 
 ---
@@ -46,7 +46,7 @@ git push
 
 This shows version, branch, active tasks, blockers, and doc freshness.
 
-**Read next:** `docs/AGENT_BOOTSTRAP.md` → `docs/AI_CONTEXT_PACK.md` → `docs/TASKS.md`
+**Read next:** `docs/agent-bootstrap.md` → `docs/ai-context-pack.md` → `docs/TASKS.md`
 
 ---
 
@@ -60,7 +60,7 @@ IS 456 RC beam design library with **Python + VBA parity**.
 - Prefer minimal, surgical changes.
 
 ## Always load this context first
-- docs/AI_CONTEXT_PACK.md
+- docs/ai-context-pack.md
 - docs/architecture/project-overview.md
 - docs/reference/api.md
 - docs/reference/known-pitfalls.md
@@ -552,7 +552,7 @@ git push
 1. Update `docs/planning/next-session-brief.md` with session summary
 2. Ensure TASKS.md reflects current state
 3. Commit any uncommitted doc changes
-4. Use `docs/HANDOFF.md` as the short resume template
+4. Use `docs/handoff.md` as the short resume template
 
 ---
 

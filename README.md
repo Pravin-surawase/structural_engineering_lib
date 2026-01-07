@@ -165,7 +165,7 @@ python3 -m structural_lib design input.csv -o results.json --insights
 
 Design writes per-beam status in `results.json`; failed beams are flagged with `is_safe=false` (plus an error message).
 
-ETABS exports can be normalized into this schema. See `docs/specs/ETABS_INTEGRATION.md` for the mapping rules.
+ETABS exports can be normalized into this schema. See `docs/specs/ETABS_integration.md` for the mapping rules.
 
 ---
 

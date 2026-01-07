@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 
 REPO_ROOT = Path(__file__).parent.parent
-SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
+SESSION_LOG = REPO_ROOT / "docs" / "SESSION_log.md"
 NEXT_BRIEF = REPO_ROOT / "docs" / "planning" / "next-session-brief.md"
 
 DATE_RE = re.compile(r"##\s+(\d{4}-\d{2}-\d{2})\s+—\s+Session")
@@ -24,7 +24,7 @@ def _latest_session_block(lines: list[str]) -> tuple[str, list[str]]:
             break
 
     if start_idx == -1:
-        raise ValueError("No session header found in SESSION_LOG.md")
+        raise ValueError("No session header found in SESSION_log.md")
 
     end_idx = len(lines)
     for idx in range(start_idx + 1, len(lines)):
@@ -124,7 +124,7 @@ def _update_next_brief(handoff_lines: list[str]) -> None:
 
 def main() -> int:
     if not SESSION_LOG.exists():
-        print("ERROR: docs/SESSION_LOG.md not found")
+        print("ERROR: docs/SESSION_log.md not found")
         return 1
     if not NEXT_BRIEF.exists():
         print("ERROR: docs/planning/next-session-brief.md not found")
@@ -135,7 +135,7 @@ def main() -> int:
     handoff_lines = _build_handoff_lines(date_str, block)
 
     if not handoff_lines:
-        print("ERROR: Could not build handoff lines from SESSION_LOG.md")
+        print("ERROR: Could not build handoff lines from SESSION_log.md")
         return 1
 
     _update_next_brief(handoff_lines)

@@ -14,7 +14,7 @@ The test suite is comprehensive in scope (59 test files, 2200+ tests) and covers
 - Listed test files in `Python/tests` and counted `test_*.py` files.
 - Reviewed `Python/tests/data` and `Python/tests/fixtures`.
 - Spot-checked property tests in `test_property_invariants.py`.
-- Used project metrics in `docs/AI_CONTEXT_PACK.md` for coverage context.
+- Used project metrics in `docs/ai-context-pack.md` for coverage context.
 
 ## Findings
 
@@ -338,7 +338,7 @@ rg "@pytest.mark.parametrize" tests/ | wc -l
 ## References
 - `Python/tests/`
 - `Python/tests/test_property_invariants.py`
-- `docs/AI_CONTEXT_PACK.md`
+- `docs/ai-context-pack.md`
 - [pytest documentation](https://docs.pytest.org/)
 - [Coverage.py documentation](https://coverage.readthedocs.io/)
 - [pytest-benchmark](https://pytest-benchmark.readthedocs.io/)

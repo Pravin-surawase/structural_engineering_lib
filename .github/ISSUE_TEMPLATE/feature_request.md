@@ -19,14 +19,14 @@ labels: enhancement
 
 _How will we know this feature is complete?_
 
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
 - [ ] Tests pass (Python at minimum)
 - [ ] Docs updated if API changed
 
 ## Scope & files likely affected (optional)
 
 _Help scope the work:_
-- Python: 
-- VBA: 
-- Docs: 
+- Python:
+- VBA:
+- Docs:

@@ -57,7 +57,7 @@ DOC_VERSION_FILES = {
     "docs/README.md": [
         # Now links to TASKS.md, no version to update
     ],
-    "docs/AI_CONTEXT_PACK.md": [
+    "docs/ai-context-pack.md": [
         (r"^\|\s*\*\*Current Release\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current Release** | v{version}"),
     ],
     "docs/planning/production-roadmap.md": [
@@ -239,8 +239,8 @@ def main():
         print()
         print("Release logs (manual):")
         print("  - CHANGELOG.md")
-        print("  - docs/RELEASES.md")
-        print("  - docs/SESSION_LOG.md")
+        print("  - docs/releases.md")
+        print("  - docs/SESSION_log.md")
         return 0
 
     today = date.today().isoformat()
@@ -352,7 +352,7 @@ def main():
         print(f"Updated {doc_changes} doc file(s)")
         print("\nRemember to also:")
         print("  1. Add entry to CHANGELOG.md")
-        print("  2. Update docs/RELEASES.md")
+        print("  2. Update docs/releases.md")
         print("  3. Commit and tag: git tag v" + new_version)
 
     print(EVERGREEN_NOTES)

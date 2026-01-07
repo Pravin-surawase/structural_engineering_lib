@@ -1,6 +1,6 @@
 """Comprehensive quality gaps assessment script.
 
-Runs all checks from QUALITY_GAPS_ASSESSMENT.md and generates concrete results.
+Runs all checks from quality-gaps-assessment.md and generates concrete results.
 """
 
 import sys
@@ -220,6 +220,6 @@ print("ASSESSMENT COMPLETE")
 print("=" * 70)
 print("\nNext steps:")
 print("1. Review findings above")
-print("2. Update QUALITY_GAPS_ASSESSMENT.md with actual results")
+print("2. Update quality-gaps-assessment.md with actual results")
 print("3. Prioritize gaps based on project goals")
 print("4. Create action items in TASKS.md")

@@ -50,27 +50,27 @@ Latest checks run during MAIN review:
 #### Category A: Real Broken Links (5) - CRITICAL
 
 1. **docs/planning/background-agents-setup-complete.md**
-   - Link: `[ai-enhancements.md](../research/ai-enhancements.md)`
+   - Link: `ai-enhancements.md (../research/ai-enhancements.md)`
    - Issue: File doesn't exist
    - Fix: Either create file or remove reference
 
 2. **docs/planning/background-agents-setup-complete.md**
-   - Link: `[detailing-research.md](../research/detailing-research.md)`
+   - Link: `detailing-research.md (../research/detailing-research.md)`
    - Issue: File doesn't exist
    - Fix: Either create file or remove reference
 
 3. **docs/planning/v0.17-task-specs.md**
-   - Link: `[LICENSE_ENGINEERING.md](LICENSE_ENGINEERING.md)`
+   - Link: `LICENSE_ENGINEERING.md (LICENSE_ENGINEERING.md)`
    - Issue: File doesn't exist
    - Fix: Either create file or update link to existing LICENSE
 
 4. **docs/planning/v0.17-task-specs.md**
-   - Link: `[docs/legal/usage-guidelines.md](docs/legal/usage-guidelines.md)`
+   - Link: `docs/legal/usage-guidelines.md (docs/legal/usage-guidelines.md)`
    - Issue: Directory/file doesn't exist
    - Fix: Either create legal directory or remove reference
 
 5. **docs/guidelines/api-design-guidelines.md**
-   - Link: `[Examples](examples/)`
+   - Link: `Examples (examples/)`
    - Issue: Examples directory doesn't exist at that path
    - Fix: Create examples or link to existing Python/examples/
 
@@ -80,24 +80,24 @@ These are in template/example sections but should still be fixed:
 
 6-7. **docs/planning/agent-2-tasks.md** (3 links)
    - `[docs/_archive/original-filename.md]` - Example placeholder
-   - `[Next Session Brief](planning/next-session-brief.md)` - Wrong path
-   - `[SUPPORT.md](../SUPPORT.md)` - Correct path but example context
+   - `Next Session Brief (planning/next-session-brief.md)` - Wrong path
+   - `SUPPORT.md (../SUPPORT.md)` - Correct path but example context
 
 8-10. **docs/planning/agent-2-tasks.md** (3 links)
    - `[docs/_archive/old-file.md]` - Example placeholder
-   - `[current-file.md](current-file.md)` - Example placeholder
+   - `current-file.md (current-file.md)` - Example placeholder
    - All in code example blocks
 
 11. **docs/planning/v0.17-task-specs.md**
-   - Link: `[SECURITY.md](SECURITY.md)` - Wrong relative path
+   - Link: `SECURITY.md (SECURITY.md)` - Wrong relative path
    - Fix: `[SECURITY.md](../../SECURITY.md)`
 
 12-17. **docs/guidelines/api-evolution-standard.md** (6 links)
-   - `[Migration Guide](link)` - Placeholder
-   - `[FAQ](link)` - Placeholder
-   - `[#123](link-to-issue)` - Placeholder
-   - `[GitHub Discussions](link)` - Placeholder
-   - `[GitHub Issues](link)` - Placeholder
+   - `Migration Guide (link)` - Placeholder
+   - `FAQ (link)` - Placeholder
+   - `#123 (link-to-issue)` - Placeholder
+   - `GitHub Discussions (link)` - Placeholder
+   - `GitHub Issues (link)` - Placeholder
    - All marked as TODOs in document
 
 **Additional links discovered by check_links.py (18):**
@@ -120,11 +120,11 @@ touch docs/research/detailing-research.md
 # Edit files to remove non-existent links
 
 # Fix SECURITY.md path
-sed -i 's|[SECURITY.md](SECURITY.md)|[SECURITY.md](../../SECURITY.md)|g' docs/planning/v0.17-task-specs.md
+sed -i 's|SECURITY.md (SECURITY.md)|[SECURITY.md](../../SECURITY.md)|g' docs/planning/v0.17-task-specs.md
 
 # Fix examples/ path
 # Edit docs/guidelines/api-design-guidelines.md
-# Change: [Examples](examples/)
+# Change: Examples (examples/)
 # To: [Examples](../../Python/examples/)
 
 # Fix placeholder links in api-evolution-standard.md
@@ -220,50 +220,50 @@ git ls-files | grep ".mypy_cache"
 
 **Current Issues:**
 - Mixed UPPERCASE and kebab-case in docs/
-- Inconsistent: `AI_CONTEXT_PACK.md` vs `project-overview.md`
+- Inconsistent: `ai-context-pack.md` vs `project-overview.md`
 
 **Files with UPPERCASE naming (30 found):**
 
 ```
-docs/research/API_DESIGN_PATTERN_ANALYSIS.md
-docs/research/RESEARCH_METHODOLOGY.md
-docs/MISSION_AND_PRINCIPLES.md
-docs/TESTING_STRATEGY.md
-docs/DEEP_PROJECT_MAP.md
-docs/VERIFICATION_EXAMPLES.md
-docs/RELEASES.md
+docs/research/api-design-pattern-analysis.md
+docs/research/research-methodology.md
+docs/mission-and-principles.md
+docs/testing-strategy.md
+docs/deep-project-map.md
+docs/verification-examples.md
+docs/releases.md
 
-docs/_internal/VERSION_STRATEGY.md
-docs/_internal/QUALITY_GAPS_ASSESSMENT.md
-docs/_internal/AGENT_WORKFLOW.md
-docs/_internal/FOUNDATION_STATUS.md
-docs/_internal/STRATEGIC_ROADMAP.md
-docs/_internal/GIT_GOVERNANCE.md
-docs/_internal/MULTI_AGENT_REVIEW_2025-12-28.md
-docs/_internal/PROJECT_MILESTONES.md
-docs/_internal/MAIN_AGENT_SUMMARY_2026-01-06.md
-docs/_internal/AUTOMATION_IMPROVEMENTS.md
+docs/_internal/version-strategy.md
+docs/_internal/quality-gaps-assessment.md
+docs/_internal/agent-workflow.md
+docs/_internal/foundation-status.md
+docs/_internal/strategic-roadmap.md
+docs/_internal/git-governance.md
+docs/_internal/multi-agent-review-2025-12-28.md
+docs/_internal/project-milestones.md
+docs/_internal/main-agent-summary-2026-01-06.md
+docs/_internal/automation-improvements.md
 
-docs/_internal/tasks/TASK-142-design-suggestions.md
+docs/_internal/tasks/task-142-design-suggestions.md
 
 docs/_internal/copilot-tasks/ (14 files):
-  HANDOFF_TO_COPILOT.md
-  XLWINGS_QUICK_START.md
-  TASK_1.1_BeamDesignSchedule_Spec.md
-  PYTHON_EXCEL_RESEARCH_2025.md
-  VSCODE_VBA_QUICKSTART.md
-  XLWINGS_SOLUTION_SUMMARY.md
-  COPILOT_WORKFLOW.md
-  PROGRESS_TRACKER.md
-  VBA_VSCODE_WORKFLOW.md
-  XLWINGS_MIGRATION_PLAN.md
-  XLWINGS_TEST_RESULTS.md
-  TASK_0.1_xlwings_installation_COPILOT.md
+  handoff-to-copilot.md
+  xlwings-quick-start.md
+  task-1.1-beamdesignschedule-spec.md
+  python-excel-research-2025.md
+  vscode-vba-quickstart.md
+  xlwings-solution-summary.md
+  copilot-workflow.md
+  progress-tracker.md
+  vba-vscode-workflow.md
+  xlwings-migration-plan.md
+  xlwings-test-results.md
+  task-0.1-xlwings-installation-copilot.md
   (and more...)
 ```
 
 **Proposed Standard:**
-- **Keep UPPERCASE:** `README.md`, `LICENSE`, `CHANGELOG.md`, `TASKS.md`, `SESSION_LOG.md` (important, high-visibility files)
+- **Keep UPPERCASE:** `README.md`, `LICENSE`, `CHANGELOG.md`, `TASKS.md`, `SESSION_log.md` (important, high-visibility files)
 - **Convert to kebab-case:** All other docs
 
 **Recommendations (Phase approach):**
@@ -271,15 +271,15 @@ docs/_internal/copilot-tasks/ (14 files):
 **Phase 1: High-visibility root docs/** (2-3 hours)
 ```bash
 # Rename key files
-git mv docs/MISSION_AND_PRINCIPLES.md docs/mission-and-principles.md
-git mv docs/TESTING_STRATEGY.md docs/testing-strategy.md
-git mv docs/DEEP_PROJECT_MAP.md docs/deep-project-map.md
-git mv docs/VERIFICATION_EXAMPLES.md docs/verification-examples.md
-git mv docs/RELEASES.md docs/releases.md
+git mv docs/mission-and-principles.md docs/mission-and-principles.md
+git mv docs/testing-strategy.md docs/testing-strategy.md
+git mv docs/deep-project-map.md docs/deep-project-map.md
+git mv docs/verification-examples.md docs/verification-examples.md
+git mv docs/releases.md docs/releases.md
 
 # Update links
-rg -l "MISSION_AND_PRINCIPLES.md" | xargs sed -i 's|MISSION_AND_PRINCIPLES.md|mission-and-principles.md|g'
-rg -l "TESTING_STRATEGY.md" | xargs sed -i 's|TESTING_STRATEGY.md|testing-strategy.md|g'
+rg -l "mission-and-principles.md" | xargs sed -i 's|mission-and-principles.md|mission-and-principles.md|g'
+rg -l "testing-strategy.md" | xargs sed -i 's|testing-strategy.md|testing-strategy.md|g'
 # ... repeat for each file
 
 # Verify
@@ -335,7 +335,7 @@ cat > Python/LICENSE << 'EOF'
 
 This package is licensed under the same terms as the main project.
 
-See: [LICENSE](../LICENSE)
+See: LICENSE (../LICENSE)
 EOF
 git add Python/LICENSE
 
@@ -344,7 +344,7 @@ git mv agents/SUPPORT.md agents/SUPPORT.md.bak
 cat > agents/SUPPORT.md << 'EOF'
 # Support
 
-See the main project support documentation: [SUPPORT.md](../SUPPORT.md)
+See the main project support documentation: SUPPORT.md (../SUPPORT.md)
 EOF
 git add agents/SUPPORT.md
 
@@ -621,15 +621,15 @@ Proposed reorganization:
 docs/
 ├── README.md (main index)
 ├── guides/
-│   ├── MISSION_AND_PRINCIPLES.md
-│   ├── TESTING_STRATEGY.md
+│   ├── mission-and-principles.md
+│   ├── testing-strategy.md
 │   └── ... (move root guides here)
 ├── overview/
-│   ├── DEEP_PROJECT_MAP.md
+│   ├── deep-project-map.md
 │   ├── project-overview.md
 │   └── ... (move overview docs here)
 ├── releases/
-│   ├── RELEASES.md
+│   ├── releases.md
 │   ├── CHANGELOG.md
 │   └── v*.md files
 └── [existing subdirectories...]
@@ -668,8 +668,8 @@ docs/planning/task-210-211-*.md (4 files) → docs/_archive/planning/
 
 **Additional Archive Candidates:**
 ```
-docs/v0.7_REQUIREMENTS.md
-docs/v0.8_EXECUTION_CHECKLIST.md
+docs/v0.7-requirements.md
+docs/v0.8-execution-checklist.md
 docs/v0.9_TASKS.md (if exists)
 docs/planning/v0.16-task-specs.md (if complete)
 docs/planning/v0.17-task-specs.md (if complete)
@@ -853,7 +853,7 @@ cat .gitignore
 - **Standard:** kebab-case (e.g., `api-design-guide.md`)
 - **Exceptions:**
   - `README.md` (high visibility)
-  - `TASKS.md`, `SESSION_LOG.md` (important planning docs)
+  - `TASKS.md`, `SESSION_log.md` (important planning docs)
   - `LICENSE`, `CHANGELOG.md` (standard practice)
 
 ### Python Files

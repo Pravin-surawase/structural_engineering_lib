@@ -42,7 +42,7 @@ This repo enforces a layered architecture. Keep responsibilities separated:
 
 ### 3.1 Excel/VBA workflow (flagship)
 
-Source of truth mapping: `docs/specs/v0.7_DATA_MAPPING.md`.
+Source of truth mapping: `docs/specs/v0.7-data-mapping.md`.
 
 ```
 ETABS CSV (optional)
@@ -176,7 +176,7 @@ VBA:
 
 ### 6.2 Excel mapping into detailing
 
-The spec mapping is explicit in `docs/specs/v0.7_DATA_MAPPING.md`:
+The spec mapping is explicit in `docs/specs/v0.7-data-mapping.md`:
 - Source table: `tbl_BeamDesign`
 - Target: `create_beam_detailing(...)` in Python (and analogous VBA call)
 
@@ -256,5 +256,5 @@ When changing any of the above, treat it as a parity change and add/extend Pytho
 - Project scope/architecture: `docs/architecture/project-overview.md`
 - API contract: `docs/reference/api.md`
 - Pitfalls/unit rules: `docs/reference/known-pitfalls.md`
-- v0.7 data mapping: `docs/specs/v0.7_DATA_MAPPING.md`
+- v0.7 data mapping: `docs/specs/v0.7-data-mapping.md`
 - Next session plan: `docs/planning/next-session-brief.md`

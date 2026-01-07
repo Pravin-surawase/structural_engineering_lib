@@ -466,4 +466,4 @@ python -m structural_lib job --help
 
 - [Python Quickstart](../getting-started/python-quickstart.md) — Getting started with Python API
 - [API Reference](../reference/api.md) — Programmatic API documentation
-- [Job Schema](../specs/v0.9_JOB_SCHEMA.md) — Full job specification schema
+- [Job Schema](../specs/v0.9-job-schema.md) — Full job specification schema

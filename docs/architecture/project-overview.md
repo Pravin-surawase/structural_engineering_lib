@@ -4,7 +4,7 @@
 **Use:** Treat this as shared context for VS Code AI or other tooling. No code here — just goals and approach.
 **See also:**
 - [mission-and-principles.md](mission-and-principles.md) for the deeper "why" and product philosophy.
-- [docs/_internal/GIT_GOVERNANCE.md](../_internal/GIT_GOVERNANCE.md) for version control and contribution rules.
+- [docs/_internal/git-governance.md](../_internal/git-governance.md) for version control and contribution rules.
 
 ---
 
@@ -103,7 +103,7 @@ Keep role docs under `/agents/` (to add):
 - DEVOPS agent: repo layout, exports, versioning, automation.
 - PM/PRODUCT agent: scope/roadmap, value, changelog guidance.
 
-Workflow: specify role and context (“Use PROJECT_OVERVIEW.md and agents/DEV.md…”), ask for concrete outputs (design decisions, tests, sheet layouts).
+Workflow: specify role and context (“Use project-overview.md and agents/dev.md…”), ask for concrete outputs (design decisions, tests, sheet layouts).
 
 ---
 
@@ -131,7 +131,7 @@ Use this with `agents/*.md` for prompts.
 ---
 
 **How to use this doc:**
-Reference it when prompting AI: e.g., “Use PROJECT_OVERVIEW.md as context. Act as DEV agent and design the detailed function list for the structural library,” or “Using PROJECT_OVERVIEW.md and TESTER role, propose a test matrix for v0 beams.”
+Reference it when prompting AI: e.g., “Use project-overview.md as context. Act as DEV agent and design the detailed function list for the structural library,” or “Using project-overview.md and TESTER role, propose a test matrix for v0 beams.”
 
 ---
 
@@ -143,6 +143,6 @@ Reference it when prompting AI: e.g., “Use PROJECT_OVERVIEW.md as context. Act
 - **Feature:** PM → CLIENT (requirements) → RESEARCHER (clauses/constraints) → UI (layout) → DEV (build) → TESTER (verify) → DEVOPS (package) → DOCS (update notes/API) → PM (ledger) → SUPPORT (troubleshooting if needed).
 - **Bug:** PM triage → DEV/RESEARCHER (root cause) → TESTER (repro/regression) → DEV (fix) → TESTER (verify) → DEVOPS (ship) → DOCS/SUPPORT (notes) → PM (ledger).
 - **Data/Integration change:** PM → INTEGRATION (schema/mapping/validation) → DEV (implement) → TESTER (data-path cases) → DEVOPS (import/export workflow) → DOCS (schema reference) → PM.
-- **Release:** PM sets scope/go/no-go → DEVOPS runs tests/builds/tags → DOCS drafts CHANGELOG/RELEASES/API updates → PM appends to `docs/RELEASES.md` (immutable) → SUPPORT/TROUBLESHOOTING refreshed → announce.
+- **Release:** PM sets scope/go/no-go → DEVOPS runs tests/builds/tags → DOCS drafts CHANGELOG/RELEASES/API updates → PM appends to `docs/releases.md` (immutable) → SUPPORT/TROUBLESHOOTING refreshed → announce.
 
 Reference: `agents/README.md` for agent prompt templates.

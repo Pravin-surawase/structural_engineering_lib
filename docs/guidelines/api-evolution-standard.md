@@ -680,7 +680,7 @@ def calculate_steel(...):
 
 ### Deprecated
 - `calculate_steel()` is deprecated in favor of `calculate_reinforcement()`.
-  Will be removed in v2.0. ([#123](link-to-issue))
+  Will be removed in v2.0. (issue #123)
 - `design_beam()` parameter `b_mm` is deprecated in favor of `width_mm`.
   Will be removed in v2.0.
 
@@ -926,7 +926,7 @@ The following items are deprecated and will be removed in v2.0:
 - `calculate_steel()` → Use `calculate_reinforcement()` instead
 - `design_beam(b_mm=...)` → Use `design_beam(width_mm=...)` instead
 
-See [Migration Guide](link) for details.
+See the migration guide (planned) for details.
 
 ## 🐛 Bug Fixes
 
@@ -1076,9 +1076,9 @@ structural-lib-migrate v1-to-v2 my_project/
 
 ## Need Help?
 
-- Read the [FAQ](link)
-- Ask on [GitHub Discussions](link)
-- Report migration issues: [GitHub Issues](link)
+- Read the FAQ (planned)
+- Ask on GitHub Discussions (planned)
+- Report migration issues via GitHub Issues (planned)
 ```
 
 ### 6.5 Communicating Pre-Release

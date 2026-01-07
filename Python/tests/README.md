@@ -382,7 +382,7 @@ pytest --durations=10
 ## References
 
 - **Research Document:** `docs/research/test-organization-audit.md` (TASK-170)
-- **Testing Strategy:** `docs/TESTING_STRATEGY.md`
+- **Testing Strategy:** `docs/testing-strategy.md`
 - **Pytest Docs:** https://docs.pytest.org/
 - **Coverage Docs:** https://pytest-cov.readthedocs.io/
 

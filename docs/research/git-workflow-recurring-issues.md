@@ -177,7 +177,7 @@ The problem is not a bug in this area; the problem is inconsistent usage and con
 - Replace auto `--ours` resolution with explicit prompt or `--ours` only on docs.
 
 ### P2 - Documentation consolidation
-- Added canonical doc: `docs/GIT_WORKFLOW_AI_AGENTS.md`.
+- Added canonical doc: `docs/git-workflow-ai-agents.md`.
 - Older guidance marked as deprecated.
 
 ---

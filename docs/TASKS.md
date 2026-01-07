@@ -179,6 +179,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-280** | Repository hygiene implementation (naming, link fixes, archives, health scripts) | DEVOPS | ✅ 2026-01-07 |
 | **TASK-261** | Research: Professional Liability & Disclaimers (MIT + engineering addendum, disclaimer templates, certification guidance) | RESEARCHER | ✅ 2026-01-07 |
 | **TASK-260** | Research: Security Best Practices (input validation, dependency scanning, CI hardening) | DEVOPS | ✅ 2026-01-07 |
 | **TASK-252** | Research: Interactive Testing UI (Jupyter widgets + Streamlit UI plan) | INTEGRATION | ✅ 2026-01-07 |
@@ -217,4 +218,4 @@
 
 ## Archive
 
-Full task history: `docs/_archive/TASKS_HISTORY.md`
+Full task history: `docs/_archive/tasks-history.md`

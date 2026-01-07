@@ -55,7 +55,7 @@ def print_checklist(version: str):
     print()
     print("Manual steps (you must do these):")
     print("  [ ] 1. Edit CHANGELOG.md — Add release notes")
-    print("  [ ] 2. Edit docs/RELEASES.md — Add release entry")
+    print("  [ ] 2. Edit docs/releases.md — Add release entry")
     print("  [ ] 3. Review changes: git diff")
     print("  [ ] 4. Commit: git add -A && git commit -m 'chore: release v{}'".format(version))
     print("  [ ] 5. Create PR and merge to main")
@@ -143,7 +143,7 @@ def main():
     if not args.no_open and not dry_run:
         print("Opening files for editing...")
         open_file_in_editor(REPO_ROOT / "CHANGELOG.md")
-        open_file_in_editor(REPO_ROOT / "docs" / "RELEASES.md")
+        open_file_in_editor(REPO_ROOT / "docs" / "releases.md")
         print()
 
     if dry_run:

@@ -8,7 +8,7 @@
 ---
 
 ## Executive Summary
-The repo is functionally healthy, but its documentation and file organization have drifted into a multi-root structure (top-level docs plus topical subfolders) that increases maintenance cost and link breakage. Duplicate filenames and parallel doc trees (e.g., `docs/PROJECT_OVERVIEW.md` vs `docs/architecture/project-overview.md`) create ambiguity about canonical sources. Broken links exist in critical docs and research notes, and several top-level docs reflect older versioning, which reduces trust in the current release narrative. Build artifacts and OS metadata (`.coverage`, `.DS_Store`) are present and should be cleaned or ignored consistently.
+The repo is functionally healthy, but its documentation and file organization have drifted into a multi-root structure (top-level docs plus topical subfolders) that increases maintenance cost and link breakage. Duplicate filenames and parallel doc trees (e.g., `docs/project-overview.md` vs `docs/architecture/project-overview.md`) create ambiguity about canonical sources. Broken links exist in critical docs and research notes, and several top-level docs reflect older versioning, which reduces trust in the current release narrative. Build artifacts and OS metadata (`.coverage`, `.DS_Store`) are present and should be cleaned or ignored consistently.
 
 Top 5 issues:
 1. **Duplicate docs across multiple roots** (top-level `docs/*.md` vs `docs/**/`), creating canonical ambiguity.
@@ -46,8 +46,8 @@ Duplicates (non-venv, non-cache) identified by basename:
 
 ### 2) Obsolete Content Report
 Likely archive candidates (still referenced in active doc trees):
-- `docs/v0.7_REQUIREMENTS.md`
-- `docs/v0.8_EXECUTION_CHECKLIST.md`
+- `docs/v0.7-requirements.md`
+- `docs/v0.8-execution-checklist.md`
 - `docs/planning/v0.12-plan.md`
 - `docs/planning/production-roadmap.md` (current state references v0.10.x)
 - `docs/planning/project-status.md` (current release listed as v0.11.0)
@@ -59,18 +59,18 @@ Removal candidates (if not required for auditing):
 - `.DS_Store` in root/Excel/VBA
 
 ### 3) Naming Inconsistencies
-- **Docs:** uppercase + underscore (`AI_CONTEXT_PACK.md`) vs kebab-case (`project-overview.md`) vs title-style (`PROJECT_OVERVIEW.md`).
+- **Docs:** uppercase + underscore (`ai-context-pack.md`) vs kebab-case (`project-overview.md`) vs title-style (`project-overview.md`).
 - **Directories:** `docs/_internal`, `docs/_archive`, `docs/_references` mixed with `docs/reference` and `docs/architecture`.
-- **Files:** `docs/PROJECT_OVERVIEW.md` vs `docs/architecture/project-overview.md` (duplicate topic, different naming convention).
+- **Files:** `docs/project-overview.md` vs `docs/architecture/project-overview.md` (duplicate topic, different naming convention).
 
 Recommendation: Standardize on **kebab-case** for file names and **lowercase** directory names; reserve `docs/_internal` and `docs/_archive` for non-user-facing content.
 
 ### 4) Broken Links Report
 From `scripts/check_links.py` (2026-01-06):
-- `docs/AI_CONTEXT_PACK.md` -> `.github/copilot-instructions.md` (should be `../.github/copilot-instructions.md`).
+- `docs/ai-context-pack.md` -> `.github/copilot-instructions.md` (should be `../.github/copilot-instructions.md`).
 - `docs/research/documentation-handoff-analysis.md` -> `reference/automation-catalog.md` (should be `../reference/automation-catalog.md`).
 - `docs/research/session-2026-01-06-documentation-enhancement.md` -> `reference/automation-catalog.md` (same issue, appears twice).
-- `docs/research/RESEARCH_METHODOLOGY.md` -> `Paper title (link placeholder)` placeholder.
+- `docs/research/research-methodology.md` -> `Paper title (link placeholder)` placeholder.
 - `docs/troubleshooting/merge-conflict-prevention.md` -> `/.github/copilot-instructions.md` (should be `../.github/copilot-instructions.md`).
 - `docs/troubleshooting/merge-conflict-prevention.md` -> `/scripts/check_unfinished_merge.sh` (script not present).
 - `docs/getting-started/design-suggestions-guide.md` -> `./cost-optimization-guide.md` (missing file).

@@ -140,8 +140,8 @@ def main() -> int:
 
     # Archive link.
     archive_lines = _section(lines, positions[6])
-    if not any("docs/_archive/TASKS_HISTORY.md" in line for line in archive_lines):
-        print("ERROR: Archive link missing (docs/_archive/TASKS_HISTORY.md).")
+    if not any("docs/_archive/tasks-history.md" in line for line in archive_lines):
+        print("ERROR: Archive link missing (docs/_archive/tasks-history.md).")
         return 1
 
     return 0

@@ -128,6 +128,6 @@ When adding new deferrals:
 
 ## See Also
 
-- [Known Pitfalls](../KNOWN_PITFALLS.md) - User-facing limitations
+- [Known Pitfalls](../known-pitfalls.md) - User-facing limitations
 - [TASKS.md](../TASKS.md) - Active work tracking
-- [Project Roadmap](../PRODUCTION_ROADMAP.md) - Release planning
+- [Project Roadmap](../production-roadmap.md) - Release planning

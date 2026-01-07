@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate CHANGELOG.md and docs/RELEASES.md have matching versions."""
+"""Validate CHANGELOG.md and docs/releases.md have matching versions."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import re
 import sys
 
 CHANGELOG = Path("CHANGELOG.md")
-RELEASES = Path("docs/RELEASES.md")
+RELEASES = Path("docs/releases.md")
 
 VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+)\b")
 
@@ -34,7 +34,7 @@ def main() -> int:
         print("ERROR: CHANGELOG.md not found")
         return 1
     if not RELEASES.exists():
-        print("ERROR: docs/RELEASES.md not found")
+        print("ERROR: docs/releases.md not found")
         return 1
 
     changelog_versions = _parse_versions(CHANGELOG)
@@ -44,7 +44,7 @@ def main() -> int:
         print("ERROR: No versions found in CHANGELOG.md")
         return 1
     if not releases_versions:
-        print("ERROR: No versions found in docs/RELEASES.md")
+        print("ERROR: No versions found in docs/releases.md")
         return 1
 
     missing_in_releases = sorted(

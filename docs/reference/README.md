@@ -15,3 +15,4 @@ Lookup documentation for API, formulas, and troubleshooting.
 - Function signatures → [api.md](api.md)
 - "Why is my output wrong?" → [known-pitfalls.md](known-pitfalls.md)
 - Error messages → [troubleshooting.md](troubleshooting.md)
+- Repo health baseline → [repo-health-baseline-2026-01-07.md](repo-health-baseline-2026-01-07.md)

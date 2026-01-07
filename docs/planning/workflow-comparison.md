@@ -40,7 +40,7 @@ if scripts/:
 ### Example 1: Phase 1 Automation Catalog (Actual Recent Commit)
 
 **Changes:**
-- 4 files: automation-catalog.md (new, 1500 lines), AI_CONTEXT_PACK.md (+50), AGENT_BOOTSTRAP.md (+1), TASKS.md (updates)
+- 4 files: automation-catalog.md (new, 1500 lines), ai-context-pack.md (+50), agent-bootstrap.md (+1), TASKS.md (updates)
 - Total: 1404 lines
 
 **Old workflow:** docs/ → Direct commit ✅

@@ -793,7 +793,7 @@ if pre['status'] == 'LIKELY_PASS':
 
 **Read more:**
 - [GitHub repository](https://github.com/...) (MIT license)
-- [Full research documentation](../../findings/00-research-summary-FINAL.md)
+- [Full research documentation](../../findings/00-research-summary-final.md)
 - [Blog 02: Deterministic ML vs Machine Learning](../02-deterministic-ml/draft.md)
 
 **Questions? Feedback?** Open an issue on GitHub or comment below!

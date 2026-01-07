@@ -1,7 +1,7 @@
 # IS Code Detailing Research — RESEARCHER Agent
 
-**Status:** ✅ Research Complete  
-**Date:** 2025-12-11  
+**Status:** ✅ Research Complete
+**Date:** 2025-12-11
 **Scope:** IS 456:2000, IS 13920:2016, SP 34:1987 for RC Beam Detailing
 
 ---
@@ -193,7 +193,7 @@ Where:
 ```
                     CLEAR SPAN (L)
     ├─────────────────────────────────────────────┤
-    
+
     ┌─────────────────────────────────────────────┐
     │  TOP STEEL: 2-16                            │
     │  ════════════════════════════════════════   │ D
@@ -278,4 +278,3 @@ def calc_plastic_hinge_length(D: float) -> float:
 | Role | Status | Date |
 |------|--------|------|
 | RESEARCHER | ✅ Complete | 2025-12-11 |
-

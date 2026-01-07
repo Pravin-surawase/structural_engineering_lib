@@ -1,7 +1,7 @@
 # Pre-Release Checklist
 
 Version: 0.15.0 (planned)
-Date: 2026-01-07
+Date: 2026-01-08
 Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---
@@ -29,7 +29,7 @@ Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 **Release discipline:**
 - Version bumps happen **only when releasing**, not for every merge.
-- Each release must update **RELEASES.md** and **CHANGELOG.md**.
+- Each release must update **releases.md** and **CHANGELOG.md**.
 - Tag format: `vX.Y.Z`.
 
 **Beta labeling:**

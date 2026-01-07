@@ -179,7 +179,7 @@ Add entry in `CHANGELOG.md` under "Deprecated" section:
 
 ### 3. API Documentation
 
-Update `docs/API_REFERENCE.md` to mark deprecated items:
+Update `docs/api-reference.md` to mark deprecated items:
 
 ```markdown
 ## ⚠️ Deprecated Functions

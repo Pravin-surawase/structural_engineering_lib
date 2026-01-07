@@ -314,10 +314,10 @@ if EZDXF_AVAILABLE:
         stirrup_dia=8, stirrup_spacing_start=150, stirrup_spacing_mid=200,
         stirrup_spacing_end=150,
     )
-    
+
     # Single beam
     dxf_export.generate_beam_dxf(detail, "beam_detail.dxf")
-    
+
     # Multiple beams in grid layout
     details = [detail, detail]  # Your list of details
     dxf_export.generate_multi_beam_dxf(details, "all_beams.dxf", columns=2)

@@ -52,4 +52,4 @@ Practical guide to consume, ship, and maintain the VBA side of the Structural En
 - Rebuild the `.xlam` using the import order above; publish to the shared location.
 - Smoke-test key UDFs and one detailing flow; confirm no missing references.
 - Generate sample DXF and verify layer colors and content in CAD viewer.
-- Note VBA scope in `docs/RELEASES.md` if it diverges from Python.
+- Note VBA scope in `docs/releases.md` if it diverges from Python.

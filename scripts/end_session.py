@@ -23,7 +23,7 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
-SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
+SESSION_LOG = REPO_ROOT / "docs" / "SESSION_log.md"
 
 
 def get_uncommitted_changes() -> list[str]:

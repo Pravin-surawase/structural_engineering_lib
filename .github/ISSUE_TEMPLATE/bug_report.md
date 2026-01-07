@@ -44,4 +44,4 @@ _What should happen after the fix? Be specific about expected values/behavior._
 ## Files likely affected (optional)
 
 _Help scope the fix by listing suspected files:_
-- 
+-

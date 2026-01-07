@@ -518,7 +518,7 @@ See [insights-api.md](../reference/insights-api.md) for detailed API documentati
 ## Further Reading
 
 - [Sensitivity Analysis Blog Post (draft)](../publications/blog-posts/03-sensitivity-analysis/draft.md)
-- [Constructability Scoring Research](../publications/findings/00-research-summary-FINAL.md)
+- [Constructability Scoring Research](../publications/findings/00-research-summary-final.md)
 - [IS 456 Formula Reference](../reference/is456-formulas.md)
 
 ---

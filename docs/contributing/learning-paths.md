@@ -6,19 +6,19 @@ Pick the smallest reading path that still protects quality. Each path lists the 
 
 | Task type | Path | Read first |
 | --- | --- | --- |
-| Docs-only change | Beginner | `../../.github/copilot-instructions.md`, `../GIT_WORKFLOW_AI_AGENTS.md` |
-| Small bug fix in existing module | Beginner | `../AI_CONTEXT_PACK.md`, `../reference/known-pitfalls.md` |
+| Docs-only change | Beginner | `../../.github/copilot-instructions.md`, `../git-workflow-ai-agents.md` |
+| Small bug fix in existing module | Beginner | `../ai-context-pack.md`, `../reference/known-pitfalls.md` |
 | New feature in existing domain | Intermediate | `../architecture/project-overview.md`, `testing-strategy.md` |
 | Refactor or API change | Advanced | `../reference/api.md`, `../architecture/deep-project-map.md` |
 | VBA or Excel change | Intermediate | `vba-guide.md`, `excel-addin-guide.md` |
-| Release or CI change | Advanced | `solo-maintainer-operating-system.md`, `../_internal/GIT_GOVERNANCE.md` |
+| Release or CI change | Advanced | `solo-maintainer-operating-system.md`, `../_internal/git-governance.md` |
 
 ## Path A: Beginner (docs-only or tiny fix)
 
 Read in order:
 1. `../../.github/copilot-instructions.md`
-2. `../AGENT_BOOTSTRAP.md`
-3. `../GIT_WORKFLOW_AI_AGENTS.md`
+2. `../agent-bootstrap.md`
+3. `../git-workflow-ai-agents.md`
 4. `../reference/known-pitfalls.md`
 
 Use this path for:
@@ -32,7 +32,7 @@ Checks to run:
 ## Path B: Intermediate (feature work in existing modules)
 
 Read in order:
-1. `../AI_CONTEXT_PACK.md`
+1. `../ai-context-pack.md`
 2. `../architecture/project-overview.md`
 3. `testing-strategy.md`
 4. `../reference/api.md`
@@ -52,7 +52,7 @@ Read in order:
 1. `../architecture/deep-project-map.md`
 2. `../reference/api.md`
 3. `solo-maintainer-operating-system.md`
-4. `../_internal/GIT_GOVERNANCE.md`
+4. `../_internal/git-governance.md`
 5. `../reference/known-pitfalls.md`
 
 Use this path for:
@@ -70,7 +70,7 @@ Checks to run:
 | --- | --- |
 | Fix a flaky test | `testing-strategy.md`, `../reference/known-pitfalls.md` |
 | Add a new CLI subcommand | `../reference/api.md`, `../architecture/project-overview.md` |
-| Update docs structure | `../GIT_WORKFLOW_AI_AGENTS.md`, `../reference/known-pitfalls.md` |
+| Update docs structure | `../git-workflow-ai-agents.md`, `../reference/known-pitfalls.md` |
 | Plan a new feature | `../architecture/project-overview.md`, `../planning/next-session-brief.md` |
 | Adopt a new tool | `../research/modern-python-tooling.md`, `solo-maintainer-operating-system.md` |
 

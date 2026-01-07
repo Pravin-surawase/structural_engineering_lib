@@ -2,7 +2,7 @@
 
 **Updated:** 2026-01-06 (Production Stage Guidelines)
 **Research:** See docs/research/git-workflow-production-stage.md
-**Canonical:** `docs/GIT_WORKFLOW_AI_AGENTS.md`
+**Canonical:** `docs/git-workflow-ai-agents.md`
 
 ## 🎯 Quick Decision: Direct Commit or PR?
 

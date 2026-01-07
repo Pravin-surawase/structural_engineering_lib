@@ -107,7 +107,7 @@ With MAIN agent, confirm:
 
 ### 4. Review Git Workflow
 
-Read: `docs/GIT_WORKFLOW_AI_AGENTS.md`
+Read: `docs/git-workflow-ai-agents.md`
 
 Key rule: **Never run manual git commands.** Use workflow scripts only.
 
@@ -124,7 +124,7 @@ Key rule: **Never run manual git commands.** Use workflow scripts only.
 ❌ **Avoid:**
 - Implementation code
 - Test files
-- Shared tracking files (TASKS.md, SESSION_LOG.md)
+- Shared tracking files (TASKS.md, SESSION_log.md)
 
 ### DEV Agent
 ✅ **Safe:**
@@ -383,7 +383,7 @@ MAIN agent responds with decision, background agent continues work.
 
 **High-churn files** (MAIN agent only):
 - `docs/TASKS.md`
-- `docs/SESSION_LOG.md`
+- `docs/SESSION_log.md`
 - `docs/planning/next-session-brief.md`
 - `docs/planning/memory.md` (MAIN updates, agents read)
 

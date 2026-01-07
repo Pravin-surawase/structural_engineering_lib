@@ -329,7 +329,7 @@ All notable changes to this project will be documented in this file.
   - `__all__` export list in `api.py` (8 public functions)
   - Golden vector source documentation (`tests/data/sources.md`)
   - Shear module section completed in `docs/reference/api.md`
-  - Multi-agent review document (`docs/_internal/MULTI_AGENT_REVIEW_2025-12-28.md`)
+  - Multi-agent review document (`docs/_internal/multi-agent-review-2025-12-28.md`)
 - **Critical IS 456 Tests (45 new tests):**
   - Mu_lim boundary tests for all concrete grades
   - xu/d ratio limit tests (balanced section)
@@ -341,14 +341,14 @@ All notable changes to this project will be documented in this file.
   - Local CI parity script (`scripts/ci_local.sh`)
   - Doc version drift checker (`scripts/check_doc_versions.py`)
   - Pre-commit hooks documentation
-  - Updated GIT_GOVERNANCE.md with accurate CI checks
+  - Updated git-governance.md with accurate CI checks
   - AI agent workflow rules in `copilot-instructions.md`
 
 ### Changed
 - **Documentation Polish:**
   - TASKS.md refactored (209→103 lines) — cleaner sections, current status
-  - SESSION_LOG.md archived and cleaned (641→135 lines)
-  - AI_CONTEXT_PACK.md reformatted with tables and clear sections
+  - SESSION_log.md archived and cleaned (641→135 lines)
+  - ai-context-pack.md reformatted with tables and clear sections
 - **CLI Warning for Global Crack-Width Params:**
   - Emits warning when `--crack-width-params` is used with multiple beams
   - Alerts users that same parameters apply to all beams in batch
@@ -610,10 +610,10 @@ All notable changes to this project will be documented in this file.
   - `generate_detailing_schedule`: Export detailing to CSV schedule format.
   - CLI entry point: `python -m structural_lib.excel_integration`.
 - **Documentation**:
-  - `docs/specs/v0.7_DATA_MAPPING.md`: Complete data flow specification.
-  - `docs/specs/v0.7_REQUIREMENTS.md`: CLIENT requirements for detailing.
-  - `docs/RESEARCH_DETAILING.md`: IS 456/SP 34 detailing research.
-  - `docs/_internal/AGENT_WORKFLOW.md`: Multi-agent governance system.
+  - `docs/specs/v0.7-data-mapping.md`: Complete data flow specification.
+  - `docs/specs/v0.7-requirements.md`: CLIENT requirements for detailing.
+  - `docs/research-detailing.md`: IS 456/SP 34 detailing research.
+  - `docs/_internal/agent-workflow.md`: Multi-agent governance system.
 - **Test Coverage**:
   - `test_detailing.py`: 31 tests for detailing module.
   - `test_excel_integration.py`: 15 tests for integration module.
@@ -638,8 +638,8 @@ All notable changes to this project will be documented in this file.
   - Auto-sorting by Story/ID before grouping.
   - `Get_Bar_Pattern`: Converts steel area to practical bar notation (e.g., "3-16").
 - **Governance Documentation**:
-  - `docs/_internal/GIT_GOVERNANCE.md`: Branching, commits, versioning, release process.
-  - `docs/MISSION_AND_PRINCIPLES.md`: Project philosophy and design principles.
+  - `docs/_internal/git-governance.md`: Branching, commits, versioning, release process.
+  - `docs/mission-and-principles.md`: Project philosophy and design principles.
 - **Test Fixtures**:
   - `Python/examples/ETABS_BeamForces_Example.csv`: Sample ETABS export.
 
@@ -655,10 +655,10 @@ All notable changes to this project will be documented in this file.
   - `M99_Setup.bas`: Scaffolding script to generate the v0.5 Workbook structure.
 - **Governance**:
   - Added `DOCS`, `INTEGRATION`, and `SUPPORT` agent roles.
-  - Formalized Feature/Bug/Release workflows in `PM.md` and `PROJECT_OVERVIEW.md`.
+  - Formalized Feature/Bug/Release workflows in `pm.md` and `project-overview.md`.
 - **Documentation**:
-  - Added `docs/specs/v0.5_EXCEL_SPEC.md`.
-  - Updated `EXCEL_ADDIN_GUIDE.md` with dynamic path handling.
+  - Added `docs/specs/v0.5-excel-spec.md`.
+  - Updated `excel-addin-guide.md` with dynamic path handling.
 
 ## [0.4.0] - 2025-12-11
 ### Added
@@ -672,7 +672,7 @@ All notable changes to this project will be documented in this file.
   - Excel: Added `StructEngLib.xlam` add-in support.
   - UDFs: Added `IS456_Check_Ductility` to `M09_UDFs.bas`.
 - **Documentation**:
-  - Updated `API_REFERENCE.md` to v0.4.0.
+  - Updated `api-reference.md` to v0.4.0.
   - Completed `TASKS.md` for v0.4 scope.
 
 ## [0.3.0] - 2025-12-11
@@ -709,8 +709,8 @@ All notable changes to this project will be documented in this file.
 - **Infrastructure**:
   - Dual implementation in Python and VBA.
   - Unit tests for Python (`pytest`).
-  - Documentation structure (`API_REFERENCE.md`, `TASKS.md`).
-  - Excel add-in guide (`EXCEL_ADDIN_GUIDE.md`).
+  - Documentation structure (`api-reference.md`, `TASKS.md`).
+  - Excel add-in guide (`excel-addin-guide.md`).
 
 ---
 
