@@ -50,31 +50,15 @@
 
 #### Foundation Implementation (HIGH Priority)
 
-| ID | Task | Agent | Est | Blockers |
-|----|------|-------|-----|----------|
-| **TASK-210** | Apply API Guidelines to `api.py` (refactor signatures, keyword-only params, result objects) | DEV | 2-3 days | None |
-| **TASK-211** | Apply API Guidelines to core modules (flexure.py, shear.py, detailing.py) | DEV | 2-3 days | TASK-210 |
-| **TASK-212** | Create exception hierarchy (3-level: base→category→specific per guidelines) | DEV | 1 day | None |
-| **TASK-213** | Implement error message templates (Three Questions Framework) | DEV | 1 day | TASK-212 |
-| **TASK-214** | Create result object base classes (BaseResult with to_dict/summary/validate) | DEV | 1 day | None |
+*All foundation implementation tasks complete (TASK-210-214). See Recently Done.*
 
 #### Professional Engineering Requirements (HIGH Priority)
 
-| ID | Task | Agent | Est | Why Critical |
-|----|------|-------|-----|--------------|
-| **TASK-230** | Research: Testing Strategies for Engineering Software (visual regression, property-based testing, mutation testing) → [research doc](research/) | TESTER | 4-5 hrs | Quality assurance for DXF/reports |
-| **TASK-238** | Research: Input Flexibility & Data Interchange (ETABS, spreadsheets, CAD, BIM workflows) → [research doc](research/) | ARCHITECT | 4-5 hrs | Fixes Colab UX pain (C- → B+) |
-| **TASK-240** | Research: Code Clause Database Architecture (structured IS 456 clause storage, traceability) → [research doc](research/) | ARCHITECT | 3-4 hrs | Professional traceability requirement |
-| **TASK-242** | Research: Calculation Report Generation (LaTeX/PDF, equation rendering, clause citations) → [research doc](research/) | RESEARCHER | 4-5 hrs | Core engineering deliverable |
-| **TASK-245** | Research: Verification & Audit Trail (checksums, audit logs, reproducibility proof) → [research doc](research/) | RESEARCHER | 3-4 hrs | Professional liability protection |
-| **TASK-252** | Research: Interactive Testing UI (Streamlit/Gradio for manual testing + dogfooding) → [research doc](research/) | INTEGRATION | 2-3 hrs + 1 day impl | Developer productivity boost |
-| **TASK-260** | Research: Security Best Practices (input sanitization, secrets management, code signing) → [research doc](research/) | DEVOPS | 2-3 hrs | Production security review |
-| **TASK-261** | Research: Professional Liability & Disclaimers (legal framework, engineer seal, terms of service) → [research doc](research/) | RESEARCHER | 2-3 hrs | Legal protection before marketing |
+*All professional requirements research complete (TASK-230, 238, 240, 242, 245, 252, 260, 261). See Recently Done.*
 
 **Implementation Order:**
-1. Week 1-2: TASK-210-214 (API Implementation)
-2. Week 2-3: TASK-252 (Interactive UI - can start in parallel)
-3. Week 3-6: TASK-230, 238, 240, 242, 245, 260, 261 (Research tasks)
+1. Translate completed research into v1.0 implementation epics and milestones.
+2. Prioritize deliverables that unblock compliance/reporting and user-facing UX wins.
 
 ---
 
@@ -132,6 +116,16 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-261** | Research: Professional Liability & Disclaimers (MIT + engineering addendum, disclaimer templates, certification guidance) | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-260** | Research: Security Best Practices (input validation, dependency scanning, CI hardening) | DEVOPS | ✅ 2026-01-07 |
+| **TASK-252** | Research: Interactive Testing UI (Jupyter widgets + Streamlit UI plan) | INTEGRATION | ✅ 2026-01-07 |
+| **TASK-245** | Research: Verification & Audit Trail (SHA-256 signatures, immutable audit records, CLI verification) | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-242** | Research: Calculation Report Generation (Jinja2 HTML, PDF via WeasyPrint, Excel export) | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-240** | Research: Code Clause Database Architecture (JSON clause DB, @clause decorator, traceability) | ARCHITECT | ✅ 2026-01-07 |
+| **TASK-238** | Research: Input Flexibility & Data Interchange (BeamInput dataclasses, import helpers, builder pattern) | ARCHITECT | ✅ 2026-01-07 |
+| **TASK-230** | Research: Testing Strategies for Engineering Software (visual regression, property-based, mutation testing) | TESTER | ✅ 2026-01-07 |
+| **TASK-211** | Apply API Guidelines to core modules (flexure/shear/detailing refactor + tests) | DEV | ✅ 2026-01-07 |
+| **TASK-210** | Apply API Guidelines to `api.py` (keyword-only signatures, result objects) | DEV | ✅ 2026-01-07 |
 | **TASK-213** | Implement error message templates (Three Questions Framework: dimension, material, design, compliance, calculation templates) → error_messages.py + 29 tests | DEV | ✅ 2026-01-07 |
 | **TASK-212** | Create exception hierarchy (3-level: StructuralLibError→5 categories→3 specific with details/suggestion/clause_ref) → errors.py + 19 tests | DEV | ✅ 2026-01-07 |
 | **TASK-214** | Create result object base classes (BaseResult, CalculationResult, ComplianceResult with to_dict/summary/validate) → result_base.py + 14 tests | DEV | ✅ 2026-01-07 |
