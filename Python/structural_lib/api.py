@@ -1200,9 +1200,7 @@ def optimize_beam_cost(
     # Convert optimal and alternatives
     optimal = result.optimal_candidate
     optimal_design = _to_optimal_design(optimal)
-
     alternatives = [_to_optimal_design(alt) for alt in result.alternatives if alt]
-
     return CostOptimizationResult(
         optimal_design=optimal_design,
         baseline_cost=result.baseline_cost,
@@ -1420,7 +1418,6 @@ def smart_analyze_design(
 
     # Convert dashboard to SmartAnalysisResult
     dashboard_dict = dashboard.to_dict()
-
     return SmartAnalysisResult(
         summary_data=dashboard_dict.get("summary", {}),
         metadata=dashboard_dict.get("metadata", {}),
