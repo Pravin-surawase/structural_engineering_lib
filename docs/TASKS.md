@@ -59,10 +59,7 @@
 
 #### Phase 3: Synthesis
 
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-208** | **Synthesis: Create API Guidelines Document** (Consolidate all research into unified `docs/guidelines/api-design-guidelines.md`; actionable rules; code templates; review checklists) | ARCHITECT | 3-4 hrs | 🔴 HIGH |
-| **TASK-209** | **Implementation Roadmap: API Improvements** (Prioritized improvements from research; implementation sequence; migration strategies; timeline) → `docs/planning/api-improvement-roadmap.md` | PM | 2-3 hrs | 🔴 HIGH |
+_All Phase 3 synthesis tasks complete — see Recently Done._
 
 #### Phase 4: Advanced Topics (Future-Proofing)
 
@@ -170,6 +167,14 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 | **TASK-202** | **Research: Function Signature Design Standards** (11 sections: core principles, parameter ordering, keyword-only patterns, type hints, defaults, unit suffixes, validation params, special cases, anti-patterns, migration guide, examples; comprehensive ~1000 line standard document with quick reference card and PR review checklist) → `docs/guidelines/function-signature-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-201** | **Research: UX Patterns for Technical APIs** (Cognitive load, discoverability, error design, "pit of success"; created docs/research/ux-patterns-for-technical-apis.md) | 2026-01-07 | RESEARCHER |
 | **TASK-215** | Update workflow to allow docs/research direct commits (no PR) with checks intact | 2026-01-07 | DEVOPS |
+| **TASK-208** | **Synthesis: Create API Guidelines Document** (Unified `docs/guidelines/api-design-guidelines.md` consolidates all Phase 1+2 research; 2609 lines; 11 sections + 4 appendices; actionable rules, code templates, 30-point review checklist; synthesizes TASK-200-207) | 2026-01-07 | ARCHITECT |
+| **TASK-201** | **Research: UX Patterns for Technical APIs** (Study cognitive load management, pit of success, IDE-driven development, progressive disclosure, error UX) | 2026-01-07 | RESEARCHER |
+| **TASK-207** | **Research: API Evolution & Migration** (Study semantic versioning, deprecation patterns, breaking change policies, CHANGELOG formats from established projects) | 2026-01-07 | RESEARCHER |
+| **TASK-206** | **Research: API Documentation & Discoverability** (Study documentation standards: Google/NumPy docstrings, Sphinx, MkDocs; IDE tooltips; example-driven docs; API playground) | 2026-01-07 | RESEARCHER |
+| **TASK-205** | **Research: Engineering Domain APIs** (Study domain-specific libraries: PyNite, ezdxf, pint; unit handling; material databases; CAD patterns; domain notation) | 2026-01-07 | RESEARCHER |
+| **TASK-204** | **Research: Error Handling Standard** (Study exception hierarchies, error message patterns, validation strategies from professional libraries) | 2026-01-07 | RESEARCHER |
+| **TASK-203** | **Research: Result Object Standard** (Study dataclasses, attrs, Pydantic, NamedTuples; immutability; serialization; validation) | 2026-01-07 | RESEARCHER |
+| **TASK-202** | **Research: Function Signature Standard** (Study parameter ordering, keyword-only args, defaults, type hints, overloading from established APIs) | 2026-01-07 | RESEARCHER |
 | **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns) | 2026-01-07 | RESEARCHER |
 | **TASK-199** | Sync Colab notebooks (root + docs) and document output review findings | 2026-01-06 | DOCS |
 | **TASK-198** | Update Colab workflow notebook for v0.15 smart design + comparison testing | 2026-01-06 | DOCS |
