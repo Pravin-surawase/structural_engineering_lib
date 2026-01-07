@@ -77,6 +77,44 @@
 | **TASK-226** | **Research: Internationalization & Localization** (Unit system handling (SI/Imperial/mixed); language support for messages/reports; locale-specific formatting; cultural considerations in engineering practice; translation workflow; example: US market needs Imperial units, ft-kip-psi) → `docs/research/internationalization.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
 | **TASK-227** | **Research: Code Generation & Metaprogramming** (Generate boilerplate from templates; type-safe code generation; macro systems; abstract syntax tree (AST) manipulation; reducing repetitive patterns; example: auto-generate similar functions for different codes; property-based test generation) → `docs/research/code-generation.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
 
+#### Phase 5: Infrastructure & DevOps (Production Readiness)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-230** | **Research: Testing Strategies for Engineering Software** (Visual regression for drawings/reports; property-based testing with Hypothesis for structural constraints; mutation testing; contract testing; fuzz testing; testing against textbook examples; comparing with STAAD/ETABS results) → `docs/research/engineering-testing-strategies.md` | TESTER | 4-5 hrs | 🔴 HIGH |
+| **TASK-231** | **Research: Multi-Platform Distribution** (Conda packaging for engineers; conda-forge recipe; PyInstaller/Nuitka for executables; multi-OS testing (Win/Mac/Linux); platform-specific issues; C extension compilation; dependency management) → `docs/research/multi-platform-distribution.md` | DEVOPS | 3-4 hrs | 🔴 HIGH |
+| **TASK-232** | **Research: CI/CD Pipeline Best Practices** (GitHub Actions optimization; build caching; artifact storage; automated releases; changelog generation; performance regression tracking; security scanning (Dependabot, Snyk); license compliance; SBOM generation) → `docs/research/cicd-best-practices.md` | DEVOPS | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-233** | **Research: Data Serialization & Storage** (Binary formats (HDF5, Parquet, Pickle); JSON Schema for validation; SQLite for project databases; cloud storage (S3/Azure); version control for design data; migration strategies; performance comparison) → `docs/research/data-serialization.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
+| **TASK-234** | **Research: Observability & Debugging Tools** (Structured logging (loguru, structlog); distributed tracing; profiling tools (cProfile, py-spy, scalene); memory profiling; error tracking (Sentry); telemetry (opt-in analytics); debugging structural calculations) → `docs/research/observability-debugging.md` | DEVOPS | 2-3 hrs | 🟡 MEDIUM |
+
+#### Phase 6: Engineering Domain Integration (Professional Features)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-240** | **Research: Code Clause Database Architecture** (Structured storage of IS 456/ACI/EC2 clauses; search and lookup; cross-referencing; version management for code updates; citation in calculations; automated compliance checking; example: "which clause for minimum steel?") → `docs/research/code-clause-database.md` | ARCHITECT | 3-4 hrs | 🔴 HIGH |
+| **TASK-241** | **Research: Load Combination Generation** (IS 1893 (seismic), IS 875 (wind/live/dead); automatic combination generation; factoring per code; envelope analysis; load case management; user-defined combinations; example: generate all 1.5DL+1.5LL combinations) → `docs/research/load-combinations.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+| **TASK-242** | **Research: Calculation Report Generation** (LaTeX for professional reports; Markdown to PDF; equation rendering with SymPy; automatic calculation sheets; step-by-step derivations; clause citations; engineer seal integration; Word/PDF templates) → `docs/research/calculation-reports.md` | RESEARCHER | 4-5 hrs | 🔴 HIGH |
+| **TASK-243** | **Research: CAD & BIM Integration** (AutoCAD DXF (already have, enhance); Revit via pyrevit; IFC format for BIM; parametric modeling; bidirectional sync; drawing generation automation; 3D visualization; integration with existing workflows) → `docs/research/cad-bim-integration.md` | INTEGRATION | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-244** | **Research: Material Database Management** (Built-in material properties (concrete, steel grades); user-defined materials; regional variations (India/US/Europe); temperature/durability effects; database schema; versioning; validation; example: fck=30MPa properties lookup) → `docs/research/material-database.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
+| **TASK-245** | **Research: Design Verification & Audit Trail** (Calculation checksums for reproducibility; audit log for design changes; comparison with hand calculations; automated design review checklist; independent verification tools; traceability for professional liability; timestamp and user tracking) → `docs/research/verification-audit-trail.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
+
+#### Phase 7: Development Experience (DX) & Collaboration
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-250** | **Research: Development Environment Setup** (devcontainer.json for VS Code; Docker dev environments; pre-configured IDE settings; debugger configurations; REPL for interactive design; hot reload; reproducible environments; onboarding automation; example: `docker compose up dev`) → `docs/research/dev-environment-setup.md` | DEVOPS | 2-3 hrs | 🟡 MEDIUM |
+| **TASK-251** | **Research: Interactive Documentation** (Jupyter Book for tutorials; executable documentation with Pyodide/WebAssembly; API playground; live examples in browser; video tutorial generation; architecture decision records (ADR); searchable clause database) → `docs/research/interactive-documentation.md` | DOCS | 3-4 hrs | 🟡 MEDIUM |
+| **TASK-252** | **Research: Web & Desktop Deployment Options** (Streamlit/Gradio for quick web apps; FastAPI for REST API; PyQt/PySide for desktop GUI; Progressive Web Apps (PWA); Electron wrapper; mobile considerations (Kivy, BeeWare); pros/cons comparison) → `docs/research/deployment-options.md` | INTEGRATION | 3-4 hrs | 🟢 LOW |
+| **TASK-253** | **Research: Collaboration & Version Control** (Design data version control (DVC); collaborative workflows; conflict resolution for calculations; shared project databases; real-time collaboration (WebSocket); review/approval workflows; Excel/Sheets integration for teams) → `docs/research/collaboration-workflows.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
+
+#### Phase 8: Security, Compliance & Legal (Professional Practice)
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-260** | **Research: Security Best Practices** (Input sanitization for file uploads; secrets management (API keys, license keys); code signing for distributions; dependency vulnerability scanning; OWASP top 10 for engineering software; secure calculation storage; encryption for sensitive data) → `docs/research/security-best-practices.md` | DEVOPS | 2-3 hrs | 🔴 HIGH |
+| **TASK-261** | **Research: Professional Liability & Disclaimers** (Calculation software liability; disclaimer templates; engineer seal requirements; terms of service for API/web; warranty limitations; verification requirements; professional engineering standards; regional regulations (US/India/Europe)) → `docs/research/professional-liability.md` | RESEARCHER | 2-3 hrs | 🔴 HIGH |
+| **TASK-262** | **Research: Licensing & Monetization Models** (Open-source vs commercial; dual licensing (AGPL+commercial); feature-based tiers; API usage limits; enterprise support; consultant licensing; SaaS pricing; GitHub Sponsors; sustainability models) → `docs/research/licensing-monetization.md` | PM | 2-3 hrs | 🟡 MEDIUM |
+
 ### Documentation Enhancement (From Handoff Analysis)
 
 _Most tasks completed — see Recently Done._
