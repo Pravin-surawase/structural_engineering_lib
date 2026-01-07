@@ -61,6 +61,16 @@
 
 _All Phase 3 synthesis tasks complete — see Recently Done._
 
+#### Phase 4 Foundation Implementation
+
+| ID | Task | Agent | Est | Priority |
+|----|------|-------|-----|----------|
+| **TASK-210** | Apply API Guidelines to `api.py` (After research: refactor function signatures, add keyword-only params, improve result objects) | DEV | 2-3 days | 🔴 HIGH |
+| **TASK-211** | Apply API Guidelines to core modules (flexure.py, shear.py, detailing.py based on guidelines) | DEV | 2-3 days | 🔴 HIGH |
+| **TASK-212** | Create exception hierarchy (3-level: base→category→specific per Section 5 guidelines) | DEV | 1 day | 🔴 HIGH |
+| **TASK-213** | Implement error message templates (Three Questions Framework from guidelines) | DEV | 1 day | 🔴 HIGH |
+| **TASK-214** | Create result object base classes (BaseResult with to_dict/summary/validate per Section 4 guidelines) | DEV | 1 day | 🔴 HIGH |
+
 #### Phase 4: Advanced Topics (Future-Proofing)
 
 | ID | Task | Agent | Est | Priority |
@@ -167,6 +177,7 @@ _TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (
 | **TASK-202** | **Research: Function Signature Design Standards** (11 sections: core principles, parameter ordering, keyword-only patterns, type hints, defaults, unit suffixes, validation params, special cases, anti-patterns, migration guide, examples; comprehensive ~1000 line standard document with quick reference card and PR review checklist) → `docs/guidelines/function-signature-standard.md` | 2026-01-07 | RESEARCHER |
 | **TASK-201** | **Research: UX Patterns for Technical APIs** (Cognitive load, discoverability, error design, "pit of success"; created docs/research/ux-patterns-for-technical-apis.md) | 2026-01-07 | RESEARCHER |
 | **TASK-215** | Update workflow to allow docs/research direct commits (no PR) with checks intact | 2026-01-07 | DEVOPS |
+| **TASK-209** | **Implementation Roadmap: API Improvements** (Prioritized 48 functions into 3 tiers: must-fix 18/should-fix 22/nice-to-have 8; 3-phase implementation plan over 8-10 weeks; migration strategies; risk assessment; timeline) → `docs/planning/api-improvement-roadmap.md` | 2026-01-07 | PM |
 | **TASK-208** | **Synthesis: Create API Guidelines Document** (Unified `docs/guidelines/api-design-guidelines.md` consolidates all Phase 1+2 research; 2609 lines; 11 sections + 4 appendices; actionable rules, code templates, 30-point review checklist; synthesizes TASK-200-207) | 2026-01-07 | ARCHITECT |
 | **TASK-201** | **Research: UX Patterns for Technical APIs** (Study cognitive load management, pit of success, IDE-driven development, progressive disclosure, error UX) | 2026-01-07 | RESEARCHER |
 | **TASK-207** | **Research: API Evolution & Migration** (Study semantic versioning, deprecation patterns, breaking change policies, CHANGELOG formats from established projects) | 2026-01-07 | RESEARCHER |
