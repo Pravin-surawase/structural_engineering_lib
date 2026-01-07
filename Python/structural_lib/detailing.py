@@ -19,7 +19,6 @@ from dataclasses import dataclass
 from typing import Optional
 
 from .error_messages import (
-    dimension_too_small,
     material_property_out_of_range,
 )
 from .errors import (
