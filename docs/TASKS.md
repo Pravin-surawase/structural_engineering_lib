@@ -4,31 +4,32 @@
 
 **Updated:** 2026-01-07
 
-> **Note:** For TASK-165 to TASK-170 (Professional Standards & Hygiene), see detailed specifications in [docs/planning/hygiene-research-specs.md](planning/hygiene-research-specs.md)
+> **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
 ---
 
 ## Rules (read first)
-- **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks (e.g., research + cleanup, small fix + docs). For complex features, keep WIP=1 to maintain focus.
+- **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks. For complex features, keep WIP=1.
 - Move tasks between sections; do not duplicate.
-- **Umbrella tasks:** For phased work, keep a single umbrella task in Active/Up Next and list included TASK IDs in its description; move included tasks to Recently Done when finished.
+- **Umbrella tasks:** Keep a single umbrella task in Active/Up Next and list included TASK IDs in description.
 - Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
-- Keep "Recently Done" to the last 10-20 items; older history lives in the archive.
-- Use agent roles from `agents/` and the workflow in `docs/_internal/AGENT_WORKFLOW.md`.
+- Keep "Recently Done" to last 10-20 items; older history in archive.
 
 ---
 
 ## Current Release
 
-- Target: v0.15.0 (TBD)
-- Focus: Smart library features & comparison tools
-- Blockers: none
+- **Version:** v0.15.0 ✅ Released (2026-01-07)
+- **Focus:** Code Quality Excellence - Enterprise-grade standards
+- **Next:** v1.0 (API improvement + professional requirements)
 
 ---
 
 ## Active
 
-- **TASK-208**: Create unified API Guidelines Document (consolidates TASK-200 through TASK-207 research; ~2000 lines synthesizing all Phase 1+2 findings into actionable rules, templates, review checklist) [ARCHITECT] (WIP: step 1/2)
+| ID | Task | Status | Notes |
+|----|------|--------|-------|
+| **TASK-214** | Create result object base classes (BaseResult with to_dict/summary/validate) | 🟢 IN PROGRESS | Base classes created, tests passing |
 
 ---
 
@@ -44,242 +45,118 @@
 
 ## Backlog
 
-### API Improvement Research (CRITICAL for v1.0 — Professional Standards)
+### Phase 4: API Improvement & Professional Requirements (v1.0 Critical)
 
-> **Full specifications:** [docs/planning/api-improvement-research-specs.md](planning/api-improvement-research-specs.md)
-> **Philosophy:** Research-first, then guidelines, then implementation.
+> **Context:** [Research backlog review](research/research-backlog-review.md) | [API specs](planning/api-improvement-research-specs.md)
+> **Status:** Research complete (10,547 lines of guidelines), ready for implementation
 
-#### Phase 1: Core Research (Critical)
+#### Foundation Implementation (HIGH Priority)
 
-*All Phase 1 tasks complete — see Recently Done.*
+| ID | Task | Agent | Est | Blockers |
+|----|------|-------|-----|----------|
+| **TASK-210** | Apply API Guidelines to `api.py` (refactor signatures, keyword-only params, result objects) | DEV | 2-3 days | None |
+| **TASK-211** | Apply API Guidelines to core modules (flexure.py, shear.py, detailing.py) | DEV | 2-3 days | TASK-210 |
+| **TASK-212** | Create exception hierarchy (3-level: base→category→specific per guidelines) | DEV | 1 day | None |
+| **TASK-213** | Implement error message templates (Three Questions Framework) | DEV | 1 day | TASK-212 |
+| **TASK-214** | Create result object base classes (BaseResult with to_dict/summary/validate) | DEV | 1 day | None |
 
-#### Phase 2: Domain Research
+#### Professional Engineering Requirements (HIGH Priority)
 
-*All Phase 2 tasks complete — see Recently Done.*
+| ID | Task | Agent | Est | Why Critical |
+|----|------|-------|-----|--------------|
+| **TASK-230** | Research: Testing Strategies for Engineering Software (visual regression, property-based testing, mutation testing) → [research doc](research/) | TESTER | 4-5 hrs | Quality assurance for DXF/reports |
+| **TASK-238** | Research: Input Flexibility & Data Interchange (ETABS, spreadsheets, CAD, BIM workflows) → [research doc](research/) | ARCHITECT | 4-5 hrs | Fixes Colab UX pain (C- → B+) |
+| **TASK-240** | Research: Code Clause Database Architecture (structured IS 456 clause storage, traceability) → [research doc](research/) | ARCHITECT | 3-4 hrs | Professional traceability requirement |
+| **TASK-242** | Research: Calculation Report Generation (LaTeX/PDF, equation rendering, clause citations) → [research doc](research/) | RESEARCHER | 4-5 hrs | Core engineering deliverable |
+| **TASK-245** | Research: Verification & Audit Trail (checksums, audit logs, reproducibility proof) → [research doc](research/) | RESEARCHER | 3-4 hrs | Professional liability protection |
+| **TASK-252** | Research: Interactive Testing UI (Streamlit/Gradio for manual testing + dogfooding) → [research doc](research/) | INTEGRATION | 2-3 hrs + 1 day impl | Developer productivity boost |
+| **TASK-260** | Research: Security Best Practices (input sanitization, secrets management, code signing) → [research doc](research/) | DEVOPS | 2-3 hrs | Production security review |
+| **TASK-261** | Research: Professional Liability & Disclaimers (legal framework, engineer seal, terms of service) → [research doc](research/) | RESEARCHER | 2-3 hrs | Legal protection before marketing |
 
-#### Phase 3: Synthesis
+**Implementation Order:**
+1. Week 1-2: TASK-210-214 (API Implementation)
+2. Week 2-3: TASK-252 (Interactive UI - can start in parallel)
+3. Week 3-6: TASK-230, 238, 240, 242, 245, 260, 261 (Research tasks)
 
-_All Phase 3 synthesis tasks complete — see Recently Done._
+---
 
-#### Phase 4 Foundation Implementation
+### Phase 4B: Post-v1.0 Enhancements (MEDIUM Priority)
+
+> **Timeline:** v1.1-v1.2 (Q2-Q3 2026) - Based on user feedback
+
+| ID | Task | Agent | Est | Target |
+|----|------|-------|-----|--------|
+| **TASK-241** | Research: Load Combination Generation (IS 1893/875, automatic combinations, envelope analysis) | RESEARCHER | 3-4 hrs | v1.1 |
+| **TASK-244** | Research: Material Database Management (built-in properties, regional variations, user-defined materials) | RESEARCHER | 2-3 hrs | v1.1 |
+| **TASK-223** | Research: Configuration Management System (user preferences, project defaults, config files) | RESEARCHER | 2-3 hrs | v1.2 |
+| **TASK-224** | Research: Advanced Validation Frameworks (Pydantic integration, cross-parameter validation) | RESEARCHER | 3-4 hrs | v1.2 |
+| **TASK-231** | Research: Multi-Platform Distribution (Conda packaging, PyInstaller, multi-OS testing) | DEVOPS | 3-4 hrs | v1.2 |
+| **TASK-221** | Research: Performance Optimization Patterns (caching, vectorization, lazy evaluation) | RESEARCHER | 3-4 hrs | When needed |
+| **TASK-243** | Research: CAD/BIM Integration (Revit, IFC, parametric modeling) | INTEGRATION | 3-4 hrs | v2.0 |
+
+---
+
+### Future Research Ideas (Archived)
+
+> **Status:** Deferred until v1.0 ships and real user feedback validates necessity
+> **Rationale:** These solve hypothetical problems without user validation
+
+**Removed Tasks:** TASK-220 (Multi-code architecture), TASK-222 (Plugin architecture), TASK-225 (DSL patterns), TASK-226 (Internationalization), TASK-227 (Code generation), TASK-232 (CI/CD best practices), TASK-233 (Data serialization), TASK-234 (Observability), TASK-250 (Dev environment setup), TASK-251 (Interactive docs), TASK-253 (Collaboration tools), TASK-262 (Licensing/monetization)
+
+**Decision:** Removed completely from backlog. Will revisit if users request these features post-v1.0.
+
+---
+
+### Visualization & Quality (Deferred)
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-210** | Apply API Guidelines to `api.py` (After research: refactor function signatures, add keyword-only params, improve result objects) | DEV | 2-3 days | 🔴 HIGH |
-| **TASK-211** | Apply API Guidelines to core modules (flexure.py, shear.py, detailing.py based on guidelines) | DEV | 2-3 days | 🔴 HIGH |
-| **TASK-212** | Create exception hierarchy (3-level: base→category→specific per Section 5 guidelines) | DEV | 1 day | 🔴 HIGH |
-| **TASK-213** | Implement error message templates (Three Questions Framework from guidelines) | DEV | 1 day | 🔴 HIGH |
-| **TASK-214** | Create result object base classes (BaseResult with to_dict/summary/validate per Section 4 guidelines) | DEV | 1 day | 🔴 HIGH |
+| **TASK-145** | Visualization Stack (matplotlib/plotly, BMD/SFD, beam elevation, cross-sections) | DEV | 3-4 days | 🟡 MEDIUM |
+| **TASK-146** | DXF Quality Polish (CAD visual QA, DWG conversion workflow) | QA | 2-3 days | 🟡 MEDIUM |
+| **TASK-147** | Developer Documentation (10+ examples, extension points, tutorials) | DOCS | 2-3 days | 🟡 MEDIUM |
 
-#### Phase 4: Advanced Topics (Future-Proofing)
+---
 
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-220** | **Research: Multi-Code Architecture** (Support IS 456 + ACI 318 + Eurocode 2; code-agnostic vs code-specific separation; parameter mapping; configuration mechanism; testing strategy; example: `design_beam(code='IS456')` vs `design_beam(code='ACI318')`; shared utilities; code registry pattern) → `docs/research/multi-code-architecture.md` | ARCHITECT | 4-5 hrs | 🟡 MEDIUM |
-| **TASK-221** | **Research: Performance Optimization Patterns** (Caching strategies for repeated calculations; vectorization with NumPy for batch operations; lazy evaluation patterns; memoization for expensive functions; profiling and bottleneck identification; trade-offs: memory vs speed) → `docs/research/performance-optimization.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
-| **TASK-222** | **Research: Plugin & Extension Architecture** (Plugin discovery mechanism; extension points in design pipeline; hook system for custom calculations; third-party integrations; versioning for plugins; security considerations; example: custom material models, optimization algorithms) → `docs/research/plugin-architecture.md` | ARCHITECT | 3-4 hrs | 🟢 LOW |
-| **TASK-223** | **Research: Configuration Management System** (User preferences storage; project-level defaults; code-specific configurations; environment variables; config file formats (YAML/TOML/JSON); validation; migration between config versions; example: default cover, design assumptions) → `docs/research/configuration-management.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
-| **TASK-224** | **Research: Advanced Validation Frameworks** (Schema validation with Pydantic/dataclasses; cross-parameter validation; unit validation with pint; constraint satisfaction; validation rules from code clauses; error aggregation; performance impact; example: validate entire beam config at once) → `docs/research/advanced-validation.md` | RESEARCHER | 3-4 hrs | 🟡 MEDIUM |
-| **TASK-225** | **Research: Domain-Specific Language (DSL) Patterns** (Fluent API for design workflows; method chaining; builder pattern; declarative vs imperative; readability vs flexibility; example: `Beam().width(300).depth(600).moment(180).design()`; symbolic math integration for documentation; code generation from DSL) → `docs/research/dsl-patterns.md` | RESEARCHER | 3-4 hrs | 🟢 LOW |
-| **TASK-226** | **Research: Internationalization & Localization** (Unit system handling (SI/Imperial/mixed); language support for messages/reports; locale-specific formatting; cultural considerations in engineering practice; translation workflow; example: US market needs Imperial units, ft-kip-psi) → `docs/research/internationalization.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
-| **TASK-227** | **Research: Code Generation & Metaprogramming** (Generate boilerplate from templates; type-safe code generation; macro systems; abstract syntax tree (AST) manipulation; reducing repetitive patterns; example: auto-generate similar functions for different codes; property-based test generation) → `docs/research/code-generation.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
-
-#### Phase 5: Infrastructure & DevOps (Production Readiness)
+### Post-v1.0 (Beam Scope)
 
 | ID | Task | Agent | Est | Priority |
 |----|------|-------|-----|----------|
-| **TASK-230** | **Research: Testing Strategies for Engineering Software** (Visual regression for drawings/reports; property-based testing with Hypothesis for structural constraints; mutation testing; contract testing; fuzz testing; testing against textbook examples; comparing with STAAD/ETABS results) → `docs/research/engineering-testing-strategies.md` | TESTER | 4-5 hrs | 🔴 HIGH |
-| **TASK-231** | **Research: Multi-Platform Distribution** (Conda packaging for engineers; conda-forge recipe; PyInstaller/Nuitka for executables; multi-OS testing (Win/Mac/Linux); platform-specific issues; C extension compilation; dependency management) → `docs/research/multi-platform-distribution.md` | DEVOPS | 3-4 hrs | 🔴 HIGH |
-| **TASK-232** | **Research: CI/CD Pipeline Best Practices** (GitHub Actions optimization; build caching; artifact storage; automated releases; changelog generation; performance regression tracking; security scanning (Dependabot, Snyk); license compliance; SBOM generation) → `docs/research/cicd-best-practices.md` | DEVOPS | 3-4 hrs | 🟡 MEDIUM |
-| **TASK-233** | **Research: Data Serialization & Storage** (Binary formats (HDF5, Parquet, Pickle); JSON Schema for validation; SQLite for project databases; cloud storage (S3/Azure); version control for design data; migration strategies; performance comparison) → `docs/research/data-serialization.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
-| **TASK-234** | **Research: Observability & Debugging Tools** (Structured logging (loguru, structlog); distributed tracing; profiling tools (cProfile, py-spy, scalene); memory profiling; error tracking (Sentry); telemetry (opt-in analytics); debugging structural calculations) → `docs/research/observability-debugging.md` | DEVOPS | 2-3 hrs | 🟡 MEDIUM |
-
-#### Phase 6: Engineering Domain Integration (Professional Features)
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-238** | **Research: Input Flexibility & Data Interchange** (Support diverse input sources beyond programmatic API: ETABS (.e2k, JSON, database), SAP2000, STAAD.Pro, Robot; spreadsheet templates (Excel, CSV); manual GUI/web forms; CAD files (DXF with annotations); BIM models (IFC, Revit); structured formats (JSON, YAML, XML); workflows for different users (consultants batch processing, practitioners manual input, students learning, checkers auditing); domain-specific needs (buildings, industrial, bridges, retrofitting, forensic); input validation and normalization; example: "import beam loads from ETABS analysis results") → `docs/research/input-flexibility-data-interchange.md` | ARCHITECT | 4-5 hrs | 🔴 HIGH |
-| **TASK-240** | **Research: Code Clause Database Architecture** (Structured storage of IS 456/ACI/EC2 clauses; search and lookup; cross-referencing; version management for code updates; citation in calculations; automated compliance checking; example: "which clause for minimum steel?") → `docs/research/code-clause-database.md` | ARCHITECT | 3-4 hrs | 🔴 HIGH |
-| **TASK-241** | **Research: Load Combination Generation** (IS 1893 (seismic), IS 875 (wind/live/dead); automatic combination generation; factoring per code; envelope analysis; load case management; user-defined combinations; example: generate all 1.5DL+1.5LL combinations) → `docs/research/load-combinations.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-| **TASK-242** | **Research: Calculation Report Generation** (LaTeX for professional reports; Markdown to PDF; equation rendering with SymPy; automatic calculation sheets; step-by-step derivations; clause citations; engineer seal integration; Word/PDF templates) → `docs/research/calculation-reports.md` | RESEARCHER | 4-5 hrs | 🔴 HIGH |
-| **TASK-243** | **Research: CAD & BIM Integration** (AutoCAD DXF (already have, enhance); Revit via pyrevit; IFC format for BIM; parametric modeling; bidirectional sync; drawing generation automation; 3D visualization; integration with existing workflows) → `docs/research/cad-bim-integration.md` | INTEGRATION | 3-4 hrs | 🟡 MEDIUM |
-| **TASK-244** | **Research: Material Database Management** (Built-in material properties (concrete, steel grades); user-defined materials; regional variations (India/US/Europe); temperature/durability effects; database schema; versioning; validation; example: fck=30MPa properties lookup) → `docs/research/material-database.md` | RESEARCHER | 2-3 hrs | 🟡 MEDIUM |
-| **TASK-245** | **Research: Design Verification & Audit Trail** (Calculation checksums for reproducibility; audit log for design changes; comparison with hand calculations; automated design review checklist; independent verification tools; traceability for professional liability; timestamp and user tracking) → `docs/research/verification-audit-trail.md` | RESEARCHER | 3-4 hrs | 🔴 HIGH |
-
-#### Phase 7: Development Experience (DX) & Collaboration
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-250** | **Research: Development Environment Setup** (devcontainer.json for VS Code; Docker dev environments; pre-configured IDE settings; debugger configurations; REPL for interactive design; hot reload; reproducible environments; onboarding automation; example: `docker compose up dev`) → `docs/research/dev-environment-setup.md` | DEVOPS | 2-3 hrs | 🟡 MEDIUM |
-| **TASK-251** | **Research: Interactive Documentation** (Jupyter Book for tutorials; executable documentation with Pyodide/WebAssembly; API playground; live examples in browser; video tutorial generation; architecture decision records (ADR); searchable clause database) → `docs/research/interactive-documentation.md` | DOCS | 3-4 hrs | 🟡 MEDIUM |
-| **TASK-252** | **Research: Web & Desktop Deployment Options** (Streamlit/Gradio for quick web apps; FastAPI for REST API; PyQt/PySide for desktop GUI; Progressive Web Apps (PWA); Electron wrapper; mobile considerations (Kivy, BeeWare); pros/cons comparison) → `docs/research/deployment-options.md` | INTEGRATION | 3-4 hrs | 🟢 LOW |
-| **TASK-253** | **Research: Collaboration & Version Control** (Design data version control (DVC); collaborative workflows; conflict resolution for calculations; shared project databases; real-time collaboration (WebSocket); review/approval workflows; Excel/Sheets integration for teams) → `docs/research/collaboration-workflows.md` | RESEARCHER | 2-3 hrs | 🟢 LOW |
-
-#### Phase 8: Security, Compliance & Legal (Professional Practice)
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-260** | **Research: Security Best Practices** (Input sanitization for file uploads; secrets management (API keys, license keys); code signing for distributions; dependency vulnerability scanning; OWASP top 10 for engineering software; secure calculation storage; encryption for sensitive data) → `docs/research/security-best-practices.md` | DEVOPS | 2-3 hrs | 🔴 HIGH |
-| **TASK-261** | **Research: Professional Liability & Disclaimers** (Calculation software liability; disclaimer templates; engineer seal requirements; terms of service for API/web; warranty limitations; verification requirements; professional engineering standards; regional regulations (US/India/Europe)) → `docs/research/professional-liability.md` | RESEARCHER | 2-3 hrs | 🔴 HIGH |
-| **TASK-262** | **Research: Licensing & Monetization Models** (Open-source vs commercial; dual licensing (AGPL+commercial); feature-based tiers; API usage limits; enterprise support; consultant licensing; SaaS pricing; GitHub Sponsors; sustainability models) → `docs/research/licensing-monetization.md` | PM | 2-3 hrs | 🟡 MEDIUM |
-
-### Documentation Enhancement (From Handoff Analysis)
-
-_Most tasks completed — see Recently Done._
-
-### Professional Standards & Hygiene (CRITICAL for v1.0 readiness)
-All research tasks completed (see Recently Done).
-
-### Professional Standards & Hygiene Implementation (Phase 1-3)
-
-_TASK-191 (test restructuring), TASK-192 (coverage + benchmarks), TASK-193-196 (type annotations, naming, docstrings) completed — see Recently Done._
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-210** | Apply API Guidelines to `api.py` (After research: refactor function signatures, add keyword-only params, improve result objects) | DEV | 2-3 days | 🔴 HIGH |
-| **TASK-211** | Apply API Guidelines to core modules (flexure.py, shear.py, detailing.py based on guidelines) | DEV | 2-3 days | 🔴 HIGH |
-
-### Foundation & Architecture (CRITICAL for stability)
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-212** | Create custom exception hierarchy (BaseLibraryError, ValidationError, DesignError, ComplianceError based on research) | DEV | 1 day | 🔴 HIGH |
-| **TASK-213** | Implement error message templates (actionable, context-rich messages following research guidelines) | DEV | 1 day | 🔴 HIGH |
-| **TASK-214** | Create result object base classes (BaseResult with to_dict, summary, validate methods) | DEV | 1 day | 🔴 HIGH |
-
-### v1.0 Readiness (carryover)
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-
-### Post-v1.0 (beam scope)
-
-| ID | Task | Agent | Est | Priority |
-|----|------|-------|-----|----------|
-| **TASK-081** | Level C Serviceability (creep + shrinkage) | DEV | 1-2 days | 🟡 Medium |
-| **TASK-082** | VBA parity automation harness | DEVOPS | 1-2 days | 🟡 Medium |
-| **TASK-138** | ETABS tables → beam input mapping (export checklist + converter) | INTEGRATION | 1-2 days | 🟡 Medium |
-| **TASK-085** | Torsion design + detailing (Cl. 41) | DEV | 2-3 days | 🟡 Medium |
-| **TASK-087** | Anchorage space check (Cl. 26.2) | DEV | 1 day | 🟡 Medium |
-| **TASK-088** | Slenderness/stability check (Cl. 23.1.2) | DEV | 4 hrs | 🟡 Medium |
+| **TASK-081** | Level C Serviceability (creep + shrinkage) | DEV | 1-2 days | 🟡 MEDIUM |
+| **TASK-082** | VBA parity automation harness | DEVOPS | 1-2 days | 🟡 MEDIUM |
+| **TASK-138** | ETABS tables → beam input mapping (export checklist + converter) | INTEGRATION | 1-2 days | 🟡 MEDIUM |
+| **TASK-085** | Torsion design + detailing (Cl. 41) | DEV | 2-3 days | 🟡 MEDIUM |
+| **TASK-087** | Anchorage space check (Cl. 26.2) | DEV | 1 day | 🟡 MEDIUM |
+| **TASK-088** | Slenderness/stability check (Cl. 23.1.2) | DEV | 4 hrs | 🟡 MEDIUM |
 
 ---
 
 ## Recently Done
 
-| ID | Task | Completed | Agent |
-|----|------|-----------|-------|
-| **TASK-207** | **Research: API Evolution & Migration Strategies** (8 sections + 2 appendices: semantic versioning (SemVer), backward compatibility strategies, deprecation process with decorator, breaking changes batching, version communication (CHANGELOG/releases), migration tools (automated script, compat shims), API lifecycle (stability levels, feature flags, LTS), real-world examples (NumPy, Django, Pandas, Requests, FastAPI); comprehensive ~1700 line standard with 3 checklists) → `docs/guidelines/api-evolution-standard.md` | 2026-01-07 | RESEARCHER |
-| **TASK-206** | **Research: API Documentation & Discoverability** (10 sections + 2 appendices: docstring standard (Google style), type hints & annotations, example-driven documentation, IDE integration (VSCode/PyCharm), module-level documentation, API reference generation with pdoc, error documentation, code examples best practices, documentation testing with doctest, 4 complete docstring templates; comprehensive ~1500 line standard) → `docs/guidelines/documentation-standard.md` | 2026-01-07 | RESEARCHER |
-| **TASK-205** | **Research: Engineering Domain API Patterns** (10 sections: analyzed PyNite, ezdxf, pint, handcalcs, OpenSees; cross-library patterns, unit handling strategies (implicit vs explicit vs suffix-based), engineering notation conventions, recommendations; validates our current suffix-based approach as optimal; ~1000 line comprehensive analysis) → `docs/research/engineering-domain-apis.md` | 2026-01-07 | RESEARCHER |
-| **TASK-204** | **Research: Error Handling & Exception Design** (12 sections: core principles, exception hierarchy, error message quality, validation patterns, error recovery, exception context, anti-patterns, testing, migration, examples, logging, performance; comprehensive ~2100 line standard with quick reference checklist and complete exception catalog) → `docs/guidelines/error-handling-standard.md` | 2026-01-07 | RESEARCHER |
-| **TASK-203** | **Research: Result Object Design Patterns** (12 sections: dataclass vs namedtuple vs dict, essential methods, immutability, nested results, error handling, serialization, anti-patterns, migration; comprehensive ~950 line standard with SciPy OptimizeResult case study) → `docs/guidelines/result-object-standard.md` | 2026-01-07 | RESEARCHER |
-| **TASK-202** | **Research: Function Signature Design Standards** (11 sections: core principles, parameter ordering, keyword-only patterns, type hints, defaults, unit suffixes, validation params, special cases, anti-patterns, migration guide, examples; comprehensive ~1000 line standard document with quick reference card and PR review checklist) → `docs/guidelines/function-signature-standard.md` | 2026-01-07 | RESEARCHER |
-| **TASK-201** | **Research: UX Patterns for Technical APIs** (Cognitive load, discoverability, error design, "pit of success"; created docs/research/ux-patterns-for-technical-apis.md) | 2026-01-07 | RESEARCHER |
-| **TASK-215** | Update workflow to allow docs/research direct commits (no PR) with checks intact | 2026-01-07 | DEVOPS |
-| **TASK-209** | **Implementation Roadmap: API Improvements** (Prioritized 48 functions into 3 tiers: must-fix 18/should-fix 22/nice-to-have 8; 3-phase implementation plan over 8-10 weeks; migration strategies; risk assessment; timeline) → `docs/planning/api-improvement-roadmap.md` | 2026-01-07 | PM |
-| **TASK-208** | **Synthesis: Create API Guidelines Document** (Unified `docs/guidelines/api-design-guidelines.md` consolidates all Phase 1+2 research; 2609 lines; 11 sections + 4 appendices; actionable rules, code templates, 30-point review checklist; synthesizes TASK-200-207) | 2026-01-07 | ARCHITECT |
-| **TASK-201** | **Research: UX Patterns for Technical APIs** (Study cognitive load management, pit of success, IDE-driven development, progressive disclosure, error UX) | 2026-01-07 | RESEARCHER |
-| **TASK-207** | **Research: API Evolution & Migration** (Study semantic versioning, deprecation patterns, breaking change policies, CHANGELOG formats from established projects) | 2026-01-07 | RESEARCHER |
-| **TASK-206** | **Research: API Documentation & Discoverability** (Study documentation standards: Google/NumPy docstrings, Sphinx, MkDocs; IDE tooltips; example-driven docs; API playground) | 2026-01-07 | RESEARCHER |
-| **TASK-205** | **Research: Engineering Domain APIs** (Study domain-specific libraries: PyNite, ezdxf, pint; unit handling; material databases; CAD patterns; domain notation) | 2026-01-07 | RESEARCHER |
-| **TASK-204** | **Research: Error Handling Standard** (Study exception hierarchies, error message patterns, validation strategies from professional libraries) | 2026-01-07 | RESEARCHER |
-| **TASK-203** | **Research: Result Object Standard** (Study dataclasses, attrs, Pydantic, NamedTuples; immutability; serialization; validation) | 2026-01-07 | RESEARCHER |
-| **TASK-202** | **Research: Function Signature Standard** (Study parameter ordering, keyword-only args, defaults, type hints, overloading from established APIs) | 2026-01-07 | RESEARCHER |
-| **TASK-200** | **Research: Professional Python Library API Patterns** (Study NumPy, SciPy, Pandas, Requests, Pydantic, scikit-learn patterns) | 2026-01-07 | RESEARCHER |
-| **TASK-199** | Sync Colab notebooks (root + docs) and document output review findings | 2026-01-06 | DOCS |
-| **TASK-198** | Update Colab workflow notebook for v0.15 smart design + comparison testing | 2026-01-06 | DOCS |
-| **TASK-182** | **Phase 3: Final Documentation Pass** (Review all Phase 1+2 changes; update cross-references; validate all links; final quality check for consistency) | 2026-01-06 | DOCS |
-| **TASK-181** | **Phase 3: Add Data Flow Diagrams** (Create Mermaid diagrams for complex pipelines: job_runner, smart_designer; show data transformations through layers; commit to docs/architecture/) | 2026-01-06 | DOCS |
-| **TASK-180** | **Phase 3: Create Module Dependency Graph** (Use pydeps or similar to generate Python/structural_lib dependency graph; commit PNG to docs/architecture/dependencies.png) | 2026-01-06 | DOCS |
-| **TASK-179** | **Phase 3: Generate Visual Architecture Diagrams** (Create PlantUML or Mermaid diagrams for: layer architecture, module dependencies, data flows; commit to docs/architecture/) | 2026-01-06 | DOCS |
-| **TASK-197** | Add repo hygiene artifact check (block tracked `.DS_Store`/`.coverage`; add `scripts/check_repo_hygiene.py`; pre-commit hook; documented in automation catalog) | 2026-01-06 | DEV |
-| **TASK-164** | Complete Error Migration (v0.14: add deprecation warnings to error_message/remarks fields; v1.0: remove deprecated fields; update all callers) | 2026-01-06 | DEV |
-| **TASK-163** | Add Missing Return Type Annotations (audit script to find functions without return types; add types to all public functions; mypy --disallow-untyped-defs) | 2026-01-06 | DEV |
-| **TASK-196** | Add Complete Docstrings to Core Modules (flexure.py, shear.py, detailing.py) | 2026-01-06 | DEV |
-| **TASK-192** | Add per-module coverage report + baseline performance benchmarks (pytest-benchmark added to dev dependencies; 13 benchmarks covering core calculations, module functions, API, optimization, batch processing; 2 skipped; baseline data saved in .benchmarks/; documented current coverage: 6 modules >90%, 8 modules 80-90%, 5 modules <80%; updated Python/tests/README.md with performance testing section; PR #270 merged) | 2026-01-06 | TESTER |
-| **TASK-191** | Restructure tests into category subfolders with pytest markers (59 files → 5 categories: unit/12, integration/38, regression/8, property/1, performance/0; 7 markers in pytest.ini; comprehensive Python/tests/README.md; fixed data/ and fixtures/ paths; updated CI workflow paths; removed 28 iCloud duplicate files; all 2270 tests pass; PR #269 merged) | 2026-01-06 | TESTER |
-| **TASK-190** | Resolve dead-code findings + TODOs + comprehensive CI linting cleanup (removed 2 dead code items: bbs.py unused param, comparison.py unused var; updated 3 TODOs with deferral notes; created deferred-integrations.md tracking doc; fixed all 91 ruff errors: 21 auto-fixed, config updates for structural notation, test naming patterns; documented CI scope mismatch prevention; PR #268 merged; all 2270 tests pass) | 2026-01-06 | DEV |
-| **TASK-195** | Add Complete Docstrings to api.py (compute_detailing, compute_bbs, compute_dxf, compute_report; 139 lines added; Google Style with Args/Returns/Raises/Examples) | 2026-01-06 | DEV |
-| **TASK-194** | Fix Naming Convention Issues (configured ruff to allow structural engineering conventions: D, D_mm, Df, etc.; 59 naming issues resolved; per-file ignores for excel_bridge) | 2026-01-06 | DEV |
-| **TASK-193** | Type Annotation Modernization (PEP 585/604: 398 issues resolved; 25 files modified; list/dict/tuple instead of List/Dict/Tuple; all 2270 tests pass) | 2026-01-06 | DEV |
-| **TASK-189** | Expand ruff rules + docstring guide (9 rule categories; Google Style guide; 17 auto-fixes; phased implementation plan; see docs/research/ruff-expansion-summary.md) | 2026-01-06 | DEV |
-| **TASK-187** | Standardize license headers in Python modules and align VBA header format (SPDX-License-Identifier: MIT, Copyright (c) 2024-2026 Pravin Surawase; 40 Python files, 33 VBA files; script: add_license_headers.py; all 2270 tests pass) | 2026-01-06 | DEV |
-| **TASK-188** | Publish nomenclature glossary + naming rules in `docs/contributing/development-guide.md`; update key examples to match | 2026-01-06 | DOCS |
-| **TASK-184** | Canonicalize doc sources (define single source per topic + redirect stubs) and add a `docs/README.md` canonical index map | 2026-01-06 | DOCS |
-| **TASK-175** | **Phase 2: Create Learning Paths Guide** (Map task complexity → required docs; paths: beginner/intermediate/advanced; examples: "small bug fix" → copilot-instructions + known-pitfalls; "new feature" → architecture + API + testing strategy) → `docs/contributing/learning-paths.md` | 2026-01-06 | DOCS |
-| **TASK-176** | **Phase 2: Enhance Agent Role Decision Tree** (Update agents/README.md with task type → agent role mappings; decision tree: bug fix → DEV+TESTER, new feature → PM→RESEARCHER→DEV→TESTER→DOCS, docs → DOCS, release → DEVOPS→PM) | 2026-01-06 | DOCS |
-| **TASK-177** | **Phase 2: Create Research Document Index** (Create docs/research/README.md; list 12+ research docs with topic tags (git, testing, tooling, CS practices, etc.); add when-to-read guidance) | 2026-01-06 | DOCS |
-| **TASK-178** | **Phase 2: Update Session Brief with Findings** (Update next-session-brief.md with documentation audit findings; summarize gaps and recommendations) | 2026-01-06 | DOCS |
-| **TASK-185** | Phase 1 hygiene umbrella (includes TASK-183, TASK-186): archive legacy planning docs (v0.10-v0.12) with redirect stubs in `docs/planning/` | 2026-01-06 | DOCS |
-| **TASK-183** | Fix broken internal links and add missing doc stubs (cost optimization guide, link repairs) | 2026-01-06 | DOCS |
-| **TASK-186** | Add repo metadata files (CITATION.cff, AUTHORS.md, FUNDING.yml, support issue template, third-party licenses summary) | 2026-01-06 | DOCS |
-| **TASK-165** | **Research: Project Hygiene & File Organization** (Audit: duplicate files, obsolete content, inconsistent naming, broken links, outdated docs, archive candidates; cleanup plan and file structure standards) → `docs/research/project-hygiene-audit.md` | 2026-01-06 | RESEARCHER |
-| **TASK-166** | **Research: Nomenclature Standardization** (Audit: naming, abbreviations; glossary + standards) → `docs/research/nomenclature-standards.md` | 2026-01-06 | RESEARCHER |
-| **TASK-167** | **Research: Professional Repository Standards** (Audit: license headers, community health files, templates, badges, metadata) → `docs/research/professional-repo-standards.md` | 2026-01-06 | RESEARCHER |
-| **TASK-168** | **Research: Documentation Quality & Completeness** (Audit: outdated info, broken links, missing examples, formatting, redundancy) → `docs/research/documentation-quality-audit.md` | 2026-01-06 | RESEARCHER |
-| **TASK-169** | **Research: Code Style Consistency** (Audit: formatting consistency, docstrings, TODOs, magic numbers) → `docs/research/code-style-consistency.md` | 2026-01-06 | RESEARCHER |
-| **TASK-170** | **Research: Test Organization & Coverage Gaps** (Audit: test structure, categories, coverage gaps, performance tests) → `docs/research/test-organization-audit.md` | 2026-01-06 | RESEARCHER |
-| **TASK-171** | **Phase 1: Create Automation Script Catalog** (Cataloged all 41 scripts: Session (3), Git (9), Doc Quality (8), Release (4), Testing (5), Code Quality (4), Specialized (8); comprehensive usage guide) → `docs/reference/automation-catalog.md` | 2026-01-06 | DOCS |
-| **TASK-172** | **Phase 1: Update AI_CONTEXT_PACK with Automation Section** (Added automation quick reference; categorized key scripts; linked to catalog) | 2026-01-06 | DOCS |
-| **TASK-173** | **Phase 1: Add Automation Links to AGENT_BOOTSTRAP** (Updated quick reference with automation catalog link; improved agent discoverability) | 2026-01-06 | DOCS |
-| **TASK-174** | **Phase 1: Test Automation Discoverability** (Validated new agent workflow: AI_CONTEXT_PACK → automation section → catalog; all links working; <30 second discovery confirmed) | 2026-01-06 | DOCS |
-| **TASK-156** | Research: Backward Compatibility Automation (contract testing in CI, breaking change detection, API stability enforcement, mutation testing) | 2026-01-06 | RESEARCHER |
-
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| **TASK-144** | Smart Library Integration (SmartDesigner unified dashboard with smart_analyze_design() API; 6 data classes; CLI integration; 700+ lines; 19/20 tests passing; complete with API wrapper solution for type architecture) | DEV | ✅ Done |
-| **TASK-143** | Comparison & Sensitivity Enhancement (created comparison.py with compare_designs and cost_aware_sensitivity; 400+ lines with DesignAlternative, ComparisonMetrics, ComparisonResult, CostSensitivityResult; 19 tests; exports via insights/__init__.py; 2231 tests pass) | DEV | ✅ Done |
-| **TASK-162** | Replace Dict[str, Any] with TypedDicts (BeamGeometry, LoadCase, JobSpec created; job_runner/report/report_svg updated; 2231 tests pass; mypy clean) | DEV | ✅ Done |
-| **TASK-161 Sprint 2** | Gradually Tighten Mypy Configuration - Sprint 2 (enabled check_untyped_defs, no_implicit_optional; fixed 2 errors; added Optional imports; 2200 tests pass; mypy clean) | DEV | ✅ Done |
-| **TASK-161 Sprint 1** | Gradually Tighten Mypy Configuration - Sprint 1 (enabled warn_return_any, strict_optional; fixed 5 errors; 2200 tests pass; mypy clean) | DEV | ✅ Done |
-| **TASK-159** | Standardize Error Handling by Layer (documented strategy in CONTRIBUTING.md with 5 layers; created audit script; 25 modules audited - all compliant) | DEV+DOCS | ✅ Done |
-| **TASK-158** | Eliminate Silent Failures in Core Modules (17 functions fixed: flexure, shear, materials, detailing, serviceability, ductile; all now raise ValueError with clear messages; 2200 tests pass) | DEV | ✅ Done |
-| **TASK-158** | Eliminate Silent Failures in Core Modules (Fixed 8 functions: calculate_mu_lim, calculate_tv, calculate_ast_required, get_xu_max_d, get_ec, get_fcr, calculate_development_length, calculate_bar_spacing - all now raise ValueError; updated 7 tests; 2200 tests passing) | DEV | ✅ Done |
-| **TASK-160** | Fix Mypy Pre-Commit Configuration (use local hook with full venv path, cd Python && mypy structural_lib/) | DEVOPS | ✅ Done |
-| **TASK-157** | Complete Validation Utilities Module (6 new validators + 37 tests: validate_cover, validate_loads, validate_material_grades, validate_reinforcement, validate_span, validate_beam_inputs) | DEV | ✅ Done |
-| **TASK-155** | **Research: CS Best Practices Implementation Plan** (23 tasks across 3 phases: validation utilities, error handling, mypy, docstrings, TypedDicts) → `docs/research/cs-practices-implementation-plan.md` | RESEARCHER | ✅ Done |
-| **TASK-154** | **Research: xlwings vs VBA Strategy** (Hybrid approach: deprecate VBA calculations, keep minimal UI VBA; 85% VBA reduction; 3-phase migration plan) → `docs/research/xlwings-vba-strategy.md` | RESEARCHER | ✅ Done |
-| **TASK-153** | Add deprecation decorator and policy (@deprecated, deprecated_field, policy docs, CHANGELOG template) → `Python/structural_lib/utilities.py`, `docs/reference/deprecation-policy.md`, 18 tests | DEV | ✅ Done |
-| **TASK-152** | Standardize error handling (validation utilities, flexure.py refactor) → `Python/structural_lib/validation.py`, 41 tests | DEV | ✅ Done |
-| **TASK-151** | Implement contract testing (API stability safeguards, pre-commit hook) → `Python/tests/test_contracts.py` | DEV | ✅ Done |
-| **TASK-150** | Research: Modern Python Tooling Evaluation (uv, Hypothesis, pytest-benchmark, mutmut for structural libraries) → `docs/research/modern-python-tooling.md` | RESEARCHER | ✅ Done |
-| **TASK-149** | Research: Backward Compatibility Strategy (evaluate pytest-regressions, contract testing, semantic versioning tools, API stability safeguards) → `docs/research/backward-compatibility-strategy.md` | RESEARCHER | ✅ Done |
-| **TASK-148** | Research: CS Best Practices Audit (review codebase against Python scientific library standards, compare to numpy/scipy/pandas patterns, identify gaps) → `docs/research/cs-best-practices-audit.md` | RESEARCHER | ✅ Done |
-| **TASK-142** | Design Suggestions Engine (17 expert rules, 6 categories, confidence scoring, JSON) | DEV | ✅ Done |
-| **TASK-141** | Integrate cost calculation into `api.py` and CLI | INTEGRATION | ✅ Done |
-| **TASK-140** | Implement Cost Optimization Feature (Python) | DEV | ✅ Done |
-| **TASK-139** | Cost Optimization Research (Day 1): Material/Labor models | RESEARCHER | ✅ Done |
-| **TASK-135** | Insights verification pack: 10 benchmark cases + JSON data + pytest module | TESTER | ✅ Done |
-| **TASK-137** | Complete insights documentation (user guide + API reference, cross-linked) | DOCS | ✅ Done |
-| **TASK-136** | Insights JSON schema + CLI integration (`.to_dict()` methods, `--insights` flag, 6 tests) | INTEGRATION | ✅ Done |
-| **TASK-134** | Constructability scoring refinement (0-100 scale, 7 factors, 10 comprehensive tests) | DEV | ✅ Done |
-| **TASK-133b** | Comprehensive tests for sensitivity analysis (14 tests: golden vectors, edge cases, physical validation) | TESTER | ✅ Done |
-| **TASK-133** | Sensitivity analysis fixes + robustness scoring (normalization bug, margin-based robustness) | DEV | ✅ Done |
-| **TASK-132** | Insights module scaffolding + precheck (types, precheck.py, tests) | DEV | ✅ Done |
-| **TASK-086** | Side-face reinforcement check (Cl. 26.5.1.3) | DEV | ✅ Done |
-| **TASK-089** | Flanged effective width helper | INTEGRATION | ✅ Done |
-| **TASK-077** | External user CLI test | CLIENT | ✅ Done |
-| **TASK-079** | VBA parity spot-check | TESTER | ✅ Done |
-| **TASK-078** | Seismic detailing validation | TESTER | ✅ Done |
-| **TASK-131** | Add regression fixtures for BBS/DXF mark-diff (missing marks, mismatched counts) | TESTER | ✅ Done |
-| **TASK-130** | Add contract tests for units conversion boundaries at API/CLI entrypoints | TESTER | ✅ Done |
-| **TASK-129** | Reduce property-invariant skips by tightening generators (d > d_min, paired fy inputs) | TESTER | ✅ Done |
-| **TASK-126** | Warn on Table 19 fck out-of-range in shear design | DEV | ✅ Done |
-| **TASK-127** | Document Table 19 range warning in known-pitfalls + error schema | DOCS | ✅ Done |
-| **TASK-128** | Add tests for Table 19 range warning | TESTER | ✅ Done |
-| **TASK-122** | v0.12 release notes (CHANGELOG + RELEASES) | DOCS | ✅ Done |
-| **TASK-123** | v0.12 version bump (Python/VBA) | DEVOPS | ✅ Done |
-| **TASK-124** | v0.12 session log + next-session brief | DOCS | ✅ Done |
-| **TASK-125** | v0.12 release tag + publish | DEVOPS | ✅ Done |
-| **TASK-104** | Define stable API surface + doc updates | DOCS | ✅ Done |
-| **TASK-105** | Validation APIs + `validate` CLI subcommand | DEV | ✅ Done |
-| **TASK-106** | Detailing + BBS APIs + `detail` CLI subcommand | DEV | ✅ Done |
-| **TASK-107** | DXF/report/critical API wrappers (no behavior change) | DEV | ✅ Done |
-| **TASK-108** | API/CLI tests + stability labels | TESTER | ✅ Done |
+| **TASK-207** | Research: API Evolution & Migration Strategies (SemVer, deprecation, breaking changes, migration tools) → 1700 lines | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-206** | Research: API Documentation & Discoverability (docstring standards, IDE integration, API reference) → 1500 lines | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-205** | Research: Engineering Domain API Patterns (PyNite, ezdxf, pint, handcalcs, unit handling) → 1000 lines | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-204** | Research: Error Handling & Exception Design (exception hierarchy, error messages, validation) → 2100 lines | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-203** | Research: Result Object Design Patterns (dataclass vs alternatives, methods, serialization) → 950 lines | RESEARCHER | ✅ 2026-01-07 |
+| **TASK-202** | Research: Function Signature Design Standards (parameter ordering, keyword-only, type hints) → 1000 lines | 2026-01-07 | RESEARCHER |
+| **TASK-201** | Research: UX Patterns for Technical APIs (cognitive load, discoverability, pit of success) | 2026-01-07 | RESEARCHER |
+| **TASK-215** | Update workflow: allow docs/research direct commits (no PR) with checks intact | 2026-01-07 | DEVOPS |
+| **TASK-209** | Implementation Roadmap: API Improvements (48 functions, 3 tiers, 3-phase plan) | 2026-01-07 | PM |
+| **TASK-208** | Synthesis: Create API Guidelines Document (2609 lines, 11 sections, 30-point checklist) | 2026-01-07 | ARCHITECT |
+| **TASK-200** | Research: Professional Python Library API Patterns (NumPy, SciPy, Pandas, Requests) | 2026-01-07 | RESEARCHER |
+| **TASK-199** | Sync Colab notebooks (root + docs) and document output review findings | 2026-01-06 | DOCS |
+| **TASK-198** | Update Colab workflow notebook for v0.15 smart design + comparison testing | 2026-01-06 | DOCS |
+| **TASK-192** | Add per-module coverage + baseline performance benchmarks (13 benchmarks, coverage by module) | 2026-01-06 | TESTER |
+| **TASK-191** | Restructure tests into category subfolders with pytest markers (5 categories, 7 markers) | 2026-01-06 | TESTER |
+| **TASK-190** | Resolve dead-code findings + TODOs + comprehensive CI linting cleanup (91→0 ruff errors) | 2026-01-06 | DEV |
+| **TASK-193** | Type Annotation Modernization (PEP 585/604: 398 issues resolved, 25 files) | 2026-01-06 | DEV |
+| **TASK-187** | Standardize license headers in Python + VBA modules (SPDX-License-Identifier: MIT) | 2026-01-06 | DEV |
+| **TASK-162** | Replace Dict[str, Any] with TypedDicts (BeamGeometry, LoadCase, JobSpec) | 2026-01-06 | DEV |
+| **TASK-144** | Smart Library Integration (SmartDesigner unified dashboard, smart_analyze_design API) | 2026-01-06 | DEV |
 
 ---
 
 ## Archive
 
-- Full history: `docs/_archive/TASKS_HISTORY.md`
+Full task history: `docs/_archive/TASKS_HISTORY.md`
