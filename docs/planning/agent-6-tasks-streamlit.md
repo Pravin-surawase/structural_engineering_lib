@@ -30,8 +30,8 @@ Build a **world-class Streamlit UI** for the structural engineering library that
 **Morning Routine (5-10 min):**
 ```bash
 # 1. Always start from clean main
+# (MAIN agent ensures main is up-to-date before handoff)
 git checkout main
-git pull origin main  # Get latest changes from MAIN agent
 
 # 2. Create dated feature branch
 # Format: streamlit/YYYY-MM-DD-feature-name
@@ -852,9 +852,8 @@ status_text.text("Complete!")
 
 1. **Morning Health Check (5 min)**
    ```bash
-   # Start from clean main
+   # Start from clean main (MAIN agent ensures it's up-to-date)
    git checkout main
-   git pull origin main
 
    # Run app locally to verify it works
    streamlit run streamlit_app/app.py
