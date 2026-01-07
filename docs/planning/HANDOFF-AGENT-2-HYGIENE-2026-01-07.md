@@ -15,9 +15,9 @@ Completed comprehensive repository hygiene audit covering all active HYGIENE tas
 **Key Metrics:**
 - Markdown files audited: **267**
 - Internal links checked: **470**
-- Broken links found: **17** (5 critical, 12 placeholders)
+- Broken links found: **35** (includes placeholders in audit report)
 - Build artifacts tracked: **1** (root .coverage)
-- Git worktrees: **4** (2 active, 2 need investigation)
+- Git worktrees: **5** (re-check before cleanup)
 - Inconsistent filenames: **30+** (UPPERCASE in docs/)
 - Duplicate files: **4** (LICENSE/SUPPORT duplicates)
 
@@ -38,7 +38,7 @@ Completed comprehensive repository hygiene audit covering all active HYGIENE tas
 - Decision points for MAIN
 
 **Sections:**
-1. ISSUE-001: Broken Internal Links (17 total)
+1. ISSUE-001: Broken Internal Links (35 total)
 2. ISSUE-002: Build Artifacts Tracked in Git
 3. ISSUE-003: MyPy Cache Files Not Ignored
 4. ISSUE-004: Inconsistent File Naming (30+ files)
@@ -68,7 +68,7 @@ Completed comprehensive repository hygiene audit covering all active HYGIENE tas
    - Update .gitignore
 
 3. **ISSUE-003: MyPy Cache** (10min)
-   - Add to .gitignore (currently untracked but not ignored)
+   - Verify not tracked (already ignored by .gitignore)
 
 ### 🟠 P1 (High) - Fix Within Sprint - 8-12 hours
 
@@ -190,8 +190,8 @@ If implementing P0 + P1 issues:
 Day 1-2:
 ✅ ISSUE-001: Fix 5 critical broken links (1h)
 ✅ ISSUE-002: Remove root .coverage (15min)
-✅ ISSUE-003: Add mypy to .gitignore (10min)
-✅ ISSUE-006: Investigate 2 worktrees (1h)
+✅ ISSUE-003: Verify mypy cache not tracked (10min)
+✅ ISSUE-006: Investigate worktrees (re-check count) (1h)
 ✅ ISSUE-005: Consolidate LICENSE/SUPPORT (30min)
 ```
 

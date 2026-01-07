@@ -22,14 +22,14 @@
 ## 🎯 Issues Summary
 
 ### P0 (Critical) - 3-4 hours
-- ISSUE-001: 17 broken links (5 critical)
+- ISSUE-001: 35 broken links (includes placeholders in audit report)
 - ISSUE-002: Root .coverage tracked
-- ISSUE-003: MyPy cache not ignored
+- ISSUE-003: MyPy cache not tracked (already ignored by .gitignore)
 
 ### P1 (High) - 8-12 hours
 - ISSUE-004: 30+ UPPERCASE filenames
 - ISSUE-005: 4 duplicate files
-- ISSUE-006: 4 worktrees (2 stale?)
+- ISSUE-006: 5 worktrees (re-check before cleanup)
 - ISSUE-007: 28 READMEs (audit needed)
 
 ### P2 (Medium) - 8-10 hours
@@ -67,9 +67,10 @@ cat docs/planning/HANDOFF-AGENT-2-HYGIENE-2026-01-07.md
 
 **Option B: MAIN Implements**
 ```bash
-git checkout -b hygiene/fixes-2026-01-07
+./scripts/create_task_pr.sh HYGIENE-XXX "hygiene fixes"
 # Follow commands in audit report
-git push origin hygiene/fixes-2026-01-07
+./scripts/ai_commit.sh "chore: hygiene fixes"
+./scripts/finish_task_pr.sh HYGIENE-XXX "hygiene fixes"
 ```
 
 **Option C: Hybrid**
@@ -83,9 +84,9 @@ git push origin hygiene/fixes-2026-01-07
 ## 📊 Repository Health Snapshot
 
 - **Markdown files:** 267
-- **Internal links:** 470 (17 broken)
+- **Internal links:** 495 (35 broken)
 - **Repository size:** 20M (.git)
-- **Worktrees:** 4 (2 active, 2 investigate)
+- **Worktrees:** 5 (re-check before cleanup)
 - **Large files:** 3 (mypy cache - safe)
 - **Tracked artifacts:** 1 (root .coverage)
 

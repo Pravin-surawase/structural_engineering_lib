@@ -11,28 +11,37 @@
 
 Comprehensive hygiene audit of the structural_engineering_lib repository identified **61 actionable items** across 5 priority categories:
 
-- **P0 (Critical):** 18 issues - Fix immediately
+- **P0 (Critical):** 3 issues (18 actions) - Fix immediately
 - **P1 (High):** 30+ issues - Fix within sprint
 - **P2 (Medium):** 13 issues - Nice to have
 
 **Top Priority Issues:**
-1. ✅ 17 broken internal links (5 critical, 12 placeholder/example)
+1. ✅ 35 broken internal links (5 critical missing files, remainder placeholders/outdated paths)
 2. ✅ 1 root `.coverage` file tracked by git (should be in Python/ only)
 3. ✅ 4 git worktrees (2 active, 2 potentially stale)
 4. ✅ 30+ UPPERCASE doc filenames (inconsistent naming)
 5. ✅ 4 duplicate LICENSE/SUPPORT files across directories
 
 **Repository Health Metrics:**
-- Total markdown files checked: **267**
-- Total internal links: **470**
+- Total markdown files checked: **270**
+- Total internal links: **495**
 - Repository size: **20M** (.git directory)
 - Large files (>1MB): **3** (all mypy cache - safe)
 
 ---
 
+## Verification Update (2026-01-07)
+
+Latest checks run during MAIN review:
+- `scripts/check_links.py`: **35 broken links** across 495 links (includes placeholder links in this report)
+- `.gitignore` already contains `.mypy_cache/` (verify no tracked cache files)
+- `git worktree list`: **5 worktrees** currently present (re-check before cleanup)
+
+---
+
 ## P0 (Critical) - Fix Immediately
 
-### ISSUE-001: Broken Internal Links (17 total)
+### ISSUE-001: Broken Internal Links (35 total)
 
 **Impact:** Documentation navigation broken, poor user experience
 **Effort:** 2-3 hours
@@ -90,6 +99,14 @@ These are in template/example sections but should still be fixed:
    - `[GitHub Discussions](link)` - Placeholder
    - `[GitHub Issues](link)` - Placeholder
    - All marked as TODOs in document
+
+**Additional links discovered by check_links.py (18):**
+- Broken links inside this report (intentional placeholders shown as markdown links)
+- `docs/guidelines/api-design-guidelines.md` → `docs/migration/v1-to-v2.md`
+- `docs/planning/agent-2-tasks.md` additional placeholders beyond the 3 listed above
+
+**Recommendation:** treat placeholder links as TODOs or convert them to inline code
+to avoid failing link checks.
 
 **Recommendations:**
 
@@ -178,26 +195,17 @@ git ls-files | grep "\.coverage$"
 
 **Currently Untracked:** ✅ Good (not in git ls-files)
 
-**Issue:** Not explicitly in .gitignore (risk of accidental commit)
+**Issue:** `.mypy_cache/` is already in `.gitignore`, but verify no tracked cache files exist.
 
 **Recommendations:**
 
 ```bash
-# Add to .gitignore if not present
-grep -q "\.mypy_cache" .gitignore || cat >> .gitignore << 'EOF'
-
-# MyPy cache
-.mypy_cache/
-*.mypy_cache/
-EOF
-
 # Verify not tracked
 git ls-files | grep ".mypy_cache"
 # Should return nothing
 ```
 
 **Acceptance Criteria:**
-- [ ] `.mypy_cache/` in .gitignore
 - [ ] Verified not tracked by git
 
 ---
@@ -751,7 +759,7 @@ rg "^import |^from " Python/structural_lib/ | awk '{print $2}' | sort -u
 **Current .gitignore Status:**
 - ✅ `.venv/` - Good
 - ⚠️ `.coverage` - Should be `/.coverage` (root only)
-- ⚠️ `.mypy_cache/` - Should add if not present
+- ✅ `.mypy_cache/` - Already in .gitignore; verify not tracked
 - ⚠️ `.pytest_cache/` - Should add if not present
 - ⚠️ `.DS_Store` - Should add (macOS)
 
@@ -887,7 +895,7 @@ cat .gitignore
    - Remove `.coverage` from git root
    - Update .gitignore
 
-3. **Add mypy cache to .gitignore** (10min)
+3. **Verify mypy cache not tracked** (10min)
 
 ### Sprint Actions (P1) - 8-12 hours total
 
