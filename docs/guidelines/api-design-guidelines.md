@@ -1890,3 +1890,720 @@ This is **step 3/4** of the unified guidelines document. Final section:
 
 **Current Progress:** ~1850 lines created (sections 1-9 complete)
 **Target:** ~2100 lines total (88% complete)
+
+---
+
+## 10. Implementation Guide
+
+### 10.1 Refactoring Existing Code
+
+**When refactoring to follow these guidelines:**
+
+**Phase 1: Add new API (no breaking changes)**
+```python
+# v0.16: Add new API alongside old
+# Old API (keep for now)
+def calculate_steel(b, d, mu):
+    return calculate_reinforcement(b, d, mu)  # Delegate to new
+
+# New API (preferred)
+def calculate_reinforcement(
+    width_mm: float,
+    depth_mm: float,
+    moment_knm: float
+) -> ReinforcementResult:
+    """New API following guidelines."""
+    ...
+```
+
+**Phase 2: Deprecate old API (warnings)**
+```python
+# v0.17: Add deprecation warning
+@deprecated(
+    version='0.17.0',
+    removal_version='1.0.0',
+    replacement='calculate_reinforcement',
+    instructions='Rename function and use keyword arguments'
+)
+def calculate_steel(b, d, mu):
+    return calculate_reinforcement(width_mm=b, depth_mm=d, moment_knm=mu)
+```
+
+**Phase 3: Remove old API (major version)**
+```python
+# v1.0: Remove old API
+# calculate_steel() function removed
+# Only calculate_reinforcement() remains
+```
+
+### 10.2 Adding New Functions
+
+**Checklist for new functions (must complete all):**
+
+✅ **Signature Design**
+- [ ] Function name is a verb (calculate_*, design_*, check_*)
+- [ ] ≤3 parameters OR keyword-only enforced with `*`
+- [ ] Parameter names include units (`_mm`, `_kn`, `_mpa`)
+- [ ] Type hints for all parameters and return
+- [ ] Literal types for enum-like strings
+- [ ] Required params have no default
+- [ ] Optional params have IS 456 defaults with clause refs
+
+✅ **Result Object**
+- [ ] Returns frozen dataclass (not dict/tuple)
+- [ ] All fields have units in name
+- [ ] Includes `to_dict()`, `summary()`, `validate()` methods
+- [ ] Docstring documents all fields
+
+✅ **Validation**
+- [ ] Validates all inputs at entry (fail fast)
+- [ ] Error messages follow Three Questions framework
+- [ ] References IS 456 clauses in errors
+- [ ] Suggests typical values in errors
+
+✅ **Documentation**
+- [ ] Google-style docstring with all 8 sections
+- [ ] First line <80 chars, imperative mood
+- [ ] Args section documents units, constraints, defaults
+- [ ] Returns section documents structure and units
+- [ ] Raises section documents all exceptions
+- [ ] Example section with 1-3 levels
+- [ ] Note section with IS 456 clause references
+
+✅ **Testing**
+- [ ] Unit tests cover happy path
+- [ ] Tests cover validation errors
+- [ ] Tests cover boundary conditions
+- [ ] Doctest or manual examples tested in CI
+- [ ] Test names follow `test_<function>_<scenario>` pattern
+
+**Example complete implementation:**
+```python
+from dataclasses import dataclass
+from typing import Literal
+
+@dataclass(frozen=True)
+class ShearResult:
+    """Result of shear design."""
+    shear_capacity_kn: float
+    stirrup_diameter_mm: int
+    stirrup_spacing_mm: float
+    stirrup_legs: int
+    is_adequate: bool
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+    def summary(self) -> str:
+        return f"""
+Shear Design Result:
+  Capacity: {self.shear_capacity_kn:.1f} kN
+  Stirrups: #{self.stirrup_diameter_mm} @ {self.stirrup_spacing_mm:.0f} mm c/c
+  Legs: {self.stirrup_legs}
+  Status: {'✅ Adequate' if self.is_adequate else '❌ Inadequate'}
+"""
+
+    def validate(self) -> None:
+        if self.shear_capacity_kn <= 0:
+            raise ValueError("Capacity must be positive")
+        if self.stirrup_spacing_mm <= 0:
+            raise ValueError("Spacing must be positive")
+
+
+def design_shear(
+    shear_kn: float,
+    width_mm: float,
+    depth_mm: float,
+    *,
+    concrete_grade: Literal['M15', 'M20', 'M25', 'M30', 'M35', 'M40'] = 'M20',
+    steel_grade: Literal['Fe250', 'Fe415', 'Fe500'] = 'Fe415',
+    stirrup_diameter: Literal[6, 8, 10, 12] = 8,
+    validate: bool = True
+) -> ShearResult:
+    """Design shear reinforcement per IS 456:2000 Cl. 40.
+
+    Calculates required stirrup spacing for a rectangular beam section
+    subjected to factored shear force. Checks minimum shear reinforcement
+    and maximum spacing limits per IS 456 Cl. 26.5.1.5 and 26.5.1.6.
+
+    Args:
+        shear_kn: Factored shear force in kilonewtons. Must be positive.
+        width_mm: Beam width in millimeters. Must be ≥ 200mm per IS 456 Cl. 26.5.1.1.
+        depth_mm: Effective depth in millimeters. Distance from compression face
+            to centroid of tension reinforcement.
+        concrete_grade: IS 456 concrete grade (Table 2).
+            Common: M20 (residential), M25 (commercial), M30 (industrial).
+        steel_grade: IS 456 steel grade for stirrups (Cl. 6.2).
+            Typically Fe415 or Fe500 for stirrups.
+        stirrup_diameter: Stirrup bar diameter in mm.
+            Typical: 8mm (common), 10mm (heavy loads), 6mm (light loads).
+        validate: If True, validate inputs. Set False for batch operations.
+
+    Returns:
+        ShearResult with fields:
+            - shear_capacity_kn: Design shear capacity (kN)
+            - stirrup_diameter_mm: Bar diameter used
+            - stirrup_spacing_mm: Center-to-center spacing
+            - stirrup_legs: Number of legs (typically 2)
+            - is_adequate: True if capacity ≥ demand
+
+    Raises:
+        ValidationError: If shear_kn ≤ 0, width_mm < 200, or depth_mm < 150.
+        ValidationError: If concrete_grade or steel_grade invalid.
+        DesignError: If maximum shear capacity exceeded (needs larger section).
+
+    Example:
+        >>> # Simple case: 8mm stirrups in M20 concrete
+        >>> result = design_shear(
+        ...     shear_kn=150,
+        ...     width_mm=230,
+        ...     depth_mm=450,
+        ...     concrete_grade='M20'
+        ... )
+        >>> print(f"Spacing: {result.stirrup_spacing_mm:.0f} mm")
+        Spacing: 175 mm
+
+        >>> # Check adequacy
+        >>> if result.is_adequate:
+        ...     print("Design OK")
+        ... else:
+        ...     print("Increase section or use higher grade")
+        Design OK
+
+    Note:
+        Per IS 456:2000:
+        - Cl. 40.1: V_us = 0.87 × f_y × A_sv × d / s_v
+        - Cl. 26.5.1.5: Minimum shear reinforcement required
+        - Cl. 26.5.1.6: Maximum spacing = 0.75d or 300mm, whichever less
+        - Cl. 40.2.3: Maximum shear strength τ_c,max from Table 20
+
+    See Also:
+        check_minimum_shear_reinforcement: Validates minimum steel
+        calculate_shear_capacity: For given spacing
+    """
+    if validate:
+        # Validate inputs
+        if shear_kn <= 0:
+            raise ValidationError(
+                f"shear_kn must be positive, got {shear_kn} kN. "
+                f"Check load combination signs."
+            )
+
+        if width_mm < 200:
+            raise ValidationError(
+                f"width_mm must be ≥ 200mm (IS 456 Cl. 26.5.1.1), got {width_mm} mm. "
+                f"Typical beam widths: 230mm, 300mm, 400mm."
+            )
+
+        if depth_mm < 150:
+            raise ValidationError(
+                f"depth_mm must be ≥ 150mm, got {depth_mm} mm. "
+                f"Typical depths: 400-600mm for residential beams."
+            )
+
+        if concrete_grade not in CONCRETE_GRADES:
+            raise ValidationError(
+                f"Invalid concrete_grade '{concrete_grade}'. "
+                f"Must be one of: {', '.join(CONCRETE_GRADES.keys())}."
+            )
+
+    # Calculate design shear strength
+    fck_mpa = CONCRETE_GRADES[concrete_grade]
+    fy_mpa = STEEL_GRADES[steel_grade]
+
+    # ... calculation logic
+
+    return ShearResult(
+        shear_capacity_kn=capacity,
+        stirrup_diameter_mm=stirrup_diameter,
+        stirrup_spacing_mm=spacing,
+        stirrup_legs=2,
+        is_adequate=capacity >= shear_kn
+    )
+```
+
+### 10.3 Quick Wins (Low-Hanging Fruit)
+
+**Improvements you can make immediately:**
+
+**Win 1: Add type hints**
+```python
+# Before (30 seconds to fix)
+def calculate_moment(load, span):
+    return load * span ** 2 / 8
+
+# After
+def calculate_moment(load_kn: float, span_m: float) -> float:
+    return load_kn * span_m ** 2 / 8
+```
+
+**Win 2: Add docstring first line**
+```python
+# Before
+def calculate_moment(load_kn: float, span_m: float) -> float:
+    return load_kn * span_m ** 2 / 8
+
+# After (2 minutes to fix)
+def calculate_moment(load_kn: float, span_m: float) -> float:
+    """Calculate bending moment for simply supported beam with UDL."""
+    return load_kn * span_m ** 2 / 8
+```
+
+**Win 3: Replace tuple with dataclass**
+```python
+# Before (returns mystery tuple)
+def design_beam(...):
+    return (ast, bars, dia)
+
+# After (10 minutes to fix)
+@dataclass(frozen=True)
+class BeamResult:
+    ast_mm2: float
+    bar_count: int
+    bar_diameter_mm: int
+
+def design_beam(...) -> BeamResult:
+    return BeamResult(ast_mm2=ast, bar_count=bars, bar_diameter_mm=dia)
+```
+
+---
+
+## 11. PR Review Checklist
+
+### 11.1 API Design Checklist (30 points)
+
+Use this checklist when reviewing PRs that add/modify public APIs:
+
+**Function Signature (8 points)**
+- [ ] Function name is a verb (not noun or adjective)
+- [ ] ≤3 parameters OR uses `*` for keyword-only
+- [ ] Parameter names include units (`_mm`, `_kn`)
+- [ ] Type hints present for all params and return
+- [ ] Literal types used for string enums
+- [ ] Required params have no defaults
+- [ ] Optional params have sensible defaults
+- [ ] Parameter order: primary → geometry → materials → config → flags
+
+**Result Object (5 points)**
+- [ ] Returns dataclass (not dict/tuple)
+- [ ] Dataclass is frozen (immutable)
+- [ ] All fields have units in name
+- [ ] Has `to_dict()`, `summary()` methods
+- [ ] Validated in `__post_init__` or `validate()`
+
+**Documentation (8 points)**
+- [ ] Google-style docstring with all sections
+- [ ] First line <80 chars, imperative mood
+- [ ] Args document units, ranges, defaults
+- [ ] Returns documents structure
+- [ ] Raises lists all exceptions
+- [ ] Example section with 1+ examples
+- [ ] IS 456 clause referenced in Note
+- [ ] See Also cross-references related functions
+
+**Error Handling (4 points)**
+- [ ] Validates inputs at entry (fail fast)
+- [ ] Uses custom exceptions (not ValueError)
+- [ ] Error messages follow Three Questions
+- [ ] Error messages suggest fixes
+
+**Testing (3 points)**
+- [ ] Unit tests for happy path
+- [ ] Tests for error conditions
+- [ ] Tests for boundary values
+
+**Engineering Domain (2 points)**
+- [ ] Uses IS 456 terminology correctly
+- [ ] String grades ('M20', 'Fe415') not raw MPa
+
+**Total: 30 points**
+- **28-30**: Excellent, merge
+- **24-27**: Good, minor revisions
+- **20-23**: Acceptable, needs changes
+- **<20**: Not ready, major rework needed
+
+### 11.2 Anti-Patterns to Reject
+
+**Reject PRs that:**
+- ❌ Return bare dicts or tuples (not dataclasses)
+- ❌ Use positional-only params for >3 arguments
+- ❌ Have no type hints
+- ❌ Have no docstrings
+- ❌ Parameters without units (`width` instead of `width_mm`)
+- ❌ Raise bare `Exception` or `ValueError`
+- ❌ Have no input validation
+- ❌ Add breaking changes without deprecation warnings
+
+**Red flags (require explanation):**
+- ⚠️ Adding `**kwargs` (usually indicates unclear design)
+- ⚠️ Mutable default arguments (lists, dicts)
+- ⚠️ Side effects in calculation functions (printing, logging)
+- ⚠️ Global state or module-level variables
+
+---
+
+## Appendix A: Code Templates
+
+### A.1 Simple Calculation Function
+
+```python
+def calculate_<quantity>(
+    param1_<unit>: float,
+    param2_<unit>: float,
+    *,
+    param3_<unit>: float = <default>  # IS 456 Cl. X.Y.Z
+) -> float:
+    """Calculate <quantity> per IS 456:2000 Cl. X.Y.
+
+    Brief description (2-3 sentences).
+
+    Args:
+        param1_<unit>: Description with constraints.
+        param2_<unit>: Description with typical values.
+        param3_<unit>: Description with default rationale.
+
+    Returns:
+        <Quantity> in <units>.
+
+    Raises:
+        ValidationError: If param1 < min or param2 > max.
+
+    Example:
+        >>> result = calculate_<quantity>(10.0, 20.0)
+        >>> print(f"{result:.2f}")
+        42.50
+
+    Note:
+        IS 456:2000 Cl. X.Y: Formula and assumptions.
+    """
+    # Validate
+    if param1_<unit> <= 0:
+        raise ValidationError(
+            f"param1_<unit> must be positive, got {param1_<unit>}."
+        )
+
+    # Calculate
+    result = ...  # Formula with comment referencing IS 456
+
+    return result
+```
+
+### A.2 Design Function with Result Object
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class <Module>Result:
+    """Result of <module> design."""
+    field1_<unit>: float
+    field2_<unit>: float
+    is_adequate: bool
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+    def summary(self) -> str:
+        return f"Field1: {self.field1_<unit>:.2f}, Adequate: {self.is_adequate}"
+
+def design_<module>(
+    primary_param_<unit>: float,
+    *,
+    geometry_<unit>: float,
+    material_grade: Literal['M20', 'M25', 'M30'] = 'M20',
+    validate: bool = True
+) -> <Module>Result:
+    """Design <module> per IS 456:2000 Cl. X.
+
+    Args:
+        primary_param_<unit>: Primary design parameter.
+        geometry_<unit>: Geometric property.
+        material_grade: Concrete grade per IS 456 Table 2.
+        validate: Validate inputs before calculation.
+
+    Returns:
+        <Module>Result with fields:
+            - field1_<unit>: Description
+            - field2_<unit>: Description
+            - is_adequate: True if design meets IS 456
+
+    Raises:
+        ValidationError: If inputs invalid.
+        DesignError: If design inadequate.
+
+    Example:
+        >>> result = design_<module>(100.0, geometry_<unit>=50.0)
+        >>> print(result.summary())
+    """
+    if validate:
+        # Input validation
+        ...
+
+    # Calculations
+    ...
+
+    return <Module>Result(
+        field1_<unit>=value1,
+        field2_<unit>=value2,
+        is_adequate=check
+    )
+```
+
+### A.3 Validation Function
+
+```python
+def check_<requirement>(
+    value_<unit>: float,
+    limit_<unit>: float,
+    *,
+    clause: str = 'IS 456 Cl. X.Y'
+) -> ComplianceResult:
+    """Check if value meets code requirement.
+
+    Args:
+        value_<unit>: Calculated value to check.
+        limit_<unit>: Code limit per IS 456.
+        clause: Reference clause (for error messages).
+
+    Returns:
+        ComplianceResult with:
+            - is_compliant: True if value ≤ limit
+            - ratio: value / limit
+            - message: Compliance status message
+
+    Example:
+        >>> result = check_<requirement>(10.0, 15.0)
+        >>> assert result.is_compliant
+    """
+    ratio = value_<unit> / limit_<unit> if limit_<unit> > 0 else float('inf')
+    is_compliant = ratio <= 1.0
+
+    if is_compliant:
+        message = f"✅ Compliant: {ratio:.2%} of limit ({clause})"
+    else:
+        message = f"❌ Non-compliant: {ratio:.2%} exceeds limit ({clause})"
+
+    return ComplianceResult(
+        is_compliant=is_compliant,
+        ratio=ratio,
+        message=message
+    )
+```
+
+---
+
+## Appendix B: Decision Trees
+
+### B.1 Should I Use Keyword-Only Parameters?
+
+```
+START: How many parameters total?
+  │
+  ├─ ≤3 parameters
+  │  └─ Use positional (but keyword-only is also fine)
+  │
+  └─ >3 parameters
+     ├─ Primary inputs (1-2) → Allow positional
+     ├─ Everything else → Require keyword-only with *
+     └─ Example:
+        def design_beam(
+            span_mm,      # Positional OK (primary)
+            load_kn_per_m,  # Positional OK (primary)
+            *,              # Force keyword-only after this
+            width_mm,       # Must use keyword
+            depth_mm,       # Must use keyword
+            ...
+        )
+```
+
+### B.2 Should I Create a Config Object?
+
+```
+START: How many optional parameters?
+  │
+  ├─ ≤5 optional parameters
+  │  └─ Just use function parameters with defaults
+  │
+  └─ >5 optional parameters
+     ├─ All related to same concern?
+     │  ├─ YES → Group in config dataclass
+     │  │  Example: MaterialConfig(fck, fy, Es, Ec, ...)
+     │  │
+     │  └─ NO → Keep as separate parameters
+     │
+     └─ Will users customize most of them?
+        ├─ YES → Config object worth it
+        └─ NO → Keep defaults, rare customization OK as params
+```
+
+### B.3 Return Type Decision
+
+```
+START: What am I returning?
+  │
+  ├─ Single scalar value
+  │  └─ Return float/int (NOT tuple or dict)
+  │
+  ├─ 2-3 related values
+  │  └─ Create small frozen dataclass (NOT tuple!)
+  │
+  ├─ >3 values
+  │  └─ Create result dataclass with methods
+  │
+  └─ Complex nested structure
+     └─ Create hierarchical dataclasses
+        Example: BeamResult(flexure=FlexureResult(...), shear=ShearResult(...))
+```
+
+---
+
+## Appendix C: Migration Examples
+
+### C.1 Function Signature Migration
+
+```python
+# Step 1 (v0.16): Add new function, keep old
+def calculate_steel_old(b, d, mu):  # Old name
+    """DEPRECATED: Use calculate_reinforcement()."""
+    warnings.warn("Use calculate_reinforcement()", DeprecationWarning)
+    return calculate_reinforcement(width_mm=b, depth_mm=d, moment_knm=mu)
+
+def calculate_reinforcement(
+    width_mm: float,
+    depth_mm: float,
+    moment_knm: float
+) -> float:
+    """New function following guidelines."""
+    ...
+
+# Step 2 (v0.17): Remove old, only new remains
+# (Delete calculate_steel_old)
+```
+
+### C.2 Return Type Migration
+
+```python
+# Step 1 (v0.16): Return dataclass that supports dict access
+@dataclass(frozen=True)
+class Result:
+    value_mm2: float
+
+    def __getitem__(self, key: str):  # Backward compat
+        warnings.warn("Dict access deprecated", DeprecationWarning)
+        if key == 'value':
+            return self.value_mm2
+        raise KeyError(key)
+
+def calculate(...) -> Result:
+    return Result(value_mm2=1250.5)
+
+# Old code works with warning:
+result = calculate(...)
+x = result['value']  # ⚠️ Warning
+
+# New code uses attribute:
+x = result.value_mm2  # ✅ No warning
+
+# Step 2 (v0.17): Remove dict access support
+# (Remove __getitem__ method)
+```
+
+---
+
+## Appendix D: Anti-Patterns Catalog
+
+### D.1 Parameter Anti-Patterns
+
+**❌ DON'T: Ambiguous parameter names**
+```python
+def design(b, d, m, f):  # What are these?
+    ...
+```
+**✅ DO: Explicit names with units**
+```python
+def design(width_mm: float, depth_mm: float, moment_knm: float, concrete_grade: str):
+    ...
+```
+
+**❌ DON'T: Many positional parameters**
+```python
+def design(230, 450, 150, 'M20', 'Fe415', 25, 'moderate')  # Order?
+```
+**✅ DO: Keyword-only parameters**
+```python
+design(width_mm=230, depth_mm=450, moment_knm=150, concrete_grade='M20', ...)
+```
+
+**❌ DON'T: Boolean traps**
+```python
+design_beam(6000, 25, True)  # What does True mean?
+```
+**✅ DO: Explicit parameter names**
+```python
+design_beam(span_mm=6000, load_kn_per_m=25, validate=True)
+```
+
+### D.2 Return Value Anti-Patterns
+
+**❌ DON'T: Return bare tuples**
+```python
+return (1250, 3, 20)  # Which is which?
+```
+**✅ DO: Return dataclass**
+```python
+return ReinforcementResult(area_mm2=1250, bar_count=3, bar_diameter_mm=20)
+```
+
+**❌ DON'T: Return dicts**
+```python
+return {'ast': 1250, 'bars': 3}  # No autocomplete, typo-prone
+```
+**✅ DO: Return dataclass**
+```python
+return Result(ast_mm2=1250, bar_count=3)
+```
+
+### D.3 Error Handling Anti-Patterns
+
+**❌ DON'T: Generic exceptions**
+```python
+raise ValueError("Invalid")  # What's invalid? How to fix?
+```
+**✅ DO: Specific exceptions with context**
+```python
+raise ValidationError(
+    f"width_mm must be ≥200mm (IS 456 Cl. 26.5.1.1), got {width_mm}mm. "
+    f"Typical widths: 230mm, 300mm."
+)
+```
+
+---
+
+## Summary
+
+**This unified API Guidelines Document consolidates:**
+- TASK-200: Professional API Patterns
+- TASK-201: UX Patterns
+- TASK-202: Function Signature Standard
+- TASK-203: Result Object Standard
+- TASK-204: Error Handling Standard
+- TASK-205: Engineering Domain APIs
+- TASK-206: API Documentation & Discoverability
+- TASK-207: API Evolution & Migration
+
+**Total research synthesized:** ~9300 lines across 8 documents
+
+**Key outcomes:**
+1. **The 5 Core Principles**: Engineering domain fit, safety through design, self-documenting, evolution-friendly, IDE-first
+2. **Mandatory patterns**: Keyword-only params (>3 args), frozen dataclasses (returns), Google-style docstrings, SemVer
+3. **Decision frameworks**: Parameter ordering, type hint strategy, unit handling, error message structure
+4. **Implementation guide**: Refactoring path, new function checklist, quick wins
+5. **PR review checklist**: 30-point validation for API changes
+
+**Next actions (TASK-209, TASK-210):**
+- Create implementation roadmap prioritizing 40+ functions to refactor
+- Apply guidelines to api.py (high-impact, user-facing)
+- Create base classes for result objects and exceptions
+
+**Version:** 1.0 (APPROVED for implementation)
+**Status:** COMPLETE ✅
