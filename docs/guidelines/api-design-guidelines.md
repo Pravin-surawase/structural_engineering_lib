@@ -1274,3 +1274,619 @@ This is **step 2/4** of the unified guidelines document. Remaining sections:
 
 **Current Progress:** ~1500 lines created (sections 1-7 complete)
 **Target:** ~2000 lines total (75% complete)
+
+---
+
+## 8. Engineering Domain Patterns
+
+### 8.1 Unit Handling Philosophy
+
+**Rule:** Units MUST be explicit in parameter/field names. Never rely on documentation alone.
+
+**Three strategies (in order of preference):**
+
+**Strategy 1: Unit suffix naming** (RECOMMENDED - our choice)
+```python
+def calculate_moment(
+    load_kn: float,        # Clear: kilonewtons
+    span_m: float,         # Clear: meters
+    factor: float = 1.5    # Dimensionless (no suffix)
+) -> float:
+    """Returns moment in kN·m."""
+    return load_kn * span_m ** 2 * factor / 8
+```
+
+**Strategy 2: Type-based units** (ADVANCED - consider for v2.0)
+```python
+from pint import UnitRegistry
+ureg = UnitRegistry()
+
+def calculate_moment(
+    load: ureg.Quantity,   # Must have units
+    span: ureg.Quantity
+) -> ureg.Quantity:
+    """Requires pint.Quantity with units."""
+    moment = load * span ** 2 / 8
+    return moment.to('kN*m')
+
+# Usage:
+m = calculate_moment(load=25 * ureg.kN, span=6 * ureg.m)
+print(f"{m:.2f}")  # 112.50 kilonewton * meter
+```
+
+**Strategy 3: Unit enum parameter** (VERBOSE - avoid)
+```python
+def calculate_moment(
+    load: float,
+    span: float,
+    load_unit: Literal['kN', 'N', 'kip'] = 'kN',
+    span_unit: Literal['m', 'mm', 'ft'] = 'm'
+) -> float:
+    # Too many parameters, error-prone
+    ...
+```
+
+**Our standard units:**
+- Distance: `_mm` (millimeters - IS 456 standard)
+- Force: `_kn` (kilonewtons)
+- Stress: `_mpa` (megapascals = N/mm²)
+- Moment: `_knm` (kilonewton-meters)
+- Area: `_mm2` (square millimeters)
+- Angle: `_deg` (degrees)
+- Ratio: `_ratio` or `_percent`
+- Dimensionless: no suffix
+
+### 8.2 IS 456 Terminology Mapping
+
+**Rule:** Use IS 456 notation where engineers expect it, but make it IDE-friendly.
+
+| IS 456 Symbol | Our Parameter Name | Rationale |
+|---------------|-------------------|-----------|
+| b | `width_mm` or `b_mm` | Both acceptable; width is clearer for beginners |
+| d | `depth_mm` or `d_mm` | Both acceptable; depth clearer |
+| D | `overall_depth_mm` | Explicit (vs effective depth) |
+| f<sub>ck</sub> | `concrete_grade` (string) | Use 'M20', 'M25' not raw MPa |
+| f<sub>y</sub> | `steel_grade` (string) | Use 'Fe415', 'Fe500' |
+| A<sub>st</sub> | `ast_mm2` or `steel_area_mm2` | Both acceptable |
+| M<sub>u</sub> | `moment_knm` or `mu_knm` | Both acceptable |
+| V<sub>u</sub> | `shear_kn` or `vu_kn` | Both acceptable |
+| τ<sub>bd</sub> | `bond_stress_mpa` | Explicit (no Greek) |
+| l<sub>d</sub> | `dev_length_mm` | Common abbreviation |
+| φ | `bar_diameter_mm` | Explicit (no Greek) |
+
+**Examples:**
+```python
+# ✅ GOOD: Mix of textbook notation and clarity
+def design_singly_reinforced(
+    b_mm: float,              # Engineers recognize "b"
+    d_mm: float,              # Engineers recognize "d"
+    mu_knm: float,            # Engineers recognize "Mu"
+    *,
+    concrete_grade: str,      # Clearer than "fck_mpa"
+    steel_grade: str          # Clearer than "fy_mpa"
+) -> FlexureResult:
+    ...
+
+# ✅ ALSO GOOD: Fully explicit (for beginners)
+def design_singly_reinforced(
+    width_mm: float,
+    effective_depth_mm: float,
+    moment_knm: float,
+    *,
+    concrete_grade: str = 'M20',
+    steel_grade: str = 'Fe415'
+) -> FlexureResult:
+    ...
+
+# ❌ BAD: Too cryptic
+def design(b, d, mu, fck, fy):  # What are these?
+    ...
+
+# ❌ BAD: Inconsistent notation
+def design(width, d, bending_moment, f_ck, steel_fy):  # Mixed styles
+    ...
+```
+
+### 8.3 Material Grade Representation
+
+**Rule:** Use string grades ('M20', 'Fe415') not raw MPa values. This matches how engineers think and prevents confusion.
+
+```python
+# ✅ EXCELLENT: String grades with validation
+from typing import Literal
+
+def calculate_capacity(
+    *,
+    concrete_grade: Literal['M15', 'M20', 'M25', 'M30', 'M35', 'M40', 'M45', 'M50'],
+    steel_grade: Literal['Fe250', 'Fe415', 'Fe500', 'Fe550']
+) -> float:
+    """
+    Calculate capacity.
+
+    Args:
+        concrete_grade: IS 456 concrete grade (Table 2).
+            M20 = 20 MPa characteristic strength at 28 days.
+        steel_grade: IS 456 steel grade (Cl. 6.2).
+            Fe415 = 415 MPa yield strength.
+    """
+    # Internal: convert to MPa if needed
+    fck_mpa = float(concrete_grade[1:])  # 'M20' → 20.0
+    fy_mpa = float(steel_grade[2:])      # 'Fe415' → 415.0
+    ...
+
+# ✅ GOOD: Expose both interfaces
+def calculate_capacity_from_grades(
+    concrete_grade: str,
+    steel_grade: str
+) -> float:
+    """User-friendly interface with grade strings."""
+    fck = float(concrete_grade[1:])
+    fy = float(steel_grade[2:])
+    return calculate_capacity_from_strengths(fck, fy)
+
+def calculate_capacity_from_strengths(
+    fck_mpa: float,
+    fy_mpa: float
+) -> float:
+    """Low-level interface with raw MPa (for advanced users)."""
+    ...
+
+# ❌ BAD: Only MPa interface (user must look up values)
+def calculate_capacity(fck: float, fy: float) -> float:
+    """fck: concrete strength in MPa (what's M20? Must look up!)"""
+    ...
+```
+
+**Grade validation:**
+```python
+CONCRETE_GRADES = {
+    'M15': 15.0, 'M20': 20.0, 'M25': 25.0, 'M30': 30.0,
+    'M35': 35.0, 'M40': 40.0, 'M45': 45.0, 'M50': 50.0
+}
+
+STEEL_GRADES = {
+    'Fe250': 250.0, 'Fe415': 415.0, 'Fe500': 500.0, 'Fe550': 550.0
+}
+
+def validate_concrete_grade(grade: str) -> float:
+    """Validate and convert concrete grade to MPa."""
+    if grade not in CONCRETE_GRADES:
+        raise ValidationError(
+            f"Invalid concrete grade '{grade}'. "
+            f"Must be one of: {', '.join(CONCRETE_GRADES.keys())}. "
+            f"Common: M20 (residential), M25 (commercial), M30 (industrial)."
+        )
+    return CONCRETE_GRADES[grade]
+```
+
+### 8.4 Code Clause References
+
+**Rule:** Always reference IS 456 clauses in docstrings and error messages. This enables engineers to verify calculations.
+
+```python
+def calculate_xu_max(
+    depth_mm: float,
+    steel_grade: str = 'Fe415'
+) -> float:
+    """Calculate maximum neutral axis depth per IS 456:2000 Cl. 38.1.
+
+    Ensures under-reinforced section (ductile failure mode) by limiting
+    neutral axis depth xu to xu,max = 0.48d for Fe415 (Cl. 38.1a).
+
+    Args:
+        depth_mm: Effective depth of section (mm).
+        steel_grade: Steel grade per IS 456 Table 19.
+            Fe415: xu,max = 0.48d (Cl. 38.1a)
+            Fe500: xu,max = 0.46d (Cl. 38.1b)
+
+    Returns:
+        Maximum neutral axis depth in mm per IS 456 Cl. 38.1.
+
+    Note:
+        IS 456:2000 Cl. 38.1:
+        "For ensuring ductile failure, the neutral axis depth xu
+        shall not exceed xu,max given by:
+        - For Fe415: xu,max = 0.48d
+        - For Fe500: xu,max = 0.46d"
+
+    See Also:
+        IS 456:2000 Cl. 38.1 (Limiting values for xu/d)
+        SP:16-1980 Cl. 5.3 (Under-reinforced sections)
+    """
+    xu_max_factors = {'Fe250': 0.53, 'Fe415': 0.48, 'Fe500': 0.46, 'Fe550': 0.44}
+    if steel_grade not in xu_max_factors:
+        raise ValidationError(f"Unknown steel grade: {steel_grade}")
+
+    return xu_max_factors[steel_grade] * depth_mm
+```
+
+**In error messages:**
+```python
+if xu > xu_max:
+    raise DesignError(
+        f"Section is over-reinforced (brittle failure mode). "
+        f"Neutral axis xu ({xu:.1f} mm) exceeds xu,max ({xu_max:.1f} mm). "
+        f"Per IS 456:2000 Cl. 38.1, xu ≤ {xu_max/depth_mm:.2f}d for {steel_grade}. "
+        f"Solutions: (1) Increase depth to ≥{xu/0.48:.0f} mm, or "
+        f"(2) Use compression steel (doubly reinforced section)."
+    )
+```
+
+### 8.5 Engineering Workflow Integration
+
+**Rule:** Design APIs for real engineering workflows, not just isolated calculations.
+
+**Common workflows:**
+
+**Workflow 1: Iterative design** (try different sections)
+```python
+# ✅ GOOD: Stateless functions enable easy iteration
+sections = [
+    (230, 400), (230, 450), (230, 500),
+    (300, 400), (300, 450), (300, 500)
+]
+
+for width, depth in sections:
+    result = design_beam(
+        span_mm=6000,
+        load_kn_per_m=25,
+        width_mm=width,
+        depth_mm=depth
+    )
+    if result.is_adequate:
+        print(f"✅ {width}×{depth}: OK")
+        break
+    else:
+        print(f"❌ {width}×{depth}: {result.failure_reason}")
+```
+
+**Workflow 2: Batch processing** (analyze many beams)
+```python
+# ✅ GOOD: Vectorized or batch API
+from structural_lib import run_job_is456
+
+results = run_job_is456([
+    {'id': 'B1', 'span': 6000, 'load': 25, 'width': 230, 'depth': 450},
+    {'id': 'B2', 'span': 7000, 'load': 30, 'width': 230, 'depth': 500},
+    {'id': 'B3', 'span': 5000, 'load': 20, 'width': 230, 'depth': 400},
+    # ... 100 more beams
+])
+
+# Export to Excel/CSV for review
+results_df = pd.DataFrame([r.to_dict() for r in results])
+results_df.to_excel('beam_designs.xlsx')
+```
+
+**Workflow 3: Integration with analysis software** (ETABS, SAP2000)
+```python
+# ✅ GOOD: Import from common formats
+from structural_lib import import_from_etabs
+
+beams = import_from_etabs('analysis.e2k')  # Parse ETABS export
+
+for beam in beams:
+    result = design_beam(
+        span_mm=beam.length,
+        moment_knm=beam.max_moment,
+        shear_kn=beam.max_shear,
+        width_mm=beam.width,
+        depth_mm=beam.depth
+    )
+    beam.design_result = result
+
+# Export back to CAD
+export_to_dxf(beams, 'beam_details.dxf')
+```
+
+---
+
+## 9. UX & Discoverability
+
+### 9.1 The "Pit of Success" Pattern
+
+**Principle:** Make correct usage the easiest path. Make mistakes hard or impossible.
+
+```python
+# ✅ EXCELLENT: Pit of success (hard to use wrong)
+def design_beam(
+    span_mm: float,           # Required, explicit units
+    load_kn_per_m: float,     # Required, explicit units
+    *,                        # Force keyword-only after this
+    width_mm: float,          # Explicit units
+    depth_mm: float,          # Explicit units
+    concrete_grade: Literal['M15', 'M20', 'M25', 'M30'] = 'M20',  # Enum catches typos
+    steel_grade: Literal['Fe250', 'Fe415', 'Fe500'] = 'Fe415',
+    validate: bool = True     # Defaults to safe option
+) -> BeamDesignResult:        # Returns structured object, not tuple
+    """Design beam per IS 456:2000."""
+    if validate:
+        # Eagerly validate at entry
+        if span_mm <= 0:
+            raise ValidationError(f"span_mm must be positive, got {span_mm}")
+        if load_kn_per_m <= 0:
+            raise ValidationError(f"load_kn_per_m must be positive, got {load_kn_per_m}")
+        # ... more validation
+
+    # Calculation code
+    ...
+
+    return BeamDesignResult(
+        is_adequate=True,
+        ast_required_mm2=1250.5,
+        # ... more fields
+    )
+
+# Usage: IDE autocomplete shows all options!
+result = design_beam(
+    span_mm=6000,
+    load_kn_per_m=25,
+    width_mm=230,
+    depth_mm=450,
+    concrete_grade='M20',  # ← IDE shows: 'M15', 'M20', 'M25', 'M30'
+)
+
+# ❌ BAD: Easy to misuse
+def design(s, l, w, d, c='M20', st='Fe415'):  # What are s, l, w, d?
+    # No validation
+    return (1250.5, True, 'OK')  # Mystery tuple
+```
+
+### 9.2 Progressive Disclosure
+
+**Principle:** Simple tasks should be simple. Complex tasks should be possible.
+
+**Three levels of API:**
+
+**Level 1: Simple (80% of users)**
+```python
+# Minimal parameters, sensible defaults
+from structural_lib import design_beam_is456
+
+result = design_beam_is456(
+    span_mm=6000,
+    load_kn_per_m=25
+)
+# Uses defaults: 230×450 section, M20 concrete, Fe415 steel, moderate exposure
+```
+
+**Level 2: Intermediate (15% of users)**
+```python
+# Common customizations
+result = design_beam_is456(
+    span_mm=6000,
+    load_kn_per_m=25,
+    width_mm=300,         # Custom section
+    depth_mm=500,
+    concrete_grade='M25', # Higher grade
+    exposure='severe'     # Coastal environment
+)
+```
+
+**Level 3: Advanced (5% of users)**
+```python
+# Full control with config object
+from structural_lib import design_beam_detailed, BeamConfig
+
+config = BeamConfig(
+    concrete_grade='M30',
+    steel_grade='Fe500',
+    exposure='very_severe',
+    cover_mm=40,
+    redistribution=True,
+    redistribution_factor=0.10,
+    phi_compression=0.75,
+    phi_tension=0.87,
+    use_exact_formula=True,
+    optimization_enabled=False
+)
+
+result = design_beam_detailed(
+    span_mm=6000,
+    load_kn_per_m=25,
+    width_mm=300,
+    depth_mm=500,
+    config=config
+)
+```
+
+### 9.3 IDE Autocomplete Optimization
+
+**Rule:** Optimize for IDE discoverability. Most users explore via autocomplete, not docs.
+
+**Techniques:**
+
+**1. Module organization**
+```python
+# ✅ GOOD: Hierarchical imports
+from structural_lib.design import beams, columns, slabs
+from structural_lib.analysis import moment, shear, deflection
+from structural_lib.detailing import bar_bending, anchorage
+
+# User types: structural_lib. [autocomplete shows: design, analysis, detailing]
+# User types: structural_lib.design. [shows: beams, columns, slabs]
+# User types: structural_lib.design.beams. [shows: design_singly_reinforced, design_doubly_reinforced, ...]
+
+# ❌ BAD: Flat namespace
+from structural_lib import (
+    design_beam, design_column, design_slab,
+    calculate_moment, calculate_shear, calculate_deflection,
+    # ... 50 more functions in one namespace
+)
+```
+
+**2. Consistent naming prefixes**
+```python
+# ✅ GOOD: Verb prefixes group related functions
+calculate_moment_capacity()
+calculate_shear_capacity()
+calculate_deflection()
+calculate_crack_width()
+
+design_singly_reinforced()
+design_doubly_reinforced()
+design_t_beam()
+
+check_minimum_steel()
+check_maximum_steel()
+check_spacing_limits()
+
+# User types: "calc" [autocomplete shows all calculate_* functions]
+# User types: "design" [shows all design_* functions]
+# User types: "check" [shows all check_* functions]
+```
+
+**3. Docstring first line**
+```python
+def calculate_moment_capacity(...) -> float:
+    """Calculate moment capacity of reinforced concrete section.  ← Shows in autocomplete!
+
+    Detailed explanation here...
+    """
+    ...
+
+# ❌ BAD: Vague first line
+def calculate_moment_capacity(...) -> float:
+    """
+    This function does calculations.  ← Not helpful in autocomplete!
+
+    Actually calculates moment capacity (user has to read further)
+    """
+    ...
+```
+
+### 9.4 Error Messages as UI
+
+**Rule:** Error messages are user interface. Treat them with the same care as function signatures.
+
+**Three-part error message structure:**
+
+1. **What went wrong** (diagnosis)
+2. **Why it's a problem** (context)
+3. **How to fix it** (actionable guidance)
+
+```python
+# ✅ EXCELLENT: Complete error message
+def design_beam(width_mm: float, depth_mm: float, ...):
+    if depth_mm < width_mm:
+        raise ValidationError(
+            # 1. WHAT: Specific diagnosis
+            f"Beam depth ({depth_mm} mm) is less than width ({width_mm} mm). "
+            # 2. WHY: Context
+            f"For rectangular beams, depth should be ≥ width to resist bending efficiently. "
+            # 3. HOW: Actionable fix
+            f"Typical depth/width ratios: 1.5-2.5. Try depth={width_mm * 2:.0f} mm."
+        )
+
+    if width_mm < 200:
+        raise ValidationError(
+            f"Beam width ({width_mm} mm) is below minimum. "
+            f"IS 456:2000 Cl. 26.5.1.1 requires width ≥ 200 mm for RC beams. "
+            f"Increase width to ≥ 200 mm."
+        )
+
+# ❌ BAD: Vague error (user doesn't know what to do)
+def design_beam(width_mm: float, depth_mm: float, ...):
+    if depth_mm < width_mm:
+        raise ValueError("Invalid dimensions")  # What's invalid? How to fix?
+
+    if width_mm < 200:
+        raise ValueError("Width too small")  # How small? What's the limit?
+```
+
+**Error message checklist:**
+- ✅ Include parameter name and actual value
+- ✅ Include expected range or constraint
+- ✅ Include units (mm, kN, MPa)
+- ✅ Reference IS 456 clause if applicable
+- ✅ Suggest typical/common values
+- ✅ Explain *why* it's a problem (not just *what*)
+- ❌ Don't use jargon without explanation
+- ❌ Don't just say "invalid" without specifics
+
+### 9.5 Example-Driven Learning
+
+**Rule:** Provide runnable examples at three levels of complexity in docstrings and examples/ directory.
+
+**In docstrings:**
+```python
+def design_singly_reinforced(...) -> FlexureResult:
+    """Design singly reinforced section.
+
+    Example:
+        >>> # Level 1: Minimal (Hello World)
+        >>> result = design_singly_reinforced(width_mm=230, depth_mm=450, moment_knm=150)
+        >>> print(f"Steel required: {result.ast_required_mm2:.0f} mm²")
+        Steel required: 1256 mm²
+
+        >>> # Level 2: Realistic (Real project)
+        >>> result = design_singly_reinforced(
+        ...     width_mm=230,
+        ...     depth_mm=450,
+        ...     moment_knm=150,
+        ...     concrete_grade='M25',
+        ...     steel_grade='Fe415',
+        ...     cover_mm=30
+        ... )
+        >>> print(result.summary())
+        Section: 230×450 mm
+        Steel: 3-#20 + 1-#16 (1256 mm²)
+        Adequate: ✅ Yes
+
+        >>> # Level 3: Advanced (Edge case)
+        >>> try:
+        ...     result = design_singly_reinforced(width_mm=230, depth_mm=300, moment_knm=250)
+        ... except DesignError as e:
+        ...     print(f"Design failed: {e}")
+        Design failed: Section is over-reinforced. Increase depth to ≥450 mm.
+    """
+    ...
+```
+
+**In examples/ directory:**
+```python
+# examples/01_hello_world.py
+"""Minimal beam design example."""
+from structural_lib import design_beam_is456
+
+result = design_beam_is456(span_mm=6000, load_kn_per_m=25)
+print(f"Steel area: {result.ast_mm2:.0f} mm²")
+
+# examples/02_residential_building.py
+"""Realistic residential building beam."""
+from structural_lib import design_beam_is456
+
+result = design_beam_is456(
+    span_mm=6000,
+    load_kn_per_m=25,
+    width_mm=230,
+    depth_mm=450,
+    concrete_grade='M20',
+    exposure='moderate'
+)
+print(result.summary())
+result.export_dxf('beam_detail.dxf')
+
+# examples/03_advanced_optimization.py
+"""Advanced: Optimize beam dimensions for minimum cost."""
+from structural_lib import optimize_beam_cost
+
+result = optimize_beam_cost(
+    span_mm=6000,
+    load_kn_per_m=25,
+    constraints={'max_depth_mm': 500, 'deflection_limit': 'l/250'},
+    material_costs={'concrete_per_m3': 5000, 'steel_per_kg': 60}
+)
+print(f"Optimal: {result.width_mm}×{result.depth_mm} mm")
+print(f"Cost: ₹{result.total_cost:.2f}")
+```
+
+---
+
+## Next Steps
+
+This is **step 3/4** of the unified guidelines document. Final section:
+
+- **Step 4**: Sections 10-11 + Appendices (Implementation Guide, PR Checklist, Templates, Anti-Patterns)
+
+**Current Progress:** ~1850 lines created (sections 1-9 complete)
+**Target:** ~2100 lines total (88% complete)
