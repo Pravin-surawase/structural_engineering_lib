@@ -132,6 +132,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-213** | Implement error message templates (Three Questions Framework: dimension, material, design, compliance, calculation templates) → error_messages.py + 29 tests | DEV | ✅ 2026-01-07 |
+| **TASK-212** | Create exception hierarchy (3-level: StructuralLibError→5 categories→3 specific with details/suggestion/clause_ref) → errors.py + 19 tests | DEV | ✅ 2026-01-07 |
 | **TASK-214** | Create result object base classes (BaseResult, CalculationResult, ComplianceResult with to_dict/summary/validate) → result_base.py + 14 tests | DEV | ✅ 2026-01-07 |
 | **TASK-207** | Research: API Evolution & Migration Strategies (SemVer, deprecation, breaking changes, migration tools) → 1700 lines | RESEARCHER | ✅ 2026-01-07 |
 | **TASK-206** | Research: API Documentation & Discoverability (docstring standards, IDE integration, API reference) → 1500 lines | RESEARCHER | ✅ 2026-01-07 |
