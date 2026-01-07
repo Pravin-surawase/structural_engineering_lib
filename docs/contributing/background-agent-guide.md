@@ -2,9 +2,56 @@
 
 **Purpose:** Enable safe parallel work without conflicts, CI failures, or duplicated effort.
 
-**Scope:** 1-2 background agents (RESEARCHER, DEV, TESTER, DEVOPS, PM) working in parallel with the MAIN agent.
+**Scope:** AI agents (Claude, Copilot, ChatGPT instances) working in parallel with the MAIN agent/user.
+
+**Important:** "Background agents" = other AI assistant instances, NOT human developers. These AI agents work locally on branches; MAIN agent/user handles all remote operations (push, PR, merge).
 
 **Status:** v2.0 - Updated for multi-agent collaboration framework (2026-01-07)
+
+---
+
+## How This Works
+
+### Roles
+- **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatGPT) working on assigned tasks
+- **MAIN Agent/User:** You (the project owner) coordinating work and handling all remote Git operations
+
+### Simple Workflow
+1. **Background agent:** Creates branch locally → Makes changes → Commits → Runs checks → Notifies MAIN
+2. **MAIN agent/user:** Reviews work → Pushes to remote → Creates PR → Monitors CI → Merges
+
+### Why This Works
+✅ **Safe:** Background agents can't push broken code to remote
+✅ **Simple:** Background agents work locally only, no GitHub access needed
+✅ **Clean:** Single point of control (you) for all remote operations
+✅ **Efficient:** Background agents work in parallel, you handle coordination
+
+### Example in Practice
+
+**Scenario:** You want to fix 8 test failures (TASK-270)
+
+**You (MAIN agent) say to background Claude instance:**
+> "Create branch feature/TASK-270-fix-tests, fix the 8 test failures from API refactoring, commit locally, run all checks, and hand off to me. Don't push anything."
+
+**Background Claude does:**
+```bash
+git checkout -b feature/TASK-270-fix-tests
+# ... fixes tests ...
+git commit -m "test: fix exception types in 8 failing tests"
+python -m pytest  # ✅ All pass
+# Notifies you with handoff message
+```
+
+**You (MAIN agent) do:**
+```bash
+git checkout feature/TASK-270-fix-tests  # Review work
+git push origin feature/TASK-270-fix-tests
+gh pr create
+gh pr checks --watch
+gh pr merge --squash
+```
+
+**Result:** Background agent did the work, you maintained control of the repository.
 
 ---
 
@@ -127,37 +174,71 @@ Key rule: **Never run manual git commands.** Use workflow scripts only.
 
 ## Branching and Isolation
 
-### Standard PR Workflow (Code/Tests/CI Changes)
+### Background Agent Workflow (Local Work Only)
+
+**Background AI agents work locally, MAIN agent/user handles remote operations.**
 
 ```bash
-# 1. Create feature branch and PR
-./scripts/create_task_pr.sh TASK-XXX "short description"
+# 1. Create feature branch locally
+git checkout -b feature/TASK-XXX-description
 
 # 2. Make changes in isolated scope
 # ... edit files ...
 
-# 3. Commit with pre-commit hooks
-./scripts/ai_commit.sh "feat: describe change"
+# 3. Commit locally (pre-commit hooks run automatically)
+git add .
+git commit -m "feat: describe change"
 
-# 4. Finish task (pushes branch, opens PR)
-./scripts/finish_task_pr.sh TASK-XXX "short description"
+# 4. Run local checks
+cd Python && python -m pytest  # All tests
+python -m black .              # Format
+python -m ruff check .         # Lint
+python -m mypy                 # Type check
 
-# 5. Notify MAIN agent for review/merge
+# 5. Notify MAIN agent with handoff (see Communication section below)
+# STOP HERE - Do not push or create PR
+```
+
+### MAIN Agent/User Workflow (Remote Operations)
+
+**After receiving handoff from background agent:**
+
+```bash
+# 1. Review background agent's work
+git checkout feature/TASK-XXX-description
+git log                        # Review commits
+git diff main                  # Review changes
+
+# 2. Push to remote
+git push origin feature/TASK-XXX-description
+
+# 3. Create PR
+gh pr create --title "TASK-XXX: description" --body "..."
+
+# 4. Wait for CI checks
+gh pr checks --watch
+
+# 5. Merge when ready
+gh pr merge --squash
 ```
 
 ### Direct Commit Workflow (Research/Docs Only)
 
+**For non-code changes (research docs, guidelines) - background agents can work on main:**
+
 ```bash
-# For research docs approved for direct commit
-./scripts/ai_commit.sh "docs: add research for topic X"
+# Background agent makes changes on main branch
+git checkout main
+# ... edit docs/research/file.md ...
+git add docs/research/file.md
+git commit -m "docs: add research for topic X"
+
+# STOP - notify MAIN agent
+# MAIN agent reviews and pushes
+git push origin main
 ```
 
-If unsure, run:
-```bash
-./scripts/should_use_pr.sh --explain
-```
-
-**Rule:** Only use direct commits if explicitly approved by MAIN agent. When in doubt, use PR workflow.
+**Rule:** Background agents NEVER push to remote. All remote operations (push, PR, merge) done by MAIN agent/user only.
 
 ---
 
@@ -227,7 +308,7 @@ gh run list -w "CodeQL" -L 1
 
 ### Task Completion Handoff
 
-When your task is complete, use this template in PR description or direct message to MAIN:
+When your task is complete (committed locally, checks passed), notify MAIN agent with this template:
 
 ```markdown
 ## Handoff: [ROLE] → MAIN
@@ -235,6 +316,7 @@ When your task is complete, use this template in PR description or direct messag
 **Task:** TASK-XXX
 **Agent Role:** [RESEARCHER/DEV/TESTER/DEVOPS/PM]
 **Branch:** feature/TASK-XXX-description
+**Status:** ✅ Committed locally, all checks passed
 
 ### Summary
 [2-3 sentences: what changed and why]
@@ -247,31 +329,46 @@ When your task is complete, use this template in PR description or direct messag
 - **Decision 1:** [rationale]
 - **Decision 2:** [rationale]
 
-### Test Results
-- X tests passing
+### Local Test Results
+- X tests passing locally
 - Y new tests added
 - Coverage: Z%
+- Black/Ruff/Mypy: ✅ Clean
 
 ### Open Questions
 - [Any unresolved items or needed clarifications]
 
-### Action Required
-[Next step for MAIN agent - review, merge, assign follow-up task]
+### Action Required by MAIN
+1. Review changes: `git checkout feature/TASK-XXX-description`
+2. Push to remote: `git push origin feature/TASK-XXX-description`
+3. Create PR: `gh pr create`
+4. Monitor CI and merge when ready
 ```
 
-### During Development Communication
+**Important:** Background agents do NOT push to remote or create PRs. MAIN agent/user handles all remote operations.
 
-**Use PR comments** for questions/updates during development:
+### During Development Questions
+
+If background agent has questions during work, notify MAIN agent with this format:
+
 ```markdown
-@MAIN - Question on [topic]:
-[specific question with context]
+## Question: [ROLE] → MAIN
 
-Options:
+**Task:** TASK-XXX
+**Current Progress:** [what's done so far]
+
+**Question:** [specific question with context]
+
+**Options Considered:**
 1. [option A] - [pros/cons]
 2. [option B] - [pros/cons]
 
-Recommend: [option] because [rationale]
+**Recommendation:** [option] because [rationale]
+
+**Waiting for guidance before proceeding.**
 ```
+
+MAIN agent responds with decision, background agent continues work.
 
 ---
 
@@ -299,14 +396,16 @@ Recommend: [option] because [rationale]
 
 ### Merge Protocol
 
-**Never self-merge.** Only MAIN agent merges PRs.
+**Background agents NEVER push or merge.** Only MAIN agent/user handles remote operations.
 
 **Sequence:**
-1. Background agent creates PR
-2. Background agent notifies MAIN with handoff
-3. MAIN reviews (may request changes)
-4. MAIN merges when approved
-5. MAIN updates TASKS.md and memory.md
+1. Background agent commits locally and notifies MAIN with handoff
+2. MAIN agent reviews local commits: `git checkout feature/TASK-XXX`
+3. If approved, MAIN pushes: `git push origin feature/TASK-XXX`
+4. MAIN creates PR: `gh pr create`
+5. MAIN monitors CI: `gh pr checks --watch`
+6. MAIN merges when ready: `gh pr merge --squash`
+7. MAIN updates TASKS.md and memory.md
 
 ### Conflict Resolution
 
@@ -435,32 +534,50 @@ python -m ruff check --fix .
 
 ## Quick Reference
 
-### Essential Commands
+### Background Agent Commands (Local Only)
 
 ```bash
-# Start session
-.venv/bin/python scripts/start_session.py
-
-# Read context
+# Start session - read context
 cat docs/planning/memory.md
 cat docs/TASKS.md
 
+# Create feature branch
+git checkout -b feature/TASK-XXX-description
+
+# Make changes, then commit
+git add .
+git commit -m "type: message"
+
+# Run local checks
+cd Python
+python -m pytest              # All tests
+python -m black .             # Format
+python -m ruff check --fix .  # Lint
+python -m mypy                # Type check
+
+# STOP - Notify MAIN agent with handoff
+# Do NOT push or create PR
+```
+
+### MAIN Agent/User Commands (Remote Operations)
+
+```bash
+# Review background agent's work
+git checkout feature/TASK-XXX-description
+git log
+git diff main
+
+# Push to remote
+git push origin feature/TASK-XXX-description
+
 # Create PR
-./scripts/create_task_pr.sh TASK-XXX "description"
+gh pr create --title "TASK-XXX: description" --body "..."
 
-# Commit changes
-./scripts/ai_commit.sh "type: message"
+# Monitor CI
+gh pr checks --watch
 
-# Finish task
-./scripts/finish_task_pr.sh TASK-XXX "description"
-
-# Run tests (Python/)
-python -m pytest tests/unit/test_module.py -v
-
-# Format code (Python/)
-python -m black .
-python -m ruff check --fix .
-python -m mypy
+# Merge when ready
+gh pr merge --squash
 ```
 
 ### File Boundaries Quick Ref
@@ -472,15 +589,6 @@ python -m mypy
 | **TESTER** | Test files, benchmarks | Implementation code, test infra |
 | **DEVOPS** | CI/CD workflows, scripts | Application code, tests |
 | **PM** | Roadmap docs, planning | Implementation, TASKS.md |
-
-### Automation Scripts
-
-| Script | Purpose | When to Use |
-|--------|---------|-------------|
-| `scripts/create_task_pr.sh` | Create feature branch + PR | Start code/test/CI task |
-| `scripts/ai_commit.sh` | Commit with pre-commit hooks | Every commit |
-| `scripts/finish_task_pr.sh` | Update CHANGELOG + push | Complete task |
-| `scripts/start_session.py` | Load context for new session | Start work session |
 
 ---
 
