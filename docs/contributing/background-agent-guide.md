@@ -206,6 +206,21 @@ If unsure, run:
 4. **Re-run checks** locally before push
 5. **Push fix** with `./scripts/ai_commit.sh`
 
+### Always Monitor CI (Required)
+
+After every push or PR update, monitor checks to completion and report status.
+
+**For PR branches:**
+```bash
+gh pr checks <PR_NUMBER> --watch
+```
+
+**For direct pushes to main:**
+```bash
+gh run list -w "Fast PR Checks" -L 1
+gh run list -w "CodeQL" -L 1
+```
+
 ---
 
 ## Communication + Handoff
