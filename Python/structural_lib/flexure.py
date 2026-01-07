@@ -10,13 +10,22 @@ from typing import Union
 
 from . import materials
 from .data_types import BeamType, DesignSectionType, FlexureResult
+from .error_messages import (
+    dimension_negative,
+    dimension_relationship_invalid,
+    dimension_too_small,
+    material_property_out_of_range,
+)
 from .errors import (
+    ConfigurationError,
+    DimensionError,
     E_FLEXURE_001,
     E_FLEXURE_002,
     E_FLEXURE_003,
     E_FLEXURE_004,
     E_INPUT_002,
     E_INPUT_003,
+    E_INPUT_003a,
     E_INPUT_004,
     E_INPUT_005,
     E_INPUT_010,
@@ -25,7 +34,7 @@ from .errors import (
     E_INPUT_014,
     E_INPUT_015,
     E_INPUT_016,
-    E_INPUT_003a,
+    MaterialError,
 )
 from .validation import validate_dimensions, validate_materials
 
@@ -47,16 +56,33 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
         Limiting moment capacity (kN·m).
 
     Raises:
-        ValueError: If any parameter <= 0
+        DimensionError: If b or d <= 0
+        MaterialError: If fck or fy <= 0
     """
     if b <= 0:
-        raise ValueError(f"Beam width b must be > 0, got {b}")
+        raise DimensionError(
+            dimension_too_small("beam width b", b, 0, "Cl. 38.1"),
+            details={"b": b, "minimum": 0},
+            clause_ref="Cl. 38.1",
+        )
     if d <= 0:
-        raise ValueError(f"Effective depth d must be > 0, got {d}")
+        raise DimensionError(
+            dimension_too_small("effective depth d", d, 0, "Cl. 38.1"),
+            details={"d": d, "minimum": 0},
+            clause_ref="Cl. 38.1",
+        )
     if fck <= 0:
-        raise ValueError(f"Concrete strength fck must be > 0, got {fck}")
+        raise MaterialError(
+            material_property_out_of_range("concrete strength fck", fck, 0, 100, "Cl. 6.2"),
+            details={"fck": fck, "minimum": 0, "maximum": 100},
+            clause_ref="Cl. 6.2",
+        )
     if fy <= 0:
-        raise ValueError(f"Steel yield strength fy must be > 0, got {fy}")
+        raise MaterialError(
+            material_property_out_of_range("steel yield strength fy", fy, 0, 600, "Cl. 6.2"),
+            details={"fy": fy, "minimum": 0, "maximum": 600},
+            clause_ref="Cl. 6.2",
+        )
 
     xu_max_d = materials.get_xu_max_d(fy)
 
@@ -98,12 +124,25 @@ def calculate_effective_flange_width(
         - The effective width is min(geometric width, code limit).
 
     Raises:
-        ValueError: If dimensions are invalid or beam_type is not supported.
+        DimensionError: If dimensions are invalid
+        ConfigurationError: If beam_type is not supported
     """
     if bw_mm <= 0 or span_mm <= 0 or df_mm <= 0:
-        raise ValueError("bw_mm, span_mm, and df_mm must be > 0.")
+        raise DimensionError(
+            "Web width (bw_mm), span (span_mm), and flange thickness (df_mm) must all be > 0. "
+            f"Got bw_mm={bw_mm}, span_mm={span_mm}, df_mm={df_mm}. [IS 456 Cl. 23.1.2]",
+            details={"bw_mm": bw_mm, "span_mm": span_mm, "df_mm": df_mm},
+            clause_ref="Cl. 23.1.2",
+        )
     if flange_overhang_left_mm < 0 or flange_overhang_right_mm < 0:
-        raise ValueError("Flange overhangs must be >= 0.")
+        raise DimensionError(
+            dimension_negative("flange overhang", min(flange_overhang_left_mm, flange_overhang_right_mm)),
+            details={
+                "flange_overhang_left_mm": flange_overhang_left_mm,
+                "flange_overhang_right_mm": flange_overhang_right_mm,
+            },
+            clause_ref="Cl. 23.1.2",
+        )
 
     if isinstance(beam_type, BeamType):
         beam_type_normalized = beam_type
@@ -116,19 +155,46 @@ def calculate_effective_flange_width(
         elif bt in ("RECTANGULAR", "RECT", "R"):
             beam_type_normalized = BeamType.RECTANGULAR
         else:
-            raise ValueError(
-                "beam_type must be 'T', 'L', or BeamType.FLANGED_T/FLANGED_L."
+            raise ConfigurationError(
+                f"Invalid beam_type '{beam_type}'. Must be 'T', 'L', 'RECTANGULAR', or corresponding BeamType enum. "
+                "[IS 456 Cl. 23.1.2]",
+                details={"beam_type": beam_type, "allowed": ["T", "L", "RECTANGULAR", "BeamType.FLANGED_T", "BeamType.FLANGED_L"]},
+                clause_ref="Cl. 23.1.2",
             )
     else:
-        raise ValueError("beam_type must be a string or BeamType.")
+        raise ConfigurationError(
+            f"beam_type must be a string or BeamType enum, got {type(beam_type).__name__}. [IS 456 Cl. 23.1.2]",
+            details={"beam_type": beam_type, "type": type(beam_type).__name__},
+            clause_ref="Cl. 23.1.2",
+        )
 
     bf_geom = bw_mm + flange_overhang_left_mm + flange_overhang_right_mm
     if bf_geom < bw_mm:
-        raise ValueError("Geometric flange width must be >= bw_mm.")
+        raise DimensionError(
+            dimension_relationship_invalid(
+                "flange width bf_geom",
+                bf_geom,
+                ">=",
+                "web width bw_mm",
+                bw_mm,
+                "Cl. 23.1.2"
+            ),
+            details={"bf_geom": bf_geom, "bw_mm": bw_mm},
+            clause_ref="Cl. 23.1.2",
+        )
 
     if beam_type_normalized == BeamType.RECTANGULAR:
         if flange_overhang_left_mm > 0 or flange_overhang_right_mm > 0:
-            raise ValueError("Rectangular beam cannot have flange overhangs.")
+            raise ConfigurationError(
+                f"Rectangular beam cannot have flange overhangs. Got left={flange_overhang_left_mm}mm, "
+                f"right={flange_overhang_right_mm}mm. [IS 456 Cl. 23.1.2]",
+                details={
+                    "beam_type": "RECTANGULAR",
+                    "flange_overhang_left_mm": flange_overhang_left_mm,
+                    "flange_overhang_right_mm": flange_overhang_right_mm,
+                },
+                clause_ref="Cl. 23.1.2",
+            )
         return bw_mm
 
     if beam_type_normalized == BeamType.FLANGED_T:
@@ -136,7 +202,12 @@ def calculate_effective_flange_width(
     elif beam_type_normalized == BeamType.FLANGED_L:
         bf_limit = bw_mm + (span_mm / 12.0) + (3.0 * df_mm)
     else:
-        raise ValueError("beam_type must be FLANGED_T or FLANGED_L for flanged beams.")
+        raise ConfigurationError(
+            f"beam_type must be FLANGED_T or FLANGED_L for flanged beams, got {beam_type_normalized}. "
+            "[IS 456 Cl. 23.1.2]",
+            details={"beam_type": beam_type_normalized},
+            clause_ref="Cl. 23.1.2",
+        )
 
     return min(bf_geom, bf_limit)
 
@@ -158,19 +229,36 @@ def calculate_ast_required(
         Required steel area (mm²). Returns -1.0 if Mu exceeds Mu_lim.
 
     Raises:
-        ValueError: If any dimension or material parameter <= 0
+        DimensionError: If b or d <= 0
+        MaterialError: If fck or fy <= 0
 
     Notes:
         This is a formula-based helper and does not apply min/max steel checks.
     """
     if b <= 0:
-        raise ValueError(f"Beam width b must be > 0, got {b}")
+        raise DimensionError(
+            dimension_too_small("beam width b", b, 0, "Cl. 38.1"),
+            details={"b": b, "minimum": 0},
+            clause_ref="Cl. 38.1",
+        )
     if d <= 0:
-        raise ValueError(f"Effective depth d must be > 0, got {d}")
+        raise DimensionError(
+            dimension_too_small("effective depth d", d, 0, "Cl. 38.1"),
+            details={"d": d, "minimum": 0},
+            clause_ref="Cl. 38.1",
+        )
     if fck <= 0:
-        raise ValueError(f"Concrete strength fck must be > 0, got {fck}")
+        raise MaterialError(
+            material_property_out_of_range("concrete strength fck", fck, 0, 100, "Cl. 6.2"),
+            details={"fck": fck, "minimum": 0, "maximum": 100},
+            clause_ref="Cl. 6.2",
+        )
     if fy <= 0:
-        raise ValueError(f"Steel yield strength fy must be > 0, got {fy}")
+        raise MaterialError(
+            material_property_out_of_range("steel yield strength fy", fy, 0, 600, "Cl. 6.2"),
+            details={"fy": fy, "minimum": 0, "maximum": 600},
+            clause_ref="Cl. 6.2",
+        )
 
     mu_nmm = abs(mu_knm) * 1000000.0
 
