@@ -210,7 +210,7 @@ By automating compliance checks, you:
 3.  **Design better:** Having time to optimize B3 instead of just checking B1.
 
 **Next Steps:**
-*   👉 **Tutorial:** [Read the docs on Compliance](../reference/api.html#compliance)
+*   👉 **Tutorial:** [Read the compliance API reference](../reference/api.md)
 *   👉 **Code:** `from structural_lib.compliance import check_compliance`
 
 ---

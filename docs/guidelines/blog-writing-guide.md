@@ -337,7 +337,7 @@ print(f"Rebar needed: {result.main_rebar}")
 
 **Example linking pattern:**
 
-> "Here's the complete code (also [available on GitHub](link)):"
+> "Here's the complete code (also [available on GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/Python/examples)):"
 
 ```python
 # Code block here

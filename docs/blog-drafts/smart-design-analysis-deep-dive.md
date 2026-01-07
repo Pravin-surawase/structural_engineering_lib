@@ -265,7 +265,7 @@ SmartDesigner transforms design iteration from a chore into an exploration. It h
 **Ready to upgrade your workflow?**
 
 *   **Try it:** `pip install structural-lib-is456`
-*   **Explore:** Check out the [Cost Optimization Research](../research/cost-optimization-analysis.md)
+*   **Explore:** Check out the [Cost Optimization Research](../research/cost_optimization_day1.md)
 *   **Docs:** Read the [API Reference](https://docs.structural-engineering-lib.io/reference/api.html#smartdesigner)
 
 **Questions?** Start a discussion on [GitHub](https://github.com/pravin-surawase/structural-lib/discussions). Let's build safer, optimized structures together.
