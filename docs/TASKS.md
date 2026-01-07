@@ -28,7 +28,7 @@
 
 ## Active
 
-*No active tasks. Review Up Next queue.*
+- **TASK-208**: Create unified API Guidelines Document (consolidates TASK-200 through TASK-207 research; ~2000 lines synthesizing all Phase 1+2 findings into actionable rules, templates, review checklist) [ARCHITECT] (WIP: step 1/2)
 
 ---
 
