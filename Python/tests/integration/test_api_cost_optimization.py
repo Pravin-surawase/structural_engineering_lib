@@ -51,7 +51,7 @@ def test_api_optimize_beam_cost_basic():
     # Check result object methods
     assert result.candidates_valid > 0
     assert result.computation_time_sec >= 0
-    
+
     # Test summary method
     summary = result.summary()
     assert "Optimal:" in summary

@@ -12,17 +12,16 @@ that answer:
 
 Usage:
     from structural_lib.error_messages import dimension_too_small, capacity_exceeded
-    
+
     if b_mm < 200:
         raise DimensionError(dimension_too_small("width", b_mm, 200, "Cl. 26.5.1.1"))
 
-Related: 
+Related:
 - TASK-213 (Implement error message templates)
 - docs/guidelines/error-handling-standard.md
 """
 
 from typing import Any, Optional
-
 
 # =============================================================================
 # Template Functions - Dimension Errors
@@ -53,9 +52,7 @@ def dimension_too_small(
         >>> dimension_too_small("width", 150, 200, "Cl. 26.5.1.1")
         'Width 150mm is below minimum 200mm (IS 456:2000 Cl. 26.5.1.1). Increase width to at least 200mm.'
     """
-    parts = [
-        f"{dim_name.capitalize()} {actual}{unit} is below minimum {minimum}{unit}"
-    ]
+    parts = [f"{dim_name.capitalize()} {actual}{unit} is below minimum {minimum}{unit}"]
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
     parts.append(f"Increase {dim_name} to at least {minimum}{unit}.")
@@ -82,9 +79,7 @@ def dimension_too_large(
     Returns:
         Formatted error message
     """
-    parts = [
-        f"{dim_name.capitalize()} {actual}{unit} exceeds maximum {maximum}{unit}"
-    ]
+    parts = [f"{dim_name.capitalize()} {actual}{unit} exceeds maximum {maximum}{unit}"]
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
     parts.append(f"Reduce {dim_name} to at most {maximum}{unit}.")
@@ -195,14 +190,14 @@ def material_property_out_of_range(
         Formatted error message
     """
     parts = [f"{property_name.capitalize()} {actual}{unit} is out of valid range"]
-    
+
     if min_value is not None and max_value is not None:
         parts.append(f"({min_value}-{max_value}{unit})")
     elif min_value is not None:
         parts.append(f"(minimum {min_value}{unit})")
     elif max_value is not None:
         parts.append(f"(maximum {max_value}{unit})")
-    
+
     parts.append("Provide a value within the valid range.")
     return " ".join(parts)
 
@@ -246,14 +241,14 @@ def capacity_exceeded(
         f"{load_name} {load_value}{unit} exceeds section capacity "
         f"{capacity_name} {capacity_value}{unit}"
     ]
-    
+
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
-    
+
     if suggestions:
         options = ", ".join(f"({i+1}) {s}" for i, s in enumerate(suggestions))
         parts.append(f"Options: {options}.")
-    
+
     return " ".join(parts)
 
 
@@ -285,14 +280,14 @@ def reinforcement_spacing_insufficient(
         f"Cannot fit {bar_count}-#{bar_diameter}mm bars in available width "
         f"{available_space}mm (requires {required_space}mm)"
     ]
-    
+
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
-    
+
     parts.append(
         "Options: (1) Reduce bar count, (2) Use smaller diameter, (3) Increase section width."
     )
-    
+
     return " ".join(parts)
 
 
@@ -328,12 +323,12 @@ def minimum_reinforcement_not_met(
     parts = [
         f"{parameter_name.capitalize()} {actual}{unit} is below minimum {minimum}{unit}"
     ]
-    
+
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
-    
+
     parts.append("Increase reinforcement to meet minimum requirement.")
-    
+
     return " ".join(parts)
 
 
@@ -364,12 +359,12 @@ def maximum_reinforcement_exceeded(
     parts = [
         f"{parameter_name.capitalize()} {actual}{unit} exceeds maximum {maximum}{unit}"
     ]
-    
+
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
-    
+
     parts.append("Reduce reinforcement or increase section size.")
-    
+
     return " ".join(parts)
 
 
@@ -398,12 +393,12 @@ def spacing_limit_exceeded(
     parts = [
         f"{spacing_type.capitalize()} spacing {actual_spacing}mm exceeds maximum {maximum_spacing}mm"
     ]
-    
+
     if clause_ref:
         parts.append(f"(IS 456:2000 {clause_ref})")
-    
+
     parts.append("Reduce spacing to meet code requirements.")
-    
+
     return " ".join(parts)
 
 
@@ -438,18 +433,16 @@ def convergence_failed(
         f"{algorithm_name.capitalize()} did not converge after {iterations} iterations "
         f"(tolerance={tolerance}"
     ]
-    
+
     if current_error is not None:
         parts.append(f", current error={current_error}")
-    
+
     parts.append("). Check input values or increase iteration limit.")
-    
+
     return "".join(parts)
 
 
-def numerical_instability(
-    operation: str, problematic_value: Any, reason: str
-) -> str:
+def numerical_instability(operation: str, problematic_value: Any, reason: str) -> str:
     """
     Template for numerical instability.
 

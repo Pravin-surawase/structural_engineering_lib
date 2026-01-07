@@ -17,15 +17,12 @@ from .error_messages import (
     material_property_out_of_range,
 )
 from .errors import (
-    ConfigurationError,
-    DimensionError,
     E_FLEXURE_001,
     E_FLEXURE_002,
     E_FLEXURE_003,
     E_FLEXURE_004,
     E_INPUT_002,
     E_INPUT_003,
-    E_INPUT_003a,
     E_INPUT_004,
     E_INPUT_005,
     E_INPUT_010,
@@ -34,6 +31,9 @@ from .errors import (
     E_INPUT_014,
     E_INPUT_015,
     E_INPUT_016,
+    ConfigurationError,
+    DimensionError,
+    E_INPUT_003a,
     MaterialError,
 )
 from .validation import validate_dimensions, validate_materials
@@ -73,13 +73,17 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
         )
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range("concrete strength fck", fck, 0, 100, "Cl. 6.2"),
+            material_property_out_of_range(
+                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
+            ),
             details={"fck": fck, "minimum": 0, "maximum": 100},
             clause_ref="Cl. 6.2",
         )
     if fy <= 0:
         raise MaterialError(
-            material_property_out_of_range("steel yield strength fy", fy, 0, 600, "Cl. 6.2"),
+            material_property_out_of_range(
+                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
+            ),
             details={"fy": fy, "minimum": 0, "maximum": 600},
             clause_ref="Cl. 6.2",
         )
@@ -136,7 +140,10 @@ def calculate_effective_flange_width(
         )
     if flange_overhang_left_mm < 0 or flange_overhang_right_mm < 0:
         raise DimensionError(
-            dimension_negative("flange overhang", min(flange_overhang_left_mm, flange_overhang_right_mm)),
+            dimension_negative(
+                "flange overhang",
+                min(flange_overhang_left_mm, flange_overhang_right_mm),
+            ),
             details={
                 "flange_overhang_left_mm": flange_overhang_left_mm,
                 "flange_overhang_right_mm": flange_overhang_right_mm,
@@ -158,7 +165,16 @@ def calculate_effective_flange_width(
             raise ConfigurationError(
                 f"Invalid beam_type '{beam_type}'. Must be 'T', 'L', 'RECTANGULAR', or corresponding BeamType enum. "
                 "[IS 456 Cl. 23.1.2]",
-                details={"beam_type": beam_type, "allowed": ["T", "L", "RECTANGULAR", "BeamType.FLANGED_T", "BeamType.FLANGED_L"]},
+                details={
+                    "beam_type": beam_type,
+                    "allowed": [
+                        "T",
+                        "L",
+                        "RECTANGULAR",
+                        "BeamType.FLANGED_T",
+                        "BeamType.FLANGED_L",
+                    ],
+                },
                 clause_ref="Cl. 23.1.2",
             )
     else:
@@ -174,10 +190,9 @@ def calculate_effective_flange_width(
             dimension_relationship_invalid(
                 "flange width bf_geom",
                 bf_geom,
-                ">=",
                 "web width bw_mm",
                 bw_mm,
-                "Cl. 23.1.2"
+                "must be greater than or equal to",
             ),
             details={"bf_geom": bf_geom, "bw_mm": bw_mm},
             clause_ref="Cl. 23.1.2",
@@ -249,13 +264,17 @@ def calculate_ast_required(
         )
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range("concrete strength fck", fck, 0, 100, "Cl. 6.2"),
+            material_property_out_of_range(
+                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
+            ),
             details={"fck": fck, "minimum": 0, "maximum": 100},
             clause_ref="Cl. 6.2",
         )
     if fy <= 0:
         raise MaterialError(
-            material_property_out_of_range("steel yield strength fy", fy, 0, 600, "Cl. 6.2"),
+            material_property_out_of_range(
+                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
+            ),
             details={"fy": fy, "minimum": 0, "maximum": 600},
             clause_ref="Cl. 6.2",
         )

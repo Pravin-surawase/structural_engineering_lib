@@ -1200,10 +1200,8 @@ def optimize_beam_cost(
     # Convert optimal and alternatives
     optimal = result.optimal_candidate
     optimal_design = _to_optimal_design(optimal)
-    
-    alternatives = [
-        _to_optimal_design(alt) for alt in result.alternatives if alt
-    ]
+
+    alternatives = [_to_optimal_design(alt) for alt in result.alternatives if alt]
 
     return CostOptimizationResult(
         optimal_design=optimal_design,
@@ -1285,17 +1283,17 @@ def suggest_beam_design_improvements(
 
     # Convert internal suggestion report to DesignSuggestionsResult
     from .api_results import Suggestion
-    
+
     suggestions = [
         Suggestion(
-            category=sug.category,
+            category=sug.category.value,
             title=sug.title,
-            impact=sug.impact,
+            impact=sug.impact.value.upper(),
             confidence=sug.confidence,
             rationale=sug.rationale,
             estimated_benefit=sug.estimated_benefit,
             action_steps=sug.action_steps,
-            clause_refs=sug.clause_refs,
+            clause_refs=[],
         )
         for sug in report.suggestions
     ]
@@ -1422,7 +1420,7 @@ def smart_analyze_design(
 
     # Convert dashboard to SmartAnalysisResult
     dashboard_dict = dashboard.to_dict()
-    
+
     return SmartAnalysisResult(
         summary_data=dashboard_dict.get("summary", {}),
         metadata=dashboard_dict.get("metadata", {}),

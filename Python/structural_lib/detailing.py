@@ -18,14 +18,8 @@ import math
 from dataclasses import dataclass
 from typing import Optional
 
-from .error_messages import (
-    material_property_out_of_range,
-)
-from .errors import (
-    ComplianceError,
-    ConfigurationError,
-    MaterialError,
-)
+from .error_messages import material_property_out_of_range
+from .errors import ComplianceError, ConfigurationError, MaterialError
 
 # =============================================================================
 # Constants
@@ -178,19 +172,25 @@ def calculate_development_length(
     """
     if bar_dia <= 0:
         raise MaterialError(
-            material_property_out_of_range("bar diameter", bar_dia, 0, 50, "Cl. 26.2.1"),
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.1"
+            ),
             details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
             clause_ref="Cl. 26.2.1",
         )
     if fck <= 0:
         raise MaterialError(
-            material_property_out_of_range("concrete strength fck", fck, 0, 100, "Cl. 6.2"),
+            material_property_out_of_range(
+                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
+            ),
             details={"fck": fck, "minimum": 0, "maximum": 100},
             clause_ref="Cl. 6.2",
         )
     if fy <= 0:
         raise MaterialError(
-            material_property_out_of_range("steel yield strength fy", fy, 0, 600, "Cl. 6.2"),
+            material_property_out_of_range(
+                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
+            ),
             details={"fy": fy, "minimum": 0, "maximum": 600},
             clause_ref="Cl. 6.2",
         )

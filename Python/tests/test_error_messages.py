@@ -114,9 +114,7 @@ class TestDesignConstraintTemplates:
 
     def test_capacity_exceeded_no_suggestions(self):
         """Test capacity exceeded without suggestions."""
-        msg = error_messages.capacity_exceeded(
-            "Shear Vu", 150, "Vu,max", 120, []
-        )
+        msg = error_messages.capacity_exceeded("Shear Vu", 150, "Vu,max", 120, [])
         assert "Shear Vu 150kN·m" in msg
         assert "exceeds section capacity Vu,max 120kN·m" in msg
         assert "Options" not in msg
@@ -247,8 +245,10 @@ class TestRealWorldExamples:
     def test_beam_width_validation(self):
         """Test typical beam width validation error."""
         b_mm = 150
-        msg = error_messages.dimension_too_small("beam width", b_mm, 200, "Cl. 26.5.1.1")
-        
+        msg = error_messages.dimension_too_small(
+            "beam width", b_mm, 200, "Cl. 26.5.1.1"
+        )
+
         assert "Beam width 150mm" in msg
         assert "below minimum 200mm" in msg
         assert "Increase beam width to at least 200mm" in msg
@@ -258,7 +258,7 @@ class TestRealWorldExamples:
         msg = error_messages.material_grade_invalid(
             "concrete", 35, [20, 25, 30, 40, 45, 50]
         )
-        
+
         assert "35MPa" in msg
         assert "not a standard grade" in msg
 
@@ -272,7 +272,7 @@ class TestRealWorldExamples:
             ["Increase depth", "Add compression steel"],
             "Cl. 38.1",
         )
-        
+
         assert "250.5kN·m" in msg
         assert "200.2kN·m" in msg
         assert "(1) Increase depth" in msg
@@ -283,7 +283,7 @@ class TestRealWorldExamples:
         msg = error_messages.minimum_reinforcement_not_met(
             850.0, 1100.0, "tension steel", "Cl. 26.5.1.1"
         )
-        
+
         assert "850.0mm²" in msg
         assert "1100.0mm²" in msg
         assert "Increase reinforcement" in msg
