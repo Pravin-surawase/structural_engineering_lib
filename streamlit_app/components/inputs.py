@@ -161,19 +161,21 @@ def material_selector(
         grades_db = CONCRETE_GRADES
         default_idx = list(grades_db.keys()).index(default_grade) if default_grade else 1
 
-        # Selectbox with descriptions
-        grade_options = [f"{g} - {props['description']}" for g, props in grades_db.items()]
-        selected_option = st.selectbox(
+        # Selectbox with format_func for full descriptions
+        grades = list(grades_db.keys())
+        selected_grade = st.selectbox(
             "Concrete Grade (IS 456 Table 2)",
-            grade_options,
+            options=grades,
             index=default_idx,
+            format_func=lambda g: f"{g} - {grades_db[g]['description']}",
             key=key,
             help="Select concrete characteristic strength"
         )
 
-        # Extract grade from selection
-        selected_grade = selected_option.split(" - ")[0]
         props = grades_db[selected_grade]
+
+        # Show description below dropdown
+        st.caption(f"📋 {props['description']}")
 
         # Build result
         result = {
@@ -196,19 +198,21 @@ def material_selector(
         grades_db = STEEL_GRADES
         default_idx = list(grades_db.keys()).index(default_grade) if default_grade else 1
 
-        # Selectbox with descriptions
-        grade_options = [f"{g} - {props['description']}" for g, props in grades_db.items()]
-        selected_option = st.selectbox(
+        # Selectbox with format_func for full descriptions
+        grades = list(grades_db.keys())
+        selected_grade = st.selectbox(
             "Steel Grade (IS 456 Cl. 5.6)",
-            grade_options,
+            options=grades,
             index=default_idx,
+            format_func=lambda g: f"{g} - {grades_db[g]['description']}",
             key=key,
             help="Select steel characteristic strength"
         )
 
-        # Extract grade from selection
-        selected_grade = selected_option.split(" - ")[0]
         props = grades_db[selected_grade]
+
+        # Show description below dropdown
+        st.caption(f"📋 {props['description']}")
 
         # Build result
         result = {
@@ -317,21 +321,23 @@ def exposure_selector(
         >>> exposure = exposure_selector(default="Moderate")
         >>> print(exposure['cover'])  # 30
     """
-    # Selectbox
-    exposure_options = [f"{exp} - {props['description']}" for exp, props in EXPOSURE_CONDITIONS.items()]
-    default_idx = list(EXPOSURE_CONDITIONS.keys()).index(default)
+    # Selectbox with format_func
+    exposures = list(EXPOSURE_CONDITIONS.keys())
+    default_idx = exposures.index(default)
 
-    selected_option = st.selectbox(
+    selected_exposure = st.selectbox(
         "Exposure Condition (IS 456 Table 16)",
-        exposure_options,
+        options=exposures,
         index=default_idx,
+        format_func=lambda exp: f"{exp} - {EXPOSURE_CONDITIONS[exp]['description']}",
         key=key,
         help="Environmental exposure classification"
     )
 
-    # Extract exposure
-    selected_exposure = selected_option.split(" - ")[0]
     props = EXPOSURE_CONDITIONS[selected_exposure]
+
+    # Show description below dropdown
+    st.caption(f"📋 {props['description']}")
 
     # Build result
     result = {

@@ -72,8 +72,17 @@ if 'beam_inputs' not in st.session_state:
         'exposure': 'Moderate',
         'support_condition': 'Simply Supported',
         'design_computed': False,
-        'design_result': None
+        'design_result': None,
+        'last_input_hash': None  # Track input changes
     }
+
+# Helper function to detect input changes
+def get_input_hash():
+    """Hash of all inputs to detect changes"""
+    import hashlib
+    inputs_str = f"{st.session_state.beam_inputs['mu_knm']}_{st.session_state.beam_inputs['vu_kn']}_{st.session_state.beam_inputs['b_mm']}_{st.session_state.beam_inputs['D_mm']}_{st.session_state.beam_inputs['d_mm']}_{st.session_state.beam_inputs['concrete_grade']}_{st.session_state.beam_inputs['steel_grade']}_{st.session_state.beam_inputs['span_mm']}_{st.session_state.beam_inputs['exposure']}"
+    return hashlib.md5(inputs_str.encode()).hexdigest()
+
 
 # Page header with professional styling
 page_header(
@@ -215,8 +224,21 @@ with col_input:
     # Analyze button
     all_valid = span_valid and b_valid and D_valid and d_valid
 
+    # Detect input changes
+    current_hash = get_input_hash()
+    inputs_changed = (current_hash != st.session_state.beam_inputs['last_input_hash'])
+
     if st.button("🚀 Analyze Design", disabled=not all_valid, use_container_width=True):
-        st.session_state.beam_inputs['design_computed'] = False  # Force recomputation
+        # Clear old results if inputs changed
+        if inputs_changed:
+            st.session_state.beam_inputs['design_result'] = None
+            st.session_state.beam_inputs['design_computed'] = False
+            # Clear cache to force fresh computation
+            from utils.api_wrapper import clear_cache
+            clear_cache()
+
+        # Update hash
+        st.session_state.beam_inputs['last_input_hash'] = current_hash
 
         with loading_context("spinner", "Computing design... Please wait"):
             try:
@@ -244,6 +266,9 @@ with col_input:
 
     if not all_valid:
         st.warning("⚠️ Fix validation errors before analyzing")
+    elif inputs_changed and st.session_state.beam_inputs.get('design_computed', False):
+        st.info("ℹ️ Inputs changed. Click 'Analyze Design' to update results.")
+
 
     st.markdown("---")
 
@@ -258,7 +283,46 @@ with col_input:
 with col_preview:
     st.header("📊 Design Preview")
 
-    # Show preview or results based on state
+    # ALWAYS show geometry preview (updates immediately with inputs)
+    with st.expander("📐 Geometry Visualization", expanded=not st.session_state.beam_inputs.get('design_computed', False)):
+        # Get current exposure for cover
+        exposure_props = {
+            'Mild': {'cover': 20},
+            'Moderate': {'cover': 30},
+            'Severe': {'cover': 45},
+            'Very Severe': {'cover': 50},
+            'Extreme': {'cover': 75}
+        }
+        cover = exposure_props.get(st.session_state.beam_inputs['exposure'], {'cover': 30})['cover']
+        bar_dia = 16  # Placeholder
+
+        # Calculate rebar positions (3 bars at bottom)
+        spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover) / 2
+        rebar_y = cover + bar_dia / 2
+        rebar_positions = [
+            (cover + bar_dia / 2, rebar_y),
+            (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
+            (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
+        ]
+        xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Placeholder neutral axis
+
+        fig = create_beam_diagram(
+            b_mm=st.session_state.beam_inputs['b_mm'],
+            D_mm=st.session_state.beam_inputs['D_mm'],
+            d_mm=st.session_state.beam_inputs['d_mm'],
+            rebar_positions=rebar_positions,
+            xu=xu,
+            bar_dia=bar_dia,
+            cover=cover
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Show dimensions
+        st.caption(f"📏 Width: {st.session_state.beam_inputs['b_mm']:.0f}mm × Depth: {st.session_state.beam_inputs['D_mm']:.0f}mm (d = {st.session_state.beam_inputs['d_mm']:.0f}mm)")
+
+    st.divider()
+
+    # Show results if computed
     if st.session_state.beam_inputs.get('design_computed', False):
         # Show full results (existing tabs - moved from main area)
         result = st.session_state.beam_inputs['design_result']
