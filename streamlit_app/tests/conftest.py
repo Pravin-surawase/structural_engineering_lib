@@ -16,6 +16,14 @@ from unittest.mock import MagicMock, Mock
 class MockStreamlit:
     """Enhanced Streamlit mock for testing"""
 
+    # Mock session_state as a dictionary
+    session_state = {}
+
+
+    # Mock session_state as a dictionary
+    session_state = {}
+
+
     @staticmethod
     def columns(num_cols):
         """Mock st.columns() - returns list of mock column objects"""
