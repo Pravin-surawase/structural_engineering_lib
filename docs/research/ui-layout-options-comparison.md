@@ -336,47 +336,79 @@ If two-column feels complex:
 
 ---
 
-## Implementation Code Snippet
+## Implementation Code Snippet (Top Picks)
 
-### Option 1 (Two-Column):
+### Option 1 (Two-Column Split)
 ```python
-# Replace st.sidebar with:
+import streamlit as st
+
 col_input, col_preview = st.columns([2, 3])  # 40/60 split
 
 with col_input:
-    st.header("📋 Input Parameters")
-    # Geometry
-    span = st.number_input("Span (mm)", value=5000)
-    # ... other inputs
+    st.header("Input Parameters")
+    span_mm = st.number_input("Span (mm)", value=5000)
+    b_mm = st.number_input("Width (mm)", value=300)
+    D_mm = st.number_input("Depth (mm)", value=500)
 
-    if st.button("🔍 Analyze Design"):
-        # Trigger analysis
-        pass
+    if st.button("Analyze Design", type="primary"):
+        st.session_state["run_design"] = True
 
 with col_preview:
     st.header("Preview & Status")
-    # Real-time beam diagram
-    create_beam_preview(span, width, depth)
+    create_beam_preview(span_mm, b_mm, D_mm)
 
-    # Status dashboard
-    show_validation_status()
-
-    # After analyze: Results
-    if st.session_state.get('results'):
+    if st.session_state.get("run_design"):
         show_results_tabs()
 ```
 
-### Option 4 (Tabs):
+### Option 5 (Sidebar Inputs + Results Tabs)
 ```python
-tabs = st.tabs(["📝 Input", "📊 Design", "💰 Optimize", "✅ Compliance"])
+import streamlit as st
 
-with tabs[0]:  # Input tab
+with st.sidebar:
+    st.header("Inputs")
+    span_mm = st.number_input("Span (mm)", value=5000)
+    b_mm = st.number_input("Width (mm)", value=300)
+    D_mm = st.number_input("Depth (mm)", value=500)
+    if st.button("Analyze Design", type="primary"):
+        st.session_state["run_design"] = True
+
+tabs = st.tabs(["Design", "Cost", "Compliance"])
+with tabs[0]:
+    st.subheader("Design Results")
+    create_beam_preview(span_mm, b_mm, D_mm)
+    if st.session_state.get("run_design"):
+        show_design_results()
+
+with tabs[1]:
+    st.subheader("Cost")
+    if st.session_state.get("run_design"):
+        show_cost_results()
+
+with tabs[2]:
+    st.subheader("Compliance")
+    if st.session_state.get("run_design"):
+        show_compliance_results()
+```
+
+### Option 4 (Tabbed Interface)
+```python
+import streamlit as st
+
+tabs = st.tabs(["Input", "Design", "Optimize", "Compliance"])
+
+with tabs[0]:
     st.header("Beam Parameters")
-    # All inputs here
+    span_mm = st.number_input("Span (mm)", value=5000)
+    b_mm = st.number_input("Width (mm)", value=300)
+    D_mm = st.number_input("Depth (mm)", value=500)
+    if st.button("Analyze Design", type="primary"):
+        st.session_state["run_design"] = True
 
-with tabs[1]:  # Design tab
+with tabs[1]:
     st.header("Design Results")
-    # Results here (only shown after analyze)
+    if st.session_state.get("run_design"):
+        show_design_results()
 ```
 
 ---
