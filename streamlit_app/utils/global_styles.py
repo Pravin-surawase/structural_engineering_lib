@@ -239,6 +239,7 @@ GLOBAL_CSS_PART2 = f"""
     border: 1px solid {COLORS.gray_300};
     border-radius: {RADIUS.sm};
     transition: all {ANIMATION.fast} {ANIMATION.ease_in_out};
+    min-height: 38px;
 }}
 
 .stSelectbox > div > div:hover {{
@@ -249,6 +250,23 @@ GLOBAL_CSS_PART2 = f"""
     font-family: {TYPOGRAPHY.font_ui};
     color: {COLORS.gray_900};
     padding: {SPACING.space_2} {SPACING.space_3};
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.875rem;
+}}
+
+/* Dropdown menu options */
+[data-baseweb="menu"] {{
+    font-size: 0.875rem !important;
+}}
+
+[data-baseweb="menu"] li {{
+    min-height: 36px !important;
+    padding: 8px 12px !important;
 }}
 
 /* Slider */

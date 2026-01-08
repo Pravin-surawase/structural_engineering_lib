@@ -19,9 +19,9 @@
 
 ## Current Release
 
-- **Version:** v0.15.0 ✅ Released (2026-01-07)
-- **Focus:** Code Quality Excellence - Enterprise-grade standards
-- **Next:** v0.16.0 (Q1 2026) - Fix tests/benchmarks + implement critical research findings
+- **Version:** v0.16.0 ✅ Released (2026-01-08)
+- **Focus:** UI Layout + Streamlit Improvements
+- **Next:** v0.17.0 (Q1 2026) - Continue Streamlit + API integration
 
 ---
 
