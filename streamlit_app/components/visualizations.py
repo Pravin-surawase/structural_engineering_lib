@@ -109,13 +109,18 @@ def create_beam_diagram(
     bar_dia: float,
     cover: float = 30.0,
     show_dimensions: bool = True,
+    compression_positions: Optional[List[Tuple[float, float]]] = None,
+    stirrup_dia: float = 8.0,
+    stirrup_spacing: float = 150.0,
 ) -> go.Figure:
     """
     Create interactive beam cross-section diagram with rebar placement.
 
     Features:
     - Concrete section (gray rectangle)
-    - Rebar positions (orange circles)
+    - Tension rebar positions (orange circles)
+    - Compression rebar positions (purple circles) - for doubly reinforced
+    - Stirrups (dashed rectangles)
     - Neutral axis (red dashed line)
     - Compression/tension zones (shaded)
     - Cover lines (blue dotted)
@@ -126,18 +131,23 @@ def create_beam_diagram(
         b_mm: Width (mm)
         D_mm: Total depth (mm)
         d_mm: Effective depth (mm)
-        rebar_positions: [(x1, y1), (x2, y2), ...] in mm from bottom-left
+        rebar_positions: [(x1, y1), (x2, y2), ...] tension steel in mm from bottom-left
         xu: Neutral axis depth from top (mm)
-        bar_dia: Bar diameter (mm)
+        bar_dia: Main tension bar diameter (mm)
         cover: Clear cover (mm)
         show_dimensions: Show dimension annotations
+        compression_positions: [(x1, y1), ...] compression steel positions (optional)
+        stirrup_dia: Stirrup diameter (mm)
+        stirrup_spacing: Stirrup spacing (mm c/c)
 
     Returns:
         Plotly figure
 
     Example:
-        >>> positions = [(75, 50), (150, 50), (225, 50)]  # 3 bars at bottom
-        >>> fig = create_beam_diagram(300, 500, 450, positions, 150, 16)
+        >>> tension_pos = [(75, 50), (150, 50), (225, 50)]  # 3 bars at bottom
+        >>> comp_pos = [(75, 450), (225, 450)]  # 2 bars at top
+        >>> fig = create_beam_diagram(300, 500, 450, tension_pos, 150, 16,
+        ...                           compression_positions=comp_pos)
         >>> st.plotly_chart(fig, use_container_width=True)
     """
     fig = go.Figure()
@@ -256,7 +266,7 @@ def create_beam_diagram(
             )
         )
 
-    # 7. Rebar positions (orange circles)
+    # 7. Tension steel rebar positions (orange circles)
     if rebar_positions:
         rebar_x = [pos[0] for pos in rebar_positions]
         rebar_y = [pos[1] for pos in rebar_positions]
@@ -271,12 +281,54 @@ def create_beam_diagram(
                     color=THEME_ORANGE,
                     line=dict(color=THEME_NAVY, width=1),
                 ),
-                name=f"Rebar ({bar_dia}mm)",
-                hovertemplate="Rebar Position<br>x: %{x:.0f}mm<br>y: %{y:.0f}mm<extra></extra>",
+                name=f"Tension Steel ({bar_dia}mm)",
+                hovertemplate="Tension Steel<br>x: %{x:.0f}mm<br>y: %{y:.0f}mm<extra></extra>",
             )
         )
 
-    # 8. Dimension annotations (if enabled)
+    # 8. Compression steel rebar positions (purple circles) - for doubly reinforced
+    if compression_positions:
+        comp_x = [pos[0] for pos in compression_positions]
+        comp_y = [pos[1] for pos in compression_positions]
+
+        fig.add_trace(
+            go.Scatter(
+                x=comp_x,
+                y=comp_y,
+                mode="markers",
+                marker=dict(
+                    size=bar_dia * 0.8,
+                    color=CB_SAFE_PURPLE,  # Purple for compression
+                    line=dict(color=THEME_NAVY, width=1),
+                ),
+                name=f"Compression Steel ({bar_dia}mm)",
+                hovertemplate="Compression Steel<br>x: %{x:.0f}mm<br>y: %{y:.0f}mm<extra></extra>",
+            )
+        )
+
+    # 9. Stirrups (dashed rectangles) - show 2 stirrups for visualization
+    if stirrup_dia > 0:
+        stirrup_inner_width = b_mm - 2 * cover
+        stirrup_inner_height = D_mm - 2 * cover
+
+        # Show 2 stirrups at different positions
+        stirrup_positions_x = [cover + stirrup_inner_width * 0.25, cover + stirrup_inner_width * 0.75]
+
+        for stirrup_x_offset in stirrup_positions_x:
+            # Stirrup outline (simplified rectangular shape)
+            fig.add_trace(
+                go.Scatter(
+                    x=[cover, cover, b_mm - cover, b_mm - cover, cover],
+                    y=[cover, D_mm - cover, D_mm - cover, cover, cover],
+                    mode="lines",
+                    line=dict(color=CB_SAFE_BLUE, width=2, dash="dash"),
+                    name=f"Stirrups ({stirrup_dia}mm @ {stirrup_spacing:.0f}mm)",
+                    hovertemplate=f"Stirrups<br>{stirrup_dia}mm dia<br>@ {stirrup_spacing:.0f}mm c/c<extra></extra>",
+                    showlegend=(stirrup_x_offset == stirrup_positions_x[0]),  # Show legend only once
+                )
+            )
+
+    # 10. Dimension annotations (if enabled)
     if show_dimensions:
         # Width dimension (bottom)
         fig.add_annotation(

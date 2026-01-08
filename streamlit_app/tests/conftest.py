@@ -112,6 +112,11 @@ class MockStreamlit:
         pass
 
     @staticmethod
+    def progress(value):
+        """Mock st.progress()"""
+        pass
+
+    @staticmethod
     def empty():
         """Mock st.empty() returning a placeholder with container() and empty()."""
         placeholder = MagicMock()
