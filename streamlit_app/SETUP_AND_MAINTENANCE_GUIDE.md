@@ -271,7 +271,11 @@ pip install plotly==5.17.0
    ```bash
    # Update all packages (carefully!)
    pip install --upgrade streamlit plotly pandas numpy
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
    # Test thoroughly after updating
    pytest tests/ -v
    ```
@@ -314,7 +318,11 @@ See [Streamlit deployment docs](https://docs.streamlit.io/streamlit-community-cl
 
 ### Q2: How do I add new features?
 
+<<<<<<< Updated upstream
 **A**:
+=======
+**A**:
+>>>>>>> Stashed changes
 1. Create a new branch (if using git)
 2. Add your feature in appropriate file (components/, pages/, utils/)
 3. Add tests in `tests/test_<feature>.py`
@@ -323,7 +331,11 @@ See [Streamlit deployment docs](https://docs.streamlit.io/streamlit-community-cl
 
 ### Q3: Can multiple users use this at the same time?
 
+<<<<<<< Updated upstream
 **A**:
+=======
+**A**:
+>>>>>>> Stashed changes
 - **Local development**: No - one app instance per machine
 - **Deployed (cloud)**: Yes - Streamlit handles multiple sessions automatically
 
@@ -340,14 +352,22 @@ textColor = "#262730"
 
 ### Q5: Where is the data stored?
 
+<<<<<<< Updated upstream
 **A**:
+=======
+**A**:
+>>>>>>> Stashed changes
 - **Session data**: In-memory (lost when browser refreshes)
 - **Cache**: `.streamlit/cache/` (temporary)
 - **User uploads**: Not persistent (need custom storage)
 
 ### Q6: How much RAM/CPU does it need?
 
+<<<<<<< Updated upstream
 **A**:
+=======
+**A**:
+>>>>>>> Stashed changes
 - **Minimum**: 2GB RAM, dual-core CPU
 - **Recommended**: 4GB RAM, quad-core CPU
 - **Typical usage**: 200-500MB RAM, 10-20% CPU
@@ -358,7 +378,11 @@ textColor = "#262730"
 
 ### Q8: How do I update the structural engineering library?
 
+<<<<<<< Updated upstream
 **A**:
+=======
+**A**:
+>>>>>>> Stashed changes
 ```bash
 # If the Python library is updated
 pip install --upgrade structural-lib-is456
@@ -514,6 +538,11 @@ Before running the app:
 
 ---
 
+<<<<<<< Updated upstream
 **Last Updated**: January 2026
 **Version**: 1.0.0
+=======
+**Last Updated**: January 2026
+**Version**: 1.0.0
+>>>>>>> Stashed changes
 **Maintainer**: Structural Engineering Team

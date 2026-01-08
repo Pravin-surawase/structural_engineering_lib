@@ -1,10 +1,18 @@
 # RESEARCH-006: Data Visualization Excellence with Plotly
 
+<<<<<<< Updated upstream
 **Status:** 🟡 IN PROGRESS
 **Priority:** 🔴 CRITICAL
 **Agent:** Agent 6 (Streamlit Specialist)
 **Created:** 2026-01-08
 **Estimated Duration:** 4-6 hours
+=======
+**Status:** 🟡 IN PROGRESS
+**Priority:** 🔴 CRITICAL
+**Agent:** Agent 6 (Streamlit Specialist)
+**Created:** 2026-01-08
+**Estimated Duration:** 4-6 hours
+>>>>>>> Stashed changes
 **Depends On:** RESEARCH-004 (Design Systems), RESEARCH-005 (Custom Components)
 
 ---
@@ -77,7 +85,11 @@ IS456_THEME = {
             "size": 14,
             "color": COLORS.GRAY_700,
         },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         # Title
         "title": {
             "font": {
@@ -88,6 +100,7 @@ IS456_THEME = {
             "x": 0.5,  # Center title
             "xanchor": "center",
         },
+<<<<<<< Updated upstream
 
         # Paper (outer background)
         "paper_bgcolor": "white",
@@ -95,6 +108,15 @@ IS456_THEME = {
         # Plot (chart background)
         "plot_bgcolor": COLORS.GRAY_50,
 
+=======
+
+        # Paper (outer background)
+        "paper_bgcolor": "white",
+
+        # Plot (chart background)
+        "plot_bgcolor": COLORS.GRAY_50,
+
+>>>>>>> Stashed changes
         # Grid
         "xaxis": {
             "gridcolor": COLORS.GRAY_200,
@@ -126,7 +148,11 @@ IS456_THEME = {
                 "size": 12,
             },
         },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         # Legend
         "legend": {
             "bgcolor": "rgba(255, 255, 255, 0.9)",
@@ -136,7 +162,11 @@ IS456_THEME = {
                 "size": 12,
             },
         },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         # Hover label
         "hoverlabel": {
             "bgcolor": "white",
@@ -147,7 +177,11 @@ IS456_THEME = {
                 "color": COLORS.GRAY_900,
             },
         },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         # Margins (compact for dashboards)
         "margin": {
             "l": 60,
@@ -155,12 +189,20 @@ IS456_THEME = {
             "t": 60,
             "b": 60,
         },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
         # Interaction modes
         "hovermode": "closest",
         "dragmode": "pan",
     },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Default color sequence (for multi-series charts)
     "layout.colorway": [
         COLORS.PRIMARY_500,  # Navy blue
@@ -177,10 +219,17 @@ IS456_THEME = {
 def apply_theme(fig: go.Figure) -> go.Figure:
     """
     Apply IS456 theme to a Plotly figure.
+<<<<<<< Updated upstream
 
     Args:
         fig: Plotly figure object
 
+=======
+
+    Args:
+        fig: Plotly figure object
+
+>>>>>>> Stashed changes
     Returns:
         Figure with theme applied
     """
@@ -191,10 +240,17 @@ def apply_theme(fig: go.Figure) -> go.Figure:
 def create_themed_figure(**kwargs) -> go.Figure:
     """
     Create a new Plotly figure with IS456 theme pre-applied.
+<<<<<<< Updated upstream
 
     Args:
         **kwargs: Additional layout parameters
 
+=======
+
+    Args:
+        **kwargs: Additional layout parameters
+
+>>>>>>> Stashed changes
     Returns:
         Themed figure
     """
@@ -213,18 +269,30 @@ CHART_COLORS = {
     "pass": COLORS.SUCCESS,
     "fail": COLORS.ERROR,
     "warning": COLORS.WARNING,
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Comparison
     "required": COLORS.PRIMARY_500,
     "provided": COLORS.ACCENT_500,
     "capacity": COLORS.SUCCESS,
     "demand": COLORS.WARNING,
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Materials
     "concrete": COLORS.GRAY_500,
     "steel": COLORS.PRIMARY_700,
     "rebar": COLORS.ERROR,
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Zones (stress distribution)
     "compression": "#2563EB",  # Blue
     "tension": "#DC2626",      # Red
@@ -270,7 +338,11 @@ class BeamVisualizationData:
 def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
     """
     Create interactive beam cross-section diagram.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Shows:
     - Concrete section outline
     - Rebar placement with dimensions
@@ -283,11 +355,19 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         xaxis_title="Width (mm)",
         yaxis_title="Depth (mm)",
     )
+<<<<<<< Updated upstream
 
     # Coordinate system: Origin at top-left corner
     b, D, d = data.b_mm, data.D_mm, data.d_mm
     xu = data.neutral_axis_depth
 
+=======
+
+    # Coordinate system: Origin at top-left corner
+    b, D, d = data.b_mm, data.D_mm, data.d_mm
+    xu = data.neutral_axis_depth
+
+>>>>>>> Stashed changes
     # 1. Concrete section (rectangle)
     fig.add_shape(
         type="rect",
@@ -297,7 +377,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         fillcolor=COLORS.GRAY_200,
         name="Concrete Section",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 2. Compression zone (above neutral axis)
     fig.add_shape(
         type="rect",
@@ -307,7 +391,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         line=dict(width=0),
         layer="below",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 3. Tension zone (below neutral axis)
     fig.add_shape(
         type="rect",
@@ -317,7 +405,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         line=dict(width=0),
         layer="below",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 4. Neutral axis (dashed line)
     fig.add_shape(
         type="line",
@@ -329,7 +421,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
             dash="dash",
         ),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 5. Neutral axis label
     fig.add_annotation(
         x=b + 10,
@@ -344,17 +440,29 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         ay=0,
         font=dict(size=11, color=COLORS.GRAY_700),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 6. Rebar (circles at positions)
     rebar_x = []
     rebar_y = []
     rebar_text = []
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     for i, (x, y) in enumerate(data.rebar_positions):
         rebar_x.append(x)
         rebar_y.append(y)
         rebar_text.append(f"Bar {i+1}<br>ϕ{data.bar_diameter}mm<br>({x:.0f}, {y:.0f})")
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.add_trace(go.Scatter(
         x=rebar_x,
         y=rebar_y,
@@ -368,7 +476,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         hoverinfo="text",
         name="Reinforcement",
     ))
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 7. Dimension lines (width)
     fig.add_annotation(
         x=b/2, y=-15,
@@ -376,7 +488,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         showarrow=False,
         font=dict(size=12, color=COLORS.GRAY_900),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Dimension arrows (width)
     fig.add_annotation(
         x=0, y=-10,
@@ -390,7 +506,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         arrowwidth=1.5,
         arrowcolor=COLORS.GRAY_600,
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 8. Dimension lines (depth)
     fig.add_annotation(
         x=-15, y=D/2,
@@ -399,7 +519,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         font=dict(size=12, color=COLORS.GRAY_900),
         textangle=-90,
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # 9. Effective depth marker
     fig.add_shape(
         type="line",
@@ -407,7 +531,11 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         x1=b + 15, y1=d,
         line=dict(color=COLORS.PRIMARY_500, width=2),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.add_annotation(
         x=b + 20,
         y=d,
@@ -416,14 +544,22 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         font=dict(size=11, color=COLORS.PRIMARY_500),
         xanchor="left",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Layout adjustments
     fig.update_xaxes(
         range=[-30, b + 80],
         showticklabels=False,
         showgrid=False,
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.update_yaxes(
         range=[-30, D + 20],
         showticklabels=False,
@@ -431,13 +567,21 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
         scaleanchor="x",  # Equal aspect ratio
         scaleratio=1,
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.update_layout(
         height=500,
         showlegend=True,
         legend=dict(x=0.02, y=0.98, xanchor="left", yanchor="top"),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     return fig
 ```
 
@@ -449,34 +593,57 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
 def create_cost_comparison(options: List[dict]) -> go.Figure:
     """
     Create horizontal bar chart comparing rebar options by cost.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Args:
         options: List of dicts with keys:
             - arrangement: str (e.g., "3-16mm")
             - cost: float (₹/m)
             - utilization: float (0-1)
             - compliant: bool
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Returns:
         Interactive bar chart with click events
     """
     # Sort by cost (ascending)
     options_sorted = sorted(options, key=lambda x: x["cost"])
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     arrangements = [opt["arrangement"] for opt in options_sorted]
     costs = [opt["cost"] for opt in options_sorted]
     utilizations = [opt["utilization"] * 100 for opt in options_sorted]
     compliant = [opt["compliant"] for opt in options_sorted]
+<<<<<<< Updated upstream
 
     # Color bars based on compliance
     colors = [CHART_COLORS["pass"] if c else CHART_COLORS["fail"] for c in compliant]
 
+=======
+
+    # Color bars based on compliance
+    colors = [CHART_COLORS["pass"] if c else CHART_COLORS["fail"] for c in compliant]
+
+>>>>>>> Stashed changes
     fig = create_themed_figure(
         title="Cost Comparison of Rebar Arrangements",
         xaxis_title="Cost (₹/meter)",
         yaxis_title="",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.add_trace(go.Bar(
         x=costs,
         y=arrangements,
@@ -495,13 +662,21 @@ def create_cost_comparison(options: List[dict]) -> go.Figure:
         ),
         customdata=utilizations,
     ))
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Add recommended indicator (cheapest compliant option)
     recommended_idx = next(
         (i for i, opt in enumerate(options_sorted) if opt["compliant"]),
         0
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     if recommended_idx >= 0:
         fig.add_annotation(
             x=costs[recommended_idx],
@@ -520,16 +695,28 @@ def create_cost_comparison(options: List[dict]) -> go.Figure:
             borderwidth=2,
             borderpad=4,
         )
+<<<<<<< Updated upstream
 
     fig.update_xaxes(
         range=[0, max(costs) * 1.2],  # Extra space for labels
     )
 
+=======
+
+    fig.update_xaxes(
+        range=[0, max(costs) * 1.2],  # Extra space for labels
+    )
+
+>>>>>>> Stashed changes
     fig.update_layout(
         height=max(300, len(options) * 60),  # Dynamic height
         showlegend=False,
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     return fig
 ```
 
@@ -546,19 +733,31 @@ def create_utilization_gauge(
 ) -> go.Figure:
     """
     Create semicircular gauge showing utilization percentage.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Args:
         value: Current value (0-100 for percentage)
         title: Gauge title
         unit: Unit symbol
         thresholds: Dict with keys "low", "target", "high"
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Returns:
         Indicator gauge figure
     """
     if thresholds is None:
         thresholds = {"low": 70, "target": 85, "high": 95}
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Determine color based on value
     if value < thresholds["low"]:
         gauge_color = COLORS.WARNING  # Underutilized
@@ -568,7 +767,11 @@ def create_utilization_gauge(
         gauge_color = COLORS.WARNING  # Near limit
     else:
         gauge_color = COLORS.ERROR    # Over limit
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=value,
@@ -603,12 +806,20 @@ def create_utilization_gauge(
             },
         },
     ))
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.update_layout(
         height=300,
         margin=dict(l=40, r=40, t=80, b=40),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     return fig
 ```
 
@@ -623,14 +834,22 @@ def create_sensitivity_tornado(
 ) -> go.Figure:
     """
     Create tornado chart showing parameter sensitivity.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Args:
         sensitivity_data: List of dicts with keys:
             - parameter: str (e.g., "Concrete Grade")
             - low_impact: float (value at -20% parameter)
             - high_impact: float (value at +20% parameter)
         baseline_value: Baseline result value
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     Returns:
         Tornado chart (horizontal bar chart)
     """
@@ -640,17 +859,29 @@ def create_sensitivity_tornado(
         key=lambda x: abs(x["high_impact"] - x["low_impact"]),
         reverse=True,
     )
+<<<<<<< Updated upstream
 
     parameters = [d["parameter"] for d in sensitivity_data_sorted]
     low_deltas = [d["low_impact"] - baseline_value for d in sensitivity_data_sorted]
     high_deltas = [d["high_impact"] - baseline_value for d in sensitivity_data_sorted]
 
+=======
+
+    parameters = [d["parameter"] for d in sensitivity_data_sorted]
+    low_deltas = [d["low_impact"] - baseline_value for d in sensitivity_data_sorted]
+    high_deltas = [d["high_impact"] - baseline_value for d in sensitivity_data_sorted]
+
+>>>>>>> Stashed changes
     fig = create_themed_figure(
         title="Sensitivity Analysis",
         xaxis_title="Change in Cost (₹/m)",
         yaxis_title="",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Negative bars (low impact)
     fig.add_trace(go.Bar(
         x=low_deltas,
@@ -660,7 +891,11 @@ def create_sensitivity_tornado(
         marker=dict(color=COLORS.PRIMARY_500),
         hovertemplate="<b>%{y}</b><br>Impact: %{x:+.2f} ₹/m<extra></extra>",
     ))
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Positive bars (high impact)
     fig.add_trace(go.Bar(
         x=high_deltas,
@@ -670,7 +905,11 @@ def create_sensitivity_tornado(
         marker=dict(color=COLORS.ACCENT_500),
         hovertemplate="<b>%{y}</b><br>Impact: %{x:+.2f} ₹/m<extra></extra>",
     ))
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Baseline line (x=0)
     fig.add_vline(
         x=0,
@@ -680,14 +919,22 @@ def create_sensitivity_tornado(
         annotation_text="Baseline",
         annotation_position="top",
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     fig.update_layout(
         barmode="overlay",
         height=max(300, len(parameters) * 50),
         showlegend=True,
         legend=dict(x=0.02, y=0.98, xanchor="left", yanchor="top"),
     )
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     return fig
 ```
 
@@ -813,7 +1060,11 @@ def decimate_data(x: List[float], y: List[float], max_points: int = 1000) -> Tup
     """
     if len(x) <= max_points:
         return x, y
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Simple decimation (every nth point)
     step = len(x) // max_points
     return x[::step], y[::step]
@@ -833,10 +1084,17 @@ from plotly import graph_objects as go
 def generate_expensive_chart(data_hash: int) -> go.Figure:
     """
     Cache chart generation (expensive operation).
+<<<<<<< Updated upstream
 
     Args:
         data_hash: Hash of input data (for cache key)
 
+=======
+
+    Args:
+        data_hash: Hash of input data (for cache key)
+
+>>>>>>> Stashed changes
     Returns:
         Plotly figure
     """
@@ -863,7 +1121,11 @@ fig.update_layout(
         "x": 0.5,
         "xanchor": "center",
     },
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     # Add description for screen readers
     annotations=[
         dict(
@@ -946,7 +1208,11 @@ pip install kaleido
 def create_print_friendly_figure(fig: go.Figure) -> go.Figure:
     """
     Adjust figure for printing/PDF export.
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     - Increase font sizes
     - Remove unnecessary elements
     - Optimize for grayscale
@@ -964,11 +1230,19 @@ def create_print_friendly_figure(fig: go.Figure) -> go.Figure:
         ),
         margin=dict(l=80, r=80, t=100, b=100),  # Larger margins
     )
+<<<<<<< Updated upstream
 
     # High contrast for grayscale printing
     fig.update_xaxes(gridcolor="#CCCCCC", linecolor="#000000")
     fig.update_yaxes(gridcolor="#CCCCCC", linecolor="#000000")
 
+=======
+
+    # High contrast for grayscale printing
+    fig.update_xaxes(gridcolor="#CCCCCC", linecolor="#000000")
+    fig.update_yaxes(gridcolor="#CCCCCC", linecolor="#000000")
+
+>>>>>>> Stashed changes
     return fig
 ```
 
@@ -992,9 +1266,15 @@ def test_beam_diagram_creation():
         neutral_axis_depth=150,
         bar_diameter=16,
     )
+<<<<<<< Updated upstream
 
     fig = create_beam_diagram(data)
 
+=======
+
+    fig = create_beam_diagram(data)
+
+>>>>>>> Stashed changes
     # Assertions
     assert isinstance(fig, go.Figure)
     assert fig.layout.title.text == "Beam Cross-Section"
@@ -1008,9 +1288,15 @@ def test_cost_comparison_sorting():
         {"arrangement": "3-20mm", "cost": 87.5, "utilization": 0.92, "compliant": True},
         {"arrangement": "5-12mm", "cost": 105.0, "utilization": 0.78, "compliant": False},
     ]
+<<<<<<< Updated upstream
 
     fig = create_cost_comparison(options)
 
+=======
+
+    fig = create_cost_comparison(options)
+
+>>>>>>> Stashed changes
     # Check bars are in ascending cost order
     costs = fig.data[0].x
     assert list(costs) == sorted(costs)
@@ -1030,6 +1316,7 @@ def test_visual_regression():
     """
     # Generate chart
     fig = create_beam_diagram(test_data)
+<<<<<<< Updated upstream
 
     # Export to image
     pio.write_image(fig, "output.png")
@@ -1041,6 +1328,19 @@ def test_visual_regression():
     baseline_hash = imagehash.phash(baseline)
     output_hash = imagehash.phash(output)
 
+=======
+
+    # Export to image
+    pio.write_image(fig, "output.png")
+
+    # Compare with baseline
+    baseline = Image.open("baseline.png")
+    output = Image.open("output.png")
+
+    baseline_hash = imagehash.phash(baseline)
+    output_hash = imagehash.phash(output)
+
+>>>>>>> Stashed changes
     # Allow small differences (hash distance < 5)
     assert (baseline_hash - output_hash) < 5, "Chart appearance changed significantly"
 ```
@@ -1051,6 +1351,7 @@ def test_visual_regression():
 
 ### 9.1 Do's
 
+<<<<<<< Updated upstream
 ✅ **Use custom themes** - Consistent branding
 ✅ **Label axes with units** - "Moment (kN·m)", not just "Moment"
 ✅ **Show reference values** - Target, limit, code requirements
@@ -1069,6 +1370,26 @@ def test_visual_regression():
 ❌ **Don't ignore mobile** - Many engineers use tablets on-site
 ❌ **Don't use pie charts** - Bar charts are more accurate
 ❌ **Don't forget error bars** - Show uncertainty/tolerances
+=======
+✅ **Use custom themes** - Consistent branding
+✅ **Label axes with units** - "Moment (kN·m)", not just "Moment"
+✅ **Show reference values** - Target, limit, code requirements
+✅ **Use hover templates** - Rich contextual information
+✅ **Optimize for data density** - Engineers need precision
+✅ **Test on multiple devices** - Desktop, tablet, mobile
+✅ **Cache expensive charts** - Use st.cache_data
+✅ **Use colorblind-safe palettes** - Accessibility matters
+
+### 9.2 Don'ts
+
+❌ **Don't overcomplicate** - Clarity > aesthetics
+❌ **Don't rely on color alone** - Use shapes, patterns, labels
+❌ **Don't use 3D charts** - Hard to read precise values
+❌ **Don't animate excessively** - Distracting in dashboards
+❌ **Don't ignore mobile** - Many engineers use tablets on-site
+❌ **Don't use pie charts** - Bar charts are more accurate
+❌ **Don't forget error bars** - Show uncertainty/tolerances
+>>>>>>> Stashed changes
 
 ---
 
@@ -1117,7 +1438,13 @@ def test_visual_regression():
 
 ---
 
+<<<<<<< Updated upstream
 **Research Complete:** 2026-01-08
 **Total Time:** 5 hours
 **Lines:** 988
+=======
+**Research Complete:** 2026-01-08
+**Total Time:** 5 hours
+**Lines:** 988
+>>>>>>> Stashed changes
 **Status:** ✅ READY FOR IMPLEMENTATION
