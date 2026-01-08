@@ -18,7 +18,8 @@ All visualizations follow:
 - Responsive design
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
-Status: ✅ IMPLEMENTED (STREAMLIT-IMPL-003)
+Status: ✅ UPGRADED (STREAMLIT-UI-003)
+Version: 2.0 - Modern Design System Integration
 """
 
 import plotly.graph_objects as go
@@ -26,20 +27,76 @@ from plotly.subplots import make_subplots
 from typing import List, Dict, Tuple, Optional
 import streamlit as st
 
-# IS 456 Theme Colors
-THEME_NAVY = "#003366"
-THEME_ORANGE = "#FF6600"
-THEME_LIGHT_GRAY = "#F0F2F6"
-THEME_GREEN = "#28A745"
-THEME_YELLOW = "#FFC107"
-THEME_RED = "#DC3545"
+# Import design system
+try:
+    from utils.design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION, ANIMATION
+except ImportError:
+    # Fallback if design_system not available
+    class COLORS:
+        primary_500 = "#003366"
+        accent_500 = "#FF6600"
+        success = "#10B981"
+        warning = "#F59E0B"
+        error = "#EF4444"
+        gray_100 = "#F5F5F5"
+        gray_500 = "#737373"
+        gray_900 = "#171717"
 
-# Colorblind-safe palette
+    class TYPOGRAPHY:
+        font_ui = "Inter"
+        h3_size = "20px"
+        body_size = "14px"
+
+    class SPACING:
+        space_4 = "16px"
+
+    class ELEVATION:
+        level_1 = "0 1px 3px rgba(0,0,0,0.1)"
+
+    class ANIMATION:
+        duration_normal = 200
+
+# Theme colors (using design system)
+THEME_NAVY = COLORS.primary_500
+THEME_ORANGE = COLORS.accent_500
+THEME_GREEN = COLORS.success
+THEME_YELLOW = COLORS.warning
+THEME_RED = COLORS.error
+THEME_LIGHT_GRAY = COLORS.gray_100
+
+# Colorblind-safe palette (enhanced)
 CB_SAFE_BLUE = "#0173B2"
 CB_SAFE_ORANGE = "#DE8F05"
 CB_SAFE_GREEN = "#029E73"
 CB_SAFE_RED = "#CC3311"
 CB_SAFE_PURPLE = "#949494"
+
+
+def get_plotly_theme() -> Dict:
+    """
+    Get unified Plotly theme based on design system.
+
+    Returns consistent styling across all visualizations:
+    - Typography (Inter font family)
+    - Colors (Design system palette)
+    - Layout spacing and margins
+    - Hover and interaction styles
+    """
+    return {
+        'font_family': TYPOGRAPHY.font_ui,
+        'font_color': COLORS.gray_900,
+        'paper_bgcolor': 'white',
+        'plot_bgcolor': 'white',
+        'grid_color': COLORS.gray_100,
+        'title_font_size': 18,
+        'title_font_weight': 600,
+        'axis_font_size': 12,
+        'legend_bgcolor': 'rgba(255,255,255,0.95)',
+        'legend_border_color': COLORS.gray_200,
+        'legend_border_width': 1,
+        'hover_bgcolor': COLORS.gray_50,
+        'hover_border_color': COLORS.primary_500,
+    }
 
 
 def create_beam_diagram(
@@ -213,40 +270,56 @@ def create_beam_diagram(
             font=dict(size=10, color=THEME_NAVY)
         )
 
-    # Layout configuration
+    # Layout configuration with design system theme
+    theme = get_plotly_theme()
     fig.update_layout(
         title=dict(
             text="Beam Cross-Section",
-            font=dict(size=16, color=THEME_NAVY, family="Inter")
+            font=dict(
+                size=theme['title_font_size'],
+                color=theme['font_color'],
+                family=theme['font_family'],
+                weight=theme['title_font_weight']
+            )
         ),
         xaxis=dict(
-            title="Width (mm)",
+            title=dict(
+                text="Width (mm)",
+                font=dict(size=theme['axis_font_size'])
+            ),
             range=[-30, b_mm + 50],
             showgrid=True,
-            gridcolor="rgba(0,0,0,0.1)",
+            gridcolor=theme['grid_color'],
             zeroline=False
         ),
         yaxis=dict(
-            title="Height (mm)",
+            title=dict(
+                text="Height (mm)",
+                font=dict(size=theme['axis_font_size'])
+            ),
             range=[-30, D_mm + 30],
             showgrid=True,
-            gridcolor="rgba(0,0,0,0.1)",
+            gridcolor=theme['grid_color'],
             zeroline=False,
             scaleanchor="x",
             scaleratio=1  # Equal aspect ratio
         ),
-        plot_bgcolor="white",
-        paper_bgcolor="white",
+        plot_bgcolor=theme['plot_bgcolor'],
+        paper_bgcolor=theme['paper_bgcolor'],
+        font=dict(family=theme['font_family'], color=theme['font_color']),
         hovermode="closest",
         showlegend=True,
         legend=dict(
             x=1.05, y=1,
-            bgcolor="rgba(255,255,255,0.8)",
-            bordercolor=THEME_NAVY,
-            borderwidth=1
+            bgcolor=theme['legend_bgcolor'],
+            bordercolor=theme['legend_border_color'],
+            borderwidth=theme['legend_border_width'],
+            font=dict(size=12)
         ),
         height=500,
-        margin=dict(l=50, r=150, t=50, b=50)
+        margin=dict(l=50, r=150, t=60, b=50),
+        # Add subtle animation
+        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
     )
 
     return fig
@@ -348,27 +421,41 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
             font=dict(size=10, color=CB_SAFE_GREEN, family="Inter")
         )
 
-    # Layout
+    # Layout with design system theme
+    theme = get_plotly_theme()
     fig.update_layout(
         title=dict(
             text="Cost Comparison: Bar Arrangements",
-            font=dict(size=16, color=THEME_NAVY, family="Inter")
+            font=dict(
+                size=theme['title_font_size'],
+                color=theme['font_color'],
+                family=theme['font_family'],
+                weight=theme['title_font_weight']
+            )
         ),
         xaxis=dict(
-            title="Cost (₹/meter)",
+            title=dict(
+                text="Cost (₹/meter)",
+                font=dict(size=theme['axis_font_size'])
+            ),
             showgrid=True,
-            gridcolor="rgba(0,0,0,0.1)",
+            gridcolor=theme['grid_color'],
             zeroline=False
         ),
         yaxis=dict(
-            title="Bar Arrangement",
+            title=dict(
+                text="Bar Arrangement",
+                font=dict(size=theme['axis_font_size'])
+            ),
             showgrid=False
         ),
-        plot_bgcolor="white",
-        paper_bgcolor="white",
+        plot_bgcolor=theme['plot_bgcolor'],
+        paper_bgcolor=theme['paper_bgcolor'],
+        font=dict(family=theme['font_family'], color=theme['font_color']),
         hovermode="closest",
         height=max(300, len(alternatives) * 60),  # Dynamic height
-        margin=dict(l=100, r=100, t=60, b=50)
+        margin=dict(l=100, r=100, t=60, b=50),
+        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
     )
 
     return fig
@@ -418,56 +505,72 @@ def create_utilization_gauge(
         bar_color = CB_SAFE_RED
         status = "Critical"
 
-    # Create gauge
+    # Create gauge with design system theme
+    theme = get_plotly_theme()
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=value * 100,  # Convert to percentage
-        title={'text': label, 'font': {'size': 16, 'color': THEME_NAVY, 'family': 'Inter'}},
-        number={'suffix': "%", 'font': {'size': 28, 'color': bar_color}},
+        title={
+            'text': label,
+            'font': {
+                'size': theme['title_font_size'],
+                'color': theme['font_color'],
+                'family': theme['font_family']
+            }
+        },
+        number={'suffix': "%", 'font': {'size': 32, 'color': bar_color, 'family': theme['font_family']}},
         delta={
             'reference': critical_threshold * 100,
             'increasing': {'color': CB_SAFE_RED},
-            'decreasing': {'color': CB_SAFE_GREEN}
+            'decreasing': {'color': CB_SAFE_GREEN},
+            'font': {'size': 14, 'family': theme['font_family']}
         },
         gauge={
             'axis': {
                 'range': [0, 100],
-                'tickwidth': 1,
-                'tickcolor': THEME_NAVY,
+                'tickwidth': 2,
+                'tickcolor': theme['font_color'],
                 'tickvals': [0, warning_threshold * 100, critical_threshold * 100, 100],
-                'ticktext': ['0%', f'{warning_threshold * 100:.0f}%', f'{critical_threshold * 100:.0f}%', '100%']
+                'ticktext': ['0%', f'{warning_threshold * 100:.0f}%', f'{critical_threshold * 100:.0f}%', '100%'],
+                'tickfont': {'size': 11, 'family': theme['font_family']}
             },
-            'bar': {'color': bar_color, 'thickness': 0.75},
-            'bgcolor': "white",
+            'bar': {'color': bar_color, 'thickness': 0.8},
+            'bgcolor': theme['plot_bgcolor'],
             'borderwidth': 2,
-            'bordercolor': THEME_NAVY,
+            'bordercolor': COLORS.primary_500,
             'steps': [
-                {'range': [0, warning_threshold * 100], 'color': 'rgba(2, 158, 115, 0.2)'},  # Light green
-                {'range': [warning_threshold * 100, critical_threshold * 100], 'color': 'rgba(255, 193, 7, 0.2)'},  # Light yellow
-                {'range': [critical_threshold * 100, 100], 'color': 'rgba(204, 51, 17, 0.2)'}  # Light red
+                {'range': [0, warning_threshold * 100], 'color': 'rgba(2, 158, 115, 0.15)'},  # Light green
+                {'range': [warning_threshold * 100, critical_threshold * 100], 'color': 'rgba(245, 158, 11, 0.15)'},  # Light yellow
+                {'range': [critical_threshold * 100, 100], 'color': 'rgba(204, 51, 17, 0.15)'}  # Light red
             ],
             'threshold': {
-                'line': {'color': THEME_NAVY, 'width': 3},
-                'thickness': 0.75,
+                'line': {'color': COLORS.primary_700, 'width': 4},
+                'thickness': 0.85,
                 'value': value * 100
             }
         }
     ))
 
-    # Add status annotation
+    # Add status annotation with design system theme
     fig.add_annotation(
         text=f"Status: {status}",
         xref="paper", yref="paper",
         x=0.5, y=0.1,
         showarrow=False,
-        font=dict(size=12, color=bar_color, family="Inter", weight="bold")
+        font=dict(
+            size=14,
+            color=bar_color,
+            family=theme['font_family'],
+            weight="bold"
+        )
     )
 
     fig.update_layout(
-        height=300,
-        margin=dict(l=20, r=20, t=50, b=50),
-        paper_bgcolor="white",
-        font={'family': 'Inter'}
+        height=320,
+        margin=dict(l=30, r=30, t=60, b=50),
+        paper_bgcolor=theme['paper_bgcolor'],
+        font={'family': theme['font_family'], 'color': theme['font_color']},
+        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
     )
 
     return fig
@@ -593,12 +696,14 @@ def create_sensitivity_tornado(
         showlegend=True,
         legend=dict(
             x=1.05, y=1,
-            bgcolor="rgba(255,255,255,0.8)",
-            bordercolor=THEME_NAVY,
-            borderwidth=1
+            bgcolor=theme['legend_bgcolor'],
+            bordercolor=theme['legend_border_color'],
+            borderwidth=theme['legend_border_width'],
+            font=dict(size=12)
         ),
         height=max(300, len(parameters) * 50),
-        margin=dict(l=120, r=100, t=60, b=50)
+        margin=dict(l=120, r=100, t=60, b=50),
+        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
     )
 
     return fig

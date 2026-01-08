@@ -12,7 +12,7 @@ Features:
 - Overall compliance status
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
-Phase: STREAMLIT-IMPL-006
+Phase: STREAMLIT-IMPL-006 | UI-002: Page Layout Redesign
 """
 
 from typing import Optional
@@ -20,48 +20,22 @@ from typing import Optional
 import streamlit as st
 
 from utils.api_wrapper import cached_smart_analysis
+from utils.layout import setup_page, page_header, section_header, info_panel
+from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
+from utils.loading_states import loading_context
 
-# Page configuration
-st.set_page_config(
-    page_title="Compliance Checker - IS 456 Beam Design",
-    page_icon="✅",
-    layout="wide",
+# Initialize theme
+initialize_theme()
+
+# Modern page setup
+setup_page(
+    title="Compliance Checker - IS 456 Beam Design",
+    icon="✅",
+    layout="wide"
 )
 
-# Custom CSS
-st.markdown(
-    """
-<style>
-    .compliance-pass {
-        background-color: #e8f5e9;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #2e7d32;
-    }
-    .compliance-warning {
-        background-color: #fff3e0;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #f57c00;
-    }
-    .compliance-fail {
-        background-color: #ffebee;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #c62828;
-    }
-    .clause-ref {
-        font-family: 'Courier New', monospace;
-        font-size: 0.9em;
-        color: #1976d2;
-    }
-    @media print {
-        .stButton { display: none; }
-    }
-</style>
-""",
-    unsafe_allow_html=True,
-)
+# Apply dark mode styling
+apply_dark_mode_theme()
 
 
 def initialize_session_state():
@@ -321,12 +295,10 @@ Certificate generated on: {st.session_state.get('timestamp', 'N/A')}
 def main():
     initialize_session_state()
 
-    st.title("✅ IS 456:2000 Compliance Checker")
-    st.markdown(
-        """
-    Verify beam designs against all mandatory IS 456:2000 clauses.
-    Detailed checks for flexure, shear, detailing, and serviceability.
-    """
+    page_header(
+        title="IS 456:2000 Compliance Checker",
+        subtitle="Verify beam designs against all mandatory IS 456:2000 clauses. Detailed checks for flexure, shear, detailing, and serviceability.",
+        icon="✅"
     )
 
     # Sidebar - Input Selection

@@ -11,126 +11,33 @@ Features:
 - Export to DXF, BBS
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
-Version: 0.1.0 (Phase 2 - Implementation)
+Version: 0.2.0 (UI-002: Modern Page Layout Redesign)
 """
 
 import streamlit as st
+from utils.layout import setup_page, page_header, info_panel, section_header
+from utils.design_system import COLORS
+from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
 
-# Page configuration
-st.set_page_config(
-    page_title="IS 456 Beam Design Dashboard",
-    page_icon="🏗️",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://github.com/your-repo/issues',
-        'Report a bug': 'https://github.com/your-repo/issues',
-        'About': '# IS 456 Beam Design Dashboard\n\nProfessional RC design per IS 456:2000'
-    }
+# Initialize theme
+initialize_theme()
+
+# Modern page setup
+setup_page(
+    title="IS 456 Beam Design Dashboard",
+    icon="🏗️",
+    layout="wide"
 )
 
-# Custom CSS for typography and styling
-st.markdown("""
-<style>
-    /* Import Inter font for better readability */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+# Apply dark mode styling
+apply_dark_mode_theme()
 
-    /* Apply Inter to all text */
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
-
-    /* Apply JetBrains Mono to code and numbers */
-    code, pre, [class*="css"] code {
-        font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Improve metric styling */
-    [data-testid="stMetric"] {
-        background-color: #F0F2F6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #FF6600;
-    }
-
-    /* Style success/error messages */
-    .stAlert {
-        border-radius: 0.5rem;
-        padding: 1rem;
-    }
-
-    /* Improve button styling */
-    .stButton>button {
-        border-radius: 0.5rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
-    }
-
-    /* Hero section styling */
-    .hero {
-        background: linear-gradient(135deg, #003366 0%, #004d99 100%);
-        color: white;
-        padding: 3rem 2rem;
-        border-radius: 1rem;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-    }
-
-    .hero p {
-        font-size: 1.25rem;
-        opacity: 0.9;
-    }
-
-    /* Feature card styling */
-    .feature-card {
-        background: #F0F2F6;
-        padding: 1.5rem;
-        border-radius: 0.75rem;
-        border-left: 4px solid #FF6600;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateX(4px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .feature-card h3 {
-        color: #003366;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .hero h1 {
-            font-size: 2rem;
-        }
-        .hero p {
-            font-size: 1rem;
-        }
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# Hero section
-st.markdown("""
-<div class="hero">
-    <h1>🏗️ IS 456 Beam Design Dashboard</h1>
-    <p>Professional reinforced concrete design per IS 456:2000</p>
-</div>
-""", unsafe_allow_html=True)
+# Hero section with professional styling
+page_header(
+    title="IS 456 Beam Design Dashboard",
+    subtitle="Professional reinforced concrete design per IS 456:2000",
+    icon="🏗️"
+)
 
 # Welcome message
 st.markdown("## Welcome to the Professional Beam Design Tool")
@@ -141,43 +48,43 @@ Design with confidence using our intelligent analysis tools and instant cost opt
 """)
 
 # Feature overview
-st.markdown("### 🎯 Key Features")
+section_header("Key Features", icon="🎯")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("""
-    <div class="feature-card">
-        <h3>🏗️ Beam Design</h3>
-        <p>Complete flexure, shear, and detailing design with real-time validation and visual feedback.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    info_panel(
+        message="Complete flexure, shear, and detailing design with real-time validation and visual feedback.",
+        title="Beam Design",
+        icon="🏗️"
+    )
 
-    st.markdown("""
-    <div class="feature-card">
-        <h3>✅ Compliance Checking</h3>
-        <p>Automated IS 456 clause verification with detailed compliance reports and suggestions.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    info_panel(
+        message="Automated IS 456 clause verification with detailed compliance reports and suggestions.",
+        title="Compliance Checking",
+        icon="✅"
+    )
 
 with col2:
-    st.markdown("""
-    <div class="feature-card">
-        <h3>💰 Cost Optimization</h3>
-        <p>Find the most economical bar arrangements while maintaining safety and constructability.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    info_panel(
+        message="Find the most economical bar arrangements while maintaining safety and constructability.",
+        title="Cost Optimization",
+        icon="💰"
+    )
 
-    st.markdown("""
-    <div class="feature-card">
-        <h3>📚 Documentation</h3>
-        <p>Export to DXF drawings, bar bending schedules, and comprehensive design reports.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    info_panel(
+        message="Export to DXF drawings, bar bending schedules, and comprehensive design reports.",
+        title="Documentation",
+        icon="📚"
+    )
 
 # Quick start guide
 st.markdown("---")
-st.markdown("### 🚀 Quick Start")
+section_header("Quick Start", icon="🚀")
 
 st.markdown("""
 1. **Navigate** to the **Beam Design** page from the sidebar
@@ -191,12 +98,12 @@ st.markdown("""
 
 # Status indicators
 st.markdown("---")
-st.markdown("### 📊 System Status")
+section_header("System Status", icon="📊")
 
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Version", "0.1.0", help="Dashboard version")
+    st.metric("Version", "0.2.0", help="Dashboard version")
 
 with col2:
     st.metric("Library", "0.15.0", help="structural-lib-is456 version")
@@ -227,6 +134,9 @@ with st.sidebar:
     - **✅ Compliance:** IS 456 checking
     - **📚 Documentation:** Help & examples
     """)
+
+    # Theme toggle
+    render_theme_toggle()
 
     st.markdown("---")
     st.markdown("### 🎨 Theme")
