@@ -21,17 +21,27 @@
 **Get the app running in 5 minutes:**
 
 ```bash
-# 1. Navigate to the streamlit app directory
+# 1. Navigate to the PROJECT ROOT (not streamlit_app/)
+cd structural_engineering_lib
+
+# 2. Activate the project's virtual environment
+source .venv/bin/activate  # macOS/Linux
+# OR
+.venv\Scripts\activate  # Windows
+
+# 3. Navigate to streamlit app
 cd streamlit_app
 
-# 2. Install dependencies (one-time setup)
+# 4. Install Streamlit dependencies (one-time setup)
 pip install -r requirements.txt
 
-# 3. Run the app
+# 5. Run the app
 streamlit run app.py
 ```
 
 The app will automatically open in your browser at `http://localhost:8501`
+
+**⚠️ Important:** Always use the project's `.venv` at the root, NOT a separate venv in streamlit_app/
 
 ---
 
@@ -56,32 +66,40 @@ python3 --version
 
 Expected output: `Python 3.8.x` or higher
 
-#### 2. Create Virtual Environment (Recommended)
+#### 2. Use Project's Virtual Environment (Required)
+
+**⚠️ IMPORTANT: This project already has a virtual environment at the root!**
 
 ```bash
-# Create virtual environment
-python -m venv venv
+# Navigate to PROJECT ROOT first
+cd /path/to/structural_engineering_lib
 
-# Activate it:
-# On Windows:
-venv\Scripts\activate
-
+# Activate the existing .venv:
 # On macOS/Linux:
-source venv/bin/activate
+source .venv/bin/activate
+
+# On Windows:
+.venv\Scripts\activate
 ```
 
-**Why use a virtual environment?**
-- Isolates dependencies
-- Prevents conflicts with other Python projects
-- Makes it easy to replicate setup
+**Why use the project's .venv?**
+- ✅ Already configured with all project dependencies
+- ✅ Prevents duplicate venv waste (saves ~500MB)
+- ✅ Consistent environment across all project tools (tests, scripts, streamlit)
+- ✅ No conflicts between multiple venvs
+
+**⚠️ DO NOT create a separate venv in streamlit_app/** - Use the root `.venv` only!
 
 #### 3. Install Dependencies
 
 ```bash
-# Make sure you're in the streamlit_app directory
+# 1. Make sure .venv is activated (you should see (.venv) in prompt)
+source .venv/bin/activate  # If not already activated
+
+# 2. Navigate to streamlit_app directory
 cd streamlit_app
 
-# Install all required packages
+# 3. Install Streamlit-specific packages
 pip install -r requirements.txt
 ```
 
@@ -167,19 +185,21 @@ streamlit run app.py --server.address 0.0.0.0
 ---
 
 ## ⚠️ Common Issues & Solutions
-
-### Issue 1: "Command not found: streamlit"
-
-**Problem**: Streamlit not installed or not in PATH
+.venv not activated
 
 **Solution**:
 ```bash
-# Verify pip installation
+# 1. Make sure you're using the project's .venv
+cd /path/to/structural_engineering_lib
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate     # Windows
+
+# 2. Verify streamlit is installed
 pip list | grep streamlit
 
-# If not found, install it:
-pip install streamlit
-
+# 3. If not found, install it:
+cd streamlit_app
+pip install -r requirements.txt
 # If using virtual environment, make sure it's activated
 source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
@@ -290,7 +310,7 @@ pip install plotly==5.17.0
 ### Backup Strategy
 
 **What to backup**:
-- `streamlit_app/` directory (entire folder)
+- `.venv/` (at project root - recreate from requirementser)
 - `requirements.txt` (dependencies)
 - Any custom configurations
 
@@ -426,14 +446,31 @@ streamlit cache clear
 find . -type d -name __pycache__ -exec rm -rf {} +
 
 # Browser cache (in browser settings)
-```
+``⚠️ WARNING: This affects the ENTIRE project, not just Streamlit!
 
-### Reinstall Everything
+# 1. Navigate to PROJECT ROOT
+cd /path/to/structural_engineering_lib
 
-```bash
-# Remove virtual environment
-rm -rf venv/  # macOS/Linux
-rmdir /s venv  # Windows
+# 2. Deactivate current venv
+deactivate
+
+# 3. Remove the .venv (CAREFUL! This affects whole project)
+rm -rf .venv/  # macOS/Linux
+rmdir /s .venv  # Windows
+
+# 4. Recreate .venv
+python -m venv .venv
+
+# 5. Activate it
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate     # Windows
+
+# 6. Reinstall ALL project dependencies
+pip install -r Python/requirements.txt  # Core library
+pip install -r streamlit_app/requirements.txt  # Streamlit app
+
+# 7. Reinstall development tools
+pip install -r Python/requirements-dev.txt  # If exists
 
 # Recreate
 python -m venv venv
@@ -475,10 +512,20 @@ streamlit run app.py
 # Run on different port
 streamlit run app.py --server.port 8502
 
-# Run tests
-pytest tests/ -v
+# Run Project's `.venv` activated (`source .venv/bin/activate` from root)
+- [ ] You can see `(.venv)` in your terminal prompt
+- [ ] Streamlit dependencies installed (`cd streamlit_app && pip install -r requirements.txt`)
+- [ ] Tests passing (`pytest tests/ -v`)
+- [ ] Port 8501 available (or use `--server.port <port>`)
 
-# Clear cache
+**Quick verification:**
+```bash
+# Should show (.venv) in prompt
+echo $VIRTUAL_ENV  # Should output /path/to/.venv
+
+# Should find streamlit
+which streamlit  # Should output /path/to/.venv/bin/streamlit
+```
 streamlit cache clear
 
 # Check version
