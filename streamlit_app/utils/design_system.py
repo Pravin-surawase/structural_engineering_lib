@@ -147,6 +147,13 @@ class TypographyScale:
     button_line_height: str = "20px"
     button_weight: int = 500
 
+    # Semantic aliases for common use cases
+    display_sm: str = "36px"  # Same as h1_size
+    heading_xl: str = "28px"  # Same as h2_size
+    heading_lg: str = "24px"  # Same as h3_size
+    heading_sm: str = "20px"  # Same as h4_size
+    body_sm: str = "14px"     # Same as body_sm_size
+
 
 TYPOGRAPHY = TypographyScale()
 
