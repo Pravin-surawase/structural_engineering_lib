@@ -18,6 +18,142 @@ from typing import Any, Optional
 from .result_base import BaseResult
 
 # =============================================================================
+# Design and Detail Combined Result
+# =============================================================================
+
+
+@dataclass
+class DesignAndDetailResult:
+    """Combined result from design_and_detail_beam_is456().
+
+    This class bundles the design result (strength checks) with detailing
+    output (bar arrangements, stirrups) in a single convenient package.
+
+    Note: This class is not frozen because it contains mutable nested objects.
+    For serialization, use to_dict() or to_json().
+
+    Attributes:
+        beam_id: Beam identifier
+        story: Story/level name
+        design: Design result with flexure/shear/serviceability checks
+        detailing: Detailing result with bar/stirrup arrangements
+        geometry: Beam geometry dict (b_mm, D_mm, span_mm, cover_mm)
+        materials: Material properties dict (fck_nmm2, fy_nmm2)
+        is_ok: True if both design and detailing are valid
+        remarks: Combined remarks from design and detailing
+
+    Example:
+        >>> result = design_and_detail_beam_is456(
+        ...     units="IS456",
+        ...     beam_id="B1",
+        ...     story="GF",
+        ...     span_mm=5000,
+        ...     mu_knm=150,
+        ...     vu_kn=80,
+        ...     b_mm=300,
+        ...     D_mm=500,
+        ...     fck_nmm2=25,
+        ...     fy_nmm2=500,
+        ... )
+        >>> print(result.summary())
+        'B1@GF: 300×500mm, Ast=960mm², OK'
+        >>> result.to_dict()  # Serialize
+        >>> result.to_json()  # JSON string
+    """
+
+    beam_id: str
+    story: str
+    design: Any  # ComplianceCaseResult - avoid circular import
+    detailing: Any  # BeamDetailingResult - avoid circular import
+    geometry: dict[str, float]
+    materials: dict[str, float]
+    is_ok: bool
+    remarks: str = ""
+
+    def summary(self) -> str:
+        """Human-readable summary of combined result."""
+        b = self.geometry.get("b_mm", 0)
+        D = self.geometry.get("D_mm", 0)
+        ast = self.design.flexure.ast_required if self.design else 0
+        status = "OK" if self.is_ok else "FAIL"
+        return f"{self.beam_id}@{self.story}: {b:.0f}×{D:.0f}mm, Ast={ast:.0f}mm², {status}"
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert to serializable dictionary.
+
+        Handles nested dataclasses by using dataclasses.asdict().
+
+        Returns:
+            Dictionary representation suitable for JSON serialization
+        """
+        from dataclasses import asdict, is_dataclass
+        from enum import Enum
+
+        def _safe_serialize(obj: Any) -> Any:
+            """Safely serialize an object, handling edge cases."""
+            if obj is None:
+                return None
+            if isinstance(obj, Enum):
+                return obj.name
+            if is_dataclass(obj) and not isinstance(obj, type):
+                try:
+                    return asdict(obj)
+                except Exception:
+                    # Fallback for complex dataclasses
+                    return str(obj)
+            return obj
+
+        return {
+            "beam_id": self.beam_id,
+            "story": self.story,
+            "design": _safe_serialize(self.design),
+            "detailing": _safe_serialize(self.detailing),
+            "geometry": self.geometry.copy(),
+            "materials": self.materials.copy(),
+            "is_ok": self.is_ok,
+            "remarks": self.remarks,
+        }
+
+    def to_json(self, indent: int = 2) -> str:
+        """Convert to JSON string.
+
+        Args:
+            indent: JSON indentation level (default: 2)
+
+        Returns:
+            JSON-formatted string of the complete result
+        """
+        import json
+
+        return json.dumps(self.to_dict(), indent=indent, default=str)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "DesignAndDetailResult":
+        """Create instance from dictionary.
+
+        Note: This creates a partial reconstruction. The design and detailing
+        objects are stored as dicts since full reconstruction requires the
+        original dataclass definitions.
+
+        Args:
+            data: Dictionary from to_dict() or JSON.loads()
+
+        Returns:
+            DesignAndDetailResult instance
+        """
+        return cls(
+            beam_id=data["beam_id"],
+            story=data["story"],
+            design=data.get("design"),  # Stored as dict
+            detailing=data.get("detailing"),  # Stored as dict
+            geometry=data.get("geometry", {}),
+            materials=data.get("materials", {}),
+            is_ok=data.get("is_ok", False),
+            remarks=data.get("remarks", ""),
+        )
+
+
+# =============================================================================
 # Cost Optimization Results
 # =============================================================================
 

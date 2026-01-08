@@ -1002,3 +1002,131 @@ def export_bom_summary_csv(
         )
 
     return str(path)
+
+
+# =============================================================================
+# Markdown/Display Functions
+# =============================================================================
+
+
+def generate_summary_table(
+    items: list[BBSLineItem],
+    member_id: str = "ALL",
+    format_type: str = "markdown",
+) -> str:
+    """
+    Generate a human-readable summary table from BBS items.
+
+    This is a convenience function for displaying BBS summaries in
+    Streamlit, Jupyter, or CLI applications. It generates a formatted
+    table that can be directly rendered in markdown-supporting environments.
+
+    Args:
+        items: List of BBS line items to summarize
+        member_id: Member ID for the summary header (default: "ALL")
+        format_type: Output format - "markdown", "text", or "html"
+                    (default: "markdown")
+
+    Returns:
+        Formatted string table ready for display
+
+    Example:
+        >>> from structural_lib import bbs
+        >>> items = bbs.generate_bbs_from_detailing(detailing)
+        >>> print(bbs.generate_summary_table(items))
+        | Dia (mm) | Count | Length (m) | Weight (kg) |
+        |----------|-------|------------|-------------|
+        | 12       | 8     | 42.5       | 37.6        |
+        | 16       | 4     | 24.0       | 37.9        |
+        | **TOTAL**| **12**| **66.5**   | **75.5**    |
+    """
+    summary = calculate_bbs_summary(items, member_id)
+
+    if format_type == "markdown":
+        return _format_summary_markdown(summary)
+    elif format_type == "html":
+        return _format_summary_html(summary)
+    else:
+        return _format_summary_text(summary)
+
+
+def _format_summary_markdown(summary: BBSummary) -> str:
+    """Format summary as markdown table."""
+    lines = [
+        f"### Bar Bending Schedule Summary - {summary.member_id}",
+        "",
+        "| Dia (mm) | Count | Length (m) | Weight (kg) |",
+        "|----------|-------|------------|-------------|",
+    ]
+
+    for dia in sorted(summary.count_by_diameter.keys()):
+        count = summary.count_by_diameter.get(dia, 0)
+        length = summary.length_by_diameter.get(dia, 0.0)
+        weight = summary.weight_by_diameter.get(dia, 0.0)
+        lines.append(f"| {int(dia)} | {count} | {length:.1f} | {weight:.1f} |")
+
+    lines.append(
+        f"| **TOTAL** | **{summary.total_bars}** | "
+        f"**{summary.total_length_m:.1f}** | **{summary.total_weight_kg:.1f}** |"
+    )
+    lines.append("")
+    lines.append(f"*{summary.total_items} line items*")
+
+    return "\n".join(lines)
+
+
+def _format_summary_html(summary: BBSummary) -> str:
+    """Format summary as HTML table."""
+    rows = []
+    for dia in sorted(summary.count_by_diameter.keys()):
+        count = summary.count_by_diameter.get(dia, 0)
+        length = summary.length_by_diameter.get(dia, 0.0)
+        weight = summary.weight_by_diameter.get(dia, 0.0)
+        rows.append(
+            f"<tr><td>{int(dia)}</td><td>{count}</td>"
+            f"<td>{length:.1f}</td><td>{weight:.1f}</td></tr>"
+        )
+
+    total_row = (
+        f"<tr><td><strong>TOTAL</strong></td>"
+        f"<td><strong>{summary.total_bars}</strong></td>"
+        f"<td><strong>{summary.total_length_m:.1f}</strong></td>"
+        f"<td><strong>{summary.total_weight_kg:.1f}</strong></td></tr>"
+    )
+
+    return f"""<table class="bbs-summary">
+<caption>Bar Bending Schedule - {summary.member_id}</caption>
+<thead>
+<tr><th>Dia (mm)</th><th>Count</th><th>Length (m)</th><th>Weight (kg)</th></tr>
+</thead>
+<tbody>
+{''.join(rows)}
+{total_row}
+</tbody>
+</table>"""
+
+
+def _format_summary_text(summary: BBSummary) -> str:
+    """Format summary as plain text table."""
+    lines = [
+        f"Bar Bending Schedule Summary - {summary.member_id}",
+        "=" * 50,
+        f"{'Dia (mm)':<10} {'Count':<8} {'Length (m)':<12} {'Weight (kg)':<12}",
+        "-" * 50,
+    ]
+
+    for dia in sorted(summary.count_by_diameter.keys()):
+        count = summary.count_by_diameter.get(dia, 0)
+        length = summary.length_by_diameter.get(dia, 0.0)
+        weight = summary.weight_by_diameter.get(dia, 0.0)
+        lines.append(f"{int(dia):<10} {count:<8} {length:<12.1f} {weight:<12.1f}")
+
+    lines.append("-" * 50)
+    lines.append(
+        f"{'TOTAL':<10} {summary.total_bars:<8} "
+        f"{summary.total_length_m:<12.1f} {summary.total_weight_kg:<12.1f}"
+    )
+    lines.append("=" * 50)
+    lines.append(f"{summary.total_items} line items")
+
+    return "\n".join(lines)

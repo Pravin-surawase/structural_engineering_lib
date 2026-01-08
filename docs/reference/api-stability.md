@@ -53,6 +53,9 @@ api.check_beam_is456(
 api.detail_beam_is456(
     units, beam_id, story, b_mm, D_mm, span_mm, cover_mm, fck_nmm2, fy_nmm2, ...
 )
+api.design_and_detail_beam_is456(
+    units, beam_id, story, span_mm, mu_knm, vu_kn, b_mm, D_mm, ...
+)  # Combined design + detailing convenience function
 ```
 
 Note: `api.check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m)
