@@ -27,6 +27,10 @@ from utils.documentation_data import (
     REFERENCE_TABLES
 )
 from utils.layout import setup_page, page_header, section_header, info_panel
+from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
+
+# Initialize theme
+initialize_theme()
 
 # Modern page setup
 setup_page(
@@ -34,6 +38,9 @@ setup_page(
     icon="📚",
     layout="wide"
 )
+
+# Apply dark mode styling
+apply_dark_mode_theme()
 
 # Page header
 page_header(

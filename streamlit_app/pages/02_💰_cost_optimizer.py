@@ -31,6 +31,11 @@ from components.inputs import (
 from utils.api_wrapper import cached_smart_analysis
 from utils.validation import ValidationError, validate_positive
 from utils.layout import setup_page, page_header, section_header, info_panel
+from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
+from utils.loading_states import loading_context
+
+# Initialize theme
+initialize_theme()
 
 # Modern page setup
 setup_page(
@@ -38,6 +43,9 @@ setup_page(
     icon="💰",
     layout="wide"
 )
+
+# Apply dark mode styling
+apply_dark_mode_theme()
 
 
 def initialize_session_state():

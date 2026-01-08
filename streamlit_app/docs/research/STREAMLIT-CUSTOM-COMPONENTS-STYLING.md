@@ -1,18 +1,10 @@
 # RESEARCH-005: Streamlit Custom Components & Advanced Styling
 
-<<<<<<< Updated upstream
 **Status:** 🟡 IN PROGRESS
 **Priority:** 🔴 CRITICAL
 **Agent:** Agent 6 (Streamlit Specialist)
 **Created:** 2026-01-08
 **Estimated Duration:** 6-8 hours
-=======
-**Status:** 🟡 IN PROGRESS
-**Priority:** 🔴 CRITICAL
-**Agent:** Agent 6 (Streamlit Specialist)
-**Created:** 2026-01-08
-**Estimated Duration:** 6-8 hours
->>>>>>> Stashed changes
 **Depends On:** RESEARCH-004 (Design Systems)
 
 ---
@@ -102,11 +94,7 @@ def inject_custom_css():
     /* Import fonts from Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* CSS Custom Properties (design tokens) */
     :root {
         --primary-500: #003366;
@@ -124,30 +112,18 @@ def inject_custom_css():
         --shadow-1: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Global font family */
     html, body, [class*="css"], input, textarea, select {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Numbers use monospace */
     .number-display {
         font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
         font-variant-numeric: tabular-nums;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Override Streamlit button */
     .stButton > button {
         background-color: var(--accent-500) !important;
@@ -161,30 +137,18 @@ def inject_custom_css():
         transition: all 200ms ease !important;
         cursor: pointer;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stButton > button:hover {
         background-color: #CC5200 !important;
         box-shadow: var(--shadow-2) !important;
         transform: translateY(-1px);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stButton > button:active {
         transform: translateY(0);
         box-shadow: var(--shadow-1) !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Override number input */
     .stNumberInput > div > div > input {
         font-family: 'JetBrains Mono', monospace !important;
@@ -194,57 +158,36 @@ def inject_custom_css():
         border: 1px solid #E5E5E5 !important;
         padding: var(--space-2) var(--space-4) !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stNumberInput > div > div > input:focus {
         border-color: var(--primary-500) !important;
         box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1) !important;
         outline: none !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Override text input */
     .stTextInput > div > div > input {
         border-radius: var(--radius-sm) !important;
         border: 1px solid #E5E5E5 !important;
         padding: var(--space-2) var(--space-4) !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stTextInput > div > div > input:focus {
         border-color: var(--primary-500) !important;
         box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1) !important;
         outline: none !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Override selectbox */
     .stSelectbox > div > div {
         border-radius: var(--radius-sm) !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Sidebar styling */
     [data-testid="stSidebar"] {
         background-color: var(--gray-50);
         border-right: 1px solid #E5E5E5;
     }
-<<<<<<< Updated upstream
 
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
@@ -252,25 +195,12 @@ def inject_custom_css():
         color: var(--gray-900);
     }
 
-=======
-
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: var(--gray-900);
-    }
-
->>>>>>> Stashed changes
     /* Main content area */
     .main .block-container {
         padding: var(--space-5);
         max-width: 1280px;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Custom card class */
     .custom-card {
         background: var(--gray-50);
@@ -282,106 +212,62 @@ def inject_custom_css():
         box-shadow: var(--shadow-1);
         transition: box-shadow 200ms ease;
     }
-<<<<<<< Updated upstream
 
     .custom-card:hover {
         box-shadow: var(--shadow-2);
     }
 
-=======
-
-    .custom-card:hover {
-        box-shadow: var(--shadow-2);
-    }
-
->>>>>>> Stashed changes
     /* Success card */
     .card-success {
         background: #D1F4E0;
         border-left-color: var(--success);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Warning card */
     .card-warning {
         background: #FEF3C7;
         border-left-color: var(--warning);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Error card */
     .card-error {
         background: #FEE2E2;
         border-left-color: var(--error);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Metric styling */
     [data-testid="stMetricValue"] {
         font-size: 28px;
         font-weight: 600;
         color: var(--gray-900);
     }
-<<<<<<< Updated upstream
 
     [data-testid="stMetricDelta"] {
         font-size: 14px;
     }
 
-=======
-
-    [data-testid="stMetricDelta"] {
-        font-size: 14px;
-    }
-
->>>>>>> Stashed changes
     /* Expander styling */
     .streamlit-expanderHeader {
         background-color: var(--gray-50);
         border-radius: var(--radius-sm);
         font-weight: 500;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Tabs styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: var(--space-2);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stTabs [data-baseweb="tab"] {
         padding: var(--space-2) var(--space-4);
         border-radius: var(--radius-sm);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stTabs [aria-selected="true"] {
         background-color: var(--primary-500);
         color: white;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Hide Streamlit footer and menu */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -554,19 +440,11 @@ _my_component = components.declare_component(
 def my_component(value: str, key: str = None):
     """
     My custom Streamlit component.
-<<<<<<< Updated upstream
 
     Args:
         value: Initial value
         key: Unique key for component
 
-=======
-
-    Args:
-        value: Initial value
-        key: Unique key for component
-
->>>>>>> Stashed changes
     Returns:
         Component value (from user interaction)
     """
@@ -908,11 +786,7 @@ st.markdown("""
         width: 32%;
         padding: 24px;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .main .block-container {
         max-width: 1280px;
     }
@@ -925,11 +799,7 @@ st.markdown("""
         width: 100% !important;
         margin-bottom: 16px;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Larger touch targets */
     .stButton > button {
         min-height: 44px;
@@ -1030,38 +900,22 @@ st.markdown("""
     .stDownloadButton {
         display: none !important;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Optimize for printing */
     body {
         background: white;
         color: black;
     }
-<<<<<<< Updated upstream
 
     .main {
         padding: 0;
     }
 
-=======
-
-    .main {
-        padding: 0;
-    }
-
->>>>>>> Stashed changes
     /* Page breaks */
     .page-break {
         page-break-after: always;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Ensure charts print */
     .js-plotly-plot {
         break-inside: avoid;
@@ -1100,11 +954,7 @@ def styled_card(
 ):
     """
     Styled card with elevation and color variants.
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Args:
         title: Card title
         content: Card content (supports markdown)
@@ -1118,17 +968,10 @@ def styled_card(
         "error": {"bg": COLORS.ERROR_LIGHT, "border": COLORS.ERROR, "icon": "❌"},
         "info": {"bg": COLORS.INFO_LIGHT, "border": COLORS.INFO, "icon": "ℹ️"},
     }
-<<<<<<< Updated upstream
 
     style = variants[variant]
     display_icon = icon or style["icon"]
 
-=======
-
-    style = variants[variant]
-    display_icon = icon or style["icon"]
-
->>>>>>> Stashed changes
     st.markdown(f"""
     <div style="
         background: {style['bg']};
@@ -1153,11 +996,7 @@ def styled_card(
 def styled_metric(label: str, value: str, delta: str = None, help_text: str = None):
     """
     Styled metric display with optional delta indicator.
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Args:
         label: Metric label
         value: Metric value (main display)
@@ -1177,11 +1016,7 @@ def styled_metric(label: str, value: str, delta: str = None, help_text: str = No
             {delta}
         </div>
         """
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     st.markdown(f"""
     <div style="
         background: {COLORS.GRAY_50};
@@ -1216,20 +1051,12 @@ def styled_metric(label: str, value: str, delta: str = None, help_text: str = No
 def styled_button(label: str, variant: Literal["primary", "secondary", "ghost"] = "primary", key: str = None):
     """
     Styled button (wrapper around st.button with custom CSS).
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Args:
         label: Button text
         variant: Button style variant
         key: Unique key for button
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Returns:
         True if button was clicked
     """
@@ -1244,11 +1071,7 @@ def styled_button(label: str, variant: Literal["primary", "secondary", "ghost"] 
 def code_block(code: str, language: str = "python"):
     """
     Styled code block with syntax highlighting.
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Args:
         code: Code string
         language: Programming language for syntax highlighting
@@ -1259,11 +1082,7 @@ def code_block(code: str, language: str = "python"):
 def collapsible_section(title: str, content: str, expanded: bool = False):
     """
     Collapsible section (styled expander).
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Args:
         title: Section title
         content: Section content
@@ -1343,11 +1162,7 @@ def load_css_for_page(page_name: str):
         "beam_design": "styles/beam_design.css",
         "cost_optimizer": "styles/cost_optimizer.css",
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     if page_name in css_map:
         with open(css_map[page_name]) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -1423,11 +1238,7 @@ st.markdown("""
         background: blue;
     }
     </style>
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     <button class="custom-button">Click me</button>
 </div>
 """, unsafe_allow_html=True)
@@ -1490,13 +1301,7 @@ st.markdown("""
 
 ---
 
-<<<<<<< Updated upstream
 **Research Complete:** 2026-01-08
 **Total Time:** 7 hours
 **Lines:** 985
-=======
-**Research Complete:** 2026-01-08
-**Total Time:** 7 hours
-**Lines:** 985
->>>>>>> Stashed changes
 **Status:** ✅ READY FOR IMPLEMENTATION

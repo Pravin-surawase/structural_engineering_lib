@@ -1,18 +1,10 @@
 # RESEARCH-007: Micro-interactions & Animation for Engineering UIs
 
-<<<<<<< Updated upstream
 **Status:** 🟡 IN PROGRESS
 **Priority:** 🔴 CRITICAL
 **Agent:** Agent 6 (Streamlit Specialist)
 **Created:** 2026-01-08
 **Estimated Duration:** 4-6 hours
-=======
-**Status:** 🟡 IN PROGRESS
-**Priority:** 🔴 CRITICAL
-**Agent:** Agent 6 (Streamlit Specialist)
-**Created:** 2026-01-08
-**Estimated Duration:** 4-6 hours
->>>>>>> Stashed changes
 **Depends On:** RESEARCH-004 (Design Systems), RESEARCH-005 (Custom Components)
 
 ---
@@ -732,11 +724,7 @@ st.markdown("""
     .element {
         transition: none;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Still show instant state changes */
     .element:hover {
         transform: translateY(-4px);
@@ -786,20 +774,12 @@ def custom_spinner(message: str = "Loading..."):
         <div class="custom-spinner"></div>
         <span style="color: #737373;">{message}</span>
     </div>
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     <style>
     @keyframes spin {
         to {{ transform: rotate(360deg); }}
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .custom-spinner {{
         width: 24px;
         height: 24px;
@@ -826,20 +806,12 @@ def animated_success(message: str):
     st.markdown(f"""
     <div class="success-message">
         <svg class="checkmark" width="24" height="24" viewBox="0 0 24 24">
-<<<<<<< Updated upstream
             <path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="3"
-=======
-            <path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="3"
->>>>>>> Stashed changes
                   fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span>{message}</span>
     </div>
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     <style>
     .success-message {{
         display: flex;
@@ -851,11 +823,7 @@ def animated_success(message: str):
         border-radius: 8px;
         animation: slideInRight 300ms cubic-bezier(0.4, 0, 0.2, 1);
     }}
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     @keyframes slideInRight {{
         from {{
             opacity: 0;
@@ -866,21 +834,13 @@ def animated_success(message: str):
             transform: translateX(0);
         }}
     }}
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .checkmark {{
         stroke-dasharray: 100;
         stroke-dashoffset: 100;
         animation: checkmark 500ms ease-out 300ms forwards;
     }}
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     @keyframes checkmark {{
         to {{
             stroke-dashoffset: 0;
@@ -901,11 +861,7 @@ def show_chart_skeleton():
         <div class="skeleton-bar"></div>
         <div class="skeleton-bar"></div>
     </div>
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     <style>
     .chart-skeleton {
         width: 100%;
@@ -918,11 +874,7 @@ def show_chart_skeleton():
         justify-content: flex-end;
         gap: 16px;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .skeleton-bar {
         height: 40px;
         background: linear-gradient(
@@ -935,19 +887,11 @@ def show_chart_skeleton():
         animation: skeleton-loading 1.5s ease-in-out infinite;
         border-radius: 4px;
     }
-<<<<<<< Updated upstream
 
     .skeleton-bar:nth-child(1) { width: 80%; }
     .skeleton-bar:nth-child(2) { width: 60%; }
     .skeleton-bar:nth-child(3) { width: 90%; }
 
-=======
-
-    .skeleton-bar:nth-child(1) { width: 80%; }
-    .skeleton-bar:nth-child(2) { width: 60%; }
-    .skeleton-bar:nth-child(3) { width: 90%; }
-
->>>>>>> Stashed changes
     @keyframes skeleton-loading {
         0% { background-position: 200% 0; }
         100% { background-position: -200% 0; }
@@ -984,7 +928,6 @@ import time
 def benchmark_animation():
     """Measure time for animation operations."""
     start = time.perf_counter()
-<<<<<<< Updated upstream
 
     # Trigger animation
     st.button("Animated Button")
@@ -992,15 +935,6 @@ def benchmark_animation():
     end = time.perf_counter()
     duration_ms = (end - start) * 1000
 
-=======
-
-    # Trigger animation
-    st.button("Animated Button")
-
-    end = time.perf_counter()
-    duration_ms = (end - start) * 1000
-
->>>>>>> Stashed changes
     assert duration_ms < 16.67  # Should render in < 1 frame (60fps)
 ```
 
@@ -1010,7 +944,6 @@ def benchmark_animation():
 
 ### 9.1 Do's
 
-<<<<<<< Updated upstream
 ✅ **Use animations sparingly** - Only when they serve a purpose
 ✅ **Keep durations short** - 200-300ms for most interactions
 ✅ **Use appropriate easing** - ease-out for most cases
@@ -1027,24 +960,6 @@ def benchmark_animation():
 ❌ **Don't use multiple concurrent animations** - Overwhelming
 ❌ **Don't ignore performance** - Janky animations worse than none
 ❌ **Don't use animations for decoration** - Must have functional purpose
-=======
-✅ **Use animations sparingly** - Only when they serve a purpose
-✅ **Keep durations short** - 200-300ms for most interactions
-✅ **Use appropriate easing** - ease-out for most cases
-✅ **Test on real devices** - Especially mobile
-✅ **Respect user preferences** - `prefers-reduced-motion`
-✅ **Use GPU-accelerated properties** - `transform`, `opacity`
-✅ **Provide fallbacks** - Instant state changes if animations disabled
-
-### 9.2 Don'ts
-
-❌ **Don't animate layout properties** - Causes reflows
-❌ **Don't use long durations** - > 500ms feels slow
-❌ **Don't animate during data entry** - Disrupts user flow
-❌ **Don't use multiple concurrent animations** - Overwhelming
-❌ **Don't ignore performance** - Janky animations worse than none
-❌ **Don't use animations for decoration** - Must have functional purpose
->>>>>>> Stashed changes
 
 ---
 
@@ -1093,13 +1008,7 @@ def benchmark_animation():
 
 ---
 
-<<<<<<< Updated upstream
 **Research Complete:** 2026-01-08
 **Total Time:** 5 hours
 **Lines:** 850
-=======
-**Research Complete:** 2026-01-08
-**Total Time:** 5 hours
-**Lines:** 850
->>>>>>> Stashed changes
 **Status:** ✅ READY FOR IMPLEMENTATION

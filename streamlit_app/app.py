@@ -17,6 +17,10 @@ Version: 0.2.0 (UI-002: Modern Page Layout Redesign)
 import streamlit as st
 from utils.layout import setup_page, page_header, info_panel, section_header
 from utils.design_system import COLORS
+from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
+
+# Initialize theme
+initialize_theme()
 
 # Modern page setup
 setup_page(
@@ -24,6 +28,9 @@ setup_page(
     icon="🏗️",
     layout="wide"
 )
+
+# Apply dark mode styling
+apply_dark_mode_theme()
 
 # Hero section with professional styling
 page_header(
@@ -127,6 +134,9 @@ with st.sidebar:
     - **✅ Compliance:** IS 456 checking
     - **📚 Documentation:** Help & examples
     """)
+
+    # Theme toggle
+    render_theme_toggle()
 
     st.markdown("---")
     st.markdown("### 🎨 Theme")

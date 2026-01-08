@@ -41,6 +41,11 @@ from components.visualizations import (
 from utils.api_wrapper import cached_design, cached_smart_analysis
 from utils.validation import validate_dimension, format_error_message
 from utils.layout import setup_page, page_header, section_header, three_column_metrics, info_panel
+from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
+from utils.loading_states import loading_context, add_loading_skeleton
+
+# Initialize theme
+initialize_theme()
 
 # Modern page setup with professional styling
 setup_page(
@@ -48,6 +53,9 @@ setup_page(
     icon="🏗️",
     layout="wide"
 )
+
+# Apply dark mode styling
+apply_dark_mode_theme()
 
 # Initialize session state for input persistence
 if 'beam_inputs' not in st.session_state:
@@ -79,6 +87,9 @@ page_header(
 
 with st.sidebar:
     st.header("📋 Input Parameters")
+
+    # Theme toggle at top
+    render_theme_toggle()
 
     st.markdown("---")
 
@@ -201,7 +212,8 @@ with st.sidebar:
 
     if st.button("🚀 Analyze Design", disabled=not all_valid, use_container_width=True):
         st.session_state.beam_inputs['design_computed'] = False  # Force recomputation
-        with st.spinner("Computing design... ⏳"):
+
+        with loading_context("spinner", "Computing design... Please wait"):
             try:
                 # Call design API (currently using placeholder from api_wrapper)
                 result = cached_design(

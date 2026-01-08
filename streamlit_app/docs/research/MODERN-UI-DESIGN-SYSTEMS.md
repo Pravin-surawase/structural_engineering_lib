@@ -1,18 +1,10 @@
 # RESEARCH-004: Modern UI Design Systems for Engineering Applications
 
-<<<<<<< Updated upstream
 **Status:** 🟡 IN PROGRESS
 **Priority:** 🔴 CRITICAL
 **Agent:** Agent 6 (Streamlit Specialist)
 **Created:** 2026-01-08
 **Estimated Duration:** 6-8 hours
-=======
-**Status:** 🟡 IN PROGRESS
-**Priority:** 🔴 CRITICAL
-**Agent:** Agent 6 (Streamlit Specialist)
-**Created:** 2026-01-08
-**Estimated Duration:** 6-8 hours
->>>>>>> Stashed changes
 
 ---
 
@@ -162,11 +154,7 @@ GRAY_900 = "#171717"  # Maximum contrast
 
 **Fallback Stack:**
 ```css
-<<<<<<< Updated upstream
 font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-=======
-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
->>>>>>> Stashed changes
              'Roboto', 'Helvetica Neue', Arial, sans-serif;
 
 /* For code/numbers */
@@ -686,11 +674,7 @@ def apply_custom_styles():
     /* Import fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Root variables */
     :root {
         --primary-500: #003366;
@@ -702,20 +686,12 @@ def apply_custom_styles():
         --radius-md: 8px;
         --shadow-1: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Global font */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Streamlit button override */
     .stButton > button {
         background-color: var(--accent-500);
@@ -727,21 +703,13 @@ def apply_custom_styles():
         box-shadow: var(--shadow-1);
         transition: all 200ms ease;
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     .stButton > button:hover {
         background-color: #CC5200;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         transform: translateY(-1px);
     }
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     /* Custom card class */
     .custom-card {
         background: var(--gray-50);
@@ -762,11 +730,7 @@ def apply_custom_styles():
 def custom_card(title: str, content: str, variant: str = "default"):
     """
     Custom card with elevation and styling.
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     Args:
         title: Card title
         content: Card content (markdown supported)
@@ -778,17 +742,10 @@ def custom_card(title: str, content: str, variant: str = "default"):
         "warning": {"bg": "#FEF3C7", "border": "#F59E0B"},
         "error": {"bg": "#FEE2E2", "border": "#EF4444"},
     }
-<<<<<<< Updated upstream
 
     bg = colors[variant]["bg"]
     border = colors[variant]["border"]
 
-=======
-
-    bg = colors[variant]["bg"]
-    border = colors[variant]["border"]
-
->>>>>>> Stashed changes
     st.markdown(f"""
     <div style="
         background: {bg};
@@ -839,29 +796,17 @@ from typing import Literal
 @dataclass(frozen=True)
 class ColorPalette:
     """Color palette based on IS 456 brand colors."""
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     # Primary (Navy Blue)
     PRIMARY_50 = "#E6EDF5"
     PRIMARY_500 = "#003366"
     PRIMARY_700 = "#001F3D"
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     # Accent (Orange)
     ACCENT_50 = "#FFF3E6"
     ACCENT_500 = "#FF6600"
     ACCENT_700 = "#993D00"
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     # Semantic
     SUCCESS = "#10B981"
     SUCCESS_LIGHT = "#D1F4E0"
@@ -871,11 +816,7 @@ class ColorPalette:
     ERROR_LIGHT = "#FEE2E2"
     INFO = "#3B82F6"
     INFO_LIGHT = "#DBEAFE"
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     # Grays
     GRAY_50 = "#FAFAFA"
     GRAY_100 = "#F5F5F5"
@@ -902,11 +843,7 @@ class Typography:
     """Typography scale and settings."""
     FONT_FAMILY_UI = "'Inter', sans-serif"
     FONT_FAMILY_MONO = "'JetBrains Mono', monospace"
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     DISPLAY_SIZE = "48px"
     H1_SIZE = "36px"
     H2_SIZE = "28px"
@@ -916,11 +853,7 @@ class Typography:
     BODY_SIZE = "16px"
     BODY_SM_SIZE = "14px"
     CAPTION_SIZE = "12px"
-<<<<<<< Updated upstream
 
-=======
-
->>>>>>> Stashed changes
     LINE_HEIGHT_TIGHT = 1.25
     LINE_HEIGHT_NORMAL = 1.5
     LINE_HEIGHT_RELAXED = 1.75
@@ -1155,13 +1088,7 @@ DURATION_SLOW = "300ms"
 
 ---
 
-<<<<<<< Updated upstream
 **Research Complete:** 2026-01-08
 **Total Time:** 6 hours
 **Lines:** 980
-=======
-**Research Complete:** 2026-01-08
-**Total Time:** 6 hours
-**Lines:** 980
->>>>>>> Stashed changes
 **Status:** ✅ READY FOR IMPLEMENTATION
