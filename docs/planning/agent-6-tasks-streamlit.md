@@ -3,7 +3,7 @@
 **Agent Role:** STREAMLIT UI SPECIALIST (Daily Development)
 **Primary Focus:** Build production-ready Streamlit dashboards for structural engineering, following professional UI/UX practices
 **Status:** Active
-**Last Updated:** 2026-01-08T23:30Z
+**Last Updated:** 2026-01-09T00:15Z
 **Frequency:** Daily (30-60 min/day)
 
 ---
@@ -23,184 +23,765 @@
 | STREAMLIT-IMPL-004 | Beam Design Page | 586 | - | ✅ Complete |
 | STREAMLIT-IMPL-005 | Cost Optimizer Page | 494 | - | ✅ Complete |
 | STREAMLIT-IMPL-006 | Compliance Checker Page | 485 | - | ✅ Complete |
+| STREAMLIT-FIX-001 | Fix All Failing Tests | 1,156 | 52 | ✅ Complete |
 
-**Total Delivered:** 10,001 lines, 29 tests (3 complete pages)
+**Total Delivered:** 11,157 lines, 81 tests (3 complete pages, 100% pass rate)
 
-### ⚠️ Issues to Fix
-
-| Issue | Severity | Status |
-|-------|----------|--------|
-| test_visualizations.py - Wrong function signatures | 🔴 HIGH | 🟡 TODO |
-| test_api_wrapper.py - Missing assertions | 🔴 HIGH | 🟡 TODO |
-| 44/52 new tests failing | 🔴 HIGH | 🟡 TODO |
-
-### 🔄 NEW PHASES (Start Immediately)
+### 🔄 ACTIVE PHASES (Start Immediately)
 
 | Task | Description | Priority | Status | Days |
 |------|-------------|----------|--------|------|
-| STREAMLIT-FIX-001 | Fix All Failing Tests | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
-| STREAMLIT-IMPL-008 | Documentation Page + User Guide | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
-| STREAMLIT-IMPL-009 | Error Handling & Validation | 🟠 HIGH | 🟡 TODO | Day 5-6 |
-| STREAMLIT-IMPL-010 | Performance Optimization | 🟠 HIGH | 🟡 TODO | Day 7-8 |
-| STREAMLIT-IMPL-011 | Accessibility Audit & Fixes | 🟠 HIGH | 🟡 TODO | Day 9-10 |
-| STREAMLIT-IMPL-012 | End-to-End Integration Tests | 🟠 HIGH | 🟡 TODO | Day 11-12 |
+| STREAMLIT-IMPL-008 | Documentation Page + User Guide | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
+| STREAMLIT-IMPL-009 | Error Handling & Validation | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
+| STREAMLIT-IMPL-010 | Session State & Data Persistence | 🟠 HIGH | 🟡 TODO | Day 5-6 |
+| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🟠 HIGH | 🟡 TODO | Day 7-8 |
+| STREAMLIT-IMPL-012 | Settings & Configuration Page | 🟠 HIGH | 🟡 TODO | Day 9-10 |
+| STREAMLIT-IMPL-013 | About & Help System | 🟠 HIGH | 🟡 TODO | Day 11-12 |
+| STREAMLIT-IMPL-014 | Performance & Caching Optimization | 🟢 MEDIUM | 🟡 TODO | Day 13-14 |
+| STREAMLIT-IMPL-015 | Accessibility Audit (WCAG 2.1 AA) | 🟢 MEDIUM | 🟡 TODO | Day 15-16 |
+| STREAMLIT-IMPL-016 | E2E Integration Tests | 🟢 MEDIUM | 🟡 TODO | Day 17-18 |
+| STREAMLIT-IMPL-017 | Mobile Responsiveness | 🟢 MEDIUM | 🟡 TODO | Day 19-20 |
 
 ---
 
-## 🔴 CRITICAL: STREAMLIT-FIX-001 - Fix All Failing Tests (Day 1-2)
-**Priority:** 🔴 CRITICAL - DO THIS FIRST
+## 🔴 CRITICAL: STREAMLIT-IMPL-008 - Documentation Page + User Guide (Day 1-2)
+**Priority:** 🔴 CRITICAL - START NOW
 **Status:** 🟡 TODO
-**Estimated Effort:** 3-4 hours
+**Estimated Effort:** 4-5 hours
 
-### Background
-The tests in `test_visualizations.py` and `test_api_wrapper.py` were written with incorrect function signatures that don't match the actual implementations. This MUST be fixed before any other work.
+### Objective
+Create comprehensive, interactive documentation page with:
+- IS 456 clause quick reference with search
+- Step-by-step user guides for each feature
+- Formula explanations with interactive examples
+- FAQ section with common questions
+- Glossary of structural engineering terms
 
-### Current Test Status
+### Page Layout
+
 ```
-Total tests: 81
-Passing: 37 (29 original + 8 new)
-Failing: 44
+┌─────────────────────────────────────────────────────────────────────┐
+│ 📚 Documentation - IS 456 Reference & User Guide                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│ [🔍 Search: _______________]   [Quick Links ▼]                      │
+│                                                                      │
+│ ┌───────────────────────────────────────────────────────────────┐   │
+│ │ [Getting Started] [IS 456 Clauses] [Formulas] [FAQ] [Glossary]│   │
+│ └───────────────────────────────────────────────────────────────┘   │
+│                                                                      │
+│ ══════════════════════════════════════════════════════════════════  │
+│                                                                      │
+│ 🚀 GETTING STARTED                                                  │
+│ ┌───────────────────────────────────────────────────────────────┐   │
+│ │ **Step 1: Enter Geometry**                                     │   │
+│ │ Width (b): 150-600mm typical    Depth (D): Span/10 to Span/15 │   │
+│ │                                                                │   │
+│ │ **Step 2: Select Materials**                                   │   │
+│ │ M20 for residential | M25-M30 for commercial | Fe415/Fe500    │   │
+│ │                                                                │   │
+│ │ **Step 3: Enter Loads**                                        │   │
+│ │ Moment from structural analysis | Shear from support reactions│   │
+│ └───────────────────────────────────────────────────────────────┘   │
+│                                                                      │
+│ 📋 IS 456 CLAUSE REFERENCE                                          │
+│ ┌───────────────────────────────────────────────────────────────┐   │
+│ │ ▼ Flexure (Cl. 26.5)           ▼ Shear (Cl. 40)              │   │
+│ │ ▼ Detailing (Cl. 26.3-26.4)    ▼ Serviceability (Cl. 23)     │   │
+│ │ ▼ Ductility (Cl. 21.6)         ▼ Cover (Cl. 26.4.1)          │   │
+│ └───────────────────────────────────────────────────────────────┘   │
+│                                                                      │
+│ 📐 FORMULA CALCULATOR                                               │
+│ ┌───────────────────────────────────────────────────────────────┐   │
+│ │ Select Formula: [Moment of Resistance ▼]                       │   │
+│ │ Inputs: fck=[ 25 ] fy=[ 415 ] b=[ 300 ] d=[ 450 ]            │   │
+│ │ Result: Mu_lim = 234.5 kN·m                                   │   │
+│ └───────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Root Causes Identified
+### Implementation
 
-#### 1. `create_beam_diagram()` - Wrong Parameters
-**Test uses:**
 ```python
-create_beam_diagram(
-    b_mm=300, D_mm=500, d_mm=450,
-    ast_mm2=1200,  # WRONG - doesn't exist
-    xu=120, ...
+# streamlit_app/pages/04_📚_documentation.py (~600 lines)
+
+import streamlit as st
+
+st.set_page_config(
+    page_title="Documentation | IS 456 Dashboard",
+    page_icon="📚",
+    layout="wide"
 )
+
+# Search functionality
+search_query = st.text_input("🔍 Search documentation...", key="doc_search")
+
+# Navigation tabs
+tabs = st.tabs([
+    "🚀 Getting Started",
+    "📋 IS 456 Clauses",
+    "📐 Formulas",
+    "❓ FAQ",
+    "📖 Glossary"
+])
+
+with tabs[0]:  # Getting Started
+    st.header("Getting Started Guide")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("1️⃣ Understanding Inputs")
+        st.markdown("""
+        **Geometry:**
+        - **Width (b):** 150-600mm for typical beams
+        - **Depth (D):** Usually span/10 to span/15
+        - **Effective depth (d):** D - cover - bar_dia/2
+
+        **Materials:**
+        | Grade | Use Case | fck (N/mm²) |
+        |-------|----------|-------------|
+        | M20 | Residential | 20 |
+        | M25 | Commercial | 25 |
+        | M30 | High-rise | 30 |
+        """)
+
+    with col2:
+        st.subheader("2️⃣ Reading Results")
+        st.markdown("""
+        **Status Indicators:**
+        - ✅ **SAFE** - All checks pass
+        - ⚠️ **WARNING** - Marginal, review recommended
+        - ❌ **UNSAFE** - Redesign required
+
+        **Key Outputs:**
+        - **Ast required** - Tension steel area
+        - **Utilization** - % of capacity used
+        - **Margin** - Safety factor above minimum
+        """)
+
+with tabs[1]:  # IS 456 Clauses
+    st.header("IS 456:2000 Clause Reference")
+
+    # Searchable clause database
+    clause_search = st.text_input("Search clauses...", key="clause_search")
+
+    with st.expander("📏 Flexure Requirements (Cl. 26.5)", expanded=True):
+        st.markdown("""
+        ### Cl. 26.5.1.1 - Minimum Tension Reinforcement
+
+        **Formula:**
+        $$A_{s,min} = \\frac{0.85 \\cdot b_w \\cdot d}{f_y}$$
+
+        **Purpose:** Ensures ductile failure mode and controls cracking.
+
+        **Typical Values:**
+        | Concrete | Steel | pt_min (%) |
+        |----------|-------|------------|
+        | M20 | Fe415 | 0.205 |
+        | M25 | Fe500 | 0.170 |
+        """)
+
+    with st.expander("🛡️ Shear Requirements (Cl. 40)"):
+        st.markdown("""
+        ### Cl. 40.1 - Nominal Shear Stress
+
+        **Formula:**
+        $$\\tau_v = \\frac{V_u}{b \\cdot d}$$
+
+        **Check:** τv must be ≤ τc,max (Table 20)
+
+        ### Cl. 40.4 - Shear Reinforcement
+
+        When τv > τc:
+        $$A_{sv} = \\frac{V_{us} \\cdot s_v}{0.87 \\cdot f_y \\cdot d}$$
+        """)
+
+    # More clauses...
+
+with tabs[2]:  # Formulas
+    st.header("📐 Interactive Formula Calculator")
+
+    formula_type = st.selectbox(
+        "Select Formula",
+        ["Moment of Resistance", "Shear Strength", "Development Length",
+         "Deflection Check", "Crack Width"]
+    )
+
+    if formula_type == "Moment of Resistance":
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            fck = st.number_input("fck (N/mm²)", value=25.0)
+            fy = st.number_input("fy (N/mm²)", value=415.0)
+            b = st.number_input("b (mm)", value=300.0)
+            d = st.number_input("d (mm)", value=450.0)
+
+        with col2:
+            # Calculate Mu_lim
+            xu_max_d = 0.48 if fy <= 415 else 0.46
+            Mu_lim = 0.36 * fck * b * d**2 * xu_max_d * (1 - 0.42 * xu_max_d) / 1e6
+
+            st.metric("Mu,lim", f"{Mu_lim:.1f} kN·m")
+            st.latex(r"M_{u,lim} = 0.36 f_{ck} b d^2 \frac{x_{u,max}}{d} \left(1 - 0.42\frac{x_{u,max}}{d}\right)")
+
+with tabs[3]:  # FAQ
+    st.header("❓ Frequently Asked Questions")
+
+    faqs = [
+        ("What concrete grade should I use?",
+         "M20 for residential (up to 3 floors), M25 for commercial buildings, M30+ for high-rise or aggressive environments."),
+        ("How do I size a beam initially?",
+         "Start with D = span/12 for simply supported, span/15 for continuous. Width typically 200-400mm."),
+        ("What is utilization ratio?",
+         "Percentage of the beam's capacity being used. 85-95% is optimal. Below 70% is over-designed, above 100% is unsafe."),
+        # Add 10+ FAQs
+    ]
+
+    for question, answer in faqs:
+        with st.expander(question):
+            st.write(answer)
+
+with tabs[4]:  # Glossary
+    st.header("📖 Glossary of Terms")
+
+    glossary = {
+        "Ast": "Area of tension steel reinforcement (mm²)",
+        "Asc": "Area of compression steel reinforcement (mm²)",
+        "b": "Width of beam (mm)",
+        "d": "Effective depth (mm)",
+        "D": "Overall depth (mm)",
+        "fck": "Characteristic compressive strength of concrete (N/mm²)",
+        "fy": "Characteristic yield strength of steel (N/mm²)",
+        # Add 30+ terms
+    }
+
+    cols = st.columns(3)
+    for i, (term, definition) in enumerate(sorted(glossary.items())):
+        with cols[i % 3]:
+            st.markdown(f"**{term}:** {definition}")
 ```
 
-**Actual signature:**
-```python
-create_beam_diagram(
-    b_mm: float,
-    D_mm: float,
-    d_mm: float,
-    rebar_positions: List[Tuple[float, float]],  # CORRECT
-    xu: float,
-    bar_dia: float,
-    cover: float = 30.0,
-    show_dimensions: bool = True
-)
-```
-
-#### 2. `create_cost_comparison()` - Wrong Key Names
-**Test uses:**
-```python
-{"name": "3-16mm", "cost": 87.45, ...}  # WRONG key
-```
-
-**Actual expects:**
-```python
-{"name": "3-16mm", "cost_per_meter": 87.45, ...}  # CORRECT key
-```
-
-#### 3. `create_sensitivity_tornado()` - Missing Required Argument
-**Test calls:**
-```python
-create_sensitivity_tornado(sensitivity_data)  # WRONG - missing arg
-```
-
-**Actual signature:**
-```python
-create_sensitivity_tornado(
-    sensitivity_data: List[Dict],
-    baseline_value: float  # REQUIRED
-)
-```
-
-### Fix Strategy
-
-#### Step 1: Read Actual Function Signatures
-```bash
-# Check all function signatures in visualizations.py
-grep -n "^def " streamlit_app/components/visualizations.py
-```
-
-#### Step 2: Fix test_visualizations.py
-For each test class, ensure parameters match the actual implementation:
-
-```python
-# TestBeamDiagram - CORRECTED
-class TestBeamDiagram:
-    def test_basic_beam_diagram(self):
-        fig = create_beam_diagram(
-            b_mm=300,
-            D_mm=500,
-            d_mm=450,
-            rebar_positions=[(50, 50), (150, 50), (250, 50)],  # FIXED
-            xu=120,
-            bar_dia=16,
-            cover=30.0,
-            show_dimensions=True
-        )
-        assert isinstance(fig, go.Figure)
-
-# TestCostComparison - CORRECTED
-class TestCostComparison:
-    def test_basic_cost_comparison(self):
-        alternatives = [
-            {"name": "3-16mm", "cost_per_meter": 87.45, "is_optimal": True},  # FIXED
-            {"name": "2-20mm", "cost_per_meter": 92.30, "is_optimal": False},
-        ]
-        fig = create_cost_comparison(alternatives)
-        assert isinstance(fig, go.Figure)
-
-# TestSensitivityTornado - CORRECTED
-class TestSensitivityTornado:
-    def test_basic_tornado_chart(self):
-        sensitivity_data = [
-            {"param": "Moment", "low": -15, "high": 18},
-            {"param": "Depth", "low": -10, "high": 12},
-        ]
-        fig = create_sensitivity_tornado(
-            sensitivity_data,
-            baseline_value=100.0  # FIXED - add required arg
-        )
-        assert isinstance(fig, go.Figure)
-```
-
-#### Step 3: Fix test_api_wrapper.py
-Ensure result structure assertions match actual return values:
-
-```python
-# Check actual return structure
-result = cached_design(...)
-# Current returns: {'flexure': {...}, 'shear': {...}, 'is_safe': True}
-# Tests expect: specific keys that may not exist
-```
+### Files to Create/Modify
+1. `streamlit_app/pages/04_📚_documentation.py` (~600 lines) - Main page
+2. `streamlit_app/data/is456_clauses.json` (~200 lines) - Clause database
+3. `streamlit_app/data/faq.json` (~100 lines) - FAQ content
+4. `streamlit_app/data/glossary.json` (~80 lines) - Glossary terms
 
 ### Acceptance Criteria
+- [ ] Search filters content dynamically across all tabs
+- [ ] At least 15 IS 456 clauses documented with formulas
+- [ ] Interactive formula calculator for 5+ formulas
+- [ ] FAQ has at least 15 questions
+- [ ] Glossary has at least 40 terms
+- [ ] Formulas render with LaTeX/KaTeX
+- [ ] Mobile responsive layout
+- [ ] All links work correctly
 
-- [ ] ALL 81 tests pass (`pytest streamlit_app/tests/ -v`)
-- [ ] No TypeErrors or KeyErrors
-- [ ] Tests actually validate the implementations (not just compile)
-- [ ] Test coverage meaningful (not just "return True")
-
-### Verification Commands
+### Verification
 ```bash
-# From main repo directory:
-cd /path/to/structural_engineering_lib
-.venv/bin/python -m pytest streamlit_app/tests/ -v --tb=short
+# Page loads without errors
+streamlit run streamlit_app/app.py
 
-# Expected output:
-# 81 passed in X.XXs
+# Tests pass
+pytest streamlit_app/tests/ -v -k "documentation"
 ```
 
 ---
 
-## 🔴 STREAMLIT-IMPL-008: Documentation Page + User Guide (Day 3-4)
+## 🔴 STREAMLIT-IMPL-009: Error Handling & Validation (Day 3-4)
 **Priority:** 🔴 CRITICAL
 **Status:** 🟡 TODO
 **Estimated Effort:** 4-5 hours
 
 ### Objective
-Create comprehensive documentation page with:
-- Interactive IS 456 quick reference
+Implement comprehensive, user-friendly error handling:
+- Centralized error handler with IS 456 clause references
+- Input validation with helpful suggestions
+- Graceful degradation (partial results when possible)
+- Error logging for debugging
+
+### Implementation
+
+#### 1. Create Centralized Error Handler
+
+```python
+# streamlit_app/utils/error_handler.py (~150 lines)
+
+import streamlit as st
+from typing import Optional, Dict, Any
+from dataclasses import dataclass
+from enum import Enum
+import traceback
+import logging
+
+class ErrorSeverity(Enum):
+    INFO = "info"
+    WARNING = "warning"
+    ERROR = "error"
+    CRITICAL = "critical"
+
+@dataclass
+class DesignError:
+    """Structured design error with context."""
+    message: str
+    severity: ErrorSeverity
+    clause: Optional[str] = None
+    suggestion: Optional[str] = None
+    technical_details: Optional[str] = None
+
+    def display(self):
+        """Display error in Streamlit UI."""
+        icon = {
+            ErrorSeverity.INFO: "ℹ️",
+            ErrorSeverity.WARNING: "⚠️",
+            ErrorSeverity.ERROR: "❌",
+            ErrorSeverity.CRITICAL: "🚨"
+        }[self.severity]
+
+        if self.severity == ErrorSeverity.WARNING:
+            st.warning(f"{icon} {self.message}")
+        elif self.severity in (ErrorSeverity.ERROR, ErrorSeverity.CRITICAL):
+            st.error(f"{icon} {self.message}")
+        else:
+            st.info(f"{icon} {self.message}")
+
+        if self.clause:
+            st.caption(f"📋 Reference: IS 456 {self.clause}")
+
+        if self.suggestion:
+            st.info(f"💡 **Suggestion:** {self.suggestion}")
+
+        if self.technical_details:
+            with st.expander("🔍 Technical Details"):
+                st.code(self.technical_details)
+
+
+def validate_geometry(b: float, D: float, d: float) -> list[DesignError]:
+    """Validate beam geometry and return errors/warnings."""
+    errors = []
+
+    if d >= D:
+        errors.append(DesignError(
+            message="Effective depth (d) must be less than overall depth (D)",
+            severity=ErrorSeverity.ERROR,
+            clause="Cl. 26.4.1",
+            suggestion=f"Reduce d to at least {D - 50}mm (allowing for cover + bar diameter)"
+        ))
+
+    if b > D:
+        errors.append(DesignError(
+            message=f"Width ({b}mm) greater than depth ({D}mm) is unusual for beams",
+            severity=ErrorSeverity.WARNING,
+            suggestion="Consider if this should be a slab instead, or increase depth"
+        ))
+
+    aspect_ratio = D / b if b > 0 else 0
+    if aspect_ratio > 4:
+        errors.append(DesignError(
+            message=f"High aspect ratio ({aspect_ratio:.1f}) may cause lateral buckling",
+            severity=ErrorSeverity.WARNING,
+            clause="Cl. 23.3",
+            suggestion="Add lateral restraints or increase width"
+        ))
+
+    if b < 150:
+        errors.append(DesignError(
+            message=f"Width ({b}mm) below practical minimum of 150mm",
+            severity=ErrorSeverity.WARNING,
+            suggestion="Increase width to at least 150mm for constructability"
+        ))
+
+    return errors
+
+
+def validate_materials(fck: float, fy: float) -> list[DesignError]:
+    """Validate material properties."""
+    errors = []
+
+    valid_fck = [20, 25, 30, 35, 40, 45, 50, 55, 60]
+    if fck not in valid_fck:
+        errors.append(DesignError(
+            message=f"Non-standard concrete grade M{int(fck)}",
+            severity=ErrorSeverity.WARNING,
+            clause="Table 2",
+            suggestion=f"Use standard grade: {', '.join(f'M{g}' for g in valid_fck)}"
+        ))
+
+    valid_fy = [250, 415, 500, 550]
+    if fy not in valid_fy:
+        errors.append(DesignError(
+            message=f"Non-standard steel grade Fe{int(fy)}",
+            severity=ErrorSeverity.WARNING,
+            clause="Cl. 5.6",
+            suggestion=f"Use standard grade: {', '.join(f'Fe{g}' for g in valid_fy)}"
+        ))
+
+    return errors
+
+
+def safe_design_call(design_func, **kwargs) -> tuple[Optional[Dict], list[DesignError]]:
+    """Wrap design function with error handling."""
+    errors = []
+
+    try:
+        result = design_func(**kwargs)
+        return result, errors
+    except ValueError as e:
+        errors.append(DesignError(
+            message=str(e),
+            severity=ErrorSeverity.ERROR,
+            suggestion="Check input values are within valid ranges"
+        ))
+    except Exception as e:
+        errors.append(DesignError(
+            message="Unexpected calculation error",
+            severity=ErrorSeverity.CRITICAL,
+            technical_details=traceback.format_exc()
+        ))
+
+    return None, errors
+```
+
+#### 2. Apply to All Pages
+
+```python
+# In each page, use the error handler:
+
+from utils.error_handler import validate_geometry, validate_materials, safe_design_call
+
+# Validate inputs before design
+geo_errors = validate_geometry(b, D, d)
+mat_errors = validate_materials(fck, fy)
+
+all_errors = geo_errors + mat_errors
+
+# Display any warnings/errors
+for error in all_errors:
+    error.display()
+
+# Only proceed if no critical errors
+critical_errors = [e for e in all_errors if e.severity in (ErrorSeverity.ERROR, ErrorSeverity.CRITICAL)]
+
+if not critical_errors:
+    result, calc_errors = safe_design_call(cached_design, b_mm=b, D_mm=D, ...)
+
+    for error in calc_errors:
+        error.display()
+
+    if result:
+        # Display results
+        pass
+else:
+    st.warning("⚠️ Please fix the errors above before analyzing")
+```
+
+### Files to Create/Modify
+1. `streamlit_app/utils/error_handler.py` (~150 lines) - NEW
+2. `streamlit_app/pages/01_🏗️_beam_design.py` - Add validation
+3. `streamlit_app/pages/02_💰_cost_optimizer.py` - Add validation
+4. `streamlit_app/pages/03_✅_compliance.py` - Add validation
+5. `streamlit_app/tests/test_error_handler.py` (~100 lines) - NEW
+
+### Acceptance Criteria
+- [ ] All pages have try/except blocks
+- [ ] Errors include IS 456 clause references where applicable
+- [ ] Suggestions provided for common issues
+- [ ] No raw Python tracebacks shown to users
+- [ ] Graceful degradation when partial results possible
+- [ ] Error logging to file for debugging
+- [ ] At least 20 tests for error handler
+
+---
+
+## 🟠 STREAMLIT-IMPL-010: Session State & Data Persistence (Day 5-6)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Implement robust session state management:
+- Persist user inputs across page navigation
+- Save/load design sessions (local storage or file)
+- Recent designs history
+- Undo/redo functionality
+
+### Implementation
+
+```python
+# streamlit_app/utils/session_manager.py (~200 lines)
+
+import streamlit as st
+import json
+from datetime import datetime
+from pathlib import Path
+from dataclasses import dataclass, asdict
+from typing import Optional, List
+
+@dataclass
+class DesignSession:
+    """Represents a saved design session."""
+    id: str
+    timestamp: str
+    inputs: dict
+    results: Optional[dict]
+    notes: str = ""
+
+class SessionManager:
+    """Manage design sessions with persistence."""
+
+    HISTORY_KEY = "design_history"
+    CURRENT_KEY = "current_design"
+    MAX_HISTORY = 20
+
+    @classmethod
+    def save_current(cls, inputs: dict, results: dict, notes: str = ""):
+        """Save current design to session state."""
+        session = DesignSession(
+            id=datetime.now().strftime("%Y%m%d_%H%M%S"),
+            timestamp=datetime.now().isoformat(),
+            inputs=inputs,
+            results=results,
+            notes=notes
+        )
+
+        st.session_state[cls.CURRENT_KEY] = asdict(session)
+
+        # Add to history
+        if cls.HISTORY_KEY not in st.session_state:
+            st.session_state[cls.HISTORY_KEY] = []
+
+        st.session_state[cls.HISTORY_KEY].insert(0, asdict(session))
+
+        # Trim history
+        st.session_state[cls.HISTORY_KEY] = st.session_state[cls.HISTORY_KEY][:cls.MAX_HISTORY]
+
+    @classmethod
+    def get_current(cls) -> Optional[DesignSession]:
+        """Get current design session."""
+        data = st.session_state.get(cls.CURRENT_KEY)
+        return DesignSession(**data) if data else None
+
+    @classmethod
+    def get_history(cls) -> List[DesignSession]:
+        """Get design history."""
+        history = st.session_state.get(cls.HISTORY_KEY, [])
+        return [DesignSession(**h) for h in history]
+
+    @classmethod
+    def export_session(cls, session: DesignSession) -> str:
+        """Export session to JSON string."""
+        return json.dumps(asdict(session), indent=2)
+
+    @classmethod
+    def import_session(cls, json_str: str) -> DesignSession:
+        """Import session from JSON string."""
+        data = json.loads(json_str)
+        return DesignSession(**data)
+
+    @classmethod
+    def clear_history(cls):
+        """Clear design history."""
+        st.session_state[cls.HISTORY_KEY] = []
+```
+
+### Acceptance Criteria
+- [ ] Inputs persist across page navigation
+- [ ] Design history shows last 20 designs
+- [ ] Export/import sessions as JSON
+- [ ] Clear history option
+- [ ] Tests for session manager
+
+---
+
+## 🟠 STREAMLIT-IMPL-011: Export Features (PDF/CSV/DXF) (Day 7-8)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-5 hours
+
+### Objective
+Add comprehensive export capabilities:
+- PDF report with all design details
+- CSV for data analysis
+- DXF for CAD integration
+- PNG/SVG for charts
+
+### Implementation
+
+```python
+# streamlit_app/utils/exporters.py (~300 lines)
+
+import io
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, Image
+
+class PDFExporter:
+    """Generate PDF design reports."""
+
+    def generate_report(self, design_data: dict) -> bytes:
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=A4)
+
+        # Build report content
+        story = []
+        story.append(Paragraph("IS 456 Beam Design Report", title_style))
+        story.append(Paragraph(f"Generated: {datetime.now()}", subtitle_style))
+
+        # Input summary table
+        story.append(Paragraph("Input Parameters", heading_style))
+        input_table = Table([
+            ["Width (b)", f"{design_data['b']} mm"],
+            ["Depth (D)", f"{design_data['D']} mm"],
+            # ...
+        ])
+        story.append(input_table)
+
+        # Results section
+        story.append(Paragraph("Design Results", heading_style))
+        # ...
+
+        doc.build(story)
+        return buffer.getvalue()
+
+
+class CSVExporter:
+    """Export design data to CSV."""
+
+    def export_design(self, design_data: dict) -> str:
+        # Generate CSV content
+        pass
+
+
+class DXFExporter:
+    """Export beam cross-section to DXF."""
+
+    def export_section(self, b, D, rebars) -> bytes:
+        # Generate DXF using ezdxf
+        pass
+```
+
+### Acceptance Criteria
+- [ ] PDF report with inputs, results, diagrams
+- [ ] CSV export for comparison table
+- [ ] DXF export for beam cross-section
+- [ ] PNG/SVG export for individual charts
+- [ ] Download buttons work correctly
+
+---
+
+## 🟠 STREAMLIT-IMPL-012: Settings & Configuration Page (Day 9-10)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Create settings page for user preferences:
+- Unit system (SI/Imperial)
+- Default material grades
+- Display preferences (theme, decimal places)
+- Safety factors
+
+### Implementation
+
+```python
+# streamlit_app/pages/05_⚙️_settings.py (~250 lines)
+
+import streamlit as st
+
+st.set_page_config(page_title="Settings", page_icon="⚙️")
+
+st.title("⚙️ Settings")
+
+# Initialize defaults
+if "settings" not in st.session_state:
+    st.session_state.settings = {
+        "units": "SI",
+        "decimal_places": 2,
+        "default_fck": 25,
+        "default_fy": 415,
+        "partial_safety_concrete": 1.5,
+        "partial_safety_steel": 1.15,
+    }
+
+settings = st.session_state.settings
+
+# Units
+st.subheader("🔢 Units")
+settings["units"] = st.radio("Unit System", ["SI (mm, N, kN·m)", "Imperial (in, lb, kip·ft)"])
+
+# Display
+st.subheader("🖥️ Display")
+settings["decimal_places"] = st.slider("Decimal Places", 0, 4, settings["decimal_places"])
+
+# Defaults
+st.subheader("🏗️ Default Materials")
+col1, col2 = st.columns(2)
+with col1:
+    settings["default_fck"] = st.selectbox("Default Concrete", [20, 25, 30, 35, 40])
+with col2:
+    settings["default_fy"] = st.selectbox("Default Steel", [250, 415, 500, 550])
+
+# Safety Factors
+st.subheader("🛡️ Safety Factors")
+st.caption("Per IS 456 Table 18")
+col1, col2 = st.columns(2)
+with col1:
+    settings["partial_safety_concrete"] = st.number_input("γc (concrete)", value=1.5, disabled=True)
+with col2:
+    settings["partial_safety_steel"] = st.number_input("γs (steel)", value=1.15, disabled=True)
+
+# Save
+if st.button("💾 Save Settings"):
+    st.session_state.settings = settings
+    st.success("✅ Settings saved!")
+```
+
+### Acceptance Criteria
+- [ ] Settings persist across sessions
+- [ ] Default values applied to input forms
+- [ ] Reset to defaults option
+- [ ] Export/import settings
+
+---
+
+## 🟠 STREAMLIT-IMPL-013: About & Help System (Day 11-12)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Create about page and contextual help:
+- App version and credits
+- Contact/feedback form
+- Contextual help tooltips
+- Keyboard shortcuts
+
+---
+
+## 📅 Extended Timeline Summary
+
+| Day | Phase | Task | Deliverables |
+|-----|-------|------|--------------|
+| 1-2 | IMPL-008 | Documentation Page | 600+ lines, searchable guide |
+| 3-4 | IMPL-009 | Error Handling | Centralized handler, 150+ lines |
+| 5-6 | IMPL-010 | Session Management | Persistence, history, 200+ lines |
+| 7-8 | IMPL-011 | Export Features | PDF/CSV/DXF, 300+ lines |
+| 9-10 | IMPL-012 | Settings Page | Configuration UI, 250+ lines |
+| 11-12 | IMPL-013 | About & Help | Credits, tooltips, 150+ lines |
+| 13-14 | IMPL-014 | Performance | Caching optimization |
+| 15-16 | IMPL-015 | Accessibility | WCAG 2.1 AA audit |
+| 17-18 | IMPL-016 | E2E Tests | Playwright integration |
+| 19-20 | IMPL-017 | Mobile | Responsive layout |
+
+**Total Expected Output:**
+- ~2,500+ lines of new code
+- 100+ tests
+- Full production-ready quality
+- Complete feature set for professional use
+
+---
+
+## 🔴 PHASE 5: STREAMLIT-IMPL-005 - Cost Optimizer Page (Day 1-2)
+**Priority:** 🔴 CRITICAL
 - Searchable clause lookup
 - Step-by-step user guide
 - FAQ section
