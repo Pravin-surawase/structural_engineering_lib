@@ -3,7 +3,7 @@
 **Agent Role:** STREAMLIT UI SPECIALIST (Daily Development)
 **Primary Focus:** Build production-ready Streamlit dashboards for structural engineering, following professional UI/UX practices
 **Status:** Active
-**Last Updated:** 2026-01-09T01:00Z
+**Last Updated:** 2026-01-09T03:00Z
 **Frequency:** Daily (30-60 min/day)
 
 ---
@@ -25,29 +25,30 @@
 | STREAMLIT-IMPL-006 | Compliance Checker Page | 485 | - | ✅ Complete |
 | STREAMLIT-FIX-001 | Fix All Failing Tests | 1,156 | 52 | ✅ Complete |
 | STREAMLIT-IMPL-008 | Documentation Page + User Guide | 750 | 56 | ✅ Complete |
+| STREAMLIT-IMPL-009 | Error Handler & Validation | 668 | 46 | ✅ Complete |
+| STREAMLIT-IMPL-010 | Session State & Persistence | 553 | 29 | ✅ Complete |
 
-**Total Delivered:** 13,497 lines, 138 tests (4 complete pages, 100% pass rate)
+**Total Delivered:** 19,283 lines, 213 tests (4 complete pages, 100% pass rate)
 
 ### 🔄 ACTIVE PHASES (Start Immediately)
 
 | Task | Description | Priority | Status | Days |
 |------|-------------|----------|--------|------|
-| STREAMLIT-IMPL-009 | Error Handling & Validation | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
-| STREAMLIT-IMPL-010 | Session State & Data Persistence | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
-| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🟠 HIGH | 🟡 TODO | Day 5-6 |
-| STREAMLIT-IMPL-012 | Settings & Configuration Page | 🟠 HIGH | 🟡 TODO | Day 7-8 |
-| STREAMLIT-IMPL-013 | About & Help System | 🟠 HIGH | 🟡 TODO | Day 9-10 |
-| STREAMLIT-IMPL-014 | Performance & Caching Optimization | 🟢 MEDIUM | 🟡 TODO | Day 11-12 |
-| STREAMLIT-IMPL-015 | Accessibility Audit (WCAG 2.1 AA) | 🟢 MEDIUM | 🟡 TODO | Day 13-14 |
-| STREAMLIT-IMPL-016 | E2E Integration Tests (Playwright) | 🟢 MEDIUM | 🟡 TODO | Day 15-16 |
-| STREAMLIT-IMPL-017 | Mobile Responsiveness | 🟢 MEDIUM | 🟡 TODO | Day 17-18 |
-| STREAMLIT-IMPL-018 | Design Report Generator | 🟢 MEDIUM | 🟡 TODO | Day 19-20 |
+| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
+| STREAMLIT-IMPL-012 | Settings & Configuration Page | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
+| STREAMLIT-IMPL-013 | About & Help System | 🔴 CRITICAL | 🟡 TODO | Day 5-6 |
+| STREAMLIT-IMPL-014 | Performance & Caching Optimization | 🟢 MEDIUM | 🟡 TODO | Day 7-8 |
+| STREAMLIT-IMPL-015 | Accessibility Audit (WCAG 2.1 AA) | 🟢 MEDIUM | 🟡 TODO | Day 9-10 |
+| STREAMLIT-IMPL-016 | E2E Integration Tests (Playwright) | 🟢 MEDIUM | 🟡 TODO | Day 11-12 |
+| STREAMLIT-IMPL-017 | Mobile Responsiveness | 🟢 MEDIUM | 🟡 TODO | Day 13-14 |
+| STREAMLIT-IMPL-018 | Design Report Generator | 🟢 MEDIUM | 🟡 TODO | Day 15-16 |
 
 ---
 
-## 🔴 CRITICAL: STREAMLIT-IMPL-009 - Error Handling & Validation (Day 1-2)
-**Priority:** 🔴 CRITICAL - START NOW
-**Status:** 🟡 TODO
+## ✅ COMPLETED: STREAMLIT-IMPL-009 - Error Handling & Validation
+**Priority:** 🔴 CRITICAL
+**Status:** ✅ COMPLETE (668 lines, 46 tests)
+**Completed:** 2026-01-09
 **Estimated Effort:** 4-5 hours
 
 ### Objective
@@ -280,10 +281,10 @@ pytest streamlit_app/tests/test_error_handler.py -v
 
 ---
 
-## 🔴 CRITICAL: STREAMLIT-IMPL-010 - Session State & Data Persistence (Day 3-4)
+## ✅ COMPLETED: STREAMLIT-IMPL-010 - Session State & Data Persistence
 **Priority:** 🔴 CRITICAL
-**Status:** 🟡 TODO
-**Estimated Effort:** 4-5 hours
+**Status:** ✅ COMPLETE (553 lines, 29 tests)
+**Completed:** 2026-01-09
 
 ### Objective
 Implement robust session state management:
@@ -962,167 +963,2135 @@ class SessionManager:
 
 ---
 
-## 🟠 STREAMLIT-IMPL-011: Export Features (PDF/CSV/DXF) (Day 7-8)
-**Priority:** 🟠 HIGH
+## � CRITICAL: STREAMLIT-IMPL-011 - Export Features (PDF/CSV/DXF) (Day 1-2)
+**Priority:** 🔴 CRITICAL - START NOW
 **Status:** 🟡 TODO
-**Estimated Effort:** 4-5 hours
+**Estimated Effort:** 6-8 hours
 
 ### Objective
-Add comprehensive export capabilities:
-- PDF report with all design details
-- CSV for data analysis
-- DXF for CAD integration
-- PNG/SVG for charts
+Add comprehensive export capabilities for professional engineering deliverables:
+- **PDF Report:** Complete design calculations for client review
+- **CSV Export:** Tabular data for analysis/comparison
+- **DXF Export:** CAD-ready cross-section drawings
+- **Chart Export:** PNG/SVG individual visualizations
 
-### Implementation
+### CRITICAL: Theme & Style Requirements
+**MUST use the established color scheme:**
+```python
+THEME = {
+    "primary": "#003366",    # Navy - headers, titles
+    "secondary": "#FF6600",  # Orange - accents, buttons
+    "success": "#28a745",    # Green - safe/pass
+    "warning": "#ffc107",    # Yellow - warnings
+    "danger": "#dc3545",     # Red - errors/fail
+    "background": "#f8f9fa", # Light gray
+    "text": "#333333",       # Dark gray for body text
+}
+```
+
+### Implementation Details
+
+#### 1. Create Export Module (`streamlit_app/utils/exporters.py` ~400 lines)
 
 ```python
-# streamlit_app/utils/exporters.py (~300 lines)
+"""
+Export utilities for IS 456 beam design reports.
+
+Generates professional engineering documents in multiple formats:
+- PDF: Complete design report for client/approval
+- CSV: Tabular data for spreadsheet analysis
+- DXF: CAD cross-section drawing
+- PNG/SVG: Chart images
+"""
 
 import io
+from datetime import datetime
+from typing import Dict, Any, List, Optional
+from dataclasses import dataclass
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.colors import HexColor
+from reportlab.platypus import (
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+)
+import ezdxf
+import plotly.graph_objects as go
+
+
+@dataclass
+class ReportMetadata:
+    """Metadata for design report header."""
+    project_name: str
+    client_name: str
+    engineer_name: str
+    date: datetime
+    revision: str = "R0"
+
 
 class PDFExporter:
-    """Generate PDF design reports."""
+    """
+    Generate professional PDF design reports.
 
-    def generate_report(self, design_data: dict) -> bytes:
+    Creates A4 PDF with:
+    - Cover page with project info
+    - Input parameters summary
+    - Design calculations
+    - Results with pass/fail indicators
+    - Compliance checklist
+    - Cross-section diagram (if available)
+    """
+
+    # Theme colors
+    NAVY = HexColor("#003366")
+    ORANGE = HexColor("#FF6600")
+    GREEN = HexColor("#28a745")
+    RED = HexColor("#dc3545")
+
+    def __init__(self):
+        self.styles = getSampleStyleSheet()
+        self._setup_custom_styles()
+
+    def _setup_custom_styles(self):
+        """Define custom paragraph styles matching theme."""
+        self.styles.add(ParagraphStyle(
+            name='ReportTitle',
+            parent=self.styles['Heading1'],
+            fontSize=24,
+            textColor=self.NAVY,
+            spaceAfter=20,
+        ))
+        self.styles.add(ParagraphStyle(
+            name='SectionHeading',
+            parent=self.styles['Heading2'],
+            fontSize=14,
+            textColor=self.NAVY,
+            spaceBefore=15,
+            spaceAfter=10,
+        ))
+        self.styles.add(ParagraphStyle(
+            name='ResultPass',
+            parent=self.styles['Normal'],
+            textColor=self.GREEN,
+            fontName='Helvetica-Bold',
+        ))
+        self.styles.add(ParagraphStyle(
+            name='ResultFail',
+            parent=self.styles['Normal'],
+            textColor=self.RED,
+            fontName='Helvetica-Bold',
+        ))
+
+    def generate_report(
+        self,
+        design_data: Dict[str, Any],
+        metadata: Optional[ReportMetadata] = None,
+        include_charts: bool = True
+    ) -> bytes:
+        """
+        Generate complete PDF design report.
+
+        Args:
+            design_data: Dictionary with all design inputs and results
+            metadata: Optional project/client information
+            include_charts: Whether to embed chart images
+
+        Returns:
+            PDF content as bytes (ready for st.download_button)
+        """
         buffer = io.BytesIO()
-        doc = SimpleDocTemplate(buffer, pagesize=A4)
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=A4,
+            rightMargin=50,
+            leftMargin=50,
+            topMargin=50,
+            bottomMargin=50
+        )
 
-        # Build report content
         story = []
-        story.append(Paragraph("IS 456 Beam Design Report", title_style))
-        story.append(Paragraph(f"Generated: {datetime.now()}", subtitle_style))
 
-        # Input summary table
-        story.append(Paragraph("Input Parameters", heading_style))
-        input_table = Table([
-            ["Width (b)", f"{design_data['b']} mm"],
-            ["Depth (D)", f"{design_data['D']} mm"],
-            # ...
-        ])
+        # Cover/Header
+        story.append(Paragraph("IS 456 Beam Design Report", self.styles['ReportTitle']))
+        if metadata:
+            story.append(Paragraph(f"Project: {metadata.project_name}", self.styles['Normal']))
+            story.append(Paragraph(f"Client: {metadata.client_name}", self.styles['Normal']))
+            story.append(Paragraph(f"Engineer: {metadata.engineer_name}", self.styles['Normal']))
+        story.append(Paragraph(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}", self.styles['Normal']))
+        story.append(Spacer(1, 20))
+
+        # Input Parameters Section
+        story.append(Paragraph("1. Input Parameters", self.styles['SectionHeading']))
+        input_data = [
+            ["Parameter", "Value", "Unit"],
+            ["Beam Width (b)", str(design_data.get('b', '-')), "mm"],
+            ["Overall Depth (D)", str(design_data.get('D', '-')), "mm"],
+            ["Effective Depth (d)", str(design_data.get('d', '-')), "mm"],
+            ["Clear Cover", str(design_data.get('cover', '-')), "mm"],
+            ["Concrete Grade (fck)", f"M{design_data.get('fck', '-')}", "N/mm²"],
+            ["Steel Grade (fy)", f"Fe{design_data.get('fy', '-')}", "N/mm²"],
+            ["Design Moment (Mu)", str(design_data.get('Mu', '-')), "kN·m"],
+            ["Design Shear (Vu)", str(design_data.get('Vu', '-')), "kN"],
+        ]
+        input_table = Table(input_data, colWidths=[200, 100, 80])
+        input_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), self.NAVY),
+            ('TEXTCOLOR', (0, 0), (-1, 0), HexColor("#FFFFFF")),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+            ('GRID', (0, 0), (-1, -1), 0.5, HexColor("#CCCCCC")),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [HexColor("#FFFFFF"), HexColor("#F5F5F5")]),
+        ]))
         story.append(input_table)
+        story.append(Spacer(1, 15))
 
-        # Results section
-        story.append(Paragraph("Design Results", heading_style))
-        # ...
+        # Design Results Section
+        story.append(Paragraph("2. Design Results", self.styles['SectionHeading']))
+        result = design_data.get('result', {})
+        status = result.get('status', 'Unknown')
+        status_style = 'ResultPass' if status == 'SAFE' else 'ResultFail'
+        story.append(Paragraph(f"Design Status: {status}", self.styles[status_style]))
 
+        results_data = [
+            ["Result", "Value", "Unit"],
+            ["Required Steel Area (Ast)", f"{result.get('Ast_required', '-'):.0f}", "mm²"],
+            ["Provided Steel Area", f"{result.get('Ast_provided', '-'):.0f}", "mm²"],
+            ["Utilization Ratio", f"{result.get('utilization', 0)*100:.1f}", "%"],
+            ["Neutral Axis Depth (xu)", f"{result.get('xu', '-'):.1f}", "mm"],
+        ]
+        results_table = Table(results_data, colWidths=[200, 100, 80])
+        results_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), self.NAVY),
+            ('TEXTCOLOR', (0, 0), (-1, 0), HexColor("#FFFFFF")),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+            ('GRID', (0, 0), (-1, -1), 0.5, HexColor("#CCCCCC")),
+        ]))
+        story.append(results_table)
+        story.append(Spacer(1, 15))
+
+        # Bar Schedule Section
+        if 'bar_schedule' in result:
+            story.append(Paragraph("3. Bar Schedule", self.styles['SectionHeading']))
+            bar_data = [["Bars", "Diameter", "Quantity", "Area (mm²)"]]
+            for bar in result['bar_schedule']:
+                bar_data.append([
+                    bar.get('description', '-'),
+                    f"{bar.get('diameter', '-')} mm",
+                    str(bar.get('quantity', '-')),
+                    f"{bar.get('area', '-'):.0f}"
+                ])
+            bar_table = Table(bar_data, colWidths=[150, 80, 80, 80])
+            bar_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), self.NAVY),
+                ('TEXTCOLOR', (0, 0), (-1, 0), HexColor("#FFFFFF")),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+                ('GRID', (0, 0), (-1, -1), 0.5, HexColor("#CCCCCC")),
+            ]))
+            story.append(bar_table)
+
+        # Compliance Section
+        if 'compliance' in design_data:
+            story.append(Spacer(1, 15))
+            story.append(Paragraph("4. IS 456 Compliance", self.styles['SectionHeading']))
+            for check in design_data['compliance']:
+                status_icon = "✓" if check['passed'] else "✗"
+                style = 'ResultPass' if check['passed'] else 'ResultFail'
+                story.append(Paragraph(
+                    f"{status_icon} {check['clause']}: {check['description']}",
+                    self.styles[style]
+                ))
+
+        # Build PDF
         doc.build(story)
         return buffer.getvalue()
 
 
 class CSVExporter:
-    """Export design data to CSV."""
+    """
+    Export design data to CSV format.
 
-    def export_design(self, design_data: dict) -> str:
-        # Generate CSV content
-        pass
+    Useful for:
+    - Comparison of multiple designs
+    - Data analysis in Excel/Python
+    - Batch design records
+    """
+
+    def export_single_design(self, design_data: Dict[str, Any]) -> str:
+        """Export single design to CSV string."""
+        lines = []
+        lines.append("Parameter,Value,Unit")
+        lines.append(f"Width (b),{design_data.get('b', '')},mm")
+        lines.append(f"Depth (D),{design_data.get('D', '')},mm")
+        lines.append(f"Effective Depth (d),{design_data.get('d', '')},mm")
+        lines.append(f"Concrete (fck),{design_data.get('fck', '')},N/mm²")
+        lines.append(f"Steel (fy),{design_data.get('fy', '')},N/mm²")
+        lines.append(f"Moment (Mu),{design_data.get('Mu', '')},kN·m")
+        lines.append(f"Shear (Vu),{design_data.get('Vu', '')},kN")
+
+        result = design_data.get('result', {})
+        lines.append(f"Status,{result.get('status', '')},")
+        lines.append(f"Ast Required,{result.get('Ast_required', '')},mm²")
+        lines.append(f"Utilization,{result.get('utilization', 0)*100:.1f},%")
+
+        return '\n'.join(lines)
+
+    def export_comparison(self, designs: List[Dict[str, Any]]) -> str:
+        """Export multiple designs as comparison table."""
+        if not designs:
+            return ""
+
+        # Header row
+        headers = ["Design #", "b (mm)", "D (mm)", "fck", "fy", "Mu (kN·m)",
+                   "Ast (mm²)", "Status", "Utilization (%)"]
+        lines = [",".join(headers)]
+
+        for i, design in enumerate(designs, 1):
+            result = design.get('result', {})
+            row = [
+                str(i),
+                str(design.get('b', '')),
+                str(design.get('D', '')),
+                f"M{design.get('fck', '')}",
+                f"Fe{design.get('fy', '')}",
+                str(design.get('Mu', '')),
+                f"{result.get('Ast_required', 0):.0f}",
+                result.get('status', ''),
+                f"{result.get('utilization', 0)*100:.1f}"
+            ]
+            lines.append(",".join(row))
+
+        return '\n'.join(lines)
 
 
 class DXFExporter:
-    """Export beam cross-section to DXF."""
+    """
+    Export beam cross-section to DXF for CAD integration.
 
-    def export_section(self, b, D, rebars) -> bytes:
-        # Generate DXF using ezdxf
-        pass
+    Generates 2D cross-section showing:
+    - Beam outline
+    - Reinforcement bars (as circles)
+    - Stirrup outline
+    - Dimension annotations
+    """
+
+    def export_section(
+        self,
+        b: float,
+        D: float,
+        cover: float,
+        rebars: List[Dict[str, Any]],
+        stirrup_dia: float = 8
+    ) -> bytes:
+        """
+        Generate DXF cross-section drawing.
+
+        Args:
+            b: Beam width (mm)
+            D: Overall depth (mm)
+            cover: Clear cover (mm)
+            rebars: List of rebar dicts with 'x', 'y', 'diameter'
+            stirrup_dia: Stirrup diameter (mm)
+
+        Returns:
+            DXF content as bytes
+        """
+        doc = ezdxf.new('R2010')
+        msp = doc.modelspace()
+
+        # Draw beam outline
+        msp.add_lwpolyline(
+            [(0, 0), (b, 0), (b, D), (0, D), (0, 0)],
+            close=True,
+            dxfattribs={'layer': 'CONCRETE'}
+        )
+
+        # Draw stirrup outline
+        s_offset = cover + stirrup_dia / 2
+        msp.add_lwpolyline([
+            (s_offset, s_offset),
+            (b - s_offset, s_offset),
+            (b - s_offset, D - s_offset),
+            (s_offset, D - s_offset),
+            (s_offset, s_offset),
+        ], close=True, dxfattribs={'layer': 'STIRRUPS'})
+
+        # Draw rebars as circles
+        for bar in rebars:
+            msp.add_circle(
+                (bar['x'], bar['y']),
+                radius=bar['diameter'] / 2,
+                dxfattribs={'layer': 'REBAR'}
+            )
+
+        # Add dimensions
+        msp.add_linear_dim(
+            base=(b/2, -20),
+            p1=(0, 0),
+            p2=(b, 0),
+            dimstyle='Standard',
+            override={'dimtxt': 2.5}
+        )
+        msp.add_linear_dim(
+            base=(b + 20, D/2),
+            p1=(b, 0),
+            p2=(b, D),
+            angle=90,
+            dimstyle='Standard',
+            override={'dimtxt': 2.5}
+        )
+
+        # Export to bytes
+        buffer = io.BytesIO()
+        doc.write(buffer)
+        return buffer.getvalue()
+
+
+class ChartExporter:
+    """Export Plotly charts to image formats."""
+
+    @staticmethod
+    def to_png(fig: go.Figure, width: int = 800, height: int = 600) -> bytes:
+        """Export Plotly figure to PNG bytes."""
+        return fig.to_image(format='png', width=width, height=height)
+
+    @staticmethod
+    def to_svg(fig: go.Figure, width: int = 800, height: int = 600) -> str:
+        """Export Plotly figure to SVG string."""
+        return fig.to_image(format='svg', width=width, height=height).decode('utf-8')
+```
+
+#### 2. Create Export UI Component (`streamlit_app/components/export_panel.py` ~150 lines)
+
+```python
+"""
+Export panel component for download buttons.
+
+Provides consistent UI for exporting design data in all formats.
+"""
+
+import streamlit as st
+from datetime import datetime
+from typing import Dict, Any, Optional
+from utils.exporters import PDFExporter, CSVExporter, DXFExporter, ChartExporter, ReportMetadata
+
+
+def render_export_panel(
+    design_data: Dict[str, Any],
+    figures: Optional[Dict[str, Any]] = None,
+    rebars: Optional[list] = None
+):
+    """
+    Render export options panel.
+
+    Args:
+        design_data: Complete design input/output data
+        figures: Dictionary of Plotly figures to export
+        rebars: List of rebar positions for DXF
+    """
+    st.markdown("### 📥 Export Options")
+
+    # Report metadata (optional)
+    with st.expander("📋 Report Details (Optional)"):
+        project_name = st.text_input("Project Name", "Beam Design Project")
+        client_name = st.text_input("Client Name", "")
+        engineer_name = st.text_input("Engineer Name", "")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    # PDF Export
+    with col1:
+        if st.button("📄 PDF Report", use_container_width=True):
+            with st.spinner("Generating PDF..."):
+                exporter = PDFExporter()
+                metadata = ReportMetadata(
+                    project_name=project_name,
+                    client_name=client_name or "N/A",
+                    engineer_name=engineer_name or "N/A",
+                    date=datetime.now()
+                )
+                pdf_bytes = exporter.generate_report(design_data, metadata)
+                st.download_button(
+                    label="⬇️ Download PDF",
+                    data=pdf_bytes,
+                    file_name=f"beam_design_{datetime.now():%Y%m%d_%H%M}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True
+                )
+
+    # CSV Export
+    with col2:
+        csv_exporter = CSVExporter()
+        csv_content = csv_exporter.export_single_design(design_data)
+        st.download_button(
+            label="📊 CSV Data",
+            data=csv_content,
+            file_name=f"beam_design_{datetime.now():%Y%m%d_%H%M}.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+
+    # DXF Export (only if rebar positions available)
+    with col3:
+        if rebars:
+            dxf_exporter = DXFExporter()
+            dxf_bytes = dxf_exporter.export_section(
+                b=design_data.get('b', 250),
+                D=design_data.get('D', 450),
+                cover=design_data.get('cover', 30),
+                rebars=rebars
+            )
+            st.download_button(
+                label="📐 DXF Drawing",
+                data=dxf_bytes,
+                file_name=f"beam_section_{datetime.now():%Y%m%d_%H%M}.dxf",
+                mime="application/dxf",
+                use_container_width=True
+            )
+        else:
+            st.button("📐 DXF Drawing", disabled=True, use_container_width=True,
+                     help="Run analysis first to generate DXF")
+
+    # Chart Export
+    with col4:
+        if figures:
+            chart_name = st.selectbox("Chart to Export", list(figures.keys()))
+            if st.button("🖼️ Export Chart", use_container_width=True):
+                png_bytes = ChartExporter.to_png(figures[chart_name])
+                st.download_button(
+                    label="⬇️ Download PNG",
+                    data=png_bytes,
+                    file_name=f"{chart_name}_{datetime.now():%Y%m%d_%H%M}.png",
+                    mime="image/png",
+                    use_container_width=True
+                )
+        else:
+            st.button("🖼️ Export Chart", disabled=True, use_container_width=True,
+                     help="No charts available")
+```
+
+#### 3. Integration Points
+
+**Add to Beam Design Page (`01_🏗️_beam_design.py`):**
+```python
+# After results section, add:
+from components.export_panel import render_export_panel
+
+if result:
+    st.divider()
+    render_export_panel(
+        design_data={
+            'b': b, 'D': D, 'd': d, 'cover': cover,
+            'fck': fck, 'fy': fy, 'Mu': Mu, 'Vu': Vu,
+            'result': result
+        },
+        figures={'Cross Section': cross_section_fig, 'Moment Diagram': moment_fig},
+        rebars=result.get('rebar_positions', [])
+    )
+```
+
+**Add to Cost Optimizer Page (`02_💰_cost_optimizer.py`):**
+```python
+# Add comparison CSV export
+if st.button("📊 Export Comparison CSV"):
+    csv_content = CSVExporter().export_comparison(st.session_state.cost_results)
+    st.download_button(
+        "⬇️ Download CSV",
+        csv_content,
+        "cost_comparison.csv",
+        "text/csv"
+    )
+```
+
+### Dependencies to Add
+
+```toml
+# In pyproject.toml or requirements.txt
+reportlab>=4.0.0    # PDF generation
+ezdxf>=1.0.0        # DXF generation
+kaleido>=0.2.1      # Plotly image export
+```
+
+### Files to Create/Modify
+
+| File | Action | Est. Lines |
+|------|--------|-----------|
+| `streamlit_app/utils/exporters.py` | CREATE | ~400 |
+| `streamlit_app/components/export_panel.py` | CREATE | ~150 |
+| `streamlit_app/pages/01_🏗️_beam_design.py` | MODIFY | +20 |
+| `streamlit_app/pages/02_💰_cost_optimizer.py` | MODIFY | +15 |
+| `streamlit_app/tests/test_exporters.py` | CREATE | ~200 |
+| `streamlit_app/requirements.txt` | MODIFY | +3 |
+
+**Total New Lines:** ~785
+
+### Test Requirements (~200 lines)
+
+```python
+# streamlit_app/tests/test_exporters.py
+
+import pytest
+from utils.exporters import PDFExporter, CSVExporter, DXFExporter, ChartExporter
+
+class TestPDFExporter:
+    """Tests for PDF report generation."""
+
+    def test_generate_report_returns_bytes(self):
+        """PDF generation should return bytes."""
+        exporter = PDFExporter()
+        design_data = {'b': 250, 'D': 450, 'fck': 20, 'fy': 415}
+        result = exporter.generate_report(design_data)
+        assert isinstance(result, bytes)
+        assert len(result) > 1000  # Reasonable PDF size
+
+    def test_generate_report_with_metadata(self):
+        """PDF should include metadata when provided."""
+        exporter = PDFExporter()
+        metadata = ReportMetadata(
+            project_name="Test Project",
+            client_name="Test Client",
+            engineer_name="Test Engineer",
+            date=datetime.now()
+        )
+        result = exporter.generate_report({}, metadata)
+        assert isinstance(result, bytes)
+
+    def test_generate_report_with_compliance(self):
+        """PDF should render compliance section."""
+        exporter = PDFExporter()
+        design_data = {
+            'b': 250, 'D': 450,
+            'compliance': [
+                {'clause': 'Cl. 26.5.1.1', 'description': 'Min steel', 'passed': True},
+                {'clause': 'Cl. 40.1', 'description': 'Shear', 'passed': False}
+            ]
+        }
+        result = exporter.generate_report(design_data)
+        assert isinstance(result, bytes)
+
+
+class TestCSVExporter:
+    """Tests for CSV export."""
+
+    def test_export_single_design(self):
+        """Single design CSV should have correct format."""
+        exporter = CSVExporter()
+        design_data = {'b': 250, 'D': 450, 'fck': 20}
+        result = exporter.export_single_design(design_data)
+        assert 'Width (b),250,mm' in result
+        assert 'Depth (D),450,mm' in result
+
+    def test_export_comparison(self):
+        """Comparison CSV should have header and data rows."""
+        exporter = CSVExporter()
+        designs = [
+            {'b': 250, 'D': 450, 'fck': 20, 'fy': 415, 'Mu': 85, 'result': {'Ast_required': 628, 'status': 'SAFE'}},
+            {'b': 300, 'D': 500, 'fck': 25, 'fy': 500, 'Mu': 120, 'result': {'Ast_required': 750, 'status': 'SAFE'}},
+        ]
+        result = exporter.export_comparison(designs)
+        lines = result.split('\n')
+        assert len(lines) == 3  # Header + 2 data rows
+        assert 'Design #' in lines[0]
+
+
+class TestDXFExporter:
+    """Tests for DXF export."""
+
+    def test_export_section_returns_bytes(self):
+        """DXF export should return valid bytes."""
+        exporter = DXFExporter()
+        rebars = [
+            {'x': 40, 'y': 40, 'diameter': 16},
+            {'x': 210, 'y': 40, 'diameter': 16},
+        ]
+        result = exporter.export_section(250, 450, 30, rebars)
+        assert isinstance(result, bytes)
+        assert len(result) > 100
+
+    def test_export_section_empty_rebars(self):
+        """DXF should work with no rebars."""
+        exporter = DXFExporter()
+        result = exporter.export_section(250, 450, 30, [])
+        assert isinstance(result, bytes)
 ```
 
 ### Acceptance Criteria
-- [ ] PDF report with inputs, results, diagrams
-- [ ] CSV export for comparison table
-- [ ] DXF export for beam cross-section
-- [ ] PNG/SVG export for individual charts
-- [ ] Download buttons work correctly
+
+- [ ] PDF report generates with all sections (inputs, results, compliance)
+- [ ] PDF uses theme colors (navy headers, orange accents)
+- [ ] CSV export includes all design parameters
+- [ ] Comparison CSV works for multiple designs
+- [ ] DXF generates valid CAD file with beam outline and rebars
+- [ ] DXF includes dimension annotations
+- [ ] PNG/SVG chart export works for all Plotly figures
+- [ ] Download buttons work in Streamlit UI
+- [ ] All exports use consistent naming convention
+- [ ] At least 20 tests pass for exporters
+- [ ] Dependencies added to requirements.txt
+
+### Verification Commands
+
+```bash
+# Run export tests
+pytest streamlit_app/tests/test_exporters.py -v
+
+# Verify dependencies install
+pip install reportlab ezdxf kaleido
+
+# Manual verification
+# 1. Run app: streamlit run streamlit_app/app.py
+# 2. Go to Beam Design page
+# 3. Enter values and click Analyze
+# 4. Test each export button
+# 5. Open downloaded files to verify content
+```
 
 ---
 
-## 🟠 STREAMLIT-IMPL-012: Settings & Configuration Page (Day 9-10)
-**Priority:** 🟠 HIGH
+## � CRITICAL: STREAMLIT-IMPL-012 - Settings & Configuration Page (Day 3-4)
+**Priority:** 🔴 CRITICAL
 **Status:** 🟡 TODO
-**Estimated Effort:** 3-4 hours
+**Estimated Effort:** 5-6 hours
 
 ### Objective
-Create settings page for user preferences:
-- Unit system (SI/Imperial)
-- Default material grades
-- Display preferences (theme, decimal places)
-- Safety factors
+Create comprehensive settings page for user preferences:
+- **Unit System:** SI (mm, N) / Imperial (in, lb) with automatic conversion
+- **Default Materials:** Pre-populate concrete/steel grades
+- **Display Preferences:** Theme, decimal places, chart colors
+- **Safety Factors:** View IS 456 prescribed values (read-only)
+- **Session Preferences:** Auto-save, history limit
+- **Import/Export Settings:** Share configuration across devices
 
-### Implementation
+### CRITICAL: Theme & Style Requirements
+**MUST use the established color scheme:**
+```python
+THEME = {
+    "primary": "#003366",    # Navy - headers, titles
+    "secondary": "#FF6600",  # Orange - accents, buttons
+    "success": "#28a745",    # Green - safe/pass
+    "warning": "#ffc107",    # Yellow - warnings
+    "danger": "#dc3545",     # Red - errors/fail
+    "background": "#f8f9fa", # Light gray
+    "text": "#333333",       # Dark gray for body text
+}
+```
+
+### Implementation Details
+
+#### 1. Settings Data Model (`streamlit_app/utils/settings.py` ~200 lines)
 
 ```python
-# streamlit_app/pages/05_⚙️_settings.py (~250 lines)
+"""
+Settings management for the IS 456 beam design app.
+
+Provides:
+- Type-safe settings with validation
+- Persistence to JSON file
+- Export/import capabilities
+- Default values per IS 456
+"""
+
+import json
+from pathlib import Path
+from typing import Optional, Literal
+from dataclasses import dataclass, field, asdict
+from enum import Enum
+import streamlit as st
+
+
+class UnitSystem(str, Enum):
+    """Supported unit systems."""
+    SI = "SI"           # mm, N, kN·m
+    IMPERIAL = "Imperial"  # in, lb, kip·ft
+
+
+class ThemeMode(str, Enum):
+    """Display theme options."""
+    LIGHT = "light"
+    DARK = "dark"
+    SYSTEM = "system"
+
+
+@dataclass
+class MaterialDefaults:
+    """Default material properties."""
+    fck: int = 25           # M25 concrete
+    fy: int = 415           # Fe415 steel
+    cover_internal: int = 30  # mm for internal exposure
+    cover_external: int = 40  # mm for external exposure
+
+
+@dataclass
+class SafetyFactors:
+    """IS 456 Table 18 safety factors (read-only)."""
+    gamma_c: float = 1.5    # Partial safety factor for concrete
+    gamma_s: float = 1.15   # Partial safety factor for steel
+    gamma_f_dead: float = 1.5   # Load factor for dead load
+    gamma_f_live: float = 1.5   # Load factor for live load
+
+
+@dataclass
+class DisplayPreferences:
+    """UI display preferences."""
+    decimal_places: int = 2
+    show_formulas: bool = True
+    show_intermediate_steps: bool = True
+    chart_height: int = 400
+    theme: ThemeMode = ThemeMode.LIGHT
+
+
+@dataclass
+class SessionPreferences:
+    """Session behavior preferences."""
+    auto_save: bool = True
+    history_limit: int = 10
+    cache_enabled: bool = True
+    show_tooltips: bool = True
+
+
+@dataclass
+class AppSettings:
+    """
+    Complete application settings.
+
+    All user-configurable preferences for the beam design app.
+    """
+    unit_system: UnitSystem = UnitSystem.SI
+    materials: MaterialDefaults = field(default_factory=MaterialDefaults)
+    safety_factors: SafetyFactors = field(default_factory=SafetyFactors)
+    display: DisplayPreferences = field(default_factory=DisplayPreferences)
+    session: SessionPreferences = field(default_factory=SessionPreferences)
+
+    @classmethod
+    def load(cls, path: Optional[Path] = None) -> "AppSettings":
+        """Load settings from JSON file or return defaults."""
+        if path is None:
+            path = Path.home() / ".streamlit_beam_design" / "settings.json"
+
+        if path.exists():
+            try:
+                with open(path, 'r') as f:
+                    data = json.load(f)
+                return cls.from_dict(data)
+            except (json.JSONDecodeError, KeyError):
+                return cls()  # Return defaults on error
+        return cls()
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "AppSettings":
+        """Create settings from dictionary."""
+        return cls(
+            unit_system=UnitSystem(data.get('unit_system', 'SI')),
+            materials=MaterialDefaults(**data.get('materials', {})),
+            safety_factors=SafetyFactors(**data.get('safety_factors', {})),
+            display=DisplayPreferences(**data.get('display', {})),
+            session=SessionPreferences(**data.get('session', {})),
+        )
+
+    def save(self, path: Optional[Path] = None) -> None:
+        """Save settings to JSON file."""
+        if path is None:
+            path = Path.home() / ".streamlit_beam_design" / "settings.json"
+
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, 'w') as f:
+            json.dump(self.to_dict(), f, indent=2)
+
+    def to_dict(self) -> dict:
+        """Convert settings to dictionary for serialization."""
+        return {
+            'unit_system': self.unit_system.value,
+            'materials': asdict(self.materials),
+            'safety_factors': asdict(self.safety_factors),
+            'display': {
+                **asdict(self.display),
+                'theme': self.display.theme.value
+            },
+            'session': asdict(self.session),
+        }
+
+    def to_json(self) -> str:
+        """Export settings as JSON string."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    @classmethod
+    def from_json(cls, json_str: str) -> "AppSettings":
+        """Import settings from JSON string."""
+        data = json.loads(json_str)
+        return cls.from_dict(data)
+
+    def reset_to_defaults(self) -> "AppSettings":
+        """Return a new settings object with all defaults."""
+        return AppSettings()
+
+
+def get_current_settings() -> AppSettings:
+    """Get settings from session state or load from file."""
+    if 'app_settings' not in st.session_state:
+        st.session_state.app_settings = AppSettings.load()
+    return st.session_state.app_settings
+
+
+def save_current_settings() -> None:
+    """Save current session settings to file."""
+    if 'app_settings' in st.session_state:
+        st.session_state.app_settings.save()
+```
+
+#### 2. Unit Conversion Module (`streamlit_app/utils/unit_converter.py` ~100 lines)
+
+```python
+"""
+Unit conversion utilities for SI/Imperial systems.
+
+Provides conversion functions for all design parameters.
+"""
+
+from typing import Tuple
+from dataclasses import dataclass
+
+
+@dataclass
+class UnitLabels:
+    """Unit labels for display."""
+    length: str
+    force: str
+    moment: str
+    stress: str
+    area: str
+
+
+SI_UNITS = UnitLabels(
+    length="mm",
+    force="kN",
+    moment="kN·m",
+    stress="N/mm²",
+    area="mm²"
+)
+
+IMPERIAL_UNITS = UnitLabels(
+    length="in",
+    force="kip",
+    moment="kip·ft",
+    stress="ksi",
+    area="in²"
+)
+
+
+# Conversion factors (multiply SI to get Imperial)
+MM_TO_INCH = 0.0393701
+KN_TO_KIP = 0.224809
+KNM_TO_KIPFT = 0.737562
+MPA_TO_KSI = 0.145038
+
+
+def mm_to_inch(mm: float) -> float:
+    """Convert millimeters to inches."""
+    return mm * MM_TO_INCH
+
+
+def inch_to_mm(inch: float) -> float:
+    """Convert inches to millimeters."""
+    return inch / MM_TO_INCH
+
+
+def kn_to_kip(kn: float) -> float:
+    """Convert kilonewtons to kips."""
+    return kn * KN_TO_KIP
+
+
+def kip_to_kn(kip: float) -> float:
+    """Convert kips to kilonewtons."""
+    return kip / KN_TO_KIP
+
+
+def knm_to_kipft(knm: float) -> float:
+    """Convert kN·m to kip·ft."""
+    return knm * KNM_TO_KIPFT
+
+
+def kipft_to_knm(kipft: float) -> float:
+    """Convert kip·ft to kN·m."""
+    return kipft / KNM_TO_KIPFT
+
+
+def mpa_to_ksi(mpa: float) -> float:
+    """Convert MPa (N/mm²) to ksi."""
+    return mpa * MPA_TO_KSI
+
+
+def ksi_to_mpa(ksi: float) -> float:
+    """Convert ksi to MPa (N/mm²)."""
+    return ksi / MPA_TO_KSI
+
+
+def convert_beam_inputs(
+    b: float, D: float, d: float, Mu: float, Vu: float,
+    from_system: str, to_system: str
+) -> Tuple[float, float, float, float, float]:
+    """
+    Convert all beam inputs between unit systems.
+
+    Args:
+        b, D, d: Dimensions (length units)
+        Mu: Moment (moment units)
+        Vu: Shear (force units)
+        from_system: 'SI' or 'Imperial'
+        to_system: 'SI' or 'Imperial'
+
+    Returns:
+        Tuple of converted (b, D, d, Mu, Vu)
+    """
+    if from_system == to_system:
+        return b, D, d, Mu, Vu
+
+    if from_system == 'SI' and to_system == 'Imperial':
+        return (
+            mm_to_inch(b),
+            mm_to_inch(D),
+            mm_to_inch(d),
+            knm_to_kipft(Mu),
+            kn_to_kip(Vu)
+        )
+    else:  # Imperial to SI
+        return (
+            inch_to_mm(b),
+            inch_to_mm(D),
+            inch_to_mm(d),
+            kipft_to_knm(Mu),
+            kip_to_kn(Vu)
+        )
+```
+
+#### 3. Settings Page (`streamlit_app/pages/05_⚙️_settings.py` ~350 lines)
+
+```python
+"""
+Settings and Configuration Page.
+
+Allows users to customize:
+- Unit system (SI/Imperial)
+- Default materials
+- Display preferences
+- Session behavior
+- Import/export settings
+"""
+
+import streamlit as st
+from datetime import datetime
+
+# Page configuration
+st.set_page_config(
+    page_title="Settings | IS 456 Beam Design",
+    page_icon="⚙️",
+    layout="wide"
+)
+
+from utils.settings import (
+    AppSettings, UnitSystem, ThemeMode,
+    get_current_settings, save_current_settings
+)
+
+# Custom CSS matching theme
+st.markdown("""
+<style>
+    .settings-header {
+        color: #003366;
+        border-bottom: 2px solid #FF6600;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .settings-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #003366;
+    }
+    .warning-box {
+        background-color: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 4px;
+        padding: 10px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Page header
+st.markdown('<h1 class="settings-header">⚙️ Settings & Configuration</h1>', unsafe_allow_html=True)
+
+# Load current settings
+settings = get_current_settings()
+
+# Create tabs for different settings categories
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "🔢 Units",
+    "🏗️ Materials",
+    "🖥️ Display",
+    "💾 Session",
+    "📁 Import/Export"
+])
+
+# ============ TAB 1: Units ============
+with tab1:
+    st.markdown("### Unit System")
+    st.markdown("Select your preferred unit system. All inputs and outputs will use these units.")
+
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        unit_options = {
+            "SI (mm, N, kN·m)": UnitSystem.SI,
+            "Imperial (in, lb, kip·ft)": UnitSystem.IMPERIAL
+        }
+        selected_unit = st.radio(
+            "Unit System",
+            options=list(unit_options.keys()),
+            index=0 if settings.unit_system == UnitSystem.SI else 1,
+            horizontal=True
+        )
+        settings.unit_system = unit_options[selected_unit]
+
+    with col2:
+        st.info("ℹ️ **Note:** IS 456 uses SI units. Imperial values will be converted for calculations.")
+
+    # Show conversion examples
+    st.markdown("#### Quick Reference")
+    if settings.unit_system == UnitSystem.SI:
+        st.markdown("""
+        | Parameter | Unit | Example |
+        |-----------|------|---------|
+        | Length | mm | 250 mm |
+        | Force | kN | 45 kN |
+        | Moment | kN·m | 85 kN·m |
+        | Stress | N/mm² (MPa) | 25 N/mm² |
+        """)
+    else:
+        st.markdown("""
+        | Parameter | Unit | Example |
+        |-----------|------|---------|
+        | Length | in | 9.84 in |
+        | Force | kip | 10.1 kip |
+        | Moment | kip·ft | 62.7 kip·ft |
+        | Stress | ksi | 3.63 ksi |
+        """)
+
+# ============ TAB 2: Materials ============
+with tab2:
+    st.markdown("### Default Materials")
+    st.markdown("These values will be pre-selected when opening a new design.")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("#### 🧱 Concrete")
+        fck_options = [20, 25, 30, 35, 40, 45, 50]
+        settings.materials.fck = st.selectbox(
+            "Default Grade (fck)",
+            options=fck_options,
+            index=fck_options.index(settings.materials.fck),
+            format_func=lambda x: f"M{x} ({x} N/mm²)"
+        )
+
+        st.markdown("##### Clear Cover Defaults")
+        settings.materials.cover_internal = st.number_input(
+            "Internal Exposure (mm)",
+            min_value=20, max_value=75,
+            value=settings.materials.cover_internal,
+            help="For protected indoor elements"
+        )
+        settings.materials.cover_external = st.number_input(
+            "External Exposure (mm)",
+            min_value=30, max_value=75,
+            value=settings.materials.cover_external,
+            help="For outdoor/weather-exposed elements"
+        )
+
+    with col2:
+        st.markdown("#### 🔩 Steel")
+        fy_options = [250, 415, 500, 550]
+        settings.materials.fy = st.selectbox(
+            "Default Grade (fy)",
+            options=fy_options,
+            index=fy_options.index(settings.materials.fy),
+            format_func=lambda x: f"Fe{x} ({x} N/mm²)"
+        )
+
+        st.markdown("##### Common Bar Sizes")
+        st.caption("Standard bar diameters (mm): 8, 10, 12, 16, 20, 25, 32")
+
+    # Safety Factors (Read-only)
+    st.markdown("---")
+    st.markdown("### 🛡️ Safety Factors (IS 456 Table 18)")
+    st.caption("These values are prescribed by IS 456 and cannot be modified.")
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("γc (Concrete)", f"{settings.safety_factors.gamma_c:.2f}")
+    with col2:
+        st.metric("γs (Steel)", f"{settings.safety_factors.gamma_s:.2f}")
+    with col3:
+        st.metric("γf,DL (Dead Load)", f"{settings.safety_factors.gamma_f_dead:.2f}")
+    with col4:
+        st.metric("γf,LL (Live Load)", f"{settings.safety_factors.gamma_f_live:.2f}")
+
+# ============ TAB 3: Display ============
+with tab3:
+    st.markdown("### Display Preferences")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("#### Numerical Display")
+        settings.display.decimal_places = st.slider(
+            "Decimal Places",
+            min_value=0, max_value=4,
+            value=settings.display.decimal_places,
+            help="Number of decimal places for results"
+        )
+
+        st.markdown("#### Calculation Display")
+        settings.display.show_formulas = st.checkbox(
+            "Show Formulas",
+            value=settings.display.show_formulas,
+            help="Display IS 456 formulas in results"
+        )
+        settings.display.show_intermediate_steps = st.checkbox(
+            "Show Intermediate Steps",
+            value=settings.display.show_intermediate_steps,
+            help="Show step-by-step calculation breakdown"
+        )
+
+    with col2:
+        st.markdown("#### Charts")
+        settings.display.chart_height = st.slider(
+            "Chart Height (px)",
+            min_value=200, max_value=800,
+            value=settings.display.chart_height,
+            step=50
+        )
+
+        st.markdown("#### Theme")
+        theme_options = {
+            "Light": ThemeMode.LIGHT,
+            "Dark": ThemeMode.DARK,
+            "System": ThemeMode.SYSTEM
+        }
+        selected_theme = st.radio(
+            "Color Theme",
+            options=list(theme_options.keys()),
+            index=list(theme_options.values()).index(settings.display.theme),
+            horizontal=True,
+            help="Note: Requires app restart to take effect"
+        )
+        settings.display.theme = theme_options[selected_theme]
+
+# ============ TAB 4: Session ============
+with tab4:
+    st.markdown("### Session Preferences")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("#### Auto-Save")
+        settings.session.auto_save = st.checkbox(
+            "Enable Auto-Save",
+            value=settings.session.auto_save,
+            help="Automatically save designs after each analysis"
+        )
+
+        settings.session.history_limit = st.slider(
+            "History Limit",
+            min_value=5, max_value=50,
+            value=settings.session.history_limit,
+            help="Maximum number of designs to keep in history"
+        )
+
+    with col2:
+        st.markdown("#### Performance")
+        settings.session.cache_enabled = st.checkbox(
+            "Enable Caching",
+            value=settings.session.cache_enabled,
+            help="Cache calculation results for faster repeat designs"
+        )
+
+        settings.session.show_tooltips = st.checkbox(
+            "Show Tooltips",
+            value=settings.session.show_tooltips,
+            help="Display helpful tooltips on input fields"
+        )
+
+    # Clear History Button
+    st.markdown("---")
+    st.markdown("#### ⚠️ Danger Zone")
+    if st.button("🗑️ Clear Design History", type="secondary"):
+        if 'design_history' in st.session_state:
+            st.session_state.design_history = []
+            st.success("✅ Design history cleared!")
+        else:
+            st.info("ℹ️ No history to clear")
+
+# ============ TAB 5: Import/Export ============
+with tab5:
+    st.markdown("### Import/Export Settings")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("#### 📤 Export Settings")
+        st.markdown("Download your settings to use on another device.")
+
+        json_content = settings.to_json()
+        st.download_button(
+            label="⬇️ Download Settings (JSON)",
+            data=json_content,
+            file_name=f"beam_design_settings_{datetime.now():%Y%m%d}.json",
+            mime="application/json",
+            use_container_width=True
+        )
+
+    with col2:
+        st.markdown("#### 📥 Import Settings")
+        st.markdown("Upload a previously exported settings file.")
+
+        uploaded_file = st.file_uploader(
+            "Choose settings file",
+            type=['json'],
+            help="Upload a .json settings file"
+        )
+
+        if uploaded_file is not None:
+            try:
+                json_content = uploaded_file.read().decode('utf-8')
+                imported_settings = AppSettings.from_json(json_content)
+                if st.button("✅ Apply Imported Settings", type="primary"):
+                    st.session_state.app_settings = imported_settings
+                    st.success("✅ Settings imported successfully!")
+                    st.rerun()
+            except Exception as e:
+                st.error(f"❌ Failed to import settings: {str(e)}")
+
+    # Reset to Defaults
+    st.markdown("---")
+    st.markdown("#### 🔄 Reset to Defaults")
+    if st.button("Reset All Settings", type="secondary"):
+        st.session_state.app_settings = AppSettings()
+        st.success("✅ Settings reset to defaults!")
+        st.rerun()
+
+# ============ Save Button (Bottom) ============
+st.markdown("---")
+col1, col2, col3 = st.columns([2, 1, 2])
+with col2:
+    if st.button("💾 Save All Settings", type="primary", use_container_width=True):
+        st.session_state.app_settings = settings
+        save_current_settings()
+        st.success("✅ Settings saved successfully!")
+
+# Footer
+st.markdown("---")
+st.caption("Settings are saved to `~/.streamlit_beam_design/settings.json`")
+```
+
+### Files to Create/Modify
+
+| File | Action | Est. Lines |
+|------|--------|-----------|
+| `streamlit_app/utils/settings.py` | CREATE | ~200 |
+| `streamlit_app/utils/unit_converter.py` | CREATE | ~100 |
+| `streamlit_app/pages/05_⚙️_settings.py` | CREATE | ~350 |
+| `streamlit_app/tests/test_settings.py` | CREATE | ~150 |
+| `streamlit_app/tests/test_unit_converter.py` | CREATE | ~80 |
+
+**Total New Lines:** ~880
+
+### Test Requirements (~230 lines)
+
+```python
+# streamlit_app/tests/test_settings.py
+
+import pytest
+import json
+from pathlib import Path
+from utils.settings import AppSettings, UnitSystem, ThemeMode, MaterialDefaults
+
+
+class TestAppSettings:
+    """Tests for AppSettings dataclass."""
+
+    def test_default_values(self):
+        """Default settings should have expected values."""
+        settings = AppSettings()
+        assert settings.unit_system == UnitSystem.SI
+        assert settings.materials.fck == 25
+        assert settings.materials.fy == 415
+        assert settings.safety_factors.gamma_c == 1.5
+
+    def test_to_dict_and_from_dict(self):
+        """Settings should round-trip through dict."""
+        original = AppSettings()
+        original.materials.fck = 30
+        original.display.decimal_places = 3
+
+        data = original.to_dict()
+        restored = AppSettings.from_dict(data)
+
+        assert restored.materials.fck == 30
+        assert restored.display.decimal_places == 3
+
+    def test_to_json_and_from_json(self):
+        """Settings should round-trip through JSON."""
+        original = AppSettings()
+        original.unit_system = UnitSystem.IMPERIAL
+
+        json_str = original.to_json()
+        restored = AppSettings.from_json(json_str)
+
+        assert restored.unit_system == UnitSystem.IMPERIAL
+
+    def test_save_and_load(self, tmp_path):
+        """Settings should persist to file."""
+        settings = AppSettings()
+        settings.materials.fy = 500
+
+        path = tmp_path / "settings.json"
+        settings.save(path)
+
+        loaded = AppSettings.load(path)
+        assert loaded.materials.fy == 500
+
+    def test_reset_to_defaults(self):
+        """Reset should return fresh defaults."""
+        settings = AppSettings()
+        settings.materials.fck = 40
+        settings.display.decimal_places = 4
+
+        reset = settings.reset_to_defaults()
+        assert reset.materials.fck == 25
+        assert reset.display.decimal_places == 2
+
+
+# streamlit_app/tests/test_unit_converter.py
+
+import pytest
+from utils.unit_converter import (
+    mm_to_inch, inch_to_mm,
+    kn_to_kip, kip_to_kn,
+    knm_to_kipft, kipft_to_knm,
+    convert_beam_inputs
+)
+
+
+class TestUnitConversions:
+    """Tests for unit conversion functions."""
+
+    def test_mm_to_inch(self):
+        """25.4 mm = 1 inch."""
+        assert abs(mm_to_inch(25.4) - 1.0) < 0.001
+
+    def test_inch_to_mm(self):
+        """1 inch = 25.4 mm."""
+        assert abs(inch_to_mm(1.0) - 25.4) < 0.01
+
+    def test_kn_to_kip(self):
+        """4.448 kN ≈ 1 kip."""
+        assert abs(kn_to_kip(4.448) - 1.0) < 0.01
+
+    def test_knm_to_kipft(self):
+        """1.356 kN·m ≈ 1 kip·ft."""
+        assert abs(knm_to_kipft(1.356) - 1.0) < 0.01
+
+    def test_convert_beam_inputs_same_system(self):
+        """Same system conversion returns unchanged values."""
+        b, D, d, Mu, Vu = convert_beam_inputs(
+            250, 450, 400, 85, 45, 'SI', 'SI'
+        )
+        assert b == 250
+        assert D == 450
+
+    def test_convert_beam_inputs_si_to_imperial(self):
+        """SI to Imperial conversion is correct."""
+        b, D, d, Mu, Vu = convert_beam_inputs(
+            254, 457.2, 400, 85, 45, 'SI', 'Imperial'
+        )
+        assert abs(b - 10.0) < 0.01  # 254 mm ≈ 10 in
+        assert abs(D - 18.0) < 0.01  # 457.2 mm ≈ 18 in
+```
+
+### Acceptance Criteria
+
+- [ ] Settings page has 5 tabs (Units, Materials, Display, Session, Import/Export)
+- [ ] Unit system selection works (SI/Imperial)
+- [ ] Default materials are configurable
+- [ ] Safety factors display (read-only) per IS 456
+- [ ] Display preferences work (decimal places, chart height)
+- [ ] Settings persist to file (~/.streamlit_beam_design/settings.json)
+- [ ] Export settings as JSON download
+- [ ] Import settings from JSON file
+- [ ] Reset to defaults button works
+- [ ] Theme colors match established palette (navy/orange)
+- [ ] At least 15 tests pass for settings
+- [ ] At least 10 tests pass for unit converter
+- [ ] Settings apply to all other pages
+
+### Verification Commands
+
+```bash
+# Run settings tests
+pytest streamlit_app/tests/test_settings.py -v
+pytest streamlit_app/tests/test_unit_converter.py -v
+
+# Manual verification
+# 1. Run app: streamlit run streamlit_app/app.py
+# 2. Go to Settings page
+# 3. Change unit system and verify labels update
+# 4. Export settings, modify, re-import
+# 5. Verify settings persist after app restart
+```
+
+---
+
+## 🔴 CRITICAL: STREAMLIT-IMPL-013 - About & Help System (Day 5-6)
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-5 hours
+
+### Objective
+Create comprehensive about page and integrated help system:
+- **About Page:** App version, credits, license, links
+- **Help System:** Contextual tooltips, keyboard shortcuts, FAQ
+- **Feedback:** Contact form, bug report link
+- **What's New:** Changelog/release notes display
+
+### CRITICAL: Theme & Style Requirements
+**MUST use the established color scheme:**
+```python
+THEME = {
+    "primary": "#003366",    # Navy - headers, titles
+    "secondary": "#FF6600",  # Orange - accents, buttons
+}
+```
+
+### Implementation Details
+
+#### 1. About Page (`streamlit_app/pages/06_ℹ️_about.py` ~300 lines)
+
+```python
+"""
+About Page - App information, credits, and help resources.
+
+Provides:
+- Version and build info
+- Credits and acknowledgments
+- License information
+- Links to documentation and support
+- What's New / Changelog
+- FAQ section
+"""
+
+import streamlit as st
+from datetime import datetime
+
+# Page configuration
+st.set_page_config(
+    page_title="About | IS 456 Beam Design",
+    page_icon="ℹ️",
+    layout="wide"
+)
+
+# Version info (should be imported from central location)
+APP_VERSION = "0.15.0"
+BUILD_DATE = "2026-01-09"
+PYTHON_LIB_VERSION = "0.15.0"
+
+# Custom CSS
+st.markdown("""
+<style>
+    .about-header {
+        color: #003366;
+        text-align: center;
+        padding: 30px 0;
+    }
+    .version-badge {
+        background-color: #FF6600;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        display: inline-block;
+    }
+    .credit-card {
+        background: linear-gradient(135deg, #003366 0%, #004488 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 10px 0;
+    }
+    .link-button {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        transition: all 0.2s;
+    }
+    .link-button:hover {
+        border-color: #FF6600;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Header
+st.markdown("""
+<div class="about-header">
+    <h1>🏗️ IS 456 Beam Design Tool</h1>
+    <p><span class="version-badge">v{}</span></p>
+    <p style="color: #666;">Professional RC Beam Design per IS 456:2000</p>
+</div>
+""".format(APP_VERSION), unsafe_allow_html=True)
+
+# Create tabs
+tab1, tab2, tab3, tab4 = st.tabs([
+    "ℹ️ About",
+    "📋 What's New",
+    "❓ FAQ",
+    "📧 Feedback"
+])
+
+# ============ TAB 1: About ============
+with tab1:
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.markdown("### 📖 Overview")
+        st.markdown("""
+        This application provides professional-grade reinforced concrete beam design
+        calculations following **IS 456:2000** (Indian Standard for Plain and Reinforced
+        Concrete - Code of Practice).
+
+        **Key Features:**
+        - ✅ Flexural design (singly reinforced beams)
+        - ✅ Shear design with stirrup calculations
+        - ✅ Serviceability checks (deflection, crack width)
+        - ✅ Compliance verification against 12 IS 456 clauses
+        - ✅ Cost optimization with multiple bar configurations
+        - ✅ Interactive visualizations (cross-section, moment-curvature)
+        - ✅ Export to PDF, CSV, DXF formats
+
+        **Standards Compliance:**
+        - IS 456:2000 - Plain and Reinforced Concrete
+        - SP 16:1980 - Design Aids for Reinforced Concrete
+        """)
+
+        st.markdown("### 🔧 Technical Stack")
+        st.markdown(f"""
+        | Component | Version |
+        |-----------|---------|
+        | Streamlit Dashboard | v{APP_VERSION} |
+        | structural_lib_is456 (Python) | v{PYTHON_LIB_VERSION} |
+        | Python | 3.11+ |
+        | Plotly | 5.18+ |
+        """)
+
+    with col2:
+        st.markdown("### 🔗 Quick Links")
+
+        st.markdown("""
+        <div class="link-button">
+            <a href="https://github.com/your-repo/structural-engineering-lib" target="_blank">
+                📦 GitHub Repository
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="link-button">
+            <a href="https://your-docs-site.com" target="_blank">
+                📚 Documentation
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="link-button">
+            <a href="https://github.com/your-repo/issues" target="_blank">
+                🐛 Report Issue
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("### 📜 License")
+        st.info("MIT License - Free for commercial and personal use")
+
+    # Credits section
+    st.markdown("---")
+    st.markdown("### 👥 Credits & Acknowledgments")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+        <div class="credit-card">
+            <h4>🏛️ Standards</h4>
+            <p>Bureau of Indian Standards for IS 456:2000 and SP 16:1980</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="credit-card">
+            <h4>💻 Development</h4>
+            <p>Built with Streamlit, Plotly, and the Python scientific stack</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("""
+        <div class="credit-card">
+            <h4>🙏 Community</h4>
+            <p>Thanks to all contributors and users for feedback</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# ============ TAB 2: What's New ============
+with tab2:
+    st.markdown("### 📋 Release Notes")
+
+    st.markdown(f"""
+    #### v{APP_VERSION} ({BUILD_DATE})
+    - ✨ **New:** Settings & Configuration page
+    - ✨ **New:** Export features (PDF/CSV/DXF)
+    - ✨ **New:** Error handling with IS 456 clause references
+    - ✨ **New:** Session state persistence
+    - 🐛 **Fixed:** Test stability improvements
+    - 📚 **Docs:** Comprehensive beginner's guide
+
+    #### v0.14.0 (2026-01-07)
+    - ✨ **New:** Documentation page with searchable IS 456 reference
+    - ✨ **New:** Compliance checker with 12 clause checks
+    - ✨ **New:** Cost optimizer with bar combination comparison
+
+    #### v0.13.0 (2026-01-05)
+    - ✨ **New:** Interactive beam design page
+    - ✨ **New:** 5 Plotly visualization components
+    - ✨ **New:** Input validation with error messages
+    """)
+
+# ============ TAB 3: FAQ ============
+with tab3:
+    st.markdown("### ❓ Frequently Asked Questions")
+
+    with st.expander("🔢 What units does this tool use?"):
+        st.markdown("""
+        By default, the tool uses **SI units**:
+        - Length: millimeters (mm)
+        - Force: kilonewtons (kN)
+        - Moment: kilonewton-meters (kN·m)
+        - Stress: N/mm² (MPa)
+
+        You can switch to Imperial units in Settings, but calculations are always
+        performed in SI units internally (as per IS 456).
+        """)
+
+    with st.expander("📐 What is 'effective depth' vs 'overall depth'?"):
+        st.markdown("""
+        - **Overall Depth (D):** Total height of the beam from top to bottom
+        - **Effective Depth (d):** Distance from the compression face to the centroid
+          of the tension reinforcement
+
+        Formula: `d = D - cover - stirrup_dia - main_bar_dia/2`
+
+        For a typical beam with 30mm cover, 8mm stirrups, and 16mm main bars:
+        `d = D - 30 - 8 - 8 = D - 46 mm`
+        """)
+
+    with st.expander("⚠️ What does 'Utilization Ratio' mean?"):
+        st.markdown("""
+        The **utilization ratio** shows how much of the beam's capacity is being used:
+
+        - **< 70%:** Over-designed (wasteful, consider reducing section)
+        - **70-90%:** Good design (efficient use of materials)
+        - **90-100%:** Near optimal (maximizing capacity)
+        - **> 100%:** Under-designed (UNSAFE - increase section size)
+
+        Target: 85-95% for economical design
+        """)
+
+    with st.expander("🔩 How do I choose bar sizes?"):
+        st.markdown("""
+        **Standard bar diameters (mm):** 8, 10, 12, 16, 20, 25, 32
+
+        **Guidelines:**
+        - Main bars: 12mm to 25mm typically
+        - Stirrups: 8mm or 10mm
+        - Distribution bars: 8mm or 10mm
+
+        The Cost Optimizer page shows multiple bar combinations and ranks them
+        by cost so you can choose the most economical option.
+        """)
+
+    with st.expander("📊 How accurate are the calculations?"):
+        st.markdown("""
+        The calculations follow **IS 456:2000** exactly and are verified against:
+        - SP 16:1980 design tables
+        - Textbook examples (N. Krishna Raju, P.C. Varghese)
+        - Hand calculations
+
+        **Tolerances:**
+        - Areas: ±0.1%
+        - Dimensions: ±1mm
+
+        All results should be verified by a qualified structural engineer before
+        use in actual construction.
+        """)
+
+    with st.expander("🖥️ Can I use this on mobile?"):
+        st.markdown("""
+        Yes! The dashboard is responsive and works on:
+        - Desktop browsers (Chrome, Firefox, Safari, Edge)
+        - Tablets (iPad, Android tablets)
+        - Mobile phones (limited - some charts may be small)
+
+        For best experience, use a desktop or tablet with a screen width of 768px or more.
+        """)
+
+# ============ TAB 4: Feedback ============
+with tab4:
+    st.markdown("### 📧 Contact & Feedback")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("#### 🐛 Report a Bug")
+        st.markdown("""
+        Found an issue? Please report it on GitHub:
+        1. Go to [GitHub Issues](https://github.com/your-repo/issues)
+        2. Click "New Issue"
+        3. Select "Bug Report" template
+        4. Include your inputs and expected vs actual results
+        """)
+
+        st.markdown("#### 💡 Feature Request")
+        st.markdown("""
+        Have an idea for improvement?
+        1. Go to [GitHub Discussions](https://github.com/your-repo/discussions)
+        2. Start a new discussion in "Ideas" category
+        3. Describe your use case and proposed feature
+        """)
+
+    with col2:
+        st.markdown("#### 📝 Quick Feedback")
+
+        with st.form("feedback_form"):
+            feedback_type = st.selectbox(
+                "Feedback Type",
+                ["General Feedback", "Bug Report", "Feature Request", "Question"]
+            )
+            feedback_text = st.text_area(
+                "Your Message",
+                placeholder="Tell us what you think..."
+            )
+            email = st.text_input(
+                "Email (optional)",
+                placeholder="your@email.com"
+            )
+            submitted = st.form_submit_button("📤 Send Feedback")
+
+            if submitted and feedback_text:
+                st.success("✅ Thank you for your feedback!")
+                # In production, this would send to a backend/email service
+
+# Footer
+st.markdown("---")
+st.markdown(f"""
+<p style="text-align: center; color: #666;">
+    IS 456 Beam Design Tool v{APP_VERSION} | Built with ❤️ using Streamlit<br>
+    © {datetime.now().year} structural_engineering_lib contributors
+</p>
+""", unsafe_allow_html=True)
+```
+
+#### 2. Help Tooltips Module (`streamlit_app/utils/help_tooltips.py` ~100 lines)
+
+```python
+"""
+Contextual help tooltips for input fields.
+
+Provides consistent help text across all pages.
+"""
+
+from typing import Dict
+
+# Geometry tooltips
+GEOMETRY_HELP: Dict[str, str] = {
+    "b": """
+    **Beam Width (b)**
+
+    The width of the beam cross-section in mm.
+
+    *Typical values:* 200-400mm for residential, 300-600mm for commercial
+
+    *IS 456 Reference:* Cl. 23.1
+    """,
+
+    "D": """
+    **Overall Depth (D)**
+
+    Total height of the beam from top compression face to bottom tension face.
+
+    *Rule of thumb:* D ≈ span/10 to span/12
+
+    *Example:* 4m span → D ≈ 400-500mm
+    """,
+
+    "d": """
+    **Effective Depth (d)**
+
+    Distance from compression face to centroid of tension steel.
+
+    *Formula:* d = D - cover - stirrup_dia - main_bar_dia/2
+
+    *Typical:* d ≈ D - 50mm for 30mm cover with 16mm bars
+    """,
+
+    "cover": """
+    **Clear Cover**
+
+    Minimum concrete cover to reinforcement for durability and fire protection.
+
+    *IS 456 Table 16:*
+    - Mild exposure: 20mm
+    - Moderate: 30mm
+    - Severe: 45mm
+    - Very severe: 50mm
+    """
+}
+
+# Material tooltips
+MATERIAL_HELP: Dict[str, str] = {
+    "fck": """
+    **Characteristic Compressive Strength (fck)**
+
+    28-day cube strength of concrete in N/mm² (MPa).
+
+    *Standard grades:* M20, M25, M30, M35, M40, M45, M50
+
+    *Common use:*
+    - M20: Foundations, slabs
+    - M25-M30: Beams, columns
+    - M35+: High-rise, prestressed
+    """,
+
+    "fy": """
+    **Characteristic Yield Strength (fy)**
+
+    Yield strength of reinforcement steel in N/mm².
+
+    *Standard grades:*
+    - Fe250: Mild steel (rarely used)
+    - Fe415: Most common (TMT bars)
+    - Fe500: Higher strength, economical
+    - Fe550: High strength
+    """
+}
+
+# Load tooltips
+LOAD_HELP: Dict[str, str] = {
+    "Mu": """
+    **Design Moment (Mu)**
+
+    Factored bending moment in kN·m at the critical section.
+
+    *Note:* This should be the maximum moment from structural analysis,
+    already factored by γf (typically 1.5 for DL+LL).
+
+    *Formula:* Mu = 1.5 × (MDL + MLL)
+    """,
+
+    "Vu": """
+    **Design Shear (Vu)**
+
+    Factored shear force in kN at the critical section.
+
+    *Critical section:* At distance 'd' from face of support for
+    beams loaded on top.
+
+    *Formula:* Vu = 1.5 × (VDL + VLL)
+    """
+}
+
+
+def get_tooltip(category: str, field: str) -> str:
+    """Get tooltip text for a field."""
+    tooltips = {
+        'geometry': GEOMETRY_HELP,
+        'material': MATERIAL_HELP,
+        'load': LOAD_HELP,
+    }
+
+    category_tooltips = tooltips.get(category, {})
+    return category_tooltips.get(field, "")
+```
+
+#### 3. Keyboard Shortcuts Module (`streamlit_app/utils/keyboard_shortcuts.py` ~50 lines)
+
+```python
+"""
+Keyboard shortcuts for power users.
+
+Note: Streamlit has limited keyboard shortcut support.
+These are implemented via JavaScript injection.
+"""
 
 import streamlit as st
 
-st.set_page_config(page_title="Settings", page_icon="⚙️")
 
-st.title("⚙️ Settings")
+SHORTCUTS = {
+    "Ctrl+Enter": "Run analysis",
+    "Ctrl+S": "Save current design",
+    "Ctrl+E": "Export to PDF",
+    "Ctrl+/": "Show keyboard shortcuts",
+    "Esc": "Close dialogs/expanders",
+}
 
-# Initialize defaults
-if "settings" not in st.session_state:
-    st.session_state.settings = {
-        "units": "SI",
-        "decimal_places": 2,
-        "default_fck": 25,
-        "default_fy": 415,
-        "partial_safety_concrete": 1.5,
-        "partial_safety_steel": 1.15,
-    }
 
-settings = st.session_state.settings
+def render_shortcuts_help():
+    """Render keyboard shortcuts help panel."""
+    st.markdown("### ⌨️ Keyboard Shortcuts")
 
-# Units
-st.subheader("🔢 Units")
-settings["units"] = st.radio("Unit System", ["SI (mm, N, kN·m)", "Imperial (in, lb, kip·ft)"])
+    for shortcut, action in SHORTCUTS.items():
+        st.markdown(f"- **{shortcut}**: {action}")
 
-# Display
-st.subheader("🖥️ Display")
-settings["decimal_places"] = st.slider("Decimal Places", 0, 4, settings["decimal_places"])
 
-# Defaults
-st.subheader("🏗️ Default Materials")
-col1, col2 = st.columns(2)
-with col1:
-    settings["default_fck"] = st.selectbox("Default Concrete", [20, 25, 30, 35, 40])
-with col2:
-    settings["default_fy"] = st.selectbox("Default Steel", [250, 415, 500, 550])
+def inject_keyboard_handlers():
+    """Inject JavaScript for keyboard handling."""
+    js_code = """
+    <script>
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+/ to show shortcuts
+        if (e.ctrlKey && e.key === '/') {
+            e.preventDefault();
+            // Toggle shortcuts panel (requires Streamlit component)
+        }
+    });
+    </script>
+    """
+    st.markdown(js_code, unsafe_allow_html=True)
+```
 
-# Safety Factors
-st.subheader("🛡️ Safety Factors")
-st.caption("Per IS 456 Table 18")
-col1, col2 = st.columns(2)
-with col1:
-    settings["partial_safety_concrete"] = st.number_input("γc (concrete)", value=1.5, disabled=True)
-with col2:
-    settings["partial_safety_steel"] = st.number_input("γs (steel)", value=1.15, disabled=True)
+### Files to Create/Modify
 
-# Save
-if st.button("💾 Save Settings"):
-    st.session_state.settings = settings
-    st.success("✅ Settings saved!")
+| File | Action | Est. Lines |
+|------|--------|-----------|
+| `streamlit_app/pages/06_ℹ️_about.py` | CREATE | ~300 |
+| `streamlit_app/utils/help_tooltips.py` | CREATE | ~100 |
+| `streamlit_app/utils/keyboard_shortcuts.py` | CREATE | ~50 |
+| `streamlit_app/tests/test_about.py` | CREATE | ~60 |
+| `streamlit_app/tests/test_help_tooltips.py` | CREATE | ~40 |
+
+**Total New Lines:** ~550
+
+### Test Requirements (~100 lines)
+
+```python
+# streamlit_app/tests/test_help_tooltips.py
+
+import pytest
+from utils.help_tooltips import get_tooltip, GEOMETRY_HELP, MATERIAL_HELP, LOAD_HELP
+
+
+class TestHelpTooltips:
+    """Tests for help tooltip system."""
+
+    def test_get_geometry_tooltip(self):
+        """Geometry tooltips should be retrievable."""
+        tooltip = get_tooltip('geometry', 'b')
+        assert 'Beam Width' in tooltip
+        assert 'mm' in tooltip
+
+    def test_get_material_tooltip(self):
+        """Material tooltips should be retrievable."""
+        tooltip = get_tooltip('material', 'fck')
+        assert 'Compressive Strength' in tooltip
+
+    def test_get_load_tooltip(self):
+        """Load tooltips should be retrievable."""
+        tooltip = get_tooltip('load', 'Mu')
+        assert 'Moment' in tooltip
+
+    def test_unknown_category_returns_empty(self):
+        """Unknown category should return empty string."""
+        tooltip = get_tooltip('unknown', 'field')
+        assert tooltip == ""
+
+    def test_unknown_field_returns_empty(self):
+        """Unknown field should return empty string."""
+        tooltip = get_tooltip('geometry', 'unknown')
+        assert tooltip == ""
+
+    def test_all_geometry_fields_have_tooltips(self):
+        """All geometry fields should have tooltips."""
+        required = ['b', 'D', 'd', 'cover']
+        for field in required:
+            assert field in GEOMETRY_HELP
+            assert len(GEOMETRY_HELP[field]) > 50
+
+
+# streamlit_app/tests/test_about.py
+
+import pytest
+
+
+class TestAboutPage:
+    """Tests for About page content."""
+
+    def test_version_format(self):
+        """Version should follow semantic versioning."""
+        from pages import about  # Assuming importable
+        version = about.APP_VERSION
+        parts = version.split('.')
+        assert len(parts) == 3
+        assert all(part.isdigit() for part in parts)
+
+    def test_shortcuts_defined(self):
+        """Keyboard shortcuts should be defined."""
+        from utils.keyboard_shortcuts import SHORTCUTS
+        assert len(SHORTCUTS) >= 4
+        assert 'Ctrl+Enter' in SHORTCUTS
 ```
 
 ### Acceptance Criteria
-- [ ] Settings persist across sessions
-- [ ] Default values applied to input forms
-- [ ] Reset to defaults option
-- [ ] Export/import settings
 
----
+- [ ] About page has 4 tabs (About, What's New, FAQ, Feedback)
+- [ ] Version and build info displayed correctly
+- [ ] Credits section with proper attributions
+- [ ] What's New shows recent release notes
+- [ ] FAQ has at least 6 common questions
+- [ ] Feedback form works (even if just UI)
+- [ ] Quick links to GitHub, docs, issues
+- [ ] Contextual help tooltips for all input fields
+- [ ] Keyboard shortcuts documented (even if limited implementation)
+- [ ] Theme colors match established palette
+- [ ] At least 10 tests pass for about/help system
+- [ ] Help integrates with existing input components
 
-## 🟠 STREAMLIT-IMPL-013: About & Help System (Day 11-12)
-**Priority:** 🟠 HIGH
-**Status:** 🟡 TODO
-**Estimated Effort:** 3-4 hours
+### Verification Commands
 
-### Objective
-Create about page and contextual help:
-- App version and credits
-- Contact/feedback form
-- Contextual help tooltips
-- Keyboard shortcuts
+```bash
+# Run about/help tests
+pytest streamlit_app/tests/test_about.py -v
+pytest streamlit_app/tests/test_help_tooltips.py -v
+
+# Manual verification
+# 1. Run app: streamlit run streamlit_app/app.py
+# 2. Go to About page
+# 3. Verify all tabs render correctly
+# 4. Check FAQ expanders work
+# 5. Test feedback form submission
+# 6. Hover over inputs to see tooltips
+```
 
 ---
 
