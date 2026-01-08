@@ -851,3 +851,144 @@ class TestCuttingStockOptimization:
         # Should use default stock lengths
         # 5000 + 3 kerf = 5003, so should select 6000mm
         assert plan.assignments[0].stock_length in STANDARD_STOCK_LENGTHS_MM
+
+
+# =============================================================================
+# Tests for generate_summary_table (convenience function)
+# =============================================================================
+
+
+class TestGenerateSummaryTable:
+    """Tests for the generate_summary_table convenience function."""
+
+    def test_markdown_output_format(self):
+        """Test markdown output has proper table structure."""
+        from structural_lib.bbs import generate_summary_table
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="mid",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=3,
+                cut_length_mm=4500,
+                total_length_mm=13500,
+                unit_weight_kg=1.58,
+                total_weight_kg=21.3,
+            ),
+            BBSLineItem(
+                bar_mark="S1",
+                member_id="B1",
+                location="stirrup",
+                zone="full",
+                shape_code="E",
+                diameter_mm=8,
+                no_of_bars=20,
+                cut_length_mm=1200,
+                total_length_mm=24000,
+                unit_weight_kg=0.395,
+                total_weight_kg=9.5,
+            ),
+        ]
+
+        table = generate_summary_table(items, format_type="markdown")
+
+        # Check it contains markdown table structure
+        assert "### Bar Bending Schedule Summary" in table
+        assert "| Dia (mm) | Count | Length (m) | Weight (kg) |" in table
+        assert "|----------|-------|------------|-------------|" in table
+        assert "**TOTAL**" in table
+
+    def test_text_output_format(self):
+        """Test text output has proper structure."""
+        from structural_lib.bbs import generate_summary_table
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="mid",
+                shape_code="A",
+                diameter_mm=12,
+                no_of_bars=4,
+                cut_length_mm=5000,
+                total_length_mm=20000,
+                unit_weight_kg=0.888,
+                total_weight_kg=17.8,
+            ),
+        ]
+
+        table = generate_summary_table(items, format_type="text")
+
+        # Check it contains text table structure
+        assert "Bar Bending Schedule Summary" in table
+        assert "TOTAL" in table
+        assert "Dia (mm)" in table
+
+    def test_html_output_format(self):
+        """Test HTML output has proper structure."""
+        from structural_lib.bbs import generate_summary_table
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="B1",
+                location="bottom",
+                zone="mid",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=2,
+                cut_length_mm=3000,
+                total_length_mm=6000,
+                unit_weight_kg=1.58,
+                total_weight_kg=9.5,
+            ),
+        ]
+
+        table = generate_summary_table(items, format_type="html")
+
+        # Check it contains HTML structure
+        assert "<table" in table
+        assert "<thead>" in table
+        assert "<tbody>" in table
+        assert "</table>" in table
+
+    def test_custom_member_id(self):
+        """Test that member_id is included in the output."""
+        from structural_lib.bbs import generate_summary_table
+
+        items = [
+            BBSLineItem(
+                bar_mark="B1",
+                member_id="FB-101",
+                location="bottom",
+                zone="mid",
+                shape_code="A",
+                diameter_mm=16,
+                no_of_bars=2,
+                cut_length_mm=3000,
+                total_length_mm=6000,
+                unit_weight_kg=1.58,
+                total_weight_kg=9.5,
+            ),
+        ]
+
+        table = generate_summary_table(
+            items, member_id="FB-101", format_type="markdown"
+        )
+
+        assert "FB-101" in table
+
+    def test_empty_items_returns_valid_table(self):
+        """Test that empty items list returns valid table with zeros."""
+        from structural_lib.bbs import generate_summary_table
+
+        table = generate_summary_table([], format_type="markdown")
+
+        # Should still be valid markdown with TOTAL row
+        assert "TOTAL" in table
+        assert "**0**" in table

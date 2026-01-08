@@ -44,27 +44,27 @@ class TestValidateDimensions:
         errors = validation.validate_dimensions(b=300, d=0, D=500)
         assert E_INPUT_002 in errors
 
-    def test_negative_D(self):
+    def test_negative_overall_depth(self):
         """Negative D returns E_INPUT_003a."""
         errors = validation.validate_dimensions(b=300, d=450, D=-500)
         assert E_INPUT_003a in errors
 
-    def test_zero_D(self):
+    def test_zero_overall_depth(self):
         """Zero D returns E_INPUT_003a."""
         errors = validation.validate_dimensions(b=300, d=450, D=0)
         assert E_INPUT_003a in errors
 
-    def test_d_greater_than_D(self):
+    def test_d_greater_than_overall_depth(self):
         """d >= D returns E_INPUT_003."""
         errors = validation.validate_dimensions(b=300, d=500, D=450)
         assert E_INPUT_003 in errors
 
-    def test_d_equal_to_D(self):
+    def test_d_equal_to_overall_depth(self):
         """d == D returns E_INPUT_003."""
         errors = validation.validate_dimensions(b=300, d=500, D=500)
         assert E_INPUT_003 in errors
 
-    def test_d_equal_to_D_allowed(self):
+    def test_d_equal_to_overall_depth_allowed(self):
         """d == D is allowed when require_d_less_than_D=False."""
         errors = validation.validate_dimensions(
             b=300, d=500, D=500, require_d_less_than_D=False
@@ -192,7 +192,7 @@ class TestValidateGeometryRelationship:
         errors = validation.validate_geometry_relationship(d=-450, D=500, cover=40)
         assert E_INPUT_002 in errors
 
-    def test_negative_D(self):
+    def test_negative_overall_depth(self):
         """Negative D returns error."""
         errors = validation.validate_geometry_relationship(d=450, D=-500, cover=40)
         assert E_INPUT_003a in errors
@@ -202,7 +202,7 @@ class TestValidateGeometryRelationship:
         errors = validation.validate_geometry_relationship(d=450, D=500, cover=-40)
         assert E_INPUT_015 in errors
 
-    def test_d_too_large_for_D(self):
+    def test_d_too_large_for_overall_depth(self):
         """d too large relative to D and cover returns error."""
         errors = validation.validate_geometry_relationship(d=490, D=500, cover=40)
         assert E_INPUT_003 in errors

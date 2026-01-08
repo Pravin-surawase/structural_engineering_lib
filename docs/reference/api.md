@@ -156,7 +156,61 @@ def detail_beam_is456(
 ) -> BeamDetailingResult
 ```
 
-### 1A.4 API Helpers
+### 1A.4 Combined Design + Detailing (`design_and_detail_beam_is456`)
+
+Convenience function that combines `design_beam_is456()` and `detail_beam_is456()` into a single call. Ideal for Streamlit dashboards and quick prototyping.
+
+```python
+def design_and_detail_beam_is456(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float | None = None,  # Auto-calculated if None
+    cover_mm: float = 40.0,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_support_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    is_seismic: bool = False,
+) -> DesignAndDetailResult
+```
+
+**Returns:** `DesignAndDetailResult` with:
+- `design`: ComplianceCaseResult (flexure, shear, serviceability)
+- `detailing`: BeamDetailingResult (bars, stirrups, development lengths)
+- `geometry`: Dict of geometric properties
+- `materials`: Dict of material properties
+- `is_ok`: True if design is safe and detailing is valid
+- `summary()`: Human-readable summary
+- `to_dict()`: Serialize to dictionary
+- `to_json()`: Serialize to JSON string
+
+**Example:**
+```python
+result = api.design_and_detail_beam_is456(
+    units="IS456",
+    beam_id="B1",
+    story="GF",
+    span_mm=5000,
+    mu_knm=150,
+    vu_kn=80,
+    b_mm=300,
+    D_mm=500,
+)
+print(result.summary())  # 'B1@GF: 300×500mm, Ast=856mm², OK'
+print(result.design.flexure.ast_required)  # 856.26
+```
+
+### 1A.5 API Helpers
 
 ```python
 def get_library_version() -> str
