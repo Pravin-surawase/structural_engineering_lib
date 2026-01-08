@@ -249,6 +249,8 @@ with col_input:
 
                 st.session_state.beam_inputs["design_result"] = result
                 st.session_state.beam_inputs["design_computed"] = True
+                # Also store in design_results for cost optimizer compatibility
+                st.session_state.design_results = result
                 st.success("✅ Design computed successfully!")
                 st.rerun()
 
