@@ -214,27 +214,39 @@ def run_cost_optimization(inputs: dict) -> dict:
         # Import costing functions from library
         from structural_lib.costing import CostProfile, STEEL_DENSITY_KG_PER_M3
 
-        # Run flexure design to get bar alternatives
-        result = cached_smart_analysis(
-            mu_knm=inputs["mu_knm"],
-            vu_kn=inputs.get("vu_kn", 0.0),
-            b_mm=inputs["b_mm"],
-            D_mm=inputs["D_mm"],
-            d_mm=inputs["d_mm"],
-            fck_nmm2=inputs["fck_nmm2"],
-            fy_nmm2=inputs["fy_nmm2"],
-            span_mm=inputs["span_mm"],
-            loading_type="udl",
-            support_type="simply_supported",
-        )
+        # Check if we have design results from beam design page
+        flexure = None
+        if "design_results" in st.session_state and st.session_state.design_results:
+            design_result = st.session_state.design_results
+            if "flexure" in design_result:
+                flexure = design_result["flexure"]
 
-        if not result or "flexure" not in result:
-            st.warning("⚠️ Design analysis failed.")
-            return {"analysis": None, "comparison": []}
+        # If not available, run new analysis
+        if not flexure:
+            result = cached_smart_analysis(
+                mu_knm=inputs["mu_knm"],
+                vu_kn=inputs.get("vu_kn", 0.0),
+                b_mm=inputs["b_mm"],
+                D_mm=inputs["D_mm"],
+                d_mm=inputs["d_mm"],
+                fck_nmm2=inputs["fck_nmm2"],
+                fy_nmm2=inputs["fy_nmm2"],
+                span_mm=inputs["span_mm"],
+            )
 
-        flexure = result["flexure"]
+            if not result or "design" not in result:
+                st.warning("⚠️ Design analysis failed. Please run beam design first.")
+                return {"analysis": None, "comparison": []}
+
+            design_result = result["design"]
+            if "flexure" in design_result:
+                flexure = design_result["flexure"]
+            else:
+                st.warning("⚠️ No flexure results available.")
+                return {"analysis": None, "comparison": []}
+
         if "_bar_alternatives" not in flexure or not flexure["_bar_alternatives"]:
-            st.warning("⚠️ No bar alternatives available.")
+            st.warning("⚠️ No bar alternatives available. Try running beam design first with different parameters.")
             return {"analysis": None, "comparison": []}
 
         # Get selected design and alternatives
