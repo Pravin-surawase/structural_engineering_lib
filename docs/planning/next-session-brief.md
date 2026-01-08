@@ -27,6 +27,7 @@
 - ✅ TASK-143: Comparison & Sensitivity Enhancement (392 lines, 19/19 tests)
 - ✅ Rebar optimizer test suite expansion (31 new tests, 46 total passing)
 - ✅ Phase 1 documentation hygiene completed (automation catalog, metadata, archive stubs)
+- ✅ TASK-280 hygiene sweep (P0 issues resolved; link checker false positives only)
 
 **Current State (Clean Slate):**
 - **No active tasks** - all recent work completed and documented
@@ -34,6 +35,7 @@
 - Type architecture clean with API wrapper pattern
 - Test coverage strong: 2231+ tests passing (SmartDesigner 20/20, comparison 19/19, rebar 46/46)
 - Documentation hygiene Phase 2 is ready to start (learning paths, agent decision tree, research index, brief update)
+- Repo hygiene P0 complete; remaining P1/P2 items deferred for incremental cleanup
 - Ready for v0.15.0 release or new feature work
 
 **Minor Items:**

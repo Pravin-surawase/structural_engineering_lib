@@ -39,6 +39,18 @@ Latest checks run during MAIN review:
 
 ---
 
+## Implementation Status (2026-01-08)
+
+- ✅ TASK-280 hygiene fixes merged to `main` (commit `89bef1e`).
+- ✅ Broken links fixed; link checker now reports 4 false positives from code examples in `docs/planning/agent-6-tasks-streamlit.md`.
+- ✅ Root `.coverage` removed from git; `.gitignore` updated.
+- ✅ `.mypy_cache` already ignored and not tracked.
+- ✅ Naming conventions enforced (UPPERCASE → kebab-case) with link updates.
+- ✅ Legal docs created (`LICENSE_ENGINEERING.md`, `docs/legal/usage-guidelines.md`).
+- ⏳ P1/P2 items remain as incremental improvements.
+
+---
+
 ## P0 (Critical) - Fix Immediately
 
 ### ISSUE-001: Broken Internal Links (35 total)
