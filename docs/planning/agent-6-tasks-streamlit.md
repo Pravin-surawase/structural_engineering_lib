@@ -44,7 +44,7 @@
 - ✅ IMPL-000-FIX: Plotly Type Fix (662 lines, runtime error fixed)
 - ✅ IMPL-000-TIER-2: Usage Validation (23 tests, 100% pass)
 - ✅ UI-LAYOUT: Two-Column Layout + Preview (1,066 lines, 19 tests) ← NEW!
-- ⏳ IMPL-001: Library Integration (NEXT)
+- ✅ IMPL-001: Library Integration (682 mm² design verified, all CI passed)
 **Total Tests:** 670 (was 651 → +19 preview component tests!)
 **Total Lines:** 29,809 (was 28,743 → +1,066 lines!)
 **Critical Features:** Real-time preview, beam diagram, quick checks, cost estimate
@@ -96,7 +96,7 @@ They provide the foundation for all Phase 3 features.
 |------|-------------|----------|--------|-------|
 | IMPL-000 | Comprehensive Test Suite | 🔴 CRITICAL | ✅ COMPLETE (2026-01-08) | 4.0 |
 | IMPL-000-T2 | Tier 2 Error Prevention (Contract Tests) | 🔴 CRITICAL | ✅ COMPLETE (2026-01-08) | 3.0 |
-| IMPL-001 | Python Library Integration | 🔴 CRITICAL | ⏳ NEXT | 10-15 |
+| IMPL-001 | Python Library Integration | 🔴 CRITICAL | ✅ COMPLETE (2026-01-08) | 10-15 |
 | IMPL-002 | Results Display Components | 🔴 CRITICAL | ⏳ QUEUED | 8-10 |
 | IMPL-003 | Visualization Enhancements | 🟠 HIGH | ⏳ QUEUED | 6-8 |
 | IMPL-004 | Error Handling & Validation | 🟠 HIGH | ⏳ QUEUED | 4-6 |
