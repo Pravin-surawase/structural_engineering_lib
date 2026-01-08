@@ -224,17 +224,24 @@ ELEVATION = ElevationSystem()
 class AnimationTimings:
     """Standard animation durations and easing."""
 
-    # Durations
+    # Durations (CSS format - for Streamlit CSS injection)
     instant: str = "100ms"
     fast: str = "200ms"
     normal: str = "300ms"
     slow: str = "500ms"
 
-    # Semantic aliases (PATTERN: duration_*)
+    # Semantic aliases for CSS (PATTERN: duration_*)
     duration_instant: str = "100ms"  # Same as instant
     duration_fast: str = "200ms"     # Same as fast
-    duration_normal: str = "300ms"   # Same as normal (CRITICAL - used in visualizations.py)
+    duration_normal: str = "300ms"   # Same as normal
     duration_slow: str = "500ms"     # Same as slow
+
+    # Numeric durations for Plotly (milliseconds as int)
+    # Plotly requires numeric values, not CSS strings
+    duration_instant_ms: int = 100
+    duration_fast_ms: int = 200
+    duration_normal_ms: int = 300
+    duration_slow_ms: int = 500
 
     # Easing functions
     ease_in_out: str = "cubic-bezier(0.4, 0, 0.2, 1)"

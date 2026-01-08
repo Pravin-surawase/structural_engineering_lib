@@ -318,8 +318,8 @@ def create_beam_diagram(
         ),
         height=500,
         margin=dict(l=50, r=150, t=60, b=50),
-        # Add subtle animation
-        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
+        # Add subtle animation (use _ms suffix for Plotly numeric format)
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
     )
 
     return fig
@@ -455,7 +455,7 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
         hovermode="closest",
         height=max(300, len(alternatives) * 60),  # Dynamic height
         margin=dict(l=100, r=100, t=60, b=50),
-        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
     )
 
     return fig
@@ -570,7 +570,7 @@ def create_utilization_gauge(
         margin=dict(l=30, r=30, t=60, b=50),
         paper_bgcolor=theme['paper_bgcolor'],
         font={'family': theme['font_family'], 'color': theme['font_color']},
-        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
     )
 
     return fig
@@ -703,7 +703,7 @@ def create_sensitivity_tornado(
         ),
         height=max(300, len(parameters) * 50),
         margin=dict(l=120, r=100, t=60, b=50),
-        transition=dict(duration=ANIMATION.duration_normal, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
     )
 
     return fig
