@@ -12,7 +12,7 @@ Features:
 - Manual input fallback
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
-Phase: STREAMLIT-IMPL-005
+Phase: STREAMLIT-IMPL-005 | UI-002: Page Layout Redesign
 """
 
 import io
@@ -30,34 +30,13 @@ from components.inputs import (
 )
 from utils.api_wrapper import cached_smart_analysis
 from utils.validation import ValidationError, validate_positive
+from utils.layout import setup_page, page_header, section_header, info_panel
 
-# Page configuration
-st.set_page_config(
-    page_title="Cost Optimizer - IS 456 Beam Design",
-    page_icon="💰",
-    layout="wide",
-)
-
-# Custom CSS for print-friendly output
-st.markdown(
-    """
-<style>
-    .cost-metric {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid #e0e0e0;
-        background-color: #f9f9f9;
-    }
-    .optimal-design {
-        border: 2px solid #2e7d32;
-        background-color: #e8f5e9;
-    }
-    @media print {
-        .stButton, .stDownloadButton { display: none; }
-    }
-</style>
-""",
-    unsafe_allow_html=True,
+# Modern page setup
+setup_page(
+    title="Cost Optimizer - IS 456 Beam Design",
+    icon="💰",
+    layout="wide"
 )
 
 
@@ -311,12 +290,10 @@ def run_cost_optimization(inputs: dict) -> dict:
 def main():
     initialize_session_state()
 
-    st.title("💰 Cost Optimizer")
-    st.markdown(
-        """
-    Optimize beam design for minimum cost while meeting IS 456:2000 requirements.
-    Compare different design alternatives and export results.
-    """
+    page_header(
+        title="Cost Optimizer",
+        subtitle="Optimize beam design for minimum cost while meeting IS 456:2000 requirements. Compare different design alternatives and export results.",
+        icon="💰"
     )
 
     # Sidebar - Input Selection

@@ -40,90 +40,14 @@ from components.visualizations import (
 )
 from utils.api_wrapper import cached_design, cached_smart_analysis
 from utils.validation import validate_dimension, format_error_message
+from utils.layout import setup_page, page_header, section_header, three_column_metrics, info_panel
 
-# Page configuration
-st.set_page_config(
-    page_title="Beam Design | IS 456 Dashboard",
-    page_icon="🏗️",
-    layout="wide",
-    initial_sidebar_state="expanded"
+# Modern page setup with professional styling
+setup_page(
+    title="Beam Design | IS 456 Dashboard",
+    icon="🏗️",
+    layout="wide"
 )
-
-# Custom CSS for professional appearance and print-friendliness
-st.markdown("""
-<style>
-    /* Professional styling */
-    .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    /* Metric cards with border accent */
-    [data-testid="stMetricValue"] {
-        font-size: 28px;
-        color: #003366;
-        font-weight: 600;
-    }
-
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        padding: 12px 24px;
-        font-weight: 500;
-    }
-
-    /* Button styling */
-    .stButton>button {
-        width: 100%;
-        background-color: #FF6600;
-        color: white;
-        font-weight: 600;
-        padding: 12px 24px;
-        border-radius: 8px;
-        border: none;
-        transition: all 0.3s;
-    }
-
-    .stButton>button:hover {
-        background-color: #E55A00;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    /* Print-friendly CSS */
-    @media print {
-        .stButton, .stDownloadButton {
-            display: none;
-        }
-
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-
-        .main .block-container {
-            max-width: 100%;
-            padding: 1rem;
-        }
-
-        .stTabs [data-baseweb="tab-list"] {
-            display: none;
-        }
-
-        .stTabs [data-baseweb="tab-panel"] {
-            display: block !important;
-        }
-    }
-
-    /* Success/Warning/Error message styling */
-    .stSuccess, .stWarning, .stError {
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 0.5rem 0;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 # Initialize session state for input persistence
 if 'beam_inputs' not in st.session_state:
@@ -142,11 +66,12 @@ if 'beam_inputs' not in st.session_state:
         'design_result': None
     }
 
-# Page header
-st.title("🏗️ Beam Design per IS 456:2000")
-st.markdown("Design reinforced concrete beams with real-time compliance checking")
-
-st.divider()
+# Page header with professional styling
+page_header(
+    title="Beam Design",
+    subtitle="Design reinforced concrete beams per IS 456:2000 with real-time compliance checking",
+    icon="🏗️"
+)
 
 # ============================================================================
 # SIDEBAR: Input Parameters
@@ -317,23 +242,25 @@ with st.sidebar:
 # ============================================================================
 
 if not st.session_state.beam_inputs['design_computed']:
-    # Welcome message
-    st.info("""
-    👋 **Welcome to the IS 456 Beam Design Tool!**
+    # Welcome message with modern info panel
+    info_panel(
+        message="""
+        **Getting Started:**
+        1. Adjust input parameters in the sidebar (left)
+        2. Click "🚀 Analyze Design" to compute results
+        3. Review results in the tabs below
 
-    **Getting Started:**
-    1. Adjust input parameters in the sidebar (left)
-    2. Click "🚀 Analyze Design" to compute results
-    3. Review results in the tabs below
+        **Features:**
+        - ✅ Real-time validation and feedback
+        - 📊 Interactive visualizations
+        - 📋 IS 456 compliance checking
+        - 💰 Cost optimization suggestions
 
-    **Features:**
-    - ✅ Real-time validation and feedback
-    - 📊 Interactive visualizations
-    - 📋 IS 456 compliance checking
-    - 💰 Cost optimization suggestions
-
-    All calculations per **IS 456:2000** - Plain and Reinforced Concrete - Code of Practice
-    """)
+        All calculations per **IS 456:2000** - Plain and Reinforced Concrete - Code of Practice
+        """,
+        title="Welcome to the IS 456 Beam Design Tool!",
+        icon="👋"
+    )
 
     # Example values
     with st.expander("📚 Example: Simply Supported Beam"):
@@ -376,53 +303,61 @@ else:
     # TAB 1: Summary
     # ============================================================================
     with tab1:
-        st.subheader("Design Summary")
+        section_header("Design Summary", icon="📊", divider=False)
 
-        # Key metrics
-        col1, col2, col3, col4 = st.columns(4)
+        st.markdown("<br>", unsafe_allow_html=True)
 
+        # Key metrics in modern card format
         ast_req = result.get('flexure', {}).get('ast_required', 0)
         spacing = result.get('shear', {}).get('spacing', 0)
         utilization = result.get('flexure', {}).get('ast_required', 0) / (st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm']) * 100 if result.get('flexure', {}).get('ast_required', 0) > 0 else 0
 
-        col1.metric(
-            "Steel Area Required",
-            f"{ast_req:.0f} mm²",
-            help="Tension steel area per IS 456 Cl. 26.5.1"
-        )
-        col2.metric(
-            "Stirrup Spacing",
-            f"{spacing:.0f} mm c/c" if spacing > 0 else "—",
-            help="Shear reinforcement spacing per IS 456 Cl. 26.5.1.6"
-        )
-        col3.metric(
-            "Flexure Utilization",
-            f"{utilization:.1f}%",
-            help="Percentage of flexural capacity utilized"
-        )
-        col4.metric(
-            "Overall Status",
-            "✅ SAFE" if result.get('is_safe') else "❌ UNSAFE",
-            help="Overall design safety status"
-        )
+        # Use three_column_metrics helper for consistent layout
+        col1, col2, col3, col4 = st.columns(4)
 
-        st.divider()
+        with col1:
+            st.metric(
+                "Steel Area Required",
+                f"{ast_req:.0f} mm²",
+                help="Tension steel area per IS 456 Cl. 26.5.1"
+            )
+        with col2:
+            st.metric(
+                "Stirrup Spacing",
+                f"{spacing:.0f} mm c/c" if spacing > 0 else "—",
+                help="Shear reinforcement spacing per IS 456 Cl. 26.5.1.6"
+            )
+        with col3:
+            st.metric(
+                "Flexure Utilization",
+                f"{utilization:.1f}%",
+                help="Percentage of flexural capacity utilized"
+            )
+        with col4:
+            st.metric(
+                "Overall Status",
+                "✅ SAFE" if result.get('is_safe') else "❌ UNSAFE",
+                help="Overall design safety status"
+            )
 
-        # Detailed results
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
+        # Detailed results in two columns
         col_left, col_right = st.columns(2)
 
         with col_left:
-            st.markdown("#### 🔹 Flexure Design")
+            section_header("Flexure Design", icon="🔹", divider=True)
             flexure = result.get('flexure', {})
             st.write(f"- **Ast required:** {flexure.get('ast_required', 0):.0f} mm²")
             st.write(f"- **Status:** {'✅ Safe' if flexure.get('is_safe', False) else '❌ Unsafe'}")
 
-            st.markdown("#### 🔸 Material Properties")
+            st.markdown("<br>", unsafe_allow_html=True)
+            section_header("Material Properties", icon="🔸", divider=True)
             st.write(f"- **Concrete:** {st.session_state.beam_inputs['concrete_grade']} (fck = {concrete['fck']} N/mm²)")
             st.write(f"- **Steel:** {st.session_state.beam_inputs['steel_grade']} (fy = {steel['fy']} N/mm²)")
 
         with col_right:
-            st.markdown("#### 🔹 Shear Design")
+            section_header("Shear Design", icon="🔹", divider=True)
             shear = result.get('shear', {})
             st.write(f"- **Spacing:** {shear.get('spacing', 0):.0f} mm c/c")
             st.write(f"- **Status:** {'✅ Safe' if shear.get('is_safe', False) else '❌ Unsafe'}")

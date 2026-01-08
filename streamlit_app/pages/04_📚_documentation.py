@@ -12,7 +12,7 @@ Features:
 - Quick reference tables
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
-Phase: STREAMLIT-IMPL-008
+Phase: STREAMLIT-IMPL-008 | UI-002: Page Layout Redesign
 """
 
 import streamlit as st
@@ -26,17 +26,21 @@ from utils.documentation_data import (
     GLOSSARY_DATA,
     REFERENCE_TABLES
 )
+from utils.layout import setup_page, page_header, section_header, info_panel
 
-# Page configuration
-st.set_page_config(
-    page_title="Documentation - IS 456 Beam Design",
-    page_icon="📚",
+# Modern page setup
+setup_page(
+    title="Documentation - IS 456 Beam Design",
+    icon="📚",
     layout="wide"
 )
 
-# Title
-st.title("📚 Documentation & Reference")
-st.markdown("*IS 456:2000 Plain and Reinforced Concrete - Code of Practice*")
+# Page header
+page_header(
+    title="Documentation & Reference",
+    subtitle="IS 456:2000 Plain and Reinforced Concrete - Code of Practice",
+    icon="📚"
+)
 
 # Sidebar navigation
 st.sidebar.header("📑 Contents")
@@ -54,7 +58,7 @@ section = st.sidebar.radio(
 
 # IS 456 CLAUSE REFERENCE
 if section == "📖 IS 456 Clauses":
-    st.header("📖 IS 456:2000 Clause Reference")
+    section_header("IS 456:2000 Clause Reference", icon="📖")
 
     # Search functionality
     search_query = st.text_input(

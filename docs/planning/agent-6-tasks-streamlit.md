@@ -34,30 +34,62 @@
 | STREAMLIT-IMPL-010 | Session State & Persistence | 553 | 29 | ✅ Complete |
 | STREAMLIT-IMPL-Integration | Integration Tests | 396 | 24 | ✅ Complete |
 | STREAMLIT-UI-001 | Design System & Component Library | 2,315 | 83 | ✅ Complete |
+| STREAMLIT-UI-002 | Page Layout Redesign | 753 | - | ✅ Complete |
 
-**Total Delivered:** 26,404 lines, 320 tests (4 complete pages, 100% pass rate)
+**Total Delivered:** 27,157 lines, 320 tests (5 pages, 100% pass rate)
 
-### 🔄 ACTIVE PHASES - UI MODERNIZATION IMPLEMENTATION
+### 🔄 ACTIVE PHASES - UI MODERNIZATION (Final Steps)
 
-> **UI-001 COMPLETE:** Design System & Component Library implemented.
-> 4 core modules (2,315 lines), 83 tests (100% passing).
-> Ready for UI-002: Page Layout Redesign.
+> **UI-002 COMPLETE:** Page Layout Redesign implemented.
+> layout.py (753 lines), 5 pages updated with modern styling.
+> Ready for UI-003: Chart/Visualization Upgrade.
 
 | Task | Description | Priority | Status | Days |
 |------|-------------|----------|--------|------|
 | STREAMLIT-UI-001 | Design System & Component Library | 🔴 CRITICAL | ✅ COMPLETE | Day 1-3 |
-| STREAMLIT-UI-002 | Page Layout Redesign | 🔴 CRITICAL | 🟡 TODO | Day 4-6 |
+| STREAMLIT-UI-002 | Page Layout Redesign | 🔴 CRITICAL | ✅ COMPLETE | Day 4-6 |
 | STREAMLIT-UI-003 | Chart/Visualization Upgrade | 🟠 HIGH | 🟡 TODO | Day 7-8 |
 | STREAMLIT-UI-004 | Dark Mode Implementation | 🟠 HIGH | 🟡 TODO | Day 9-10 |
 | STREAMLIT-UI-005 | Loading States & Animations | 🟠 HIGH | 🟡 TODO | Day 11-12 |
 
-### 📦 FEATURE TASKS (After UI Modernization)
+---
+
+## 📋 PHASE 3: Feature Expansion (After UI-003 to UI-005)
+
+> **PREREQUISITE:** Complete UI-003, UI-004, UI-005 first.
+> Then conduct comprehensive research before implementing new features.
+> Goal: Expose full library capabilities to users.
+
+### 🔬 Research Tasks (Before Implementation)
+
+| Task | Description | Priority | Status | Hours |
+|------|-------------|----------|--------|-------|
+| STREAMLIT-RESEARCH-009 | User Journey & Workflows | 🔴 CRITICAL | ⏳ QUEUED | 4-6 |
+| STREAMLIT-RESEARCH-010 | BBS/DXF/PDF Export UX Patterns | 🔴 CRITICAL | ⏳ QUEUED | 4-6 |
+| STREAMLIT-RESEARCH-011 | Batch Processing & File Upload UX | 🟠 HIGH | ⏳ QUEUED | 3-4 |
+| STREAMLIT-RESEARCH-012 | Educational/Learning Center Design | 🟠 HIGH | ⏳ QUEUED | 3-4 |
+| STREAMLIT-RESEARCH-013 | Library API Coverage Analysis | 🔴 CRITICAL | ⏳ QUEUED | 2-3 |
+
+### 🚀 Implementation Tasks (After Research)
 
 | Task | Description | Priority | Status | Days |
 |------|-------------|----------|--------|------|
-| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
+| STREAMLIT-FEAT-001 | BBS Generator Page | 🔴 CRITICAL | ⏳ QUEUED | 2-3 |
+| STREAMLIT-FEAT-002 | DXF Preview & Export Page | 🔴 CRITICAL | ⏳ QUEUED | 2-3 |
+| STREAMLIT-FEAT-003 | PDF Report Generator Page | 🔴 CRITICAL | ⏳ QUEUED | 2-3 |
+| STREAMLIT-FEAT-004 | Batch Design Page (CSV Upload) | 🟠 HIGH | ⏳ QUEUED | 2-3 |
+| STREAMLIT-FEAT-005 | Advanced Analysis Page | 🟠 HIGH | ⏳ QUEUED | 2-3 |
+| STREAMLIT-FEAT-006 | Learning Center / Tutorial Page | 🟡 MEDIUM | ⏳ QUEUED | 3-4 |
+| STREAMLIT-FEAT-007 | Demo Mode & Showcase | 🟡 MEDIUM | ⏳ QUEUED | 1-2 |
+| STREAMLIT-FEAT-008 | Library Capabilities Dashboard | 🟢 LOW | ⏳ QUEUED | 1-2 |
+
+### 📦 LEGACY FEATURE TASKS (Merged into FEAT-xxx)
+
+| Task | Description | Priority | Status | Days |
+|------|-------------|----------|--------|------|
+| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🟢 MEDIUM | → FEAT-001,002,003 | - |
 | STREAMLIT-IMPL-012 | Settings & Configuration Page | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
-| STREAMLIT-IMPL-013 | About & Help System | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
+| STREAMLIT-IMPL-013 | About & Help System | 🟢 MEDIUM | → FEAT-006 | - |
 | STREAMLIT-IMPL-014 | Performance & Caching Optimization | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
 
 ---
@@ -1025,7 +1057,412 @@ Add polish with animations:
 
 ---
 
-## ⚠️ STABILITY & COMPATIBILITY PLAN
+## 📚 PHASE 3 RESEARCH TASK SPECIFICATIONS
+
+> **When to Start:** After UI-003, UI-004, UI-005 are complete.
+> **Goal:** Research user needs and best practices before implementing new features.
+> **Approach:** Research-first to ensure professional, user-focused implementations.
+
+### STREAMLIT-RESEARCH-009: User Journey & Workflow Research
+**Priority:** 🔴 CRITICAL
+**Status:** ⏳ QUEUED (after UI-005)
+**Estimated Effort:** 4-6 hours
+
+**Objective:**
+Research typical user workflows for structural engineers using beam design software.
+Understand pain points, expectations, and how our dashboard can best serve them.
+
+**Research Questions:**
+1. What is the typical workflow for RC beam design in practice?
+2. What information do engineers need at each step?
+3. What frustrations do engineers have with existing tools?
+4. How do engineers verify their designs (benchmark cases)?
+5. What export formats are essential vs. nice-to-have?
+6. Mobile/tablet usage patterns for field verification?
+
+**Deliverables:**
+- `USER-JOURNEY-RESEARCH.md` (800+ lines)
+- User persona definitions (3-4 personas)
+- Workflow diagrams (Mermaid)
+- Feature prioritization matrix
+- UX improvement recommendations
+
+---
+
+### STREAMLIT-RESEARCH-010: BBS/DXF/PDF Export UX Patterns
+**Priority:** 🔴 CRITICAL
+**Status:** ⏳ QUEUED (after UI-005)
+**Estimated Effort:** 4-6 hours
+
+**Objective:**
+Research best practices for document generation and export in engineering applications.
+Focus on how professional tools handle BBS, CAD drawings, and PDF reports.
+
+**Research Questions:**
+1. How do RebarCAD, Tekla, ETABS present BBS tables?
+2. What DXF layers/styles are standard for structural drawings?
+3. What information must be in a professional design report?
+4. How do tools handle preview before export?
+5. What file naming conventions are expected?
+6. How to handle multi-beam exports (batch)?
+
+**Deliverables:**
+- `EXPORT-UX-RESEARCH.md` (800+ lines)
+- BBS table layout recommendations
+- DXF layer standards reference
+- PDF report template structure
+- Export workflow mockups
+
+---
+
+### STREAMLIT-RESEARCH-011: Batch Processing & File Upload UX
+**Priority:** 🟠 HIGH
+**Status:** ⏳ QUEUED (after UI-005)
+**Estimated Effort:** 3-4 hours
+
+**Objective:**
+Research patterns for handling batch data processing, file uploads, and progress feedback
+in web applications.
+
+**Research Questions:**
+1. Best Streamlit patterns for CSV/Excel file upload?
+2. How to show progress for 100+ beam processing?
+3. Error handling for partial batch failures?
+4. How to present batch results (summary + details)?
+5. Memory management for large files?
+6. Template download patterns?
+
+**Deliverables:**
+- `BATCH-PROCESSING-RESEARCH.md` (600+ lines)
+- File upload component recommendations
+- Progress indicator patterns
+- Error reporting UX for batch operations
+- Sample CSV template design
+
+---
+
+### STREAMLIT-RESEARCH-012: Educational/Learning Center Design
+**Priority:** 🟠 HIGH
+**Status:** ⏳ QUEUED (after UI-005)
+**Estimated Effort:** 3-4 hours
+
+**Objective:**
+Research educational content presentation for engineering tools.
+How to teach IS 456 concepts effectively within the dashboard.
+
+**Research Questions:**
+1. How do engineering education platforms present worked examples?
+2. What interactive elements help learning (sliders, animations)?
+3. How to show "why" behind IS 456 provisions?
+4. Quiz/self-assessment patterns?
+5. Progressive disclosure of complexity?
+6. Reference linking to IS 456 clauses?
+
+**Deliverables:**
+- `LEARNING-CENTER-RESEARCH.md` (600+ lines)
+- Educational content structure
+- Interactive example patterns
+- IS 456 clause reference system
+- Learning path recommendations
+
+---
+
+### STREAMLIT-RESEARCH-013: Library API Coverage Analysis
+**Priority:** 🔴 CRITICAL
+**Status:** ⏳ QUEUED (after UI-005)
+**Estimated Effort:** 2-3 hours
+
+**Objective:**
+Comprehensive audit of structural_lib capabilities vs. what's exposed in Streamlit.
+Identify gaps and prioritize which features to expose.
+
+**Research Questions:**
+1. What library functions exist that users can't access via UI?
+2. Which unexposed features are most valuable?
+3. Are there library improvements needed for better UI integration?
+4. What API changes would make integration easier?
+5. Performance considerations for heavy computations?
+
+**Analysis Scope:**
+- `flexure.py` - All functions
+- `shear.py` - All functions
+- `detailing.py` - All functions
+- `bbs.py` - All functions
+- `dxf_export.py` - All functions
+- `serviceability.py` - All functions
+- `ductile.py` - All functions
+- `compliance.py` - All functions
+- `optimization.py` - All functions
+- `report.py` - All functions
+- `api.py` - All public functions
+
+**Deliverables:**
+- `LIBRARY-COVERAGE-ANALYSIS.md` (500+ lines)
+- Function exposure matrix (exposed/not exposed/partial)
+- Gap prioritization list
+- Library enhancement recommendations
+- API wrapper suggestions
+
+---
+
+## 🚀 PHASE 3 FEATURE IMPLEMENTATION SPECIFICATIONS
+
+> **When to Start:** After all RESEARCH-009 to RESEARCH-013 are complete and reviewed.
+> **Prerequisite:** Main Agent reviews research and approves implementation plan.
+
+### STREAMLIT-FEAT-001: BBS Generator Page
+**Priority:** 🔴 CRITICAL
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-010 complete
+**Estimated Effort:** 2-3 days
+
+**Objective:**
+Create a page that generates professional Bar Bending Schedules from beam designs.
+This is the #1 differentiator feature - exposes core library capability.
+
+**User Flow:**
+1. User designs beam (existing page) → Session stores detailing result
+2. Navigate to BBS page → See summary of available designs
+3. Click "Generate BBS" → Full schedule table appears
+4. Review/edit quantities → Export to CSV/Excel
+
+**Features:**
+- [ ] Auto-detect beam designs from session state
+- [ ] IS 456 compliant bar marks (B1-M-T-01 format)
+- [ ] Hook/bend deduction calculations per SP 34
+- [ ] Cutting stock optimization toggle
+- [ ] Weight summaries by diameter
+- [ ] Export to CSV and Excel
+- [ ] Print-friendly table layout
+
+**Files to Create:**
+| File | Est. Lines |
+|------|-----------|
+| `pages/05_📋_bbs_generator.py` | 400-500 |
+| `components/bbs_table.py` | 200-300 |
+| `tests/test_bbs_page.py` | 150-200 |
+
+---
+
+### STREAMLIT-FEAT-002: DXF Preview & Export Page
+**Priority:** 🔴 CRITICAL
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-010 complete
+**Estimated Effort:** 2-3 days
+
+**Objective:**
+Create a page that previews and exports DXF drawings for beam detailing.
+Second highest-value feature after BBS.
+
+**User Flow:**
+1. User has completed beam design
+2. Navigate to DXF page → See preview of drawing
+3. Configure options (scale, layers, annotations)
+4. Click "Generate DXF" → Download file
+
+**Features:**
+- [ ] SVG preview of DXF content
+- [ ] Layer toggle (bars, dimensions, text)
+- [ ] Scale selection
+- [ ] Title block with project info
+- [ ] Multiple beam selection
+- [ ] Direct download as .dxf
+- [ ] AutoCAD/BricsCAD compatibility notes
+
+**Files to Create:**
+| File | Est. Lines |
+|------|-----------|
+| `pages/06_📐_dxf_export.py` | 350-450 |
+| `components/dxf_preview.py` | 200-300 |
+| `utils/svg_preview.py` | 150-200 |
+| `tests/test_dxf_page.py` | 150-200 |
+
+---
+
+### STREAMLIT-FEAT-003: PDF Report Generator Page
+**Priority:** 🔴 CRITICAL
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-010 complete
+**Estimated Effort:** 2-3 days
+
+**Objective:**
+Generate professional PDF design reports with calculations, diagrams, and compliance status.
+
+**User Flow:**
+1. User has completed beam design
+2. Navigate to Reports page → Configure report options
+3. Add project info, engineer name, etc.
+4. Click "Generate PDF" → Preview and download
+
+**Features:**
+- [ ] Cover page with project info
+- [ ] Input summary table
+- [ ] Calculation sheets with IS 456 clause references
+- [ ] Results summary (flexure, shear, detailing)
+- [ ] Beam cross-section diagram
+- [ ] BBS table (optional)
+- [ ] Compliance checklist
+- [ ] Engineer signature block
+- [ ] Company logo upload
+
+**Files to Create:**
+| File | Est. Lines |
+|------|-----------|
+| `pages/07_📄_report_generator.py` | 400-500 |
+| `utils/pdf_generator.py` | 300-400 |
+| `templates/report_template.py` | 200-300 |
+| `tests/test_report_page.py` | 150-200 |
+
+---
+
+### STREAMLIT-FEAT-004: Batch Design Page
+**Priority:** 🟠 HIGH
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-011 complete
+**Estimated Effort:** 2-3 days
+
+**Objective:**
+Design multiple beams from CSV upload for production workflows.
+Enables 100+ beams processed in seconds.
+
+**User Flow:**
+1. Download CSV template
+2. Fill with beam data (10-100 beams)
+3. Upload CSV → Validate inputs
+4. Click "Process All" → See progress bar
+5. Review results summary → Download all outputs
+
+**Features:**
+- [ ] Template download (CSV format)
+- [ ] File upload with validation
+- [ ] Progress bar for processing
+- [ ] Error summary per beam
+- [ ] Results table with status
+- [ ] Bulk BBS generation
+- [ ] Download results as ZIP (JSON + CSV + optional DXF)
+
+**Files to Create:**
+| File | Est. Lines |
+|------|-----------|
+| `pages/08_📁_batch_design.py` | 450-550 |
+| `utils/batch_processor.py` | 200-300 |
+| `templates/batch_template.csv` | 10-20 |
+| `tests/test_batch_page.py` | 200-250 |
+
+---
+
+### STREAMLIT-FEAT-005: Advanced Analysis Page
+**Priority:** 🟠 HIGH
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-013 complete
+**Estimated Effort:** 2-3 days
+
+**Objective:**
+Expose advanced library capabilities (Level B deflection, crack width, ductility).
+
+**Features:**
+- [ ] Level B deflection (actual calculation, not just span/depth)
+- [ ] Crack width per IS 456 Annex F
+- [ ] Ductile detailing check per IS 13920
+- [ ] Sensitivity analysis (what-if scenarios)
+- [ ] Optimization suggestions
+- [ ] Flanged/T-beam support
+
+**Files to Create:**
+| File | Est. Lines |
+|------|-----------|
+| `pages/09_🔬_advanced_analysis.py` | 500-600 |
+| `components/sensitivity_chart.py` | 150-200 |
+| `tests/test_advanced_page.py` | 200-250 |
+
+---
+
+### STREAMLIT-FEAT-006: Learning Center / Tutorial Page
+**Priority:** 🟡 MEDIUM
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-012 complete
+**Estimated Effort:** 3-4 days
+
+**Objective:**
+Educational content to help users understand IS 456 and the library.
+
+**Features:**
+- [ ] Step-by-step worked examples
+- [ ] "Explain This" tooltips on every output
+- [ ] Side-by-side: Manual calc vs Library result
+- [ ] IS 456 clause quick reference
+- [ ] Interactive sliders to see parameter effects
+- [ ] Quiz mode for students
+
+---
+
+### STREAMLIT-FEAT-007: Demo Mode & Showcase
+**Priority:** 🟡 MEDIUM
+**Status:** ⏳ QUEUED
+**Prerequisites:** FEAT-001 to FEAT-005 complete
+**Estimated Effort:** 1-2 days
+
+**Objective:**
+Interactive demo mode for first-time users and presentations.
+
+**Features:**
+- [ ] Pre-loaded realistic examples
+- [ ] Guided tour of features
+- [ ] "What Makes Us Different" comparison panel
+- [ ] Benchmark validation display
+- [ ] Speed/accuracy metrics
+
+---
+
+### STREAMLIT-FEAT-008: Library Capabilities Dashboard
+**Priority:** 🟢 LOW
+**Status:** ⏳ QUEUED
+**Prerequisites:** RESEARCH-013 complete
+**Estimated Effort:** 1-2 days
+
+**Objective:**
+Show users all library capabilities with live test results.
+
+**Features:**
+- [ ] Function coverage display
+- [ ] Live test runner (320 tests)
+- [ ] Benchmark results
+- [ ] API documentation browser
+- [ ] Code examples
+
+---
+
+## 🔧 LIBRARY ENHANCEMENT RECOMMENDATIONS
+
+> **Note:** These are potential library-side improvements identified during
+> Streamlit integration. Coordinate with Core Library development.
+
+### Recommended API Improvements
+
+| Issue | Current State | Recommendation |
+|-------|--------------|----------------|
+| BBS generation | Requires detailing result | Add `generate_bbs_from_design()` convenience function |
+| DXF export | Complex setup | Add `quick_dxf()` one-liner for common cases |
+| Report generation | Scattered functions | Add `generate_report()` unified function |
+| Batch processing | Manual loop | Add `design_beams_batch(df)` DataFrame-native function |
+| Progress callback | Not supported | Add optional `progress_callback` param for long operations |
+| Session state | Not considered | Add `to_dict()`/`from_dict()` for easy serialization |
+
+### Recommended New Functions
+
+1. **`api.design_and_detail_beam_is456()`** - Combined design + detailing in one call
+2. **`api.generate_complete_package()`** - Design + BBS + DXF + PDF in one call
+3. **`bbs.generate_summary_table()`** - Markdown-friendly BBS summary
+4. **`report.generate_html_report()`** - HTML report for web display
+5. **`validation.quick_check()`** - Fast validation for real-time feedback
+
+### Performance Considerations
+
+- Add caching decorators to heavy computations
+- Lazy load optional dependencies (ezdxf, reportlab)
+- Batch optimization for 100+ beam processing
+
+---
 
 ### Test Strategy During UI Updates
 
