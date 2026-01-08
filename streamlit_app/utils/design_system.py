@@ -230,6 +230,12 @@ class AnimationTimings:
     normal: str = "300ms"
     slow: str = "500ms"
 
+    # Semantic aliases (PATTERN: duration_*)
+    duration_instant: str = "100ms"  # Same as instant
+    duration_fast: str = "200ms"     # Same as fast
+    duration_normal: str = "300ms"   # Same as normal (CRITICAL - used in visualizations.py)
+    duration_slow: str = "500ms"     # Same as slow
+
     # Easing functions
     ease_in_out: str = "cubic-bezier(0.4, 0, 0.2, 1)"
     ease_out: str = "cubic-bezier(0.0, 0, 0.2, 1)"

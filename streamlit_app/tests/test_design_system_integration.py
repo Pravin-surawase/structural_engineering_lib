@@ -156,6 +156,20 @@ class TestAnimationTimings:
         assert ANIMATION.normal == "300ms"
         assert ANIMATION.slow == "500ms"
 
+    def test_duration_semantic_aliases(self):
+        """Semantic aliases for components (CRITICAL - used in visualizations.py)."""
+        # These aliases are required by components/visualizations.py
+        assert hasattr(ANIMATION, "duration_instant")
+        assert hasattr(ANIMATION, "duration_fast")
+        assert hasattr(ANIMATION, "duration_normal")
+        assert hasattr(ANIMATION, "duration_slow")
+
+        # Verify they match base attributes
+        assert ANIMATION.duration_instant == ANIMATION.instant
+        assert ANIMATION.duration_fast == ANIMATION.fast
+        assert ANIMATION.duration_normal == ANIMATION.normal
+        assert ANIMATION.duration_slow == ANIMATION.slow
+
     def test_easing_functions(self):
         """Easing functions."""
         assert "cubic-bezier" in ANIMATION.ease_in_out
