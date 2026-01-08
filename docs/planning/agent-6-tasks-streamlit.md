@@ -3,8 +3,33 @@
 **Agent Role:** STREAMLIT UI SPECIALIST (Daily Development)
 **Primary Focus:** Build production-ready Streamlit dashboards for structural engineering, following professional UI/UX practices
 **Status:** Active
-**Last Updated:** 2026-01-08
+**Last Updated:** 2026-01-08T22:00Z
 **Frequency:** Daily (30-60 min/day)
+
+---
+
+## 📊 Progress Tracker
+
+### ✅ Completed Tasks
+
+| Task | Description | Lines | Tests | Status |
+|------|-------------|-------|-------|--------|
+| STREAMLIT-RESEARCH-001 | Streamlit Ecosystem Research | 1,359 | - | ✅ Complete |
+| STREAMLIT-RESEARCH-002 | Codebase Integration Research | 1,639 | - | ✅ Complete |
+| STREAMLIT-RESEARCH-003 | UI/UX Best Practices | 1,187 | - | ✅ Complete |
+| STREAMLIT-IMPL-001 | Project Setup & Architecture | 1,842 | - | ✅ Complete |
+| STREAMLIT-IMPL-002 | Input Components | 690 | 29 | ✅ Complete |
+
+**Total Delivered:** 6,717 lines, 29 tests
+
+### 🔄 Current/Next Tasks
+
+| Task | Description | Priority | Status |
+|------|-------------|----------|--------|
+| STREAMLIT-IMPL-003 | Visualizations (5 charts) | 🔴 CRITICAL | 🟡 TODO |
+| STREAMLIT-IMPL-004 | Beam Design Page | 🔴 CRITICAL | 🟡 TODO |
+| STREAMLIT-IMPL-005 | Cost Optimizer Page | 🟠 HIGH | 🟡 TODO |
+| STREAMLIT-IMPL-006 | Compliance Checker Page | 🟠 HIGH | 🟡 TODO |
 
 ---
 
@@ -1110,91 +1135,147 @@ git commit -m "test(ui): add unit tests for input components"
 
 ---
 
-**STREAMLIT-IMPL-003: Visualizations** (Day 6-10)
+## ✅ STREAMLIT-IMPL-002: COMPLETED (2026-01-08)
+
+**Deliverables:**
+- 5 input components with real-time validation
+- 4 IS 456 material databases
+- 29 unit tests (100% passing)
+- 690 lines of production code + tests
+
+**Components Delivered:**
+1. `dimension_input()` - Real-time validation with visual feedback
+2. `material_selector()` - Concrete (M20-M40) & Steel (Fe415-Fe550)
+3. `load_input()` - Moment & shear with ratio validation
+4. `exposure_selector()` - 5 exposure conditions per IS 456 Table 16
+5. `support_condition_selector()` - 4 support types with moment factors
+
+---
+
+## 🔴 STREAMLIT-IMPL-003: Visualizations (Day 6-10)
 **Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO - START IMMEDIATELY
+**Estimated Effort:** 6-8 hours (1-2 hours/day over 5 days)
 
-**Components:**
+### Objective
+Create 5 interactive Plotly visualization components for structural engineering data display. All charts must be:
+- Interactive (hover tooltips, zoom, pan)
+- Responsive (mobile-friendly)
+- Accessible (WCAG 2.1 Level AA - colorblind-safe)
+- Tested (unit tests + visual regression)
 
-1. **Beam Cross-Section Diagram**
+### Component Specifications
+
+#### 1. Beam Cross-Section Diagram (`create_beam_diagram`)
+**Purpose:** Visualize rectangular beam section with rebar placement
+
+**Input Data:**
 ```python
-# streamlit_app/components/visualizations.py
-
-import plotly.graph_objects as go
-from dataclasses import dataclass
-
 @dataclass
 class BeamVisualizationData:
-    b_mm: float
-    D_mm: float
-    d_mm: float
-    rebar_positions: list[tuple[float, float]]  # (x, y) in mm
-    neutral_axis_depth: float
-    bar_diameter: int
+    b_mm: float           # Width of beam
+    D_mm: float           # Total depth
+    d_mm: float           # Effective depth
+    cover_mm: float       # Clear cover
+    bar_diameter: int     # Main bar diameter (mm)
+    num_bars: int         # Number of main bars
+    stirrup_diameter: int # Stirrup diameter (mm)
+    xu_mm: float          # Neutral axis depth
+```
 
+**Visual Elements:**
+1. **Concrete section** - Light blue rectangle with navy border
+2. **Effective depth line** - Green dashed horizontal line at d
+3. **Neutral axis** - Red dotted horizontal line at xu
+4. **Compression zone** - Light red fill above neutral axis
+5. **Tension zone** - Light green fill below neutral axis
+6. **Main bars** - Orange circles at calculated positions
+7. **Stirrups** - Gray rectangular outline (simplified)
+8. **Dimension annotations** - b, D, d, cover with leaders
+
+**Interactions:**
+- Hover on bars → Show "16mm bar, Area = 201 mm²"
+- Hover on zones → Show "Compression zone: 0.42*xu = 45mm"
+- Click to highlight individual elements
+
+**Code Template:**
+```python
 def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
     """
     Create interactive beam cross-section diagram.
+
+    Features:
+    - Accurate proportions (1:1 aspect ratio)
+    - Color-coded stress zones
+    - Interactive hover tooltips
+    - Dimension annotations
+
+    Returns:
+        Plotly Figure object
     """
     fig = go.Figure()
 
-    # Draw concrete section (rectangle)
+    # 1. Draw concrete section
     fig.add_shape(
         type="rect",
-        x0=0, y0=0,
-        x1=data.b_mm, y1=data.D_mm,
-        line=dict(color="navy", width=2),
-        fillcolor="lightblue",
-        opacity=0.3
+        x0=0, y0=0, x1=data.b_mm, y1=data.D_mm,
+        line=dict(color="#003366", width=3),
+        fillcolor="rgba(173, 216, 230, 0.3)"  # Light blue
     )
 
-    # Draw effective depth line
+    # 2. Draw compression zone (above neutral axis)
     fig.add_shape(
-        type="line",
-        x0=0, y0=data.d_mm,
-        x1=data.b_mm, y1=data.d_mm,
-        line=dict(color="green", width=1, dash="dash")
+        type="rect",
+        x0=0, y0=data.D_mm - data.xu_mm, x1=data.b_mm, y1=data.D_mm,
+        fillcolor="rgba(255, 200, 200, 0.5)",  # Light red
+        line=dict(width=0)
     )
 
-    # Draw neutral axis
+    # 3. Draw tension zone (below neutral axis)
+    fig.add_shape(
+        type="rect",
+        x0=0, y0=0, x1=data.b_mm, y1=data.D_mm - data.xu_mm,
+        fillcolor="rgba(200, 255, 200, 0.5)",  # Light green
+        line=dict(width=0)
+    )
+
+    # 4. Draw neutral axis line
     fig.add_shape(
         type="line",
-        x0=0, y0=data.neutral_axis_depth,
-        x1=data.b_mm, y1=data.neutral_axis_depth,
+        x0=0, y0=data.D_mm - data.xu_mm,
+        x1=data.b_mm, y1=data.D_mm - data.xu_mm,
         line=dict(color="red", width=2, dash="dot")
     )
 
-    # Draw rebar
-    for x, y in data.rebar_positions:
+    # 5. Calculate and draw rebar positions
+    spacing = (data.b_mm - 2*data.cover_mm - data.bar_diameter) / (data.num_bars - 1)
+    bar_y = data.cover_mm + data.stirrup_diameter + data.bar_diameter/2
+
+    for i in range(data.num_bars):
+        bar_x = data.cover_mm + data.stirrup_diameter + data.bar_diameter/2 + i * spacing
+
         fig.add_shape(
             type="circle",
-            x0=x - data.bar_diameter/2,
-            y0=y - data.bar_diameter/2,
-            x1=x + data.bar_diameter/2,
-            y1=y + data.bar_diameter/2,
-            fillcolor="orange",
-            line=dict(color="darkorange", width=2)
+            x0=bar_x - data.bar_diameter/2,
+            y0=bar_y - data.bar_diameter/2,
+            x1=bar_x + data.bar_diameter/2,
+            y1=bar_y + data.bar_diameter/2,
+            fillcolor="#FF6600",
+            line=dict(color="#CC5200", width=2)
         )
 
-    # Add annotations
-    fig.add_annotation(
-        x=data.b_mm/2, y=data.D_mm + 20,
-        text=f"b = {data.b_mm:.0f} mm",
-        showarrow=False
-    )
+    # 6. Add dimension annotations
+    fig.add_annotation(x=data.b_mm/2, y=data.D_mm + 30,
+                       text=f"b = {data.b_mm:.0f} mm", showarrow=False)
+    fig.add_annotation(x=data.b_mm + 40, y=data.D_mm/2,
+                       text=f"D = {data.D_mm:.0f} mm", showarrow=False, textangle=90)
 
-    fig.add_annotation(
-        x=data.b_mm + 30, y=data.D_mm/2,
-        text=f"D = {data.D_mm:.0f} mm",
-        showarrow=False
-    )
-
-    # Layout
+    # 7. Layout
     fig.update_layout(
-        title="Beam Cross-Section",
-        xaxis=dict(visible=False),
-        yaxis=dict(visible=False, scaleanchor="x", scaleratio=1),
-        width=600,
-        height=400,
+        title=dict(text="Beam Cross-Section", x=0.5),
+        xaxis=dict(visible=False, range=[-50, data.b_mm + 80]),
+        yaxis=dict(visible=False, range=[-50, data.D_mm + 80], scaleanchor="x"),
+        width=500, height=500,
         showlegend=False,
         hovermode='closest'
     )
@@ -1202,36 +1283,67 @@ def create_beam_diagram(data: BeamVisualizationData) -> go.Figure:
     return fig
 ```
 
-2. **Cost Comparison Chart**
+**Acceptance Criteria:**
+- [ ] Accurate proportions (1:1 aspect ratio)
+- [ ] All 7 visual elements rendered
+- [ ] Hover tooltips on bars and zones
+- [ ] Dimension annotations visible
+- [ ] Colorblind-safe palette
+- [ ] Unit tests for rebar position calculation
+
+---
+
+#### 2. Cost Comparison Chart (`create_cost_comparison`)
+**Purpose:** Bar chart comparing different bar arrangements by cost
+
+**Input Data:**
+```python
+options = [
+    {"name": "3-16mm", "area": 603, "cost": 87.45, "is_optimal": True, "utilization": 0.92},
+    {"name": "2-20mm", "area": 628, "cost": 92.30, "is_optimal": False, "utilization": 0.96},
+    {"name": "4-14mm", "area": 616, "cost": 89.50, "is_optimal": False, "utilization": 0.94},
+    {"name": "2-16mm+1-12mm", "area": 515, "cost": 75.20, "is_optimal": False, "utilization": 0.78},
+]
+```
+
+**Visual Elements:**
+1. **Bars** - Vertical bars with costs
+2. **Optimal highlight** - Green bar for recommended option
+3. **Non-optimal** - Blue bars for alternatives
+4. **Cost labels** - ₹ values above each bar
+5. **Utilization overlay** - Small indicator showing steel utilization %
+6. **Savings annotation** - "Saves ₹X.XX vs next option"
+
+**Code Template:**
 ```python
 def create_cost_comparison(options: list[dict]) -> go.Figure:
     """
-    Bar chart comparing different design options by cost.
+    Bar chart comparing design options by cost.
 
-    options: [
-        {"name": "3-16mm", "cost": 87.45, "is_recommended": True},
-        {"name": "2-20mm", "cost": 92.30, "is_recommended": False},
-        ...
-    ]
+    Highlights optimal choice, shows utilization overlay.
     """
-    fig = go.Figure()
-
     names = [opt["name"] for opt in options]
     costs = [opt["cost"] for opt in options]
-    colors = ["green" if opt.get("is_recommended") else "lightblue" for opt in options]
+    colors = ["#28A745" if opt.get("is_optimal") else "#6C9BD1" for opt in options]
+    utilizations = [opt.get("utilization", 0.9) for opt in options]
 
+    fig = go.Figure()
+
+    # Cost bars
     fig.add_trace(go.Bar(
-        x=names,
-        y=costs,
+        x=names, y=costs,
         marker_color=colors,
         text=[f"₹{c:.2f}" for c in costs],
-        textposition='outside'
+        textposition='outside',
+        hovertemplate="<b>%{x}</b><br>Cost: ₹%{y:.2f}<br>Utilization: %{customdata:.0%}<extra></extra>",
+        customdata=utilizations
     ))
 
     fig.update_layout(
         title="Cost Comparison: Bar Arrangements",
         xaxis_title="Arrangement",
-        yaxis_title="Cost (₹/m)",
+        yaxis_title="Cost per Meter (₹/m)",
+        yaxis=dict(range=[0, max(costs) * 1.2]),
         showlegend=False,
         height=400
     )
@@ -1239,127 +1351,531 @@ def create_cost_comparison(options: list[dict]) -> go.Figure:
     return fig
 ```
 
-**Daily Commits:**
-```bash
-# Day 6
-git commit -m "feat(ui): add beam cross-section visualization"
+**Acceptance Criteria:**
+- [ ] All options displayed as bars
+- [ ] Optimal option highlighted in green
+- [ ] Cost labels visible above bars
+- [ ] Hover shows utilization %
+- [ ] Responsive width
 
-# Day 7
-git commit -m "feat(ui): add cost comparison chart"
+---
 
-# Day 8
-git commit -m "feat(ui): add interactive hover tooltips to diagrams"
+#### 3. Utilization Gauge (`create_utilization_gauge`)
+**Purpose:** Circular gauge showing design capacity utilization
 
-# Day 9
-git commit -m "feat(ui): add responsive design for mobile"
+**Input Data:**
+```python
+utilization_data = {
+    "flexure": {"value": 0.92, "limit": 1.0, "status": "OK"},
+    "shear": {"value": 0.45, "limit": 1.0, "status": "OK"},
+    "deflection": {"value": 0.78, "limit": 1.0, "status": "OK"},
+}
+```
 
-# Day 10
-git commit -m "test(ui): add visual regression tests"
+**Visual Elements:**
+1. **Gauge arc** - 180° arc showing 0-100%
+2. **Colored zones** - Green (0-80%), Yellow (80-95%), Red (95-100%)
+3. **Needle** - Pointing to current value
+4. **Value label** - "92%" in center
+5. **Status text** - "OK" or "EXCEEDS LIMIT"
+
+**Code Template:**
+```python
+def create_utilization_gauge(value: float, title: str = "Utilization") -> go.Figure:
+    """
+    Semicircular gauge for capacity utilization.
+
+    Colors: Green (0-80%), Yellow (80-95%), Red (95-100%)
+    """
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number+delta",
+        value=value * 100,
+        number={"suffix": "%", "font": {"size": 40}},
+        title={"text": title, "font": {"size": 16}},
+        gauge={
+            "axis": {"range": [0, 100], "tickwidth": 2},
+            "bar": {"color": "#003366"},
+            "steps": [
+                {"range": [0, 80], "color": "#28A745"},
+                {"range": [80, 95], "color": "#FFC107"},
+                {"range": [95, 100], "color": "#DC3545"}
+            ],
+            "threshold": {
+                "line": {"color": "red", "width": 4},
+                "thickness": 0.75,
+                "value": 100
+            }
+        }
+    ))
+
+    fig.update_layout(height=300, margin=dict(t=50, b=20, l=20, r=20))
+    return fig
+```
+
+**Acceptance Criteria:**
+- [ ] Gauge shows 0-100% range
+- [ ] Color zones correct (green/yellow/red)
+- [ ] Value displayed prominently
+- [ ] Threshold line at 100%
+
+---
+
+#### 4. Sensitivity Tornado Chart (`create_sensitivity_tornado`)
+**Purpose:** Show which input parameters most affect the design
+
+**Input Data:**
+```python
+sensitivity_data = [
+    {"param": "Moment (Mu)", "low": -15, "high": 18, "base": 80},
+    {"param": "Concrete Grade", "low": -8, "high": 12, "base": 25},
+    {"param": "Steel Grade", "low": -5, "high": 8, "base": 415},
+    {"param": "Width (b)", "low": -3, "high": 4, "base": 230},
+    {"param": "Depth (D)", "low": -10, "high": 15, "base": 450},
+]
+```
+
+**Visual Elements:**
+1. **Horizontal bars** - Extending left (decrease) and right (increase)
+2. **Parameter labels** - On Y-axis
+3. **Base value line** - Vertical line at 0%
+4. **Color coding** - Blue for decrease, Orange for increase
+5. **Sorted by impact** - Largest impact at top
+
+**Code Template:**
+```python
+def create_sensitivity_tornado(data: list[dict]) -> go.Figure:
+    """
+    Tornado chart showing parameter sensitivity.
+    """
+    # Sort by total impact (|low| + |high|)
+    sorted_data = sorted(data, key=lambda x: abs(x["low"]) + abs(x["high"]), reverse=True)
+
+    params = [d["param"] for d in sorted_data]
+    lows = [d["low"] for d in sorted_data]
+    highs = [d["high"] for d in sorted_data]
+
+    fig = go.Figure()
+
+    # Low bars (negative)
+    fig.add_trace(go.Bar(
+        y=params, x=lows, orientation='h',
+        marker_color='#6C9BD1', name='Decrease (-10%)',
+        text=[f"{v}%" for v in lows], textposition='outside'
+    ))
+
+    # High bars (positive)
+    fig.add_trace(go.Bar(
+        y=params, x=highs, orientation='h',
+        marker_color='#FF6600', name='Increase (+10%)',
+        text=[f"+{v}%" for v in highs], textposition='outside'
+    ))
+
+    fig.update_layout(
+        title="Sensitivity Analysis: Cost Impact",
+        xaxis_title="% Change in Cost",
+        barmode='overlay',
+        height=400
+    )
+
+    return fig
+```
+
+**Acceptance Criteria:**
+- [ ] Bars extend both directions from center
+- [ ] Sorted by total impact
+- [ ] Clear color distinction
+- [ ] Percentage labels visible
+
+---
+
+#### 5. Compliance Checklist Visual (`create_compliance_visual`)
+**Purpose:** Visual checklist of IS 456 compliance status
+
+**Input Data:**
+```python
+compliance_checks = [
+    {"clause": "26.5.1.1", "description": "Min steel ratio", "passed": True, "value": "0.85%", "limit": "0.85%"},
+    {"clause": "26.5.1.2", "description": "Max steel ratio", "passed": True, "value": "2.1%", "limit": "4.0%"},
+    {"clause": "40.1", "description": "Shear capacity", "passed": True, "value": "0.45", "limit": "1.0"},
+    {"clause": "26.3.3", "description": "Bar spacing", "passed": False, "value": "35mm", "limit": "≥40mm"},
+]
+```
+
+**Visual Elements:**
+1. **Checklist rows** - One per compliance check
+2. **Status icons** - ✅ or ❌
+3. **Clause reference** - IS 456 clause number
+4. **Description** - Human-readable check name
+5. **Value/Limit** - Actual vs allowed
+6. **Progress bar** - Visual utilization
+
+**Code Template:**
+```python
+def create_compliance_visual(checks: list[dict]) -> go.Figure:
+    """
+    Visual compliance checklist with status indicators.
+    """
+    fig = go.Figure()
+
+    n = len(checks)
+    for i, check in enumerate(checks):
+        y = n - i - 1  # Reverse order (top to bottom)
+        color = "#28A745" if check["passed"] else "#DC3545"
+        icon = "✅" if check["passed"] else "❌"
+
+        # Status icon
+        fig.add_annotation(x=0, y=y, text=icon, showarrow=False, font=dict(size=20))
+
+        # Clause + Description
+        fig.add_annotation(x=0.5, y=y,
+                           text=f"<b>Cl. {check['clause']}</b>: {check['description']}",
+                           showarrow=False, xanchor='left')
+
+        # Value bar
+        limit_val = float(check["limit"].replace('%', '').replace('≥', '').replace('mm', ''))
+        actual_val = float(check["value"].replace('%', '').replace('mm', ''))
+        ratio = min(actual_val / limit_val, 1.0) if limit_val > 0 else 0
+
+        fig.add_shape(type="rect", x0=3, y0=y-0.3, x1=3 + ratio*2, y1=y+0.3,
+                      fillcolor=color, opacity=0.7)
+
+    fig.update_layout(
+        xaxis=dict(visible=False, range=[-0.5, 6]),
+        yaxis=dict(visible=False, range=[-1, n]),
+        height=50 * n + 100,
+        showlegend=False
+    )
+
+    return fig
+```
+
+**Acceptance Criteria:**
+- [ ] All checks displayed
+- [ ] Clear pass/fail indicators
+- [ ] Clause references visible
+- [ ] Value vs limit comparison
+
+---
+
+### Testing Requirements
+
+**Unit Tests (20+ tests):**
+```python
+# streamlit_app/tests/test_visualizations.py
+
+class TestBeamDiagram:
+    def test_rebar_positions_calculated(self):
+        """Test rebar positions are correctly spaced."""
+        pass
+
+    def test_neutral_axis_within_section(self):
+        """Test neutral axis is between 0 and D."""
+        pass
+
+    def test_figure_has_correct_shapes(self):
+        """Test figure contains expected shape types."""
+        pass
+
+class TestCostComparison:
+    def test_optimal_highlighted(self):
+        """Test optimal option is green."""
+        pass
+
+    def test_sorted_by_cost(self):
+        """Test bars sorted by cost."""
+        pass
+
+class TestUtilizationGauge:
+    def test_color_zones(self):
+        """Test gauge color at different values."""
+        pass
+
+    def test_over_100_capped(self):
+        """Test values over 100% are capped."""
+        pass
 ```
 
 ---
 
-**STREAMLIT-IMPL-004: Page 1 - Beam Design** (Day 11-15)
-**Priority:** 🔴 CRITICAL
+### Daily Work Plan
 
-**Full page implementation:**
+| Day | Focus | Deliverable |
+|-----|-------|-------------|
+| 6 | Beam diagram | `create_beam_diagram()` + tests |
+| 7 | Cost comparison | `create_cost_comparison()` + tests |
+| 8 | Utilization gauge | `create_utilization_gauge()` + tests |
+| 9 | Sensitivity tornado | `create_sensitivity_tornado()` + tests |
+| 10 | Compliance visual | `create_compliance_visual()` + integration tests |
+
+---
+
+### Handoff Checklist
+
+When IMPL-003 is complete, include in handoff:
+- [ ] All 5 visualization functions implemented
+- [ ] 20+ unit tests passing
+- [ ] Screenshots of each visualization
+- [ ] Responsive design verified (mobile/tablet/desktop)
+- [ ] Accessibility verified (colorblind-safe)
+- [ ] Performance: Each chart renders < 100ms
+
+## 🔴 STREAMLIT-IMPL-004: Beam Design Page (Day 11-15)
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO - AFTER IMPL-003
+**Estimated Effort:** 8-10 hours (1.5-2 hours/day over 5 days)
+
+### Objective
+Create the complete Beam Design page that integrates:
+- All 5 input components from IMPL-002
+- All 5 visualization components from IMPL-003
+- structural_lib API via smart_analyze_design()
+- Session state for persistence
+- Error handling and validation
+
+### Page Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 🏗️ Beam Design - IS 456 RC Beam Design                              │
+├─────────────────┬───────────────────────────────────────────────────┤
+│ SIDEBAR         │ MAIN AREA                                         │
+│ ─────────────── │ ─────────────────────────────────────────────────│
+│ 📏 Geometry     │ [📊 Summary] [🎨 Viz] [💰 Cost] [✅ Compliance]   │
+│ • Span          │ ─────────────────────────────────────────────────│
+│ • Width (b)     │                                                   │
+│ • Depth (D)     │  SUMMARY TAB:                                     │
+│ • Cover         │  ┌─────────┬─────────┬─────────┐                 │
+│                 │  │Ast_req  │Bars     │Cost     │                 │
+│ 🧱 Materials    │  │450 mm²  │3-16mm   │₹87.45/m │                 │
+│ • Concrete      │  └─────────┴─────────┴─────────┘                 │
+│ • Steel         │                                                   │
+│                 │  VIZ TAB:                                         │
+│ ⚖️ Loading      │  [Beam Cross-Section Diagram]                     │
+│ • Moment        │                                                   │
+│ • Shear         │  COST TAB:                                        │
+│                 │  [Cost Comparison Bar Chart]                      │
+│ 🌧️ Exposure     │  [Sensitivity Tornado Chart]                      │
+│ • Condition     │                                                   │
+│                 │  COMPLIANCE TAB:                                  │
+│ 📐 Support      │  [Compliance Checklist Visual]                    │
+│ • Type          │  [Utilization Gauges (3x)]                        │
+│                 │                                                   │
+│ ─────────────── │                                                   │
+│ [🚀 ANALYZE]    │                                                   │
+└─────────────────┴───────────────────────────────────────────────────┘
+```
+
+### Full Implementation
 
 ```python
 # streamlit_app/pages/01_🏗️_beam_design.py
 
 import streamlit as st
-from structural_lib.insights import smart_analyze_design
-from components.inputs import dimension_input, material_selector
-from components.visualizations import create_beam_diagram, BeamVisualizationData
-from components.results import display_results
-from utils.validation import validate_inputs
-from utils.formatters import format_result
+from structural_lib.api import smart_analyze_design
+from structural_lib.types import DesignError
 
-st.set_page_config(page_title="Beam Design", page_icon="🏗️", layout="wide")
+from components.inputs import (
+    dimension_input,
+    material_selector,
+    load_input,
+    exposure_selector,
+    support_condition_selector,
+    CONCRETE_GRADES,
+    STEEL_GRADES,
+)
+from components.visualizations import (
+    create_beam_diagram,
+    create_cost_comparison,
+    create_utilization_gauge,
+    create_sensitivity_tornado,
+    create_compliance_visual,
+    BeamVisualizationData,
+)
+from utils.api_wrapper import cached_design_analysis
+from utils.validation import validate_beam_inputs
 
+# Page config
+st.set_page_config(
+    page_title="Beam Design | IS 456 Calculator",
+    page_icon="🏗️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Custom CSS for print-friendly results
+st.markdown("""
+<style>
+    @media print {
+        .stSidebar { display: none; }
+        .stButton { display: none; }
+    }
+    .metric-card {
+        background-color: #f0f2f6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #FF6600;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Title
 st.title("🏗️ Beam Design")
-st.markdown("Design reinforced concrete beams per IS 456:2000")
+st.markdown("Design reinforced concrete beams per **IS 456:2000**")
 
-# Sidebar: Inputs
+# Initialize session state
+if 'beam_inputs' not in st.session_state:
+    st.session_state.beam_inputs = {
+        'span_mm': 4000,
+        'b_mm': 230,
+        'D_mm': 450,
+    }
+
+if 'beam_result' not in st.session_state:
+    st.session_state.beam_result = None
+
+# ─────────────────────────────────────────────────────────────
+# SIDEBAR: Input Parameters
+# ─────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.header("Input Parameters")
+    st.header("📝 Input Parameters")
 
-    # Geometry
+    # ── Geometry Section ──
     st.subheader("📏 Geometry")
+
     span_mm, span_valid = dimension_input(
-        "Span", 1000, 12000, 4000, "mm",
+        label="Span",
+        min_val=1000,
+        max_val=12000,
+        default_val=st.session_state.beam_inputs.get('span_mm', 4000),
+        unit="mm",
         help_text="Clear span between supports (Cl. 23.2.1)",
-        key="span"
+        key="input_span"
     )
 
     b_mm, b_valid = dimension_input(
-        "Width", 150, 600, 230, "mm",
+        label="Width (b)",
+        min_val=150,
+        max_val=600,
+        default_val=st.session_state.beam_inputs.get('b_mm', 230),
+        unit="mm",
         help_text="Width of beam section",
-        key="width"
+        key="input_width"
     )
 
     D_mm, D_valid = dimension_input(
-        "Total Depth", 200, 900, 450, "mm",
+        label="Total Depth (D)",
+        min_val=200,
+        max_val=900,
+        default_val=st.session_state.beam_inputs.get('D_mm', 450),
+        unit="mm",
         help_text="Overall depth of beam",
-        key="depth"
+        key="input_depth"
     )
 
-    d_mm = D_mm - 50  # Assume 50mm cover + stirrup + bar radius
-    st.info(f"Effective depth (d) ≈ {d_mm:.0f} mm")
-
-    # Materials
+    # ── Materials Section ──
     st.subheader("🧱 Materials")
-    concrete = material_selector("concrete", key="concrete")
-    steel = material_selector("steel", key="steel")
 
-    # Loading
-    st.subheader("⚖️ Loading")
-    mu_knm, mu_valid = dimension_input(
-        "Factored Moment", 10, 500, 80, "kNm",
-        help_text="Ultimate moment (Mu) from load combinations",
-        key="moment"
+    concrete_grade, concrete_props = material_selector(
+        material_type="concrete",
+        key="input_concrete"
     )
 
-    # Analyze button
+    steel_grade, steel_props = material_selector(
+        material_type="steel",
+        key="input_steel"
+    )
+
+    # ── Loading Section ──
+    st.subheader("⚖️ Loading")
+
+    mu_knm, vu_kn, load_valid = load_input(
+        default_moment=80.0,
+        default_shear=60.0,
+        key="input_loads"
+    )
+
+    # ── Exposure Section ──
+    st.subheader("🌧️ Exposure")
+
+    exposure, exposure_props = exposure_selector(key="input_exposure")
+    min_cover = exposure_props["cover"]
+
+    # ── Support Section ──
+    st.subheader("📐 Support Condition")
+
+    support, support_props = support_condition_selector(key="input_support")
+
+    # ── Calculate effective depth ──
+    stirrup_dia = 8  # Assume 8mm stirrups
+    bar_dia = 16     # Initial assumption, will be updated
+    d_mm = D_mm - min_cover - stirrup_dia - bar_dia / 2
+
+    st.info(f"📐 Effective depth (d) ≈ **{d_mm:.0f} mm**")
+    st.caption(f"Based on: D={D_mm}, cover={min_cover}, stirrup=8mm")
+
+    # ── Validation Check ──
     st.divider()
-    all_valid = all([span_valid, b_valid, D_valid, mu_valid])
+
+    all_valid = all([span_valid, b_valid, D_valid, load_valid])
 
     if not all_valid:
-        st.error("❌ Fix validation errors before analyzing")
+        st.error("❌ Fix validation errors above before analyzing")
 
-    analyze = st.button(
+    # ── Analyze Button ──
+    analyze_clicked = st.button(
         "🚀 Analyze Design",
         type="primary",
         disabled=not all_valid,
         use_container_width=True
     )
 
-# Main area: Results
-if analyze:
+# ─────────────────────────────────────────────────────────────
+# MAIN AREA: Results
+# ─────────────────────────────────────────────────────────────
+
+if analyze_clicked:
+    # Update session state with current inputs
+    st.session_state.beam_inputs = {
+        'span_mm': span_mm,
+        'b_mm': b_mm,
+        'D_mm': D_mm,
+    }
+
     with st.spinner("🔄 Analyzing design..."):
         try:
-            # Call API
-            result = smart_analyze_design(
+            # Call cached API wrapper
+            result = cached_design_analysis(
                 span_mm=span_mm,
                 b_mm=b_mm,
                 d_mm=d_mm,
                 D_mm=D_mm,
                 mu_knm=mu_knm,
-                fck_nmm2=concrete["fck"],
-                fy_nmm2=steel["fy"]
+                vu_kn=vu_kn,
+                fck=concrete_props["fck"],
+                fy=steel_props["fy"],
+                exposure=exposure,
+                support=support,
             )
 
-            # Store in session state
-            st.session_state.last_result = result
+            # Store result
+            st.session_state.beam_result = result
 
+        except DesignError as e:
+            st.error(f"❌ Design Error: {e}")
+            st.session_state.beam_result = None
+            st.stop()
         except Exception as e:
-            st.error(f"❌ Design analysis failed: {e}")
+            st.error(f"❌ Unexpected error: {e}")
+            st.session_state.beam_result = None
             st.stop()
 
-    # Display success
+# Display results if available
+if st.session_state.beam_result:
+    result = st.session_state.beam_result
+
     st.success("✅ Design analysis complete!")
 
-    # Results tabs
+    # Tabs for different views
     tab1, tab2, tab3, tab4 = st.tabs([
         "📊 Summary",
         "🎨 Visualization",
@@ -1367,33 +1883,58 @@ if analyze:
         "✅ Compliance"
     ])
 
+    # ── Tab 1: Summary ──
     with tab1:
         st.subheader("Design Summary")
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
 
         with col1:
             st.metric(
-                "Steel Area Provided",
-                f"{result.beam_result.Ast_provided:.0f} mm²",
-                delta=f"{result.beam_result.Ast_provided - result.beam_result.Ast_required:.0f} mm² (extra)"
+                label="Steel Area Required",
+                value=f"{result.Ast_required:.0f} mm²",
             )
 
         with col2:
             st.metric(
-                "Bar Arrangement",
-                f"{result.beam_result.num_bars}-{result.beam_result.bar_diameter}mm"
+                label="Steel Area Provided",
+                value=f"{result.Ast_provided:.0f} mm²",
+                delta=f"+{result.Ast_provided - result.Ast_required:.0f}",
+                delta_color="normal"
             )
 
         with col3:
             st.metric(
-                "Cost per Meter",
-                f"₹{result.cost_analysis.cost_per_meter:.2f}"
+                label="Bar Arrangement",
+                value=f"{result.num_bars}–{result.bar_dia}mm"
             )
 
-        # Detailed table
-        st.dataframe(format_result(result), use_container_width=True)
+        with col4:
+            st.metric(
+                label="Cost per Meter",
+                value=f"₹{result.cost_per_m:.2f}"
+            )
 
+        # Detailed results table
+        st.divider()
+
+        details_col1, details_col2 = st.columns(2)
+
+        with details_col1:
+            st.markdown("**Flexure Design**")
+            st.markdown(f"- Neutral axis: xu = {result.xu:.1f} mm")
+            st.markdown(f"- xu/d ratio: {result.xu/d_mm:.3f}")
+            st.markdown(f"- Tension steel: {result.Ast_provided:.0f} mm²")
+            st.markdown(f"- Steel ratio: {result.Ast_provided/(b_mm*d_mm)*100:.2f}%")
+
+        with details_col2:
+            st.markdown("**Shear Design**")
+            st.markdown(f"- Shear capacity: τc = {result.tau_c:.2f} N/mm²")
+            st.markdown(f"- Shear stress: τv = {result.tau_v:.2f} N/mm²")
+            st.markdown(f"- Stirrup spacing: {result.stirrup_spacing:.0f} mm")
+            st.markdown(f"- Shear utilization: {result.shear_utilization*100:.0f}%")
+
+    # ── Tab 2: Visualization ──
     with tab2:
         st.subheader("Beam Cross-Section")
 
@@ -1402,73 +1943,478 @@ if analyze:
             b_mm=b_mm,
             D_mm=D_mm,
             d_mm=d_mm,
-            rebar_positions=result.get_rebar_positions(),  # From API
-            neutral_axis_depth=result.beam_result.xu,
-            bar_diameter=result.beam_result.bar_diameter
+            cover_mm=min_cover,
+            bar_diameter=result.bar_dia,
+            num_bars=result.num_bars,
+            stirrup_diameter=8,
+            xu_mm=result.xu,
         )
 
         fig = create_beam_diagram(viz_data)
         st.plotly_chart(fig, use_container_width=True)
 
+        # Utilization gauges in a row
+        st.subheader("Capacity Utilization")
+
+        gauge_col1, gauge_col2, gauge_col3 = st.columns(3)
+
+        with gauge_col1:
+            fig = create_utilization_gauge(result.flexure_utilization, "Flexure")
+            st.plotly_chart(fig, use_container_width=True)
+
+        with gauge_col2:
+            fig = create_utilization_gauge(result.shear_utilization, "Shear")
+            st.plotly_chart(fig, use_container_width=True)
+
+        with gauge_col3:
+            fig = create_utilization_gauge(result.deflection_utilization, "Deflection")
+            st.plotly_chart(fig, use_container_width=True)
+
+    # ── Tab 3: Cost Analysis ──
     with tab3:
         st.subheader("Cost Optimization")
 
-        # Show cost comparison
-        if hasattr(result, 'alternative_options'):
-            fig = create_cost_comparison(result.alternative_options)
+        if hasattr(result, 'alternatives') and result.alternatives:
+            fig = create_cost_comparison(result.alternatives)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("ℹ️ Cost comparison requires rebar_optimizer module")
+
+        st.divider()
+        st.subheader("Sensitivity Analysis")
+
+        if hasattr(result, 'sensitivity_data') and result.sensitivity_data:
+            fig = create_sensitivity_tornado(result.sensitivity_data)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("ℹ️ Sensitivity analysis not available for this design")
+
+    # ── Tab 4: Compliance ──
+    with tab4:
+        st.subheader("IS 456 Compliance")
+
+        if hasattr(result, 'compliance_checks') and result.compliance_checks:
+            fig = create_compliance_visual(result.compliance_checks)
             st.plotly_chart(fig, use_container_width=True)
 
-        st.info("💡 Tip: The recommended option minimizes cost while meeting all code requirements.")
+            # Summary
+            passed = sum(1 for c in result.compliance_checks if c["passed"])
+            total = len(result.compliance_checks)
 
-    with tab4:
-        st.subheader("IS 456 Compliance Checklist")
-
-        # Show compliance results
-        for check in result.compliance_results:
-            if check.passed:
-                st.success(f"✅ {check.description} (Cl. {check.clause})")
+            if passed == total:
+                st.success(f"✅ All {total} compliance checks passed!")
             else:
-                st.error(f"❌ {check.description} (Cl. {check.clause})")
-                st.markdown(f"**Fix:** {check.suggestion}")
+                st.warning(f"⚠️ {passed}/{total} checks passed. See failures above.")
+        else:
+            st.info("ℹ️ Compliance data not available")
+
+        # Print button
+        st.divider()
+        if st.button("🖨️ Print Report"):
+            st.markdown("""
+            <script>window.print();</script>
+            """, unsafe_allow_html=True)
 
 else:
-    # Show placeholder
-    st.info("👈 Enter design parameters in the sidebar and click 'Analyze Design'")
+    # Show placeholder when no results
+    st.info("👈 Enter design parameters in the sidebar and click **Analyze Design**")
 
-    # Show example
+    # Quick example
     with st.expander("📖 Example: 4m Span Beam"):
         st.markdown("""
-        **Given:**
+        **Given (typical residential beam):**
         - Span: 4000 mm
-        - Width: 230 mm
-        - Total Depth: 450 mm
+        - Width (b): 230 mm
+        - Total Depth (D): 450 mm
         - Moment: 80 kNm
+        - Shear: 60 kN
         - Concrete: M20
         - Steel: Fe415
+        - Exposure: Moderate
 
-        **Result:**
-        - 3-16mm bars
-        - Cost: ₹87.45/m
+        **Expected Result:**
+        - Steel required: ~450 mm²
+        - Arrangement: 3–16mm bars
+        - Cost: ~₹87/meter
         """)
 ```
 
-**Daily Commits:**
-```bash
-# Day 11
-git commit -m "feat(ui): implement beam design page layout"
+### API Wrapper Implementation
 
-# Day 12
-git commit -m "feat(ui): integrate API calls with error handling"
+```python
+# streamlit_app/utils/api_wrapper.py
 
-# Day 13
-git commit -m "feat(ui): add results tabs (summary, viz, cost, compliance)"
+import streamlit as st
+from dataclasses import dataclass
+from typing import Optional, Any
 
-# Day 14
-git commit -m "feat(ui): add session state persistence"
+@dataclass
+class BeamDesignResult:
+    """Unified result object for UI display."""
+    # Flexure
+    Ast_required: float
+    Ast_provided: float
+    num_bars: int
+    bar_dia: int
+    xu: float
+    flexure_utilization: float
 
-# Day 15
-git commit -m "feat(ui): add example and help text"
+    # Shear
+    tau_c: float
+    tau_v: float
+    stirrup_spacing: float
+    shear_utilization: float
+
+    # Deflection
+    deflection_utilization: float
+
+    # Cost
+    cost_per_m: float
+
+    # Optional extras
+    alternatives: Optional[list[dict]] = None
+    sensitivity_data: Optional[list[dict]] = None
+    compliance_checks: Optional[list[dict]] = None
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def cached_design_analysis(
+    span_mm: float,
+    b_mm: float,
+    d_mm: float,
+    D_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    fck: float,
+    fy: float,
+    exposure: str,
+    support: str,
+) -> BeamDesignResult:
+    """
+    Cached wrapper around structural_lib API.
+
+    Caches results for 1 hour to improve performance.
+    """
+    from structural_lib.api import smart_analyze_design
+
+    # Call the main API
+    raw_result = smart_analyze_design(
+        span_mm=span_mm,
+        b_mm=b_mm,
+        d_mm=d_mm,
+        D_mm=D_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        fck_nmm2=fck,
+        fy_nmm2=fy,
+        exposure=exposure,
+        support_type=support,
+    )
+
+    # Transform to UI-friendly format
+    return BeamDesignResult(
+        Ast_required=raw_result.flexure.Ast_required,
+        Ast_provided=raw_result.flexure.Ast_provided,
+        num_bars=raw_result.flexure.num_bars,
+        bar_dia=raw_result.flexure.bar_diameter,
+        xu=raw_result.flexure.xu,
+        flexure_utilization=raw_result.flexure.utilization,
+        tau_c=raw_result.shear.tau_c,
+        tau_v=raw_result.shear.tau_v,
+        stirrup_spacing=raw_result.shear.stirrup_spacing,
+        shear_utilization=raw_result.shear.utilization,
+        deflection_utilization=raw_result.serviceability.deflection_ratio,
+        cost_per_m=raw_result.cost.cost_per_meter if raw_result.cost else 0,
+        alternatives=raw_result.alternatives if hasattr(raw_result, 'alternatives') else None,
+        sensitivity_data=raw_result.sensitivity if hasattr(raw_result, 'sensitivity') else None,
+        compliance_checks=raw_result.compliance if hasattr(raw_result, 'compliance') else None,
+    )
 ```
+
+### Testing Requirements
+
+**Unit Tests (15+ tests):**
+```python
+# streamlit_app/tests/test_beam_design_page.py
+
+import pytest
+from unittest.mock import MagicMock, patch
+
+class TestBeamDesignPage:
+    def test_sidebar_renders_all_inputs(self, page_session):
+        """Test all 5 input components appear in sidebar."""
+        pass
+
+    def test_validation_blocks_analysis(self, page_session):
+        """Test invalid inputs disable analyze button."""
+        pass
+
+    def test_api_called_with_correct_params(self, mock_api):
+        """Test smart_analyze_design receives correct values."""
+        pass
+
+    def test_error_handling_design_error(self, mock_api):
+        """Test DesignError shows user-friendly message."""
+        pass
+
+    def test_session_state_persists(self, page_session):
+        """Test inputs persist across reruns."""
+        pass
+
+    def test_all_tabs_render(self, page_session, mock_result):
+        """Test 4 result tabs render without error."""
+        pass
+
+class TestAPIWrapper:
+    def test_caching_works(self, mock_api):
+        """Test same inputs return cached result."""
+        pass
+
+    def test_result_transformation(self, mock_api):
+        """Test raw API result transforms to BeamDesignResult."""
+        pass
+```
+
+### Daily Work Plan
+
+| Day | Focus | Deliverable |
+|-----|-------|-------------|
+| 11 | Page layout + sidebar | All inputs in sidebar, layout structure |
+| 12 | API integration | `cached_design_analysis()` + error handling |
+| 13 | Summary + Viz tabs | Metrics, beam diagram, gauges |
+| 14 | Cost + Compliance tabs | Charts, checklist |
+| 15 | Testing + polish | 15+ tests, session state, print button |
+
+### Handoff Checklist
+
+When IMPL-004 is complete, include:
+- [ ] Full page renders without errors
+- [ ] All 5 input components work
+- [ ] All 5 visualizations display
+- [ ] API integration tested
+- [ ] Error handling tested (DesignError)
+- [ ] Session state persists inputs
+- [ ] 15+ unit tests passing
+- [ ] Responsive design verified
+
+---
+
+## 🟠 STREAMLIT-IMPL-005: Cost Optimizer Page (Day 16-20)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO - AFTER IMPL-004
+**Estimated Effort:** 8-10 hours
+
+### Objective
+Create a dedicated page for exploring rebar optimization options:
+- Compare multiple bar arrangements
+- Interactive cost vs utilization trade-off visualization
+- Batch design exploration (vary parameters)
+- Export comparison table
+
+### Page Features
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 💰 Cost Optimizer - Find the Most Economical Design                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│ [Load from Beam Design] button                                       │
+│                                                                      │
+│ ┌────────────────────────────────────────────────────────────────┐  │
+│ │ COST vs UTILIZATION SCATTER                                     │  │
+│ │                                                                  │  │
+│ │     💚 3-16mm (optimal)                                         │  │
+│ │   ●                                                              │  │
+│ │        ○ 2-20mm                                                  │  │
+│ │     ○ 4-14mm                                                     │  │
+│ │  ○ 2-16mm+1-12mm (under)                                        │  │
+│ │                                                                  │  │
+│ │  Cost (₹/m) →                                                   │  │
+│ └────────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│ ┌────────────────────────────────────────────────────────────────┐  │
+│ │ OPTIONS TABLE                                                   │  │
+│ │                                                                  │  │
+│ │ | Arrangement | Area | Util% | Cost | Savings | Status |       │  │
+│ │ |-------------|------|-------|------|---------|--------|       │  │
+│ │ | 3-16mm ⭐    | 603  | 92%   | ₹87  | -       | ✅      |       │  │
+│ │ | 2-20mm      | 628  | 96%   | ₹92  | -₹5.85  | ✅      |       │  │
+│ │ | 4-14mm      | 616  | 94%   | ₹89  | -₹2.05  | ✅      |       │  │
+│ │ | 2-16+1-12   | 515  | 78%   | ₹75  | +₹12.45 | ⚠️ UNDER|       │  │
+│ └────────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│ [📥 Export CSV] [🖨️ Print]                                          │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Functions
+
+```python
+# streamlit_app/pages/02_💰_cost_optimizer.py
+
+def create_cost_utilization_scatter(options: list[dict]) -> go.Figure:
+    """
+    Scatter plot: X=cost, Y=utilization
+    Color: green=optimal, blue=valid, red=under-designed
+    Size: proportional to steel area
+    """
+    pass
+
+def create_options_table(options: list[dict]) -> pd.DataFrame:
+    """
+    Sortable table with:
+    - Arrangement name
+    - Steel area
+    - Utilization %
+    - Cost/meter
+    - Savings vs optimal
+    - Status (✅/⚠️/❌)
+    """
+    pass
+
+def export_comparison_csv(options: list[dict], filename: str) -> bytes:
+    """
+    Export options to CSV for download.
+    """
+    pass
+```
+
+### Daily Work Plan
+
+| Day | Focus | Deliverable |
+|-----|-------|-------------|
+| 16 | Page layout + load from beam design | Integration with session state |
+| 17 | Cost/utilization scatter | Interactive Plotly scatter |
+| 18 | Options table | Sortable pandas DataFrame |
+| 19 | Export functionality | CSV download, print |
+| 20 | Testing | 10+ unit tests |
+
+---
+
+## 🟠 STREAMLIT-IMPL-006: Compliance Checker Page (Day 21-25)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO - AFTER IMPL-005
+**Estimated Effort:** 8-10 hours
+
+### Objective
+Create a dedicated compliance verification page:
+- Comprehensive IS 456 clause checking
+- Expandable clause details with code excerpts
+- Generate compliance certificate
+- Track revisions
+
+### Page Features
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ ✅ Compliance Checker - IS 456:2000 Verification                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│ OVERALL STATUS: ✅ COMPLIANT (12/12 checks passed)                  │
+│                                                                      │
+│ ▼ 26.5.1.1 - Minimum Steel Ratio                      ✅ PASS       │
+│   ├─ Requirement: pt ≥ 0.85√fck/fy = 0.85%                         │
+│   ├─ Actual: pt = 0.92%                                             │
+│   └─ Margin: +8.2%                                                  │
+│                                                                      │
+│ ▼ 26.5.1.2 - Maximum Steel Ratio                      ✅ PASS       │
+│   ├─ Requirement: pt ≤ 4.0%                                         │
+│   ├─ Actual: pt = 0.92%                                             │
+│   └─ Margin: +77%                                                   │
+│                                                                      │
+│ ▼ 40.1 - Shear Capacity                               ✅ PASS       │
+│   ├─ Requirement: τv ≤ τc + τs                                      │
+│   ├─ Actual: τv = 0.45 N/mm² ≤ 0.68 N/mm²                          │
+│   └─ Margin: +51%                                                   │
+│                                                                      │
+│ ▶ 26.3.3 - Bar Spacing [Click to expand]              ✅ PASS       │
+│ ▶ 26.4.1 - Cover Requirements                         ✅ PASS       │
+│ ▶ 23.2.1 - Deflection Limits                          ✅ PASS       │
+│ ...                                                                  │
+│                                                                      │
+│ [📜 Generate Certificate] [📥 Export Report] [🖨️ Print]             │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Functions
+
+```python
+# streamlit_app/pages/03_✅_compliance.py
+
+def create_clause_expander(check: dict) -> None:
+    """
+    Expandable section for each compliance check.
+    Shows: requirement, actual, margin, clause text excerpt.
+    """
+    pass
+
+def generate_compliance_certificate(
+    checks: list[dict],
+    project_name: str,
+    engineer_name: str,
+) -> bytes:
+    """
+    Generate PDF certificate summarizing compliance.
+    """
+    pass
+
+def create_compliance_summary_card(checks: list[dict]) -> None:
+    """
+    Summary card showing: X/Y passed, overall status.
+    """
+    pass
+```
+
+### IS 456 Clauses to Check
+
+| Clause | Description | Type |
+|--------|-------------|------|
+| 26.5.1.1 | Min steel ratio | Flexure |
+| 26.5.1.2 | Max steel ratio | Flexure |
+| 26.3.3 | Bar spacing | Detailing |
+| 26.4.1 | Cover requirements | Durability |
+| 26.4.2 | Fire resistance cover | Durability |
+| 40.1 | Shear capacity | Shear |
+| 40.2.3 | Min shear reinforcement | Shear |
+| 40.4 | Max stirrup spacing | Detailing |
+| 23.2.1 | Deflection limits | Serviceability |
+| 35.1.1 | Cracking control | Serviceability |
+| Ductile | Special seismic requirements | Seismic |
+| Anchorage | Development length | Detailing |
+
+### Daily Work Plan
+
+| Day | Focus | Deliverable |
+|-----|-------|-------------|
+| 21 | Page layout + summary card | Overall status display |
+| 22 | Clause expanders | Expandable sections with details |
+| 23 | All 12 clauses | Complete compliance checking |
+| 24 | Certificate generation | PDF export |
+| 25 | Testing | 12+ unit tests (1 per clause) |
+
+---
+
+## 📋 IMPL-007 and Beyond (Future)
+
+**STREAMLIT-IMPL-007: Documentation Page** (Day 26-28)
+- Interactive IS 456 quick reference
+- Searchable clause lookup
+- Formula explanations with MathJax
+- Example problems
+
+**STREAMLIT-IMPL-008: Settings & Preferences** (Day 29-30)
+- Unit preferences (mm vs m)
+- Theme toggle (light/dark)
+- Export preferences
+- Keyboard shortcuts
+
+**STREAMLIT-IMPL-009: Performance Optimization** (Day 31-33)
+- Lazy loading for heavy components
+- Caching strategy review
+- Bundle size analysis
+- Lighthouse audit
+
+---
 
 ---
 
@@ -1480,56 +2426,32 @@ git commit -m "feat(ui): add example and help text"
 ## Handoff: STREAMLIT SPECIALIST (Agent 6) → MAIN
 
 **Date:** 2026-01-XX
-**Branch:** streamlit/2026-01-XX-[feature-name]
+**Task:** STREAMLIT-IMPL-XXX
 **Status:** ✅ Committed locally, tested, ready for review
 
 ### Summary
 [2-3 sentences: what was built/improved today]
 
-Example:
-Built beam cross-section visualization component using Plotly. Creates interactive
-SVG diagram showing concrete section, rebar placement, and neutral axis. Tested
-with 5 different beam configurations, all render correctly.
-
 ### Files Changed
-- `streamlit_app/components/visualizations.py` - Added create_beam_diagram()
-- `streamlit_app/tests/test_visualizations.py` - Added 10 unit tests
-- `streamlit_app/docs/components.md` - Documented component API
+- `streamlit_app/components/xxx.py` - Added/modified function
+- `streamlit_app/tests/test_xxx.py` - Added X unit tests
 
 ### Features Added
-- ✅ Interactive beam diagram with hover tooltips
-- ✅ Responsive design (works on mobile)
-- ✅ Accessibility: ARIA labels, keyboard navigation
-- ✅ Unit tests (100% coverage)
+- ✅ [Feature 1]
+- ✅ [Feature 2]
 
 ### Local Testing
-- ✅ Ran `streamlit run app.py` - No errors
-- ✅ Tested on Chrome, Firefox, Safari
-- ✅ Tested on mobile (iPhone 12, Pixel 5)
-- ✅ All unit tests passing: `pytest streamlit_app/tests/`
-- ✅ Visual regression tests passed
-
-### Screenshots
-[Attach screenshot of component in action]
-
-### Performance
-- Initial load: 1.2s
-- Rerender: 0.3s
-- Bundle size: +45KB (acceptable)
+- ✅ `streamlit run app.py` - No errors
+- ✅ `pytest streamlit_app/tests/` - All tests pass
+- ✅ Tested on Chrome/Firefox
 
 ### Next Steps
-Tomorrow: Implement cost comparison chart component
+Tomorrow: [Next task]
 
 ### Action Required by MAIN
-1. Review changes: `git checkout streamlit/2026-01-XX-feature-name`
-2. Test locally: `streamlit run streamlit_app/app.py`
-3. If approved:
-   ```bash
-   git push origin streamlit/2026-01-XX-feature-name
-   gh pr create --title "feat(ui): beam cross-section visualizer" --body "..."
-   gh pr checks --watch
-   gh pr merge --squash
-   ```
+1. Review changes
+2. Test locally
+3. If approved: push and merge
 ```
 
 ---
