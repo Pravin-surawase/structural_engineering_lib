@@ -233,13 +233,14 @@ GLOBAL_CSS_PART2 = f"""
     outline: none;
 }}
 
-/* Select box */
+/* Select box - Fixed height to show full text */
 .stSelectbox > div > div {{
     background: white;
     border: 1px solid {COLORS.gray_300};
     border-radius: {RADIUS.sm};
     transition: all {ANIMATION.fast} {ANIMATION.ease_in_out};
-    min-height: 38px;
+    min-height: 42px !important;
+    height: auto !important;
 }}
 
 .stSelectbox > div > div:hover {{
@@ -249,24 +250,27 @@ GLOBAL_CSS_PART2 = f"""
 .stSelectbox > div > div > div {{
     font-family: {TYPOGRAPHY.font_ui};
     color: {COLORS.gray_900};
-    padding: {SPACING.space_2} {SPACING.space_3};
-    min-height: 34px;
+    padding: 10px 12px !important;
+    min-height: 40px !important;
+    height: auto !important;
     display: flex;
     align-items: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 0.875rem;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
 }}
 
-/* Dropdown menu options */
+/* Dropdown menu options - ensure full visibility */
 [data-baseweb="menu"] {{
-    font-size: 0.875rem !important;
+    font-size: 14px !important;
 }}
 
 [data-baseweb="menu"] li {{
-    min-height: 36px !important;
-    padding: 8px 12px !important;
+    min-height: 40px !important;
+    padding: 10px 12px !important;
+    line-height: 1.4 !important;
 }}
 
 /* Slider */

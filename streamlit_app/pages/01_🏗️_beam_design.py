@@ -348,67 +348,127 @@ with col_preview:
         with tab1:
             section_header("Design Summary", icon="📊", divider=False)
 
-            st.markdown("<br>", unsafe_allow_html=True)
+            # Get design details
+            flexure = result.get('flexure', {})
+            shear = result.get('shear', {})
+            detailing = result.get('detailing', {})
 
-            # Key metrics in modern card format
-            ast_req = result.get('flexure', {}).get('ast_required', 0)
-            spacing = result.get('shear', {}).get('spacing', 0)
-            utilization = result.get('flexure', {}).get('ast_required', 0) / (st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm']) * 100 if result.get('flexure', {}).get('ast_required', 0) > 0 else 0
+            ast_req = flexure.get('ast_required', 0)
+            ast_prov = flexure.get('ast_provided', 0)
+            spacing = shear.get('spacing', 0)
 
-            # Use three_column_metrics helper for consistent layout
-            col1, col2, col3, col4 = st.columns(4)
+            # Calculate utilization percentage
+            mu_limit = flexure.get('mu_limit_knm', 1)
+            flex_util = (st.session_state.beam_inputs['mu_knm'] / mu_limit * 100) if mu_limit > 0 else 0
+            shear_util = (shear.get('tau_v', 0) / (0.5 * (concrete['fck'] ** 0.5)) * 100)
+
+            st.markdown("---")
+
+            # ═══════════════════════════════════════════════════════════════
+            # REINFORCEMENT SUMMARY (Main results)
+            # ═══════════════════════════════════════════════════════════════
+            st.markdown("### 🔩 Reinforcement Details")
+
+            col1, col2, col3 = st.columns(3)
 
             with col1:
-                st.metric(
-                    "Steel Area Required",
-                    f"{ast_req:.0f} mm²",
-                    help="Tension steel area per IS 456 Cl. 26.5.1"
-                )
+                st.markdown("**Main Tension Steel**")
+                st.markdown(f"📏 **{flexure.get('num_bars', 3)} - {flexure.get('bar_dia', 16)}mm** bars")
+                st.caption(f"Ast = {ast_prov:.0f} mm² (req: {ast_req:.0f} mm²)")
+                if flexure.get('num_layers', 1) > 1:
+                    st.info(f"Arranged in {flexure.get('num_layers')} layers")
+
             with col2:
-                st.metric(
-                    "Stirrup Spacing",
-                    f"{spacing:.0f} mm c/c" if spacing > 0 else "—",
-                    help="Shear reinforcement spacing per IS 456 Cl. 26.5.1.6"
-                )
+                st.markdown("**Shear Reinforcement**")
+                st.markdown(f"📏 **{shear.get('legs', 2)}-legged {shear.get('stirrup_dia', 8)}mm** @ **{spacing:.0f}mm** c/c")
+                st.caption(f"τv = {shear.get('tau_v', 0):.2f} N/mm² (τc = {shear.get('tau_c', 0):.2f} N/mm²)")
+
             with col3:
-                st.metric(
-                    "Flexure Utilization",
-                    f"{utilization:.1f}%",
-                    help="Percentage of flexural capacity utilized"
-                )
+                st.markdown("**Compression Steel**")
+                if flexure.get('is_doubly_reinforced', False):
+                    st.markdown(f"📏 **Required:** {flexure.get('asc_required', 0):.0f} mm²")
+                    st.warning("⚠️ Doubly reinforced section")
+                else:
+                    st.markdown("✅ **Not required**")
+                    st.caption("Singly reinforced section")
+
+            st.markdown("---")
+
+            # Side face reinforcement row
+            col4, col5, col6 = st.columns(3)
+
             with col4:
-                st.metric(
-                    "Overall Status",
-                    "✅ SAFE" if result.get('is_safe') else "❌ UNSAFE",
-                    help="Overall design safety status"
-                )
+                st.markdown("**Side Face Steel**")
+                if detailing.get('needs_side_face', False):
+                    st.markdown(f"📏 **Required:** {detailing.get('side_face_area', 0):.0f} mm²")
+                    st.caption("(D > 450mm, per IS 456 Cl. 26.5.1.3)")
+                else:
+                    st.markdown("✅ **Not required**")
+                    st.caption("(D ≤ 450mm)")
 
-            st.markdown("<br><br>", unsafe_allow_html=True)
+            with col5:
+                st.markdown("**Clear Cover**")
+                st.markdown(f"📏 **{detailing.get('cover', 30)} mm**")
+                st.caption(f"Exposure: {st.session_state.beam_inputs['exposure']}")
 
-            # Detailed results in two columns
-            col_left, col_right = st.columns(2)
+            with col6:
+                st.markdown("**Design Status**")
+                if result.get('is_safe'):
+                    st.success("✅ **SAFE**")
+                else:
+                    st.error("❌ **UNSAFE**")
 
-            with col_left:
-                section_header("Flexure Design", icon="🔹", divider=True)
-                flexure = result.get('flexure', {})
-                st.write(f"- **Ast required:** {flexure.get('ast_required', 0):.0f} mm²")
-                st.write(f"- **Status:** {'✅ Safe' if flexure.get('is_safe', False) else '❌ Unsafe'}")
+            st.markdown("---")
 
-                st.markdown("<br>", unsafe_allow_html=True)
-                section_header("Material Properties", icon="🔸", divider=True)
-                st.write(f"- **Concrete:** {st.session_state.beam_inputs['concrete_grade']} (fck = {concrete['fck']} N/mm²)")
-                st.write(f"- **Steel:** {st.session_state.beam_inputs['steel_grade']} (fy = {steel['fy']} N/mm²)")
+            # ═══════════════════════════════════════════════════════════════
+            # UTILIZATION METERS (Simple progress bars)
+            # ═══════════════════════════════════════════════════════════════
+            st.markdown("### 📊 Capacity Utilization")
 
-            with col_right:
-                section_header("Shear Design", icon="🔹", divider=True)
-                shear = result.get('shear', {})
-                st.write(f"- **Spacing:** {shear.get('spacing', 0):.0f} mm c/c")
-                st.write(f"- **Status:** {'✅ Safe' if shear.get('is_safe', False) else '❌ Unsafe'}")
+            col_u1, col_u2, col_u3 = st.columns(3)
 
-                st.markdown("#### 🔸 Geometry")
-                st.write(f"- **Span:** {st.session_state.beam_inputs['span_mm']:.0f} mm")
-                st.write(f"- **Section:** {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm")
-                st.write(f"- **Effective depth:** {st.session_state.beam_inputs['d_mm']:.0f} mm")
+            with col_u1:
+                st.markdown("**Flexure**")
+                flex_pct = min(flex_util, 100)
+                st.progress(flex_pct / 100)
+                color = "🟢" if flex_pct < 80 else ("🟡" if flex_pct < 95 else "🔴")
+                st.caption(f"{color} {flex_pct:.1f}% utilized")
+
+            with col_u2:
+                st.markdown("**Shear**")
+                shear_pct = min(shear_util, 100)
+                st.progress(shear_pct / 100)
+                color = "🟢" if shear_pct < 80 else ("🟡" if shear_pct < 95 else "🔴")
+                st.caption(f"{color} {shear_pct:.1f}% utilized")
+
+            with col_u3:
+                st.markdown("**Steel Ratio**")
+                steel_ratio = (ast_prov / (st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm'])) * 100
+                max_ratio = 4.0  # 4% max
+                ratio_pct = min((steel_ratio / max_ratio) * 100, 100)
+                st.progress(ratio_pct / 100)
+                st.caption(f"ρ = {steel_ratio:.2f}% (max 4%)")
+
+            st.markdown("---")
+
+            # ═══════════════════════════════════════════════════════════════
+            # MATERIAL & GEOMETRY (Compact)
+            # ═══════════════════════════════════════════════════════════════
+            with st.expander("📋 Input Summary", expanded=False):
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    st.markdown("**Geometry**")
+                    st.write(f"• Span: {st.session_state.beam_inputs['span_mm']:.0f} mm")
+                    st.write(f"• Section: {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm")
+                    st.write(f"• Eff. depth: {st.session_state.beam_inputs['d_mm']:.0f} mm")
+                with c2:
+                    st.markdown("**Materials**")
+                    st.write(f"• Concrete: {st.session_state.beam_inputs['concrete_grade']} (fck={concrete['fck']})")
+                    st.write(f"• Steel: {st.session_state.beam_inputs['steel_grade']} (fy={steel['fy']})")
+                with c3:
+                    st.markdown("**Loading**")
+                    st.write(f"• Moment: {st.session_state.beam_inputs['mu_knm']:.1f} kNm")
+                    st.write(f"• Shear: {st.session_state.beam_inputs['vu_kn']:.1f} kN")
 
         # ============================================================================
         # TAB 2: Visualization
@@ -416,20 +476,23 @@ with col_preview:
         with tab2:
             st.subheader("Beam Cross-Section")
 
-            # Sample rebar positions (3 bars at bottom)
-            # TODO: Get actual positions from design result
-            cover = exposure.get('cover', 30)
-            bar_dia = 16  # Placeholder
-            spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover) / 2
-            rebar_y = cover + bar_dia / 2
+            # Get actual bar configuration from design result
+            flexure = result.get('flexure', {})
+            detailing = result.get('detailing', {})
+            cover = detailing.get('cover', 30)
+            bar_dia = flexure.get('bar_dia', 16)
+            num_bars = flexure.get('num_bars', 3)
 
-            rebar_positions = [
-                (cover + bar_dia / 2, rebar_y),
-                (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
-                (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
-            ]
+            # Calculate rebar positions based on actual design
+            rebar_positions = []
+            if num_bars > 0:
+                spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover - bar_dia) / max(num_bars - 1, 1)
+                rebar_y = cover + bar_dia / 2
+                for i in range(num_bars):
+                    x = cover + bar_dia / 2 + i * spacing_h
+                    rebar_positions.append((x, rebar_y))
 
-            xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Placeholder neutral axis
+            xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Neutral axis estimate
 
             fig = create_beam_diagram(
                 b_mm=st.session_state.beam_inputs['b_mm'],
@@ -445,33 +508,31 @@ with col_preview:
 
             st.divider()
 
-            # Utilization gauges
-            st.subheader("Utilization Gauges")
+            # Reinforcement schedule (table format - more professional)
+            st.subheader("📋 Reinforcement Schedule")
 
-            col1, col2, col3 = st.columns(3)
+            import pandas as pd
+            schedule_data = {
+                'Element': ['Main Tension', 'Stirrups', 'Compression' if flexure.get('is_doubly_reinforced') else 'Side Face'],
+                'Size': [
+                    f"{num_bars} - {bar_dia}mm",
+                    f"2L-{result.get('shear', {}).get('stirrup_dia', 8)}mm @ {result.get('shear', {}).get('spacing', 150):.0f}mm c/c",
+                    f"{flexure.get('asc_required', 0):.0f} mm² req'd" if flexure.get('is_doubly_reinforced') else (f"{detailing.get('side_face_area', 0):.0f} mm²" if detailing.get('needs_side_face') else "Not required")
+                ],
+                'Area (mm²)': [
+                    f"{flexure.get('ast_provided', 0):.0f}",
+                    "—",
+                    f"{flexure.get('asc_required', 0):.0f}" if flexure.get('is_doubly_reinforced') else (f"{detailing.get('side_face_area', 0):.0f}" if detailing.get('needs_side_face') else "—")
+                ],
+                'Remarks': [
+                    f"req'd: {flexure.get('ast_required', 0):.0f} mm²",
+                    f"τv={result.get('shear', {}).get('tau_v', 0):.2f} N/mm²",
+                    "Doubly reinforced" if flexure.get('is_doubly_reinforced') else ("D > 450mm" if detailing.get('needs_side_face') else "D ≤ 450mm")
+                ]
+            }
 
-            with col1:
-                fig_flex = create_utilization_gauge(
-                    value=min(utilization / 100, 1.0),
-                    label="Flexure"
-                )
-                st.plotly_chart(fig_flex, use_container_width=True, key="gauge_flexure")
-
-            with col2:
-                shear_util = 0.65  # Placeholder
-                fig_shear = create_utilization_gauge(
-                    value=shear_util,
-                    label="Shear"
-                )
-                st.plotly_chart(fig_shear, use_container_width=True, key="gauge_shear")
-
-            with col3:
-                deflection_util = 0.50  # Placeholder
-                fig_defl = create_utilization_gauge(
-                    value=deflection_util,
-                    label="Deflection"
-                )
-                st.plotly_chart(fig_defl, use_container_width=True, key="gauge_deflection")
+            df_schedule = pd.DataFrame(schedule_data)
+            st.dataframe(df_schedule, use_container_width=True, hide_index=True)
 
         # ============================================================================
         # TAB 3: Cost Analysis

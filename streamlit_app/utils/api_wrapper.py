@@ -110,18 +110,67 @@ def cached_design(
     cover_map = {'Mild': 20, 'Moderate': 30, 'Severe': 45, 'Very Severe': 50, 'Extreme': 75}
     cover = cover_map.get(exposure, 30)
 
+    # Calculate bar arrangement
+    import math
+    bar_dia_options = [12, 16, 20, 25, 32]
+    best_bars = None
+    for dia in bar_dia_options:
+        area_per_bar = math.pi * (dia ** 2) / 4
+        num_bars = math.ceil(ast_required / area_per_bar)
+        if num_bars >= 2:  # Minimum 2 bars
+            ast_provided = num_bars * area_per_bar
+            if ast_provided >= ast_required:
+                best_bars = {'dia': dia, 'num': num_bars, 'area': ast_provided}
+                break
+
+    if not best_bars:
+        # Fallback to 16mm bars
+        area_per_bar = math.pi * (16 ** 2) / 4
+        num_bars = max(3, math.ceil(ast_required / area_per_bar))
+        best_bars = {'dia': 16, 'num': num_bars, 'area': num_bars * area_per_bar}
+
+    # Check for compression steel (doubly reinforced)
+    is_doubly_reinforced = mu_knm > mu_limit
+    asc_required = 0  # Compression steel
+    if is_doubly_reinforced:
+        # Simplified: Mu2 = Mu - Mu_limit, Asc = Mu2 / (fsc * (d - d'))
+        mu2 = mu_knm - mu_limit
+        d_prime = cover + 8  # Assume 8mm stirrup + half bar
+        asc_required = (mu2 * 1e6) / (0.87 * fy_nmm2 * (d_mm - d_prime))
+
+    # Side face reinforcement (IS 456 Cl. 26.5.1.3) - for D > 450mm
+    needs_side_face = D_mm > 450
+    side_face_area = 0.1 * b_mm * D_mm / 100 if needs_side_face else 0  # 0.1% of web area
+
+    # Determine number of layers
+    clear_spacing = (b_mm - 2 * cover - best_bars['num'] * best_bars['dia']) / (best_bars['num'] - 1) if best_bars['num'] > 1 else 0
+    num_layers = 1 if clear_spacing >= 25 else 2  # Min 25mm clear spacing
+
     return {
         'flexure': {
             'is_safe': flexure_safe,
             'ast_required': round(ast_required, 0),
+            'ast_provided': round(best_bars['area'], 0),
             'mu_limit_knm': round(mu_limit, 1),
-            'ast_min': round(ast_min, 0)
+            'ast_min': round(ast_min, 0),
+            'bar_dia': best_bars['dia'],
+            'num_bars': best_bars['num'],
+            'num_layers': num_layers,
+            'is_doubly_reinforced': is_doubly_reinforced,
+            'asc_required': round(asc_required, 0) if is_doubly_reinforced else 0
         },
         'shear': {
             'is_safe': shear_safe,
             'spacing': round(spacing, 0),
             'tau_v': round(tau_v, 2),
-            'tau_c': round(tau_c, 2)
+            'tau_c': round(tau_c, 2),
+            'stirrup_dia': 8,
+            'legs': 2
+        },
+        'detailing': {
+            'needs_side_face': needs_side_face,
+            'side_face_area': round(side_face_area, 0) if needs_side_face else 0,
+            'cover': cover
         },
         'cover_mm': cover,
         'is_safe': flexure_safe and shear_safe

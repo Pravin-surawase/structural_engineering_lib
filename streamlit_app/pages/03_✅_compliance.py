@@ -46,19 +46,23 @@ def initialize_session_state():
 
 def get_beam_design_inputs() -> Optional[dict]:
     """Get inputs from Beam Design page session state if available."""
-    keys_needed = [
-        "mu_knm",
-        "vu_kn",
-        "b_mm",
-        "D_mm",
-        "d_mm",
-        "fck_nmm2",
-        "fy_nmm2",
-        "span_mm",
-    ]
+    # Check if beam_inputs exists (from beam design page)
+    if 'beam_inputs' in st.session_state:
+        beam = st.session_state.beam_inputs
+        # Map concrete/steel grades to fck/fy values
+        fck_map = {'M20': 20, 'M25': 25, 'M30': 30, 'M35': 35, 'M40': 40}
+        fy_map = {'Fe415': 415, 'Fe500': 500, 'Fe550': 550}
 
-    if all(key in st.session_state for key in keys_needed):
-        return {key: st.session_state[key] for key in keys_needed}
+        return {
+            'mu_knm': beam.get('mu_knm', 120.0),
+            'vu_kn': beam.get('vu_kn', 80.0),
+            'b_mm': beam.get('b_mm', 300.0),
+            'D_mm': beam.get('D_mm', 500.0),
+            'd_mm': beam.get('d_mm', 450.0),
+            'span_mm': beam.get('span_mm', 5000.0),
+            'fck_nmm2': fck_map.get(beam.get('concrete_grade', 'M25'), 25),
+            'fy_nmm2': fy_map.get(beam.get('steel_grade', 'Fe500'), 500),
+        }
     return None
 
 
