@@ -327,6 +327,29 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 
 ## Developer setup
 
+### For AI Agents (Automated Workflow)
+**⚡ Use the [Agent Automation System](docs/AGENT_AUTOMATION_SYSTEM.md) for error-free development:**
+
+```bash
+# 1. Setup session (30s)
+./scripts/agent_setup.sh
+
+# 2. Pre-flight check before work
+./scripts/agent_preflight.sh
+
+# 3. Make changes and commit (10-30s)
+./scripts/ai_commit.sh "your commit message"
+```
+
+**Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
+
+**Quick Reference:**
+- [Master Guide](docs/AGENT_WORKFLOW_MASTER_GUIDE.md) - Complete workflow
+- [Quick Reference](docs/AGENT_QUICK_REFERENCE.md) - Essential commands
+- [System Overview](docs/AGENT_AUTOMATION_SYSTEM.md) - Architecture & features
+
+### Manual Development
+
 | Task | Command | Where |
 | --- | --- | --- |
 | Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` | repo root |

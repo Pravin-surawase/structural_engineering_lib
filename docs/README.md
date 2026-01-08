@@ -19,9 +19,12 @@ python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```
 For VS Code AI-agent work, start with:
-- [ai-context-pack.md](ai-context-pack.md)
-- [AI summary](../llms.txt)
-- [Handoff Quick Start](handoff.md)
+- **[AGENT_ONBOARDING.md](AGENT_ONBOARDING.md)** - New agent checklist
+- **[AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
+- **[AGENT_QUICK_REFERENCE.md](AGENT_QUICK_REFERENCE.md)** - Essential commands
+- [ai-context-pack.md](ai-context-pack.md) - Project context
+- [AI summary](../llms.txt) - LLM-friendly summary
+- [Handoff Quick Start](handoff.md) - Session handoff
 
 ---
 
@@ -31,6 +34,10 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 
 ### Canonical roots (authoritative)
 
+- `AGENT_AUTOMATION_SYSTEM.md`
+- `AGENT_ONBOARDING.md`
+- `AGENT_QUICK_REFERENCE.md`
+- `AGENT_WORKFLOW_MASTER_GUIDE.md`
 - `agent-bootstrap.md`
 - `ai-context-pack.md`
 - `git-workflow-ai-agents.md`
