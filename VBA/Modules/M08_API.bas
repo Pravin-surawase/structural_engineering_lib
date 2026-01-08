@@ -10,11 +10,11 @@ Option Explicit
 ' ==============================================================================
 ' Module:       M08_API
 ' Description:  Public facing API functions (Simplified wrappers)
-' Version:      0.15.0
+' Version:      0.16.0
 ' ==============================================================================
 
 Public Function Get_Library_Version() As String
-    Get_Library_Version = "0.15.0"
+    Get_Library_Version = "0.16.0"
 End Function
 
 '

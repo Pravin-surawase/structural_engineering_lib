@@ -1,6 +1,6 @@
 # IS 456 RC Beam Design Library — Development Guide
 
-**Document Version:** 0.15.0
+**Document Version:** 0.16.0
 **Last Updated:** 2026-01-08<br>
 **Audience:** Contributors, maintainers, and developers extending the library
 

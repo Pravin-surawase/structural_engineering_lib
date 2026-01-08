@@ -4,6 +4,56 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-08 — Session (v0.16.0 Release - Streamlit UI Phase 2 + API Convenience)
+
+**Focus:** Complete Streamlit UI modernization (UI-003/004/005) + API convenience layer for Streamlit integration
+
+### Summary
+- **Merged Agent 6 UI Work:** UI-003 (Chart Upgrade), UI-004 (Dark Mode), UI-005 (Loading States)
+- **API Convenience Functions:** Combined design+detailing, BBS table generation, DXF quick export
+- **Repository Cleanup:** Removed 3 merged worktrees, deleted 3 remote branches
+- **v0.16.0 Release Prep:** Updated CHANGELOG.md, RELEASES.md, version in pyproject.toml and VBA
+- **Test Coverage:** 70+ new UI tests, 16 API convenience tests
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #286 | API convenience functions (design_and_detail_beam_is456, generate_summary_table, quick_dxf) |
+| #287 | Agent 6: UI-003/004/005 - Chart Upgrade, Dark Mode, Loading States (55 files, 21K+ lines) |
+
+### Key Deliverables
+**Streamlit UI Components:**
+- `streamlit_app/utils/theme_manager.py` (325 lines) - Dark mode with WCAG 2.1 AA compliance
+- `streamlit_app/utils/loading_states.py` (494 lines) - 5 professional loader types
+- `streamlit_app/utils/plotly_enhancements.py` (383 lines) - Chart theme integration
+- `streamlit_app/tests/test_theme_manager.py` (278 lines, 20+ tests)
+- `streamlit_app/tests/test_loading_states.py` (407 lines, 40+ tests)
+- `streamlit_app/tests/test_plotly_enhancements.py` (350 lines, 30+ tests)
+
+**API Convenience Layer:**
+- `api.design_and_detail_beam_is456()` - One-call combined design+detailing
+- `bbs.generate_summary_table()` - Markdown/HTML/text BBS output
+- `dxf_export.quick_dxf()` / `quick_dxf_bytes()` - One-liner DXF generation
+- `DesignAndDetailResult` dataclass with serialization (to_dict, from_dict, to_json)
+
+**Documentation Updates:**
+- Updated `docs/reference/api.md` and `docs/reference/api-stability.md`
+- Updated `docs/planning/agent-6-tasks-streamlit.md` (marked UI-001 through UI-005 complete)
+- Updated `CHANGELOG.md` and `docs/RELEASES.md` for v0.16.0
+
+**Repository Cleanup:**
+- Removed worktrees: worktree-2026-01-08T06-07-26, worktree-2026-01-08T05-59-53
+- Deleted remote branches: worktree-2026-01-07T07-28-08, worktree-2026-01-07T08-14-04, worktree-2026-01-08T06-07-26
+- Active worktrees: main + worktree-2026-01-07T19-48-19 (Agent 5 EDUCATOR)
+
+### Notes
+- All UI-001 through UI-005 tasks now complete - Phase 2 UI modernization done
+- Ready for Phase 3: Feature Expansion (RESEARCH-009 to RESEARCH-013, FEAT-001 to FEAT-008)
+- Agent 5 (EDUCATOR) worktree remains active for learning curriculum development
+- v0.16.0 ready for release tagging
+
+---
+
 ## 2026-01-07 — Session (Hygiene P0 Closeout)
 
 **Focus:** Complete TASK-280 hygiene sweep and document closeout.

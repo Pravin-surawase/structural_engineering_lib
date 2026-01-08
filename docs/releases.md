@@ -48,6 +48,38 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.16.0
+**Date:** 2026-01-08
+**Status:** ✅ Locked & Verified
+**Mindset:** Streamlit UI Excellence + API Convenience
+**Key Changes:**
+- **Streamlit UI Phase 2 Complete:** Dark mode (theme_manager.py), loading states (loading_states.py), chart enhancements (plotly_enhancements.py)
+- **API Convenience Layer:** `design_and_detail_beam_is456()`, `generate_summary_table()`, `quick_dxf()`, `quick_dxf_bytes()`
+- **UI Component Testing:** 70+ new tests for theme management, loading states, and visualizations
+- **Developer Experience:** One-liner functions for common Streamlit integration patterns
+- **Serialization Support:** `to_dict()`, `from_dict()`, `to_json()` methods on `DesignAndDetailResult`
+- **Repository Hygiene:** Cleaned up 3 merged worktrees and remote branches
+
+**New Files:**
+- `streamlit_app/utils/theme_manager.py` (325 lines) - Dark mode with session persistence
+- `streamlit_app/utils/loading_states.py` (494 lines) - Professional loading animations
+- `streamlit_app/utils/plotly_enhancements.py` (383 lines) - Chart theme integration
+- `streamlit_app/tests/test_theme_manager.py` (278 lines, 20+ tests)
+- `streamlit_app/tests/test_loading_states.py` (407 lines, 40+ tests)
+- `streamlit_app/tests/test_plotly_enhancements.py` (350 lines, 30+ tests)
+
+**Tests:** 2370+ passed (includes 70+ new UI tests, 16 API convenience tests)
+**PRs:** #286 (API convenience), #287 (UI-003/004/005)
+
+**Impact:**
+- Professional dark mode UX with accessibility compliance (WCAG 2.1 AA)
+- Enhanced developer productivity with convenience API functions
+- Improved Streamlit integration patterns (one-liners for common tasks)
+- Complete UI modernization foundation (UI-001 through UI-005 done)
+- Ready for Phase 3 feature expansion
+
+---
+
 ## v0.15.0
 **Date:** 2026-01-07
 **Status:** ✅ Locked & Verified

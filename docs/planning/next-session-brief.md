@@ -2,44 +2,60 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.15.0 | Published on PyPI |
-| **Next** | v1.0.0 | API improvement + professional requirements |
+| **Current** | v0.16.0 | Ready for PyPI release |
+| **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-07 | **Last commit:** 193b0b9
+**Date:** 2026-01-08 | **Last commit:** 0cde1dc
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-07
-- Focus: Session initialization and documentation cleanup
-- Completed: Updated TASKS.md format, fixed version drift checks for guidelines docs
-- Next: Start API improvement implementation tasks (TASK-210 onwards)
+- Date: 2026-01-08
+- Focus: v0.16.0 release prep - Streamlit UI Phase 2 + API convenience layer
+- Completed:
+  - Merged PR #286 (API convenience functions: design_and_detail_beam_is456, generate_summary_table, quick_dxf)
+  - Merged PR #287 (Agent 6: UI-003/004/005 - Chart Upgrade, Dark Mode, Loading States)
+  - Repository cleanup (3 worktrees removed, remote branches cleaned)
+  - Version bumped to 0.16.0 in pyproject.toml, VBA, CHANGELOG, RELEASES
+  - SESSION_LOG updated with today's work
+- Next: Tag and publish v0.16.0 release, then start Phase 3 feature expansion or fix benchmark failures
 <!-- HANDOFF:END -->
 
 
 
 ## 🎯 Immediate Priority
 
-**Recently Completed:**
-- ✅ TASK-144: SmartDesigner unified dashboard (700+ lines, 19/20 tests, API wrapper)
-- ✅ TASK-143: Comparison & Sensitivity Enhancement (392 lines, 19/19 tests)
-- ✅ Rebar optimizer test suite expansion (31 new tests, 46 total passing)
-- ✅ Phase 1 documentation hygiene completed (automation catalog, metadata, archive stubs)
-- ✅ TASK-280 hygiene sweep (P0 issues resolved; link checker false positives only)
+**Recently Completed (v0.16.0):**
+- ✅ **Streamlit UI Phase 2:** Dark mode (theme_manager.py), loading states (loading_states.py), chart enhancements (plotly_enhancements.py)
+- ✅ **API Convenience Layer:** Combined design+detailing function, BBS table generation, quick DXF export
+- ✅ **UI Testing:** 70+ new tests for theme, loading, and visualization components
+- ✅ **Repository Hygiene:** Worktree cleanup, remote branch deletion, task documentation updates
+- ✅ All UI-001 through UI-005 tasks complete - modern Streamlit dashboard foundation ready
 
-**Current State (Clean Slate):**
-- **No active tasks** - all recent work completed and documented
-- Smart insights ecosystem complete: SmartDesigner, comparison, cost optimization, suggestions
-- Type architecture clean with API wrapper pattern
-- Test coverage strong: 2231+ tests passing (SmartDesigner 20/20, comparison 19/19, rebar 46/46)
-- Documentation hygiene Phase 2 is ready to start (learning paths, agent decision tree, research index, brief update)
-- Repo hygiene P0 complete; remaining P1/P2 items deferred for incremental cleanup
-- Ready for v0.15.0 release or new feature work
+**Current State (v0.16.0 Ready):**
+- **Version:** 0.16.0 (pyproject.toml, VBA, docs all updated)
+- **Tests:** 2370+ passing (includes 70+ new UI tests, 16 API convenience tests)
+- **PRs Merged:** #286 (API convenience), #287 (UI-003/004/005)
+- **Worktrees:** Clean (main + Agent 5 EDUCATOR active)
+- **Documentation:** CHANGELOG.md, RELEASES.md, SESSION_LOG.md all updated
+- **Ready for:** PyPI release tagging
 
-**Minor Items:**
-- CLI smart subcommand scaffolded but not fully wired (future work)
+**Phase 3 Options:**
+1. **Fix benchmark failures** (TASK-270, TASK-271) - 13 API signature errors in test_benchmarks.py
+2. **Start feature expansion research** (RESEARCH-009 to RESEARCH-013)
+3. **Implement convenience features** (FEAT-001 to FEAT-008)
+
+**Release Checklist for v0.16.0:**
+- ✅ Version bumped in 3 places (pyproject.toml, VBA, docs)
+- ✅ CHANGELOG.md updated
+- ✅ RELEASES.md updated
+- ✅ SESSION_LOG.md updated
+- ⏳ Create git tag: `git tag -a v0.16.0 -m "v0.16.0 - Streamlit UI Phase 2 + API Convenience"`
+- ⏳ Push tag: `git push origin v0.16.0`
+- ⏳ Verify CI builds and publishes to PyPI
+- ⏳ Test installation: `pip install structural-lib-is456==0.16.0`
 
 ## Documentation Audit Snapshot (Phase 1 Findings)
 
@@ -84,39 +100,20 @@
 | Many micro-PRs for tiny changes | Review fatigue, CI waste | Batch related changes into one PR |
 | Editing without reading file first | Merge conflicts, overwrites | Always read current state before editing |
 
-**Performance facts (latest CI 2025-12-30):**
-- Tests: 2019 passed, 0 skipped, 92% branch coverage
-- Speed: 0.009ms per beam, 94,000 beams/second
-- All edge cases handled gracefully (zero/negative → `is_safe=False`)
-
----
-
-## ✅ Last Session Summary (2025-12-30)
-
-**Focus:** v0.12 library-first APIs + release prep
-
-| PR | Description |
-|----|-------------|
-| #193 | Detail CLI + compute_detailing/compute_bbs/export_bbs wrappers |
-| #194 | README + Colab workflow refresh |
-| #195 | DXF/report/critical wrappers + DXF import guard |
-| #196 | API wrapper tests + stability labels |
-
-**Outcome:** v0.12 API surface finalized; docs refreshed for new CLI usage.
-
 ---
 
 ## 🎯 What's Next (Priority Order)
 
-### Long-term milestone (v0.20.0)
-1. **S-007** — External engineer CLI test (requires human)
-2. See `docs/planning/v0.20-stabilization-checklist.md`
+**Immediate Options:**
+1. **Publish v0.16.0 release** - Tag and push to PyPI
+2. **Fix benchmark failures** (TASK-270, TASK-271) - 13 API signature errors
+3. **Phase 3 Feature Expansion** - Research RESEARCH-009 to RESEARCH-013
 
-### Backlog (v1.0+)
-See `docs/TASKS.md` for full backlog including:
-- Level C Serviceability (shrinkage + creep)
-- Torsion Design (Cl. 41)
-- Side-Face Reinforcement (Cl. 26.5.1.3)
+**Long-term (v0.17.0+):**
+- Interactive testing UI (Streamlit for developer validation)
+- Code clause database (traceability system)
+- Security hardening baseline
+- Professional liability framework
 
 ---
 
@@ -124,27 +121,16 @@ See `docs/TASKS.md` for full backlog including:
 
 ```bash
 # Check current state
-git rev-parse --short HEAD          # Latest commit
-python -c "from structural_lib import api; print(api.get_library_version())"
+git rev-parse --short HEAD
+.venv/bin/python -c "from structural_lib import api; print(api.get_library_version())"
 
 # Run tests
 cd Python && ../.venv/bin/python -m pytest -q
 
 # Check for broken links
 .venv/bin/python scripts/check_links.py
-
-# Full local CI check
-./scripts/ci_local.sh
 ```
 
 ---
 
-## 📜 History
-
-- **Full session log:** `docs/SESSION_log.md`
-- **Archived docs:** `docs/_archive/`
-- **GitHub Actions:** https://github.com/Pravin-surawase/structural_engineering_lib/actions
-
----
-
-*This briefing should be ~100 lines. If it grows beyond 150, archive old sessions to SESSION_log.md.*
+*This briefing should stay under 150 lines. Archive old sessions to SESSION_LOG.md when needed.*

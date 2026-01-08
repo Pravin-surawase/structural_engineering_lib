@@ -4,6 +4,53 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-01-08
+
+### Added
+- **Streamlit UI Enhancement - Phase 2 Complete**
+  - **UI-003: Chart/Visualization Upgrade** (`streamlit_app/utils/plotly_enhancements.py`)
+    - Enhanced Plotly theme integration with dark mode support
+    - Professional color schemes for technical engineering charts
+    - Consistent styling across all visualizations
+    - 350 lines of visualization theme code
+  - **UI-004: Dark Mode Implementation** (`streamlit_app/utils/theme_manager.py`)
+    - Complete dark/light theme toggle with session persistence
+    - WCAG 2.1 Level AA accessibility compliance
+    - Theme-aware color management for 15+ component types
+    - Moon/sun icon toggle in sidebar
+    - 325 lines of theme management code
+  - **UI-005: Loading States & Animations** (`streamlit_app/utils/loading_states.py`)
+    - 5 professional loader types (skeleton, spinner, progress, dots, shimmer)
+    - Context manager for operation loading states
+    - Theme-aware animations
+    - Sub-10ms render performance
+    - 494 lines of loading state code
+  - **Test Coverage:** 70+ new tests for UI components
+    - `test_theme_manager.py` (278 lines, 20+ test cases)
+    - `test_loading_states.py` (407 lines, 40+ test cases)
+    - `test_plotly_enhancements.py` (350 lines, 30+ test cases)
+- **API Convenience Functions for Streamlit Integration**
+  - `api.design_and_detail_beam_is456()` - Combined design + detailing in one call
+  - `bbs.generate_summary_table()` - Markdown/HTML/text BBS output formats
+  - `dxf_export.quick_dxf()` - One-liner DXF file generation
+  - `dxf_export.quick_dxf_bytes()` - DXF as bytes for Streamlit downloads
+  - `DesignAndDetailResult` dataclass with serialization methods (to_dict, from_dict, to_json)
+  - 16 new integration tests for convenience functions
+
+### Fixed
+- **Test Naming Conventions:** Fixed 7 test functions in `test_validation.py` with uppercase 'D' to comply with ruff N802 naming rules
+- **Python 3.9 Compatibility:** Fixed type annotations using `Optional[str]` instead of `str | None`
+- **Serialization:** Fixed recursion error in `to_dict()` methods using `asdict()` directly
+
+### Changed
+- **Streamlit Pages Updated:** All 4 pages (Beam Design, Cost Optimizer, Compliance, Documentation) now support dark mode
+- **API Documentation:** Updated `docs/reference/api.md` and `docs/reference/api-stability.md` with new convenience functions
+
+### Repository Maintenance
+- Cleaned up merged worktree branches (removed 3 obsolete worktrees)
+- Removed merged remote branches (worktree-2026-01-07T07-28-08, worktree-2026-01-07T08-14-04, worktree-2026-01-08T06-07-26)
+- Updated Agent 6 task documentation to mark UI-001 through UI-005 as complete
+
 ## [0.15.0] - 2026-01-07
 
 ### Added

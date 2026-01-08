@@ -1,6 +1,6 @@
 # IS 456 RC Beam Design Library — API Reference
 
-**Document Version:** 0.15.0
+**Document Version:** 0.16.0
 **Last Updated:** 2026-01-08<br>
 **Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI). All APIs protected against accidental breaking changes.
 
