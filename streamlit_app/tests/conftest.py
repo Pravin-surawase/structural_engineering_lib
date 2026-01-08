@@ -10,7 +10,14 @@ Phase: STREAMLIT-IMPL-002
 
 import pytest
 import sys
+from pathlib import Path
 from unittest.mock import MagicMock, Mock
+
+# Add project root to Python path for imports to work
+# Tests should be run from project root: pytest streamlit_app/tests/
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 
 class MockStreamlit:

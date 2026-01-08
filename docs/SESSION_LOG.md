@@ -1017,3 +1017,65 @@ All 7 CI checks passed including the new doc drift check.
 **Test Count:** 1901 tests (was 1856, +45 critical tests)
 
 ---
+
+---
+
+## 2026-01-08 (Evening) — Phase 3 Research: User Journey & Workflows
+
+**Focus:** Agent 6 - Complete STREAMLIT-RESEARCH-009 (User Journey & Workflow Research)
+
+### Summary
+- **Completed STREAMLIT-RESEARCH-009:** Comprehensive user journey and workflow analysis (1,417 lines)
+- **Deliverable:** `streamlit_app/docs/USER-JOURNEY-RESEARCH.md`
+- **Key Finding:** 4 distinct user personas with different workflows, pain points, and feature needs
+- **Time Savings Identified:** Current 3-4 hrs per beam → Target 30-45 min (5-8x faster)
+- **Feature Prioritization:** 30+ features ranked across 3 phases (Must/Should/Nice-to-Have)
+
+### Key Deliverables
+**User Personas (4):**
+1. Priya - Senior Design Engineer (batch validation, comparison mode priority)
+2. Rajesh - Junior Engineer (step-by-step guidance, learning mode priority)
+3. Anita - Consultant/Reviewer (audit trail, sampling mode priority)
+4. Vikram - Site Engineer (mobile-first, quick checks priority)
+
+**Workflow Analysis:**
+- 7-stage design process mapped (Initial Sizing → Documentation)
+- Current time breakdown: Design 30-45 min, Documentation 45-90 min (!)
+- Pain Point #1: Data re-entry across tools (9/10 severity, 10/10 frequency)
+- Batch workflow: 2-3 hrs validation → Target 15 min (8x faster)
+
+**Feature Prioritization Matrix:**
+- Must-Have (v0.17.0): Single beam design, BBS generation, compliance report, DXF export
+- Should-Have (v0.18.0): Batch validation, cost optimization, comparison mode, mobile UI
+- Nice-to-Have (v0.19.0): Learning mode, API access, photo input, voice notes
+
+**Export Requirements:**
+- Essential: BBS (CSV/Excel), Calculation PDF, DXF drawing
+- Standards: IS 2502 notation, AutoCAD R14 compatibility, A4 printable
+- Quality: Matching bar marks, searchable text, professional formatting
+
+**Mobile Usage:**
+- Current adoption: 30% of site engineers use tablets (growing 15% YoY)
+- Primary use cases: Quick reference, bar substitution, field verification
+- Requirements: Offline-first, touch-friendly (44px targets), battery efficient
+
+**Competitive Analysis:**
+- ETABS/STAAD: Full-featured but expensive ($$$), steep learning curve
+- Excel: Free, customizable but error-prone, no standardization
+- RebarCAD: Good BBS but narrow focus, missing design validation
+- **Our Differentiator:** IS 456 native, transparent, educational, free/affordable
+
+### Bug Fixes
+- ✅ Fixed import error in streamlit_app tests (ModuleNotFoundError)
+- ✅ Added path handling to conftest.py (sys.path.insert project root)
+- ✅ Tests now run correctly from project root: `pytest streamlit_app/tests/`
+
+### Documentation Updates
+- Updated `docs/planning/agent-6-tasks-streamlit.md` (2/5 research complete)
+- Updated `docs/planning/next-session-brief.md` (current handoff)
+
+### Notes
+- 2 of 5 Phase 3 research tasks complete (RESEARCH-009, RESEARCH-013)
+- Next: RESEARCH-010 (BBS/DXF/PDF Export UX Patterns)
+- Total research so far: 2,341 lines (924 + 1,417)
+- Implementation can begin after all 5 research tasks complete
