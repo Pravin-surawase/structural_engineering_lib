@@ -60,3 +60,21 @@ def display_summary_metrics(result: dict):
     col1.metric("Steel Area", "— mm²")
     col2.metric("Stirrup Spacing", "— mm")
     col3.metric("Utilization", "—%")
+
+
+def display_design_status(result: dict):
+    """
+    Display overall design status.
+
+    Args:
+        result: BeamDesignOutput dataclass or dict
+
+    Example:
+        >>> display_design_status(result)
+    """
+    # TODO: Implement in STREAMLIT-IMPL-004
+    is_safe = result.get("is_safe", False)
+    if is_safe:
+        st.success("✅ Design is safe")
+    else:
+        st.error("❌ Design is not safe")
