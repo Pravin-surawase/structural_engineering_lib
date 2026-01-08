@@ -23,6 +23,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
+try:
+    from structural_lib.costing import calculate_beam_cost, CostProfile
+    HAS_COSTING = True
+except ImportError:
+    HAS_COSTING = False
+
 from utils.api_wrapper import cached_smart_analysis
 from utils.layout import setup_page, page_header
 from utils.theme_manager import apply_dark_mode_theme, initialize_theme
@@ -149,16 +155,13 @@ def create_comparison_table(comparison_data: list[dict]) -> pd.DataFrame:
 
     # Select and rename columns for display
     display_columns = {
-        "b_mm": "Width (mm)",
-        "D_mm": "Depth (mm)",
-        "fck_nmm2": "fck (N/mm²)",
-        "fy_nmm2": "fy (N/mm²)",
+        "bar_config": "Bar Config",
         "steel_area_mm2": "Steel (mm²)",
-        "utilization_ratio": "Utilization",
         "total_cost": "Total Cost (INR)",
-        "concrete_cost": "Concrete (INR)",
         "steel_cost": "Steel (INR)",
+        "concrete_cost": "Concrete (INR)",
         "formwork_cost": "Formwork (INR)",
+        "utilization_ratio": "Relative Area",
     }
 
     available_columns = [col for col in display_columns.keys() if col in df.columns]
@@ -166,13 +169,15 @@ def create_comparison_table(comparison_data: list[dict]) -> pd.DataFrame:
     df_display.columns = [display_columns[col] for col in available_columns]
 
     # Format numeric columns
-    if "Utilization" in df_display.columns:
-        df_display["Utilization"] = df_display["Utilization"].apply(
-            lambda x: f"{x:.1%}"
+    if "Relative Area" in df_display.columns:
+        df_display["Relative Area"] = df_display["Relative Area"].apply(
+            lambda x: f"{x:.2f}"
         )
 
     for col in df_display.columns:
         if "Cost" in col or "INR" in col:
+            df_display[col] = df_display[col].apply(lambda x: f"{x:,.0f}")
+        if "Steel (mm²)" in col:
             df_display[col] = df_display[col].apply(lambda x: f"{x:,.0f}")
 
     return df_display
@@ -196,7 +201,7 @@ def export_to_csv(comparison_data: list[dict]) -> bytes:
 
 def run_cost_optimization(inputs: dict) -> dict:
     """
-    Run cost optimization analysis.
+    Run cost optimization analysis using bar alternatives.
 
     Args:
         inputs: Design input parameters
@@ -205,89 +210,133 @@ def run_cost_optimization(inputs: dict) -> dict:
         Dictionary with optimization results and comparison data
     """
     try:
-        # Run smart analysis with cost optimization
-        analysis = cached_smart_analysis(
+        # Import here to avoid circular import
+        from utils.api_wrapper import cached_design_beam_flexure
+
+        # Run flexure design to get bar alternatives
+        flexure = cached_design_beam_flexure(
             mu_knm=inputs["mu_knm"],
-            vu_kn=inputs["vu_kn"],
             b_mm=inputs["b_mm"],
             D_mm=inputs["D_mm"],
             d_mm=inputs["d_mm"],
             fck_nmm2=inputs["fck_nmm2"],
             fy_nmm2=inputs["fy_nmm2"],
-            span_mm=inputs["span_mm"],
-            include_cost=True,
+            d_dash_mm=inputs.get("d_dash_mm", 50.0),
         )
 
-        # Extract cost data
-        cost_data = analysis.get("cost", {})
+        if not flexure or "_bar_alternatives" not in flexure:
+            st.warning("⚠️ No bar alternatives available. Using default cost estimates.")
+            return {"analysis": None, "comparison": []}
 
-        # Create comparison data for visualization
+        # Get selected design and alternatives
+        selected_bars = flexure.get("tension_steel", {})
+        alternatives = flexure.get("_bar_alternatives", [])
+
+        # Cost profile (Indian average)
+        if HAS_COSTING:
+            cost_profile = CostProfile()
+        else:
+            st.warning("⚠️ Costing module not available. Showing placeholders.")
+            return {"analysis": None, "comparison": []}
+
+        # Calculate cost for selected design
         comparison = []
-        baseline = inputs.copy()
-        baseline.update(
-            {
-                "total_cost": cost_data.get("baseline_cost", 50000),
-                "concrete_cost": 15000,
-                "steel_cost": 25000,
-                "formwork_cost": 10000,
-                "steel_area_mm2": 1200,
-                "utilization_ratio": 0.85,
-                "is_optimal": False,
-            }
+        span_m = inputs["span_mm"] / 1000.0
+
+        # Selected design (baseline)
+        selected_area = selected_bars.get("area", 0)
+        selected_pt = 100 * selected_area / (inputs["b_mm"] * inputs["d_mm"])
+
+        selected_cost = calculate_beam_cost(
+            b_mm=inputs["b_mm"],
+            D_mm=inputs["D_mm"],
+            span_mm=inputs["span_mm"],
+            ast_mm2=selected_area,
+            fck_nmm2=int(inputs["fck_nmm2"]),
+            steel_percentage=selected_pt,
+            cost_profile=cost_profile,
         )
-        comparison.append(baseline)
 
-        # Add optimal design
-        optimal = cost_data.get("optimal_design", {})
-        if optimal:
-            opt_design = {
-                "b_mm": optimal.get("b_mm", inputs["b_mm"]),
-                "D_mm": optimal.get("D_mm", inputs["D_mm"]),
-                "fck_nmm2": optimal.get("fck_nmm2", inputs["fck_nmm2"]),
-                "fy_nmm2": optimal.get("fy_nmm2", inputs["fy_nmm2"]),
-                "total_cost": optimal.get("cost_breakdown", {}).get(
-                    "total_cost", 45000
-                ),
-                "concrete_cost": optimal.get("cost_breakdown", {}).get(
-                    "concrete_cost", 13500
-                ),
-                "steel_cost": optimal.get("cost_breakdown", {}).get(
-                    "steel_cost", 22500
-                ),
-                "formwork_cost": optimal.get("cost_breakdown", {}).get(
-                    "formwork_cost", 9000
-                ),
-                "steel_area_mm2": 1050,
-                "utilization_ratio": 0.80,
-                "is_optimal": True,
-            }
-            comparison.append(opt_design)
+        comparison.append({
+            "bar_config": f"{selected_bars.get('num', 0)}-{selected_bars.get('dia', 0)}mm",
+            "b_mm": inputs["b_mm"],
+            "D_mm": inputs["D_mm"],
+            "fck_nmm2": inputs["fck_nmm2"],
+            "fy_nmm2": inputs["fy_nmm2"],
+            "steel_area_mm2": selected_area,
+            "utilization_ratio": selected_area / (selected_area + 1),  # Approximate
+            "total_cost": selected_cost.total_cost,
+            "concrete_cost": selected_cost.concrete_cost,
+            "steel_cost": selected_cost.steel_cost,
+            "formwork_cost": selected_cost.formwork_cost,
+            "is_optimal": True,  # Mark as baseline/selected
+        })
 
-        # Add alternatives
-        for alt in cost_data.get("alternatives", [])[:3]:
-            alt_design = {
-                "b_mm": alt.get("b_mm", inputs["b_mm"]),
-                "D_mm": alt.get("D_mm", inputs["D_mm"]),
-                "fck_nmm2": alt.get("fck_nmm2", inputs["fck_nmm2"]),
-                "fy_nmm2": alt.get("fy_nmm2", inputs["fy_nmm2"]),
-                "total_cost": alt.get("cost_breakdown", {}).get("total_cost", 48000),
-                "concrete_cost": alt.get("cost_breakdown", {}).get(
-                    "concrete_cost", 14000
-                ),
-                "steel_cost": alt.get("cost_breakdown", {}).get("steel_cost", 24000),
-                "formwork_cost": alt.get("cost_breakdown", {}).get(
-                    "formwork_cost", 10000
-                ),
-                "steel_area_mm2": 1100,
-                "utilization_ratio": 0.82,
+        # Calculate costs for alternatives
+        for alt in alternatives[:10]:  # Limit to 10 alternatives
+            alt_area = alt.get("area", 0)
+            alt_pt = 100 * alt_area / (inputs["b_mm"] * inputs["d_mm"])
+
+            alt_cost = calculate_beam_cost(
+                b_mm=inputs["b_mm"],
+                D_mm=inputs["D_mm"],
+                span_mm=inputs["span_mm"],
+                ast_mm2=alt_area,
+                fck_nmm2=int(inputs["fck_nmm2"]),
+                steel_percentage=alt_pt,
+                cost_profile=cost_profile,
+            )
+
+            comparison.append({
+                "bar_config": f"{alt.get('num', 0)}-{alt.get('dia', 0)}mm",
+                "b_mm": inputs["b_mm"],
+                "D_mm": inputs["D_mm"],
+                "fck_nmm2": inputs["fck_nmm2"],
+                "fy_nmm2": inputs["fy_nmm2"],
+                "steel_area_mm2": alt_area,
+                "utilization_ratio": alt_area / (selected_area + 1),  # Relative to selected
+                "total_cost": alt_cost.total_cost,
+                "concrete_cost": alt_cost.concrete_cost,
+                "steel_cost": alt_cost.steel_cost,
+                "formwork_cost": alt_cost.formwork_cost,
                 "is_optimal": False,
-            }
-            comparison.append(alt_design)
+            })
 
-        return {"analysis": analysis, "comparison": comparison}
+        # Sort by total cost
+        comparison.sort(key=lambda x: x["total_cost"])
+
+        # Mark lowest cost as optimal
+        if comparison:
+            comparison[0]["is_optimal"] = True
+            for i in range(1, len(comparison)):
+                comparison[i]["is_optimal"] = False
+
+        # Calculate savings
+        if len(comparison) > 1:
+            baseline_cost = comparison[1]["total_cost"] if not comparison[0]["is_optimal"] else comparison[0]["total_cost"]
+            optimal_cost = min(c["total_cost"] for c in comparison)
+            savings = baseline_cost - optimal_cost
+            savings_pct = (savings / baseline_cost) * 100 if baseline_cost > 0 else 0
+        else:
+            baseline_cost = comparison[0]["total_cost"] if comparison else 0
+            optimal_cost = baseline_cost
+            savings = 0
+            savings_pct = 0
+
+        analysis_summary = {
+            "baseline_cost": baseline_cost,
+            "optimal_cost": optimal_cost,
+            "savings_amount": savings,
+            "savings_percent": savings_pct,
+            "candidates_evaluated": len(comparison),
+        }
+
+        return {"analysis": analysis_summary, "comparison": comparison}
 
     except Exception as e:
         st.error(f"❌ Cost optimization failed: {str(e)}")
+        import traceback
+        st.error(traceback.format_exc())
         return {"analysis": None, "comparison": []}
 
 
@@ -384,28 +433,25 @@ def main():
 
             # Summary metrics
             st.subheader("📊 Cost Summary")
-            if st.session_state.cost_results:
-                cost_data = st.session_state.cost_results.get("cost", {})
-                savings_pct = cost_data.get("savings_percent", 0.0)
-                savings_amt = cost_data.get("savings_amount", 0.0)
-
+            analysis_data = st.session_state.cost_results
+            if analysis_data:
                 col1, col2, col3, col4 = st.columns(4)
                 col1.metric(
                     "Baseline Cost",
-                    f"₹{cost_data.get('baseline_cost', 0):,.0f}",
+                    f"₹{analysis_data.get('baseline_cost', 0):,.0f}",
                 )
                 col2.metric(
                     "Optimal Cost",
-                    f"₹{cost_data.get('optimal_design', {}).get('cost_breakdown', {}).get('total_cost', 0):,.0f}",
+                    f"₹{analysis_data.get('optimal_cost', 0):,.0f}",
                 )
                 col3.metric(
                     "Savings",
-                    f"₹{savings_amt:,.0f}",
-                    delta=f"{savings_pct:.1f}%",
+                    f"₹{analysis_data.get('savings_amount', 0):,.0f}",
+                    delta=f"{analysis_data.get('savings_percent', 0):.1f}%",
                 )
                 col4.metric(
                     "Candidates Evaluated",
-                    cost_data.get("candidates_evaluated", 0),
+                    analysis_data.get("candidates_evaluated", 0),
                 )
 
             # Tabs for different views
