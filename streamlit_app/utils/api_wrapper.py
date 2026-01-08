@@ -53,18 +53,24 @@ except ImportError as e:
 
 def _manual_bar_arrangement(ast_required: float, b_mm: float, cover: float) -> tuple[dict, int]:
     """Fallback manual bar arrangement when library optimizer is not available."""
-    bar_dia_options = [12, 16, 20, 25, 32]
+    # Exclude 32mm for narrow beams, prefer practical sizes
+    bar_dia_options = [12, 16, 20, 25]
+    if b_mm >= 400:
+        bar_dia_options.append(32)
+
     best_bars = None
     for dia in bar_dia_options:
         area_per_bar = math.pi * (dia**2) / 4
         num_bars = math.ceil(ast_required / area_per_bar)
-        if num_bars >= 2:
+        # Enforce minimum 3 bars for redundancy
+        if num_bars >= 3:
             ast_provided = num_bars * area_per_bar
             if ast_provided >= ast_required:
                 best_bars = {"dia": dia, "num": num_bars, "area": ast_provided}
                 break
 
     if not best_bars:
+        # Fallback to 16mm with at least 3 bars
         area_per_bar = math.pi * (16**2) / 4
         num_bars = max(3, math.ceil(ast_required / area_per_bar))
         best_bars = {"dia": 16, "num": num_bars, "area": num_bars * area_per_bar}
@@ -97,16 +103,23 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
     if _LIBRARY_AVAILABLE and optimize_bar_arrangement is not None:
         try:
             # Use library optimizer with IS 456 spacing checks
+            # Use min_area objective for practical bar selection (not min_bar_count)
+            # Exclude 32mm for narrow beams (b < 400mm) - too large and impractical
+            allowed_diameters = [12, 16, 20, 25]
+            if b_mm >= 400:
+                allowed_diameters.append(32)  # Only allow 32mm for wide beams
+
             result = optimize_bar_arrangement(
                 ast_required_mm2=ast_required,
                 b_mm=b_mm,
                 cover_mm=cover,
                 stirrup_dia_mm=8.0,  # Standard stirrup
-                allowed_dia_mm=[12, 16, 20, 25, 32],  # Standard bar sizes
+                allowed_dia_mm=allowed_diameters,
                 max_layers=2,
-                objective="min_bar_count",  # Minimize number of bars
+                objective="min_area",  # Minimize steel area (practical)
                 agg_size_mm=20.0,  # Standard aggregate size
-                min_total_bars=2,
+                min_total_bars=3,  # Minimum 3 bars for redundancy
+                max_bars_per_layer=7,  # Maximum 7 bars per layer (practical limit)
             )
 
             if result.is_feasible and result.arrangement:
@@ -118,6 +131,40 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
                 }
                 num_layers = arr.layers
                 spacing_mm = arr.spacing
+
+                # Generate alternatives for cost comparison
+                # Try other diameters to give user options
+                alternatives = []
+                for alt_dia in [12, 16, 20, 25, 32]:
+                    if alt_dia == arr.diameter:
+                        continue  # Skip the selected diameter
+                    try:
+                        alt_result = optimize_bar_arrangement(
+                            ast_required_mm2=ast_required,
+                            b_mm=b_mm,
+                            cover_mm=cover,
+                            stirrup_dia_mm=8.0,
+                            allowed_dia_mm=[alt_dia],  # Only this diameter
+                            max_layers=2,
+                            objective="min_area",
+                            agg_size_mm=20.0,
+                            min_total_bars=3,
+                            max_bars_per_layer=7,
+                        )
+                        if alt_result.is_feasible and alt_result.arrangement:
+                            alt_arr = alt_result.arrangement
+                            alternatives.append({
+                                "dia": alt_arr.diameter,
+                                "num": alt_arr.count,
+                                "area": alt_arr.area_provided,
+                                "layers": alt_arr.layers,
+                                "spacing": alt_arr.spacing,
+                            })
+                    except Exception:
+                        pass  # Skip if alternative fails
+
+                # Store alternatives in kwargs for later use
+                kwargs["_bar_alternatives"] = alternatives
             else:
                 # Fallback to manual calculation
                 raise ValueError("Optimizer failed: " + result.remarks)
