@@ -471,13 +471,44 @@ def cached_smart_analysis(
                 include_suggestions=include_suggestions,
             )
 
-            # Return as dict
+            # Normalize SmartAnalysisResult to a dict
             if hasattr(result, "to_dict"):
-                return result.to_dict()
+                analysis = result.to_dict()
             elif hasattr(result, "__dict__"):
-                return vars(result)
+                analysis = vars(result)
             else:
-                return dict(result)
+                analysis = dict(result)
+
+            # Ensure contract: top-level "design" and "summary" keys
+            design = analysis.get("design")
+            if design is None:
+                design = cached_design(
+                    mu_knm=mu_knm,
+                    vu_kn=vu_kn,
+                    b_mm=b_mm,
+                    D_mm=D_mm,
+                    d_mm=d_mm,
+                    fck_nmm2=fck_nmm2,
+                    fy_nmm2=fy_nmm2,
+                    span_mm=span_mm,
+                )
+
+            summary = analysis.get("summary") or {}
+            if "overall_score" not in summary:
+                overall_score = analysis.get("overall_score")
+                if overall_score is None:
+                    overall_score = 0.85 if design.get("is_safe") else 0.50
+                summary = {**summary, "overall_score": overall_score}
+
+            return {
+                "design": design,
+                "summary": summary,
+                "analysis": analysis,
+                "cost": analysis.get("cost"),
+                "suggestions": analysis.get("suggestions"),
+                "_source": "structural_lib",
+                "_library_available": True,
+            }
 
         except Exception as e:
             st.warning(f"⚠️ Smart analysis error, using fallback: {str(e)[:100]}")
@@ -499,6 +530,7 @@ def cached_smart_analysis(
         "summary": {"overall_score": 0.85 if design.get("is_safe") else 0.50},
         "cost": None,
         "suggestions": None,
+        "analysis": None,
         "_source": "fallback",
         "_library_available": _LIBRARY_AVAILABLE,
     }

@@ -20,16 +20,28 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 
+class MockSessionState(dict):
+    """Session state mock supporting both dict and attribute access."""
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError as exc:
+            raise AttributeError(name) from exc
+
+    def __setattr__(self, name, value):
+        # Allow normal attribute setting for dict internals
+        if name in {"_MutableMapping__marker"}:
+            super().__setattr__(name, value)
+        else:
+            self[name] = value
+
+
 class MockStreamlit:
     """Enhanced Streamlit mock for testing"""
 
-    # Mock session_state as a dictionary
-    session_state = {}
-
-
-    # Mock session_state as a dictionary
-    session_state = {}
-
+    # Mock session_state with dict + attribute access
+    session_state = MockSessionState()
 
     @staticmethod
     def columns(num_cols):
@@ -72,17 +84,21 @@ class MockStreamlit:
         class MockExpander:
             def __enter__(self):
                 return self
+
             def __exit__(self, *args):
                 pass
+
             def markdown(self, text):
                 pass
+
             def metric(self, label, value):
                 pass
+
         return MockExpander()
 
     @staticmethod
-    def markdown(text):
-        """Mock st.markdown()"""
+    def markdown(text, **kwargs):
+        """Mock st.markdown() accepting arbitrary kwargs (e.g. unsafe_allow_html)."""
         pass
 
     @staticmethod
@@ -95,39 +111,52 @@ class MockStreamlit:
         """Mock st.metric()"""
         pass
 
-    class cache_data:
-        """Mock st.cache_data decorator that works with or without parentheses"""
-        def __init__(self, func=None, **kwargs):
-            """
-            Allow both:
-            @st.cache_data        # Called directly
-            @st.cache_data()      # Called with parentheses
-            """
-            self.func = func
+    @staticmethod
+    def empty():
+        """Mock st.empty() returning a placeholder with container() and empty()."""
+        placeholder = MagicMock()
 
-        def __call__(self, *args, **kwargs):
-            """
-            If initialized with a function, act as decorator
-            If initialized without, return self to act as decorator factory
-            """
-            if self.func is not None:
-                # Direct decoration: @st.cache_data
-                return self.func(*args, **kwargs)
-            else:
-                # Decorator factory: @st.cache_data()
-                # First call returns decorator, second call is the function
-                if len(args) == 1 and callable(args[0]) and not kwargs:
-                    # This is the function being decorated
-                    return args[0]
-                else:
-                    # This is a call to the cached function - shouldn't happen in tests
-                    raise TypeError(f"Unexpected call to cache_data: args={args}, kwargs={kwargs}")
+        class ContainerCtx:
+            def __enter__(self_inner):
+                return placeholder
 
-        @staticmethod
-        def clear():
-            """Mock cache clear"""
-            pass
+            def __exit__(self_inner, exc_type, exc, tb):
+                pass
+
+        placeholder.container.return_value = ContainerCtx()
+        placeholder.empty = MagicMock()
+        return placeholder
+
+    @staticmethod
+    def cache_data(func=None, **kwargs):
+        """Mock st.cache_data decorator.
+
+        Behaves as an identity decorator in tests, supports both
+        @st.cache_data and @st.cache_data(). Marks functions as cached
+        by setting __wrapped__ and clear attributes, so tests can detect it.
+        """
+
+        def decorator(f):
+            setattr(f, "clear", lambda: None)
+            return f
+
+        if func is None:
+            return decorator
+        return decorator(func)
 
 
 # Replace streamlit module with enhanced mock
 sys.modules['streamlit'] = MockStreamlit()
+
+# Attach a no-op clear() to mimic Streamlit's cache API on the decorator itself
+MockStreamlit.cache_data.clear = lambda: None
+
+import streamlit as st
+
+
+@pytest.fixture
+def clean_session_state():
+    """Reset Streamlit session_state before and after each test."""
+    st.session_state.clear()
+    yield
+    st.session_state.clear()
