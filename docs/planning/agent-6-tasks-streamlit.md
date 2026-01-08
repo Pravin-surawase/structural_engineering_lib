@@ -30,29 +30,944 @@
 
 **Total Delivered:** 19,283 lines, 213 tests (4 complete pages, 100% pass rate)
 
-### 🔄 ACTIVE PHASES (Start Immediately)
+### 🔄 ACTIVE PHASES - UI MODERNIZATION RESEARCH (Start Immediately)
+
+> **PRIORITY SHIFT:** Before implementing IMPL-011-018, we need comprehensive UI/UX research
+> to transform the current functional-but-basic UI into a modern, smart, professional interface.
+> This research will inform all future implementation work.
+
+| Task | Description | Priority | Status | Est. Hours |
+|------|-------------|----------|--------|------------|
+| STREAMLIT-RESEARCH-004 | Modern UI Design Systems Research | 🔴 CRITICAL | 🟡 TODO | 6-8 |
+| STREAMLIT-RESEARCH-005 | Streamlit Custom Components & Styling | 🔴 CRITICAL | 🟡 TODO | 6-8 |
+| STREAMLIT-RESEARCH-006 | Data Visualization Excellence | 🔴 CRITICAL | 🟡 TODO | 4-6 |
+| STREAMLIT-RESEARCH-007 | Micro-interactions & Animation | 🟠 HIGH | 🟡 TODO | 4-6 |
+| STREAMLIT-RESEARCH-008 | Competitive Analysis (Engineering Apps) | 🟠 HIGH | 🟡 TODO | 4-6 |
+
+### 📋 IMPLEMENTATION QUEUE (After Research)
 
 | Task | Description | Priority | Status | Days |
 |------|-------------|----------|--------|------|
-| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
-| STREAMLIT-IMPL-012 | Settings & Configuration Page | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
-| STREAMLIT-IMPL-013 | About & Help System | 🔴 CRITICAL | 🟡 TODO | Day 5-6 |
-| STREAMLIT-IMPL-014 | Performance & Caching Optimization | 🟢 MEDIUM | 🟡 TODO | Day 7-8 |
-| STREAMLIT-IMPL-015 | Accessibility Audit (WCAG 2.1 AA) | 🟢 MEDIUM | 🟡 TODO | Day 9-10 |
-| STREAMLIT-IMPL-016 | E2E Integration Tests (Playwright) | 🟢 MEDIUM | 🟡 TODO | Day 11-12 |
-| STREAMLIT-IMPL-017 | Mobile Responsiveness | 🟢 MEDIUM | 🟡 TODO | Day 13-14 |
-| STREAMLIT-IMPL-018 | Design Report Generator | 🟢 MEDIUM | 🟡 TODO | Day 15-16 |
+| STREAMLIT-UI-001 | Design System & Component Library | 🔴 CRITICAL | ⏳ BLOCKED | TBD |
+| STREAMLIT-UI-002 | Page Layout Redesign | 🔴 CRITICAL | ⏳ BLOCKED | TBD |
+| STREAMLIT-UI-003 | Chart/Visualization Upgrade | 🟠 HIGH | ⏳ BLOCKED | TBD |
+| STREAMLIT-UI-004 | Dark Mode Implementation | 🟠 HIGH | ⏳ BLOCKED | TBD |
+| STREAMLIT-UI-005 | Loading States & Animations | 🟠 HIGH | ⏳ BLOCKED | TBD |
+
+### 📦 DEFERRED FEATURE TASKS (After UI Modernization)
+
+| Task | Description | Priority | Status | Days |
+|------|-------------|----------|--------|------|
+| STREAMLIT-IMPL-011 | Export Features (PDF/CSV/DXF) | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
+| STREAMLIT-IMPL-012 | Settings & Configuration Page | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
+| STREAMLIT-IMPL-013 | About & Help System | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
+| STREAMLIT-IMPL-014 | Performance & Caching Optimization | 🟢 MEDIUM | ⏳ DEFERRED | Day TBD |
 
 ---
 
-## ✅ COMPLETED: STREAMLIT-IMPL-009 - Error Handling & Validation
-**Priority:** 🔴 CRITICAL
-**Status:** ✅ COMPLETE (668 lines, 46 tests)
-**Completed:** 2026-01-09
-**Estimated Effort:** 4-5 hours
+## 🔴 CRITICAL: STREAMLIT-RESEARCH-004 - Modern UI Design Systems Research
+**Priority:** 🔴 CRITICAL - START NOW
+**Status:** 🟡 TODO
+**Estimated Effort:** 6-8 hours
 
 ### Objective
-Implement comprehensive, user-friendly error handling across all pages:
+Research modern UI design patterns and create a comprehensive design system specification for the IS 456 dashboard. The goal is to transform the current "functional but basic" UI into a "modern, smart, professional" interface.
+
+### Research Questions to Answer
+
+#### 1. Design Trends (2024-2026)
+- What are current UI design trends for professional/enterprise applications?
+- How do glassmorphism, neumorphism, and material design 3 compare?
+- What color palette strategies work for engineering/technical applications?
+- How to balance aesthetics with information density?
+
+#### 2. Design System Components
+- What are the essential components of a design system?
+- How to create consistent spacing, typography, and color scales?
+- What component patterns work best for data-heavy applications?
+- How to design for both light and dark modes from the start?
+
+#### 3. Engineering Application UX
+- What do engineers expect from professional tools?
+- How to visualize complex data without overwhelming users?
+- What input patterns reduce errors in numerical data entry?
+- How to provide contextual help without cluttering the interface?
+
+### Research Deliverables
+
+#### 1. Design System Specification (~500 lines)
+
+Create `streamlit_app/design-system/DESIGN_SYSTEM.md`:
+
+```markdown
+# IS 456 Beam Design - Design System Specification
+
+## 1. Color Palette
+
+### Primary Colors
+- Navy (Primary): #003366 → shades from #001a33 to #4d7399
+- Orange (Accent): #FF6600 → shades from #cc5200 to #ff944d
+- Background: Light #f8fafc, Dark #0f172a
+
+### Semantic Colors
+- Success: #10b981 (emerald-500)
+- Warning: #f59e0b (amber-500)
+- Error: #ef4444 (red-500)
+- Info: #3b82f6 (blue-500)
+
+### Neutral Scale
+- 50: #f8fafc  (lightest)
+- 100: #f1f5f9
+- 200: #e2e8f0
+- 300: #cbd5e1
+- 400: #94a3b8
+- 500: #64748b
+- 600: #475569
+- 700: #334155
+- 800: #1e293b
+- 900: #0f172a (darkest)
+
+## 2. Typography Scale
+
+### Font Stack
+- Headings: Inter, system-ui, sans-serif
+- Body: Inter, system-ui, sans-serif
+- Mono: JetBrains Mono, Fira Code, monospace (for numbers/code)
+
+### Type Scale (Desktop)
+| Element | Size | Weight | Line Height |
+|---------|------|--------|-------------|
+| H1 | 36px | 700 | 1.2 |
+| H2 | 28px | 600 | 1.3 |
+| H3 | 22px | 600 | 1.4 |
+| H4 | 18px | 600 | 1.4 |
+| Body | 16px | 400 | 1.5 |
+| Small | 14px | 400 | 1.5 |
+| Caption | 12px | 500 | 1.4 |
+
+### Mobile Adjustments
+- H1: 28px, H2: 22px, H3: 18px
+
+## 3. Spacing System
+
+Using 4px base unit (Tailwind-compatible):
+- xs: 4px (0.25rem)
+- sm: 8px (0.5rem)
+- md: 16px (1rem)
+- lg: 24px (1.5rem)
+- xl: 32px (2rem)
+- 2xl: 48px (3rem)
+- 3xl: 64px (4rem)
+
+## 4. Border Radius
+- none: 0
+- sm: 4px
+- DEFAULT: 8px
+- md: 12px
+- lg: 16px
+- xl: 24px
+- full: 9999px
+
+## 5. Shadow System
+
+### Light Mode
+- sm: 0 1px 2px rgba(0,0,0,0.05)
+- DEFAULT: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)
+- md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)
+- lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)
+- xl: 0 20px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04)
+
+### Dark Mode
+- All shadows use rgba(0,0,0,0.3) base
+
+## 6. Component Patterns
+
+### Cards
+- Background: white (light) / slate-800 (dark)
+- Border: 1px solid slate-200 (light) / slate-700 (dark)
+- Radius: 12px
+- Shadow: md
+- Padding: 24px
+
+### Buttons
+- Primary: bg-orange-500, text-white, hover:bg-orange-600
+- Secondary: bg-slate-100, text-slate-700, hover:bg-slate-200
+- Ghost: transparent, text-slate-600, hover:bg-slate-100
+- Danger: bg-red-500, text-white, hover:bg-red-600
+- Height: 40px (default), 36px (small), 48px (large)
+
+### Inputs
+- Height: 44px
+- Border: 1px solid slate-300
+- Focus: ring-2 ring-orange-500/20 border-orange-500
+- Background: white (light) / slate-800 (dark)
+- Radius: 8px
+
+### Metrics/KPIs
+- Large number display with mono font
+- Trend indicator (up/down arrow)
+- Subtle background with left accent border
+- Icon + value + label pattern
+
+## 7. Animation Guidelines
+
+### Timing
+- Instant: 0ms (color changes)
+- Fast: 150ms (hover states)
+- Normal: 300ms (page transitions)
+- Slow: 500ms (complex animations)
+
+### Easing
+- Default: cubic-bezier(0.4, 0, 0.2, 1)
+- Enter: cubic-bezier(0, 0, 0.2, 1)
+- Exit: cubic-bezier(0.4, 0, 1, 1)
+
+### Motion Principles
+- Subtle is better than dramatic
+- Provide feedback, not distraction
+- Respect reduced-motion preferences
+```
+
+#### 2. Reference Gallery
+
+Create `streamlit_app/design-system/REFERENCES.md`:
+
+Research and document 10+ high-quality engineering/data apps:
+1. Notion - Clean layouts, excellent typography
+2. Linear - Modern design, smooth animations
+3. Figma - Complex UI made approachable
+4. Vercel - Minimal but powerful
+5. Stripe Dashboard - Data density done right
+6. Airtable - Form inputs excellence
+7. Retool - Engineering tool aesthetics
+8. Mixpanel - Analytics visualization
+9. ClickUp - Feature-rich but organized
+10. Webflow - Designer-friendly patterns
+
+For each, document:
+- What makes the UI feel "modern"
+- Specific patterns to borrow
+- How they handle data-heavy screens
+- Dark mode implementation
+
+#### 3. Component Inventory
+
+Create `streamlit_app/design-system/COMPONENTS.md`:
+
+Document all current components and their upgrade path:
+- Current state (screenshot/description)
+- Target state (mockup/spec)
+- CSS changes required
+- Impact on tests
+
+### Acceptance Criteria
+
+- [ ] Design system specification complete (~500 lines)
+- [ ] Color palette with all shades defined
+- [ ] Typography scale for desktop and mobile
+- [ ] Spacing and sizing tokens documented
+- [ ] Shadow and border systems defined
+- [ ] 10+ reference apps analyzed
+- [ ] Component upgrade path documented
+- [ ] Dark mode strategy defined
+- [ ] Animation guidelines established
+- [ ] No impact on existing tests (research only)
+
+### Verification
+
+```bash
+# Research output files exist
+ls streamlit_app/design-system/
+# DESIGN_SYSTEM.md, REFERENCES.md, COMPONENTS.md
+
+# Tests still pass (no code changes)
+pytest streamlit_app/tests/ -v
+```
+
+---
+
+## 🔴 CRITICAL: STREAMLIT-RESEARCH-005 - Streamlit Custom Components & Styling
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO
+**Estimated Effort:** 6-8 hours
+
+### Objective
+Deep dive into Streamlit's styling capabilities and limitations. Research custom component options, CSS injection techniques, and third-party component libraries.
+
+### Research Questions
+
+#### 1. Streamlit Styling Capabilities
+- What CSS can be injected via `st.markdown()`?
+- How to style native Streamlit widgets (selectbox, slider, etc.)?
+- What are the CSS class patterns used by Streamlit?
+- How to create custom themes beyond `.streamlit/config.toml`?
+
+#### 2. Streamlit Component Libraries
+Research and evaluate:
+- **streamlit-shadcn-ui** - Shadcn/ui components for Streamlit
+- **streamlit-extras** - Extra widgets and utilities
+- **streamlit-elements** - Material UI components
+- **streamlit-antd-components** - Ant Design components
+- **streamlit-option-menu** - Custom navigation
+- **streamlit-aggrid** - Advanced data tables
+- **streamlit-lottie** - Animations
+
+For each, document:
+- Installation: `pip install <package>`
+- Features and limitations
+- Compatibility with current codebase
+- Performance impact
+- Styling customization options
+
+#### 3. Custom Component Development
+- How to create custom Streamlit components?
+- When is a custom component worth the effort?
+- JavaScript/React integration patterns
+- Build and deployment considerations
+
+#### 4. CSS Injection Techniques
+
+```python
+# Research these patterns and document best practices:
+
+# Pattern 1: Direct injection
+st.markdown("""
+<style>
+    [data-testid="stSidebar"] { background: #003366; }
+    .stButton > button { border-radius: 12px; }
+</style>
+""", unsafe_allow_html=True)
+
+# Pattern 2: Custom CSS file
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Pattern 3: Component-specific styling
+st.markdown("""
+<div class="custom-card">
+    <h3>Title</h3>
+    <p>Content</p>
+</div>
+<style>
+    .custom-card { background: white; border-radius: 12px; padding: 20px; }
+</style>
+""", unsafe_allow_html=True)
+
+# Pattern 4: Conditional styling
+theme = st.session_state.get("theme", "light")
+st.markdown(f"<style>:root {{ --bg: {'#fff' if theme == 'light' else '#1a1a1a'}; }}</style>", unsafe_allow_html=True)
+```
+
+### Research Deliverables
+
+#### 1. Styling Capabilities Report (~400 lines)
+
+Create `streamlit_app/design-system/STYLING_CAPABILITIES.md`:
+
+```markdown
+# Streamlit Styling Capabilities Research
+
+## What Can Be Styled
+
+### ✅ Fully Styleable
+- Page background (`[data-testid="stAppViewContainer"]`)
+- Sidebar (`[data-testid="stSidebar"]`)
+- Headers, text, markdown content
+- Metrics (`[data-testid="stMetric"]`)
+- Alerts/messages
+- Expanders
+- Tabs
+- Custom HTML elements
+
+### ⚠️ Partially Styleable
+- Selectbox (container yes, dropdown limited)
+- Number input (container yes, internal limited)
+- Sliders (track yes, thumb limited)
+- File uploader
+
+### ❌ Hard to Style
+- Native buttons (some properties resist)
+- Checkbox internal
+- Radio button internals
+- Data editor cells
+
+## CSS Selector Reference
+
+| Element | Selector |
+|---------|----------|
+| Main container | `[data-testid="stAppViewContainer"]` |
+| Sidebar | `[data-testid="stSidebar"]` |
+| Header | `[data-testid="stHeader"]` |
+| Metric | `[data-testid="stMetric"]` |
+| Button | `.stButton > button` |
+| Selectbox | `.stSelectbox` |
+| Slider | `.stSlider` |
+| ...
+```
+
+#### 2. Component Library Evaluation (~300 lines)
+
+Create `streamlit_app/design-system/COMPONENT_LIBRARIES.md`:
+
+Document each library with:
+- Installation command
+- Code example
+- Screenshot/demo link
+- Pros and cons
+- Recommendation (Use / Consider / Avoid)
+
+#### 3. Custom Component Guide (~200 lines)
+
+Create `streamlit_app/design-system/CUSTOM_COMPONENTS.md`:
+
+If custom components are needed:
+- Setup guide (Node.js, React, etc.)
+- Build process
+- Integration with Streamlit
+- Example component code
+
+### Acceptance Criteria
+
+- [ ] Complete CSS selector reference for all Streamlit elements
+- [ ] 7+ component libraries evaluated
+- [ ] Code examples for all styling patterns
+- [ ] Performance benchmarks for component libraries
+- [ ] Custom component feasibility assessment
+- [ ] Recommendations for our specific use case
+- [ ] No code changes (research only)
+
+---
+
+## 🔴 CRITICAL: STREAMLIT-RESEARCH-006 - Data Visualization Excellence
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-6 hours
+
+### Objective
+Research best practices for engineering data visualization. The current Plotly charts are functional but lack polish and interactivity.
+
+### Research Questions
+
+#### 1. Plotly Advanced Features
+- Custom themes and templates
+- Animation and transitions
+- Unified tooltips across charts
+- Chart annotations and callouts
+- Responsive sizing
+- Export options (SVG, PNG, WebP)
+
+#### 2. Alternative Libraries
+Evaluate for specific use cases:
+- **Altair** - Declarative, good for statistical charts
+- **ECharts** (via streamlit-echarts) - Rich animations
+- **Bokeh** - Interactive, good for large data
+- **Matplotlib** (static) - Precise control
+- **D3.js** (via custom component) - Maximum flexibility
+
+#### 3. Engineering-Specific Visualizations
+Research patterns for:
+- Cross-section diagrams (beam, column)
+- Stress/strain diagrams
+- Load diagrams (bending moment, shear force)
+- Reinforcement layouts
+- Compliance checklists (visual)
+- Cost comparison (efficient data display)
+
+#### 4. Chart UX Best Practices
+- Color schemes for color-blind users
+- Axis labeling for engineering units
+- Interactive legends
+- Drill-down patterns
+- Animation timing for emphasis
+
+### Research Deliverables
+
+#### 1. Plotly Theme Configuration (~200 lines)
+
+Create `streamlit_app/design-system/CHART_THEME.py`:
+
+```python
+"""
+IS 456 Dashboard - Plotly Theme Configuration
+"""
+
+import plotly.graph_objects as go
+import plotly.io as pio
+
+# Define custom template
+IS456_TEMPLATE = go.layout.Template(
+    layout=go.Layout(
+        # Font settings
+        font=dict(
+            family="Inter, system-ui, sans-serif",
+            size=14,
+            color="#334155"
+        ),
+        # Title styling
+        title=dict(
+            font=dict(size=20, color="#003366"),
+            x=0.5,
+            xanchor="center"
+        ),
+        # Color sequence
+        colorway=[
+            "#003366",  # Navy (primary)
+            "#FF6600",  # Orange (accent)
+            "#10b981",  # Emerald (success)
+            "#3b82f6",  # Blue
+            "#8b5cf6",  # Violet
+            "#f59e0b",  # Amber
+        ],
+        # Grid styling
+        xaxis=dict(
+            showgrid=True,
+            gridcolor="#e2e8f0",
+            gridwidth=1,
+            zeroline=True,
+            zerolinecolor="#94a3b8",
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor="#e2e8f0",
+            gridwidth=1,
+            zeroline=True,
+            zerolinecolor="#94a3b8",
+        ),
+        # Paper and plot background
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        # Legend
+        legend=dict(
+            bgcolor="rgba(255,255,255,0.8)",
+            bordercolor="#e2e8f0",
+            borderwidth=1,
+        ),
+        # Margin
+        margin=dict(l=60, r=30, t=60, b=60),
+    )
+)
+
+# Dark mode variant
+IS456_TEMPLATE_DARK = go.layout.Template(
+    # ... dark mode configuration
+)
+
+# Register templates
+pio.templates["is456"] = IS456_TEMPLATE
+pio.templates["is456_dark"] = IS456_TEMPLATE_DARK
+pio.templates.default = "is456"
+```
+
+#### 2. Chart Enhancement Guide (~300 lines)
+
+Create `streamlit_app/design-system/CHART_ENHANCEMENTS.md`:
+
+Document upgrade path for each existing chart:
+- Current state (code snippet)
+- Enhanced state (code snippet)
+- Visual comparison (before/after)
+- Animation additions
+
+#### 3. Engineering Diagram Library (~200 lines)
+
+Create `streamlit_app/design-system/ENGINEERING_DIAGRAMS.md`:
+
+Patterns for:
+- Beam cross-section with layers
+- Bending moment diagram with gradient fill
+- Shear force diagram
+- Reinforcement detail callouts
+
+### Acceptance Criteria
+
+- [ ] Custom Plotly theme created
+- [ ] Dark mode chart theme created
+- [ ] All 5 existing charts have upgrade paths
+- [ ] 3+ engineering diagram patterns documented
+- [ ] Animation guidelines for charts
+- [ ] Color accessibility verified
+- [ ] No code changes (research/config only)
+
+---
+
+## 🟠 HIGH: STREAMLIT-RESEARCH-007 - Micro-interactions & Animation
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-6 hours
+
+### Objective
+Research animation and micro-interaction patterns that make UIs feel "alive" and professional. Focus on subtle, purposeful animations that enhance UX without distraction.
+
+### Research Questions
+
+#### 1. Animation in Streamlit
+- What animations are possible with CSS-only?
+- Using streamlit-lottie for complex animations
+- Loading states and skeletons
+- Page transitions
+- Button feedback animations
+
+#### 2. Micro-interaction Patterns
+Research patterns for:
+- Button hover states (scale, color shift, shadow)
+- Form input focus animations
+- Success/error state transitions
+- Progress indicators
+- Tooltip animations
+- Card hover effects
+- Data update animations
+
+#### 3. Performance Considerations
+- CSS vs JavaScript animations
+- Animation frame budget (16ms)
+- Reduced motion preferences (`prefers-reduced-motion`)
+- Mobile performance
+
+### Research Deliverables
+
+#### 1. Animation Library (~300 lines)
+
+Create `streamlit_app/design-system/ANIMATIONS.css`:
+
+```css
+/* IS 456 Dashboard - Animation Library */
+
+/* Timing functions */
+:root {
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Button hover effect */
+.st-button-enhanced {
+    transition: all 0.2s var(--ease-out);
+}
+.st-button-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 102, 0, 0.25);
+}
+.st-button-enhanced:active {
+    transform: translateY(0);
+}
+
+/* Card hover lift */
+.card-lift {
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+    animation: fadeIn 0.3s var(--ease-out) forwards;
+}
+
+/* Pulse animation for loading */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.pulse {
+    animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+/* Skeleton loading */
+@keyframes skeleton {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+.skeleton {
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton 1.5s ease infinite;
+}
+
+/* Number counter animation */
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Success checkmark */
+@keyframes checkmark {
+    0% { stroke-dashoffset: 50; }
+    100% { stroke-dashoffset: 0; }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+```
+
+#### 2. Lottie Animation Catalog
+
+Create `streamlit_app/design-system/LOTTIE_CATALOG.md`:
+
+Curate Lottie animations for:
+- Loading spinner (engineering themed)
+- Success checkmark
+- Error alert
+- Empty state
+- Processing/calculating
+- Building/construction
+
+Include LottieFiles URLs and preview images.
+
+#### 3. Implementation Guide (~200 lines)
+
+Create `streamlit_app/design-system/ANIMATION_IMPLEMENTATION.md`:
+
+How to apply animations to:
+- Page load
+- Button interactions
+- Form submissions
+- Results display
+- Error states
+- Chart updates
+
+### Acceptance Criteria
+
+- [ ] CSS animation library created
+- [ ] 10+ Lottie animations curated
+- [ ] Animation timing guidelines documented
+- [ ] Reduced motion support included
+- [ ] Performance guidelines documented
+- [ ] Integration examples provided
+- [ ] No code changes (design assets only)
+
+---
+
+## 🟠 HIGH: STREAMLIT-RESEARCH-008 - Competitive Analysis (Engineering Apps)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-6 hours
+
+### Objective
+Analyze competing structural engineering and calculation tools to understand industry UI standards and identify opportunities for differentiation.
+
+### Apps to Analyze
+
+#### 1. Professional Engineering Tools
+- **ETABS/SAP2000** (CSI) - Industry standard
+- **STAAD.Pro** (Bentley) - Structural analysis
+- **Robot Structural** (Autodesk) - BIM integration
+- **SAFE** (CSI) - Slab/foundation design
+- **Tekla Tedds** - Calculation documents
+
+#### 2. Web-Based Calculation Tools
+- **SkyCiv** - Cloud structural analysis
+- **Structurix** - Online calculators
+- **ClearCalcs** - Engineering calculations
+- **Dlubal RFEM** - Web interface
+- **CalcTree** - Engineering calculations
+
+#### 3. Modern Engineering SaaS
+- **Speckle** - AEC data platform
+- **Hypar** - Generative design
+- **Flux.io** (archived) - Design automation
+- **Sidewalk Labs** - Urban planning tools
+
+### Analysis Framework
+
+For each app, document:
+
+#### Visual Design
+- Color scheme and branding
+- Typography choices
+- Layout patterns
+- Component styling
+- Dark mode availability
+
+#### User Experience
+- Onboarding flow
+- Input patterns
+- Results presentation
+- Error handling
+- Help/documentation access
+
+#### Technical Features
+- Real-time calculations
+- Visualization quality
+- Export options
+- Collaboration features
+- Mobile support
+
+#### Strengths to Borrow
+- What makes this app feel professional?
+- What UI patterns are effective?
+- What innovations are impressive?
+
+#### Weaknesses to Avoid
+- What frustrates users?
+- What feels outdated?
+- What could be better?
+
+### Research Deliverables
+
+#### 1. Competitive Analysis Report (~600 lines)
+
+Create `streamlit_app/design-system/COMPETITIVE_ANALYSIS.md`:
+
+Detailed analysis of 10+ apps with screenshots and notes.
+
+#### 2. Feature Comparison Matrix
+
+| Feature | SkyCiv | ClearCalcs | Our App | Target |
+|---------|--------|------------|---------|--------|
+| Dark mode | ✅ | ❌ | ❌ | ✅ |
+| Export PDF | ✅ | ✅ | ❌ | ✅ |
+| Real-time calc | ✅ | ✅ | ✅ | ✅ |
+| Mobile-friendly | ⚠️ | ✅ | ⚠️ | ✅ |
+| ... | | | | |
+
+#### 3. Differentiation Strategy (~200 lines)
+
+Create `streamlit_app/design-system/DIFFERENTIATION.md`:
+
+How our app can stand out:
+- IS 456 specific (niche focus)
+- Open source advantage
+- Modern tech stack
+- Free tier offering
+- Educational value
+- Integration potential
+
+### Acceptance Criteria
+
+- [ ] 10+ apps analyzed in detail
+- [ ] Feature comparison matrix complete
+- [ ] 20+ UI patterns documented
+- [ ] Differentiation strategy defined
+- [ ] Priority features identified
+- [ ] Screenshots/recordings collected
+- [ ] No code changes (research only)
+
+---
+
+## 📋 UI MODERNIZATION IMPLEMENTATION TASKS (After Research)
+
+> These tasks will be detailed after research is complete. Initial outlines below.
+
+### STREAMLIT-UI-001: Design System & Component Library
+**Status:** ⏳ BLOCKED (waiting for RESEARCH-004)
+**Estimated Effort:** 8-10 hours
+
+Create reusable styled components:
+- Custom Card component
+- Enhanced Button variants
+- Styled Input fields
+- Metric displays
+- Status badges
+- Loading skeletons
+
+**Impact Assessment:**
+- **Codebase:** New `/design-system/` folder, new component files
+- **Tests:** Add component tests (~50 new tests)
+- **Docs:** Update component documentation
+
+### STREAMLIT-UI-002: Page Layout Redesign
+**Status:** ⏳ BLOCKED (waiting for UI-001)
+**Estimated Effort:** 6-8 hours
+
+Redesign all 4 pages with new components:
+- Consistent header/navigation
+- Card-based sections
+- Improved information hierarchy
+- Better use of whitespace
+
+**Impact Assessment:**
+- **Codebase:** Modify all 4 page files
+- **Tests:** Update page tests, add visual regression
+- **Docs:** Update screenshots in guides
+
+### STREAMLIT-UI-003: Chart/Visualization Upgrade
+**Status:** ⏳ BLOCKED (waiting for RESEARCH-006)
+**Estimated Effort:** 4-6 hours
+
+Apply new Plotly theme and enhancements:
+- Consistent styling across all charts
+- Improved animations
+- Better tooltips
+- Dark mode support
+
+**Impact Assessment:**
+- **Codebase:** Update visualizations.py
+- **Tests:** Update chart tests
+- **Docs:** Update chart examples
+
+### STREAMLIT-UI-004: Dark Mode Implementation
+**Status:** ⏳ BLOCKED (waiting for UI-001)
+**Estimated Effort:** 4-6 hours
+
+Full dark mode support:
+- Theme toggle in sidebar
+- CSS variables for all colors
+- Persistent theme preference
+- Chart dark mode
+
+**Impact Assessment:**
+- **Codebase:** CSS updates, session state changes
+- **Tests:** Add dark mode tests
+- **Docs:** Document theme switching
+
+### STREAMLIT-UI-005: Loading States & Animations
+**Status:** ⏳ BLOCKED (waiting for RESEARCH-007)
+**Estimated Effort:** 3-4 hours
+
+Add polish with animations:
+- Loading skeletons
+- Button feedback
+- Success/error animations
+- Page transitions
+
+**Impact Assessment:**
+- **Codebase:** CSS additions, Lottie integration
+- **Tests:** Animation tests (visual)
+- **Docs:** Animation guidelines
+
+---
+
+## ⚠️ STABILITY & COMPATIBILITY PLAN
+
+### Test Strategy During UI Updates
+
+1. **Preserve all existing tests** - 237 tests must pass throughout
+2. **Add visual regression tests** - Screenshot comparisons
+3. **Component isolation tests** - Each new component tested independently
+4. **Page integration tests** - Full page renders verified
+
+### Documentation Update Plan
+
+| Phase | Doc Updates Required |
+|-------|---------------------|
+| Research | Add design-system/ folder with specs |
+| UI-001 | Component API docs |
+| UI-002 | Update all page screenshots |
+| UI-003 | Chart usage examples |
+| UI-004 | Theme documentation |
+| UI-005 | Animation guidelines |
+
+### Rollback Strategy
+
+- Each UI change in separate commit
+- Feature flags for major changes
+- Maintain "classic" mode option
+- All changes reversible
+
+---
 - Centralized error handler with IS 456 clause references
 - Input validation with helpful suggestions
 - Graceful degradation (show partial results when possible)
