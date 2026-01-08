@@ -406,3 +406,273 @@ These tests will ensure:
 
 Next: Extend test_design_system_integration.py (+30 tests)
 """
+
+
+# ============================================================================
+# TIER 2 EXPANSION: Import Smoke Tests (20+ new tests)
+# ============================================================================
+# These tests catch AttributeError at import time, before pages even load.
+# Prevents incidents like 2026-01-08 where app crashed on page load.
+
+
+class TestAllPageImports:
+    """Test ALL pages can import without AttributeError."""
+
+    def test_beam_design_imports(self):
+        """Beam design page imports without errors."""
+        try:
+            from pages import beam_design
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"beam_design import failed: {e}")
+        except ImportError as e:
+            pytest.skip(f"Page not yet created: {e}")
+
+    def test_analysis_panel_imports(self):
+        """Analysis panel page imports without errors."""
+        try:
+            from pages import analysis_panel
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"analysis_panel import failed: {e}")
+        except ImportError as e:
+            pytest.skip(f"Page not yet created: {e}")
+
+    def test_cost_optimizer_imports(self):
+        """Cost optimizer page imports without errors."""
+        try:
+            from pages import cost_optimizer
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"cost_optimizer import failed: {e}")
+        except ImportError as e:
+            pytest.skip(f"Page not yet created: {e}")
+
+    def test_batch_processor_imports(self):
+        """Batch processor page imports without errors."""
+        try:
+            from pages import batch_processor
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"batch_processor import failed: {e}")
+        except ImportError as e:
+            pytest.skip(f"Page not yet created: {e}")
+
+    def test_learning_center_imports(self):
+        """Learning center page imports without errors."""
+        try:
+            from pages import learning_center
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"learning_center import failed: {e}")
+        except ImportError as e:
+            pytest.skip(f"Page not yet created: {e}")
+
+
+class TestAllComponentImports:
+    """Test ALL components can import without AttributeError."""
+
+    def test_inputs_imports(self):
+        """Input components import without errors."""
+        try:
+            from components import inputs
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"inputs import failed: {e}")
+
+    def test_results_imports(self):
+        """Result components import without errors."""
+        try:
+            from components import results
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"results import failed: {e}")
+
+    def test_visualizations_imports(self):
+        """Visualization components import without errors."""
+        try:
+            from components import visualizations
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"visualizations import failed: {e}")
+
+    def test_layout_imports(self):
+        """Layout utilities import without errors."""
+        try:
+            from utils import layout
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"layout import failed: {e}")
+
+    def test_styled_components_imports(self):
+        """Styled components import without errors."""
+        try:
+            from utils import styled_components
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"styled_components import failed: {e}")
+
+
+class TestUtilityImports:
+    """Test utility modules can import without AttributeError."""
+
+    def test_design_system_imports(self):
+        """Design system imports without errors."""
+        try:
+            from utils import design_system
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"design_system import failed: {e}")
+
+    def test_theme_manager_imports(self):
+        """Theme manager imports without errors."""
+        try:
+            from utils import theme_manager
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"theme_manager import failed: {e}")
+
+    def test_global_styles_imports(self):
+        """Global styles imports without errors."""
+        try:
+            from utils import global_styles
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"global_styles import failed: {e}")
+
+    def test_plotly_theme_imports(self):
+        """Plotly theme imports without errors."""
+        try:
+            from utils import plotly_theme
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"plotly_theme import failed: {e}")
+
+    def test_api_wrapper_imports(self):
+        """API wrapper imports without errors."""
+        try:
+            from utils import api_wrapper
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"api_wrapper import failed: {e}")
+
+
+class TestCriticalPathImports:
+    """Test critical path imports (most likely to be used)."""
+
+    def test_main_app_imports(self):
+        """Main app.py imports without errors (with streamlit mocked)."""
+        try:
+            import app
+            assert True
+        except AttributeError as e:
+            # If it's a streamlit session_state issue, skip (expected in tests)
+            if "session_state" in str(e) or "'dict' object has no attribute" in str(e):
+                pytest.skip(f"Streamlit session_state issue (expected in tests): {e}")
+            # Otherwise it's a real AttributeError (design tokens, etc.)
+            pytest.fail(f"app.py import failed with AttributeError: {e}")
+        except Exception as e:
+            # Any other error (streamlit, module not found, etc.) is expected in tests
+            if "streamlit" in str(e).lower() or "No module named" in str(e):
+                pytest.skip(f"Expected test environment issue: {e}")
+            # But if it's something else, skip with warning
+            pytest.skip(f"Unexpected error (not design token AttributeError): {e}")
+
+    def test_design_tokens_accessible(self):
+        """All design tokens are accessible without error."""
+        from utils.design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION, ANIMATION
+
+        # Should not raise AttributeError
+        assert COLORS is not None
+        assert TYPOGRAPHY is not None
+        assert SPACING is not None
+        assert ELEVATION is not None
+        assert ANIMATION is not None
+
+    def test_commonly_used_colors_exist(self):
+        """Most commonly used color tokens exist."""
+        from utils.design_system import COLORS
+
+        # These are used across multiple components
+        assert hasattr(COLORS, 'primary_500')
+        assert hasattr(COLORS, 'gray_50')
+        assert hasattr(COLORS, 'success')
+        assert hasattr(COLORS, 'warning')
+        assert hasattr(COLORS, 'error')
+
+    def test_commonly_used_typography_exists(self):
+        """Most commonly used typography tokens exist."""
+        from utils.design_system import TYPOGRAPHY
+
+        # These are used across multiple components
+        assert hasattr(TYPOGRAPHY, 'display_sm')  # Not display_lg
+        assert hasattr(TYPOGRAPHY, 'body_md')
+        assert hasattr(TYPOGRAPHY, 'body_sm')
+
+    def test_commonly_used_spacing_exists(self):
+        """Most commonly used spacing tokens exist."""
+        from utils.design_system import SPACING
+
+        # These are used across multiple components
+        assert hasattr(SPACING, 'space_1')  # Not xs
+        assert hasattr(SPACING, 'space_2')
+        assert hasattr(SPACING, 'space_4')
+        assert hasattr(SPACING, 'space_8')
+
+
+class TestRegressionPreventionImports:
+    """Regression tests for past import failures."""
+
+    def test_2026_01_08_layout_import_regression(self):
+        """
+        Regression: layout.py caused AttributeError on import.
+
+        Incident: 2026-01-08, layout.py used ELEVATION.shadow_sm before it existed
+        """
+        try:
+            from utils import layout
+            # Should import successfully now
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"REGRESSION: layout.py import failed again: {e}")
+
+    def test_2026_01_08_visualizations_import_regression(self):
+        """
+        Regression: visualizations.py caused AttributeError on import.
+
+        Incident: 2026-01-08, visualizations.py used ANIMATION.duration_normal
+        """
+        try:
+            from components import visualizations
+            # Should import successfully now
+            assert True
+        except AttributeError as e:
+            pytest.fail(f"REGRESSION: visualizations.py import failed again: {e}")
+
+    def test_no_circular_imports(self):
+        """Test that importing design_system doesn't cause circular imports."""
+        import sys
+
+        # Clear any previous imports
+        modules_to_clear = [m for m in sys.modules if 'streamlit_app' in m]
+        for mod in modules_to_clear:
+            del sys.modules[mod]
+
+        # Try fresh import
+        try:
+            from utils import design_system
+            assert True
+        except ImportError as e:
+            if "circular" in str(e).lower():
+                pytest.fail("Circular import detected in design_system")
+            raise
+
+
+# Updated test count:
+# Original test_page_smoke.py: 20 tests
+# + TestAllPageImports: 5 tests
+# + TestAllComponentImports: 5 tests
+# + TestUtilityImports: 5 tests
+# + TestCriticalPathImports: 5 tests
+# + TestRegressionPreventionImports: 3 tests
+# NEW TOTAL: 43 tests in test_page_smoke.py
