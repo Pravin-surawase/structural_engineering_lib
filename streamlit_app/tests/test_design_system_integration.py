@@ -259,7 +259,8 @@ class TestValueFormats:
     def test_color_hex_format(self):
         """Colors should be valid hex codes."""
         import re
-        hex_pattern = re.compile(r'^#[0-9A-Fa-f]{6}$')
+
+        hex_pattern = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
         assert hex_pattern.match(COLORS.primary_500)
         assert hex_pattern.match(COLORS.accent_500)
@@ -325,6 +326,7 @@ def test_all_tokens_discoverable():
 # IMPL-000 EXTENSION: Additional Integration Tests (30 tests)
 # ============================================================================
 
+
 class TestComponentDesignSystemIntegration:
     """Test that components properly use design system tokens."""
 
@@ -335,7 +337,7 @@ class TestComponentDesignSystemIntegration:
 
         source = inspect.getsource(dimension_input)
         # Should use design system colors, not hardcoded values
-        uses_design_system = 'COLORS' in source or 'design_system' in source
+        uses_design_system = "COLORS" in source or "design_system" in source
         assert isinstance(uses_design_system, bool)
 
     def test_results_use_typography_tokens(self):
@@ -345,7 +347,7 @@ class TestComponentDesignSystemIntegration:
 
         source = inspect.getsource(display_flexure_result)
         # Should use typography tokens for consistent text styling
-        uses_typography = 'TYPOGRAPHY' in source or 'markdown' in source.lower()
+        uses_typography = "TYPOGRAPHY" in source or "markdown" in source.lower()
         assert isinstance(uses_typography, bool)
 
     def test_visualizations_use_plotly_theme(self):
@@ -354,7 +356,7 @@ class TestComponentDesignSystemIntegration:
 
         theme = get_plotly_theme()
         assert isinstance(theme, dict)
-        assert 'layout' in theme or 'colorway' in theme or len(theme) > 0
+        assert "layout" in theme or "colorway" in theme or len(theme) > 0
 
     def test_layout_uses_spacing_tokens(self):
         """Test layout module uses SPACING tokens."""
@@ -362,7 +364,7 @@ class TestComponentDesignSystemIntegration:
         import inspect
 
         source = inspect.getsource(layout)
-        uses_spacing = 'SPACING' in source
+        uses_spacing = "SPACING" in source
         assert isinstance(uses_spacing, bool)
 
     def test_styled_components_use_all_tokens(self):
@@ -372,7 +374,7 @@ class TestComponentDesignSystemIntegration:
 
         source = inspect.getsource(styled_components)
         # Should import from design_system
-        imports_design_system = 'design_system' in source
+        imports_design_system = "design_system" in source
         assert imports_design_system
 
 
@@ -410,9 +412,9 @@ class TestDesignSystemConsistency:
     def test_animation_durations_reasonable(self):
         """Test animation durations are reasonable (not too fast/slow)."""
         # Extract numeric values
-        fast = float(ANIMATION.fast.replace('s', ''))
-        normal = float(ANIMATION.normal.replace('s', ''))
-        slow = float(ANIMATION.slow.replace('s', ''))
+        fast = float(ANIMATION.fast.replace("s", ""))
+        normal = float(ANIMATION.normal.replace("s", ""))
+        slow = float(ANIMATION.slow.replace("s", ""))
 
         assert 0.1 <= fast <= 0.3
         assert 0.2 <= normal <= 0.5
@@ -432,8 +434,8 @@ class TestDesignSystemAccessibility:
     def test_font_sizes_readable(self):
         """Test font sizes are readable (not too small)."""
         # Extract numeric values
-        xs = float(TYPOGRAPHY.text_xs.replace('rem', ''))
-        base = float(TYPOGRAPHY.text_base.replace('rem', ''))
+        xs = float(TYPOGRAPHY.text_xs.replace("rem", ""))
+        base = float(TYPOGRAPHY.text_base.replace("rem", ""))
 
         assert xs >= 0.75  # Minimum 12px (0.75rem)
         assert base >= 1.0  # Base should be 16px (1rem)
@@ -442,7 +444,7 @@ class TestDesignSystemAccessibility:
         """Test interactive elements meet touch target size."""
         # Buttons/inputs should be at least 44x44px (WCAG 2.5.5)
         # Check via spacing tokens
-        assert float(SPACING.xl.replace('rem', '')) >= 2.0  # 32px minimum
+        assert float(SPACING.xl.replace("rem", "")) >= 2.0  # 32px minimum
 
     def test_semantic_colors_distinct(self):
         """Test semantic colors are visually distinct."""
@@ -454,7 +456,7 @@ class TestDesignSystemAccessibility:
     def test_focus_indicators_visible(self):
         """Test focus states are defined."""
         # Should have focus ring color
-        assert hasattr(COLORS, 'primary_500')  # Used for focus rings
+        assert hasattr(COLORS, "primary_500")  # Used for focus rings
         assert COLORS.primary_500 != COLORS.bg_primary
 
 
@@ -463,28 +465,28 @@ class TestDesignSystemRegressionPrevention:
 
     def test_shadow_sm_attribute_exists(self):
         """REGRESSION 2026-01-08: Verify shadow_sm exists."""
-        assert hasattr(ELEVATION, 'shadow_sm')
+        assert hasattr(ELEVATION, "shadow_sm")
         assert ELEVATION.shadow_sm is not None
 
     def test_display_sm_attribute_exists(self):
         """REGRESSION 2026-01-08: Verify display_sm exists."""
-        assert hasattr(TYPOGRAPHY, 'display_sm')
+        assert hasattr(TYPOGRAPHY, "display_sm")
         assert TYPOGRAPHY.display_sm is not None
 
     def test_all_typography_display_sizes_exist(self):
         """Test all display sizes are defined (sm, md, lg, xl)."""
-        assert hasattr(TYPOGRAPHY, 'display_sm')
-        assert hasattr(TYPOGRAPHY, 'display_md')
-        assert hasattr(TYPOGRAPHY, 'display_lg')
-        assert hasattr(TYPOGRAPHY, 'display_xl')
+        assert hasattr(TYPOGRAPHY, "display_sm")
+        assert hasattr(TYPOGRAPHY, "display_md")
+        assert hasattr(TYPOGRAPHY, "display_lg")
+        assert hasattr(TYPOGRAPHY, "display_xl")
 
     def test_all_shadow_levels_exist(self):
         """Test all shadow levels are defined."""
-        assert hasattr(ELEVATION, 'shadow_xs')
-        assert hasattr(ELEVATION, 'shadow_sm')
-        assert hasattr(ELEVATION, 'shadow_md')
-        assert hasattr(ELEVATION, 'shadow_lg')
-        assert hasattr(ELEVATION, 'shadow_xl')
+        assert hasattr(ELEVATION, "shadow_xs")
+        assert hasattr(ELEVATION, "shadow_sm")
+        assert hasattr(ELEVATION, "shadow_md")
+        assert hasattr(ELEVATION, "shadow_lg")
+        assert hasattr(ELEVATION, "shadow_xl")
 
     def test_no_undefined_token_access_in_layout(self):
         """Test layout doesn't access undefined tokens."""
@@ -495,9 +497,9 @@ class TestDesignSystemRegressionPrevention:
 
         # Check for common undefined token patterns
         # This is a basic pattern check
-        if 'COLORS.' in source:
+        if "COLORS." in source:
             # Should not access undefined colors
-            assert 'COLORS.undefined' not in source
+            assert "COLORS.undefined" not in source
 
 
 class TestThemeCompatibility:
@@ -507,14 +509,14 @@ class TestThemeCompatibility:
         """Test colors are suitable for light mode."""
         # Light mode: dark text on light background
         assert COLORS.text_primary != COLORS.bg_primary
-        assert COLORS.bg_primary in ['#FFFFFF', '#FAFAFA', '#F9FAFB']
+        assert COLORS.bg_primary in ["#FFFFFF", "#FAFAFA", "#F9FAFB"]
 
     def test_colors_work_in_dark_mode(self):
         """Test colors are suitable for dark mode."""
         # Dark mode: light text on dark background
         assert COLORS.bg_secondary != COLORS.text_primary
         # Should have dark background color defined
-        assert hasattr(COLORS, 'gray_900')
+        assert hasattr(COLORS, "gray_900")
 
     def test_semantic_colors_theme_independent(self):
         """Test semantic colors work in both themes."""
@@ -526,13 +528,13 @@ class TestThemeCompatibility:
     def test_elevation_works_in_both_themes(self):
         """Test shadows work in light and dark modes."""
         # Shadows should be defined (opacity handles theme)
-        assert 'rgba' in ELEVATION.shadow_md or 'rgb' in ELEVATION.shadow_md
+        assert "rgba" in ELEVATION.shadow_md or "rgb" in ELEVATION.shadow_md
 
     def test_animation_theme_independent(self):
         """Test animations work regardless of theme."""
         # Animation durations don't depend on theme
         assert isinstance(ANIMATION.fast, str)
-        assert 's' in ANIMATION.fast or 'ms' in ANIMATION.fast
+        assert "s" in ANIMATION.fast or "ms" in ANIMATION.fast
 
 
 class TestDesignSystemPerformance:
@@ -563,11 +565,12 @@ class TestDesignSystemPerformance:
         import sys
 
         # Remove from cache
-        if 'utils.design_system' in sys.modules:
-            del sys.modules['utils.design_system']
+        if "utils.design_system" in sys.modules:
+            del sys.modules["utils.design_system"]
 
         start = time.time()
         from utils import design_system
+
         duration = time.time() - start
 
         # Import should be < 10ms
@@ -586,6 +589,7 @@ class TestDesignSystemPerformance:
             from utils.design_system import COLORS, TYPOGRAPHY, SPACING
             import importlib
             import utils.design_system as ds
+
             importlib.reload(ds)
             assert True
         except ImportError as e:
@@ -619,241 +623,3 @@ This extended test suite ensures:
 
 Total IMPL-000 Progress: 40 + 40 + 20 + 30 = 130 tests (87% of target)
 """
-
-
-# ============================================================================
-# IMPL-000 EXTENSION: Additional Integration Tests (30 tests)
-# ============================================================================
-
-class TestComponentDesignSystemIntegration:
-    """Test that components properly use design system tokens."""
-
-    def test_inputs_use_color_tokens(self):
-        """Test input components use COLORS tokens."""
-        from components.inputs import dimension_input
-        import inspect
-
-        source = inspect.getsource(dimension_input)
-        uses_design_system = 'COLORS' in source or 'design_system' in source
-        assert isinstance(uses_design_system, bool)
-
-    def test_results_use_typography_tokens(self):
-        """Test results components use TYPOGRAPHY tokens."""
-        from components.results import display_flexure_result
-        import inspect
-
-        source = inspect.getsource(display_flexure_result)
-        uses_typography = 'TYPOGRAPHY' in source or 'markdown' in source.lower()
-        assert isinstance(uses_typography, bool)
-
-    def test_visualizations_use_plotly_theme(self):
-        """Test visualizations use consistent Plotly theme."""
-        from components.visualizations import get_plotly_theme
-
-        theme = get_plotly_theme()
-        assert isinstance(theme, dict)
-        assert 'layout' in theme or 'colorway' in theme or len(theme) > 0
-
-    def test_layout_uses_spacing_tokens(self):
-        """Test layout module uses SPACING tokens."""
-        from utils import layout
-        import inspect
-
-        source = inspect.getsource(layout)
-        uses_spacing = 'SPACING' in source
-        assert isinstance(uses_spacing, bool)
-
-    def test_styled_components_use_all_tokens(self):
-        """Test styled components import all design tokens."""
-        from utils import styled_components
-        import inspect
-
-        source = inspect.getsource(styled_components)
-        imports_design_system = 'design_system' in source
-        assert imports_design_system
-
-
-class TestDesignSystemConsistency:
-    """Test design system internal consistency."""
-
-    def test_primary_color_scale_gradient(self):
-        """Test primary colors form a gradient."""
-        assert COLORS.primary_50 < COLORS.primary_100
-        assert COLORS.primary_500 != COLORS.primary_900
-
-    def test_typography_scale_proportions(self):
-        """Test typography scales follow proportions."""
-        assert TYPOGRAPHY.text_xs < TYPOGRAPHY.text_sm
-        assert TYPOGRAPHY.text_sm < TYPOGRAPHY.text_base
-        assert TYPOGRAPHY.text_base < TYPOGRAPHY.text_lg
-
-    def test_spacing_scale_is_consistent(self):
-        """Test spacing scale doubles at each step."""
-        assert SPACING.xs == "0.5rem"
-        assert SPACING.sm == "0.75rem"
-        assert SPACING.md == "1rem"
-
-    def test_elevation_shadows_increase(self):
-        """Test elevation shadows increase with level."""
-        assert len(ELEVATION.shadow_sm) < len(ELEVATION.shadow_md)
-        assert len(ELEVATION.shadow_md) < len(ELEVATION.shadow_lg)
-
-    def test_animation_durations_reasonable(self):
-        """Test animation durations are reasonable."""
-        fast = float(ANIMATION.fast.replace('s', ''))
-        normal = float(ANIMATION.normal.replace('s', ''))
-        slow = float(ANIMATION.slow.replace('s', ''))
-
-        assert 0.1 <= fast <= 0.3
-        assert 0.2 <= normal <= 0.5
-        assert 0.3 <= slow <= 0.8
-
-
-class TestDesignSystemAccessibility:
-    """Test design system meets accessibility standards."""
-
-    def test_color_contrast_sufficient(self):
-        """Test color contrasts meet WCAG guidelines."""
-        assert COLORS.primary_500 != COLORS.gray_50
-        assert COLORS.text_primary != COLORS.bg_primary
-
-    def test_font_sizes_readable(self):
-        """Test font sizes are readable."""
-        xs = float(TYPOGRAPHY.text_xs.replace('rem', ''))
-        base = float(TYPOGRAPHY.text_base.replace('rem', ''))
-
-        assert xs >= 0.75
-        assert base >= 1.0
-
-    def test_clickable_targets_sized_appropriately(self):
-        """Test interactive elements meet touch target size."""
-        assert float(SPACING.xl.replace('rem', '')) >= 2.0
-
-    def test_semantic_colors_distinct(self):
-        """Test semantic colors are visually distinct."""
-        assert COLORS.success != COLORS.warning
-        assert COLORS.warning != COLORS.error
-        assert COLORS.error != COLORS.success
-
-    def test_focus_indicators_visible(self):
-        """Test focus states are defined."""
-        assert hasattr(COLORS, 'primary_500')
-        assert COLORS.primary_500 != COLORS.bg_primary
-
-
-class TestDesignSystemRegressionPrevention:
-    """Regression tests for known issues."""
-
-    def test_shadow_sm_exists_regression(self):
-        """REGRESSION: Verify shadow_sm exists."""
-        assert hasattr(ELEVATION, 'shadow_sm')
-        assert ELEVATION.shadow_sm is not None
-
-    def test_display_sm_exists_regression(self):
-        """REGRESSION: Verify display_sm exists."""
-        assert hasattr(TYPOGRAPHY, 'display_sm')
-        assert TYPOGRAPHY.display_sm is not None
-
-    def test_all_typography_display_sizes(self):
-        """Test all display sizes are defined."""
-        assert hasattr(TYPOGRAPHY, 'display_sm')
-        assert hasattr(TYPOGRAPHY, 'display_md')
-        assert hasattr(TYPOGRAPHY, 'display_lg')
-        assert hasattr(TYPOGRAPHY, 'display_xl')
-
-    def test_all_shadow_levels(self):
-        """Test all shadow levels are defined."""
-        assert hasattr(ELEVATION, 'shadow_xs')
-        assert hasattr(ELEVATION, 'shadow_sm')
-        assert hasattr(ELEVATION, 'shadow_md')
-        assert hasattr(ELEVATION, 'shadow_lg')
-
-    def test_no_undefined_token_access(self):
-        """Test layout doesn't access undefined tokens."""
-        from utils import layout
-        import inspect
-
-        source = inspect.getsource(layout)
-        if 'COLORS.' in source:
-            assert 'COLORS.undefined' not in source
-
-
-class TestThemeCompatibility:
-    """Test design system works with theme switching."""
-
-    def test_colors_work_in_light_mode(self):
-        """Test colors are suitable for light mode."""
-        assert COLORS.text_primary != COLORS.bg_primary
-        assert COLORS.bg_primary in ['#FFFFFF', '#FAFAFA', '#F9FAFB']
-
-    def test_colors_work_in_dark_mode(self):
-        """Test colors are suitable for dark mode."""
-        assert COLORS.bg_secondary != COLORS.text_primary
-        assert hasattr(COLORS, 'gray_900')
-
-    def test_semantic_colors_theme_independent(self):
-        """Test semantic colors work in both themes."""
-        assert COLORS.success != COLORS.bg_primary
-        assert COLORS.warning != COLORS.bg_primary
-        assert COLORS.error != COLORS.bg_primary
-
-    def test_elevation_works_in_both_themes(self):
-        """Test shadows work in light and dark modes."""
-        assert 'rgba' in ELEVATION.shadow_md or 'rgb' in ELEVATION.shadow_md
-
-    def test_animation_theme_independent(self):
-        """Test animations work regardless of theme."""
-        assert isinstance(ANIMATION.fast, str)
-        assert 's' in ANIMATION.fast or 'ms' in ANIMATION.fast
-
-
-class TestDesignSystemPerformance:
-    """Test design system doesn't impact performance."""
-
-    def test_token_access_is_fast(self):
-        """Test accessing tokens is O(1)."""
-        import time
-
-        start = time.time()
-        for _ in range(1000):
-            _ = COLORS.primary_500
-        duration = time.time() - start
-
-        assert duration < 0.001
-
-    def test_no_expensive_computations_in_tokens(self):
-        """Test tokens are static values."""
-        assert isinstance(COLORS.primary_500, str)
-        assert isinstance(TYPOGRAPHY.text_base, str)
-        assert isinstance(SPACING.md, str)
-
-    def test_design_system_import_is_fast(self):
-        """Test importing design_system is fast."""
-        import time
-        import sys
-
-        if 'utils.design_system' in sys.modules:
-            del sys.modules['utils.design_system']
-
-        start = time.time()
-        from utils import design_system
-        duration = time.time() - start
-
-        assert duration < 0.01
-
-    def test_tokens_are_not_functions(self):
-        """Test tokens are values, not function calls."""
-        assert not callable(COLORS.primary_500)
-        assert not callable(TYPOGRAPHY.text_base)
-        assert not callable(SPACING.md)
-
-    def test_no_circular_dependencies(self):
-        """Test design_system doesn't have circular imports."""
-        try:
-            from utils.design_system import COLORS, TYPOGRAPHY, SPACING
-            import importlib
-            import utils.design_system as ds
-            importlib.reload(ds)
-            assert True
-        except ImportError as e:
-            pytest.fail(f"Circular import: {e}")

@@ -24,20 +24,20 @@ from utils.documentation_data import (
     IS456_CLAUSES,
     FAQ_DATA,
     GLOSSARY_DATA,
-    REFERENCE_TABLES
+    REFERENCE_TABLES,
 )
 from utils.layout import setup_page, page_header, section_header, info_panel
-from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
+from utils.theme_manager import (
+    apply_dark_mode_theme,
+    render_theme_toggle,
+    initialize_theme,
+)
 
 # Initialize theme
 initialize_theme()
 
 # Modern page setup
-setup_page(
-    title="Documentation - IS 456 Beam Design",
-    icon="📚",
-    layout="wide"
-)
+setup_page(title="Documentation - IS 456 Beam Design", icon="📚", layout="wide")
 
 # Apply dark mode styling
 apply_dark_mode_theme()
@@ -46,7 +46,7 @@ apply_dark_mode_theme()
 page_header(
     title="Documentation & Reference",
     subtitle="IS 456:2000 Plain and Reinforced Concrete - Code of Practice",
-    icon="📚"
+    icon="📚",
 )
 
 # Sidebar navigation
@@ -59,8 +59,8 @@ section = st.sidebar.radio(
         "📋 Examples",
         "❓ FAQ",
         "📊 Reference Tables",
-        "📚 Glossary"
-    ]
+        "📚 Glossary",
+    ],
 )
 
 # IS 456 CLAUSE REFERENCE
@@ -71,17 +71,18 @@ if section == "📖 IS 456 Clauses":
     search_query = st.text_input(
         "🔍 Search clauses",
         placeholder="e.g., 'limit state', 'flexure', 'minimum reinforcement'",
-        help="Search by clause number, keyword, or topic"
+        help="Search by clause number, keyword, or topic",
     )
 
     # Filter clauses based on search
     if search_query:
         filtered_clauses = {
-            k: v for k, v in IS456_CLAUSES.items()
-            if search_query.lower() in k.lower() or
-               search_query.lower() in v["title"].lower() or
-               search_query.lower() in v["content"].lower() or
-               search_query.lower() in v["category"].lower()
+            k: v
+            for k, v in IS456_CLAUSES.items()
+            if search_query.lower() in k.lower()
+            or search_query.lower() in v["title"].lower()
+            or search_query.lower() in v["content"].lower()
+            or search_query.lower() in v["category"].lower()
         }
     else:
         filtered_clauses = IS456_CLAUSES
@@ -99,7 +100,10 @@ if section == "📖 IS 456 Clauses":
 
     # Display clauses by category
     for category, clause_list in sorted(categories.items()):
-        with st.expander(f"📂 {category} ({len(clause_list)} clauses)", expanded=(len(categories) == 1)):
+        with st.expander(
+            f"📂 {category} ({len(clause_list)} clauses)",
+            expanded=(len(categories) == 1),
+        ):
             for clause_num, clause_data in sorted(clause_list):
                 st.subheader(f"Clause {clause_num}: {clause_data['title']}")
 
@@ -132,8 +136,8 @@ elif section == "🧮 Formula Calculator":
             "Steel Area Required",
             "Shear Stress",
             "Stirrup Spacing",
-            "Development Length"
-        ]
+            "Development Length",
+        ],
     )
 
     col1, col2 = st.columns(2)
@@ -141,11 +145,19 @@ elif section == "🧮 Formula Calculator":
     if calc_type == "Moment of Resistance (Singly Reinforced)":
         with col1:
             st.subheader("Inputs")
-            Ast = st.number_input("Ast (mm²)", value=804.0, step=50.0, help="Area of tension steel")
-            d = st.number_input("d (mm)", value=450.0, step=10.0, help="Effective depth")
+            Ast = st.number_input(
+                "Ast (mm²)", value=804.0, step=50.0, help="Area of tension steel"
+            )
+            d = st.number_input(
+                "d (mm)", value=450.0, step=10.0, help="Effective depth"
+            )
             b = st.number_input("b (mm)", value=300.0, step=10.0, help="Width")
-            fck = st.number_input("fck (N/mm²)", value=25.0, step=5.0, help="Concrete grade")
-            fy = st.number_input("fy (N/mm²)", value=500.0, step=50.0, help="Steel grade")
+            fck = st.number_input(
+                "fck (N/mm²)", value=25.0, step=5.0, help="Concrete grade"
+            )
+            fy = st.number_input(
+                "fy (N/mm²)", value=500.0, step=50.0, help="Steel grade"
+            )
 
         with col2:
             st.subheader("Results")
@@ -179,11 +191,19 @@ elif section == "🧮 Formula Calculator":
     elif calc_type == "Steel Area Required":
         with col1:
             st.subheader("Inputs")
-            Mu = st.number_input("Mu (kN·m)", value=120.0, step=10.0, help="Factored moment")
-            d = st.number_input("d (mm)", value=450.0, step=10.0, help="Effective depth")
+            Mu = st.number_input(
+                "Mu (kN·m)", value=120.0, step=10.0, help="Factored moment"
+            )
+            d = st.number_input(
+                "d (mm)", value=450.0, step=10.0, help="Effective depth"
+            )
             b = st.number_input("b (mm)", value=300.0, step=10.0, help="Width")
-            fck = st.number_input("fck (N/mm²)", value=25.0, step=5.0, help="Concrete grade")
-            fy = st.number_input("fy (N/mm²)", value=500.0, step=50.0, help="Steel grade")
+            fck = st.number_input(
+                "fck (N/mm²)", value=25.0, step=5.0, help="Concrete grade"
+            )
+            fy = st.number_input(
+                "fy (N/mm²)", value=500.0, step=50.0, help="Steel grade"
+            )
 
         with col2:
             st.subheader("Results")
@@ -195,7 +215,7 @@ elif section == "🧮 Formula Calculator":
             Ru = Mu_nmm / (b * d**2)
 
             # Calculate ρ
-            rho = (0.5 * fck / fy) * (1 - (1 - (4.6 * Ru)/(fck))**0.5)
+            rho = (0.5 * fck / fy) * (1 - (1 - (4.6 * Ru) / (fck)) ** 0.5)
 
             # Calculate Ast
             Ast_req = rho * b * d
@@ -208,15 +228,18 @@ elif section == "🧮 Formula Calculator":
             st.metric("Steel Ratio (ρ)", f"{rho*100:.3f}%")
             st.metric("Ast Required", f"{Ast_req:.0f} mm²")
             st.metric("Ast Minimum", f"{Ast_min:.0f} mm²")
-            st.metric("Ast Final", f"{Ast_final:.0f} mm²",
-                     delta=f"{Ast_final - Ast_req:.0f} mm²" if Ast_final > Ast_req else None)
+            st.metric(
+                "Ast Final",
+                f"{Ast_final:.0f} mm²",
+                delta=f"{Ast_final - Ast_req:.0f} mm²" if Ast_final > Ast_req else None,
+            )
 
             # Suggest bar configuration
             st.divider()
             st.markdown("**Suggested Bar Configurations:**")
             bar_sizes = [12, 16, 20, 25]
             for bar_dia in bar_sizes:
-                bar_area = 3.14159 * (bar_dia/2)**2
+                bar_area = 3.14159 * (bar_dia / 2) ** 2
                 num_bars = int(Ast_final / bar_area) + 1
                 provided_area = num_bars * bar_area
                 if 2 <= num_bars <= 6 and provided_area >= Ast_final:
@@ -225,13 +248,21 @@ elif section == "🧮 Formula Calculator":
     elif calc_type == "Stirrup Spacing":
         with col1:
             st.subheader("Inputs")
-            Vu = st.number_input("Vu (kN)", value=85.0, step=5.0, help="Factored shear force")
+            Vu = st.number_input(
+                "Vu (kN)", value=85.0, step=5.0, help="Factored shear force"
+            )
             b = st.number_input("b (mm)", value=300.0, step=10.0, help="Width")
-            d = st.number_input("d (mm)", value=450.0, step=10.0, help="Effective depth")
+            d = st.number_input(
+                "d (mm)", value=450.0, step=10.0, help="Effective depth"
+            )
             fck = st.number_input("fck (N/mm²)", value=25.0, step=5.0)
-            Ast = st.number_input("Ast (mm²)", value=804.0, step=50.0, help="Tension steel area")
+            Ast = st.number_input(
+                "Ast (mm²)", value=804.0, step=50.0, help="Tension steel area"
+            )
             stirrup_dia = st.number_input("Stirrup φ (mm)", value=8.0, step=2.0)
-            stirrup_legs = st.number_input("Number of legs", value=2, step=1, min_value=2)
+            stirrup_legs = st.number_input(
+                "Number of legs", value=2, step=1, min_value=2
+            )
             fy_stirrup = st.number_input("fy stirrup (N/mm²)", value=415.0, step=50.0)
 
         with col2:
@@ -242,15 +273,15 @@ elif section == "🧮 Formula Calculator":
 
             # Calculate τc (simplified)
             pt = 100 * Ast / (b * d)
-            tau_c = 0.85 * (0.8 * fck)**0.5 * (pt/100)**(1/3) / 1.5
+            tau_c = 0.85 * (0.8 * fck) ** 0.5 * (pt / 100) ** (1 / 3) / 1.5
 
             # Calculate required Asv/sv
             if tau_v > tau_c:
                 Vus = (tau_v - tau_c) * b * d / 1000
-                Asv = stirrup_legs * 3.14159 * (stirrup_dia/2)**2
+                Asv = stirrup_legs * 3.14159 * (stirrup_dia / 2) ** 2
                 sv_req = (0.87 * fy_stirrup * Asv * d) / (Vus * 1000)
             else:
-                sv_req = float('inf')
+                sv_req = float("inf")
 
             # Maximum spacing
             sv_max = min(0.75 * d, 300)
@@ -272,9 +303,13 @@ elif section == "🧮 Formula Calculator":
 
             # Provide recommendation
             standard_spacings = [75, 100, 125, 150, 175, 200, 250, 300]
-            recommended = min([s for s in standard_spacings if s <= sv_final], default=75)
+            recommended = min(
+                [s for s in standard_spacings if s <= sv_final], default=75
+            )
 
-            st.info(f"💡 Recommended: {stirrup_legs}-legged {stirrup_dia}mm @ {recommended}mm c/c")
+            st.info(
+                f"💡 Recommended: {stirrup_legs}-legged {stirrup_dia}mm @ {recommended}mm c/c"
+            )
 
 # EXAMPLES
 elif section == "📋 Examples":
@@ -285,8 +320,8 @@ elif section == "📋 Examples":
         [
             "Example 1: Simply Supported Beam (4m span)",
             "Example 2: Doubly Reinforced Section",
-            "Example 3: Shear Design with Stirrups"
-        ]
+            "Example 3: Shear Design with Stirrups",
+        ],
     )
 
     if "Example 1" in example_selection:
@@ -295,7 +330,8 @@ elif section == "📋 Examples":
         col1, col2 = st.columns([1, 1])
 
         with col1:
-            st.markdown("""
+            st.markdown(
+                """
 **Given Data:**
 - Span: 4.0 m (c/c of supports)
 - Dead load: 10 kN/m (including self-weight)
@@ -312,10 +348,12 @@ elif section == "📋 Examples":
 2. Design for shear
 3. Check deflection
 4. Detailing
-            """)
+            """
+            )
 
         with col2:
-            st.markdown("""
+            st.markdown(
+                """
 **Solution:**
 
 **Step 1: Load Calculation**
@@ -340,7 +378,8 @@ elif section == "📋 Examples":
 - τc = 0.49 N/mm² (from Table 19)
 - τv > τc → Provide shear reinforcement
 - Use 2L-8mm @ 150mm c/c ✅
-            """)
+            """
+            )
 
         st.success("✅ Design Complete: 3-16mm + 2L-8mm @ 150mm c/c")
 
@@ -353,7 +392,7 @@ elif section == "❓ FAQ":
         st.subheader(f"📂 {category}")
         for qa in qa_list:
             with st.expander(f"**Q:** {qa['q']}", expanded=False):
-                st.markdown(qa['a'])
+                st.markdown(qa["a"])
 
 # REFERENCE TABLES
 elif section == "📊 Reference Tables":
@@ -365,8 +404,8 @@ elif section == "📊 Reference Tables":
             "Table 19: Design Shear Strength (τc)",
             "Table 20: Maximum Shear Stress (τc,max)",
             "Table 16: Nominal Cover Requirements",
-            "Standard Bar Sizes and Areas"
-        ]
+            "Standard Bar Sizes and Areas",
+        ],
     )
 
     # Display selected table from REFERENCE_TABLES
@@ -376,7 +415,9 @@ elif section == "📊 Reference Tables":
         st.subheader(table_data["title"])
 
         df = pd.DataFrame(table_data["data"])
-        st.dataframe(df, use_container_width=True, hide_index=table_data.get("hide_index", False))
+        st.dataframe(
+            df, use_container_width=True, hide_index=table_data.get("hide_index", False)
+        )
 
         if "notes" in table_data:
             st.info(table_data["notes"])
@@ -394,11 +435,14 @@ elif section == "📚 Glossary":
 
 # Footer
 st.divider()
-st.markdown("""
+st.markdown(
+    """
 <div style='text-align: center; color: gray; font-size: 0.9em;'>
 📚 IS 456:2000 Plain and Reinforced Concrete - Code of Practice<br>
 Bureau of Indian Standards, New Delhi<br>
 <br>
 <em>This documentation is for educational purposes. Always refer to the official IS 456:2000 code for design.</em>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)

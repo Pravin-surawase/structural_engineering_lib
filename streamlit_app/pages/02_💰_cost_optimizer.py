@@ -23,26 +23,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from components.inputs import (
-    dimension_input,
-    load_input,
-    material_selector,
-)
 from utils.api_wrapper import cached_smart_analysis
-from utils.validation import validate_dimension, format_error_message
-from utils.layout import setup_page, page_header, section_header, info_panel
-from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
-from utils.loading_states import loading_context
+from utils.layout import setup_page, page_header
+from utils.theme_manager import apply_dark_mode_theme, initialize_theme
 
 # Initialize theme
 initialize_theme()
 
 # Modern page setup
-setup_page(
-    title="Cost Optimizer - IS 456 Beam Design",
-    icon="💰",
-    layout="wide"
-)
+setup_page(title="Cost Optimizer - IS 456 Beam Design", icon="💰", layout="wide")
 
 # Apply dark mode styling
 apply_dark_mode_theme()
@@ -59,21 +48,21 @@ def initialize_session_state():
 def get_beam_design_inputs() -> Optional[dict]:
     """Get inputs from Beam Design page session state if available."""
     # Check if beam_inputs exists (from beam design page)
-    if 'beam_inputs' in st.session_state:
+    if "beam_inputs" in st.session_state:
         beam = st.session_state.beam_inputs
         # Map concrete/steel grades to fck/fy values
-        fck_map = {'M20': 20, 'M25': 25, 'M30': 30, 'M35': 35, 'M40': 40}
-        fy_map = {'Fe415': 415, 'Fe500': 500, 'Fe550': 550}
+        fck_map = {"M20": 20, "M25": 25, "M30": 30, "M35": 35, "M40": 40}
+        fy_map = {"Fe415": 415, "Fe500": 500, "Fe550": 550}
 
         return {
-            'mu_knm': beam.get('mu_knm', 120.0),
-            'vu_kn': beam.get('vu_kn', 80.0),
-            'b_mm': beam.get('b_mm', 300.0),
-            'D_mm': beam.get('D_mm', 500.0),
-            'd_mm': beam.get('d_mm', 450.0),
-            'span_mm': beam.get('span_mm', 5000.0),
-            'fck_nmm2': fck_map.get(beam.get('concrete_grade', 'M25'), 25),
-            'fy_nmm2': fy_map.get(beam.get('steel_grade', 'Fe500'), 500),
+            "mu_knm": beam.get("mu_knm", 120.0),
+            "vu_kn": beam.get("vu_kn", 80.0),
+            "b_mm": beam.get("b_mm", 300.0),
+            "D_mm": beam.get("D_mm", 500.0),
+            "d_mm": beam.get("d_mm", 450.0),
+            "span_mm": beam.get("span_mm", 5000.0),
+            "fck_nmm2": fck_map.get(beam.get("concrete_grade", "M25"), 25),
+            "fy_nmm2": fy_map.get(beam.get("steel_grade", "Fe500"), 500),
         }
     return None
 
@@ -256,11 +245,15 @@ def run_cost_optimization(inputs: dict) -> dict:
                 "D_mm": optimal.get("D_mm", inputs["D_mm"]),
                 "fck_nmm2": optimal.get("fck_nmm2", inputs["fck_nmm2"]),
                 "fy_nmm2": optimal.get("fy_nmm2", inputs["fy_nmm2"]),
-                "total_cost": optimal.get("cost_breakdown", {}).get("total_cost", 45000),
+                "total_cost": optimal.get("cost_breakdown", {}).get(
+                    "total_cost", 45000
+                ),
                 "concrete_cost": optimal.get("cost_breakdown", {}).get(
                     "concrete_cost", 13500
                 ),
-                "steel_cost": optimal.get("cost_breakdown", {}).get("steel_cost", 22500),
+                "steel_cost": optimal.get("cost_breakdown", {}).get(
+                    "steel_cost", 22500
+                ),
                 "formwork_cost": optimal.get("cost_breakdown", {}).get(
                     "formwork_cost", 9000
                 ),
@@ -305,7 +298,7 @@ def main():
     page_header(
         title="Cost Optimizer",
         subtitle="Optimize beam design for minimum cost while meeting IS 456:2000 requirements. Compare different design alternatives and export results.",
-        icon="💰"
+        icon="💰",
     )
 
     # Sidebar - Input Selection
