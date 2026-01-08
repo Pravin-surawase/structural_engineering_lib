@@ -141,6 +141,9 @@ def create_beam_diagram(
     """
     fig = go.Figure()
 
+    # Handle None xu (before design is computed)
+    xu_valid = xu is not None and xu > 0
+
     # 1. Concrete section (light gray rectangle)
     fig.add_trace(go.Scatter(
         x=[0, b_mm, b_mm, 0, 0],
@@ -154,7 +157,7 @@ def create_beam_diagram(
     ))
 
     # 2. Compression zone (light blue shading above neutral axis)
-    if xu > 0:
+    if xu_valid:
         fig.add_trace(go.Scatter(
             x=[0, b_mm, b_mm, 0, 0],
             y=[D_mm, D_mm, D_mm - xu, D_mm - xu, D_mm],
@@ -168,30 +171,32 @@ def create_beam_diagram(
         ))
 
     # 3. Tension zone (light orange shading below neutral axis)
-    tension_depth = D_mm - xu
-    if tension_depth > 0:
-        fig.add_trace(go.Scatter(
-            x=[0, b_mm, b_mm, 0, 0],
-            y=[0, 0, D_mm - xu, D_mm - xu, 0],
-            fill="toself",
-            fillcolor="rgba(222, 143, 5, 0.15)",  # Colorblind-safe orange
-            line=dict(width=0),
-            mode="lines",
-            name="Tension Zone",
-            hovertemplate=f"Tension Zone<br>Depth: {tension_depth:.1f}mm<extra></extra>",
-            showlegend=True
-        ))
+    if xu_valid:
+        tension_depth = D_mm - xu
+        if tension_depth > 0:
+            fig.add_trace(go.Scatter(
+                x=[0, b_mm, b_mm, 0, 0],
+                y=[0, 0, D_mm - xu, D_mm - xu, 0],
+                fill="toself",
+                fillcolor="rgba(222, 143, 5, 0.15)",  # Colorblind-safe orange
+                line=dict(width=0),
+                mode="lines",
+                name="Tension Zone",
+                hovertemplate=f"Tension Zone<br>Depth: {tension_depth:.1f}mm<extra></extra>",
+                showlegend=True
+            ))
 
-    # 4. Neutral axis (red dashed line)
-    na_y = D_mm - xu
-    fig.add_trace(go.Scatter(
-        x=[0, b_mm],
-        y=[na_y, na_y],
-        mode="lines",
-        line=dict(color=CB_SAFE_RED, width=2, dash="dash"),
-        name="Neutral Axis",
-        hovertemplate=f"Neutral Axis<br>xu = {xu:.1f}mm from top<extra></extra>"
-    ))
+    # 4. Neutral axis (red dashed line) - only if xu is valid
+    if xu_valid:
+        na_y = D_mm - xu
+        fig.add_trace(go.Scatter(
+            x=[0, b_mm],
+            y=[na_y, na_y],
+            mode="lines",
+            line=dict(color=CB_SAFE_RED, width=2, dash="dash"),
+            name="Neutral Axis",
+            hovertemplate=f"Neutral Axis<br>xu = {xu:.1f}mm from top<extra></extra>"
+        ))
 
     # 5. Effective depth line (green dashed)
     ed_y = D_mm - d_mm
