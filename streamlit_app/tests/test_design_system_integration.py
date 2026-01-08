@@ -92,6 +92,8 @@ class TestTypographyScale:
         assert hasattr(TYPOGRAPHY, "heading_xl")
         assert hasattr(TYPOGRAPHY, "heading_lg")
         assert hasattr(TYPOGRAPHY, "heading_sm")
+        assert hasattr(TYPOGRAPHY, "body_lg")  # ADDED 2026-01-08
+        assert hasattr(TYPOGRAPHY, "body_md")  # ADDED 2026-01-08
         assert hasattr(TYPOGRAPHY, "body_sm")
 
         # Verify values match

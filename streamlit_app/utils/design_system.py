@@ -152,6 +152,8 @@ class TypographyScale:
     heading_xl: str = "28px"  # Same as h2_size
     heading_lg: str = "24px"  # Same as h3_size
     heading_sm: str = "20px"  # Same as h4_size
+    body_lg: str = "18px"     # Same as body_lg_size
+    body_md: str = "16px"     # Same as base_size
     body_sm: str = "14px"     # Same as body_sm_size
 
 
