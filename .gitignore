@@ -132,3 +132,8 @@ docs/_references/downloads_snapshot/
 # -----------------------------------------------------------------------------
 /docs/learning/
 learning-materials/
+
+# -----------------------------------------------------------------------------
+# Research Agent daily logs (local only, weekly/monthly summaries tracked)
+# -----------------------------------------------------------------------------
+research_logs/daily/

@@ -24,6 +24,7 @@ from . import (
 from .api_results import (
     CostBreakdown,
     CostOptimizationResult,
+    DesignAndDetailResult,
     DesignSuggestionsResult,
     OptimalDesign,
     SmartAnalysisResult,
@@ -55,6 +56,7 @@ __all__ = [
     "design_beam_is456",
     "check_beam_is456",
     "detail_beam_is456",
+    "design_and_detail_beam_is456",
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",
@@ -1114,6 +1116,169 @@ def detail_beam_is456(
         stirrup_spacing_mid=stirrup_spacing_mid_mm,
         stirrup_spacing_end=stirrup_spacing_end_mm,
         is_seismic=is_seismic,
+    )
+
+
+def design_and_detail_beam_is456(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: Optional[float] = None,
+    cover_mm: float = 40.0,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_support_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    is_seismic: bool = False,
+) -> DesignAndDetailResult:
+    """Design AND detail a beam in one call (IS 456:2000).
+
+    This is a convenience function that combines design_beam_is456() and
+    detail_beam_is456() into a single call. It:
+    1. Designs the beam (flexure + shear checks per IS 456)
+    2. Extracts required steel areas from design
+    3. Creates detailing with bar arrangements per SP 34
+
+    This eliminates the need to manually extract Ast from design and pass
+    it to the detailing function - perfect for quick prototyping and
+    Streamlit dashboards.
+
+    Args:
+        units: Units label (must be one of the IS456 aliases).
+        beam_id: Beam identifier (e.g., "B1", "FB-101").
+        story: Story/level name (e.g., "GF", "1F").
+        span_mm: Beam span (mm).
+        mu_knm: Factored bending moment (kN·m).
+        vu_kn: Factored shear (kN).
+        b_mm: Beam width (mm).
+        D_mm: Overall depth (mm).
+        d_mm: Effective depth (mm). If None, calculated as D_mm - cover_mm.
+        cover_mm: Clear cover (mm). Default: 40mm.
+        fck_nmm2: Concrete strength (N/mm²). Default: 25.
+        fy_nmm2: Steel yield strength (N/mm²). Default: 500.
+        d_dash_mm: Compression steel depth (mm). Default: 50.
+        asv_mm2: Area of stirrup legs (mm²). Default: 100 (2x8mm).
+        stirrup_dia_mm: Stirrup diameter (mm). Default: 8.
+        stirrup_spacing_support_mm: Stirrup spacing at supports (mm). Default: 150.
+        stirrup_spacing_mid_mm: Stirrup spacing at midspan (mm). Default: 200.
+        is_seismic: Apply IS 13920 detailing if True. Default: False.
+
+    Returns:
+        DesignAndDetailResult with:
+            - design: ComplianceCaseResult (flexure, shear, serviceability)
+            - detailing: BeamDetailingResult (bars, stirrups, Ld, lap)
+            - geometry: Dict of geometric properties
+            - materials: Dict of material properties
+            - is_ok: True if design is safe and detailing is valid
+            - summary(): Human-readable summary
+
+    Example:
+        >>> result = design_and_detail_beam_is456(
+        ...     units="IS456",
+        ...     beam_id="B1",
+        ...     story="GF",
+        ...     span_mm=5000,
+        ...     mu_knm=150,
+        ...     vu_kn=80,
+        ...     b_mm=300,
+        ...     D_mm=500,
+        ...     fck_nmm2=25,
+        ...     fy_nmm2=500,
+        ... )
+        >>> print(result.summary())
+        'B1@GF: 300×500mm, Ast=960mm², OK'
+        >>> print(f"Tension steel: {result.design.flexure.ast_required:.0f} mm²")
+        >>> print(f"Bottom bars: {result.detailing.bottom_bars}")
+
+    See Also:
+        - design_beam_is456(): Design-only (returns ComplianceCaseResult)
+        - detail_beam_is456(): Detailing-only (requires Ast as input)
+    """
+    _require_is456_units(units)
+
+    # Calculate effective depth if not provided
+    if d_mm is None:
+        d_mm = D_mm - cover_mm
+
+    # Step 1: Design the beam
+    design_result = design_beam_is456(
+        units=units,
+        case_id=f"{beam_id}@{story}",
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+    )
+
+    # Step 2: Extract steel areas from design
+    # For simplicity, use same Ast at all zones (conservative for gravity loads)
+    ast_required = design_result.flexure.ast_required
+    asc_required = design_result.flexure.asc_required
+
+    # Step 3: Create detailing
+    detail_result = detail_beam_is456(
+        units=units,
+        beam_id=beam_id,
+        story=story,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        span_mm=span_mm,
+        cover_mm=cover_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        ast_start_mm2=ast_required,
+        ast_mid_mm2=ast_required,
+        ast_end_mm2=ast_required,
+        asc_start_mm2=asc_required,
+        asc_mid_mm2=asc_required,
+        asc_end_mm2=asc_required,
+        stirrup_dia_mm=stirrup_dia_mm,
+        stirrup_spacing_start_mm=stirrup_spacing_support_mm,
+        stirrup_spacing_mid_mm=stirrup_spacing_mid_mm,
+        stirrup_spacing_end_mm=stirrup_spacing_support_mm,
+        is_seismic=is_seismic,
+    )
+
+    # Combine results
+    is_ok = design_result.is_ok and detail_result.is_valid
+    remarks_parts = []
+    if design_result.remarks:
+        remarks_parts.append(design_result.remarks)
+    if detail_result.remarks:
+        remarks_parts.append(detail_result.remarks)
+
+    return DesignAndDetailResult(
+        beam_id=beam_id,
+        story=story,
+        design=design_result,
+        detailing=detail_result,
+        geometry={
+            "b_mm": b_mm,
+            "D_mm": D_mm,
+            "d_mm": d_mm,
+            "span_mm": span_mm,
+            "cover_mm": cover_mm,
+        },
+        materials={
+            "fck_nmm2": fck_nmm2,
+            "fy_nmm2": fy_nmm2,
+        },
+        is_ok=is_ok,
+        remarks="; ".join(remarks_parts) if remarks_parts else "",
     )
 
 

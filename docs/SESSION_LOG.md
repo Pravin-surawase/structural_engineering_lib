@@ -4,21 +4,32 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-07 — Session
+## 2026-01-07 — Session (Hygiene P0 Closeout)
+
+**Focus:** Complete TASK-280 hygiene sweep and document closeout.
 
 ### Summary
--
+- Completed TASK-280 hygiene sweep; all P0 items resolved.
+- Created missing legal docs and normalized doc naming.
+- Link checker now reports only 4 false positives from code example syntax.
 
 ### PRs Merged
 | PR | Summary |
 |----|---------|
-| #XX | - |
+| #285 | TASK-280 hygiene sweep (links, naming, archives, repo health) |
 
 ### Key Deliverables
--
+- `LICENSE_ENGINEERING.md`
+- `docs/legal/usage-guidelines.md`
+- `docs/contributing/naming-conventions.md`
+- `docs/reference/repo-health-baseline-2026-01-07.md`
+- `docs/planning/dependency-audit-2026-01-07.md`
+- `docs/planning/docs-structure-review-2026-01-07.md`
+- `docs/planning/readme-audit-2026-01-07.md`
 
 ### Notes
--
+- P1/P2 hygiene items deferred for incremental cleanup.
+- Active worktrees retained for ongoing agent work.
 
 
 ## 2026-01-06 — Session (Professional Standards & Code Quality)

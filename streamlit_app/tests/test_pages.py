@@ -67,7 +67,8 @@ class TestMainApp:
 
         # Check for required imports
         assert "import streamlit as st" in content
-        assert "st.set_page_config" in content
+        # Check for page config (either direct or via setup_page helper)
+        assert ("st.set_page_config" in content or "setup_page" in content)
 
 
 class TestPageStructure:
@@ -82,10 +83,12 @@ class TestPageStructure:
                 continue
 
             content = page_file.read_text()
-            # Each page should set a title or header
+            # Each page should set a title/header or use modern layout helpers
             assert ("st.title" in content or
                     "st.header" in content or
-                    "st.set_page_config" in content), \
+                    "st.set_page_config" in content or
+                    "setup_page" in content or
+                    "page_header" in content), \
                    f"Page {page_file.name} missing title/header"
 
     def test_pages_import_streamlit(self):

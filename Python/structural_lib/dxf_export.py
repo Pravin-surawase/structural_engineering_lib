@@ -1336,6 +1336,132 @@ def generate_multi_beam_dxf(
 
 
 # =============================================================================
+# Convenience Functions
+# =============================================================================
+
+
+def quick_dxf(
+    detailing: "BeamDetailingResult",
+    output_path: Optional[str] = None,
+    include_title_block: bool = True,
+    project_name: str = "",
+) -> str:
+    """
+    One-liner DXF generation with sensible defaults.
+
+    This is a convenience wrapper around generate_beam_dxf() that provides
+    a simple interface for quick DXF generation with all annotations,
+    dimensions, and section cuts enabled by default.
+
+    Args:
+        detailing: BeamDetailingResult from detailing module
+        output_path: Path to save DXF file. If None, uses
+                    "{beam_id}_{story}_detail.dxf" in current directory.
+        include_title_block: Include professional title block (default: True)
+        project_name: Project name for title block (optional)
+
+    Returns:
+        Path to generated DXF file
+
+    Example:
+        >>> from structural_lib import api, dxf_export
+        >>> result = api.design_and_detail_beam_is456(
+        ...     units="IS456", beam_id="B1", story="GF", span_mm=5000,
+        ...     mu_knm=150, vu_kn=80, b_mm=300, D_mm=500
+        ... )
+        >>> path = dxf_export.quick_dxf(result.detailing)
+        >>> print(f"DXF saved to: {path}")
+        'DXF saved to: B1_GF_detail.dxf'
+
+        >>> # With custom output path
+        >>> path = dxf_export.quick_dxf(result.detailing, "drawings/beam_B1.dxf")
+
+    See Also:
+        generate_beam_dxf(): Full control over all DXF options
+        generate_multi_beam_dxf(): Multiple beams on one sheet
+    """
+    check_ezdxf()
+
+    # Generate default output path if not provided
+    if output_path is None:
+        output_path = f"{detailing.beam_id}_{detailing.story}_detail.dxf"
+
+    # Build title block info
+    title_block_info = None
+    if include_title_block:
+        title_block_info = {
+            "title": f"Beam {detailing.beam_id} - Detail Drawing",
+            "beam_id": detailing.beam_id,
+            "story": detailing.story,
+            "span_line": f"Span: {detailing.span:.0f} mm",
+            "project": project_name,
+        }
+
+    return generate_beam_dxf(
+        detailing=detailing,
+        output_path=output_path,
+        include_dimensions=True,
+        include_annotations=True,
+        include_section_cuts=True,
+        include_title_block=include_title_block,
+        title_block=title_block_info,
+    )
+
+
+def quick_dxf_bytes(
+    detailing: "BeamDetailingResult",
+    include_title_block: bool = True,
+    project_name: str = "",
+) -> bytes:
+    """
+    Generate DXF as bytes for in-memory use (e.g., Streamlit download).
+
+    This function generates a DXF drawing and returns the raw bytes,
+    useful for web applications where you need to provide a download
+    without writing to disk.
+
+    Args:
+        detailing: BeamDetailingResult from detailing module
+        include_title_block: Include professional title block (default: True)
+        project_name: Project name for title block (optional)
+
+    Returns:
+        DXF file contents as bytes
+
+    Example:
+        >>> import streamlit as st
+        >>> from structural_lib import dxf_export
+        >>> dxf_bytes = dxf_export.quick_dxf_bytes(result.detailing)
+        >>> st.download_button(
+        ...     "Download DXF",
+        ...     data=dxf_bytes,
+        ...     file_name="beam_detail.dxf",
+        ...     mime="application/dxf"
+        ... )
+    """
+    import tempfile
+
+    # Generate to temp file, read bytes, clean up
+    with tempfile.NamedTemporaryFile(suffix=".dxf", delete=False) as tmp:
+        tmp_path = tmp.name
+
+    try:
+        quick_dxf(
+            detailing=detailing,
+            output_path=tmp_path,
+            include_title_block=include_title_block,
+            project_name=project_name,
+        )
+        with open(tmp_path, "rb") as f:
+            return f.read()
+    finally:
+        import os
+
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
+
+# =============================================================================
 # CLI Interface
 # =============================================================================
 
