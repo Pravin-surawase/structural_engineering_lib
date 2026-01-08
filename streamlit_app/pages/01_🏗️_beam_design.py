@@ -525,6 +525,7 @@ with col_preview:
             bar_dia = flexure.get("bar_dia", 16)
             num_bars = flexure.get("num_bars", 3)
             num_layers = flexure.get("num_layers", 1)
+            spacing_mm = flexure.get("spacing_mm", 0)  # Actual spacing from optimizer
             is_doubly = flexure.get("is_doubly_reinforced", False)
             asc_required = flexure.get("asc_required", 0)
 
@@ -542,12 +543,23 @@ with col_preview:
             # TENSION STEEL: Arrange in layers per IS 456 practice
             if num_bars > 0:
                 if num_layers == 1:
-                    # Single layer - distribute evenly
-                    spacing_h = (b_mm - 2 * cover - bar_dia) / max(num_bars - 1, 1)
-                    rebar_y = cover + bar_dia / 2
-                    for i in range(num_bars):
-                        x = cover + bar_dia / 2 + i * spacing_h
-                        rebar_positions.append((x, rebar_y))
+                    # Single layer - distribute evenly with actual spacing
+                    # Use optimizer spacing if available, else calculate
+                    if spacing_mm > 0 and num_bars > 1:
+                        # Use library-calculated spacing (center-to-center)
+                        total_width_bars = (num_bars - 1) * spacing_mm + bar_dia
+                        x_start = (b_mm - total_width_bars) / 2
+                        rebar_y = cover + bar_dia / 2
+                        for i in range(num_bars):
+                            x = x_start + bar_dia / 2 + i * spacing_mm
+                            rebar_positions.append((x, rebar_y))
+                    else:
+                        # Fallback: distribute evenly
+                        spacing_h = (b_mm - 2 * cover - bar_dia) / max(num_bars - 1, 1)
+                        rebar_y = cover + bar_dia / 2
+                        for i in range(num_bars):
+                            x = cover + bar_dia / 2 + i * spacing_h
+                            rebar_positions.append((x, rebar_y))
                 else:
                     # Multiple layers - split bars between layers
                     bars_per_layer = num_bars // num_layers
@@ -555,12 +567,24 @@ with col_preview:
 
                     for layer_idx in range(num_layers):
                         layer_bars = bars_per_layer + (1 if layer_idx < extra_bars else 0)
-                        spacing_h = (b_mm - 2 * cover - bar_dia) / max(layer_bars - 1, 1)
+                        # Calculate spacing for this layer
+                        if spacing_mm > 0 and layer_bars > 1:
+                            # Use library spacing
+                            total_width_bars = (layer_bars - 1) * spacing_mm + bar_dia
+                            x_start = (b_mm - total_width_bars) / 2
+                        else:
+                            # Fallback spacing
+                            spacing_h = (b_mm - 2 * cover - bar_dia) / max(layer_bars - 1, 1)
+                            x_start = cover + bar_dia / 2
+
                         # Layer spacing: bar_dia + clear spacing (minimum 25mm per IS 456)
                         rebar_y = cover + bar_dia / 2 + layer_idx * (bar_dia + 25)
 
                         for i in range(layer_bars):
-                            x = cover + bar_dia / 2 + i * spacing_h
+                            if spacing_mm > 0 and layer_bars > 1:
+                                x = x_start + bar_dia / 2 + i * spacing_mm
+                            else:
+                                x = x_start + i * spacing_h
                             rebar_positions.append((x, rebar_y))
 
             # COMPRESSION STEEL: For doubly reinforced sections
@@ -597,6 +621,17 @@ with col_preview:
             )
 
             st.plotly_chart(fig, use_container_width=True, key="beam_section_viz")
+
+            # Show spacing info if available
+            if spacing_mm > 0:
+                min_spacing_is456 = max(bar_dia, 20 + 5, 25)  # IS 456 Cl. 26.3.2
+                spacing_ok = spacing_mm >= min_spacing_is456
+                spacing_status = "✅" if spacing_ok else "⚠️"
+
+                st.caption(
+                    f"{spacing_status} **Bar spacing:** {spacing_mm:.1f} mm c/c "
+                    f"(min required: {min_spacing_is456:.0f} mm per IS 456 Cl. 26.3.2)"
+                )
 
             st.divider()
 

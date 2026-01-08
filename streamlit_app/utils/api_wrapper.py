@@ -37,12 +37,45 @@ _LIBRARY_AVAILABLE = False
 _IMPORT_ERROR = ""
 try:
     from structural_lib.api import design_beam_is456, smart_analyze_design
+    from structural_lib.rebar_optimizer import optimize_bar_arrangement
+    from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
 
     _LIBRARY_AVAILABLE = True
 except ImportError as e:
     # Library not available - will use fallback calculations
     _LIBRARY_AVAILABLE = False
     _IMPORT_ERROR = str(e)
+    # Stub functions for when library is not available
+    optimize_bar_arrangement = None
+    calculate_bar_spacing = None
+    check_min_spacing = None
+
+
+def _manual_bar_arrangement(ast_required: float, b_mm: float, cover: float) -> tuple[dict, int]:
+    """Fallback manual bar arrangement when library optimizer is not available."""
+    bar_dia_options = [12, 16, 20, 25, 32]
+    best_bars = None
+    for dia in bar_dia_options:
+        area_per_bar = math.pi * (dia**2) / 4
+        num_bars = math.ceil(ast_required / area_per_bar)
+        if num_bars >= 2:
+            ast_provided = num_bars * area_per_bar
+            if ast_provided >= ast_required:
+                best_bars = {"dia": dia, "num": num_bars, "area": ast_provided}
+                break
+
+    if not best_bars:
+        area_per_bar = math.pi * (16**2) / 4
+        num_bars = max(3, math.ceil(ast_required / area_per_bar))
+        best_bars = {"dia": 16, "num": num_bars, "area": num_bars * area_per_bar}
+
+    # Estimate number of layers (rough calculation)
+    clear_spacing = (b_mm - 2 * cover - best_bars["num"] * best_bars["dia"]) / max(
+        best_bars["num"] - 1, 1
+    )
+    num_layers = 1 if clear_spacing >= 25 else 2
+
+    return best_bars, num_layers
 
 
 def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
@@ -60,28 +93,43 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
     ast_required = flexure.ast_required
     ast_min = 0.85 * b_mm * d_mm / fy_nmm2
 
-    # Calculate bar arrangement from ast_required
-    bar_dia_options = [12, 16, 20, 25, 32]
-    best_bars = None
-    for dia in bar_dia_options:
-        area_per_bar = math.pi * (dia**2) / 4
-        num_bars = math.ceil(ast_required / area_per_bar)
-        if num_bars >= 2:
-            ast_provided = num_bars * area_per_bar
-            if ast_provided >= ast_required:
-                best_bars = {"dia": dia, "num": num_bars, "area": ast_provided}
-                break
+    # Use library's optimize_bar_arrangement for IS 456 compliant bar selection
+    if _LIBRARY_AVAILABLE and optimize_bar_arrangement is not None:
+        try:
+            # Use library optimizer with IS 456 spacing checks
+            result = optimize_bar_arrangement(
+                ast_required_mm2=ast_required,
+                b_mm=b_mm,
+                cover_mm=cover,
+                stirrup_dia_mm=8.0,  # Standard stirrup
+                allowed_dia_mm=[12, 16, 20, 25, 32],  # Standard bar sizes
+                max_layers=2,
+                objective="min_bar_count",  # Minimize number of bars
+                agg_size_mm=20.0,  # Standard aggregate size
+                min_total_bars=2,
+            )
 
-    if not best_bars:
-        area_per_bar = math.pi * (16**2) / 4
-        num_bars = max(3, math.ceil(ast_required / area_per_bar))
-        best_bars = {"dia": 16, "num": num_bars, "area": num_bars * area_per_bar}
-
-    # Number of layers
-    clear_spacing = (b_mm - 2 * cover - best_bars["num"] * best_bars["dia"]) / max(
-        best_bars["num"] - 1, 1
-    )
-    num_layers = 1 if clear_spacing >= 25 else 2
+            if result.is_feasible and result.arrangement:
+                arr = result.arrangement
+                best_bars = {
+                    "dia": arr.diameter,
+                    "num": arr.count,
+                    "area": arr.area_provided,
+                }
+                num_layers = arr.layers
+                spacing_mm = arr.spacing
+            else:
+                # Fallback to manual calculation
+                raise ValueError("Optimizer failed: " + result.remarks)
+        except Exception as e:
+            # Fallback to manual calculation if optimizer fails
+            st.warning(f"⚠️ Bar optimizer failed, using fallback: {str(e)[:80]}")
+            best_bars, num_layers = _manual_bar_arrangement(ast_required, b_mm, cover)
+            spacing_mm = 0.0
+    else:
+        # Library not available - use manual calculation
+        best_bars, num_layers = _manual_bar_arrangement(ast_required, b_mm, cover)
+        spacing_mm = 0.0
 
     # Check doubly reinforced
     is_doubly = (
@@ -109,6 +157,7 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
         "bar_dia": best_bars["dia"],
         "num_bars": best_bars["num"],
         "num_layers": num_layers,
+        "spacing_mm": round(spacing_mm, 1),  # Actual spacing from optimizer
         "is_doubly_reinforced": is_doubly,
         "asc_required": (
             round(flexure.asc_required, 0)
