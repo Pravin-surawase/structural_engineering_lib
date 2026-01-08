@@ -38,6 +38,7 @@ from components.visualizations import (
     create_sensitivity_tornado,
     create_compliance_visual
 )
+from components.preview import render_real_time_preview
 from utils.api_wrapper import cached_design, cached_smart_analysis
 from utils.validation import validate_dimension, format_error_message
 from utils.layout import setup_page, page_header, section_header, three_column_metrics, info_panel
@@ -82,13 +83,17 @@ page_header(
 )
 
 # ============================================================================
-# SIDEBAR: Input Parameters
+# TWO-COLUMN LAYOUT: Input + Preview/Results
 # ============================================================================
 
-with st.sidebar:
+# Create two-column layout (40% input, 60% preview/results)
+col_input, col_preview = st.columns([2, 3], gap="large")
+
+# Left column: Input parameters
+with col_input:
     st.header("📋 Input Parameters")
 
-    # Theme toggle at top
+    # Theme toggle
     render_theme_toggle()
 
     st.markdown("---")
@@ -249,271 +254,249 @@ with st.sidebar:
             clear_cache()
             st.success("Cache cleared!")
 
-# ============================================================================
-# MAIN AREA: Results Display
-# ============================================================================
+# Right column: Preview or Results
+with col_preview:
+    st.header("📊 Design Preview")
 
-if not st.session_state.beam_inputs['design_computed']:
-    # Welcome message with modern info panel
-    info_panel(
-        message="""
-        **Getting Started:**
-        1. Adjust input parameters in the sidebar (left)
-        2. Click "🚀 Analyze Design" to compute results
-        3. Review results in the tabs below
+    # Show preview or results based on state
+    if st.session_state.beam_inputs.get('design_computed', False):
+        # Show full results (existing tabs - moved from main area)
+        result = st.session_state.beam_inputs['design_result']
 
-        **Features:**
-        - ✅ Real-time validation and feedback
-        - 📊 Interactive visualizations
-        - 📋 IS 456 compliance checking
-        - 💰 Cost optimization suggestions
-
-        All calculations per **IS 456:2000** - Plain and Reinforced Concrete - Code of Practice
-        """,
-        title="Welcome to the IS 456 Beam Design Tool!",
-        icon="👋"
-    )
-
-    # Example values
-    with st.expander("📚 Example: Simply Supported Beam"):
-        st.markdown("""
-        **Problem:** Design a simply supported beam
-        - Span: 5000 mm
-        - Width: 300 mm
-        - Depth: 500 mm (effective: 450 mm)
-        - Materials: M25 concrete, Fe500 steel
-        - Loading: Moment = 120 kNm, Shear = 80 kN
-        - Exposure: Moderate
-
-        **Expected Result:**
-        - Steel area required: ~600 mm²
-        - Typical arrangement: 3-16mm bars
-        - Stirrups: 2L-8mm @ 175mm c/c
-        """)
-
-else:
-    # Display results
-    result = st.session_state.beam_inputs['design_result']
-
-    # Success/Failure banner
-    if result.get('is_safe', False):
-        st.success("✅ **Design is SAFE** - Meets all IS 456 requirements")
-    else:
-        st.error("❌ **Design is UNSAFE** - Does not meet IS 456 requirements. Modify dimensions or materials.")
-
-    st.divider()
-
-    # Results tabs
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "📊 Summary",
-        "🎨 Visualization",
-        "💰 Cost Analysis",
-        "✅ Compliance"
-    ])
-
-    # ============================================================================
-    # TAB 1: Summary
-    # ============================================================================
-    with tab1:
-        section_header("Design Summary", icon="📊", divider=False)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        # Key metrics in modern card format
-        ast_req = result.get('flexure', {}).get('ast_required', 0)
-        spacing = result.get('shear', {}).get('spacing', 0)
-        utilization = result.get('flexure', {}).get('ast_required', 0) / (st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm']) * 100 if result.get('flexure', {}).get('ast_required', 0) > 0 else 0
-
-        # Use three_column_metrics helper for consistent layout
-        col1, col2, col3, col4 = st.columns(4)
-
-        with col1:
-            st.metric(
-                "Steel Area Required",
-                f"{ast_req:.0f} mm²",
-                help="Tension steel area per IS 456 Cl. 26.5.1"
-            )
-        with col2:
-            st.metric(
-                "Stirrup Spacing",
-                f"{spacing:.0f} mm c/c" if spacing > 0 else "—",
-                help="Shear reinforcement spacing per IS 456 Cl. 26.5.1.6"
-            )
-        with col3:
-            st.metric(
-                "Flexure Utilization",
-                f"{utilization:.1f}%",
-                help="Percentage of flexural capacity utilized"
-            )
-        with col4:
-            st.metric(
-                "Overall Status",
-                "✅ SAFE" if result.get('is_safe') else "❌ UNSAFE",
-                help="Overall design safety status"
-            )
-
-        st.markdown("<br><br>", unsafe_allow_html=True)
-
-        # Detailed results in two columns
-        col_left, col_right = st.columns(2)
-
-        with col_left:
-            section_header("Flexure Design", icon="🔹", divider=True)
-            flexure = result.get('flexure', {})
-            st.write(f"- **Ast required:** {flexure.get('ast_required', 0):.0f} mm²")
-            st.write(f"- **Status:** {'✅ Safe' if flexure.get('is_safe', False) else '❌ Unsafe'}")
-
-            st.markdown("<br>", unsafe_allow_html=True)
-            section_header("Material Properties", icon="🔸", divider=True)
-            st.write(f"- **Concrete:** {st.session_state.beam_inputs['concrete_grade']} (fck = {concrete['fck']} N/mm²)")
-            st.write(f"- **Steel:** {st.session_state.beam_inputs['steel_grade']} (fy = {steel['fy']} N/mm²)")
-
-        with col_right:
-            section_header("Shear Design", icon="🔹", divider=True)
-            shear = result.get('shear', {})
-            st.write(f"- **Spacing:** {shear.get('spacing', 0):.0f} mm c/c")
-            st.write(f"- **Status:** {'✅ Safe' if shear.get('is_safe', False) else '❌ Unsafe'}")
-
-            st.markdown("#### 🔸 Geometry")
-            st.write(f"- **Span:** {st.session_state.beam_inputs['span_mm']:.0f} mm")
-            st.write(f"- **Section:** {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm")
-            st.write(f"- **Effective depth:** {st.session_state.beam_inputs['d_mm']:.0f} mm")
-
-    # ============================================================================
-    # TAB 2: Visualization
-    # ============================================================================
-    with tab2:
-        st.subheader("Beam Cross-Section")
-
-        # Sample rebar positions (3 bars at bottom)
-        # TODO: Get actual positions from design result
-        cover = exposure.get('cover', 30)
-        bar_dia = 16  # Placeholder
-        spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover) / 2
-        rebar_y = cover + bar_dia / 2
-
-        rebar_positions = [
-            (cover + bar_dia / 2, rebar_y),
-            (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
-            (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
-        ]
-
-        xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Placeholder neutral axis
-
-        fig = create_beam_diagram(
-            b_mm=st.session_state.beam_inputs['b_mm'],
-            D_mm=st.session_state.beam_inputs['D_mm'],
-            d_mm=st.session_state.beam_inputs['d_mm'],
-            rebar_positions=rebar_positions,
-            xu=xu,
-            bar_dia=bar_dia,
-            cover=cover
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
+        # Success/Failure banner
+        if result.get('is_safe', False):
+            st.success("✅ **Design is SAFE** - Meets all IS 456 requirements")
+        else:
+            st.error("❌ **Design is UNSAFE** - Does not meet IS 456 requirements. Modify dimensions or materials.")
 
         st.divider()
 
-        # Utilization gauges
-        st.subheader("Utilization Gauges")
+        # Results tabs
+        tab1, tab2, tab3, tab4 = st.tabs([
+            "📊 Summary",
+            "🎨 Visualization",
+            "💰 Cost Analysis",
+            "✅ Compliance"
+        ])
 
-        col1, col2, col3 = st.columns(3)
+        # ============================================================================
+        # TAB 1: Summary
+        # ============================================================================
+        with tab1:
+            section_header("Design Summary", icon="📊", divider=False)
 
-        with col1:
-            fig_flex = create_utilization_gauge(
-                value=min(utilization / 100, 1.0),
-                label="Flexure"
+            st.markdown("<br>", unsafe_allow_html=True)
+
+            # Key metrics in modern card format
+            ast_req = result.get('flexure', {}).get('ast_required', 0)
+            spacing = result.get('shear', {}).get('spacing', 0)
+            utilization = result.get('flexure', {}).get('ast_required', 0) / (st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm']) * 100 if result.get('flexure', {}).get('ast_required', 0) > 0 else 0
+
+            # Use three_column_metrics helper for consistent layout
+            col1, col2, col3, col4 = st.columns(4)
+
+            with col1:
+                st.metric(
+                    "Steel Area Required",
+                    f"{ast_req:.0f} mm²",
+                    help="Tension steel area per IS 456 Cl. 26.5.1"
+                )
+            with col2:
+                st.metric(
+                    "Stirrup Spacing",
+                    f"{spacing:.0f} mm c/c" if spacing > 0 else "—",
+                    help="Shear reinforcement spacing per IS 456 Cl. 26.5.1.6"
+                )
+            with col3:
+                st.metric(
+                    "Flexure Utilization",
+                    f"{utilization:.1f}%",
+                    help="Percentage of flexural capacity utilized"
+                )
+            with col4:
+                st.metric(
+                    "Overall Status",
+                    "✅ SAFE" if result.get('is_safe') else "❌ UNSAFE",
+                    help="Overall design safety status"
+                )
+
+            st.markdown("<br><br>", unsafe_allow_html=True)
+
+            # Detailed results in two columns
+            col_left, col_right = st.columns(2)
+
+            with col_left:
+                section_header("Flexure Design", icon="🔹", divider=True)
+                flexure = result.get('flexure', {})
+                st.write(f"- **Ast required:** {flexure.get('ast_required', 0):.0f} mm²")
+                st.write(f"- **Status:** {'✅ Safe' if flexure.get('is_safe', False) else '❌ Unsafe'}")
+
+                st.markdown("<br>", unsafe_allow_html=True)
+                section_header("Material Properties", icon="🔸", divider=True)
+                st.write(f"- **Concrete:** {st.session_state.beam_inputs['concrete_grade']} (fck = {concrete['fck']} N/mm²)")
+                st.write(f"- **Steel:** {st.session_state.beam_inputs['steel_grade']} (fy = {steel['fy']} N/mm²)")
+
+            with col_right:
+                section_header("Shear Design", icon="🔹", divider=True)
+                shear = result.get('shear', {})
+                st.write(f"- **Spacing:** {shear.get('spacing', 0):.0f} mm c/c")
+                st.write(f"- **Status:** {'✅ Safe' if shear.get('is_safe', False) else '❌ Unsafe'}")
+
+                st.markdown("#### 🔸 Geometry")
+                st.write(f"- **Span:** {st.session_state.beam_inputs['span_mm']:.0f} mm")
+                st.write(f"- **Section:** {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm")
+                st.write(f"- **Effective depth:** {st.session_state.beam_inputs['d_mm']:.0f} mm")
+
+        # ============================================================================
+        # TAB 2: Visualization
+        # ============================================================================
+        with tab2:
+            st.subheader("Beam Cross-Section")
+
+            # Sample rebar positions (3 bars at bottom)
+            # TODO: Get actual positions from design result
+            cover = exposure.get('cover', 30)
+            bar_dia = 16  # Placeholder
+            spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover) / 2
+            rebar_y = cover + bar_dia / 2
+
+            rebar_positions = [
+                (cover + bar_dia / 2, rebar_y),
+                (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
+                (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
+            ]
+
+            xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Placeholder neutral axis
+
+            fig = create_beam_diagram(
+                b_mm=st.session_state.beam_inputs['b_mm'],
+                D_mm=st.session_state.beam_inputs['D_mm'],
+                d_mm=st.session_state.beam_inputs['d_mm'],
+                rebar_positions=rebar_positions,
+                xu=xu,
+                bar_dia=bar_dia,
+                cover=cover
             )
-            st.plotly_chart(fig_flex, use_container_width=True)
 
-        with col2:
-            shear_util = 0.65  # Placeholder
-            fig_shear = create_utilization_gauge(
-                value=shear_util,
-                label="Shear"
-            )
-            st.plotly_chart(fig_shear, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
 
-        with col3:
-            deflection_util = 0.50  # Placeholder
-            fig_defl = create_utilization_gauge(
-                value=deflection_util,
-                label="Deflection"
-            )
-            st.plotly_chart(fig_defl, use_container_width=True)
+            st.divider()
 
-    # ============================================================================
-    # TAB 3: Cost Analysis
-    # ============================================================================
-    with tab3:
-        st.subheader("Cost Comparison")
+            # Utilization gauges
+            st.subheader("Utilization Gauges")
 
-        # Sample alternatives (placeholder data)
-        alternatives = [
-            {'bar_arrangement': '3-16mm', 'cost_per_meter': 87.45, 'is_optimal': True, 'area_provided': 603},
-            {'bar_arrangement': '4-14mm', 'cost_per_meter': 89.20, 'is_optimal': False, 'area_provided': 616},
-            {'bar_arrangement': '2-20mm', 'cost_per_meter': 92.30, 'is_optimal': False, 'area_provided': 628},
-            {'bar_arrangement': '5-12mm', 'cost_per_meter': 85.10, 'is_optimal': False, 'area_provided': 565},
-        ]
+            col1, col2, col3 = st.columns(3)
 
-        fig_cost = create_cost_comparison(alternatives)
-        st.plotly_chart(fig_cost, use_container_width=True)
+            with col1:
+                fig_flex = create_utilization_gauge(
+                    value=min(utilization / 100, 1.0),
+                    label="Flexure"
+                )
+                st.plotly_chart(fig_flex, use_container_width=True)
 
-        st.info("""
-        💡 **Cost Optimization Tips:**
-        - Use standard bar sizes (12, 16, 20, 25 mm)
-        - Minimize number of bar diameters
-        - Consider constructability and spacing
-        - Balance material cost vs labor cost
-        """)
+            with col2:
+                shear_util = 0.65  # Placeholder
+                fig_shear = create_utilization_gauge(
+                    value=shear_util,
+                    label="Shear"
+                )
+                st.plotly_chart(fig_shear, use_container_width=True)
 
-    # ============================================================================
-    # TAB 4: Compliance
-    # ============================================================================
-    with tab4:
-        st.subheader("IS 456:2000 Compliance Checklist")
+            with col3:
+                deflection_util = 0.50  # Placeholder
+                fig_defl = create_utilization_gauge(
+                    value=deflection_util,
+                    label="Deflection"
+                )
+                st.plotly_chart(fig_defl, use_container_width=True)
 
-        # Sample compliance checks (placeholder data)
-        checks = [
-            {
-                'clause': '26.5.1.1(a)',
-                'description': 'Minimum tension reinforcement',
-                'status': 'pass',
-                'actual_value': ast_req,
-                'limit_value': 0.85 * st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm'] / steel['fy'],
-                'unit': 'mm²',
-                'details': 'Ast,min = 0.85 bd / fy'
-            },
-            {
-                'clause': '26.5.1.1(b)',
-                'description': 'Maximum tension reinforcement',
-                'status': 'pass',
-                'actual_value': ast_req,
-                'limit_value': 0.04 * st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['D_mm'],
-                'unit': 'mm²',
-                'details': 'Ast,max = 0.04 bD'
-            },
-            {
-                'clause': '26.5.1.5',
-                'description': 'Maximum spacing of tension bars',
-                'status': 'pass',
-                'actual_value': 150,
-                'limit_value': min(3 * st.session_state.beam_inputs['d_mm'], 300),
-                'unit': 'mm',
-                'details': 'Max spacing = min(3d, 300mm)'
-            },
-            {
-                'clause': '26.5.1.6',
-                'description': 'Minimum shear reinforcement',
-                'status': 'pass',
-                'actual_value': spacing,
-                'limit_value': 0.75 * st.session_state.beam_inputs['d_mm'],
-                'unit': 'mm',
-                'details': 'Max spacing = 0.75d for vertical stirrups'
-            }
-        ]
+        # ============================================================================
+        # TAB 3: Cost Analysis
+        # ============================================================================
+        with tab3:
+            st.subheader("Cost Comparison")
+
+            # Sample alternatives (placeholder data)
+            alternatives = [
+                {'bar_arrangement': '3-16mm', 'cost_per_meter': 87.45, 'is_optimal': True, 'area_provided': 603},
+                {'bar_arrangement': '4-14mm', 'cost_per_meter': 89.20, 'is_optimal': False, 'area_provided': 616},
+                {'bar_arrangement': '2-20mm', 'cost_per_meter': 92.30, 'is_optimal': False, 'area_provided': 628},
+                {'bar_arrangement': '5-12mm', 'cost_per_meter': 85.10, 'is_optimal': False, 'area_provided': 565},
+            ]
+
+            fig_cost = create_cost_comparison(alternatives)
+            st.plotly_chart(fig_cost, use_container_width=True)
+
+            st.info("""
+            💡 **Cost Optimization Tips:**
+            - Use standard bar sizes (12, 16, 20, 25 mm)
+            - Minimize number of bar diameters
+            - Consider constructability and spacing
+            - Balance material cost vs labor cost
+            """)
+
+        # ============================================================================
+        # TAB 4: Compliance
+        # ============================================================================
+        with tab4:
+            st.subheader("IS 456:2000 Compliance Checklist")
+
+            # Sample compliance checks (placeholder data)
+            checks = [
+                {
+                    'clause': '26.5.1.1(a)',
+                    'description': 'Minimum tension reinforcement',
+                    'status': 'pass',
+                    'actual_value': ast_req,
+                    'limit_value': 0.85 * st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm'] / steel['fy'],
+                    'unit': 'mm²',
+                    'details': 'Ast,min = 0.85 bd / fy'
+                },
+                {
+                    'clause': '26.5.1.1(b)',
+                    'description': 'Maximum tension reinforcement',
+                    'status': 'pass',
+                    'actual_value': ast_req,
+                    'limit_value': 0.04 * st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['D_mm'],
+                    'unit': 'mm²',
+                    'details': 'Ast,max = 0.04 bD'
+                },
+                {
+                    'clause': '26.5.1.5',
+                    'description': 'Maximum spacing of tension bars',
+                    'status': 'pass',
+                    'actual_value': 150,
+                    'limit_value': min(3 * st.session_state.beam_inputs['d_mm'], 300),
+                    'unit': 'mm',
+                    'details': 'Max spacing = min(3d, 300mm)'
+                },
+                {
+                    'clause': '26.5.1.6',
+                    'description': 'Minimum shear reinforcement',
+                    'status': 'pass',
+                    'actual_value': spacing,
+                    'limit_value': 0.75 * st.session_state.beam_inputs['d_mm'],
+                    'unit': 'mm',
+                    'details': 'Max spacing = 0.75d for vertical stirrups'
+                }
+            ]
 
         create_compliance_visual(checks)
+
+    else:
+        # Show real-time preview when design not yet computed
+        render_real_time_preview(
+            span_mm=st.session_state.beam_inputs['span_mm'],
+            b_mm=st.session_state.beam_inputs['b_mm'],
+            D_mm=st.session_state.beam_inputs['D_mm'],
+            d_mm=st.session_state.beam_inputs['d_mm'],
+            concrete_grade=concrete['grade'],
+            steel_grade=steel['grade'],
+            mu_knm=st.session_state.beam_inputs['mu_knm'],
+            vu_kn=st.session_state.beam_inputs['vu_kn'],
+            exposure=st.session_state.beam_inputs['exposure'],
+            support_condition=st.session_state.beam_inputs['support_condition']
+        )
 
 # ============================================================================
 # FOOTER
