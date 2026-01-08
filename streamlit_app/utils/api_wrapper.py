@@ -185,7 +185,7 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
         else False
     )
 
-    return {
+    result_dict = {
         "is_safe": flexure.is_safe,
         "ast_required": round(flexure.ast_required, 0),
         "ast_provided": round(best_bars["area"], 0),
@@ -211,7 +211,19 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
             if hasattr(flexure, "asc_required") and flexure.asc_required
             else 0
         ),
+        # Issue #3: Add tension_steel nested structure for cost optimizer
+        "tension_steel": {
+            "num": best_bars["num"],
+            "dia": best_bars["dia"],
+            "area": best_bars["area"],
+        },
     }
+
+    # Issue #2: Propagate bar alternatives from kwargs
+    if "_bar_alternatives" in kwargs:
+        result_dict["_bar_alternatives"] = kwargs["_bar_alternatives"]
+
+    return result_dict
 
 
 def _shear_result_to_dict(shear: Any) -> dict:
