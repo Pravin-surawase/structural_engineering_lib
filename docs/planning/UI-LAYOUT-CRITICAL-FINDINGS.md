@@ -10,6 +10,57 @@ Pre-implementation review identified **5 critical issues** in the original plan 
 
 ---
 
+## Alignment Update (2026-01-08)
+
+This plan now aligns with the **Option 5 baseline + Power View toggle** decision and the
+visual-first direction (professional, interactive, and clearly “smart tech” at first glance).
+
+### Visual Experience Requirements (Non-negotiable)
+- **Option 5 default:** Sidebar inputs + results tabs (inputs always visible).
+- **Power View toggle:** Option 6 three-panel layout enabled on wide screens only.
+- **Professional visuals:** No default Plotly styling; all charts use design tokens.
+- **Engineering context:** Units, limits, and clause references visible by default.
+- **Interactive feel:** Live preview, hover details, click-to-edit hooks.
+- **3D readiness:** 3D view is optional, performance-gated, and backed by 2D.
+- Compatibility checklist: `docs/planning/data-model-compatibility-checklist.md`
+
+### Innovative UI Signature (First-Glance Cues)
+These elements make the UI read as professional + smart tech in the first 3 seconds.
+
+**1) Engineering Credibility Banner**
+- Title line: "IS 456 Beam Design" + version + active code clause badge.
+- Status chip: "SAFE / REVIEW / FAIL" with explicit utilization percent.
+- One-line context: units (mm, kN, kN·m) shown on the header.
+
+**2) Smart Insight Capsule**
+- Compact card that surfaces the top 1-2 risks or optimizations.
+- Must include "why" and "what to change" (not just warnings).
+- Example: "Shear near limit (Vu/Vc = 0.96). Try 8mm @ 150."
+
+**3) Traceability Ribbon**
+- Inline clause references with hover detail (e.g., "Cl. 26.5.1.1").
+- A "View Calculation Steps" link that expands a small audit trail.
+
+**4) Professional Visual Tone**
+- Subtle grid, muted palette, monospace numeric labels.
+- Units and limit lines are always visible (no hidden context).
+- No bright default colors; use IS 456 tokens only.
+
+**5) Interactive Preview Hooks**
+- Slider + live preview (instant feedback).
+- Click-to-edit marker on the diagram (shows editable nodes).
+- Power View toggle appears only on wide screens.
+
+### Visual Roadmap (2D → 2.5D → 3D)
+1. **Phase A (2D, Week 1-2):** Cross-section, BMD/SFD, detailing diagrams with
+   units, limits, and clause tags.
+2. **Phase B (2.5D, Week 2-3):** Extruded section + rebar cage in pseudo-3D,
+   hoverable callouts, and comparison sliders.
+3. **Phase C (3D, Week 3+):** Full 3D toggle (Plotly 3D or equivalent),
+   gated by screen width and device performance.
+
+---
+
 ## Critical Findings
 
 ### 🔴 HIGH: Token String Coercion Breaking Change
@@ -561,7 +612,8 @@ class TypographyToken(Protocol):
 - [ ] Verify catches all type mismatches
 
 **Day 4-5: UI Layout Implementation (6 hours)**
-- [ ] Follow original UI-LAYOUT-FINAL-DECISION.md plan
+- [ ] Implement Option 5 layout (sidebar + results tabs)
+- [ ] Add Power View toggle stub (Option 6) for wide screens
 - [ ] Use new token classes in preview components
 - [ ] Test both implicit and explicit token usage
 - [ ] Document token usage patterns
@@ -1016,8 +1068,10 @@ if __name__ == "__main__":
 
 ### Phase 2 (UI Layout) - Complete When:
 
-- [ ] ✅ Two-column layout working
+- [ ] ✅ Option 5 layout working (sidebar + tabs)
+- [ ] ✅ Power View toggle renders in wide screen mode
 - [ ] ✅ Real-time preview using token classes
+- [ ] ✅ All charts use design tokens (no default Plotly theme)
 - [ ] ✅ All tests pass with new tokens
 - [ ] ✅ No regression in existing functionality
 - [ ] ✅ 80%+ test coverage
@@ -1034,6 +1088,7 @@ if __name__ == "__main__":
 | **Silent fallback** | dict.get(default) → hides typos | ✅ Use Literal + ValueError |
 | **Pre-commit coverage** | Only update_layout → partial | ✅ Check all Plotly patterns |
 | **Token scope** | Expand all now? | ✅ Duration + Color now, rest later |
+| **Layout alignment** | Two-column baseline | ✅ Option 5 baseline + Power View |
 
 ---
 

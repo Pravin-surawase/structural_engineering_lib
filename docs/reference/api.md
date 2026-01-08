@@ -307,7 +307,22 @@ Notes:
 - `warnings` (list[str])
 - `details` (dict)
 
-**Planned (not implemented yet):**
+**Planned (not implemented yet, v0.17+; subject to change):**
+- `compute_beam_geometry(...) -> BeamGeometry`
+- `compute_rebar_layout(...) -> RebarLayout`
+- `compute_bmd_sfd(...) -> LoadDiagramResult`
+- `compute_section_properties(...) -> SectionProperties`
+- `build_preview_payload(...) -> PreviewPayload`
+- `generate_design_variants(...) -> list[DesignVariant]`
+- `evaluate_variants(...) -> list[VariantScore]`
+- `sensitivity_analysis(...) -> SensitivityResult`
+- `compare_designs(...) -> ComparisonResult`
+- `list_clause_checks(...) -> list[ClauseCheck]`
+- `explain_design(...) -> ExplanationResult`
+- `get_clause_reference(...) -> ClauseReference`
+- `validate_inputs_quick(...) -> ValidationSummary`
+- `estimate_cost_quick(...) -> CostEstimate`
+- `derive_default_inputs(...) -> BeamInput`
 
 ---
 
@@ -316,6 +331,65 @@ Notes:
 These helpers power the CLI/job runner and return the canonical output schema
 (`BeamDesignOutput`, `MultiBeamOutput`). Use them when you want a full, structured
 pipeline without building it yourself.
+
+---
+
+## Appendix: Data Model Glossary (Planned Types)
+
+These models are **drafts** to support planned v0.17+ APIs. Field names and shapes
+may evolve before implementation.
+
+### BeamGeometry
+- `span_mm: float`
+- `b_mm: float`
+- `D_mm: float`
+- `cover_mm: float`
+- `d_mm: float`
+- `effective_span_mm: float`
+
+### RebarLayout
+- `bars: list[BarSpec]`
+- `positions_mm: list[tuple[float, float]]`
+- `clear_spacing_mm: float`
+- `cover_mm: float`
+
+### LoadDiagramResult
+- `positions_mm: list[float]`
+- `bmd_knm: list[float]`
+- `sfd_kn: list[float]`
+- `critical_points: list[CriticalPoint]`
+
+### SectionProperties
+- `area_mm2: float`
+- `ixx_mm4: float`
+- `zxx_mm3: float`
+- `neutral_axis_mm: float`
+
+### PreviewPayload
+- `geometry: BeamGeometry`
+- `rebar: RebarLayout | None`
+- `bmd: LoadDiagramResult | None`
+- `checks: list[ClauseCheck]`
+- `status: str`
+
+### ValidationSummary
+- `is_valid: bool`
+- `issues: list[ValidationIssue]`
+
+### CostEstimate
+- `material_cost: float`
+- `labor_cost: float`
+- `total_cost: float`
+
+### SensitivityResult
+- `parameter: str`
+- `delta_inputs: dict[str, float]`
+- `delta_outputs: dict[str, float]`
+
+### ComparisonResult
+- `summary: str`
+- `deltas: dict[str, float]`
+- `winner: str`
 
 ### 1B.1 Units Validation
 
