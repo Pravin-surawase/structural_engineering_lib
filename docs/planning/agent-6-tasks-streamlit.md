@@ -3,7 +3,7 @@
 **Agent Role:** STREAMLIT UI SPECIALIST (Daily Development)
 **Primary Focus:** Build production-ready Streamlit dashboards for structural engineering, following professional UI/UX practices
 **Status:** Active
-**Last Updated:** 2026-01-08T22:00Z
+**Last Updated:** 2026-01-08T23:30Z
 **Frequency:** Daily (30-60 min/day)
 
 ---
@@ -21,32 +21,608 @@
 | STREAMLIT-IMPL-002 | Input Components | 690 | 29 | ✅ Complete |
 | STREAMLIT-IMPL-003 | Visualizations (5 Plotly charts) | 719 | - | ✅ Complete |
 | STREAMLIT-IMPL-004 | Beam Design Page | 586 | - | ✅ Complete |
+| STREAMLIT-IMPL-005 | Cost Optimizer Page | 494 | - | ✅ Complete |
+| STREAMLIT-IMPL-006 | Compliance Checker Page | 485 | - | ✅ Complete |
 
-**Total Delivered:** 8,022 lines, 29 tests
+**Total Delivered:** 10,001 lines, 29 tests (3 complete pages)
 
-### 🔄 Current/Next Tasks (NEW PHASES - Start Immediately)
+### ⚠️ Issues to Fix
 
-| Task | Description | Priority | Status | Day |
-|------|-------------|----------|--------|-----|
-| STREAMLIT-IMPL-005 | Cost Optimizer Page | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
-| STREAMLIT-IMPL-006 | Compliance Checker Page | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
-| STREAMLIT-IMPL-007 | Visualization Tests Suite | 🔴 CRITICAL | 🟡 TODO | Day 5-6 |
+| Issue | Severity | Status |
+|-------|----------|--------|
+| test_visualizations.py - Wrong function signatures | 🔴 HIGH | 🟡 TODO |
+| test_api_wrapper.py - Missing assertions | 🔴 HIGH | 🟡 TODO |
+| 44/52 new tests failing | 🔴 HIGH | 🟡 TODO |
+
+### 🔄 NEW PHASES (Start Immediately)
+
+| Task | Description | Priority | Status | Days |
+|------|-------------|----------|--------|------|
+| STREAMLIT-FIX-001 | Fix All Failing Tests | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
+| STREAMLIT-IMPL-008 | Documentation Page + User Guide | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
+| STREAMLIT-IMPL-009 | Error Handling & Validation | 🟠 HIGH | 🟡 TODO | Day 5-6 |
+| STREAMLIT-IMPL-010 | Performance Optimization | 🟠 HIGH | 🟡 TODO | Day 7-8 |
+| STREAMLIT-IMPL-011 | Accessibility Audit & Fixes | 🟠 HIGH | 🟡 TODO | Day 9-10 |
+| STREAMLIT-IMPL-012 | End-to-End Integration Tests | 🟠 HIGH | 🟡 TODO | Day 11-12 |
 
 ---
 
-## 🚀 NEW PHASES FOR AGENT 6 (Start 2026-01-08)
+## 🔴 CRITICAL: STREAMLIT-FIX-001 - Fix All Failing Tests (Day 1-2)
+**Priority:** 🔴 CRITICAL - DO THIS FIRST
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
 
-### 📋 Phase Overview
+### Background
+The tests in `test_visualizations.py` and `test_api_wrapper.py` were written with incorrect function signatures that don't match the actual implementations. This MUST be fixed before any other work.
 
-| Phase | Task | Description | Estimated Time | Output |
-|-------|------|-------------|----------------|--------|
-| **PHASE 5** | IMPL-005 | Cost Optimizer Page | 3-4 hours | ~500 lines |
-| **PHASE 6** | IMPL-006 | Compliance Checker Page | 3-4 hours | ~500 lines |
-| **PHASE 7** | IMPL-007 | Visualization Tests + Integration | 2-3 hours | ~400 lines, 30+ tests |
+### Current Test Status
+```
+Total tests: 81
+Passing: 37 (29 original + 8 new)
+Failing: 44
+```
 
-**Total Expected:** ~1,400 lines, 30+ new tests over 3 phases (6-7 days)
+### Root Causes Identified
+
+#### 1. `create_beam_diagram()` - Wrong Parameters
+**Test uses:**
+```python
+create_beam_diagram(
+    b_mm=300, D_mm=500, d_mm=450,
+    ast_mm2=1200,  # WRONG - doesn't exist
+    xu=120, ...
+)
+```
+
+**Actual signature:**
+```python
+create_beam_diagram(
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    rebar_positions: List[Tuple[float, float]],  # CORRECT
+    xu: float,
+    bar_dia: float,
+    cover: float = 30.0,
+    show_dimensions: bool = True
+)
+```
+
+#### 2. `create_cost_comparison()` - Wrong Key Names
+**Test uses:**
+```python
+{"name": "3-16mm", "cost": 87.45, ...}  # WRONG key
+```
+
+**Actual expects:**
+```python
+{"name": "3-16mm", "cost_per_meter": 87.45, ...}  # CORRECT key
+```
+
+#### 3. `create_sensitivity_tornado()` - Missing Required Argument
+**Test calls:**
+```python
+create_sensitivity_tornado(sensitivity_data)  # WRONG - missing arg
+```
+
+**Actual signature:**
+```python
+create_sensitivity_tornado(
+    sensitivity_data: List[Dict],
+    baseline_value: float  # REQUIRED
+)
+```
+
+### Fix Strategy
+
+#### Step 1: Read Actual Function Signatures
+```bash
+# Check all function signatures in visualizations.py
+grep -n "^def " streamlit_app/components/visualizations.py
+```
+
+#### Step 2: Fix test_visualizations.py
+For each test class, ensure parameters match the actual implementation:
+
+```python
+# TestBeamDiagram - CORRECTED
+class TestBeamDiagram:
+    def test_basic_beam_diagram(self):
+        fig = create_beam_diagram(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            rebar_positions=[(50, 50), (150, 50), (250, 50)],  # FIXED
+            xu=120,
+            bar_dia=16,
+            cover=30.0,
+            show_dimensions=True
+        )
+        assert isinstance(fig, go.Figure)
+
+# TestCostComparison - CORRECTED
+class TestCostComparison:
+    def test_basic_cost_comparison(self):
+        alternatives = [
+            {"name": "3-16mm", "cost_per_meter": 87.45, "is_optimal": True},  # FIXED
+            {"name": "2-20mm", "cost_per_meter": 92.30, "is_optimal": False},
+        ]
+        fig = create_cost_comparison(alternatives)
+        assert isinstance(fig, go.Figure)
+
+# TestSensitivityTornado - CORRECTED
+class TestSensitivityTornado:
+    def test_basic_tornado_chart(self):
+        sensitivity_data = [
+            {"param": "Moment", "low": -15, "high": 18},
+            {"param": "Depth", "low": -10, "high": 12},
+        ]
+        fig = create_sensitivity_tornado(
+            sensitivity_data,
+            baseline_value=100.0  # FIXED - add required arg
+        )
+        assert isinstance(fig, go.Figure)
+```
+
+#### Step 3: Fix test_api_wrapper.py
+Ensure result structure assertions match actual return values:
+
+```python
+# Check actual return structure
+result = cached_design(...)
+# Current returns: {'flexure': {...}, 'shear': {...}, 'is_safe': True}
+# Tests expect: specific keys that may not exist
+```
+
+### Acceptance Criteria
+
+- [ ] ALL 81 tests pass (`pytest streamlit_app/tests/ -v`)
+- [ ] No TypeErrors or KeyErrors
+- [ ] Tests actually validate the implementations (not just compile)
+- [ ] Test coverage meaningful (not just "return True")
+
+### Verification Commands
+```bash
+# From main repo directory:
+cd /path/to/structural_engineering_lib
+.venv/bin/python -m pytest streamlit_app/tests/ -v --tb=short
+
+# Expected output:
+# 81 passed in X.XXs
+```
 
 ---
+
+## 🔴 STREAMLIT-IMPL-008: Documentation Page + User Guide (Day 3-4)
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-5 hours
+
+### Objective
+Create comprehensive documentation page with:
+- Interactive IS 456 quick reference
+- Searchable clause lookup
+- Step-by-step user guide
+- FAQ section
+- Formula explanations
+
+### Page Layout
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 📚 Documentation - IS 456 Reference & User Guide                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│ [🔍 Search: _______________]                                        │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 📖 QUICK NAVIGATION                                             │ │
+│ │ [Getting Started] [IS 456 Clauses] [Formulas] [FAQ] [Glossary] │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 🚀 GETTING STARTED                                               │ │
+│ │                                                                  │ │
+│ │ **Step 1: Enter Geometry**                                       │ │
+│ │ - Width (b): 150-600mm for typical beams                        │ │
+│ │ - Depth (D): Usually L/10 to L/15 for initial sizing            │ │
+│ │                                                                  │ │
+│ │ **Step 2: Select Materials**                                     │ │
+│ │ - Concrete: M20 for residential, M25-M30 for commercial         │ │
+│ │ - Steel: Fe415 (most common), Fe500 for high-strength           │ │
+│ │                                                                  │ │
+│ │ **Step 3: Enter Loads**                                          │ │
+│ │ - Moment (Mu): From structural analysis                          │ │
+│ │ - Shear (Vu): Typically Mu/L for simply supported               │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 📋 IS 456 CLAUSE REFERENCE                                       │ │
+│ │                                                                  │ │
+│ │ ▼ Flexure Requirements                                           │ │
+│ │ ├─ Cl. 26.5.1.1 - Minimum Steel Ratio                           │ │
+│ │ │   Formula: pt_min = 0.85 * sqrt(fck) / fy                     │ │
+│ │ │   Example: For M20, Fe415: pt_min = 0.85%                      │ │
+│ │ │                                                               │ │
+│ │ ├─ Cl. 26.5.1.2 - Maximum Steel Ratio                           │ │
+│ │ │   Limit: pt_max = 4.0% (to ensure ductile failure)            │ │
+│ │ │                                                               │ │
+│ │ ▼ Shear Requirements                                             │ │
+│ │ ├─ Cl. 40.1 - Shear Stress Check                                │ │
+│ │ │   Formula: τv = Vu / (b × d)                                  │ │
+│ │ │   Must satisfy: τv ≤ τc + τs                                  │ │
+│ │ │                                                               │ │
+│ │ ▼ Detailing Requirements                                         │ │
+│ │ ├─ Cl. 26.3.3 - Bar Spacing                                     │ │
+│ │ ├─ Cl. 26.4.1 - Cover Requirements                              │ │
+│ │ │                                                               │ │
+│ │ ▼ Serviceability                                                 │ │
+│ │ ├─ Cl. 23.2.1 - Deflection Limits                               │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ ❓ FREQUENTLY ASKED QUESTIONS                                    │ │
+│ │                                                                  │ │
+│ │ Q: What concrete grade should I use?                             │ │
+│ │ A: M20 for residential (up to 3 floors), M25 for commercial...  │ │
+│ │                                                                  │ │
+│ │ Q: How do I determine the initial beam depth?                    │ │
+│ │ A: Start with D = L/12 for simply supported, L/15 for continuous│ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Implementation
+
+```python
+# streamlit_app/pages/04_📚_documentation.py
+
+import streamlit as st
+
+st.set_page_config(
+    page_title="Documentation - IS 456 Reference",
+    page_icon="📚",
+    layout="wide"
+)
+
+st.title("📚 Documentation")
+st.markdown("IS 456:2000 Reference Guide and User Manual")
+
+# Search functionality
+search_query = st.text_input("🔍 Search documentation...", "")
+
+# Navigation tabs
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "🚀 Getting Started",
+    "📋 IS 456 Clauses",
+    "📐 Formulas",
+    "❓ FAQ",
+    "📖 Glossary"
+])
+
+with tab1:
+    st.header("Getting Started Guide")
+
+    st.subheader("Step 1: Understanding Inputs")
+    st.markdown("""
+    **Geometry Inputs:**
+    - **Width (b):** 150-600mm typical for RC beams
+    - **Total Depth (D):** Usually span/10 to span/15
+    - **Effective Depth (d):** D minus cover minus half bar diameter
+
+    **Material Selection:**
+    | Grade | Use Case | fck (N/mm²) |
+    |-------|----------|-------------|
+    | M20 | Residential | 20 |
+    | M25 | Commercial | 25 |
+    | M30 | High-rise | 30 |
+    """)
+
+    st.subheader("Step 2: Interpreting Results")
+    # ... more content
+
+with tab2:
+    st.header("IS 456:2000 Clause Reference")
+
+    # Expandable sections for each clause category
+    with st.expander("📏 Flexure Requirements", expanded=True):
+        st.markdown("""
+        ### Cl. 26.5.1.1 - Minimum Steel Ratio
+
+        **Formula:**
+        $$p_{t,min} = \\frac{0.85 \\sqrt{f_{ck}}}{f_y}$$
+
+        **Purpose:** Ensures ductile behavior and prevents sudden failure.
+
+        **Typical Values:**
+        | Concrete | Steel | pt_min |
+        |----------|-------|--------|
+        | M20 | Fe415 | 0.85% |
+        | M25 | Fe500 | 0.76% |
+        """)
+
+    with st.expander("🛡️ Shear Requirements"):
+        st.markdown("""
+        ### Cl. 40.1 - Shear Strength
+
+        **Check:** τv ≤ τc + τs
+
+        Where:
+        - τv = Vu / (b × d) — Applied shear stress
+        - τc = From Table 19 — Concrete shear capacity
+        - τs = From stirrups — Steel shear capacity
+        """)
+
+# ... more tabs
+```
+
+### Files to Create/Modify
+1. `streamlit_app/pages/04_📚_documentation.py` (~600 lines)
+2. `streamlit_app/data/is456_clauses.json` - Clause database (~200 lines)
+3. `streamlit_app/data/faq.json` - FAQ content (~100 lines)
+
+### Acceptance Criteria
+- [ ] Search filters content dynamically
+- [ ] All major IS 456 clauses documented (at least 15)
+- [ ] Formulas rendered with MathJax/KaTeX
+- [ ] FAQ has at least 10 common questions
+- [ ] Glossary has at least 30 terms
+- [ ] Mobile-responsive
+
+---
+
+## 🟠 STREAMLIT-IMPL-009: Error Handling & Validation (Day 5-6)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Implement comprehensive error handling and input validation across all pages:
+- User-friendly error messages
+- Input validation with suggestions
+- Graceful degradation
+- Error logging
+
+### Implementation Areas
+
+#### 1. Create Centralized Error Handler
+```python
+# streamlit_app/utils/error_handler.py
+
+import streamlit as st
+from typing import Optional
+import traceback
+
+class DesignError(Exception):
+    """Custom error for design calculations."""
+    def __init__(self, message: str, clause: Optional[str] = None, suggestion: Optional[str] = None):
+        self.message = message
+        self.clause = clause
+        self.suggestion = suggestion
+        super().__init__(message)
+
+def display_error(error: Exception, context: str = ""):
+    """Display user-friendly error message."""
+    if isinstance(error, DesignError):
+        st.error(f"❌ **Design Error:** {error.message}")
+        if error.clause:
+            st.caption(f"Reference: IS 456 {error.clause}")
+        if error.suggestion:
+            st.info(f"💡 **Suggestion:** {error.suggestion}")
+    else:
+        st.error(f"❌ **Unexpected Error:** {str(error)}")
+        with st.expander("🔍 Technical Details"):
+            st.code(traceback.format_exc())
+
+def validate_beam_geometry(b_mm: float, D_mm: float, d_mm: float) -> list[str]:
+    """Validate beam geometry and return list of warnings/errors."""
+    issues = []
+
+    if d_mm >= D_mm:
+        issues.append("❌ Effective depth (d) must be less than total depth (D)")
+
+    if b_mm > D_mm:
+        issues.append("⚠️ Width greater than depth is unusual for beams")
+
+    aspect_ratio = D_mm / b_mm
+    if aspect_ratio > 4:
+        issues.append(f"⚠️ Aspect ratio {aspect_ratio:.1f} is high. Consider increasing width.")
+
+    return issues
+```
+
+#### 2. Apply to All Pages
+```python
+# In each page, wrap calculations:
+try:
+    result = cached_design(...)
+except DesignError as e:
+    display_error(e, context="Beam Design")
+except Exception as e:
+    display_error(e, context="Unexpected")
+```
+
+### Acceptance Criteria
+- [ ] All pages have try/except blocks
+- [ ] Custom DesignError class with clause references
+- [ ] User-friendly error messages (no raw tracebacks)
+- [ ] Input validation with warnings before errors
+- [ ] Error logging to file (optional)
+
+---
+
+## 🟠 STREAMLIT-IMPL-010: Performance Optimization (Day 7-8)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Optimize app performance for production:
+- Efficient caching strategy
+- Lazy loading for heavy components
+- Memory management
+- Load time < 3 seconds
+
+### Implementation Areas
+
+#### 1. Caching Strategy Review
+```python
+# Review all @st.cache_data decorators
+# Ensure TTL is appropriate
+# Add cache_resource for expensive objects
+
+@st.cache_resource
+def load_plotly_template():
+    """Load custom Plotly template once."""
+    return {...}
+
+@st.cache_data(ttl=3600)  # 1 hour cache
+def cached_design(...):
+    ...
+```
+
+#### 2. Lazy Loading
+```python
+# Only import heavy modules when needed
+def get_plotly():
+    import plotly.graph_objects as go
+    return go
+
+# Use st.experimental_fragment for partial updates (if available)
+```
+
+#### 3. Memory Profiling
+```python
+# Add to utils/performance.py
+import tracemalloc
+
+def profile_memory():
+    tracemalloc.start()
+    # ... run code ...
+    snapshot = tracemalloc.take_snapshot()
+    top_stats = snapshot.statistics('lineno')[:10]
+    return top_stats
+```
+
+### Acceptance Criteria
+- [ ] Initial page load < 3 seconds
+- [ ] Cached calls < 50ms
+- [ ] No memory leaks on repeated use
+- [ ] Bundle size documented
+
+---
+
+## 🟠 STREAMLIT-IMPL-011: Accessibility Audit & Fixes (Day 9-10)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Ensure WCAG 2.1 Level AA compliance:
+- Keyboard navigation
+- Screen reader support
+- Color contrast verification
+- Focus indicators
+
+### Checklist
+
+#### Color Contrast (WCAG 1.4.3)
+- [ ] All text has 4.5:1 contrast ratio
+- [ ] Large text has 3:1 contrast ratio
+- [ ] Focus indicators visible
+
+#### Keyboard Navigation (WCAG 2.1.1)
+- [ ] All interactive elements reachable via Tab
+- [ ] No keyboard traps
+- [ ] Skip links for navigation
+
+#### Screen Reader (WCAG 1.1.1)
+- [ ] All images have alt text
+- [ ] Charts have text descriptions
+- [ ] Form inputs have labels
+
+### Implementation
+```python
+# Add accessibility attributes where possible
+st.markdown("""
+<div role="region" aria-label="Design Results">
+    <!-- Results content -->
+</div>
+""", unsafe_allow_html=True)
+
+# Add text descriptions for charts
+st.caption("Chart shows cost comparison between 5 bar arrangements. 3-16mm is optimal at ₹87.45/m.")
+```
+
+---
+
+## 🟠 STREAMLIT-IMPL-012: End-to-End Integration Tests (Day 11-12)
+**Priority:** 🟠 HIGH
+**Status:** 🟡 TODO
+**Estimated Effort:** 4-5 hours
+
+### Objective
+Create comprehensive E2E tests using Selenium or Playwright:
+- User flow testing
+- Cross-browser compatibility
+- Regression testing
+
+### Test Scenarios
+
+```python
+# tests/e2e/test_user_flows.py
+
+import pytest
+from playwright.sync_api import Page
+
+class TestBeamDesignFlow:
+    def test_complete_design_workflow(self, page: Page):
+        """Test complete beam design from input to results."""
+        page.goto("http://localhost:8501")
+
+        # Navigate to Beam Design
+        page.click("text=🏗️ Beam Design")
+
+        # Enter inputs
+        page.fill('[data-testid="width_input"]', "300")
+        page.fill('[data-testid="depth_input"]', "500")
+        page.fill('[data-testid="moment_input"]', "120")
+
+        # Click Analyze
+        page.click("text=🚀 Analyze")
+
+        # Verify results appear
+        assert page.locator("text=Design Summary").is_visible()
+        assert page.locator("text=✅").count() >= 1
+
+    def test_cost_optimizer_flow(self, page: Page):
+        """Test cost optimization workflow."""
+        # ... test steps
+```
+
+### Files to Create
+1. `tests/e2e/conftest.py` - Playwright fixtures
+2. `tests/e2e/test_user_flows.py` - User flow tests (~300 lines)
+3. `tests/e2e/test_cross_browser.py` - Browser compatibility (~100 lines)
+
+---
+
+## 📅 Extended Timeline Summary
+
+| Day | Phase | Task | Deliverables |
+|-----|-------|------|--------------|
+| 1-2 | FIX-001 | Fix Failing Tests | 44 tests fixed, 81/81 passing |
+| 3-4 | IMPL-008 | Documentation Page | 600+ lines, searchable guide |
+| 5-6 | IMPL-009 | Error Handling | Centralized error handler |
+| 7-8 | IMPL-010 | Performance | < 3s load, caching optimized |
+| 9-10 | IMPL-011 | Accessibility | WCAG 2.1 AA compliance |
+| 11-12 | IMPL-012 | E2E Tests | Playwright tests, CI integration |
+
+**Total Expected Output:**
+- ~2,000+ lines of new/fixed code
+- 81+ passing tests (up from 37)
+- 100% test pass rate
+- Production-ready quality
 
 ## 🔴 PHASE 5: STREAMLIT-IMPL-005 - Cost Optimizer Page (Day 1-2)
 **Priority:** 🔴 CRITICAL
