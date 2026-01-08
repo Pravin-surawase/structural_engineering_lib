@@ -442,7 +442,7 @@ with col_preview:
                 cover=cover
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="beam_section_viz")
 
             st.divider()
 
@@ -456,7 +456,7 @@ with col_preview:
                     value=min(utilization / 100, 1.0),
                     label="Flexure"
                 )
-                st.plotly_chart(fig_flex, use_container_width=True)
+                st.plotly_chart(fig_flex, use_container_width=True, key="gauge_flexure")
 
             with col2:
                 shear_util = 0.65  # Placeholder
@@ -464,7 +464,7 @@ with col_preview:
                     value=shear_util,
                     label="Shear"
                 )
-                st.plotly_chart(fig_shear, use_container_width=True)
+                st.plotly_chart(fig_shear, use_container_width=True, key="gauge_shear")
 
             with col3:
                 deflection_util = 0.50  # Placeholder
@@ -472,7 +472,7 @@ with col_preview:
                     value=deflection_util,
                     label="Deflection"
                 )
-                st.plotly_chart(fig_defl, use_container_width=True)
+                st.plotly_chart(fig_defl, use_container_width=True, key="gauge_deflection")
 
         # ============================================================================
         # TAB 3: Cost Analysis
@@ -489,7 +489,7 @@ with col_preview:
             ]
 
             fig_cost = create_cost_comparison(alternatives)
-            st.plotly_chart(fig_cost, use_container_width=True)
+            st.plotly_chart(fig_cost, use_container_width=True, key="cost_comparison")
 
             st.info("""
             💡 **Cost Optimization Tips:**
@@ -545,7 +545,7 @@ with col_preview:
                 }
             ]
 
-        create_compliance_visual(checks)
+            create_compliance_visual(checks)
 
     else:
         # Show real-time preview when design not yet computed
