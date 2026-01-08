@@ -29,57 +29,56 @@ from components.inputs import (
     material_selector,
     load_input,
     exposure_selector,
-    support_condition_selector
+    support_condition_selector,
 )
 from components.visualizations import (
     create_beam_diagram,
     create_cost_comparison,
-    create_utilization_gauge,
-    create_sensitivity_tornado,
-    create_compliance_visual
+    create_compliance_visual,
 )
 from components.preview import render_real_time_preview
-from utils.api_wrapper import cached_design, cached_smart_analysis
-from utils.validation import validate_dimension, format_error_message
-from utils.layout import setup_page, page_header, section_header, three_column_metrics, info_panel
-from utils.theme_manager import apply_dark_mode_theme, render_theme_toggle, initialize_theme
-from utils.loading_states import loading_context, add_loading_skeleton
+from utils.api_wrapper import cached_design
+from utils.layout import setup_page, page_header, section_header
+from utils.theme_manager import (
+    apply_dark_mode_theme,
+    render_theme_toggle,
+    initialize_theme,
+)
+from utils.loading_states import loading_context
 
 # Initialize theme
 initialize_theme()
 
 # Modern page setup with professional styling
-setup_page(
-    title="Beam Design | IS 456 Dashboard",
-    icon="🏗️",
-    layout="wide"
-)
+setup_page(title="Beam Design | IS 456 Dashboard", icon="🏗️", layout="wide")
 
 # Apply dark mode styling
 apply_dark_mode_theme()
 
 # Initialize session state for input persistence
-if 'beam_inputs' not in st.session_state:
+if "beam_inputs" not in st.session_state:
     st.session_state.beam_inputs = {
-        'span_mm': 5000.0,
-        'b_mm': 300.0,
-        'D_mm': 500.0,
-        'd_mm': 450.0,
-        'concrete_grade': 'M25',
-        'steel_grade': 'Fe500',
-        'mu_knm': 120.0,
-        'vu_kn': 80.0,
-        'exposure': 'Moderate',
-        'support_condition': 'Simply Supported',
-        'design_computed': False,
-        'design_result': None,
-        'last_input_hash': None  # Track input changes
+        "span_mm": 5000.0,
+        "b_mm": 300.0,
+        "D_mm": 500.0,
+        "d_mm": 450.0,
+        "concrete_grade": "M25",
+        "steel_grade": "Fe500",
+        "mu_knm": 120.0,
+        "vu_kn": 80.0,
+        "exposure": "Moderate",
+        "support_condition": "Simply Supported",
+        "design_computed": False,
+        "design_result": None,
+        "last_input_hash": None,  # Track input changes
     }
+
 
 # Helper function to detect input changes
 def get_input_hash():
     """Hash of all inputs to detect changes"""
     import hashlib
+
     inputs_str = f"{st.session_state.beam_inputs['mu_knm']}_{st.session_state.beam_inputs['vu_kn']}_{st.session_state.beam_inputs['b_mm']}_{st.session_state.beam_inputs['D_mm']}_{st.session_state.beam_inputs['d_mm']}_{st.session_state.beam_inputs['concrete_grade']}_{st.session_state.beam_inputs['steel_grade']}_{st.session_state.beam_inputs['span_mm']}_{st.session_state.beam_inputs['exposure']}"
     return hashlib.md5(inputs_str.encode()).hexdigest()
 
@@ -88,7 +87,7 @@ def get_input_hash():
 page_header(
     title="Beam Design",
     subtitle="Design reinforced concrete beams per IS 456:2000 with real-time compliance checking",
-    icon="🏗️"
+    icon="🏗️",
 )
 
 # ============================================================================
@@ -114,49 +113,49 @@ with col_input:
         label="Span",
         min_value=1000.0,
         max_value=12000.0,
-        default_value=st.session_state.beam_inputs['span_mm'],
+        default_value=st.session_state.beam_inputs["span_mm"],
         unit="mm",
         help_text="Clear span between supports",
         key="input_span",
-        show_validation=False
+        show_validation=False,
     )
-    st.session_state.beam_inputs['span_mm'] = span
+    st.session_state.beam_inputs["span_mm"] = span
 
     b, b_valid = dimension_input(
         label="Width",
         min_value=150.0,
         max_value=600.0,
-        default_value=st.session_state.beam_inputs['b_mm'],
+        default_value=st.session_state.beam_inputs["b_mm"],
         unit="mm",
         help_text="Beam width (smaller dimension)",
         key="input_b",
-        show_validation=False
+        show_validation=False,
     )
-    st.session_state.beam_inputs['b_mm'] = b
+    st.session_state.beam_inputs["b_mm"] = b
 
     D, D_valid = dimension_input(
         label="Total Depth",
         min_value=200.0,
         max_value=900.0,
-        default_value=st.session_state.beam_inputs['D_mm'],
+        default_value=st.session_state.beam_inputs["D_mm"],
         unit="mm",
         help_text="Total beam depth",
         key="input_D",
-        show_validation=False
+        show_validation=False,
     )
-    st.session_state.beam_inputs['D_mm'] = D
+    st.session_state.beam_inputs["D_mm"] = D
 
     d, d_valid = dimension_input(
         label="Effective Depth",
         min_value=150.0,
         max_value=850.0,
-        default_value=st.session_state.beam_inputs['d_mm'],
+        default_value=st.session_state.beam_inputs["d_mm"],
         unit="mm",
         help_text="Distance from compression face to centroid of tension steel",
         key="input_d",
-        show_validation=False
+        show_validation=False,
     )
-    st.session_state.beam_inputs['d_mm'] = d
+    st.session_state.beam_inputs["d_mm"] = d
 
     # Validation: d must be less than D
     if d >= D:
@@ -168,48 +167,48 @@ with col_input:
 
     concrete = material_selector(
         material_type="concrete",
-        default_grade=st.session_state.beam_inputs['concrete_grade'],
+        default_grade=st.session_state.beam_inputs["concrete_grade"],
         key="input_concrete",
-        show_properties=False
+        show_properties=False,
     )
-    st.session_state.beam_inputs['concrete_grade'] = concrete['grade']
+    st.session_state.beam_inputs["concrete_grade"] = concrete["grade"]
 
     steel = material_selector(
         material_type="steel",
-        default_grade=st.session_state.beam_inputs['steel_grade'],
+        default_grade=st.session_state.beam_inputs["steel_grade"],
         key="input_steel",
-        show_properties=False
+        show_properties=False,
     )
-    st.session_state.beam_inputs['steel_grade'] = steel['grade']
+    st.session_state.beam_inputs["steel_grade"] = steel["grade"]
 
     # Section 3: Loading (compact)
     st.markdown("**⚖️ Loading**")
 
     loads = load_input(
-        default_moment=st.session_state.beam_inputs['mu_knm'],
-        default_shear=st.session_state.beam_inputs['vu_kn'],
-        key_prefix="input"
+        default_moment=st.session_state.beam_inputs["mu_knm"],
+        default_shear=st.session_state.beam_inputs["vu_kn"],
+        key_prefix="input",
     )
-    st.session_state.beam_inputs['mu_knm'] = loads['mu_knm']
-    st.session_state.beam_inputs['vu_kn'] = loads['vu_kn']
+    st.session_state.beam_inputs["mu_knm"] = loads["mu_knm"]
+    st.session_state.beam_inputs["vu_kn"] = loads["vu_kn"]
 
     # Section 4: Exposure & Support (compact - side by side)
     col_exp, col_sup = st.columns(2)
 
     with col_exp:
         exposure = exposure_selector(
-            default=st.session_state.beam_inputs['exposure'],
+            default=st.session_state.beam_inputs["exposure"],
             key="input_exposure",
-            show_requirements=False
+            show_requirements=False,
         )
-        st.session_state.beam_inputs['exposure'] = exposure['exposure']
+        st.session_state.beam_inputs["exposure"] = exposure["exposure"]
 
     with col_sup:
         support = support_condition_selector(
-            default=st.session_state.beam_inputs['support_condition'],
-            key="input_support"
+            default=st.session_state.beam_inputs["support_condition"],
+            key="input_support",
         )
-        st.session_state.beam_inputs['support_condition'] = support['condition']
+        st.session_state.beam_inputs["support_condition"] = support["condition"]
 
     st.markdown("---")
 
@@ -218,49 +217,49 @@ with col_input:
 
     # Detect input changes
     current_hash = get_input_hash()
-    inputs_changed = (current_hash != st.session_state.beam_inputs['last_input_hash'])
+    inputs_changed = current_hash != st.session_state.beam_inputs["last_input_hash"]
 
     if st.button("🚀 Analyze Design", disabled=not all_valid, use_container_width=True):
         # Clear old results if inputs changed
         if inputs_changed:
-            st.session_state.beam_inputs['design_result'] = None
-            st.session_state.beam_inputs['design_computed'] = False
+            st.session_state.beam_inputs["design_result"] = None
+            st.session_state.beam_inputs["design_computed"] = False
             # Clear cache to force fresh computation
             from utils.api_wrapper import clear_cache
+
             clear_cache()
 
         # Update hash
-        st.session_state.beam_inputs['last_input_hash'] = current_hash
+        st.session_state.beam_inputs["last_input_hash"] = current_hash
 
         with loading_context("spinner", "Computing design... Please wait"):
             try:
                 # Call design API (currently using placeholder from api_wrapper)
                 result = cached_design(
-                    mu_knm=st.session_state.beam_inputs['mu_knm'],
-                    vu_kn=st.session_state.beam_inputs['vu_kn'],
-                    b_mm=st.session_state.beam_inputs['b_mm'],
-                    D_mm=st.session_state.beam_inputs['D_mm'],
-                    d_mm=st.session_state.beam_inputs['d_mm'],
-                    fck_nmm2=concrete['fck'],
-                    fy_nmm2=steel['fy'],
-                    span_mm=st.session_state.beam_inputs['span_mm'],
-                    exposure=st.session_state.beam_inputs['exposure']
+                    mu_knm=st.session_state.beam_inputs["mu_knm"],
+                    vu_kn=st.session_state.beam_inputs["vu_kn"],
+                    b_mm=st.session_state.beam_inputs["b_mm"],
+                    D_mm=st.session_state.beam_inputs["D_mm"],
+                    d_mm=st.session_state.beam_inputs["d_mm"],
+                    fck_nmm2=concrete["fck"],
+                    fy_nmm2=steel["fy"],
+                    span_mm=st.session_state.beam_inputs["span_mm"],
+                    exposure=st.session_state.beam_inputs["exposure"],
                 )
 
-                st.session_state.beam_inputs['design_result'] = result
-                st.session_state.beam_inputs['design_computed'] = True
+                st.session_state.beam_inputs["design_result"] = result
+                st.session_state.beam_inputs["design_computed"] = True
                 st.success("✅ Design computed successfully!")
                 st.rerun()
 
             except Exception as e:
                 st.error(f"❌ Design computation failed: {str(e)}")
-                st.session_state.beam_inputs['design_computed'] = False
+                st.session_state.beam_inputs["design_computed"] = False
 
     if not all_valid:
         st.warning("⚠️ Fix validation errors before analyzing")
-    elif inputs_changed and st.session_state.beam_inputs.get('design_computed', False):
+    elif inputs_changed and st.session_state.beam_inputs.get("design_computed", False):
         st.info("ℹ️ Inputs changed. Click 'Analyze Design' to update results.")
-
 
     st.markdown("---")
 
@@ -268,6 +267,7 @@ with col_input:
     with st.expander("⚙️ Advanced"):
         if st.button("🗑️ Clear Cache", use_container_width=True):
             from utils.api_wrapper import clear_cache
+
             clear_cache()
             st.success("Cache cleared!")
 
@@ -276,27 +276,32 @@ with col_preview:
     st.header("📊 Design Preview")
 
     # Show geometry preview (without reinforcement until analyzed)
-    with st.expander("📐 Geometry Preview", expanded=not st.session_state.beam_inputs.get('design_computed', False)):
+    with st.expander(
+        "📐 Geometry Preview",
+        expanded=not st.session_state.beam_inputs.get("design_computed", False),
+    ):
         # Get current exposure for cover
         exposure_props = {
-            'Mild': {'cover': 20},
-            'Moderate': {'cover': 30},
-            'Severe': {'cover': 45},
-            'Very Severe': {'cover': 50},
-            'Extreme': {'cover': 75}
+            "Mild": {"cover": 20},
+            "Moderate": {"cover": 30},
+            "Severe": {"cover": 45},
+            "Very Severe": {"cover": 50},
+            "Extreme": {"cover": 75},
         }
-        cover = exposure_props.get(st.session_state.beam_inputs['exposure'], {'cover': 30})['cover']
+        cover = exposure_props.get(
+            st.session_state.beam_inputs["exposure"], {"cover": 30}
+        )["cover"]
 
         # Only show reinforcement AFTER design is computed
-        if st.session_state.beam_inputs.get('design_computed', False):
+        if st.session_state.beam_inputs.get("design_computed", False):
             bar_dia = 16  # Placeholder
             rebar_y = cover + bar_dia / 2
             rebar_positions = [
                 (cover + bar_dia / 2, rebar_y),
-                (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
-                (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
+                (st.session_state.beam_inputs["b_mm"] / 2, rebar_y),
+                (st.session_state.beam_inputs["b_mm"] - cover - bar_dia / 2, rebar_y),
             ]
-            xu = st.session_state.beam_inputs['d_mm'] * 0.33
+            xu = st.session_state.beam_inputs["d_mm"] * 0.33
         else:
             # No reinforcement shown before analysis
             rebar_positions = []
@@ -304,43 +309,44 @@ with col_preview:
             bar_dia = 0
 
         fig = create_beam_diagram(
-            b_mm=st.session_state.beam_inputs['b_mm'],
-            D_mm=st.session_state.beam_inputs['D_mm'],
-            d_mm=st.session_state.beam_inputs['d_mm'],
+            b_mm=st.session_state.beam_inputs["b_mm"],
+            D_mm=st.session_state.beam_inputs["D_mm"],
+            d_mm=st.session_state.beam_inputs["d_mm"],
             rebar_positions=rebar_positions,
             xu=xu,
             bar_dia=bar_dia,
-            cover=cover
+            cover=cover,
         )
         st.plotly_chart(fig, use_container_width=True)
 
         # Show dimensions
-        st.caption(f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)")
-        if not st.session_state.beam_inputs.get('design_computed', False):
+        st.caption(
+            f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)"
+        )
+        if not st.session_state.beam_inputs.get("design_computed", False):
             st.info("ℹ️ Click 'Analyze Design' to see reinforcement")
 
     st.divider()
 
     # Show results if computed
-    if st.session_state.beam_inputs.get('design_computed', False):
+    if st.session_state.beam_inputs.get("design_computed", False):
         # Show full results (existing tabs - moved from main area)
-        result = st.session_state.beam_inputs['design_result']
+        result = st.session_state.beam_inputs["design_result"]
 
         # Success/Failure banner
-        if result.get('is_safe', False):
+        if result.get("is_safe", False):
             st.success("✅ **Design is SAFE** - Meets all IS 456 requirements")
         else:
-            st.error("❌ **Design is UNSAFE** - Does not meet IS 456 requirements. Modify dimensions or materials.")
+            st.error(
+                "❌ **Design is UNSAFE** - Does not meet IS 456 requirements. Modify dimensions or materials."
+            )
 
         st.divider()
 
         # Results tabs
-        tab1, tab2, tab3, tab4 = st.tabs([
-            "📊 Summary",
-            "🎨 Visualization",
-            "💰 Cost Analysis",
-            "✅ Compliance"
-        ])
+        tab1, tab2, tab3, tab4 = st.tabs(
+            ["📊 Summary", "🎨 Visualization", "💰 Cost Analysis", "✅ Compliance"]
+        )
 
         # ============================================================================
         # TAB 1: Summary
@@ -349,18 +355,22 @@ with col_preview:
             section_header("Design Summary", icon="📊", divider=False)
 
             # Get design details
-            flexure = result.get('flexure', {})
-            shear = result.get('shear', {})
-            detailing = result.get('detailing', {})
+            flexure = result.get("flexure", {})
+            shear = result.get("shear", {})
+            detailing = result.get("detailing", {})
 
-            ast_req = flexure.get('ast_required', 0)
-            ast_prov = flexure.get('ast_provided', 0)
-            spacing = shear.get('spacing', 0)
+            ast_req = flexure.get("ast_required", 0)
+            ast_prov = flexure.get("ast_provided", 0)
+            spacing = shear.get("spacing", 0)
 
             # Calculate utilization percentage
-            mu_limit = flexure.get('mu_limit_knm', 1)
-            flex_util = (st.session_state.beam_inputs['mu_knm'] / mu_limit * 100) if mu_limit > 0 else 0
-            shear_util = (shear.get('tau_v', 0) / (0.5 * (concrete['fck'] ** 0.5)) * 100)
+            mu_limit = flexure.get("mu_limit_knm", 1)
+            flex_util = (
+                (st.session_state.beam_inputs["mu_knm"] / mu_limit * 100)
+                if mu_limit > 0
+                else 0
+            )
+            shear_util = shear.get("tau_v", 0) / (0.5 * (concrete["fck"] ** 0.5)) * 100
 
             st.markdown("---")
 
@@ -373,20 +383,28 @@ with col_preview:
 
             with col1:
                 st.markdown("**Main Tension Steel**")
-                st.markdown(f"📏 **{flexure.get('num_bars', 3)} - {flexure.get('bar_dia', 16)}mm** bars")
+                st.markdown(
+                    f"📏 **{flexure.get('num_bars', 3)} - {flexure.get('bar_dia', 16)}mm** bars"
+                )
                 st.caption(f"Ast = {ast_prov:.0f} mm² (req: {ast_req:.0f} mm²)")
-                if flexure.get('num_layers', 1) > 1:
+                if flexure.get("num_layers", 1) > 1:
                     st.info(f"Arranged in {flexure.get('num_layers')} layers")
 
             with col2:
                 st.markdown("**Shear Reinforcement**")
-                st.markdown(f"📏 **{shear.get('legs', 2)}-legged {shear.get('stirrup_dia', 8)}mm** @ **{spacing:.0f}mm** c/c")
-                st.caption(f"τv = {shear.get('tau_v', 0):.2f} N/mm² (τc = {shear.get('tau_c', 0):.2f} N/mm²)")
+                st.markdown(
+                    f"📏 **{shear.get('legs', 2)}-legged {shear.get('stirrup_dia', 8)}mm** @ **{spacing:.0f}mm** c/c"
+                )
+                st.caption(
+                    f"τv = {shear.get('tau_v', 0):.2f} N/mm² (τc = {shear.get('tau_c', 0):.2f} N/mm²)"
+                )
 
             with col3:
                 st.markdown("**Compression Steel**")
-                if flexure.get('is_doubly_reinforced', False):
-                    st.markdown(f"📏 **Required:** {flexure.get('asc_required', 0):.0f} mm²")
+                if flexure.get("is_doubly_reinforced", False):
+                    st.markdown(
+                        f"📏 **Required:** {flexure.get('asc_required', 0):.0f} mm²"
+                    )
                     st.warning("⚠️ Doubly reinforced section")
                 else:
                     st.markdown("✅ **Not required**")
@@ -399,8 +417,10 @@ with col_preview:
 
             with col4:
                 st.markdown("**Side Face Steel**")
-                if detailing.get('needs_side_face', False):
-                    st.markdown(f"📏 **Required:** {detailing.get('side_face_area', 0):.0f} mm²")
+                if detailing.get("needs_side_face", False):
+                    st.markdown(
+                        f"📏 **Required:** {detailing.get('side_face_area', 0):.0f} mm²"
+                    )
                     st.caption("(D > 450mm, per IS 456 Cl. 26.5.1.3)")
                 else:
                     st.markdown("✅ **Not required**")
@@ -413,7 +433,7 @@ with col_preview:
 
             with col6:
                 st.markdown("**Design Status**")
-                if result.get('is_safe'):
+                if result.get("is_safe"):
                     st.success("✅ **SAFE**")
                 else:
                     st.error("❌ **UNSAFE**")
@@ -443,7 +463,13 @@ with col_preview:
 
             with col_u3:
                 st.markdown("**Steel Ratio**")
-                steel_ratio = (ast_prov / (st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm'])) * 100
+                steel_ratio = (
+                    ast_prov
+                    / (
+                        st.session_state.beam_inputs["b_mm"]
+                        * st.session_state.beam_inputs["d_mm"]
+                    )
+                ) * 100
                 max_ratio = 4.0  # 4% max
                 ratio_pct = min((steel_ratio / max_ratio) * 100, 100)
                 st.progress(ratio_pct / 100)
@@ -458,16 +484,28 @@ with col_preview:
                 c1, c2, c3 = st.columns(3)
                 with c1:
                     st.markdown("**Geometry**")
-                    st.write(f"• Span: {st.session_state.beam_inputs['span_mm']:.0f} mm")
-                    st.write(f"• Section: {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm")
-                    st.write(f"• Eff. depth: {st.session_state.beam_inputs['d_mm']:.0f} mm")
+                    st.write(
+                        f"• Span: {st.session_state.beam_inputs['span_mm']:.0f} mm"
+                    )
+                    st.write(
+                        f"• Section: {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm"
+                    )
+                    st.write(
+                        f"• Eff. depth: {st.session_state.beam_inputs['d_mm']:.0f} mm"
+                    )
                 with c2:
                     st.markdown("**Materials**")
-                    st.write(f"• Concrete: {st.session_state.beam_inputs['concrete_grade']} (fck={concrete['fck']})")
-                    st.write(f"• Steel: {st.session_state.beam_inputs['steel_grade']} (fy={steel['fy']})")
+                    st.write(
+                        f"• Concrete: {st.session_state.beam_inputs['concrete_grade']} (fck={concrete['fck']})"
+                    )
+                    st.write(
+                        f"• Steel: {st.session_state.beam_inputs['steel_grade']} (fy={steel['fy']})"
+                    )
                 with c3:
                     st.markdown("**Loading**")
-                    st.write(f"• Moment: {st.session_state.beam_inputs['mu_knm']:.1f} kNm")
+                    st.write(
+                        f"• Moment: {st.session_state.beam_inputs['mu_knm']:.1f} kNm"
+                    )
                     st.write(f"• Shear: {st.session_state.beam_inputs['vu_kn']:.1f} kN")
 
         # ============================================================================
@@ -477,31 +515,33 @@ with col_preview:
             st.subheader("Beam Cross-Section")
 
             # Get actual bar configuration from design result
-            flexure = result.get('flexure', {})
-            detailing = result.get('detailing', {})
-            cover = detailing.get('cover', 30)
-            bar_dia = flexure.get('bar_dia', 16)
-            num_bars = flexure.get('num_bars', 3)
+            flexure = result.get("flexure", {})
+            detailing = result.get("detailing", {})
+            cover = detailing.get("cover", 30)
+            bar_dia = flexure.get("bar_dia", 16)
+            num_bars = flexure.get("num_bars", 3)
 
             # Calculate rebar positions based on actual design
             rebar_positions = []
             if num_bars > 0:
-                spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover - bar_dia) / max(num_bars - 1, 1)
+                spacing_h = (
+                    st.session_state.beam_inputs["b_mm"] - 2 * cover - bar_dia
+                ) / max(num_bars - 1, 1)
                 rebar_y = cover + bar_dia / 2
                 for i in range(num_bars):
                     x = cover + bar_dia / 2 + i * spacing_h
                     rebar_positions.append((x, rebar_y))
 
-            xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Neutral axis estimate
+            xu = st.session_state.beam_inputs["d_mm"] * 0.33  # Neutral axis estimate
 
             fig = create_beam_diagram(
-                b_mm=st.session_state.beam_inputs['b_mm'],
-                D_mm=st.session_state.beam_inputs['D_mm'],
-                d_mm=st.session_state.beam_inputs['d_mm'],
+                b_mm=st.session_state.beam_inputs["b_mm"],
+                D_mm=st.session_state.beam_inputs["D_mm"],
+                d_mm=st.session_state.beam_inputs["d_mm"],
                 rebar_positions=rebar_positions,
                 xu=xu,
                 bar_dia=bar_dia,
-                cover=cover
+                cover=cover,
             )
 
             st.plotly_chart(fig, use_container_width=True, key="beam_section_viz")
@@ -512,23 +552,56 @@ with col_preview:
             st.subheader("📋 Reinforcement Schedule")
 
             import pandas as pd
+
             schedule_data = {
-                'Element': ['Main Tension', 'Stirrups', 'Compression' if flexure.get('is_doubly_reinforced') else 'Side Face'],
-                'Size': [
+                "Element": [
+                    "Main Tension",
+                    "Stirrups",
+                    (
+                        "Compression"
+                        if flexure.get("is_doubly_reinforced")
+                        else "Side Face"
+                    ),
+                ],
+                "Size": [
                     f"{num_bars} - {bar_dia}mm",
                     f"2L-{result.get('shear', {}).get('stirrup_dia', 8)}mm @ {result.get('shear', {}).get('spacing', 150):.0f}mm c/c",
-                    f"{flexure.get('asc_required', 0):.0f} mm² req'd" if flexure.get('is_doubly_reinforced') else (f"{detailing.get('side_face_area', 0):.0f} mm²" if detailing.get('needs_side_face') else "Not required")
+                    (
+                        f"{flexure.get('asc_required', 0):.0f} mm² req'd"
+                        if flexure.get("is_doubly_reinforced")
+                        else (
+                            f"{detailing.get('side_face_area', 0):.0f} mm²"
+                            if detailing.get("needs_side_face")
+                            else "Not required"
+                        )
+                    ),
                 ],
-                'Area (mm²)': [
+                "Area (mm²)": [
                     f"{flexure.get('ast_provided', 0):.0f}",
                     "—",
-                    f"{flexure.get('asc_required', 0):.0f}" if flexure.get('is_doubly_reinforced') else (f"{detailing.get('side_face_area', 0):.0f}" if detailing.get('needs_side_face') else "—")
+                    (
+                        f"{flexure.get('asc_required', 0):.0f}"
+                        if flexure.get("is_doubly_reinforced")
+                        else (
+                            f"{detailing.get('side_face_area', 0):.0f}"
+                            if detailing.get("needs_side_face")
+                            else "—"
+                        )
+                    ),
                 ],
-                'Remarks': [
+                "Remarks": [
                     f"req'd: {flexure.get('ast_required', 0):.0f} mm²",
                     f"τv={result.get('shear', {}).get('tau_v', 0):.2f} N/mm²",
-                    "Doubly reinforced" if flexure.get('is_doubly_reinforced') else ("D > 450mm" if detailing.get('needs_side_face') else "D ≤ 450mm")
-                ]
+                    (
+                        "Doubly reinforced"
+                        if flexure.get("is_doubly_reinforced")
+                        else (
+                            "D > 450mm"
+                            if detailing.get("needs_side_face")
+                            else "D ≤ 450mm"
+                        )
+                    ),
+                ],
             }
 
             df_schedule = pd.DataFrame(schedule_data)
@@ -542,22 +615,44 @@ with col_preview:
 
             # Sample alternatives (placeholder data)
             alternatives = [
-                {'bar_arrangement': '3-16mm', 'cost_per_meter': 87.45, 'is_optimal': True, 'area_provided': 603},
-                {'bar_arrangement': '4-14mm', 'cost_per_meter': 89.20, 'is_optimal': False, 'area_provided': 616},
-                {'bar_arrangement': '2-20mm', 'cost_per_meter': 92.30, 'is_optimal': False, 'area_provided': 628},
-                {'bar_arrangement': '5-12mm', 'cost_per_meter': 85.10, 'is_optimal': False, 'area_provided': 565},
+                {
+                    "bar_arrangement": "3-16mm",
+                    "cost_per_meter": 87.45,
+                    "is_optimal": True,
+                    "area_provided": 603,
+                },
+                {
+                    "bar_arrangement": "4-14mm",
+                    "cost_per_meter": 89.20,
+                    "is_optimal": False,
+                    "area_provided": 616,
+                },
+                {
+                    "bar_arrangement": "2-20mm",
+                    "cost_per_meter": 92.30,
+                    "is_optimal": False,
+                    "area_provided": 628,
+                },
+                {
+                    "bar_arrangement": "5-12mm",
+                    "cost_per_meter": 85.10,
+                    "is_optimal": False,
+                    "area_provided": 565,
+                },
             ]
 
             fig_cost = create_cost_comparison(alternatives)
             st.plotly_chart(fig_cost, use_container_width=True, key="cost_comparison")
 
-            st.info("""
+            st.info(
+                """
             💡 **Cost Optimization Tips:**
             - Use standard bar sizes (12, 16, 20, 25 mm)
             - Minimize number of bar diameters
             - Consider constructability and spacing
             - Balance material cost vs labor cost
-            """)
+            """
+            )
 
         # ============================================================================
         # TAB 4: Compliance
@@ -568,41 +663,46 @@ with col_preview:
             # Sample compliance checks (placeholder data)
             checks = [
                 {
-                    'clause': '26.5.1.1(a)',
-                    'description': 'Minimum tension reinforcement',
-                    'status': 'pass',
-                    'actual_value': ast_req,
-                    'limit_value': 0.85 * st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['d_mm'] / steel['fy'],
-                    'unit': 'mm²',
-                    'details': 'Ast,min = 0.85 bd / fy'
+                    "clause": "26.5.1.1(a)",
+                    "description": "Minimum tension reinforcement",
+                    "status": "pass",
+                    "actual_value": ast_req,
+                    "limit_value": 0.85
+                    * st.session_state.beam_inputs["b_mm"]
+                    * st.session_state.beam_inputs["d_mm"]
+                    / steel["fy"],
+                    "unit": "mm²",
+                    "details": "Ast,min = 0.85 bd / fy",
                 },
                 {
-                    'clause': '26.5.1.1(b)',
-                    'description': 'Maximum tension reinforcement',
-                    'status': 'pass',
-                    'actual_value': ast_req,
-                    'limit_value': 0.04 * st.session_state.beam_inputs['b_mm'] * st.session_state.beam_inputs['D_mm'],
-                    'unit': 'mm²',
-                    'details': 'Ast,max = 0.04 bD'
+                    "clause": "26.5.1.1(b)",
+                    "description": "Maximum tension reinforcement",
+                    "status": "pass",
+                    "actual_value": ast_req,
+                    "limit_value": 0.04
+                    * st.session_state.beam_inputs["b_mm"]
+                    * st.session_state.beam_inputs["D_mm"],
+                    "unit": "mm²",
+                    "details": "Ast,max = 0.04 bD",
                 },
                 {
-                    'clause': '26.5.1.5',
-                    'description': 'Maximum spacing of tension bars',
-                    'status': 'pass',
-                    'actual_value': 150,
-                    'limit_value': min(3 * st.session_state.beam_inputs['d_mm'], 300),
-                    'unit': 'mm',
-                    'details': 'Max spacing = min(3d, 300mm)'
+                    "clause": "26.5.1.5",
+                    "description": "Maximum spacing of tension bars",
+                    "status": "pass",
+                    "actual_value": 150,
+                    "limit_value": min(3 * st.session_state.beam_inputs["d_mm"], 300),
+                    "unit": "mm",
+                    "details": "Max spacing = min(3d, 300mm)",
                 },
                 {
-                    'clause': '26.5.1.6',
-                    'description': 'Minimum shear reinforcement',
-                    'status': 'pass',
-                    'actual_value': spacing,
-                    'limit_value': 0.75 * st.session_state.beam_inputs['d_mm'],
-                    'unit': 'mm',
-                    'details': 'Max spacing = 0.75d for vertical stirrups'
-                }
+                    "clause": "26.5.1.6",
+                    "description": "Minimum shear reinforcement",
+                    "status": "pass",
+                    "actual_value": spacing,
+                    "limit_value": 0.75 * st.session_state.beam_inputs["d_mm"],
+                    "unit": "mm",
+                    "details": "Max spacing = 0.75d for vertical stirrups",
+                },
             ]
 
             create_compliance_visual(checks)
@@ -610,16 +710,16 @@ with col_preview:
     else:
         # Show real-time preview when design not yet computed
         render_real_time_preview(
-            span_mm=st.session_state.beam_inputs['span_mm'],
-            b_mm=st.session_state.beam_inputs['b_mm'],
-            D_mm=st.session_state.beam_inputs['D_mm'],
-            d_mm=st.session_state.beam_inputs['d_mm'],
-            concrete_grade=concrete['grade'],
-            steel_grade=steel['grade'],
-            mu_knm=st.session_state.beam_inputs['mu_knm'],
-            vu_kn=st.session_state.beam_inputs['vu_kn'],
-            exposure=st.session_state.beam_inputs['exposure'],
-            support_condition=st.session_state.beam_inputs['support_condition']
+            span_mm=st.session_state.beam_inputs["span_mm"],
+            b_mm=st.session_state.beam_inputs["b_mm"],
+            D_mm=st.session_state.beam_inputs["D_mm"],
+            d_mm=st.session_state.beam_inputs["d_mm"],
+            concrete_grade=concrete["grade"],
+            steel_grade=steel["grade"],
+            mu_knm=st.session_state.beam_inputs["mu_knm"],
+            vu_kn=st.session_state.beam_inputs["vu_kn"],
+            exposure=st.session_state.beam_inputs["exposure"],
+            support_condition=st.session_state.beam_inputs["support_condition"],
         )
 
 # ============================================================================

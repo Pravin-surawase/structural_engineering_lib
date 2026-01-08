@@ -56,6 +56,7 @@ except ImportError:
     class ANIMATION:
         duration_normal = 200
 
+
 # Theme colors (using design system)
 THEME_NAVY = COLORS.primary_500
 THEME_ORANGE = COLORS.accent_500
@@ -83,19 +84,19 @@ def get_plotly_theme() -> Dict:
     - Hover and interaction styles
     """
     return {
-        'font_family': TYPOGRAPHY.font_ui,
-        'font_color': COLORS.gray_900,
-        'paper_bgcolor': 'white',
-        'plot_bgcolor': 'white',
-        'grid_color': COLORS.gray_100,
-        'title_font_size': 18,
-        'title_font_weight': 600,
-        'axis_font_size': 12,
-        'legend_bgcolor': 'rgba(255,255,255,0.95)',
-        'legend_border_color': COLORS.gray_200,
-        'legend_border_width': 1,
-        'hover_bgcolor': COLORS.gray_50,
-        'hover_border_color': COLORS.primary_500,
+        "font_family": TYPOGRAPHY.font_ui,
+        "font_color": COLORS.gray_900,
+        "paper_bgcolor": "white",
+        "plot_bgcolor": "white",
+        "grid_color": COLORS.gray_100,
+        "title_font_size": 18,
+        "title_font_weight": 600,
+        "axis_font_size": 12,
+        "legend_bgcolor": "rgba(255,255,255,0.95)",
+        "legend_border_color": COLORS.gray_200,
+        "legend_border_width": 1,
+        "hover_bgcolor": COLORS.gray_50,
+        "hover_border_color": COLORS.primary_500,
     }
 
 
@@ -107,7 +108,7 @@ def create_beam_diagram(
     xu: float,
     bar_dia: float,
     cover: float = 30.0,
-    show_dimensions: bool = True
+    show_dimensions: bool = True,
 ) -> go.Figure:
     """
     Create interactive beam cross-section diagram with rebar placement.
@@ -145,134 +146,154 @@ def create_beam_diagram(
     xu_valid = xu is not None and xu > 0
 
     # 1. Concrete section (light gray rectangle)
-    fig.add_trace(go.Scatter(
-        x=[0, b_mm, b_mm, 0, 0],
-        y=[0, 0, D_mm, D_mm, 0],
-        fill="toself",
-        fillcolor="rgba(200, 200, 200, 0.3)",
-        line=dict(color=THEME_NAVY, width=2),
-        mode="lines",
-        name="Concrete Section",
-        hovertemplate=f"Beam Section<br>Width: {b_mm}mm<br>Depth: {D_mm}mm<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=[0, b_mm, b_mm, 0, 0],
+            y=[0, 0, D_mm, D_mm, 0],
+            fill="toself",
+            fillcolor="rgba(200, 200, 200, 0.3)",
+            line=dict(color=THEME_NAVY, width=2),
+            mode="lines",
+            name="Concrete Section",
+            hovertemplate=f"Beam Section<br>Width: {b_mm}mm<br>Depth: {D_mm}mm<extra></extra>",
+        )
+    )
 
     # 2. Compression zone (light blue shading above neutral axis)
     if xu_valid:
-        fig.add_trace(go.Scatter(
-            x=[0, b_mm, b_mm, 0, 0],
-            y=[D_mm, D_mm, D_mm - xu, D_mm - xu, D_mm],
-            fill="toself",
-            fillcolor="rgba(0, 115, 178, 0.15)",  # Colorblind-safe blue
-            line=dict(width=0),
-            mode="lines",
-            name="Compression Zone",
-            hovertemplate=f"Compression Zone<br>Depth: {xu:.1f}mm<extra></extra>",
-            showlegend=True
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[0, b_mm, b_mm, 0, 0],
+                y=[D_mm, D_mm, D_mm - xu, D_mm - xu, D_mm],
+                fill="toself",
+                fillcolor="rgba(0, 115, 178, 0.15)",  # Colorblind-safe blue
+                line=dict(width=0),
+                mode="lines",
+                name="Compression Zone",
+                hovertemplate=f"Compression Zone<br>Depth: {xu:.1f}mm<extra></extra>",
+                showlegend=True,
+            )
+        )
 
     # 3. Tension zone (light orange shading below neutral axis)
     if xu_valid:
         tension_depth = D_mm - xu
         if tension_depth > 0:
-            fig.add_trace(go.Scatter(
-                x=[0, b_mm, b_mm, 0, 0],
-                y=[0, 0, D_mm - xu, D_mm - xu, 0],
-                fill="toself",
-                fillcolor="rgba(222, 143, 5, 0.15)",  # Colorblind-safe orange
-                line=dict(width=0),
-                mode="lines",
-                name="Tension Zone",
-                hovertemplate=f"Tension Zone<br>Depth: {tension_depth:.1f}mm<extra></extra>",
-                showlegend=True
-            ))
+            fig.add_trace(
+                go.Scatter(
+                    x=[0, b_mm, b_mm, 0, 0],
+                    y=[0, 0, D_mm - xu, D_mm - xu, 0],
+                    fill="toself",
+                    fillcolor="rgba(222, 143, 5, 0.15)",  # Colorblind-safe orange
+                    line=dict(width=0),
+                    mode="lines",
+                    name="Tension Zone",
+                    hovertemplate=f"Tension Zone<br>Depth: {tension_depth:.1f}mm<extra></extra>",
+                    showlegend=True,
+                )
+            )
 
     # 4. Neutral axis (red dashed line) - only if xu is valid
     if xu_valid:
         na_y = D_mm - xu
-        fig.add_trace(go.Scatter(
-            x=[0, b_mm],
-            y=[na_y, na_y],
-            mode="lines",
-            line=dict(color=CB_SAFE_RED, width=2, dash="dash"),
-            name="Neutral Axis",
-            hovertemplate=f"Neutral Axis<br>xu = {xu:.1f}mm from top<extra></extra>"
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[0, b_mm],
+                y=[na_y, na_y],
+                mode="lines",
+                line=dict(color=CB_SAFE_RED, width=2, dash="dash"),
+                name="Neutral Axis",
+                hovertemplate=f"Neutral Axis<br>xu = {xu:.1f}mm from top<extra></extra>",
+            )
+        )
 
     # 5. Effective depth line (green dashed)
     ed_y = D_mm - d_mm
-    fig.add_trace(go.Scatter(
-        x=[0, b_mm],
-        y=[ed_y, ed_y],
-        mode="lines",
-        line=dict(color=CB_SAFE_GREEN, width=1, dash="dot"),
-        name="Effective Depth",
-        hovertemplate=f"Effective Depth<br>d = {d_mm}mm<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=[0, b_mm],
+            y=[ed_y, ed_y],
+            mode="lines",
+            line=dict(color=CB_SAFE_GREEN, width=1, dash="dot"),
+            name="Effective Depth",
+            hovertemplate=f"Effective Depth<br>d = {d_mm}mm<extra></extra>",
+        )
+    )
 
     # 6. Cover lines (blue dotted)
     if cover > 0:
         # Bottom cover
-        fig.add_trace(go.Scatter(
-            x=[0, b_mm],
-            y=[cover, cover],
-            mode="lines",
-            line=dict(color=CB_SAFE_BLUE, width=1, dash="dot"),
-            name="Cover",
-            hovertemplate=f"Clear Cover<br>{cover}mm<extra></extra>",
-            showlegend=False
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[0, b_mm],
+                y=[cover, cover],
+                mode="lines",
+                line=dict(color=CB_SAFE_BLUE, width=1, dash="dot"),
+                name="Cover",
+                hovertemplate=f"Clear Cover<br>{cover}mm<extra></extra>",
+                showlegend=False,
+            )
+        )
         # Side covers
-        fig.add_trace(go.Scatter(
-            x=[cover, cover],
-            y=[0, D_mm],
-            mode="lines",
-            line=dict(color=CB_SAFE_BLUE, width=1, dash="dot"),
-            showlegend=False,
-            hoverinfo="skip"
-        ))
-        fig.add_trace(go.Scatter(
-            x=[b_mm - cover, b_mm - cover],
-            y=[0, D_mm],
-            mode="lines",
-            line=dict(color=CB_SAFE_BLUE, width=1, dash="dot"),
-            showlegend=False,
-            hoverinfo="skip"
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[cover, cover],
+                y=[0, D_mm],
+                mode="lines",
+                line=dict(color=CB_SAFE_BLUE, width=1, dash="dot"),
+                showlegend=False,
+                hoverinfo="skip",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[b_mm - cover, b_mm - cover],
+                y=[0, D_mm],
+                mode="lines",
+                line=dict(color=CB_SAFE_BLUE, width=1, dash="dot"),
+                showlegend=False,
+                hoverinfo="skip",
+            )
+        )
 
     # 7. Rebar positions (orange circles)
     if rebar_positions:
         rebar_x = [pos[0] for pos in rebar_positions]
         rebar_y = [pos[1] for pos in rebar_positions]
 
-        fig.add_trace(go.Scatter(
-            x=rebar_x,
-            y=rebar_y,
-            mode="markers",
-            marker=dict(
-                size=bar_dia * 0.8,  # Scale to mm (approximate visual size)
-                color=THEME_ORANGE,
-                line=dict(color=THEME_NAVY, width=1)
-            ),
-            name=f"Rebar ({bar_dia}mm)",
-            hovertemplate="Rebar Position<br>x: %{x:.0f}mm<br>y: %{y:.0f}mm<extra></extra>"
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=rebar_x,
+                y=rebar_y,
+                mode="markers",
+                marker=dict(
+                    size=bar_dia * 0.8,  # Scale to mm (approximate visual size)
+                    color=THEME_ORANGE,
+                    line=dict(color=THEME_NAVY, width=1),
+                ),
+                name=f"Rebar ({bar_dia}mm)",
+                hovertemplate="Rebar Position<br>x: %{x:.0f}mm<br>y: %{y:.0f}mm<extra></extra>",
+            )
+        )
 
     # 8. Dimension annotations (if enabled)
     if show_dimensions:
         # Width dimension (bottom)
         fig.add_annotation(
-            x=b_mm / 2, y=-20,
+            x=b_mm / 2,
+            y=-20,
             text=f"b = {b_mm}mm",
             showarrow=False,
-            font=dict(size=10, color=THEME_NAVY)
+            font=dict(size=10, color=THEME_NAVY),
         )
         # Height dimension (right side)
         fig.add_annotation(
-            x=b_mm + 30, y=D_mm / 2,
+            x=b_mm + 30,
+            y=D_mm / 2,
             text=f"D = {D_mm}mm",
             showarrow=False,
             textangle=-90,
-            font=dict(size=10, color=THEME_NAVY)
+            font=dict(size=10, color=THEME_NAVY),
         )
 
     # Layout configuration with design system theme
@@ -281,50 +302,45 @@ def create_beam_diagram(
         title=dict(
             text="Beam Cross-Section",
             font=dict(
-                size=theme['title_font_size'],
-                color=theme['font_color'],
-                family=theme['font_family'],
-                weight=theme['title_font_weight']
-            )
+                size=theme["title_font_size"],
+                color=theme["font_color"],
+                family=theme["font_family"],
+                weight=theme["title_font_weight"],
+            ),
         ),
         xaxis=dict(
-            title=dict(
-                text="Width (mm)",
-                font=dict(size=theme['axis_font_size'])
-            ),
+            title=dict(text="Width (mm)", font=dict(size=theme["axis_font_size"])),
             range=[-30, b_mm + 50],
             showgrid=True,
-            gridcolor=theme['grid_color'],
-            zeroline=False
+            gridcolor=theme["grid_color"],
+            zeroline=False,
         ),
         yaxis=dict(
-            title=dict(
-                text="Height (mm)",
-                font=dict(size=theme['axis_font_size'])
-            ),
+            title=dict(text="Height (mm)", font=dict(size=theme["axis_font_size"])),
             range=[-30, D_mm + 30],
             showgrid=True,
-            gridcolor=theme['grid_color'],
+            gridcolor=theme["grid_color"],
             zeroline=False,
             scaleanchor="x",
-            scaleratio=1  # Equal aspect ratio
+            scaleratio=1,  # Equal aspect ratio
         ),
-        plot_bgcolor=theme['plot_bgcolor'],
-        paper_bgcolor=theme['paper_bgcolor'],
-        font=dict(family=theme['font_family'], color=theme['font_color']),
+        plot_bgcolor=theme["plot_bgcolor"],
+        paper_bgcolor=theme["paper_bgcolor"],
+        font=dict(family=theme["font_family"], color=theme["font_color"]),
         hovermode="closest",
         showlegend=True,
         legend=dict(
-            x=1.05, y=1,
-            bgcolor=theme['legend_bgcolor'],
-            bordercolor=theme['legend_border_color'],
-            borderwidth=theme['legend_border_width'],
-            font=dict(size=12)
+            x=1.05,
+            y=1,
+            bgcolor=theme["legend_bgcolor"],
+            bordercolor=theme["legend_border_color"],
+            borderwidth=theme["legend_border_width"],
+            font=dict(size=12),
         ),
         height=500,
         margin=dict(l=50, r=150, t=60, b=50),
         # Add subtle animation (use _ms suffix for Plotly numeric format)
-        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing="cubic-in-out"),
     )
 
     return fig
@@ -366,21 +382,23 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
         fig = go.Figure()
         fig.add_annotation(
             text="No alternatives to compare",
-            xref="paper", yref="paper",
-            x=0.5, y=0.5,
+            xref="paper",
+            yref="paper",
+            x=0.5,
+            y=0.5,
             showarrow=False,
-            font=dict(size=14, color="gray")
+            font=dict(size=14, color="gray"),
         )
         return fig
 
     # Sort by cost (ascending)
-    sorted_alts = sorted(alternatives, key=lambda x: x['cost_per_meter'])
+    sorted_alts = sorted(alternatives, key=lambda x: x["cost_per_meter"])
 
     # Extract data
-    arrangements = [alt['bar_arrangement'] for alt in sorted_alts]
-    costs = [alt['cost_per_meter'] for alt in sorted_alts]
-    is_optimal_list = [alt.get('is_optimal', False) for alt in sorted_alts]
-    areas = [alt.get('area_provided', 0) for alt in sorted_alts]
+    arrangements = [alt["bar_arrangement"] for alt in sorted_alts]
+    costs = [alt["cost_per_meter"] for alt in sorted_alts]
+    is_optimal_list = [alt.get("is_optimal", False) for alt in sorted_alts]
+    areas = [alt.get("area_provided", 0) for alt in sorted_alts]
 
     # Color bars (green for optimal, colorblind-safe blue for others)
     colors = [CB_SAFE_GREEN if opt else CB_SAFE_BLUE for opt in is_optimal_list]
@@ -388,26 +406,25 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
     # Create horizontal bar chart
     fig = go.Figure()
 
-    fig.add_trace(go.Bar(
-        y=arrangements,
-        x=costs,
-        orientation='h',
-        marker=dict(
-            color=colors,
-            line=dict(color=THEME_NAVY, width=1)
-        ),
-        text=[f"₹{cost:.2f}/m" for cost in costs],
-        textposition='outside',
-        textfont=dict(size=11, color=THEME_NAVY),
-        hovertemplate=(
-            "<b>%{y}</b><br>" +
-            "Cost: ₹%{x:.2f}/m<br>" +
-            "Area: %{customdata}mm²<br>" +
-            "<extra></extra>"
-        ),
-        customdata=areas,
-        showlegend=False
-    ))
+    fig.add_trace(
+        go.Bar(
+            y=arrangements,
+            x=costs,
+            orientation="h",
+            marker=dict(color=colors, line=dict(color=THEME_NAVY, width=1)),
+            text=[f"₹{cost:.2f}/m" for cost in costs],
+            textposition="outside",
+            textfont=dict(size=11, color=THEME_NAVY),
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                + "Cost: ₹%{x:.2f}/m<br>"
+                + "Area: %{customdata}mm²<br>"
+                + "<extra></extra>"
+            ),
+            customdata=areas,
+            showlegend=False,
+        )
+    )
 
     # Add optimal marker
     optimal_idx = next((i for i, opt in enumerate(is_optimal_list) if opt), None)
@@ -423,7 +440,7 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
             arrowcolor=CB_SAFE_GREEN,
             ax=50,
             ay=0,
-            font=dict(size=10, color=CB_SAFE_GREEN, family="Inter")
+            font=dict(size=10, color=CB_SAFE_GREEN, family="Inter"),
         )
 
     # Layout with design system theme
@@ -432,44 +449,36 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
         title=dict(
             text="Cost Comparison: Bar Arrangements",
             font=dict(
-                size=theme['title_font_size'],
-                color=theme['font_color'],
-                family=theme['font_family'],
-                weight=theme['title_font_weight']
-            )
+                size=theme["title_font_size"],
+                color=theme["font_color"],
+                family=theme["font_family"],
+                weight=theme["title_font_weight"],
+            ),
         ),
         xaxis=dict(
-            title=dict(
-                text="Cost (₹/meter)",
-                font=dict(size=theme['axis_font_size'])
-            ),
+            title=dict(text="Cost (₹/meter)", font=dict(size=theme["axis_font_size"])),
             showgrid=True,
-            gridcolor=theme['grid_color'],
-            zeroline=False
+            gridcolor=theme["grid_color"],
+            zeroline=False,
         ),
         yaxis=dict(
-            title=dict(
-                text="Bar Arrangement",
-                font=dict(size=theme['axis_font_size'])
-            ),
-            showgrid=False
+            title=dict(text="Bar Arrangement", font=dict(size=theme["axis_font_size"])),
+            showgrid=False,
         ),
-        plot_bgcolor=theme['plot_bgcolor'],
-        paper_bgcolor=theme['paper_bgcolor'],
-        font=dict(family=theme['font_family'], color=theme['font_color']),
+        plot_bgcolor=theme["plot_bgcolor"],
+        paper_bgcolor=theme["paper_bgcolor"],
+        font=dict(family=theme["font_family"], color=theme["font_color"]),
         hovermode="closest",
         height=max(300, len(alternatives) * 60),  # Dynamic height
         margin=dict(l=100, r=100, t=60, b=50),
-        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing="cubic-in-out"),
     )
 
     return fig
 
 
 def create_utilization_gauge(
-    value: float,
-    label: str,
-    thresholds: Optional[Dict[str, float]] = None
+    value: float, label: str, thresholds: Optional[Dict[str, float]] = None
 ) -> go.Figure:
     """
     Create semicircular utilization gauge with color zones.
@@ -494,10 +503,10 @@ def create_utilization_gauge(
         >>> st.plotly_chart(fig, use_container_width=True)
     """
     if thresholds is None:
-        thresholds = {'warning': 0.8, 'critical': 0.95}
+        thresholds = {"warning": 0.8, "critical": 0.95}
 
-    warning_threshold = thresholds.get('warning', 0.8)
-    critical_threshold = thresholds.get('critical', 0.95)
+    warning_threshold = thresholds.get("warning", 0.8)
+    critical_threshold = thresholds.get("critical", 0.95)
 
     # Determine color based on value
     if value < warning_threshold:
@@ -512,78 +521,102 @@ def create_utilization_gauge(
 
     # Create gauge with design system theme
     theme = get_plotly_theme()
-    fig = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=value * 100,  # Convert to percentage
-        title={
-            'text': label,
-            'font': {
-                'size': theme['title_font_size'],
-                'color': theme['font_color'],
-                'family': theme['font_family']
-            }
-        },
-        number={'suffix': "%", 'font': {'size': 32, 'color': bar_color, 'family': theme['font_family']}},
-        delta={
-            'reference': critical_threshold * 100,
-            'increasing': {'color': CB_SAFE_RED},
-            'decreasing': {'color': CB_SAFE_GREEN},
-            'font': {'size': 14, 'family': theme['font_family']}
-        },
-        gauge={
-            'axis': {
-                'range': [0, 100],
-                'tickwidth': 2,
-                'tickcolor': theme['font_color'],
-                'tickvals': [0, warning_threshold * 100, critical_threshold * 100, 100],
-                'ticktext': ['0%', f'{warning_threshold * 100:.0f}%', f'{critical_threshold * 100:.0f}%', '100%'],
-                'tickfont': {'size': 11, 'family': theme['font_family']}
+    fig = go.Figure(
+        go.Indicator(
+            mode="gauge+number+delta",
+            value=value * 100,  # Convert to percentage
+            title={
+                "text": label,
+                "font": {
+                    "size": theme["title_font_size"],
+                    "color": theme["font_color"],
+                    "family": theme["font_family"],
+                },
             },
-            'bar': {'color': bar_color, 'thickness': 0.8},
-            'bgcolor': theme['plot_bgcolor'],
-            'borderwidth': 2,
-            'bordercolor': COLORS.primary_500,
-            'steps': [
-                {'range': [0, warning_threshold * 100], 'color': 'rgba(2, 158, 115, 0.15)'},  # Light green
-                {'range': [warning_threshold * 100, critical_threshold * 100], 'color': 'rgba(245, 158, 11, 0.15)'},  # Light yellow
-                {'range': [critical_threshold * 100, 100], 'color': 'rgba(204, 51, 17, 0.15)'}  # Light red
-            ],
-            'threshold': {
-                'line': {'color': COLORS.primary_700, 'width': 4},
-                'thickness': 0.85,
-                'value': value * 100
-            }
-        }
-    ))
+            number={
+                "suffix": "%",
+                "font": {
+                    "size": 32,
+                    "color": bar_color,
+                    "family": theme["font_family"],
+                },
+            },
+            delta={
+                "reference": critical_threshold * 100,
+                "increasing": {"color": CB_SAFE_RED},
+                "decreasing": {"color": CB_SAFE_GREEN},
+                "font": {"size": 14, "family": theme["font_family"]},
+            },
+            gauge={
+                "axis": {
+                    "range": [0, 100],
+                    "tickwidth": 2,
+                    "tickcolor": theme["font_color"],
+                    "tickvals": [
+                        0,
+                        warning_threshold * 100,
+                        critical_threshold * 100,
+                        100,
+                    ],
+                    "ticktext": [
+                        "0%",
+                        f"{warning_threshold * 100:.0f}%",
+                        f"{critical_threshold * 100:.0f}%",
+                        "100%",
+                    ],
+                    "tickfont": {"size": 11, "family": theme["font_family"]},
+                },
+                "bar": {"color": bar_color, "thickness": 0.8},
+                "bgcolor": theme["plot_bgcolor"],
+                "borderwidth": 2,
+                "bordercolor": COLORS.primary_500,
+                "steps": [
+                    {
+                        "range": [0, warning_threshold * 100],
+                        "color": "rgba(2, 158, 115, 0.15)",
+                    },  # Light green
+                    {
+                        "range": [warning_threshold * 100, critical_threshold * 100],
+                        "color": "rgba(245, 158, 11, 0.15)",
+                    },  # Light yellow
+                    {
+                        "range": [critical_threshold * 100, 100],
+                        "color": "rgba(204, 51, 17, 0.15)",
+                    },  # Light red
+                ],
+                "threshold": {
+                    "line": {"color": COLORS.primary_700, "width": 4},
+                    "thickness": 0.85,
+                    "value": value * 100,
+                },
+            },
+        )
+    )
 
     # Add status annotation with design system theme
     fig.add_annotation(
         text=f"Status: {status}",
-        xref="paper", yref="paper",
-        x=0.5, y=0.1,
+        xref="paper",
+        yref="paper",
+        x=0.5,
+        y=0.1,
         showarrow=False,
-        font=dict(
-            size=14,
-            color=bar_color,
-            family=theme['font_family'],
-            weight="bold"
-        )
+        font=dict(size=14, color=bar_color, family=theme["font_family"], weight="bold"),
     )
 
     fig.update_layout(
         height=320,
         margin=dict(l=30, r=30, t=60, b=50),
-        paper_bgcolor=theme['paper_bgcolor'],
-        font={'family': theme['font_family'], 'color': theme['font_color']},
-        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
+        paper_bgcolor=theme["paper_bgcolor"],
+        font={"family": theme["font_family"], "color": theme["font_color"]},
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing="cubic-in-out"),
     )
 
     return fig
 
 
 def create_sensitivity_tornado(
-    parameters: List[Dict[str, any]],
-    baseline_value: float
+    parameters: List[Dict[str, any]], baseline_value: float
 ) -> go.Figure:
     """
     Create tornado diagram showing parameter sensitivity.
@@ -618,69 +651,78 @@ def create_sensitivity_tornado(
         fig = go.Figure()
         fig.add_annotation(
             text="No sensitivity data available",
-            xref="paper", yref="paper",
-            x=0.5, y=0.5,
+            xref="paper",
+            yref="paper",
+            x=0.5,
+            y=0.5,
             showarrow=False,
-            font=dict(size=14, color="gray")
+            font=dict(size=14, color="gray"),
         )
         return fig
 
     # Calculate impacts and sort by total impact
     for param in parameters:
-        param['low_impact'] = param['low_value'] - baseline_value
-        param['high_impact'] = param['high_value'] - baseline_value
-        param['total_impact'] = abs(param['low_impact']) + abs(param['high_impact'])
+        param["low_impact"] = param["low_value"] - baseline_value
+        param["high_impact"] = param["high_value"] - baseline_value
+        param["total_impact"] = abs(param["low_impact"]) + abs(param["high_impact"])
 
-    sorted_params = sorted(parameters, key=lambda x: x['total_impact'], reverse=True)
+    sorted_params = sorted(parameters, key=lambda x: x["total_impact"], reverse=True)
+
+    # Get theme for consistent styling
+    theme = get_plotly_theme()
 
     # Extract data
-    names = [p['name'] for p in sorted_params]
-    low_impacts = [p['low_impact'] for p in sorted_params]
-    high_impacts = [p['high_impact'] for p in sorted_params]
-    units = [p.get('unit', '') for p in sorted_params]
+    names = [p["name"] for p in sorted_params]
+    low_impacts = [p["low_impact"] for p in sorted_params]
+    high_impacts = [p["high_impact"] for p in sorted_params]
+    units = [p.get("unit", "") for p in sorted_params]
 
     fig = go.Figure()
 
     # Low values (left bars, blue)
-    fig.add_trace(go.Bar(
-        name='Decrease',
-        y=names,
-        x=low_impacts,
-        orientation='h',
-        marker=dict(color=CB_SAFE_BLUE),
-        hovertemplate=(
-            "<b>%{y} (Decrease)</b><br>" +
-            "Impact: %{x:+.1f}<br>" +
-            "<extra></extra>"
+    fig.add_trace(
+        go.Bar(
+            name="Decrease",
+            y=names,
+            x=low_impacts,
+            orientation="h",
+            marker=dict(color=CB_SAFE_BLUE),
+            hovertemplate=(
+                "<b>%{y} (Decrease)</b><br>"
+                + "Impact: %{x:+.1f}<br>"
+                + "<extra></extra>"
+            ),
         )
-    ))
+    )
 
     # High values (right bars, orange)
-    fig.add_trace(go.Bar(
-        name='Increase',
-        y=names,
-        x=high_impacts,
-        orientation='h',
-        marker=dict(color=CB_SAFE_ORANGE),
-        hovertemplate=(
-            "<b>%{y} (Increase)</b><br>" +
-            "Impact: %{x:+.1f}<br>" +
-            "<extra></extra>"
+    fig.add_trace(
+        go.Bar(
+            name="Increase",
+            y=names,
+            x=high_impacts,
+            orientation="h",
+            marker=dict(color=CB_SAFE_ORANGE),
+            hovertemplate=(
+                "<b>%{y} (Increase)</b><br>"
+                + "Impact: %{x:+.1f}<br>"
+                + "<extra></extra>"
+            ),
         )
-    ))
+    )
 
     # Baseline reference line
     fig.add_vline(
         x=0,
         line=dict(color=THEME_NAVY, width=2, dash="solid"),
         annotation_text="Baseline",
-        annotation_position="top"
+        annotation_position="top",
     )
 
     fig.update_layout(
         title=dict(
             text=f"Sensitivity Analysis (Baseline: {baseline_value:.1f})",
-            font=dict(size=16, color=THEME_NAVY, family="Inter")
+            font=dict(size=16, color=THEME_NAVY, family="Inter"),
         ),
         xaxis=dict(
             title="Impact on Result",
@@ -688,27 +730,25 @@ def create_sensitivity_tornado(
             gridcolor="rgba(0,0,0,0.1)",
             zeroline=True,
             zerolinecolor=THEME_NAVY,
-            zerolinewidth=2
+            zerolinewidth=2,
         ),
-        yaxis=dict(
-            title="Parameter",
-            showgrid=False
-        ),
-        barmode='overlay',
+        yaxis=dict(title="Parameter", showgrid=False),
+        barmode="overlay",
         plot_bgcolor="white",
         paper_bgcolor="white",
         hovermode="closest",
         showlegend=True,
         legend=dict(
-            x=1.05, y=1,
-            bgcolor=theme['legend_bgcolor'],
-            bordercolor=theme['legend_border_color'],
-            borderwidth=theme['legend_border_width'],
-            font=dict(size=12)
+            x=1.05,
+            y=1,
+            bgcolor=theme.get("legend_bgcolor", "rgba(255,255,255,0.9)"),
+            bordercolor=theme.get("legend_border_color", "#E0E0E0"),
+            borderwidth=theme.get("legend_border_width", 1),
+            font=dict(size=12),
         ),
         height=max(300, len(parameters) * 50),
         margin=dict(l=120, r=100, t=60, b=50),
-        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing="cubic-in-out"),
     )
 
     return fig
@@ -753,9 +793,9 @@ def create_compliance_visual(checks: List[Dict[str, any]]) -> None:
 
     # Calculate summary statistics
     total = len(checks)
-    passed = sum(1 for c in checks if c['status'] == 'pass')
-    warnings = sum(1 for c in checks if c['status'] == 'warning')
-    failed = sum(1 for c in checks if c['status'] == 'fail')
+    passed = sum(1 for c in checks if c["status"] == "pass")
+    warnings = sum(1 for c in checks if c["status"] == "warning")
+    failed = sum(1 for c in checks if c["status"] == "fail")
 
     # Summary metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -779,11 +819,11 @@ def create_compliance_visual(checks: List[Dict[str, any]]) -> None:
 
     for i, check in enumerate(checks, 1):
         # Status icon and color
-        if check['status'] == 'pass':
+        if check["status"] == "pass":
             icon = "✅"
             status_color = CB_SAFE_GREEN
             expander_label = f"{icon} [{check['clause']}] {check['description']}"
-        elif check['status'] == 'warning':
+        elif check["status"] == "warning":
             icon = "⚠️"
             status_color = THEME_YELLOW
             expander_label = f"{icon} [{check['clause']}] {check['description']}"
@@ -793,37 +833,47 @@ def create_compliance_visual(checks: List[Dict[str, any]]) -> None:
             expander_label = f"{icon} [{check['clause']}] {check['description']}"
 
         # Expandable details
-        with st.expander(expander_label, expanded=(check['status'] != 'pass')):
+        with st.expander(expander_label, expanded=(check["status"] != "pass")):
             # Clause reference
             st.markdown(f"**IS 456:2000 Clause:** `{check['clause']}`")
 
             # Values (if provided)
-            if 'actual_value' in check and 'limit_value' in check:
-                unit = check.get('unit', '')
-                actual = check['actual_value']
-                limit = check['limit_value']
+            if "actual_value" in check and "limit_value" in check:
+                unit = check.get("unit", "")
+                actual = check["actual_value"]
+                limit = check["limit_value"]
 
                 col_a, col_b = st.columns(2)
                 col_a.metric("Actual Value", f"{actual:.2f} {unit}")
                 col_b.metric("Limit Value", f"{limit:.2f} {unit}")
 
                 # Comparison
-                if check['status'] == 'pass':
-                    st.markdown(f"✅ `{actual:.2f}` meets requirement `{limit:.2f}` {unit}")
-                elif check['status'] == 'warning':
-                    st.markdown(f"⚠️ `{actual:.2f}` marginally meets requirement `{limit:.2f}` {unit}")
+                if check["status"] == "pass":
+                    st.markdown(
+                        f"✅ `{actual:.2f}` meets requirement `{limit:.2f}` {unit}"
+                    )
+                elif check["status"] == "warning":
+                    st.markdown(
+                        f"⚠️ `{actual:.2f}` marginally meets requirement `{limit:.2f}` {unit}"
+                    )
                 else:
-                    st.markdown(f"❌ `{actual:.2f}` FAILS requirement `{limit:.2f}` {unit}")
+                    st.markdown(
+                        f"❌ `{actual:.2f}` FAILS requirement `{limit:.2f}` {unit}"
+                    )
 
             # Additional details
-            if 'details' in check and check['details']:
-                st.info(check['details'])
+            if "details" in check and check["details"]:
+                st.info(check["details"])
 
             # Recommendations (for failures/warnings)
-            if check['status'] == 'fail':
+            if check["status"] == "fail":
                 st.error("**Action Required:** Modify design to meet this requirement")
-            elif check['status'] == 'warning':
-                st.warning("**Recommendation:** Consider design adjustments for better safety margin")
+            elif check["status"] == "warning":
+                st.warning(
+                    "**Recommendation:** Consider design adjustments for better safety margin"
+                )
 
     # Footer note
-    st.caption("Note: All checks per IS 456:2000 - Plain and Reinforced Concrete - Code of Practice")
+    st.caption(
+        "Note: All checks per IS 456:2000 - Plain and Reinforced Concrete - Code of Practice"
+    )
