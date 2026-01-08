@@ -19,17 +19,814 @@
 | STREAMLIT-RESEARCH-003 | UI/UX Best Practices | 1,187 | - | ✅ Complete |
 | STREAMLIT-IMPL-001 | Project Setup & Architecture | 1,842 | - | ✅ Complete |
 | STREAMLIT-IMPL-002 | Input Components | 690 | 29 | ✅ Complete |
+| STREAMLIT-IMPL-003 | Visualizations (5 Plotly charts) | 719 | - | ✅ Complete |
+| STREAMLIT-IMPL-004 | Beam Design Page | 586 | - | ✅ Complete |
 
-**Total Delivered:** 6,717 lines, 29 tests
+**Total Delivered:** 8,022 lines, 29 tests
 
-### 🔄 Current/Next Tasks
+### 🔄 Current/Next Tasks (NEW PHASES - Start Immediately)
 
-| Task | Description | Priority | Status |
-|------|-------------|----------|--------|
-| STREAMLIT-IMPL-003 | Visualizations (5 charts) | 🔴 CRITICAL | 🟡 TODO |
-| STREAMLIT-IMPL-004 | Beam Design Page | 🔴 CRITICAL | 🟡 TODO |
-| STREAMLIT-IMPL-005 | Cost Optimizer Page | 🟠 HIGH | 🟡 TODO |
-| STREAMLIT-IMPL-006 | Compliance Checker Page | 🟠 HIGH | 🟡 TODO |
+| Task | Description | Priority | Status | Day |
+|------|-------------|----------|--------|-----|
+| STREAMLIT-IMPL-005 | Cost Optimizer Page | 🔴 CRITICAL | 🟡 TODO | Day 1-2 |
+| STREAMLIT-IMPL-006 | Compliance Checker Page | 🔴 CRITICAL | 🟡 TODO | Day 3-4 |
+| STREAMLIT-IMPL-007 | Visualization Tests Suite | 🔴 CRITICAL | 🟡 TODO | Day 5-6 |
+
+---
+
+## 🚀 NEW PHASES FOR AGENT 6 (Start 2026-01-08)
+
+### 📋 Phase Overview
+
+| Phase | Task | Description | Estimated Time | Output |
+|-------|------|-------------|----------------|--------|
+| **PHASE 5** | IMPL-005 | Cost Optimizer Page | 3-4 hours | ~500 lines |
+| **PHASE 6** | IMPL-006 | Compliance Checker Page | 3-4 hours | ~500 lines |
+| **PHASE 7** | IMPL-007 | Visualization Tests + Integration | 2-3 hours | ~400 lines, 30+ tests |
+
+**Total Expected:** ~1,400 lines, 30+ new tests over 3 phases (6-7 days)
+
+---
+
+## 🔴 PHASE 5: STREAMLIT-IMPL-005 - Cost Optimizer Page (Day 1-2)
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO - START IMMEDIATELY
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Create a dedicated Cost Optimizer page that allows engineers to:
+- Compare multiple rebar arrangements side-by-side
+- Visualize cost vs utilization trade-offs
+- Export comparison data for reports
+- Load designs from Beam Design page
+
+### Page Layout
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ 💰 Cost Optimizer - Find the Most Economical Design                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 📊 LOAD FROM BEAM DESIGN                                        │ │
+│ │ [Load Current Design] or [Enter New Parameters]                 │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 💡 OPTIMIZATION SUMMARY                                         │ │
+│ │ ┌───────────┬───────────┬───────────┬───────────┐              │ │
+│ │ │ Optimal   │ Savings   │ Utilization│ Options  │              │ │
+│ │ │ 3-16mm    │ ₹4.85/m   │ 92%        │ 5 shown  │              │ │
+│ │ └───────────┴───────────┴───────────┴───────────┘              │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 📈 COST vs UTILIZATION SCATTER PLOT                             │ │
+│ │                                                                  │ │
+│ │        ●                 (hover for details)                    │ │
+│ │     💚 ○ 3-16mm (OPTIMAL)                                       │ │
+│ │        ○ ○                                                      │ │
+│ │     ○                                                           │ │
+│ │  ─────┼─────┼─────┼─────┼─────→ Utilization (%)                │ │
+│ │      70%   80%   90%  100%                                      │ │
+│ │  Cost ↑                                                         │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 📋 COMPARISON TABLE                                              │ │
+│ │ ┌────────────┬────────┬───────┬────────┬────────┬───────────┐  │ │
+│ │ │ Arrange    │ Area   │ Util% │ Cost   │ Saving │ Status    │  │ │
+│ │ ├────────────┼────────┼───────┼────────┼────────┼───────────┤  │ │
+│ │ │ 3-16mm ⭐  │ 603mm² │ 92%   │ ₹87.45 │ BASE   │ ✅ OPTIMAL │  │ │
+│ │ │ 2-20mm     │ 628mm² │ 96%   │ ₹92.30 │ -₹4.85 │ ✅ OK      │  │ │
+│ │ │ 4-14mm     │ 616mm² │ 94%   │ ₹89.50 │ -₹2.05 │ ✅ OK      │  │ │
+│ │ │ 2-16+1-12  │ 515mm² │ 78%   │ ₹75.20 │ +₹12.25│ ⚠️ UNDER   │  │ │
+│ │ └────────────┴────────┴───────┴────────┴────────┴───────────┘  │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ [📥 Export CSV] [📄 Export PDF] [🖨️ Print]                          │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Implementation Details
+
+```python
+# streamlit_app/pages/02_💰_cost_optimizer.py
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from components.visualizations import create_cost_comparison
+from utils.api_wrapper import get_rebar_options
+
+st.set_page_config(
+    page_title="Cost Optimizer | IS 456 Dashboard",
+    page_icon="💰",
+    layout="wide"
+)
+
+st.title("💰 Cost Optimizer")
+st.markdown("Find the most economical rebar arrangement for your design")
+
+# ── Load from Beam Design ──
+col1, col2 = st.columns([3, 1])
+with col1:
+    if st.button("📊 Load from Beam Design", use_container_width=True):
+        if 'beam_inputs' in st.session_state:
+            st.session_state.optimizer_inputs = st.session_state.beam_inputs
+            st.success("✅ Loaded design from Beam Design page")
+        else:
+            st.warning("⚠️ No design found. Complete Beam Design first.")
+
+with col2:
+    st.button("🔄 Clear", use_container_width=True)
+
+# ── Get Options ──
+if 'optimizer_inputs' in st.session_state:
+    inputs = st.session_state.optimizer_inputs
+
+    with st.spinner("🔄 Finding optimal arrangements..."):
+        options = get_rebar_options(
+            ast_required=inputs.get('ast_required', 600),
+            b_mm=inputs.get('b_mm', 230),
+            d_mm=inputs.get('d_mm', 400)
+        )
+
+    # ── Summary Metrics ──
+    st.subheader("💡 Optimization Summary")
+    optimal = [o for o in options if o.get('is_optimal')][0]
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Optimal Choice", optimal['name'])
+    m2.metric("Cost per Meter", f"₹{optimal['cost']:.2f}")
+    m3.metric("Utilization", f"{optimal['utilization']*100:.0f}%")
+    m4.metric("Options Analyzed", len(options))
+
+    # ── Scatter Plot ──
+    st.subheader("📈 Cost vs Utilization")
+
+    df = pd.DataFrame(options)
+    fig = px.scatter(
+        df,
+        x='utilization',
+        y='cost',
+        text='name',
+        color='is_optimal',
+        color_discrete_map={True: '#28A745', False: '#6C9BD1'},
+        size='area',
+        hover_data=['area', 'status']
+    )
+    fig.update_layout(
+        xaxis_title="Utilization (%)",
+        yaxis_title="Cost (₹/m)",
+        showlegend=False
+    )
+    fig.update_traces(textposition='top center')
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ── Comparison Table ──
+    st.subheader("📋 Comparison Table")
+
+    # Format DataFrame for display
+    display_df = df[['name', 'area', 'utilization', 'cost', 'savings', 'status']].copy()
+    display_df.columns = ['Arrangement', 'Area (mm²)', 'Utilization', 'Cost (₹/m)', 'Savings', 'Status']
+    display_df['Utilization'] = display_df['Utilization'].apply(lambda x: f"{x*100:.0f}%")
+
+    st.dataframe(
+        display_df,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            'Arrangement': st.column_config.TextColumn(width='medium'),
+            'Status': st.column_config.TextColumn(width='small'),
+        }
+    )
+
+    # ── Export Options ──
+    st.divider()
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        csv = display_df.to_csv(index=False)
+        st.download_button(
+            "📥 Export CSV",
+            csv,
+            "cost_comparison.csv",
+            "text/csv",
+            use_container_width=True
+        )
+
+    with col2:
+        st.button("📄 Export PDF", use_container_width=True, disabled=True)
+        st.caption("Coming soon")
+
+    with col3:
+        if st.button("🖨️ Print", use_container_width=True):
+            st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
+
+else:
+    st.info("👈 Load a design from the Beam Design page or enter parameters below")
+
+    # Manual input fallback
+    with st.expander("📝 Enter Parameters Manually"):
+        ast = st.number_input("Steel Area Required (mm²)", 200, 2000, 600)
+        b = st.number_input("Width (mm)", 150, 600, 230)
+        d = st.number_input("Effective Depth (mm)", 200, 800, 400)
+
+        if st.button("Find Options"):
+            st.session_state.optimizer_inputs = {'ast_required': ast, 'b_mm': b, 'd_mm': d}
+            st.rerun()
+```
+
+### API Wrapper Addition
+
+```python
+# Add to streamlit_app/utils/api_wrapper.py
+
+@st.cache_data
+def get_rebar_options(
+    ast_required: float,
+    b_mm: float,
+    d_mm: float
+) -> list[dict]:
+    """
+    Get list of rebar arrangement options sorted by cost.
+
+    Returns list of dicts with: name, area, cost, utilization, savings, status, is_optimal
+    """
+    # TODO: Integrate with rebar_optimizer module
+    # from structural_lib.rebar_optimizer import get_all_options
+
+    # Placeholder data
+    base_cost = 87.45
+    return [
+        {"name": "3-16mm", "area": 603, "cost": base_cost, "utilization": 0.92,
+         "savings": 0, "status": "✅ OPTIMAL", "is_optimal": True},
+        {"name": "2-20mm", "area": 628, "cost": 92.30, "utilization": 0.96,
+         "savings": -4.85, "status": "✅ OK", "is_optimal": False},
+        {"name": "4-14mm", "area": 616, "cost": 89.50, "utilization": 0.94,
+         "savings": -2.05, "status": "✅ OK", "is_optimal": False},
+        {"name": "2-16mm+1-12mm", "area": 515, "cost": 75.20, "utilization": 0.78,
+         "savings": 12.25, "status": "⚠️ UNDER", "is_optimal": False},
+        {"name": "5-12mm", "area": 565, "cost": 82.00, "utilization": 0.86,
+         "savings": 5.45, "status": "✅ OK", "is_optimal": False},
+    ]
+```
+
+### Acceptance Criteria
+
+- [ ] Page loads without errors
+- [ ] "Load from Beam Design" works with session state
+- [ ] Manual input fallback works
+- [ ] Scatter plot is interactive (hover, zoom)
+- [ ] Table is sortable
+- [ ] CSV export downloads correctly
+- [ ] Optimal option highlighted in green
+- [ ] Under-designed options show warning
+- [ ] Responsive design (mobile-friendly)
+- [ ] Print button triggers print dialog
+
+### Files to Create/Modify
+
+1. `streamlit_app/pages/02_💰_cost_optimizer.py` (~400 lines)
+2. `streamlit_app/utils/api_wrapper.py` - Add `get_rebar_options()` (~50 lines)
+
+---
+
+## 🔴 PHASE 6: STREAMLIT-IMPL-006 - Compliance Checker Page (Day 3-4)
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO - AFTER IMPL-005
+**Estimated Effort:** 3-4 hours
+
+### Objective
+Create a dedicated Compliance Checker page for comprehensive IS 456 verification:
+- Check all relevant IS 456 clauses
+- Show pass/fail with expandable details
+- Display margin of safety for each check
+- Generate compliance certificate
+
+### Page Layout
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ ✅ Compliance Checker - IS 456:2000 Verification                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 🎯 OVERALL STATUS                                               │ │
+│ │ ┌───────────────────────────────────────────────────────────┐  │ │
+│ │ │  ✅ COMPLIANT  │  12/12 checks passed  │  Min margin: 8%  │  │ │
+│ │ └───────────────────────────────────────────────────────────┘  │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ 📋 DETAILED CHECKS                                              │ │
+│ │                                                                  │ │
+│ │ ▼ FLEXURE REQUIREMENTS                                          │ │
+│ │ ├─ ✅ Cl. 26.5.1.1 - Minimum Steel Ratio      Margin: +8.2%    │ │
+│ │ │   └─ Required: pt ≥ 0.85√fck/fy = 0.85%                      │ │
+│ │ │   └─ Provided: pt = 0.92%                                     │ │
+│ │ │   └─ Status: PASS (margin = 8.2%)                            │ │
+│ │ │                                                               │ │
+│ │ ├─ ✅ Cl. 26.5.1.2 - Maximum Steel Ratio      Margin: +77%     │ │
+│ │ │   └─ Required: pt ≤ 4.0%                                      │ │
+│ │ │   └─ Provided: pt = 0.92%                                     │ │
+│ │ │                                                               │ │
+│ │ ▼ SHEAR REQUIREMENTS                                            │ │
+│ │ ├─ ✅ Cl. 40.1 - Shear Capacity               Margin: +51%     │ │
+│ │ │   └─ τv = 0.45 N/mm² ≤ τc + τs = 0.68 N/mm²                  │ │
+│ │ │                                                               │ │
+│ │ ├─ ✅ Cl. 40.2.3 - Min Shear Reinforcement    Margin: +120%    │ │
+│ │ │   └─ Asv/sv ≥ 0.4/(0.87*fy)                                  │ │
+│ │ │                                                               │ │
+│ │ ▼ DETAILING REQUIREMENTS                                        │ │
+│ │ ├─ ✅ Cl. 26.3.3 - Bar Spacing                Margin: +25%     │ │
+│ │ ├─ ✅ Cl. 26.4.1 - Cover Requirements         Margin: +33%     │ │
+│ │ ├─ ✅ Cl. 40.4 - Max Stirrup Spacing          Margin: +30%     │ │
+│ │ │                                                               │ │
+│ │ ▼ SERVICEABILITY                                                │ │
+│ │ ├─ ✅ Cl. 23.2.1 - Deflection Limits          Margin: +22%     │ │
+│ │ ├─ ✅ Cl. 35.1.1 - Cracking Control           Margin: +10%     │ │
+│ │ │                                                               │ │
+│ │ ▼ DURABILITY                                                    │ │
+│ │ ├─ ✅ Cl. 26.4.2 - Fire Resistance Cover      Margin: +50%     │ │
+│ │ └─────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│ [📜 Generate Certificate] [📥 Export PDF] [🖨️ Print]                │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Implementation Details
+
+```python
+# streamlit_app/pages/03_✅_compliance.py
+
+import streamlit as st
+from typing import Dict, List
+
+st.set_page_config(
+    page_title="Compliance Checker | IS 456 Dashboard",
+    page_icon="✅",
+    layout="wide"
+)
+
+st.title("✅ Compliance Checker")
+st.markdown("Verify your design against **IS 456:2000** requirements")
+
+# Compliance check categories
+COMPLIANCE_CATEGORIES = {
+    "FLEXURE": [
+        {
+            "clause": "26.5.1.1",
+            "name": "Minimum Steel Ratio",
+            "formula": "pt ≥ 0.85√fck/fy",
+            "check_fn": lambda d: d['pt_provided'] >= d['pt_min'],
+            "margin_fn": lambda d: (d['pt_provided'] - d['pt_min']) / d['pt_min'] * 100
+        },
+        {
+            "clause": "26.5.1.2",
+            "name": "Maximum Steel Ratio",
+            "formula": "pt ≤ 4.0%",
+            "check_fn": lambda d: d['pt_provided'] <= 4.0,
+            "margin_fn": lambda d: (4.0 - d['pt_provided']) / 4.0 * 100
+        },
+    ],
+    "SHEAR": [
+        {
+            "clause": "40.1",
+            "name": "Shear Capacity",
+            "formula": "τv ≤ τc + τs",
+            "check_fn": lambda d: d['tau_v'] <= d['tau_c'] + d['tau_s'],
+            "margin_fn": lambda d: ((d['tau_c'] + d['tau_s']) - d['tau_v']) / d['tau_v'] * 100
+        },
+        {
+            "clause": "40.2.3",
+            "name": "Minimum Shear Reinforcement",
+            "formula": "Asv/sv ≥ 0.4/(0.87*fy)",
+            "check_fn": lambda d: d['asv_sv'] >= d['asv_sv_min'],
+            "margin_fn": lambda d: (d['asv_sv'] - d['asv_sv_min']) / d['asv_sv_min'] * 100
+        },
+    ],
+    "DETAILING": [
+        {
+            "clause": "26.3.3",
+            "name": "Bar Spacing",
+            "formula": "spacing ≥ max(bar_dia, 25mm)",
+            "check_fn": lambda d: d['spacing'] >= d['min_spacing'],
+            "margin_fn": lambda d: (d['spacing'] - d['min_spacing']) / d['min_spacing'] * 100
+        },
+        {
+            "clause": "26.4.1",
+            "name": "Cover Requirements",
+            "formula": "cover ≥ nominal_cover",
+            "check_fn": lambda d: d['cover'] >= d['min_cover'],
+            "margin_fn": lambda d: (d['cover'] - d['min_cover']) / d['min_cover'] * 100
+        },
+    ],
+    "SERVICEABILITY": [
+        {
+            "clause": "23.2.1",
+            "name": "Deflection Limits",
+            "formula": "L/d ≤ basic_ratio × factors",
+            "check_fn": lambda d: d['ld_ratio'] <= d['ld_limit'],
+            "margin_fn": lambda d: (d['ld_limit'] - d['ld_ratio']) / d['ld_limit'] * 100
+        },
+    ],
+}
+
+
+def render_compliance_category(category: str, checks: List[Dict], design_data: Dict):
+    """Render an expandable category of compliance checks."""
+    with st.expander(f"{'▼' if True else '▶'} {category} REQUIREMENTS", expanded=True):
+        for check in checks:
+            passed = check['check_fn'](design_data)
+            margin = check['margin_fn'](design_data)
+
+            icon = "✅" if passed else "❌"
+            color = "green" if passed else "red"
+
+            col1, col2, col3 = st.columns([4, 2, 1])
+
+            with col1:
+                st.markdown(f"**{icon} Cl. {check['clause']}** - {check['name']}")
+
+            with col2:
+                st.markdown(f"Margin: **{margin:+.1f}%**")
+
+            with col3:
+                if not passed:
+                    st.error("FAIL")
+
+            # Expandable details
+            with st.container():
+                st.caption(f"Formula: `{check['formula']}`")
+
+
+# ── Load Design Data ──
+if 'beam_result' in st.session_state:
+    result = st.session_state.beam_result
+
+    # Extract data for checks
+    design_data = {
+        'pt_provided': result.get('pt', 0.92),
+        'pt_min': 0.85,
+        'tau_v': result.get('tau_v', 0.45),
+        'tau_c': result.get('tau_c', 0.48),
+        'tau_s': result.get('tau_s', 0.20),
+        'asv_sv': result.get('asv_sv', 0.35),
+        'asv_sv_min': result.get('asv_sv_min', 0.16),
+        'spacing': result.get('bar_spacing', 50),
+        'min_spacing': result.get('min_spacing', 40),
+        'cover': result.get('cover', 40),
+        'min_cover': result.get('min_cover', 30),
+        'ld_ratio': result.get('ld_ratio', 18),
+        'ld_limit': result.get('ld_limit', 23),
+    }
+
+    # Calculate overall status
+    all_checks = []
+    for category, checks in COMPLIANCE_CATEGORIES.items():
+        for check in checks:
+            all_checks.append({
+                'passed': check['check_fn'](design_data),
+                'margin': check['margin_fn'](design_data)
+            })
+
+    passed_count = sum(1 for c in all_checks if c['passed'])
+    total_count = len(all_checks)
+    min_margin = min(c['margin'] for c in all_checks)
+
+    # ── Overall Status ──
+    st.subheader("🎯 Overall Status")
+
+    if passed_count == total_count:
+        st.success(f"✅ **COMPLIANT** | {passed_count}/{total_count} checks passed | Min margin: {min_margin:.1f}%")
+    else:
+        st.error(f"❌ **NON-COMPLIANT** | {passed_count}/{total_count} checks passed")
+
+    # ── Detailed Checks ──
+    st.subheader("📋 Detailed Checks")
+
+    for category, checks in COMPLIANCE_CATEGORIES.items():
+        render_compliance_category(category, checks, design_data)
+
+    # ── Export Options ──
+    st.divider()
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("📜 Generate Certificate", use_container_width=True):
+            st.balloons()
+            st.success("Certificate generated!")
+
+    with col2:
+        st.button("📥 Export PDF", use_container_width=True, disabled=True)
+
+    with col3:
+        st.button("🖨️ Print", use_container_width=True)
+
+else:
+    st.info("👈 Complete a design in the Beam Design page first")
+```
+
+### Acceptance Criteria
+
+- [ ] Page loads without errors
+- [ ] All 12 IS 456 clauses checked
+- [ ] Pass/fail status clearly visible
+- [ ] Margins calculated correctly
+- [ ] Expandable sections work
+- [ ] Certificate generation button works
+- [ ] Session state integration works
+- [ ] Color coding: green=pass, red=fail, yellow=marginal
+
+### Files to Create/Modify
+
+1. `streamlit_app/pages/03_✅_compliance.py` (~400 lines)
+2. `streamlit_app/utils/compliance_checker.py` - Reusable check logic (~100 lines)
+
+---
+
+## 🔴 PHASE 7: STREAMLIT-IMPL-007 - Visualization Tests + Integration (Day 5-6)
+**Priority:** 🔴 CRITICAL
+**Status:** 🟡 TODO - AFTER IMPL-006
+**Estimated Effort:** 2-3 hours
+
+### Objective
+Create comprehensive test suite for:
+- All 5 visualization components
+- API wrapper functions
+- Page integration tests
+- Accessibility checks
+
+### Test Structure
+
+```python
+# streamlit_app/tests/test_visualizations.py
+
+import pytest
+import plotly.graph_objects as go
+from components.visualizations import (
+    create_beam_diagram,
+    create_cost_comparison,
+    create_utilization_gauge,
+    create_sensitivity_tornado,
+    create_compliance_visual
+)
+
+
+class TestBeamDiagram:
+    """Tests for beam cross-section visualization."""
+
+    @pytest.fixture
+    def sample_inputs(self):
+        return {
+            'b_mm': 230,
+            'D_mm': 450,
+            'd_mm': 400,
+            'rebar_positions': [(50, 50), (115, 50), (180, 50)],
+            'xu': 120,
+            'bar_dia': 16,
+            'cover': 30
+        }
+
+    def test_returns_plotly_figure(self, sample_inputs):
+        """Test function returns Plotly Figure object."""
+        fig = create_beam_diagram(**sample_inputs)
+        assert isinstance(fig, go.Figure)
+
+    def test_has_concrete_shape(self, sample_inputs):
+        """Test figure contains concrete rectangle."""
+        fig = create_beam_diagram(**sample_inputs)
+        shapes = fig.layout.shapes
+        assert len(shapes) >= 1
+        assert any(s.type == 'rect' for s in shapes)
+
+    def test_has_rebar_circles(self, sample_inputs):
+        """Test figure contains rebar circles."""
+        fig = create_beam_diagram(**sample_inputs)
+        shapes = fig.layout.shapes
+        circles = [s for s in shapes if s.type == 'circle']
+        assert len(circles) == 3  # 3 rebars
+
+    def test_neutral_axis_shown(self, sample_inputs):
+        """Test neutral axis line is visible."""
+        fig = create_beam_diagram(**sample_inputs)
+        shapes = fig.layout.shapes
+        lines = [s for s in shapes if s.type == 'line']
+        assert len(lines) >= 1
+
+    def test_dimensions_annotated(self, sample_inputs):
+        """Test dimension annotations are present."""
+        fig = create_beam_diagram(**sample_inputs)
+        annotations = fig.layout.annotations
+        assert len(annotations) >= 2  # At least b and D
+
+    def test_aspect_ratio_correct(self, sample_inputs):
+        """Test figure maintains 1:1 aspect ratio."""
+        fig = create_beam_diagram(**sample_inputs)
+        # Check scaleanchor is set
+        assert fig.layout.yaxis.scaleanchor == 'x'
+
+
+class TestCostComparison:
+    """Tests for cost comparison bar chart."""
+
+    @pytest.fixture
+    def sample_options(self):
+        return [
+            {"name": "3-16mm", "cost": 87.45, "is_optimal": True, "utilization": 0.92},
+            {"name": "2-20mm", "cost": 92.30, "is_optimal": False, "utilization": 0.96},
+        ]
+
+    def test_returns_plotly_figure(self, sample_options):
+        """Test function returns Plotly Figure."""
+        fig = create_cost_comparison(sample_options)
+        assert isinstance(fig, go.Figure)
+
+    def test_bar_count_matches_options(self, sample_options):
+        """Test number of bars matches input options."""
+        fig = create_cost_comparison(sample_options)
+        assert len(fig.data) >= 1
+        assert len(fig.data[0].x) == 2
+
+    def test_optimal_is_green(self, sample_options):
+        """Test optimal option has green color."""
+        fig = create_cost_comparison(sample_options)
+        colors = fig.data[0].marker.color
+        assert '#28A745' in colors or 'green' in str(colors).lower()
+
+    def test_cost_labels_shown(self, sample_options):
+        """Test cost labels appear on bars."""
+        fig = create_cost_comparison(sample_options)
+        assert fig.data[0].text is not None
+
+
+class TestUtilizationGauge:
+    """Tests for utilization gauge."""
+
+    def test_returns_plotly_figure(self):
+        """Test function returns Plotly Figure."""
+        fig = create_utilization_gauge(0.85, "Test")
+        assert isinstance(fig, go.Figure)
+
+    def test_value_displayed(self):
+        """Test value is displayed in gauge."""
+        fig = create_utilization_gauge(0.85, "Test")
+        indicator = fig.data[0]
+        assert indicator.value == 85
+
+    def test_color_zones_exist(self):
+        """Test gauge has colored zones."""
+        fig = create_utilization_gauge(0.85, "Test")
+        gauge = fig.data[0].gauge
+        assert len(gauge.steps) >= 2
+
+    def test_over_100_handled(self):
+        """Test values over 100% are handled."""
+        fig = create_utilization_gauge(1.2, "Test")
+        # Should not raise error
+        assert fig is not None
+
+
+class TestSensitivityTornado:
+    """Tests for tornado diagram."""
+
+    @pytest.fixture
+    def sample_data(self):
+        return [
+            {"param": "Moment", "low": -15, "high": 18},
+            {"param": "Depth", "low": -10, "high": 12},
+        ]
+
+    def test_returns_plotly_figure(self, sample_data):
+        """Test function returns Plotly Figure."""
+        fig = create_sensitivity_tornado(sample_data)
+        assert isinstance(fig, go.Figure)
+
+    def test_sorted_by_impact(self, sample_data):
+        """Test parameters sorted by total impact."""
+        fig = create_sensitivity_tornado(sample_data)
+        # First parameter should have highest impact
+        y_values = fig.data[0].y
+        assert y_values[0] == "Moment"  # |−15|+|18| = 33 > |−10|+|12| = 22
+
+
+class TestComplianceVisual:
+    """Tests for compliance checklist visualization."""
+
+    @pytest.fixture
+    def sample_checks(self):
+        return [
+            {"clause": "26.5.1.1", "description": "Min steel", "passed": True, "value": "0.92%", "limit": "0.85%"},
+            {"clause": "40.1", "description": "Shear", "passed": False, "value": "0.95", "limit": "0.80"},
+        ]
+
+    def test_returns_plotly_figure(self, sample_checks):
+        """Test function returns Plotly Figure."""
+        fig = create_compliance_visual(sample_checks)
+        assert isinstance(fig, go.Figure)
+
+    def test_all_checks_displayed(self, sample_checks):
+        """Test all checks are shown."""
+        fig = create_compliance_visual(sample_checks)
+        annotations = fig.layout.annotations
+        assert len(annotations) >= 2
+
+    def test_pass_fail_colors(self, sample_checks):
+        """Test passed checks are green, failed are red."""
+        fig = create_compliance_visual(sample_checks)
+        shapes = fig.layout.shapes
+        colors = [s.fillcolor for s in shapes if hasattr(s, 'fillcolor')]
+        assert any('#28A745' in str(c) for c in colors)  # Green for pass
+        assert any('#DC3545' in str(c) for c in colors)  # Red for fail
+```
+
+### API Wrapper Tests
+
+```python
+# streamlit_app/tests/test_api_wrapper.py
+
+import pytest
+from utils.api_wrapper import cached_design, get_rebar_options
+
+
+class TestCachedDesign:
+    """Tests for cached design wrapper."""
+
+    def test_returns_dict(self):
+        """Test function returns dictionary."""
+        result = cached_design(
+            mu_knm=120, vu_kn=80, b_mm=300, D_mm=500,
+            d_mm=450, fck_nmm2=25, fy_nmm2=500
+        )
+        assert isinstance(result, dict)
+
+    def test_has_required_keys(self):
+        """Test result has expected keys."""
+        result = cached_design(
+            mu_knm=120, vu_kn=80, b_mm=300, D_mm=500,
+            d_mm=450, fck_nmm2=25, fy_nmm2=500
+        )
+        assert 'flexure' in result
+        assert 'shear' in result
+        assert 'is_safe' in result
+
+
+class TestGetRebarOptions:
+    """Tests for rebar options function."""
+
+    def test_returns_list(self):
+        """Test function returns list."""
+        options = get_rebar_options(600, 230, 400)
+        assert isinstance(options, list)
+
+    def test_has_optimal_option(self):
+        """Test at least one option is marked optimal."""
+        options = get_rebar_options(600, 230, 400)
+        optimal = [o for o in options if o.get('is_optimal')]
+        assert len(optimal) == 1
+
+    def test_options_sorted_by_cost(self):
+        """Test options are sorted by cost."""
+        options = get_rebar_options(600, 230, 400)
+        costs = [o['cost'] for o in options]
+        # Optimal should be first or near first
+```
+
+### Acceptance Criteria
+
+- [ ] 30+ unit tests written
+- [ ] All tests pass (pytest)
+- [ ] Coverage > 80% for visualization module
+- [ ] Edge cases tested (empty data, extremes)
+- [ ] Accessibility checks included
+- [ ] Performance benchmarks added
+
+### Files to Create
+
+1. `streamlit_app/tests/test_visualizations.py` (~300 lines)
+2. `streamlit_app/tests/test_api_wrapper.py` (~100 lines)
+3. `streamlit_app/tests/test_pages.py` (~100 lines) - Optional page integration tests
+
+---
+
+## 📅 3-Phase Timeline Summary
+
+| Day | Phase | Task | Deliverables |
+|-----|-------|------|--------------|
+| 1 | PHASE 5 | IMPL-005 Part 1 | Cost Optimizer layout, scatter plot |
+| 2 | PHASE 5 | IMPL-005 Part 2 | Table, export, integration |
+| 3 | PHASE 6 | IMPL-006 Part 1 | Compliance page layout, categories |
+| 4 | PHASE 6 | IMPL-006 Part 2 | All checks, certificate |
+| 5 | PHASE 7 | IMPL-007 Part 1 | Visualization tests (20+ tests) |
+| 6 | PHASE 7 | IMPL-007 Part 2 | API + page tests (10+ tests) |
+
+**Total Output Expected:**
+- ~1,400 lines of new code
+- 30+ new tests
+- 2 complete pages
+- Comprehensive test coverage
 
 ---
 
