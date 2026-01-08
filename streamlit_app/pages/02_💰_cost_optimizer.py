@@ -156,12 +156,11 @@ def create_comparison_table(comparison_data: list[dict]) -> pd.DataFrame:
     # Select and rename columns for display
     display_columns = {
         "bar_config": "Bar Config",
-        "steel_area_mm2": "Steel (mm²)",
-        "total_cost": "Total Cost (INR)",
-        "steel_cost": "Steel (INR)",
-        "concrete_cost": "Concrete (INR)",
-        "formwork_cost": "Formwork (INR)",
-        "utilization_ratio": "Relative Area",
+        "steel_area_mm2": "Steel Area (mm²)",
+        "steel_kg": "Steel Weight (kg)",
+        "total_cost": "Total Cost",
+        "steel_cost": "Steel Cost",
+        "utilization_ratio": "Area Ratio",
     }
 
     available_columns = [col for col in display_columns.keys() if col in df.columns]
@@ -169,16 +168,18 @@ def create_comparison_table(comparison_data: list[dict]) -> pd.DataFrame:
     df_display.columns = [display_columns[col] for col in available_columns]
 
     # Format numeric columns
-    if "Relative Area" in df_display.columns:
-        df_display["Relative Area"] = df_display["Relative Area"].apply(
-            lambda x: f"{x:.2f}"
+    if "Area Ratio" in df_display.columns:
+        df_display["Area Ratio"] = df_display["Area Ratio"].apply(
+            lambda x: f"{x:.2%}"
         )
 
     for col in df_display.columns:
-        if "Cost" in col or "INR" in col:
+        if "Cost" in col:
+            df_display[col] = df_display[col].apply(lambda x: f"₹{x:,.0f}")
+        if "Steel Area (mm²)" in col:
             df_display[col] = df_display[col].apply(lambda x: f"{x:,.0f}")
-        if "Steel (mm²)" in col:
-            df_display[col] = df_display[col].apply(lambda x: f"{x:,.0f}")
+        if "Steel Weight (kg)" in col:
+            df_display[col] = df_display[col].apply(lambda x: f"{x:.2f}")
 
     return df_display
 
@@ -211,33 +212,39 @@ def run_cost_optimization(inputs: dict) -> dict:
     """
     try:
         # Import here to avoid circular import
-        from utils.api_wrapper import cached_design_beam_flexure
+        from structural_lib.materials import unit_cost_steel_kg, concrete_density_kg_m3, steel_density_kg_m3
 
         # Run flexure design to get bar alternatives
-        flexure = cached_design_beam_flexure(
+        result = cached_smart_analysis(
             mu_knm=inputs["mu_knm"],
+            vu_kn=inputs.get("vu_kn", 0.0),
             b_mm=inputs["b_mm"],
             D_mm=inputs["D_mm"],
             d_mm=inputs["d_mm"],
             fck_nmm2=inputs["fck_nmm2"],
             fy_nmm2=inputs["fy_nmm2"],
-            d_dash_mm=inputs.get("d_dash_mm", 50.0),
+            span_mm=inputs["span_mm"],
+            loading_type="udl",
+            support_type="simply_supported",
         )
 
-        if not flexure or "_bar_alternatives" not in flexure:
-            st.warning("⚠️ No bar alternatives available. Using default cost estimates.")
+        if not result or "flexure" not in result:
+            st.warning("⚠️ Design analysis failed.")
+            return {"analysis": None, "comparison": []}
+
+        flexure = result["flexure"]
+        if "_bar_alternatives" not in flexure or not flexure["_bar_alternatives"]:
+            st.warning("⚠️ No bar alternatives available.")
             return {"analysis": None, "comparison": []}
 
         # Get selected design and alternatives
         selected_bars = flexure.get("tension_steel", {})
         alternatives = flexure.get("_bar_alternatives", [])
 
-        # Cost profile (Indian average)
-        if HAS_COSTING:
-            cost_profile = CostProfile()
-        else:
-            st.warning("⚠️ Costing module not available. Showing placeholders.")
-            return {"analysis": None, "comparison": []}
+        # Simple cost calculation using library functions
+        # Cost per kg of steel (₹/kg)
+        steel_unit_cost = unit_cost_steel_kg()  # ~₹60-70/kg
+        steel_density = steel_density_kg_m3() / 1e9  # kg/mm³
 
         # Calculate cost for selected design
         comparison = []
@@ -245,60 +252,50 @@ def run_cost_optimization(inputs: dict) -> dict:
 
         # Selected design (baseline)
         selected_area = selected_bars.get("area", 0)
-        selected_pt = 100 * selected_area / (inputs["b_mm"] * inputs["d_mm"])
+        selected_num = selected_bars.get("num", 0)
+        selected_dia = selected_bars.get("dia", 0)
 
-        selected_cost = calculate_beam_cost(
-            b_mm=inputs["b_mm"],
-            D_mm=inputs["D_mm"],
-            span_mm=inputs["span_mm"],
-            ast_mm2=selected_area,
-            fck_nmm2=int(inputs["fck_nmm2"]),
-            steel_percentage=selected_pt,
-            cost_profile=cost_profile,
-        )
+        # Steel volume = area × span
+        selected_steel_vol_mm3 = selected_area * inputs["span_mm"]
+        selected_steel_kg = selected_steel_vol_mm3 * steel_density
+        selected_steel_cost = selected_steel_kg * steel_unit_cost
 
         comparison.append({
-            "bar_config": f"{selected_bars.get('num', 0)}-{selected_bars.get('dia', 0)}mm",
+            "bar_config": f"{selected_num}-{selected_dia}mm",
             "b_mm": inputs["b_mm"],
             "D_mm": inputs["D_mm"],
             "fck_nmm2": inputs["fck_nmm2"],
             "fy_nmm2": inputs["fy_nmm2"],
             "steel_area_mm2": selected_area,
-            "utilization_ratio": selected_area / (selected_area + 1),  # Approximate
-            "total_cost": selected_cost.total_cost,
-            "concrete_cost": selected_cost.concrete_cost,
-            "steel_cost": selected_cost.steel_cost,
-            "formwork_cost": selected_cost.formwork_cost,
-            "is_optimal": True,  # Mark as baseline/selected
+            "steel_kg": selected_steel_kg,
+            "utilization_ratio": 1.00,  # Baseline = 100%
+            "total_cost": selected_steel_cost,
+            "steel_cost": selected_steel_cost,
+            "is_optimal": False,  # Will determine later
         })
 
-        # Calculate costs for alternatives
-        for alt in alternatives[:10]:  # Limit to 10 alternatives
+        # Calculate costs for alternatives (up to 10)
+        for alt in alternatives[:10]:
             alt_area = alt.get("area", 0)
-            alt_pt = 100 * alt_area / (inputs["b_mm"] * inputs["d_mm"])
+            alt_num = alt.get("num", 0)
+            alt_dia = alt.get("dia", 0)
 
-            alt_cost = calculate_beam_cost(
-                b_mm=inputs["b_mm"],
-                D_mm=inputs["D_mm"],
-                span_mm=inputs["span_mm"],
-                ast_mm2=alt_area,
-                fck_nmm2=int(inputs["fck_nmm2"]),
-                steel_percentage=alt_pt,
-                cost_profile=cost_profile,
-            )
+            # Steel volume and cost
+            alt_steel_vol_mm3 = alt_area * inputs["span_mm"]
+            alt_steel_kg = alt_steel_vol_mm3 * steel_density
+            alt_steel_cost = alt_steel_kg * steel_unit_cost
 
             comparison.append({
-                "bar_config": f"{alt.get('num', 0)}-{alt.get('dia', 0)}mm",
+                "bar_config": f"{alt_num}-{alt_dia}mm",
                 "b_mm": inputs["b_mm"],
                 "D_mm": inputs["D_mm"],
                 "fck_nmm2": inputs["fck_nmm2"],
                 "fy_nmm2": inputs["fy_nmm2"],
                 "steel_area_mm2": alt_area,
-                "utilization_ratio": alt_area / (selected_area + 1),  # Relative to selected
-                "total_cost": alt_cost.total_cost,
-                "concrete_cost": alt_cost.concrete_cost,
-                "steel_cost": alt_cost.steel_cost,
-                "formwork_cost": alt_cost.formwork_cost,
+                "steel_kg": alt_steel_kg,
+                "utilization_ratio": alt_area / selected_area,  # Relative to selected
+                "total_cost": alt_steel_cost,
+                "steel_cost": alt_steel_cost,
                 "is_optimal": False,
             })
 
