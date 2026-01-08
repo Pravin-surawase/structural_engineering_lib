@@ -316,6 +316,9 @@ with col_preview:
             xu=xu,
             bar_dia=bar_dia,
             cover=cover,
+            compression_positions=None,  # No compression steel in preview
+            stirrup_dia=0,  # No stirrups in preview
+            stirrup_spacing=0,
         )
         st.plotly_chart(fig, use_container_width=True)
 
@@ -517,31 +520,80 @@ with col_preview:
             # Get actual bar configuration from design result
             flexure = result.get("flexure", {})
             detailing = result.get("detailing", {})
+            shear = result.get("shear", {})
             cover = detailing.get("cover", 30)
             bar_dia = flexure.get("bar_dia", 16)
             num_bars = flexure.get("num_bars", 3)
+            num_layers = flexure.get("num_layers", 1)
+            is_doubly = flexure.get("is_doubly_reinforced", False)
+            asc_required = flexure.get("asc_required", 0)
 
-            # Calculate rebar positions based on actual design
+            # Get actual xu from design (not estimate!)
+            xu = flexure.get("xu", st.session_state.beam_inputs["d_mm"] * 0.33)
+
+            # Calculate PRACTICAL rebar positions based on actual design
+            b_mm = st.session_state.beam_inputs["b_mm"]
+            D_mm = st.session_state.beam_inputs["D_mm"]
+            d_mm = st.session_state.beam_inputs["d_mm"]
+
             rebar_positions = []
-            if num_bars > 0:
-                spacing_h = (
-                    st.session_state.beam_inputs["b_mm"] - 2 * cover - bar_dia
-                ) / max(num_bars - 1, 1)
-                rebar_y = cover + bar_dia / 2
-                for i in range(num_bars):
-                    x = cover + bar_dia / 2 + i * spacing_h
-                    rebar_positions.append((x, rebar_y))
+            compression_positions = []
 
-            xu = st.session_state.beam_inputs["d_mm"] * 0.33  # Neutral axis estimate
+            # TENSION STEEL: Arrange in layers per IS 456 practice
+            if num_bars > 0:
+                if num_layers == 1:
+                    # Single layer - distribute evenly
+                    spacing_h = (b_mm - 2 * cover - bar_dia) / max(num_bars - 1, 1)
+                    rebar_y = cover + bar_dia / 2
+                    for i in range(num_bars):
+                        x = cover + bar_dia / 2 + i * spacing_h
+                        rebar_positions.append((x, rebar_y))
+                else:
+                    # Multiple layers - split bars between layers
+                    bars_per_layer = num_bars // num_layers
+                    extra_bars = num_bars % num_layers
+
+                    for layer_idx in range(num_layers):
+                        layer_bars = bars_per_layer + (1 if layer_idx < extra_bars else 0)
+                        spacing_h = (b_mm - 2 * cover - bar_dia) / max(layer_bars - 1, 1)
+                        # Layer spacing: bar_dia + clear spacing (minimum 25mm per IS 456)
+                        rebar_y = cover + bar_dia / 2 + layer_idx * (bar_dia + 25)
+
+                        for i in range(layer_bars):
+                            x = cover + bar_dia / 2 + i * spacing_h
+                            rebar_positions.append((x, rebar_y))
+
+            # COMPRESSION STEEL: For doubly reinforced sections
+            if is_doubly and asc_required > 0:
+                # Use similar bar size as tension steel
+                comp_bar_dia = bar_dia
+                area_per_bar = 3.14159 * (comp_bar_dia ** 2) / 4
+                num_comp_bars = max(2, int(asc_required / area_per_bar) + 1)
+
+                # Position at top (from top surface)
+                comp_y = D_mm - cover - comp_bar_dia / 2
+                spacing_h = (b_mm - 2 * cover - comp_bar_dia) / max(num_comp_bars - 1, 1)
+
+                for i in range(num_comp_bars):
+                    x = cover + comp_bar_dia / 2 + i * spacing_h
+                    compression_positions.append((x, comp_y))
+
+            # STIRRUPS: Get shear reinforcement data
+            stirrup_dia = shear.get("stirrup_dia", 8)
+            stirrup_spacing = shear.get("spacing", 150)
+            stirrup_legs = shear.get("legs", 2)
 
             fig = create_beam_diagram(
-                b_mm=st.session_state.beam_inputs["b_mm"],
-                D_mm=st.session_state.beam_inputs["D_mm"],
-                d_mm=st.session_state.beam_inputs["d_mm"],
+                b_mm=b_mm,
+                D_mm=D_mm,
+                d_mm=d_mm,
                 rebar_positions=rebar_positions,
                 xu=xu,
                 bar_dia=bar_dia,
                 cover=cover,
+                compression_positions=compression_positions,
+                stirrup_dia=stirrup_dia,
+                stirrup_spacing=stirrup_spacing,
             )
 
             st.plotly_chart(fig, use_container_width=True, key="beam_section_viz")
