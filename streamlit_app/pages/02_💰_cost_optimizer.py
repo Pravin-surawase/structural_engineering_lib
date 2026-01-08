@@ -211,8 +211,8 @@ def run_cost_optimization(inputs: dict) -> dict:
         Dictionary with optimization results and comparison data
     """
     try:
-        # Import here to avoid circular import
-        from structural_lib.materials import unit_cost_steel_kg, concrete_density_kg_m3, steel_density_kg_m3
+        # Import costing functions from library
+        from structural_lib.costing import CostProfile, STEEL_DENSITY_KG_PER_M3
 
         # Run flexure design to get bar alternatives
         result = cached_smart_analysis(
@@ -241,10 +241,10 @@ def run_cost_optimization(inputs: dict) -> dict:
         selected_bars = flexure.get("tension_steel", {})
         alternatives = flexure.get("_bar_alternatives", [])
 
-        # Simple cost calculation using library functions
-        # Cost per kg of steel (₹/kg)
-        steel_unit_cost = unit_cost_steel_kg()  # ~₹60-70/kg
-        steel_density = steel_density_kg_m3() / 1e9  # kg/mm³
+        # Simple cost calculation using library constants
+        cost_profile = CostProfile()  # Indian average costs
+        steel_unit_cost = cost_profile.steel_cost_per_kg  # ₹72/kg (Fe500)
+        steel_density = STEEL_DENSITY_KG_PER_M3 / 1e9  # kg/mm³
 
         # Calculate cost for selected design
         comparison = []
