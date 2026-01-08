@@ -100,15 +100,15 @@ col_input, col_preview = st.columns([2, 3], gap="large")
 
 # Left column: Input parameters
 with col_input:
-    st.header("📋 Input Parameters")
+    # Compact header with theme toggle inline
+    col_h1, col_h2 = st.columns([3, 1])
+    with col_h1:
+        st.subheader("📋 Inputs")
+    with col_h2:
+        render_theme_toggle()
 
-    # Theme toggle
-    render_theme_toggle()
-
-    st.markdown("---")
-
-    # Section 1: Geometry
-    st.subheader("📏 Geometry")
+    # Section 1: Geometry (compact)
+    st.markdown("**📏 Geometry**")
 
     span, span_valid = dimension_input(
         label="Span",
@@ -163,10 +163,8 @@ with col_input:
         st.error("❌ Effective depth must be less than total depth")
         d_valid = False
 
-    st.markdown("---")
-
-    # Section 2: Materials
-    st.subheader("🧱 Materials")
+    # Section 2: Materials (compact)
+    st.markdown("**🧱 Materials**")
 
     concrete = material_selector(
         material_type="concrete",
@@ -184,10 +182,8 @@ with col_input:
     )
     st.session_state.beam_inputs['steel_grade'] = steel['grade']
 
-    st.markdown("---")
-
-    # Section 3: Loading
-    st.subheader("⚖️ Loading")
+    # Section 3: Loading (compact)
+    st.markdown("**⚖️ Loading**")
 
     loads = load_input(
         default_moment=st.session_state.beam_inputs['mu_knm'],
@@ -197,27 +193,23 @@ with col_input:
     st.session_state.beam_inputs['mu_knm'] = loads['mu_knm']
     st.session_state.beam_inputs['vu_kn'] = loads['vu_kn']
 
-    st.markdown("---")
+    # Section 4: Exposure & Support (compact - side by side)
+    col_exp, col_sup = st.columns(2)
 
-    # Section 4: Exposure & Support
-    st.subheader("🌦️ Exposure")
+    with col_exp:
+        exposure = exposure_selector(
+            default=st.session_state.beam_inputs['exposure'],
+            key="input_exposure",
+            show_requirements=False
+        )
+        st.session_state.beam_inputs['exposure'] = exposure['exposure']
 
-    exposure = exposure_selector(
-        default=st.session_state.beam_inputs['exposure'],
-        key="input_exposure",
-        show_requirements=False
-    )
-    st.session_state.beam_inputs['exposure'] = exposure['exposure']
-
-    st.markdown("---")
-
-    st.subheader("🔗 Support Condition")
-
-    support = support_condition_selector(
-        default=st.session_state.beam_inputs['support_condition'],
-        key="input_support"
-    )
-    st.session_state.beam_inputs['support_condition'] = support['condition']
+    with col_sup:
+        support = support_condition_selector(
+            default=st.session_state.beam_inputs['support_condition'],
+            key="input_support"
+        )
+        st.session_state.beam_inputs['support_condition'] = support['condition']
 
     st.markdown("---")
 
@@ -283,8 +275,8 @@ with col_input:
 with col_preview:
     st.header("📊 Design Preview")
 
-    # ALWAYS show geometry preview (updates immediately with inputs)
-    with st.expander("📐 Geometry Visualization", expanded=not st.session_state.beam_inputs.get('design_computed', False)):
+    # Show geometry preview (without reinforcement until analyzed)
+    with st.expander("📐 Geometry Preview", expanded=not st.session_state.beam_inputs.get('design_computed', False)):
         # Get current exposure for cover
         exposure_props = {
             'Mild': {'cover': 20},
@@ -294,17 +286,22 @@ with col_preview:
             'Extreme': {'cover': 75}
         }
         cover = exposure_props.get(st.session_state.beam_inputs['exposure'], {'cover': 30})['cover']
-        bar_dia = 16  # Placeholder
 
-        # Calculate rebar positions (3 bars at bottom)
-        spacing_h = (st.session_state.beam_inputs['b_mm'] - 2 * cover) / 2
-        rebar_y = cover + bar_dia / 2
-        rebar_positions = [
-            (cover + bar_dia / 2, rebar_y),
-            (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
-            (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
-        ]
-        xu = st.session_state.beam_inputs['d_mm'] * 0.33  # Placeholder neutral axis
+        # Only show reinforcement AFTER design is computed
+        if st.session_state.beam_inputs.get('design_computed', False):
+            bar_dia = 16  # Placeholder
+            rebar_y = cover + bar_dia / 2
+            rebar_positions = [
+                (cover + bar_dia / 2, rebar_y),
+                (st.session_state.beam_inputs['b_mm'] / 2, rebar_y),
+                (st.session_state.beam_inputs['b_mm'] - cover - bar_dia / 2, rebar_y)
+            ]
+            xu = st.session_state.beam_inputs['d_mm'] * 0.33
+        else:
+            # No reinforcement shown before analysis
+            rebar_positions = []
+            xu = None
+            bar_dia = 0
 
         fig = create_beam_diagram(
             b_mm=st.session_state.beam_inputs['b_mm'],
@@ -318,7 +315,9 @@ with col_preview:
         st.plotly_chart(fig, use_container_width=True)
 
         # Show dimensions
-        st.caption(f"📏 Width: {st.session_state.beam_inputs['b_mm']:.0f}mm × Depth: {st.session_state.beam_inputs['D_mm']:.0f}mm (d = {st.session_state.beam_inputs['d_mm']:.0f}mm)")
+        st.caption(f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)")
+        if not st.session_state.beam_inputs.get('design_computed', False):
+            st.info("ℹ️ Click 'Analyze Design' to see reinforcement")
 
     st.divider()
 

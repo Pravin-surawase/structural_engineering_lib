@@ -161,15 +161,14 @@ def material_selector(
         grades_db = CONCRETE_GRADES
         default_idx = list(grades_db.keys()).index(default_grade) if default_grade else 1
 
-        # Selectbox with format_func for full descriptions
+        # Selectbox - show grade code only (description shown as caption)
         grades = list(grades_db.keys())
         selected_grade = st.selectbox(
-            "Concrete Grade (IS 456 Table 2)",
+            "Concrete Grade",
             options=grades,
             index=default_idx,
-            format_func=lambda g: f"{g} - {grades_db[g]['description']}",
             key=key,
-            help="Select concrete characteristic strength"
+            help="IS 456 Table 2 - Characteristic strength"
         )
 
         props = grades_db[selected_grade]
@@ -198,15 +197,14 @@ def material_selector(
         grades_db = STEEL_GRADES
         default_idx = list(grades_db.keys()).index(default_grade) if default_grade else 1
 
-        # Selectbox with format_func for full descriptions
+        # Selectbox - show grade code only (description shown as caption)
         grades = list(grades_db.keys())
         selected_grade = st.selectbox(
-            "Steel Grade (IS 456 Cl. 5.6)",
+            "Steel Grade",
             options=grades,
             index=default_idx,
-            format_func=lambda g: f"{g} - {grades_db[g]['description']}",
             key=key,
-            help="Select steel characteristic strength"
+            help="IS 456 Cl. 5.6 - Yield strength"
         )
 
         props = grades_db[selected_grade]
@@ -321,17 +319,16 @@ def exposure_selector(
         >>> exposure = exposure_selector(default="Moderate")
         >>> print(exposure['cover'])  # 30
     """
-    # Selectbox with format_func
+    # Selectbox - show exposure name only (description as caption)
     exposures = list(EXPOSURE_CONDITIONS.keys())
     default_idx = exposures.index(default)
 
     selected_exposure = st.selectbox(
-        "Exposure Condition (IS 456 Table 16)",
+        "Exposure",
         options=exposures,
         index=default_idx,
-        format_func=lambda exp: f"{exp} - {EXPOSURE_CONDITIONS[exp]['description']}",
         key=key,
-        help="Environmental exposure classification"
+        help="IS 456 Table 16 - Environmental classification"
     )
 
     props = EXPOSURE_CONDITIONS[selected_exposure]
@@ -378,9 +375,9 @@ def support_condition_selector(
         >>> support = support_condition_selector()
         >>> print(support['moment_factor'])  # 1.0 for simply supported
     """
-    # Selectbox
+    # Selectbox - compact label
     selected = st.selectbox(
-        "Support Condition",
+        "Support",
         list(SUPPORT_CONDITIONS.keys()),
         index=list(SUPPORT_CONDITIONS.keys()).index(default),
         key=key,
