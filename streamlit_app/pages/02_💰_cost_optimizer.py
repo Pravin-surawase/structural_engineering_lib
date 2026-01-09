@@ -16,6 +16,8 @@ Phase: STREAMLIT-IMPL-005 | UI-002: Page Layout Redesign
 """
 
 import io
+import logging
+import traceback
 from typing import Optional
 
 import pandas as pd
@@ -24,14 +26,29 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from structural_lib.costing import calculate_beam_cost, CostProfile
+    from structural_lib.costing import calculate_beam_cost, CostProfile, STEEL_DENSITY_KG_PER_M3
     HAS_COSTING = True
 except ImportError:
     HAS_COSTING = False
+    STEEL_DENSITY_KG_PER_M3 = 7850000.0  # Fallback value
 
 from utils.api_wrapper import cached_smart_analysis
 from utils.layout import setup_page, page_header
 from utils.theme_manager import apply_dark_mode_theme, initialize_theme
+from utils.cost_optimizer_validators import (
+    validate_beam_inputs,
+    validate_design_result,
+    safe_divide,
+    safe_format_currency,
+    safe_format_percent,
+)
+from utils.cost_optimizer_error_boundary import (
+    error_boundary,
+    SafeSessionState,
+)
+
+# Setup logging
+logger = logging.getLogger(__name__)
 
 # Initialize theme
 initialize_theme()
@@ -45,32 +62,49 @@ apply_dark_mode_theme()
 
 def initialize_session_state():
     """Initialize session state for cost optimizer."""
-    if "cost_results" not in st.session_state:
-        st.session_state.cost_results = None
-    if "cost_comparison_data" not in st.session_state:
-        st.session_state.cost_comparison_data = []
+    safe_state = SafeSessionState()
+
+    if not safe_state.exists("cost_results"):
+        safe_state.set("cost_results", None)
+    if not safe_state.exists("cost_comparison_data"):
+        safe_state.set("cost_comparison_data", [])
+
+
+# Module-level constants (moved out of function)
+CONCRETE_GRADE_MAP = {"M20": 20, "M25": 25, "M30": 30, "M35": 35, "M40": 40}
+STEEL_GRADE_MAP = {"Fe415": 415, "Fe500": 500, "Fe550": 550}
 
 
 def get_beam_design_inputs() -> Optional[dict]:
     """Get inputs from Beam Design page session state if available."""
-    # Check if beam_inputs exists (from beam design page)
-    if "beam_inputs" in st.session_state:
-        beam = st.session_state.beam_inputs
-        # Map concrete/steel grades to fck/fy values
-        fck_map = {"M20": 20, "M25": 25, "M30": 30, "M35": 35, "M40": 40}
-        fy_map = {"Fe415": 415, "Fe500": 500, "Fe550": 550}
+    safe_state = SafeSessionState()
 
-        return {
-            "mu_knm": beam.get("mu_knm", 120.0),
-            "vu_kn": beam.get("vu_kn", 80.0),
-            "b_mm": beam.get("b_mm", 300.0),
-            "D_mm": beam.get("D_mm", 500.0),
-            "d_mm": beam.get("d_mm", 450.0),
-            "span_mm": beam.get("span_mm", 5000.0),
-            "fck_nmm2": fck_map.get(beam.get("concrete_grade", "M25"), 25),
-            "fy_nmm2": fy_map.get(beam.get("steel_grade", "Fe500"), 500),
-        }
-    return None
+    # Check if beam_inputs exists (from beam design page)
+    if not safe_state.exists("beam_inputs"):
+        return None
+
+    beam = safe_state.get_dict("beam_inputs")
+    if not beam:
+        return None
+
+    inputs = {
+        "mu_knm": beam.get("mu_knm", 120.0),
+        "vu_kn": beam.get("vu_kn", 80.0),
+        "b_mm": beam.get("b_mm", 300.0),
+        "D_mm": beam.get("D_mm", 500.0),
+        "d_mm": beam.get("d_mm", 450.0),
+        "span_mm": beam.get("span_mm", 5000.0),
+        "fck_nmm2": CONCRETE_GRADE_MAP.get(beam.get("concrete_grade", "M25"), 25),
+        "fy_nmm2": STEEL_GRADE_MAP.get(beam.get("steel_grade", "Fe500"), 500),
+    }
+
+    # Validate inputs before returning
+    validation = validate_beam_inputs(inputs)
+    if not validation:
+        logger.warning(f"Invalid beam inputs from session state: {validation.errors}")
+        # Still return for backward compatibility, but log the issue
+
+    return inputs
 
 
 def create_cost_scatter(comparison_data: list[dict]) -> go.Figure:
@@ -200,6 +234,7 @@ def export_to_csv(comparison_data: list[dict]) -> bytes:
     return output.getvalue().encode("utf-8")
 
 
+@error_boundary(fallback_value={"analysis": None, "comparison": []}, show_error=True)
 def run_cost_optimization(inputs: dict) -> dict:
     """
     Run cost optimization analysis using bar alternatives.
@@ -210,143 +245,159 @@ def run_cost_optimization(inputs: dict) -> dict:
     Returns:
         Dictionary with optimization results and comparison data
     """
-    try:
-        # Import costing functions from library
-        from structural_lib.costing import CostProfile, STEEL_DENSITY_KG_PER_M3
+    # Validate inputs first
+    validation = validate_beam_inputs(inputs)
+    if not validation:
+        for error in validation.errors:
+            st.error(f"❌ Input validation failed: {error}")
+        return {"analysis": None, "comparison": []}
 
-        # Check if we have design results from beam design page
-        flexure = None
-        if "design_results" in st.session_state and st.session_state.design_results:
-            design_result = st.session_state.design_results
-            if "flexure" in design_result:
-                flexure = design_result["flexure"]
+    # Use module-level imports (already imported at top)
+    safe_state = SafeSessionState()
 
-        # If not available, run new analysis
-        if not flexure:
-            result = cached_smart_analysis(
-                mu_knm=inputs["mu_knm"],
-                vu_kn=inputs.get("vu_kn", 0.0),
-                b_mm=inputs["b_mm"],
-                D_mm=inputs["D_mm"],
-                d_mm=inputs["d_mm"],
-                fck_nmm2=inputs["fck_nmm2"],
-                fy_nmm2=inputs["fy_nmm2"],
-                span_mm=inputs["span_mm"],
-            )
+    # Check if we have design results from beam design page
+    flexure = None
+    if safe_state.exists("design_results"):
+        design_result = safe_state.get_dict("design_results")
+        if design_result:
+            flexure = design_result.get("flexure")
 
-            if not result or "design" not in result:
-                st.warning("⚠️ Design analysis failed. Please run beam design first.")
-                return {"analysis": None, "comparison": []}
+    # If not available, run new analysis
+    if not flexure:
+        result = cached_smart_analysis(
+            mu_knm=inputs.get("mu_knm"),
+            vu_kn=inputs.get("vu_kn", 0.0),
+            b_mm=inputs.get("b_mm"),
+            D_mm=inputs.get("D_mm"),
+            d_mm=inputs.get("d_mm"),
+            fck_nmm2=inputs.get("fck_nmm2"),
+            fy_nmm2=inputs.get("fy_nmm2"),
+            span_mm=inputs.get("span_mm"),
+        )
 
-            design_result = result["design"]
-            if "flexure" in design_result:
-                flexure = design_result["flexure"]
-            else:
-                st.warning("⚠️ No flexure results available.")
-                return {"analysis": None, "comparison": []}
-
-        if "_bar_alternatives" not in flexure or not flexure["_bar_alternatives"]:
-            st.warning("⚠️ No bar alternatives available. Try running beam design first with different parameters.")
+        if not result:
+            st.warning("⚠️ Design analysis failed. Please run beam design first.")
             return {"analysis": None, "comparison": []}
 
-        # Get selected design and alternatives
-        selected_bars = flexure.get("tension_steel", {})
-        alternatives = flexure.get("_bar_alternatives", [])
+        # Validate design result structure
+        result_validation = validate_design_result(result)
+        if not result_validation:
+            st.error("⚠️ Design result structure is invalid:")
+            for error in result_validation.errors:
+                st.error(f"  • {error}")
+            return {"analysis": None, "comparison": []}
 
-        # Simple cost calculation using library constants
-        cost_profile = CostProfile()  # Indian average costs
-        steel_unit_cost = cost_profile.steel_cost_per_kg  # ₹72/kg (Fe500)
-        steel_density = STEEL_DENSITY_KG_PER_M3 / 1e9  # kg/mm³
+        design_result = result.get("design", {})
+        flexure = design_result.get("flexure")
 
-        # Calculate cost for selected design
-        comparison = []
-        span_m = inputs["span_mm"] / 1000.0
+        if not flexure:
+            st.warning("⚠️ No flexure results available.")
+            return {"analysis": None, "comparison": []}
 
-        # Selected design (baseline)
-        selected_area = selected_bars.get("area", 0)
-        selected_num = selected_bars.get("num", 0)
-        selected_dia = selected_bars.get("dia", 0)
+    # Check for alternatives
+    alternatives = flexure.get("_bar_alternatives", [])
+    if not alternatives:
+        st.warning("⚠️ No bar alternatives available. Try running beam design first with different parameters.")
+        return {"analysis": None, "comparison": []}
 
-        # Steel volume = area × span
-        selected_steel_vol_mm3 = selected_area * inputs["span_mm"]
-        selected_steel_kg = selected_steel_vol_mm3 * steel_density
-        selected_steel_cost = selected_steel_kg * steel_unit_cost
+    # Get selected design
+    selected_bars = flexure.get("tension_steel", {})
+
+    # CRITICAL: Validate selected area to prevent zero division
+    selected_area = selected_bars.get("area", 0)
+    if selected_area <= 0:
+        st.error("❌ Invalid baseline design: steel area is zero or negative.")
+        st.error("This usually means the design failed. Please check beam design inputs.")
+        return {"analysis": None, "comparison": []}
+
+    selected_num = selected_bars.get("num", 0)
+    selected_dia = selected_bars.get("dia", 0)
+
+    # Simple cost calculation using library constants
+    if not HAS_COSTING:
+        st.error("❌ Costing library not available")
+        return {"analysis": None, "comparison": []}
+
+    cost_profile = CostProfile()  # Indian average costs
+    steel_unit_cost = cost_profile.steel_cost_per_kg  # ₹72/kg (Fe500)
+    # Safe: STEEL_DENSITY_KG_PER_M3 is a positive constant (7850.0) from library
+    selected_steel_vol_mm3 = selected_area * inputs.get("span_mm", 0)
+    selected_steel_kg = selected_steel_vol_mm3 * steel_density
+    selected_steel_cost = selected_steel_kg * steel_unit_cost
+
+    comparison.append({
+        "bar_config": f"{selected_num}-{selected_dia}mm",
+        "b_mm": inputs.get("b_mm", 0),
+        "D_mm": inputs.get("D_mm", 0),
+        "fck_nmm2": inputs.get("fck_nmm2", 0),
+        "fy_nmm2": inputs.get("fy_nmm2", 0),
+        "steel_area_mm2": selected_area,
+        "steel_kg": selected_steel_kg,
+        "utilization_ratio": 1.00,  # Baseline = 100%
+        "total_cost": selected_steel_cost,
+        "steel_cost": selected_steel_cost,
+        "is_optimal": False,  # Will determine later
+    })
+
+    # Calculate costs for alternatives (up to 10)
+    MAX_ALTERNATIVES = 10
+    for alt in alternatives[:MAX_ALTERNATIVES]:
+        alt_area = alt.get("area", 0)
+        alt_num = alt.get("num", 0)
+        alt_dia = alt.get("dia", 0)
+
+        # Steel volume and cost
+        alt_steel_vol_mm3 = alt_area * inputs.get("span_mm", 0)
+        alt_steel_kg = alt_steel_vol_mm3 * steel_density
+        alt_steel_cost = alt_steel_kg * steel_unit_cost
+
+        # FIXED: Use safe_divide to prevent zero division
+        utilization_ratio = safe_divide(alt_area, selected_area, default=1.0)
 
         comparison.append({
-            "bar_config": f"{selected_num}-{selected_dia}mm",
-            "b_mm": inputs["b_mm"],
-            "D_mm": inputs["D_mm"],
-            "fck_nmm2": inputs["fck_nmm2"],
-            "fy_nmm2": inputs["fy_nmm2"],
-            "steel_area_mm2": selected_area,
-            "steel_kg": selected_steel_kg,
-            "utilization_ratio": 1.00,  # Baseline = 100%
-            "total_cost": selected_steel_cost,
-            "steel_cost": selected_steel_cost,
-            "is_optimal": False,  # Will determine later
+            "bar_config": f"{alt_num}-{alt_dia}mm",
+            "b_mm": inputs.get("b_mm", 0),
+            "D_mm": inputs.get("D_mm", 0),
+            "fck_nmm2": inputs.get("fck_nmm2", 0),
+            "fy_nmm2": inputs.get("fy_nmm2", 0),
+            "steel_area_mm2": alt_area,
+            "steel_kg": alt_steel_kg,
+            "utilization_ratio": utilization_ratio,
+            "total_cost": alt_steel_cost,
+            "steel_cost": alt_steel_cost,
+            "is_optimal": False,
         })
 
-        # Calculate costs for alternatives (up to 10)
-        for alt in alternatives[:10]:
-            alt_area = alt.get("area", 0)
-            alt_num = alt.get("num", 0)
-            alt_dia = alt.get("dia", 0)
+    # Sort by total cost
+    comparison.sort(key=lambda x: x.get("total_cost", float('inf')))
 
-            # Steel volume and cost
-            alt_steel_vol_mm3 = alt_area * inputs["span_mm"]
-            alt_steel_kg = alt_steel_vol_mm3 * steel_density
-            alt_steel_cost = alt_steel_kg * steel_unit_cost
+    # Mark lowest cost as optimal
+    if comparison:
+        comparison[0]["is_optimal"] = True
+        for i in range(1, len(comparison)):
+            comparison[i]["is_optimal"] = False
 
-            comparison.append({
-                "bar_config": f"{alt_num}-{alt_dia}mm",
-                "b_mm": inputs["b_mm"],
-                "D_mm": inputs["D_mm"],
-                "fck_nmm2": inputs["fck_nmm2"],
-                "fy_nmm2": inputs["fy_nmm2"],
-                "steel_area_mm2": alt_area,
-                "steel_kg": alt_steel_kg,
-                "utilization_ratio": alt_area / selected_area,  # Relative to selected
-                "total_cost": alt_steel_cost,
-                "steel_cost": alt_steel_cost,
-                "is_optimal": False,
-            })
+    # Calculate savings using safe_divide
+    if len(comparison) > 1:
+        baseline_cost = comparison[1]["total_cost"] if not comparison[0]["is_optimal"] else comparison[0]["total_cost"]
+        optimal_cost = min(c["total_cost"] for c in comparison)
+        savings = baseline_cost - optimal_cost
+        savings_pct = safe_divide(savings * 100, baseline_cost, default=0.0)
+    else:
+        baseline_cost = comparison[0]["total_cost"] if comparison else 0
+        optimal_cost = baseline_cost
+        savings = 0
+        savings_pct = 0
 
-        # Sort by total cost
-        comparison.sort(key=lambda x: x["total_cost"])
+    analysis_summary = {
+        "baseline_cost": baseline_cost,
+        "optimal_cost": optimal_cost,
+        "savings_amount": savings,
+        "savings_percent": savings_pct,
+        "candidates_evaluated": len(comparison),
+    }
 
-        # Mark lowest cost as optimal
-        if comparison:
-            comparison[0]["is_optimal"] = True
-            for i in range(1, len(comparison)):
-                comparison[i]["is_optimal"] = False
-
-        # Calculate savings
-        if len(comparison) > 1:
-            baseline_cost = comparison[1]["total_cost"] if not comparison[0]["is_optimal"] else comparison[0]["total_cost"]
-            optimal_cost = min(c["total_cost"] for c in comparison)
-            savings = baseline_cost - optimal_cost
-            savings_pct = (savings / baseline_cost) * 100 if baseline_cost > 0 else 0
-        else:
-            baseline_cost = comparison[0]["total_cost"] if comparison else 0
-            optimal_cost = baseline_cost
-            savings = 0
-            savings_pct = 0
-
-        analysis_summary = {
-            "baseline_cost": baseline_cost,
-            "optimal_cost": optimal_cost,
-            "savings_amount": savings,
-            "savings_percent": savings_pct,
-            "candidates_evaluated": len(comparison),
-        }
-
-        return {"analysis": analysis_summary, "comparison": comparison}
-
-    except Exception as e:
-        st.error(f"❌ Cost optimization failed: {str(e)}")
-        import traceback
-        st.error(traceback.format_exc())
-        return {"analysis": None, "comparison": []}
+    return {"analysis": analysis_summary, "comparison": comparison}
 
 
 # Main page layout
