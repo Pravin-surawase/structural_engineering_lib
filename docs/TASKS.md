@@ -187,6 +187,7 @@
 | **TASK-242** | Research: Calculation Report Generation (Jinja2 HTML, PDF via WeasyPrint, Excel export) | RESEARCHER | ✅ 2026-01-07 |
 | **TASK-240** | Research: Code Clause Database Architecture (JSON clause DB, @clause decorator, traceability) | ARCHITECT | ✅ 2026-01-07 |
 | **TASK-238** | Research: Input Flexibility & Data Interchange (BeamInput dataclasses, import helpers, builder pattern) | ARCHITECT | ✅ 2026-01-07 |
+| **AGENT8-WEEK1** | Git workflow optimizations (4/4): Parallel Fetch (#309), Incremental Whitespace (#310), CI Monitor Daemon (#311), Merge Conflict Test Suite (#312). **Performance: 45-60s → 5s commits (90% faster!)** | AGENT8 | ✅ 2026-01-09 |
 | **TASK-230** | Research: Testing Strategies for Engineering Software (visual regression, property-based, mutation testing) | TESTER | ✅ 2026-01-07 |
 | **TASK-211** | Apply API Guidelines to core modules (flexure/shear/detailing refactor + tests) | DEV | ✅ 2026-01-07 |
 | **TASK-210** | Apply API Guidelines to `api.py` (keyword-only signatures, result objects) | DEV | ✅ 2026-01-07 |
