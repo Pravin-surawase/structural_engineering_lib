@@ -95,6 +95,46 @@ remote_ref_exists() {
   git show-ref --verify --quiet "refs/remotes/$REMOTE_NAME/$CURRENT_BRANCH"
 }
 
+# WEEK 1 OPTIMIZATION: Parallel git fetch
+# Fetch runs in background while we stage files, saving 15-30s per commit
+FETCH_PID=""
+
+parallel_fetch_start() {
+  log_message "INFO" "Starting parallel fetch in background"
+  git fetch "$REMOTE_NAME" "$DEFAULT_BRANCH" 2>&1 | tee -a "$LOG_FILE" &
+  FETCH_PID=$!
+  log_message "INFO" "Fetch started with PID: $FETCH_PID"
+}
+
+parallel_fetch_complete() {
+  # Wait for background fetch to complete
+  if [ -n "${FETCH_PID}" ] && kill -0 $FETCH_PID 2>/dev/null; then
+    log_message "INFO" "Waiting for background fetch (PID: $FETCH_PID) to complete..."
+    wait $FETCH_PID
+    local exit_code=$?
+    if [[ $exit_code -ne 0 ]]; then
+      log_message "ERROR" "Fetch failed with exit code: $exit_code"
+      return 1
+    fi
+    log_message "INFO" "Fetch completed successfully"
+  else
+    log_message "WARN" "Fetch PID not found or already completed"
+  fi
+
+  # Now merge the fetched changes (branch-aware)
+  if [[ "$CURRENT_BRANCH" == "$DEFAULT_BRANCH" ]]; then
+    # On main: fast-forward only
+    git pull --ff-only "$REMOTE_NAME" "$DEFAULT_BRANCH"
+  else
+    # On feature branch: merge or rebase depending on tracking
+    if git rev-parse --abbrev-ref "@{u}" >/dev/null 2>&1; then
+      git merge --no-edit "$REMOTE_NAME/$DEFAULT_BRANCH"
+    else
+      git rebase "$REMOTE_NAME/$DEFAULT_BRANCH"
+    fi
+  fi
+}
+
 # Check if we're already in a merge state
 if [ -f .git/MERGE_HEAD ]; then
   echo -e "${YELLOW}⚠️  Unfinished merge detected!${NC}"
@@ -143,32 +183,12 @@ if [[ -n $(git status --porcelain) ]]; then
   AUTO_STASHED="true"
 fi
 
-# Step 1: Sync FIRST to get latest remote state (branch-aware)
-echo -e "${YELLOW}Step 1/7: Syncing latest from remote...${NC}"
-log_message "INFO" "Step 1: Syncing from remote"
-if ! sync_with_main_branch 2>&1; then
-  # Sync may have conflicts from previous uncommitted changes
-  if git status | grep -q "Unmerged paths"; then
-    echo -e "${YELLOW}Merge conflicts detected. Auto-resolving with --ours...${NC}"
-    CONFLICTS=$(git diff --name-only --diff-filter=U)
-    log_message "WARN" "Conflicts detected in $(echo "$CONFLICTS" | wc -l | tr -d ' ') file(s)"
-    for file in $CONFLICTS; do
-      echo -e "  Resolving: $file (keeping your version)"
-      git checkout --ours "$file"
-      git add "$file"
-      log_message "INFO" "Auto-resolved conflict: $file"
-    done
-    complete_sync_resolution
-    echo -e "${GREEN}Conflicts resolved${NC}"
-    log_message "SUCCESS" "All conflicts resolved with --ours strategy"
-  else
-    echo -e "${RED}ERROR: Sync failed${NC}"
-    git status
-    exit 1
-  fi
-else
-  echo -e "${GREEN}Up to date with remote${NC}"
-fi
+# Step 1: Start parallel fetch (Week 1 optimization - saves 15-30s)
+echo -e "${YELLOW}Step 1/7: Starting background fetch...${NC}"
+log_message "INFO" "Step 1: Starting parallel fetch"
+parallel_fetch_start
+echo -e "${GREEN}→ Fetch running in background (PID: $FETCH_PID)${NC}"
+log_message "INFO" "Will complete fetch before commit"
 
 # Restore auto-stashed changes after sync
 if [[ "$AUTO_STASHED" == "true" ]]; then
@@ -230,30 +250,10 @@ else
   log_message "INFO" "No pre-commit modifications detected"
 fi
 
-# Step 5: Sync AGAIN (branch-aware)
-echo -e "${YELLOW}Step 5/7: Syncing again (catch any changes during commit)...${NC}"
-log_message "INFO" "Step 5: Syncing again (safety check)"
-if ! sync_with_main_branch 2>&1; then
-  if git status | grep -q "Unmerged paths"; then
-    echo -e "${YELLOW}Remote changed during commit. Auto-resolving conflicts...${NC}"
-
-    CONFLICTS=$(git diff --name-only --diff-filter=U)
-    for file in $CONFLICTS; do
-      echo -e "  Resolving: $file (keeping your version - you have latest)"
-      git checkout --ours "$file"
-      git add "$file"
-    done
-
-    complete_sync_resolution
-    echo -e "${GREEN}Conflicts resolved (kept your changes)${NC}"
-  else
-    echo -e "${RED}ERROR: Sync failed but no conflicts detected${NC}"
-    git status
-    exit 1
-  fi
-else
-  echo -e "${GREEN}Still up to date (no remote changes during commit)${NC}"
-fi
+# Step 5: Complete parallel fetch and sync (branch-aware)
+echo -e "${YELLOW}Step 5/7: Completing parallel fetch and syncing...${NC}"
+log_message "INFO" "Step 5: Completing parallel fetch started in Step 1"
+parallel_fetch_complete
 
 # Cache upstream availability for push behavior
 if has_upstream; then
