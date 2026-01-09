@@ -47,6 +47,9 @@ Normal work mode:
     1. Open: docs/planning/agent-8-tasks-git-ops.md
     2. Follow: Agent 8 protocol for PR review
     3. Execute: Agent 8 decision logic (auto-merge criteria, CI monitoring)
+    4. Validation: If Streamlit changes, scanner runs automatically
+       - CRITICAL issues → Must fix before merge
+       - HIGH issues → Review but can proceed
   ↓
   Return to normal work mode
 ```

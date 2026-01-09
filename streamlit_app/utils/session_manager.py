@@ -446,6 +446,145 @@ class SessionStateManager:
         SessionStateManager.initialize()
         logger.info("Session state reset to defaults")
 
+    # =========================================================================
+    # IMPL-006 Phase 3: State Optimization Enhancements
+    # =========================================================================
+
+    @staticmethod
+    def minimize_state():
+        """
+        Remove non-essential state to reduce memory footprint.
+        Keeps only current inputs, result, and recent history.
+        """
+        SessionStateManager.initialize()
+
+        # Keep only last 5 in history (instead of 10)
+        if len(st.session_state[StateKeys.INPUT_HISTORY]) > 5:
+            st.session_state[StateKeys.INPUT_HISTORY] = st.session_state[StateKeys.INPUT_HISTORY][-5:]
+
+        if len(st.session_state[StateKeys.RESULT_HISTORY]) > 5:
+            st.session_state[StateKeys.RESULT_HISTORY] = st.session_state[StateKeys.RESULT_HISTORY][-5:]
+
+        # Clear old cache entries (keep last 10)
+        cache = st.session_state[StateKeys.DESIGN_CACHE]
+        if len(cache) > 10:
+            keys_to_keep = list(cache.keys())[-10:]
+            st.session_state[StateKeys.DESIGN_CACHE] = {k: cache[k] for k in keys_to_keep}
+
+        logger.info("State minimized - reduced memory footprint")
+
+    @staticmethod
+    def track_state_diff(old_inputs: BeamInputs, new_inputs: BeamInputs) -> Dict[str, Any]:
+        """
+        Track differences between input states.
+
+        Args:
+            old_inputs: Previous inputs
+            new_inputs: New inputs
+
+        Returns:
+            Dictionary of changed fields
+        """
+        diff = {}
+
+        for field in ['span_mm', 'b_mm', 'd_mm', 'D_mm', 'fck_mpa', 'fy_mpa', 'mu_knm', 'vu_kn', 'cover_mm']:
+            old_val = getattr(old_inputs, field)
+            new_val = getattr(new_inputs, field)
+
+            if old_val != new_val:
+                diff[field] = {
+                    'old': old_val,
+                    'new': new_val,
+                    'change': new_val - old_val
+                }
+
+        return diff
+
+    @staticmethod
+    def clear_stale_state(max_age_minutes: int = 30):
+        """
+        Clear state that hasn't been accessed recently.
+
+        Args:
+            max_age_minutes: Maximum age for state entries
+        """
+        SessionStateManager.initialize()
+
+        from datetime import datetime, timedelta
+        cutoff = datetime.now() - timedelta(minutes=max_age_minutes)
+
+        # Clear stale history entries
+        result_history = st.session_state[StateKeys.RESULT_HISTORY]
+        fresh_results = []
+
+        for result in result_history:
+            try:
+                result_time = datetime.fromisoformat(result.timestamp)
+                if result_time > cutoff:
+                    fresh_results.append(result)
+            except (ValueError, AttributeError):
+                # Keep if timestamp invalid (safer)
+                fresh_results.append(result)
+
+        if len(fresh_results) < len(result_history):
+            st.session_state[StateKeys.RESULT_HISTORY] = fresh_results
+            logger.info(f"Cleared {len(result_history) - len(fresh_results)} stale results")
+
+    @staticmethod
+    def compress_large_objects():
+        """
+        Compress large objects in state to reduce memory.
+        Currently a placeholder for future implementation.
+        """
+        # In future: could use pickle + gzip for large objects
+        # For now, just log state size
+        SessionStateManager.initialize()
+
+        cache_size = len(st.session_state.get(StateKeys.DESIGN_CACHE, {}))
+        history_size = len(st.session_state.get(StateKeys.RESULT_HISTORY, []))
+
+        logger.debug(f"State size - Cache: {cache_size}, History: {history_size}")
+
+    @staticmethod
+    def get_state_metrics() -> Dict[str, int]:
+        """
+        Get metrics about current state size.
+
+        Returns:
+            Dictionary with state metrics
+        """
+        SessionStateManager.initialize()
+
+        return {
+            'total_keys': len(st.session_state),
+            'cache_entries': len(st.session_state.get(StateKeys.DESIGN_CACHE, {})),
+            'history_entries': len(st.session_state.get(StateKeys.RESULT_HISTORY, [])),
+            'input_history_entries': len(st.session_state.get(StateKeys.INPUT_HISTORY, [])),
+        }
+
+    @staticmethod
+    def optimize_state_on_interval(interval_seconds: int = 300):
+        """
+        Periodically optimize state (call every 5 minutes).
+
+        Args:
+            interval_seconds: Optimization interval
+        """
+        # Check if enough time has passed
+        last_optimize_key = '_last_state_optimize'
+
+        if last_optimize_key not in st.session_state:
+            st.session_state[last_optimize_key] = datetime.now()
+
+        time_since_last = (datetime.now() - st.session_state[last_optimize_key]).total_seconds()
+
+        if time_since_last >= interval_seconds:
+            SessionStateManager.minimize_state()
+            SessionStateManager.clear_stale_state()
+            SessionStateManager.compress_large_objects()
+            st.session_state[last_optimize_key] = datetime.now()
+            logger.info("State optimization completed")
+
 
 # =============================================================================
 # Helper Functions
