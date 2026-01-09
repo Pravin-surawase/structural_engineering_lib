@@ -1,0 +1,115 @@
+# Streamlit App Validation Workflow
+# Runs comprehensive checks on Streamlit app code to catch runtime errors before deployment
+name: Streamlit Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'streamlit_app/**/*.py'
+      - 'scripts/check_streamlit_issues.py'
+      - '.pylintrc-streamlit'
+      - '.github/workflows/streamlit-validation.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'streamlit_app/**/*.py'
+      - 'scripts/check_streamlit_issues.py'
+      - '.pylintrc-streamlit'
+
+jobs:
+  ast-scanner:
+    name: AST Scanner (NameError, ZeroDivisionError, etc.)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install streamlit pandas numpy plotly
+
+      - name: Run AST Scanner (all pages)
+        run: |
+          python scripts/check_streamlit_issues.py --all-pages --verbose
+
+      - name: Check for critical issues
+        run: |
+          # Fail if any critical issues found
+          python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+
+  pylint-check:
+    name: Pylint (undefined variables, imports, etc.)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint streamlit pandas numpy plotly
+
+      - name: Run Pylint
+        run: |
+          python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/*.py || true
+
+      - name: Check for errors
+        run: |
+          # Exit code 0-3 = warnings/refactoring, 4-31 = errors
+          EXIT_CODE=$(python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/*.py; echo $?)
+          if [ $EXIT_CODE -ge 4 ]; then
+            echo "❌ Pylint found errors (exit code: $EXIT_CODE)"
+            exit 1
+          fi
+          echo "✓ Pylint check passed"
+
+  combined-report:
+    name: Combined Analysis Report
+    runs-on: ubuntu-latest
+    needs: [ast-scanner, pylint-check]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint streamlit pandas numpy plotly
+
+      - name: Generate Combined Report
+        run: |
+          echo "# Streamlit Validation Report" > report.md
+          echo "" >> report.md
+          echo "## AST Scanner Results" >> report.md
+          python scripts/check_streamlit_issues.py --all-pages --verbose >> report.md 2>&1 || true
+          echo "" >> report.md
+          echo "## Pylint Results" >> report.md
+          python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/*.py >> report.md 2>&1 || true
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: streamlit-validation-report
+          path: report.md
+          retention-days: 30
+
+      - name: Display Summary
+        run: |
+          echo "📊 Validation Summary:"
+          echo "AST Scanner: ${{ needs.ast-scanner.result }}"
+          echo "Pylint: ${{ needs.pylint-check.result }}"

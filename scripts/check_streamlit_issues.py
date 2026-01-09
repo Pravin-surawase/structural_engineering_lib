@@ -459,12 +459,24 @@ def main():
         type=str,
         help="Comma-separated list of severities to fail on (e.g., 'critical,high')"
     )
+    parser.add_argument(
+        "--fail-on-critical",
+        action="store_true",
+        help="Shortcut for --fail-on critical (exit 1 if any critical issues found)"
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Show detailed output"
+    )
 
     args = parser.parse_args()
 
     # Parse fail-on severities
     fail_on_severities = None
-    if args.fail_on:
+    if args.fail_on_critical:
+        fail_on_severities = ['critical']
+    elif args.fail_on:
         fail_on_severities = [s.strip() for s in args.fail_on.split(',')]
 
     # Determine project root
