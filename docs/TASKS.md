@@ -76,6 +76,25 @@
 
 ### v0.17.0 Implementation
 
+#### Agent 9 Governance (Phase A: Critical Infrastructure)
+
+> **Research:** [Phase 1](../agents/agent-9/research/RESEARCH_FINDINGS_STRUCTURE.md) + [Phase 2](../agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md) (3.5h, 14 research tasks, 4,747 lines)
+> **Roadmap:** [AGENT_9_IMPLEMENTATION_ROADMAP.md](../agents/agent-9/AGENT_9_IMPLEMENTATION_ROADMAP.md)
+> **Goal:** Reduce doc sprawl (41 → <10), establish governance baseline, prevent future debt
+
+| ID | Task | Agent | Est | Priority | Status | Due |
+|----|------|-------|-----|----------|--------|-----|
+| **TASK-280** | Archive 34 root files to `docs/_archive/2026-01/` (cleanup from high-velocity sprints) | AGENT_9 | 2h | 🔴 P0-Critical | ⏳ Ready | 2026-01-15 |
+| **TASK-281** | CI Root File Limit Check (fail build if >10 root docs, prevent sprawl regression) | AGENT_9 | 1h | 🔴 P0-Critical | ⏳ Blocked by 280 | 2026-01-16 |
+| **TASK-282** | Metrics Collection Script (automate baseline tracking: velocity, WIP, quality) | AGENT_9 | 2h | 🟠 P1-High | ⏳ Blocked by 280 | 2026-01-18 |
+| **TASK-283** | Automated Archival Script (`archive_old_sessions.sh` - weekly cleanup) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Blocked by 280 | 2026-01-23 |
+
+**Success Criteria:**
+- Root docs: 41 → <10 (75% reduction)
+- Archive coverage: 0% → 100% (34 files)
+- Leading indicators: 3/6 alerts resolved (crisis docs, handoffs, completions)
+- CI enforcement: Automated root file limit check
+
 #### Critical Path (Must complete for v0.17.0)
 
 | ID | Task | Agent | Est | Priority | Status |
@@ -86,6 +105,24 @@
 | **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates in docs/) | DOCS | 2-3 hrs | 🔴 HIGH | ⏳ Queued |
 
 ### v0.18+ (Professional Features Pipeline)
+
+#### Agent 9 Governance (Phase B: Automation & Observability)
+
+> **Goal:** Establish governance cadence (80/20 rule), automate maintenance, enable proactive monitoring
+> **Dependencies:** Phase A complete (TASK-280-283)
+
+| ID | Task | Agent | Est | Priority | Status | Due |
+|----|------|-------|-----|----------|--------|-----|
+| **TASK-284** | Weekly Governance Sessions (80/20 rule: 1 governance per 5 feature sessions) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Blocked by 283 | 2026-01-30 |
+| **TASK-285** | Metrics Dashboard (trending: velocity, docs, quality, alerts) | AGENT_9 | 4h | 🟡 P2-Medium | ⏳ Blocked by 284 | 2026-02-04 |
+| **TASK-286** | Leading Indicator Alerts (CI warnings for 6 metrics: crisis docs, handoffs, etc.) | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Blocked by 285 | 2026-02-06 |
+
+**Success Criteria:**
+- Governance ratio: 20% of sessions (1 per 5)
+- Alert count: 3/6 → 0/6 (all green)
+- Dashboard: Daily automated updates
+
+#### Professional Features
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
@@ -101,6 +138,29 @@
 | **TASK-145** | Visualization Stack (matplotlib/plotly, BMD/SFD, beam elevation, cross-sections) | DEV | 3-4 days | 🟡 MEDIUM | ⏳ Queued |
 | **TASK-146** | DXF Quality Polish (CAD visual QA, DWG conversion workflow) | QA | 2-3 days | 🟡 MEDIUM | ⏳ Queued |
 | **TASK-147** | Developer Documentation (10+ examples, extension points, tutorials) | DOCS | 2-3 days | 🟡 MEDIUM | ⏳ Queued |
+
+---
+
+## v1.0+ Long-Term Governance (Phase C: Advanced Optimization)
+
+> **Goal:** Predictive analytics, dynamic optimization, long-term sustainability
+> **Timeline:** v1.0.0+ (March 2026+)
+
+### Agent 9 Governance (Phase C: Advanced Features)
+
+| ID | Task | Agent | Est | Priority | Status | Due |
+|----|------|-------|-----|----------|--------|-----|
+| **TASK-287** | Predictive Velocity Modeling (7-day forecasting, trend analysis, anomaly detection) | AGENT_9 | 8h | 🔵 P3-Low | ⏳ Blocked by 286 | 2026-03-15 |
+| **TASK-288** | Release Cadence Optimization (dynamic scheduling based on velocity patterns) | AGENT_9 | 6h | 🔵 P3-Low | ⏳ Blocked by 287 | 2026-03-20 |
+| **TASK-289** | Governance Health Score (0-100 composite metric: velocity, docs, quality, alerts) | AGENT_9 | 4h | 🔵 P3-Low | ⏳ Blocked by 288 | 2026-03-22 |
+| **TASK-290** | Context Optimization for AI Agents (progressive disclosure, table-first docs) | AGENT_9 | 6h | 🔵 P3-Low | ⏳ Blocked by 289 | 2026-03-25 |
+| **TASK-291** | Technical Debt Dashboard (debt inventory, trending, ROI calculator) | AGENT_9 | 5h | 🔵 P3-Low | ⏳ Blocked by 290 | 2026-03-27 |
+
+**Success Criteria:**
+- Health score: >85/100 (sustainable governance)
+- Predictive alerts: 7-day velocity forecast accuracy >90%
+- Tech debt trend: Declining month-over-month
+- Context optimization: AI agent onboarding <30min (vs. current 2-3h)
 
 ---
 
