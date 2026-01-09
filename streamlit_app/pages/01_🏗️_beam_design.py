@@ -458,15 +458,16 @@ with col_preview:
                             rebar_positions.append((x, rebar_y))
                     else:
                         # Fallback: distribute evenly
-                        spacing_h = (b_mm - 2 * cover - bar_dia) / max(num_bars - 1, 1)
+                        denominator = max(num_bars - 1, 1)
+                        spacing_h = (b_mm - 2 * cover - bar_dia) / denominator if denominator > 0 else 0
                         rebar_y = cover + bar_dia / 2
                         for i in range(num_bars):
                             x = cover + bar_dia / 2 + i * spacing_h
                             rebar_positions.append((x, rebar_y))
                 else:
                     # Multiple layers - split bars between layers
-                    bars_per_layer = num_bars // num_layers
-                    extra_bars = num_bars % num_layers
+                    bars_per_layer = num_bars // num_layers if num_layers > 0 else num_bars
+                    extra_bars = num_bars % num_layers if num_layers > 0 else 0
 
                     for layer_idx in range(num_layers):
                         layer_bars = bars_per_layer + (1 if layer_idx < extra_bars else 0)
@@ -477,7 +478,8 @@ with col_preview:
                             x_start = (b_mm - total_width_bars) / 2
                         else:
                             # Fallback spacing
-                            spacing_h = (b_mm - 2 * cover - bar_dia) / max(layer_bars - 1, 1)
+                            denominator = max(layer_bars - 1, 1)
+                            spacing_h = (b_mm - 2 * cover - bar_dia) / denominator if denominator > 0 else 0
                             x_start = cover + bar_dia / 2
 
                         # Layer spacing: bar_dia + clear spacing (minimum 25mm per IS 456)
@@ -495,11 +497,12 @@ with col_preview:
                 # Use similar bar size as tension steel
                 comp_bar_dia = bar_dia
                 area_per_bar = 3.14159 * (comp_bar_dia ** 2) / 4
-                num_comp_bars = max(2, int(asc_required / area_per_bar) + 1)
+                num_comp_bars = max(2, int(asc_required / area_per_bar) + 1) if area_per_bar > 0 else 2
 
                 # Position at top (from top surface)
                 comp_y = D_mm - cover - comp_bar_dia / 2
-                spacing_h = (b_mm - 2 * cover - comp_bar_dia) / max(num_comp_bars - 1, 1)
+                denominator = max(num_comp_bars - 1, 1)
+                spacing_h = (b_mm - 2 * cover - comp_bar_dia) / denominator if denominator > 0 else 0
 
                 for i in range(num_comp_bars):
                     x = cover + comp_bar_dia / 2 + i * spacing_h
@@ -655,6 +658,9 @@ with col_preview:
             detailing = result.get("detailing", {})
             shear = result.get("shear", {})
 
+            # Extract stirrup spacing for compliance check
+            stirrup_spacing = shear.get("spacing", 150)  # Default to 150mm if not available
+
             # Get steel area (provided, not required - this is what we actually have)
             ast_provided = flexure.get("ast_provided", 0)
 
@@ -665,10 +671,14 @@ with col_preview:
                     "description": "Minimum tension reinforcement",
                     "status": "pass",
                     "actual_value": ast_provided,
-                    "limit_value": 0.85
-                    * st.session_state.beam_inputs["b_mm"]
-                    * st.session_state.beam_inputs["d_mm"]
-                    / steel["fy"],
+                    "limit_value": (
+                        0.85
+                        * st.session_state.beam_inputs["b_mm"]
+                        * st.session_state.beam_inputs["d_mm"]
+                        / steel["fy"]
+                        if steel.get("fy", 0) > 0
+                        else 0
+                    ),
                     "unit": "mm²",
                     "details": "Ast,min = 0.85 bd / fy",
                 },
@@ -696,7 +706,7 @@ with col_preview:
                     "clause": "26.5.1.6",
                     "description": "Minimum shear reinforcement",
                     "status": "pass",
-                    "actual_value": spacing,
+                    "actual_value": stirrup_spacing,
                     "limit_value": 0.75 * st.session_state.beam_inputs["d_mm"],
                     "unit": "mm",
                     "details": "Max spacing = 0.75d for vertical stirrups",
