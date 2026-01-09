@@ -1,7 +1,7 @@
 # ✅ Scanner Enhanced - Now Detects TypeError Issues
 
-**Date:** 2026-01-09T10:30Z  
-**Issue:** Scanner didn't catch `TypeError: unhashable type: 'list'`  
+**Date:** 2026-01-09T10:30Z
+**Issue:** Scanner didn't catch `TypeError: unhashable type: 'list'`
 **Status:** ✅ FIXED and Enhanced
 
 ---
@@ -28,7 +28,7 @@ The scanner (Agent 8's `check_streamlit_issues.py`) checked for:
 ## ✅ Scanner Enhancement Applied
 
 ### Added: `visit_Call()` Method
-**File:** `scripts/check_streamlit_issues.py`  
+**File:** `scripts/check_streamlit_issues.py`
 **Lines:** 527-568 (42 new lines)
 
 **Detects:**
@@ -56,17 +56,17 @@ The scanner (Agent 8's `check_streamlit_issues.py`) checked for:
 def visit_Call(self, node: ast.Call):
     """
     Detect TypeError risks in function calls.
-    
+
     Checks for:
     - hash()/frozenset() on unhashable types (lists, dicts)
     - Common type mismatches
     """
     if isinstance(node.func, ast.Name):
         func_name = node.func.id
-        
+
         if func_name in ('hash', 'frozenset') and node.args:
             arg = node.args[0]
-            
+
             # Direct list/dict/set literals are unhashable
             if isinstance(arg, (ast.List, ast.Dict, ast.Set)):
                 self.issues.append((
@@ -74,7 +74,7 @@ def visit_Call(self, node: ast.Call):
                     "CRITICAL",
                     f"TypeError: {func_name}() called on unhashable type"
                 ))
-            
+
             # Check for .items() which may contain unhashable values
             elif isinstance(arg, ast.Call):
                 if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
@@ -83,7 +83,7 @@ def visit_Call(self, node: ast.Call):
                         "HIGH",
                         f"TypeError risk: {func_name}(dict.items()) may fail if dict contains unhashable values. Use make_hashable() helper."
                     ))
-    
+
     self.generic_visit(node)
 ```
 
@@ -97,7 +97,7 @@ def visit_Call(self, node: ast.Call):
 **Bad examples (should be detected):**
 ```python
 # This WILL be caught now
-cache_key = f"viz_{hash(frozenset(kwargs.items()))}"  
+cache_key = f"viz_{hash(frozenset(kwargs.items()))}"
 # ❌ HIGH: TypeError risk detected!
 
 # This too
@@ -117,7 +117,7 @@ def make_hashable(obj):
         return obj
 
 hashable_kwargs = make_hashable(kwargs)
-cache_key = f"viz_{hash(hashable_kwargs)}"  
+cache_key = f"viz_{hash(hashable_kwargs)}"
 # ✅ Safe! No warning
 ```
 
@@ -170,8 +170,8 @@ cache_key = f"viz_{hash(frozenset(kwargs.items()))}"  # Line 111
 
 **Scanner would now report:**
 ```
-01_beam_design.py:111: HIGH - TypeError risk: hash(frozenset(dict.items())) 
-may fail if dict contains unhashable values (lists, dicts). 
+01_beam_design.py:111: HIGH - TypeError risk: hash(frozenset(dict.items()))
+may fail if dict contains unhashable values (lists, dicts).
 Use make_hashable() helper.
 ```
 
@@ -259,5 +259,5 @@ grep "def visit_" scripts/check_streamlit_issues.py
 
 ---
 
-**Status:** ✅ Scanner enhanced and ready to catch TypeError issues!  
+**Status:** ✅ Scanner enhanced and ready to catch TypeError issues!
 **Impact:** Future hash/frozenset bugs will be caught before runtime! 🛡️

@@ -1,6 +1,6 @@
 # 🔧 Better Testing Strategy - No Token Waste
 
-**Problem:** Testing through AI chat wastes tokens and time  
+**Problem:** Testing through AI chat wastes tokens and time
 **Solution:** Automated pre-flight checks + clear fix instructions
 
 ---
@@ -17,7 +17,7 @@ python3 scripts/validate_streamlit_page.py streamlit_app/pages/01_🏗️_beam_d
 
 **What it checks:**
 - ✅ Syntax errors
-- ✅ Import errors  
+- ✅ Import errors
 - ✅ Unhashable hash() calls
 - ✅ Theme setup issues
 - ✅ Common Streamlit mistakes

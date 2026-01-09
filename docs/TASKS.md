@@ -84,10 +84,10 @@
 
 | ID | Task | Agent | Est | Priority | Status | Due |
 |----|------|-------|-----|----------|--------|-----|
-| **TASK-280** | Archive 34 root files to `docs/_archive/2026-01/` (cleanup from high-velocity sprints) | AGENT_9 | 2h | 🔴 P0-Critical | ⏳ Ready | 2026-01-15 |
-| **TASK-281** | CI Root File Limit Check (fail build if >10 root docs, prevent sprawl regression) | AGENT_9 | 1h | 🔴 P0-Critical | ⏳ Blocked by 280 | 2026-01-16 |
-| **TASK-282** | Metrics Collection Script (automate baseline tracking: velocity, WIP, quality) | AGENT_9 | 2h | 🟠 P1-High | ⏳ Blocked by 280 | 2026-01-18 |
-| **TASK-283** | Automated Archival Script (`archive_old_sessions.sh` - weekly cleanup) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Blocked by 280 | 2026-01-23 |
+| **TASK-280** | Archive 34 root files to `docs/_archive/2026-01/` (cleanup from high-velocity sprints) | AGENT_9 | 2h | 🔴 P0-Critical | ✅ Done 2026-01-10 | 2026-01-15 |
+| **TASK-281** | CI Root File Limit Check (fail build if >10 root docs, prevent sprawl regression) | AGENT_9 | 1h | 🔴 P0-Critical | ⏳ Ready | 2026-01-16 |
+| **TASK-282** | Metrics Collection Script (automate baseline tracking: velocity, WIP, quality) | AGENT_9 | 2h | 🟠 P1-High | ⏳ Blocked by 281 | 2026-01-18 |
+| **TASK-283** | Automated Archival Script (`archive_old_sessions.sh` - weekly cleanup) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Blocked by 281 | 2026-01-23 |
 
 **Success Criteria:**
 - Root docs: 41 → <10 (75% reduction)
