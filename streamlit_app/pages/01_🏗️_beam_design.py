@@ -650,13 +650,21 @@ with col_preview:
         with tab4:
             st.subheader("IS 456:2000 Compliance Checklist")
 
+            # Extract design data for compliance checks
+            flexure = result.get("flexure", {})
+            detailing = result.get("detailing", {})
+            shear = result.get("shear", {})
+
+            # Get steel area (provided, not required - this is what we actually have)
+            ast_provided = flexure.get("ast_provided", 0)
+
             # Sample compliance checks (placeholder data)
             checks = [
                 {
                     "clause": "26.5.1.1(a)",
                     "description": "Minimum tension reinforcement",
                     "status": "pass",
-                    "actual_value": ast_req,
+                    "actual_value": ast_provided,
                     "limit_value": 0.85
                     * st.session_state.beam_inputs["b_mm"]
                     * st.session_state.beam_inputs["d_mm"]
@@ -668,7 +676,7 @@ with col_preview:
                     "clause": "26.5.1.1(b)",
                     "description": "Maximum tension reinforcement",
                     "status": "pass",
-                    "actual_value": ast_req,
+                    "actual_value": ast_provided,
                     "limit_value": 0.04
                     * st.session_state.beam_inputs["b_mm"]
                     * st.session_state.beam_inputs["D_mm"],
