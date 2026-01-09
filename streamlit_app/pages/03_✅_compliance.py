@@ -15,6 +15,7 @@ Author: STREAMLIT UI SPECIALIST (Agent 6)
 Phase: STREAMLIT-IMPL-006 | UI-002: Page Layout Redesign
 """
 
+import datetime
 from typing import Optional
 
 import streamlit as st
@@ -151,14 +152,14 @@ def run_compliance_checks(inputs: dict) -> dict:
     try:
         # Run smart analysis to get design output
         analysis = cached_smart_analysis(
-            mu_knm=inputs["mu_knm"],
-            vu_kn=inputs["vu_kn"],
-            b_mm=inputs["b_mm"],
-            D_mm=inputs["D_mm"],
-            d_mm=inputs["d_mm"],
-            fck_nmm2=inputs["fck_nmm2"],
-            fy_nmm2=inputs["fy_nmm2"],
-            span_mm=inputs["span_mm"],
+            mu_knm=inputs.get("mu_knm", 0),
+            vu_kn=inputs.get("vu_kn", 0),
+            b_mm=inputs.get("b_mm", 0),
+            D_mm=inputs.get("D_mm", 0),
+            d_mm=inputs.get("d_mm", 0),
+            fck_nmm2=inputs.get("fck_nmm2", 0),
+            fy_nmm2=inputs.get("fy_nmm2", 0),
+            span_mm=inputs.get("span_mm", 0),
         )
 
         # Generate check results (placeholder logic - real implementation would extract from API)
@@ -184,7 +185,7 @@ def run_compliance_checks(inputs: dict) -> dict:
                 "margin_percent": margin,
                 "provided": "—",
                 "required": "—",
-                "remarks": f"Check based on {check_config['clause']}",
+                "remarks": f"Check based on {check_config.get('clause', 'N/A')}",
             }
 
         return {
@@ -208,8 +209,10 @@ def display_check_status(check: dict, config: dict):
         check: Check result data
         config: Check configuration
     """
-    status = check["status"]
+    status = check.get("status", "unknown")
     margin = check.get("margin_percent", 0)
+    title = config.get("title", "Unknown Check")
+    clause = config.get("clause", "N/A")
 
     # Icon and color based on status
     if status == "pass":
@@ -223,7 +226,7 @@ def display_check_status(check: dict, config: dict):
         css_class = "compliance-fail"
 
     with st.expander(
-        f"{icon} {config['title']} — {config['clause']}", expanded=(status != "pass")
+        f"{icon} {title} — {clause}", expanded=(status != "pass")
     ):
         st.markdown(f"<div class='{css_class}'>", unsafe_allow_html=True)
 
@@ -265,12 +268,12 @@ IS 456:2000 COMPLIANCE CERTIFICATE
 ===================================
 
 Beam Design Parameters:
-- Width (b): {inputs['b_mm']:.0f} mm
-- Depth (D): {inputs['D_mm']:.0f} mm
-- Effective Depth (d): {inputs['d_mm']:.0f} mm
-- Span: {inputs['span_mm']:.0f} mm
-- Concrete Grade: M{inputs['fck_nmm2']:.0f}
-- Steel Grade: Fe{inputs['fy_nmm2']:.0f}
+- Width (b): {inputs.get('b_mm', 0):.0f} mm
+- Depth (D): {inputs.get('D_mm', 0):.0f} mm
+- Effective Depth (d): {inputs.get('d_mm', 0):.0f} mm
+- Span: {inputs.get('span_mm', 0):.0f} mm
+- Concrete Grade: M{inputs.get('fck_nmm2', 0):.0f}
+- Steel Grade: Fe{inputs.get('fy_nmm2', 0):.0f}
 
 Compliance Summary:
 - Total Checks: {total_checks}
@@ -373,8 +376,6 @@ def main():
             with st.spinner("Running IS 456:2000 compliance checks..."):
                 results = run_compliance_checks(inputs)
                 st.session_state.compliance_results = results
-                import datetime
-
                 st.session_state.timestamp = datetime.datetime.now().strftime(
                     "%Y-%m-%d %H:%M:%S"
                 )
@@ -424,7 +425,7 @@ def main():
 
                 for check_config in checks_in_cat:
                     check_key = check_config["key"]
-                    check_result = results["checks"].get(check_key, {})
+                    check_result = results.get("checks", {}).get(check_key, {})
                     display_check_status(check_result, check_config)
 
                 st.markdown("")  # Spacing

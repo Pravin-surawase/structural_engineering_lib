@@ -113,13 +113,16 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
                 )
 
                 # Extract key results
+                status = result.get("status", "UNKNOWN")
+                flexure = result.get("flexure", {})
+                shear = result.get("shear", {})
                 results.append({
                     "beam_id": row["beam_id"],
-                    "status": "✅ OK" if result["status"] == "OK" else "❌ FAIL",
-                    "Ast_req_mm2": result["flexure"]["Ast_req"],
-                    "Ast_prov_mm2": result["flexure"]["Ast_prov"],
-                    "bar_config": result["flexure"]["bar_config"],
-                    "stirrup_spacing_mm": result["shear"].get("spacing_mm", "-"),
+                    "status": "✅ OK" if status == "OK" else "❌ FAIL",
+                    "Ast_req_mm2": flexure.get("Ast_req", "-"),
+                    "Ast_prov_mm2": flexure.get("Ast_prov", "-"),
+                    "bar_config": flexure.get("bar_config", "-"),
+                    "stirrup_spacing_mm": shear.get("spacing_mm", "-"),
                     "cost_per_m_INR": result.get("cost_per_m", 0),
                 })
 

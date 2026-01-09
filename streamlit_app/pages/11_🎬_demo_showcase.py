@@ -188,8 +188,8 @@ def create_comparison_chart(results: dict) -> go.Figure:
     scenarios = list(results.keys())
 
     # Extract metrics
-    ast_req = [results[s]["flexure"]["Ast_req"] for s in scenarios]
-    ast_prov = [results[s]["flexure"]["Ast_prov"] for s in scenarios]
+    ast_req = [results[s].get("flexure", {}).get("Ast_req", 0) for s in scenarios]
+    ast_prov = [results[s].get("flexure", {}).get("Ast_prov", 0) for s in scenarios]
     costs = [results[s].get("cost_per_m", 0) for s in scenarios]
 
     # Create subplots
@@ -292,57 +292,60 @@ if demo_mode == "🎯 Single Demo":
                 st.metric("Mu (kN·m)", scenario["params"]["Mu"])
                 st.metric("Vu (kN)", scenario["params"]["Vu"])
 
+        flexure = result.get("flexure", {})
+        shear = result.get("shear", {})
+        ast_req = flexure.get("Ast_req", 0)
+        ast_prov = flexure.get("Ast_prov", 0)
+
         # Key results
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
             st.metric(
                 "Steel Required",
-                f"{result['flexure']['Ast_req']:.0f} mm²"
+                f"{ast_req:.0f} mm²"
             )
 
         with col2:
             st.metric(
                 "Steel Provided",
-                f"{result['flexure']['Ast_prov']:.0f} mm²",
-                delta=f"+{result['flexure']['Ast_prov'] - result['flexure']['Ast_req']:.0f} mm²"
+                f"{ast_prov:.0f} mm²",
+                delta=f"+{ast_prov - ast_req:.0f} mm²"
             )
 
         with col3:
             st.metric(
                 "Bar Configuration",
-                result['flexure']['bar_config']
+                flexure.get("bar_config", "-")
             )
 
         with col4:
             st.metric(
                 "Stirrup Spacing",
-                f"{result['shear'].get('spacing_mm', 0):.0f} mm"
+                f"{shear.get('spacing_mm', 0):.0f} mm"
             )
 
         # Detailed results tabs
         tab1, tab2, tab3 = st.tabs(["Flexure", "Shear", "Compliance"])
 
         with tab1:
-            flex = result["flexure"]
             section_area = scenario["params"]["b"] * scenario["params"]["D"]
             if section_area > 0:
-                steel_pct = (flex["Ast_prov"] / section_area) * 100
+                steel_pct = (flexure.get("Ast_prov", 0) / section_area) * 100
             else:
                 steel_pct = 0.0
             st.markdown(f"""
-            - **Moment Capacity**: {flex.get('Mu_capacity', 0)/1e6:.1f} kN·m
-            - **xu/d Ratio**: {flex.get('xu_by_d', 0):.3f} {'✅' if flex.get('xu_by_d', 0) <= 0.46 else '❌'}
+            - **Moment Capacity**: {flexure.get('Mu_capacity', 0)/1e6:.1f} kN·m
+            - **xu/d Ratio**: {flexure.get('xu_by_d', 0):.3f} {'✅' if flexure.get('xu_by_d', 0) <= 0.46 else '❌'}
             - **Steel Percentage**: {steel_pct:.2f}%
             """)
 
         with tab2:
-            shear_data = result["shear"]
             st.markdown(f"""
-            - **Shear Stress (τv)**: {shear_data.get('tau_v', 0):.2f} N/mm²
-            - **Concrete Capacity (τc)**: {shear_data.get('tau_c', 0):.2f} N/mm²
-            - **Stirrup Legs**: {shear_data.get('legs', 2)}
-            - **Stirrup Diameter**: {shear_data.get('diameter_mm', 8)} mm
+            - **Shear Stress (τv)**: {shear.get('tau_v', 0):.2f} N/mm²
+            - **Concrete Capacity (τc)**: {shear.get('tau_c', 0):.2f} N/mm²
+            - **Stirrup Legs**: {shear.get('legs', 2)}
+            - **Stirrup Diameter**: {shear.get('diameter_mm', 8)} mm
             """)
 
         with tab3:
@@ -416,14 +419,15 @@ elif demo_mode == "🔀 Compare Demos":
                 if demo_name in results:
                     result = results[demo_name]
                     scenario = DEMO_SCENARIOS[demo_name]
+                    flexure = result.get("flexure", {})
 
                     comparison_data.append({
                         "Scenario": f"{scenario['icon']} {demo_name}",
                         "Dimensions": f"{scenario['params']['b']}×{scenario['params']['D']}",
                         "Materials": f"M{scenario['params']['fck']}/Fe{scenario['params']['fy']}",
-                        "Ast_req (mm²)": result["flexure"]["Ast_req"],
-                        "Ast_prov (mm²)": result["flexure"]["Ast_prov"],
-                        "Bar Config": result["flexure"]["bar_config"],
+                        "Ast_req (mm²)": flexure.get("Ast_req", 0),
+                        "Ast_prov (mm²)": flexure.get("Ast_prov", 0),
+                        "Bar Config": flexure.get("bar_config", "-"),
                         "Cost/m (INR)": result.get("cost_per_m", 0),
                     })
 
@@ -510,10 +514,13 @@ else:  # Auto-Tour
                 col1, col2, col3 = st.columns(3)
 
                 with col1:
-                    st.metric("Steel Area", f"{result['flexure']['Ast_prov']:.0f} mm²")
+                    st.metric(
+                        "Steel Area",
+                        f"{result.get('flexure', {}).get('Ast_prov', 0):.0f} mm²"
+                    )
 
                 with col2:
-                    st.metric("Bar Config", result['flexure']['bar_config'])
+                    st.metric("Bar Config", result.get("flexure", {}).get("bar_config", "-"))
 
                 with col3:
                     st.metric("Cost/m", f"₹{result.get('cost_per_m', 0):.2f}")

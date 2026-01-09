@@ -119,6 +119,13 @@ initialize_session_state()
 # Helper Functions
 # =============================================================================
 
+def safe_int(value, default=0):
+    """Safely cast value to int with fallback."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
 def get_beam_design_from_session() -> Optional[Dict]:
     """Get beam design inputs from beam_design page if available."""
     if "beam_inputs" in st.session_state:
@@ -156,8 +163,8 @@ def create_detailing_from_beam_design(beam_data: Dict) -> BeamDetailingResult:
     steel_grade = inputs.get("steel_grade", "Fe500")
 
     # Parse grades
-    fck = int(concrete_grade.replace("M", ""))
-    fy = int(steel_grade.replace("Fe", ""))
+    fck = safe_int(concrete_grade.replace("M", ""), default=0)
+    fy = safe_int(steel_grade.replace("Fe", ""), default=0)
 
     # Extract reinforcement from result
     ast_required = result.get("ast_required_mm2", 1000)
@@ -197,9 +204,9 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
     lines.append("")
     lines.append(f"Beam ID: {detailing.beam_id}")
     lines.append(f"Story: {detailing.story}")
-    lines.append(f"Dimensions: {int(detailing.b)} x {int(detailing.D)} mm")
-    lines.append(f"Span: {int(detailing.span)} mm ({detailing.span/1000:.1f} m)")
-    lines.append(f"Cover: {int(detailing.cover)} mm")
+    lines.append(f"Dimensions: {safe_int(detailing.b)} x {safe_int(detailing.D)} mm")
+    lines.append(f"Span: {safe_int(detailing.span)} mm ({detailing.span/1000:.1f} m)")
+    lines.append(f"Cover: {safe_int(detailing.cover)} mm")
     lines.append("")
 
     lines.append("REINFORCEMENT DETAILS:")
@@ -210,7 +217,7 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("Bottom Bars (Tension):")
         for i, bar in enumerate(detailing.bottom_bars):
             zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
-            lines.append(f"  {zone}: {bar.count} nos. Ø{int(bar.diameter)} mm "
+            lines.append(f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
                         f"(Area: {bar.area_provided:.0f} mm²)")
 
     # Top bars
@@ -219,7 +226,7 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("Top Bars (Hanger/Compression):")
         for i, bar in enumerate(detailing.top_bars):
             zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
-            lines.append(f"  {zone}: {bar.count} nos. Ø{int(bar.diameter)} mm "
+            lines.append(f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
                         f"(Area: {bar.area_provided:.0f} mm²)")
 
     # Stirrups
@@ -228,14 +235,16 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("Stirrups (Shear):")
         for i, stirrup in enumerate(detailing.stirrups):
             zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
-            lines.append(f"  {zone}: Ø{int(stirrup.diameter)} mm @ {int(stirrup.spacing)} mm c/c")
+            lines.append(
+                f"  {zone}: Ø{safe_int(stirrup.diameter)} mm @ {safe_int(stirrup.spacing)} mm c/c"
+            )
 
     lines.append("")
     lines.append("DEVELOPMENT LENGTHS:")
     lines.append("-" * 80)
-    lines.append(f"Tension (Ld): {int(detailing.ld_tension)} mm")
-    lines.append(f"Compression: {int(detailing.ld_compression)} mm")
-    lines.append(f"Lap Length: {int(detailing.lap_length)} mm")
+    lines.append(f"Tension (Ld): {safe_int(detailing.ld_tension)} mm")
+    lines.append(f"Compression: {safe_int(detailing.ld_compression)} mm")
+    lines.append(f"Lap Length: {safe_int(detailing.lap_length)} mm")
 
     lines.append("")
     lines.append("DXF LAYERS:")
