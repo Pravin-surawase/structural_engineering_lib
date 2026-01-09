@@ -63,6 +63,8 @@ from utils.theme_manager import (
 from utils.loading_states import loading_context
 # IMPL-007: Performance optimizations
 from utils.caching import SmartCache
+import hashlib
+import json
 # TODO Phase 2+: Uncomment as needed when implementing those phases
 # from utils.session_manager import SessionStateManager
 # from utils.lazy_loader import LazyLoader
@@ -104,8 +106,6 @@ if "beam_inputs" not in st.session_state:
 # Helper function to detect input changes
 def get_input_hash():
     """Hash of all inputs to detect changes"""
-    import hashlib
-
     inputs_str = f"{st.session_state.beam_inputs['mu_knm']}_{st.session_state.beam_inputs['vu_kn']}_{st.session_state.beam_inputs['b_mm']}_{st.session_state.beam_inputs['D_mm']}_{st.session_state.beam_inputs['d_mm']}_{st.session_state.beam_inputs['concrete_grade']}_{st.session_state.beam_inputs['steel_grade']}_{st.session_state.beam_inputs['span_mm']}_{st.session_state.beam_inputs['exposure']}"
     return hashlib.md5(inputs_str.encode()).hexdigest()
 
@@ -114,8 +114,6 @@ def get_input_hash():
 def create_cached_beam_diagram(**kwargs):
     """Cached wrapper for beam diagram generation"""
     # Create cache key from all parameters (handle unhashable types)
-    import json
-    
     # Convert kwargs to JSON-serializable format
     def make_hashable(obj):
         if isinstance(obj, (list, tuple)):
