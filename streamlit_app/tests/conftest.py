@@ -43,6 +43,9 @@ class MockStreamlit:
     # Mock session_state with dict + attribute access
     session_state = MockSessionState()
 
+    # Track if markdown was called (for accessibility tests)
+    markdown_called = False
+
     @staticmethod
     def columns(num_cols):
         """Mock st.columns() - returns list of mock column objects"""
@@ -109,7 +112,7 @@ class MockStreamlit:
     @staticmethod
     def markdown(text, **kwargs):
         """Mock st.markdown() accepting arbitrary kwargs (e.g. unsafe_allow_html)."""
-        pass
+        MockStreamlit.markdown_called = True
 
     @staticmethod
     def caption(text):
@@ -175,3 +178,13 @@ def clean_session_state():
     st.session_state.clear()
     yield
     st.session_state.clear()
+
+
+@pytest.fixture
+def mock_streamlit():
+    """Provide MockStreamlit instance with reset state."""
+    MockStreamlit.markdown_called = False
+    MockStreamlit.session_state.clear()
+    yield MockStreamlit
+    MockStreamlit.markdown_called = False
+    MockStreamlit.session_state.clear()
