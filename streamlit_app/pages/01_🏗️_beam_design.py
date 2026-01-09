@@ -37,6 +37,16 @@ from components.visualizations import (
     create_compliance_visual,
 )
 from components.preview import render_real_time_preview
+from components.results import (
+    display_design_status,
+    display_reinforcement_summary,
+    display_flexure_result,
+    display_shear_result,
+    display_summary_metrics,
+    display_utilization_meters,
+    display_material_properties,
+    display_compliance_checks,
+)
 from utils.api_wrapper import cached_design
 from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import (
@@ -359,132 +369,23 @@ with col_preview:
         with tab1:
             section_header("Design Summary", icon="📊", divider=False)
 
-            # Get design details
-            flexure = result.get("flexure", {})
-            shear = result.get("shear", {})
-            detailing = result.get("detailing", {})
-
-            ast_req = flexure.get("ast_required", 0)
-            ast_prov = flexure.get("ast_provided", 0)
-            spacing = shear.get("spacing", 0)
-
-            # Calculate utilization percentage
-            mu_limit = flexure.get("mu_limit_knm", 1)
-            flex_util = (
-                (st.session_state.beam_inputs["mu_knm"] / mu_limit * 100)
-                if mu_limit > 0
-                else 0
-            )
-            shear_util = shear.get("tau_v", 0) / (0.5 * (concrete["fck"] ** 0.5)) * 100
+            # 1. Design Status Banner
+            display_design_status(result, show_icon=True)
 
             st.markdown("---")
 
-            # ═══════════════════════════════════════════════════════════════
-            # REINFORCEMENT SUMMARY (Main results)
-            # ═══════════════════════════════════════════════════════════════
-            st.markdown("### 🔩 Reinforcement Details")
-
-            col1, col2, col3 = st.columns(3)
-
-            with col1:
-                st.markdown("**Main Tension Steel**")
-                st.markdown(
-                    f"📏 **{flexure.get('num_bars', 3)} - {flexure.get('bar_dia', 16)}mm** bars"
-                )
-                st.caption(f"Ast = {ast_prov:.0f} mm² (req: {ast_req:.0f} mm²)")
-                if flexure.get("num_layers", 1) > 1:
-                    st.info(f"Arranged in {flexure.get('num_layers')} layers")
-
-            with col2:
-                st.markdown("**Shear Reinforcement**")
-                st.markdown(
-                    f"📏 **{shear.get('legs', 2)}-legged {shear.get('stirrup_dia', 8)}mm** @ **{spacing:.0f}mm** c/c"
-                )
-                st.caption(
-                    f"τv = {shear.get('tau_v', 0):.2f} N/mm² (τc = {shear.get('tau_c', 0):.2f} N/mm²)"
-                )
-
-            with col3:
-                st.markdown("**Compression Steel**")
-                if flexure.get("is_doubly_reinforced", False):
-                    st.markdown(
-                        f"📏 **Required:** {flexure.get('asc_required', 0):.0f} mm²"
-                    )
-                    st.warning("⚠️ Doubly reinforced section")
-                else:
-                    st.markdown("✅ **Not required**")
-                    st.caption("Singly reinforced section")
+            # 2. Reinforcement Summary (main result display)
+            display_reinforcement_summary(result, layout="columns")
 
             st.markdown("---")
 
-            # Side face reinforcement row
-            col4, col5, col6 = st.columns(3)
-
-            with col4:
-                st.markdown("**Side Face Steel**")
-                if detailing.get("needs_side_face", False):
-                    st.markdown(
-                        f"📏 **Required:** {detailing.get('side_face_area', 0):.0f} mm²"
-                    )
-                    st.caption("(D > 450mm, per IS 456 Cl. 26.5.1.3)")
-                else:
-                    st.markdown("✅ **Not required**")
-                    st.caption("(D ≤ 450mm)")
-
-            with col5:
-                st.markdown("**Clear Cover**")
-                st.markdown(f"📏 **{detailing.get('cover', 30)} mm**")
-                st.caption(f"Exposure: {st.session_state.beam_inputs['exposure']}")
-
-            with col6:
-                st.markdown("**Design Status**")
-                if result.get("is_safe"):
-                    st.success("✅ **SAFE**")
-                else:
-                    st.error("❌ **UNSAFE**")
-
-            st.markdown("---")
-
-            # ═══════════════════════════════════════════════════════════════
-            # UTILIZATION METERS (Simple progress bars)
-            # ═══════════════════════════════════════════════════════════════
+            # 3. Utilization Meters
             st.markdown("### 📊 Capacity Utilization")
-
-            col_u1, col_u2, col_u3 = st.columns(3)
-
-            with col_u1:
-                st.markdown("**Flexure**")
-                flex_pct = min(flex_util, 100)
-                st.progress(flex_pct / 100)
-                color = "🟢" if flex_pct < 80 else ("🟡" if flex_pct < 95 else "🔴")
-                st.caption(f"{color} {flex_pct:.1f}% utilized")
-
-            with col_u2:
-                st.markdown("**Shear**")
-                shear_pct = min(shear_util, 100)
-                st.progress(shear_pct / 100)
-                color = "🟢" if shear_pct < 80 else ("🟡" if shear_pct < 95 else "🔴")
-                st.caption(f"{color} {shear_pct:.1f}% utilized")
-
-            with col_u3:
-                st.markdown("**Steel Ratio**")
-                steel_ratio = (
-                    ast_prov
-                    / (
-                        st.session_state.beam_inputs["b_mm"]
-                        * st.session_state.beam_inputs["d_mm"]
-                    )
-                ) * 100
-                max_ratio = 4.0  # 4% max
-                ratio_pct = min((steel_ratio / max_ratio) * 100, 100)
-                st.progress(ratio_pct / 100)
-                st.caption(f"ρ = {steel_ratio:.2f}% (max 4%)")
+            display_utilization_meters(result)
 
             st.markdown("---")
 
-            # ═══════════════════════════════════════════════════════════════
-            # MATERIAL & GEOMETRY (Compact)
-            # ═══════════════════════════════════════════════════════════════
+            # 4. Input Summary (collapsible)
             with st.expander("📋 Input Summary", expanded=False):
                 c1, c2, c3 = st.columns(3)
                 with c1:
