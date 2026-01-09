@@ -8,8 +8,11 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-yaml
+        files: \.(yml|yaml)$  # Only run on YAML files
       - id: check-toml
+        files: \.toml$  # Only run on TOML files
       - id: check-json
+        files: \.json$  # Only run on JSON files
       - id: end-of-file-fixer
         exclude: ^(VBA/|Excel/)
       - id: trailing-whitespace
