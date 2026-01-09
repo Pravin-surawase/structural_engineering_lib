@@ -18,6 +18,9 @@
 | **[METRICS.md](METRICS.md)** | Tracking templates & dashboards |
 | **[KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md)** | Git/CI governance & research |
 | **[SESSION_TEMPLATES.md](SESSION_TEMPLATES.md)** | Planning templates |
+| **[RESEARCH_PLAN.md](RESEARCH_PLAN.md)** | Comprehensive research plan (810 lines) |
+| **[RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md)** | Executive summary (394 lines) |
+| **[RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md)** | 1-page quick reference card |
 
 ---
 
@@ -51,9 +54,52 @@ AI agents amplify existing disciplines - not substitute for them. Strong technic
 
 ---
 
-## Research Backlog (Agent 9)
+## Research Plan (2026-01-10) 📋 NEW!
 
-**Shortlist (internal-first):**
+**Status:** Ready for execution
+**Duration:** 3-5 hours (over 1-2 sessions)
+**Output:** 5-10 actionable governance tasks
+
+### What It Solves
+- **Doc sprawl:** 67+ session docs → <10 active (85% reduction)
+- **Unsustainable velocity:** 122 commits/day → 50-75 target
+- **Governance boundaries:** Clear authority matrix for Agent 9
+- **No measurement:** Baseline metrics + leading indicators
+
+### Quick Start
+```bash
+# Read the plan (15-20 min)
+cat agents/agent-9/RESEARCH_PLAN.md
+
+# Or use quick reference (5 min)
+cat agents/agent-9/RESEARCH_QUICK_REF.md
+
+# Execute Phase 1 (2-3 hours)
+# - Internal analysis (45 min)
+# - Baseline metrics (30 min)
+# - Constraint design (30 min)
+# - Quick external scan (30 min)
+```
+
+### Documents
+1. **[RESEARCH_PLAN.md](RESEARCH_PLAN.md)** - Complete specification (14 tasks, 5 areas)
+2. **[RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md)** - Executive summary & FAQ
+3. **[RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md)** - 1-page checklist
+
+### Success Criteria
+- ✅ Can answer: "Why 122 commits/day?"
+- ✅ Can answer: "What archive strategy?"
+- ✅ Can answer: "How much governance?"
+- ✅ Have 5-10 tasks ready for TASKS.md
+- ✅ Time invested <5 hours
+
+---
+
+## Research Backlog (Agent 9) — REPLACED BY RESEARCH PLAN
+
+**⚠️ Note:** The research backlog below has been superseded by the comprehensive research plan above (2026-01-10). Use the new plan for structured, time-boxed research sessions.
+
+**Legacy shortlist (internal-first):**
 - Review `docs/_internal/git-governance.md` against current CI and branch protection rules.
 - Audit docs lifecycle rules vs. current `docs/archive/` structure.
 - Inventory existing automation scripts vs. planned scripts in AUTOMATION.md.
