@@ -10,28 +10,79 @@ Scans ALL Streamlit pages for common issues:
 - ImportError (imports inside functions)
 - TypeError (wrong function args)
 
-Part of comprehensive prevention system (Phase 1A).
+Part of comprehensive prevention system (Phase 1A + Phase 2).
 
 Usage:
     python scripts/check_streamlit_issues.py --all-pages
     python scripts/check_streamlit_issues.py --page beam_design
     python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
+    python scripts/check_streamlit_issues.py --all-pages --ignore-file .scanner-ignore.yml
 """
 
 import ast
 import sys
 import argparse
+import yaml
 from pathlib import Path
 from typing import List, Tuple, Set, Dict, Optional
 from collections import defaultdict
 
 
+class IgnoreConfig:
+    """Configuration for ignored issues."""
+
+    def __init__(self, config_path: Optional[Path] = None):
+        self.ignored_lines: Dict[str, Set[int]] = defaultdict(set)
+        self.ignored_patterns: List[Dict] = []
+
+        if config_path and config_path.exists():
+            self._load_config(config_path)
+
+    def _load_config(self, config_path: Path):
+        """Load ignore configuration from YAML file."""
+        try:
+            with open(config_path, 'r') as f:
+                config = yaml.safe_load(f) or {}
+
+            # Parse false_positives section
+            false_positives = config.get('false_positives', [])
+            for item in false_positives:
+                file_pattern = item.get('file', '')
+                lines = item.get('lines', [])
+
+                # Store ignored lines per file
+                for line in lines:
+                    self.ignored_lines[file_pattern].add(line)
+
+            # Parse known_issues section (for documentation, not ignored)
+            # These are real issues that are acknowledged but not yet fixed
+
+        except Exception as e:
+            print(f"⚠️  Warning: Failed to load ignore config: {e}")
+
+    def should_ignore(self, filepath: str, line: int) -> bool:
+        """Check if an issue at this location should be ignored."""
+        filename = Path(filepath).name
+
+        # Check exact filename match
+        if line in self.ignored_lines.get(filename, set()):
+            return True
+
+        # Check pattern matches
+        for pattern_file, ignored_lines in self.ignored_lines.items():
+            if pattern_file in filepath and line in ignored_lines:
+                return True
+
+        return False
+
+
 class EnhancedIssueDetector(ast.NodeVisitor):
     """Enhanced AST visitor with scope tracking for NameError detection."""
 
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str, ignore_config: Optional[IgnoreConfig] = None):
         self.filepath = filepath
         self.issues: List[Tuple[int, str, str]] = []  # (line, severity, message)
+        self.ignore_config = ignore_config
 
         # Scope tracking for NameError detection
         self.scopes: List[Set[str]] = [set()]  # Stack of scopes (sets of defined vars)
@@ -49,6 +100,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             'ImportError', 'IOError', 'OSError',
         }  # Python builtins
 
+        # Track Path types for division operator detection
+        self.path_like_vars: Set[str] = set()  # Variables that are Path objects
+
         # Session state tracking
         self.session_state_keys: Set[str] = set()  # Track keys set in session state
 
@@ -61,6 +115,12 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.safe_denominators: Set[str] = set()  # Variables validated as non-zero
         self.parent_nodes: List[ast.AST] = []  # Stack for tracking parent nodes
         self.in_conditional = False  # Track if we're inside a conditional branch
+
+    def add_issue(self, line: int, severity: str, message: str):
+        """Add an issue, respecting ignore configuration."""
+        if self.ignore_config and self.ignore_config.should_ignore(self.filepath, line):
+            return  # Issue is ignored
+        self.issues.append((line, severity, message))
 
     def visit(self, node: ast.AST):
         """Override visit to track parent nodes."""
@@ -112,14 +172,19 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             self.imported_names.add(imported_name)
             self.add_defined_name(imported_name)
 
+            # Phase 2: Track Path imports
+            if alias.name == 'pathlib' or alias.name.startswith('pathlib.'):
+                if 'Path' in alias.name or imported_name == 'Path':
+                    self.path_like_vars.add(imported_name)
+
         # Detect imports inside functions (bad practice)
         if self.in_function:
             for alias in node.names:
-                self.issues.append((
+                self.add_issue(
                     node.lineno,
                     "HIGH",
                     f"Import '{alias.name}' inside function '{self.function_name}' (move to module level)"
-                ))
+                )
 
         self.generic_visit(node)
 
@@ -131,14 +196,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 self.imported_names.add(imported_name)
                 self.add_defined_name(imported_name)
 
+                # Phase 2: Track Path imports
+                if node.module == 'pathlib' and (alias.name == 'Path' or imported_name == 'Path'):
+                    self.path_like_vars.add(imported_name)
+
         # Detect imports inside functions
         if self.in_function:
             module = node.module or ""
-            self.issues.append((
+            self.add_issue(
                 node.lineno,
                 "HIGH",
                 f"Import from '{module}' inside function '{self.function_name}' (move to module level)"
-            ))
+            )
 
         self.generic_visit(node)
 
@@ -159,16 +228,22 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         for arg in node.args.args:
             self.add_defined_name(arg.arg)
 
+        # Phase 2: Add *args and **kwargs to scope
+        if node.args.vararg:
+            self.add_defined_name(node.args.vararg.arg)
+        if node.args.kwarg:
+            self.add_defined_name(node.args.kwarg.arg)
+
         # Check for missing type hints on functions returning dict
         if node.returns is None:
             for child in ast.walk(node):
                 if isinstance(child, ast.Return) and child.value:
                     if isinstance(child.value, ast.Dict):
-                        self.issues.append((
+                        self.add_issue(
                             node.lineno,
                             "MEDIUM",
                             f"Function '{node.name}' returns dict without type hint"
-                        ))
+                        )
                         break
 
         self.generic_visit(node)
@@ -180,10 +255,24 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.function_name = old_function_name
 
     def visit_Assign(self, node: ast.Assign):
-        """Track variable assignments."""
+        """Track variable assignments (Phase 2: improved)."""
+        # Check if assigning a Path object
+        is_path_assignment = False
+        if isinstance(node.value, ast.Call):
+            if isinstance(node.value.func, ast.Name) and node.value.func.id in self.path_like_vars:
+                is_path_assignment = True
+        elif isinstance(node.value, ast.BinOp):
+            # Path / "string" creates new Path
+            if isinstance(node.value.op, ast.Div):
+                left_name = self._extract_var_name(node.value.left)
+                if left_name in self.path_like_vars:
+                    is_path_assignment = True
+
         for target in node.targets:
             if isinstance(target, ast.Name):
                 self.add_defined_name(target.id)
+                if is_path_assignment:
+                    self.path_like_vars.add(target.id)
             elif isinstance(target, ast.Tuple) or isinstance(target, ast.List):
                 # Unpack tuple/list assignment
                 for elt in target.elts:
@@ -286,11 +375,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         if isinstance(node.target, ast.Name):
             # For +=, the variable must already exist
             if not self.is_defined(node.target.id):
-                self.issues.append((
+                self.add_issue(
                     node.lineno,
                     "CRITICAL",
                     f"NameError: '{node.target.id}' used in augmented assignment but not defined"
-                ))
+                )
         self.generic_visit(node)
 
     def visit_Name(self, node: ast.Name):
@@ -300,11 +389,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             if not self.is_defined(node.id):
                 # Filter out likely false positives
                 if node.id not in ['_', '__name__', '__file__']:
-                    self.issues.append((
+                    self.add_issue(
                         node.lineno,
                         "CRITICAL",
                         f"NameError: name '{node.id}' is not defined (used before assignment or import)"
-                    ))
+                    )
 
         self.generic_visit(node)
 
@@ -319,11 +408,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 attr_name = node.attr
                 # Only warn if we haven't seen this key set
                 if attr_name not in self.session_state_keys:
-                    self.issues.append((
+                    self.add_issue(
                         node.lineno,
                         "HIGH",
                         f"AttributeError risk: st.session_state.{attr_name} may not exist (use .get() or check 'in')"
-                    ))
+                    )
 
         self.generic_visit(node)
 
@@ -357,11 +446,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 # String key access - likely dict access
                 if var_name in ['result', 'inputs', 'design_result', 'flexure',
                                 'shear', 'detailing', 'data', 'config']:
-                    self.issues.append((
+                    self.add_issue(
                         node.lineno,
                         "HIGH",
                         f"KeyError risk: '{var_name}[{repr(node.slice.value)}]' may raise KeyError (use .get() with default)"
-                    ))
+                    )
 
         # Session state subscript: st.session_state["key"]
         if isinstance(node.value, ast.Attribute):
@@ -371,11 +460,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 if isinstance(node.slice, ast.Constant):
                     key = node.slice.value
                     if isinstance(key, str) and key not in self.session_state_keys:
-                        self.issues.append((
+                        self.add_issue(
                             node.lineno,
                             "HIGH",
                             f"KeyError risk: st.session_state[{repr(key)}] may not exist (use .get() or check 'in')"
-                        ))
+                        )
 
         # IndexError: list/tuple access
         if isinstance(node.ctx, ast.Load):
@@ -389,11 +478,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     if isinstance(index_value, int):
                         # Check if bounds validated (look for len() checks)
                         if not self._has_bounds_check_nearby(container_name, index_value):
-                            self.issues.append((
+                            self.add_issue(
                                 node.lineno,
                                 "MEDIUM",
                                 f"IndexError risk: {container_name}[{index_value}] without bounds check (validate len() > {index_value})"
-                            ))
+                            )
 
         self.generic_visit(node)
 
@@ -514,8 +603,21 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             self.generic_visit(node)
 
     def visit_BinOp(self, node: ast.BinOp):
-        """Detect division operations (ZeroDivisionError risk)."""
+        """Detect division operations (ZeroDivisionError risk) - Phase 2: Path-aware."""
         if isinstance(node.op, (ast.Div, ast.FloorDiv, ast.Mod)):
+            # Phase 2: Check if this is Path division (Path / "string")
+            left_name = self._extract_var_name(node.left)
+            if left_name in self.path_like_vars and isinstance(node.op, ast.Div):
+                # This is Path division, not arithmetic - safe
+                self.generic_visit(node)
+                return
+
+            # Check if left operand is a Path call: Path(...) / "string"
+            if isinstance(node.left, ast.Call):
+                if isinstance(node.left.func, ast.Name) and node.left.func.id in self.path_like_vars:
+                    self.generic_visit(node)
+                    return
+
             # Check if denominator is obviously safe
             is_safe = False
 
@@ -537,11 +639,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
             if not is_safe:
                 op_name = {ast.Div: '/', ast.FloorDiv: '//', ast.Mod: '%'}[type(node.op)]
-                self.issues.append((
+                self.add_issue(
                     node.lineno,
                     "CRITICAL",
                     f"ZeroDivisionError risk: division '{op_name}' without obvious zero check (validate denominator)"
-                ))
+                )
 
         self.generic_visit(node)
 
@@ -564,15 +666,19 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         return False
 
     def visit_For(self, node: ast.For):
-        """Track for loop variables."""
-        if isinstance(node.target, ast.Name):
-            self.add_defined_name(node.target.id)
-        elif isinstance(node.target, (ast.Tuple, ast.List)):
-            for elt in node.target.elts:
-                if isinstance(elt, ast.Name):
-                    self.add_defined_name(elt.id)
-
+        """Track for loop variables (Phase 2: improved tuple unpacking)."""
+        self._add_target_names(node.target)
         self.generic_visit(node)
+
+    def _add_target_names(self, target):
+        """Recursively add names from assignment targets (handles nested unpacking)."""
+        if isinstance(target, ast.Name):
+            self.add_defined_name(target.id)
+        elif isinstance(target, (ast.Tuple, ast.List)):
+            for elt in target.elts:
+                self._add_target_names(elt)  # Recursive for nested unpacking
+        elif isinstance(target, ast.Starred):
+            self._add_target_names(target.value)
 
     def visit_With(self, node: ast.With):
         """Track with statement variables."""
@@ -613,11 +719,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 # Direct unhashable types: hash([...]), hash({...}), hash({x: y})
                 if isinstance(arg, (ast.List, ast.Set, ast.Dict)):
                     type_name = {ast.List: "list", ast.Set: "set", ast.Dict: "dict"}[type(arg)]
-                    self.issues.append((
+                    self.add_issue(
                         node.lineno,
                         "CRITICAL",
                         f"TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)"
-                    ))
+                    )
 
                 # Risky pattern: hash(frozenset(dict.items()))
                 elif isinstance(arg, ast.Call):
@@ -626,11 +732,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                         inner_call = arg.args[0]
                         if (isinstance(inner_call.func, ast.Attribute) and
                             inner_call.func.attr == 'items'):
-                            self.issues.append((
+                            self.add_issue(
                                 node.lineno,
                                 "HIGH",
-                                "TypeError risk: hash(frozenset(dict.items())) fails if dict contains unhashable values (validate first)"
-                            ))
+                                "TypeError risk: hash(frozenset(dict.items()) fails if dict contains unhashable values (validate first)"
+                            )
 
         # Check for frozenset() with unhashable types
         if func_name == 'frozenset' and node.args:
@@ -638,21 +744,21 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
             # Direct list/dict/set literals are unhashable
             if isinstance(arg, (ast.List, ast.Dict, ast.Set)):
-                self.issues.append((
+                self.add_issue(
                     node.lineno,
                     "CRITICAL",
                     f"TypeError: frozenset() called on unhashable type (lists/dicts/sets cannot be hashed)"
-                ))
+                )
 
             # Check for .items() which returns unhashable tuples containing unhashable values
             elif isinstance(arg, ast.Call):
                 if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
                     # dict.items() returns unhashable if dict values are unhashable
-                    self.issues.append((
+                    self.add_issue(
                         node.lineno,
                         "HIGH",
                         f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper."
-                    ))
+                    )
 
         # Check for int() / float() without error handling
         if func_name in ('int', 'float'):
@@ -660,16 +766,16 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             if node.args:
                 # Check if inside try/except
                 if not self._is_in_try_except():
-                    self.issues.append((
+                    self.add_issue(
                         node.lineno,
                         "MEDIUM",
                         f"ValueError risk: {func_name}() without try/except (invalid input will crash)"
-                    ))
+                    )
 
         self.generic_visit(node)
 
 
-def check_file(filepath: Path) -> List[Tuple[int, str, str]]:
+def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None) -> List[Tuple[int, str, str]]:
     """Check a single file for issues."""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -678,7 +784,7 @@ def check_file(filepath: Path) -> List[Tuple[int, str, str]]:
         # Parse AST
         tree = ast.parse(source, filename=str(filepath))
 
-        detector = EnhancedIssueDetector(str(filepath))
+        detector = EnhancedIssueDetector(str(filepath), ignore_config=ignore_config)
         detector.visit(tree)
 
         return detector.issues
@@ -689,7 +795,7 @@ def check_file(filepath: Path) -> List[Tuple[int, str, str]]:
         return [(0, "ERROR", f"Failed to parse file: {e}")]
 
 
-def scan_all_pages(pages_dir: Path) -> Dict[str, List[Tuple[int, str, str]]]:
+def scan_all_pages(pages_dir: Path, ignore_config: Optional[IgnoreConfig] = None) -> Dict[str, List[Tuple[int, str, str]]]:
     """Scan all Streamlit pages."""
     results = {}
 
@@ -701,7 +807,7 @@ def scan_all_pages(pages_dir: Path) -> Dict[str, List[Tuple[int, str, str]]]:
         return results
 
     for page_file in page_files:
-        issues = check_file(page_file)
+        issues = check_file(page_file, ignore_config=ignore_config)
         results[page_file.name] = issues
 
     return results
@@ -832,6 +938,12 @@ def main():
         action="store_true",
         help="Show detailed output"
     )
+    parser.add_argument(
+        "--ignore-file",
+        type=str,
+        default=".scanner-ignore.yml",
+        help="Path to ignore configuration file (default: .scanner-ignore.yml)"
+    )
 
     args = parser.parse_args()
 
@@ -846,13 +958,20 @@ def main():
     project_root = Path(__file__).parent.parent
     pages_dir = project_root / "streamlit_app" / "pages"
 
+    # Load ignore configuration
+    ignore_file_path = project_root / args.ignore_file
+    ignore_config = IgnoreConfig(ignore_file_path) if ignore_file_path.exists() else None
+
+    if ignore_config and args.verbose:
+        print(f"📋 Loaded ignore config from {ignore_file_path}")
+
     if not pages_dir.exists():
         print(f"❌ Pages directory not found: {pages_dir}")
         return 1
 
     # Scan pages
     if args.all_pages:
-        results = scan_all_pages(pages_dir)
+        results = scan_all_pages(pages_dir, ignore_config=ignore_config)
         return print_results(results, fail_on_severities)
 
     elif args.page:
@@ -865,7 +984,7 @@ def main():
         page_file = matching_files[0]
         print(f"🔍 Checking {page_file.name}...\n")
 
-        issues = check_file(page_file)
+        issues = check_file(page_file, ignore_config=ignore_config)
         results = {page_file.name: issues}
         return print_results(results, fail_on_severities)
 
