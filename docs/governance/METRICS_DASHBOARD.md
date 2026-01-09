@@ -94,4 +94,4 @@ Six metrics with alert thresholds:
 
 **Automation:** Run `./scripts/generate_dashboard.sh` to update this dashboard
 **Frequency:** Daily (automated in governance sessions)
-**Version:** 1.0.0 (TASK-285)
+**Version:** v0.16.0 (TASK-285)
