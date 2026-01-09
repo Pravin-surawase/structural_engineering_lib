@@ -312,35 +312,48 @@ else
   fi
 fi
 
-# Step 7: Push
-echo -e "${YELLOW}Step 7/7: Pushing to remote...${NC}"
-log_message "INFO" "Step 7: Pushing to remote"
-if [[ "$PUSH_HAS_UPSTREAM" == "true" ]]; then
-  PUSH_CMD=(git push)
+# Step 7: Push (or skip for worktrees)
+if [[ "$IS_WORKTREE" == "true" ]]; then
+  # Worktree mode: local commit only, no push
+  echo -e "${YELLOW}Step 7/7: Skipping push (worktree mode)${NC}"
+  echo -e "${CYAN}✅ Committed locally (not pushed)${NC}"
+  echo -e "${CYAN}📍 Commit: $(git log -1 --oneline)${NC}"
+  echo ""
+  echo -e "${BLUE}🌿 Worktree workflow complete${NC}"
+  echo -e "${BLUE}💡 Tip: Use worktree_manager.sh submit when ready${NC}"
+  log_message "SUCCESS" "Worktree commit completed (not pushed): $(git log -1 --oneline)"
+  log_message "INFO" "=== Worktree Workflow Completed ==="
 else
-  PUSH_CMD=(git push -u "$REMOTE_NAME" "$CURRENT_BRANCH")
-fi
+  # Main agent mode: commit and push
+  echo -e "${YELLOW}Step 7/7: Pushing to remote...${NC}"
+  log_message "INFO" "Step 7: Pushing to remote"
+  if [[ "$PUSH_HAS_UPSTREAM" == "true" ]]; then
+    PUSH_CMD=(git push)
+  else
+    PUSH_CMD=(git push -u "$REMOTE_NAME" "$CURRENT_BRANCH")
+  fi
 
-if "${PUSH_CMD[@]}"; then
-  echo -e "${GREEN}✅ Successfully pushed!${NC}"
-  echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
-  echo ""
-  echo -e "${BLUE}Workflow succeeded${NC}"
-  log_message "SUCCESS" "Push completed successfully: $(git log -1 --oneline)"
-  log_message "INFO" "=== Workflow Completed Successfully ==="
-else
-  echo -e "${RED}ERROR: Push failed${NC}"
-  echo "This shouldn't happen after all safety checks. Investigating..."
-  echo ""
-  echo "Current branch status:"
-  git status
-  echo ""
-  echo "Recent commits:"
-  git log --oneline -5
-  echo ""
-  echo "Divergence check:"
-  git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD
-  log_message "ERROR" "Push failed after all safety checks"
-  log_message "ERROR" "Divergence: $(git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD | wc -l | tr -d ' ') commits ahead"
-  exit 1
+  if "${PUSH_CMD[@]}"; then
+    echo -e "${GREEN}✅ Successfully pushed!${NC}"
+    echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
+    echo ""
+    echo -e "${BLUE}Workflow succeeded${NC}"
+    log_message "SUCCESS" "Push completed successfully: $(git log -1 --oneline)"
+    log_message "INFO" "=== Workflow Completed Successfully ==="
+  else
+    echo -e "${RED}ERROR: Push failed${NC}"
+    echo "This shouldn't happen after all safety checks. Investigating..."
+    echo ""
+    echo "Current branch status:"
+    git status
+    echo ""
+    echo "Recent commits:"
+    git log --oneline -5
+    echo ""
+    echo "Divergence check:"
+    git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD
+    log_message "ERROR" "Push failed after all safety checks"
+    log_message "ERROR" "Divergence: $(git log --oneline "$REMOTE_NAME/$CURRENT_BRANCH"..HEAD | wc -l | tr -d ' ') commits ahead"
+    exit 1
+  fi
 fi
