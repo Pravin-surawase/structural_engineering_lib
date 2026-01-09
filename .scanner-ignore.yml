@@ -5,11 +5,11 @@ false_positives:
   - file: "streamlit_app/pages/08_📊_batch_design.py"
     lines: [38, 99, 277, 279, 281]
     reason: "Division operations on CSV-validated numeric data with upstream checks"
-  
+
   - file: "streamlit_app/pages/09_🔬_advanced_analysis.py"
     lines: [38, 156, 157]
     reason: "Division on st.number_input validated parameters (never zero)"
-  
+
   - file: "streamlit_app/pages/11_🎬_demo_showcase.py"
     lines: [36, 328, 440, 486]
     reason: "Division on hardcoded demo scenario values (never zero)"
