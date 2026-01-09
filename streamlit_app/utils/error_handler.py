@@ -18,9 +18,10 @@ Phase: STREAMLIT-IMPL-009
 
 import streamlit as st
 import logging
-from typing import Optional, Callable, Any
+from typing import Optional, Callable, Any, List
 from dataclasses import dataclass
 from enum import Enum
+from contextlib import contextmanager
 
 # Configure logging
 logging.basicConfig(
@@ -61,6 +62,27 @@ class ErrorMessage:
     fix_suggestions: list[str]
     technical_details: Optional[str] = None
     clause_reference: Optional[str] = None
+
+
+@dataclass
+class ErrorContext:
+    """
+    Enhanced error context with recovery information.
+
+    Attributes:
+        severity: Error severity level
+        message: User-friendly error message
+        technical_details: Technical error details for debugging
+        recovery_steps: List of actionable recovery steps
+        can_continue: Whether user can continue despite error
+        fallback_value: Optional fallback value to use
+    """
+    severity: ErrorSeverity
+    message: str
+    technical_details: str
+    recovery_steps: List[str]
+    can_continue: bool = False
+    fallback_value: Optional[Any] = None
 
 
 # =============================================================================
@@ -666,3 +688,238 @@ def display_info_message(message: str):
         message: Info message
     """
     st.info(f"ℹ️ {message}")
+
+
+# =============================================================================
+# Enhanced Error Handlers (IMPL-004)
+# =============================================================================
+
+def handle_library_error(e: Exception, context: str) -> ErrorContext:
+    """
+    Handle errors from structural_lib with user-friendly messages.
+
+    Args:
+        e: Exception from library
+        context: Context where error occurred (e.g., "beam design")
+
+    Returns:
+        ErrorContext with recovery information
+    """
+    error_type = type(e).__name__
+    error_msg = str(e)
+
+    # Map common library errors to user-friendly messages
+    if "convergence" in error_msg.lower():
+        return ErrorContext(
+            severity=ErrorSeverity.ERROR,
+            message="Design calculations did not converge. The section may be inadequate.",
+            technical_details=f"{error_type}: {error_msg}",
+            recovery_steps=[
+                "Increase beam depth by 50-100mm",
+                "Use higher concrete grade (M30 or M35)",
+                "Reduce applied loads if possible",
+                "Check if input values are realistic"
+            ],
+            can_continue=False,
+            fallback_value=None
+        )
+    elif "xu_max" in error_msg.lower() or "neutral axis" in error_msg.lower():
+        return ErrorContext(
+            severity=ErrorSeverity.ERROR,
+            message="Beam section is over-reinforced or neutral axis position invalid.",
+            technical_details=f"{error_type}: {error_msg}",
+            recovery_steps=[
+                "Increase beam depth significantly (+100mm or more)",
+                "Add compression reinforcement",
+                "Use higher concrete grade",
+                "Reduce moment demand"
+            ],
+            can_continue=False,
+            fallback_value=None
+        )
+    elif "ValueError" in error_type or "invalid" in error_msg.lower():
+        return ErrorContext(
+            severity=ErrorSeverity.WARNING,
+            message=f"Invalid input detected in {context}.",
+            technical_details=f"{error_type}: {error_msg}",
+            recovery_steps=[
+                "Check all input values are correct",
+                "Verify units (mm, kN, kNm, MPa)",
+                "Ensure numeric values only",
+                "Try example values first"
+            ],
+            can_continue=True,
+            fallback_value=None
+        )
+    else:
+        # Generic library error
+        return ErrorContext(
+            severity=ErrorSeverity.ERROR,
+            message=f"An error occurred during {context}.",
+            technical_details=f"{error_type}: {error_msg}",
+            recovery_steps=[
+                "Verify all inputs are correct",
+                "Try different section size",
+                "Check IS 456 compliance requirements",
+                "If problem persists, contact support"
+            ],
+            can_continue=False,
+            fallback_value=None
+        )
+
+
+def handle_validation_error(e: Exception, field: str) -> ErrorContext:
+    """
+    Handle input validation errors with specific guidance.
+
+    Args:
+        e: Validation exception
+        field: Field name that failed validation
+
+    Returns:
+        ErrorContext with recovery information
+    """
+    error_msg = str(e)
+
+    return ErrorContext(
+        severity=ErrorSeverity.WARNING,
+        message=f"Invalid value for '{field}': {error_msg}",
+        technical_details=f"ValidationError in {field}: {error_msg}",
+        recovery_steps=[
+            f"Check if '{field}' value is in correct range",
+            "Verify units are correct",
+            "Ensure numeric values only (no text)",
+            "Try using slider inputs for guidance"
+        ],
+        can_continue=True,
+        fallback_value=None
+    )
+
+
+def handle_visualization_error(e: Exception, chart_type: str) -> ErrorContext:
+    """
+    Handle chart rendering errors with fallback options.
+
+    Args:
+        e: Visualization exception
+        chart_type: Type of chart being rendered
+
+    Returns:
+        ErrorContext with recovery information
+    """
+    error_type = type(e).__name__
+    error_msg = str(e)
+
+    # Check for specific Plotly errors
+    if "Invalid value" in error_msg and "duration" in error_msg:
+        return ErrorContext(
+            severity=ErrorSeverity.ERROR,
+            message=f"Chart configuration error in {chart_type}.",
+            technical_details=f"Plotly error: {error_msg}",
+            recovery_steps=[
+                "This is a known issue - please report to developers",
+                "Try refreshing the page",
+                "Chart will be fixed in next update"
+            ],
+            can_continue=True,
+            fallback_value=None
+        )
+    elif "NoneType" in error_msg:
+        return ErrorContext(
+            severity=ErrorSeverity.WARNING,
+            message=f"{chart_type} data unavailable. Some calculations may not be complete.",
+            technical_details=f"{error_type}: {error_msg}",
+            recovery_steps=[
+                "Run design calculation first",
+                "Check if all required results are available",
+                "Some visualizations require specific calculation types"
+            ],
+            can_continue=True,
+            fallback_value=None
+        )
+    else:
+        return ErrorContext(
+            severity=ErrorSeverity.WARNING,
+            message=f"Could not render {chart_type}.",
+            technical_details=f"{error_type}: {error_msg}",
+            recovery_steps=[
+                "Try refreshing the page",
+                "Check if calculation completed successfully",
+                "Chart may require specific data format"
+            ],
+            can_continue=True,
+            fallback_value=None
+        )
+
+
+def display_error_with_recovery(e: Exception, severity: ErrorSeverity = ErrorSeverity.ERROR):
+    """
+    Display error with recovery suggestions.
+
+    Args:
+        e: Exception to display
+        severity: Error severity level
+    """
+    error_type = type(e).__name__
+    error_msg = str(e)
+
+    # Map to display function
+    display_funcs = {
+        ErrorSeverity.INFO: st.info,
+        ErrorSeverity.WARNING: st.warning,
+        ErrorSeverity.ERROR: st.error,
+        ErrorSeverity.CRITICAL: st.error
+    }
+
+    display_func = display_funcs.get(severity, st.error)
+
+    # Build message
+    message = f"**{error_type}:** {error_msg}\n\n"
+    message += "Try:\n"
+    message += "• Refreshing the page\n"
+    message += "• Checking input values\n"
+    message += "• Using example values\n"
+
+    display_func(message)
+
+    # Log
+    logger.error(f"[{severity.value}] {error_type}: {error_msg}")
+
+
+@contextmanager
+def error_boundary(
+    fallback_value: Any = None,
+    show_error: bool = True,
+    severity: ErrorSeverity = ErrorSeverity.ERROR,
+    context: str = "operation"
+):
+    """
+    Context manager for graceful error handling with fallback.
+
+    Args:
+        fallback_value: Value to return if error occurs
+        show_error: Whether to display error to user
+        severity: Error severity level
+        context: Context description for error messages
+
+    Yields:
+        None
+
+    Example:
+        with error_boundary(fallback_value=None, context="beam diagram"):
+            fig = create_beam_diagram(...)
+            if fig:
+                st.plotly_chart(fig)
+    """
+    try:
+        yield
+    except Exception as e:
+        if show_error:
+            display_error_with_recovery(e, severity)
+
+        # Log the error
+        logger.exception(f"Error in {context}: {type(e).__name__}: {str(e)}")
+
+        # Return fallback value (implicitly by not raising)
+        # Note: In context manager, we can't return a value,
+        # but the caller can handle this by checking if exception occurred
