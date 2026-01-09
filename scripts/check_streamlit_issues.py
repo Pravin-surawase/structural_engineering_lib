@@ -523,6 +523,51 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def visit_Call(self, node: ast.Call):
+        """
+        Detect TypeError risks in function calls.
+        
+        Checks for:
+        - hash()/frozenset() on unhashable types (lists, dicts)
+        - Common type mismatches
+        """
+        # Check for hash() and frozenset() calls with potentially unhashable arguments
+        if isinstance(node.func, ast.Name):
+            func_name = node.func.id
+            
+            if func_name in ('hash', 'frozenset') and node.args:
+                # Check if argument could be unhashable
+                arg = node.args[0]
+                
+                # Direct list/dict/set literals are unhashable
+                if isinstance(arg, (ast.List, ast.Dict, ast.Set)):
+                    self.issues.append((
+                        node.lineno,
+                        "CRITICAL",
+                        f"TypeError: {func_name}() called on unhashable type (lists/dicts/sets cannot be hashed)"
+                    ))
+                
+                # Check for .items() which returns unhashable tuples containing unhashable values
+                elif isinstance(arg, ast.Call):
+                    if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
+                        # dict.items() returns unhashable if dict values are unhashable
+                        self.issues.append((
+                            node.lineno,
+                            "HIGH",
+                            f"TypeError risk: {func_name}(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper."
+                        ))
+                
+                # Check for frozenset(dict.items()) pattern
+                elif func_name == 'frozenset' and isinstance(arg, ast.Call):
+                    if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
+                        self.issues.append((
+                            node.lineno,
+                            "HIGH",
+                            f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values. Convert lists/dicts to tuples first."
+                        ))
+        
+        self.generic_visit(node)
+
 
 def check_file(filepath: Path) -> List[Tuple[int, str, str]]:
     """Check a single file for issues."""

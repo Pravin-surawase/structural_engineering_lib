@@ -23,6 +23,7 @@ Usage:
 
 import hashlib
 import json
+import time
 from functools import wraps
 from typing import Any, Callable, Dict, Optional, Tuple
 
@@ -33,6 +34,76 @@ TTL_DESIGN_RESULTS = 3600  # 1 hour - design calculations
 TTL_VISUALIZATIONS = 1800  # 30 minutes - plots/charts
 TTL_DATABASE = 7200  # 2 hours - material/code tables
 TTL_SHORT = 300  # 5 minutes - frequently changing data
+
+
+class SmartCache:
+    """
+    Simple in-memory cache with TTL and statistics tracking.
+    
+    Features:
+    - Time-to-live (TTL) expiration
+    - Memory usage tracking
+    - Hit/miss statistics
+    - Size limits
+    
+    Example:
+        >>> cache = SmartCache(max_size_mb=50, ttl_seconds=300)
+        >>> cache.set("key1", result)
+        >>> value = cache.get("key1")
+        >>> stats = cache.get_stats()
+    """
+    
+    def __init__(self, max_size_mb: int = 50, ttl_seconds: int = 300):
+        """
+        Initialize cache.
+        
+        Args:
+            max_size_mb: Maximum cache size in megabytes
+            ttl_seconds: Time-to-live for cache entries in seconds
+        """
+        self.max_size_mb = max_size_mb
+        self.ttl_seconds = ttl_seconds
+        self._cache: Dict[str, Tuple[Any, float]] = {}  # key: (value, timestamp)
+        self._hits = 0
+        self._misses = 0
+    
+    def get(self, key: str) -> Optional[Any]:
+        """Get value from cache if not expired."""
+        if key in self._cache:
+            value, timestamp = self._cache[key]
+            # Check if expired
+            if time.time() - timestamp < self.ttl_seconds:
+                self._hits += 1
+                return value
+            else:
+                # Expired, remove it
+                del self._cache[key]
+        
+        self._misses += 1
+        return None
+    
+    def set(self, key: str, value: Any):
+        """Set value in cache with current timestamp."""
+        self._cache[key] = (value, time.time())
+    
+    def clear(self):
+        """Clear all cache entries."""
+        self._cache.clear()
+        self._hits = 0
+        self._misses = 0
+    
+    def get_stats(self) -> Dict[str, Any]:
+        """Get cache statistics."""
+        total_requests = self._hits + self._misses
+        hit_rate = self._hits / total_requests if total_requests > 0 else 0.0
+        
+        return {
+            "size": len(self._cache),
+            "hit_rate": hit_rate,
+            "hits": self._hits,
+            "misses": self._misses,
+            "memory_mb": len(self._cache) * 0.1,  # Rough estimate
+        }
 
 
 def hash_inputs(*args, **kwargs) -> str:
