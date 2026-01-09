@@ -55,6 +55,12 @@ from utils.theme_manager import (
     initialize_theme,
 )
 from utils.loading_states import loading_context
+# IMPL-007: Performance optimizations
+from utils.caching import SmartCache
+from utils.session_manager import SessionStateManager
+from utils.lazy_loader import LazyLoader
+from utils.render_optimizer import RenderOptimizer
+from utils.data_loader import DataLoader
 
 # Initialize theme
 initialize_theme()
