@@ -405,6 +405,56 @@ The script handles EVERYTHING:
 - Tolerance: ±0.1% for areas, ±1mm for dimensions
 - Document source for expected values (SP:16, textbook, hand calc)
 
+## Test Writing Rules (CRITICAL - Prevents 80% of Test Failures)
+
+### Before writing ANY test:
+1. **READ the actual function signature** - don't assume args
+   ```bash
+   grep -A20 "def function_name" streamlit_app/utils/*.py
+   ```
+2. **CHECK conftest.py** for existing mocks - don't duplicate
+   ```bash
+   grep -E "class Mock|def mock_" streamlit_app/tests/conftest.py
+   ```
+3. **VERIFY return types** - dict vs bool vs tuple matters
+
+### Streamlit Mock Assertions:
+```python
+# ❌ WRONG: Regular methods don't have .called
+assert mock_streamlit.markdown.called  # AttributeError!
+
+# ✅ CORRECT Option 1: Just verify no exception
+show_skeleton_loader(rows=3)
+assert True  # Function ran without error
+
+# ✅ CORRECT Option 2: Set up MagicMock first
+from unittest.mock import MagicMock
+mock_streamlit.info = MagicMock()
+show_performance_stats()
+assert mock_streamlit.info.called  # Works because we used MagicMock
+```
+
+### Session State Patterns:
+```python
+# ❌ WRONG: Replaces MockSessionState with dict
+mock_streamlit.session_state = {"key": "value"}
+
+# ✅ CORRECT: Updates existing MockSessionState
+mock_streamlit.session_state["key"] = "value"
+```
+
+### Never Duplicate Mocks:
+- MockStreamlit lives in `streamlit_app/tests/conftest.py`
+- Never define your own MockStreamlit class in test files
+- If conftest mock is missing features, ADD to conftest, don't create local
+
+### API Signature Verification Checklist:
+Before testing a function, verify:
+- [ ] Number of required positional args
+- [ ] Keyword argument names (min_value vs min_val)
+- [ ] Return type (dict vs bool vs tuple)
+- [ ] Whether it's a context manager (use `with`)
+
 ## Role context (see agents/*.md for full details)
 When working on specific task types, apply these focuses:
 - **Implementation:** Layer-aware, clause refs in comments, Mac-safe
