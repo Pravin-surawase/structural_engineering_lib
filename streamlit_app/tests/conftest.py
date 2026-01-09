@@ -49,6 +49,10 @@ class MockStreamlit:
     empty_calls = []
     container_calls = []
 
+    # Cache storage (cleared between tests)
+    _cache_data_storage = {}
+    _cache_resource_storage = {}
+
     @staticmethod
     def columns(num_cols):
         """Mock st.columns() - returns list of mock column objects
@@ -160,17 +164,13 @@ class MockStreamlit:
         @st.cache_data and @st.cache_data(). Marks functions as cached
         by setting __wrapped__ and clear attributes, so tests can detect it.
         """
-
         def decorator(f):
-            setattr(f, "clear", lambda: None)
+            setattr(f, "clear", lambda: MockStreamlit._cache_data_storage.clear())
             return f
 
         if func is None:
             return decorator
         return decorator(func)
-
-    # Add clear method to cache_data itself
-    cache_data.clear = lambda: None
 
     @staticmethod
     def cache_resource(func=None, **kwargs):
@@ -179,17 +179,13 @@ class MockStreamlit:
         Similar to cache_data but for singleton resources like
         database connections, theme objects, etc.
         """
-
         def decorator(f):
-            setattr(f, "clear", lambda: None)
+            setattr(f, "clear", lambda: MockStreamlit._cache_resource_storage.clear())
             return f
 
         if func is None:
             return decorator
         return decorator(func)
-
-    # Add clear method to cache_resource itself
-    cache_resource.clear = lambda: None
 
     @staticmethod
     def spinner(text="Loading..."):
@@ -270,11 +266,12 @@ class MockStreamlit:
         return value if value is not None else (min_value if min_value is not None else 0)
 
 
+# Add class-level clear methods for cache decorators
+MockStreamlit.cache_data.clear = lambda: MockStreamlit._cache_data_storage.clear()
+MockStreamlit.cache_resource.clear = lambda: MockStreamlit._cache_resource_storage.clear()
+
 # Replace streamlit module with enhanced mock
 sys.modules['streamlit'] = MockStreamlit()
-
-# Attach a no-op clear() to mimic Streamlit's cache API on the decorator itself
-MockStreamlit.cache_data.clear = lambda: None
 
 import streamlit as st
 
@@ -317,6 +314,14 @@ def reset_all_mock_state():
     MockStreamlit.empty_calls = []
     MockStreamlit.container_calls = []
 
+    # Clear cache storage
+    MockStreamlit._cache_data_storage.clear()
+    MockStreamlit._cache_resource_storage.clear()
+
+    # Clear all cache decorators
+    MockStreamlit.cache_data.clear()
+    MockStreamlit.cache_resource.clear()
+
     yield
 
     # Cleanup after test
@@ -325,3 +330,11 @@ def reset_all_mock_state():
     MockStreamlit.markdown_calls = []
     MockStreamlit.empty_calls = []
     MockStreamlit.container_calls = []
+
+    # Clear cache storage
+    MockStreamlit._cache_data_storage.clear()
+    MockStreamlit._cache_resource_storage.clear()
+
+    # Clear all cache decorators
+    MockStreamlit.cache_data.clear()
+    MockStreamlit.cache_resource.clear()
