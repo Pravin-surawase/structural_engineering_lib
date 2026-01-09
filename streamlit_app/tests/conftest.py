@@ -169,6 +169,28 @@ class MockStreamlit:
             return decorator
         return decorator(func)
 
+    # Add clear method to cache_data itself
+    cache_data.clear = lambda: None
+
+    @staticmethod
+    def cache_resource(func=None, **kwargs):
+        """Mock st.cache_resource decorator.
+
+        Similar to cache_data but for singleton resources like
+        database connections, theme objects, etc.
+        """
+
+        def decorator(f):
+            setattr(f, "clear", lambda: None)
+            return f
+
+        if func is None:
+            return decorator
+        return decorator(func)
+
+    # Add clear method to cache_resource itself
+    cache_resource.clear = lambda: None
+
     @staticmethod
     def spinner(text="Loading..."):
         """Mock st.spinner() context manager"""
