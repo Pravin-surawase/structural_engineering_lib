@@ -33,7 +33,7 @@ if str(streamlit_app_dir) not in sys.path:
     sys.path.insert(0, str(streamlit_app_dir))
 
 # Add Python library to path
-python_lib_dir = streamlit_app_dir.parent / "Python"
+python_lib_dir = streamlit_app_dir.parent.joinpath("Python")
 if str(python_lib_dir) not in sys.path:
     sys.path.insert(0, str(python_lib_dir))
 

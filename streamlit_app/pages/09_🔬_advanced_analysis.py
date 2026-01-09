@@ -35,7 +35,7 @@ streamlit_app_dir = pages_dir.parent
 if str(streamlit_app_dir) not in sys.path:
     sys.path.insert(0, str(streamlit_app_dir))
 
-python_lib_dir = streamlit_app_dir.parent / "Python"
+python_lib_dir = streamlit_app_dir.parent.joinpath("Python")
 if str(python_lib_dir) not in sys.path:
     sys.path.insert(0, str(python_lib_dir))
 
@@ -136,7 +136,6 @@ def sensitivity_analysis(base_params: Dict, param_name: str, variation: float = 
     """
     base_result = cached_design(**base_params)
     base_ast = base_result["flexure"]["Ast_req"]
-
     # Test +variation%
     params_plus = base_params.copy()
     params_plus[param_name] *= (1 + variation)
@@ -149,12 +148,20 @@ def sensitivity_analysis(base_params: Dict, param_name: str, variation: float = 
     result_minus = cached_design(**params_minus)
     ast_minus = result_minus["flexure"]["Ast_req"]
 
+    if base_ast > 0:
+        sensitivity_plus = ((ast_plus - base_ast) / base_ast) * 100
+        sensitivity_minus = ((ast_minus - base_ast) / base_ast) * 100
+    else:
+        st.warning("⚠️ Base Ast is zero; sensitivity set to 0 to avoid division by zero.")
+        sensitivity_plus = 0.0
+        sensitivity_minus = 0.0
+
     return {
         "parameter": param_name,
         "base_value": base_params[param_name],
         "base_Ast": base_ast,
-        "sensitivity_plus": (ast_plus - base_ast) / base_ast * 100,
-        "sensitivity_minus": (ast_minus - base_ast) / base_ast * 100,
+        "sensitivity_plus": sensitivity_plus,
+        "sensitivity_minus": sensitivity_minus,
     }
 
 

@@ -33,7 +33,7 @@ streamlit_app_dir = pages_dir.parent
 if str(streamlit_app_dir) not in sys.path:
     sys.path.insert(0, str(streamlit_app_dir))
 
-python_lib_dir = streamlit_app_dir.parent / "Python"
+python_lib_dir = streamlit_app_dir.parent.joinpath("Python")
 if str(python_lib_dir) not in sys.path:
     sys.path.insert(0, str(python_lib_dir))
 
@@ -325,10 +325,15 @@ if demo_mode == "🎯 Single Demo":
 
         with tab1:
             flex = result["flexure"]
+            section_area = scenario["params"]["b"] * scenario["params"]["D"]
+            if section_area > 0:
+                steel_pct = (flex["Ast_prov"] / section_area) * 100
+            else:
+                steel_pct = 0.0
             st.markdown(f"""
             - **Moment Capacity**: {flex.get('Mu_capacity', 0)/1e6:.1f} kN·m
             - **xu/d Ratio**: {flex.get('xu_by_d', 0):.3f} {'✅' if flex.get('xu_by_d', 0) <= 0.46 else '❌'}
-            - **Steel Percentage**: {(flex['Ast_prov']/(scenario['params']['b']*scenario['params']['D'])*100):.2f}%
+            - **Steel Percentage**: {steel_pct:.2f}%
             """)
 
         with tab2:
@@ -431,22 +436,28 @@ elif demo_mode == "🔀 Compare Demos":
 
             # Find cheapest and most expensive
             costs = [results[d].get("cost_per_m", 0) for d in selected_demos]
-            cheapest_idx = costs.index(min(costs))
-            expensive_idx = costs.index(max(costs))
+            min_cost = min(costs)
+            max_cost = max(costs)
+            cheapest_idx = costs.index(min_cost)
+            expensive_idx = costs.index(max_cost)
+            if max_cost > 0:
+                savings_pct = ((max_cost - min_cost) / max_cost) * 100
+            else:
+                savings_pct = 0.0
 
             col1, col2 = st.columns(2)
 
             with col1:
                 st.success(f"""
                 **Most Economical:** {selected_demos[cheapest_idx]}
-                - Cost: ₹{min(costs):.2f}/m
-                - Savings: {((max(costs)-min(costs))/max(costs)*100):.1f}% vs most expensive
+                - Cost: ₹{min_cost:.2f}/m
+                - Savings: {savings_pct:.1f}% vs most expensive
                 """)
 
             with col2:
                 st.info(f"""
                 **Premium Design:** {selected_demos[expensive_idx]}
-                - Cost: ₹{max(costs):.2f}/m
+                - Cost: ₹{max_cost:.2f}/m
                 - Higher grade materials
                 - Increased capacity
                 """)
@@ -480,44 +491,46 @@ else:  # Auto-Tour
         status_text = st.empty()
 
         total_demos = len(DEMO_SCENARIOS)
+        if total_demos > 0:
+            for idx, (demo_name, scenario) in enumerate(DEMO_SCENARIOS.items()):
+                # Update progress
+                progress = (idx + 1) / total_demos
+                progress_bar.progress(progress)
+                status_text.text(f"Demo {idx+1}/{total_demos}: {demo_name}")
 
-        for idx, (demo_name, scenario) in enumerate(DEMO_SCENARIOS.items()):
-            # Update progress
-            progress = (idx + 1) / total_demos
-            progress_bar.progress(progress)
-            status_text.text(f"Demo {idx+1}/{total_demos}: {demo_name}")
+                # Show scenario info
+                st.subheader(f"{scenario['icon']} {demo_name}")
+                st.caption(scenario["description"])
 
-            # Show scenario info
-            st.subheader(f"{scenario['icon']} {demo_name}")
-            st.caption(scenario["description"])
+                # Run demo
+                with loading_context(f"Running {demo_name}..."):
+                    result = run_demo(demo_name)
 
-            # Run demo
-            with loading_context(f"Running {demo_name}..."):
-                result = run_demo(demo_name)
+                # Quick results
+                col1, col2, col3 = st.columns(3)
 
-            # Quick results
-            col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Steel Area", f"{result['flexure']['Ast_prov']:.0f} mm²")
 
-            with col1:
-                st.metric("Steel Area", f"{result['flexure']['Ast_prov']:.0f} mm²")
+                with col2:
+                    st.metric("Bar Config", result['flexure']['bar_config'])
 
-            with col2:
-                st.metric("Bar Config", result['flexure']['bar_config'])
+                with col3:
+                    st.metric("Cost/m", f"₹{result.get('cost_per_m', 0):.2f}")
 
-            with col3:
-                st.metric("Cost/m", f"₹{result.get('cost_per_m', 0):.2f}")
+                st.divider()
 
-            st.divider()
+                # Pause between demos
+                if idx < total_demos - 1:
+                    time.sleep(pause_duration)
 
-            # Pause between demos
-            if idx < total_demos - 1:
-                time.sleep(pause_duration)
+            status_text.text("✅ Auto-tour complete!")
+            st.balloons()
 
-        status_text.text("✅ Auto-tour complete!")
-        st.balloons()
-
-        if st.button("🔄 Restart Tour"):
-            st.rerun()
+            if st.button("🔄 Restart Tour"):
+                st.rerun()
+        else:
+            st.warning("⚠️ No demo scenarios available.")
 
 # Footer
 st.divider()

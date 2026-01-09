@@ -34,7 +34,7 @@ if str(streamlit_app_dir) not in sys.path:
     sys.path.insert(0, str(streamlit_app_dir))
 
 # Add Python library to path
-python_lib_dir = streamlit_app_dir.parent / "Python"
+python_lib_dir = streamlit_app_dir.parent.joinpath("Python")
 if str(python_lib_dir) not in sys.path:
     sys.path.insert(0, str(python_lib_dir))
 
@@ -388,11 +388,16 @@ if mode == "auto":
             # Weight breakdown
             st.markdown("#### Weight Breakdown by Diameter")
             weight_data = []
+            total_weight_kg = bbs_doc.summary.total_weight_kg
             for dia, weight in bbs_doc.summary.weight_by_diameter.items():
+                if total_weight_kg > 0:
+                    percent_total = (weight / total_weight_kg) * 100
+                else:
+                    percent_total = 0.0
                 weight_data.append({
                     "Diameter (mm)": f"Ø{int(dia)}",
                     "Total Weight (kg)": f"{weight:.2f}",
-                    "% of Total": f"{(weight/bbs_doc.summary.total_weight_kg)*100:.1f}%" if bbs_doc.summary.total_weight_kg > 0 else "0.0%"
+                    "% of Total": f"{percent_total:.1f}%"
                 })
 
             weight_df = pd.DataFrame(weight_data)
