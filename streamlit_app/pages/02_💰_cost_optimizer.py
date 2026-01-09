@@ -16,6 +16,7 @@ Phase: STREAMLIT-IMPL-005 | UI-002: Page Layout Redesign
 """
 
 import io
+import itertools
 import logging
 import math
 import traceback
@@ -378,28 +379,26 @@ def run_cost_optimization(inputs: dict) -> dict:
     comparison.sort(key=lambda x: x.get("total_cost", math.inf))
 
     # Mark lowest cost as optimal
-    if len(comparison) > 0:
-        comparison[0]["is_optimal"] = True
-        for i in range(1, len(comparison)):
-            comparison[i]["is_optimal"] = False
+    if comparison:
+        for idx, item in enumerate(comparison):
+            item["is_optimal"] = idx == 0
 
     # Calculate savings using safe_divide
     if len(comparison) > 1:
         baseline_cost = 0
-        first = {}
-        if len(comparison) > 0:
-            first = comparison[0]
+        first = next(iter(comparison), None)
+        if first:
             baseline_cost = first.get("total_cost") or 0
-        if len(comparison) > 1 and not first.get("is_optimal"):
-            baseline_cost = comparison[1].get("total_cost") or baseline_cost
-        optimal_cost = min((c.get("total_cost") or 0) for c in comparison)
+        if first and not first.get("is_optimal"):
+            second = next(itertools.islice(comparison, 1, None), None)
+            if second:
+                baseline_cost = second.get("total_cost") or baseline_cost
+        optimal_cost = min((item.get("total_cost") or 0) for item in comparison)
         savings = baseline_cost - optimal_cost
         savings_pct = safe_divide(savings * 100, baseline_cost, default=0.0)
     else:
-        if len(comparison) > 0:
-            baseline_cost = comparison[0].get("total_cost") or 0
-        else:
-            baseline_cost = 0
+        first = next(iter(comparison), None)
+        baseline_cost = (first.get("total_cost") or 0) if first else 0
         optimal_cost = baseline_cost
         savings = 0
         savings_pct = 0
