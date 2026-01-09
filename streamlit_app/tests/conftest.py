@@ -46,12 +46,22 @@ class MockStreamlit:
     @staticmethod
     def columns(num_cols):
         """Mock st.columns() - returns list of mock column objects"""
-        return [MagicMock() for _ in range(num_cols)]
+        # Handle both int and list[int] arguments
+        if isinstance(num_cols, list):
+            count = len(num_cols)
+        else:
+            count = num_cols
+        return [MagicMock() for _ in range(count)]
 
     @staticmethod
     def info(msg):
         """Mock st.info()"""
         pass
+
+    @staticmethod
+    def button(label, key=None, **kwargs):
+        """Mock st.button() - returns False by default"""
+        return False
 
     @staticmethod
     def success(msg):
