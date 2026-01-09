@@ -1,6 +1,6 @@
 # Agent 8 Multi-Agent Coordination
 
-**Version:** 1.0.0
+**Version:** 0.16.0
 **Last Updated:** 2026-01-09
 **Status:** Active
 
