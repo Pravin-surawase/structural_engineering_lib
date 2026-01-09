@@ -6,26 +6,120 @@ Scans ALL Streamlit pages for common issues:
 - NameError (undefined variables)
 - AttributeError (session state access)
 - KeyError (direct dict access)
-- ZeroDivisionError (division without checks)
+- ZeroDivisionError (division without checks) - Phase 3: Guard clause aware
 - ImportError (imports inside functions)
 - TypeError (wrong function args)
+- API signature mismatches (Phase 3: test files)
 
-Part of comprehensive prevention system (Phase 1A + Phase 2).
+**Phase 3 Enhancements:**
+- Guard clause detection: Recognizes early-exit patterns that validate for entire function
+- API signature checking: Validates test function calls against actual signatures
+
+Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3).
 
 Usage:
     python scripts/check_streamlit_issues.py --all-pages
     python scripts/check_streamlit_issues.py --page beam_design
+    python scripts/check_streamlit_issues.py tmp/test_file.py
     python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
     python scripts/check_streamlit_issues.py --all-pages --ignore-file .scanner-ignore.yml
+    python scripts/check_streamlit_issues.py --all-pages --verbose
 """
 
 import ast
 import sys
 import argparse
 import yaml
+import inspect
+import time
 from pathlib import Path
-from typing import List, Tuple, Set, Dict, Optional
+from typing import List, Tuple, Set, Dict, Optional, Any
 from collections import defaultdict
+
+# =============================================================================
+# PHASE 3: FUNCTION SIGNATURE REGISTRY
+# =============================================================================
+
+class FunctionSignatureRegistry:
+    """
+    Registry of function signatures for API mismatch detection.
+
+    Scans source files to build a database of function signatures,
+    then compares test calls against actual signatures.
+    """
+
+    def __init__(self):
+        self.signatures: Dict[str, Dict[str, Any]] = {}  # func_name -> signature info
+        self._scanned_files: Set[Path] = set()
+
+    def scan_file(self, filepath: Path):
+        """Scan a file and extract function signatures."""
+        if filepath in self._scanned_files:
+            return
+
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                tree = ast.parse(f.read(), str(filepath))
+
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef):
+                    sig_info = self._extract_signature(node, filepath)
+                    # Store with module context
+                    func_key = f"{filepath.stem}.{node.name}"
+                    self.signatures[func_key] = sig_info
+                    # Also store without module for common functions
+                    if node.name not in self.signatures:
+                        self.signatures[node.name] = sig_info
+
+            self._scanned_files.add(filepath)
+        except Exception as e:
+            # Silently skip files that can't be parsed
+            pass
+
+    def _extract_signature(self, node: ast.FunctionDef, filepath: Path) -> Dict[str, Any]:
+        """Extract signature information from function definition."""
+        args = node.args
+
+        # Required positional args (no defaults)
+        required_args = [arg.arg for arg in args.args[:len(args.args) - len(args.defaults)]]
+
+        # Optional args (with defaults)
+        optional_args = [arg.arg for arg in args.args[len(args.args) - len(args.defaults):]]
+
+        # Keyword-only args
+        kwonly_required = [arg.arg for arg in args.kwonlyargs if arg.arg not in [d.arg for d in args.kw_defaults if d]]
+        kwonly_optional = [arg.arg for arg in args.kwonlyargs if arg.arg in [d.arg for d in args.kw_defaults if d]]
+
+        return {
+            'name': node.name,
+            'required_args': required_args,
+            'optional_args': optional_args,
+            'kwonly_required': kwonly_required,
+            'kwonly_optional': kwonly_optional,
+            'has_vararg': args.vararg is not None,
+            'has_kwarg': args.kwarg is not None,
+            'total_params': len(args.args),
+            'min_params': len(required_args),
+            'filepath': str(filepath),
+            'lineno': node.lineno,
+        }
+
+    def get_signature(self, func_name: str) -> Optional[Dict[str, Any]]:
+        """Get signature for a function name."""
+        return self.signatures.get(func_name)
+
+    def scan_common_modules(self, project_root: Path):
+        """Scan common utility modules."""
+        patterns = [
+            'streamlit_app/utils/*.py',
+            'streamlit_app/components/*.py',
+            'Python/structural_lib/*.py',
+        ]
+
+        for pattern in patterns:
+            for filepath in project_root.glob(pattern):
+                if filepath.name != '__init__.py':
+                    self.scan_file(filepath)
 
 
 class IgnoreConfig:
@@ -79,10 +173,12 @@ class IgnoreConfig:
 class EnhancedIssueDetector(ast.NodeVisitor):
     """Enhanced AST visitor with scope tracking for NameError detection."""
 
-    def __init__(self, filepath: str, ignore_config: Optional[IgnoreConfig] = None):
+    def __init__(self, filepath: str, ignore_config: Optional[IgnoreConfig] = None,
+                 sig_registry: Optional[FunctionSignatureRegistry] = None):
         self.filepath = filepath
         self.issues: List[Tuple[int, str, str]] = []  # (line, severity, message)
         self.ignore_config = ignore_config
+        self.sig_registry = sig_registry  # Phase 3: API signature checking
 
         # Scope tracking for NameError detection
         self.scopes: List[Set[str]] = [set()]  # Stack of scopes (sets of defined vars)
@@ -111,8 +207,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.function_name = ""
         self.current_class = None
 
-        # Division safety tracking
+        # Division safety tracking (Phase 3: Enhanced with guard clause detection)
         self.safe_denominators: Set[str] = set()  # Variables validated as non-zero
+        self.function_level_safe_denoms: Set[str] = set()  # Safe at function scope
         self.parent_nodes: List[ast.AST] = []  # Stack for tracking parent nodes
         self.in_conditional = False  # Track if we're inside a conditional branch
 
@@ -223,6 +320,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.in_function = True
         self.function_name = node.name
+
+        # Phase 3: Clear function-level safe denominators for new function
+        self.function_level_safe_denoms.clear()
 
         # Enter function scope
         self.enter_scope()
@@ -556,6 +656,79 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 break
         return False
 
+    def _check_api_signature(self, node: ast.Call, func_name: str):
+        """
+        Check if function call matches registered signature (Phase 3).
+
+        Validates:
+        - Correct number of positional arguments
+        - Valid keyword argument names
+        - Required arguments provided
+
+        Args:
+            node: The Call AST node
+            func_name: The function name to check
+        """
+        sig = self.sig_registry.get_signature(func_name)
+        if not sig:
+            # Function not in registry (might be builtin, local, etc.)
+            return
+
+        # Count positional args provided (not including kwargs)
+        positional_count = len([arg for arg in node.args if not isinstance(arg, ast.Starred)])
+
+        # Extract keyword argument names
+        keyword_names = {kw.arg for kw in node.keywords if kw.arg is not None}
+
+        # Check for **kwargs spread (can't validate)
+        has_kwargs_spread = any(kw.arg is None for kw in node.keywords)
+
+        # Check minimum positional args
+        min_required = sig['min_params']
+        total_required = len(sig['required_args'])
+
+        # If they provide too few positional args and no matching keywords
+        if positional_count < min_required:
+            # Check if missing args are provided as keywords
+            missing_args = sig['required_args'][positional_count:]
+            missing_not_in_kwargs = [arg for arg in missing_args if arg not in keyword_names]
+
+            if missing_not_in_kwargs and not has_kwargs_spread:
+                self.add_issue(
+                    node.lineno,
+                    "HIGH",
+                    f"API signature mismatch: {func_name}() requires {total_required} args, "
+                    f"but only {positional_count} positional provided. "
+                    f"Missing: {', '.join(missing_not_in_kwargs)}"
+                )
+
+        # Check for invalid keyword argument names (if no **kwargs in signature)
+        if not sig['has_kwarg'] and not has_kwargs_spread:
+            valid_kwarg_names = (set(sig['required_args']) |
+                                set(sig['optional_args']) |
+                                set(sig['kwonly_required']) |
+                                set(sig['kwonly_optional']))
+
+            invalid_kwargs = keyword_names - valid_kwarg_names
+            if invalid_kwargs:
+                self.add_issue(
+                    node.lineno,
+                    "HIGH",
+                    f"API signature mismatch: {func_name}() called with invalid keyword args: "
+                    f"{', '.join(invalid_kwargs)}. Valid: {', '.join(sorted(valid_kwarg_names))}"
+                )
+
+        # Check for too many positional args (if no *args in signature)
+        if not sig['has_vararg']:
+            max_positional = len(sig['required_args']) + len(sig['optional_args'])
+            if positional_count > max_positional:
+                self.add_issue(
+                    node.lineno,
+                    "HIGH",
+                    f"API signature mismatch: {func_name}() accepts max {max_positional} positional args, "
+                    f"but {positional_count} provided"
+                )
+
     def _is_zero_check(self, test: ast.expr) -> Optional[str]:
         """
         Check if a comparison is validating a variable against zero.
@@ -605,9 +778,26 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         return validated_vars
 
     def visit_If(self, node: ast.If):
-        """Track if statements and mark validated denominators."""
+        """Track if statements and mark validated denominators.
+
+        Phase 3: Enhanced with guard clause detection.
+        Recognizes patterns like:
+            if x == 0:
+                return None  # or raise
+            # x is now safe for rest of function
+        """
         # Check if the test validates any denominators
         validated_vars = self._get_validated_vars(node.test)
+
+        # Phase 3: Check for guard clause pattern
+        # Pattern: if <var> == 0: return/raise (early exit validates var for rest of function)
+        is_guard_clause = False
+        guard_validated_vars = set()
+
+        if validated_vars and self._is_early_exit(node.body):
+            # This is a guard clause - variable is safe AFTER the if block
+            is_guard_clause = True
+            guard_validated_vars = validated_vars.copy()
 
         if validated_vars:
             # Add all to safe denominators for the body
@@ -618,9 +808,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             for child in node.body:
                 self.visit(child)
 
-            # Remove from safe denominators after the body
-            for var in validated_vars:
-                self.safe_denominators.discard(var)
+            # If not a guard clause, remove from safe denominators after the body
+            if not is_guard_clause:
+                for var in validated_vars:
+                    self.safe_denominators.discard(var)
 
             # Visit orelse without the validation
             for child in node.orelse:
@@ -629,8 +820,13 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Normal processing
             self.generic_visit(node)
 
+        # Phase 3: If this was a guard clause, mark variables as safe at function level
+        if is_guard_clause:
+            for var in guard_validated_vars:
+                self.function_level_safe_denoms.add(var)
+
     def visit_BinOp(self, node: ast.BinOp):
-        """Detect division operations (ZeroDivisionError risk) - Phase 2: Path-aware."""
+        """Detect division operations (ZeroDivisionError risk) - Phase 3: Guard clause aware."""
         if isinstance(node.op, (ast.Div, ast.FloorDiv, ast.Mod)):
             # Phase 2: Check if this is Path division (Path / "string")
             left_name = self._extract_var_name(node.left)
@@ -653,7 +849,13 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 if isinstance(node.right.value, (int, float)) and node.right.value != 0:
                     is_safe = True
 
-            # Check if denominator is a validated variable
+            # Phase 3: Check if denominator is validated at function level (guard clause)
+            if not is_safe:
+                denom_name = self._extract_var_name(node.right)
+                if denom_name and denom_name in self.function_level_safe_denoms:
+                    is_safe = True
+
+            # Check if denominator is a validated variable (if-block level)
             if not is_safe:
                 denom_name = self._extract_var_name(node.right)
                 if denom_name and denom_name in self.safe_denominators:
@@ -692,6 +894,32 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 return True
         return False
 
+    def _is_early_exit(self, body: List[ast.stmt]) -> bool:
+        """Check if a code block contains early exit (return/raise).
+
+        Phase 3: Helper for guard clause detection.
+        Returns True if the block only contains early exit statements.
+
+        Examples:
+            if x == 0: return None  # True
+            if x == 0: raise ValueError()  # True
+            if x == 0: return  # True
+            if x == 0:
+                log("error")
+                return None  # True (exits after logging)
+        """
+        if not body:
+            return False
+
+        # Check if last statement is return or raise
+        last_stmt = body[-1]
+        if isinstance(last_stmt, (ast.Return, ast.Raise)):
+            return True
+
+        # Check for early exit in nested if/while/for (conservative)
+        # For guard clause detection, we require simple patterns
+        return False
+
     def visit_For(self, node: ast.For):
         """Track for loop variables (Phase 2: improved tuple unpacking)."""
         self._add_target_names(node.target)
@@ -727,16 +955,23 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         """
         Detect TypeError and ValueError risks in function calls.
 
+        Phase 3: Also checks API signature mismatches in test files.
+
         Checks for:
         - hash()/frozenset() on unhashable types (lists, dicts)
         - int()/float() without try/except (ValueError)
         - Common type mismatches
+        - API signature mismatches (test files only)
         """
         func_name = None
 
         # Extract function name
         if isinstance(node.func, ast.Name):
             func_name = node.func.id
+
+        # Phase 3: Check API signature mismatches in test files
+        if self.sig_registry and '/tests/' in self.filepath and func_name:
+            self._check_api_signature(node, func_name)
 
         # Check for hash() with unhashable types
         if func_name == 'hash':
@@ -879,8 +1114,15 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.current_class = old_class
 
 
-def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None) -> List[Tuple[int, str, str]]:
-    """Check a single file for issues."""
+def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None,
+               sig_registry: Optional[FunctionSignatureRegistry] = None) -> List[Tuple[int, str, str]]:
+    """Check a single file for issues.
+
+    Args:
+        filepath: Path to file to check
+        ignore_config: Optional ignore configuration
+        sig_registry: Optional signature registry for API validation
+    """
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             source = f.read()
@@ -888,7 +1130,8 @@ def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None) -> 
         # Parse AST
         tree = ast.parse(source, filename=str(filepath))
 
-        detector = EnhancedIssueDetector(str(filepath), ignore_config=ignore_config)
+        detector = EnhancedIssueDetector(str(filepath), ignore_config=ignore_config,
+                                        sig_registry=sig_registry)
         detector.visit(tree)
 
         return detector.issues
@@ -899,8 +1142,15 @@ def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None) -> 
         return [(0, "ERROR", f"Failed to parse file: {e}")]
 
 
-def scan_all_pages(pages_dir: Path, ignore_config: Optional[IgnoreConfig] = None) -> Dict[str, List[Tuple[int, str, str]]]:
-    """Scan all Streamlit pages."""
+def scan_all_pages(pages_dir: Path, ignore_config: Optional[IgnoreConfig] = None,
+                   sig_registry: Optional[FunctionSignatureRegistry] = None) -> Dict[str, List[Tuple[int, str, str]]]:
+    """Scan all Streamlit pages.
+
+    Args:
+        pages_dir: Directory containing page files
+        ignore_config: Optional ignore configuration
+        sig_registry: Optional signature registry for API validation
+    """
     results = {}
 
     # Find all Python files in pages directory
@@ -911,7 +1161,7 @@ def scan_all_pages(pages_dir: Path, ignore_config: Optional[IgnoreConfig] = None
         return results
 
     for page_file in page_files:
-        issues = check_file(page_file, ignore_config=ignore_config)
+        issues = check_file(page_file, ignore_config=ignore_config, sig_registry=sig_registry)
         results[page_file.name] = issues
 
     return results
@@ -1048,6 +1298,12 @@ def main():
         default=".scanner-ignore.yml",
         help="Path to ignore configuration file (default: .scanner-ignore.yml)"
     )
+    parser.add_argument(
+        "filepath",
+        nargs="?",
+        type=str,
+        help="Optional: scan a specific file path"
+    )
 
     args = parser.parse_args()
 
@@ -1069,13 +1325,37 @@ def main():
     if ignore_config and args.verbose:
         print(f"📋 Loaded ignore config from {ignore_file_path}")
 
+    # Phase 3: Initialize signature registry for API validation
+    sig_registry = FunctionSignatureRegistry()
+    if args.verbose:
+        print(f"🔧 Building function signature registry...")
+        start_time = time.time()
+
+    sig_registry.scan_common_modules(project_root)
+
+    if args.verbose:
+        elapsed = time.time() - start_time
+        print(f"✅ Scanned {len(sig_registry.signatures)} function signatures in {elapsed:.2f}s")
+
     if not pages_dir.exists():
         print(f"❌ Pages directory not found: {pages_dir}")
         return 1
 
     # Scan pages
-    if args.all_pages:
-        results = scan_all_pages(pages_dir, ignore_config=ignore_config)
+    if args.filepath:
+        # Scan specific file path
+        file_path = Path(args.filepath)
+        if not file_path.exists():
+            print(f"❌ File not found: {file_path}")
+            return 1
+
+        print(f"🔍 Checking {file_path}...\n")
+        issues = check_file(file_path, ignore_config=ignore_config, sig_registry=sig_registry)
+        results = {file_path.name: issues}
+        return print_results(results, fail_on_severities)
+
+    elif args.all_pages:
+        results = scan_all_pages(pages_dir, ignore_config=ignore_config, sig_registry=sig_registry)
         return print_results(results, fail_on_severities)
 
     elif args.page:
@@ -1088,7 +1368,7 @@ def main():
         page_file = matching_files[0]
         print(f"🔍 Checking {page_file.name}...\n")
 
-        issues = check_file(page_file, ignore_config=ignore_config)
+        issues = check_file(page_file, ignore_config=ignore_config, sig_registry=sig_registry)
         results = {page_file.name: issues}
         return print_results(results, fail_on_severities)
 
