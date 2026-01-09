@@ -140,18 +140,22 @@ def display_reinforcement_summary(result: dict, layout: str = "columns"):
             st.error("❌ **UNSAFE**")
 
 
-def display_flexure_result(flexure: dict, compact: bool = False):
+def display_flexure_result(flexure_result: dict = None, flexure: dict = None, compact: bool = False):
     """
     Display flexure design result details.
 
     Args:
-        flexure: Flexure result dict
+        flexure_result: Flexure result dict (preferred parameter name)
+        flexure: Flexure result dict (legacy, for backwards compatibility)
         compact: Use compact layout (default: False)
 
     Example:
-        >>> display_flexure_result(result['flexure'])
+        >>> display_flexure_result(flexure_result=result['flexure'])
         >>> display_flexure_result(result['flexure'], compact=True)
     """
+    # Handle both parameter names for backwards compatibility
+    flexure = flexure_result if flexure_result is not None else flexure
+
     if compact:
         # Compact mode: single line
         ast_req = flexure.get("ast_required") or 0
@@ -188,18 +192,22 @@ def display_flexure_result(flexure: dict, compact: bool = False):
             st.warning("Doubly reinforced")
 
 
-def display_shear_result(shear: dict, compact: bool = False):
+def display_shear_result(shear_result: dict = None, shear: dict = None, compact: bool = False):
     """
     Display shear design result details.
 
     Args:
-        shear: Shear result dict
+        shear_result: Shear result dict (preferred parameter name)
+        shear: Shear result dict (legacy, for backwards compatibility)
         compact: Use compact layout (default: False)
 
     Example:
-        >>> display_shear_result(result['shear'])
+        >>> display_shear_result(shear_result=result['shear'])
         >>> display_shear_result(result['shear'], compact=True)
     """
+    # Handle both parameter names for backwards compatibility
+    shear = shear_result if shear_result is not None else shear
+
     if compact:
         # Compact mode: single line
         spacing = shear.get("spacing") or 0
