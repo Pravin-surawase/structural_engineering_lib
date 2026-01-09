@@ -318,11 +318,15 @@ def run_cost_optimization(inputs: dict) -> dict:
         st.error("❌ Costing library not available")
         return {"analysis": None, "comparison": []}
 
+    # Initialize comparison list for storing all design alternatives
+    comparison = []
+
     cost_profile = CostProfile()  # Indian average costs
     steel_unit_cost = cost_profile.steel_cost_per_kg  # ₹72/kg (Fe500)
     # Safe: STEEL_DENSITY_KG_PER_M3 is a positive constant (7850.0) from library
     selected_steel_vol_mm3 = selected_area * inputs.get("span_mm", 0)
-    selected_steel_kg = selected_steel_vol_mm3 * steel_density
+    # Convert from N/mm³ to kg/mm³: divide by 1e9 to get kg
+    selected_steel_kg = selected_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 / 1e9)
     selected_steel_cost = selected_steel_kg * steel_unit_cost
 
     comparison.append({
@@ -348,7 +352,8 @@ def run_cost_optimization(inputs: dict) -> dict:
 
         # Steel volume and cost
         alt_steel_vol_mm3 = alt_area * inputs.get("span_mm", 0)
-        alt_steel_kg = alt_steel_vol_mm3 * steel_density
+        # Convert from N/mm³ to kg/mm³: divide by 1e9 to get kg
+        alt_steel_kg = alt_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 / 1e9)
         alt_steel_cost = alt_steel_kg * steel_unit_cost
 
         # FIXED: Use safe_divide to prevent zero division
