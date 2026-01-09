@@ -36,6 +36,10 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 # Format check
 .venv/bin/python -m black Python/ --check
 
+# Streamlit validation (run before committing Streamlit changes)
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+# Expected: Critical: 0, High: 123 (as of 2026-01-09)
+
 # End session
 .venv/bin/python scripts/end_session.py
 ```
