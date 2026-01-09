@@ -35,7 +35,7 @@ streamlit_app_dir = pages_dir.parent
 if str(streamlit_app_dir) not in sys.path:
     sys.path.insert(0, str(streamlit_app_dir))
 
-python_lib_dir = streamlit_app_dir.parent / "Python"
+python_lib_dir = streamlit_app_dir.parent.joinpath("Python")
 if str(python_lib_dir) not in sys.path:
     sys.path.insert(0, str(python_lib_dir))
 
@@ -93,46 +93,48 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
     """Process batch of designs."""
     results = []
     total = len(df)
+    if total > 0:
+        for idx, row in df.iterrows():
+            # Update progress
+            progress = (idx + 1) / total
+            progress_bar.progress(progress)
+            status_text.text(f"Processing {row['beam_id']}... ({idx + 1}/{total})")
 
-    for idx, row in df.iterrows():
-        # Update progress
-        progress = (idx + 1) / total
-        progress_bar.progress(progress)
-        status_text.text(f"Processing {row['beam_id']}... ({idx + 1}/{total})")
+            try:
+                # Run design
+                result = cached_design(
+                    L=row["L_mm"],
+                    b=row["b_mm"],
+                    D=row["D_mm"],
+                    fck=row["fck_MPa"],
+                    fy=row["fy_MPa"],
+                    Mu=row["Mu_kNm"] * 1e6,  # Convert kN·m to N·mm
+                    Vu=row["Vu_kN"] * 1e3,   # Convert kN to N
+                )
 
-        try:
-            # Run design
-            result = cached_design(
-                L=row["L_mm"],
-                b=row["b_mm"],
-                D=row["D_mm"],
-                fck=row["fck_MPa"],
-                fy=row["fy_MPa"],
-                Mu=row["Mu_kNm"] * 1e6,  # Convert kN·m to N·mm
-                Vu=row["Vu_kN"] * 1e3,   # Convert kN to N
-            )
+                # Extract key results
+                results.append({
+                    "beam_id": row["beam_id"],
+                    "status": "✅ OK" if result["status"] == "OK" else "❌ FAIL",
+                    "Ast_req_mm2": result["flexure"]["Ast_req"],
+                    "Ast_prov_mm2": result["flexure"]["Ast_prov"],
+                    "bar_config": result["flexure"]["bar_config"],
+                    "stirrup_spacing_mm": result["shear"].get("spacing_mm", "-"),
+                    "cost_per_m_INR": result.get("cost_per_m", 0),
+                })
 
-            # Extract key results
-            results.append({
-                "beam_id": row["beam_id"],
-                "status": "✅ OK" if result["status"] == "OK" else "❌ FAIL",
-                "Ast_req_mm2": result["flexure"]["Ast_req"],
-                "Ast_prov_mm2": result["flexure"]["Ast_prov"],
-                "bar_config": result["flexure"]["bar_config"],
-                "stirrup_spacing_mm": result["shear"].get("spacing_mm", "-"),
-                "cost_per_m_INR": result.get("cost_per_m", 0),
-            })
-
-        except Exception as e:
-            results.append({
-                "beam_id": row["beam_id"],
-                "status": f"❌ ERROR: {str(e)[:50]}",
-                "Ast_req_mm2": "-",
-                "Ast_prov_mm2": "-",
-                "bar_config": "-",
-                "stirrup_spacing_mm": "-",
-                "cost_per_m_INR": "-",
-            })
+            except Exception as e:
+                results.append({
+                    "beam_id": row["beam_id"],
+                    "status": f"❌ ERROR: {str(e)[:50]}",
+                    "Ast_req_mm2": "-",
+                    "Ast_prov_mm2": "-",
+                    "bar_config": "-",
+                    "stirrup_spacing_mm": "-",
+                    "cost_per_m_INR": "-",
+                })
+    else:
+        return pd.DataFrame(results)
 
     return pd.DataFrame(results)
 
@@ -270,15 +272,21 @@ if st.session_state.batch_results is not None:
     total = len(results_df)
     success = len(results_df[results_df["status"] == "✅ OK"])
     failed = total - success
+    if total > 0:
+        success_pct = 100 * success / total
+        failed_pct = 100 * failed / total
+    else:
+        success_pct = 0.0
+        failed_pct = 0.0
 
     with col1:
         st.metric("Total Beams", total)
     with col2:
-        st.metric("Successful", success, delta=f"{100*success/total:.0f}%")
+        st.metric("Successful", success, delta=f"{success_pct:.0f}%")
     with col3:
-        st.metric("Failed", failed, delta=f"-{100*failed/total:.0f}%" if failed > 0 else "0%")
+        st.metric("Failed", failed, delta=f"-{failed_pct:.0f}%" if failed > 0 else "0%")
     with col4:
-        st.metric("Success Rate", f"{100*success/total:.1f}%")
+        st.metric("Success Rate", f"{success_pct:.1f}%")
 
     # Results table
     st.dataframe(results_df, use_container_width=True)
