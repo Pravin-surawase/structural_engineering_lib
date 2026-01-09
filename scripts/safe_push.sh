@@ -56,6 +56,25 @@ REMOTE_NAME="origin"
 AUTO_STASHED="false"
 PUSH_HAS_UPSTREAM="false"
 
+# Detect if we're in a worktree (for background agents)
+IS_WORKTREE="false"
+AGENT_NAME=""
+if git rev-parse --git-common-dir >/dev/null 2>&1; then
+  GIT_COMMON_DIR=$(git rev-parse --git-common-dir)
+  GIT_DIR=$(git rev-parse --git-dir)
+  if [[ "$GIT_COMMON_DIR" != "$GIT_DIR" ]]; then
+    IS_WORKTREE="true"
+    # Try to detect agent name from .agent_marker or branch name
+    if [[ -f ".agent_marker" ]]; then
+      AGENT_NAME=$(head -1 .agent_marker 2>/dev/null || echo "unknown")
+    else
+      # Extract from branch name (e.g., worktree-AGENT_5-2026-01-09)
+      AGENT_NAME=$(echo "$CURRENT_BRANCH" | grep -oE 'AGENT_[0-9]+|worktree-[^-]+' | head -1)
+    fi
+    log_message "INFO" "Worktree detected: $AGENT_NAME on branch $CURRENT_BRANCH"
+  fi
+fi
+
 if [[ -z "$CURRENT_BRANCH" ]]; then
   echo -e "${RED}ERROR: Detached HEAD state detected${NC}"
   echo "Checkout a branch before committing."
@@ -133,7 +152,14 @@ FILES="${3:-}"  # Optional files argument
 log_message "INFO" "Commit message: ${COMMIT_MSG:0:100}..." # Log first 100 chars
 
 echo -e "${GREEN}=== Safe Push Workflow (Conflict-Minimized) ===${NC}"
-echo -e "${BLUE}This workflow syncs safely before commit${NC}"
+if [[ "$IS_WORKTREE" == "true" ]]; then
+  echo -e "${CYAN}🌿 Worktree Mode: $AGENT_NAME${NC}"
+  echo -e "${CYAN}📍 Branch: $CURRENT_BRANCH${NC}"
+  echo -e "${BLUE}   (Background agent workflow - commits locally)${NC}"
+else
+  echo -e "${BLUE}📍 Branch: $CURRENT_BRANCH${NC}"
+  echo -e "${BLUE}   (Main agent workflow - commits and pushes)${NC}"
+fi
 echo ""
 
 # Step 0: Auto-stash dirty changes before sync
