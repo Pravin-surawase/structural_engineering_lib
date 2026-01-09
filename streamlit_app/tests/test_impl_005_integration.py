@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch, MagicMock
 
 from streamlit_app.utils.responsive import get_device_type, get_responsive_columns, apply_responsive_styles
 from streamlit_app.utils.performance import lazy_load, measure_render_time, batch_render
-from streamlit_app.utils.accessibility import add_page_title, validate_color_contrast, announce_to_screen_reader
+from streamlit_app.utils.accessibility import add_aria_label, validate_color_contrast, announce_to_screen_reader
 from streamlit_app.components.polish import show_skeleton_loader, show_empty_state, show_toast
 
 
@@ -146,7 +146,7 @@ class TestAccessibilityIntegration:
 
     def test_page_title_integration(self, mock_streamlit):
         """Test page title can be set."""
-        add_page_title("Beam Design")
+        add_aria_label("page-title", "Beam Design", role="heading")
         # Should not raise exceptions
         assert True
 
