@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-07
+**Updated:** 2026-01-09
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
