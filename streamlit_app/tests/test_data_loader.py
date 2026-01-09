@@ -269,8 +269,9 @@ class TestGetCodeValue:
     def test_get_bar_sizes(self, mock_streamlit):
         """Test getting bar sizes."""
         bar_sizes = get_code_value('bar_sizes', None)
-        # bar_sizes is a list, not dict, so key lookup returns None
-        # This tests error handling
+        # bar_sizes is a list, returned when key is None
+        assert isinstance(bar_sizes, list)
+        assert len(bar_sizes) > 0
 
     def test_get_invalid_table(self, mock_streamlit):
         """Test with invalid table name."""

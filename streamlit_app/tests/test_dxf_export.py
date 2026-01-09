@@ -12,92 +12,7 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 import io
 
-# Mock Streamlit for testing
-class MockStreamlit:
-    """Mock Streamlit module for testing."""
-
-    class session_state:
-        _state = {}
-
-        @classmethod
-        def __contains__(cls, key):
-            return key in cls._state
-
-        @classmethod
-        def __getitem__(cls, key):
-            return cls._state.get(key)
-
-        @classmethod
-        def __setitem__(cls, key, value):
-            cls._state[key] = value
-
-        @classmethod
-        def get(cls, key, default=None):
-            return cls._state.get(key, default)
-
-        @classmethod
-        def clear(cls):
-            cls._state = {}
-
-    @staticmethod
-    def metric(label, value):
-        return f"{label}: {value}"
-
-    @staticmethod
-    def markdown(text, **kwargs):
-        return text
-
-    @staticmethod
-    def error(text):
-        return f"ERROR: {text}"
-
-    @staticmethod
-    def warning(text):
-        return f"WARNING: {text}"
-
-    @staticmethod
-    def success(text):
-        return f"SUCCESS: {text}"
-
-    @staticmethod
-    def info(text):
-        return f"INFO: {text}"
-
-    @staticmethod
-    def button(label, **kwargs):
-        return False
-
-    @staticmethod
-    def checkbox(label, value=False, **kwargs):
-        return value
-
-    @staticmethod
-    def download_button(label, data, **kwargs):
-        return None
-
-    @staticmethod
-    def code(text, **kwargs):
-        return text
-
-    @staticmethod
-    def expander(title, expanded=False):
-        return MockContext()
-
-    @staticmethod
-    def columns(spec):
-        return [MockContext() for _ in range(spec if isinstance(spec, int) else len(spec))]
-
-    @staticmethod
-    def stop():
-        raise SystemExit("st.stop() called")
-
-    @staticmethod
-    def balloons():
-        pass
-
-    @staticmethod
-    def rerun():
-        pass
+# Use centralized MockStreamlit from conftest.py - no local mock needed
 
 
 class MockContext:
@@ -108,11 +23,7 @@ class MockContext:
         pass
 
 
-@pytest.fixture
-def mock_streamlit():
-    """Fixture to provide mock Streamlit."""
-    MockStreamlit.session_state.clear()
-    return MockStreamlit
+# Note: mock_streamlit fixture is provided by conftest.py
 
 
 @pytest.fixture
@@ -172,9 +83,9 @@ def mock_detailing():
     ]
 
     mock.stirrups = [
-        StirrupArrangement(diameter=8, spacing=150, legs=2),
-        StirrupArrangement(diameter=8, spacing=200, legs=2),
-        StirrupArrangement(diameter=8, spacing=150, legs=2),
+        StirrupArrangement(diameter=8, spacing=150, legs=2, zone_length=1000),
+        StirrupArrangement(diameter=8, spacing=200, legs=2, zone_length=3000),
+        StirrupArrangement(diameter=8, spacing=150, legs=2, zone_length=1000),
     ]
 
     return mock
@@ -496,7 +407,7 @@ class TestDXFIntegration:
         """Test that warning is shown when no beam design exists."""
         # Clear beam design
         if "beam_inputs" in mock_streamlit.session_state:
-            del mock_streamlit.session_state._state["beam_inputs"]
+            del mock_streamlit.session_state["beam_inputs"]
 
         # Check condition
         beam_data = mock_streamlit.session_state.get("beam_inputs")

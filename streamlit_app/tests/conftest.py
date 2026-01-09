@@ -135,8 +135,13 @@ class MockStreamlit:
 
     @staticmethod
     def progress(value):
-        """Mock st.progress()"""
-        pass
+        """Mock st.progress() - returns object that can update progress"""
+        class ProgressBar:
+            def progress(self, value):
+                pass
+            def empty(self):
+                pass
+        return ProgressBar()
 
     @staticmethod
     def empty():
@@ -160,13 +165,30 @@ class MockStreamlit:
     def cache_data(func=None, **kwargs):
         """Mock st.cache_data decorator.
 
-        Behaves as an identity decorator in tests, supports both
-        @st.cache_data and @st.cache_data(). Marks functions as cached
-        by setting __wrapped__ and clear attributes, so tests can detect it.
+        Actually caches function results using args/kwargs as keys.
+        Supports both @st.cache_data and @st.cache_data().
         """
         def decorator(f):
-            setattr(f, "clear", lambda: MockStreamlit._cache_data_storage.clear())
-            return f
+            import functools
+            import json
+
+            @functools.wraps(f)
+            def wrapper(*args, **kw):
+                # Create a cache key from function name and args
+                # Use JSON serialization for unhashable types like dicts
+                try:
+                    key = (f.__name__, args, tuple(sorted(kw.items())))
+                    hash(key)  # Test if hashable
+                except TypeError:
+                    # Fall back to JSON-based key for unhashable args
+                    key = f.__name__ + json.dumps((args, kw), sort_keys=True, default=str)
+
+                if key not in MockStreamlit._cache_data_storage:
+                    MockStreamlit._cache_data_storage[key] = f(*args, **kw)
+                return MockStreamlit._cache_data_storage[key]
+
+            wrapper.clear = lambda: MockStreamlit._cache_data_storage.clear()
+            return wrapper
 
         if func is None:
             return decorator
@@ -176,12 +198,29 @@ class MockStreamlit:
     def cache_resource(func=None, **kwargs):
         """Mock st.cache_resource decorator.
 
-        Similar to cache_data but for singleton resources like
-        database connections, theme objects, etc.
+        Actually caches singleton resources using function name as key.
         """
         def decorator(f):
-            setattr(f, "clear", lambda: MockStreamlit._cache_resource_storage.clear())
-            return f
+            import functools
+            import json
+
+            @functools.wraps(f)
+            def wrapper(*args, **kw):
+                # Create a cache key from function name and args
+                # Use JSON serialization for unhashable types like dicts
+                try:
+                    key = (f.__name__, args, tuple(sorted(kw.items())))
+                    hash(key)  # Test if hashable
+                except TypeError:
+                    # Fall back to JSON-based key for unhashable args
+                    key = f.__name__ + json.dumps((args, kw), sort_keys=True, default=str)
+
+                if key not in MockStreamlit._cache_resource_storage:
+                    MockStreamlit._cache_resource_storage[key] = f(*args, **kw)
+                return MockStreamlit._cache_resource_storage[key]
+
+            wrapper.clear = lambda: MockStreamlit._cache_resource_storage.clear()
+            return wrapper
 
         if func is None:
             return decorator

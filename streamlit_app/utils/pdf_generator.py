@@ -316,7 +316,7 @@ class BeamDesignReportGenerator:
             ['Factored Moment (Mu)', 'Mu = wu × L² / 8', f"{flexure.get('Mu_kNm', 0):.2f} kN·m"],
             ['Limiting Moment (Mu,lim)', 'Mu,lim = 0.138 fck b d²', f"{flexure.get('Mu_lim_kNm', 0):.2f} kN·m"],
             ['Steel Area Required (Ast)', 'From Mu = 0.87 fy Ast (d - 0.42 Xu)', f"{flexure.get('Ast_req_mm2', 0):.0f} mm²"],
-            ['Minimum Steel (Ast,min)', '0.85 / fy × b × d', f"{flexure.get('Ast_min_mm2', 0):.0f} mm²'],
+            ['Minimum Steel (Ast,min)', '0.85 / fy × b × d', f"{flexure.get('Ast_min_mm2', 0):.0f} mm²"],
             ['Steel Provided (Ast,prov)', 'Based on bar selection', f"{flexure.get('Ast_prov_mm2', 0):.0f} mm²"],
         ]
 
@@ -336,7 +336,7 @@ class BeamDesignReportGenerator:
         shear_calc = [
             ['Calculation Step', 'Formula', 'Result'],
             ['Factored Shear (Vu)', 'Vu = wu × L / 2', f"{shear.get('Vu_kN', 0):.2f} kN"],
-            ['Shear Stress (τv)', 'τv = Vu / (b × d)', f"{shear.get('tau_v', 0):.3f} N/mm²'],
+            ['Shear Stress (τv)', 'τv = Vu / (b × d)', f"{shear.get('tau_v', 0):.3f} N/mm²"],
             ['Shear Capacity (τc)', 'From Table 19, IS 456', f"{shear.get('tau_c', 0):.3f} N/mm²"],
             ['Stirrup Spacing (Sv)', 'From design chart', f"{shear.get('spacing_mm', 0):.0f} mm"],
         ]

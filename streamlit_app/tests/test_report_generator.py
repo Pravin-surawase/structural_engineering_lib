@@ -14,6 +14,15 @@ import sys
 from pathlib import Path
 from io import BytesIO
 
+# Skip all tests if reportlab is not installed
+try:
+    import reportlab
+    HAS_REPORTLAB = True
+except ImportError:
+    HAS_REPORTLAB = False
+
+pytestmark = pytest.mark.skipif(not HAS_REPORTLAB, reason="reportlab not installed")
+
 # MockStreamlit available from conftest.py
 import streamlit as st
 

@@ -188,4 +188,11 @@ def get_code_value(table_name: str, key: str) -> Optional[Any]:
     if table_name not in tables:
         return None
 
-    return tables[table_name].get(key)
+    table = tables[table_name]
+    # Handle both dict (use .get()) and list (return whole list if key is None)
+    if isinstance(table, dict):
+        return table.get(key)
+    elif isinstance(table, list):
+        # For lists, if key is None, return the whole list; otherwise return None
+        return table if key is None else None
+    return None

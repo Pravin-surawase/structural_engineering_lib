@@ -12,88 +12,7 @@ import pytest
 from unittest.mock import Mock, patch
 import pandas as pd
 
-
-# Mock Streamlit for testing
-class MockSessionState:
-    """Mock session_state that behaves like a dict."""
-    _state = {}
-
-    def __contains__(self, key):
-        return key in self._state
-
-    def __getitem__(self, key):
-        return self._state[key]
-
-    def __setitem__(self, key, value):
-        self._state[key] = value
-
-    def get(self, key, default=None):
-        return self._state.get(key, default)
-
-    def clear(self):
-        self._state = {}
-
-
-class MockStreamlit:
-    """Mock Streamlit module for testing."""
-
-    session_state = MockSessionState()
-
-    @staticmethod
-    def metric(label, value):
-        return f"{label}: {value}"
-
-    @staticmethod
-    def markdown(text, **kwargs):
-        return text
-
-    @staticmethod
-    def error(text):
-        return f"ERROR: {text}"
-
-    @staticmethod
-    def warning(text):
-        return f"WARNING: {text}"
-
-    @staticmethod
-    def success(text):
-        return f"SUCCESS: {text}"
-
-    @staticmethod
-    def info(text):
-        return f"INFO: {text}"
-
-    @staticmethod
-    def button(label, **kwargs):
-        return False
-
-    @staticmethod
-    def radio(label, options, **kwargs):
-        return options[0]
-
-    @staticmethod
-    def dataframe(df, **kwargs):
-        return df
-
-    @staticmethod
-    def table(df):
-        return df
-
-    @staticmethod
-    def download_button(label, data, **kwargs):
-        return None
-
-    @staticmethod
-    def expander(title, expanded=False):
-        return MockContext()
-
-    @staticmethod
-    def columns(spec):
-        return [MockContext() for _ in range(spec if isinstance(spec, int) else len(spec))]
-
-    @staticmethod
-    def stop():
-        raise SystemExit("st.stop() called")
+# Use centralized MockStreamlit from conftest.py - no local mock needed
 
 
 class MockContext:
@@ -104,11 +23,7 @@ class MockContext:
         pass
 
 
-@pytest.fixture
-def mock_streamlit():
-    """Fixture to provide mock Streamlit."""
-    MockStreamlit.session_state.clear()
-    return MockStreamlit
+# Note: mock_streamlit fixture is provided by conftest.py
 
 
 @pytest.fixture
