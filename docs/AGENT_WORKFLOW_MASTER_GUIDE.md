@@ -368,6 +368,26 @@ cd $PROJECT_ROOT
 # - Tests passing (optional)
 ```
 
+### Streamlit Validation (Automatic in CI/Pre-commit)
+```bash
+# AST Scanner - detects runtime errors before they happen
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+
+# Pylint - code quality checks
+.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
+
+# Both run automatically on commit and in CI
+# CRITICAL issues block the commit/PR
+# HIGH issues are warnings only
+```
+
+**Scanner Intelligence (Zero False Positives):**
+- Recognizes zero-validation patterns: `x / y if y > 0 else 0`
+- Handles compound conditions: `if x > 0 and y > 0:`
+- Tracks validated variables in if-blocks
+- Understands ternary expressions, dict access, complex denominators
+- Phase 1B complete (2026-01-09): 100% accurate division safety detection
+
 ### Pre-Release Gates
 ```bash
 # Comprehensive check

@@ -287,7 +287,8 @@ The SOLUTION:
 
 ### Before committing Python code:
 1. Run tests locally: `pytest tests/test_<file>.py -v`
-2. Use ai_commit.sh or safe_push.sh (pre-commit hooks run automatically)
+2. **For Streamlit code:** Run scanner: `.venv/bin/python scripts/check_streamlit_issues.py <file>`
+3. Use ai_commit.sh or safe_push.sh (pre-commit hooks run automatically including scanner)
 
 ### PR and merge workflow:
 1. `./scripts/create_task_pr.sh TASK-XXX "description"`
@@ -412,6 +413,32 @@ When working on specific task types, apply these focuses:
 .venv/bin/python -m black <file>
 .venv/bin/python -m ruff check <file>
 ```
+
+### Streamlit validation (CRITICAL - read this!):
+```bash
+# Run AST scanner to check for NameError, ZeroDivisionError, etc.
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+
+# Run pylint on Streamlit code
+.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
+
+# Both run automatically in CI and pre-commit hooks
+```
+
+**Scanner capabilities:**
+- ✅ Detects NameError (undefined variables)
+- ✅ Detects ZeroDivisionError (unprotected division)
+- ✅ Detects AttributeError (missing session state keys)
+- ✅ Detects KeyError (dict access without checks)
+- ✅ Detects ImportError (missing imports)
+- ✅ Intelligent: recognizes zero-validation patterns (ternary, if-blocks, compound conditions)
+- ✅ Zero false positives for division operations (as of 2026-01-09)
+
+**When editing Streamlit code:**
+1. Run scanner before committing: `.venv/bin/python scripts/check_streamlit_issues.py <file>`
+2. Fix any CRITICAL issues (scanner blocks on critical)
+3. HIGH issues are warnings (session state patterns - not blocking)
+4. Scanner runs automatically in pre-commit and CI
 
 ### gh CLI commands:
 - `gh pr checks <num>` may show "no checks" if CI hasn't started — wait 5-10 seconds

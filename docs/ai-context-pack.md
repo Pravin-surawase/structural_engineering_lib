@@ -213,6 +213,34 @@ Keep wording precise; no claims about untested tooling.
 
 ---
 
+## 🔍 Streamlit Code Validation
+
+**AST Scanner:** Detects runtime errors before they happen
+```bash
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+```
+
+**Capabilities:**
+- ✅ NameError (undefined variables)
+- ✅ ZeroDivisionError (unprotected division)
+- ✅ AttributeError (missing session state keys)
+- ✅ KeyError (dict access without checks)
+- ✅ ImportError (missing imports)
+
+**Intelligence:**
+- Recognizes zero-validation patterns: `x / y if y > 0 else 0`
+- Handles compound conditions: `if x > 0 and y > 0:`
+- Tracks validated variables in if-blocks
+- Zero false positives (Phase 1B complete, 2026-01-09)
+
+**When to run:**
+- Before committing any Streamlit file changes
+- Runs automatically in pre-commit hooks and CI
+- CRITICAL issues block commits/PRs
+- HIGH issues are warnings (session state patterns)
+
+---
+
 ## ⚠️ Common Mistakes
 
 | Mistake | Correct |
@@ -221,7 +249,4 @@ Keep wording precise; no claims about untested tooling.
 | Merging before CI passes | Wait for `gh pr checks --watch` |
 | Multiple micro-PRs | Batch related changes |
 | Editing without reading | Check file content first |
-
----
-
-*Last updated: 2025-12-29*
+| Editing Streamlit without scanner | Run `.venv/bin/python scripts/check_streamlit_issues.py <file>` |

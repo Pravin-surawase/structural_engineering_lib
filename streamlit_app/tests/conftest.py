@@ -43,28 +43,15 @@ class MockStreamlit:
     # Mock session_state with dict + attribute access
     session_state = MockSessionState()
 
-    # Track if markdown was called (for accessibility tests)
-    markdown_called = False
-
     @staticmethod
     def columns(num_cols):
         """Mock st.columns() - returns list of mock column objects"""
-        # Handle both int and list[int] arguments
-        if isinstance(num_cols, list):
-            count = len(num_cols)
-        else:
-            count = num_cols
-        return [MagicMock() for _ in range(count)]
+        return [MagicMock() for _ in range(num_cols)]
 
     @staticmethod
     def info(msg):
         """Mock st.info()"""
         pass
-
-    @staticmethod
-    def button(label, key=None, **kwargs):
-        """Mock st.button() - returns False by default"""
-        return False
 
     @staticmethod
     def success(msg):
@@ -112,7 +99,7 @@ class MockStreamlit:
     @staticmethod
     def markdown(text, **kwargs):
         """Mock st.markdown() accepting arbitrary kwargs (e.g. unsafe_allow_html)."""
-        MockStreamlit.markdown_called = True
+        pass
 
     @staticmethod
     def caption(text):
@@ -182,9 +169,28 @@ def clean_session_state():
 
 @pytest.fixture
 def mock_streamlit():
-    """Provide MockStreamlit instance with reset state."""
-    MockStreamlit.markdown_called = False
+    """Provide MockStreamlit instance for testing."""
+    # Reset session state
     MockStreamlit.session_state.clear()
+
+    # Reset markdown call tracking
+    MockStreamlit.markdown_called = False
+
+    # Enhance with mock tracking
+    original_markdown = MockStreamlit.markdown
+
+    def tracked_markdown(*args, **kwargs):
+        MockStreamlit.markdown_called = True
+        return original_markdown(*args, **kwargs)
+
+    MockStreamlit.markdown = tracked_markdown
+
+    # Add write method
+    MockStreamlit.write = MagicMock()
+
     yield MockStreamlit
-    MockStreamlit.markdown_called = False
+
+    # Cleanup
     MockStreamlit.session_state.clear()
+    MockStreamlit.markdown = original_markdown
+    MockStreamlit.markdown_called = False
