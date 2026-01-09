@@ -21,14 +21,8 @@ import streamlit as st
 import sys
 from pathlib import Path
 
-# Fix import path - add streamlit_app directory to path
-current_file = Path(__file__).resolve()
-pages_dir = current_file.parent
-streamlit_app_dir = pages_dir.parent
-
-# Ensure streamlit_app is in path for component imports
-if str(streamlit_app_dir) not in sys.path:
-    sys.path.insert(0, str(streamlit_app_dir))
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from components.inputs import (
     dimension_input,
@@ -76,7 +70,7 @@ initialize_theme()
 setup_page(title="Beam Design | IS 456 Dashboard", icon="🏗️", layout="wide")
 
 # Apply dark mode styling
-#apply_dark_mode_theme()
+apply_dark_mode_theme()
 
 # PHASE 1: Initialize SmartCache instances for performance optimization
 design_cache = SmartCache(max_size_mb=50, ttl_seconds=300)  # 5-min TTL for design calcs
