@@ -113,14 +113,14 @@
 
 | ID | Task | Agent | Est | Priority | Status | Due |
 |----|------|-------|-----|----------|--------|-----|
-| **TASK-284** | Weekly Governance Sessions (80/20 rule: 1 governance per 5 feature sessions) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Blocked by 283 | 2026-01-30 |
-| **TASK-285** | Metrics Dashboard (trending: velocity, docs, quality, alerts) | AGENT_9 | 4h | 🟡 P2-Medium | ⏳ Blocked by 284 | 2026-02-04 |
-| **TASK-286** | Leading Indicator Alerts (CI warnings for 6 metrics: crisis docs, handoffs, etc.) | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Blocked by 285 | 2026-02-06 |
+| **TASK-284** | Weekly Governance Sessions (80/20 rule: 1 governance per 5 feature sessions) | AGENT_9 | 3h | 🟠 P1-High | ✅ Done 2026-01-10 | 2026-01-30 |
+| **TASK-285** | Metrics Dashboard (trending: velocity, docs, quality, alerts) | AGENT_9 | 4h | 🟡 P2-Medium | ✅ Done 2026-01-10 | 2026-02-04 |
+| **TASK-286** | Leading Indicator Alerts (CI warnings for 6 metrics: crisis docs, handoffs, etc.) | AGENT_9 | 2h | 🟡 P2-Medium | ✅ Done 2026-01-10 | 2026-02-06 |
 
 **Success Criteria:**
-- Governance ratio: 20% of sessions (1 per 5)
-- Alert count: 3/6 → 0/6 (all green)
-- Dashboard: Daily automated updates
+- Governance ratio: 20% of sessions (1 per 5) ✅
+- Alert count: 3/6 → 0/6 (1/6 remaining: doc creation rate)
+- Dashboard: Daily automated updates ✅
 
 #### Professional Features
 
