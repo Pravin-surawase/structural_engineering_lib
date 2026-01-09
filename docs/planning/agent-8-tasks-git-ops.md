@@ -1142,6 +1142,12 @@ evaluate-automerge [pr-number]
 recover-git-state && alert-main
 ```
 
+### Pre-Flight Checklist (Docs + Rebase Safety)
+
+- Update `docs/planning/next-session-brief.md` date, keep `Required Reading`, and keep the file <= 150 lines.
+- If adding a new doc, check whether the path already exists upstream before writing.
+- For non-interactive rebases, set `GIT_EDITOR=:` to avoid editor stalls.
+
 ### Background Agent → GIT Agent (Summary)
 
 **Instead of:**
