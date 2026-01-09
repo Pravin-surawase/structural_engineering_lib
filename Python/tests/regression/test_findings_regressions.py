@@ -73,18 +73,19 @@ def test_flanged_beam_invalid_d_total_le_d_fails():
 
 
 def test_development_length_invalid_inputs():
-    """Q-002: calculate_development_length raises ValueError for invalid inputs."""
+    """Q-002: calculate_development_length raises MaterialError for invalid inputs."""
     import pytest
 
     from structural_lib.detailing import calculate_development_length
+    from structural_lib.errors import MaterialError
 
-    with pytest.raises(ValueError, match="bar_dia must be positive"):
+    with pytest.raises(MaterialError, match=r"(?i)bar diameter"):
         calculate_development_length(bar_dia=0, fck=25, fy=500)
-    with pytest.raises(ValueError, match="fck must be positive"):
+    with pytest.raises(MaterialError, match=r"(?i)concrete strength"):
         calculate_development_length(bar_dia=16, fck=0, fy=500)
-    with pytest.raises(ValueError, match="fy must be positive"):
+    with pytest.raises(MaterialError, match=r"(?i)fy"):
         calculate_development_length(bar_dia=16, fck=25, fy=0)
-    with pytest.raises(ValueError, match="bar_dia must be positive"):
+    with pytest.raises(MaterialError, match=r"(?i)bar diameter"):
         calculate_development_length(bar_dia=-16, fck=25, fy=500)
 
 
