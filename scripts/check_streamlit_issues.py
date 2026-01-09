@@ -22,7 +22,7 @@ import ast
 import sys
 import argparse
 from pathlib import Path
-from typing import List, Tuple, Set, Dict
+from typing import List, Tuple, Set, Dict, Optional
 from collections import defaultdict
 
 
@@ -45,6 +45,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.in_function = False
         self.function_name = ""
         self.current_class = None
+
+        # Division safety tracking
+        self.safe_denominators: Set[str] = set()  # Variables validated as non-zero
+        self.parent_nodes: List[ast.AST] = []  # Stack for tracking parent nodes
+        self.in_conditional = False  # Track if we're inside a conditional branch
+
+    def visit(self, node: ast.AST):
+        """Override visit to track parent nodes."""
+        self.parent_nodes.append(node)
+        result = super().visit(node)
+        self.parent_nodes.pop()
+        return result
 
     def enter_scope(self):
         """Enter a new scope."""
@@ -336,6 +348,122 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def _extract_var_name(self, node: ast.expr) -> Optional[str]:
+        """Extract variable name from an AST node."""
+        if isinstance(node, ast.Name):
+            return node.id
+        elif isinstance(node, ast.Call):
+            # Handle max(x, 1) or dict.get("key", default)
+            if isinstance(node.func, ast.Name):
+                return node.func.id
+            elif isinstance(node.func, ast.Attribute):
+                # For dict.get(), extract the object name
+                return self._extract_var_name(node.func.value)
+        elif isinstance(node, ast.BinOp):
+            # Handle expressions like: x * 1000, x + 1, etc.
+            # Extract the variable (if present)
+            left_var = self._extract_var_name(node.left)
+            right_var = self._extract_var_name(node.right)
+            # Return the first non-None variable
+            return left_var if left_var else right_var
+        elif isinstance(node, ast.Subscript):
+            # Handle dict/list access like: steel["fy"], data[0]
+            return self._extract_var_name(node.value)
+        return None
+
+    def _is_in_safe_ternary(self, binop_node: ast.BinOp) -> bool:
+        """
+        Check if the BinOp is inside a ternary expression (IfExp) with zero-check.
+        Pattern: expr / denom if denom > 0 else default
+        """
+        # Look for IfExp parent
+        for parent in reversed(self.parent_nodes):
+            if isinstance(parent, ast.IfExp):
+                # Check if the test validates the denominator
+                validated_vars = self._get_validated_vars(parent.test)
+                denom_name = self._extract_var_name(binop_node.right)
+
+                # If the denominator matches any validated variable, it's safe
+                if denom_name and denom_name in validated_vars:
+                    return True
+            # Stop at statement boundaries
+            elif isinstance(parent, (ast.FunctionDef, ast.ClassDef, ast.If, ast.For, ast.While)):
+                break
+        return False
+
+    def _is_zero_check(self, test: ast.expr) -> Optional[str]:
+        """
+        Check if a comparison is validating a variable against zero.
+        Returns the variable name if it's a zero check, None otherwise.
+        For compound conditions (AND/OR), returns None (handled by _get_validated_vars).
+        """
+        if isinstance(test, ast.Compare):
+            # Check for patterns like: x > 0, x != 0, 0 < x
+            if len(test.ops) == 1 and len(test.comparators) == 1:
+                op = test.ops[0]
+                left = test.left
+                right = test.comparators[0]
+
+                # Check if comparing against zero
+                is_zero_left = isinstance(left, ast.Constant) and left.value == 0
+                is_zero_right = isinstance(right, ast.Constant) and right.value == 0
+
+                # Pattern: var > 0, var != 0
+                if is_zero_right and isinstance(op, (ast.Gt, ast.GtE, ast.NotEq)):
+                    return self._extract_var_name(left)
+
+                # Pattern: 0 < var, 0 != var
+                if is_zero_left and isinstance(op, (ast.Lt, ast.LtE, ast.NotEq)):
+                    return self._extract_var_name(right)
+
+        return None
+
+    def _get_validated_vars(self, test: ast.expr) -> Set[str]:
+        """
+        Get all variables validated against zero in a test expression.
+        Handles compound conditions like: x > 0 and y > 0
+        """
+        validated_vars = set()
+
+        # Handle BoolOp (and/or)
+        if isinstance(test, ast.BoolOp):
+            for value in test.values:
+                var = self._is_zero_check(value)
+                if var:
+                    validated_vars.add(var)
+        else:
+            # Single comparison
+            var = self._is_zero_check(test)
+            if var:
+                validated_vars.add(var)
+
+        return validated_vars
+
+    def visit_If(self, node: ast.If):
+        """Track if statements and mark validated denominators."""
+        # Check if the test validates any denominators
+        validated_vars = self._get_validated_vars(node.test)
+
+        if validated_vars:
+            # Add all to safe denominators for the body
+            for var in validated_vars:
+                self.safe_denominators.add(var)
+
+            # Visit the body where the variables are safe
+            for child in node.body:
+                self.visit(child)
+
+            # Remove from safe denominators after the body
+            for var in validated_vars:
+                self.safe_denominators.discard(var)
+
+            # Visit orelse without the validation
+            for child in node.orelse:
+                self.visit(child)
+        else:
+            # Normal processing
+            self.generic_visit(node)
+
     def visit_BinOp(self, node: ast.BinOp):
         """Detect division operations (ZeroDivisionError risk)."""
         if isinstance(node.op, (ast.Div, ast.FloorDiv, ast.Mod)):
@@ -345,6 +473,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Check if it's a constant (not zero)
             if isinstance(node.right, ast.Constant):
                 if isinstance(node.right.value, (int, float)) and node.right.value != 0:
+                    is_safe = True
+
+            # Check if denominator is a validated variable
+            if not is_safe:
+                denom_name = self._extract_var_name(node.right)
+                if denom_name and denom_name in self.safe_denominators:
+                    is_safe = True
+
+            # Check if inside a ternary expression with zero-check
+            if not is_safe:
+                if self._is_in_safe_ternary(node):
                     is_safe = True
 
             if not is_safe:
