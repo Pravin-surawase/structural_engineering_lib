@@ -146,8 +146,39 @@ if [[ ${#MISSING_SCRIPTS[@]} -gt 0 ]]; then
 fi
 echo -e "${GREEN}✓ All workflow scripts present${NC}"
 
-# Step 8: Display environment info
-echo -e "${BLUE}[8/8]${NC} Environment summary..."
+# Step 8: Start CI Monitor Daemon (main agent only)
+if [[ "$WORKTREE_MODE" == false ]]; then
+    echo -e "${BLUE}[8/9]${NC} Starting CI Monitor Daemon..."
+
+    # Check if daemon script exists
+    if [[ -f "scripts/ci_monitor_daemon.sh" ]]; then
+        # Check if daemon is already running
+        DAEMON_STATUS=$(./scripts/ci_monitor_daemon.sh status 2>&1)
+
+        if echo "$DAEMON_STATUS" | grep -q "is running"; then
+            DAEMON_PID=$(echo "$DAEMON_STATUS" | grep -oE 'PID: [0-9]+' | grep -oE '[0-9]+')
+            echo -e "${GREEN}✓ CI Monitor already running (PID: $DAEMON_PID)${NC}"
+        else
+            # Start the daemon
+            DAEMON_OUTPUT=$(./scripts/ci_monitor_daemon.sh start 2>&1)
+            if echo "$DAEMON_OUTPUT" | grep -q "started"; then
+                DAEMON_PID=$(echo "$DAEMON_OUTPUT" | grep -oE 'PID: [0-9]+' | grep -oE '[0-9]+')
+                echo -e "${GREEN}✓ CI Monitor started (PID: $DAEMON_PID)${NC}"
+            else
+                echo -e "${YELLOW}⚠ CI Monitor failed to start (non-critical)${NC}"
+                echo "$DAEMON_OUTPUT" | head -3
+            fi
+        fi
+    else
+        echo -e "${YELLOW}⊘ CI Monitor script not found (skipped)${NC}"
+    fi
+else
+    echo -e "${BLUE}[8/9]${NC} CI Monitor..."
+    echo -e "${YELLOW}⊘ Skipped (worktree mode uses main agent's daemon)${NC}"
+fi
+
+# Step 9: Display environment info
+echo -e "${BLUE}[9/9]${NC} Environment summary..."
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${GREEN}✓ Environment ready!${NC}"
