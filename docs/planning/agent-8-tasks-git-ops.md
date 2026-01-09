@@ -98,6 +98,11 @@ git-agent workflow [changes]
 | Dependencies | pyproject.toml, requirements*.txt | Any | PR required | No (manual) |
 | Multi-type | Mixed | N/A | PR required | No (manual) |
 
+**Multi-Phase Strategy (NEW):**
+- For tasks with 3+ phases: commit each phase to feature branch, create PR after final phase
+- Benefits: Fewer CI runs (1 instead of 4), consolidated review, more efficient
+- Example: IMPL-006 (4 phases) → 4 commits on task/IMPL-006 → 1 PR at end
+
 **Implementation:**
 - Uses existing `should_use_pr.sh --explain` for decision logic
 - Wraps `ai_commit.sh` for low-risk direct commits

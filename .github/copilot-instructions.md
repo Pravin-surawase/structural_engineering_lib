@@ -173,6 +173,12 @@ The tool analyzes:
 
 ### 🔀 Pull Requests (REQUIRED - Default Workflow)
 
+**PR Strategy:**
+- **Multi-phase tasks:** Commit all phases to feature branch, then create ONE PR at end
+  - More efficient: fewer CI runs, consolidated review
+  - Example: IMPL-006 Phases 1-4 → commit each → PR after Phase 4 complete
+- **Single-phase tasks:** Create PR at start, commit progress, merge at end
+
 **Always required for:**
 1. **Production code** - Python/structural_lib/**/*.py (NO exceptions)
 2. **VBA code** - VBA/**/*.bas, Excel/**/*.xlsm
