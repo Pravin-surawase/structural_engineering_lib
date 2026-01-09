@@ -1,5 +1,5 @@
 # Streamlit Maintenance Guide
-**Version:** 1.0.0
+**Version:** 0.16.0
 **Last Updated:** 2026-01-09
 **For:** Project Maintainers & Future AI Agents
 
