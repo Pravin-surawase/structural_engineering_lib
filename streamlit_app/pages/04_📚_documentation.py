@@ -17,6 +17,7 @@ Phase: STREAMLIT-IMPL-008 | UI-002: Page Layout Redesign
 
 import streamlit as st
 import pandas as pd
+import math
 from typing import Dict, List, Optional
 
 # Import clause data and other helpers
@@ -246,7 +247,13 @@ elif section == "🧮 Formula Calculator":
             bar_sizes = [12, 16, 20, 25]
             for bar_dia in bar_sizes:
                 bar_area = 3.14159 * (bar_dia / 2) ** 2
-                num_bars = int(Ast_final / bar_area) + 1 if bar_area > 0 else 0
+                if bar_area > 0:
+                    try:
+                        num_bars = int(Ast_final / bar_area) + 1
+                    except (TypeError, ValueError):
+                        num_bars = 0
+                else:
+                    num_bars = 0
                 provided_area = num_bars * bar_area
                 if 2 <= num_bars <= 6 and provided_area >= Ast_final:
                     st.code(f"{num_bars}-{bar_dia}mm (Ast = {provided_area:.0f} mm²)")
@@ -286,9 +293,9 @@ elif section == "🧮 Formula Calculator":
             if tau_v > tau_c:
                 Vus = (tau_v - tau_c) * b * d / 1000
                 Asv = stirrup_legs * 3.14159 * (stirrup_dia / 2) ** 2
-                sv_req = (0.87 * fy_stirrup * Asv * d) / (Vus * 1000) if Vus > 0 else float("inf")
+                sv_req = (0.87 * fy_stirrup * Asv * d) / (Vus * 1000) if Vus > 0 else math.inf
             else:
-                sv_req = float("inf")
+                sv_req = math.inf
 
             # Maximum spacing
             sv_max = min(0.75 * d, 300)

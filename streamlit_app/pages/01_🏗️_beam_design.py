@@ -122,22 +122,22 @@ def create_cached_beam_diagram(**kwargs):
             return tuple(sorted((k, make_hashable(v)) for k, v in obj.items()))
         else:
             return obj
-    
+
     # Create stable cache key
     hashable_kwargs = make_hashable(kwargs)
     cache_key = f"viz_{hash(hashable_kwargs)}"
-    
+
     # Try to get from cache
     cached_fig = viz_cache.get(cache_key)
     if cached_fig is not None:
         return cached_fig
-    
+
     # Generate new figure
     fig = create_beam_diagram(**kwargs)
-    
+
     # Store in cache
     viz_cache.set(cache_key, fig)
-    
+
     return fig
 
 
@@ -326,54 +326,54 @@ with col_input:
     # PHASE 1: Cache statistics and controls
     with st.expander("⚙️ Advanced"):
         st.markdown("#### 📊 Performance Cache Statistics")
-        
+
         # Display cache stats in 3 columns
         cache_col1, cache_col2, cache_col3 = st.columns(3)
-        
+
         with cache_col1:
             # Design cache stats
             design_stats = design_cache.get_stats()
             hit_rate = design_stats.get("hit_rate", 0.0)
             st.metric(
-                "Design Cache Hit Rate", 
+                "Design Cache Hit Rate",
                 f"{hit_rate:.1%}",
                 help="Percentage of design calculations served from cache"
             )
-        
+
         with cache_col2:
             # Visualization cache stats
             viz_stats = viz_cache.get_stats()
             viz_items = viz_stats.get("size", 0)
             st.metric(
-                "Cached Visualizations", 
+                "Cached Visualizations",
                 viz_items,
                 help="Number of cached beam diagrams"
             )
-        
+
         with cache_col3:
             # Total memory usage
             total_memory = design_stats.get("memory_mb", 0) + viz_stats.get("memory_mb", 0)
             st.metric(
-                "Cache Memory", 
+                "Cache Memory",
                 f"{total_memory:.1f} MB",
                 help="Total memory used by all caches"
             )
-        
+
         st.markdown("---")
-        
+
         # Cache control buttons
         clear_col1, clear_col2 = st.columns(2)
-        
+
         with clear_col1:
             if st.button("🗑️ Clear All Caches", use_container_width=True):
                 from utils.api_wrapper import clear_cache
-                
+
                 clear_cache()
                 design_cache.clear()
                 viz_cache.clear()
                 st.success("✅ All caches cleared!")
                 st.rerun()
-        
+
         with clear_col2:
             if st.button("🔄 Clear Viz Cache Only", use_container_width=True):
                 viz_cache.clear()
@@ -594,7 +594,13 @@ with col_preview:
                 # Use similar bar size as tension steel
                 comp_bar_dia = bar_dia
                 area_per_bar = 3.14159 * (comp_bar_dia ** 2) / 4
-                num_comp_bars = max(2, int(asc_required / area_per_bar) + 1) if area_per_bar > 0 else 2
+                if area_per_bar > 0:
+                    try:
+                        num_comp_bars = max(2, int(asc_required / area_per_bar) + 1)
+                    except (TypeError, ValueError):
+                        num_comp_bars = 2
+                else:
+                    num_comp_bars = 2
 
                 # Position at top (from top surface)
                 comp_y = D_mm - cover - comp_bar_dia / 2

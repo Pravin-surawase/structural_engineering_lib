@@ -105,6 +105,13 @@ initialize_session_state()
 # Helper Functions
 # =============================================================================
 
+def safe_int(value, default=0):
+    """Safely cast value to int with fallback."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
 def get_beam_design_from_session() -> Optional[Dict]:
     """Get beam design inputs from beam_design page if available."""
     if "beam_inputs" in st.session_state:
@@ -187,7 +194,10 @@ def create_bbs_from_beam_design(beam_data: Dict) -> BBSDocument:
     )
 
     # Number of stirrups along span
-    num_stirrups = int((span_mm / stirrup_spacing) + 1) if stirrup_spacing > 0 else 0
+    if stirrup_spacing > 0:
+        num_stirrups = safe_int((span_mm / stirrup_spacing) + 1, default=0)
+    else:
+        num_stirrups = 0
 
     unit_weight_stirrup = calculate_bar_weight(stirrup_dia, stirrup_cut_length)
 
@@ -246,10 +256,10 @@ def bbs_to_dataframe(bbs_doc: BBSDocument) -> pd.DataFrame:
         data.append({
             "Bar Mark": item.bar_mark,
             "Shape": item.shape_code,
-            "Diameter (mm)": int(item.diameter_mm),
+            "Diameter (mm)": safe_int(item.diameter_mm, default=0),
             "Location": item.location.capitalize(),
             "No. of Bars": item.no_of_bars,
-            "Cut Length (mm)": int(item.cut_length_mm),
+            "Cut Length (mm)": safe_int(item.cut_length_mm, default=0),
             "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
             "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
             "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
@@ -395,7 +405,7 @@ if mode == "auto":
                 else:
                     percent_total = 0.0
                 weight_data.append({
-                    "Diameter (mm)": f"Ø{int(dia)}",
+                    "Diameter (mm)": f"Ø{safe_int(dia, default=0)}",
                     "Total Weight (kg)": f"{weight:.2f}",
                     "% of Total": f"{percent_total:.1f}%"
                 })

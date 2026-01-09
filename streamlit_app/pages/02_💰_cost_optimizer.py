@@ -17,6 +17,7 @@ Phase: STREAMLIT-IMPL-005 | UI-002: Page Layout Redesign
 
 import io
 import logging
+import math
 import traceback
 from typing import Optional
 
@@ -304,14 +305,14 @@ def run_cost_optimization(inputs: dict) -> dict:
     selected_bars = flexure.get("tension_steel", {})
 
     # CRITICAL: Validate selected area to prevent zero division
-    selected_area = selected_bars.get("area", 0)
+    selected_area = selected_bars.get("area") or 0
     if selected_area <= 0:
         st.error("❌ Invalid baseline design: steel area is zero or negative.")
         st.error("This usually means the design failed. Please check beam design inputs.")
         return {"analysis": None, "comparison": []}
 
-    selected_num = selected_bars.get("num", 0)
-    selected_dia = selected_bars.get("dia", 0)
+    selected_num = selected_bars.get("num") or 0
+    selected_dia = selected_bars.get("dia") or 0
 
     # Simple cost calculation using library constants
     if not HAS_COSTING:
@@ -324,17 +325,17 @@ def run_cost_optimization(inputs: dict) -> dict:
     cost_profile = CostProfile()  # Indian average costs
     steel_unit_cost = cost_profile.steel_cost_per_kg  # ₹72/kg (Fe500)
     # Safe: STEEL_DENSITY_KG_PER_M3 is a positive constant (7850.0) from library
-    selected_steel_vol_mm3 = selected_area * inputs.get("span_mm", 0)
+    selected_steel_vol_mm3 = selected_area * (inputs.get("span_mm") or 0)
     # Convert from N/mm³ to kg/mm³: divide by 1e9 to get kg
-    selected_steel_kg = selected_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 / 1e9)
+    selected_steel_kg = selected_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 * 1e-9)
     selected_steel_cost = selected_steel_kg * steel_unit_cost
 
     comparison.append({
         "bar_config": f"{selected_num}-{selected_dia}mm",
-        "b_mm": inputs.get("b_mm", 0),
-        "D_mm": inputs.get("D_mm", 0),
-        "fck_nmm2": inputs.get("fck_nmm2", 0),
-        "fy_nmm2": inputs.get("fy_nmm2", 0),
+        "b_mm": inputs.get("b_mm") or 0,
+        "D_mm": inputs.get("D_mm") or 0,
+        "fck_nmm2": inputs.get("fck_nmm2") or 0,
+        "fy_nmm2": inputs.get("fy_nmm2") or 0,
         "steel_area_mm2": selected_area,
         "steel_kg": selected_steel_kg,
         "utilization_ratio": 1.00,  # Baseline = 100%
@@ -346,14 +347,14 @@ def run_cost_optimization(inputs: dict) -> dict:
     # Calculate costs for alternatives (up to 10)
     MAX_ALTERNATIVES = 10
     for alt in alternatives[:MAX_ALTERNATIVES]:
-        alt_area = alt.get("area", 0)
-        alt_num = alt.get("num", 0)
-        alt_dia = alt.get("dia", 0)
+        alt_area = alt.get("area") or 0
+        alt_num = alt.get("num") or 0
+        alt_dia = alt.get("dia") or 0
 
         # Steel volume and cost
-        alt_steel_vol_mm3 = alt_area * inputs.get("span_mm", 0)
+        alt_steel_vol_mm3 = alt_area * (inputs.get("span_mm") or 0)
         # Convert from N/mm³ to kg/mm³: divide by 1e9 to get kg
-        alt_steel_kg = alt_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 / 1e9)
+        alt_steel_kg = alt_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 * 1e-9)
         alt_steel_cost = alt_steel_kg * steel_unit_cost
 
         # FIXED: Use safe_divide to prevent zero division
@@ -361,10 +362,10 @@ def run_cost_optimization(inputs: dict) -> dict:
 
         comparison.append({
             "bar_config": f"{alt_num}-{alt_dia}mm",
-            "b_mm": inputs.get("b_mm", 0),
-            "D_mm": inputs.get("D_mm", 0),
-            "fck_nmm2": inputs.get("fck_nmm2", 0),
-            "fy_nmm2": inputs.get("fy_nmm2", 0),
+            "b_mm": inputs.get("b_mm") or 0,
+            "D_mm": inputs.get("D_mm") or 0,
+            "fck_nmm2": inputs.get("fck_nmm2") or 0,
+            "fy_nmm2": inputs.get("fy_nmm2") or 0,
             "steel_area_mm2": alt_area,
             "steel_kg": alt_steel_kg,
             "utilization_ratio": utilization_ratio,
@@ -374,22 +375,31 @@ def run_cost_optimization(inputs: dict) -> dict:
         })
 
     # Sort by total cost
-    comparison.sort(key=lambda x: x.get("total_cost", float('inf')))
+    comparison.sort(key=lambda x: x.get("total_cost", math.inf))
 
     # Mark lowest cost as optimal
-    if comparison:
+    if len(comparison) > 0:
         comparison[0]["is_optimal"] = True
         for i in range(1, len(comparison)):
             comparison[i]["is_optimal"] = False
 
     # Calculate savings using safe_divide
     if len(comparison) > 1:
-        baseline_cost = comparison[1]["total_cost"] if not comparison[0]["is_optimal"] else comparison[0]["total_cost"]
-        optimal_cost = min(c["total_cost"] for c in comparison)
+        baseline_cost = 0
+        first = {}
+        if len(comparison) > 0:
+            first = comparison[0]
+            baseline_cost = first.get("total_cost") or 0
+        if len(comparison) > 1 and not first.get("is_optimal"):
+            baseline_cost = comparison[1].get("total_cost") or baseline_cost
+        optimal_cost = min((c.get("total_cost") or 0) for c in comparison)
         savings = baseline_cost - optimal_cost
         savings_pct = safe_divide(savings * 100, baseline_cost, default=0.0)
     else:
-        baseline_cost = comparison[0]["total_cost"] if comparison else 0
+        if len(comparison) > 0:
+            baseline_cost = comparison[0].get("total_cost") or 0
+        else:
+            baseline_cost = 0
         optimal_cost = baseline_cost
         savings = 0
         savings_pct = 0
@@ -503,20 +513,20 @@ def main():
                 col1, col2, col3, col4 = st.columns(4)
                 col1.metric(
                     "Baseline Cost",
-                    f"₹{analysis_data.get('baseline_cost', 0):,.0f}",
+                f"₹{(analysis_data.get('baseline_cost') or 0):,.0f}",
                 )
                 col2.metric(
                     "Optimal Cost",
-                    f"₹{analysis_data.get('optimal_cost', 0):,.0f}",
+                f"₹{(analysis_data.get('optimal_cost') or 0):,.0f}",
                 )
                 col3.metric(
                     "Savings",
-                    f"₹{analysis_data.get('savings_amount', 0):,.0f}",
-                    delta=f"{analysis_data.get('savings_percent', 0):.1f}%",
+                f"₹{(analysis_data.get('savings_amount') or 0):,.0f}",
+                delta=f"{(analysis_data.get('savings_percent') or 0):.1f}%",
                 )
                 col4.metric(
                     "Candidates Evaluated",
-                    analysis_data.get("candidates_evaluated", 0),
+                analysis_data.get("candidates_evaluated") or 0,
                 )
 
             # Tabs for different views

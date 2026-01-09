@@ -59,6 +59,26 @@ if "parametric_results" not in st.session_state:
 
 
 # =============================================================================
+# Helper Functions
+# =============================================================================
+
+def safe_int(value, default=0):
+    """Safely cast value to int with fallback."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def safe_float(value, default=0.0):
+    """Safely cast value to float with fallback."""
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+# =============================================================================
 # Analysis Functions
 # =============================================================================
 
@@ -78,12 +98,14 @@ def parametric_study_fck(base_params: Dict, fck_range: List[float]) -> pd.DataFr
                 Vu=base_params["Vu"],
             )
 
+            flexure = result.get("flexure", {})
+            shear = result.get("shear", {})
             results.append({
                 "fck": fck,
-                "Ast_req": result["flexure"]["Ast_req"],
-                "Ast_prov": result["flexure"]["Ast_prov"],
-                "xu_by_d": result["flexure"].get("xu_by_d", 0),
-                "stirrup_spacing": result["shear"].get("spacing_mm", 0),
+                "Ast_req": flexure.get("Ast_req", 0),
+                "Ast_prov": flexure.get("Ast_prov", 0),
+                "xu_by_d": flexure.get("xu_by_d", 0),
+                "stirrup_spacing": shear.get("spacing_mm", 0),
                 "cost_per_m": result.get("cost_per_m", 0),
             })
         except Exception as e:
@@ -115,12 +137,14 @@ def parametric_study_dimensions(
                 Vu=params["Vu"],
             )
 
+            flexure = result.get("flexure", {})
+            shear = result.get("shear", {})
             results.append({
                 dimension: dim_value,
-                "Ast_req": result["flexure"]["Ast_req"],
-                "Ast_prov": result["flexure"]["Ast_prov"],
-                "bar_config": result["flexure"]["bar_config"],
-                "stirrup_spacing": result["shear"].get("spacing_mm", 0),
+                "Ast_req": flexure.get("Ast_req", 0),
+                "Ast_prov": flexure.get("Ast_prov", 0),
+                "bar_config": flexure.get("bar_config", "-"),
+                "stirrup_spacing": shear.get("spacing_mm", 0),
                 "cost_per_m": result.get("cost_per_m", 0),
             })
         except Exception as e:
@@ -135,18 +159,18 @@ def sensitivity_analysis(base_params: Dict, param_name: str, variation: float = 
     Returns % change in Ast for ±variation% change in parameter.
     """
     base_result = cached_design(**base_params)
-    base_ast = base_result["flexure"]["Ast_req"]
+    base_ast = base_result.get("flexure", {}).get("Ast_req", 0)
     # Test +variation%
     params_plus = base_params.copy()
     params_plus[param_name] *= (1 + variation)
     result_plus = cached_design(**params_plus)
-    ast_plus = result_plus["flexure"]["Ast_req"]
+    ast_plus = result_plus.get("flexure", {}).get("Ast_req", 0)
 
     # Test -variation%
     params_minus = base_params.copy()
     params_minus[param_name] *= (1 - variation)
     result_minus = cached_design(**params_minus)
-    ast_minus = result_minus["flexure"]["Ast_req"]
+    ast_minus = result_minus.get("flexure", {}).get("Ast_req", 0)
 
     if base_ast > 0:
         sensitivity_plus = ((ast_plus - base_ast) / base_ast) * 100
@@ -239,16 +263,16 @@ if analysis_type == "📊 Parametric Study":
     with col2:
         if param_to_vary in ["b (width)", "D (depth)"]:
             base_value = b if param_to_vary == "b (width)" else D
-            min_val = st.number_input("Min Value (mm)", value=int(base_value * 0.7), step=10)
+            min_val = st.number_input("Min Value (mm)", value=safe_int(base_value * 0.7), step=10)
         else:
             base_value = fck if param_to_vary == "fck" else fy
-            min_val = st.number_input("Min Value", value=float(base_value * 0.7), step=5.0)
+            min_val = st.number_input("Min Value", value=safe_float(base_value * 0.7), step=5.0)
 
     with col3:
         if param_to_vary in ["b (width)", "D (depth)"]:
-            max_val = st.number_input("Max Value (mm)", value=int(base_value * 1.3), step=10)
+            max_val = st.number_input("Max Value (mm)", value=safe_int(base_value * 1.3), step=10)
         else:
-            max_val = st.number_input("Max Value", value=float(base_value * 1.3), step=5.0)
+            max_val = st.number_input("Max Value", value=safe_float(base_value * 1.3), step=5.0)
 
     num_points = st.slider("Number of Points", min_value=5, max_value=20, value=10)
 
@@ -499,10 +523,10 @@ else:  # Loading Scenarios
                     "Scenario": scenario["name"],
                     "Mu (kN·m)": scenario["Mu"],
                     "Vu (kN)": scenario["Vu"],
-                    "Ast_req (mm²)": result["flexure"]["Ast_req"],
-                    "Ast_prov (mm²)": result["flexure"]["Ast_prov"],
-                    "Bar Config": result["flexure"]["bar_config"],
-                    "Stirrup Spacing (mm)": result["shear"].get("spacing_mm", "-"),
+                    "Ast_req (mm²)": result.get("flexure", {}).get("Ast_req", 0),
+                    "Ast_prov (mm²)": result.get("flexure", {}).get("Ast_prov", 0),
+                    "Bar Config": result.get("flexure", {}).get("bar_config", "-"),
+                    "Stirrup Spacing (mm)": result.get("shear", {}).get("spacing_mm", "-"),
                     "Cost/m (INR)": result.get("cost_per_m", 0),
                 })
 
