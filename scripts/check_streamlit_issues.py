@@ -179,6 +179,85 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def visit_Lambda(self, node: ast.Lambda):
+        """Track lambda parameters as defined names in lambda scope."""
+        # Create new scope for lambda
+        self.enter_scope()
+
+        # Add lambda parameters to scope
+        for arg in node.args.args:
+            self.add_defined_name(arg.arg)
+
+        # Visit lambda body
+        self.generic_visit(node)
+
+        # Pop lambda scope
+        self.exit_scope()
+
+    def visit_ListComp(self, node: ast.ListComp):
+        """Track list comprehension variables."""
+        self.enter_scope()
+
+        # Add all comprehension target variables
+        for generator in node.generators:
+            if isinstance(generator.target, ast.Name):
+                self.add_defined_name(generator.target.id)
+            elif isinstance(generator.target, ast.Tuple):
+                for elt in generator.target.elts:
+                    if isinstance(elt, ast.Name):
+                        self.add_defined_name(elt.id)
+
+        self.generic_visit(node)
+        self.exit_scope()
+
+    def visit_DictComp(self, node: ast.DictComp):
+        """Track dict comprehension variables."""
+        self.enter_scope()
+
+        # Add all comprehension target variables
+        for generator in node.generators:
+            if isinstance(generator.target, ast.Name):
+                self.add_defined_name(generator.target.id)
+            elif isinstance(generator.target, ast.Tuple):
+                for elt in generator.target.elts:
+                    if isinstance(elt, ast.Name):
+                        self.add_defined_name(elt.id)
+
+        self.generic_visit(node)
+        self.exit_scope()
+
+    def visit_SetComp(self, node: ast.SetComp):
+        """Track set comprehension variables."""
+        self.enter_scope()
+
+        # Add all comprehension target variables
+        for generator in node.generators:
+            if isinstance(generator.target, ast.Name):
+                self.add_defined_name(generator.target.id)
+            elif isinstance(generator.target, ast.Tuple):
+                for elt in generator.target.elts:
+                    if isinstance(elt, ast.Name):
+                        self.add_defined_name(elt.id)
+
+        self.generic_visit(node)
+        self.exit_scope()
+
+    def visit_GeneratorExp(self, node: ast.GeneratorExp):
+        """Track generator expression variables."""
+        self.enter_scope()
+
+        # Add all comprehension target variables
+        for generator in node.generators:
+            if isinstance(generator.target, ast.Name):
+                self.add_defined_name(generator.target.id)
+            elif isinstance(generator.target, ast.Tuple):
+                for elt in generator.target.elts:
+                    if isinstance(elt, ast.Name):
+                        self.add_defined_name(elt.id)
+
+        self.generic_visit(node)
+        self.exit_scope()
+
     def visit_AugAssign(self, node: ast.AugAssign):
         """Track augmented assignments (+=, -=, etc.)."""
         if isinstance(node.target, ast.Name):

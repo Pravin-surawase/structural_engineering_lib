@@ -163,7 +163,8 @@ elif section == "🧮 Formula Calculator":
             st.subheader("Results")
 
             # Calculate xu
-            xu = (0.87 * fy * Ast) / (0.36 * fck * b)
+            denominator = 0.36 * fck * b
+            xu = (0.87 * fy * Ast) / denominator if denominator > 0 else 0
 
             # Check under-reinforced
             xu_max = 0.48 * d  # For Fe500
@@ -173,12 +174,13 @@ elif section == "🧮 Formula Calculator":
             Mu = 0.87 * fy * Ast * (d - 0.42 * xu) / 1_000_000  # Convert to kN·m
 
             st.metric("Neutral Axis Depth (xu)", f"{xu:.2f} mm")
-            st.metric("xu/d Ratio", f"{xu/d:.3f}")
+            xu_d_ratio = xu / d if d > 0 else 0
+            st.metric("xu/d Ratio", f"{xu_d_ratio:.3f}")
 
             if is_under_reinforced:
-                st.success(f"✅ Under-reinforced (xu/d = {xu/d:.3f} ≤ 0.48)")
+                st.success(f"✅ Under-reinforced (xu/d = {xu_d_ratio:.3f} ≤ 0.48)")
             else:
-                st.error(f"❌ Over-reinforced! (xu/d = {xu/d:.3f} > 0.48)")
+                st.error(f"❌ Over-reinforced! (xu/d = {xu_d_ratio:.3f} > 0.48)")
                 st.warning("⚠️ Add compression steel or increase depth")
 
             st.metric("Moment Capacity (Mu)", f"{Mu:.2f} kN·m")
@@ -212,16 +214,20 @@ elif section == "🧮 Formula Calculator":
             Mu_nmm = Mu * 1_000_000
 
             # Calculate Ru
-            Ru = Mu_nmm / (b * d**2)
+            denominator = b * d**2
+            Ru = Mu_nmm / denominator if denominator > 0 else 0
 
             # Calculate ρ
-            rho = (0.5 * fck / fy) * (1 - (1 - (4.6 * Ru) / (fck)) ** 0.5)
+            if fy > 0 and fck > 0:
+                rho = (0.5 * fck / fy) * (1 - (1 - (4.6 * Ru) / (fck)) ** 0.5)
+            else:
+                rho = 0
 
             # Calculate Ast
             Ast_req = rho * b * d
 
             # Check minimum
-            Ast_min = 0.85 * b * d / fy
+            Ast_min = 0.85 * b * d / fy if fy > 0 else 0
             Ast_final = max(Ast_req, Ast_min)
 
             st.metric("Ru (N/mm²)", f"{Ru:.3f}")
@@ -240,7 +246,7 @@ elif section == "🧮 Formula Calculator":
             bar_sizes = [12, 16, 20, 25]
             for bar_dia in bar_sizes:
                 bar_area = 3.14159 * (bar_dia / 2) ** 2
-                num_bars = int(Ast_final / bar_area) + 1
+                num_bars = int(Ast_final / bar_area) + 1 if bar_area > 0 else 0
                 provided_area = num_bars * bar_area
                 if 2 <= num_bars <= 6 and provided_area >= Ast_final:
                     st.code(f"{num_bars}-{bar_dia}mm (Ast = {provided_area:.0f} mm²)")
@@ -269,17 +275,18 @@ elif section == "🧮 Formula Calculator":
             st.subheader("Results")
 
             # Calculate τv
-            tau_v = (Vu * 1000) / (b * d)
+            denominator = b * d
+            tau_v = (Vu * 1000) / denominator if denominator > 0 else 0
 
             # Calculate τc (simplified)
-            pt = 100 * Ast / (b * d)
-            tau_c = 0.85 * (0.8 * fck) ** 0.5 * (pt / 100) ** (1 / 3) / 1.5
+            pt = 100 * Ast / denominator if denominator > 0 else 0
+            tau_c = 0.85 * (0.8 * fck) ** 0.5 * (pt / 100) ** (1 / 3) / 1.5 if pt > 0 else 0
 
             # Calculate required Asv/sv
             if tau_v > tau_c:
                 Vus = (tau_v - tau_c) * b * d / 1000
                 Asv = stirrup_legs * 3.14159 * (stirrup_dia / 2) ** 2
-                sv_req = (0.87 * fy_stirrup * Asv * d) / (Vus * 1000)
+                sv_req = (0.87 * fy_stirrup * Asv * d) / (Vus * 1000) if Vus > 0 else float("inf")
             else:
                 sv_req = float("inf")
 
