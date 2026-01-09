@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-01-10",
+  "velocity": {
+    "commits_24h": 71,
+    "commits_7d": 427,
+    "commits_per_day": 61.0,
+    "total_commits": 815
+  },
+  "wip": {
+    "active_prs": "1",
+    "active_worktrees": 1,
+    "active_tasks": 4
+  },
+  "documentation": {
+    "root_files": 9,
+    "total_docs": 385,
+    "archived_files": 53
+  },
+  "quality": {
+    "test_files": 64,
+    "test_count": "",
+    "coverage_percent": "86",
+    "ruff_errors": "0",
+    "mypy_errors": "0"
+  },
+  "leading_indicators": {
+    "root_docs_created_7d": 35,
+    "crisis_docs": 0,
+    "handoff_docs": 2,
+    "completion_docs": 0,
+    "oldest_pr_days": "0"
+  },
+  "alerts": [
+    "Root doc creation rate HIGH: 35 in 7 days (threshold: 6)"
+  ],
+  "alert_count": 1
+}
