@@ -43,6 +43,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             'hasattr', 'getattr', 'setattr', 'sum', 'min', 'max', 'abs',
             'round', 'sorted', 'reversed', 'enumerate', 'zip', 'map',
             'filter', 'all', 'any', 'open', 'hash', 'id', 'ord', 'chr',
+            # Standard exception names
+            'Exception', 'ValueError', 'TypeError', 'KeyError', 'IndexError',
+            'AttributeError', 'NameError', 'ZeroDivisionError', 'RuntimeError',
+            'ImportError', 'IOError', 'OSError',
         }  # Python builtins
 
         # Session state tracking
@@ -323,9 +327,29 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def visit_Compare(self, node: ast.Compare):
+        """Track 'in' checks for session state keys."""
+        # Pattern: 'key' in/not in st.session_state
+        if len(node.ops) == 1 and len(node.comparators) == 1:
+            op = node.ops[0]
+            if isinstance(op, (ast.In, ast.NotIn)):
+                # Check if comparing against st.session_state
+                comparator = node.comparators[0]
+                if (isinstance(comparator, ast.Attribute) and
+                    isinstance(comparator.value, ast.Name) and
+                    comparator.value.id == 'st' and
+                    comparator.attr == 'session_state'):
+                    # Extract the key being checked
+                    if isinstance(node.left, ast.Constant) and isinstance(node.left.value, str):
+                        key = node.left.value
+                        # Mark this key as validated
+                        self.session_state_keys.add(key)
+
+        self.generic_visit(node)
+
     def visit_Subscript(self, node: ast.Subscript):
-        """Detect direct dict access (KeyError risk)."""
-        # Check if this is a subscript on a variable
+        """Detect IndexError and KeyError risks."""
+        # KeyError: dict access with string keys
         if isinstance(node.value, ast.Name):
             var_name = node.value.id
             # Skip safe patterns (list indexing with int)
@@ -352,6 +376,24 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                             "HIGH",
                             f"KeyError risk: st.session_state[{repr(key)}] may not exist (use .get() or check 'in')"
                         ))
+
+        # IndexError: list/tuple access
+        if isinstance(node.ctx, ast.Load):
+            # Extract container name
+            container_name = self._extract_var_name(node.value)
+
+            if container_name:
+                # Check for constant index (e.g., items[0], items[5])
+                if isinstance(node.slice, ast.Constant):
+                    index_value = node.slice.value
+                    if isinstance(index_value, int):
+                        # Check if bounds validated (look for len() checks)
+                        if not self._has_bounds_check_nearby(container_name, index_value):
+                            self.issues.append((
+                                node.lineno,
+                                "MEDIUM",
+                                f"IndexError risk: {container_name}[{index_value}] without bounds check (validate len() > {index_value})"
+                            ))
 
         self.generic_visit(node)
 
@@ -503,28 +545,6 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_Subscript(self, node: ast.Subscript):
-        """Detect IndexError and KeyError risks."""
-        # IndexError: list/tuple access
-        if isinstance(node.ctx, ast.Load):
-            # Extract container name
-            container_name = self._extract_var_name(node.value)
-
-            if container_name:
-                # Check for constant index (e.g., items[0], items[5])
-                if isinstance(node.slice, ast.Constant):
-                    index_value = node.slice.value
-                    if isinstance(index_value, int):
-                        # Check if bounds validated (look for len() checks)
-                        if not self._has_bounds_check_nearby(container_name, index_value):
-                            self.issues.append((
-                                node.lineno,
-                                "MEDIUM",
-                                f"IndexError risk: {container_name}[{index_value}] without bounds check (validate len() > {index_value})"
-                            ))
-
-        self.generic_visit(node)
-
     def _has_bounds_check_nearby(self, container: str, index: int) -> bool:
         """Check if there's a len() check for this container/index nearby."""
         # Look through parent nodes for if statements with len() checks
@@ -535,55 +555,6 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 if f"len({container})" in test_str and str(index) in test_str:
                     return True
         return False
-
-    def visit_Call(self, node: ast.Call):
-        """Detect TypeError risks and ValueError risks in function calls."""
-        func_name = None
-
-        # Extract function name
-        if isinstance(node.func, ast.Name):
-            func_name = node.func.id
-
-        # Check for hash() with unhashable types
-        if func_name == 'hash':
-            if node.args:
-                arg = node.args[0]
-
-                # Direct unhashable types: hash([...]), hash({...}), hash({x: y})
-                if isinstance(arg, (ast.List, ast.Set, ast.Dict)):
-                    type_name = {ast.List: "list", ast.Set: "set", ast.Dict: "dict"}[type(arg)]
-                    self.issues.append((
-                        node.lineno,
-                        "CRITICAL",
-                        f"TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)"
-                    ))
-
-                # Risky pattern: hash(frozenset(dict.items()))
-                elif isinstance(arg, ast.Call):
-                    if (isinstance(arg.func, ast.Name) and arg.func.id == 'frozenset' and
-                        arg.args and isinstance(arg.args[0], ast.Call)):
-                        inner_call = arg.args[0]
-                        if (isinstance(inner_call.func, ast.Attribute) and
-                            inner_call.func.attr == 'items'):
-                            self.issues.append((
-                                node.lineno,
-                                "HIGH",
-                                "TypeError risk: hash(frozenset(dict.items())) fails if dict contains unhashable values (validate first)"
-                            ))
-
-        # Check for int() / float() without error handling
-        if func_name in ('int', 'float'):
-            # Only flag if there are arguments (conversion attempt)
-            if node.args:
-                # Check if inside try/except
-                if not self._is_in_try_except():
-                    self.issues.append((
-                        node.lineno,
-                        "MEDIUM",
-                        f"ValueError risk: {func_name}() without try/except (invalid input will crash)"
-                    ))
-
-        self.generic_visit(node)
 
     def _is_in_try_except(self) -> bool:
         """Check if current node is inside a try/except block."""
@@ -621,46 +592,79 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
     def visit_Call(self, node: ast.Call):
         """
-        Detect TypeError risks in function calls.
+        Detect TypeError and ValueError risks in function calls.
 
         Checks for:
         - hash()/frozenset() on unhashable types (lists, dicts)
+        - int()/float() without try/except (ValueError)
         - Common type mismatches
         """
-        # Check for hash() and frozenset() calls with potentially unhashable arguments
+        func_name = None
+
+        # Extract function name
         if isinstance(node.func, ast.Name):
             func_name = node.func.id
 
-            if func_name in ('hash', 'frozenset') and node.args:
-                # Check if argument could be unhashable
+        # Check for hash() with unhashable types
+        if func_name == 'hash':
+            if node.args:
                 arg = node.args[0]
 
-                # Direct list/dict/set literals are unhashable
-                if isinstance(arg, (ast.List, ast.Dict, ast.Set)):
+                # Direct unhashable types: hash([...]), hash({...}), hash({x: y})
+                if isinstance(arg, (ast.List, ast.Set, ast.Dict)):
+                    type_name = {ast.List: "list", ast.Set: "set", ast.Dict: "dict"}[type(arg)]
                     self.issues.append((
                         node.lineno,
                         "CRITICAL",
-                        f"TypeError: {func_name}() called on unhashable type (lists/dicts/sets cannot be hashed)"
+                        f"TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)"
                     ))
 
-                # Check for .items() which returns unhashable tuples containing unhashable values
+                # Risky pattern: hash(frozenset(dict.items()))
                 elif isinstance(arg, ast.Call):
-                    if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
-                        # dict.items() returns unhashable if dict values are unhashable
-                        self.issues.append((
-                            node.lineno,
-                            "HIGH",
-                            f"TypeError risk: {func_name}(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper."
-                        ))
+                    if (isinstance(arg.func, ast.Name) and arg.func.id == 'frozenset' and
+                        arg.args and isinstance(arg.args[0], ast.Call)):
+                        inner_call = arg.args[0]
+                        if (isinstance(inner_call.func, ast.Attribute) and
+                            inner_call.func.attr == 'items'):
+                            self.issues.append((
+                                node.lineno,
+                                "HIGH",
+                                "TypeError risk: hash(frozenset(dict.items())) fails if dict contains unhashable values (validate first)"
+                            ))
 
-                # Check for frozenset(dict.items()) pattern
-                elif func_name == 'frozenset' and isinstance(arg, ast.Call):
-                    if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
-                        self.issues.append((
-                            node.lineno,
-                            "HIGH",
-                            f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values. Convert lists/dicts to tuples first."
-                        ))
+        # Check for frozenset() with unhashable types
+        if func_name == 'frozenset' and node.args:
+            arg = node.args[0]
+
+            # Direct list/dict/set literals are unhashable
+            if isinstance(arg, (ast.List, ast.Dict, ast.Set)):
+                self.issues.append((
+                    node.lineno,
+                    "CRITICAL",
+                    f"TypeError: frozenset() called on unhashable type (lists/dicts/sets cannot be hashed)"
+                ))
+
+            # Check for .items() which returns unhashable tuples containing unhashable values
+            elif isinstance(arg, ast.Call):
+                if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
+                    # dict.items() returns unhashable if dict values are unhashable
+                    self.issues.append((
+                        node.lineno,
+                        "HIGH",
+                        f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper."
+                    ))
+
+        # Check for int() / float() without error handling
+        if func_name in ('int', 'float'):
+            # Only flag if there are arguments (conversion attempt)
+            if node.args:
+                # Check if inside try/except
+                if not self._is_in_try_except():
+                    self.issues.append((
+                        node.lineno,
+                        "MEDIUM",
+                        f"ValueError risk: {func_name}() without try/except (invalid input will crash)"
+                    ))
 
         self.generic_visit(node)
 
