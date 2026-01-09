@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate next-session-brief.md and SESSION_log.md consistency."""
+"""Validate next-session-brief.md and SESSION_LOG.md consistency."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 
 NEXT_PATH = Path("docs/planning/next-session-brief.md")
-SESSION_PATH = Path("docs/SESSION_log.md")
+SESSION_PATH = Path("docs/SESSION_LOG.md")
 
 DATE_RE = re.compile(r"Date:\*\*?\s*(\d{4}-\d{2}-\d{2})")
 HANDOFF_DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
@@ -56,7 +56,7 @@ def main() -> int:
         print("ERROR: docs/planning/next-session-brief.md not found")
         return 1
     if not SESSION_PATH.exists():
-        print("ERROR: docs/SESSION_log.md not found")
+        print("ERROR: docs/SESSION_LOG.md not found")
         return 1
 
     next_lines = NEXT_PATH.read_text(encoding="utf-8").splitlines()
@@ -111,18 +111,18 @@ def main() -> int:
             break
 
     if session_idx == -1:
-        print(f"ERROR: SESSION_log.md missing session entry for {date_str}")
+        print(f"ERROR: SESSION_LOG.md missing session entry for {date_str}")
         return 1
 
     if first_session_line is not None and not first_session_line.startswith(session_heading):
-        print("ERROR: SESSION_log.md newest session must be at the top (append-only).")
+        print("ERROR: SESSION_LOG.md newest session must be at the top (append-only).")
         print(f"Expected first session header to start with {session_heading}.")
         return 1
 
     # Ensure Focus appears near the session header.
     window = session_lines[session_idx : session_idx + 25]
     if not any("Focus:" in line for line in window):
-        print(f"ERROR: SESSION_log.md entry for {date_str} missing 'Focus:' line")
+        print(f"ERROR: SESSION_LOG.md entry for {date_str} missing 'Focus:' line")
         return 1
 
     return 0

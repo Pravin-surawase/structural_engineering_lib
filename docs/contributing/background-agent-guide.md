@@ -124,7 +124,7 @@ Key rule: **Never run manual git commands.** Use workflow scripts only.
 ❌ **Avoid:**
 - Implementation code
 - Test files
-- Shared tracking files (TASKS.md, SESSION_log.md)
+- Shared tracking files (TASKS.md, SESSION_LOG.md)
 
 ### DEV Agent
 ✅ **Safe:**
@@ -383,7 +383,7 @@ MAIN agent responds with decision, background agent continues work.
 
 **High-churn files** (MAIN agent only):
 - `docs/TASKS.md`
-- `docs/SESSION_log.md`
+- `docs/SESSION_LOG.md`
 - `docs/planning/next-session-brief.md`
 - `docs/planning/memory.md` (MAIN updates, agents read)
 

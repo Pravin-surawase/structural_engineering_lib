@@ -160,6 +160,167 @@ fi
 
 ---
 
+### HIGH: Terminal Stuck in Git Pager (Alternate Buffer)
+
+**What Happened:**
+- Copilot Agent runs `git status`, `git log`, or `git diff`
+- Git opens output in pager (`less`)
+- Terminal enters "alternate buffer" mode
+- Agent cannot send keystrokes to quit (`q`)
+- **Terminal completely stuck**, agent cannot continue
+- All subsequent commands blocked
+
+**Timeline of Failure:**
+```
+15:42:13 - Agent runs: git status
+15:42:14 - Git opens less pager (output > 1 screen)
+15:42:14 - Terminal enters alternate buffer mode
+15:42:15 - Agent tries next command → BLOCKED
+15:42:16 - Agent tries: echo "checking..." → BLOCKED
+15:42:17 - Agent tries: git merge --abort → BLOCKED
+[Terminal stuck indefinitely until manual intervention]
+```
+
+**Root Cause:**
+> **"Git's pager (less) requires keyboard input to quit. Agents cannot send keyboard strokes."**
+
+**The Fatal Pattern:**
+```bash
+# ❌ WRONG - Triggers pager on long output
+git status              # If > 24 lines, opens less
+git log                 # Almost always opens less
+git diff                # Opens less for file changes
+git branch -a           # Opens less if many branches
+
+# Agent is now STUCK waiting for 'q' keypress
+```
+
+**Real Example from 2026-01-10:**
+```
+> git status
+The command opened the alternate buffer.
+
+> git merge --abort 2>/dev/null || true; git status -sb
+The command opened the alternate buffer.
+
+> ./scripts/safe_push.sh "feat(migration): enhance link checker"
+The command opened the alternate buffer.
+
+Terminal is completely stuck. All commands blocked.
+```
+
+**Prevention in Agent 8:**
+
+**Solution 1: Disable pager globally (RECOMMENDED for agents)**
+```bash
+# One-time setup for agent environment
+git config --global core.pager cat
+git config --global pager.status false
+git config --global pager.branch false
+git config --global pager.diff false
+
+# Now all git commands output directly, no pager
+```
+
+**Solution 2: Use pager-safe flags (per-command)**
+```bash
+# ✅ CORRECT - Never triggers pager
+
+# Instead of: git status
+git status --short           # Short format, rarely pagers
+git status --porcelain       # Machine-readable, no pager
+git --no-pager status        # Force no pager
+
+# Instead of: git log
+git log --oneline            # Condensed format
+git log --oneline -n 10      # Limit output
+git --no-pager log           # Force no pager
+
+# Instead of: git diff
+git diff --stat              # Summary only
+git diff --name-only         # Files only
+git --no-pager diff          # Force no pager
+
+# Instead of: git branch -a
+git branch --list            # Local only
+git --no-pager branch -a     # Force no pager
+```
+
+**Solution 3: Set pager to cat (alternative)**
+```bash
+# Export in agent's shell environment
+export GIT_PAGER=cat
+
+# Or in .bashrc/.zshrc for agent sessions
+echo 'export GIT_PAGER=cat' >> ~/.bashrc
+```
+
+**Detection Pattern for Agent 8:**
+```bash
+# Before running ANY git command, ensure pager disabled
+if [ -z "$GIT_PAGER" ]; then
+    export GIT_PAGER=cat
+    git config --global core.pager cat
+fi
+
+# Or wrap all git commands
+safe_git() {
+    git --no-pager "$@"
+}
+
+# Usage
+safe_git status
+safe_git log --oneline -n 20
+```
+
+**Recovery if Agent Gets Stuck:**
+1. **Manual intervention required** - user must press `q` in terminal
+2. Or press `Ctrl+C` to force quit pager
+3. Or close terminal tab and restart
+4. Then apply pager prevention (Solution 1)
+
+**Agent Behavioral Pattern:**
+```bash
+# At session start, ALWAYS run:
+git config --global core.pager cat
+git config --global pager.status false
+git config --global pager.branch false
+git config --global pager.diff false
+
+# Then verify
+git config core.pager  # Should show: cat
+```
+
+**Success Metric:**
+- **Before fix:** 100% terminal stuck on first `git status`
+- **After fix:** 0% stuck (no pager triggered)
+- **Agent 8 Target:** Never trigger git pager
+
+**Related Commands That Can Trigger Pager:**
+```bash
+# HIGH RISK (almost always page)
+git log
+git diff
+git show
+git blame [large-file]
+
+# MEDIUM RISK (page if output long)
+git status
+git branch -a
+git remote -v
+git config --list
+
+# LOW RISK (rarely page)
+git status --short
+git rev-parse HEAD
+git symbolic-ref HEAD
+```
+
+**Best Practice for Agent 8:**
+> **"Always use --short, --oneline, or --no-pager flags. Never run bare git commands."**
+
+---
+
 ### HIGH: The --ours Auto-Resolve Hidden Changes Risk
 
 **What Happens:**

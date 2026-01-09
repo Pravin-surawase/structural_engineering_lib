@@ -812,7 +812,7 @@ Best collaboration happens when:
 
 ### Do These Things (High Value)
 
-1. **Read SESSION_log.md first**
+1. **Read SESSION_LOG.md first**
    - Shows what previous agents struggled with
    - Prevents repeating mistakes
    - Provides historical context

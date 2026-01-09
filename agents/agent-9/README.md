@@ -21,6 +21,7 @@
 | **[RESEARCH_PLAN.md](RESEARCH_PLAN.md)** | Comprehensive research plan (810 lines) |
 | **[RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md)** | Executive summary (394 lines) |
 | **[RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md)** | 1-page quick reference card |
+| **[Governance Hub](governance/README.md)** | Central location for migration + structure governance |
 
 ---
 
@@ -30,6 +31,13 @@
 
 **Core Principle:**
 AI agents amplify existing disciplines - not substitute for them. Strong technical foundations (CI/CD, tests, automation) require matching organizational foundations (WIP limits, pacing rules, archival processes) to sustain high velocity without chaos.
+
+**Navigation Principles (Adopted):**
+- Progressive disclosure (README → one target doc)
+- Information scent via precise filenames
+- Two-level depth limit for governance docs
+- Diataxis separation (tutorial/how-to/reference/explanation)
+- Optional front matter metadata for fast scanning
 
 ---
 
@@ -216,6 +224,7 @@ What type of governance session?
 3. **[TASKS.md](../../docs/TASKS.md)** - Current backlog state
 4. **[SESSION_LOG.md](../../docs/SESSION_LOG.md)** - Historical decisions
 5. **[git-governance.md](../../docs/_internal/git-governance.md)** - Git/CI best practices
+6. **[Governance Hub](governance/README.md)** - Migration + structure governance home
 
 ### Research Foundation
 - Best AI Coding Agents for 2026 - Faros AI

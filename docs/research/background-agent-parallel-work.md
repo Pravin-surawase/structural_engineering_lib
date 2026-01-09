@@ -120,7 +120,7 @@ This research consolidates 12+ years of industry practices, academic research, a
 
 1. **File Ownership = Communication Boundaries**
    - Agents working on separate modules require less coordination
-   - Shared files (TASKS.md, SESSION_log.md) require synchronous coordination
+   - Shared files (TASKS.md, SESSION_LOG.md) require synchronous coordination
    - Our solution: MAIN agent owns high-churn files, background agents own isolated modules
 
 2. **Role Specialization = Cleaner Interfaces**
@@ -363,7 +363,7 @@ Our preference: PRs for implementation discussion, Docs for persistent knowledge
 |----------|------------------|-------|---------|
 | `docs/planning/memory.md` | Daily | MAIN | Current state, challenges, decisions |
 | `docs/TASKS.md` | Per merge | MAIN | Work queue, priorities |
-| `docs/SESSION_log.md` | Per session | MAIN | Historical record, append-only |
+| `docs/SESSION_LOG.md` | Per session | MAIN | Historical record, append-only |
 | `docs/planning/next-session-brief.md` | Per session | MAIN | Quick resume point |
 | `docs/ai-context-pack.md` | Per release | DOCS | Project rules, architecture |
 
@@ -589,7 +589,7 @@ Four memory types for effective AI agent work:
    - Last 5-10 commits
    - Recent decisions and their rationale
    - Open blockers and unresolved questions
-   - Our implementation: `docs/SESSION_log.md` (append-only, last 20 items)
+   - Our implementation: `docs/SESSION_LOG.md` (append-only, last 20 items)
 
 2. **Semantic Memory (Knowledge and Rules):**
    - Project architecture and patterns
@@ -611,7 +611,7 @@ Four memory types for effective AI agent work:
 
 **Memory Decay Prevention:**
 - Update memory.md every session (MAIN agent)
-- Archive SESSION_log.md when > 1000 lines (prevent overflow)
+- Archive SESSION_LOG.md when > 1000 lines (prevent overflow)
 - Review ai-context-pack.md every release (keep current)
 - Prune stale tasks from TASKS.md weekly (prevent clutter)
 

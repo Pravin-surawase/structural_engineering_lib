@@ -46,7 +46,7 @@ During week:
 
 End of week:
 - `.venv/bin/python scripts/end_session.py`
-- Summarize in `docs/SESSION_log.md`.
+- Summarize in `docs/SESSION_LOG.md`.
 
 ---
 
@@ -74,7 +74,7 @@ End of week:
 Required before tagging:
 - `./scripts/ci_local.sh`
 - `.venv/bin/python scripts/check_doc_versions.py --ci`
-- Update `CHANGELOG.md`, `docs/releases.md`, `docs/SESSION_log.md`
+- Update `CHANGELOG.md`, `docs/releases.md`, `docs/SESSION_LOG.md`
 
 If any gate fails, do not release.
 

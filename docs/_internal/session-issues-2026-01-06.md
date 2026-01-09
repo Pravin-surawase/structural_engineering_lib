@@ -22,7 +22,7 @@
 SKIP_FILES = [
     "CHANGELOG.md",
     "releases.md",
-    "SESSION_log.md",
+    "SESSION_LOG.md",
     "docs/_archive/",
     "docs/research/",  # Research docs reference external tool versions
 ]

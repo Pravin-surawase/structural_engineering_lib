@@ -71,7 +71,7 @@ git add <files>          # Stage files
 
 **❌ Session log entry missing:**
 - Script auto-creates entry with `--fix`
-- Or manually add to `docs/SESSION_log.md`:
+- Or manually add to `docs/SESSION_LOG.md`:
   ```markdown
   ## 2026-01-06 — Session (Brief Title)
 
@@ -460,7 +460,7 @@ git log --oneline -3    # Verify your commits are there
 - **end_session.py usage:** Run with `--help` for full options
 - **Automation catalog:** [docs/reference/automation-catalog.md](../reference/automation-catalog.md)
 - **Session issues log:** [docs/contributing/session-issues.md](session-issues.md)
-- **Session log:** [docs/SESSION_log.md](../SESSION_log.md)
+- **Session log:** [docs/SESSION_LOG.md](../SESSION_LOG.md)
 - **Handoff quick start:** [docs/handoff.md](../handoff.md)
 
 ---

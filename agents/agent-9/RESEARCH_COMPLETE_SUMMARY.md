@@ -178,6 +178,20 @@
 
 ---
 
+## Navigation Efficiency Synthesis (Adopted)
+
+**Validated principles to improve agent navigation speed:**
+- **Progressive disclosure:** one hub README → one target doc
+- **Information scent:** semantic filenames and clear titles reduce search time
+- **Two-level depth limit:** avoid deep hierarchies (reduces agent context thrash)
+- **Diataxis separation:** keep tutorials/how-to/reference/explanation distinct
+- **Front matter metadata (optional):** owner/status/updated for quick filtering
+- **Context window awareness:** optimize for 10-20 pages effective context
+
+**Adoption:** Applied to the Agent 9 Governance Hub and future doc layouts.
+
+---
+
 ## Files Created (7 documents, ~4,000 lines)
 
 ### Phase 1 Research Documents:

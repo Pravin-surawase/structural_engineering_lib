@@ -844,7 +844,7 @@ Merging performs a three-way merge using the common ancestor.
 - Production code (`Python/structural_lib/**/*`)
 - Tests (`Python/tests/**/*`)
 - Main documentation (`docs/**/*` except `docs/planning/agent-5-tasks.md`)
-- `docs/TASKS.md`, `docs/SESSION_log.md` (MAIN agent owns these)
+- `docs/TASKS.md`, `docs/SESSION_LOG.md` (MAIN agent owns these)
 
 ### Git Workflow Proposal
 

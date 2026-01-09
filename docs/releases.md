@@ -271,7 +271,7 @@ Use workflow_dispatch with `testpypi` target:
   - Review document at `docs/_internal/multi-agent-review-2025-12-28.md`
 - **CLI Warning:** Warns when `--crack-width-params` used with multiple beams
 - **CI Standardization:** GitHub Actions versions unified to @v6
-- **Documentation Polish:** TASKS.md, SESSION_log.md, ai-context-pack.md cleaned and reformatted
+- **Documentation Polish:** TASKS.md, SESSION_LOG.md, ai-context-pack.md cleaned and reformatted
 
 **Test Results:** 1958 passed, 91 skipped
 **PyPI:** `pip install structural-lib-is456==0.10.3`

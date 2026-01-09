@@ -44,7 +44,7 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 - `handoff.md`
 - `README.md`
 - `releases.md`
-- `SESSION_log.md`
+- `SESSION_LOG.md`
 - `TASKS.md`
 
 ### Legacy root redirects (docs/ -> canonical)

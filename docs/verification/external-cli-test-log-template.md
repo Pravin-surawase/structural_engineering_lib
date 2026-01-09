@@ -2,7 +2,7 @@
 
 > Purpose: capture a repeatable, human-run CLI test from a fresh user.
 >
-> Fill this out and paste into `docs/SESSION_log.md` (or attach it to the PR).
+> Fill this out and paste into `docs/SESSION_LOG.md` (or attach it to the PR).
 
 ---
 

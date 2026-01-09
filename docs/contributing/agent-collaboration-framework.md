@@ -41,7 +41,7 @@ This project uses **agent-driven maintenance** where specialized AI agents (rese
 - Communicate with user
 - Assign tasks to background agents
 - Review PRs and merge approved work
-- Maintain TASKS.md and SESSION_log.md
+- Maintain TASKS.md and SESSION_LOG.md
 - Resolve conflicts between agents
 - Make architectural decisions
 
@@ -52,7 +52,7 @@ This project uses **agent-driven maintenance** where specialized AI agents (rese
 
 **Files Owned:**
 - `docs/TASKS.md`
-- `docs/SESSION_log.md`
+- `docs/SESSION_LOG.md`
 - `docs/planning/next-session-brief.md`
 
 ---
@@ -540,7 +540,7 @@ docs/planning/feature-x-implementation-plan.md
    - Backlog priorities
    - Updated: By MAIN after each session
 
-4. **`docs/SESSION_log.md`**
+4. **`docs/SESSION_LOG.md`**
    - Session-by-session progress
    - Decisions made
    - Problems encountered

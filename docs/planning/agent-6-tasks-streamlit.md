@@ -6019,7 +6019,7 @@ At the end of each phase, produce a concise handoff summary:
 **❌ NEVER Edit:**
 - `Python/structural_lib/` (implementation code - DEV agent territory)
 - `Python/tests/` (unit tests - TESTER agent territory)
-- `docs/TASKS.md`, `docs/SESSION_log.md` (MAIN agent owns)
+- `docs/TASKS.md`, `docs/SESSION_LOG.md` (MAIN agent owns)
 - `.github/workflows/` (DEVOPS agent owns)
 
 ### Merge Conflicts Prevention

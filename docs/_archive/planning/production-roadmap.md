@@ -176,7 +176,7 @@ These are expected issues for this domain — plan for them, don't be surprised:
   - Deliverable: add WIP=1 rule to docs/TASKS.md and docs/ai-context-pack.md.
   - Done when: rule visible and agreed.
 - W02: External CLI test (S-007)
-  - Deliverable: cold-start test log in docs/SESSION_log.md (fresh install, run CLI, verify outputs).
+  - Deliverable: cold-start test log in docs/SESSION_LOG.md (fresh install, run CLI, verify outputs).
   - Done when: results recorded + issues captured + at least 3 “stranger” pain points converted to backlog items.
   - If blocked: mark as Waiting and proceed to W03 (WIP=1 rule still applies; S-007 resumes when tester is available).
 - W03: Error schema draft
@@ -311,7 +311,7 @@ These are expected issues for this domain — plan for them, don't be surprised:
   - Done when: outputs match expected.
 - W44: Cold-start onboarding test
   - Deliverable: install -> result in < 5 minutes.
-  - Done when: logged in docs/SESSION_log.md.
+  - Done when: logged in docs/SESSION_LOG.md.
 - W45: Docs information architecture
   - Deliverable: quick summary vs deep-dive split.
   - Done when: docs/README.md updated.
