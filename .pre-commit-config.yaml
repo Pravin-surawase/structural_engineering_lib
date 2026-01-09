@@ -168,6 +168,13 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-cost-optimizer-issues
+        name: Check cost optimizer code issues
+        entry: python3 scripts/check_cost_optimizer_issues.py
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/02_.*cost_optimizer\.py$
+        verbose: true
 
 # CI note: pre-commit hooks run locally only.
 # CI has separate lint/format checks in .github/workflows/python-tests.yml
