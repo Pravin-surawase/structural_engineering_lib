@@ -655,10 +655,24 @@ def is_library_available() -> bool:
 
 
 def get_library_status() -> dict:
-    """Get status information about the library integration."""
+    """
+    Get detailed status information about the library integration.
+
+    Returns:
+        Dict with keys:
+        - available (bool): Whether library is available
+        - version (str): Library version if available
+        - library_path (str): Path to Python library
+        - missing_modules (list): List of missing modules if unavailable
+        - error_message (str): Error message if import failed
+        - fallback_mode (bool): Whether using fallback calculations
+    """
     status = {
         "available": _LIBRARY_AVAILABLE,
         "library_path": str(_lib_path),
+        "fallback_mode": not _LIBRARY_AVAILABLE,
+        "missing_modules": [],
+        "error_message": None,
     }
 
     if _LIBRARY_AVAILABLE:
@@ -669,6 +683,31 @@ def get_library_status() -> dict:
         except Exception:
             status["version"] = "unknown"
     else:
-        status["error"] = _IMPORT_ERROR
+        status["error_message"] = _IMPORT_ERROR
+
+        # Parse import error to identify missing modules
+        if "No module named" in _IMPORT_ERROR:
+            # Extract module name from error message
+            import re
+            match = re.search(r"No module named '([^']+)'", _IMPORT_ERROR)
+            if match:
+                status["missing_modules"].append(match.group(1))
 
     return status
+
+
+def get_library_status_message() -> str:
+    """
+    Get human-readable status message about library integration.
+
+    Returns:
+        Formatted status message for display
+    """
+    status = get_library_status()
+
+    if status["available"]:
+        version = status.get("version", "unknown")
+        return f"✅ structural_lib {version} available"
+    else:
+        error = status.get("error_message", "Unknown error")
+        return f"⚠️ structural_lib unavailable: {error[:100]}"
