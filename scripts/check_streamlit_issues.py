@@ -116,6 +116,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.parent_nodes: List[ast.AST] = []  # Stack for tracking parent nodes
         self.in_conditional = False  # Track if we're inside a conditional branch
 
+        # Test mock tracking (Phase 2 enhancement)
+        self.magicmock_assignments: Set[str] = set()  # Track mock.attr = MagicMock()
+
     def add_issue(self, line: int, severity: str, message: str):
         """Add an issue, respecting ignore configuration."""
         if self.ignore_config and self.ignore_config.should_ignore(self.filepath, line):
@@ -261,6 +264,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         if isinstance(node.value, ast.Call):
             if isinstance(node.value.func, ast.Name) and node.value.func.id in self.path_like_vars:
                 is_path_assignment = True
+
+            # Phase 2: Track MagicMock assignments for test files
+            # Pattern: mock_streamlit.method = MagicMock()
+            if isinstance(node.value.func, ast.Name) and node.value.func.id == 'MagicMock':
+                for target in node.targets:
+                    if isinstance(target, ast.Attribute):
+                        # Extract the full attribute path: mock_streamlit.method
+                        attr_path = self._get_attribute_path(target)
+                        if attr_path:
+                            self.magicmock_assignments.add(attr_path)
+
         elif isinstance(node.value, ast.BinOp):
             # Path / "string" creates new Path
             if isinstance(node.value.op, ast.Div):
@@ -485,6 +499,19 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                             )
 
         self.generic_visit(node)
+
+    def _get_attribute_path(self, node: ast.expr) -> Optional[str]:
+        """
+        Get the full attribute path from an AST node.
+        Example: mock_streamlit.progress -> "mock_streamlit.progress"
+        """
+        if isinstance(node, ast.Name):
+            return node.id
+        elif isinstance(node, ast.Attribute):
+            base = self._get_attribute_path(node.value)
+            if base:
+                return f"{base}.{node.attr}"
+        return None
 
     def _extract_var_name(self, node: ast.expr) -> Optional[str]:
         """Extract variable name from an AST node."""
@@ -773,6 +800,83 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     )
 
         self.generic_visit(node)
+
+    def visit_Attribute(self, node: ast.Attribute):
+        """
+        Detect mock assertion anti-patterns in test files.
+
+        Phase 2 Enhancement: Detect .called, .call_count on non-Mock objects.
+        Common in test files when checking if mock_streamlit.function.called.
+        """
+        # Only check in test files
+        if '/tests/' in self.filepath or self.filepath.endswith('_test.py'):
+            # Check for .called, .call_count, .call_args patterns
+            if node.attr in ('called', 'call_count', 'call_args', 'call_args_list'):
+                # Check if this is likely NOT a Mock object
+                # Heuristic: if it's mock_streamlit.method_name.called, flag it
+                # unless the method was explicitly set to MagicMock
+                if isinstance(node.value, ast.Attribute):
+                    # Pattern: mock_streamlit.markdown.called
+                    base = node.value.value
+                    method = node.value.attr
+
+                    # Check if base looks like a mock fixture (mock_streamlit, mock_*, etc.)
+                    if isinstance(base, ast.Name):
+                        base_name = base.id
+                        if base_name.startswith('mock_'):
+                            # Get the full path: mock_streamlit.method
+                            attr_path = f"{base_name}.{method}"
+
+                            # Check if this was explicitly set to MagicMock
+                            if attr_path not in self.magicmock_assignments:
+                                # This is likely mock_streamlit.function.called
+                                # which will fail if function is not a MagicMock
+                                self.add_issue(
+                                    node.lineno,
+                                    "HIGH",
+                                    f"Mock assertion anti-pattern: '{attr_path}.{node.attr}' "
+                                    f"will fail if {method} is not a MagicMock. "
+                                    f"Either: (1) Set '{attr_path} = MagicMock()' first, "
+                                    f"or (2) Use 'assert True' to verify function ran without error."
+                                )
+
+        self.generic_visit(node)
+
+    def visit_ClassDef(self, node: ast.ClassDef):
+        """
+        Detect duplicate class definitions that shadow conftest fixtures.
+
+        Phase 2 Enhancement: Warn when test files define MockStreamlit, MockSessionState, etc.
+        These should use the centralized fixtures from conftest.py instead.
+        """
+        # Only check in test files (not conftest.py itself)
+        if '/tests/' in self.filepath and not self.filepath.endswith('conftest.py'):
+            # Known centralized test fixtures
+            centralized_classes = {
+                'MockStreamlit': 'streamlit_app/tests/conftest.py',
+                'MockSessionState': 'streamlit_app/tests/conftest.py',
+                'MockContext': 'streamlit_app/tests/conftest.py',
+            }
+
+            if node.name in centralized_classes:
+                expected_location = centralized_classes[node.name]
+                self.add_issue(
+                    node.lineno,
+                    "MEDIUM",
+                    f"Duplicate class definition: '{node.name}' shadows centralized fixture in {expected_location}. "
+                    f"Use the conftest.py fixture instead (via 'mock_streamlit' parameter in test functions)."
+                )
+
+        # Track the class definition
+        self.add_defined_name(node.name)
+        old_class = self.current_class
+        self.current_class = node.name
+
+        self.enter_scope()
+        self.generic_visit(node)
+        self.exit_scope()
+
+        self.current_class = old_class
 
 
 def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None) -> List[Tuple[int, str, str]]:
