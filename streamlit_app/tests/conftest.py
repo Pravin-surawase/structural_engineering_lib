@@ -36,12 +36,20 @@ class MockSessionState(dict):
         else:
             self[name] = value
 
+    def get(self, key, default=None):
+        """Enhanced get() with default handling"""
+        return super().get(key, default)
+
 
 class MockStreamlit:
     """Enhanced Streamlit mock for testing"""
 
     # Mock session_state with dict + attribute access
     session_state = MockSessionState()
+
+    # Call tracking attributes
+    markdown_called = False
+    markdown_calls = []
 
     @staticmethod
     def columns(num_cols):
@@ -99,6 +107,8 @@ class MockStreamlit:
     @staticmethod
     def markdown(text, **kwargs):
         """Mock st.markdown() accepting arbitrary kwargs (e.g. unsafe_allow_html)."""
+        MockStreamlit.markdown_called = True
+        MockStreamlit.markdown_calls.append({'text': text, 'kwargs': kwargs})
         pass
 
     @staticmethod
@@ -149,6 +159,83 @@ class MockStreamlit:
             return decorator
         return decorator(func)
 
+    @staticmethod
+    def spinner(text):
+        """Mock st.spinner() context manager"""
+        class SpinnerContext:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+        return SpinnerContext()
+
+    @staticmethod
+    def status(label, expanded=False, state="running"):
+        """Mock st.status() context manager"""
+        class StatusContext:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def update(self, label=None, state=None, expanded=None):
+                pass
+        return StatusContext()
+
+    @staticmethod
+    def tabs(labels):
+        """Mock st.tabs() - returns list of tab context managers"""
+        class TabContext:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def markdown(self, text):
+                pass
+            def write(self, text):
+                pass
+        return [TabContext() for _ in labels]
+
+    @staticmethod
+    def plotly_chart(fig, use_container_width=True, key=None, **kwargs):
+        """Mock st.plotly_chart()"""
+        pass
+
+    @staticmethod
+    def container():
+        """Mock st.container() context manager"""
+        class ContainerContext:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def markdown(self, text, **kwargs):
+                pass
+            def write(self, *args):
+                pass
+            def metric(self, label, value, delta=None):
+                pass
+        return ContainerContext()
+
+    @staticmethod
+    def write(*args, **kwargs):
+        """Mock st.write()"""
+        pass
+
+    @staticmethod
+    def button(label, key=None, help=None, on_click=None, disabled=False):
+        """Mock st.button() - always returns False in tests"""
+        return False
+
+    @staticmethod
+    def selectbox(label, options, index=0, key=None, help=None):
+        """Mock st.selectbox() - returns first option"""
+        return options[index] if options else None
+
+    @staticmethod
+    def number_input(label, min_value=None, max_value=None, value=None, key=None):
+        """Mock st.number_input() - returns value or min_value"""
+        return value if value is not None else (min_value if min_value is not None else 0)
+
 
 # Replace streamlit module with enhanced mock
 sys.modules['streamlit'] = MockStreamlit()
@@ -173,24 +260,13 @@ def mock_streamlit():
     # Reset session state
     MockStreamlit.session_state.clear()
 
-    # Reset markdown call tracking
+    # Reset call tracking
     MockStreamlit.markdown_called = False
-
-    # Enhance with mock tracking
-    original_markdown = MockStreamlit.markdown
-
-    def tracked_markdown(*args, **kwargs):
-        MockStreamlit.markdown_called = True
-        return original_markdown(*args, **kwargs)
-
-    MockStreamlit.markdown = tracked_markdown
-
-    # Add write method
-    MockStreamlit.write = MagicMock()
+    MockStreamlit.markdown_calls = []
 
     yield MockStreamlit
 
     # Cleanup
     MockStreamlit.session_state.clear()
-    MockStreamlit.markdown = original_markdown
     MockStreamlit.markdown_called = False
+    MockStreamlit.markdown_calls = []
