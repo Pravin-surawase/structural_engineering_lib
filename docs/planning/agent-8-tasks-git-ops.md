@@ -677,6 +677,38 @@ mypy                     # Type checking
 bandit                   # Security checks
 contract-tests           # API contract validation
 check-links              # Documentation link validation
+check-streamlit-issues   # Streamlit AST scanner (BLOCKING)
+pylint-streamlit         # Streamlit code quality
+```
+
+**Streamlit Validation (Special Handling):**
+
+The Streamlit scanner runs automatically when editing `streamlit_app/**/*.py` files:
+
+```yaml
+check-streamlit-issues:
+  - Detects: NameError, ZeroDivisionError, AttributeError, KeyError, ImportError
+  - Intelligence: Recognizes zero-validation patterns (ternary, if-blocks)
+  - Blocking: CRITICAL issues → commit blocked
+  - Warnings: HIGH issues → commit proceeds with warnings
+  - Files: Only runs on streamlit_app/ changes
+```
+
+**When Scanner Blocks Commit:**
+```bash
+# Example: CRITICAL ZeroDivisionError detected
+# File: streamlit_app/pages/01_🏗️_beam_design.py
+# Line 462: division '/' without obvious zero check
+
+# Fix pattern:
+if denominator > 0:
+    result = numerator / denominator
+# OR use ternary:
+result = numerator / denominator if denominator > 0 else 0
+
+# After fix:
+git add <file>
+git commit --amend --no-edit  # Hooks run again
 ```
 
 **If hooks fail:**
@@ -685,6 +717,7 @@ check-links              # Documentation link validation
 # - Mypy error → Show specific type mismatch
 # - Contract test failure → Show API breaking change
 # - Link check failure → Show broken link path
+# - Streamlit scanner CRITICAL → Show line number + pattern to fix
 
 # Alert background agent with specific fix guidance
 ```

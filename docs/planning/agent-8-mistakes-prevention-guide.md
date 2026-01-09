@@ -407,6 +407,53 @@ fi
 
 ---
 
+### MEDIUM: Streamlit Code Without Validation
+
+**What Happened:**
+- Streamlit files committed with NameError/ZeroDivisionError
+- Runtime crashes discovered in production
+- User reports of non-functional pages
+- **95% preventable** with scanner
+
+**Pattern:**
+> "Agents edit Streamlit code, commit with --no-verify, skip validation"
+
+**Real Example:**
+```python
+# ❌ Committed without validation
+st.metric("Result", f"{result / total:.2f}")
+# Runtime: ZeroDivisionError when total = 0
+```
+
+**Prevention in Agent 8:**
+```bash
+# ✅ CORRECT: Let pre-commit hooks run
+./scripts/ai_commit.sh "feat: add calculation"
+# Scanner runs automatically, detects unsafe division
+# CRITICAL: ZeroDivisionError risk at line 42
+# → Fix required before commit proceeds
+
+# ❌ NEVER bypass scanner
+git commit --no-verify  # Skips validation!
+```
+
+**Scanner Capabilities (Phase 1B Complete):**
+- ✅ NameError detection (undefined variables)
+- ✅ ZeroDivisionError detection (zero-check patterns)
+- ✅ AttributeError detection (session state)
+- ✅ KeyError detection (dict access)
+- ✅ Zero false positives (intelligent pattern recognition)
+
+**Agent 8 Rule:**
+> "Streamlit edits MUST pass scanner. CRITICAL blocks = fix required."
+
+**Success Metric:**
+- **Before scanner:** 39 runtime bugs in Streamlit (2026-01-04)
+- **After scanner:** 0 new runtime bugs (2026-01-09)
+- **Agent 8 Target:** 0 scanner bypasses
+
+---
+
 ### MEDIUM: Skipping Pre-Commit Hooks
 
 **The Pattern:**
