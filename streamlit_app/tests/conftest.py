@@ -165,3 +165,32 @@ def clean_session_state():
     st.session_state.clear()
     yield
     st.session_state.clear()
+
+
+@pytest.fixture
+def mock_streamlit():
+    """Provide MockStreamlit instance for testing."""
+    # Reset session state
+    MockStreamlit.session_state.clear()
+
+    # Reset markdown call tracking
+    MockStreamlit.markdown_called = False
+
+    # Enhance with mock tracking
+    original_markdown = MockStreamlit.markdown
+
+    def tracked_markdown(*args, **kwargs):
+        MockStreamlit.markdown_called = True
+        return original_markdown(*args, **kwargs)
+
+    MockStreamlit.markdown = tracked_markdown
+
+    # Add write method
+    MockStreamlit.write = MagicMock()
+
+    yield MockStreamlit
+
+    # Cleanup
+    MockStreamlit.session_state.clear()
+    MockStreamlit.markdown = original_markdown
+    MockStreamlit.markdown_called = False
