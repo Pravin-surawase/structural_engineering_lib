@@ -29,7 +29,10 @@ Usage:
 import ast
 import sys
 import argparse
-import yaml
+try:
+    import yaml
+except ModuleNotFoundError:
+    yaml = None
 import inspect
 import time
 from pathlib import Path
@@ -134,6 +137,12 @@ class IgnoreConfig:
 
     def _load_config(self, config_path: Path):
         """Load ignore configuration from YAML file."""
+        if yaml is None:
+            print(
+                "⚠️  Warning: PyYAML not installed; ignore config not loaded. "
+                "Install with: pip install pyyaml"
+            )
+            return
         try:
             with open(config_path, 'r') as f:
                 config = yaml.safe_load(f) or {}
