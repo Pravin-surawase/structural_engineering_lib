@@ -46,6 +46,14 @@ If unsure, start with PM for triage and assignment.
 
 ---
 
+## GOVERNANCE (Agent 9)
+- Role: organizational health, sustainability, governance, maintenance orchestration.
+- **Documentation:** See [agent-9/](agent-9/) folder for complete documentation suite (7 specialized documents)
+- Prompt:
+  ```
+  Act as GOVERNANCE. Run weekly maintenance session: archive docs older than 7 days, clean worktrees, check version consistency, validate links, generate health metrics. Use workflows from agents/agent-9/WORKFLOWS.md and checklists from agents/agent-9/CHECKLISTS.md.
+  ```
+
 ## PM
 - Role: scope, governance, orchestration, release ledger.
 - Prompt:

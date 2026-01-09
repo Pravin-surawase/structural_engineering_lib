@@ -36,6 +36,56 @@ You're achieving exceptional results but accumulating organizational debt faster
 
 ---
 
+## Agent 9 Status (Updated)
+
+**Current Reality:** Agent 9 documentation exists and is organized under `agents/agent-9/` with 7 files totaling ~4,480 lines. This is a strong foundation, but enforcement and automation are not yet fully implemented.
+
+**Documents (current):**
+- README.md (292 lines)
+- WORKFLOWS.md (645 lines)
+- CHECKLISTS.md (503 lines)
+- AUTOMATION.md (839 lines)
+- KNOWLEDGE_BASE.md (630 lines)
+- METRICS.md (597 lines)
+- SESSION_TEMPLATES.md (974 lines)
+
+**Immediate Upgrade Targets:**
+1. Implement the five automation scripts specified in AUTOMATION.md.
+2. Publish the first weekly governance metrics report.
+3. Enforce WIP limits (worktrees, PRs, docs) with a visible checklist.
+4. Add a governance exception policy (documented, time-limited, reviewed).
+
+---
+
+## Additional Sustainability Risks & Opportunities (New)
+
+**Risks to address now:**
+- No governance automation is actually running (specs exist, scripts not implemented).
+- WIP limits are defined but not enforced or visible in daily workflow.
+- Session logs record decisions, but outcomes are not tracked against metrics.
+- Docs lifecycle policy exists but isn’t backed by a scheduled archive pass.
+- Governance ownership is implicit; no explicit “owner-of-week” rotation.
+- Release cadence exists but isn’t tied to a formal freeze checklist execution.
+
+**Opportunities to increase stability:**
+- Add a governance “heartbeat” (weekly summary in SESSION_LOG.md).
+- Create a lightweight “policy exception” template for justified deviations.
+- Introduce a governance risk register in METRICS.md (top 5 active risks).
+- Add CI guardrails for docs lifecycle and WIP limits on governance PRs.
+- Publish a quarterly governance review summary (what changed, why).
+- Tie governance metrics to TASKS.md (maintenance items as first-class tasks).
+- Create a “documentation freshness” score (active vs archived).
+- Track “agent handoff quality” as a measurable KPI.
+- Add a governance onboarding checklist for any new agent.
+- Establish a “maintenance debt budget” (max backlog allowed before feature work).
+- Add a “policy violation” log with prevention actions.
+- Use standard naming and templates for governance decisions to reduce drift.
+- Add PR labels for governance vs feature to enforce the 80/20 rule.
+- Log governance automation failures with next actions in SESSION_LOG.md.
+- Define minimal required governance artifacts per release (metrics + archive pass).
+
+---
+
 ## Table of Contents
 
 1. [What You've Accomplished](#part-1-what-youve-accomplished)
