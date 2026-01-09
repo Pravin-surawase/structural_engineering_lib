@@ -125,17 +125,27 @@ git push
 
 **Why Agent 8 workflow?**
 - Handles pre-commit modifications automatically
+- **Runs validation checks** (Streamlit scanner, black, ruff, etc.)
 - Pulls before committing (prevents conflicts)
 - Auto-resolves conflicts safely
 - Never rewrites pushed history
 - Logs all operations in git_operations_log/
 - 90-95% faster commits, 97.5% fewer errors
 
+**What happens during Agent 8 commit:**
+1. Stages your changes
+2. **Pre-commit hooks run** (including Streamlit scanner if editing streamlit_app/)
+3. If CRITICAL issues found → commit blocks, fix required
+4. If HIGH issues found → warnings shown, commit proceeds
+5. Pulls latest from remote
+6. Pushes your commit
+
 **For future agents:**
 1. Read [AGENT_WORKFLOW_MASTER_GUIDE.md](../docs/AGENT_WORKFLOW_MASTER_GUIDE.md) first
 2. Run `./scripts/agent_setup.sh` at session start
 3. ALWAYS use `./scripts/ai_commit.sh` for commits
-4. Check `git_operations_log/YYYY-MM-DD.md` for session history
+4. **If editing Streamlit:** Validation runs automatically, fix CRITICAL issues
+5. Check `git_operations_log/YYYY-MM-DD.md` for session history
 
 The tool analyzes:
 - **File type** (production vs docs/tests/scripts)
