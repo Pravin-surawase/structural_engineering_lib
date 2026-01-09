@@ -14,31 +14,30 @@ import pandas as pd
 
 
 # Mock Streamlit for testing
+class MockSessionState:
+    """Mock session_state that behaves like a dict."""
+    _state = {}
+
+    def __contains__(self, key):
+        return key in self._state
+
+    def __getitem__(self, key):
+        return self._state[key]
+
+    def __setitem__(self, key, value):
+        self._state[key] = value
+
+    def get(self, key, default=None):
+        return self._state.get(key, default)
+
+    def clear(self):
+        self._state = {}
+
+
 class MockStreamlit:
     """Mock Streamlit module for testing."""
 
-    class session_state:
-        _state = {}
-
-        @classmethod
-        def __contains__(cls, key):
-            return key in cls._state
-
-        @classmethod
-        def __getitem__(cls, key):
-            return cls._state.get(key)
-
-        @classmethod
-        def __setitem__(cls, key, value):
-            cls._state[key] = value
-
-        @classmethod
-        def get(cls, key, default=None):
-            return cls._state.get(key, default)
-
-        @classmethod
-        def clear(cls):
-            cls._state = {}
+    session_state = MockSessionState()
 
     @staticmethod
     def metric(label, value):
@@ -204,7 +203,10 @@ class TestSessionStateInitialization:
     """Test session state initialization."""
 
     def test_session_state_structure(self, mock_streamlit):
-        """Test that session state has correct structure."""
+        """Test that session_state has correct structure."""
+        # Clear state first
+        mock_streamlit.session_state.clear()
+
         # Simulate initialization
         if "bbs_inputs" not in mock_streamlit.session_state:
             mock_streamlit.session_state["bbs_inputs"] = {
