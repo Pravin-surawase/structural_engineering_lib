@@ -243,10 +243,10 @@
 
 ## 🔗 Related Files
 
-- [.pylintrc-streamlit](.pylintrc-streamlit) - Pylint configuration
-- [scripts/pylint_streamlit.sh](../scripts/pylint_streamlit.sh) - Wrapper script
-- [scripts/check_streamlit_issues.py](../../scripts/check_streamlit_issues.py) - AST scanner
-- [STREAMLIT_ISSUES_CATALOG.md](../contributing/streamlit-issues-catalog.md) - Issue catalog
+- `.pylintrc-streamlit` - Pylint configuration (in project root)
+- `scripts/pylint_streamlit.sh` - Wrapper script
+- [check_streamlit_issues.py](../../scripts/check_streamlit_issues.py) - AST scanner
+- [streamlit-issues-catalog.md](../contributing/streamlit-issues-catalog.md) - Issue catalog
 
 ---
 

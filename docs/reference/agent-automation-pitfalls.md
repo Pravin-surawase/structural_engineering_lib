@@ -71,7 +71,7 @@ git diff --name-only
 - `git blame [large-file]` (pages on large files)
 
 **Refs:**
-- [Agent 8 Git Operations](../planning/agent-8-tasks-git-ops.md#git-pager-prevention)
+- [Agent 8 Git Operations](../agents/guides/agent-8-git-ops.md#git-pager-prevention)
 - [Agent 8 Mistakes Guide](../agents/guides/agent-8-mistakes-prevention-guide.md#high-terminal-stuck-in-git-pager-alternate-buffer)
 
 ---
@@ -599,7 +599,7 @@ fi
 
 ## Additional Resources
 
-- **Agent 8 Git Operations:** [agent-8-tasks-git-ops.md](../planning/agent-8-tasks-git-ops.md)
+- **Agent 8 Git Operations:** [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md)
 - **Agent 8 Mistakes Guide:** [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md)
 - **Bash Pitfalls:** https://mywiki.wooledge.org/BashPitfalls
 - **Shell Check:** https://www.shellcheck.net/ (lint bash scripts)

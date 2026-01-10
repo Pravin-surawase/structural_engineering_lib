@@ -24,10 +24,10 @@
 parallel_sync() {
     git fetch origin main &
     FETCH_PID=$!
-    
+
     # Stage while fetching
     git add -A
-    
+
     # Wait for fetch
     wait $FETCH_PID
     git merge --ff-only FETCH_HEAD
@@ -119,21 +119,21 @@ test_conflict_code_different_sections() {
 # In scripts/auto_merge_decision.py
 def calculate_risk_score(pr):
     score = 0
-    
+
     # High risk
     if has_production_code(pr): score += 50
     if has_vba_code(pr): score += 40
     if lines_changed > 500: score += 30
-    
+
     # Low risk reductions
     if test_coverage >= 95: score -= 10
     if only_docs(pr): score -= 30
-    
+
     return score
 
 def should_automerge(pr):
     risk = calculate_risk_score(pr)
-    
+
     if risk <= 0: return True, "Zero risk"
     if risk <= 10: return True, "Very low risk"
     if risk <= 25: return True, "Low risk"
@@ -225,7 +225,7 @@ while true; do
         ./scripts/recover_git_state.sh
         notify "🔧 Auto-recovered from unfinished merge"
     fi
-    
+
     # Check 2: Diverged branches
     for branch in $(git branch | grep -v main); do
         BEHIND=$(git rev-list --count $branch..origin/main)
@@ -233,13 +233,13 @@ while true; do
             notify "⚠️ Branch $branch is $BEHIND behind"
         fi
     done
-    
+
     # Check 3: Stale merged branches
     for branch in $(git branch --merged main | grep -v main); do
         git branch -d $branch
         notify "🧹 Deleted merged branch: $branch"
     done
-    
+
     sleep 300  # Every 5 minutes
 done
 ```
@@ -283,17 +283,17 @@ test_branch_diverged() {
     git checkout -b test-diverged
     echo "local" > file.txt
     git add . && git commit -m "local"
-    
+
     # Simulate remote push
     git checkout main
     echo "remote" > file.txt
     git add . && git commit -m "remote"
     git push origin main
-    
+
     # Try to push diverged branch
     git checkout test-diverged
     ./scripts/safe_push.sh "test"
-    
+
     # Verify: conflict detected, resolved with merge
 }
 
@@ -313,7 +313,7 @@ test_branch_diverged() {
 benchmark_safe_push() {
     TIMES=10
     TOTAL=0
-    
+
     for i in $(seq 1 $TIMES); do
         START=$(date +%s.%N)
         ./scripts/safe_push.sh "benchmark test $i" > /dev/null 2>&1
@@ -321,10 +321,10 @@ benchmark_safe_push() {
         ELAPSED=$(echo "$END - $START" | bc)
         TOTAL=$(echo "$TOTAL + $ELAPSED" | bc)
     done
-    
+
     AVG=$(echo "$TOTAL / $TIMES" | bc -l)
     echo "safe_push.sh average: ${AVG}s"
-    
+
     # Alert if regression
     BASELINE=20.0
     if (( $(echo "$AVG > $BASELINE" | bc -l) )); then
@@ -344,23 +344,23 @@ benchmark_safe_push() {
 test_full_pr_workflow() {
     # 1. Create branch
     ./scripts/create_task_pr.sh TEST-001 "integration test"
-    
+
     # 2. Make changes
     echo "test" > integration_test.md
     git add integration_test.md
-    
+
     # 3. Commit
     ./scripts/ai_commit.sh "docs: add integration test"
-    
+
     # 4. Create PR
     ./scripts/finish_task_pr.sh TEST-001 "integration test"
-    
+
     # 5. Verify PR exists
     gh pr list --head task/TEST-001 | grep -q "TEST-001"
-    
+
     # 6. Simulate CI pass
     # ... mock CI success ...
-    
+
     # 7. Auto-merge (if daemon running)
     sleep 60
     gh pr list --state merged | grep -q "TEST-001"
@@ -379,12 +379,12 @@ test_chaos_network_failure() {
     # Simulate network failure during push
     (sleep 3 && sudo ifconfig en0 down) &
     KILLER=$!
-    
+
     ./scripts/safe_push.sh "test" || true
-    
+
     sudo ifconfig en0 up
     kill $KILLER
-    
+
     # Verify: graceful error, no corruption
 }
 
@@ -469,19 +469,19 @@ cp scripts/safe_push.sh scripts/safe_push.sh.backup
 ```bash
 parallel_git_sync() {
     echo -e "${YELLOW}Step 1: Syncing (parallel)...${NC}"
-    
+
     # Start fetch in background
     git fetch origin $DEFAULT_BRANCH 2>&1 | tee logs/git_fetch.log &
     FETCH_PID=$!
-    
+
     # Stage files while fetching
     echo -e "${YELLOW}Step 2: Staging files...${NC}"
     git add -A
-    
+
     # Wait for fetch
     echo -e "${YELLOW}Waiting for fetch to complete...${NC}"
     wait $FETCH_PID
-    
+
     # Merge
     if [[ "$CURRENT_BRANCH" == "$DEFAULT_BRANCH" ]]; then
         git merge --ff-only FETCH_HEAD
@@ -547,7 +547,7 @@ cat logs/ci_monitor.log
 ## 📚 Resources
 
 - **Full research:** [agent-8-optimization-research.md](agent-8-optimization-research.md)
-- **Current implementation:** [agent-8-tasks-git-ops.md](../planning/agent-8-tasks-git-ops.md)
+- **Current implementation:** [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md)
 - **Test framework:** [test_git_workflow.sh](../../scripts/test_git_workflow.sh)
 
 ---
@@ -579,4 +579,3 @@ cp scripts/safe_push.sh scripts/safe_push.sh.$(date +%Y%m%d)
 **Implementation started:** TBD
 **Expected completion:** +4 weeks
 **Status:** Ready to begin! 🚀
-

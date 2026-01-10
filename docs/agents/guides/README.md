@@ -18,10 +18,10 @@
 - [agent-8-operations-log-spec.md](agent-8-operations-log-spec.md) - Log format specification
 
 ### Tools & Scripts
-All Agent 8 scripts are in [../../scripts/](../../scripts/) - see [agent-8-automation.md](agent-8-automation.md) for complete index.
+All Agent 8 scripts are in `scripts/` - see [agent-8-automation.md](agent-8-automation.md) for complete index.
 
 ### Research & Analysis
-Agent 8 research documents remain in [../research/](../research/) for centralized research organization.
+Agent 8 research documents remain in `docs/research/` for centralized research organization.
 
 ---
 

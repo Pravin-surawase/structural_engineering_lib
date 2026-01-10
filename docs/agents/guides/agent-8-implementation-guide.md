@@ -44,7 +44,7 @@ Normal work mode:
   You: "I need to review Agent 6's PR"
   ↓
   Load Agent 8 context:
-    1. Open: docs/planning/agent-8-tasks-git-ops.md
+    1. Open: docs/agents/guides/agent-8-git-ops.md
     2. Follow: Agent 8 protocol for PR review
     3. Execute: Agent 8 decision logic (auto-merge criteria, CI monitoring)
     4. Validation: If Streamlit changes, scanner runs automatically
@@ -118,7 +118,7 @@ Done - back to work
 2. **You switch to Agent 8 mode:**
    ```bash
    # Open Agent 8 protocol (keep visible)
-   open docs/planning/agent-8-tasks-git-ops.md
+   open docs/agents/guides/agent-8-git-ops.md
 
    # Follow checklist:
    # [✓] 1. Validate handoff complete
@@ -232,7 +232,7 @@ Switch to Agent 8 mode when:
 ### Agent 8 Quick Workflow
 
 1. **Receive handoff notification**
-2. **Load Agent 8 context:** `docs/planning/agent-8-tasks-git-ops.md`
+2. **Load Agent 8 context:** `docs/agents/guides/agent-8-git-ops.md`
 3. **Follow decision matrix:**
    - Assess risk level (LOW/MEDIUM/HIGH)
    - Execute appropriate workflow
@@ -274,7 +274,7 @@ Add to "Workflow Patterns" section:
 # Background agent notifies you: "Handoff ready: streamlit/2026-01-08"
 
 # Option A: Manual (Phase 1)
-open docs/planning/agent-8-tasks-git-ops.md
+open docs/agents/guides/agent-8-git-ops.md
 # Follow checklist manually
 
 # Option B: Semi-automated (Phase 2)
@@ -517,7 +517,7 @@ Request: Please push, PR, and auto-merge if eligible
 **You (MAIN) switch to Agent 8 mode:**
 ```bash
 # 1. Open Agent 8 protocol
-open docs/planning/agent-8-tasks-git-ops.md
+open docs/agents/guides/agent-8-git-ops.md
 
 # 2. Follow checklist (5 minutes first time, 2 min after practice)
 git checkout streamlit/2026-01-08-add-beam-viz
@@ -649,7 +649,7 @@ Agent 6: (can finally continue next task)
 Agent 6: "Handoff ready"
   ↓
 You:    (2-3 minutes)
-        open agent-8-tasks-git-ops.md
+        open agent-8-git-ops.md
         (follow 7-step checklist)
         (Agent 8 decision logic is faster)
   ↓
@@ -768,7 +768,7 @@ Agent 6: (continues immediately)
 
 ### Immediate (Today)
 
-- [ ] **Read Agent 8 protocol:** `docs/planning/agent-8-tasks-git-ops.md`
+- [ ] **Read Agent 8 protocol:** `docs/agents/guides/agent-8-git-ops.md`
 - [ ] **Keep it open:** Put in 2nd monitor or print key sections
 - [ ] **Next handoff:** Use Agent 8 checklist manually (Model B)
 - [ ] **Time yourself:** See actual time improvement

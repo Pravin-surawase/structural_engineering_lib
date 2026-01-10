@@ -15,6 +15,31 @@ from pathlib import Path
 from typing import Optional, Dict
 
 
+# Skip these patterns - they are placeholders/examples, not real links
+SKIP_LINK_PATTERNS = [
+    r'^text$',                    # [text](target) - example link
+    r'^Link \d+$',                # [Link 1], [Link 2] - example links
+    r'^\$\w+$',                   # [$file] - variable placeholder
+    r'^\.\*',                     # [.*\] - regex pattern in docs
+    r'^\'.*\'$',                  # ['check_fn'] - code references
+    r'^path/to/',                 # path/to/doc.md - example paths
+    r'^target\.md$',              # target.md - example
+    r'^old-file\.md',             # old-file.md - example
+    r'^Old_File\.md',             # Old_File.md - example
+    r'^file\.md',                 # file.md - example
+]
+
+
+def is_placeholder_link(text: str, target: str) -> bool:
+    """Check if a link is a placeholder/example that should be skipped."""
+    for pattern in SKIP_LINK_PATTERNS:
+        if re.search(pattern, text, re.IGNORECASE):
+            return True
+        if re.search(pattern, target, re.IGNORECASE):
+            return True
+    return False
+
+
 def find_markdown_links(content: str) -> list[tuple[str, str]]:
     """Find all markdown links [text](target)."""
     pattern = r'(?<!!)\[([^\]]+)\]\(([^)]+)\)'
@@ -66,6 +91,9 @@ def main() -> int:
                 continue
             # Skip pure anchors
             if target.startswith('#'):
+                continue
+            # Skip placeholder/example links
+            if is_placeholder_link(text, target):
                 continue
 
             link_count += 1

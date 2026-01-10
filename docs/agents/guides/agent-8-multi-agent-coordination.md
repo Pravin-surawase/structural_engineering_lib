@@ -320,7 +320,7 @@ git push origin HEAD
 ## References
 
 - [Background Agent Guide](../../contributing/background-agent-guide.md)
-- [Worktree Manager](../../scripts/worktree_manager.sh)
+- [Worktree Manager](../../../scripts/worktree_manager.sh)
 - [Agent 8 Week 1 Handoff](../../planning/agent8-week1-handoff.md)
 - [Git Workflow for AI Agents](../../contributing/git-workflow-ai-agents.md)
 

@@ -7,7 +7,7 @@
 
 ## 📚 Complete Agent 8 Documentation Suite
 
-### 1. **agent-8-tasks-git-ops.md** (21KB, 1,171 lines)
+### 1. **agent-8-git-ops.md** (21KB, 1,171 lines)
 **Purpose:** Complete Agent 8 protocol and responsibilities
 
 **Contents:**
@@ -230,7 +230,7 @@ git status --porcelain | grep -v "\.(coverage|DS_Store|pyc)$" | xargs git add
 
 ## 🔗 Documentation Cross-References
 
-**Main Protocol:** [agent-8-tasks-git-ops.md](agent-8-tasks-git-ops.md)
+**Main Protocol:** [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md)
 - Complete workflows
 - Decision matrices
 - CI integration
@@ -335,7 +335,7 @@ git status --porcelain | grep -v "\.(coverage|DS_Store|pyc)$" | xargs git add
 
 **Immediate Actions:**
 1. ✅ Read this summary (you're here!)
-2. ✅ Review [agent-8-tasks-git-ops.md](agent-8-tasks-git-ops.md) (main protocol)
+2. ✅ Review [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md) (main protocol)
 3. ✅ Skim [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md) (lessons learned)
 4. ✅ On next Agent 6 handoff: Follow Agent 8 checklist
 5. ✅ Time yourself: See the improvement!
