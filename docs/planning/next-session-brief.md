@@ -5,31 +5,40 @@
 | **Current** | v0.16.0 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-11 | **Last commit:** 1f30381
+**Date:** 2026-01-11 | **Last commit:** 4e87f60
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-11 (Session 6 - Migration Automation Complete ✅)
-- Focus: **TASK-317 complete, migration automation created**
+- Date: 2026-01-11 (Session 7 - Folder Restructuring Phase 1 ✅)
+- Focus: **Folder cleanup, automation scripts, CI fix**
 - Deliverables:
-  - PR #324 merged (codes/is456/__init__.py exports)
-  - validate_stub_exports.py (stub validation)
-  - update_is456_init.py (__init__.py generator)
-  - migration-issues-analysis.md (5 issue categories)
-  - Migration rules added to copilot-instructions.md
-- Next: v0.17.0 feature development (Streamlit, clause database)
+  - PR #325 merged (14 streamlit files archived, typo folder renamed)
+  - batch_archive.py (multi-file archival with link updates)
+  - rename_folder_safe.py (safe folder rename with link updates)
+  - folder-restructuring-plan.md (comprehensive plan)
+  - Fixed Leading Indicators CI JSON bug
+  - Updated file-operations-safety-guide.md
+- Next: Phase 2 docs organization (planning docs archive)
 <!-- HANDOFF:END -->
 
 ---
 
 ## 🎯 Immediate Priority: v0.17.0 Features
 
-**IS 456 migration complete! Move to v0.17.0 requirements.**
+**Folder cleanup done! Continue Phase 2 or move to v0.17.0.**
 
-### Critical Path Tasks
+### Phase 2 Cleanup Tasks (Optional)
+
+| Task | Files | Priority |
+|------|-------|----------|
+| Archive orphan planning docs | ~30 files | 🟡 MEDIUM |
+| Organize docs/_archive by date | ~10 loose files | 🟡 MEDIUM |
+| Add README to empty folders | ~72 folders | 🔵 LOW |
+
+### Critical Path Tasks (v0.17.0)
 
 | ID | Task | Est | Priority |
 |----|------|-----|----------|
@@ -68,19 +77,27 @@ grep -r "Clause\|clause" Python/structural_lib/*.py | head -20
 | Version | v0.16.0 | Released |
 | Tests | 2392 | ✅ Passing |
 | IS 456 Migration | 7/7 | ✅ Complete |
-| TASK-317 | ✅ Complete | PR #324 merged |
-| Session 6 Commits | 5 | ✅ Good progress |
+| Session 7 Commits | 4 | ✅ Good progress |
+| Broken Links | 0 | ✅ All valid |
 
-## Completed This Session (6)
+## Completed This Session (7)
 
-1. `0107058` - feat: TASK-317 - Update IS 456 __init__.py exports (PR #324)
-2. `3ad5d9a` - docs: add Module Migration Rules to copilot-instructions
-3. `191370e` - docs: mark TASK-317 complete
-4. `aa29db5` - docs: add future core module tasks (TASK-320, 321)
-5. `1f30381` - docs: clean up duplicate entries and update SESSION_LOG
+### Commits
+1. `db95cf6` - feat: TASK-325 folder cleanup phase 1 (PR #325)
+2. `6909da0` - fix: correct grep newline bug in collect_metrics.sh
+3. `c85b92b` - docs: update SESSION_LOG and TASKS.md
+4. `4e87f60` - docs: add batch_archive.py and rename_folder_safe.py to safety guide
+
+### Deliverables
+- Archived 14 streamlit orphan files
+- Renamed typo folder "files from external yser" → "external_data"
+- Fixed CI Leading Indicators JSON bug
+- Created batch_archive.py and rename_folder_safe.py
+- Updated file operations safety guide
 
 ## 📚 Required Reading
 
-- `.github/copilot-instructions.md` - Migration rules section added
-- `docs/research/migration-issues-analysis.md` - 5 issue categories
-- `docs/SESSION_LOG.md` - Session 6 accomplishments
+- `.github/copilot-instructions.md` - Migration rules + file operations
+- `docs/research/folder-restructuring-plan.md` - Restructuring plan
+- `docs/guidelines/file-operations-safety-guide.md` - New scripts documented
+- `docs/SESSION_LOG.md` - Session 7 accomplishments
