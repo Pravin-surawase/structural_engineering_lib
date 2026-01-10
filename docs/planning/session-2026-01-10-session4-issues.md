@@ -126,7 +126,7 @@ Use the new automation to actually clean up orphan files:
 
 ### Priority 2: Fix External Files Folder
 
-The folder `files from external yser/` has a typo and contains large files (36MB+):
+The folder `external_data/` has a typo and contains large files (36MB+):
 - Rename to `external_files/` (but check if files are needed first)
 - Consider adding to `.gitignore` if not needed in repo
 

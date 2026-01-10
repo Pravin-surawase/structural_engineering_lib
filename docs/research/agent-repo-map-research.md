@@ -21,7 +21,7 @@ Document the current repo layout, agent workflow entry points, automation script
 - `docs/` - documentation, planning, research, governance, and handoffs.
 - `scripts/` - automation scripts (git, session, testing, validation, releases).
 - `agents/` - agent role docs and agent-9 governance suite.
-- `files from external yser/` - user-provided Excel files (external inputs).
+- `external_data/` - user-provided Excel files (external inputs).
 
 **Notable external/integration areas:**
 - `docs/specs/etabs-integration.md`

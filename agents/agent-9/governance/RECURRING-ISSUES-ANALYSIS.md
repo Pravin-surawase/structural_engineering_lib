@@ -115,7 +115,7 @@ Priority rankings based on: frequency, impact, and ease of automation.
 **Impact:** Shell command issues, URL encoding problems
 
 **Locations:**
-- `files from external yser/` (folder and contents)
+- `external_data/` (folder and contents)
 - `docs/_references/downloads-snapshot/` (reference files)
 
 **Assessment:**
