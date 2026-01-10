@@ -74,7 +74,7 @@
 ============================================================
 ```
 
-**Related:** [end_session.py](#2-end_sessionpy), [handoff.md](../handoff.md)
+**Related:** [end_session.py](#2-end_sessionpy), [handoff.md](../contributing/handoff.md)
 
 ---
 
@@ -1372,7 +1372,7 @@ Error Handling Audit:
 - Function complexity
 - Code duplication
 
-**Related:** [vba-guide.md](../vba-guide.md)
+**Related:** [vba-guide.md](vba-guide.md)
 
 ---
 
@@ -2001,13 +2001,13 @@ chmod +x scripts/*.sh
 ## Related Documentation
 
 - [Git Workflow Quick Reference](../contributing/git-workflow-quick-reference.md)
-- [Git Workflow for AI Agents](../git-workflow-ai-agents.md)
+- [Git Workflow for AI Agents](../contributing/git-workflow-ai-agents.md)
 - [Development Guide](../contributing/development-guide.md)
-- [handoff.md](../handoff.md) — Session management workflow
-- [ai-context-pack.md](../ai-context-pack.md) — Agent entrypoint
+- [handoff.md](../contributing/handoff.md) — Session management workflow
+- [ai-context-pack.md](../getting-started/ai-context-pack.md) — Agent entrypoint
 
 ---
 
 **Last Updated:** 2026-01-10
 **Maintained By:** Project automation
-**Questions?** See [troubleshooting.md](../troubleshooting.md) or [SUPPORT.md](../../SUPPORT.md)
+**Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../SUPPORT.md)

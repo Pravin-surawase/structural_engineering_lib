@@ -690,7 +690,7 @@ It exists because this ledger is **append-only**.
 - Introduced pinned numerical targets that lock key outputs and determinism across core modules.
 
 **Deterministic job runner + CLI:**
-- Job spec: [docs/specs/v0.9-job-schema.md](specs/v0.9-job-schema.md).
+- Job spec: [docs/specs/v0.9-job-schema.md](../specs/v0.9-job-schema.md).
 - Runner: `structural_lib.job_runner.run_job(...)` writes stable outputs (JSON + CSV) in a fixed folder layout.
 - CLI: `python -m structural_lib.job_cli run --job job.json --out <dir>`.
 

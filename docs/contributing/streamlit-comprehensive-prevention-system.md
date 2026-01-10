@@ -485,9 +485,9 @@ def test_error_boundary_catches_nameerror():
 ---
 
 ## 🔗 Related Documents
-- [Cost Optimizer Prevention System](../scripts/check_cost_optimizer_issues.py) - Original system
-- [Error Boundary Implementation](../streamlit_app/utils/cost_optimizer_error_boundary.py) - Current boundaries
-- [TASKS.md](TASKS.md#STREAMLIT-IMPL) - Implementation tasks
+- [Cost Optimizer Prevention System](../../scripts/check_cost_optimizer_issues.py) - Original system
+- [Error Boundary Implementation](../../streamlit_app/utils/cost_optimizer_error_boundary.py) - Current boundaries
+- [TASKS.md](../TASKS.md#STREAMLIT-IMPL) - Implementation tasks
 
 ---
 

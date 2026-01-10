@@ -470,12 +470,12 @@ git push
 - [agent-bootstrap.md](../getting-started/agent-bootstrap.md) - Initial setup guide
 
 ### Testing Docs
-- [testing-strategy.md](../testing-strategy.md) - Testing approach
-- [vba-testing-guide.md](../vba-testing-guide.md) - VBA testing
+- [testing-strategy.md](../contributing/testing-strategy.md) - Testing approach
+- [vba-testing-guide.md](../contributing/vba-testing-guide.md) - VBA testing
 
 ### Architecture Docs
-- [project-overview.md](../project-overview.md) - System architecture
-- [api-reference.md](../api-reference.md) - API documentation
+- [project-overview.md](../architecture/project-overview.md) - System architecture
+- [api-reference.md](../reference/api-reference.md) - API documentation
 
 ---
 

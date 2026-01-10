@@ -576,12 +576,12 @@ SCHEMA = {
 ## 🔗 References
 
 ### Original Proposal
-- [STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md](STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md)
+- [STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md](streamlit-comprehensive-prevention-system.md)
 
 ### Related Systems
-- [Cost Optimizer Prevention](../scripts/check_cost_optimizer_issues.py)
-- [Cost Optimizer Validators](../streamlit_app/utils/cost_optimizer_validators.py)
-- [Error Boundaries](../streamlit_app/utils/cost_optimizer_error_boundary.py)
+- [Cost Optimizer Prevention](../../scripts/check_cost_optimizer_issues.py)
+- [Cost Optimizer Validators](../../streamlit_app/utils/cost_optimizer_validators.py)
+- [Error Boundaries](../../streamlit_app/utils/cost_optimizer_error_boundary.py)
 
 ### External Resources
 - [Streamlit Error Handling Best Practices](https://docs.streamlit.io/library/advanced-features/error-handling)

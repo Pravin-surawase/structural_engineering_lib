@@ -146,7 +146,7 @@ docs/research/navigation_study/
 
 ## Quick Links
 
-- **Full Research Plan**: [../../research/INDEX_PER_FOLDER_EFFICIENCY_RESEARCH.md](../../research/INDEX_PER_FOLDER_EFFICIENCY_RESEARCH.md)
+- **Full Research Plan**: [../../research/INDEX_PER_FOLDER_EFFICIENCY_RESEARCH.md](../index-per-folder-efficiency-research.md)
 - **Agent 9 Governance**: [../../../agents/agent-9/README.md](../../../agents/agent-9/README.md)
 - **Git Workflow**: [../../../agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
 

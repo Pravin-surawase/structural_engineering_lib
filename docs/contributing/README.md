@@ -6,7 +6,7 @@ Guides for developers and maintainers.
 
 | Guide | Audience |
 |-------|----------|
-| [**Git Workflow for AI Agents**](../git-workflow-ai-agents.md) ⚠️ | **AI agents: MUST READ to avoid git race conditions** |
+| [**Git Workflow for AI Agents**](git-workflow-ai-agents.md) ⚠️ | **AI agents: MUST READ to avoid git race conditions** |
 | [Background Agent Guide](background-agent-guide.md) | Parallel work with 1-2 background agents |
 | [Naming Conventions](naming-conventions.md) | File, module, and branch naming standards |
 | [Development Guide](development-guide.md) | Coding standards, PR workflow |

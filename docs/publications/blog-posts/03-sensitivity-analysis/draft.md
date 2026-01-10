@@ -1060,8 +1060,8 @@ for param, margin in margins.items():
 
 **Internal Documentation:**
 
-- [Research plan](../../../planning/research-smart-library.md)
-- [Prototype findings](../../../planning/prototype-findings-intelligence.md)
+- [Research plan](../../../_archive/2026-01/research-smart-library.md)
+- [Prototype findings](../../../_archive/2026-01/prototype-findings-intelligence.md)
 
 ---
 

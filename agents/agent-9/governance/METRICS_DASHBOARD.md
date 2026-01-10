@@ -5,7 +5,7 @@
 2026-01-10 16:00:50
 
 > **Purpose:** Track project health metrics, velocity trends, and governance compliance
-> **Research:** Based on [METRICS_BASELINE.md](../../agents/agent-9/research/METRICS_BASELINE.md)
+> **Research:** Based on [METRICS_BASELINE.md](../research/METRICS_BASELINE.md)
 
 ---
 
@@ -85,9 +85,9 @@ Six metrics with alert thresholds:
 
 ## 🔗 Related Documentation
 
-- [Metrics Baseline](../../agents/agent-9/research/METRICS_BASELINE.md) - Initial research
-- [Research Findings](../../agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md) - Industry patterns
-- [Implementation Roadmap](../../agents/agent-9/AGENT_9_IMPLEMENTATION_ROADMAP.md) - Complete plan
+- [Metrics Baseline](../research/METRICS_BASELINE.md) - Initial research
+- [Research Findings](../research/RESEARCH_FINDINGS_EXTERNAL.md) - Industry patterns
+- [Implementation Roadmap](../AGENT_9_IMPLEMENTATION_ROADMAP.md) - Complete plan
 - [Governance Session Script](../../scripts/governance_session.sh) - 80/20 rule automation
 
 ---

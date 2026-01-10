@@ -138,4 +138,4 @@ Based on current state:
 2. Establish weekly archival automation
 3. Track sustainability ratios weekly
 
-See: [ARCHIVE_INDEX.md](2026-01/ARCHIVE_INDEX.md) for Phase 1A results
+See: [ARCHIVE_INDEX.md](../_archive/2026-01/archive-index.md) for Phase 1A results

@@ -323,7 +323,7 @@ Track metrics:
 ## 🆘 Support
 
 If tests fail:
-1. Check [troubleshooting.md](../troubleshooting.md)
+1. Check [troubleshooting.md](troubleshooting.md)
 2. Run with `--verbose` flag
 3. Validate git state manually
 4. Check CI logs

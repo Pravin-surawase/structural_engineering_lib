@@ -245,8 +245,8 @@
 
 - [.pylintrc-streamlit](.pylintrc-streamlit) - Pylint configuration
 - [scripts/pylint_streamlit.sh](../scripts/pylint_streamlit.sh) - Wrapper script
-- [scripts/check_streamlit_issues.py](../scripts/check_streamlit_issues.py) - AST scanner
-- [STREAMLIT_ISSUES_CATALOG.md](STREAMLIT_ISSUES_CATALOG.md) - Issue catalog
+- [scripts/check_streamlit_issues.py](../../scripts/check_streamlit_issues.py) - AST scanner
+- [STREAMLIT_ISSUES_CATALOG.md](../contributing/streamlit-issues-catalog.md) - Issue catalog
 
 ---
 

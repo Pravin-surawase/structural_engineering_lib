@@ -117,9 +117,9 @@ Every folder gets TWO files:
 | File | Description | Time | Updated |
 |------|-------------|------|---------|
 | [installation.md](installation.md) | Install Python library and Excel add-in | 10min | 2026-01-08 |
-| [python-quickstart.md](python-quickstart.md) | 5-minute Python API tutorial | 5min | 2026-01-09 |
-| [excel-quickstart.md](excel-quickstart.md) | 5-minute Excel VBA tutorial | 5min | 2026-01-09 |
-| [beginners-guide.md](beginners-guide.md) | Complete beginner's walkthrough | 30min | 2026-01-10 |
+| [python-quickstart.md](../getting-started/python-quickstart.md) | 5-minute Python API tutorial | 5min | 2026-01-09 |
+| [excel-quickstart.md](../getting-started/excel-quickstart.md) | 5-minute Excel VBA tutorial | 5min | 2026-01-09 |
+| [beginners-guide.md](../getting-started/beginners-guide.md) | Complete beginner's walkthrough | 30min | 2026-01-10 |
 
 ## Related Folders
 

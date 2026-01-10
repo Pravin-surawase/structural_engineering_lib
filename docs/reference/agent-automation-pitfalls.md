@@ -72,7 +72,7 @@ git diff --name-only
 
 **Refs:**
 - [Agent 8 Git Operations](../planning/agent-8-tasks-git-ops.md#git-pager-prevention)
-- [Agent 8 Mistakes Guide](../planning/agent-8-mistakes-prevention-guide.md#high-terminal-stuck-in-git-pager-alternate-buffer)
+- [Agent 8 Mistakes Guide](../agents/guides/agent-8-mistakes-prevention-guide.md#high-terminal-stuck-in-git-pager-alternate-buffer)
 
 ---
 
@@ -209,7 +209,7 @@ git push                        # [4] Push
 # NEVER amend after push (unless you want force push)
 ```
 
-**Ref:** [Agent 8 Mistakes Guide](../planning/agent-8-mistakes-prevention-guide.md#critical-the-merge-commit-spike-disaster)
+**Ref:** [Agent 8 Mistakes Guide](../agents/guides/agent-8-mistakes-prevention-guide.md#critical-the-merge-commit-spike-disaster)
 
 ---
 
@@ -600,7 +600,7 @@ fi
 ## Additional Resources
 
 - **Agent 8 Git Operations:** [agent-8-tasks-git-ops.md](../planning/agent-8-tasks-git-ops.md)
-- **Agent 8 Mistakes Guide:** [agent-8-mistakes-prevention-guide.md](../planning/agent-8-mistakes-prevention-guide.md)
+- **Agent 8 Mistakes Guide:** [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md)
 - **Bash Pitfalls:** https://mywiki.wooledge.org/BashPitfalls
 - **Shell Check:** https://www.shellcheck.net/ (lint bash scripts)
 - **Advanced Bash Guide:** https://tldp.org/LDP/abs/html/

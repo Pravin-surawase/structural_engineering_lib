@@ -10,7 +10,7 @@
 | **Coverage** | 86% overall, 100% on 10 modules |
 | **Recent Features** | SmartDesigner, comparison module, cost optimization, design suggestions |
 
-> **Status details:** See [TASKS.md](TASKS.md) and [next-session-brief.md](planning/next-session-brief.md).
+> **Status details:** See [TASKS.md](../TASKS.md) and [next-session-brief.md](next-session-brief.md).
 
 ---
 
@@ -157,7 +157,7 @@ scripts/                   ← Automation scripts
 - `external_cli_test.py` — CLI testing (S-007)
 - More in full catalog...
 
-**📚 Full Catalog:** [automation-catalog.md](reference/automation-catalog.md) — Complete reference with usage, examples, when-to-use guidance for all 41 scripts.
+**📚 Full Catalog:** [automation-catalog.md](../reference/automation-catalog.md) — Complete reference with usage, examples, when-to-use guidance for all 41 scripts.
 
 ---
 

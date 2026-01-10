@@ -597,10 +597,10 @@ def test_issue_2026_01_08_validation_error():
 ## 📚 Resources & References
 
 ### Research Documents (Agent 6)
-1. [USER-JOURNEY-RESEARCH.md](streamlit_app/docs/USER-JOURNEY-RESEARCH.md) - 4 personas, 7-stage workflow
-2. [EXPORT-UX-RESEARCH.md](streamlit_app/docs/EXPORT-UX-RESEARCH.md) - IS 2502, AIA CAD, PDF/A standards
-3. [BATCH-PROCESSING-RESEARCH.md](streamlit_app/docs/BATCH-PROCESSING-RESEARCH.md) - CSV format, validation
-4. [LEARNING-CENTER-RESEARCH.md](streamlit_app/docs/LEARNING-CENTER-RESEARCH.md) - 8 tutorials, gamification
+1. [USER-JOURNEY-RESEARCH.md](../../streamlit_app/docs/USER-JOURNEY-RESEARCH.md) - 4 personas, 7-stage workflow
+2. [EXPORT-UX-RESEARCH.md](../../streamlit_app/docs/EXPORT-UX-RESEARCH.md) - IS 2502, AIA CAD, PDF/A standards
+3. [BATCH-PROCESSING-RESEARCH.md](../../streamlit_app/docs/BATCH-PROCESSING-RESEARCH.md) - CSV format, validation
+4. [LEARNING-CENTER-RESEARCH.md](../../streamlit_app/docs/LEARNING-CENTER-RESEARCH.md) - 8 tutorials, gamification
 
 ### Python Library API (v0.16.0)
 - `design_beam_is456()` - Complete beam design
@@ -612,7 +612,7 @@ def test_issue_2026_01_08_validation_error():
 - `generate_calculation_report()` - PDF reports
 
 ### Design System (Tested)
-- [test_design_system_integration.py](streamlit_app/tests/test_design_system_integration.py) - 30 tests passing
+- [test_design_system_integration.py](../../streamlit_app/tests/test_design_system_integration.py) - 30 tests passing
 - COLORS, TYPOGRAPHY, SPACING, ELEVATION, ANIMATION - All verified
 
 ### Standards & Compliance
@@ -629,7 +629,7 @@ def test_issue_2026_01_08_validation_error():
 1. ✅ Review this plan (DONE - reading now)
 2. ⏳ Approve implementation priority order
 3. ⏳ Assign IMPL-000 to Agent 6 or Dev Agent
-4. ⏳ Update [docs/planning/agent-6-tasks-streamlit.md](docs/planning/agent-6-tasks-streamlit.md)
+4. ⏳ Update [docs/planning/agent-6-tasks-streamlit.md](agent-6-tasks-streamlit.md)
 5. ⏳ Create git_operations_log entry
 
 ### For Agent 6 (Next Session):

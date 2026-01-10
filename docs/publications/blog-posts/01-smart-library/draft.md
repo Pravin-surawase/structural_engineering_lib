@@ -828,9 +828,9 @@ if pre['status'] == 'LIKELY_PASS':
 
 **Internal Documentation:**
 
-- [Research plan](../../../planning/research-smart-library.md)
-- [Prototype findings](../../../planning/prototype-findings-intelligence.md)
-- [Implementation plan v0.13-v0.14](../../../planning/v0.13-v0.14-implementation-plan.md)
+- [Research plan](../../../_archive/2026-01/research-smart-library.md)
+- [Prototype findings](../../../_archive/2026-01/prototype-findings-intelligence.md)
+- [Implementation plan v0.13-v0.14](../../../_archive/2026-01/v0.13-v0.14-implementation-plan.md)
 
 ---
 

@@ -10,7 +10,7 @@
 | File | Description | Updated | Lines |
 |------|-------------|---------|-------|
 | [AUTHORS.md](AUTHORS.md) | - Pravin Surawase - (Add contributors here in alphabetical order) | 2026-01-06 | 8 |
-| [BOOTSTRAP_REVIEW_SUMMARY.md](BOOTSTRAP_REVIEW_SUMMARY.md) | - ✅ Phase A completion status (TASK-280-283) - ✅ Research completion summary (14 | 2026-01-10 | 212 |
+| [BOOTSTRAP_REVIEW_SUMMARY.md](docs/_archive/2026-01/bootstrap-review-summary.md) | - ✅ Phase A completion status (TASK-280-283) - ✅ Research completion summary (14 | 2026-01-10 | 212 |
 | [CHANGELOG.md](CHANGELOG.md) | All notable changes to this project will be documented in this file. - **Streaml | 2026-01-10 | 765 |
 | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | This project follows a simple, professional standard: - Be respectful and constr | 2025-12-15 | 11 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Thanks for helping improve **structural_engineering_lib**. - Install (editable)  | 2026-01-08 | 221 |
@@ -24,7 +24,7 @@
 - [Python/](Python/) - IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
 - [VBA/](VBA/)
 - [agents/](agents/) - Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.
-- [docs/](docs/) - If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience. > **Version info:** See [TASKS.md](TASKS.md) for curre
+- [docs/](docs/) - If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience. > **Version info:** See [TASKS.md](docs/TASKS.md) for curre
 - [files from external yser/](files from external yser/)
 - [git_operations_log/](git_operations_log/)
 - [learning-materials/](learning-materials/)

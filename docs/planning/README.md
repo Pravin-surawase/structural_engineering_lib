@@ -16,7 +16,7 @@ Internal planning documents and research notes.
 
 ## Research Process
 
-> **Full workflow:** See [research-workflow.md](research-workflow.md) for the complete 5-stage process.
+> **Full workflow:** See [research-workflow.md](../_archive/2026-01/research-workflow.md) for the complete 5-stage process.
 
 ### How Features Evolve
 
@@ -86,7 +86,7 @@ Internal planning documents and research notes.
 | [v0.12 Plan](v0.12-plan.md) | v0.12 scope + milestones |
 | [BBS + DXF Improvement Plan](bbs-dxf-improvement-plan.md) | Output contract + DXF/BBS quality plan |
 | [Library API Expansion](library-api-expansion.md) | Library-first APIs + CLI helpers |
-| [Public API Maintenance Review](public-api-maintenance-review.md) | Public API risks + fixes |
+| [Public API Maintenance Review](../_archive/2026-01/public-api-maintenance-review.md) | Public API risks + fixes |
 
 ---
 
@@ -94,8 +94,8 @@ Internal planning documents and research notes.
 
 | Document | Use For |
 |----------|---------|
-| [research-workflow.md](research-workflow.md) | Full 5-stage process with agent handoffs |
-| [_research-template.md](_research-template.md) | New research topics |
+| [research-workflow.md](../_archive/2026-01/research-workflow.md) | Full 5-stage process with agent handoffs |
+| [_research-template.md](../_archive/2026-01/_research-template.md) | New research topics |
 
 ---
 

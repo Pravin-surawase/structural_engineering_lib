@@ -230,8 +230,8 @@ streamlit run app.py --server.runOnSave true
 
 ## 📚 Documentation
 
-- **User Guide:** [docs/user-guide.md](docs/user-guide.md)
-- **API Reference:** [docs/api-reference.md](docs/api-reference.md)
+- **User Guide:** [docs/user-guide.md](../docs/getting-started/user-guide.md)
+- **API Reference:** [docs/api-reference.md](../docs/reference/api-reference.md)
 - **Design Decisions:** [docs/research/](docs/research/)
 - **IS 456 Quick Reference:** [docs/is456-quick-ref.md](docs/is456-quick-ref.md)
 

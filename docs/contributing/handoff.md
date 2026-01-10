@@ -43,7 +43,7 @@ $ .venv/bin/python scripts/start_session.py --quick
 
 ## Handoff (ending)
 
-> **📋 Full workflow:** See [contributing/end-of-session-workflow.md](contributing/end-of-session-workflow.md) for comprehensive checklist
+> **📋 Full workflow:** See [contributing/end-of-session-workflow.md](end-of-session-workflow.md) for comprehensive checklist
 
 **Quick steps (5 minutes):**
 1. Run: `.venv/bin/python scripts/end_session.py --fix`

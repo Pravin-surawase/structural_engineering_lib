@@ -111,7 +111,7 @@
 Root directory has 41 .md files vs. industry best practice of <5 (Prettier, Vitest, tRPC). Research shows high-velocity projects maintain minimal root to reduce cognitive load during onboarding.
 
 **Research Source:**
-- [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#case-study-5-vitest-modern-tooling)
+- [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md#case-study-5-vitest-modern-tooling)
 - Finding: Projects with >100 commits/month have <5 root files
 - Evidence: Vitest (2 files, 300 commits/mo), Prettier (5 files, 100 commits/mo)
 
@@ -168,7 +168,7 @@ grep -r "](/" docs/ | grep -v "_archive" | grep "\.md"
 Prevent future documentation sprawl by enforcing <10 root file limit in CI. Research shows that without enforcement, doc count creeps up over time (our 2.8 files/session creation rate).
 
 **Research Source:**
-- [RESEARCH_FINDINGS_STRUCTURE.md](agents/agent-9/research/RESEARCH_FINDINGS_STRUCTURE.md#finding-5-hierarchies-scale)
+- [RESEARCH_FINDINGS_STRUCTURE.md](research/RESEARCH_FINDINGS_STRUCTURE.md#finding-5-hierarchies-scale)
 - Finding: Flat root directory doesn't scale, enforcement needed
 - Evidence: Our own history (41 files in 10 days)
 
@@ -242,7 +242,7 @@ rm *.md && touch {1..8}.md
 Manual metrics collection (bash commands in METRICS_BASELINE.md) is time-consuming (~30 min) and error-prone. Automate to enable tracking over time and faster governance sessions.
 
 **Research Source:**
-- [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-7-observability-as-code)
+- [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-7-observability-as-code)
 - Pattern: Stripe's observability as code (automated metrics)
 - Benefit: 10-100x faster than manual queries
 
@@ -330,7 +330,7 @@ jq 'keys | length' docs/metrics/$(date +%Y-%m-%d).json
 Prevent future documentation sprawl by automating archival of old session docs. Research shows manual archival isn't sustainable (we accumulated 34 archivable docs in 10 days).
 
 **Research Source:**
-- [RESEARCH_FINDINGS_STRUCTURE.md](agents/agent-9/research/RESEARCH_FINDINGS_STRUCTURE.md#archive-strategy-decision)
+- [RESEARCH_FINDINGS_STRUCTURE.md](research/RESEARCH_FINDINGS_STRUCTURE.md#archive-strategy-decision)
 - Strategy: Time-based archival (docs older than 7 days)
 - Rationale: Automatable, predictable, scales to 100+ sessions
 
@@ -423,7 +423,7 @@ find . -maxdepth 1 -name "README.md"
 Implement 80/20 rule (4 feature sessions : 1 governance session). Research shows Shopify's 75/25 rule (25% tech debt time) sustains velocity for 5+ years.
 
 **Research Source:**
-- [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-3-25-technical-debt-cycles)
+- [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-3-25-technical-debt-cycles)
 - Pattern: Shopify's mandated 25% tech debt time
 - Result: Sustained high velocity for 5+ years, no big-bang rewrites
 
@@ -528,7 +528,7 @@ wc -l agents/agent-9/templates/GOVERNANCE_SESSION_TEMPLATE.md
 Visualize metrics over time to spot trends before they become problems. Research shows leading indicators (not lagging metrics) enable proactive governance.
 
 **Research Source:**
-- [METRICS_BASELINE.md](agents/agent-9/research/METRICS_BASELINE.md#leading-indicators)
+- [METRICS_BASELINE.md](research/METRICS_BASELINE.md#leading-indicators)
 - Identified 6 leading indicators with alert thresholds
 - Example: Root doc creation rate >2/day for 3+ days = warning
 
@@ -613,7 +613,7 @@ cat docs/metrics/DASHBOARD.md
 Warn on PRs if leading indicators show concerning trends. Enables early intervention before problems accumulate.
 
 **Research Source:**
-- [METRICS_BASELINE.md](agents/agent-9/research/METRICS_BASELINE.md#leading-indicators)
+- [METRICS_BASELINE.md](research/METRICS_BASELINE.md#leading-indicators)
 - Thresholds defined for 6 indicators
 - Example: Crisis doc creation (>3 in 7 days)
 
@@ -693,7 +693,7 @@ jobs:
 Use historical metrics to predict velocity trends and proactively adjust governance before burnout occurs.
 
 **Research Source:**
-- [METRICS_BASELINE.md](agents/agent-9/research/METRICS_BASELINE.md#velocity-metrics)
+- [METRICS_BASELINE.md](research/METRICS_BASELINE.md#velocity-metrics)
 - Current: 60 commits/day (12-24x normal)
 - Pattern: Velocity spikes precede burnout in solo dev projects
 
@@ -721,7 +721,7 @@ Use historical metrics to predict velocity trends and proactively adjust governa
 Optimize release cadence based on metrics (velocity, test coverage, user feedback). Research shows GitLab adjusts deploy frequency dynamically based on error rates.
 
 **Research Source:**
-- [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-5-continuous-deployment)
+- [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-5-continuous-deployment)
 - GitLab: 12 deploys/day with progressive rollout
 - Lesson: Match cadence to stability metrics
 
@@ -773,7 +773,7 @@ Single aggregate score (0-100) representing overall governance health. Simplifie
 Apply AI context format guidelines (RESEARCH-006) to all agent specifications and handoff docs. Improve agent onboarding time from hours to minutes.
 
 **Research Source:**
-- [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#guideline-1-information-density)
+- [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md#guideline-1-information-density)
 - Tables > prose for AI parsing (5-10x faster)
 - Progressive disclosure: README → Details
 
@@ -800,7 +800,7 @@ Apply AI context format guidelines (RESEARCH-006) to all agent specifications an
 Track technical debt explicitly (TODO count, test skips, complexity metrics). Research shows tracking debt prevents accumulation.
 
 **Research Source:**
-- [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-3-25-technical-debt)
+- [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md#pattern-3-25-technical-debt)
 - Shopify: Tracks debt paid down vs. accumulated
 - Goal: Debt trend = flat or declining
 
@@ -1147,7 +1147,7 @@ All research documents available in `agents/agent-9/research/`:
 - Make breaking changes
 - Override security policies
 
-**Full matrix:** [AGENT_9_CONSTRAINTS.md](agents/agent-9/research/AGENT_9_CONSTRAINTS.md#authority-matrix)
+**Full matrix:** [AGENT_9_CONSTRAINTS.md](research/AGENT_9_CONSTRAINTS.md#authority-matrix)
 
 ---
 

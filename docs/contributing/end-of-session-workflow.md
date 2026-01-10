@@ -461,7 +461,7 @@ git log --oneline -3    # Verify your commits are there
 - **Automation catalog:** [docs/reference/automation-catalog.md](../reference/automation-catalog.md)
 - **Session issues log:** [docs/contributing/session-issues.md](session-issues.md)
 - **Session log:** [docs/SESSION_LOG.md](../SESSION_LOG.md)
-- **Handoff quick start:** [docs/handoff.md](../handoff.md)
+- **Handoff quick start:** [docs/handoff.md](handoff.md)
 
 ---
 

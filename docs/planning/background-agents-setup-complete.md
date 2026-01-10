@@ -220,12 +220,12 @@ As the MAIN agent, you handle:
 
 **For MAIN Agent:**
 - [Main TASKS.md](../TASKS.md) - Primary task board
-- [Git Workflow](../git-workflow-ai-agents.md) - Git automation guide
+- [Git Workflow](../contributing/git-workflow-ai-agents.md) - Git automation guide
 - [Automation Catalog](../reference/automation-catalog.md) - All scripts
 
 **Project Context:**
-- [AI Context Pack](../ai-context-pack.md) - Everything you need to know
-- [Agent Bootstrap](../agent-bootstrap.md) - Quick start guide
+- [AI Context Pack](../getting-started/ai-context-pack.md) - Everything you need to know
+- [Agent Bootstrap](../getting-started/agent-bootstrap.md) - Quick start guide
 - [Next Session Brief](next-session-brief.md) - Current state
 
 ---

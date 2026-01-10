@@ -325,10 +325,10 @@ max-locals=20
 
 ## 📚 Related Documentation
 
-- [Git Workflow](../git-workflow-ai-agents.md) - Commit workflow with pre-commit hooks
-- [Testing Strategy](../testing-strategy.md) - Overall testing approach
-- [Agent Bootstrap](../agent-bootstrap.md) - Getting started guide
-- [AI Context Pack](../ai-context-pack.md) - Quick reference
+- [Git Workflow](../contributing/git-workflow-ai-agents.md) - Commit workflow with pre-commit hooks
+- [Testing Strategy](../contributing/testing-strategy.md) - Overall testing approach
+- [Agent Bootstrap](../getting-started/agent-bootstrap.md) - Getting started guide
+- [AI Context Pack](../getting-started/ai-context-pack.md) - Quick reference
 
 ---
 
@@ -367,7 +367,7 @@ git pull origin main
 
 **Questions?** Check:
 1. This documentation
-2. [TASKS.md](../../TASKS.md) for known issues
+2. [TASKS.md](../TASKS.md) for known issues
 3. [SESSION_LOG.md](../SESSION_LOG.md) for recent changes
 4. `.github/copilot-instructions.md` for general rules
 

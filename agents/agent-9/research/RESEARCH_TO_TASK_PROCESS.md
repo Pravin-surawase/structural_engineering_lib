@@ -254,7 +254,7 @@ Root directory has 41 .md files vs. best practice of <5 (8x over threshold).
 Research shows high-velocity projects (Prettier, Vitest, tRPC) maintain
 minimal root to reduce cognitive load during onboarding.
 
-**Research Source:** [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#case-study-5-vitest-modern-tooling)
+**Research Source:** [RESEARCH_FINDINGS_EXTERNAL.md](RESEARCH_FINDINGS_EXTERNAL.md#case-study-5-vitest-modern-tooling)
 - Finding: Projects with >100 commits/month have <5 root files
 - Evidence: Vitest (2 files, 300 commits/mo), Prettier (5 files, 100 commits/mo)
 
@@ -358,7 +358,7 @@ high-velocity projects maintain <5 root files (we have 41).
 - [ ] Root ≤10 .md files
 - [ ] CI check enforces limit
 
-**Research Source:** [RESEARCH_FINDINGS_EXTERNAL.md](agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md#case-study-5-vitest-modern-tooling)
+**Research Source:** [RESEARCH_FINDINGS_EXTERNAL.md](RESEARCH_FINDINGS_EXTERNAL.md#case-study-5-vitest-modern-tooling)
 
 **Dependencies:** None
 ```

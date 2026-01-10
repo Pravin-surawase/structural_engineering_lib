@@ -203,9 +203,9 @@ This folder contains work-in-progress documents, temporary research, and drafts.
 
 ## Current Active Work (2026-01)
 
-- [Project Needs Assessment](2026-01/PROJECT-NEEDS-ASSESSMENT-2026-01-09.md)
-- [Work Division Main Agent 6](2026-01/WORK-DIVISION-MAIN-AGENT6-2026-01-09.md)
-- [Hygiene Suggestions](2026-01/hygiene-suggestions-2026-01-07.md)
+- [Project Needs Assessment](../../../docs/planning/project-needs-assessment-2026-01-09.md)
+- [Work Division Main Agent 6](../../../docs/planning/work-division-main-agent6-2026-01-09.md)
+- [Hygiene Suggestions](../../../docs/planning/hygiene-suggestions-2026-01-07.md)
 
 ## How to Use
 
@@ -298,12 +298,12 @@ User-facing documentation for getting started with the library.
 
 - [Installation](installation.md)
 - [Python Quickstart](python.md)
-- [Excel Quickstart](excel-quickstart.md)
-- [Beginner's Guide](beginners-guide.md)
+- [Excel Quickstart](../../../docs/getting-started/excel-quickstart.md)
+- [Beginner's Guide](../../../docs/getting-started/beginners-guide.md)
 
 ## For Contributors
 
-See [../contributing/](../contributing/) for development guides.
+See [../contributing/](../../../CONTRIBUTING.md) for development guides.
 EOF
 
 # Repeat for other categories...
@@ -321,24 +321,24 @@ This is the main documentation hub for the structural_engineering_lib project.
 ### Getting Started
 - [Installation](getting-started/installation.md)
 - [Python Quickstart](getting-started/python.md)
-- [Excel Quickstart](getting-started/excel-quickstart.md)
+- [Excel Quickstart](../../../docs/getting-started/excel-quickstart.md)
 
 ### Reference
-- [API Reference](reference/api-reference.md)
-- [IS 456 Quick Reference](reference/is456-quick-reference.md)
-- [Troubleshooting](reference/troubleshooting.md)
+- [API Reference](../../../docs/reference/api-reference.md)
+- [IS 456 Quick Reference](../../../docs/reference/is456-quick-reference.md)
+- [Troubleshooting](../../../docs/contributing/troubleshooting.md)
 
 ### Contributing
-- [Development Guide](contributing/development-guide.md)
-- [Testing Strategy](contributing/testing-strategy.md)
+- [Development Guide](../../../docs/contributing/development-guide.md)
+- [Testing Strategy](../../../docs/contributing/testing-strategy.md)
 
 ### Architecture
-- [Project Overview](architecture/project-overview.md)
-- [Deep Project Map](architecture/deep-project-map.md)
+- [Project Overview](../../../docs/architecture/project-overview.md)
+- [Deep Project Map](../../../docs/architecture/deep-project-map.md)
 
 ### Governance
-- [Git Workflow](governance/git-workflow-ai-agents.md)
-- [Folder Structure](governance/FOLDER_STRUCTURE_GOVERNANCE.md)
+- [Git Workflow](../../../docs/contributing/git-workflow-ai-agents.md)
+- [Folder Structure](FOLDER_STRUCTURE_GOVERNANCE.md)
 
 ### AI Agents
 - [Agent Guides](agents/)
@@ -346,8 +346,8 @@ This is the main documentation hub for the structural_engineering_lib project.
 
 ## 📝 Living Documents
 
-- [TASKS.md](TASKS.md) - Current work items
-- [SESSION_LOG.md](SESSION_LOG.md) - Session history
+- [TASKS.md](../../../docs/TASKS.md) - Current work items
+- [SESSION_LOG.md](../../../docs/SESSION_LOG.md) - Session history
 
 ## 🗂️ Special Folders
 

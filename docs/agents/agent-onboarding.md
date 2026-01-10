@@ -208,9 +208,9 @@ cd worktree-AGENT_NAME-*
 
 ### Project Documentation
 - [project-overview.md](../architecture/project-overview.md) - Architecture
-- [api-reference.md](../api-reference.md) - API documentation
+- [api-reference.md](../reference/api-reference.md) - API documentation
 - [TASKS.md](../TASKS.md) - Current work
-- [known-pitfalls.md](../known-pitfalls.md) - Common issues
+- [known-pitfalls.md](../reference/known-pitfalls.md) - Common issues
 
 ### Workflow Scripts
 - `scripts/agent_setup.sh` - Environment setup

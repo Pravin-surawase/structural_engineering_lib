@@ -538,5 +538,5 @@ ml_result = neural_network_approach(X_train, y_train)
 - Nature Scientific Reports (2025). Intelligent low carbon RC beam design via deep reinforcement learning.
 
 ### Internal Documentation
-- [Research document](../../../planning/research-smart-library.md)
+- [Research document](../../../_archive/2026-01/research-smart-library.md)
 - [Evidence framework](../../findings/evidence-framework.md)

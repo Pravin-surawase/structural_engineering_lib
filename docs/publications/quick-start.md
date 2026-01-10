@@ -12,7 +12,7 @@ A comprehensive publication plan documenting our research and development work o
 
 ### Key Assets Created
 
-1. **Comprehensive Research** ([research-smart-library.md](../planning/research-smart-library.md))
+1. **Comprehensive Research** ([research-smart-library.md](../_archive/2026-01/research-smart-library.md))
    - 20+ citations from academic literature
    - 7 research directions explored
    - Recommendations prioritized by feasibility
@@ -23,12 +23,12 @@ A comprehensive publication plan documenting our research and development work o
    - Constructability scoring (weighted metrics)
    - Sample-only validation (3 vectors matched; not a general accuracy claim)
 
-3. **Findings Documented** ([prototype-findings-intelligence.md](../planning/prototype-findings-intelligence.md))
+3. **Findings Documented** ([prototype-findings-intelligence.md](../_archive/2026-01/prototype-findings-intelligence.md))
    - Test results (7/7 scenarios passed)
    - Performance metrics (<10ms for all features)
    - Engineering validation (aligns with IS 456)
 
-4. **Implementation Plan** ([v0.13-v0.14-implementation-plan.md](../planning/v0.13-v0.14-implementation-plan.md))
+4. **Implementation Plan** ([v0.13-v0.14-implementation-plan.md](../_archive/2026-01/v0.13-v0.14-implementation-plan.md))
    - Comprehensive 1900+ line plan
    - Architecture decisions (separate insights module)
    - Release timeline (v0.13-v0.14)
@@ -301,9 +301,9 @@ Not all problems need 10,000 training samples. When you have physical models and
 ## Resources & References
 
 ### Internal Documentation
-- [Research document](../planning/research-smart-library.md) — 20+ citations
-- [Prototype findings](../planning/prototype-findings-intelligence.md) — Validation results
-- [Implementation plan](../planning/v0.13-v0.14-implementation-plan.md) — v0.13-v0.14 roadmap
+- [Research document](../_archive/2026-01/research-smart-library.md) — 20+ citations
+- [Prototype findings](../_archive/2026-01/prototype-findings-intelligence.md) — Validation results
+- [Implementation plan](../_archive/2026-01/v0.13-v0.14-implementation-plan.md) — v0.13-v0.14 roadmap
 - [Production roadmap](../planning/production-roadmap.md) — 52-week plan to v1.0
 
 ### Code & Examples

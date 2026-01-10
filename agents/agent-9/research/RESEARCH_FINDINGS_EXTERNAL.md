@@ -570,7 +570,7 @@ documents which exceeds the target of less than 10...
 
 **Good:**
 ```markdown
-See [METRICS_BASELINE.md](agents/agent-9/research/METRICS_BASELINE.md)
+See [METRICS_BASELINE.md](METRICS_BASELINE.md)
 for current measurements.
 ```
 

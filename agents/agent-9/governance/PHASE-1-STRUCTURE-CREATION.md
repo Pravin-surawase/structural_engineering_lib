@@ -163,7 +163,7 @@ Documentation for working with AI agents in this project.
 ## Quick Start
 
 New to agents? Start here:
-- **[Agent Bootstrap](../agent-bootstrap.md)** - Fast onboarding (15 min)
+- **[Agent Bootstrap](../../../docs/getting-started/agent-bootstrap.md)** - Fast onboarding (15 min)
 - **[Agent Onboarding](guides/onboarding.md)** - Complete onboarding guide
 - **[Workflow Master Guide](guides/workflow-master-guide.md)** - Agent workflows
 
@@ -188,8 +188,8 @@ Individual agent specifications: [../../agents/roles/](../../agents/roles/)
 ## Related Documentation
 
 - **[Main Documentation](../README.md)** - Project documentation home
-- **[Agent Bootstrap](../agent-bootstrap.md)** - Fast onboarding
-- **[AI Context Pack](../ai-context-pack.md)** - Project context for AI
+- **[Agent Bootstrap](../../../docs/getting-started/agent-bootstrap.md)** - Fast onboarding
+- **[AI Context Pack](../../../docs/getting-started/ai-context-pack.md)** - Project context for AI
 EOF
 
 # Create docs/agents/roles/README.md
@@ -274,18 +274,18 @@ Welcome! This directory contains guides to help you start using the structural e
 ## Quick Start Paths
 
 ### For Python Developers
-1. **[Python Quick Start](../getting-started-python.md)** - Install and first design
-2. **[Beginners Guide](../beginners-guide.md)** - Step-by-step tutorial
-3. **[API Reference](../reference/api-reference.md)** - API documentation
+1. **[Python Quick Start](../../../docs/getting-started/getting-started-python.md)** - Install and first design
+2. **[Beginners Guide](../../../docs/getting-started/beginners-guide.md)** - Step-by-step tutorial
+3. **[API Reference](../../../docs/reference/api-reference.md)** - API documentation
 
 ### For Excel Users
-1. **[Excel Quick Start](../excel-quickstart.md)** - Add-in installation
-2. **[Excel Tutorial](../excel-tutorial.md)** - Excel walkthrough
-3. **[Excel Add-in Guide](../guides/excel-addin-guide.md)** - Complete guide
+1. **[Excel Quick Start](../../../docs/getting-started/excel-quickstart.md)** - Add-in installation
+2. **[Excel Tutorial](../../../docs/getting-started/excel-tutorial.md)** - Excel walkthrough
+3. **[Excel Add-in Guide](../../../docs/contributing/excel-addin-guide.md)** - Complete guide
 
 ### For VBA Developers
-1. **[VBA Guide](../guides/vba-guide.md)** - VBA integration
-2. **[VBA Testing Guide](../guides/vba-testing-guide.md)** - Testing in VBA
+1. **[VBA Guide](../../../docs/contributing/vba-guide.md)** - VBA integration
+2. **[VBA Testing Guide](../../../docs/contributing/vba-testing-guide.md)** - Testing in VBA
 
 ## What You'll Learn
 
@@ -297,9 +297,9 @@ Welcome! This directory contains guides to help you start using the structural e
 ## Next Steps
 
 After getting started:
-- **[Development Guide](../development-guide.md)** - Contribute to the project
-- **[IS 456 Quick Reference](../reference/is456-quick-reference.md)** - Code standards
-- **[Troubleshooting](../troubleshooting.md)** - Common issues
+- **[Development Guide](../../../docs/contributing/development-guide.md)** - Contribute to the project
+- **[IS 456 Quick Reference](../../../docs/reference/is456-quick-reference.md)** - Code standards
+- **[Troubleshooting](../../../docs/contributing/troubleshooting.md)** - Common issues
 
 ---
 
@@ -329,8 +329,8 @@ Technical reference and API documentation.
 ## Available References
 
 ### API Documentation
-- **[API Reference](api-reference.md)** - Complete API documentation
-- **[IS 456 Quick Reference](is456-quick-reference.md)** - IS 456:2000 quick reference
+- **[API Reference](../../../docs/reference/api-reference.md)** - Complete API documentation
+- **[IS 456 Quick Reference](../../../docs/reference/is456-quick-reference.md)** - IS 456:2000 quick reference
 
 ### Technical References
 - (More references will be added here after migration)
@@ -379,28 +379,28 @@ Guides for contributors and maintainers.
 ## For Contributors
 
 ### Getting Started
-- **[Development Guide](../development-guide.md)** - How to contribute
-- **[Testing Strategy](../testing-strategy.md)** - Testing approach
-- **[AI Context Pack](../ai-context-pack.md)** - AI context for development
+- **[Development Guide](../../../docs/contributing/development-guide.md)** - How to contribute
+- **[Testing Strategy](../../../docs/contributing/testing-strategy.md)** - Testing approach
+- **[AI Context Pack](../../../docs/getting-started/ai-context-pack.md)** - AI context for development
 
 ### Development Workflows
-- **[Git Workflow for AI Agents](../git-workflow-ai-agents.md)** - Git workflow
+- **[Git Workflow for AI Agents](../../../docs/contributing/git-workflow-ai-agents.md)** - Git workflow
 - (More workflow guides will be added here after migration)
 
 ## Development Resources
 
 ### Quality & Testing
-- **[Testing Strategy](../testing-strategy.md)** - How we test
-- **[Verification Pack](../verification-pack.md)** - Verification procedures
-- **[Verification Examples](../verification-examples.md)** - Example verifications
+- **[Testing Strategy](../../../docs/contributing/testing-strategy.md)** - How we test
+- **[Verification Pack](../../../docs/reference/verification-pack.md)** - Verification procedures
+- **[Verification Examples](../../../docs/reference/verification-examples.md)** - Example verifications
 
 ### Architecture
 - **[Architecture Documentation](../architecture/)** - System architecture
-- **[Project Overview](../project-overview.md)** - High-level overview
+- **[Project Overview](../../../docs/architecture/project-overview.md)** - High-level overview
 
 ## CI/CD & Automation
 
-- **[GitHub Actions](../../.github/workflows/)** - CI/CD configuration
+- **[GitHub Actions](../WORKFLOWS.md)** - CI/CD configuration
 - **[Pre-commit Hooks](../../.pre-commit-config.yaml)** - Code quality hooks
 
 ---
@@ -563,7 +563,7 @@ _archive/
 
 ## Monthly Archives
 
-- **[2026-01](2026-01/README.md)** - January 2026 (current)
+- **[2026-01](README.md)** - January 2026 (current)
 - (Future archives will appear here)
 
 ## Searching Archives

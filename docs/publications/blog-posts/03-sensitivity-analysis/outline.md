@@ -680,5 +680,5 @@ print(robustness)     # Robustness score (0-1)
 - SP:16 (1980) — Design Aids for Reinforced Concrete
 
 ### Internal Documentation
-- [Research document](../../../planning/research-smart-library.md)
-- [Prototype findings](../../../planning/prototype-findings-intelligence.md)
+- [Research document](../../../_archive/2026-01/research-smart-library.md)
+- [Prototype findings](../../../_archive/2026-01/prototype-findings-intelligence.md)

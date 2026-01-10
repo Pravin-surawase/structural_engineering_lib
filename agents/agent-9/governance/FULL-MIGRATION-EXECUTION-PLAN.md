@@ -513,7 +513,7 @@ Estimated Duration: X hours
 - [Link Map](LINK-MAP.md) (auto-generated during migration)
 
 ### Related Documents
-- [Agent 9 README](../agents/agent-9/README.md)
+- [Agent 9 README](README.md)
 - [Folder Structure Governance](FOLDER_STRUCTURE_GOVERNANCE.md)
 - [Migration Review & Risks](MIGRATION_REVIEW_AND_RISKS.md)
 

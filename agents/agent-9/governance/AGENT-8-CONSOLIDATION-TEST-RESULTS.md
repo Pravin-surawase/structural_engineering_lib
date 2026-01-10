@@ -167,18 +167,18 @@ $ grep -c "docs/agents/guides/agent-8" .github/copilot/instructions.md
 
 ### Path 1: Hub → Guides → Specific Doc
 1. Start: [docs/agents/README.md](../README.md)
-2. Click: "Quick Start" → [agent-8-quick-start.md](../guides/agent-8-quick-start.md)
+2. Click: "Quick Start" → [agent-8-quick-start.md](../../../docs/agents/guides/agent-8-quick-start.md)
 3. Result: ✅ Link works, content loads
 
 ### Path 2: Hub → Sessions → Weekly Summary
 1. Start: [docs/agents/README.md](../README.md)
 2. Click: "Sessions" → [sessions/2026-01/](../sessions/2026-01/)
-3. Click: Week 1 → [agent-8-week1-completion-summary.md](../sessions/2026-01/agent-8-week1-completion-summary.md)
+3. Click: Week 1 → [agent-8-week1-completion-summary.md](../../../docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md)
 4. Result: ✅ All links work, full navigation path
 
 ### Path 3: External → Agent 8 Docs
 1. Start: [.github/copilot/instructions.md](../../../.github/copilot/instructions.md)
-2. Click: Agent 8 reference → [docs/agents/guides/agent-8-quick-start.md](../guides/agent-8-quick-start.md)
+2. Click: Agent 8 reference → [docs/agents/guides/agent-8-quick-start.md](../../../docs/agents/guides/agent-8-quick-start.md)
 3. Result: ✅ Cross-repository links work
 
 ---

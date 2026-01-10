@@ -293,9 +293,9 @@
 
 ## 🔗 Related Documents
 
-- [STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md](STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md) - Original proposal
-- [STREAMLIT_PREVENTION_SYSTEM_REVIEW.md](STREAMLIT_PREVENTION_SYSTEM_REVIEW.md) - Refined approach
-- [check_streamlit_issues.py](../scripts/check_streamlit_issues.py) - Scanner tool
+- [STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md](streamlit-comprehensive-prevention-system.md) - Original proposal
+- [STREAMLIT_PREVENTION_SYSTEM_REVIEW.md](streamlit-prevention-system-review.md) - Refined approach
+- [check_streamlit_issues.py](../../scripts/check_streamlit_issues.py) - Scanner tool
 
 ---
 
