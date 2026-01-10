@@ -74,7 +74,9 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | **TASK-313** | Execute Phase 1-7: Migrate all IS 456 modules | DEV | 2.5h | 🔴 HIGH | ✅ Done |
-| **TASK-317** | Update codes/is456/__init__.py exports & validate | DEV | 30m | 🟠 P1-High | ⏳ Ready |
+| **TASK-317** | Update codes/is456/__init__.py exports & validate | DEV | 30m | 🟠 P1-High | ✅ Done |
+
+> **TASK-317 Completed:** Session 6, 2026-01-11. PR #324 merged. Created `validate_stub_exports.py` + `update_is456_init.py` automation scripts.
 
 ---
 
