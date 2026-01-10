@@ -12,72 +12,87 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-10
-- Focus: Agent 9 (Governance) Created - Organizational Sustainability Agent
-- Agent 9 Achievements:
-  - ✅ **Complete agent specification:** 831 lines in agents/GOVERNANCE.md
-  - ✅ **80/20 Rule defined:** 4 feature sessions : 1 governance session (Shopify strategy)
-  - ✅ **WIP Limits established:** Max 2 worktrees, 5 PRs, 10 docs, 3 research (Kanban-style)
-  - ✅ **Release Cadence:** Bi-weekly (v0.17.0: Jan 23, v0.18.0: Feb 6, v0.19.0: Feb 20, v1.0.0: Mar 27)
-  - ✅ **Documentation Lifecycle:** Active (<7 days) → Archive (>7 days) → Canonical (evergreen)
-  - ✅ **3 Core Workflows:** Weekly maintenance, pre-release governance, monthly review
-  - ✅ **5 Automation Scripts:** archive_old_sessions.sh, check_wip_limits.sh, check_version_consistency.sh, generate_health_report.sh, monthly_maintenance.sh
-  - ✅ **Success Metrics:** 10 primary metrics (commits/day, docs count, ratios, compliance)
-- **Key Insight:** "AI agents amplify existing disciplines - not substitute for them. Strong technical foundations require matching organizational foundations to sustain high velocity without chaos."
-- **Research Foundation:** 6 industry sources (Faros AI, Statsig/Shopify, Addy Osmani, Axon, Intuition Labs, Monday.com)
-- **Integration:** Agent 9 coordinates with Agent 6 (features → sustainability) and Agent 8 (velocity → pace monitoring)
-- **Rationale:** Project has 90% technical foundations (CI/CD, tests, automation) but lacked organizational discipline. Agent 9 provides the missing 10%.
-- Next: **FIRST AGENT 9 SESSION** - Weekly maintenance to establish baseline (archive 67 docs, implement scripts, generate metrics)
-- Status: Agent 9 specification 100% complete, ready for first governance session
+- Date: 2026-01-10 (Evening Session)
+- Focus: **Phase C.1 Complete** - Documentation Semantic Enhancement
+- Session Commits (5):
+  - 0a3e78d - TASKS.md update with Phase C tasks
+  - 22a8730 - Redirect stub automation + 4 stubs removed
+  - 18cfaf8 - Semantic README enhancement (3 files)
+  - f7be195 - Duplicate docs checker + session issues doc
+  - (pending) - Phase C research + session prep
+- Automation Created:
+  - ✅ `scripts/check_redirect_stubs.py` - Find and clean redirect stubs (--fix, --dry-run)
+  - ✅ `scripts/check_duplicate_docs.py` - Find duplicate filenames (--json)
+- Docs Enhanced:
+  - ✅ `docs/README.md` - Semantic navigation tables with Type/Complexity
+  - ✅ `docs/agents/README.md` - Agent registry with Domain/Complexity
+  - ✅ `docs/research/README.md` - Research index with Type/Tags
+- Metrics:
+  - 289 markdown files (was 292, 4 stubs removed)
+  - 729 internal links (was 708, +21 from semantic tables)
+  - 0 broken links
+  - 13 redirect stubs remain (have active references)
+  - 7 duplicate filename patterns (1 true duplicate)
+- Issues Fixed:
+  - Python 3.9 compatibility note added to copilot-instructions.md
+  - Session issues documented in docs/planning/session-2026-01-10-issues.md
+- Next: **Phase C.2** - TASK-302 (clean stubs with refs), TASK-303 (front-matter template)
+- Research: See docs/planning/phase-c-next-tasks-research.md
 <!-- HANDOFF:END -->
 
 
 
 ## 🎯 Immediate Priority
 
-**✅ AGENT 9 (GOVERNANCE) CREATED - NOW READY FOR FIRST SESSION**
+**✅ PHASE C.1 COMPLETE - NOW READY FOR PHASE C.2**
 
-**What Changed:** Instead of a one-time stabilization session, we now have a **permanent organizational health agent** (Agent 9) that runs every 5th session (20% of work time).
+### What Was Accomplished This Session
 
-**Why This is Better:**
-- **Sustainable:** Not a one-time fix - ongoing governance
-- **Automated:** 5 scripts handle most maintenance
-- **Research-Backed:** Based on Shopify's 25% debt cycles (we use 20%)
-- **Proven Pattern:** Agent 6 & Agent 8 showed focused agents work exceptionally well
+| Area | Result | Impact |
+|------|--------|--------|
+| **TASKS.md** | Phase C defined (7 tasks) | Clear roadmap |
+| **Automation** | 2 new scripts | Faster future cleanup |
+| **Semantic Enhancement** | 3 README indexes | Better AI navigation |
+| **Issues** | 5 documented, all fixed | Prevention patterns |
 
-**First Agent 9 Session Plan (2-4 hours):**
+### Next Session Plan: Phase C.2 (2-3 hours)
 
-1. **Archive 67+ Session Docs** (45 min)
-   - Create `docs/archive/2026-01/` structure
-   - Move docs older than 7 days
-   - Generate archive index
-   - Verify link integrity
+1. **TASK-302: Clean Redirect Stubs with References** (90 min)
+   - 13 stubs remain with active references
+   - Use `scripts/check_redirect_stubs.py` to identify
+   - Update references to canonical locations
+   - Remove stubs after updating refs
+   - Priority: project-overview.md (24 refs), api-reference.md (14 refs)
 
-2. **Implement WIP Limit Scripts** (45 min)
-   - Create `scripts/check_wip_limits.sh`
-   - Create `scripts/check_version_consistency.sh`
-   - Test automation
-   - Add to pre-commit hooks
+2. **TASK-303: Add Front-Matter Template** (60 min)
+   - Create template in `docs/contributing/doc-template.md`
+   - Add metadata: owner, status, last_updated, doc_type, complexity
+   - Apply to key indexes first
+   - Create validation script
 
-3. **Generate Baseline Health Metrics** (30 min)
-   - Collect 7-day metrics (commits, PRs, docs, tests)
-   - Calculate sustainability ratios
-   - Create `docs/planning/GOVERNANCE-METRICS.md`
-   - Establish baseline for future comparison
+3. **Quick Win: Resolve Duplicate** (15 min)
+   - Compare `docs/research/ui-layout-final-decision.md` vs `docs/planning/`
+   - Archive less complete version
 
-4. **Create Archival Script** (45 min)
-   - Implement `scripts/archive_old_sessions.sh`
-   - Test dry-run mode
-   - Test actual archival
-   - Schedule weekly automation
+### Research Document Created
 
-**Expected Outcomes:** Clean `docs/planning/`, organized archive index, baseline metrics, and governance tooling running.
+**See:** [docs/planning/phase-c-next-tasks-research.md](phase-c-next-tasks-research.md)
 
-**Future Agent 9 Sessions:** Weekly (every 5th session), pre-release (3 days before), monthly (first session).
+Contains:
+- Detailed approach for each task
+- Innovation ideas (automated reference updater, doc freshness dashboard)
+- Dependencies and session planning
+- Success criteria
 
-**Alternative (Not Recommended Right Now):**
-- Continue Agent 8 Week 2 optimizations
-- Risk: More velocity without governance foundation
+### Innovation Opportunity
+
+**Automated Reference Updater** - Could significantly speed up TASK-302:
+- Script finds all references to a stub
+- Calculates new path by following redirect
+- Updates all references automatically
+- Removes stub
+
+This would turn 13 manual fixes into a single script run.
 
 ---
 
