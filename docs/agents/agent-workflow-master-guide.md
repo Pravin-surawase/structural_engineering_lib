@@ -80,6 +80,41 @@ git push
 
 ---
 
+## 🧠 Automation-First Mentality (CRITICAL)
+
+> **If you see 10+ similar issues → Build automation FIRST, never fix manually!**
+
+### Core Principles
+
+| Principle | What It Means |
+|-----------|---------------|
+| **Pattern Recognition** | 10+ similar issues = automation script, not manual fixes |
+| **Research First** | Check `scripts/` for existing tools before writing new ones |
+| **Build Once, Use Many** | Scripts like `fix_broken_links.py` save hours of future work |
+| **Commit Incrementally** | Use `ai_commit.sh` frequently, don't accumulate changes |
+| **Full Sessions** | Aim for 5-10+ commits per session, don't stop early |
+| **Document Everything** | Update TASKS.md, SESSION_LOG.md after significant work |
+
+### Example Automation Scripts
+```bash
+# Fix broken links automatically (fixed 213 links in 5 seconds)
+python scripts/fix_broken_links.py --fix
+
+# Validate folder structure
+python scripts/validate_folder_structure.py
+
+# Check doc version drift
+python scripts/check_doc_versions.py
+```
+
+### Session Duration Guidelines
+- **Minimum:** 5+ commits or 30+ minutes of substantial work
+- **Target:** Complete a full task or meaningful chunk before stopping
+- **If blocked:** Move to next task instead of ending session
+- **Before stopping:** Update TASKS.md, SESSION_LOG.md, run end_session.py
+
+---
+
 ## 📋 Decision Trees
 
 ### Decision Tree 1: What Workflow?

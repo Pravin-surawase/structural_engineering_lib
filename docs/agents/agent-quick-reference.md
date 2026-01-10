@@ -168,6 +168,27 @@ docs/agents/
 
 ---
 
+## 🧠 Automation-First Principles
+
+> **10+ similar issues = Write automation script FIRST!**
+
+| Principle | Action |
+|-----------|--------|
+| **Pattern Recognition** | See 10+ issues → automate, don't fix manually |
+| **Research First** | Check `scripts/` before writing new tools |
+| **Build Once, Use Many** | `fix_broken_links.py` fixed 213 links in 5 sec |
+| **Full Sessions** | 5-10+ commits per session, don't stop early |
+| **Document Always** | Update TASKS.md, SESSION_LOG after work |
+
+### Quick Automation Commands
+```bash
+python scripts/fix_broken_links.py --fix      # Fix links
+python scripts/validate_folder_structure.py   # Check structure
+python scripts/check_doc_versions.py --fix    # Fix versions
+```
+
+---
+
 ## 🎓 Learning Resources
 
 ### Day 1: Basics

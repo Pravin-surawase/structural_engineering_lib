@@ -245,6 +245,35 @@ cd worktree-AGENT_NAME-*
 
 ---
 
+## 🧠 Automation-First Mindset
+
+**Critical principle: 10+ similar issues = Build automation FIRST!**
+
+### What This Means
+
+| See This... | Do This... |
+|-------------|------------|
+| 10+ broken links | Run `python scripts/fix_broken_links.py --fix` |
+| 10+ file renames needed | Write a rename script first |
+| Repetitive manual task | Check if automation exists in `scripts/` |
+| New pattern of issues | Create a script, document it, use it |
+
+### Session Duration Expectations
+
+- **Minimum:** 5+ commits or 30+ minutes of substantial work
+- **Don't stop early** — complete a full task or meaningful chunk
+- **If blocked:** Move to the next task, don't end the session
+- **Before ending:** Update TASKS.md, SESSION_LOG.md, run `end_session.py`
+
+### Example Automation
+```bash
+python scripts/fix_broken_links.py --fix      # Fixed 213 links in 5 seconds
+python scripts/validate_folder_structure.py   # Validates entire repo structure
+python scripts/check_doc_versions.py --fix    # Syncs doc versions automatically
+```
+
+---
+
 ## ✅ Certification
 
 I have completed the onboarding checklist and:

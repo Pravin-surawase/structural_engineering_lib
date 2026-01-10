@@ -51,13 +51,33 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 - **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
 - **Automation scripts (41):** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
-- **Handoff quick start:** [../handoff.md](../contributing/handoff.md)
+- **Handoff quick start:** [../contributing/handoff.md](../contributing/handoff.md)
 - **Background agent guide:** [../contributing/background-agent-guide.md](../contributing/background-agent-guide.md)
 - **API docs:** [../reference/api.md](../reference/api.md)
-- **Known pitfalls:** [../known-pitfalls.md](../reference/known-pitfalls.md)
+- **Known pitfalls:** [../reference/known-pitfalls.md](../reference/known-pitfalls.md)
 - **Recent issues:** [../contributing/session-issues.md](../contributing/session-issues.md)
 - **Agent roles:** [../agents/README.md](../agents/README.md)
 - **Project status:** [../planning/project-status.md](../planning/project-status.md) (quick) or [../planning/project-status-deep-dive.md](../planning/project-status-deep-dive.md) (detailed)
+
+---
+
+## 🧠 Automation-First Mentality
+
+> **CRITICAL: If you see 10+ similar issues → Build automation FIRST!**
+
+| Principle | What It Means |
+|-----------|---------------|
+| **Pattern Recognition** | 10+ issues = automation script, not manual fixes |
+| **Research First** | Check `scripts/` before writing new tools |
+| **Full Sessions** | 5-10+ commits, don't stop early |
+| **Document Always** | Update TASKS.md, SESSION_LOG after work |
+
+### Quick Automation
+```bash
+python scripts/fix_broken_links.py --fix      # Fix links
+python scripts/validate_folder_structure.py   # Check structure
+python scripts/check_doc_versions.py --fix    # Fix versions
+```
 
 ---
 

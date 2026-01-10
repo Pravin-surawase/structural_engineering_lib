@@ -702,3 +702,52 @@ git push
 4. **One terminal command at a time** — Don't run parallel terminal commands
 5. **Verify before declaring success** — Run tests, check output, confirm behavior
 6. **Read this file first** — Before starting any session, review these rules completely
+---
+
+## 🧠 Automation-First Mentality (CRITICAL)
+
+**Core Principles for Every Session:**
+
+### 1. Pattern Recognition → Automation
+- If you see **10+ similar issues** → build automation script FIRST
+- Never manually fix repetitive issues one-by-one
+- Example: 396 broken links? Create `fix_broken_links.py`, not manual edits
+
+### 2. Research Before Action
+- Check existing scripts in `scripts/` before writing new ones
+- Understand the problem scope before starting work
+- Plan the approach, estimate effort, then execute
+
+### 3. Build Once, Use Many
+- Automation scripts save hours of future work
+- Document scripts in their docstrings and README
+- Example: `fix_broken_links.py` fixed 213 links in 5 seconds vs hours manually
+
+### 4. Commit Incrementally
+- Use Agent 8 workflow (`ai_commit.sh`) for EVERY git action
+- Commit working states frequently
+- Never accumulate too many changes before committing
+
+### 5. Full Sessions, More Work
+- **DO NOT stop a session early** — complete significant work chunks
+- Aim for **5-10+ commits per session** for substantial progress
+- If blocked on one task, move to the next rather than stopping
+- End sessions only after documenting progress and updating TASKS.md
+
+### 6. Document Everything
+- Update TASKS.md, SESSION_LOG.md, and relevant docs
+- Future agents (including yourself) will thank you
+- If you create automation, document it in the script and reference docs
+
+**Automation Script Examples:**
+```bash
+# Link fixing automation
+python scripts/fix_broken_links.py --fix
+
+# Folder structure validation
+python scripts/validate_folder_structure.py
+
+# Session management
+python scripts/start_session.py
+python scripts/end_session.py
+```
