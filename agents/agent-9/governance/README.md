@@ -15,6 +15,8 @@
 2. **Execution plan**
    - `FULL-MIGRATION-EXECUTION-PLAN.md` (ultra-safe plan)
    - `MIGRATION-TASKS.md` (step-by-step tasks + validations)
+   - `MIGRATION-EXECUTION-PLAN.md` (execution order + stop conditions)
+   - `MIGRATION-WALKTHROUGH.md` (operator runbook)
    - `MIGRATION_REVIEW_AND_RISKS.md` (known risks + mitigations)
 
 3. **Phase-by-phase docs**

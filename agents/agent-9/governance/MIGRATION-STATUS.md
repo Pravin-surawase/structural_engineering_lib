@@ -16,6 +16,8 @@ Update after each phase or batch.
 ## Current Assets (Ready)
 
 - `FULL-MIGRATION-EXECUTION-PLAN.md` (overall plan)
+- `MIGRATION-EXECUTION-PLAN.md` (execution order + stop conditions)
+- `MIGRATION-WALKTHROUGH.md` (operator runbook)
 - `MIGRATION-TASKS.md` (step-by-step tasks + validations)
 - Phase docs: `PHASE-0` through `PHASE-8`
 - Support: `MIGRATION-SCRIPTS.md`, `LINK-MAP.md`, `ROLLBACK-PROCEDURES.md`
@@ -85,6 +87,7 @@ Update after each phase or batch.
   3. agents/ root: 14 files (max 1)
   4. Dated files in wrong locations: 26 files
   5. Invalid filenames (not kebab-case): 15 files
+  - Note: `check_root_file_count.sh` reports 11 root files; the validator counts all root files.
 - Root cause: Natural accumulation before governance implementation
 - Fix strategy: Systematic reduction through Phases A1-A6
 - Follow-up: Track error count after each phase

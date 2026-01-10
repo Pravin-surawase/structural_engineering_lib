@@ -1,0 +1,21 @@
+{
+  "trial_id": "2026-01-10T16-20-32-task08-hierarchical-3-rep1",
+  "timestamp": "2026-01-10T16:20:33+05:30",
+  "condition": "hierarchical",
+  "agent_type": "3",
+  "task_id": "task08",
+  "task_description": "Find handoff workflow steps",
+  "ground_truth_file": "docs/contributing/end-of-session-workflow.md",
+  "metrics": {
+    "time_to_complete_ms": 40,
+    "files_accessed": 3,
+    "bytes_loaded": 37243,
+    "tokens_loaded": 4433,
+    "wrong_files_opened": 2,
+    "navigation_path": ["docs/index.json","docs/contributing/index.json","docs/contributing/end-of-session-workflow.md"]
+  },
+  "outcome": {
+    "success": true,
+    "correct_file_found": true
+  }
+}

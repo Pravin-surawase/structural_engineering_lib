@@ -90,7 +90,7 @@ Option A splits migration into small, low-risk batches with validation after eve
 **Validation / Tests**
 - `python scripts/validate_folder_structure.py`
 - `./scripts/check_docs_index.py`
- - `./scripts/check_docs_index_links.py`
+- `./scripts/check_docs_index_links.py`
 
 **Issue Capture**
 - Missing folders or missing README → add to `MIGRATION-STATUS.md`
@@ -103,14 +103,19 @@ Option A splits migration into small, low-risk batches with validation after eve
 **Goal:** Move a small, high-value batch into correct Diataxis locations.
 
 **Steps**
-1. Select 10-15 docs to move (start with low-risk docs).
-2. Update references in README files or docs index.
-3. Update `LINK-MAP.md` with old → new path.
+1. Move Agent 8 Git Workflow docs first (priority for all agents):
+   - `docs/planning/agent-8-tasks-git-ops.md` → `docs/agents/guides/agent-8-git-ops.md`
+   - `docs/planning/agent-8-implementation-guide.md` → `docs/agents/guides/agent-8-implementation-guide.md`
+   - `docs/planning/agent-8-mistakes-prevention-guide.md` → `docs/agents/guides/agent-8-mistakes-prevention-guide.md`
+2. Select 7-12 additional docs to move (start with low-risk docs).
+3. Update references in README files, `docs/reference/agent-automation-pitfalls.md`,
+   and any agent docs that cite the old paths.
+4. Update `LINK-MAP.md` with old → new path.
 
 **Validation / Tests**
 - `./scripts/check_links.py`
 - `./scripts/check_docs_index.py`
- - `./scripts/check_docs_index_links.py`
+- `./scripts/check_docs_index_links.py`
 - `python scripts/validate_folder_structure.py`
 
 **Issue Capture**
@@ -133,7 +138,7 @@ Option A splits migration into small, low-risk batches with validation after eve
 **Validation / Tests**
 - `./scripts/check_links.py`
 - `python scripts/validate_folder_structure.py`
- - `./scripts/check_docs_index_links.py`
+- `./scripts/check_docs_index_links.py`
 
 **Issue Capture**
 - Unexpected file removals
@@ -181,7 +186,7 @@ If output is non-empty, fix LINK-MAP so every old path maps directly to final pa
 - `./scripts/check_links.py`
 - `python scripts/validate_folder_structure.py`
 - `./scripts/check_root_file_count.sh`
- - `./scripts/check_docs_index_links.py`
+- `./scripts/check_docs_index_links.py`
 
 ---
 

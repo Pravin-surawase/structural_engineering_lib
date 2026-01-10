@@ -1,7 +1,7 @@
 # Migration Decision Summary - Quick Reference
 
 **Date:** 2026-01-10
-**Status:** 🎯 AWAITING YOUR DECISION
+**Status:** Option A selected (Modified Hybrid)
 
 ---
 
@@ -10,38 +10,18 @@
 I've completed comprehensive review of:
 - ✅ **Agent 9 docs** (18 files, ~4,500 lines) → **EXCELLENT, ready for use**
 - ✅ **Migration plan** → **Well-designed, but I propose improvements**
-- ✅ **Current state** → **115 validation errors confirmed**
+- ✅ **Current state** → **118 validation errors baseline (see MIGRATION-STATUS.md)**
 
-**My Recommendation:** Modified Hybrid Approach (4 phases over 2 weeks, interleaved with feature work)
+**Decision:** Option A - Modified Hybrid (4 phases over 2 weeks, interleaved with feature work)
 
 ---
 
-## Current State Snapshot
+## Current State Snapshot (Live Data)
 
-```
-Working Tree Status:
-  ✅ CLEAN (only new governance docs untracked)
-  - 8 untracked files in agents/agent-9/governance/ (created today)
-  - No modified files blocking migration
-
-Open PRs:
-  ⚠️ 2 open PRs:
-  - PR #318: TASK-284-286 (Governance automation)
-  - PR #305: FIX-002 (Streamlit test mocks)
-  - Recommendation: Merge or pause before migration Phase 2
-
-Validation Errors:
-  ❌ 115 errors
-  - Root: 16 files (limit: 10)
-  - docs/: 44 files (limit: 5)
-  - agents/: 13 files (limit: 1)
-  - Dated files: 23 misplaced
-  - Naming: 92 violations
-
-Missing Tools:
-  ❌ scripts/check_links.py does not exist
-  → Will create in Phase 1
-```
+- Working tree: run `git status -sb` before starting migration.
+- Open PRs: confirm none touch `docs/` or `agents/`.
+- Validation baseline: see `MIGRATION-STATUS.md` (current baseline recorded there).
+- Tools: `scripts/check_links.py` exists (no blocker).
 
 ---
 
