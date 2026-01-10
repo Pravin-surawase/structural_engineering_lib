@@ -14,6 +14,7 @@
 
 2. **Execution plan**
    - `FULL-MIGRATION-EXECUTION-PLAN.md` (ultra-safe plan)
+   - `MIGRATION-TASKS.md` (step-by-step tasks + validations)
    - `MIGRATION_REVIEW_AND_RISKS.md` (known risks + mitigations)
 
 3. **Phase-by-phase docs**
