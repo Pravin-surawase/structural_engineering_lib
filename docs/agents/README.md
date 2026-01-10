@@ -1,20 +1,31 @@
 # Agent Documentation Hub
 
-**Purpose:** Central location for all agent-specific documentation, guides, and session logs.
+> **For AI Agents:** Use the semantic registry below to find the right docs quickly.
+> **Start here** → Find your agent → Read Quick Start → Use Hub for details.
 
 ---
 
-## Agent Registry
+## 🎯 Agent Registry (Semantic Index)
 
-| Agent | Role | Quick Start | Hub |
-|-------|------|-------------|-----|
-| **6** | Streamlit UI | [agent-6-quick-start.md](guides/agent-6-quick-start.md) | [agent-6-streamlit-hub.md](guides/agent-6-streamlit-hub.md) |
-| **8** | Git Operations | [agent-8-quick-start.md](guides/agent-8-quick-start.md) | [agent-8-git-ops.md](guides/agent-8-git-ops.md) |
-| **9** | Governance | [agent-9-quick-start.md](guides/agent-9-quick-start.md) | [agent-9-governance-hub.md](guides/agent-9-governance-hub.md) |
+| Agent | Role | Domain | Quick Start | Hub | Complexity |
+|-------|------|--------|-------------|-----|------------|
+| **6** | Streamlit UI | Frontend, validation, dashboards | [60s Start](guides/agent-6-quick-start.md) | [Full Hub](guides/agent-6-streamlit-hub.md) | 🟢 Beginner |
+| **8** | Git Operations | Commits, PRs, conflict prevention | [60s Start](guides/agent-8-quick-start.md) | [Full Hub](guides/agent-8-git-ops.md) | 🟡 Intermediate |
+| **9** | Governance | Docs structure, migrations, quality | [60s Start](guides/agent-9-quick-start.md) | [Full Hub](guides/agent-9-governance-hub.md) | 🟡 Intermediate |
+
+### 📋 When to Use Each Agent
+
+| Task | Agent | Key Docs |
+|------|-------|----------|
+| Build Streamlit pages | **6** | [maintenance-guide](../contributing/streamlit-maintenance-guide.md), [prevention-system](../contributing/streamlit-comprehensive-prevention-system.md) |
+| Commit code changes | **8** | [ai_commit.sh](../../scripts/ai_commit.sh), [safe_push.sh](../../scripts/safe_push.sh) |
+| Fix merge conflicts | **8** | [mistake-prevention](guides/agent-8-mistakes-prevention-guide.md) |
+| Reorganize docs | **9** | [governance hub](../../agents/agent-9/governance/README.md) |
+| Clean up stale files | **9** | [check_redirect_stubs.py](../../scripts/check_redirect_stubs.py) |
 
 ---
 
-## Structure
+## 📂 Structure
 
 ### guides/
 Agent-specific guides, protocols, and reference documentation:

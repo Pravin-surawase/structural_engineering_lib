@@ -1,8 +1,49 @@
 # Docs Index (Start Here)
 
-If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience.
+> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.
+> Look at the **Type** and **Complexity** columns to decide what to read.
 
-> **Version info:** See [TASKS.md](TASKS.md) for current/next release status.
+---
+
+## 📋 Quick Navigation (Semantic Index)
+
+### 🚀 Start Here (by role)
+
+| Role | Start With | Type | Complexity | Description |
+|------|-----------|------|------------|-------------|
+| **AI Agent (new)** | [agent-onboarding.md](agents/agent-onboarding.md) | guide | beginner | 60-second onboarding checklist |
+| **AI Agent (working)** | [agent-quick-reference.md](agents/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
+| **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
+| **Excel User** | [excel-tutorial.md](getting-started/excel-tutorial.md) | tutorial | beginner | UDF usage, workbook setup |
+| **Contributor** | [development-guide.md](contributing/development-guide.md) | guide | intermediate | PR process, code style, tests |
+| **Researcher** | [research/README.md](research/README.md) | index | intermediate | Research catalog and findings |
+
+### 📚 By Topic (all docs)
+
+| Topic | Key Docs | Type | Complexity | What You'll Learn |
+|-------|---------|------|------------|-------------------|
+| **API** | [api.md](reference/api.md) | reference | advanced | Full function signatures, parameters |
+| **IS 456 Formulas** | [is456-formulas.md](reference/is456-formulas.md) | reference | intermediate | Clause references, equations |
+| **Architecture** | [project-overview.md](architecture/project-overview.md) | guide | intermediate | Layer structure, data flow |
+| **Testing** | [testing-strategy.md](contributing/testing-strategy.md) | guide | intermediate | Test categories, coverage, CI |
+| **Git Workflow** | [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) | guide | beginner | Commit, PR, merge rules |
+| **Troubleshooting** | [troubleshooting.md](reference/troubleshooting.md) | reference | beginner | Common errors, fixes |
+| **Tasks** | [TASKS.md](TASKS.md) | index | beginner | What to work on next |
+| **Session Log** | [SESSION_LOG.md](SESSION_LOG.md) | log | beginner | Recent work history |
+
+---
+
+## 🔍 Document Type Legend
+
+| Type | Icon | Purpose | When to Use |
+|------|------|---------|-------------|
+| **tutorial** | 📖 | Step-by-step learning | New to a topic |
+| **guide** | 📋 | Conceptual understanding | Need context |
+| **reference** | 📚 | Lookup information | Know what you need |
+| **index** | 🗂️ | Navigate to other docs | Finding related content |
+| **log** | 📝 | Historical record | Understanding history |
+
+---
 
 ## Quick CLI Reference (v0.11.0+)
 
