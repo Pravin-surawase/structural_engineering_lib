@@ -4,6 +4,63 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-10 — Session 4: Folder Cleanup Automation 🧹
+
+**Focus:** Safe file operations, folder READMEs, cleanup automation
+
+### Folder Cleanup Automation Complete ✅
+
+**TASK-311 Delivered:**
+- `scripts/safe_file_move.py` - Move files with automatic link updates
+- `scripts/safe_file_delete.py` - Delete with reference check + backup
+- `scripts/check_folder_readmes.py` - Verify folder documentation
+- `scripts/find_orphan_files.py` - Find unreferenced docs
+
+**Documentation Created:**
+- `docs/guidelines/file-operations-safety-guide.md` - Safety procedures
+- `docs/guidelines/folder-cleanup-workflow.md` - Step-by-step workflow
+- `docs/research/folder-cleanup-research.md` - Research findings
+- 6 folder READMEs (scripts, VBA, structural_lib, examples, learning-materials)
+
+**Key Features:**
+- **Safe Move:** Updates all links automatically when moving files
+- **Safe Delete:** Checks references before deleting, creates backup
+- **Orphan Detection:** 50+ orphan files identified for review
+- **README Enforcement:** All required folders now documented
+
+### Commits This Session (4)
+1. `30c48aa` - feat: add folder cleanup automation (4 scripts)
+2. `6b666dd` - docs: add README.md to key folders
+3. `8bfdeab` - docs: add file operations safety guide and cleanup workflow
+4. `0100b6a` - docs: update TASKS.md and copilot-instructions
+
+### Automation Created
+- `safe_file_move.py` - Move with link updates
+- `safe_file_delete.py` - Delete with checks
+- `check_folder_readmes.py` - README verification
+- `find_orphan_files.py` - Orphan detection
+
+### Session Issues (Resolved)
+- 845 files with whitespace → Auto-fixed by Step 2.5
+- 6 folders missing README → Created comprehensive READMEs
+- 50+ orphan files → Documented, ready for cleanup
+
+**See:** [docs/planning/session-2026-01-10-session4-issues.md](planning/session-2026-01-10-session4-issues.md)
+
+### Metrics
+- 4 new automation scripts
+- 6 new folder READMEs
+- 2 comprehensive guides
+- 719 links verified (0 broken)
+- 50+ orphans identified
+
+### Next Steps
+1. [ ] Execute cleanup using new automation
+2. [ ] Module migration (IS 456 to codes/is456/)
+3. [ ] Start v0.17.0 tasks (TASK-273, TASK-272)
+
+---
+
 ## 2026-01-10 — Session 3: Multi-Code Foundation 🏗️
 
 **Focus:** Research enterprise folder structure for multi-code support (IS 456 + future ACI/Eurocode)

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-10T22:57:59.058090",
-  "total_docs": 291,
+  "generated": "2026-01-10T23:23:47.773037",
+  "total_docs": 295,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,6 +10,8 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-01-10 \u2014 Session 4: Folder Cleanup Automation \ud83e\uddf9",
+        "2026-01-10 \u2014 Session 3: Multi-Code Foundation \ud83c\udfd7\ufe0f",
         "2026-01-10 \u2014 Session: Agent 9 Migration Complete \ud83c\udf89",
         "2026-01-10 \u2014 Session: Agent 9 Phase A5 Link Integrity + Automation-First Principles",
         "2026-01-10 \u2014 Session: Agent 9 (Governance) Created & Enhanced",
@@ -17,11 +19,9 @@
         "2026-01-09 \u2014 Session: Agent 8 Week 1 Complete + Agent 6 Issues Audit",
         "2026-01-09 \u2014 Session: Agent 6 Issues Audit & Long-term Maintenance",
         "2026-01-08 (Continued) \u2014 Phase 3 Research: Library API Coverage Analysis",
-        "2026-01-08 \u2014 Session (v0.16.0 Release - Streamlit UI Phase 2 + API Convenience)",
-        "2026-01-07 \u2014 Session (Hygiene P0 Closeout)",
-        "2026-01-06 \u2014 Session (Professional Standards & Code Quality)"
+        "2026-01-08 \u2014 Session (v0.16.0 Release - Streamlit UI Phase 2 + API Convenience)"
       ],
-      "size_bytes": 65749
+      "size_bytes": 69844
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -61,7 +61,7 @@
         "Recently Done",
         "Archive"
       ],
-      "size_bytes": 18304
+      "size_bytes": 18475
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -1181,6 +1181,29 @@
         "9. Backward Compatibility Strategy"
       ],
       "size_bytes": 12450
+    },
+    "docs/research/folder-cleanup-research.md": {
+      "title": "Folder Cleanup & Maintenance Research",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "1. Current State Analysis",
+        "2. Safe File Operation Strategies",
+        "3. Archive Policy Recommendations",
+        "4. Folder README Template",
+        "What belongs here",
+        "What does NOT belong here",
+        "Archive Policy",
+        "For AI Agents",
+        "5. Automation Requirements",
+        "6. Immediate Cleanup Plan"
+      ],
+      "size_bytes": 9325
     },
     "docs/research/input-flexibility-data-interchange-part3.md": {
       "title": "Input Flexibility & Data Interchange - Part 3/3",
@@ -2852,7 +2875,7 @@
         "References (Use When Needed)",
         "\ud83d\udcda Required Reading"
       ],
-      "size_bytes": 4662
+      "size_bytes": 5262
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3512,6 +3535,23 @@
         "Files Changed Summary"
       ],
       "size_bytes": 12191
+    },
+    "docs/planning/session-2026-01-10-session4-issues.md": {
+      "title": "Session 2026-01-10 Session 4 Issues & Resolutions",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Issues Encountered",
+        "Automation Created This Session",
+        "Documentation Created",
+        "Recommendations for Future Sessions"
+      ],
+      "size_bytes": 4429
     },
     "docs/planning/research-detailing.md": {
       "title": "IS Code Detailing Research \u2014 RESEARCHER Agent",
@@ -5287,6 +5327,43 @@
       ],
       "size_bytes": 43796
     },
+    "docs/guidelines/file-operations-safety-guide.md": {
+      "title": "File Operations Safety Guide",
+      "type": "guide",
+      "complexity": "intermediate",
+      "folder": "guidelines",
+      "tags": [],
+      "sections": [
+        "\u26a0\ufe0f CRITICAL: Read Before Any File Operation",
+        "\ud83d\udee1\ufe0f Safe Scripts Reference",
+        "\ud83d\udccb Complete Workflows",
+        "\ud83d\udd0d Pre-Operation Checklist",
+        "\ud83d\udea8 Emergency Recovery",
+        "\ud83d\udcc1 Special Folder Rules",
+        "\ud83e\udd16 For AI Agents"
+      ],
+      "size_bytes": 6909
+    },
+    "docs/guidelines/folder-cleanup-workflow.md": {
+      "title": "Folder Cleanup Workflow",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "guidelines",
+      "tags": [],
+      "sections": [
+        "Overview",
+        "Phase 1: Audit (Gather Information)",
+        "Baseline",
+        "Targets",
+        "Phase 2: Classify (Decision Making)",
+        "Files to Keep",
+        "Files to Archive",
+        "Files to Delete",
+        "Phase 3: Plan (Prepare Operations)",
+        "Phase 4: Execute (Apply Changes)"
+      ],
+      "size_bytes": 6549
+    },
     "docs/guidelines/result-object-standard.md": {
       "title": "Result Object Design Standard",
       "type": "documentation",
@@ -5896,6 +5973,7 @@
         "docs/research/ui-layout-options-comparison.md",
         "docs/research/engineering-domain-apis.md",
         "docs/research/professional-liability-disclaimers.md",
+        "docs/research/folder-cleanup-research.md",
         "docs/research/navigation_study/README.md",
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/streamlit-maintenance-guide.md",
@@ -6025,6 +6103,7 @@
         "docs/research/git-workflow-production-stage.md",
         "docs/research/autonomous-agent-workflow-research.md",
         "docs/research/input-flexibility-data-interchange-part2.md",
+        "docs/research/folder-cleanup-research.md",
         "docs/research/input-flexibility-data-interchange-part3.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/code-style-consistency.md",
@@ -6083,6 +6162,7 @@
         "docs/research/git-workflow-production-stage.md",
         "docs/research/autonomous-agent-workflow-research.md",
         "docs/research/input-flexibility-data-interchange-part2.md",
+        "docs/research/folder-cleanup-research.md",
         "docs/research/input-flexibility-data-interchange-part3.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/code-style-consistency.md",
@@ -6246,6 +6326,7 @@
         "docs/planning/phase-1-governance-implementation.md",
         "docs/planning/project-status-deep-dive.md",
         "docs/planning/handoff-agent-2-hygiene-2026-01-07.md",
+        "docs/planning/session-2026-01-10-session4-issues.md",
         "docs/planning/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/v0.20-stabilization-checklist.md",
@@ -6307,6 +6388,7 @@
         "docs/planning/phase-1-governance-implementation.md",
         "docs/planning/project-status-deep-dive.md",
         "docs/planning/handoff-agent-2-hygiene-2026-01-07.md",
+        "docs/planning/session-2026-01-10-session4-issues.md",
         "docs/planning/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/v0.20-stabilization-checklist.md",

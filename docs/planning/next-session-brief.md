@@ -2,84 +2,100 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.16.0 | Ready for PyPI release |
+| **Current** | v0.16.0 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-10 | **Last commit:** dfe4936
+**Date:** 2026-01-10 | **Last commit:** 0100b6a
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-10 (Session 3 - Multi-code Foundation)
-- Focus: **Enterprise folder structure research + multi-code foundation**
-- Session Commits (1):
-  - dfe4936 (PR #322) - feat: add multi-code foundation (TASK-310)
+- Date: 2026-01-10 (Session 4 - Folder Cleanup Automation)
+- Focus: **Safe file operations, folder READMEs, cleanup automation**
+- Session Commits (4):
+  - 30c48aa - feat: add folder cleanup automation (4 scripts)
+  - 6b666dd - docs: add README.md to key folders
+  - 8bfdeab - docs: add file operations safety guide and cleanup workflow
+  - 0100b6a - docs: update TASKS.md and copilot-instructions
 - Deliverables:
-  - ✅ `Python/structural_lib/core/` - Base classes, materials, geometry, registry
-  - ✅ `Python/structural_lib/codes/` - IS456, ACI318, EC2 namespaces
-  - ✅ `scripts/generate_docs_index.py` - Machine-readable doc index generator
-  - ✅ `docs/docs-index.json` - 290 documents indexed for AI agent efficiency
-  - ✅ `docs/research/enterprise-folder-structure-research.md` - Detailed research
-  - ✅ `Python/tests/test_core.py` - 24 unit tests (all passing)
-- New Features:
-  - CodeRegistry: Runtime code selection (`CodeRegistry.get("IS456")`)
-  - MaterialFactory: Code-specific formulas (IS456/ACI318/EC2 elastic modulus)
-  - RectangularSection, TSection, LSection: Geometry classes
-  - Abstract base classes for future code implementations
+  - ✅ `scripts/safe_file_move.py` - Move files with link updates
+  - ✅ `scripts/safe_file_delete.py` - Delete with reference check
+  - ✅ `scripts/check_folder_readmes.py` - Verify folder documentation
+  - ✅ `scripts/find_orphan_files.py` - Find unreferenced docs
+  - ✅ `docs/guidelines/file-operations-safety-guide.md` - Safety procedures
+  - ✅ `docs/guidelines/folder-cleanup-workflow.md` - Cleanup workflow
+  - ✅ 6 folder READMEs (scripts, VBA, structural_lib, examples, learning-materials)
 - Metrics:
-  - 290 docs indexed in docs-index.json
-  - 24 new tests (all passing)
-  - 8,087 lines added
-- Next Steps: Module migration (move IS 456 modules to codes/is456/)
+  - 4 new automation scripts
+  - 6 new folder READMEs
+  - 50+ orphan files identified (need review)
+  - 719 links verified (0 broken)
+- Next Steps: Execute cleanup using new automation, v0.17.0 tasks
 <!-- HANDOFF:END -->
 
 
 
 ## 🎯 Immediate Priority
 
-**✅ MULTI-CODE FOUNDATION COMPLETE (TASK-310) - READY FOR MIGRATION**
+**✅ FOLDER CLEANUP AUTOMATION COMPLETE (TASK-311)**
 
-### What Was Accomplished This Session (Session 3)
+### What Was Accomplished This Session (Session 4)
 
 | Area | Result | Impact |
 |------|--------|--------|
-| **Research** | Enterprise folder structure research complete | Clear migration path |
-| **Core Module** | core/ with base, materials, geometry, registry | Foundation for multi-code |
-| **Code Namespaces** | codes/is456/, codes/aci318/, codes/ec2/ | Future expansion ready |
-| **Docs Index** | generate_docs_index.py + docs-index.json | AI agent efficiency |
-| **Tests** | 24 unit tests for core module | Quality assurance |
+| **Safe Scripts** | 4 automation scripts | No more broken links from file ops |
+| **Folder READMEs** | 6 key folders documented | Clear guidance for agents |
+| **Safety Guide** | Comprehensive procedures | Error prevention |
+| **Orphan Detection** | 50+ orphans identified | Cleanup targets known |
+| **Copilot Rules** | File operation rules added | Mandatory safety |
 
-### Next Session Tasks (Migration Phase)
+### Next Session Tasks (Choose Priority)
 
-**Option A: Module Migration (2-3 hours)**
-1. Move IS 456-specific modules to `codes/is456/`
-2. Create abstract base implementations
-3. Update imports for backward compatibility
-4. Run full test suite
+**Option A: Execute Folder Cleanup (1-2 hours)**
+Use new automation to clean orphan files:
+```bash
+.venv/bin/python scripts/find_orphan_files.py --age
+.venv/bin/python scripts/safe_file_move.py <file> docs/_archive/planning/<file>
+```
 
-**Option B: Start v0.17.0 Critical Path (2-4 hours)**
+**Option B: Module Migration (2-3 hours)**
+- Move IS 456-specific modules to `codes/is456/`
+- Update imports for backward compatibility
+- Run full test suite
+
+**Option C: Start v0.17.0 Critical Path (2-4 hours)**
 - TASK-273: Interactive Testing UI (Streamlit)
 - TASK-272: Code Clause Database
 
-### New Automation Available
+### New Automation Available (Session 4)
 
 ```bash
-# Generate machine-readable docs index
-python scripts/generate_docs_index.py --write
+# Move file safely (updates all links)
+.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
+.venv/bin/python scripts/safe_file_move.py old.md new.md
 
-# Use CodeRegistry for design codes
-from structural_lib.core import CodeRegistry
-code = CodeRegistry.get("IS456")
+# Delete file safely (checks references first)
+.venv/bin/python scripts/safe_file_delete.py obsolete.md --dry-run
+.venv/bin/python scripts/safe_file_delete.py obsolete.md
 
-# Use MaterialFactory for code-specific materials
-from structural_lib.core import MaterialFactory
-factory = MaterialFactory("IS456")
-concrete = factory.concrete(fck=30)
+# Find orphan files
+.venv/bin/python scripts/find_orphan_files.py --age
+
+# Check folder READMEs
+.venv/bin/python scripts/check_folder_readmes.py --required-only
 ```
 
-### Architecture Reference
+### Key Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [file-operations-safety-guide.md](../guidelines/file-operations-safety-guide.md) | Safe procedures |
+| [folder-cleanup-workflow.md](../guidelines/folder-cleanup-workflow.md) | Step-by-step cleanup |
+| [folder-cleanup-research.md](../research/folder-cleanup-research.md) | Research findings |
+
+### Architecture Reference (From Session 3)
 
 **Multi-Code Structure (Implemented):**
 ```
