@@ -32,7 +32,7 @@
 ### 1.3 Issues Identified
 
 #### Critical Issues
-1. **`files from external yser/`** - Typo in folder name, contains external Excel files (36MB+)
+1. **`external_data/`** - Typo in folder name, contains external Excel files (36MB+)
 2. **`tmp/`** - Contains test files that should be in `tests/`
 3. **Many folders lack README.md** - No clear purpose/guidelines
 
@@ -215,7 +215,7 @@ Current hooks run link check. Consider adding:
 ## 6. Immediate Cleanup Plan
 
 ### Phase 1: Fix Critical Issues (This Session)
-1. ✅ Rename `files from external yser/` → `external_files/`
+1. ✅ Rename `external_data/` → `external_files/`
 2. ✅ Move `tmp/test_*.py` → `tests/` (or delete if duplicates)
 3. ✅ Create key folder READMEs
 
@@ -305,7 +305,7 @@ When creating new files:
 - [ ] Create `scripts/safe_file_move.py`
 - [ ] Create `scripts/safe_file_delete.py`
 - [ ] Create `scripts/check_folder_readmes.py`
-- [ ] Rename `files from external yser/` folder
+- [ ] Rename `external_data/` folder
 - [ ] Move or delete `tmp/` test files
 - [ ] Add README to VBA/ folder
 - [ ] Add README to Python/structural_lib/

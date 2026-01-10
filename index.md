@@ -25,7 +25,7 @@
 - [VBA/](VBA/)
 - [agents/](agents/) - Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.
 - [docs/](docs/) - If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience. > **Version info:** See [TASKS.md](docs/TASKS.md) for curre
-- [files from external yser/](files from external yser/)
+- [files from external yser/](external_data/)
 - [git_operations_log/](git_operations_log/)
 - [learning-materials/](learning-materials/)
 - [logs/](logs/) - This folder is for **local, machine-specific runtime logs** (debug output, ad-hoc run logs, temporary traces). - Logs are **not** part of the library’s source of truth and should not be committed.

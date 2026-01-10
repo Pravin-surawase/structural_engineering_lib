@@ -114,7 +114,7 @@ temp/
 tmp/
 
 # External user artifacts (local only)
-files from external yser/
+external_data/
 
 # -----------------------------------------------------------------------------
 # Local runtime logs (keep out of git)
