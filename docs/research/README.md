@@ -3,6 +3,8 @@
 > **For AI Agents:** This index uses semantic tags and complexity ratings.
 > Use **Tags** to filter by topic, **Complexity** to gauge reading time.
 
+**Last Updated:** 2026-01-11 (Session 9)
+
 ---
 
 ## 🎯 Quick Navigation
@@ -14,6 +16,8 @@
 | Improve docs | [documentation-quality-audit.md](documentation-quality-audit.md) | docs |
 | Code quality | [cs-best-practices-audit.md](cs-best-practices-audit.md) | quality |
 | API stability | [backward-compatibility-strategy.md](backward-compatibility-strategy.md) | api |
+| Folder cleanup | [folder-restructuring-plan.md](folder-restructuring-plan.md) | cleanup |
+| Session planning | [session-9-master-plan.md](session-9-master-plan.md) | session |
 
 ---
 
@@ -41,6 +45,83 @@
 
 ---
 
+## 🗂️ Folder & Cleanup Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [folder-restructuring-plan.md](folder-restructuring-plan.md) | plan | 🟡 Medium | Master folder cleanup plan |
+| [folder-cleanup-research.md](folder-cleanup-research.md) | research | 🟡 Medium | Cleanup strategy research |
+| [enterprise-folder-structure-research.md](enterprise-folder-structure-research.md) | research | 🟡 Medium | Enterprise structure patterns |
+| [session-8-automation-review.md](session-8-automation-review.md) | audit | 🟡 Medium | Automation review |
+| [session-9-master-plan.md](session-9-master-plan.md) | plan | 🟡 Medium | Current session planning |
+
+---
+
+## 🔧 API & Engineering Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [api-design-pattern-analysis.md](api-design-pattern-analysis.md) | research | 🟡 Medium | API design patterns |
+| [professional-api-patterns.md](professional-api-patterns.md) | guide | 🟡 Medium | Professional API practices |
+| [ux-patterns-for-technical-apis.md](ux-patterns-for-technical-apis.md) | research | 🟡 Medium | UX patterns for APIs |
+| [engineering-domain-apis.md](engineering-domain-apis.md) | research | 🟡 Medium | Domain-specific APIs |
+| [input-flexibility-data-interchange-part1.md](input-flexibility-data-interchange-part1.md) | research | 🔴 High | Data interchange |
+| [input-flexibility-data-interchange-part2.md](input-flexibility-data-interchange-part2.md) | research | 🔴 High | Data interchange |
+| [input-flexibility-data-interchange-part3.md](input-flexibility-data-interchange-part3.md) | research | 🔴 High | Data interchange |
+
+---
+
+## 🧪 UI & Testing Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [ui-layout-options-comparison.md](ui-layout-options-comparison.md) | research | 🟡 Medium | UI layout comparison |
+| [ui-layout-final-decision.md](ui-layout-final-decision.md) | decision | 🟢 Low | Final UI decision |
+| [ui-layout-best-practices.md](ui-layout-best-practices.md) | guide | 🟡 Medium | UI best practices |
+| [interactive-testing-ui.md](interactive-testing-ui.md) | research | 🟡 Medium | Interactive testing |
+| [testing-strategies-engineering.md](testing-strategies-engineering.md) | research | 🟡 Medium | Testing strategies |
+| [calculation-report-generation-part1.md](calculation-report-generation-part1.md) | research | 🔴 High | Report generation |
+| [calculation-report-generation-part2.md](calculation-report-generation-part2.md) | research | 🔴 High | Report generation |
+
+---
+
+## 🔒 Security & Quality Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [security-best-practices-part1.md](security-best-practices-part1.md) | research | 🔴 High | Security practices |
+| [security-best-practices-part2.md](security-best-practices-part2.md) | research | 🔴 High | Security practices |
+| [professional-liability-disclaimers.md](professional-liability-disclaimers.md) | research | 🟡 Medium | Legal disclaimers |
+| [comprehensive-quality-improvement-research.md](comprehensive-quality-improvement-research.md) | research | 🔴 High | Quality improvement |
+| [ruff-expansion-summary.md](ruff-expansion-summary.md) | summary | 🟢 Low | Ruff linting expansion |
+
+---
+
+## 📝 Agent & Session Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [agent-repo-map-research.md](agent-repo-map-research.md) | research | 🟡 Medium | Repo mapping for agents |
+| [agent-research-review-and-validation.md](agent-research-review-and-validation.md) | audit | 🟡 Medium | Research validation |
+| [autonomous-agent-workflow-research.md](autonomous-agent-workflow-research.md) | research | 🟡 Medium | Autonomous workflow |
+| [agent-efficiency-research.md](agent-efficiency-research.md) | research | 🟡 Medium | Agent efficiency |
+| [agent-8-implementation-priority.md](agent-8-implementation-priority.md) | plan | 🟡 Medium | Agent 8 priorities |
+| [agent-8-optimization-research.md](agent-8-optimization-research.md) | research | 🟡 Medium | Optimization research |
+| [agent-8-week1-summary.md](agent-8-week1-summary.md) | summary | 🟢 Low | Week 1 summary |
+| [agent-8-week1-reality-check.md](agent-8-week1-reality-check.md) | analysis | 🟡 Medium | Reality check |
+| [agent-8-week1-implementation-blocker.md](agent-8-week1-implementation-blocker.md) | analysis | 🟡 Medium | Blockers |
+
+---
+
+## 📰 Blogging & Publication Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [blogging-strategy-research.md](blogging-strategy-research.md) | research | 🟡 Medium | Blog strategy |
+| [colab-output-review.md](colab-output-review.md) | review | 🟢 Low | Colab outputs |
+
+---
+
 ## 🔬 Navigation Study (AI Agent Efficiency)
 
 | Doc | Type | Complexity | Purpose |
@@ -48,6 +129,21 @@
 | [navigation_study/navigation-study-results.md](navigation_study/navigation-study-results.md) | results | 🟡 Medium | Pilot study: hierarchical vs flat navigation |
 | [index-per-folder-efficiency-research.md](index-per-folder-efficiency-research.md) | research | 🔴 High | Theoretical 92% context reduction analysis |
 | [agent-efficiency-research.md](agent-efficiency-research.md) | research | 🟡 Medium | Scanner enhancements for error prevention |
+
+---
+
+## 🔄 IS 456 Migration Research
+
+| Doc | Type | Complexity | Purpose |
+|-----|------|------------|---------|
+| [is456-migration-research.md](is456-migration-research.md) | research | 🔴 High | Migration planning |
+| [migration-issues-analysis.md](migration-issues-analysis.md) | analysis | 🟡 Medium | Migration issues |
+| [verification-audit-trail.md](verification-audit-trail.md) | audit | 🟡 Medium | Verification audit |
+| [code-clause-database.md](code-clause-database.md) | research | 🟡 Medium | Clause database |
+| [hygiene-research-review.md](hygiene-research-review.md) | review | 🟡 Medium | Hygiene review |
+| [research-backlog-review.md](research-backlog-review.md) | review | 🟢 Low | Backlog review |
+| [session-2026-01-06-documentation-enhancement.md](session-2026-01-06-documentation-enhancement.md) | session | 🟢 Low | Session notes |
+| [cost-optimization-day1.md](cost-optimization-day1.md) | session | 🟢 Low | Optimization notes |
 
 ---
 
