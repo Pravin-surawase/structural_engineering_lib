@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-10 (Session 4: Folder Cleanup Automation)
+**Updated:** 2026-01-10 (Session 5: IS 456 Migration Preparation)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -64,6 +64,35 @@
 ---
 
 ## Active
+
+### IS 456 Module Migration (Multi-Code Support)
+
+> **Research:** [is456-migration-research.md](research/is456-migration-research.md) | [Workflow Guide](guidelines/migration-workflow-guide.md)
+> **Status:** ✅ Research & automation complete (2026-01-10). Ready for execution.
+> **Goal:** Move IS 456 modules to `codes/is456/` with backward compatibility stubs
+> **Migration Order:** tables → shear → flexure → detailing → serviceability → compliance → ductile
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-313** | Execute Phase 1-7: Migrate all IS 456 modules | DEV | 2.5h | 🔴 HIGH | ⏳ Ready |
+| **TASK-317** | Update codes/is456/__init__.py exports & validate | DEV | 30m | 🟠 P1-High | ⏳ Blocked by 313 |
+
+---
+
+## Up Next
+
+### IS 456 Migration Details (Reference)
+
+> **Detailed tasks for TASK-313 breakdown if needed:**
+
+| Phase | Module | Est | Dependencies |
+|-------|--------|-----|--------------|
+| 1 | tables.py | 15m | None |
+| 2 | shear.py | 20m | tables |
+| 3 | flexure.py | 30m | materials |
+| 4-7 | detailing, serviceability, compliance, ductile | 1h | Previous phases |
+
+---
 
 ### Agent 9 Governance (Phase C: Semantic Navigation) ✅ MOSTLY COMPLETE
 
@@ -255,6 +284,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-312** | IS 456 migration research & automation: migration-research.md, preflight-checklist.md, workflow-guide.md, migrate_module.py, validate_migration.py, pre_migration_check.py | ARCHITECT | ✅ 2026-01-10 |
 | **TASK-311** | Folder cleanup automation: safe_file_move.py, safe_file_delete.py, check_folder_readmes.py, find_orphan_files.py + guides | DEVOPS | ✅ 2026-01-10 |
 | **TASK-310** | Multi-code foundation: core/, codes/ structure with CodeRegistry, MaterialFactory, geometry classes, docs-index.json generator (PR #322) | ARCHITECT | ✅ 2026-01-10 |
 | **AGENT9-PHASE-B** | Folder Migration Complete: Agent 6 entry points, agent registry, 29 docs archived, navigation study, governance automation (5 commits: 59f4dc0, ce57e44, 1570d3c, cacf83c, 8a66d8a) | AGENT_9 | ✅ 2026-01-10 |
