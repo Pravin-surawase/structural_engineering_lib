@@ -1,7 +1,7 @@
 # Migration Status
 
 **Date:** 2026-01-10
-**Status:** Phase A0 Complete ✅
+**Status:** Agent 8 Consolidation Complete ✅ | Phase A1-A3 Complete ✅
 **Owner:** Agent 9 (Governance)
 
 ---
@@ -105,7 +105,15 @@ Update after each phase or batch.
 ## Next Step
 
 ✅ **Phase A0 Complete**
-→ **Next:** Phase A1 (Critical Structure) - Ensure required folders + READMEs
+✅ **Agent 8 Consolidation Complete** (Phases A1-A3)
+  - Phase A1: docs/agents/ structure created
+  - Phase A2: 7 Agent 8 docs moved with git history preserved
+  - Phase A3: All references updated (quick-start + automation index added)
 
-**Estimated time:** 4-6 hours
-**Focus:** Folder structure confirmation, index regeneration, validation
+→ **Next:** Continue with remaining migration phases or validation
+
+**New Entry Points:**
+- `docs/agents/README.md` - Agent hub
+- `docs/agents/guides/agent-8-quick-start.md` - 60-second onboarding
+- `docs/agents/guides/agent-8-automation.md` - All scripts indexed
+- `docs/agents/sessions/2026-01/` - January session logs
