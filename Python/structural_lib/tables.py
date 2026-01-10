@@ -11,11 +11,17 @@ Migration date: 2026-01-10 (Session 5)
 from __future__ import annotations
 
 # Re-export utilities for backward compatibility (used by some tests)
-# Re-export everything from the new location
-from structural_lib.codes.is456.tables import *  # noqa: F401, F403
+from structural_lib import utilities  # noqa: F401
 
 # Re-export private functions that tests depend on
 # (star import doesn't include names starting with _)
+# Re-export everything from the new location
+from structural_lib.codes.is456.tables import *  # noqa: F401, F403
+from structural_lib.codes.is456.tables import (  # noqa: F401
+    _PT_ROWS,
+    _TC_COLUMNS,
+    _get_tc_for_grade,
+)
 
 # Re-export __all__ if defined
 try:
