@@ -65,7 +65,8 @@ ACTIVE_WORKTREES=$(git worktree list | grep -v "(bare)" | tail -n +2 | wc -l | t
 
 # Active tasks (from TASKS.md)
 if [ -f "docs/TASKS.md" ]; then
-    ACTIVE_TASKS=$(grep -c "⏳ Ready\|⏳ In Progress" docs/TASKS.md || echo "0")
+    # grep -c returns 1 when no matches, use subshell to capture exit safely
+    ACTIVE_TASKS=$(grep -c "⏳ Ready\|⏳ In Progress" docs/TASKS.md 2>/dev/null) || ACTIVE_TASKS="0"
 else
     ACTIVE_TASKS="0"
 fi
