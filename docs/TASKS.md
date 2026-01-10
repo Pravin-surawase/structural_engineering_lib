@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-10 (Session 5: IS 456 Migration Complete ✅)
+**Updated:** 2026-01-11 (Session 6: Migration Automation Complete ✅)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -77,10 +77,26 @@
 | **TASK-317** | Update codes/is456/__init__.py exports & validate | DEV | 30m | 🟠 P1-High | ✅ Done |
 
 > **TASK-317 Completed:** Session 6, 2026-01-11. PR #324 merged. Created `validate_stub_exports.py` + `update_is456_init.py` automation scripts.
+> **Automation Created:** Pre-migration checks, stub validation, __init__.py generator. See [migration-issues-analysis.md](research/migration-issues-analysis.md)
 
 ---
 
 ## Up Next
+
+### Future: Core Module Organization (Low Priority)
+
+> **Purpose:** Move code-agnostic modules to `core/` for multi-code support
+> **Status:** ⏳ Backlog - Only needed when adding ACI 318 or EC2 support
+> **Research:** [migration-issues-analysis.md](research/migration-issues-analysis.md)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-320** | Migrate materials.py → core/materials.py (if needed) | DEV | 30m | 🔵 P3-Low | ⏳ Backlog |
+| **TASK-321** | Migrate utilities.py → core/utilities.py (if needed) | DEV | 30m | 🔵 P3-Low | ⏳ Backlog |
+
+> **Note:** core/ already has base.py, geometry.py, materials.py. Root materials.py may be redundant - investigate before migrating.
+
+---
 
 ### IS 456 Migration Details (Reference)
 
