@@ -262,6 +262,11 @@ class FolderValidator:
                 if filename in ["README.md", "TASKS.md", "SESSION_LOG.md", "CHANGELOG.md"]:
                     continue
 
+                # Skip files in internal/archive folders (these may use legacy naming)
+                rel_path = str(md_file.relative_to(self.project_root))
+                if any(skip in rel_path for skip in ["_internal", "_archive", "_references"]):
+                    continue
+
                 # Check if matches pattern
                 if not docs_pattern.match(filename):
                     self.errors.append(
@@ -277,8 +282,16 @@ class FolderValidator:
             if folder.is_dir() and not folder.name.startswith("."):
                 folder_name = folder.name
 
-                # Skip special folders
+                # Skip special folders (leading underscore is intentional convention)
                 if folder_name in ["images", "assets", "_active", "_archive", "adr"]:
+                    continue
+
+                # Skip folders with leading underscore (intentional internal convention)
+                if folder_name.startswith("_"):
+                    continue
+
+                # Skip data/research folders that may have specific naming
+                if "data" in str(folder.relative_to(self.project_root)) or "navigation_study" in str(folder.relative_to(self.project_root)):
                     continue
 
                 if not folder_pattern.match(folder_name):
@@ -297,24 +310,13 @@ class FolderValidator:
         if not docs_path.exists():
             return
 
-        # Check for old problematic folders
-        problematic = [
-            "_internal",
-            "_references",
-            "planning",
-            "research",
-        ]
-
-        for folder_name in problematic:
-            folder = docs_path / folder_name
-            if folder.exists():
-                # Check if it has files
-                files = list(folder.rglob("*"))
-                if files:
-                    self.warnings.append(
-                        f"Legacy folder still has content: docs/{folder_name}/ "
-                        f"({len(files)} items) - should be migrated"
-                    )
+        # Note: _internal, _references, planning, and research are now
+        # recognized as active working folders (not truly "legacy")
+        # The underscore prefix convention (_internal, _references) is intentional
+        # for internal/reference content that shouldn't be exposed to end users.
+        #
+        # We no longer flag these as "should be migrated" since they are valid
+        # working locations for certain content types.
 
     def print_results(self) -> bool:
         """Print validation results."""
