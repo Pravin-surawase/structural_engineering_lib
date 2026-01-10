@@ -1,19 +1,12 @@
 # Architecture
 
-Deep dives into project structure and design decisions.
+Deep dives into project structure, design decisions, and system architecture.
 
-## Contents
+**Files:** 8 | **Updated:** 2026-01-11
 
-| Document | Purpose |
-|----------|---------|
-| [Project Overview](project-overview.md) | High-level scope, layers, workflows |
-| [Deep Project Map](deep-project-map.md) | Consolidated architecture and data flow |
-| [Mission & Principles](mission-and-principles.md) | Core principles and non-negotiables |
-| [Visual Architecture Diagrams](visual-architecture.md) | Mermaid diagrams for layers, module groupings, and data flow |
-| [Module Dependency Graph](dependencies.md) | Generated dependency graph for `structural_lib` |
-| [Pipeline Data Flow Diagrams](data-flow-diagrams.md) | Job runner + smart designer data flow diagrams |
+---
 
-## Quick architecture summary
+## 🏗️ Quick Architecture Summary
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -23,9 +16,63 @@ Deep dives into project structure and design decisions.
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Key design decisions
+### Layer Architecture
 
-- **Deterministic outputs** — Same input → same output
-- **Explicit units** — No hidden conversions
-- **Python/VBA parity** — Matching behavior where implemented
-- **Layer separation** — Core has no I/O dependencies
+| Layer | Modules | Rules |
+|-------|---------|-------|
+| **Core** | flexure, shear, detailing, tables | Pure functions, no I/O |
+| **Application** | api, job_runner, bbs | Orchestrates core |
+| **UI/I-O** | excel_integration, dxf_export, job_cli | External data |
+
+---
+
+## 📋 Contents
+
+### High-Level Architecture
+
+| Document | Description |
+|----------|-------------|
+| [project-overview.md](project-overview.md) | High-level scope, layers, and workflows |
+| [mission-and-principles.md](mission-and-principles.md) | Core principles and non-negotiables |
+| [index.md](index.md) | Architecture index |
+
+### Detailed Architecture
+
+| Document | Description |
+|----------|-------------|
+| [deep-project-map.md](deep-project-map.md) | Consolidated architecture and data flow |
+| [visual-architecture.md](visual-architecture.md) | Mermaid diagrams for layers and modules |
+| [data-flow-diagrams.md](data-flow-diagrams.md) | Job runner + smart designer data flow |
+| [dependencies.md](dependencies.md) | Module dependency graph |
+
+### Historical
+
+| Document | Description |
+|----------|-------------|
+| [architecture-review-2025-12-27.md](architecture-review-2025-12-27.md) | Architecture review notes |
+
+---
+
+## 🎯 Key Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| **Deterministic outputs** | Same input → same output (testable, predictable) |
+| **Explicit units** | No hidden conversions (mm, N, N/mm²) |
+| **Python/VBA parity** | Matching behavior across platforms |
+| **Layer separation** | Core has no I/O dependencies (pure calculations) |
+| **IS 456 compliance** | Every calculation traceable to code clause |
+
+---
+
+## 📚 Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [API Reference](../reference/api.md) | Function signatures |
+| [IS 456 Formulas](../reference/is456-formulas.md) | Formula reference |
+| [Contributing Guide](../contributing/README.md) | Development workflow |
+
+---
+
+**Parent:** [docs/README.md](../README.md)
