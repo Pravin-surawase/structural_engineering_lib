@@ -1,25 +1,64 @@
 # Reference Materials (Local)
 
-This folder is intended for **local** reference materials you want to cite/summarize into the project docs (especially the research log).
+This folder holds **local** reference materials you want to cite or summarize into project documentation.
 
-## What to put here
-- PDFs you own/have rights to use (course notes, your internal notes, vendor manuals)
-- Your own spreadsheets (worked examples, benchmark calculations)
-- Images or screenshots of worked examples you want summarized
+**Updated:** 2026-01-11
 
-## How it’s used
-- These files are **not** used by the library at runtime.
-- They exist to make it easy to:
-  - extract benchmark examples into `docs/planning/research-ai-enhancements.md`
-  - derive test cases in `Python/tests/`
-  - document assumptions and verification steps
+---
 
-## Naming suggestions
-- Prefer descriptive names, e.g.:
-  - `CE371_beam_serviceability_notes.pdf`
-  - `beam_benchmarks_M25_Fe500.xlsx`
-  - `bbs_cutting_stock_examples.xlsx`
+## 📁 What to Put Here
 
-## Copyright / licensing
-- Do not add copyrighted standards text (e.g., the IS code PDFs) unless you have explicit rights.
-- It’s fine to reference clause numbers and summarize your own calculations/interpretations.
+| Category | Examples |
+|----------|----------|
+| **PDFs you own** | Course notes, internal notes, vendor manuals |
+| **Your spreadsheets** | Worked examples, benchmark calculations |
+| **Screenshots** | Worked examples you want summarized |
+| **Personal notes** | Derivations, assumptions, clarifications |
+
+---
+
+## 🚫 What NOT to Put Here
+
+| Don't Add | Reason |
+|-----------|--------|
+| IS code PDFs | Copyright - reference clause numbers only |
+| Published textbook scans | Copyright violation |
+| Third-party proprietary data | Licensing issues |
+
+---
+
+## 🔧 How This Folder Is Used
+
+These files are **NOT** used by the library at runtime. They exist to:
+
+| Purpose | Target |
+|---------|--------|
+| Extract benchmark examples | → [research-ai-enhancements.md](../planning/research-ai-enhancements.md) |
+| Derive test cases | → [Python/tests/](../../Python/tests/) |
+| Document assumptions | → [verification/](../verification/README.md) |
+
+---
+
+## 📝 Naming Suggestions
+
+```
+# Good - descriptive names
+CE371_beam_serviceability_notes.pdf
+beam_benchmarks_M25_Fe500.xlsx
+bbs_cutting_stock_examples.xlsx
+my_hand_calculations_flexure.pdf
+```
+
+---
+
+## ⚖️ Copyright / Licensing
+
+| ✅ Allowed | ❌ Not Allowed |
+|------------|----------------|
+| Your own calculations | Copyrighted standards text |
+| Clause number references | Scanned textbook pages |
+| Materials with explicit rights | Third-party proprietary data |
+
+---
+
+**Parent:** [docs/README.md](../README.md)
