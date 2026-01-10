@@ -227,12 +227,12 @@
 
 ### B4: Navigation Study Re-run ✅
 - **Completed:** 2026-01-10
-- **Commit:** (pending)
+- **Commit:** cacf83c
 - **Summary:** Updated navigation script paths, ran 30 trials, verified Agent Registry → Quick Start → Target navigation works
 
 ### B5: Maintenance Automation ✅
 - **Completed:** 2026-01-10
-- **Commit:** (pending)
+- **Commit:** cacf83c
 - **Summary:** Created weekly_governance_check.sh with 5 checks, documented in AUTOMATION-CATALOG.md
 
 ---
