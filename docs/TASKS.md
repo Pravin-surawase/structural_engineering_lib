@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 6: Migration Automation Complete ✅)
+**Updated:** 2026-01-11 (Session 7: Folder Restructuring Phase 1 ✅)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -301,6 +301,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-325** | Folder cleanup phase 1: Archive 14 streamlit orphan files, rename typo folder, add batch_archive.py + rename_folder_safe.py (PR #325) | DEVOPS | ✅ 2026-01-11 |
 | **TASK-312** | IS 456 migration research & automation: migration-research.md, preflight-checklist.md, workflow-guide.md, migrate_module.py, validate_migration.py, pre_migration_check.py | ARCHITECT | ✅ 2026-01-10 |
 | **TASK-311** | Folder cleanup automation: safe_file_move.py, safe_file_delete.py, check_folder_readmes.py, find_orphan_files.py + guides | DEVOPS | ✅ 2026-01-10 |
 | **TASK-310** | Multi-code foundation: core/, codes/ structure with CodeRegistry, MaterialFactory, geometry classes, docs-index.json generator (PR #322) | ARCHITECT | ✅ 2026-01-10 |
