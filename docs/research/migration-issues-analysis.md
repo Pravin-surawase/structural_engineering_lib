@@ -178,7 +178,7 @@ ruff: E402: Module level import not at top of file
 
 ## New Scripts Needed
 
-### 1. `validate_stub_exports.py` (HIGH PRIORITY)
+### 1. `validate_stub_exports.py` ✅ CREATED (Session 6)
 
 **Purpose:** Verify stub modules correctly re-export all functions from source.
 
@@ -191,10 +191,26 @@ ruff: E402: Module level import not at top of file
 **Usage:**
 ```bash
 .venv/bin/python scripts/validate_stub_exports.py tables
-.venv/bin/python scripts/validate_stub_exports.py --all
+.venv/bin/python scripts/validate_stub_exports.py --all --verbose
 ```
 
-### 2. `scan_type_annotations.py` (MEDIUM PRIORITY)
+### 2. `update_is456_init.py` ✅ CREATED (Session 6)
+
+**Purpose:** Auto-generate correct __init__.py exports for codes/is456/.
+
+**Features:**
+- Detect all migrated modules
+- Generate correct imports
+- Create IS456Code convenience methods
+- Update __all__ exports
+
+**Usage:**
+```bash
+.venv/bin/python scripts/update_is456_init.py --apply
+.venv/bin/python scripts/update_is456_init.py --dry-run
+```
+
+### 3. `scan_type_annotations.py` (MEDIUM PRIORITY - Future)
 
 **Purpose:** Find type annotations that reference migrated modules.
 
@@ -203,7 +219,7 @@ ruff: E402: Module level import not at top of file
 - Check if TypeName is accessible in module
 - Suggest data type re-exports
 
-### 3. `check_monkeypatch_targets.py` (LOW PRIORITY)
+### 4. `check_monkeypatch_targets.py` (LOW PRIORITY - Future)
 
 **Purpose:** Find tests that monkeypatch stub modules.
 
@@ -212,7 +228,7 @@ ruff: E402: Module level import not at top of file
 - Check if target is a stub module
 - Warn about potential issues
 
-### 4. Enhanced `create_reexport_stub.py` (HIGH PRIORITY)
+### 5. Enhanced `create_reexport_stub.py` (LOW PRIORITY - Future)
 
 **Enhancements needed:**
 - Auto-detect private functions to export
@@ -290,11 +306,12 @@ After migrating a module:
 
 ### Migration Priority
 
-1. **TASK-317: Update codes/is456/__init__.py** (This session)
-   - Add all migrated module exports
-   - Update IS456Code class methods
+1. **TASK-317: Update codes/is456/__init__.py** ✅ COMPLETE (Session 6)
+   - ✅ All migrated module exports added
+   - ✅ IS456Code class methods updated (get_tau_c → get_tc_value)
+   - ✅ PR #324 merged
 
-2. **TASK-XXX: Core module organization** (Future)
+2. **TASK-320/321: Core module organization** (Future - Low Priority)
    - Move materials.py → core/materials.py
    - Move utilities.py → core/utilities.py
    - Keep backward compatibility stubs
@@ -308,23 +325,23 @@ After migrating a module:
 
 ## Automation Enhancement Plan
 
-### Phase 1: Stub Validation (This Session)
+### Phase 1: Stub Validation ✅ COMPLETE (Session 6)
 
-1. Create `validate_stub_exports.py`
-2. Enhance `create_reexport_stub.py` with auto-detection
-3. Update migration workflow documentation
+1. ✅ Created `validate_stub_exports.py`
+2. ⏳ Enhance `create_reexport_stub.py` with auto-detection (future)
+3. ✅ Updated migration workflow documentation (copilot-instructions.md)
 
-### Phase 2: __init__.py Automation (This Session)
+### Phase 2: __init__.py Automation ✅ COMPLETE (Session 6)
 
-1. Create `update_init_exports.py` script
-2. Auto-detect migrated modules
-3. Generate correct __init__.py exports
+1. ✅ Created `update_is456_init.py` script
+2. ✅ Auto-detect migrated modules
+3. ✅ Generate correct __init__.py exports
 
-### Phase 3: Future Migration Prep (This Session)
+### Phase 3: Future Migration Prep ✅ COMPLETE (Session 6)
 
-1. Research remaining modules
-2. Document migration order
-3. Create automation for core/ migration
+1. ✅ Research remaining modules (documented above)
+2. ✅ Document migration order (TASK-320, TASK-321 created)
+3. ⏳ Create automation for core/ migration (deferred - low priority)
 
 ---
 
