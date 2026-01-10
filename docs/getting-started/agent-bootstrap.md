@@ -57,7 +57,7 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 - **Known pitfalls:** [../reference/known-pitfalls.md](../reference/known-pitfalls.md)
 - **Recent issues:** [../contributing/session-issues.md](../contributing/session-issues.md)
 - **Agent roles:** [../agents/README.md](../agents/README.md)
-- **Project status:** [../planning/project-status.md](../planning/project-status.md) (quick) or [../planning/project-status-deep-dive.md](../planning/project-status-deep-dive.md) (detailed)
+- **Project status:** [../planning/project-status.md](../_archive/planning/project-status.md) (quick) or [../planning/project-status-deep-dive.md](../planning/project-status-deep-dive.md) (detailed)
 
 ---
 

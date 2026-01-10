@@ -3,7 +3,7 @@
 *Detailed architecture, module maps, and research directions*
 
 **Last updated:** 2025-07-11
-**Parent document:** [project-status.md](project-status.md)
+**Parent document:** [project-status.md](../_archive/planning/project-status.md)
 
 ---
 
@@ -34,7 +34,7 @@
 | Topic | Document |
 |-------|----------|
 | Project overview | [project-overview.md](../architecture/project-overview.md) |
-| Production roadmap | [production-roadmap.md](production-roadmap.md) |
+| Production roadmap | [production-roadmap.md](../_archive/planning/production-roadmap.md) |
 | Task board | [TASKS.md](../TASKS.md) |
 | Job schema | [v0.9-job-schema.md](../specs/v0.9-job-schema.md) |
 | Testing strategy | [testing-strategy.md](../contributing/testing-strategy.md) |

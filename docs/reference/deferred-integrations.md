@@ -130,4 +130,4 @@ When adding new deferrals:
 
 - [Known Pitfalls](known-pitfalls.md) - User-facing limitations
 - [TASKS.md](../TASKS.md) - Active work tracking
-- [Project Roadmap](../planning/production-roadmap.md) - Release planning
+- [Project Roadmap](../_archive/planning/production-roadmap.md) - Release planning

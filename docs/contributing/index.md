@@ -17,7 +17,7 @@ Guides for developers and maintainers. | Guide | Audience |
 | [docstring-style-guide.md](docstring-style-guide.md) | > **Purpose:** Standard docstring format for all Python modules in structural_li | 2026-01-06 | 358 |
 | [end-of-session-workflow.md](end-of-session-workflow.md) | > **Standard procedure for ALL agents when ending a session.** ```bash | 2026-01-10 | 471 |
 | [excel-addin-guide.md](excel-addin-guide.md) | This guide explains how to package the VBA library into a reusable Excel Add-in  | 2026-01-08 | 372 |
-| [git-workflow-for-ai-agents.md](git-workflow-for-ai-agents.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
+| [git-workflow-for-ai-agents.md](git-workflow-ai-agents.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
 | [git-workflow-quick-reference.md](git-workflow-quick-reference.md) | ```bash git add <files> | 2026-01-08 | 187 |
 | [git-workflow-testing.md](git-workflow-testing.md) | This document explains how we test and validate our git workflow to prevent merg | 2026-01-08 | 337 |
 | [github-workflow.md](github-workflow.md) | ```bash ./scripts/should_use_pr.sh --explain | 2026-01-08 | 277 |

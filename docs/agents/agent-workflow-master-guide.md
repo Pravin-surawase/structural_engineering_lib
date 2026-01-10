@@ -510,7 +510,7 @@ git push
 
 ### Architecture Docs
 - [project-overview.md](../architecture/project-overview.md) - System architecture
-- [api-reference.md](../reference/api-reference.md) - API documentation
+- [api-reference.md](../reference/api.md) - API documentation
 
 ---
 

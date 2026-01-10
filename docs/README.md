@@ -217,7 +217,7 @@ If you want to understand the concepts and the code step by step, start here:
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
 - v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
 - Research index: [research/README.md](research/README.md)
-- High-level production checklist: [planning/production-roadmap.md](planning/production-roadmap.md)
+- High-level production checklist: [planning/production-roadmap.md](_archive/planning/production-roadmap.md)
 
 ---
 

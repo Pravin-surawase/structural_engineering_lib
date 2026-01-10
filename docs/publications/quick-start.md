@@ -304,7 +304,7 @@ Not all problems need 10,000 training samples. When you have physical models and
 - [Research document](../_archive/2026-01/research-smart-library.md) — 20+ citations
 - [Prototype findings](../_archive/2026-01/prototype-findings-intelligence.md) — Validation results
 - [Implementation plan](../_archive/2026-01/v0.13-v0.14-implementation-plan.md) — v0.13-v0.14 roadmap
-- [Production roadmap](../planning/production-roadmap.md) — 52-week plan to v1.0
+- [Production roadmap](../_archive/planning/production-roadmap.md) — 52-week plan to v1.0
 
 ### Code & Examples
 - [Python/structural_lib/insights/](../../Python/structural_lib/insights/) — Insights implementation

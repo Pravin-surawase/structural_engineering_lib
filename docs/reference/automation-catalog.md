@@ -1372,7 +1372,7 @@ Error Handling Audit:
 - Function complexity
 - Code duplication
 
-**Related:** [vba-guide.md](vba-guide.md)
+**Related:** [vba-guide.md](../contributing/vba-guide.md)
 
 ---
 
