@@ -1,8 +1,9 @@
 # Migration Status
 
 **Date:** 2026-01-10
-**Status:** Agent 8 Consolidation Complete ✅ | Phase A1-A3 Complete ✅
+**Status:** Agent 8 Consolidation Complete ✅ | Phase A1-A4 Complete ✅
 **Owner:** Agent 9 (Governance)
+**Validation:** 117 → 39 errors (67% reduction)
 
 ---
 
@@ -348,12 +349,101 @@ Ready for Phase A4: Naming Cleanup (kebab-case violations).
 3. **Agent 8 workflow:** Zero manual git conflicts - automation works flawlessly
 4. **Batch size:** 10-15 files optimal for manageable review and clean commits
 
-### Next Phase Planning
+---
 
-**Phase A4: Naming Cleanup** (Target: 26 files)
-- Rename kebab-case violations in:
-  - docs/_archive/2026-01/ (15 files with UPPERCASE)
-  - docs/_internal/ (files to check)
-  - docs/planning/ (files to check)
-- Use `git mv` for case-sensitive renames (macOS safe)
-- Expected: Reduce validation errors 117 → ~90
+## Phase A4: Naming Cleanup (2026-01-10) ✅
+
+**Status:** Complete | **Commits:** 8 commits across 2 sessions
+**Validation:** 117 → 39 errors (67% reduction)
+
+### Session 1 Commits (from previous session)
+
+**Batch 1** (Commit: [3cd500e])
+- Renamed 10 files in docs/_internal/
+- Files: cost-optimizer-*.md (9 files), testing-plan-cost-optimizer.md
+- Result: Errors 117 → 107
+
+**Batches 2a-2c** (Commits: [be7a164], [ddff82f], [edbe91b])
+- Renamed 15 files in docs/_archive/2026-01/
+- Discovered macOS case-insensitivity issue (documented in MACOS-RENAME-ISSUE.md)
+- Solution: Two-step rename with .tmp suffix
+- Result: Errors 107 → ~90
+
+**Final Batch** (Commit: [6b23534])
+- Renamed 22 remaining files in docs/_archive/2026-01/
+- All UPPERCASE files converted to kebab-case
+- Result: Errors ~90 → 70
+
+### Session 2 Commits (current session)
+
+**Batch A** (Commit: [35a9c7f])
+- Renamed 10 files:
+  - docs/contributing/STREAMLIT_* → streamlit-* (3 files)
+  - docs/planning/* → kebab-case (3 files)
+  - docs/research/* → kebab-case (4 files)
+- Result: Errors 70 → ~60
+
+**Batch B** (Commit: [43f3eef])
+- Renamed 18 files:
+  - docs/agents/AGENT_* → agent-* (6 files)
+  - docs/planning/* → kebab-case (11 files)
+  - docs/reference/PYLINT_VS_AST_COMPARISON → pylint-vs-ast-comparison
+- Fixed broken links in docs/README.md (3 links)
+- Result: Errors ~60 → 42
+
+**Cleanup** (Commit: [0dc66d7])
+- Removed duplicate QUALITY_REVIEW_REPORT.md entry (git tracking issue)
+- Result: Errors 42 → 39
+
+### Metrics Achieved
+
+| Metric | Start | Target | Achieved | Status |
+|--------|-------|--------|----------|--------|
+| Validation errors | 117 | <90 | 39 | ✅✅ 67% better |
+| Files renamed | 0 | ~26 | 76 | ✅ 192% of target |
+| Sessions | - | - | 2 | - |
+| Total commits | - | - | 8 | - |
+
+### macOS Case-Sensitivity Issue (Documented)
+
+**Problem:** macOS APFS is case-insensitive. `git mv FILE.md file.md` fails.
+**Solution:** Two-step rename with .tmp suffix:
+```bash
+git mv "FILE.md" "FILE.md.tmp"
+git mv "FILE.md.tmp" "file.md"
+git commit && git push  # Immediate, no stash
+```
+
+**Documentation:** agents/agent-9/governance/MACOS-RENAME-ISSUE.md
+
+### Remaining Errors Analysis (39 total)
+
+1. **Version-numbered files** (~15): v0.7-requirements.md, v0.9-job-schema.md, etc.
+   - These may be valid naming (version prefixes are common)
+   - Recommendation: Allowlist or keep as-is
+
+2. **Root test files** (~5): test_*.py, colab_workflow.ipynb, CITATION.cff
+   - Recommendation: Add to allowed root files list
+
+3. **Underscore folders** (~5): _internal, _references, navigation_study
+   - Recommendation: May be intentional convention (leading underscore = internal)
+
+4. **Legacy folder warnings** (~10): Large content in planning/, research/
+   - These are active working folders, not truly "legacy"
+   - Recommendation: Update validator to recognize as valid
+
+5. **Untracked files in .gitignore folders** (~4): docs/learning/*.md
+   - These are personal files, intentionally untracked
+   - Recommendation: Exclude from validation
+
+### Next Phase Recommendations
+
+**Phase A5: Link Integrity** - Check and fix broken links across docs/
+**Phase A6: Final Validation** - Tune validator, add allowlists, target <20 errors
+
+### Lessons Learned
+
+1. **macOS quirks:** Case-insensitive filesystem requires two-step rename workaround
+2. **Batch efficiency:** 18-22 files per batch is efficient and manageable
+3. **Duplicate tracking:** Git can track both UPPER and lower versions separately
+4. **Pre-commit safety:** Link checking hooks caught all broken link issues immediately
