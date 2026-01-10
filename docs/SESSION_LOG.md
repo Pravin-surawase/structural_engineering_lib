@@ -8,15 +8,19 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 **Focus:** Research folder structure, create cleanup automation, archive orphan files
 
-### Commits This Session (2 so far)
+### Commits This Session (6 total)
 1. `db95cf6` - feat: TASK-325 folder cleanup phase 1 - archive streamlit orphans, add automation (PR #325, merged)
 2. `6909da0` - fix: correct grep newline bug in collect_metrics.sh
+3. `c85b92b` - docs: update SESSION_LOG and TASKS.md for Session 7
+4. `4e87f60` - docs: add batch_archive.py and rename_folder_safe.py to safety guide
+5. `43ec1cf` - docs: update next-session-brief for Session 7 handoff
+6. `fd84884` - chore: archive 7 orphan planning docs from Agent 5/6
 
 ### Phase 1 Complete ✅
 
-**Archived 14 Streamlit Orphan Files:**
-- Moved Agent 6 completion docs from `streamlit_app/` root to `streamlit_app/docs/_archive/`
-- Files: AGENT-6-*.md, UI-*.md, WORK_SUMMARY.md, etc.
+**Archived 21 Orphan Files Total:**
+- 14 Streamlit Agent 6 completion docs → `streamlit_app/docs/_archive/`
+- 7 old planning docs (Agent 5/6) → `docs/_archive/planning/`
 
 **Folder Rename (Typo Fix):**
 - `files from external yser/` → `external_data/`
@@ -42,7 +46,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | Metric | Value |
 |--------|-------|
 | Total folders | 116 |
-| Orphan files | 175 |
+| Orphan files | 176 → 155 (21 archived) |
 | Missing READMEs | 72 (optional) |
 | Link targets | 840 |
 | Internal links | 726 (0 broken) |
@@ -51,6 +55,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Session started from conversation summary checkpoint
 - Resolved commit workflow blocker (stash → branch → commit → PR → merge)
 - Leading Indicators CI failure was pre-existing JSON bug, now fixed
+- Used batch_archive.py automation for Phase 2 cleanup
 
 ---
 
