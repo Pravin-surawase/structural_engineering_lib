@@ -219,7 +219,7 @@ What type of governance session?
 ## 🎓 Context Requirements
 
 ### Critical Documents (Read First)
-1. **[SOLO-DEVELOPER-SUSTAINABILITY-ANALYSIS.md](../../docs/planning/SOLO-DEVELOPER-SUSTAINABILITY-ANALYSIS.md)** - Research findings, strategies, metrics
+1. **[SOLO-DEVELOPER-SUSTAINABILITY-ANALYSIS.md](../../docs/_archive/planning/solo-developer-sustainability-analysis.md)** - Research findings, strategies, metrics
 2. **[.github/copilot-instructions.md](../../.github/copilot-instructions.md)** - Core project rules
 3. **[TASKS.md](../../docs/TASKS.md)** - Current backlog state
 4. **[SESSION_LOG.md](../../docs/SESSION_LOG.md)** - Historical decisions

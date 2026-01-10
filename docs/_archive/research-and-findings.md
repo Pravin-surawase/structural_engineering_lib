@@ -6,9 +6,9 @@
 
 > Note: This file started as an early-stage “design + research” doc. The repo now has working Python/VBA implementations.
 > For current scope/architecture and how to use the library, prefer:
-> - [project-overview.md](../project-overview.md)
+> - [project-overview.md](../architecture/project-overview.md)
 > - [api-reference.md](../api-reference.md)
-> - [TASKS.md](../TASKS.md) and [next-session-brief.md](../next-session-brief.md)
+> - [TASKS.md](../TASKS.md) and [next-session-brief.md](../planning/next-session-brief.md)
 
 ---
 
@@ -690,7 +690,7 @@ End Sub
 
 ## 10. Development Guidelines
 
-> **📘 Full documentation:** See **[development-guide.md](../development-guide.md)** for comprehensive coding standards, naming conventions, testing guidelines, and packaging instructions.
+> **📘 Full documentation:** See **[development-guide.md](../contributing/development-guide.md)** for comprehensive coding standards, naming conventions, testing guidelines, and packaging instructions.
 
 ### 10.1 Summary
 
@@ -726,7 +726,7 @@ def function_name(param1: float, param2: float) -> float:
     # Validation → Unit conversion → Calculation → Return
 ```
 
-For detailed standards on naming, error handling, testing, Git workflow, and packaging, refer to the [Development Guide](../development-guide.md).
+For detailed standards on naming, error handling, testing, Git workflow, and packaging, refer to the [Development Guide](../contributing/development-guide.md).
 
 ---
 

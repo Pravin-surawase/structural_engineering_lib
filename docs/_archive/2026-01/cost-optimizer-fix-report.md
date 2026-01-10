@@ -22,7 +22,7 @@ Successfully completed systematic analysis and partial fix of Cost Optimizer iss
 
 ### Phase 1: Comprehensive Analysis (Round 1)
 **Duration:** 30 minutes
-**Output:** [COST_OPTIMIZER_ISSUES_ANALYSIS.md](docs/_internal/COST_OPTIMIZER_ISSUES_ANALYSIS.md)
+**Output:** [COST_OPTIMIZER_ISSUES_ANALYSIS.md](../../_internal/cost-optimizer-issues-analysis.md)
 
 **Issues Found:** 9 total
 - 3 CRITICAL (blocking basic functionality)
@@ -72,7 +72,7 @@ Successfully completed systematic analysis and partial fix of Cost Optimizer iss
 
 ### Phase 3: Testing Methodology
 **Duration:** 15 minutes
-**Output:** [TESTING_PLAN_COST_OPTIMIZER.md](docs/_internal/TESTING_PLAN_COST_OPTIMIZER.md)
+**Output:** [TESTING_PLAN_COST_OPTIMIZER.md](../../_internal/testing-plan-cost-optimizer.md)
 
 **Created:** Comprehensive 8-category testing framework
 - Category 1: Data Flow Testing
@@ -88,7 +88,7 @@ Successfully completed systematic analysis and partial fix of Cost Optimizer iss
 
 ### Phase 4: Systematic Issue Discovery (Round 2)
 **Duration:** 45 minutes
-**Output:** [COST_OPTIMIZER_ISSUES_ROUND2.md](docs/_internal/COST_OPTIMIZER_ISSUES_ROUND2.md)
+**Output:** [COST_OPTIMIZER_ISSUES_ROUND2.md](../../_internal/cost-optimizer-issues-round2.md)
 
 **Method:** Code review + data flow simulation + edge case analysis
 
@@ -290,9 +290,9 @@ if not isinstance(selected_bars, dict):
 
 ## References
 
-- **Round 1 Analysis:** [docs/_internal/COST_OPTIMIZER_ISSUES_ANALYSIS.md](docs/_internal/COST_OPTIMIZER_ISSUES_ANALYSIS.md)
-- **Round 2 Analysis:** [docs/_internal/COST_OPTIMIZER_ISSUES_ROUND2.md](docs/_internal/COST_OPTIMIZER_ISSUES_ROUND2.md)
-- **Testing Plan:** [docs/_internal/TESTING_PLAN_COST_OPTIMIZER.md](docs/_internal/TESTING_PLAN_COST_OPTIMIZER.md)
+- **Round 1 Analysis:** [docs/_internal/COST_OPTIMIZER_ISSUES_ANALYSIS.md](../../_internal/cost-optimizer-issues-analysis.md)
+- **Round 2 Analysis:** [docs/_internal/COST_OPTIMIZER_ISSUES_ROUND2.md](../../_internal/cost-optimizer-issues-round2.md)
+- **Testing Plan:** [docs/_internal/TESTING_PLAN_COST_OPTIMIZER.md](../../_internal/testing-plan-cost-optimizer.md)
 - **PR #297:** https://github.com/Pravin-surawase/structural_engineering_lib/pull/297
 
 ---

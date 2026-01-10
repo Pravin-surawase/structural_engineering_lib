@@ -18,13 +18,13 @@
 | [FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md](FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md) | Comprehensive research into folder-level governance has been completed. Three de | 2026-01-10 | 370 |
 | [FOLDER_IMPLEMENTATION_GUIDE.md](FOLDER_IMPLEMENTATION_GUIDE.md) | **Quick Start for AI Agents** Three comprehensive documents + automation scripts | 2026-01-10 | 224 |
 | [FOLDER_MIGRATION_PLAN.md](FOLDER_MIGRATION_PLAN.md) | > **Context:** This plan executes the migration from current chaos (45 files in  | 2026-01-10 | 716 |
-| [FOLDER_STRUCTURE_GOVERNANCE.md](FOLDER_STRUCTURE_GOVERNANCE.md) | > **FOR ALL AI AGENTS:** These rules are PRESCRIPTIVE and MANDATORY. No exceptio | 2026-01-10 | 706 |
+| [FOLDER_STRUCTURE_GOVERNANCE.md](../FOLDER_STRUCTURE_GOVERNANCE.md) | > **FOR ALL AI AGENTS:** These rules are PRESCRIPTIVE and MANDATORY. No exceptio | 2026-01-10 | 706 |
 | [FULL-MIGRATION-EXECUTION-PLAN.md](FULL-MIGRATION-EXECUTION-PLAN.md) | This document provides a **step-by-step, ultra-safe migration plan** to complete | 2026-01-10 | 564 |
 | [LINK-MAP.md](LINK-MAP.md) | ```bash cat agents/agent-9/governance/LINK-MAP.md | grep "→" | 2026-01-10 | 323 |
 | [METRICS_DASHBOARD.md](METRICS_DASHBOARD.md) | > **Auto-generated** by `scripts/generate_dashboard.sh` (TASK-285) > **Last upda | 2026-01-10 | 98 |
 | [MIGRATION-EXECUTION-PLAN.md](MIGRATION-EXECUTION-PLAN.md) | - Decision: `DECISION-SUMMARY.md` - Task plan: `MIGRATION-TASKS.md` | 2026-01-10 | 69 |
 | [MIGRATION-SCRIPTS.md](MIGRATION-SCRIPTS.md) | This document catalogs all scripts created or used during the migration, their p | 2026-01-10 | 693 |
-| [MIGRATION-STATUS.md](MIGRATION-STATUS.md) | Single source of truth for migration readiness, issues, and progress. Update aft | 2026-01-10 | 160 |
+| [MIGRATION-STATUS.md](../MIGRATION-STATUS.md) | Single source of truth for migration readiness, issues, and progress. Update aft | 2026-01-10 | 160 |
 | [MIGRATION-TASKS.md](MIGRATION-TASKS.md) | Option A splits migration into small, low-risk batches with validation after eve | 2026-01-10 | 246 |
 | [MIGRATION-WALKTHROUGH.md](MIGRATION-WALKTHROUGH.md) | 1. Confirm you are not on `main`: - `./scripts/check_not_main.sh` | 2026-01-10 | 112 |
 | [MIGRATION_REVIEW_AND_RISKS.md](MIGRATION_REVIEW_AND_RISKS.md) | > **CRITICAL:** This document analyzes ALL risks before executing the full folde | 2026-01-10 | 568 |

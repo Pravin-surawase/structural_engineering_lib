@@ -514,7 +514,7 @@ Estimated Duration: X hours
 
 ### Related Documents
 - [Agent 9 README](README.md)
-- [Folder Structure Governance](FOLDER_STRUCTURE_GOVERNANCE.md)
+- [Folder Structure Governance](../FOLDER_STRUCTURE_GOVERNANCE.md)
 - [Migration Review & Risks](MIGRATION_REVIEW_AND_RISKS.md)
 
 ---

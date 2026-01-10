@@ -5,7 +5,7 @@
 
 Three comprehensive documents + automation scripts to fix the folder structure chaos:
 
-### 1. [FOLDER_STRUCTURE_GOVERNANCE.md](FOLDER_STRUCTURE_GOVERNANCE.md)
+### 1. [FOLDER_STRUCTURE_GOVERNANCE.md](../FOLDER_STRUCTURE_GOVERNANCE.md)
 **5,000+ words | MANDATORY rules**
 - Industry standards analysis (tRPC, Vitest, Prettier, Django)
 - Prescriptive folder structure (max 2-3 levels deep)

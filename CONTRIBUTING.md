@@ -19,7 +19,7 @@ Thanks for helping improve **structural_engineering_lib**.
 
 ### For AI Agents (CRITICAL)
 - ⚠️ **ALWAYS use `./scripts/safe_push.sh "message"` for commits** to avoid git race conditions
-- Read the full guide: [docs/contributing/git-workflow-for-ai-agents.md](docs/contributing/git-workflow-for-ai-agents.md)
+- Read the full guide: [docs/contributing/git-workflow-for-ai-agents.md](docs/_archive/contributing/git-workflow-for-ai-agents.md)
 - Pre-commit hooks modify files after staging — safe_push.sh handles this automatically
 - Never use `git push` directly after `git commit`
 

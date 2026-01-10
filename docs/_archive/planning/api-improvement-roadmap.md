@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-This roadmap prioritizes refactoring of **48 public functions** across 12 modules to follow the [unified API Design Guidelines](../guidelines/api-design-guidelines.md). The work is divided into 3 phases over 8-10 weeks, with backward compatibility maintained through deprecation warnings.
+This roadmap prioritizes refactoring of **48 public functions** across 12 modules to follow the [unified API Design Guidelines](../../guidelines/api-design-guidelines.md). The work is divided into 3 phases over 8-10 weeks, with backward compatibility maintained through deprecation warnings.
 
 **Key Metrics:**
 - **Total functions analyzed:** 48 public APIs
@@ -849,7 +849,7 @@ def migrate_function_call(node: ast.Call) -> ast.Call:
 
 ## Appendix C: PR Review Checklist
 
-Use this checklist for all API refactoring PRs (copy from [API Guidelines Section 11](../guidelines/api-design-guidelines.md#11-pr-review-checklist)):
+Use this checklist for all API refactoring PRs (copy from [API Guidelines Section 11](../../guidelines/api-design-guidelines.md#11-pr-review-checklist)):
 
 **Function Signature (8 points)**
 - [ ] Function name is a verb

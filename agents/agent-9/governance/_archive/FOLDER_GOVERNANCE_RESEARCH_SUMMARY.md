@@ -9,7 +9,7 @@
 
 Comprehensive research into folder-level governance has been completed. Three deliverables have been created:
 
-1. **[FOLDER_STRUCTURE_GOVERNANCE.md](FOLDER_STRUCTURE_GOVERNANCE.md)** - Complete governance rules (MANDATORY)
+1. **[FOLDER_STRUCTURE_GOVERNANCE.md](../FOLDER_STRUCTURE_GOVERNANCE.md)** - Complete governance rules (MANDATORY)
 2. **[FOLDER_MIGRATION_PLAN.md](FOLDER_MIGRATION_PLAN.md)** - Step-by-step migration plan (8-10 days)
 3. **Automation Scripts:**
    - `scripts/validate_folder_structure.py` - Pre-commit validation
@@ -310,7 +310,7 @@ python scripts/validate_folder_structure.py --fix
 ## 🔗 Deliverables
 
 ### Documentation
-1. ✅ [FOLDER_STRUCTURE_GOVERNANCE.md](FOLDER_STRUCTURE_GOVERNANCE.md) (5,000+ words)
+1. ✅ [FOLDER_STRUCTURE_GOVERNANCE.md](../FOLDER_STRUCTURE_GOVERNANCE.md) (5,000+ words)
 2. ✅ [FOLDER_MIGRATION_PLAN.md](FOLDER_MIGRATION_PLAN.md) (4,000+ words)
 3. ✅ This summary document
 

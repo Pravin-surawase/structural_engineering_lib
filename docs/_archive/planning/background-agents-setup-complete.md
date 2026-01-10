@@ -10,14 +10,14 @@
 ## ✅ Completed Setup
 
 ### 1. Documentation Enhanced
-- ✅ Enhanced [background-agent-guide.md](../contributing/background-agent-guide.md) with research-backed practices
-- ✅ Created [background-agent-parallel-work.md](../research/background-agent-parallel-work.md) (1,800+ lines of research)
+- ✅ Enhanced [background-agent-guide.md](../../contributing/background-agent-guide.md) with research-backed practices
+- ✅ Created [background-agent-parallel-work.md](../../research/background-agent-parallel-work.md) (1,800+ lines of research)
 - ✅ All changes committed and pushed (commits: 01c6d8e, 365384d)
 - ✅ CI checks passed (Fast PR Checks: success)
 
 ### 2. Agent Task Files Created
-- ✅ [agent-1-tasks.md](agent-1-tasks.md) - RESEARCHER role
-- ✅ [agent-2-tasks.md](agent-2-tasks.md) - DEV/TESTER role (flexible)
+- ✅ [agent-1-tasks.md](../../planning/agent-1-tasks.md) - RESEARCHER role
+- ✅ [agent-2-tasks.md](../../planning/agent-2-tasks.md) - DEV/TESTER role (flexible)
 
 ### 3. Git State
 - ✅ Worktree clean
@@ -143,13 +143,13 @@ As the MAIN agent, you handle:
 ## 📖 Research Resources to Reuse (Avoid Duplication)
 
 **Existing Research (read these first):**
-- [research-ai-enhancements.md](research-ai-enhancements.md) - ML/AI for design analysis
-- [background-agent-parallel-work.md](../research/background-agent-parallel-work.md) - Multi-agent coordination
-- [research-detailing.md](research-detailing.md) - IS 456 detailing rules
+- [research-ai-enhancements.md](../../planning/research-ai-enhancements.md) - ML/AI for design analysis
+- [background-agent-parallel-work.md](../../research/background-agent-parallel-work.md) - Multi-agent coordination
+- [research-detailing.md](../../planning/research-detailing.md) - IS 456 detailing rules
 
 **API Documentation:**
-- [api.md](../reference/api.md) - Complete API reference
-- [known-pitfalls.md](../reference/known-pitfalls.md) - Common issues and solutions
+- [api.md](../../reference/api.md) - Complete API reference
+- [known-pitfalls.md](../../reference/known-pitfalls.md) - Common issues and solutions
 
 **Code Examples:**
 - `Python/structural_lib/` - Production code (for blog examples)
@@ -213,20 +213,20 @@ As the MAIN agent, you handle:
 ## 🔗 Quick Links
 
 **For Background Agents:**
-- [Background Agent Guide](../contributing/background-agent-guide.md) - How to work safely
-- [Background Agent Research](../research/background-agent-parallel-work.md) - Why it works
-- [Agent 1 Tasks](agent-1-tasks.md) - RESEARCHER task board
-- [Agent 2 Tasks](agent-2-tasks.md) - DEV/TESTER task board
+- [Background Agent Guide](../../contributing/background-agent-guide.md) - How to work safely
+- [Background Agent Research](../../research/background-agent-parallel-work.md) - Why it works
+- [Agent 1 Tasks](../../planning/agent-1-tasks.md) - RESEARCHER task board
+- [Agent 2 Tasks](../../planning/agent-2-tasks.md) - DEV/TESTER task board
 
 **For MAIN Agent:**
-- [Main TASKS.md](../TASKS.md) - Primary task board
-- [Git Workflow](../contributing/git-workflow-ai-agents.md) - Git automation guide
-- [Automation Catalog](../reference/automation-catalog.md) - All scripts
+- [Main TASKS.md](../../TASKS.md) - Primary task board
+- [Git Workflow](../../contributing/git-workflow-ai-agents.md) - Git automation guide
+- [Automation Catalog](../../reference/automation-catalog.md) - All scripts
 
 **Project Context:**
-- [AI Context Pack](../getting-started/ai-context-pack.md) - Everything you need to know
-- [Agent Bootstrap](../getting-started/agent-bootstrap.md) - Quick start guide
-- [Next Session Brief](next-session-brief.md) - Current state
+- [AI Context Pack](../../getting-started/ai-context-pack.md) - Everything you need to know
+- [Agent Bootstrap](../../getting-started/agent-bootstrap.md) - Quick start guide
+- [Next Session Brief](../../planning/next-session-brief.md) - Current state
 
 ---
 

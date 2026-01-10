@@ -249,5 +249,5 @@ git_operations_log/    # No move (index from docs/agents/guides/)
 ## References
 
 - [AGENT-8-INCIDENT-ANALYSIS.md](./AGENT-8-INCIDENT-ANALYSIS.md) - Root cause of recent issues
-- [MIGRATION-STATUS.md](./MIGRATION-STATUS.md) - Overall migration status
+- [MIGRATION-STATUS.md](../MIGRATION-STATUS.md) - Overall migration status
 - Agent 9 folder structure (as reference model)

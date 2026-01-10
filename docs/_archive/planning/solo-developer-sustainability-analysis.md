@@ -583,10 +583,10 @@ Each "Maintenance" session:
 **Your Situation:**
 
 ✅ **Excellent Context Infrastructure:**
-- [agent-bootstrap.md](../getting-started/agent-bootstrap.md) - Fast onboarding
-- [ai-context-pack.md](../getting-started/ai-context-pack.md) - Complete project context
+- [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) - Fast onboarding
+- [ai-context-pack.md](../../getting-started/ai-context-pack.md) - Complete project context
 - [.github/copilot-instructions.md](../../.github/copilot-instructions.md) - Critical rules
-- [TASKS.md](../TASKS.md) - Current backlog
+- [TASKS.md](../../TASKS.md) - Current backlog
 
 ⚠️ **Context Fragmentation Challenge:**
 - Context spread across 67+ session docs
@@ -884,7 +884,7 @@ Session documents archived from `docs/planning/` on 2026-01-09.
 
 ## Document Index
 
-See [INDEX.md](../contributing/index.md) for complete listing.
+See [INDEX.md](../2026-01/index.md) for complete listing.
 
 ## Restoration
 
@@ -984,15 +984,15 @@ Update `docs/README.md` to reference archive:
 
 ## Active Documentation (Current Week)
 
-- [Next Session Brief](next-session-brief.md) - Start here!
-- [TASKS.md](../TASKS.md) - Current backlog
-- [Agent Bootstrap](../getting-started/agent-bootstrap.md) - Fast onboarding
+- [Next Session Brief](../../planning/next-session-brief.md) - Start here!
+- [TASKS.md](../../TASKS.md) - Current backlog
+- [Agent Bootstrap](../../getting-started/agent-bootstrap.md) - Fast onboarding
 
 ## Archives
 
 Session documents older than 7 days are archived monthly:
 
-- [January 2026 Archive](README.md) - 67 documents
+- [January 2026 Archive](../../planning/README.md) - 67 documents
 - Future archives will appear here
 
 ## Search Tips
@@ -1105,7 +1105,7 @@ sed -i '' 's/v0\.15\.0/v0.16.0/g' docs/**/*.md
 
 ## Questions?
 
-See [CONTRIBUTING.md](../../CONTRIBUTING.md) or ask in project discussions.
+See [CONTRIBUTING.md](../../../CONTRIBUTING.md) or ask in project discussions.
 ```
 
 #### Task 3.2: Create Release Cadence Policy (30 min)

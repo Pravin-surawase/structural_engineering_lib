@@ -32,7 +32,7 @@ ERROR: Active section must have at most 2 task(s) (WIP=2).
 **Error:**
 ```
 ❌ docs/TASKS.md
-   [Navigation Study](../research/navigation_study/navigation-study-results.md)
+   [Navigation Study](../../research/navigation_study/navigation-study-results.md)
 ```
 
 **Fix:** Changed to relative path: `research/navigation_study/navigation-study-results.md`

@@ -375,8 +375,8 @@ To minimize risk and preserve existing functionality:
 
 - [AGENT-8-CONSOLIDATION-PLAN.md](AGENT-8-CONSOLIDATION-PLAN.md) - Original detailed plan
 - [AGENT-8-INCIDENT-ANALYSIS.md](AGENT-8-INCIDENT-ANALYSIS.md) - Root cause that prompted this
-- [MIGRATION-STATUS.md](MIGRATION-STATUS.md) - Overall migration status
-- [FOLDER_STRUCTURE_GOVERNANCE.md](FOLDER_STRUCTURE_GOVERNANCE.md) - Governance rules followed
+- [MIGRATION-STATUS.md](../MIGRATION-STATUS.md) - Overall migration status
+- [FOLDER_STRUCTURE_GOVERNANCE.md](../FOLDER_STRUCTURE_GOVERNANCE.md) - Governance rules followed
 
 ---
 

@@ -230,28 +230,28 @@ git status --porcelain | grep -v "\.(coverage|DS_Store|pyc)$" | xargs git add
 
 ## 🔗 Documentation Cross-References
 
-**Main Protocol:** [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md)
+**Main Protocol:** [agent-8-git-ops.md](../../agents/guides/agent-8-git-ops.md)
 - Complete workflows
 - Decision matrices
 - CI integration
 - Success metrics
 
-**Implementation Guide:** [agent-8-implementation-guide.md](../agents/guides/agent-8-implementation-guide.md)
+**Implementation Guide:** [agent-8-implementation-guide.md](../../agents/guides/agent-8-implementation-guide.md)
 - Three implementation models
 - Helper scripts (ready to use)
 - Integration steps
 - Practical examples
 
-**Mistakes Prevention:** [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md)
+**Mistakes Prevention:** [agent-8-mistakes-prevention-guide.md](../../agents/guides/agent-8-mistakes-prevention-guide.md)
 - Historical mistake database
 - Root cause analysis
 - Prevention system (4 layers)
 - Emergency procedures
 
 **Current Git Workflows:**
-- [git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) - Canonical workflow
-- [AGENT_WORKFLOW_MASTER_GUIDE.md](../agents/agent-workflow-master-guide.md) - Master guide
-- [AGENT_QUICK_REFERENCE.md](../agents/agent-quick-reference.md) - Quick reference
+- [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md) - Canonical workflow
+- [AGENT_WORKFLOW_MASTER_GUIDE.md](../../agents/agent-workflow-master-guide.md) - Master guide
+- [AGENT_QUICK_REFERENCE.md](../../agents/agent-quick-reference.md) - Quick reference
 
 ---
 
@@ -335,8 +335,8 @@ git status --porcelain | grep -v "\.(coverage|DS_Store|pyc)$" | xargs git add
 
 **Immediate Actions:**
 1. ✅ Read this summary (you're here!)
-2. ✅ Review [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md) (main protocol)
-3. ✅ Skim [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md) (lessons learned)
+2. ✅ Review [agent-8-git-ops.md](../../agents/guides/agent-8-git-ops.md) (main protocol)
+3. ✅ Skim [agent-8-mistakes-prevention-guide.md](../../agents/guides/agent-8-mistakes-prevention-guide.md) (lessons learned)
 4. ✅ On next Agent 6 handoff: Follow Agent 8 checklist
 5. ✅ Time yourself: See the improvement!
 
