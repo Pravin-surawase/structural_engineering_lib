@@ -22,9 +22,9 @@ For VS Code AI-agent work, start with:
 - **[AGENT_ONBOARDING.md](AGENT_ONBOARDING.md)** - New agent checklist
 - **[AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
 - **[AGENT_QUICK_REFERENCE.md](AGENT_QUICK_REFERENCE.md)** - Essential commands
-- [ai-context-pack.md](ai-context-pack.md) - Project context
+- [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
 - [AI summary](../llms.txt) - LLM-friendly summary
-- [Handoff Quick Start](handoff.md) - Session handoff
+- [Handoff Quick Start](contributing/handoff.md) - Session handoff
 
 ---
 
@@ -38,13 +38,16 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 - `AGENT_ONBOARDING.md`
 - `AGENT_QUICK_REFERENCE.md`
 - `AGENT_WORKFLOW_MASTER_GUIDE.md`
-- `agent-bootstrap.md`
-- `ai-context-pack.md`
-- `git-workflow-ai-agents.md`
-- `handoff.md`
+- `AGENT_AUTOMATION_IMPLEMENTATION.md`
+- `AGENT_BOOTSTRAP_COMPLETE_REVIEW.md`
+- `BOOTSTRAP_AND_PROJECT_STRUCTURE_SUMMARY.md`
+- `PROJECT-NEEDS-ASSESSMENT-2026-01-09.md`
+- `PYLINT_VS_AST_COMPARISON.md`
 - `README.md`
-- `releases.md`
 - `SESSION_LOG.md`
+- `STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md`
+- `STREAMLIT_ISSUES_CATALOG.md`
+- `STREAMLIT_PREVENTION_SYSTEM_REVIEW.md`
 - `TASKS.md`
 
 ### Legacy root redirects (docs/ -> canonical)
@@ -166,7 +169,7 @@ If you want to understand the concepts and the code step by step, start here:
 - VBA testing guide: [contributing/vba-testing-guide.md](contributing/vba-testing-guide.md)
 - Insights verification pack: [verification/insights-verification-pack.md](verification/insights-verification-pack.md)
 - Development practices: [contributing/development-guide.md](contributing/development-guide.md)
-- **Git workflow for AI agents:** [git-workflow-ai-agents.md](git-workflow-ai-agents.md) ⚠️
+- **Git workflow for AI agents:** [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) ⚠️
 - Background agent guide: [contributing/background-agent-guide.md](contributing/background-agent-guide.md)
 - Repo professionalism playbook: [contributing/repo-professionalism.md](contributing/repo-professionalism.md)
 - Contributor learning paths: [contributing/learning-paths.md](contributing/learning-paths.md)
@@ -180,19 +183,19 @@ If you want to understand the concepts and the code step by step, start here:
 
 ## Planning / Research (roadmaps, “what’s next”)
 
-- What to do next this session: [planning/next-session-brief.md](planning/next-session-brief.md)
-- v0.8 implementation playbook: [v0.8-execution-checklist.md](v0.8-execution-checklist.md)
+- What to do next this session: [getting-started/next-session-brief.md](getting-started/next-session-brief.md)
+- v0.8 implementation playbook: [_archive/2026-01/v0.8-execution-checklist.md](_archive/2026-01/v0.8-execution-checklist.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
 - v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
 - Research index: [research/README.md](research/README.md)
-- High-level production checklist: [planning/production-roadmap.md](planning/production-roadmap.md)
+- High-level production checklist: [contributing/production-roadmap.md](contributing/production-roadmap.md)
 
 ---
 
 ## Release History
 
 - User-facing change history: root [CHANGELOG.md](../CHANGELOG.md)
-- Append-only release ledger (locked entries): [releases.md](releases.md)
+- Append-only release ledger (locked entries): [getting-started/releases.md](getting-started/releases.md)
 
 ---
 

@@ -8,7 +8,7 @@ import re
 import sys
 
 CHANGELOG = Path("CHANGELOG.md")
-RELEASES = Path("docs/releases.md")
+RELEASES = Path("docs/getting-started/releases.md")
 
 VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+)\b")
 
@@ -34,7 +34,7 @@ def main() -> int:
         print("ERROR: CHANGELOG.md not found")
         return 1
     if not RELEASES.exists():
-        print("ERROR: docs/releases.md not found")
+        print("ERROR: docs/getting-started/releases.md not found")
         return 1
 
     changelog_versions = _parse_versions(CHANGELOG)
@@ -44,7 +44,7 @@ def main() -> int:
         print("ERROR: No versions found in CHANGELOG.md")
         return 1
     if not releases_versions:
-        print("ERROR: No versions found in docs/releases.md")
+        print("ERROR: No versions found in docs/getting-started/releases.md")
         return 1
 
     missing_in_releases = sorted(
