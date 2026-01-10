@@ -69,29 +69,40 @@ Priority rankings based on: frequency, impact, and ease of automation.
 
 ---
 
-### 3. Duplicate File Names
+### 3. Duplicate File Names ⚠️ PARTIAL
 
 **Pattern:** Same filename in multiple directories
-**Current Count:** 10+ duplicates
+**Current Count:** 7 duplicate patterns (some expected, some not)
 **Impact:** Confusion about canonical version, link ambiguity
+**Status:** ⚠️ Automation created, 4 duplicates are redirect stubs (tracked in #2)
 
-**Duplicates Found:**
-- `README.md` (expected - per-folder)
-- `current-state-and-goals.md` (unexpected)
-- `deep-project-map.md` (unexpected)
-- `next-session-brief.md` (unexpected)
-- `mission-and-principles.md` (unexpected)
+**Expected Duplicates (per-folder files):**
+- `README.md` - one per folder is correct
+- `draft.md`, `outline.md` - one per blog post is correct
 
-**Automation Proposed:**
-```python
-# Script: check_duplicate_docs.py
-# Flag duplicate filenames (excluding README.md, index.md)
+**Unexpected Duplicates (redirect stubs - see #2):**
+- `excel-addin-guide.md` (contributing/ is canonical, getting-started/ is stub)
+- `project-overview.md` (architecture/ is canonical, getting-started/ is stub)
+- `vba-guide.md` (contributing/ is canonical, reference/ is stub)
+- `vba-testing-guide.md` (contributing/ is canonical, reference/ is stub)
+
+**True Duplicate (needs resolution):**
+- `ui-layout-final-decision.md` (both have substantial content)
+  - `docs/research/` (27,968 bytes)
+  - `docs/planning/` (46,418 bytes)
+
+**Automation Created:**
+```bash
+# Find duplicate filenames
+.venv/bin/python scripts/check_duplicate_docs.py
+
+# Output as JSON for scripting
+.venv/bin/python scripts/check_duplicate_docs.py --json
 ```
 
-**Manual Fix:**
-- Identify canonical version
-- Redirect or archive duplicates
-- Update references
+**Next Steps:**
+1. Resolve ui-layout-final-decision.md (merge or archive one)
+2. Remove redirect stubs when references are updated (see #2)
 
 ---
 
@@ -201,7 +212,7 @@ Priority rankings based on: frequency, impact, and ease of automation.
 |-------|----------|--------|------------|
 | Root test files | High | ✅ Resolved | N/A (already fixed) |
 | Redirect stubs | High | ⚠️ Partial (4 removed, 13 remain) | `scripts/check_redirect_stubs.py` ✅ |
-| Duplicate docs | High | Action needed | Script |
+| Duplicate docs | High | ⚠️ Partial (1 true duplicate found) | `scripts/check_duplicate_docs.py` ✅ |
 | Spaces in names | Medium | Gitignored | N/A |
 | TODO comments | Medium | Track monthly | Script |
 | Empty dirs | Low | Non-issue | N/A |

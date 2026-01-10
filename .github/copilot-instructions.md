@@ -82,8 +82,7 @@ IS 456 RC beam design library with **Python + VBA parity**.
 - Add/extend tests with every behavior change (Python at minimum).
 - If you move files, keep redirect stubs to avoid breaking links.
 - Format Python code with `black` before committing.
-- **Type safety**: Always handle `Optional[T]` types explicitly - check for `None` before accessing attributes.
-- **Run mypy locally** before pushing: `.venv/bin/python -m mypy Python/structural_lib/<file>.py`
+- **Type safety**: Always handle `Optional[T]` types explicitly - check for `None` before accessing attributes.- **Python 3.9 compatibility**: Add `from __future__ import annotations` at top of new Python files. This enables `str | None` syntax on Python 3.9.- **Run mypy locally** before pushing: `.venv/bin/python -m mypy Python/structural_lib/<file>.py`
 ## Definition of done
 - Tests pass (at least Python).
 - Docs updated where contracts/examples changed.
