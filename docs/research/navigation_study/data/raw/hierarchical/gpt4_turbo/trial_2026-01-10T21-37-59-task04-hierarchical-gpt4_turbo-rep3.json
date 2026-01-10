@@ -1,0 +1,21 @@
+{
+  "trial_id": "2026-01-10T21-37-59-task04-hierarchical-gpt4_turbo-rep3",
+  "timestamp": "2026-01-10T21:37:59+05:30",
+  "condition": "hierarchical",
+  "agent_type": "gpt4_turbo",
+  "task_id": "task04",
+  "task_description": "Find error schema definitions",
+  "ground_truth_file": "docs/reference/error-schema.md",
+  "metrics": {
+    "time_to_complete_ms": 32,
+    "files_accessed": 3,
+    "bytes_loaded": 31951,
+    "tokens_loaded": 3807,
+    "wrong_files_opened": 2,
+    "navigation_path": ["docs/index.json","docs/reference/index.json","docs/reference/error-schema.md"]
+  },
+  "outcome": {
+    "success": true,
+    "correct_file_found": true
+  }
+}

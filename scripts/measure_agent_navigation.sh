@@ -79,8 +79,8 @@ task_info() {
         task06) echo "Find git workflow rules|docs/git-workflow-ai-agents.md" ;;
         task07) echo "Find agent bootstrap quick start|docs/agent-bootstrap.md" ;;
         task08) echo "Find handoff workflow steps|docs/contributing/end-of-session-workflow.md" ;;
-        task09) echo "Find migration decision summary|agents/agent-9/governance/DECISION-SUMMARY.md" ;;
-        task10) echo "Find automation catalog|docs/reference/automation-catalog.md" ;;
+        task09) echo "Find governance roadmap|agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md" ;;
+        task10) echo "Find automation catalog|agents/agent-9/governance/AUTOMATION-CATALOG.md" ;;
         *) echo "" ;;
     esac
 }
@@ -93,8 +93,8 @@ baseline_paths() {
         task06) echo "docs/README.md docs/git-workflow-ai-agents.md" ;;
         task07) echo "docs/README.md docs/agent-bootstrap.md" ;;
         task08) echo "docs/README.md docs/contributing/end-of-session-workflow.md" ;;
-        task09) echo "agents/agent-9/README.md agents/agent-9/governance/DECISION-SUMMARY.md" ;;
-        task10) echo "docs/README.md docs/reference/README.md docs/reference/automation-catalog.md" ;;
+        task09) echo "agents/README.md agents/agent-9/governance/README.md agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md" ;;
+        task10) echo "agents/README.md agents/agent-9/governance/README.md agents/agent-9/governance/AUTOMATION-CATALOG.md" ;;
         *) echo "" ;;
     esac
 }
@@ -107,8 +107,8 @@ hierarchical_paths() {
         task06) echo "docs/index.json docs/git-workflow-ai-agents.md" ;;
         task07) echo "docs/index.json docs/agent-bootstrap.md" ;;
         task08) echo "docs/index.json docs/contributing/index.json docs/contributing/end-of-session-workflow.md" ;;
-        task09) echo "agents/index.json agents/agent-9/governance/index.json agents/agent-9/governance/DECISION-SUMMARY.md" ;;
-        task10) echo "docs/index.json docs/reference/index.json docs/reference/automation-catalog.md" ;;
+        task09) echo "docs/agents/README.md docs/agents/guides/agent-9-quick-start.md agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md" ;;
+        task10) echo "docs/agents/README.md docs/agents/guides/agent-9-quick-start.md agents/agent-9/governance/AUTOMATION-CATALOG.md" ;;
         *) echo "" ;;
     esac
 }

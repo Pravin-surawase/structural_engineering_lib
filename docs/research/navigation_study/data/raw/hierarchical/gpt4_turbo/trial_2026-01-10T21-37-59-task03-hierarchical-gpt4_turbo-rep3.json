@@ -1,0 +1,21 @@
+{
+  "trial_id": "2026-01-10T21-37-59-task03-hierarchical-gpt4_turbo-rep3",
+  "timestamp": "2026-01-10T21:37:59+05:30",
+  "condition": "hierarchical",
+  "agent_type": "gpt4_turbo",
+  "task_id": "task03",
+  "task_description": "Find detailing output entry point",
+  "ground_truth_file": "docs/reference/api.md",
+  "metrics": {
+    "time_to_complete_ms": 34,
+    "files_accessed": 3,
+    "bytes_loaded": 69313,
+    "tokens_loaded": 8395,
+    "wrong_files_opened": 2,
+    "navigation_path": ["docs/index.json","docs/reference/index.json","docs/reference/api.md"]
+  },
+  "outcome": {
+    "success": true,
+    "correct_file_found": true
+  }
+}

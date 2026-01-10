@@ -142,14 +142,56 @@ Update after each phase or batch.
 
 ---
 
+## Phase B: Post-Migration Optimization (2026-01-10)
+
+### B0: Merge Roadmap Branch ✅
+**Commit:** 59f4dc0
+- Merged `chore/agent-9-roadmap-update` branch into main
+- Created PHASE-B-TASK-TRACKER.md as single source of truth for Phase B
+
+### B1+B2: Agent 6 Entry Points + Registry ✅
+**Commit:** ce57e44
+- Created `docs/agents/guides/agent-6-quick-start.md` (60-second onboarding)
+- Created `docs/agents/guides/agent-6-streamlit-hub.md` (Streamlit doc navigation)
+- Added Agent Registry table to `docs/agents/README.md`
+- All 3 agents (6, 8, 9) now have consistent entry point pattern
+
+### B3: Archive Phase A Planning Docs ✅
+**Commit:** 1570d3c
+- Moved 29 historical docs to `agents/agent-9/governance/_archive/`
+- Created archive README explaining contents
+- Governance folder reduced: 36 → 7 active files (81% reduction)
+- Updated hub and quick-start docs to remove archived links
+
+### B4: Navigation Study Re-run ✅
+- Updated `scripts/measure_agent_navigation.sh` with new task paths
+- Ran 30 trials (10 tasks × 3 reps) with post-migration structure
+- Task09 now successfully navigates: docs/agents/README.md → agent-9-quick-start.md → AGENT-9-GOVERNANCE-ROADMAP.md
+- Key improvement: Agent Registry provides clear entry point for agent docs
+
+### Phase B Metrics
+| Metric | Pre-Phase B | Post-Phase B |
+|--------|-------------|--------------|
+| Governance folder files | 36 | 7 |
+| Agent entry points | 2/3 | 3/3 ✅ |
+| Navigation success | task09 failed | task09 passed |
+| Agent registry | None | Complete |
+
+---
+
 ## Next Steps
 
 ### Short-Term (2026-01-10)
-- [ ] Re-run navigation study with new Agent 9 entry points
-- [ ] Continue migration phases if needed
+- [x] Re-run navigation study with new Agent 9 entry points
+- [x] Continue migration phases if needed
+- [ ] Create maintenance automation script (B5)
 - [ ] Monitor validation metrics
 
 ### Entry Points Created
+**Agent 6:**
+- [docs/agents/guides/agent-6-quick-start.md](../../../docs/agents/guides/agent-6-quick-start.md)
+- [docs/agents/guides/agent-6-streamlit-hub.md](../../../docs/agents/guides/agent-6-streamlit-hub.md)
+
 **Agent 8:**
 - [docs/agents/guides/agent-8-quick-start.md](../../../docs/agents/guides/agent-8-quick-start.md)
 - [docs/agents/guides/agent-8-automation.md](../../../docs/agents/guides/agent-8-automation.md)

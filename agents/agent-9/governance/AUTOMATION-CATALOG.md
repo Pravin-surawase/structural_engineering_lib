@@ -20,6 +20,33 @@
 | Large Files | Pre-commit | `check-added-large-files` | Yes |
 | Trailing Whitespace | Pre-commit | `trailing-whitespace` | Auto-fix |
 | Black Formatting | Pre-commit | `black` | Auto-fix |
+| **Weekly Governance** | **Manual/Weekly** | `./scripts/weekly_governance_check.sh` | **No (reporting)** |
+
+---
+
+## Weekly Governance Check (NEW)
+
+**File:** `scripts/weekly_governance_check.sh`
+**Purpose:** Consolidated health check for governance compliance
+
+**What it checks:**
+1. Folder structure validation (all rules)
+2. Internal link validation (all docs)
+3. Root file count (≤10)
+4. docs/ root file count (≤5)
+5. Agent entry points (3/3)
+
+**Usage:**
+```bash
+./scripts/weekly_governance_check.sh           # Full check
+./scripts/weekly_governance_check.sh --quick   # Skip slow checks
+./scripts/weekly_governance_check.sh --fix     # Auto-fix where possible
+```
+
+**When to run:**
+- Weekly maintenance check
+- Before major releases
+- After large documentation changes
 
 ---
 

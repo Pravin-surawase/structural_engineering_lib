@@ -1,0 +1,21 @@
+{
+  "trial_id": "2026-01-10T21-38-00-task08-hierarchical-gpt4_turbo-rep1",
+  "timestamp": "2026-01-10T21:38:00+05:30",
+  "condition": "hierarchical",
+  "agent_type": "gpt4_turbo",
+  "task_id": "task08",
+  "task_description": "Find handoff workflow steps",
+  "ground_truth_file": "docs/contributing/end-of-session-workflow.md",
+  "metrics": {
+    "time_to_complete_ms": 36,
+    "files_accessed": 3,
+    "bytes_loaded": 37478,
+    "tokens_loaded": 4457,
+    "wrong_files_opened": 2,
+    "navigation_path": ["docs/index.json","docs/contributing/index.json","docs/contributing/end-of-session-workflow.md"]
+  },
+  "outcome": {
+    "success": true,
+    "correct_file_found": true
+  }
+}
