@@ -4,6 +4,55 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-10 — Session 3: Multi-Code Foundation 🏗️
+
+**Focus:** Research enterprise folder structure for multi-code support (IS 456 + future ACI/Eurocode)
+
+### Multi-Code Foundation Complete ✅
+
+**TASK-310 Delivered:**
+- `structural_lib/core/` - Abstract base classes, materials, geometry, registry
+- `structural_lib/codes/` - IS456, ACI318, EC2 namespaces
+- `docs-index.json` - 291 documents indexed for AI agent efficiency
+- 24 unit tests (all passing)
+
+**Key Features:**
+- **CodeRegistry:** Runtime code selection (`CodeRegistry.get("IS456")`)
+- **MaterialFactory:** Code-specific formulas (IS456/ACI318/EC2 elastic modulus)
+- **Geometry classes:** RectangularSection, TSection, LSection
+- **Abstract bases:** DesignCode, FlexureDesigner, ShearDesigner, DetailingRules
+
+### Commits This Session (4)
+1. `dfe4936` (PR #322) - feat: add multi-code foundation with core/, codes/ structure
+2. `3ce7850` - docs: update TASKS.md and next-session-brief for Session 3
+3. `8820b20` - feat: add folder structure validator + session issues doc
+4. `22192f3` - chore: regenerate docs-index.json (291 documents)
+
+### Automation Created
+- `scripts/generate_docs_index.py` - Machine-readable doc index generator
+- `scripts/check_folder_structure.py` - Multi-code architecture validator
+
+### Session Issues (Resolved)
+- External research blocked → Used internal synthesis approach
+- Pre-commit N806/mypy failures → Fixed variable naming + return types
+- Leading Indicator CI failure → Infrastructure issue (non-blocking)
+
+**See:** [docs/planning/session-2026-01-10-session3-issues.md](planning/session-2026-01-10-session3-issues.md)
+
+### Metrics
+- 8,087 lines added
+- 14 new files
+- 24 new tests
+- 291 docs indexed
+- 11/11 structure checks passing
+
+### Next Steps (Migration Phase)
+1. [ ] Move IS 456 modules to `codes/is456/`
+2. [ ] Create abstract base implementations
+3. [ ] Update imports for backward compatibility
+
+---
+
 ## 2026-01-10 — Session: Agent 9 Migration Complete 🎉
 
 **Focus:** Complete Phase A5-A6, clean up redirect stubs, create automation catalog
