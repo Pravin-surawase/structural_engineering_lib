@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-10 (Session 2: Phase C Planning)
+**Updated:** 2026-01-10 (Session 3: Multi-code Foundation)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -255,6 +255,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-310** | Multi-code foundation: core/, codes/ structure with CodeRegistry, MaterialFactory, geometry classes, docs-index.json generator (PR #322) | ARCHITECT | ✅ 2026-01-10 |
 | **AGENT9-PHASE-B** | Folder Migration Complete: Agent 6 entry points, agent registry, 29 docs archived, navigation study, governance automation (5 commits: 59f4dc0, ce57e44, 1570d3c, cacf83c, 8a66d8a) | AGENT_9 | ✅ 2026-01-10 |
 | **TASK-270** | Fix 8 test failures from API refactoring (exception types, validation, CLI) | TESTER | ✅ 2026-01-10 |
 | **TASK-271** | Fix 13 benchmark errors from API signature changes | TESTER | ✅ 2026-01-10 |
