@@ -4,36 +4,54 @@ This module provides IS 456-specific implementations of:
 - Flexure design (Cl. 38.1)
 - Shear design (Cl. 40)
 - Detailing rules (Cl. 26)
-- Material factors (Cl. 36)
+- Serviceability checks (Cl. 42, 43)
+- Compliance verification
 
 All existing functionality from the main library is preserved.
 This package acts as a namespace for IS 456-specific code.
 
-Migration Status:
-- tables.py: ✅ Migrated (Session 5)
-- shear.py: ⏳ Pending
-- flexure.py: ⏳ Pending
-- detailing.py: ⏳ Pending
-- serviceability.py: ⏳ Pending
-- compliance.py: ⏳ Pending
-- ductile.py: ⏳ Pending
+Migration Status (Session 5-6):
+- tables.py: ✅ Migrated
+- shear.py: ✅ Migrated
+- flexure.py: ✅ Migrated
+- detailing.py: ✅ Migrated
+- serviceability.py: ✅ Migrated
+- compliance.py: ✅ Migrated
+- ductile.py: ✅ Migrated
 """
 
 from __future__ import annotations
 
-# Import migrated modules - these are now in codes/is456/
-from structural_lib.codes.is456 import tables
+# Import migrated modules
+from structural_lib.codes.is456 import (
+    compliance,
+    detailing,
+    ductile,
+    flexure,
+    serviceability,
+    shear,
+    tables,
+)
+
+# Import base classes for IS456Code
 from structural_lib.core.base import DesignCode
 from structural_lib.core.registry import register_code
-
-# NOTE: Other modules (flexure, shear, detailing, etc.) will be imported here
-# AFTER they are migrated. Importing them now would cause circular imports.
-# See docs/research/is456-migration-research.md for migration plan.
 
 
 @register_code("IS456")
 class IS456Code(DesignCode):
-    """IS 456:2000 design code implementation."""
+    """IS 456:2000 design code implementation.
+
+    This class provides code-specific constants and methods.
+    The actual design functions are in the submodules:
+    - tables: Table 19/23 lookups
+    - shear: Shear design per Cl. 40
+    - flexure: Flexure design per Cl. 38.1
+    - detailing: Reinforcement detailing per Cl. 26
+    - serviceability: Deflection/crack width per Cl. 42/43
+    - compliance: Compliance checking orchestration
+    - ductile: Ductile detailing per IS 13920
+    """
 
     @property
     def code_id(self) -> str:
@@ -63,11 +81,26 @@ class IS456Code(DesignCode):
         """Design yield strength of steel (fy/γs)."""
         return fy / self.GAMMA_S
 
+    # Convenience methods that delegate to submodules
+    # These provide a unified interface through IS456Code instance
+
+    def get_tau_c(self, fck: float, pt: float) -> float:
+        """Get design shear strength τc from Table 19."""
+        return tables.get_tc_value(fck, pt)
+
+    def get_tau_c_max(self, fck: float) -> float:
+        """Get maximum shear stress τc,max from Table 20."""
+        return tables.get_tc_max_value(fck)
+
 
 # Convenience exports
 __all__ = [
     "IS456Code",
-    # Migrated modules
     "tables",
-    # Note: flexure, shear, detailing exports will be added after migration
+    "shear",
+    "flexure",
+    "detailing",
+    "serviceability",
+    "compliance",
+    "ductile",
 ]
