@@ -424,7 +424,7 @@ Duration: 4 seconds
 
 ### Documentation Updated
 - ✅ `docs/TASKS.md`: Added AGENT8-WEEK1 completion entry
-- ✅ `docs/planning/agent-8-week1-completion-summary.md`: This document
+- ✅ `docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md`: This document
 - ⏳ `docs/SESSION_LOG.md`: Pending update (next step)
 - ⏳ `docs/next-session-brief.md`: Pending Week 2 planning (next step)
 

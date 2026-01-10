@@ -185,7 +185,9 @@ git br      # Same as: git branch --list
 ## Additional Resources
 
 - **Full pitfalls guide:** [docs/reference/agent-automation-pitfalls.md](docs/reference/agent-automation-pitfalls.md)
-- **Agent 8 protocol:** [docs/planning/agent-8-tasks-git-ops.md](docs/planning/agent-8-tasks-git-ops.md)
+- **Agent 8 quick start:** [docs/agents/guides/agent-8-quick-start.md](../agents/guides/agent-8-quick-start.md)
+- **Agent 8 protocol:** [docs/agents/guides/agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md)
+- **Agent 8 automation:** [docs/agents/guides/agent-8-automation.md](../agents/guides/agent-8-automation.md)
 - **Copilot instructions:** [.github/copilot/instructions.md](.github/copilot/instructions.md)
 
 ---

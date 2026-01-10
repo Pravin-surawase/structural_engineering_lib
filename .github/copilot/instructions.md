@@ -122,5 +122,7 @@ ls -1                    # vs ls (one file per line)
 ## References
 
 - [Agent Automation Pitfalls](../../docs/reference/agent-automation-pitfalls.md)
-- [Agent 8 Git Operations Protocol](../../docs/planning/agent-8-tasks-git-ops.md)
-- [Agent 8 Mistakes Prevention](../../docs/planning/agent-8-mistakes-prevention-guide.md)
+- [Agent 8 Quick Start](../../docs/agents/guides/agent-8-quick-start.md)
+- [Agent 8 Git Operations Protocol](../../docs/agents/guides/agent-8-git-ops.md)
+- [Agent 8 Automation Index](../../docs/agents/guides/agent-8-automation.md)
+- [Agent 8 Mistakes Prevention](../../docs/agents/guides/agent-8-mistakes-prevention-guide.md)

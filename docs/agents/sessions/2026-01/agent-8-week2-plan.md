@@ -550,7 +550,7 @@ run_tests
 ## 📝 Documentation Updates
 
 ### Files to Update (Post-Implementation)
-- [ ] `docs/planning/agent-8-week2-completion-summary.md` (create)
+- [ ] `docs/agents/sessions/2026-01/agent-8-week2-completion-summary.md` (create)
 - [ ] `docs/TASKS.md` (add AGENT8-WEEK2 entry)
 - [ ] `docs/SESSION_LOG.md` (add Week 2 achievements)
 - [ ] `docs/planning/next-session-brief.md` (update with Week 3 planning)
