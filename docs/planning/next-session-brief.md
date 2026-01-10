@@ -5,38 +5,36 @@
 | **Current** | v0.16.0 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-11 | **Last commit:** 4e87f60
+**Date:** 2026-01-11 | **Last commit:** 265a6dc
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-11 (Session 7 - Folder Restructuring Phase 1 ✅)
-- Focus: **Folder cleanup, automation scripts, CI fix**
+- Date: 2026-01-11 (Session 8 - Phase 2 Docs Consolidation ✅)
+- Focus: **Archive orphan docs, fix broken links, cleanup automation**
 - Deliverables:
-  - PR #325 merged (14 streamlit files archived, typo folder renamed)
-  - batch_archive.py (multi-file archival with link updates)
-  - rename_folder_safe.py (safe folder rename with link updates)
-  - folder-restructuring-plan.md (comprehensive plan)
-  - Fixed Leading Indicators CI JSON bug
-  - Updated file-operations-safety-guide.md
-- Next: Phase 2 docs organization (planning docs archive)
+  - 48 orphan files archived (planning, publications, specs)
+  - 162 broken links auto-fixed
+  - session-8-automation-review.md (automation audit + issues)
+  - Orphan count: 176 → 169 (in progress)
+- Next: Continue Phase 2/3 or v0.17.0 features
 <!-- HANDOFF:END -->
 
 ---
 
 ## 🎯 Immediate Priority: v0.17.0 Features
 
-**Folder cleanup done! Continue Phase 2 or move to v0.17.0.**
+**Phase 2 in progress - 48 files archived this session!**
 
-### Phase 2 Cleanup Tasks (Optional)
+### Remaining Cleanup Tasks (Optional)
 
 | Task | Files | Priority |
 |------|-------|----------|
-| Archive orphan planning docs | ~30 files | 🟡 MEDIUM |
-| Organize docs/_archive by date | ~10 loose files | 🟡 MEDIUM |
-| Add README to empty folders | ~72 folders | 🔵 LOW |
+| Archive remaining research orphans | ~28 files | 🟡 MEDIUM |
+| Continue docs/_archive organization | ~50 files | 🟡 MEDIUM |
+| Add README to folders | ~72 folders | 🔵 LOW |
 
 ### Critical Path Tasks (v0.17.0)
 
@@ -47,25 +45,16 @@
 | **TASK-274** | Security Hardening Baseline | 2-3 hrs | 🔴 HIGH |
 | **TASK-275** | Professional Liability Framework | 2-3 hrs | 🔴 HIGH |
 
-### Quick Start for TASK-273 (Streamlit)
+### Quick Start Commands
 ```bash
-# Streamlit app already exists and is functional
+# Streamlit app
 cd streamlit_app && streamlit run app.py
 
-# Check existing pages
-ls streamlit_app/pages/
+# Check orphan status
+.venv/bin/python scripts/find_orphan_files.py 2>&1 | grep "^   ⚠️" | wc -l
 
-# Run Streamlit tests
-.venv/bin/python -m pytest streamlit_app/tests/ -v
-```
-
-### Quick Start for TASK-272 (Clause Database)
-```bash
-# Research: Look for @clause decorator pattern
-grep -r "@clause" Python/structural_lib/
-
-# Check existing clause references
-grep -r "Clause\|clause" Python/structural_lib/*.py | head -20
+# Batch archive more files
+.venv/bin/python scripts/batch_archive.py --files "file1.md" "file2.md" --dest "docs/_archive/folder" --dry-run
 ```
 
 ---
@@ -76,28 +65,31 @@ grep -r "Clause\|clause" Python/structural_lib/*.py | head -20
 |--------|-------|--------|
 | Version | v0.16.0 | Released |
 | Tests | 2392 | ✅ Passing |
-| IS 456 Migration | 7/7 | ✅ Complete |
-| Session 7 Commits | 4 | ✅ Good progress |
+| Session 8 Commits | 6 | ✅ Good progress |
+| Files Archived | 48 | ✅ This session |
+| Links Fixed | 162 | ✅ Auto-fixed |
 | Broken Links | 0 | ✅ All valid |
+| Orphan Files | 169 | 🟡 Reduced from 176 |
+| Markdown Files | 231 | Down from 269 |
 
-## Completed This Session (7)
+## Completed This Session (8)
 
 ### Commits
-1. `db95cf6` - feat: TASK-325 folder cleanup phase 1 (PR #325)
-2. `6909da0` - fix: correct grep newline bug in collect_metrics.sh
-3. `c85b92b` - docs: update SESSION_LOG and TASKS.md
-4. `4e87f60` - docs: add batch_archive.py and rename_folder_safe.py to safety guide
+1. `024ddff` - chore: archive 10 agent/session planning docs (batch 1)
+2. `f8ceda9` - chore: archive 12 completed task/version planning docs (batch 2)
+3. `30d85ed` - chore: archive 9 workflow/UI/API docs + fix 162 broken links (batch 3)
+4. `db7323d` - chore: archive 11 publications orphan docs (batch 4)
+5. `2b41c03` - chore: archive 6 specs/troubleshooting orphan docs (batch 5)
+6. `265a6dc` - docs: update SESSION_LOG and TASKS.md for Session 8
 
 ### Deliverables
-- Archived 14 streamlit orphan files
-- Renamed typo folder "files from external yser" → "external_data"
-- Fixed CI Leading Indicators JSON bug
-- Created batch_archive.py and rename_folder_safe.py
-- Updated file operations safety guide
+- 48 orphan files archived to docs/_archive/
+- 162 broken links auto-fixed
+- Created session-8-automation-review.md
 
 ## 📚 Required Reading
 
-- `.github/copilot-instructions.md` - Migration rules + file operations
+- `.github/copilot-instructions.md` - Git workflow + automation rules
+- `docs/research/session-8-automation-review.md` - Automation audit + issues
 - `docs/research/folder-restructuring-plan.md` - Restructuring plan
-- `docs/guidelines/file-operations-safety-guide.md` - New scripts documented
-- `docs/SESSION_LOG.md` - Session 7 accomplishments
+- `docs/SESSION_LOG.md` - Session 8 accomplishments
