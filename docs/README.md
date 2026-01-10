@@ -19,9 +19,9 @@ python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```
 For VS Code AI-agent work, start with:
-- **[AGENT_ONBOARDING.md](AGENT_ONBOARDING.md)** - New agent checklist
-- **[AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
-- **[AGENT_QUICK_REFERENCE.md](AGENT_QUICK_REFERENCE.md)** - Essential commands
+- **[AGENT_ONBOARDING.md](agents/AGENT_ONBOARDING.md)** - New agent checklist
+- **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
+- **[AGENT_QUICK_REFERENCE.md](agents/AGENT_QUICK_REFERENCE.md)** - Essential commands
 - [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
 - [AI summary](../llms.txt) - LLM-friendly summary
 - [Handoff Quick Start](contributing/handoff.md) - Session handoff
@@ -34,20 +34,8 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 
 ### Canonical roots (authoritative)
 
-- `AGENT_AUTOMATION_SYSTEM.md`
-- `AGENT_ONBOARDING.md`
-- `AGENT_QUICK_REFERENCE.md`
-- `AGENT_WORKFLOW_MASTER_GUIDE.md`
-- `AGENT_AUTOMATION_IMPLEMENTATION.md`
-- `AGENT_BOOTSTRAP_COMPLETE_REVIEW.md`
-- `BOOTSTRAP_AND_PROJECT_STRUCTURE_SUMMARY.md`
-- `PROJECT-NEEDS-ASSESSMENT-2026-01-09.md`
-- `PYLINT_VS_AST_COMPARISON.md`
 - `README.md`
 - `SESSION_LOG.md`
-- `STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md`
-- `STREAMLIT_ISSUES_CATALOG.md`
-- `STREAMLIT_PREVENTION_SYSTEM_REVIEW.md`
 - `TASKS.md`
 
 ### Legacy root redirects (docs/ -> canonical)
