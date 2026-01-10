@@ -1,0 +1,418 @@
+{
+  "folder": "docs",
+  "description": "If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience. > **Version info:** See [TASKS.md](TASKS.md) for curre",
+  "last_updated": "2026-01-10",
+  "file_count": 45,
+  "files": [
+    {
+      "name": "AGENT_AUTOMATION_IMPLEMENTATION.md",
+      "title": "Agent Automation System - Implementation Summary",
+      "description": "Complete workflow guide covering: - Quick start (30 seconds)",
+      "last_updated": "2026-01-08",
+      "size_lines": 404,
+      "status": "✅ Complete & Deployed"
+    },
+    {
+      "name": "AGENT_AUTOMATION_SYSTEM.md",
+      "title": "Agent Automation System v1.0.0",
+      "description": "Comprehensive automation system for error-free AI agent workflows. Prevents 99% of common Git errors through automated workflow scripts. - **[AGENT_WORKFLOW_MASTER_GUIDE.md](../docs/AGENT_WORKFLOW_MAS",
+      "last_updated": "2026-01-08",
+      "size_lines": 322,
+      "status": "✅ Production Ready (All tests passing)"
+    },
+    {
+      "name": "AGENT_BOOTSTRAP_COMPLETE_REVIEW.md",
+      "title": "Agent Bootstrap - Complete Review & Link Analysis",
+      "description": "The **agent-bootstrap.md** file is a 65-line quick-start guide designed to get new agents productive in 30 seconds. This document provides a complete analysis of every link in it and what each one con",
+      "last_updated": "2026-01-10",
+      "size_lines": 498,
+      "status": "✅ All Links Analyzed and Documented"
+    },
+    {
+      "name": "AGENT_ONBOARDING.md",
+      "title": "Agent Onboarding Checklist",
+      "description": "**For New AI Agents Starting Work on This Project** Use this checklist to ensure you're set up correctly and following the project's automated workflows.",
+      "last_updated": "2026-01-08",
+      "size_lines": 272
+    },
+    {
+      "name": "AGENT_QUICK_REFERENCE.md",
+      "title": "Agent Workflow Quick Reference Card",
+      "description": "| Command | Purpose | |---------|---------|",
+      "last_updated": "2026-01-08",
+      "size_lines": 238
+    },
+    {
+      "name": "AGENT_WORKFLOW_MASTER_GUIDE.md",
+      "title": "Agent Workflow Master Guide",
+      "description": "> **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations. > Read this FIRST before any work. Following these rules prevents 99% of errors.",
+      "last_updated": "2026-01-09",
+      "size_lines": 586,
+      "status": "✅ Production Ready"
+    },
+    {
+      "name": "BOOTSTRAP_AND_PROJECT_STRUCTURE_SUMMARY.md",
+      "title": "Agent Bootstrap & Project Structure - Complete Reference",
+      "description": "You asked me to read the agent bootstrap file and every link in it. I've completed a comprehensive review of: - ✅ **agent-bootstrap.md** (65 lines - the starting point)",
+      "last_updated": "2026-01-10",
+      "size_lines": 313,
+      "status": "✅ Complete Analysis & All Documents Reviewed"
+    },
+    {
+      "name": "PROJECT-NEEDS-ASSESSMENT-2026-01-09.md",
+      "title": "Project Needs Assessment & Action Plan",
+      "description": "- `test_loading_states.py`: 80 failures (shimmer effects, loading contexts) - `test_theme_manager.py`: 18 failures (theme init, colors, persistence)",
+      "last_updated": "2026-01-09",
+      "size_lines": 780,
+      "status": "🔴 Critical Issues Identified - Action Required"
+    },
+    {
+      "name": "PYLINT_VS_AST_COMPARISON.md",
+      "title": "Pylint vs AST Scanner Comparison Report",
+      "description": "> **Purpose:** Compare pylint and AST scanner results to determine best approach. - **Undefined variables (E0602):** 19 findings",
+      "last_updated": "2026-01-09",
+      "size_lines": 255
+    },
+    {
+      "name": "SESSION_LOG.md",
+      "title": "Session Log",
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see [TASKS.md](TASKS.md). 1. **README.md** (292 lines) - Main specification with quick reference and navigation",
+      "last_updated": "2026-01-10",
+      "size_lines": 1404
+    },
+    {
+      "name": "STREAMLIT_COMPREHENSIVE_PREVENTION_SYSTEM.md",
+      "title": "Comprehensive Streamlit App Prevention System",
+      "description": "> **Context:** Built prevention system for cost_optimizer.py (PR #301), but discovered > NameError in beam_design.py that wasn't caught. Need app-wide solution.",
+      "last_updated": "2026-01-09",
+      "size_lines": 496,
+      "status": "🎯 PROPOSED"
+    },
+    {
+      "name": "STREAMLIT_ISSUES_CATALOG.md",
+      "title": "Streamlit App Comprehensive Issue Catalog",
+      "description": "> **Purpose:** Complete catalog of all issues found across 5 Streamlit pages. > This document guides Phase 1B fixes and tracks progress.",
+      "last_updated": "2026-01-09",
+      "size_lines": 309
+    },
+    {
+      "name": "STREAMLIT_PREVENTION_SYSTEM_REVIEW.md",
+      "title": "Comprehensive Prevention System - Review & Refinements",
+      "description": "> **Purpose:** Critical review of the proposed comprehensive prevention system, > identifying gaps, refining approach, and prioritizing implementation.",
+      "last_updated": "2026-01-09",
+      "size_lines": 608,
+      "status": "📝 UNDER REVIEW"
+    },
+    {
+      "name": "TASKS.md",
+      "title": "Task Board",
+      "description": "> Single source of truth for work. Keep it short and current. > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.",
+      "last_updated": "2026-01-10",
+      "size_lines": 283
+    },
+    {
+      "name": "agent-bootstrap.md",
+      "title": "Agent Bootstrap",
+      "description": "> **Read this first.** This is the fastest path to productive work. > **👤 For users onboarding a new agent:** See [contributing/agent-onboarding-message.md](contributing/agent-onboarding-message.md) f",
+      "last_updated": "2026-01-09",
+      "size_lines": 65
+    },
+    {
+      "name": "ai-context-pack.md",
+      "title": "AI Context Pack",
+      "description": "> **For AI Agents:** Use this as your single entrypoint when working in VS Code. | Metric | Value |",
+      "last_updated": "2026-01-09",
+      "size_lines": 253
+    },
+    {
+      "name": "api-reference.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "beginners-guide.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "current-state-and-goals.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "deep-project-map.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "development-guide.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "excel-addin-guide.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "excel-quickstart.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "excel-tutorial.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "getting-started-python.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "git-workflow-ai-agents.md",
+      "title": "Git Workflow for AI Agents (Canonical)",
+      "description": "**Never use manual git commit/push.** Always use the workflow scripts. Run:",
+      "last_updated": "2026-01-08",
+      "size_lines": 87
+    },
+    {
+      "name": "handoff.md",
+      "title": "Handoff Quick Start",
+      "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: `.venv/bin/python scripts/start_session.py`",
+      "last_updated": "2026-01-08",
+      "size_lines": 59
+    },
+    {
+      "name": "is456-quick-reference.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "known-pitfalls.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "mission-and-principles.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "next-session-brief.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "production-roadmap.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "project-overview.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "releases.md",
+      "title": "Release Ledger",
+      "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
+      "last_updated": "2026-01-10",
+      "size_lines": 726
+    },
+    {
+      "name": "research-ai-enhancements.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "research-detailing.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "streamlit-maintenance-guide.md",
+      "title": "Streamlit Maintenance Guide",
+      "description": "> **Purpose:** Your complete reference for developing, testing, validating, and maintaining the Streamlit UI. 1. [Quick Start](#quick-start)",
+      "last_updated": "2026-01-09",
+      "size_lines": 755
+    },
+    {
+      "name": "testing-strategy.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "troubleshooting.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "v0.7-requirements.md",
+      "title": "v0.7 Requirements (Archived)",
+      "description": "This document has moved to the archive: [docs/_archive/v0.7-requirements.md](_archive/v0.7-requirements.md)",
+      "last_updated": "2026-01-08",
+      "size_lines": 8
+    },
+    {
+      "name": "v0.8-execution-checklist.md",
+      "title": "v0.8 Execution Checklist (Archived)",
+      "description": "This document has moved to the archive: [docs/_archive/v0.8-execution-checklist.md](_archive/v0.8-execution-checklist.md)",
+      "last_updated": "2026-01-08",
+      "size_lines": 8
+    },
+    {
+      "name": "vba-guide.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "vba-testing-guide.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "verification-examples.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "verification-pack.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "adr",
+      "path": "adr/",
+      "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later. Write one when you:"
+    },
+    {
+      "name": "architecture",
+      "path": "architecture/",
+      "description": "Deep dives into project structure and design decisions. | Document | Purpose |"
+    },
+    {
+      "name": "blog-drafts",
+      "path": "blog-drafts/",
+      "description": ""
+    },
+    {
+      "name": "contributing",
+      "path": "contributing/",
+      "description": "Guides for developers and maintainers. | Guide | Audience |"
+    },
+    {
+      "name": "cookbook",
+      "path": "cookbook/",
+      "description": "Task-focused recipes for common workflows. | Recipe | Status | Use case |"
+    },
+    {
+      "name": "getting-started",
+      "path": "getting-started/",
+      "description": "Quick onboarding guides for new users. | Guide | Audience | Time |"
+    },
+    {
+      "name": "guidelines",
+      "path": "guidelines/",
+      "description": ""
+    },
+    {
+      "name": "images",
+      "path": "images/",
+      "description": "This folder contains images referenced by the documentation (e.g., the Excel tutorial screenshots). The file [docs/_internal/screenshot-guide.md](../_internal/screenshot-guide.md) lists the target scr"
+    },
+    {
+      "name": "learning",
+      "path": "learning/",
+      "description": "This folder is a guided learning path for this repo. It is written for an engineer who is new to software projects, but wants to understand the concepts and code."
+    },
+    {
+      "name": "legal",
+      "path": "legal/",
+      "description": ""
+    },
+    {
+      "name": "planning",
+      "path": "planning/",
+      "description": "Internal planning documents and research notes. | Document | Purpose |"
+    },
+    {
+      "name": "publications",
+      "path": "publications/",
+      "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineering library. Document and share:"
+    },
+    {
+      "name": "reference",
+      "path": "reference/",
+      "description": "Lookup documentation for API, formulas, and troubleshooting. | Document | Purpose |"
+    },
+    {
+      "name": "research",
+      "path": "research/",
+      "description": "This index helps you find the right research document quickly. Start with the methodology doc if you are new to the research set. - Read `research-methodology.md` first if you are creating or reviewin"
+    },
+    {
+      "name": "specs",
+      "path": "specs/",
+      "description": ""
+    },
+    {
+      "name": "troubleshooting",
+      "path": "troubleshooting/",
+      "description": ""
+    },
+    {
+      "name": "verification",
+      "path": "verification/",
+      "description": "Benchmark examples and verification packs for validating library calculations. | Document | Purpose |"
+    }
+  ]
+}

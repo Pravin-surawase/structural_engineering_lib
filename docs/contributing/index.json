@@ -1,0 +1,176 @@
+{
+  "folder": "docs/contributing",
+  "description": "Guides for developers and maintainers. | Guide | Audience |",
+  "last_updated": "2026-01-10",
+  "file_count": 23,
+  "files": [
+    {
+      "name": "agent-collaboration-framework.md",
+      "title": "Agent Collaboration Framework",
+      "description": "This project uses **agent-driven maintenance** where specialized AI agents (researcher, tester, devops, pm, dev) work in parallel on isolated tasks. This framework defines roles, workflows, and coordi",
+      "last_updated": "2026-01-10",
+      "size_lines": 666,
+      "status": "ACTIVE"
+    },
+    {
+      "name": "agent-onboarding-message.md",
+      "title": "First Message for New Agents",
+      "description": "> **Copy-paste this exact message to any new agent starting work on this project.** ```",
+      "last_updated": "2026-01-08",
+      "size_lines": 103
+    },
+    {
+      "name": "background-agent-guide.md",
+      "title": "Background Agent Parallel Work Guide",
+      "description": "- **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatGPT) working on assigned tasks - **MAIN Agent/User:** You (the project owner) coordinating work and handling all remote G",
+      "last_updated": "2026-01-10",
+      "size_lines": 609,
+      "status": "v2.0 - Updated for multi-agent collaboration framework (2026-01-07)"
+    },
+    {
+      "name": "changelog-deprecation-template.md",
+      "title": "CHANGELOG Template for Deprecations",
+      "description": "This template guides you when adding deprecation entries to `CHANGELOG.md`. Deprecations go under the **`### Deprecated`** section for the **current unreleased version**.",
+      "last_updated": "2026-01-08",
+      "size_lines": 177
+    },
+    {
+      "name": "development-guide.md",
+      "title": "IS 456 RC Beam Design Library — Development Guide",
+      "description": "1. [Overview](#1-overview) 2. [Project Structure](#2-project-structure)",
+      "last_updated": "2026-01-10",
+      "size_lines": 1499,
+      "audience": "Contributors, maintainers, and developers extending the library"
+    },
+    {
+      "name": "docstring-style-guide.md",
+      "title": "Docstring Style Guide",
+      "description": "> **Purpose:** Standard docstring format for all Python modules in structural_lib > **Style:** Google Style (readable, widely adopted in scientific Python)",
+      "last_updated": "2026-01-06",
+      "size_lines": 358
+    },
+    {
+      "name": "end-of-session-workflow.md",
+      "title": "End-of-Session Workflow",
+      "description": "> **Standard procedure for ALL agents when ending a session.** ```bash",
+      "last_updated": "2026-01-10",
+      "size_lines": 471
+    },
+    {
+      "name": "excel-addin-guide.md",
+      "title": "How to Create and Use the Excel Add-in (.xlam)",
+      "description": "This guide explains how to package the VBA library into a reusable Excel Add-in (`StructEngLib.xlam`). 1) Open a new blank Excel workbook.",
+      "last_updated": "2026-01-08",
+      "size_lines": 372
+    },
+    {
+      "name": "git-workflow-for-ai-agents.md",
+      "title": "This document has moved",
+      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
+      "last_updated": "2026-01-08",
+      "size_lines": 7
+    },
+    {
+      "name": "git-workflow-quick-reference.md",
+      "title": "Git Workflow Quick Reference",
+      "description": "```bash git add <files>",
+      "last_updated": "2026-01-08",
+      "size_lines": 187,
+      "status": "✅ Production Ready (tested with 13 scenarios)"
+    },
+    {
+      "name": "git-workflow-testing.md",
+      "title": "Git Workflow Testing Strategy",
+      "description": "This document explains how we test and validate our git workflow to prevent merge conflicts, rebase issues, and other common git problems. 1. **Prevent merge conflicts** through automated conflict det",
+      "last_updated": "2026-01-08",
+      "size_lines": 337
+    },
+    {
+      "name": "github-workflow.md",
+      "title": "GitHub Workflow Guide",
+      "description": "```bash ./scripts/should_use_pr.sh --explain",
+      "last_updated": "2026-01-08",
+      "size_lines": 277
+    },
+    {
+      "name": "learning-paths.md",
+      "title": "Learning Paths for Contributors",
+      "description": "Pick the smallest reading path that still protects quality. Each path lists the minimum docs to read before you work. | Task type | Path | Read first |",
+      "last_updated": "2026-01-08",
+      "size_lines": 80
+    },
+    {
+      "name": "lesson-incomplete-implementation.md",
+      "title": "Lesson Learned: Incomplete Implementation (2026-01-09)",
+      "description": "✅ \"Background agents work on worktrees (local commits only)\" ✅ \"Automatic detection, zero configuration\"",
+      "last_updated": "2026-01-09",
+      "size_lines": 353,
+      "status": "Fixed in commit ef1ce7f"
+    },
+    {
+      "name": "naming-conventions.md",
+      "title": "Naming Conventions",
+      "description": "This document defines naming standards for files, modules, and symbols in this repository.",
+      "last_updated": "2026-01-08",
+      "size_lines": 63,
+      "status": "Active"
+    },
+    {
+      "name": "quickstart-checklist.md",
+      "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
+      "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** `streamlit_app/pages/NN_📋_page_name.py`",
+      "last_updated": "2026-01-09",
+      "size_lines": 493
+    },
+    {
+      "name": "repo-professionalism.md",
+      "title": "Repo Professionalism Playbook",
+      "description": "Purpose: keep the repo reliable, predictable, and safe to publish even when work is fast or done by multiple agents. This doc does not replace existing rules. It links to the canonical sources and add",
+      "last_updated": "2026-01-10",
+      "size_lines": 197
+    },
+    {
+      "name": "session-issues.md",
+      "title": "Session Issues and Fixes",
+      "description": "Purpose: capture recurring friction points and the fixes so we do not repeat them. - **Release script rewrote doc stamps** and introduced trailing whitespace in “Last Updated” lines, which caused pre-",
+      "last_updated": "2025-12-31",
+      "size_lines": 43
+    },
+    {
+      "name": "solo-maintainer-operating-system.md",
+      "title": "Solo Maintainer Operating System (Public)",
+      "description": "Purpose: keep a solo-maintained engineering library stable, trusted, and low-drift. Scope: applies to all public releases, schemas, and APIs.",
+      "last_updated": "2026-01-10",
+      "size_lines": 114
+    },
+    {
+      "name": "testing-strategy.md",
+      "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
+      "description": "- Location: `Python/tests/` - Runner: `pytest`",
+      "last_updated": "2025-12-30",
+      "size_lines": 162
+    },
+    {
+      "name": "vba-guide.md",
+      "title": "VBA Library Guide",
+      "description": "Practical guide to consume, ship, and maintain the VBA side of the Structural Engineering Library. - **Current modules:** `M01_Constants` through `M17_Serviceability` plus optional tests in `VBA/Tests",
+      "last_updated": "2026-01-08",
+      "size_lines": 56
+    },
+    {
+      "name": "vba-testing-guide.md",
+      "title": "VBA Testing Guide",
+      "description": "1. **Open** the Excel workbook (`Excel/StructEng_BeamDesign_v0.5.xlsm` or `BeamDesignApp.xlsm`) 2. **Press** `Alt+F11` to open the VBA Editor",
+      "last_updated": "2026-01-10",
+      "size_lines": 240
+    },
+    {
+      "name": "workflow-professional-review.md",
+      "title": "Git Workflow Professional Review & Recommendations",
+      "description": "| Feature | Status | Notes | |---------|--------|-------|",
+      "last_updated": "2026-01-06",
+      "size_lines": 439
+    }
+  ],
+  "subfolders": []
+}

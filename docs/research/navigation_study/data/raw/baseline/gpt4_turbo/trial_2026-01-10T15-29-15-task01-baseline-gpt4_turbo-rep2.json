@@ -1,0 +1,21 @@
+{
+  "trial_id": "2026-01-10T15-29-15-task01-baseline-gpt4_turbo-rep2",
+  "timestamp": "2026-01-10T15:29:15+05:30",
+  "condition": "baseline",
+  "agent_type": "gpt4_turbo",
+  "task_id": "task01",
+  "task_description": "Find flexure module API",
+  "ground_truth_file": "docs/reference/api.md",
+  "metrics": {
+    "time_to_complete_ms": 36,
+    "files_accessed": 3,
+    "bytes_loaded": 55510,
+    "tokens_loaded": 6830,
+    "wrong_files_opened": 2,
+    "navigation_path": ["docs/README.md","docs/reference/README.md","docs/reference/api.md"]
+  },
+  "outcome": {
+    "success": true,
+    "correct_file_found": true
+  }
+}
