@@ -401,7 +401,7 @@ git add agents/SUPPORT.md
 **Proposed Standard:**
 - **Docs:** kebab-case (`project-overview.md`, `ai-context-pack.md`)
 - **Special files:** Keep UPPERCASE for visibility (`README.md`, `LICENSE`, `CHANGELOG.md`)
-- **Planning docs:** Keep UPPERCASE for important files (`TASKS.md`, `SESSION_log.md`)
+- **Planning docs:** Keep UPPERCASE for important files (`TASKS.md`, `SESSION_LOG.md`)
 
 **Process (Mode 1 - Audit):**
 1. List all non-standard filenames
@@ -621,7 +621,7 @@ du -sh .git/
 
 **❌ NEVER Edit:**
 - `docs/TASKS.md` (MAIN agent owns this)
-- `docs/SESSION_log.md` (MAIN agent owns this)
+- `docs/SESSION_LOG.md` (MAIN agent owns this)
 - `docs/planning/next-session-brief.md` (MAIN agent owns this)
 - Production code (`Python/structural_lib/*.py`)
 - Tests (`Python/tests/*.py`)

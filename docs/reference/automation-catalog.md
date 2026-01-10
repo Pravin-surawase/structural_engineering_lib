@@ -1,8 +1,10 @@
 # Automation Script Catalog
 
-> **Purpose:** Complete reference of all 43 automation scripts in this project.
+> **Purpose:** Complete reference of all 71 automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
-> **Last Updated:** 2026-01-06
+> **Last Updated:** 2026-01-10
+>
+> **⚠️ IMPORTANT:** See [Agent Automation Pitfalls](agent-automation-pitfalls.md) for common issues when running automation scripts (git pager lockup, interactive prompts, etc.)
 
 ---
 
@@ -10,15 +12,17 @@
 
 | Category | Scripts | Primary Use Case |
 |----------|---------|------------------|
-| [Session Management](#session-management) | 3 | Agent onboarding and handoff |
-| [Git Workflow](#git-workflow) | 9 | Conflict-free commits and workflow decisions |
-| [Documentation Quality](#documentation-quality) | 9 | Link checking, version drift, consistency |
+| [Session Management](#session-management) | 6 | Agent onboarding and handoff |
+| [Git Workflow](#git-workflow) | 13 | Conflict-free commits and workflow decisions |
+| [Documentation Quality](#documentation-quality) | 13 | Link checking, version drift, structure governance |
 | [Release Management](#release-management) | 4 | Version bumping, release validation |
-| [Testing & Quality](#testing--quality) | 5 | Local CI, pre-commit checks, validation |
+| [Testing & Quality](#testing--quality) | 9 | Local CI, pre-commit checks, validation |
 | [Code Quality](#code-quality) | 5 | Error handling audits, linting, coverage, license headers |
-| [Specialized](#specialized) | 8 | DXF rendering, CLI testing, VBA linting |
+| [Streamlit QA](#streamlit-qa) | 6 | Streamlit linting, AST validation, page checks |
+| [Governance & Monitoring](#governance--monitoring) | 7 | Metrics, dashboards, repo health |
+| [Specialized](#specialized) | 8 | DXF rendering, CLI testing, automation helpers |
 
-**Total: 43 scripts** (17 shell `.sh` + 26 Python `.py`)
+**Total: 71 scripts** (37 shell `.sh` + 34 Python `.py`)
 
 ---
 
@@ -155,9 +159,81 @@ Checking handoff readiness...
 
 ---
 
+### 4. `agent_setup.sh`
+
+**Purpose:** Prepare the environment for agent work (repo checks, tooling sanity, worktree setup).
+
+**When to Use:**
+- ✅ Before starting a new agent session
+- ✅ When creating a background worktree
+- ✅ After major repo updates or environment changes
+
+**Usage:**
+```bash
+./scripts/agent_setup.sh
+./scripts/agent_setup.sh --worktree AGENT_5
+./scripts/agent_setup.sh --quick
+```
+
+**What It Does:**
+- Verifies repo location and required files
+- Checks core tooling/venv availability
+- Prints next-step guidance for session start
+
+**Related:** [agent_preflight.sh](#5-agent_preflightsh), [start_session.py](#1-start_sessionpy)
+
+---
+
+### 5. `agent_preflight.sh`
+
+**Purpose:** Pre-flight checklist to validate environment readiness before work.
+
+**When to Use:**
+- ✅ Right before starting a session
+- ✅ After switching branches or worktrees
+- ✅ When troubleshooting environment issues
+
+**Usage:**
+```bash
+./scripts/agent_preflight.sh
+./scripts/agent_preflight.sh --quick
+./scripts/agent_preflight.sh --fix
+```
+
+**What It Does:**
+- Runs a focused readiness checklist
+- Flags missing dependencies or repo state issues
+- Optionally applies safe auto-fixes
+
+**Related:** [agent_setup.sh](#4-agent_setupsh), [start_session.py](#1-start_sessionpy)
+
+---
+
+### 6. `worktree_manager.sh`
+
+**Purpose:** Manage parallel agent worktrees (create/list/submit/cleanup/status).
+
+**When to Use:**
+- ✅ Spinning up a background agent workspace
+- ✅ Reviewing or cleaning old worktrees
+- ✅ Submitting background agent work
+
+**Usage:**
+```bash
+./scripts/worktree_manager.sh create AGENT_NAME
+./scripts/worktree_manager.sh list
+./scripts/worktree_manager.sh submit AGENT_NAME "summary"
+./scripts/worktree_manager.sh cleanup AGENT_NAME
+./scripts/worktree_manager.sh status AGENT_NAME
+```
+
+**Related:** [agent_setup.sh](#4-agent_setupsh)
+
+---
+
 ## Git Workflow
 
-### 4. `safe_push.sh` ⭐ MANDATORY
+### 7. `safe_push.sh` ⭐ MANDATORY
 
 **Purpose:** Branch-aware commit and push with conflict prevention.
 
@@ -202,11 +278,11 @@ git push
 # This WILL cause conflicts and wasted time!
 ```
 
-**Related:** [should_use_pr.sh](#5-should_use_prsh), [verify_git_fix.sh](#6-verify_git_fixsh)
+**Related:** [should_use_pr.sh](#8-should_use_prsh), [verify_git_fix.sh](#10-verify_git_fixsh)
 
 ---
 
-### 5. `should_use_pr.sh`
+### 8. `should_use_pr.sh`
 
 **Purpose:** Decision helper for production-stage workflow (PR vs direct commit).
 
@@ -262,11 +338,29 @@ Reasoning: All changes are low-risk documentation updates.
 Safe for direct commit using safe_push.sh.
 ```
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory), [create_task_pr.sh](#7-create_task_prsh)
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory), [create_task_pr.sh](#11-create_task_prsh)
 
 ---
 
-### 6. `verify_git_fix.sh`
+### 9. `should_use_pr_old.sh`
+
+**Purpose:** Legacy PR decision helper (deprecated).
+
+**Status:** ⚠️ Deprecated — use [should_use_pr.sh](#8-should_use_prsh) instead.
+
+**Usage:**
+```bash
+./scripts/should_use_pr_old.sh
+./scripts/should_use_pr_old.sh --explain
+```
+
+**Notes:** Retained for historical reference and comparison testing.
+
+**Related:** [should_use_pr.sh](#8-should_use_prsh)
+
+---
+
+### 10. `verify_git_fix.sh`
 
 **Purpose:** Validate that Step 2.5 whitespace fix works correctly (prevents hash divergence).
 
@@ -293,11 +387,11 @@ Safe for direct commit using safe_push.sh.
 
 **CI Integration:** Runs in `.github/workflows/git-workflow-tests.yml` on every push.
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory), [test_should_use_pr.sh](#8-test_should_use_prsh)
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory), [test_should_use_pr.sh](#8-test_should_use_prsh)
 
 ---
 
-### 7. `create_task_pr.sh`
+### 11. `create_task_pr.sh`
 
 **Purpose:** Create pull request for a task with proper naming and structure.
 
@@ -327,11 +421,11 @@ Safe for direct commit using safe_push.sh.
 4. Sets proper labels
 5. Links to task in TASKS.md
 
-**Related:** [finish_task_pr.sh](#8-finish_task_prsh), [should_use_pr.sh](#5-should_use_prsh)
+**Related:** [finish_task_pr.sh](#12-finish_task_prsh), [should_use_pr.sh](#8-should_use_prsh)
 
 ---
 
-### 8. `finish_task_pr.sh`
+### 12. `finish_task_pr.sh`
 
 **Purpose:** Complete PR work and merge with proper workflow.
 
@@ -355,11 +449,11 @@ Safe for direct commit using safe_push.sh.
 4. Updates TASKS.md (moves to Done)
 5. Switches back to main
 
-**Related:** [create_task_pr.sh](#7-create_task_prsh)
+**Related:** [create_task_pr.sh](#11-create_task_prsh)
 
 ---
 
-### 9. `test_should_use_pr.sh`
+### 13. `test_should_use_pr.sh`
 
 **Purpose:** Comprehensive test suite for should_use_pr.sh decision logic.
 
@@ -387,11 +481,11 @@ Tests failed: 0
 
 **CI Integration:** Runs in `.github/workflows/git-workflow-tests.yml`.
 
-**Related:** [should_use_pr.sh](#5-should_use_prsh), [verify_git_fix.sh](#6-verify_git_fixsh)
+**Related:** [should_use_pr.sh](#8-should_use_prsh), [verify_git_fix.sh](#10-verify_git_fixsh)
 
 ---
 
-### 10. `test_git_workflow.sh`
+### 14. `test_git_workflow.sh`
 
 **Purpose:** End-to-end testing of complete git workflow.
 
@@ -415,7 +509,48 @@ Tests failed: 0
 
 ---
 
-### 11. `check_unfinished_merge.sh`
+### 15. `test_branch_operations.sh`
+
+**Purpose:** Test suite for git branch and worktree operations used by Agent 8.
+
+**When to Use:**
+- ✅ After modifying branch/worktree logic
+- ✅ When debugging worktree issues
+- ✅ As part of git workflow verification
+
+**Usage:**
+```bash
+./scripts/test_branch_operations.sh
+./scripts/test_branch_operations.sh --test N
+./scripts/test_branch_operations.sh --verbose
+./scripts/test_branch_operations.sh --quick
+```
+
+**Related:** [worktree_manager.sh](#6-worktree_managersh), [safe_push.sh](#7-safe_pushsh-mandatory)
+
+---
+
+### 16. `test_merge_conflicts.sh`
+
+**Purpose:** Merge conflict scenario test suite for Agent 8 workflows.
+
+**When to Use:**
+- ✅ After changing merge/rebase logic
+- ✅ Before rolling out git workflow updates
+- ✅ To reproduce conflict handling
+
+**Usage:**
+```bash
+./scripts/test_merge_conflicts.sh
+./scripts/test_merge_conflicts.sh --verbose
+./scripts/test_merge_conflicts.sh --test <num>
+```
+
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory), [recover_git_state.sh](#18-recover_git_statesh)
+
+---
+
+### 17. `check_unfinished_merge.sh`
 
 **Purpose:** Detect unfinished merge state (MERGE_HEAD exists).
 
@@ -436,11 +571,11 @@ Tests failed: 0
 
 **Action:** If detected, complete merge with `git commit --no-edit` then push.
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory)
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory)
 
 ---
 
-### 12. `recover_git_state.sh`
+### 18. `recover_git_state.sh`
 
 **Purpose:** Print exact recovery commands for common broken git states.
 
@@ -459,11 +594,11 @@ Tests failed: 0
 - Specific commands for divergence
 - Next safe step for clean states
 
-**Related:** [validate_git_state.sh](#13-validate_git_statesh)
+**Related:** [validate_git_state.sh](#19-validate_git_statesh)
 
 ---
 
-### 13. `validate_git_state.sh`
+### 19. `validate_git_state.sh`
 
 **Purpose:** Comprehensive git state validation before operations.
 
@@ -484,13 +619,13 @@ Tests failed: 0
 - No unfinished merges
 - No stashed changes
 
-**Related:** [check_unfinished_merge.sh](#11-check_unfinished_mergesh), [recover_git_state.sh](#12-recover_git_statesh)
+**Related:** [check_unfinished_merge.sh](#17-check_unfinished_mergesh), [recover_git_state.sh](#18-recover_git_statesh)
 
 ---
 
 ## Documentation Quality
 
-### 13. `check_links.py`
+### 20. `check_links.py`
 
 **Purpose:** Detect broken links in all markdown files.
 
@@ -523,7 +658,7 @@ Checking links in 193 markdown files...
 
 ---
 
-### 14. `check_docs_index.py`
+### 21. `check_docs_index.py`
 
 **Purpose:** Validate docs/README.md index completeness and structure.
 
@@ -547,7 +682,7 @@ Checking links in 193 markdown files...
 
 ---
 
-### 15. `check_docs_index_links.py`
+### 22. `check_docs_index_links.py`
 
 **Purpose:** Validate all links within docs/README.md index.
 
@@ -566,11 +701,11 @@ Checking links in 193 markdown files...
 - Anchor links valid
 - No broken cross-references
 
-**Related:** [check_docs_index.py](#14-check_docs_indexpy), [check_links.py](#13-check_linkspy)
+**Related:** [check_docs_index.py](#21-check_docs_indexpy), [check_links.py](#20-check_linkspy)
 
 ---
 
-### 16. `check_doc_versions.py`
+### 23. `check_doc_versions.py`
 
 **Purpose:** Detect version number drift in documentation.
 
@@ -603,7 +738,7 @@ Current version: 0.14.0
 
 ---
 
-### 17. `check_api_docs_sync.py`
+### 24. `check_api_docs_sync.py`
 
 **Purpose:** Ensure API reference docs match actual code signatures.
 
@@ -623,11 +758,11 @@ Current version: 0.14.0
 - Return types documented
 - Examples use valid syntax
 
-**Related:** [check_api_doc_signatures.py](#18-check_api_doc_signaturespy)
+**Related:** [check_api_doc_signatures.py](#25-check_api_doc_signaturespy)
 
 ---
 
-### 18. `check_api_doc_signatures.py`
+### 25. `check_api_doc_signatures.py`
 
 **Purpose:** Validate API documentation function signatures are syntactically correct.
 
@@ -646,11 +781,11 @@ Current version: 0.14.0
 - Type hints correct
 - Consistent formatting
 
-**Related:** [check_api_docs_sync.py](#17-check_api_docs_syncpy)
+**Related:** [check_api_docs_sync.py](#24-check_api_docs_syncpy)
 
 ---
 
-### 19. `check_repo_hygiene.py`
+### 26. `check_repo_hygiene.py`
 
 **Purpose:** Ensure hygiene artifacts are not tracked in git.
 
@@ -677,7 +812,7 @@ python3 scripts/check_repo_hygiene.py
 
 ---
 
-### 19. `check_cli_reference.py`
+### 27. `check_cli_reference.py`
 
 **Purpose:** Validate CLI reference documentation completeness.
 
@@ -697,11 +832,11 @@ python3 scripts/check_repo_hygiene.py
 - Examples provided
 - Help text matches docs
 
-**Related:** [check_api_docs_sync.py](#17-check_api_docs_syncpy)
+**Related:** [check_api_docs_sync.py](#24-check_api_docs_syncpy)
 
 ---
 
-### 20. `check_next_session_brief_length.py`
+### 28. `check_next_session_brief_length.py`
 
 **Purpose:** Ensure next-session-brief.md stays under target length (150 lines).
 
@@ -718,7 +853,7 @@ python3 scripts/check_repo_hygiene.py
 **What It Checks:**
 - File length < 150 lines (target)
 - Warns if > 150 lines
-- Suggests archiving old content to SESSION_log.md
+- Suggests archiving old content to SESSION_LOG.md
 
 **Output:**
 ```
@@ -729,9 +864,98 @@ next-session-brief.md: 142 lines ✅ (target <150)
 
 ---
 
+### 29. `check_root_file_count.sh`
+
+**Purpose:** Enforce root-directory file count limits to prevent sprawl.
+
+**When to Use:**
+- ✅ Monthly maintenance or cleanup passes
+- ✅ Before adding new root-level files
+- ✅ Governance validation
+
+**Usage:**
+```bash
+./scripts/check_root_file_count.sh
+```
+
+**What It Checks:**
+- Counts root `.md`, `.txt`, `.sh` files
+- Fails if the count exceeds the configured limit
+
+**Related:** [validate_folder_structure.py](#30-validate_folder_structurepy)
+
+---
+
+### 30. `validate_folder_structure.py`
+
+**Purpose:** Validate repo folder structure against governance rules.
+
+**When to Use:**
+- ✅ After moving or renaming folders
+- ✅ Before running migration phases
+- ✅ CI or governance checks
+
+**Usage:**
+```bash
+python scripts/validate_folder_structure.py
+python scripts/validate_folder_structure.py --fix
+python scripts/validate_folder_structure.py --report
+```
+
+**What It Checks:**
+- Root file limits and allowed extensions
+- Required top-level folders
+- Naming and folder structure rules
+
+**Related:** [check_root_file_count.sh](#29-check_root_file_countsh)
+
+---
+
+### 31. `archive_old_files.sh`
+
+**Purpose:** Archive old files from `docs/_active/` into `docs/_archive/`.
+
+**When to Use:**
+- ✅ Monthly maintenance
+- ✅ Before repo cleanups
+- ✅ When `docs/_active/` grows too large
+
+**Usage:**
+```bash
+./scripts/archive_old_files.sh
+./scripts/archive_old_files.sh --dry-run
+```
+
+**What It Does:**
+- Moves files older than the retention window into the archive
+- Supports dry-run for previewing changes
+
+---
+
+### 32. `archive_old_sessions.sh`
+
+**Purpose:** Archive old session-related docs on a schedule.
+
+**When to Use:**
+- ✅ Weekly maintenance
+- ✅ After long multi-agent sessions
+- ✅ When session docs exceed the target age
+
+**Usage:**
+```bash
+./scripts/archive_old_sessions.sh
+DRY_RUN=1 ./scripts/archive_old_sessions.sh
+```
+
+**What It Does:**
+- Moves older completion/handoff/session docs into `docs/_archive/`
+- Uses age thresholds per document type
+
+---
+
 ## Release Management
 
-### 21. `release.py`
+### 33. `release.py`
 
 **Purpose:** One-command release helper for version bumping and release prep.
 
@@ -759,11 +983,11 @@ next-session-brief.md: 142 lines ✅ (target <150)
 7. Creates annotated git tag
 8. Instructions for pushing tag
 
-**Related:** [bump_version.py](#22-bump_versionpy), [verify_release.py](#23-verify_releasepy)
+**Related:** [bump_version.py](#34-bump_versionpy), [verify_release.py](#35-verify_releasepy)
 
 ---
 
-### 22. `bump_version.py`
+### 34. `bump_version.py`
 
 **Purpose:** Bump version number across all files (Python, VBA, docs).
 
@@ -783,11 +1007,11 @@ next-session-brief.md: 142 lines ✅ (target <150)
 - `docs/planning/next-session-brief.md`
 - Other version references
 
-**Related:** [release.py](#21-releasepy), [check_doc_versions.py](#16-check_doc_versionspy)
+**Related:** [release.py](#33-releasepy), [check_doc_versions.py](#23-check_doc_versionspy)
 
 ---
 
-### 23. `verify_release.py`
+### 35. `verify_release.py`
 
 **Purpose:** Validate release after publishing (local wheel or PyPI).
 
@@ -815,11 +1039,11 @@ next-session-brief.md: 142 lines ✅ (target <150)
 
 **Important:** Always use a **clean venv** for verification (not project venv).
 
-**Related:** [release.py](#21-releasepy)
+**Related:** [release.py](#33-releasepy)
 
 ---
 
-### 24. `check_release_docs.py`
+### 36. `check_release_docs.py`
 
 **Purpose:** Validate release documentation consistency.
 
@@ -839,13 +1063,13 @@ next-session-brief.md: 142 lines ✅ (target <150)
 - Version numbers consistent
 - Release notes complete
 
-**Related:** [release.py](#21-releasepy), [check_pre_release_checklist.py](#27-check_pre_release_checklistpy)
+**Related:** [release.py](#33-releasepy), [check_pre_release_checklist.py](#39-check_pre_release_checklistpy)
 
 ---
 
 ## Testing & Quality
 
-### 25. `ci_local.sh`
+### 37. `ci_local.sh`
 
 **Purpose:** Run full CI suite locally before pushing.
 
@@ -872,11 +1096,11 @@ next-session-brief.md: 142 lines ✅ (target <150)
 
 **Note:** Uses project venv (`.venv`), installs latest wheel from `Python/dist/`.
 
-**Related:** [quick_check.sh](#26-quick_checksh)
+**Related:** [quick_check.sh](#38-quick_checksh)
 
 ---
 
-### 26. `quick_check.sh`
+### 38. `quick_check.sh`
 
 **Purpose:** Fast pre-commit checks (subset of CI).
 
@@ -905,11 +1129,11 @@ next-session-brief.md: 142 lines ✅ (target <150)
 - **docs:** Link checks, version drift (20 seconds)
 - **coverage:** Pytest with coverage (60 seconds)
 
-**Related:** [ci_local.sh](#25-ci_localsh)
+**Related:** [ci_local.sh](#37-ci_localsh)
 
 ---
 
-### 27. `check_pre_release_checklist.py`
+### 39. `check_pre_release_checklist.py`
 
 **Purpose:** Validate pre-release checklist completeness.
 
@@ -945,11 +1169,11 @@ Pre-Release Checklist:
 ✅ Ready for release!
 ```
 
-**Related:** [release.py](#21-releasepy)
+**Related:** [release.py](#33-releasepy)
 
 ---
 
-### 28. `check_tasks_format.py`
+### 40. `check_tasks_format.py`
 
 **Purpose:** Validate TASKS.md structure and format.
 
@@ -970,11 +1194,11 @@ Pre-Release Checklist:
 - No duplicate IDs
 - Proper sections (Active, Up Next, Backlog, Done)
 
-**Related:** [check_session_docs.py](#29-check_session_docspy)
+**Related:** [check_session_docs.py](#41-check_session_docspy)
 
 ---
 
-### 29. `check_session_docs.py`
+### 41. `check_session_docs.py`
 
 **Purpose:** Validate session document consistency (TASKS, SESSION_LOG, next-session-brief).
 
@@ -994,11 +1218,11 @@ Pre-Release Checklist:
 - TASKS.md reflects current state
 - No conflicting task statuses
 
-**Related:** [end_session.py](#2-end_sessionpy), [check_handoff_ready.py](#30-check_handoff_readypy)
+**Related:** [end_session.py](#2-end_sessionpy), [check_handoff_ready.py](#42-check_handoff_readypy)
 
 ---
 
-### 30. `check_handoff_ready.py`
+### 42. `check_handoff_ready.py`
 
 **Purpose:** Comprehensive handoff readiness validation.
 
@@ -1025,9 +1249,71 @@ Pre-Release Checklist:
 
 ---
 
+### 43. `test_agent_automation.sh`
+
+**Purpose:** Integration test for agent automation workflows.
+
+**When to Use:**
+- ✅ After changing agent workflow scripts
+- ✅ Before major automation refactors
+- ✅ CI verification for agent tooling
+
+**Usage:**
+```bash
+./scripts/test_agent_automation.sh
+```
+
+**What It Tests:**
+- Session start/end workflows
+- Handoff updates
+- Automation script compatibility
+
+---
+
+### 44. `create_test_scaffold.py`
+
+**Purpose:** Generate structured pytest scaffolds for new modules/pages.
+
+**When to Use:**
+- ✅ When adding new modules/classes
+- ✅ To standardize new test files quickly
+- ✅ During refactors that need coverage
+
+**Usage:**
+```bash
+python scripts/create_test_scaffold.py ClassName module.path
+python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page
+```
+
+**What It Does:**
+- Generates class/test template with fixtures
+- Adds edge-case and error placeholders
+- Adds coverage checklist sections
+
+---
+
+### 45. `watch_tests.sh`
+
+**Purpose:** Auto-run tests on file changes (watch mode).
+
+**When to Use:**
+- ✅ During rapid development
+- ✅ When iterating on tests
+- ✅ For instant feedback loops
+
+**Usage:**
+```bash
+./scripts/watch_tests.sh
+./scripts/watch_tests.sh streamlit_app tests/
+```
+
+**Requirements:** `fswatch` installed (macOS: `brew install fswatch`).
+
+---
+
 ## Code Quality
 
-### 31. `audit_error_handling.py`
+### 46. `audit_error_handling.py`
 
 **Purpose:** Audit codebase for error handling compliance by layer.
 
@@ -1062,7 +1348,7 @@ Error Handling Audit:
 
 ---
 
-### 32. `lint_vba.py`
+### 47. `lint_vba.py`
 
 **Purpose:** VBA code linting and style checks.
 
@@ -1090,7 +1376,7 @@ Error Handling Audit:
 
 ---
 
-### 33. `update_test_stats.py`
+### 48. `update_test_stats.py`
 
 **Purpose:** Update test statistics JSON file for tracking.
 
@@ -1121,11 +1407,11 @@ Error Handling Audit:
 }
 ```
 
-**Related:** [ci_local.sh](#25-ci_localsh)
+**Related:** [ci_local.sh](#37-ci_localsh)
 
 ---
 
-### 34. `add_license_headers.py`
+### 49. `add_license_headers.py`
 
 **Purpose:** Add standardized SPDX license headers to Python and VBA source files.
 
@@ -1193,7 +1479,7 @@ Summary:
 
 ---
 
-### 35. `check_not_main.sh`
+### 50. `check_not_main.sh`
 
 **Purpose:** Prevent accidental commits to main branch (when using PR workflow).
 
@@ -1213,13 +1499,265 @@ Summary:
 
 **Note:** Not used when direct commits to main are allowed (docs/tests/scripts).
 
-**Related:** [should_use_pr.sh](#5-should_use_prsh)
+**Related:** [should_use_pr.sh](#8-should_use_prsh)
+
+---
+
+## Streamlit QA
+
+### 51. `check_streamlit_issues.py`
+
+**Purpose:** Scan Streamlit pages for common AST-level issues.
+
+**When to Use:**
+- ✅ Before committing Streamlit changes
+- ✅ As part of Streamlit QA checks
+- ✅ CI validation for page safety
+
+**Usage:**
+```bash
+python scripts/check_streamlit_issues.py --all-pages
+python scripts/check_streamlit_issues.py --page beam_design
+python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
+```
+
+**What It Checks:**
+- Undefined variables, unsafe dict access, division-by-zero risks
+- Import errors and API signature mismatches
+- Streamlit session state patterns
+
+**Related:** [validate_streamlit_page.py](#52-validate_streamlit_pagepy)
+
+---
+
+### 52. `validate_streamlit_page.py`
+
+**Purpose:** Validate a single Streamlit page without launching the UI.
+
+**When to Use:**
+- ✅ Quick validation of a specific page
+- ✅ Debugging page failures
+- ✅ Pre-commit or CI checks
+
+**Usage:**
+```bash
+python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py
+```
+
+**Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
+
+---
+
+### 53. `pylint_streamlit.sh`
+
+**Purpose:** Run pylint with Streamlit-focused configuration.
+
+**When to Use:**
+- ✅ Linting Streamlit pages
+- ✅ Catching static issues before runtime
+- ✅ Comparing lint output during refactors
+
+**Usage:**
+```bash
+./scripts/pylint_streamlit.sh --all-pages
+./scripts/pylint_streamlit.sh --page beam_design
+./scripts/pylint_streamlit.sh --compare
+```
+
+**Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
+
+---
+
+### 54. `test_page.sh`
+
+**Purpose:** Run a focused test pass for a single Streamlit page.
+
+**When to Use:**
+- ✅ Fast iteration on a page
+- ✅ Pre-commit checks for a specific page
+- ✅ Debugging page regressions
+
+**Usage:**
+```bash
+./scripts/test_page.sh beam_design
+```
+
+**What It Runs:**
+- Streamlit AST scan
+- Imports and lightweight checks
+- Page-specific tests (if present)
+
+---
+
+### 55. `auto_fix_page.py`
+
+**Purpose:** Auto-fix common Streamlit page issues in-place.
+
+**When to Use:**
+- ✅ After running page validation
+- ✅ For common, repetitive fixes
+- ✅ Before manual cleanup
+
+**Usage:**
+```bash
+python scripts/auto_fix_page.py streamlit_app/pages/01_beam_design.py
+```
+
+**What It Fixes:**
+- Import path issues
+- Theme conflicts
+- Missing dependencies
+- Syntax errors
+
+---
+
+### 56. `check_cost_optimizer_issues.py`
+
+**Purpose:** Detect common cost-optimizer issues (AST-based).
+
+**When to Use:**
+- ✅ Before committing cost-optimizer changes
+- ✅ As part of Streamlit QA
+- ✅ Pre-commit hooks
+
+**Usage:**
+```bash
+python scripts/check_cost_optimizer_issues.py streamlit_app/pages/cost_optimizer.py
+```
+
+**What It Checks:**
+- Unsafe dict access
+- Division without zero checks
+- Missing type hints and validation
+
+---
+
+## Governance & Monitoring
+
+### 57. `collect_metrics.sh`
+
+**Purpose:** Collect governance metrics into `metrics/metrics_YYYY-MM-DD.json`.
+
+**When to Use:**
+- ✅ Weekly governance sessions
+- ✅ Monthly reporting
+- ✅ Before generating dashboards
+
+**Usage:**
+```bash
+./scripts/collect_metrics.sh
+```
+
+**Related:** [generate_dashboard.sh](#58-generate_dashboardsh)
+
+---
+
+### 58. `generate_dashboard.sh`
+
+**Purpose:** Generate a metrics dashboard for governance reporting.
+
+**When to Use:**
+- ✅ After collecting metrics
+- ✅ Monthly review cycles
+- ✅ Governance reporting
+
+**Usage:**
+```bash
+./scripts/generate_dashboard.sh
+```
+
+**Output:** `agents/agent-9/governance/METRICS_DASHBOARD.md`
+
+**Related:** [collect_metrics.sh](#57-collect_metricssh)
+
+---
+
+### 59. `repo_health_check.sh`
+
+**Purpose:** Report repository size, file counts, and large file inventory.
+
+**When to Use:**
+- ✅ Monthly repo health check
+- ✅ Before large migrations
+- ✅ Troubleshooting repo bloat
+
+**Usage:**
+```bash
+./scripts/repo_health_check.sh
+```
+
+---
+
+### 60. `governance_session.sh`
+
+**Purpose:** Run weekly governance sessions and track governance ratio.
+
+**When to Use:**
+- ✅ Every 4th session (80/20 rule)
+- ✅ Governance retrospectives
+- ✅ Before major migrations
+
+**Usage:**
+```bash
+./scripts/governance_session.sh
+```
+
+**Related:** [collect_metrics.sh](#57-collect_metricssh)
+
+---
+
+### 61. `comprehensive_validator.py`
+
+**Purpose:** Deep Streamlit page validator with multi-stage analysis.
+
+**When to Use:**
+- ✅ Before shipping Streamlit changes
+- ✅ When diagnosing complex page failures
+- ✅ As part of validation pipelines
+
+**Usage:**
+```bash
+python scripts/comprehensive_validator.py streamlit_app/pages/01_beam_design.py
+```
+
+---
+
+### 62. `ci_monitor_daemon.sh`
+
+**Purpose:** Background CI monitor for auto-merge workflow.
+
+**When to Use:**
+- ✅ When monitoring CI on PRs
+- ✅ During agent 8 optimization workflows
+- ✅ Long-running PR validation
+
+**Usage:**
+```bash
+./scripts/ci_monitor_daemon.sh
+```
+
+---
+
+### 63. `risk_cache.sh`
+
+**Purpose:** Cache risk scores for faster PR decision checks.
+
+**When to Use:**
+- ✅ When optimizing should_use_pr.sh performance
+- ✅ In automation scripts that compute risk scores
+
+**Usage:**
+```bash
+source scripts/risk_cache.sh
+```
+
+**Related:** [should_use_pr.sh](#8-should_use_prsh)
 
 ---
 
 ## Specialized
 
-### 35. `dxf_render.py`
+### 64. `dxf_render.py`
 
 **Purpose:** Render DXF files to PNG/PDF for visual verification.
 
@@ -1248,7 +1786,7 @@ pip install ezdxf matplotlib reportlab
 
 ---
 
-### 36. `external_cli_test.py`
+### 65. `external_cli_test.py`
 
 **Purpose:** Test CLI from external user perspective (S-007 task).
 
@@ -1279,7 +1817,30 @@ python scripts/external_cli_test.py
 
 ---
 
-### 37. `ai_commit.sh`
+### 66. `autonomous_fixer.py`
+
+**Purpose:** Auto-fix common Streamlit page issues detected by validators.
+
+**When to Use:**
+- ✅ After running comprehensive_validator.py
+- ✅ For bulk cleanup of Streamlit pages
+- ✅ During QA automation
+
+**Usage:**
+```bash
+python scripts/autonomous_fixer.py streamlit_app/pages/01_beam_design.py
+python scripts/autonomous_fixer.py streamlit_app/pages --dry-run
+```
+
+**Options:**
+- `--dry-run` to report fixes without applying
+- `--pattern` to select file patterns
+
+**Related:** [comprehensive_validator.py](#61-comprehensive_validatorpy)
+
+---
+
+### 67. `ai_commit.sh`
 
 **Purpose:** Primary entrypoint for safe commits (stages, enforces PR rules, calls safe_push.sh).
 
@@ -1299,37 +1860,37 @@ python scripts/external_cli_test.py
 3. Blocks if PR is required on main; warns if on a feature branch
 4. Delegates to safe_push.sh
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory), [should_use_pr.sh](#5-should_use_prsh)
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory), [should_use_pr.sh](#8-should_use_prsh)
 
 ---
 
-### 38. `quick_push.sh`
+### 68. `quick_push.sh`
 
 **Purpose:** Deprecated legacy script.
 
-**Status:** ⚠️ BLOCKED — Use [ai_commit.sh](#37-ai_commitsh) or [safe_push.sh](#4-safe_pushsh-mandatory).
+**Status:** ⚠️ BLOCKED — Use [ai_commit.sh](#67-ai_commitsh) or [safe_push.sh](#7-safe_pushsh-mandatory).
 
 **Why Deprecated:** Skipped safety checks that caused conflicts.
 
 **Migration:** Replace all `quick_push.sh` calls with `ai_commit.sh`.
 
-**Related:** [ai_commit.sh](#37-ai_commitsh), [safe_push.sh](#4-safe_pushsh-mandatory)
+**Related:** [ai_commit.sh](#67-ai_commitsh), [safe_push.sh](#7-safe_pushsh-mandatory)
 
 ---
 
-### 39. `safe_push_v2.sh`
+### 69. `safe_push_v2.sh`
 
 **Purpose:** Experimental version of safe_push.sh (NOT USED).
 
 **Status:** ⚠️ Experimental — Not in production use.
 
-**Note:** Testing ground for new workflow features. Use [safe_push.sh](#4-safe_pushsh-mandatory) in production.
+**Note:** Testing ground for new workflow features. Use [safe_push.sh](#7-safe_pushsh-mandatory) in production.
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory)
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory)
 
 ---
 
-### 40. `pre_commit_check.sh`
+### 70. `pre_commit_check.sh`
 
 **Purpose:** Manual pre-commit validation (for debugging hooks).
 
@@ -1353,7 +1914,7 @@ python scripts/external_cli_test.py
 
 ---
 
-### 41. `pre-push-hook.sh`
+### 71. `pre-push-hook.sh`
 
 **Purpose:** Git pre-push hook (installed in `.git/hooks/`).
 
@@ -1374,7 +1935,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 **Note:** Part of git hooks infrastructure.
 
-**Related:** [safe_push.sh](#4-safe_pushsh-mandatory)
+**Related:** [safe_push.sh](#7-safe_pushsh-mandatory)
 
 ---
 
@@ -1386,10 +1947,10 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 3. ✅ Review [next-session-brief.md](../planning/next-session-brief.md)
 
 ### During Development
-1. ✅ Use [ai_commit.sh](#37-ai_commitsh) for ALL commits
-2. ✅ Check [should_use_pr.sh](#5-should_use_prsh) if unsure about PR
-3. ✅ Run [quick_check.sh](#26-quick_checksh) before commits
-4. ✅ Use [ci_local.sh](#25-ci_localsh) before major changes
+1. ✅ Use [ai_commit.sh](#67-ai_commitsh) for ALL commits
+2. ✅ Check [should_use_pr.sh](#8-should_use_prsh) if unsure about PR
+3. ✅ Run [quick_check.sh](#38-quick_checksh) before commits
+4. ✅ Use [ci_local.sh](#37-ci_localsh) before major changes
 
 ### Before Ending Session
 1. ✅ Run [end_session.py](#2-end_sessionpy) --fix
@@ -1398,10 +1959,10 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 4. ✅ Commit all doc changes
 
 ### Before Release
-1. ✅ Run [ci_local.sh](#25-ci_localsh)
-2. ✅ Run [check_pre_release_checklist.py](#27-check_pre_release_checklistpy)
-3. ✅ Use [release.py](#21-releasepy) for version bump
-4. ✅ Verify with [verify_release.py](#23-verify_releasepy)
+1. ✅ Run [ci_local.sh](#37-ci_localsh)
+2. ✅ Run [check_pre_release_checklist.py](#39-check_pre_release_checklistpy)
+3. ✅ Use [release.py](#33-releasepy) for version bump
+4. ✅ Verify with [verify_release.py](#35-verify_releasepy)
 
 ---
 
@@ -1420,19 +1981,19 @@ chmod +x scripts/*.sh
 ```
 
 ### Git Workflow Issues
-- Always use [ai_commit.sh](#37-ai_commitsh) — never manual git
-- Run [check_unfinished_merge.sh](#11-check_unfinished_mergesh) if git seems stuck
-- Use [recover_git_state.sh](#12-recover_git_statesh) for exact recovery steps
-- Use [validate_git_state.sh](#13-validate_git_statesh) to diagnose
+- Always use [ai_commit.sh](#67-ai_commitsh) — never manual git
+- Run [check_unfinished_merge.sh](#17-check_unfinished_mergesh) if git seems stuck
+- Use [recover_git_state.sh](#18-recover_git_statesh) for exact recovery steps
+- Use [validate_git_state.sh](#19-validate_git_statesh) to diagnose
 
 ### Pre-commit Hook Issues
-- Run [pre_commit_check.sh](#40-pre_commit_checksh) manually to debug
+- Run [pre_commit_check.sh](#70-pre_commit_checksh) manually to debug
 - Check `.pre-commit-config.yaml` is up to date
 - Re-install hooks: `pre-commit install`
 
 ### CI Failures
-- Run [ci_local.sh](#25-ci_localsh) to reproduce locally
-- Check [quick_check.sh](#26-quick_checksh) for specific failures
+- Run [ci_local.sh](#37-ci_localsh) to reproduce locally
+- Check [quick_check.sh](#38-quick_checksh) for specific failures
 - Review CI logs on GitHub
 
 ---
@@ -1447,6 +2008,6 @@ chmod +x scripts/*.sh
 
 ---
 
-**Last Updated:** 2026-01-06
+**Last Updated:** 2026-01-10
 **Maintained By:** Project automation
 **Questions?** See [troubleshooting.md](../troubleshooting.md) or [SUPPORT.md](../../SUPPORT.md)

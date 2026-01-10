@@ -729,6 +729,109 @@ git commit --amend --no-edit  # Hooks run again
 
 ---
 
+## Git Pager Prevention (CRITICAL for Agent Operations)
+
+**Problem:** Git's pager (`less`) causes terminal lockup for automated agents.
+
+### Why This is Critical
+
+When agents run git commands, Git may open output in a pager (usually `less`), which:
+1. Enters "alternate buffer" mode in the terminal
+2. Waits for keyboard input (`q` to quit)
+3. **Blocks ALL subsequent commands** until manually quit
+4. Agent cannot send keystrokes → terminal completely stuck
+
+**High-risk commands:**
+```bash
+git status      # If output > 24 lines
+git log         # Almost always pages
+git diff        # Pages on file changes
+git branch -a   # Pages if many branches
+git show        # Always pages
+```
+
+### Prevention (Run at Session Start)
+
+**REQUIRED for all agent sessions:**
+
+```bash
+# Disable pager globally (one-time setup)
+git config --global core.pager cat
+git config --global pager.status false
+git config --global pager.branch false
+git config --global pager.diff false
+
+# Verify
+git config core.pager  # Should show: cat
+```
+
+**Or use per-command flags:**
+
+```bash
+# ✅ Safe git commands for agents
+git --no-pager status
+git --no-pager log --oneline -n 20
+git --no-pager diff --stat
+git status --short           # Short format rarely pages
+git status --porcelain       # Machine-readable, no pager
+git log --oneline           # Condensed format
+git diff --name-only        # Files only
+```
+
+### Agent 8 Enforcement Pattern
+
+```bash
+# At every session start (Pre-Flight Checklist):
+check_git_pager_disabled() {
+    local pager=$(git config core.pager)
+    if [ "$pager" != "cat" ]; then
+        echo "⚠️  Git pager not disabled - fixing..."
+        git config --global core.pager cat
+        git config --global pager.status false
+        git config --global pager.branch false
+        git config --global pager.diff false
+        echo "✅ Git pager disabled"
+    fi
+}
+
+# Run before ANY git operations
+check_git_pager_disabled
+```
+
+### Recovery if Terminal Stuck
+
+If an agent gets stuck in pager mode:
+
+1. **Manual intervention required** - user must press `q` in terminal
+2. Or press `Ctrl+C` to force quit
+3. Or close terminal tab and restart
+4. Then run pager prevention setup above
+
+### Related Commands to Avoid
+
+**Never use without --no-pager flag:**
+- `git log` (always pages)
+- `git diff` (almost always pages)
+- `git show` (always pages)
+- `git blame [large-file]` (pages on large files)
+- `git config --list` (pages if many configs)
+
+**Safe alternatives:**
+```bash
+# Instead of: git log
+git log --oneline -n 20    # Limit output
+git --no-pager log         # Force no pager
+
+# Instead of: git diff
+git diff --stat            # Summary only
+git diff --name-only       # Files only
+git --no-pager diff        # Force no pager
+```
+
+**Ref:** See `docs/planning/agent-8-mistakes-prevention-guide.md` → "Terminal Stuck in Git Pager" section for full details.
+
+---
+
 ## CI/CD Integration
 
 ### Fast Checks (PR only - 20-30 seconds)
@@ -1047,7 +1150,7 @@ alert-main "Pre-commit hooks issue:
 
 **Protected Files:**
 - `docs/TASKS.md` (MAIN agent owns)
-- `docs/SESSION_log.md` (MAIN agent owns)
+- `docs/SESSION_LOG.md` (MAIN agent owns)
 - `docs/planning/next-session-brief.md` (MAIN agent owns)
 
 **Protected Branches:**
@@ -1147,6 +1250,7 @@ recover-git-state && alert-main
 - Update `docs/planning/next-session-brief.md` date, keep `Required Reading`, and keep the file <= 150 lines.
 - If adding a new doc, check whether the path already exists upstream before writing.
 - For non-interactive rebases, set `GIT_EDITOR=:` to avoid editor stalls.
+- **CRITICAL: Disable git pager to prevent terminal lockup** (see Git Pager Prevention below)
 
 ### Background Agent → GIT Agent (Summary)
 

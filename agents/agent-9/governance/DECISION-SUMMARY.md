@@ -21,7 +21,7 @@ I've completed comprehensive review of:
 ```
 Working Tree Status:
   ✅ CLEAN (only new governance docs untracked)
-  - 8 untracked files in docs/governance/ (created today)
+  - 8 untracked files in agents/agent-9/governance/ (created today)
   - No modified files blocking migration
 
 Open PRs:
@@ -265,7 +265,7 @@ Example: `v0.16-task-specs.md`
 Act as Agent 9 (GOVERNANCE). This is your first governance session.
 Execute Weekly Maintenance workflow from agents/agent-9/WORKFLOWS.md.
 Create baseline metrics and implement 4 missing automation scripts.
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 1)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 1)
 ```
 
 **Expected Output:**
@@ -279,7 +279,7 @@ Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 1)
 ```
 Act as Agent 9 (GOVERNANCE). Execute Phase 2 Critical Structure Migration.
 Move 12 agent files to agents/roles/, 10 docs to proper subdirectories.
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 2)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 2)
 ```
 
 **Expected Output:**
@@ -292,7 +292,7 @@ Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 2)
 ```
 Act as Agent 9 (GOVERNANCE). Execute Phase 3 Automated Archival.
 Run archive script, move dated files, clean up docs/planning/.
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 3)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 3)
 ```
 
 **Expected Output:**
@@ -305,7 +305,7 @@ Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 3)
 ```
 Act as Agent 9 (GOVERNANCE). Execute Phase 4 Day N/10.
 Rename 5-10 files to kebab-case, update links.
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 4)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 4)
 ```
 
 **Expected Output:**
@@ -317,7 +317,7 @@ Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.2, Phase 4)
 ```
 Act as Agent 9 (GOVERNANCE). Validate migration completion.
 Run validation, generate final report, update metrics.
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.3)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.3)
 ```
 
 **Expected Output:**

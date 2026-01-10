@@ -394,7 +394,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **Documentation Polish:**
   - TASKS.md refactored (209→103 lines) — cleaner sections, current status
-  - SESSION_log.md archived and cleaned (641→135 lines)
+  - SESSION_LOG.md archived and cleaned (641→135 lines)
   - ai-context-pack.md reformatted with tables and clear sections
 - **CLI Warning for Global Crack-Width Params:**
   - Emits warning when `--crack-width-params` is used with multiple beams

@@ -26,7 +26,7 @@ TEST_COUNT_PATTERNS = {
     "docs/TASKS.md": [
         (r"(\*\*Tests\*\*:\s*)\d+ passed, \d+ skipped", r"\g<1>{passed} passed, {skipped} skipped"),
     ],
-    "docs/SESSION_log.md": [
+    "docs/SESSION_LOG.md": [
         # Only update the most recent entry pattern
         (r"(\*\*Test Count:\*\*\s*)\d+ tests", r"\g<1>{total} tests"),
     ],

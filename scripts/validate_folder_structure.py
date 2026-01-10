@@ -2,7 +2,7 @@
 """Validate folder structure against governance rules.
 
 This script checks if the project folder structure follows the rules defined in:
-docs/governance/FOLDER_STRUCTURE_GOVERNANCE.md
+agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md
 
 Usage:
     python scripts/validate_folder_structure.py
@@ -60,7 +60,7 @@ RULES = {
             "docs/reference",
             "docs/contributing",
             "docs/architecture",
-            "docs/governance",
+            "agents/agent-9/governance",
             "docs/agents",
         ],
         "must_have_readme": True,

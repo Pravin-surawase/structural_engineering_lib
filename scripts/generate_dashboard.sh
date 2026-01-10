@@ -10,7 +10,7 @@ cd "$PROJECT_ROOT"
 
 # Configuration
 METRICS_DIR="metrics"
-DASHBOARD_OUTPUT="docs/governance/METRICS_DASHBOARD.md"
+DASHBOARD_OUTPUT="agents/agent-9/governance/METRICS_DASHBOARD.md"
 
 # Colors
 GREEN='\033[0;32m'

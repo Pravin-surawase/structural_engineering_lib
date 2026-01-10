@@ -209,21 +209,22 @@ tests/                     📂 Cross-cutting tests (if needed)
 **RULE 5.3:** NO MixedCase in file or folder names (except Python class names in code)
 **RULE 5.4:** NO spaces in file or folder names (use hyphens)
 **RULE 5.5:** NO dates in file names UNLESS in archive folders
+**RULE 5.6:** Streamlit pages in `streamlit_app/pages/` may use numeric prefixes and emoji (for page order and branding)
 
 ### Dated File Naming Rules
 
-**RULE 5.6:** Active dated files MUST follow format: `description-YYYY-MM-DD.md`
+**RULE 5.7:** Active dated files MUST follow format: `description-YYYY-MM-DD.md`
 - ✅ `hygiene-audit-2026-01-07.md`
 - ✅ `needs-assessment-2026-01-09.md`
 - ❌ `2026-01-07-hygiene.md` (date-first is hard to search)
 - ❌ `hygiene_2026_01_07.md` (underscores in docs)
 
-**RULE 5.7:** Dated files MUST live in:
+**RULE 5.8:** Dated files MUST live in:
 - `docs/_active/YYYY-MM/` (work-in-progress, auto-archive after 90 days)
 - `docs/_archive/YYYY-MM/` (historical reference, permanent)
 - NEVER in category folders (docs/planning/, docs/architecture/, etc.)
 
-**RULE 5.8:** Session logs use format: `session-YYYY-MM-DD.md` or `SESSION_LOG.md` (rolling)
+**RULE 5.9:** Session logs use format: `session-YYYY-MM-DD.md` or `SESSION_LOG.md` (rolling)
 
 ---
 
@@ -271,7 +272,7 @@ tests/                     📂 Cross-cutting tests (if needed)
 - Implementation tasks (use TASKS.md)
 - Session notes (use docs/agents/sessions/)
 
-### docs/governance/
+### agents/agent-9/governance/
 **Purpose:** Process, policy, workflow rules
 **File Limit:** 10 files max
 **Retention:** Permanent
@@ -616,7 +617,7 @@ echo "✅ Migration complete. Please review and test!"
 | **User getting-started guide** | `docs/getting-started/` | `installation.md` |
 | **API documentation** | `docs/reference/` | `api-reference.md` |
 | **Architectural decision** | `docs/architecture/` | `adr-001-use-pydantic.md` |
-| **Git workflow rules** | `docs/governance/` | `git-workflow.md` |
+| **Git workflow rules** | `agents/agent-9/governance/` | `git-workflow.md` |
 | **Agent role definition** | `agents/roles/` | `dev.md` |
 | **Agent guide** | `agents/guides/` | `workflow-master-guide.md` |
 | **Session handoff** | `docs/agents/sessions/YYYY-MM/` | `session-2026-01-10.md` |

@@ -275,7 +275,7 @@ docs/_internal/copilot-tasks/ (14 files):
 ```
 
 **Proposed Standard:**
-- **Keep UPPERCASE:** `README.md`, `LICENSE`, `CHANGELOG.md`, `TASKS.md`, `SESSION_log.md` (important, high-visibility files)
+- **Keep UPPERCASE:** `README.md`, `LICENSE`, `CHANGELOG.md`, `TASKS.md`, `SESSION_LOG.md` (important, high-visibility files)
 - **Convert to kebab-case:** All other docs
 
 **Recommendations (Phase approach):**
@@ -865,7 +865,7 @@ cat .gitignore
 - **Standard:** kebab-case (e.g., `api-design-guide.md`)
 - **Exceptions:**
   - `README.md` (high visibility)
-  - `TASKS.md`, `SESSION_log.md` (important planning docs)
+  - `TASKS.md`, `SESSION_LOG.md` (important planning docs)
   - `LICENSE`, `CHANGELOG.md` (standard practice)
 
 ### Python Files

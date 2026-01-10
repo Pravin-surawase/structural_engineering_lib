@@ -89,7 +89,7 @@ agents/
          - API docs → docs/reference/
          - Dev docs → docs/contributing/
          - Design → docs/architecture/
-         - Process → docs/governance/
+         - Process → agents/agent-9/governance/
    NO → docs/_active/YYYY-MM/
 
 3. Is agent-related?
@@ -104,10 +104,10 @@ agents/
 
 ```bash
 # 1. Read the governance doc
-open docs/governance/FOLDER_STRUCTURE_GOVERNANCE.md
+open agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md
 
 # 2. Review migration plan
-open docs/governance/FOLDER_MIGRATION_PLAN.md
+open agents/agent-9/governance/FOLDER_MIGRATION_PLAN.md
 
 # 3. Execute Phase 1 (create structure)
 mkdir -p docs/{getting-started,reference,contributing,architecture,governance}
@@ -179,7 +179,7 @@ Add to `.pre-commit-config.yaml`:
 
 ## 📚 Files Created
 
-All files are in `docs/governance/`:
+All files are in `agents/agent-9/governance/`:
 
 - ✅ `FOLDER_STRUCTURE_GOVERNANCE.md` (5,000+ words)
 - ✅ `FOLDER_MIGRATION_PLAN.md` (4,000+ words)

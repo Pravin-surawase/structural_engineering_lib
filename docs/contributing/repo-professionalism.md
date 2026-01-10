@@ -172,7 +172,7 @@ If any check modifies files, re-stage and re-commit.
 1) Run `scripts/start_session.py`.
 2) Pick one TASK and finish it.
 3) Run the relevant checks (docs or code).
-4) Update `docs/SESSION_log.md` and `docs/TASKS.md`.
+4) Update `docs/SESSION_LOG.md` and `docs/TASKS.md`.
 5) Run `scripts/update_handoff.py` (or `scripts/end_session.py --fix`).
 6) Stop.
 

@@ -1177,7 +1177,7 @@ After merging PR #55, additional review identified three bugs in the beam_pipeli
 - `Python/tests/test_beam_pipeline.py`
 - `Python/tests/test_cli.py`
 - `docs/TASKS.md`
-- `docs/SESSION_log.md`
+- `docs/SESSION_LOG.md`
 
 ---
 

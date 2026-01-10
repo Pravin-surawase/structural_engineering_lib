@@ -74,7 +74,7 @@ Total Documentation: 193 markdown files
 6. `docs/architecture/project-overview.md` - Architecture + philosophy
 7. `docs/reference/known-pitfalls.md` - Common traps
 8. `docs/handoff.md` - Resume procedures
-9. `docs/SESSION_log.md` (862 lines) - Historical decisions
+9. `docs/SESSION_LOG.md` (862 lines) - Historical decisions
 
 **Tier 3 (Deep Dives):**
 10. `docs/contributing/` - Workflow guides
@@ -196,7 +196,7 @@ Total Documentation: 193 markdown files
 - **Size:** ~200 lines (target <150, within tolerance)
 - **Currency:** ✅ Updated 2026-01-06
 
-**`docs/SESSION_log.md`**
+**`docs/SESSION_LOG.md`**
 - **Purpose:** Append-only historical record
 - **Content:** 862 lines covering 50+ sessions
 - **Format:** Date → Focus → Summary → PRs → Deliverables → Next Actions
@@ -210,7 +210,7 @@ Total Documentation: 193 markdown files
 1. scripts/start_session.py              # 10 seconds
 2. Read handoff.md                       # 2 minutes
 3. Read next-session-brief.md            # 3 minutes
-4. Skim SESSION_log.md (recent entries)  # 2 minutes
+4. Skim SESSION_LOG.md (recent entries)  # 2 minutes
 5. Check TASKS.md                        # 1 minute
 ---
 Total: 8 minutes to full context

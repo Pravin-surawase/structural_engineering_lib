@@ -397,7 +397,7 @@ Moved 12 role definitions from agents/ root to agents/roles/:
 agents/ root now has only README.md (within limit of 1)
 
 Part of Phase 2 Critical Structure Migration
-Ref: docs/governance/MIGRATION_REVIEW_AND_RISKS.md"
+Ref: agents/agent-9/governance/MIGRATION_REVIEW_AND_RISKS.md"
 
 git push
 ```
@@ -444,7 +444,7 @@ Moved reference to docs/reference/:
 - api-reference.md, is456-quick-reference.md
 
 Part of Phase 2 Critical Structure Migration (10 files moved)
-Ref: docs/governance/MIGRATION_REVIEW_AND_RISKS.md"
+Ref: agents/agent-9/governance/MIGRATION_REVIEW_AND_RISKS.md"
 
 git push
 ```
@@ -941,7 +941,7 @@ Tasks:
 5. Validate errors reduced to ~93 (19% reduction)
 6. Commit and push with detailed commit messages
 
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Phase 2)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Phase 2)
 ```
 
 **Session 3 (30-60 min, week of 2026-01-13):**
@@ -955,7 +955,7 @@ Tasks:
 3. Move streamlit_app/docs/ dated files to archive
 4. Validate errors reduced to ~70 (39% reduction)
 
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Phase 3)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Phase 3)
 ```
 
 **Sessions 4-13 (5-10 files per session, 10-20 min each, spread over 10 days):**
@@ -969,7 +969,7 @@ Tasks:
 3. Commit and push
 4. Track progress: N/92 files renamed
 
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Phase 4)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Phase 4)
 ```
 
 **Final Session (1 hour, after Phase 4 complete):**
@@ -984,7 +984,7 @@ Tasks:
 4. Update GOVERNANCE-METRICS.md with after metrics
 5. Create migration completion report
 
-Ref: docs/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.3)
+Ref: agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md (Part 4.3)
 ```
 
 ---

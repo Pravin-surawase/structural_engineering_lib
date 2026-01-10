@@ -33,7 +33,7 @@
 - Getting-started → docs/getting-started/
 - Reference → docs/reference/
 - Architecture → docs/architecture/
-- Governance → docs/governance/
+- Governance → agents/agent-9/governance/
 - Dated files → docs/_active/2026-01/
 
 #### agents/ Root (13 files → 1 file)
@@ -59,7 +59,7 @@ mkdir -p docs/getting-started
 mkdir -p docs/reference
 mkdir -p docs/contributing
 mkdir -p docs/architecture/adr
-mkdir -p docs/governance
+mkdir -p agents/agent-9/governance
 mkdir -p docs/agents/sessions/2026-01
 mkdir -p docs/_active/2026-01
 mkdir -p docs/_archive/2025-12
@@ -72,7 +72,7 @@ touch docs/getting-started/README.md
 touch docs/reference/README.md
 touch docs/contributing/README.md
 touch docs/architecture/README.md
-touch docs/governance/README.md
+touch agents/agent-9/governance/README.md
 touch docs/agents/README.md
 touch docs/_active/README.md
 touch docs/_archive/README.md
@@ -268,8 +268,8 @@ mv docs/current-state-and-goals.md docs/architecture/current-state-and-goals.md
 
 **Governance:**
 ```bash
-mv docs/git-workflow-ai-agents.md docs/governance/git-workflow-ai-agents.md
-mv docs/ai-context-pack.md docs/governance/ai-context-pack.md
+mv docs/git-workflow-ai-agents.md agents/agent-9/governance/git-workflow-ai-agents.md
+mv docs/ai-context-pack.md agents/agent-9/governance/ai-context-pack.md
 # FOLDER_STRUCTURE_GOVERNANCE.md already in governance/
 ```
 
@@ -392,7 +392,7 @@ tree docs -L 2 -I "_*"
 # - Obsolete → Delete
 
 # Example:
-mv docs/_internal/agent-workflow.md docs/governance/agent-workflow-legacy.md
+mv docs/_internal/agent-workflow.md agents/agent-9/governance/agent-workflow-legacy.md
 mv docs/_internal/COST_OPTIMIZER_FIX_PLAN.md docs/_archive/2026-01/
 # ... review each file
 ```
@@ -566,7 +566,7 @@ bash scripts/archive_old_files.sh --dry-run
 
 #### Step 8.2: Create Migration Guide
 ```bash
-# Create: docs/governance/FOLDER_MIGRATION_GUIDE.md
+# Create: agents/agent-9/governance/FOLDER_MIGRATION_GUIDE.md
 # (For future agents who need to add files)
 ```
 
@@ -582,7 +582,7 @@ bash scripts/archive_old_files.sh --dry-run
 grep -r "FOLDER_STRUCTURE_GOVERNANCE" .github/ agents/
 
 # Migration guide complete
-ls -la docs/governance/FOLDER_MIGRATION_GUIDE.md
+ls -la agents/agent-9/governance/FOLDER_MIGRATION_GUIDE.md
 ```
 
 ---

@@ -240,7 +240,7 @@ def main():
         print("Release logs (manual):")
         print("  - CHANGELOG.md")
         print("  - docs/releases.md")
-        print("  - docs/SESSION_log.md")
+        print("  - docs/SESSION_LOG.md")
         return 0
 
     today = date.today().isoformat()

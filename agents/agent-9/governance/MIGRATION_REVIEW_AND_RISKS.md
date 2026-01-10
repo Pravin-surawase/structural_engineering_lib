@@ -94,7 +94,7 @@ Legacy folders: 4 (223 items total)
 **Mitigation Strategy:**
 1. **Update all agent docs FIRST**
    - agents/roles/*.md (reference new structure)
-   - docs/governance/FOLDER_STRUCTURE_GOVERNANCE.md (already done)
+   - agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md (already done)
 2. **Create migration guide for agents**
    - Old path → New path mapping
    - Quick reference card
