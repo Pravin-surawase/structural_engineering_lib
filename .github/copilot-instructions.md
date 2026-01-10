@@ -600,6 +600,54 @@ git push
 
 ---
 
+## ⚠️ File Operations (Move, Delete, Rename) — CRITICAL
+
+**NEVER manually delete, move, or rename files!** Use the safe automation scripts:
+
+```bash
+# ✅ CORRECT: Use safe scripts
+.venv/bin/python scripts/safe_file_move.py old.md new.md
+.venv/bin/python scripts/safe_file_delete.py obsolete.md
+
+# ❌ WRONG: Manual operations (breaks links!)
+rm docs/old.md
+mv docs/a.md docs/b.md
+git rm docs/file.md
+```
+
+### Why?
+- Manual operations break internal markdown links (we have 719+ links!)
+- Safe scripts automatically check references and update links
+- Safe scripts create backups and run validation
+
+### Workflow
+
+```bash
+# Step 1: ALWAYS dry-run first
+.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
+
+# Step 2: Execute if safe
+.venv/bin/python scripts/safe_file_move.py old.md new.md
+
+# Step 3: Verify links
+.venv/bin/python scripts/check_links.py
+
+# Step 4: Commit
+./scripts/ai_commit.sh "refactor: move old.md to new location"
+```
+
+### Available Scripts
+| Script | Purpose |
+|--------|---------|
+| `safe_file_move.py` | Move/rename with link updates |
+| `safe_file_delete.py` | Delete with reference check + backup |
+| `find_orphan_files.py` | Find unreferenced docs |
+| `check_folder_readmes.py` | Verify folder documentation |
+
+**Full guide:** `docs/guidelines/file-operations-safety-guide.md`
+
+---
+
 ## Common mistakes to AVOID
 
 | Mistake | Correct Approach |
