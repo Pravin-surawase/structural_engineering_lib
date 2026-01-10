@@ -38,16 +38,18 @@ SKIP_FILES = [
     "CHANGELOG.md",
     "releases.md",
     "SESSION_LOG.md",
-    "SESSION_LOG.md",
     "docs/_archive/",
     "docs/research/",  # Research docs reference external tool versions
     "docs/guidelines/",  # Guidelines contain example version numbers
     # Agent docs have independent versioning (document version, not project version)
-    "AGENT_WORKFLOW_MASTER_GUIDE.md",
-    "AGENT_QUICK_REFERENCE.md",
-    "AGENT_ONBOARDING.md",
-    "UI-IMPLEMENTATION-AGENT-GUIDE.md",
+    "agent-workflow-master-guide.md",
+    "agent-quick-reference.md",
+    "agent-onboarding.md",
+    "agent-automation-system.md",
+    "ui-implementation-agent-guide.md",
     "streamlit-phase-3-implementation-plan.md",
+    "docs/agents/",  # All agent docs have independent versioning
+    "docs/planning/",  # Planning docs may reference various versions
 ]
 
 
