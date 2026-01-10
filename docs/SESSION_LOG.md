@@ -23,13 +23,13 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - ✅ 0 validation warnings
 - ✅ 0 broken links (active docs)
 - ✅ 10 root files (target met)
-- ✅ 3 docs root files (exceeded target of ≤5)
+- ✅ 3 docs root files (within target of ≤5)
 - ✅ 290 markdown files validated
 - ✅ 701 internal links validated
 
 ### Commits This Session
 1. `182551c` - feat(agent-9): Complete Phase A6 Final Validation - 0 errors/warnings
-2. (pending) - chore: Clean up redirect stubs and orphaned test files
+2. `91af04e` - chore(agent-9): Clean up redirect stubs, move test files, add automation docs
 
 ### Cleanup Work ✅
 

@@ -18,6 +18,7 @@
    - `MIGRATION-EXECUTION-PLAN.md` (execution order + stop conditions)
    - `MIGRATION-WALKTHROUGH.md` (operator runbook)
    - `MIGRATION_REVIEW_AND_RISKS.md` (known risks + mitigations)
+   - `AGENT-9-GOVERNANCE-ROADMAP.md` (post-migration roadmap)
 
 3. **Phase-by-phase docs**
    - `PHASE-0-PREPARATION.md`

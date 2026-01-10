@@ -514,8 +514,8 @@ python scripts/check_links.py &  # Parallel with other checks
 
 ```bash
 $ python scripts/check_links.py
-🔍 Checked 296 markdown files
-   Found 707 internal links
+🔍 Checked 290 markdown files
+   Found 701 internal links
    Broken links: 0
 ✅ All internal links are valid!
 
@@ -642,9 +642,9 @@ $ python scripts/check_links.py
 - ✅ 0 validation warnings
 - ✅ 0 broken links (active docs)
 - ✅ 10 root files (target met)
-- ✅ 3 docs root files (exceeded target of ≤5)
-- ✅ 296 markdown files validated
-- ✅ 707 internal links validated
+- ✅ 3 docs root files (within target of ≤5)
+- ✅ 290 markdown files validated
+- ✅ 701 internal links validated
 - ✅ Pre-commit hooks prevent regressions
 - ✅ CI checks maintain quality
 
