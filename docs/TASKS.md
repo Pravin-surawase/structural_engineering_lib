@@ -65,22 +65,16 @@
 
 ## Active
 
-### Agent 9 Governance (Phase C: Semantic Navigation)
+### Agent 9 Governance (Phase C: Semantic Navigation) ✅ MOSTLY COMPLETE
 
 > **Research:** [Navigation Study](research/navigation_study/navigation-study-results.md) showed structural cleanup doesn't improve navigation (1.0x speedup).
-> **Insight:** Need semantic indexes with descriptions, not just file lists. Current indexes lack "information scent".
-> **Goal:** Add semantic intelligence to structure → achieve 20%+ context reduction for AI agents.
+> **Status:** ✅ 6/7 tasks complete (2026-01-10). Only TASK-305 (re-run nav study) remains.
+> **Results:** 277 files, 717 links, 0 broken. 13 stubs removed. Front-matter template + validation added.
+> **Completed:** TASK-300 (semantic README), TASK-301 (test files), TASK-302 (stubs), TASK-303 (front-matter), TASK-304 (duplicate), TASK-306 (automation)
 
-| ID | Task | Agent | Est | Priority | Status | Due |
-|----|------|-------|-----|----------|--------|-----|
-| **TASK-300** | Enhance key README.md indexes with descriptions + doc_type metadata | AGENT_9 | 2h | 🔴 P0-Critical | ⏳ In Progress | 2026-01-11 |
-| **TASK-301** | Move 3 orphan test files from root to tests/ + clean redirect stubs | AGENT_9 | 1h | 🔴 P0-Critical | ⏳ Queued | 2026-01-10 |
-
-**Success Criteria:**
-- Navigation speedup: 1.0x → >1.2x
-- Token reduction: -17% → +20% reduction
-- Task success rate: 57% → >70%
-- AI agent onboarding: 2-3h → <30min
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-305** | Re-run navigation study with semantic indexes | AGENT_9 | 1h | 🟡 P2-Medium | ⏳ Queued |
 
 ---
 
@@ -116,18 +110,6 @@
 *All Phase B tasks complete. See [PHASE-B-TASK-TRACKER.md](../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md) for details.*
 
 ---
-
-#### Agent 9 Governance (Phase C: Semantic Navigation - Queued Tasks)
-
-> **Goal:** Add semantic intelligence to structure for better AI agent navigation
-
-| ID | Task | Agent | Est | Priority | Status | Due |
-|----|------|-------|-----|----------|--------|-----|
-| **TASK-302** | Clean 10+ redirect stub files (files <10 lines with "Moved to" pattern) | AGENT_9 | 1h | 🟠 P1-High | ⏳ Queued | 2026-01-11 |
-| **TASK-303** | Add front-matter template to key docs (Owner, Status, Last Updated) | AGENT_9 | 2h | 🟠 P1-High | ⏳ Queued | 2026-01-12 |
-| **TASK-304** | Resolve 10+ duplicate doc names (identify canonical, archive duplicates) | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Queued | 2026-01-13 |
-| **TASK-305** | Re-run navigation study with semantic indexes (validate improvements) | AGENT_9 | 1h | 🟡 P2-Medium | ⏳ Blocked by 300 | 2026-01-14 |
-| **TASK-306** | Create automation: check_redirect_stubs.py + check_duplicate_docs.py | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Queued | 2026-01-14 |
 
 #### Critical Path (Must complete for v0.17.0)
 
