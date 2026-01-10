@@ -4,6 +4,43 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 8: Phase 2 Docs Consolidation 📚
+
+**Focus:** Continue folder cleanup, archive planning/publications orphans, fix broken links
+
+### Commits This Session (5 so far)
+1. `024ddff` - chore: archive 10 agent/session planning docs (batch 1)
+2. `f8ceda9` - chore: archive 12 completed task/version planning docs (batch 2)
+3. `30d85ed` - chore: archive 9 workflow/UI/API docs + fix 162 broken links (batch 3)
+4. `db7323d` - chore: archive 11 publications orphan docs (batch 4)
+5. `2b41c03` - chore: archive 6 specs/troubleshooting orphan docs (batch 5)
+
+### Phase 2 Progress ✅
+
+**Total Archived This Session: 48 files**
+- 10 agent/session planning docs (agent-2, agent-5, agent-7, agent-8, session issues)
+- 12 completed task docs (audits, v0.16/v0.17 specs, migrations)
+- 9 workflow/UI/API planning docs
+- 11 publications orphan docs (findings, research)
+- 6 specs/troubleshooting docs (etabs, excel-faq, pylint comparison)
+
+**Link Fixes:**
+- Fixed 162 broken links automatically with `fix_broken_links.py`
+- All links verified valid (672 total, 0 broken)
+
+### Documentation Created
+- `docs/research/session-8-automation-review.md` - Comprehensive automation audit & issues review
+
+### Metrics Update
+| Metric | Before Session 8 | After |
+|--------|------------------|-------|
+| Orphan files | 176 | 169 (in progress) |
+| Markdown files | 269 | 231 |
+| Internal links | 717 | 627 |
+| Broken links | 0 | 0 |
+
+---
+
 ## 2026-01-11 — Session 7: Folder Restructuring & Cleanup 🗂️
 
 **Focus:** Research folder structure, create cleanup automation, archive orphan files

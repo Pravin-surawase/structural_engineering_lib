@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 7: Folder Restructuring Phase 1 ✅)
+**Updated:** 2026-01-11 (Session 8: Phase 2 Docs Consolidation ✅)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
