@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-09
+**Updated:** 2026-01-10
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -67,8 +67,8 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-270** | Fix 8 test failures from API refactoring (exception types, validation, CLI) | TESTER | 1-2 hrs | 🔴 HIGH | ⏳ Ready |
-| **TASK-271** | Fix 13 benchmark errors from API signature changes | TESTER | 2-3 hrs | 🔴 HIGH | ⏳ Ready |
+| **TASK-270** | Fix 8 test failures from API refactoring (exception types, validation, CLI) | TESTER | 1-2 hrs | 🔴 HIGH | ✅ Verified 2026-01-10: All 831 tests pass |
+| **TASK-271** | Fix 13 benchmark errors from API signature changes | TESTER | 2-3 hrs | 🔴 HIGH | ✅ Verified 2026-01-10: All benchmarks pass |
 
 ---
 

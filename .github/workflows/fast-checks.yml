@@ -58,6 +58,7 @@ jobs:
           python scripts/check_doc_versions.py --ci &
           python scripts/check_tasks_format.py &
           python scripts/check_api_docs_sync.py &
+          python scripts/check_links.py &
           wait
 
   full-tests-notification:

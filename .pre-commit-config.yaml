@@ -171,6 +171,13 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-markdown-links
+        name: Check markdown internal links
+        entry: python3 scripts/check_links.py
+        language: system
+        pass_filenames: false
+        files: ^docs/.*\.md$
+        verbose: true
       - id: check-cost-optimizer-issues
         name: Check cost optimizer code issues
         entry: python3 scripts/check_cost_optimizer_issues.py

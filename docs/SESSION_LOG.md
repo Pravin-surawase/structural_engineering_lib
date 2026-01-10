@@ -4,6 +4,65 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-10 — Session: Agent 9 Phase A5 Link Integrity + Automation-First Principles
+
+**Focus:** Fix broken links, prevent future link rot, add automation-first mentality to agent docs
+
+### Broken Link Resolution ✅
+
+**Problem:** 130+ broken links detected (78 archive, 52 active)
+**Root Causes:**
+1. Migration renamed files without updating all references
+2. `agent-8-tasks-git-ops.md` consolidated to `agent-8-git-ops.md`
+3. Relative path errors (wrong `../` levels)
+4. Planning docs with example/target paths flagged as broken
+
+**Solution (Automation-First):**
+1. **Enhanced `check_links.py`** with intelligent filtering:
+   - `SKIP_LINK_PATTERNS` - filter placeholder/example links
+   - `SKIP_DIRECTORIES` - exclude planning/archive/research docs
+   - `is_placeholder_link()` - detect example patterns
+   - `should_skip_file()` - directory-level exclusion
+2. **Bulk sed fix** for agent-8-tasks-git-ops.md references (20+ files)
+3. **Manual path fixes** for relative path errors
+
+**Result:** 130 broken links → 0 broken links in active docs
+
+### Commits This Session
+1. `7f92825` - docs(agents): Add automation-first mentality and full session guidelines
+2. `fe81803` - fix(docs): Fix broken links and update agent-8-tasks-git-ops references
+3. `96ecf68` - fix(scripts): Enhance link checker with directory exclusions
+
+### Automation-First Mentality Added to Agent Docs ✅
+
+**Files Updated:**
+- `.github/copilot-instructions.md` - New "🧠 Automation-First Mentality" section
+- `docs/agents/agent-workflow-master-guide.md` - Automation principles table
+- `docs/agents/agent-quick-reference.md` - Quick automation commands
+- `docs/agents/agent-onboarding.md` - Session duration expectations (5-10+ commits)
+- `docs/getting-started/agent-bootstrap.md` - Brief automation section
+
+**Core Principles Documented:**
+1. **Pattern Recognition:** 10+ similar issues → build automation first
+2. **Research Before Action:** Check existing scripts before writing new ones
+3. **Build Once, Use Many:** Automation saves hours of future work
+4. **Commit Incrementally:** Use Agent 8 workflow for every git action
+5. **Full Sessions:** 5-10+ commits per session, don't stop early
+6. **Document Everything:** Update TASKS.md, SESSION_LOG.md
+
+### Test Status Verified ✅
+- Unit tests: 256 passed
+- Integration tests: 575 passed
+- Total: 831 tests passing (TASK-270/271 verified complete)
+
+### Next Actions (Agent 9 Phase A5-A6)
+1. **Create CI check** for broken links (prevent regression)
+2. **Add pre-commit hook** for link validation
+3. **Create link governance workflow** (document when/how to validate)
+4. **Complete Phase A5-A6** validation and reporting
+
+---
+
 ## 2026-01-10 — Session: Agent 9 (Governance) Created & Enhanced
 
 **Focus:** Create dedicated governance agent + enhanced folder organization
