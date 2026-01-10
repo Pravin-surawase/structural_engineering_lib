@@ -55,6 +55,81 @@ Use this doc as the one place to track goals, links, safety rules, tests, and su
 
 ---
 
+## Full Cleaning + Migration Program (Phase B)
+
+This is the deeper, repo‑wide cleanup and optimization pass based on the research.
+It is designed to be safe, incremental, and measurable.
+
+### B1) Agent Entry Points for All Agents (6/8/9 + future)
+**Why:** fast onboarding and low context overhead for AI agents.
+**Action:**
+- Create `docs/agents/guides/agent-6-quick-start.md`.
+- Create `docs/agents/guides/agent-6-streamlit-hub.md` linking to Streamlit docs.
+- Create `docs/agents/guides/agent-9-quick-start.md` + `agent-9-governance-hub.md`.
+- Add placeholders for future roles: tester, researcher.
+
+**Tests:**
+- `python3 scripts/check_links.py`
+- `./scripts/check_docs_index_links.py`
+
+**Success:** each agent has a 1‑page entry + a hub link in `docs/agents/README.md`.
+
+### B2) Agent Registry + Quickstart Index
+**Why:** structured indexes reduce search time and ambiguity.
+**Action:**
+- Generate/update `agents/index.json` and `agents/index.md`.
+- Add a short “Agent Registry” section in `docs/agents/README.md`.
+
+**Tests:**
+- `./scripts/check_docs_index.py`
+
+**Success:** all agents listed with their quick‑start paths and owners.
+
+### B3) Docs Root Reduction (Sustainability Cleanup)
+**Why:** prevent future drift and reduce noise.
+**Action:** move 10–15 low‑risk docs from `docs/` root to proper categories
+(`docs/getting-started/`, `docs/reference/`, `docs/contributing/`).
+
+**Tests:**
+- `python3 scripts/validate_folder_structure.py`
+- `./scripts/check_links.py`
+
+**Success:** `docs/` root ≤ 5 files.
+
+### B4) Naming Cleanup (Small Batches)
+**Why:** improve information scent and reduce broken link risk.
+**Action:** rename 5–10 files per batch to kebab‑case and update `LINK-MAP.md`.
+
+**Tests:**
+- `python3 scripts/validate_folder_structure.py`
+- `./scripts/check_links.py`
+- Chain‑link check from `MIGRATION-TASKS.md`.
+
+**Success:** naming violations drop steadily to zero.
+
+### B5) Archive Hygiene + Session Pruning
+**Why:** keep active docs fresh and reduce scan time.
+**Action:**
+- Run `DRY_RUN=1 ./scripts/archive_old_sessions.sh`, then execute.
+- Ensure archives are indexed in `docs/_archive/README.md`.
+
+**Tests:**
+- `python3 scripts/check_links.py`
+
+**Success:** active folders contain only current work.
+
+---
+
+## Innovations for AI Agent Efficiency
+
+1. **Progressive disclosure:** README hub → quick‑start → deep docs.
+2. **Two‑level depth rule:** avoid navigation trees deeper than 2 levels.
+3. **Clear info scent:** keep `agent-8-` prefix in filenames for search clarity.
+4. **Registry + quickstart cards:** structured index plus 1‑page entry per agent.
+5. **Front‑matter metadata (optional):** add `Owner`, `Status`, `Last Updated` to new docs.
+
+---
+
 ## Ongoing Maintenance Cadence
 
 ### Weekly (15-30 min)
