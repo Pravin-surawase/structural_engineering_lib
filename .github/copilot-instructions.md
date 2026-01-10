@@ -404,6 +404,68 @@ The script handles EVERYTHING:
 - Tolerance: ±0.1% for areas, ±1mm for dimensions
 - Document source for expected values (SP:16, textbook, hand calc)
 
+## Module Migration Rules (CRITICAL - Learned from Session 5)
+
+### Before migrating a module:
+1. Run pre-flight check: `.venv/bin/python scripts/pre_migration_check.py`
+2. Check for private function usage in tests: `grep -r "module._" Python/tests/`
+3. Check for type annotation usage: `grep -r "module.\w*Result" Python/structural_lib/`
+
+### Stub Creation (Prevents 90% of migration issues):
+```python
+# ❌ WRONG: Just star import (misses private functions)
+from structural_lib.codes.is456.tables import *  # noqa: F401, F403
+
+# ✅ CORRECT: Star import + explicit private functions
+from structural_lib.codes.is456.tables import *  # noqa: F401, F403
+from structural_lib.codes.is456.tables import (  # noqa: F401
+    _get_tc_for_grade,
+    _PT_ROWS,
+    _TC_COLUMNS,
+)
+```
+
+### Type Annotation Re-exports:
+```python
+# If api.py uses `serviceability.DeflectionResult`, add to stub:
+from structural_lib.data_types import (  # noqa: F401
+    DeflectionResult,
+    CrackWidthResult,
+)
+```
+
+### Monkeypatch in Tests:
+```python
+# ❌ WRONG: Patching stub module (patch goes to wrong location)
+monkeypatch.setattr(flexure, "calculate_mu_lim", mock_fn)
+
+# ✅ CORRECT: Patch at source location
+from structural_lib.codes.is456 import flexure as flexure_source
+monkeypatch.setattr(flexure_source, "calculate_mu_lim", mock_fn)
+```
+
+### Import Order (Prevents E402):
+```python
+# ❌ WRONG: Logger before imports
+_logger = logging.getLogger(__name__)
+from structural_lib.data_types import Result  # E402!
+
+# ✅ CORRECT: All imports at top
+from structural_lib.data_types import Result
+_logger = logging.getLogger(__name__)
+```
+
+### Validation Commands:
+```bash
+# Validate all stub exports
+.venv/bin/python scripts/validate_stub_exports.py --all
+
+# Update __init__.py exports
+.venv/bin/python scripts/update_is456_init.py --apply
+
+# Full research doc: docs/research/migration-issues-analysis.md
+```
+
 ## Test Writing Rules (CRITICAL - Prevents 80% of Test Failures)
 
 ### Before writing ANY test:
