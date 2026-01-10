@@ -461,21 +461,21 @@ git push
 ## 📚 Additional Resources
 
 ### Essential Docs
-- [TASKS.md](../docs/TASKS.md) - Current work items
-- [SESSION_LOG.md](../docs/SESSION_LOG.md) - Session history
-- [NEXT_SESSION_BRIEF.md](../docs/planning/next-session-brief.md) - Handoff doc
+- [TASKS.md](../TASKS.md) - Current work items
+- [SESSION_LOG.md](../SESSION_LOG.md) - Session history
+- [next-session-brief.md](../planning/next-session-brief.md) - Handoff doc
 
 ### Workflow Docs
-- [git-workflow-ai-agents.md](git-workflow-ai-agents.md) - Core workflow
-- [AGENT_BOOTSTRAP.md](AGENT_BOOTSTRAP.md) - Initial setup guide
+- [git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) - Core workflow
+- [agent-bootstrap.md](../getting-started/agent-bootstrap.md) - Initial setup guide
 
 ### Testing Docs
-- [TESTING_STRATEGY.md](TESTING_STRATEGY.md) - Testing approach
-- [VBA_TESTING_GUIDE.md](VBA_TESTING_GUIDE.md) - VBA testing
+- [testing-strategy.md](../testing-strategy.md) - Testing approach
+- [vba-testing-guide.md](../vba-testing-guide.md) - VBA testing
 
 ### Architecture Docs
-- [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) - System architecture
-- [API_REFERENCE.md](API_REFERENCE.md) - API documentation
+- [project-overview.md](../project-overview.md) - System architecture
+- [api-reference.md](../api-reference.md) - API documentation
 
 ---
 

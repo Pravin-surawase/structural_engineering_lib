@@ -143,18 +143,18 @@ scripts/
 ├── recover_git_state.sh     # Emergency recovery
 └── end_session.py           # End session
 
-docs/
-└── AGENT_WORKFLOW_MASTER_GUIDE.md  # Full guide
+docs/agents/
+└── agent-workflow-master-guide.md  # Full guide
 ```
 
 ---
 
 ## 🔗 Quick Links
 
-- **Full Guide:** [AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md)
+- **Full Guide:** [agent-workflow-master-guide.md](agent-workflow-master-guide.md)
 - **Tasks:** [TASKS.md](../TASKS.md)
-- **Git Workflow:** [git-workflow-ai-agents.md](git-workflow-ai-agents.md)
-- **Session Log:** [SESSION_LOG.md](SESSION_LOG.md)
+- **Git Workflow:** [git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md)
+- **Session Log:** [SESSION_LOG.md](../SESSION_LOG.md)
 
 ---
 
@@ -196,7 +196,7 @@ docs/
 2. Check `logs/git_workflow.log`
 3. Run `./scripts/agent_preflight.sh`
 4. Run `./scripts/recover_git_state.sh`
-5. Review [AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md)
+5. Review [agent-workflow-master-guide.md](agent-workflow-master-guide.md)
 
 **Common issues solved in <2 minutes:**
 - Git conflicts → recover_git_state.sh

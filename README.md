@@ -330,7 +330,7 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 ## Developer setup
 
 ### For AI Agents (Automated Workflow)
-**⚡ Use the [Agent Automation System](docs/AGENT_AUTOMATION_SYSTEM.md) for error-free development:**
+**⚡ Use the [Agent Automation System](docs/agents/agent-automation-system.md) for error-free development:**
 
 ```bash
 # 1. Setup session (30s)
@@ -346,9 +346,9 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 **Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
 
 **Quick Reference:**
-- [Master Guide](docs/AGENT_WORKFLOW_MASTER_GUIDE.md) - Complete workflow
-- [Quick Reference](docs/AGENT_QUICK_REFERENCE.md) - Essential commands
-- [System Overview](docs/AGENT_AUTOMATION_SYSTEM.md) - Architecture & features
+- [Master Guide](docs/agents/agent-workflow-master-guide.md) - Complete workflow
+- [Quick Reference](docs/agents/agent-quick-reference.md) - Essential commands
+- [System Overview](docs/agents/agent-automation-system.md) - Architecture & features
 
 ### Manual Development
 
