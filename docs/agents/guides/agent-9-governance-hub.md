@@ -24,37 +24,15 @@ This is the canonical entry point for all governance documents, migration plans,
 - **[Agent 9 Quick Start](agent-9-quick-start.md)** - 60-second workflow guide
 - **[Folder Structure Rules](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md)** - All naming and placement rules
 
-### Decision Making
-- **[Decision Summary](../../../agents/agent-9/governance/DECISION-SUMMARY.md)** - Final questions and readiness
-- **[Migration Review](../../../agents/agent-9/governance/AGENT-9-AND-MIGRATION-REVIEW.md)** - Review synthesis
+### Active Documents
+- **[Migration Status](../../../agents/agent-9/governance/MIGRATION-STATUS.md)** - Current progress and audit trail
+- **[Governance Roadmap](../../../agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md)** - Current goals and next steps
+- **[Task Tracker](../../../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md)** - Phase B progress
+- **[Automation Catalog](../../../agents/agent-9/governance/AUTOMATION-CATALOG.md)** - All validation checks
 
-### Execution
-- **[Migration Status](../../../agents/agent-9/governance/MIGRATION-STATUS.md)** - Current progress and blockers
-- **[Migration Tasks](../../../agents/agent-9/governance/MIGRATION-TASKS.md)** - Step-by-step execution
-- **[Full Migration Plan](../../../agents/agent-9/governance/FULL-MIGRATION-EXECUTION-PLAN.md)** - Complete ultra-safe plan
-
-### Safety
-- **[Rollback Procedures](../../../agents/agent-9/governance/ROLLBACK-PROCEDURES.md)** - Recovery steps
-- **[Migration Risks](../../../agents/agent-9/governance/MIGRATION_REVIEW_AND_RISKS.md)** - Known risks and mitigations
-
-### Validation
-- **[Validation Scripts](../../../agents/agent-9/governance/MIGRATION-SCRIPTS.md)** - All validation tools
-- **[Metrics Dashboard](../../../agents/agent-9/governance/METRICS_DASHBOARD.md)** - Auto-generated metrics
-
----
-
-## Phase Documentation
-
-All migration phases are documented in detail:
-
-- [Phase 0: Preparation](../../../agents/agent-9/governance/PHASE-0-PREPARATION.md)
-- [Phase 1: Structure Creation](../../../agents/agent-9/governance/PHASE-1-STRUCTURE-CREATION.md)
-- [Phase 2: Agents Migration](../../../agents/agent-9/governance/PHASE-2-AGENTS-MIGRATION.md)
-- [Phase 4: Dated Files](../../../agents/agent-9/governance/PHASE-4-DATED-FILES.md)
-- [Phase 5: Naming Cleanup](../../../agents/agent-9/governance/PHASE-5-NAMING-CLEANUP.md)
-- [Phase 6: Link Fixing](../../../agents/agent-9/governance/PHASE-6-LINK-FIXING.md)
-- [Phase 7: Script Updates](../../../agents/agent-9/governance/PHASE-7-SCRIPT-UPDATES.md)
-- [Phase 8: Final Validation](../../../agents/agent-9/governance/PHASE-8-FINAL-VALIDATION.md)
+### Archived (Historical Reference)
+Migration Phase A is complete. Historical docs are archived:
+- **[Archive](../../../agents/agent-9/governance/_archive/)** - Phase A planning docs, execution plans, research
 
 ---
 
@@ -74,9 +52,6 @@ Run these after any structure changes:
 
 # Check root file count
 ./scripts/check_root_file_count.sh
-
-# Update metrics dashboard
-./scripts/generate_dashboard.sh
 ```
 
 ---
@@ -140,38 +115,14 @@ grep -r "old/path.md" docs/ agents/
 .venv/bin/python scripts/check_links.py
 ```
 
-### Workflow 3: Run Migration Phase
-```bash
-# Check current status
-open agents/agent-9/governance/MIGRATION-STATUS.md
-
-# Read phase doc
-open agents/agent-9/governance/PHASE-N-*.md
-
-# Execute tasks
-open agents/agent-9/governance/MIGRATION-TASKS.md
-
-# Validate
-./scripts/validate_bundle.sh
-```
-
----
-
-## Research & Context
-
-For background on governance decisions:
-
-- **[Research Summary](../../../agents/agent-9/governance/FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md)** - Research basis for rules
-- **[Navigation Study Results](../../../docs/research/)** - Agent navigation research
-
 ---
 
 ## Need Help?
 
 1. **Quick questions:** Check [Agent 9 Quick Start](agent-9-quick-start.md)
 2. **Detailed rules:** See [FOLDER_STRUCTURE_GOVERNANCE.md](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md)
-3. **Migration help:** Read [MIGRATION-WALKTHROUGH.md](../../../agents/agent-9/governance/MIGRATION-WALKTHROUGH.md)
-4. **All docs:** Browse [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
+3. **All docs:** Browse [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
+4. **Historical docs:** Browse [Archive](../../../agents/agent-9/governance/_archive/)
 
 ---
 

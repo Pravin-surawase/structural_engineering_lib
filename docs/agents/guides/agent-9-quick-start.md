@@ -150,13 +150,11 @@ open agents/agent-9/governance/MIGRATION-TASKS.md
 
 **Key Rules:**
 - [FOLDER_STRUCTURE_GOVERNANCE.md](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md) - All naming + placement rules
-- [MIGRATION-STATUS.md](../../../agents/agent-9/governance/MIGRATION-STATUS.md) - Current status
-- [MIGRATION-TASKS.md](../../../agents/agent-9/governance/MIGRATION-TASKS.md) - Step-by-step tasks
+- [MIGRATION-STATUS.md](../../../agents/agent-9/governance/MIGRATION-STATUS.md) - Current status + audit trail
+- [AUTOMATION-CATALOG.md](../../../agents/agent-9/governance/AUTOMATION-CATALOG.md) - All validation checks
+- [PHASE-B-TASK-TRACKER.md](../../../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md) - Current task progress
 
-**Execution Plans:**
-- [FULL-MIGRATION-EXECUTION-PLAN.md](../../../agents/agent-9/governance/FULL-MIGRATION-EXECUTION-PLAN.md) - Complete plan
-- [MIGRATION-EXECUTION-PLAN.md](../../../agents/agent-9/governance/MIGRATION-EXECUTION-PLAN.md) - Execution order
-- [ROLLBACK-PROCEDURES.md](../../../agents/agent-9/governance/ROLLBACK-PROCEDURES.md) - Safety net
+**Historical:** See [Archive](../../../agents/agent-9/governance/_archive/) for Phase A planning docs
 
 ---
 
@@ -243,9 +241,9 @@ If structure changes cause issues:
 ## Need More Detail?
 
 - **Full governance rules:** [FOLDER_STRUCTURE_GOVERNANCE.md](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md)
-- **Migration guide:** [MIGRATION-WALKTHROUGH.md](../../../agents/agent-9/governance/MIGRATION-WALKTHROUGH.md)
+- **Governance hub:** [agent-9-governance-hub.md](agent-9-governance-hub.md)
 - **All Agent 9 docs:** [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
-- **Research basis:** [FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md](../../../agents/agent-9/governance/FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md)
+- **Phase A history:** [Archive](../../../agents/agent-9/governance/_archive/)
 
 ---
 

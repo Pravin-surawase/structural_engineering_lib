@@ -88,34 +88,42 @@
 
 ---
 
-### B3: Archive Phase A Planning Docs 🗄️
+### B3: Archive Phase A Planning Docs ✅
 **Priority:** P2
 **Why:** Keep active folders clean, reduce noise
+**Status:** COMPLETE
+**Commit:** (pending)
 
 **Steps:**
-1. [ ] Identify obsolete planning docs (Phase A0-A6 complete)
-2. [ ] Create archive folder: `docs/_archive/2026-01-governance/`
-3. [ ] Move with `git mv` to preserve history
-4. [ ] Update any references
-5. [ ] Run link check
+1. [x] Identified 29 obsolete planning docs (Phase A complete)
+2. [x] Created archive folder: `agents/agent-9/governance/_archive/`
+3. [x] Moved with `git mv` to preserve history
+4. [x] Updated references in hub and quick-start docs
+5. [x] Ran link check → 0 broken
 
-**Candidates for Archive:**
-- `agents/agent-9/governance/PHASE-*.md` (8 files)
-- `agents/agent-9/governance/MIGRATION-EXECUTION-PLAN.md`
-- `agents/agent-9/governance/FULL-MIGRATION-EXECUTION-PLAN.md`
-- `agents/agent-9/governance/MIGRATION-WALKTHROUGH.md`
+**Archived (29 files):**
+- PHASE-0 through PHASE-8 docs (9 files)
+- MIGRATION-TASKS.md, MIGRATION-SCRIPTS.md, MIGRATION-WALKTHROUGH.md
+- MIGRATION-EXECUTION-PLAN.md, FULL-MIGRATION-EXECUTION-PLAN.md
+- AGENT-8-CONSOLIDATION-*.md (3 files)
+- Research and decision docs (10 files)
 
-**Keep Active:**
+**Keep Active (7 files):**
+- `README.md` (hub)
 - `MIGRATION-STATUS.md` (audit trail)
 - `AUTOMATION-CATALOG.md` (ongoing reference)
 - `FOLDER_STRUCTURE_GOVERNANCE.md` (rules)
-- `README.md` (hub)
+- `AGENT-9-GOVERNANCE-ROADMAP.md` (roadmap)
+- `PHASE-B-TASK-TRACKER.md` (this file)
+- `RECURRING-ISSUES-ANALYSIS.md` (patterns)
 
 **Validation:**
-- `python scripts/check_links.py` → 0 broken
-- `python scripts/validate_folder_structure.py` → PASS
+- `python scripts/check_links.py` → 0 broken ✅
+- 292 files, 710 internal links validated
 
-**Time:** 45 min
+**Result:** Governance folder reduced from 36 → 7 active files (81% reduction)
+
+**Time:** 30 min
 
 ---
 
@@ -178,16 +186,31 @@ echo "Weekly check complete"
 
 ## Completed Tasks Log
 
-### B0: Merge Roadmap Branch
-- **Status:** Not started
-- **Started:** -
-- **Completed:** -
-- **Commit:** -
-- **Summary:** -
+### B0: Merge Roadmap Branch ✅
+- **Completed:** 2026-01-10
+- **Commit:** 59f4dc0
+- **Summary:** Merged chore/agent-9-roadmap-update branch into main with fast-forward merge
+
+### B1+B2: Agent 6 Entry Points + Registry ✅
+- **Completed:** 2026-01-10
+- **Commit:** ce57e44
+- **Summary:** Created agent-6-quick-start.md, agent-6-streamlit-hub.md, added registry table to docs/agents/README.md
+
+### B3: Archive Phase A Planning Docs ✅
+- **Completed:** 2026-01-10
+- **Commit:** (pending)
+- **Summary:** Moved 29 historical docs to _archive/, updated hub and quick-start docs, governance folder reduced from 36 to 7 files
 
 ---
 
 ## Session Summaries
+
+### Session 2 (2026-01-10) - Phase B Execution
+- ✅ B0: Merged roadmap branch (59f4dc0)
+- ✅ B1+B2: Created Agent 6 entry points + registry (ce57e44)
+- ✅ B3: Archived 29 Phase A docs, updated references
+- Validation: 292 files, 710 links, 0 broken
+- Next: B4 (navigation study), B5 (automation script)
 
 ### Session 1 (2026-01-10)
 - Created this task tracker
