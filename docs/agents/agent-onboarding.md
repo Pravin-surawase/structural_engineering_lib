@@ -9,10 +9,10 @@ Use this checklist to ensure you're set up correctly and following the project's
 ## ✅ Pre-Session Checklist (First Time)
 
 ### 1. Read Core Documentation (5 minutes)
-- [ ] Read [.github/copilot-instructions.md](../.github/copilot-instructions.md) - **MANDATORY**
-- [ ] Read [AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md) - Complete workflow
-- [ ] Print [AGENT_QUICK_REFERENCE.md](AGENT_QUICK_REFERENCE.md) - Keep visible
-- [ ] Skim [TASKS.md](TASKS.md) - Current work items
+- [ ] Read [.github/copilot-instructions.md](../../.github/copilot-instructions.md) - **MANDATORY**
+- [ ] Read [agent-workflow-master-guide.md](agent-workflow-master-guide.md) - Complete workflow
+- [ ] Print [agent-quick-reference.md](agent-quick-reference.md) - Keep visible
+- [ ] Skim [TASKS.md](../TASKS.md) - Current work items
 
 ### 2. Environment Setup (2 minutes)
 ```bash
@@ -201,16 +201,16 @@ cd worktree-AGENT_NAME-*
 ## 📚 Reference Links
 
 ### Essential Documentation
-- **[AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete guide (400+ lines)
-- **[AGENT_QUICK_REFERENCE.md](AGENT_QUICK_REFERENCE.md)** - Quick reference (200+ lines)
-- **[AGENT_AUTOMATION_SYSTEM.md](AGENT_AUTOMATION_SYSTEM.md)** - System overview (600+ lines)
-- **[git-workflow-ai-agents.md](git-workflow-ai-agents.md)** - Core workflow rules
+- **[agent-workflow-master-guide.md](agent-workflow-master-guide.md)** - Complete guide (400+ lines)
+- **[agent-quick-reference.md](agent-quick-reference.md)** - Quick reference (200+ lines)
+- **[agent-automation-system.md](agent-automation-system.md)** - System overview (600+ lines)
+- **[git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md)** - Core workflow rules
 
 ### Project Documentation
-- [PROJECT_OVERVIEW.md](architecture/project-overview.md) - Architecture
-- [API_REFERENCE.md](reference/api.md) - API documentation
-- [TASKS.md](TASKS.md) - Current work
-- [KNOWN_PITFALLS.md](reference/known-pitfalls.md) - Common issues
+- [project-overview.md](../architecture/project-overview.md) - Architecture
+- [api-reference.md](../api-reference.md) - API documentation
+- [TASKS.md](../TASKS.md) - Current work
+- [known-pitfalls.md](../known-pitfalls.md) - Common issues
 
 ### Workflow Scripts
 - `scripts/agent_setup.sh` - Environment setup
@@ -266,6 +266,6 @@ I have completed the onboarding checklist and:
 
 **Remember:** The automation system prevents 99% of errors. Trust the scripts!
 
-**Questions?** Check [AGENT_WORKFLOW_MASTER_GUIDE.md](AGENT_WORKFLOW_MASTER_GUIDE.md) or run `./scripts/agent_preflight.sh`
+**Questions?** Check [agent-workflow-master-guide.md](agent-workflow-master-guide.md) or run `./scripts/agent_preflight.sh`
 
 **Last Updated:** 2026-01-08 | **Version:** 1.0.0
