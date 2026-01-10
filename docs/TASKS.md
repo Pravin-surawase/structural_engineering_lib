@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-10
+**Updated:** 2026-01-10 (Session 2: Phase C Planning)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -65,10 +65,22 @@
 
 ## Active
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-270** | Fix 8 test failures from API refactoring (exception types, validation, CLI) | TESTER | 1-2 hrs | 🔴 HIGH | ✅ Verified 2026-01-10: All 831 tests pass |
-| **TASK-271** | Fix 13 benchmark errors from API signature changes | TESTER | 2-3 hrs | 🔴 HIGH | ✅ Verified 2026-01-10: All benchmarks pass |
+### Agent 9 Governance (Phase C: Semantic Navigation)
+
+> **Research:** [Navigation Study](research/navigation_study/navigation-study-results.md) showed structural cleanup doesn't improve navigation (1.0x speedup).
+> **Insight:** Need semantic indexes with descriptions, not just file lists. Current indexes lack "information scent".
+> **Goal:** Add semantic intelligence to structure → achieve 20%+ context reduction for AI agents.
+
+| ID | Task | Agent | Est | Priority | Status | Due |
+|----|------|-------|-----|----------|--------|-----|
+| **TASK-300** | Enhance key README.md indexes with descriptions + doc_type metadata | AGENT_9 | 2h | 🔴 P0-Critical | ⏳ In Progress | 2026-01-11 |
+| **TASK-301** | Move 3 orphan test files from root to tests/ + clean redirect stubs | AGENT_9 | 1h | 🔴 P0-Critical | ⏳ Queued | 2026-01-10 |
+
+**Success Criteria:**
+- Navigation speedup: 1.0x → >1.2x
+- Token reduction: -17% → +20% reduction
+- Task success rate: 57% → >70%
+- AI agent onboarding: 2-3h → <30min
 
 ---
 
@@ -76,24 +88,46 @@
 
 ### v0.17.0 Implementation
 
-#### Agent 9 Governance (Phase A: Critical Infrastructure)
+#### Agent 9 Governance (Phase A: Critical Infrastructure) ✅ COMPLETE
 
 > **Research:** [Phase 1](../agents/agent-9/research/RESEARCH_FINDINGS_STRUCTURE.md) + [Phase 2](../agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md) (3.5h, 14 research tasks, 4,747 lines)
-> **Roadmap:** [AGENT_9_IMPLEMENTATION_ROADMAP.md](../agents/agent-9/AGENT_9_IMPLEMENTATION_ROADMAP.md)
-> **Goal:** Reduce doc sprawl (41 → <10), establish governance baseline, prevent future debt
+> **Status:** ✅ **PHASE A COMPLETE** - All 4 tasks done 2026-01-10
+> **Results:** Root docs 47→9 (81% reduction), CI enforcement active, archival automation running
+
+*All Phase A tasks moved to Recently Done section.*
+
+---
+
+#### Agent 9 Governance (Phase B: Folder Migration) ✅ COMPLETE
+
+> **Roadmap:** [AGENT-9-GOVERNANCE-ROADMAP.md](../agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md)
+> **Status:** ✅ **PHASE B COMPLETE** - All 6 tasks done 2026-01-10 (5 commits)
+> **Results:** 292 files, 710 links, 0 broken. Agent entry points 3/3. Governance folder 36→7 (81% reduction).
+
+| ID | Task | Agent | Commit | Status |
+|----|------|-------|--------|--------|
+| **B0** | Merge roadmap branch to main | AGENT_9 | 59f4dc0 | ✅ Done |
+| **B1** | Agent 6 entry points (quick-start + hub) | AGENT_9 | ce57e44 | ✅ Done |
+| **B2** | Agent registry in docs/agents/README.md | AGENT_9 | ce57e44 | ✅ Done |
+| **B3** | Archive 29 Phase A planning docs | AGENT_9 | 1570d3c | ✅ Done |
+| **B4** | Navigation study re-run | AGENT_9 | cacf83c | ✅ Done |
+| **B5** | Weekly governance check script | AGENT_9 | cacf83c | ✅ Done |
+
+*All Phase B tasks complete. See [PHASE-B-TASK-TRACKER.md](../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md) for details.*
+
+---
+
+#### Agent 9 Governance (Phase C: Semantic Navigation - Queued Tasks)
+
+> **Goal:** Add semantic intelligence to structure for better AI agent navigation
 
 | ID | Task | Agent | Est | Priority | Status | Due |
 |----|------|-------|-----|----------|--------|-----|
-| **TASK-280** | Archive 34 root files to `docs/_archive/2026-01/` (cleanup from high-velocity sprints) | AGENT_9 | 2h | 🔴 P0-Critical | ✅ Done 2026-01-10 | 2026-01-15 |
-| **TASK-281** | CI Root File Limit Check (fail build if >10 root docs, prevent sprawl regression) | AGENT_9 | 1h | 🔴 P0-Critical | ✅ Done 2026-01-10 | 2026-01-16 |
-| **TASK-282** | Metrics Collection Script (automate baseline tracking: velocity, WIP, quality) | AGENT_9 | 2h | 🟠 P1-High | ✅ Done 2026-01-10 | 2026-01-18 |
-| **TASK-283** | Automated Archival Script (`archive_old_sessions.sh` - weekly cleanup) | AGENT_9 | 3h | 🟠 P1-High | ✅ Done 2026-01-10 | 2026-01-23 |
-
-**Success Criteria:**
-- Root docs: 41 → <10 (75% reduction)
-- Archive coverage: 0% → 100% (34 files)
-- Leading indicators: 3/6 alerts resolved (crisis docs, handoffs, completions)
-- CI enforcement: Automated root file limit check
+| **TASK-302** | Clean 10+ redirect stub files (files <10 lines with "Moved to" pattern) | AGENT_9 | 1h | 🟠 P1-High | ⏳ Queued | 2026-01-11 |
+| **TASK-303** | Add front-matter template to key docs (Owner, Status, Last Updated) | AGENT_9 | 2h | 🟠 P1-High | ⏳ Queued | 2026-01-12 |
+| **TASK-304** | Resolve 10+ duplicate doc names (identify canonical, archive duplicates) | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Queued | 2026-01-13 |
+| **TASK-305** | Re-run navigation study with semantic indexes (validate improvements) | AGENT_9 | 1h | 🟡 P2-Medium | ⏳ Blocked by 300 | 2026-01-14 |
+| **TASK-306** | Create automation: check_redirect_stubs.py + check_duplicate_docs.py | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Queued | 2026-01-14 |
 
 #### Critical Path (Must complete for v0.17.0)
 
@@ -106,14 +140,14 @@
 
 ### v0.18+ (Professional Features Pipeline)
 
-#### Agent 9 Governance (Phase B: Automation & Observability)
+#### Agent 9 Governance (Phase D: Automation & Observability)
 
 > **Goal:** Establish governance cadence (80/20 rule), automate maintenance, enable proactive monitoring
-> **Dependencies:** Phase A complete (TASK-280-283)
+> **Dependencies:** ✅ Phase A+B complete. Phase C (semantic navigation) in progress.
 
 | ID | Task | Agent | Est | Priority | Status | Due |
 |----|------|-------|-----|----------|--------|-----|
-| **TASK-284** | Weekly Governance Sessions (80/20 rule: 1 governance per 5 feature sessions) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Blocked by 283 | 2026-01-30 |
+| **TASK-284** | Weekly Governance Sessions (80/20 rule: 1 governance per 5 feature sessions) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Queued | 2026-01-30 |
 | **TASK-285** | Metrics Dashboard (trending: velocity, docs, quality, alerts) | AGENT_9 | 4h | 🟡 P2-Medium | ⏳ Blocked by 284 | 2026-02-04 |
 | **TASK-286** | Leading Indicator Alerts (CI warnings for 6 metrics: crisis docs, handoffs, etc.) | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Blocked by 285 | 2026-02-06 |
 
@@ -239,6 +273,9 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **AGENT9-PHASE-B** | Folder Migration Complete: Agent 6 entry points, agent registry, 29 docs archived, navigation study, governance automation (5 commits: 59f4dc0, ce57e44, 1570d3c, cacf83c, 8a66d8a) | AGENT_9 | ✅ 2026-01-10 |
+| **TASK-270** | Fix 8 test failures from API refactoring (exception types, validation, CLI) | TESTER | ✅ 2026-01-10 |
+| **TASK-271** | Fix 13 benchmark errors from API signature changes | TESTER | ✅ 2026-01-10 |
 | **TASK-280** | Repository hygiene implementation (naming, link fixes, archives, health scripts) | DEVOPS | ✅ 2026-01-07 |
 | **TASK-261** | Research: Professional Liability & Disclaimers (MIT + engineering addendum, disclaimer templates, certification guidance) | RESEARCHER | ✅ 2026-01-07 |
 | **TASK-260** | Research: Security Best Practices (input validation, dependency scanning, CI hardening) | DEVOPS | ✅ 2026-01-07 |
