@@ -8,11 +8,13 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 **Focus:** Create automation toolkit to prevent Session 5 issues, complete TASK-317
 
-### Commits This Session
-1. `0107058` - feat: TASK-317 - Update IS 456 __init__.py exports + validation scripts (PR #324, merged)
+### Commits This Session (6 total)
+1. `9e581b1` - feat: TASK-317 - Update IS 456 __init__.py exports + validation scripts (PR #324, merged)
 2. `3ad5d9a` - docs: add Module Migration Rules section to copilot-instructions
 3. `191370e` - docs: mark TASK-317 complete - IS 456 exports updated
 4. `aa29db5` - docs: add future core module tasks and update Session 6 status
+5. `1f30381` - docs: clean up duplicate entries and update SESSION_LOG
+6. `5ccc3a9` - docs: update research doc and next-session-brief for Session 6 completion
 
 ### Automation Scripts Created
 
