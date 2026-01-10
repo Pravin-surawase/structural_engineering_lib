@@ -25,12 +25,27 @@ Agent 8 research documents remain in [../research/](../research/) for centralize
 
 ---
 
-## Agent 9 - Governance
+## Agent 9 - Governance & Documentation Structure
 
-**Mission:** Maintain documentation quality, structure, and migration governance.
+**Mission:** Maintain sustainable information architecture, govern folder structure, ensure migration safety.
 
-### Documentation
-See: `agents/agent-9/governance/` folder for Agent 9 documentation.
+### Core Documentation
+- [agent-9-quick-start.md](agent-9-quick-start.md) - 60-second onboarding
+- [agent-9-governance-hub.md](agent-9-governance-hub.md) - Access point to all governance docs
+- Full governance docs: [../../agents/agent-9/governance/](../../agents/agent-9/governance/)
+
+### Key Rules
+- Root directory: <10 files
+- Kebab-case naming for all docs
+- Scripts stay in `scripts/` (Rule 3.2)
+- Time buckets for dated docs: `sessions/YYYY-MM/`
+- Git mv for file moves (preserve history)
+
+### Validation Tools
+- `validate_folder_structure.py` - Check rule compliance
+- `check_links.py` - Find broken links
+- `check_docs_index_links.py` - Verify index accuracy
+- `check_root_file_count.sh` - Ensure <10 root files
 
 ---
 
