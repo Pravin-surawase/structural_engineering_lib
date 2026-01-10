@@ -2,7 +2,7 @@
 
 > **Auto-generated** by `scripts/generate_dashboard.sh` (TASK-285)
 > **Last updated:**
-2026-01-10 02:08:29
+2026-01-10 16:00:50
 
 > **Purpose:** Track project health metrics, velocity trends, and governance compliance
 > **Research:** Based on [METRICS_BASELINE.md](../../agents/agent-9/research/METRICS_BASELINE.md)
@@ -15,13 +15,13 @@
 
 | Category | Metric | Value | Target | Status |
 |----------|--------|-------|--------|--------|
-| **Velocity** | Commits/day (7d avg) | 61.1 | 50-75 | ✅ |
-| | Total commits | 816 | - | ℹ️ |
+| **Velocity** | Commits/day (7d avg) | 62.5 | 50-75 | ✅ |
+| | Total commits | 826 | - | ℹ️ |
 | **WIP** | Active PRs | 1 | ≤2 | ✅ |
 | | Worktrees | 1 | ≤2 | ✅ |
 | | Active tasks | 2 | ≤2 | ✅ |
-| **Documentation** | Root files | 9 | <10 | ✅ |
-| | Archived files | 53 | - | ℹ️ |
+| **Documentation** | Root files | 10 | <10 | ❌ |
+| | Archived files | 63 | - | ℹ️ |
 | **Quality** | Test coverage | 86% | >85% | ✅ |
 | | Ruff errors | 0 | 0 | ✅ |
 | | Mypy errors | 0 | 0 | ✅ |
@@ -29,7 +29,7 @@
 
 ### 🚨 Active Alerts
 
-- ⚠️ Root doc creation rate HIGH: 35 in 7 days (threshold: 6)
+- ⚠️ Root doc creation rate HIGH: 36 in 7 days (threshold: 6)
 
 ---
 
@@ -39,13 +39,13 @@
 
 | Date | Commits/day | Commits (7d) | Total | Trend |
 |------|-------------|--------------|-------|-------|
-| 2026-01-10 | 61.1 | 428 | 816 | - |
+| 2026-01-10 | 62.5 | 438 | 826 | - |
 
 ### Documentation Trends
 
 | Date | Root Files | Total Docs | Archived | Status |
 |------|------------|------------|----------|--------|
-| 2026-01-10 | 9 | 385 | 53 | ✅ |
+| 2026-01-10 | 10 | 402 | 63 | ✅ |
 
 ### Quality Trends
 
@@ -94,4 +94,4 @@ Six metrics with alert thresholds:
 
 **Automation:** Run `./scripts/generate_dashboard.sh` to update this dashboard
 **Frequency:** Daily (automated in governance sessions)
-**Version:** v0.16.0 (TASK-285)
+**Version:** 1.0.0 (TASK-285)
