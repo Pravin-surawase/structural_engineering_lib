@@ -10,7 +10,7 @@
 | **Coverage** | 86% overall, 100% on 10 modules |
 | **Recent Features** | SmartDesigner, comparison module, cost optimization, design suggestions |
 
-> **Status details:** See [TASKS.md](../TASKS.md) and [next-session-brief.md](next-session-brief.md).
+> **Status details:** See [TASKS.md](../TASKS.md) and [next-session-brief.md](../planning/next-session-brief.md).
 
 ---
 

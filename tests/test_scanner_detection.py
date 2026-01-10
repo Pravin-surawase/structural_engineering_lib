@@ -22,7 +22,7 @@ def good_example():
             return tuple(sorted((k, make_hashable(v)) for k, v in obj.items()))
         else:
             return obj
-    
+
     kwargs = {"rebar_positions": [(1,2), (3,4)], "xu": 100}
     hashable_kwargs = make_hashable(kwargs)
     cache_key = f"viz_{hash(hashable_kwargs)}"  # ✅ Safe!

@@ -171,12 +171,12 @@ If you want to understand the concepts and the code step by step, start here:
 
 ## Planning / Research (roadmaps, “what’s next”)
 
-- What to do next this session: [getting-started/next-session-brief.md](getting-started/next-session-brief.md)
+- What to do next this session: [planning/next-session-brief.md](planning/next-session-brief.md)
 - v0.8 implementation playbook: [_archive/2026-01/v0.8-execution-checklist.md](_archive/2026-01/v0.8-execution-checklist.md)
 - Task board (canonical backlog): [TASKS.md](TASKS.md)
 - v0.8+ research log: [planning/research-ai-enhancements.md](planning/research-ai-enhancements.md)
 - Research index: [research/README.md](research/README.md)
-- High-level production checklist: [contributing/production-roadmap.md](contributing/production-roadmap.md)
+- High-level production checklist: [planning/production-roadmap.md](planning/production-roadmap.md)
 
 ---
 
