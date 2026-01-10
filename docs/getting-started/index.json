@@ -23,7 +23,7 @@
       "title": "GitHub Copilot Agent Quick Start",
       "description": "```bash source scripts/copilot_setup.sh",
       "last_updated": "2026-01-10",
-      "size_lines": 194
+      "size_lines": 196
     },
     {
       "name": "cost-optimization-guide.md",

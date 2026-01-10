@@ -2,8 +2,40 @@
   "folder": "agents/agent-9/governance",
   "description": "1. **Decision entry point** - `DECISION-SUMMARY.md` (final questions + readiness)",
   "last_updated": "2026-01-10",
-  "file_count": 21,
+  "file_count": 29,
   "files": [
+    {
+      "name": "AGENT-8-CONSOLIDATION-COMPLETE.md",
+      "title": "Agent 8 Consolidation - Completion Summary",
+      "description": "- 7 documentation files moved (git history preserved) - 2 new entry documents created (quick-start + automation index)",
+      "last_updated": "2026-01-10",
+      "size_lines": 387,
+      "status": "✅ Complete - Merged to main"
+    },
+    {
+      "name": "AGENT-8-CONSOLIDATION-PLAN.md",
+      "title": "Agent 8 Consolidation Plan",
+      "description": "Agent 8 files are currently scattered across: - `docs/planning/` (7 files)",
+      "last_updated": "2026-01-10",
+      "size_lines": 254,
+      "status": "📋 Planning Complete"
+    },
+    {
+      "name": "AGENT-8-CONSOLIDATION-TEST-RESULTS.md",
+      "title": "Agent 8 Consolidation - End-to-End Test Results",
+      "description": "- ✅ **PASS:** docs/agents/README.md exists - ✅ **PASS:** docs/agents/guides/ exists (8 items total)",
+      "last_updated": "2026-01-10",
+      "size_lines": 319,
+      "status": "✅ ALL TESTS PASSED"
+    },
+    {
+      "name": "AGENT-8-INCIDENT-ANALYSIS.md",
+      "title": "Agent 8 Git Workflow Analysis - What Went Wrong",
+      "description": "1. **16:02** - Phase A0 committed and pushed (d2251f5) ✅ 2. **16:29-16:30** - Phase A1 work done (created docs/_active/, indexes, etc.)",
+      "last_updated": "2026-01-10",
+      "size_lines": 363,
+      "status": "Root Cause Identified"
+    },
     {
       "name": "AGENT-9-AND-MIGRATION-REVIEW.md",
       "title": "Agent 9 & Folder Migration: Comprehensive Review",
@@ -17,8 +49,8 @@
       "title": "Migration Decision Summary - Quick Reference",
       "description": "I've completed comprehensive review of: - ✅ **Agent 9 docs** (18 files, ~4,500 lines) → **EXCELLENT, ready for use**",
       "last_updated": "2026-01-10",
-      "size_lines": 388,
-      "status": "🎯 AWAITING YOUR DECISION"
+      "size_lines": 368,
+      "status": "Option A selected (Modified Hybrid)"
     },
     {
       "name": "FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md",
@@ -74,6 +106,14 @@
       "size_lines": 98
     },
     {
+      "name": "MIGRATION-EXECUTION-PLAN.md",
+      "title": "Migration Execution Plan (Option A - Modified Hybrid)",
+      "description": "- Decision: `DECISION-SUMMARY.md` - Task plan: `MIGRATION-TASKS.md`",
+      "last_updated": "2026-01-10",
+      "size_lines": 69,
+      "status": "Active plan"
+    },
+    {
       "name": "MIGRATION-SCRIPTS.md",
       "title": "Migration Scripts Reference",
       "description": "This document catalogs all scripts created or used during the migration, their purpose, usage, and maintenance instructions. 1. **Existing Scripts** (updated during migration)",
@@ -82,10 +122,27 @@
     },
     {
       "name": "MIGRATION-STATUS.md",
-      "title": "Migration Documentation Status",
-      "description": "1. **[FULL-MIGRATION-EXECUTION-PLAN.md](FULL-MIGRATION-EXECUTION-PLAN.md)** ✅ - Executive summary",
+      "title": "Migration Status",
+      "description": "Single source of truth for migration readiness, issues, and progress. Update after each phase or batch.",
       "last_updated": "2026-01-10",
-      "size_lines": 296
+      "size_lines": 160,
+      "status": "Agent 8 Consolidation Complete ✅ | Phase A1-A3 Complete ✅"
+    },
+    {
+      "name": "MIGRATION-TASKS.md",
+      "title": "Migration Task Plan (Option A - Modified Hybrid)",
+      "description": "Option A splits migration into small, low-risk batches with validation after every batch. | Phase | Task | Primary Output | Required Validation |",
+      "last_updated": "2026-01-10",
+      "size_lines": 246,
+      "status": "Ready to execute after decision"
+    },
+    {
+      "name": "MIGRATION-WALKTHROUGH.md",
+      "title": "Migration Walkthrough (Operator Runbook)",
+      "description": "1. Confirm you are not on `main`: - `./scripts/check_not_main.sh`",
+      "last_updated": "2026-01-10",
+      "size_lines": 112,
+      "audience": "Operator running the migration in a live session"
     },
     {
       "name": "MIGRATION_REVIEW_AND_RISKS.md",
@@ -158,6 +215,14 @@
       "last_updated": "2026-01-10",
       "size_lines": 790,
       "complexity": "Low"
+    },
+    {
+      "name": "PHASE-A1-COMPLETION-SUMMARY.md",
+      "title": "Phase A1 Completion Summary",
+      "description": "1. **Created missing docs/_active/ folder** - Was absent from required structure",
+      "last_updated": "2026-01-10",
+      "size_lines": 265,
+      "status": "Phase A1 Complete, Ready for Phase A2"
     },
     {
       "name": "ROLLBACK-PROCEDURES.md",

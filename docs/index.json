@@ -335,6 +335,11 @@
       "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later. Write one when you:"
     },
     {
+      "name": "agents",
+      "path": "agents/",
+      "description": "Agent-specific guides, protocols, and reference documentation: - **Agent 8 (Git Operations):** Git workflow automation, mistake prevention, coordination"
+    },
+    {
       "name": "architecture",
       "path": "architecture/",
       "description": "Deep dives into project structure and design decisions. | Document | Purpose |"

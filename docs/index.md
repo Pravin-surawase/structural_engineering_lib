@@ -58,6 +58,7 @@ If this folder feels “too big”, you’re right — most people only need a h
 ## Subfolders
 
 - [adr/](adr/) - Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later. Write one when you:
+- [agents/](agents/) - Agent-specific guides, protocols, and reference documentation: - **Agent 8 (Git Operations):** Git workflow automation, mistake prevention, coordination
 - [architecture/](architecture/) - Deep dives into project structure and design decisions. | Document | Purpose |
 - [blog-drafts/](blog-drafts/)
 - [contributing/](contributing/) - Guides for developers and maintainers. | Guide | Audience |
