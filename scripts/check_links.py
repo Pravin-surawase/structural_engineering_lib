@@ -29,6 +29,13 @@ SKIP_LINK_PATTERNS = [
     r'^file\.md',                 # file.md - example
 ]
 
+# Skip files in these directories (planning/migration docs with target paths)
+SKIP_DIRECTORIES = [
+    "agents/agent-9",             # Agent-9 governance/planning docs
+    "docs/_archive",              # Archived docs with historical links
+    "docs/research",              # Research docs with example content
+]
+
 
 def is_placeholder_link(text: str, target: str) -> bool:
     """Check if a link is a placeholder/example that should be skipped."""
@@ -37,6 +44,18 @@ def is_placeholder_link(text: str, target: str) -> bool:
             return True
         if re.search(pattern, target, re.IGNORECASE):
             return True
+    return False
+
+
+def should_skip_file(file_path: Path, project_root: Path) -> bool:
+    """Check if a file should be skipped based on its directory."""
+    try:
+        rel_path = str(file_path.relative_to(project_root))
+        for skip_dir in SKIP_DIRECTORIES:
+            if rel_path.startswith(skip_dir):
+                return True
+    except ValueError:
+        pass
     return False
 
 
@@ -79,6 +98,10 @@ def main() -> int:
 
     for md_file in md_files:
         if not md_file.exists():
+            continue
+
+        # Skip files in excluded directories
+        if should_skip_file(md_file, project_root):
             continue
 
         file_count += 1
