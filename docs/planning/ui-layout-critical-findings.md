@@ -33,7 +33,7 @@ Future Duration class (OPTIONAL - for migration):
 
 ## Related Documents
 - **Step-by-Step Guide:** [UI-IMPLEMENTATION-AGENT-GUIDE.md](UI-IMPLEMENTATION-AGENT-GUIDE.md)
-- **Original Plan:** [UI-LAYOUT-FINAL-DECISION.md](UI-LAYOUT-FINAL-DECISION.md)
+- **Original Plan:** [ui-layout-implementation-plan.md](ui-layout-implementation-plan.md)
 - **Research:** [ui-layout-best-practices.md](../research/ui-layout-best-practices.md)
 - **Data Model:** [data-model-compatibility-checklist.md](data-model-compatibility-checklist.md)
 

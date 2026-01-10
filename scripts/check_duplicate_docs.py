@@ -18,7 +18,14 @@ from collections import defaultdict
 from pathlib import Path
 
 # Expected duplicates (per-folder files)
-EXPECTED_DUPLICATES = {"README.md", "index.md", "__init__.py"}
+EXPECTED_DUPLICATES = {
+    "README.md",
+    "index.md",
+    "__init__.py",
+    # Blog posts have their own draft/outline per post
+    "draft.md",
+    "outline.md",
+}
 
 # Directories to skip
 SKIP_DIRS = {"_archive", "node_modules", ".git", "__pycache__", ".venv"}

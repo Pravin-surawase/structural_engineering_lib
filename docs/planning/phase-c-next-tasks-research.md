@@ -82,7 +82,7 @@ complexity: beginner | intermediate | advanced
 
 **Files:**
 - `docs/research/ui-layout-final-decision.md` (27,968 bytes)
-- `docs/planning/ui-layout-final-decision.md` (46,418 bytes)
+- `docs/planning/ui-layout-implementation-plan.md` (46,418 bytes)
 
 **Resolution:**
 1. Compare content - determine which is more complete
