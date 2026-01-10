@@ -112,7 +112,7 @@ git config --global pager.diff false
 Going forward:
 1. VSCode settings prevent pager in new terminals
 2. Global git config prevents pager system-wide
-3. Copilot should use safe command formats (see COPILOT-QUICK-START.md)
+3. Copilot should use safe command formats (see copilot-quick-start.md)
 
 ---
 

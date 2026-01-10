@@ -14,7 +14,7 @@
 
 📚 [Documentation](docs/README.md) • 🚀 [Quick Start](#quick-start) • 💡 [Examples](Python/examples/) • 🔧 [API Reference](docs/reference/api.md) • 📊 [Insights Guide](docs/getting-started/insights-guide.md) • 🤖 [AI Summary](llms.txt)
 
-> **🤖 For GitHub Copilot Users:** See [COPILOT-QUICK-START.md](COPILOT-QUICK-START.md) to prevent terminal lockup issues
+> **🤖 For GitHub Copilot Users:** See [copilot quick start](docs/getting-started/copilot-quick-start.md) to prevent terminal lockup issues
 
 </div>
 
