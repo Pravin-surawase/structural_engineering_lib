@@ -717,6 +717,9 @@ git rm docs/file.md
 | **Using manual git commands (git add, commit, push)** | **ALWAYS use ./scripts/ai_commit.sh "message"** |
 | **Doing `git commit` then trying to fix pre-commit issues** | **Use ai_commit.sh or safe_push.sh - it handles pre-commit automatically** |
 | **Manual merge conflict resolution** | **Use safe_push.sh - it auto-resolves safely** |
+| **Unfinished merge (MERGE_HEAD exists)** | **Run:** `./scripts/recover_git_state.sh` (or `git commit --no-edit` then `git push`) |
+| **Using `git commit --amend` AFTER pushing** | **NEVER DO THIS!** Create new commit instead: `git add -A && git commit -m "fix: ..."` |
+| **Running checks on subdirectory when CI checks everything** | **CRITICAL: Run `cd Python && python -m black --check .` (not `black --check structural_lib/`) - CI checks ALL of Python/ including examples/** |
 | Creating Python file → commit → CI fails on black | Create → run black locally → commit (or rely on pre-commit hooks) |
 | `gh pr create` → immediately `gh pr merge` | Create → `gh pr checks --watch` → wait → merge |
 | Running `python` directly | Use full venv path or configure environment first |
@@ -730,21 +733,6 @@ git rm docs/file.md
 | Resolving merge conflicts + feature in one commit | Resolve conflicts in separate commit first, then add feature |
 | PR title/description doesn't match actual changes | List ALL changed files in PR body; update title if scope changes |
 | Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` **ONLY IF NOT YET PUSHED** |
-| **Using `git commit --amend` AFTER pushing** | **NEVER DO THIS!** Create new commit instead: `git add -A && git commit -m "fix: ..."` |
-| Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
-| Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
-| Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
-| Verifying PyPI in an existing venv | Use a fresh venv for `pip install structural-lib-is456==X.Y.Z` |
-| CI fails on formatting | Run `black`/`ruff` locally, commit, push |
-| **Running checks on subdirectory when CI checks everything** | **CRITICAL: Run `cd Python && python -m black --check .` (not `black --check structural_lib/`) - CI checks ALL of Python/ including examples/** |
-| Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
-| CI shows old formatting failure | Re-run checks after pushing formatting fix |
-| Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
-| Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
-| **Unfinished merge (MERGE_HEAD exists)** | **Run:** `./scripts/recover_git_state.sh` (or `git commit --no-edit` then `git push`) |
-| Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
-| Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` **ONLY IF NOT YET PUSHED** |
-| **Using `git commit --amend` AFTER pushing** | **NEVER DO THIS!** Create new commit instead: `git add -A && git commit -m "fix: ..."` |
 | Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
 | Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
 | Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
@@ -753,8 +741,6 @@ git rm docs/file.md
 | Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
 | CI shows old formatting failure | Re-run checks after pushing formatting fix |
 | Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
-| Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
-| **Unfinished merge (MERGE_HEAD exists)** | **Run:** `./scripts/recover_git_state.sh` (or `git commit --no-edit` then `git push`) |
 | Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
 
 ---

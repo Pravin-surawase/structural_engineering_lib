@@ -6,7 +6,13 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ## 2026-01-11 — Session 6: Migration Automation & Prevention System 🛡️
 
-**Focus:** Create automation toolkit to prevent Session 5 issues
+**Focus:** Create automation toolkit to prevent Session 5 issues, complete TASK-317
+
+### Commits This Session
+1. `0107058` - feat: TASK-317 - Update IS 456 __init__.py exports + validation scripts (PR #324, merged)
+2. `3ad5d9a` - docs: add Module Migration Rules section to copilot-instructions
+3. `191370e` - docs: mark TASK-317 complete - IS 456 exports updated
+4. `aa29db5` - docs: add future core module tasks and update Session 6 status
 
 ### Automation Scripts Created
 
@@ -27,14 +33,16 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | Monkeypatch doesn't work | Patching stub not source | Document pattern |
 | E402 import order | Logger before imports | Ruff auto-fix |
 
-### TASK-317 Progress
+### TASK-317 Complete ✅
 - Updated codes/is456/__init__.py to export all 7 migrated modules
-- Added IS456Code convenience methods (get_tau_c, get_tau_c_max)
+- Added IS456Code convenience methods (get_tau_c → get_tc_value, get_tau_c_max → get_tc_max_value)
 - 2392 tests passing
+- Migration rules added to copilot-instructions.md
 
 ### Notes
 - Created PR workflow for production code changes
 - Automation-first approach: scripts prevent manual errors
+- Future tasks TASK-320/321 created for core module migration (low priority)
 
 
 ## 2026-01-10 — Session 5: IS 456 Migration Complete 🎉
