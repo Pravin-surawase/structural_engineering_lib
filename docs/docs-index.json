@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-10T22:43:42.834198",
-  "total_docs": 290,
+  "generated": "2026-01-10T22:57:59.058090",
+  "total_docs": 291,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -61,7 +61,7 @@
         "Recently Done",
         "Archive"
       ],
-      "size_bytes": 18114
+      "size_bytes": 18304
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -297,7 +297,7 @@
         "Part 4: Proposed Enterprise Structure",
         "Part 5: Implementation Priority"
       ],
-      "size_bytes": 11402
+      "size_bytes": 11050
     },
     "docs/research/agent-8-week1-implementation-blocker.md": {
       "title": "Agent 8 Week 1 Implementation Blocker",
@@ -2852,7 +2852,7 @@
         "References (Use When Needed)",
         "\ud83d\udcda Required Reading"
       ],
-      "size_bytes": 5181
+      "size_bytes": 4662
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3984,6 +3984,23 @@
         "TASK-275: Professional Liability Framework"
       ],
       "size_bytes": 37193
+    },
+    "docs/planning/session-2026-01-10-session3-issues.md": {
+      "title": "Session 3 Issues and Solutions (2026-01-10)",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Issues Encountered",
+        "Automation Improvements Made",
+        "Session Metrics",
+        "Recommendations for Future Sessions"
+      ],
+      "size_bytes": 3075
     },
     "docs/planning/agent-5-phase-3-handoff.md": {
       "title": "\ud83d\udccb PHASE 3 HANDOFF - ACCURATE SUMMARY",
@@ -6251,6 +6268,7 @@
         "docs/planning/dependency-audit-2026-01-07.md",
         "docs/planning/blog-content-calendar.md",
         "docs/planning/v0.17-task-specs.md",
+        "docs/planning/session-2026-01-10-session3-issues.md",
         "docs/planning/agent-5-phase-3-handoff.md",
         "docs/planning/project-needs-assessment-2026-01-09.md"
       ],
@@ -6311,6 +6329,7 @@
         "docs/planning/dependency-audit-2026-01-07.md",
         "docs/planning/blog-content-calendar.md",
         "docs/planning/v0.17-task-specs.md",
+        "docs/planning/session-2026-01-10-session3-issues.md",
         "docs/planning/agent-5-phase-3-handoff.md",
         "docs/planning/project-needs-assessment-2026-01-09.md"
       ],
