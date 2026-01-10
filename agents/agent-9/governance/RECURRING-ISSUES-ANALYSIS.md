@@ -15,60 +15,57 @@ Priority rankings based on: frequency, impact, and ease of automation.
 
 ## High Priority (Automate Now)
 
-### 1. Root Test Files (Orphaned)
+### 1. Root Test Files (Orphaned) ✅ RESOLVED
 
 **Pattern:** Test files in project root instead of tests/
-**Current Count:** 3 files
-**Impact:** Confusing structure, tests may not run in CI
+**Current Count:** 0 files (was 3)
+**Status:** ✅ Already fixed - files now in tests/
 
-**Files Found:**
-- `test_quality_assessment.py` (root)
-- `test_scanner_detection.py` (root)
-- `test_xlwings_bridge.py` (root)
+**Files (now correctly located):**
+- `tests/test_quality_assessment.py` ✅
+- `tests/test_scanner_detection.py` ✅
+- `tests/test_xlwings_bridge.py` ✅
 
-**Automation Proposed:**
-```yaml
-# Pre-commit hook: check-test-location
-- id: check-test-location
-  name: Check test files are in tests/
-  entry: |
-    find . -maxdepth 1 -name "test_*.py" -exec echo "ERROR: {} should be in tests/" \;
-  language: system
-```
-
-**Manual Fix:**
-```bash
-git mv test_*.py tests/
-```
+**Verified:** 2026-01-10
 
 ---
 
-### 2. Stale Redirect Stubs (Small Files)
+### 2. Stale Redirect Stubs (Small Files) ⚠️ PARTIAL
 
 **Pattern:** Files <10 lines that are just redirects to moved files
-**Current Count:** 10+ files
+**Current Count:** 13 stubs with references (was 17, 4 removed)
 **Impact:** Clutters docs/, confusing for navigators
+**Status:** ⚠️ 4 orphaned stubs removed, 13 remain with active references
 
-**Files Found (sample):**
-- `docs/research/research-detailing.md` (6 lines)
-- `docs/contributing/git-workflow-for-ai-agents.md` (6 lines)
-- `docs/contributing/troubleshooting.md` (6 lines)
+**Stubs Removed (2026-01-10):**
+- `docs/planning/task-210-211-session-complete.md` ✅
+- `docs/planning/task-210-211-complete.md` ✅
+- `docs/planning/task-210-211-work-session.md` ✅
+- `docs/planning/task-210-211-status.md` ✅
 
-**Automation Proposed:**
-```python
-# Script: check_redirect_stubs.py
-# Flag files <10 lines with "Moved to" pattern
-```
+**Remaining (have references - need link updates first):**
+- `docs/reference/api-reference.md` (14 refs)
+- `docs/getting-started/project-overview.md` (24 refs)
+- `docs/reference/vba-guide.md` (12 refs)
+- `docs/planning/production-roadmap.md` (11 refs)
+- ... and 9 more (use `scripts/check_redirect_stubs.py` for full list)
 
-**Manual Fix:**
+**Automation Created:**
 ```bash
-# Verify content exists at target
-wc -l docs/path/file.md
-cat docs/path/file.md  # Should show redirect
+# Check redirect stubs
+.venv/bin/python scripts/check_redirect_stubs.py
 
-# If redirect only, remove
-git rm docs/path/file.md
+# Remove safe stubs (no references)
+.venv/bin/python scripts/check_redirect_stubs.py --fix
+
+# Preview removals
+.venv/bin/python scripts/check_redirect_stubs.py --dry-run
 ```
+
+**Next Steps:**
+1. Run script periodically to find new orphaned stubs
+2. Update references before removing remaining stubs
+3. Consider bulk reference update script for future
 
 ---
 
@@ -202,8 +199,8 @@ git rm docs/path/file.md
 
 | Issue | Priority | Status | Automation |
 |-------|----------|--------|------------|
-| Root test files | High | Action needed | Pre-commit hook |
-| Redirect stubs | High | Action needed | Script |
+| Root test files | High | ✅ Resolved | N/A (already fixed) |
+| Redirect stubs | High | ⚠️ Partial (4 removed, 13 remain) | `scripts/check_redirect_stubs.py` ✅ |
 | Duplicate docs | High | Action needed | Script |
 | Spaces in names | Medium | Gitignored | N/A |
 | TODO comments | Medium | Track monthly | Script |
