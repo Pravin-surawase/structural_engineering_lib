@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-01-10
+doc_type: reference
+complexity: advanced
+tags: [api, python, functions, contracts]
+---
+
 # IS 456 RC Beam Design Library — API Reference
 
 **Document Version:** 0.16.0

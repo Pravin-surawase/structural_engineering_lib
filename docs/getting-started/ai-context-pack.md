@@ -1,3 +1,12 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-01-10
+doc_type: guide
+complexity: beginner
+tags: [ai-agent, onboarding, context]
+---
+
 # AI Context Pack
 
 > **For AI Agents:** Use this as your single entrypoint when working in VS Code.
