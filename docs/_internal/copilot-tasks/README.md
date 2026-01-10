@@ -8,10 +8,25 @@
 
 | File | Purpose | When to Use |
 |------|---------|-------------|
-| **copilot-workflow.md** | Master guide for working with Copilot | Read first, reference always |
-| **progress-tracker.md** | Track completion of tasks | Update as you work |
+| **[copilot-workflow.md](copilot-workflow.md)** | Master guide for working with Copilot | Read first, reference always |
+| **[progress-tracker.md](progress-tracker.md)** | Track completion of tasks | Update as you work |
+| **[handoff-to-copilot.md](handoff-to-copilot.md)** | Handoff documentation to Copilot | Task transitions |
+| **[python-excel-research-2025.md](python-excel-research-2025.md)** | Python-Excel integration research | Reference for Excel features |
 | **TASK_X.Y_Name_Spec.md** | Detailed implementation specs | One per task, feed to Copilot |
 | **README.md** | This file (system overview) | Orientation |
+
+## Task Files
+
+| File | Status |
+|------|--------|
+| [task-0.1-xlwings-installation-copilot.md](task-0.1-xlwings-installation-copilot.md) | XLWings setup |
+| [task-1.1-beamdesignschedule-spec.md](task-1.1-beamdesignschedule-spec.md) | Beam design schedule |
+| [vba-vscode-workflow.md](vba-vscode-workflow.md) | VBA VS Code workflow |
+| [vscode-vba-quickstart.md](vscode-vba-quickstart.md) | VBA VS Code quickstart |
+| [xlwings-migration-plan.md](xlwings-migration-plan.md) | XLWings migration plan |
+| [xlwings-quick-start.md](xlwings-quick-start.md) | XLWings quick start |
+| [xlwings-solution-summary.md](xlwings-solution-summary.md) | XLWings solution summary |
+| [xlwings-test-results.md](xlwings-test-results.md) | XLWings test results |
 
 ---
 

@@ -2,7 +2,7 @@
 
 Internal project documentation including audits, workflows, and strategies.
 
-**Files:** 22 | **Updated:** 2026-01-11
+**Files:** 22+ | **Updated:** 2026-01-11
 
 ---
 
@@ -47,6 +47,13 @@ Internal project documentation including audits, workflows, and strategies.
 | [multi-agent-review-2025-12-28.md](multi-agent-review-2025-12-28.md) | Multi-agent review |
 | [quality-gaps-assessment.md](quality-gaps-assessment.md) | Quality gaps assessment |
 | [screenshot-guide.md](screenshot-guide.md) | Screenshot guide |
+
+## Subfolders
+
+| Folder | Description |
+|--------|-------------|
+| [copilot-tasks/](copilot-tasks/README.md) | Copilot task execution system |
+| [tasks/](tasks/) | Individual task specs ([task-142-design-suggestions.md](tasks/task-142-design-suggestions.md)) |
 
 ---
 

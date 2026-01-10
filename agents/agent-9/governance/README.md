@@ -31,9 +31,12 @@
    - `PHASE-8-FINAL-VALIDATION.md`
 
 4. **Governance rules**
-   - `FOLDER_STRUCTURE_GOVERNANCE.md` (naming rules + exceptions)
-   - `FOLDER_IMPLEMENTATION_GUIDE.md` (practical setup)
-   - `FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md` (research basis)
+   - [FOLDER_STRUCTURE_GOVERNANCE.md](FOLDER_STRUCTURE_GOVERNANCE.md) (naming rules + exceptions)
+   - [FOLDER_IMPLEMENTATION_GUIDE.md](FOLDER_IMPLEMENTATION_GUIDE.md) (practical setup)
+   - [FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md](FOLDER_GOVERNANCE_RESEARCH_SUMMARY.md) (research basis)
+   - [RECURRING-ISSUES-ANALYSIS.md](RECURRING-ISSUES-ANALYSIS.md) (recurring issues & solutions)
+   - [AUTOMATION-CATALOG.md](AUTOMATION-CATALOG.md) (available automation scripts)
+   - [PHASE-B-TASK-TRACKER.md](PHASE-B-TASK-TRACKER.md) (Phase B task tracking)
 
 5. **Execution support**
    - `ROLLBACK-PROCEDURES.md` (rollback levels)
