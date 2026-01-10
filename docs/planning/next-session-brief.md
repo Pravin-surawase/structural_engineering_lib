@@ -5,68 +5,52 @@
 | **Current** | v0.16.0 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-10 | **Last commit:** 1827ce2
+**Date:** 2026-01-10 | **Last commit:** d436c7b
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-10 (Session 5 - IS 456 Migration Preparation)
-- Focus: **Migration research, automation scripts, workflow guides**
-- Commits: 1827ce2 - feat: add IS 456 migration automation and research
-- Deliverables: 4 migration scripts + 3 docs (2,493 lines)
-- Next: Execute migration starting with tables.py (TASK-313)
+- Date: 2026-01-10 (Session 5 - IS 456 Migration Complete ✅)
+- Focus: **Migrated all 7 IS 456 modules to codes/is456/ namespace**
+- Commits: d436c7b - feat: TASK-313 - Migrate IS 456 modules (#323)
+- Deliverables: 3,048 lines migrated, 2392 tests passing, zero breaking changes
+- Next: Update codes/is456/__init__.py exports (TASK-317)
 <!-- HANDOFF:END -->
 
 ---
 
-## 🎯 Immediate Priority: Execute Migration (TASK-313)
+## 🎯 Immediate Priority: Complete IS 456 Integration (TASK-317)
 
-**Ready to execute! All automation is in place.**
+**Migration done! Now update exports for clean API.**
 
 ### Quick Start
 ```bash
-# 1. Pre-flight check
-.venv/bin/python scripts/pre_migration_check.py
+# 1. Check current state
+.venv/bin/python scripts/migrate_module.py --list
 
-# 2. Create feature branch
-git checkout -b feat/migrate-is456-modules
+# 2. Update codes/is456/__init__.py to re-export migrated modules
+# (See codes/is456/__init__.py for current exports)
 
-# 3. Migrate first module
-.venv/bin/python scripts/migrate_module.py tables --dry-run
-.venv/bin/python scripts/migrate_module.py tables
-
-# 4. Test and commit
-.venv/bin/python -m pytest Python/tests/test_tables*.py -v
-./scripts/ai_commit.sh "refactor: migrate tables.py to codes/is456/"
+# 3. Validate all tests still pass
+.venv/bin/python -m pytest Python/tests/ --tb=short -q
 ```
 
-### Migration Order (Respects Dependencies)
+### What TASK-317 Requires
 
-| Order | Module | Est | Order | Module | Est |
-|-------|--------|-----|-------|--------|-----|
-| 1 | tables.py | 15m | 5 | serviceability.py | 25m |
-| 2 | shear.py | 20m | 6 | compliance.py | 25m |
-| 3 | flexure.py | 30m | 7 | ductile.py | 15m |
-| 4 | detailing.py | 20m | **Total** | | **~2.5h** |
+1. Update `codes/is456/__init__.py` to export all migrated modules
+2. Ensure `IS456Code` class properly references migrated functions
+3. Validate CodeRegistry works with new structure
+4. Update any remaining import paths
 
-### Key Commands
+### After TASK-317
 
-```bash
-.venv/bin/python scripts/migrate_module.py --list     # Status
-.venv/bin/python scripts/migrate_module.py X --dry-run # Preview
-.venv/bin/python scripts/migrate_module.py X          # Execute
-.venv/bin/python scripts/validate_migration.py -v     # Validate
-```
-
-### Key Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [is456-migration-research.md](../research/is456-migration-research.md) | Full analysis |
-| [migration-workflow-guide.md](../guidelines/migration-workflow-guide.md) | Step-by-step |
-| [migration-preflight-checklist.md](../guidelines/migration-preflight-checklist.md) | Pre-checks |
+Move on to v0.17.0 critical tasks:
+- TASK-273: Interactive Testing UI (Streamlit)
+- TASK-272: Code Clause Database
+- TASK-274: Security Hardening
+- TASK-275: Professional Liability Framework
 
 ---
 
@@ -75,12 +59,11 @@ git checkout -b feat/migrate-is456-modules
 | Metric | Value | Status |
 |--------|-------|--------|
 | Version | v0.16.0 | Released |
-| Tests | 2300+ | ✅ Passing |
-| Links | 727 | ✅ 0 broken |
-| Migration Scripts | 4 | ✅ Ready |
-| Modules to Migrate | 7 | ⏳ Pending |
+| Tests | 2392 | ✅ Passing |
+| IS 456 Migration | 7/7 | ✅ Complete |
+| TASK-317 | codes/__init__.py | ⏳ Next |
 
 ## 📚 Required Reading
 
 - `.github/copilot-instructions.md`
-- `docs/guidelines/migration-workflow-guide.md`
+- `docs/SESSION_LOG.md` (Session 5 - lessons learned)
