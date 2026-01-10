@@ -8,29 +8,27 @@ This module provides IS 456-specific implementations of:
 
 All existing functionality from the main library is preserved.
 This package acts as a namespace for IS 456-specific code.
+
+Migration Status:
+- tables.py: ✅ Migrated (Session 5)
+- shear.py: ⏳ Pending
+- flexure.py: ⏳ Pending
+- detailing.py: ⏳ Pending
+- serviceability.py: ⏳ Pending
+- compliance.py: ⏳ Pending
+- ductile.py: ⏳ Pending
 """
 
 from __future__ import annotations
 
+# Import migrated modules - these are now in codes/is456/
+from structural_lib.codes.is456 import tables
 from structural_lib.core.base import DesignCode
 from structural_lib.core.registry import register_code
-from structural_lib.detailing import (
-    calculate_bar_spacing,
-    calculate_development_length,
-    calculate_lap_length,
-    check_min_spacing,
-)
 
-# Re-export existing implementations for backward compatibility
-# These will be gradually migrated to this package
-from structural_lib.flexure import (
-    calculate_ast_required,
-    calculate_mu_lim,
-    design_doubly_reinforced,
-    design_flanged_beam,
-    design_singly_reinforced,
-)
-from structural_lib.shear import calculate_tv, design_shear
+# NOTE: Other modules (flexure, shear, detailing, etc.) will be imported here
+# AFTER they are migrated. Importing them now would cause circular imports.
+# See docs/research/is456-migration-research.md for migration plan.
 
 
 @register_code("IS456")
@@ -69,18 +67,7 @@ class IS456Code(DesignCode):
 # Convenience exports
 __all__ = [
     "IS456Code",
-    # Flexure
-    "calculate_ast_required",
-    "calculate_mu_lim",
-    "design_singly_reinforced",
-    "design_doubly_reinforced",
-    "design_flanged_beam",
-    # Shear
-    "calculate_tv",
-    "design_shear",
-    # Detailing
-    "calculate_development_length",
-    "calculate_lap_length",
-    "calculate_bar_spacing",
-    "check_min_spacing",
+    # Migrated modules
+    "tables",
+    # Note: flexure, shear, detailing exports will be added after migration
 ]
