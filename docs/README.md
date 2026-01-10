@@ -19,9 +19,9 @@ python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```
 For VS Code AI-agent work, start with:
-- **[AGENT_ONBOARDING.md](agents/AGENT_ONBOARDING.md)** - New agent checklist
-- **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
-- **[AGENT_QUICK_REFERENCE.md](agents/AGENT_QUICK_REFERENCE.md)** - Essential commands
+- **[AGENT_ONBOARDING.md](agents/agent-onboarding.md)** - New agent checklist
+- **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/agent-workflow-master-guide.md)** - Complete automation guide
+- **[AGENT_QUICK_REFERENCE.md](agents/agent-quick-reference.md)** - Essential commands
 - [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
 - [AI summary](../llms.txt) - LLM-friendly summary
 - [Handoff Quick Start](contributing/handoff.md) - Session handoff
