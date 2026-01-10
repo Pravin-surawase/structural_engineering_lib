@@ -135,9 +135,11 @@
 ### Phase 1: Model B (START TODAY)
 
 **Next handoff from Agent 6:**
-1. Open: `docs/planning/agent-8-tasks-git-ops.md`
-2. Open: `docs/planning/agent-8-mistakes-prevention-guide.md` (reference)
-3. Follow Agent 8 checklist manually (7 steps)
+1. Open: `docs/agents/guides/agent-8-quick-start.md` (60-second onboarding)
+2. Open: `docs/agents/guides/agent-8-git-ops.md` (full protocol)
+3. Open: `docs/agents/guides/agent-8-automation.md` (all scripts)
+4. Open: `docs/agents/guides/agent-8-mistakes-prevention-guide.md` (reference)
+5. Follow Agent 8 checklist manually (7 steps)
 4. Time yourself - see immediate improvement
 
 **Expected:** 70-85% faster than current process

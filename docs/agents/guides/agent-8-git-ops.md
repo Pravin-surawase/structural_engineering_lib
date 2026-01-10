@@ -828,7 +828,7 @@ git diff --name-only       # Files only
 git --no-pager diff        # Force no pager
 ```
 
-**Ref:** See `docs/planning/agent-8-mistakes-prevention-guide.md` → "Terminal Stuck in Git Pager" section for full details.
+**Ref:** See [agent-8-mistakes-prevention-guide.md](agent-8-mistakes-prevention-guide.md) → "Terminal Stuck in Git Pager" section for full details.
 
 ---
 

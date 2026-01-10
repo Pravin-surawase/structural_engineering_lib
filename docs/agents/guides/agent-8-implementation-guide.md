@@ -323,8 +323,10 @@ if [[ "$GIT_AGENT_MODE" == true ]]; then
 
     # Display Agent 8 context
     echo "📋 Agent 8 Context:"
-    echo "  • Protocol: docs/planning/agent-8-tasks-git-ops.md"
-    echo "  • Decision Matrix: docs/planning/agent-8-tasks-git-ops.md#decision-logic"
+    echo "  • Quick Start: docs/agents/guides/agent-8-quick-start.md"
+    echo "  • Protocol: docs/agents/guides/agent-8-git-ops.md"
+    echo "  • Automation: docs/agents/guides/agent-8-automation.md"
+    echo "  • Decision Matrix: docs/agents/guides/agent-8-git-ops.md#decision-logic"
     echo "  • Audit Log: git_operations_log/$(date +%Y-%m-%d).md"
     echo ""
 

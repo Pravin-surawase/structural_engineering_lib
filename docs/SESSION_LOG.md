@@ -285,7 +285,7 @@ Based on Faros AI, Statsig, Axon, and Shopify research:
 | Conflict Tests | 0 tests | 15 scenarios | 90% coverage |
 
 #### Deliverables
-- `docs/planning/agent-8-week1-completion-summary.md` (comprehensive analysis, this document)
+- `docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md` (comprehensive analysis, this document)
 - `scripts/safe_push.sh` (modified with Opt #1 & #2)
 - `scripts/ci_monitor_daemon.sh` (new, 337 lines)
 - `scripts/test_merge_conflicts.sh` (new, 942 lines)
