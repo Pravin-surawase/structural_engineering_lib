@@ -6,13 +6,25 @@ who is new to software projects, but wants to understand the concepts and code.
 If you are already comfortable with Python/VBA, you can move faster. If not, take
 it step by step. The goal is confidence, not speed.
 
+**Files:** 9 | **Updated:** 2026-01-11
+
 ## Recommended order (start here)
 
-1) learning-plan.md
-2) concepts-map.md
-3) glossary.md
-4) exercises.md
-5) guides.md
+| # | File | Description |
+|---|------|-------------|
+| 1 | [learning-plan.md](learning-plan.md) | Start here - structured learning path |
+| 2 | [concepts-map.md](concepts-map.md) | Key concepts overview |
+| 3 | [glossary.md](glossary.md) | Terminology definitions |
+| 4 | [exercises.md](exercises.md) | Practice exercises |
+| 5 | [guides.md](guides.md) | Additional learning guides |
+
+## Additional Resources
+
+| File | Description |
+|------|-------------|
+| [owner-learning-plan.md](owner-learning-plan.md) | Project owner learning plan |
+| [week-01-start-here.md](week-01-start-here.md) | Week 1 getting started guide |
+| [phase-coverage-audit.md](phase-coverage-audit.md) | Learning phase coverage audit |
 
 ## Two tracks (pick one)
 
