@@ -1,18 +1,24 @@
 # Verification
 
-Benchmark examples and verification packs for validating library calculations.
+Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
-## Contents
+**Files:** 5 | **Updated:** 2026-01-11
 
-| Document | Purpose |
-|----------|---------|
-| [Validation Pack](validation-pack.md) | 5 benchmark beams with IS 456 references |
-| [Insights Verification Pack](insights-verification-pack.md) | 10 benchmark cases for insights module (v0.12.0+) |
-| [Examples](examples.md) | Detailed worked examples with hand calculations |
-| [Verification Pack](pack.md) | Test vectors for regression testing |
-| [External CLI Test](external-cli-test.md) | S-007 checklist for a fresh user run |
+---
 
-## Quick Start
+## 📋 Contents
+
+| Document | Description |
+|----------|-------------|
+| [validation-pack.md](validation-pack.md) | 5 benchmark beams with IS 456 references |
+| [insights-verification-pack.md](insights-verification-pack.md) | 10 benchmark cases for insights module (v0.12.0+) |
+| [examples.md](examples.md) | Detailed worked examples with hand calculations |
+| [pack.md](pack.md) | Test vectors for regression testing |
+| [external-cli-test.md](external-cli-test.md) | S-007 checklist for a fresh user run |
+
+---
+
+## 🚀 Quick Start
 
 Run the validation pack to verify library accuracy:
 
@@ -26,11 +32,29 @@ print(f'B4: τv={r.tv:.3f} (expected: 1.449)')
 "
 ```
 
-## Why verification matters
+---
+
+## ✅ Why Verification Matters
 
 Engineering software must be verifiable. These documents provide:
 
-- **Hand calculation comparisons** — Every formula traced to IS 456 clause
-- **SP:16 cross-references** — Design aids table lookups
-- **Tolerance specifications** — Acceptable error bounds
-- **Reproducible test cases** — Same input → same output
+| Feature | Purpose |
+|---------|---------|
+| **Hand calculation comparisons** | Every formula traced to IS 456 clause |
+| **SP:16 cross-references** | Design aids table lookups |
+| **Tolerance specifications** | Acceptable error bounds (±0.1% areas, ±1mm dimensions) |
+| **Reproducible test cases** | Same input → same output (deterministic) |
+
+---
+
+## 📚 Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [IS 456 Formulas](../reference/is456-formulas.md) | Formula quick reference |
+| [Testing Strategy](../contributing/testing-strategy.md) | Test writing guidelines |
+| [Known Pitfalls](../reference/known-pitfalls.md) | Common calculation traps |
+
+---
+
+**Parent:** [docs/README.md](../README.md)

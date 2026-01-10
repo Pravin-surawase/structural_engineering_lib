@@ -1,24 +1,35 @@
 # Learning Hub (Beginner-Friendly)
 
-This folder is a guided learning path for this repo. It is written for an engineer
-who is new to software projects, but wants to understand the concepts and code.
-
-If you are already comfortable with Python/VBA, you can move faster. If not, take
-it step by step. The goal is confidence, not speed.
+A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the Python/VBA implementation.
 
 **Files:** 9 | **Updated:** 2026-01-11
 
-## Recommended order (start here)
+---
 
-| # | File | Description |
-|---|------|-------------|
-| 1 | [learning-plan.md](learning-plan.md) | Start here - structured learning path |
-| 2 | [concepts-map.md](concepts-map.md) | Key concepts overview |
-| 3 | [glossary.md](glossary.md) | Terminology definitions |
-| 4 | [exercises.md](exercises.md) | Practice exercises |
-| 5 | [guides.md](guides.md) | Additional learning guides |
+## 🎯 Choose Your Track
 
-## Additional Resources
+| I am... | Start Here | Time |
+|---------|------------|------|
+| **New to coding** | [learning-plan.md](learning-plan.md) | 2-4 weeks |
+| **Python developer** | [concepts-map.md](concepts-map.md) then [../architecture/](../architecture/README.md) | 2-3 days |
+| **Structural engineer** | [../getting-started/beginners-guide.md](../getting-started/beginners-guide.md) | 1-2 hours |
+| **Project owner** | [owner-learning-plan.md](owner-learning-plan.md) | 1 week |
+
+---
+
+## 📚 Core Learning Materials
+
+| # | File | Description | Audience |
+|---|------|-------------|----------|
+| 1 | [learning-plan.md](learning-plan.md) | **Start here** - structured 4-week path | Beginners |
+| 2 | [concepts-map.md](concepts-map.md) | Key concepts overview (IS 456, layers) | All |
+| 3 | [glossary.md](glossary.md) | Terminology definitions | All |
+| 4 | [exercises.md](exercises.md) | Practice exercises with solutions | Learners |
+| 5 | [guides.md](guides.md) | Additional learning resources | All |
+
+---
+
+## 📖 Additional Resources
 
 | File | Description |
 |------|-------------|
@@ -26,21 +37,49 @@ it step by step. The goal is confidence, not speed.
 | [week-01-start-here.md](week-01-start-here.md) | Week 1 getting started guide |
 | [phase-coverage-audit.md](phase-coverage-audit.md) | Learning phase coverage audit |
 
-## Two tracks (pick one)
+---
 
-### Track A: Use the library
-- Start: docs/getting-started/beginners-guide.md
-- Then: docs/getting-started/python-quickstart.md
-- Then: docs/cookbook/cli-reference.md
+## 🛤️ Two Tracks (Pick One)
 
-### Track B: Maintain the library
-- Start: docs/architecture/project-overview.md
-- Then: docs/architecture/deep-project-map.md
-- Then: docs/reference/api.md
-- Then: docs/contributing/testing-strategy.md
+### Track A: Use the Library (Engineers)
 
-## What you will be able to do
-- Run the full pipeline (CSV -> JSON -> BBS -> DXF)
-- Understand the output schema and compliance summary
-- Trace a design calculation to the exact module and test
-- Safely modify code and verify changes
+```
+Step 1: docs/getting-started/beginners-guide.md     → Understand the basics
+Step 2: docs/getting-started/python-quickstart.md   → Run your first calculation
+Step 3: docs/cookbook/cli-reference.md              → Use the command line
+Step 4: docs/cookbook/python-recipes.md             → Common patterns
+```
+
+### Track B: Maintain the Library (Developers)
+
+```
+Step 1: docs/architecture/project-overview.md       → System architecture
+Step 2: docs/architecture/deep-project-map.md       → Code organization
+Step 3: docs/reference/api.md                       → API reference
+Step 4: docs/contributing/testing-strategy.md       → Testing patterns
+```
+
+---
+
+## ✅ What You Will Be Able To Do
+
+| After Track A | After Track B |
+|---------------|---------------|
+| Run full pipeline (CSV → JSON → BBS → DXF) | Safely modify calculation code |
+| Understand output schema | Write and run tests |
+| Interpret compliance summary | Add new IS 456 formulas |
+| Use CLI for batch processing | Create pull requests |
+
+---
+
+## 📚 Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [Getting Started](../getting-started/README.md) | Quick setup guides |
+| [Cookbook](../cookbook/README.md) | Task-focused recipes |
+| [Reference](../reference/README.md) | API documentation |
+
+---
+
+**Parent:** [docs/README.md](../README.md)
