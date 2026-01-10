@@ -12,53 +12,77 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-10 (Evening Session)
-- Focus: **Phase C.1 Complete** - Documentation Semantic Enhancement
-- Session Commits (5):
-  - 0a3e78d - TASKS.md update with Phase C tasks
-  - 22a8730 - Redirect stub automation + 4 stubs removed
-  - 18cfaf8 - Semantic README enhancement (3 files)
-  - f7be195 - Duplicate docs checker + session issues doc
-  - (pending) - Phase C research + session prep
+- Date: 2026-01-10 (Session 2 - Evening)
+- Focus: **Phase C MOSTLY COMPLETE** - 6/7 tasks done
+- Session Commits (4):
+  - 362eef8 - TASK-302: Remove all 13 redirect stubs with automated reference updater
+  - 78b13b9 - TASK-303: Add front-matter template + validation script
+  - 4270343 - TASK-304: Resolve duplicate by renaming to implementation-plan
+  - e1c27ca - Update TASKS.md with Phase C progress
 - Automation Created:
-  - ✅ `scripts/check_redirect_stubs.py` - Find and clean redirect stubs (--fix, --dry-run)
-  - ✅ `scripts/check_duplicate_docs.py` - Find duplicate filenames (--json)
+  - ✅ `scripts/update_redirect_refs.py` - Automated redirect reference updater (--fix, --remove-stubs)
+  - ✅ `scripts/check_doc_frontmatter.py` - Validate doc front-matter metadata (--add, --json)
+  - ✅ `scripts/check_redirect_stubs.py` - Updated with self-reference detection
+  - ✅ `scripts/check_duplicate_docs.py` - Updated with draft.md/outline.md exclusions
 - Docs Enhanced:
-  - ✅ `docs/README.md` - Semantic navigation tables with Type/Complexity
-  - ✅ `docs/agents/README.md` - Agent registry with Domain/Complexity
-  - ✅ `docs/research/README.md` - Research index with Type/Tags
+  - ✅ `docs/contributing/doc-template.md` - Front-matter template for new docs
+  - ✅ `docs/getting-started/ai-context-pack.md` - Added front-matter
+  - ✅ `docs/reference/api.md` - Added front-matter
+  - ✅ `docs/contributing/development-guide.md` - Added front-matter
 - Metrics:
-  - 289 markdown files (was 292, 4 stubs removed)
-  - 729 internal links (was 708, +21 from semantic tables)
-  - 0 broken links
-  - 13 redirect stubs remain (have active references)
-  - 7 duplicate filename patterns (1 true duplicate)
-- Issues Fixed:
-  - Python 3.9 compatibility note added to copilot-instructions.md
-  - Session issues documented in docs/planning/session-2026-01-10-issues.md
-- Next: **Phase C.2** - TASK-302 (clean stubs with refs), TASK-303 (front-matter template)
-- Research: See docs/planning/phase-c-next-tasks-research.md
+  - 277 markdown files (was 290, -13 stubs removed)
+  - 717 internal links, 0 broken
+  - 0 redirect stubs (was 13) ✅
+  - 0 duplicate names (was 3) ✅
+  - 4 files with front-matter (was 1)
+- Remaining: TASK-305 (re-run navigation study to measure improvements)
+- Session Issues: See docs/planning/session-2026-01-10-session2-issues.md
 <!-- HANDOFF:END -->
 
 
 
 ## 🎯 Immediate Priority
 
-**✅ PHASE C.1 COMPLETE - NOW READY FOR PHASE C.2**
+**✅ PHASE C MOSTLY COMPLETE (6/7 TASKS) - READY FOR PHASE D OR v0.17.0**
 
-### What Was Accomplished This Session
+### What Was Accomplished This Session (Session 2)
 
 | Area | Result | Impact |
 |------|--------|--------|
-| **TASKS.md** | Phase C defined (7 tasks) | Clear roadmap |
-| **Automation** | 2 new scripts | Faster future cleanup |
-| **Semantic Enhancement** | 3 README indexes | Better AI navigation |
-| **Issues** | 5 documented, all fixed | Prevention patterns |
+| **TASK-302** | 13 redirect stubs removed | Clean doc structure |
+| **TASK-303** | Front-matter template + validator | Metadata standard |
+| **TASK-304** | Duplicate resolved (renamed) | No confusion |
+| **Automation** | 2 new scripts + 2 updated | Future-proofed |
 
-### Next Session Plan: Phase C.2 (2-3 hours)
+### Next Session Options
 
-1. **TASK-302: Clean Redirect Stubs with References** (90 min)
-   - 13 stubs remain with active references
+**Option A: Complete Phase C (1 hour)**
+- TASK-305: Re-run navigation study to measure improvements
+- Compare before/after metrics
+
+**Option B: Start v0.17.0 Critical Path (2-4 hours)**
+- TASK-273: Interactive Testing UI (Streamlit)
+- TASK-272: Code Clause Database
+
+**Option C: Phase D Governance (2-3 hours)**
+- TASK-284: Weekly Governance Sessions
+- TASK-285: Metrics Dashboard
+
+### Automation Now Available
+
+```bash
+# Remove redirect stubs automatically
+python scripts/update_redirect_refs.py --fix --remove-stubs
+
+# Validate doc front-matter
+python scripts/check_doc_frontmatter.py
+
+# Check for duplicate doc names
+python scripts/check_duplicate_docs.py
+
+# Check for redirect stubs
+python scripts/check_redirect_stubs.py
+```
    - Use `scripts/check_redirect_stubs.py` to identify
    - Update references to canonical locations
    - Remove stubs after updating refs

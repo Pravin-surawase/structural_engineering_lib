@@ -96,6 +96,10 @@ def resolve_target_path(stub_path: Path, target: str | None, docs_dir: Path) -> 
     else:
         resolved = (stub_path.parent / target).resolve()
 
+    # Check for self-reference (stub points to itself)
+    if resolved == stub_path.resolve():
+        return None  # Treat as invalid - self-reference
+
     if resolved.exists():
         return resolved
 
