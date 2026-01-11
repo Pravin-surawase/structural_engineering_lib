@@ -9,10 +9,10 @@ Use this checklist to ensure you're set up correctly and following the project's
 ## ✅ Pre-Session Checklist (First Time)
 
 ### 1. Read Core Documentation (5 minutes)
-- [ ] Read [.github/copilot-instructions.md](../../.github/copilot-instructions.md) - **MANDATORY**
+- [ ] Read [.github/copilot-instructions.md](../../../.github/copilot-instructions.md) - **MANDATORY**
 - [ ] Read [agent-workflow-master-guide.md](agent-workflow-master-guide.md) - Complete workflow
 - [ ] Print [agent-quick-reference.md](agent-quick-reference.md) - Keep visible
-- [ ] Skim [TASKS.md](../TASKS.md) - Current work items
+- [ ] Skim [TASKS.md](../../TASKS.md) - Current work items
 
 ### 2. Environment Setup (2 minutes)
 ```bash
@@ -204,13 +204,13 @@ cd worktree-AGENT_NAME-*
 - **[agent-workflow-master-guide.md](agent-workflow-master-guide.md)** - Complete guide (400+ lines)
 - **[agent-quick-reference.md](agent-quick-reference.md)** - Quick reference (200+ lines)
 - **[agent-automation-system.md](agent-automation-system.md)** - System overview (600+ lines)
-- **[git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md)** - Core workflow rules
+- **[git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)** - Core workflow rules
 
 ### Project Documentation
-- [project-overview.md](../architecture/project-overview.md) - Architecture
-- [api-reference.md](../reference/api.md) - API documentation
-- [TASKS.md](../TASKS.md) - Current work
-- [known-pitfalls.md](../reference/known-pitfalls.md) - Common issues
+- [project-overview.md](../../architecture/project-overview.md) - Architecture
+- [api-reference.md](../../reference/api.md) - API documentation
+- [TASKS.md](../../TASKS.md) - Current work
+- [known-pitfalls.md](../../reference/known-pitfalls.md) - Common issues
 
 ### Workflow Scripts
 - `scripts/agent_setup.sh` - Environment setup

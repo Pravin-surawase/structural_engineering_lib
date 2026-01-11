@@ -152,9 +152,9 @@ docs/agents/
 ## 🔗 Quick Links
 
 - **Full Guide:** [agent-workflow-master-guide.md](agent-workflow-master-guide.md)
-- **Tasks:** [TASKS.md](../TASKS.md)
-- **Git Workflow:** [git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md)
-- **Session Log:** [SESSION_LOG.md](../SESSION_LOG.md)
+- **Tasks:** [TASKS.md](../../TASKS.md)
+- **Git Workflow:** [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)
+- **Session Log:** [SESSION_LOG.md](../../SESSION_LOG.md)
 
 ---
 

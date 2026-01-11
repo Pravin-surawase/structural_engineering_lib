@@ -496,21 +496,21 @@ git push
 ## 📚 Additional Resources
 
 ### Essential Docs
-- [TASKS.md](../TASKS.md) - Current work items
-- [SESSION_LOG.md](../SESSION_LOG.md) - Session history
-- [next-session-brief.md](../planning/next-session-brief.md) - Handoff doc
+- [TASKS.md](../../TASKS.md) - Current work items
+- [SESSION_LOG.md](../../SESSION_LOG.md) - Session history
+- [next-session-brief.md](../../planning/next-session-brief.md) - Handoff doc
 
 ### Workflow Docs
-- [git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) - Core workflow
-- [agent-bootstrap.md](../getting-started/agent-bootstrap.md) - Initial setup guide
+- [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md) - Core workflow
+- [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) - Initial setup guide
 
 ### Testing Docs
-- [testing-strategy.md](../contributing/testing-strategy.md) - Testing approach
-- [vba-testing-guide.md](../contributing/vba-testing-guide.md) - VBA testing
+- [testing-strategy.md](../../contributing/testing-strategy.md) - Testing approach
+- [vba-testing-guide.md](../../contributing/vba-testing-guide.md) - VBA testing
 
 ### Architecture Docs
-- [project-overview.md](../architecture/project-overview.md) - System architecture
-- [api-reference.md](../reference/api.md) - API documentation
+- [project-overview.md](../../architecture/project-overview.md) - System architecture
+- [api-reference.md](../../reference/api.md) - API documentation
 
 ---
 
@@ -609,7 +609,7 @@ git commit --no-edit
 
 ## 🏗️ Folder Structure Governance
 
-> **Reference:** [FOLDER_STRUCTURE_GOVERNANCE.md](../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+> **Reference:** [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
 
 All agents MUST follow the published governance spec. Key rules:
 
@@ -642,7 +642,7 @@ python scripts/safe_file_delete.py old.md
 
 ### Pre-Migration Checklist
 Before moving files or creating new folder structures:
-- [ ] Check [FOLDER_STRUCTURE_GOVERNANCE.md](../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+- [ ] Check [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
 - [ ] Run `python scripts/check_governance_compliance.py --strict`
 - [ ] Verify target folder is compliant with governance
 - [ ] Document migration in TASKS.md

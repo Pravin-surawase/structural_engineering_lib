@@ -61,10 +61,10 @@ AI agents amplify existing disciplines - not substitute for them. Strong technic
 ## Context Requirements (Must Read First)
 
 ### Critical Documents
-1. **[SOLO-DEVELOPER-SUSTAINABILITY-ANALYSIS.md](../docs/_archive/planning/solo-developer-sustainability-analysis.md)** - Research findings, strategies, metrics
-2. **[.github/copilot-instructions.md](../.github/copilot-instructions.md)** - Core project rules
-3. **[TASKS.md](../docs/TASKS.md)** - Current backlog state
-4. **[SESSION_LOG.md](../docs/SESSION_LOG.md)** - Historical decisions
+1. **[SOLO-DEVELOPER-SUSTAINABILITY-ANALYSIS.md](../../docs/_archive/planning/solo-developer-sustainability-analysis.md)** - Research findings, strategies, metrics
+2. **[.github/copilot-instructions.md](../../.github/copilot-instructions.md)** - Core project rules
+3. **[TASKS.md](../../docs/TASKS.md)** - Current backlog state
+4. **[SESSION_LOG.md](../../docs/SESSION_LOG.md)** - Historical decisions
 
 ### Research Sources
 - Best AI Coding Agents for 2026 - Faros AI

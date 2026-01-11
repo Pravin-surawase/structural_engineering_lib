@@ -15,7 +15,7 @@ Comprehensive automation system for error-free AI agent workflows. Prevents 99% 
 ### 📚 Documentation
 - **[agent-workflow-master-guide.md](agent-workflow-master-guide.md)** - Complete guide (400+ lines)
 - **[agent-quick-reference.md](agent-quick-reference.md)** - Quick reference card (200+ lines)
-- **[git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md)** - Core workflow rules
+- **[git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)** - Core workflow rules
 
 ### 🛠️ Automation Scripts
 - **agent_setup.sh** - Session environment setup
@@ -304,7 +304,7 @@ MIT - Same as parent project
 **Documentation:**
 - [Master Guide](agent-workflow-master-guide.md)
 - [Quick Reference](agent-quick-reference.md)
-- [Git Workflow](../contributing/git-workflow-ai-agents.md)
+- [Git Workflow](../../contributing/git-workflow-ai-agents.md)
 
 **Testing:**
 ```bash

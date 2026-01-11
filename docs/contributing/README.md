@@ -102,7 +102,7 @@ python -m black .
 |----------|---------|
 | [Guidelines](../guidelines/README.md) | Development standards |
 | [Architecture](../architecture/README.md) | System design decisions |
-| [Agent Onboarding](../agents/agent-onboarding.md) | Complete agent setup |
+| [Agent Onboarding](../agents/guides/agent-onboarding.md) | Complete agent setup |
 
 ---
 

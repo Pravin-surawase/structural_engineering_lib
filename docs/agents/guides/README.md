@@ -32,7 +32,7 @@ Agent 8 research documents remain in `docs/research/` for centralized research o
 ### Core Documentation
 - [agent-9-quick-start.md](agent-9-quick-start.md) - 60-second onboarding
 - [agent-9-governance-hub.md](agent-9-governance-hub.md) - Access point to all governance docs
-- Full governance docs: [../../agents/agent-9/governance/](../../../agents/GOVERNANCE.md)
+- Full governance docs: [Agent 9 Governance](../../../agents/roles/GOVERNANCE.md)
 
 ### Key Rules
 - Root directory: <10 files
