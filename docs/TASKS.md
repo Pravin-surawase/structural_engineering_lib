@@ -145,6 +145,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **SESSION-14P3** | Git automation: docs/git-automation/ hub (6 files), ai_commit.sh --dry-run/--help, git_automation_health.sh, improvement plan, copilot-instructions update | MAIN | ✅ 2026-01-11 |
 | **SESSION-14** | Phase 1: TASKS cleanup (50→15) + v0.17.0 roadmap (6 commits); Phase 2: Agent 8 research (8116 lines analyzed) + consolidation plan + archival + --quick default (5 commits) | MAIN | ✅ 2026-01-11 |
 | **ONBOARD-03** | Agent start v2.1: full mode fix, worktree passthrough | DEVOPS | ✅ 2026-01-11 |
 | **ONBOARD-02** | Agent start v2.0: unified script, proper preflight | DEVOPS | ✅ 2026-01-11 |

@@ -32,7 +32,12 @@ git push
 
 **Exceptions:** NONE. Always use ai_commit.sh or safe_push.sh for commits.
 
-**Canonical doc:** `docs/git-workflow-ai-agents.md`
+**Canonical docs:**
+- **Quick Reference:** `docs/git-automation/README.md` (navigation hub)
+- **Full Workflow:** `docs/git-automation/workflow-guide.md` (7-step workflow)
+- **All Scripts:** `docs/git-automation/automation-scripts.md` (103 scripts reference)
+- **Legacy:** `docs/contributing/git-workflow-ai-agents.md`
+
 **Legacy note:** If you see manual git commands elsewhere, ignore them and use the scripts.
 
 ---
@@ -62,7 +67,8 @@ git push
 **Critical Resources (Read in order):**
 1. **[agent-workflow-master-guide.md](../docs/agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
 2. **[agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)** - Essential commands
-3. `docs/getting-started/agent-bootstrap.md` → `docs/getting-started/ai-context-pack.md` → `docs/TASKS.md`
+3. **[git-automation/README.md](../docs/git-automation/README.md)** - Git workflow hub (NEW)
+4. `docs/getting-started/agent-bootstrap.md` → `docs/getting-started/ai-context-pack.md` → `docs/TASKS.md`
 
 **Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
 

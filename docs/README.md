@@ -26,7 +26,8 @@
 | **IS 456 Formulas** | [is456-formulas.md](reference/is456-formulas.md) | reference | intermediate | Clause references, equations |
 | **Architecture** | [project-overview.md](architecture/project-overview.md) | guide | intermediate | Layer structure, data flow |
 | **Testing** | [testing-strategy.md](contributing/testing-strategy.md) | guide | intermediate | Test categories, coverage, CI |
-| **Git Workflow** | [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) | guide | beginner | Commit, PR, merge rules |
+| **Git Workflow** | [git-automation/README.md](git-automation/README.md) | hub | beginner | Git automation hub, scripts, workflow |
+| **Git Workflow (legacy)** | [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) | guide | beginner | Commit, PR, merge rules |
 | **Troubleshooting** | [troubleshooting.md](reference/troubleshooting.md) | reference | beginner | Common errors, fixes |
 | **Tasks** | [TASKS.md](TASKS.md) | index | beginner | What to work on next |
 | **Session Log** | [SESSION_LOG.md](SESSION_LOG.md) | log | beginner | Recent work history |
