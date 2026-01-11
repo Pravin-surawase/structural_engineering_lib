@@ -34,7 +34,7 @@ Updated README with comprehensive Session 13 highlights:
 - **789 Validated Links:** Zero orphan files, zero broken links
 
 ### 2. Version Bump & CHANGELOG (Commit 43268e8)
-- Updated `Python/pyproject.toml`: 0.16.0 → 0.16.5
+- Updated `Python/pyproject.toml`: 0.16.5
 - Added 73-line v0.16.5 entry to `CHANGELOG.md`
 - Added comprehensive v0.16.5 entry to `docs/getting-started/releases.md`
 - Auto-synced 18 doc files with standard version patterns
@@ -43,8 +43,8 @@ Updated README with comprehensive Session 13 highlights:
 - **Challenge:** 9 doc files had non-standard version formats
 - **Solution:** Manual fixes with multi_replace_string_in_file
 - **Formats fixed:**
-  - `*Document Version: 0.16.0 | Last Updated: 2026-01-08*`
-  - `**Document Version: 0.16.0`
+  - `*Document Version: 0.16.5 | Last Updated: 2026-01-11*`
+  - `**Document Version: 0.16.5`
 - **Result:** Zero version drift across all 26 doc files
 
 ### 4. Release Tag & PyPI Publish
