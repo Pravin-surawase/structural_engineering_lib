@@ -105,11 +105,11 @@
 | [agent-research-review-and-validation.md](agent-research-review-and-validation.md) | audit | 🟡 Medium | Research validation |
 | [autonomous-agent-workflow-research.md](autonomous-agent-workflow-research.md) | research | 🟡 Medium | Autonomous workflow |
 | [agent-efficiency-research.md](agent-efficiency-research.md) | research | 🟡 Medium | Agent efficiency |
-| [agent-8-implementation-priority.md](agent-8-implementation-priority.md) | plan | 🟡 Medium | Agent 8 priorities |
+| [agent-8-implementation-priority.md](../docs/_archive/research/agent-8/agent-8-implementation-priority.md) | plan | 🟡 Medium | Agent 8 priorities |
 | [agent-8-optimization-research.md](agent-8-optimization-research.md) | research | 🟡 Medium | Optimization research |
-| [agent-8-week1-summary.md](agent-8-week1-summary.md) | summary | 🟢 Low | Week 1 summary |
-| [agent-8-week1-reality-check.md](agent-8-week1-reality-check.md) | analysis | 🟡 Medium | Reality check |
-| [agent-8-week1-implementation-blocker.md](agent-8-week1-implementation-blocker.md) | analysis | 🟡 Medium | Blockers |
+| [agent-8-week1-summary.md](../docs/_archive/research/agent-8/agent-8-week1-summary.md) | summary | 🟢 Low | Week 1 summary |
+| [agent-8-week1-reality-check.md](../docs/_archive/research/agent-8/agent-8-week1-reality-check.md) | analysis | 🟡 Medium | Reality check |
+| [agent-8-week1-implementation-blocker.md](../docs/_archive/research/agent-8/agent-8-week1-implementation-blocker.md) | analysis | 🟡 Medium | Blockers |
 
 ---
 

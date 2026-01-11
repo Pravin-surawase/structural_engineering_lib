@@ -23,23 +23,23 @@
    - Profiled every operation
    - Designed 4-week implementation roadmap
 
-2. **Implementation priority guide** - [agent-8-implementation-priority.md](../research/agent-8-implementation-priority.md)
+2. **Implementation priority guide** - [agent-8-implementation-priority.md](../_archive/research/agent-8/agent-8-implementation-priority.md) (*Archived*)
    - Week-by-week task breakdown
    - ROI analysis for each optimization
    - Copy-paste ready code samples
    - Success metrics defined
 
-3. **Week 1 technical specifications** - [agent-8-week1-summary.md](../research/agent-8-week1-summary.md)
+3. **Week 1 technical specifications** - [agent-8-week1-summary.md](../_archive/research/agent-8/agent-8-week1-summary.md) (*Archived*)
    - Detailed design for all 4 optimizations
    - Expected performance improvements
    - Implementation approach documented
 
 ### Documentation Created (3 files, 2,400+ lines)
 - ✅ agent-8-optimization-research.md (1,500 lines)
-- ✅ agent-8-implementation-priority.md (500 lines)
-- ✅ agent-8-week1-summary.md (212 lines)
-- ✅ agent-8-week1-reality-check.md (264 lines)
-- ✅ agent-8-week1-implementation-blocker.md (231 lines)
+- ✅ [agent-8-implementation-priority.md](../_archive/research/agent-8/agent-8-implementation-priority.md) (500 lines) - *Archived*
+- ✅ [agent-8-week1-summary.md](../_archive/research/agent-8/agent-8-week1-summary.md) (212 lines) - *Archived*
+- ✅ [agent-8-week1-reality-check.md](../_archive/research/agent-8/agent-8-week1-reality-check.md) (264 lines) - *Archived*
+- ✅ [agent-8-week1-implementation-blocker.md](../_archive/research/agent-8/agent-8-week1-implementation-blocker.md) (231 lines) - *Archived*
 
 ### Commits Made
 - `d055506` - Research documents
@@ -65,7 +65,7 @@ Likely iCloud Drive sync interference at path:
 `~/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/...`
 
 ### Details
-See: [agent-8-week1-implementation-blocker.md](../research/agent-8-week1-implementation-blocker.md)
+See: [agent-8-week1-implementation-blocker.md](../_archive/research/agent-8/agent-8-week1-implementation-blocker.md) (*Archived*)
 
 ---
 
@@ -80,7 +80,7 @@ See: [agent-8-week1-implementation-blocker.md](../research/agent-8-week1-impleme
 - Modify Step 1: Start fetch in background
 - Modify Step 5: Complete fetch before push
 
-**Code Location:** [week1-summary.md - Section 1](../research/agent-8-week1-summary.md#1-parallel-git-fetch)
+**Code Location:** [week1-summary.md - Section 1](../_archive/research/agent-8/agent-8-week1-summary.md#1-parallel-git-fetch)
 
 **Test:**
 ```bash
@@ -99,7 +99,7 @@ time ./scripts/safe_push.sh "test: parallel fetch"
 - Extract filenames from `git diff --check` output
 - Fix only those specific files
 
-**Code Location:** [week1-summary.md - Section 2](../research/agent-8-week1-summary.md#2-incremental-whitespace-fix)
+**Code Location:** [week1-summary.md - Section 2](../_archive/research/agent-8/agent-8-week1-summary.md#2-incremental-whitespace-fix)
 
 **Test:**
 ```bash
@@ -349,10 +349,10 @@ Continue with Week 2 optimizations:
 
 ### Documentation
 - Research: [agent-8-optimization-research.md](../research/agent-8-optimization-research.md)
-- Priority: [agent-8-implementation-priority.md](../research/agent-8-implementation-priority.md)
-- Week 1 spec: [agent-8-week1-summary.md](../research/agent-8-week1-summary.md)
-- Reality check: [agent-8-week1-reality-check.md](../research/agent-8-week1-reality-check.md)
-- Blocker: [agent-8-week1-implementation-blocker.md](../research/agent-8-week1-implementation-blocker.md)
+- Priority: [agent-8-implementation-priority.md](../_archive/research/agent-8/agent-8-implementation-priority.md) (*Archived*)
+- Week 1 spec: [agent-8-week1-summary.md](../_archive/research/agent-8/agent-8-week1-summary.md) (*Archived*)
+- Reality check: [agent-8-week1-reality-check.md](../_archive/research/agent-8/agent-8-week1-reality-check.md) (*Archived*)
+- Blocker: [agent-8-week1-implementation-blocker.md](../_archive/research/agent-8/agent-8-week1-implementation-blocker.md) (*Archived*)
 
 ### Key Scripts
 - Current workflow: [scripts/safe_push.sh](../../scripts/safe_push.sh)
