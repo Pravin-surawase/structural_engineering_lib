@@ -90,6 +90,41 @@
 | **TASK-278** | Verification & Audit Trail (SHA-256, immutable logs) | DEV | 3-4 hrs | 🔴 HIGH | ⏳ Queued |
 | **TASK-279** | Engineering Testing Strategies (visual regression, property-based) | TESTER | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
 
+### v0.17.5 - Code Quality & Automation Enhancement
+
+> **Goal:** Improve scanner accuracy, create developer guidelines, enhance automation
+> **Research:** docs/research/streamlit-code-quality-research.md
+> **Timeline:** Week 2-3, January 2026
+
+**Phase A: Quick Wins (1-2 hours total)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-401** | Fix IndexError false positives (split pattern) | DEV | 1h | 🔴 HIGH | ⏳ Queued |
+| **TASK-422** | Document PR auto-merge behavior in copilot-instructions | DOCS | 30m | 🔴 HIGH | ✅ Session 15 |
+| **TASK-431** | Fix finish_task_pr.sh auto-merge behavior | DEVOPS | 30m | 🔴 HIGH | ✅ Session 15 |
+
+**Phase B: Scanner Enhancement (6-8 hours)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-402** | Add type annotation checker to scanner | DEV | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-403** | Add widget return type validation | DEV | 3h | 🔴 HIGH | ⏳ Queued |
+| **TASK-404** | Add circular import detection | DEV | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-405** | Add performance issue detection | DEV | 4h | 🟡 LOW | ⏳ Queued |
+
+**Phase C: Streamlit Automation (10-12 hours)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-411** | Create streamlit_preflight.sh | DEVOPS | 2h | 🔴 HIGH | ⏳ Queued |
+| **TASK-412** | Create generate_streamlit_page.py scaffold | DEV | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-413** | Create validate_session_state.py | DEV | 3h | 🔴 HIGH | ⏳ Queued |
+| **TASK-414** | Create performance profiler | DEV | 4h | 🟠 MEDIUM | ⏳ Queued |
+
+**Phase D: Documentation (3-4 hours)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-421** | Create agent-coding-standards.md | DOCS | 2h | 🔴 HIGH | ✅ Session 15 |
+| **TASK-423** | Update copilot-instructions with coding rules | DOCS | 1h | 🔴 HIGH | ⏳ Queued |
+
 ### v0.18+ - Governance & Observability (Agent 9)
 
 > **Goal:** 80/20 governance cadence, proactive monitoring, sustainable velocity

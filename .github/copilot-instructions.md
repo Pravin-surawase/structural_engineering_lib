@@ -91,11 +91,25 @@ IS 456 RC beam design library with **Python + VBA parity**.
 - docs/TASKS.md
 
 ## Coding rules
-- Don’t mix UI/I-O code into core calculation modules.
+
+> **Full Guide:** See [docs/agents/guides/agent-coding-standards.md](../docs/agents/guides/agent-coding-standards.md) for comprehensive coding standards.
+
+### Essential Rules (Scanner-Enforced)
+- ✅ **Dict access:** Always use `.get('key', default)` - never bare `dict['key']`
+- ✅ **List access:** Always check bounds: `items[0] if len(items) > 0 else None`
+- ✅ **Division:** Always check zero: `x / y if y != 0 else 0`
+- ✅ **Session state:** Always use `.get()` or check `'key' in st.session_state`
+- ✅ **Imports:** Always at module level, never inside functions
+
+### Code Quality Rules
+- Don't mix UI/I-O code into core calculation modules.
 - Add/extend tests with every behavior change (Python at minimum).
 - If you move files, keep redirect stubs to avoid breaking links.
 - Format Python code with `black` before committing.
-- **Type safety**: Always handle `Optional[T]` types explicitly - check for `None` before accessing attributes.- **Python 3.9 compatibility**: Add `from __future__ import annotations` at top of new Python files. This enables `str | None` syntax on Python 3.9.- **Run mypy locally** before pushing: `.venv/bin/python -m mypy Python/structural_lib/<file>.py`
+- **Type safety**: Always handle `Optional[T]` types explicitly - check for `None` before accessing attributes.
+- **Python 3.9 compatibility**: Add `from __future__ import annotations` at top of new Python files. This enables `str | None` syntax on Python 3.9.
+- **Run mypy locally** before pushing: `.venv/bin/python -m mypy Python/structural_lib/<file>.py`
+
 ## Definition of done
 - Tests pass (at least Python).
 - Docs updated where contracts/examples changed.
@@ -373,6 +387,12 @@ The SOLUTION:
 
 > **Note:** Merge authority depends on project governance. If branch protection
 > requires human review, stop at step 4 and notify the user.
+
+### PR Merge Behavior (Updated Session 15):
+- `finish_task_pr.sh` now waits for all CI checks before merging
+- Removed `--auto` flag to prevent premature auto-merge
+- Script prompts for confirmation before merging
+- If CI is slow, merge manually: `gh pr merge <num> --squash --delete-branch`
 
 ### When pre-commit modifies files:
 If pre-commit hooks fix files during commit, do NOT create a second commit:
