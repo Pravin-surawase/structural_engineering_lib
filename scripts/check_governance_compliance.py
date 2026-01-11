@@ -251,8 +251,16 @@ def check_redirect_stubs() -> List[ComplianceIssue]:
     if not docs_path.exists():
         return issues
 
+    # Skip directories that shouldn't be checked for redirect stubs
+    # (consistent with check_redirect_stubs.py SKIP_DIRS)
+    skip_dirs = {"_archive", "node_modules", "__pycache__", ".venv"}
+
     # Scan all markdown files in docs/
     for md_file in docs_path.rglob("*.md"):
+        # Skip files in archived or excluded directories
+        if any(skip_dir in md_file.parts for skip_dir in skip_dirs):
+            continue
+
         # Skip known non-stub files
         if md_file.name in ["README.md", "TASKS.md", "SESSION_LOG.md"]:
             continue

@@ -12,9 +12,9 @@ Agent 9 manages **governance, documentation structure, and migration safety** fo
 
 ## Main Hub
 
-**→ [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)**
+**→ [docs/guidelines/folder-structure-governance.md](../../guidelines/folder-structure-governance.md)**
 
-This is the canonical entry point for all governance documents, migration plans, and folder structure rules.
+This is the canonical governance specification for all folder structure rules, naming conventions, and validation requirements.
 
 ---
 
@@ -22,17 +22,17 @@ This is the canonical entry point for all governance documents, migration plans,
 
 ### Getting Started
 - **[Agent 9 Quick Start](agent-9-quick-start.md)** - 60-second workflow guide
-- **[Folder Structure Rules](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md)** - All naming and placement rules
+- **[Folder Structure Rules](../../guidelines/folder-structure-governance.md)** - All naming and placement rules
 
 ### Active Documents
-- **[Migration Status](../../../agents/agent-9/governance/MIGRATION-STATUS.md)** - Current progress and audit trail
-- **[Governance Roadmap](../../../agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md)** - Current goals and next steps
-- **[Task Tracker](../../../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md)** - Phase B progress
-- **[Automation Catalog](../../../agents/agent-9/governance/AUTOMATION-CATALOG.md)** - All validation checks
+- **[Migration Progress](../../planning/folder-migration-progress.md)** - Current progress tracker
+- **[Migration Workflow Guide](../../guidelines/migration-workflow-guide.md)** - How to do migrations
+- **[Folder Cleanup Workflow](../../guidelines/folder-cleanup-workflow.md)** - Cleanup procedures
+- **[Automation Catalog](../../reference/automation-catalog.md)** - All validation checks
 
 ### Archived (Historical Reference)
-Migration Phase A is complete. Historical docs are archived:
-- **[Archive](../../../agents/agent-9/governance/_archive/)** - Phase A planning docs, execution plans, research
+Migration Phase A-D complete. Historical docs are archived:
+- **[Agent-9 Legacy Governance](../../_archive/2026-01/agent-9-governance-legacy/)** - Phase A-D planning docs
 
 ---
 
@@ -84,13 +84,11 @@ Always use `git mv` for file moves, never manual `mv`
 ```
 1. Start here (agent-9-governance-hub.md)
    ↓
-2. Go to main hub (agents/agent-9/governance/README.md)
+2. Read canonical governance (docs/guidelines/folder-structure-governance.md)
    ↓
-3. Read specific doc (e.g., FOLDER_STRUCTURE_GOVERNANCE.md)
+3. Execute task
    ↓
-4. Execute task
-   ↓
-5. Validate with scripts
+4. Validate with scripts
 ```
 
 ---
@@ -100,7 +98,7 @@ Always use `git mv` for file moves, never manual `mv`
 ### Workflow 1: Check Governance Rules
 ```bash
 # Before making structure changes
-open agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md
+open docs/guidelines/folder-structure-governance.md
 ```
 
 ### Workflow 2: Move a Document
@@ -120,16 +118,16 @@ grep -r "old/path.md" docs/ agents/
 ## Need Help?
 
 1. **Quick questions:** Check [Agent 9 Quick Start](agent-9-quick-start.md)
-2. **Detailed rules:** See [FOLDER_STRUCTURE_GOVERNANCE.md](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md)
-3. **All docs:** Browse [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
-4. **Historical docs:** Browse [Archive](../../../agents/agent-9/governance/_archive/)
+2. **Detailed rules:** See [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
+3. **Progress tracking:** See [folder-migration-progress.md](../../planning/folder-migration-progress.md)
+4. **Historical docs:** Browse [Archive](../../_archive/2026-01/agent-9-governance-legacy/)
 
 ---
 
 **Navigation Philosophy:**
-**Front door in `docs/agents/guides/` → Detail docs stay in `agents/agent-9/governance/`**
+**Canonical governance in `docs/guidelines/` → Agent guides in `docs/agents/guides/`**
 
-This preserves governance separation while providing fast access.
+This consolidates governance to a single source of truth.
 
 ---
 
