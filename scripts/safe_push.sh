@@ -46,6 +46,7 @@ log_message() {
 }
 
 # Log workflow start
+WORKFLOW_START_TIME=$(date +%s)
 log_message "INFO" "=== Safe Push Workflow Started ==="
 log_message "INFO" "User: $(whoami)"
 log_message "INFO" "Branch: $(git branch --show-current 2>/dev/null || echo 'unknown')"
@@ -175,7 +176,11 @@ if [ -f .git/MERGE_HEAD ]; then
   # Now push
   echo -e "${YELLOW}Pushing merged changes...${NC}"
   git push
+  WORKFLOW_END_TIME=$(date +%s)
+  TOTAL_DURATION=$((WORKFLOW_END_TIME - WORKFLOW_START_TIME))
   echo -e "${GREEN}✅ Successfully pushed merged changes!${NC}"
+  echo -e "⏱️  Total time: ${TOTAL_DURATION}s"
+  log_message "TIMING" "Total workflow duration: ${TOTAL_DURATION}s"
   exit 0
 fi
 
@@ -345,11 +350,16 @@ else
   fi
 
   if "${PUSH_CMD[@]}"; then
+    # Calculate and display timing metrics
+    WORKFLOW_END_TIME=$(date +%s)
+    TOTAL_DURATION=$((WORKFLOW_END_TIME - WORKFLOW_START_TIME))
     echo -e "${GREEN}✅ Successfully pushed!${NC}"
     echo -e "${GREEN}Commit: $(git log -1 --oneline)${NC}"
     echo ""
     echo -e "${BLUE}Workflow succeeded${NC}"
+    echo -e "⏱️  Total time: ${TOTAL_DURATION}s"
     log_message "SUCCESS" "Push completed successfully: $(git log -1 --oneline)"
+    log_message "TIMING" "Total workflow duration: ${TOTAL_DURATION}s"
     log_message "INFO" "=== Workflow Completed Successfully ==="
   else
     echo -e "${RED}ERROR: Push failed${NC}"
