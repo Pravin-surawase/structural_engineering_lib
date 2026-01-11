@@ -532,24 +532,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_Attribute(self, node: ast.Attribute):
-        """Detect session state access without validation."""
-        # Check for st.session_state.key pattern
-        if isinstance(node.value, ast.Attribute):
-            if (isinstance(node.value.value, ast.Name) and
-                node.value.value.id == 'st' and
-                node.value.attr == 'session_state'):
-                # This is st.session_state.some_key
-                attr_name = node.attr
-                # Only warn if we haven't seen this key set
-                if attr_name not in self.session_state_keys:
-                    self.add_issue(
-                        node.lineno,
-                        "HIGH",
-                        f"AttributeError risk: st.session_state.{attr_name} may not exist (use .get() or check 'in')"
-                    )
-
-        self.generic_visit(node)
+    # NOTE: visit_Attribute is defined later in this class (around line 1138)
+    # to handle both session state detection AND mock assertion anti-patterns.
+    # Do NOT add another visit_Attribute here!
 
     def visit_Compare(self, node: ast.Compare):
         """Track 'in' checks for session state keys."""
@@ -1137,11 +1122,29 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
     def visit_Attribute(self, node: ast.Attribute):
         """
-        Detect mock assertion anti-patterns in test files.
+        Detect session state access without validation AND mock assertion anti-patterns.
 
-        Phase 2 Enhancement: Detect .called, .call_count on non-Mock objects.
-        Common in test files when checking if mock_streamlit.function.called.
+        Handles:
+        1. st.session_state.key access without validation
+        2. Phase 2 Enhancement: Detect .called, .call_count on non-Mock objects
         """
+        # === Session state detection (for all files) ===
+        # Check for st.session_state.key pattern
+        if isinstance(node.value, ast.Attribute):
+            if (isinstance(node.value.value, ast.Name) and
+                node.value.value.id == 'st' and
+                node.value.attr == 'session_state'):
+                # This is st.session_state.some_key
+                attr_name = node.attr
+                # Only warn if we haven't seen this key set
+                if attr_name not in self.session_state_keys:
+                    self.add_issue(
+                        node.lineno,
+                        "HIGH",
+                        f"AttributeError risk: st.session_state.{attr_name} may not exist (use .get() or check 'in')"
+                    )
+
+        # === Mock assertion anti-patterns (test files only) ===
         # Only check in test files
         if '/tests/' in self.filepath or self.filepath.endswith('_test.py'):
             # Check for .called, .call_count, .call_args patterns
