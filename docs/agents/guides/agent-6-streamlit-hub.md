@@ -15,6 +15,13 @@ Start here, find what you need, get back to work.
 
 ## Quick Links
 
+### 🚀 START HERE (New Agents)
+
+| Document | Purpose |
+|----------|---------|
+| **[Comprehensive Onboarding](agent-6-comprehensive-onboarding.md)** | **Full onboarding with guard rails, coding standards, scanner usage** |
+| [Quick Start](agent-6-quick-start.md) | 5-minute overview |
+
 ### Core Documentation
 
 | Document | Purpose |
@@ -23,13 +30,14 @@ Start here, find what you need, get back to work.
 | [Prevention System](../../contributing/streamlit-comprehensive-prevention-system.md) | Error prevention patterns |
 | [Issues Catalog](../../contributing/streamlit-issues-catalog.md) | Known issues + solutions |
 | [Validation Reference](../../reference/streamlit-validation.md) | Validation patterns |
+| [Code Files Analysis](../../research/streamlit-code-files-analysis.md) | File-by-file deep dive, scanner results |
 
 ### Planning & Tasks
 
 | Document | Purpose |
 |----------|---------|
-| [Agent 6 Tasks](../../planning/agent-6-tasks-streamlit.md) | Current task list |
-| [Phase 3 Implementation](../../planning/streamlit-phase-3-implementation-plan.md) | Feature roadmap |
+| [Agent 6 Tasks](../../planning/agent-6-tasks-streamlit.md) | Full task history + details |
+| [v0.17.5 Tasks in TASKS.md](../../TASKS.md) | Current sprint tasks (TASK-401-437) |
 
 ### App Structure
 
