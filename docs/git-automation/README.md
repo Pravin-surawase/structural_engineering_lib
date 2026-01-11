@@ -33,6 +33,7 @@
 |------|------|-------------|
 | **Learn the workflow** | [workflow-guide.md](workflow-guide.md) | Core 7-step process, decision trees |
 | **Find commands** | [automation-scripts.md](automation-scripts.md) | All 103 scripts organized by use case |
+| **Agent patterns** | [efficient-agent-usage.md](efficient-agent-usage.md) | Per-agent workflows, time optimization |
 | **Avoid mistakes** | [mistakes-prevention.md](mistakes-prevention.md) | Historical lessons, emergency procedures |
 | **Advanced patterns** | [advanced-coordination.md](advanced-coordination.md) | Worktrees, background agents |
 | **Deep research** | [research/](research/) | Comprehensive analysis, performance data |
