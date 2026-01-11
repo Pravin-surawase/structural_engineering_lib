@@ -1,6 +1,6 @@
 # Streamlit App Comprehensive Issue Catalog
 **Date:** 2026-01-09
-**Version:** 0.16.0
+**Version:** 0.16.5
 **Scanner:** check_streamlit_issues.py (Phase 1A)
 
 > **Purpose:** Complete catalog of all issues found across 5 Streamlit pages.

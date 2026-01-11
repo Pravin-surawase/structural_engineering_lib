@@ -1,5 +1,5 @@
 # Comprehensive Streamlit App Prevention System
-**Version:** 0.16.0
+**Version:** 0.16.5
 **Date:** 2026-01-09
 **Status:** 🎯 PROPOSED
 
