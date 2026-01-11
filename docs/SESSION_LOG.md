@@ -4,6 +4,103 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 15: TASK-272 IS 456 Clause Database & Traceability System
+
+**Focus:** Implement comprehensive IS 456 clause database and @clause decorator for code traceability
+
+### Implementation Summary
+
+**TASK-272: Code Clause Database**
+- Created `clauses.json` database with 67 IS 456 clauses (main clauses + Annex G)
+- Implemented `traceability.py` module with @clause decorator and full lookup API
+- Built `clause_cli.py` command-line tool for clause lookups
+- Added @clause decorators to 13 production functions across flexure, shear, detailing
+- Created comprehensive test suite (38 tests, all passing)
+
+### Files Created
+| File | Lines | Purpose |
+|------|-------|---------|
+| `clauses.json` | ~460 | 67 IS 456 clauses with metadata, formulas, keywords |
+| `traceability.py` | ~365 | @clause decorator, registry, lookup API |
+| `clause_cli.py` | ~200 | CLI for clause lookups (--clause, --search, --category, --stats) |
+| `test_clause_traceability.py` | ~490 | 38 tests for traceability API |
+
+### Files Modified
+- `flexure.py`: Added @clause to 7 functions
+- `shear.py`: Added @clause to 2 functions
+- `detailing.py`: Added @clause to 4 functions
+- `__init__.py`: Added traceability exports
+
+### Traceability API Features
+```python
+from structural_lib.codes.is456.traceability import (
+    clause,              # @clause("38.1", "40.1") decorator
+    get_clause_refs,     # Get clause refs for a function
+    get_clause_info,     # Get clause details from database
+    list_clauses_by_category,  # List all clauses in a category
+    search_clauses,      # Search by keyword
+    generate_traceability_report,  # Full traceability report
+)
+```
+
+### CLI Usage Examples
+```bash
+# Look up specific clause
+python -m structural_lib.codes.is456.clause_cli --clause 38.1
+
+# Search by keyword
+python -m structural_lib.codes.is456.clause_cli --search shear
+
+# List by category
+python -m structural_lib.codes.is456.clause_cli --category flexure
+
+# Database statistics
+python -m structural_lib.codes.is456.clause_cli --stats
+```
+
+### Decorated Functions (13 total)
+| Module | Function | Clauses |
+|--------|----------|---------|
+| flexure | calculate_mu_lim | 38.1, 38.1.1 |
+| flexure | calculate_effective_flange_width | 23.1.2, 36.4.2 |
+| flexure | calculate_ast_required | 38.2 |
+| flexure | design_singly_reinforced | 38.1, 38.2 |
+| flexure | design_doubly_reinforced | 38.1, 38.2, G-1.1 |
+| flexure | calculate_mu_lim_flanged | 38.1, G-2.2 |
+| flexure | design_flanged_beam | 38.1, 23.1.2, G-2.2 |
+| shear | calculate_tv | 40.1 |
+| shear | design_shear | 40.1, 40.2, 40.4, 26.5.1.5, 26.5.1.6 |
+| detailing | get_bond_stress | 26.2.1.1 |
+| detailing | calculate_development_length | 26.2.1 |
+| detailing | calculate_lap_length | 26.2.5 |
+| detailing | check_side_face_reinforcement | 26.5.1.3 |
+
+### Commits This Session
+1. `e148846` - feat(traceability): implement TASK-272 IS 456 clause database and @clause decorator - **PR #333**
+
+### PRs This Session
+- **PR #333**: TASK-272 IS 456 clause database and @clause decorator system (pending CI)
+
+### Key Decisions
+1. **Database Structure**: JSON with metadata, clauses, tables, figures, annexures sections
+2. **Registry Pattern**: Module-level `_CLAUSE_REGISTRY` dict for runtime function tracking
+3. **Validation**: Decorator warns on unknown clauses but doesn't raise (graceful degradation)
+4. **Annex G Support**: Added G-1.1, G-2.2 for doubly reinforced and flanged beam formulas
+
+### Metrics
+- Tests: 38 new tests, all passing (0.32s)
+- Code coverage: Traceability module at 100%
+- Clause database: 67 clauses across 8 categories
+- Production functions decorated: 13
+- Lines added: ~1,630
+
+### Next Steps
+1. Merge PR #333 after CI passes
+2. Consider TASK-273 (Interactive Testing UI) or continue adding @clause decorators
+3. Update API documentation with traceability features
+
+---
+
 ## 2026-01-11 — Session 14: TASKS.md Cleanup, v0.17.0 Planning & Git Automation Hub
 
 **Focus:** Task board hygiene, v0.17.0 release roadmap, git automation consolidation & improvements

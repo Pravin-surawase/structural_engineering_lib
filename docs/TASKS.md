@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 14: TASK-274/275 Implementation)
+**Updated:** 2026-01-11 (Session 15: TASK-272 Implementation)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -34,7 +34,7 @@
 **Key Deliverables:**
 1. ✅ Security hardening baseline (input validation audit, dependency scanning) - **PR #331**
 2. ✅ Professional liability framework (disclaimers, templates, certification guidance) - **DONE**
-3. 🔴 Code clause database (JSON DB, @clause decorator, traceability system)
+3. � Code clause database (JSON DB, @clause decorator, traceability system) - **PR #333 pending**
 4. 🔴 Interactive testing UI (Streamlit/Gradio for design validation)
 
 **Success Metrics:**
@@ -51,7 +51,7 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 pending merge |
-| **TASK-275** | Professional Liability Framework | DOCS | ✅ Complete |
+| **TASK-272** | Code Clause Database | DEV | 🟡 PR #333 pending CI |
 
 ---
 
@@ -70,7 +70,7 @@
 **Phase 2 (Week 3): Traceability (Medium Risk, 4-6 hours)**
 | ID | Task | Agent | Est | Priority | Blockers |
 |----|------|-------|-----|----------|----------|
-| **TASK-272** | Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | None |
+| **TASK-272** | Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | 🟡 PR #333 |
 
 **Phase 3 (Week 4): Developer UX (High Value, 1-2 days)**
 | ID | Task | Agent | Est | Priority | Blockers |
@@ -148,6 +148,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-275** | Professional Liability Framework (docs/legal/) | DOCS | ✅ 2026-01-11 |
 | **SESSION-14P3** | Git automation: docs/git-automation/ hub (6 files), ai_commit.sh --dry-run/--help, git_automation_health.sh, improvement plan, copilot-instructions update | MAIN | ✅ 2026-01-11 |
 | **SESSION-14** | Phase 1: TASKS cleanup (50→15) + v0.17.0 roadmap (6 commits); Phase 2: Agent 8 research (8116 lines analyzed) + consolidation plan + archival + --quick default (5 commits) | MAIN | ✅ 2026-01-11 |
 | **ONBOARD-03** | Agent start v2.1: full mode fix, worktree passthrough | DEVOPS | ✅ 2026-01-11 |
