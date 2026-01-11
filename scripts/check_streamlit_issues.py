@@ -10,6 +10,12 @@ Scans ALL Streamlit pages for common issues:
 - ImportError (imports inside functions)
 - TypeError (wrong function args)
 - API signature mismatches (Phase 3: test files)
+- Widget default values (Phase 5: TASK-403)
+
+**Phase 5 Enhancements (TASK-403):**
+- Widget return type validation: Detects st.number_input(), st.text_input(),
+  st.selectbox() etc. without explicit default values
+- Prevents potential None/empty value issues in calculations
 
 **Phase 4 Enhancements (TASK-401):**
 - Path division detection: Recognizes Path(...).method().attr[n] / "string" patterns
@@ -20,7 +26,7 @@ Scans ALL Streamlit pages for common issues:
 - Guard clause detection: Recognizes early-exit patterns that validate for entire function
 - API signature checking: Validates test function calls against actual signatures
 
-Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3 + Phase 4).
+Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3 + Phase 4 + Phase 5).
 
 Usage:
     python scripts/check_streamlit_issues.py --all-pages
@@ -978,6 +984,80 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 return True
         return False
 
+    def _check_widget_defaults(self, node: ast.Call):
+        """TASK-403: Check Streamlit widget calls for missing default values.
+
+        Detects widgets that may return None or unexpected values:
+        - st.number_input() without value= parameter
+        - st.text_input() without value= parameter
+        - st.text_area() without value= parameter
+        - st.selectbox() without index= parameter
+        - st.multiselect() without default= parameter
+        - st.slider() without value= parameter
+        - st.radio() without index= parameter
+
+        When defaults are missing, widgets return their first option or None,
+        which can cause TypeError/AttributeError when used in calculations.
+        """
+        # Only check st.widget_name() calls
+        if not isinstance(node.func, ast.Attribute):
+            return
+
+        # Check if it's a call on 'st' object
+        if not (isinstance(node.func.value, ast.Name) and node.func.value.id == 'st'):
+            return
+
+        widget_name = node.func.attr
+
+        # Define widgets and their required default parameters
+        # Format: widget_name -> (default_param_name, severity, description)
+        widget_defaults = {
+            'number_input': ('value', 'MEDIUM', 'returns 0.0 or min_value if no default'),
+            'text_input': ('value', 'LOW', 'returns empty string if no default'),
+            'text_area': ('value', 'LOW', 'returns empty string if no default'),
+            'selectbox': ('index', 'LOW', 'returns first option if no index'),
+            'multiselect': ('default', 'LOW', 'returns empty list if no default'),
+            'slider': ('value', 'LOW', 'returns min_value if no default'),
+            'radio': ('index', 'LOW', 'returns first option if no index'),
+        }
+
+        if widget_name not in widget_defaults:
+            return
+
+        param_name, severity, description = widget_defaults[widget_name]
+
+        # Check if the required parameter is provided
+        has_default = False
+
+        # Check keyword arguments
+        for kw in node.keywords:
+            if kw.arg == param_name:
+                has_default = True
+                break
+
+        # For some widgets, positional args may provide the default
+        # st.number_input(label, min, max, value) - value is 4th positional
+        # st.text_input(label, value) - value is 2nd positional
+        # st.slider(label, min, max, value) - value is 4th positional
+        positional_defaults = {
+            'number_input': 3,  # 4th arg (0-indexed: label, min, max, value)
+            'text_input': 1,    # 2nd arg (label, value)
+            'text_area': 1,     # 2nd arg (label, value)
+            'slider': 3,        # 4th arg (label, min, max, value)
+        }
+
+        if widget_name in positional_defaults:
+            min_positional_for_default = positional_defaults[widget_name]
+            if len(node.args) > min_positional_for_default:
+                has_default = True
+
+        if not has_default:
+            self.add_issue(
+                node.lineno,
+                severity,
+                f"Widget st.{widget_name}() missing '{param_name}=' parameter ({description})"
+            )
+
     def _is_early_exit(self, body: List[ast.stmt]) -> bool:
         """Check if a code block contains early exit (return/raise).
 
@@ -1117,6 +1197,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                         "MEDIUM",
                         f"ValueError risk: {func_name}() without try/except (invalid input will crash)"
                     )
+
+        # TASK-403: Widget return type validation
+        # Detect Streamlit widgets without explicit default values
+        self._check_widget_defaults(node)
 
         self.generic_visit(node)
 
