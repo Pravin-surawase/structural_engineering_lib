@@ -106,7 +106,7 @@
 | **TASK-401** | Fix scanner false positives (Path division, constant divisors, split pattern) | AGENT_6 | 1h | 🔴 HIGH | ⏳ Queued |
 | **TASK-422** | Document PR auto-merge behavior in copilot-instructions | DOCS | 30m | 🔴 HIGH | ✅ Session 15 |
 | **TASK-431** | Fix finish_task_pr.sh auto-merge behavior | DEVOPS | 30m | 🔴 HIGH | ✅ Session 15 |
-| **TASK-432** | Archive outdated Agent 6 files (work-division-main-agent6-2026-01-09.md) | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-432** | Archive outdated Agent 6 files (work-division-main-agent6-2026-01-09.md) | AGENT_6 | 15m | 🟠 MEDIUM | ✅ Session 15P3 |
 
 **Phase B: Scanner Enhancement (6-8 hours)**
 | ID | Task | Agent | Est | Priority | Status |
@@ -135,9 +135,9 @@
 **Phase E: True Positive Fixes (from code analysis)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-435** | Fix session_manager.py line 646 division (ast_required/ast_provided) | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued |
-| **TASK-436** | Fix session_manager.py lines 675-676 int() error handling | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued |
-| **TASK-437** | Move imports to module level (api_wrapper.py, session_manager.py) | AGENT_6 | 30m | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-435** | Fix session_manager.py line 646 division (cost_per_meter) | AGENT_6 | 15m | 🟠 MEDIUM | ✅ PR #337 |
+| **TASK-436** | Fix session_manager.py lines 675-676 int() error handling | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued (false positive - dataclass attrs) |
+| **TASK-437** | Move imports to module level (session_manager.py) | AGENT_6 | 30m | 🟠 MEDIUM | ✅ PR #337 |
 
 ### v0.18+ - Governance & Observability (Agent 9)
 
@@ -196,6 +196,11 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-435** | Fix session_manager.py division issue (PR #337) | AGENT_6 | ✅ 2026-01-11 |
+| **TASK-437** | Move timedelta import to module level (PR #337) | AGENT_6 | ✅ 2026-01-11 |
+| **TASK-432** | Archive outdated Agent 6 files | AGENT_6 | ✅ 2026-01-11 |
+| **TASK-433** | Create Agent 6 comprehensive onboarding guide (PR #336) | DOCS | ✅ 2026-01-11 |
+| **TASK-434** | Create Streamlit code files analysis (PR #336) | DOCS | ✅ 2026-01-11 |
 | **TASK-273** | Interactive Testing UI - Streamlit clause traceability page (PR #334) | DEV | ✅ 2026-01-11 |
 | **TASK-272** | Code Clause Database (67 clauses, 13 functions decorated, PR #333) | DEV | ✅ 2026-01-11 |
 | **TASK-275** | Professional Liability Framework (docs/legal/) | DOCS | ✅ 2026-01-11 |
