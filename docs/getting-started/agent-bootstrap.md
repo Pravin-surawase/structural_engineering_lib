@@ -55,7 +55,7 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 
 - **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
-- **Automation scripts (102):** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
+- **Automation scripts (103):** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
 - **Handoff quick start:** [../contributing/handoff.md](../contributing/handoff.md)
 - **Background agent guide:** [../contributing/background-agent-guide.md](../contributing/background-agent-guide.md)
 - **API docs:** [../reference/api.md](../reference/api.md)
