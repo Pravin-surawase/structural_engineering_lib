@@ -4,6 +4,27 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 16: Workflow Optimization & Scanner Improvements
+
+**Focus:** Reduce unnecessary PRs for solo dev workflow, fix scanner false positives (TASK-401)
+
+### Summary
+- Updated PR threshold policy for solo dev workflow (no reviewers)
+- Added Streamlit category to should_use_pr.sh
+- Increased docs+scripts threshold to 100 lines (was 50)
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| - | Direct commits (workflow changes) |
+
+### Key Deliverables
+- `scripts/should_use_pr.sh` - Added Streamlit category, adjusted thresholds
+
+### Notes
+- Session in progress
+
+
 ## 2026-01-11 — Session 15 (Part 3): Agent 6 Onboarding & Code Quality Fixes
 
 **Focus:** Comprehensive Agent 6 onboarding infrastructure, code analysis research, and true positive fixes
