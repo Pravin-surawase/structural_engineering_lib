@@ -323,6 +323,113 @@ value = st.session_state.my_key
 
 
 # =============================================================================
+# Widget Default Detection Tests (TASK-403)
+# =============================================================================
+
+class TestWidgetDefaultDetection:
+    """Test widget return type validation (TASK-403).
+
+    Detects widgets without explicit default values:
+    - st.number_input() without value=
+    - st.text_input() without value=
+    - st.selectbox() without index=
+    """
+
+    def test_catches_number_input_without_value(self):
+        """Verify scanner catches st.number_input() without value=."""
+        code = """
+import streamlit as st
+x = st.number_input("Enter value")
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.number_input()" in i[2]]
+        assert len(widget_issues) == 1
+        assert "value=" in widget_issues[0][2]
+
+    def test_allows_number_input_with_value(self):
+        """Verify scanner allows st.number_input() with value=."""
+        code = """
+import streamlit as st
+x = st.number_input("Enter value", value=10.0)
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.number_input()" in i[2]]
+        assert len(widget_issues) == 0
+
+    def test_allows_number_input_with_positional_value(self):
+        """Verify scanner allows st.number_input() with value as positional arg."""
+        code = """
+import streamlit as st
+# label, min_value, max_value, value
+x = st.number_input("Enter value", 0, 100, 50)
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.number_input()" in i[2]]
+        assert len(widget_issues) == 0
+
+    def test_catches_text_input_without_value(self):
+        """Verify scanner catches st.text_input() without value=."""
+        code = """
+import streamlit as st
+name = st.text_input("Enter name")
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.text_input()" in i[2]]
+        assert len(widget_issues) == 1
+
+    def test_allows_text_input_with_value(self):
+        """Verify scanner allows st.text_input() with value=."""
+        code = """
+import streamlit as st
+name = st.text_input("Enter name", value="default")
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.text_input()" in i[2]]
+        assert len(widget_issues) == 0
+
+    def test_catches_selectbox_without_index(self):
+        """Verify scanner catches st.selectbox() without index=."""
+        code = """
+import streamlit as st
+choice = st.selectbox("Choose", ["A", "B", "C"])
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.selectbox()" in i[2]]
+        assert len(widget_issues) == 1
+        assert "index=" in widget_issues[0][2]
+
+    def test_allows_selectbox_with_index(self):
+        """Verify scanner allows st.selectbox() with index=."""
+        code = """
+import streamlit as st
+choice = st.selectbox("Choose", ["A", "B", "C"], index=0)
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.selectbox()" in i[2]]
+        assert len(widget_issues) == 0
+
+    def test_catches_slider_without_value(self):
+        """Verify scanner catches st.slider() without value=."""
+        code = """
+import streamlit as st
+val = st.slider("Adjust")
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.slider()" in i[2]]
+        assert len(widget_issues) == 1
+
+    def test_allows_slider_with_value(self):
+        """Verify scanner allows st.slider() with value=."""
+        code = """
+import streamlit as st
+val = st.slider("Adjust", min_value=0, max_value=100, value=50)
+"""
+        issues = scan_code(code)
+        widget_issues = [i for i in issues if "st.slider()" in i[2]]
+        assert len(widget_issues) == 0
+
+
+# =============================================================================
 # Integration Tests
 # =============================================================================
 
