@@ -4,9 +4,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-11 — Session 15: TASK-272 IS 456 Clause Database & Traceability System
+## 2026-01-11 — Session 15: TASK-272 & TASK-273 - IS 456 Clause Database & Streamlit UI
 
-**Focus:** Implement comprehensive IS 456 clause database and @clause decorator for code traceability
+**Focus:** Implement comprehensive IS 456 clause database with @clause decorator and interactive Streamlit viewer
 
 ### Implementation Summary
 
@@ -16,6 +16,11 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Built `clause_cli.py` command-line tool for clause lookups
 - Added @clause decorators to 13 production functions across flexure, shear, detailing
 - Created comprehensive test suite (38 tests, all passing)
+
+**TASK-273: Interactive Testing UI (Streamlit)**
+- Created new Streamlit page: `12_📖_clause_traceability.py` (320 lines)
+- 4 interactive tabs: Browse by Category, Search, Function Traceability, Report Generator
+- Fixed Streamlit scanner to recognize annotated assignments (x: T = val)
 
 ### Files Created
 | File | Lines | Purpose |
@@ -77,9 +82,13 @@ python -m structural_lib.codes.is456.clause_cli --stats
 
 ### Commits This Session
 1. `e148846` - feat(traceability): implement TASK-272 IS 456 clause database and @clause decorator - **PR #333**
+2. `0611ceb` - docs: update TASKS.md and SESSION_LOG with TASK-272 progress
+3. `426c3e8` - docs: mark TASK-272 complete (PR #333 merged)
+4. `6a6c2bd` - feat(streamlit): add IS 456 clause traceability page (TASK-273) - **PR #334**
 
 ### PRs This Session
-- **PR #333**: TASK-272 IS 456 clause database and @clause decorator system (pending CI)
+- **PR #333**: TASK-272 IS 456 clause database and @clause decorator system ✅ Merged
+- **PR #334**: TASK-273 Streamlit clause traceability page + scanner fix ✅ Merged
 
 ### Key Decisions
 1. **Database Structure**: JSON with metadata, clauses, tables, figures, annexures sections
@@ -88,16 +97,19 @@ python -m structural_lib.codes.is456.clause_cli --stats
 4. **Annex G Support**: Added G-1.1, G-2.2 for doubly reinforced and flanged beam formulas
 
 ### Metrics
-- Tests: 38 new tests, all passing (0.32s)
+- Tests: 38 new traceability tests, all passing (0.32s)
 - Code coverage: Traceability module at 100%
 - Clause database: 67 clauses across 8 categories
 - Production functions decorated: 13
-- Lines added: ~1,630
+- Streamlit pages: 11 → 12 (added clause traceability)
+- Scanner improved: Added visit_AnnAssign handler
+- Lines added: ~2,000+
 
 ### Next Steps
-1. Merge PR #333 after CI passes
-2. Consider TASK-273 (Interactive Testing UI) or continue adding @clause decorators
-3. Update API documentation with traceability features
+1. ✅ PR #333 merged - TASK-272 complete
+2. ✅ PR #334 merged - TASK-273 complete
+3. v0.17.0 deliverables: 4/4 complete (Security, Legal, Traceability, UI)
+4. Consider v0.17.0 release or continue adding @clause decorators
 
 ---
 
