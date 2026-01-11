@@ -34,7 +34,7 @@
 **Key Deliverables:**
 1. ✅ Security hardening baseline (input validation audit, dependency scanning) - **PR #331**
 2. ✅ Professional liability framework (disclaimers, templates, certification guidance) - **DONE**
-3. � Code clause database (JSON DB, @clause decorator, traceability system) - **PR #333 pending**
+3. ✅ Code clause database (JSON DB, @clause decorator, traceability system) - **PR #333 merged**
 4. 🔴 Interactive testing UI (Streamlit/Gradio for design validation)
 
 **Success Metrics:**
@@ -51,7 +51,7 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 pending merge |
-| **TASK-272** | Code Clause Database | DEV | 🟡 PR #333 pending CI |
+| **TASK-273** | Interactive Testing UI | DEV | 🔴 Up Next |
 
 ---
 
@@ -67,10 +67,10 @@
 | **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning, CI setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | ✅ PR #331 |
 | **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates, certification guidance) | DOCS | 2-3 hrs | 🔴 HIGH | ✅ Complete |
 
-**Phase 2 (Week 3): Traceability (Medium Risk, 4-6 hours)**
+**Phase 2 (Week 3): Traceability (Medium Risk, 4-6 hours) ✅ COMPLETE**
 | ID | Task | Agent | Est | Priority | Blockers |
 |----|------|-------|-----|----------|----------|
-| **TASK-272** | Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | 🟡 PR #333 |
+| **TASK-272** | Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | ✅ PR #333 merged |
 
 **Phase 3 (Week 4): Developer UX (High Value, 1-2 days)**
 | ID | Task | Agent | Est | Priority | Blockers |
@@ -148,6 +148,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-272** | Code Clause Database (67 clauses, 13 functions decorated, PR #333) | DEV | ✅ 2026-01-11 |
 | **TASK-275** | Professional Liability Framework (docs/legal/) | DOCS | ✅ 2026-01-11 |
 | **SESSION-14P3** | Git automation: docs/git-automation/ hub (6 files), ai_commit.sh --dry-run/--help, git_automation_health.sh, improvement plan, copilot-instructions update | MAIN | ✅ 2026-01-11 |
 | **SESSION-14** | Phase 1: TASKS cleanup (50→15) + v0.17.0 roadmap (6 commits); Phase 2: Agent 8 research (8116 lines analyzed) + consolidation plan + archival + --quick default (5 commits) | MAIN | ✅ 2026-01-11 |
