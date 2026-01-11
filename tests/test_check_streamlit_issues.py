@@ -228,6 +228,34 @@ if spacing > 0:
         issues = scan_code(code)
         assert not has_issue_type(issues, "ZeroDivisionError")
 
+    def test_allows_path_division(self):
+        """Verify scanner allows Path / 'string' division (Phase 4)."""
+        code = """
+from pathlib import Path
+path = Path('/tmp')
+result = path / 'subdir'
+"""
+        issues = scan_code(code)
+        # Path division should not be flagged
+        assert not has_issue_type(issues, "ZeroDivisionError")
+
+    def test_allows_chained_path_division(self):
+        """Verify scanner allows complex Path expressions (Phase 4)."""
+        code = """
+from pathlib import Path
+lib_path = Path(__file__).resolve().parents[2] / 'Python'
+"""
+        issues = scan_code(code)
+        # Complex Path expressions should not be flagged
+        assert not has_issue_type(issues, "ZeroDivisionError")
+
+    def test_allows_max_denominator(self):
+        """Verify scanner allows division by max(x, positive) (Phase 4)."""
+        code = "result = total / max(count, 1)"
+        issues = scan_code(code)
+        # max(count, 1) guarantees non-zero
+        assert not has_issue_type(issues, "ZeroDivisionError")
+
 
 # =============================================================================
 # NameError Tests (Existing - Verify Still Works)

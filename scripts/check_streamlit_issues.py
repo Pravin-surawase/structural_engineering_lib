@@ -6,16 +6,21 @@ Scans ALL Streamlit pages for common issues:
 - NameError (undefined variables)
 - AttributeError (session state access)
 - KeyError (direct dict access)
-- ZeroDivisionError (division without checks) - Phase 3: Guard clause aware
+- ZeroDivisionError (division without checks) - Phase 4: Enhanced detection
 - ImportError (imports inside functions)
 - TypeError (wrong function args)
 - API signature mismatches (Phase 3: test files)
+
+**Phase 4 Enhancements (TASK-401):**
+- Path division detection: Recognizes Path(...).method().attr[n] / "string" patterns
+- Guaranteed non-zero detection: max(x, positive), min(x, negative)
+- Complex expression tracing for Path-like objects
 
 **Phase 3 Enhancements:**
 - Guard clause detection: Recognizes early-exit patterns that validate for entire function
 - API signature checking: Validates test function calls against actual signatures
 
-Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3).
+Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3 + Phase 4).
 
 Usage:
     python scripts/check_streamlit_issues.py --all-pages
@@ -652,6 +657,80 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             return self._extract_var_name(node.value)
         return None
 
+    def _is_path_expression(self, node: ast.expr) -> bool:
+        """
+        Recursively check if an expression originates from a Path call.
+
+        Detects patterns like:
+        - Path(__file__)
+        - Path(__file__).resolve()
+        - Path(__file__).resolve().parents[2]
+        - path_var (if path_var is in self.path_like_vars)
+
+        Phase 4: Enhanced Path detection for complex expressions.
+        """
+        if isinstance(node, ast.Name):
+            # Direct variable reference
+            return node.id in self.path_like_vars
+
+        elif isinstance(node, ast.Call):
+            # Direct Path(...) call
+            if isinstance(node.func, ast.Name) and node.func.id in self.path_like_vars:
+                return True
+            # Method call like path.resolve()
+            if isinstance(node.func, ast.Attribute):
+                return self._is_path_expression(node.func.value)
+
+        elif isinstance(node, ast.Attribute):
+            # Attribute access like path.parents
+            return self._is_path_expression(node.value)
+
+        elif isinstance(node, ast.Subscript):
+            # Subscript like path.parents[2]
+            return self._is_path_expression(node.value)
+
+        return False
+
+    def _is_guaranteed_nonzero(self, node: ast.expr) -> bool:
+        """
+        Check if an expression is guaranteed to be non-zero.
+
+        Detects patterns like:
+        - max(expr, 1) or max(1, expr) - minimum is 1
+        - min(expr, -1) or max(expr, positive_const)
+        - abs(expr) + 1 (but not abs alone)
+        - Numeric constants > 0 or < 0
+
+        Phase 4: Enhanced denominator safety detection.
+        """
+        if isinstance(node, ast.Constant):
+            # Non-zero constant
+            if isinstance(node.value, (int, float)) and node.value != 0:
+                return True
+
+        elif isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name):
+                # max(a, b) - if any argument is positive constant, result >= that constant
+                if node.func.id == 'max' and len(node.args) >= 2:
+                    for arg in node.args:
+                        if isinstance(arg, ast.Constant):
+                            if isinstance(arg.value, (int, float)) and arg.value > 0:
+                                return True
+
+                # min(a, b) - if any argument is negative constant, result <= that constant (non-zero)
+                if node.func.id == 'min' and len(node.args) >= 2:
+                    for arg in node.args:
+                        if isinstance(arg, ast.Constant):
+                            if isinstance(arg.value, (int, float)) and arg.value < 0:
+                                return True
+
+        elif isinstance(node, ast.BinOp):
+            # Addition/subtraction of constant to abs()
+            # e.g., abs(x) + 1 is always >= 1 if constant > 0
+            pass  # Complex case, skip for now
+
+        return False
+
     def _is_in_safe_ternary(self, binop_node: ast.BinOp) -> bool:
         """
         Check if the BinOp is inside a ternary expression (IfExp) with zero-check.
@@ -842,26 +921,30 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 self.function_level_safe_denoms.add(var)
 
     def visit_BinOp(self, node: ast.BinOp):
-        """Detect division operations (ZeroDivisionError risk) - Phase 3: Guard clause aware."""
+        """Detect division operations (ZeroDivisionError risk) - Phase 4: Enhanced detection."""
         if isinstance(node.op, (ast.Div, ast.FloorDiv, ast.Mod)):
-            # Phase 2: Check if this is Path division (Path / "string")
-            left_name = self._extract_var_name(node.left)
-            if left_name in self.path_like_vars and isinstance(node.op, ast.Div):
+            # Phase 4: Enhanced Path detection - handles complex expressions like
+            # Path(__file__).resolve().parents[2] / "Python"
+            if isinstance(node.op, ast.Div) and self._is_path_expression(node.left):
                 # This is Path division, not arithmetic - safe
                 self.generic_visit(node)
                 return
 
-            # Check if left operand is a Path call: Path(...) / "string"
-            if isinstance(node.left, ast.Call):
-                if isinstance(node.left.func, ast.Name) and node.left.func.id in self.path_like_vars:
-                    self.generic_visit(node)
-                    return
+            # Phase 2 fallback: Check if left is simple Path variable
+            left_name = self._extract_var_name(node.left)
+            if left_name in self.path_like_vars and isinstance(node.op, ast.Div):
+                self.generic_visit(node)
+                return
 
             # Check if denominator is obviously safe
             is_safe = False
 
+            # Phase 4: Check if denominator is guaranteed non-zero (e.g., max(x, 1))
+            if self._is_guaranteed_nonzero(node.right):
+                is_safe = True
+
             # Check if it's a constant (not zero)
-            if isinstance(node.right, ast.Constant):
+            if not is_safe and isinstance(node.right, ast.Constant):
                 if isinstance(node.right.value, (int, float)) and node.right.value != 0:
                     is_safe = True
 
