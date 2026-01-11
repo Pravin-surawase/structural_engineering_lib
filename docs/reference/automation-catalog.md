@@ -1,8 +1,8 @@
 # Automation Script Catalog
 
-> **Purpose:** Complete reference of all 71 automation scripts in this project.
+> **Purpose:** Complete reference of all automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
-> **Last Updated:** 2026-01-10
+> **Last Updated:** 2026-01-11
 >
 > **⚠️ IMPORTANT:** See [Agent Automation Pitfalls](agent-automation-pitfalls.md) for common issues when running automation scripts (git pager lockup, interactive prompts, etc.)
 
@@ -21,8 +21,9 @@
 | [Streamlit QA](#streamlit-qa) | 6 | Streamlit linting, AST validation, page checks |
 | [Governance & Monitoring](#governance--monitoring) | 7 | Metrics, dashboards, repo health |
 | [Specialized](#specialized) | 8 | DXF rendering, CLI testing, automation helpers |
+| [Other](#other) | ~32 | Additional utility scripts |
 
-**Total: 71 scripts** (37 shell `.sh` + 34 Python `.py`)
+**Total: ~103 files in scripts/** (59 Python `.py` + 43 Shell `.sh` + README)
 
 ---
 

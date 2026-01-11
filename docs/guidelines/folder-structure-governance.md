@@ -240,17 +240,18 @@ agents/
 
 ## VIII. Current Status
 
-**Last Updated:** 2026-01-11 (Session 12 Review)
+**Last Updated:** 2026-01-11 (Session 13 Part 2)
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| Root files (≤10) | ❌ FAIL | 14 files, need to reduce to 10 |
+| Root files (≤10) | ✅ PASS | 9 files |
 | docs/ root (≤5) | ✅ PASS | 3 files |
-| Link validity | ✅ PASS | 808 links, 0 broken |
-| agents/ roles | ✅ PASS | 12 files migrated to agents/roles/ |
-| agents/GOVERNANCE.md | ✅ PASS | Moved to agents/roles/GOVERNANCE.md |
-| docs/agents structure | ✅ PASS | 6 files migrated to docs/agents/guides/ |
-| Spec/validator sync | ✅ PASS | Validator fixed in Session 12 |
+| Link validity | ✅ PASS | 801 links, 0 broken |
+| agents/ roles | ✅ PASS | 12 files in agents/roles/ |
+| Governance consolidated | ✅ PASS | Single location: docs/guidelines/ |
+| docs/agents structure | ✅ PASS | All agent guides in docs/agents/guides/ |
+| Spec/validator sync | ✅ PASS | max_files=10 aligned |
+| Naming convention | ✅ PASS | All files kebab-case |
 | Doc metadata | ⚠️ IN PROGRESS | New standard being applied |
 
 ---
