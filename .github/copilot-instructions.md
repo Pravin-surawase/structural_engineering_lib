@@ -725,7 +725,7 @@ git rm docs/file.md
 **Created:** YYYY-MM-DD
 **Last Updated:** YYYY-MM-DD
 **Related Tasks:** Task identifiers (see docs/planning/TASKS.md)
-**Location Rationale:** Why this folder? (Reference FOLDER_STRUCTURE_GOVERNANCE.md)
+**Location Rationale:** Why this folder? (Reference folder-structure-governance.md)
 **Archive/Supersede:** [If replacing old doc: "Supersedes: old-doc.md" or "Archive after: date"]
 
 ---
@@ -757,7 +757,7 @@ git rm docs/file.md
 - Move to `docs/_archive/` after archival date
 - Always link to replacement doc if deprecated
 
-**Full spec:** `docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md` Section V
+**Full spec:** `docs/guidelines/folder-structure-governance.md` Section V
 
 ---
 
