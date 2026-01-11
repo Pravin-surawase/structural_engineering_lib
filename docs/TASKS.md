@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 15: TASK-272 + TASK-273 Complete)
+**Updated:** 2026-01-12 (Session 16: TASK-401 Phase 4 Complete, PR Workflow Optimized)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -103,7 +103,7 @@
 **Phase A: Quick Wins (1-2 hours total)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-401** | Fix scanner false positives (Path division, constant divisors, split pattern) | AGENT_6 | 1h | 🔴 HIGH | ⏳ Queued |
+| **TASK-401** | Fix scanner false positives (Path division, constant divisors, split pattern) | AGENT_6 | 1h | 🔴 HIGH | ✅ PR #339 Session 16 |
 | **TASK-422** | Document PR auto-merge behavior in copilot-instructions | DOCS | 30m | 🔴 HIGH | ✅ Session 15 |
 | **TASK-431** | Fix finish_task_pr.sh auto-merge behavior | DEVOPS | 30m | 🔴 HIGH | ✅ Session 15 |
 | **TASK-432** | Archive outdated Agent 6 files (work-division-main-agent6-2026-01-09.md) | AGENT_6 | 15m | 🟠 MEDIUM | ✅ Session 15P3 |
@@ -196,6 +196,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-401** | Scanner Phase 4: Path division, max() patterns (PR #339) | AGENT_6 | ✅ 2026-01-12 |
+| **SESSION-16** | PR workflow optimization for solo dev (150-line threshold, Streamlit category) | MAIN | ✅ 2026-01-12 |
 | **TASK-435** | Fix session_manager.py division issue (PR #337) | AGENT_6 | ✅ 2026-01-11 |
 | **TASK-437** | Move timedelta import to module level (PR #337) | AGENT_6 | ✅ 2026-01-11 |
 | **TASK-432** | Archive outdated Agent 6 files | AGENT_6 | ✅ 2026-01-11 |

@@ -4,27 +4,89 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-12 — Session 16: Workflow Optimization & Scanner Improvements
+## 2026-01-12 — Session 16: Workflow Optimization & Scanner Phase 4
 
-**Focus:** Reduce unnecessary PRs for solo dev workflow, fix scanner false positives (TASK-401)
+**Focus:** Optimize PR workflow for solo dev, implement scanner Phase 4 (TASK-401)
 
 ### Summary
-- Updated PR threshold policy for solo dev workflow (no reviewers)
-- Added Streamlit category to should_use_pr.sh
-- Increased docs+scripts threshold to 100 lines (was 50)
 
-### PRs Merged
-| PR | Summary |
-|----|---------|
-| - | Direct commits (workflow changes) |
+Session 16 addressed user concerns about excessive PRs for small changes and completed the high-priority scanner improvement task (TASK-401). Key achievements:
+
+1. **PR Workflow Optimization** - Recognized that solo developer workflow doesn't need PRs for every small change
+2. **Scanner Phase 4** - Fixed false positives for Path division and max() guaranteed non-zero patterns
+3. **Agent 6 Verification** - Confirmed comprehensive onboarding infrastructure is complete
+
+### Commits & PRs
+
+| Type | Reference | Description |
+|------|-----------|-------------|
+| Direct | `27df2f4` | feat(workflow): optimize PR thresholds for solo dev |
+| Direct | `70020c3` | chore: update session docs |
+| PR | **#339** ✅ merged | feat(scanner): TASK-401 Phase 4 - fix false positives |
 
 ### Key Deliverables
-- `scripts/should_use_pr.sh` - Added Streamlit category, adjusted thresholds
 
-### Notes
-- Session in progress
+**1. PR Workflow Optimization (`should_use_pr.sh`)**
+- Added `STREAMLIT_ONLY` category with 20-line threshold
+- Increased `DOCS_SCRIPTS_MINOR_THRESHOLD` from 50 to 150 lines
+- Allows up to 4 files for docs+scripts (was 2)
+- Rationale: Solo dev workflow, no reviewers available, quick iteration needed
 
+**2. Scanner Phase 4 Improvements (`check_streamlit_issues.py`)**
+- Added `_is_path_expression()` - Recursive Path chain detection
+  - Handles: `Path() / "subdir"`, `Path().resolve().parents[2] / "file"`
+  - Tracks path-like variables (Path, PurePath, etc.)
+- Added `_is_guaranteed_nonzero()` - max/min safety detection
+  - Handles: `x / max(y, 1)`, `a / max(b, positive_constant)`
+- Updated `visit_BinOp` to use new helpers
+- Results: `api_wrapper.py` critical issues reduced from 13 to 10
 
+**3. New Test Cases (`test_check_streamlit_issues.py`)**
+- `test_allows_path_division` - Simple Path / string
+- `test_allows_chained_path_division` - Complex Path chains
+- `test_allows_max_denominator` - max(x, positive) patterns
+
+### Verification
+
+- Agent 6 has 3 comprehensive guides:
+  - `agent-6-comprehensive-onboarding.md` (525 lines)
+  - `agent-6-streamlit-hub.md` (hub document)
+  - `agent-6-role.md` (role definition)
+- No issues from Session 15 needed fixing
+- All 7 ZeroDivisionError tests passing
+
+### TASK-401 Impact
+
+| File | Before | After | Improvement |
+|------|--------|-------|-------------|
+| `api_wrapper.py` | 13 critical | 10 critical | 3 false positives fixed |
+
+**Patterns now recognized as safe:**
+```python
+# Path division (NOT filesystem division)
+config_path = Path(__file__).parent / "config.json"
+base = Path().resolve().parents[2] / "data"
+
+# Guaranteed non-zero denominator
+ratio = value / max(divisor, 1)
+avg = total / max(count, 1)
+```
+
+### Tasks Completed
+
+| ID | Task | Status |
+|----|------|--------|
+| **TASK-401** | Scanner Phase 4: Path division, max() patterns | ✅ PR #339 |
+| **SESSION-16** | PR workflow optimization (150-line threshold) | ✅ Direct commit |
+
+### Next Session Recommendations
+
+1. **TASK-403** (HIGH) - Widget return type validation (3h)
+2. **TASK-411** (HIGH) - Create streamlit_preflight.sh (2h)
+3. **TASK-402** (MEDIUM) - Type annotation checker (2h)
+4. **TASK-413** (HIGH) - validate_session_state.py audit tool (3h)
+
+---
 ## 2026-01-11 — Session 15 (Part 3): Agent 6 Onboarding & Code Quality Fixes
 
 **Focus:** Comprehensive Agent 6 onboarding infrastructure, code analysis research, and true positive fixes
