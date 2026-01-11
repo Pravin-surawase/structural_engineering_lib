@@ -5,24 +5,55 @@
 | **Current** | v0.16.5 | Released |
 | **Next** | v0.17.0 | Foundation → Traceability → Developer UX |
 
-**Date:** 2026-01-11 | **Last commit:** 58add0d
+**Date:** 2026-01-11 | **Last commit:** 144b3f4
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-11 (Session 14 - TASKS.md Cleanup & v0.17.0 Planning)
-- Focus: **Task Board Hygiene + v0.17.0 Roadmap**
+- Date: 2026-01-11 (Session 14 Part 3 - Git Automation Consolidation)
+- Focus: **Professional Git Automation Hub + Script Improvements**
 - Completed:
-  - ✅ TASKS.md restructure: Phase 1 (top sections) + Phase 2 (consolidation)
-  - ✅ Recently Done: Trimmed from 50+ to 15 items (retained S11-S14 focus)
-  - ✅ Archive rule: Established 20+ items or 14+ days threshold
-  - ✅ copilot-instructions.md: Added Task Archival Rules section
-  - ✅ v0.17.0: Defined phase-based approach (Low → Medium → High risk)
-- Commits: 6776b61, 02067be, 58add0d (3/6 so far)
-- Next: Create v0.17.0 task specifications, update SESSION_LOG, finalize planning
+  - ✅ Created docs/git-automation/ hub (7 files total)
+  - ✅ Deep script review: 5,500+ lines analyzed, 12 improvement opportunities
+  - ✅ ai_commit.sh: Added --dry-run and --help flags
+  - ✅ safe_push.sh: Added timing metrics display
+  - ✅ Created git_automation_health.sh (17 health checks)
+  - ✅ Created efficient-agent-usage.md (per-agent workflow patterns)
+  - ✅ Archived legacy scripts to scripts/_archive/
+  - ✅ Updated copilot-instructions with new hub references
+  - ✅ All 847 internal links valid
+- Commits: 5 this part (f8eefb2, 14bda9e, 45d8620, 22743da, 144b3f4)
+- Total Session 14: 11+ commits across 3 parts
 <!-- HANDOFF:END -->
+
+---
+
+## 🎯 Next Tasks (Priority Order)
+
+### Immediate (Ready Now)
+| ID | Task | Est | Priority |
+|----|------|-----|----------|
+| **TASK-274** | Security Baseline (SBOM, supply chain) | 2-3h | 🔴 HIGH |
+| **TASK-275** | Liability Framework (docs, disclaimers) | 2-3h | 🔴 HIGH |
+| **TASK-272** | Code Clause Database (IS 456 refs) | 4-6h | 🔴 HIGH |
+
+### After Foundation (v0.17.0 Phase 2-3)
+| ID | Task | Est | Depends On |
+|----|------|-----|------------|
+| **TASK-245** | Verification & Audit Trail | 3-4h | TASK-272 |
+| **TASK-273** | Interactive Testing UI | 1 day | Phase 1 complete |
+
+### Git Automation Improvements (Remaining)
+| Item | Description | Est |
+|------|-------------|-----|
+| P1.1 | Detailed per-step timing metrics | 1h |
+| P1.3 | Better error messages with suggestions | 2h |
+| P3.1 | Unified test runner script | 2h |
+| P4.1 | Performance benchmarking suite | 3h |
+
+*Full improvement plan: docs/research/git-automation-improvement-plan.md*
 
 ---
 
@@ -50,42 +81,24 @@
 |----|------|-----|-----------|
 | **TASK-273** | Interactive Testing UI | 1 day | Complex, depends on stable foundation |
 
-### Rationale
-- **Phase 1** builds trust and infrastructure with minimal friction
-- **Phase 2** adds traceability on top of clause foundation
-- **Phase 3** delivers high-value UX after core is stable
-
----
-
-## 🎯 Session 14 Progress (3/6 commits)
-
-| Commit | Description | Status |
-|--------|-------------|--------|
-| 6776b61 | Phase 1: Top sections cleanup | ✅ Complete |
-| 02067be | Phase 2: Consolidate + trim | ✅ Complete |
-| 58add0d | Archive rule to copilot-instructions | ✅ Complete |
-| *Next* | v0.17.0 task specifications | ⏳ Pending |
-| *Next* | SESSION_LOG.md update | ⏳ Pending |
-| *Next* | next-session-brief finalization | ⏳ Pending |
-
 ---
 
 ## Current State
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Version | v0.16.0 | Released |
+| Version | v0.16.5 | Released |
 | Tests | 2392 | ✅ Passing |
-| Session 13 Commits | 13 | ✅ Complete |
+| Session 14 Commits | 11+ | ✅ Across 3 parts |
 | Root Files | 9 | ✅ Below limit (10) |
-| Internal Links | 788 | ✅ All valid |
+| Internal Links | 847 | ✅ All valid |
 | Broken Links | 0 | ✅ Perfect |
-| Markdown Files | 288 | +54 from archiving |
-| Archived Files | 164 | Proper lifecycle |
-| Scripts | 103 | Including new agent_start.sh |
+| Scripts | 103 | 59 .py + 44 .sh |
+| Git Automation Health | 17/17 | ✅ All checks passing |
 
 ## 📚 Required Reading
 
 - `.github/copilot-instructions.md` - Git workflow + automation rules
+- `docs/git-automation/README.md` - **NEW: Git automation hub**
 - `docs/TASKS.md` - Current task status
-- `docs/SESSION_LOG.md` - Session 13 accomplishments
+- `docs/SESSION_LOG.md` - Session history
