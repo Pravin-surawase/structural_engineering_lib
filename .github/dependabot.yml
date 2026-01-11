@@ -5,27 +5,53 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
+      - "ci"
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "ci(deps)"
     groups:
       github-actions:
         patterns:
           - "*"
 
-  # Keep Python dependencies up to date (best-effort with setuptools/pyproject)
+  # Keep Python dependencies up to date
   - package-ecosystem: "pip"
     directory: "/Python"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
+      - "security"
     commit-message:
       prefix: "chore(deps)"
     groups:
-      python:
+      # Group dev dependencies together (less urgent)
+      dev-dependencies:
         patterns:
-          - "*"
+          - "pytest*"
+          - "black"
+          - "mypy"
+          - "ruff"
+          - "isort"
+          - "bandit"
+          - "pre-commit"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group visualization dependencies
+      visualization:
+        patterns:
+          - "ezdxf"
+          - "matplotlib"
+        update-types:
+          - "minor"
+          - "patch"
