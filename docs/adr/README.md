@@ -2,22 +2,40 @@
 
 Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later.
 
-## When to write an ADR
-Write one when you:
-- Change public API contracts (Python or VBA)
-- Choose between two algorithms/approaches (e.g., deflection method A vs B)
-- Introduce a new dependency (Python package, Excel tooling, etc.)
-- Decide a unit convention, rounding rule, or tolerance rule
-- Make a compatibility choice (Windows-only vs cross-platform)
+**Updated:** 2026-01-11
 
-If it’s small and local (typo, refactor, minor test), no ADR needed.
+---
 
-## File naming
+## 📋 Current ADRs
+
+| ADR | Title | Status |
+|-----|-------|--------|
+| *(none yet)* | Create ADRs as needed | - |
+
+---
+
+## ❓ When to Write an ADR
+
+| Scenario | Write ADR? |
+|----------|------------|
+| Change public API contracts (Python or VBA) | ✅ Yes |
+| Choose between algorithms/approaches | ✅ Yes |
+| Introduce a new dependency | ✅ Yes |
+| Decide unit convention, rounding, or tolerance | ✅ Yes |
+| Make compatibility choice (Windows-only vs cross-platform) | ✅ Yes |
+| Fix typo, refactor, minor test | ❌ No |
+
+---
+
+## 📝 File Naming
+
 Use sequential numbering:
 - `0001-serviceability-level-a.md`
 - `0002-dxf-layer-conventions.md`
 
-## ADR template (copy-paste)
+---
+
+## 📄 ADR Template
 
 ```markdown
 # ADR 000X: <title>
@@ -52,3 +70,17 @@ What did we decide?
 - Docs: <relevant docs>
 - Code: <paths>
 ```
+
+---
+
+## 📚 Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [Architecture](../architecture/README.md) | System design |
+| [Guidelines](../guidelines/README.md) | Development standards |
+| [Reference](../reference/README.md) | API documentation |
+
+---
+
+**Parent:** [docs/README.md](../README.md)
