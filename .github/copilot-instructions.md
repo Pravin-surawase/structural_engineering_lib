@@ -95,6 +95,36 @@ IS 456 RC beam design library with **Python + VBA parity**.
 
 ---
 
+## Task Archival Rules (CRITICAL)
+
+**Archive Rule:** Keep TASKS.md Recently Done section focused by moving completed items to archive after:
+- **20+ items** accumulated in Recently Done, OR
+- **14+ days** have passed since item completion
+
+**Archive Location:** `docs/_archive/tasks-history.md`
+
+**What to Archive:**
+- Completed tasks older than 14 days
+- Keep only last 10-15 most recent items in TASKS.md
+- Preserve metadata: ID, description, date, agent, PR number
+
+**Manual Process (Until Automated):**
+1. Identify items meeting archive criteria (date or count threshold)
+2. Copy items to appropriate release section in tasks-history.md
+3. Remove from TASKS.md Recently Done section
+4. Update Archive Rule note if needed
+5. Commit: `./scripts/ai_commit.sh "docs: archive completed tasks to tasks-history.md"`
+
+**Why This Matters:**
+- Keeps TASKS.md focused on active/recent work
+- Prevents unbounded file growth (50+ items → 10-15 items)
+- Maintains historical record in dedicated archive
+- Improves agent onboarding speed (smaller, focused task board)
+
+**Future Automation:** Consider creating `scripts/archive_completed_tasks.py` when archive operations become frequent (>2 per week).
+
+---
+
 ## Git workflow rules (CRITICAL - Production Stage)
 
 ### 🎯 Quick Decision Tool
