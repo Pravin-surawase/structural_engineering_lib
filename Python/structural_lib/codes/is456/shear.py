@@ -21,10 +21,12 @@ from structural_lib.errors import (
 )
 
 from . import tables
+from .traceability import clause
 
 __all__ = ["calculate_tv", "design_shear"]
 
 
+@clause("40.1")
 def calculate_tv(vu_kn: float, b: float, d: float) -> float:
     """
     Calculate nominal shear stress (tv).
@@ -56,6 +58,7 @@ def calculate_tv(vu_kn: float, b: float, d: float) -> float:
     return (abs(vu_kn) * 1000.0) / (b * d)
 
 
+@clause("40.1", "40.2", "40.4", "26.5.1.5", "26.5.1.6")
 def design_shear(
     vu_kn: float, b: float, d: float, fck: float, fy: float, asv: float, pt: float
 ) -> ShearResult:
