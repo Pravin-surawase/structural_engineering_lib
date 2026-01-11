@@ -93,7 +93,7 @@ Agent 6 uses a **3-layer prevention system** to catch issues before they reach u
 
 | Agent | Collaboration |
 |-------|---------------|
-| [Agent 8](agent-8-quick-start.md) | Git operations for commits |
+| [Agent 8](agent-8-automation.md) | Git operations for commits |
 | [Agent 9](agent-9-quick-start.md) | Governance and structure |
 
 ---

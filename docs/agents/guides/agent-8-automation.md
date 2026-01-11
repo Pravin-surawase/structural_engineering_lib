@@ -1,6 +1,38 @@
 # Agent 8 Automation - Scripts & Tools Index
 
 **Complete reference for all Agent 8 automation scripts.**
+**Last Updated:** 2026-01-11
+
+---
+
+## Quick Start (60 Seconds)
+
+### 1. Setup (Once per session)
+```bash
+./scripts/agent_start.sh        # Unified setup
+# OR
+./scripts/agent_setup.sh        # Legacy (still works)
+```
+
+### 2. Before any work
+```bash
+./scripts/agent_preflight.sh
+```
+
+### 3. Commit & Push (Every commit)
+```bash
+./scripts/ai_commit.sh "your commit message"
+```
+
+**That's it!** The script handles staging, pre-commit hooks, pull before push, whitespace fixes, PR vs direct commit decision, and fast-forward push.
+
+### The One Rule
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ NEVER use manual git commands!                 ┃
+┃ ALWAYS use ./scripts/ai_commit.sh "message"    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
 
 ---
 
@@ -284,11 +316,10 @@ gh pr merge <num> --squash --delete-branch
 
 ## Full Documentation
 
-- **[Quick Start](agent-8-quick-start.md)** - Get started in 60 seconds
-- **[Git Operations Protocol](agent-8-git-ops.md)** - Core mission & detailed workflow
+- **[Git Operations Protocol](agent-8-git-ops.md)** - Core mission & detailed workflow (primary doc)
 - **[Mistake Prevention](agent-8-mistakes-prevention-guide.md)** - Historical mistakes database
-- **[Implementation Guide](agent-8-implementation-guide.md)** - Setup instructions
 - **[Multi-Agent Coordination](agent-8-multi-agent-coordination.md)** - Coordination patterns
+- **[Automation System](agent-automation-system.md)** - System overview & benefits
 
 ---
 

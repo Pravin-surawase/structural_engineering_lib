@@ -1,5 +1,7 @@
 # Agent 8 Quick Start - Git Operations Automation
 
+> **⚠️ ARCHIVED:** 2026-01-11 | Content merged into [agent-8-automation.md](../../../agents/guides/agent-8-automation.md)
+
 **Get started with Agent 8 in 60 seconds.**
 
 ---

@@ -1,8 +1,10 @@
 # Agent Automation System - Implementation Summary
 
+> **⚠️ ARCHIVED:** 2026-01-11 | Content merged into [agent-automation-system.md](../../../agents/guides/agent-automation-system.md)
+
 **Date:** 2026-01-08
 **Commit:** 0be4524
-**Status:** ✅ Complete & Deployed
+**Status:** ✅ Complete & Deployed (ARCHIVED)
 **Tests:** 10/10 Passing
 
 ---

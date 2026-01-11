@@ -10,7 +10,7 @@
 | Agent | Role | Domain | Quick Start | Hub | Complexity |
 |-------|------|--------|-------------|-----|------------|
 | **6** | Streamlit UI | Frontend, validation, dashboards | [60s Start](guides/agent-6-quick-start.md) | [Full Hub](guides/agent-6-streamlit-hub.md) | 🟢 Beginner |
-| **8** | Git Operations | Commits, PRs, conflict prevention | [60s Start](guides/agent-8-quick-start.md) | [Full Hub](guides/agent-8-git-ops.md) | 🟡 Intermediate |
+| **8** | Git Operations | Commits, PRs, conflict prevention | [Automation](guides/agent-8-automation.md) | [Full Hub](guides/agent-8-git-ops.md) | 🟡 Intermediate |
 | **9** | Governance | Docs structure, migrations, quality | [60s Start](guides/agent-9-quick-start.md) | [Full Hub](guides/agent-9-governance-hub.md) | 🟡 Intermediate |
 
 ### 📋 When to Use Each Agent
@@ -54,11 +54,9 @@ Time-bucketed session logs and summaries by month:
 ### Agent 8 - Git Operations Automation
 **Mission:** Prevent merge conflicts, automate git workflows, ensure safe commits
 
-- [Quick Start](guides/agent-8-quick-start.md) - Get started in 60 seconds
+- [Automation Index](guides/agent-8-automation.md) - Quick start + all scripts & tools
 - [Git Operations Protocol](guides/agent-8-git-ops.md) - Core mission & workflow
-- [Automation Index](guides/agent-8-automation.md) - All scripts & tools
 - [Mistake Prevention](guides/agent-8-mistakes-prevention-guide.md) - Historical mistakes database
-- [Implementation Guide](guides/agent-8-implementation-guide.md) - Setup instructions
 - [Multi-Agent Coordination](guides/agent-8-multi-agent-coordination.md) - Work with background agents
 - [Operations Log Spec](guides/agent-8-operations-log-spec.md) - Log format specification
 

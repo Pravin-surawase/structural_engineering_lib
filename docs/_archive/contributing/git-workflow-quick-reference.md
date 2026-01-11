@@ -1,9 +1,11 @@
 # Git Workflow Quick Reference
 
+> **⚠️ ARCHIVED:** 2026-01-11 | See canonical doc: [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)
+
 **Canonical:** `docs/git-workflow-ai-agents.md`
 
 **Last Updated:** 2026-01-06
-**Status:** ✅ Production Ready (tested with 13 scenarios)
+**Status:** ARCHIVED (use canonical doc)
 
 ---
 

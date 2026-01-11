@@ -1,8 +1,10 @@
 # Agent 8: GIT Operations - Implementation Guide
 
+> **⚠️ ARCHIVED:** 2026-01-11 | Conceptual future plan, superseded by production implementation
+
 **Version:** 1.0
 **Created:** 2026-01-08
-**Status:** Ready for Implementation
+**Status:** ARCHIVED (was conceptual plan)
 
 ---
 

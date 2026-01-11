@@ -18,7 +18,6 @@ Guides for developers and maintainers. | Guide | Audience |
 | [end-of-session-workflow.md](end-of-session-workflow.md) | > **Standard procedure for ALL agents when ending a session.** ```bash | 2026-01-10 | 471 |
 | [excel-addin-guide.md](excel-addin-guide.md) | This guide explains how to package the VBA library into a reusable Excel Add-in  | 2026-01-08 | 372 |
 | [git-workflow-for-ai-agents.md](git-workflow-ai-agents.md) | Please update your bookmarks. *This redirect will be removed in v1.0.* | 2026-01-08 | 7 |
-| [git-workflow-quick-reference.md](git-workflow-quick-reference.md) | ```bash git add <files> | 2026-01-08 | 187 |
 | [git-workflow-testing.md](git-workflow-testing.md) | This document explains how we test and validate our git workflow to prevent merg | 2026-01-08 | 337 |
 | [github-workflow.md](github-workflow.md) | ```bash ./scripts/should_use_pr.sh --explain | 2026-01-08 | 277 |
 | [learning-paths.md](learning-paths.md) | Pick the smallest reading path that still protects quality. Each path lists the  | 2026-01-08 | 80 |

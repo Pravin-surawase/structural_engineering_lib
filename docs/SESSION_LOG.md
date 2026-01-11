@@ -4,6 +4,60 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 13 Part 5: Agent Onboarding & Doc Consolidation ✅
+
+**Focus:** Improve agent onboarding efficiency, consolidate scattered automation docs
+
+### Commits This Session
+1. `aea7599` - feat: create unified agent_start.sh, simplify onboarding docs (#329)
+2. *(pending)* - refactor: consolidate automation docs, archive 4 redundant files
+
+### 🎯 Key Achievements
+
+#### 1. Unified Agent Onboarding (ONBOARD-01)
+- **Problem:** New agents required 4 separate commands to start a session
+- **Solution:** Created `scripts/agent_start.sh` (164 lines)
+  - Replaces: agent_setup.sh + agent_preflight.sh + start_session.py
+  - Supports: `--agent 6|8|9` for agent-specific guidance
+  - Supports: `--quick` for fast startup
+- **Usage:** `./scripts/agent_start.sh --agent 9 --quick`
+
+#### 2. Documentation Consolidation
+- **Archived 4 redundant files:**
+  - `agent-automation-implementation.md` → merged into agent-automation-system.md v1.1.0
+  - `agent-8-quick-start.md` → merged into agent-8-automation.md
+  - `agent-8-implementation-guide.md` → archived (conceptual future plan)
+  - `git-workflow-quick-reference.md` → canonical doc is git-workflow-ai-agents.md
+
+- **Updated files:**
+  - `agent-automation-system.md` v1.0.0 → v1.1.0 (added metrics tables, problem list)
+  - `agent-8-automation.md` (added Quick Start section)
+  - `agent-bootstrap.md` (fixed stale automation count 41→102)
+  - `copilot-quick-start.md` (simplified, points to agent_start.sh)
+  - `agent-quick-reference.md` v1.0.0 → v1.1.0 (added agent_start.sh)
+
+### 📊 Onboarding Improvements
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Commands to start | 4 | 1 |
+| Docs to read | 5+ scattered | 2 canonical |
+| Agent-specific guidance | None | Built-in (--agent flag) |
+| Stale automation count | 41 | 102 (accurate) |
+
+### 📁 Files Changed
+
+| Category | Added | Modified | Archived |
+|----------|-------|----------|----------|
+| Scripts | 1 | 0 | 0 |
+| Docs | 0 | 5 | 4 |
+
+### ⏭️ Next Session
+- Continue doc consolidation if more redundancy found
+- Focus on v0.17.0 implementation tasks (TASK-272, 273, 274, 275)
+
+---
+
 ## 2026-01-11 — Session 13 Part 4: Fourth External Review & Final Alignment ✅
 
 **Focus:** Validate remaining review claims, achieve full spec/validator alignment

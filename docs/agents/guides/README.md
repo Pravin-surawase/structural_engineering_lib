@@ -9,11 +9,9 @@
 **Mission:** Single source of truth for all git operations, preventing conflicts and ensuring consistency.
 
 ### Core Documentation
-- [agent-8-quick-start.md](agent-8-quick-start.md) - 60-second onboarding
+- [agent-8-automation.md](agent-8-automation.md) - Quick start + script index (start here)
 - [agent-8-git-ops.md](agent-8-git-ops.md) - Core protocol (1,320 lines)
-- [agent-8-automation.md](agent-8-automation.md) - Script index & usage
 - [agent-8-mistakes-prevention-guide.md](agent-8-mistakes-prevention-guide.md) - Historical mistakes DB (1,096 lines)
-- [agent-8-implementation-guide.md](agent-8-implementation-guide.md) - Setup & implementation
 - [agent-8-multi-agent-coordination.md](agent-8-multi-agent-coordination.md) - Multi-agent workflows
 - [agent-8-operations-log-spec.md](agent-8-operations-log-spec.md) - Log format specification
 

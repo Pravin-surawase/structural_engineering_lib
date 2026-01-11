@@ -2001,8 +2001,7 @@ chmod +x scripts/*.sh
 
 ## Related Documentation
 
-- [Git Workflow Quick Reference](../contributing/git-workflow-quick-reference.md)
-- [Git Workflow for AI Agents](../contributing/git-workflow-ai-agents.md)
+- [Git Workflow for AI Agents](../contributing/git-workflow-ai-agents.md) (canonical)
 - [Development Guide](../contributing/development-guide.md)
 - [handoff.md](../contributing/handoff.md) — Session management workflow
 - [ai-context-pack.md](../getting-started/ai-context-pack.md) — Agent entrypoint
