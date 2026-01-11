@@ -1,5 +1,14 @@
 # Agent Workflow Quick Reference Card
-**Version:** 1.0.0 | **Print this and keep it visible!**
+**Version:** 1.1.0 | **Print this and keep it visible!**
+
+---
+
+## 🚀 Session Start (ONE COMMAND)
+
+```bash
+./scripts/agent_start.sh --quick              # Default
+./scripts/agent_start.sh --agent 9 --quick    # With agent-specific guidance
+```
 
 ---
 
@@ -7,11 +16,10 @@
 
 | Command | Purpose |
 |---------|---------|
-| `./scripts/agent_setup.sh` | **Start session** |
-| `./scripts/agent_preflight.sh` | **Before any work** |
+| `./scripts/agent_start.sh --quick` | **Start session (NEW - replaces 4 commands)** |
 | `./scripts/ai_commit.sh "msg"` | **Commit changes** |
 | `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
-| `./scripts/end_session.py` | **End session** |
+| `.venv/bin/python scripts/end_session.py` | **End session** |
 
 ---
 

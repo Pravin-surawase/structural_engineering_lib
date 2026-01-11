@@ -9,11 +9,16 @@
 ## 🚀 First 30 Seconds
 
 ```bash
-# Run this immediately:
-.venv/bin/python scripts/start_session.py
+# Run this ONE command (replaces 4 separate scripts):
+./scripts/agent_start.sh --quick
+
+# Or with agent-specific guidance:
+./scripts/agent_start.sh --agent 9 --quick   # For governance agents
+./scripts/agent_start.sh --agent 8 --quick   # For git/automation agents
+./scripts/agent_start.sh --agent 6 --quick   # For UI agents
 ```
 
-This shows: version, branch, active tasks, blockers, and doc freshness.
+This shows: version, branch, active tasks, blockers, and agent-specific commands.
 
 ---
 
@@ -50,7 +55,7 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 
 - **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
-- **Automation scripts (41):** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
+- **Automation scripts (102):** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
 - **Handoff quick start:** [../contributing/handoff.md](../contributing/handoff.md)
 - **Background agent guide:** [../contributing/background-agent-guide.md](../contributing/background-agent-guide.md)
 - **API docs:** [../reference/api.md](../reference/api.md)
