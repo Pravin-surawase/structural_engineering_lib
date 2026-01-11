@@ -337,6 +337,22 @@ The SOLUTION:
 - ✅ Step 2.5 prevents the root cause
 - ✅ Zero manual intervention needed
 
+### Commit Strategy (CRITICAL - Read This):
+**Philosophy:** Maximize VALUE per request, not commit count. Batch related changes into meaningful commits.
+
+**✅ Good Commit Patterns:**
+- Feature complete with tests + docs (1 commit)
+- Multiple related file updates (1 commit)
+- Research findings + consolidation plan (1 commit)
+- Batch of related fixes (1 commit)
+
+**❌ Bad Commit Patterns (Unprofessional):**
+- Artificially splitting to inflate count
+- Committing trivial updates separately to "hit a number"
+- Session docs as separate commit (batch with final work)
+
+**Rule:** Commit when work is **logically complete**, not to hit arbitrary counts. Users pay per request - deliver maximum value, not maximum commits.
+
 ### Before committing Python code:
 1. Run tests locally: `pytest tests/test_<file>.py -v`
 2. **For Streamlit code:** Run scanner: `.venv/bin/python scripts/check_streamlit_issues.py <file>`
