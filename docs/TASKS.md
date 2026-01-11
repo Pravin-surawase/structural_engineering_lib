@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 14: TASKS Cleanup & v0.17.0 Planning)
+**Updated:** 2026-01-11 (Session 14: TASK-274/275 Implementation)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -32,14 +32,14 @@
 **Focus:** Security, legal compliance, traceability, developer productivity
 
 **Key Deliverables:**
-1. 🔴 Security hardening baseline (input validation audit, dependency scanning)
-2. 🔴 Professional liability framework (disclaimers, templates, certification guidance)
+1. ✅ Security hardening baseline (input validation audit, dependency scanning) - **PR #331**
+2. ✅ Professional liability framework (disclaimers, templates, certification guidance) - **DONE**
 3. 🔴 Code clause database (JSON DB, @clause decorator, traceability system)
 4. 🔴 Interactive testing UI (Streamlit/Gradio for design validation)
 
 **Success Metrics:**
-- Security: Input validation audit complete, dependency scanning in CI
-- Legal: MIT+engineering disclaimer, templates in docs/legal/
+- Security: Input validation audit complete, dependency scanning in CI ✅
+- Legal: MIT+engineering disclaimer, templates in docs/legal/ ✅
 - Traceability: Clause references in 80%+ design functions
 - Developer UX: Working Streamlit app for manual validation
 - API grade: A- → A (93/100)
@@ -48,7 +48,10 @@
 
 ## Active
 
-*No active tasks. Pick from Up Next and move here when starting.*
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 pending merge |
+| **TASK-275** | Professional Liability Framework | DOCS | ✅ Complete |
 
 ---
 
@@ -58,11 +61,11 @@
 
 > **Phase Approach:** Start with low-risk foundation (security, legal) before high-risk features (Streamlit)
 
-**Phase 1 (Week 2): Foundation (Low Risk, 4-6 hours)**
-| ID | Task | Agent | Est | Priority | Blockers |
-|----|------|-------|-----|----------|----------|
-| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning, CI setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | None |
-| **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates, certification guidance) | DOCS | 2-3 hrs | 🔴 HIGH | None |
+**Phase 1 (Week 2): Foundation (Low Risk) ✅ COMPLETE**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning, CI setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | ✅ PR #331 |
+| **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates, certification guidance) | DOCS | 2-3 hrs | 🔴 HIGH | ✅ Complete |
 
 **Phase 2 (Week 3): Traceability (Medium Risk, 4-6 hours)**
 | ID | Task | Agent | Est | Priority | Blockers |
