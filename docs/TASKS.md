@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 13 Part 5: Agent Onboarding & Doc Consolidation ✅)
+**Updated:** 2026-01-11 (Session 13 Part 6: Onboarding Finalization + agent_start.sh v2.0)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -325,6 +325,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **ONBOARD-02** | Finalize onboarding: agent_start.sh v2.0 (calls agent_setup.sh, proper preflight, --worktree support, removes || true), update agent-onboarding.md, fix script count 102→103 | DEVOPS | ✅ 2026-01-11 |
 | **ONBOARD-01** | Agent onboarding efficiency: Created unified `agent_start.sh` script, consolidated 4 redundant docs (agent-automation-implementation, agent-8-quick-start, agent-8-implementation-guide, git-workflow-quick-reference) into archives, merged metrics into agent-automation-system.md v1.1.0 (PR #329 + 1 commit) | DEVOPS | ✅ 2026-01-11 |
 | **TASK-325** | Folder cleanup phase 1: Archive 14 streamlit orphan files, rename typo folder, add batch_archive.py + rename_folder_safe.py (PR #325) | DEVOPS | ✅ 2026-01-11 |
 | **TASK-312** | IS 456 migration research & automation: migration-research.md, preflight-checklist.md, workflow-guide.md, migrate_module.py, validate_migration.py, pre_migration_check.py | ARCHITECT | ✅ 2026-01-10 |

@@ -4,6 +4,42 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 13 Part 6: Onboarding Finalization + agent_start.sh v2.0
+
+**Focus:** Address review feedback, finalize agent_start.sh as true replacement for 4-command flow
+
+### Commits This Session
+*(pending)*
+
+### 🔍 Review Feedback Addressed
+
+| Issue Identified | Action Taken |
+|------------------|--------------|
+| agent_start.sh doesn't call agent_setup.sh | ✅ Fixed: Now calls agent_setup.sh --quick |
+| Always runs preflight with --quick even in non-quick mode | ✅ Fixed: Full mode runs full preflight |
+| Hard-codes git pager instead of copilot_setup.sh | ✅ Fixed: Uses copilot_setup.sh if available |
+| Ignores preflight failures (|| true) | ✅ Fixed: Failures block startup in full mode |
+| No --worktree support | ✅ Added: --worktree NAME passthrough |
+| agent-onboarding.md uses old 3-command flow | ✅ Fixed: Uses agent_start.sh, legacy in fallback |
+| agent-bootstrap.md says 102 scripts | ✅ Fixed: Updated to 103 |
+| UPPERCASE filename refs in docs | ✅ Fixed in Part 5: copilot-instructions.md |
+
+### 📁 Files Changed
+
+| File | Change |
+|------|--------|
+| scripts/agent_start.sh | v1.0→v2.0: agent_setup.sh integration, proper preflight, --worktree |
+| docs/agents/guides/agent-onboarding.md | v1.0→v2.0: agent_start.sh primary, legacy in fallback |
+| docs/getting-started/agent-bootstrap.md | Script count 102→103 |
+| docs/getting-started/copilot-quick-start.md | Updated to use agent_start.sh |
+| docs/TASKS.md | Added ONBOARD-02 to Recently Done |
+
+### ⏭️ Next Session
+- Test agent_start.sh with all modes (--quick, --worktree, --agent)
+- Focus on v0.17.0 implementation tasks
+
+---
+
 ## 2026-01-11 — Session 13 Part 5: Agent Onboarding & Doc Consolidation ✅
 
 **Focus:** Improve agent onboarding efficiency, consolidate scattered automation docs

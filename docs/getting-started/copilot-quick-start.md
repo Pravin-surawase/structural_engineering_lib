@@ -151,7 +151,7 @@ The command opened the alternate buffer.
 **Recovery:**
 1. User must press `q` in the terminal to quit pager
 2. Or press `Ctrl+C` to force quit
-3. Then run: `source scripts/copilot_setup.sh`
+3. Then run: `./scripts/agent_start.sh --quick` (handles all git pager config)
 4. Continue with safe commands
 
 ---
@@ -160,17 +160,26 @@ The command opened the alternate buffer.
 
 At the start of every Copilot session:
 
-- [ ] Run `source scripts/copilot_setup.sh`
+- [ ] Run `./scripts/agent_start.sh --quick` (handles everything automatically)
 - [ ] Verify with `git status --short` (should work without paging)
 - [ ] Check current branch: `git rev-parse --abbrev-ref HEAD`
 - [ ] Check for uncommitted changes: `git diff --name-only`
 - [ ] Check merge state: `test -f .git/MERGE_HEAD && echo "Merge in progress" || echo "Clean"`
 
+<details>
+<summary>🔧 Fallback: Manual pager config (if agent_start.sh unavailable)</summary>
+
+```bash
+source scripts/copilot_setup.sh
+```
+
+</details>
+
 ---
 
 ## Useful Aliases (Created by Setup Script)
 
-After running `scripts/copilot_setup.sh`, you can use:
+After running `./scripts/agent_start.sh`, you can use:
 
 ```bash
 git st      # Same as: git status --short

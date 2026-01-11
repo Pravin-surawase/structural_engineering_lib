@@ -14,13 +14,18 @@ Use this checklist to ensure you're set up correctly and following the project's
 - [ ] Print [agent-quick-reference.md](agent-quick-reference.md) - Keep visible
 - [ ] Skim [TASKS.md](../../TASKS.md) - Current work items
 
-### 2. Environment Setup (2 minutes)
+### 2. Environment Setup (30 seconds - ONE COMMAND!)
 ```bash
 # Navigate to project
 cd "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib"
 
-# Run setup (installs deps, checks environment)
-./scripts/agent_setup.sh
+# Single unified command that does everything!
+./scripts/agent_start.sh
+
+# Or with options:
+./scripts/agent_start.sh --quick             # Fast mode (skip detailed checks)
+./scripts/agent_start.sh --agent 8           # Agent-specific guidance
+./scripts/agent_start.sh --worktree AGENT_5  # Background agent worktree
 ```
 
 - [ ] Setup script completed successfully
@@ -28,18 +33,29 @@ cd "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/p
 - [ ] All workflow scripts executable
 - [ ] Python version 3.9+
 
+<details>
+<summary>🔧 Fallback: Legacy 4-Command Flow (if agent_start.sh fails)</summary>
+
+```bash
+# Only use this if agent_start.sh has issues:
+./scripts/agent_setup.sh              # Environment setup
+./scripts/agent_preflight.sh --quick  # Pre-flight check
+.venv/bin/python scripts/start_session.py --quick  # Session start
+```
+
+</details>
+
 ### 3. Workflow Understanding (3 minutes)
 - [ ] Understand THE ONE RULE: **Never use manual git commands**
 - [ ] Know the essential command: `./scripts/ai_commit.sh "message"`
 - [ ] Understand PR vs Direct commit decision
-- [ ] Know where to find help (AGENT_WORKFLOW_MASTER_GUIDE.md)
+- [ ] Know where to find help (agent-workflow-master-guide.md)
 
 ### 4. Tool Familiarization (2 minutes)
 ```bash
-# Test key scripts
-./scripts/agent_preflight.sh --quick   # Pre-flight check
-./scripts/worktree_manager.sh list    # Worktree manager
+# Test key scripts (already run by agent_start.sh, but for reference)
 ./scripts/should_use_pr.sh --help     # PR decision helper
+./scripts/worktree_manager.sh list    # Worktree manager
 ```
 
 - [ ] Scripts execute without errors
@@ -50,16 +66,13 @@ cd "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/p
 
 ## 🔄 Every Session Checklist (30 seconds)
 
-### Session Start
+### Session Start (ONE COMMAND!)
 ```bash
-# 1. Setup environment
-./scripts/agent_setup.sh --quick
+# Start of every session - this does everything!
+./scripts/agent_start.sh --quick
 
-# 2. Pre-flight check
-./scripts/agent_preflight.sh --quick
-
-# 3. Review current state
-.venv/bin/python scripts/start_session.py --quick
+# Or with agent-specific guidance:
+./scripts/agent_start.sh --agent 9 --quick  # Agent 9 (Governance)
 ```
 
 - [ ] No blocking issues found
@@ -295,6 +308,6 @@ I have completed the onboarding checklist and:
 
 **Remember:** The automation system prevents 99% of errors. Trust the scripts!
 
-**Questions?** Check [agent-workflow-master-guide.md](agent-workflow-master-guide.md) or run `./scripts/agent_preflight.sh`
+**Questions?** Check [agent-workflow-master-guide.md](agent-workflow-master-guide.md) or run `./scripts/agent_start.sh`
 
-**Last Updated:** 2026-01-08 | **Version:** 1.0.0
+**Last Updated:** 2026-01-11 | **Version:** 2.0.0
