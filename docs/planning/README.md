@@ -82,7 +82,7 @@ Internal planning documents and research notes.
 | [Project Status](../_archive/planning/project-status.md) | Current state summary |
 | [Project Status Deep Dive](project-status-deep-dive.md) | Module maps, contracts |
 | [Pre-Release Checklist](pre-release-checklist.md) | v1.0 gates |
-| [v0.20 Stabilization](v0.20-stabilization-checklist.md) | Next milestone checklist |
+| [v0.20 Stabilization](v020-stabilization-checklist.md) | Next milestone checklist |
 | [v0.12 Plan](../_archive/planning/v0.12-plan.md) | v0.12 scope + milestones |
 | [BBS + DXF Improvement Plan](bbs-dxf-improvement-plan.md) | Output contract + DXF/BBS quality plan |
 | [Library API Expansion](library-api-expansion.md) | Library-first APIs + CLI helpers |
