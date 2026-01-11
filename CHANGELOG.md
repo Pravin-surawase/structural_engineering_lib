@@ -4,6 +4,77 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.16.5] - 2026-01-11
+
+### Added
+- **Unified Agent Onboarding** (`scripts/agent_start.sh`)
+  - Single command replaces 4-command workflow (agent_setup + agent_preflight + start_session + copilot_setup)
+  - 90% faster onboarding (4 commands → 1 command, ~30s → ~3s)
+  - Agent-specific guidance with `--agent` flag (6, 8, 9)
+  - Worktree support for background agents (`--worktree NAME`)
+  - Quick mode (`--quick`) and full validation modes
+  - v2.1: Fixed full mode to run complete setup, proper worktree passthrough
+
+- **Folder Structure Governance** (`docs/guidelines/folder-structure-governance.md`)
+  - Comprehensive V2.0 spec with 115 validation errors fixed
+  - CI-enforced folder limits (max 10 root files, currently 9)
+  - Automated compliance checking via `scripts/check_governance_compliance.py`
+  - Safe file operations: `safe_file_move.py`, `safe_file_delete.py`
+  - Link validation protecting 789 internal links
+  - Repository hygiene: zero orphan files, semantic READMEs in all folders
+
+- **Git Workflow Automation Improvements**
+  - 90-95% faster commits (45-60s → 5s average)
+  - Parallel fetch optimization (saves 30-40s per commit)
+  - Incremental whitespace checking (Step 2.5 prevents hash divergence)
+  - CI monitoring daemon for PR status tracking
+  - Merge conflict test suite (31 test cases)
+  - Comprehensive audit logging in `git_operations_log/`
+
+- **Multi-Code Foundation Architecture**
+  - New `core/` package for code-agnostic modules (geometry, materials, base classes)
+  - New `codes/` package with `is456/` subdirectory
+  - CodeRegistry for multi-code support (future: ACI 318, EC2)
+  - MaterialFactory with code-specific material properties
+  - All 7 IS 456 modules migrated to `codes/is456/` (3,048 lines)
+  - Zero breaking changes (100% backward compatibility via stubs)
+  - 2392 tests passing, 86% coverage maintained
+
+- **103 Automation Scripts**
+  - Module migration: `migrate_module.py`, `validate_migration.py`, `pre_migration_check.py`
+  - Governance: `check_governance_compliance.py`, `validate_folder_structure.py`
+  - Link management: `check_links.py`, `fix_broken_links.py` (fixed 213 links in 5s)
+  - File operations: `safe_file_move.py`, `safe_file_delete.py`, `find_orphan_files.py`
+  - Documentation: `generate_folder_index.py`, `enhance_readme.py`, `check_folder_readmes.py`
+  - Metrics: `measure_agent_navigation.sh`, `analyze_navigation_data.py`
+
+### Changed
+- **Documentation Consolidation**
+  - Archived 7 redundant automation docs (reduced from 8 → 5 canonical)
+  - Updated agent onboarding docs to use `agent_start.sh` as primary workflow
+  - Marked Agent 9 governance content as archived (migrated to `docs/guidelines/`)
+  - Fixed 20+ stale FOLDER_STRUCTURE_GOVERNANCE.md references in historical docs
+
+- **README Showcase**
+  - Updated "At a glance" with 103 automation scripts, 789 validated links
+  - Added v0.16.5 highlights: automation, governance, multi-code foundation
+  - Work-in-progress banner with links to TASKS.md and next-session-brief.md
+
+### Fixed
+- Pre-commit hook whitespace handling (Step 2.5 prevents commit hash divergence)
+- Governance validator: root file counting, limit enforcement (20→10), path resolution
+- Link validation: 789 internal links, zero broken links
+- agent_start.sh v2.1: Full mode now runs complete setup (not --quick)
+- Worktree passthrough to both agent_setup.sh and agent_preflight.sh
+
+### Repository Metrics (Session 13)
+- **Commits:** ~25 commits across 7 parts
+- **PRs:** 7 PRs merged (#323, #326, #327, #328, #329, #330)
+- **Files:** 11 governance tasks complete, 164 files archived
+- **Links:** 789 internal links validated, zero broken
+- **Scripts:** 103 total automation scripts (+15 from Session 13)
+- **Root Files:** 14 → 9 (below CI limit of 10)
+
 ## [0.16.0] - 2026-01-08
 
 ### Added

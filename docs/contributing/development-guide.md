@@ -9,8 +9,8 @@ tags: [contributing, development, vba, python, standards]
 
 # IS 456 RC Beam Design Library — Development Guide
 
-**Document Version:** 0.16.0
-**Last Updated:** 2026-01-10<br>
+**Document Version:** 0.16.5
+**Last Updated:** 2026-01-11<br>
 **Audience:** Contributors, maintainers, and developers extending the library
 
 ---

@@ -2,7 +2,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.16.0 | Released |
+| **Current** | v0.16.5 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
 **Date:** 2026-01-11 | **Last commit:** d65d9c1

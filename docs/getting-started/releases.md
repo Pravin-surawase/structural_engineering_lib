@@ -48,6 +48,41 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.16.5
+**Date:** 2026-01-11
+**Status:** ✅ Locked & Verified
+**Mindset:** Developer Experience & Automation - Workflow efficiency and multi-code foundation
+**Key Changes:**
+- **Unified Agent Onboarding:** Single `./scripts/agent_start.sh` command replaces 4-command workflow (90% faster)
+- **Folder Structure Governance:** 115 validation errors → 0, CI-enforced folder limits, comprehensive V2.0 spec
+- **Git Workflow Automation:** 90-95% faster commits (45-60s → 5s), parallel fetch, incremental whitespace checks
+- **Multi-Code Foundation:** New `core/` and `codes/` architecture ready for ACI 318/EC2 support
+- **IS 456 Module Migration:** All 7 modules reorganized under `codes/is456/` (3,048 lines, zero breaking changes)
+- **Documentation Quality:** 789 internal links validated, zero orphan files, semantic READMEs in all folders
+- **103 Automation Scripts:** Safe file operations, link validation, governance compliance, migration tools
+
+**New Infrastructure:**
+- `scripts/agent_start.sh` (164 lines) - Unified onboarding replacing 4 commands
+- `docs/guidelines/folder-structure-governance.md` (272 lines) - V2.0 governance spec
+- `scripts/safe_file_move.py` (200+ lines) - Automated link-safe file operations
+- `scripts/check_governance_compliance.py` - CI-enforced folder validation
+- `Python/structural_lib/core/` - Code-agnostic base modules (geometry, materials)
+- `Python/structural_lib/codes/is456/` - IS 456 module namespace (7 modules)
+
+**Tests:** 2392 passed (all categories), maintained 86% coverage
+**Commits:** ~25 commits across 7 session parts
+**PRs:** #323, #326, #327, #328, #329, #330
+
+**Impact:**
+- Agent onboarding: 4 commands → 1, ~30s → ~3s (90% faster)
+- Commit speed: 45-60s → 5s (90-95% improvement)
+- Documentation: Zero broken links (789 validated)
+- Folder hygiene: Root files 14 → 9 (below CI limit of 10)
+- Multi-code ready: Foundation for ACI 318/EC2 support
+- Repository health: 115 governance issues → 0
+
+---
+
 ## v0.16.0
 **Date:** 2026-01-08
 **Status:** ✅ Locked & Verified

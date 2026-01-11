@@ -95,7 +95,7 @@
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
-**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.16.0`).
+**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.16.5`).
 
 ## Quick Start
 
