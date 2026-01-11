@@ -1,6 +1,11 @@
 #!/bin/bash
 # AI-friendly wrapper for safe commits and pushes
 # This script ensures ALL commits from AI agents use the safe workflow
+#
+# Usage:
+#   ./scripts/ai_commit.sh "commit message"
+#   ./scripts/ai_commit.sh "commit message" --dry-run  # Preview only
+#   ./scripts/ai_commit.sh --help
 
 set -e  # Exit on any error
 
@@ -8,7 +13,30 @@ set -e  # Exit on any error
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# Parse flags
+DRY_RUN=false
+COMMIT_MSG=""
+for arg in "$@"; do
+    if [[ "$arg" == "--dry-run" ]]; then
+        DRY_RUN=true
+    elif [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
+        echo "Usage: ai_commit.sh \"commit message\" [--dry-run]"
+        echo ""
+        echo "Options:"
+        echo "  --dry-run  Preview what would happen without committing"
+        echo "  --help     Show this help message"
+        echo ""
+        echo "Examples:"
+        echo "  ./scripts/ai_commit.sh \"docs: update guide\""
+        echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
+        exit 0
+    elif [[ -z "$COMMIT_MSG" ]]; then
+        COMMIT_MSG="$arg"
+    fi
+done
 
 # Get the project root (where .git is)
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -16,6 +44,9 @@ cd "$PROJECT_ROOT"
 CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
 
 echo -e "${YELLOW}🤖 AI Commit Workflow${NC}"
+if [[ "$DRY_RUN" == "true" ]]; then
+    echo -e "${BLUE}   (DRY RUN - no changes will be made)${NC}"
+fi
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Check if we have uncommitted changes
@@ -24,8 +55,10 @@ if [[ -z $(git status --porcelain) ]]; then
     exit 0
 fi
 
-# Get commit message from argument or use default
-COMMIT_MSG="${1:-chore: AI-generated changes}"
+# Get commit message (default if not provided)
+if [[ -z "$COMMIT_MSG" ]]; then
+    COMMIT_MSG="chore: AI-generated changes"
+fi
 
 echo "📝 Commit message: $COMMIT_MSG"
 echo ""
@@ -58,6 +91,28 @@ echo ""
 echo "Files to commit:"
 git status --short
 echo ""
+
+# Dry run mode: show what would happen and exit
+if [[ "$DRY_RUN" == "true" ]]; then
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${BLUE}DRY RUN SUMMARY${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo -e "Branch: ${GREEN}$CURRENT_BRANCH${NC}"
+    echo -e "Message: ${GREEN}$COMMIT_MSG${NC}"
+    echo ""
+    echo "What would happen:"
+    echo "  1. Stage all changes"
+    echo "  2. Run pre-commit hooks"
+    echo "  3. Create commit"
+    echo "  4. Pull latest from remote"
+    echo "  5. Push to origin"
+    echo ""
+    echo -e "${GREEN}✓ Dry run complete - no changes made${NC}"
+    # Unstage the changes we staged for preview
+    git reset HEAD >/dev/null 2>&1
+    exit 0
+fi
 
 # Use the safe_push.sh script
 SAFE_PUSH_SCRIPT="$PROJECT_ROOT/scripts/safe_push.sh"
