@@ -145,6 +145,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **SESSION-14** | TASKS.md cleanup (50+→15 items) + v0.17.0 roadmap + copilot archive rules (5 commits) | MAIN | ✅ 2026-01-11 |
 | **ONBOARD-03** | Agent start v2.1: full mode fix, worktree passthrough | DEVOPS | ✅ 2026-01-11 |
 | **ONBOARD-02** | Agent start v2.0: unified script, proper preflight | DEVOPS | ✅ 2026-01-11 |
 | **ONBOARD-01** | Unified agent_start.sh, consolidated 4 docs (PR #329) | DEVOPS | ✅ 2026-01-11 |
@@ -159,7 +160,6 @@
 | **TASK-270** | Fix 8 test failures from API refactoring | TESTER | ✅ 2026-01-10 |
 | **TASK-271** | Fix 13 benchmark signature errors | TESTER | ✅ 2026-01-10 |
 | **AGENT8-WEEK1** | Git workflow optimizations (4 PRs, 90% faster commits) | AGENT8 | ✅ 2026-01-09 |
-| **TASK-280** | Repository hygiene implementation | DEVOPS | ✅ 2026-01-07 |
 
 > **Full History:** [docs/_archive/tasks-history.md](_archive/tasks-history.md)
 
