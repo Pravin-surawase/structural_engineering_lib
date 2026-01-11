@@ -4,6 +4,73 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 13: External Review Validation & Fixes 🔧
+
+**Focus:** Validate external review claims, fix critical bugs, achieve governance compliance
+
+### Commits This Session (5 total)
+1. `262b54d` - fix(governance): fix for-else bug, redirect detection, GOVERNANCE.md path check
+2. `60a1a7e` - docs: update agent-9-quick-start.md with correct paths to docs/guidelines
+3. `98ecdd3` - refactor: reduce root files from 14 to 9 (governance compliant)
+4. `e2d89b2` - docs: create folder migration progress tracker
+5. `5f43313` - chore: remove docs/reference/vba-guide.md redirect stub
+
+### 🔍 External Review Validation
+
+| Claim | Verified | Result | Action |
+|-------|----------|--------|--------|
+| for...else bug in compliance checker | ✅ | CONFIRMED | Fixed - Python for...else always runs else |
+| Redirect stub detection wrong paths | ✅ | CONFIRMED | Fixed - now scans all docs/ recursively |
+| Root limit 10 vs 20 mismatch | ✅ | NOT CONFIRMED | Both spec and validator use 10 |
+| GOVERNANCE.md location inconsistent | ✅ | CONFIRMED | Fixed - checks agents/roles/ now |
+| Root file counting inconsistency | ✅ | CONFIRMED | Fixed - bash/python now consistent |
+| Agent-9-quick-start stale paths | ✅ | CONFIRMED | Fixed - 10 paths updated |
+
+**Review Accuracy:** 5/6 claims confirmed (83%)
+
+### 🎯 Key Achievements
+
+1. **Fixed Critical Compliance Checker Bugs**
+   - for...else pattern was ALWAYS adding passes (Python gotcha)
+   - Redirect detection scanned wrong hardcoded paths
+   - GOVERNANCE.md location check outdated
+
+2. **Achieved Governance Compliance**
+   - Root files: 14 → 9 (limit: 10) ✅
+   - Moved SECURITY.md, SUPPORT.md → .github/
+   - Moved colab_workflow.ipynb → docs/cookbook/
+   - Removed redundant index.md
+
+3. **Created Progress Tracker**
+   - [FOLDER_MIGRATION_PROGRESS.md](planning/FOLDER_MIGRATION_PROGRESS.md) - single source of truth
+
+4. **Removed Active Redirect Stub**
+   - Deleted docs/reference/vba-guide.md (only 3 archive stubs remain)
+
+### 📊 Governance Status After Session
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Root files | 14 ❌ | 9 ✅ |
+| Broken links | 0 | 0 ✅ |
+| Redirect stubs | 4 | 3 (archive only) |
+| Compliance | NON-COMPLIANT | **COMPLIANT** ✅ |
+
+### 🛠️ Automation Efficiency
+
+| Script | Status | Issues Fixed |
+|--------|--------|--------------|
+| check_governance_compliance.py | ✅ Fixed | 3 bugs |
+| check_root_file_count.sh | ✅ Fixed | Counting consistency |
+| check_redirect_stubs.py | ✅ Working | Already correct |
+
+### 📋 Remaining Work (Phase E)
+1. Consolidate agent-9 governance folder redundancy
+2. Archive remaining stubs in docs/_archive/
+3. Final cleanup and documentation
+
+---
+
 ## 2026-01-11 — Session 12: Session 11 Deep Review & Fixes 🔍
 
 **Focus:** Thorough review of Session 11 claims, fix issues discovered, enhance automation

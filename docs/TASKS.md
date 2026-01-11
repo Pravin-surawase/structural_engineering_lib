@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 8: Phase 2 Docs Consolidation ✅)
+**Updated:** 2026-01-11 (Session 13: Folder Structure Governance ✅)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -108,6 +108,27 @@
 | 2 | shear.py | 20m | tables |
 | 3 | flexure.py | 30m | materials |
 | 4-7 | detailing, serviceability, compliance, ductile | 1h | Previous phases |
+
+---
+
+### Folder Structure Governance (Session 11-13) ✅ PHASE D COMPLETE
+
+> **Governance Spec:** [FOLDER_STRUCTURE_GOVERNANCE.md](guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+> **Progress Tracker:** [FOLDER_MIGRATION_PROGRESS.md](planning/FOLDER_MIGRATION_PROGRESS.md)
+> **Status:** ✅ COMPLIANT - Root files 9/10, zero broken links, governance checks passing
+
+| ID | Task | Session | Status |
+|----|------|---------|--------|
+| **GOV-001** | Create governance spec (V2.0) | S11 | ✅ Done |
+| **GOV-002** | Reorganize agents/ folder structure | S11 | ✅ Done |
+| **GOV-003** | Fix compliance checker bugs (for-else, paths) | S13 | ✅ Done |
+| **GOV-004** | Fix root file counting consistency | S13 | ✅ Done |
+| **GOV-005** | Update agent-9-quick-start.md paths | S13 | ✅ Done |
+| **GOV-006** | Reduce root files 14→9 | S13 | ✅ Done |
+| **GOV-007** | Remove docs/reference/vba-guide.md stub | S13 | ✅ Done |
+| **GOV-008** | Create progress tracker | S13 | ✅ Done |
+
+> **Session 13 Commits:** 262b54d (bug fixes), 60a1a7e (path fixes), 98ecdd3 (root reduction), e2d89b2 (tracker), 5f43313 (stub removal)
 
 ---
 
