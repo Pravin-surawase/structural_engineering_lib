@@ -111,24 +111,27 @@
 
 ---
 
-### Folder Structure Governance (Session 11-13) ✅ PHASE D COMPLETE
+### Folder Structure Governance (Session 11-13) ✅ COMPLETE
 
 > **Governance Spec:** [folder-structure-governance.md](guidelines/folder-structure-governance.md)
 > **Progress Tracker:** [folder-migration-progress.md](planning/folder-migration-progress.md)
-> **Status:** ✅ COMPLIANT - Root files 9/10, zero broken links, governance checks passing
+> **Status:** ✅ COMPLETE - All validators pass, CI enforced, spec/validator aligned
 
 | ID | Task | Session | Status |
 |----|------|---------|--------|
 | **GOV-001** | Create governance spec (V2.0) | S11 | ✅ Done |
 | **GOV-002** | Reorganize agents/ folder structure | S11 | ✅ Done |
-| **GOV-003** | Fix compliance checker bugs (for-else, paths) | S13 | ✅ Done |
-| **GOV-004** | Fix root file counting consistency | S13 | ✅ Done |
-| **GOV-005** | Update agent-9-quick-start.md paths | S13 | ✅ Done |
-| **GOV-006** | Reduce root files 14→9 | S13 | ✅ Done |
-| **GOV-007** | Remove docs/reference/vba-guide.md stub | S13 | ✅ Done |
-| **GOV-008** | Create progress tracker | S13 | ✅ Done |
+| **GOV-003** | Fix compliance checker bugs (for-else, paths) | S13.1 | ✅ Done |
+| **GOV-004** | Fix root file counting consistency | S13.1 | ✅ Done |
+| **GOV-005** | Update agent-9-quick-start.md paths | S13.1 | ✅ Done |
+| **GOV-006** | Reduce root files 14→9 | S13.1 | ✅ Done |
+| **GOV-007** | Remove docs/reference/vba-guide.md stub | S13.1 | ✅ Done |
+| **GOV-008** | Create progress tracker | S13.1 | ✅ Done |
+| **GOV-013** | Fix validator limit 20→10, consolidate governance | S13.2 | ✅ Done |
+| **GOV-014** | Fix third review issues, add CI governance checks | S13.3 | ✅ Done |
+| **GOV-015** | Align validator with spec, fix stale refs | S13.4 | ✅ Done |
 
-> **Session 13 Commits:** 262b54d (bug fixes), 60a1a7e (path fixes), 98ecdd3 (root reduction), e2d89b2 (tracker), 5f43313 (stub removal)
+> **Session 13 Total:** 11 commits, 4 PRs (#323, #326, #327, #328), 23/26 review claims validated (88% accuracy)
 
 ---
 
