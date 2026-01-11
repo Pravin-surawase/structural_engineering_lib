@@ -10,7 +10,7 @@ All Agent 8 scripts are in: **`scripts/`** (project root)
 
 **Why scripts/ not docs/agents/?**
 - Scripts are shared infrastructure (used by all agents)
-- Follows FOLDER_STRUCTURE_GOVERNANCE.md Rule 3.2
+- Follows [folder-structure-governance.md](../../guidelines/folder-structure-governance.md) Rule 3.2
 - Avoids breaking existing automation
 - Easier to execute (shorter paths)
 

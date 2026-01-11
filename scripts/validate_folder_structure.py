@@ -2,7 +2,7 @@
 """Validate folder structure against governance rules.
 
 This script checks if the project folder structure follows the rules defined in:
-docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md
+docs/guidelines/folder-structure-governance.md
 
 Usage:
     python scripts/validate_folder_structure.py
