@@ -4,6 +4,72 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 14: TASKS.md Cleanup & v0.17.0 Planning
+
+**Focus:** Task board hygiene and v0.17.0 release roadmap
+
+### Commits This Session
+1. `6776b61` - docs: clean up TASKS.md structure (phase 1 - top sections)
+2. `02067be` - docs: complete TASKS.md restructure (phase 2 - consolidate sections + trim recently done)
+3. `58add0d` - docs: add task archival rules to copilot instructions
+4. `[PENDING]` - docs: update planning docs with v0.17.0 roadmap
+
+### 🎯 Task Board Restructure
+
+| Task | Action | Status |
+|------|--------|--------|
+| Archive Rule | Established 20+ items / 14+ days threshold | ✅ Done |
+| Recently Done | Trimmed from 50+ to 15 items | ✅ Done |
+| v0.17.0 Section | Added phase-based approach | ✅ Done |
+| v0.18+ Section | Consolidated Professional Features + Governance | ✅ Done |
+| Backlog Section | Streamlined to category-based tables | ✅ Done |
+| copilot-instructions | Added Task Archival Rules section | ✅ Done |
+
+### 📊 TASKS.md Improvements
+
+**Before:**
+- 283 lines total
+- 50+ items in Recently Done (unbounded growth)
+- Redundant v0.18+ sections
+- No archival rule
+
+**After:**
+- ~150 lines (47% reduction)
+- 15 items in Recently Done (focused on S11-S14)
+- Consolidated sections with clean tables
+- Clear archive rule with process
+
+**Archive Rule:**
+- Move items to tasks-history.md after **20+ items** OR **14+ days**
+- Keep last 10-15 most recent items
+- Future automation: `scripts/archive_completed_tasks.py`
+
+### 🚀 v0.17.0 Release Planning
+
+**Theme:** Security + Traceability Foundation
+
+**Phase-Based Approach:**
+
+| Phase | Focus | Tasks | Rationale |
+|-------|-------|-------|-----------|
+| **Phase 1** | Low-Risk Foundation | TASK-272, 274, 275 | Non-breaking, builds trust |
+| **Phase 2** | Traceability | TASK-245 | Depends on clause DB (272) |
+| **Phase 3** | Developer UX | TASK-273 | High-value, needs stable base |
+
+**Critical Path:**
+1. **TASK-272** (4-6h): Code Clause Database → Enables traceability
+2. **TASK-274** (2-3h): Security Baseline → Trust & professional signal
+3. **TASK-275** (2-3h): Liability Framework → Documentation clarity
+4. **TASK-245** (3-4h): Verification & Audit Trail → On clause foundation
+5. **TASK-273** (1 day): Interactive Testing UI → High-value developer tool
+
+### ⏭️ Next Session
+- Create detailed specs for TASK-272/273/274/275
+- Start TASK-272 implementation (code clause database)
+- Monitor v0.16.5 PyPI publish status
+
+---
+
 ## 2026-01-11 — Session 13 Part 8: v0.16.5 Release
 
 **Focus:** Release preparation and execution for v0.16.5
