@@ -1,8 +1,12 @@
 #!/bin/bash
 # Check Root File Count
 # Ensures root directory doesn't accumulate documentation sprawl
-# Target: <10 files (.md, .txt, .sh)
+# Target: ≤10 files (ALL non-hidden files, consistent with Python validator)
 # Research: Industry standard from Prettier, Vitest, tRPC case studies
+#
+# FIXED Session 13: Now counts ALL files (not just .md/.txt/.sh) to match
+# check_governance_compliance.py behavior. Previous version had inconsistent
+# counting that could pass bash check but fail Python check.
 
 set -e
 
@@ -11,8 +15,9 @@ MAX_FILES=10
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
-# Count root files (excluding hidden files and specific exceptions)
-ROOT_FILES=$(find . -maxdepth 1 -type f \( -name "*.md" -o -name "*.txt" -o -name "*.sh" \) ! -name ".*" | sort)
+# Count ALL root files (excluding hidden files) - FIXED: matches Python validator
+# Excludes: hidden files (.*), directories
+ROOT_FILES=$(find . -maxdepth 1 -type f ! -name ".*" | sort)
 FILE_COUNT=$(echo "$ROOT_FILES" | grep -v "^$" | wc -l | tr -d ' ')
 
 echo "=== Root File Count Check ==="

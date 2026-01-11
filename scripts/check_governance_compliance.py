@@ -205,17 +205,32 @@ def check_docs_agents_structure() -> List[ComplianceIssue]:
 
 
 def check_governance_location() -> List[ComplianceIssue]:
-    """Check agents/GOVERNANCE.md is in correct location."""
+    """Check GOVERNANCE.md exists in agents/roles/ (canonical location)."""
     issues = []
-    agents_gov = Path("agents/GOVERNANCE.md")
 
-    if agents_gov.exists():
+    # Canonical location after Session 11 migration
+    canonical_gov = Path("agents/roles/GOVERNANCE.md")
+    old_gov = Path("agents/GOVERNANCE.md")
+
+    # Check if GOVERNANCE.md is missing from canonical location
+    if not canonical_gov.exists():
+        issues.append(
+            ComplianceIssue(
+                severity="HIGH",
+                location="agents/roles/",
+                rule="GOVERNANCE.md must exist in agents/roles/",
+                message="agents/roles/GOVERNANCE.md is missing (required for agent governance)",
+            )
+        )
+
+    # Check if old location still has GOVERNANCE.md (should be removed)
+    if old_gov.exists():
         issues.append(
             ComplianceIssue(
                 severity="MEDIUM",
                 location="agents/GOVERNANCE.md",
-                rule="GOVERNANCE.md should be in agents/governance/",
-                message="agents/GOVERNANCE.md should be moved to agents/governance/GOVERNANCE.md",
+                rule="GOVERNANCE.md should be in agents/roles/",
+                message="agents/GOVERNANCE.md should be moved to agents/roles/GOVERNANCE.md",
             )
         )
 
@@ -223,34 +238,50 @@ def check_governance_location() -> List[ComplianceIssue]:
 
 
 def check_redirect_stubs() -> List[ComplianceIssue]:
-    """Check for redirect stub files (single source rule)."""
+    """Check for redirect stub files (single source rule).
+
+    A redirect stub is a small file (<15 lines, <50 words) that primarily
+    contains links pointing to another location. These violate the single
+    source of truth principle.
+    """
     issues = []
 
-    # Look for common redirect patterns
-    suspicious_files = [
-        "docs/vba-guide.md",
-        "docs/excel-guide.md",
-        "docs/python-guide.md",
-    ]
+    # Scan docs/ for potential redirect stubs (not just hardcoded paths)
+    docs_path = Path("docs")
+    if not docs_path.exists():
+        return issues
 
-    for file_path in suspicious_files:
-        path = Path(file_path)
-        if path.exists():
-            content = path.read_text()
-            # Check if it's a redirect (mostly links, very few words)
-            lines = content.strip().split("\n")
-            links = content.count("](")
-            words = len(content.split())
+    # Scan all markdown files in docs/
+    for md_file in docs_path.rglob("*.md"):
+        # Skip known non-stub files
+        if md_file.name in ["README.md", "TASKS.md", "SESSION_LOG.md"]:
+            continue
 
-            if len(lines) < 10 and links > 0 and words < 50:
-                issues.append(
-                    ComplianceIssue(
-                        severity="MEDIUM",
-                        location=file_path,
-                        rule="No redirect stubs (single source rule)",
-                        message=f"Likely redirect stub: {len(lines)} lines, {links} links (remove or expand)",
-                    )
+        try:
+            content = md_file.read_text()
+        except Exception:
+            continue
+
+        lines = content.strip().split("\n")
+        links = content.count("](")
+        words = len(content.split())
+
+        # Detect redirect pattern: short file, has links, few words
+        # Also check for explicit redirect markers
+        is_redirect_marker = "redirect" in content.lower() or "moved to" in content.lower()
+        is_small_with_links = len(lines) < 15 and links > 0 and words < 50
+
+        if is_small_with_links or (is_redirect_marker and len(lines) < 20):
+            # Get relative path from project root
+            rel_path = str(md_file)
+            issues.append(
+                ComplianceIssue(
+                    severity="MEDIUM",
+                    location=rel_path,
+                    rule="No redirect stubs (single source rule)",
+                    message=f"Likely redirect stub: {len(lines)} lines, {links} links, {words} words",
                 )
+            )
 
     return issues
 
@@ -272,35 +303,44 @@ def main() -> int:
 
     report = ComplianceReport()
 
-    # Run all checks
-    for issue in check_root_file_count():
+    # Run all checks - FIXED: Don't use for...else pattern!
+    # Python's for...else runs else when loop completes normally (always runs!)
+    # Instead, check if issues list is empty to determine pass/fail
+
+    root_issues = check_root_file_count()
+    for issue in root_issues:
         report.add_issue(issue)
-    else:
+    if not root_issues:
         report.add_pass("Root file count (≤10)")
 
-    for issue in check_docs_root_file_count():
+    docs_issues = check_docs_root_file_count()
+    for issue in docs_issues:
         report.add_issue(issue)
-    else:
+    if not docs_issues:
         report.add_pass("docs/ root file count (≤5)")
 
-    for issue in check_agents_root_structure():
+    agents_issues = check_agents_root_structure()
+    for issue in agents_issues:
         report.add_issue(issue)
-    else:
+    if not agents_issues:
         report.add_pass("agents/ structure")
 
-    for issue in check_docs_agents_structure():
+    docs_agents_issues = check_docs_agents_structure()
+    for issue in docs_agents_issues:
         report.add_issue(issue)
-    else:
+    if not docs_agents_issues:
         report.add_pass("docs/agents/ structure")
 
-    for issue in check_governance_location():
+    governance_issues = check_governance_location()
+    for issue in governance_issues:
         report.add_issue(issue)
-    else:
-        report.add_pass("agents/GOVERNANCE.md location")
+    if not governance_issues:
+        report.add_pass("GOVERNANCE.md location (agents/roles/)")
 
-    for issue in check_redirect_stubs():
+    redirect_issues = check_redirect_stubs()
+    for issue in redirect_issues:
         report.add_issue(issue)
-    else:
+    if not redirect_issues:
         report.add_pass("No redirect stubs")
 
     if args.json:
