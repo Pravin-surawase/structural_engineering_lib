@@ -9,7 +9,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 **Focus:** Address review feedback, finalize agent_start.sh as true replacement for 4-command flow
 
 ### Commits This Session
-*(pending)*
+1. `d08a35c` - feat: finalize agent_start.sh v2.0 with full 4-command replacement (#330)
 
 ### 🔍 Review Feedback Addressed
 

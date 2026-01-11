@@ -5,22 +5,26 @@
 | **Current** | v0.16.0 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-11 | **Last commit:** 980b5d3
+**Date:** 2026-01-11 | **Last commit:** d08a35c
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-11 (Session 13 Part 5 - Agent Onboarding & Doc Consolidation ✅)
-- Focus: **Improve agent onboarding efficiency, consolidate scattered automation docs**
+- Date: 2026-01-11 (Session 13 Part 6 - Onboarding Finalization + agent_start.sh v2.0)
+- Focus: **Address review feedback, finalize agent_start.sh as true 4-command replacement**
 - Completed:
-  - ✅ Created unified `agent_start.sh` script (164 lines) - replaces 4 commands with 1
-  - ✅ Archived 4 redundant docs (agent-automation-implementation, agent-8-quick-start, agent-8-implementation-guide, git-workflow-quick-reference)
-  - ✅ Merged content into agent-automation-system.md v1.1.0 and agent-8-automation.md
-  - ✅ Fixed 9 broken links from archived files
-  - ✅ PR #329 merged (agent_start.sh)
-- Commits: aea7599, 980b5d3
+  - ✅ agent_start.sh v2.0: Now calls agent_setup.sh (proper full replacement)
+  - ✅ Fixed preflight logic: Full mode fails on issues, quick mode warns
+  - ✅ Added --worktree NAME support for background agents
+  - ✅ Added --skip-preflight for recovery scenarios
+  - ✅ Uses copilot_setup.sh if available (no code duplication)
+  - ✅ Removed || true to properly surface failures
+  - ✅ Updated agent-onboarding.md v2.0: agent_start.sh primary, legacy in fallback
+  - ✅ Fixed script count 102→103 in agent-bootstrap.md
+  - ✅ PR #330 merged
+- Commits: d08a35c
 - Next: v0.17.0 implementation tasks (TASK-272, 273, 274, 275)
 <!-- HANDOFF:END -->
 
@@ -31,14 +35,16 @@
 | Part | Focus | Commits | PRs |
 |------|-------|---------|-----|
 | Part 1-4 | Folder Structure Governance | 11 | #323, #326, #327, #328 |
-| Part 5 | Agent Onboarding & Doc Consolidation | 2 | #329 |
-| **Total** | | **13** | **5** |
+| Part 5 | Agent Onboarding & Doc Consolidation | 7 | #329 |
+| Part 6 | Onboarding Finalization + agent_start.sh v2.0 | 1 | #330 |
+| **Total** | | **19** | **7** |
 
 **Key Improvements:**
 - ✅ Root files: 14→9 (limit 10)
 - ✅ Agent onboarding: 4 commands → 1 (`./scripts/agent_start.sh`)
+- ✅ agent_start.sh v2.0: Full 4-command replacement with all fixes
 - ✅ Automation docs: 4 archived, 2 consolidated
-- ✅ All 788 internal links valid
+- ✅ All 787 internal links valid
 
 ---
 
