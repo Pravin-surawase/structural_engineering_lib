@@ -4,6 +4,54 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 13 Part 8: v0.16.5 Release
+
+**Focus:** Release preparation and execution for v0.16.5
+
+### Commits This Session
+1. `76b5bc6` - docs(readme): update with Session 13 achievements (automation, governance, multi-code)
+2. `43268e8` - chore: bump version to 0.16.5, sync all version references, update CHANGELOG and releases.md
+3. `f96532c` - docs: fix remaining 9 version drift issues (0.16.0 → 0.16.5)
+
+### 🎯 Release Preparation
+
+| Step | Action | Status |
+|------|--------|--------|
+| README showcase | Added Session 13 highlights to README | ✅ Done |
+| Version bump | Updated to 0.16.5 in pyproject.toml | ✅ Done |
+| CHANGELOG | Added v0.16.5 comprehensive entry | ✅ Done |
+| releases.md | Added v0.16.5 locked entry | ✅ Done |
+| Version sync | Fixed 18+9 version drift issues | ✅ Done |
+| Pre-commit checks | All hooks passing, zero drift | ✅ Done |
+| Release tag | Created v0.16.5, pushed to GitHub | ✅ Done |
+
+### 📦 v0.16.5 Release Highlights
+
+**Theme:** Developer Experience & Automation
+
+**Key Improvements:**
+- **Unified Agent Onboarding:** 90% faster (4 commands → 1)
+- **Folder Structure Governance:** 115 errors → 0, CI-enforced
+- **Git Workflow Automation:** 90-95% faster commits (45-60s → 5s)
+- **Multi-Code Foundation:** New `core/` and `codes/` architecture
+- **IS 456 Module Migration:** 7 modules → `codes/is456/` namespace
+- **Documentation Quality:** 789 internal links validated, zero orphan files
+- **103 Automation Scripts:** Safe operations, validation, compliance
+
+**Metrics:**
+- Commits: ~28 total (Session 13)
+- PRs: 7 merged
+- Tests: 2392 passing (86% coverage)
+- Links: 789 valid, 0 broken
+- Root files: 9 (below limit of 10)
+
+### ⏭️ Next Session
+- Monitor GitHub Actions for PyPI publishing
+- Start v0.17.0 implementation (interactive testing UI, security hardening)
+- Continue Streamlit improvements
+
+---
+
 ## 2026-01-11 — Session 13 Part 7: Final Review Fixes & Cleanup
 
 **Focus:** Address main agent review feedback, final cleanup before session end

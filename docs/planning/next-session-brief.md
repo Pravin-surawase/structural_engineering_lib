@@ -5,22 +5,25 @@
 | **Current** | v0.16.5 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-11 | **Last commit:** d65d9c1
+**Date:** 2026-01-11 | **Last commit:** f96532c
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-11 (Session 13 Part 7 - Final Review Fixes)
-- Focus: **Address main agent review feedback, final cleanup**
+- Date: 2026-01-11 (Session 13 Part 8 - v0.16.5 Release)
+- Focus: **v0.16.5 Release - Developer Experience & Automation**
 - Completed:
-  - ✅ agent_start.sh v2.1: Fixed full mode (now runs full setup), worktree passthrough to both scripts
-  - ✅ Archived 3 automation docs: automation-improvements, backward-compat-automation, session-8-automation-review
-  - ✅ Marked agent-9 CURRENT_STATE_SUMMARY as archived (governance moved to docs/guidelines)
-  - ✅ Added README WIP banner with links to TASKS.md and next-session-brief
-- Commits: 2ebbbdb, 9dd58aa, ea0f35d, d65d9c1
-- Next: v0.17.0 implementation tasks, Streamlit improvements
+  - ✅ README showcase: Added Session 13 achievements (unified onboarding, governance, automation)
+  - ✅ Version bump: 0.16.0 → 0.16.5 in pyproject.toml, CHANGELOG, releases.md
+  - ✅ Version sync: Fixed 26 doc files (18 auto, 9 manual) - zero drift
+  - ✅ Release tag: Created v0.16.5, pushed to GitHub (triggers PyPI publish)
+  - ✅ SESSION_LOG: Added Part 8 entry
+  - ✅ next-session-brief: Updated with release info
+- Commits: 76b5bc6, 43268e8, f96532c
+- Tag: v0.16.5
+- Next: Verify PyPI publish, start v0.17.0 implementation tasks
 <!-- HANDOFF:END -->
 
 ---
@@ -33,14 +36,17 @@
 | Part 5 | Agent Onboarding & Doc Consolidation | 7 | #329 |
 | Part 6 | Onboarding Finalization + agent_start.sh v2.0 | 2 | #330 |
 | Part 7 | Final Review Fixes | 4 | — |
-| **Total** | | **~24** | **7** |
+| Part 8 | v0.16.5 Release | 3 | — |
+| **Total** | | **~28** | **7** |
 
 **Key Improvements:**
 - ✅ Root files: 14→9 (limit 10)
 - ✅ Agent onboarding: 4 commands → 1 (`./scripts/agent_start.sh`)
-- ✅ agent_start.sh v2.0: Full 4-command replacement with all fixes
-- ✅ Automation docs: 4 archived, 2 consolidated
-- ✅ All 787 internal links valid
+- ✅ Folder governance: 115 errors → 0
+- ✅ Git workflow: 90-95% faster commits (ai_commit.sh)
+- ✅ Automation scripts: 103 total
+- ✅ All 789 internal links valid
+- ✅ v0.16.5 released
 
 ---
 
