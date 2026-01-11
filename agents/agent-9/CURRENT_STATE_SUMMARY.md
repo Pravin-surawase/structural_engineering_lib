@@ -1,6 +1,10 @@
 # Agent 9 Current State Summary
 **Date:** 2026-01-10
-**Status:** 🎯 Between Research Completion and Major Migration Decision
+**Status:** 📦 ARCHIVED - Governance migrated to docs/guidelines/
+
+> **Note:** As of Session 12-13, the Agent 9 governance content has been
+> migrated to `docs/guidelines/folder-structure-governance.md`. This summary
+> is kept for historical reference only.
 
 ---
 
