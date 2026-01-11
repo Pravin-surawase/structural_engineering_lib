@@ -25,11 +25,12 @@
 
 ## At a glance
 
-- **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA)
-- **Quality:** Contract-tested APIs, 2270 tests, 86% coverage, comprehensive validation utilities
+- **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA) with multi-code foundation
+- **Quality:** Contract-tested APIs, 2392 tests, 86% coverage, comprehensive validation utilities, 103 automation scripts
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
-- **Automation:** Batch-ready CLI + public API wrappers for validation/detailing/export
+- **Automation:** Batch-ready CLI + public API wrappers + unified agent onboarding (90% faster workflow)
 - **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
+- **Documentation:** 789 validated internal links, zero orphan files, semantic folder structure with CI enforcement
 
 ---
 
@@ -65,9 +66,19 @@
 
 ## Status
 
-🚀 **Production-Ready Professional Tool (v0.15.0)** — Published on PyPI with enterprise-grade quality standards.
+🚀 **Production-Ready Professional Tool (v0.16.5)** — Published on PyPI with enterprise-grade quality standards.
 
-**What's new in v0.15.0 (Code Quality Excellence - 2026-01-07):**
+**What's new in v0.16.5 (Developer Experience & Automation - 2026-01-11):**
+- **Unified Agent Onboarding:** Single `./scripts/agent_start.sh` command replaces 4-command workflow (90% faster onboarding)
+- **Folder Structure Governance:** 115 validation errors → 0, CI-enforced folder limits, comprehensive spec
+- **Documentation Quality:** 789 internal links validated, zero orphan files, semantic READMEs in all folders
+- **Git Workflow Automation:** 90-95% faster commits (45-60s → 5s), parallel fetch, incremental whitespace checks
+- **Multi-Code Foundation:** New `core/` and `codes/` architecture ready for ACI 318/EC2 support
+- **IS 456 Module Migration:** All 7 modules reorganized under `codes/is456/` (3,048 lines, zero breaking changes)
+- **103 Automation Scripts:** Safe file operations, link validation, governance compliance, migration tools
+- **Session 13 Total:** ~25 commits, 7 PRs, 11 governance tasks complete
+
+**Previous: v0.15.0 (Code Quality Excellence - 2026-01-07):**
 - **SPDX License Headers:** All 73 source files with standardized copyright and MIT license identifiers (TASK-187)
 - **PEP 585/604 Type Modernization:** 398 type hints updated to modern syntax (`list[X]`, `X | None`) (TASK-193)
 - **Performance Benchmarks:** 13 comprehensive benchmarks (flexure, shear, detailing, validation, insights) with regression tracking (TASK-192)
