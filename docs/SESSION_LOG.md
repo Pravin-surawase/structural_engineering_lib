@@ -4,7 +4,71 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-11 — Session 13: External Review Validation & Fixes 🔧
+## 2026-01-11 — Session 13 Part 2: Second External Review & Consolidation 🎯
+
+**Focus:** Validate 7 new review claims, consolidate governance to single source of truth
+
+### Commits This Session
+1. `252101c` - GOV-13: Fix governance validator limit, consolidate governance to single source of truth (#326)
+
+### 🔍 Second External Review Validation
+
+| Claim | Verified | Result | Action |
+|-------|----------|--------|--------|
+| validate_folder_structure.py max_files=20 | ✅ | CONFIRMED | Fixed to 10 |
+| Uppercase filenames fail validation | ✅ | CONFIRMED | Renamed to kebab-case |
+| Duplicate governance specs | ✅ | CONFIRMED | Archived agents/agent-9/governance/ |
+| Redirect-stub policy inconsistent | ✅ | CONFIRMED | Unified skip_dirs |
+| Progress tracker stale | ✅ | CONFIRMED | Updated with current info |
+| Automation catalog outdated (71 vs 103) | ✅ | CONFIRMED | Fixed count |
+| Governance metrics stale | ✅ | CONFIRMED | Updated status section |
+
+**Review Accuracy:** 7/7 claims confirmed (100%)
+
+### 🎯 Key Achievements
+
+1. **Fixed Validator Limit Mismatch**
+   - validate_folder_structure.py had max_files=20, governance spec requires ≤10
+   - Fixed to max_files=10 with comment referencing spec
+
+2. **Consolidated Governance to Single Source**
+   - Archived agents/agent-9/governance/ → docs/_archive/2026-01/agent-9-governance-legacy/
+   - Canonical location: docs/guidelines/folder-structure-governance.md
+
+3. **Renamed Uppercase Files**
+   - FOLDER_STRUCTURE_GOVERNANCE.md → folder-structure-governance.md
+   - FOLDER_MIGRATION_PROGRESS.md → folder-migration-progress.md
+
+4. **Fixed 24 Broken Links**
+   - Updated all references after file moves and renames
+
+5. **Unified Redirect-Stub Policy**
+   - check_governance_compliance.py now skips _archive (consistent with check_redirect_stubs.py)
+
+6. **Updated Stale Documentation**
+   - Progress tracker reflects Session 13 Part 2 work
+   - Automation catalog: 71 → 103 scripts
+   - Governance status: all metrics current
+
+### 📊 Final Governance Status
+
+| Metric | Status |
+|--------|--------|
+| Root files (≤10) | 9 ✅ |
+| Broken links | 0 ✅ |
+| Redirect stubs | 0 ✅ |
+| Governance location | Single (docs/guidelines/) ✅ |
+| Naming convention | All kebab-case ✅ |
+| Validator/spec sync | Aligned ✅ |
+| Compliance | **FULLY COMPLIANT** ✅ |
+
+### 📋 Migration Complete
+
+All folder structure governance tasks are complete. See [folder-migration-progress.md](planning/folder-migration-progress.md) for full history.
+
+---
+
+## 2026-01-11 — Session 13 Part 1: External Review Validation & Fixes 🔧
 
 **Focus:** Validate external review claims, fix critical bugs, achieve governance compliance
 
