@@ -4,7 +4,7 @@
 **Audience:** All Agents
 **Status:** ✅ COMPLETE
 **Created:** 2026-01-11 (Session 13)
-**Last Updated:** 2026-01-11 (Session 13 Part 3)
+**Last Updated:** 2026-01-11 (Session 13 Part 4)
 
 ---
 
@@ -18,13 +18,27 @@
 | **Redirect Stubs** | 0 ✅ | 0 |
 | **Governance Location** | Single (docs/guidelines/) ✅ | Single |
 | **CI Integration** | Governance checks in CI ✅ | CI protected |
+| **Spec/Validator Alignment** | 100% ✅ | 100% |
 | **Phase** | COMPLETE ✅ | Complete |
 
 ---
 
 ## 📊 Session Progress
 
-### Session 13 Part 3 (Current - 2026-01-11)
+### Session 13 Part 4 (Current - 2026-01-11)
+
+**Focus:** Fourth external review + full spec/validator alignment
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Validate 8 new review claims | ✅ Done | 6/8 CONFIRMED |
+| Fix validator/spec mismatch (max_files 15→5) | ✅ Done | c0cd80f |
+| Fix governance spec stale content | ✅ Done | c0cd80f |
+| Fix copilot-instructions.md old filename refs | ✅ Done | c0cd80f |
+| Convert instructions.md to true stub (129→30 lines) | ✅ Done | c0cd80f |
+| Add deprecation notices to legacy scripts | ✅ Done | c0cd80f |
+
+### Session 13 Part 3 (2026-01-11)
 
 **Focus:** Third external review + CI integration
 

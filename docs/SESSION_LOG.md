@@ -4,6 +4,68 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 13 Part 4: Fourth External Review & Final Alignment ✅
+
+**Focus:** Validate remaining review claims, achieve full spec/validator alignment
+
+### Commits This Session
+1. `c0cd80f` - fix: align validator with spec, fix stale refs, add deprecation notices (#328)
+
+### 🔍 Fourth External Review Validation
+
+| Claim | Verified | Result | Action |
+|-------|----------|--------|--------|
+| Validator allows role files in agents/ root (max_files=15) | ✅ | CONFIRMED | Fixed to max_files=5, removed role files |
+| Governance spec says "agents/ - 6 root files" | ✅ | CONFIRMED | Updated to "3 files + 2 folders" |
+| copilot-instructions.md has old UPPERCASE filename refs | ✅ | CONFIRMED | Fixed lines 728, 760 |
+| Copilot instructions.md not a true stub (129 lines) | ✅ | CONFIRMED | Reduced to 30 lines |
+| Legacy scripts have no deprecation notices | ✅ | CONFIRMED | Added to safe_push_v2.sh, should_use_pr_old.sh |
+| Progress tracker has 9eed730/pending conflicts | ❌ | FALSE | Already fixed in Part 3 |
+| CURRENT_STATE_SUMMARY.md has old refs | ❌ | FALSE | File doesn't exist |
+| Governance spec line 222 has old filename | ✅ | CONFIRMED | Fixed reference |
+
+**Review Accuracy:** 6/8 claims confirmed (75%)
+
+### 🎯 Key Achievements
+
+1. **Full Spec/Validator Alignment**
+   - validate_folder_structure.py now matches governance spec exactly
+   - agents_root: max_files=5 (was 15), role files removed from allowed list
+
+2. **Fixed All Stale Content**
+   - Governance spec "Needs attention" → "Status (verified 2026-01-11)"
+   - Old UPPERCASE filename references → lowercase
+
+3. **True Redirect Stub**
+   - .github/copilot/instructions.md: 129 lines → 30 lines
+   - Only essential redirect info, no content drift risk
+
+4. **Legacy Script Deprecation**
+   - safe_push_v2.sh: Added deprecation notice
+   - should_use_pr_old.sh: Added deprecation notice
+   - Planned removal: v0.18.0
+
+### 📊 Session 13 Overall Progress
+
+| Part | Commits | PRs | Claims Verified | Accuracy |
+|------|---------|-----|-----------------|----------|
+| Part 1 | 6 | #323 | 5/6 | 83% |
+| Part 2 | 2 | #326 | 7/7 | 100% |
+| Part 3 | 2 | #327 | 5/5 | 100% |
+| Part 4 | 1 | #328 | 6/8 | 75% |
+| **Total** | **11** | **4** | **23/26** | **88%** |
+
+### 🏁 Migration Status: COMPLETE
+
+All governance requirements met:
+- ✅ Root files ≤10 (currently 9)
+- ✅ Validator/spec alignment
+- ✅ CI enforcement (fast-checks.yml)
+- ✅ 0 broken links
+- ✅ Single source of truth established
+
+---
+
 ## 2026-01-11 — Session 13 Part 3: Third External Review & CI Integration 🛡️
 
 **Focus:** Validate 5 new review claims, add governance checks to CI
