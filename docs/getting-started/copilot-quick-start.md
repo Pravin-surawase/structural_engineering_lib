@@ -1,31 +1,30 @@
 # GitHub Copilot Agent Quick Start
 
-**IMPORTANT:** Copilot runs in its own shell environment, not VSCode terminal. You must configure git for each session.
+> **⚠️ CONSOLIDATED:** This document has been simplified.
+>
+> **Use instead:** `./scripts/agent_start.sh` (handles everything in one command)
+>
+> For detailed instructions: See [copilot-instructions.md](../../.github/copilot-instructions.md)
 
 ---
 
-## ⚠️ CRITICAL: Run This First (Every Session)
+## 🚀 Quick Start (One Command)
 
 ```bash
-# Option 1: Source the setup script (RECOMMENDED)
-source scripts/copilot_setup.sh
+# This does everything: git config, env setup, pre-flight, session start
+./scripts/agent_start.sh --quick
 
-# Option 2: Manual setup
-git config --global core.pager cat
-git config --global pager.status false
-git config --global pager.branch false
-git config --global pager.diff false
-export GIT_EDITOR=":"
-export PAGER=cat
+# With agent-specific guidance:
+./scripts/agent_start.sh --agent 9 --quick   # Governance focus
+./scripts/agent_start.sh --agent 8 --quick   # Git/automation focus
+./scripts/agent_start.sh --agent 6 --quick   # UI focus
 ```
-
-**Why?** Without this, git commands will open a pager and **lock your terminal**.
 
 ---
 
-## Safe Git Commands Reference
+## Git Pager Prevention (Handled by agent_start.sh)
 
-### Always Use These Formats:
+If you're NOT using the unified script, run manually:
 
 ```bash
 # Status
