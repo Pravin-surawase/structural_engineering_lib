@@ -39,23 +39,27 @@ git push
 
 ## 🚀 Quick Start (First 30 Seconds)
 
-**NEW: Use the automation system for error-free workflow!**
+**NEW: Use the unified automation system for error-free workflow!**
 
 ```bash
-# Step 1: Initialize environment (REQUIRED at session start)
+# Option 1: Single unified command (RECOMMENDED)
+./scripts/agent_start.sh --quick
+
+# Option 2: With agent-specific guidance
+./scripts/agent_start.sh --agent 9 --quick  # For governance agents
+```
+
+**Legacy commands (still work, but unified script is simpler):**
+```bash
 ./scripts/agent_setup.sh
-
-# Step 2: Pre-flight check (BEFORE any work)
 ./scripts/agent_preflight.sh
-
-# Step 3: Start session
 .venv/bin/python scripts/start_session.py
 ```
 
 **Critical Resources (Read in order):**
 1. **[AGENT_WORKFLOW_MASTER_GUIDE.md](../docs/AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
 2. **[AGENT_QUICK_REFERENCE.md](../docs/AGENT_QUICK_REFERENCE.md)** - Essential commands
-3. `docs/agent-bootstrap.md` → `docs/ai-context-pack.md` → `docs/TASKS.md`
+3. `docs/getting-started/agent-bootstrap.md` → `docs/getting-started/ai-context-pack.md` → `docs/TASKS.md`
 
 **Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
 
@@ -141,7 +145,7 @@ git push
 
 **For future agents:**
 1. Read [AGENT_WORKFLOW_MASTER_GUIDE.md](../docs/AGENT_WORKFLOW_MASTER_GUIDE.md) first
-2. Run `./scripts/agent_setup.sh` at session start
+2. Run `./scripts/agent_start.sh` at session start (or legacy `./scripts/agent_setup.sh`)
 3. ALWAYS use `./scripts/ai_commit.sh` for commits
 4. **If editing Streamlit:** Validation runs automatically, fix CRITICAL issues
 5. Check `git_operations_log/YYYY-MM-DD.md` for session history
