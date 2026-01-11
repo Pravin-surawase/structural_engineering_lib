@@ -17,7 +17,7 @@ Agent 9 is the **governance and documentation structure agent**, ensuring sustai
 ### 1. Check Governance Rules First
 ```bash
 # Read the governing document for any folder/doc changes
-open docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md
+open docs/guidelines/folder-structure-governance.md
 ```
 
 ### 2. Review Current Status
@@ -133,7 +133,7 @@ grep -r "old/path.md" docs/ agents/ .github/
 .venv/bin/python scripts/check_governance_compliance.py
 
 # 2. Read governance spec
-open docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md
+open docs/guidelines/folder-structure-governance.md
 
 # 3. Review migration guide
 open docs/guidelines/migration-workflow-guide.md
@@ -146,10 +146,10 @@ open docs/guidelines/migration-workflow-guide.md
 
 ## Governance Documents (Full Detail)
 
-**Main Hub:** [docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+**Main Hub:** [docs/guidelines/folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
 
 **Key Resources:**
-- [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md) - All naming + placement rules
+- [folder-structure-governance.md](../../guidelines/folder-structure-governance.md) - All naming + placement rules
 - [migration-workflow-guide.md](../../guidelines/migration-workflow-guide.md) - Migration procedures
 - [folder-cleanup-workflow.md](../../guidelines/folder-cleanup-workflow.md) - Cleanup procedures
 - [migration-preflight-checklist.md](../../guidelines/migration-preflight-checklist.md) - Pre-migration checks
@@ -243,7 +243,7 @@ If structure changes cause issues:
 
 ## Need More Detail?
 
-- **Full governance rules:** [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+- **Full governance rules:** [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
 - **Governance hub:** [agent-9-governance-hub.md](agent-9-governance-hub.md)
 - **Migration workflow:** [migration-workflow-guide.md](../../guidelines/migration-workflow-guide.md)
 - **Agent role docs:** [agents/roles/](../../../agents/roles/)

@@ -2,7 +2,7 @@
 """Validate folder structure against governance rules.
 
 This script checks if the project folder structure follows the rules defined in:
-agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md
+docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md
 
 Usage:
     python scripts/validate_folder_structure.py
@@ -21,21 +21,20 @@ from pathlib import Path
 from typing import List, Tuple, Dict
 import argparse
 
-# Governance rules
+# Governance rules - MUST match FOLDER_STRUCTURE_GOVERNANCE.md
+# Updated Session 13: aligned with governance spec (was 20, now 10)
 RULES = {
     "root": {
-        "max_files": 20,  # Adjusted for realistic project needs
+        "max_files": 10,  # Per FOLDER_STRUCTURE_GOVERNANCE.md Section II
         "allowed_extensions": [".md", ".txt", ".toml", ".yaml", ".yml", ".json", ".cfg", ".ini", ".cff", ".py", ".ipynb"],
         "allowed_files": [
-            # Standard project files
+            # Standard project files (per governance spec)
             "README.md",
             "CHANGELOG.md",
             "CONTRIBUTING.md",
             "LICENSE",
             "LICENSE_ENGINEERING.md",
             "CODE_OF_CONDUCT.md",
-            "SECURITY.md",
-            "SUPPORT.md",
             "AUTHORS.md",
             "pyproject.toml",
             ".gitignore",
@@ -43,8 +42,9 @@ RULES = {
             # Citation and discovery
             "CITATION.cff",
             "llms.txt",
-            # Development/test files (root-level for convenience)
-            "colab_workflow.ipynb",
+            # Note: SECURITY.md, SUPPORT.md moved to .github/ (Session 13)
+            # Note: colab_workflow.ipynb moved to docs/cookbook/ (Session 13)
+            # Note: test_*.py files should be in tests/ or root (legacy)
             "test_quality_assessment.py",
             "test_scanner_detection.py",
             "test_xlwings_bridge.py",
@@ -86,7 +86,7 @@ RULES = {
             "docs/reference",
             "docs/contributing",
             "docs/architecture",
-            "agents/agent-9/governance",
+            "docs/guidelines",  # Canonical governance location (moved from agents/agent-9/governance)
             "docs/agents",
         ],
         "must_have_readme": True,

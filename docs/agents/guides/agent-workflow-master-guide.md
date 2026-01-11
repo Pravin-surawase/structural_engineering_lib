@@ -609,7 +609,7 @@ git commit --no-edit
 
 ## 🏗️ Folder Structure Governance
 
-> **Reference:** [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+> **Reference:** [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
 
 All agents MUST follow the published governance spec. Key rules:
 
@@ -642,7 +642,7 @@ python scripts/safe_file_delete.py old.md
 
 ### Pre-Migration Checklist
 Before moving files or creating new folder structures:
-- [ ] Check [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+- [ ] Check [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
 - [ ] Run `python scripts/check_governance_compliance.py --strict`
 - [ ] Verify target folder is compliant with governance
 - [ ] Document migration in TASKS.md
@@ -673,7 +673,7 @@ All NEW documents MUST include this metadata block at the top:
 | **Created** | When written | YYYY-MM-DD format |
 | **Last Updated** | When last edited | YYYY-MM-DD format (update on any change) |
 | **Related Tasks** | Links to tracker | Task identifiers (see docs/planning/TASKS.md) |
-| **Location Rationale** | Why this folder? | Reference FOLDER_STRUCTURE_GOVERNANCE.md |
+| **Location Rationale** | Why this folder? | Reference folder-structure-governance.md |
 
 ### When to Update Metadata
 - ✅ **Last Updated:** Every time document changes

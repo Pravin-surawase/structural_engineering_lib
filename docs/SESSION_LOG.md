@@ -42,7 +42,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
    - Removed redundant index.md
 
 3. **Created Progress Tracker**
-   - [FOLDER_MIGRATION_PROGRESS.md](planning/FOLDER_MIGRATION_PROGRESS.md) - single source of truth
+   - [folder-migration-progress.md](planning/folder-migration-progress.md) - single source of truth
 
 4. **Removed Active Redirect Stub**
    - Deleted docs/reference/vba-guide.md (only 3 archive stubs remain)
@@ -131,7 +131,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 **Focus:** Deep structural review, governance specification, systematic folder migrations
 
 ### Commits This Session (4 total)
-1. `a0c9ec7` - docs: add comprehensive FOLDER_STRUCTURE_GOVERNANCE.md + session-11-structure-issues-analysis.md
+1. `a0c9ec7` - docs: add comprehensive folder-structure-governance.md + session-11-structure-issues-analysis.md
 2. `6e40f55` - chore: add governance compliance checker + improve agent guidelines with metadata standard
 3. `470e71d` - refactor: complete structural migration - agents roles + docs/agents guides + fix 50+ broken links
 4. `1f617b1` - docs: add session-11-migration-lessons.md - systematic approach to folder migrations
@@ -139,7 +139,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ### 🎯 Key Achievements
 
 #### 1. **Comprehensive Governance Spec** (NEW)
-- Created [FOLDER_STRUCTURE_GOVERNANCE.md](guidelines/FOLDER_STRUCTURE_GOVERNANCE.md) (350+ lines)
+- Created [folder-structure-governance.md](guidelines/folder-structure-governance.md) (350+ lines)
   - Defines all folder rules, categories, validation requirements
   - Specifies root file limits, doc categories, enforcement
   - Includes quarterly review process
@@ -187,7 +187,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 |------|--------|-------|--------|
 | agents/ structure | ❌ 0% | ✅ 100% | Role files in agents/roles/ |
 | docs/agents structure | ⚠️ 40% | ✅ 100% | Guides in docs/agents/guides/ |
-| Spec alignment | ❌ <30% | ✅ 100% | FOLDER_STRUCTURE_GOVERNANCE.md |
+| Spec alignment | ❌ <30% | ✅ 100% | folder-structure-governance.md |
 | Internal links | 789 ✅ | 791 ✅ | 0 broken (maintained) |
 
 ### Unexpected Insights
@@ -219,7 +219,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 3. **Quarterly Governance Audits**
    - Schedule monthly check_governance_compliance.py runs
-   - Update FOLDER_STRUCTURE_GOVERNANCE.md with new rules
+   - Update folder-structure-governance.md with new rules
    - Track compliance metrics over time
 
 4. **Safe Migration Playbook**
@@ -230,7 +230,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 | Document | Lines | Purpose |
 |----------|-------|---------|
-| [FOLDER_STRUCTURE_GOVERNANCE.md](guidelines/FOLDER_STRUCTURE_GOVERNANCE.md) | 350+ | Centralized spec for all folder rules |
+| [folder-structure-governance.md](guidelines/folder-structure-governance.md) | 350+ | Centralized spec for all folder rules |
 | [session-11-structure-issues-analysis.md](research/session-11-structure-issues-analysis.md) | 250+ | Root cause analysis + prevention strategy |
 | [session-11-migration-lessons.md](research/session-11-migration-lessons.md) | 251 | Systematic approach + learnings |
 | [check_governance_compliance.py](../scripts/check_governance_compliance.py) | 272 | Validator for governance rules |

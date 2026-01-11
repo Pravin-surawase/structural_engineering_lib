@@ -113,8 +113,8 @@
 
 ### Folder Structure Governance (Session 11-13) ✅ PHASE D COMPLETE
 
-> **Governance Spec:** [FOLDER_STRUCTURE_GOVERNANCE.md](guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
-> **Progress Tracker:** [FOLDER_MIGRATION_PROGRESS.md](planning/FOLDER_MIGRATION_PROGRESS.md)
+> **Governance Spec:** [folder-structure-governance.md](guidelines/folder-structure-governance.md)
+> **Progress Tracker:** [folder-migration-progress.md](planning/folder-migration-progress.md)
 > **Status:** ✅ COMPLIANT - Root files 9/10, zero broken links, governance checks passing
 
 | ID | Task | Session | Status |
@@ -161,7 +161,7 @@
 
 #### Agent 9 Governance (Phase B: Folder Migration) ✅ COMPLETE
 
-> **Roadmap:** [AGENT-9-GOVERNANCE-ROADMAP.md](../agents/agent-9/governance/AGENT-9-GOVERNANCE-ROADMAP.md)
+> **Governance Spec:** [folder-structure-governance.md](guidelines/folder-structure-governance.md)
 > **Status:** ✅ **PHASE B COMPLETE** - All 6 tasks done 2026-01-10 (5 commits)
 > **Results:** 292 files, 710 links, 0 broken. Agent entry points 3/3. Governance folder 36→7 (81% reduction).
 
@@ -174,7 +174,7 @@
 | **B4** | Navigation study re-run | AGENT_9 | cacf83c | ✅ Done |
 | **B5** | Weekly governance check script | AGENT_9 | cacf83c | ✅ Done |
 
-*All Phase B tasks complete. See [PHASE-B-TASK-TRACKER.md](../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md) for details.*
+*All Phase B tasks complete. Historical docs archived in [docs/_archive/2026-01/agent-9-governance-legacy/](_archive/2026-01/agent-9-governance-legacy/).*
 
 ---
 

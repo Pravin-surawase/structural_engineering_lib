@@ -20,7 +20,7 @@
 | Build Streamlit pages | **6** | [maintenance-guide](../contributing/streamlit-maintenance-guide.md), [prevention-system](../contributing/streamlit-comprehensive-prevention-system.md) |
 | Commit code changes | **8** | [ai_commit.sh](../../scripts/ai_commit.sh), [safe_push.sh](../../scripts/safe_push.sh) |
 | Fix merge conflicts | **8** | [mistake-prevention](guides/agent-8-mistakes-prevention-guide.md) |
-| Reorganize docs | **9** | [governance hub](../../agents/agent-9/governance/README.md) |
+| Reorganize docs | **9** | [governance spec](../guidelines/folder-structure-governance.md) |
 | Clean up stale files | **9** | [check_redirect_stubs.py](../../scripts/check_redirect_stubs.py) |
 
 ---
@@ -67,7 +67,7 @@ Time-bucketed session logs and summaries by month:
 
 - [Quick Start](guides/agent-9-quick-start.md) - Get started in 60 seconds
 - [Governance Hub](guides/agent-9-governance-hub.md) - Access all governance docs
-- [Full Detail Docs](../../agents/agent-9/governance/README.md) - Complete governance hub
+- [Governance Spec](../guidelines/folder-structure-governance.md) - Folder structure rules
 
 ---
 
