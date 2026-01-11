@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-11 (Session 13 Part 7: Final Review Fixes)
+**Updated:** 2026-01-11 (Session 14: TASKS Cleanup & v0.17.0 Planning)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -13,182 +13,68 @@
 - Move tasks between sections; do not duplicate.
 - **Umbrella tasks:** Keep a single umbrella task in Active/Up Next and list included TASK IDs in description.
 - Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
-- Keep "Recently Done" to last 10-20 items; older history in archive.
+- **Archive rule:** Move "Recently Done" items to [docs/_archive/tasks-history.md](_archive/tasks-history.md) after 20+ items or 14+ days old. Keep last 10-15 items visible.
 
 ---
 
 ## Current Release
 
 - **Version:** v0.16.5 ✅ Released (2026-01-08)
-- **Focus:** UI Layout + Streamlit Improvements
-- **Next:** v0.17.0 (Q1 2026) - Continue Streamlit + API integration
+- **Focus:** Folder Structure Governance + Multi-Code Foundation
+- **Next:** v0.17.0 (Q1 2026, Weeks 2-4) - Professional Requirements Foundation
 
 ---
 
-## v0.16.0 Target (Q1 2026 - Week 1)
-
-**Goal:** Stabilize API refactoring foundation
-
-**Focus:** Fix all test/benchmark failures from API changes
-
-**Key Deliverables:**
-1. ✅ All tests passing (fix 8 API refactoring failures)
-2. ✅ All benchmarks passing (fix 13 signature errors)
-
-**Success Metrics:**
-- 2300+ tests passing, 0 failures
-- 86%+ coverage maintained
-- 0 ruff/mypy errors
-
----
-
-## v0.17.0 Target (Q1 2026 - Weeks 2-4)
+## v0.17.0 Release Target (Q1 2026 - Weeks 2-4)
 
 **Goal:** Implement first professional engineering requirements
 
-**Focus:** Developer productivity + professional compliance foundation
+**Focus:** Security, legal compliance, traceability, developer productivity
 
 **Key Deliverables:**
-1. ✅ Interactive testing UI (Streamlit/Gradio for developer validation)
-2. ✅ Code clause database (traceability system)
-3. ✅ Security hardening baseline (input validation, dependency scanning)
-4. ✅ Professional liability framework (disclaimers, templates)
+1. 🔴 Security hardening baseline (input validation audit, dependency scanning)
+2. 🔴 Professional liability framework (disclaimers, templates, certification guidance)
+3. 🔴 Code clause database (JSON DB, @clause decorator, traceability system)
+4. 🔴 Interactive testing UI (Streamlit/Gradio for design validation)
 
 **Success Metrics:**
-- Working Streamlit app for manual testing
-- Clause references traceable in code
-- Basic security scanning in CI
-- Legal protection docs in place
+- Security: Input validation audit complete, dependency scanning in CI
+- Legal: MIT+engineering disclaimer, templates in docs/legal/
+- Traceability: Clause references in 80%+ design functions
+- Developer UX: Working Streamlit app for manual validation
 - API grade: A- → A (93/100)
 
 ---
 
 ## Active
 
-### IS 456 Module Migration (Multi-Code Support) ✅ COMPLETE
-
-> **Research:** [is456-migration-research.md](research/is456-migration-research.md) | [Workflow Guide](guidelines/migration-workflow-guide.md)
-> **Status:** ✅ **COMPLETE** (2026-01-10, Session 5) - All 7 modules migrated, PR #323 merged
-> **Results:** 3,048 lines migrated, 2392 tests passing, zero breaking changes
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-313** | Execute Phase 1-7: Migrate all IS 456 modules | DEV | 2.5h | 🔴 HIGH | ✅ Done |
-| **TASK-317** | Update codes/is456/__init__.py exports & validate | DEV | 30m | 🟠 P1-High | ✅ Done |
-
-> **TASK-317 Completed:** Session 6, 2026-01-11. PR #324 merged. Created `validate_stub_exports.py` + `update_is456_init.py` automation scripts.
-> **Automation Created:** Pre-migration checks, stub validation, __init__.py generator. See [migration-issues-analysis.md](research/migration-issues-analysis.md)
+*No active tasks. Pick from Up Next and move here when starting.*
 
 ---
 
 ## Up Next
 
-### Future: Core Module Organization (Low Priority)
+### v0.17.0 - Critical Path (Must Complete)
 
-> **Purpose:** Move code-agnostic modules to `core/` for multi-code support
-> **Status:** ⏳ Backlog - Only needed when adding ACI 318 or EC2 support
-> **Research:** [migration-issues-analysis.md](research/migration-issues-analysis.md)
+> **Phase Approach:** Start with low-risk foundation (security, legal) before high-risk features (Streamlit)
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-320** | Migrate materials.py → core/materials.py (if needed) | DEV | 30m | 🔵 P3-Low | ⏳ Backlog |
-| **TASK-321** | Migrate utilities.py → core/utilities.py (if needed) | DEV | 30m | 🔵 P3-Low | ⏳ Backlog |
+**Phase 1 (Week 2): Foundation (Low Risk, 4-6 hours)**
+| ID | Task | Agent | Est | Priority | Blockers |
+|----|------|-------|-----|----------|----------|
+| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning, CI setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | None |
+| **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates, certification guidance) | DOCS | 2-3 hrs | 🔴 HIGH | None |
 
-> **Note:** core/ already has base.py, geometry.py, materials.py. Root materials.py may be redundant - investigate before migrating.
+**Phase 2 (Week 3): Traceability (Medium Risk, 4-6 hours)**
+| ID | Task | Agent | Est | Priority | Blockers |
+|----|------|-------|-----|----------|----------|
+| **TASK-272** | Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | None |
 
----
+**Phase 3 (Week 4): Developer UX (High Value, 1-2 days)**
+| ID | Task | Agent | Est | Priority | Blockers |
+|----|------|-------|-----|----------|----------|
+| **TASK-273** | Interactive Testing UI (Streamlit basic app with design validation) | DEV | 1-2 days | 🔴 HIGH | Test infrastructure |
 
-### IS 456 Migration Details (Reference)
-
-> **Detailed tasks for TASK-313 breakdown if needed:**
-
-| Phase | Module | Est | Dependencies |
-|-------|--------|-----|--------------|
-| 1 | tables.py | 15m | None |
-| 2 | shear.py | 20m | tables |
-| 3 | flexure.py | 30m | materials |
-| 4-7 | detailing, serviceability, compliance, ductile | 1h | Previous phases |
-
----
-
-### Folder Structure Governance (Session 11-13) ✅ COMPLETE
-
-> **Governance Spec:** [folder-structure-governance.md](guidelines/folder-structure-governance.md)
-> **Progress Tracker:** [folder-migration-progress.md](planning/folder-migration-progress.md)
-> **Status:** ✅ COMPLETE - All validators pass, CI enforced, spec/validator aligned
-
-| ID | Task | Session | Status |
-|----|------|---------|--------|
-| **GOV-001** | Create governance spec (V2.0) | S11 | ✅ Done |
-| **GOV-002** | Reorganize agents/ folder structure | S11 | ✅ Done |
-| **GOV-003** | Fix compliance checker bugs (for-else, paths) | S13.1 | ✅ Done |
-| **GOV-004** | Fix root file counting consistency | S13.1 | ✅ Done |
-| **GOV-005** | Update agent-9-quick-start.md paths | S13.1 | ✅ Done |
-| **GOV-006** | Reduce root files 14→9 | S13.1 | ✅ Done |
-| **GOV-007** | Remove docs/reference/vba-guide.md stub | S13.1 | ✅ Done |
-| **GOV-008** | Create progress tracker | S13.1 | ✅ Done |
-| **GOV-013** | Fix validator limit 20→10, consolidate governance | S13.2 | ✅ Done |
-| **GOV-014** | Fix third review issues, add CI governance checks | S13.3 | ✅ Done |
-| **GOV-015** | Align validator with spec, fix stale refs | S13.4 | ✅ Done |
-
-> **Session 13 Total:** 11 commits, 4 PRs (#323, #326, #327, #328), 23/26 review claims validated (88% accuracy)
-
----
-
-### Agent 9 Governance (Phase C: Semantic Navigation) ✅ MOSTLY COMPLETE
-
-> **Research:** [Navigation Study](research/navigation_study/navigation-study-results.md) showed structural cleanup doesn't improve navigation (1.0x speedup).
-> **Status:** ✅ 6/7 tasks complete (2026-01-10). Only TASK-305 (re-run nav study) remains.
-> **Results:** 277 files, 717 links, 0 broken. 13 stubs removed. Front-matter template + validation added.
-> **Completed:** TASK-300 (semantic README), TASK-301 (test files), TASK-302 (stubs), TASK-303 (front-matter), TASK-304 (duplicate), TASK-306 (automation)
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-305** | Re-run navigation study with semantic indexes | AGENT_9 | 1h | 🟡 P2-Medium | ⏳ Queued |
-
----
-
-## Up Next
-
-### v0.17.0 Implementation
-
-#### Agent 9 Governance (Phase A: Critical Infrastructure) ✅ COMPLETE
-
-> **Research:** [Phase 1](../agents/agent-9/research/RESEARCH_FINDINGS_STRUCTURE.md) + [Phase 2](../agents/agent-9/research/RESEARCH_FINDINGS_EXTERNAL.md) (3.5h, 14 research tasks, 4,747 lines)
-> **Status:** ✅ **PHASE A COMPLETE** - All 4 tasks done 2026-01-10
-> **Results:** Root docs 47→9 (81% reduction), CI enforcement active, archival automation running
-
-*All Phase A tasks moved to Recently Done section.*
-
----
-
-#### Agent 9 Governance (Phase B: Folder Migration) ✅ COMPLETE
-
-> **Governance Spec:** [folder-structure-governance.md](guidelines/folder-structure-governance.md)
-> **Status:** ✅ **PHASE B COMPLETE** - All 6 tasks done 2026-01-10 (5 commits)
-> **Results:** 292 files, 710 links, 0 broken. Agent entry points 3/3. Governance folder 36→7 (81% reduction).
-
-| ID | Task | Agent | Commit | Status |
-|----|------|-------|--------|--------|
-| **B0** | Merge roadmap branch to main | AGENT_9 | 59f4dc0 | ✅ Done |
-| **B1** | Agent 6 entry points (quick-start + hub) | AGENT_9 | ce57e44 | ✅ Done |
-| **B2** | Agent registry in docs/agents/README.md | AGENT_9 | ce57e44 | ✅ Done |
-| **B3** | Archive 29 Phase A planning docs | AGENT_9 | 1570d3c | ✅ Done |
-| **B4** | Navigation study re-run | AGENT_9 | cacf83c | ✅ Done |
-| **B5** | Weekly governance check script | AGENT_9 | cacf83c | ✅ Done |
-
-*All Phase B tasks complete. Historical docs archived in [docs/_archive/2026-01/agent-9-governance-legacy/](_archive/2026-01/agent-9-governance-legacy/).*
-
----
-
-#### Critical Path (Must complete for v0.17.0)
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-273** | Implement Interactive Testing UI (Streamlit basic app with design validation) | DEV | 1 day | 🔴 HIGH | ⏳ Queued |
-| **TASK-272** | Implement Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | ⏳ Queued |
-| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | ⏳ Queued |
-| **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates in docs/) | DOCS | 2-3 hrs | 🔴 HIGH | ⏳ Queued |
+> **Note:** TASK-273 depends on stable test infrastructure. If blocked, deliver v0.17.0 with TASK-272/274/275 only.
 
 ### v0.18+ (Professional Features Pipeline)
 
