@@ -12,7 +12,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 1. `aea7599` - feat: create unified agent_start.sh, simplify onboarding docs (#329)
 2. `980b5d3` - refactor: consolidate automation docs, archive 4 redundant files
 3. `5c9eca3` - docs: update handoff and next-session-brief for Session 13 Part 5
-4. *(pending)* - docs: update copilot-instructions.md with agent_start.sh
+4. `78e3824` - docs: update copilot-instructions.md with agent_start.sh command
+5. `4e0cae4` - fix: correct broken doc links in copilot-instructions.md
+6. `f071157` - docs: update agent-workflow-master-guide.md with agent_start.sh
 
 ### 🎯 Key Achievements
 
@@ -52,11 +54,12 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | Category | Added | Modified | Archived |
 |----------|-------|----------|----------|
 | Scripts | 1 | 0 | 0 |
-| Docs | 0 | 5 | 4 |
+| Docs | 0 | 9 | 4 |
 
 ### ⏭️ Next Session
 - Continue doc consolidation if more redundancy found
 - Focus on v0.17.0 implementation tasks (TASK-272, 273, 274, 275)
+- Research docs in docs/research/ may have stale content (but are historical records)
 
 ---
 
