@@ -5,35 +5,32 @@ Goal: enable the next agent to resume in under 2 minutes.
 ---
 
 ## Resume (next agent)
-1. Run: `.venv/bin/python scripts/start_session.py`
+1. Run: `./scripts/agent_start.sh --quick` (or with `--agent 9` for governance work)
 2. Read:
    - `docs/planning/next-session-brief.md` (what changed + blockers)
    - `docs/TASKS.md` (active + up next)
    - `.github/copilot-instructions.md` (CRITICAL - git workflow, layers, rules)
 3. Review recent work:
-   - **Jan 6 2026**: TASK-143 (comparison), TASK-144 (SmartDesigner), workflow automation
-   - Smart insights ecosystem now complete: dashboard, comparison, cost optimization, suggestions
-   - New workflow tools: `create_task_pr.sh`, `finish_task_pr.sh`, `test_git_workflow.sh`
+   - **Jan 11 2026**: Session 13 - Folder Governance + Agent Onboarding
+   - Created unified `agent_start.sh` (replaces 4 commands with 1)
+   - Archived 4 redundant docs, consolidated agent-automation-system.md v1.1.0
 4. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
 
-### Quick output sample (start_session --quick)
+### Quick output sample (agent_start.sh --quick)
 ```
-$ .venv/bin/python scripts/start_session.py --quick
+$ ./scripts/agent_start.sh --quick
 ============================================================
-🚀 SESSION START
+🚀 AGENT SESSION START
 ============================================================
-  Version:  v0.11.0
+  Version:  v0.16.0
   Branch:   main
-  Date:     2025-01-02
+  Date:     2026-01-11
   Git:      Clean working tree
 
-📝 Session Log:
-  ✅ Entry exists for 2025-01-02
-
 📋 Active Tasks:
-  • S-007: External engineer CLI test (BLOCKER - requires human)
+  • v0.17.0 implementation (TASK-272, 273, 274, 275)
 
-📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md
+📖 Read first: docs/handoff.md → docs/TASKS.md
 ============================================================
 ```
 
