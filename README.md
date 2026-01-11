@@ -2,6 +2,9 @@
 
 <div align="center">
 
+> ⚠️ **Work in Progress**: This project is under active development.
+> See [TASKS.md](docs/TASKS.md) for roadmap and [next-session-brief.md](docs/next-session-brief.md) for current status.
+
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
