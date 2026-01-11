@@ -21,6 +21,8 @@ from typing import Optional
 from structural_lib.error_messages import material_property_out_of_range
 from structural_lib.errors import ComplianceError, ConfigurationError, MaterialError
 
+from .traceability import clause
+
 __all__ = [
     # Classes
     "BarArrangement",
@@ -131,6 +133,7 @@ class BeamDetailingResult:
 # =============================================================================
 
 
+@clause("26.2.1.1")
 def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
     """
     Get design bond stress τbd.
@@ -163,6 +166,7 @@ def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
     return tau_bd
 
 
+@clause("26.2.1")
 def calculate_development_length(
     bar_dia: float,
     fck: float,
@@ -233,6 +237,7 @@ def calculate_development_length(
     return round(ld, 0)
 
 
+@clause("26.2.5")
 def calculate_lap_length(
     bar_dia: float,
     fck: float,
@@ -350,6 +355,7 @@ def check_min_spacing(
         return False, f"FAIL: Spacing {spacing} mm < min {min_spacing} mm"
 
 
+@clause("26.5.1.3")
 def check_side_face_reinforcement(
     D: float, b: float, cover: float
 ) -> tuple[bool, float, float]:
