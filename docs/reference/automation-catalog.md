@@ -2008,6 +2008,6 @@ chmod +x scripts/*.sh
 
 ---
 
-**Last Updated:** 2026-01-10
+**Last Updated:** 2026-01-11
 **Maintained By:** Project automation
-**Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../SUPPORT.md)
+**Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../.github/SUPPORT.md)

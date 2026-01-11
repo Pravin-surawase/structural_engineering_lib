@@ -324,8 +324,8 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 ## Community
 
 - Contributing: `CONTRIBUTING.md`
-- Support: `SUPPORT.md`
-- Security: `SECURITY.md`
+- Support: `.github/SUPPORT.md`
+- Security: `.github/SECURITY.md`
 
 ## Developer setup
 

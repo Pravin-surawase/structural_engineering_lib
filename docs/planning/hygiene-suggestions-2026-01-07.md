@@ -102,7 +102,7 @@ These are in template/example sections but should still be fixed:
 
 11. **docs/planning/v0.17-task-specs.md**
    - Link: `SECURITY.md (SECURITY.md)` - Wrong relative path
-   - Fix: `[SECURITY.md](../../SECURITY.md)`
+   - Fix: `[SECURITY.md](../../.github/SECURITY.md)` (moved to .github/ in Session 13)
 
 12-17. **docs/guidelines/api-evolution-standard.md** (6 links)
    - `Migration Guide (link)` - Placeholder
@@ -131,8 +131,8 @@ touch docs/research/detailing-research.md
 # Option 2: Remove broken references
 # Edit files to remove non-existent links
 
-# Fix SECURITY.md path
-sed -i 's|SECURITY.md (SECURITY.md)|[SECURITY.md](../../SECURITY.md)|g' docs/planning/v0.17-task-specs.md
+# Fix SECURITY.md path (NOTE: SECURITY.md moved to .github/ in Session 13)
+sed -i 's|SECURITY.md (SECURITY.md)|[SECURITY.md](../../.github/SECURITY.md)|g' docs/planning/v0.17-task-specs.md
 
 # Fix examples/ path
 # Edit docs/guidelines/api-design-guidelines.md
