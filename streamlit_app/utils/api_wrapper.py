@@ -21,6 +21,7 @@ Updated: 2026-01-08
 """
 
 import math
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -688,7 +689,6 @@ def get_library_status() -> dict:
         # Parse import error to identify missing modules
         if "No module named" in _IMPORT_ERROR:
             # Extract module name from error message
-            import re
             match = re.search(r"No module named '([^']+)'", _IMPORT_ERROR)
             if match:
                 status["missing_modules"].append(match.group(1))
