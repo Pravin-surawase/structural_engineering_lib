@@ -90,40 +90,54 @@
 | **TASK-278** | Verification & Audit Trail (SHA-256, immutable logs) | DEV | 3-4 hrs | 🔴 HIGH | ⏳ Queued |
 | **TASK-279** | Engineering Testing Strategies (visual regression, property-based) | TESTER | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
 
-### v0.17.5 - Code Quality & Automation Enhancement
+### v0.17.5 - Code Quality & Automation Enhancement (Agent 6 Focus)
 
 > **Goal:** Improve scanner accuracy, create developer guidelines, enhance automation
-> **Research:** docs/research/streamlit-code-quality-research.md
+> **Research:** [streamlit-code-quality-research.md](research/streamlit-code-quality-research.md), [streamlit-code-files-analysis.md](research/streamlit-code-files-analysis.md)
+> **Onboarding:** [agent-6-comprehensive-onboarding.md](agents/guides/agent-6-comprehensive-onboarding.md)
 > **Timeline:** Week 2-3, January 2026
+> **Owner:** Agent 6 (Streamlit Specialist)
+
+**Codebase Stats:** 12 pages (6,090 lines) + 26 utilities (11,312 lines) + 6 components (2,645 lines) = ~20,000 lines
 
 **Phase A: Quick Wins (1-2 hours total)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-401** | Fix IndexError false positives (split pattern) | DEV | 1h | 🔴 HIGH | ⏳ Queued |
+| **TASK-401** | Fix scanner false positives (Path division, constant divisors, split pattern) | AGENT_6 | 1h | 🔴 HIGH | ⏳ Queued |
 | **TASK-422** | Document PR auto-merge behavior in copilot-instructions | DOCS | 30m | 🔴 HIGH | ✅ Session 15 |
 | **TASK-431** | Fix finish_task_pr.sh auto-merge behavior | DEVOPS | 30m | 🔴 HIGH | ✅ Session 15 |
+| **TASK-432** | Archive outdated Agent 6 files (work-division-main-agent6-2026-01-09.md) | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued |
 
 **Phase B: Scanner Enhancement (6-8 hours)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-402** | Add type annotation checker to scanner | DEV | 2h | 🟠 MEDIUM | ⏳ Queued |
-| **TASK-403** | Add widget return type validation | DEV | 3h | 🔴 HIGH | ⏳ Queued |
-| **TASK-404** | Add circular import detection | DEV | 2h | 🟠 MEDIUM | ⏳ Queued |
-| **TASK-405** | Add performance issue detection | DEV | 4h | 🟡 LOW | ⏳ Queued |
+| **TASK-402** | Add type annotation checker to scanner | AGENT_6 | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-403** | Add widget return type validation | AGENT_6 | 3h | 🔴 HIGH | ⏳ Queued |
+| **TASK-404** | Add circular import detection | AGENT_6 | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-405** | Add performance issue detection | AGENT_6 | 4h | 🟡 LOW | ⏳ Queued |
 
 **Phase C: Streamlit Automation (10-12 hours)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-411** | Create streamlit_preflight.sh | DEVOPS | 2h | 🔴 HIGH | ⏳ Queued |
-| **TASK-412** | Create generate_streamlit_page.py scaffold | DEV | 2h | 🟠 MEDIUM | ⏳ Queued |
-| **TASK-413** | Create validate_session_state.py | DEV | 3h | 🔴 HIGH | ⏳ Queued |
-| **TASK-414** | Create performance profiler | DEV | 4h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-411** | Create streamlit_preflight.sh (combines scanner + pylint + tests) | AGENT_6 | 2h | 🔴 HIGH | ⏳ Queued |
+| **TASK-412** | Create generate_streamlit_page.py scaffold | AGENT_6 | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-413** | Create validate_session_state.py (audit all session_state usage) | AGENT_6 | 3h | 🔴 HIGH | ⏳ Queued |
+| **TASK-414** | Create performance profiler | AGENT_6 | 4h | 🟠 MEDIUM | ⏳ Queued |
 
-**Phase D: Documentation (3-4 hours)**
+**Phase D: Documentation & Onboarding (3-4 hours)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | **TASK-421** | Create agent-coding-standards.md | DOCS | 2h | 🔴 HIGH | ✅ Session 15 |
-| **TASK-423** | Update copilot-instructions with coding rules | DOCS | 1h | 🔴 HIGH | ⏳ Queued |
+| **TASK-423** | Update copilot-instructions with coding rules | DOCS | 1h | 🔴 HIGH | ✅ Session 15 |
+| **TASK-433** | Create Agent 6 comprehensive onboarding guide | DOCS | 1h | 🔴 HIGH | ✅ Session 15 |
+| **TASK-434** | Create Streamlit code files analysis (file-by-file research) | DOCS | 2h | 🔴 HIGH | ✅ Session 15 |
+
+**Phase E: True Positive Fixes (from code analysis)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-435** | Fix session_manager.py line 646 division (ast_required/ast_provided) | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-436** | Fix session_manager.py lines 675-676 int() error handling | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-437** | Move imports to module level (api_wrapper.py, session_manager.py) | AGENT_6 | 30m | 🟠 MEDIUM | ⏳ Queued |
 
 ### v0.18+ - Governance & Observability (Agent 9)
 
