@@ -240,16 +240,18 @@ agents/
 
 ## VIII. Current Status
 
+**Last Updated:** 2026-01-11 (Session 12 Review)
+
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| Root files (≤10) | ✅ PASS | 10 files exactly |
+| Root files (≤10) | ❌ FAIL | 14 files, need to reduce to 10 |
 | docs/ root (≤5) | ✅ PASS | 3 files |
-| Link validity | ✅ PASS | 789 links, 0 broken |
-| agents/ roles | ❌ FAIL | 13 files in root, need migration |
-| agents/GOVERNANCE.md | ❌ FAIL | In wrong location |
-| docs/agents structure | ⚠️ PARTIAL | 6 files in root, should be in guides/ |
-| Spec/validator sync | ⚠️ PARTIAL | Need update validators |
-| Doc metadata | ⚠️ NOT YET | New standard, not yet applied |
+| Link validity | ✅ PASS | 808 links, 0 broken |
+| agents/ roles | ✅ PASS | 12 files migrated to agents/roles/ |
+| agents/GOVERNANCE.md | ✅ PASS | Moved to agents/roles/GOVERNANCE.md |
+| docs/agents structure | ✅ PASS | 6 files migrated to docs/agents/guides/ |
+| Spec/validator sync | ✅ PASS | Validator fixed in Session 12 |
+| Doc metadata | ⚠️ IN PROGRESS | New standard being applied |
 
 ---
 
@@ -257,13 +259,14 @@ agents/
 
 | Phase | Task | Status |
 |-------|------|--------|
-| 1 | Publish this governance spec | In progress |
-| 2 | Update validators | Next |
-| 3 | Create migration tools | Next |
-| 4 | Migrate agents/ roles (13 files) | Planned |
-| 5 | Reorganize docs/agents | Planned |
-| 6 | Move agents/GOVERNANCE.md | Planned |
-| 7 | Apply document metadata standard | Planned |
+| 1 | Publish this governance spec | ✅ Complete (Session 11) |
+| 2 | Update validators | ✅ Complete (Session 12) |
+| 3 | Create migration tools | ✅ Complete (safe_file_move.py) |
+| 4 | Migrate agents/ roles (12 files) | ✅ Complete (Session 11) |
+| 5 | Reorganize docs/agents (6 files) | ✅ Complete (Session 11) |
+| 6 | Move agents/GOVERNANCE.md | ✅ Complete (to agents/roles/) |
+| 7 | Apply document metadata standard | ⏳ In Progress |
+| 8 | Reduce root files (14 → 10) | ⏳ Session 12 Priority |
 
 ---
 

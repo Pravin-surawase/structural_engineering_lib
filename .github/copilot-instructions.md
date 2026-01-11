@@ -710,6 +710,57 @@ git rm docs/file.md
 
 ---
 
+## 📄 Document Metadata Standard (NEW - Session 12)
+
+**All NEW documents MUST include this metadata block at the top:**
+
+```markdown
+# Document Title
+
+**Type:** [Guide|Research|Reference|Architecture|Decision|Implementation]
+**Audience:** [All Agents|Developers|Users|Maintainers]
+**Status:** [Draft|Review|Approved|Deprecated|Production Ready]
+**Importance:** [Critical|High|Medium|Low]
+**Version:** 1.0.0
+**Created:** YYYY-MM-DD
+**Last Updated:** YYYY-MM-DD
+**Related Tasks:** Task identifiers (see docs/planning/TASKS.md)
+**Location Rationale:** Why this folder? (Reference FOLDER_STRUCTURE_GOVERNANCE.md)
+**Archive/Supersede:** [If replacing old doc: "Supersedes: old-doc.md" or "Archive after: date"]
+
+---
+```
+
+### Field Descriptions
+
+| Field | Purpose | Examples |
+|-------|---------|----------|
+| **Type** | Classifies document purpose | Guide, Research, Reference, Architecture, Decision |
+| **Audience** | Who should read this? | All Agents, Developers, Users |
+| **Status** | Development stage | Draft, Review, Approved, Deprecated |
+| **Importance** | Priority level | Critical (blocks work), High, Medium, Low |
+| **Version** | Semantic versioning | 1.0.0 (increment on breaking changes) |
+| **Created** | When written | YYYY-MM-DD format |
+| **Last Updated** | When last edited | YYYY-MM-DD format |
+| **Related Tasks** | Links to tracker | TASK-123, IMPL-456 |
+| **Location Rationale** | Why this folder? | "Research findings go in docs/research/" |
+| **Archive/Supersede** | Lifecycle management | "Supersedes: old-guide.md" or "Archive after: 2026-06-01" |
+
+### When to Update Metadata
+- ✅ **Last Updated:** Every time document changes
+- ✅ **Version:** When breaking changes made (major) or new sections added (minor)
+- ✅ **Status:** When development stage changes
+
+### Archival Guidelines
+- Mark as **Deprecated** when superseded by new doc
+- Add **Archive after:** date for time-limited docs (e.g., session research)
+- Move to `docs/_archive/` after archival date
+- Always link to replacement doc if deprecated
+
+**Full spec:** `docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md` Section V
+
+---
+
 ## Common mistakes to AVOID
 
 | Mistake | Correct Approach |

@@ -140,7 +140,9 @@ def check_agents_root_structure() -> List[ComplianceIssue]:
         )
 
     # Check for required subdirectories
-    for subdir in ["roles", "guides"]:
+    # Note: guides/ is in docs/agents/guides/, NOT agents/guides/
+    # Only check for roles/ in agents/
+    for subdir in ["roles"]:
         if not (agents / subdir).exists():
             issues.append(
                 ComplianceIssue(

@@ -274,7 +274,40 @@ def main():
         print(f"  ⚠️  {msg}")
     print()
 
-    # 5. Today's activity summary
+    # 5. Governance compliance check (NEW - Session 12)
+    print("📋 Governance Compliance:")
+    gov_script = REPO_ROOT / "scripts" / "check_governance_compliance.py"
+    if gov_script.exists():
+        venv_python = REPO_ROOT / ".venv" / "bin" / "python"
+        python_exe = str(venv_python) if venv_python.exists() else sys.executable
+        try:
+            result = subprocess.run(
+                [python_exe, str(gov_script)],
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if result.returncode == 0:
+                print("  ✅ All governance checks passed")
+            else:
+                # Extract issues count
+                critical = result.stdout.count("CRITICAL")
+                high = result.stdout.count("HIGH")
+                if critical > 0:
+                    print(f"  🔴 {critical} CRITICAL issue(s) found")
+                    all_passed = False
+                if high > 0:
+                    print(f"  🟠 {high} HIGH severity issue(s)")
+                if critical == 0 and high == 0:
+                    print("  ✅ Only minor issues (MEDIUM/LOW)")
+        except Exception as e:
+            print(f"  ⚠️  Could not run governance check: {e}")
+    else:
+        print("  ⏭️  Governance checker not found (skipping)")
+    print()
+
+    # 6. Today's activity summary
     print("📊 Today's Activity:")
     prs = get_today_prs()
     if prs:
