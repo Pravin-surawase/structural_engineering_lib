@@ -6,6 +6,7 @@ This module provides IS 456-specific implementations of:
 - Detailing rules (Cl. 26)
 - Serviceability checks (Cl. 42, 43)
 - Compliance verification
+- **Code traceability** (TASK-272: clause decorator and database)
 
 All existing functionality from the main library is preserved.
 This package acts as a namespace for IS 456-specific code.
@@ -18,6 +19,7 @@ Migration Status (Session 5-6):
 - serviceability.py: ✅ Migrated
 - compliance.py: ✅ Migrated
 - ductile.py: ✅ Migrated
+- traceability.py: ✅ Added (TASK-272)
 """
 
 from __future__ import annotations
@@ -31,6 +33,16 @@ from structural_lib.codes.is456 import (
     serviceability,
     shear,
     tables,
+    traceability,
+)
+
+# Import traceability API for convenience
+from structural_lib.codes.is456.traceability import (
+    clause,
+    get_clause_info,
+    get_clause_refs,
+    list_clauses_by_category,
+    search_clauses,
 )
 
 # Import base classes for IS456Code
@@ -96,6 +108,7 @@ class IS456Code(DesignCode):
 # Convenience exports
 __all__ = [
     "IS456Code",
+    # Modules
     "tables",
     "shear",
     "flexure",
@@ -103,4 +116,11 @@ __all__ = [
     "serviceability",
     "compliance",
     "ductile",
+    "traceability",
+    # Traceability API (TASK-272)
+    "clause",
+    "get_clause_refs",
+    "get_clause_info",
+    "list_clauses_by_category",
+    "search_clauses",
 ]

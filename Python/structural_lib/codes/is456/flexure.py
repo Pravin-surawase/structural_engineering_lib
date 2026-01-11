@@ -2,13 +2,16 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """
 Module:       flexure
-Description:  Flexural design and analysis functions
+Description:  Flexural design and analysis functions per IS 456:2000
+
+Traceability: Functions are decorated with @clause for IS 456 clause references.
 """
 
 import math
 from typing import Union
 
 from structural_lib import materials
+from structural_lib.codes.is456.traceability import clause
 from structural_lib.data_types import BeamType, DesignSectionType, FlexureResult
 from structural_lib.error_messages import (
     dimension_negative,
@@ -49,6 +52,7 @@ __all__ = [
 ]
 
 
+@clause("38.1", "38.1.1")
 def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     """
     Calculate limiting moment of resistance for a rectangular section.
@@ -108,6 +112,7 @@ def calculate_mu_lim(b: float, d: float, fck: float, fy: float) -> float:
     return mu_lim_nmm / 1000000.0  # Convert back to kN-m
 
 
+@clause("23.1.2", "36.4.2")
 def calculate_effective_flange_width(
     *,
     bw_mm: float,
@@ -237,6 +242,7 @@ def calculate_effective_flange_width(
     return min(bf_geom, bf_limit)
 
 
+@clause("38.2")
 def calculate_ast_required(
     b: float, d: float, mu_knm: float, fck: float, fy: float
 ) -> float:
@@ -307,6 +313,7 @@ def calculate_ast_required(
     return term1 * (1.0 - math.sqrt(1.0 - term2)) * b * d
 
 
+@clause("38.1", "38.2")
 def design_singly_reinforced(
     b: float, d: float, d_total: float, mu_knm: float, fck: float, fy: float
 ) -> FlexureResult:
@@ -422,6 +429,7 @@ def design_singly_reinforced(
     )
 
 
+@clause("38.1", "38.2", "G-1.1")
 def design_doubly_reinforced(
     b: float,
     d: float,
@@ -603,6 +611,7 @@ def design_doubly_reinforced(
     )
 
 
+@clause("38.1", "G-2.2")
 def calculate_mu_lim_flanged(
     bw: float, bf: float, d: float, Df: float, fck: float, fy: float
 ) -> float:
@@ -648,6 +657,7 @@ def calculate_mu_lim_flanged(
     return mu_web_knm + m_flange_knm
 
 
+@clause("38.1", "23.1.2", "G-2.2")
 def design_flanged_beam(
     bw: float,
     bf: float,
