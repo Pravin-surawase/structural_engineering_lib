@@ -414,6 +414,13 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def visit_AnnAssign(self, node: ast.AnnAssign):
+        """Track annotated assignments (e.g., x: int = 5)."""
+        # AnnAssign has .target (single target), .annotation, .value
+        if isinstance(node.target, ast.Name):
+            self.add_defined_name(node.target.id)
+        self.generic_visit(node)
+
     def visit_Lambda(self, node: ast.Lambda):
         """Track lambda parameters as defined names in lambda scope."""
         # Create new scope for lambda
