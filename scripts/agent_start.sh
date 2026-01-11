@@ -18,7 +18,7 @@
 #   4. .venv/bin/python scripts/start_session.py (session start)
 #
 # Created: 2026-01-11 (Session 13 Part 5)
-# Updated: 2026-01-11 (Session 13 Part 6) - Full replacement for 4-command flow
+# Updated: 2026-01-11 (Session 13 Part 7) - v2.1: Fixed full mode, worktree passthrough
 
 set -e
 
@@ -83,7 +83,7 @@ cd "$PROJECT_ROOT"
 
 echo ""
 echo -e "${BOLD}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v2.0         ║${NC}"
+echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v2.1         ║${NC}"
 echo -e "${BOLD}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
@@ -111,13 +111,12 @@ echo -e "  ${GREEN}✓${NC} Git pager disabled"
 # Step 2: Environment Setup via agent_setup.sh
 echo -e "${BLUE}[2/5]${NC} Running environment setup..."
 if [ -f "$SCRIPT_DIR/agent_setup.sh" ]; then
-    if [ -n "$WORKTREE" ]; then
-        "$SCRIPT_DIR/agent_setup.sh" --worktree "$WORKTREE" --quick
-    elif [ -n "$QUICK" ]; then
-        "$SCRIPT_DIR/agent_setup.sh" --quick
-    else
-        "$SCRIPT_DIR/agent_setup.sh" --quick  # Always use --quick in setup, full checks in preflight
-    fi
+    SETUP_ARGS=""
+    [ -n "$WORKTREE" ] && SETUP_ARGS="$SETUP_ARGS --worktree $WORKTREE"
+    [ -n "$QUICK" ] && SETUP_ARGS="$SETUP_ARGS --quick"
+    "$SCRIPT_DIR/agent_setup.sh" $SETUP_ARGS 2>&1 || {
+        echo -e "  ${YELLOW}⚠${NC} agent_setup.sh had warnings (continuing)"
+    }
 else
     # Fallback: basic environment activation
     echo -e "  ${YELLOW}⚠${NC} agent_setup.sh not found, using fallback..."
@@ -141,8 +140,10 @@ if [ -n "$SKIP_PREFLIGHT" ]; then
     echo -e "  ${YELLOW}⊘${NC} Skipped (--skip-preflight)"
 elif [ -n "$QUICK" ]; then
     if [ -f "$SCRIPT_DIR/agent_preflight.sh" ]; then
-        # In quick mode, run preflight with --quick but DON'T ignore failures
-        if ! "$SCRIPT_DIR/agent_preflight.sh" --quick 2>&1; then
+        # In quick mode, run preflight with --quick
+        PREFLIGHT_ARGS="--quick"
+        [ -n "$WORKTREE" ] && PREFLIGHT_ARGS="$PREFLIGHT_ARGS --worktree $WORKTREE"
+        if ! "$SCRIPT_DIR/agent_preflight.sh" $PREFLIGHT_ARGS 2>&1; then
             echo -e "  ${YELLOW}⚠${NC} Pre-flight found warnings (continuing in quick mode)"
         fi
     else
@@ -151,7 +152,9 @@ elif [ -n "$QUICK" ]; then
 else
     # Full mode: run full preflight, fail if issues found
     if [ -f "$SCRIPT_DIR/agent_preflight.sh" ]; then
-        if ! "$SCRIPT_DIR/agent_preflight.sh" 2>&1; then
+        PREFLIGHT_ARGS=""
+        [ -n "$WORKTREE" ] && PREFLIGHT_ARGS="--worktree $WORKTREE"
+        if ! "$SCRIPT_DIR/agent_preflight.sh" $PREFLIGHT_ARGS 2>&1; then
             echo -e "  ${RED}✗${NC} Pre-flight failed! Fix issues before continuing."
             echo -e "  ${YELLOW}→${NC} Run with --skip-preflight to bypass (not recommended)"
             exit 1
