@@ -86,40 +86,81 @@ PR_NUMBER=$(gh pr view --json number -q .number)
 echo ""
 echo -e "${GREEN}✓ Pull request created: #$PR_NUMBER${NC}"
 echo ""
-echo "→ Watching fast checks (should complete in ~20-30s)..."
-gh pr checks "$PR_NUMBER" --watch --interval 10
-
-echo ""
 echo -e "${YELLOW}Options:${NC}"
-echo "  1. View PR:  gh pr view $PR_NUMBER --web"
-echo "  2. Merge:    gh pr merge $PR_NUMBER --squash --delete-branch"
-echo "  3. Cancel:   gh pr close $PR_NUMBER && git push origin --delete $CURRENT_BRANCH"
+echo "  1. [A]sync - Daemon monitors & auto-merges (recommended - continue working)"
+echo "  2. [W]ait  - Watch CI now, then merge"
+echo "  3. [S]kip  - Manual merge later"
 echo ""
-read -p "Merge PR now? (y/N) " -n 1 -r
+read -p "Choice [A/w/s]: " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "→ Waiting for all CI checks to complete..."
-    gh pr checks "$PR_NUMBER" --watch --fail-fast || {
-        echo -e "${YELLOW}⚠ Some checks still running or failed${NC}"
-        echo "Check status: gh pr checks $PR_NUMBER"
-        echo "Merge manually when ready: gh pr merge $PR_NUMBER --squash --delete-branch"
-        exit 0
-    }
 
-    echo "→ Merging PR..."
-    # Note: Removed --auto flag to prevent premature auto-merge
-    # PR now merges immediately after explicit confirmation
-    gh pr merge "$PR_NUMBER" --squash --delete-branch
+case "$REPLY" in
+    [Ww])
+        echo "→ Watching CI checks..."
+        gh pr checks "$PR_NUMBER" --watch --interval 10
 
-    echo "→ Switching back to main..."
-    git checkout main
-    git pull --ff-only
+        echo ""
+        read -p "Merge PR now? (y/N) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            echo "→ Waiting for all CI checks to complete..."
+            gh pr checks "$PR_NUMBER" --watch --fail-fast || {
+                echo -e "${YELLOW}⚠ Some checks still running or failed${NC}"
+                echo "Check status: gh pr checks $PR_NUMBER"
+                echo "Merge manually when ready: gh pr merge $PR_NUMBER --squash --delete-branch"
+                exit 0
+            }
 
-    echo ""
-    echo -e "${GREEN}✓ PR merged and cleaned up!${NC}"
-    echo "  You're back on main with latest changes"
-else
-    echo ""
-    echo -e "${YELLOW}PR created but not merged${NC}"
-    echo "Merge manually when ready: gh pr merge $PR_NUMBER --squash --delete-branch"
-fi
+            echo "→ Merging PR..."
+            gh pr merge "$PR_NUMBER" --squash --delete-branch
+
+            echo "→ Switching back to main..."
+            git checkout main
+            git pull --ff-only
+
+            echo ""
+            echo -e "${GREEN}✓ PR merged and cleaned up!${NC}"
+        else
+            echo -e "${YELLOW}PR created but not merged${NC}"
+            echo "Merge manually: gh pr merge $PR_NUMBER --squash --delete-branch"
+        fi
+        ;;
+
+    [Ss])
+        echo -e "${YELLOW}PR created but not monitored${NC}"
+        echo "View:  gh pr view $PR_NUMBER --web"
+        echo "Merge: gh pr merge $PR_NUMBER --squash --delete-branch"
+        ;;
+
+    *)
+        # Default: Async monitoring (recommended)
+        echo "→ Setting up async monitoring..."
+
+        # Ensure daemon is running
+        if ! "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" status 2>/dev/null | grep -q "running"; then
+            "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" start
+        fi
+
+        echo ""
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}✓ PR #$PR_NUMBER is now monitored by daemon${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+        echo "What happens next:"
+        echo "  📊 Daemon checks CI every 30s"
+        echo "  ⚠️  You'll be notified on FIRST failure"
+        echo "  ✅ Auto-merge when ALL checks pass"
+        echo ""
+        echo "Commands:"
+        echo "  Status: ./scripts/pr_async_merge.sh status"
+        echo "  Logs:   ./scripts/ci_monitor_daemon.sh logs"
+        echo ""
+
+        # Return to main
+        echo "→ Switching back to main..."
+        git checkout main
+        git pull --ff-only 2>/dev/null || true
+
+        echo -e "${GREEN}✓ You're on main - continue working!${NC}"
+        ;;
+esac

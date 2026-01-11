@@ -10,6 +10,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PID_FILE="$PROJECT_ROOT/.git/ci_monitor.pid"
 LOG_FILE="$PROJECT_ROOT/logs/ci_monitor.log"
 STATUS_FILE="$PROJECT_ROOT/.git/ci_monitor_status.json"
+FAILURE_CACHE="$PROJECT_ROOT/.git/ci_failures_notified.txt"
 CHECK_INTERVAL=30  # seconds
 
 # Colors
@@ -90,12 +91,15 @@ monitor_pr() {
 
     if [ "$state" != "OPEN" ]; then
         log_message "INFO" "PR #$pr_number is $state, skipping"
+        # Clear failure cache for this PR if merged/closed
+        sed -i '' "/^$pr_number:/d" "$FAILURE_CACHE" 2>/dev/null || true
         return 0
     fi
 
     # Check CI status
     local checks_passing=true
     local checks_complete=true
+    local first_failure=""
 
     while IFS= read -r check; do
         local check_status=$(echo "$check" | jq -r '.status' 2>/dev/null || echo "UNKNOWN")
@@ -108,9 +112,22 @@ monitor_pr() {
         elif [ "$check_status" = "COMPLETED" ]; then
             if [ "$check_conclusion" != "SUCCESS" ] && [ "$check_conclusion" != "NEUTRAL" ] && [ "$check_conclusion" != "SKIPPED" ]; then
                 checks_passing=false
-                log_message "WARN" "PR #$pr_number: $check_name failed ($check_conclusion)"
-                # Send notification
-                echo -e "\a"  # Terminal bell
+                # Only notify on FIRST failure (per PR)
+                if [ -z "$first_failure" ]; then
+                    first_failure="$check_name"
+                    local cache_key="$pr_number:$check_name"
+                    if ! grep -q "^$cache_key$" "$FAILURE_CACHE" 2>/dev/null; then
+                        # First time seeing this failure - notify!
+                        echo "$cache_key" >> "$FAILURE_CACHE"
+                        log_message "WARN" "PR #$pr_number: FIRST FAILURE - $check_name ($check_conclusion)"
+                        echo -e "\a"  # Terminal bell
+                        echo -e "${RED}⚠️  PR #$pr_number: CI check '$check_name' FAILED${NC}"
+                        echo "  → View: gh pr view $pr_number --web"
+                        echo "  → Logs: gh pr checks $pr_number"
+                    else
+                        log_message "INFO" "PR #$pr_number: $check_name failed (already notified)"
+                    fi
+                fi
             fi
         fi
     done < <(echo "$pr_status" | jq -c '.checks[]' 2>/dev/null || echo "")
@@ -122,8 +139,15 @@ monitor_pr() {
         if gh pr merge "$pr_number" --squash --delete-branch 2>&1 | tee -a "$LOG_FILE"; then
             log_message "SUCCESS" "✅ PR #$pr_number auto-merged successfully!"
             echo -e "${GREEN}✅ PR #$pr_number merged!${NC}"
+            # Clear failure cache
+            sed -i '' "/^$pr_number:/d" "$FAILURE_CACHE" 2>/dev/null || true
             # Success notification
             echo -e "\a\a"  # Double bell
+
+            # Sync local main
+            log_message "INFO" "Syncing local main branch..."
+            (cd "$PROJECT_ROOT" && git checkout main 2>/dev/null && git pull --ff-only 2>/dev/null) || true
+            log_message "INFO" "Local main synced"
         else
             log_message "ERROR" "Failed to auto-merge PR #$pr_number"
             echo -e "${RED}❌ Failed to merge PR #$pr_number${NC}"
@@ -131,8 +155,7 @@ monitor_pr() {
     elif [ "$checks_complete" = false ]; then
         log_message "INFO" "PR #$pr_number: CI still running..."
     elif [ "$checks_passing" = false ]; then
-        log_message "WARN" "PR #$pr_number: CI checks failed"
-        echo -e "${YELLOW}⚠️  PR #$pr_number has failed checks${NC}"
+        log_message "INFO" "PR #$pr_number: CI checks failed (already notified)"
     fi
 
     return 0
