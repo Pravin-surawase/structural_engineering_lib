@@ -4,6 +4,55 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-11 — Session 13 Part 7: Final Review Fixes & Cleanup
+
+**Focus:** Address main agent review feedback, final cleanup before session end
+
+### Commits This Session
+1. `2ebbbdb` - fix(agent): agent_start.sh v2.1 - full mode uses full setup, worktree passthrough
+2. `9dd58aa` - refactor(docs): archive 3 automation docs to consolidate to 5 canonical files
+3. `ea0f35d` - docs(agent-9): mark CURRENT_STATE_SUMMARY as archived, governance moved to docs/guidelines
+4. `d65d9c1` - docs(readme): add WIP banner with links to TASKS.md and next-session-brief
+
+### 🔍 Review Feedback Addressed
+
+| Issue Identified | Action Taken |
+|------------------|--------------|
+| agent_start.sh full mode calls --quick | ✅ Fixed: v2.1 only adds --quick when flag passed |
+| Worktree not passed to preflight | ✅ Fixed: Both setup and preflight get worktree arg |
+| 8 automation docs (target 2-3) | ✅ Archived 3 research/internal docs, now 5 canonical |
+| Old FOLDER_STRUCTURE_GOVERNANCE.md refs | ✅ Research docs are historical; agent-9 summary marked archived |
+| README needs WIP notice | ✅ Added banner with links to TASKS.md, next-session-brief |
+
+### 📁 Files Changed
+
+| File | Change |
+|------|--------|
+| scripts/agent_start.sh | v2.0→v2.1: Fixed full mode, worktree passthrough |
+| docs/_archive/automation-improvements.md | Moved from docs/_internal/ |
+| docs/_archive/backward-compat-automation.md | Moved from docs/research/ |
+| docs/_archive/session-8-automation-review.md | Moved from docs/research/ |
+| agents/agent-9/CURRENT_STATE_SUMMARY.md | Marked as archived |
+| README.md | Added WIP banner |
+
+### 📊 Session 13 Summary (All Parts)
+
+| Part | Focus | Commits |
+|------|-------|---------|
+| Part 1-4 | Various improvements | ~15 |
+| Part 5 | agent_start.sh v1.0, doc consolidation | 6 |
+| Part 6 | agent_start.sh v2.0, review fixes | 2 |
+| Part 7 | agent_start.sh v2.1, final cleanup | 4+ |
+
+**Total Session 13 Commits:** ~27
+
+### ⏭️ Next Session
+- v0.17.0 implementation: remaining API features
+- Continue Streamlit app improvements
+- Consider v0.16.5 patch release if critical fixes needed
+
+---
+
 ## 2026-01-11 — Session 13 Part 6: Onboarding Finalization + agent_start.sh v2.0
 
 **Focus:** Address review feedback, finalize agent_start.sh as true replacement for 4-command flow

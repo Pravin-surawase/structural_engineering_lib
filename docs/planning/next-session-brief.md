@@ -5,27 +5,22 @@
 | **Current** | v0.16.0 | Released |
 | **Next** | v0.17.0 | Interactive testing UI + professional requirements |
 
-**Date:** 2026-01-11 | **Last commit:** d08a35c
+**Date:** 2026-01-11 | **Last commit:** d65d9c1
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-11 (Session 13 Part 6 - Onboarding Finalization + agent_start.sh v2.0)
-- Focus: **Address review feedback, finalize agent_start.sh as true 4-command replacement**
+- Date: 2026-01-11 (Session 13 Part 7 - Final Review Fixes)
+- Focus: **Address main agent review feedback, final cleanup**
 - Completed:
-  - ✅ agent_start.sh v2.0: Now calls agent_setup.sh (proper full replacement)
-  - ✅ Fixed preflight logic: Full mode fails on issues, quick mode warns
-  - ✅ Added --worktree NAME support for background agents
-  - ✅ Added --skip-preflight for recovery scenarios
-  - ✅ Uses copilot_setup.sh if available (no code duplication)
-  - ✅ Removed || true to properly surface failures
-  - ✅ Updated agent-onboarding.md v2.0: agent_start.sh primary, legacy in fallback
-  - ✅ Fixed script count 102→103 in agent-bootstrap.md
-  - ✅ PR #330 merged
-- Commits: d08a35c
-- Next: v0.17.0 implementation tasks (TASK-272, 273, 274, 275)
+  - ✅ agent_start.sh v2.1: Fixed full mode (now runs full setup), worktree passthrough to both scripts
+  - ✅ Archived 3 automation docs: automation-improvements, backward-compat-automation, session-8-automation-review
+  - ✅ Marked agent-9 CURRENT_STATE_SUMMARY as archived (governance moved to docs/guidelines)
+  - ✅ Added README WIP banner with links to TASKS.md and next-session-brief
+- Commits: 2ebbbdb, 9dd58aa, ea0f35d, d65d9c1
+- Next: v0.17.0 implementation tasks, Streamlit improvements
 <!-- HANDOFF:END -->
 
 ---
@@ -36,8 +31,9 @@
 |------|-------|---------|-----|
 | Part 1-4 | Folder Structure Governance | 11 | #323, #326, #327, #328 |
 | Part 5 | Agent Onboarding & Doc Consolidation | 7 | #329 |
-| Part 6 | Onboarding Finalization + agent_start.sh v2.0 | 1 | #330 |
-| **Total** | | **19** | **7** |
+| Part 6 | Onboarding Finalization + agent_start.sh v2.0 | 2 | #330 |
+| Part 7 | Final Review Fixes | 4 | — |
+| **Total** | | **~24** | **7** |
 
 **Key Improvements:**
 - ✅ Root files: 14→9 (limit 10)
