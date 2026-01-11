@@ -98,8 +98,18 @@ echo ""
 read -p "Merge PR now? (y/N) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "→ Waiting for all CI checks to complete..."
+    gh pr checks "$PR_NUMBER" --watch --fail-fast || {
+        echo -e "${YELLOW}⚠ Some checks still running or failed${NC}"
+        echo "Check status: gh pr checks $PR_NUMBER"
+        echo "Merge manually when ready: gh pr merge $PR_NUMBER --squash --delete-branch"
+        exit 0
+    }
+
     echo "→ Merging PR..."
-    gh pr merge "$PR_NUMBER" --squash --delete-branch --auto
+    # Note: Removed --auto flag to prevent premature auto-merge
+    # PR now merges immediately after explicit confirmation
+    gh pr merge "$PR_NUMBER" --squash --delete-branch
 
     echo "→ Switching back to main..."
     git checkout main

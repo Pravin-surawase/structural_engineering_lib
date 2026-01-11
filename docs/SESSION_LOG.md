@@ -4,7 +4,67 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-11 — Session 15: TASK-272 & TASK-273 - IS 456 Clause Database & Streamlit UI
+## 2026-01-11 — Session 15 (Part 2): Code Quality Research & Automation Planning
+
+**Focus:** Comprehensive research into Streamlit code quality, scanner improvements, and automation gaps
+
+### Research & Documentation Created
+
+**1. streamlit-code-quality-research.md** (~400 lines)
+- Scanner capabilities analysis (9 issue types, accuracy ratings)
+- Known scanner gaps and false positives
+- Common Streamlit mistakes (historical analysis)
+- PR auto-merge behavior analysis and fix
+- Workflow automation opportunities (7 missing scripts identified)
+- Task conversion plan (15+ new tasks)
+- Success metrics definition
+
+**2. agent-coding-standards.md** (~400 lines)
+- Comprehensive coding standards for AI agents
+- Streamlit-specific rules (dict, list, division, session state)
+- Scanner awareness section
+- Testing requirements
+- Code review checklist
+- Quick reference patterns
+
+### Fixes Implemented
+
+**PR Auto-Merge Fix (finish_task_pr.sh):**
+- Removed `--auto` flag that caused premature merges
+- Added explicit CI wait before merge
+- Added fail-safe for incomplete checks
+
+**Copilot Instructions Updates:**
+- Added reference to agent-coding-standards.md
+- Added Essential Rules section (scanner-enforced)
+- Documented PR merge behavior changes
+
+### New Tasks Created (v0.17.5 - Code Quality Enhancement)
+
+**Phase A: Quick Wins**
+- TASK-401: Fix IndexError false positives
+- TASK-422: Document PR auto-merge ✅
+- TASK-431: Fix finish_task_pr.sh ✅
+
+**Phase B: Scanner Enhancement**
+- TASK-402: Add type annotation checker
+- TASK-403: Add widget return type validation
+- TASK-404: Add circular import detection
+- TASK-405: Add performance issue detection
+
+**Phase C: Streamlit Automation**
+- TASK-411: Create streamlit_preflight.sh
+- TASK-412: Create generate_streamlit_page.py
+- TASK-413: Create validate_session_state.py
+- TASK-414: Create performance profiler
+
+**Phase D: Documentation**
+- TASK-421: Create agent-coding-standards.md ✅
+- TASK-423: Update copilot-instructions
+
+---
+
+## 2026-01-11 — Session 15 (Part 1): TASK-272 & TASK-273 - IS 456 Clause Database & Streamlit UI
 
 **Focus:** Implement comprehensive IS 456 clause database with @clause decorator and interactive Streamlit viewer
 
