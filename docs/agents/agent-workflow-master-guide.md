@@ -1,6 +1,6 @@
 # Agent Workflow Master Guide
-**Version:** 1.0.0
-**Last Updated:** 2026-01-08
+**Version:** 2.0.0
+**Last Updated:** 2026-01-11
 **Status:** ✅ Production Ready
 
 > **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations.
@@ -607,10 +607,97 @@ git commit --no-edit
 
 ---
 
+## 🏗️ Folder Structure Governance
+
+> **Reference:** [FOLDER_STRUCTURE_GOVERNANCE.md](../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+
+All agents MUST follow the published governance spec. Key rules:
+
+### Root Files (max 10)
+- Keep root clean: only top-level project files
+- All role files go in `agents/roles/` (not `agents/`)
+- All workflow guides go in `docs/agents/guides/` (not `docs/agents/`)
+
+### Creating New Documents
+**ALWAYS check:** Does this file need folder migration pre-approval?
+```bash
+# BEFORE creating a file:
+python scripts/check_governance_compliance.py --strict
+
+# WHEN creating a file:
+# Include metadata header (see next section)
+# Choose correct folder per governance spec
+# Run validators after creation
+```
+
+### Safe File Operations (CRITICAL)
+**NEVER use:** `rm`, `mv`, or `git rm` manually
+```bash
+# ✅ ALWAYS USE these scripts:
+python scripts/safe_file_move.py old.md new.md
+python scripts/safe_file_delete.py old.md
+
+# Why? Auto-updates all links (789+ internal links to protect!)
+```
+
+### Pre-Migration Checklist
+Before moving files or creating new folder structures:
+- [ ] Check [FOLDER_STRUCTURE_GOVERNANCE.md](../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
+- [ ] Run `python scripts/check_governance_compliance.py --strict`
+- [ ] Verify target folder is compliant with governance
+- [ ] Document migration in TASKS.md
+- [ ] Use safe_file_move.py for all moves
+- [ ] Validate links after migration: `python scripts/check_links.py`
+
+---
+
+## 📄 Document Metadata Standard
+
+All NEW documents MUST include this metadata block at the top:
+
+```markdown
+# Document Title
+**Type:** [Implementation|Guide|Research|Architecture|Reference|Decision]
+**Audience:** [All Agents|Implementation Agents|Architects|Support Agents]
+**Status:** [Draft|Review|Approved|Deprecated]
+**Importance:** [Critical|High|Medium|Low]
+**Version:** 1.0.0
+**Created:** YYYY-MM-DD
+**Last Updated:** YYYY-MM-DD
+**Related Tasks:** Task identifiers (see docs/planning/TASKS.md)
+| **Type** | Classifies document purpose | Implementation, Guide, Research, Decision, Architecture |
+| **Audience** | Who should read this? | All Agents, Implementation Agents, Architects |
+| **Status** | Development stage | Draft, Review, Approved, Deprecated, Production Ready |
+| **Importance** | Priority level | Critical (blocks work), High, Medium, Low |
+| **Version** | Semantic versioning | 1.0.0, 2.1.3 (increment on breaking changes) |
+| **Created** | When written | YYYY-MM-DD format |
+| **Last Updated** | When last edited | YYYY-MM-DD format (update on any change) |
+| **Related Tasks** | Links to tracker | Task identifiers (see docs/planning/TASKS.md) |
+| **Location Rationale** | Why this folder? | Reference FOLDER_STRUCTURE_GOVERNANCE.md |
+
+### When to Update Metadata
+- ✅ **Last Updated:** Every time document changes
+- ✅ **Version:** When breaking changes made (major) or new sections added (minor)
+- ✅ **Status:** When development stage changes
+
+### Example: Well-Formatted Document
+```markdown
+# Beam Design Integration Guide
+**Type:** Implementation
+**Audience:** Implementation Agents
+**Status:** Approved
+**Importance:** High
+**Version:** 2.1.0
+**Created:** 2025-06-15
+**Last Updated:** 2026-01-11
+**Related Tasks:** IMPL-003, IMPL-004 (see docs/planning/TASKS.md)
+---
+
 ## 📝 Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.0.0 | 2026-01-11 | Added governance compliance rules, document metadata standard, safe file operations section, pre-migration checklist |
 | 1.0.0 | 2026-01-08 | Initial comprehensive guide |
 
 ---
