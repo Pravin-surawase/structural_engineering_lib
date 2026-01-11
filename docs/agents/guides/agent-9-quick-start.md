@@ -17,13 +17,13 @@ Agent 9 is the **governance and documentation structure agent**, ensuring sustai
 ### 1. Check Governance Rules First
 ```bash
 # Read the governing document for any folder/doc changes
-open agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md
+open docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md
 ```
 
 ### 2. Review Current Status
 ```bash
 # Check migration status before making structural changes
-open agents/agent-9/governance/MIGRATION-STATUS.md
+open docs/guidelines/migration-workflow-guide.md
 ```
 
 ### 3. Validate Changes
@@ -67,7 +67,7 @@ open agents/agent-9/governance/MIGRATION-STATUS.md
 Is this a dated document (contains YYYY-MM-DD)?
     ├─ YES → sessions/YYYY-MM/ (time buckets)
     └─ NO  → Is it agent-specific?
-        ├─ YES → agents/agent-N/
+        ├─ YES → agents/roles/ or docs/agents/guides/
         └─ NO  → docs/ with proper category
 
 Is this a root-level file?
@@ -116,45 +116,48 @@ grep -r "old/path.md" docs/ agents/ .github/
 ### Task 2: Create Agent Entry Point
 ```bash
 # 1. Create in docs/agents/guides/
-#    (NOT in agents/agent-N/ - that's internal)
+#    (Entry points for quick-start)
 
 # 2. Link from docs/agents/README.md
 
-# 3. Keep detail docs in agents/agent-N/
-#    (governance separation)
+# 3. Keep role docs in agents/roles/
+#    (Agent role definitions)
 
 # 4. Validate
 .venv/bin/python scripts/check_links.py
 ```
 
-### Task 3: Run Migration Phase
+### Task 3: Run Structure Validation
 ```bash
-# 1. Check status
-open agents/agent-9/governance/MIGRATION-STATUS.md
+# 1. Run governance compliance check
+.venv/bin/python scripts/check_governance_compliance.py
 
-# 2. Read phase doc
-open agents/agent-9/governance/PHASE-N-*.md
+# 2. Read governance spec
+open docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md
 
-# 3. Follow step-by-step tasks
-open agents/agent-9/governance/MIGRATION-TASKS.md
+# 3. Review migration guide
+open docs/guidelines/migration-workflow-guide.md
 
 # 4. Validate after each batch
-./scripts/validate_bundle.sh
+.venv/bin/python scripts/check_links.py
 ```
 
 ---
 
 ## Governance Documents (Full Detail)
 
-**Main Hub:** [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
+**Main Hub:** [docs/guidelines/FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
 
-**Key Rules:**
-- [FOLDER_STRUCTURE_GOVERNANCE.md](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md) - All naming + placement rules
-- [MIGRATION-STATUS.md](../../../agents/agent-9/governance/MIGRATION-STATUS.md) - Current status + audit trail
-- [AUTOMATION-CATALOG.md](../../../agents/agent-9/governance/AUTOMATION-CATALOG.md) - All validation checks
-- [PHASE-B-TASK-TRACKER.md](../../../agents/agent-9/governance/PHASE-B-TASK-TRACKER.md) - Current task progress
+**Key Resources:**
+- [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md) - All naming + placement rules
+- [migration-workflow-guide.md](../../guidelines/migration-workflow-guide.md) - Migration procedures
+- [folder-cleanup-workflow.md](../../guidelines/folder-cleanup-workflow.md) - Cleanup procedures
+- [migration-preflight-checklist.md](../../guidelines/migration-preflight-checklist.md) - Pre-migration checks
 
-**Historical:** See [Archive](../../../agents/agent-9/governance/_archive/) for Phase A planning docs
+**Validation Scripts:**
+- `check_governance_compliance.py` - Full compliance check
+- `check_links.py` - Link validation
+- `check_root_file_count.sh` - Root file limit check
 
 ---
 
@@ -240,13 +243,13 @@ If structure changes cause issues:
 
 ## Need More Detail?
 
-- **Full governance rules:** [FOLDER_STRUCTURE_GOVERNANCE.md](../../../agents/agent-9/governance/FOLDER_STRUCTURE_GOVERNANCE.md)
+- **Full governance rules:** [FOLDER_STRUCTURE_GOVERNANCE.md](../../guidelines/FOLDER_STRUCTURE_GOVERNANCE.md)
 - **Governance hub:** [agent-9-governance-hub.md](agent-9-governance-hub.md)
-- **All Agent 9 docs:** [agents/agent-9/governance/README.md](../../../agents/agent-9/governance/README.md)
-- **Phase A history:** [Archive](../../../agents/agent-9/governance/_archive/)
+- **Migration workflow:** [migration-workflow-guide.md](../../guidelines/migration-workflow-guide.md)
+- **Agent role docs:** [agents/roles/](../../../agents/roles/)
 
 ---
 
-**Last Updated:** 2026-01-10
+**Last Updated:** 2026-01-11
 **Owner:** Agent 9 (Governance)
 **Status:** Active
