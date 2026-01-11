@@ -143,18 +143,19 @@ agents/
 ├── templates/                   ← PLANNED (not yet populated)
 │   ├── prompt-template.md
 │   └── session-log-template.md
-├── governance/                  ← Agent governance (agents/agent-9/governance/)
-│   └── GOVERNANCE.md            (currently at agents/GOVERNANCE.md)
 └── agent-9/                     ← Agent-specific folders
     ├── README.md
     └── ...
 ```
 
-**Current issues:**
+**Current status (verified 2026-01-11):**
 
-1. **agents/roles/ does not exist** - 13 role files still in agents/ root
-2. **agents/GOVERNANCE.md in wrong place** - Should be agents/governance/
-3. **docs/agents/guides/ exists but workflow docs still in docs/agents/ root**
+1. ✅ **agents/roles/ exists** - All 12 role files properly organized
+2. ✅ **agents/roles/GOVERNANCE.md** - In correct location
+3. ✅ **docs/agents/guides/** - All agent guides properly nested
+4. ✅ **agents/ root** - Only 4 files (README.md, index.json, index.md, roles/, agent-9/)
+
+**Note:** Historical governance docs archived at `docs/_archive/2026-01/agent-9-governance-legacy/`
 
 **Enforcement rules:**
 

@@ -1,44 +1,45 @@
 # GitHub Copilot Agent Instructions
 
-## CRITICAL: Git Pager Prevention
+> **⚠️ REDIRECT:** This file has been consolidated.
+>
+> **Canonical location:** [../.github/copilot-instructions.md](../copilot-instructions.md)
+>
+> All agent instructions are now in the main copilot-instructions.md file (899 lines).
+> This file is kept only for backward compatibility.
 
-**IMPORTANT:** Always use `--no-pager` or short-format flags to prevent terminal lockup.
+---
 
-### Required for ALL Git Commands
+## Quick Reference (See main file for details)
+
+### Git Pager Prevention
+
+Always use `--no-pager` or short-format flags:
 
 ```bash
-# ✅ CORRECT - Safe for Copilot Agent
 git --no-pager status
 git status --short
-git status --porcelain
-git --no-pager log --oneline -n 20
+git log --oneline -n 20
 git --no-pager diff --stat
-git --no-pager branch -a
-
-# ❌ WRONG - Will lock terminal
-git status       # Opens pager if output long
-git log          # Always opens pager
-git diff         # Opens pager on changes
-git branch -a    # Opens pager if many branches
 ```
 
-### Commands to ALWAYS Use
+### Git Workflow
 
-Replace bare git commands with these:
-
-| Instead of | Use |
-|------------|-----|
-| `git status` | `git status --short` or `git --no-pager status` |
-| `git log` | `git log --oneline -n 20` or `git --no-pager log` |
-| `git diff` | `git diff --stat` or `git --no-pager diff` |
-| `git branch -a` | `git --no-pager branch -a` |
-| `git show` | `git --no-pager show` |
-
-### Session Start Checklist
-
-At the start of EVERY session, run:
-
+**ALWAYS use automation scripts:**
 ```bash
+./scripts/ai_commit.sh "commit message"
+./scripts/safe_push.sh "commit message"
+```
+
+### Session Start
+```bash
+./scripts/agent_setup.sh
+./scripts/agent_preflight.sh
+.venv/bin/python scripts/start_session.py
+```
+
+---
+
+**Full instructions:** [copilot-instructions.md](../copilot-instructions.md)
 # Verify git pager is disabled
 git config core.pager
 

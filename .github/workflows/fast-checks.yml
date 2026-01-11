@@ -61,6 +61,11 @@ jobs:
           python scripts/check_links.py &
           wait
 
+      - name: Governance checks
+        run: |
+          python scripts/validate_folder_structure.py
+          python scripts/check_governance_compliance.py
+
   full-tests-notification:
     name: Full Test Info
     runs-on: ubuntu-latest

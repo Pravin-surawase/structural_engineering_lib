@@ -30,12 +30,12 @@
 | Task | Status | Commit |
 |------|--------|--------|
 | Validate 7 new review claims | ✅ Done | All 7 CONFIRMED |
-| Fix validate_folder_structure.py max_files 20→10 | ✅ Done | 9eed730 |
-| Rename uppercase files to kebab-case | ✅ Done | 9eed730 |
-| Archive duplicate governance folder | ✅ Done | 9eed730 |
-| Fix 24 broken links from consolidation | ✅ Done | 9eed730 |
-| Unify redirect-stub skip policy | ✅ Done | (pending) |
-| Update progress tracker | ✅ Done | (this update) |
+| Fix validate_folder_structure.py max_files 20→10 | ✅ Done | 252101c |
+| Rename uppercase files to kebab-case | ✅ Done | 252101c |
+| Archive duplicate governance folder | ✅ Done | 252101c |
+| Fix 24 broken links from consolidation | ✅ Done | 252101c |
+| Unify redirect-stub skip policy | ✅ Done | 252101c |
+| Update progress tracker | ✅ Done | 2d013f6 |
 
 ### Session 13 Part 1 (2026-01-11)
 
