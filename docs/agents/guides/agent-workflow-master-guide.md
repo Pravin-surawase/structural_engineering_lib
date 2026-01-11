@@ -12,8 +12,11 @@
 
 ### Step 1: Setup Your Environment
 ```bash
-# RECOMMENDED: Single unified command
+# DEFAULT: Quick mode (6s, 54% faster, sufficient for 95% of sessions)
 ./scripts/agent_start.sh --quick
+
+# OPTIONAL: Full validation (13s, use when debugging)
+./scripts/agent_start.sh
 
 # With agent-specific guidance:
 ./scripts/agent_start.sh --agent 9 --quick  # For governance agents

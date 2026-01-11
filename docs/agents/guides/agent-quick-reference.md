@@ -6,7 +6,8 @@
 ## 🚀 Session Start (ONE COMMAND)
 
 ```bash
-./scripts/agent_start.sh --quick              # Default
+./scripts/agent_start.sh --quick              # RECOMMENDED (6s, 54% faster)
+./scripts/agent_start.sh                      # Full validation (13s, optional)
 ./scripts/agent_start.sh --agent 9 --quick    # With agent-specific guidance
 ```
 

@@ -9,10 +9,13 @@
 ## 🚀 First 30 Seconds
 
 ```bash
-# Run this ONE command (replaces 4 separate scripts):
+# RECOMMENDED: Quick mode (6s, 54% faster, sufficient for 95% of sessions)
 ./scripts/agent_start.sh --quick
 
-# Or with agent-specific guidance:
+# OPTIONAL: Full validation (13s, use when debugging)
+./scripts/agent_start.sh
+
+# With agent-specific guidance:
 ./scripts/agent_start.sh --agent 9 --quick   # For governance agents
 ./scripts/agent_start.sh --agent 8 --quick   # For git/automation agents
 ./scripts/agent_start.sh --agent 6 --quick   # For UI agents
