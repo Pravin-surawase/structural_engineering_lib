@@ -34,6 +34,24 @@
 
 ---
 
+## ⚠️ Engineering Disclaimer
+
+> **CRITICAL: This library is a DESIGN AID, not a substitute for professional engineering judgment.**
+
+This software is intended to assist qualified structural engineers with IS 456:2000 RC beam design calculations. By using this library, you acknowledge:
+
+1. **Professional Responsibility:** All designs MUST be reviewed and certified by a licensed Professional Engineer (PE/SE) or equivalent authority in your jurisdiction before construction.
+
+2. **No Liability:** The authors accept NO responsibility for structural failures, property damage, injuries, or deaths resulting from the use of this software. See [LICENSE_ENGINEERING.md](LICENSE_ENGINEERING.md) for full terms.
+
+3. **Verification Required:** Independent hand calculations or verified commercial software should confirm critical designs. See [verification checklist](docs/legal/verification-checklist.md).
+
+4. **Regional Compliance:** Users are responsible for ensuring compliance with local building codes, amendments to IS 456, and site-specific requirements.
+
+**For guidance on professional certification:** [Certification Template](docs/legal/certification-template.md)
+
+---
+
 ## Features
 
 ### Core Capabilities
