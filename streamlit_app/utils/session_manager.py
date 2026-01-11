@@ -21,7 +21,7 @@ import streamlit as st
 import json
 from typing import Any, Optional, Dict, List
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 
 logger = logging.getLogger(__name__)
@@ -510,7 +510,6 @@ class SessionStateManager:
         """
         SessionStateManager.initialize()
 
-        from datetime import datetime, timedelta
         cutoff = datetime.now() - timedelta(minutes=max_age_minutes)
 
         # Clear stale history entries
@@ -640,10 +639,15 @@ def compare_designs(result1: DesignResult, result2: DesignResult) -> Dict[str, A
     Returns:
         Dictionary with comparison metrics
     """
+    # Safe division for cost savings calculation (denominator validated)
+    denominator = result1.cost_per_meter
+    cost_savings_pct = (
+        ((result1.cost_per_meter - result2.cost_per_meter) / denominator) * 100
+    ) if denominator > 0 else 0.0
     return {
         'utilization_diff': result2.utilization_pct - result1.utilization_pct,
         'cost_diff': result2.cost_per_meter - result1.cost_per_meter,
-        'cost_savings_pct': ((result1.cost_per_meter - result2.cost_per_meter) / result1.cost_per_meter) * 100,
+        'cost_savings_pct': cost_savings_pct,
         'steel_area_diff': result2.ast_provided_mm2 - result1.ast_provided_mm2,
         'better_utilization': result2.utilization_pct > result1.utilization_pct,
         'more_economical': result2.cost_per_meter < result1.cost_per_meter
