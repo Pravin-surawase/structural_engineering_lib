@@ -1,4 +1,9 @@
 #!/bin/bash
+# ⚠️ DEPRECATED: Use should_use_pr.sh instead!
+# This is the old version, kept for reference only.
+# Canonical script: ./scripts/should_use_pr.sh
+# Removal planned: v0.18.0
+#
 # Helper script: Should this change use a Pull Request?
 # Analyzes staged files and recommends workflow based on:
 # - File type (production code vs docs/tests)

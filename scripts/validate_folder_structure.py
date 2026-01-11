@@ -61,23 +61,13 @@ RULES = {
         ],
     },
     "agents_root": {
-        "max_files": 15,  # Role files (ARCHITECT.md, DEV.md, etc.) live here
+        "max_files": 5,  # Only hub files - role files now in agents/roles/
         "allowed_files": [
             "README.md",
             "index.md",
-            # Agent role definition files
-            "ARCHITECT.md",
-            "CLIENT.md",
-            "DEV.md",
-            "DEVOPS.md",
-            "DOCS.md",
-            "GOVERNANCE.md",
-            "INTEGRATION.md",
-            "PM.md",
-            "RESEARCHER.md",
-            "SUPPORT.md",
-            "TESTER.md",
-            "UI.md",
+            "index.json",
+            # Role files are in agents/roles/, not here!
+            # See: agents/roles/ARCHITECT.md, agents/roles/DEV.md, etc.
         ],
     },
     "category_folders": {

@@ -106,10 +106,10 @@
 - planning/ (12 files)
 - research/ (20+ files)
 
-**Needs attention (⚠️):**
-- blog-drafts/ - 4 files (OK)
-- publications/ - (old archive exists)
-- agents/ - 6 root files (SHOULD BE 3-5)
+**Status (verified 2026-01-11):**
+- blog-drafts/ - 4 files ✅
+- publications/ - archived ✅
+- agents/ - 3 root files + 2 folders ✅ (README.md, index.md, index.json, roles/, agent-9/)
 - _archive/ - properly structured ✅
 - _internal/ - exists, used ✅
 - _references/ - exists, used ✅
@@ -221,7 +221,7 @@ agents/
 ### Changing the Spec
 
 1. **Propose change** in GitHub issue with rationale
-2. **Update FOLDER_STRUCTURE_GOVERNANCE.md first**
+2. **Update folder-structure-governance.md first** (this file)
 3. **Update validators to match**
 4. **Run full validation**
 5. **Execute moves if needed**

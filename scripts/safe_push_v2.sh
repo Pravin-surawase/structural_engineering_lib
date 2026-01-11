@@ -1,4 +1,9 @@
 #!/bin/bash
+# ⚠️ DEPRECATED: Use safe_push.sh instead!
+# This v2 version was experimental and is no longer maintained.
+# Canonical script: ./scripts/safe_push.sh
+# Removal planned: v0.18.0
+#
 # Enterprise-grade safe push workflow v2.0
 # Professional git workflow with comprehensive error handling and logging
 #
