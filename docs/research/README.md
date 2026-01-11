@@ -37,7 +37,7 @@
 | [cs-practices-implementation-plan.md](cs-practices-implementation-plan.md) | plan | 🟡 Medium | roadmap | Scheduling code quality |
 | [modern-python-tooling.md](modern-python-tooling.md) | research | 🟡 Medium | tooling, ci | Adopting new tools |
 | [backward-compatibility-strategy.md](backward-compatibility-strategy.md) | guide | 🔴 High | api, stability | Before breaking changes |
-| [backward-compat-automation.md](backward-compat-automation.md) | spec | 🟡 Medium | ci, contracts | Enforcing API in CI |
+| [backward-compat-automation.md](../docs/_archive/backward-compat-automation.md) | spec | 🟡 Medium | ci, contracts | Enforcing API in CI |
 | [xlwings-vba-strategy.md](xlwings-vba-strategy.md) | research | 🟡 Medium | vba, migration | VBA migration planning |
 | [git-workflow-production-stage.md](git-workflow-production-stage.md) | guide | 🟡 Medium | git, workflow | Adjusting git rules |
 | [git-workflow-recurring-issues.md](git-workflow-recurring-issues.md) | troubleshooting | 🟢 Low | git, issues | Diagnosing git friction |
@@ -52,7 +52,7 @@
 | [folder-restructuring-plan.md](folder-restructuring-plan.md) | plan | 🟡 Medium | Master folder cleanup plan |
 | [folder-cleanup-research.md](folder-cleanup-research.md) | research | 🟡 Medium | Cleanup strategy research |
 | [enterprise-folder-structure-research.md](enterprise-folder-structure-research.md) | research | 🟡 Medium | Enterprise structure patterns |
-| [session-8-automation-review.md](session-8-automation-review.md) | audit | 🟡 Medium | Automation review |
+| [session-8-automation-review.md](../docs/_archive/session-8-automation-review.md) | audit | 🟡 Medium | Automation review |
 | [session-9-master-plan.md](session-9-master-plan.md) | plan | 🟡 Medium | Current session planning |
 
 ---

@@ -27,7 +27,7 @@ Internal project documentation including audits, workflows, and strategies.
 |------|-------------|
 | [agent-workflow.md](agent-workflow.md) | Agent workflow documentation |
 | [git-governance.md](git-governance.md) | Git governance rules |
-| [automation-improvements.md](automation-improvements.md) | Automation improvements |
+| [automation-improvements.md](../_archive/automation-improvements.md) | Automation improvements (archived) |
 
 ## Strategic Planning
 
