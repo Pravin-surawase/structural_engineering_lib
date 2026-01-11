@@ -57,8 +57,8 @@ git push
 ```
 
 **Critical Resources (Read in order):**
-1. **[AGENT_WORKFLOW_MASTER_GUIDE.md](../docs/AGENT_WORKFLOW_MASTER_GUIDE.md)** - Complete automation guide
-2. **[AGENT_QUICK_REFERENCE.md](../docs/AGENT_QUICK_REFERENCE.md)** - Essential commands
+1. **[agent-workflow-master-guide.md](../docs/agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
+2. **[agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)** - Essential commands
 3. `docs/getting-started/agent-bootstrap.md` → `docs/getting-started/ai-context-pack.md` → `docs/TASKS.md`
 
 **Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
@@ -144,7 +144,7 @@ git push
 6. Pushes your commit
 
 **For future agents:**
-1. Read [AGENT_WORKFLOW_MASTER_GUIDE.md](../docs/AGENT_WORKFLOW_MASTER_GUIDE.md) first
+1. Read [agent-workflow-master-guide.md](../docs/agents/guides/agent-workflow-master-guide.md) first
 2. Run `./scripts/agent_start.sh` at session start (or legacy `./scripts/agent_setup.sh`)
 3. ALWAYS use `./scripts/ai_commit.sh` for commits
 4. **If editing Streamlit:** Validation runs automatically, fix CRITICAL issues
