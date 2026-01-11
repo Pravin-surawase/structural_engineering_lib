@@ -4,15 +4,26 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-11 — Session 14: TASKS.md Cleanup & v0.17.0 Planning
+## 2026-01-11 — Session 14: TASKS.md Cleanup, v0.17.0 Planning & Agent 8 Research
 
-**Focus:** Task board hygiene and v0.17.0 release roadmap
+**Focus:** Task board hygiene, v0.17.0 release roadmap, comprehensive Agent 8 & git automation research
 
-### Commits This Session
+### Commits This Session (11 total)
+
+**Phase 1: TASKS.md Cleanup (Commits 1-6)**
 1. `6776b61` - docs: clean up TASKS.md structure (phase 1 - top sections)
 2. `02067be` - docs: complete TASKS.md restructure (phase 2 - consolidate sections + trim recently done)
 3. `58add0d` - docs: add task archival rules to copilot instructions
-4. `[PENDING]` - docs: update planning docs with v0.17.0 roadmap
+4. `63c284a` - docs: update planning docs with v0.17.0 roadmap
+5. `0fc5c56` - docs: create v0.17.0 implementation guide (339 lines)
+6. `faeee14` - docs: finalize Session 14 entry in TASKS.md
+
+**Phase 2: Agent 8 & Git Automation Research (Commits 7-11)**
+7. `902c8f1` - docs: analyze agent_start.sh modes (full vs quick), recommend --quick as default (411 lines)
+8. `24bf3d2` - docs: create comprehensive Agent 8 & git automation research (8116 lines analyzed, 1192 lines created)
+9. `08ad7ac` - docs: create Agent 8 documentation consolidation plan (552 lines)
+10. `b2d9b00` - docs: archive historical Agent 8 research docs (week 1 materials, 4 files, zero broken links)
+11. `bafa0af` - docs: update agent_start.sh default recommendation to --quick mode (4 docs updated)
 
 ### 🎯 Task Board Restructure
 
@@ -26,6 +37,60 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | copilot-instructions | Added Task Archival Rules section | ✅ Done |
 
 ### 📊 TASKS.md Improvements
+
+**Before:**
+- 283 lines total
+- 50+ items in Recently Done (unwieldy)
+- Mixed v0.17+ and v0.18+ items
+- Scattered backlog structure
+
+**After:**
+- 217 lines total (23% reduction)
+- 15 items in Recently Done (focused)
+- Clear v0.17.0 phase-based roadmap
+- Category-based backlog tables
+- Task Archival Rules documented
+
+**Archival Rule Established:**
+- Archive after: 20+ items in Recently Done OR 14+ days since completion
+- Location: `docs/_archive/tasks-history.md`
+- Next check: ~2026-01-25
+
+---
+
+### 🔍 Agent 8 & Git Automation Research
+
+**Comprehensive Analysis:**
+- **Scope:** Analyzed all 26 Agent 8 + git workflow docs (8,116 total lines)
+- **Categories:** 5 active guides, 2 sessions, 7 research docs, 3 archived, 6 git workflows, 3 archived git docs
+- **Scripts:** 103 total automation scripts (59 .py + 43 .sh + README)
+- **Tests:** 24 git workflow tests, 10 agent automation tests (100% passing)
+
+**Key Findings:**
+- System is **mature & production-ready** (90-95% faster commits, 97.5% fewer errors)
+- Zero merge commits since 2026-01-09 fix (100% improvement)
+- Documentation well-organized (only minor archival needed)
+- agent_start.sh --quick mode 54% faster (6s vs 13s) - recommended as default
+
+**Deliverables Created:**
+1. **agent-start-modes-analysis.md** (411 lines) - Full vs quick mode comparison
+2. **agent-8-git-automation-comprehensive-research.md** (1,192 lines) - Complete system analysis
+3. **agent8-docs-consolidation-plan.md** (552 lines) - Implementation plan for cleanup
+
+**Actions Taken:**
+- ✅ Archived 4 historical Agent 8 research docs (week 1 materials) to `docs/_archive/research/agent-8/`
+- ✅ Updated agent_start.sh recommendations across 4 key docs (copilot-instructions.md, agent-workflow-master-guide.md, agent-quick-reference.md, agent-bootstrap.md)
+- ✅ Fixed all broken links (796 internal links validated, zero broken)
+
+**Validation:**
+- Pre-commit hooks: ✅ All 23 checks passing
+- Link validation: ✅ 796 internal links, 0 broken
+- Git workflow tests: ✅ 24/24 passing
+- Agent automation tests: ✅ 10/10 passing
+
+---
+
+### 📊 TASKS.md Improvements (Phase 1)
 
 **Before:**
 - 283 lines total
