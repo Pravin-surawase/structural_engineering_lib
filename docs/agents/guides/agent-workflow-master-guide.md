@@ -1,5 +1,5 @@
 # Agent Workflow Master Guide
-**Version:** 2.0.0
+**Version:** 2.1.0
 **Last Updated:** 2026-01-11
 **Status:** ✅ Production Ready
 
@@ -12,29 +12,28 @@
 
 ### Step 1: Setup Your Environment
 ```bash
-# Run this ONCE at the start of your session:
+# RECOMMENDED: Single unified command
+./scripts/agent_start.sh --quick
+
+# With agent-specific guidance:
+./scripts/agent_start.sh --agent 9 --quick  # For governance agents
+
+# Legacy commands (still work):
 ./scripts/agent_setup.sh
-
-# For worktree agents (Agent 5, Agent 6, etc.):
-./scripts/agent_setup.sh --worktree AGENT_NAME
-```
-
-### Step 2: Pre-Flight Check
-```bash
-# Run BEFORE starting any task:
 ./scripts/agent_preflight.sh
+.venv/bin/python scripts/start_session.py
 ```
 
-### Step 3: Work & Commit
+### Step 2: Work & Commit
 ```bash
 # Make changes, then:
 ./scripts/ai_commit.sh "feat: your description"
 ```
 
-### Step 4: End Session
+### Step 3: End Session
 ```bash
 # Run BEFORE ending session:
-./scripts/end_session.py
+.venv/bin/python scripts/end_session.py
 ```
 
 ---
