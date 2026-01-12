@@ -101,6 +101,13 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-python-version
+        name: Check Python version consistency
+        entry: python3 scripts/check_python_version.py --ci
+        language: system
+        pass_filenames: false
+        files: (pyproject\.toml|setup\.cfg|\.github/workflows/.*\.yml)$
+        verbose: true
       - id: check-tasks-format
         name: Check TASKS.md format
         entry: python3 scripts/check_tasks_format.py
