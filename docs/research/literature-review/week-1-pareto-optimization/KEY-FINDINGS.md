@@ -24,25 +24,51 @@ This document consolidates the key insights from all Week 1 papers. Update daily
 
 ---
 
-## Research Q&A
+## Research Q&A ✅ ANSWERED FROM PHASE 1.1 PAPERS
 
 ### Q1: What algorithms are best for finding Pareto frontiers?
-**Answer:** *[Will consolidate from papers]*
-- NSGA-II:
-- MOPSO:
-- Other:
+**Answer:** *Phase 1.1 Consolidated Findings - 15 papers analyzed*
+
+**NSGA-II (Deb, 2002)** ⭐⭐⭐⭐⭐ WORKHORSE
+- Non-dominated sorting with crowding distance
+- Handles 2-5 objectives well, ~1000 evaluations for convergence
+- 10,000+ citations - most influential algorithm
+- **For IS 456:** Best choice for MVP (if needed)
+
+**MOEA/D (Zhang & Li, 2007)** ⭐⭐⭐⭐ FOR 4+ OBJECTIVES
+- Decomposes MOO into single-objective subproblems
+- More efficient for constrained problems than NSGA-II
+- **For IS 456:** Consider if adding durability/safety constraints
+
+**Surrogate-Assisted MOO (Jin 2005, Chugh 2017)** ⭐⭐⭐⭐⭐ **OUR BEST FIT**
+- Train surrogate on 500 real IS 456 designs, run MOO with fast approximations
+- Validate top 100 with full IS 456 constraints
+- Reduces time from hours to minutes
+- **For IS 456:** PERFECT - makes expensive beam evaluations practical
 
 ### Q2: How many objectives can engineers visualize/understand?
-**Answer:** *[Will consolidate from papers]*
-- 2D optimal:
-- 3D feasible:
-- 4D+ challenges:
+**Answer:** *Phase 1.1 Consolidated Findings*
+
+**2D (Cost vs Weight)** ⭐⭐⭐⭐⭐ OPTIMAL
+- Scatter plot most intuitive, standard in all engineering papers
+- **For IS 456:** Start here for MVP
+
+**3D (Cost vs Weight vs Carbon)** ⭐⭐⭐⭐ FEASIBLE
+- Color third objective, interactive 3D optional
+- **For IS 456:** Achievable in Phase 1
+
+**4D+** ⭐⭐⭐ COMPLEX - needs special techniques
+- Parallel coordinates, scatter plot matrix, interactive filtering
+- **For IS 456:** Phase 2+ if needed
 
 ### Q3: Has anyone applied multi-objective optimization to concrete beam design?
-**Answer:** *[Will consolidate from papers]*
-- Existing work:
-- Gaps:
-- Opportunities:
+**Answer:** *Phase 1.1 Consolidated Findings*
+
+**Existing Work:** Italy (Lepore 2014), Spain (Yepes 2006), Greece (Koumousis 2008)
+
+**CRITICAL GAP:** ⚠️ **NO published multi-objective RC beam optimization for Indian Standards (IS 456)**
+
+**Market Opportunity:** First-to-market advantage. Literature validates approach validity for your novel IS 456 application.
 
 ---
 
