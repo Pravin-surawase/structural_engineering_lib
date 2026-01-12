@@ -4,6 +4,78 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 19P4: Git Workflow Improvements (Evidence-Based)
+
+**Focus:** Research validation, error clarity, policy-aware merge, enforcement hook
+
+### Summary
+
+Session 19 Part 4 implemented git workflow improvements based on validated research:
+
+1. **Research Validated** - Confirmed log counts: 121 pre-commit failures, 228 noisy warnings, 12 merge policy failures
+2. **Docs Consistency** - Fixed conflicting PR rules (git-workflow-ai-agents.md now defers to should_use_pr.sh)
+3. **Error Clarity** - Improved commit error message with 3 actionable fix hints; changed noisy WARN to INFO
+4. **CI Monitor** - Added policy-aware merge that tries --auto flag when policy prohibits regular merge
+5. **Enforcement Hook** - Created install_enforcement_hook.sh for soft enforcement of automation scripts
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `f12b0f7` | fix(scripts): improve git workflow - error clarity, policy-aware merge, doc consistency |
+| `d7fa55b` | feat(scripts): add enforcement hook for manual git prevention |
+
+### Key Deliverables
+
+**1. Research Validation**
+Confirmed log evidence from agent research:
+- Pre-commit failures: 121 occurrences with generic error messages
+- Noisy warnings: 228 "Fetch PID not found" entries (not actual errors)
+- Merge policy failures: 12 occurrences due to missing --auto flag
+
+**2. Docs Consistency (Phase A)**
+- Problem: git-workflow-ai-agents.md said "Docs-only, any size" for direct commit
+- Conflict: copilot-instructions.md says ">150 lines requires PR"
+- Solution: Defer to should_use_pr.sh as single source of truth
+
+**3. Error Clarity (Phase B)**
+- Changed "Fetch PID not found" from WARN to INFO (cleaner logs)
+- Improved commit error message with actionable hints:
+  1. Check black/ruff errors
+  2. Check shellcheck errors
+  3. Run specific checks
+
+**4. CI Monitor Compatibility (Phase C)**
+- Problem: Merges fail with "policy prohibits" due to branch protection
+- Solution: Policy-aware merge that:
+  1. Tries regular merge first
+  2. If "policy prohibits" detected, retries with --auto flag
+  3. Provides informative message if admin merge needed
+
+**5. Enforcement Hook (Phase D)**
+- Created install_enforcement_hook.sh
+- Pre-push hook warns on manual pushes to main
+- Automatically bypassed when AI_COMMIT_ACTIVE or SAFE_PUSH_ACTIVE is set
+- Soft enforcement: warns but doesn't block (user can confirm with 'y')
+
+### Metrics
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Noisy warnings | 228/week | 0/week (now INFO) |
+| Pre-commit error clarity | Generic message | 3 actionable hints |
+| Policy merge handling | Fails silently | Auto-retry with --auto |
+| Manual git enforcement | None | Optional hook available |
+
+### Impact
+
+- **Cleaner Logs** - INFO level for non-errors reduces noise
+- **Faster Debugging** - Specific hints help agents fix errors quickly
+- **Better Automation** - CI monitor works with branch protection
+- **Consistent Rules** - Single source of truth for PR decisions
+
+---
+
 ## 2026-01-12 — Session 19P3: Python 3.11 Follow-up & Automation Fixes
 
 **Focus:** Future annotations, branch protection fix, workflow improvements
