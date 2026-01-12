@@ -274,15 +274,34 @@ fi
 # Step 3: Commit (pre-commit hooks will run)
 echo -e "${YELLOW}Step 3/7: Committing (pre-commit hooks running)...${NC}"
 log_message "INFO" "Step 3: Creating commit"
-if ! git commit -m "$COMMIT_MSG"; then
-  echo -e "${RED}ERROR: Commit failed (pre-commit hooks may have errors)${NC}"
+
+# Capture hook output to identify which hook failed (GITDOC-06)
+HOOK_LOG="$LOG_DIR/hook_output_$(date +%Y%m%d_%H%M%S).log"
+if ! git commit -m "$COMMIT_MSG" 2>&1 | tee "$HOOK_LOG"; then
+  echo -e "${RED}ERROR: Commit failed (pre-commit hooks reported errors)${NC}"
   echo ""
+
+  # Parse hook output to identify the failing hook
+  FAILED_HOOK=""
+  if grep -q "check yaml" "$HOOK_LOG"; then FAILED_HOOK="YAML validation"; fi
+  if grep -q "black.*Failed" "$HOOK_LOG"; then FAILED_HOOK="black (Python formatting)"; fi
+  if grep -q "ruff.*Failed" "$HOOK_LOG"; then FAILED_HOOK="ruff (Python linting)"; fi
+  if grep -q "mypy.*Failed" "$HOOK_LOG"; then FAILED_HOOK="mypy (type checking)"; fi
+  if grep -q "check-streamlit.*Failed" "$HOOK_LOG"; then FAILED_HOOK="Streamlit scanner"; fi
+  if grep -q "pylint.*Failed" "$HOOK_LOG"; then FAILED_HOOK="pylint"; fi
+  if grep -q "Check markdown.*Failed" "$HOOK_LOG"; then FAILED_HOOK="markdown link checker"; fi
+
+  if [[ -n "$FAILED_HOOK" ]]; then
+    echo -e "${YELLOW}Failed hook: ${RED}$FAILED_HOOK${NC}"
+  fi
+
   echo -e "${YELLOW}Common fixes:${NC}"
   echo "  1. Check hook output above for specific errors"
   echo "  2. If ruff/black modified files, run this command again (auto-retry)"
   echo "  3. If tests failed, fix and re-run: ./scripts/ai_commit.sh \"message\""
   echo ""
-  log_message "ERROR" "Commit failed - pre-commit hooks reported errors"
+  echo -e "${BLUE}Hook output saved to: $HOOK_LOG${NC}"
+  log_message "ERROR" "Commit failed - hook: ${FAILED_HOOK:-unknown}"
   exit 1
 fi
 log_message "SUCCESS" "Commit created: $(git log -1 --oneline)"

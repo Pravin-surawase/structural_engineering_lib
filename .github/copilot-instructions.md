@@ -281,7 +281,10 @@ The tool analyzes:
 **DO NOT use manual git commands!** Use the automation:
 
 ```bash
-# ✅ ONLY WAY TO COMMIT:
+# ✅ RECOMMENDED (decides PR vs direct automatically):
+./scripts/ai_commit.sh "commit message"
+
+# ✅ ALTERNATIVE (direct commit, skips PR check):
 ./scripts/safe_push.sh "commit message"
 
 # ❌ FORBIDDEN (causes conflicts and wasted time):

@@ -57,19 +57,22 @@ if [[ -f .git/MERGE_HEAD ]]; then
     log_warn "Unfinished merge detected"
     if git status | grep -q "Unmerged paths"; then
         log_error "Merge conflicts still present"
-        log_info "Resolve conflicts, then run:"
-        echo "  git add <files>"
-        echo "  git commit --no-edit"
-        echo "  git push"
+        log_info "Auto-recovery steps:"
         echo ""
-        log_info "Or use safe_push.sh after resolving:"
+        echo "  # Step 1: Keep your version of conflicted files"
+        echo "  git checkout --ours docs/TASKS.md  # (adjust filename as needed)"
+        echo ""
+        echo "  # Step 2: Complete with automation"
         echo "  ./scripts/safe_push.sh \"merge: resolve conflicts\""
+        echo ""
+        log_info "The automation script handles staging, committing, and pushing."
         exit 1
     fi
 
-    log_info "Conflicts resolved; complete the merge:"
-    echo "  git commit --no-edit"
-    echo "  git push"
+    log_info "Conflicts resolved. Completing merge automatically..."
+    git commit --no-edit
+    git push
+    log_ok "Merge completed and pushed!"
     exit 0
 fi
 
@@ -91,26 +94,33 @@ if git rev-parse --abbrev-ref "@{u}" > /dev/null 2>&1; then
         log_ok "Branch up to date with remote"
     elif [[ "$LOCAL" == "$BASE" ]]; then
         log_warn "Branch behind remote"
-        log_info "Pull latest changes:"
-        echo "  git pull --ff-only"
+        log_info "Auto-syncing with remote..."
+        git pull --ff-only
+        log_ok "Synced with remote!"
         exit 0
     elif [[ "$REMOTE" == "$BASE" ]]; then
         log_warn "Branch ahead of remote"
-        log_info "Use safe_push.sh to commit/push:"
-        echo "  ./scripts/safe_push.sh \"message\""
+        log_info "Use automation to push:"
+        echo "  ./scripts/ai_commit.sh \"your message\""
         exit 0
     else
         log_error "Branch has diverged from remote"
-        log_info "Recommended recovery:"
-        echo "  git fetch origin"
-        echo "  git rebase origin/$BRANCH"
-        echo "  ./scripts/safe_push.sh \"message\""
+        log_info "Auto-recovery steps:"
+        echo ""
+        echo "  # Option 1: Rebase (preferred if no conflicts expected)"
+        echo "  git fetch origin && git rebase origin/$BRANCH"
+        echo "  ./scripts/ai_commit.sh \"merge: sync with remote\""
+        echo ""
+        echo "  # Option 2: Merge (if rebase fails)"
+        echo "  git fetch origin && git merge origin/$BRANCH"
+        echo "  ./scripts/safe_push.sh \"merge: sync with remote\""
         exit 1
     fi
 else
     log_warn "No upstream configured"
-    log_info "Set upstream and retry:"
-    echo "  git push -u origin $BRANCH"
+    log_info "Setting upstream automatically..."
+    git push -u origin $BRANCH
+    log_ok "Upstream set and pushed!"
     exit 0
 fi
 

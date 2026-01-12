@@ -41,9 +41,9 @@ Confirmed log evidence from agent research:
 **3. Error Clarity (Phase B)**
 - Changed "Fetch PID not found" from WARN to INFO (cleaner logs)
 - Improved commit error message with actionable hints:
-  1. Check black/ruff errors
-  2. Check shellcheck errors
-  3. Run specific checks
+  1. Check hook output above for specific errors
+  2. If ruff/black modified files, run command again (auto-retry)
+  3. If tests failed, fix and re-run: `./scripts/ai_commit.sh "message"`
 
 **4. CI Monitor Compatibility (Phase C)**
 - Problem: Merges fail with "policy prohibits" due to branch protection

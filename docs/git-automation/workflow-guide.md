@@ -228,10 +228,8 @@ For complex tasks with 3+ phases:
 
 **Solution:**
 ```bash
+# Use recovery script - it handles this automatically
 ./scripts/recover_git_state.sh
-# OR
-git pull --rebase origin main
-git push
 ```
 
 ### Merge Conflict in TASKS.md
@@ -240,10 +238,11 @@ git push
 
 **Solution:**
 ```bash
+# Step 1: Keep your version
 git checkout --ours docs/TASKS.md
-git add docs/TASKS.md
-git commit --no-edit
-git push
+
+# Step 2: Use automation to complete
+./scripts/safe_push.sh "merge: resolve TASKS.md conflict"
 ```
 
 ### Unfinished Merge (MERGE_HEAD exists)
@@ -252,8 +251,8 @@ git push
 
 **Solution:**
 ```bash
-git commit --no-edit  # Complete the merge
-git push
+# Recovery script auto-completes this
+./scripts/recover_git_state.sh
 ```
 
 ### Pre-commit Modified Files (Not Yet Pushed)
@@ -262,9 +261,9 @@ git push
 
 **Solution:**
 ```bash
-# Already handled by ai_commit.sh
-# Manual if needed:
-git add -A && git commit --amend --no-edit
+# Already handled automatically by ai_commit.sh
+# Just run the command again - it auto-retries
+./scripts/ai_commit.sh "your message"
 ```
 
 ### Pre-commit Modified Files (Already Pushed)
@@ -273,10 +272,8 @@ git add -A && git commit --amend --no-edit
 
 **Solution:**
 ```bash
-# NEVER amend after push!
-# Create new commit:
-git add -A && git commit -m "chore: apply pre-commit fixes"
-git push
+# Use automation - NEVER amend after push!
+./scripts/ai_commit.sh "chore: apply pre-commit fixes"
 ```
 
 ---
