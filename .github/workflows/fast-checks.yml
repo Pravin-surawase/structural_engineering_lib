@@ -66,6 +66,18 @@ jobs:
           python scripts/validate_folder_structure.py
           python scripts/check_governance_compliance.py
 
+      - name: Code quality checks (Streamlit scanner suite)
+        run: |
+          # Type annotation audit (fail if <50% annotated)
+          python scripts/check_type_annotations.py --fail-threshold 50 --json > /dev/null || \
+            (echo "❌ Type annotation rate below 50%" && exit 1)
+          # Circular import detection (fail on any cycles)
+          python scripts/check_circular_imports.py || \
+            (echo "❌ Circular imports detected" && exit 1)
+          # Performance issues (warn only, don't fail)
+          python scripts/check_performance_issues.py || true
+          echo "✅ Code quality checks passed"
+
   full-tests-notification:
     name: Full Test Info
     runs-on: ubuntu-latest

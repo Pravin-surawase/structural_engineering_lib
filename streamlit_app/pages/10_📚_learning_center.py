@@ -543,8 +543,10 @@ with tab5:
             "xu": "Clause 38.1 - Neutral axis depth limit (xu/d ≤ 0.46 for Fe415)",
         }
 
+        # Pre-compute lowercase search query once (performance optimization)
+        search_query_lower = search_query.lower()
         for key, value in keywords.items():
-            if key in search_query.lower():
+            if key in search_query_lower:
                 results.append(value)
 
         if results:

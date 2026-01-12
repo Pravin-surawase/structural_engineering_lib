@@ -104,6 +104,28 @@ class PerformanceVisitor(ast.NodeVisitor):
         "generate_report",
     }
 
+    # Functions that are NOT expensive (whitelist for loop usage)
+    # These are intentionally used in loops for UI feedback or are O(1) lookups
+    LOOP_SAFE_FUNCTIONS = {
+        # UI feedback functions (intentional per-iteration feedback)
+        "loading_context",
+        "st.spinner",
+        "st.progress",
+        "st.status",
+        # O(1) dict/set operations
+        "is_loaded",
+        "mark_loaded",
+        "get",
+        "set",
+        "add",
+        "remove",
+        # String methods (O(n) but typically small strings)
+        "lower",
+        "upper",
+        "strip",
+        "split",
+    }
+
     # Functions that should be cached
     CACHEABLE_PATTERNS = {
         "load_",
@@ -289,6 +311,13 @@ class PerformanceVisitor(ast.NodeVisitor):
 
     def _is_expensive_call(self, func_name: str) -> bool:
         """Check if a function call is expensive."""
+        # First check whitelist - these are safe in loops
+        # Check both full name and last part (method name)
+        name_parts = func_name.split(".")
+        last_part = name_parts[-1] if name_parts else func_name
+        if last_part in self.LOOP_SAFE_FUNCTIONS or func_name in self.LOOP_SAFE_FUNCTIONS:
+            return False
+
         return func_name in self.EXPENSIVE_FUNCTIONS or any(
             pattern in func_name for pattern in ["fetch", "load", "query", "request"]
         )
