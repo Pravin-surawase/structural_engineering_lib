@@ -4,7 +4,84 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-12 — Session 19: Automation Scripts & Python 3.11 Research
+## 2026-01-12 — Session 19: Python 3.11 Baseline Upgrade
+
+**Focus:** Python 3.11 baseline upgrade, type hint modernization, CI fixes, v0.16.6 release
+
+### Summary
+
+Session 19 completed the Python 3.11 baseline upgrade:
+
+1. **Python 3.11 Install** - Upgraded local Python from 3.9.6 to 3.11.14 via Homebrew
+2. **Config Updates** - Updated pyproject.toml, setup.cfg, CI workflows for Python 3.11 baseline
+3. **Type Modernization** - Converted all type hints to PEP 604 syntax (X | None)
+4. **CI Fixes** - Fixed B905 (zip strict), type annotation checker threshold logic
+5. **v0.16.6 Release** - Released and tagged Python 3.11 baseline version
+6. **Documentation** - Updated README, SESSION_LOG, releases.md
+
+### Commits (PR #343 - squash merged)
+
+| Reference | Description |
+|-----------|-------------|
+| `a325c95` | Python 3.11 Baseline Upgrade (PR #343 - squash merge of 9 commits) |
+| `dc463de` | docs: update README for v0.16.6 (TASK-456) |
+
+**Original branch commits (before squash):**
+1. feat!: upgrade Python baseline from 3.9 to 3.11 (TASK-450, TASK-452)
+2. feat(scripts): add check_python_version.py consistency checker (TASK-453)
+3. docs: update README badge and TASKS.md for Python 3.11 upgrade (TASK-451)
+4. refactor: modernize type hints with PEP 604 syntax (TASK-454)
+5. chore: release v0.16.6 - Python 3.11 baseline (TASK-455)
+6. fix: add strict parameter to zip() calls (B905 compliance)
+7. fix: correct type annotation checker threshold logic
+8. chore: sync doc version references to 0.16.6 and fix releases.md
+
+### Key Deliverables
+
+**1. Python 3.11 Baseline**
+- Minimum Python raised from 3.9 to 3.11
+- Benefits: Faster runtime, cleaner type syntax, modern features
+- CI matrix: 3.11/3.12 (was 3.9/3.10/3.11/3.12, 50% faster)
+
+**2. Type Hint Modernization (TASK-454)**
+- Converted `Optional[X]` → `X | None` across all modules
+- Converted `Union[X, Y]` → `X | Y`
+- Added `from __future__ import annotations` for compatibility
+- Fixed UP038 errors (isinstance syntax)
+
+**3. Pre-commit Updates**
+- Changed 16 local hooks from `python3` to `.venv/bin/python`
+- Ensures hooks use Python 3.11 venv, not system Python 3.9
+
+**4. CI Fixes**
+- B905: Added `strict` parameter to 6 zip() calls
+- Type checker: Fixed threshold logic to pass when rate > threshold
+
+**5. New Scripts**
+- `scripts/check_python_version.py` (219 lines) - Validates Python version consistency
+- `scripts/add_future_annotations.py` (93 lines) - Helper to add __future__ imports
+
+### Tasks Completed
+- ✅ TASK-450: Python baseline configs (pyproject.toml, setup.cfg, CI)
+- ✅ TASK-451: Docs updated (README badge)
+- ✅ TASK-452: CI updated (fast-checks, python-tests matrix)
+- ✅ TASK-453: Version consistency checker created
+- ✅ TASK-454: Type hint modernization (PEP 604)
+- ✅ TASK-455: Release v0.16.6
+- ✅ TASK-456: README update for v0.16.6
+
+### Test Results
+- 2430 tests passing on Python 3.11
+- All pre-commit hooks passing
+- All CI checks passing
+
+### Next Session
+- Continue with v0.17.0 features
+- Consider Streamlit improvements or security tasks
+
+---
+
+## 2026-01-12 — Session 19 (Part 1): Automation Scripts & Research
 
 **Focus:** Performance fixes, scanner CI integration, TASK-412/414 automation scripts, Python 3.11 upgrade research
 
