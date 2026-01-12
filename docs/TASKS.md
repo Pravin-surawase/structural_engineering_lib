@@ -230,6 +230,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **SESSION-19P4** | Git workflow improvements: error clarity, policy-aware merge, docs consistency, enforcement hook | MAIN | ✅ 2026-01-12 |
 | **TASK-457** | Add future annotations to 12 core modules (PR #344) | DEV | ✅ 2026-01-12 |
 | **SESSION-19** | Python 3.11 Baseline Complete: v0.16.6 released, PR #343 merged | MAIN | ✅ 2026-01-12 |
 | **TASK-401** | Scanner Phase 4: Path division, max() patterns (PR #339) | AGENT_6 | ✅ 2026-01-12 |

@@ -10,6 +10,9 @@
 
 set -e  # Exit on any error
 
+# Mark that we're running from automation (for pre-push hook bypass)
+export AI_COMMIT_ACTIVE=1
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
