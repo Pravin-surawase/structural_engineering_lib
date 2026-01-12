@@ -130,6 +130,39 @@ git push
 
 ---
 
+## ⚠️ Deprecated/Legacy Scripts
+
+The following scripts are **legacy** and should NOT be used. They are retained only for reference or edge-case recovery.
+
+### Tier-0 Scripts (USE THESE ONLY)
+
+| Script | Purpose | Replaces |
+|--------|---------|----------|
+| `ai_commit.sh` | **PRIMARY** - All commits | Manual git, safe_push.sh directly |
+| `agent_start.sh --quick` | Session start | agent_setup.sh, agent_preflight.sh separately |
+| `git_ops.sh --status` | State analysis | Manual git status checking |
+| `recover_git_state.sh` | Emergency recovery | Manual conflict resolution |
+
+### Deprecated Scripts (DO NOT USE)
+
+| Script | Status | Replacement |
+|--------|--------|-------------|
+| Direct `safe_push.sh` | Internal use only | Use `ai_commit.sh` |
+| Manual `git add/commit/push` | Blocked by hooks | Use `ai_commit.sh` |
+| `agent_setup.sh` alone | Still works | Prefer `agent_start.sh --quick` |
+| `agent_preflight.sh` alone | Still works | Prefer `agent_start.sh` (includes this) |
+
+### Why This Matters
+
+Deprecated scripts cause:
+- **Cognitive overload** - 103 scripts is too many to remember
+- **Wrong entry points** - Agents pick internal scripts instead of wrappers
+- **Missed features** - Direct calls skip PR decisions, hook handling
+
+**Rule:** When in doubt, check the Tier-0 table above. Use only those 4 scripts.
+
+---
+
 ## 📚 Related Documentation
 
 ### Core Guides

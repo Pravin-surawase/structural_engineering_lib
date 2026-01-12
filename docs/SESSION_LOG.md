@@ -4,6 +4,97 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 19P8 Phase 2: Automation Governance & Prevention Systems (COMPLETE)
+
+**Focus:** Establish automation governance, implement prevention systems to stop repeating mistakes
+
+### Summary
+
+Session 19P8 Phase 2 (continuation) builds on Phase 1 hook clarity by implementing permanent prevention systems and automation governance to eliminate root causes of agent mistakes:
+
+1. **Strategic Planning** - Published P8 work plan documenting root causes and permanent fixes
+2. **Automation Governance** - Added Tier-0/deprecated scripts section to README
+3. **Mistake Visibility** - Extended agent_mistakes_report.sh to parse hook_output logs (visibility of failures)
+4. **Manual Git Prevention** - Created lint_docs_git_examples.sh (detected 121 matches in docs)
+5. **Session Doc Freshness** - Updated next-session-brief.md with Session Start Checklist
+6. **Script Governance** - Added undocumented script check to git_automation_health.sh
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `ae61916` | docs(planning): create P8 work plan (strategic session template) |
+| `0705385` | docs(log): document P8 Phase 1 (merged) and Phase 2 (in progress) |
+| `3d68f08` | feat(scripts): add hook output log parsing to agent_mistakes_report.sh |
+| `4ae90d4` | docs(git-automation): add deprecated scripts section with Tier-0 guidance |
+| `ec9065f` | feat(scripts): add lint_docs_git_examples.sh for manual git detection |
+| `713943d` | docs(planning): add Session Start Checklist and update P8 handoff |
+| `8c5538a` | feat(scripts): add undocumented script check to git_automation_health.sh |
+
+### Prevention Systems Implemented
+
+| System | Purpose | Status |
+|--------|---------|--------|
+| Hook log parser | Make 121+ failures visible | ✅ Done |
+| Tier-0 scripts doc | Reduce 103 scripts to 4 entrypoints | ✅ Done |
+| Manual git linter | Detect examples in active docs | ✅ Done (121 matches) |
+| Session Start Checklist | One-command session setup | ✅ Done |
+| Undocumented script guard | Prevent script sprawl | ✅ Done |
+| P8 work plan | Document strategic approach | ✅ Done |
+
+### Success Metrics (Achieved)
+
+- ✅ All hook output visible via `agent_mistakes_report.sh --verbose`
+- ✅ Tier-0 scripts documented (4 commands vs 103)
+- ✅ Manual git examples detected (121 matches visible)
+- ✅ Session start simplified (one command: `agent_start.sh --quick`)
+- ✅ 7 commits in professional session (exceeds 5+ target)
+
+### Key Insight
+
+**From Reactive to Proactive:**
+- P7 approach: Add deprecation banner to one doc (symptoms fix)
+- P8 approach: Create automation governance systems (root cause fix)
+- Result: Problems visible immediately (early detection), not discovered in review
+
+---
+
+## 2026-01-12 — Session 19P8 Phase 1: Hook Clarity & Recovery Guidance
+
+**Focus:** Clarify hook blocking messages and recovery guidance
+
+### Summary
+
+Session 19 Part 8 Phase 1 reduced manual git fallbacks by improving hook output clarity and adding explicit recovery paths:
+
+1. **Hook Clarity** - Added "Why?" and automation coverage to pre-commit/pre-push output
+2. **Recovery Guidance** - Hooks now point to `git_ops.sh --status` when stuck
+3. **Entrypoint Reinforcement** - Emphasized `ai_commit.sh` as the primary path
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `0a58c20` | feat(hooks): improve clarity with 'why' and recovery guidance (PR #348 squash) |
+
+### Key Improvements
+
+- Hook blocks now explain the benefit (formatting, validation, safety, conflict resolution)
+- Recovery path is explicit (`git_ops.sh --status`)
+- Single primary command reinforced (`ai_commit.sh "message"`)
+- Addressed Tier 3 pre-commit failures (121 logged) by providing context
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| Commits | 1 (PR #348 merged) |
+| Files changed | 2 (pre-commit, pre-push hooks) |
+| Lines added | 27 (benefit explanation, recovery path) |
+| Hook output clarity | Enhanced (explains "why" automation exists) |
+
+---
+
 ## 2026-01-12 — Session 19P7: Documentation Cleanup & Tier-0 Entrypoints
 
 **Focus:** Validate review findings, consolidate entrypoints, add automation banners
