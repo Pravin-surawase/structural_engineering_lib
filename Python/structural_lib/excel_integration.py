@@ -20,7 +20,6 @@ import os
 _logger = logging.getLogger(__name__)
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Optional
 
 from .detailing import BeamDetailingResult, create_beam_detailing
 from .dxf_export import EZDXF_AVAILABLE, generate_beam_dxf
@@ -152,9 +151,9 @@ class ProcessingResult:
     beam_id: str
     story: str
     success: bool
-    dxf_path: Optional[str]
-    detailing: Optional[BeamDetailingResult]
-    error: Optional[str]
+    dxf_path: str | None
+    detailing: BeamDetailingResult | None
+    error: str | None
 
 
 # =============================================================================

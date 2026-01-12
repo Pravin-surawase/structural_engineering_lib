@@ -7,7 +7,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -113,7 +113,7 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
-**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.16.5`).
+**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.16.6`).
 
 ## Quick Start
 

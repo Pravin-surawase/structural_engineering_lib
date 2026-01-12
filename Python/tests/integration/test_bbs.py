@@ -546,7 +546,7 @@ class TestDeterminism:
         items2 = generate_bbs_from_detailing(detailing)
 
         assert len(items1) == len(items2)
-        for i1, i2 in zip(items1, items2):
+        for i1, i2 in zip(items1, items2, strict=True):
             assert i1.bar_mark == i2.bar_mark
             assert i1.cut_length_mm == i2.cut_length_mm
             assert i1.total_weight_kg == i2.total_weight_kg

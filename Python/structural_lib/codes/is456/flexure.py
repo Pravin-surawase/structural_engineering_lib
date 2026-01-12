@@ -8,7 +8,6 @@ Traceability: Functions are decorated with @clause for IS 456 clause references.
 """
 
 import math
-from typing import Union
 
 from structural_lib import materials
 from structural_lib.codes.is456.traceability import clause
@@ -120,7 +119,7 @@ def calculate_effective_flange_width(
     df_mm: float,
     flange_overhang_left_mm: float,
     flange_overhang_right_mm: float,
-    beam_type: Union[BeamType, str],
+    beam_type: BeamType | str,
 ) -> float:
     """
     Calculate effective flange width (IS 456 Cl 23.1.2).

@@ -2,7 +2,7 @@
 
 **Document Type:** Quality Assurance Checklist
 **Status:** Template
-**Version:** 0.16.5
+**Version:** 0.16.6
 **Last Updated:** 2026-01-11
 
 ---

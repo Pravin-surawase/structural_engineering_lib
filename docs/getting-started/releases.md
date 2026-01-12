@@ -48,6 +48,28 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.16.6
+**Date:** 2026-01-12
+**Status:** ✅ Locked & Verified
+**Mindset:** Python 3.11 Baseline - Modern Python, faster CI, cleaner codebase
+**Key Changes:**
+- **Python 3.11 Baseline:** Minimum Python version raised from 3.9 to 3.11
+- **CI Optimization:** Test matrix reduced from 4 versions to 2 (50% faster CI)
+- **Type Hint Modernization:** PEP 604 syntax (`X | None` instead of `Optional[X]`)
+- **Pre-commit Updates:** All local hooks use `.venv/bin/python` for 3.11 compatibility
+
+**Developer Requirements:**
+- Python 3.11+ required locally (`brew install python@3.11` on macOS)
+- Virtual environment should be recreated with Python 3.11
+
+**New Scripts:**
+- `scripts/check_python_version.py` - Validates Python version consistency across project
+- `scripts/add_future_annotations.py` - Helper to add `from __future__ import annotations`
+
+**Tests:** 2430 passing on Python 3.11
+
+---
+
 ## v0.16.5
 **Date:** 2026-01-11
 **Status:** ✅ Locked & Verified

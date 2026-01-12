@@ -152,7 +152,7 @@ MAJOR.MINOR.PATCH
 **Examples:**
 - `0.15.0 → 0.15.1`: Bug fix (patch)
 - `0.15.1 → 0.16.0`: New feature (minor)
-- `0.16.5 → 1.0.0`: Breaking changes (major)
+- `0.16.6 → 1.0.0`: Breaking changes (major)
 
 ### 2.2 Pre-1.0 Development (Current: v0.15.x)
 

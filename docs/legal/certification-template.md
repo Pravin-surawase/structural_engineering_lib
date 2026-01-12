@@ -2,7 +2,7 @@
 
 **Document Type:** PE/Licensed Engineer Certification Guidance
 **Status:** Template
-**Version:** 0.16.5
+**Version:** 0.16.6
 **Last Updated:** 2026-01-11
 
 ---
@@ -91,7 +91,7 @@ When using this library in professional practice, document:
 
 | Item | Value |
 |------|-------|
-| Library Version | e.g., 0.16.5 |
+| Library Version | e.g., 0.16.6 |
 | Python Version | e.g., 3.11.0 |
 | Date of Calculation | YYYY-MM-DD |
 | Reviewer | Name, License # |

@@ -3,7 +3,6 @@
 """Cost calculation utilities for structural elements."""
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 STEEL_DENSITY_KG_PER_M3 = 7850.0
 DEFAULT_CONCRETE_GRADE = 25
@@ -177,7 +176,7 @@ def calculate_beam_cost(
     )
 
 
-def _parse_concrete_grade(grade: Optional[str]) -> Optional[int]:
+def _parse_concrete_grade(grade: str | None) -> int | None:
     if not grade:
         return None
     normalized = grade.strip().upper()

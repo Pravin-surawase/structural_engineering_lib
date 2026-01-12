@@ -2,7 +2,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.16.5 | Released |
+| **Current** | v0.16.6 | Released |
 | **Next** | v0.16.6 | Python 3.11 baseline upgrade |
 
 **Date:** 2026-01-12 | **Last Session:** 19 | **Last commit:** c54ff9e
@@ -96,7 +96,7 @@ brew install python@3.11
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Version | v0.16.5 | Released |
+| Version | v0.16.6 | Released |
 | Tests | 2392 | ✅ Passing |
 | Session 19 Commits | 5 | ✅ Target nearly met |
 | Scripts | 108 | +2 new scripts |

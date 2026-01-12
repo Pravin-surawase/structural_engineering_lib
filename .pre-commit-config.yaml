@@ -89,105 +89,112 @@ repos:
         always_run: true
       - id: check-repo-hygiene
         name: Check repo hygiene artifacts
-        entry: python3 scripts/check_repo_hygiene.py
+        entry: .venv/bin/python scripts/check_repo_hygiene.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-doc-versions
         name: Check doc version drift
-        entry: python3 scripts/check_doc_versions.py
+        entry: .venv/bin/python scripts/check_doc_versions.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-python-version
+        name: Check Python version consistency
+        entry: .venv/bin/python scripts/check_python_version.py --ci
+        language: system
+        pass_filenames: false
+        files: (pyproject\.toml|setup\.cfg|\.github/workflows/.*\.yml)$
+        verbose: true
       - id: check-tasks-format
         name: Check TASKS.md format
-        entry: python3 scripts/check_tasks_format.py
+        entry: .venv/bin/python scripts/check_tasks_format.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-docs-index
         name: Check docs index structure
-        entry: python3 scripts/check_docs_index.py
+        entry: .venv/bin/python scripts/check_docs_index.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-release-docs
         name: Check release docs consistency
-        entry: python3 scripts/check_release_docs.py
+        entry: .venv/bin/python scripts/check_release_docs.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-session-docs
         name: Check session docs consistency
-        entry: python3 scripts/check_session_docs.py
+        entry: .venv/bin/python scripts/check_session_docs.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-api-docs-sync
         name: Check API docs sync
-        entry: python3 scripts/check_api_docs_sync.py
+        entry: .venv/bin/python scripts/check_api_docs_sync.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-pre-release-checklist
         name: Check pre-release checklist structure
-        entry: python3 scripts/check_pre_release_checklist.py
+        entry: .venv/bin/python scripts/check_pre_release_checklist.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-api-doc-signatures
         name: Check API doc signatures
-        entry: python3 scripts/check_api_doc_signatures.py
+        entry: .venv/bin/python scripts/check_api_doc_signatures.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-next-session-brief-length
         name: Check next-session brief length
-        entry: python3 scripts/check_next_session_brief_length.py
+        entry: .venv/bin/python scripts/check_next_session_brief_length.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-cli-reference
         name: Check CLI reference commands
-        entry: python3 scripts/check_cli_reference.py
+        entry: .venv/bin/python scripts/check_cli_reference.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-docs-index-links
         name: Check docs index links
-        entry: python3 scripts/check_docs_index_links.py
+        entry: .venv/bin/python scripts/check_docs_index_links.py
         language: system
         pass_filenames: false
         always_run: true
         verbose: true
       - id: check-markdown-links
         name: Check markdown internal links
-        entry: python3 scripts/check_links.py
+        entry: .venv/bin/python scripts/check_links.py
         language: system
         pass_filenames: false
         files: ^docs/.*\.md$
         verbose: true
       - id: check-cost-optimizer-issues
         name: Check cost optimizer code issues
-        entry: python3 scripts/check_cost_optimizer_issues.py
+        entry: .venv/bin/python scripts/check_cost_optimizer_issues.py
         language: system
         pass_filenames: false
         files: ^streamlit_app/pages/02_.*cost_optimizer\.py$
         verbose: true
       - id: check-streamlit-issues
         name: Check Streamlit app issues (AST scanner)
-        entry: python3 scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+        entry: .venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
         language: system
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$

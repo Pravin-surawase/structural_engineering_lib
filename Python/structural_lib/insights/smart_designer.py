@@ -37,7 +37,7 @@ Example:
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 from ..beam_pipeline import BeamDesignOutput
 from ..costing import CostProfile
@@ -65,8 +65,8 @@ class CostAnalysis:
     current_cost: float  # Current design cost (Rs)
     optimal_cost: float  # Best achievable cost (Rs)
     savings_percent: float  # Potential savings
-    baseline_alternative: Optional[dict[str, Any]] = None
-    optimal_alternative: Optional[dict[str, Any]] = None
+    baseline_alternative: dict[str, Any] | None = None
+    optimal_alternative: dict[str, Any] | None = None
     alternatives: list[dict[str, Any]] = field(default_factory=list)
 
 
@@ -130,10 +130,10 @@ class DashboardReport:
     summary: SmartAnalysisSummary
     design_result: BeamDesignOutput
     metadata: dict[str, Any]
-    cost: Optional[CostAnalysis] = None
-    suggestions: Optional[DesignSuggestions] = None
-    sensitivity: Optional[SensitivityInsights] = None
-    constructability: Optional[ConstructabilityInsights] = None
+    cost: CostAnalysis | None = None
+    suggestions: DesignSuggestions | None = None
+    sensitivity: SensitivityInsights | None = None
+    constructability: ConstructabilityInsights | None = None
 
     def to_dict(self) -> dict[str, Any]:
         """Convert dashboard to dictionary for JSON serialization."""
@@ -277,8 +277,8 @@ class SmartDesigner:
         include_suggestions: bool = True,
         include_sensitivity: bool = True,
         include_constructability: bool = True,
-        cost_profile: Optional[CostProfile] = None,
-        weights: Optional[dict[str, float]] = None,
+        cost_profile: CostProfile | None = None,
+        weights: dict[str, float] | None = None,
     ) -> DashboardReport:
         """
         Perform comprehensive smart design analysis.

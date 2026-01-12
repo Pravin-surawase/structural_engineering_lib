@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.16.6] - 2026-01-12
+
+### Changed
+- **Python 3.11 Baseline Upgrade**
+  - Minimum Python version raised from 3.9 to 3.11
+  - CI matrix reduced from [3.9, 3.10, 3.11, 3.12] to [3.11, 3.12] (50% faster CI)
+  - Fast checks now use Python 3.11 only
+  - Local virtual environment recreated with Python 3.11.14
+
+- **Type Hint Modernization (PEP 604)**
+  - Converted `Optional[X]` to `X | None` across 20+ modules
+  - Converted `Union[X, Y]` to `X | Y` using ruff --fix
+  - Converted `isinstance((X, Y))` to `isinstance(X | Y)` (UP038)
+  - Added `from __future__ import annotations` to all affected modules
+
+- **Pre-commit Hook Updates**
+  - All local hooks now use `.venv/bin/python` for Python 3.11 compatibility
+  - Added `check_python_version.py` to enforce version consistency
+
+### Added
+- `scripts/check_python_version.py` - Validates Python version references across project
+- `scripts/add_future_annotations.py` - Helper to add `__future__` imports
+
+### Developer Notes
+- Users must have Python 3.11+ installed locally (`brew install python@3.11`)
+- Virtual environment should be recreated: `rm -rf .venv && python3.11 -m venv .venv`
+- All 2430 tests passing on Python 3.11
+
 ## [0.16.5] - 2026-01-11
 
 ### Added

@@ -28,7 +28,7 @@ class TestFlexureInvariants:
     # Typical beam dimensions
     B_VALUES = [200, 230, 250, 300, 350, 400]
     D_VALUES = [350, 400, 450, 500, 550, 600]
-    D_COMPARISONS = list(zip(D_VALUES[:-1], D_VALUES[1:]))
+    D_COMPARISONS = list(zip(D_VALUES[:-1], D_VALUES[1:], strict=True))
     FCK_VALUES = [20, 25, 30, 35, 40]
     FY_VALUES = [415, 500, 550]
 
@@ -255,7 +255,7 @@ class TestMaterialsInvariants:
     """Property tests for materials module."""
 
     FY_VALUES = [415, 500, 550]
-    FY_COMPARISONS = list(zip(FY_VALUES[:-1], FY_VALUES[1:]))
+    FY_COMPARISONS = list(zip(FY_VALUES[:-1], FY_VALUES[1:], strict=True))
 
     @pytest.mark.parametrize("fy", FY_VALUES)
     def test_xu_max_d_in_valid_range(self, fy):

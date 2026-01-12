@@ -15,9 +15,11 @@ See:
 Related: TASK-212 (Create exception hierarchy)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 # =============================================================================
 # Exception Hierarchy (for raising errors)
@@ -50,9 +52,9 @@ class StructuralLibError(Exception):
         self,
         message: str,
         *,
-        details: Optional[dict[str, Any]] = None,
-        suggestion: Optional[str] = None,
-        clause_ref: Optional[str] = None,
+        details: dict[str, Any] | None = None,
+        suggestion: str | None = None,
+        clause_ref: str | None = None,
     ):
         super().__init__(message)
         self.message = message
@@ -226,9 +228,9 @@ class DesignError:
     code: str
     severity: Severity
     message: str
-    field: Optional[str] = None
-    hint: Optional[str] = None
-    clause: Optional[str] = None
+    field: str | None = None
+    hint: str | None = None
+    clause: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -496,9 +498,9 @@ def make_error(
     code: str,
     severity: Severity,
     message: str,
-    field: Optional[str] = None,
-    hint: Optional[str] = None,
-    clause: Optional[str] = None,
+    field: str | None = None,
+    hint: str | None = None,
+    clause: str | None = None,
 ) -> DesignError:
     """Factory function to create a DesignError."""
     return DesignError(

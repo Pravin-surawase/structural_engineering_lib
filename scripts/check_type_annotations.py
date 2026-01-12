@@ -512,10 +512,13 @@ def main():
     # Determine exit code
     summary = checker.get_summary()
     if args.fail_threshold > 0:
+        # When --fail-threshold is set, only check the rate threshold
         if summary["annotation_rate"] < args.fail_threshold:
             sys.exit(1)
+        # Threshold passed, exit success
+        sys.exit(0)
 
-    # Exit with error if issues found
+    # Default behavior: exit with error if issues found
     if summary["total_issues"] > 0:
         sys.exit(1)
     sys.exit(0)
