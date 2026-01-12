@@ -79,6 +79,29 @@ api.BeamInput.from_json(json_string)  # Create from JSON string
 api.BeamInput.from_json_file(path)  # Create from JSON file
 ```
 
+### Verification & Audit Trail (v0.17+)
+
+```python
+from structural_lib import api
+
+# Calculation hash for integrity verification
+api.CalculationHash.from_calculation(inputs, outputs)
+api.compute_hash(data)  # SHA-256 hash of dict
+
+# Audit trail for design sessions
+api.AuditTrail(project_id)
+api.AuditTrail.log_design(beam_id, story, inputs, outputs, metadata=None)
+api.AuditTrail.log_verification(beam_id, story, original_hash, verification_result)
+api.AuditTrail.verify_entry(entry_id, inputs, outputs)
+api.AuditTrail.export_log(path)
+api.AuditTrail.from_json_file(path)
+api.AuditLogEntry  # Structured log entry dataclass
+
+# Calculation certificates
+api.create_calculation_certificate(inputs, outputs, project_id="", beam_id="", engineer="")
+api.verify_calculation(inputs, outputs, certificate)
+```
+
 Note: `api.check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m)
 and does not perform explicit unit validation. Use `api.check_beam_is456()` when
 you want unit validation at the API boundary.

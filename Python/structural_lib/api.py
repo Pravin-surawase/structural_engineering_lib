@@ -31,6 +31,14 @@ from .api_results import (
     OptimalDesign,
     SmartAnalysisResult,
 )
+from .audit import (
+    AuditLogEntry,
+    AuditTrail,
+    CalculationHash,
+    compute_hash,
+    create_calculation_certificate,
+    verify_calculation,
+)
 from .costing import CostProfile
 from .data_types import (
     ComplianceCaseResult,
@@ -68,6 +76,13 @@ __all__ = [
     "LoadCaseInput",
     "DetailingConfigInput",
     "design_from_input",
+    # Audit & Verification (TASK-278)
+    "AuditTrail",
+    "AuditLogEntry",
+    "CalculationHash",
+    "compute_hash",
+    "create_calculation_certificate",
+    "verify_calculation",
     # Outputs
     "compute_detailing",
     "compute_bbs",

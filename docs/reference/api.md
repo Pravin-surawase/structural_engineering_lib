@@ -396,6 +396,114 @@ report = design_from_input(beam, include_detailing=False)
 print(f"Governing: {report.governing_case_id}")
 ```
 
+### 1A.4.3 Verification & Audit Trail (v0.17.0+)
+
+Provides SHA-256 based verification and immutable audit logging for engineering calculations.
+
+**Available classes:** `api.AuditTrail`, `api.AuditLogEntry`, `api.CalculationHash`
+
+**Available functions:** `api.compute_hash`, `api.create_calculation_certificate`, `api.verify_calculation`
+
+#### CalculationHash (`api.CalculationHash`)
+
+Immutable hash of calculation inputs and outputs for integrity verification.
+
+```python
+@dataclass(frozen=True)
+class CalculationHash:
+    input_hash: str       # SHA-256 hash of inputs
+    output_hash: str      # SHA-256 hash of outputs
+    combined_hash: str    # Combined verification hash
+    algorithm: str        # "sha256"
+    timestamp: str        # ISO 8601 timestamp
+
+    @classmethod
+    def from_calculation(cls, inputs: dict, outputs: dict) -> CalculationHash
+
+    def verify_inputs(self, inputs: dict) -> bool
+    def verify_outputs(self, outputs: dict) -> bool
+    def to_dict(self) -> dict
+```
+
+#### AuditTrail (`api.AuditTrail`)
+
+Manages immutable audit trail for design calculations.
+
+```python
+@dataclass
+class AuditTrail:
+    project_id: str
+    entries: list[AuditLogEntry]
+    created_at: str
+    library_version: str
+
+    def log_design(self, beam_id: str, story: str, inputs: dict, outputs: dict, metadata: dict | None = None) -> AuditLogEntry
+    def log_verification(self, beam_id: str, story: str, original_hash: str, verification_result: bool) -> AuditLogEntry
+    def get_entry_by_id(self, entry_id: str) -> AuditLogEntry | None
+    def get_entries_for_beam(self, beam_id: str, story: str | None = None) -> list[AuditLogEntry]
+    def verify_entry(self, entry_id: str, inputs: dict, outputs: dict) -> tuple[bool, str]
+    def export_log(self, path: str | Path) -> Path
+    @classmethod
+    def from_json_file(cls, path: str | Path) -> AuditTrail
+```
+
+#### Convenience Functions
+
+```python
+# Create verification certificate
+def create_calculation_certificate(
+    inputs: dict, outputs: dict,
+    project_id: str = "", beam_id: str = "", engineer: str = ""
+) -> dict
+
+# Verify calculation against certificate
+def verify_calculation(inputs: dict, outputs: dict, certificate: dict) -> tuple[bool, str]
+
+# Compute SHA-256 hash of data
+def compute_hash(data: dict) -> str
+```
+
+**Example (audit trail usage):**
+```python
+from structural_lib import api
+
+# Create audit trail for project
+trail = api.AuditTrail(project_id="PROJECT-001")
+
+# After each design calculation
+result = api.design_beam_is456(...)
+entry = trail.log_design(
+    beam_id="B1",
+    story="GF",
+    inputs={"b_mm": 300, "D_mm": 500, ...},
+    outputs={"ast_required": 856, "is_ok": True, ...},
+)
+
+# Export for records
+trail.export_log("audit_log.json")
+
+# Later: verify a calculation hasn't been modified
+passed, message = trail.verify_entry(entry.entry_id, inputs, outputs)
+```
+
+**Example (calculation certificate):**
+```python
+from structural_lib import api
+
+# Create certificate for a calculation
+cert = api.create_calculation_certificate(
+    inputs={"b_mm": 300, "D_mm": 500},
+    outputs={"ast_required": 856},
+    project_id="PROJECT-001",
+    beam_id="B1",
+    engineer="J. Smith",
+)
+
+# Later: verify the certificate
+passed, msg = api.verify_calculation(inputs, outputs, cert)
+# Returns: (True, "Verification passed: calculation is authentic")
+```
+
 ### 1A.5 API Helpers
 
 ```python
