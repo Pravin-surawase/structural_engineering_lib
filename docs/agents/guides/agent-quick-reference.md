@@ -20,6 +20,7 @@
 | `./scripts/agent_start.sh --quick` | **Start session (NEW - replaces 4 commands)** |
 | `./scripts/ai_commit.sh "msg"` | **Commit changes** |
 | `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
+| `./scripts/git_ops.sh --status` | **Analyze git state & get recommendation** |
 | `.venv/bin/python scripts/end_session.py` | **End session** |
 
 ---
@@ -98,9 +99,11 @@ cd $PROJECT_ROOT
 |---------|----------|
 | **Git is broken** | `./scripts/recover_git_state.sh` |
 | **Merge conflict** | `./scripts/check_unfinished_merge.sh` |
-| **Don't know what to do** | `./scripts/agent_preflight.sh` |
+| **Don't know what to do** | `./scripts/git_ops.sh --status` |
+| **Check git health** | `./scripts/git_automation_health.sh` |
 | **CI failed on format** | `cd Python && python -m black . && cd .. && ./scripts/ai_commit.sh "style: format"` |
 | **Version drift** | `python scripts/check_doc_versions.py --fix` |
+| **Hooks not installed** | `./scripts/install_git_hooks.sh` |
 
 ---
 

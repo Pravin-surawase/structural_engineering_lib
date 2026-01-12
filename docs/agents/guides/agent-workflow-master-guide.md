@@ -221,6 +221,7 @@ cd $PROJECT_ROOT
 | `agent_preflight.sh` | Pre-task validation | Before every task |
 | `ai_commit.sh` | Safe commit & push | Every commit |
 | `should_use_pr.sh` | Decision helper | When unsure |
+| `git_ops.sh --status` | State-aware router | When unsure what to do |
 | `end_session.py` | Session cleanup | End of session |
 
 ### PR Management Scripts
@@ -248,6 +249,8 @@ cd $PROJECT_ROOT
 | `recover_git_state.sh` | Fix git issues | Git errors |
 | `check_unfinished_merge.sh` | Detect merge state | Suspicious behavior |
 | `validate_git_state.sh` | Comprehensive check | After recovery |
+| `git_automation_health.sh` | Check all automation | Status check |
+| `install_git_hooks.sh` | Install hook enforcement | First-time setup |
 
 ---
 
