@@ -504,6 +504,123 @@ passed, msg = api.verify_calculation(inputs, outputs, cert)
 # Returns: (True, "Verification passed: calculation is authentic")
 ```
 
+### 1A.4.4 Calculation Report Generation (v0.17.0+) (`api.CalculationReport`)
+
+Professional engineering calculation sheet generation supporting multiple output formats (HTML, JSON, Markdown).
+
+**Available classes:** `api.CalculationReport`, `api.ProjectInfo`, `api.InputSection`, `api.ResultSection`
+
+**Available functions:** `api.generate_calculation_report`
+
+#### ProjectInfo (`api.ProjectInfo`)
+
+Project and engineer metadata for reports.
+
+```python
+@dataclass
+class ProjectInfo:
+    project_name: str = "Untitled Project"
+    project_number: str = ""
+    client_name: str = ""
+    engineer_name: str = ""
+    checker_name: str = ""
+    revision: str = "A"
+    date: str = ""  # Auto-set if not provided
+```
+
+#### CalculationReport (`api.CalculationReport`)
+
+Complete calculation report container.
+
+```python
+@dataclass
+class CalculationReport:
+    report_id: str            # Unique report identifier
+    project_info: ProjectInfo
+    beam_id: str
+    story: str
+    inputs: InputSection
+    results: ResultSection
+    code_references: list[str] = []
+    notes: list[str] = []
+    verification_hash: str = ""
+    generated_at: str = ""    # Auto-set
+
+    @classmethod
+    def from_design_result(
+        cls, result, beam_id: str = "B1", story: str = "GF",
+        project_info: dict | None = None
+    ) -> CalculationReport
+
+    def to_dict(self) -> dict
+    def to_json(self, indent: int = 2) -> str
+    def export_json(self, path: str | Path) -> Path
+    def export_html(self, path: str | Path) -> Path
+    def export_markdown(self, path: str | Path) -> Path
+```
+
+#### Convenience Function
+
+```python
+def generate_calculation_report(
+    result,
+    beam_id: str = "B1",
+    story: str = "GF",
+    project_info: dict | None = None,
+    output_path: str | Path | None = None,
+    output_format: str = "html",
+) -> CalculationReport
+```
+
+**Example (HTML report generation):**
+```python
+from structural_lib import api
+
+# Design the beam
+result = api.design_and_detail_beam_is456(
+    b_mm=300, D_mm=500, d_mm=460, fck=25, fy=500,
+    mu_knm=150, vu_kn=100, span_mm=6000, cover_mm=40,
+)
+
+# Generate professional calculation report
+report = api.generate_calculation_report(
+    result=result,
+    beam_id="B1",
+    story="GF",
+    project_info={
+        "project_name": "Tower A Design",
+        "project_number": "PRJ-2026-001",
+        "client_name": "ABC Builders",
+        "engineer_name": "J. Smith",
+        "checker_name": "P. Johnson",
+    },
+    output_path="reports/B1_calculation.html",
+    output_format="html",
+)
+print(f"Report generated: {report.report_id}")
+```
+
+**Example (with audit trail integration):**
+```python
+from structural_lib import api
+
+# Design and create audit trail
+result = api.design_and_detail_beam_is456(...)
+cert = api.create_calculation_certificate(
+    inputs={"b_mm": 300, ...},
+    outputs={"ast_required": 856, ...},
+)
+
+# Create report with verification hash
+report = api.CalculationReport.from_design_result(
+    result=result,
+    beam_id="B1",
+    project_info={"project_name": "Tower A"},
+)
+report.verification_hash = cert["combined_hash"]
+report.export_html("B1_verified.html")
+```
+
 ### 1A.5 API Helpers
 
 ```python

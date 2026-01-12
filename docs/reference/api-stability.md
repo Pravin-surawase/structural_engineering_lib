@@ -102,6 +102,28 @@ api.create_calculation_certificate(inputs, outputs, project_id="", beam_id="", e
 api.verify_calculation(inputs, outputs, certificate)
 ```
 
+### Calculation Report Generation (v0.17+)
+
+```python
+from structural_lib import api
+
+# Professional calculation report generation
+api.ProjectInfo(project_name, project_number, client_name, engineer_name, checker_name, revision)
+api.InputSection(geometry, materials, loads, detailing)
+api.ResultSection(flexure, shear, serviceability, detailing, summary)
+
+# Report from design result
+api.CalculationReport.from_design_result(result, beam_id="B1", story="GF", project_info=None)
+api.CalculationReport.to_dict()
+api.CalculationReport.to_json(indent=2)
+api.CalculationReport.export_json(path)
+api.CalculationReport.export_html(path)
+api.CalculationReport.export_markdown(path)
+
+# Convenience function (one-step report generation)
+api.generate_calculation_report(result, beam_id, story, project_info, output_path, output_format)
+```
+
 Note: `api.check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m)
 and does not perform explicit unit validation. Use `api.check_beam_is456()` when
 you want unit validation at the API boundary.

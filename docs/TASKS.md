@@ -120,8 +120,8 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | **TASK-276** | Input Flexibility (BeamInput dataclasses, import helpers) | DEV | 4-5 hrs | 🔴 HIGH | ✅ Session 19 |
-| **TASK-277** | Calculation Report Generation (Jinja2, HTML/PDF) | DEV | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
-| **TASK-278** | Verification & Audit Trail (SHA-256, immutable logs) | DEV | 3-4 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-277** | Calculation Report Generation (HTML/JSON/Markdown) | DEV | 4-5 hrs | 🔴 HIGH | ✅ Session 19 |
+| **TASK-278** | Verification & Audit Trail (SHA-256, immutable logs) | DEV | 3-4 hrs | 🔴 HIGH | ✅ Session 19 |
 | **TASK-279** | Engineering Testing Strategies (visual regression, property-based) | TESTER | 4-5 hrs | 🔴 HIGH | ⏳ Queued |
 
 ### v0.17.5 - Code Quality & Automation Enhancement (Agent 6 Focus)

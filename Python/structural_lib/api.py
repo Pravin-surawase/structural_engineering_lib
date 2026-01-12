@@ -39,6 +39,13 @@ from .audit import (
     create_calculation_certificate,
     verify_calculation,
 )
+from .calculation_report import (
+    CalculationReport,
+    InputSection,
+    ProjectInfo,
+    ResultSection,
+    generate_calculation_report,
+)
 from .costing import CostProfile
 from .data_types import (
     ComplianceCaseResult,
@@ -83,6 +90,12 @@ __all__ = [
     "compute_hash",
     "create_calculation_certificate",
     "verify_calculation",
+    # Calculation Report (TASK-277)
+    "CalculationReport",
+    "ProjectInfo",
+    "InputSection",
+    "ResultSection",
+    "generate_calculation_report",
     # Outputs
     "compute_detailing",
     "compute_bbs",
