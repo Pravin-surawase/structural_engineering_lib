@@ -152,8 +152,12 @@ preflight_checks() {
         return 1
     fi
 
-    # Check current state
-    assert_git_clean || log_info "Working tree not clean (OK for dev)"
+    # Check current state (soft check - dev sessions may be dirty)
+    if [[ -z $(git status --porcelain) ]]; then
+        log_pass "Git working tree is clean"
+    else
+        log_info "Working tree not clean (OK for dev)"
+    fi
     assert_no_merge_conflict || return 1
 
     echo ""
