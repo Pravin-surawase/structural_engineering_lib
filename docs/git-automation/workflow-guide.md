@@ -238,11 +238,14 @@ For complex tasks with 3+ phases:
 
 **Solution:**
 ```bash
-# Step 1: Keep your version
-git checkout --ours docs/TASKS.md
+# Recovery script handles this automatically
+./scripts/recover_git_state.sh
 
-# Step 2: Use automation to complete
-./scripts/safe_push.sh "merge: resolve TASKS.md conflict"
+# It will:
+# 1. Detect the conflict
+# 2. Apply --ours strategy for known files (TASKS.md, SESSION_LOG.md)
+# 3. Complete the merge
+# 4. Push the resolution
 ```
 
 ### Unfinished Merge (MERGE_HEAD exists)

@@ -83,12 +83,24 @@ cd "$PROJECT_ROOT"
 
 echo ""
 echo -e "${BOLD}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v2.1         ║${NC}"
+echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v2.2         ║${NC}"
 echo -e "${BOLD}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
+# Step 0: Install Git Hooks (ensures enforcement is active)
+echo -e "${BLUE}[0/6]${NC} Installing git hooks (enforcement)..."
+if [ -f "$SCRIPT_DIR/install_git_hooks.sh" ]; then
+    "$SCRIPT_DIR/install_git_hooks.sh" > /dev/null 2>&1 && {
+        echo -e "  ${GREEN}✓${NC} Git hooks installed (manual git blocked)"
+    } || {
+        echo -e "  ${YELLOW}⚠${NC} Git hooks installation had warnings"
+    }
+else
+    echo -e "  ${YELLOW}⚠${NC} install_git_hooks.sh not found"
+fi
+
 # Step 1: Git Pager Configuration (use copilot_setup.sh if available)
-echo -e "${BLUE}[1/5]${NC} Configuring git pager (prevents terminal lock)..."
+echo -e "${BLUE}[1/6]${NC} Configuring git pager (prevents terminal lock)..."
 if [ -f "$SCRIPT_DIR/copilot_setup.sh" ]; then
     source "$SCRIPT_DIR/copilot_setup.sh" 2>/dev/null || {
         # Fallback to inline config if copilot_setup.sh fails
@@ -109,7 +121,7 @@ export PAGER=cat
 echo -e "  ${GREEN}✓${NC} Git pager disabled"
 
 # Step 2: Environment Setup via agent_setup.sh
-echo -e "${BLUE}[2/5]${NC} Running environment setup..."
+echo -e "${BLUE}[2/6]${NC} Running environment setup..."
 if [ -f "$SCRIPT_DIR/agent_setup.sh" ]; then
     SETUP_ARGS=""
     [ -n "$WORKTREE" ] && SETUP_ARGS="$SETUP_ARGS --worktree $WORKTREE"
@@ -135,7 +147,7 @@ else
 fi
 
 # Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
-echo -e "${BLUE}[3/5]${NC} Running pre-flight checks..."
+echo -e "${BLUE}[3/6]${NC} Running pre-flight checks..."
 if [ -n "$SKIP_PREFLIGHT" ]; then
     echo -e "  ${YELLOW}⊘${NC} Skipped (--skip-preflight)"
 elif [ -n "$QUICK" ]; then
@@ -165,7 +177,7 @@ else
 fi
 
 # Step 4: Start Session
-echo -e "${BLUE}[4/5]${NC} Starting session..."
+echo -e "${BLUE}[4/6]${NC} Starting session..."
 if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
     "$PROJECT_ROOT/.venv/bin/python" scripts/start_session.py $QUICK
 else
@@ -174,7 +186,7 @@ else
 fi
 
 # Step 5: Agent-specific guidance
-echo -e "${BLUE}[5/5]${NC} Ready!"
+echo -e "${BLUE}[5/6]${NC} Ready!"
 echo ""
 echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
