@@ -4,6 +4,35 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P11: Session Docs PR-Number Workflow
+
+**Focus:** Eliminate session-log loops by logging PR numbers and updating session docs in the same PR.
+
+### Summary
+
+1. **Session Doc Gate** - Added `--with-session-docs` in `finish_task_pr.sh` to require committing session docs before PR creation
+2. **Automation Bypass** - Exported `SAFE_PUSH_ACTIVE` in `finish_task_pr.sh` to avoid hook blocks during automated pushes
+3. **Docs Alignment** - Updated git workflow docs to record PR numbers (not merge hashes) and reflect new flag
+4. **Test Coverage** - Extended `test_git_workflow.sh` to cover the session-docs flag
+
+### PRs
+
+| PR | Description |
+| --- | --- |
+| #350 | Session docs PR-number workflow |
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `a30517c` | feat(git): enforce session docs in PR workflow |
+
+### Tests
+
+- `./scripts/test_git_workflow.sh`
+
+---
+
 ## 2026-01-12 — Session 19P10: Git Workflow Docs Alignment
 
 **Focus:** Align git workflow docs with updated PR tooling and CI polling
