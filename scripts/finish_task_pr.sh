@@ -137,7 +137,10 @@ case "$REPLY" in
         echo "→ Setting up async monitoring..."
 
         # Ensure daemon is running
-        if ! "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" status 2>/dev/null | grep -q "running"; then
+        # Note: Capture to variable to avoid SIGPIPE with grep -q
+        local daemon_status
+        daemon_status=$("$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" status 2>/dev/null || true)
+        if ! echo "$daemon_status" | grep -q "running"; then
             "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" start
         fi
 

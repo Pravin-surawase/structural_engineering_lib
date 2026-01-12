@@ -55,8 +55,11 @@ EOF
 }
 
 # Check if daemon is running
+# Note: Use capture variable to avoid SIGPIPE with grep -q under pipefail
 ensure_daemon() {
-    if ! "$DAEMON_SCRIPT" status 2>/dev/null | grep -q "running"; then
+    local daemon_status
+    daemon_status=$("$DAEMON_SCRIPT" status 2>/dev/null || true)
+    if ! echo "$daemon_status" | grep -q "running"; then
         echo -e "${YELLOW}→ Starting CI monitor daemon...${NC}"
         "$DAEMON_SCRIPT" start
         sleep 2
@@ -210,7 +213,10 @@ cmd_status() {
     echo ""
 
     # Daemon status
-    if "$DAEMON_SCRIPT" status 2>/dev/null | grep -q "running"; then
+    # Note: Use capture variable to avoid SIGPIPE with grep -q under pipefail
+    local daemon_status
+    daemon_status=$("$DAEMON_SCRIPT" status 2>/dev/null || true)
+    if echo "$daemon_status" | grep -q "running"; then
         echo -e "${GREEN}✓ Daemon: Running${NC}"
     else
         echo -e "${YELLOW}⚠ Daemon: Stopped${NC}"
