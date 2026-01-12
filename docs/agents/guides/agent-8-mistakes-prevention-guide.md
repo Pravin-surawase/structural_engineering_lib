@@ -1,8 +1,25 @@
 # Agent 8: Mistakes Prevention Guide (Lessons Learned)
 
-**Version:** 2.0 (Enhanced with Project History)
+**Version:** 2.1 (With Historical Banner)
 **Created:** 2026-01-08
+**Updated:** 2026-01-12
 **Based On:** Comprehensive analysis of all git mistakes in project history
+
+---
+
+> ⚠️ **HISTORICAL DOCUMENTATION NOTICE**
+>
+> This document contains **manual git examples for educational/historical purposes only**.
+> These examples show **what went wrong** and **how it was fixed**.
+>
+> **DO NOT copy manual git commands from this document!**
+>
+> **For current workflows, always use:**
+> - `./scripts/ai_commit.sh "message"` - For all commits
+> - `./scripts/recover_git_state.sh` - For recovery
+> - `./scripts/git_ops.sh --status` - When unsure what to do
+>
+> Manual git is now **blocked by hooks**. See [workflow-guide.md](../../git-automation/workflow-guide.md) for current practices.
 
 ---
 

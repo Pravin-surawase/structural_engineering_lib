@@ -355,17 +355,23 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 ## Developer setup
 
 ### For AI Agents (Automated Workflow)
-**⚡ Use the [Agent Automation System](docs/agents/guides/agent-automation-system.md) for error-free development:**
 
+**⚡ Tier-0 Entrypoints — Start Here (3 commands only):**
+
+| Command | When to Use | Time |
+|---------|-------------|------|
+| `./scripts/agent_start.sh --quick` | **Session start** | 6s |
+| `./scripts/ai_commit.sh "message"` | **Every commit** | 5s |
+| `./scripts/git_ops.sh --status` | **When unsure** | 1s |
+
+> **THE ONE RULE:** Never use manual git commands. Always use `ai_commit.sh`.
+
+**Session Workflow:**
 ```bash
-# 1. Setup session (30s)
-./scripts/agent_setup.sh
-
-# 2. Pre-flight check before work
-./scripts/agent_preflight.sh
-
-# 3. Make changes and commit (10-30s)
-./scripts/ai_commit.sh "your commit message"
+./scripts/agent_start.sh --quick   # Start session
+# ... make changes ...
+./scripts/ai_commit.sh "feat: add feature"  # Commit
+./scripts/git_ops.sh --status      # If unsure, get guidance
 ```
 
 **Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
@@ -374,13 +380,11 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 - [Master Guide](docs/agents/guides/agent-workflow-master-guide.md) - Complete agent workflow
 - [Quick Reference](docs/agents/guides/agent-quick-reference.md) - Essential commands
 - [Git Automation](docs/git-automation/README.md) - Scripts & troubleshooting
-- [Automation Scripts](docs/git-automation/automation-scripts.md) - 103 scripts catalog
 
 **Git Hook Enforcement:**
 - Hooks block manual `git commit/push` - use `./scripts/ai_commit.sh` instead
 - Auto-installed by `./scripts/agent_start.sh`
-- Check status: `./scripts/git_automation_health.sh`
-- State-aware router: `./scripts/git_ops.sh --status`
+- Check health: `./scripts/git_automation_health.sh`
 
 ### Manual Development
 
