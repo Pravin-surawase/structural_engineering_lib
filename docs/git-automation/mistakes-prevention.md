@@ -250,6 +250,47 @@ git commit --no-verify  # ❌ NEVER - skips all safety
 
 ---
 
+## 🤖 CI Monitor Behavior & Policy Fallback
+
+The `ci_monitor_daemon.sh` script handles several merge scenarios automatically:
+
+### Scenario 1: Normal Merge (Success)
+```
+PR ready → gh pr merge --squash → Merged ✅
+```
+
+### Scenario 2: Policy Prohibits Merge
+```
+PR ready → "policy prohibits merge" → --auto flag retry → Queued for auto-merge ✅
+```
+**What happens:** Branch protection may require admin approval or specific conditions. The script retries with `--auto` to queue the merge.
+
+### Scenario 3: Head Branch Behind (NEW - GITDOC-07)
+```
+PR ready → "head branch not up to date" → gh pr update-branch → Will retry next cycle ✅
+```
+**What happens:** The target branch (main) has new commits. Script runs `gh pr update-branch` to bring the PR up to date, then merges on next monitoring cycle.
+
+### Scenario 4: Admin Required
+```
+PR ready → all retries fail → "Manual merge needed: gh pr merge <num> --admin" ⚠️
+```
+**Action required:** Run the merge with admin privileges if you have them.
+
+### CI Monitor Logs
+```bash
+# View recent CI monitor activity
+tail -50 logs/ci_monitor.log
+
+# Common messages:
+# "PR #X is ready to merge!" → attempting merge
+# "head branch is behind, updating..." → auto-updating PR
+# "set to auto-merge" → queued for policy compliance
+# "needs manual merge" → requires admin action
+```
+
+---
+
 ## 📊 Success Metrics (After Fixes)
 
 | Metric | Before | After |

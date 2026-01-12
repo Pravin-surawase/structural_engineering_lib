@@ -204,6 +204,19 @@ gh pr merge <num> --squash --delete-branch
 - **Purpose:** Detect unfinished merge state
 - **Use when:** Git behavior seems suspicious
 
+**`install_enforcement_hook.sh`** (NEW) - Manual Git Prevention
+```bash
+./scripts/install_enforcement_hook.sh
+```
+- **Purpose:** Install pre-push hook that warns on manual git commands
+- **Features:**
+  - Warns when pushing to main without automation
+  - Auto-bypassed when using `ai_commit.sh` or `safe_push.sh`
+  - Soft enforcement (can be bypassed with 'y')
+- **Install once:** Hook persists across sessions
+- **Bypass flags:** `AI_COMMIT_ACTIVE=1` or `SAFE_PUSH_ACTIVE=1`
+- **Use case:** Reinforce automation-first workflow
+
 ---
 
 ### 5. Worktree Management Scripts

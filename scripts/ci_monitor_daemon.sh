@@ -152,6 +152,21 @@ monitor_pr() {
             log_message "INFO" "Syncing local main branch..."
             (cd "$PROJECT_ROOT" && git checkout main 2>/dev/null && git pull --ff-only 2>/dev/null) || true
             log_message "INFO" "Local main synced"
+        elif echo "$merge_output" | grep -qi "not up to date\|out of date\|behind"; then
+            # Head branch is behind base - update it first (GITDOC-07)
+            log_message "INFO" "PR #$pr_number head branch is behind, updating..."
+            if gh pr update-branch "$pr_number" 2>&1 | tee -a "$LOG_FILE"; then
+                log_message "SUCCESS" "PR #$pr_number branch updated, will retry merge on next cycle"
+                echo -e "${YELLOW}🔄 PR #$pr_number branch updated - will retry merge${NC}"
+            else
+                # Fallback: try --auto flag if update fails
+                log_message "WARN" "Branch update failed, trying auto-merge..."
+                if gh pr merge "$pr_number" --squash --delete-branch --auto 2>&1 | tee -a "$LOG_FILE"; then
+                    log_message "SUCCESS" "✅ PR #$pr_number set to auto-merge (will merge after updates)"
+                else
+                    log_message "WARN" "PR #$pr_number needs manual update: gh pr update-branch $pr_number"
+                fi
+            fi
         elif echo "$merge_output" | grep -q "policy prohibits"; then
             # Branch protection requires --auto flag
             log_message "INFO" "Branch policy requires auto-merge, enabling..."

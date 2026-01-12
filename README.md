@@ -370,10 +370,11 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 
 **Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
 
-**Quick Reference:**
-- [Master Guide](docs/agents/guides/agent-workflow-master-guide.md) - Complete workflow
+**Documentation Hub:**
+- [Master Guide](docs/agents/guides/agent-workflow-master-guide.md) - Complete agent workflow
 - [Quick Reference](docs/agents/guides/agent-quick-reference.md) - Essential commands
-- [System Overview](docs/agents/guides/agent-automation-system.md) - Architecture & features
+- [Git Automation](docs/git-automation/README.md) - Scripts & troubleshooting
+- [Automation Scripts](docs/git-automation/automation-scripts.md) - 103 scripts catalog
 
 ### Manual Development
 

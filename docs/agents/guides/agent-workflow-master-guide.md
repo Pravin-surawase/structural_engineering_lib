@@ -502,8 +502,14 @@ git push
 - [SESSION_LOG.md](../../SESSION_LOG.md) - Session history
 - [next-session-brief.md](../../planning/next-session-brief.md) - Handoff doc
 
-### Workflow Docs
-- [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md) - Core workflow
+### Git Automation Docs (Canonical)
+- [git-automation/README.md](../../git-automation/README.md) - Hub & quick start
+- [git-automation/workflow-guide.md](../../git-automation/workflow-guide.md) - Core workflow
+- [git-automation/automation-scripts.md](../../git-automation/automation-scripts.md) - Scripts reference
+- [git-automation/mistakes-prevention.md](../../git-automation/mistakes-prevention.md) - Troubleshooting
+
+### Legacy (Redirects to Canonical)
+- [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md) - → See workflow-guide.md
 - [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) - Initial setup guide
 
 ### Testing Docs
