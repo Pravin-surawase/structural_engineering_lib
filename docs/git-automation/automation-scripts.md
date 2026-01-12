@@ -27,6 +27,8 @@ Complete reference for all 103 git automation scripts. Organized by use case for
 | `./scripts/agent_start.sh --quick` | **Session setup** | ~6s |
 | `./scripts/should_use_pr.sh --explain` | **PR decision** | ~2s |
 | `./scripts/recover_git_state.sh` | **Emergency recovery** | ~5s |
+| `./scripts/git_ops.sh --status` | **State analysis & recommendation** | ~2s |
+| `./scripts/git_automation_health.sh` | **Check all automation** | ~3s |
 
 ---
 
@@ -204,15 +206,40 @@ gh pr merge <num> --squash --delete-branch
 - **Purpose:** Detect unfinished merge state
 - **Use when:** Git behavior seems suspicious
 
-**`install_enforcement_hook.sh`** (NEW) - Manual Git Prevention
+**`git_ops.sh`** (NEW) - State-Aware Router
 ```bash
-./scripts/install_enforcement_hook.sh
+./scripts/git_ops.sh --status
 ```
-- **Purpose:** Install pre-push hook that warns on manual git commands
+- **Purpose:** Analyze git state and recommend correct script
+- **Detects:** Rebase/merge in progress, divergence, uncommitted changes, ahead/behind
+- **Recommends:** `recover_git_state.sh`, `ai_commit.sh`, or "no action needed"
+- **Use when:** Unsure what to do
+
+**`git_automation_health.sh`** (NEW) - Comprehensive Health Check
+```bash
+./scripts/git_automation_health.sh
+```
+- **Purpose:** Verify all automation systems are working
+- **Checks:**
+  - Git configuration
+  - Script availability
+  - Hook enforcement status
+  - Pre-commit hooks
+- **Output:** Detailed status report with pass/fail counts
+
+**`install_git_hooks.sh`** (NEW) - Hook Enforcement Setup
+```bash
+./scripts/install_git_hooks.sh          # Install
+./scripts/install_git_hooks.sh --status # Check status
+./scripts/install_git_hooks.sh --uninstall
+```
+- **Purpose:** Install versioned git hooks that block manual git commands
 - **Features:**
-  - Warns when pushing to main without automation
-  - Auto-bypassed when using `ai_commit.sh` or `safe_push.sh`
-  - Soft enforcement (can be bypassed with 'y')
+  - Blocks `git commit` and `git push` unless using automation scripts
+  - Sets `core.hooksPath` to `scripts/git-hooks/`
+  - Auto-bypass when `AI_COMMIT_ACTIVE` or `SAFE_PUSH_ACTIVE` is set
+  - Hard enforcement (no bypass option)
+- **Installed by:** `agent_start.sh` automatically
 - **Install once:** Hook persists across sessions
 - **Bypass flags:** `AI_COMMIT_ACTIVE=1` or `SAFE_PUSH_ACTIVE=1`
 - **Use case:** Reinforce automation-first workflow

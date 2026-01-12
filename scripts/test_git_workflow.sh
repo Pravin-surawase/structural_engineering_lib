@@ -130,10 +130,19 @@ preflight_checks() {
     assert_file_exists "$PROJECT_ROOT/scripts/create_task_pr.sh" || return 1
     assert_file_exists "$PROJECT_ROOT/scripts/finish_task_pr.sh" || return 1
     assert_file_exists "$PROJECT_ROOT/scripts/recover_git_state.sh" || return 1
+    assert_file_exists "$PROJECT_ROOT/scripts/git_ops.sh" || return 1
+    assert_file_exists "$PROJECT_ROOT/scripts/install_git_hooks.sh" || return 1
+    assert_file_exists "$PROJECT_ROOT/scripts/git_automation_health.sh" || return 1
 
     # Check scripts are executable
     assert_script_executable "$PROJECT_ROOT/scripts/safe_push.sh" || return 1
     assert_script_executable "$PROJECT_ROOT/scripts/ai_commit.sh" || return 1
+    assert_script_executable "$PROJECT_ROOT/scripts/git_ops.sh" || return 1
+    assert_script_executable "$PROJECT_ROOT/scripts/install_git_hooks.sh" || return 1
+
+    # Check versioned hooks exist
+    assert_file_exists "$PROJECT_ROOT/scripts/git-hooks/pre-commit" || return 1
+    assert_file_exists "$PROJECT_ROOT/scripts/git-hooks/pre-push" || return 1
 
     # Check we're in a git repo
     if git rev-parse --git-dir > /dev/null 2>&1; then
@@ -164,6 +173,9 @@ test_script_syntax() {
         "finish_task_pr.sh"
         "check_unfinished_merge.sh"
         "recover_git_state.sh"
+        "git_ops.sh"
+        "install_git_hooks.sh"
+        "git_automation_health.sh"
     )
 
     for script in "${scripts[@]}"; do
@@ -454,6 +466,177 @@ test_conflict_prevention_logic() {
 }
 
 # ============================================================================
+# TEST: Hook Enforcement System (GITDOC-19/20)
+# ============================================================================
+
+test_hook_enforcement_system() {
+    log_test "Hook Enforcement System"
+
+    cd "$PROJECT_ROOT"
+
+    # Test 1: Versioned hooks directory exists
+    if [[ -d "$PROJECT_ROOT/scripts/git-hooks" ]]; then
+        log_pass "scripts/git-hooks directory exists"
+    else
+        log_fail "scripts/git-hooks directory missing"
+        return 1
+    fi
+
+    # Test 2: pre-commit hook exists and has correct content
+    local pre_commit="$PROJECT_ROOT/scripts/git-hooks/pre-commit"
+    if [[ -f "$pre_commit" ]]; then
+        log_pass "pre-commit hook exists"
+        # Check for bypass logic
+        if grep -q "AI_COMMIT_ACTIVE" "$pre_commit" && grep -q "SAFE_PUSH_ACTIVE" "$pre_commit"; then
+            log_pass "pre-commit hook has bypass environment variables"
+        else
+            log_fail "pre-commit hook missing bypass variables"
+            return 1
+        fi
+    else
+        log_fail "pre-commit hook missing"
+        return 1
+    fi
+
+    # Test 3: pre-push hook exists and has correct content
+    local pre_push="$PROJECT_ROOT/scripts/git-hooks/pre-push"
+    if [[ -f "$pre_push" ]]; then
+        log_pass "pre-push hook exists"
+        if grep -q "AI_COMMIT_ACTIVE" "$pre_push" && grep -q "SAFE_PUSH_ACTIVE" "$pre_push"; then
+            log_pass "pre-push hook has bypass environment variables"
+        else
+            log_fail "pre-push hook missing bypass variables"
+            return 1
+        fi
+    else
+        log_fail "pre-push hook missing"
+        return 1
+    fi
+
+    # Test 4: Hooks are executable
+    assert_script_executable "$pre_commit" || return 1
+    assert_script_executable "$pre_push" || return 1
+
+    # Test 5: install_git_hooks.sh uses core.hooksPath
+    if grep -q "core.hooksPath" "$PROJECT_ROOT/scripts/install_git_hooks.sh"; then
+        log_pass "install_git_hooks.sh uses core.hooksPath"
+    else
+        log_fail "install_git_hooks.sh should use core.hooksPath"
+        return 1
+    fi
+
+    # Test 6: install_git_hooks.sh is idempotent (has status check)
+    if grep -q "\-\-status" "$PROJECT_ROOT/scripts/install_git_hooks.sh"; then
+        log_pass "install_git_hooks.sh supports --status flag"
+    else
+        log_fail "install_git_hooks.sh missing --status support"
+        return 1
+    fi
+
+    echo ""
+}
+
+# ============================================================================
+# TEST: Git Operations Router (GITDOC-23)
+# ============================================================================
+
+test_git_ops_router() {
+    log_test "Git Operations Router"
+
+    cd "$PROJECT_ROOT"
+
+    local git_ops="$PROJECT_ROOT/scripts/git_ops.sh"
+
+    # Test 1: Script exists and is executable
+    assert_file_exists "$git_ops" || return 1
+    assert_script_executable "$git_ops" || return 1
+
+    # Test 2: Has --status flag
+    if grep -q "\-\-status" "$git_ops"; then
+        log_pass "git_ops.sh supports --status flag"
+    else
+        log_fail "git_ops.sh missing --status support"
+        return 1
+    fi
+
+    # Test 3: Detects rebase in progress
+    if grep -q "rebase-merge\|rebase-apply" "$git_ops"; then
+        log_pass "git_ops.sh detects rebase in progress"
+    else
+        log_fail "git_ops.sh should detect rebase state"
+        return 1
+    fi
+
+    # Test 4: Detects merge in progress
+    if grep -q "MERGE_HEAD" "$git_ops"; then
+        log_pass "git_ops.sh detects merge in progress"
+    else
+        log_fail "git_ops.sh should detect merge state"
+        return 1
+    fi
+
+    # Test 5: Recommends recover_git_state.sh for issues
+    if grep -q "recover_git_state" "$git_ops"; then
+        log_pass "git_ops.sh recommends recover_git_state.sh"
+    else
+        log_fail "git_ops.sh should recommend recovery script"
+        return 1
+    fi
+
+    # Test 6: Recommends ai_commit.sh for normal commits
+    if grep -q "ai_commit" "$git_ops"; then
+        log_pass "git_ops.sh recommends ai_commit.sh"
+    else
+        log_fail "git_ops.sh should recommend commit script"
+        return 1
+    fi
+
+    # Test 7: Can run with --status without error
+    if "$git_ops" --status >/dev/null 2>&1; then
+        log_pass "git_ops.sh --status runs successfully"
+    else
+        log_fail "git_ops.sh --status failed to run"
+        return 1
+    fi
+
+    echo ""
+}
+
+# ============================================================================
+# TEST: Git Automation Health Check (GITDOC-27)
+# ============================================================================
+
+test_git_automation_health() {
+    log_test "Git Automation Health Check"
+
+    cd "$PROJECT_ROOT"
+
+    local health_check="$PROJECT_ROOT/scripts/git_automation_health.sh"
+
+    # Test 1: Script exists and is executable
+    assert_file_exists "$health_check" || return 1
+    assert_script_executable "$health_check" || return 1
+
+    # Test 2: Checks hook enforcement
+    if grep -q "Hook Enforcement\|core.hooksPath" "$health_check"; then
+        log_pass "git_automation_health.sh checks hook enforcement"
+    else
+        log_fail "git_automation_health.sh should check hook enforcement"
+        return 1
+    fi
+
+    # Test 3: Can run without error
+    if "$health_check" >/dev/null 2>&1; then
+        log_pass "git_automation_health.sh runs successfully"
+    else
+        # It may return non-zero if some checks fail, that's OK
+        log_info "git_automation_health.sh completed (some checks may have failed)"
+    fi
+
+    echo ""
+}
+
+# ============================================================================
 # TEST: Error Handling
 # ============================================================================
 
@@ -645,6 +828,9 @@ main() {
     test_precommit_hook_detection
     test_safe_push_precommit_modifications
     test_conflict_prevention_logic
+    test_hook_enforcement_system
+    test_git_ops_router
+    test_git_automation_health
     test_error_handling
     test_pr_helper_structure
     test_git_configuration

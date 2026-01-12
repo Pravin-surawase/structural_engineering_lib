@@ -149,6 +149,27 @@ check_script "ai_commit.sh" "scripts/ai_commit.sh" "true"
 check_script "safe_push.sh" "scripts/safe_push.sh" "true"
 check_script "should_use_pr.sh" "scripts/should_use_pr.sh" "true"
 check_script "recover_git_state.sh" "scripts/recover_git_state.sh" "true"
+check_script "git_ops.sh" "scripts/git_ops.sh" "false"
+echo ""
+
+echo -e "${BLUE}🔒 Git Hook Enforcement${NC}"
+echo "────────────────────────────────────────────"
+printf "%-30s" "core.hooksPath configured"
+HOOKS_PATH=$(git config --get core.hooksPath 2>/dev/null || echo "")
+if [[ -z "$HOOKS_PATH" ]]; then
+    echo -e "${YELLOW}⚠ not set (manual git allowed)${NC}"
+    ((WARNINGS++))
+elif [[ "$HOOKS_PATH" == *"scripts/git-hooks"* ]]; then
+    echo -e "${GREEN}✓${NC}"
+    ((PASSED++))
+else
+    echo -e "${YELLOW}⚠ set to: $HOOKS_PATH${NC}"
+    ((WARNINGS++))
+fi
+
+check_script "pre-commit hook" "scripts/git-hooks/pre-commit" "false"
+check_script "pre-push hook" "scripts/git-hooks/pre-push" "false"
+check_script "install_git_hooks.sh" "scripts/install_git_hooks.sh" "false"
 echo ""
 
 echo -e "${BLUE}🔧 Session Scripts${NC}"

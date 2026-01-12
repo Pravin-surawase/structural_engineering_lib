@@ -376,12 +376,19 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 - [Git Automation](docs/git-automation/README.md) - Scripts & troubleshooting
 - [Automation Scripts](docs/git-automation/automation-scripts.md) - 103 scripts catalog
 
+**Git Hook Enforcement:**
+- Hooks block manual `git commit/push` - use `./scripts/ai_commit.sh` instead
+- Auto-installed by `./scripts/agent_start.sh`
+- Check status: `./scripts/git_automation_health.sh`
+- State-aware router: `./scripts/git_ops.sh --status`
+
 ### Manual Development
 
 | Task | Command | Where |
 | --- | --- | --- |
 | Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` | repo root |
 | Install hooks | `pre-commit install` | repo root |
+| Install git hooks | `./scripts/install_git_hooks.sh` | repo root |
 | Run tests | `cd Python && python3 -m pytest` | repo root |
 | Run benchmarks | `cd Python && python3 -m pytest --benchmark-only` | repo root |
 | Format check | `cd Python && python3 -m black --check .` | repo root |

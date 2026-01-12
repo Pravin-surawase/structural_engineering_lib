@@ -32,6 +32,17 @@ git push
 
 **Exceptions:** NONE. Always use ai_commit.sh or safe_push.sh for commits.
 
+**🔒 Hook Enforcement (NEW - Session 19P6):**
+- Git hooks block manual `git commit` and `git push` commands
+- Hooks installed automatically by `agent_start.sh`
+- Scripts set `AI_COMMIT_ACTIVE` or `SAFE_PUSH_ACTIVE` to bypass hooks
+- To check status: `./scripts/git_automation_health.sh`
+- To manually install: `./scripts/install_git_hooks.sh`
+
+**State-Aware Router:**
+- If unsure what to do: `./scripts/git_ops.sh --status`
+- It analyzes git state and recommends the right script
+
 **Canonical docs:**
 - **Quick Reference:** `docs/git-automation/README.md` (navigation hub)
 - **Full Workflow:** `docs/git-automation/workflow-guide.md` (7-step workflow)

@@ -242,11 +242,13 @@ git commit --no-verify  # ❌ NEVER - skips all safety
 | Situation | Command |
 |-----------|---------|
 | Git broken | `./scripts/recover_git_state.sh` |
-| Unfinished merge | `git commit --no-edit && git push` |
-| Merge conflict | `git checkout --ours <file> && git add <file> && git commit --no-edit` |
-| Diverged branches | `git pull --ff-only` (if fails, see recover script) |
+| Unfinished merge | `./scripts/recover_git_state.sh` |
+| Merge conflict | `./scripts/recover_git_state.sh` |
+| Diverged branches | `./scripts/recover_git_state.sh` |
 | Terminal stuck | User presses `q` or `Ctrl+C` |
 | CI fails on format | `cd Python && python -m black . && cd .. && ./scripts/ai_commit.sh "style: format"` |
+
+> **Note:** All git recovery scenarios are handled by `recover_git_state.sh`. Never use manual git commands.
 
 ---
 
