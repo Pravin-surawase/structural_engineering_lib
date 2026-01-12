@@ -244,6 +244,33 @@ else
     echo -e "${GREEN}✓${NC}"
     ((PASSED++))
 fi
+
+# Check for undocumented scripts (not in automation-scripts.md)
+printf "%-30s" "Undocumented git scripts"
+UNDOCUMENTED=0
+DOC_FILE="docs/git-automation/automation-scripts.md"
+if [[ -f "$DOC_FILE" ]]; then
+    for script in scripts/ai_commit.sh scripts/safe_push.sh scripts/git_ops.sh scripts/should_use_pr.sh scripts/recover_git_state.sh; do
+        basename_script=$(basename "$script")
+        if ! grep -q "$basename_script" "$DOC_FILE" 2>/dev/null; then
+            ((UNDOCUMENTED++))
+            if [[ "$VERBOSE" == "true" ]]; then
+                echo ""
+                echo -e "  ${YELLOW}Missing: $basename_script${NC}"
+            fi
+        fi
+    done
+    if [[ "$UNDOCUMENTED" -gt 0 ]]; then
+        echo -e "${YELLOW}⚠ $UNDOCUMENTED core scripts not in docs${NC}"
+        ((WARNINGS++))
+    else
+        echo -e "${GREEN}✓${NC}"
+        ((PASSED++))
+    fi
+else
+    echo -e "${YELLOW}⚠ automation-scripts.md not found${NC}"
+    ((WARNINGS++))
+fi
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
