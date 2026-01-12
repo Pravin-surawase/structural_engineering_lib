@@ -2,6 +2,8 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Optimization algorithms for structural design."""
 
+from __future__ import annotations
+
 import time
 from dataclasses import dataclass
 

@@ -19,6 +19,8 @@ Usage:
     generate_beam_dxf(detailing_result, "output.dxf")
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Any
 
@@ -1345,7 +1347,7 @@ def generate_multi_beam_dxf(
 
 
 def quick_dxf(
-    detailing: "BeamDetailingResult",
+    detailing: BeamDetailingResult,
     output_path: str | None = None,
     include_title_block: bool = True,
     project_name: str = "",
@@ -1413,7 +1415,7 @@ def quick_dxf(
 
 
 def quick_dxf_bytes(
-    detailing: "BeamDetailingResult",
+    detailing: BeamDetailingResult,
     include_title_block: bool = True,
     project_name: str = "",
 ) -> bytes:

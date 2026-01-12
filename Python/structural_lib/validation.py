@@ -10,6 +10,7 @@ and ensure consistent error handling across the library.
 See docs/research/cs-best-practices-audit.md for design rationale.
 """
 
+from __future__ import annotations
 
 from .errors import (
     E_INPUT_001,

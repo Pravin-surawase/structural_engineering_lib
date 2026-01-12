@@ -14,6 +14,8 @@ References:
 - SP 34:1987 (Handbook on Detailing)
 """
 
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass
 

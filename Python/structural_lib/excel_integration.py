@@ -12,6 +12,8 @@ Usage:
     from structural_lib.excel_integration import process_beam_schedule, batch_generate_dxf
 """
 
+from __future__ import annotations
+
 import csv
 import json
 import logging
@@ -51,7 +53,7 @@ class BeamDesignData:
     status: str  # "OK" or "REVISE"
 
     @classmethod
-    def from_dict(cls, data: dict) -> "BeamDesignData":
+    def from_dict(cls, data: dict) -> BeamDesignData:
         """Create from dictionary (flexible key matching)."""
         # Normalize keys (handle both camelCase and snake_case)
         normalized = {}

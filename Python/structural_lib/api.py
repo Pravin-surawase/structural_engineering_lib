@@ -5,6 +5,8 @@ Module:       api
 Description:  Public facing API functions
 """
 
+from __future__ import annotations
+
 import json
 from collections.abc import Sequence
 from importlib.metadata import PackageNotFoundError, version

@@ -7,6 +7,8 @@ Description:  Flexural design and analysis functions per IS 456:2000
 Traceability: Functions are decorated with @clause for IS 456 clause references.
 """
 
+from __future__ import annotations
+
 import math
 
 from structural_lib import materials

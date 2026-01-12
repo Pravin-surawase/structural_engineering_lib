@@ -6,6 +6,7 @@ This module provides AI-driven cost optimization that finds the cheapest
 beam design meeting IS 456:2000 requirements.
 """
 
+from __future__ import annotations
 
 from structural_lib.costing import CostProfile
 from structural_lib.optimization import CostOptimizationResult, optimize_beam_cost
