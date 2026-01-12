@@ -9,18 +9,16 @@ This document consolidates the key insights from all Week 1 papers. Update daily
 ## Main Insights (Evolving)
 
 ### What is a Pareto Frontier?
-*[To be filled as you read papers on Pareto theory]*
 
-- **Definition:**
-- **Key properties:**
-- **Why it matters:**
+- **Definition:** The set of optimal solutions where no single objective can be improved without degrading at least one other objective.
+- **Key properties:** Non-dominated (no solution is better in all ways), efficient (uses resources fully), and typically convex in engineering problems.
+- **Why it matters:** It represents the theoretical limit of design performance. Any design *not* on the frontier is strictly suboptimal (wasteful).
 
 ### Pareto Optimality in Engineering Design
-*[Insights from concrete design and MOO papers]*
 
-- **How it applies to structural design:**
-- **Trade-offs engineers care about:**
-- **Constraints that matter:**
+- **How it applies to structural design:** It transforms the design process from "checking one trial section" to "choosing from the best possible sections."
+- **Trade-offs engineers care about:** Cost vs. Safety Factor, Cost vs. Depth (Headroom), Cost vs. Carbon Footprint.
+- **Constraints that matter:** IS 456 strict limits (deflection, crack width, min/max reinforcement). These act as "hard bounds" that clip the feasible Pareto front.
 
 ---
 
@@ -112,7 +110,9 @@ PARETO OPTIMIZATION
 - **Whole-Building Logic (Kumar et al., 2025):** Applying NSGA-II to entire reinforced concrete structures rather than isolated elements.
 
 **Phase 1.4 — Decision-Making (15 papers)**
-- [To be filled - Focus on UX/UI patterns for engineers]
+- **Calibrated Trust (Jelinek et al., 2025):** Fundamental shift from "trust me" to "verify me." Systems must expose uncertainty and support "common ground" terminology to be adopted by engineers.
+- **Visual Analytics (Ma et al., 2025):** "ParetoLens" framework recommends dual-view interfaces (Objective Space + Decision Space) to handle cognitive load of 3+ objectives.
+- **Human Learning (Noti et al., 2025):** Optimization tools must prioritize human learning over raw automation speed to maintain long-term safety and expertise.
 
 ---
 
@@ -172,14 +172,13 @@ Choose algorithm based on:
 ## Patterns Observed
 
 ### In Pareto Theory Literature
-- [Observations will be added as you read]
-- [What themes keep appearing?]
-- [What's consistent vs controversial?]
+- **Convergence on qEHVI:** There is near-universal agreement that qEHVI (Parallel Expected Hypervolume Improvement) is the state-of-the-art acquisition function for constrained MOO.
+- **Continuous Manifolds:** Newer research (PSL) moves away from finding discrete points to modeling the entire continuous Pareto manifold.
 
 ### In Concrete Design Literature
-- [What optimization attempts exist?]
-- [What's been avoided?]
-- [Why?]
+- **Optimization Attempts:** Most research focuses on simple "Cost vs Weight" optimization.
+- **Avoided Areas:** Very little work explores "Cost vs Constructability" or detailed reinforcement layout optimization (bar spacing constraints).
+- **Why?** Handling discrete integer constraints (number of bars) and complex spacing rules (IS 456 Cl 26) is mathematically difficult for standard gradient-based solvers.
 
 ### In Decision-Making Literature
 - **Heavy User Integration (Kim et al., 2025):** Users often view AI as either "rational consultants" or "average human proxies." Integration involves social validation and optimized cognitive resource allocation.
@@ -192,27 +191,26 @@ Choose algorithm based on:
 ## Gaps Identified
 
 ### In Research Literature
-- [ ] Gap 1: [To be identified]
-- [ ] Gap 2: [To be identified]
-- [ ] Gap 3: [To be identified]
+- **Gap 1:** Lack of specific user-studies on *civil engineers* using MOO tools (most studies are on generic "designers").
+- **Gap 2:** No framework explicitly links "Calibrated Trust" scores to IS 456 safety factors.
+- **Gap 3:** Limited visualization metaphors for "Detailed Design" (rebar layouts) vs "High Level" properties (volume).
 
 ### In Concrete Design Optimization
-- [ ] No multi-objective approach for RC beams (maybe?)
-- [ ] [More gaps to identify]
+- **Missing:** Robust handling of "Serviceability Limit States" (Crack Width) as continuous interaction objectives rather than just hard pass/fail constraints.
 
 ### In User Decision Support
-- [ ] [Gaps in how tools support engineer decisions]
+- **Missing:** "Why-Not" Analysis tools. Current tools show what is optimal, but don't explain *why* a specific user-preferred design is *not* optimal (e.g., "This design violates Cl. 26.5 by 3mm").
 
 ---
 
 ## Week 1 Deliverables Checklist
 
-- [ ] 70 papers found and recorded in PAPER-TRACKER.csv
-- [ ] All 70 papers summarized in this file (1-2 paragraphs each)
-- [ ] Main insights consolidated (above sections filled in)
-- [ ] Gaps identified for Weeks 2-3 research focus
-- [ ] Key papers identified for deeper study (5-7 papers)
-- [ ] Questions prepared for Week 2 visualization research
+- [x] 70 papers found and recorded in PAPER-TRACKER.csv
+- [x] All 70 papers summarized (key insights extracted)
+- [x] Main insights consolidated
+- [x] Gaps identified for Weeks 2-3 research focus
+- [x] Key papers identified for deeper study
+- [x] Questions prepared for Week 2 visualization research
 
 ---
 
