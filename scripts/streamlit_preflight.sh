@@ -119,10 +119,15 @@ fi
 # Run scanner and capture output
 SCANNER_OUTPUT=$(.venv/bin/python scripts/check_streamlit_issues.py $SCANNER_ARGS 2>&1) || true
 
-# Count issues from scanner output (grep -c returns count, handle failure)
-SCANNER_CRITICAL=$(echo "$SCANNER_OUTPUT" | grep -c "Critical:" 2>/dev/null || echo "0")
-SCANNER_HIGH=$(echo "$SCANNER_OUTPUT" | grep -c "🟠 HIGH" 2>/dev/null || echo "0")
-SCANNER_MEDIUM=$(echo "$SCANNER_OUTPUT" | grep -c "🟡 MEDIUM" 2>/dev/null || echo "0")
+# Count issues from scanner output
+# Parse the summary section which looks like:
+#   - Errors: 0
+#   - Critical: 0
+#   - High: 15
+#   - Medium: 1
+SCANNER_CRITICAL=$(echo "$SCANNER_OUTPUT" | grep -E "^[[:space:]]*-[[:space:]]*Critical:" | sed 's/.*: //' | tr -d ' ' || echo "0")
+SCANNER_HIGH=$(echo "$SCANNER_OUTPUT" | grep -E "^[[:space:]]*-[[:space:]]*High:" | sed 's/.*: //' | tr -d ' ' || echo "0")
+SCANNER_MEDIUM=$(echo "$SCANNER_OUTPUT" | grep -E "^[[:space:]]*-[[:space:]]*Medium:" | sed 's/.*: //' | tr -d ' ' || echo "0")
 
 # Ensure values are numeric
 SCANNER_CRITICAL=${SCANNER_CRITICAL//[^0-9]/}
