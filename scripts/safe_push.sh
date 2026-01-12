@@ -138,7 +138,8 @@ parallel_fetch_complete() {
     fi
     log_message "INFO" "Fetch completed successfully"
   else
-    log_message "WARN" "Fetch PID not found or already completed"
+    # Not an error - fetch likely completed quickly or was skipped
+    log_message "INFO" "Fetch completed (no PID to wait on)"
   fi
 
   # Now merge the fetched changes (branch-aware)
@@ -272,7 +273,12 @@ echo -e "${YELLOW}Step 3/7: Committing (pre-commit hooks running)...${NC}"
 log_message "INFO" "Step 3: Creating commit"
 if ! git commit -m "$COMMIT_MSG"; then
   echo -e "${RED}ERROR: Commit failed (pre-commit hooks may have errors)${NC}"
-  echo "Fix the errors and run again"
+  echo ""
+  echo -e "${YELLOW}Common fixes:${NC}"
+  echo "  1. Check hook output above for specific errors"
+  echo "  2. If ruff/black modified files, run this command again (auto-retry)"
+  echo "  3. If tests failed, fix and re-run: ./scripts/ai_commit.sh \"message\""
+  echo ""
   log_message "ERROR" "Commit failed - pre-commit hooks reported errors"
   exit 1
 fi

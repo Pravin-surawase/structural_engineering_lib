@@ -136,7 +136,11 @@ monitor_pr() {
     if [ "$checks_complete" = true ] && [ "$checks_passing" = true ] && [ "$mergeable" = "MERGEABLE" ]; then
         log_message "SUCCESS" "PR #$pr_number is ready to merge! Attempting auto-merge..."
 
-        if gh pr merge "$pr_number" --squash --delete-branch 2>&1 | tee -a "$LOG_FILE"; then
+        # Try merge, capture output for policy detection
+        local merge_output
+        merge_output=$(gh pr merge "$pr_number" --squash --delete-branch 2>&1) || true
+
+        if echo "$merge_output" | grep -q "Squashed and merged"; then
             log_message "SUCCESS" "✅ PR #$pr_number auto-merged successfully!"
             echo -e "${GREEN}✅ PR #$pr_number merged!${NC}"
             # Clear failure cache
@@ -148,8 +152,18 @@ monitor_pr() {
             log_message "INFO" "Syncing local main branch..."
             (cd "$PROJECT_ROOT" && git checkout main 2>/dev/null && git pull --ff-only 2>/dev/null) || true
             log_message "INFO" "Local main synced"
+        elif echo "$merge_output" | grep -q "policy prohibits"; then
+            # Branch protection requires --auto flag
+            log_message "INFO" "Branch policy requires auto-merge, enabling..."
+            if gh pr merge "$pr_number" --squash --delete-branch --auto 2>&1 | tee -a "$LOG_FILE"; then
+                log_message "SUCCESS" "✅ PR #$pr_number set to auto-merge (waiting for policy)"
+                echo -e "${GREEN}✅ PR #$pr_number set to auto-merge${NC}"
+            else
+                log_message "WARN" "PR #$pr_number requires manual merge (admin or review needed)"
+                echo -e "${YELLOW}⚠️  PR #$pr_number needs manual merge: gh pr merge $pr_number --squash --admin${NC}"
+            fi
         else
-            log_message "ERROR" "Failed to auto-merge PR #$pr_number"
+            log_message "ERROR" "Failed to auto-merge PR #$pr_number: $merge_output"
             echo -e "${RED}❌ Failed to merge PR #$pr_number${NC}"
         fi
     elif [ "$checks_complete" = false ]; then
