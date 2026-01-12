@@ -4,6 +4,95 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 19P8 Phase 2: Automation Governance & Prevention Systems (IN PROGRESS)
+
+**Focus:** Establish automation governance, implement prevention systems to stop repeating mistakes
+
+### Summary
+
+Session 19P8 Phase 2 (continuation) builds on Phase 1 hook clarity by implementing permanent prevention systems and automation governance to eliminate root causes of agent mistakes:
+
+1. **Strategic Planning** - Published P8 work plan documenting root causes and permanent fixes
+2. **Automation Governance** - Creating registry to track all 103+ scripts with status (active/deprecated/legacy)
+3. **Mistake Visibility** - Extending agent_mistakes_report.sh to parse hook_output logs (121 failures visible)
+4. **Manual Git Prevention** - Creating linter to block manual git examples from non-archive docs
+5. **Session Doc Freshness** - Implementing validator to prevent stale handoff documentation
+
+### Commits (In Progress)
+
+| Hash | Description |
+|------|-------------|
+| `ae61916` | docs(planning): create P8 work plan (strategic session template for future sessions) |
+| (pending) | docs(session): update SESSION_LOG and next-session-brief with P8 Phase 1+2 |
+| (pending) | feat(automation): create automation registry and validator |
+| (pending) | feat(logs): extend agent_mistakes_report.sh to parse hook output |
+| (pending) | feat(linter): create lint_docs_git_examples.sh for safety |
+| (pending) | feat(validator): create session doc freshness check |
+
+### Root Causes Being Fixed (Permanent Solutions)
+
+| Issue | Root Cause | Permanent Fix |
+|-------|-----------|---------------|
+| Automation sprawl (103+ scripts) | No registry, no governance | Registry + validator (can't add undocumented) |
+| Session docs drift | Manual updates, no freshness checks | Freshness validator (checks at commit time) |
+| Hook logs invisible | 25+ logs exist, parser doesn't read them | Extend mistakes report to parse all logs |
+| Manual git cognitive bias | Examples in docs unconsciously teach wrong behavior | Linter prevents ALL manual git (blocks at pre-commit) |
+| P8 strategy not published | Strategic work not documented | Published work plan as precedent |
+
+### Success Metrics (Target)
+
+- ✅ All hook output visible to agents (not buried in logs)
+- ✅ All scripts documented with status (active/deprecated/legacy)
+- ✅ 0 new undocumented scripts possible (validator blocks them)
+- ✅ 0 manual git examples in non-archive docs (linter prevents them)
+- ✅ Session docs stay current (freshness validator catches drift)
+- ✅ 0 merge conflicts caused by process (prevention systems enforce it)
+
+### Key Insight
+
+**From Reactive to Proactive:**
+- P7 approach: Add deprecation banner to one doc (symptoms fix)
+- P8 approach: Create automation governance systems (root cause fix)
+- Result: Problems CAN'T repeat (guards prevent them), not just unlikely
+
+---
+
+## 2026-01-12 — Session 19P8 Phase 1: Hook Clarity & Recovery Guidance
+
+**Focus:** Clarify hook blocking messages and recovery guidance
+
+### Summary
+
+Session 19 Part 8 Phase 1 reduced manual git fallbacks by improving hook output clarity and adding explicit recovery paths:
+
+1. **Hook Clarity** - Added "Why?" and automation coverage to pre-commit/pre-push output
+2. **Recovery Guidance** - Hooks now point to `git_ops.sh --status` when stuck
+3. **Entrypoint Reinforcement** - Emphasized `ai_commit.sh` as the primary path
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `0a58c20` | feat(hooks): improve clarity with 'why' and recovery guidance (PR #348 squash) |
+
+### Key Improvements
+
+- Hook blocks now explain the benefit (formatting, validation, safety, conflict resolution)
+- Recovery path is explicit (`git_ops.sh --status`)
+- Single primary command reinforced (`ai_commit.sh "message"`)
+- Addressed Tier 3 pre-commit failures (121 logged) by providing context
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| Commits | 1 (PR #348 merged) |
+| Files changed | 2 (pre-commit, pre-push hooks) |
+| Lines added | 27 (benefit explanation, recovery path) |
+| Hook output clarity | Enhanced (explains "why" automation exists) |
+
+---
+
 ## 2026-01-12 — Session 19P7: Documentation Cleanup & Tier-0 Entrypoints
 
 **Focus:** Validate review findings, consolidate entrypoints, add automation banners
