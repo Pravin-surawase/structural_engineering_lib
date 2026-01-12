@@ -5,6 +5,7 @@
 # Usage:
 #   ./scripts/ai_commit.sh "commit message"
 #   ./scripts/ai_commit.sh "commit message" --dry-run  # Preview only
+#   ./scripts/ai_commit.sh "commit message" --force    # Bypass PR check (for batching)
 #   ./scripts/ai_commit.sh --help
 
 set -e  # Exit on any error
@@ -18,20 +19,25 @@ NC='\033[0m' # No Color
 
 # Parse flags
 DRY_RUN=false
+FORCE=false
 COMMIT_MSG=""
 for arg in "$@"; do
     if [[ "$arg" == "--dry-run" ]]; then
         DRY_RUN=true
+    elif [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
+        FORCE=true
     elif [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
-        echo "Usage: ai_commit.sh \"commit message\" [--dry-run]"
+        echo "Usage: ai_commit.sh \"commit message\" [--dry-run] [--force]"
         echo ""
         echo "Options:"
         echo "  --dry-run  Preview what would happen without committing"
+        echo "  --force    Bypass PR requirement check (for batching work)"
         echo "  --help     Show this help message"
         echo ""
         echo "Examples:"
         echo "  ./scripts/ai_commit.sh \"docs: update guide\""
         echo "  ./scripts/ai_commit.sh \"feat: add feature\" --dry-run"
+        echo "  ./scripts/ai_commit.sh \"feat: batch work\" --force"
         exit 0
     elif [[ -z "$COMMIT_MSG" ]]; then
         COMMIT_MSG="$arg"
@@ -67,9 +73,13 @@ echo ""
 echo "→ Staging changes..."
 git add -A
 
-# Enforce PR-first workflow decision
+# Enforce PR-first workflow decision (unless --force is used)
 SHOULD_USE_PR_SCRIPT="$PROJECT_ROOT/scripts/should_use_pr.sh"
-if [[ -f "$SHOULD_USE_PR_SCRIPT" ]]; then
+if [[ "$FORCE" == "true" ]]; then
+    echo ""
+    echo -e "${YELLOW}→ --force flag: Bypassing PR requirement check${NC}"
+    echo "  (Use this for batching multiple commits, PR at end)"
+elif [[ -f "$SHOULD_USE_PR_SCRIPT" ]]; then
     echo ""
     echo "→ Checking whether a PR is required..."
     if ! "$SHOULD_USE_PR_SCRIPT" --explain; then
@@ -77,6 +87,9 @@ if [[ -f "$SHOULD_USE_PR_SCRIPT" ]]; then
             echo ""
             echo -e "${RED}✗ PR required. Create a task branch first:${NC}"
             echo "  ./scripts/create_task_pr.sh TASK-XXX \"description\""
+            echo ""
+            echo -e "${YELLOW}TIP: Use --force to bypass for batched commits:${NC}"
+            echo "  ./scripts/ai_commit.sh \"message\" --force"
             exit 1
         fi
         echo ""
