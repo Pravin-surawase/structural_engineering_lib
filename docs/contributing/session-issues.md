@@ -4,6 +4,25 @@ Purpose: capture recurring friction points and the fixes so we do not repeat the
 
 ---
 
+## 🔍 Mistake Review (Run at Session Start)
+
+**Run `./scripts/agent_mistakes_report.sh` at the start of each session** to see:
+- Pre-commit failures (files changed by hooks after staging)
+- Missing commit messages (empty or placeholder messages)
+- Policy blocks (manual git blocked by hooks)
+
+**What to do with this data:**
+1. **High pre-commit failures?** → Run `black` and `ruff` before committing
+2. **Policy blocks?** → You or another agent tried manual git - always use `ai_commit.sh`
+3. **Missing messages?** → Write meaningful commit messages describing the change
+
+**Automatic logging (OPS-01):**
+- Git hooks now log all blocked manual git attempts to `logs/git_workflow.log`
+- The `agent_mistakes_report.sh` script parses these logs
+- Review patterns weekly to identify training/documentation gaps
+
+---
+
 ## 2025-12-29 (v0.11.0 release)
 
 ### Issues Seen
