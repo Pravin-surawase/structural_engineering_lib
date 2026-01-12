@@ -252,6 +252,12 @@ The tool analyzes:
 3. **CI workflows** - .github/workflows/**/*.yml
 4. **Dependencies** - pyproject.toml, requirements*.txt
 
+**Dependency policy (agents MAY add deps when justified):**
+- Prefer stdlib-first; add third-party packages only when they materially improve quality or capability.
+- New dependencies must be optional extras in `Python/pyproject.toml` unless core runtime requires it.
+- Update README + relevant docs (API/API stability) to document the extra and install command.
+- Add tests or examples that exercise the new dependency path.
+
 **Also required for substantial changes even in low-risk files:**
 - **Major docs** - 500+ lines (e.g., new guides, catalogs)
 - **Substantial docs** - 150+ lines or 3+ files

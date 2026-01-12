@@ -47,7 +47,8 @@
 | **Commit changes** | `./scripts/ai_commit.sh "message"` | 5s |
 | **Check if PR needed** | `./scripts/should_use_pr.sh --explain` | 1s |
 | **Create task PR** | `./scripts/create_task_pr.sh TASK-XXX "description"` | 10s |
-| **Finish task PR** | `./scripts/finish_task_pr.sh TASK-XXX "description"` | 15s |
+| **Finish task PR** | `./scripts/finish_task_pr.sh TASK-XXX "description" --async` | 15s |
+| **Clean stale branches** | `./scripts/cleanup_stale_branches.sh` | 10s |
 | **Fix git issues** | `./scripts/recover_git_state.sh` | 5s |
 | **Start session** | `./scripts/agent_start.sh --quick` | 6s |
 | **End session** | `.venv/bin/python scripts/end_session.py` | 3s |

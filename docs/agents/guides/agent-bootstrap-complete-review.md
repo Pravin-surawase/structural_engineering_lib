@@ -287,7 +287,7 @@ git push
 
 **Examples:**
 - Release script whitespace issues → use `<br>` instead of trailing spaces
-- `gh pr checks --watch` timeout → re-run with longer timeout
+- `./scripts/pr_async_merge.sh status` timeout → re-run with longer timeout
 - PR behind main → run `gh pr update-branch <num>`
 - Main branch guard race condition → API eventual consistency (fixed)
 

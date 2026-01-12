@@ -33,7 +33,7 @@ Purpose: capture recurring friction points and the fixes so we do not repeat the
 
 ### Fixes Applied
 - **Doc stamp formatting:** switch “Last Updated” lines to `...<br>` instead of trailing spaces; update `scripts/bump_version.py` to output `<br>` (no whitespace).
-- **Checks timeout:** re-run `gh pr checks <num> --watch` with a longer timeout when needed.
+- **Checks timeout:** avoid TUI checks; use `./scripts/pr_async_merge.sh status` or `finish_task_pr.sh --wait` (polling).
 - **Update-behind PRs:** run `gh pr update-branch <num>` then re-check CI before merging.
 - **Clean-venv verify:** use a fresh venv for `pip install structural-lib-is456==X.Y.Z`.
 

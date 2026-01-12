@@ -80,6 +80,12 @@ git push
 ./scripts/worktree_manager.sh create AGENT_NAME
 ```
 
+### Rule 4: Dependency Changes Must Be Optional
+- Prefer stdlib-first; add third-party deps only when needed.
+- Add new packages under `Python/pyproject.toml` optional extras.
+- Update README + API docs with install commands and purpose.
+- Always use PR workflow for dependency changes.
+
 ---
 
 ## 🧠 Automation-First Mentality (CRITICAL)
@@ -182,13 +188,10 @@ START
 ./scripts/ai_commit.sh "fix: update benchmark function calls"
 
 # 4. Finish and create PR
-./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures"
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async
 
-# 5. Wait for CI
-gh pr checks $(gh pr list --head task/TASK-270 --json number -q '.[0].number') --watch
-
-# 6. Merge when green
-gh pr merge $(gh pr list --head task/TASK-270 --json number -q '.[0].number') --squash --delete-branch
+# 5. Check CI status
+./scripts/pr_async_merge.sh status
 ```
 
 ### Pattern C: Worktree Workflow (Background Agents)
@@ -231,7 +234,7 @@ cd $PROJECT_ROOT
 |--------|---------|-------------|
 | `create_task_pr.sh` | Start PR workflow | Before production changes |
 | `finish_task_pr.sh` | Create PR | When work complete |
-| `gh pr checks --watch` | Monitor CI | After PR creation |
+| `./scripts/pr_async_merge.sh status` | Monitor CI | After PR creation |
 | `gh pr merge --squash` | Merge PR | When CI passes |
 
 ### Worktree Management Scripts

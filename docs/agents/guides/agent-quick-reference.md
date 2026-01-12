@@ -70,11 +70,10 @@ Is this >50 lines OR 2+ files?
 ./scripts/ai_commit.sh "fix: update signatures"
 
 # 3. Submit PR
-./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks"
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --async
 
-# 4. Wait for CI & merge
-gh pr checks <num> --watch
-gh pr merge <num> --squash --delete-branch
+# 4. Check CI status
+./scripts/pr_async_merge.sh status
 ```
 
 ### Pattern 3: Background Agent (Long Tasks)

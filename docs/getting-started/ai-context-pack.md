@@ -255,7 +255,7 @@ Keep wording precise; no claims about untested tooling.
 | Mistake | Correct |
 |---------|---------|
 | Running `python` directly | Use `.venv/bin/python` |
-| Merging before CI passes | Wait for `gh pr checks --watch` |
+| Merging before CI passes | Wait for `./scripts/pr_async_merge.sh status` |
 | Multiple micro-PRs | Batch related changes |
 | Editing without reading | Check file content first |
 | Editing Streamlit without scanner | Run `.venv/bin/python scripts/check_streamlit_issues.py <file>` |

@@ -118,6 +118,11 @@ pip install structural-lib-is456
 
 # With DXF export support (recommended)
 pip install "structural-lib-is456[dxf]"
+
+# Optional extras
+pip install "structural-lib-is456[report]"     # Jinja2 templates for report rendering
+pip install "structural-lib-is456[validation]" # JSON schema validation helpers
+pip install "structural-lib-is456[render]"     # DXF render to PNG/PDF (matplotlib)
 ```
 
 Colab:
@@ -390,7 +395,7 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 
 | Task | Command | Where |
 | --- | --- | --- |
-| Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` | repo root |
+| Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` (includes Hypothesis) | repo root |
 | Install hooks | `pre-commit install` | repo root |
 | Install git hooks | `./scripts/install_git_hooks.sh` | repo root |
 | Run tests | `cd Python && python3 -m pytest` | repo root |

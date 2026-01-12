@@ -47,7 +47,7 @@ python -m pytest  # ✅ All pass
 git checkout feature/TASK-270-fix-tests  # Review work
 git push origin feature/TASK-270-fix-tests
 gh pr create
-gh pr checks --watch
+./scripts/pr_async_merge.sh status
 gh pr merge --squash
 ```
 
@@ -216,7 +216,7 @@ git push origin feature/TASK-XXX-description
 gh pr create --title "TASK-XXX: description" --body "..."
 
 # 4. Wait for CI checks
-gh pr checks --watch
+./scripts/pr_async_merge.sh status
 
 # 5. Merge when ready
 gh pr merge --squash
@@ -403,7 +403,7 @@ MAIN agent responds with decision, background agent continues work.
 2. MAIN agent reviews local commits: `git checkout feature/TASK-XXX`
 3. If approved, MAIN pushes: `git push origin feature/TASK-XXX`
 4. MAIN creates PR: `gh pr create`
-5. MAIN monitors CI: `gh pr checks --watch`
+5. MAIN monitors CI: `./scripts/pr_async_merge.sh status`
 6. MAIN merges when ready: `gh pr merge --squash`
 7. MAIN updates TASKS.md and memory.md
 
@@ -574,7 +574,7 @@ git push origin feature/TASK-XXX-description
 gh pr create --title "TASK-XXX: description" --body "..."
 
 # Monitor CI
-gh pr checks --watch
+./scripts/pr_async_merge.sh status
 
 # Merge when ready
 gh pr merge --squash

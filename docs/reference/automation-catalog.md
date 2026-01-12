@@ -416,7 +416,7 @@ Safe for direct commit using safe_push.sh.
   - `git stash pop`
 
 **What It Does:**
-1. Creates branch: `task-XXX-description`
+1. Creates branch: `task/TASK-XXX`
 2. Switches to new branch
 3. Creates PR with title: `[TASK-XXX] Description`
 4. Sets proper labels
@@ -437,24 +437,44 @@ Safe for direct commit using safe_push.sh.
 
 **Usage:**
 ```bash
-./scripts/finish_task_pr.sh TASK-XXX "completion summary"
+./scripts/finish_task_pr.sh TASK-XXX "completion summary" --async
+./scripts/finish_task_pr.sh TASK-XXX "completion summary" --wait
 
 # Example
-./scripts/finish_task_pr.sh TASK-171 "Automation catalog with 41 scripts documented"
+./scripts/finish_task_pr.sh TASK-171 "Automation catalog with 41 scripts documented" --async
 ```
 
 **What It Does:**
-1. Verifies CI passed
-2. Squash merges PR
-3. Deletes branch
-4. Updates TASKS.md (moves to Done)
-5. Switches back to main
+1. Creates PR with a safe body file (no multiline shell issues)
+2. `--async` registers PR with the CI daemon for auto-merge
+3. `--wait` polls CI checks and merges when green
+4. `--skip` leaves PR open for manual merge
 
 **Related:** [create_task_pr.sh](#11-create_task_prsh)
 
 ---
 
-### 13. `test_should_use_pr.sh`
+### 13. `cleanup_stale_branches.sh`
+
+**Purpose:** Identify and optionally delete stale local/remote task branches.
+
+**Usage:**
+```bash
+./scripts/cleanup_stale_branches.sh        # Dry run
+./scripts/cleanup_stale_branches.sh --apply
+```
+
+**What It Does:**
+1. Fetches `origin` with prune
+2. Flags local branches merged into `origin/main`
+3. Flags remote `origin/task/*` branches with no open PRs
+4. Deletes only when `--apply` is passed
+
+**Safety:** Dry-run by default; review before deleting.
+
+---
+
+### 14. `test_should_use_pr.sh`
 
 **Purpose:** Comprehensive test suite for should_use_pr.sh decision logic.
 

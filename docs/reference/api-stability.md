@@ -126,6 +126,8 @@ api.generate_calculation_report(result, beam_id, story, project_info, output_pat
 
 ### Engineering Testing Utilities (v0.17+)
 
+Optional extras: `dev` (Hypothesis), `report` (Jinja2), `validation` (jsonschema). Core remains stdlib-only.
+
 ```python
 from structural_lib import testing_strategies
 
@@ -147,7 +149,7 @@ testing_strategies.BoundaryValueGenerator.generate()
 testing_strategies.BeamParameterRanges()
 testing_strategies.BeamParameterRanges.get_boundary_generator(param)
 
-# Property-based testing (stdlib only, no hypothesis)
+# Property-based testing (stdlib by default; optional Hypothesis via `.[dev]`)
 testing_strategies.PropertyBasedTester(seed=None)
 testing_strategies.PropertyBasedTester.generate_beam_cases(n=100, ranges=None)
 

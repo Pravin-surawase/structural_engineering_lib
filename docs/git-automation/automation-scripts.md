@@ -159,22 +159,29 @@ Complete reference for all 103 git automation scripts. Organized by use case for
 
 **`finish_task_pr.sh`** (3.0KB)
 ```bash
-./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks"
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --async
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --wait
 ```
 - **Purpose:** Submit PR (open pull request)
-- **Creates:** GitHub PR with:
-  - Link to task
-  - Labels
-  - Push to remote
+- **Creates:** GitHub PR with title + body file (safe for automation)
+- **Modes:**
+  - `--async` (default) - CI daemon monitors and auto-merges
+  - `--wait` - Polls CI and merges when green
+  - `--skip` - Leaves PR open for manual merge
 
 **After PR Created:**
 ```bash
-# Wait for CI
-gh pr checks <num> --watch
-
-# Merge when green
-gh pr merge <num> --squash --delete-branch
+# Check status
+./scripts/pr_async_merge.sh status
 ```
+
+**`cleanup_stale_branches.sh`** (NEW)
+```bash
+./scripts/cleanup_stale_branches.sh        # Dry run
+./scripts/cleanup_stale_branches.sh --apply
+```
+- **Purpose:** Identify and optionally delete stale local/remote task branches
+- **Safety:** Dry-run by default; requires review before deletion
 
 ---
 

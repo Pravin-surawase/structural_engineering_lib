@@ -48,7 +48,7 @@ Based on comprehensive analysis of `docs/research/git-workflow-recurring-issues.
 - **Solution:** Intelligent conflict detection, resolution strategy guidance
 
 **Problem 4: CI Monitoring Gap**
-- Manual `gh pr checks --watch` after every PR
+- Manual CI polling after every PR (TUI-based)
 - Failures discovered late, blocking other work
 - No root cause analysis, manual log diving
 - **Solution:** Auto-monitoring, intelligent alerting, failure diagnosis
@@ -159,7 +159,7 @@ Background Agent 2 → commits locally → notifies GIT agent → continues work
 
 3. **Monitor CI**
    ```bash
-   gh pr checks --watch
+   ./scripts/pr_async_merge.sh status
    # If failure: Parse logs, identify root cause, alert MAIN/background agent
    ```
 
@@ -647,7 +647,7 @@ test_should_use_pr.sh     # Tests decision logic
 ```bash
 gh pr create              # Create PR with title/description
 gh pr list                # List open/closed PRs
-gh pr checks --watch      # Monitor CI checks real-time
+./scripts/pr_async_merge.sh status  # Monitor CI checks (non-TUI)
 gh pr merge --squash      # Merge PR with squash strategy
 gh pr view                # View PR details
 gh run list               # List workflow runs
@@ -1182,7 +1182,7 @@ alert-main "Pre-commit hooks issue:
 2. ✅ Risk assessment automation (file types, scope analysis)
 3. ✅ Auto-push to remote (feature branches)
 4. ✅ Auto-PR creation (title/description generation)
-5. ✅ CI monitoring (gh pr checks --watch)
+5. ✅ CI monitoring (pr_async_merge.sh status)
 6. ✅ Low-risk auto-merge (docs/tests/scripts only)
 
 **Success Criteria:**

@@ -149,7 +149,7 @@ git commit -m "feat: implement new feature"  # Pre-commit hooks run here
 # If pre-commit modifies files: git add -A && git commit --amend --no-edit
 git push -u origin feat/task-142-new-feature
 gh pr create --title "feat: implement new feature" --body "Implements TASK-142..."
-gh pr checks --watch  # WAIT for all CI checks
+./scripts/pr_async_merge.sh status  # WAIT for all CI checks
 gh pr merge --squash --delete-branch  # Only after CI passes
 ```
 
@@ -455,7 +455,7 @@ If `main` breaks:
 
 ### ✅ DO:
 - **Use pre-commit hooks** — Install once (`pre-commit install`), saves CI time
-- **Wait for CI before merging** — Use `gh pr checks --watch`
+- **Wait for CI before merging** — Use `./scripts/pr_async_merge.sh status`
 - **Pull before push** — Especially after merging PRs: `git pull --ff-only`
 - **Use feature branches for significant changes** — Breaking changes, new features, risky refactors
 - **Amend commits when pre-commit modifies files** — `git add -A && git commit --amend --no-edit`
@@ -508,7 +508,7 @@ If `main` breaks:
 - [ ] Commit message follows convention (`feat:`, `fix:`, `docs:`)
 - [ ] No unrelated files staged (`git status`)
 - [ ] Pulled latest changes (`git pull --ff-only` if on main)
-- [ ] For PR: Ready to wait for CI (`gh pr checks --watch`)
+- [ ] For PR: Ready to wait for CI (`./scripts/pr_async_merge.sh status`)
 
 ---
 

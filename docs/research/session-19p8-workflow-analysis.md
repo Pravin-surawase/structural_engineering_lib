@@ -14,7 +14,7 @@
 
 ## Summary
 
-Analysis of git workflow issues from Session 19P8 Phase 2 to identify root causes and permanent solutions.
+Analysis of git workflow issues from Session 19P8 Phase 2 to identify root causes and permanent solutions. Updated to reflect fixes now in automation scripts.
 
 ---
 
@@ -34,7 +34,7 @@ Analysis of git workflow issues from Session 19P8 Phase 2 to identify root cause
 **Solution:**
 1. Always use `create_task_pr.sh` to create branches (enforces naming)
 2. When continuing work on existing branch, use branch name directly
-3. Add `--force` flag to `finish_task_pr.sh` to skip interactive prompts
+3. ✅ `finish_task_pr.sh` now supports `--force` for non-interactive use
 
 ### Issue 2: Direct `gh pr create` with Multiline Body
 
@@ -47,9 +47,8 @@ Analysis of git workflow issues from Session 19P8 Phase 2 to identify root cause
 - The terminal tool simplifies commands, breaking multiline handling
 
 **Solution:**
-1. Use heredoc or temp file for PR body
-2. Or use `--body-file` flag with a file
-3. Or use simple one-line body and edit PR description later
+1. ✅ `finish_task_pr.sh` now uses `--body-file` to avoid multiline parsing issues
+2. Alternative: use a simple one-line body and edit PR description later
 
 ### Issue 3: Orphan Remote Branches
 
@@ -62,9 +61,8 @@ Analysis of git workflow issues from Session 19P8 Phase 2 to identify root cause
 - Some branches from failed/abandoned PRs
 
 **Solution:**
-1. Regular cleanup with `git push origin --delete <branch>`
-2. Add cleanup script for orphan branches
-3. Ensure all merges use `--delete-branch`
+1. ✅ Use `cleanup_stale_branches.sh` (dry run by default)
+2. Ensure all merges use `--delete-branch`
 
 ### Issue 4: Using `gh pr checks --watch` in Terminal
 
@@ -76,9 +74,8 @@ Analysis of git workflow issues from Session 19P8 Phase 2 to identify root cause
 - `gh pr checks --watch` uses TUI mode incompatible with captured output
 
 **Solution:**
-1. Use `gh pr view --json statusCheckRollup` instead of `--watch`
-2. Loop with `sleep` to poll status
-3. Avoid TUI commands in automated workflows
+1. ✅ `finish_task_pr.sh` now polls `gh pr view --json statusCheckRollup`
+2. Avoid TUI commands in automated workflows
 
 ### Issue 5: Local Stale Branches
 
@@ -94,18 +91,17 @@ Analysis of git workflow issues from Session 19P8 Phase 2 to identify root cause
 - No automation for local cleanup
 
 **Solution:**
-1. Clean local branches after PR merge
-2. Add script to detect and clean stale local branches
+1. ✅ `cleanup_stale_branches.sh` detects and deletes stale local branches
 
 ---
 
 ## Correct Workflow (For Reference)
 
-### Option A: Using PR Scripts (Preferred)
+### Option A: Using PR Scripts (Preferred, Automation-First)
 
 ```bash
-# 1. Start on main
-git switch main && git pull --ff-only
+# 1. Ensure git state is clean
+./scripts/git_ops.sh --status
 
 # 2. Create task branch (ALWAYS use this script)
 ./scripts/create_task_pr.sh TASK-XXX "description"
@@ -115,31 +111,22 @@ git switch main && git pull --ff-only
 ./scripts/ai_commit.sh "fix: handle edge case"
 
 # 4. Finish and create PR (use SAME task ID)
-./scripts/finish_task_pr.sh TASK-XXX "description"
+./scripts/finish_task_pr.sh TASK-XXX "description" --async
 # Choose: A (async), W (wait), or S (skip)
 
 # 5. After merge, clean up
-git switch main && git pull --ff-only
-git branch -d task/TASK-XXX  # Delete local branch
+./scripts/cleanup_stale_branches.sh
+# (run with --apply only after verifying the list)
 ```
 
-### Option B: Direct PR (When Branch Already Exists)
+### Option B: Existing Task Branch
 
 ```bash
 # If already on a task branch with commits:
 ./scripts/ai_commit.sh "final commit"
 
-# Create PR manually (simple body to avoid terminal issues)
-gh pr create --title "TASK-XXX: Description" --body "Summary of changes"
-
-# Wait for CI (use JSON, not --watch)
-gh pr view <num> --json statusCheckRollup
-
-# Merge when ready
-gh pr merge <num> --squash --delete-branch
-
-# Clean up
-git switch main && git pull --ff-only
+# Create PR + wait/merge using the script (non-interactive safe)
+./scripts/finish_task_pr.sh TASK-XXX "description" --wait
 ```
 
 ---
@@ -147,10 +134,10 @@ git switch main && git pull --ff-only
 ## Action Items
 
 1. ✅ Document these issues (this file)
-2. 🔲 Clean up orphan remote branches
-3. 🔲 Clean up stale local branches
-4. 🔲 Add `--force` flag to finish_task_pr.sh for non-interactive use
-5. 🔲 Create branch cleanup script
+2. ✅ Clean up orphan remote branches (via cleanup script)
+3. ✅ Clean up stale local branches (via cleanup script)
+4. ✅ Add `--force` flag to finish_task_pr.sh for non-interactive use
+5. ✅ Create branch cleanup script
 6. 🔲 Update workflow documentation
 
 ---
@@ -167,8 +154,8 @@ Add to `agent_start.sh`:
 ### Post-Merge Checklist
 
 After any PR merge:
-1. Switch to main: `git switch main && git pull --ff-only`
-2. Delete local branch: `git branch -d task/TASK-XXX`
+1. Ensure clean state: `./scripts/git_ops.sh --status`
+2. Clean stale branches: `./scripts/cleanup_stale_branches.sh` (use `--apply` only after review)
 3. Verify remote deleted (should be automatic with `--delete-branch`)
 
 ---

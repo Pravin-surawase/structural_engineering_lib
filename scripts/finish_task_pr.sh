@@ -13,11 +13,64 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+# Poll PR checks without TUI (avoids alternate buffer issues).
+poll_pr_checks() {
+    local pr_number="$1"
+    local interval="${2:-10}"
+
+    while true; do
+        local stats
+        stats=$(gh pr view "$pr_number" --json state,mergeable,statusCheckRollup --jq '[
+            .state,
+            .mergeable,
+            (.statusCheckRollup | length),
+            ([.statusCheckRollup[] | select(.conclusion == "SUCCESS" or .conclusion == "NEUTRAL" or .conclusion == "SKIPPED")] | length),
+            ([.statusCheckRollup[] | select(.conclusion == "FAILURE" or .conclusion == "CANCELLED" or .conclusion == "TIMED_OUT" or .conclusion == "ACTION_REQUIRED")] | length),
+            ([.statusCheckRollup[] | select(.status != "COMPLETED")] | length)
+        ] | @tsv' 2>/dev/null || true)
+
+        if [[ -z "$stats" ]]; then
+            echo -e "${YELLOW}⚠ Unable to fetch PR status. Retrying...${NC}"
+            sleep "$interval"
+            continue
+        fi
+
+        local state mergeable total passed failed pending
+        read -r state mergeable total passed failed pending <<< "$stats"
+
+        if [[ "$state" == "MERGED" ]]; then
+            echo -e "${GREEN}✓ PR already merged${NC}"
+            return 0
+        fi
+        if [[ "$state" == "CLOSED" ]]; then
+            echo -e "${YELLOW}PR closed without merge${NC}"
+            return 1
+        fi
+        if [[ "$mergeable" == "CONFLICTING" ]]; then
+            echo -e "${RED}✗ PR has conflicts${NC}"
+            return 1
+        fi
+
+        if [[ "$failed" -gt 0 ]]; then
+            echo -e "${RED}✗ $failed checks failed${NC}"
+            return 1
+        fi
+        if [[ "$pending" -gt 0 ]]; then
+            echo -e "${YELLOW}⏳ $pending pending${NC} (${passed}/${total} passed)"
+            sleep "$interval"
+            continue
+        fi
+
+        echo -e "${GREEN}✓ All checks passed (${passed}/${total})${NC}"
+        return 0
+    done
+}
+
 # Parse arguments
 TASK_ID=""
 DESCRIPTION=""
 FORCE=false
-ASYNC=true
+MODE="prompt"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -26,11 +79,11 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --async|-a)
-            ASYNC=true
+            MODE="async"
             shift
             ;;
         --wait|-w)
-            ASYNC=false
+            MODE="wait"
             shift
             ;;
         *)
@@ -92,15 +145,16 @@ git push -u origin "$CURRENT_BRANCH"
 
 # Create PR
 echo "→ Creating pull request..."
-PR_BODY="## $TASK_ID: $DESCRIPTION
+PR_BODY_FILE=$(mktemp)
+trap 'rm -f "$PR_BODY_FILE"' EXIT
+cat > "$PR_BODY_FILE" <<EOF
+## $TASK_ID: $DESCRIPTION
 
 ### Changes
 <!-- Summarize what was changed -->
 
 ### Testing
-- ✅ All 2200 tests passing
-- ✅ Mypy type checking clean
-- ✅ Pre-commit hooks passing
+- Not run (update if tests executed)
 
 ### Checklist
 - [ ] Tests pass locally
@@ -109,11 +163,12 @@ PR_BODY="## $TASK_ID: $DESCRIPTION
 - [ ] Docs updated if needed
 
 ---
-*Created via finish_task_pr.sh*"
+*Created via finish_task_pr.sh*
+EOF
 
 gh pr create \
     --title "$TASK_ID: $DESCRIPTION" \
-    --body "$PR_BODY" \
+    --body-file "$PR_BODY_FILE" \
     --base main
 
 PR_NUMBER=$(gh pr view --json number -q .number)
@@ -122,10 +177,11 @@ echo ""
 echo -e "${GREEN}✓ Pull request created: #$PR_NUMBER${NC}"
 echo ""
 
-# Handle force mode (non-interactive) - always use async
-if [[ "$FORCE" == "true" ]]; then
-    REPLY="a"
-else
+if [[ "$FORCE" == "true" && "$MODE" == "prompt" ]]; then
+    MODE="async"
+fi
+
+if [[ "$MODE" == "prompt" ]]; then
     echo -e "${YELLOW}Options:${NC}"
     echo "  1. [A]sync - Daemon monitors & auto-merges (recommended - continue working)"
     echo "  2. [W]ait  - Watch CI now, then merge"
@@ -133,54 +189,34 @@ else
     echo ""
     read -p "Choice [A/w/s]: " -n 1 -r
     echo
+    case "$REPLY" in
+        [Ww]) MODE="wait" ;;
+        [Ss]) MODE="skip" ;;
+        *) MODE="async" ;;
+    esac
 fi
 
-case "$REPLY" in
-    [Ww])
-        echo "→ Watching CI checks..."
-        # Use --fail-fast to avoid indefinite blocking in non-interactive
-        if [[ "$FORCE" == "true" ]]; then
-            # In force mode, set auto-merge and don't block
-            echo "→ Setting up auto-merge..."
-            gh pr merge "$PR_NUMBER" --squash --delete-branch --auto 2>/dev/null || {
-                echo -e "${YELLOW}⚠ Auto-merge not available, trying direct merge${NC}"
-                gh pr merge "$PR_NUMBER" --squash --delete-branch 2>/dev/null || true
-            }
+case "$MODE" in
+    wait)
+        echo "→ Watching CI checks (polling)..."
+        if poll_pr_checks "$PR_NUMBER" 10; then
+            echo "→ Merging PR..."
+            gh pr merge "$PR_NUMBER" --squash --delete-branch
+
+            echo "→ Switching back to main..."
             git checkout main
             git pull --ff-only 2>/dev/null || true
-            echo -e "${GREEN}✓ Auto-merge enabled for PR #$PR_NUMBER${NC}"
-        else
-            gh pr checks "$PR_NUMBER" --watch --interval 10
 
             echo ""
-            read -p "Merge PR now? (y/N) " -n 1 -r
-            echo
-            if [[ $REPLY =~ ^[Yy]$ ]]; then
-                echo "→ Waiting for all CI checks to complete..."
-                gh pr checks "$PR_NUMBER" --watch --fail-fast || {
-                    echo -e "${YELLOW}⚠ Some checks still running or failed${NC}"
-                    echo "Check status: gh pr checks $PR_NUMBER"
-                    echo "Merge manually when ready: gh pr merge $PR_NUMBER --squash --delete-branch"
-                    exit 0
-                }
-
-                echo "→ Merging PR..."
-                gh pr merge "$PR_NUMBER" --squash --delete-branch
-
-                echo "→ Switching back to main..."
-                git checkout main
-                git pull --ff-only
-
-                echo ""
-                echo -e "${GREEN}✓ PR merged and cleaned up!${NC}"
-            else
-                echo -e "${YELLOW}PR created but not merged${NC}"
-                echo "Merge manually: gh pr merge $PR_NUMBER --squash --delete-branch"
-            fi
+            echo -e "${GREEN}✓ PR merged and cleaned up!${NC}"
+        else
+            echo -e "${YELLOW}⚠ Checks failed or blocked${NC}"
+            echo "Check status: gh pr view $PR_NUMBER --web"
+            exit 1
         fi
         ;;
 
-    [Ss])
+    skip)
         echo -e "${YELLOW}PR created but not monitored${NC}"
         echo "View:  gh pr view $PR_NUMBER --web"
         echo "Merge: gh pr merge $PR_NUMBER --squash --delete-branch"

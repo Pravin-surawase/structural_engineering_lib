@@ -104,13 +104,10 @@ For code, VBA, CI, dependencies:
 ./scripts/ai_commit.sh "fix: update benchmark function calls"
 
 # 3. Finish and create PR
-./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures"
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async
 
-# 4. Wait for CI
-gh pr checks <PR_NUM> --watch
-
-# 5. Merge when green
-gh pr merge <PR_NUM> --squash --delete-branch
+# 4. Check CI status (non-TUI)
+./scripts/pr_async_merge.sh status
 ```
 
 ### Pattern C: Multi-Phase Tasks
@@ -323,7 +320,7 @@ type(scope): description
 | `git commit --amend` after pushing | Create new commit instead |
 | Multiple micro-PRs for tiny changes | Batch related changes into one |
 | Committing unrelated files together | Stage only intended files |
-| Skipping CI checks | Always `gh pr checks --watch` |
+| Skipping CI checks | Use `finish_task_pr.sh --wait` or `pr_async_merge.sh status` |
 
 ---
 

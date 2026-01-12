@@ -629,6 +629,8 @@ Professional testing utilities for structural engineering calculations.
 
 **Predefined tolerances:** `AREA_TOLERANCE`, `LENGTH_TOLERANCE`, `FORCE_TOLERANCE`, `STRESS_TOLERANCE`, `RATIO_TOLERANCE`
 
+**Optional extras:** `dev` (Hypothesis), `report` (Jinja2 templates), `validation` (jsonschema helpers). Core stays stdlib-only.
+
 #### ToleranceSpec
 
 Numerical tolerance specification for engineering comparisons.
@@ -661,7 +663,7 @@ class BoundaryValueGenerator:
 
 #### PropertyBasedTester
 
-Property-based testing using stdlib random (no hypothesis dependency).
+Property-based testing using stdlib random (Hypothesis optional via `.[dev]`).
 
 ```python
 class PropertyBasedTester:
@@ -669,6 +671,9 @@ class PropertyBasedTester:
     def generate_beam_cases(self, n: int = 100, ranges: BeamParameterRanges | None = None) -> list[RandomTestCase]
     def reset(self, seed: int | None = None) -> None
 ```
+
+**Optional:** If `hypothesis` is installed (via `pip install -e ".[dev]"`), you can use it
+directly for richer generators while keeping this module stdlib-only.
 
 #### RegressionTestSuite
 

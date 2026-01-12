@@ -1268,6 +1268,13 @@ pre-commit install
 pre-commit run --all-files
 ```
 
+**Optional extras:**
+```bash
+# Add optional report + validation helpers (Jinja2/jsonschema)
+cd Python
+python -m pip install -e ".[dev,report,validation]"
+```
+
 **Repo automation:**
 - Dependabot runs weekly updates (Actions + Python deps best-effort).
     - Grouped updates reduce PR noise (configured in `.github/dependabot.yml`).

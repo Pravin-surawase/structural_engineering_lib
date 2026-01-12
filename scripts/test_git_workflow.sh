@@ -707,6 +707,161 @@ test_pr_helper_structure() {
 }
 
 # ============================================================================
+# TEST: finish_task_pr.sh Flags & CI Polling
+# ============================================================================
+
+test_finish_task_pr_flags() {
+    log_test "finish_task_pr.sh Flags & CI Polling"
+
+    local script="$PROJECT_ROOT/scripts/finish_task_pr.sh"
+    assert_file_exists "$script" || return 1
+
+    # Flags documented
+    if grep -q "\-\-async" "$script" && grep -q "\-\-wait" "$script" && grep -q "\-\-force" "$script"; then
+        log_pass "finish_task_pr.sh documents --async/--wait/--force flags"
+    else
+        log_fail "finish_task_pr.sh missing flag documentation"
+        return 1
+    fi
+
+    # Non-TUI CI polling
+    if grep -q "statusCheckRollup" "$script"; then
+        log_pass "finish_task_pr.sh polls CI using statusCheckRollup"
+    else
+        log_fail "finish_task_pr.sh missing statusCheckRollup polling"
+        return 1
+    fi
+
+    # Avoid TUI check command
+    if grep -q "gh pr checks --watch" "$script"; then
+        log_fail "finish_task_pr.sh should not use gh pr checks --watch"
+        return 1
+    else
+        log_pass "finish_task_pr.sh avoids gh pr checks --watch"
+    fi
+
+    # PR body safety
+    if grep -q "\-\-body-file" "$script" && grep -q "mktemp" "$script"; then
+        log_pass "finish_task_pr.sh uses --body-file with temp file"
+    else
+        log_fail "finish_task_pr.sh missing --body-file temp usage"
+        return 1
+    fi
+
+    # Branch cleanup on merge
+    if grep -q "gh pr merge .*--delete-branch" "$script"; then
+        log_pass "finish_task_pr.sh deletes branch on merge"
+    else
+        log_fail "finish_task_pr.sh should delete branch on merge"
+        return 1
+    fi
+
+    echo ""
+}
+
+# ============================================================================
+# TEST: cleanup_stale_branches.sh Behavior
+# ============================================================================
+
+test_cleanup_stale_branches() {
+    log_test "cleanup_stale_branches.sh Behavior"
+
+    local script="$PROJECT_ROOT/scripts/cleanup_stale_branches.sh"
+    assert_file_exists "$script" || return 1
+    assert_script_executable "$script" || return 1
+
+    if grep -q "git fetch --prune origin" "$script"; then
+        log_pass "cleanup_stale_branches.sh fetches with prune"
+    else
+        log_fail "cleanup_stale_branches.sh missing prune fetch"
+        return 1
+    fi
+
+    if grep -q "origin/main" "$script"; then
+        log_pass "cleanup_stale_branches.sh compares against origin/main"
+    else
+        log_fail "cleanup_stale_branches.sh should use origin/main"
+        return 1
+    fi
+
+    if grep -q "\-\-apply" "$script" && grep -q "Dry run" "$script"; then
+        log_pass "cleanup_stale_branches.sh uses dry-run gating"
+    else
+        log_fail "cleanup_stale_branches.sh missing dry-run safeguards"
+        return 1
+    fi
+
+    if grep -q "gh pr list" "$script"; then
+        log_pass "cleanup_stale_branches.sh checks open PRs"
+    else
+        log_fail "cleanup_stale_branches.sh missing PR check"
+        return 1
+    fi
+
+    echo ""
+}
+
+# ============================================================================
+# TEST: Hook Logging & Diagnostics
+# ============================================================================
+
+test_hook_logging() {
+    log_test "Hook Logging & Diagnostics"
+
+    local pre_commit="$PROJECT_ROOT/scripts/git-hooks/pre-commit"
+    local pre_push="$PROJECT_ROOT/scripts/git-hooks/pre-push"
+
+    if grep -q "BLOCKED: Manual git commit" "$pre_commit"; then
+        log_pass "pre-commit hook logs blocked manual commit"
+    else
+        log_fail "pre-commit hook missing block log"
+        return 1
+    fi
+
+    if grep -q "BLOCKED: Manual git push" "$pre_push"; then
+        log_pass "pre-push hook logs blocked manual push"
+    else
+        log_fail "pre-push hook missing block log"
+        return 1
+    fi
+
+    if grep -q "hook_output_" "$PROJECT_ROOT/scripts/safe_push.sh"; then
+        log_pass "safe_push.sh captures hook output"
+    else
+        log_fail "safe_push.sh missing hook output capture"
+        return 1
+    fi
+
+    echo ""
+}
+
+# ============================================================================
+# TEST: CI Monitor Edge Cases
+# ============================================================================
+
+test_ci_monitor_edge_cases() {
+    log_test "CI Monitor Edge Cases"
+
+    local script="$PROJECT_ROOT/scripts/ci_monitor_daemon.sh"
+
+    if grep -q "head branch is behind" "$script" && grep -q "update-branch" "$script"; then
+        log_pass "ci_monitor_daemon.sh handles head-behind updates"
+    else
+        log_fail "ci_monitor_daemon.sh missing head-behind handling"
+        return 1
+    fi
+
+    if grep -q "policy prohibits" "$script"; then
+        log_pass "ci_monitor_daemon.sh detects policy-prohibited merges"
+    else
+        log_fail "ci_monitor_daemon.sh missing policy-prohibit handling"
+        return 1
+    fi
+
+    echo ""
+}
+
+# ============================================================================
 # TEST: Git Configuration
 # ============================================================================
 
@@ -833,6 +988,10 @@ main() {
     test_git_automation_health
     test_error_handling
     test_pr_helper_structure
+    test_finish_task_pr_flags
+    test_cleanup_stale_branches
+    test_hook_logging
+    test_ci_monitor_edge_cases
     test_git_configuration
     test_workflow_documentation
     test_script_permissions

@@ -44,16 +44,13 @@ echo "────────────────────────�
 
 LOCAL_TO_DELETE=()
 while IFS= read -r branch; do
-    # Skip main and current
-    branch=$(echo "$branch" | xargs)  # Trim whitespace
-    if [[ "$branch" == "main" ]] || [[ "$branch" == "* main" ]] || [[ -z "$branch" ]]; then
+    branch=$(echo "$branch" | xargs)
+    if [[ "$branch" == "main" ]] || [[ -z "$branch" ]]; then
         continue
     fi
-    # Remove leading * if present
-    branch="${branch#\* }"
 
-    # Check if branch is merged into main
-    if git branch --merged main | grep -q "^[* ]*$branch$"; then
+    # Check if branch is merged into origin/main (avoid stale local main)
+    if git branch --merged origin/main --format='%(refname:short)' | grep -Fxq "$branch"; then
         echo -e "${YELLOW}  ⚠ $branch${NC} (merged - can delete)"
         LOCAL_TO_DELETE+=("$branch")
     elif [[ "$branch" == backup/* ]] || [[ "$branch" == copilot-worktree-* ]] || [[ "$branch" == chore/* ]]; then
@@ -62,7 +59,7 @@ while IFS= read -r branch; do
     else
         echo -e "${GREEN}  ✓ $branch${NC} (active)"
     fi
-done < <(git branch | grep -v "^[* ]*main$")
+done < <(git branch --format='%(refname:short)')
 
 echo ""
 echo -e "${BLUE}📋 Remote Branches (origin/task/*)${NC}"
@@ -82,7 +79,7 @@ while IFS= read -r branch; do
         echo -e "${GREEN}  ✓ $branch${NC} (has open PR)"
     else
         # Check if branch is merged
-        if git branch -r --merged origin/main | grep -q "origin/$branch$"; then
+        if git branch -r --merged origin/main --format='%(refname:short)' | grep -Fxq "origin/$branch"; then
             echo -e "${YELLOW}  ⚠ $branch${NC} (merged, no PR - can delete)"
             REMOTE_TO_DELETE+=("$branch")
         else
@@ -91,7 +88,7 @@ while IFS= read -r branch; do
             echo -e "${YELLOW}  ? $branch${NC} (unmerged, last commit: $LAST_COMMIT)"
         fi
     fi
-done < <(git branch -r | grep "origin/task/")
+done < <(git branch -r --format='%(refname:short)' | grep "^origin/task/")
 
 echo ""
 echo -e "${BLUE}📊 Summary${NC}"
