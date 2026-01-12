@@ -472,7 +472,9 @@ def generate_bbs_from_detailing(
 
     # Process bottom bars
     zones = ["start", "mid", "end"]
-    for _i, (bar_arr, zone) in enumerate(zip(detailing.bottom_bars, zones)):
+    for _i, (bar_arr, zone) in enumerate(
+        zip(detailing.bottom_bars, zones, strict=False)
+    ):
         if bar_arr.count > 0:
             cut_length = calculate_straight_bar_length(
                 span_mm=detailing.span,
@@ -508,7 +510,7 @@ def generate_bbs_from_detailing(
             )
 
     # Process top bars
-    for _i, (bar_arr, zone) in enumerate(zip(detailing.top_bars, zones)):
+    for _i, (bar_arr, zone) in enumerate(zip(detailing.top_bars, zones, strict=False)):
         if bar_arr.count > 0:
             cut_length = calculate_straight_bar_length(
                 span_mm=detailing.span,
@@ -544,7 +546,7 @@ def generate_bbs_from_detailing(
             )
 
     # Process stirrups
-    for _i, (stirrup, zone) in enumerate(zip(detailing.stirrups, zones)):
+    for _i, (stirrup, zone) in enumerate(zip(detailing.stirrups, zones, strict=False)):
         if stirrup.spacing > 0 and stirrup.zone_length > 0:
             # Number of stirrups in zone
             no_of_stirrups = int(stirrup.zone_length / stirrup.spacing) + 1
