@@ -2,6 +2,8 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Cost calculation utilities for structural elements."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 
 STEEL_DENSITY_KG_PER_M3 = 7850.0

@@ -12,6 +12,8 @@ Related:
 - docs/guidelines/result-object-standard.md
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
 
@@ -128,7 +130,7 @@ class DesignAndDetailResult:
         return json.dumps(self.to_dict(), indent=indent, default=str)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "DesignAndDetailResult":
+    def from_dict(cls, data: dict[str, Any]) -> DesignAndDetailResult:
         """Create instance from dictionary.
 
         Note: This creates a partial reconstruction. The design and detailing

@@ -17,6 +17,7 @@ Setup:
     4. Use functions in formulas
 """
 
+from __future__ import annotations
 
 import xlwings as xw
 
