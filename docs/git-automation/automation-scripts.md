@@ -161,6 +161,7 @@ Complete reference for all 103 git automation scripts. Organized by use case for
 ```bash
 ./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --async
 ./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --wait
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmarks" --with-session-docs
 ```
 - **Purpose:** Submit PR (open pull request)
 - **Creates:** GitHub PR with title + body file (safe for automation)
@@ -168,6 +169,7 @@ Complete reference for all 103 git automation scripts. Organized by use case for
   - `--async` (default) - CI daemon monitors and auto-merges
   - `--wait` - Polls CI and merges when green
   - `--skip` - Leaves PR open for manual merge
+  - `--with-session-docs` - Ensures handoff is updated before PR creation
 
 **After PR Created:**
 ```bash

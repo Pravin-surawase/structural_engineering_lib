@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 0.16.6
 **Created:** 2026-01-11
-**Last Updated:** 2026-01-11
+**Last Updated:** 2026-01-13
 
 ---
 
@@ -53,6 +53,9 @@
 | **Start session** | `./scripts/agent_start.sh --quick` | 6s |
 | **End session** | `.venv/bin/python scripts/end_session.py` | 3s |
 
+**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in the same PR and
+record the PR number (not merge hash).
+
 ---
 
 ## 💡 Philosophy
@@ -92,10 +95,10 @@
 
 ### Test Coverage
 
-- **24/24** git workflow tests passing
-- **10/10** agent automation tests passing
-- **23/23** pre-commit hooks passing
-- **796** internal links validated (0 broken)
+- **Git workflow suites:** 20 (run `./scripts/test_git_workflow.sh`)
+- **Agent automation suites:** run `./scripts/test_agent_automation.sh`
+- **Pre-commit hooks:** run `pre-commit run --all-files`
+- **Internal links:** run `python scripts/check_links.py`
 
 ---
 

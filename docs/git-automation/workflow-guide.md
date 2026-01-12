@@ -103,8 +103,13 @@ For code, VBA, CI, dependencies:
 # ... edit files ...
 ./scripts/ai_commit.sh "fix: update benchmark function calls"
 
-# 3. Finish and create PR
-./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async
+# 3. Update session docs (in the SAME PR)
+# - Record PR number (not merge hash) in SESSION_LOG
+# - Sync handoff from SESSION_LOG
+python3 scripts/update_handoff.py
+
+# 4. Finish and create PR
+./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async --with-session-docs
 
 # 4. Check CI status (non-TUI)
 ./scripts/pr_async_merge.sh status

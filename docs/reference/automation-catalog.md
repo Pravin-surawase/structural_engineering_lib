@@ -2,7 +2,7 @@
 
 > **Purpose:** Complete reference of all automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
-> **Last Updated:** 2026-01-11
+> **Last Updated:** 2026-01-13
 >
 > **⚠️ IMPORTANT:** See [Agent Automation Pitfalls](agent-automation-pitfalls.md) for common issues when running automation scripts (git pager lockup, interactive prompts, etc.)
 
@@ -439,6 +439,7 @@ Safe for direct commit using safe_push.sh.
 ```bash
 ./scripts/finish_task_pr.sh TASK-XXX "completion summary" --async
 ./scripts/finish_task_pr.sh TASK-XXX "completion summary" --wait
+./scripts/finish_task_pr.sh TASK-XXX "completion summary" --with-session-docs
 
 # Example
 ./scripts/finish_task_pr.sh TASK-171 "Automation catalog with 41 scripts documented" --async
@@ -449,6 +450,7 @@ Safe for direct commit using safe_push.sh.
 2. `--async` registers PR with the CI daemon for auto-merge
 3. `--wait` polls CI checks and merges when green
 4. `--skip` leaves PR open for manual merge
+5. `--with-session-docs` updates handoff and enforces session docs before PR
 
 **Related:** [create_task_pr.sh](#11-create_task_prsh)
 
@@ -2028,6 +2030,6 @@ chmod +x scripts/*.sh
 
 ---
 
-**Last Updated:** 2026-01-11
+**Last Updated:** 2026-01-13
 **Maintained By:** Project automation
 **Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../.github/SUPPORT.md)

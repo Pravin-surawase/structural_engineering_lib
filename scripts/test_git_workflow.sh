@@ -721,8 +721,8 @@ test_finish_task_pr_flags() {
     assert_file_exists "$script" || return 1
 
     # Flags documented
-    if grep -q "\-\-async" "$script" && grep -q "\-\-wait" "$script" && grep -q "\-\-force" "$script"; then
-        log_pass "finish_task_pr.sh documents --async/--wait/--force flags"
+    if grep -q "\-\-async" "$script" && grep -q "\-\-wait" "$script" && grep -q "\-\-force" "$script" && grep -q "\-\-with-session-docs" "$script"; then
+        log_pass "finish_task_pr.sh documents --async/--wait/--force/--with-session-docs"
     else
         log_fail "finish_task_pr.sh missing flag documentation"
         return 1
@@ -749,6 +749,13 @@ test_finish_task_pr_flags() {
         log_pass "finish_task_pr.sh uses --body-file with temp file"
     else
         log_fail "finish_task_pr.sh missing --body-file temp usage"
+        return 1
+    fi
+
+    if grep -q "SAFE_PUSH_ACTIVE=1" "$script"; then
+        log_pass "finish_task_pr.sh sets SAFE_PUSH_ACTIVE to bypass hooks"
+    else
+        log_fail "finish_task_pr.sh should set SAFE_PUSH_ACTIVE"
         return 1
     fi
 
