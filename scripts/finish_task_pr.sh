@@ -4,6 +4,7 @@
 #   ./scripts/finish_task_pr.sh TASK-162 "Brief description"
 #   ./scripts/finish_task_pr.sh TASK-162 "Brief description" --force  # Non-interactive
 #   ./scripts/finish_task_pr.sh TASK-162 "Brief description" --async  # Async merge (default)
+#   ./scripts/finish_task_pr.sh TASK-162 "Brief description" --with-session-docs
 
 set -e
 
@@ -71,6 +72,10 @@ TASK_ID=""
 DESCRIPTION=""
 FORCE=false
 MODE="prompt"
+SESSION_DOCS=false
+
+# Mark as automation to bypass pre-push hook enforcement.
+export SAFE_PUSH_ACTIVE=1
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -86,6 +91,10 @@ while [[ $# -gt 0 ]]; do
             MODE="wait"
             shift
             ;;
+        --with-session-docs)
+            SESSION_DOCS=true
+            shift
+            ;;
         *)
             if [[ -z "$TASK_ID" ]]; then
                 TASK_ID="$1"
@@ -99,18 +108,36 @@ done
 
 if [[ -z "$TASK_ID" ]]; then
     echo -e "${RED}Error: Task ID required${NC}"
-    echo "Usage: ./scripts/finish_task_pr.sh TASK-162 'Brief description' [--force] [--async|--wait]"
+    echo "Usage: ./scripts/finish_task_pr.sh TASK-162 'Brief description' [--force] [--async|--wait] [--with-session-docs]"
     exit 1
 fi
 
 if [[ -z "$DESCRIPTION" ]]; then
     echo -e "${RED}Error: Description required${NC}"
-    echo "Usage: ./scripts/finish_task_pr.sh TASK-162 'Brief description' [--force] [--async|--wait]"
+    echo "Usage: ./scripts/finish_task_pr.sh TASK-162 'Brief description' [--force] [--async|--wait] [--with-session-docs]"
     exit 1
 fi
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
+
+if [[ "$SESSION_DOCS" == "true" ]]; then
+    echo "→ Updating handoff from SESSION_LOG..."
+    if [[ -f "$PROJECT_ROOT/scripts/update_handoff.py" ]]; then
+        if [[ -x "$PROJECT_ROOT/.venv/bin/python" ]]; then
+            "$PROJECT_ROOT/.venv/bin/python" "$PROJECT_ROOT/scripts/update_handoff.py" || true
+        else
+            python3 "$PROJECT_ROOT/scripts/update_handoff.py" || true
+        fi
+    fi
+
+    if git status --porcelain docs/SESSION_LOG.md docs/planning/next-session-brief.md | grep -q .; then
+        echo -e "${YELLOW}⚠ Session docs changed. Commit them in this branch before finishing:${NC}"
+        echo "  ./scripts/ai_commit.sh \"docs: update session log and handoff\""
+        echo "Then re-run finish_task_pr.sh to create the PR."
+        exit 1
+    fi
+fi
 
 echo -e "${YELLOW}📋 Finishing $TASK_ID and creating PR${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

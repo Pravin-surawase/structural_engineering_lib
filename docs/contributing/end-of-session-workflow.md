@@ -269,6 +269,11 @@ git log --oneline -3    # Verify your commits are there
 
 ## 🔄 Quick Reference by Session Type
 
+### ✅ Session Docs Rule (Avoid the Commit Loop)
+Update `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` **in the same PR**
+before running `finish_task_pr.sh`. Record the **PR number** (not the merge hash) in the
+SESSION_LOG entry so you never need a post-merge log commit.
+
 ### Routine Bug Fix (1-2 hours)
 1. Run `end_session.py --quick`
 2. Commit work with clear message

@@ -54,7 +54,7 @@
 ```bash
 ./scripts/create_task_pr.sh TASK-163 "Add return type annotations"
 # Make changes, commit with ai_commit.sh
-./scripts/finish_task_pr.sh TASK-163 "Add return type annotations"
+./scripts/finish_task_pr.sh TASK-163 "Add return type annotations" --with-session-docs
 ```
 
 ---
@@ -80,7 +80,7 @@
 **How:**
 1. `./scripts/create_task_pr.sh TASK-162 "Add TypedDict support"`
 2. Make changes and commit: `./scripts/ai_commit.sh "feat: implement X"`
-3. When done: `./scripts/finish_task_pr.sh TASK-162 "Add TypedDict support"`
+3. When done: `./scripts/finish_task_pr.sh TASK-162 "Add TypedDict support" --with-session-docs`
 
 ---
 
@@ -149,7 +149,7 @@ vim Python/structural_lib/data_types.py
 ./scripts/ai_commit.sh "feat: add DeflectionParams TypedDict"
 
 # Finish and create PR
-./scripts/finish_task_pr.sh TASK-162 "Replace Dict[str, Any] with TypedDicts"
+./scripts/finish_task_pr.sh TASK-162 "Replace Dict[str, Any] with TypedDicts" --with-session-docs
 
 # Script will:
 # 1. Push branch

@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 0.16.6
 **Created:** 2026-01-11
-**Last Updated:** 2026-01-12
+**Last Updated:** 2026-01-13
 
 ---
 
@@ -52,6 +52,9 @@
 | **Fix git issues** | `./scripts/recover_git_state.sh` | 5s |
 | **Start session** | `./scripts/agent_start.sh --quick` | 6s |
 | **End session** | `.venv/bin/python scripts/end_session.py` | 3s |
+
+**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in the same PR and
+record the PR number (not merge hash).
 
 ---
 

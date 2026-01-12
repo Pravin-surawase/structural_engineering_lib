@@ -76,6 +76,8 @@ Is this >50 lines OR 2+ files?
 ./scripts/pr_async_merge.sh status
 ```
 
+**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in this PR and log the PR number.
+
 ### Pattern 3: Background Agent (Long Tasks)
 ```bash
 # 1. Create worktree
@@ -267,4 +269,4 @@ python scripts/check_doc_versions.py --fix    # Fix versions
 
 **Remember:** Automation prevents errors. Trust the scripts!
 
-**Last Updated:** 2026-01-12 | **Version:** 1.1.0
+**Last Updated:** 2026-01-13 | **Version:** 1.1.0

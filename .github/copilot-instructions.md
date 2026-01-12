@@ -274,6 +274,11 @@ The tool analyzes:
 ./scripts/finish_task_pr.sh TASK-XXX "description"
 ```
 
+**Session docs rule (avoid commit loops):**
+- Update `docs/SESSION_LOG.md` + `docs/planning/next-session-brief.md` in the same PR.
+- Log **PR number** (not merge hash) in SESSION_LOG.
+- Optionally run: `./scripts/finish_task_pr.sh ... --with-session-docs`
+
 ### ⛔ NEVER Direct Commit To Main For:
 - Production code changes (Python/structural_lib/)
 - VBA algorithm changes
