@@ -4,6 +4,94 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 18: Scanner Suite Completion & Bug Fixes
+
+**Focus:** Complete scanner suite (TASK-402/404/405), fix bugs from Session 17, validate previous work
+
+### Summary
+
+Session 18 completed the scanner enhancement phase with 3 new AST-based analysis tools and fixed critical bugs discovered during validation. Key achievements:
+
+1. **Bug Fixes** - Fixed SIGPIPE bug in daemon scripts, fixed preflight counting bug
+2. **TASK-402** - Type annotation checker (73.9% annotation rate baseline)
+3. **TASK-404** - Circular import detection (0 cycles, healthy codebase)
+4. **TASK-405** - Performance issue detection (62 issues, 5 HIGH, actionable)
+
+### Commits
+
+| Reference | Description |
+|-----------|-------------|
+| `5b56c42` | fix(scripts): resolve SIGPIPE bug in daemon status detection |
+| `51545db` | fix(preflight): correct issue counting from scanner summary |
+| `e5e4de2` | feat(scripts): add type annotation checker (TASK-402) |
+| `956f953` | feat(scripts): add circular import detection (TASK-404) |
+| `9862489` | feat(scripts): add performance issue detection (TASK-405) |
+
+### Key Deliverables
+
+**1. SIGPIPE Bug Fix (`pr_async_merge.sh`, `finish_task_pr.sh`)**
+- Root cause: `set -o pipefail` + `grep -q` causes SIGPIPE (exit 141)
+- Solution: Capture daemon output to variable first, then grep
+- Daemon status detection now works correctly
+
+**2. Preflight Counting Fix (`streamlit_preflight.sh`)**
+- Root cause: Counted ALL lines with "Critical:" instead of parsing summary
+- Solution: Parse SUMMARY section for accurate counts
+- Before: 10 critical (wrong), After: 0 critical, 15 high (correct)
+
+**3. Type Annotation Checker (`check_type_annotations.py` - 526 lines)**
+- AST-based function signature analysis
+- Modes: `--lenient` (skip internal), `--strict` (require all)
+- Output: `--json` for CI, `--fix-suggestions` for hints
+- Results: 44 files, 349 functions, 73.9% annotation rate
+
+**4. Circular Import Detector (`check_circular_imports.py` - 387 lines)**
+- Builds import dependency graph
+- Detects direct and indirect cycles
+- Visualization: `--graph`, `--verbose`
+- Results: 46 files, 11 modules tracked, 0 cycles (healthy!)
+
+**5. Performance Issue Detector (`check_performance_issues.py` - 449 lines)**
+- Detects expensive operations in loops
+- Identifies inefficient DataFrame iterations (iterrows)
+- Finds missing caching opportunities
+- Results: 44 files, 62 issues (5 HIGH, 1 MEDIUM, 56 LOW)
+
+### Tasks Completed
+
+| ID | Task | Status |
+|----|------|--------|
+| **TASK-402** | Type annotation checker | ✅ Session 18 |
+| **TASK-404** | Circular import detection | ✅ Session 18 |
+| **TASK-405** | Performance issue detection | ✅ Session 18 |
+
+### Tasks Validated
+
+| ID | Validation | Result |
+|----|------------|--------|
+| **TASK-401** | Scanner `--all-pages` | 0 ZeroDivisionError false positives ✅ |
+| **TASK-411** | `streamlit_preflight.sh --quick` | Runs, counting fixed ✅ |
+| **TASK-413** | `validate_session_state.py` | 192 issues found ✅ |
+
+### Scanner Suite Summary (Phase B Complete)
+
+| Tool | Files | Key Metric |
+|------|-------|------------|
+| `check_streamlit_issues.py` | 1569 lines | 0 false positives |
+| `check_type_annotations.py` | 526 lines | 73.9% annotation rate |
+| `check_circular_imports.py` | 387 lines | 0 circular imports |
+| `check_performance_issues.py` | 449 lines | 62 issues (actionable) |
+| `check_widget_returns.py` | 412 lines | Widget return validation |
+
+### Next Session Recommendations
+
+1. **TASK-412** (MEDIUM) - Create generate_streamlit_page.py scaffold (2h)
+2. **TASK-414** (MEDIUM) - Create performance profiler (4h)
+3. Address performance issues found (56 missing cache suggestions)
+4. Consider adding scanner tools to CI pipeline
+
+---
+
 ## 2026-01-12 — Session 16: Workflow Optimization & Scanner Phase 4
 
 **Focus:** Optimize PR workflow for solo dev, implement scanner Phase 4 (TASK-401)
