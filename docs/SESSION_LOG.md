@@ -4,6 +4,31 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 19P10: Git Workflow Docs Alignment
+
+**Focus:** Align git workflow docs with updated PR tooling and CI polling
+
+### Summary
+
+Session 19P10 refreshed workflow references to match the updated PR tooling:
+
+1. **PR Flow Docs** - Updated `finish_task_pr.sh` usage to include `--async/--wait`
+2. **CI Monitoring** - Replaced TUI `gh pr checks --watch` guidance with `pr_async_merge.sh status`
+3. **Branch Hygiene** - Documented `cleanup_stale_branches.sh` in catalogs
+4. **Doc Metadata** - Refreshed "Last Updated" stamps on touched guides
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `3b15b07` | docs(git): refresh workflow docs and test guidance |
+
+### Tests
+
+- `./scripts/test_git_workflow.sh`
+
+---
+
 ## 2026-01-12 — Session 19P8 Phase 2: Automation Governance & Prevention Systems (COMPLETE)
 
 **Focus:** Establish automation governance, implement prevention systems to stop repeating mistakes

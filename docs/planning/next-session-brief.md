@@ -5,7 +5,7 @@
 | **Current** | v0.16.6 | ✅ Released (Python 3.11 Baseline) |
 | **Next** | v0.17.0 | Professional Features |
 
-**Date:** 2026-01-12 | **Last Session:** 19P8 | **Last commit:** ec9065f
+**Date:** 2026-01-12 | **Last Session:** 19P10 | **Last commit:** 3b15b07
 
 ---
 
@@ -24,14 +24,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-12
-- Session 19 Part 8: Prevention systems for git automation
-- Enhanced agent_mistakes_report.sh with hook output log parsing
-- Added Tier-0 deprecated scripts section to git-automation/README.md
-- Created lint_docs_git_examples.sh for manual git pattern detection
-- Added Session Start Checklist to next-session-brief.md
-- P8 work plan published: docs/planning/session-19p8-work-plan.md
-- Commits: ae61916, 0705385, 3d68f08, 4ae90d4, ec9065f
-- PR pending: task/P8-PHASE2-v2 branch
+- Session 19 Part 10: Git workflow docs alignment
+- Updated docs to use finish_task_pr.sh --async/--wait and pr_async_merge.sh status
+- Documented cleanup_stale_branches.sh and refreshed Last Updated stamps
+- Tests: ./scripts/test_git_workflow.sh
+- Commit: 3b15b07
 <!-- HANDOFF:END -->
 
 ---
