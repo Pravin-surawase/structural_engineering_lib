@@ -7,7 +7,7 @@ name = "structural-lib-is456"
 version = "0.16.5"
 description = "IS 456 RC Beam Design Library (flexure, shear, ductile detailing, DXF export for RC beams)"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
@@ -18,10 +18,9 @@ classifiers = [
   "Intended Audience :: Developers",
   "Topic :: Scientific/Engineering",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
 
 [project.urls]
@@ -37,7 +36,7 @@ dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
 render = ["ezdxf>=1.0", "matplotlib>=3.5"]  # DXF render to PNG/PDF
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py311"
 line-length = 88
 
 [tool.ruff.lint]
@@ -95,7 +94,7 @@ classmethod-decorators = ["classmethod"]
 "tests/unit/test_serviceability.py" = ["E402"]  # Import after section header comment
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.11"
 files = ["structural_lib"]
 explicit_package_bases = true
 ignore_missing_imports = true
