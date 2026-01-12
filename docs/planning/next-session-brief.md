@@ -2,7 +2,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.16.5 | Released |
+| **Current** | v0.16.6 | Released |
 | **Next** | v0.16.6 | Python 3.11 baseline upgrade |
 
 **Date:** 2026-01-12 | **Last Session:** 19 | **Last commit:** c54ff9e

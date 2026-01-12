@@ -14,7 +14,7 @@ Option Explicit
 ' ==============================================================================
 
 Public Function Get_Library_Version() As String
-    Get_Library_Version = "0.16.0"
+    Get_Library_Version = "0.16.6"
 End Function
 
 '

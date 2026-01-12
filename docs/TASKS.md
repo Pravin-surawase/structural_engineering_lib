@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-12 (Session 16: TASK-401 Phase 4 Complete, PR Workflow Optimized)
+**Updated:** 2026-01-12 (Session 19: Python 3.11 Baseline Complete)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -19,9 +19,9 @@
 
 ## Current Release
 
-- **Version:** v0.16.5 ✅ Released (2026-01-08)
-- **Focus:** Folder Structure Governance + Multi-Code Foundation
-- **Next:** v0.16.6 (Python 3.11 Baseline, maintenance) → v0.17.0 (Q1 2026, Weeks 2-4)
+- **Version:** v0.16.6 ✅ Released (2026-01-12)
+- **Focus:** Python 3.11 Baseline + Type Modernization
+- **Next:** v0.17.0 (Q1 2026, Weeks 2-4)
 
 ---
 
@@ -49,12 +49,12 @@
 **Phase 3: Code & Lint Cleanup (If Needed)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-454** | Run ruff/mypy with py311 targets; fix any new lint/type issues | DEV | 1-2 hrs | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-454** | Run ruff/mypy with py311 targets; fix any new lint/type issues | DEV | 1-2 hrs | 🟠 MEDIUM | ✅ Session 19 |
 
 **Phase 4: Release v0.16.6**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-455** | Release v0.16.6 (pre-release checks, version bump, changelog, release docs) | RELEASE | 1-2 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-455** | Release v0.16.6 (pre-release checks, version bump, changelog, release docs) | RELEASE | 1-2 hrs | 🔴 HIGH | ✅ Session 19 |
 | **TASK-456** | README update (WIP banner + active roadmap links) | DOCS | 30m | 🟠 MEDIUM | ⏳ Queued |
 
 ---
