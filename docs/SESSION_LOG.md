@@ -638,32 +638,32 @@ python -m structural_lib.codes.is456.clause_cli --stats
 ### ⏭️ Next Session
 - Create detailed specs for TASK-272/273/274/275
 - Start TASK-272 implementation (code clause database)
-- Monitor v0.16.5 PyPI publish status
+- Monitor v0.16.6 PyPI publish status
 
 ---
 
-## 2026-01-11 — Session 13 Part 8: v0.16.5 Release
+## 2026-01-11 — Session 13 Part 8: v0.16.6 Release
 
-**Focus:** Release preparation and execution for v0.16.5
+**Focus:** Release preparation and execution for v0.16.6
 
 ### Commits This Session
 1. `76b5bc6` - docs(readme): update with Session 13 achievements (automation, governance, multi-code)
-2. `43268e8` - chore: bump version to 0.16.5, sync all version references, update CHANGELOG and releases.md
-3. `f96532c` - docs: fix remaining 9 version drift issues (0.16.0 → 0.16.5)
+2. `43268e8` - chore: bump version to 0.16.6, sync all version references, update CHANGELOG and releases.md
+3. `f96532c` - docs: fix remaining 9 version drift issues (0.16.0 → 0.16.6)
 
 ### 🎯 Release Preparation
 
 | Step | Action | Status |
 |------|--------|--------|
 | README showcase | Added Session 13 highlights to README | ✅ Done |
-| Version bump | Updated to 0.16.5 in pyproject.toml | ✅ Done |
-| CHANGELOG | Added v0.16.5 comprehensive entry | ✅ Done |
-| releases.md | Added v0.16.5 locked entry | ✅ Done |
+| Version bump | Updated to 0.16.6 in pyproject.toml | ✅ Done |
+| CHANGELOG | Added v0.16.6 comprehensive entry | ✅ Done |
+| releases.md | Added v0.16.6 locked entry | ✅ Done |
 | Version sync | Fixed 18+9 version drift issues | ✅ Done |
 | Pre-commit checks | All hooks passing, zero drift | ✅ Done |
-| Release tag | Created v0.16.5, pushed to GitHub | ✅ Done |
+| Release tag | Created v0.16.6, pushed to GitHub | ✅ Done |
 
-### 📦 v0.16.5 Release Highlights
+### 📦 v0.16.6 Release Highlights
 
 **Theme:** Developer Experience & Automation
 
@@ -735,7 +735,7 @@ python -m structural_lib.codes.is456.clause_cli --stats
 ### ⏭️ Next Session
 - v0.17.0 implementation: remaining API features
 - Continue Streamlit app improvements
-- Consider v0.16.5 patch release if critical fixes needed
+- Consider v0.16.6 patch release if critical fixes needed
 
 ---
 

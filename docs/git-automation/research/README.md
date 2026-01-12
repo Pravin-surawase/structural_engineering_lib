@@ -3,7 +3,7 @@
 **Type:** Research Index
 **Audience:** All Agents
 **Status:** Reference
-**Version:** 0.16.5
+**Version:** 0.16.6
 **Created:** 2026-01-11
 **Last Updated:** 2026-01-11
 

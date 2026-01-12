@@ -96,7 +96,7 @@ brew install python@3.11
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Version | v0.16.5 | Released |
+| Version | v0.16.6 | Released |
 | Tests | 2392 | ✅ Passing |
 | Session 19 Commits | 5 | ✅ Target nearly met |
 | Scripts | 108 | +2 new scripts |

@@ -4,7 +4,7 @@
 **Audience:** All Agents
 **Status:** Production Ready
 **Importance:** High
-**Version:** 0.16.5
+**Version:** 0.16.6
 **Created:** 2026-01-11
 **Last Updated:** 2026-01-11
 **Related Tasks:** Documentation consolidation
