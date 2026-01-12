@@ -219,6 +219,183 @@ print(result.summary())  # 'B1@GF: 300×500mm, Ast=856mm², OK'
 print(result.design.flexure.ast_required)  # 856.26
 ```
 
+### 1A.4.1 Structured Input Classes (v0.17.0+)
+
+Professional input dataclasses for type-safe, validated beam design inputs.
+
+**Available classes:** `api.BeamInput`, `api.BeamGeometryInput`, `api.MaterialsInput`,
+`api.LoadsInput`, `api.LoadCaseInput`, `api.DetailingConfigInput`
+
+#### BeamGeometryInput (`api.BeamGeometryInput`)
+
+Beam geometry parameters with validation.
+
+```python
+@dataclass(frozen=True)
+class BeamGeometryInput:
+    b_mm: float       # Beam width (mm)
+    D_mm: float       # Overall depth (mm)
+    span_mm: float    # Clear span (mm)
+    d_mm: float | None = None  # Effective depth (auto-calculated if None)
+    cover_mm: float = 40.0     # Clear cover (mm)
+
+    # Properties
+    effective_depth: float  # d_mm or D_mm - cover_mm
+    span_depth_ratio: float  # L/d ratio
+
+    # Factory methods
+    @classmethod
+    def from_dict(cls, data: dict) -> BeamGeometryInput
+```
+
+#### MaterialsInput (`api.MaterialsInput`)
+
+Material properties with common grade factory methods.
+
+```python
+@dataclass(frozen=True)
+class MaterialsInput:
+    fck_nmm2: float   # Concrete strength (N/mm²)
+    fy_nmm2: float    # Steel yield strength (N/mm²)
+    es_nmm2: float = 200000.0  # Steel modulus
+
+    # Properties
+    concrete_grade: str  # "M25"
+    steel_grade: str     # "Fe 500"
+
+    # Factory methods
+    @classmethod
+    def m25_fe500(cls) -> MaterialsInput  # Most common
+    @classmethod
+    def m30_fe500(cls) -> MaterialsInput
+    @classmethod
+    def m20_fe415(cls) -> MaterialsInput  # Legacy
+```
+
+#### LoadsInput / LoadCaseInput (`api.LoadsInput`, `api.LoadCaseInput`)
+
+Load specifications for single and multi-case design.
+
+```python
+@dataclass(frozen=True)
+class LoadsInput:
+    mu_knm: float      # Factored moment (kN·m)
+    vu_kn: float       # Factored shear (kN)
+    case_id: str = "CASE-1"
+
+@dataclass(frozen=True)
+class LoadCaseInput:
+    case_id: str       # Load case identifier
+    mu_knm: float      # Factored moment (kN·m)
+    vu_kn: float       # Factored shear (kN)
+    description: str = ""
+```
+
+#### DetailingConfigInput (`api.DetailingConfigInput`)
+
+Detailing configuration with seismic presets.
+
+```python
+@dataclass(frozen=True)
+class DetailingConfigInput:
+    stirrup_dia_mm: float = 8.0
+    stirrup_spacing_start_mm: float = 150.0
+    stirrup_spacing_mid_mm: float = 200.0
+    is_seismic: bool = False
+
+    # Factory methods
+    @classmethod
+    def seismic(cls, zone: int = 3) -> DetailingConfigInput
+    @classmethod
+    def gravity_only(cls) -> DetailingConfigInput
+```
+
+#### BeamInput (`api.BeamInput`)
+
+Complete beam input container.
+
+```python
+@dataclass
+class BeamInput:
+    beam_id: str
+    story: str
+    geometry: BeamGeometryInput
+    materials: MaterialsInput
+    loads: LoadsInput | None = None
+    load_cases: list[LoadCaseInput] = field(default_factory=list)
+    detailing_config: DetailingConfigInput = field(default_factory=DetailingConfigInput)
+    units: str = "IS456"
+
+    # Properties
+    has_multiple_cases: bool
+    governing_moment: float
+    governing_shear: float
+
+    # Serialization
+    def to_dict(self) -> dict
+    def to_json(self) -> str
+    def to_json_file(self, path: str | Path) -> Path
+
+    @classmethod
+    def from_dict(cls, data: dict) -> BeamInput
+    @classmethod
+    def from_json(cls, json_string: str) -> BeamInput
+    @classmethod
+    def from_json_file(cls, path: str | Path) -> BeamInput
+```
+
+### 1A.4.2 Design from Structured Input (`design_from_input`)
+
+Design using `BeamInput` dataclass instead of individual parameters.
+
+```python
+def design_from_input(
+    beam: BeamInput,
+    *,
+    include_detailing: bool = True,
+) -> DesignAndDetailResult | ComplianceReport
+```
+
+**Example (simple):**
+```python
+from structural_lib.api import (
+    BeamInput, BeamGeometryInput, MaterialsInput, LoadsInput,
+    design_from_input
+)
+
+beam = BeamInput(
+    beam_id="B1",
+    story="GF",
+    geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+    materials=MaterialsInput.m25_fe500(),
+    loads=LoadsInput(mu_knm=150, vu_kn=80),
+)
+result = design_from_input(beam)
+print(result.summary())
+```
+
+**Example (from JSON file):**
+```python
+beam = BeamInput.from_json_file("inputs/B1.json")
+result = design_from_input(beam)
+```
+
+**Example (multi-case without detailing):**
+```python
+beam = BeamInput(
+    beam_id="B2",
+    story="1F",
+    geometry=BeamGeometryInput(b_mm=300, D_mm=600, span_mm=6000),
+    materials=MaterialsInput.m30_fe500(),
+    load_cases=[
+        LoadCaseInput("1.5DL+1.5LL", mu_knm=200, vu_kn=100),
+        LoadCaseInput("1.2DL+EQ", mu_knm=220, vu_kn=110),
+    ],
+)
+report = design_from_input(beam, include_detailing=False)
+print(f"Governing: {report.governing_case_id}")
+```
+
 ### 1A.5 API Helpers
 
 ```python

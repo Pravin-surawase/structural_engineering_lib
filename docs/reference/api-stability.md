@@ -56,6 +56,27 @@ api.detail_beam_is456(
 api.design_and_detail_beam_is456(
     units, beam_id, story, span_mm, mu_knm, vu_kn, b_mm, D_mm, ...
 )  # Combined design + detailing convenience function
+api.design_from_input(beam, include_detailing=True)  # Design using BeamInput
+```
+
+### Input Dataclasses (v0.17+)
+
+```python
+from structural_lib import api
+
+# Input containers for type-safe design workflow
+api.BeamGeometryInput(b_mm, D_mm, span_mm, d_mm=None, cover_mm=40.0)
+api.MaterialsInput(fck_nmm2, fy_nmm2, es_nmm2=200000.0)
+api.MaterialsInput.m25_fe500()  # Factory method
+api.MaterialsInput.m30_fe500()  # Factory method
+api.LoadsInput(mu_knm, vu_kn, case_id="CASE-1")
+api.LoadCaseInput(case_id, mu_knm, vu_kn, description="")
+api.DetailingConfigInput(is_seismic=False, seismic_zone=None, ...)
+api.DetailingConfigInput.seismic(zone=3)  # Factory method
+api.BeamInput(beam_id, story, geometry, materials, loads=None, load_cases=[], ...)
+api.BeamInput.from_dict(data)  # Create from dictionary
+api.BeamInput.from_json(json_string)  # Create from JSON string
+api.BeamInput.from_json_file(path)  # Create from JSON file
 ```
 
 Note: `api.check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m)

@@ -39,26 +39,48 @@ from .data_types import (
     DeflectionParams,
     ValidationReport,
 )
+from .inputs import (
+    BeamGeometryInput,
+    BeamInput,
+    DetailingConfigInput,
+    LoadCaseInput,
+    LoadsInput,
+    MaterialsInput,
+)
 from .insights import cost_optimization, design_suggestions
 
 __all__ = [
+    # Version
     "get_library_version",
+    # Validation
     "validate_job_spec",
     "validate_design_results",
+    # Core design functions
+    "design_beam_is456",
+    "check_beam_is456",
+    "detail_beam_is456",
+    "design_and_detail_beam_is456",
+    # Input dataclasses (TASK-276)
+    "BeamInput",
+    "BeamGeometryInput",
+    "MaterialsInput",
+    "LoadsInput",
+    "LoadCaseInput",
+    "DetailingConfigInput",
+    "design_from_input",
+    # Outputs
     "compute_detailing",
     "compute_bbs",
     "export_bbs",
     "compute_dxf",
     "compute_report",
     "compute_critical",
+    # Serviceability
     "check_beam_ductility",
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
-    "design_beam_is456",
-    "check_beam_is456",
-    "detail_beam_is456",
-    "design_and_detail_beam_is456",
+    # Smart features
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",
@@ -1592,4 +1614,163 @@ def smart_analyze_design(
         suggestions=dashboard_dict.get("suggestions"),
         sensitivity=dashboard_dict.get("sensitivity"),
         constructability=dashboard_dict.get("constructability"),
+    )
+
+
+# =============================================================================
+# BeamInput-based API (TASK-276: Input Flexibility)
+# =============================================================================
+
+
+def design_from_input(
+    beam: BeamInput,
+    *,
+    include_detailing: bool = True,
+) -> DesignAndDetailResult | ComplianceReport:
+    """Design a beam using the structured BeamInput dataclass.
+
+    This is the recommended API for new projects. It accepts a structured
+    BeamInput object instead of individual parameters, providing:
+    - Type safety and IDE autocompletion
+    - Input validation at construction time
+    - Clean separation of geometry, materials, and loads
+    - Easy JSON import/export for automation
+
+    Args:
+        beam: BeamInput dataclass with geometry, materials, loads.
+        include_detailing: If True, return DesignAndDetailResult with
+            full bar and stirrup layouts. If False, return ComplianceReport
+            with design checks only.
+
+    Returns:
+        DesignAndDetailResult if include_detailing=True (single case or envelope)
+        ComplianceReport if include_detailing=False (multi-case analysis)
+
+    Examples:
+        >>> # Simple usage with dataclasses
+        >>> from structural_lib.api import (
+        ...     BeamInput, BeamGeometryInput, MaterialsInput, LoadsInput,
+        ...     design_from_input
+        ... )
+        >>> beam = BeamInput(
+        ...     beam_id="B1",
+        ...     story="GF",
+        ...     geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+        ...     materials=MaterialsInput.m25_fe500(),
+        ...     loads=LoadsInput(mu_knm=150, vu_kn=80),
+        ... )
+        >>> result = design_from_input(beam)
+        >>> print(result.summary())
+
+        >>> # From JSON file
+        >>> beam = BeamInput.from_json_file("inputs/beam_b1.json")
+        >>> result = design_from_input(beam)
+
+        >>> # Multi-case analysis without detailing
+        >>> beam = BeamInput(
+        ...     beam_id="B2",
+        ...     story="1F",
+        ...     geometry=BeamGeometryInput(b_mm=300, D_mm=600, span_mm=6000),
+        ...     materials=MaterialsInput.m30_fe500(),
+        ...     load_cases=[
+        ...         LoadCaseInput("1.5DL+1.5LL", mu_knm=200, vu_kn=100),
+        ...         LoadCaseInput("1.2DL+1.6LL+EQ", mu_knm=220, vu_kn=110),
+        ...     ],
+        ... )
+        >>> report = design_from_input(beam, include_detailing=False)
+        >>> print(f"Governing case: {report.governing_case_id}")
+
+    See Also:
+        - BeamInput: Complete input dataclass with helper methods
+        - BeamGeometryInput: Geometry with validation
+        - MaterialsInput: Material grades with factory methods
+        - design_and_detail_beam_is456: Low-level parameter-based API
+    """
+    geom = beam.geometry
+    mat = beam.materials
+    config = beam.detailing_config
+
+    # Get effective depth
+    d_mm = geom.effective_depth
+
+    if beam.has_multiple_cases:
+        # Multi-case analysis
+        cases = [
+            {
+                "case_id": case.case_id,
+                "mu_knm": case.mu_knm,
+                "vu_kn": case.vu_kn,
+            }
+            for case in beam.load_cases
+        ]
+
+        report = check_beam_is456(
+            units=beam.units,
+            cases=cases,
+            b_mm=geom.b_mm,
+            D_mm=geom.D_mm,
+            d_mm=d_mm,
+            fck_nmm2=mat.fck_nmm2,
+            fy_nmm2=mat.fy_nmm2,
+            d_dash_mm=config.d_dash_mm,
+            asv_mm2=config.asv_mm2,
+        )
+
+        if not include_detailing:
+            return report
+
+        # Create detailing using governing case
+        governing = report.governing_case_id
+        governing_case = next(
+            (c for c in report.cases if c.case_id == governing),
+            report.cases[0] if report.cases else None,
+        )
+
+        if governing_case is None:
+            raise ValueError("No valid load cases in report")
+
+        return design_and_detail_beam_is456(
+            units=beam.units,
+            beam_id=beam.beam_id,
+            story=beam.story,
+            span_mm=geom.span_mm,
+            mu_knm=governing_case.mu_knm,
+            vu_kn=governing_case.vu_kn,
+            b_mm=geom.b_mm,
+            D_mm=geom.D_mm,
+            d_mm=d_mm,
+            cover_mm=geom.cover_mm,
+            fck_nmm2=mat.fck_nmm2,
+            fy_nmm2=mat.fy_nmm2,
+            d_dash_mm=config.d_dash_mm,
+            asv_mm2=config.asv_mm2,
+            stirrup_dia_mm=config.stirrup_dia_mm,
+            stirrup_spacing_support_mm=config.stirrup_spacing_start_mm,
+            stirrup_spacing_mid_mm=config.stirrup_spacing_mid_mm,
+            is_seismic=config.is_seismic,
+        )
+
+    # Single case
+    if beam.loads is None:
+        raise ValueError("BeamInput requires either 'loads' or 'load_cases'")
+
+    return design_and_detail_beam_is456(
+        units=beam.units,
+        beam_id=beam.beam_id,
+        story=beam.story,
+        span_mm=geom.span_mm,
+        mu_knm=beam.loads.mu_knm,
+        vu_kn=beam.loads.vu_kn,
+        b_mm=geom.b_mm,
+        D_mm=geom.D_mm,
+        d_mm=d_mm,
+        cover_mm=geom.cover_mm,
+        fck_nmm2=mat.fck_nmm2,
+        fy_nmm2=mat.fy_nmm2,
+        d_dash_mm=config.d_dash_mm,
+        asv_mm2=config.asv_mm2,
+        stirrup_dia_mm=config.stirrup_dia_mm,
+        stirrup_spacing_support_mm=config.stirrup_spacing_start_mm,
+        stirrup_spacing_mid_mm=config.stirrup_spacing_mid_mm,
+        is_seismic=config.is_seismic,
     )
