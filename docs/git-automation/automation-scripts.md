@@ -125,6 +125,13 @@ Complete reference for all 103 git automation scripts. Organized by use case for
   - Python environment
 - **Exit Codes:** 0 = ready, non-zero = issues
 
+**`agent_mistakes_report.sh`** - Mistake Reminder
+```bash
+./scripts/agent_mistakes_report.sh
+```
+- **Purpose:** Quick reminder of common agent mistakes and fixes
+- **Use when:** Start of session (automatically shown by agent_start.sh)
+
 **`end_session.py`** - Session End
 ```bash
 .venv/bin/python scripts/end_session.py

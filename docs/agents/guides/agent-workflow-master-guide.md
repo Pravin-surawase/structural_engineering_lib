@@ -222,6 +222,7 @@ cd $PROJECT_ROOT
 | `ai_commit.sh` | Safe commit & push | Every commit |
 | `should_use_pr.sh` | Decision helper | When unsure |
 | `git_ops.sh --status` | State-aware router | When unsure what to do |
+| `agent_mistakes_report.sh` | Mistake reminder | Start of session |
 | `end_session.py` | Session cleanup | End of session |
 
 ### PR Management Scripts

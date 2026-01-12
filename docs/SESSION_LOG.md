@@ -21,10 +21,7 @@ Session 19 Part 6 validated review findings and implemented proper prevention me
 
 | Hash | Description |
 |------|-------------|
-| `e3f93a0` | feat(git): add versioned hook enforcement and automation-first recovery |
-| `a0e7891` | docs: add new git tools to all agent guides (GITDOC-24) |
-| `a58f75c` | docs: update automation-scripts.md with new tools (GITDOC-25/26) |
-| `92f702d` | test: add tests for hook enforcement, git_ops.sh, and health check (GITDOC-28) |
+| `2b89b1b` | GITDOC-P6: Hook Enforcement System & Automation-First Recovery (PR #346 squash) |
 
 ### GITDOC Tasks Completed
 
@@ -58,7 +55,7 @@ Session 19 Part 6 validated review findings and implemented proper prevention me
 
 **Recovery Script (GITDOC-18)**
 - Before: Printed manual commands for complex cases
-- After: Auto-executes all recovery scenarios (rebase abort, merge conflict resolution, divergence)
+- After: Auto-executes safe recoveries and reports conflicts that need resolution
 
 ### Mistake Analysis (Root Causes Fixed)
 
@@ -66,7 +63,7 @@ Session 19 Part 6 validated review findings and implemented proper prevention me
 |---------|------------|-----|------------|
 | Wrong commit hashes | Documented before squash merge | Updated to squash hash | Document AFTER merge |
 | False "manual git = 0" | Didn't search exhaustively | Ran grep, fixed all | Search before claiming |
-| Incomplete recovery | Rationalized manual fallback | Fully automated | No manual fallback |
+| Incomplete recovery | Rationalized manual fallback | Auto-run safe recovery | Manual conflict resolution only for non-doc files |
 | Optional enforcement | Hooks not installed by default | Auto-install in agent_start | Mandatory enforcement |
 
 ### Metrics

@@ -215,7 +215,7 @@ For complex tasks with 3+ phases:
 **Usage:**
 ```bash
 ./scripts/recover_git_state.sh
-# Follows printed instructions
+# Auto-executes safe recovery steps and reports conflicts
 ```
 
 ---
@@ -243,9 +243,9 @@ For complex tasks with 3+ phases:
 
 # It will:
 # 1. Detect the conflict
-# 2. Apply --ours strategy for known files (TASKS.md, SESSION_LOG.md)
-# 3. Complete the merge
-# 4. Push the resolution
+# 2. Auto-resolve safe doc conflicts (TASKS.md, SESSION_LOG.md, next-session-brief.md)
+# 3. Stop and report if conflicts involve other files
+# 4. Complete and push when safe
 ```
 
 ### Unfinished Merge (MERGE_HEAD exists)

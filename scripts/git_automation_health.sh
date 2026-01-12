@@ -177,6 +177,7 @@ echo "────────────────────────�
 check_script "agent_start.sh" "scripts/agent_start.sh" "false"
 check_script "agent_setup.sh" "scripts/agent_setup.sh" "false"
 check_script "agent_preflight.sh" "scripts/agent_preflight.sh" "false"
+check_script "agent_mistakes_report.sh" "scripts/agent_mistakes_report.sh" "false"
 echo ""
 
 echo -e "${BLUE}🔀 PR Management${NC}"
