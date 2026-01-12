@@ -124,6 +124,45 @@ api.CalculationReport.export_markdown(path)
 api.generate_calculation_report(result, beam_id, story, project_info, output_path, output_format)
 ```
 
+### Engineering Testing Utilities (v0.17+)
+
+```python
+from structural_lib import testing_strategies
+
+# Tolerance specifications for numerical comparisons
+testing_strategies.ToleranceSpec(relative, absolute, description)
+testing_strategies.ToleranceSpec.is_close(actual, expected)
+testing_strategies.ToleranceSpec.assert_close(actual, expected, message="")
+
+# Predefined engineering tolerances
+testing_strategies.AREA_TOLERANCE   # 0.1%, 1.0 mm²
+testing_strategies.LENGTH_TOLERANCE # 0.1%, 0.1 mm
+testing_strategies.FORCE_TOLERANCE  # 0.1%, 0.01 kN
+testing_strategies.STRESS_TOLERANCE # 1%, 0.1 N/mm²
+testing_strategies.RATIO_TOLERANCE  # 0.1%, 0.0001
+
+# Boundary value testing
+testing_strategies.BoundaryValueGenerator(min_val, max_val, typical_val=None)
+testing_strategies.BoundaryValueGenerator.generate()
+testing_strategies.BeamParameterRanges()
+testing_strategies.BeamParameterRanges.get_boundary_generator(param)
+
+# Property-based testing (stdlib only, no hypothesis)
+testing_strategies.PropertyBasedTester(seed=None)
+testing_strategies.PropertyBasedTester.generate_beam_cases(n=100, ranges=None)
+
+# Regression testing
+testing_strategies.RegressionTestSuite(baseline_dir)
+testing_strategies.RegressionTestSuite.add_baseline(name, inputs, outputs, version="")
+testing_strategies.RegressionTestSuite.compare(name, actual_outputs)
+testing_strategies.RegressionTestSuite.save()
+
+# Engineering invariants
+testing_strategies.BeamDesignInvariants.get_all()
+testing_strategies.BeamDesignInvariants.check_all(result)
+testing_strategies.assert_beam_design_valid(result)
+```
+
 Note: `api.check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m)
 and does not perform explicit unit validation. Use `api.check_beam_is456()` when
 you want unit validation at the API boundary.

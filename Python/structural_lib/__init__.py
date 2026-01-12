@@ -36,6 +36,7 @@ from . import (
     result_base,
     serviceability,
     shear,
+    testing_strategies,
     types,
 )
 
@@ -61,5 +62,6 @@ __all__ = [
     "result_base",
     "serviceability",
     "shear",
+    "testing_strategies",
     "types",
 ]

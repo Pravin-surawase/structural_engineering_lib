@@ -31,9 +31,22 @@ Changelog = "https://github.com/Pravin-surawase/structural_engineering_lib/blob/
 Issues = "https://github.com/Pravin-surawase/structural_engineering_lib/issues"
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "pytest-benchmark", "black", "mypy", "pre-commit", "ruff", "bandit", "isort"]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "pytest-benchmark",
+  "black",
+  "mypy",
+  "pre-commit",
+  "ruff",
+  "bandit",
+  "isort",
+  "hypothesis>=6.0",
+]
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
 render = ["ezdxf>=1.0", "matplotlib>=3.5"]  # DXF render to PNG/PDF
+report = ["jinja2>=3.1"]  # Optional HTML templating for reports
+validation = ["jsonschema>=4.21"]  # Optional input/output schema validation
 
 [tool.ruff]
 target-version = "py311"

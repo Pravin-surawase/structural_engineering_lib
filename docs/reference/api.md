@@ -621,6 +621,126 @@ report.verification_hash = cert["combined_hash"]
 report.export_html("B1_verified.html")
 ```
 
+### 1A.4.5 Engineering Testing Utilities (v0.17.0+)
+
+Professional testing utilities for structural engineering calculations.
+
+**Available classes:** `testing_strategies.ToleranceSpec`, `testing_strategies.BoundaryValueGenerator`, `testing_strategies.BeamParameterRanges`, `testing_strategies.PropertyBasedTester`, `testing_strategies.RegressionTestSuite`
+
+**Predefined tolerances:** `AREA_TOLERANCE`, `LENGTH_TOLERANCE`, `FORCE_TOLERANCE`, `STRESS_TOLERANCE`, `RATIO_TOLERANCE`
+
+#### ToleranceSpec
+
+Numerical tolerance specification for engineering comparisons.
+
+```python
+@dataclass(frozen=True)
+class ToleranceSpec:
+    relative: float = 0.001  # 0.1% relative tolerance
+    absolute: float = 0.1    # 0.1 absolute tolerance
+    description: str = ""
+
+    def is_close(self, actual: float, expected: float) -> bool
+    def assert_close(self, actual: float, expected: float, message: str = "") -> None
+```
+
+#### BoundaryValueGenerator
+
+Generate boundary values for testing (min, min+ε, typical, max-ε, max).
+
+```python
+@dataclass
+class BoundaryValueGenerator:
+    min_val: float
+    max_val: float
+    typical_val: float | None = None
+    include_invalid: bool = False
+
+    def generate(self) -> list[float]
+```
+
+#### PropertyBasedTester
+
+Property-based testing using stdlib random (no hypothesis dependency).
+
+```python
+class PropertyBasedTester:
+    def __init__(self, seed: int | None = None)
+    def generate_beam_cases(self, n: int = 100, ranges: BeamParameterRanges | None = None) -> list[RandomTestCase]
+    def reset(self, seed: int | None = None) -> None
+```
+
+#### RegressionTestSuite
+
+Manage regression test baselines for comparing across versions.
+
+```python
+class RegressionTestSuite:
+    def __init__(self, baseline_dir: str | Path)
+    def add_baseline(self, name: str, inputs: dict, outputs: dict, version: str = "") -> RegressionBaseline
+    def compare(self, name: str, actual_outputs: dict) -> list[tuple[str, bool, str]]
+    def save(self) -> None
+```
+
+#### BeamDesignInvariants
+
+Standard engineering invariants for beam design validation.
+
+```python
+class BeamDesignInvariants:
+    @staticmethod
+    def get_all() -> list[InvariantCheck]
+    @staticmethod
+    def check_all(result) -> list[tuple[bool, str]]
+
+# Convenience function
+def assert_beam_design_valid(result) -> None  # Raises AssertionError on failure
+```
+
+**Example (tolerance testing):**
+```python
+from structural_lib.testing_strategies import AREA_TOLERANCE
+
+# Compare steel area with engineering tolerance
+AREA_TOLERANCE.assert_close(
+    actual=1017.88,
+    expected=1018.0,
+    message="Steel area check"
+)  # Passes (0.1% tolerance)
+```
+
+**Example (property-based testing):**
+```python
+from structural_lib.testing_strategies import PropertyBasedTester
+from structural_lib import api
+
+tester = PropertyBasedTester(seed=42)  # Reproducible
+cases = tester.generate_beam_cases(n=100)
+
+for case in cases:
+    result = api.design_beam_is456(**case.inputs)
+    assert result.flexure.ast_provided >= result.flexure.ast_required
+```
+
+**Example (regression testing):**
+```python
+from structural_lib.testing_strategies import RegressionTestSuite
+
+suite = RegressionTestSuite("tests/baselines/")
+suite.add_baseline(
+    name="standard_beam",
+    inputs={"b_mm": 300, "D_mm": 500},
+    outputs={"ast_required": 856},
+    version="0.16.0"
+)
+suite.save()
+
+# Later: compare against baseline
+results = suite.compare("standard_beam", {"ast_required": 857})
+for name, passed, msg in results:
+    print(f"{name}: {'✓' if passed else '✗'} - {msg}")
+```
+
 ### 1A.5 API Helpers
 
 ```python
