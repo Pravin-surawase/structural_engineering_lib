@@ -12,7 +12,7 @@
 | Need | Go To | Tags |
 |------|-------|------|
 | Start new research | [research-methodology.md](research-methodology.md) | process |
-| Fix git issues | [git-workflow-recurring-issues.md](git-workflow-recurring-issues.md) | troubleshooting |
+| Fix git issues | [git-workflow-recurring-issues.md](../docs/_archive/research/git-automation/git-workflow-recurring-issues.md) | troubleshooting |
 | Improve docs | [documentation-quality-audit.md](documentation-quality-audit.md) | docs |
 | Code quality | [cs-best-practices-audit.md](cs-best-practices-audit.md) | quality |
 | API stability | [backward-compatibility-strategy.md](backward-compatibility-strategy.md) | api |
@@ -39,8 +39,8 @@
 | [backward-compatibility-strategy.md](backward-compatibility-strategy.md) | guide | 🔴 High | api, stability | Before breaking changes |
 | [backward-compat-automation.md](../docs/_archive/backward-compat-automation.md) | spec | 🟡 Medium | ci, contracts | Enforcing API in CI |
 | [xlwings-vba-strategy.md](xlwings-vba-strategy.md) | research | 🟡 Medium | vba, migration | VBA migration planning |
-| [git-workflow-production-stage.md](git-workflow-production-stage.md) | guide | 🟡 Medium | git, workflow | Adjusting git rules |
-| [git-workflow-recurring-issues.md](git-workflow-recurring-issues.md) | troubleshooting | 🟢 Low | git, issues | Diagnosing git friction |
+| [git-workflow-production-stage.md](../docs/_archive/research/git-automation/git-workflow-production-stage.md) | guide | 🟡 Medium | git, workflow | Adjusting git rules |
+| [git-workflow-recurring-issues.md](../docs/_archive/research/git-automation/git-workflow-recurring-issues.md) | troubleshooting | 🟢 Low | git, issues | Diagnosing git friction |
 | [background-agent-parallel-work.md](background-agent-parallel-work.md) | guide | 🟡 Medium | agents, workflow | Running parallel agents |
 
 ---
