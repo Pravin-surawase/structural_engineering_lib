@@ -56,6 +56,12 @@ This document consolidates the key insights from all Week 1 papers. Update daily
 - **Pareto Set Learning (Lin et al., 2022):** Learns a continuous model of the entire Pareto set rather than just a finite set of points. This allows for infinite high-quality trade-off exploration and better capture of structural properties in expensive MOO.
 - **Preference-Guided Diffusion (Annadani et al., 2025):** Uses classifier-guided diffusion models (trained on preferences) to generate diverse Pareto-optimal designs outside the initial training distribution.
 
+### Q6: How do 2024-2026 frameworks bridge theoretical Pareto fronts with structural codes like IS 456?
+**Answer:**
+- **Integrated Code Compliance (Parhi et al., 2026):** State-of-the-art frameworks embed the structural code (like IS 456) directly into the non-linear MOEA's feasibility filter. They combine this with **Interpretable ML (Lasso)** to explain which rebar detailing rules are currently governing the frontier.
+- **Tri-Objective Sustainability (Santos et al., 2023):** There is a shift towards optimizing **Cost vs. Carbon vs. Crack Width**. Serviceability limits are treated as "soft" objectives to find solutions that are significantly better than the code minimum for a marginal cost increase.
+- **Surrogate-Accelerated Frontiers (Hong & Nguyen, 2023):** The **Hong-Lagrange algorithm** uses ANNs to predict Pareto frontiers for RC beams, reducing the computational cost of thousands of structural iterations while maintaining high fidelity to code requirements.
+
 ---
 
 ## Literature Landscape Map
