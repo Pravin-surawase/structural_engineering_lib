@@ -10,7 +10,6 @@ and ensure consistent error handling across the library.
 See docs/research/cs-best-practices-audit.md for design rationale.
 """
 
-from typing import Optional
 
 from .errors import (
     E_INPUT_001,
@@ -570,7 +569,7 @@ def validate_beam_inputs(
     mu: float,
     vu: float,
     *,
-    span: Optional[float] = None,
+    span: float | None = None,
     allow_negative_loads: bool = False,
 ) -> list[DesignError]:
     """Validate all common beam design inputs.

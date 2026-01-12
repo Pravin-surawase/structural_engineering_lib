@@ -17,7 +17,6 @@ Setup:
     4. Use functions in formulas
 """
 
-from typing import Union
 
 import xlwings as xw
 
@@ -35,7 +34,7 @@ from structural_lib import detailing, flexure, shear
 @xw.arg("fck", doc="Concrete grade (N/mm²)")
 @xw.arg("fy", doc="Steel grade (N/mm²)")
 @xw.ret(doc="Limiting moment of resistance (kN·m)")
-def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> Union[float, str]:
+def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> float | str:
     """
     Calculate limiting moment of resistance for singly reinforced beam.
 
@@ -62,7 +61,7 @@ def IS456_MuLim(b: float, d: float, fck: float, fy: float) -> Union[float, str]:
 @xw.ret(doc="Required tension steel area (mm²) or error message")
 def IS456_AstRequired(
     b: float, d: float, mu: float, fck: float, fy: float
-) -> Union[float, str]:
+) -> float | str:
     """
     Calculate required tension steel area for flexure.
 
@@ -110,7 +109,7 @@ def IS456_AstRequired(
 @xw.ret(doc="Required stirrup spacing (mm)")
 def IS456_ShearSpacing(
     vu: float, b: float, d: float, fck: float, fy: float, dia_stirrup: float, pt: float
-) -> Union[float, str]:
+) -> float | str:
     """
     Calculate required stirrup spacing for shear.
 
@@ -173,7 +172,7 @@ def IS456_StirrupCallout(legs: int, dia: int, spacing: int) -> str:
 @xw.arg("fck", doc="Concrete grade (N/mm²)")
 @xw.arg("fy", doc="Steel grade (N/mm²)")
 @xw.ret(doc="Development length (mm)")
-def IS456_Ld(dia: float, fck: float, fy: float) -> Union[float, str]:
+def IS456_Ld(dia: float, fck: float, fy: float) -> float | str:
     """
     Calculate development length (IS 456:2000 Cl 26.2.1).
 

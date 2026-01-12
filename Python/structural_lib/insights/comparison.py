@@ -8,8 +8,9 @@ analyze sensitivity with cost considerations.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 from ..data_types import ComplianceCaseResult
 from .cost_optimization import CostProfile
@@ -277,7 +278,7 @@ def cost_aware_sensitivity(
 
         # Perturb and calculate cost impact
         perturbed_params = base_params.copy()
-        if isinstance(base_value, (int, float)) and base_value != 0:
+        if isinstance(base_value, int | float) and base_value != 0:
             perturbed_params[param] = base_value * (1.0 + perturbation)
             perturbed_cost = _estimate_design_cost(perturbed_params, cost_profile)
             cost_delta = perturbed_cost - base_cost

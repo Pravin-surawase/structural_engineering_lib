@@ -15,7 +15,8 @@ Usage:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
+from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from structural_lib.core.base import DesignCode

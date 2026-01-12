@@ -4,7 +4,6 @@
 
 import time
 from dataclasses import dataclass
-from typing import Optional
 
 from structural_lib import flexure
 from structural_lib.costing import CostBreakdown, CostProfile, calculate_beam_cost
@@ -20,10 +19,10 @@ class OptimizationCandidate:
     d_mm: int
     fck_nmm2: int
     fy_nmm2: int
-    design_result: Optional[FlexureResult]
-    cost_breakdown: Optional[CostBreakdown]
+    design_result: FlexureResult | None
+    cost_breakdown: CostBreakdown | None
     is_valid: bool
-    failure_reason: Optional[str] = None
+    failure_reason: str | None = None
 
 
 @dataclass
@@ -51,7 +50,7 @@ def optimize_beam_cost(
     span_mm: float,
     mu_knm: float,
     vu_kn: float,
-    cost_profile: Optional[CostProfile] = None,
+    cost_profile: CostProfile | None = None,
     cover_mm: int = 40,
 ) -> CostOptimizationResult:
     """Find cheapest beam design meeting IS 456:2000.

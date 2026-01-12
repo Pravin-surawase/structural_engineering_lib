@@ -5,9 +5,11 @@ Module:       types
 Description:  Custom Data Types (Classes/Dataclasses) and Enums
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Optional, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 
 from .utilities import deprecated_field
 
@@ -117,9 +119,9 @@ class BeamGeometry(TypedDict, total=False):
     # Optional fields
     d_dash_mm: float  # Cover to compression steel (mm), default 50.0
     asv_mm2: float  # Area of stirrup legs (mm²), default 100.0
-    pt_percent: Optional[float]  # Percentage of steel for deflection, optional
-    deflection_defaults: Optional[DeflectionParams]  # Deflection calculation params
-    crack_width_defaults: Optional[CrackWidthParams]  # Crack width params
+    pt_percent: float | None  # Percentage of steel for deflection, optional
+    deflection_defaults: DeflectionParams | None  # Deflection calculation params
+    crack_width_defaults: CrackWidthParams | None  # Crack width params
 
 
 class LoadCase(TypedDict):
@@ -183,7 +185,7 @@ class FlexureResult:
     is_safe: bool  # True if design is valid
     asc_required: float = 0.0  # Area of compression steel required (mm^2)
     error_message: str = ""  # Deprecated: Use errors list instead
-    errors: list["DesignError"] = field(default_factory=list)  # Structured errors
+    errors: list[DesignError] = field(default_factory=list)  # Structured errors
 
     def __post_init__(self) -> None:
         if self.error_message:
@@ -205,7 +207,7 @@ class ShearResult:
     spacing: float  # Calculated spacing (mm)
     is_safe: bool  # True if section is safe in shear
     remarks: str = ""  # Deprecated: Use errors list instead
-    errors: list["DesignError"] = field(default_factory=list)  # Structured errors
+    errors: list[DesignError] = field(default_factory=list)  # Structured errors
 
     def __post_init__(self) -> None:
         if self.remarks:
@@ -271,8 +273,8 @@ class ComplianceCaseResult:
     vu_kn: float
     flexure: FlexureResult
     shear: ShearResult
-    deflection: Optional[DeflectionResult] = None
-    crack_width: Optional[CrackWidthResult] = None
+    deflection: DeflectionResult | None = None
+    crack_width: CrackWidthResult | None = None
     is_ok: bool = False
     governing_utilization: float = 0.0
     utilizations: dict[str, float] = field(default_factory=dict)

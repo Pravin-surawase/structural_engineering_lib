@@ -16,7 +16,6 @@ References:
 
 import math
 from dataclasses import dataclass
-from typing import Optional
 
 from structural_lib.error_messages import material_property_out_of_range
 from structural_lib.errors import ComplianceError, ConfigurationError, MaterialError
@@ -418,7 +417,7 @@ def select_bar_arrangement(
     b: float,
     cover: float,
     stirrup_dia: float = 8.0,
-    preferred_dia: Optional[float] = None,
+    preferred_dia: float | None = None,
     max_layers: int = 2,
 ) -> BarArrangement:
     """

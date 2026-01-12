@@ -9,7 +9,7 @@ import json
 from collections.abc import Sequence
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 from . import (
     bbs,
@@ -86,7 +86,7 @@ def get_library_version() -> str:
         return "0.0.0-dev"
 
 
-def validate_job_spec(path: Union[str, Path]) -> ValidationReport:
+def validate_job_spec(path: str | Path) -> ValidationReport:
     """Validate a job.json specification file.
 
     Returns a ValidationReport with errors/warnings and summary details.
@@ -139,7 +139,7 @@ def _beam_has_loads(beam: dict[str, Any]) -> bool:
     )
 
 
-def validate_design_results(path: Union[str, Path]) -> ValidationReport:
+def validate_design_results(path: str | Path) -> ValidationReport:
     """Validate a design results JSON file (single or multi-beam)."""
     errors: list[str] = []
     warnings: list[str] = []
@@ -322,7 +322,7 @@ def _detailing_result_to_dict(
 def compute_detailing(
     design_results: dict[str, Any],
     *,
-    config: Optional[dict[str, Any]] = None,
+    config: dict[str, Any] | None = None,
 ) -> list[detailing.BeamDetailingResult]:
     """Compute beam detailing results from design results JSON dict.
 
@@ -468,7 +468,7 @@ def compute_bbs(
 
 def export_bbs(
     bbs_doc: bbs.BBSDocument,
-    path: Union[str, Path],
+    path: str | Path,
     *,
     fmt: str = "csv",
 ) -> Path:
@@ -486,11 +486,11 @@ def export_bbs(
 
 def compute_dxf(
     detailing_list: list[detailing.BeamDetailingResult],
-    output: Union[str, Path],
+    output: str | Path,
     *,
     multi: bool = False,
     include_title_block: bool = False,
-    title_block: Optional[dict[str, Any]] = None,
+    title_block: dict[str, Any] | None = None,
     sheet_margin_mm: float = 20.0,
     title_block_width_mm: float = 120.0,
     title_block_height_mm: float = 40.0,
@@ -577,14 +577,14 @@ def compute_dxf(
 
 
 def compute_report(
-    source: Union[str, Path, dict[str, Any]],
+    source: str | Path | dict[str, Any],
     *,
     format: str = "html",
-    job_path: Optional[Union[str, Path]] = None,
-    results_path: Optional[Union[str, Path]] = None,
-    output_path: Optional[Union[str, Path]] = None,
+    job_path: str | Path | None = None,
+    results_path: str | Path | None = None,
+    output_path: str | Path | None = None,
     batch_threshold: int = 80,
-) -> Union[str, Path, list[Path]]:
+) -> str | Path | list[Path]:
     """Generate design report from job outputs or design results.
 
     Creates HTML or JSON reports with design calculations, code checks, reinforcement
@@ -707,14 +707,14 @@ def compute_report(
 
 
 def compute_critical(
-    job_out: Union[str, Path],
+    job_out: str | Path,
     *,
     top: int = 10,
     format: str = "csv",
-    job_path: Optional[Union[str, Path]] = None,
-    results_path: Optional[Union[str, Path]] = None,
-    output_path: Optional[Union[str, Path]] = None,
-) -> Union[str, Path]:
+    job_path: str | Path | None = None,
+    results_path: str | Path | None = None,
+    output_path: str | Path | None = None,
+) -> str | Path:
     """Generate critical set export from job outputs."""
     fmt = format.lower()
     if fmt not in {"csv", "html"}:
@@ -767,10 +767,10 @@ def check_deflection_span_depth(
     span_mm: float,
     d_mm: float,
     support_condition: str = "simply_supported",
-    base_allowable_ld: Optional[float] = None,
-    mf_tension_steel: Optional[float] = None,
-    mf_compression_steel: Optional[float] = None,
-    mf_flanged: Optional[float] = None,
+    base_allowable_ld: float | None = None,
+    mf_tension_steel: float | None = None,
+    mf_compression_steel: float | None = None,
+    mf_flanged: float | None = None,
 ) -> serviceability.DeflectionResult:
     """Check deflection using span/depth ratio (Level A).
 
@@ -800,13 +800,13 @@ def check_deflection_span_depth(
 
 def check_crack_width(
     exposure_class: str = "moderate",
-    limit_mm: Optional[float] = None,
-    acr_mm: Optional[float] = None,
-    cmin_mm: Optional[float] = None,
-    h_mm: Optional[float] = None,
-    x_mm: Optional[float] = None,
-    epsilon_m: Optional[float] = None,
-    fs_service_nmm2: Optional[float] = None,
+    limit_mm: float | None = None,
+    acr_mm: float | None = None,
+    cmin_mm: float | None = None,
+    h_mm: float | None = None,
+    x_mm: float | None = None,
+    epsilon_m: float | None = None,
+    fs_service_nmm2: float | None = None,
     es_nmm2: float = 200000.0,
 ) -> serviceability.CrackWidthResult:
     """Check crack width using an Annex-F-style estimate.
@@ -848,9 +848,9 @@ def check_compliance_report(
     fy_nmm2: float,
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
-    pt_percent: Optional[float] = None,
-    deflection_defaults: Optional[DeflectionParams] = None,
-    crack_width_defaults: Optional[CrackWidthParams] = None,
+    pt_percent: float | None = None,
+    deflection_defaults: DeflectionParams | None = None,
+    crack_width_defaults: CrackWidthParams | None = None,
 ) -> ComplianceReport:
     """Run a multi-case IS 456 compliance report.
 
@@ -899,10 +899,10 @@ def design_beam_is456(
     fy_nmm2: float,
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
-    pt_percent: Optional[float] = None,
-    ast_mm2_for_shear: Optional[float] = None,
-    deflection_params: Optional[DeflectionParams] = None,
-    crack_width_params: Optional[CrackWidthParams] = None,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    deflection_params: DeflectionParams | None = None,
+    crack_width_params: CrackWidthParams | None = None,
 ) -> ComplianceCaseResult:
     """Design/check a single IS 456 beam case (strength + optional serviceability).
 
@@ -982,9 +982,9 @@ def check_beam_is456(
     fy_nmm2: float,
     d_dash_mm: float = 50.0,
     asv_mm2: float = 100.0,
-    pt_percent: Optional[float] = None,
-    deflection_defaults: Optional[DeflectionParams] = None,
-    crack_width_defaults: Optional[CrackWidthParams] = None,
+    pt_percent: float | None = None,
+    deflection_defaults: DeflectionParams | None = None,
+    crack_width_defaults: CrackWidthParams | None = None,
 ) -> ComplianceReport:
     """Run an IS 456 compliance report across multiple cases.
 
@@ -1129,7 +1129,7 @@ def design_and_detail_beam_is456(
     vu_kn: float,
     b_mm: float,
     D_mm: float,
-    d_mm: Optional[float] = None,
+    d_mm: float | None = None,
     cover_mm: float = 40.0,
     fck_nmm2: float = 25.0,
     fy_nmm2: float = 500.0,
@@ -1288,7 +1288,7 @@ def optimize_beam_cost(
     span_mm: float,
     mu_knm: float,
     vu_kn: float,
-    cost_profile: Optional[CostProfile] = None,
+    cost_profile: CostProfile | None = None,
     cover_mm: int = 40,
 ) -> CostOptimizationResult:
     """Find the most cost-effective beam design meeting IS 456:2000.
@@ -1382,9 +1382,9 @@ def suggest_beam_design_improvements(
     *,
     units: str,
     design: beam_pipeline.BeamDesignOutput,
-    span_mm: Optional[float] = None,
-    mu_knm: Optional[float] = None,
-    vu_kn: Optional[float] = None,
+    span_mm: float | None = None,
+    mu_knm: float | None = None,
+    vu_kn: float | None = None,
 ) -> DesignSuggestionsResult:
     """Get AI-driven design improvement suggestions for an IS 456:2000 beam design.
 
@@ -1489,8 +1489,8 @@ def smart_analyze_design(
     include_suggestions: bool = True,
     include_sensitivity: bool = True,
     include_constructability: bool = True,
-    cost_profile: Optional[CostProfile] = None,
-    weights: Optional[dict[str, float]] = None,
+    cost_profile: CostProfile | None = None,
+    weights: dict[str, float] | None = None,
 ) -> SmartAnalysisResult:
     """Unified smart design analysis dashboard.
 

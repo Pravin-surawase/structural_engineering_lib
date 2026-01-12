@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
-from typing import Any, Callable
+from collections.abc import Callable, Iterable
+from typing import Any
 
 from .data_types import RobustnessScore, SensitivityResult
 
@@ -80,7 +80,7 @@ def sensitivity_analysis(
             continue
 
         base_value = base_params[param]
-        if not isinstance(base_value, (int, float)):
+        if not isinstance(base_value, int | float):
             continue
 
         perturbed_value = base_value * (1 + perturbation)

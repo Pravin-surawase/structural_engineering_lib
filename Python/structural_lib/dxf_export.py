@@ -20,7 +20,7 @@ Usage:
 """
 
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 ezdxf: Any = None
 _units: Any = None
@@ -154,7 +154,7 @@ def _bar_mark_map(detailing: BeamDetailingResult) -> dict:
     return marks
 
 
-def extract_bar_marks_from_dxf(path: Union[str, Path]) -> dict[str, set[str]]:
+def extract_bar_marks_from_dxf(path: str | Path) -> dict[str, set[str]]:
     """Extract bar marks from a DXF file, grouped by beam."""
     check_ezdxf()
     p = Path(path)
@@ -185,8 +185,8 @@ def extract_bar_marks_from_dxf(path: Union[str, Path]) -> dict[str, set[str]]:
 
 
 def compare_bbs_dxf_marks(
-    bbs_csv_path: Union[str, Path],
-    dxf_path: Union[str, Path],
+    bbs_csv_path: str | Path,
+    dxf_path: str | Path,
 ) -> dict[str, object]:
     """Compare bar marks in a BBS CSV against a DXF file."""
     bbs_marks = bbs.extract_bar_marks_from_bbs_csv(bbs_csv_path)
@@ -525,7 +525,7 @@ def draw_annotations(
     stirrups: list[StirrupArrangement],
     ld: float,
     lap: float,
-    detailing: Optional[BeamDetailingResult] = None,
+    detailing: BeamDetailingResult | None = None,
     origin: tuple[float, float] = (0, 0),
 ) -> None:
     """
@@ -552,7 +552,9 @@ def draw_annotations(
     # Bottom bar callouts (zone-specific)
     if bottom_bars:
         zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
-        for bar_arr, zone, x in zip(bottom_bars, ["start", "mid", "end"], zone_x):
+        for bar_arr, zone, x in zip(
+            bottom_bars, ["start", "mid", "end"], zone_x, strict=False
+        ):
             if bar_arr.count <= 0:
                 continue
             mark = mark_map.get(("bottom", zone), "")
@@ -572,7 +574,9 @@ def draw_annotations(
     # Top bar callouts (zone-specific)
     if top_bars:
         zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
-        for bar_arr, zone, x in zip(top_bars, ["start", "mid", "end"], zone_x):
+        for bar_arr, zone, x in zip(
+            top_bars, ["start", "mid", "end"], zone_x, strict=False
+        ):
             if bar_arr.count <= 0:
                 continue
             mark = mark_map.get(("top", zone), "")
@@ -602,7 +606,7 @@ def draw_annotations(
             zone_names = ["start", "mid", "end"]
             zone_x = [x0 + span * 0.125, x0 + span * 0.5, x0 + span * 0.875]
 
-        for stir, zone, x in zip(stirrups, zone_names, zone_x):
+        for stir, zone, x in zip(stirrups, zone_names, zone_x, strict=False):
             mark = mark_map.get(("stirrup", zone), "")
             mark_text = f"{mark} " if mark else ""
             msp.add_text(
@@ -812,7 +816,7 @@ def generate_beam_dxf(
     include_annotations: bool = True,
     include_section_cuts: bool = True,
     include_title_block: bool = False,
-    title_block: Optional[dict] = None,
+    title_block: dict | None = None,
     sheet_margin_mm: float = DEFAULT_SHEET_MARGIN,
     title_block_width_mm: float = DEFAULT_TITLE_BLOCK_WIDTH,
     title_block_height_mm: float = DEFAULT_TITLE_BLOCK_HEIGHT,
@@ -1054,7 +1058,7 @@ def generate_multi_beam_dxf(
     include_annotations: bool = True,
     include_section_cuts: bool = True,
     include_title_block: bool = False,
-    title_block: Optional[dict] = None,
+    title_block: dict | None = None,
     sheet_margin_mm: float = DEFAULT_SHEET_MARGIN,
     title_block_width_mm: float = DEFAULT_TITLE_BLOCK_WIDTH,
     title_block_height_mm: float = DEFAULT_TITLE_BLOCK_HEIGHT,
@@ -1342,7 +1346,7 @@ def generate_multi_beam_dxf(
 
 def quick_dxf(
     detailing: "BeamDetailingResult",
-    output_path: Optional[str] = None,
+    output_path: str | None = None,
     include_title_block: bool = True,
     project_name: str = "",
 ) -> str:

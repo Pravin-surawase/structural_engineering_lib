@@ -13,7 +13,7 @@ Related:
 """
 
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 from .result_base import BaseResult
 
@@ -201,7 +201,7 @@ class OptimalDesign:
     fy_nmm2: float
     cost_breakdown: CostBreakdown
     is_valid: bool
-    failure_reason: Optional[str] = None
+    failure_reason: str | None = None
 
 
 @dataclass(frozen=True)
@@ -274,7 +274,7 @@ class Suggestion:
     impact: str  # LOW, MEDIUM, HIGH
     confidence: float  # 0.0-1.0
     rationale: str
-    estimated_benefit: Optional[str]
+    estimated_benefit: str | None
     action_steps: list[str]
     clause_refs: list[str]
 
@@ -360,10 +360,10 @@ class SmartAnalysisResult(BaseResult):
 
     summary_data: dict[str, Any]
     metadata: dict[str, Any]
-    cost: Optional[dict[str, Any]] = None
-    suggestions: Optional[dict[str, Any]] = None
-    sensitivity: Optional[dict[str, Any]] = None
-    constructability: Optional[dict[str, Any]] = None
+    cost: dict[str, Any] | None = None
+    suggestions: dict[str, Any] | None = None
+    sensitivity: dict[str, Any] | None = None
+    constructability: dict[str, Any] | None = None
 
     def summary(self) -> str:
         """Human-readable summary of analysis."""

@@ -21,7 +21,9 @@ Related:
 - docs/guidelines/error-handling-standard.md
 """
 
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
 
 # =============================================================================
 # Template Functions - Dimension Errors
@@ -32,7 +34,7 @@ def dimension_too_small(
     dim_name: str,
     actual: float,
     minimum: float,
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
     unit: str = "mm",
 ) -> str:
     """
@@ -63,7 +65,7 @@ def dimension_too_large(
     dim_name: str,
     actual: float,
     maximum: float,
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
     unit: str = "mm",
 ) -> str:
     """
@@ -172,8 +174,8 @@ def material_grade_invalid(
 def material_property_out_of_range(
     property_name: str,
     actual: float,
-    min_value: Optional[float] = None,
-    max_value: Optional[float] = None,
+    min_value: float | None = None,
+    max_value: float | None = None,
     unit: str = "",
 ) -> str:
     """
@@ -213,7 +215,7 @@ def capacity_exceeded(
     capacity_name: str,
     capacity_value: float,
     suggestions: list[str],
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
     unit: str = "kN·m",
 ) -> str:
     """
@@ -257,7 +259,7 @@ def reinforcement_spacing_insufficient(
     required_space: float,
     bar_count: int,
     bar_diameter: float,
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
 ) -> str:
     """
     Template for insufficient spacing for reinforcement.
@@ -300,7 +302,7 @@ def minimum_reinforcement_not_met(
     actual: float,
     minimum: float,
     parameter_name: str = "reinforcement",
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
     unit: str = "mm²",
 ) -> str:
     """
@@ -336,7 +338,7 @@ def maximum_reinforcement_exceeded(
     actual: float,
     maximum: float,
     parameter_name: str = "reinforcement",
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
     unit: str = "mm²",
 ) -> str:
     """
@@ -372,7 +374,7 @@ def spacing_limit_exceeded(
     actual_spacing: float,
     maximum_spacing: float,
     spacing_type: str = "stirrup",
-    clause_ref: Optional[str] = None,
+    clause_ref: str | None = None,
 ) -> str:
     """
     Template for spacing exceeding code limits.
@@ -411,7 +413,7 @@ def convergence_failed(
     algorithm_name: str,
     iterations: int,
     tolerance: float,
-    current_error: Optional[float] = None,
+    current_error: float | None = None,
 ) -> str:
     """
     Template for iterative calculation convergence failure.
