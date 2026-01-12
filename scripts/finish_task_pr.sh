@@ -138,7 +138,6 @@ case "$REPLY" in
 
         # Ensure daemon is running
         # Note: Capture to variable to avoid SIGPIPE with grep -q
-        local daemon_status
         daemon_status=$("$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" status 2>/dev/null || true)
         if ! echo "$daemon_status" | grep -q "running"; then
             "$PROJECT_ROOT/scripts/ci_monitor_daemon.sh" start
