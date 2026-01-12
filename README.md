@@ -26,11 +26,11 @@
 ## At a glance
 
 - **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA) with multi-code foundation
-- **Quality:** Contract-tested APIs, 2392 tests, 86% coverage, comprehensive validation utilities, 103 automation scripts
+- **Quality:** Contract-tested APIs, 2430 tests, 86% coverage, comprehensive validation utilities, 103 automation scripts
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
 - **Automation:** Batch-ready CLI + public API wrappers + unified agent onboarding (90% faster workflow)
 - **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
-- **Documentation:** 789 validated internal links, zero orphan files, semantic folder structure with CI enforcement
+- **Documentation:** 870 validated internal links, zero orphan files, semantic folder structure with CI enforcement
 
 ---
 
@@ -72,7 +72,7 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 ### Quality & Trust
 - **Professional-Grade Foundation:** Contract tests prevent API breaking changes, validation utilities reduce code duplication 30%
-- **Comprehensive Testing:** 2270 tests, 86% coverage, 13 performance benchmarks
+- **Comprehensive Testing:** 2430 tests, 86% coverage, 13 performance benchmarks
 - **API Stability:** Contract-tested public APIs with deprecation policy for safe evolution
 - **Error Handling:** 5-layer architecture with structured errors, zero silent failures
 - **Type Safety:** Modern PEP 585/604 syntax (`list[X]`, `X | None`), stricter mypy checks
@@ -84,32 +84,25 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 ## Status
 
-🚀 **Production-Ready Professional Tool (v0.16.5)** — Published on PyPI with enterprise-grade quality standards.
+🚀 **Production-Ready Professional Tool (v0.16.6)** — Published on PyPI with enterprise-grade quality standards.
 
-**What's new in v0.16.5 (Developer Experience & Automation - 2026-01-11):**
-- **Unified Agent Onboarding:** Single `./scripts/agent_start.sh` command replaces 4-command workflow (90% faster onboarding)
+**What's new in v0.16.6 (Python 3.11 Baseline - 2026-01-12):**
+- **Python 3.11 Baseline:** Minimum Python version raised from 3.9 to 3.11 for faster runtime and cleaner code
+- **CI Optimization:** Test matrix reduced from 4 versions to 2 (50% faster CI)
+- **Type Hint Modernization:** PEP 604 syntax (`X | None` instead of `Optional[X]`) across all modules
+- **Pre-commit Updates:** All local hooks use `.venv/bin/python` for Python 3.11 compatibility
+- **Developer Requirements:** Python 3.11+ required locally (`brew install python@3.11` on macOS)
+
+**Previous: v0.16.5 (Developer Experience & Automation - 2026-01-11):**
+- **Unified Agent Onboarding:** Single `./scripts/agent_start.sh` command replaces 4-command workflow (90% faster)
 - **Folder Structure Governance:** 115 validation errors → 0, CI-enforced folder limits, comprehensive spec
-- **Documentation Quality:** 789 internal links validated, zero orphan files, semantic READMEs in all folders
-- **Git Workflow Automation:** 90-95% faster commits (45-60s → 5s), parallel fetch, incremental whitespace checks
-- **Multi-Code Foundation:** New `core/` and `codes/` architecture ready for ACI 318/EC2 support
-- **IS 456 Module Migration:** All 7 modules reorganized under `codes/is456/` (3,048 lines, zero breaking changes)
-- **103 Automation Scripts:** Safe file operations, link validation, governance compliance, migration tools
-- **Session 13 Total:** ~25 commits, 7 PRs, 11 governance tasks complete
+- **Git Workflow Automation:** 90-95% faster commits (45-60s → 5s), 103 automation scripts
 
 **Previous: v0.15.0 (Code Quality Excellence - 2026-01-07):**
-- **SPDX License Headers:** All 73 source files with standardized copyright and MIT license identifiers (TASK-187)
-- **PEP 585/604 Type Modernization:** 398 type hints updated to modern syntax (`list[X]`, `X | None`) (TASK-193)
-- **Performance Benchmarks:** 13 comprehensive benchmarks (flexure, shear, detailing, validation, insights) with regression tracking (TASK-192)
-- **Test Organization:** Structured into 5 categories (unit/integration/regression/property/performance) with pytest markers (TASK-191)
-- **Per-Module Coverage:** 6 modules >90%, 8 modules 80-90%, detailed HTML reports (TASK-192)
-- **TypedDicts Phase 1:** Type-safe dictionaries for reinforcement data (`BarDict`, `StirrupDict`) (TASK-162)
-- **Expanded Ruff Rules:** 9 rule categories (F/E/W/I/N/UP/B/C4/PIE), 91→0 ruff errors (TASK-189)
-- **Dead Code Cleanup:** Removed obsolete code and naming convention standardization (TASK-190, TASK-194)
-- **API Documentation:** Comprehensive docstrings for all public functions (TASK-195)
-- **Architecture Docs:** Data flow diagrams, dependency graphs, component relationships
-- **Quality Metrics:** 2270 tests (+39), 86% coverage, 0 ruff errors, all benchmarks passing
-
-**Previous releases:** v0.14.0 added contract testing, validation utilities, deprecation policy (Foundation Hardening). v0.13.0 added advisory insights module (precheck, sensitivity, constructability). v0.12.0 added library-first API wrappers and DXF/BBS quality gates.
+- **SPDX License Headers:** All 73 source files with standardized copyright
+- **PEP 585/604 Type Modernization:** 398 type hints updated to modern syntax
+- **Performance Benchmarks:** 13 comprehensive benchmarks with regression tracking
+- **Test Organization:** 2270 tests, 86% coverage, structured into 5 categories
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
