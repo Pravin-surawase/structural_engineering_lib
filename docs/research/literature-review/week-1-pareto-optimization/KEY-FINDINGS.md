@@ -24,51 +24,37 @@ This document consolidates the key insights from all Week 1 papers. Update daily
 
 ---
 
-## Research Q&A ✅ ANSWERED FROM PHASE 1.1 PAPERS
+## Research Q&A ✅ ANSWERED FROM PHASE 1.2 PAPERS (WEB RESEARCH)
 
-### Q1: What algorithms are best for finding Pareto frontiers?
-**Answer:** *Phase 1.1 Consolidated Findings - 15 papers analyzed*
+### Q1: How do engineers choose between competing objectives in practice?
+**Answer:** *Phase 1.2 Web Research Findings (6 abstracts analyzed)*
+- **Decision Psychology (Noti et al., 2025):** There is a fundamental trade-off between recommending the most accurate features vs. those that align with the human's existing understanding. System patience and human learning speed significantly impact long-term decision quality.
+- **Preference Structures (Chen et al., 2025):** Engineers often use "soft" (aspirational) and "hard" (non-negotiable) bounds. Trust is built when the system can prove that no superior alternatives were missed (using sensitivity analysis like T-MoSH).
 
-**NSGA-II (Deb, 2002)** ⭐⭐⭐⭐⭐ WORKHORSE
-- Non-dominated sorting with crowding distance
-- Handles 2-5 objectives well, ~1000 evaluations for convergence
-- 10,000+ citations - most influential algorithm
-- **For IS 456:** Best choice for MVP (if needed)
+### Q2: What decision support systems and interfaces exist?
+**Answer:**
+- **ParetoLens (Ma et al., 2025):** An algorithm-agnostic visual analytics framework that uses modular interactive representations to explore high-dimensional Pareto sets, specifically designed to mitigate visual clutter.
+- **Active-MoSH (Chen et al., 2025):** An interactive local-global framework that maintains probabilistic preference models to guide users through expensive evaluation spaces.
+- **Orbit (Yang et al., 2024):** A conceptual framework for objective-centric iteration. It uses "boundary objects" to facilitate communication between cross-functional teams and allows real-time exploration of design trade-offs.
+- **EMO Visual Analytics (Huang et al., 2023):** Provides interactive visualization for comparing internal evolutionary processes of multiple algorithms, moving beyond black-box analysis.
 
-**MOEA/D (Zhang & Li, 2007)** ⭐⭐⭐⭐ FOR 4+ OBJECTIVES
-- Decomposes MOO into single-objective subproblems
-- More efficient for constrained problems than NSGA-II
-- **For IS 456:** Consider if adding durability/safety constraints
+### Q3: How are constraints handled in real applications?
+**Answer:**
+- **Inverse Design (Awan et al., 2025):** Inverse design (structure-to-property mapping) uses constrained multi-objective regression. q-EHVI remains the gold standard for convergence in these high-dimensional numerical spaces.
+- **Probabilistic Scaling (Chen et al., 2025):** Handling strict "hard" bounds alongside soft preferences is a key requirement for high-stakes domains (comparable to structural codes).
+- **Concept Identification (Lanfermann et al., 2023):** Sorting configuration options into "concepts" based on description spaces (partitioning objectives and parameters) helps manage thousands of Pareto solutions by grouping them into meaningful viable sets.
 
-**Surrogate-Assisted MOO (Jin 2005, Chugh 2017)** ⭐⭐⭐⭐⭐ **OUR BEST FIT**
-- Train surrogate on 500 real IS 456 designs, run MOO with fast approximations
-- Validate top 100 with full IS 456 constraints
-- Reduces time from hours to minutes
-- **For IS 456:** PERFECT - makes expensive beam evaluations practical
+### Q4: Robustness and sensitivity analysis approaches?
+**Answer:**
+- **T-MoSH (Chen et al., 2025):** Employs multi-objective sensitivity analysis to identify potentially overlooked high-value points beyond the immediate feedback loop, reinforcing decision-maker trust.
+- **Lexicographic Sorting (Zhang et al., 2024):** Uses lexicographic optimization to handle non-monotonic criteria and rectify inconsistencies in decision-maker preference feedback, ensuring robust preference learning.
+- **Trustworthy Automation Guidelines (Jelinek et al., 2025):** Emphasizes calibrated trust through Gricean communication maxims—ensuring the system provides relevant, true, and clear cues for the user to accurately assess system reliability.
 
-### Q2: How many objectives can engineers visualize/understand?
-**Answer:** *Phase 1.1 Consolidated Findings*
-
-**2D (Cost vs Weight)** ⭐⭐⭐⭐⭐ OPTIMAL
-- Scatter plot most intuitive, standard in all engineering papers
-- **For IS 456:** Start here for MVP
-
-**3D (Cost vs Weight vs Carbon)** ⭐⭐⭐⭐ FEASIBLE
-- Color third objective, interactive 3D optional
-- **For IS 456:** Achievable in Phase 1
-
-**4D+** ⭐⭐⭐ COMPLEX - needs special techniques
-- Parallel coordinates, scatter plot matrix, interactive filtering
-- **For IS 456:** Phase 2+ if needed
-
-### Q3: Has anyone applied multi-objective optimization to concrete beam design?
-**Answer:** *Phase 1.1 Consolidated Findings*
-
-**Existing Work:** Italy (Lepore 2014), Spain (Yepes 2006), Greece (Koumousis 2008)
-
-**CRITICAL GAP:** ⚠️ **NO published multi-objective RC beam optimization for Indian Standards (IS 456)**
-
-**Market Opportunity:** First-to-market advantage. Literature validates approach validity for your novel IS 456 application.
+### Q5: Uncertainty quantification and probabilistic design?
+**Answer:**
+- **Collaborative UQ (Noorani et al., 2025):** AI should complement human experts by identifying outcomes they missed while avoiding "counterfactual harm" (not degrading correct human judgment). Optimal sets follow a two-threshold structure over a single score function.
+- **Pareto Set Learning (Lin et al., 2022):** Learns a continuous model of the entire Pareto set rather than just a finite set of points. This allows for infinite high-quality trade-off exploration and better capture of structural properties in expensive MOO.
+- **Preference-Guided Diffusion (Annadani et al., 2025):** Uses classifier-guided diffusion models (trained on preferences) to generate diverse Pareto-optimal designs outside the initial training distribution.
 
 ---
 
@@ -84,45 +70,43 @@ PARETO OPTIMIZATION
 │   └── Mathematical foundations
 │
 ├── Algorithms
-│   ├── Genetic algorithms (NSGA-II, etc.)
-│   ├── Particle swarm optimization
-│   ├── Evolutionary algorithms
-│   └── Other metaheuristics
+│   ├── Genetic algorithms (NSGA-II workhorse)
+│   ├── Bayesian Optimization (qEHVI - Benchmark Gold Standard)
+│   ├── Pareto Set Learning (PSL - modeling continuous manifolds)
+│   ├── Classifier-Guided Diffusion (Generative Pareto sets)
+│   └── Evolutionary Multi-Objective Optimization (EMO)
 │
-├── Applications
-│   ├── Structural design (rare!)
-│   ├── Aerospace/automotive
-│   ├── Product design
-│   └── Urban planning
+├── Engineering Applications
+│   ├── Structural design (Arch dams, Building reconstruction - code integration)
+│   ├── Mechanical Design (Vehicle suspension recommendation - multi-fidelity)
+│   ├── Materials Informatics (Inverse design for resins/polymers)
+│   ├── Energy Management (Building efficiency concepts)
+│   └── Structural Health Monitoring (NN architecture selection)
 │
-└── Decision Support
-    ├── Trade-off visualization
-    ├── Preference modeling
-    ├── Decision psychology
-    └── Uncertainty handling
+└── Decision Support & HCI
+    ├── Visual Analytics (ParetoLens - modular charts; EMO comparison)
+    ├── Preference Elicitation (Active-MoSH, Direct Preference Optimization - DPO)
+    ├── Collaborative UQ (Human-AI complementarity; Avoiding Counterfactual Harm)
+    ├── Trustworthiness Assessment (Six Design Guidelines; calibrated trust)
+    └── Decision Psychology (Learning vs Accuracy trade-offs; Boundary objects)
 ```
 
 ### Key Findings by Phase
 
 **Phase 1.1 — Pareto Theory (15 papers)**
-- Core concepts: [To be filled]
-- Key researchers: [To be filled]
-- Foundational works: [To be filled]
+- Foundations: NSGA-II remains the industry workhorse; MOEA/D for high-dimensional problems.
 
 **Phase 1.2 — MOO Methods (20 papers)**
-- Algorithm comparison: [To be filled]
-- Strengths/weaknesses: [To be filled]
-- Design space applications: [To be filled]
+- 2025 Trends: Convergence on qEHVI as performance ceiling; shift towards Interactive Preference Learning with soft/hard bounds; emergence of LLMs as fast generative optimizers for inverse design.
 
 **Phase 1.3 — Concrete Design (20 papers)**
-- Existing optimization approaches: [To be filled]
-- What's been optimized: [To be filled]
-- What's NOT been optimized: [To be filled]
+- **Emerging Frameworks (Parhi et al., 2026):** State-of-the-art approach integrating nonlinear MOEA with interpretable ML to ensure "rigorous compliance to structural codes" (IS 456 context).
+- **RC Beam Pareto Sets (Hong & Nguyen, 2023):** Specialized algorithms (ANN-based Hong-Lagrange) now being used to generate frontiers specifically for reinforced concrete beams.
+- **Sustainability Optimization (Santos et al., 2023):** Shifting focus from cost-only to tri-objective optimization: **Cost vs. CO2 vs. Performance (Crack Prevention)**.
+- **Whole-Building Logic (Kumar et al., 2025):** Applying NSGA-II to entire reinforced concrete structures rather than isolated elements.
 
 **Phase 1.4 — Decision-Making (15 papers)**
-- How engineers decide: [To be filled]
-- Information they need: [To be filled]
-- Barriers to adoption: [To be filled]
+- [To be filled - Focus on UX/UI patterns for engineers]
 
 ---
 
@@ -192,9 +176,10 @@ Choose algorithm based on:
 - [Why?]
 
 ### In Decision-Making Literature
-- [How do engineers actually choose?]
-- [What information do they trust?]
-- [What's misleading?]
+- **Heavy User Integration (Kim et al., 2025):** Users often view AI as either "rational consultants" or "average human proxies." Integration involves social validation and optimized cognitive resource allocation.
+- **Trust Calibration (Jelinek et al., 2025):** Trust is not absolute; it must be "calibrated"—meaning high trust in reliable ranges and rational skepticism in error-prone ranges.
+- **Communication Maxims:** Effective decision support follows Gricean maxims (be reasonably informative, truthful, relevant, and clear).
+- **Learning vs Accuracy (Noti et al., 2025):** Systems should balance recommending optimal solutions with preserving the human's ability to learn and stay engaged.
 
 ---
 
