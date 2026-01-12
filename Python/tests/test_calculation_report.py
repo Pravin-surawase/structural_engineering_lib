@@ -562,12 +562,12 @@ class TestEdgeCases:
         @dataclass
         class MockFlexure:
             ast_required: float = 500.0
-            ast_provided: float = 600.0
+            pt_provided: float = 0.5
 
         @dataclass
         class MockShear:
-            vu_kn: float = 80.0
-            vc_kn: float = 50.0
+            spacing: float = 150.0
+            is_safe: bool = True
 
         result = MagicMock(spec=["flexure", "shear", "is_ok"])
         result.flexure = MockFlexure()

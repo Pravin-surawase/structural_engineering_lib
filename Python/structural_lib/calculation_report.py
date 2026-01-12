@@ -206,11 +206,11 @@ class CalculationReport:
             inputs.geometry = {"beam_id": beam_id, "story": story}
             results_section.flexure = {
                 "ast_required": result.flexure.ast_required,
-                "ast_provided": result.flexure.ast_provided,
+                "pt_provided": result.flexure.pt_provided,
             }
             results_section.shear = {
-                "vu_kn": result.shear.vu_kn,
-                "vc_kn": result.shear.vc_kn,
+                "spacing": result.shear.spacing,
+                "is_safe": result.shear.is_safe,
             }
             results_section.summary = {"is_ok": result.is_ok}
 
