@@ -2,7 +2,7 @@
 
 > **Purpose:** Complete reference of all automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
-> **Last Updated:** 2026-01-11
+> **Last Updated:** 2026-01-12
 >
 > **⚠️ IMPORTANT:** See [Agent Automation Pitfalls](agent-automation-pitfalls.md) for common issues when running automation scripts (git pager lockup, interactive prompts, etc.)
 
@@ -2028,6 +2028,6 @@ chmod +x scripts/*.sh
 
 ---
 
-**Last Updated:** 2026-01-11
+**Last Updated:** 2026-01-12
 **Maintained By:** Project automation
 **Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../.github/SUPPORT.md)

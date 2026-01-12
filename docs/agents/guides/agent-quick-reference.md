@@ -267,4 +267,4 @@ python scripts/check_doc_versions.py --fix    # Fix versions
 
 **Remember:** Automation prevents errors. Trust the scripts!
 
-**Last Updated:** 2026-01-08 | **Version:** 1.0.0
+**Last Updated:** 2026-01-12 | **Version:** 1.1.0
