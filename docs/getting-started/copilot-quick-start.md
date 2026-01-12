@@ -80,36 +80,34 @@ git commit --amend --no-edit
 
 ## Common Workflows
 
-### Safe Commit and Push
+> **⚠️ USE AUTOMATION INSTEAD OF MANUAL GIT:**
+>
+> The commands below show the manual process for educational purposes only.
+> **Always use `./scripts/ai_commit.sh "message"` for commits.**
+
+### Safe Commit and Push (USE ai_commit.sh INSTEAD)
 
 ```bash
-# 1. Check status
-git status --short
+# ✅ PREFERRED (one command does everything):
+./scripts/ai_commit.sh "feat: implement feature"
 
-# 2. Add files
-git add .
-
-# 3. Commit with message
-git commit -m "feat: implement feature"
-
-# 4. Pull before push
-git pull --ff-only
-
-# 5. Push
-git push origin $(git rev-parse --abbrev-ref HEAD)
+# ❌ Manual process (shown for education only - DO NOT USE):
+# git status --short
+# git add .
+# git commit -m "feat: implement feature"
+# git pull --ff-only
+# git push origin $(git rev-parse --abbrev-ref HEAD)
 ```
 
-### Safe Merge/Rebase
+### Safe Merge/Rebase (USE recover_git_state.sh INSTEAD)
 
 ```bash
-# Check if merge in progress
-test -f .git/MERGE_HEAD && echo "Merge in progress" || echo "No merge"
+# ✅ PREFERRED (handles all recovery automatically):
+./scripts/recover_git_state.sh
 
-# Abort merge if stuck
-git merge --abort
-
-# Pull with rebase
-git pull --rebase origin main
+# ❌ Manual process (shown for education only - DO NOT USE):
+# git merge --abort
+# git pull --rebase origin main
 ```
 
 ---

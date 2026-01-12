@@ -4,6 +4,70 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-12 — Session 19P7: Documentation Cleanup & Tier-0 Entrypoints
+
+**Focus:** Validate review findings, consolidate entrypoints, add automation banners
+
+### Summary
+
+Session 19 Part 7 completed the documentation cleanup and QA/OPS improvements identified in P6:
+
+1. **Review Validation** - Validated P6 agent changes: agent_mistakes_report.sh, safer recover_git_state.sh
+2. **Tier-0 Entrypoints** - Consolidated to 3 commands: agent_start.sh, ai_commit.sh, git_ops.sh
+3. **Historical Banners** - Added warnings to legacy docs with manual git examples
+4. **QA/OPS Improvements** - Commit hash validation, duplicate script detection, event logging
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `2d10811` | feat(git): add mistake report and safer recovery (review validation) |
+| `e019f3e` | docs(git): consolidate entrypoints and add automation banners |
+| `a6fa20a` | feat(ops): add QA validation and mistake tracking |
+
+### Tasks Completed
+
+| Task | Description | Status |
+|------|-------------|--------|
+| DOC-01 | Add historical banner to agent-8-mistakes-prevention-guide.md | ✅ |
+| DOC-02 | Replace manual git in efficient-agent-usage.md | ✅ |
+| DOC-03 | Add Tier-0 entrypoints table to README.md | ✅ |
+| DOC-04 | Deprecate install_enforcement_hook.sh | ✅ |
+| DOC-05 | Add automation redirect to copilot-quick-start.md | ✅ |
+| QA-01 | Add commit hash format validation to check_session_docs.py | ✅ |
+| QA-02 | Add Deprecated Script Check to git_automation_health.sh | ✅ |
+| OPS-01 | Add logging to pre-commit/pre-push hooks | ✅ |
+| OPS-02 | Add Mistake Review section to session-issues.md | ✅ |
+
+### Key Improvements
+
+**Tier-0 Entrypoints (3 commands only)**
+- `./scripts/agent_start.sh --quick` - Session start (6s)
+- `./scripts/ai_commit.sh "message"` - Every commit (5s)
+- `./scripts/git_ops.sh --status` - When unsure (1s)
+
+**Historical Banners**
+- agent-8-mistakes-prevention-guide.md: 900+ line historical doc now has warning banner
+- copilot-quick-start.md: Manual workflows section redirects to automation
+- install_enforcement_hook.sh: Deprecated with redirect to install_git_hooks.sh
+
+**QA/OPS Observability**
+- check_session_docs.py: Validates commit hash format (7-40 hex chars)
+- git_automation_health.sh: Detects deprecated/duplicate scripts
+- pre-commit/pre-push hooks: Log blocked events to git_workflow.log
+- session-issues.md: New "Mistake Review" section for session start
+
+### Metrics
+
+| Metric | Value |
+|--------|-------|
+| Commits | 3 |
+| Files changed | 15 |
+| Docs updated | 6 (README, agent guides, session-issues) |
+| Scripts updated | 5 (hooks, health check, session docs check) |
+
+---
+
 ## 2026-01-12 — Session 19P6: Hook Enforcement & Automation-First Completion
 
 **Focus:** Validate review findings, complete automation-first recovery, add hook enforcement
@@ -21,10 +85,7 @@ Session 19 Part 6 validated review findings and implemented proper prevention me
 
 | Hash | Description |
 |------|-------------|
-| `e3f93a0` | feat(git): add versioned hook enforcement and automation-first recovery |
-| `a0e7891` | docs: add new git tools to all agent guides (GITDOC-24) |
-| `a58f75c` | docs: update automation-scripts.md with new tools (GITDOC-25/26) |
-| `92f702d` | test: add tests for hook enforcement, git_ops.sh, and health check (GITDOC-28) |
+| `2b89b1b` | GITDOC-P6: Hook Enforcement System & Automation-First Recovery (PR #346 squash) |
 
 ### GITDOC Tasks Completed
 
@@ -58,7 +119,7 @@ Session 19 Part 6 validated review findings and implemented proper prevention me
 
 **Recovery Script (GITDOC-18)**
 - Before: Printed manual commands for complex cases
-- After: Auto-executes all recovery scenarios (rebase abort, merge conflict resolution, divergence)
+- After: Auto-executes safe recoveries and reports conflicts that need resolution
 
 ### Mistake Analysis (Root Causes Fixed)
 
@@ -66,7 +127,7 @@ Session 19 Part 6 validated review findings and implemented proper prevention me
 |---------|------------|-----|------------|
 | Wrong commit hashes | Documented before squash merge | Updated to squash hash | Document AFTER merge |
 | False "manual git = 0" | Didn't search exhaustively | Ran grep, fixed all | Search before claiming |
-| Incomplete recovery | Rationalized manual fallback | Fully automated | No manual fallback |
+| Incomplete recovery | Rationalized manual fallback | Auto-run safe recovery | Manual conflict resolution only for non-doc files |
 | Optional enforcement | Hooks not installed by default | Auto-install in agent_start | Mandatory enforcement |
 
 ### Metrics

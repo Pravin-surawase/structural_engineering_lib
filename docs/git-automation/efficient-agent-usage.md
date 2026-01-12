@@ -210,7 +210,8 @@ When you're certain (small doc edits):
 |-------|---------|------|
 | Git broken | `./scripts/recover_git_state.sh` | 30s |
 | Health check | `./scripts/git_automation_health.sh` | 5s |
-| Merge conflict | `git checkout --ours <file> && git add <file>` | 10s |
+| Merge conflict | `./scripts/recover_git_state.sh` | 30s |
+| State check | `./scripts/git_ops.sh --status` | 2s |
 
 ---
 

@@ -255,4 +255,12 @@ echo -e "${BOLD}⚡ THE ONE RULE${NC}"
 echo -e "  ${RED}NEVER use manual git commands!${NC}"
 echo "  ALWAYS use: ./scripts/ai_commit.sh \"message\""
 echo ""
+
+# Mistake review (quick refresher)
+if [ -f "$SCRIPT_DIR/agent_mistakes_report.sh" ]; then
+    echo -e "${BOLD}Mistake Review${NC}"
+    "$SCRIPT_DIR/agent_mistakes_report.sh"
+    echo ""
+fi
+
 echo -e "${GREEN}Ready to work!${NC}"

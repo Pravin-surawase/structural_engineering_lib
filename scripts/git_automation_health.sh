@@ -177,6 +177,7 @@ echo "────────────────────────�
 check_script "agent_start.sh" "scripts/agent_start.sh" "false"
 check_script "agent_setup.sh" "scripts/agent_setup.sh" "false"
 check_script "agent_preflight.sh" "scripts/agent_preflight.sh" "false"
+check_script "agent_mistakes_report.sh" "scripts/agent_mistakes_report.sh" "false"
 echo ""
 
 echo -e "${BLUE}🔀 PR Management${NC}"
@@ -199,6 +200,50 @@ check_git_state
 check_branch
 check_remote
 check_log_dir
+echo ""
+
+# QA-02: Check for deprecated/duplicate scripts
+echo -e "${BLUE}🧹 Deprecated Script Check${NC}"
+echo "────────────────────────────────────────────"
+
+# Check for old enforcement script
+printf "%-30s" "Old enforcement hook"
+if [[ -f "scripts/install_enforcement_hook.sh" ]]; then
+    # Check if it's deprecated (has deprecation banner)
+    if grep -q "DEPRECATED" "scripts/install_enforcement_hook.sh" 2>/dev/null; then
+        echo -e "${GREEN}✓${NC} (deprecated with banner)"
+        ((PASSED++))
+    else
+        echo -e "${YELLOW}⚠ exists (should be deprecated)${NC}"
+        ((WARNINGS++))
+    fi
+else
+    echo -e "${GREEN}✓${NC} (removed)"
+    ((PASSED++))
+fi
+
+# Check for duplicate hook installers
+printf "%-30s" "Duplicate hook scripts"
+HOOK_INSTALLERS=$(find scripts -name "*hook*.sh" -type f 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$HOOK_INSTALLERS" -gt 2 ]]; then
+    echo -e "${YELLOW}⚠ $HOOK_INSTALLERS found (check for duplicates)${NC}"
+    ((WARNINGS++))
+else
+    echo -e "${GREEN}✓${NC} ($HOOK_INSTALLERS scripts)"
+    ((PASSED++))
+fi
+
+# Check for multiple entrypoint scripts advertising themselves
+printf "%-30s" "Entrypoint consistency"
+# Should only advertise agent_start.sh, ai_commit.sh, git_ops.sh
+ADVERTISED=$(grep -l "Start session\|Session start\|start here" scripts/*.sh 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$ADVERTISED" -gt 3 ]]; then
+    echo -e "${YELLOW}⚠ too many ($ADVERTISED) - consolidate docs${NC}"
+    ((WARNINGS++))
+else
+    echo -e "${GREEN}✓${NC}"
+    ((PASSED++))
+fi
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

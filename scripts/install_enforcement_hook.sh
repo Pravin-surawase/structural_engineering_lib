@@ -1,4 +1,32 @@
 #!/bin/bash
+# ⚠️ DEPRECATED: This script is superseded by install_git_hooks.sh
+#
+# This script only warned on manual git. The new script BLOCKS manual git.
+# Use install_git_hooks.sh instead (or just run agent_start.sh which calls it).
+#
+# This script will be removed in a future version.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+echo ""
+echo "⚠️  DEPRECATED: install_enforcement_hook.sh is superseded!"
+echo ""
+echo "This script only WARNED on manual git commands."
+echo "The new script BLOCKS them entirely (which is what we want)."
+echo ""
+echo "Use instead:"
+echo "  ./scripts/install_git_hooks.sh"
+echo ""
+echo "Or just run:"
+echo "  ./scripts/agent_start.sh --quick"
+echo ""
+echo "The new hooks are already active if you've run agent_start.sh."
+echo ""
+exit 1
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ORIGINAL CODE BELOW (kept for reference, no longer executed)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
 # Install a pre-push hook that warns on manual git push to main
 # Usage: ./scripts/install_enforcement_hook.sh
 

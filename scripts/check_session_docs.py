@@ -14,6 +14,9 @@ HANDOFF_DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
 HANDOFF_START = "<!-- HANDOFF:START -->"
 HANDOFF_END = "<!-- HANDOFF:END -->"
 
+# Commit hash validation: 7-40 hex chars, not preceded/followed by more hex
+COMMIT_HASH_RE = re.compile(r"(?<![0-9a-fA-F])([0-9a-fA-F]{7,40})(?![0-9a-fA-F])")
+
 
 def _find_heading(lines: list[str], heading: str) -> int:
     for idx, line in enumerate(lines):
@@ -49,6 +52,53 @@ def _handoff_date(lines: list[str]) -> str | None:
             if match:
                 return match.group(1)
     return None
+
+
+def _validate_commit_hashes(lines: list[str], filename: str) -> list[str]:
+    """Validate commit hash format in session docs.
+
+    Returns list of error messages for malformed hashes.
+    Valid hashes: 7-40 hex characters (standard git short/full format).
+    """
+    errors: list[str] = []
+
+    # Skip common false positives (dates, version numbers, UUIDs)
+    skip_patterns = [
+        re.compile(r"^\d{4}-\d{2}-\d{2}"),  # Dates
+        re.compile(r"^\d+\.\d+\.\d+"),  # Version numbers
+        re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}"),  # UUID fragments
+    ]
+
+    for line_num, line in enumerate(lines, 1):
+        # Only check lines that look like they contain commit references
+        if not any(kw in line.lower() for kw in ["commit", "hash", "sha", "merged", "squash"]):
+            continue
+
+        for match in COMMIT_HASH_RE.finditer(line):
+            candidate = match.group(1)
+
+            # Skip false positives
+            if any(p.match(candidate) for p in skip_patterns):
+                continue
+
+            # Check for obviously bad patterns
+            # All same character (like "0000000" or "fffffff")
+            if len(set(candidate)) == 1:
+                errors.append(
+                    f"{filename}:{line_num}: Suspicious hash '{candidate}' "
+                    "(all same character)"
+                )
+                continue
+
+            # Only digits (probably a number, not a hash)
+            if candidate.isdigit():
+                continue  # Not an error, just skip
+
+            # Hash looks valid - no error
+            # Note: We don't verify against git because the hash might be
+            # from remote-only commits or historical records
+
+    return errors
 
 
 def main() -> int:
@@ -124,6 +174,14 @@ def main() -> int:
     if not any("Focus:" in line for line in window):
         print(f"ERROR: SESSION_LOG.md entry for {date_str} missing 'Focus:' line")
         return 1
+
+    # QA-01: Validate commit hash formats
+    hash_errors = _validate_commit_hashes(session_lines, "SESSION_LOG.md")
+    hash_errors.extend(_validate_commit_hashes(next_lines, "next-session-brief.md"))
+    if hash_errors:
+        for err in hash_errors:
+            print(f"WARNING: {err}")
+        # Don't fail on warnings, just report them
 
     return 0
 
