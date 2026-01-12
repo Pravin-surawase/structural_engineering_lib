@@ -21,7 +21,41 @@
 
 - **Version:** v0.16.5 ✅ Released (2026-01-08)
 - **Focus:** Folder Structure Governance + Multi-Code Foundation
-- **Next:** v0.17.0 (Q1 2026, Weeks 2-4) - Professional Requirements Foundation
+- **Next:** v0.16.6 (Python 3.11 Baseline, maintenance) → v0.17.0 (Q1 2026, Weeks 2-4)
+
+---
+
+## v0.16.6 Maintenance Release - Python 3.11 Baseline
+
+**Goal:** Raise minimum supported Python to 3.11 for faster runtime and simpler maintenance.
+
+**Rationale (validated in repo):**
+- CI already tests 3.11/3.12 (`.github/workflows/python-tests.yml`).
+- Fast checks still run 3.9 only; dropping 3.9/3.10 cuts matrix 4 → 2 (≈50% CI time).
+- Tooling already flags 3.9 compatibility in docs and lint config (ruff/mypy targets).
+
+**Phase 1: Policy + Config (Low Risk)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-450** | Update Python baseline to 3.11 (pyproject requires-python, classifiers, ruff target-version, mypy python_version) | DEVOPS | 1-2 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-451** | Update docs for new Python baseline (README, copilot-instructions, getting-started) | DOCS | 1 hr | 🟠 MEDIUM | ⏳ Queued |
+
+**Phase 2: CI + Automation (Medium Risk)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-452** | Update CI to 3.11 baseline (fast-checks uses 3.11, pytest matrix 3.11/3.12) | DEVOPS | 1 hr | 🔴 HIGH | ⏳ Queued |
+| **TASK-453** | Add python-version consistency check (script + CI hook) | DEVOPS | 1-2 hrs | 🟠 MEDIUM | ⏳ Queued |
+
+**Phase 3: Code & Lint Cleanup (If Needed)**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-454** | Run ruff/mypy with py311 targets; fix any new lint/type issues | DEV | 1-2 hrs | 🟠 MEDIUM | ⏳ Queued |
+
+**Phase 4: Release v0.16.6**
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-455** | Release v0.16.6 (pre-release checks, version bump, changelog, release docs) | RELEASE | 1-2 hrs | 🔴 HIGH | ⏳ Queued |
+| **TASK-456** | README update (WIP banner + active roadmap links) | DOCS | 30m | 🟠 MEDIUM | ⏳ Queued |
 
 ---
 
