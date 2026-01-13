@@ -255,7 +255,9 @@ def check_compliance_case(
     if not flex.is_safe:
         # Extract specific error messages if available
         error_msgs = [
-            f"flexure ({e.message})" for e in flex.errors if e.severity == Severity.ERROR
+            f"flexure ({e.message})"
+            for e in flex.errors
+            if e.severity == Severity.ERROR
         ]
         if not error_msgs:
             error_msgs = ["flexure"]

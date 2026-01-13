@@ -79,8 +79,9 @@ def test_flexure_design_singly_reinforced_rejects_invalid_inputs(
     res = flexure.design_singly_reinforced(**kwargs)
     assert res.is_safe is False
     # Check that error for the expected field is in the errors list
-    assert _has_error_with_field(res.errors, expected_substring) or \
-        _has_error_with_message(res.errors, expected_substring)
+    assert _has_error_with_field(
+        res.errors, expected_substring
+    ) or _has_error_with_message(res.errors, expected_substring)
 
 
 def test_flexure_design_doubly_reinforced_rejects_nonpositive_d_dash():
@@ -96,9 +97,11 @@ def test_flexure_design_doubly_reinforced_rejects_nonpositive_d_dash():
     )
     assert res.is_safe is False
     # Check for d' error in errors list
-    assert _has_error_with_field(res.errors, "d_dash") or \
-        _has_error_with_message(res.errors, "d'") or \
-        _has_error_with_message(res.errors, "d_dash")
+    assert (
+        _has_error_with_field(res.errors, "d_dash")
+        or _has_error_with_message(res.errors, "d'")
+        or _has_error_with_message(res.errors, "d_dash")
+    )
     assert any(err.code == "E_INPUT_010" for err in res.errors)
 
 
@@ -183,5 +186,6 @@ def test_shear_design_rejects_invalid_inputs(kwargs, expected_field):
     res = shear.design_shear(**kwargs)
     assert res.is_safe is False
     # Check that error for the expected field is in the errors list
-    assert _has_error_with_field(res.errors, expected_field) or \
-        _has_error_with_message(res.errors, expected_field)
+    assert _has_error_with_field(res.errors, expected_field) or _has_error_with_message(
+        res.errors, expected_field
+    )

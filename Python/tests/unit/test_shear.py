@@ -104,8 +104,9 @@ class TestDesignShear:
             vu_kn=500.0, b=150.0, d=200.0, fck=20.0, fy=415.0, asv=157.0, pt=1.0
         )
         assert result.is_safe is False
-        assert _has_error_with_message(result.errors, "exceeds tc_max") or \
-            _has_error_with_code(result.errors, "E_SHEAR_001")
+        assert _has_error_with_message(
+            result.errors, "exceeds tc_max"
+        ) or _has_error_with_code(result.errors, "E_SHEAR_001")
 
     def test_nominal_shear_less_than_tc(self):
         """Low shear stress < tc: minimum reinforcement required."""
@@ -116,8 +117,9 @@ class TestDesignShear:
         assert result.is_safe is True
         assert result.vus == 0.0
         # Check for minimum shear reinforcement info in errors list
-        assert _has_error_with_message(result.errors, "minimum") or \
-            _has_error_with_code(result.errors, "E_SHEAR_003")
+        assert _has_error_with_message(
+            result.errors, "minimum"
+        ) or _has_error_with_code(result.errors, "E_SHEAR_003")
 
     def test_shear_reinforcement_required(self):
         """Higher shear stress > tc: stirrup design required."""
