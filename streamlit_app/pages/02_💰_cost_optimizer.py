@@ -28,7 +28,12 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from structural_lib.costing import calculate_beam_cost, CostProfile, STEEL_DENSITY_KG_PER_M3
+    from structural_lib.costing import (
+        calculate_beam_cost,
+        CostProfile,
+        STEEL_DENSITY_KG_PER_M3,
+    )
+
     HAS_COSTING = True
 except ImportError:
     HAS_COSTING = False
@@ -205,9 +210,7 @@ def create_comparison_table(comparison_data: list[dict]) -> pd.DataFrame:
 
     # Format numeric columns
     if "Area Ratio" in df_display.columns:
-        df_display["Area Ratio"] = df_display["Area Ratio"].apply(
-            lambda x: f"{x:.2%}"
-        )
+        df_display["Area Ratio"] = df_display["Area Ratio"].apply(lambda x: f"{x:.2%}")
 
     for col in df_display.columns:
         if "Cost" in col:
@@ -299,7 +302,9 @@ def run_cost_optimization(inputs: dict) -> dict:
     # Check for alternatives
     alternatives = flexure.get("_bar_alternatives", [])
     if not alternatives:
-        st.warning("⚠️ No bar alternatives available. Try running beam design first with different parameters.")
+        st.warning(
+            "⚠️ No bar alternatives available. Try running beam design first with different parameters."
+        )
         return {"analysis": None, "comparison": []}
 
     # Get selected design
@@ -309,7 +314,9 @@ def run_cost_optimization(inputs: dict) -> dict:
     selected_area = selected_bars.get("area") or 0
     if selected_area <= 0:
         st.error("❌ Invalid baseline design: steel area is zero or negative.")
-        st.error("This usually means the design failed. Please check beam design inputs.")
+        st.error(
+            "This usually means the design failed. Please check beam design inputs."
+        )
         return {"analysis": None, "comparison": []}
 
     selected_num = selected_bars.get("num") or 0
@@ -331,19 +338,21 @@ def run_cost_optimization(inputs: dict) -> dict:
     selected_steel_kg = selected_steel_vol_mm3 * (STEEL_DENSITY_KG_PER_M3 * 1e-9)
     selected_steel_cost = selected_steel_kg * steel_unit_cost
 
-    comparison.append({
-        "bar_config": f"{selected_num}-{selected_dia}mm",
-        "b_mm": inputs.get("b_mm") or 0,
-        "D_mm": inputs.get("D_mm") or 0,
-        "fck_nmm2": inputs.get("fck_nmm2") or 0,
-        "fy_nmm2": inputs.get("fy_nmm2") or 0,
-        "steel_area_mm2": selected_area,
-        "steel_kg": selected_steel_kg,
-        "utilization_ratio": 1.00,  # Baseline = 100%
-        "total_cost": selected_steel_cost,
-        "steel_cost": selected_steel_cost,
-        "is_optimal": False,  # Will determine later
-    })
+    comparison.append(
+        {
+            "bar_config": f"{selected_num}-{selected_dia}mm",
+            "b_mm": inputs.get("b_mm") or 0,
+            "D_mm": inputs.get("D_mm") or 0,
+            "fck_nmm2": inputs.get("fck_nmm2") or 0,
+            "fy_nmm2": inputs.get("fy_nmm2") or 0,
+            "steel_area_mm2": selected_area,
+            "steel_kg": selected_steel_kg,
+            "utilization_ratio": 1.00,  # Baseline = 100%
+            "total_cost": selected_steel_cost,
+            "steel_cost": selected_steel_cost,
+            "is_optimal": False,  # Will determine later
+        }
+    )
 
     # Calculate costs for alternatives (up to 10)
     MAX_ALTERNATIVES = 10
@@ -361,19 +370,21 @@ def run_cost_optimization(inputs: dict) -> dict:
         # FIXED: Use safe_divide to prevent zero division
         utilization_ratio = safe_divide(alt_area, selected_area, default=1.0)
 
-        comparison.append({
-            "bar_config": f"{alt_num}-{alt_dia}mm",
-            "b_mm": inputs.get("b_mm") or 0,
-            "D_mm": inputs.get("D_mm") or 0,
-            "fck_nmm2": inputs.get("fck_nmm2") or 0,
-            "fy_nmm2": inputs.get("fy_nmm2") or 0,
-            "steel_area_mm2": alt_area,
-            "steel_kg": alt_steel_kg,
-            "utilization_ratio": utilization_ratio,
-            "total_cost": alt_steel_cost,
-            "steel_cost": alt_steel_cost,
-            "is_optimal": False,
-        })
+        comparison.append(
+            {
+                "bar_config": f"{alt_num}-{alt_dia}mm",
+                "b_mm": inputs.get("b_mm") or 0,
+                "D_mm": inputs.get("D_mm") or 0,
+                "fck_nmm2": inputs.get("fck_nmm2") or 0,
+                "fy_nmm2": inputs.get("fy_nmm2") or 0,
+                "steel_area_mm2": alt_area,
+                "steel_kg": alt_steel_kg,
+                "utilization_ratio": utilization_ratio,
+                "total_cost": alt_steel_cost,
+                "steel_cost": alt_steel_cost,
+                "is_optimal": False,
+            }
+        )
 
     # Sort by total cost
     comparison.sort(key=lambda x: x.get("total_cost", math.inf))
@@ -502,30 +513,32 @@ def main():
                 st.session_state.cost_comparison_data = results.get("comparison", [])
 
         # Display results if available
-        if st.session_state.cost_results or st.session_state.cost_comparison_data:
+        has_results = st.session_state.get("cost_results") is not None
+        has_comparison = len(st.session_state.get("cost_comparison_data") or []) > 0
+        if has_results or has_comparison:
             st.success("✅ Optimization complete!")
 
             # Summary metrics
             st.subheader("📊 Cost Summary")
-            analysis_data = st.session_state.cost_results
+            analysis_data = st.session_state.get("cost_results")
             if analysis_data:
                 col1, col2, col3, col4 = st.columns(4)
                 col1.metric(
                     "Baseline Cost",
-                f"₹{(analysis_data.get('baseline_cost') or 0):,.0f}",
+                    f"₹{(analysis_data.get('baseline_cost') or 0):,.0f}",
                 )
                 col2.metric(
                     "Optimal Cost",
-                f"₹{(analysis_data.get('optimal_cost') or 0):,.0f}",
+                    f"₹{(analysis_data.get('optimal_cost') or 0):,.0f}",
                 )
                 col3.metric(
                     "Savings",
-                f"₹{(analysis_data.get('savings_amount') or 0):,.0f}",
-                delta=f"{(analysis_data.get('savings_percent') or 0):.1f}%",
+                    f"₹{(analysis_data.get('savings_amount') or 0):,.0f}",
+                    delta=f"{(analysis_data.get('savings_percent') or 0):.1f}%",
                 )
                 col4.metric(
                     "Candidates Evaluated",
-                analysis_data.get("candidates_evaluated") or 0,
+                    analysis_data.get("candidates_evaluated") or 0,
                 )
 
             # Tabs for different views
@@ -535,8 +548,9 @@ def main():
 
             with tab1:
                 st.subheader("Cost vs Utilization")
-                if st.session_state.cost_comparison_data:
-                    fig = create_cost_scatter(st.session_state.cost_comparison_data)
+                comparison_data = st.session_state.get("cost_comparison_data") or []
+                if comparison_data:
+                    fig = create_cost_scatter(comparison_data)
                     st.plotly_chart(fig, width="stretch")
 
                     st.markdown(
@@ -551,10 +565,9 @@ def main():
 
             with tab2:
                 st.subheader("Design Alternatives Comparison")
-                if st.session_state.cost_comparison_data:
-                    df_display = create_comparison_table(
-                        st.session_state.cost_comparison_data
-                    )
+                comparison_data = st.session_state.get("cost_comparison_data") or []
+                if comparison_data:
+                    df_display = create_comparison_table(comparison_data)
                     st.dataframe(
                         df_display,
                         width="stretch",
@@ -568,8 +581,9 @@ def main():
 
             with tab3:
                 st.subheader("Export Results")
-                if st.session_state.cost_comparison_data:
-                    csv_data = export_to_csv(st.session_state.cost_comparison_data)
+                comparison_data = st.session_state.get("cost_comparison_data") or []
+                if comparison_data:
+                    csv_data = export_to_csv(comparison_data)
 
                     st.download_button(
                         label="📥 Download CSV",
