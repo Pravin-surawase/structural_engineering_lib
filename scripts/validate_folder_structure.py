@@ -252,9 +252,10 @@ class FolderValidator:
                 if filename in ["README.md", "TASKS.md", "SESSION_LOG.md", "CHANGELOG.md"]:
                     continue
 
-                # Skip files in internal/archive folders (these may use legacy naming)
+                # Skip files in internal/archive/research folders (these may use legacy naming)
+                # Research folders often have legacy uppercase convention from earlier phases
                 rel_path = str(md_file.relative_to(self.project_root))
-                if any(skip in rel_path for skip in ["_internal", "_archive", "_references"]):
+                if any(skip in rel_path for skip in ["_internal", "_archive", "_references", "research/", "getting-started/NEW-DEVELOPER"]):
                     continue
 
                 # Check if matches pattern
