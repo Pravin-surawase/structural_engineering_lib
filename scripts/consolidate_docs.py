@@ -213,6 +213,61 @@ def find_consolidatable_phase_files() -> List[Tuple[Path, str]]:
     return candidates
 
 
+def find_archivable_completed_research() -> List[Tuple[Path, str]]:
+    """Find completed research files that can be archived.
+
+    Criteria:
+    1. Research with Status: Complete or ✅ Complete
+    2. Older implementation plans that are done
+    3. Dated audit/analysis files
+    """
+    candidates = []
+
+    research_dir = DOCS_DIR / "research"
+    if not research_dir.exists():
+        return candidates
+
+    # Files with dates in names (typically one-time analyses)
+    dated_patterns = [
+        r"\d{4}-\d{2}-\d{2}",  # 2026-01-13
+        r"\d{8}",              # 20260113
+    ]
+
+    # Specific categories that can be archived
+    archivable_patterns = [
+        ("AUDIT-AND-RECOMMENDATIONS", "Dated audit"),
+        ("QUICK-DECISION-GUIDE", "One-time decision guide"),
+        ("QUICK-REFERENCE", "Research quick reference"),
+        ("RESEARCH-DECISION-MATRIX", "Decision matrix"),
+        ("RESEARCH-STATUS-VISUAL", "Status visualization"),
+        ("DISCUSSION-GUIDE", "Discussion guide"),
+    ]
+
+    for f in research_dir.glob("*.md"):
+        name = f.name
+        reason = None
+
+        # Check for dated files
+        for pattern in dated_patterns:
+            if re.search(pattern, name):
+                # Exclude today's files and consolidation research
+                if "consolidation" not in name.lower():
+                    if "20260113" in name or "2026-01-13" in name:
+                        reason = "Dated research file"
+                        break
+
+        # Check for archivable patterns
+        for pattern, pattern_reason in archivable_patterns:
+            if pattern in name:
+                reason = pattern_reason
+                break
+
+        if reason:
+            candidates.append((f, reason))
+
+    return candidates
+
+
 def archive_file(source: Path, dest_folder: str, dry_run: bool = True) -> bool:
     """Archive a single file using safe_file_move.py."""
     dest_path = ARCHIVE_DIR / dest_folder / source.name
@@ -275,6 +330,7 @@ def cmd_analyze(args):
     # Find archivable files
     session_files = find_archivable_session_files()
     phase_files = find_consolidatable_phase_files()
+    completed_files = find_archivable_completed_research()
 
     print("🎯 Consolidation Candidates:")
     print(f"   Archivable session files: {len(session_files)}")
@@ -286,10 +342,16 @@ def cmd_analyze(args):
     print(f"   Consolidatable PHASE files: {len(phase_files)}")
     for f, reason in phase_files[:3]:
         print(f"      • {f.name}")
+
+    print(f"   Completed research files: {len(completed_files)}")
+    for f, reason in completed_files[:5]:
+        print(f"      • {f.name} ({reason})")
+    if len(completed_files) > 5:
+        print(f"      ... and {len(completed_files) - 5} more")
     print()
 
     # Calculate potential reduction
-    potential_reduction = len(session_files) + len(phase_files)
+    potential_reduction = len(session_files) + len(phase_files) + len(completed_files)
     new_total = counts["total_docs"] - potential_reduction
     reduction_pct = potential_reduction / counts["total_docs"] * 100
 
@@ -305,6 +367,7 @@ def cmd_analyze(args):
         "link_metrics": links,
         "archivable_session_files": len(session_files),
         "consolidatable_phase_files": len(phase_files),
+        "archivable_completed_files": len(completed_files),
         "potential_reduction": potential_reduction,
     }
     save_metrics("baseline", all_metrics)
@@ -319,7 +382,7 @@ def cmd_analyze(args):
 
 
 def cmd_archive(args):
-    """Archive old session and summary files."""
+    """Archive old session, phase, and completed research files."""
     print("=" * 70)
     print("📦 ARCHIVE OLD RESEARCH FILES")
     print("=" * 70)
@@ -336,23 +399,44 @@ def cmd_archive(args):
     print(f"📊 Before: {before_counts['total_docs']} files, {before_links['broken_links']} broken links")
     print()
 
-    # Find files to archive
-    session_files = find_archivable_session_files()
+    total_archived = 0
+    total_candidates = 0
 
-    if not session_files:
+    # Category 1: Session files
+    session_files = find_archivable_session_files()
+    if session_files:
+        print(f"📁 Category 1: Session research files ({len(session_files)} found):")
+        total_candidates += len(session_files)
+        for source, reason in session_files:
+            if archive_file(source, "research-sessions", dry_run=args.dry_run):
+                total_archived += 1
+        print()
+
+    # Category 2: PHASE files
+    phase_files = find_consolidatable_phase_files()
+    if phase_files:
+        print(f"📁 Category 2: PHASE research files ({len(phase_files)} found):")
+        total_candidates += len(phase_files)
+        for source, reason in phase_files:
+            if archive_file(source, "research-phases", dry_run=args.dry_run):
+                total_archived += 1
+        print()
+
+    # Category 3: Completed research files
+    completed_files = find_archivable_completed_research()
+    if completed_files:
+        print(f"📁 Category 3: Completed research files ({len(completed_files)} found):")
+        total_candidates += len(completed_files)
+        for source, reason in completed_files:
+            if archive_file(source, "research-completed", dry_run=args.dry_run):
+                total_archived += 1
+        print()
+
+    if total_candidates == 0:
         print("✓ No files to archive")
         return
 
-    print(f"📁 Archiving {len(session_files)} session research files:")
-    print()
-
-    success_count = 0
-    for source, reason in session_files:
-        if archive_file(source, "research-sessions", dry_run=args.dry_run):
-            success_count += 1
-
-    print()
-    print(f"{'Would archive' if args.dry_run else 'Archived'}: {success_count}/{len(session_files)} files")
+    print(f"{'Would archive' if args.dry_run else 'Archived'}: {total_archived}/{total_candidates} files")
 
     if not args.dry_run:
         # Verify links after archival
@@ -362,6 +446,9 @@ def cmd_archive(args):
         after_counts = get_file_counts()
 
         print(f"📊 After: {after_counts['total_docs']} files, {after_links['broken_links']} broken links")
+
+        reduction = before_counts['total_docs'] - after_counts['total_docs']
+        print(f"📉 Reduction: {reduction} files")
 
         if after_links["broken_links"] > before_links["broken_links"]:
             print("⚠️ WARNING: New broken links detected!")
@@ -373,7 +460,8 @@ def cmd_archive(args):
         save_metrics("after_archive", {
             "file_counts": after_counts,
             "link_metrics": after_links,
-            "files_archived": success_count,
+            "files_archived": total_archived,
+            "reduction": reduction,
         })
 
     print()
@@ -382,7 +470,7 @@ def cmd_archive(args):
         print("Dry run complete. To execute, remove --dry-run flag.")
     else:
         print("Archive complete!")
-        print("Next: ./scripts/ai_commit.sh 'docs: archive old session research files (TASK-457 Phase 1)'")
+        print("Next: ./scripts/ai_commit.sh 'docs: archive research files (TASK-457)'")
     print("=" * 70)
 
 

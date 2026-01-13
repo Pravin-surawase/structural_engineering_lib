@@ -50,5 +50,31 @@
       },
       "files_archived": 8
     }
+  },
+  "after_archive_2026-01-13T13:02:19.291429": {
+    "phase": "after_archive",
+    "timestamp": "2026-01-13T13:02:19.291429",
+    "metrics": {
+      "file_counts": {
+        "total_docs": 525,
+        "research": 98,
+        "research_sessions": 3,
+        "research_summaries": 9,
+        "research_phases": 0,
+        "research_readmes": 5,
+        "archived": 195,
+        "contributing": 30,
+        "planning": 32,
+        "reference": 21,
+        "agents": 21,
+        "getting_started": 17
+      },
+      "link_metrics": {
+        "total_links": 877,
+        "broken_links": 0
+      },
+      "files_archived": 12,
+      "reduction": 0
+    }
   }
 }
