@@ -455,7 +455,6 @@ def design_doubly_reinforced(
     input_errors = validate_dimensions(b, d, d_total)
 
     if input_errors:
-        failed_fields = [e.field for e in input_errors if e.field]
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -689,7 +688,6 @@ def design_flanged_beam(
         input_errors.append(E_INPUT_003a)
 
     if input_errors:
-        failed_fields = [e.field for e in input_errors if e.field]
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -810,7 +808,6 @@ def design_flanged_beam(
         # Keep consistent with rectangular design checks: 4% of bD (bw * d_total).
         ast_max = 0.04 * bw * d_total
         is_safe = web_result.is_safe
-        error_msg = web_result.error_message
         design_errors = list(web_result.errors)
         if total_ast > ast_max:
             is_safe = False

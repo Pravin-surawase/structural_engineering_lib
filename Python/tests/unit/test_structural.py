@@ -6,7 +6,6 @@ import unittest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from structural_lib import flexure, materials, shear, tables, types
-from structural_lib.errors import Severity
 
 
 def _has_error_with_code(errors, code: str) -> bool:
