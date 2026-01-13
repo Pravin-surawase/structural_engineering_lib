@@ -14,7 +14,7 @@
 | **Current** | v0.17.0 | ✅ Released (2026-01-13) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 21 | **Commits:** 2
+**Last Session:** 22 | **Commits:** 5
 
 ---
 
@@ -33,19 +33,29 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-13
-- Session: 21
-- Focus: Maintenance & Validation Fixes
-- Commits: 2
+- Session: 22
+- Focus: Review, validate, and fix Sessions 20-21 work
+- PR: #357 (Core library error handling refactor and test updates)
+- Commits: 5 commits
 - Key Deliverables:
-  - **Refactor:** Removed deprecated fields from core structural_lib.
-  - **Refactor:** Updated error handling in flexure.py, shear.py, compliance.py.
-  - **Tooling:** Fixed syntax error in comprehensive_validator.py.
-  - **CI:** Updated actions/upload-artifact to v4.
+  - **Validation:** Reviewed Sessions 20 (PR #356), 20b, and 21
+  - **Critical Fix:** 13 broken unit tests → all 256 tests now pass
+  - **Test Updates:** 26 tests across 5 files updated to use `errors` list
+  - **Research Document:** `docs/research/sessions-20-21-review-2026-01-13.md`
+- Files Changed:
+  - `Python/tests/unit/test_shear.py` (7 tests updated)
+  - `Python/tests/unit/test_structural.py` (5 tests updated)
+  - `Python/tests/unit/test_compliance.py` (1 test updated)
+  - `Python/tests/unit/test_input_validation.py` (12 tests updated)
+  - `Python/tests/unit/test_error_schema.py` (1 test updated)
 - Metrics:
-  - Validation: passed 0 Errors, 104 Warnings.
-  - Critical Journeys: 11 tests passed.
+  - Unit tests: 256 passing
+  - Critical journeys: 11 passing, 5 skipped
+  - CI checks: Pending on PR #357
 - Next Steps:
-  - Continue pending tasks from Session 19.
+  - Merge PR #357 when CI passes
+  - Continue with v0.18.0 tasks
+  - Consider archiving completed research doc
 <!-- HANDOFF:END -->
 
 ---
