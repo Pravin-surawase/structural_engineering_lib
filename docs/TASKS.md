@@ -92,9 +92,9 @@
 |----|------|-------|-----|----------|--------|
 | **TASK-520** | Hypothesis property-based testing (strategies + 43 tests) | DEV | 4h | 🟠 MEDIUM | ✅ Complete |
 | **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests) | DEV | 1h | 🟠 MEDIUM | ✅ Complete |
-| **TASK-522** | Add Jinja2 report templates | DEV | 4h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-522** | Add Jinja2 report templates (3 templates, 25 tests) | DEV | 4h | 🟠 MEDIUM | ✅ PR #360 |
 | **TASK-523** | Hypothesis docs + CI integration | DOCS | 1h | 🟠 MEDIUM | ✅ PR #358 Merged |
-| **TASK-524** | New calculation functions (span_depth_ratio, get_fs, etc.) | DEV | 3h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-524** | Beam slenderness check (IS 456 Cl 23.3, 50 tests) | DEV | 3h | 🟠 MEDIUM | ✅ PR #359 |
 
 ---
 

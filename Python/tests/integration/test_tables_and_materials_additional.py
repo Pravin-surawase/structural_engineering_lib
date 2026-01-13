@@ -210,7 +210,10 @@ def test_flexure_doubly_reinforced_denom_nonpositive_path():
     )
     assert res.is_safe is False
     # Check for d_dash/geometry error in errors list
-    assert any("d'" in err.message.lower() or "d_dash" in err.field.lower() for err in res.errors)
+    assert any(
+        "d'" in err.message.lower() or "d_dash" in err.field.lower()
+        for err in res.errors
+    )
 
 
 def test_flexure_doubly_reinforced_hits_asc_exceeds_max_branch():
@@ -228,7 +231,10 @@ def test_flexure_doubly_reinforced_hits_asc_exceeds_max_branch():
     )
     assert res.is_safe is False
     # Check for asc exceeds max error in errors list
-    assert any("asc" in err.message.lower() or "max" in err.message.lower() for err in res.errors)
+    assert any(
+        "asc" in err.message.lower() or "max" in err.message.lower()
+        for err in res.errors
+    )
 
 
 def test_flexure_flanged_beam_hits_yf_clamp_and_ast_max_exceeded():
@@ -295,7 +301,10 @@ def test_flexure_flanged_beam_solver_hits_minimum_steel_branch_low_fck():
 
     assert res.ast_required > 0
     # Check for minimum steel info in errors list
-    assert any("minimum" in err.message.lower() or "min" in err.message.lower() for err in res.errors)
+    assert any(
+        "minimum" in err.message.lower() or "min" in err.message.lower()
+        for err in res.errors
+    )
 
 
 def test_flexure_flanged_beam_solver_hits_ast_max_exceeded_branch():
@@ -316,7 +325,10 @@ def test_flexure_flanged_beam_solver_hits_ast_max_exceeded_branch():
 
     assert res.is_safe is False
     # Check for max steel error in errors list
-    assert any("max" in err.message.lower() or "ast" in err.message.lower() for err in res.errors)
+    assert any(
+        "max" in err.message.lower() or "ast" in err.message.lower()
+        for err in res.errors
+    )
 
 
 def test_tables_get_tc_value_breaks_on_upper_grade_boundary():

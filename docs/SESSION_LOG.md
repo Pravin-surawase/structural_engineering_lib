@@ -4,9 +4,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-14 — Session 23: Hypothesis Property-Based Testing + Test Fixes
+## 2026-01-14 — Session 23: Hypothesis + Slenderness + Jinja2 Reports
 
-**Focus:** Implement Hypothesis property-based testing framework and fix deprecated test patterns.
+**Focus:** Implement v0.18.0 Library Expansion features: property-based testing, slenderness check, and Jinja2 report templates.
 
 ### Summary
 
@@ -30,11 +30,6 @@ Created comprehensive property-based testing framework using Hypothesis:
    - `ci`: 200 examples with `derandomize=True` (reproducible CI)
    - `exhaustive`: 1000 examples (thorough pre-release testing)
 
-4. **Key Findings from Property Testing:**
-   - High fck (70) + low fy (250) can exceed 4% max steel even for Mu < Mu_lim
-   - Narrow beams stress geometry validation logic
-   - Shear stress limits are sensitive to concrete grade transitions
-
 **Part 2: Fix Deprecated Test Patterns (10 tests → 2639 pass)**
 
 Fixed tests checking deprecated `error_message` and `remarks` fields:
@@ -44,26 +39,79 @@ Fixed tests checking deprecated `error_message` and `remarks` fields:
 - `test_critical_is456.py`: 1 test updated
 - `test_findings_regressions.py`: 2 tests updated
 
-All tests now check the structured `errors` list instead.
-
-**Part 3: Documentation & CI Integration (PR #358)**
+**Part 3: Documentation & CI Integration (PR #358)** ✅ Merged
 
 - Added Section 7 to `testing-strategy.md` with Hypothesis documentation
 - Updated `nightly.yml` to use `--hypothesis-profile=ci`
+
+**Part 4: Beam Slenderness Check (PR #359)** - TASK-524
+
+Implemented IS 456:2000 Clause 23.3 beam lateral stability check:
+
+1. **slenderness.py** (~300 lines)
+   - `BeamType` enum: simply_supported, continuous, cantilever
+   - `SlendernessResult` dataclass with is_ok, utilization, warnings
+   - `check_beam_slenderness()`: main API function
+   - Limits: SS/continuous = 60, cantilever = 25
+
+2. **Tests:**
+   - 34 unit tests covering all beam types and edge cases
+   - 16 Hypothesis property tests for robustness
+   - Total: 50 tests for slenderness module
+
+3. **API Integration:**
+   - Added `check_beam_slenderness()` to api.py
+   - Backward-compatible stub at structural_lib/slenderness.py
+
+**Part 5: Jinja2 Report Templates (PR #360)** - TASK-522
+
+Created professional HTML report generation system:
+
+1. **reports package** (~650 lines)
+   - `ReportContext` dataclass for structured report data
+   - `generate_html_report()` function for API integration
+   - Custom Jinja2 filters: format_number, format_mm, format_percent
+   - Graceful fallback when Jinja2 not installed
+
+2. **Templates:**
+   - `beam_design_report.html.j2` (~350 lines): Full calculation sheet
+   - `summary_report.html.j2` (~150 lines): Compact summary
+   - `detailed_report.html.j2` (~650 lines): Step-by-step calculations
+
+3. **Features:**
+   - Professional CSS styling with print support
+   - Pass/Fail status badges
+   - IS 456 clause references
+   - Responsive layout
+   - Code references (Cl. 38.1, Cl. 40, etc.)
+
+4. **Tests:**
+   - 25 comprehensive tests for report generation
+   - Integration tests with realistic beam design data
 
 ### Commits
 
 | Hash | Description |
 | --- | --- |
 | `49ae86d` | feat(tests): add Hypothesis property-based testing with 43 new tests |
-| `PR #358` | docs: add Hypothesis property testing section and enable CI profile |
 | `94bbfbb` | fix(tests): update tests to check errors list instead of deprecated fields |
+| `PR #358` | docs: add Hypothesis property testing section and enable CI profile |
+| `PR #359` | feat(is456): add beam slenderness check per IS 456 Cl 23.3 (50 tests) |
+| `PR #360` | feat(reports): add Jinja2-based HTML report generation (25 tests) |
+| `e5e97b0` | style: apply black formatting to integration tests |
+
+### Metrics
+
+- **New tests:** 118 (43 Hypothesis + 50 slenderness + 25 reports)
+- **New code:** ~1,600 lines (slenderness + reports modules)
+- **Templates:** 3 professional HTML report templates (~1,150 lines)
+- **PRs created:** 3 (#358 merged, #359, #360 pending)
 
 ### Next Actions
 
-1. Implement TASK-522: Add Jinja2 report templates
-2. Implement TASK-524: New calculation functions (span_depth_ratio, get_fs, etc.)
-3. Continue v0.18.0 Library Expansion
+1. Merge PR #359 and #360 when CI passes
+2. Continue v0.18.0 Library Expansion (more calculation functions)
+3. Prepare for v0.18.0 release
 
 ---
 
