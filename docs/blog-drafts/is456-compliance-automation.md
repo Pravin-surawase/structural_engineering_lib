@@ -1,6 +1,6 @@
 # IS 456 Compliance Automation: How the Library Checks Your Beam Designs
 
-**Type:** Blog Draft
+**Type:** Blog
 **Audience:** Users
 **Status:** Draft
 **Importance:** Low

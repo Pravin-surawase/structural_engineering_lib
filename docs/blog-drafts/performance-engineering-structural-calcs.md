@@ -1,6 +1,6 @@
 # Performance Engineering for Structural Calculations: Speed Up Your Analysis 10x
 
-**Type:** Blog Draft
+**Type:** Blog
 **Audience:** Users
 **Status:** Draft
 **Importance:** Low

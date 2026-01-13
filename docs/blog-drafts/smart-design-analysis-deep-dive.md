@@ -1,6 +1,6 @@
 # Smart Design Analysis Deep Dive: Unified Dashboard for Intelligent Structural Design
 
-**Type:** Blog Draft
+**Type:** Blog
 **Audience:** Users
 **Status:** Draft
 **Importance:** Low

@@ -1,6 +1,6 @@
 # Type Safety in Engineering Software: The 10 Lakh Rupee Mistake
 
-**Type:** Blog Draft
+**Type:** Blog
 **Audience:** Users
 **Status:** Draft
 **Importance:** Low

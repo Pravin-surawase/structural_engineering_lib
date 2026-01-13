@@ -78,6 +78,7 @@ VALID_VALUES = {
     "Type": [
         "Guide", "Research", "Reference", "Architecture", "Decision",
         "Implementation", "Plan", "Index", "Hub", "Session", "Catalog",
+        "Specification", "Blog", "Lesson",
     ],
     "Audience": [
         "All Agents", "Developers", "Users", "Maintainers", "Architects",

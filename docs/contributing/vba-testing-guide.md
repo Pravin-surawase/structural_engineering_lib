@@ -1,7 +1,14 @@
 # VBA Testing Guide
 
-**Version:** 0.16.6
-**Last Updated:** 2026-01-13<br>
+**Type:** Guide
+**Audience:** Developers
+**Status:** Approved
+**Importance:** Medium
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+**Related Tasks:** VBA Testing
+
+---
 
 ## Quick Start
 
