@@ -1,5 +1,17 @@
 # Agent Workflow Quick Reference Card
-**Version:** 1.1.0 | **Print this and keep it visible!**
+**Version:** 1.2.0 | **Print this and keep it visible!**
+
+---
+
+## 📚 Guide Hierarchy
+
+**You are here:** Quick Reference Card (Cheat Sheet)
+
+| Need | Guide | Use When |
+|------|-------|----------|
+| **Quick Start** | [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) | First 30 seconds, immediate productivity |
+| **Quick Reference** | This document | Cheat sheet, emergency commands, first session ← **YOU ARE HERE** |
+| **Complete Guide** | [agent-workflow-master-guide.md](agent-workflow-master-guide.md) | Decision trees, troubleshooting, deep patterns |
 
 ---
 
@@ -48,6 +60,30 @@ Is this >50 lines OR 2+ files?
     ├─ YES → PR Workflow (below)
     └─ NO  → Direct Commit: ./scripts/ai_commit.sh "msg"
 ```
+
+---
+
+## ✅ First Session Checklist
+
+### Before Starting Work (5 minutes)
+- [ ] Read [copilot-instructions.md](../../../.github/copilot-instructions.md) - **MANDATORY**
+- [ ] Print this quick reference - Keep it visible
+- [ ] Read [TASKS.md](../../TASKS.md) - Current work items
+- [ ] Run `./scripts/agent_start.sh --quick` - Validates environment
+
+### Your First Task (Pattern: Simple Direct Commit)
+```bash
+# 1. Make a small change (e.g., fix typo in docs)
+# 2. Commit
+./scripts/ai_commit.sh "docs: fix typo in guide"
+# 3. Done! ✓ Script handles staging, hooks, push
+```
+
+### After Your First Commit
+- [ ] Verified commit appeared in `git log`
+- [ ] No errors during push
+- [ ] Understand what the script did (staging → hooks → pull → push)
+- [ ] Ready for more complex work
 
 ---
 
