@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-import pytest
 from datetime import date
+
+import pytest
 
 from structural_lib.reports import (
     JINJA2_AVAILABLE,
@@ -219,12 +220,14 @@ class TestJinja2Availability:
 
     def test_flag_consistency(self) -> None:
         """Test that the flag matches actual availability."""
-        from structural_lib.reports.generator import JINJA2_AVAILABLE as flag
+        from structural_lib.reports.generator import (
+            JINJA2_AVAILABLE as JINJA2_FLAG,
+        )
 
-        assert isinstance(flag, bool)
+        assert isinstance(JINJA2_FLAG, bool)
         # If Jinja2 is installed, both should be True
         if JINJA2_AVAILABLE:
-            assert flag is True
+            assert JINJA2_FLAG is True
 
 
 class TestReportWithRealData:
