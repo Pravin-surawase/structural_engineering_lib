@@ -39,24 +39,24 @@ TTL_SHORT = 300  # 5 minutes - frequently changing data
 class SmartCache:
     """
     Simple in-memory cache with TTL and statistics tracking.
-    
+
     Features:
     - Time-to-live (TTL) expiration
     - Memory usage tracking
     - Hit/miss statistics
     - Size limits
-    
+
     Example:
         >>> cache = SmartCache(max_size_mb=50, ttl_seconds=300)
         >>> cache.set("key1", result)
         >>> value = cache.get("key1")
         >>> stats = cache.get_stats()
     """
-    
+
     def __init__(self, max_size_mb: int = 50, ttl_seconds: int = 300):
         """
         Initialize cache.
-        
+
         Args:
             max_size_mb: Maximum cache size in megabytes
             ttl_seconds: Time-to-live for cache entries in seconds
@@ -66,7 +66,7 @@ class SmartCache:
         self._cache: Dict[str, Tuple[Any, float]] = {}  # key: (value, timestamp)
         self._hits = 0
         self._misses = 0
-    
+
     def get(self, key: str) -> Optional[Any]:
         """Get value from cache if not expired."""
         if key in self._cache:
@@ -78,25 +78,25 @@ class SmartCache:
             else:
                 # Expired, remove it
                 del self._cache[key]
-        
+
         self._misses += 1
         return None
-    
+
     def set(self, key: str, value: Any):
         """Set value in cache with current timestamp."""
         self._cache[key] = (value, time.time())
-    
+
     def clear(self):
         """Clear all cache entries."""
         self._cache.clear()
         self._hits = 0
         self._misses = 0
-    
+
     def get_stats(self) -> Dict[str, Any]:
         """Get cache statistics."""
         total_requests = self._hits + self._misses
         hit_rate = self._hits / total_requests if total_requests > 0 else 0.0
-        
+
         return {
             "size": len(self._cache),
             "hit_rate": hit_rate,

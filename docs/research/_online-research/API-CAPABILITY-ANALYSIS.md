@@ -565,4 +565,3 @@ if st.button("Generate Pareto Frontier"):
 Your library is 80% complete for this project. The remaining 20% is glue code (batch processing, visualization, carbon tracking).
 
 **Next:** Build the implementation plan with specific code structure.
-

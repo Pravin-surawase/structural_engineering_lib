@@ -644,7 +644,7 @@ class TestEdgeCases:
 
         # Verify all fields present and correct types
         assert isinstance(data["suggestions"], list)
-        assert isinstance(data["analysis_time_ms"], (int, float))
+        assert isinstance(data["analysis_time_ms"], int | float)
         assert isinstance(data["suggestions_count"], int)
         assert isinstance(data["engine_version"], str)
 

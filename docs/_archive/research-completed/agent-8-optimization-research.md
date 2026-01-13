@@ -386,28 +386,28 @@ def should_automerge(pr):
     Returns: (bool, reason)
     """
     risk_score = calculate_risk_score(pr)
-    
+
     # Level 1: Zero risk (100% safe)
     if risk_score == 0:
         # - Docs only (<500 lines)
         # - Typo fixes (<10 lines)
         # - README updates
         return (True, "Level 1: Zero risk (docs/typos)")
-    
+
     # Level 2: Very low risk (95% safe)
     if risk_score <= 10:
         # - Tests only (<100 lines, 100% coverage)
         # - Scripts (<50 lines, syntax validated)
         # - Small refactors (single file, <50 lines, all tests pass)
         return (True, "Level 2: Very low risk (tests/small scripts)")
-    
+
     # Level 3: Low risk (85% safe)
     if risk_score <= 25:
         # - Multiple test files (<200 lines total)
         # - Doc + test combo (<300 lines)
         # - Non-critical utilities (<100 lines, 90%+ coverage)
         return (True, "Level 3: Low risk (multiple tests/docs)")
-    
+
     # Level 4+: Manual review required
     return (False, f"Risk score {risk_score} exceeds threshold (25)")
 ```
@@ -416,33 +416,33 @@ def should_automerge(pr):
 ```python
 def calculate_risk_score(pr):
     score = 0
-    
+
     # File type risk
     if has_production_code(pr): score += 50  # High risk
     if has_vba_code(pr): score += 40         # Medium-high risk
     if has_ci_code(pr): score += 30          # Medium risk
     if has_api_changes(pr): score += 35      # Medium-high risk
-    
+
     # Size risk
     lines_changed = pr.lines_added + pr.lines_deleted
     if lines_changed > 500: score += 30
     elif lines_changed > 200: score += 15
     elif lines_changed > 100: score += 5
-    
+
     # Complexity risk
     if pr.files_changed > 5: score += 10
     if pr.has_breaking_changes: score += 50
     if pr.test_coverage < 80: score += 20
-    
+
     # Historical risk
     if author_conflict_rate(pr.author) > 0.1: score += 10
     if file_conflict_rate(pr.files) > 0.2: score += 15
-    
+
     # Confidence boosters (negative risk)
     if pr.test_coverage >= 95: score -= 10
     if pr.has_integration_tests: score -= 5
     if all_reviewers_approved(pr): score -= 15
-    
+
     return max(0, score)
 ```
 
@@ -458,7 +458,7 @@ check_git_health() {
         alert "⚠️ Unfinished merge detected"
         auto_complete_merge
     fi
-    
+
     # 2. Diverged branch detection
     for branch in $(git branch | grep -v main); do
         BEHIND=$(git rev-list --count HEAD..origin/main -- 2>/dev/null || echo 0)
@@ -467,13 +467,13 @@ check_git_health() {
             suggest_rebase
         fi
     done
-    
+
     # 3. Stale branch detection
     for branch in $(git branch --merged main | grep -v main); do
         alert "🧹 Branch $branch is merged and can be deleted"
         auto_delete_merged_branch $branch
     done
-    
+
     # 4. Uncommitted changes check
     if [[ -n $(git status --porcelain) ]]; then
         UNCOMMITTED_AGE=$(git status --porcelain | wc -l)
@@ -481,7 +481,7 @@ check_git_health() {
             alert "⚠️ $UNCOMMITTED_AGE uncommitted changes detected"
         fi
     fi
-    
+
     # 5. Pre-commit hook validation
     if ! pre-commit run --all-files --show-diff-on-failure > /dev/null 2>&1; then
         alert "⚠️ Pre-commit hooks have failures"
@@ -502,7 +502,7 @@ queue_add() {
     local agent=$1
     local branch=$2
     local description=$3
-    
+
     jq -n \
         --arg agent "$agent" \
         --arg branch "$branch" \
@@ -523,22 +523,22 @@ queue_process() {
     while true; do
         # Get highest priority pending item
         ITEM=$(jq -r 'sort_by(.priority) | reverse | .[0] | select(.status == "pending")' "$QUEUE_FILE")
-        
+
         if [[ -z "$ITEM" ]]; then
             sleep 30
             continue
         fi
-        
+
         # Process item
         BRANCH=$(echo "$ITEM" | jq -r '.branch')
         process_handoff "$BRANCH"
-        
+
         # Update status
         jq --arg branch "$BRANCH" \
             'map(if .branch == $branch then .status = "complete" else . end)' \
             "$QUEUE_FILE" > "$QUEUE_FILE.tmp"
         mv "$QUEUE_FILE.tmp" "$QUEUE_FILE"
-        
+
         sleep 10
     done
 }
@@ -555,9 +555,9 @@ benchmark() {
     local test_name=$1
     local command=$2
     local iterations=${3:-10}
-    
+
     echo "Benchmarking: $test_name"
-    
+
     local total_time=0
     for i in $(seq 1 $iterations); do
         START=$(date +%s.%N)
@@ -566,10 +566,10 @@ benchmark() {
         ELAPSED=$(echo "$END - $START" | bc)
         total_time=$(echo "$total_time + $ELAPSED" | bc)
     done
-    
+
     AVG=$(echo "$total_time / $iterations" | bc -l)
     printf "Average: %.2fs\n" "$AVG"
-    
+
     # Store baseline
     echo "$test_name:$AVG" >> .benchmarks/baseline.txt
 }
@@ -619,25 +619,25 @@ test_chaos_corrupted_git_dir() {
 test_integration_full_pr_workflow() {
     # 1. Create task branch
     ./scripts/create_task_pr.sh TEST-001 "test"
-    
+
     # 2. Make changes
     echo "test" > test_file.md
-    
+
     # 3. Commit
     ./scripts/ai_commit.sh "docs: add test"
-    
+
     # 4. Finish PR
     ./scripts/finish_task_pr.sh TEST-001 "test"
-    
+
     # 5. Verify PR created
     gh pr list --head task/TEST-001
-    
+
     # 6. Mock CI pass
     # ...
-    
+
     # 7. Auto-merge
     # ...
-    
+
     # 8. Verify main updated
     git checkout main
     git pull
@@ -647,16 +647,16 @@ test_integration_full_pr_workflow() {
 test_integration_background_agent_handoff() {
     # 1. Create worktree
     ./scripts/worktree_manager.sh create AGENT_TEST
-    
+
     # 2. Work in worktree
     cd worktree-AGENT_TEST-*
     echo "test" > test.txt
     ../scripts/ai_commit.sh "test"
-    
+
     # 3. Submit handoff
     cd ..
     ./scripts/worktree_manager.sh submit AGENT_TEST "test work"
-    
+
     # 4. Verify PR created
     # 5. Verify CI monitoring started
     # 6. Verify auto-merge eligible check
@@ -772,20 +772,20 @@ parallel_git_sync() {
     # Start fetch in background
     git fetch origin main 2>&1 | tee logs/git_fetch.log &
     FETCH_PID=$!
-    
+
     # Do local operations while fetching
     stage_files
     run_whitespace_checks
-    
+
     # Wait for fetch to complete
     wait $FETCH_PID
     FETCH_EXIT=$?
-    
+
     if [[ $FETCH_EXIT -ne 0 ]]; then
         echo "Fetch failed, cannot proceed"
         return 1
     fi
-    
+
     # Now merge (fast, already fetched)
     git merge --ff-only FETCH_HEAD
 }
@@ -993,4 +993,3 @@ repos:
 **Research completed by:** AI Agent
 **Date:** 2026-01-09
 **Status:** ✅ Ready for implementation
-

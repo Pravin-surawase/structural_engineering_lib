@@ -190,7 +190,7 @@ def call_function(func_path: str, inputs: dict) -> Any:
 def extract_value(result: Any, key: str) -> Any:
     """Extract a value from a result (scalar or dataclass)."""
     # For scalar functions, the result IS the value
-    if isinstance(result, (int, float)):
+    if isinstance(result, int | float):
         return result
 
     # For dataclass results
