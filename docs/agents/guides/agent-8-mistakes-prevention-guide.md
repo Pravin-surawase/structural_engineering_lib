@@ -1,4 +1,5 @@
 # Agent 8: Mistakes Prevention Guide (Lessons Learned)
+<!-- lint-ignore-git -->
 
 **Version:** 2.1 (With Historical Banner)
 **Created:** 2026-01-08

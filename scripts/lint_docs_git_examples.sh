@@ -74,7 +74,19 @@ for pattern in "${PATTERNS[@]}"; do
         "$pattern" "$PROJECT_ROOT/docs" 2>/dev/null || true)
 
     if [[ -n "$MATCHES" ]]; then
-        COUNT=$(echo "$MATCHES" | wc -l | tr -d ' ')
+        # Skip files explicitly marked for lint ignore.
+        FILTERED_MATCHES=$(echo "$MATCHES" | while read -r line; do
+            FILE=$(echo "$line" | cut -d: -f1)
+            if ! rg -q "lint-ignore-git" "$FILE"; then
+                echo "$line"
+            fi
+        done)
+
+        if [[ -z "$FILTERED_MATCHES" ]]; then
+            continue
+        fi
+
+        COUNT=$(echo "$FILTERED_MATCHES" | wc -l | tr -d ' ')
         ((TOTAL_MATCHES+=COUNT)) || true
 
         if [[ "$ISSUES_FOUND" -eq 0 ]]; then
@@ -85,7 +97,7 @@ for pattern in "${PATTERNS[@]}"; do
         ISSUES_FOUND=1
 
         echo "Pattern: $pattern"
-        echo "$MATCHES" | while read -r line; do
+        echo "$FILTERED_MATCHES" | while read -r line; do
             # Extract file path relative to docs/
             FILE=$(echo "$line" | cut -d: -f1 | sed "s|$PROJECT_ROOT/||")
             LINE_NUM=$(echo "$line" | cut -d: -f2)

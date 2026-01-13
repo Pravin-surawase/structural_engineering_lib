@@ -35,20 +35,18 @@
 
 **Background Claude does:**
 ```bash
-git checkout -b feature/TASK-270-fix-tests
+./scripts/worktree_manager.sh create AGENT_2
+cd worktree-AGENT_2-*
 # ... fixes tests ...
-git commit -m "test: fix exception types in 8 failing tests"
+../scripts/ai_commit.sh "test: fix exception types in 8 failing tests"
 python -m pytest  # ✅ All pass
 # Notifies you with handoff message
 ```
 
 **You (MAIN agent) do:**
 ```bash
-git checkout feature/TASK-270-fix-tests  # Review work
-git push origin feature/TASK-270-fix-tests
-gh pr create
+./scripts/worktree_manager.sh submit AGENT_2 "Fix TASK-270 test failures"
 ./scripts/pr_async_merge.sh status
-gh pr merge --squash
 ```
 
 **Result:** Background agent did the work, you maintained control of the repository.
@@ -179,15 +177,15 @@ Key rule: **Never run manual git commands.** Use workflow scripts only.
 **Background AI agents work locally, MAIN agent/user handles remote operations.**
 
 ```bash
-# 1. Create feature branch locally
-git checkout -b feature/TASK-XXX-description
+# 1. Create worktree locally
+./scripts/worktree_manager.sh create AGENT_NAME
+cd worktree-AGENT_NAME-*
 
 # 2. Make changes in isolated scope
 # ... edit files ...
 
 # 3. Commit locally (pre-commit hooks run automatically)
-git add .
-git commit -m "feat: describe change"
+../scripts/ai_commit.sh "feat: describe change"
 
 # 4. Run local checks
 cd Python && python -m pytest  # All tests
@@ -204,18 +202,10 @@ python -m mypy                 # Type check
 **After receiving handoff from background agent:**
 
 ```bash
-# 1. Review background agent's work
-git checkout feature/TASK-XXX-description
-git log                        # Review commits
-git diff main                  # Review changes
+# 1. Submit worktree via automation (push + PR creation)
+./scripts/worktree_manager.sh submit AGENT_NAME "TASK-XXX: description"
 
-# 2. Push to remote
-git push origin feature/TASK-XXX-description
-
-# 3. Create PR
-gh pr create --title "TASK-XXX: description" --body "..."
-
-# 4. Wait for CI checks
+# 2. Wait for CI checks
 ./scripts/pr_async_merge.sh status
 
 # 5. Merge when ready
@@ -228,14 +218,10 @@ gh pr merge --squash
 
 ```bash
 # Background agent makes changes on main branch
-git checkout main
 # ... edit docs/research/file.md ...
-git add docs/research/file.md
-git commit -m "docs: add research for topic X"
+./scripts/ai_commit.sh "docs: add research for topic X"
 
-# STOP - notify MAIN agent
-# MAIN agent reviews and pushes
-git push origin main
+# STOP - notify MAIN agent (no manual push)
 ```
 
 **Rule:** Background agents NEVER push to remote. All remote operations (push, PR, merge) done by MAIN agent/user only.
@@ -339,10 +325,9 @@ When your task is complete (committed locally, checks passed), notify MAIN agent
 - [Any unresolved items or needed clarifications]
 
 ### Action Required by MAIN
-1. Review changes: `git checkout feature/TASK-XXX-description`
-2. Push to remote: `git push origin feature/TASK-XXX-description`
-3. Create PR: `gh pr create`
-4. Monitor CI and merge when ready
+1. Review changes in worktree
+2. Submit via automation: `./scripts/worktree_manager.sh submit AGENT_NAME "TASK-XXX: description"`
+3. Monitor CI: `./scripts/pr_async_merge.sh status`
 ```
 
 **Important:** Background agents do NOT push to remote or create PRs. MAIN agent/user handles all remote operations.
@@ -400,12 +385,11 @@ MAIN agent responds with decision, background agent continues work.
 
 **Sequence:**
 1. Background agent commits locally and notifies MAIN with handoff
-2. MAIN agent reviews local commits: `git checkout feature/TASK-XXX`
-3. If approved, MAIN pushes: `git push origin feature/TASK-XXX`
-4. MAIN creates PR: `gh pr create`
-5. MAIN monitors CI: `./scripts/pr_async_merge.sh status`
-6. MAIN merges when ready: `gh pr merge --squash`
-7. MAIN updates TASKS.md and memory.md
+2. MAIN agent reviews local commits in the worktree
+3. MAIN submits via automation: `./scripts/worktree_manager.sh submit AGENT_NAME "TASK-XXX: description"`
+4. MAIN monitors CI: `./scripts/pr_async_merge.sh status`
+5. MAIN merges when ready (or daemon auto-merges)
+6. MAIN updates TASKS.md and memory.md
 
 ### Conflict Resolution
 
@@ -542,11 +526,11 @@ cat docs/planning/memory.md
 cat docs/TASKS.md
 
 # Create feature branch
-git checkout -b feature/TASK-XXX-description
+./scripts/worktree_manager.sh create AGENT_NAME
+cd worktree-AGENT_NAME-*
 
 # Make changes, then commit
-git add .
-git commit -m "type: message"
+../scripts/ai_commit.sh "type: message"
 
 # Run local checks
 cd Python
@@ -563,21 +547,13 @@ python -m mypy                # Type check
 
 ```bash
 # Review background agent's work
-git checkout feature/TASK-XXX-description
-git log
-git diff main
-
-# Push to remote
-git push origin feature/TASK-XXX-description
-
-# Create PR
-gh pr create --title "TASK-XXX: description" --body "..."
+# Review worktree locally, then submit:
+./scripts/worktree_manager.sh submit AGENT_NAME "TASK-XXX: description"
 
 # Monitor CI
 ./scripts/pr_async_merge.sh status
 
-# Merge when ready
-gh pr merge --squash
+# Merge when ready (or daemon auto-merges)
 ```
 
 ### File Boundaries Quick Ref

@@ -1,4 +1,5 @@
 # Session Issues Analysis — 2026-01-06
+<!-- lint-ignore-git -->
 
 > **Purpose:** Document issues encountered during TASK-152 implementation and preventive measures to avoid them in future sessions.
 

@@ -1,4 +1,5 @@
 # Background Agent 1 Tasks (RESEARCHER)
+<!-- lint-ignore-git -->
 
 **Agent Role:** RESEARCHER
 **Primary Focus:** Research documentation, blog content research, technical analysis

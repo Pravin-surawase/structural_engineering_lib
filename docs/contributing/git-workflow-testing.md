@@ -157,38 +157,25 @@ Our workflow prevents conflicts through:
 
 ### 1. Pull-First Pattern
 ```bash
-# Bad (can cause conflicts)
-git commit -m "message"
-git pull
-git push
+# Bad (can cause conflicts):
+# manual commit/pull/push workflows
 
-# Good (conflict-free)
-git pull           # Get latest FIRST
-git commit -m "message"
-git pull           # Pull AGAIN (safety)
-git push
+# Good (conflict-free):
+./scripts/ai_commit.sh "message"
 ```
 
 ### 2. Auto-Resolution
 When conflicts occur during pull:
 ```bash
-git pull --no-rebase
-if [ -f .git/MERGE_HEAD ]; then
-    git checkout --ours <file>  # Keep our version (we have latest)
-    git add <file>
-    git commit --no-edit
-fi
+./scripts/recover_git_state.sh
 ```
 
 **Why --ours is safe:** Because we pulled FIRST, our version IS the latest version.
 
 ### 3. Pre-commit Hook Handling
 ```bash
-git commit -m "message"    # Hooks may modify files
-if modified_by_hooks; then
-    git add -A              # Re-stage modifications
-    git commit --amend --no-edit  # Amend BEFORE pushing
-fi
+./scripts/ai_commit.sh "message"  # Hooks may modify files
+# safe_push.sh re-stages and amends automatically
 ```
 
 **Critical:** Never amend AFTER pushing (rewrites history).
@@ -264,7 +251,7 @@ fi
 ```
 
 ### Pre-commit (automatic)
-Pre-commit hooks run automatically on `git commit`:
+Pre-commit hooks run automatically via `./scripts/ai_commit.sh`:
 - black formatting
 - ruff linting
 - mypy type checking

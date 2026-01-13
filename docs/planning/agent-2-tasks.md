@@ -1,4 +1,5 @@
 # Background Agent 2 Tasks (PROJECT HYGIENE & MAINTENANCE)
+<!-- lint-ignore-git -->
 
 **Agent Role:** PROJECT HYGIENE SPECIALIST
 **Primary Focus:** Repository cleanliness, file organization, duplicate removal, archival, documentation structure

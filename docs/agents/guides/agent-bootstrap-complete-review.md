@@ -119,10 +119,7 @@ The **agent-bootstrap.md** file is a 65-line quick-start guide designed to get n
 # ✅ ALWAYS USE:
 ./scripts/ai_commit.sh "commit message"
 
-# ❌ NEVER DO:
-git add .
-git commit -m "message"
-git push
+# ❌ NEVER DO: manual add/commit/push workflows (automation only)
 ```
 
 **Quick Start:**

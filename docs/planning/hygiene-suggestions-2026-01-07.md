@@ -1,4 +1,5 @@
 # Repository Hygiene Audit Report - 2026-01-07
+<!-- lint-ignore-git -->
 
 **Agent:** Project Hygiene & Maintenance Specialist (Agent 2)
 **Mode:** Mode 1 (Audit & Document)

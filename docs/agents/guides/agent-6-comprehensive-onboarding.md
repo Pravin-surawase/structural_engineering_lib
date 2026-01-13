@@ -93,10 +93,7 @@ streamlit_app/                # ~20,000 lines total
 ### Rule 1: NEVER Use Manual Git Commands
 
 ```bash
-# ❌ FORBIDDEN
-git add .
-git commit -m "message"
-git push
+# ❌ FORBIDDEN: manual add/commit/push workflows
 
 # ✅ ALWAYS USE
 ./scripts/ai_commit.sh "message"

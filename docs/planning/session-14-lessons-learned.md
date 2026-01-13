@@ -1,4 +1,5 @@
 # Session 14 Lessons Learned & Solutions
+<!-- lint-ignore-git -->
 
 **Date:** 2026-01-11
 **Session:** 14

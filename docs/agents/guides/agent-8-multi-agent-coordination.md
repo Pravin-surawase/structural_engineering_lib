@@ -269,7 +269,6 @@ cd worktree-TEST_AGENT-*
 
 # Test commit
 echo "test" > test.txt
-git add test.txt
 ../scripts/ai_commit.sh "test: worktree detection"
 
 # Expected output:
@@ -284,9 +283,7 @@ git add test.txt
 # After commit in worktree
 git log origin/main..HEAD
 # Should show 1 unpushed commit
-
-git push origin HEAD
-# Should push successfully (manual confirmation that auto-push was skipped)
+# Do not push manually; main agent handles PR/merge.
 ```
 
 ---
