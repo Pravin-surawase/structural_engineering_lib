@@ -164,37 +164,141 @@ def run_compliance_checks(inputs: dict) -> dict:
             span_mm=inputs.get("span_mm", 0),
         )
 
-        # Generate check results (placeholder logic - real implementation would extract from API)
+        # Extract actual values from analysis result
+        flexure = analysis.get("flexure", {})
+        shear = analysis.get("shear", {})
+        detailing = analysis.get("detailing", {})
+
+        # Input parameters for reference
+        b_mm = inputs.get("b_mm", 0)
+        D_mm = inputs.get("D_mm", 0)
+        d_mm = inputs.get("d_mm", 0)
+        span_mm = inputs.get("span_mm", 0)
+        fck = inputs.get("fck_nmm2", 0)
+        fy = inputs.get("fy_nmm2", 0)
+
+        # Calculate actual check values
+        ast_req = flexure.get("ast_required") or flexure.get("Ast_req") or 0
+        ast_prov = flexure.get("ast_provided") or flexure.get("Ast_prov") or 0
+        ast_min = 0.85 * b_mm * d_mm / fy if fy > 0 else 0  # IS 456 Cl. 26.5.1.1
+        pt_max = 4.0  # Maximum steel percentage
+
+        tau_v = shear.get("tau_v") or 0
+        tau_c = shear.get("tau_c") or 1
+        tau_c_max = shear.get("tau_c_max") or 0
+
+        cover_req = detailing.get("cover") or 30
+        span_depth_basic = 20  # For simply supported beam
+
+        pass_count = 0
+        warning_count = 0
+        fail_count = 0
+
         checks = {}
         for check_config in COMPLIANCE_CHECKS:
             key = check_config["key"]
-            # Simulate check results
-            if "flexure" in key or "shear" in key:
-                status = "pass"
-                margin = 15.5
-            elif "serviceability" in key:
-                status = "warning" if "crack" in key else "pass"
-                margin = 8.2 if "crack" in key else 12.0
-            elif "detailing" in key:
-                status = "pass"
-                margin = 20.0
+
+            # Extract real values based on check type
+            if key == "flexure_capacity":
+                provided = f"{ast_prov:.0f} mm²"
+                required = f"{ast_req:.0f} mm²"
+                margin = ((ast_prov - ast_req) / ast_req * 100) if ast_req > 0 else 100
+                status = "pass" if ast_prov >= ast_req else "fail"
+            elif key == "flexure_min_steel":
+                provided = f"{ast_prov:.0f} mm²"
+                required = f"{ast_min:.0f} mm²"
+                margin = ((ast_prov - ast_min) / ast_min * 100) if ast_min > 0 else 100
+                status = "pass" if ast_prov >= ast_min else "fail"
+            elif key == "flexure_max_steel":
+                pt_prov = (ast_prov / (b_mm * d_mm) * 100) if (b_mm * d_mm) > 0 else 0
+                provided = f"{pt_prov:.2f}%"
+                required = f"≤ {pt_max:.1f}%"
+                margin = ((pt_max - pt_prov) / pt_max * 100) if pt_max > 0 else 100
+                status = "pass" if pt_prov <= pt_max else "fail"
+            elif key == "shear_capacity":
+                provided = f"{tau_v:.2f} N/mm²"
+                required = f"≤ {tau_c_max:.2f} N/mm²"
+                margin = ((tau_c_max - tau_v) / tau_c_max * 100) if tau_c_max > 0 else 100
+                status = "pass" if tau_v <= tau_c_max else "fail"
+            elif key == "shear_min_steel":
+                # Shear reinforcement required if tau_v > tau_c
+                shear_reinf_req = tau_v > tau_c
+                provided = "Yes" if shear.get("spacing_mm") else "No"
+                required = "Yes" if shear_reinf_req else "Not required"
+                margin = 100  # Binary check
+                status = "pass" if (not shear_reinf_req or shear.get("spacing_mm")) else "fail"
+            elif key == "detailing_cover":
+                provided = f"{cover_req:.0f} mm"
+                required = f"≥ 25 mm"  # Typical minimum
+                margin = ((cover_req - 25) / 25 * 100) if cover_req >= 25 else -10
+                status = "pass" if cover_req >= 25 else "fail"
+            elif key == "detailing_spacing":
+                bar_spacing = flexure.get("spacing_mm") or 0
+                min_spacing = max(flexure.get("bar_dia") or 16, 25)  # Always >= 25
+                provided = f"{bar_spacing:.0f} mm" if bar_spacing > 0 else "N/A"
+                required = f"≥ {min_spacing} mm"
+                # min_spacing always >= 25 from max(), but check for scanner
+                margin = ((bar_spacing - min_spacing) / min_spacing * 100) if (bar_spacing > 0 and min_spacing > 0) else 0
+                status = "pass" if bar_spacing >= min_spacing else ("warning" if bar_spacing > 0 else "fail")
+            elif key == "detailing_side_face":
+                need_side_face = D_mm > 450  # IS 456 Cl. 26.5.1.3
+                provided = "Required" if need_side_face else "Not required"
+                required = "D > 450mm"
+                margin = 100
+                status = "warning" if need_side_face else "pass"
+            elif key == "serviceability_deflection":
+                span_depth_actual = span_mm / D_mm if D_mm > 0 else 0
+                provided = f"{span_depth_actual:.1f}"
+                required = f"≤ {span_depth_basic}"
+                margin = ((span_depth_basic - span_depth_actual) / span_depth_basic * 100) if span_depth_basic > 0 else 0
+                status = "pass" if span_depth_actual <= span_depth_basic else "warning"
+            elif key == "serviceability_crack_width":
+                provided = "Design check"
+                required = "≤ 0.3 mm"
+                margin = 15.0  # Assumed
+                status = "warning"  # Needs detailed calculation
+            elif key == "ductility_check":
+                xu = flexure.get("xu") or 0
+                xu_max = flexure.get("xu_max") or d_mm * 0.48
+                provided = f"xu = {xu:.1f} mm"
+                required = f"xu ≤ {xu_max:.1f} mm"
+                margin = ((xu_max - xu) / xu_max * 100) if xu_max > 0 else 100
+                status = "pass" if xu <= xu_max else "fail"
             else:
+                provided = "—"
+                required = "—"
+                margin = 0
                 status = "pass"
-                margin = 10.0
+
+            # Count status
+            if status == "pass":
+                pass_count += 1
+            elif status == "warning":
+                warning_count += 1
+            else:
+                fail_count += 1
 
             checks[key] = {
                 "status": status,
-                "margin_percent": margin,
-                "provided": "—",
-                "required": "—",
+                "margin_percent": max(-100, min(100, margin)),  # Clamp to -100 to 100
+                "provided": provided,
+                "required": required,
                 "remarks": f"Check based on {check_config.get('clause', 'N/A')}",
             }
 
+        # Determine overall status
+        if fail_count > 0:
+            overall_status = "fail"
+        elif warning_count > 0:
+            overall_status = "warning"
+        else:
+            overall_status = "pass"
+
         return {
-            "overall_status": "pass",
-            "pass_count": 10,
-            "warning_count": 2,
-            "fail_count": 0,
+            "overall_status": overall_status,
+            "pass_count": pass_count,
+            "warning_count": warning_count,
+            "fail_count": fail_count,
             "checks": checks,
         }
 

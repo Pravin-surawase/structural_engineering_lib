@@ -386,37 +386,41 @@ def run_cost_optimization(inputs: dict) -> dict:
             }
         )
 
+    # SAVE baseline cost BEFORE sorting (first item is the originally selected design)
+    if len(comparison) > 0:
+        baseline_cost = comparison[0].get("total_cost") or 0
+        baseline_config = comparison[0].get("bar_config", "")
+    else:
+        baseline_cost = 0
+        baseline_config = ""
+
     # Sort by total cost
     comparison.sort(key=lambda x: x.get("total_cost", math.inf))
 
     # Mark lowest cost as optimal
-    if comparison:
+    if len(comparison) > 0:
         for idx, item in enumerate(comparison):
             item["is_optimal"] = idx == 0
 
-    # Calculate savings using safe_divide
-    if len(comparison) > 1:
-        baseline_cost = 0
-        first = next(iter(comparison), None)
-        if first:
-            baseline_cost = first.get("total_cost") or 0
-        if first and not first.get("is_optimal"):
-            second = next(itertools.islice(comparison, 1, None), None)
-            if second:
-                baseline_cost = second.get("total_cost") or baseline_cost
-        optimal_cost = min((item.get("total_cost") or 0) for item in comparison)
+    # Calculate savings: baseline (original design) vs optimal (cheapest)
+    if len(comparison) > 0:
+        # Scanner: len check above guards this access
+        first_item = comparison[0]
+        optimal_cost = first_item.get("total_cost") or 0  # First after sort = cheapest
+        optimal_config = first_item.get("bar_config", "")
         savings = baseline_cost - optimal_cost
         savings_pct = safe_divide(savings * 100, baseline_cost, default=0.0)
     else:
-        first = next(iter(comparison), None)
-        baseline_cost = (first.get("total_cost") or 0) if first else 0
         optimal_cost = baseline_cost
+        optimal_config = baseline_config
         savings = 0
         savings_pct = 0
 
     analysis_summary = {
         "baseline_cost": baseline_cost,
+        "baseline_config": baseline_config,
         "optimal_cost": optimal_cost,
+        "optimal_config": optimal_config,
         "savings_amount": savings,
         "savings_percent": savings_pct,
         "candidates_evaluated": len(comparison),

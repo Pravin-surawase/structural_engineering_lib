@@ -2,7 +2,7 @@
 
 **Type:** Research
 **Audience:** All Agents
-**Status:** In Progress
+**Status:** Complete
 **Importance:** Critical
 **Created:** 2026-01-14
 **Last Updated:** 2026-01-14
@@ -15,24 +15,32 @@
 
 User-reported issues with the Streamlit app identified 10+ bugs spanning API mismatches, UI rendering problems, and missing features. This document catalogs all issues, identifies root causes, and proposes fixes.
 
+**Session 24 Part 2 Completion:**
+- ✅ Root cause analysis: Scanner only checked /tests/ files for API signatures
+- ✅ Extended scanner to check ALL critical API calls
+- ✅ Fixed compliance page placeholder values (ISSUE-005)
+- ✅ Fixed cost optimizer savings logic (ISSUE-006)
+- ✅ Added dependencies: Jinja2, ReportLab, ezdxf
+- ✅ Created 16 regression tests to prevent future issues
+
 ---
 
 ## Issue Catalog
 
 ### 🔴 CRITICAL (Blocking Functionality)
 
-#### ISSUE-001: Advanced Analysis Page Crashes
+#### ISSUE-001: Advanced Analysis Page Crashes ✅ FIXED (PR #361)
 **Error:** `TypeError: cached_design() missing 7 required positional arguments`
 **Location:** `pages/09_🔬_advanced_analysis.py:161`
 **Root Cause:** Page uses old parameter names (`L`, `b`, `D`, `fck`, `fy`, `Mu`, `Vu`) but `cached_design()` expects (`mu_knm`, `vu_kn`, `b_mm`, `D_mm`, `d_mm`, `fck_nmm2`, `fy_nmm2`).
-**Fix:** Update all calls in advanced_analysis.py to use correct parameter names.
+**Fix:** Updated all calls in advanced_analysis.py to use correct parameter names.
 
-#### ISSUE-002: Sensitivity Analysis Crashes
+#### ISSUE-002: Sensitivity Analysis Crashes ✅ FIXED (PR #361)
 **Error:** Same as ISSUE-001
 **Location:** `pages/09_🔬_advanced_analysis.py:415`
 **Root Cause:** Same API signature mismatch.
 
-#### ISSUE-003: Loading Scenarios Crashes
+#### ISSUE-003: Loading Scenarios Crashes ✅ FIXED (PR #361)
 **Error:** `IndexError: list index out of range`
 **Location:** `pages/09_🔬_advanced_analysis.py:301`
 **Root Cause:** DataFrame column check fails when expected columns don't exist.
@@ -41,20 +49,22 @@ User-reported issues with the Streamlit app identified 10+ bugs spanning API mis
 
 ### 🟠 HIGH (Incorrect Behavior)
 
-#### ISSUE-004: Incorrect Utilization Numbers
+#### ISSUE-004: Incorrect Utilization Numbers ✅ FIXED (PR #361)
 **Report:** "Flexure Utilization 🟡 86.1%, Shear Utilization 🔴 120.4%"
 **Location:** `pages/01_🏗️_beam_design.py` (display logic)
-**Root Cause:** Need to verify calculation and display logic.
+**Fix:** Corrected capacity utilization display format.
 
-#### ISSUE-005: Compliance Page Wrong Values
+#### ISSUE-005: Compliance Page Wrong Values ✅ FIXED (Session 24 Part 2)
 **Report:** "Provided: —, Required: —" for all checks
 **Location:** `pages/03_✅_compliance.py`
-**Root Cause:** Compliance checks not receiving proper data from design result.
+**Root Cause:** `run_compliance_checks()` used placeholder values instead of extracting real data from `cached_smart_analysis()` result.
+**Fix:** Rewrote function to extract actual values for all 11 compliance checks.
 
-#### ISSUE-006: Cost Optimization Shows No Savings
+#### ISSUE-006: Cost Optimization Shows No Savings ✅ FIXED (Session 24 Part 2)
 **Report:** "Baseline Cost ₹2,238, Optimal Cost ₹2,238, Savings ₹0"
 **Location:** `pages/02_💰_cost_optimizer.py`
-**Root Cause:** Optimization logic not finding better alternatives.
+**Root Cause:** Baseline cost was saved AFTER sorting (when first item = optimal), so baseline always equaled optimal.
+**Fix:** Save baseline cost BEFORE sorting comparison list.
 
 ---
 
@@ -141,19 +151,81 @@ User-reported issues with the Streamlit app identified 10+ bugs spanning API mis
 
 ## Fix Priority and Effort
 
-| Issue | Priority | Effort | Blocked By |
-|-------|----------|--------|------------|
-| ISSUE-001 | P0 | Low | - |
-| ISSUE-002 | P0 | Low | - |
-| ISSUE-003 | P0 | Low | - |
-| ISSUE-005 | P1 | Medium | - |
-| ISSUE-004 | P1 | Medium | - |
-| ISSUE-006 | P2 | Medium | - |
-| ISSUE-007 | P2 | Low | - |
-| ISSUE-008 | P2 | Low | - |
-| ISSUE-009 | P2 | Medium | - |
-| ISSUE-011 | P3 | High | - |
-| ISSUE-010 | P3 | Low | User install |
+| Issue | Priority | Effort | Status |
+|-------|----------|--------|--------|
+| ISSUE-001 | P0 | Low | ✅ Fixed PR #361 |
+| ISSUE-002 | P0 | Low | ✅ Fixed PR #361 |
+| ISSUE-003 | P0 | Low | ✅ Fixed PR #361 |
+| ISSUE-004 | P1 | Medium | ✅ Fixed PR #361 |
+| ISSUE-005 | P1 | Medium | ✅ Fixed Session 24 Part 2 |
+| ISSUE-006 | P2 | Medium | ✅ Fixed Session 24 Part 2 |
+| ISSUE-007 | P2 | Low | Deferred (cosmetic) |
+| ISSUE-008 | P2 | Low | Deferred (cosmetic) |
+| ISSUE-009 | P2 | Medium | Deferred (cosmetic) |
+| ISSUE-010 | P3 | Low | ✅ Dependencies added |
+| ISSUE-011 | P3 | High | Deferred |
+
+---
+
+## Root Cause Analysis: Why Weren't These Caught?
+
+### Finding 1: Scanner Only Checked Test Files
+```python
+# Line 1137 of check_streamlit_issues.py (BEFORE fix):
+if self.sig_registry and '/tests/' in self.filepath and func_name:
+```
+This meant API signature checks ONLY ran on test files, not on pages!
+
+**Fix Applied:** Extended scanner to check critical API functions in ALL files:
+```python
+critical_api_funcs = {'cached_design', 'cached_smart_analysis', 'run_cost_optimization', ...}
+if func_name in critical_api_funcs:
+    # Check signature regardless of file location
+```
+
+### Finding 2: No Tests for Advanced Analysis Page
+```bash
+$ find streamlit_app/tests -name "*advanced*"
+# No results!
+```
+The page had zero test coverage, so signature mismatches went undetected.
+
+**Fix Applied:** Created `test_page_api_integration.py` with:
+- 16 regression tests
+- API signature verification
+- Response structure validation
+- Specific tests for each bug we fixed
+
+### Finding 3: Compliance Used Placeholder Logic
+The `run_compliance_checks()` function called the API but ignored the result:
+```python
+# BEFORE (placeholder values):
+checks[key] = {"provided": "—", "required": "—", ...}
+
+# AFTER (real extraction):
+checks[key] = {"provided": f"{ast_prov:.0f} mm²", "required": f"{ast_req:.0f} mm²", ...}
+```
+
+---
+
+## Prevention System Implemented
+
+### 1. Extended Scanner Coverage
+- Scanner now checks critical API calls in ALL files
+- Critical functions: `cached_design`, `cached_smart_analysis`, etc.
+
+### 2. Regression Test Suite
+Created `streamlit_app/tests/test_page_api_integration.py`:
+- `TestPageImports` - Verify all pages exist
+- `TestAPISignatures` - Verify correct API call patterns
+- `TestAPIResponseHandling` - Verify response parsing
+- `TestRegressionPrevention` - Specific tests for each fixed bug
+
+### 3. Dependencies Added
+Added to `streamlit_app/requirements.txt`:
+- `jinja2>=3.1.0` - Report generation
+- `reportlab>=4.0.0` - PDF generation
+- `ezdxf>=1.0.0` - DXF export
 
 ---
 
@@ -170,18 +242,20 @@ These are separate concerns. The Streamlit pages would need to be updated separa
 
 ---
 
-## Action Plan
+## Action Plan (Session 24 Completion)
 
-### Phase 1: Critical Fixes (This Session)
-1. Fix advanced_analysis.py API calls
-2. Fix compliance page data flow
-3. Fix double printing issue
+### Phase 1: Critical Fixes ✅ COMPLETE
+1. ✅ Fix advanced_analysis.py API calls (PR #361)
+2. ✅ Fix compliance page data flow
+3. ✅ Fix double printing issue (PR #361)
+4. ✅ Fix cost optimizer savings calculation
 
-### Phase 2: UI Improvements
-4. Fix dropdown styling
-5. Improve geometry preview formatting
-6. Improve cost optimization display
+### Phase 2: Prevention ✅ COMPLETE
+5. ✅ Extended scanner to check pages
+6. ✅ Created 16 regression tests
+7. ✅ Added dependencies
 
-### Phase 3: Future Work
-7. DXF annotation positioning
-8. Consider PDF dependency as optional extra
+### Phase 3: Deferred (Cosmetic)
+8. ⏳ Dropdown styling
+9. ⏳ Geometry preview formatting
+10. ⏳ DXF annotation positioning

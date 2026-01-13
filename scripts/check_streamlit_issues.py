@@ -1133,9 +1133,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         if isinstance(node.func, ast.Name):
             func_name = node.func.id
 
-        # Phase 3: Check API signature mismatches in test files
-        if self.sig_registry and '/tests/' in self.filepath and func_name:
-            self._check_api_signature(node, func_name)
+        # Phase 3+: Check API signature mismatches in test files AND page files
+        # Extended from tests-only to catch API mismatches in Streamlit pages
+        critical_api_funcs = {'cached_design', 'cached_smart_analysis', 'run_cost_optimization',
+                              'run_compliance_checks', 'design_beam'}
+        if self.sig_registry and func_name:
+            # Check all calls to critical API functions (regardless of file location)
+            if func_name in critical_api_funcs:
+                self._check_api_signature(node, func_name)
+            # Also check test files for all registered functions
+            elif '/tests/' in self.filepath:
+                self._check_api_signature(node, func_name)
 
         # Check for hash() with unhashable types
         if func_name == 'hash':
