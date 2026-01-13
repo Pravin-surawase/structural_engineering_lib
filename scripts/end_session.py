@@ -177,6 +177,84 @@ def check_links() -> tuple[bool, str]:
         return True, f"Link check skipped: {e}"
 
 
+def get_changed_doc_folders() -> list[Path]:
+    """Get list of docs/ folders that had file changes (staged or modified)."""
+    try:
+        # Get changed files from git
+        result = subprocess.run(
+            ["git", "diff", "--name-only", "HEAD~5", "HEAD"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+        )
+
+        changed_files = result.stdout.strip().split("\n") if result.stdout.strip() else []
+
+        # Also check uncommitted changes
+        result2 = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+        )
+        for line in result2.stdout.strip().split("\n"):
+            if line.strip():
+                # Extract filename from status line
+                parts = line.strip().split(maxsplit=1)
+                if len(parts) > 1:
+                    changed_files.append(parts[1])
+
+        # Filter to docs/ folders and get unique parent folders
+        doc_folders = set()
+        for f in changed_files:
+            if f.startswith("docs/") and f.endswith(".md"):
+                folder = Path(f).parent
+                # Only consider folders with significant depth
+                if len(folder.parts) >= 2:
+                    doc_folders.add(REPO_ROOT / folder)
+
+        return list(doc_folders)
+    except Exception:
+        return []
+
+
+def update_folder_readmes(folders: list[Path], fix: bool = False) -> int:
+    """Update README.md for specified folders using generate_folder_index.py."""
+    if not fix:
+        return 0
+
+    gen_script = REPO_ROOT / "scripts" / "generate_folder_index.py"
+    if not gen_script.exists():
+        return 0
+
+    venv_python = REPO_ROOT / ".venv" / "bin" / "python"
+    python_exe = str(venv_python) if venv_python.exists() else sys.executable
+
+    updated = 0
+    for folder in folders:
+        if not folder.exists():
+            continue
+        try:
+            # Check if folder has enough files to warrant an index
+            md_files = list(folder.glob("*.md"))
+            if len(md_files) < 3:
+                continue
+
+            result = subprocess.run(
+                [python_exe, str(gen_script), str(folder)],
+                cwd=REPO_ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if result.returncode == 0:
+                updated += 1
+        except Exception:
+            pass
+
+    return updated
+
+
 def get_today_prs() -> list[str]:
     """Get PRs merged today (from git log)."""
     try:
@@ -272,6 +350,20 @@ def main():
         print(f"  ✅ {msg}")
     else:
         print(f"  ⚠️  {msg}")
+    print()
+
+    # 4.5 README Auto-Update (NEW - Session 19P12)
+    print("📚 README Index Updates:")
+    changed_folders = get_changed_doc_folders()
+    if changed_folders:
+        print(f"  📂 {len(changed_folders)} folder(s) with changes detected")
+        updated = update_folder_readmes(changed_folders, fix=args.fix)
+        if args.fix and updated:
+            print(f"  ✅ Updated {updated} README file(s)")
+        elif not args.fix:
+            print(f"  ℹ️  Run with --fix to auto-update READMEs")
+    else:
+        print("  ✅ No doc folder changes detected")
     print()
 
     # 5. Governance compliance check (NEW - Session 12)
