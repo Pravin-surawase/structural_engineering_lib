@@ -5,7 +5,7 @@
 | **Current** | v0.16.6 | ✅ Released (Python 3.11 Baseline) |
 | **Next** | v0.17.0 | Professional Features |
 
-**Date:** 2026-01-13 | **Last Session:** 19P14 | **Last PR:** #351 (TASK-276-279 Integration)
+**Date:** 2026-01-13 | **Last Session:** 19P15 | **Last PR:** #352
 
 ---
 
@@ -24,12 +24,8 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-13
-- Focus: CI fix + TASK-458 Phase 2 + PR #351 merge
-- Tasks: TASK-458 Phase 2 (metadata check), PR #351 merge
-- CI Fix: Added research/ to validate_folder_structure.py skip list
-- New: scripts/check_doc_metadata.py (pre-commit metadata check, warning mode)
-- Merged: PR #351 - TASK-276-279 Streamlit Integration (input bridge + export tab)
-- Commits: 4e46b02, f3e8f35
+- Focus: Remove manual git examples from active docs and tighten automation-first onboarding.
+- PRs merged: #352
 <!-- HANDOFF:END -->
 
 ---

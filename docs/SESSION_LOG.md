@@ -4,6 +4,34 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P15: Manual Git Cleanup + Lint Ignore Markers
+
+**Focus:** Remove manual git examples from active docs and tighten automation-first onboarding.
+
+### Summary
+
+1. **Active Docs Cleanup** - Replaced manual git examples in core guides with automation equivalents
+2. **Lint Ignore Markers** - Added `lint-ignore-git` markers to historical/internal docs and updated lint to respect them
+3. **Onboarding Reinforcement** - Added a git workflow quick reference in `agent_start.sh`
+
+### PRs
+
+| PR | Description |
+| --- | --- |
+| #352 | Manual git cleanup + lint ignores |
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `1c5d0be` | docs(git): remove manual git examples in active docs |
+
+### Tests
+
+- `./scripts/lint_docs_git_examples.sh`
+
+---
+
 ## 2026-01-13 — Session 19P14: CI Fix + TASK-458 Phase 2
 
 **Focus:** Fix CI failures, merge Streamlit integration PR, complete metadata standards Phase 2
