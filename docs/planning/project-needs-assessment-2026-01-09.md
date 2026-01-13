@@ -1037,9 +1037,9 @@ IMPORTANT│                      │                      │
 
 **Key Documents:**
 - [TASKS.md](../TASKS.md) - Task board (active work)
-- [AGENT-6-ISSUES-AUDIT-2026-01-09.md](../../streamlit_app/docs/AGENT-6-ISSUES-AUDIT-2026-01-09.md) - 103 test failures analysis
-- [LIBRARY-COVERAGE-ANALYSIS.md](../../streamlit_app/docs/LIBRARY-COVERAGE-ANALYSIS.md) - 0% library integration, 40+ gaps
-- [AGENT-6-HANDOFF-2026-01-08.md](../../streamlit_app/docs/AGENT-6-HANDOFF-2026-01-08.md) - Phase 3 research complete (6,111 lines)
+- [AGENT-6-ISSUES-AUDIT-2026-01-09.md](../../streamlit_app/docs/_archive/agent-6-sessions/AGENT-6-ISSUES-AUDIT-2026-01-09.md) - 103 test failures analysis
+- [LIBRARY-COVERAGE-ANALYSIS.md](../../streamlit_app/docs/_archive/research/LIBRARY-COVERAGE-ANALYSIS.md) - 0% library integration, 40+ gaps
+- [AGENT-6-HANDOFF-2026-01-08.md](../../streamlit_app/docs/_archive/agent-6-sessions/AGENT-6-HANDOFF-2026-01-08.md) - Phase 3 research complete (6,111 lines)
 - [SESSION_LOG.md](../SESSION_LOG.md) - Recent activity history
 
 **Research Assets (Agent 6 Phase 3):**

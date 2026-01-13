@@ -597,10 +597,10 @@ def test_issue_2026_01_08_validation_error():
 ## 📚 Resources & References
 
 ### Research Documents (Agent 6)
-1. [USER-JOURNEY-RESEARCH.md](../../streamlit_app/docs/USER-JOURNEY-RESEARCH.md) - 4 personas, 7-stage workflow
-2. [EXPORT-UX-RESEARCH.md](../../streamlit_app/docs/EXPORT-UX-RESEARCH.md) - IS 2502, AIA CAD, PDF/A standards
-3. [BATCH-PROCESSING-RESEARCH.md](../../streamlit_app/docs/BATCH-PROCESSING-RESEARCH.md) - CSV format, validation
-4. [LEARNING-CENTER-RESEARCH.md](../../streamlit_app/docs/LEARNING-CENTER-RESEARCH.md) - 8 tutorials, gamification
+1. [USER-JOURNEY-RESEARCH.md](../../streamlit_app/docs/_archive/research/USER-JOURNEY-RESEARCH.md) - 4 personas, 7-stage workflow
+2. [EXPORT-UX-RESEARCH.md](../../streamlit_app/docs/_archive/research/EXPORT-UX-RESEARCH.md) - IS 2502, AIA CAD, PDF/A standards
+3. [BATCH-PROCESSING-RESEARCH.md](../../streamlit_app/docs/_archive/research/BATCH-PROCESSING-RESEARCH.md) - CSV format, validation
+4. [LEARNING-CENTER-RESEARCH.md](../../streamlit_app/docs/_archive/research/LEARNING-CENTER-RESEARCH.md) - 8 tutorials, gamification
 
 ### Python Library API (v0.16.0)
 - `design_beam_is456()` - Complete beam design

@@ -15,21 +15,21 @@
 - **Root Cause:** High velocity (60 commits/day) without governance cadence
 - **Solution:** Time-based archival (`docs/_archive/YYYY-MM/`)
 - **Impact:** 34 files (82.9%) immediately archivable
-- **Document:** [RESEARCH_FINDINGS_STRUCTURE.md](research/RESEARCH_FINDINGS_STRUCTURE.md)
+- **Document:** [RESEARCH_FINDINGS_STRUCTURE.md](../research/RESEARCH_FINDINGS_STRUCTURE.md)
 
 **RESEARCH-007-009: Constraints & Authority**
 - **Problem:** Agent 9 could become bureaucratic bottleneck
 - **Solution:** 73-operation authority matrix (47% autonomous)
 - **Time Budget:** 10-20% governance (80/20 rule)
 - **Red Lines:** 10 boundaries Agent 9 will never cross
-- **Document:** [AGENT_9_CONSTRAINTS.md](research/AGENT_9_CONSTRAINTS.md)
+- **Document:** [AGENT_9_CONSTRAINTS.md](../research/AGENT_9_CONSTRAINTS.md)
 
 **RESEARCH-010-012: Baseline Metrics**
 - **Current Velocity:** 60 commits/day (12-24x normal solo dev)
 - **WIP Status:** 100% compliant (1 PR, 2 worktrees, 2 tasks)
 - **Quality:** 86% coverage, 0 errors (excellent)
 - **Leading Indicators:** 3 of 6 in red (crisis docs, handoffs, completions)
-- **Document:** [METRICS_BASELINE.md](research/METRICS_BASELINE.md)
+- **Document:** [METRICS_BASELINE.md](../research/METRICS_BASELINE.md)
 
 ### Phase 2: External Validation ✅
 
@@ -61,7 +61,7 @@
 
 **Key Finding:** AI agents need different doc structure than humans
 
-**Document:** [RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md)
+**Document:** [RESEARCH_FINDINGS_EXTERNAL.md](../research/RESEARCH_FINDINGS_EXTERNAL.md)
 
 ### Phase 2: Meta-Documentation ✅
 
@@ -69,13 +69,13 @@
 - Standard format for future research cycles
 - Quality checklist, anti-patterns
 - Examples of good vs. bad research docs
-- **Document:** [RESEARCH_FINDING_TEMPLATE.md](research/RESEARCH_FINDING_TEMPLATE.md)
+- **Document:** [RESEARCH_FINDING_TEMPLATE.md](../research/RESEARCH_FINDING_TEMPLATE.md)
 
 **RESEARCH-014: Research→Task Conversion**
 - 6-step process: Validate → Prioritize → Extract → Define → Add → Track
 - Priority matrix (Impact × Effort)
 - Task specification template
-- **Document:** [RESEARCH_TO_TASK_PROCESS.md](research/RESEARCH_TO_TASK_PROCESS.md)
+- **Document:** [RESEARCH_TO_TASK_PROCESS.md](../research/RESEARCH_TO_TASK_PROCESS.md)
 
 ---
 
@@ -129,7 +129,7 @@
 - Predictive alerts: 7-day velocity forecast
 - Tech debt trend: Declining month-over-month
 
-**Complete Roadmap:** [AGENT_9_IMPLEMENTATION_ROADMAP.md](AGENT_9_IMPLEMENTATION_ROADMAP.md)
+**Complete Roadmap:** [AGENT_9_IMPLEMENTATION_ROADMAP.md](../AGENT_9_IMPLEMENTATION_ROADMAP.md)
 
 ---
 
@@ -195,38 +195,38 @@
 ## Files Created (7 documents, ~4,000 lines)
 
 ### Phase 1 Research Documents:
-1. **[RESEARCH_FINDINGS_STRUCTURE.md](research/RESEARCH_FINDINGS_STRUCTURE.md)** (650 lines)
+1. **[RESEARCH_FINDINGS_STRUCTURE.md](../research/RESEARCH_FINDINGS_STRUCTURE.md)** (650 lines)
    - Internal analysis: 12 sessions, 41 files categorized
    - Archive strategy decision: Time-based
    - Key insight: 82.9% of root files archivable
 
-2. **[METRICS_BASELINE.md](research/METRICS_BASELINE.md)** (550 lines)
+2. **[METRICS_BASELINE.md](../research/METRICS_BASELINE.md)** (550 lines)
    - Baseline snapshot: 60 commits/day, 86% coverage
    - 6 leading indicators with alert thresholds
    - SMART targets defined
 
-3. **[AGENT_9_CONSTRAINTS.md](research/AGENT_9_CONSTRAINTS.md)** (650 lines)
+3. **[AGENT_9_CONSTRAINTS.md](../research/AGENT_9_CONSTRAINTS.md)** (650 lines)
    - 73-operation authority matrix
    - 10 red lines, time budgets (10-20%)
    - Escalation process with SLA
 
 ### Phase 2 Research Documents:
-4. **[RESEARCH_FINDINGS_EXTERNAL.md](research/RESEARCH_FINDINGS_EXTERNAL.md)** (900 lines)
+4. **[RESEARCH_FINDINGS_EXTERNAL.md](../research/RESEARCH_FINDINGS_EXTERNAL.md)** (900 lines)
    - 7 industry patterns (Stripe, Shopify, GitLab)
    - 5 case studies (Prettier, Vitest, tRPC, Zod, Fastify)
    - AI context optimization guidelines
 
-5. **[RESEARCH_FINDING_TEMPLATE.md](research/RESEARCH_FINDING_TEMPLATE.md)** (350 lines)
+5. **[RESEARCH_FINDING_TEMPLATE.md](../research/RESEARCH_FINDING_TEMPLATE.md)** (350 lines)
    - Reusable template for future research
    - Quality checklist, anti-patterns
    - Examples of good vs. bad docs
 
-6. **[RESEARCH_TO_TASK_PROCESS.md](research/RESEARCH_TO_TASK_PROCESS.md)** (300 lines)
+6. **[RESEARCH_TO_TASK_PROCESS.md](../research/RESEARCH_TO_TASK_PROCESS.md)** (300 lines)
    - 6-step workflow: Validate → Prioritize → Extract → Define → Add → Track
    - Priority matrix (Impact × Effort)
    - Task specification template
 
-7. **[AGENT_9_IMPLEMENTATION_ROADMAP.md](AGENT_9_IMPLEMENTATION_ROADMAP.md)** (850 lines)
+7. **[AGENT_9_IMPLEMENTATION_ROADMAP.md](../AGENT_9_IMPLEMENTATION_ROADMAP.md)** (850 lines)
    - 12 governance tasks across 3 phases
    - Complete timeline, dependencies, success metrics
    - Risk assessment, rollback plans
@@ -238,7 +238,7 @@
 ### ✅ Research Complete — Ready for Implementation
 
 **Immediate (This Session):**
-1. ✅ Add TASK-280 through TASK-291 to [TASKS.md](../../docs/TASKS.md)
+1. ✅ Add TASK-280 through TASK-291 to [TASKS.md](../../../docs/TASKS.md)
 2. ⏳ **Start Phase A:** TASK-280 (Archive 34 root files)
 
 **Week 1 (Jan 11-17):**

@@ -142,7 +142,7 @@
 | [code-clause-database.md](../_archive/research-completed/code-clause-database.md) | research | 🟡 Medium | Clause database |
 | [hygiene-research-review.md](hygiene-research-review.md) | review | 🟡 Medium | Hygiene review |
 | [research-backlog-review.md](research-backlog-review.md) | review | 🟢 Low | Backlog review |
-| [session-2026-01-06-documentation-enhancement.md](../docs/_archive/2026-01/session-2026-01-06-documentation-enhancement.md) | session | 🟢 Low | Session notes |
+| [session-2026-01-06-documentation-enhancement.md](../_archive/2026-01/session-2026-01-06-documentation-enhancement.md) | session | 🟢 Low | Session notes |
 | [cost-optimization-day1.md](../_archive/research-completed/cost-optimization-day1.md) | session | 🟢 Low | Optimization notes |
 
 ---

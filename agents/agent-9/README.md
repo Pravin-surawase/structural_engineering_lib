@@ -18,10 +18,10 @@
 | **[METRICS.md](METRICS.md)** | Tracking templates & dashboards |
 | **[KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md)** | Git/CI governance & research |
 | **[SESSION_TEMPLATES.md](SESSION_TEMPLATES.md)** | Planning templates |
-| **[CURRENT_STATE_SUMMARY.md](CURRENT_STATE_SUMMARY.md)** | Current project state snapshot |
-| **[RESEARCH_COMPLETE_SUMMARY.md](RESEARCH_COMPLETE_SUMMARY.md)** | Completed research summary |
+| **[CURRENT_STATE_SUMMARY.md](_archive/CURRENT_STATE_SUMMARY.md)** | Current project state snapshot |
+| **[RESEARCH_COMPLETE_SUMMARY.md](_archive/RESEARCH_COMPLETE_SUMMARY.md)** | Completed research summary |
 | **[RESEARCH_PLAN.md](RESEARCH_PLAN.md)** | Comprehensive research plan (810 lines) |
-| **[RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md)** | Executive summary (394 lines) |
+| **[RESEARCH_PLAN_SUMMARY.md](_archive/RESEARCH_PLAN_SUMMARY.md)** | Executive summary (394 lines) |
 | **[RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md)** | 1-page quick reference card |
 | **[AGENT_9_IMPLEMENTATION_ROADMAP.md](AGENT_9_IMPLEMENTATION_ROADMAP.md)** | Implementation roadmap |
 | **[Governance Hub](README.md)** | Central location for migration + structure governance |
@@ -94,7 +94,7 @@ cat agents/agent-9/RESEARCH_QUICK_REF.md
 
 ### Documents
 1. **[RESEARCH_PLAN.md](RESEARCH_PLAN.md)** - Complete specification (14 tasks, 5 areas)
-2. **[RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md)** - Executive summary & FAQ
+2. **[RESEARCH_PLAN_SUMMARY.md](_archive/RESEARCH_PLAN_SUMMARY.md)** - Executive summary & FAQ
 3. **[RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md)** - 1-page checklist
 
 ### Success Criteria

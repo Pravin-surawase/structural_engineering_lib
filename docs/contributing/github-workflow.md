@@ -11,7 +11,7 @@
 
 ---
 
-**Research:** See [git-workflow-production-stage.md](../research/git-workflow-production-stage.md)
+**Research:** See [git-workflow-production-stage.md](../_archive/research/git-automation/git-workflow-production-stage.md)
 **Canonical:** [git-workflow-ai-agents.md](git-workflow-ai-agents.md)
 
 ## 🎯 Quick Decision: Direct Commit or PR?

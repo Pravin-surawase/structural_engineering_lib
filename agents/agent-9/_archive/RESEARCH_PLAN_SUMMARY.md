@@ -1,6 +1,6 @@
 # Agent 9 Research Plan - Executive Summary
 
-**Document:** [RESEARCH_PLAN.md](RESEARCH_PLAN.md)
+**Document:** [RESEARCH_PLAN.md](../RESEARCH_PLAN.md)
 **Created:** 2026-01-10
 **Status:** ✅ Ready for Execution
 
@@ -347,15 +347,15 @@ This research plan includes:
 
 **Created from:**
 - User requirements (comprehensive research plan request)
-- Existing Agent 9 spec ([agents/agent-9/README.md](README.md))
+- Existing Agent 9 spec ([agents/agent-9/README.md](../README.md))
 - Project context (SESSION_LOG.md, TASKS.md)
 - Industry research (Shopify, Faros AI, etc. - cited in KNOWLEDGE_BASE.md)
 
 **Builds on:**
-- [WORKFLOWS.md](WORKFLOWS.md) - Operational procedures
-- [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md) - Research foundations
-- [METRICS.md](METRICS.md) - Tracking systems
-- [AUTOMATION.md](AUTOMATION.md) - Script specs
+- [WORKFLOWS.md](../WORKFLOWS.md) - Operational procedures
+- [KNOWLEDGE_BASE.md](../KNOWLEDGE_BASE.md) - Research foundations
+- [METRICS.md](../METRICS.md) - Tracking systems
+- [AUTOMATION.md](../AUTOMATION.md) - Script specs
 
 **Feeds into:**
 - Implementation roadmap (to be created)
@@ -387,7 +387,7 @@ This research plan includes:
 
 **Status:** ✅ Research plan delivered and committed
 
-**Location:** [agents/agent-9/RESEARCH_PLAN.md](RESEARCH_PLAN.md)
+**Location:** [agents/agent-9/RESEARCH_PLAN.md](../RESEARCH_PLAN.md)
 
 **Ready for:** Immediate execution or scheduled deployment
 

@@ -192,7 +192,7 @@ Test one hypothesis → document decision → ship
 ## 🔗 Related Documents
 
 - [RESEARCH_PLAN.md](RESEARCH_PLAN.md) - Full specification (810 lines)
-- [RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md) - Executive summary (394 lines)
+- [RESEARCH_PLAN_SUMMARY.md](_archive/RESEARCH_PLAN_SUMMARY.md) - Executive summary (394 lines)
 - [agents/agent-9/README.md](README.md) - Agent 9 spec
 - [agents/agent-9/WORKFLOWS.md](WORKFLOWS.md) - Operational procedures
 - [agents/agent-9/KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md) - Research foundations
