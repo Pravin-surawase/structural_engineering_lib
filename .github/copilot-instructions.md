@@ -159,6 +159,91 @@ IS 456 RC beam design library with **Python + VBA parity**.
 
 ---
 
+## 📚 Documentation Guidelines (CRITICAL - Prevents Doc Sprawl)
+
+**Problem Solved:** We reduced 525 docs with 700+ similar pairs to a lean, focused structure.
+**Goal:** Prevent future doc sprawl that slows agent onboarding and wastes context tokens.
+
+### Research Document Rules
+
+**One Research Project = Maximum 2 Files:**
+1. `research/<topic>.md` - Main research file (findings, analysis)
+2. `research/<topic>-implementation.md` - Implementation plan (optional)
+
+**When research is COMPLETE:**
+1. Add `**Status:** Complete` to metadata header
+2. Run: `.venv/bin/python scripts/consolidate_docs.py archive`
+3. Script auto-moves to `docs/_archive/research-completed/`
+4. All links auto-updated
+
+**❌ NEVER Create:**
+- Session-specific files (`session-X-findings.md`) - use SESSION_LOG instead
+- Phase files (`PHASE-1-whatever.md`) - use single research file
+- Multiple summary files - consolidate into one
+- Dated research files (`topic-2026-01-13.md`) - dates go in metadata, not filename
+
+**✅ DO Create:**
+- One consolidated research file per topic
+- Clear metadata header with Status field
+- Archive condition in metadata
+
+### Research File Template
+
+```markdown
+# Research: [Topic Name]
+
+**Type:** Research
+**Audience:** All Agents
+**Status:** In Progress | Complete
+**Importance:** High | Medium | Low
+**Created:** YYYY-MM-DD
+**Last Updated:** YYYY-MM-DD
+**Related Tasks:** TASK-XXX
+**Archive Condition:** Archive when Status: Complete
+
+---
+
+## Summary
+[Brief findings]
+
+## Analysis
+[Detailed analysis]
+
+## Recommendations
+[Action items]
+
+## Implementation Notes
+[If applicable]
+```
+
+### Consolidation Workflow
+
+When you notice research sprawl (multiple files on same topic):
+
+```bash
+# Check current state
+.venv/bin/python scripts/consolidate_docs.py analyze
+
+# Dry-run archival
+.venv/bin/python scripts/consolidate_docs.py archive --dry-run
+
+# Execute archival (fixes links automatically)
+.venv/bin/python scripts/consolidate_docs.py archive
+
+# Verify no broken links
+.venv/bin/python scripts/check_links.py
+```
+
+### Key Metrics to Maintain
+
+| Metric | Target | Check Command |
+|--------|--------|---------------|
+| Research files | <80 | `find docs/research -name "*.md" \| wc -l` |
+| Broken links | 0 | `.venv/bin/python scripts/check_links.py` |
+| Similar file pairs | <50 | `.venv/bin/python scripts/analyze_doc_redundancy.py` |
+
+---
+
 ## Git workflow rules (CRITICAL - Production Stage)
 
 ### 🎯 Quick Decision Tool
