@@ -9,7 +9,7 @@
 
 ---
 
-Version: 0.16.6 (current)
+Version: 0.17.0 (current)
 Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---

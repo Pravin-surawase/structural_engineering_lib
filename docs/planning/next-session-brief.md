@@ -5,13 +5,13 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-13<br>
 
 ---
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.16.6 | ✅ Released (Python 3.11 Baseline) |
+| **Current** | v0.17.0 | ✅ Released (Python 3.11 Baseline) |
 | **Next** | v0.17.0 | Professional Features |
 
 **Last Session:** 19P21 | **Commits:** 2

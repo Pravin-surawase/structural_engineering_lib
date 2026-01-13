@@ -4,6 +4,61 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-01-13
+
+### Added
+- **Professional API Features**
+  - `BeamInput` dataclasses for flexible input handling (TASK-276)
+  - Professional calculation report generation module (TASK-277)
+  - Verification and audit trail module for compliance tracking (TASK-278)
+  - Engineering testing strategies module with benchmark framework (TASK-279)
+
+- **Debug & Diagnostics Infrastructure**
+  - `scripts/collect_diagnostics.py` - Creates timestamped diagnostic bundles for troubleshooting
+  - `scripts/generate_api_manifest.py` - Generates/validates API manifest with 38 public symbols
+  - `scripts/check_scripts_index.py` - Validates scripts/index.json accuracy
+  - `docs/reference/api-manifest.json` - Complete API surface documentation
+  - Diagnostics reminders in `agent_start.sh` and `end_session.py`
+  - Debug snapshot checklist in handoff documentation
+
+- **Documentation Metadata System (TASK-458)**
+  - Added metadata headers to 50+ documentation files
+  - `scripts/create_doc.py` - Creates new docs with proper metadata
+  - `scripts/check_doc_metadata.py` - Validates metadata in pre-commit
+  - Standardized Type, Audience, Status, Importance, Version fields
+
+- **Documentation Consolidation (TASK-457)**
+  - Archived 91 session/task docs from streamlit_app/docs
+  - Archived 26 completed research files with 180 link fixes
+  - `scripts/consolidate_docs.py` - Improved consolidation workflow
+  - Reduced documentation sprawl significantly
+
+### Changed
+- **Git Workflow Automation**
+  - Added enforcement hook blocking manual git commands
+  - Improved error clarity with 'why' and recovery guidance
+  - Policy-aware merge with `--force` mode for batched commits
+  - Removed manual git examples from active documentation
+
+- **Pre-commit Hooks**
+  - Added API manifest validation hook
+  - Added scripts index validation hook
+  - Added doc metadata check (warning mode)
+  - Skip research folder in filename validation
+
+### Fixed
+- Streamlit import checker: added `--skip-known` flag to reduce false positives
+- CI: skip research folder in filename validation for legacy naming
+- Fixed invalid 'local' keyword in `finish_task_pr.sh`
+- Pre-commit whitespace and line ending fixes across 15 files
+- Ruff UP038 fixes in test files (use `X | Y` in isinstance)
+
+### Developer Notes
+- All 2598 tests passing
+- 128 automation scripts indexed
+- 38 public API symbols tracked
+- Pre-commit validation strengthened
+
 ## [0.16.6] - 2026-01-12
 
 ### Changed
