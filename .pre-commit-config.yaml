@@ -206,6 +206,14 @@ repos:
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$
         verbose: true
+      - id: check-doc-metadata
+        name: Check doc metadata (warning mode)
+        entry: .venv/bin/python scripts/check_doc_metadata.py
+        language: system
+        pass_filenames: false
+        files: ^docs/.*\.md$
+        verbose: true
+        # Note: This runs in warning mode (non-blocking). Use --strict to enforce.
 
 # CI note: pre-commit hooks run locally only.
 # CI has separate lint/format checks in .github/workflows/python-tests.yml

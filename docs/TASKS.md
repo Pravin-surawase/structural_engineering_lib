@@ -86,7 +86,7 @@
 |----|------|-------|--------|
 | **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 pending merge |
 | **TASK-457** | Documentation Consolidation (Phase 1-3) | DOCS | ✅ Phase 1 Complete (46 files archived) |
-| **TASK-458** | File Metadata Standards & README Automation | DOCS | ✅ Phase 1 Complete |
+| **TASK-458** | File Metadata Standards & README Automation | DOCS | ✅ Phase 2 Complete |
 
 **TASK-457 Details:**
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
@@ -101,7 +101,7 @@
 
 **TASK-458 Details:**
 - **Phase 1:** ✅ Research + README auto-update in end_session.py + create_doc.py script
-- **Phase 2:** ⏳ Add pre-commit metadata check (warning mode)
+- **Phase 2:** ✅ Pre-commit metadata check (warning mode) - `scripts/check_doc_metadata.py`
 - **Phase 3:** ⏳ Gradual metadata migration for existing files
 - **Documentation:** See [file-metadata-standards-research.md](research/file-metadata-standards-research.md)
 
