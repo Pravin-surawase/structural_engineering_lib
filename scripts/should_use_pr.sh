@@ -97,6 +97,9 @@ is_docs_like() {
     if [[ "$file" =~ ^docs/ ]]; then
         return 0
     fi
+    if [[ "$file" =~ ^metrics/ ]]; then
+        return 0
+    fi
     if [[ "$file" =~ \.md$ ]]; then
         return 0
     fi
