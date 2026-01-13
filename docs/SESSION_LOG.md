@@ -4,6 +4,42 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P19: TASK-458 Metadata Migration + Import Checker Fix
+
+**Focus:** Continue TASK-458 Phase 3 metadata migration; fix Streamlit import checker false positives.
+
+### Summary
+
+1. **PR #355 Validation** - Verified session log corrections and PR guardrails merged successfully
+2. **Import Checker Fix** - Added `--skip-known` flag to skip 4 relative-import files that fail outside Streamlit context
+3. **Metadata Migration** - Added standardized headers to 31 docs across 3 folders:
+   - 12 contributing docs
+   - 6 architecture docs
+   - 13 getting-started docs
+4. **Doc Type Expansion** - Added "Blog", "Specification", "Lesson" to valid metadata types
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `b40b451` | chore(TASK-458): add Blog, Specification, Lesson to valid doc types + 3 docs |
+| `ec4fdc4` | fix(scripts): add skip-known flag to Streamlit import checker |
+| `d70b7a2` | chore(TASK-458): add metadata headers to 12 contributing docs |
+| `9dd42e1` | chore(TASK-458): add metadata headers to 6 architecture docs |
+| `ce38dd5` | chore(TASK-458): add metadata headers to 13 getting-started docs |
+
+### Progress
+
+- TASK-458 Phase 3: ~31 docs migrated this session (total: 50+ with prior batches)
+- Remaining: ~350 docs still need metadata (gradual migration continues)
+
+### Tests
+
+- Streamlit import checker: 40/40 pass (4 skipped as known relative-imports)
+- Link checker: 876/876 valid
+
+---
+
 ## 2026-01-13 — Session 19P18: Session Log Corrections + PR Guardrails
 
 **Focus:** Fix inaccurate session log claims and tighten guidance to prevent repeat errors.
