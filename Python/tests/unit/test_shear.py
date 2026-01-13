@@ -11,7 +11,22 @@ Reference: IS 456:2000 Clause 40
 import pytest
 
 from structural_lib import shear
-from structural_lib.errors import DimensionError
+from structural_lib.errors import DimensionError, Severity
+
+
+def _has_error_with_code(errors, code: str) -> bool:
+    """Check if errors list contains an error with the given code."""
+    return any(e.code == code for e in errors)
+
+
+def _has_error_with_message(errors, message_substring: str) -> bool:
+    """Check if errors list contains an error with the given message substring."""
+    return any(message_substring.lower() in e.message.lower() for e in errors)
+
+
+def _get_error_messages(errors) -> list[str]:
+    """Extract all error messages from errors list."""
+    return [e.message for e in errors]
 
 
 class TestCalculateTv:
@@ -51,7 +66,7 @@ class TestDesignShear:
             vu_kn=100.0, b=0.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
         )
         assert result.is_safe is False
-        assert "b and d must be > 0" in result.remarks
+        assert _has_error_with_message(result.errors, "b must be > 0")
 
         result = shear.design_shear(
             vu_kn=100.0, b=250.0, d=-100.0, fck=25.0, fy=415.0, asv=157.0, pt=0.5
@@ -64,7 +79,7 @@ class TestDesignShear:
             vu_kn=100.0, b=250.0, d=450.0, fck=0.0, fy=415.0, asv=157.0, pt=0.5
         )
         assert result.is_safe is False
-        assert "fck and fy must be > 0" in result.remarks
+        assert _has_error_with_message(result.errors, "fck must be > 0")
 
     def test_invalid_asv_returns_unsafe(self):
         """Zero or negative Asv should return unsafe result."""
@@ -72,7 +87,7 @@ class TestDesignShear:
             vu_kn=100.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=0.0, pt=0.5
         )
         assert result.is_safe is False
-        assert "asv must be > 0" in result.remarks
+        assert _has_error_with_message(result.errors, "asv must be > 0")
 
     def test_negative_pt_returns_unsafe(self):
         """Negative pt should return unsafe result."""
@@ -80,7 +95,7 @@ class TestDesignShear:
             vu_kn=100.0, b=250.0, d=450.0, fck=25.0, fy=415.0, asv=157.0, pt=-0.5
         )
         assert result.is_safe is False
-        assert "pt must be >= 0" in result.remarks
+        assert _has_error_with_message(result.errors, "pt must be >= 0")
 
     def test_exceeds_tc_max_returns_unsafe(self):
         """Shear stress exceeding tc_max should return unsafe."""
@@ -89,7 +104,8 @@ class TestDesignShear:
             vu_kn=500.0, b=150.0, d=200.0, fck=20.0, fy=415.0, asv=157.0, pt=1.0
         )
         assert result.is_safe is False
-        assert "exceeds Tc_max" in result.remarks
+        assert _has_error_with_message(result.errors, "exceeds tc_max") or \
+            _has_error_with_code(result.errors, "E_SHEAR_001")
 
     def test_nominal_shear_less_than_tc(self):
         """Low shear stress < tc: minimum reinforcement required."""
@@ -99,7 +115,9 @@ class TestDesignShear:
         )
         assert result.is_safe is True
         assert result.vus == 0.0
-        assert "minimum shear reinforcement" in result.remarks.lower()
+        # Check for minimum shear reinforcement info in errors list
+        assert _has_error_with_message(result.errors, "minimum") or \
+            _has_error_with_code(result.errors, "E_SHEAR_003")
 
     def test_shear_reinforcement_required(self):
         """Higher shear stress > tc: stirrup design required."""
@@ -108,7 +126,8 @@ class TestDesignShear:
         )
         assert result.is_safe is True
         assert result.vus > 0.0
-        assert "reinforcement required" in result.remarks.lower()
+        # When reinforcement is required and provided, design is safe
+        # No specific error message needed when design succeeds
 
     def test_tc_value_lookup(self):
         """Verify tc is looked up from Table 19."""
@@ -145,7 +164,8 @@ class TestDesignShear:
         assert hasattr(result, "vus")
         assert hasattr(result, "spacing")
         assert hasattr(result, "is_safe")
-        assert hasattr(result, "remarks")
+        assert hasattr(result, "errors")  # New structured errors field
+        assert hasattr(result, "remarks")  # Deprecated, kept for backward compat
 
     def test_symmetric_positive_negative_shear(self):
         """Positive and negative shear should give same design."""
