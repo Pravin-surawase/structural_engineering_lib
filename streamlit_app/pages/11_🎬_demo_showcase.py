@@ -257,7 +257,7 @@ if demo_mode == "🎯 Single Demo":
                 for highlight in scenario["highlights"]:
                     st.markdown(f"• {highlight}")
 
-                if st.button(f"Run This Demo", key=f"run_{name}", use_container_width=True):
+                if st.button(f"Run This Demo", key=f"run_{name}", width="stretch"):
                     st.session_state.current_demo = name
 
                     with loading_context(f"Running {name} demo..."):
@@ -356,17 +356,17 @@ if demo_mode == "🎯 Single Demo":
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            if st.button("📥 Export Results", use_container_width=True):
+            if st.button("📥 Export Results", width="stretch"):
                 st.info("Export feature - integrate with existing export pages")
 
         with col2:
-            if st.button("🔄 Try Another Demo", use_container_width=True):
+            if st.button("🔄 Try Another Demo", width="stretch"):
                 st.session_state.current_demo = None
                 st.session_state.demo_results = {}
                 st.rerun()
 
         with col3:
-            if st.button("✏️ Edit Parameters", use_container_width=True):
+            if st.button("✏️ Edit Parameters", width="stretch"):
                 st.info("💡 Navigate to '01_🏗️_beam_design' page to customize this design")
 
 
@@ -410,7 +410,7 @@ elif demo_mode == "🔀 Compare Demos":
 
             # Comparison chart
             fig = create_comparison_chart(results)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
             # Comparison table
             comparison_data = []
@@ -432,7 +432,7 @@ elif demo_mode == "🔀 Compare Demos":
                     })
 
             df = pd.DataFrame(comparison_data)
-            st.dataframe(df, use_container_width=True)
+            st.dataframe(df, width="stretch")
 
             # Insights
             st.divider()

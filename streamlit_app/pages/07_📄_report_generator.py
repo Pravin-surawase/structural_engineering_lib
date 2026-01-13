@@ -219,7 +219,7 @@ def render_page():
         generate_button = st.button(
             "📄 Generate PDF",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             help="Generate and download PDF report"
         )
 
@@ -269,7 +269,7 @@ def render_page():
                     file_name=f"beam_design_report_{project_name.replace(' ', '_')}.pdf",
                     mime="application/pdf",
                     type="primary",
-                    use_container_width=True
+                    width="stretch"
                 )
 
                 # Show file size

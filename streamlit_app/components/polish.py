@@ -128,7 +128,7 @@ def show_empty_state(
     if action_label and action_key:
         col1, col2, col3 = st.columns([1, 1, 1])
         with col2:
-            return st.button(action_label, key=action_key, use_container_width=True)
+            return st.button(action_label, key=action_key, width="stretch")
 
     return False
 

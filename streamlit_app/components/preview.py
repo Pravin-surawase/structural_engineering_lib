@@ -60,7 +60,7 @@ def render_real_time_preview(
         D_mm=D_mm,
         support_condition=support_condition
     )
-    st.plotly_chart(fig, use_container_width=True, key="preview_beam_diagram")
+    st.plotly_chart(fig, width="stretch", key="preview_beam_diagram")
 
     # Section 2: Quick Checks
     st.subheader("✅ Design Checks")

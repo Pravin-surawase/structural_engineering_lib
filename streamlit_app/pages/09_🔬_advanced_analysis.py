@@ -350,11 +350,11 @@ if analysis_type == "📊 Parametric Study":
 
         fig.update_layout(height=800, showlegend=True)
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         # Data table
         with st.expander("📊 View Data Table"):
-            st.dataframe(df, use_container_width=True)
+            st.dataframe(df, width="stretch")
 
         # Download
         csv_data = df.to_csv(index=False)
@@ -448,11 +448,11 @@ elif analysis_type == "🎯 Sensitivity Analysis":
                 height=400,
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
             # Summary table
             st.dataframe(sens_df[["parameter", "base_value", "base_Ast", "sensitivity_plus", "sensitivity_minus"]],
-                        use_container_width=True)
+                        width="stretch")
 
             # Insights
             most_sensitive = sens_df.iloc[-1]
@@ -562,10 +562,10 @@ else:  # Loading Scenarios
 
             fig.update_layout(height=500, showlegend=True)
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
             # Results table
-            st.dataframe(results_df, use_container_width=True)
+            st.dataframe(results_df, width="stretch")
 
             # Envelope design recommendation
             max_ast = results_df["Ast_prov (mm²)"].max()

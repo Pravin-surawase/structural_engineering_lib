@@ -377,7 +377,7 @@ else:
     col1, col2, col3 = st.columns([2, 1, 1])
 
     with col1:
-        if st.button("🚀 Generate DXF Drawing", type="primary", use_container_width=True):
+        if st.button("🚀 Generate DXF Drawing", type="primary", width="stretch"):
             with loading_context("Generating DXF drawing..."):
                 try:
                     # Create detailing
@@ -407,7 +407,7 @@ else:
                         st.code(traceback.format_exc())
 
     with col2:
-        if st.button("🔄 Refresh", use_container_width=True):
+        if st.button("🔄 Refresh", width="stretch"):
             st.session_state.dxf_inputs["generated_dxf"] = None
             st.rerun()
 
@@ -457,7 +457,7 @@ else:
                 data=dxf_bytes,
                 file_name=f"{detailing.beam_id}_detail.dxf",
                 mime="application/dxf",
-                use_container_width=True,
+                width="stretch",
                 type="primary"
             )
 
@@ -468,14 +468,14 @@ else:
                 data=dxf_bytes,
                 file_name=f"{detailing.beam_id}_{detailing.story}_detail.dxf",
                 mime="application/dxf",
-                use_container_width=True
+                width="stretch"
             )
 
         with col3:
             st.button(
                 "🖨️ Print Preview",
                 disabled=True,
-                use_container_width=True,
+                width="stretch",
                 help="Coming soon - Open in CAD viewer"
             )
             st.caption("Feature coming soon")

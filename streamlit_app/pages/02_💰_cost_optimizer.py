@@ -537,7 +537,7 @@ def main():
                 st.subheader("Cost vs Utilization")
                 if st.session_state.cost_comparison_data:
                     fig = create_cost_scatter(st.session_state.cost_comparison_data)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
 
                     st.markdown(
                         """
@@ -557,7 +557,7 @@ def main():
                     )
                     st.dataframe(
                         df_display,
-                        use_container_width=True,
+                        width="stretch",
                         height=400,
                     )
 

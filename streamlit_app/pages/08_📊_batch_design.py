@@ -218,7 +218,7 @@ if uploaded_file:
 
             # Preview
             with st.expander("👁️ Preview Data"):
-                st.dataframe(df, use_container_width=True)
+                st.dataframe(df, width="stretch")
         else:
             st.error(f"❌ Invalid CSV: {message}")
             st.session_state.batch_data = None
@@ -239,7 +239,7 @@ if st.session_state.batch_data is not None:
         st.write(f"**Ready to process {len(st.session_state.batch_data)} beams**")
 
     with col2:
-        if st.button("▶️ Start Processing", type="primary", use_container_width=True):
+        if st.button("▶️ Start Processing", type="primary", width="stretch"):
             st.session_state.processing_status = "processing"
 
     # Progress indicators
@@ -292,7 +292,7 @@ if st.session_state.batch_results is not None:
         st.metric("Success Rate", f"{success_pct:.1f}%")
 
     # Results table
-    st.dataframe(results_df, use_container_width=True)
+    st.dataframe(results_df, width="stretch")
 
     # Download options
     col1, col2, col3 = st.columns(3)
@@ -321,7 +321,7 @@ if st.session_state.batch_results is not None:
         )
 
     with col3:
-        if st.button("🔄 Reset", use_container_width=True):
+        if st.button("🔄 Reset", width="stretch"):
             st.session_state.batch_data = None
             st.session_state.batch_results = None
             st.session_state.processing_status = "idle"
