@@ -4,7 +4,7 @@
 **Audience:** All Agents
 **Status:** Production Ready
 **Importance:** Critical
-**Version:** 0.16.6
+**Version:** 0.17.0
 **Created:** 2026-01-11
 **Last Updated:** 2026-01-13
 

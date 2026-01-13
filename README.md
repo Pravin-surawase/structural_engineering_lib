@@ -84,14 +84,19 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 ## Status
 
-🚀 **Production-Ready Professional Tool (v0.16.6)** — Published on PyPI with enterprise-grade quality standards.
+🚀 **Production-Ready Professional Tool (v0.17.0)** — Published on PyPI with enterprise-grade quality standards.
 
-**What's new in v0.16.6 (Python 3.11 Baseline - 2026-01-12):**
-- **Python 3.11 Baseline:** Minimum Python version raised from 3.9 to 3.11 for faster runtime and cleaner code
+**What's new in v0.17.0 (Professional API + Debug Infrastructure - 2026-01-13):**
+- **Professional API Features:** BeamInput dataclasses, report generation, audit trail, testing strategies
+- **Debug Infrastructure:** 1-command diagnostics bundle (`collect_diagnostics.py`), API manifest tracking (38 symbols)
+- **Documentation System:** Metadata headers on 50+ docs, standardized doc creation workflow
+- **Git Workflow:** Enforcement hooks blocking manual git, improved error clarity and recovery
+- **Pre-commit Validation:** API manifest check, scripts index check, doc metadata check
+
+**Previous: v0.16.6 (Python 3.11 Baseline - 2026-01-12):**
+- **Python 3.11 Baseline:** Minimum Python version raised from 3.9 to 3.11 for faster runtime
 - **CI Optimization:** Test matrix reduced from 4 versions to 2 (50% faster CI)
 - **Type Hint Modernization:** PEP 604 syntax (`X | None` instead of `Optional[X]`) across all modules
-- **Pre-commit Updates:** All local hooks use `.venv/bin/python` for Python 3.11 compatibility
-- **Developer Requirements:** Python 3.11+ required locally (`brew install python@3.11` on macOS)
 
 **Previous: v0.16.5 (Developer Experience & Automation - 2026-01-11):**
 - **Unified Agent Onboarding:** Single `./scripts/agent_start.sh` command replaces 4-command workflow (90% faster)
