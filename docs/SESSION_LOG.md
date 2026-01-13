@@ -4,7 +4,70 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-13 — Session 20: Phase 1 Critical Infrastructure (PR #TBD)
+## 2026-01-13 — Session 22: Sessions 20-21 Validation & Test Fixes (PR #357)
+
+**Focus:** Review, validate, and fix issues from Sessions 20-21.
+
+### Summary
+
+**Validated 3 Prior Sessions:**
+
+1. **Session 20: Phase 1 Critical Infrastructure (PR #356)** ✅
+   - Cross-platform CI matrix verified
+   - Performance regression tracking verified
+   - GitHub Issue Forms verified (4 YAML files)
+   - Critical journey tests verified (11 pass, 5 skip)
+
+2. **Session 20b: Review & Validation** ✅
+   - All 4 identified issues already addressed in current codebase
+   - `streamlit-validation.yml` has `critical-journeys` job
+   - `nightly.yml` has `if-no-files-found: warn` for benchmarks
+   - `check_doc_versions.py` delegates to `bump_version.py`
+
+3. **Session 21: Core Library Deprecation Cleanup** ❌→✅
+   - **Critical Issue Found:** 13 unit tests failed
+   - Tests were checking deprecated `remarks` and `error_message` fields
+   - **Resolution:** Updated 26 tests across 5 files to use new `errors` list
+
+**Test Files Updated:**
+- `test_shear.py`: 7 tests updated
+- `test_structural.py`: 5 tests updated
+- `test_compliance.py`: 1 test updated
+- `test_input_validation.py`: 12 tests updated
+- `test_error_schema.py`: 1 test updated
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `8f1ac6c` | fix: repair CI workflows and refactor core library to remove deprecations |
+| `c3bd33a` | fix: syntax error in comprehensive_validator.py script |
+| `36bbd00` | docs: update session log and handoff for session 21 |
+| `14fdcb4` | fix(tests): update unit tests to use errors list |
+| `bb535f8` | docs: mark sessions 20-21 review as complete |
+
+### Branch & PR
+
+- **Branch:** task/TASK-506
+- **PR:** #357
+
+### Impact
+
+- **All 256 unit tests now pass**
+- **Error handling:** Tests now verify structured `DesignError` objects
+- **Backward compatibility:** Deprecated fields still exist but return empty strings
+- **Documentation:** Research document captures validation findings
+
+### Session Totals
+
+- **Commits:** 5
+- **Tests Updated:** 26
+- **Files Changed:** 7 unique files
+- **Issues Found & Fixed:** 1 critical (13 broken tests)
+
+---
+
+## 2026-01-13 — Session 20: Phase 1 Critical Infrastructure (PR #356)
 
 **Focus:** Execute Phase 1 Pre-v0.18.0 Critical Infrastructure tasks (TASK-501, 503, 504, 505).
 

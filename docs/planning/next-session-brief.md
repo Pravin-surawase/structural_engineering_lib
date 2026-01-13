@@ -14,7 +14,7 @@
 | **Current** | v0.17.0 | ✅ Released (2026-01-13) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 19P21 (extended) | **Commits:** 8
+**Last Session:** 22 | **Commits:** 5
 
 ---
 
@@ -33,26 +33,29 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-13
-- Session: 19P21 (extended)
-- Focus: Phase 1+2 commit + IMP-02/03 + validation + v0.17.0 release + post-release docs + CI investigation
-- Commits: 8 professional commits
+- Session: 22
+- Focus: Review, validate, and fix Sessions 20-21 work
+- PR: #357 (Core library error handling refactor and test updates)
+- Commits: 5 commits
 - Key Deliverables:
-  - **Phase 1+2:** 16 files committed (diagnostics bundle, API manifest, scripts index)
-  - **IMP-02/03:** Diagnostics reminders in agent_start.sh + end_session.py + handoff docs
-  - **Pre-commit validation:** 15 files fixed (whitespace, line endings, ruff UP038)
-  - **v0.17.0 release:** CHANGELOG + version bumps + git tag pushed ✅
-  - **Post-release audit:** 300+ line analysis doc, README/releases.md updates
-  - **CI investigation:** Fixed filename governance violation, identified coverage soft-failure
+  - **Validation:** Reviewed Sessions 20 (PR #356), 20b, and 21
+  - **Critical Fix:** 13 broken unit tests → all 256 tests now pass
+  - **Test Updates:** 26 tests across 5 files updated to use `errors` list
+  - **Research Document:** `docs/research/sessions-20-21-review-2026-01-13.md`
+- Files Changed:
+  - `Python/tests/unit/test_shear.py` (7 tests updated)
+  - `Python/tests/unit/test_structural.py` (5 tests updated)
+  - `Python/tests/unit/test_compliance.py` (1 test updated)
+  - `Python/tests/unit/test_input_validation.py` (12 tests updated)
+  - `Python/tests/unit/test_error_schema.py` (1 test updated)
 - Metrics:
-  - Scripts: 128 total
-  - API symbols: 38 tracked
-  - Tests: 2598 passing (6 contract tests)
-  - Documentation: 877 internal links (0 broken)
-  - Debug performance: 96% faster (5 min → 10 sec)
+  - Unit tests: 256 passing
+  - Critical journeys: 11 passing, 5 skipped
+  - CI checks: Pending on PR #357
 - Next Steps:
-  - DOC-ONB-01/02: Guide consolidation (3-4 hrs)
-  - TASK-457 Phase 3: Deduplication (2-3 hrs)
-  - v0.18.0: Professional features planning
+  - Merge PR #357 when CI passes
+  - Continue with v0.18.0 tasks
+  - Consider archiving completed research doc
 <!-- HANDOFF:END -->
 
 ---
