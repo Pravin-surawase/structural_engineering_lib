@@ -1,5 +1,14 @@
 # IS 456 RC Beam Design Library — Known Pitfalls and Traps
 
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Critical
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 Use this as a checklist to avoid common mistakes when implementing or reviewing code.
 
 ---

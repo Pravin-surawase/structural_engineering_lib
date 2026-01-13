@@ -1,8 +1,12 @@
 # Folder Structure Governance
 
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** Critical
 **Version:** 2.0
-**Last Updated:** 2026-01-11
-**Status:** Comprehensive specification
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
 **Enforcement:** Automated validators + pre-commit hooks
 
 ---

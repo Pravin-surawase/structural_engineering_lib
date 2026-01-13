@@ -1,5 +1,14 @@
 # How to Create and Use the Excel Add-in (.xlam)
 
+**Type:** Guide
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Medium
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 This guide explains how to package the VBA library into a reusable Excel Add-in (`StructEngLib.xlam`).
 
 ---
