@@ -16,7 +16,7 @@ import logging
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 _logger = logging.getLogger(__name__)
 
@@ -27,9 +27,8 @@ try:
     JINJA2_AVAILABLE = True
 except ImportError:
     JINJA2_AVAILABLE = False
-    Environment = None  # type: ignore[misc,assignment]
-    PackageLoader = None  # type: ignore[misc,assignment]
-    select_autoescape = None  # type: ignore[misc,assignment]
+    if TYPE_CHECKING:
+        from jinja2 import Environment, PackageLoader, select_autoescape
 
 
 __all__ = [
@@ -255,7 +254,8 @@ def generate_html_report_from_dict(
 
     # Load and render template
     tmpl = env.get_template(template_file)
-    return tmpl.render(**context)
+    rendered: str = tmpl.render(**context)
+    return rendered
 
 
 # =============================================================================
