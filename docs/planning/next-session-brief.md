@@ -14,7 +14,7 @@
 | **Current** | v0.16.6 | ✅ Released (Python 3.11 Baseline) |
 | **Next** | v0.17.0 | Professional Features |
 
-**Last Session:** 19P20 | **Commits:** 6
+**Last Session:** 19P21 | **Commits:** 2
 
 ---
 
@@ -33,18 +33,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-13
-- Session: 19P20
-- Focus: Automation Discovery + TASK-457 Phase 2 Complete + TASK-458 Metadata Migration
-- Commits: 6
+- Session: 19P21
+- Focus: Commit Phase 1+2 (debug upgrades, API guardrails) + IMP-02/03 diagnostics reminders
+- Commits: 2
 - Key Deliverables:
-  - scripts/index.json (125 scripts in 14 categories with tier0 priorities)
-  - .github/workflows/README.md (12 CI/CD workflows documented)
-  - 91 session/task docs archived (streamlit_app/docs 98% reduction)
-  - 56 docs migrated to standardized metadata (total ~150)
+  - Phase 1+2 committed: 16 files, 5 new scripts (collect_diagnostics.py, generate_api_manifest.py, check_scripts_index.py)
+  - IMP-02: Diagnostics reminders in agent_start.sh + end_session.py
+  - IMP-03: Debug snapshot checklist in handoff.md + next-session-brief.md
+  - Scripts total: 128 (up from 125)
+  - API manifest: 38 public symbols tracked
 - Next Steps:
-  - Continue metadata migration (research/, specs/, adr/ folders)
+  - DOC-ONB-01/02: Guide consolidation (onboarding guides)
+  - Continue metadata migration (research/, specs/, adr/)
   - v0.17.0 release preparation
-  - Optional: more deduplication in research/
 <!-- HANDOFF:END -->
 
 ---

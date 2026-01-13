@@ -4,6 +4,55 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P21: Phase 1+2 Commit + IMP-02/03 Diagnostics Improvements
+
+**Focus:** Commit previous agent's Phase 1+2 work (debug upgrades, API guardrails, scripts index check); implement IMP-02/03 diagnostics reminders.
+
+### Summary
+
+1. **Commit Phase 1+2 Work** (from previous agent)
+   - Committed 16 files including 5 new scripts
+   - DEBUG-01: `collect_diagnostics.py` - diagnostics bundle generator
+   - DEBUG-02: DEBUG=1 toggle for full tracebacks in Streamlit
+   - API-01/02/03: API manifest generator + CI checks + onboarding checklist
+   - IMP-01: `check_scripts_index.py` - scripts index consistency check
+   - Task board cleanup: 47 tasks archived, Recently Done trimmed to 12
+
+2. **IMP-02/03: Diagnostics Reminders**
+   - Added diagnostics reminder to `agent_start.sh` (on Python not found)
+   - Added diagnostics reminder to `end_session.py` (when issues found)
+   - Added debug snapshot checklist to `docs/contributing/handoff.md`
+   - Added debug resources table to `docs/planning/next-session-brief.md`
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `a2587da` | feat(debug+api): complete Phase 1+2 - diagnostics bundle, API guardrails, scripts index check |
+| `70da224` | feat(debug): IMP-02/03 - add diagnostics reminders and debug checklist |
+
+### Progress
+
+- DEBUG-01/02: ✅ Complete (diagnostics bundle + debug mode)
+- API-01/02/03: ✅ Complete (API manifest + CI checks + onboarding)
+- IMP-01: ✅ Complete (scripts index guardrail)
+- IMP-02/03: ✅ Complete (diagnostics reminders)
+
+### Files Changed
+
+- **Commit 1:** 16 files (5 new), +1353/-135 lines
+- **Commit 2:** 4 files, +55 lines
+- **Scripts total:** 128 (up from 125)
+- **API manifest:** 38 public symbols tracked
+
+### Next Steps
+
+- DOC-ONB-01/02: Guide consolidation (onboarding guides)
+- TASK-436: Agent 6 session_manager.py fix (queued)
+- v0.17.5 Code Quality work
+
+---
+
 ## 2026-01-13 — Session 19P20: Automation Discovery + Major Documentation Consolidation
 
 **Focus:** Create comprehensive automation discovery for AI agents; complete TASK-457 Phase 2; continue TASK-458 metadata migration.

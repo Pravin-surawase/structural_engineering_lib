@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-13 (API guardrails + scripts index guardrail)
+**Updated:** 2026-01-13 (IMP-02/03 diagnostics reminders complete)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -82,9 +82,11 @@
 
 ## Active
 
-No active tasks. Phase 2 API guardrails are complete; next up is guide consolidation and remaining improvements.
+No active tasks. Phase 1+2 (debug upgrades + API guardrails) and IMP-02/03 complete.
 
-**TASK-457 Details:**
+**Next focus:** Guide consolidation (DOC-ONB-01/02) or v0.17.5 Agent 6 tasks.
+
+**TASK-457 Details:****
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
 - **Phase 1 (Quick Wins):** ✅ **COMPLETE** - 46 files archived
 - **Phase 2 (Streamlit/Agent Cleanup):** ✅ **COMPLETE** - 91 files archived (98% reduction in streamlit_app/docs)
@@ -118,8 +120,8 @@ No active tasks. Phase 2 API guardrails are complete; next up is guide consolida
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **IMP-02** | Add `collect_diagnostics.py` reminder to `agent_start.sh` and `end_session.py` failure paths | DEVOPS | 30m | 🟡 LOW | ⏳ |
-| **IMP-03** | Add a debug snapshot checklist to handoff docs (include logs + diagnostics bundle) | DOCS | 30m | 🟡 LOW | ⏳ |
+| **IMP-02** | Add `collect_diagnostics.py` reminder to `agent_start.sh` and `end_session.py` failure paths | DEVOPS | 30m | 🟡 LOW | ✅ 2026-01-13 |
+| **IMP-03** | Add a debug snapshot checklist to handoff docs (include logs + diagnostics bundle) | DOCS | 30m | 🟡 LOW | ✅ 2026-01-13 |
 
 ### v0.17.0 - Critical Path (Complete)
 
@@ -208,6 +210,8 @@ and `streamlit_app/tests/test_input_bridge.py`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **IMP-02** | Add diagnostics reminders to agent_start.sh + end_session.py | DEVOPS | ✅ 2026-01-13 |
+| **IMP-03** | Add debug snapshot checklist to handoff docs | DOCS | ✅ 2026-01-13 |
 | **API-01** | Generate API manifest (public functions + signatures) | DEVOPS | ✅ 2026-01-13 |
 | **API-02** | Pre-commit check: API changes require manifest update | DEVOPS | ✅ 2026-01-13 |
 | **API-03** | Onboarding “API touchpoints” checklist | DOCS | ✅ 2026-01-13 |
