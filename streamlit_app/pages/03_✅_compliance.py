@@ -38,6 +38,8 @@ def initialize_session_state():
     """Initialize session state for compliance checker."""
     if "compliance_results" not in st.session_state:
         st.session_state.compliance_results = None
+    if "timestamp" not in st.session_state:
+        st.session_state["timestamp"] = None
 
 
 def get_beam_design_inputs() -> Optional[dict]:
@@ -225,9 +227,7 @@ def display_check_status(check: dict, config: dict):
         icon = "❌"
         css_class = "compliance-fail"
 
-    with st.expander(
-        f"{icon} {title} — {clause}", expanded=(status != "pass")
-    ):
+    with st.expander(f"{icon} {title} — {clause}", expanded=(status != "pass")):
         st.markdown(f"<div class='{css_class}'>", unsafe_allow_html=True)
 
         col1, col2 = st.columns([3, 1])
@@ -375,14 +375,14 @@ def main():
         if st.button("🔍 Run Compliance Checks", type="primary"):
             with st.spinner("Running IS 456:2000 compliance checks..."):
                 results = run_compliance_checks(inputs)
-                st.session_state.compliance_results = results
-                st.session_state.timestamp = datetime.datetime.now().strftime(
+                st.session_state["compliance_results"] = results
+                st.session_state["timestamp"] = datetime.datetime.now().strftime(
                     "%Y-%m-%d %H:%M:%S"
                 )
 
         # Display results if available
-        if st.session_state.compliance_results:
-            results = st.session_state.compliance_results
+        if st.session_state.get("compliance_results"):
+            results = st.session_state.get("compliance_results")
             overall_status = results.get("overall_status", "unknown")
 
             # Overall status banner
