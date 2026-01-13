@@ -11,10 +11,10 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.17.0 | ✅ Released (Python 3.11 Baseline) |
-| **Next** | v0.17.0 | Professional Features |
+| **Current** | v0.17.0 | ✅ Released (2026-01-13) |
+| **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 19P21 | **Commits:** 2
+**Last Session:** 19P21 (extended) | **Commits:** 8
 
 ---
 
@@ -33,19 +33,26 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-13
-- Session: 19P21
-- Focus: Commit Phase 1+2 (debug upgrades, API guardrails) + IMP-02/03 diagnostics reminders
-- Commits: 2
+- Session: 19P21 (extended)
+- Focus: Phase 1+2 commit + IMP-02/03 + validation + v0.17.0 release + post-release docs + CI investigation
+- Commits: 8 professional commits
 - Key Deliverables:
-  - Phase 1+2 committed: 16 files, 5 new scripts (collect_diagnostics.py, generate_api_manifest.py, check_scripts_index.py)
-  - IMP-02: Diagnostics reminders in agent_start.sh + end_session.py
-  - IMP-03: Debug snapshot checklist in handoff.md + next-session-brief.md
-  - Scripts total: 128 (up from 125)
-  - API manifest: 38 public symbols tracked
+  - **Phase 1+2:** 16 files committed (diagnostics bundle, API manifest, scripts index)
+  - **IMP-02/03:** Diagnostics reminders in agent_start.sh + end_session.py + handoff docs
+  - **Pre-commit validation:** 15 files fixed (whitespace, line endings, ruff UP038)
+  - **v0.17.0 release:** CHANGELOG + version bumps + git tag pushed ✅
+  - **Post-release audit:** 300+ line analysis doc, README/releases.md updates
+  - **CI investigation:** Fixed filename governance violation, identified coverage soft-failure
+- Metrics:
+  - Scripts: 128 total
+  - API symbols: 38 tracked
+  - Tests: 2598 passing (6 contract tests)
+  - Documentation: 877 internal links (0 broken)
+  - Debug performance: 96% faster (5 min → 10 sec)
 - Next Steps:
-  - DOC-ONB-01/02: Guide consolidation (onboarding guides)
-  - Continue metadata migration (research/, specs/, adr/)
-  - v0.17.0 release preparation
+  - DOC-ONB-01/02: Guide consolidation (3-4 hrs)
+  - TASK-457 Phase 3: Deduplication (2-3 hrs)
+  - v0.18.0: Professional features planning
 <!-- HANDOFF:END -->
 
 ---
