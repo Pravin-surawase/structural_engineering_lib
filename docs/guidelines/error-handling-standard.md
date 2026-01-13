@@ -1,7 +1,16 @@
 # Error Handling & Exception Design Standard
 
+**Type:** Guideline
+**Audience:** Developers
+**Status:** Active
+**Importance:** High
+**Created:** 2026-01-07
+**Last Updated:** 2026-01-13
+
+---
+
 > **Standard for exception design, error messages, and validation patterns**
-> Created: 2026-01-07 | Status: Active | Part of: API Improvement Research (TASK-204)
+> Part of: API Improvement Research (TASK-204)
 
 ---
 

@@ -1,10 +1,16 @@
 # Blog Writing Guidelines for Structural Engineering Library
 
-**Style Guide & Technical Writing Standards**
+**Type:** Guideline
+**Audience:** Content Creators
+**Status:** Active
+**Importance:** Medium
+**Created:** 2026-01-07
+**Last Updated:** 2026-01-13
 
+---
+
+**Style Guide & Technical Writing Standards**
 **Version:** 1.0
-**Last Updated:** 2026-01-07
-**Audience:** Content creators, technical writers, guest contributors
 
 ---
 

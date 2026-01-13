@@ -1,8 +1,15 @@
 # Result Object Design Standard
 
-**Status:** DRAFT
+**Type:** Guideline
+**Audience:** Developers
+**Status:** Draft
+**Importance:** High
+**Created:** 2026-01-07
+**Last Updated:** 2026-01-13
+
+---
+
 **Version:** 1.0
-**Last Updated:** 2026-01-07
 **Owner:** RESEARCHER
 **Related:** [Function Signature Standard](function-signature-standard.md), [Professional API Patterns](../research/professional-api-patterns.md), [UX Patterns](../research/ux-patterns-for-technical-apis.md)
 

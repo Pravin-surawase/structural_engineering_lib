@@ -1,9 +1,15 @@
 # File Operations Safety Guide
 
-> **Status:** Active | **Created:** 2026-01-10
-> **Purpose:** Safe procedures for file deletion, moves, and renames
+**Type:** Guideline
+**Audience:** All Agents
+**Status:** Active
+**Importance:** Critical
+**Created:** 2026-01-10
+**Last Updated:** 2026-01-13
 
 ---
+
+**Purpose:** Safe procedures for file deletion, moves, and renames
 
 ## ⚠️ CRITICAL: Read Before Any File Operation
 

@@ -1,7 +1,16 @@
 # API Documentation & Discoverability Standard
 
+**Type:** Guideline
+**Audience:** Developers
+**Status:** Active
+**Importance:** High
+**Created:** 2026-01-07
+**Last Updated:** 2026-01-13
+
+---
+
 > **Standard for documentation, docstrings, and API discoverability**
-> Created: 2026-01-07 | Status: Active | Part of: API Improvement Research (TASK-206)
+> Part of: API Improvement Research (TASK-206)
 
 ---
 

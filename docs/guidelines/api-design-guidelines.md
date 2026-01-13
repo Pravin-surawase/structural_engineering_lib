@@ -1,8 +1,15 @@
 # API Design Guidelines
 
-**Status:** DRAFT → IN REVIEW → APPROVED
+**Type:** Guideline
+**Audience:** Developers
+**Status:** Approved
+**Importance:** High
+**Created:** 2026-01-07
+**Last Updated:** 2026-01-13
+
+---
+
 **Version:** 1.0
-**Last Updated:** 2026-01-07
 **Owner:** ARCHITECT
 **Synthesizes:** TASK-200 through TASK-207 research (~9300 lines)
 

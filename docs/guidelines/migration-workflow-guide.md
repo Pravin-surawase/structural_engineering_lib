@@ -1,9 +1,15 @@
 # IS 456 Module Migration Workflow
 
-> **Status:** Ready for Use | **Date:** 2026-01-10
-> **Purpose:** Step-by-step guide for executing the IS 456 module migration
+**Type:** Guide
+**Audience:** Developers
+**Status:** Ready for Use
+**Importance:** High
+**Created:** 2026-01-10
+**Last Updated:** 2026-01-13
 
 ---
+
+**Purpose:** Step-by-step guide for executing the IS 456 module migration
 
 ## Quick Reference
 

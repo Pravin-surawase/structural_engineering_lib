@@ -1,9 +1,15 @@
 # IS 456 Migration Pre-Flight Checklist
 
-> **Status:** Ready for Use | **Date:** 2026-01-10
-> **Purpose:** Complete checklist to run before starting IS 456 module migration
+**Type:** Checklist
+**Audience:** Developers
+**Status:** Ready for Use
+**Importance:** High
+**Created:** 2026-01-10
+**Last Updated:** 2026-01-13
 
 ---
+
+**Purpose:** Complete checklist to run before starting IS 456 module migration
 
 ## Quick Start
 

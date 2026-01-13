@@ -1,7 +1,16 @@
 # API Evolution & Migration Standard
 
+**Type:** Guideline
+**Audience:** Developers
+**Status:** Active
+**Importance:** High
+**Created:** 2026-01-07
+**Last Updated:** 2026-01-13
+
+---
+
 > **Standard for API versioning, deprecation, and backward compatibility**
-> Created: 2026-01-07 | Status: Active | Part of: API Improvement Research (TASK-207)
+> Part of: API Improvement Research (TASK-207)
 
 ---
 

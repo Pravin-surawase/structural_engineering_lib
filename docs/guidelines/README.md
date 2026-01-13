@@ -1,8 +1,17 @@
 # Guidelines Index
 
+**Type:** Index
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 Development standards and best practices for the structural engineering library.
 
-**Files:** 11 | **Updated:** 2026-01-11
+**Files:** 12 | **Updated:** 2026-01-13
 
 ---
 

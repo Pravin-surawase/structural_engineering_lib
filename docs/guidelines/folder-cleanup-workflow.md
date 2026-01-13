@@ -1,9 +1,15 @@
 # Folder Cleanup Workflow
 
-> **Status:** Active | **Created:** 2026-01-10
-> **Purpose:** Step-by-step workflow for safe folder cleanup with checkpoints
+**Type:** Guideline
+**Audience:** All Agents
+**Status:** Active
+**Importance:** Medium
+**Created:** 2026-01-10
+**Last Updated:** 2026-01-13
 
 ---
+
+**Purpose:** Step-by-step workflow for safe folder cleanup with checkpoints
 
 ## Overview
 
