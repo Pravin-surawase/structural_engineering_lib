@@ -8,8 +8,9 @@ on:
 
 # Default to least-privilege for the workflow. Jobs can widen if needed.
 permissions:
-  contents: read
+  contents: write
   issues: write
+  pull-requests: write
 
 jobs:
   nightly:
@@ -35,6 +36,41 @@ jobs:
         working-directory: Python
         run: |
           python -m pytest -q
+
+      # ================================================================
+      # TASK-503: Performance Regression Tracking
+      # ================================================================
+      - name: Run performance benchmarks
+        working-directory: Python
+        run: |
+          python -m pytest tests/performance/test_benchmarks.py \
+            --benchmark-only \
+            --benchmark-json=../benchmark-results.json \
+            -v
+        continue-on-error: true
+
+      - name: Store benchmark results
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: IS 456 Performance Benchmarks
+          tool: 'pytest'
+          output-file-path: benchmark-results.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          alert-threshold: '150%'
+          comment-on-alert: true
+          fail-on-alert: false
+          alert-comment-cc-users: '@Pravin-surawase'
+          benchmark-data-dir-path: 'dev/benchmark-data'
+        continue-on-error: true
+
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: benchmark-results
+          path: benchmark-results.json
+          retention-days: 90
+        if: always()
 
       - name: Check documentation links
         run: |

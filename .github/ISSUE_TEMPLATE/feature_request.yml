@@ -1,0 +1,106 @@
+name: ✨ Feature Request
+description: Suggest an improvement or new feature
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the library! Please describe your feature request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Clear description of the use case or pain point
+      placeholder: I need to design beams with torsion, but the library doesn't support it...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How you think this should work
+      placeholder: |
+        Add a `design_torsion()` function that calculates:
+        - Torsional shear stress (τt)
+        - Equivalent shear (Ve = Vu + 1.6*Tu/b)
+        - Required transverse reinforcement
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of the library should this affect?
+      options:
+        - Core library (structural_lib)
+        - Excel/VBA parity
+        - Streamlit app
+        - CLI tool
+        - DXF export
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority (your assessment)
+      description: How important is this for your use case?
+      options:
+        - Critical - blocks my work
+        - High - needed soon
+        - Medium - nice to have
+        - Low - future improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What else have you tried or considered?
+      placeholder: I tried using a separate library for torsion but it doesn't integrate well...
+    validations:
+      required: false
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: Code Reference
+      description: IS 456 / IS 13920 clause/table if applicable
+      placeholder: |
+        - IS 456:2000 Clause 41.4 (Torsion)
+        - IS 456:2000 Table 20 (Reinforcement requirements)
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this feature is complete?
+      value: |
+        - [ ] Feature implemented in Python library
+        - [ ] Tests added (coverage maintained)
+        - [ ] VBA parity implemented (if applicable)
+        - [ ] Documentation updated
+        - [ ] Example added
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I am willing to help test this feature
+          required: false

@@ -1,0 +1,116 @@
+name: 🐛 Bug Report
+description: Report a calculation, integration, or DXF issue
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill in as much detail as possible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Clear description of the bug
+      placeholder: The library returned incorrect steel area for...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: What should have happened
+      placeholder: Expected Ast = 1200 mm² based on SP:16 calculation...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of the library is affected?
+      options:
+        - Python library (structural_lib)
+        - Excel/VBA
+        - Streamlit app
+        - CLI tool
+        - DXF export
+        - Documentation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: beam-type
+    attributes:
+      label: Beam Type
+      description: What type of beam design?
+      options:
+        - Rectangular
+        - Flanged (T-beam)
+        - L-beam
+        - Not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Inputs to Reproduce
+      description: Minimal input to reproduce the issue
+      placeholder: |
+        b = 300 mm
+        D = 500 mm
+        d = 450 mm
+        fck = 25 MPa
+        fy = 415 MPa
+        Mu = 120 kN·m
+        Vu = 80 kN
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Your system information
+      value: |
+        - OS: [e.g., Windows 11, macOS 14, Ubuntu 22.04]
+        - Python version: [e.g., 3.11.8]
+        - Library version: [e.g., 0.17.0]
+        - Excel version (if VBA): [e.g., Microsoft 365]
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error Output
+      description: Paste any error messages or console output
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Files Likely Affected
+      description: If you have an idea which files might need changes
+      placeholder: |
+        - Python/structural_lib/flexure.py
+        - tests/unit/test_flexure.py
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I have provided minimal reproduction steps
+          required: true

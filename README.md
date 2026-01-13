@@ -362,6 +362,20 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 - Support: `.github/SUPPORT.md`
 - Security: `.github/SECURITY.md`
 
+## 📊 Usage Statistics & Feedback
+
+### PyPI Downloads
+[![PyPI Downloads](https://img.shields.io/pypi/dm/structural-lib-is456)](https://pypistats.org/packages/structural-lib-is456)
+[![PyPI Total](https://img.shields.io/pypi/pyversions/structural-lib-is456)](https://pypi.org/project/structural-lib-is456/)
+
+View detailed download statistics: [pypistats.org/packages/structural-lib-is456](https://pypistats.org/packages/structural-lib-is456)
+
+### Report Issues & Request Features
+- [🐛 Report a Bug](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=bug_report.yml)
+- [✨ Request a Feature](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=feature_request.yml)
+- [❓ Ask a Question](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=support.yml)
+- [💬 Discussions](https://github.com/Pravin-surawase/structural_engineering_lib/discussions)
+
 ## Developer setup
 
 ### For AI Agents (Automated Workflow)
