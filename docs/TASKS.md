@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-13 (Session 19P19: Metadata Migration + Import Checker)
+**Updated:** 2026-01-13 (Session 19P20: Automation Discovery + Doc Consolidation)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -85,25 +85,27 @@
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 merged |
-| **TASK-457** | Documentation Consolidation (Phase 1-3) | DOCS | ✅ Phase 1 Complete (46 files archived) |
-| **TASK-458** | File Metadata Standards & README Automation | DOCS | ⏳ Phase 3 in progress (50+ docs migrated) |
+| **TASK-457** | Documentation Consolidation (Phase 1-3) | DOCS | ✅ Phase 2 Complete (91 files archived) |
+| **TASK-458** | File Metadata Standards & README Automation | DOCS | ⏳ Phase 3 in progress (~150 docs migrated) |
 
 **TASK-457 Details:**
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
-- **Phase 1 (Quick Wins):** ✅ **COMPLETE** - 46 files archived (8 sessions + 12 PHASE + 26 completed)
-  - Research folder: 118 → 72 files (-39% reduction)
-  - All 877 links maintained (0 broken)
-  - Added documentation guidelines to copilot-instructions.md
-- **Phase 2 (Research Folder):** ⏳ Consolidate remaining SUMMARY files (3-4 hrs)
+- **Phase 1 (Quick Wins):** ✅ **COMPLETE** - 46 files archived
+- **Phase 2 (Streamlit/Agent Cleanup):** ✅ **COMPLETE** - 91 files archived (98% reduction in streamlit_app/docs)
+  - streamlit_app/docs: 93 → 2 files
+  - agents/agent-9: SUMMARY files archived
+  - 48 broken links fixed
 - **Phase 3 (Deduplication):** Merge remaining similar file pairs (2-3 hrs)
-- **Expected Impact:** 30-35% reduction, 10-15 min saved per agent session
-- **Documentation:** See [documentation-consolidation-research-2026-01-13.md](research/documentation-consolidation-research-2026-01-13.md)
+- **Expected Impact:** 35%+ reduction, 10-15 min saved per agent session
 
 **TASK-458 Details:**
 - **Phase 1:** ✅ Research + README auto-update in end_session.py + create_doc.py script
 - **Phase 2:** ✅ Pre-commit metadata check (warning mode) - `scripts/check_doc_metadata.py`
-- **Phase 3:** ⏳ Gradual metadata migration for existing files
-- **Documentation:** See [file-metadata-standards-research.md](research/file-metadata-standards-research.md)
+- **Phase 3:** ⏳ Gradual metadata migration (~150 docs migrated, ~150 remaining)
+  - Completed: reference/, planning/, guidelines/, contributing/, architecture/, getting-started/
+  - Remaining: research/, _archive/, specs/, adr/
+- **Automation Discovery:** Created `scripts/index.json` (125 scripts) + `workflows/README.md` (12 workflows)
+- **Documentation:** See [metadata-migration-strategy.md](research/metadata-migration-strategy.md)
 
 ---
 
