@@ -195,7 +195,7 @@ def sensitivity_analysis(base_params: Dict, param_name: str, variation: float = 
 
 page_header(
     title="🔬 Advanced Analysis",
-    description="Parametric studies, sensitivity analysis, and optimization tools"
+    subtitle="Parametric studies, sensitivity analysis, and optimization tools"
 )
 
 # Analysis type selector

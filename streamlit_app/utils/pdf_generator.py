@@ -12,22 +12,42 @@ Generates professional PDF reports with:
 
 Author: Agent 6 (Streamlit Specialist)
 Task: STREAMLIT-FEAT-003
+
+Dependencies:
+    This module requires reportlab. Install with:
+        pip install structural-lib-is456[pdf]
+    or:
+        pip install reportlab
 """
 
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import mm
-from reportlab.lib import colors
-from reportlab.platypus import (
-    SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer,
-    PageBreak, Image, Frame, PageTemplate
-)
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
-from reportlab.pdfgen import canvas
 from io import BytesIO
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 import os
+
+# Optional dependency: reportlab for PDF generation
+try:
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.units import mm
+    from reportlab.lib import colors
+    from reportlab.platypus import (
+        SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer,
+        PageBreak, Image, Frame, PageTemplate
+    )
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+    from reportlab.pdfgen import canvas
+    HAS_REPORTLAB = True
+except ImportError:
+    HAS_REPORTLAB = False
+    # Define stubs to prevent NameError at class definition time
+    A4 = (595.27, 841.89)  # A4 in points
+    mm = 2.834645669291339  # points per mm
+
+
+def is_reportlab_available() -> bool:
+    """Check if reportlab is available for PDF generation."""
+    return HAS_REPORTLAB
 
 
 class BeamDesignReportGenerator:
@@ -36,10 +56,23 @@ class BeamDesignReportGenerator:
 
     Follows IS 456:2000 reporting standards and includes all necessary
     calculation documentation for regulatory compliance.
+
+    Requires:
+        reportlab package. Install with: pip install structural-lib-is456[pdf]
     """
 
     def __init__(self):
-        """Initialize report generator with default styles."""
+        """Initialize report generator with default styles.
+
+        Raises:
+            ImportError: If reportlab package is not installed.
+        """
+        if not HAS_REPORTLAB:
+            raise ImportError(
+                "reportlab is required for PDF generation. "
+                "Install with: pip install reportlab\n"
+                "Or: pip install structural-lib-is456[pdf]"
+            )
         self.styles = getSampleStyleSheet()
         self._setup_custom_styles()
         self.page_width, self.page_height = A4

@@ -225,7 +225,7 @@ def create_comparison_chart(results: dict) -> go.Figure:
 
 page_header(
     title="🎬 Demo Showcase",
-    description="Explore the app capabilities through curated design examples"
+    subtitle="Explore the app capabilities through curated design examples"
 )
 
 # Demo mode selector

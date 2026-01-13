@@ -148,7 +148,7 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
 
 page_header(
     title="📊 Batch Design Processor",
-    description="Process multiple beam designs from CSV upload"
+    subtitle="Process multiple beam designs from CSV upload"
 )
 
 # Instructions

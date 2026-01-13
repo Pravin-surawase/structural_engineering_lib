@@ -46,6 +46,7 @@ dev = [
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
 render = ["ezdxf>=1.0", "matplotlib>=3.5"]  # DXF render to PNG/PDF
 report = ["jinja2>=3.1"]  # Optional HTML templating for reports
+pdf = ["reportlab>=4.0"]  # PDF report generation (Streamlit app)
 validation = ["jsonschema>=4.21"]  # Optional input/output schema validation
 
 [tool.ruff]
