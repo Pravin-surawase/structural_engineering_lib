@@ -22,6 +22,7 @@ from . import (
     job_runner,
     report,
     serviceability,
+    slenderness,
 )
 from .api_results import (
     CostBreakdown,
@@ -105,6 +106,7 @@ __all__ = [
     "compute_critical",
     # Serviceability
     "check_beam_ductility",
+    "check_beam_slenderness",
     "check_deflection_span_depth",
     "check_crack_width",
     "check_compliance_report",
@@ -813,6 +815,53 @@ def check_beam_ductility(
         DuctileBeamResult with pass/fail flags and limiting values.
     """
     return ductile.check_beam_ductility(b, D, d, fck, fy, min_long_bar_dia)
+
+
+def check_beam_slenderness(
+    b_mm: float,
+    d_mm: float,
+    l_eff_mm: float,
+    beam_type: str = "simply_supported",
+    has_lateral_restraint: bool = False,
+) -> slenderness.SlendernessResult:
+    """Check beam slenderness for lateral stability per IS 456 Cl 23.3.
+
+    This function checks whether a beam section satisfies the lateral
+    stability requirements of IS 456:2000.
+
+    Args:
+        b_mm: Width of compression flange in mm (typically beam width).
+        d_mm: Overall depth of beam in mm.
+        l_eff_mm: Effective unsupported length in mm.
+        beam_type: Type of beam ('simply_supported', 'continuous', 'cantilever').
+        has_lateral_restraint: If True, beam is laterally restrained (slab on top).
+
+    Returns:
+        SlendernessResult with check status and details.
+
+    Raises:
+        ValueError: If inputs are invalid (non-positive dimensions).
+
+    Example:
+        >>> result = check_beam_slenderness(
+        ...     b_mm=300,
+        ...     d_mm=600,
+        ...     l_eff_mm=8000,
+        ...     beam_type="simply_supported"
+        ... )
+        >>> result.is_ok
+        True
+
+    References:
+        IS 456:2000 Cl 23.3: Slenderness limits for beams
+    """
+    return slenderness.check_beam_slenderness(
+        b_mm=b_mm,
+        d_mm=d_mm,
+        l_eff_mm=l_eff_mm,
+        beam_type=beam_type,
+        has_lateral_restraint=has_lateral_restraint,
+    )
 
 
 def check_deflection_span_depth(
