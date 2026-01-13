@@ -3,6 +3,16 @@ import pytest
 from structural_lib import flexure
 
 
+def _has_error_with_message_containing(errors, text: str) -> bool:
+    """Check if any error message contains the given text (case-insensitive)."""
+    return any(text.lower() in e.message.lower() for e in errors)
+
+
+def _get_all_error_messages(errors) -> str:
+    """Combine all error messages into one string for checking."""
+    return " ".join(e.message for e in errors)
+
+
 def test_design_singly_reinforced_applies_minimum_steel_message():
     b, d, d_total = 230, 450, 500
     fck, fy = 25, 500
@@ -10,7 +20,7 @@ def test_design_singly_reinforced_applies_minimum_steel_message():
     res = flexure.design_singly_reinforced(b, d, d_total, mu_knm=1.0, fck=fck, fy=fy)
     assert res.is_safe is True
     assert res.ast_required > 0
-    assert "Minimum steel" in res.error_message
+    assert _has_error_with_message_containing(res.errors, "Minimum")
 
 
 def test_calculate_ast_required_returns_minus_one_when_over_reinforced():
@@ -47,7 +57,9 @@ def test_design_doubly_reinforced_invalid_geometry_guard():
     res = flexure.design_doubly_reinforced(b, d, d_dash_bad, d_total, mu, fck, fy)
     assert res.is_safe is False
     assert res.ast_required == 0.0
-    assert "Invalid section geometry" in res.error_message
+    # Error is now in errors list, check for d_dash related message
+    assert len(res.errors) > 0
+    assert _has_error_with_message_containing(res.errors, "d'")
 
 
 def test_design_doubly_reinforced_invalid_when_d_dash_exceeds_d():
@@ -61,7 +73,9 @@ def test_design_doubly_reinforced_invalid_when_d_dash_exceeds_d():
         b, d, d_dash=d + 10.0, d_total=d_total, mu_knm=mu, fck=fck, fy=fy
     )
     assert res.is_safe is False
-    assert "Invalid section geometry" in res.error_message
+    # Error is now in errors list, check for d_dash related message
+    assert len(res.errors) > 0
+    assert _has_error_with_message_containing(res.errors, "d'")
 
 
 def test_design_doubly_reinforced_flags_when_total_ast_exceeds_max():
@@ -82,12 +96,15 @@ def test_design_doubly_reinforced_flags_when_total_ast_exceeds_max():
             fck=fck,
             fy=fy,
         )
-        if res.is_safe is False and "maximum" in res.error_message.lower():
+        # Check errors list for max-related messages
+        if res.is_safe is False and _has_error_with_message_containing(
+            res.errors, "max"
+        ):
             break
 
     assert res is not None
     assert res.is_safe is False
-    assert "maximum" in res.error_message.lower()
+    assert _has_error_with_message_containing(res.errors, "max")
 
 
 def test_design_flanged_beam_neutral_axis_in_flange_matches_rectangular_design():
