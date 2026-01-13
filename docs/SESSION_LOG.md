@@ -4,6 +4,42 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+---
+
+## 2026-01-13 — Session 21: Maintenance & Validation Fixes
+
+**Focus:** Address technical debt (deprecations), fix CI workflow deprecations, and repair internal validation tools.
+
+### Summary
+
+**Core Library Refactor:**
+1. **Removed Deprecated Fields:** Removed `remarks` and `error_message` from `FlexureResult` and `ShearResult` in `structural_lib`.
+2. **Structured Error Handling:** logic update in `flexure.py` and `shear.py` to use the `design_errors` list (list of `DesignError`) instead of string concatenation.
+3. **Compliance Layer Update:** Updated `compliance.py` to consume the new `errors` list and properly format output for users.
+
+**CI & Tooling Fixes:**
+4. **CI Workflow Deprecations:** Updated `actions/upload-artifact` and `actions/download-artifact` to v4/v5 across workflows to resolve Node.js 16 deprecation warnings.
+5. **Validator Repair:** Fixed a SyntaxError in `scripts/comprehensive_validator.py` that was preventing full project scanning.
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `8f1ac6c` | fix: repair CI workflows and refactor core library to remove deprecations |
+| `c3bd33a` | fix: syntax error in comprehensive_validator.py script |
+
+### Validation
+
+- **Critical Journeys:** `streamlit_app/tests/test_critical_journeys.py` PASSED (11 tests)
+- **Project Structure:** `scripts/comprehensive_validator.py` PASSED (0 Errors, 104 Warnings)
+
+### Session Totals
+
+- **Commits:** 2
+- **Files Changed:** Core lib (`flexure.py`, `shear.py`, `compliance.py`), Validation Script, CI Workflows.
+- **Verification:** All critical tests passing.
+
+
 ## 2026-01-13 — Session 20: Phase 1 Critical Infrastructure (PR #TBD)
 
 **Focus:** Execute Phase 1 Pre-v0.18.0 Critical Infrastructure tasks (TASK-501, 503, 504, 505).
