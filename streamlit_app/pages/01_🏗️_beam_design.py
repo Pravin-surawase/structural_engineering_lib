@@ -63,6 +63,9 @@ from utils.theme_manager import (
 from utils.loading_states import loading_context
 # IMPL-007: Performance optimizations
 from utils.caching import SmartCache
+# TASK-276-279 Integration: Professional report export
+from components.report_export import show_export_options, show_audit_trail_summary
+from utils.input_bridge import log_design_to_audit
 import hashlib
 import json
 # TODO Phase 2+: Uncomment as needed when implementing those phases
@@ -455,9 +458,9 @@ with col_preview:
 
         st.divider()
 
-        # Results tabs
-        tab1, tab2, tab3, tab4 = st.tabs(
-            ["📊 Summary", "🎨 Visualization", "💰 Cost Analysis", "✅ Compliance"]
+        # Results tabs (includes new Export tab for TASK-276-279)
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(
+            ["📊 Summary", "🎨 Visualization", "💰 Cost Analysis", "✅ Compliance", "📄 Export"]
         )
 
         # ============================================================================
@@ -817,6 +820,28 @@ with col_preview:
             ]
 
             create_compliance_visual(checks)
+
+        # ============================================================================
+        # TAB 5: Export & Audit (TASK-276-279 Integration)
+        # ============================================================================
+        with tab5:
+            st.subheader("📄 Export & Audit Trail")
+
+            # Get beam identifier from session
+            beam_id = st.session_state.get("current_beam_id", "B1")
+            story = st.session_state.get("current_story", "GF")
+
+            # Report export section
+            show_export_options(
+                result=result,
+                beam_id=beam_id,
+                story=story,
+            )
+
+            st.divider()
+
+            # Audit trail section
+            show_audit_trail_summary()
 
     else:
         # Show real-time preview when design not yet computed
