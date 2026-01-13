@@ -598,6 +598,9 @@ except Exception as e:
     st.expander("Debug Info").code(traceback.format_exc())
 ```
 
+For deep debugging, set `DEBUG=1` before `streamlit run` to show full tracebacks
+from the shared `error_handler.py` decorator.
+
 ### Performance
 
 1. **Use caching** for expensive operations

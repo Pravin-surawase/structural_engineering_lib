@@ -9,6 +9,27 @@
 
 ---
 
+## Quick Diagnostics Bundle
+
+Use this when reporting bugs or debugging agent failures:
+
+```bash
+.venv/bin/python scripts/collect_diagnostics.py --out logs/diagnostics.txt
+```
+
+This captures: environment, git state, and recent automation logs.
+
+## Enable Streamlit Debug Tracebacks
+
+When you need full tracebacks in the UI, set `DEBUG=1` before running:
+
+```bash
+DEBUG=1 streamlit run streamlit_app/app.py
+```
+
+For one-off debugging inside a page, pass `show_traceback=True` to
+`@handle_errors(...)` in `streamlit_app/utils/error_handler.py`.
+
 ## VBA Runtime Error 6: Overflow
 
 ### The Issue (Pinpointed)

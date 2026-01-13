@@ -1,0 +1,198 @@
+{
+  "generated": "2026-01-13",
+  "module": "structural_lib.api",
+  "python": "3.11.14",
+  "count": 38,
+  "symbols": [
+    {
+      "name": "AuditLogEntry",
+      "kind": "class",
+      "signature": "(entry_id: 'str', timestamp: 'str', action: 'str', beam_id: 'str', story: 'str', inputs_summary: 'dict[str, Any]', outputs_summary: 'dict[str, Any]', hash: 'CalculationHash', library_version: 'str', metadata: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "AuditTrail",
+      "kind": "class",
+      "signature": "(project_id: 'str', entries: 'list[AuditLogEntry]' = <factory>, created_at: 'str' = <factory>, library_version: 'str' = '') -> None"
+    },
+    {
+      "name": "BeamGeometryInput",
+      "kind": "class",
+      "signature": "(b_mm: 'float', D_mm: 'float', span_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0) -> None"
+    },
+    {
+      "name": "BeamInput",
+      "kind": "class",
+      "signature": "(beam_id: 'str', story: 'str', geometry: 'BeamGeometryInput', materials: 'MaterialsInput', loads: 'LoadsInput | None' = None, load_cases: 'list[LoadCaseInput]' = <factory>, detailing_config: 'DetailingConfigInput' = <factory>, units: 'str' = 'IS456') -> None"
+    },
+    {
+      "name": "CalculationHash",
+      "kind": "class",
+      "signature": "(input_hash: 'str', output_hash: 'str', combined_hash: 'str', algorithm: 'str' = 'sha256', timestamp: 'str' = <factory>) -> None"
+    },
+    {
+      "name": "CalculationReport",
+      "kind": "class",
+      "signature": "(report_id: 'str', project_info: 'ProjectInfo', beam_id: 'str', story: 'str', inputs: 'InputSection', results: 'ResultSection', code_references: 'list[str]' = <factory>, notes: 'list[str]' = <factory>, verification_hash: 'str' = '', generated_at: 'str' = '') -> None"
+    },
+    {
+      "name": "DetailingConfigInput",
+      "kind": "class",
+      "signature": "(stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float | None' = None, is_seismic: 'bool' = False, preferred_bar_dias: 'tuple[float, ...]' = (12.0, 16.0, 20.0, 25.0), max_bar_layers: 'int' = 2, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0) -> None"
+    },
+    {
+      "name": "InputSection",
+      "kind": "class",
+      "signature": "(geometry: 'dict[str, Any]' = <factory>, materials: 'dict[str, Any]' = <factory>, loads: 'list[dict[str, Any]]' = <factory>, detailing: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "LoadCaseInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', mu_knm: 'float', vu_kn: 'float', description: 'str' = '') -> None"
+    },
+    {
+      "name": "LoadsInput",
+      "kind": "class",
+      "signature": "(mu_knm: 'float', vu_kn: 'float', case_id: 'str' = 'CASE-1') -> None"
+    },
+    {
+      "name": "MaterialsInput",
+      "kind": "class",
+      "signature": "(fck_nmm2: 'float', fy_nmm2: 'float', es_nmm2: 'float' = 200000.0) -> None"
+    },
+    {
+      "name": "ProjectInfo",
+      "kind": "class",
+      "signature": "(project_name: 'str' = 'Untitled Project', project_number: 'str' = '', client_name: 'str' = '', engineer_name: 'str' = '', checker_name: 'str' = '', revision: 'str' = 'A', date: 'str' = '') -> None"
+    },
+    {
+      "name": "ResultSection",
+      "kind": "class",
+      "signature": "(flexure: 'dict[str, Any]' = <factory>, shear: 'dict[str, Any]' = <factory>, serviceability: 'dict[str, Any]' = <factory>, detailing: 'dict[str, Any]' = <factory>, summary: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "check_beam_ductility",
+      "kind": "function",
+      "signature": "(b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', min_long_bar_dia: 'float') -> 'ductile.DuctileBeamResult'"
+    },
+    {
+      "name": "check_beam_is456",
+      "kind": "function",
+      "signature": "(*, units: 'str', cases: 'Sequence[dict[str, Any]]', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, deflection_defaults: 'DeflectionParams | None' = None, crack_width_defaults: 'CrackWidthParams | None' = None) -> 'ComplianceReport'"
+    },
+    {
+      "name": "check_compliance_report",
+      "kind": "function",
+      "signature": "(cases: 'Sequence[dict[str, Any]]', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, deflection_defaults: 'DeflectionParams | None' = None, crack_width_defaults: 'CrackWidthParams | None' = None) -> 'ComplianceReport'"
+    },
+    {
+      "name": "check_crack_width",
+      "kind": "function",
+      "signature": "(exposure_class: 'str' = 'moderate', limit_mm: 'float | None' = None, acr_mm: 'float | None' = None, cmin_mm: 'float | None' = None, h_mm: 'float | None' = None, x_mm: 'float | None' = None, epsilon_m: 'float | None' = None, fs_service_nmm2: 'float | None' = None, es_nmm2: 'float' = 200000.0) -> 'serviceability.CrackWidthResult'"
+    },
+    {
+      "name": "check_deflection_span_depth",
+      "kind": "function",
+      "signature": "(span_mm: 'float', d_mm: 'float', support_condition: 'str' = 'simply_supported', base_allowable_ld: 'float | None' = None, mf_tension_steel: 'float | None' = None, mf_compression_steel: 'float | None' = None, mf_flanged: 'float | None' = None) -> 'serviceability.DeflectionResult'"
+    },
+    {
+      "name": "compute_bbs",
+      "kind": "function",
+      "signature": "(detailing_list: 'list[detailing.BeamDetailingResult]', *, project_name: 'str' = 'Beam BBS') -> 'bbs.BBSDocument'"
+    },
+    {
+      "name": "compute_critical",
+      "kind": "function",
+      "signature": "(job_out: 'str | Path', *, top: 'int' = 10, format: 'str' = 'csv', job_path: 'str | Path | None' = None, results_path: 'str | Path | None' = None, output_path: 'str | Path | None' = None) -> 'str | Path'"
+    },
+    {
+      "name": "compute_detailing",
+      "kind": "function",
+      "signature": "(design_results: 'dict[str, Any]', *, config: 'dict[str, Any] | None' = None) -> 'list[detailing.BeamDetailingResult]'"
+    },
+    {
+      "name": "compute_dxf",
+      "kind": "function",
+      "signature": "(detailing_list: 'list[detailing.BeamDetailingResult]', output: 'str | Path', *, multi: 'bool' = False, include_title_block: 'bool' = False, title_block: 'dict[str, Any] | None' = None, sheet_margin_mm: 'float' = 20.0, title_block_width_mm: 'float' = 120.0, title_block_height_mm: 'float' = 40.0) -> 'Path'"
+    },
+    {
+      "name": "compute_hash",
+      "kind": "function",
+      "signature": "(data: 'dict[str, Any]') -> 'str'"
+    },
+    {
+      "name": "compute_report",
+      "kind": "function",
+      "signature": "(source: 'str | Path | dict[str, Any]', *, format: 'str' = 'html', job_path: 'str | Path | None' = None, results_path: 'str | Path | None' = None, output_path: 'str | Path | None' = None, batch_threshold: 'int' = 80) -> 'str | Path | list[Path]'"
+    },
+    {
+      "name": "create_calculation_certificate",
+      "kind": "function",
+      "signature": "(inputs: 'dict[str, Any]', outputs: 'dict[str, Any]', project_id: 'str' = '', beam_id: 'str' = '', engineer: 'str' = '') -> 'dict[str, Any]'"
+    },
+    {
+      "name": "design_and_detail_beam_is456",
+      "kind": "function",
+      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_support_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, is_seismic: 'bool' = False) -> 'DesignAndDetailResult'"
+    },
+    {
+      "name": "design_beam_is456",
+      "kind": "function",
+      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None) -> 'ComplianceCaseResult'"
+    },
+    {
+      "name": "design_from_input",
+      "kind": "function",
+      "signature": "(beam: 'BeamInput', *, include_detailing: 'bool' = True) -> 'DesignAndDetailResult | ComplianceReport'"
+    },
+    {
+      "name": "detail_beam_is456",
+      "kind": "function",
+      "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False) -> 'detailing.BeamDetailingResult'"
+    },
+    {
+      "name": "export_bbs",
+      "kind": "function",
+      "signature": "(bbs_doc: 'bbs.BBSDocument', path: 'str | Path', *, fmt: 'str' = 'csv') -> 'Path'"
+    },
+    {
+      "name": "generate_calculation_report",
+      "kind": "function",
+      "signature": "(result: 'Any', beam_id: 'str' = 'B1', story: 'str' = 'GF', project_info: 'dict[str, Any] | None' = None, output_path: 'str | Path | None' = None, output_format: 'str' = 'html') -> 'CalculationReport'"
+    },
+    {
+      "name": "get_library_version",
+      "kind": "function",
+      "signature": "() -> 'str'"
+    },
+    {
+      "name": "optimize_beam_cost",
+      "kind": "function",
+      "signature": "(*, units: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40) -> 'CostOptimizationResult'"
+    },
+    {
+      "name": "smart_analyze_design",
+      "kind": "function",
+      "signature": "(*, units: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, include_cost: 'bool' = True, include_suggestions: 'bool' = True, include_sensitivity: 'bool' = True, include_constructability: 'bool' = True, cost_profile: 'CostProfile | None' = None, weights: 'dict[str, float] | None' = None) -> 'SmartAnalysisResult'"
+    },
+    {
+      "name": "suggest_beam_design_improvements",
+      "kind": "function",
+      "signature": "(*, units: 'str', design: 'beam_pipeline.BeamDesignOutput', span_mm: 'float | None' = None, mu_knm: 'float | None' = None, vu_kn: 'float | None' = None) -> 'DesignSuggestionsResult'"
+    },
+    {
+      "name": "validate_design_results",
+      "kind": "function",
+      "signature": "(path: 'str | Path') -> 'ValidationReport'"
+    },
+    {
+      "name": "validate_job_spec",
+      "kind": "function",
+      "signature": "(path: 'str | Path') -> 'ValidationReport'"
+    },
+    {
+      "name": "verify_calculation",
+      "kind": "function",
+      "signature": "(inputs: 'dict[str, Any]', outputs: 'dict[str, Any]', certificate: 'dict[str, Any]') -> 'tuple[bool, str]'"
+    }
+  ]
+}

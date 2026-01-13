@@ -31,6 +31,58 @@ See also: `docs/_internal/agent-workflow.md`
 
 No active tasks. Pick from "Up Next" and move here when starting.
 
+## Archived from TASKS.md (2026-01-13)
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| **RESEARCH-1.1/1.4/1.5** | Phase 1 MOO research completion: foundational audit, HAI/decision support, synthesis roadmap | MAIN | ✅ 2026-01-13 |
+| **RESEARCH-1.3** | Phase 1.3 Bridge to Structural Engineering Complete: Analyzed 4 key papers (Parhi et al. 2026, Hong & Nguyen 2023, etc.) on MOO for RC beams/IS 456. | MAIN | ✅ 2026-01-13 |
+| **RESEARCH-1.2** | Phase 1.2 Web Research Complete: 2025-2026 MOO trends consolidated in `KEY-FINDINGS.md` and `PAPER-TRACKER.csv` (20+ papers) | MAIN | ✅ 2026-01-13 |
+| **TASK-457** | Add future annotations to 12 core modules (PR #344) | DEV | ✅ 2026-01-12 |
+| **TASK-401** | Scanner Phase 4: Path division, max() patterns (PR #339) | AGENT_6 | ✅ 2026-01-12 |
+| **SESSION-16** | PR workflow optimization for solo dev (150-line threshold, Streamlit category) | MAIN | ✅ 2026-01-12 |
+| **TASK-435** | Fix session_manager.py division issue (PR #337) | AGENT_6 | ✅ 2026-01-11 |
+| **TASK-437** | Move timedelta import to module level (PR #337) | AGENT_6 | ✅ 2026-01-11 |
+| **TASK-432** | Archive outdated Agent 6 files | AGENT_6 | ✅ 2026-01-11 |
+| **TASK-433** | Create Agent 6 comprehensive onboarding guide (PR #336) | DOCS | ✅ 2026-01-11 |
+| **TASK-272** | Code Clause Database (67 clauses, 13 functions decorated, PR #333) | DEV | ✅ 2026-01-11 |
+| **TASK-275** | Professional Liability Framework (docs/legal/) | DOCS | ✅ 2026-01-11 |
+| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning, CI setup) | DEVOPS | ✅ PR #331 |
+| **TASK-273** | Interactive Testing UI (Streamlit clause traceability page) | DEV | ✅ PR #334 merged |
+| **TASK-276** | Input Flexibility (BeamInput dataclasses, import helpers) | DEV | ✅ Session 19 |
+| **TASK-277** | Calculation Report Generation (HTML/JSON/Markdown) | DEV | ✅ Session 19 |
+| **TASK-278** | Verification & Audit Trail (SHA-256, immutable logs) | DEV | ✅ Session 19 |
+| **TASK-279** | Engineering Testing Strategies (tolerance, property-based, regression) | TESTER | ✅ Session 19 |
+| **TASK-422** | Document PR auto-merge behavior in copilot-instructions | DOCS | ✅ Session 15 |
+| **TASK-431** | Fix finish_task_pr.sh auto-merge behavior | DEVOPS | ✅ Session 15 |
+| **TASK-402** | Add type annotation checker to scanner | AGENT_6 | ✅ Session 18 |
+| **TASK-403** | Add widget return type validation | AGENT_6 | ✅ Session 17 |
+| **TASK-404** | Add circular import detection | AGENT_6 | ✅ Session 18 |
+| **TASK-405** | Add performance issue detection | AGENT_6 | ✅ Session 18 |
+| **TASK-411** | Create streamlit_preflight.sh (combines scanner + pylint + tests) | AGENT_6 | ✅ Session 17 |
+| **TASK-412** | Create generate_streamlit_page.py scaffold | AGENT_6 | ✅ Session 19 |
+| **TASK-413** | Create validate_session_state.py (audit all session_state usage) | AGENT_6 | ✅ Session 17 |
+| **TASK-414** | Create performance profiler | AGENT_6 | ✅ Session 19 |
+| **TASK-421** | Create agent-coding-standards.md | DOCS | ✅ Session 15 |
+| **TASK-423** | Update copilot-instructions with coding rules | DOCS | ✅ Session 15 |
+| **TASK-434** | Create Streamlit code files analysis (file-by-file research) | DOCS | ✅ Session 15 |
+| **SESSION-14P3** | Git automation: docs/git-automation/ hub (6 files), ai_commit.sh --dry-run/--help, git_automation_health.sh, improvement plan, copilot-instructions update | MAIN | ✅ 2026-01-11 |
+| **SESSION-14** | Phase 1: TASKS cleanup (50→15) + v0.17.0 roadmap (6 commits); Phase 2: Agent 8 research (8116 lines analyzed) + consolidation plan + archival + --quick default (5 commits) | MAIN | ✅ 2026-01-11 |
+| **ONBOARD-03** | Agent start v2.1: full mode fix, worktree passthrough | DEVOPS | ✅ 2026-01-11 |
+| **ONBOARD-02** | Agent start v2.0: unified script, proper preflight | DEVOPS | ✅ 2026-01-11 |
+| **ONBOARD-01** | Unified agent_start.sh, consolidated 4 docs (PR #329) | DEVOPS | ✅ 2026-01-11 |
+| **TASK-325** | Folder cleanup: archive 14 streamlit files (PR #325) | DEVOPS | ✅ 2026-01-11 |
+| **TASK-313** | IS 456 Module Migration (7 modules, 3,048 lines, PR #323) | DEV | ✅ 2026-01-10 |
+| **TASK-317** | Update codes/is456/__init__.py exports (PR #324) | DEV | ✅ 2026-01-11 |
+| **TASK-312** | IS 456 migration research + automation scripts | ARCHITECT | ✅ 2026-01-10 |
+| **TASK-311** | Folder cleanup automation scripts | DEVOPS | ✅ 2026-01-10 |
+| **TASK-310** | Multi-code foundation: core/, codes/ (PR #322) | ARCHITECT | ✅ 2026-01-10 |
+| **AGENT9-PHASE-B** | Folder Migration (5 commits) | AGENT_9 | ✅ 2026-01-10 |
+| **GOV-001-015** | Folder Governance (11 tasks, 4 PRs, S11-S13) | AGENT_9 | ✅ 2026-01-11 |
+| **TASK-270** | Fix 8 test failures from API refactoring | TESTER | ✅ 2026-01-10 |
+| **TASK-271** | Fix 13 benchmark signature errors | TESTER | ✅ 2026-01-10 |
+| **AGENT8-WEEK1** | Git workflow optimizations (4 PRs, 90% faster commits) | AGENT8 | ✅ 2026-01-09 |
+
 ## Recently Completed (Quality Hardening)
 
 | ID | Task | Agent | Status |

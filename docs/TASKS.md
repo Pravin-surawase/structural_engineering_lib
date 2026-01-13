@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-13 (Session 19P20: Automation Discovery + Doc Consolidation)
+**Updated:** 2026-01-13 (API guardrails + scripts index guardrail)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -82,11 +82,7 @@
 
 ## Active
 
-| ID | Task | Agent | Status |
-|----|------|-------|--------|
-| **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 merged |
-| **TASK-457** | Documentation Consolidation (Phase 1-3) | DOCS | ✅ Phase 2 Complete (91 files archived) |
-| **TASK-458** | File Metadata Standards & README Automation | DOCS | ⏳ Phase 3 in progress (~150 docs migrated) |
+No active tasks. Phase 2 API guardrails are complete; next up is guide consolidation and remaining improvements.
 
 **TASK-457 Details:**
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
@@ -104,67 +100,39 @@
 - **Phase 3:** ⏳ Gradual metadata migration (~150 docs migrated, ~150 remaining)
   - Completed: reference/, planning/, guidelines/, contributing/, architecture/, getting-started/
   - Remaining: research/, _archive/, specs/, adr/
-- **Automation Discovery:** Created `scripts/index.json` (125 scripts) + `workflows/README.md` (12 workflows)
+- **Automation Discovery:** Created `scripts/index.json` (128 scripts) + `workflows/README.md` (12 workflows)
 - **Documentation:** See [metadata-migration-strategy.md](research/metadata-migration-strategy.md)
-
----
-
-## Active Research (Phase 1)
-
-**Goal:** Establish theoretical and competitive baseline for MOO beam design.
-
-| ID | Task | Status |
-|----|------|--------|
-| **PHASE 1.1** | Initial audit of MOO repository and foundational theory (NSGA-II) | ✅ COMPLETE |
-| **PHASE 1.2** | 2025-2026 Web Research (qEHVI, PSL, ParetoLens) | ✅ COMPLETE |
-| **PHASE 1.3** | Bridge to Structural Engineering (IS 456 compliance, Parhi et al. 2026) | ✅ COMPLETE |
-| **PHASE 1.4** | Human-AI Interaction & Decision Support (Trust, UX) | ✅ COMPLETE |
-| **PHASE 1.5** | Final Synthesis & Implementation Roadmap (v0.18+ integration) | ✅ COMPLETE |
 
 ---
 
 ## Up Next
 
-### v0.17.0 - Critical Path (Must Complete)
+### Guide Consolidation (Phase 3)
 
-> **Phase Approach:** Start with low-risk foundation (security, legal) before high-risk features (Streamlit)
-
-**Phase 1 (Week 2): Foundation (Low Risk) ✅ COMPLETE**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-274** | Security Hardening Baseline (input validation audit, dependency scanning, CI setup) | DEVOPS | 2-3 hrs | 🔴 HIGH | ✅ PR #331 |
-| **TASK-275** | Professional Liability Framework (MIT+engineering disclaimer, templates, certification guidance) | DOCS | 2-3 hrs | 🔴 HIGH | ✅ Complete |
+| **DOC-ONB-01** | Consolidate onboarding guides (bootstrap + workflow) | DOCS | 3h | 🟠 MEDIUM | ⏳ |
+| **DOC-ONB-02** | Update cross-links + index references | DOCS | 1h | 🟡 LOW | ⏳ |
 
-**Phase 2 (Week 3): Traceability (Medium Risk, 4-6 hours) ✅ COMPLETE**
-| ID | Task | Agent | Est | Priority | Blockers |
-|----|------|-------|-----|----------|----------|
-| **TASK-272** | Code Clause Database (JSON DB, @clause decorator, traceability) | DEV | 4-6 hrs | 🔴 HIGH | ✅ PR #333 merged |
+### Improvements I recommend (compact, high-value)
 
-**Phase 3 (Week 4): Developer UX (High Value, 1-2 days) ✅ COMPLETE**
-| ID | Task | Agent | Est | Priority | Blockers |
-|----|------|-------|-----|----------|----------|
-| **TASK-273** | Interactive Testing UI (Streamlit clause traceability page) | DEV | 1-2 days | 🔴 HIGH | ✅ PR #334 merged |
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **IMP-02** | Add `collect_diagnostics.py` reminder to `agent_start.sh` and `end_session.py` failure paths | DEVOPS | 30m | 🟡 LOW | ⏳ |
+| **IMP-03** | Add a debug snapshot checklist to handoff docs (include logs + diagnostics bundle) | DOCS | 30m | 🟡 LOW | ⏳ |
 
-> **Note:** TASK-273 depends on stable test infrastructure. If blocked, deliver v0.17.0 with TASK-272/274/275 only.
+### v0.17.0 - Critical Path (Complete)
+
+All core deliverables are complete (TASK-272/273/274/275). See `docs/_archive/tasks-history.md`.
 
 ### v0.18+ - Professional Features Pipeline
 
 > **Goal:** Build on v0.17.0 foundation with advanced professional features
 > **Timeline:** Q1-Q2 2026
 
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-276** | Input Flexibility (BeamInput dataclasses, import helpers) | DEV | 4-5 hrs | 🔴 HIGH | ✅ Session 19 |
-| **TASK-277** | Calculation Report Generation (HTML/JSON/Markdown) | DEV | 4-5 hrs | 🔴 HIGH | ✅ Session 19 |
-| **TASK-278** | Verification & Audit Trail (SHA-256, immutable logs) | DEV | 3-4 hrs | 🔴 HIGH | ✅ Session 19 |
-| **TASK-279** | Engineering Testing Strategies (tolerance, property-based, regression) | TESTER | 4-5 hrs | 🔴 HIGH | ✅ Session 19 |
-
-**TASK-276-279 Streamlit Integration:** (PR in progress)
-- Library modules implemented: `inputs.py`, `calculation_report.py`, `audit.py`, `testing_strategies.py`
-- **Integration added (Session 19P12):**
-  - `streamlit_app/utils/input_bridge.py` - Bridge UI BeamInputs ↔ Library BeamInput
-  - `streamlit_app/components/report_export.py` - Professional report export UI
-  - `streamlit_app/tests/test_input_bridge.py` - Integration tests (8 passing)
+TASK-276-279 are complete (Session 19). Streamlit integration PR is in progress; see
+`streamlit_app/utils/input_bridge.py`, `streamlit_app/components/report_export.py`,
+and `streamlit_app/tests/test_input_bridge.py`.
 
 ### v0.17.5 - Code Quality & Automation Enhancement (Agent 6 Focus)
 
@@ -176,44 +144,12 @@
 
 **Codebase Stats:** 12 pages (6,090 lines) + 26 utilities (11,312 lines) + 6 components (2,645 lines) = ~20,000 lines
 
-**Phase A: Quick Wins (1-2 hours total)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-401** | Fix scanner false positives (Path division, constant divisors, split pattern) | AGENT_6 | 1h | 🔴 HIGH | ✅ PR #339 Session 16 |
-| **TASK-422** | Document PR auto-merge behavior in copilot-instructions | DOCS | 30m | 🔴 HIGH | ✅ Session 15 |
-| **TASK-431** | Fix finish_task_pr.sh auto-merge behavior | DEVOPS | 30m | 🔴 HIGH | ✅ Session 15 |
-| **TASK-432** | Archive outdated Agent 6 files (work-division-main-agent6-2026-01-09.md) | AGENT_6 | 15m | 🟠 MEDIUM | ✅ Session 15P3 |
-
-**Phase B: Scanner Enhancement (6-8 hours)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-402** | Add type annotation checker to scanner | AGENT_6 | 2h | 🟠 MEDIUM | ✅ Session 18 |
-| **TASK-403** | Add widget return type validation | AGENT_6 | 3h | 🔴 HIGH | ✅ Session 17 |
-| **TASK-404** | Add circular import detection | AGENT_6 | 2h | 🟠 MEDIUM | ✅ Session 18 |
-| **TASK-405** | Add performance issue detection | AGENT_6 | 4h | 🟡 LOW | ✅ Session 18 |
-
-**Phase C: Streamlit Automation (10-12 hours)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-411** | Create streamlit_preflight.sh (combines scanner + pylint + tests) | AGENT_6 | 2h | 🔴 HIGH | ✅ Session 17 |
-| **TASK-412** | Create generate_streamlit_page.py scaffold | AGENT_6 | 2h | 🟠 MEDIUM | ✅ Session 19 |
-| **TASK-413** | Create validate_session_state.py (audit all session_state usage) | AGENT_6 | 3h | 🔴 HIGH | ✅ Session 17 |
-| **TASK-414** | Create performance profiler | AGENT_6 | 4h | 🟠 MEDIUM | ✅ Session 19 |
-
-**Phase D: Documentation & Onboarding (3-4 hours)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-421** | Create agent-coding-standards.md | DOCS | 2h | 🔴 HIGH | ✅ Session 15 |
-| **TASK-423** | Update copilot-instructions with coding rules | DOCS | 1h | 🔴 HIGH | ✅ Session 15 |
-| **TASK-433** | Create Agent 6 comprehensive onboarding guide | DOCS | 1h | 🔴 HIGH | ✅ Session 15 |
-| **TASK-434** | Create Streamlit code files analysis (file-by-file research) | DOCS | 2h | 🔴 HIGH | ✅ Session 15 |
+**Phase A-D:** ✅ Complete (archived to `docs/_archive/tasks-history.md`)
 
 **Phase E: True Positive Fixes (from code analysis)**
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-435** | Fix session_manager.py line 646 division (cost_per_meter) | AGENT_6 | 15m | 🟠 MEDIUM | ✅ PR #337 |
 | **TASK-436** | Fix session_manager.py lines 675-676 int() error handling | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued (false positive - dataclass attrs) |
-| **TASK-437** | Move imports to module level (session_manager.py) | AGENT_6 | 30m | 🟠 MEDIUM | ✅ PR #337 |
 
 ### v0.18+ - Governance & Observability (Agent 9)
 
@@ -272,39 +208,18 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **API-01** | Generate API manifest (public functions + signatures) | DEVOPS | ✅ 2026-01-13 |
+| **API-02** | Pre-commit check: API changes require manifest update | DEVOPS | ✅ 2026-01-13 |
+| **API-03** | Onboarding “API touchpoints” checklist | DOCS | ✅ 2026-01-13 |
+| **IMP-01** | Guardrail: fail CI if new scripts are added without updating `scripts/index.json` | DEVOPS | ✅ 2026-01-13 |
+| **DEBUG-01** | Diagnostics bundle script (env, versions, git, logs) | DEVOPS | ✅ 2026-01-13 |
+| **DEBUG-02** | Debug mode toggle + logging guidance (Streamlit + CLI) | DEV | ✅ 2026-01-13 |
 | **TASK-460** | Fix Streamlit runtime errors (page_header signature, reportlab, use_container_width deprecation, import checker) | DEV | ✅ PR #354 2026-01-13 |
 | **TASK-457-P2** | Documentation Consolidation Phase 2: Archive 3 session-specific research files | DOCS | ✅ 2026-01-13 |
-| **RESEARCH-1.3** | Phase 1.3 Bridge to Structural Engineering Complete: Analyzed 4 key papers (Parhi et al. 2026, Hong & Nguyen 2023, etc.) on MOO for RC beams/IS 456. | MAIN | ✅ 2026-01-13 |
-| **RESEARCH-1.2** | Phase 1.2 Web Research Complete: 2025-2026 MOO trends consolidated in `KEY-FINDINGS.md` and `PAPER-TRACKER.csv` (20+ papers) | MAIN | ✅ 2026-01-13 |
 | **GITDOC-15-28** | Hook enforcement system: versioned hooks, git_ops.sh router, automation-first recovery, health check, test suite (14 tasks, 4 commits) | MAIN | ✅ 2026-01-12 |
 | **GITDOC-01-14** | Git workflow automation-first: error clarity, hook capture, CI monitor, docs consolidation (14 tasks, PR #345) | MAIN | ✅ 2026-01-12 |
 | **SESSION-19P4** | Git workflow improvements: error clarity, policy-aware merge, docs consistency, enforcement hook | MAIN | ✅ 2026-01-12 |
-| **TASK-457** | Add future annotations to 12 core modules (PR #344) | DEV | ✅ 2026-01-12 |
 | **SESSION-19** | Python 3.11 Baseline Complete: v0.16.6 released, PR #343 merged | MAIN | ✅ 2026-01-12 |
-| **TASK-401** | Scanner Phase 4: Path division, max() patterns (PR #339) | AGENT_6 | ✅ 2026-01-12 |
-| **SESSION-16** | PR workflow optimization for solo dev (150-line threshold, Streamlit category) | MAIN | ✅ 2026-01-12 |
-| **TASK-435** | Fix session_manager.py division issue (PR #337) | AGENT_6 | ✅ 2026-01-11 |
-| **TASK-437** | Move timedelta import to module level (PR #337) | AGENT_6 | ✅ 2026-01-11 |
-| **TASK-432** | Archive outdated Agent 6 files | AGENT_6 | ✅ 2026-01-11 |
-| **TASK-433** | Create Agent 6 comprehensive onboarding guide (PR #336) | DOCS | ✅ 2026-01-11 |
-| **TASK-272** | Code Clause Database (67 clauses, 13 functions decorated, PR #333) | DEV | ✅ 2026-01-11 |
-| **TASK-275** | Professional Liability Framework (docs/legal/) | DOCS | ✅ 2026-01-11 |
-| **SESSION-14P3** | Git automation: docs/git-automation/ hub (6 files), ai_commit.sh --dry-run/--help, git_automation_health.sh, improvement plan, copilot-instructions update | MAIN | ✅ 2026-01-11 |
-| **SESSION-14** | Phase 1: TASKS cleanup (50→15) + v0.17.0 roadmap (6 commits); Phase 2: Agent 8 research (8116 lines analyzed) + consolidation plan + archival + --quick default (5 commits) | MAIN | ✅ 2026-01-11 |
-| **ONBOARD-03** | Agent start v2.1: full mode fix, worktree passthrough | DEVOPS | ✅ 2026-01-11 |
-| **ONBOARD-02** | Agent start v2.0: unified script, proper preflight | DEVOPS | ✅ 2026-01-11 |
-| **ONBOARD-01** | Unified agent_start.sh, consolidated 4 docs (PR #329) | DEVOPS | ✅ 2026-01-11 |
-| **TASK-325** | Folder cleanup: archive 14 streamlit files (PR #325) | DEVOPS | ✅ 2026-01-11 |
-| **TASK-313** | IS 456 Module Migration (7 modules, 3,048 lines, PR #323) | DEV | ✅ 2026-01-10 |
-| **TASK-317** | Update codes/is456/__init__.py exports (PR #324) | DEV | ✅ 2026-01-11 |
-| **TASK-312** | IS 456 migration research + automation scripts | ARCHITECT | ✅ 2026-01-10 |
-| **TASK-311** | Folder cleanup automation scripts | DEVOPS | ✅ 2026-01-10 |
-| **TASK-310** | Multi-code foundation: core/, codes/ (PR #322) | ARCHITECT | ✅ 2026-01-10 |
-| **AGENT9-PHASE-B** | Folder Migration (5 commits) | AGENT_9 | ✅ 2026-01-10 |
-| **GOV-001-015** | Folder Governance (11 tasks, 4 PRs, S11-S13) | AGENT_9 | ✅ 2026-01-11 |
-| **TASK-270** | Fix 8 test failures from API refactoring | TESTER | ✅ 2026-01-10 |
-| **TASK-271** | Fix 13 benchmark signature errors | TESTER | ✅ 2026-01-10 |
-| **AGENT8-WEEK1** | Git workflow optimizations (4 PRs, 90% faster commits) | AGENT8 | ✅ 2026-01-09 |
 
 > **Full History:** [docs/_archive/tasks-history.md](_archive/tasks-history.md)
 

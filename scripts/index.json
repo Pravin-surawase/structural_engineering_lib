@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "updated": "2026-01-13",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 125,
+  "total_scripts": 128,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
-
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
     "scripts": {
@@ -41,7 +40,6 @@
       }
     }
   },
-
   "categories": {
     "git_workflow": {
       "description": "Git operations and workflow automation",
@@ -64,7 +62,6 @@
         "quick_push.sh": "Quick push (use ai_commit.sh instead)"
       }
     },
-
     "session_management": {
       "description": "Session start, end, and handoff",
       "scripts": {
@@ -76,10 +73,10 @@
         "agent_mistakes_report.sh": "Show common mistakes reminder",
         "update_handoff.py": "Update handoff documentation",
         "check_handoff_ready.py": "Validate handoff completeness",
-        "check_session_docs.py": "Validate session documentation"
+        "check_session_docs.py": "Validate session documentation",
+        "collect_diagnostics.py": "Bundle debug context (env, git, logs)"
       }
     },
-
     "code_validation": {
       "description": "Code quality, linting, and validation",
       "scripts": {
@@ -102,7 +99,6 @@
         "pylint_streamlit.sh": "Run pylint on Streamlit code"
       }
     },
-
     "documentation": {
       "description": "Documentation validation and generation",
       "scripts": {
@@ -124,7 +120,6 @@
         "analyze_doc_redundancy.py": "Analyze doc redundancy"
       }
     },
-
     "file_operations": {
       "description": "Safe file move, delete, and archive operations",
       "scripts": {
@@ -140,7 +135,6 @@
         "update_redirect_refs.py": "Update redirect references"
       }
     },
-
     "project_structure": {
       "description": "Validate project structure and governance",
       "scripts": {
@@ -153,10 +147,10 @@
         "check_wip_limits.sh": "Check WIP limits",
         "check_cli_reference.py": "Validate CLI reference docs",
         "check_redirect_stubs.py": "Check redirect stubs",
-        "repo_health_check.sh": "Overall repository health"
+        "repo_health_check.sh": "Overall repository health",
+        "check_scripts_index.py": "Ensure scripts/index.json is in sync"
       }
     },
-
     "api_validation": {
       "description": "API documentation and validation",
       "scripts": {
@@ -164,10 +158,10 @@
         "check_api_docs_sync.py": "Sync API docs with code",
         "validate_stub_exports.py": "Validate stub module exports",
         "create_reexport_stub.py": "Create re-export stub module",
-        "update_is456_init.py": "Update IS456 __init__.py exports"
+        "update_is456_init.py": "Update IS456 __init__.py exports",
+        "generate_api_manifest.py": "Generate API manifest JSON"
       }
     },
-
     "testing": {
       "description": "Testing utilities and validation",
       "scripts": {
@@ -184,7 +178,6 @@
         "validate_trial_data.py": "Validate trial/test data"
       }
     },
-
     "release": {
       "description": "Release and versioning",
       "scripts": {
@@ -196,7 +189,6 @@
         "check_pre_release_checklist.py": "Pre-release checklist validation"
       }
     },
-
     "ci_cd": {
       "description": "CI/CD and automation",
       "scripts": {
@@ -211,7 +203,6 @@
         "risk_cache.sh": "Risk assessment cache"
       }
     },
-
     "code_migration": {
       "description": "Code migration and refactoring",
       "scripts": {
@@ -222,7 +213,6 @@
         "add_license_headers.py": "Add license headers to files"
       }
     },
-
     "streamlit_dev": {
       "description": "Streamlit development utilities",
       "scripts": {
@@ -233,14 +223,12 @@
         "generate_dashboard.sh": "Generate dashboard metrics"
       }
     },
-
     "vba": {
       "description": "VBA code utilities",
       "scripts": {
         "lint_vba.py": "Lint VBA code"
       }
     },
-
     "governance": {
       "description": "Governance and compliance",
       "scripts": {
@@ -252,7 +240,6 @@
       }
     }
   },
-
   "quick_reference": {
     "start_session": "./scripts/agent_start.sh --quick",
     "commit_changes": "./scripts/ai_commit.sh \"message\"",
@@ -266,7 +253,6 @@
     "check_streamlit": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
     "validate_docs": ".venv/bin/python scripts/check_doc_metadata.py"
   },
-
   "workflows": {
     "simple_doc_edit": [
       "./scripts/agent_start.sh --quick",
@@ -285,7 +271,6 @@
       "# Follow printed instructions"
     ]
   },
-
   "deprecated": {
     "description": "Scripts that should NOT be used directly",
     "scripts": {

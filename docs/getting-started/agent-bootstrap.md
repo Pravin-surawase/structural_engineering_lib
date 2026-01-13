@@ -45,6 +45,19 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 
 ---
 
+## ✅ API Touchpoints Checklist (When Changing Public API)
+
+1. Update exports in `Python/structural_lib/api.py` (`__all__`).
+2. Update docs in `docs/reference/api.md` and `docs/reference/api-stability.md`.
+3. Regenerate the manifest:
+   `./.venv/bin/python scripts/generate_api_manifest.py`
+4. Run API checks:
+   `./.venv/bin/python scripts/check_api_doc_signatures.py`
+
+Keep public signatures stable unless explicitly approved.
+
+---
+
 ## ⚙️ Key Commands
 
 ```bash
@@ -68,7 +81,7 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 
 - **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
-- **Automation scripts (103):** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
+- **Automation scripts:** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
 - **Handoff quick start:** [../contributing/handoff.md](../contributing/handoff.md)
 - **Background agent guide:** [../contributing/background-agent-guide.md](../contributing/background-agent-guide.md)
 - **API docs:** [../reference/api.md](../reference/api.md)

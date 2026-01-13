@@ -14,6 +14,14 @@
 
 ---
 
+## API Manifest (Public Signatures)
+
+Machine-readable signatures live in `docs/reference/api-manifest.json`.
+
+```bash
+.venv/bin/python scripts/generate_api_manifest.py
+```
+
 ## 0. Unified CLI (v0.9.4+)
 
 The library provides a unified command-line interface:

@@ -18,6 +18,7 @@ Phase: STREAMLIT-IMPL-009
 
 import streamlit as st
 import logging
+import os
 from typing import Optional, Callable, Any, List
 from dataclasses import dataclass
 from enum import Enum
@@ -479,7 +480,8 @@ def handle_errors(
                 logger.exception(f"Unhandled exception in {func.__name__}")
 
                 # Show traceback if requested
-                if show_traceback:
+                debug_enabled = os.getenv("DEBUG", "").lower() in {"1", "true", "yes", "on"}
+                if show_traceback or debug_enabled:
                     st.exception(e)
 
                 return None

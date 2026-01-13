@@ -157,6 +157,13 @@ repos:
         pass_filenames: false
         always_run: true
         verbose: true
+      - id: check-api-manifest
+        name: Check API manifest
+        entry: .venv/bin/python scripts/generate_api_manifest.py --check
+        language: system
+        pass_filenames: false
+        files: ^Python/structural_lib/api\.py$
+        verbose: true
       - id: check-next-session-brief-length
         name: Check next-session brief length
         entry: .venv/bin/python scripts/check_next_session_brief_length.py
@@ -167,6 +174,13 @@ repos:
       - id: check-cli-reference
         name: Check CLI reference commands
         entry: .venv/bin/python scripts/check_cli_reference.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-scripts-index
+        name: Check scripts index
+        entry: .venv/bin/python scripts/check_scripts_index.py
         language: system
         pass_filenames: false
         always_run: true

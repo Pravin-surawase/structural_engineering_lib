@@ -3,7 +3,7 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 > **Owner:** All contributors
 > **Last Updated:** 2026-01-13
-> **Total Scripts:** 125
+> **Total Scripts:** 128
 
 ## 🤖 For AI Agents: Quick Discovery
 
@@ -11,7 +11,7 @@
 
 ```python
 # In your context, load this file for full script catalog:
-# scripts/index.json - Contains all 125 scripts organized by category
+# scripts/index.json - Contains all 128 scripts organized by category
 ```
 
 **Key categories in index.json:**
@@ -49,6 +49,8 @@
 | `check_folder_structure.py` | Validate multi-code architecture |
 | `check_streamlit_issues.py` | AST scanner for Streamlit code |
 | `check_doc_versions.py` | Check version drift in docs |
+| `generate_api_manifest.py` | Generate API manifest JSON |
+| `check_scripts_index.py` | Ensure scripts index is in sync |
 
 ### File & Folder Management
 | Script | Purpose |
@@ -74,6 +76,7 @@
 | `end_session.py` | End session with checks |
 | `agent_setup.sh` | Agent environment setup |
 | `agent_preflight.sh` | Pre-flight checks |
+| `collect_diagnostics.py` | Bundle debug context (env, git, logs) |
 
 ### Release & Versioning
 | Script | Purpose |
