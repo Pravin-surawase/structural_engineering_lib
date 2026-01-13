@@ -1,11 +1,19 @@
 # Performance Engineering for Structural Calculations: Speed Up Your Analysis 10x
 
-**Blog Post | Technical Deep-Dive with Benchmarks**
+**Type:** Blog Draft
+**Audience:** Users
+**Status:** Draft
+**Importance:** Low
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+**Related Tasks:** Documentation
 
+---
+
+**Category:** Technical Deep-Dive with Benchmarks
 **Word Count:** 1,600+
 **Target Audience:** Advanced engineers, performance-focused developers, high-volume users
 **Reading Time:** 8-10 minutes
-**Published:** [Date]
 
 ---
 

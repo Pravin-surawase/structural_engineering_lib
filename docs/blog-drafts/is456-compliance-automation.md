@@ -1,11 +1,19 @@
 # IS 456 Compliance Automation: How the Library Checks Your Beam Designs
 
-**Blog Post | Technical Tutorial + Real-World Impact**
+**Type:** Blog Draft
+**Audience:** Users
+**Status:** Draft
+**Importance:** Low
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+**Related Tasks:** Documentation
 
+---
+
+**Category:** Technical Tutorial + Real-World Impact
 **Word Count:** 1,300+
 **Target Audience:** Structural engineers, code compliance professionals, researchers
 **Reading Time:** 6-8 minutes
-**Published:** [Date]
 
 ---
 

@@ -1,11 +1,19 @@
 # Smart Design Analysis Deep Dive: Unified Dashboard for Intelligent Structural Design
 
-**Blog Post | Technical Deep-Dive**
+**Type:** Blog Draft
+**Audience:** Users
+**Status:** Draft
+**Importance:** Low
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+**Related Tasks:** Documentation
 
+---
+
+**Category:** Technical Deep-Dive
 **Word Count:** 1,800+
 **Target Audience:** Senior structural engineers, technical developers, architects
 **Reading Time:** 8-10 minutes
-**Published:** [Date]
 
 ---
 

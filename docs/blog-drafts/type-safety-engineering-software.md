@@ -1,11 +1,19 @@
 # Type Safety in Engineering Software: The 10 Lakh Rupee Mistake
 
-**Blog Post | Technical Best Practices**
+**Type:** Blog Draft
+**Audience:** Users
+**Status:** Draft
+**Importance:** Low
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+**Related Tasks:** Documentation
 
+---
+
+**Category:** Technical Best Practices
 **Word Count:** 1,200+
 **Target Audience:** Senior developers, engineering software architects, Python practitioners
 **Reading Time:** 6-8 minutes
-**Published:** [Date]
 
 ---
 
