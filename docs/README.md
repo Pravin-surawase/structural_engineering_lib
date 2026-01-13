@@ -11,7 +11,7 @@
 
 | Role | Start With | Type | Complexity | Description |
 |------|-----------|------|------------|-------------|
-| **AI Agent (new)** | [agent-onboarding.md](agents/guides/agent-onboarding.md) | guide | beginner | 60-second onboarding checklist |
+| **AI Agent (new)** | [agent-onboarding.md](_archive/2026-01/agent-onboarding.md) | guide | beginner | 60-second onboarding checklist |
 | **AI Agent (working)** | [agent-quick-reference.md](agents/guides/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
 | **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
 | **Excel User** | [excel-tutorial.md](getting-started/excel-tutorial.md) | tutorial | beginner | UDF usage, workbook setup |
@@ -61,7 +61,7 @@ python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```
 For VS Code AI-agent work, start with:
-- **[AGENT_ONBOARDING.md](agents/guides/agent-onboarding.md)** - New agent checklist
+- **[AGENT_ONBOARDING.md](_archive/2026-01/agent-onboarding.md)** - New agent checklist
 - **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
 - **[AGENT_QUICK_REFERENCE.md](agents/guides/agent-quick-reference.md)** - Essential commands
 - [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
