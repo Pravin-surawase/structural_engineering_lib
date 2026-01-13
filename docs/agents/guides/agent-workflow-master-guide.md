@@ -1,10 +1,22 @@
 # Agent Workflow Master Guide
-**Version:** 2.1.0
+**Version:** 2.2.0
 **Last Updated:** 2026-01-13
 **Status:** ✅ Production Ready
 
 > **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations.
 > Read this FIRST before any work. Following these rules prevents 99% of errors.
+
+---
+
+## 📚 Guide Hierarchy
+
+**You are here:** Complete Guide (Master Reference)
+
+| Need | Guide | Use When |
+|------|-------|----------|
+| **Quick Start** | [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) | First 30 seconds, immediate productivity |
+| **Quick Reference** | [agent-quick-reference.md](agent-quick-reference.md) | Cheat sheet, emergency commands, first session |
+| **Complete Guide** | This document | Decision trees, troubleshooting, deep patterns ← **YOU ARE HERE** |
 
 ---
 

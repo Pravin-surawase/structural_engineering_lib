@@ -4,7 +4,7 @@
 **Audience:** All Agents
 **Status:** Approved
 **Importance:** Critical
-**Version:** 2.0.0
+**Version:** 2.1.0
 **Created:** 2026-01-08
 **Last Updated:** 2026-01-13
 
@@ -16,7 +16,19 @@
 
 ---
 
-## 🚀 First 30 Seconds
+## � Guide Hierarchy
+
+**You are here:** Quick Start (Bootstrap)
+
+| Need | Guide | Use When |
+|------|-------|----------|
+| **Quick Start** | This document | First 30 seconds, immediate productivity ← **YOU ARE HERE** |
+| **Quick Reference** | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) | Cheat sheet, emergency commands, first session |
+| **Complete Guide** | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) | Decision trees, troubleshooting, deep patterns |
+
+---
+
+## �🚀 First 30 Seconds
 
 ```bash
 # RECOMMENDED: Quick mode (6s, 54% faster, sufficient for 95% of sessions)
