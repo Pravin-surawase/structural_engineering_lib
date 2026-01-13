@@ -1,5 +1,14 @@
 # Library Contract (v1) - Beam-Only IS 456
 
+**Type:** Specification
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 This document defines the stability promises for the beam design library.
 It is written for developers who want to depend on the library as a core
 building block (not a full product).

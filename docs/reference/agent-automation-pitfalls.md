@@ -1,11 +1,16 @@
 # Agent Automation Pitfalls and Best Practices
 <!-- lint-ignore-git -->
 
-**Purpose:** Common pitfalls when building automated agents and LLM-based workflows
-**Audience:** Developers building AI agents, automation scripts, or LLM integrations
-**Last Updated:** 2026-01-10
+**Type:** Reference
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2026-01-10
+**Last Updated:** 2026-01-13
 
 ---
+
+**Purpose:** Common pitfalls when building automated agents and LLM-based workflows
 
 > ⚠️ **Note:** This document includes manual git examples only to illustrate pitfalls.
 > Use automation in this repo: `./scripts/ai_commit.sh` and `./scripts/recover_git_state.sh`.

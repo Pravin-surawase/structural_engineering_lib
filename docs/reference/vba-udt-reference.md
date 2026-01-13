@@ -1,6 +1,15 @@
 # VBA User-Defined Types (UDT) Reference
 
-**Version: 0.14.0
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-06-01
+**Last Updated:** 2026-01-13
+
+---
+
+**Version:** 0.14.0
 **Modules:** M02_Types.bas, M10_Ductile.bas
 **Purpose:** Technical reference for VBA data structures
 

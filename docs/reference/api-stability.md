@@ -1,5 +1,14 @@
 # API Stability
 
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 > This document defines which parts of the library are safe to depend on and which may change.
 
 ---

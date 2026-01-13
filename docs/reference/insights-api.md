@@ -1,5 +1,14 @@
 # Insights API Reference
 
+**Type:** Reference
+**Audience:** Developers
+**Status:** Draft
+**Importance:** Medium
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+
+---
+
 > **Status:** Preview (v0.13.0+)
 > **Stability:** Experimental - API may change before v1.0
 

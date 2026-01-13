@@ -1,5 +1,14 @@
 # Third-Party Licenses
 
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Low
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 This repository is primarily standard-library based. Optional and development tools introduce third-party licenses.
 
 ## Runtime Dependencies

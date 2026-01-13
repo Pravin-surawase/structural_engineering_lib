@@ -1,8 +1,15 @@
 # Deferred Integrations Tracker
 
-**Purpose:** Track feature integrations deferred to future releases with clear rationale and target versions.
+**Type:** Reference
+**Audience:** Developers
+**Status:** In Progress
+**Importance:** Medium
+**Created:** 2026-01-06
+**Last Updated:** 2026-01-13
 
-**Last Updated:** 2026-01-06
+---
+
+**Purpose:** Track feature integrations deferred to future releases with clear rationale and target versions.
 
 ---
 

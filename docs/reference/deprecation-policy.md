@@ -1,7 +1,12 @@
 # Deprecation Policy
 
-**Document Version: 0.16.6
-**Last Updated:** 2026-01-08
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Medium
+**Version:** 0.16.6
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
 
 ---
 

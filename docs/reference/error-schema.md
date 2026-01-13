@@ -1,9 +1,15 @@
 # Error Schema v1
 
-*Structured error format for machine-readable and human-friendly errors*
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Medium
+**Created:** 2025-12-28
+**Last Updated:** 2026-01-13
 
-**Status:** Implemented (v0.10.5)
-**Last updated:** 2025-12-28
+---
+
+*Structured error format for machine-readable and human-friendly errors*
 
 ---
 

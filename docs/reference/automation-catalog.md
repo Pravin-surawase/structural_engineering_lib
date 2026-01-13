@@ -1,8 +1,16 @@
 # Automation Script Catalog
 
+**Type:** Reference
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** Critical
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+
+---
+
 > **Purpose:** Complete reference of all automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
-> **Last Updated:** 2026-01-13
 >
 > **⚠️ IMPORTANT:** See [Agent Automation Pitfalls](agent-automation-pitfalls.md) for common issues when running automation scripts (git pager lockup, interactive prompts, etc.)
 

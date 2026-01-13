@@ -1,5 +1,14 @@
 # BBS + DXF Contract (v1.x)
 
+**Type:** Specification
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Medium
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 This document defines the stable contracts for Bar Bending Schedule (BBS) and
 DXF outputs. It is beam-only (IS 456) and is intended for integrators who need
 predictable outputs across releases.

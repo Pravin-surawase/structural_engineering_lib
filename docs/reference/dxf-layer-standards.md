@@ -1,6 +1,15 @@
 # DXF Layer Standards & Drawing Conventions
 
-**Version: 0.14.0
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Medium
+**Version:** 0.16.6
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 **Module:** M16_DXF.bas
 **DXF Format:** AutoCAD R12 (maximum compatibility)
 **Reference:** IS 456:2000, SP 34:1987 (Drawing Practices for RC Structures)

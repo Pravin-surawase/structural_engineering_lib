@@ -1,5 +1,14 @@
 # Troubleshooting Guide
 
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 ## VBA Runtime Error 6: Overflow
 
 ### The Issue (Pinpointed)

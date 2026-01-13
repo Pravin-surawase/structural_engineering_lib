@@ -1,9 +1,17 @@
 # Reference Index
 
-Lookup documentation for API, formulas, and troubleshooting. | Document | Purpose |
+**Type:** Index
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** Medium
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
 
-**Last Updated:** 2026-01-10
-**File Count:** 19
+---
+
+Lookup documentation for API, formulas, and troubleshooting.
+
+**File Count:** 20
 
 ## Files
 
