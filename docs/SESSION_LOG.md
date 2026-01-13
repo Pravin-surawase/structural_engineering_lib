@@ -4,6 +4,34 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P18: Session Log Corrections + PR Guardrails
+
+**Focus:** Fix inaccurate session log claims and tighten guidance to prevent repeat errors.
+
+### Summary
+
+1. **Session Log Corrections** - Replaced pre-squash commit hashes and removed an incorrect discovery
+2. **Session Log Rules** - Added guidance to log merge commit hashes for squash PRs
+3. **Docs/Script Alignment** - Treated `metrics/` as docs-like for PR recommendation consistency
+
+### PRs
+
+| PR | Description |
+| --- | --- |
+| #355 | Session log corrections + PR guardrails |
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `c430456` | feat(git): tighten session logging rules |
+
+### Tests
+
+- Not run (docs/scripts-only)
+
+---
+
 ## 2026-01-13 — Session 19P17: Streamlit Runtime Fixes + Documentation Consolidation
 
 **Focus:** Fix critical Streamlit runtime errors discovered during testing; continue TASK-457 Phase 2.
@@ -15,6 +43,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 3. **Deprecation Migration** - Migrated 49 occurrences of `use_container_width=True` to `width="stretch"` across 14 files
 4. **Import Checker** - Created `scripts/check_streamlit_imports.py` to catch import errors before deployment
 5. **Documentation Archival** - Moved 3 session-specific research files to `docs/_archive/2026-01/`
+6. **Metadata Headers** - Added metadata headers to 7 docs (TASK-458 Phase 3)
 
 ### PRs
 
@@ -26,21 +55,20 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 | Hash | Description |
 | --- | --- |
-| `76aecb3` | fix(streamlit): fix page_header() signature and reportlab dependency |
-| `5844c87` | refactor(streamlit): migrate use_container_width to width parameter |
-| `775497d` | feat(scripts): add Streamlit import validation script |
+| `6a41616` | TASK-460: Fix Streamlit runtime errors and deprecations (#354) |
 | `abda809` | docs: TASK-457 Phase 2 - archive 3 session-specific files |
+| `3fff964` | docs: TASK-458 Phase 3 - add metadata to 7 docs |
+| `11736a8` | docs: update SESSION_LOG and TASKS.md for session 19P17 |
 
 ### Discoveries
 
-- **agent_start.sh vs --quick**: Full version launches Streamlit app to detect runtime errors!
+- **agent_start.sh vs --quick**: Full mode runs preflight + session checks; `--quick` skips detailed checks (no Streamlit app launch in either).
 - **Testing gap**: Current tests don't catch page import errors or signature mismatches
 - **Deprecation warning**: Streamlit `use_container_width` removed after 2025-12-31
 
 ### Tests
 
-- Streamlit import checker validates 28/32 utility modules successfully
-- 4 modules have relative import issues (work when run via streamlit but not standalone)
+- Not run (import checker added; run `./scripts/check_streamlit_imports.py` for results)
 
 ---
 
