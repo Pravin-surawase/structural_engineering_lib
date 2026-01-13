@@ -1,4 +1,5 @@
 """Tests for the reports module."""
+
 from __future__ import annotations
 
 import pytest
@@ -112,9 +113,7 @@ class TestGenerateHtmlReport:
             "results": {},
             "is_ok": True,
         }
-        html = generate_html_report(
-            design_result, template="summary", beam_id="B1"
-        )
+        html = generate_html_report(design_result, template="summary", beam_id="B1")
         assert isinstance(html, str)
         assert "B1" in html
 
@@ -125,9 +124,7 @@ class TestGenerateHtmlReport:
             "results": {"flexure": {"ast_mm2": 1000}},
             "is_ok": True,
         }
-        html = generate_html_report(
-            design_result, template="detailed", beam_id="B1"
-        )
+        html = generate_html_report(design_result, template="detailed", beam_id="B1")
         assert isinstance(html, str)
         assert "B1" in html
         assert "Detailed" in html
@@ -223,6 +220,7 @@ class TestJinja2Availability:
     def test_flag_consistency(self) -> None:
         """Test that the flag matches actual availability."""
         from structural_lib.reports.generator import JINJA2_AVAILABLE as flag
+
         assert isinstance(flag, bool)
         # If Jinja2 is installed, both should be True
         if JINJA2_AVAILABLE:

@@ -202,7 +202,9 @@ def generate_html_report(
         date=proj.get("date", ""),
         inputs=result_dict.get("inputs", {}),
         results=result_dict.get("results", result_dict),
-        is_ok=result_dict.get("is_ok", result_dict.get("results", {}).get("is_ok", False)),
+        is_ok=result_dict.get(
+            "is_ok", result_dict.get("results", {}).get("is_ok", False)
+        ),
         software_version=proj.get("software_version", ""),
     )
 
