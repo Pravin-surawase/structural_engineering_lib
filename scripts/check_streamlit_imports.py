@@ -37,6 +37,16 @@ class ImportResult(NamedTuple):
     error_message: str | None
 
 
+# Files that use relative imports and can only be tested via running Streamlit app
+# These are expected false positives for standalone import testing
+KNOWN_RELATIVE_IMPORT_FILES = {
+    "global_styles.py",      # Uses: from .styled_components import ...
+    "plotly_theme.py",       # Uses: from .styled_components import ...
+    "styled_components.py",  # Uses: from .global_styles import ...
+    "design_system_demo.py", # Uses: import design_system (package-level)
+}
+
+
 def validate_import(file_path: Path) -> ImportResult:
     """
     Attempt to import a Python file and capture any errors.
@@ -221,6 +231,17 @@ def main():
         action="store_true",
         help="Only check pages (not utils/components)"
     )
+    parser.add_argument(
+        "--skip-known",
+        action="store_true",
+        default=True,
+        help="Skip known relative-import files (default: True)"
+    )
+    parser.add_argument(
+        "--check-all",
+        action="store_true",
+        help="Check all files including known relative-import files"
+    )
 
     args = parser.parse_args()
 
@@ -247,6 +268,19 @@ def main():
     if not args.utils_only:
         files_to_check.extend(find_streamlit_pages(app_dir))
 
+    # Filter out known relative-import files if --skip-known (default)
+    skip_known = args.skip_known and not args.check_all
+    skipped_files = []
+    if skip_known:
+        original_count = len(files_to_check)
+        filtered = []
+        for f in files_to_check:
+            if f.name in KNOWN_RELATIVE_IMPORT_FILES:
+                skipped_files.append(f)
+            else:
+                filtered.append(f)
+        files_to_check = filtered
+
     if not files_to_check:
         print("No files found to check")
         sys.exit(0)
@@ -256,6 +290,8 @@ def main():
     print("Streamlit Import Validation")
     print("=" * 60)
     print(f"Checking {len(files_to_check)} files...")
+    if skipped_files:
+        print(f"Skipping {len(skipped_files)} known relative-import files (use --check-all to include)")
     print()
 
     results = []

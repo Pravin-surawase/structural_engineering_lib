@@ -84,9 +84,9 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 pending merge |
+| **TASK-274** | Security Hardening Baseline | DEVOPS | ✅ PR #331 merged |
 | **TASK-457** | Documentation Consolidation (Phase 1-3) | DOCS | ✅ Phase 1 Complete (46 files archived) |
-| **TASK-458** | File Metadata Standards & README Automation | DOCS | ✅ Phase 2 Complete |
+| **TASK-458** | File Metadata Standards & README Automation | DOCS | ⏳ Phase 3 in progress |
 
 **TASK-457 Details:**
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
