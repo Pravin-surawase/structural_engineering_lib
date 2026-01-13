@@ -255,6 +255,7 @@ and `streamlit_app/tests/test_input_bridge.py`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-506** | Session 20-21 Validation & Test Fixes (17 broken tests → all pass, lint fixes) | MAIN | ✅ PR #357 2026-01-13 |
 | **IMP-02** | Add diagnostics reminders to agent_start.sh + end_session.py | DEVOPS | ✅ 2026-01-13 |
 | **IMP-03** | Add debug snapshot checklist to handoff docs | DOCS | ✅ 2026-01-13 |
 | **API-01** | Generate API manifest (public functions + signatures) | DEVOPS | ✅ 2026-01-13 |

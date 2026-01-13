@@ -25,9 +25,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
    - `check_doc_versions.py` delegates to `bump_version.py`
 
 3. **Session 21: Core Library Deprecation Cleanup** ❌→✅
-   - **Critical Issue Found:** 13 unit tests failed
+   - **Critical Issue Found:** 17 tests failed (13 unit + 4 integration)
    - Tests were checking deprecated `remarks` and `error_message` fields
-   - **Resolution:** Updated 26 tests across 5 files to use new `errors` list
+   - **Resolution:** Updated 30 tests across 6 files to use new `errors` list
 
 **Test Files Updated:**
 - `test_shear.py`: 7 tests updated
@@ -35,6 +35,12 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - `test_compliance.py`: 1 test updated
 - `test_input_validation.py`: 12 tests updated
 - `test_error_schema.py`: 1 test updated
+- `test_flexure_edges_additional.py`: 4 tests updated (integration)
+
+**Lint Fixes:**
+- Removed unused `failed_fields` variable in flexure.py (2 locations)
+- Removed unused `error_msg` variable in flexure.py
+- Removed unused `Severity` imports from test files
 
 ### Commits
 
@@ -45,25 +51,31 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | `36bbd00` | docs: update session log and handoff for session 21 |
 | `14fdcb4` | fix(tests): update unit tests to use errors list |
 | `bb535f8` | docs: mark sessions 20-21 review as complete |
+| `2d6e142` | style: apply black formatting to test files |
+| `f84102b` | merge: resolve session docs conflict (accept main version) |
+| `db65d89` | fix(lint): remove unused variables and imports flagged by ruff |
+| `13aceea` | fix(tests): update integration tests to use errors list |
 
 ### Branch & PR
 
 - **Branch:** task/TASK-506
-- **PR:** #357
+- **PR:** #357 (merged)
 
 ### Impact
 
 - **All 256 unit tests now pass**
+- **All 9 integration tests in test_flexure_edges_additional.py pass**
+- **CI fully green:** Format Check, Quick Validation, CodeQL all pass
 - **Error handling:** Tests now verify structured `DesignError` objects
 - **Backward compatibility:** Deprecated fields still exist but return empty strings
 - **Documentation:** Research document captures validation findings
 
 ### Session Totals
 
-- **Commits:** 5
-- **Tests Updated:** 26
-- **Files Changed:** 7 unique files
-- **Issues Found & Fixed:** 1 critical (13 broken tests)
+- **Commits:** 9 (on task/TASK-506 branch)
+- **Tests Updated:** 30 (26 unit + 4 integration)
+- **Files Changed:** 8 unique files
+- **Issues Found & Fixed:** 1 critical (17 broken tests), 5 lint issues
 
 ---
 

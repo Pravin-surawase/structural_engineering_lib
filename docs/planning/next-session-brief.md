@@ -14,7 +14,7 @@
 | **Current** | v0.17.0 | ✅ Released (2026-01-13) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 22 | **Commits:** 5
+**Last Session:** 22 | **Commits:** 9
 
 ---
 
@@ -35,12 +35,13 @@
 - Date: 2026-01-13
 - Session: 22
 - Focus: Review, validate, and fix Sessions 20-21 work
-- PR: #357 (Core library error handling refactor and test updates)
-- Commits: 5 commits
+- PR: #357 (merged) — Core library error handling refactor and test updates
+- Commits: 9 commits
 - Key Deliverables:
   - **Validation:** Reviewed Sessions 20 (PR #356), 20b, and 21
-  - **Critical Fix:** 13 broken unit tests → all 256 tests now pass
-  - **Test Updates:** 26 tests across 5 files updated to use `errors` list
+  - **Critical Fix:** 17 broken tests (13 unit + 4 integration) → all pass
+  - **Test Updates:** 30 tests across 6 files updated to use `errors` list
+  - **Lint Fixes:** Removed unused variables/imports flagged by ruff
   - **Research Document:** `docs/research/sessions-20-21-review-2026-01-13.md`
 - Files Changed:
   - `Python/tests/unit/test_shear.py` (7 tests updated)
@@ -48,12 +49,14 @@
   - `Python/tests/unit/test_compliance.py` (1 test updated)
   - `Python/tests/unit/test_input_validation.py` (12 tests updated)
   - `Python/tests/unit/test_error_schema.py` (1 test updated)
+  - `Python/tests/integration/test_flexure_edges_additional.py` (4 tests updated)
+  - `Python/structural_lib/codes/is456/flexure.py` (lint fixes)
 - Metrics:
   - Unit tests: 256 passing
+  - Integration tests: 9 passing in test_flexure_edges_additional.py
   - Critical journeys: 11 passing, 5 skipped
-  - CI checks: Pending on PR #357
+  - CI checks: All passing on PR #357
 - Next Steps:
-  - Merge PR #357 when CI passes
   - Continue with v0.18.0 tasks
   - Consider archiving completed research doc
 <!-- HANDOFF:END -->
