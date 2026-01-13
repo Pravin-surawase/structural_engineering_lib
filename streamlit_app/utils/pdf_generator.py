@@ -20,9 +20,11 @@ Dependencies:
         pip install reportlab
 """
 
+from __future__ import annotations
+
 from io import BytesIO
 from datetime import datetime
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, TYPE_CHECKING
 import os
 
 # Optional dependency: reportlab for PDF generation
