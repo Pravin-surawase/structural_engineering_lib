@@ -11,7 +11,6 @@ Tests cover:
 
 from __future__ import annotations
 
-import pytest
 from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
@@ -21,7 +20,6 @@ from structural_lib.codes.is456.slenderness import (
     check_beam_slenderness,
     get_slenderness_limit,
 )
-
 
 # =============================================================================
 # Strategies for Slenderness Testing
