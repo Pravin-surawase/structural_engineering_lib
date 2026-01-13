@@ -320,9 +320,7 @@ class TestSlendernessInvariants:
         l_eff=effective_length_realistic(),
     )
     @settings(max_examples=100)
-    def test_utilization_formula(
-        self, b: float, d: float, l_eff: float
-    ) -> None:
+    def test_utilization_formula(self, b: float, d: float, l_eff: float) -> None:
         """Utilization = ratio / limit for all valid inputs."""
         result = check_beam_slenderness(
             b_mm=b,
@@ -339,9 +337,7 @@ class TestSlendernessInvariants:
         l_eff=st.floats(min_value=1000.0, max_value=5000.0, allow_nan=False),
     )
     @settings(max_examples=50)
-    def test_short_span_generally_ok(
-        self, b: float, d: float, l_eff: float
-    ) -> None:
+    def test_short_span_generally_ok(self, b: float, d: float, l_eff: float) -> None:
         """Short spans with reasonable proportions generally pass."""
         assume(d / b <= 4.0)  # Reasonable depth/width ratio
 

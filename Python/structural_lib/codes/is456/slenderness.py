@@ -255,7 +255,9 @@ def check_beam_slenderness(
         )
 
     # Determine slenderness status
-    is_slender = slenderness_ratio > slenderness_limit * 0.8  # 80% threshold for "slender"
+    is_slender = (
+        slenderness_ratio > slenderness_limit * 0.8
+    )  # 80% threshold for "slender"
     slenderness_ok = slenderness_ratio <= slenderness_limit
 
     # Check depth/width ratio
@@ -358,6 +360,4 @@ def _normalize_beam_type(value: BeamType | str) -> BeamType:
         return alias_map[normalized]
 
     valid_options = list(alias_map.keys())
-    raise ValueError(
-        f"Unknown beam type '{value}'. Valid options: {valid_options}"
-    )
+    raise ValueError(f"Unknown beam type '{value}'. Valid options: {valid_options}")
