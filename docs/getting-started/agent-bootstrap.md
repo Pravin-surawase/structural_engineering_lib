@@ -1,5 +1,15 @@
 # Agent Bootstrap
 
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** Critical
+**Version:** 2.0.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 > **Read this first.** This is the fastest path to productive work.
 
 > **👤 For users onboarding a new agent:** See [../contributing/agent-onboarding-message.md](../contributing/agent-onboarding-message.md) for the exact message to send.

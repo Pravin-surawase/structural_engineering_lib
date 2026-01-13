@@ -1,5 +1,15 @@
 # Excel Step-by-Step Tutorial
 
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2025-12-15
+**Last Updated:** 2026-01-13
+
+---
+
 This tutorial walks you through using the Structural Engineering Library in Excel, step by step with screenshots descriptions and sample data.
 
 ---

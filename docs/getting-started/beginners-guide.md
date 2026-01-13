@@ -1,5 +1,15 @@
 # Beginner's Guide (No Coding Required)
 
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2025-12-15
+**Last Updated:** 2026-01-13
+
+---
+
 This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result.
 
 You have two ways to use this library:

@@ -1,6 +1,15 @@
 # Advisory Insights Guide
 
-> **Status:** Preview (v0.13.0+)
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2025-12-28
+**Last Updated:** 2026-01-13
+
+---
+
 > **Stability:** Experimental - API may change before v1.0
 
 Advisory insights provide quick heuristic assessments of beam designs to help engineers make informed decisions early in the design process.

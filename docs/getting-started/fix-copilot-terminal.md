@@ -1,5 +1,15 @@
 # Fix Copilot Terminal Lockup - Manual Steps
 
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 ## Problem
 Copilot Agent's terminal is stuck in git pager mode. Commands open "alternate buffer" and nothing works.
 

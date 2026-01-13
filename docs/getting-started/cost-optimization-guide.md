@@ -1,6 +1,14 @@
 # Cost Optimization Guide
 
-**Status:** Stable (v0.14.0+)
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2025-12-20
+**Last Updated:** 2026-01-13
+
+---
 
 This guide explains how to use the cost optimization features to explore cheaper beam designs while meeting IS 456 requirements.
 

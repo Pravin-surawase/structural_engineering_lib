@@ -1,5 +1,15 @@
 # Python Quickstart (Beginner-Friendly)
 
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2025-12-15
+**Last Updated:** 2026-01-13
+
+---
+
 This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required.
 
 > **📚 New to this?** See [beginners-guide.md](beginners-guide.md) for comprehensive step-by-step instructions with explanations.

@@ -1,5 +1,15 @@
 # Release Ledger
 
+**Type:** Reference
+**Audience:** Maintainers
+**Status:** Approved
+**Importance:** Critical
+**Version:** 1.0.0
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+
+---
+
 This document serves as the **immutable source of truth** for project releases.
 Entries here represent "locked" versions that have been verified and approved.
 **Rule:** Agents may ONLY append to this file. Never edit or delete past entries.

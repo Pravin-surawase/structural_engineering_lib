@@ -1,5 +1,15 @@
 # Design Suggestions Guide
 
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2025-12-25
+**Last Updated:** 2026-01-13
+
+---
+
 The design suggestions engine provides expert recommendations to improve your beam designs beyond basic code compliance. Think of it as having an experienced structural engineer review your work and suggest optimizations.
 
 ## Quick Start

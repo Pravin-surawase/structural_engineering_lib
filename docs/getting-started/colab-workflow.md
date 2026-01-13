@@ -1,6 +1,14 @@
 # Colab Workflow (End-to-End, No ETABS Needed)
 
-> **Version: 0.14.0 | **Updated:** 2025-12-30
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** Medium
+**Version:** 0.14.0
+**Created:** 2025-12-30
+**Last Updated:** 2026-01-13
+
+---
 
 This guide runs the full pipeline in Google Colab:
 install → generate inputs → design → BBS → DXF → reports → critical set.

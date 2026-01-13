@@ -1,5 +1,15 @@
 # GitHub Copilot Agent Quick Start
 
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** High
+**Version:** 2.0.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 > **⚠️ CONSOLIDATED:** This document has been simplified.
 >
 > **Use instead:** `./scripts/agent_start.sh` (handles everything in one command)
