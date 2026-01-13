@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-13 (IMP-02/03 diagnostics reminders complete)
+**Updated:** 2026-01-13 (v0.17.0 Released!)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -19,9 +19,9 @@
 
 ## Current Release
 
-- **Version:** v0.16.6 ✅ Released (2026-01-12)
-- **Focus:** Python 3.11 Baseline + Type Modernization
-- **Next:** v0.17.0 (Q1 2026, Weeks 2-4)
+- **Version:** v0.17.0 ✅ Released (2026-01-13)
+- **Focus:** Professional API Features + Debug Infrastructure + Doc Consolidation
+- **Next:** v0.18.0 (Q1 2026, Weeks 3-4)
 
 ---
 

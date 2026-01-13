@@ -4,6 +4,52 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P21 (continued): Proper Validation + v0.17.0 Release
+
+**Focus:** Deep validation of previous work; pre-commit fixes; release v0.17.0.
+
+### Summary
+
+1. **Proper Validation (not just git log)**
+   - Ran full pre-commit on all files - found 4 issue types
+   - Fixed trailing whitespace in 9 files (auto-fixed by hooks)
+   - Fixed mixed line endings in 1 file
+   - Fixed EOF issues in 4 files
+   - Fixed ruff UP038 in 2 test files (isinstance tuple → union syntax)
+
+2. **v0.17.0 Release**
+   - Reviewed 65+ commits since v0.16.6
+   - Created comprehensive CHANGELOG entry (60+ lines)
+   - Ran release.py script to bump versions in 16 files
+   - Created and pushed v0.17.0 tag
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `8165d23` | docs: update session log and handoff for 19P21 |
+| `87c137f` | chore: pre-commit fixes - whitespace, line endings, ruff UP038 |
+| `234ac4b` | chore: release v0.17.0 |
+| **Tag** | `v0.17.0` pushed to origin |
+
+### v0.17.0 Release Highlights
+
+- **Professional API:** BeamInput dataclasses, reports, audit trail, testing strategies
+- **Debug Infrastructure:** collect_diagnostics.py, API manifest (38 symbols), scripts index
+- **Doc Metadata System:** 50+ docs with standardized headers
+- **Doc Consolidation:** 91 session docs archived
+- **Git Workflow:** Enforcement hooks, error clarity improvements
+- **Pre-commit:** API manifest, scripts index, doc metadata checks
+
+### Session Totals
+
+- **Commits this session:** 5 (3 earlier + 2 now)
+- **Files changed:** 35+ unique files
+- **Release version:** 0.16.6 → 0.17.0
+- **Tests passing:** 2598
+
+---
+
 ## 2026-01-13 — Session 19P21: Phase 1+2 Commit + IMP-02/03 Diagnostics Improvements
 
 **Focus:** Commit previous agent's Phase 1+2 work (debug upgrades, API guardrails, scripts index check); implement IMP-02/03 diagnostics reminders.
