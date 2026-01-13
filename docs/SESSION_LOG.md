@@ -4,6 +4,46 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-14 — Session 24: Streamlit App Bug Fixes
+
+**Focus:** Fix critical API signature issues and UI problems in Streamlit app.
+
+### Summary
+
+**Issues Fixed:**
+
+1. **Advanced Analysis Page (CRITICAL)** - Fixed `TypeError: cached_design() missing 7 required positional arguments`
+   - Added `build_design_params()` helper function for consistent API calls
+   - Fixed all 3 analysis sections: Parametric Study, Sensitivity Analysis, Loading Scenarios
+   - Properly mapped parameters: `mu_knm`, `vu_kn`, `b_mm`, `D_mm`, `d_mm`, `fck_nmm2`, `fy_nmm2`
+
+2. **Utilization Display** - Fixed double printing of "Capacity Utilization"
+   - Removed duplicate header from `results.py` component
+   - Improved layout with side-by-side columns
+   - Added context for shear >100% (explains stirrups are required)
+   - Added captions showing actual values (Ast req/prov, τv/τc)
+
+3. **Cost Optimizer** - Fixed session state access patterns
+   - Changed direct attribute access to `.get()` pattern
+   - Prevents AttributeError on missing keys
+
+4. **Compliance Page** - Fixed session state initialization
+   - Added `timestamp` to session state initialization
+   - Fixed session state assignment patterns
+
+**Research Document Created:**
+- `docs/research/streamlit-app-issues-2026-01-14.md` - Comprehensive analysis of 11 Streamlit issues with root cause analysis and API compatibility matrix
+
+### PRs
+- PR #361: Fix Streamlit API Issues and UI Improvements
+
+### Next Actions
+- [ ] Test fixed Streamlit app
+- [ ] Address remaining UI issues (dropdown heights, DXF annotations)
+- [ ] Investigate geometry preview rebar display
+
+---
+
 ## 2026-01-14 — Session 23: Hypothesis + Slenderness + Jinja2 Reports
 
 **Focus:** Implement v0.18.0 Library Expansion features: property-based testing, slenderness check, and Jinja2 report templates.
