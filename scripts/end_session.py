@@ -417,6 +417,9 @@ def main():
         print("⚠️  Some issues found. Consider fixing before handoff.")
         if not args.fix:
             print("   Run with --fix to auto-fix what's possible.")
+        print()
+        print("💡 Tip: Collect diagnostics for troubleshooting:")
+        print("   .venv/bin/python scripts/collect_diagnostics.py > diagnostics.txt")
     print("=" * 60)
     print()
 

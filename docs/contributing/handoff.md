@@ -49,6 +49,37 @@ $ ./scripts/agent_start.sh --quick
 4. Document issues in `docs/contributing/session-issues.md` (if encountered).
 5. Ensure clean tree: `git status -sb`
 
+## Debug Snapshot Checklist
+
+When encountering persistent errors, collect this information for handoff:
+
+1. **Collect diagnostics bundle:**
+   ```bash
+   .venv/bin/python scripts/collect_diagnostics.py > diagnostics.txt
+   ```
+
+2. **Enable debug mode** (Streamlit):
+   ```bash
+   DEBUG=1 streamlit run streamlit_app/app.py
+   ```
+
+3. **Check log files:**
+   - `logs/git_workflow.log` (git operations)
+   - `logs/ci_monitor.log` (CI status)
+
+4. **Run validators:**
+   ```bash
+   .venv/bin/python scripts/generate_api_manifest.py --check
+   .venv/bin/python scripts/check_scripts_index.py
+   .venv/bin/python scripts/check_links.py
+   ```
+
+5. **Include in handoff:**
+   - Diagnostics output
+   - Relevant log excerpts
+   - Error screenshots/messages
+   - Steps to reproduce
+
 ## Common Traps (fast fixes)
 - CI watch times out: re-run `gh pr checks <num> --watch`.
 - PR behind base: `gh pr update-branch <num>` then re-check CI.

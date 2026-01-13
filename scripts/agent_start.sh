@@ -182,6 +182,9 @@ if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
     "$PROJECT_ROOT/.venv/bin/python" scripts/start_session.py $QUICK
 else
     echo -e "  ${RED}✗${NC} Python interpreter not found in .venv"
+    echo ""
+    echo -e "  ${YELLOW}💡 Tip: Collect diagnostics for troubleshooting:${NC}"
+    echo "     .venv/bin/python scripts/collect_diagnostics.py > diagnostics.txt"
     exit 1
 fi
 

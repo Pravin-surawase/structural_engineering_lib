@@ -195,3 +195,21 @@
 - `docs/git-automation/README.md` - Git automation hub
 - `docs/TASKS.md` - Current task status (Python 3.11 plan added)
 - `docs/SESSION_LOG.md` - Session history (Session 19 added)
+
+---
+
+## 🐛 Debug Resources
+
+When troubleshooting needed, use these tools:
+
+| Tool | Command |
+|------|---------|
+| **Diagnostics Bundle** | `.venv/bin/python scripts/collect_diagnostics.py` |
+| **Debug Mode** | `DEBUG=1 streamlit run streamlit_app/app.py` |
+| **API Manifest Check** | `.venv/bin/python scripts/generate_api_manifest.py --check` |
+| **Scripts Index Check** | `.venv/bin/python scripts/check_scripts_index.py` |
+| **Link Validator** | `.venv/bin/python scripts/check_links.py` |
+
+**Log locations:**
+- `logs/git_workflow.log` - Git automation logs
+- `logs/ci_monitor.log` - CI monitor logs
