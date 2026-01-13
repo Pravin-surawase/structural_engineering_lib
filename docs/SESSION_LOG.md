@@ -4,6 +4,46 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P17: Streamlit Runtime Fixes + Documentation Consolidation
+
+**Focus:** Fix critical Streamlit runtime errors discovered during testing; continue TASK-457 Phase 2.
+
+### Summary
+
+1. **Page Header Fix** - Changed `description=` to `subtitle=` in 4 pages (08, 09, 10, 11) to match `page_header()` signature
+2. **Reportlab Dependency** - Added `[pdf]` optional extra to pyproject.toml; made pdf_generator.py gracefully handle missing reportlab
+3. **Deprecation Migration** - Migrated 49 occurrences of `use_container_width=True` to `width="stretch"` across 14 files
+4. **Import Checker** - Created `scripts/check_streamlit_imports.py` to catch import errors before deployment
+5. **Documentation Archival** - Moved 3 session-specific research files to `docs/_archive/2026-01/`
+
+### PRs
+
+| PR | Description |
+| --- | --- |
+| #354 | Fix Streamlit runtime errors and deprecations (MERGED) |
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `76aecb3` | fix(streamlit): fix page_header() signature and reportlab dependency |
+| `5844c87` | refactor(streamlit): migrate use_container_width to width parameter |
+| `775497d` | feat(scripts): add Streamlit import validation script |
+| `abda809` | docs: TASK-457 Phase 2 - archive 3 session-specific files |
+
+### Discoveries
+
+- **agent_start.sh vs --quick**: Full version launches Streamlit app to detect runtime errors!
+- **Testing gap**: Current tests don't catch page import errors or signature mismatches
+- **Deprecation warning**: Streamlit `use_container_width` removed after 2025-12-31
+
+### Tests
+
+- Streamlit import checker validates 28/32 utility modules successfully
+- 4 modules have relative import issues (work when run via streamlit but not standalone)
+
+---
+
 ## 2026-01-13 — Session 19P16: Session Docs Workflow Review
 
 **Focus:** Validate last session cleanup and prevent session-doc drift after PR creation.

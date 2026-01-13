@@ -2,7 +2,7 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-12 (Session 19: Python 3.11 Baseline Complete)
+**Updated:** 2026-01-13 (Session 19P17: Streamlit Runtime Fixes)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -270,6 +270,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-460** | Fix Streamlit runtime errors (page_header signature, reportlab, use_container_width deprecation, import checker) | DEV | ✅ PR #354 2026-01-13 |
+| **TASK-457-P2** | Documentation Consolidation Phase 2: Archive 3 session-specific research files | DOCS | ✅ 2026-01-13 |
 | **RESEARCH-1.3** | Phase 1.3 Bridge to Structural Engineering Complete: Analyzed 4 key papers (Parhi et al. 2026, Hong & Nguyen 2023, etc.) on MOO for RC beams/IS 456. | MAIN | ✅ 2026-01-13 |
 | **RESEARCH-1.2** | Phase 1.2 Web Research Complete: 2025-2026 MOO trends consolidated in `KEY-FINDINGS.md` and `PAPER-TRACKER.csv` (20+ papers) | MAIN | ✅ 2026-01-13 |
 | **GITDOC-15-28** | Hook enforcement system: versioned hooks, git_ops.sh router, automation-first recovery, health check, test suite (14 tasks, 4 commits) | MAIN | ✅ 2026-01-12 |
@@ -283,8 +285,6 @@
 | **TASK-437** | Move timedelta import to module level (PR #337) | AGENT_6 | ✅ 2026-01-11 |
 | **TASK-432** | Archive outdated Agent 6 files | AGENT_6 | ✅ 2026-01-11 |
 | **TASK-433** | Create Agent 6 comprehensive onboarding guide (PR #336) | DOCS | ✅ 2026-01-11 |
-| **TASK-434** | Create Streamlit code files analysis (PR #336) | DOCS | ✅ 2026-01-11 |
-| **TASK-273** | Interactive Testing UI - Streamlit clause traceability page (PR #334) | DEV | ✅ 2026-01-11 |
 | **TASK-272** | Code Clause Database (67 clauses, 13 functions decorated, PR #333) | DEV | ✅ 2026-01-11 |
 | **TASK-275** | Professional Liability Framework (docs/legal/) | DOCS | ✅ 2026-01-11 |
 | **SESSION-14P3** | Git automation: docs/git-automation/ hub (6 files), ai_commit.sh --dry-run/--help, git_automation_health.sh, improvement plan, copilot-instructions update | MAIN | ✅ 2026-01-11 |
