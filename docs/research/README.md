@@ -17,7 +17,7 @@
 | Code quality | [cs-best-practices-audit.md](cs-best-practices-audit.md) | quality |
 | API stability | [backward-compatibility-strategy.md](backward-compatibility-strategy.md) | api |
 | Folder cleanup | [folder-restructuring-plan.md](folder-restructuring-plan.md) | cleanup |
-| Session planning | [session-9-master-plan.md](session-9-master-plan.md) | session |
+| Session planning | [session-9-master-plan.md](../docs/_archive/research-sessions/session-9-master-plan.md) | session |
 
 ---
 
@@ -53,7 +53,7 @@
 | [folder-cleanup-research.md](folder-cleanup-research.md) | research | 🟡 Medium | Cleanup strategy research |
 | [enterprise-folder-structure-research.md](enterprise-folder-structure-research.md) | research | 🟡 Medium | Enterprise structure patterns |
 | [session-8-automation-review.md](../docs/_archive/session-8-automation-review.md) | audit | 🟡 Medium | Automation review |
-| [session-9-master-plan.md](session-9-master-plan.md) | plan | 🟡 Medium | Current session planning |
+| [session-9-master-plan.md](../docs/_archive/research-sessions/session-9-master-plan.md) | plan | 🟡 Medium | Current session planning |
 
 ---
 

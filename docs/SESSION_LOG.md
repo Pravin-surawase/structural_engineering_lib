@@ -1715,7 +1715,7 @@ All folder structure governance tasks are complete. See [folder-migration-progre
 - ✅ Enhanced end_session.py with governance compliance check
 
 ### 📄 New Documents Created
-- [session-11-review-and-analysis.md](research/session-11-review-and-analysis.md) - Comprehensive review with root cause analysis
+- [session-11-review-and-analysis.md](_archive/research-sessions/session-11-review-and-analysis.md) - Comprehensive review with root cause analysis
 - [session-12-planning.md](planning/session-12-planning.md) - Detailed planning for root file reduction
 
 ### 🛠️ Automation Improvements
@@ -1763,7 +1763,7 @@ All folder structure governance tasks are complete. See [folder-migration-progre
   - Defines all folder rules, categories, validation requirements
   - Specifies root file limits, doc categories, enforcement
   - Includes quarterly review process
-- Created [session-11-structure-issues-analysis.md](research/session-11-structure-issues-analysis.md) (250+ lines)
+- Created [session-11-structure-issues-analysis.md](_archive/research-sessions/session-11-structure-issues-analysis.md) (250+ lines)
   - Validates 5 critical gaps identified in user review
   - Documents root causes and prevention strategies
   - Plans 7-phase execution plan for fixes
@@ -1851,8 +1851,8 @@ All folder structure governance tasks are complete. See [folder-migration-progre
 | Document | Lines | Purpose |
 |----------|-------|---------|
 | [folder-structure-governance.md](guidelines/folder-structure-governance.md) | 350+ | Centralized spec for all folder rules |
-| [session-11-structure-issues-analysis.md](research/session-11-structure-issues-analysis.md) | 250+ | Root cause analysis + prevention strategy |
-| [session-11-migration-lessons.md](research/session-11-migration-lessons.md) | 251 | Systematic approach + learnings |
+| [session-11-structure-issues-analysis.md](_archive/research-sessions/session-11-structure-issues-analysis.md) | 250+ | Root cause analysis + prevention strategy |
+| [session-11-migration-lessons.md](_archive/research-sessions/session-11-migration-lessons.md) | 251 | Systematic approach + learnings |
 | [check_governance_compliance.py](../scripts/check_governance_compliance.py) | 272 | Validator for governance rules |
 
 ### 🎊 Back-to-Back-to-Back Milestones 🏆
