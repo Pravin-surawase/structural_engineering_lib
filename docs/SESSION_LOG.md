@@ -4,6 +4,35 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 19P16: Session Docs Workflow Review
+
+**Focus:** Validate last session cleanup and prevent session-doc drift after PR creation.
+
+### Summary
+
+1. **Validation** - Confirmed PR #352 merged and manual-git lint is clean in active docs
+2. **Session Doc Reminder** - Added a post-PR reminder in `finish_task_pr.sh`
+3. **Handoff Clarity** - `update_handoff.py` now labels PRs generically (not "merged")
+4. **Background Guide** - Updated worktree branch placeholder to match `worktree_manager.sh`
+
+### PRs
+
+| PR | Description |
+| --- | --- |
+| #353 | Session docs reminders + handoff label |
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `a754664` | feat(git): improve session docs reminders |
+
+### Tests
+
+- Not run (docs/scripts-only)
+
+---
+
 ## 2026-01-13 — Session 19P15: Manual Git Cleanup + Lint Ignore Markers
 
 **Focus:** Remove manual git examples from active docs and tighten automation-first onboarding.
