@@ -2,7 +2,7 @@
 
 **Type:** Research
 **Audience:** All Agents
-**Status:** In Progress
+**Status:** Complete
 **Importance:** Critical
 **Created:** 2026-01-13
 **Last Updated:** 2026-01-13
@@ -18,9 +18,11 @@ This document reviews and validates the last 3 sessions of agent work:
 - **Session 20b:** Review & validation of Session 20, fixes identified
 - **Session 21:** Core library deprecation cleanup (task/TASK-506 branch)
 
-### Critical Finding: Session 21 Broke 13 Unit Tests
+### Critical Finding: Session 21 Broke 13 Unit Tests ✅ FIXED
 
-The Session 21 changes that removed `remarks` and `error_message` fields from `ShearResult` and `FlexureResult` have **broken 13 unit tests** that assert on those fields.
+The Session 21 changes that removed `remarks` and `error_message` fields from `ShearResult` and `FlexureResult` had **broken 13 unit tests** that asserted on those fields.
+
+**Resolution (Session 22):** Updated 26 tests across 5 test files to use the new `errors` list pattern. All 256 unit tests now pass.
 
 ---
 
