@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         working-directory: Python
         run: |
-          python -m pytest -q
+          python -m pytest -q --hypothesis-profile=ci
 
       # ================================================================
       # TASK-503: Performance Regression Tracking

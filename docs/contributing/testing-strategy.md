@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-14
 
 ---
 
@@ -159,7 +159,112 @@ Notes:
 
 ---
 
-## 7) Definition of “good” (target state)
+## 7) Property-Based Testing (Hypothesis)
+
+Property-based testing uses the [Hypothesis](https://hypothesis.readthedocs.io/) library to automatically generate test inputs and discover edge cases that unit tests might miss.
+
+### Location
+
+- Strategies: `Python/tests/property/strategies.py`
+- Tests: `Python/tests/property/test_*_hypothesis.py`
+- Profile config: `Python/tests/conftest.py`
+
+### Available Profiles
+
+| Profile | Examples | Use Case |
+|---------|----------|----------|
+| `dev` | 25 | Fast local development |
+| `default` | 100 | Standard test runs |
+| `ci` | 200 | CI runs (deterministic) |
+| `exhaustive` | 1000 | Thorough testing before release |
+
+### Running Property Tests
+
+```bash
+# Fast development run (25 examples per test)
+python -m pytest Python/tests/property/ --hypothesis-profile=dev
+
+# Standard run (100 examples)
+python -m pytest Python/tests/property/
+
+# CI run (200 examples, deterministic)
+python -m pytest Python/tests/property/ --hypothesis-profile=ci
+
+# Thorough run (1000 examples)
+python -m pytest Python/tests/property/ --hypothesis-profile=exhaustive
+```
+
+### Reusable Strategies
+
+The `strategies.py` module provides domain-specific strategies:
+
+| Strategy | Description |
+|----------|-------------|
+| `concrete_grade()` | Valid fck values (20-70 N/mm²) |
+| `steel_grade()` | Valid fy values (250-550 N/mm²) |
+| `beam_section()` | Complete beam geometry (b, d, D) |
+| `flexure_inputs()` | All inputs for flexure design |
+| `shear_inputs()` | All inputs for shear design |
+| `ductile_inputs()` | All inputs for ductile beam check |
+
+### What Property Tests Cover
+
+1. **Flexure module (13 tests)**
+   - `calculate_mu_lim`: positivity, scaling with dimensions
+   - `calculate_ast_required`: area always positive
+   - `design_singly_reinforced`: valid result structure
+
+2. **Shear module (13 tests)**
+   - `calculate_tv`: stress bounds
+   - `get_tc_from_table19`: grade ordering, interpolation
+   - `get_tc_max`: value ordering
+   - `design_shear_reinforcement`: stirrup spacing valid
+
+3. **Ductile detailing (17 tests)**
+   - `check_ductile_beam_geometry`: b/D ratio limits
+   - `get_min_steel_percentage`: percentage bounds
+   - `get_confinement_zone_length`: IS 13920 compliance
+   - `check_beam_ductility`: integrated checks
+
+### Adding New Property Tests
+
+1. **Use existing strategies** from `strategies.py`:
+   ```python
+   from tests.property.strategies import flexure_inputs
+
+   @given(inputs=flexure_inputs())
+   def test_my_property(self, inputs: dict) -> None:
+       result = my_function(**inputs)
+       assert invariant_holds(result)
+   ```
+
+2. **Create composite strategies** for complex inputs:
+   ```python
+   @st.composite
+   def my_complex_input(draw):
+       fck = draw(concrete_grade())
+       b = draw(st.integers(200, 500))
+       return {"fck": fck, "b": b}
+   ```
+
+3. **Use `assume()`** for preconditions:
+   ```python
+   @given(b=st.integers(100, 1000), d=st.integers(200, 800))
+   def test_with_precondition(self, b: int, d: int) -> None:
+       assume(d >= b)  # Skip invalid inputs
+       result = function(b, d)
+   ```
+
+### Key Findings from Property Testing
+
+Hypothesis discovered several edge cases:
+- High fck (70) + low fy (250) can exceed 4% max steel even for Mu < Mu_lim
+- Narrow beams (100-150mm) stress the geometry validation logic
+- Shear stress limits are sensitive to concrete grade transitions
+
+---
+
+## 8) Definition of "good" (target state)
 
 - CI enforces a stable baseline (coverage gate + full test pass).
 - Deterministic tests for boundary conditions and known failure modes.
