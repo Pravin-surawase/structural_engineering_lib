@@ -109,12 +109,14 @@ No active tasks. Phase 1+2 (debug upgrades + API guardrails) and IMP-02/03 compl
 
 ## Up Next
 
-### Guide Consolidation (Phase 3)
+### Guide Consolidation (Complete)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **DOC-ONB-01** | Consolidate onboarding guides (bootstrap + workflow) | DOCS | 3h | 🟠 MEDIUM | ⏳ |
-| **DOC-ONB-02** | Update cross-links + index references | DOCS | 1h | 🟡 LOW | ⏳ |
+| **DOC-ONB-01** | Consolidate onboarding guides (bootstrap + workflow) | DOCS | 3h | 🟠 MEDIUM | ✅ 2026-01-13 |
+| **DOC-ONB-02** | Update cross-links + index references | DOCS | 1h | 🟡 LOW | ✅ 2026-01-13 |
+
+**Result:** 4 guides → 3 guides (25% reduction), 1,404 → 1,119 active lines, clear hierarchy
 
 ### Improvements I recommend (compact, high-value)
 

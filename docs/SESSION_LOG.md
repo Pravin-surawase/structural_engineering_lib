@@ -4,6 +4,82 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — DOC-ONB-01/02: Guide Consolidation Complete
+
+**Focus:** Research, plan, and execute guide consolidation (4 guides → 3 guides).
+
+### Summary
+
+**Validation & Cleanup:**
+1. Validated previous session work (0 broken links, 6 contract tests passing)
+2. Archived 3 session-specific documents (34KB) to docs/_archive/2026-01/
+
+**DOC-ONB-01/02 Implementation:**
+3. **Research & Planning** - Analyzed 4 onboarding guides (1,404 lines)
+   - Evaluated 3 consolidation options
+   - Recommended: Three-Guide Hierarchy (Option C)
+   - Created detailed implementation plan
+
+4. **Phase 1:** Enhanced quick-reference with first session workflow
+   - Added guide hierarchy navigation table
+   - Added First Session Checklist section
+   - Size: 273 → 304 lines (+31 lines)
+
+5. **Phase 2:** Added cross-link navigation to bootstrap and master-guide
+   - All 3 guides now have hierarchy tables
+   - Clear progression: quick start → cheat sheet → deep dive
+
+6. **Phase 3+4:** Archived agent-onboarding.md and updated all references
+   - Moved to docs/_archive/2026-01/
+   - Auto-updated 28 references via safe_file_move.py
+   - Fixed 1 manual link in contributing/README.md
+   - Link validation: ✅ 0 broken links
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `55ce466` | refactor: archive session 19P21 planning documents to 2026-01 |
+| `e8e8fd4` | research: DOC-ONB-01/02 guide consolidation strategy (user commit) |
+| `314d697` | feat(docs): enhance quick-reference with first session workflow |
+| `8add7d1` | docs: add guide hierarchy navigation to bootstrap and master-guide |
+| `ac2a3f5` | refactor: archive agent-onboarding.md after guide consolidation |
+| `[NEXT]` | docs: update TASKS.md and session docs for DOC-ONB-01/02 completion |
+
+### Results
+
+**Before:**
+- 4 onboarding guides (1,404 lines)
+- agent-bootstrap.md (115 lines)
+- agent-workflow-master-guide.md (704 lines)
+- agent-quick-reference.md (272 lines)
+- agent-onboarding.md (313 lines)
+
+**After:**
+- 3 onboarding guides (1,119 lines active)
+- agent-bootstrap.md (127 lines) - Added hierarchy
+- agent-workflow-master-guide.md (717 lines) - Added hierarchy
+- agent-quick-reference.md (304 lines) - Added hierarchy + first session workflow
+- agent-onboarding.md (archived, 313 lines)
+
+**Impact:**
+- 25% guide reduction (4 → 3)
+- 20% line reduction (1,404 → 1,119 active)
+- Clear hierarchy: bootstrap → quick-ref → master-guide
+- First-time agents have complete walkthrough in cheat sheet
+- All unique content preserved, better organized
+
+### Session Totals
+
+- **Commits:** 5 (targeting 6+, one more for session docs)
+- **Files changed:** 11 unique files
+- **Guides consolidated:** 4 → 3
+- **Lines reduced:** 285 lines (20%)
+- **Link validation:** ✅ 0 broken links
+- **Time:** ~2 hrs (vs 3-4 hrs estimated)
+
+---
+
 ## 2026-01-13 — Session 19P21 (extended): Post-Release + CI Investigation
 
 **Focus:** Post-release documentation updates; comprehensive audit; CI failure investigation and resolution.
