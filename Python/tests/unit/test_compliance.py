@@ -61,7 +61,9 @@ def test_compliance_report_failure_propagation_and_governing():
 
     bad = [c for c in report.cases if c.case_id == "BAD_SHEAR"][0]
     assert bad.is_ok is False
-    assert "shear" in bad.failed_checks
+    # Check that shear failure is in failed_checks
+    # Format may include error details: "shear (tv exceeds tc_max)"
+    assert any("shear" in check for check in bad.failed_checks)
 
 
 def test_compliance_report_ok_when_all_checks_pass():

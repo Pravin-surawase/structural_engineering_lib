@@ -341,8 +341,6 @@ def design_singly_reinforced(
 
     if input_errors:
         # Build specific error message based on which fields failed
-        failed_fields = [e.field for e in input_errors if e.field]
-        error_message = f"Invalid input: {', '.join(failed_fields)} must be > 0."
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -351,7 +349,6 @@ def design_singly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message=error_message,
             errors=input_errors,
         )
 
@@ -367,7 +364,6 @@ def design_singly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: fck and fy must be > 0.",
             errors=material_errors,
         )
 
@@ -384,7 +380,6 @@ def design_singly_reinforced(
             xu=xu_max,
             xu_max=xu_max,
             is_safe=False,
-            error_message="Mu exceeds Mu_lim. Doubly reinforced section required.",
             errors=[E_FLEXURE_001],
         )
 
@@ -394,11 +389,9 @@ def design_singly_reinforced(
     # Check Minimum Steel (Cl. 26.5.1.1)
     ast_min = 0.85 * b * d / fy
 
-    error_msg = ""
     design_errors = []
     if ast_calc < ast_min:
         ast_final = ast_min
-        error_msg = "Minimum steel provided."
         design_errors.append(E_FLEXURE_002)
     else:
         ast_final = ast_calc
@@ -408,7 +401,6 @@ def design_singly_reinforced(
     ast_max = 0.04 * b * d_total
     if ast_final > ast_max:
         is_safe = False
-        error_msg = "Ast exceeds maximum limit (4% bD)."
         design_errors.append(E_FLEXURE_003)
 
     # Calculate Pt
@@ -425,7 +417,6 @@ def design_singly_reinforced(
         xu=xu,
         xu_max=xu_max,
         is_safe=is_safe,
-        error_message=error_msg,
         errors=design_errors,
     )
 
@@ -464,8 +455,6 @@ def design_doubly_reinforced(
     input_errors = validate_dimensions(b, d, d_total)
 
     if input_errors:
-        failed_fields = [e.field for e in input_errors if e.field]
-        error_message = f"Invalid input: {', '.join(failed_fields)} must be > 0."
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -474,7 +463,6 @@ def design_doubly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message=error_message,
             errors=input_errors,
         )
 
@@ -490,7 +478,6 @@ def design_doubly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: fck and fy must be > 0.",
             errors=material_errors,
         )
 
@@ -503,7 +490,6 @@ def design_doubly_reinforced(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: d' must be > 0.",
             errors=[E_INPUT_010],
         )
 
@@ -534,7 +520,6 @@ def design_doubly_reinforced(
             xu=xu_max,
             xu_max=xu_max,
             is_safe=False,
-            error_message="Invalid section geometry for doubly reinforced design (d' too large or fsc too low).",
             errors=[E_FLEXURE_004],
         )
 
@@ -561,7 +546,6 @@ def design_doubly_reinforced(
             xu=xu_max,
             xu_max=xu_max,
             is_safe=False,
-            error_message="Invalid section geometry for doubly reinforced design (d' too large or fsc too low).",
             errors=[E_FLEXURE_004],
         )
 
@@ -580,18 +564,15 @@ def design_doubly_reinforced(
     # 7. Check Max Steel (Cl. 26.5.1.2) - 4% bD
     ast_max = 0.04 * b * d_total
     is_safe = True
-    error_msg = ""
     design_errors = []
 
     if ast_total > ast_max:
         is_safe = False
-        error_msg = "Total Ast exceeds maximum limit (4% bD)."
         design_errors.append(E_FLEXURE_003)
 
     # Note: We should also check Asc max limit (4% bD), but usually Ast controls.
     if asc > ast_max:
         is_safe = False
-        error_msg += " Asc exceeds maximum limit."
         if not any(err.code == E_FLEXURE_003.code for err in design_errors):
             design_errors.append(E_FLEXURE_003)
 
@@ -607,7 +588,6 @@ def design_doubly_reinforced(
         xu_max=xu_max,
         is_safe=is_safe,
         asc_required=asc,
-        error_message=error_msg,
         errors=design_errors,
     )
 
@@ -708,8 +688,6 @@ def design_flanged_beam(
         input_errors.append(E_INPUT_003a)
 
     if input_errors:
-        failed_fields = [e.field for e in input_errors if e.field]
-        error_message = f"Invalid input: {', '.join(failed_fields)} must be > 0."
         return FlexureResult(
             mu_lim=0.0,
             ast_required=0.0,
@@ -718,7 +696,6 @@ def design_flanged_beam(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message=error_message,
             errors=input_errors,
         )
 
@@ -731,7 +708,6 @@ def design_flanged_beam(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: bf must be >= bw.",
             errors=[E_INPUT_015],
         )
 
@@ -744,7 +720,6 @@ def design_flanged_beam(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: d_total must be > d.",
             errors=[E_INPUT_003],
         )
 
@@ -757,7 +732,6 @@ def design_flanged_beam(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: Df must be < d.",
             errors=[E_INPUT_016],
         )
 
@@ -776,7 +750,6 @@ def design_flanged_beam(
             xu=0.0,
             xu_max=0.0,
             is_safe=False,
-            error_message="Invalid input: fck and fy must be > 0.",
             errors=material_errors,
         )
 
@@ -835,21 +808,13 @@ def design_flanged_beam(
         # Keep consistent with rectangular design checks: 4% of bD (bw * d_total).
         ast_max = 0.04 * bw * d_total
         is_safe = web_result.is_safe
-        error_msg = web_result.error_message
         design_errors = list(web_result.errors)
         if total_ast > ast_max:
             is_safe = False
-            error_msg = (
-                "Total Ast exceeds maximum limit (4% bw*d_total) for combined T-beam."
-            )
             if not any(err.code == E_FLEXURE_003.code for err in design_errors):
                 design_errors.append(E_FLEXURE_003)
         if web_result.asc_required > ast_max:
             is_safe = False
-            if error_msg:
-                error_msg = f"{error_msg} Asc exceeds maximum limit (4% bw*d_total)."
-            else:
-                error_msg = "Asc exceeds maximum limit (4% bw*d_total)."
             if not any(err.code == E_FLEXURE_003.code for err in design_errors):
                 design_errors.append(E_FLEXURE_003)
 
@@ -862,7 +827,6 @@ def design_flanged_beam(
             xu_max=xu_max,
             is_safe=is_safe,
             asc_required=web_result.asc_required,
-            error_message=error_msg,
             errors=design_errors,
         )
 
@@ -925,11 +889,9 @@ def design_flanged_beam(
     # Min steel: Cl 26.5.1.1 (a) for beams: As/bd = 0.85/fy. b is bw.
     ast_min = 0.85 * bw * d / fy
 
-    error_msg = ""
     design_errors = []
     if ast_required < ast_min:
         ast_final = ast_min
-        error_msg = "Minimum steel provided."
         design_errors.append(E_FLEXURE_002)
     else:
         ast_final = ast_required
@@ -943,7 +905,6 @@ def design_flanged_beam(
     is_safe = True
     if ast_final > ast_max:
         is_safe = False
-        error_msg = "Ast exceeds maximum limit."
         if not any(err.code == E_FLEXURE_003.code for err in design_errors):
             design_errors.append(E_FLEXURE_003)
 
@@ -958,6 +919,5 @@ def design_flanged_beam(
         xu_max=xu_max,
         is_safe=is_safe,
         asc_required=0.0,
-        error_message=error_msg,
         errors=design_errors,
     )

@@ -97,7 +97,6 @@ def design_shear(
             vus=0.0,
             spacing=0.0,
             is_safe=False,
-            remarks="Invalid input: b and d must be > 0.",
             errors=input_errors,
         )
 
@@ -115,7 +114,6 @@ def design_shear(
             vus=0.0,
             spacing=0.0,
             is_safe=False,
-            remarks="Invalid input: fck and fy must be > 0.",
             errors=material_errors,
         )
 
@@ -127,7 +125,6 @@ def design_shear(
             vus=0.0,
             spacing=0.0,
             is_safe=False,
-            remarks="Invalid input: asv must be > 0.",
             errors=[E_INPUT_008],
         )
 
@@ -139,7 +136,6 @@ def design_shear(
             vus=0.0,
             spacing=0.0,
             is_safe=False,
-            remarks="Invalid input: pt must be >= 0.",
             errors=[E_INPUT_009],
         )
 
@@ -162,7 +158,6 @@ def design_shear(
             vus=0.0,
             spacing=0.0,
             is_safe=False,
-            remarks="Shear stress exceeds Tc_max. Redesign section.",
             errors=warning_errors + [E_SHEAR_001],
         )
 
@@ -177,7 +172,6 @@ def design_shear(
     if tv <= tc:
         # Nominal shear < Design strength
         vus = 0.0
-        remarks = "Nominal shear < Tc. Provide minimum shear reinforcement."
         design_errors.append(E_SHEAR_003)
 
         # Spacing for min reinforcement (Cl. 26.5.1.6)
@@ -185,7 +179,6 @@ def design_shear(
     else:
         # Design for shear
         vus = (vu_n - vc_n) / 1000.0  # kN
-        remarks = "Shear reinforcement required."
 
         # sv = (0.87 * fy * Asv * d) / Vus_N
         spacing_calc = (0.87 * fy * asv * d) / (vus * 1000.0)
@@ -210,6 +203,5 @@ def design_shear(
         vus=vus,
         spacing=spacing,
         is_safe=True,
-        remarks=remarks,
         errors=design_errors,
     )

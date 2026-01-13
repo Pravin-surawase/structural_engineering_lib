@@ -8,6 +8,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from structural_lib import flexure, materials, shear, tables, types
 
 
+def _has_error_with_code(errors, code: str) -> bool:
+    """Check if errors list contains an error with the given code."""
+    return any(e.code == code for e in errors)
+
+
+def _has_error_with_message(errors, message_substring: str) -> bool:
+    """Check if errors list contains an error with the given message substring."""
+    return any(message_substring.lower() in e.message.lower() for e in errors)
+
+
 class TestStructuralLib(unittest.TestCase):
 
     def test_materials(self):
@@ -135,7 +145,11 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertTrue(res.is_safe)
         self.assertEqual(res.vus, 0.0)
-        self.assertIn("minimum shear reinforcement", res.remarks)
+        # Check for minimum shear reinforcement message in errors list
+        self.assertTrue(
+            _has_error_with_message(res.errors, "minimum")
+            or _has_error_with_code(res.errors, "E_SHEAR_003")
+        )
         self.assertEqual(res.spacing, 300.0)
 
     # --------------------------------------------------------------------------
@@ -156,7 +170,11 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertTrue(res.is_safe)
         self.assertAlmostEqual(res.ast_required, ast_min, places=1)
-        self.assertIn("Minimum steel", res.error_message)
+        # Check for minimum steel info in errors list (E_FLEXURE_002)
+        self.assertTrue(
+            _has_error_with_message(res.errors, "minimum steel")
+            or _has_error_with_code(res.errors, "E_FLEXURE_002")
+        )
 
     def test_flexure_over_reinforced(self):
         """Test that section is flagged as over-reinforced when Mu > Mu_lim."""
@@ -211,7 +229,11 @@ class TestStructuralLib(unittest.TestCase):
 
         res_above = shear.design_shear(vu_at + 0.1, b, d, fck, fy, asv, pt)
         self.assertFalse(res_above.is_safe)
-        self.assertIn("exceeds Tc_max", res_above.remarks)
+        # Check for tc_max exceeded error in errors list
+        self.assertTrue(
+            _has_error_with_message(res_above.errors, "exceeds tc_max")
+            or _has_error_with_code(res_above.errors, "E_SHEAR_001")
+        )
 
     def test_shear_unsafe_section(self):
         """Test that section fails if Tv > Tc_max."""
@@ -227,7 +249,11 @@ class TestStructuralLib(unittest.TestCase):
         res = shear.design_shear(vu_unsafe, b, d, fck, fy, asv, pt)
 
         self.assertFalse(res.is_safe)
-        self.assertIn("exceeds Tc_max", res.remarks)
+        # Check for tc_max exceeded error in errors list
+        self.assertTrue(
+            _has_error_with_message(res.errors, "exceeds tc_max")
+            or _has_error_with_code(res.errors, "E_SHEAR_001")
+        )
 
     def test_shear_min_reinforcement(self):
         """Test that min shear reinforcement spacing is calculated when Tv < Tc."""
@@ -244,7 +270,11 @@ class TestStructuralLib(unittest.TestCase):
 
         self.assertTrue(res.is_safe)
         self.assertEqual(res.vus, 0.0)
-        self.assertIn("minimum shear reinforcement", res.remarks)
+        # Check for minimum shear reinforcement info in errors list
+        self.assertTrue(
+            _has_error_with_message(res.errors, "minimum")
+            or _has_error_with_code(res.errors, "E_SHEAR_003")
+        )
 
         # Check spacing for min reinf:
         # s = (0.87 * fy * Asv) / (0.4 * b)

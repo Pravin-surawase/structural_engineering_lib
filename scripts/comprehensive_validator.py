@@ -321,7 +321,7 @@ class ComprehensiveValidator:
                     ))
 
             # Check for dict access without get()
-            if "['"]in line and '.get(' not in line:
+            if ("['" in line or '["' in line) and '.get(' not in line:
                 result.add_issue(ValidationIssue(
                     severity=Severity.INFO,
                     category="KeyError Risk",

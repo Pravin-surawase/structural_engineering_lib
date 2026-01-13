@@ -216,9 +216,11 @@ class TestFlexureErrorsIntegration:
         assert result.is_safe is False
         assert len(result.errors) >= 1
         assert any(e.code == "E_INPUT_001" for e in result.errors)
-        # Check dynamic error message only mentions 'b'
-        assert "b" in result.error_message
-        assert "d_total" not in result.error_message
+        # Check that the error references 'b' field
+        error = next(e for e in result.errors if e.code == "E_INPUT_001")
+        assert error.field == "b"
+        # d_total should not be in the errors for this specific case
+        assert not any(e.field == "d_total" for e in result.errors)
 
     def test_invalid_d_returns_error(self):
         result = design_singly_reinforced(
