@@ -137,11 +137,11 @@ git commit --no-edit
 
 ## Full Documentation
 
-- **[Git Operations Protocol](agent-8-git-ops.md)** (1,320 lines) - Core mission & workflow
-- **[Automation Index](agent-8-automation.md)** - All scripts & tools
-- **[Mistake Prevention](agent-8-mistakes-prevention-guide.md)** (1,096 lines) - Historical mistakes DB
+- **[Git Operations Protocol](../../../agents/guides/agent-8-git-ops.md)** (1,320 lines) - Core mission & workflow
+- **[Automation Index](../../../agents/guides/agent-8-automation.md)** - All scripts & tools
+- **[Mistake Prevention](../../../agents/guides/agent-8-mistakes-prevention-guide.md)** (1,096 lines) - Historical mistakes DB
 - **[Implementation Guide](agent-8-implementation-guide.md)** - Setup & implementation
-- **[Multi-Agent Coordination](agent-8-multi-agent-coordination.md)** - Coordination workflows
+- **[Multi-Agent Coordination](../../../agents/guides/agent-8-multi-agent-coordination.md)** - Coordination workflows
 
 ---
 

@@ -474,7 +474,7 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 
 ### Research & Analysis
 - [agent-8-git-automation-comprehensive-research.md](../research/agent-8-git-automation-comprehensive-research.md) - Complete system analysis
-- [agent-start-modes-analysis.md](../research/agent-start-modes-analysis.md) - Full vs quick comparison
+- [agent-start-modes-analysis.md](../_archive/research-completed/agent-start-modes-analysis.md) - Full vs quick comparison
 
 ### Active Guides (No Changes)
 - [agent-8-automation.md](../agents/guides/agent-8-automation.md) - Script index

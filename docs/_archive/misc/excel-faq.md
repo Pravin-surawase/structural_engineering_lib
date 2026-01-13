@@ -236,11 +236,11 @@ Common issues and solutions for using the Structural Engineering Library in Exce
 
 2. **Check module import order:**
    - Correct order: M02 → M01, M03-M07 → M08-M19 → M99
-   - See [VBA Guide](../contributing/vba-guide.md) for details
+   - See [VBA Guide](../../contributing/vba-guide.md) for details
 
 3. **Re-import modules:**
    - Remove all modules
-   - Use bulk import macro from [Excel Add-in Guide](../contributing/excel-addin-guide.md)
+   - Use bulk import macro from [Excel Add-in Guide](../../contributing/excel-addin-guide.md)
 
 ---
 
@@ -279,7 +279,7 @@ Common issues and solutions for using the Structural Engineering Library in Exce
    - Modules embedded in workbook are more reliable on Mac
 
 3. **Check VBA compatibility:**
-   - See [Known Pitfalls - Mac VBA](../reference/known-pitfalls.md) for workarounds
+   - See [Known Pitfalls - Mac VBA](../../reference/known-pitfalls.md) for workarounds
    - Some features (DXF export with file dialogs) may have reduced functionality
 
 4. **File paths:**
@@ -370,7 +370,7 @@ Common issues and solutions for using the Structural Engineering Library in Exce
    - Try saving to Desktop or Documents
 
 3. **Verify worksheet data:**
-   - Macro expects specific cell layout (see [VBA API Reference](../reference/vba-api-reference.md#is456_exportbeamdxf))
+   - Macro expects specific cell layout (see [VBA API Reference](../../reference/vba-api-reference.md#is456_exportbeamdxf))
    - Missing cells (B2, B3, etc.) cause failure
 
 4. **Check for VBA errors:**
@@ -492,9 +492,9 @@ Common issues and solutions for using the Structural Engineering Library in Exce
    - Check `Excel/Templates/` (if available)
 
 2. **Documentation:**
-   - [Excel Tutorial](../getting-started/excel-tutorial.md) - Step-by-step guide
-   - [VBA API Reference](../reference/vba-api-reference.md) - All functions with examples
-   - [Excel Quickstart](../getting-started/excel-quickstart.md) - 5-minute intro
+   - [Excel Tutorial](../../getting-started/excel-tutorial.md) - Step-by-step guide
+   - [VBA API Reference](../../reference/vba-api-reference.md) - All functions with examples
+   - [Excel Quickstart](../../getting-started/excel-quickstart.md) - 5-minute intro
 
 3. **Test files:**
    - `VBA/Tests/Test_*.bas` - Unit test examples (for developers)
@@ -504,17 +504,17 @@ Common issues and solutions for using the Structural Engineering Library in Exce
 ## Still Having Issues?
 
 1. **Check documentation:**
-   - [Excel Quickstart](../getting-started/excel-quickstart.md)
-   - [Excel Tutorial](../getting-started/excel-tutorial.md)
-   - [VBA API Reference](../reference/vba-api-reference.md)
-   - [Known Pitfalls](../reference/known-pitfalls.md)
+   - [Excel Quickstart](../../getting-started/excel-quickstart.md)
+   - [Excel Tutorial](../../getting-started/excel-tutorial.md)
+   - [VBA API Reference](../../reference/vba-api-reference.md)
+   - [Known Pitfalls](../../reference/known-pitfalls.md)
 
 2. **Report a bug:**
-   - See [CONTRIBUTING.md](../../CONTRIBUTING.md) for issue reporting
+   - See [CONTRIBUTING.md](../../../CONTRIBUTING.md) for issue reporting
    - Include: Excel version, Windows/Mac, error message, sample worksheet
 
 3. **Community support:**
-   - See [SUPPORT.md](../../SUPPORT.md) for contact options
+   - See [SUPPORT.md](../../../agents/roles/SUPPORT.md) for contact options
 
 ---
 

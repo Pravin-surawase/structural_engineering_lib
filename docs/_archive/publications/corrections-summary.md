@@ -159,7 +159,7 @@
 
 **Status:** ✅ ALL CREDIBILITY ISSUES RESOLVED
 
-**Canonical Document:** [00-research-summary-final.md](00-research-summary-final.md)
+**Canonical Document:** [00-research-summary-final.md](../../publications/findings/00-research-summary-final.md)
 
 **Use This For:**
 - Blog 01: Making Structural Design Intelligent

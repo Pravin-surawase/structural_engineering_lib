@@ -145,7 +145,7 @@ As of **2026-01-11 (Session 9):**
 
 ## Related Documentation
 
-- [Session 9 Master Plan](../research/session-9-master-plan.md) - Current cleanup plan
+- [Session 9 Master Plan](research-sessions/session-9-master-plan.md) - Current cleanup plan
 - [Folder Restructuring Plan](../research/folder-restructuring-plan.md) - Overall strategy
 - [File Operations Safety Guide](../guidelines/file-operations-safety-guide.md) - Automation scripts
 

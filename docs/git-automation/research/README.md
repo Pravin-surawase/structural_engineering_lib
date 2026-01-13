@@ -23,7 +23,7 @@ This folder contains research documents related to git automation and workflow o
 - **Status:** Complete
 
 ### Performance Optimization
-- **File:** [agent-8-optimization-research.md](../../research/agent-8-optimization-research.md)
+- **File:** [agent-8-optimization-research.md](../../_archive/research-completed/agent-8-optimization-research.md)
 - **Purpose:** Optimization strategies and benchmarks
 - **Status:** Complete
 

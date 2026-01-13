@@ -355,6 +355,6 @@ The library expects **factored** design forces. If ETABS exports multiple combos
 ## 9. References
 
 - ETABS User Manual: Table Export Formats
-- [docs/specs/v0.9-job-schema.md](v0.9-job-schema.md) — Job schema specification
-- [docs/specs/v0.7-data-mapping.md](v0.7-data-mapping.md) — Detailing data mapping
-- [docs/getting-started/python-quickstart.md](../getting-started/python-quickstart.md) — Python quickstart
+- [docs/specs/v0.9-job-schema.md](../../specs/v0.9-job-schema.md) — Job schema specification
+- [docs/specs/v0.7-data-mapping.md](../../specs/v0.7-data-mapping.md) — Detailing data mapping
+- [docs/getting-started/python-quickstart.md](../../getting-started/python-quickstart.md) — Python quickstart

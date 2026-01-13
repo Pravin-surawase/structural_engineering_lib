@@ -217,9 +217,14 @@ def find_archivable_completed_research() -> List[Tuple[Path, str]]:
     """Find completed research files that can be archived.
 
     Criteria:
-    1. Research with Status: Complete or ✅ Complete
+    1. Research with Status: Complete/Done/Implemented/Archived
     2. Older implementation plans that are done
     3. Dated audit/analysis files
+
+    Exclusions:
+    - Today's research file
+    - Active strategy files
+    - Core reference files
     """
     candidates = []
 
@@ -227,43 +232,37 @@ def find_archivable_completed_research() -> List[Tuple[Path, str]]:
     if not research_dir.exists():
         return candidates
 
-    # Files with dates in names (typically one-time analyses)
-    dated_patterns = [
-        r"\d{4}-\d{2}-\d{2}",  # 2026-01-13
-        r"\d{8}",              # 20260113
+    # Patterns to always exclude (active/needed files)
+    exclude_patterns = [
+        "README.md",
+        "documentation-consolidation-research-2026-01-13.md",  # Today's work
+        "methodology",  # Reference file
+        "backlog",  # Active planning
+        "JOURNEY",  # Active tracking
     ]
 
-    # Specific categories that can be archived
-    archivable_patterns = [
-        ("AUDIT-AND-RECOMMENDATIONS", "Dated audit"),
-        ("QUICK-DECISION-GUIDE", "One-time decision guide"),
-        ("QUICK-REFERENCE", "Research quick reference"),
-        ("RESEARCH-DECISION-MATRIX", "Decision matrix"),
-        ("RESEARCH-STATUS-VISUAL", "Status visualization"),
-        ("DISCUSSION-GUIDE", "Discussion guide"),
+    # Complete status patterns - handle various formats including emojis
+    complete_patterns = [
+        re.compile(r"\*\*Status\*\*:.*(?:Complete|Done|Implemented|Archived)", re.IGNORECASE),
+        re.compile(r"Status:.*(?:Complete|Done|Implemented|Archived)", re.IGNORECASE),
     ]
 
     for f in research_dir.glob("*.md"):
         name = f.name
-        reason = None
 
-        # Check for dated files
-        for pattern in dated_patterns:
-            if re.search(pattern, name):
-                # Exclude today's files and consolidation research
-                if "consolidation" not in name.lower():
-                    if "20260113" in name or "2026-01-13" in name:
-                        reason = "Dated research file"
-                        break
+        # Skip excluded files
+        if any(excl in name for excl in exclude_patterns):
+            continue
 
-        # Check for archivable patterns
-        for pattern, pattern_reason in archivable_patterns:
-            if pattern in name:
-                reason = pattern_reason
-                break
-
-        if reason:
-            candidates.append((f, reason))
+        # Check if file has Complete status in metadata (first 30 lines)
+        try:
+            content = f.read_text()[:2000]  # First ~30 lines
+            for pattern in complete_patterns:
+                if pattern.search(content):
+                    candidates.append((f, "Status: Complete"))
+                    break
+        except Exception:
+            pass
 
     return candidates
 

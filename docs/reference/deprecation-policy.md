@@ -350,4 +350,4 @@ for item in deprecated:
 - [`structural_lib.utilities.deprecated`](../reference/api.md#deprecated) — Decorator API reference
 - [`structural_lib.utilities.deprecated_field`](../reference/api.md#deprecated_field) — Field deprecation API
 - [CHANGELOG.md](../../CHANGELOG.md) — Release history with deprecation notices
-- [docs/research/backward-compatibility-strategy.md](../research/backward-compatibility-strategy.md) — Full research document
+- [docs/research/backward-compatibility-strategy.md](../_archive/research-completed/backward-compatibility-strategy.md) — Full research document

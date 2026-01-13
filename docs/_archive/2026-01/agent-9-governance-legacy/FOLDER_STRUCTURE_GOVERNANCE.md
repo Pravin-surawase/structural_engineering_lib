@@ -694,10 +694,10 @@ echo "✅ Migration complete. Please review and test!"
 
 ## 🔗 Related Documents
 
-- [Git Workflow for AI Agents](../../../docs/contributing/git-workflow-ai-agents.md)
-- [Agent Workflow Master Guide](../../../docs/agents/agent-workflow-master-guide.md)
-- [Project Overview](../../../docs/architecture/project-overview.md)
-- [TASKS.md](../../../docs/TASKS.md)
+- [Git Workflow for AI Agents](../../../contributing/git-workflow-ai-agents.md)
+- [Agent Workflow Master Guide](../../../agents/guides/agent-workflow-master-guide.md)
+- [Project Overview](../../../architecture/project-overview.md)
+- [TASKS.md](../../../TASKS.md)
 
 ---
 

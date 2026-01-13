@@ -236,7 +236,7 @@ git status --porcelain | grep -v "\.(coverage|DS_Store|pyc)$" | xargs git add
 - CI integration
 - Success metrics
 
-**Implementation Guide:** [agent-8-implementation-guide.md](../../agents/guides/agent-8-implementation-guide.md)
+**Implementation Guide:** [agent-8-implementation-guide.md](../agents/guides/agent-8-implementation-guide.md)
 - Three implementation models
 - Helper scripts (ready to use)
 - Integration steps
@@ -250,8 +250,8 @@ git status --porcelain | grep -v "\.(coverage|DS_Store|pyc)$" | xargs git add
 
 **Current Git Workflows:**
 - [git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md) - Canonical workflow
-- [AGENT_WORKFLOW_MASTER_GUIDE.md](../../agents/agent-workflow-master-guide.md) - Master guide
-- [AGENT_QUICK_REFERENCE.md](../../agents/agent-quick-reference.md) - Quick reference
+- [AGENT_WORKFLOW_MASTER_GUIDE.md](../../agents/guides/agent-workflow-master-guide.md) - Master guide
+- [AGENT_QUICK_REFERENCE.md](../../agents/guides/agent-quick-reference.md) - Quick reference
 
 ---
 

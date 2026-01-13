@@ -21,7 +21,7 @@
 ### 1. Research Documents (TASK-148, 149, 150) ✅
 We already researched CS best practices! Here's what we learned:
 
-#### **CS Best Practices Audit** ([docs/research/cs-best-practices-audit.md](../research/cs-best-practices-audit.md))
+#### **CS Best Practices Audit** ([docs/research/cs-best-practices-audit.md](../_archive/research-completed/cs-best-practices-audit.md))
 **Status:** ✅ Complete (938 lines, comprehensive)
 
 **What We Found:**
@@ -39,7 +39,7 @@ We already researched CS best practices! Here's what we learned:
 
 ---
 
-#### **Backward Compatibility Strategy** ([docs/research/backward-compatibility-strategy.md](../research/backward-compatibility-strategy.md))
+#### **Backward Compatibility Strategy** ([docs/research/backward-compatibility-strategy.md](../_archive/research-completed/backward-compatibility-strategy.md))
 **Status:** ✅ Complete (1203 lines, extremely detailed)
 
 **What We Found:**
@@ -63,7 +63,7 @@ We already researched CS best practices! Here's what we learned:
 
 ---
 
-#### **Modern Python Tooling** ([docs/research/modern-python-tooling.md](../research/modern-python-tooling.md))
+#### **Modern Python Tooling** ([docs/research/modern-python-tooling.md](../_archive/research-completed/modern-python-tooling.md))
 **Status:** ✅ Complete
 
 **What We Found:** (details in research doc)

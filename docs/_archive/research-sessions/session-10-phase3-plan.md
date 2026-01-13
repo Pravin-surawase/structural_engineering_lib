@@ -198,7 +198,7 @@ Use this structure for all README enhancements:
 
 ## Related
 
-- [Link to related folder](../folder/README.md)
+- [Link to related folder](../README.md)
 - [Link to parent](../README.md)
 ```
 

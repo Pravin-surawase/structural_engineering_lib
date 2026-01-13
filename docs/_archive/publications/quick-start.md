@@ -12,7 +12,7 @@ A comprehensive publication plan documenting our research and development work o
 
 ### Key Assets Created
 
-1. **Comprehensive Research** ([research-smart-library.md](../_archive/2026-01/research-smart-library.md))
+1. **Comprehensive Research** ([research-smart-library.md](../2026-01/research-smart-library.md))
    - 20+ citations from academic literature
    - 7 research directions explored
    - Recommendations prioritized by feasibility
@@ -23,12 +23,12 @@ A comprehensive publication plan documenting our research and development work o
    - Constructability scoring (weighted metrics)
    - Sample-only validation (3 vectors matched; not a general accuracy claim)
 
-3. **Findings Documented** ([prototype-findings-intelligence.md](../_archive/2026-01/prototype-findings-intelligence.md))
+3. **Findings Documented** ([prototype-findings-intelligence.md](../2026-01/prototype-findings-intelligence.md))
    - Test results (7/7 scenarios passed)
    - Performance metrics (<10ms for all features)
    - Engineering validation (aligns with IS 456)
 
-4. **Implementation Plan** ([v0.13-v0.14-implementation-plan.md](../_archive/2026-01/v0.13-v0.14-implementation-plan.md))
+4. **Implementation Plan** ([v0.13-v0.14-implementation-plan.md](../2026-01/v0.13-v0.14-implementation-plan.md))
    - Comprehensive 1900+ line plan
    - Architecture decisions (separate insights module)
    - Release timeline (v0.13-v0.14)
@@ -63,7 +63,7 @@ A comprehensive publication plan documenting our research and development work o
 
 ### 1. Making Structural Design Intelligent (Without ML)
 - **Status:** ✅ OUTLINE COMPLETE
-- **File:** [blog-posts/01-smart-library/outline.md](blog-posts/01-smart-library/outline.md)
+- **File:** [blog-posts/01-smart-library/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 - **Length:** 2000-2500 words
 - **Target:** Dev.to + Medium
 - **Publish:** January 15, 2025
@@ -84,7 +84,7 @@ A comprehensive publication plan documenting our research and development work o
 
 ### 2. Deterministic ML — When Classical Methods Beat Neural Networks
 - **Status:** ✅ OUTLINE COMPLETE
-- **File:** [blog-posts/02-deterministic-ml/outline.md](blog-posts/02-deterministic-ml/outline.md)
+- **File:** [blog-posts/02-deterministic-ml/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 - **Length:** 1800-2200 words
 - **Target:** Dev.to, HackerNews
 - **Publish:** January 30, 2025
@@ -105,7 +105,7 @@ A comprehensive publication plan documenting our research and development work o
 
 ### 3. Sensitivity Analysis for Reinforced Concrete Beam Design
 - **Status:** ✅ OUTLINE COMPLETE
-- **File:** [blog-posts/03-sensitivity-analysis/outline.md](blog-posts/03-sensitivity-analysis/outline.md)
+- **File:** [blog-posts/03-sensitivity-analysis/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 - **Length:** 2500-3000 words
 - **Target:** Medium (longform technical)
 - **Publish:** February 15, 2025
@@ -301,16 +301,16 @@ Not all problems need 10,000 training samples. When you have physical models and
 ## Resources & References
 
 ### Internal Documentation
-- [Research document](../_archive/2026-01/research-smart-library.md) — 20+ citations
-- [Prototype findings](../_archive/2026-01/prototype-findings-intelligence.md) — Validation results
-- [Implementation plan](../_archive/2026-01/v0.13-v0.14-implementation-plan.md) — v0.13-v0.14 roadmap
-- [Production roadmap](../_archive/planning/production-roadmap.md) — 52-week plan to v1.0
+- [Research document](../2026-01/research-smart-library.md) — 20+ citations
+- [Prototype findings](../2026-01/prototype-findings-intelligence.md) — Validation results
+- [Implementation plan](../2026-01/v0.13-v0.14-implementation-plan.md) — v0.13-v0.14 roadmap
+- [Production roadmap](../planning/production-roadmap.md) — 52-week plan to v1.0
 
 ### Code & Examples
 - [Python/structural_lib/insights/](../../Python/structural_lib/insights/) — Insights implementation
-- [Python/structural_lib/intelligence.py](../../Python/structural_lib/intelligence.py) — Compatibility shim
-- [Python/examples/demo_intelligence.py](../../Python/examples/demo_intelligence.py) — Feature demonstration
-- [Python/examples/validate_intelligence.py](../../Python/examples/validate_intelligence.py) — Sample validation
+- [Python/structural_lib/intelligence.py](../../../Python/structural_lib/intelligence.py) — Compatibility shim
+- [Python/examples/demo_intelligence.py](../../../Python/examples/demo_intelligence.py) — Feature demonstration
+- [Python/examples/validate_intelligence.py](../../../Python/examples/validate_intelligence.py) — Sample validation
 
 ### External References
 - [pymoo documentation](https://pymoo.org/) — Multi-objective optimization
@@ -388,13 +388,13 @@ Target: 3000+ total views, 30+ comments, 50+ GitHub stars by end of Q1 2025.
 ## Support
 
 **Questions about the plan?**
-- Review [content-strategy.md](content-strategy.md) for comprehensive details
+- Review [content-strategy.md](../../publications/content-strategy.md) for comprehensive details
 - Check individual blog outlines for section-by-section breakdown
 - Reference implementation plan for technical details
 
 **Ready to start writing?**
 - Expand outlines section by section
-- Add code examples from [Python/examples/](../../Python/examples/)
+- Add code examples from [Python/examples/](../../verification/examples.md)
 - Create diagrams using Mermaid or draw.io
 - Internal review before publishing
 

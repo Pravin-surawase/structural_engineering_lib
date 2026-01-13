@@ -79,7 +79,7 @@ sed -i '' 's|old-path.md|new-path.md|g' affected-files.md
 # 2. Or manually edit files
 ```
 
-**Workflow:** [LINK_GOVERNANCE.md](../workflows/LINK_GOVERNANCE.md)
+**Workflow:** [LINK_GOVERNANCE.md](../../../../agents/agent-9/workflows/LINK_GOVERNANCE.md)
 
 ---
 

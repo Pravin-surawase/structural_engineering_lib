@@ -74,7 +74,7 @@ docs/agents/
 
 ```
 # VBA Guide
-See [docs/contributing/vba-guide.md](docs/contributing/vba-guide.md)
+See [docs/contributing/vba-guide.md](../../contributing/vba-guide.md)
 ```
 
 **Issue:** This is a redirect stub that still exists.

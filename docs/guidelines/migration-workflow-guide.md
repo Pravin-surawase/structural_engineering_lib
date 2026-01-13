@@ -434,7 +434,7 @@ CLEANUP
 
 ## Related Documents
 
-- [is456-migration-research.md](../research/is456-migration-research.md) - Full research
+- [is456-migration-research.md](../_archive/research-completed/is456-migration-research.md) - Full research
 - [migration-preflight-checklist.md](migration-preflight-checklist.md) - Detailed checklist
 - [enterprise-folder-structure-research.md](../research/enterprise-folder-structure-research.md) - Architecture research
 

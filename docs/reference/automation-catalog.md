@@ -1498,7 +1498,7 @@ Summary:
   Total: 73 modified
 ```
 
-**Related:** [professional-repo-standards.md](../research/professional-repo-standards.md), [LICENSE](../../LICENSE)
+**Related:** [professional-repo-standards.md](../_archive/research-completed/professional-repo-standards.md), [LICENSE](../../LICENSE)
 
 ---
 

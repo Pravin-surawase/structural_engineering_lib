@@ -24,7 +24,7 @@
 | **[RESEARCH_PLAN_SUMMARY.md](RESEARCH_PLAN_SUMMARY.md)** | Executive summary (394 lines) |
 | **[RESEARCH_QUICK_REF.md](RESEARCH_QUICK_REF.md)** | 1-page quick reference card |
 | **[AGENT_9_IMPLEMENTATION_ROADMAP.md](AGENT_9_IMPLEMENTATION_ROADMAP.md)** | Implementation roadmap |
-| **[Governance Hub](governance/README.md)** | Central location for migration + structure governance |
+| **[Governance Hub](README.md)** | Central location for migration + structure governance |
 
 ---
 
@@ -227,7 +227,7 @@ What type of governance session?
 3. **[TASKS.md](../../docs/TASKS.md)** - Current backlog state
 4. **[SESSION_LOG.md](../../docs/SESSION_LOG.md)** - Historical decisions
 5. **[git-governance.md](../../docs/_internal/git-governance.md)** - Git/CI best practices
-6. **[Governance Hub](governance/README.md)** - Migration + structure governance home
+6. **[Governance Hub](README.md)** - Migration + structure governance home
 
 ### Research Foundation
 - Best AI Coding Agents for 2026 - Faros AI

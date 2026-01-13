@@ -2,7 +2,7 @@
 
 **Update Date:** 2025-12-31
 **Status:** ✅ ALL THREE OUTLINES CORRECTED
-**Evidence Basis:** [00-research-summary-final.md](findings/00-research-summary-final.md)
+**Evidence Basis:** [00-research-summary-final.md](../../publications/findings/00-research-summary-final.md)
 
 ---
 
@@ -41,7 +41,7 @@ All three blog post outlines have been updated to reflect corrected, evidence-ba
 
 ## Blog 01: Making Structural Design Intelligent
 
-**File:** [blog-posts/01-smart-library/outline.md](blog-posts/01-smart-library/outline.md)
+**File:** [blog-posts/01-smart-library/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 
 ### Changes Made
 
@@ -75,7 +75,7 @@ All three blog post outlines have been updated to reflect corrected, evidence-ba
 
 ## Blog 02: Deterministic ML
 
-**File:** [blog-posts/02-deterministic-ml/outline.md](blog-posts/02-deterministic-ml/outline.md)
+**File:** [blog-posts/02-deterministic-ml/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 
 ### Changes Made
 
@@ -101,7 +101,7 @@ All three blog post outlines have been updated to reflect corrected, evidence-ba
 
 ## Blog 03: Sensitivity Analysis
 
-**File:** [blog-posts/03-sensitivity-analysis/outline.md](blog-posts/03-sensitivity-analysis/outline.md)
+**File:** [blog-posts/03-sensitivity-analysis/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 
 ### Changes Made
 
@@ -214,9 +214,9 @@ All three blog outlines now have:
 
 ## Files Updated
 
-1. ✅ [blog-posts/01-smart-library/outline.md](blog-posts/01-smart-library/outline.md)
-2. ✅ [blog-posts/02-deterministic-ml/outline.md](blog-posts/02-deterministic-ml/outline.md)
-3. ✅ [blog-posts/03-sensitivity-analysis/outline.md](blog-posts/03-sensitivity-analysis/outline.md)
+1. ✅ [blog-posts/01-smart-library/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
+2. ✅ [blog-posts/02-deterministic-ml/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
+3. ✅ [blog-posts/03-sensitivity-analysis/outline.md](../../publications/blog-posts/03-sensitivity-analysis/outline.md)
 
 ---
 

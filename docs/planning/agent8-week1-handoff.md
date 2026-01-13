@@ -17,7 +17,7 @@
 ## What Was Accomplished
 
 ### Research Phase (100% Complete)
-1. **45-page optimization analysis** - [agent-8-optimization-research.md](../research/agent-8-optimization-research.md)
+1. **45-page optimization analysis** - [agent-8-optimization-research.md](../_archive/research-completed/agent-8-optimization-research.md)
    - Identified 13 optimization opportunities
    - Analyzed current workflow (45-120s per commit)
    - Profiled every operation
@@ -348,7 +348,7 @@ Continue with Week 2 optimizations:
 ## Resources
 
 ### Documentation
-- Research: [agent-8-optimization-research.md](../research/agent-8-optimization-research.md)
+- Research: [agent-8-optimization-research.md](../_archive/research-completed/agent-8-optimization-research.md)
 - Priority: [agent-8-implementation-priority.md](../_archive/research/agent-8/agent-8-implementation-priority.md) (*Archived*)
 - Week 1 spec: [agent-8-week1-summary.md](../_archive/research/agent-8/agent-8-week1-summary.md) (*Archived*)
 - Reality check: [agent-8-week1-reality-check.md](../_archive/research/agent-8/agent-8-week1-reality-check.md) (*Archived*)

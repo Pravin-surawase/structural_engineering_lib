@@ -19,11 +19,11 @@
 
 | Document | Purpose | Read This If... |
 |----------|---------|-----------------|
-| [QUICK-REFERENCE.md](docs/research/QUICK-REFERENCE.md) | **Start here** - One-page summary | You want the 5-minute overview |
-| [RESEARCH-SUMMARY-AND-PLAN.md](docs/research/RESEARCH-SUMMARY-AND-PLAN.md) | Simple language summary + math formulation | You want to understand the problem and solution |
-| [IMPLEMENTATION-DETAILED-PLAN.md](docs/research/IMPLEMENTATION-DETAILED-PLAN.md) | **10 specific tasks with code templates** | You're ready to start coding |
-| [IMPLEMENTATION-ROADMAP.md](docs/research/literature-review/week-1-pareto-optimization/IMPLEMENTATION-ROADMAP.md) | Architecture + 4 phases (v0.17 - v0.20) | You want the long-term vision |
-| [PHASE-1.4-HUMAN-AI-INTERACTION.md](docs/research/literature-review/week-1-pareto-optimization/PHASE-1.4-HUMAN-AI-INTERACTION.md) | Research findings on trust & visualization | You need to understand engineer psychology |
+| [QUICK-REFERENCE.md](../_archive/research-completed/QUICK-REFERENCE.md) | **Start here** - One-page summary | You want the 5-minute overview |
+| [RESEARCH-SUMMARY-AND-PLAN.md](RESEARCH-SUMMARY-AND-PLAN.md) | Simple language summary + math formulation | You want to understand the problem and solution |
+| [IMPLEMENTATION-DETAILED-PLAN.md](IMPLEMENTATION-DETAILED-PLAN.md) | **10 specific tasks with code templates** | You're ready to start coding |
+| [IMPLEMENTATION-ROADMAP.md](literature-review/week-1-pareto-optimization/IMPLEMENTATION-ROADMAP.md) | Architecture + 4 phases (v0.17 - v0.20) | You want the long-term vision |
+| [PHASE-1.4-HUMAN-AI-INTERACTION.md](../_archive/research-phases/PHASE-1.4-HUMAN-AI-INTERACTION.md) | Research findings on trust & visualization | You need to understand engineer psychology |
 
 ---
 
@@ -73,7 +73,7 @@ Output: Interactive scatter plot with 10 beam options
 ## What Happens Next
 
 ### To Start Coding (Task List)
-Follow [IMPLEMENTATION-DETAILED-PLAN.md](docs/research/IMPLEMENTATION-DETAILED-PLAN.md):
+Follow [IMPLEMENTATION-DETAILED-PLAN.md](IMPLEMENTATION-DETAILED-PLAN.md):
 - **Week 1:** Build foundation (validator, cost, carbon calculators)
 - **Week 2:** Build Phase 1 MVP (simple dashboard)
 - **Week 3:** Build Phase 2 (brute force frontier)
@@ -91,10 +91,10 @@ Follow [IMPLEMENTATION-DETAILED-PLAN.md](docs/research/IMPLEMENTATION-DETAILED-P
 
 In This Order:
 
-1. **Start:** [QUICK-REFERENCE.md](docs/research/QUICK-REFERENCE.md) (5 min)
-2. **Understand:** [RESEARCH-SUMMARY-AND-PLAN.md](docs/research/RESEARCH-SUMMARY-AND-PLAN.md) (15 min)
-3. **Implement:** [IMPLEMENTATION-DETAILED-PLAN.md](docs/research/IMPLEMENTATION-DETAILED-PLAN.md) (dive into Task-001)
-4. **Deep Dive:** [PHASE-1.4-HUMAN-AI-INTERACTION.md](docs/research/literature-review/week-1-pareto-optimization/PHASE-1.4-HUMAN-AI-INTERACTION.md) (for UI/UX details)
+1. **Start:** [QUICK-REFERENCE.md](../_archive/research-completed/QUICK-REFERENCE.md) (5 min)
+2. **Understand:** [RESEARCH-SUMMARY-AND-PLAN.md](RESEARCH-SUMMARY-AND-PLAN.md) (15 min)
+3. **Implement:** [IMPLEMENTATION-DETAILED-PLAN.md](IMPLEMENTATION-DETAILED-PLAN.md) (dive into Task-001)
+4. **Deep Dive:** [PHASE-1.4-HUMAN-AI-INTERACTION.md](../_archive/research-phases/PHASE-1.4-HUMAN-AI-INTERACTION.md) (for UI/UX details)
 
 ---
 

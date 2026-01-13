@@ -189,17 +189,17 @@ Update after each phase or batch.
 
 ### Entry Points Created
 **Agent 6:**
-- [docs/agents/guides/agent-6-quick-start.md](../../../docs/agents/guides/agent-6-quick-start.md)
-- [docs/agents/guides/agent-6-streamlit-hub.md](../../../docs/agents/guides/agent-6-streamlit-hub.md)
+- [docs/agents/guides/agent-6-quick-start.md](../../../agents/guides/agent-6-quick-start.md)
+- [docs/agents/guides/agent-6-streamlit-hub.md](../../../agents/guides/agent-6-streamlit-hub.md)
 
 **Agent 8:**
-- [docs/agents/guides/agent-8-quick-start.md](../../../docs/agents/guides/agent-8-quick-start.md)
-- [docs/agents/guides/agent-8-automation.md](../../../docs/agents/guides/agent-8-automation.md)
-- [docs/agents/guides/agent-8-git-ops.md](../../../docs/agents/guides/agent-8-git-ops.md) (core protocol)
+- [docs/agents/guides/agent-8-quick-start.md](../../agents/guides/agent-8-quick-start.md)
+- [docs/agents/guides/agent-8-automation.md](../../../agents/guides/agent-8-automation.md)
+- [docs/agents/guides/agent-8-git-ops.md](../../../agents/guides/agent-8-git-ops.md) (core protocol)
 
 **Agent 9:**
-- [docs/agents/guides/agent-9-quick-start.md](../../../docs/agents/guides/agent-9-quick-start.md)
-- [docs/agents/guides/agent-9-governance-hub.md](../../../docs/agents/guides/agent-9-governance-hub.md)
+- [docs/agents/guides/agent-9-quick-start.md](../../../agents/guides/agent-9-quick-start.md)
+- [docs/agents/guides/agent-9-governance-hub.md](../../../agents/guides/agent-9-governance-hub.md)
 - [agents/agent-9/governance/README.md](README.md) (full detail hub)
 
 ---
