@@ -29,4 +29,10 @@ from .preview import (
     render_cost_summary
 )
 
+# Report export component (TASK-276-279 Integration)
+from .report_export import (
+    show_export_options,
+    show_audit_trail_summary,
+)
+
 # This file will be populated in STREAMLIT-IMPL-002

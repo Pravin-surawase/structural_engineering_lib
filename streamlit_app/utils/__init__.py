@@ -9,8 +9,14 @@ Modules:
 - validation: Input validation functions
 - formatters: Data formatting utilities
 - state: Session state management
+- input_bridge: Bridge between UI inputs and library inputs (TASK-276-279)
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
 """
 
-# This file will be populated in implementation phase
+# Input bridge for TASK-276-279 integration
+from .input_bridge import (
+    InputBridge,
+    get_beam_input_from_session,
+    log_design_to_audit,
+)
