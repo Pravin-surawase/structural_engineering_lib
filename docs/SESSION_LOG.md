@@ -4,6 +4,69 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-14 — Session 23: Hypothesis Property-Based Testing + Test Fixes
+
+**Focus:** Implement Hypothesis property-based testing framework and fix deprecated test patterns.
+
+### Summary
+
+**Part 1: Hypothesis Property-Based Testing (43 new tests)**
+
+Created comprehensive property-based testing framework using Hypothesis:
+
+1. **strategies.py** (~235 lines)
+   - Reusable strategies: `concrete_grade()`, `steel_grade()`, `beam_section()`
+   - Composite strategies: `flexure_inputs()`, `shear_inputs()`, `ductile_inputs()`
+   - Edge case strategy: `beam_width_narrow()` for narrow beams (100-200mm)
+
+2. **Test Coverage:**
+   - `test_flexure_hypothesis.py`: 13 tests (Mu_lim, Ast, singly reinforced design)
+   - `test_shear_hypothesis.py`: 13 tests (Tv, Tc, Tc_max, shear design)
+   - `test_ductile_hypothesis.py`: 17 tests (geometry, steel %, confinement, ductility)
+
+3. **Hypothesis Profiles:**
+   - `dev`: 25 examples (fast local development)
+   - `default`: 100 examples (standard runs)
+   - `ci`: 200 examples with `derandomize=True` (reproducible CI)
+   - `exhaustive`: 1000 examples (thorough pre-release testing)
+
+4. **Key Findings from Property Testing:**
+   - High fck (70) + low fy (250) can exceed 4% max steel even for Mu < Mu_lim
+   - Narrow beams stress geometry validation logic
+   - Shear stress limits are sensitive to concrete grade transitions
+
+**Part 2: Fix Deprecated Test Patterns (10 tests → 2639 pass)**
+
+Fixed tests checking deprecated `error_message` and `remarks` fields:
+
+- `test_flanged_beam.py`: 2 tests updated
+- `test_tables_and_materials_additional.py`: 5 tests updated
+- `test_critical_is456.py`: 1 test updated
+- `test_findings_regressions.py`: 2 tests updated
+
+All tests now check the structured `errors` list instead.
+
+**Part 3: Documentation & CI Integration (PR #358)**
+
+- Added Section 7 to `testing-strategy.md` with Hypothesis documentation
+- Updated `nightly.yml` to use `--hypothesis-profile=ci`
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `49ae86d` | feat(tests): add Hypothesis property-based testing with 43 new tests |
+| `PR #358` | docs: add Hypothesis property testing section and enable CI profile |
+| `94bbfbb` | fix(tests): update tests to check errors list instead of deprecated fields |
+
+### Next Actions
+
+1. Implement TASK-522: Add Jinja2 report templates
+2. Implement TASK-524: New calculation functions (span_depth_ratio, get_fs, etc.)
+3. Continue v0.18.0 Library Expansion
+
+---
+
 ## 2026-01-13 — Session 22: Sessions 20-21 Validation & Test Fixes (PR #357)
 
 **Focus:** Review, validate, and fix issues from Sessions 20-21.

@@ -82,6 +82,22 @@
 
 ## Active
 
+### v0.18.0 Core Library Expansion
+
+> **Goal:** Expand testing and templating capabilities for v0.18.0 release
+> **Research:** [v018-library-expansion-feasibility.md](research/v018-library-expansion-feasibility.md)
+> **Timeline:** Week 3-4 January 2026
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-520** | Hypothesis property-based testing (strategies + 43 tests) | DEV | 4h | 🟠 MEDIUM | ✅ Complete |
+| **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests) | DEV | 1h | 🟠 MEDIUM | ✅ Complete |
+| **TASK-522** | Add Jinja2 report templates | DEV | 4h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-523** | Hypothesis docs + CI integration | DOCS | 1h | 🟠 MEDIUM | ✅ PR #358 Merged |
+| **TASK-524** | New calculation functions (span_depth_ratio, get_fs, etc.) | DEV | 3h | 🟠 MEDIUM | ⏳ Queued |
+
+---
+
 ### v0.18.0 Pre-Release: Critical Infrastructure (Phase 1)
 
 > **Goal:** Fix 5 critical infrastructure gaps BEFORE v0.18.0 to prevent post-release firefighting
@@ -255,6 +271,9 @@ and `streamlit_app/tests/test_input_bridge.py`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-520** | Hypothesis property-based testing (strategies + 43 tests for flexure/shear/ductile) | DEV | ✅ 2026-01-14 |
+| **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests → all 2639 pass) | DEV | ✅ 2026-01-14 |
+| **TASK-523** | Hypothesis docs + CI integration (testing-strategy.md, nightly.yml) | DOCS | ✅ PR #358 2026-01-14 |
 | **TASK-506** | Session 20-21 Validation & Test Fixes (17 broken tests → all pass, lint fixes) | MAIN | ✅ PR #357 2026-01-13 |
 | **IMP-02** | Add diagnostics reminders to agent_start.sh + end_session.py | DEVOPS | ✅ 2026-01-13 |
 | **IMP-03** | Add debug snapshot checklist to handoff docs | DOCS | ✅ 2026-01-13 |
