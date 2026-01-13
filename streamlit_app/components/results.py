@@ -95,7 +95,9 @@ def display_reinforcement_summary(result: dict, layout: str = "columns"):
         spacing = shear.get("spacing") or 0
 
         if legs and stirrup_dia and spacing:
-            st.markdown(f"📏 **{legs}-legged {stirrup_dia}mm** @ **{spacing:.0f}mm** c/c")
+            st.markdown(
+                f"📏 **{legs}-legged {stirrup_dia}mm** @ **{spacing:.0f}mm** c/c"
+            )
 
         tau_v = shear.get("tau_v") or 0
         tau_c = shear.get("tau_c") or 0
@@ -140,7 +142,9 @@ def display_reinforcement_summary(result: dict, layout: str = "columns"):
             st.error("❌ **UNSAFE**")
 
 
-def display_flexure_result(flexure_result: dict = None, flexure: dict = None, compact: bool = False):
+def display_flexure_result(
+    flexure_result: dict = None, flexure: dict = None, compact: bool = False
+):
     """
     Display flexure design result details.
 
@@ -192,7 +196,9 @@ def display_flexure_result(flexure_result: dict = None, flexure: dict = None, co
             st.warning("Doubly reinforced")
 
 
-def display_shear_result(shear_result: dict = None, shear: dict = None, compact: bool = False):
+def display_shear_result(
+    shear_result: dict = None, shear: dict = None, compact: bool = False
+):
     """
     Display shear design result details.
 
@@ -272,11 +278,17 @@ def display_summary_metrics(result: dict, metrics: Optional[List[str]] = None):
         # Custom metrics
         cols = st.columns(len(metrics))
         for i, metric_key in enumerate(metrics):
-            value = result.get("flexure", {}).get(metric_key) or result.get("shear", {}).get(metric_key) or 0
+            value = (
+                result.get("flexure", {}).get(metric_key)
+                or result.get("shear", {}).get(metric_key)
+                or 0
+            )
             cols[i].metric(metric_key.replace("_", " ").title(), f"{value:.0f}")
 
 
-def display_utilization_meters(result: dict, thresholds: Optional[Dict[str, float]] = None):
+def display_utilization_meters(
+    result: dict, thresholds: Optional[Dict[str, float]] = None
+):
     """
     Display capacity utilization progress bars.
 
@@ -291,36 +303,58 @@ def display_utilization_meters(result: dict, thresholds: Optional[Dict[str, floa
     if thresholds is None:
         thresholds = {"green": 80, "yellow": 95, "red": 100}
 
-    st.markdown("### 📊 Capacity Utilization")
+    # Note: Header removed - callers should add their own header if needed
+    # This prevents double-printing when beam_design.py adds its own header
 
     flexure = result.get("flexure", {})
     shear = result.get("shear", {})
 
-    # Flexure utilization (simplified - would need actual Mu/Mu_limit)
-    ast_req = flexure.get("ast_required") or 0
-    ast_prov = flexure.get("ast_provided") or 1
-    if ast_prov > 0:
-        flex_util = (ast_req / ast_prov) * 100
-    else:
-        flex_util = 0
+    # Create two columns for utilization display
+    col1, col2 = st.columns(2)
 
-    st.markdown("**Flexure Utilization**")
-    flex_color = "🟢" if flex_util < thresholds["green"] else "🟡" if flex_util < thresholds["yellow"] else "🔴"
-    st.markdown(f"{flex_color} {flex_util:.1f}%")
-    st.progress(min(flex_util / 100, 1.0))
+    with col1:
+        # Flexure utilization: Ast_required / Ast_provided
+        # Shows how much of provided steel is being used
+        ast_req = flexure.get("ast_required") or flexure.get("Ast_req") or 0
+        ast_prov = flexure.get("ast_provided") or flexure.get("Ast_prov") or 1
+        if ast_prov > 0:
+            flex_util = (ast_req / ast_prov) * 100
+        else:
+            flex_util = 0
 
-    # Shear utilization
-    tau_v = shear.get("tau_v") or 0
-    tau_c = shear.get("tau_c") or 1
-    if tau_c > 0:
-        shear_util = (tau_v / tau_c) * 100
-    else:
-        shear_util = 0
+        st.markdown("**Flexure (Steel Utilization)**")
+        flex_color = (
+            "🟢"
+            if flex_util < thresholds["green"]
+            else "🟡" if flex_util < thresholds["yellow"] else "🔴"
+        )
+        st.markdown(f"{flex_color} {flex_util:.1f}%")
+        st.progress(min(flex_util / 100, 1.0))
+        st.caption(f"Ast req/prov: {ast_req:.0f} / {ast_prov:.0f} mm²")
 
-    st.markdown("**Shear Utilization**")
-    shear_color = "🟢" if shear_util < thresholds["green"] else "🟡" if shear_util < thresholds["yellow"] else "🔴"
-    st.markdown(f"{shear_color} {shear_util:.1f}%")
-    st.progress(min(shear_util / 100, 1.0))
+    with col2:
+        # Shear utilization: tau_v / tau_c
+        # If >100%, stirrups are required (this is normal)
+        tau_v = shear.get("tau_v") or 0
+        tau_c = shear.get("tau_c") or 1
+        if tau_c > 0:
+            shear_util = (tau_v / tau_c) * 100
+        else:
+            shear_util = 0
+
+        # For shear, >100% is common and means stirrups needed
+        st.markdown("**Shear (τv / τc)**")
+        if shear_util > 100:
+            st.markdown(f"🔶 {shear_util:.1f}% (stirrups required)")
+        else:
+            shear_color = (
+                "🟢"
+                if shear_util < thresholds["green"]
+                else "🟡" if shear_util < thresholds["yellow"] else "🔴"
+            )
+            st.markdown(f"{shear_color} {shear_util:.1f}%")
+        st.progress(min(shear_util / 100, 1.0))
+        st.caption(f"τv / τc: {tau_v:.2f} / {tau_c:.2f} N/mm²")
 
 
 def display_material_properties(concrete: dict, steel: dict, compact: bool = False):
@@ -339,7 +373,9 @@ def display_material_properties(concrete: dict, steel: dict, compact: bool = Fal
     """
     if compact:
         # Compact mode: single line
-        st.markdown(f"**Materials:** {concrete.get('grade', 'M25')} / {steel.get('grade', 'Fe415')}")
+        st.markdown(
+            f"**Materials:** {concrete.get('grade', 'M25')} / {steel.get('grade', 'Fe415')}"
+        )
         return
 
     # Full mode: detailed display
