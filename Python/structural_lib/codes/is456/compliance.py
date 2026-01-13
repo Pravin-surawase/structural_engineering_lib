@@ -35,6 +35,7 @@ from structural_lib.data_types import (
     ShearResult,
     SupportCondition,
 )
+from structural_lib.errors import Severity
 
 from . import flexure, serviceability, shear
 
@@ -252,9 +253,22 @@ def check_compliance_case(
 
     # Determine pass/fail.
     if not flex.is_safe:
-        failed_checks.append("flexure")
+        # Extract specific error messages if available
+        error_msgs = [
+            f"flexure ({e.message})" for e in flex.errors if e.severity == Severity.ERROR
+        ]
+        if not error_msgs:
+            error_msgs = ["flexure"]
+        failed_checks.extend(error_msgs)
+
     if not sh.is_safe:
-        failed_checks.append("shear")
+        error_msgs = [
+            f"shear ({e.message})" for e in sh.errors if e.severity == Severity.ERROR
+        ]
+        if not error_msgs:
+            error_msgs = ["shear"]
+        failed_checks.extend(error_msgs)
+
     if defl is not None and not defl.is_ok:
         failed_checks.append("deflection")
     if crack is not None and not crack.is_ok:
