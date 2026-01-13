@@ -186,6 +186,21 @@ IS 456 RC beam design library with **Python + VBA parity**.
 - One consolidated research file per topic
 - Clear metadata header with Status field
 - Archive condition in metadata
+- **Use create_doc.py for new files:** `.venv/bin/python scripts/create_doc.py <path> "Title"`
+
+### Creating New Documents (RECOMMENDED)
+
+Use the `create_doc.py` script to create new files with proper metadata:
+
+```bash
+# Create new research file
+.venv/bin/python scripts/create_doc.py docs/research/my-topic.md "My Topic Research"
+
+# Create with specific type and tasks
+.venv/bin/python scripts/create_doc.py docs/planning/my-plan.md "My Plan" --type=Plan --tasks=TASK-XXX
+
+# Options: --type, --status, --importance, --tasks, --abstract
+```
 
 ### Research File Template
 

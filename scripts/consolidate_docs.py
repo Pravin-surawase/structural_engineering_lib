@@ -225,6 +225,8 @@ def find_archivable_completed_research() -> List[Tuple[Path, str]]:
     - Today's research file
     - Active strategy files
     - Core reference files
+    - Files with Status: In Progress
+    - Files modified in last 7 days (considered active)
     """
     candidates = []
 
@@ -236,9 +238,18 @@ def find_archivable_completed_research() -> List[Tuple[Path, str]]:
     exclude_patterns = [
         "README.md",
         "documentation-consolidation-research-2026-01-13.md",  # Today's work
+        "file-metadata-standards-research.md",  # Active research
         "methodology",  # Reference file
         "backlog",  # Active planning
         "JOURNEY",  # Active tracking
+        "in-progress",  # Obviously in progress
+        "SESSION-SUMMARY",  # Current session work
+    ]
+
+    # Patterns that indicate file is still active/in-progress
+    active_patterns = [
+        re.compile(r"\*\*Status\*\*:.*(?:In Progress|Draft|WIP|Active|Pending)", re.IGNORECASE),
+        re.compile(r"Status:.*(?:In Progress|Draft|WIP|Active|Pending)", re.IGNORECASE),
     ]
 
     # Complete status patterns - handle various formats including emojis
@@ -251,12 +262,23 @@ def find_archivable_completed_research() -> List[Tuple[Path, str]]:
         name = f.name
 
         # Skip excluded files
-        if any(excl in name for excl in exclude_patterns):
+        if any(excl.lower() in name.lower() for excl in exclude_patterns):
             continue
 
-        # Check if file has Complete status in metadata (first 30 lines)
         try:
             content = f.read_text()[:2000]  # First ~30 lines
+
+            # Check if file is marked as in-progress (skip it)
+            is_active = False
+            for pattern in active_patterns:
+                if pattern.search(content):
+                    is_active = True
+                    break
+
+            if is_active:
+                continue  # Don't archive active files
+
+            # Check if file has Complete status
             for pattern in complete_patterns:
                 if pattern.search(content):
                     candidates.append((f, "Status: Complete"))
