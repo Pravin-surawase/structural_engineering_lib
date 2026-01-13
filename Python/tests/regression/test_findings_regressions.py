@@ -49,7 +49,8 @@ def test_flanged_beam_invalid_df_ge_d_fails():
         fy=500,
     )
     assert res.is_safe is False
-    assert "df" in res.error_message.lower()
+    # Check for Df error in errors list
+    assert any("df" in err.message.lower() for err in res.errors)
 
 
 def test_flanged_beam_invalid_d_total_le_d_fails():
@@ -64,7 +65,8 @@ def test_flanged_beam_invalid_d_total_le_d_fails():
         fy=500,
     )
     assert res.is_safe is False
-    assert "d_total" in res.error_message.lower()
+    # Check for d_total error in errors list
+    assert any("d_total" in err.message.lower() for err in res.errors)
 
 
 # ============================================================================

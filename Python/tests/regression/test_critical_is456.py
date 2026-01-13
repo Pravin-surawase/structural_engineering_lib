@@ -212,7 +212,8 @@ class TestShearCapacityLimits:
             vu_kn=400, b=150, d=250, fck=20, fy=415, asv=157, pt=1.0
         )
         assert result.is_safe is False
-        assert "exceeds Tc_max" in result.remarks
+        # Check for tc_max error in errors list
+        assert any("tc_max" in err.message.lower() for err in result.errors)
 
     def test_shear_tc_interpolation(self):
         """tc should be interpolated from Table 19."""
