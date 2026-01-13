@@ -47,6 +47,13 @@ try:
 except ImportError:
     dxf_export = None
 
+# Reports module is optional (requires jinja2)
+reports: _ModuleType | None
+try:
+    reports = importlib.import_module(f"{__name__}.reports")
+except ImportError:
+    reports = None
+
 __all__ = [
     "__version__",
     "api",
@@ -59,6 +66,7 @@ __all__ = [
     "dxf_export",
     "flexure",
     "inputs",
+    "reports",
     "result_base",
     "serviceability",
     "shear",
