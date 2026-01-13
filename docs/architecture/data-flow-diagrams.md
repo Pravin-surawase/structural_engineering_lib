@@ -1,5 +1,15 @@
 # Pipeline Data Flow Diagrams
 
+**Type:** Architecture
+**Audience:** Developers
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2025-12-22
+**Last Updated:** 2026-01-13
+
+---
+
 Focused pipeline diagrams for the two most complex execution paths.
 For layer and module overview, see:
 - [visual-architecture.md](visual-architecture.md)

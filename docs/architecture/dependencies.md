@@ -1,5 +1,15 @@
 # Python Module Dependency Graph
 
+**Type:** Reference
+**Audience:** Developers
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2025-12-20
+**Last Updated:** 2026-01-13
+
+---
+
 This graph shows direct imports between `structural_lib` modules.
 
 ![Python module dependency graph](dependencies.png)

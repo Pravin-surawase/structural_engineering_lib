@@ -1,5 +1,15 @@
 # Visual Architecture Diagrams
 
+**Type:** Architecture
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2025-12-22
+**Last Updated:** 2026-01-13
+
+---
+
 Quick diagrams for layers, module groupings, and data flow. For detailed narrative, see:
 - [deep-project-map.md](deep-project-map.md)
 - [project-overview.md](project-overview.md)

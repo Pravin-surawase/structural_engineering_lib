@@ -1,5 +1,15 @@
 # StructEng Automation – Mission, Vision & Principles
 
+**Type:** Architecture
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** Critical
+**Version:** 1.0.0
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+
+---
+
 ## 1. Why this project exists
 
 Structural engineering today, especially in everyday practice (beams, slabs, columns, walls), has a few recurring problems:

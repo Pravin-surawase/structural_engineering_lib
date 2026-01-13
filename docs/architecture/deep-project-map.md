@@ -1,5 +1,15 @@
 # Deep Project Map (Python + VBA parity)
 
+**Type:** Architecture
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** Critical
+**Version:** 1.0.0
+**Created:** 2025-12-20
+**Last Updated:** 2026-01-13
+
+---
+
 **Project:** IS 456 RC Beam Design Library (Strength + detailing + DXF), with Python + VBA parity.
 
 **Why this doc exists:** a single, layer-aware map of **what lives where**, **how data flows**, and **where to add the next features** (especially v0.8 serviceability) without breaking parity.

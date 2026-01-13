@@ -1,5 +1,15 @@
 # Architecture Review — 2025-12-27
 
+**Type:** Architecture
+**Audience:** Architects
+**Status:** Complete
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2025-12-27
+**Last Updated:** 2026-01-13
+
+---
+
 **Requested by:** main agent
 **Reviewer:** ARCHITECT agent (role doc in `agents/architect.md`)
 **Context used:** `docs/architecture/project-overview.md`, `docs/architecture/deep-project-map.md`
