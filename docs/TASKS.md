@@ -82,9 +82,41 @@
 
 ## Active
 
-No active tasks. Phase 1+2 (debug upgrades + API guardrails) and IMP-02/03 complete.
+### v0.18.0 Pre-Release: Critical Infrastructure (Phase 1)
 
-**Next focus:** Guide consolidation (DOC-ONB-01/02) or v0.17.5 Agent 6 tasks.
+> **Goal:** Fix 5 critical infrastructure gaps BEFORE v0.18.0 to prevent post-release firefighting
+> **Research:** [critical-infrastructure-gaps-v018.md](research/critical-infrastructure-gaps-v018.md)
+> **Timeline:** 19-27 hours (2.4-3.4 work days)
+> **ROI:** Fix now saves 296-456 hours of future reactive work (11-17x return)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-501** | Cross-platform CI (macOS + Windows matrix) | DEVOPS | 4-6h | 🔴 P0-CRITICAL | ⏳ In Progress |
+| **TASK-502** | VBA test automation (smoke tests) | DEVOPS | 6-8h | 🔴 P0-CRITICAL | ⏳ Queued |
+| **TASK-503** | Performance regression tracking in CI | DEVOPS | 3-4h | 🔴 P0-CRITICAL | ⏳ In Progress |
+| **TASK-504** | Streamlit integration tests (5-8 tests) | DEV | 4-6h | 🔴 P0-CRITICAL | ⏳ Queued |
+| **TASK-505** | User feedback setup (PyPI stats, survey) | DOCS | 2-3h | 🔴 P0-CRITICAL | ⏳ In Progress |
+
+**TASK-501 Subtasks (Cross-Platform CI):**
+- [x] 501.1: Research current workflow structure (all 13 use ubuntu-latest)
+- [ ] 501.2: Add matrix strategy to python-tests.yml (ubuntu, windows, macos × 3.11, 3.12)
+- [ ] 501.3: Handle Windows path differences (backslash issues)
+- [ ] 501.4: Test and debug macOS-specific issues if any
+- [ ] 501.5: Update fast-checks.yml to test one cross-platform smoke test
+
+**TASK-503 Subtasks (Performance Tracking):**
+- [x] 503.1: Review existing test_benchmarks.py (13 benchmarks, pytest-benchmark)
+- [ ] 503.2: Add benchmark job to nightly.yml workflow
+- [ ] 503.3: Integrate github-action-benchmark for trend tracking + alerts
+- [ ] 503.4: Set alert threshold (150% = 50% slower triggers alert)
+- [ ] 503.5: Document baseline targets in README
+
+**TASK-505 Subtasks (User Feedback):**
+- [ ] 505.1: Add PyPI download tracking documentation (pypistats.org)
+- [ ] 505.2: Convert issue templates to GitHub Issue Forms (YAML)
+- [ ] 505.3: Add auto-labeling to issue templates
+- [ ] 505.4: Add user survey link to README + Streamlit help page
+- [ ] 505.5: Document telemetry approach for v1.0 (opt-in)
 
 **TASK-457 Details:****
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
