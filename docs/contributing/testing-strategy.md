@@ -1,5 +1,14 @@
 # Testing Strategy & Setup (Python-first, VBA parity aware)
 
+**Type:** Guide
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 **Purpose:** Document how testing is currently set up, what it covers well, what gaps remain, and the recommended next improvements.
 
 **Scope:** This doc focuses on Python test automation + CI. VBA tests are currently manual and are tracked as future automation work.

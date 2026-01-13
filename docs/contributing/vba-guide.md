@@ -1,5 +1,14 @@
 # VBA Library Guide
 
+**Type:** Guide
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 Practical guide to consume, ship, and maintain the VBA side of the Structural Engineering Library.
 
 ---

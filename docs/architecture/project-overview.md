@@ -1,5 +1,15 @@
 # IS 456 RC Beam Design Library — Project Overview
 
+**Type:** Architecture
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** Critical
+**Version:** 1.0.0
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 **Purpose:** Give a concise, layer-aware guide so any contributor (human or AI) knows what we are building, why, and how.
 **Use:** Treat this as shared context for VS Code AI or other tooling. No code here — just goals and approach.
 **See also:**
