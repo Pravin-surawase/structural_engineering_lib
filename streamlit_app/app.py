@@ -150,10 +150,20 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### ℹ️ About")
     st.markdown("""
-    **Version:** 0.1.0
-    **Phase:** Implementation
-    **Status:** Active Development
+    **Version:** 0.17.0
+    **Library:** structural-lib-is456
+    **Code:** IS 456:2000
 
-    [📖 Documentation](https://github.com/your-repo/docs)
-    [🐛 Report Issue](https://github.com/your-repo/issues)
+    [📖 Documentation](https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/docs)
+    [🐛 Report Bug](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=bug_report.yml)
+    [✨ Request Feature](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=feature_request.yml)
+    [❓ Ask Question](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=support.yml)
+    """)
+
+    st.markdown("---")
+    st.markdown("### 💬 Feedback")
+    st.markdown("""
+    Help us improve! Your feedback shapes future versions.
+
+    [![PyPI Stats](https://img.shields.io/pypi/dm/structural-lib-is456)](https://pypistats.org/packages/structural-lib-is456)
     """)
