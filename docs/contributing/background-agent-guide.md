@@ -301,7 +301,7 @@ When your task is complete (committed locally, checks passed), notify MAIN agent
 
 **Task:** TASK-XXX
 **Agent Role:** [RESEARCHER/DEV/TESTER/DEVOPS/PM]
-**Branch:** feature/TASK-XXX-description
+**Branch:** worktree-AGENT_NAME-* (auto)
 **Status:** ✅ Committed locally, all checks passed
 
 ### Summary
