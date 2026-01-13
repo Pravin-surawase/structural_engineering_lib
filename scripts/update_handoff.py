@@ -82,7 +82,7 @@ def _build_handoff_lines(date_str: str, block: list[str]) -> list[str]:
     if completed:
         lines.append(f"- Completed: {'; '.join(completed)}")
     if prs:
-        lines.append(f"- PRs merged: {', '.join(prs)}")
+        lines.append(f"- PRs: {', '.join(prs)}")
     return lines
 
 

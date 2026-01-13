@@ -203,6 +203,12 @@ PR_NUMBER=$(gh pr view --json number -q .number)
 echo ""
 echo -e "${GREEN}✓ Pull request created: #$PR_NUMBER${NC}"
 echo ""
+echo -e "${YELLOW}📝 Session docs reminder${NC}"
+echo "  1. Update docs/SESSION_LOG.md with PR #$PR_NUMBER"
+echo "  2. Run: python3 scripts/update_handoff.py"
+echo "  3. Commit: ./scripts/ai_commit.sh \"docs: update session log and handoff\""
+echo "  4. Push to update this PR"
+echo ""
 
 if [[ "$FORCE" == "true" && "$MODE" == "prompt" ]]; then
     MODE="async"
