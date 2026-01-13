@@ -1,17 +1,14 @@
----
-owner: Main Agent
-status: active
-last_updated: 2026-01-10
-doc_type: guide
-complexity: intermediate
-tags: [contributing, development, vba, python, standards]
----
-
 # IS 456 RC Beam Design Library — Development Guide
 
-**Document Version:** 0.16.6
-**Last Updated:** 2026-01-13<br>
-**Audience:** Contributors, maintainers, and developers extending the library
+**Type:** Guide
+**Audience:** Developers
+**Status:** Approved
+**Importance:** High
+**Version:** 0.16.6
+**Created:** 2025-06-01
+**Last Updated:** 2026-01-13
+**Related Tasks:** IMPL-003
+**Tags:** contributing, development, vba, python, standards
 
 ---
 

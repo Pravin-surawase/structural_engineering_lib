@@ -1,8 +1,18 @@
 # GitHub Workflow Guide
 
-**Updated:** 2026-01-06 (Production Stage Guidelines)
-**Research:** See docs/research/git-workflow-production-stage.md
-**Canonical:** `docs/git-workflow-ai-agents.md`
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2026-01-06
+**Last Updated:** 2026-01-13
+**Related Tasks:** TASK-421
+
+---
+
+**Research:** See [git-workflow-production-stage.md](../research/git-workflow-production-stage.md)
+**Canonical:** [git-workflow-ai-agents.md](git-workflow-ai-agents.md)
 
 ## 🎯 Quick Decision: Direct Commit or PR?
 

@@ -1,5 +1,15 @@
 # Learning Paths for Contributors
 
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 Pick the smallest reading path that still protects quality. Each path lists the minimum docs to read before you work.
 
 ## Quick selector

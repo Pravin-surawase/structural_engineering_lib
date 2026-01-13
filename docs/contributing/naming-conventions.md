@@ -1,7 +1,12 @@
 # Naming Conventions
 
-**Status:** Active
-**Last Updated:** 2026-01-07
+**Type:** Guide
+**Audience:** Developers
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
 
 This document defines naming standards for files, modules, and symbols in this
 repository.

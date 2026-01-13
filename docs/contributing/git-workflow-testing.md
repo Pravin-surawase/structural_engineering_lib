@@ -1,5 +1,15 @@
 # Git Workflow Testing Strategy
 
+**Type:** Guide
+**Audience:** Developers
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2026-01-09
+**Last Updated:** 2026-01-13
+
+---
+
 This document explains how we test and validate our git workflow to prevent merge conflicts, rebase issues, and other common git problems.
 
 ## 🎯 Goals

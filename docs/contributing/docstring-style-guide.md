@@ -1,5 +1,15 @@
 # Docstring Style Guide
 
+**Type:** Guide
+**Audience:** Developers
+**Status:** Approved
+**Importance:** Medium
+**Version:** 1.0.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 > **Purpose:** Standard docstring format for all Python modules in structural_lib
 > **Style:** Google Style (readable, widely adopted in scientific Python)
 > **Enforcement:** Manual review + ruff (future: pydocstyle integration)

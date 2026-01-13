@@ -1,8 +1,18 @@
 # Solo Maintainer Operating System (Public)
 
-Purpose: keep a solo-maintained engineering library stable, trusted, and low-drift.
+**Type:** Guide
+**Audience:** Maintainers
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2026-01-09
+**Last Updated:** 2026-01-13
 
-Scope: applies to all public releases, schemas, and APIs.
+---
+
+**Purpose:** Keep a solo-maintained engineering library stable, trusted, and low-drift.
+
+**Scope:** Applies to all public releases, schemas, and APIs.
 
 ---
 

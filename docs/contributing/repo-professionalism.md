@@ -1,6 +1,16 @@
 # Repo Professionalism Playbook
 
-Purpose: keep the repo reliable, predictable, and safe to publish even when work is fast or done by multiple agents.
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** High
+**Version:** 1.0.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
+**Purpose:** Keep the repo reliable, predictable, and safe to publish even when work is fast or done by multiple agents.
 
 This doc does not replace existing rules. It links to the canonical sources and adds a practical "what to do next" map.
 

@@ -1,5 +1,15 @@
 # End-of-Session Workflow
 
+**Type:** Guide
+**Audience:** All Agents
+**Status:** Approved
+**Importance:** Critical
+**Version:** 1.2.0
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 > **Standard procedure for ALL agents when ending a session.**
 
 **Purpose:** Ensure clean handoff, prevent knowledge loss, maintain documentation quality.
