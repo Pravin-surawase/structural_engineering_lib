@@ -249,7 +249,7 @@ with col1:
     )
     apply_theme(fig1)
     fig1.update_layout(title="Steel Area Comparison", height=400)
-    st.plotly_chart(fig1, config=get_chart_config(), use_container_width=True)
+    st.plotly_chart(fig1, config=get_chart_config(), width="stretch")
 
 with col2:
     st.subheader("Scatter Plot")
@@ -270,7 +270,7 @@ with col2:
         yaxis_title="Cost (₹)",
         height=400,
     )
-    st.plotly_chart(fig2, config=get_chart_config(), use_container_width=True)
+    st.plotly_chart(fig2, config=get_chart_config(), width="stretch")
 
 # Gauge chart
 st.subheader("Utilization Gauge")
@@ -298,7 +298,7 @@ fig3 = go.Figure(
 )
 apply_theme(fig3)
 fig3.update_layout(height=300)
-st.plotly_chart(fig3, config=get_chart_config(interactive=False), use_container_width=True)
+st.plotly_chart(fig3, config=get_chart_config(interactive=False), width="stretch")
 
 divider()
 

@@ -370,7 +370,7 @@ COMMON_MISTAKES = [
 
 page_header(
     title="📚 Learning Center",
-    description="Interactive tutorials, IS 456 reference, and design guides"
+    subtitle="Interactive tutorials, IS 456 reference, and design guides"
 )
 
 # Main tabs

@@ -280,8 +280,8 @@ class MockStreamlit:
         return ContainerContext()
 
     @staticmethod
-    def plotly_chart(fig, use_container_width=True, key=None, **kwargs):
-        """Mock st.plotly_chart()"""
+    def plotly_chart(fig, width="stretch", use_container_width=None, key=None, **kwargs):
+        """Mock st.plotly_chart() - supports both old and new API."""
         pass
 
     @staticmethod

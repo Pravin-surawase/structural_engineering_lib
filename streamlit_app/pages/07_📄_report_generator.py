@@ -14,6 +14,9 @@ Features:
 
 Author: Agent 6 (Streamlit Specialist)
 Task: STREAMLIT-FEAT-003
+
+Dependencies:
+    reportlab - Install with: pip install structural-lib-is456[pdf]
 """
 
 import streamlit as st
@@ -23,7 +26,10 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from streamlit_app.utils.pdf_generator import BeamDesignReportGenerator
+from streamlit_app.utils.pdf_generator import (
+    BeamDesignReportGenerator,
+    is_reportlab_available,
+)
 
 
 def render_page():
@@ -33,6 +39,22 @@ def render_page():
         "Generate professional structural design reports with calculations, "
         "diagrams, and compliance documentation."
     )
+
+    # Check if reportlab is available
+    if not is_reportlab_available():
+        st.error("⚠️ **Missing Dependency: reportlab**")
+        st.info(
+            "The PDF report generator requires the `reportlab` package.\n\n"
+            "**Install with:**\n"
+            "```bash\n"
+            "pip install reportlab\n"
+            "```\n\n"
+            "Or install with the structural library:\n"
+            "```bash\n"
+            "pip install structural-lib-is456[pdf]\n"
+            "```"
+        )
+        return
 
     # Check if design results exist
     if 'design_result' not in st.session_state:
@@ -197,7 +219,7 @@ def render_page():
         generate_button = st.button(
             "📄 Generate PDF",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             help="Generate and download PDF report"
         )
 
@@ -247,7 +269,7 @@ def render_page():
                     file_name=f"beam_design_report_{project_name.replace(' ', '_')}.pdf",
                     mime="application/pdf",
                     type="primary",
-                    use_container_width=True
+                    width="stretch"
                 )
 
                 # Show file size

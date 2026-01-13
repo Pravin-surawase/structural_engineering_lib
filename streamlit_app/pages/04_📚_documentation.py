@@ -430,7 +430,7 @@ elif section == "📊 Reference Tables":
 
         df = pd.DataFrame(table_data["data"])
         st.dataframe(
-            df, use_container_width=True, hide_index=table_data.get("hide_index", False)
+            df, width="stretch", hide_index=table_data.get("hide_index", False)
         )
 
         if "notes" in table_data:

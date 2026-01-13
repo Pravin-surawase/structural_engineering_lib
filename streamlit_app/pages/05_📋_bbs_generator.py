@@ -358,7 +358,7 @@ if mode == "auto":
                 st.metric("Concrete", inputs.get("concrete_grade", "M25"))
 
         # Generate BBS button
-        if st.button("🚀 Generate BBS", type="primary", use_container_width=True):
+        if st.button("🚀 Generate BBS", type="primary", width="stretch"):
             with loading_context("Generating Bar Bending Schedule..."):
                 try:
                     bbs_doc = create_bbs_from_beam_design(beam_data)
@@ -391,7 +391,7 @@ if mode == "auto":
             df = bbs_to_dataframe(bbs_doc)
             st.dataframe(
                 df,
-                use_container_width=True,
+                width="stretch",
                 hide_index=True
             )
 
@@ -424,15 +424,15 @@ if mode == "auto":
                     data=csv_data,
                     file_name=f"BBS_{bbs_doc.member_ids[0]}.csv",
                     mime="text/csv",
-                    use_container_width=True
+                    width="stretch"
                 )
 
             with col2:
-                st.button("📊 Download Excel", disabled=True, use_container_width=True)
+                st.button("📊 Download Excel", disabled=True, width="stretch")
                 st.caption("Coming soon")
 
             with col3:
-                st.button("🖨️ Print Preview", disabled=True, use_container_width=True)
+                st.button("🖨️ Print Preview", disabled=True, width="stretch")
                 st.caption("Coming soon")
 
 

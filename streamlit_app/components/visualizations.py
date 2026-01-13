@@ -148,7 +148,7 @@ def create_beam_diagram(
         >>> comp_pos = [(75, 450), (225, 450)]  # 2 bars at top
         >>> fig = create_beam_diagram(300, 500, 450, tension_pos, 150, 16,
         ...                           compression_positions=comp_pos)
-        >>> st.plotly_chart(fig, use_container_width=True)
+        >>> st.plotly_chart(fig, width="stretch")
     """
     fig = go.Figure()
 
@@ -427,7 +427,7 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
         ...      'is_optimal': False, 'area_provided': 628}
         ... ]
         >>> fig = create_cost_comparison(alternatives)
-        >>> st.plotly_chart(fig, use_container_width=True)
+        >>> st.plotly_chart(fig, width="stretch")
     """
     if not alternatives:
         # Empty chart
@@ -552,7 +552,7 @@ def create_utilization_gauge(
 
     Example:
         >>> fig = create_utilization_gauge(0.75, "Flexure Utilization")
-        >>> st.plotly_chart(fig, use_container_width=True)
+        >>> st.plotly_chart(fig, width="stretch")
     """
     if thresholds is None:
         thresholds = {"warning": 0.8, "critical": 0.95}
@@ -697,7 +697,7 @@ def create_sensitivity_tornado(
         ...     {'name': 'Width', 'low_value': 550, 'high_value': 650, 'unit': 'mm²'}
         ... ]
         >>> fig = create_sensitivity_tornado(params, baseline_value=600)
-        >>> st.plotly_chart(fig, use_container_width=True)
+        >>> st.plotly_chart(fig, width="stretch")
     """
     if not parameters:
         fig = go.Figure()

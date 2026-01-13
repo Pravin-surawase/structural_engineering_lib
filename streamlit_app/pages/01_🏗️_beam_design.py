@@ -280,7 +280,7 @@ with col_input:
     current_hash = get_input_hash()
     inputs_changed = current_hash != st.session_state.beam_inputs["last_input_hash"]
 
-    if st.button("🚀 Analyze Design", disabled=not all_valid, use_container_width=True):
+    if st.button("🚀 Analyze Design", disabled=not all_valid, width="stretch"):
         # Clear old results if inputs changed
         if inputs_changed:
             st.session_state.beam_inputs["design_result"] = None
@@ -368,7 +368,7 @@ with col_input:
         clear_col1, clear_col2 = st.columns(2)
 
         with clear_col1:
-            if st.button("🗑️ Clear All Caches", use_container_width=True):
+            if st.button("🗑️ Clear All Caches", width="stretch"):
                 from utils.api_wrapper import clear_cache
 
                 clear_cache()
@@ -378,7 +378,7 @@ with col_input:
                 st.rerun()
 
         with clear_col2:
-            if st.button("🔄 Clear Viz Cache Only", use_container_width=True):
+            if st.button("🔄 Clear Viz Cache Only", width="stretch"):
                 viz_cache.clear()
                 st.success("✅ Visualization cache cleared!")
                 st.rerun()
@@ -432,7 +432,7 @@ with col_preview:
             stirrup_dia=0,  # No stirrups in preview
             stirrup_spacing=0,
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         # Show dimensions
         st.caption(
@@ -632,7 +632,7 @@ with col_preview:
                 stirrup_spacing=stirrup_spacing,
             )
 
-            st.plotly_chart(fig, use_container_width=True, key="beam_section_viz")
+            st.plotly_chart(fig, width="stretch", key="beam_section_viz")
 
             # Show spacing info if available
             if spacing_mm > 0:
@@ -704,7 +704,7 @@ with col_preview:
             }
 
             df_schedule = pd.DataFrame(schedule_data)
-            st.dataframe(df_schedule, use_container_width=True, hide_index=True)
+            st.dataframe(df_schedule, width="stretch", hide_index=True)
 
         # ============================================================================
         # TAB 3: Cost Analysis
@@ -741,7 +741,7 @@ with col_preview:
             ]
 
             fig_cost = create_cost_comparison(alternatives)
-            st.plotly_chart(fig_cost, use_container_width=True, key="cost_comparison")
+            st.plotly_chart(fig_cost, width="stretch", key="cost_comparison")
 
             st.info(
                 """
