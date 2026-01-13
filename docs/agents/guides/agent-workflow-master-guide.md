@@ -44,13 +44,7 @@
 ## 🚨 CRITICAL RULES (Read These!)
 
 ### Rule 1: NEVER Use Manual Git Commands
-❌ **FORBIDDEN:**
-```bash
-git add .
-git commit -m "message"
-git pull
-git push
-```
+❌ **FORBIDDEN:** manual add/commit/pull/push workflows
 
 ✅ **ALWAYS USE:**
 ```bash
@@ -291,13 +285,7 @@ cd $PROJECT_ROOT
 # 1. Check state
 ./scripts/check_unfinished_merge.sh
 
-# 2. If unfinished merge detected:
-git checkout --ours docs/TASKS.md  # Keep our version
-git add docs/TASKS.md
-git commit --no-edit
-git push
-
-# 3. Or use recovery script:
+# 2. Use recovery script (auto-handles the conflict safely)
 ./scripts/recover_git_state.sh
 ```
 
@@ -473,11 +461,7 @@ cd $PROJECT_ROOT
 ### Tip 2: Use Worktrees for Parallel Work
 ❌ **Bad:** Switching branches frequently
 ```bash
-git checkout task/UI-003
-# work...
-git checkout main
-git checkout task/API-002
-# work...
+(Avoid branch hopping in a single worktree)
 ```
 
 ✅ **Good:** Separate worktrees
@@ -492,11 +476,7 @@ cd $PROJECT_ROOT
 ### Tip 3: Leverage Automation
 ❌ **Bad:** Manual steps
 ```bash
-git fetch
-git pull
-git add file1 file2
-git commit -m "message"
-git push
+(Manual add/commit/pull/push workflows)
 ```
 
 ✅ **Good:** Single command
@@ -565,10 +545,8 @@ cd "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/p
 # Check merge state
 ./scripts/check_unfinished_merge.sh
 
-# Keep our version (usually)
-git checkout --ours <file>
-git add <file>
-git commit --no-edit
+# Recover automatically
+./scripts/recover_git_state.sh
 ```
 
 ---

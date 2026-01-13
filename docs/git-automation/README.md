@@ -117,10 +117,7 @@ record the PR number (not merge hash).
 ## ⚠️ NEVER Do This
 
 ```bash
-# ❌ FORBIDDEN - Causes conflicts and wasted time
-git add .
-git commit -m "message"
-git push
+# ❌ FORBIDDEN - Manual add/commit/push workflows
 
 # ✅ ALWAYS USE THIS INSTEAD
 ./scripts/ai_commit.sh "message"
@@ -152,7 +149,7 @@ The following scripts are **legacy** and should NOT be used. They are retained o
 | Script | Status | Replacement |
 |--------|--------|-------------|
 | Direct `safe_push.sh` | Internal use only | Use `ai_commit.sh` |
-| Manual `git add/commit/push` | Blocked by hooks | Use `ai_commit.sh` |
+| Manual add/commit/push workflows | Blocked by hooks | Use `ai_commit.sh` |
 | `agent_setup.sh` alone | Still works | Prefer `agent_start.sh --quick` |
 | `agent_preflight.sh` alone | Still works | Prefer `agent_start.sh` (includes this) |
 

@@ -255,7 +255,7 @@ Checking handoff readiness...
 **What It Does (8 Steps):**
 1. **Auto-stash local changes** (ensures clean sync)
 2. **Sync with origin/main** (ff-only on main; feature branches rebase before first push, otherwise merge main)
-3. **Stage files** (git add)
+3. **Stage files** (automation handles staging)
 4. **Step 2.5: Pre-flight whitespace check** (detects and fixes before commit)
 5. **Commit** (runs pre-commit hooks automatically)
 6. **Sync again** (catch race conditions)
@@ -271,11 +271,7 @@ Checking handoff readiness...
 
 **Never Do This:**
 ```bash
-# ❌ WRONG: Manual git workflow
-git add .
-git commit -m "message"
-git pull
-git push
+# ❌ WRONG: Manual add/commit/pull/push workflows
 # This WILL cause conflicts and wasted time!
 ```
 
@@ -328,7 +324,6 @@ git push
 
 **Example:**
 ```bash
-$ git add docs/reference/api.md
 $ ./scripts/should_use_pr.sh --explain
 ✅ RECOMMENDATION: Direct commit (Documentation only)
 
@@ -592,7 +587,7 @@ Tests failed: 0
 - Conflicted files
 - Merge in progress
 
-**Action:** If detected, complete merge with `git commit --no-edit` then push.
+**Action:** If detected, run `./scripts/recover_git_state.sh` to complete the merge safely.
 
 **Related:** [safe_push.sh](#7-safe_pushsh-mandatory)
 

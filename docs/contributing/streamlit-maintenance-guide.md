@@ -558,8 +558,8 @@ pre-commit install
 # Run manually
 pre-commit run --all-files
 
-# Bypass (emergency only)
-git commit --no-verify
+# Bypass (emergency only, requires approval)
+GIT_HOOKS_BYPASS=1 ./scripts/ai_commit.sh "message"
 ```
 
 ### Automation Scripts

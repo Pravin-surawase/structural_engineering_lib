@@ -122,9 +122,8 @@ Create a script or checklist:
 ### Step 3.3: Backup Branch (Optional but Recommended)
 
 ```bash
-git checkout -b backup/cleanup-2026-01-10
-git push origin backup/cleanup-2026-01-10
-git checkout main
+# If you want a safety branch, create a task branch first:
+./scripts/create_task_pr.sh TASK-XXX "folder cleanup backup"
 ```
 
 ---
@@ -235,19 +234,15 @@ git revert HEAD
 ### Rollback Multiple Commits
 
 ```bash
-# Find the commit before cleanup started
-git log --oneline -10
-
-# Reset to that point (CAREFUL: loses all cleanup)
-git reset --hard <commit-before-cleanup>
-git push --force-with-lease  # Only if absolutely necessary
+# Avoid force-push resets. Prefer revert commits and automation:
+./scripts/recover_git_state.sh
 ```
 
 ### Restore from Backup Branch
 
 ```bash
-# Restore specific file
-git show backup/cleanup-2026-01-10:path/to/file.md > path/to/file.md
+# Restore specific file via manual review, then commit with ai_commit.sh
+./scripts/ai_commit.sh "revert: restore file from backup branch"
 ```
 
 ---

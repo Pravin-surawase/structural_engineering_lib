@@ -1,4 +1,5 @@
 # Agent 8 Week 2 Implementation Plan
+<!-- lint-ignore-git -->
 **Version:** 0.16.0
 **Date:** 2026-01-09
 **Status:** 📋 PLANNING

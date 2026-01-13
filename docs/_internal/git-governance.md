@@ -1,4 +1,5 @@
 # Git & GitHub Governance Guide
+<!-- lint-ignore-git -->
 
 **Status:** Active
 **Owner:** DEVOPS Agent

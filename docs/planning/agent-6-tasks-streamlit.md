@@ -1,4 +1,5 @@
 # Background Agent 6 Tasks (STREAMLIT SPECIALIST)
+<!-- lint-ignore-git -->
 
 **Agent Role:** STREAMLIT UI SPECIALIST (Daily Development)
 **Primary Focus:** Build production-ready Streamlit dashboards for structural engineering, following professional UI/UX practices

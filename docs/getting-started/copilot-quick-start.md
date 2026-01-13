@@ -67,13 +67,8 @@ git diff --name-only
 # Current branch
 git rev-parse --abbrev-ref HEAD
 
-# Pull and push safely
-git pull --ff-only
-git push origin $(git rev-parse --abbrev-ref HEAD)
-
-# Commit with inline message (NEVER without -m)
-git commit -m "feat: your message"
-git commit --amend --no-edit
+# Commit/push are handled by automation
+./scripts/ai_commit.sh "feat: your message"
 ```
 
 ---
@@ -90,13 +85,6 @@ git commit --amend --no-edit
 ```bash
 # ✅ PREFERRED (one command does everything):
 ./scripts/ai_commit.sh "feat: implement feature"
-
-# ❌ Manual process (shown for education only - DO NOT USE):
-# git status --short
-# git add .
-# git commit -m "feat: implement feature"
-# git pull --ff-only
-# git push origin $(git rev-parse --abbrev-ref HEAD)
 ```
 
 ### Safe Merge/Rebase (USE recover_git_state.sh INSTEAD)
@@ -104,10 +92,6 @@ git commit --amend --no-edit
 ```bash
 # ✅ PREFERRED (handles all recovery automatically):
 ./scripts/recover_git_state.sh
-
-# ❌ Manual process (shown for education only - DO NOT USE):
-# git merge --abort
-# git pull --rebase origin main
 ```
 
 ---

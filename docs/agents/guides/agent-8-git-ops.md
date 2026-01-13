@@ -139,13 +139,11 @@ Background Agent 2 → commits locally → notifies GIT agent → continues work
 
 **Operations GIT Agent Handles:**
 
-1. **Push to Remote**
+1. **Sync + Push (Automation)**
    ```bash
    # Receives handoff from background agent
-   git checkout feature/TASK-XXX
-   git fetch origin main
-   git rebase origin/main  # Ensure linear history
-   git push origin feature/TASK-XXX
+   ./scripts/git_ops.sh --status
+   ./scripts/ai_commit.sh "chore: finalize handoff (if needed)"
    ```
 
 2. **Create PR**
@@ -181,9 +179,9 @@ Background Agent 2 → commits locally → notifies GIT agent → continues work
 
 5. **Branch Cleanup**
    ```bash
-   # After merge
-   git branch -d feature/TASK-XXX
-   git push origin --delete feature/TASK-XXX
+   # After merge (dry run first, then apply)
+   ./scripts/cleanup_stale_branches.sh
+   ./scripts/cleanup_stale_branches.sh --apply
    ```
 
 **Audit Trail:**
@@ -301,14 +299,13 @@ notify-background-agent "CI Failed: Fix Required
 ```bash
 # Issue: Diverged branch detected
 # Safe auto-fix:
-git checkout main
-git pull origin main
-notify-main "Auto-synced main branch (was 3 commits behind)"
+./scripts/git_ops.sh --status
+notify-main "Auto-synced main branch via automation"
 
 # Issue: Stale feature branch (merged but not deleted)
 # Safe auto-fix:
-git branch -d feature/TASK-270
-notify-main "Cleaned up merged branch: feature/TASK-270"
+./scripts/cleanup_stale_branches.sh --apply
+notify-main "Cleaned up merged branches via cleanup_stale_branches.sh"
 
 # Issue: Unfinished merge
 # NOT safe - alert MAIN:
@@ -475,14 +472,13 @@ alert-main "❌ Manual conflict resolution required
 # Expected: ✅ All green
 
 # 2. Sync Main Branch
-git checkout main
-git pull origin main
-# Expected: Already up to date OR Fast-forward merge
+./scripts/git_ops.sh --status
+# If behind, recover safely:
+./scripts/recover_git_state.sh
 
 # 3. Check Stale Branches
-git branch --merged | grep -v "main"
-# Clean up merged branches:
-git branch -d [stale-branches]
+./scripts/cleanup_stale_branches.sh
+./scripts/cleanup_stale_branches.sh --apply
 
 # 4. Review Pending PRs
 gh pr list --state open
@@ -671,9 +667,8 @@ mixed-line-ending --fix  # Normalizes line endings
 
 **If hooks modify files:**
 ```bash
-git add .
-git commit --amend --no-edit
-# Pre-commit hooks run again (should pass now)
+# Rerun automation; it re-stages and amends as needed.
+./scripts/ai_commit.sh "fix: apply hook changes"
 ```
 
 **Hooks That Only Check (No Modification):**
@@ -712,8 +707,7 @@ if denominator > 0:
 result = numerator / denominator if denominator > 0 else 0
 
 # After fix:
-git add <file>
-git commit --amend --no-edit  # Hooks run again
+./scripts/ai_commit.sh "fix: resolve streamlit scanner issue"
 ```
 
 **If hooks fail:**
@@ -940,7 +934,7 @@ Manual review required before merge. Consider:
 2. [Specific review point 2]
 
 ### Actions
-- [ ] Review code changes: `git checkout [branch-name]`
+- [ ] Review code changes: `gh pr checkout [pr-number]`
 - [ ] Run local tests: `cd Python && pytest`
 - [ ] Approve or request changes in GitHub
 ```
@@ -972,13 +966,10 @@ Location: Python/tests/test_beam_design.py:234
 
 ### How to Fix
 ```bash
-git checkout [branch-name]
 # Edit Python/tests/test_beam_design.py:234
 # Change: assert result == 150.5
 # To: assert result == pytest.approx(150.5, rel=1e-2)
-git add .
-git commit --amend --no-edit
-git push -f origin [branch-name]
+./scripts/ai_commit.sh "fix: adjust test tolerance"
 ```
 
 CI will re-run automatically after push.
@@ -1095,9 +1086,7 @@ git bisect run pytest
 
 # 3. Recommend revert
 alert-main "Breaking commit identified: [SHA]
-  Recommend immediate revert:
-  git revert [SHA]
-  git push origin main"
+  Recommend immediate revert via automation workflow"
 ```
 
 ### Pre-Commit Hooks Broken
@@ -1187,7 +1176,7 @@ alert-main "Pre-commit hooks issue:
 
 **Success Criteria:**
 - Background Agent 6 handoff → merge in <5 minutes (vs. 20 minutes currently)
-- Zero manual "git push" commands by background agents
+- Zero manual push attempts by background agents
 - 100% of PRs monitored automatically
 
 ### Phase 2: Proactive Health & Recovery (Week 2)
@@ -1256,16 +1245,14 @@ recover-git-state && alert-main
 
 **Instead of:**
 ```bash
-# Background agent does:
-git push origin feature/TASK-XXX
-gh pr create
-# ... waits for MAIN to merge ...
+# Background agent does NOT run manual push/create.
+# Use automation or notify the GIT agent.
 ```
 
 **Now:**
 ```bash
 # Background agent does:
-git commit -m "feat: implement feature"
+./scripts/ai_commit.sh "feat: implement feature"
 notify-git-agent "Handoff: feature/TASK-XXX ready"
 # ... continues working immediately ...
 # GIT agent handles rest automatically

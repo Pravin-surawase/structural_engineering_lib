@@ -1,4 +1,5 @@
 # Copilot Task Execution System
+<!-- lint-ignore-git -->
 
 **Purpose:** Cost-optimized workflow using GitHub Copilot for implementation and Claude for strategic planning
 

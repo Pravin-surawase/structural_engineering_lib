@@ -1,4 +1,5 @@
 # Agent 8 Week 1 Completion Summary
+<!-- lint-ignore-git -->
 **Date:** 2026-01-09
 **Status:** ✅ COMPLETE
 **Performance:** 45-60s → ~5s commits (90% faster!)

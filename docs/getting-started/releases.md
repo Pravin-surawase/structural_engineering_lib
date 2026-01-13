@@ -18,10 +18,8 @@ Entries here represent "locked" versions that have been verified and approved.
 2. **Update CHANGELOG.md** with release notes
 
 3. **Create and push tag:**
-   ```bash
-   git tag -a vX.Y.Z -m "vX.Y.Z - Short description"
-   git push origin vX.Y.Z
-   ```
+   - Create an annotated tag `vX.Y.Z`
+   - Push the tag to origin (maintainer-only, use the release workflow checklist)
 
 4. **Automatic publishing:**
    - GitHub Actions builds wheel + sdist

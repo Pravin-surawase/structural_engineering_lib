@@ -174,7 +174,7 @@ Both checks run in GitHub Actions:
 
 ### Automatic Checks
 
-- **Pre-commit:** Runs on every `git commit`
+- **Pre-commit:** Runs on every `./scripts/ai_commit.sh`
 - **CI:** Runs on every PR
 - **No manual intervention needed** (unless issues found)
 
@@ -352,7 +352,7 @@ max-locals=20
 **Issue:** Different results locally vs CI
 **Solution:** Ensure you're on latest main:
 ```bash
-git pull origin main
+./scripts/recover_git_state.sh
 .venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
