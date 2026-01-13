@@ -130,5 +130,33 @@
       "archivable_completed_files": 0,
       "potential_reduction": 0
     }
+  },
+  "baseline_2026-01-13T13:32:44.830064": {
+    "phase": "baseline",
+    "timestamp": "2026-01-13T13:32:44.830064",
+    "metrics": {
+      "file_counts": {
+        "total_docs": 526,
+        "research": 73,
+        "research_sessions": 3,
+        "research_summaries": 8,
+        "research_phases": 0,
+        "research_readmes": 5,
+        "archived": 221,
+        "contributing": 30,
+        "planning": 32,
+        "reference": 21,
+        "agents": 21,
+        "getting_started": 17
+      },
+      "link_metrics": {
+        "total_links": 877,
+        "broken_links": 0
+      },
+      "archivable_session_files": 0,
+      "consolidatable_phase_files": 0,
+      "archivable_completed_files": 0,
+      "potential_reduction": 0
+    }
   }
 }
