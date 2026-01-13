@@ -64,9 +64,8 @@ All checks passed! Ready to hand off.
 
 **❌ Uncommitted changes detected:**
 ```bash
-git status                # Review what's uncommitted
-git add <files>          # Stage files
-./scripts/safe_push.sh "session: document work" # Commit
+# Commit via automation (stages internally)
+./scripts/ai_commit.sh "session: document work"
 ```
 
 **❌ Session log entry missing:**
@@ -82,6 +81,11 @@ git add <files>          # Stage files
   - Issues encountered
   - Decisions made
   ```
+
+**Commit accuracy rules:**
+- If a PR was squash-merged, record the **merge commit hash** (from main).
+- Do not list pre-squash branch commits unless explicitly labeled as such.
+- Prefer: `gh pr view <PR> --json mergeCommit -q .mergeCommit.oid` for accuracy.
 
 **❌ Next session brief outdated:**
 - Update `docs/planning/next-session-brief.md`:
