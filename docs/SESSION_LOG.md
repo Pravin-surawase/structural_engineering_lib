@@ -4,6 +4,75 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-13 — Session 20: Phase 1 Critical Infrastructure (PR #TBD)
+
+**Focus:** Execute Phase 1 Pre-v0.18.0 Critical Infrastructure tasks (TASK-501, 503, 504, 505).
+
+### Summary
+
+**Completed 4 of 5 Critical Infrastructure Tasks:**
+
+1. **TASK-501: Cross-Platform CI** ✅
+   - Updated python-tests.yml with matrix strategy: ubuntu, windows, macos × 3.11, 3.12
+   - Excluded macOS+3.11 (reduce matrix from 6 to 5 jobs)
+   - Added Windows-specific PowerShell packaging check
+   - Coverage runs only on ubuntu+3.12
+
+2. **TASK-503: Performance Regression Tracking** ✅
+   - Added performance benchmark job to nightly.yml
+   - Integrated github-action-benchmark@v1 for trend tracking
+   - Alert threshold: 150% (triggers on 50%+ slowdown)
+   - Benchmark artifacts stored 90 days
+
+3. **TASK-505: User Feedback Setup** ✅
+   - Migrated issue templates from Markdown to GitHub Issue Forms (YAML)
+   - Created bug_report.yml, feature_request.yml, support.yml with dropdowns and auto-labels
+   - Added config.yml for issue template chooser
+   - Added PyPI stats section to README
+   - Added feedback links to Streamlit sidebar
+
+4. **TASK-504: Streamlit Integration Tests** ✅
+   - Created test_critical_journeys.py with 16 tests covering 8 user journeys
+   - Critical journey 1: Complete beam design (4 tests)
+   - All tests pass (11 pass, 5 skip for optional features)
+
+5. **TASK-502: VBA Test Automation** ⏳ Deferred
+   - Requires 6-8 hours and Windows CI environment
+   - Will be addressed in v0.18.0 or separate PR
+
+### Commits
+
+| Hash | Description |
+| --- | --- |
+| `9ccba86` | ci(TASK-501): add cross-platform testing (macOS + Windows + Ubuntu) |
+| `55919bb` | ci(TASK-503): add performance regression tracking to nightly workflow |
+| `1fd97cb` | ci(TASK-505): migrate issue templates to GitHub Issue Forms |
+| `a3c4225` | docs(TASK-505): add PyPI stats and feedback links |
+| `dfa60ac` | test(TASK-504): add critical user journey integration tests |
+| `[NEXT]` | docs: finalize session and create PR |
+
+### Branch
+
+- **Branch:** task/TASK-501
+- **PR:** To be created
+
+### Impact
+
+- **Cross-platform:** Windows/macOS bugs now caught before release
+- **Performance:** Regressions auto-detected with 150% threshold
+- **Feedback:** Modern issue forms with dropdowns, auto-labels
+- **Quality:** 16 new E2E tests for critical user journeys
+
+### Session Totals
+
+- **Commits:** 5 (targeting 6)
+- **Tasks Completed:** 4 of 5 (TASK-502 deferred)
+- **Files Changed:** 13 unique files
+- **New Tests:** 16 critical journey tests
+- **Time Saved (ROI):** Estimated 100+ hours of future debugging
+
+---
+
 ## 2026-01-13 — DOC-ONB-01/02: Guide Consolidation Complete
 
 **Focus:** Research, plan, and execute guide consolidation (4 guides → 3 guides).

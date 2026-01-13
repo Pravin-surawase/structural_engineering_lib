@@ -92,9 +92,9 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | **TASK-501** | Cross-platform CI (macOS + Windows matrix) | DEVOPS | 4-6h | 🔴 P0-CRITICAL | ✅ Complete |
-| **TASK-502** | VBA test automation (smoke tests) | DEVOPS | 6-8h | 🔴 P0-CRITICAL | ⏳ Queued |
+| **TASK-502** | VBA test automation (smoke tests) | DEVOPS | 6-8h | 🔴 P0-CRITICAL | ⏳ Deferred |
 | **TASK-503** | Performance regression tracking in CI | DEVOPS | 3-4h | 🔴 P0-CRITICAL | ✅ Complete |
-| **TASK-504** | Streamlit integration tests (5-8 tests) | DEV | 4-6h | 🔴 P0-CRITICAL | ⏳ Queued |
+| **TASK-504** | Streamlit integration tests (5-8 tests) | DEV | 4-6h | 🔴 P0-CRITICAL | ✅ Complete |
 | **TASK-505** | User feedback setup (PyPI stats, survey) | DOCS | 2-3h | 🔴 P0-CRITICAL | ✅ Complete |
 
 **TASK-501 Subtasks (Cross-Platform CI):**
@@ -111,12 +111,23 @@
 - [x] 503.4: Set alert threshold (150% = 50% slower triggers alert)
 - [x] 503.5: Add benchmark artifact storage (90 day retention)
 
+**TASK-504 Subtasks (Streamlit Integration Tests):**
+- [x] 504.1: Create test_critical_journeys.py with 8 user journey test classes
+- [x] 504.2: Add 16 tests covering core value proposition (beam design)
+- [x] 504.3: Add error recovery tests (invalid inputs, zero values)
+- [x] 504.4: All tests pass (11 pass, 5 skip for optional features)
+
 **TASK-505 Subtasks (User Feedback):**
 - [x] 505.1: Add PyPI download tracking documentation (pypistats.org)
 - [x] 505.2: Convert issue templates to GitHub Issue Forms (YAML)
 - [x] 505.3: Add auto-labeling to issue templates
 - [x] 505.4: Add feedback links to README + Streamlit sidebar
 - [x] 505.5: Add issue template chooser (config.yml)
+
+**TASK-502 Notes (VBA Test Automation - Deferred):**
+- Requires Windows CI runner or cross-platform VBA tooling
+- Estimated 6-8 hours for proper implementation
+- Will be addressed in v0.18.0 or as separate PR
 
 **TASK-457 Details:****
 - **Research:** Documentation redundancy analysis complete (525 files → target <400)
