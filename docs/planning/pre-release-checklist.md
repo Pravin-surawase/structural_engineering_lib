@@ -1,7 +1,15 @@
 # Pre-Release Checklist
 
-Version: 0.16.6 (planned)
-Date: 2026-01-13
+**Type:** Checklist
+**Audience:** Maintainers
+**Status:** Active
+**Importance:** High
+**Created:** 2025-06-01
+**Last Updated:** 2026-01-13
+
+---
+
+Version: 0.16.6 (current)
 Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---

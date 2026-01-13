@@ -1,7 +1,15 @@
 # v0.17.0 Implementation Guide
 
-**Version:** 1.0.0
+**Type:** Guide
+**Audience:** Developers
 **Status:** Planning
+**Importance:** High
+**Created:** 2026-01-09
+**Last Updated:** 2026-01-13
+
+---
+
+**Version:** 1.0.0
 **Target Release:** 2026-01-15
 **Theme:** Security + Traceability Foundation
 

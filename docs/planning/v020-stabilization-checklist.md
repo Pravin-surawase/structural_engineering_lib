@@ -1,5 +1,14 @@
 # v0.20.0 Stabilization Checklist
 
+**Type:** Checklist
+**Audience:** Maintainers
+**Status:** Active
+**Importance:** Medium
+**Created:** 2026-01-09
+**Last Updated:** 2026-01-13
+
+---
+
 **Goal:** Make this version stable, safe, efficient, well-documented, and trustworthy.
 
 > **Version info:** See [TASKS.md](../TASKS.md) for current/next release status.

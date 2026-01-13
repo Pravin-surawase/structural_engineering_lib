@@ -1,9 +1,18 @@
 # BBS + DXF Improvement Plan (Beam-Only)
 
+**Type:** Plan
+**Audience:** Developers
+**Status:** Complete
+**Importance:** Low
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+
+---
+
 Goal: make BBS and DXF outputs fabrication-ready, deterministic, and consistent
 with each other, without changing the current 3-layer architecture.
 
-**Status:** Completed (v0.12 scope via PR #185)
+**Implementation Status:** Completed (v0.12 scope via PR #185)
 
 ---
 

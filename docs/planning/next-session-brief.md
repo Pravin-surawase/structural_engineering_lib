@@ -1,11 +1,20 @@
 # Next Session Briefing
 
+**Type:** Handoff
+**Audience:** All Agents
+**Status:** Active
+**Importance:** Critical
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.16.6 | ✅ Released (Python 3.11 Baseline) |
 | **Next** | v0.17.0 | Professional Features |
 
-**Date:** 2026-01-13 | **Last Session:** 19P18 | **Last PR:** #355
+**Last Session:** 19P18 | **Last PR:** #355
 
 ---
 

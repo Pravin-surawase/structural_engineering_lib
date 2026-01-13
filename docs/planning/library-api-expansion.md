@@ -1,9 +1,16 @@
 # Library API Expansion Plan (Beam-Only)
 
+**Type:** Plan
+**Audience:** Developers
+**Status:** Planned
+**Importance:** Medium
+**Created:** 2025-12-01
+**Last Updated:** 2026-01-13
+
+---
+
 Goal: make the library easy to embed by exposing stable, composable functions
 and thin CLI wrappers. This is library-first, not product-first.
-
-**Status:** Planned (v0.12)
 
 ---
 

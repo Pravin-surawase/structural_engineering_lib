@@ -1,5 +1,14 @@
 # Data Model Compatibility Checklist (BeamGeometry/RebarLayout)
-**Date:** 2026-01-08
+
+**Type:** Checklist
+**Audience:** Developers
+**Status:** Active
+**Importance:** Medium
+**Created:** 2026-01-08
+**Last Updated:** 2026-01-13
+
+---
+
 **Purpose:** Ensure new data models align with existing `structural_lib` outputs.
 **Scope:** BeamGeometry, RebarLayout, PreviewPayload, and related planned types.
 

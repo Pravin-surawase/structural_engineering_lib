@@ -1,8 +1,16 @@
 # IS 456 RC Beam Design Library — Deep Dive
 
+**Type:** Architecture
+**Audience:** Developers
+**Status:** Review
+**Importance:** Medium
+**Created:** 2025-07-11
+**Last Updated:** 2026-01-13
+
+---
+
 *Detailed architecture, module maps, and research directions*
 
-**Last updated:** 2025-07-11
 **Parent document:** [project-status.md](../_archive/planning/project-status.md)
 
 ---

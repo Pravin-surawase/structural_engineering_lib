@@ -1,5 +1,14 @@
 # Planning
 
+**Type:** Index
+**Audience:** All Agents
+**Status:** Production Ready
+**Importance:** High
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-13
+
+---
+
 Internal planning documents and research notes.
 
 ---
