@@ -4,6 +4,47 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-15 — Session 25: v0.17.5 Release & Infrastructure Hardening
+
+**Focus:** Release v0.17.5, add API signature validation to CI/pre-commit, validate all tests.
+
+### Summary
+
+**Commits:**
+
+1. **ci: add API signature validation to pre-commit and CI workflow** (`a99aa73`)
+   - Added `check-api-signatures` hook to `.pre-commit-config.yaml`
+   - Added `api-signature-check` job to `streamlit-validation.yml`
+   - Updated combined-report job dependencies
+
+2. **chore(release): bump version to 0.17.5** (`d7f996f`)
+   - Updated `pyproject.toml` version
+   - Added CHANGELOG.md section for v0.17.5
+   - Updated README.md with new features section
+   - Synced version references across 13 doc files
+
+**Release v0.17.5 (Tag: v0.17.5)**
+
+Features:
+- Multi-Objective Pareto Optimization (NSGA-II algorithm)
+- API Signature Validation in CI/pre-commit
+- Cost Optimizer UI Enhancement
+- 1317 tests passing
+
+**Validation:**
+- ✅ 1317 unit tests passed
+- ✅ 0 CRITICAL scanner issues
+- ✅ 19 HIGH issues (acceptable session state patterns)
+- ✅ Pre-commit hooks working
+- ✅ CI workflows updated
+
+### Next Actions
+- [ ] Monitor CI run for new api-signature-check job
+- [ ] Continue v0.18.0 library expansion (slenderness, anchorage, torsion)
+- [ ] Address deferred cosmetic issues (ISSUE-007, ISSUE-009, ISSUE-011)
+
+---
+
 ## 2026-01-14 — Session 24: Streamlit App Bug Fixes
 
 **Focus:** Fix critical API signature issues and UI problems in Streamlit app.

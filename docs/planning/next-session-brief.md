@@ -5,16 +5,16 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-14<br>
+**Last Updated:** 2026-01-15<br>
 
 ---
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.17.5 | ✅ Released (2026-01-13) |
+| **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 23 | **Commits:** 5
+**Last Session:** 25 | **Commits:** 2
 
 ---
 
@@ -32,41 +32,34 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-14
-- Session: 23
-- Focus: v0.18.0 Library Expansion - Hypothesis, Slenderness, Jinja2 Reports
-- PRs:
-  - #358 (merged) — Hypothesis property-based testing integration
-  - #359 (pending CI) — Slenderness check per IS 456 Cl 23.3
-  - #360 (pending CI) — Jinja2 report templates package
-- Commits: 5 commits (plus prior Hypothesis work)
+- Date: 2026-01-15
+- Session: 25
+- Focus: v0.17.5 Release + API Signature Validation Infrastructure
+- Commits:
+  - `a99aa73` — ci: add API signature validation to pre-commit and CI workflow
+  - `d7f996f` — chore(release): bump version to 0.17.5
+- Release: v0.17.5 Tag pushed
 - Key Deliverables:
-  - **Hypothesis Testing:** 43 property-based tests across 5 modules
-  - **Slenderness Module:** IS 456 Cl 23.3 beam lateral stability checks
-    - `Python/structural_lib/codes/is456/slenderness.py` (~300 lines)
-    - 50 tests (34 unit + 16 Hypothesis)
-    - BeamType enum, SlendernessResult dataclass
-  - **Jinja2 Reports Package:** Professional HTML report generation
-    - `Python/structural_lib/reports/generator.py` (~350 lines)
-    - 3 templates: beam_design, summary, detailed (~1,150 lines)
-    - 25 tests, optional `report` extras dependency
+  - **API Signature Validation:** Added to pre-commit hooks + CI workflow
+    - `.pre-commit-config.yaml`: `check-api-signatures` hook
+    - `.github/workflows/streamlit-validation.yml`: `api-signature-check` job
+  - **v0.17.5 Release:** Multi-Objective Pareto Optimization, 1317 tests passing
+  - **Version Sync:** 16 files updated (CHANGELOG, pyproject.toml, README, 13 docs)
 - Files Changed:
-  - `Python/structural_lib/codes/is456/slenderness.py` (NEW)
-  - `Python/structural_lib/slenderness.py` (NEW - stub)
-  - `Python/structural_lib/reports/` (NEW package)
-  - `Python/structural_lib/api.py` (added slenderness)
-  - `Python/structural_lib/__init__.py` (added reports export)
-  - `Python/tests/test_slenderness.py` (NEW)
-  - `Python/tests/property/test_slenderness_hypothesis.py` (NEW)
-  - `Python/tests/test_reports.py` (NEW)
+  - `.pre-commit-config.yaml` (hook added)
+  - `.github/workflows/streamlit-validation.yml` (job added)
+  - `CHANGELOG.md` (v0.17.5 section)
+  - `Python/pyproject.toml` (version bump)
+  - `Python/README.md` (new features section)
+  - 13 doc files (version sync via check_doc_versions.py --fix)
 - Metrics:
-  - 118 new tests added this session
-  - ~2,750 lines of new code
-  - All local tests passing
+  - 1317 unit tests passing
+  - 0 CRITICAL scanner issues
+  - 19 HIGH issues (acceptable session state patterns)
 - Next Steps:
-  - Monitor PRs #359, #360 for CI completion
-  - Merge when CI passes (both updated with formatting fix)
-  - Continue v0.18.0 pipeline (ductile detailing, validation audit)
+  - Monitor CI for new api-signature-check job
+  - Continue v0.18.0 library expansion (anchorage, torsion, Level C serviceability)
+  - Address deferred cosmetic issues (ISSUE-007, ISSUE-009, ISSUE-011)
 <!-- HANDOFF:END -->
 
 ---

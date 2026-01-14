@@ -19,9 +19,23 @@
 
 ## Current Release
 
-- **Version:** v0.17.0 ✅ Released (2026-01-13)
-- **Focus:** Professional API Features + Debug Infrastructure + Doc Consolidation
+- **Version:** v0.17.5 ✅ Released (2026-01-15)
+- **Focus:** Multi-Objective Optimization + API Validation Infrastructure
 - **Next:** v0.18.0 (Q1 2026, Weeks 3-4)
+
+---
+
+## v0.17.5 Release Summary (2026-01-15)
+
+**Key Features:**
+- ✅ Multi-Objective Pareto Optimization (NSGA-II algorithm)
+- ✅ API Signature Validation in CI/pre-commit
+- ✅ Cost Optimizer UI Enhancement
+- ✅ 1317 tests passing
+
+**Commits:**
+- `a99aa73` - ci: add API signature validation to pre-commit and CI workflow
+- `d7f996f` - chore(release): bump version to 0.17.5
 
 ---
 
@@ -271,6 +285,8 @@ and `streamlit_app/tests/test_input_bridge.py`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **REL-0175** | Release v0.17.5: Multi-Objective Pareto Optimization, API Signature Validation CI, 1317 tests | MAIN | ✅ 2026-01-15 |
+| **INFRA-01** | Add check-api-signatures hook to pre-commit + CI api-signature-check job | DEVOPS | ✅ 2026-01-15 |
 | **IMPL-008** | Fix Streamlit API issues and UI improvements (advanced analysis, utilization display, session state) | DEV | ✅ PR #361 2026-01-14 |
 | **TASK-520** | Hypothesis property-based testing (strategies + 43 tests for flexure/shear/ductile) | DEV | ✅ 2026-01-14 |
 | **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests → all 2639 pass) | DEV | ✅ 2026-01-14 |
