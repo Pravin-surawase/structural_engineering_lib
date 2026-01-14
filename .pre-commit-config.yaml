@@ -213,6 +213,13 @@ repos:
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$
         verbose: true
+      - id: check-api-signatures
+        name: Check API function signatures
+        entry: .venv/bin/python scripts/check_api_signatures.py
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/.*\.py$
+        verbose: true
       - id: pylint-streamlit
         name: Pylint check for Streamlit app
         entry: bash -c '.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit --exit-zero streamlit_app/pages/*.py'

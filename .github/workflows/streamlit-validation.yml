@@ -98,10 +98,34 @@ jobs:
         run: |
           python -m pytest -q streamlit_app/tests/test_critical_journeys.py
 
+  api-signature-check:
+    name: API Signature Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run API Signature Checker
+        run: |
+          python scripts/check_api_signatures.py --fix
+
+      - name: Verify no signature issues
+        run: |
+          EXIT_CODE=$(python scripts/check_api_signatures.py; echo $?)
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "❌ API signature issues found"
+            exit 1
+          fi
+          echo "✅ All API signatures valid"
+
   combined-report:
     name: Combined Analysis Report
     runs-on: ubuntu-latest
-    needs: [ast-scanner, pylint-check, critical-journeys]
+    needs: [ast-scanner, pylint-check, critical-journeys, api-signature-check]
     if: always()
     steps:
       - uses: actions/checkout@v4
@@ -123,6 +147,9 @@ jobs:
           echo "## AST Scanner Results" >> report.md
           python scripts/check_streamlit_issues.py --all-pages --verbose >> report.md 2>&1 || true
           echo "" >> report.md
+          echo "## API Signature Results" >> report.md
+          python scripts/check_api_signatures.py --fix >> report.md 2>&1 || true
+          echo "" >> report.md
           echo "## Pylint Results" >> report.md
           python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/*.py >> report.md 2>&1 || true
 
@@ -137,5 +164,6 @@ jobs:
         run: |
           echo "📊 Validation Summary:"
           echo "AST Scanner: ${{ needs.ast-scanner.result }}"
+          echo "API Signatures: ${{ needs.api-signature-check.result }}"
           echo "Pylint: ${{ needs.pylint-check.result }}"
           echo "Critical journeys: ${{ needs.critical-journeys.result }}"
