@@ -23,7 +23,60 @@ from structural_lib.errors import (
 from . import tables
 from .traceability import clause
 
-__all__ = ["calculate_tv", "design_shear"]
+__all__ = ["calculate_tv", "design_shear", "round_to_practical_spacing"]
+
+
+# Standard stirrup spacings used in construction (mm)
+# These are practical values that are easy to mark and maintain on site
+STANDARD_STIRRUP_SPACINGS = [75, 100, 125, 150, 175, 200, 225, 250, 275, 300]
+
+
+def round_to_practical_spacing(spacing_mm: float, round_down: bool = True) -> float:
+    """
+    Round calculated stirrup spacing to practical construction values.
+
+    Stirrup spacings in practice are rounded to standard values that are
+    easy to mark and maintain on site. This function rounds to the nearest
+    standard value from: 75, 100, 125, 150, 175, 200, 225, 250, 275, 300 mm.
+
+    Args:
+        spacing_mm: Calculated spacing in mm.
+        round_down: If True, round down (conservative). If False, round to nearest.
+
+    Returns:
+        Practical spacing value in mm.
+
+    Example:
+        >>> round_to_practical_spacing(241.3)
+        225.0
+        >>> round_to_practical_spacing(241.3, round_down=False)
+        250.0
+    """
+    if spacing_mm <= 0:
+        return 0.0
+
+    if spacing_mm <= STANDARD_STIRRUP_SPACINGS[0]:
+        return float(STANDARD_STIRRUP_SPACINGS[0])
+
+    if spacing_mm >= STANDARD_STIRRUP_SPACINGS[-1]:
+        return float(STANDARD_STIRRUP_SPACINGS[-1])
+
+    if round_down:
+        # Find the largest standard spacing that is <= calculated spacing
+        for s in reversed(STANDARD_STIRRUP_SPACINGS):
+            if s <= spacing_mm:
+                return float(s)
+        return float(STANDARD_STIRRUP_SPACINGS[0])
+    else:
+        # Find the nearest standard spacing
+        closest = STANDARD_STIRRUP_SPACINGS[0]
+        min_diff = abs(spacing_mm - closest)
+        for s in STANDARD_STIRRUP_SPACINGS[1:]:
+            diff = abs(spacing_mm - s)
+            if diff < min_diff:
+                min_diff = diff
+                closest = s
+        return float(closest)
 
 
 @clause("40.1")
@@ -195,6 +248,9 @@ def design_shear(
         spacing = max_spacing_2
     if spacing > max_spacing_min_reinf:
         spacing = max_spacing_min_reinf
+
+    # 6. Round to practical construction spacing (conservative)
+    spacing = round_to_practical_spacing(spacing, round_down=True)
 
     return ShearResult(
         tv=tv,

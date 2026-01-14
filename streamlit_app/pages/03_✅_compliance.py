@@ -202,7 +202,7 @@ def run_compliance_checks(inputs: dict) -> dict:
             key = check_config["key"]
 
             # Extract real values based on check type
-            if key == "flexure_capacity":
+            if key == "flexure_steel_area":
                 provided = f"{ast_prov:.0f} mm²"
                 required = f"{ast_req:.0f} mm²"
                 margin = ((ast_prov - ast_req) / ast_req * 100) if ast_req > 0 else 100
@@ -218,11 +218,19 @@ def run_compliance_checks(inputs: dict) -> dict:
                 required = f"≤ {pt_max:.1f}%"
                 margin = ((pt_max - pt_prov) / pt_max * 100) if pt_max > 0 else 100
                 status = "pass" if pt_prov <= pt_max else "fail"
-            elif key == "shear_capacity":
+            elif key == "shear_stress":
                 provided = f"{tau_v:.2f} N/mm²"
                 required = f"≤ {tau_c_max:.2f} N/mm²"
                 margin = ((tau_c_max - tau_v) / tau_c_max * 100) if tau_c_max > 0 else 100
                 status = "pass" if tau_v <= tau_c_max else "fail"
+            elif key == "shear_spacing":
+                # Stirrup spacing check per IS 456 Cl. 26.5.1.5
+                stirrup_spacing = shear.get("spacing_mm") or shear.get("spacing") or 0
+                max_spacing = min(0.75 * d_mm, 300)  # IS 456 Cl. 26.5.1.5
+                provided = f"{stirrup_spacing:.0f} mm" if stirrup_spacing > 0 else "Not provided"
+                required = f"≤ {max_spacing:.0f} mm"
+                margin = ((max_spacing - stirrup_spacing) / max_spacing * 100) if (max_spacing > 0 and stirrup_spacing > 0) else 0
+                status = "pass" if (stirrup_spacing > 0 and stirrup_spacing <= max_spacing) else "warning"
             elif key == "shear_min_steel":
                 # Shear reinforcement required if tau_v > tau_c
                 shear_reinf_req = tau_v > tau_c
