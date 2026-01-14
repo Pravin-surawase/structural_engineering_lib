@@ -23,6 +23,7 @@ import streamlit as st
 from utils.api_wrapper import cached_smart_analysis
 from utils.layout import setup_page, page_header
 from utils.theme_manager import apply_dark_mode_theme, initialize_theme
+from utils.fragments import fragment_input_section
 
 # Initialize theme
 initialize_theme()
@@ -471,48 +472,56 @@ def main():
             return
 
     else:  # Manual Input
-        st.sidebar.subheader("Manual Input")
+        @st.fragment
+        def render_manual_inputs():
+            """Manual input form wrapped in fragment for better performance."""
+            st.sidebar.subheader("Manual Input")
 
-        with st.sidebar.form("manual_input_form"):
-            st.markdown("**Loads**")
-            mu_knm = st.number_input(
-                "Moment Mu (kN·m)", min_value=1.0, value=120.0, step=10.0
-            )
-            vu_kn = st.number_input(
-                "Shear Vu (kN)", min_value=1.0, value=85.0, step=5.0
-            )
+            with st.sidebar.form("manual_input_form"):
+                st.markdown("**Loads**")
+                mu_knm = st.number_input(
+                    "Moment Mu (kN·m)", min_value=1.0, value=120.0, step=10.0
+                )
+                vu_kn = st.number_input(
+                    "Shear Vu (kN)", min_value=1.0, value=85.0, step=5.0
+                )
 
-            st.markdown("**Geometry**")
-            b_mm = st.number_input(
-                "Width b (mm)", min_value=100.0, value=300.0, step=50.0
-            )
-            D_mm = st.number_input(
-                "Total Depth D (mm)", min_value=150.0, value=500.0, step=50.0
-            )
-            d_mm = st.number_input(
-                "Effective Depth d (mm)", min_value=100.0, value=450.0, step=50.0
-            )
-            span_mm = st.number_input(
-                "Span (mm)", min_value=1000.0, value=5000.0, step=500.0
-            )
+                st.markdown("**Geometry**")
+                b_mm = st.number_input(
+                    "Width b (mm)", min_value=100.0, value=300.0, step=50.0
+                )
+                D_mm = st.number_input(
+                    "Total Depth D (mm)", min_value=150.0, value=500.0, step=50.0
+                )
+                d_mm = st.number_input(
+                    "Effective Depth d (mm)", min_value=100.0, value=450.0, step=50.0
+                )
+                span_mm = st.number_input(
+                    "Span (mm)", min_value=1000.0, value=5000.0, step=500.0
+                )
 
-            st.markdown("**Materials**")
-            fck_nmm2 = st.selectbox("fck (N/mm²)", [20, 25, 30, 35, 40], index=1)
-            fy_nmm2 = st.selectbox("fy (N/mm²)", [415, 500], index=1)
+                st.markdown("**Materials**")
+                fck_nmm2 = st.selectbox("fck (N/mm²)", [20, 25, 30, 35, 40], index=1)
+                fy_nmm2 = st.selectbox("fy (N/mm²)", [415, 500], index=1)
 
-            submitted = st.form_submit_button("Use These Inputs", type="primary")
+                submitted = st.form_submit_button("Use These Inputs", type="primary")
 
-            if submitted:
-                inputs = {
-                    "mu_knm": mu_knm,
-                    "vu_kn": vu_kn,
-                    "b_mm": b_mm,
-                    "D_mm": D_mm,
-                    "d_mm": d_mm,
-                    "span_mm": span_mm,
-                    "fck_nmm2": fck_nmm2,
-                    "fy_nmm2": fy_nmm2,
-                }
+                if submitted:
+                    return {
+                        "mu_knm": mu_knm,
+                        "vu_kn": vu_kn,
+                        "b_mm": b_mm,
+                        "D_mm": D_mm,
+                        "d_mm": d_mm,
+                        "span_mm": span_mm,
+                        "fck_nmm2": fck_nmm2,
+                        "fy_nmm2": fy_nmm2,
+                    }
+            return None
+
+        manual_inputs = render_manual_inputs()
+        if manual_inputs:
+            inputs = manual_inputs
 
     # Main area - Results
     if inputs:
