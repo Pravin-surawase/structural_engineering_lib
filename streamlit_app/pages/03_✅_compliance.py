@@ -165,9 +165,12 @@ def run_compliance_checks(inputs: dict) -> dict:
         )
 
         # Extract actual values from analysis result
-        flexure = analysis.get("flexure", {})
-        shear = analysis.get("shear", {})
-        detailing = analysis.get("detailing", {})
+        # Note: cached_smart_analysis returns {design: {...}, summary: {...}, ...}
+        # The design dict contains flexure, shear, detailing
+        design = analysis.get("design", {})
+        flexure = design.get("flexure", {})
+        shear = design.get("shear", {})
+        detailing = design.get("detailing", {})
 
         # Input parameters for reference
         b_mm = inputs.get("b_mm", 0)

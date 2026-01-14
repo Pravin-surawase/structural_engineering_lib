@@ -127,10 +127,10 @@ def parametric_study_fck(base_params: Dict, fck_range: List[float]) -> pd.DataFr
             results.append(
                 {
                     "fck": fck,
-                    "Ast_req": flexure.get("Ast_req", 0),
-                    "Ast_prov": flexure.get("Ast_prov", 0),
-                    "xu_by_d": flexure.get("xu_by_d", 0),
-                    "stirrup_spacing": shear.get("spacing_mm", 0),
+                    "Ast_req": flexure.get("ast_required", 0),
+                    "Ast_prov": flexure.get("ast_provided", 0),
+                    "xu_by_d": flexure.get("xu", 0) / (base_params["D_mm"] - 50) if (base_params["D_mm"] - 50) > 0 else 0,
+                    "stirrup_spacing": shear.get("spacing", 0),
                     "cost_per_m": result.get("cost_per_m", 0),
                 }
             )
@@ -161,13 +161,17 @@ def parametric_study_dimensions(
 
             flexure = result.get("flexure", {})
             shear = result.get("shear", {})
+            # Build bar config from bar_dia and num_bars
+            bar_dia = flexure.get("bar_dia", 16)
+            num_bars = flexure.get("num_bars", 3)
+            bar_config = f"{num_bars}-{bar_dia}mm"
             results.append(
                 {
                     dimension: dim_value,
-                    "Ast_req": flexure.get("Ast_req", 0),
-                    "Ast_prov": flexure.get("Ast_prov", 0),
-                    "bar_config": flexure.get("bar_config", "-"),
-                    "stirrup_spacing": shear.get("spacing_mm", 0),
+                    "Ast_req": flexure.get("ast_required", 0),
+                    "Ast_prov": flexure.get("ast_provided", 0),
+                    "bar_config": bar_config,
+                    "stirrup_spacing": shear.get("spacing", 0),
                     "cost_per_m": result.get("cost_per_m", 0),
                 }
             )
@@ -187,21 +191,21 @@ def sensitivity_analysis(
     """
     params = build_design_params(**base_params)
     base_result = cached_design(**params)
-    base_ast = base_result.get("flexure", {}).get("Ast_req", 0)
+    base_ast = base_result.get("flexure", {}).get("ast_required", 0)
 
     # Test +variation%
     params_plus = base_params.copy()
     params_plus[param_name] *= 1 + variation
     params_plus_built = build_design_params(**params_plus)
     result_plus = cached_design(**params_plus_built)
-    ast_plus = result_plus.get("flexure", {}).get("Ast_req", 0)
+    ast_plus = result_plus.get("flexure", {}).get("ast_required", 0)
 
     # Test -variation%
     params_minus = base_params.copy()
     params_minus[param_name] *= 1 - variation
     params_minus_built = build_design_params(**params_minus)
     result_minus = cached_design(**params_minus_built)
-    ast_minus = result_minus.get("flexure", {}).get("Ast_req", 0)
+    ast_minus = result_minus.get("flexure", {}).get("ast_required", 0)
 
     if base_ast > 0:
         sensitivity_plus = ((ast_plus - base_ast) / base_ast) * 100
@@ -345,9 +349,9 @@ if analysis_type == "📊 Parametric Study":
                         results.append(
                             {
                                 "fy_nmm2": fy_val,
-                                "Ast_req": flexure.get("Ast_req", 0),
-                                "Ast_prov": flexure.get("Ast_prov", 0),
-                                "stirrup_spacing": shear.get("spacing_mm", 0),
+                                "Ast_req": flexure.get("ast_required", 0),
+                                "Ast_prov": flexure.get("ast_provided", 0),
+                                "stirrup_spacing": shear.get("spacing", 0),
                                 "cost_per_m": result.get("cost_per_m", 0),
                             }
                         )
@@ -650,28 +654,34 @@ else:  # Loading Scenarios
             results = []
 
             for scenario in scenarios:
-                # Build correct API params
+                # Build correct API params (use correct parameter names)
                 params = build_design_params(
                     b_mm=load_b_mm,
                     D_mm=load_D_mm,
                     mu_knm=scenario["mu_knm"],
                     vu_kn=scenario["vu_kn"],
-                    fck=load_fck,
-                    fy=load_fy,
-                    cover=load_cover,
+                    fck_nmm2=load_fck,
+                    fy_nmm2=load_fy,
+                    cover_mm=load_cover,
                 )
                 result = cached_design(**params)
+
+                # Build bar config from bar_dia and num_bars
+                flexure = result.get("flexure", {})
+                bar_dia = flexure.get("bar_dia", 16)
+                num_bars = flexure.get("num_bars", 3)
+                bar_config = f"{num_bars}-{bar_dia}mm"
 
                 results.append(
                     {
                         "Scenario": scenario["name"],
                         "Mu (kN·m)": scenario["mu_knm"],
                         "Vu (kN)": scenario["vu_kn"],
-                        "Ast_req (mm²)": result.get("flexure", {}).get("Ast_req", 0),
-                        "Ast_prov (mm²)": result.get("flexure", {}).get("Ast_prov", 0),
-                        "Bar Config": result.get("flexure", {}).get("bar_config", "-"),
+                        "Ast_req (mm²)": flexure.get("ast_required", 0),
+                        "Ast_prov (mm²)": flexure.get("ast_provided", 0),
+                        "Bar Config": bar_config,
                         "Stirrup Spacing (mm)": result.get("shear", {}).get(
-                            "spacing_mm", "-"
+                            "spacing", "-"
                         ),
                         "Cost/m (INR)": result.get("cost_per_m", 0),
                     }

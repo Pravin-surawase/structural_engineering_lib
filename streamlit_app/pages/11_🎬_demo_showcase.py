@@ -170,14 +170,19 @@ def run_demo(scenario_name: str) -> dict:
     scenario = DEMO_SCENARIOS[scenario_name]
     params = scenario["params"]
 
+    # Calculate effective depth (D - assumed cover of 50mm)
+    D_mm = params["D"]
+    cover_mm = 50
+    d_mm = D_mm - cover_mm
+
     result = cached_design(
-        L=params["L"],
-        b=params["b"],
-        D=params["D"],
-        fck=params["fck"],
-        fy=params["fy"],
-        Mu=params["Mu"] * 1e6,  # Convert kN·m to N·mm
-        Vu=params["Vu"] * 1e3,  # Convert kN to N
+        mu_knm=params["Mu"],  # Already in kN·m
+        vu_kn=params["Vu"],   # Already in kN
+        b_mm=params["b"],
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=params["fck"],
+        fy_nmm2=params["fy"],
     )
 
     return result

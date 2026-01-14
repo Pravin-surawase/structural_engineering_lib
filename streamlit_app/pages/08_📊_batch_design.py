@@ -101,28 +101,37 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
             status_text.text(f"Processing {row['beam_id']}... ({idx + 1}/{total})")
 
             try:
-                # Run design
+                # Calculate effective depth (D - assumed cover of 50mm)
+                D_mm = row["D_mm"]
+                cover_mm = 50
+                d_mm = D_mm - cover_mm
+
+                # Run design with correct API parameters
                 result = cached_design(
-                    L=row["L_mm"],
-                    b=row["b_mm"],
-                    D=row["D_mm"],
-                    fck=row["fck_MPa"],
-                    fy=row["fy_MPa"],
-                    Mu=row["Mu_kNm"] * 1e6,  # Convert kN·m to N·mm
-                    Vu=row["Vu_kN"] * 1e3,   # Convert kN to N
+                    mu_knm=row["Mu_kNm"],       # Already in kN·m
+                    vu_kn=row["Vu_kN"],         # Already in kN
+                    b_mm=row["b_mm"],
+                    D_mm=D_mm,
+                    d_mm=d_mm,
+                    fck_nmm2=row["fck_MPa"],
+                    fy_nmm2=row["fy_MPa"],
                 )
 
                 # Extract key results
-                status = result.get("status", "UNKNOWN")
+                status = "OK" if result.get("is_safe", False) else "FAIL"
                 flexure = result.get("flexure", {})
                 shear = result.get("shear", {})
+                # Build bar config from bar_dia and num_bars
+                bar_dia = flexure.get("bar_dia", 16)
+                num_bars = flexure.get("num_bars", 3)
+                bar_config = f"{num_bars}-{bar_dia}mm"
                 results.append({
                     "beam_id": row["beam_id"],
                     "status": "✅ OK" if status == "OK" else "❌ FAIL",
-                    "Ast_req_mm2": flexure.get("Ast_req", "-"),
-                    "Ast_prov_mm2": flexure.get("Ast_prov", "-"),
-                    "bar_config": flexure.get("bar_config", "-"),
-                    "stirrup_spacing_mm": shear.get("spacing_mm", "-"),
+                    "Ast_req_mm2": flexure.get("ast_required", "-"),
+                    "Ast_prov_mm2": flexure.get("ast_provided", "-"),
+                    "bar_config": bar_config,
+                    "stirrup_spacing_mm": shear.get("spacing", "-"),
                     "cost_per_m_INR": result.get("cost_per_m", 0),
                 })
 
