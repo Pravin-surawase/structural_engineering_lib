@@ -262,9 +262,16 @@ GLOBAL_CSS_PART2 = f"""
     line-height: 1.4 !important;
 }}
 
+/* Dropdown menu container - ensure proper z-index and positioning */
+[data-baseweb="popover"] {{
+    z-index: 10000 !important;
+}}
+
 /* Dropdown menu options - ensure full visibility */
 [data-baseweb="menu"] {{
     font-size: 14px !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
 }}
 
 [data-baseweb="menu"] li {{
@@ -409,6 +416,7 @@ GLOBAL_CSS_PART3 = f"""
     border-radius: {RADIUS.lg};
     padding: {SPACING.space_4};
     box-shadow: {ELEVATION.level_1};
+    overflow: visible !important;  /* Allow dropdowns to overflow */
 }}
 
 /* ==================== METRICS (st.metric) ==================== */
