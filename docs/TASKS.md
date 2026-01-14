@@ -11,6 +11,7 @@
 ## Rules (read first)
 - **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks.
 - Definition of Done: tests pass, docs updated, scanner passes.
+- **Commit quality:** Batch session docs (TASKS, SESSION_LOG, handoff) into ONE commit at session end. Never pad commits.
 - **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items.
 
 ---
@@ -25,25 +26,28 @@
 
 ## Active
 
-### TASK-602: Modern Streamlit Patterns Adoption (Session 28)
+### TASK-604: Focus App on Core Features (Session 28 Cont.)
 
-> **Goal:** Apply modern Streamlit patterns (st.fragment, st.dialog, st.badge) to key pages
-> **Research:** [streamlit-modern-patterns-research.md](research/streamlit-modern-patterns-research.md)
-> **Timeline:** Session 28 (2026-01-17)
+> **Goal:** Focus app on 4 core pages, hide secondary features, improve beam design UX
+> **Timeline:** Session 28 (2026-01-15)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-602.1** | Add CacheStatsFragment to beam_design.py (auto-refresh 10s) | MAIN | 30m | 🔴 HIGH | ✅ `88ae05f` |
-| **TASK-602.2** | Add show_status_badge for SAFE/UNSAFE display | MAIN | 15m | 🔴 HIGH | ✅ `88ae05f` |
-| **TASK-602.4** | Add st.badge to cost_optimizer.py Pareto results | MAIN | 30m | 🟠 MEDIUM | ✅ `9425bc0` |
-| **TASK-602.5** | Extract shared constants to utils/constants.py | MAIN | 45m | 🟠 MEDIUM | ✅ `f01ba3f` |
-| **TASK-602.6** | Clean TASKS.md and update SESSION_LOG | MAIN | 30m | 🟠 MEDIUM | ⏳ In Progress |
+| **TASK-604.1** | Hide 8 secondary pages (underscore prefix) | MAIN | 15m | 🔴 HIGH | ✅ Done |
+| **TASK-604.2** | Update sidebar navigation messaging | MAIN | 5m | 🔴 HIGH | ✅ Done |
+| **TASK-604.3** | Add input validation improvements to beam_design.py | MAIN | 30m | 🟠 MEDIUM | ⏳ In Progress |
+| **TASK-604.4** | Add Pareto explanation tooltips to cost_optimizer.py | MAIN | 30m | 🟠 MEDIUM | ⏳ Queued |
 
-**Key Deliverables:**
-- ✅ Auto-refreshing cache stats fragment (replaces manual 30-line expander)
-- ✅ Modern badge-based status indicators
-- ✅ Centralized constants file for consistency
-- ⏳ Clean task board focused on current work
+**Focus Pages (4 Visible):**
+- ✅ 01_beam_design.py - Core design functionality
+- ✅ 02_cost_optimizer.py - Key differentiator
+- ✅ 03_compliance.py - Essential for engineers
+- ✅ 04_documentation.py - User reference
+
+**Hidden Pages (8 with underscore prefix):**
+- _05_bbs_generator.py, _06_dxf_export.py, _07_report_generator.py
+- _08_batch_design.py, _09_advanced_analysis.py, _10_learning_center.py
+- _11_demo_showcase.py, _12_clause_traceability.py
 
 ---
 

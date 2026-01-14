@@ -135,12 +135,14 @@ with st.sidebar:
     st.markdown("### 📋 Navigation")
     st.info(
         """
-    Use the pages above to navigate between different features:
+    **Core Features:**
 
     - **🏗️ Beam Design:** Main design workflow
     - **💰 Cost Optimizer:** Find economical solutions
     - **✅ Compliance:** IS 456 checking
     - **📚 Documentation:** Help & examples
+
+    *More features coming soon!*
     """
     )
 
