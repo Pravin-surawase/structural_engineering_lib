@@ -220,6 +220,13 @@ repos:
         pass_filenames: false
         files: ^streamlit_app/.*\.py$
         verbose: true
+      - id: apptest-smoke
+        name: AppTest smoke tests (runtime validation)
+        entry: bash -c '.venv/bin/python -m pytest tests/apptest/test_all_pages_smoke.py -v --tb=short -x'
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/.*\.py$
+        verbose: true
       - id: check-api-signatures
         name: Check API function signatures
         entry: .venv/bin/python scripts/check_api_signatures.py
