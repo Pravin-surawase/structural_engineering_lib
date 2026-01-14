@@ -59,9 +59,9 @@ def lazy_import(module_name: str) -> Any:
     return _lazy_importer.get_module(module_name)
 
 
-def load_on_demand(component_key: str):
-    """
-    Decorator to load component only when first accessed.
+def load_on_demand(component_key: str) -> Callable[[Callable], Callable]:
+    """Decorator to load component only when first accessed.
+
     Component state tracked in session_state.
 
     Usage:
@@ -72,10 +72,13 @@ def load_on_demand(component_key: str):
 
     Args:
         component_key: Unique key for component
+
+    Returns:
+        Decorator function
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             # Check if component should be loaded
             state_key = f"_loaded_{component_key}"
 
@@ -93,16 +96,18 @@ def load_on_demand(component_key: str):
     return decorator
 
 
-def defer_until_visible(container_type: str = "expander"):
-    """
-    Defer rendering until container is visible/expanded.
+def defer_until_visible(container_type: str = "expander") -> Callable[[Callable], Callable]:
+    """Defer rendering until container is visible/expanded.
 
     Args:
         container_type: Type of container ('expander', 'tab', 'column')
+
+    Returns:
+        Decorator function
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             # For expanders, check if expanded
             if container_type == "expander":
                 # Render immediately (Streamlit handles visibility)
@@ -150,9 +155,8 @@ _component_loader = ComponentLoader()
 def progressive_load(
     component_id: str,
     placeholder_text: str = "Loading component..."
-) -> Callable:
-    """
-    Load component progressively with placeholder.
+) -> Callable[[Callable], Callable]:
+    """Load component progressively with placeholder.
 
     Usage:
         @progressive_load('chart_section', 'Loading chart...')
@@ -163,10 +167,13 @@ def progressive_load(
     Args:
         component_id: Unique component identifier
         placeholder_text: Text to show while loading
+
+    Returns:
+        Decorator function
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             # Check if already loaded
             if _component_loader.is_loaded(component_id):
                 return func(*args, **kwargs)

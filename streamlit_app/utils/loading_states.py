@@ -9,7 +9,7 @@ Created: 2026-01-08
 
 import streamlit as st
 import time
-from typing import Optional, Literal
+from typing import Generator, Optional, Literal
 from contextlib import contextmanager
 from utils.design_system import COLORS, ANIMATION
 from utils.theme_manager import get_theme_colors
@@ -328,14 +328,16 @@ def loading_context(
     loader_type: LoaderType = "spinner",
     message: str = "Loading...",
     min_display_time: float = 0.5,
-):
-    """
-    Context manager for showing loading state during operation.
+) -> Generator[None, None, None]:
+    """Context manager for showing loading state during operation.
 
     Args:
         loader_type: Type of loader to show
         message: Loading message
         min_display_time: Minimum time to show loader (seconds)
+
+    Yields:
+        None
 
     Example:
         >>> with loading_context("spinner", "Calculating..."):
