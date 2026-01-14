@@ -357,7 +357,9 @@ class TestSelectStirrupDiameter:
                 dia = shear.select_stirrup_diameter(
                     vu_kn=vu, b_mm=b, d_mm=450, fck=25, main_bar_dia=16
                 )
-                assert dia in standard_sizes, f"Got {dia} which is not in {standard_sizes}"
+                assert (
+                    dia in standard_sizes
+                ), f"Got {dia} which is not in {standard_sizes}"
 
     def test_zero_dimensions_returns_default(self):
         """Zero dimensions should return safe default (8mm)."""
