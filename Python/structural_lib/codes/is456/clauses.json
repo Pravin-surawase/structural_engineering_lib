@@ -149,6 +149,14 @@
       "category": "detailing",
       "keywords": ["hooks", "bends", "anchorage", "standard"]
     },
+    "26.2.3.3": {
+      "title": "Anchorage at Simple Supports",
+      "section": "26 - Detailing",
+      "text": "At simple supports, the positive moment tension reinforcement shall be limited to a diameter such that Ld does not exceed M1/V + Lo, where Lo is the sum of anchorage beyond the center of support.",
+      "category": "detailing",
+      "formula": "Ld ≤ (M1/V) + Lo",
+      "keywords": ["anchorage", "simple support", "bottom bars", "development length", "Lo"]
+    },
     "26.2.5": {
       "title": "Lap Splices",
       "section": "26 - Detailing",
