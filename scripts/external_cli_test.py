@@ -102,7 +102,9 @@ def _subprocess_env(repo_root: Path | None) -> dict[str, str]:
     # Make `python -m structural_lib` work even if the package isn't installed.
     if python_dir.exists():
         old = env.get("PYTHONPATH", "")
-        env["PYTHONPATH"] = str(python_dir) if not old else f"{python_dir}{os.pathsep}{old}"
+        env["PYTHONPATH"] = (
+            str(python_dir) if not old else f"{python_dir}{os.pathsep}{old}"
+        )
     return env
 
 
@@ -118,7 +120,13 @@ def _run(cmd: list[str], cwd: Path, env: dict[str, str], timeout_s: int) -> CmdR
         timeout=timeout_s,
     )
     seconds = time.perf_counter() - start
-    return CmdResult(cmd=cmd, returncode=p.returncode, seconds=seconds, stdout=p.stdout, stderr=p.stderr)
+    return CmdResult(
+        cmd=cmd,
+        returncode=p.returncode,
+        seconds=seconds,
+        stdout=p.stdout,
+        stderr=p.stderr,
+    )
 
 
 def _write_file(path: Path, content: str) -> None:
@@ -135,8 +143,9 @@ def _log_block(f, title: str, body: str) -> None:
 
 def _format_cmd_result(r: CmdResult) -> str:
     cmd_str = " ".join(r.cmd)
-    return textwrap.dedent(
-        f"""
+    return (
+        textwrap.dedent(
+            f"""
         $ {cmd_str}
         returncode: {r.returncode}
         seconds: {r.seconds:.3f}
@@ -147,7 +156,9 @@ def _format_cmd_result(r: CmdResult) -> str:
         --- stderr ---
         {r.stderr.rstrip()}
         """
-    ).strip() + "\n"
+        ).strip()
+        + "\n"
+    )
 
 
 def main() -> int:
@@ -301,8 +312,9 @@ def main() -> int:
             ]
         )
 
-    header = textwrap.dedent(
-        f"""
+    header = (
+        textwrap.dedent(
+            f"""
         External CLI Test (S-007)
 
         Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}
@@ -316,7 +328,9 @@ def main() -> int:
         - Optional steps: {len(optional_steps)}
         - Repo mode: {'yes' if repo_root else 'no'}
         """
-    ).strip() + "\n"
+        ).strip()
+        + "\n"
+    )
 
     with log_path.open("w", encoding="utf-8") as f:
         f.write(header)
@@ -327,7 +341,11 @@ def main() -> int:
             try:
                 r = _run(cmd, cwd=workdir, env=env, timeout_s=args.timeout)
             except subprocess.TimeoutExpired:
-                _log_block(f, f"REQUIRED: {title}", f"TIMEOUT after {args.timeout}s\n$ {' '.join(cmd)}\n")
+                _log_block(
+                    f,
+                    f"REQUIRED: {title}",
+                    f"TIMEOUT after {args.timeout}s\n$ {' '.join(cmd)}\n",
+                )
                 failed_required = True
                 continue
 
@@ -339,7 +357,11 @@ def main() -> int:
             try:
                 r = _run(cmd, cwd=workdir, env=env, timeout_s=args.timeout)
             except subprocess.TimeoutExpired:
-                _log_block(f, f"OPTIONAL: {title}", f"TIMEOUT after {args.timeout}s\n$ {' '.join(cmd)}\n")
+                _log_block(
+                    f,
+                    f"OPTIONAL: {title}",
+                    f"TIMEOUT after {args.timeout}s\n$ {' '.join(cmd)}\n",
+                )
                 continue
 
             _log_block(f, f"OPTIONAL: {title}", _format_cmd_result(r))

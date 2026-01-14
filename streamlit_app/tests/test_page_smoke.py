@@ -37,6 +37,7 @@ page_files = list(pages_dir.glob("*.py")) if pages_dir.exists() else []
 # Test Group 1: Page Importability (5 tests)
 # ============================================================================
 
+
 def test_pages_directory_exists():
     """Test that pages/ directory exists."""
     assert pages_dir.exists(), "pages/ directory should exist"
@@ -53,22 +54,19 @@ def test_pages_have_correct_naming():
         # - page_name.py (unnumbered)
         # - Should not start with underscore (those are ignored)
 
-        assert not name.startswith('_'), \
-            f"Page {name} should not start with underscore"
-        assert name.endswith('.py'), \
-            f"Page {name} should end with .py"
+        assert not name.startswith("_"), f"Page {name} should not start with underscore"
+        assert name.endswith(".py"), f"Page {name} should end with .py"
 
 
 def test_all_pages_importable_as_modules():
     """Test that all pages can be loaded as modules."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
         try:
             spec = importlib.util.spec_from_file_location(
-                f"pages.{page_file.stem}",
-                page_file
+                f"pages.{page_file.stem}", page_file
             )
             module = importlib.util.module_from_spec(spec)
             # We don't execute (spec.loader.exec_module) to avoid Streamlit errors
@@ -81,13 +79,13 @@ def test_all_pages_importable_as_modules():
 def test_pages_have_no_syntax_errors():
     """Test that page files have no syntax errors."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
         try:
-            with open(page_file, 'r', encoding='utf-8') as f:
+            with open(page_file, "r", encoding="utf-8") as f:
                 source = f.read()
-            compile(source, page_file.name, 'exec')
+            compile(source, page_file.name, "exec")
         except SyntaxError as e:
             pytest.fail(f"Syntax error in {page_file.name}: {e}")
 
@@ -101,18 +99,19 @@ def test_pages_directory_not_empty():
 # Test Group 2: Page Structure (5 tests)
 # ============================================================================
 
+
 def test_pages_use_setup_page():
     """Test that pages call setup_page() for consistent layout."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Pages should call setup_page() for consistent styling
         # This is a best practice, not mandatory
-        has_setup = 'setup_page' in source
+        has_setup = "setup_page" in source
 
         # Just check, don't enforce (some pages might not need it)
         assert isinstance(has_setup, bool)
@@ -121,28 +120,29 @@ def test_pages_use_setup_page():
 def test_pages_import_streamlit():
     """Test that pages import streamlit."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # All pages should import streamlit
-        assert 'import streamlit' in source or 'from streamlit' in source, \
-            f"{page_file.name} should import streamlit"
+        assert (
+            "import streamlit" in source or "from streamlit" in source
+        ), f"{page_file.name} should import streamlit"
 
 
 def test_pages_have_docstrings():
     """Test that pages have module docstrings."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Should have docstring or comments explaining the page
-        has_docs = '"""' in source or "'''" in source or '#' in source
+        has_docs = '"""' in source or "'''" in source or "#" in source
 
         assert has_docs, f"{page_file.name} should have documentation"
 
@@ -150,18 +150,18 @@ def test_pages_have_docstrings():
 def test_pages_use_relative_imports():
     """Test that pages use correct import paths."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Check import patterns
         has_imports = (
-            'from components' in source or
-            'from utils' in source or
-            'import components' in source or
-            'import utils' in source
+            "from components" in source
+            or "from utils" in source
+            or "import components" in source
+            or "import utils" in source
         )
 
         # Most pages should import components or utils
@@ -174,22 +174,24 @@ def test_pages_dont_have_circular_imports():
     # Pages should import from components/utils, not vice versa
 
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Pages should not be imported by other modules
         # (they're entry points, not libraries)
         # This is enforced by Streamlit architecture
-        assert 'import pages' not in source, \
-            f"{page_file.name} should not import from pages/"
+        assert (
+            "import pages" not in source
+        ), f"{page_file.name} should not import from pages/"
 
 
 # ============================================================================
 # Test Group 3: Design System Usage (5 tests)
 # ============================================================================
+
 
 def test_pages_dont_use_undefined_design_tokens():
     """REGRESSION: Test pages don't use non-existent design tokens."""
@@ -201,22 +203,23 @@ def test_pages_dont_use_undefined_design_tokens():
     valid_spacing_tokens = dir(SPACING)
 
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Check for common token access patterns
         # This is a basic check, not exhaustive
 
         # Look for COLORS.xxx usage
-        if 'COLORS.' in source:
+        if "COLORS." in source:
             # Extract token names (simplified pattern matching)
             import re
-            matches = re.findall(r'COLORS\.(\w+)', source)
+
+            matches = re.findall(r"COLORS\.(\w+)", source)
             for token in matches:
-                if token not in ['items', 'keys', 'values']:  # Skip dict methods
+                if token not in ["items", "keys", "values"]:  # Skip dict methods
                     # Just verify pattern, don't enforce
                     assert isinstance(token, str)
 
@@ -224,33 +227,36 @@ def test_pages_dont_use_undefined_design_tokens():
 def test_pages_use_design_system_imports():
     """Test that pages import from design_system when using tokens."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # If using design tokens, should import them
-        uses_tokens = any(token in source for token in ['COLORS', 'TYPOGRAPHY', 'SPACING'])
+        uses_tokens = any(
+            token in source for token in ["COLORS", "TYPOGRAPHY", "SPACING"]
+        )
 
         if uses_tokens:
-            assert 'design_system' in source or 'from utils' in source, \
-                f"{page_file.name} uses design tokens but doesn't import design_system"
+            assert (
+                "design_system" in source or "from utils" in source
+            ), f"{page_file.name} uses design tokens but doesn't import design_system"
 
 
 def test_pages_dont_define_custom_styles_inline():
     """Test that pages use design system instead of inline styles (best practice)."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Discourage inline RGB colors (should use design system)
         # This is a guideline, not strict rule
-        has_inline_rgb = 'rgb(' in source.lower()
-        has_inline_hex = source.count('#') > 5  # Allow some comments
+        has_inline_rgb = "rgb(" in source.lower()
+        has_inline_hex = source.count("#") > 5  # Allow some comments
 
         # Just check, don't enforce strictly
         assert isinstance(has_inline_rgb, bool)
@@ -259,16 +265,15 @@ def test_pages_dont_define_custom_styles_inline():
 def test_pages_use_styled_components():
     """Test that pages use styled_components for consistency."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Check if page uses components (best practice)
         uses_components = (
-            'from components' in source or
-            'from utils.styled_components' in source
+            "from components" in source or "from utils.styled_components" in source
         )
 
         # Most pages should use components
@@ -278,34 +283,35 @@ def test_pages_use_styled_components():
 def test_pages_follow_theme_system():
     """Test that pages respect theme manager."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Pages should not override theme directly
         # Should use theme_manager instead
-        if 'st.set_page_config' in source:
+        if "st.set_page_config" in source:
             # Check that it's used appropriately
-            assert 'theme' not in source or 'theme_manager' in source
+            assert "theme" not in source or "theme_manager" in source
 
 
 # ============================================================================
 # Test Group 4: Error Handling (5 tests)
 # ============================================================================
 
+
 def test_pages_have_error_boundaries():
     """Test that pages have error handling."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Pages should have try/except blocks
-        has_error_handling = 'try:' in source and 'except' in source
+        has_error_handling = "try:" in source and "except" in source
 
         # Not all pages need this, but it's a best practice
         assert isinstance(has_error_handling, bool)
@@ -314,14 +320,14 @@ def test_pages_have_error_boundaries():
 def test_pages_use_error_handler_utility():
     """Test that pages use centralized error handling."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Check if using error_handler utility
-        uses_error_handler = 'error_handler' in source
+        uses_error_handler = "error_handler" in source
 
         # This is optional but recommended
         assert isinstance(uses_error_handler, bool)
@@ -330,16 +336,17 @@ def test_pages_use_error_handler_utility():
 def test_pages_handle_missing_data_gracefully():
     """Test that pages check for data before using it."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Look for defensive programming patterns
-        has_checks = any(pattern in source for pattern in [
-            'if not', 'if result', 'if data', 'is None', 'is not None'
-        ])
+        has_checks = any(
+            pattern in source
+            for pattern in ["if not", "if result", "if data", "is None", "is not None"]
+        )
 
         assert isinstance(has_checks, bool)
 
@@ -347,15 +354,15 @@ def test_pages_handle_missing_data_gracefully():
 def test_pages_display_user_friendly_errors():
     """Test that pages use st.error() for user feedback."""
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # If has error handling, should use st.error()
-        if 'except' in source:
-            has_st_error = 'st.error' in source or 'st.warning' in source
+        if "except" in source:
+            has_st_error = "st.error" in source or "st.warning" in source
 
             # Should show errors to users
             assert isinstance(has_st_error, bool)
@@ -366,10 +373,10 @@ def test_pages_dont_crash_on_import():
     # This tests that pages don't have top-level code that runs on import
 
     for page_file in page_files:
-        if page_file.name.startswith('__'):
+        if page_file.name.startswith("__"):
             continue
 
-        with open(page_file, 'r', encoding='utf-8') as f:
+        with open(page_file, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Page logic should be inside functions or if __name__ == "__main__"
@@ -377,9 +384,9 @@ def test_pages_dont_crash_on_import():
 
         # Check for main guard or function definitions
         has_structure = (
-            'def main' in source or
-            'if __name__' in source or
-            source.count('def ') > 2  # Multiple functions = organized
+            "def main" in source
+            or "if __name__" in source
+            or source.count("def ") > 2  # Multiple functions = organized
         )
 
         assert isinstance(has_structure, bool)
@@ -422,6 +429,7 @@ class TestAllPageImports:
         """Beam design page imports without errors."""
         try:
             from pages import beam_design
+
             assert True
         except AttributeError as e:
             pytest.fail(f"beam_design import failed: {e}")
@@ -432,6 +440,7 @@ class TestAllPageImports:
         """Analysis panel page imports without errors."""
         try:
             from pages import analysis_panel
+
             assert True
         except AttributeError as e:
             pytest.fail(f"analysis_panel import failed: {e}")
@@ -442,6 +451,7 @@ class TestAllPageImports:
         """Cost optimizer page imports without errors."""
         try:
             from pages import cost_optimizer
+
             assert True
         except AttributeError as e:
             pytest.fail(f"cost_optimizer import failed: {e}")
@@ -452,6 +462,7 @@ class TestAllPageImports:
         """Batch processor page imports without errors."""
         try:
             from pages import batch_processor
+
             assert True
         except AttributeError as e:
             pytest.fail(f"batch_processor import failed: {e}")
@@ -462,6 +473,7 @@ class TestAllPageImports:
         """Learning center page imports without errors."""
         try:
             from pages import learning_center
+
             assert True
         except AttributeError as e:
             pytest.fail(f"learning_center import failed: {e}")
@@ -476,6 +488,7 @@ class TestAllComponentImports:
         """Input components import without errors."""
         try:
             from components import inputs
+
             assert True
         except AttributeError as e:
             pytest.fail(f"inputs import failed: {e}")
@@ -484,6 +497,7 @@ class TestAllComponentImports:
         """Result components import without errors."""
         try:
             from components import results
+
             assert True
         except AttributeError as e:
             pytest.fail(f"results import failed: {e}")
@@ -492,6 +506,7 @@ class TestAllComponentImports:
         """Visualization components import without errors."""
         try:
             from components import visualizations
+
             assert True
         except AttributeError as e:
             pytest.fail(f"visualizations import failed: {e}")
@@ -500,6 +515,7 @@ class TestAllComponentImports:
         """Layout utilities import without errors."""
         try:
             from utils import layout
+
             assert True
         except AttributeError as e:
             pytest.fail(f"layout import failed: {e}")
@@ -508,6 +524,7 @@ class TestAllComponentImports:
         """Styled components import without errors."""
         try:
             from utils import styled_components
+
             assert True
         except AttributeError as e:
             pytest.fail(f"styled_components import failed: {e}")
@@ -520,6 +537,7 @@ class TestUtilityImports:
         """Design system imports without errors."""
         try:
             from utils import design_system
+
             assert True
         except AttributeError as e:
             pytest.fail(f"design_system import failed: {e}")
@@ -528,6 +546,7 @@ class TestUtilityImports:
         """Theme manager imports without errors."""
         try:
             from utils import theme_manager
+
             assert True
         except AttributeError as e:
             pytest.fail(f"theme_manager import failed: {e}")
@@ -536,6 +555,7 @@ class TestUtilityImports:
         """Global styles imports without errors."""
         try:
             from utils import global_styles
+
             assert True
         except AttributeError as e:
             pytest.fail(f"global_styles import failed: {e}")
@@ -544,6 +564,7 @@ class TestUtilityImports:
         """Plotly theme imports without errors."""
         try:
             from utils import plotly_theme
+
             assert True
         except AttributeError as e:
             pytest.fail(f"plotly_theme import failed: {e}")
@@ -552,6 +573,7 @@ class TestUtilityImports:
         """API wrapper imports without errors."""
         try:
             from utils import api_wrapper
+
             assert True
         except AttributeError as e:
             pytest.fail(f"api_wrapper import failed: {e}")
@@ -564,13 +586,16 @@ class TestCriticalPathImports:
         """Main app.py imports without errors (with streamlit mocked)."""
         try:
             import app
+
             assert True
         except AttributeError as e:
             # If it's a streamlit session_state OR set_page_config issue, skip (expected in tests)
-            if ("session_state" in str(e) or
-                "'dict' object has no attribute" in str(e) or
-                "set_page_config" in str(e) or
-                "MockStreamlit" in str(e)):
+            if (
+                "session_state" in str(e)
+                or "'dict' object has no attribute" in str(e)
+                or "set_page_config" in str(e)
+                or "MockStreamlit" in str(e)
+            ):
                 pytest.skip(f"Streamlit mock limitation (expected in tests): {e}")
             # Otherwise it's a real AttributeError (design tokens, etc.)
             pytest.fail(f"app.py import failed with AttributeError: {e}")
@@ -583,7 +608,13 @@ class TestCriticalPathImports:
 
     def test_design_tokens_accessible(self):
         """All design tokens are accessible without error."""
-        from utils.design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION, ANIMATION
+        from utils.design_system import (
+            COLORS,
+            TYPOGRAPHY,
+            SPACING,
+            ELEVATION,
+            ANIMATION,
+        )
 
         # Should not raise AttributeError
         assert COLORS is not None
@@ -597,30 +628,30 @@ class TestCriticalPathImports:
         from utils.design_system import COLORS
 
         # These are used across multiple components
-        assert hasattr(COLORS, 'primary_500')
-        assert hasattr(COLORS, 'gray_50')
-        assert hasattr(COLORS, 'success')
-        assert hasattr(COLORS, 'warning')
-        assert hasattr(COLORS, 'error')
+        assert hasattr(COLORS, "primary_500")
+        assert hasattr(COLORS, "gray_50")
+        assert hasattr(COLORS, "success")
+        assert hasattr(COLORS, "warning")
+        assert hasattr(COLORS, "error")
 
     def test_commonly_used_typography_exists(self):
         """Most commonly used typography tokens exist."""
         from utils.design_system import TYPOGRAPHY
 
         # These are used across multiple components
-        assert hasattr(TYPOGRAPHY, 'display_sm')  # Not display_lg
-        assert hasattr(TYPOGRAPHY, 'body_md')
-        assert hasattr(TYPOGRAPHY, 'body_sm')
+        assert hasattr(TYPOGRAPHY, "display_sm")  # Not display_lg
+        assert hasattr(TYPOGRAPHY, "body_md")
+        assert hasattr(TYPOGRAPHY, "body_sm")
 
     def test_commonly_used_spacing_exists(self):
         """Most commonly used spacing tokens exist."""
         from utils.design_system import SPACING
 
         # These are used across multiple components
-        assert hasattr(SPACING, 'space_1')  # Not xs
-        assert hasattr(SPACING, 'space_2')
-        assert hasattr(SPACING, 'space_4')
-        assert hasattr(SPACING, 'space_8')
+        assert hasattr(SPACING, "space_1")  # Not xs
+        assert hasattr(SPACING, "space_2")
+        assert hasattr(SPACING, "space_4")
+        assert hasattr(SPACING, "space_8")
 
 
 class TestRegressionPreventionImports:
@@ -634,6 +665,7 @@ class TestRegressionPreventionImports:
         """
         try:
             from utils import layout
+
             # Should import successfully now
             assert True
         except AttributeError as e:
@@ -647,6 +679,7 @@ class TestRegressionPreventionImports:
         """
         try:
             from components import visualizations
+
             # Should import successfully now
             assert True
         except AttributeError as e:
@@ -657,13 +690,14 @@ class TestRegressionPreventionImports:
         import sys
 
         # Clear any previous imports
-        modules_to_clear = [m for m in sys.modules if 'streamlit_app' in m]
+        modules_to_clear = [m for m in sys.modules if "streamlit_app" in m]
         for mod in modules_to_clear:
             del sys.modules[mod]
 
         # Try fresh import
         try:
             from utils import design_system
+
             assert True
         except ImportError as e:
             if "circular" in str(e).lower():

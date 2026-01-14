@@ -135,7 +135,9 @@ class TestMaterialInputValidation:
         """Test concrete grade above M50"""
         result = validate_material_inputs(fck=60, fy=415)
         assert not result.is_valid
-        assert any("M50" in err or "high-strength" in err.lower() for err in result.errors)
+        assert any(
+            "M50" in err or "high-strength" in err.lower() for err in result.errors
+        )
 
     def test_steel_below_minimum(self):
         """Test steel grade below Fe 250"""

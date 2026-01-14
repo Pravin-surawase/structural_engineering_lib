@@ -12,13 +12,11 @@ import streamlit as st
 
 logger = logging.getLogger(__name__)
 
-F = TypeVar('F', bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])
 
 
 def error_boundary(
-    fallback_value: Any = None,
-    show_error: bool = True,
-    log_error: bool = True
+    fallback_value: Any = None, show_error: bool = True, log_error: bool = True
 ) -> Callable[[F], F]:
     """
     Decorator that catches exceptions and provides safe fallback.
@@ -38,6 +36,7 @@ def error_boundary(
 
         result = risky_function()  # Returns [], shows error to user
     """
+
     def decorator(func: F) -> F:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -47,7 +46,9 @@ def error_boundary(
                 if log_error:
                     logger.error(f"Division by zero in {func.__name__}: {e}")
                 if show_error:
-                    st.error(f"❌ Calculation error in {func.__name__}: division by zero")
+                    st.error(
+                        f"❌ Calculation error in {func.__name__}: division by zero"
+                    )
                 return fallback_value
             except KeyError as e:
                 if log_error:
@@ -71,10 +72,14 @@ def error_boundary(
                 if log_error:
                     logger.exception(f"Unexpected error in {func.__name__}")
                 if show_error:
-                    st.error(f"❌ Unexpected error in {func.__name__}: {type(e).__name__}")
+                    st.error(
+                        f"❌ Unexpected error in {func.__name__}: {type(e).__name__}"
+                    )
                     # Don't show full traceback to users for security
                 return fallback_value
+
         return wrapper
+
     return decorator
 
 
@@ -93,10 +98,12 @@ def monitor_performance(threshold_seconds: float = 1.0) -> Callable[[F], F]:
         def slow_function():
             time.sleep(3)  # Would trigger warning
     """
+
     def decorator(func: F) -> F:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             import time
+
             start = time.time()
 
             try:
@@ -114,7 +121,9 @@ def monitor_performance(threshold_seconds: float = 1.0) -> Callable[[F], F]:
                 duration = time.time() - start
                 logger.error(f"{func.__name__} failed after {duration:.2f}s: {e}")
                 raise
+
         return wrapper
+
     return decorator
 
 
@@ -136,17 +145,22 @@ def require_session_state(*keys: str) -> Callable[[F], F]:
         def use_results():
             return st.session_state.design_results
     """
+
     def decorator(func: F) -> F:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             missing = [key for key in keys if key not in st.session_state]
             if missing:
-                error_msg = f"{func.__name__} requires session state keys: {', '.join(missing)}"
+                error_msg = (
+                    f"{func.__name__} requires session state keys: {', '.join(missing)}"
+                )
                 logger.error(error_msg)
                 st.error(f"❌ {error_msg}")
                 raise KeyError(error_msg)
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -166,22 +180,27 @@ def validate_inputs(validator_func: Callable) -> Callable[[F], F]:
             # inputs are guaranteed valid here
             pass
     """
+
     def decorator(func: F) -> F:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             # Assume first positional arg or 'inputs' kwarg is what needs validation
-            inputs = args[0] if args else kwargs.get('inputs')
+            inputs = args[0] if args else kwargs.get("inputs")
 
             if inputs is not None:
                 result = validator_func(inputs)
                 if not result.is_valid:
-                    logger.error(f"Validation failed for {func.__name__}: {result.errors}")
+                    logger.error(
+                        f"Validation failed for {func.__name__}: {result.errors}"
+                    )
                     for error in result.errors:
                         st.error(f"❌ {error}")
                     raise ValueError(f"Input validation failed: {result.errors}")
 
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -210,7 +229,9 @@ class SafeSessionState:
         if value is None:
             return default or {}
         if not isinstance(value, dict):
-            logger.warning(f"Session state key '{key}' is not a dict (got {type(value).__name__})")
+            logger.warning(
+                f"Session state key '{key}' is not a dict (got {type(value).__name__})"
+            )
             return default or {}
         return value
 
@@ -220,7 +241,9 @@ class SafeSessionState:
         if value is None:
             return default or []
         if not isinstance(value, list):
-            logger.warning(f"Session state key '{key}' is not a list (got {type(value).__name__})")
+            logger.warning(
+                f"Session state key '{key}' is not a list (got {type(value).__name__})"
+            )
             return default or []
         return value
 

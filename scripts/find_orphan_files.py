@@ -77,7 +77,7 @@ def find_all_links(project_root: Path) -> dict[str, list[Path]]:
             continue
 
         # Find markdown links: [text](path)
-        link_pattern = r'\[([^\]]*)\]\(([^)]+)\)'
+        link_pattern = r"\[([^\]]*)\]\(([^)]+)\)"
         for match in re.finditer(link_pattern, content):
             link_target = match.group(2)
 
@@ -103,7 +103,7 @@ def find_orphans(
     project_root: Path,
     scan_folders: list[str],
     links: dict[str, list[Path]],
-    verbose: bool = False
+    verbose: bool = False,
 ) -> list[tuple[Path, int]]:
     """Find files that are not linked to.
 
@@ -160,7 +160,7 @@ def get_file_age_info(file_path: Path, project_root: Path) -> str:
             cwd=project_root,
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
         )
         return result.stdout.strip() if result.stdout.strip() else "Unknown"
     except (subprocess.SubprocessError, OSError):
@@ -172,17 +172,15 @@ def main():
         description="Find orphan files not referenced anywhere"
     )
     parser.add_argument(
-        "--all", action="store_true",
-        help="Scan all folders, not just docs/"
+        "--all", action="store_true", help="Scan all folders, not just docs/"
     )
     parser.add_argument(
-        "--verbose", "-v", action="store_true",
-        help="Show reference counts for all files"
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Show reference counts for all files",
     )
-    parser.add_argument(
-        "--age", action="store_true",
-        help="Show age of orphan files"
-    )
+    parser.add_argument("--age", action="store_true", help="Show age of orphan files")
 
     args = parser.parse_args()
 

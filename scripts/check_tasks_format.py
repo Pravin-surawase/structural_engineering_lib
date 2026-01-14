@@ -100,12 +100,17 @@ def main() -> int:
     active_lines = _section(lines, positions[2])
     active_rows = _table_rows(active_lines)
     if len(active_rows) > wip_limit:
-        print(f"ERROR: Active section must have at most {wip_limit} task(s) (WIP={wip_limit}).")
+        print(
+            f"ERROR: Active section must have at most {wip_limit} task(s) (WIP={wip_limit})."
+        )
         return 1
 
     # Up Next table header.
     up_next_lines = _section(lines, positions[3])
-    if not any("| ID | Task | Agent | Est | Priority | Status |" in line for line in up_next_lines):
+    if not any(
+        "| ID | Task | Agent | Est | Priority | Status |" in line
+        for line in up_next_lines
+    ):
         print("ERROR: Up Next table header missing or malformed.")
         return 1
 
@@ -129,7 +134,9 @@ def main() -> int:
             if "umbrella" not in task_desc.lower():
                 continue
             included_ids = [
-                included for included in _task_ids_in_text(task_desc) if included != task_id
+                included
+                for included in _task_ids_in_text(task_desc)
+                if included != task_id
             ]
             if not included_ids:
                 print(

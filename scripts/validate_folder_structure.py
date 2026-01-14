@@ -26,7 +26,19 @@ import argparse
 RULES = {
     "root": {
         "max_files": 10,  # Per FOLDER_STRUCTURE_GOVERNANCE.md Section II
-        "allowed_extensions": [".md", ".txt", ".toml", ".yaml", ".yml", ".json", ".cfg", ".ini", ".cff", ".py", ".ipynb"],
+        "allowed_extensions": [
+            ".md",
+            ".txt",
+            ".toml",
+            ".yaml",
+            ".yml",
+            ".json",
+            ".cfg",
+            ".ini",
+            ".cff",
+            ".py",
+            ".ipynb",
+        ],
         "allowed_files": [
             # Standard project files (per governance spec)
             "README.md",
@@ -249,13 +261,27 @@ class FolderValidator:
                 filename = md_file.name
 
                 # Skip special files
-                if filename in ["README.md", "TASKS.md", "SESSION_LOG.md", "CHANGELOG.md"]:
+                if filename in [
+                    "README.md",
+                    "TASKS.md",
+                    "SESSION_LOG.md",
+                    "CHANGELOG.md",
+                ]:
                     continue
 
                 # Skip files in internal/archive/research folders (these may use legacy naming)
                 # Research folders often have legacy uppercase convention from earlier phases
                 rel_path = str(md_file.relative_to(self.project_root))
-                if any(skip in rel_path for skip in ["_internal", "_archive", "_references", "research/", "getting-started/NEW-DEVELOPER"]):
+                if any(
+                    skip in rel_path
+                    for skip in [
+                        "_internal",
+                        "_archive",
+                        "_references",
+                        "research/",
+                        "getting-started/NEW-DEVELOPER",
+                    ]
+                ):
                     continue
 
                 # Check if matches pattern
@@ -282,7 +308,9 @@ class FolderValidator:
                     continue
 
                 # Skip data/research folders that may have specific naming
-                if "data" in str(folder.relative_to(self.project_root)) or "navigation_study" in str(folder.relative_to(self.project_root)):
+                if "data" in str(
+                    folder.relative_to(self.project_root)
+                ) or "navigation_study" in str(folder.relative_to(self.project_root)):
                     continue
 
                 if not folder_pattern.match(folder_name):
@@ -375,7 +403,9 @@ def main():
         current = Path.cwd()
         project_root = current
         while project_root != project_root.parent:
-            if (project_root / "README.md").exists() and (project_root / "docs").exists():
+            if (project_root / "README.md").exists() and (
+                project_root / "docs"
+            ).exists():
                 break
             project_root = project_root.parent
 

@@ -18,10 +18,10 @@ import pytest
 from structural_lib.multi_objective_optimizer import (
     ParetoCandidate,
     ParetoOptimizationResult,
-    optimize_pareto_front,
-    get_design_explanation,
-    _fast_non_dominated_sort,
     _crowding_distance,
+    _fast_non_dominated_sort,
+    get_design_explanation,
+    optimize_pareto_front,
 )
 
 

@@ -193,7 +193,9 @@ def validate_imports(result: ValidationResult, verbose: bool) -> None:
         else:
             result.add_fail(f"from structural_lib.codes.is456.{mod} import *")
             if verbose:
-                print(f"  ❌ from structural_lib.codes.is456.{mod} import *: {stderr[:100]}")
+                print(
+                    f"  ❌ from structural_lib.codes.is456.{mod} import *: {stderr[:100]}"
+                )
 
 
 def validate_key_exports(result: ValidationResult, verbose: bool) -> None:
@@ -295,11 +297,10 @@ def validate_tests(result: ValidationResult, verbose: bool) -> None:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Validate IS 456 module migration"
-    )
+    parser = argparse.ArgumentParser(description="Validate IS 456 module migration")
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Show detailed output",
     )

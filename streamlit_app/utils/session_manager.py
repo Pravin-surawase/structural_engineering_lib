@@ -31,9 +31,11 @@ logger = logging.getLogger(__name__)
 # State Data Classes
 # =============================================================================
 
+
 @dataclass
 class BeamInputs:
     """Beam design input parameters"""
+
     span_mm: float = 5000.0
     b_mm: float = 300.0
     d_mm: float = 450.0
@@ -55,7 +57,7 @@ class BeamInputs:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'BeamInputs':
+    def from_dict(cls, data: Dict[str, Any]) -> "BeamInputs":
         """Create from dictionary"""
         return cls(**data)
 
@@ -63,6 +65,7 @@ class BeamInputs:
 @dataclass
 class DesignResult:
     """Design analysis result"""
+
     inputs: BeamInputs
     ast_mm2: float
     ast_provided_mm2: float
@@ -84,37 +87,37 @@ class DesignResult:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary"""
         return {
-            'inputs': self.inputs.to_dict(),
-            'ast_mm2': self.ast_mm2,
-            'ast_provided_mm2': self.ast_provided_mm2,
-            'num_bars': self.num_bars,
-            'bar_diameter_mm': self.bar_diameter_mm,
-            'stirrup_diameter_mm': self.stirrup_diameter_mm,
-            'stirrup_spacing_mm': self.stirrup_spacing_mm,
-            'utilization_pct': self.utilization_pct,
-            'status': self.status,
-            'compliance_checks': self.compliance_checks,
-            'cost_per_meter': self.cost_per_meter,
-            'timestamp': self.timestamp
+            "inputs": self.inputs.to_dict(),
+            "ast_mm2": self.ast_mm2,
+            "ast_provided_mm2": self.ast_provided_mm2,
+            "num_bars": self.num_bars,
+            "bar_diameter_mm": self.bar_diameter_mm,
+            "stirrup_diameter_mm": self.stirrup_diameter_mm,
+            "stirrup_spacing_mm": self.stirrup_spacing_mm,
+            "utilization_pct": self.utilization_pct,
+            "status": self.status,
+            "compliance_checks": self.compliance_checks,
+            "cost_per_meter": self.cost_per_meter,
+            "timestamp": self.timestamp,
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'DesignResult':
+    def from_dict(cls, data: Dict[str, Any]) -> "DesignResult":
         """Create from dictionary"""
-        inputs = BeamInputs.from_dict(data['inputs'])
+        inputs = BeamInputs.from_dict(data["inputs"])
         return cls(
             inputs=inputs,
-            ast_mm2=data['ast_mm2'],
-            ast_provided_mm2=data['ast_provided_mm2'],
-            num_bars=data['num_bars'],
-            bar_diameter_mm=data['bar_diameter_mm'],
-            stirrup_diameter_mm=data['stirrup_diameter_mm'],
-            stirrup_spacing_mm=data['stirrup_spacing_mm'],
-            utilization_pct=data['utilization_pct'],
-            status=data['status'],
-            compliance_checks=data['compliance_checks'],
-            cost_per_meter=data['cost_per_meter'],
-            timestamp=data.get('timestamp', '')
+            ast_mm2=data["ast_mm2"],
+            ast_provided_mm2=data["ast_provided_mm2"],
+            num_bars=data["num_bars"],
+            bar_diameter_mm=data["bar_diameter_mm"],
+            stirrup_diameter_mm=data["stirrup_diameter_mm"],
+            stirrup_spacing_mm=data["stirrup_spacing_mm"],
+            utilization_pct=data["utilization_pct"],
+            status=data["status"],
+            compliance_checks=data["compliance_checks"],
+            cost_per_meter=data["cost_per_meter"],
+            timestamp=data.get("timestamp", ""),
         )
 
 
@@ -122,8 +125,10 @@ class DesignResult:
 # Session State Keys (Constants)
 # =============================================================================
 
+
 class StateKeys:
     """Session state key constants"""
+
     # Current inputs
     CURRENT_INPUTS = "current_inputs"
 
@@ -149,6 +154,7 @@ class StateKeys:
 # =============================================================================
 # Session State Manager
 # =============================================================================
+
 
 class SessionStateManager:
     """
@@ -198,11 +204,11 @@ class SessionStateManager:
         # User preferences
         if StateKeys.USER_PREFERENCES not in st.session_state:
             st.session_state[StateKeys.USER_PREFERENCES] = {
-                'theme': 'light',
-                'decimal_places': 2,
-                'unit_system': 'SI',
-                'show_formulas': True,
-                'auto_save': True
+                "theme": "light",
+                "decimal_places": 2,
+                "unit_system": "SI",
+                "show_formulas": True,
+                "auto_save": True,
             }
 
         logger.info("Session state initialized")
@@ -231,7 +237,9 @@ class SessionStateManager:
         """Set current design result."""
         SessionStateManager.initialize()
         st.session_state[StateKeys.CURRENT_RESULT] = result
-        logger.debug(f"Updated current result: status={result.status}, util={result.utilization_pct}%")
+        logger.debug(
+            f"Updated current result: status={result.status}, util={result.utilization_pct}%"
+        )
 
     @staticmethod
     def add_to_history(inputs: BeamInputs, result: DesignResult) -> None:
@@ -259,7 +267,9 @@ class SessionStateManager:
         if len(result_history) > 10:
             st.session_state[StateKeys.RESULT_HISTORY] = result_history[-10:]
 
-        logger.info(f"Added design to history (total: {len(st.session_state[StateKeys.INPUT_HISTORY])})")
+        logger.info(
+            f"Added design to history (total: {len(st.session_state[StateKeys.INPUT_HISTORY])})"
+        )
 
     @staticmethod
     def get_history() -> List[DesignResult]:
@@ -352,13 +362,20 @@ class SessionStateManager:
         SessionStateManager.initialize()
 
         return {
-            'current_inputs': st.session_state[StateKeys.CURRENT_INPUTS].to_dict(),
-            'current_result': st.session_state[StateKeys.CURRENT_RESULT].to_dict()
-                             if st.session_state[StateKeys.CURRENT_RESULT] else None,
-            'input_history': [inp.to_dict() for inp in st.session_state[StateKeys.INPUT_HISTORY]],
-            'result_history': [res.to_dict() for res in st.session_state[StateKeys.RESULT_HISTORY]],
-            'preferences': st.session_state[StateKeys.USER_PREFERENCES],
-            'export_timestamp': datetime.now().isoformat()
+            "current_inputs": st.session_state[StateKeys.CURRENT_INPUTS].to_dict(),
+            "current_result": (
+                st.session_state[StateKeys.CURRENT_RESULT].to_dict()
+                if st.session_state[StateKeys.CURRENT_RESULT]
+                else None
+            ),
+            "input_history": [
+                inp.to_dict() for inp in st.session_state[StateKeys.INPUT_HISTORY]
+            ],
+            "result_history": [
+                res.to_dict() for res in st.session_state[StateKeys.RESULT_HISTORY]
+            ],
+            "preferences": st.session_state[StateKeys.USER_PREFERENCES],
+            "export_timestamp": datetime.now().isoformat(),
         }
 
     @staticmethod
@@ -370,26 +387,26 @@ class SessionStateManager:
         """
         try:
             # Current inputs
-            if 'current_inputs' in state_dict:
+            if "current_inputs" in state_dict:
                 st.session_state[StateKeys.CURRENT_INPUTS] = BeamInputs.from_dict(
-                    state_dict['current_inputs']
+                    state_dict["current_inputs"]
                 )
 
             # Current result
-            if 'current_result' in state_dict and state_dict['current_result']:
+            if "current_result" in state_dict and state_dict["current_result"]:
                 st.session_state[StateKeys.CURRENT_RESULT] = DesignResult.from_dict(
-                    state_dict['current_result']
+                    state_dict["current_result"]
                 )
 
             # History
-            if 'input_history' in state_dict:
+            if "input_history" in state_dict:
                 st.session_state[StateKeys.INPUT_HISTORY] = [
-                    BeamInputs.from_dict(inp) for inp in state_dict['input_history']
+                    BeamInputs.from_dict(inp) for inp in state_dict["input_history"]
                 ]
 
-            if 'result_history' in state_dict:
+            if "result_history" in state_dict:
                 st.session_state[StateKeys.RESULT_HISTORY] = [
-                    DesignResult.from_dict(res) for res in state_dict['result_history']
+                    DesignResult.from_dict(res) for res in state_dict["result_history"]
                 ]
 
             # Preferences
@@ -399,7 +416,7 @@ class SessionStateManager:
 
             if "preferences" in state_dict:
                 st.session_state[StateKeys.USER_PREFERENCES].update(
-                    state_dict['preferences']
+                    state_dict["preferences"]
                 )
 
             logger.info("Session state imported successfully")
@@ -456,21 +473,29 @@ class SessionStateManager:
 
         # Keep only last 5 in history (instead of 10)
         if len(st.session_state[StateKeys.INPUT_HISTORY]) > 5:
-            st.session_state[StateKeys.INPUT_HISTORY] = st.session_state[StateKeys.INPUT_HISTORY][-5:]
+            st.session_state[StateKeys.INPUT_HISTORY] = st.session_state[
+                StateKeys.INPUT_HISTORY
+            ][-5:]
 
         if len(st.session_state[StateKeys.RESULT_HISTORY]) > 5:
-            st.session_state[StateKeys.RESULT_HISTORY] = st.session_state[StateKeys.RESULT_HISTORY][-5:]
+            st.session_state[StateKeys.RESULT_HISTORY] = st.session_state[
+                StateKeys.RESULT_HISTORY
+            ][-5:]
 
         # Clear old cache entries (keep last 10)
         cache = st.session_state[StateKeys.DESIGN_CACHE]
         if len(cache) > 10:
             keys_to_keep = list(cache.keys())[-10:]
-            st.session_state[StateKeys.DESIGN_CACHE] = {k: cache[k] for k in keys_to_keep}
+            st.session_state[StateKeys.DESIGN_CACHE] = {
+                k: cache[k] for k in keys_to_keep
+            }
 
         logger.info("State minimized - reduced memory footprint")
 
     @staticmethod
-    def track_state_diff(old_inputs: BeamInputs, new_inputs: BeamInputs) -> Dict[str, Any]:
+    def track_state_diff(
+        old_inputs: BeamInputs, new_inputs: BeamInputs
+    ) -> Dict[str, Any]:
         """
         Track differences between input states.
 
@@ -483,15 +508,25 @@ class SessionStateManager:
         """
         diff = {}
 
-        for field in ['span_mm', 'b_mm', 'd_mm', 'D_mm', 'fck_mpa', 'fy_mpa', 'mu_knm', 'vu_kn', 'cover_mm']:
+        for field in [
+            "span_mm",
+            "b_mm",
+            "d_mm",
+            "D_mm",
+            "fck_mpa",
+            "fy_mpa",
+            "mu_knm",
+            "vu_kn",
+            "cover_mm",
+        ]:
             old_val = getattr(old_inputs, field)
             new_val = getattr(new_inputs, field)
 
             if old_val != new_val:
                 diff[field] = {
-                    'old': old_val,
-                    'new': new_val,
-                    'change': new_val - old_val
+                    "old": old_val,
+                    "new": new_val,
+                    "change": new_val - old_val,
                 }
 
         return diff
@@ -522,7 +557,9 @@ class SessionStateManager:
 
         if len(fresh_results) < len(result_history):
             st.session_state[StateKeys.RESULT_HISTORY] = fresh_results
-            logger.info(f"Cleared {len(result_history) - len(fresh_results)} stale results")
+            logger.info(
+                f"Cleared {len(result_history) - len(fresh_results)} stale results"
+            )
 
     @staticmethod
     def compress_large_objects() -> None:
@@ -550,10 +587,12 @@ class SessionStateManager:
         SessionStateManager.initialize()
 
         return {
-            'total_keys': len(st.session_state),
-            'cache_entries': len(st.session_state.get(StateKeys.DESIGN_CACHE, {})),
-            'history_entries': len(st.session_state.get(StateKeys.RESULT_HISTORY, [])),
-            'input_history_entries': len(st.session_state.get(StateKeys.INPUT_HISTORY, [])),
+            "total_keys": len(st.session_state),
+            "cache_entries": len(st.session_state.get(StateKeys.DESIGN_CACHE, {})),
+            "history_entries": len(st.session_state.get(StateKeys.RESULT_HISTORY, [])),
+            "input_history_entries": len(
+                st.session_state.get(StateKeys.INPUT_HISTORY, [])
+            ),
         }
 
     @staticmethod
@@ -564,12 +603,14 @@ class SessionStateManager:
             interval_seconds: Optimization interval
         """
         # Check if enough time has passed
-        last_optimize_key = '_last_state_optimize'
+        last_optimize_key = "_last_state_optimize"
 
         if last_optimize_key not in st.session_state:
             st.session_state[last_optimize_key] = datetime.now()
 
-        time_since_last = (datetime.now() - st.session_state[last_optimize_key]).total_seconds()
+        time_since_last = (
+            datetime.now() - st.session_state[last_optimize_key]
+        ).total_seconds()
 
         if time_since_last >= interval_seconds:
             SessionStateManager.minimize_state()
@@ -582,6 +623,7 @@ class SessionStateManager:
 # =============================================================================
 # Helper Functions
 # =============================================================================
+
 
 def load_last_design() -> Optional[BeamInputs]:
     """
@@ -603,7 +645,7 @@ def save_design_to_file(filepath: str) -> None:
         filepath: Path to save file
     """
     state = SessionStateManager.export_state()
-    with open(filepath, 'w') as f:
+    with open(filepath, "w") as f:
         json.dump(state, f, indent=2)
     logger.info(f"Design saved to {filepath}")
 
@@ -614,7 +656,7 @@ def load_design_from_file(filepath: str) -> None:
     Args:
         filepath: Path to load file
     """
-    with open(filepath, 'r') as f:
+    with open(filepath, "r") as f:
         state = json.load(f)
     SessionStateManager.import_state(state)
     logger.info(f"Design loaded from {filepath}")
@@ -634,15 +676,17 @@ def compare_designs(result1: DesignResult, result2: DesignResult) -> Dict[str, A
     # Safe division for cost savings calculation (denominator validated)
     denominator = result1.cost_per_meter
     cost_savings_pct = (
-        ((result1.cost_per_meter - result2.cost_per_meter) / denominator) * 100
-    ) if denominator > 0 else 0.0
+        (((result1.cost_per_meter - result2.cost_per_meter) / denominator) * 100)
+        if denominator > 0
+        else 0.0
+    )
     return {
-        'utilization_diff': result2.utilization_pct - result1.utilization_pct,
-        'cost_diff': result2.cost_per_meter - result1.cost_per_meter,
-        'cost_savings_pct': cost_savings_pct,
-        'steel_area_diff': result2.ast_provided_mm2 - result1.ast_provided_mm2,
-        'better_utilization': result2.utilization_pct > result1.utilization_pct,
-        'more_economical': result2.cost_per_meter < result1.cost_per_meter
+        "utilization_diff": result2.utilization_pct - result1.utilization_pct,
+        "cost_diff": result2.cost_per_meter - result1.cost_per_meter,
+        "cost_savings_pct": cost_savings_pct,
+        "steel_area_diff": result2.ast_provided_mm2 - result1.ast_provided_mm2,
+        "better_utilization": result2.utilization_pct > result1.utilization_pct,
+        "more_economical": result2.cost_per_meter < result1.cost_per_meter,
     }
 
 

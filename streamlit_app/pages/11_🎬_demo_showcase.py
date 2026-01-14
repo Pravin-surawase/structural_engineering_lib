@@ -43,11 +43,7 @@ from utils.api_wrapper import cached_design
 from utils.loading_states import loading_context
 
 # Page setup
-setup_page(
-    title="Demo Showcase | IS 456 Beam Design",
-    icon="🎬",
-    layout="wide"
-)
+setup_page(title="Demo Showcase | IS 456 Beam Design", icon="🎬", layout="wide")
 
 initialize_theme()
 
@@ -165,6 +161,7 @@ DEMO_SCENARIOS = {
 # Helper Functions
 # =============================================================================
 
+
 def run_demo(scenario_name: str) -> dict:
     """Run design for demo scenario."""
     scenario = DEMO_SCENARIOS[scenario_name]
@@ -177,7 +174,7 @@ def run_demo(scenario_name: str) -> dict:
 
     result = cached_design(
         mu_knm=params["Mu"],  # Already in kN·m
-        vu_kn=params["Vu"],   # Already in kN
+        vu_kn=params["Vu"],  # Already in kN
         b_mm=params["b"],
         D_mm=D_mm,
         d_mm=d_mm,
@@ -199,24 +196,28 @@ def create_comparison_chart(results: dict) -> go.Figure:
 
     # Create subplots
     fig = make_subplots(
-        rows=1, cols=2,
-        subplot_titles=("Steel Area (mm²)", "Cost per Meter (INR)")
+        rows=1, cols=2, subplot_titles=("Steel Area (mm²)", "Cost per Meter (INR)")
     )
 
     # Steel area chart
     fig.add_trace(
         go.Bar(name="Required", x=scenarios, y=ast_req, marker_color="#003366"),
-        row=1, col=1
+        row=1,
+        col=1,
     )
     fig.add_trace(
         go.Bar(name="Provided", x=scenarios, y=ast_prov, marker_color="#FF6600"),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # Cost chart
     fig.add_trace(
-        go.Bar(name="Cost", x=scenarios, y=costs, marker_color="#10b981", showlegend=False),
-        row=1, col=2
+        go.Bar(
+            name="Cost", x=scenarios, y=costs, marker_color="#10b981", showlegend=False
+        ),
+        row=1,
+        col=2,
     )
 
     fig.update_layout(height=500, showlegend=True)
@@ -230,7 +231,7 @@ def create_comparison_chart(results: dict) -> go.Figure:
 
 page_header(
     title="🎬 Demo Showcase",
-    subtitle="Explore the app capabilities through curated design examples"
+    subtitle="Explore the app capabilities through curated design examples",
 )
 
 # Demo mode selector
@@ -274,7 +275,9 @@ if demo_mode == "🎯 Single Demo":
     # Display results if demo was run
     if st.session_state.current_demo:
         st.divider()
-        section_header(f"Results: {DEMO_SCENARIOS[st.session_state.current_demo]['icon']} {st.session_state.current_demo}")
+        section_header(
+            f"Results: {DEMO_SCENARIOS[st.session_state.current_demo]['icon']} {st.session_state.current_demo}"
+        )
 
         demo_name = st.session_state.current_demo
         result = st.session_state.demo_results[demo_name]
@@ -306,29 +309,20 @@ if demo_mode == "🎯 Single Demo":
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            st.metric(
-                "Steel Required",
-                f"{ast_req:.0f} mm²"
-            )
+            st.metric("Steel Required", f"{ast_req:.0f} mm²")
 
         with col2:
             st.metric(
                 "Steel Provided",
                 f"{ast_prov:.0f} mm²",
-                delta=f"+{ast_prov - ast_req:.0f} mm²"
+                delta=f"+{ast_prov - ast_req:.0f} mm²",
             )
 
         with col3:
-            st.metric(
-                "Bar Configuration",
-                flexure.get("bar_config", "-")
-            )
+            st.metric("Bar Configuration", flexure.get("bar_config", "-"))
 
         with col4:
-            st.metric(
-                "Stirrup Spacing",
-                f"{shear.get('spacing_mm', 0):.0f} mm"
-            )
+            st.metric("Stirrup Spacing", f"{shear.get('spacing_mm', 0):.0f} mm")
 
         # Detailed results tabs
         tab1, tab2, tab3 = st.tabs(["Flexure", "Shear", "Compliance"])
@@ -339,19 +333,23 @@ if demo_mode == "🎯 Single Demo":
                 steel_pct = (flexure.get("Ast_prov", 0) / section_area) * 100
             else:
                 steel_pct = 0.0
-            st.markdown(f"""
+            st.markdown(
+                f"""
             - **Moment Capacity**: {flexure.get('Mu_capacity', 0)/1e6:.1f} kN·m
             - **xu/d Ratio**: {flexure.get('xu_by_d', 0):.3f} {'✅' if flexure.get('xu_by_d', 0) <= 0.46 else '❌'}
             - **Steel Percentage**: {steel_pct:.2f}%
-            """)
+            """
+            )
 
         with tab2:
-            st.markdown(f"""
+            st.markdown(
+                f"""
             - **Shear Stress (τv)**: {shear.get('tau_v', 0):.2f} N/mm²
             - **Concrete Capacity (τc)**: {shear.get('tau_c', 0):.2f} N/mm²
             - **Stirrup Legs**: {shear.get('legs', 2)}
             - **Stirrup Diameter**: {shear.get('diameter_mm', 8)} mm
-            """)
+            """
+            )
 
         with tab3:
             st.success("✅ All IS 456 compliance checks passed")
@@ -372,7 +370,9 @@ if demo_mode == "🎯 Single Demo":
 
         with col3:
             if st.button("✏️ Edit Parameters", width="stretch"):
-                st.info("💡 Navigate to '01_🏗️_beam_design' page to customize this design")
+                st.info(
+                    "💡 Navigate to '01_🏗️_beam_design' page to customize this design"
+                )
 
 
 # =============================================================================
@@ -426,15 +426,17 @@ elif demo_mode == "🔀 Compare Demos":
                     scenario = DEMO_SCENARIOS[demo_name]
                     flexure = result.get("flexure", {})
 
-                    comparison_data.append({
-                        "Scenario": f"{scenario['icon']} {demo_name}",
-                        "Dimensions": f"{scenario['params']['b']}×{scenario['params']['D']}",
-                        "Materials": f"M{scenario['params']['fck']}/Fe{scenario['params']['fy']}",
-                        "Ast_req (mm²)": flexure.get("Ast_req", 0),
-                        "Ast_prov (mm²)": flexure.get("Ast_prov", 0),
-                        "Bar Config": flexure.get("bar_config", "-"),
-                        "Cost/m (INR)": result.get("cost_per_m", 0),
-                    })
+                    comparison_data.append(
+                        {
+                            "Scenario": f"{scenario['icon']} {demo_name}",
+                            "Dimensions": f"{scenario['params']['b']}×{scenario['params']['D']}",
+                            "Materials": f"M{scenario['params']['fck']}/Fe{scenario['params']['fy']}",
+                            "Ast_req (mm²)": flexure.get("Ast_req", 0),
+                            "Ast_prov (mm²)": flexure.get("Ast_prov", 0),
+                            "Bar Config": flexure.get("bar_config", "-"),
+                            "Cost/m (INR)": result.get("cost_per_m", 0),
+                        }
+                    )
 
             df = pd.DataFrame(comparison_data)
             st.dataframe(df, width="stretch")
@@ -457,19 +459,23 @@ elif demo_mode == "🔀 Compare Demos":
             col1, col2 = st.columns(2)
 
             with col1:
-                st.success(f"""
+                st.success(
+                    f"""
                 **Most Economical:** {selected_demos[cheapest_idx]}
                 - Cost: ₹{min_cost:.2f}/m
                 - Savings: {savings_pct:.1f}% vs most expensive
-                """)
+                """
+                )
 
             with col2:
-                st.info(f"""
+                st.info(
+                    f"""
                 **Premium Design:** {selected_demos[expensive_idx]}
                 - Cost: ₹{max_cost:.2f}/m
                 - Higher grade materials
                 - Increased capacity
-                """)
+                """
+                )
 
 
 # =============================================================================
@@ -479,15 +485,17 @@ elif demo_mode == "🔀 Compare Demos":
 else:  # Auto-Tour
     section_header("🎥 Automated Demo Tour")
 
-    st.write("""
+    st.write(
+        """
     Sit back and watch as we automatically demonstrate all features of the app.
     The tour will run through each demo scenario with a brief pause between designs.
-    """)
+    """
+    )
 
     tour_speed = st.select_slider(
         "Tour Speed",
         options=["Slow (5s)", "Normal (3s)", "Fast (1s)"],
-        value="Normal (3s)"
+        value="Normal (3s)",
     )
 
     speed_map = {"Slow (5s)": 5, "Normal (3s)": 3, "Fast (1s)": 1}
@@ -521,11 +529,13 @@ else:  # Auto-Tour
                 with col1:
                     st.metric(
                         "Steel Area",
-                        f"{result.get('flexure', {}).get('Ast_prov', 0):.0f} mm²"
+                        f"{result.get('flexure', {}).get('Ast_prov', 0):.0f} mm²",
                     )
 
                 with col2:
-                    st.metric("Bar Config", result.get("flexure", {}).get("bar_config", "-"))
+                    st.metric(
+                        "Bar Config", result.get("flexure", {}).get("bar_config", "-")
+                    )
 
                 with col3:
                     st.metric("Cost/m", f"₹{result.get('cost_per_m', 0):.2f}")
@@ -546,11 +556,15 @@ else:  # Auto-Tour
 
 # Footer
 st.divider()
-st.markdown("""
+st.markdown(
+    """
 ### 🎯 What's Next?
 - **Try the Calculator**: Navigate to "01_🏗️_beam_design" to input your own parameters
 - **Export Results**: Use "📋_bbs_generator" and "📐_dxf_export" for detailed outputs
 - **Learn More**: Visit "📚_learning_center" for tutorials and IS 456 reference
-""")
+"""
+)
 
-st.caption("💡 **Pro Tip:** Use demo mode to showcase capabilities to clients or team members!")
+st.caption(
+    "💡 **Pro Tip:** Use demo mode to showcase capabilities to clients or team members!"
+)

@@ -52,15 +52,17 @@ def find_redirect_stubs(docs_dir: Path) -> list[dict]:
 
         if is_redirect:
             # Extract target link
-            link_match = re.search(r'\[([^\]]*)\]\(([^)]+)\)', content)
+            link_match = re.search(r"\[([^\]]*)\]\(([^)]+)\)", content)
             target = link_match.group(2) if link_match else None
 
-            stubs.append({
-                "file": md_file,
-                "size": md_file.stat().st_size,
-                "target": target,
-                "content": content[:200],
-            })
+            stubs.append(
+                {
+                    "file": md_file,
+                    "size": md_file.stat().st_size,
+                    "target": target,
+                    "content": content[:200],
+                }
+            )
 
     return stubs
 
@@ -83,7 +85,9 @@ def find_references_to_stub(stub_path: Path, docs_dir: Path) -> list[tuple[Path,
     return references
 
 
-def resolve_target_path(stub_path: Path, target: str | None, docs_dir: Path) -> Path | None:
+def resolve_target_path(
+    stub_path: Path, target: str | None, docs_dir: Path
+) -> Path | None:
     """Resolve the target path from a redirect stub."""
     if not target:
         return None
@@ -115,8 +119,12 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Check and clean redirect stubs")
-    parser.add_argument("--fix", action="store_true", help="Update references and remove stubs")
-    parser.add_argument("--dry-run", action="store_true", help="Show what --fix would do")
+    parser.add_argument(
+        "--fix", action="store_true", help="Update references and remove stubs"
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Show what --fix would do"
+    )
     args = parser.parse_args()
 
     docs_dir = Path(__file__).parent.parent / "docs"
@@ -172,7 +180,9 @@ def main():
                 stub["file"].unlink()
 
         if has_references:
-            print(f"\n⚠️  {len(has_references)} stubs have references - manual review needed:")
+            print(
+                f"\n⚠️  {len(has_references)} stubs have references - manual review needed:"
+            )
             for stub, refs, resolved in has_references:
                 rel_path = stub["file"].relative_to(docs_dir.parent)
                 print(f"  {rel_path}: {len(refs)} references")

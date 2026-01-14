@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.validation import (
     validate_dimension,
     validate_materials,
-    format_error_message
+    format_error_message,
 )
 
 
@@ -32,41 +32,55 @@ class TestDimensionValidation:
 
     def test_valid_dimension_in_range(self):
         """Test valid dimension passes validation"""
-        is_valid, error = validate_dimension(300.0, min_val=100.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            300.0, min_val=100.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is True
         assert error == ""
 
     def test_dimension_below_minimum(self):
         """Test dimension below minimum fails"""
-        is_valid, error = validate_dimension(50.0, min_val=100.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            50.0, min_val=100.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is False
         assert "width" in error.lower() or "100" in error
 
     def test_dimension_above_maximum(self):
         """Test dimension above maximum fails"""
-        is_valid, error = validate_dimension(1500.0, min_val=100.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            1500.0, min_val=100.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is False
         assert "width" in error.lower() or "1000" in error
 
     def test_dimension_at_boundaries(self):
         """Test dimension at exact boundaries"""
         # At minimum
-        is_valid, error = validate_dimension(100.0, min_val=100.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            100.0, min_val=100.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is True
 
         # At maximum
-        is_valid, error = validate_dimension(1000.0, min_val=100.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            1000.0, min_val=100.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is True
 
     def test_negative_dimension_rejected(self):
         """Test negative dimensions are rejected"""
-        is_valid, error = validate_dimension(-100.0, min_val=0.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            -100.0, min_val=0.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is False
 
     def test_zero_dimension_handling(self):
         """Test zero dimension handling"""
         # Zero may be valid if min is 0
-        is_valid, error = validate_dimension(0.0, min_val=0.0, max_val=1000.0, name="Width")
+        is_valid, error = validate_dimension(
+            0.0, min_val=0.0, max_val=1000.0, name="Width"
+        )
         assert is_valid is True
 
 
@@ -141,26 +155,36 @@ class TestEdgeCases:
 
     def test_very_small_dimensions(self):
         """Test very small positive dimensions"""
-        is_valid, error = validate_dimension(0.001, min_val=0.0, max_val=1.0, name="Test")
+        is_valid, error = validate_dimension(
+            0.001, min_val=0.0, max_val=1.0, name="Test"
+        )
         assert is_valid is True
 
     def test_very_large_dimensions(self):
         """Test very large dimensions"""
-        is_valid, error = validate_dimension(10000.0, min_val=0.0, max_val=100000.0, name="Test")
+        is_valid, error = validate_dimension(
+            10000.0, min_val=0.0, max_val=100000.0, name="Test"
+        )
         assert is_valid is True
 
     def test_equal_min_max_boundary(self):
         """Test when min equals max"""
-        is_valid, error = validate_dimension(100.0, min_val=100.0, max_val=100.0, name="Test")
+        is_valid, error = validate_dimension(
+            100.0, min_val=100.0, max_val=100.0, name="Test"
+        )
         assert is_valid is True
 
     def test_dimension_validation_precision(self):
         """Test floating point precision handling"""
         # Test values very close to boundaries
-        is_valid, error = validate_dimension(100.0001, min_val=100.0, max_val=1000.0, name="Test")
+        is_valid, error = validate_dimension(
+            100.0001, min_val=100.0, max_val=1000.0, name="Test"
+        )
         assert is_valid is True
 
-        is_valid, error = validate_dimension(999.9999, min_val=100.0, max_val=1000.0, name="Test")
+        is_valid, error = validate_dimension(
+            999.9999, min_val=100.0, max_val=1000.0, name="Test"
+        )
         assert is_valid is True
 
 
@@ -170,8 +194,12 @@ class TestValidationConsistency:
     def test_same_input_same_output(self):
         """Test validation is deterministic"""
         for _ in range(10):
-            is_valid1, error1 = validate_dimension(300.0, min_val=100.0, max_val=1000.0, name="Width")
-            is_valid2, error2 = validate_dimension(300.0, min_val=100.0, max_val=1000.0, name="Width")
+            is_valid1, error1 = validate_dimension(
+                300.0, min_val=100.0, max_val=1000.0, name="Width"
+            )
+            is_valid2, error2 = validate_dimension(
+                300.0, min_val=100.0, max_val=1000.0, name="Width"
+            )
             assert is_valid1 == is_valid2
             assert error1 == error2
 

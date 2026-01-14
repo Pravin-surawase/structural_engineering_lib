@@ -24,7 +24,10 @@ REPO_ROOT = Path(__file__).parent.parent
 # Files that contain test counts (pattern, file)
 TEST_COUNT_PATTERNS = {
     "docs/TASKS.md": [
-        (r"(\*\*Tests\*\*:\s*)\d+ passed, \d+ skipped", r"\g<1>{passed} passed, {skipped} skipped"),
+        (
+            r"(\*\*Tests\*\*:\s*)\d+ passed, \d+ skipped",
+            r"\g<1>{passed} passed, {skipped} skipped",
+        ),
     ],
     "docs/SESSION_LOG.md": [
         # Only update the most recent entry pattern
@@ -88,8 +91,16 @@ def get_coverage_stats() -> dict:
 
     try:
         result = subprocess.run(
-            [python_exe, "-m", "pytest", "tests",
-             "--cov=structural_lib", "--cov-branch", "--tb=no", "-q"],
+            [
+                python_exe,
+                "-m",
+                "pytest",
+                "tests",
+                "--cov=structural_lib",
+                "--cov-branch",
+                "--tb=no",
+                "-q",
+            ],
             cwd=python_dir,
             capture_output=True,
             text=True,
@@ -137,10 +148,14 @@ def write_stats_file(stats: dict):
 
 def main():
     parser = argparse.ArgumentParser(description="Update test statistics in docs")
-    parser.add_argument("--sync", action="store_true", help="Update doc files with current stats")
+    parser.add_argument(
+        "--sync", action="store_true", help="Update doc files with current stats"
+    )
     parser.add_argument("--badge", action="store_true", help="Generate badge JSON")
     parser.add_argument("--json", action="store_true", help="Output stats as JSON")
-    parser.add_argument("--coverage", action="store_true", help="Include coverage stats (slower)")
+    parser.add_argument(
+        "--coverage", action="store_true", help="Include coverage stats (slower)"
+    )
 
     args = parser.parse_args()
 
@@ -174,7 +189,7 @@ def main():
     print(f"  Failed:  {stats['failed']}")
     print(f"  Errors:  {stats['errors']}")
     print(f"  Total:   {stats['total']}")
-    if 'coverage_percent' in stats:
+    if "coverage_percent" in stats:
         print(f"  Coverage: {stats['coverage_percent']}%")
     print(f"  Date:    {stats['date']}")
     print("=" * 50)

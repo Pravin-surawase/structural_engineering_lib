@@ -54,6 +54,7 @@ try:
         LAYERS,
     )
     from structural_lib.detailing import BeamDetailingResult, create_beam_detailing
+
     HAS_DXF = True
 except ImportError as e:
     # Define fallback LAYERS for error handling paths
@@ -98,6 +99,7 @@ dxf_cache = SmartCache(max_size_mb=50, ttl_seconds=900)  # 15-min TTL
 # Session State Initialization
 # =============================================================================
 
+
 def initialize_session_state():
     """Initialize session state for DXF export."""
     if "dxf_inputs" not in st.session_state:
@@ -119,6 +121,7 @@ initialize_session_state()
 # Helper Functions
 # =============================================================================
 
+
 def safe_int(value, default=0):
     """Safely cast value to int with fallback."""
     try:
@@ -126,15 +129,13 @@ def safe_int(value, default=0):
     except (TypeError, ValueError):
         return default
 
+
 def get_beam_design_from_session() -> Optional[Dict]:
     """Get beam design inputs from beam_design page if available."""
     if "beam_inputs" in st.session_state:
         beam = st.session_state.beam_inputs
         if beam.get("design_computed") and beam.get("design_result"):
-            return {
-                "inputs": beam,
-                "result": beam["design_result"]
-            }
+            return {"inputs": beam, "result": beam["design_result"]}
     return None
 
 
@@ -217,8 +218,10 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("Bottom Bars (Tension):")
         for i, bar in enumerate(detailing.bottom_bars):
             zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
-            lines.append(f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
-                        f"(Area: {bar.area_provided:.0f} mm²)")
+            lines.append(
+                f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
+                f"(Area: {bar.area_provided:.0f} mm²)"
+            )
 
     # Top bars
     if detailing.top_bars:
@@ -226,8 +229,10 @@ def generate_dxf_preview_text(detailing: BeamDetailingResult) -> str:
         lines.append("Top Bars (Hanger/Compression):")
         for i, bar in enumerate(detailing.top_bars):
             zone = ["Start", "Mid", "End"][i] if i < 3 else f"Zone {i+1}"
-            lines.append(f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
-                        f"(Area: {bar.area_provided:.0f} mm²)")
+            lines.append(
+                f"  {zone}: {bar.count} nos. Ø{safe_int(bar.diameter)} mm "
+                f"(Area: {bar.area_provided:.0f} mm²)"
+            )
 
     # Stirrups
     if detailing.stirrups:
@@ -276,7 +281,7 @@ def get_dxf_file_info(dxf_bytes: bytes) -> Dict:
         "format": "DXF R2010 (AC1024)",
         "units": "Millimeters",
         "layers": len(LAYERS),
-        "compatible_with": ["AutoCAD", "LibreCAD", "DraftSight", "QCAD", "FreeCAD"]
+        "compatible_with": ["AutoCAD", "LibreCAD", "DraftSight", "QCAD", "FreeCAD"],
     }
 
 
@@ -287,17 +292,20 @@ def get_dxf_file_info(dxf_bytes: bytes) -> Dict:
 # Page header
 page_header(
     "📐 DXF Export & Preview",
-    "Generate AutoCAD DXF drawings for beam reinforcement details"
+    "Generate AutoCAD DXF drawings for beam reinforcement details",
 )
 
 # Check if DXF module is available
 if not HAS_DXF:
-    st.error("⚠️ DXF export module is not available. Please ensure structural_lib is installed with ezdxf.")
+    st.error(
+        "⚠️ DXF export module is not available. Please ensure structural_lib is installed with ezdxf."
+    )
     st.stop()
 
 # Check if ezdxf library is available
 if not EZDXF_AVAILABLE:
-    st.error("""
+    st.error(
+        """
     ⚠️ **ezdxf library not installed!**
 
     To enable DXF export, install ezdxf:
@@ -306,7 +314,8 @@ if not EZDXF_AVAILABLE:
     ```
 
     ezdxf is required for generating AutoCAD-compatible DXF files.
-    """)
+    """
+    )
     st.stop()
 
 # Export options section
@@ -318,7 +327,7 @@ with col1:
     include_dimensions = st.checkbox(
         "Include Dimensions",
         value=st.session_state.dxf_inputs["include_dimensions"],
-        help="Add dimension lines for span, depth, and cover"
+        help="Add dimension lines for span, depth, and cover",
     )
     st.session_state.dxf_inputs["include_dimensions"] = include_dimensions
 
@@ -326,7 +335,7 @@ with col2:
     include_annotations = st.checkbox(
         "Include Annotations",
         value=st.session_state.dxf_inputs["include_annotations"],
-        help="Add text annotations for bar marks, sizes, and specifications"
+        help="Add text annotations for bar marks, sizes, and specifications",
     )
     st.session_state.dxf_inputs["include_annotations"] = include_annotations
 
@@ -334,7 +343,7 @@ with col3:
     include_title_block = st.checkbox(
         "Include Title Block",
         value=st.session_state.dxf_inputs["include_title_block"],
-        help="Add professional title block with project information"
+        help="Add professional title block with project information",
     )
     st.session_state.dxf_inputs["include_title_block"] = include_title_block
 
@@ -344,14 +353,16 @@ st.markdown("---")
 beam_data = get_beam_design_from_session()
 
 if beam_data is None:
-    st.warning("""
+    st.warning(
+        """
     **No beam design found!**
 
     Please go to the **Beam Design** page and:
     1. Enter beam geometry and loading
     2. Click "Run Design Analysis"
     3. Return here to generate DXF drawing
-    """)
+    """
+    )
 
     if st.button("🔗 Go to Beam Design Page"):
         st.switch_page("pages/01_🏗️_beam_design.py")
@@ -387,14 +398,16 @@ else:
                     dxf_bytes = quick_dxf_bytes(
                         detailing=detailing,
                         include_title_block=include_title_block,
-                        project_name=st.session_state.dxf_inputs["project_name"]
+                        project_name=st.session_state.dxf_inputs["project_name"],
                     )
 
                     # Store in session
                     st.session_state.dxf_inputs["generated_dxf"] = {
                         "bytes": dxf_bytes,
                         "detailing": detailing,
-                        "timestamp": st.session_state.get("beam_inputs", {}).get("member_id", "B1")
+                        "timestamp": st.session_state.get("beam_inputs", {}).get(
+                            "member_id", "B1"
+                        ),
                     }
 
                     st.success("✅ DXF drawing generated successfully!")
@@ -403,6 +416,7 @@ else:
                 except Exception as e:
                     st.error(f"❌ Error generating DXF: {str(e)}")
                     import traceback
+
                     with st.expander("🐛 Error Details"):
                         st.code(traceback.format_exc())
 
@@ -430,7 +444,7 @@ else:
         with col2:
             st.metric("Format", "DXF R2010")
         with col3:
-            st.metric("Layers", file_info['layers'])
+            st.metric("Layers", file_info["layers"])
         with col4:
             st.metric("Units", "Millimeters")
 
@@ -441,7 +455,7 @@ else:
 
         # Compatible software
         st.markdown("#### 📦 Compatible Software")
-        compatible_apps = ", ".join(file_info['compatible_with'])
+        compatible_apps = ", ".join(file_info["compatible_with"])
         st.info(f"This DXF file can be opened in: **{compatible_apps}**")
 
         # Download section
@@ -458,7 +472,7 @@ else:
                 file_name=f"{detailing.beam_id}_detail.dxf",
                 mime="application/dxf",
                 width="stretch",
-                type="primary"
+                type="primary",
             )
 
         with col2:
@@ -468,7 +482,7 @@ else:
                 data=dxf_bytes,
                 file_name=f"{detailing.beam_id}_{detailing.story}_detail.dxf",
                 mime="application/dxf",
-                width="stretch"
+                width="stretch",
             )
 
         with col3:
@@ -476,7 +490,7 @@ else:
                 "🖨️ Print Preview",
                 disabled=True,
                 width="stretch",
-                help="Coming soon - Open in CAD viewer"
+                help="Coming soon - Open in CAD viewer",
             )
             st.caption("Feature coming soon")
 
@@ -489,28 +503,32 @@ with st.expander("📖 Reference: DXF Layer Information"):
     layer_data = []
     for layer_name, layer_info in LAYERS.items():
         color, linetype = layer_info
-        layer_data.append({
-            "Layer": layer_name,
-            "Color Code": color,
-            "Line Type": linetype,
-            "Purpose": {
-                "BEAM_OUTLINE": "Beam external boundaries",
-                "REBAR_MAIN": "Main reinforcement (flexure)",
-                "REBAR_STIRRUP": "Stirrups (shear reinforcement)",
-                "DIMENSIONS": "Dimension lines and text",
-                "TEXT": "Annotations and labels",
-                "CENTERLINE": "Beam centerline",
-                "HIDDEN": "Hidden or internal lines",
-                "BORDER": "Drawing border and title block"
-            }.get(layer_name, "Support layer")
-        })
+        layer_data.append(
+            {
+                "Layer": layer_name,
+                "Color Code": color,
+                "Line Type": linetype,
+                "Purpose": {
+                    "BEAM_OUTLINE": "Beam external boundaries",
+                    "REBAR_MAIN": "Main reinforcement (flexure)",
+                    "REBAR_STIRRUP": "Stirrups (shear reinforcement)",
+                    "DIMENSIONS": "Dimension lines and text",
+                    "TEXT": "Annotations and labels",
+                    "CENTERLINE": "Beam centerline",
+                    "HIDDEN": "Hidden or internal lines",
+                    "BORDER": "Drawing border and title block",
+                }.get(layer_name, "Support layer"),
+            }
+        )
 
     import pandas as pd
+
     layer_df = pd.DataFrame(layer_data)
     st.table(layer_df)
 
 with st.expander("🎨 Reference: CAD Color Codes"):
-    st.markdown("""
+    st.markdown(
+        """
     #### AutoCAD Color Index (ACI)
 
     | Code | Color   | Usage in Drawing |
@@ -522,10 +540,12 @@ with st.expander("🎨 Reference: CAD Color Codes"):
     | 6    | Magenta | Centerlines |
     | 7    | White   | Outlines & borders |
     | 8    | Gray    | Hidden lines |
-    """)
+    """
+    )
 
 with st.expander("💡 Tips: Working with DXF Files"):
-    st.markdown("""
+    st.markdown(
+        """
     #### Opening DXF Files
 
     **Free Software:**
@@ -553,10 +573,12 @@ with st.expander("💡 Tips: Working with DXF Files"):
     - Use as underlays in structural software
     - Convert to PDF for documentation
     - Overlay with architectural drawings
-    """)
+    """
+    )
 
 with st.expander("🔧 Advanced: Customization Options"):
-    st.markdown("""
+    st.markdown(
+        """
     #### Available Customizations (Future Enhancements)
 
     **Phase 2 Features:**
@@ -575,8 +597,11 @@ with st.expander("🔧 Advanced: Customization Options"):
     - [ ] Compare drawings (before/after)
     - [ ] Cloud storage integration
     - [ ] Email drawings directly
-    """)
+    """
+    )
 
 # Footer
 st.markdown("---")
-st.caption("DXF Export | AutoCAD R2010 Format | IS 456:2000 & SP 34:1987 Compliant | Developed by Agent 6")
+st.caption(
+    "DXF Export | AutoCAD R2010 Format | IS 456:2000 & SP 34:1987 Compliant | Developed by Agent 6"
+)

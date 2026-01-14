@@ -2,6 +2,7 @@
 Data Lazy Loading Utilities
 Load material databases, code tables, and large datasets on demand.
 """
+
 from typing import Any, Dict, List, Optional
 import streamlit as st
 
@@ -28,7 +29,7 @@ def load_material_database() -> Dict[str, Any]:
             "Fe415": {"fy": 415, "Es": 200000},
             "Fe500": {"fy": 500, "Es": 200000},
             "Fe550": {"fy": 550, "Es": 200000},
-        }
+        },
     }
     return materials
 
@@ -149,7 +150,9 @@ class DataManager:
         load_validation_rules.clear()
 
 
-def get_material_property(material_type: str, grade: str, property_name: str) -> Optional[Any]:
+def get_material_property(
+    material_type: str, grade: str, property_name: str
+) -> Optional[Any]:
     """
     Get specific material property with lazy loading.
 

@@ -24,7 +24,11 @@ def _strip_code_blocks(text: str) -> str:
 
 
 def _is_external(link: str) -> bool:
-    return link.startswith("http://") or link.startswith("https://") or link.startswith("mailto:")
+    return (
+        link.startswith("http://")
+        or link.startswith("https://")
+        or link.startswith("mailto:")
+    )
 
 
 def main() -> int:

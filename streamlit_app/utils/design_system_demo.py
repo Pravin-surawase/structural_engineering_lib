@@ -202,7 +202,9 @@ with col3:
     )
 
 with col4:
-    metric_card(label="Shear", value="78.2", unit="kN", delta="Critical", delta_color="warning")
+    metric_card(
+        label="Shear", value="78.2", unit="kN", delta="Critical", delta_color="warning"
+    )
 
 # Alert boxes
 st.subheader("Alert Boxes")
@@ -213,7 +215,9 @@ alert_box("Refer to Clause 26.5.1.5 for detailing requirements", "info", icon="�
 
 # Progress bars
 st.subheader("Progress Bars")
-progress_bar(value=45, max_value=100, label="Flexural Utilization", color=COLORS.success)
+progress_bar(
+    value=45, max_value=100, label="Flexural Utilization", color=COLORS.success
+)
 progress_bar(value=78, max_value=100, label="Shear Utilization", color=COLORS.warning)
 progress_bar(value=92, max_value=100, label="Serviceability Check", color=COLORS.error)
 
@@ -244,7 +248,11 @@ with col1:
     st.subheader("Bar Chart")
     fig1 = go.Figure(
         data=[
-            go.Bar(x=["Option A", "Option B", "Option C"], y=[1200, 1350, 1180], name="Steel Area (mm²)")
+            go.Bar(
+                x=["Option A", "Option B", "Option C"],
+                y=[1200, 1350, 1180],
+                name="Steel Area (mm²)",
+            )
         ]
     )
     apply_theme(fig1)

@@ -39,6 +39,7 @@ from utils.session_manager import (
 # Fixtures
 # =============================================================================
 
+
 @pytest.fixture
 def sample_inputs():
     """Sample beam inputs"""
@@ -51,7 +52,7 @@ def sample_inputs():
         fy_mpa=500,
         mu_knm=120,
         vu_kn=80,
-        cover_mm=30
+        cover_mm=30,
     )
 
 
@@ -68,18 +69,15 @@ def sample_result(sample_inputs):
         stirrup_spacing_mm=175,
         utilization_pct=65.5,
         status="PASS",
-        compliance_checks={
-            "min_steel": True,
-            "max_steel": True,
-            "spacing": True
-        },
-        cost_per_meter=87.45
+        compliance_checks={"min_steel": True, "max_steel": True, "spacing": True},
+        cost_per_meter=87.45,
     )
 
 
 @pytest.fixture
 def mock_session_state(monkeypatch):
     """Mock Streamlit session state"""
+
     # Create a dict-like mock for session_state
     class MockSessionState(dict):
         pass
@@ -100,11 +98,12 @@ def mock_session_state(monkeypatch):
     mock_streamlit.session_state = mock_st
 
     # Patch at module level
-    monkeypatch.setattr('streamlit.session_state', mock_st)
+    monkeypatch.setattr("streamlit.session_state", mock_st)
 
     # Also patch in the session_manager module
     import utils.session_manager
-    monkeypatch.setattr(utils.session_manager, 'st', mock_streamlit)
+
+    monkeypatch.setattr(utils.session_manager, "st", mock_streamlit)
 
     # Initialize required keys for session manager
     mock_st["user_preferences"] = {}
@@ -120,6 +119,7 @@ def mock_session_state(monkeypatch):
 # =============================================================================
 # Test Data Classes
 # =============================================================================
+
 
 class TestBeamInputs:
     """Test BeamInputs data class"""
@@ -146,9 +146,9 @@ class TestBeamInputs:
         """Test converting to dictionary"""
         data = sample_inputs.to_dict()
         assert isinstance(data, dict)
-        assert data['span_mm'] == 5000
-        assert data['b_mm'] == 300
-        assert 'timestamp' in data
+        assert data["span_mm"] == 5000
+        assert data["b_mm"] == 300
+        assert "timestamp" in data
 
     def test_from_dict(self, sample_inputs):
         """Test creating from dictionary"""
@@ -185,10 +185,10 @@ class TestDesignResult:
         """Test converting to dictionary"""
         data = sample_result.to_dict()
         assert isinstance(data, dict)
-        assert data['ast_mm2'] == 603
-        assert data['status'] == "PASS"
-        assert 'inputs' in data
-        assert isinstance(data['inputs'], dict)
+        assert data["ast_mm2"] == 603
+        assert data["status"] == "PASS"
+        assert "inputs" in data
+        assert isinstance(data["inputs"], dict)
 
     def test_from_dict(self, sample_result):
         """Test creating from dictionary"""
@@ -211,6 +211,7 @@ class TestDesignResult:
 # Test Session State Manager (without Streamlit)
 # =============================================================================
 
+
 class TestSessionStateManagerBasics:
     """Test SessionStateManager basic operations"""
 
@@ -230,7 +231,7 @@ class TestSessionStateManagerBasics:
             fck_mpa=25,
             fy_mpa=500,
             mu_knm=120,
-            vu_kn=80
+            vu_kn=80,
         )
 
         hash1 = SessionStateManager._input_hash(sample_inputs)
@@ -239,10 +240,26 @@ class TestSessionStateManagerBasics:
 
     def test_input_hash_precision(self):
         """Test hash handles floating point precision"""
-        inputs1 = BeamInputs(span_mm=5000.0, b_mm=300.0, d_mm=450.0, D_mm=500.0,
-                            fck_mpa=25.0, fy_mpa=500.0, mu_knm=120.0, vu_kn=80.0)
-        inputs2 = BeamInputs(span_mm=5000.01, b_mm=300.02, d_mm=450.0, D_mm=500.0,
-                            fck_mpa=25.0, fy_mpa=500.0, mu_knm=120.0, vu_kn=80.0)
+        inputs1 = BeamInputs(
+            span_mm=5000.0,
+            b_mm=300.0,
+            d_mm=450.0,
+            D_mm=500.0,
+            fck_mpa=25.0,
+            fy_mpa=500.0,
+            mu_knm=120.0,
+            vu_kn=80.0,
+        )
+        inputs2 = BeamInputs(
+            span_mm=5000.01,
+            b_mm=300.02,
+            d_mm=450.0,
+            D_mm=500.0,
+            fck_mpa=25.0,
+            fy_mpa=500.0,
+            mu_knm=120.0,
+            vu_kn=80.0,
+        )
 
         # Hashes should be same (rounded to 1 decimal place)
         hash1 = SessionStateManager._input_hash(inputs1)
@@ -253,7 +270,9 @@ class TestSessionStateManagerBasics:
 class TestStateExportImport:
     """Test state export/import functionality"""
 
-    def test_export_state_structure(self, sample_inputs, sample_result, mock_session_state):
+    def test_export_state_structure(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test exported state has correct structure"""
         # Setup state
         SessionStateManager.initialize()
@@ -264,14 +283,16 @@ class TestStateExportImport:
         state = SessionStateManager.export_state()
 
         # Check structure
-        assert 'current_inputs' in state
-        assert 'current_result' in state
-        assert 'input_history' in state
-        assert 'result_history' in state
-        assert 'preferences' in state
-        assert 'export_timestamp' in state
+        assert "current_inputs" in state
+        assert "current_result" in state
+        assert "input_history" in state
+        assert "result_history" in state
+        assert "preferences" in state
+        assert "export_timestamp" in state
 
-    def test_export_import_roundtrip(self, sample_inputs, sample_result, mock_session_state):
+    def test_export_import_roundtrip(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test export then import preserves data"""
         # Setup original state
         SessionStateManager.initialize()
@@ -294,7 +315,9 @@ class TestStateExportImport:
         assert imported_result.ast_mm2 == sample_result.ast_mm2
         assert imported_result.status == sample_result.status
 
-    def test_export_json_serializable(self, sample_inputs, sample_result, mock_session_state):
+    def test_export_json_serializable(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test exported state is JSON serializable"""
         SessionStateManager.initialize()
         SessionStateManager.set_current_inputs(sample_inputs)
@@ -308,12 +331,13 @@ class TestStateExportImport:
 
         # Should be able to deserialize
         restored = json.loads(json_str)
-        assert restored['current_inputs']['span_mm'] == 5000
+        assert restored["current_inputs"]["span_mm"] == 5000
 
 
 # =============================================================================
 # Test Helper Functions
 # =============================================================================
+
 
 class TestHelperFunctions:
     """Test helper functions"""
@@ -321,8 +345,16 @@ class TestHelperFunctions:
     def test_compare_designs_all_metrics(self, sample_result):
         """Test compare_designs calculates all metrics"""
         # Create second result with different values
-        inputs2 = BeamInputs(span_mm=5000, b_mm=350, d_mm=450, D_mm=500,
-                            fck_mpa=25, fy_mpa=500, mu_knm=120, vu_kn=80)
+        inputs2 = BeamInputs(
+            span_mm=5000,
+            b_mm=350,
+            d_mm=450,
+            D_mm=500,
+            fck_mpa=25,
+            fy_mpa=500,
+            mu_knm=120,
+            vu_kn=80,
+        )
         result2 = DesignResult(
             inputs=inputs2,
             ast_mm2=603,
@@ -334,17 +366,17 @@ class TestHelperFunctions:
             utilization_pct=75.0,
             status="PASS",
             compliance_checks={"min_steel": True},
-            cost_per_meter=95.00
+            cost_per_meter=95.00,
         )
 
         comparison = compare_designs(sample_result, result2)
 
-        assert 'utilization_diff' in comparison
-        assert 'cost_diff' in comparison
-        assert 'cost_savings_pct' in comparison
-        assert 'steel_area_diff' in comparison
-        assert 'better_utilization' in comparison
-        assert 'more_economical' in comparison
+        assert "utilization_diff" in comparison
+        assert "cost_diff" in comparison
+        assert "cost_savings_pct" in comparison
+        assert "steel_area_diff" in comparison
+        assert "better_utilization" in comparison
+        assert "more_economical" in comparison
 
     def test_compare_designs_utilization_diff(self, sample_result):
         """Test utilization difference calculation"""
@@ -359,11 +391,11 @@ class TestHelperFunctions:
             utilization_pct=80.0,  # Different
             status="PASS",
             compliance_checks={},
-            cost_per_meter=87.45
+            cost_per_meter=87.45,
         )
 
         comparison = compare_designs(sample_result, result2)
-        assert comparison['utilization_diff'] == pytest.approx(14.5)  # 80 - 65.5
+        assert comparison["utilization_diff"] == pytest.approx(14.5)  # 80 - 65.5
 
     def test_compare_designs_cost_savings(self, sample_result):
         """Test cost savings percentage calculation"""
@@ -378,13 +410,13 @@ class TestHelperFunctions:
             utilization_pct=65.5,
             status="PASS",
             compliance_checks={},
-            cost_per_meter=70.00  # Cheaper
+            cost_per_meter=70.00,  # Cheaper
         )
 
         comparison = compare_designs(sample_result, result2)
         # Savings = (87.45 - 70) / 87.45 * 100 ≈ 19.97%
-        assert comparison['cost_savings_pct'] == pytest.approx(19.97, rel=0.01)
-        assert comparison['more_economical'] == True
+        assert comparison["cost_savings_pct"] == pytest.approx(19.97, rel=0.01)
+        assert comparison["more_economical"] == True
 
     def test_format_design_summary_structure(self, sample_result):
         """Test format_design_summary produces valid output"""
@@ -416,7 +448,7 @@ class TestHelperFunctions:
 
         # Loading
         assert "120" in summary  # moment
-        assert "80" in summary   # shear
+        assert "80" in summary  # shear
 
         # Design
         assert "603" in summary  # steel area
@@ -428,7 +460,9 @@ class TestHelperFunctions:
 class TestFileOperations:
     """Test file save/load operations"""
 
-    def test_save_and_load_design(self, sample_inputs, sample_result, mock_session_state):
+    def test_save_and_load_design(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test saving and loading design from file"""
         # Setup state
         SessionStateManager.initialize()
@@ -436,7 +470,7 @@ class TestFileOperations:
         SessionStateManager.set_current_result(sample_result)
 
         # Save to temp file
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
             filepath = f.name
 
         try:
@@ -461,25 +495,27 @@ class TestFileOperations:
             if os.path.exists(filepath):
                 os.unlink(filepath)
 
-    def test_saved_file_is_valid_json(self, sample_inputs, sample_result, mock_session_state):
+    def test_saved_file_is_valid_json(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test saved file is valid JSON"""
         SessionStateManager.initialize()
         SessionStateManager.set_current_inputs(sample_inputs)
         SessionStateManager.set_current_result(sample_result)
 
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
             filepath = f.name
 
         try:
             save_design_to_file(filepath)
 
             # Load and parse JSON
-            with open(filepath, 'r') as f:
+            with open(filepath, "r") as f:
                 data = json.load(f)
 
             # Verify structure
-            assert 'current_inputs' in data
-            assert 'export_timestamp' in data
+            assert "current_inputs" in data
+            assert "export_timestamp" in data
 
         finally:
             if os.path.exists(filepath):
@@ -490,6 +526,7 @@ class TestFileOperations:
 # Test Edge Cases
 # =============================================================================
 
+
 class TestEdgeCases:
     """Test edge cases and special scenarios"""
 
@@ -499,7 +536,9 @@ class TestEdgeCases:
         last_design = load_last_design()
         assert last_design is None
 
-    def test_load_last_design_with_history(self, sample_inputs, sample_result, mock_session_state):
+    def test_load_last_design_with_history(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test loading last design from history"""
         SessionStateManager.initialize()
         SessionStateManager.add_to_history(sample_inputs, sample_result)
@@ -526,7 +565,7 @@ class TestEdgeCases:
                 utilization_pct=65.0,
                 status="PASS",
                 compliance_checks={},
-                cost_per_meter=87.0
+                cost_per_meter=87.0,
             )
             SessionStateManager.add_to_history(inputs, result)
 
@@ -556,7 +595,7 @@ class TestEdgeCases:
                 utilization_pct=65.0,
                 status="PASS",
                 compliance_checks={},
-                cost_per_meter=87.0
+                cost_per_meter=87.0,
             )
             SessionStateManager.cache_design(inputs, result)
 
@@ -568,6 +607,7 @@ class TestEdgeCases:
 # =============================================================================
 # Integration Tests
 # =============================================================================
+
 
 class TestIntegration:
     """Integration tests for session manager"""
@@ -600,7 +640,7 @@ class TestIntegration:
 
         # 8. Export state
         state = SessionStateManager.export_state()
-        assert state['current_result']['ast_mm2'] == 603
+        assert state["current_result"]["ast_mm2"] == 603
 
         # 9. Clear and import
         mock_session_state.clear()
@@ -615,10 +655,13 @@ class TestIntegration:
 # Performance Tests
 # =============================================================================
 
+
 class TestPerformance:
     """Test performance of session manager"""
 
-    def test_cache_lookup_performance(self, sample_inputs, sample_result, mock_session_state):
+    def test_cache_lookup_performance(
+        self, sample_inputs, sample_result, mock_session_state
+    ):
         """Test cache lookup is fast"""
         import time
 

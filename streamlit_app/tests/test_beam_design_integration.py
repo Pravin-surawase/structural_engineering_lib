@@ -23,6 +23,7 @@ from unittest.mock import patch, MagicMock
 # TEST 1: Visualization handles None values (CRITICAL BUG FIX)
 # ============================================================================
 
+
 class TestVisualizationNullSafety:
     """Tests that visualizations handle None/empty values correctly."""
 
@@ -36,13 +37,13 @@ class TestVisualizationNullSafety:
             D_mm=500.0,
             d_mm=450.0,
             rebar_positions=[],  # Empty before analysis
-            xu=None,             # None before analysis
+            xu=None,  # None before analysis
             bar_dia=0,
-            cover=30.0
+            cover=30.0,
         )
 
         assert fig is not None
-        assert hasattr(fig, 'data')
+        assert hasattr(fig, "data")
         # Should only have concrete section, effective depth, and cover
         # (no compression/tension zones or neutral axis when xu=None)
 
@@ -57,7 +58,7 @@ class TestVisualizationNullSafety:
             rebar_positions=[],
             xu=0,  # Zero is also edge case
             bar_dia=0,
-            cover=30.0
+            cover=30.0,
         )
 
         assert fig is not None
@@ -73,7 +74,7 @@ class TestVisualizationNullSafety:
             rebar_positions=[],  # Empty list
             xu=150.0,
             bar_dia=16,
-            cover=30.0
+            cover=30.0,
         )
 
         assert fig is not None
@@ -89,7 +90,7 @@ class TestVisualizationNullSafety:
             rebar_positions=[(50, 50), (150, 50), (250, 50)],
             xu=150.0,
             bar_dia=16,
-            cover=30.0
+            cover=30.0,
         )
 
         assert fig is not None
@@ -100,6 +101,7 @@ class TestVisualizationNullSafety:
 # ============================================================================
 # TEST 2: API Wrapper produces dynamic results
 # ============================================================================
+
 
 class TestAPIWrapperDynamicResults:
     """Tests that cached_design returns different results for different inputs."""
@@ -129,7 +131,7 @@ class TestAPIWrapperDynamicResults:
         )
 
         # Steel area should increase with moment
-        assert result2['flexure']['ast_required'] > result1['flexure']['ast_required']
+        assert result2["flexure"]["ast_required"] > result1["flexure"]["ast_required"]
 
     def test_different_shear_gives_different_spacing(self):
         """Different shear inputs must produce different stirrup spacing."""
@@ -156,7 +158,7 @@ class TestAPIWrapperDynamicResults:
         )
 
         # Higher shear should require closer stirrup spacing
-        assert result2['shear']['spacing'] <= result1['shear']['spacing']
+        assert result2["shear"]["spacing"] <= result1["shear"]["spacing"]
 
     def test_different_dimensions_affect_results(self):
         """Beam dimensions must affect design results."""
@@ -183,7 +185,10 @@ class TestAPIWrapperDynamicResults:
         )
 
         # Larger beam should require less steel (better lever arm)
-        assert result_large['flexure']['ast_required'] < result_small['flexure']['ast_required']
+        assert (
+            result_large["flexure"]["ast_required"]
+            < result_small["flexure"]["ast_required"]
+        )
 
     def test_different_materials_affect_results(self):
         """Material grades must affect design results."""
@@ -210,12 +215,16 @@ class TestAPIWrapperDynamicResults:
         )
 
         # Higher concrete grade means higher moment limit
-        assert result_m40['flexure']['mu_limit_knm'] > result_m25['flexure']['mu_limit_knm']
+        assert (
+            result_m40["flexure"]["mu_limit_knm"]
+            > result_m25["flexure"]["mu_limit_knm"]
+        )
 
 
 # ============================================================================
 # TEST 3: Design calculation correctness (IS 456 verification)
 # ============================================================================
+
 
 class TestDesignCalculationCorrectness:
     """Tests that design calculations follow IS 456 formulas correctly."""
@@ -240,11 +249,12 @@ class TestDesignCalculationCorrectness:
         )
 
         # Calculate expected: Mu = 0.138 * fck * b * d^2 / 1e6
-        expected_mu_limit = 0.138 * fck * b * (d ** 2) / 1e6  # kNm
+        expected_mu_limit = 0.138 * fck * b * (d**2) / 1e6  # kNm
 
         # Allow larger tolerance due to rounding in calculation
-        assert abs(result['flexure']['mu_limit_knm'] - expected_mu_limit) < 10.0, \
-            f"Mu_limit mismatch: expected {expected_mu_limit:.2f}, got {result['flexure']['mu_limit_knm']:.2f}"
+        assert (
+            abs(result["flexure"]["mu_limit_knm"] - expected_mu_limit) < 10.0
+        ), f"Mu_limit mismatch: expected {expected_mu_limit:.2f}, got {result['flexure']['mu_limit_knm']:.2f}"
 
     def test_minimum_steel_formula(self):
         """Verify Ast_min = 0.85 * b * d / fy (IS 456 Cl. 26.5.1.1)."""
@@ -266,7 +276,7 @@ class TestDesignCalculationCorrectness:
 
         expected_ast_min = 0.85 * b * d / fy
 
-        assert abs(result['flexure']['ast_min'] - expected_ast_min) < 1.0
+        assert abs(result["flexure"]["ast_min"] - expected_ast_min) < 1.0
 
     def test_shear_stress_formula(self):
         """Verify tau_v = Vu / (b * d) (IS 456 shear stress)."""
@@ -288,12 +298,13 @@ class TestDesignCalculationCorrectness:
 
         expected_tau_v = (vu * 1000) / (b * d)  # N/mm²
 
-        assert abs(result['shear']['tau_v'] - expected_tau_v) < 0.01
+        assert abs(result["shear"]["tau_v"] - expected_tau_v) < 0.01
 
 
 # ============================================================================
 # TEST 4: Input component contracts
 # ============================================================================
+
 
 class TestInputComponentContracts:
     """Tests that input components return expected data structures."""
@@ -304,46 +315,47 @@ class TestInputComponentContracts:
         from components.inputs import CONCRETE_GRADES
 
         for grade, props in CONCRETE_GRADES.items():
-            assert 'fck' in props
-            assert 'ec' in props
-            assert 'cost_factor' in props
-            assert 'description' in props
-            assert isinstance(props['fck'], (int, float))
-            assert props['fck'] > 0
+            assert "fck" in props
+            assert "ec" in props
+            assert "cost_factor" in props
+            assert "description" in props
+            assert isinstance(props["fck"], (int, float))
+            assert props["fck"] > 0
 
     def test_material_selector_steel_structure(self):
         """material_selector('steel') returns correct structure."""
         from components.inputs import STEEL_GRADES
 
         for grade, props in STEEL_GRADES.items():
-            assert 'fy' in props
-            assert 'es' in props
-            assert 'cost_factor' in props
-            assert isinstance(props['fy'], (int, float))
-            assert props['fy'] > 0
+            assert "fy" in props
+            assert "es" in props
+            assert "cost_factor" in props
+            assert isinstance(props["fy"], (int, float))
+            assert props["fy"] > 0
 
     def test_exposure_conditions_structure(self):
         """Exposure conditions have required properties."""
         from components.inputs import EXPOSURE_CONDITIONS
 
         for exposure, props in EXPOSURE_CONDITIONS.items():
-            assert 'cover' in props
-            assert 'max_crack_width' in props
-            assert props['cover'] >= 20  # Minimum cover per IS 456
+            assert "cover" in props
+            assert "max_crack_width" in props
+            assert props["cover"] >= 20  # Minimum cover per IS 456
 
     def test_support_conditions_structure(self):
         """Support conditions have required properties."""
         from components.inputs import SUPPORT_CONDITIONS
 
         for condition, props in SUPPORT_CONDITIONS.items():
-            assert 'end_condition' in props
-            assert 'moment_factor' in props
-            assert props['moment_factor'] > 0
+            assert "end_condition" in props
+            assert "moment_factor" in props
+            assert props["moment_factor"] > 0
 
 
 # ============================================================================
 # TEST 5: Edge cases and error handling
 # ============================================================================
+
 
 class TestEdgeCasesAndErrorHandling:
     """Tests edge cases that could cause crashes."""
@@ -363,7 +375,7 @@ class TestEdgeCasesAndErrorHandling:
         )
 
         # Should return minimum steel
-        assert result['flexure']['ast_required'] >= result['flexure']['ast_min']
+        assert result["flexure"]["ast_required"] >= result["flexure"]["ast_min"]
 
     def test_extreme_aspect_ratio(self):
         """Design handles extreme b/D ratios."""
@@ -381,7 +393,7 @@ class TestEdgeCasesAndErrorHandling:
         )
 
         assert result is not None
-        assert 'is_safe' in result
+        assert "is_safe" in result
 
     def test_high_concrete_grade(self):
         """Design handles high concrete grades (M40+)."""
@@ -398,13 +410,13 @@ class TestEdgeCasesAndErrorHandling:
         )
 
         assert result is not None
-        assert result['shear']['tau_c'] >= 0.48  # Higher tau_c for higher fck
+        assert result["shear"]["tau_c"] >= 0.48  # Higher tau_c for higher fck
 
     def test_exposure_parameter_handling(self):
         """Design handles different exposure conditions."""
         from utils.api_wrapper import cached_design
 
-        exposures = ['Mild', 'Moderate', 'Severe', 'Very Severe', 'Extreme']
+        exposures = ["Mild", "Moderate", "Severe", "Very Severe", "Extreme"]
         expected_covers = [20, 30, 45, 50, 75]
 
         for exposure, expected_cover in zip(exposures, expected_covers):
@@ -419,7 +431,7 @@ class TestEdgeCasesAndErrorHandling:
                 exposure=exposure,
             )
 
-            assert result['cover_mm'] == expected_cover
+            assert result["cover_mm"] == expected_cover
 
 
 # ============================================================================

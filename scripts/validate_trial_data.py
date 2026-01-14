@@ -8,16 +8,25 @@ from pathlib import Path
 # Expected schema
 TRIAL_SCHEMA = {
     "required_fields": [
-        "trial_id", "timestamp", "condition", "agent_type",
-        "task_id", "task_description", "ground_truth_file",
-        "metrics", "outcome"
+        "trial_id",
+        "timestamp",
+        "condition",
+        "agent_type",
+        "task_id",
+        "task_description",
+        "ground_truth_file",
+        "metrics",
+        "outcome",
     ],
     "metrics_fields": [
-        "time_to_complete_ms", "files_accessed", "tokens_loaded",
-        "wrong_files_opened"
+        "time_to_complete_ms",
+        "files_accessed",
+        "tokens_loaded",
+        "wrong_files_opened",
     ],
-    "outcome_fields": ["success", "correct_file_found"]
+    "outcome_fields": ["success", "correct_file_found"],
 }
+
 
 def validate_trial(trial_data: dict, filename: str) -> bool:
     """Validate a single trial against schema."""
@@ -48,6 +57,7 @@ def validate_trial(trial_data: dict, filename: str) -> bool:
 
     return True
 
+
 def main():
     data_dir = Path("docs/research/navigation_study/data/raw")
 
@@ -63,7 +73,7 @@ def main():
     for trial_file in data_dir.rglob("trial_*.json"):
         total += 1
         try:
-            with open(trial_file, 'r') as f:
+            with open(trial_file, "r") as f:
                 trial_data = json.load(f)
 
             if validate_trial(trial_data, trial_file.name):
@@ -84,6 +94,7 @@ def main():
     else:
         print(f"\n⚠️  {total - valid} files have validation errors")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

@@ -306,7 +306,9 @@ def main():
     else:
         print("Ready to work! Pick a task from Active or Up Next.")
     print()
-    print("📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md")
+    print(
+        "📖 Read first: docs/handoff.md → docs/agent-bootstrap.md → docs/ai-context-pack.md"
+    )
     print("=" * 60)
     print()
 

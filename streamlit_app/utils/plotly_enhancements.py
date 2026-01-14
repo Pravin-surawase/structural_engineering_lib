@@ -22,11 +22,14 @@ import plotly.graph_objects as go
 try:
     from utils.design_system import COLORS, TYPOGRAPHY, ANIMATION
 except ImportError:
+
     class COLORS:
         primary_500 = "#003366"
         gray_100 = "#F5F5F5"
+
     class TYPOGRAPHY:
         font_ui = "Inter"
+
     class ANIMATION:
         duration_normal = 200
 
@@ -43,28 +46,33 @@ def add_animation_config(fig: go.Figure, duration_ms: int = 300) -> go.Figure:
         Enhanced figure with animations
     """
     fig.update_layout(
-        transition={
-            'duration': duration_ms,
-            'easing': 'cubic-in-out'
-        },
-        updatemenus=[{
-            'type': 'buttons',
-            'direction': 'left',
-            'x': 0.1,
-            'y': 1.15,
-            'showactive': True,
-            'buttons': [
-                {
-                    'label': '▶ Animate',
-                    'method': 'animate',
-                    'args': [None, {
-                        'frame': {'duration': duration_ms, 'redraw': True},
-                        'transition': {'duration': duration_ms, 'easing': 'cubic-in-out'},
-                        'fromcurrent': True
-                    }]
-                }
-            ]
-        }]
+        transition={"duration": duration_ms, "easing": "cubic-in-out"},
+        updatemenus=[
+            {
+                "type": "buttons",
+                "direction": "left",
+                "x": 0.1,
+                "y": 1.15,
+                "showactive": True,
+                "buttons": [
+                    {
+                        "label": "▶ Animate",
+                        "method": "animate",
+                        "args": [
+                            None,
+                            {
+                                "frame": {"duration": duration_ms, "redraw": True},
+                                "transition": {
+                                    "duration": duration_ms,
+                                    "easing": "cubic-in-out",
+                                },
+                                "fromcurrent": True,
+                            },
+                        ],
+                    }
+                ],
+            }
+        ],
     )
     return fig
 
@@ -82,35 +90,33 @@ def add_export_config(fig: go.Figure, filename: str = "chart") -> go.Figure:
     """
     fig.update_layout(
         modebar={
-            'orientation': 'v',
-            'bgcolor': 'rgba(255,255,255,0.8)',
-            'color': COLORS.primary_500,
-            'activecolor': COLORS.primary_500
+            "orientation": "v",
+            "bgcolor": "rgba(255,255,255,0.8)",
+            "color": COLORS.primary_500,
+            "activecolor": COLORS.primary_500,
         }
     )
 
     # Configure export settings
     config = {
-        'toImageButtonOptions': {
-            'format': 'png',  # png, svg, jpeg
-            'filename': filename,
-            'height': 800,
-            'width': 1200,
-            'scale': 2  # High DPI export
+        "toImageButtonOptions": {
+            "format": "png",  # png, svg, jpeg
+            "filename": filename,
+            "height": 800,
+            "width": 1200,
+            "scale": 2,  # High DPI export
         },
-        'displayModeBar': True,
-        'displaylogo': False,
-        'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
-        'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'eraseshape'],
+        "displayModeBar": True,
+        "displaylogo": False,
+        "modeBarButtonsToRemove": ["lasso2d", "select2d"],
+        "modeBarButtonsToAdd": ["drawline", "drawopenpath", "eraseshape"],
     }
 
     return fig, config
 
 
 def create_rich_hover_template(
-    title: str,
-    fields: Dict[str, str],
-    show_extra: bool = False
+    title: str, fields: Dict[str, str], show_extra: bool = False
 ) -> str:
     """
     Create rich hover template with consistent formatting.
@@ -149,7 +155,7 @@ def create_rich_hover_template(
 def add_responsive_layout(
     fig: go.Figure,
     height_px: Optional[int] = None,
-    aspect_ratio: Optional[float] = None
+    aspect_ratio: Optional[float] = None,
 ) -> go.Figure:
     """
     Make figure responsive with proper margins.
@@ -163,24 +169,21 @@ def add_responsive_layout(
         Figure with responsive layout
     """
     layout_updates = {
-        'autosize': True,
-        'margin': dict(
+        "autosize": True,
+        "margin": dict(
             l=60,  # Left margin
             r=40,  # Right margin
             t=80,  # Top margin
             b=60,  # Bottom margin
-            pad=10  # Padding
-        )
+            pad=10,  # Padding
+        ),
     }
 
     if height_px:
-        layout_updates['height'] = height_px
+        layout_updates["height"] = height_px
 
     if aspect_ratio:
-        layout_updates['yaxis'] = dict(
-            scaleanchor='x',
-            scaleratio=aspect_ratio
-        )
+        layout_updates["yaxis"] = dict(scaleanchor="x", scaleratio=aspect_ratio)
 
     fig.update_layout(**layout_updates)
     return fig
@@ -191,7 +194,7 @@ def add_gridlines(
     x_grid: bool = True,
     y_grid: bool = True,
     grid_color: Optional[str] = None,
-    grid_width: float = 1
+    grid_width: float = 1,
 ) -> go.Figure:
     """
     Add styled gridlines to figure.
@@ -210,25 +213,18 @@ def add_gridlines(
         grid_color = COLORS.gray_100
 
     fig.update_xaxes(
-        showgrid=x_grid,
-        gridcolor=grid_color,
-        gridwidth=grid_width,
-        griddash='dot'
+        showgrid=x_grid, gridcolor=grid_color, gridwidth=grid_width, griddash="dot"
     )
 
     fig.update_yaxes(
-        showgrid=y_grid,
-        gridcolor=grid_color,
-        gridwidth=grid_width,
-        griddash='dot'
+        showgrid=y_grid, gridcolor=grid_color, gridwidth=grid_width, griddash="dot"
     )
 
     return fig
 
 
 def add_annotations_layer(
-    fig: go.Figure,
-    annotations: list[Dict[str, Any]]
+    fig: go.Figure, annotations: list[Dict[str, Any]]
 ) -> go.Figure:
     """
     Add styled annotations to figure.
@@ -247,25 +243,25 @@ def add_annotations_layer(
     """
     for ann in annotations:
         fig.add_annotation(
-            text=ann['text'],
-            x=ann['x'],
-            y=ann['y'],
-            showarrow=ann.get('showarrow', True),
-            arrowhead=ann.get('arrowhead', 2),
-            arrowsize=ann.get('arrowsize', 1),
-            arrowwidth=ann.get('arrowwidth', 2),
-            arrowcolor=ann.get('arrowcolor', COLORS.primary_500),
-            ax=ann.get('ax', 0),
-            ay=ann.get('ay', -40),
+            text=ann["text"],
+            x=ann["x"],
+            y=ann["y"],
+            showarrow=ann.get("showarrow", True),
+            arrowhead=ann.get("arrowhead", 2),
+            arrowsize=ann.get("arrowsize", 1),
+            arrowwidth=ann.get("arrowwidth", 2),
+            arrowcolor=ann.get("arrowcolor", COLORS.primary_500),
+            ax=ann.get("ax", 0),
+            ay=ann.get("ay", -40),
             font=dict(
-                size=ann.get('font_size', 12),
-                color=ann.get('font_color', COLORS.primary_500),
-                family=TYPOGRAPHY.font_ui
+                size=ann.get("font_size", 12),
+                color=ann.get("font_color", COLORS.primary_500),
+                family=TYPOGRAPHY.font_ui,
             ),
-            bgcolor=ann.get('bgcolor', 'rgba(255,255,255,0.8)'),
-            bordercolor=ann.get('bordercolor', COLORS.primary_500),
+            bgcolor=ann.get("bgcolor", "rgba(255,255,255,0.8)"),
+            bordercolor=ann.get("bordercolor", COLORS.primary_500),
             borderwidth=1,
-            borderpad=4
+            borderpad=4,
         )
 
     return fig
@@ -285,23 +281,21 @@ def add_loading_skeleton(message: str = "Generating visualization...") -> go.Fig
 
     fig.add_annotation(
         text=f"⏳ {message}",
-        xref="paper", yref="paper",
-        x=0.5, y=0.5,
+        xref="paper",
+        yref="paper",
+        x=0.5,
+        y=0.5,
         showarrow=False,
-        font=dict(
-            size=16,
-            color=COLORS.primary_500,
-            family=TYPOGRAPHY.font_ui
-        )
+        font=dict(size=16, color=COLORS.primary_500, family=TYPOGRAPHY.font_ui),
     )
 
     fig.update_layout(
         xaxis=dict(visible=False),
         yaxis=dict(visible=False),
-        plot_bgcolor='white',
+        plot_bgcolor="white",
         paper_bgcolor=COLORS.gray_100,
         height=400,
-        margin=dict(l=0, r=0, t=0, b=0)
+        margin=dict(l=0, r=0, t=0, b=0),
     )
 
     return fig
@@ -326,20 +320,12 @@ def apply_dark_mode_theme(fig: go.Figure) -> go.Figure:
     fig.update_layout(
         plot_bgcolor=bg_dark,
         paper_bgcolor=paper_dark,
-        font=dict(color=text_dark, family=TYPOGRAPHY.font_ui)
+        font=dict(color=text_dark, family=TYPOGRAPHY.font_ui),
     )
 
-    fig.update_xaxes(
-        gridcolor=grid_dark,
-        linecolor=grid_dark,
-        tickcolor=text_dark
-    )
+    fig.update_xaxes(gridcolor=grid_dark, linecolor=grid_dark, tickcolor=text_dark)
 
-    fig.update_yaxes(
-        gridcolor=grid_dark,
-        linecolor=grid_dark,
-        tickcolor=text_dark
-    )
+    fig.update_yaxes(gridcolor=grid_dark, linecolor=grid_dark, tickcolor=text_dark)
 
     return fig
 
@@ -349,35 +335,35 @@ def apply_dark_mode_theme(fig: go.Figure) -> go.Figure:
 # ============================================================================
 
 ENGINEERING_CHART_CONFIG = {
-    'displayModeBar': True,
-    'displaylogo': False,
-    'toImageButtonOptions': {
-        'format': 'png',
-        'filename': 'engineering_chart',
-        'height': 1000,
-        'width': 1400,
-        'scale': 2
+    "displayModeBar": True,
+    "displaylogo": False,
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "engineering_chart",
+        "height": 1000,
+        "width": 1400,
+        "scale": 2,
     },
-    'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
-    'scrollZoom': True,
-    'responsive': True
+    "modeBarButtonsToRemove": ["lasso2d", "select2d"],
+    "scrollZoom": True,
+    "responsive": True,
 }
 
 PRESENTATION_CHART_CONFIG = {
-    'displayModeBar': False,  # Hide for presentations
-    'staticPlot': False,  # Keep interactive
-    'responsive': True
+    "displayModeBar": False,  # Hide for presentations
+    "staticPlot": False,  # Keep interactive
+    "responsive": True,
 }
 
 PRINT_CHART_CONFIG = {
-    'displayModeBar': True,
-    'displaylogo': False,
-    'toImageButtonOptions': {
-        'format': 'svg',  # Vector for print
-        'filename': 'chart_print',
-        'height': 1200,
-        'width': 1600,
-        'scale': 1
+    "displayModeBar": True,
+    "displaylogo": False,
+    "toImageButtonOptions": {
+        "format": "svg",  # Vector for print
+        "filename": "chart_print",
+        "height": 1200,
+        "width": 1600,
+        "scale": 1,
     },
-    'staticPlot': True  # No interactions for print
+    "staticPlot": True,  # No interactions for print
 }

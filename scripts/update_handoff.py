@@ -104,7 +104,10 @@ def _update_next_brief(handoff_lines: list[str]) -> None:
 
     if start_marker in text and end_marker in text:
         pattern = re.compile(
-            r"## Latest Handoff \(auto\)\n\n" + re.escape(start_marker) + r"[\s\S]*?" + re.escape(end_marker)
+            r"## Latest Handoff \(auto\)\n\n"
+            + re.escape(start_marker)
+            + r"[\s\S]*?"
+            + re.escape(end_marker)
         )
         new_text = pattern.sub(block.rstrip(), text)
     else:

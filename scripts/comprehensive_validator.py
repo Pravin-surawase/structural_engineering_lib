@@ -26,6 +26,7 @@ from enum import Enum
 
 class Severity(Enum):
     """Issue severity levels."""
+
     ERROR = "ERROR"  # Blocks execution
     WARNING = "WARNING"  # Should fix
     INFO = "INFO"  # Nice to have
@@ -34,6 +35,7 @@ class Severity(Enum):
 @dataclass
 class ValidationIssue:
     """A validation issue found in code."""
+
     severity: Severity
     category: str
     message: str
@@ -46,6 +48,7 @@ class ValidationIssue:
 @dataclass
 class ValidationResult:
     """Result of validation."""
+
     file_path: str
     passed: bool
     issues: List[ValidationIssue] = field(default_factory=list)
@@ -81,15 +84,47 @@ class ComprehensiveValidator:
         """
         self.strict_mode = strict_mode
         self.streamlit_components = {
-            'button', 'checkbox', 'radio', 'selectbox', 'multiselect',
-            'slider', 'text_input', 'text_area', 'number_input',
-            'date_input', 'time_input', 'file_uploader',
-            'camera_input', 'color_picker', 'metric', 'markdown',
-            'title', 'header', 'subheader', 'caption', 'code',
-            'text', 'latex', 'divider', 'dataframe', 'table',
-            'json', 'columns', 'tabs', 'expander', 'container',
-            'empty', 'warning', 'error', 'success', 'info',
-            'exception', 'progress', 'spinner', 'balloons', 'snow'
+            "button",
+            "checkbox",
+            "radio",
+            "selectbox",
+            "multiselect",
+            "slider",
+            "text_input",
+            "text_area",
+            "number_input",
+            "date_input",
+            "time_input",
+            "file_uploader",
+            "camera_input",
+            "color_picker",
+            "metric",
+            "markdown",
+            "title",
+            "header",
+            "subheader",
+            "caption",
+            "code",
+            "text",
+            "latex",
+            "divider",
+            "dataframe",
+            "table",
+            "json",
+            "columns",
+            "tabs",
+            "expander",
+            "container",
+            "empty",
+            "warning",
+            "error",
+            "success",
+            "info",
+            "exception",
+            "progress",
+            "spinner",
+            "balloons",
+            "snow",
         }
 
     def validate_file(self, file_path: str) -> ValidationResult:
@@ -105,14 +140,16 @@ class ComprehensiveValidator:
         result = ValidationResult(file_path=file_path, passed=True)
 
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 code = f.read()
         except Exception as e:
-            result.add_issue(ValidationIssue(
-                severity=Severity.ERROR,
-                category="File Access",
-                message=f"Cannot read file: {e}"
-            ))
+            result.add_issue(
+                ValidationIssue(
+                    severity=Severity.ERROR,
+                    category="File Access",
+                    message=f"Cannot read file: {e}",
+                )
+            )
             return result
 
         # Level 1: Syntax & Structure
@@ -137,13 +174,15 @@ class ComprehensiveValidator:
         try:
             tree = ast.parse(code)
         except SyntaxError as e:
-            result.add_issue(ValidationIssue(
-                severity=Severity.ERROR,
-                category="Syntax Error",
-                message=f"Invalid Python syntax: {e.msg}",
-                line_number=e.lineno,
-                column=e.offset
-            ))
+            result.add_issue(
+                ValidationIssue(
+                    severity=Severity.ERROR,
+                    category="Syntax Error",
+                    message=f"Invalid Python syntax: {e.msg}",
+                    line_number=e.lineno,
+                    column=e.offset,
+                )
+            )
             return
 
         # Check imports
@@ -156,20 +195,24 @@ class ComprehensiveValidator:
                     imports.append(node.module)
 
         # Check for required imports
-        if 'streamlit' not in imports and 'st' not in [n.split('.')[0] for n in imports]:
-            result.add_issue(ValidationIssue(
-                severity=Severity.WARNING,
-                category="Missing Import",
-                message="Streamlit not imported (expected 'import streamlit as st')",
-                fix_suggestion="Add: import streamlit as st",
-                auto_fixable=True
-            ))
+        if "streamlit" not in imports and "st" not in [
+            n.split(".")[0] for n in imports
+        ]:
+            result.add_issue(
+                ValidationIssue(
+                    severity=Severity.WARNING,
+                    category="Missing Import",
+                    message="Streamlit not imported (expected 'import streamlit as st')",
+                    fix_suggestion="Add: import streamlit as st",
+                    auto_fixable=True,
+                )
+            )
 
         # Check indentation consistency
-        lines = code.split('\n')
+        lines = code.split("\n")
         indents = set()
         for line in lines:
-            if line.strip() and line[0] in ' \t':
+            if line.strip() and line[0] in " \t":
                 indent = len(line) - len(line.lstrip())
                 if indent > 0:
                     indents.add(indent)
@@ -178,11 +221,13 @@ class ComprehensiveValidator:
             # Check if inconsistent (not multiples of smallest)
             smallest = min(indents)
             if any(i % smallest != 0 for i in indents):
-                result.add_issue(ValidationIssue(
-                    severity=Severity.WARNING,
-                    category="Indentation",
-                    message="Inconsistent indentation detected"
-                ))
+                result.add_issue(
+                    ValidationIssue(
+                        severity=Severity.WARNING,
+                        category="Indentation",
+                        message="Inconsistent indentation detected",
+                    )
+                )
 
     def _validate_semantics(self, code: str, result: ValidationResult):
         """Level 2: Semantic analysis."""
@@ -193,7 +238,7 @@ class ComprehensiveValidator:
 
         # Track defined names
         defined_names = set(dir(__builtins__))
-        defined_names.update(['st', 'streamlit', 'pd', 'np', 'plt'])  # Common imports
+        defined_names.update(["st", "streamlit", "pd", "np", "plt"])  # Common imports
 
         # Check for undefined variables
         for node in ast.walk(tree):
@@ -206,13 +251,17 @@ class ComprehensiveValidator:
                     if isinstance(target, ast.Name):
                         defined_names.add(target.id)
             elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
-                if node.id not in defined_names and not node.id.startswith('_'):
-                    result.add_issue(ValidationIssue(
-                        severity=Severity.WARNING if self.strict_mode else Severity.INFO,
-                        category="Undefined Variable",
-                        message=f"Variable '{node.id}' may not be defined",
-                        line_number=node.lineno
-                    ))
+                if node.id not in defined_names and not node.id.startswith("_"):
+                    result.add_issue(
+                        ValidationIssue(
+                            severity=(
+                                Severity.WARNING if self.strict_mode else Severity.INFO
+                            ),
+                            category="Undefined Variable",
+                            message=f"Variable '{node.id}' may not be defined",
+                            line_number=node.lineno,
+                        )
+                    )
 
         # Check for unhashable types in caching
         self._check_unhashable_types(tree, result)
@@ -223,17 +272,17 @@ class ComprehensiveValidator:
     def _check_unhashable_types(self, tree: ast.AST, result: ValidationResult):
         """Check for unhashable types that break caching."""
         unhashable_patterns = {
-            'list': ['[]', 'list('],
-            'dict': ['{}', 'dict('],
-            'set': ['set(']
+            "list": ["[]", "list("],
+            "dict": ["{}", "dict("],
+            "set": ["set("],
         }
 
         for node in ast.walk(tree):
             # Check function decorators for @st.cache_data
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 has_cache_decorator = any(
-                    (isinstance(d, ast.Name) and 'cache' in d.id) or
-                    (isinstance(d, ast.Attribute) and 'cache' in d.attr)
+                    (isinstance(d, ast.Name) and "cache" in d.id)
+                    or (isinstance(d, ast.Attribute) and "cache" in d.attr)
                     for d in node.decorator_list
                 )
 
@@ -241,12 +290,14 @@ class ComprehensiveValidator:
                     # Check function arguments
                     for arg in node.args.args:
                         # This is a simplified check - real implementation would need type hints
-                        result.add_issue(ValidationIssue(
-                            severity=Severity.INFO,
-                            category="Caching",
-                            message=f"Function '{node.name}' uses caching - ensure args are hashable",
-                            line_number=node.lineno
-                        ))
+                        result.add_issue(
+                            ValidationIssue(
+                                severity=Severity.INFO,
+                                category="Caching",
+                                message=f"Function '{node.name}' uses caching - ensure args are hashable",
+                                line_number=node.lineno,
+                            )
+                        )
 
     def _check_type_consistency(self, tree: ast.AST, result: ValidationResult):
         """Check for type consistency issues."""
@@ -259,75 +310,89 @@ class ComprehensiveValidator:
     def _validate_streamlit_specific(self, code: str, result: ValidationResult):
         """Level 3: Streamlit-specific validation."""
         # Check session state usage
-        if 'st.session_state' in code:
+        if "st.session_state" in code:
             # Check for proper initialization
-            if 'if ' not in code or 'in st.session_state' not in code:
-                result.add_issue(ValidationIssue(
-                    severity=Severity.WARNING,
-                    category="Session State",
-                    message="Session state used without initialization check",
-                    fix_suggestion="Always check: if 'key' not in st.session_state:",
-                    auto_fixable=False
-                ))
+            if "if " not in code or "in st.session_state" not in code:
+                result.add_issue(
+                    ValidationIssue(
+                        severity=Severity.WARNING,
+                        category="Session State",
+                        message="Session state used without initialization check",
+                        fix_suggestion="Always check: if 'key' not in st.session_state:",
+                        auto_fixable=False,
+                    )
+                )
 
         # Check for theme setup
-        if 'setup_page' not in code and 'st.set_page_config' not in code:
-            result.add_issue(ValidationIssue(
-                severity=Severity.INFO,
-                category="Page Config",
-                message="No page configuration found",
-                fix_suggestion="Add st.set_page_config() or utils.layout.setup_page()"
-            ))
+        if "setup_page" not in code and "st.set_page_config" not in code:
+            result.add_issue(
+                ValidationIssue(
+                    severity=Severity.INFO,
+                    category="Page Config",
+                    message="No page configuration found",
+                    fix_suggestion="Add st.set_page_config() or utils.layout.setup_page()",
+                )
+            )
 
         # Check for component availability
-        lines = code.split('\n')
+        lines = code.split("\n")
         for i, line in enumerate(lines, 1):
             # Check st.write with objects
-            if 'st.write(' in line and '{' in line:
-                result.add_issue(ValidationIssue(
-                    severity=Severity.INFO,
-                    category="Streamlit Component",
-                    message="st.write() with dict - consider st.json() for better formatting",
-                    line_number=i
-                ))
+            if "st.write(" in line and "{" in line:
+                result.add_issue(
+                    ValidationIssue(
+                        severity=Severity.INFO,
+                        category="Streamlit Component",
+                        message="st.write() with dict - consider st.json() for better formatting",
+                        line_number=i,
+                    )
+                )
 
     def _predict_runtime_issues(self, code: str, result: ValidationResult):
         """Level 4: Predict likely runtime issues."""
-        lines = code.split('\n')
+        lines = code.split("\n")
 
         for i, line in enumerate(lines, 1):
             # Check for division without zero check
-            if '/' in line and 'if' not in line and '#' not in line:
+            if "/" in line and "if" not in line and "#" not in line:
                 # Simple heuristic - not perfect but catches common cases
-                if any(var in line for var in ['spacing', 'count', 'total', 'denominator']):
-                    result.add_issue(ValidationIssue(
-                        severity=Severity.WARNING,
-                        category="ZeroDivisionError Risk",
-                        message="Division operation without zero check",
-                        line_number=i,
-                        fix_suggestion="Add: if denominator > 0:"
-                    ))
+                if any(
+                    var in line for var in ["spacing", "count", "total", "denominator"]
+                ):
+                    result.add_issue(
+                        ValidationIssue(
+                            severity=Severity.WARNING,
+                            category="ZeroDivisionError Risk",
+                            message="Division operation without zero check",
+                            line_number=i,
+                            fix_suggestion="Add: if denominator > 0:",
+                        )
+                    )
 
             # Check for list index without bounds check
-            if '[' in line and ']' in line and 'if len(' not in code[:code.find(line)]:
-                if any(word in line for word in ['.append', '.pop', '.remove']):
+            if "[" in line and "]" in line and "if len(" not in code[: code.find(line)]:
+                if any(word in line for word in [".append", ".pop", ".remove"]):
                     pass  # List operations are fine
-                elif re.search(r'\[\d+\]', line):  # Fixed index
-                    result.add_issue(ValidationIssue(
-                        severity=Severity.INFO,
-                        category="IndexError Risk",
-                        message="List indexing without bounds check",
-                        line_number=i
-                    ))
+                elif re.search(r"\[\d+\]", line):  # Fixed index
+                    result.add_issue(
+                        ValidationIssue(
+                            severity=Severity.INFO,
+                            category="IndexError Risk",
+                            message="List indexing without bounds check",
+                            line_number=i,
+                        )
+                    )
 
             # Check for dict access without get()
-            if ("['" in line or '["' in line) and '.get(' not in line:
-                result.add_issue(ValidationIssue(
-                    severity=Severity.INFO,
-                    category="KeyError Risk",
-                    message="Dict access without .get() - consider using .get(key, default)",
-                    line_number=i
-                ))
+            if ("['" in line or '["' in line) and ".get(" not in line:
+                result.add_issue(
+                    ValidationIssue(
+                        severity=Severity.INFO,
+                        category="KeyError Risk",
+                        message="Dict access without .get() - consider using .get(key, default)",
+                        line_number=i,
+                    )
+                )
 
 
 class ValidationRunner:
@@ -336,7 +401,9 @@ class ValidationRunner:
     def __init__(self, strict_mode: bool = False):
         self.validator = ComprehensiveValidator(strict_mode=strict_mode)
 
-    def validate_directory(self, directory: str, pattern: str = "*.py") -> List[ValidationResult]:
+    def validate_directory(
+        self, directory: str, pattern: str = "*.py"
+    ) -> List[ValidationResult]:
         """
         Validate all Python files in a directory.
 
@@ -351,7 +418,7 @@ class ValidationRunner:
         path = Path(directory)
 
         for file_path in path.rglob(pattern):
-            if '__pycache__' in str(file_path):
+            if "__pycache__" in str(file_path):
                 continue
             result = self.validator.validate_file(str(file_path))
             results.append(result)
@@ -388,8 +455,14 @@ class ValidationRunner:
                     if issue.severity == Severity.INFO and not verbose:
                         continue
 
-                    icon = "🔴" if issue.severity == Severity.ERROR else "🟡" if issue.severity == Severity.WARNING else "ℹ️"
-                    location = f"Line {issue.line_number}" if issue.line_number else "File"
+                    icon = (
+                        "🔴"
+                        if issue.severity == Severity.ERROR
+                        else "🟡" if issue.severity == Severity.WARNING else "ℹ️"
+                    )
+                    location = (
+                        f"Line {issue.line_number}" if issue.line_number else "File"
+                    )
                     print(f"{icon} [{issue.category}] {location}: {issue.message}")
 
                     if issue.fix_suggestion:
@@ -425,9 +498,15 @@ def main():
 
     parser = argparse.ArgumentParser(description="Validate Streamlit pages")
     parser.add_argument("path", help="File or directory to validate")
-    parser.add_argument("--strict", action="store_true", help="Strict mode (warnings become errors)")
-    parser.add_argument("--verbose", action="store_true", help="Show all issues including INFO")
-    parser.add_argument("--pattern", default="*.py", help="File pattern (default: *.py)")
+    parser.add_argument(
+        "--strict", action="store_true", help="Strict mode (warnings become errors)"
+    )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Show all issues including INFO"
+    )
+    parser.add_argument(
+        "--pattern", default="*.py", help="File pattern (default: *.py)"
+    )
 
     args = parser.parse_args()
 

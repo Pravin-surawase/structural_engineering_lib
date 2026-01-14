@@ -25,7 +25,7 @@ def add_aria_label(element_key: str, label: str, role: Optional[str] = None) -> 
     aria_html = f'<div data-testid="{element_key}" aria-label="{label}"'
     if role:
         aria_html += f' role="{role}"'
-    aria_html += '></div>'
+    aria_html += "></div>"
     return aria_html
 
 
@@ -76,9 +76,10 @@ def validate_color_contrast(fg_hex: str, bg_hex: str, level: str = "AA") -> dict
     Returns:
         dict with ratio, passes_text, passes_ui, passes_large
     """
+
     def hex_to_rgb(hex_color: str) -> tuple:
-        hex_color = hex_color.lstrip('#')
-        return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+        hex_color = hex_color.lstrip("#")
+        return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
 
     def relative_luminance(rgb: tuple) -> float:
         r, g, b = [x / 255.0 for x in rgb]
@@ -117,9 +118,7 @@ def validate_color_contrast(fg_hex: str, bg_hex: str, level: str = "AA") -> dict
     }
 
 
-def add_keyboard_shortcut(
-    key: str, description: str, scope: str = "global"
-) -> str:
+def add_keyboard_shortcut(key: str, description: str, scope: str = "global") -> str:
     """
     Document a keyboard shortcut and return HTML for display.
 
@@ -135,11 +134,13 @@ def add_keyboard_shortcut(
     if "keyboard_shortcuts" not in st.session_state:
         st.session_state.keyboard_shortcuts = []
 
-    st.session_state.keyboard_shortcuts.append({
-        "key": key,
-        "description": description,
-        "scope": scope,
-    })
+    st.session_state.keyboard_shortcuts.append(
+        {
+            "key": key,
+            "description": description,
+            "scope": scope,
+        }
+    )
 
     # Return formatted HTML
     return f"""

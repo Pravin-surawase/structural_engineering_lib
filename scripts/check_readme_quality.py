@@ -183,7 +183,9 @@ def main() -> int:
             "total": len(results),
             "passing": sum(1 for r in results if r.score >= args.min_score),
             "failing": sum(1 for r in results if r.score < args.min_score),
-            "average_score": sum(r.score for r in results) / len(results) if results else 0,
+            "average_score": (
+                sum(r.score for r in results) / len(results) if results else 0
+            ),
             "results": [
                 {
                     "path": r.path,

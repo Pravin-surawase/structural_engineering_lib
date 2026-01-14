@@ -32,6 +32,7 @@ from components.results import (
 # HELPER FUNCTIONS
 # ============================================================================
 
+
 def create_column_mock():
     """Create a mock that supports context manager (with statement)."""
     col = Mock()
@@ -43,6 +44,7 @@ def create_column_mock():
 # ============================================================================
 # FIXTURES
 # ============================================================================
+
 
 @pytest.fixture
 def safe_result():
@@ -133,6 +135,7 @@ def doubly_reinforced_result():
 # TEST 1: display_design_status()
 # ============================================================================
 
+
 @patch("streamlit.success")
 def test_design_status_safe_shows_success(mock_success, safe_result):
     """Safe design shows success banner."""
@@ -172,13 +175,18 @@ def test_design_status_missing_key_shows_warning(mock_info):
 # TEST 2: display_reinforcement_summary()
 # ============================================================================
 
+
 @patch("streamlit.markdown")
 @patch("streamlit.columns")
 def test_reinforcement_summary_singly_reinforced(
     mock_columns, mock_markdown, safe_result
 ):
     """Singly reinforced section displays correctly."""
-    mock_columns.return_value = [create_column_mock(), create_column_mock(), create_column_mock()]
+    mock_columns.return_value = [
+        create_column_mock(),
+        create_column_mock(),
+        create_column_mock(),
+    ]
     display_reinforcement_summary(safe_result)
     # Should render main steel, shear steel, but not compression steel
     assert mock_markdown.call_count >= 3
@@ -191,7 +199,11 @@ def test_reinforcement_summary_doubly_reinforced(
     mock_columns, mock_warning, mock_markdown, doubly_reinforced_result
 ):
     """Doubly reinforced section shows compression steel."""
-    mock_columns.return_value = [create_column_mock(), create_column_mock(), create_column_mock()]
+    mock_columns.return_value = [
+        create_column_mock(),
+        create_column_mock(),
+        create_column_mock(),
+    ]
     display_reinforcement_summary(doubly_reinforced_result)
     # Should show warning about doubly reinforced
     mock_warning.assert_called()
@@ -204,7 +216,11 @@ def test_reinforcement_summary_side_face_steel(
     mock_columns, mock_caption, mock_markdown, doubly_reinforced_result
 ):
     """Side face steel shown when D > 450mm."""
-    mock_columns.return_value = [create_column_mock(), create_column_mock(), create_column_mock()]
+    mock_columns.return_value = [
+        create_column_mock(),
+        create_column_mock(),
+        create_column_mock(),
+    ]
     display_reinforcement_summary(doubly_reinforced_result)
     # Check that side face section rendered
     markdown_calls = [str(call) for call in mock_markdown.call_args_list]
@@ -217,7 +233,11 @@ def test_reinforcement_summary_multi_layer_indication(
     mock_columns, mock_info, doubly_reinforced_result
 ):
     """Multi-layer bars indicated."""
-    mock_columns.return_value = [create_column_mock(), create_column_mock(), create_column_mock()]
+    mock_columns.return_value = [
+        create_column_mock(),
+        create_column_mock(),
+        create_column_mock(),
+    ]
     display_reinforcement_summary(doubly_reinforced_result)
     mock_info.assert_called()
     args = str(mock_info.call_args[0][0])
@@ -227,6 +247,7 @@ def test_reinforcement_summary_multi_layer_indication(
 # ============================================================================
 # TEST 3: display_flexure_result()
 # ============================================================================
+
 
 @patch("streamlit.markdown")
 @patch("streamlit.caption")
@@ -244,9 +265,7 @@ def test_flexure_result_displays_steel_area(
 
 @patch("streamlit.markdown")
 @patch("streamlit.columns")
-def test_flexure_result_bar_configuration(
-    mock_columns, mock_markdown, safe_result
-):
+def test_flexure_result_bar_configuration(mock_columns, mock_markdown, safe_result):
     """Bar configuration (num × dia) displayed."""
     mock_columns.return_value = [create_column_mock(), create_column_mock()]
     display_flexure_result(safe_result["flexure"])
@@ -268,6 +287,7 @@ def test_flexure_result_compact_mode(mock_columns, mock_markdown, safe_result):
 # ============================================================================
 # TEST 4: display_shear_result()
 # ============================================================================
+
 
 @patch("streamlit.markdown")
 @patch("streamlit.caption")
@@ -299,6 +319,7 @@ def test_shear_result_stress_values(mock_columns, mock_markdown, safe_result):
 # ============================================================================
 # TEST 5: display_summary_metrics()
 # ============================================================================
+
 
 @patch("streamlit.metric")
 @patch("streamlit.columns")
@@ -333,6 +354,7 @@ def test_summary_metrics_custom_list(mock_columns, mock_metric, safe_result):
 # TEST 6: display_utilization_meters()
 # ============================================================================
 
+
 @patch("streamlit.progress")
 @patch("streamlit.markdown")
 def test_utilization_meters_progress_bars(mock_markdown, mock_progress, safe_result):
@@ -364,6 +386,7 @@ def test_utilization_meters_zero_values(mock_progress):
 # TEST 7: display_material_properties()
 # ============================================================================
 
+
 @patch("streamlit.markdown")
 @patch("streamlit.columns")
 def test_material_properties_standard_grades(mock_columns, mock_markdown):
@@ -393,6 +416,7 @@ def test_material_properties_compact_mode(mock_columns, mock_markdown):
 # TEST 8: display_compliance_checks()
 # ============================================================================
 
+
 @patch("streamlit.markdown")
 def test_compliance_checks_all_listed(mock_markdown, safe_result):
     """All checks listed."""
@@ -415,6 +439,7 @@ def test_compliance_checks_pass_fail_icons(mock_markdown, unsafe_result):
 # EDGE CASE TESTS
 # ============================================================================
 
+
 def test_all_components_handle_empty_dict():
     """All components handle empty dict without crashing."""
     empty = {}
@@ -424,7 +449,11 @@ def test_all_components_handle_empty_dict():
         display_design_status(empty)
 
     with patch("streamlit.columns") as mock_cols:
-        mock_cols.return_value = [create_column_mock(), create_column_mock(), create_column_mock()]
+        mock_cols.return_value = [
+            create_column_mock(),
+            create_column_mock(),
+            create_column_mock(),
+        ]
         with patch("streamlit.markdown"):
             display_reinforcement_summary(empty)
             display_summary_metrics(empty)
@@ -453,7 +482,11 @@ def test_all_components_handle_none_values():
         display_design_status(result)
 
     with patch("streamlit.columns") as mock_cols:
-        mock_cols.return_value = [create_column_mock(), create_column_mock(), create_column_mock()]
+        mock_cols.return_value = [
+            create_column_mock(),
+            create_column_mock(),
+            create_column_mock(),
+        ]
         with patch("streamlit.markdown"):
             display_reinforcement_summary(result)
             display_summary_metrics(result)
@@ -463,6 +496,7 @@ def test_all_components_handle_none_values():
 # INTEGRATION TESTS
 # ============================================================================
 
+
 @patch("streamlit.success")
 @patch("streamlit.markdown")
 @patch("streamlit.columns")
@@ -470,6 +504,7 @@ def test_full_result_display_pipeline(
     mock_columns, mock_markdown, mock_success, safe_result
 ):
     """Full result display pipeline works."""
+
     # Mock columns to return proper column mocks
     def columns_side_effect(n):
         return [create_column_mock() for _ in range(n)]

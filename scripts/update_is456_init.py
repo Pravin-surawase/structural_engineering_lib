@@ -59,10 +59,9 @@ def generate_init_content(migrated_modules: list[str]) -> str:
     """Generate the new __init__.py content."""
 
     # Build module import lines
-    module_imports = "\n".join([
-        f"from structural_lib.codes.is456 import {m}"
-        for m in migrated_modules
-    ])
+    module_imports = "\n".join(
+        [f"from structural_lib.codes.is456 import {m}" for m in migrated_modules]
+    )
 
     # Build __all__ list
     all_items = ['    "IS456Code",']

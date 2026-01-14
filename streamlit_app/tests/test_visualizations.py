@@ -34,11 +34,11 @@ class TestBeamDiagram:
         """Test basic beam diagram generation"""
         # Realistic rebar positions: 3 bars at bottom (tension), 2 bars at top (compression)
         rebar_positions = [
-            (75, 50),   # Bottom left
+            (75, 50),  # Bottom left
             (150, 50),  # Bottom center
             (225, 50),  # Bottom right
             (75, 450),  # Top left
-            (225, 450)  # Top right
+            (225, 450),  # Top right
         ]
 
         fig = create_beam_diagram(
@@ -49,7 +49,7 @@ class TestBeamDiagram:
             xu=150.0,  # Neutral axis at 150mm from top
             bar_dia=16.0,
             cover=30.0,
-            show_dimensions=True
+            show_dimensions=True,
         )
 
         assert isinstance(fig, go.Figure)
@@ -59,11 +59,7 @@ class TestBeamDiagram:
     def test_beam_diagram_without_compression_steel(self):
         """Test beam diagram with no compression steel"""
         # Only tension steel (bottom bars)
-        rebar_positions = [
-            (75, 50),
-            (150, 50),
-            (225, 50)
-        ]
+        rebar_positions = [(75, 50), (150, 50), (225, 50)]
 
         fig = create_beam_diagram(
             b_mm=300.0,
@@ -71,7 +67,7 @@ class TestBeamDiagram:
             d_mm=450.0,
             rebar_positions=rebar_positions,
             xu=150.0,
-            bar_dia=16.0
+            bar_dia=16.0,
         )
 
         assert isinstance(fig, go.Figure)
@@ -80,14 +76,16 @@ class TestBeamDiagram:
     def test_beam_diagram_extreme_dimensions(self):
         """Test beam diagram with extreme dimensions"""
         # Very wide shallow beam
-        rebar_positions1 = [(i * 200, 50) for i in range(1, 5)]  # 4 bars spread across width
+        rebar_positions1 = [
+            (i * 200, 50) for i in range(1, 5)
+        ]  # 4 bars spread across width
         fig1 = create_beam_diagram(
             b_mm=1000.0,
             D_mm=300.0,
             d_mm=250.0,
             rebar_positions=rebar_positions1,
             xu=100.0,
-            bar_dia=20.0
+            bar_dia=20.0,
         )
         assert isinstance(fig1, go.Figure)
 
@@ -99,7 +97,7 @@ class TestBeamDiagram:
             d_mm=750.0,
             rebar_positions=rebar_positions2,
             xu=300.0,
-            bar_dia=25.0
+            bar_dia=25.0,
         )
         assert isinstance(fig2, go.Figure)
 
@@ -118,7 +116,7 @@ class TestBeamDiagram:
             d_mm=450.0,
             rebar_positions=rebar_positions,
             xu=150.0,
-            bar_dia=16.0
+            bar_dia=16.0,
         )
         assert isinstance(fig1, go.Figure)
 
@@ -129,7 +127,7 @@ class TestBeamDiagram:
             d_mm=550.0,
             rebar_positions=rebar_positions,
             xu=150.0,
-            bar_dia=16.0
+            bar_dia=16.0,
         )
         assert isinstance(fig2, go.Figure)
 
@@ -143,7 +141,7 @@ class TestBeamDiagram:
             d_mm=450.0,
             rebar_positions=rebar_positions,
             xu=180.0,  # Neutral axis depth from top
-            bar_dia=16.0
+            bar_dia=16.0,
         )
 
         assert isinstance(fig, go.Figure)
@@ -157,9 +155,24 @@ class TestCostComparison:
     def test_basic_cost_comparison(self):
         """Test basic cost comparison chart"""
         alternatives = [
-            {"bar_arrangement": "3-16mm", "cost_per_meter": 87.45, "is_optimal": True, "area_provided": 603},
-            {"bar_arrangement": "2-20mm", "cost_per_meter": 92.30, "is_optimal": False, "area_provided": 628},
-            {"bar_arrangement": "4-14mm", "cost_per_meter": 95.00, "is_optimal": False, "area_provided": 616},
+            {
+                "bar_arrangement": "3-16mm",
+                "cost_per_meter": 87.45,
+                "is_optimal": True,
+                "area_provided": 603,
+            },
+            {
+                "bar_arrangement": "2-20mm",
+                "cost_per_meter": 92.30,
+                "is_optimal": False,
+                "area_provided": 628,
+            },
+            {
+                "bar_arrangement": "4-14mm",
+                "cost_per_meter": 95.00,
+                "is_optimal": False,
+                "area_provided": 616,
+            },
         ]
 
         fig = create_cost_comparison(alternatives)
@@ -171,8 +184,18 @@ class TestCostComparison:
     def test_cost_comparison_with_breakdown(self):
         """Test cost comparison with different arrangements"""
         alternatives = [
-            {"bar_arrangement": "3-16mm", "cost_per_meter": 87.45, "is_optimal": True, "area_provided": 603},
-            {"bar_arrangement": "2-20mm", "cost_per_meter": 92.30, "is_optimal": False, "area_provided": 628},
+            {
+                "bar_arrangement": "3-16mm",
+                "cost_per_meter": 87.45,
+                "is_optimal": True,
+                "area_provided": 603,
+            },
+            {
+                "bar_arrangement": "2-20mm",
+                "cost_per_meter": 92.30,
+                "is_optimal": False,
+                "area_provided": 628,
+            },
         ]
 
         fig = create_cost_comparison(alternatives)
@@ -192,7 +215,12 @@ class TestCostComparison:
     def test_cost_comparison_single_option(self):
         """Test cost comparison with single option"""
         alternatives = [
-            {"bar_arrangement": "3-16mm", "cost_per_meter": 87.45, "is_optimal": True, "area_provided": 603},
+            {
+                "bar_arrangement": "3-16mm",
+                "cost_per_meter": 87.45,
+                "is_optimal": True,
+                "area_provided": 603,
+            },
         ]
 
         fig = create_cost_comparison(alternatives)
@@ -244,13 +272,11 @@ class TestUtilizationGauge:
 
     def test_gauge_with_title(self):
         """Test gauge with custom title"""
-        fig = create_utilization_gauge(
-            value=0.85, label="Flexure Utilization"
-        )
+        fig = create_utilization_gauge(value=0.85, label="Flexure Utilization")
 
         assert isinstance(fig, go.Figure)
         # The label/title is in the indicator's title, not layout title
-        assert "Flexure" in str(fig.data[0]['title']['text'])
+        assert "Flexure" in str(fig.data[0]["title"]["text"])
 
 
 class TestSensitivityTornado:
@@ -432,7 +458,7 @@ class TestVisualizationPerformance:
                 d_mm=450.0,
                 rebar_positions=rebar_positions,
                 xu=150.0,
-                bar_dia=16.0
+                bar_dia=16.0,
             )
 
         result = benchmark(create)
@@ -441,7 +467,12 @@ class TestVisualizationPerformance:
     def test_cost_comparison_performance(self, benchmark):
         """Benchmark cost comparison generation"""
         alternatives = [
-            {"bar_arrangement": f"Option {i}", "cost_per_meter": 85.0 + i * 5, "is_optimal": i == 0, "area_provided": 600 + i * 10}
+            {
+                "bar_arrangement": f"Option {i}",
+                "cost_per_meter": 85.0 + i * 5,
+                "is_optimal": i == 0,
+                "area_provided": 600 + i * 10,
+            }
             for i in range(5)
         ]
 
@@ -454,7 +485,11 @@ class TestVisualizationPerformance:
     def test_large_sensitivity_data(self):
         """Test tornado chart with large dataset"""
         sensitivity_data = [
-            {"name": f"param_{i}", "low_value": 95.0 + i * 0.1, "high_value": 105.0 - i * 0.1}
+            {
+                "name": f"param_{i}",
+                "low_value": 95.0 + i * 0.1,
+                "high_value": 105.0 - i * 0.1,
+            }
             for i in range(50)
         ]
         baseline_value = 100.0
@@ -478,13 +513,18 @@ class TestEdgeCases:
             d_mm=450.0,
             rebar_positions=rebar_positions,
             xu=150.0,
-            bar_dia=8.0  # Small diameter
+            bar_dia=8.0,  # Small diameter
         )
         assert isinstance(fig1, go.Figure)
 
         # Cost comparison with zero costs
         alternatives = [
-            {"bar_arrangement": "Free Option", "cost_per_meter": 0, "is_optimal": True, "area_provided": 0},
+            {
+                "bar_arrangement": "Free Option",
+                "cost_per_meter": 0,
+                "is_optimal": True,
+                "area_provided": 0,
+            },
         ]
         fig2 = create_cost_comparison(alternatives)
         assert isinstance(fig2, go.Figure)
@@ -492,20 +532,27 @@ class TestEdgeCases:
     def test_very_large_values(self):
         """Test visualizations with very large values"""
         # Large beam dimensions
-        rebar_positions = [(i * 1000, 500) for i in range(1, 5)]  # Spread across large beam
+        rebar_positions = [
+            (i * 1000, 500) for i in range(1, 5)
+        ]  # Spread across large beam
         fig1 = create_beam_diagram(
             b_mm=5000.0,
             D_mm=10000.0,
             d_mm=9500.0,
             rebar_positions=rebar_positions,
             xu=3000.0,
-            bar_dia=40.0
+            bar_dia=40.0,
         )
         assert isinstance(fig1, go.Figure)
 
         # High costs
         alternatives = [
-            {"bar_arrangement": "Expensive", "cost_per_meter": 10_000, "is_optimal": False, "area_provided": 50000},
+            {
+                "bar_arrangement": "Expensive",
+                "cost_per_meter": 10_000,
+                "is_optimal": False,
+                "area_provided": 50000,
+            },
         ]
         fig2 = create_cost_comparison(alternatives)
         assert isinstance(fig2, go.Figure)
@@ -513,8 +560,18 @@ class TestEdgeCases:
     def test_unicode_labels(self):
         """Test visualizations with unicode characters"""
         alternatives = [
-            {"bar_arrangement": "विकल्प A", "cost_per_meter": 87.45, "is_optimal": True, "area_provided": 603},
-            {"bar_arrangement": "選項 B", "cost_per_meter": 92.30, "is_optimal": False, "area_provided": 628},
+            {
+                "bar_arrangement": "विकल्प A",
+                "cost_per_meter": 87.45,
+                "is_optimal": True,
+                "area_provided": 603,
+            },
+            {
+                "bar_arrangement": "選項 B",
+                "cost_per_meter": 92.30,
+                "is_optimal": False,
+                "area_provided": 628,
+            },
         ]
 
         fig = create_cost_comparison(alternatives)
@@ -530,7 +587,7 @@ class TestEdgeCases:
             d_mm=450.0,
             rebar_positions=rebar_positions,
             xu=150.0,
-            bar_dia=16.0
+            bar_dia=16.0,
             # cover and show_dimensions are optional
         )
         assert isinstance(fig1, go.Figure)

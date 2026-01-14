@@ -23,24 +23,71 @@ from typing import Tuple, Dict, Optional
 
 # Material property databases (IS 456:2000)
 CONCRETE_GRADES = {
-    "M20": {"fck": 20, "ec": 22360, "cost_factor": 1.0, "description": "General construction"},
-    "M25": {"fck": 25, "ec": 25000, "cost_factor": 1.15, "description": "Standard beams/columns"},
+    "M20": {
+        "fck": 20,
+        "ec": 22360,
+        "cost_factor": 1.0,
+        "description": "General construction",
+    },
+    "M25": {
+        "fck": 25,
+        "ec": 25000,
+        "cost_factor": 1.15,
+        "description": "Standard beams/columns",
+    },
     "M30": {"fck": 30, "ec": 27386, "cost_factor": 1.30, "description": "Heavy loads"},
-    "M35": {"fck": 35, "ec": 29580, "cost_factor": 1.45, "description": "High-rise structures"},
-    "M40": {"fck": 40, "ec": 31623, "cost_factor": 1.60, "description": "Prestressed concrete"},
+    "M35": {
+        "fck": 35,
+        "ec": 29580,
+        "cost_factor": 1.45,
+        "description": "High-rise structures",
+    },
+    "M40": {
+        "fck": 40,
+        "ec": 31623,
+        "cost_factor": 1.60,
+        "description": "Prestressed concrete",
+    },
 }
 
 STEEL_GRADES = {
-    "Fe415": {"fy": 415, "es": 200000, "cost_factor": 1.0, "description": "Standard reinforcement"},
-    "Fe500": {"fy": 500, "es": 200000, "cost_factor": 1.12, "description": "High-strength (common)"},
-    "Fe550": {"fy": 550, "es": 200000, "cost_factor": 1.25, "description": "High-strength (special)"},
+    "Fe415": {
+        "fy": 415,
+        "es": 200000,
+        "cost_factor": 1.0,
+        "description": "Standard reinforcement",
+    },
+    "Fe500": {
+        "fy": 500,
+        "es": 200000,
+        "cost_factor": 1.12,
+        "description": "High-strength (common)",
+    },
+    "Fe550": {
+        "fy": 550,
+        "es": 200000,
+        "cost_factor": 1.25,
+        "description": "High-strength (special)",
+    },
 }
 
 EXPOSURE_CONDITIONS = {
-    "Mild": {"cover": 20, "max_crack_width": 0.3, "description": "Protected from weather"},
+    "Mild": {
+        "cover": 20,
+        "max_crack_width": 0.3,
+        "description": "Protected from weather",
+    },
     "Moderate": {"cover": 30, "max_crack_width": 0.3, "description": "Normal exposure"},
-    "Severe": {"cover": 45, "max_crack_width": 0.2, "description": "Coastal, industrial"},
-    "Very Severe": {"cover": 50, "max_crack_width": 0.2, "description": "Marine, chemical"},
+    "Severe": {
+        "cover": 45,
+        "max_crack_width": 0.2,
+        "description": "Coastal, industrial",
+    },
+    "Very Severe": {
+        "cover": 50,
+        "max_crack_width": 0.2,
+        "description": "Marine, chemical",
+    },
     "Extreme": {"cover": 75, "max_crack_width": 0.1, "description": "Severe marine"},
 }
 
@@ -61,7 +108,7 @@ def dimension_input(
     help_text: Optional[str] = None,
     key: Optional[str] = None,
     step: float = 1.0,
-    show_validation: bool = True
+    show_validation: bool = True,
 ) -> Tuple[float, bool]:
     """
     Dimension input with real-time validation and visual feedback.
@@ -102,7 +149,7 @@ def dimension_input(
         value=default_value,
         step=step,
         help=full_help,
-        key=key
+        key=key,
     )
 
     # Validation
@@ -117,9 +164,13 @@ def dimension_input(
         if not is_valid:
             st.error(f"❌ {label} must be between {min_value} and {max_value} {unit}")
         elif value < warn_low:
-            st.warning(f"⚠️ {label} is very small. Typical minimum: {warn_low:.0f} {unit}")
+            st.warning(
+                f"⚠️ {label} is very small. Typical minimum: {warn_low:.0f} {unit}"
+            )
         elif value > warn_high:
-            st.warning(f"⚠️ {label} is very large. Typical maximum: {warn_high:.0f} {unit}")
+            st.warning(
+                f"⚠️ {label} is very large. Typical maximum: {warn_high:.0f} {unit}"
+            )
         else:
             st.success(f"✅ {label} is within typical range")
 
@@ -130,7 +181,7 @@ def material_selector(
     material_type: str,
     default_grade: Optional[str] = None,
     key: Optional[str] = None,
-    show_properties: bool = True
+    show_properties: bool = True,
 ) -> Dict[str, any]:
     """
     Material grade selector with properties per IS 456:2000.
@@ -159,7 +210,9 @@ def material_selector(
 
     if material_type == "concrete":
         grades_db = CONCRETE_GRADES
-        default_idx = list(grades_db.keys()).index(default_grade) if default_grade else 1
+        default_idx = (
+            list(grades_db.keys()).index(default_grade) if default_grade else 1
+        )
 
         # Selectbox - show grade code only (description shown as caption)
         grades = list(grades_db.keys())
@@ -168,7 +221,7 @@ def material_selector(
             options=grades,
             index=default_idx,
             key=key,
-            help="IS 456 Table 2 - Characteristic strength"
+            help="IS 456 Table 2 - Characteristic strength",
         )
 
         props = grades_db[selected_grade]
@@ -180,10 +233,10 @@ def material_selector(
         result = {
             "grade": selected_grade,
             "fck": props["fck"],  # N/mm²
-            "ec": props["ec"],    # N/mm² (Modulus)
+            "ec": props["ec"],  # N/mm² (Modulus)
             "cost_factor": props["cost_factor"],
             "description": props["description"],
-            "material_type": "concrete"
+            "material_type": "concrete",
         }
 
         # Show properties
@@ -191,11 +244,15 @@ def material_selector(
             col1, col2, col3 = st.columns(3)
             col1.metric("fck", f"{props['fck']} N/mm²", help="Characteristic strength")
             col2.metric("Ec", f"{props['ec']:.0f} N/mm²", help="Modulus of elasticity")
-            col3.metric("Cost Factor", f"{props['cost_factor']:.2f}x", help="Relative to M20")
+            col3.metric(
+                "Cost Factor", f"{props['cost_factor']:.2f}x", help="Relative to M20"
+            )
 
     else:  # steel
         grades_db = STEEL_GRADES
-        default_idx = list(grades_db.keys()).index(default_grade) if default_grade else 1
+        default_idx = (
+            list(grades_db.keys()).index(default_grade) if default_grade else 1
+        )
 
         # Selectbox - show grade code only (description shown as caption)
         grades = list(grades_db.keys())
@@ -204,7 +261,7 @@ def material_selector(
             options=grades,
             index=default_idx,
             key=key,
-            help="IS 456 Cl. 5.6 - Yield strength"
+            help="IS 456 Cl. 5.6 - Yield strength",
         )
 
         props = grades_db[selected_grade]
@@ -215,11 +272,11 @@ def material_selector(
         # Build result
         result = {
             "grade": selected_grade,
-            "fy": props["fy"],    # N/mm²
-            "es": props["es"],    # N/mm²
+            "fy": props["fy"],  # N/mm²
+            "es": props["es"],  # N/mm²
             "cost_factor": props["cost_factor"],
             "description": props["description"],
-            "material_type": "steel"
+            "material_type": "steel",
         }
 
         # Show properties
@@ -227,7 +284,9 @@ def material_selector(
             col1, col2, col3 = st.columns(3)
             col1.metric("fy", f"{props['fy']} N/mm²", help="Yield strength")
             col2.metric("Es", f"{props['es']:.0f} N/mm²", help="Modulus of elasticity")
-            col3.metric("Cost Factor", f"{props['cost_factor']:.2f}x", help="Relative to Fe415")
+            col3.metric(
+                "Cost Factor", f"{props['cost_factor']:.2f}x", help="Relative to Fe415"
+            )
 
     return result
 
@@ -235,7 +294,7 @@ def material_selector(
 def load_input(
     default_moment: float = 100.0,
     default_shear: float = 50.0,
-    key_prefix: Optional[str] = None
+    key_prefix: Optional[str] = None,
 ) -> Dict[str, float]:
     """
     Load input for moment and shear forces.
@@ -268,7 +327,7 @@ def load_input(
             unit="kNm",
             help_text="Factored design moment (1.5 × service load)",
             key=f"{key_prefix}_moment" if key_prefix else None,
-            show_validation=False
+            show_validation=False,
         )
 
     with col2:
@@ -280,7 +339,7 @@ def load_input(
             unit="kN",
             help_text="Factored design shear (1.5 × service load)",
             key=f"{key_prefix}_shear" if key_prefix else None,
-            show_validation=False
+            show_validation=False,
         )
 
     # Check moment-shear ratio (typical M/V = span/2 for simply supported)
@@ -295,9 +354,7 @@ def load_input(
 
 
 def exposure_selector(
-    default: str = "Moderate",
-    key: Optional[str] = None,
-    show_requirements: bool = True
+    default: str = "Moderate", key: Optional[str] = None, show_requirements: bool = True
 ) -> Dict[str, any]:
     """
     Exposure condition selector (IS 456 Table 16).
@@ -328,7 +385,7 @@ def exposure_selector(
         options=exposures,
         index=default_idx,
         key=key,
-        help="IS 456 Table 16 - Environmental classification"
+        help="IS 456 Table 16 - Environmental classification",
     )
 
     props = EXPOSURE_CONDITIONS[selected_exposure]
@@ -341,21 +398,24 @@ def exposure_selector(
         "exposure": selected_exposure,
         "cover": props["cover"],  # mm
         "max_crack_width": props["max_crack_width"],  # mm
-        "description": props["description"]
+        "description": props["description"],
     }
 
     # Show requirements
     if show_requirements:
         col1, col2 = st.columns(2)
         col1.metric("Min Cover", f"{props['cover']} mm", help="IS 456 Cl. 26.4")
-        col2.metric("Max Crack Width", f"{props['max_crack_width']} mm", help="IS 456 Cl. 35.3.2")
+        col2.metric(
+            "Max Crack Width",
+            f"{props['max_crack_width']} mm",
+            help="IS 456 Cl. 35.3.2",
+        )
 
     return result
 
 
 def support_condition_selector(
-    default: str = "Simply Supported",
-    key: Optional[str] = None
+    default: str = "Simply Supported", key: Optional[str] = None
 ) -> Dict[str, any]:
     """
     Support condition selector for structural analysis.
@@ -381,7 +441,7 @@ def support_condition_selector(
         list(SUPPORT_CONDITIONS.keys()),
         index=list(SUPPORT_CONDITIONS.keys()).index(default),
         key=key,
-        help="Structural support configuration"
+        help="Structural support configuration",
     )
 
     props = SUPPORT_CONDITIONS[selected]
@@ -389,5 +449,5 @@ def support_condition_selector(
     return {
         "condition": selected,
         "end_condition": props["end_condition"],
-        "moment_factor": props["moment_factor"]
+        "moment_factor": props["moment_factor"],
     }

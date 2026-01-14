@@ -312,7 +312,10 @@ def create_beam_diagram(
         stirrup_inner_height = D_mm - 2 * cover
 
         # Show 2 stirrups at different positions
-        stirrup_positions_x = [cover + stirrup_inner_width * 0.25, cover + stirrup_inner_width * 0.75]
+        stirrup_positions_x = [
+            cover + stirrup_inner_width * 0.25,
+            cover + stirrup_inner_width * 0.75,
+        ]
 
         for stirrup_x_offset in stirrup_positions_x:
             # Stirrup outline (simplified rectangular shape)
@@ -324,7 +327,9 @@ def create_beam_diagram(
                     line=dict(color=CB_SAFE_BLUE, width=2, dash="dash"),
                     name=f"Stirrups ({stirrup_dia}mm @ {stirrup_spacing:.0f}mm)",
                     hovertemplate=f"Stirrups<br>{stirrup_dia}mm dia<br>@ {stirrup_spacing:.0f}mm c/c<extra></extra>",
-                    showlegend=(stirrup_x_offset == stirrup_positions_x[0]),  # Show legend only once
+                    showlegend=(
+                        stirrup_x_offset == stirrup_positions_x[0]
+                    ),  # Show legend only once
                 )
             )
 

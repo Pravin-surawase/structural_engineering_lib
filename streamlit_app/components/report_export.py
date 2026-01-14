@@ -76,7 +76,9 @@ def _create_mock_library_result(result: DesignResult) -> Any:
             self.is_ok = r.status == "PASS"
 
         def summary(self) -> str:
-            return f"Design {'passes' if self.is_ok else 'fails'} all IS 456 requirements."
+            return (
+                f"Design {'passes' if self.is_ok else 'fails'} all IS 456 requirements."
+            )
 
     return MockResult(result)
 

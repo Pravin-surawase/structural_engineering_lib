@@ -63,7 +63,7 @@ def find_redirect_stubs(docs_dir: Path) -> dict[Path, Path]:
 
         if is_redirect:
             # Extract target link from markdown link syntax
-            link_match = re.search(r'\[([^\]]*)\]\(([^)]+)\)', content)
+            link_match = re.search(r"\[([^\]]*)\]\(([^)]+)\)", content)
             if link_match:
                 target_ref = link_match.group(2).strip()
                 # Resolve target path relative to stub location
@@ -86,7 +86,9 @@ def find_references(docs_dir: Path, stub_path: Path) -> list[tuple[Path, str, st
     stub_name = stub_path.name
 
     # Pattern to match markdown links containing the stub filename
-    link_pattern = re.compile(r'\[([^\]]*)\]\(([^)]*' + re.escape(stub_name) + r'[^)]*)\)')
+    link_pattern = re.compile(
+        r"\[([^\]]*)\]\(([^)]*" + re.escape(stub_name) + r"[^)]*)\)"
+    )
 
     for md_file in docs_dir.rglob("*.md"):
         if md_file == stub_path:
@@ -165,7 +167,7 @@ def update_references(
                 new_path += anchor
 
             # Build new link (preserve link text)
-            link_text_match = re.match(r'\[([^\]]*)\]', old_link)
+            link_text_match = re.match(r"\[([^\]]*)\]", old_link)
             link_text = link_text_match.group(1) if link_text_match else ""
             new_link = f"[{link_text}]({new_path})"
 

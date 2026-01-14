@@ -33,8 +33,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from structural_lib import flexure
-from structural_lib.costing import CostBreakdown, CostProfile, calculate_beam_cost
-from structural_lib.codes.is456.traceability import get_clause_refs
+from structural_lib.costing import CostProfile, calculate_beam_cost
 
 
 @dataclass
@@ -224,8 +223,8 @@ def _dominates(a: list[float], b: list[float]) -> bool:
     Returns:
         True if a dominates b (a <= b in all objectives, a < b in at least one)
     """
-    all_less_equal = all(ai <= bi for ai, bi in zip(a, b))
-    any_less = any(ai < bi for ai, bi in zip(a, b))
+    all_less_equal = all(ai <= bi for ai, bi in zip(a, b, strict=True))
+    any_less = any(ai < bi for ai, bi in zip(a, b, strict=True))
     return all_less_equal and any_less
 
 
@@ -371,7 +370,7 @@ def _get_governing_clauses(
     Returns:
         List of governing clause references with descriptions
     """
-    clauses = []
+    clauses: list[str] = []
 
     if not design:
         return clauses
@@ -466,7 +465,7 @@ def optimize_pareto_front(
     grade_options = [(25, 500), (30, 500), (25, 415), (30, 415)]
 
     # Steel density for weight calculation
-    STEEL_DENSITY = 7850.0  # kg/m³
+    steel_density = 7850.0  # kg/m³
 
     candidates: list[ParetoCandidate] = []
 
@@ -511,7 +510,7 @@ def optimize_pareto_front(
 
                 # Calculate steel weight (kg)
                 steel_vol_m3 = ast_provided * span_mm / 1e9  # mm² * mm / 1e9 = m³
-                steel_weight_kg = steel_vol_m3 * STEEL_DENSITY
+                steel_weight_kg = steel_vol_m3 * steel_density
 
                 # Calculate utilization
                 utilization = mu_knm / mu_lim if mu_lim > 0 else 0.0

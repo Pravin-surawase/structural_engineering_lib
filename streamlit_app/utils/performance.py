@@ -282,9 +282,7 @@ def batch_render(
         if show_progress and total > batch_size:
             progress = min((i + batch_size) / total, 1.0)
             progress_bar.progress(progress)
-            status_text.text(
-                f"Rendering: {min(i + batch_size, total)}/{total} items"
-            )
+            status_text.text(f"Rendering: {min(i + batch_size, total)}/{total} items")
 
     # Clear progress
     if show_progress and total > batch_size:

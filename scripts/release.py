@@ -57,14 +57,22 @@ def print_checklist(version: str):
     print("  [ ] 1. Edit CHANGELOG.md — Add release notes")
     print("  [ ] 2. Edit docs/releases.md — Add release entry")
     print("  [ ] 3. Review changes: git diff")
-    print("  [ ] 4. Commit: git add -A && git commit -m 'chore: release v{}'".format(version))
+    print(
+        "  [ ] 4. Commit: git add -A && git commit -m 'chore: release v{}'".format(
+            version
+        )
+    )
     print("  [ ] 5. Create PR and merge to main")
     print("  [ ] 6. Tag: git tag v{} && git push origin v{}".format(version, version))
     print("  [ ] 7. GitHub Release will trigger PyPI publish")
     print()
     print("Verification:")
     print("  [ ] Check PyPI: pip install structural-lib-is456=={}".format(version))
-    print("  [ ] Clean-venv verify: python scripts/verify_release.py --version {} --source pypi".format(version))
+    print(
+        "  [ ] Clean-venv verify: python scripts/verify_release.py --version {} --source pypi".format(
+            version
+        )
+    )
     print("  [ ] Check GitHub Release page")
     print()
 
@@ -81,9 +89,13 @@ def open_file_in_editor(filepath: Path):
 def main():
     parser = argparse.ArgumentParser(description="Release helper script")
     parser.add_argument("version", nargs="?", help="New version (e.g., 0.9.7)")
-    parser.add_argument("--dry-run", action="store_true", help="Preview without making changes")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Preview without making changes"
+    )
     parser.add_argument("--checklist", action="store_true", help="Show checklist only")
-    parser.add_argument("--no-open", action="store_true", help="Don't open files in editor")
+    parser.add_argument(
+        "--no-open", action="store_true", help="Don't open files in editor"
+    )
 
     args = parser.parse_args()
 
@@ -92,7 +104,8 @@ def main():
             # Read current version
             result = subprocess.run(
                 [sys.executable, str(BUMP_SCRIPT), "--current"],
-                capture_output=True, text=True
+                capture_output=True,
+                text=True,
             )
             current = result.stdout.strip().replace("Current version: ", "")
             print(f"Current version: {current}")
@@ -106,7 +119,8 @@ def main():
         # Show current version and usage
         result = subprocess.run(
             [sys.executable, str(BUMP_SCRIPT), "--current"],
-            capture_output=True, text=True
+            capture_output=True,
+            text=True,
         )
         print(result.stdout.strip())
         print("\nUsage: python scripts/release.py <new_version>")

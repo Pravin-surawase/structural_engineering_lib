@@ -62,8 +62,8 @@ def parse_frontmatter(content: str) -> tuple[dict[str, Any] | None, str]:
     if not end_match:
         return None, content
 
-    fm_text = content[4:end_match.start() + 3]
-    remaining = content[end_match.end() + 4:]
+    fm_text = content[4 : end_match.start() + 3]
+    remaining = content[end_match.end() + 4 :]
 
     # Simple YAML parsing (key: value)
     fm_dict: dict[str, Any] = {}
@@ -77,7 +77,9 @@ def parse_frontmatter(content: str) -> tuple[dict[str, Any] | None, str]:
             value = value.strip().strip("'\"")
             # Handle arrays
             if value.startswith("[") and value.endswith("]"):
-                value = [v.strip().strip("'\"") for v in value[1:-1].split(",") if v.strip()]
+                value = [
+                    v.strip().strip("'\"") for v in value[1:-1].split(",") if v.strip()
+                ]
             fm_dict[key] = value
 
     return fm_dict, remaining
@@ -106,12 +108,16 @@ def validate_frontmatter(fm: dict[str, Any], filepath: Path) -> list[str]:
         try:
             datetime.strptime(str(fm["last_updated"]), "%Y-%m-%d")
         except ValueError:
-            errors.append(f"Invalid last_updated format: '{fm['last_updated']}' (use YYYY-MM-DD)")
+            errors.append(
+                f"Invalid last_updated format: '{fm['last_updated']}' (use YYYY-MM-DD)"
+            )
 
     return errors
 
 
-def generate_frontmatter(doc_type: str = "guide", complexity: str = "intermediate") -> str:
+def generate_frontmatter(
+    doc_type: str = "guide", complexity: str = "intermediate"
+) -> str:
     """Generate a front-matter template."""
     today = datetime.now().strftime("%Y-%m-%d")
     return f"""---
@@ -187,10 +193,12 @@ def check_docs(docs_dir: Path, add_missing: bool = False) -> dict[str, Any]:
             errors = validate_frontmatter(fm, md_file)
             if errors:
                 report["invalid_frontmatter"] += 1
-                report["files_invalid"].append({
-                    "file": str(rel_path),
-                    "errors": errors,
-                })
+                report["files_invalid"].append(
+                    {
+                        "file": str(rel_path),
+                        "errors": errors,
+                    }
+                )
 
     return report
 

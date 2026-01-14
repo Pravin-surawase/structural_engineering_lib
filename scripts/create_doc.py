@@ -30,7 +30,7 @@ TYPE_FOLDER_MAP = {
     "index": ["docs", "agents", "Python"],
 }
 
-TEMPLATE = '''# {title}
+TEMPLATE = """# {title}
 
 **Type:** {doc_type}
 **Audience:** {audience}
@@ -58,7 +58,7 @@ TEMPLATE = '''# {title}
 ---
 
 *This document follows the metadata standard defined in copilot-instructions.md.*
-'''
+"""
 
 
 def get_type_from_path(file_path: Path) -> str:
@@ -101,14 +101,21 @@ def get_audience_from_type(doc_type: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="Create a new doc with metadata")
-    parser.add_argument("filepath", help="Path for new document (e.g., docs/research/topic.md)")
+    parser.add_argument(
+        "filepath", help="Path for new document (e.g., docs/research/topic.md)"
+    )
     parser.add_argument("title", help="Document title")
-    parser.add_argument("--type", dest="doc_type", help="Document type (Research, Guide, etc.)")
+    parser.add_argument(
+        "--type", dest="doc_type", help="Document type (Research, Guide, etc.)"
+    )
     parser.add_argument("--status", default="In Progress", help="Initial status")
     parser.add_argument("--importance", default="Medium", help="Importance level")
     parser.add_argument("--tasks", default="", help="Related task IDs")
-    parser.add_argument("--abstract", default="[Brief description of this document's purpose]",
-                        help="One-line abstract")
+    parser.add_argument(
+        "--abstract",
+        default="[Brief description of this document's purpose]",
+        help="One-line abstract",
+    )
     parser.add_argument("--force", action="store_true", help="Overwrite existing file")
 
     args = parser.parse_args()

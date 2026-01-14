@@ -42,8 +42,10 @@ try:
         _CLAUSE_REGISTRY,
         generate_traceability_report,
     )
+
     # Import modules to populate registry at module level
     from structural_lib.codes.is456 import flexure, shear, detailing
+
     TRACEABILITY_AVAILABLE = True
 except ImportError:
     TRACEABILITY_AVAILABLE = False
@@ -68,6 +70,7 @@ def _count_unique_clauses(report: dict) -> int:
         unique_refs.update(refs_list)
     return len(unique_refs)
 
+
 from utils.layout import setup_page, page_header, section_header
 
 # Page setup
@@ -79,7 +82,9 @@ def main():
     page_header("IS 456 Clause Traceability", "Browse and search IS 456:2000 clauses")
 
     if not TRACEABILITY_AVAILABLE:
-        st.error("Traceability module not available. Please ensure structural_lib is installed.")
+        st.error(
+            "Traceability module not available. Please ensure structural_lib is installed."
+        )
         return
 
     # Get database metadata
@@ -100,20 +105,21 @@ def main():
         # Category filter
         st.header("🗂️ Categories")
         clauses = db.get("clauses", {})
-        categories = sorted(set(c.get("category", "other") for c in clauses.values() if isinstance(c, dict)))
+        categories = sorted(
+            set(
+                c.get("category", "other")
+                for c in clauses.values()
+                if isinstance(c, dict)
+            )
+        )
         selected_category = st.selectbox(
-            "Filter by Category",
-            ["All"] + categories,
-            index=0
+            "Filter by Category", ["All"] + categories, index=0
         )
 
     # Main content tabs
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "📖 Browse Clauses",
-        "🔍 Search",
-        "📐 Functions",
-        "📊 Report"
-    ])
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ["📖 Browse Clauses", "🔍 Search", "📐 Functions", "📊 Report"]
+    )
 
     # Tab 1: Browse Clauses
     with tab1:
@@ -123,7 +129,8 @@ def main():
             display_clauses = clauses
         else:
             display_clauses = {
-                ref: info for ref, info in clauses.items()
+                ref: info
+                for ref, info in clauses.items()
                 if isinstance(info, dict) and info.get("category") == selected_category
             }
 
@@ -135,7 +142,7 @@ def main():
                 """Sort key for clause references."""
                 # split('.') always returns at least 1 element
                 # Use safe access pattern for scanner compatibility
-                first_part = x.split('.')[0] if x else x
+                first_part = x.split(".")[0] if x else x
                 return (first_part.zfill(3), x)
 
             for ref in sorted(display_clauses.keys(), key=sort_clause_key):
@@ -171,7 +178,7 @@ def main():
         search_query = st.text_input(
             "Search by keyword",
             placeholder="e.g., shear, reinforcement, stress...",
-            key="clause_search"
+            key="clause_search",
         )
 
         if search_query:
@@ -200,7 +207,7 @@ def main():
         clause_ref = st.text_input(
             "Enter clause reference",
             placeholder="e.g., 38.1, 40.1, 26.2.1",
-            key="clause_lookup"
+            key="clause_lookup",
         )
 
         if clause_ref:
@@ -230,10 +237,12 @@ def main():
     with tab3:
         section_header("Function → Clause Mapping")
 
-        st.markdown("""
+        st.markdown(
+            """
         This table shows which IS 456 clauses are implemented by which functions
         in the `structural_lib.codes.is456` module.
-        """)
+        """
+        )
 
         # Use module-level registry (already imported)
         try:
@@ -244,11 +253,13 @@ def main():
                     parts = func_key.split(".")
                     module = parts[-2] if len(parts) >= 2 else "unknown"
                     func_name = parts[-1] if parts else "unknown"
-                    data.append({
-                        "Module": module,
-                        "Function": func_name,
-                        "Clauses": ", ".join(refs)
-                    })
+                    data.append(
+                        {
+                            "Module": module,
+                            "Function": func_name,
+                            "Clauses": ", ".join(refs),
+                        }
+                    )
 
                 # Display as dataframe (pandas imported at module level)
                 df = pd.DataFrame(data)
@@ -258,12 +269,18 @@ def main():
                     hide_index=True,
                     column_config={
                         "Module": st.column_config.TextColumn("Module", width="small"),
-                        "Function": st.column_config.TextColumn("Function", width="medium"),
-                        "Clauses": st.column_config.TextColumn("Clauses", width="medium"),
-                    }
+                        "Function": st.column_config.TextColumn(
+                            "Function", width="medium"
+                        ),
+                        "Clauses": st.column_config.TextColumn(
+                            "Clauses", width="medium"
+                        ),
+                    },
                 )
 
-                st.info(f"📊 **{len(_CLAUSE_REGISTRY)}** functions with clause traceability")
+                st.info(
+                    f"📊 **{len(_CLAUSE_REGISTRY)}** functions with clause traceability"
+                )
             else:
                 st.warning("No functions registered with @clause decorator")
         except Exception as e:
@@ -273,10 +290,12 @@ def main():
     with tab4:
         section_header("Traceability Report")
 
-        st.markdown("""
+        st.markdown(
+            """
         Generate a comprehensive traceability report showing the coverage
         of IS 456 clauses in the codebase.
-        """)
+        """
+        )
 
         if st.button("📄 Generate Report", type="primary"):
             try:
@@ -292,7 +311,10 @@ def main():
                 with col1:
                     st.metric("Standard", report.get("standard", "IS 456:2000"))
                 with col2:
-                    st.metric("Functions Decorated", report.get("total_decorated_functions", 0))
+                    st.metric(
+                        "Functions Decorated",
+                        report.get("total_decorated_functions", 0),
+                    )
                 with col3:
                     st.metric("Unique Clauses Referenced", unique_clause_count)
 
@@ -309,7 +331,9 @@ def main():
 
     # Footer
     st.markdown("---")
-    st.caption(f"IS 456:2000 Clause Database | {metadata.get('total_clauses', '?')} clauses | v{metadata.get('version', '?')}")
+    st.caption(
+        f"IS 456:2000 Clause Database | {metadata.get('total_clauses', '?')} clauses | v{metadata.get('version', '?')}"
+    )
 
 
 if __name__ == "__main__":

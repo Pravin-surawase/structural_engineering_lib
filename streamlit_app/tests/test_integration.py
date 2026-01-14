@@ -276,22 +276,22 @@ class TestDataStructures:
         inputs = BeamInputs(b_mm=400.0, d_mm=500.0)
         data = inputs.to_dict()
         assert isinstance(data, dict)
-        assert data['b_mm'] == 400.0
-        assert data['d_mm'] == 500.0
+        assert data["b_mm"] == 400.0
+        assert data["d_mm"] == 500.0
 
     def test_beam_inputs_from_dict(self):
         """Test BeamInputs deserialization."""
         data = {
-            'span_mm': 7000.0,
-            'b_mm': 350.0,
-            'd_mm': 450.0,
-            'D_mm': 500.0,
-            'fck_mpa': 30.0,
-            'fy_mpa': 415.0,
-            'mu_knm': 150.0,
-            'vu_kn': 100.0,
-            'cover_mm': 40.0,
-            'timestamp': '2024-01-01T12:00:00',
+            "span_mm": 7000.0,
+            "b_mm": 350.0,
+            "d_mm": 450.0,
+            "D_mm": 500.0,
+            "fck_mpa": 30.0,
+            "fy_mpa": 415.0,
+            "mu_knm": 150.0,
+            "vu_kn": 100.0,
+            "cover_mm": 40.0,
+            "timestamp": "2024-01-01T12:00:00",
         }
         inputs = BeamInputs.from_dict(data)
         assert inputs.span_mm == 7000.0
@@ -344,14 +344,14 @@ class TestComponentData:
     def test_concrete_grade_properties(self):
         """Test that concrete grades have required properties."""
         for grade, props in CONCRETE_GRADES.items():
-            assert 'fck' in props, f"{grade} missing fck"
-            assert 'cost_factor' in props, f"{grade} missing cost_factor"
+            assert "fck" in props, f"{grade} missing fck"
+            assert "cost_factor" in props, f"{grade} missing cost_factor"
 
     def test_steel_grade_properties(self):
         """Test that steel grades have required properties."""
         for grade, props in STEEL_GRADES.items():
-            assert 'fy' in props, f"{grade} missing fy"
-            assert 'cost_factor' in props, f"{grade} missing cost_factor"
+            assert "fy" in props, f"{grade} missing fy"
+            assert "cost_factor" in props, f"{grade} missing cost_factor"
 
 
 class TestPerformance:

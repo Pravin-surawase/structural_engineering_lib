@@ -300,9 +300,7 @@ class TestThemeIntegration:
     def test_complete_bar_chart_workflow(self):
         """Test complete workflow for bar chart."""
         # Create figure
-        fig = go.Figure(
-            data=[go.Bar(x=["A", "B", "C"], y=[10, 20, 15], name="Values")]
-        )
+        fig = go.Figure(data=[go.Bar(x=["A", "B", "C"], y=[10, 20, 15], name="Values")])
 
         # Apply theme
         apply_theme(fig)
@@ -316,9 +314,7 @@ class TestThemeIntegration:
 
     def test_complete_scatter_chart_workflow(self):
         """Test complete workflow for scatter plot."""
-        fig = go.Figure(
-            data=[go.Scatter(x=[1, 2, 3], y=[4, 5, 6], mode="markers")]
-        )
+        fig = go.Figure(data=[go.Scatter(x=[1, 2, 3], y=[4, 5, 6], mode="markers")])
 
         apply_theme(fig, dark_mode=False)
         config = get_chart_config(interactive=True)
@@ -344,9 +340,7 @@ class TestThemeIntegration:
 
     def test_theme_with_custom_colors(self):
         """Theme should not override custom trace colors."""
-        fig = go.Figure(
-            data=[go.Bar(x=[1, 2], y=[3, 4], marker={"color": "#FF0000"})]
-        )
+        fig = go.Figure(data=[go.Bar(x=[1, 2], y=[3, 4], marker={"color": "#FF0000"})])
 
         apply_theme(fig)
 

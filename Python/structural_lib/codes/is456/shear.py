@@ -23,7 +23,165 @@ from structural_lib.errors import (
 from . import tables
 from .traceability import clause
 
-__all__ = ["calculate_tv", "design_shear"]
+__all__ = [
+    "calculate_tv",
+    "design_shear",
+    "round_to_practical_spacing",
+    "select_stirrup_diameter",
+    "STANDARD_STIRRUP_DIAMETERS",
+    "STANDARD_STIRRUP_SPACINGS",
+]
+
+
+# Standard stirrup spacings used in construction (mm)
+# These are practical values that are easy to mark and maintain on site
+STANDARD_STIRRUP_SPACINGS = [75, 100, 125, 150, 175, 200, 225, 250, 275, 300]
+
+# Standard stirrup diameters (mm) per IS 456 and SP 34 practice
+# 6mm: Light shear, small beams
+# 8mm: Normal shear, typical beams (most common)
+# 10mm: Moderate shear, medium beams
+# 12mm: High shear, large beams
+STANDARD_STIRRUP_DIAMETERS = [6, 8, 10, 12]
+
+
+def round_to_practical_spacing(spacing_mm: float, round_down: bool = True) -> float:
+    """
+    Round calculated stirrup spacing to practical construction values.
+
+    Stirrup spacings in practice are rounded to standard values that are
+    easy to mark and maintain on site. This function rounds to the nearest
+    standard value from: 75, 100, 125, 150, 175, 200, 225, 250, 275, 300 mm.
+
+    Args:
+        spacing_mm: Calculated spacing in mm.
+        round_down: If True, round down (conservative). If False, round to nearest.
+
+    Returns:
+        Practical spacing value in mm.
+
+    Example:
+        >>> round_to_practical_spacing(241.3)
+        225.0
+        >>> round_to_practical_spacing(241.3, round_down=False)
+        250.0
+    """
+    if spacing_mm <= 0:
+        return 0.0
+
+    if spacing_mm <= STANDARD_STIRRUP_SPACINGS[0]:
+        return float(STANDARD_STIRRUP_SPACINGS[0])
+
+    if spacing_mm >= STANDARD_STIRRUP_SPACINGS[-1]:
+        return float(STANDARD_STIRRUP_SPACINGS[-1])
+
+    if round_down:
+        # Find the largest standard spacing that is <= calculated spacing
+        for s in reversed(STANDARD_STIRRUP_SPACINGS):
+            if s <= spacing_mm:
+                return float(s)
+        return float(STANDARD_STIRRUP_SPACINGS[0])
+    else:
+        # Find the nearest standard spacing
+        closest = STANDARD_STIRRUP_SPACINGS[0]
+        min_diff = abs(spacing_mm - closest)
+        for s in STANDARD_STIRRUP_SPACINGS[1:]:
+            diff = abs(spacing_mm - s)
+            if diff < min_diff:
+                min_diff = diff
+                closest = s
+        return float(closest)
+
+
+def select_stirrup_diameter(
+    vu_kn: float,
+    b_mm: float,
+    d_mm: float,
+    fck: float,
+    main_bar_dia: float = 16.0,
+    num_legs: int = 2,
+) -> int:
+    """
+    Select appropriate stirrup diameter based on shear demand.
+
+    Selection criteria (IS 456 + SP 34 practice):
+    - 6mm: Light shear (tv < 0.4 N/mm²), narrow beams (b < 200mm)
+    - 8mm: Normal shear (tv < 0.8 N/mm²), typical beams (default)
+    - 10mm: Moderate shear (tv < 1.5 N/mm²), medium-large beams
+    - 12mm: High shear (tv >= 1.5 N/mm²), large beams (b >= 400mm)
+
+    Also considers:
+    - Main bar diameter (stirrup should be >= main_bar/4 per IS 456)
+    - Beam width (larger beams use larger stirrups)
+
+    Args:
+        vu_kn: Factored shear force (kN).
+        b_mm: Beam width (mm).
+        d_mm: Effective depth (mm).
+        fck: Concrete strength (N/mm²).
+        main_bar_dia: Main reinforcement bar diameter (mm).
+        num_legs: Number of stirrup legs.
+
+    Returns:
+        Recommended stirrup diameter (mm): 6, 8, 10, or 12.
+
+    Example:
+        >>> select_stirrup_diameter(80, 300, 450, 25, 16)
+        8
+        >>> select_stirrup_diameter(200, 500, 700, 30, 25)
+        12
+    """
+    import math
+
+    # Calculate nominal shear stress
+    if b_mm <= 0 or d_mm <= 0:
+        return 8  # Default
+
+    tv = (abs(vu_kn) * 1000.0) / (b_mm * d_mm)
+
+    # Minimum stirrup diameter per IS 456 Cl. 26.5.1.8
+    # Stirrup diameter should not be less than main_bar / 4
+    min_dia_from_main = math.ceil(main_bar_dia / 4)
+    min_dia = max(6, min_dia_from_main)
+
+    # Selection based on shear stress and beam size
+    if tv < 0.4:
+        # Light shear - use minimum practical size
+        if b_mm < 200:
+            selected = 6
+        else:
+            selected = 8
+    elif tv < 0.8:
+        # Normal shear - standard 8mm for most cases
+        if b_mm >= 400:
+            selected = 10
+        else:
+            selected = 8
+    elif tv < 1.5:
+        # Moderate shear
+        if b_mm >= 400 or d_mm >= 600:
+            selected = 10
+        else:
+            selected = 8
+    else:
+        # High shear - use larger stirrups
+        if b_mm >= 400:
+            selected = 12
+        else:
+            selected = 10
+
+    # Ensure minimum diameter constraint
+    selected = max(selected, min_dia)
+
+    # Ensure it's a standard size
+    if selected not in STANDARD_STIRRUP_DIAMETERS:
+        # Round up to next standard size
+        for std in STANDARD_STIRRUP_DIAMETERS:
+            if std >= selected:
+                selected = std
+                break
+
+    return selected
 
 
 @clause("40.1")
@@ -195,6 +353,9 @@ def design_shear(
         spacing = max_spacing_2
     if spacing > max_spacing_min_reinf:
         spacing = max_spacing_min_reinf
+
+    # 6. Round to practical construction spacing (conservative)
+    spacing = round_to_practical_spacing(spacing, round_down=True)
 
     return ShearResult(
         tv=tv,

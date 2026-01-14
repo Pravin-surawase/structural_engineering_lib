@@ -42,11 +42,13 @@ class IssueDetector(ast.NodeVisitor):
             for child in ast.walk(node):
                 if isinstance(child, ast.Return) and child.value:
                     if isinstance(child.value, ast.Dict):
-                        self.issues.append((
-                            node.lineno,
-                            "MEDIUM",
-                            f"Function '{node.name}' returns dict without type hint"
-                        ))
+                        self.issues.append(
+                            (
+                                node.lineno,
+                                "MEDIUM",
+                                f"Function '{node.name}' returns dict without type hint",
+                            )
+                        )
                         break
 
         self.generic_visit(node)
@@ -58,22 +60,26 @@ class IssueDetector(ast.NodeVisitor):
         """Detect imports inside functions."""
         if self.in_function:
             for alias in node.names:
-                self.issues.append((
-                    node.lineno,
-                    "HIGH",
-                    f"Import '{alias.name}' inside function '{self.function_name}' (move to module level)"
-                ))
+                self.issues.append(
+                    (
+                        node.lineno,
+                        "HIGH",
+                        f"Import '{alias.name}' inside function '{self.function_name}' (move to module level)",
+                    )
+                )
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node: ast.ImportFrom):
         """Detect from...import inside functions."""
         if self.in_function:
             module = node.module or ""
-            self.issues.append((
-                node.lineno,
-                "HIGH",
-                f"Import from '{module}' inside function '{self.function_name}' (move to module level)"
-            ))
+            self.issues.append(
+                (
+                    node.lineno,
+                    "HIGH",
+                    f"Import from '{module}' inside function '{self.function_name}' (move to module level)",
+                )
+            )
         self.generic_visit(node)
 
     def visit_Subscript(self, node: ast.Subscript):
@@ -82,15 +88,25 @@ class IssueDetector(ast.NodeVisitor):
         if isinstance(node.value, ast.Name):
             var_name = node.value.id
             # Skip common safe patterns (list indexing with int, etc.)
-            if isinstance(node.slice, ast.Constant) and isinstance(node.slice.value, str):
+            if isinstance(node.slice, ast.Constant) and isinstance(
+                node.slice.value, str
+            ):
                 # This is string key access - likely dict access
-                if var_name in ['result', 'inputs', 'design_result', 'flexure',
-                                'st.session_state', 'session_state']:
-                    self.issues.append((
-                        node.lineno,
-                        "HIGH",
-                        f"Direct dict access '{var_name}[...]' may raise KeyError (use .get() with default)"
-                    ))
+                if var_name in [
+                    "result",
+                    "inputs",
+                    "design_result",
+                    "flexure",
+                    "st.session_state",
+                    "session_state",
+                ]:
+                    self.issues.append(
+                        (
+                            node.lineno,
+                            "HIGH",
+                            f"Direct dict access '{var_name}[...]' may raise KeyError (use .get() with default)",
+                        )
+                    )
         self.generic_visit(node)
 
     def visit_BinOp(self, node: ast.BinOp):
@@ -98,18 +114,20 @@ class IssueDetector(ast.NodeVisitor):
         if isinstance(node.op, ast.Div):
             # Check if there's an obvious zero check nearby
             # This is a heuristic - not perfect but catches most cases
-            self.issues.append((
-                node.lineno,
-                "CRITICAL",
-                "Division operation without obvious zero check (validate denominator)"
-            ))
+            self.issues.append(
+                (
+                    node.lineno,
+                    "CRITICAL",
+                    "Division operation without obvious zero check (validate denominator)",
+                )
+            )
         self.generic_visit(node)
 
 
 def check_file(filepath: Path) -> List[Tuple[int, str, str]]:
     """Check a single file for issues."""
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, "r") as f:
             source = f.read()
 
         # Parse AST
@@ -119,24 +137,28 @@ def check_file(filepath: Path) -> List[Tuple[int, str, str]]:
         detector.visit(tree)
 
         # Additional regex-based checks (for patterns AST can't catch)
-        lines = source.split('\n')
+        lines = source.split("\n")
 
         for i, line in enumerate(lines, 1):
             # Check for st.session_state access without .get()
-            if 'st.session_state.' in line and '[' in line and '.get(' not in line:
-                detector.issues.append((
-                    i,
-                    "HIGH",
-                    "Session state access may fail if key missing (use .get() or check key exists)"
-                ))
+            if "st.session_state." in line and "[" in line and ".get(" not in line:
+                detector.issues.append(
+                    (
+                        i,
+                        "HIGH",
+                        "Session state access may fail if key missing (use .get() or check key exists)",
+                    )
+                )
 
             # Check for hardcoded defaults in .get() calls that mask errors
-            if re.search(r'\.get\([^,]+,\s*0\s*\)', line):
-                detector.issues.append((
-                    i,
-                    "MEDIUM",
-                    "Using 0 as default in .get() may mask missing data (consider None or raise error)"
-                ))
+            if re.search(r"\.get\([^,]+,\s*0\s*\)", line):
+                detector.issues.append(
+                    (
+                        i,
+                        "MEDIUM",
+                        "Using 0 as default in .get() may mask missing data (consider None or raise error)",
+                    )
+                )
 
         return detector.issues
 
@@ -150,7 +172,9 @@ def main():
     """Main entry point."""
     # Check cost optimizer file
     project_root = Path(__file__).parent.parent
-    cost_optimizer_file = project_root / "streamlit_app" / "pages" / "02_💰_cost_optimizer.py"
+    cost_optimizer_file = (
+        project_root / "streamlit_app" / "pages" / "02_💰_cost_optimizer.py"
+    )
 
     if not cost_optimizer_file.exists():
         print(f"❌ File not found: {cost_optimizer_file}")

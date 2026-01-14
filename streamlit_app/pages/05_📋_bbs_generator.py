@@ -61,6 +61,7 @@ try:
         UNIT_WEIGHTS_KG_M,
     )
     from structural_lib.detailing import BeamDetailingResult
+
     HAS_BBS = True
 except ImportError as e:
     st.error(f"⚠️ BBS module not available: {e}")
@@ -70,7 +71,9 @@ except ImportError as e:
 initialize_theme()
 
 # Modern page setup
-setup_page(title="BBS Generator - IS 2502 Bar Bending Schedule", icon="📋", layout="wide")
+setup_page(
+    title="BBS Generator - IS 2502 Bar Bending Schedule", icon="📋", layout="wide"
+)
 
 # Apply dark mode
 apply_dark_mode_theme()
@@ -82,6 +85,7 @@ bbs_cache = SmartCache(max_size_mb=20, ttl_seconds=600)
 # =============================================================================
 # Session State Initialization
 # =============================================================================
+
 
 def initialize_session_state():
     """Initialize session state for BBS generator."""
@@ -105,6 +109,7 @@ initialize_session_state()
 # Helper Functions
 # =============================================================================
 
+
 def safe_int(value, default=0):
     """Safely cast value to int with fallback."""
     try:
@@ -112,15 +117,13 @@ def safe_int(value, default=0):
     except (TypeError, ValueError):
         return default
 
+
 def get_beam_design_from_session() -> Optional[Dict]:
     """Get beam design inputs from beam_design page if available."""
     if "beam_inputs" in st.session_state:
         beam = st.session_state.beam_inputs
         if beam.get("design_computed") and beam.get("design_result"):
-            return {
-                "inputs": beam,
-                "result": beam["design_result"]
-            }
+            return {"inputs": beam, "result": beam["design_result"]}
     return None
 
 
@@ -159,29 +162,27 @@ def create_bbs_from_beam_design(beam_data: Dict) -> BBSDocument:
 
     # === MAIN BARS (Bottom) ===
     cut_length_bottom = calculate_straight_bar_length(
-        span_mm=span_mm,
-        cover_mm=cover_mm,
-        ld_mm=ld_mm,
-        location="bottom",
-        zone="full"
+        span_mm=span_mm, cover_mm=cover_mm, ld_mm=ld_mm, location="bottom", zone="full"
     )
 
     unit_weight_bottom = calculate_bar_weight(bar_dia, cut_length_bottom)
 
-    bbs_items.append(BBSLineItem(
-        bar_mark=f"{inputs.get('member_id', 'B1')}-BM-B",
-        member_id=inputs.get("member_id", "B1"),
-        location="bottom",
-        zone="full",
-        shape_code="A",  # Straight bar
-        diameter_mm=bar_dia,
-        no_of_bars=num_bars,
-        cut_length_mm=cut_length_bottom,
-        total_length_mm=cut_length_bottom * num_bars,
-        unit_weight_kg=unit_weight_bottom,
-        total_weight_kg=unit_weight_bottom * num_bars,
-        remarks="Bottom tension steel"
-    ))
+    bbs_items.append(
+        BBSLineItem(
+            bar_mark=f"{inputs.get('member_id', 'B1')}-BM-B",
+            member_id=inputs.get("member_id", "B1"),
+            location="bottom",
+            zone="full",
+            shape_code="A",  # Straight bar
+            diameter_mm=bar_dia,
+            no_of_bars=num_bars,
+            cut_length_mm=cut_length_bottom,
+            total_length_mm=cut_length_bottom * num_bars,
+            unit_weight_kg=unit_weight_bottom,
+            total_weight_kg=unit_weight_bottom * num_bars,
+            remarks="Bottom tension steel",
+        )
+    )
 
     # === STIRRUPS ===
     hook_length = calculate_hook_length(stirrup_dia, hook_angle=135)
@@ -190,7 +191,7 @@ def create_bbs_from_beam_design(beam_data: Dict) -> BBSDocument:
         D_mm=D_mm,
         cover_mm=cover_mm,
         stirrup_dia_mm=stirrup_dia,
-        hook_length_mm=hook_length
+        hook_length_mm=hook_length,
     )
 
     # Number of stirrups along span
@@ -201,22 +202,24 @@ def create_bbs_from_beam_design(beam_data: Dict) -> BBSDocument:
 
     unit_weight_stirrup = calculate_bar_weight(stirrup_dia, stirrup_cut_length)
 
-    bbs_items.append(BBSLineItem(
-        bar_mark=f"{inputs.get('member_id', 'B1')}-ST",
-        member_id=inputs.get("member_id", "B1"),
-        location="stirrup",
-        zone="full",
-        shape_code="E",  # Closed stirrup
-        diameter_mm=stirrup_dia,
-        no_of_bars=num_stirrups,
-        cut_length_mm=stirrup_cut_length,
-        total_length_mm=stirrup_cut_length * num_stirrups,
-        unit_weight_kg=unit_weight_stirrup,
-        total_weight_kg=unit_weight_stirrup * num_stirrups,
-        a_mm=b_mm - 2*cover_mm,
-        b_mm=D_mm - 2*cover_mm,
-        remarks=f"@ {stirrup_spacing}mm c/c"
-    ))
+    bbs_items.append(
+        BBSLineItem(
+            bar_mark=f"{inputs.get('member_id', 'B1')}-ST",
+            member_id=inputs.get("member_id", "B1"),
+            location="stirrup",
+            zone="full",
+            shape_code="E",  # Closed stirrup
+            diameter_mm=stirrup_dia,
+            no_of_bars=num_stirrups,
+            cut_length_mm=stirrup_cut_length,
+            total_length_mm=stirrup_cut_length * num_stirrups,
+            unit_weight_kg=unit_weight_stirrup,
+            total_weight_kg=unit_weight_stirrup * num_stirrups,
+            a_mm=b_mm - 2 * cover_mm,
+            b_mm=D_mm - 2 * cover_mm,
+            remarks=f"@ {stirrup_spacing}mm c/c",
+        )
+    )
 
     # === SUMMARY ===
     total_weight = sum(item.total_weight_kg for item in bbs_items)
@@ -235,7 +238,7 @@ def create_bbs_from_beam_design(beam_data: Dict) -> BBSDocument:
         total_bars=sum(item.no_of_bars for item in bbs_items),
         total_length_m=total_length_m,
         total_weight_kg=total_weight,
-        weight_by_diameter=weight_by_dia
+        weight_by_diameter=weight_by_dia,
     )
 
     # Create document
@@ -243,7 +246,7 @@ def create_bbs_from_beam_design(beam_data: Dict) -> BBSDocument:
         project_name=st.session_state.bbs_inputs["project_name"],
         member_ids=[inputs.get("member_id", "B1")],
         items=bbs_items,
-        summary=summary
+        summary=summary,
     )
 
     return doc
@@ -253,18 +256,20 @@ def bbs_to_dataframe(bbs_doc: BBSDocument) -> pd.DataFrame:
     """Convert BBS document to pandas DataFrame for display."""
     data = []
     for item in bbs_doc.items:
-        data.append({
-            "Bar Mark": item.bar_mark,
-            "Shape": item.shape_code,
-            "Diameter (mm)": safe_int(item.diameter_mm, default=0),
-            "Location": item.location.capitalize(),
-            "No. of Bars": item.no_of_bars,
-            "Cut Length (mm)": safe_int(item.cut_length_mm, default=0),
-            "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
-            "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
-            "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
-            "Remarks": item.remarks
-        })
+        data.append(
+            {
+                "Bar Mark": item.bar_mark,
+                "Shape": item.shape_code,
+                "Diameter (mm)": safe_int(item.diameter_mm, default=0),
+                "Location": item.location.capitalize(),
+                "No. of Bars": item.no_of_bars,
+                "Cut Length (mm)": safe_int(item.cut_length_mm, default=0),
+                "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
+                "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
+                "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
+                "Remarks": item.remarks,
+            }
+        )
 
     return pd.DataFrame(data)
 
@@ -290,12 +295,14 @@ def export_bbs_to_csv(bbs_doc: BBSDocument) -> bytes:
 # Page header
 page_header(
     "📋 Bar Bending Schedule Generator",
-    "Generate IS 2502 compliant bar bending schedules from beam designs"
+    "Generate IS 2502 compliant bar bending schedules from beam designs",
 )
 
 # Check if BBS module is available
 if not HAS_BBS:
-    st.error("⚠️ BBS module is not available. Please ensure structural_lib is installed.")
+    st.error(
+        "⚠️ BBS module is not available. Please ensure structural_lib is installed."
+    )
     st.stop()
 
 # Mode selection
@@ -306,15 +313,19 @@ with col1:
     mode = st.radio(
         "Select Mode",
         options=["auto", "manual"],
-        format_func=lambda x: "🤖 Auto (from design)" if x == "auto" else "✏️ Manual Entry",
+        format_func=lambda x: (
+            "🤖 Auto (from design)" if x == "auto" else "✏️ Manual Entry"
+        ),
         index=0 if st.session_state.bbs_inputs["mode"] == "auto" else 1,
-        key="bbs_mode_select"
+        key="bbs_mode_select",
     )
     st.session_state.bbs_inputs["mode"] = mode
 
 with col2:
     if mode == "auto":
-        st.info("**Auto Mode:** Automatically generate BBS from your beam design on the Beam Design page.")
+        st.info(
+            "**Auto Mode:** Automatically generate BBS from your beam design on the Beam Design page."
+        )
     else:
         st.info("**Manual Mode:** Enter bar details manually to create custom BBS.")
 
@@ -328,14 +339,16 @@ if mode == "auto":
     beam_data = get_beam_design_from_session()
 
     if beam_data is None:
-        st.warning("""
+        st.warning(
+            """
         **No beam design found!**
 
         Please go to the **Beam Design** page and:
         1. Enter beam geometry and loading
         2. Click "Run Design Analysis"
         3. Return here to generate BBS
-        """)
+        """
+        )
 
         if st.button("🔗 Go to Beam Design Page"):
             st.switch_page("pages/01_🏗️_beam_design.py")
@@ -389,11 +402,7 @@ if mode == "auto":
             # BBS table
             st.markdown("#### Detailed Bar List")
             df = bbs_to_dataframe(bbs_doc)
-            st.dataframe(
-                df,
-                width="stretch",
-                hide_index=True
-            )
+            st.dataframe(df, width="stretch", hide_index=True)
 
             # Weight breakdown
             st.markdown("#### Weight Breakdown by Diameter")
@@ -404,11 +413,13 @@ if mode == "auto":
                     percent_total = (weight / total_weight_kg) * 100
                 else:
                     percent_total = 0.0
-                weight_data.append({
-                    "Diameter (mm)": f"Ø{safe_int(dia, default=0)}",
-                    "Total Weight (kg)": f"{weight:.2f}",
-                    "% of Total": f"{percent_total:.1f}%"
-                })
+                weight_data.append(
+                    {
+                        "Diameter (mm)": f"Ø{safe_int(dia, default=0)}",
+                        "Total Weight (kg)": f"{weight:.2f}",
+                        "% of Total": f"{percent_total:.1f}%",
+                    }
+                )
 
             weight_df = pd.DataFrame(weight_data)
             st.table(weight_df)
@@ -424,7 +435,7 @@ if mode == "auto":
                     data=csv_data,
                     file_name=f"BBS_{bbs_doc.member_ids[0]}.csv",
                     mime="text/csv",
-                    width="stretch"
+                    width="stretch",
                 )
 
             with col2:
@@ -455,10 +466,7 @@ with st.expander("📖 Reference: Bar Shapes (IS 2502)"):
 
     shapes_data = []
     for code, description in BAR_SHAPES.items():
-        shapes_data.append({
-            "Code": code,
-            "Description": description
-        })
+        shapes_data.append({"Code": code, "Description": description})
 
     shapes_df = pd.DataFrame(shapes_data)
     st.table(shapes_df)
@@ -468,14 +476,15 @@ with st.expander("⚖️ Reference: Unit Weights"):
 
     weights_data = []
     for dia, weight in UNIT_WEIGHTS_KG_M.items():
-        weights_data.append({
-            "Diameter (mm)": f"Ø{dia}",
-            "Unit Weight (kg/m)": f"{weight:.3f}"
-        })
+        weights_data.append(
+            {"Diameter (mm)": f"Ø{dia}", "Unit Weight (kg/m)": f"{weight:.3f}"}
+        )
 
     weights_df = pd.DataFrame(weights_data)
     st.table(weights_df)
 
 # Footer
 st.markdown("---")
-st.caption("Bar Bending Schedule Generator | IS 2502:1999 & SP 34:1987 | Developed by Agent 6")
+st.caption(
+    "Bar Bending Schedule Generator | IS 2502:1999 & SP 34:1987 | Developed by Agent 6"
+)

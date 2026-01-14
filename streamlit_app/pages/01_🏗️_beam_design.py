@@ -61,13 +61,16 @@ from utils.theme_manager import (
     initialize_theme,
 )
 from utils.loading_states import loading_context
+
 # IMPL-007: Performance optimizations
 from utils.caching import SmartCache
+
 # TASK-276-279 Integration: Professional report export
 from components.report_export import show_export_options, show_audit_trail_summary
 from utils.input_bridge import log_design_to_audit
 import hashlib
 import json
+
 # TODO Phase 2+: Uncomment as needed when implementing those phases
 # from utils.session_manager import SessionStateManager
 # from utils.lazy_loader import LazyLoader
@@ -81,7 +84,7 @@ initialize_theme()
 setup_page(title="Beam Design | IS 456 Dashboard", icon="🏗️", layout="wide")
 
 # Apply dark mode styling
-#apply_dark_mode_theme()
+# apply_dark_mode_theme()
 
 # PHASE 1: Initialize SmartCache instances for performance optimization
 design_cache = SmartCache(max_size_mb=50, ttl_seconds=300)  # 5-min TTL for design calcs
@@ -116,6 +119,7 @@ def get_input_hash():
 # PHASE 1: Cached visualization wrapper for performance
 def create_cached_beam_diagram(**kwargs):
     """Cached wrapper for beam diagram generation"""
+
     # Create cache key from all parameters (handle unhashable types)
     # Convert kwargs to JSON-serializable format
     def make_hashable(obj):
@@ -340,7 +344,7 @@ with col_input:
             st.metric(
                 "Design Cache Hit Rate",
                 f"{hit_rate:.1%}",
-                help="Percentage of design calculations served from cache"
+                help="Percentage of design calculations served from cache",
             )
 
         with cache_col2:
@@ -350,16 +354,18 @@ with col_input:
             st.metric(
                 "Cached Visualizations",
                 viz_items,
-                help="Number of cached beam diagrams"
+                help="Number of cached beam diagrams",
             )
 
         with cache_col3:
             # Total memory usage
-            total_memory = design_stats.get("memory_mb", 0) + viz_stats.get("memory_mb", 0)
+            total_memory = design_stats.get("memory_mb", 0) + viz_stats.get(
+                "memory_mb", 0
+            )
             st.metric(
                 "Cache Memory",
                 f"{total_memory:.1f} MB",
-                help="Total memory used by all caches"
+                help="Total memory used by all caches",
             )
 
         st.markdown("---")
@@ -460,7 +466,13 @@ with col_preview:
 
         # Results tabs (includes new Export tab for TASK-276-279)
         tab1, tab2, tab3, tab4, tab5 = st.tabs(
-            ["📊 Summary", "🎨 Visualization", "💰 Cost Analysis", "✅ Compliance", "📄 Export"]
+            [
+                "📊 Summary",
+                "🎨 Visualization",
+                "💰 Cost Analysis",
+                "✅ Compliance",
+                "📄 Export",
+            ]
         )
 
         # ============================================================================
@@ -559,18 +571,26 @@ with col_preview:
                     else:
                         # Fallback: distribute evenly
                         denominator = max(num_bars - 1, 1)
-                        spacing_h = (b_mm - 2 * cover - bar_dia) / denominator if denominator > 0 else 0
+                        spacing_h = (
+                            (b_mm - 2 * cover - bar_dia) / denominator
+                            if denominator > 0
+                            else 0
+                        )
                         rebar_y = cover + bar_dia / 2
                         for i in range(num_bars):
                             x = cover + bar_dia / 2 + i * spacing_h
                             rebar_positions.append((x, rebar_y))
                 else:
                     # Multiple layers - split bars between layers
-                    bars_per_layer = num_bars // num_layers if num_layers > 0 else num_bars
+                    bars_per_layer = (
+                        num_bars // num_layers if num_layers > 0 else num_bars
+                    )
                     extra_bars = num_bars % num_layers if num_layers > 0 else 0
 
                     for layer_idx in range(num_layers):
-                        layer_bars = bars_per_layer + (1 if layer_idx < extra_bars else 0)
+                        layer_bars = bars_per_layer + (
+                            1 if layer_idx < extra_bars else 0
+                        )
                         # Calculate spacing for this layer
                         if spacing_mm > 0 and layer_bars > 1:
                             # Use library spacing
@@ -579,7 +599,11 @@ with col_preview:
                         else:
                             # Fallback spacing
                             denominator = max(layer_bars - 1, 1)
-                            spacing_h = (b_mm - 2 * cover - bar_dia) / denominator if denominator > 0 else 0
+                            spacing_h = (
+                                (b_mm - 2 * cover - bar_dia) / denominator
+                                if denominator > 0
+                                else 0
+                            )
                             x_start = cover + bar_dia / 2
 
                         # Layer spacing: bar_dia + clear spacing (minimum 25mm per IS 456)
@@ -596,7 +620,7 @@ with col_preview:
             if is_doubly and asc_required > 0:
                 # Use similar bar size as tension steel
                 comp_bar_dia = bar_dia
-                area_per_bar = 3.14159 * (comp_bar_dia ** 2) / 4
+                area_per_bar = 3.14159 * (comp_bar_dia**2) / 4
                 if area_per_bar > 0:
                     try:
                         num_comp_bars = max(2, int(asc_required / area_per_bar) + 1)
@@ -608,7 +632,11 @@ with col_preview:
                 # Position at top (from top surface)
                 comp_y = D_mm - cover - comp_bar_dia / 2
                 denominator = max(num_comp_bars - 1, 1)
-                spacing_h = (b_mm - 2 * cover - comp_bar_dia) / denominator if denominator > 0 else 0
+                spacing_h = (
+                    (b_mm - 2 * cover - comp_bar_dia) / denominator
+                    if denominator > 0
+                    else 0
+                )
 
                 for i in range(num_comp_bars):
                     x = cover + comp_bar_dia / 2 + i * spacing_h
@@ -765,7 +793,9 @@ with col_preview:
             shear = result.get("shear", {})
 
             # Extract stirrup spacing for compliance check
-            stirrup_spacing = shear.get("spacing", 150)  # Default to 150mm if not available
+            stirrup_spacing = shear.get(
+                "spacing", 150
+            )  # Default to 150mm if not available
 
             # Get steel area (provided, not required - this is what we actually have)
             ast_provided = flexure.get("ast_provided", 0)

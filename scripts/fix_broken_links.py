@@ -21,7 +21,7 @@ from collections import defaultdict
 
 def find_markdown_links(content: str) -> List[Tuple[str, str, int]]:
     """Find all markdown links [text](target) with their positions."""
-    pattern = r'(?<!!)\[([^\]]+)\]\(([^)]+)\)'
+    pattern = r"(?<!!)\[([^\]]+)\]\(([^)]+)\)"
     matches = []
     for match in re.finditer(pattern, content):
         text, target = match.groups()
@@ -36,14 +36,18 @@ def build_file_index(project_root: Path) -> Dict[str, List[Path]]:
     # Scan all markdown files
     for md_file in project_root.rglob("*.md"):
         # Skip node_modules, .git, etc.
-        if any(part.startswith('.') or part == 'node_modules' for part in md_file.parts):
+        if any(
+            part.startswith(".") or part == "node_modules" for part in md_file.parts
+        ):
             continue
         filename = md_file.name.lower()
         index[filename].append(md_file)
 
     # Also index Python files that might be linked
     for py_file in project_root.rglob("*.py"):
-        if any(part.startswith('.') or part == 'node_modules' for part in py_file.parts):
+        if any(
+            part.startswith(".") or part == "node_modules" for part in py_file.parts
+        ):
             continue
         filename = py_file.name.lower()
         index[filename].append(py_file)
@@ -55,11 +59,16 @@ def normalize_filename(name: str) -> str:
     """Normalize filename for matching (lowercase, handle variations)."""
     name = name.lower()
     # Handle SCREAMING_SNAKE_CASE to kebab-case
-    name = name.replace('_', '-')
+    name = name.replace("_", "-")
     return name
 
 
-def find_best_match(target_path: str, source_file: Path, file_index: Dict[str, List[Path]], project_root: Path) -> Optional[Path]:
+def find_best_match(
+    target_path: str,
+    source_file: Path,
+    file_index: Dict[str, List[Path]],
+    project_root: Path,
+) -> Optional[Path]:
     """Find the best matching file for a broken link target."""
     # Extract just the filename from the target
     target = Path(target_path)
@@ -91,7 +100,7 @@ def find_best_match(target_path: str, source_file: Path, file_index: Dict[str, L
                 return candidates[0]
             # Return first match from docs/ if available
             for c in candidates:
-                if 'docs' in c.parts:
+                if "docs" in c.parts:
                     return c
             return candidates[0]
 
@@ -105,7 +114,7 @@ def find_best_match(target_path: str, source_file: Path, file_index: Dict[str, L
                 return candidates[0]
             # Return first match from docs/ if available
             for c in candidates:
-                if 'docs' in c.parts:
+                if "docs" in c.parts:
                     return c
             return candidates[0]
 
@@ -140,8 +149,8 @@ def compute_relative_path(from_file: Path, to_file: Path, project_root: Path) ->
         # Then down to target
         downs = to_parts[common_length:]
 
-        path_parts = ['..'] * ups + list(downs)
-        return '/'.join(path_parts)
+        path_parts = [".."] * ups + list(downs)
+        return "/".join(path_parts)
 
 
 def fix_links_in_file(
@@ -149,10 +158,10 @@ def fix_links_in_file(
     file_index: Dict[str, List[Path]],
     project_root: Path,
     apply_fix: bool = False,
-    verbose: bool = False
+    verbose: bool = False,
 ) -> Tuple[int, int, List[str]]:
     """Fix broken links in a single file. Returns (checked, fixed, messages)."""
-    content = file_path.read_text(encoding='utf-8')
+    content = file_path.read_text(encoding="utf-8")
     links = find_markdown_links(content)
 
     checked = 0
@@ -162,17 +171,17 @@ def fix_links_in_file(
 
     for text, target, pos in links:
         # Skip external links
-        if target.startswith(('http://', 'https://', 'mailto:')):
+        if target.startswith(("http://", "https://", "mailto:")):
             continue
         # Skip pure anchors
-        if target.startswith('#'):
+        if target.startswith("#"):
             continue
 
         checked += 1
 
         # Handle anchors
-        target_path = target.split('#')[0]
-        anchor = '#' + target.split('#')[1] if '#' in target else ''
+        target_path = target.split("#")[0]
+        anchor = "#" + target.split("#")[1] if "#" in target else ""
 
         if not target_path:
             continue
@@ -207,7 +216,7 @@ def fix_links_in_file(
             new_link = f"]({new_target})"
             new_content = new_content.replace(old_link, new_link)
 
-        file_path.write_text(new_content, encoding='utf-8')
+        file_path.write_text(new_content, encoding="utf-8")
 
     return checked, fixed, messages
 
@@ -215,9 +224,15 @@ def fix_links_in_file(
 def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Fix broken markdown links")
-    parser.add_argument('--fix', action='store_true', help="Apply fixes (default: dry run)")
-    parser.add_argument('--verbose', '-v', action='store_true', help="Show detailed changes")
-    parser.add_argument('--exclude-archive', action='store_true', help="Skip _archive directories")
+    parser.add_argument(
+        "--fix", action="store_true", help="Apply fixes (default: dry run)"
+    )
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Show detailed changes"
+    )
+    parser.add_argument(
+        "--exclude-archive", action="store_true", help="Skip _archive directories"
+    )
     args = parser.parse_args()
 
     # Find project root
@@ -230,10 +245,12 @@ def main() -> int:
 
     # Collect all markdown files
     md_files = list(project_root.rglob("*.md"))
-    md_files = [f for f in md_files if not any(part.startswith('.') for part in f.parts)]
+    md_files = [
+        f for f in md_files if not any(part.startswith(".") for part in f.parts)
+    ]
 
     if args.exclude_archive:
-        md_files = [f for f in md_files if '_archive' not in str(f)]
+        md_files = [f for f in md_files if "_archive" not in str(f)]
 
     print(f"\n📝 Scanning {len(md_files)} markdown files...")
 
@@ -243,8 +260,7 @@ def main() -> int:
 
     for md_file in sorted(md_files):
         checked, fixed, messages = fix_links_in_file(
-            md_file, file_index, project_root,
-            apply_fix=args.fix, verbose=args.verbose
+            md_file, file_index, project_root, apply_fix=args.fix, verbose=args.verbose
         )
         total_checked += checked
         total_fixed += fixed
@@ -271,12 +287,18 @@ def main() -> int:
         print(f"\n✅ Fixed {total_fixed} broken links!")
         print(f"\n🔄 Re-running link checker to verify...")
         import subprocess
+
         result = subprocess.run(
-            [str(project_root / ".venv/bin/python"), str(script_dir / "check_links.py")],
-            capture_output=True, text=True, cwd=project_root
+            [
+                str(project_root / ".venv/bin/python"),
+                str(script_dir / "check_links.py"),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=project_root,
         )
         # Extract just the summary
-        for line in result.stdout.split('\n')[:5]:
+        for line in result.stdout.split("\n")[:5]:
             print(f"   {line}")
 
     return 0 if total_fixed == 0 else 1

@@ -122,10 +122,7 @@ def hash_inputs(*args, **kwargs) -> str:
         'a3f7...'
     """
     # Convert to JSON-serializable dict
-    data = {
-        "args": args,
-        "kwargs": kwargs
-    }
+    data = {"args": args, "kwargs": kwargs}
 
     # Create stable JSON string
     json_str = json.dumps(data, sort_keys=True, default=str)
@@ -251,7 +248,7 @@ def cached_plotly_chart(
     elif chart_type == "line":
         fig = go.Figure(data=[go.Scatter(**data)])
     elif chart_type == "scatter":
-        fig = go.Figure(data=[go.Scatter(mode='markers', **data)])
+        fig = go.Figure(data=[go.Scatter(mode="markers", **data)])
     else:
         raise ValueError(f"Unknown chart type: {chart_type}")
 
@@ -315,7 +312,7 @@ def cached_material_database() -> Dict[str, Any]:
             "Fe415": {"fy": 415, "es": 200000},
             "Fe500": {"fy": 500, "es": 200000},
             "Fe550": {"fy": 550, "es": 200000},
-        }
+        },
     }
 
 
@@ -339,7 +336,7 @@ def cached_code_tables() -> Dict[str, Any]:
             # Grade: {pt: tau_c}
             "M20": {0.15: 0.28, 0.25: 0.35, 0.50: 0.48},
             "M25": {0.15: 0.29, 0.25: 0.36, 0.50: 0.49},
-        }
+        },
     }
 
 
@@ -360,7 +357,7 @@ def cache_stats() -> Dict[str, Any]:
         "cache_hit_rate": "N/A (Streamlit doesn't expose this)",
         "cache_size": "N/A",
         "cache_memory": "N/A",
-        "note": "Use st.cache_data.clear() to clear all caches"
+        "note": "Use st.cache_data.clear() to clear all caches",
     }
 
 
@@ -420,13 +417,16 @@ def timed_cache(ttl: int = 300) -> Callable[[Callable], Callable]:
         >>> def expensive_function(x):
         >>>     return x ** 2
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
             # Use st.cache_data with specified TTL
             cached_func = st.cache_data(ttl=ttl)(func)
             return cached_func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 

@@ -48,8 +48,12 @@ def analyze_file_metadata(filepath: Path) -> Dict[str, any]:
             "heading_count": len([l for l in lines if l.startswith("#")]),
             "code_blocks": content.count("```"),
             "has_type_metadata": any("**Type:**" in line for line in first_100_lines),
-            "has_status_metadata": any("**Status:**" in line for line in first_100_lines),
-            "has_version_metadata": any("**Version:**" in line for line in first_100_lines),
+            "has_status_metadata": any(
+                "**Status:**" in line for line in first_100_lines
+            ),
+            "has_version_metadata": any(
+                "**Version:**" in line for line in first_100_lines
+            ),
             "first_heading": "",
             "keywords": set(),
         }
@@ -62,12 +66,24 @@ def analyze_file_metadata(filepath: Path) -> Dict[str, any]:
 
         # Extract keywords from title and first heading
         title = filepath.stem.lower()
-        keywords = set(re.findall(r'\w+', title))
+        keywords = set(re.findall(r"\w+", title))
         if metadata["first_heading"]:
-            keywords.update(re.findall(r'\w+', metadata["first_heading"].lower()))
+            keywords.update(re.findall(r"\w+", metadata["first_heading"].lower()))
 
         # Filter common words
-        common_words = {"the", "and", "for", "with", "from", "this", "that", "are", "was", "have", "has"}
+        common_words = {
+            "the",
+            "and",
+            "for",
+            "with",
+            "from",
+            "this",
+            "that",
+            "are",
+            "was",
+            "have",
+            "has",
+        }
         metadata["keywords"] = keywords - common_words
 
         return metadata
@@ -88,7 +104,7 @@ def find_similar_files(metadata_list: List[Dict]) -> List[Tuple[Path, Path, Set[
     for i, meta1 in enumerate(metadata_list):
         if "error" in meta1:
             continue
-        for meta2 in metadata_list[i+1:]:
+        for meta2 in metadata_list[i + 1 :]:
             if "error" in meta2:
                 continue
 
@@ -174,12 +190,14 @@ def identify_archival_candidates() -> List[Tuple[Path, str]]:
 
             # Check for old session docs (Session 1-10)
             if "Session" in filepath.name:
-                match = re.search(r'Session[- ]?(\d+)', content)
+                match = re.search(r"Session[- ]?(\d+)", content)
                 if match and int(match.group(1)) < 15:
                     reasons.append(f"Old session doc (Session {match.group(1)})")
 
             if reasons:
-                candidates.append((filepath.relative_to(PROJECT_ROOT), ", ".join(reasons)))
+                candidates.append(
+                    (filepath.relative_to(PROJECT_ROOT), ", ".join(reasons))
+                )
 
         except Exception:
             pass
@@ -214,8 +232,12 @@ def generate_report():
     with_type = sum(1 for m in metadata_list if m.get("has_type_metadata", False))
     with_status = sum(1 for m in metadata_list if m.get("has_status_metadata", False))
     print(f"📋 Metadata compliance:")
-    print(f"   Files with **Type:** metadata: {with_type} ({with_type/len(all_files)*100:.1f}%)")
-    print(f"   Files with **Status:** metadata: {with_status} ({with_status/len(all_files)*100:.1f}%)")
+    print(
+        f"   Files with **Type:** metadata: {with_type} ({with_type/len(all_files)*100:.1f}%)"
+    )
+    print(
+        f"   Files with **Status:** metadata: {with_status} ({with_status/len(all_files)*100:.1f}%)"
+    )
     print()
 
     # Find similar files
@@ -225,7 +247,9 @@ def generate_report():
 
     if similar_pairs:
         print("\n   Top 10 similar pairs:")
-        for path1, path2, overlap in sorted(similar_pairs, key=lambda x: len(x[2]), reverse=True)[:10]:
+        for path1, path2, overlap in sorted(
+            similar_pairs, key=lambda x: len(x[2]), reverse=True
+        )[:10]:
             print(f"      • {path1.name} ↔ {path2.name}")
             print(f"        Keywords: {', '.join(sorted(overlap)[:5])}")
     print()
@@ -233,7 +257,9 @@ def generate_report():
     # Group by folder
     print("📁 Files by folder:")
     groups = group_files_by_folder()
-    for folder, files in sorted(groups.items(), key=lambda x: len(x[1]), reverse=True)[:15]:
+    for folder, files in sorted(groups.items(), key=lambda x: len(x[1]), reverse=True)[
+        :15
+    ]:
         print(f"   {folder}: {len(files)} files")
     print()
 
@@ -243,7 +269,11 @@ def generate_report():
     if research_analysis:
         print(f"   Total files: {research_analysis['total_files']}")
         print("   Pattern groups:")
-        for pattern, count in sorted(research_analysis["pattern_groups"].items(), key=lambda x: x[1], reverse=True):
+        for pattern, count in sorted(
+            research_analysis["pattern_groups"].items(),
+            key=lambda x: x[1],
+            reverse=True,
+        ):
             if count > 0:
                 print(f"      {pattern}: {count} files")
     print()
@@ -266,7 +296,9 @@ def generate_report():
     if research_analysis:
         for pattern, files in research_analysis.get("files_by_pattern", {}).items():
             if len(files) > 3:
-                print(f"   • {len(files)} {pattern}-prefixed files could be consolidated")
+                print(
+                    f"   • {len(files)} {pattern}-prefixed files could be consolidated"
+                )
     print()
 
     print("2. SESSION DOCUMENTATION")
@@ -281,10 +313,14 @@ def generate_report():
     print()
 
     print("4. FOLDER STRUCTURE")
-    high_count_folders = [(f, len(files)) for f, files in groups.items() if len(files) > 20]
+    high_count_folders = [
+        (f, len(files)) for f, files in groups.items() if len(files) > 20
+    ]
     if high_count_folders:
         print("   • Folders with 20+ files (consider sub-grouping):")
-        for folder, count in sorted(high_count_folders, key=lambda x: x[1], reverse=True)[:5]:
+        for folder, count in sorted(
+            high_count_folders, key=lambda x: x[1], reverse=True
+        )[:5]:
             print(f"      {folder}: {count} files")
     print()
 

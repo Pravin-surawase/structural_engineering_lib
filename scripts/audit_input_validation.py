@@ -214,9 +214,7 @@ def audit_directory(directory: Path, verbose: bool = False) -> list[FunctionInfo
     return all_functions
 
 
-def generate_report(
-    functions: list[FunctionInfo], verbose: bool = False
-) -> dict:
+def generate_report(functions: list[FunctionInfo], verbose: bool = False) -> dict:
     """Generate audit report."""
     # Filter to public functions only
     public_funcs = [f for f in functions if f.is_public]

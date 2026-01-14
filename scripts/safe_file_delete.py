@@ -80,7 +80,7 @@ def check_git_history(file_path: Path, project_root: Path) -> dict:
             ["git", "log", "--oneline", "-5", "--", str(file_path)],
             cwd=project_root,
             capture_output=True,
-            text=True
+            text=True,
         )
 
         commits = result.stdout.strip().split("\n") if result.stdout.strip() else []
@@ -90,14 +90,14 @@ def check_git_history(file_path: Path, project_root: Path) -> dict:
             ["git", "log", "-1", "--format=%ci", "--", str(file_path)],
             cwd=project_root,
             capture_output=True,
-            text=True
+            text=True,
         )
         last_modified = result2.stdout.strip() if result2.stdout.strip() else "Unknown"
 
         return {
             "recent_commits": len(commits),
             "last_modified": last_modified,
-            "commits": commits[:3]
+            "commits": commits[:3],
         }
     except (OSError, subprocess.CalledProcessError):
         return {"recent_commits": 0, "last_modified": "Unknown", "commits": []}
@@ -126,7 +126,7 @@ def run_link_check(project_root: Path) -> tuple[bool, str]:
         [sys.executable, str(check_script)],
         cwd=project_root,
         capture_output=True,
-        text=True
+        text=True,
     )
 
     success = "Broken links: 0" in result.stdout or result.returncode == 0
@@ -139,17 +139,12 @@ def main():
     )
     parser.add_argument("file", help="File to delete")
     parser.add_argument(
-        "--force", action="store_true",
-        help="Delete even if references exist"
+        "--force", action="store_true", help="Delete even if references exist"
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
-        help="Show what would happen without deleting"
+        "--dry-run", action="store_true", help="Show what would happen without deleting"
     )
-    parser.add_argument(
-        "--no-backup", action="store_true",
-        help="Skip creating backup"
-    )
+    parser.add_argument("--no-backup", action="store_true", help="Skip creating backup")
 
     args = parser.parse_args()
 
@@ -189,8 +184,8 @@ def main():
     history = check_git_history(file_path, project_root)
     print(f"   Last modified: {history['last_modified']}")
     print(f"   Recent commits: {history['recent_commits']}")
-    if history['commits']:
-        for commit in history['commits']:
+    if history["commits"]:
+        for commit in history["commits"]:
             print(f"     - {commit}")
     print()
 

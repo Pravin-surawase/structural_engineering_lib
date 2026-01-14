@@ -18,9 +18,7 @@ def main() -> int:
     line_count = len(lines)
 
     if line_count > MAX_LINES:
-        print(
-            f"ERROR: next-session-brief.md is {line_count} lines (max {MAX_LINES})."
-        )
+        print(f"ERROR: next-session-brief.md is {line_count} lines (max {MAX_LINES}).")
         return 1
 
     return 0

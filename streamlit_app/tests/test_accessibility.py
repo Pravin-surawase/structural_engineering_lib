@@ -30,7 +30,7 @@ class TestARIALabels:
         result = add_aria_label("test-button", "Click me")
         assert 'aria-label="Click me"' in result
         assert 'data-testid="test-button"' in result
-        assert 'role=' not in result
+        assert "role=" not in result
 
     def test_aria_label_with_role(self):
         """Test ARIA label with role."""

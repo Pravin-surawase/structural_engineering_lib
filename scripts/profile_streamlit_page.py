@@ -498,7 +498,9 @@ def format_complexity_report(pages: list[Path]) -> str:
         lines.append(f"   Lines: {metrics['lines_of_code']}")
         lines.append(f"   Functions: {metrics['function_count']}")
         lines.append(f"   Streamlit calls: {metrics['streamlit_calls']}")
-        lines.append(f"   Loops: {metrics['loop_count']} (nested: {metrics['nested_loops']})")
+        lines.append(
+            f"   Loops: {metrics['loop_count']} (nested: {metrics['nested_loops']})"
+        )
         lines.append(f"   Complexity score: {metrics['complexity_score']}")
 
     lines.append("\n" + "=" * 60)

@@ -241,9 +241,7 @@ class PerformanceVisitor(ast.NodeVisitor):
         """Check for string concatenation in loops."""
         if self.loop_depth > 0 and isinstance(node.op, ast.Add):
             # Check if adding strings
-            if isinstance(node.left, ast.Constant) and isinstance(
-                node.left.value, str
-            ):
+            if isinstance(node.left, ast.Constant) and isinstance(node.left.value, str):
                 self._add_issue(
                     line=node.lineno,
                     severity=Severity.MEDIUM,
@@ -315,7 +313,10 @@ class PerformanceVisitor(ast.NodeVisitor):
         # Check both full name and last part (method name)
         name_parts = func_name.split(".")
         last_part = name_parts[-1] if name_parts else func_name
-        if last_part in self.LOOP_SAFE_FUNCTIONS or func_name in self.LOOP_SAFE_FUNCTIONS:
+        if (
+            last_part in self.LOOP_SAFE_FUNCTIONS
+            or func_name in self.LOOP_SAFE_FUNCTIONS
+        ):
             return False
 
         return func_name in self.EXPENSIVE_FUNCTIONS or any(
@@ -481,7 +482,9 @@ class PerformanceChecker:
                 Severity.MEDIUM: 2,
                 Severity.LOW: 3,
             }
-            sorted_issues = sorted(self.issues, key=lambda x: severity_order[x.severity])
+            sorted_issues = sorted(
+                self.issues, key=lambda x: severity_order[x.severity]
+            )
 
             current_file = ""
             for issue in sorted_issues:
@@ -577,9 +580,7 @@ def main() -> None:
 
     # Determine exit code
     summary = checker.get_summary()
-    critical_high = (
-        summary["by_severity"]["critical"] + summary["by_severity"]["high"]
-    )
+    critical_high = summary["by_severity"]["critical"] + summary["by_severity"]["high"]
 
     if args.strict and checker.issues:
         sys.exit(1)

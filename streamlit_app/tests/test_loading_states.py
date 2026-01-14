@@ -15,7 +15,7 @@ from utils.loading_states import (
     add_loading_pulse,
     loading_context,
     show_loading_card,
-    add_shimmer_effect
+    add_shimmer_effect,
 )
 
 
@@ -38,10 +38,7 @@ class TestLoadingSkeleton:
     def test_skeleton_custom_styling(self):
         """Test skeleton with custom styling."""
         add_loading_skeleton(
-            height="150px",
-            count=3,
-            border_radius="12px",
-            margin="16px 0"
+            height="150px", count=3, border_radius="12px", margin="16px 0"
         )
 
     def test_skeleton_zero_count(self):
@@ -75,11 +72,7 @@ class TestLoadingSpinner:
 
     def test_spinner_all_custom(self):
         """Test spinner with all parameters customized."""
-        add_loading_spinner(
-            size="80px",
-            color="#003366",
-            message="Processing data..."
-        )
+        add_loading_spinner(size="80px", color="#003366", message="Processing data...")
 
     def test_spinner_empty_message(self):
         """Test spinner with empty message."""
@@ -177,11 +170,7 @@ class TestLoadingPulse:
 
     def test_pulse_all_custom(self):
         """Test pulse with all parameters."""
-        add_loading_pulse(
-            size="120px",
-            color="#003366",
-            message="Analyzing..."
-        )
+        add_loading_pulse(size="120px", color="#003366", message="Analyzing...")
 
 
 class TestLoadingContext:
@@ -280,7 +269,7 @@ class TestLoadingCard:
         show_loading_card(
             title="Analyzing Beam",
             description="This may take a moment...",
-            loader_type="spinner"
+            loader_type="spinner",
         )
 
 
@@ -315,6 +304,7 @@ class TestShimmerEffect:
 # ============================================================================
 # INTEGRATION TESTS
 # ============================================================================
+
 
 class TestLoadingIntegration:
     """Integration tests for loading states."""
