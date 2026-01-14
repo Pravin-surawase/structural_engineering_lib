@@ -2,8 +2,8 @@
 
 **Professional Streamlit dashboard for RC beam design per IS 456:2000**
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue)
-![Python](https://img.shields.io/badge/python-3.10+-blue)
+![Version](https://img.shields.io/badge/version-0.17.0-blue)
+![Python](https://img.shields.io/badge/python-3.9+-blue)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.30+-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -11,11 +11,16 @@
 
 ## 🎯 Features
 
-- **🏗️ Interactive Beam Design** - Complete flexure, shear, and detailing design
+- **🏗️ Interactive Beam Design** - Complete flexure, shear, and detailing design with live visualization
 - **💰 Cost Optimization** - Find the most economical bar arrangements
-- **✅ Compliance Checking** - Automated IS 456 clause verification
-- **📊 Visual Feedback** - Interactive cross-section diagrams and utilization gauges
-- **📚 Export Options** - DXF drawings, bar bending schedules, design reports
+- **✅ Compliance Checking** - Automated IS 456 clause verification with pass/fail status
+- **📋 BBS Generator** - Generate bar bending schedules with quantity summaries
+- **📐 DXF Export** - CAD-ready drawings for beam sections and elevations
+- **📄 PDF Reports** - Professional design reports with IS 456 references
+- **📊 Batch Design** - Process multiple beams from CSV/Excel files
+- **🔬 Advanced Analysis** - Deflection, crack width, ductility analysis
+- **📚 Learning Center** - Interactive tutorials and IS 456 references
+- **📖 Clause Traceability** - Full IS 456 clause references for all calculations
 
 ---
 
@@ -30,7 +35,7 @@ No installation needed!
 ### Option 2: Local Installation
 
 **Requirements:**
-- Python 3.10 or higher
+- Python 3.9 or higher
 - pip package manager
 
 **Installation:**
@@ -38,12 +43,13 @@ No installation needed!
 ```bash
 # Clone repository
 git clone https://github.com/your-repo/structural-lib.git
-cd structural-lib/streamlit_app
+cd structural-lib
 
-# Install dependencies
-pip install -r requirements.txt
+# Install the library with all dependencies
+pip install -e Python[full]
 
 # Run app
+cd streamlit_app
 streamlit run app.py
 ```
 
@@ -63,13 +69,15 @@ The app will open in your browser at `http://localhost:8501`
 3. **Click** "Analyze Design" to get instant results
 4. **Review** results in tabs:
    - Summary (key metrics, utilization)
-   - Visualization (cross-section diagram)
-   - Compliance (IS 456 checks)
-5. **Export** if needed (DXF, BBS, PDF report)
+   - Visualization (cross-section diagram with stirrups)
+   - Cost Analysis (bar arrangement options)
+   - Compliance (IS 456 checks with clause references)
+   - Export (PDF, DXF, BBS)
+5. **Export** your design in your preferred format
 
 ### Example: 5m Simply Supported Beam
 
-```python
+```
 # Inputs
 Span: 5000 mm
 Width: 300 mm
@@ -87,12 +95,56 @@ Utilization: 65%
 
 ---
 
+## 📁 Project Structure
+
+```
+streamlit_app/
+├── app.py                              # Home page
+├── pages/
+│   ├── 01_🏗️_beam_design.py            # Main design page
+│   ├── 02_💰_cost_optimizer.py          # Cost optimization
+│   ├── 03_✅_compliance.py              # IS 456 compliance checking
+│   ├── 04_📚_documentation.py           # Help & examples
+│   ├── 05_📋_bbs_generator.py           # Bar bending schedule
+│   ├── 06_📐_dxf_export.py              # CAD export
+│   ├── 07_📄_report_generator.py        # PDF reports
+│   ├── 08_📊_batch_design.py            # Batch processing
+│   ├── 09_🔬_advanced_analysis.py       # Serviceability analysis
+│   ├── 10_📚_learning_center.py         # Tutorials & learning
+│   ├── 11_🎬_demo_showcase.py           # Demo & showcase
+│   └── 12_📖_clause_traceability.py     # IS 456 clause references
+├── components/
+│   ├── __init__.py
+│   ├── inputs.py                       # Input widgets
+│   ├── visualizations.py               # Plotly charts & beam diagrams
+│   └── results.py                      # Result displays
+├── utils/
+│   ├── __init__.py
+│   ├── api_wrapper.py                  # Cached API calls
+│   ├── design_system.py                # Design tokens (colors, typography)
+│   ├── global_styles.py                # CSS styling
+│   ├── theme_manager.py                # Theme management
+│   ├── styled_components.py            # Reusable styled components
+│   ├── layout.py                       # Page layout utilities
+│   └── pdf_generator.py                # PDF report generation
+├── tests/
+│   ├── conftest.py                     # Test fixtures
+│   ├── test_page_smoke.py              # Page import tests
+│   ├── test_critical_journeys.py       # E2E journey tests
+│   └── test_page_fixes_2026_01_13.py   # Regression tests
+├── .streamlit/
+│   └── config.toml                     # Theme configuration
+├── requirements.txt                    # Dependencies
+└── README.md                           # This file
+```
+
+---
+
 ## 🎨 Design Philosophy
 
 ### Theme: IS 456 Professional
 
-- **Colors:** Navy blue (#003366), Orange (#FF6600)
-- **Colorblind-safe:** Tested with deuteranopia, protanopia, tritanopia
+- **Colors:** Navy blue (#003366), Orange (#FF6600), Colorblind-safe palette
 - **Accessibility:** WCAG 2.1 Level AA compliant
 - **Typography:** Inter (body), JetBrains Mono (code/numbers)
 
@@ -101,78 +153,8 @@ Utilization: 65%
 - **Input-Output Split:** Sidebar for inputs, main area for results
 - **Progressive Disclosure:** Advanced options hidden in expanders
 - **Real-Time Validation:** Immediate feedback as you type
-- **Friendly Errors:** No Python stack traces, clear fix suggestions
-
----
-
-## 📁 Project Structure
-
-```
-streamlit_app/
-├── app.py                          # Home page
-├── pages/
-│   ├── 01_🏗️_beam_design.py        # Main design page
-│   ├── 02_💰_cost_optimizer.py      # Cost optimization
-│   ├── 03_✅_compliance.py          # Compliance checking
-│   └── 04_📚_documentation.py       # Help & examples
-├── components/
-│   ├── __init__.py
-│   ├── inputs.py                   # Input widgets
-│   ├── visualizations.py           # Plotly charts
-│   └── results.py                  # Result displays
-├── utils/
-│   ├── __init__.py
-│   ├── api_wrapper.py              # Cached API calls
-│   └── validation.py               # Input validation
-├── .streamlit/
-│   └── config.toml                 # Theme configuration
-├── requirements.txt                # Dependencies
-└── README.md                       # This file
-```
-
----
-
-## 🔧 Configuration
-
-### Theme Customization
-
-Edit `.streamlit/config.toml`:
-
-```toml
-[theme]
-primaryColor = "#FF6600"          # Orange (buttons, highlights)
-backgroundColor = "#FFFFFF"        # White
-secondaryBackgroundColor = "#F0F2F6"  # Light gray
-textColor = "#003366"              # Navy blue
-font = "sans serif"
-```
-
-### Performance Tuning
-
-```toml
-[server]
-maxUploadSize = 200                # Max file size (MB)
-port = 8501                        # Port number
-
-[client]
-toolbarMode = "minimal"            # Toolbar mode
-showErrorDetails = true            # Show error details
-```
-
----
-
-## 📊 Performance
-
-- **Cold Start:** <3 seconds (first load)
-- **Page Rerun:** <500ms (with caching)
-- **Design Computation:** 0.5-2s (first time), <10ms (cached)
-- **Chart Rendering:** <100ms
-
-**Optimization:**
-- All design computations cached (`@st.cache_data`)
-- Chart generation cached
-- Lazy loading of heavy modules
-- Session state for form persistence
+- **Friendly Errors:** Clear messages with fix suggestions
+- **Practical Values:** Stirrup spacings rounded to construction-friendly values (75, 100, 125... 300mm)
 
 ---
 
@@ -181,48 +163,57 @@ showErrorDetails = true            # Show error details
 ### Run Tests
 
 ```bash
-# Unit tests
+# All Streamlit tests
+cd streamlit_app
 pytest tests/ -v
 
-# Component tests
-pytest tests/test_components.py -v
+# Specific test file
+pytest tests/test_page_fixes_2026_01_13.py -v
 
-# Integration tests
-pytest tests/test_integration.py -v
+# Core library tests
+cd ../Python
+pytest tests/ -v
 ```
 
-### Manual Testing
+### Static Analysis
 
-1. Start app: `streamlit run app.py`
-2. Navigate to each page
-3. Test with various inputs
-4. Verify results match hand calculations
-5. Check responsive design (resize browser)
+```bash
+# Streamlit-specific scanner (checks for runtime errors)
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+
+# Pylint
+.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
+```
+
+---
+
+## 📊 Test Coverage
+
+| Test Category | Tests | Description |
+|---------------|-------|-------------|
+| Page Smoke | 43 | Import tests, structure, design system |
+| Critical Journeys | 16 | E2E user workflows |
+| Regression | 20 | Bug fix verification |
+| Integration | 25+ | API wrapper, components |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions welcome! Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
 
 ### Development Setup
 
 ```bash
 # Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install dev dependencies
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
+pip install -e Python[dev,full]
 
 # Run in development mode
+cd streamlit_app
 streamlit run app.py --server.runOnSave true
 ```
 
@@ -230,57 +221,16 @@ streamlit run app.py --server.runOnSave true
 
 ## 📚 Documentation
 
-- **User Guide:** [docs/user-guide.md](../docs/getting-started/user-guide.md)
-- **API Reference:** [docs/api-reference.md](../docs/reference/api-reference.md)
-- **Design Decisions:** [docs/research/](docs/research/)
-- **IS 456 Quick Reference:** [docs/is456-quick-ref.md](docs/is456-quick-ref.md)
-
----
-
-## 🐛 Troubleshooting
-
-### App won't start
-
-```bash
-# Check Python version (need 3.10+)
-python --version
-
-# Reinstall dependencies
-pip install -r requirements.txt --force-reinstall
-
-# Check Streamlit version
-streamlit --version
-```
-
-### Design computation slow
-
-- Check if caching is working (see terminal output)
-- Clear cache: Settings → Clear Cache → Rerun
-- Check system resources (CPU, memory)
-
-### Import errors
-
-```bash
-# Ensure structural_lib is installed
-pip install -e ../Python  # From streamlit_app directory
-
-# Or install from PyPI
-pip install structural-lib-is456
-```
+- **User Guide:** [docs/getting-started/](../docs/getting-started/)
+- **API Reference:** [docs/reference/api.md](../docs/reference/api.md)
+- **Architecture:** [docs/architecture/](../docs/architecture/)
+- **Streamlit Research:** [docs/research/](../docs/research/)
 
 ---
 
 ## 📝 License
 
 MIT License - see [LICENSE](../LICENSE) for details
-
----
-
-## 👥 Authors
-
-**STREAMLIT UI SPECIALIST (Agent 6)**
-- Research Phase: Phase 1 (4,700+ lines)
-- Implementation Phase: Phase 2 (ongoing)
 
 ---
 
@@ -293,16 +243,8 @@ MIT License - see [LICENSE](../LICENSE) for details
 
 ---
 
-## 📞 Support
-
-- **Issues:** [GitHub Issues](https://github.com/your-repo/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/your-repo/discussions)
-- **Email:** support@example.com
-
----
-
-**Version:** 0.1.0
-**Status:** ✅ Phase 1 Complete (Project Setup)
-**Next:** Phase 2 - Component Implementation
+**Version:** 0.17.0
+**Status:** ✅ Production Ready
+**Python:** 3.9+
 
 Built with ❤️ using Streamlit
