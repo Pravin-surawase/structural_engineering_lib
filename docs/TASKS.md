@@ -2,267 +2,72 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-13 (v0.17.0 Released!)
+**Updated:** 2026-01-17 (Session 28)
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
 ---
 
 ## Rules (read first)
-- **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks. For complex features, keep WIP=1.
-- Move tasks between sections; do not duplicate.
-- **Umbrella tasks:** Keep a single umbrella task in Active/Up Next and list included TASK IDs in description.
-- Definition of Done: tests pass, docs updated, CHANGELOG/RELEASES updated when needed.
-- **Archive rule:** Move "Recently Done" items to [docs/_archive/tasks-history.md](_archive/tasks-history.md) after 20+ items or 14+ days old. Keep last 10-15 items visible.
+- **WIP = 2** (max 2 active tasks). Use WIP=2 only for independent tasks.
+- Definition of Done: tests pass, docs updated, scanner passes.
+- **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items.
 
 ---
 
 ## Current Release
 
-- **Version:** v0.17.5 ✅ Released (2026-01-15)
-- **Focus:** Multi-Objective Optimization + API Validation Infrastructure
-- **Next:** v0.18.0 (Q1 2026, Weeks 3-4)
-
----
-
-## v0.17.5 Release Summary (2026-01-15)
-
-**Key Features:**
-- ✅ Multi-Objective Pareto Optimization (NSGA-II algorithm)
-- ✅ API Signature Validation in CI/pre-commit
-- ✅ Cost Optimizer UI Enhancement
-- ✅ 1317 tests passing
-
-**Commits:**
-- `a99aa73` - ci: add API signature validation to pre-commit and CI workflow
-- `d7f996f` - chore(release): bump version to 0.17.5
-
----
-
-## v0.16.6 Maintenance Release - Python 3.11 Baseline
-
-**Goal:** Raise minimum supported Python to 3.11 for faster runtime and simpler maintenance.
-
-**Rationale (validated in repo):**
-- CI already tests 3.11/3.12 (`.github/workflows/python-tests.yml`).
-- Fast checks still run 3.9 only; dropping 3.9/3.10 cuts matrix 4 → 2 (≈50% CI time).
-- Tooling already flags 3.9 compatibility in docs and lint config (ruff/mypy targets).
-
-**Phase 1: Policy + Config (Low Risk)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-450** | Update Python baseline to 3.11 (pyproject requires-python, classifiers, ruff target-version, mypy python_version) | DEVOPS | 1-2 hrs | 🔴 HIGH | ✅ Session 19 |
-| **TASK-451** | Update docs for new Python baseline (README, copilot-instructions, getting-started) | DOCS | 1 hr | 🟠 MEDIUM | ✅ Session 19 |
-
-**Phase 2: CI + Automation (Medium Risk)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-452** | Update CI to 3.11 baseline (fast-checks uses 3.11, pytest matrix 3.11/3.12) | DEVOPS | 1 hr | 🔴 HIGH | ✅ Session 19 |
-| **TASK-453** | Add python-version consistency check (script + CI hook) | DEVOPS | 1-2 hrs | 🟠 MEDIUM | ✅ Session 19 |
-
-**Phase 3: Code & Lint Cleanup (If Needed)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-454** | Run ruff/mypy with py311 targets; fix any new lint/type issues | DEV | 1-2 hrs | 🟠 MEDIUM | ✅ Session 19 |
-
-**Phase 4: Release v0.16.6**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-455** | Release v0.16.6 (pre-release checks, version bump, changelog, release docs) | RELEASE | 1-2 hrs | 🔴 HIGH | ✅ Session 19 |
-| **TASK-456** | README update (WIP banner + active roadmap links) | DOCS | 30m | 🟠 MEDIUM | ✅ Session 19 |
-
----
-
-## v0.17.0 Release Target (Q1 2026 - Weeks 2-4)
-
-**Goal:** Implement first professional engineering requirements
-
-**Focus:** Security, legal compliance, traceability, developer productivity
-
-**Key Deliverables:**
-1. ✅ Security hardening baseline (input validation audit, dependency scanning) - **PR #331**
-2. ✅ Professional liability framework (disclaimers, templates, certification guidance) - **DONE**
-3. ✅ Code clause database (JSON DB, @clause decorator, traceability system) - **PR #333 merged**
-4. ✅ Interactive testing UI (Streamlit clause traceability page) - **PR #334 merged**
-
-**Success Metrics:**
-- Security: Input validation audit complete, dependency scanning in CI ✅
-- Legal: MIT+engineering disclaimer, templates in docs/legal/ ✅
-- Traceability: Clause references in 80%+ design functions
-- Developer UX: Working Streamlit app for manual validation
-- API grade: A- → A (93/100)
+- **Version:** v0.17.5 ✅ Released
+- **Focus:** Multi-Objective Optimization + API Validation
+- **Next:** v0.18.0 (Q1 2026)
 
 ---
 
 ## Active
 
-### TASK-601: Enhanced AppTest & Modern Streamlit Patterns (Current Session)
+### TASK-602: Modern Streamlit Patterns Adoption (Session 28)
 
-> **Goal:** Improve Streamlit testing and adopt modern patterns
-> **Branch:** task/TASK-601
-> **Timeline:** Session 22 (2026-01-16)
+> **Goal:** Apply modern Streamlit patterns (st.fragment, st.dialog, st.badge) to key pages
+> **Research:** [streamlit-modern-patterns-research.md](research/streamlit-modern-patterns-research.md)
+> **Timeline:** Session 28 (2026-01-17)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-601.1** | Enhanced AppTest conftest (12 page fixtures, AppTestHelper class) | MAIN | 1h | 🔴 HIGH | ✅ Complete |
-| **TASK-601.2** | Integration workflow tests (14 new tests) | MAIN | 1h | 🔴 HIGH | ✅ Complete |
-| **TASK-601.3** | Fragment utilities (st.fragment, st.dialog patterns) | MAIN | 1h | 🟠 MEDIUM | ✅ Complete |
-| **TASK-601.4** | Fragment utility tests (15 tests) | MAIN | 30m | 🟠 MEDIUM | ✅ Complete |
-| **TASK-601.5** | Nightly workflow: Add AppTest + Streamlit scanner | MAIN | 30m | 🟠 MEDIUM | ✅ Complete |
-| **TASK-601.6** | Modern patterns research document | MAIN | 1h | 🟠 MEDIUM | ✅ Complete |
-| **TASK-601.7** | Code quality assessment (8.4/10 Senior Level) | MAIN | 30m | 🟠 MEDIUM | ✅ Complete |
+| **TASK-602.1** | Add CacheStatsFragment to beam_design.py (auto-refresh 10s) | MAIN | 30m | 🔴 HIGH | ✅ `88ae05f` |
+| **TASK-602.2** | Add show_status_badge for SAFE/UNSAFE display | MAIN | 15m | 🔴 HIGH | ✅ `88ae05f` |
+| **TASK-602.4** | Add st.badge to cost_optimizer.py Pareto results | MAIN | 30m | 🟠 MEDIUM | ✅ `9425bc0` |
+| **TASK-602.5** | Extract shared constants to utils/constants.py | MAIN | 45m | 🟠 MEDIUM | ✅ `f01ba3f` |
+| **TASK-602.6** | Clean TASKS.md and update SESSION_LOG | MAIN | 30m | 🟠 MEDIUM | ⏳ In Progress |
 
 **Key Deliverables:**
-- ✅ 60 AppTests passing (46 original + 14 new integration tests)
-- ✅ Fragment utilities module (`utils/fragments.py`)
-- ✅ Nightly CI enhanced with UI testing
-- ✅ Research document: [streamlit-modern-patterns-research.md](research/streamlit-modern-patterns-research.md)
-- ✅ Code quality rating: 8.4/10 (Senior Developer Level)
+- ✅ Auto-refreshing cache stats fragment (replaces manual 30-line expander)
+- ✅ Modern badge-based status indicators
+- ✅ Centralized constants file for consistency
+- ⏳ Clean task board focused on current work
 
 ---
 
-### v0.18.0 Core Library Expansion
+## Up Next (Session 29+)
 
-> **Goal:** Expand testing and templating capabilities for v0.18.0 release
-> **Research:** [v018-library-expansion-feasibility.md](research/v018-library-expansion-feasibility.md)
-> **Timeline:** Week 3-4 January 2026
+### TASK-603: Remaining Modern Patterns
+
+> **Goal:** Continue modern Streamlit patterns across remaining pages
+> **Estimated:** 4-6 hours across 2-3 sessions
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-520** | Hypothesis property-based testing (strategies + 43 tests) | DEV | 4h | 🟠 MEDIUM | ✅ Complete |
-| **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests) | DEV | 1h | 🟠 MEDIUM | ✅ Complete |
+| **TASK-603.1** | Add st.fragment to input sections (3-5 pages) | MAIN | 2h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-603.2** | Add st.dialog for export modals | MAIN | 1h | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-603.3** | Apply CacheStatsFragment to other cached pages | MAIN | 1h | 🟡 LOW | ⏳ Queued |
+| **TASK-603.4** | Performance optimization with fragments | MAIN | 1h | 🟡 LOW | ⏳ Queued |
+
+### v0.18.0 Pending Work
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-502** | VBA test automation (smoke tests) | DEVOPS | 6-8h | 🔴 HIGH | ⏳ Deferred |
 | **TASK-522** | Add Jinja2 report templates (3 templates, 25 tests) | DEV | 4h | 🟠 MEDIUM | ✅ PR #360 |
-| **TASK-523** | Hypothesis docs + CI integration | DOCS | 1h | 🟠 MEDIUM | ✅ PR #358 Merged |
-| **TASK-524** | Beam slenderness check (IS 456 Cl 23.3, 50 tests) | DEV | 3h | 🟠 MEDIUM | ✅ PR #359 |
-
----
-
-### v0.18.0 Pre-Release: Critical Infrastructure (Phase 1)
-
-> **Goal:** Fix 5 critical infrastructure gaps BEFORE v0.18.0 to prevent post-release firefighting
-> **Research:** [critical-infrastructure-gaps-v018.md](research/critical-infrastructure-gaps-v018.md)
-> **Timeline:** 19-27 hours (2.4-3.4 work days)
-> **ROI:** Fix now saves 296-456 hours of future reactive work (11-17x return)
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-501** | Cross-platform CI (macOS + Windows matrix) | DEVOPS | 4-6h | 🔴 P0-CRITICAL | ✅ Complete |
-| **TASK-502** | VBA test automation (smoke tests) | DEVOPS | 6-8h | 🔴 P0-CRITICAL | ⏳ Deferred |
-| **TASK-503** | Performance regression tracking in CI | DEVOPS | 3-4h | 🔴 P0-CRITICAL | ✅ Complete |
-| **TASK-504** | Streamlit integration tests (5-8 tests) | DEV | 4-6h | 🔴 P0-CRITICAL | ✅ Complete |
-| **TASK-505** | User feedback setup (PyPI stats, survey) | DOCS | 2-3h | 🔴 P0-CRITICAL | ✅ Complete |
-
-**TASK-501 Subtasks (Cross-Platform CI):**
-- [x] 501.1: Research current workflow structure (all 13 use ubuntu-latest)
-- [x] 501.2: Add matrix strategy to python-tests.yml (ubuntu, windows, macos × 3.11, 3.12)
-- [x] 501.3: Handle Windows path differences (PowerShell packaging check)
-- [x] 501.4: Test and debug macOS-specific issues if any (excluded 3.11 on macOS)
-- [x] 501.5: Update coverage to run only on ubuntu+3.12
-
-**TASK-503 Subtasks (Performance Tracking):**
-- [x] 503.1: Review existing test_benchmarks.py (13 benchmarks, pytest-benchmark)
-- [x] 503.2: Add benchmark job to nightly.yml workflow
-- [x] 503.3: Integrate github-action-benchmark for trend tracking + alerts
-- [x] 503.4: Set alert threshold (150% = 50% slower triggers alert)
-- [x] 503.5: Add benchmark artifact storage (90 day retention)
-
-**TASK-504 Subtasks (Streamlit Integration Tests):**
-- [x] 504.1: Create test_critical_journeys.py with 8 user journey test classes
-- [x] 504.2: Add 16 tests covering core value proposition (beam design)
-- [x] 504.3: Add error recovery tests (invalid inputs, zero values)
-- [x] 504.4: All tests pass (11 pass, 5 skip for optional features)
-
-**TASK-505 Subtasks (User Feedback):**
-- [x] 505.1: Add PyPI download tracking documentation (pypistats.org)
-- [x] 505.2: Convert issue templates to GitHub Issue Forms (YAML)
-- [x] 505.3: Add auto-labeling to issue templates
-- [x] 505.4: Add feedback links to README + Streamlit sidebar
-- [x] 505.5: Add issue template chooser (config.yml)
-
-**TASK-502 Notes (VBA Test Automation - Deferred):**
-- Requires Windows CI runner or cross-platform VBA tooling
-- Estimated 6-8 hours for proper implementation
-- Will be addressed in v0.18.0 or as separate PR
-
-**TASK-457 Details:****
-- **Research:** Documentation redundancy analysis complete (525 files → target <400)
-- **Phase 1 (Quick Wins):** ✅ **COMPLETE** - 46 files archived
-- **Phase 2 (Streamlit/Agent Cleanup):** ✅ **COMPLETE** - 91 files archived (98% reduction in streamlit_app/docs)
-  - streamlit_app/docs: 93 → 2 files
-  - agents/agent-9: SUMMARY files archived
-  - 48 broken links fixed
-- **Phase 3 (Deduplication):** Merge remaining similar file pairs (2-3 hrs)
-- **Expected Impact:** 35%+ reduction, 10-15 min saved per agent session
-
-**TASK-458 Details:**
-- **Phase 1:** ✅ Research + README auto-update in end_session.py + create_doc.py script
-- **Phase 2:** ✅ Pre-commit metadata check (warning mode) - `scripts/check_doc_metadata.py`
-- **Phase 3:** ⏳ Gradual metadata migration (~150 docs migrated, ~150 remaining)
-  - Completed: reference/, planning/, guidelines/, contributing/, architecture/, getting-started/
-  - Remaining: research/, _archive/, specs/, adr/
-- **Automation Discovery:** Created `scripts/index.json` (128 scripts) + `workflows/README.md` (12 workflows)
-- **Documentation:** See [metadata-migration-strategy.md](research/metadata-migration-strategy.md)
-
----
-
-## Up Next
-
-### Guide Consolidation (Complete)
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **DOC-ONB-01** | Consolidate onboarding guides (bootstrap + workflow) | DOCS | 3h | 🟠 MEDIUM | ✅ 2026-01-13 |
-| **DOC-ONB-02** | Update cross-links + index references | DOCS | 1h | 🟡 LOW | ✅ 2026-01-13 |
-
-**Result:** 4 guides → 3 guides (25% reduction), 1,404 → 1,119 active lines, clear hierarchy
-
-### Improvements I recommend (compact, high-value)
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **IMP-02** | Add `collect_diagnostics.py` reminder to `agent_start.sh` and `end_session.py` failure paths | DEVOPS | 30m | 🟡 LOW | ✅ 2026-01-13 |
-| **IMP-03** | Add a debug snapshot checklist to handoff docs (include logs + diagnostics bundle) | DOCS | 30m | 🟡 LOW | ✅ 2026-01-13 |
-
-### v0.17.0 - Critical Path (Complete)
-
-All core deliverables are complete (TASK-272/273/274/275). See `docs/_archive/tasks-history.md`.
-
-### v0.18+ - Professional Features Pipeline
-
-> **Goal:** Build on v0.17.0 foundation with advanced professional features
-> **Timeline:** Q1-Q2 2026
-
-TASK-276-279 are complete (Session 19). Streamlit integration PR is in progress; see
-`streamlit_app/utils/input_bridge.py`, `streamlit_app/components/report_export.py`,
-and `streamlit_app/tests/test_input_bridge.py`.
-
-### v0.17.5 - Code Quality & Automation Enhancement (Agent 6 Focus)
-
-> **Goal:** Improve scanner accuracy, create developer guidelines, enhance automation
-> **Research:** [streamlit-code-quality-research.md](research/streamlit-code-quality-research.md), [streamlit-code-files-analysis.md](research/streamlit-code-files-analysis.md)
-> **Onboarding:** [agent-6-comprehensive-onboarding.md](agents/guides/agent-6-comprehensive-onboarding.md)
-> **Timeline:** Week 2-3, January 2026
-> **Owner:** Agent 6 (Streamlit Specialist)
-
-**Codebase Stats:** 12 pages (6,090 lines) + 26 utilities (11,312 lines) + 6 components (2,645 lines) = ~20,000 lines
-
-**Phase A-D:** ✅ Complete (archived to `docs/_archive/tasks-history.md`)
-
-**Phase E: True Positive Fixes (from code analysis)**
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-436** | Fix session_manager.py lines 675-676 int() error handling | AGENT_6 | 15m | 🟠 MEDIUM | ⏳ Queued (false positive - dataclass attrs) |
-
-### v0.18+ - Governance & Observability (Agent 9)
-
-> **Goal:** 80/20 governance cadence, proactive monitoring, sustainable velocity
-> **Dependencies:** Phase A+B+C complete
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-284** | Weekly Governance Sessions (80/20 rule) | AGENT_9 | 3h | 🟠 P1-High | ⏳ Queued |
-| **TASK-285** | Metrics Dashboard (trending, alerts) | AGENT_9 | 4h | 🟡 P2-Medium | ⏳ Blocked by 284 |
-| **TASK-286** | Leading Indicator Alerts (6 metrics) | AGENT_9 | 2h | 🟡 P2-Medium | ⏳ Blocked by 285 |
+| **TASK-284** | Weekly Governance Sessions (80/20 rule) | AGENT_9 | 3h | 🟠 MEDIUM | ⏳ Queued |
 
 ---
 
