@@ -315,9 +315,8 @@ def get_chart_config(interactive: bool = True) -> Dict[str, Any]:
         }
 
 
-def apply_theme(fig, dark_mode: bool = False) -> None:
-    """
-    Apply IS456 theme to a Plotly figure.
+def apply_theme(fig: Any, dark_mode: bool = False) -> None:
+    """Apply IS456 theme to a Plotly figure.
 
     Args:
         fig: Plotly figure object

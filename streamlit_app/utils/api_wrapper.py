@@ -645,7 +645,7 @@ def cached_smart_analysis(
     }
 
 
-def clear_cache():
+def clear_cache() -> None:
     """Clear all cached computations."""
     st.cache_data.clear()
 

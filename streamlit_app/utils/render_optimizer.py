@@ -14,9 +14,8 @@ class RenderBatcher:
     def __init__(self):
         self._batches: Dict[str, List[Callable]] = {}
 
-    def add_to_batch(self, batch_id: str, render_func: Callable):
-        """
-        Add render function to a batch.
+    def add_to_batch(self, batch_id: str, render_func: Callable) -> None:
+        """Add render function to a batch.
 
         Args:
             batch_id: Batch identifier
@@ -27,9 +26,8 @@ class RenderBatcher:
 
         self._batches[batch_id].append(render_func)
 
-    def render_batch(self, batch_id: str):
-        """
-        Render all functions in a batch.
+    def render_batch(self, batch_id: str) -> None:
+        """Render all functions in a batch.
 
         Args:
             batch_id: Batch to render
@@ -46,12 +44,12 @@ class RenderBatcher:
         # Clear batch after rendering
         self._batches[batch_id] = []
 
-    def clear_batch(self, batch_id: str):
+    def clear_batch(self, batch_id: str) -> None:
         """Clear a batch without rendering."""
         if batch_id in self._batches:
             self._batches[batch_id] = []
 
-    def clear_all(self):
+    def clear_all(self) -> None:
         """Clear all batches."""
         self._batches.clear()
 
@@ -60,9 +58,8 @@ class RenderBatcher:
 _render_batcher = RenderBatcher()
 
 
-def batch_render(batch_id: str):
-    """
-    Decorator to add function to render batch.
+def batch_render(batch_id: str) -> Callable[[Callable], Callable]:
+    """Decorator to add function to render batch.
 
     Usage:
         @batch_render('metrics_section')
@@ -71,10 +68,13 @@ def batch_render(batch_id: str):
 
     Args:
         batch_id: Batch identifier
+
+    Returns:
+        Decorator function
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> None:
             # Add to batch instead of immediate render
             _render_batcher.add_to_batch(batch_id, lambda: func(*args, **kwargs))
 
@@ -82,9 +82,8 @@ def batch_render(batch_id: str):
     return decorator
 
 
-def flush_render_batch(batch_id: str):
-    """
-    Flush (render) a specific batch.
+def flush_render_batch(batch_id: str) -> None:
+    """Flush (render) a specific batch.
 
     Args:
         batch_id: Batch to render
@@ -96,9 +95,8 @@ class FragmentManager:
     """Manage Streamlit fragments for partial rerenders."""
 
     @staticmethod
-    def create_isolated_fragment(func: Callable, run_every: Optional[float] = None):
-        """
-        Create isolated fragment that doesn't trigger full rerun.
+    def create_isolated_fragment(func: Callable, run_every: Optional[float] = None) -> Callable:
+        """Create isolated fragment that doesn't trigger full rerun.
 
         Args:
             func: Function to wrap in fragment
@@ -119,9 +117,8 @@ class FragmentManager:
             return func
 
     @staticmethod
-    def update_fragment_state(fragment_key: str, value: Any):
-        """
-        Update state for a specific fragment.
+    def update_fragment_state(fragment_key: str, value: Any) -> None:
+        """Update state for a specific fragment.
 
         Args:
             fragment_key: Fragment identifier
@@ -147,8 +144,7 @@ class FragmentManager:
 
 
 def optimize_render_cycle(func: Callable) -> Callable:
-    """
-    Decorator to optimize render cycle by skipping unnecessary rerenders.
+    """Decorator to optimize render cycle by skipping unnecessary rerenders.
 
     Usage:
         @optimize_render_cycle
@@ -163,7 +159,7 @@ def optimize_render_cycle(func: Callable) -> Callable:
         Optimized function
     """
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> Optional[Any]:
         # Create state key for this function
         func_key = f"_render_hash_{func.__name__}"
 
@@ -185,9 +181,8 @@ def optimize_render_cycle(func: Callable) -> Callable:
     return wrapper
 
 
-def debounce_render(delay_ms: int = 300):
-    """
-    Debounce rendering to avoid excessive rerenders.
+def debounce_render(delay_ms: int = 300) -> Callable[[Callable], Callable]:
+    """Debounce rendering to avoid excessive rerenders.
 
     Args:
         delay_ms: Delay in milliseconds
@@ -197,7 +192,7 @@ def debounce_render(delay_ms: int = 300):
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Optional[Any]:
             # Get last render time
             time_key = f"_debounce_{func.__name__}"
 
@@ -222,9 +217,8 @@ class ConditionalRenderer:
     """Render components conditionally to save resources."""
 
     @staticmethod
-    def render_if_visible(container_name: str, render_func: Callable):
-        """
-        Render only if container is visible/expanded.
+    def render_if_visible(container_name: str, render_func: Callable) -> None:
+        """Render only if container is visible/expanded.
 
         Args:
             container_name: Name of container
@@ -237,9 +231,8 @@ class ConditionalRenderer:
             render_func()
 
     @staticmethod
-    def render_if_changed(watch_keys: List[str], render_func: Callable):
-        """
-        Render only if watched state keys changed.
+    def render_if_changed(watch_keys: List[str], render_func: Callable) -> None:
+        """Render only if watched state keys changed.
 
         Args:
             watch_keys: List of state keys to watch
@@ -257,9 +250,8 @@ class ConditionalRenderer:
             st.session_state[hash_key] = watch_hash
 
     @staticmethod
-    def lazy_render(threshold_px: int = 800):
-        """
-        Lazy render components below the fold.
+    def lazy_render(threshold_px: int = 800) -> Callable[[Callable], Callable]:
+        """Lazy render components below the fold.
 
         Args:
             threshold_px: Pixel threshold for lazy loading
@@ -269,7 +261,7 @@ class ConditionalRenderer:
         """
         def decorator(func: Callable) -> Callable:
             @wraps(func)
-            def wrapper(*args, **kwargs):
+            def wrapper(*args, **kwargs) -> Any:
                 # In Streamlit, we can't directly detect scroll position
                 # So this is a simplified version that just renders
                 # In a real implementation, this would use JS
@@ -280,8 +272,7 @@ class ConditionalRenderer:
 
 
 def render_with_profiling(func: Callable) -> Callable:
-    """
-    Decorator to profile render time.
+    """Decorator to profile render time.
 
     Usage:
         @render_with_profiling
@@ -296,7 +287,7 @@ def render_with_profiling(func: Callable) -> Callable:
         Wrapped function that logs timing
     """
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> Any:
         start_time = time.time()
         result = func(*args, **kwargs)
         elapsed = (time.time() - start_time) * 1000
@@ -323,8 +314,7 @@ def render_with_profiling(func: Callable) -> Callable:
 
 
 def get_render_metrics() -> Dict[str, Any]:
-    """
-    Get render performance metrics.
+    """Get render performance metrics.
 
     Returns:
         Dictionary of metrics by function name
@@ -333,7 +323,7 @@ def get_render_metrics() -> Dict[str, Any]:
     return st.session_state.get(metrics_key, {})
 
 
-def clear_render_cache():
+def clear_render_cache() -> None:
     """Clear all render optimization caches."""
     keys_to_remove = [
         k for k in st.session_state.keys()

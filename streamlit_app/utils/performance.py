@@ -40,7 +40,7 @@ def lazy_load(component_fn: Callable) -> Callable:
     """
 
     @functools.wraps(component_fn)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> Any:
         # In Streamlit, we use expander or tabs for lazy loading
         # Components inside collapsed expanders are not rendered until expanded
         component_name = component_fn.__name__
@@ -168,7 +168,7 @@ def memoize_with_ttl(ttl_seconds: int = 3600) -> Callable:
         cache_key = f"memo_{func.__name__}"
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             # Initialize cache
             if cache_key not in st.session_state:
                 st.session_state[cache_key] = {}

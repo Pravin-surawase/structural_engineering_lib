@@ -79,7 +79,7 @@ class BeamDesignReportGenerator:
         self._setup_custom_styles()
         self.page_width, self.page_height = A4
 
-    def _setup_custom_styles(self):
+    def _setup_custom_styles(self) -> None:
         """Create custom paragraph styles for consistent formatting."""
         # Title style
         self.styles.add(ParagraphStyle(
@@ -578,7 +578,7 @@ class BeamDesignReportGenerator:
 
         return table
 
-    def _add_header_footer(self, canvas_obj, doc):
+    def _add_header_footer(self, canvas_obj: Any, doc: Any) -> None:
         """Add header and footer to pages."""
         canvas_obj.saveState()
 
