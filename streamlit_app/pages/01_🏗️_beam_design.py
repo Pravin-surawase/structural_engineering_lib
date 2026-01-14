@@ -65,6 +65,9 @@ from utils.loading_states import loading_context
 # IMPL-007: Performance optimizations
 from utils.caching import SmartCache
 
+# TASK-602: Modern Streamlit patterns (Session 28)
+from utils.fragments import CacheStatsFragment, show_status_badge
+
 # TASK-276-279 Integration: Professional report export
 from components.report_export import show_export_options, show_audit_trail_summary
 from utils.input_bridge import log_design_to_audit
@@ -330,43 +333,15 @@ with col_input:
 
     st.markdown("---")
 
-    # PHASE 1: Cache statistics and controls
+    # PHASE 1: Cache statistics and controls (TASK-602: uses auto-refresh fragment)
     with st.expander("⚙️ Advanced"):
-        st.markdown("#### 📊 Performance Cache Statistics")
-
-        # Display cache stats in 3 columns
-        cache_col1, cache_col2, cache_col3 = st.columns(3)
-
-        with cache_col1:
-            # Design cache stats
-            design_stats = design_cache.get_stats()
-            hit_rate = design_stats.get("hit_rate", 0.0)
-            st.metric(
-                "Design Cache Hit Rate",
-                f"{hit_rate:.1%}",
-                help="Percentage of design calculations served from cache",
-            )
-
-        with cache_col2:
-            # Visualization cache stats
-            viz_stats = viz_cache.get_stats()
-            viz_items = viz_stats.get("size", 0)
-            st.metric(
-                "Cached Visualizations",
-                viz_items,
-                help="Number of cached beam diagrams",
-            )
-
-        with cache_col3:
-            # Total memory usage
-            total_memory = design_stats.get("memory_mb", 0) + viz_stats.get(
-                "memory_mb", 0
-            )
-            st.metric(
-                "Cache Memory",
-                f"{total_memory:.1f} MB",
-                help="Total memory used by all caches",
-            )
+        # Use auto-refreshing cache stats fragment (updates every 10s without user action)
+        cache_stats_fragment = CacheStatsFragment(
+            design_cache=design_cache,
+            viz_cache=viz_cache,
+            refresh_interval=10,
+        )
+        cache_stats_fragment.render()
 
         st.markdown("---")
 
@@ -454,13 +429,12 @@ with col_preview:
         # Show full results (existing tabs - moved from main area)
         result = st.session_state.beam_inputs["design_result"]
 
-        # Success/Failure banner
-        if result.get("is_safe", False):
-            st.success("✅ **Design is SAFE** - Meets all IS 456 requirements")
-        else:
-            st.error(
-                "❌ **Design is UNSAFE** - Does not meet IS 456 requirements. Modify dimensions or materials."
-            )
+        # Success/Failure banner (TASK-602: modern st.badge pattern)
+        show_status_badge(
+            is_safe=result.get("is_safe", False),
+            safe_text="SAFE - Meets all IS 456 requirements",
+            unsafe_text="UNSAFE - Does not meet IS 456 requirements",
+        )
 
         st.divider()
 
