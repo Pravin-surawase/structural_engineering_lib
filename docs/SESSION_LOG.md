@@ -4,6 +4,64 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-15 — Session 26: Dynamic Stirrup Selection & AppTest Automation
+
+**Focus:** Fix stirrup diameter selection, PDF report data, and implement AppTest automation framework.
+
+### Summary
+
+**Commits (TASK-600 branch):**
+
+1. **feat(shear): Dynamic stirrup diameter selection** (`59a2c2a`)
+   - Added `select_stirrup_diameter()` function to shear.py
+   - Selection based on shear stress, beam size, and main bar diameter
+   - Added 8 unit tests for stirrup diameter selection
+
+2. **fix(pdf): Report data transformation** (`66b07c9`)
+   - Added `_transform_design_data_for_pdf()` to report_generator.py
+   - Maps api_wrapper output to PDF generator expected keys
+   - Handles back-calculation of load estimates from Mu
+
+3. **feat(test): AppTest automation framework** (`d880d28`)
+   - Created tests/apptest/ with official Streamlit AppTest framework
+   - 18 smoke tests verify all 12 pages load without exceptions
+   - 11 beam design tests verify widget interaction and calculations
+   - Updated parent conftest.py to preserve real streamlit module
+
+4. **ci: Add AppTest to Streamlit validation workflow** (`d786aca`)
+   - Added apptest-smoke job running 29 tests
+   - Added tests/apptest/ to workflow triggers
+   - Updated combined-report to include AppTest results
+
+5. **test(apptest): Cost optimizer and report generator tests** (`ba23b4b`)
+   - Added test_page_02_cost_optimizer.py with 9 tests
+   - Added test_page_07_report_generator.py with 8 tests
+   - Total AppTest count: 29 → 46 tests (+17)
+
+**Test Count:**
+- AppTest: 46 tests (new)
+- Total project tests: ~1363 (1317 + 46)
+
+**Research:**
+- Created `docs/research/streamlit-automation-testing-research.md`
+
+### Technical Decisions
+
+1. **AppTest Location:** Placed in `tests/apptest/` NOT `streamlit_app/tests/apptest/` to avoid the parent conftest.py that mocks streamlit module (required for unit tests but breaks AppTest).
+
+2. **Stirrup Selection Logic:** Based on IS 456 guidelines:
+   - 6mm for low shear (tv < 0.5 N/mm²)
+   - 8mm for standard cases
+   - 10mm for high shear or large beams
+   - 12mm for extreme shear (tv >= 1.5 N/mm²)
+
+### Next Actions
+- [ ] Merge PR for TASK-600
+- [ ] Continue with more page-specific AppTest tests if needed
+- [ ] Address remaining cosmetic UI issues
+
+---
+
 ## 2026-01-15 — Session 25: v0.17.5 Release & Infrastructure Hardening
 
 **Focus:** Release v0.17.5, add API signature validation to CI/pre-commit, validate all tests.
