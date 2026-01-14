@@ -107,7 +107,8 @@ class TestSlendernessRatioProperties:
     def test_inverse_with_width(self, l_eff: float, b1: float, b2: float) -> None:
         """Increasing width decreases slenderness ratio."""
         assume(b1 > 0 and b2 > 0)
-        assume(b1 != b2)
+        # Use a minimum difference to avoid floating-point near-equality issues
+        assume(abs(b1 - b2) > 0.01)
 
         r1 = calculate_slenderness_ratio(l_eff, b1)
         r2 = calculate_slenderness_ratio(l_eff, b2)

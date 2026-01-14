@@ -172,7 +172,7 @@
         "tc_nmm2": 0.62,
         "tc_max_nmm2": 2.8,
         "vus_kn": 85.83,
-        "spacing_mm": 189.30,
+        "spacing_mm": 175.0,
         "is_safe": true
       }
     },

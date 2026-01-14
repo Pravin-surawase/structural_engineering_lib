@@ -57,8 +57,9 @@
           "tv": 1.4814814814814814,
           "tc": 0.49173073525275585,
           "tc_max": 3.1,
-          "spacing": 146.50153137292136,
-          "is_safe": true
+          "spacing": 125.0,
+          "is_safe": true,
+          "_note": "spacing rounded to practical value (was 146.5mm)"
         }
       }
     },

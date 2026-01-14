@@ -72,6 +72,8 @@ def test_calculate_tv_handles_zero_bd():
 
 def test_shear_spacing_clamps_to_min_reinf_limit():
     # Cover the final clamp: spacing > max_spacing_min_reinf.
+    # Note: design_shear now rounds to practical spacing values (75, 100, 125, ...)
+    # for constructability. The calculated spacing of ~90.26mm rounds down to 75mm.
     from structural_lib import shear
 
     res = shear.design_shear(
@@ -85,8 +87,9 @@ def test_shear_spacing_clamps_to_min_reinf_limit():
     )
 
     assert res.is_safe is True
-    max_spacing_min_reinf = (0.87 * 415.0 * 100.0) / (0.4 * 1000.0)
-    assert res.spacing == pytest.approx(max_spacing_min_reinf)
+    # Calculated max_spacing_min_reinf = (0.87 * 415 * 100) / (0.4 * 1000) = 90.26mm
+    # This rounds down to the nearest standard spacing of 75mm
+    assert res.spacing == 75.0
 
 
 def test_ductile_geometry_failure_branches():

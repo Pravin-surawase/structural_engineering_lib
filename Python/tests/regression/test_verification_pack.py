@@ -97,7 +97,8 @@ def test_verification_shear_case_04():
     assert r9(res.tc) == 0.62
     assert r9(res.tc_max) == 2.8
     assert r9(res.vus) == 85.83
-    assert r9(res.spacing) == 189.295700804
+    # Spacing is rounded to practical construction value (was 189.295700804)
+    assert r9(res.spacing) == 175.0
 
 
 def test_verification_serviceability_deflection_case_05():
