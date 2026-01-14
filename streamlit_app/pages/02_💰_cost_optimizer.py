@@ -70,6 +70,7 @@ from utils.cost_optimizer_error_boundary import (
 
 # TASK-602: Modern Streamlit patterns
 from utils.fragments import show_status_badge
+from utils.constants import CONCRETE_GRADE_MAP, STEEL_GRADE_MAP
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -93,10 +94,6 @@ def initialize_session_state():
     if not safe_state.exists("cost_comparison_data"):
         safe_state.set("cost_comparison_data", [])
 
-
-# Module-level constants (moved out of function)
-CONCRETE_GRADE_MAP = {"M20": 20, "M25": 25, "M30": 30, "M35": 35, "M40": 40}
-STEEL_GRADE_MAP = {"Fe415": 415, "Fe500": 500, "Fe550": 550}
 
 
 def get_beam_design_inputs() -> Optional[dict]:

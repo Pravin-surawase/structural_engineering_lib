@@ -54,6 +54,11 @@ from components.results import (
     display_compliance_checks,
 )
 from utils.api_wrapper import cached_design
+from utils.constants import (
+    EXPOSURE_COVER_MAP,
+    DEFAULT_BEAM_INPUTS,
+    get_cover_for_exposure,
+)
 from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import (
     apply_dark_mode_theme,
@@ -93,23 +98,9 @@ setup_page(title="Beam Design | IS 456 Dashboard", icon="🏗️", layout="wide"
 design_cache = SmartCache(max_size_mb=50, ttl_seconds=300)  # 5-min TTL for design calcs
 viz_cache = SmartCache(max_size_mb=30, ttl_seconds=600)  # 10-min TTL for visualizations
 
-# Initialize session state for input persistence
+# Initialize session state for input persistence (using centralized defaults)
 if "beam_inputs" not in st.session_state:
-    st.session_state.beam_inputs = {
-        "span_mm": 5000.0,
-        "b_mm": 300.0,
-        "D_mm": 500.0,
-        "d_mm": 450.0,
-        "concrete_grade": "M25",
-        "steel_grade": "Fe500",
-        "mu_knm": 120.0,
-        "vu_kn": 80.0,
-        "exposure": "Moderate",
-        "support_condition": "Simply Supported",
-        "design_computed": False,
-        "design_result": None,
-        "last_input_hash": None,  # Track input changes
-    }
+    st.session_state.beam_inputs = DEFAULT_BEAM_INPUTS.copy()
 
 
 # Helper function to detect input changes
@@ -373,17 +364,8 @@ with col_preview:
         "📐 Geometry Preview",
         expanded=not st.session_state.beam_inputs.get("design_computed", False),
     ):
-        # Get current exposure for cover
-        exposure_props = {
-            "Mild": {"cover": 20},
-            "Moderate": {"cover": 30},
-            "Severe": {"cover": 45},
-            "Very Severe": {"cover": 50},
-            "Extreme": {"cover": 75},
-        }
-        cover = exposure_props.get(
-            st.session_state.beam_inputs["exposure"], {"cover": 30}
-        )["cover"]
+        # Get current exposure for cover (using centralized constants)
+        cover = get_cover_for_exposure(st.session_state.beam_inputs["exposure"])
 
         # Only show reinforcement AFTER design is computed
         if st.session_state.beam_inputs.get("design_computed", False):
