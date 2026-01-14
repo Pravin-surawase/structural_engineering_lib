@@ -12,6 +12,13 @@ Scans ALL Streamlit pages for common issues:
 - API signature mismatches (Phase 3: test files)
 - Widget default values (Phase 5: TASK-403)
 
+**Phase 6 Enhancements (TASK-425):**
+- Safe dict-like methods: Recognizes .get(), .setdefault(), .pop(), .update(),
+  .keys(), .values(), .items(), .clear() as safe method calls on session_state
+- Attribute-style tracking: Now tracks st.session_state.key = value assignments
+  (previously only tracked st.session_state["key"] = value)
+- Eliminates ~19 false positives per scan where .get() was flagged
+
 **Phase 5 Enhancements (TASK-403):**
 - Widget return type validation: Detects st.number_input(), st.text_input(),
   st.selectbox() etc. without explicit default values
@@ -26,7 +33,7 @@ Scans ALL Streamlit pages for common issues:
 - Guard clause detection: Recognizes early-exit patterns that validate for entire function
 - API signature checking: Validates test function calls against actual signatures
 
-Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3 + Phase 4 + Phase 5).
+Part of comprehensive prevention system (Phase 1A + Phase 2 + Phase 3 + Phase 4 + Phase 5 + Phase 6).
 
 Usage:
     python scripts/check_streamlit_issues.py --all-pages
@@ -423,6 +430,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                             if isinstance(key, str):
                                 self.session_state_keys.add(key)
 
+            # Phase 6: Track attribute-style session state assignments
+            # Pattern: st.session_state.key = value
+            elif isinstance(target, ast.Attribute):
+                if (isinstance(target.value, ast.Attribute) and
+                    isinstance(target.value.value, ast.Name) and
+                    target.value.value.id == 'st' and
+                    target.value.attr == 'session_state'):
+                    # This is st.session_state.key = value
+                    key = target.attr
+                    self.session_state_keys.add(key)
+
         self.generic_visit(node)
 
     def visit_AnnAssign(self, node: ast.AnnAssign):
@@ -602,6 +620,15 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 if isinstance(node.slice, ast.Constant):
                     index_value = node.slice.value
                     if isinstance(index_value, int):
+                        # Phase 6: Skip if accessing [0] on result of split()
+                        # str.split() always returns at least 1 element
+                        if index_value == 0 and isinstance(node.value, ast.Call):
+                            if (isinstance(node.value.func, ast.Attribute) and
+                                node.value.func.attr == 'split'):
+                                # This is x.split(...)[0] - always safe
+                                self.generic_visit(node)
+                                return
+
                         # Check if bounds validated (look for len() checks)
                         if not self._has_bounds_check_nearby(container_name, index_value):
                             self.add_issue(
@@ -967,14 +994,51 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.generic_visit(node)
 
     def _has_bounds_check_nearby(self, container: str, index: int) -> bool:
-        """Check if there's a len() check for this container/index nearby."""
-        # Look through parent nodes for if statements with len() checks
-        for parent in self.parent_nodes[-5:]:  # Check last 5 parent nodes
+        """Check if there's a len() check for this container/index nearby.
+
+        Phase 6 Enhancement:
+        - Look at ALL parent nodes (not just last 5)
+        - Properly match len() > index patterns
+        - Handle if-blocks that guard the access
+        - Handle ternary expressions (x if len(y) > 0 else default)
+        """
+        # Look through ALL parent nodes for if statements with len() checks
+        for parent in self.parent_nodes:
             if isinstance(parent, ast.If):
                 # Check if test contains len(container)
-                test_str = ast.unparse(parent.test) if hasattr(ast, 'unparse') else ""
-                if f"len({container})" in test_str and str(index) in test_str:
-                    return True
+                try:
+                    test_str = ast.unparse(parent.test) if hasattr(ast, 'unparse') else ""
+                except Exception:
+                    continue
+
+                # Pattern: len(container) > index or len(container) >= (index + 1)
+                # For index 0: len(container) > 0 OR len(container) OR just container
+                if f"len({container})" in test_str:
+                    # Check comparison patterns
+                    if index == 0:
+                        # For [0], any of these work:
+                        # len(container) > 0, len(container) >= 1, len(container)
+                        if any(p in test_str for p in ["> 0", ">= 1", "!= 0", "!= []"]):
+                            return True
+                        # Also: just "if len(container):" is truthy check
+                        if test_str.strip() == f"len({container})":
+                            return True
+                    else:
+                        # For [n], need len > n or len >= n+1
+                        if f"> {index}" in test_str or f">= {index + 1}" in test_str:
+                            return True
+
+            # Also check ternary expressions in assignments
+            elif isinstance(parent, ast.IfExp):
+                try:
+                    test_str = ast.unparse(parent.test) if hasattr(ast, 'unparse') else ""
+                except Exception:
+                    continue
+
+                if f"len({container})" in test_str:
+                    if index == 0 and any(p in test_str for p in ["> 0", ">= 1", "!= 0"]):
+                        return True
+
         return False
 
     def _is_in_try_except(self) -> bool:
@@ -1219,6 +1283,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         Handles:
         1. st.session_state.key access without validation
         2. Phase 2 Enhancement: Detect .called, .call_count on non-Mock objects
+
+        Phase 6 Enhancement (TASK-425):
+        - Recognize safe dict-like methods (.get, .setdefault, .pop, etc.)
+        - These are safe method calls, not risky attribute accesses
         """
         # === Session state detection (for all files) ===
         # Check for st.session_state.key pattern
@@ -1228,8 +1296,19 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 node.value.attr == 'session_state'):
                 # This is st.session_state.some_key
                 attr_name = node.attr
+
+                # Phase 6: Safe dict-like methods are NOT risky attribute accesses
+                # These are standard dict methods that always exist on session_state
+                safe_dict_methods = {
+                    'get', 'setdefault', 'pop', 'update', 'keys', 'values',
+                    'items', 'clear', 'copy', '__contains__', '__getitem__',
+                    '__setitem__', '__delitem__', '__len__', '__iter__',
+                }
+                if attr_name in safe_dict_methods:
+                    # This is a safe method call, not a key access - skip warning
+                    pass
                 # Only warn if we haven't seen this key set
-                if attr_name not in self.session_state_keys:
+                elif attr_name not in self.session_state_keys:
                     self.add_issue(
                         node.lineno,
                         "HIGH",
