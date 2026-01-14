@@ -69,7 +69,7 @@ from utils.cost_optimizer_error_boundary import (
 )
 
 # TASK-602: Modern Streamlit patterns
-from utils.fragments import show_status_badge, fragment_input_section
+from utils.fragments import show_status_badge, fragment_input_section, CacheStatsFragment
 from utils.constants import CONCRETE_GRADE_MAP, STEEL_GRADE_MAP
 
 # Setup logging
@@ -603,6 +603,15 @@ def main():
         ["From Beam Design", "Manual Input"],
         help="Use inputs from Beam Design page or enter manually",
     )
+
+    # Cache performance stats (auto-refresh every 5 seconds)
+    with st.sidebar.expander("⚡ Cache Performance", expanded=False):
+        cache_stats = CacheStatsFragment(
+            cache_func=cached_smart_analysis,
+            refresh_interval=5.0,
+            show_details=True,
+        )
+        cache_stats.render()
 
     inputs = None
 
