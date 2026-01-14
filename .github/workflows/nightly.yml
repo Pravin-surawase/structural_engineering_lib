@@ -45,7 +45,6 @@ jobs:
           python -m pip install streamlit pytest
 
       - name: Run AppTest UI tests
-        working-directory: streamlit_app
         run: |
           python -m pytest tests/apptest/ -v --tb=short -q
         continue-on-error: true
