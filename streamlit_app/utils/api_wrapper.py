@@ -40,6 +40,7 @@ try:
     from structural_lib.api import design_beam_is456, smart_analyze_design
     from structural_lib.rebar_optimizer import optimize_bar_arrangement
     from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
+    from structural_lib.codes.is456.shear import select_stirrup_diameter
 
     _LIBRARY_AVAILABLE = True
 except ImportError as e:
@@ -50,6 +51,7 @@ except ImportError as e:
     optimize_bar_arrangement = None
     calculate_bar_spacing = None
     check_min_spacing = None
+    select_stirrup_diameter = None
 
 
 def _manual_bar_arrangement(
@@ -231,10 +233,38 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
     return result_dict
 
 
-def _shear_result_to_dict(shear: Any) -> dict:
-    """Convert ShearResult dataclass to dict for UI."""
+def _shear_result_to_dict(shear: Any, **kwargs) -> dict:
+    """Convert ShearResult dataclass to dict for UI.
+
+    Args:
+        shear: ShearResult object or dict
+        **kwargs: Additional parameters for stirrup selection:
+            - vu_kn: Factored shear (kN)
+            - b_mm: Beam width (mm)
+            - d_mm: Effective depth (mm)
+            - fck: Concrete strength (N/mm²)
+            - main_bar_dia: Main bar diameter (mm)
+    """
     if isinstance(shear, dict):
         return shear
+
+    # Calculate appropriate stirrup diameter if function available
+    stirrup_dia = 8  # Default
+    if _LIBRARY_AVAILABLE and select_stirrup_diameter is not None:
+        vu_kn = kwargs.get("vu_kn", 0)
+        b_mm = kwargs.get("b_mm", 300)
+        d_mm = kwargs.get("d_mm", 450)
+        fck = kwargs.get("fck", 25)
+        main_bar_dia = kwargs.get("main_bar_dia", 16)
+
+        if vu_kn > 0 and b_mm > 0 and d_mm > 0:
+            stirrup_dia = select_stirrup_diameter(
+                vu_kn=vu_kn,
+                b_mm=b_mm,
+                d_mm=d_mm,
+                fck=fck,
+                main_bar_dia=main_bar_dia,
+            )
 
     return {
         "is_safe": shear.is_safe,
@@ -245,7 +275,7 @@ def _shear_result_to_dict(shear: Any) -> dict:
             round(shear.tc_max, 2) if hasattr(shear, "tc_max") and shear.tc_max else 2.5
         ),
         "vus": round(shear.vus, 1) if hasattr(shear, "vus") and shear.vus else 0,
-        "stirrup_dia": 8,
+        "stirrup_dia": stirrup_dia,
         "legs": 2,
     }
 
@@ -282,7 +312,24 @@ def _compliance_result_to_dict(result: Any, **kwargs) -> dict:
         fy_nmm2=fy_nmm2,
         cover=cover,
     )
-    shear_dict = _shear_result_to_dict(result.shear)
+
+    # Get main bar diameter for stirrup selection
+    main_bar_dia = flexure_dict.get("bar_dia", 16)
+
+    # Get shear force from result if available
+    vu_kn = 0
+    if hasattr(result, "shear") and hasattr(result.shear, "tv"):
+        # Approximate Vu from tv (reverse calculation for stirrup selection)
+        vu_kn = result.shear.tv * b_mm * d_mm / 1000  # kN
+
+    shear_dict = _shear_result_to_dict(
+        result.shear,
+        vu_kn=vu_kn,
+        b_mm=b_mm,
+        d_mm=d_mm,
+        fck=fck_nmm2,
+        main_bar_dia=main_bar_dia,
+    )
 
     # Side face reinforcement (IS 456 Cl. 26.5.1.3) - for D > 450mm
     needs_side_face = D_mm > 450
@@ -405,6 +452,25 @@ def _fallback_design(
     )
     num_layers = 1 if clear_spacing >= 25 else 2
 
+    # Calculate stirrup diameter based on shear demand
+    stirrup_dia = 8  # Default
+    if select_stirrup_diameter is not None:
+        stirrup_dia = select_stirrup_diameter(
+            vu_kn=vu_kn,
+            b_mm=b_mm,
+            d_mm=d_mm,
+            fck=fck_nmm2,
+            main_bar_dia=best_bars["dia"],
+        )
+    else:
+        # Simple fallback logic if function not available
+        if tau_v >= 1.5:
+            stirrup_dia = 12 if b_mm >= 400 else 10
+        elif tau_v >= 0.8:
+            stirrup_dia = 10 if b_mm >= 400 else 8
+        else:
+            stirrup_dia = 8
+
     return {
         "flexure": {
             "is_safe": flexure_safe,
@@ -423,7 +489,7 @@ def _fallback_design(
             "spacing": round(spacing, 0),
             "tau_v": round(tau_v, 2),
             "tau_c": round(tau_c, 2),
-            "stirrup_dia": 8,
+            "stirrup_dia": stirrup_dia,
             "legs": 2,
         },
         "detailing": {

@@ -301,3 +301,83 @@ class TestPracticalSpacingRounding:
         # Spacing should be one of the standard values
         standard_values = [75, 100, 125, 150, 175, 200, 225, 250, 275, 300]
         assert result.spacing in standard_values or result.spacing == 0.0
+
+
+class TestSelectStirrupDiameter:
+    """Tests for select_stirrup_diameter function (added 2026-01-15)."""
+
+    def test_light_shear_narrow_beam(self):
+        """Light shear with narrow beam should use 6mm or 8mm."""
+        # Small shear force, narrow beam
+        dia = shear.select_stirrup_diameter(
+            vu_kn=30, b_mm=200, d_mm=350, fck=25, main_bar_dia=12
+        )
+        assert dia in [6, 8]
+
+    def test_normal_shear_standard_beam(self):
+        """Normal shear with standard beam should use 8mm."""
+        # Typical residential beam
+        dia = shear.select_stirrup_diameter(
+            vu_kn=80, b_mm=300, d_mm=450, fck=25, main_bar_dia=16
+        )
+        assert dia == 8
+
+    def test_moderate_shear_large_beam(self):
+        """Moderate shear with large beam should use 10mm."""
+        dia = shear.select_stirrup_diameter(
+            vu_kn=150, b_mm=400, d_mm=600, fck=30, main_bar_dia=20
+        )
+        assert dia == 10
+
+    def test_high_shear_large_beam(self):
+        """High shear (tv >= 1.5) with large beam should use 12mm.
+
+        For 500x800 beam, tv >= 1.5 requires vu_kn >= 600 kN.
+        tv = 600*1000/(500*800) = 1.5 N/mm²
+        """
+        dia = shear.select_stirrup_diameter(
+            vu_kn=650, b_mm=500, d_mm=800, fck=30, main_bar_dia=25
+        )
+        assert dia == 12
+
+    def test_minimum_dia_from_main_bar(self):
+        """Stirrup should be at least main_bar_dia/4."""
+        # 32mm main bar -> min stirrup = 8mm
+        dia = shear.select_stirrup_diameter(
+            vu_kn=50, b_mm=300, d_mm=450, fck=25, main_bar_dia=32
+        )
+        assert dia >= 8  # 32/4 = 8
+
+    def test_returns_standard_sizes_only(self):
+        """Should return only standard sizes: 6, 8, 10, 12."""
+        standard_sizes = shear.STANDARD_STIRRUP_DIAMETERS
+
+        for vu in [30, 80, 150, 300]:
+            for b in [200, 300, 400, 500]:
+                dia = shear.select_stirrup_diameter(
+                    vu_kn=vu, b_mm=b, d_mm=450, fck=25, main_bar_dia=16
+                )
+                assert dia in standard_sizes, f"Got {dia} which is not in {standard_sizes}"
+
+    def test_zero_dimensions_returns_default(self):
+        """Zero dimensions should return safe default (8mm)."""
+        dia = shear.select_stirrup_diameter(
+            vu_kn=100, b_mm=0, d_mm=450, fck=25, main_bar_dia=16
+        )
+        assert dia == 8
+
+        dia = shear.select_stirrup_diameter(
+            vu_kn=100, b_mm=300, d_mm=0, fck=25, main_bar_dia=16
+        )
+        assert dia == 8
+
+    def test_increasing_shear_increases_diameter(self):
+        """Higher shear should generally result in larger stirrup diameter."""
+        # Same beam, increasing shear
+        dia_low = shear.select_stirrup_diameter(
+            vu_kn=30, b_mm=400, d_mm=600, fck=25, main_bar_dia=16
+        )
+        dia_high = shear.select_stirrup_diameter(
+            vu_kn=400, b_mm=400, d_mm=600, fck=25, main_bar_dia=16
+        )
+        assert dia_high >= dia_low
