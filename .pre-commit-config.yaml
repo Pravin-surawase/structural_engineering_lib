@@ -213,6 +213,13 @@ repos:
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$
         verbose: true
+      - id: check-fragment-violations
+        name: Check Streamlit fragment API violations
+        entry: .venv/bin/python scripts/check_fragment_violations.py
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/.*\.py$
+        verbose: true
       - id: check-api-signatures
         name: Check API function signatures
         entry: .venv/bin/python scripts/check_api_signatures.py
