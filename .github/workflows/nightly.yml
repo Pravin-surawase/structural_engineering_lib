@@ -38,6 +38,23 @@ jobs:
           python -m pytest -q --hypothesis-profile=ci
 
       # ================================================================
+      # TASK-601: AppTest UI Testing
+      # ================================================================
+      - name: Install Streamlit dependencies
+        run: |
+          python -m pip install streamlit pytest
+
+      - name: Run AppTest UI tests
+        run: |
+          python -m pytest tests/apptest/ -v --tb=short -q
+        continue-on-error: true
+
+      - name: Run Streamlit validation
+        run: |
+          python scripts/check_streamlit_issues.py --all-pages
+        continue-on-error: true
+
+      # ================================================================
       # TASK-503: Performance Regression Tracking
       # ================================================================
       - name: Run performance benchmarks

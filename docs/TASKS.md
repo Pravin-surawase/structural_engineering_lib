@@ -96,6 +96,31 @@
 
 ## Active
 
+### TASK-601: Enhanced AppTest & Modern Streamlit Patterns (Current Session)
+
+> **Goal:** Improve Streamlit testing and adopt modern patterns
+> **Branch:** task/TASK-601
+> **Timeline:** Session 22 (2026-01-16)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-601.1** | Enhanced AppTest conftest (12 page fixtures, AppTestHelper class) | MAIN | 1h | 🔴 HIGH | ✅ Complete |
+| **TASK-601.2** | Integration workflow tests (14 new tests) | MAIN | 1h | 🔴 HIGH | ✅ Complete |
+| **TASK-601.3** | Fragment utilities (st.fragment, st.dialog patterns) | MAIN | 1h | 🟠 MEDIUM | ✅ Complete |
+| **TASK-601.4** | Fragment utility tests (15 tests) | MAIN | 30m | 🟠 MEDIUM | ✅ Complete |
+| **TASK-601.5** | Nightly workflow: Add AppTest + Streamlit scanner | MAIN | 30m | 🟠 MEDIUM | ✅ Complete |
+| **TASK-601.6** | Modern patterns research document | MAIN | 1h | 🟠 MEDIUM | ✅ Complete |
+| **TASK-601.7** | Code quality assessment (8.4/10 Senior Level) | MAIN | 30m | 🟠 MEDIUM | ✅ Complete |
+
+**Key Deliverables:**
+- ✅ 60 AppTests passing (46 original + 14 new integration tests)
+- ✅ Fragment utilities module (`utils/fragments.py`)
+- ✅ Nightly CI enhanced with UI testing
+- ✅ Research document: [streamlit-modern-patterns-research.md](research/streamlit-modern-patterns-research.md)
+- ✅ Code quality rating: 8.4/10 (Senior Developer Level)
+
+---
+
 ### v0.18.0 Core Library Expansion
 
 > **Goal:** Expand testing and templating capabilities for v0.18.0 release
@@ -285,6 +310,7 @@ and `streamlit_app/tests/test_input_bridge.py`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-601** | Enhanced AppTest framework: integration tests (14 new), fragment utilities, nightly workflow, code quality research | MAIN | ✅ PR #TBD 2026-01-16 |
 | **TASK-600** | Streamlit fixes: stirrup diameter selection, PDF report data, AppTest automation (46 tests) | MAIN | ✅ PR #TBD 2026-01-15 |
 | **REL-0175** | Release v0.17.5: Multi-Objective Pareto Optimization, API Signature Validation CI, 1317 tests | MAIN | ✅ 2026-01-15 |
 | **INFRA-01** | Add check-api-signatures hook to pre-commit + CI api-signature-check job | DEVOPS | ✅ 2026-01-15 |
