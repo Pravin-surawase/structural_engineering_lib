@@ -24,7 +24,9 @@ from pathlib import Path
 from datetime import datetime
 
 
-def generate_test_scaffold(class_name: str, module_path: str, test_type: str = "class") -> str:
+def generate_test_scaffold(
+    class_name: str, module_path: str, test_type: str = "class"
+) -> str:
     """Generate comprehensive test template based on type."""
 
     if test_type == "streamlit_page":
@@ -369,14 +371,20 @@ def main():
         print("=" * 50)
         print()
         print("Usage:")
-        print("  python scripts/create_test_scaffold.py <ClassName> <module.path> [test_type]")
+        print(
+            "  python scripts/create_test_scaffold.py <ClassName> <module.path> [test_type]"
+        )
         print()
         print("Examples:")
         print("  # Generate class test:")
-        print("  python scripts/create_test_scaffold.py SmartCache streamlit_app.utils.caching")
+        print(
+            "  python scripts/create_test_scaffold.py SmartCache streamlit_app.utils.caching"
+        )
         print()
         print("  # Generate Streamlit page test:")
-        print("  python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page")
+        print(
+            "  python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page"
+        )
         print()
         print("Test Types:")
         print("  class         - Standard class test (default)")
@@ -401,13 +409,15 @@ def main():
     output_path = Path(test_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         f.write(test_content)
 
     print(f"✅ Test scaffold created: {test_file}")
     print(f"📝 TODO: Fill in test implementations (search for 'TODO')")
     print(f"🧪 Run with: pytest {test_file} -v")
-    print(f"📊 Coverage: pytest {test_file} --cov={module_path.replace('.', '/')} --cov-report=term-missing")
+    print(
+        f"📊 Coverage: pytest {test_file} --cov={module_path.replace('.', '/')} --cov-report=term-missing"
+    )
 
 
 if __name__ == "__main__":

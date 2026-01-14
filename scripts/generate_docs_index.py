@@ -51,6 +51,7 @@ FOLDER_TAGS = {
     "learning": ["education", "training"],
 }
 
+
 # Complexity estimation based on file size
 def estimate_complexity(file_size: int) -> str:
     """Estimate document complexity from file size."""
@@ -65,13 +66,16 @@ def estimate_complexity(file_size: int) -> str:
 def extract_title(content: str, filepath: Path) -> str:
     """Extract title from markdown content."""
     # Try front-matter title
-    fm_match = re.search(r'^---\s*\n.*?^title:\s*["\']?(.+?)["\']?\s*$.*?^---',
-                         content, re.MULTILINE | re.DOTALL)
+    fm_match = re.search(
+        r'^---\s*\n.*?^title:\s*["\']?(.+?)["\']?\s*$.*?^---',
+        content,
+        re.MULTILINE | re.DOTALL,
+    )
     if fm_match:
         return fm_match.group(1).strip()
 
     # Try first heading
-    h1_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+    h1_match = re.search(r"^#\s+(.+)$", content, re.MULTILINE)
     if h1_match:
         return h1_match.group(1).strip()
 
@@ -81,7 +85,7 @@ def extract_title(content: str, filepath: Path) -> str:
 
 def extract_sections(content: str) -> list[str]:
     """Extract H2 sections from markdown."""
-    sections = re.findall(r'^##\s+(.+)$', content, re.MULTILINE)
+    sections = re.findall(r"^##\s+(.+)$", content, re.MULTILINE)
     return [s.strip() for s in sections[:10]]  # Max 10 sections
 
 
@@ -94,9 +98,9 @@ def extract_tags(content: str, folder: str) -> list[str]:
         tags.update(FOLDER_TAGS[folder])
 
     # Try front-matter tags
-    fm_match = re.search(r'^tags:\s*\[([^\]]+)\]', content, re.MULTILINE)
+    fm_match = re.search(r"^tags:\s*\[([^\]]+)\]", content, re.MULTILINE)
     if fm_match:
-        fm_tags = [t.strip().strip('"\'') for t in fm_match.group(1).split(",")]
+        fm_tags = [t.strip().strip("\"'") for t in fm_match.group(1).split(",")]
         tags.update(fm_tags)
 
     return sorted(tags)

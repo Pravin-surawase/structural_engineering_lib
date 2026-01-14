@@ -29,7 +29,8 @@ def get_all_markdown_files() -> list[Path]:
         files.extend(PROJECT_ROOT.glob(pattern))
     # Exclude .venv, node_modules, etc.
     files = [
-        f for f in files
+        f
+        for f in files
         if ".venv" not in str(f)
         and "node_modules" not in str(f)
         and ".git" not in str(f)

@@ -82,12 +82,8 @@ def update_links(old_path: Path, new_path: Path, dry_run: bool = False) -> int:
             new_content = content
 
             # Update absolute-style references
-            new_content = new_content.replace(
-                f"]({old_rel})", f"]({new_rel})"
-            )
-            new_content = new_content.replace(
-                f"]({old_path.name})", f"]({new_rel})"
-            )
+            new_content = new_content.replace(f"]({old_rel})", f"]({new_rel})")
+            new_content = new_content.replace(f"]({old_path.name})", f"]({new_rel})")
 
             if new_content != content:
                 if not dry_run:
@@ -273,7 +269,11 @@ def main() -> int:
     failed = 0
 
     for file_path in files:
-        rel_path = file_path.relative_to(PROJECT_ROOT) if file_path.is_relative_to(PROJECT_ROOT) else file_path
+        rel_path = (
+            file_path.relative_to(PROJECT_ROOT)
+            if file_path.is_relative_to(PROJECT_ROOT)
+            else file_path
+        )
         print(f"📄 {rel_path}")
 
         if archive_file(file_path, dest_dir, args.dry_run, not args.no_git):

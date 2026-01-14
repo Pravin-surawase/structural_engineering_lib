@@ -102,7 +102,9 @@ def run_checks() -> dict:
     # Check required folders
     for folder in REQUIRED_FOLDERS:
         passed, msg = check_folder_exists(folder)
-        results["folders"]["required"].append({"folder": folder, "passed": passed, "message": msg})
+        results["folders"]["required"].append(
+            {"folder": folder, "passed": passed, "message": msg}
+        )
         if passed:
             results["summary"]["passed"] += 1
         else:
@@ -115,7 +117,9 @@ def run_checks() -> dict:
             msg = msg.replace("✅", "✓")  # Different marker for optional
         else:
             msg = f"○ {folder}/ (optional, not yet created)"
-        results["folders"]["optional"].append({"folder": folder, "passed": passed, "message": msg})
+        results["folders"]["optional"].append(
+            {"folder": folder, "passed": passed, "message": msg}
+        )
 
     # Check required files and exports
     for file_path, exports in REQUIRED_FILES.items():

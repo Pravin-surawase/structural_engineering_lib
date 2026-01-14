@@ -79,9 +79,7 @@ def get_module_exports(module_path: Path) -> dict[str, ExportInfo]:
                 if isinstance(target, ast.Name):
                     name = target.id
                     if not name.startswith("__"):  # Skip dunder
-                        export_type = (
-                            "private" if name.startswith("_") else "variable"
-                        )
+                        export_type = "private" if name.startswith("_") else "variable"
                         exports[name] = ExportInfo(name=name, type=export_type)
 
     return exports
@@ -150,7 +148,9 @@ def find_type_annotation_usage(module_name: str) -> set[str]:
     return used_types
 
 
-def validate_module(module_name: str, verbose: bool = False, show_fix: bool = False) -> tuple[bool, list[str]]:
+def validate_module(
+    module_name: str, verbose: bool = False, show_fix: bool = False
+) -> tuple[bool, list[str]]:
     """Validate a single module's stub exports."""
     source_path = CODES_IS456 / f"{module_name}.py"
     stub_path = STRUCTURAL_LIB / f"{module_name}.py"
@@ -190,7 +190,9 @@ def validate_module(module_name: str, verbose: bool = False, show_fix: bool = Fa
     for priv_name in privates_in_tests:
         if priv_name not in stub_imports:
             missing_privates.append(priv_name)
-            issues.append(f"Private function '{priv_name}' used in tests but not in stub")
+            issues.append(
+                f"Private function '{priv_name}' used in tests but not in stub"
+            )
 
     # Check type annotations
     missing_types = []
@@ -205,7 +207,9 @@ def validate_module(module_name: str, verbose: bool = False, show_fix: bool = Fa
         print(f"\n🔧 Fix for {module_name}.py stub:")
         if missing_privates:
             print(f"\n# Add private function imports:")
-            print(f"from structural_lib.codes.is456.{module_name} import (  # noqa: F401")
+            print(
+                f"from structural_lib.codes.is456.{module_name} import (  # noqa: F401"
+            )
             for name in sorted(missing_privates):
                 print(f"    {name},")
             print(")")
@@ -271,7 +275,8 @@ Examples:
         help="Validate all migrated modules",
     )
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Show detailed output",
     )

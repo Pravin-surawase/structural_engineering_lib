@@ -83,7 +83,9 @@ class FunctionAnnotationStatus:
     @property
     def annotation_percentage(self) -> float:
         total = len(self.params) + 1  # params + return
-        annotated = sum(1 for a in self.params.values() if a) + (1 if self.has_return else 0)
+        annotated = sum(1 for a in self.params.values() if a) + (
+            1 if self.has_return else 0
+        )
         return (annotated / total * 100) if total > 0 else 100.0
 
 
@@ -148,7 +150,9 @@ class TypeAnnotationVisitor(ast.NodeVisitor):
         self._check_function(node)
         self.generic_visit(node)
 
-    def _check_function(self, node: Union[ast.FunctionDef, ast.AsyncFunctionDef]) -> None:
+    def _check_function(
+        self, node: Union[ast.FunctionDef, ast.AsyncFunctionDef]
+    ) -> None:
         """Check a function for type annotations."""
         name = node.name
         is_dunder = name.startswith("__") and name.endswith("__")
@@ -323,7 +327,9 @@ class TypeAnnotationChecker:
             "total_functions": total_functions,
             "fully_annotated": fully_annotated,
             "annotation_rate": (
-                (fully_annotated / total_functions * 100) if total_functions > 0 else 100
+                (fully_annotated / total_functions * 100)
+                if total_functions > 0
+                else 100
             ),
             "public_functions": public_functions,
             "public_annotated": public_annotated,
@@ -345,7 +351,9 @@ class TypeAnnotationChecker:
             "total_functions": total_functions,
             "fully_annotated": total_annotated,
             "annotation_rate": (
-                (total_annotated / total_functions * 100) if total_functions > 0 else 100
+                (total_annotated / total_functions * 100)
+                if total_functions > 0
+                else 100
             ),
             "total_issues": len(self.all_issues),
             "issues_by_type": self._count_by_type(),
@@ -358,7 +366,9 @@ class TypeAnnotationChecker:
             counts[issue.issue_type] += 1
         return dict(counts)
 
-    def print_report(self, verbose: bool = False, show_suggestions: bool = False) -> None:
+    def print_report(
+        self, verbose: bool = False, show_suggestions: bool = False
+    ) -> None:
         """Print a human-readable report."""
         print("=" * 70)
         print("🔍 TYPE ANNOTATION CHECK RESULTS")

@@ -43,14 +43,22 @@ def get_file_description(file_path: Path) -> str:
             if line.startswith("# "):
                 title = line[2:].strip()
                 # Don't return if it's just the filename
-                if title.lower().replace("-", " ").replace("_", " ") != file_path.stem.lower().replace("-", " ").replace("_", " "):
+                if title.lower().replace("-", " ").replace(
+                    "_", " "
+                ) != file_path.stem.lower().replace("-", " ").replace("_", " "):
                     return title
                 break
 
         # Look for first paragraph
         for line in lines[:20]:
             line = line.strip()
-            if line and not line.startswith("#") and not line.startswith("|") and not line.startswith("-") and not line.startswith("*"):
+            if (
+                line
+                and not line.startswith("#")
+                and not line.startswith("|")
+                and not line.startswith("-")
+                and not line.startswith("*")
+            ):
                 if len(line) > 20:
                     return line[:80] + "..." if len(line) > 80 else line
                 break
@@ -81,16 +89,20 @@ def analyze_folder(folder_path: Path) -> dict:
             continue
 
         if item.is_dir():
-            result["subfolders"].append({
-                "name": item.name,
-                "has_readme": (item / "README.md").exists(),
-            })
+            result["subfolders"].append(
+                {
+                    "name": item.name,
+                    "has_readme": (item / "README.md").exists(),
+                }
+            )
         elif item.suffix == ".md" and item.name != "README.md":
-            result["markdown_files"].append({
-                "name": item.name,
-                "path": item,
-                "description": get_file_description(item),
-            })
+            result["markdown_files"].append(
+                {
+                    "name": item.name,
+                    "path": item,
+                    "description": get_file_description(item),
+                }
+            )
         else:
             result["other_files"].append(item.name)
 
@@ -118,25 +130,33 @@ def generate_readme_content(folder_path: Path, analysis: dict) -> str:
 
     # Add subfolders section if any
     if analysis["subfolders"]:
-        lines.extend([
-            "## Subfolders",
-            "",
-            "| Folder | Description |",
-            "|--------|-------------|",
-        ])
+        lines.extend(
+            [
+                "## Subfolders",
+                "",
+                "| Folder | Description |",
+                "|--------|-------------|",
+            ]
+        )
         for sf in analysis["subfolders"]:
-            readme_link = f"[{sf['name']}/]({sf['name']}/README.md)" if sf["has_readme"] else f"`{sf['name']}/`"
+            readme_link = (
+                f"[{sf['name']}/]({sf['name']}/README.md)"
+                if sf["has_readme"]
+                else f"`{sf['name']}/`"
+            )
             lines.append(f"| {readme_link} | [Add description] |")
         lines.append("")
 
     # Add files section
     if analysis["markdown_files"]:
-        lines.extend([
-            "## Contents",
-            "",
-            "| File | Description |",
-            "|------|-------------|",
-        ])
+        lines.extend(
+            [
+                "## Contents",
+                "",
+                "| File | Description |",
+                "|------|-------------|",
+            ]
+        )
         for f in analysis["markdown_files"]:
             lines.append(f"| [{f['name']}]({f['name']}) | {f['description']} |")
         lines.append("")
@@ -144,11 +164,13 @@ def generate_readme_content(folder_path: Path, analysis: dict) -> str:
     # Add navigation footer
     parent = folder_path.parent
     if parent.name != folder_path.name:
-        lines.extend([
-            "---",
-            "",
-            f"**Parent:** [../README.md](../README.md)",
-        ])
+        lines.extend(
+            [
+                "---",
+                "",
+                f"**Parent:** [../README.md](../README.md)",
+            ]
+        )
 
     return "\n".join(lines)
 
@@ -163,11 +185,13 @@ def check_all_readmes(min_lines: int = 50) -> list[dict]:
     for readme in docs_path.rglob("README.md"):
         lines = count_lines(readme)
         if lines < min_lines:
-            sparse_readmes.append({
-                "path": readme.relative_to(root),
-                "lines": lines,
-                "folder": readme.parent.relative_to(root),
-            })
+            sparse_readmes.append(
+                {
+                    "path": readme.relative_to(root),
+                    "lines": lines,
+                    "folder": readme.parent.relative_to(root),
+                }
+            )
 
     return sorted(sparse_readmes, key=lambda x: x["lines"])
 
@@ -175,10 +199,20 @@ def check_all_readmes(min_lines: int = 50) -> list[dict]:
 def main():
     parser = argparse.ArgumentParser(description="Enhance README files")
     parser.add_argument("folder", nargs="?", help="Folder to enhance")
-    parser.add_argument("--dry-run", action="store_true", help="Show what would be generated")
-    parser.add_argument("--apply", action="store_true", help="Apply changes (preserves existing content)")
-    parser.add_argument("--check-all", action="store_true", help="Find all sparse READMEs")
-    parser.add_argument("--min-lines", type=int, default=50, help="Minimum lines for --check-all")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Show what would be generated"
+    )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Apply changes (preserves existing content)",
+    )
+    parser.add_argument(
+        "--check-all", action="store_true", help="Find all sparse READMEs"
+    )
+    parser.add_argument(
+        "--min-lines", type=int, default=50, help="Minimum lines for --check-all"
+    )
 
     args = parser.parse_args()
 

@@ -31,6 +31,7 @@ from typing import NamedTuple
 
 class ImportResult(NamedTuple):
     """Result of attempting to import a module."""
+
     file_path: Path
     success: bool
     error_type: str | None
@@ -40,10 +41,10 @@ class ImportResult(NamedTuple):
 # Files that use relative imports and can only be tested via running Streamlit app
 # These are expected false positives for standalone import testing
 KNOWN_RELATIVE_IMPORT_FILES = {
-    "global_styles.py",      # Uses: from .styled_components import ...
-    "plotly_theme.py",       # Uses: from .styled_components import ...
+    "global_styles.py",  # Uses: from .styled_components import ...
+    "plotly_theme.py",  # Uses: from .styled_components import ...
     "styled_components.py",  # Uses: from .global_styles import ...
-    "design_system_demo.py", # Uses: import design_system (package-level)
+    "design_system_demo.py",  # Uses: import design_system (package-level)
 }
 
 
@@ -59,15 +60,14 @@ def validate_import(file_path: Path) -> ImportResult:
     """
     try:
         spec = importlib.util.spec_from_file_location(
-            f"_test_import_{file_path.stem}",
-            file_path
+            f"_test_import_{file_path.stem}", file_path
         )
         if spec is None or spec.loader is None:
             return ImportResult(
                 file_path=file_path,
                 success=False,
                 error_type="SpecError",
-                error_message="Could not create module spec"
+                error_message="Could not create module spec",
             )
 
         module = importlib.util.module_from_spec(spec)
@@ -75,10 +75,7 @@ def validate_import(file_path: Path) -> ImportResult:
         spec.loader.exec_module(module)
 
         return ImportResult(
-            file_path=file_path,
-            success=True,
-            error_type=None,
-            error_message=None
+            file_path=file_path, success=True, error_type=None, error_message=None
         )
 
     except ModuleNotFoundError as e:
@@ -86,42 +83,42 @@ def validate_import(file_path: Path) -> ImportResult:
             file_path=file_path,
             success=False,
             error_type="ModuleNotFoundError",
-            error_message=str(e)
+            error_message=str(e),
         )
     except ImportError as e:
         return ImportResult(
             file_path=file_path,
             success=False,
             error_type="ImportError",
-            error_message=str(e)
+            error_message=str(e),
         )
     except SyntaxError as e:
         return ImportResult(
             file_path=file_path,
             success=False,
             error_type="SyntaxError",
-            error_message=f"Line {e.lineno}: {e.msg}"
+            error_message=f"Line {e.lineno}: {e.msg}",
         )
     except TypeError as e:
         return ImportResult(
             file_path=file_path,
             success=False,
             error_type="TypeError",
-            error_message=str(e)
+            error_message=str(e),
         )
     except NameError as e:
         return ImportResult(
             file_path=file_path,
             success=False,
             error_type="NameError",
-            error_message=str(e)
+            error_message=str(e),
         )
     except Exception as e:
         return ImportResult(
             file_path=file_path,
             success=False,
             error_type=type(e).__name__,
-            error_message=str(e)
+            error_message=str(e),
         )
 
 
@@ -208,39 +205,39 @@ def find_util_modules(app_dir: Path) -> list[Path]:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Validate Streamlit app imports"
+    parser = argparse.ArgumentParser(description="Validate Streamlit app imports")
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Show detailed output for each file",
     )
     parser.add_argument(
-        "--verbose", "-v",
+        "--fix-suggestions",
+        "-f",
         action="store_true",
-        help="Show detailed output for each file"
-    )
-    parser.add_argument(
-        "--fix-suggestions", "-f",
-        action="store_true",
-        help="Show fix suggestions for errors"
+        help="Show fix suggestions for errors",
     )
     parser.add_argument(
         "--utils-only",
         action="store_true",
-        help="Only check utils/components (not pages)"
+        help="Only check utils/components (not pages)",
     )
     parser.add_argument(
         "--pages-only",
         action="store_true",
-        help="Only check pages (not utils/components)"
+        help="Only check pages (not utils/components)",
     )
     parser.add_argument(
         "--skip-known",
         action="store_true",
         default=True,
-        help="Skip known relative-import files (default: True)"
+        help="Skip known relative-import files (default: True)",
     )
     parser.add_argument(
         "--check-all",
         action="store_true",
-        help="Check all files including known relative-import files"
+        help="Check all files including known relative-import files",
     )
 
     args = parser.parse_args()
@@ -291,7 +288,9 @@ def main():
     print("=" * 60)
     print(f"Checking {len(files_to_check)} files...")
     if skipped_files:
-        print(f"Skipping {len(skipped_files)} known relative-import files (use --check-all to include)")
+        print(
+            f"Skipping {len(skipped_files)} known relative-import files (use --check-all to include)"
+        )
     print()
 
     results = []

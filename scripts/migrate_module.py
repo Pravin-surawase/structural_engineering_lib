@@ -29,13 +29,13 @@ CODES_IS456 = STRUCTURAL_LIB / "codes" / "is456"
 
 # Modules that can be migrated, in order of dependencies
 MIGRATION_ORDER = [
-    "tables",        # No IS 456 deps
-    "shear",         # Depends on tables
-    "flexure",       # Depends on materials (stays in root)
-    "detailing",     # Depends on errors (stays in root)
+    "tables",  # No IS 456 deps
+    "shear",  # Depends on tables
+    "flexure",  # Depends on materials (stays in root)
+    "detailing",  # Depends on errors (stays in root)
     "serviceability",  # Depends on data_types (stays in root)
-    "compliance",    # Depends on flexure, shear, serviceability
-    "ductile",       # Depends on errors (stays in root)
+    "compliance",  # Depends on flexure, shear, serviceability
+    "ductile",  # Depends on errors (stays in root)
 ]
 
 # Modules that will NOT be migrated (code-agnostic, stay in root)
@@ -114,7 +114,7 @@ def update_imports(content: str, module_name: str) -> str:
         updated_line = line
 
         # Pattern: from . import X
-        match = re.match(r'^(\s*)from \. import (.+)$', line)
+        match = re.match(r"^(\s*)from \. import (.+)$", line)
         if match:
             indent, imports = match.groups()
             # Check each imported module
@@ -134,7 +134,9 @@ def update_imports(content: str, module_name: str) -> str:
 
             new_lines = []
             if non_migrated:
-                new_lines.append(f"{indent}from structural_lib import {', '.join(non_migrated)}")
+                new_lines.append(
+                    f"{indent}from structural_lib import {', '.join(non_migrated)}"
+                )
             if migrated:
                 new_lines.append(f"{indent}from . import {', '.join(migrated)}")
 
@@ -144,18 +146,22 @@ def update_imports(content: str, module_name: str) -> str:
                 updated_line = line  # Keep original if nothing to change
 
         # Pattern: from .module import X
-        match = re.match(r'^(\s*)from \.(\w+) import (.+)$', line)
+        match = re.match(r"^(\s*)from \.(\w+) import (.+)$", line)
         if match:
             indent, from_module, imports = match.groups()
             if from_module in NON_MIGRATABLE:
                 # Change to absolute import
-                updated_line = f"{indent}from structural_lib.{from_module} import {imports}"
+                updated_line = (
+                    f"{indent}from structural_lib.{from_module} import {imports}"
+                )
             elif from_module in MIGRATION_ORDER:
                 # Keep as relative (within codes/is456/)
                 updated_line = line
             else:
                 # Unknown module, use absolute to be safe
-                updated_line = f"{indent}from structural_lib.{from_module} import {imports}"
+                updated_line = (
+                    f"{indent}from structural_lib.{from_module} import {imports}"
+                )
 
         updated_lines.append(updated_line)
 
@@ -321,7 +327,9 @@ def migrate_module(module_name: str, dry_run: bool = False) -> bool:
     print()
     print("Next steps:")
     print(f"  1. Run tests: pytest Python/tests/test_{module_name}*.py -v")
-    print(f"  2. Commit: ./scripts/ai_commit.sh 'refactor: migrate {module_name}.py to codes/is456/'")
+    print(
+        f"  2. Commit: ./scripts/ai_commit.sh 'refactor: migrate {module_name}.py to codes/is456/'"
+    )
 
     return True
 

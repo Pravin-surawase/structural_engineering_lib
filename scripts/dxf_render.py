@@ -36,7 +36,7 @@ def _require_ezdxf():
         import ezdxf  # noqa: F401
     except Exception as exc:
         raise RuntimeError(
-            "Missing ezdxf. Install with: pip install \"structural-lib-is456[dxf]\""
+            'Missing ezdxf. Install with: pip install "structural-lib-is456[dxf]"'
         ) from exc
 
 
@@ -45,7 +45,7 @@ def _require_matplotlib():
         import matplotlib  # noqa: F401
     except Exception as exc:
         raise RuntimeError(
-            "Missing matplotlib. Install with: pip install \"structural-lib-is456[render]\""
+            'Missing matplotlib. Install with: pip install "structural-lib-is456[render]"'
         ) from exc
 
 
@@ -98,7 +98,9 @@ def main() -> int:
         choices=["png", "pdf"],
         help="Force output format (default: inferred from output path)",
     )
-    parser.add_argument("--dpi", type=int, default=200, help="Output DPI (default: 200)")
+    parser.add_argument(
+        "--dpi", type=int, default=200, help="Output DPI (default: 200)"
+    )
     parser.add_argument(
         "--pad-mm",
         type=float,

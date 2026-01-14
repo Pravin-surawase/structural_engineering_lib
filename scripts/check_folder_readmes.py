@@ -60,7 +60,7 @@ REQUIRED_FOLDERS = {
 }
 
 # README template
-README_TEMPLATE = '''# {folder_name}
+README_TEMPLATE = """# {folder_name}
 
 > **Purpose:** [Describe the purpose of this folder]
 > **Last Updated:** {date}
@@ -78,7 +78,7 @@ README_TEMPLATE = '''# {folder_name}
 When working with files in this folder:
 - [Guideline 1]
 - [Guideline 2]
-'''
+"""
 
 
 def should_skip(folder: Path, project_root: Path) -> bool:
@@ -130,7 +130,7 @@ def create_readme(folder: Path) -> None:
 
     content = README_TEMPLATE.format(
         folder_name=folder.name.replace("-", " ").replace("_", " ").title(),
-        date=datetime.now().strftime("%Y-%m-%d")
+        date=datetime.now().strftime("%Y-%m-%d"),
     )
 
     readme_path.write_text(content, encoding="utf-8")
@@ -141,16 +141,16 @@ def main():
         description="Check that all folders have README.md files"
     )
     parser.add_argument(
-        "--fix", action="store_true",
-        help="Create template READMEs for missing folders"
+        "--fix", action="store_true", help="Create template READMEs for missing folders"
     )
     parser.add_argument(
-        "--verbose", "-v", action="store_true",
-        help="Show all folders, not just missing"
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Show all folders, not just missing",
     )
     parser.add_argument(
-        "--required-only", action="store_true",
-        help="Only check required folders"
+        "--required-only", action="store_true", help="Only check required folders"
     )
 
     args = parser.parse_args()
@@ -177,9 +177,9 @@ def main():
     # Filter to required only if requested
     if args.required_only:
         all_folders = [
-            f for f in all_folders
-            if str(f.relative_to(project_root)) in REQUIRED_FOLDERS
-            or f == project_root
+            f
+            for f in all_folders
+            if str(f.relative_to(project_root)) in REQUIRED_FOLDERS or f == project_root
         ]
 
     # Check each folder
@@ -188,7 +188,9 @@ def main():
     required_missing: list[Path] = []
 
     for folder in sorted(all_folders):
-        rel_path = folder.relative_to(project_root) if folder != project_root else Path(".")
+        rel_path = (
+            folder.relative_to(project_root) if folder != project_root else Path(".")
+        )
         is_required = str(rel_path) in REQUIRED_FOLDERS
 
         if has_readme(folder):
@@ -218,7 +220,11 @@ def main():
         print("🔧 Creating missing READMEs...")
         created = 0
         for folder in missing:
-            rel_path = folder.relative_to(project_root) if folder != project_root else Path(".")
+            rel_path = (
+                folder.relative_to(project_root)
+                if folder != project_root
+                else Path(".")
+            )
             create_readme(folder)
             print(f"  Created: {rel_path}/README.md")
             created += 1

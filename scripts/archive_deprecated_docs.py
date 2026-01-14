@@ -61,8 +61,11 @@ def find_deprecated_files() -> List[Tuple[Path, str]]:
             first_lines = content.split("\n")[:50]
             first_section = "\n".join(first_lines).lower()
 
-            if ("superseded by:" in first_section or "replaced by:" in first_section or
-                "this document is superseded" in first_section):
+            if (
+                "superseded by:" in first_section
+                or "replaced by:" in first_section
+                or "this document is superseded" in first_section
+            ):
                 reasons.append("Superseded")
 
             if reasons:
@@ -142,8 +145,12 @@ def validate_links() -> bool:
 
 def main():
     """Main execution."""
-    parser = argparse.ArgumentParser(description="Archive deprecated documentation files")
-    parser.add_argument("--dry-run", action="store_true", help="Preview without making changes")
+    parser = argparse.ArgumentParser(
+        description="Archive deprecated documentation files"
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Preview without making changes"
+    )
     args = parser.parse_args()
 
     print("=" * 80)
@@ -225,7 +232,9 @@ def main():
     print("Next steps:")
     print("1. Review changes: git status")
     print("2. Test navigation in VS Code")
-    print("3. Commit: ./scripts/ai_commit.sh 'docs: archive deprecated files (Phase 1)'")
+    print(
+        "3. Commit: ./scripts/ai_commit.sh 'docs: archive deprecated files (Phase 1)'"
+    )
     print("=" * 80)
 
 

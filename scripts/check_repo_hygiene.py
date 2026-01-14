@@ -27,11 +27,7 @@ def _tracked_files() -> list[str]:
 
 
 def main() -> int:
-    tracked = [
-        path
-        for path in _tracked_files()
-        if Path(path).name in ARTIFACT_NAMES
-    ]
+    tracked = [path for path in _tracked_files() if Path(path).name in ARTIFACT_NAMES]
     if tracked:
         print("ERROR: tracked hygiene artifacts detected:")
         for path in tracked:

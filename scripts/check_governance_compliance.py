@@ -96,9 +96,7 @@ def check_docs_root_file_count() -> List[ComplianceIssue]:
         return issues
 
     files = [
-        f
-        for f in docs_root.iterdir()
-        if f.is_file() and not f.name.startswith(".")
+        f for f in docs_root.iterdir() if f.is_file() and not f.name.startswith(".")
     ]
 
     if len(files) > 5:
@@ -123,9 +121,19 @@ def check_agents_root_structure() -> List[ComplianceIssue]:
         return issues
 
     # Check that role files are in agents/roles/
-    role_files = ["ARCHITECT.md", "CLIENT.md", "DEV.md", "DEVOPS.md", "DOCS.md",
-                  "INTEGRATION.md", "PM.md", "RESEARCHER.md", "SUPPORT.md",
-                  "TESTER.md", "UI.md"]
+    role_files = [
+        "ARCHITECT.md",
+        "CLIENT.md",
+        "DEV.md",
+        "DEVOPS.md",
+        "DOCS.md",
+        "INTEGRATION.md",
+        "PM.md",
+        "RESEARCHER.md",
+        "SUPPORT.md",
+        "TESTER.md",
+        "UI.md",
+    ]
 
     roles_in_root = [f for f in role_files if (agents / f).exists()]
     if roles_in_root:
@@ -155,9 +163,7 @@ def check_agents_root_structure() -> List[ComplianceIssue]:
 
     # Check agents/ root file count
     root_files = [
-        f
-        for f in agents.iterdir()
-        if f.is_file() and not f.name.startswith(".")
+        f for f in agents.iterdir() if f.is_file() and not f.name.startswith(".")
     ]
     if len(root_files) > 5:
         issues.append(
@@ -276,7 +282,9 @@ def check_redirect_stubs() -> List[ComplianceIssue]:
 
         # Detect redirect pattern: short file, has links, few words
         # Also check for explicit redirect markers
-        is_redirect_marker = "redirect" in content.lower() or "moved to" in content.lower()
+        is_redirect_marker = (
+            "redirect" in content.lower() or "moved to" in content.lower()
+        )
         is_small_with_links = len(lines) < 15 and links > 0 and words < 50
 
         if is_small_with_links or (is_redirect_marker and len(lines) < 20):
@@ -353,7 +361,11 @@ def main() -> int:
 
     if args.json:
         output = {
-            "status": "PASS" if report.critical == 0 and (not args.strict or report.high == 0) else "FAIL",
+            "status": (
+                "PASS"
+                if report.critical == 0 and (not args.strict or report.high == 0)
+                else "FAIL"
+            ),
             "total_issues": report.total_issues,
             "critical": report.critical,
             "high": report.high,

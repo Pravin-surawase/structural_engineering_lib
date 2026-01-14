@@ -49,7 +49,7 @@ class StreamlitPageValidator:
         print("\n1️⃣  Checking syntax...")
         try:
             with open(self.page_path) as f:
-                compile(f.read(), self.page_path, 'exec')
+                compile(f.read(), self.page_path, "exec")
             print("   ✅ Syntax OK")
             return True
         except SyntaxError as e:
@@ -68,7 +68,7 @@ class StreamlitPageValidator:
                 if isinstance(node, ast.Import):
                     for alias in node.names:
                         try:
-                            __import__(alias.name.split('.')[0])
+                            __import__(alias.name.split(".")[0])
                         except ImportError:
                             self.warnings.append(f"Import may fail: {alias.name}")
 
@@ -89,10 +89,10 @@ class StreamlitPageValidator:
             # Check for unhashable hash calls
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
-                    if isinstance(node.func, ast.Name) and node.func.id == 'hash':
+                    if isinstance(node.func, ast.Name) and node.func.id == "hash":
                         if node.args and isinstance(node.args[0], ast.Call):
                             if isinstance(node.args[0].func, ast.Name):
-                                if node.args[0].func.id == 'frozenset':
+                                if node.args[0].func.id == "frozenset":
                                     self.warnings.append(
                                         f"Line {node.lineno}: Potential unhashable hash() - "
                                         "ensure dict values are hashable"
@@ -111,23 +111,23 @@ class StreamlitPageValidator:
                 content = f.read()
 
             # Check for theme initialization
-            if 'initialize_theme()' not in content:
+            if "initialize_theme()" not in content:
                 self.warnings.append("Theme not initialized - call initialize_theme()")
 
-            if 'apply_dark_mode_theme()' not in content:
+            if "apply_dark_mode_theme()" not in content:
                 self.warnings.append("Dark mode theme not applied")
 
             # Check import order
-            lines = content.split('\n')
+            lines = content.split("\n")
             theme_import_line = None
             theme_init_line = None
 
             for i, line in enumerate(lines):
-                if 'from utils.theme_manager import' in line:
+                if "from utils.theme_manager import" in line:
                     theme_import_line = i
-                if 'initialize_theme()' in line:
+                if "initialize_theme()" in line:
                     theme_init_line = i
-                if 'apply_dark_mode_theme()' in line and theme_init_line is None:
+                if "apply_dark_mode_theme()" in line and theme_init_line is None:
                     self.warnings.append(
                         f"Line {i+1}: apply_dark_mode_theme() before initialize_theme()"
                     )
@@ -159,24 +159,26 @@ class StreamlitPageValidator:
         print("\n" + "=" * 60)
 
         return {
-            'success': len(self.errors) == 0,
-            'errors': self.errors,
-            'warnings': self.warnings
+            "success": len(self.errors) == 0,
+            "errors": self.errors,
+            "warnings": self.warnings,
         }
 
 
 def main():
     if len(sys.argv) < 2:
         print("Usage: python scripts/validate_streamlit_page.py <page_path>")
-        print("Example: python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py")
+        print(
+            "Example: python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py"
+        )
         sys.exit(1)
 
     page_path = sys.argv[1]
     validator = StreamlitPageValidator(page_path)
     result = validator.validate()
 
-    sys.exit(0 if result['success'] else 1)
+    sys.exit(0 if result["success"] else 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

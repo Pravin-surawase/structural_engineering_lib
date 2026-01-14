@@ -33,6 +33,7 @@ from dataclasses import dataclass, field
 @dataclass
 class SessionStateUsage:
     """Tracks a single usage of session_state."""
+
     key: str
     line: int
     file: str
@@ -43,11 +44,14 @@ class SessionStateUsage:
 @dataclass
 class SessionStateReport:
     """Summary report for session_state analysis."""
+
     total_keys: int = 0
     total_usages: int = 0
     uninitialized_reads: List[SessionStateUsage] = field(default_factory=list)
     unused_writes: List[SessionStateUsage] = field(default_factory=list)
-    unsafe_access: List[SessionStateUsage] = field(default_factory=list)  # .key without check
+    unsafe_access: List[SessionStateUsage] = field(
+        default_factory=list
+    )  # .key without check
     issues_count: int = 0
 
 
@@ -77,16 +81,20 @@ class SessionStateVisitor(ast.NodeVisitor):
             for comparator in node.comparators:
                 if self._is_session_state(comparator):
                     # Extract the key being checked
-                    if isinstance(node.left, ast.Constant) and isinstance(node.left.value, str):
+                    if isinstance(node.left, ast.Constant) and isinstance(
+                        node.left.value, str
+                    ):
                         key = node.left.value
                         self.checked_keys.add(key)
-                        self.usages.append(SessionStateUsage(
-                            key=key,
-                            line=node.lineno,
-                            file=self.filename,
-                            access_type='check',
-                            context=f"'{key}' in st.session_state"
-                        ))
+                        self.usages.append(
+                            SessionStateUsage(
+                                key=key,
+                                line=node.lineno,
+                                file=self.filename,
+                                access_type="check",
+                                context=f"'{key}' in st.session_state",
+                            )
+                        )
 
         self.generic_visit(node)
 
@@ -96,14 +104,16 @@ class SessionStateVisitor(ast.NodeVisitor):
             key = self._extract_key(node.slice)
             if key:
                 # Determine if read or write based on context
-                access_type = 'write' if self._is_write_context(node) else 'read'
-                self.usages.append(SessionStateUsage(
-                    key=key,
-                    line=node.lineno,
-                    file=self.filename,
-                    access_type=access_type,
-                    context=f"st.session_state['{key}']"
-                ))
+                access_type = "write" if self._is_write_context(node) else "read"
+                self.usages.append(
+                    SessionStateUsage(
+                        key=key,
+                        line=node.lineno,
+                        file=self.filename,
+                        access_type=access_type,
+                        context=f"st.session_state['{key}']",
+                    )
+                )
 
         self.generic_visit(node)
 
@@ -111,21 +121,35 @@ class SessionStateVisitor(ast.NodeVisitor):
         """Detect st.session_state.key patterns."""
         # Check for st.session_state.key
         if isinstance(node.value, ast.Attribute):
-            if (isinstance(node.value.value, ast.Name) and
-                node.value.value.id == 'st' and
-                node.value.attr == 'session_state'):
+            if (
+                isinstance(node.value.value, ast.Name)
+                and node.value.value.id == "st"
+                and node.value.attr == "session_state"
+            ):
 
                 key = node.attr
                 # Skip methods like .get, .keys, .values
-                if key not in ('get', 'keys', 'values', 'items', 'clear', 'update', 'pop'):
-                    access_type = 'write' if self._is_write_context(node) else 'unsafe_read'
-                    self.usages.append(SessionStateUsage(
-                        key=key,
-                        line=node.lineno,
-                        file=self.filename,
-                        access_type=access_type,
-                        context=f"st.session_state.{key}"
-                    ))
+                if key not in (
+                    "get",
+                    "keys",
+                    "values",
+                    "items",
+                    "clear",
+                    "update",
+                    "pop",
+                ):
+                    access_type = (
+                        "write" if self._is_write_context(node) else "unsafe_read"
+                    )
+                    self.usages.append(
+                        SessionStateUsage(
+                            key=key,
+                            line=node.lineno,
+                            file=self.filename,
+                            access_type=access_type,
+                            context=f"st.session_state.{key}",
+                        )
+                    )
 
         self.generic_visit(node)
 
@@ -133,30 +157,36 @@ class SessionStateVisitor(ast.NodeVisitor):
         """Detect st.session_state.get('key') patterns."""
         if isinstance(node.func, ast.Attribute):
             # Check for st.session_state.get()
-            if (node.func.attr == 'get' and
-                isinstance(node.func.value, ast.Attribute) and
-                isinstance(node.func.value.value, ast.Name) and
-                node.func.value.value.id == 'st' and
-                node.func.value.attr == 'session_state'):
+            if (
+                node.func.attr == "get"
+                and isinstance(node.func.value, ast.Attribute)
+                and isinstance(node.func.value.value, ast.Name)
+                and node.func.value.value.id == "st"
+                and node.func.value.attr == "session_state"
+            ):
 
                 if node.args and isinstance(node.args[0], ast.Constant):
                     key = node.args[0].value
-                    self.usages.append(SessionStateUsage(
-                        key=key,
-                        line=node.lineno,
-                        file=self.filename,
-                        access_type='get',
-                        context=f"st.session_state.get('{key}')"
-                    ))
+                    self.usages.append(
+                        SessionStateUsage(
+                            key=key,
+                            line=node.lineno,
+                            file=self.filename,
+                            access_type="get",
+                            context=f"st.session_state.get('{key}')",
+                        )
+                    )
 
         self.generic_visit(node)
 
     def _is_session_state(self, node: ast.expr) -> bool:
         """Check if node is st.session_state."""
         if isinstance(node, ast.Attribute):
-            if (isinstance(node.value, ast.Name) and
-                node.value.id == 'st' and
-                node.attr == 'session_state'):
+            if (
+                isinstance(node.value, ast.Name)
+                and node.value.id == "st"
+                and node.attr == "session_state"
+            ):
                 return True
         return False
 
@@ -175,7 +205,7 @@ class SessionStateVisitor(ast.NodeVisitor):
 def analyze_file(filepath: Path) -> List[SessionStateUsage]:
     """Analyze a single file for session_state usage."""
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             source = f.read()
 
         tree = ast.parse(source)
@@ -205,10 +235,13 @@ def analyze_codebase(base_dir: Path, verbose: bool = False) -> SessionStateRepor
     py_files = list(streamlit_dir.rglob("*.py"))
 
     # Exclude test files and __pycache__
-    py_files = [f for f in py_files
-                if '__pycache__' not in str(f)
-                and not f.name.startswith('test_')
-                and 'tests' not in f.parts]
+    py_files = [
+        f
+        for f in py_files
+        if "__pycache__" not in str(f)
+        and not f.name.startswith("test_")
+        and "tests" not in f.parts
+    ]
 
     if verbose:
         print(f"Scanning {len(py_files)} files...")
@@ -224,18 +257,20 @@ def analyze_codebase(base_dir: Path, verbose: bool = False) -> SessionStateRepor
     unsafe_reads: List[SessionStateUsage] = []
 
     for usage in all_usages:
-        if usage.access_type == 'write':
+        if usage.access_type == "write":
             keys_written[usage.key].append(usage)
-        elif usage.access_type in ('read', 'get'):
+        elif usage.access_type in ("read", "get"):
             keys_read[usage.key].append(usage)
-        elif usage.access_type == 'check':
+        elif usage.access_type == "check":
             keys_checked[usage.key].append(usage)
-        elif usage.access_type == 'unsafe_read':
+        elif usage.access_type == "unsafe_read":
             unsafe_reads.append(usage)
             keys_read[usage.key].append(usage)
 
     # Find issues
-    all_keys = set(keys_written.keys()) | set(keys_read.keys()) | set(keys_checked.keys())
+    all_keys = (
+        set(keys_written.keys()) | set(keys_read.keys()) | set(keys_checked.keys())
+    )
 
     # Uninitialized reads: keys read but never written
     for key in keys_read:
@@ -253,9 +288,9 @@ def analyze_codebase(base_dir: Path, verbose: bool = False) -> SessionStateRepor
     report.total_keys = len(all_keys)
     report.total_usages = len(all_usages)
     report.issues_count = (
-        len(report.uninitialized_reads) +
-        len(report.unused_writes) +
-        len(report.unsafe_access)
+        len(report.uninitialized_reads)
+        + len(report.unused_writes)
+        + len(report.unsafe_access)
     )
 
     return report
@@ -274,7 +309,11 @@ def print_report(report: SessionStateReport, verbose: bool = False):
         print(f"🟠 UNSAFE ACCESS ({len(report.unsafe_access)} issues)")
         print("   Using st.session_state.key instead of .get() or 'in' check")
         for usage in report.unsafe_access[:10]:  # Limit output
-            rel_path = Path(usage.file).relative_to(Path.cwd()) if Path(usage.file).is_absolute() else usage.file
+            rel_path = (
+                Path(usage.file).relative_to(Path.cwd())
+                if Path(usage.file).is_absolute()
+                else usage.file
+            )
             print(f"   - {rel_path}:{usage.line}: {usage.context}")
         if len(report.unsafe_access) > 10:
             print(f"   ... and {len(report.unsafe_access) - 10} more")
@@ -284,7 +323,11 @@ def print_report(report: SessionStateReport, verbose: bool = False):
         print(f"🔴 UNINITIALIZED READS ({len(report.uninitialized_reads)} issues)")
         print("   Keys read but never written in analyzed files")
         for usage in report.uninitialized_reads[:10]:
-            rel_path = Path(usage.file).relative_to(Path.cwd()) if Path(usage.file).is_absolute() else usage.file
+            rel_path = (
+                Path(usage.file).relative_to(Path.cwd())
+                if Path(usage.file).is_absolute()
+                else usage.file
+            )
             print(f"   - {rel_path}:{usage.line}: {usage.key}")
         if len(report.uninitialized_reads) > 10:
             print(f"   ... and {len(report.uninitialized_reads) - 10} more")
@@ -294,7 +337,11 @@ def print_report(report: SessionStateReport, verbose: bool = False):
         print(f"🟡 UNUSED WRITES ({len(report.unused_writes)} issues)")
         print("   Keys written but never read (may be intentional)")
         for usage in report.unused_writes[:5]:
-            rel_path = Path(usage.file).relative_to(Path.cwd()) if Path(usage.file).is_absolute() else usage.file
+            rel_path = (
+                Path(usage.file).relative_to(Path.cwd())
+                if Path(usage.file).is_absolute()
+                else usage.file
+            )
             print(f"   - {rel_path}:{usage.line}: {usage.key}")
         if len(report.unused_writes) > 5:
             print(f"   ... and {len(report.unused_writes) - 5} more")
@@ -313,20 +360,9 @@ def main():
     parser = argparse.ArgumentParser(
         description="Audit session_state usage in Streamlit app"
     )
-    parser.add_argument(
-        '--file', '-f',
-        help="Analyze specific file only"
-    )
-    parser.add_argument(
-        '--verbose', '-v',
-        action='store_true',
-        help="Verbose output"
-    )
-    parser.add_argument(
-        '--json',
-        action='store_true',
-        help="Output as JSON"
-    )
+    parser.add_argument("--file", "-f", help="Analyze specific file only")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
+    parser.add_argument("--json", action="store_true", help="Output as JSON")
 
     args = parser.parse_args()
 
@@ -346,15 +382,15 @@ def main():
 
         if args.json:
             output = {
-                'total_keys': report.total_keys,
-                'total_usages': report.total_usages,
-                'issues_count': report.issues_count,
-                'uninitialized_reads': [
-                    {'key': u.key, 'file': u.file, 'line': u.line}
+                "total_keys": report.total_keys,
+                "total_usages": report.total_usages,
+                "issues_count": report.issues_count,
+                "uninitialized_reads": [
+                    {"key": u.key, "file": u.file, "line": u.line}
                     for u in report.uninitialized_reads
                 ],
-                'unsafe_access': [
-                    {'key': u.key, 'file': u.file, 'line': u.line, 'context': u.context}
+                "unsafe_access": [
+                    {"key": u.key, "file": u.file, "line": u.line, "context": u.context}
                     for u in report.unsafe_access
                 ],
             }

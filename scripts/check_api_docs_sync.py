@@ -44,7 +44,8 @@ def main() -> int:
         return 1
 
     missing_in_api_doc = [
-        symbol for symbol in sorted(stability_symbols)
+        symbol
+        for symbol in sorted(stability_symbols)
         if not _is_documented(api_doc_text, symbol)
     ]
 

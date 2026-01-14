@@ -50,7 +50,9 @@ class AutoFixer:
             content = f.read()
 
         # Look for the sys.path.insert line
-        old_pattern = r'sys\.path\.insert\(0,\s*str\(Path\(__file__\)\.parent\.parent\)\)'
+        old_pattern = (
+            r"sys\.path\.insert\(0,\s*str\(Path\(__file__\)\.parent\.parent\)\)"
+        )
 
         if re.search(old_pattern, content):
             # Replace with more robust version
@@ -64,12 +66,12 @@ if str(streamlit_app_dir) not in sys.path:
     sys.path.insert(0, str(streamlit_app_dir))"""
 
             content = re.sub(
-                r'# Add parent directory to path for imports\s*\n' + old_pattern,
+                r"# Add parent directory to path for imports\s*\n" + old_pattern,
                 new_code,
-                content
+                content,
             )
 
-            with open(self.page_path, 'w') as f:
+            with open(self.page_path, "w") as f:
                 f.write(content)
 
             self.fixes_applied.append("Fixed import paths (more robust)")
@@ -87,12 +89,14 @@ if str(streamlit_app_dir) not in sys.path:
         modified = False
         for i, line in enumerate(lines):
             # Comment out apply_dark_mode_theme if not already
-            if 'apply_dark_mode_theme()' in line and not line.strip().startswith('#'):
-                lines[i] = line.replace('apply_dark_mode_theme()', '#apply_dark_mode_theme()')
+            if "apply_dark_mode_theme()" in line and not line.strip().startswith("#"):
+                lines[i] = line.replace(
+                    "apply_dark_mode_theme()", "#apply_dark_mode_theme()"
+                )
                 modified = True
 
         if modified:
-            with open(self.page_path, 'w') as f:
+            with open(self.page_path, "w") as f:
                 f.writelines(lines)
 
             self.fixes_applied.append("Disabled problematic theme")
@@ -106,7 +110,7 @@ if str(streamlit_app_dir) not in sys.path:
 
         try:
             with open(self.page_path) as f:
-                compile(f.read(), self.page_path, 'exec')
+                compile(f.read(), self.page_path, "exec")
             print("   ✅ Syntax OK")
         except SyntaxError as e:
             print(f"   ❌ Syntax error at line {e.lineno}: {e.msg}")
@@ -140,5 +144,5 @@ def main():
     fixer.fix_all()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

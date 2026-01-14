@@ -71,7 +71,9 @@ def _validate_commit_hashes(lines: list[str], filename: str) -> list[str]:
 
     for line_num, line in enumerate(lines, 1):
         # Only check lines that look like they contain commit references
-        if not any(kw in line.lower() for kw in ["commit", "hash", "sha", "merged", "squash"]):
+        if not any(
+            kw in line.lower() for kw in ["commit", "hash", "sha", "merged", "squash"]
+        ):
             continue
 
         for match in COMMIT_HASH_RE.finditer(line):
@@ -164,7 +166,9 @@ def main() -> int:
         print(f"ERROR: SESSION_LOG.md missing session entry for {date_str}")
         return 1
 
-    if first_session_line is not None and not first_session_line.startswith(session_heading):
+    if first_session_line is not None and not first_session_line.startswith(
+        session_heading
+    ):
         print("ERROR: SESSION_LOG.md newest session must be at the top (append-only).")
         print(f"Expected first session header to start with {session_heading}.")
         return 1

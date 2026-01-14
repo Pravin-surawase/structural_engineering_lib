@@ -22,7 +22,9 @@ def _documented_names(doc_text: str) -> set[str]:
     names: set[str] = set()
     for match in re.finditer(r"\bapi\.([a-zA-Z_][a-zA-Z0-9_]*)", doc_text):
         names.add(match.group(1))
-    for match in re.finditer(r"^\s*def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", doc_text, re.M):
+    for match in re.finditer(
+        r"^\s*def\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(", doc_text, re.M
+    ):
         names.add(match.group(1))
     return names
 
@@ -36,7 +38,9 @@ def main() -> int:
     documented = _documented_names(doc_text)
 
     api = _load_api_module()
-    exported = [name for name in getattr(api, "__all__", []) if not name.startswith("_")]
+    exported = [
+        name for name in getattr(api, "__all__", []) if not name.startswith("_")
+    ]
 
     missing = [name for name in exported if name not in documented]
     if missing:

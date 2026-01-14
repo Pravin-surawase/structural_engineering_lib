@@ -28,9 +28,15 @@ def run_bump_version(args: list[str]) -> int:
 
 def main():
     parser = argparse.ArgumentParser(description="Check for doc version drift")
-    parser.add_argument("--fix", action="store_true", help="Auto-fix with bump_version.py --sync-docs")
-    parser.add_argument("--ci", action="store_true", help="Exit with error code if drift found")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Show all checked patterns")
+    parser.add_argument(
+        "--fix", action="store_true", help="Auto-fix with bump_version.py --sync-docs"
+    )
+    parser.add_argument(
+        "--ci", action="store_true", help="Exit with error code if drift found"
+    )
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Show all checked patterns"
+    )
 
     args = parser.parse_args()
 

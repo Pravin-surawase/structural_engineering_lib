@@ -47,6 +47,7 @@ Usage:
 import ast
 import sys
 import argparse
+
 try:
     import yaml
 except ModuleNotFoundError:
@@ -60,6 +61,7 @@ from collections import defaultdict
 # =============================================================================
 # PHASE 3: FUNCTION SIGNATURE REGISTRY
 # =============================================================================
+
 
 class FunctionSignatureRegistry:
     """
@@ -79,7 +81,7 @@ class FunctionSignatureRegistry:
             return
 
         try:
-            with open(filepath, 'r', encoding='utf-8') as f:
+            with open(filepath, "r", encoding="utf-8") as f:
                 tree = ast.parse(f.read(), str(filepath))
 
             for node in ast.walk(tree):
@@ -97,32 +99,46 @@ class FunctionSignatureRegistry:
             # Silently skip files that can't be parsed
             pass
 
-    def _extract_signature(self, node: ast.FunctionDef, filepath: Path) -> Dict[str, Any]:
+    def _extract_signature(
+        self, node: ast.FunctionDef, filepath: Path
+    ) -> Dict[str, Any]:
         """Extract signature information from function definition."""
         args = node.args
 
         # Required positional args (no defaults)
-        required_args = [arg.arg for arg in args.args[:len(args.args) - len(args.defaults)]]
+        required_args = [
+            arg.arg for arg in args.args[: len(args.args) - len(args.defaults)]
+        ]
 
         # Optional args (with defaults)
-        optional_args = [arg.arg for arg in args.args[len(args.args) - len(args.defaults):]]
+        optional_args = [
+            arg.arg for arg in args.args[len(args.args) - len(args.defaults) :]
+        ]
 
         # Keyword-only args
-        kwonly_required = [arg.arg for arg in args.kwonlyargs if arg.arg not in [d.arg for d in args.kw_defaults if d]]
-        kwonly_optional = [arg.arg for arg in args.kwonlyargs if arg.arg in [d.arg for d in args.kw_defaults if d]]
+        kwonly_required = [
+            arg.arg
+            for arg in args.kwonlyargs
+            if arg.arg not in [d.arg for d in args.kw_defaults if d]
+        ]
+        kwonly_optional = [
+            arg.arg
+            for arg in args.kwonlyargs
+            if arg.arg in [d.arg for d in args.kw_defaults if d]
+        ]
 
         return {
-            'name': node.name,
-            'required_args': required_args,
-            'optional_args': optional_args,
-            'kwonly_required': kwonly_required,
-            'kwonly_optional': kwonly_optional,
-            'has_vararg': args.vararg is not None,
-            'has_kwarg': args.kwarg is not None,
-            'total_params': len(args.args),
-            'min_params': len(required_args),
-            'filepath': str(filepath),
-            'lineno': node.lineno,
+            "name": node.name,
+            "required_args": required_args,
+            "optional_args": optional_args,
+            "kwonly_required": kwonly_required,
+            "kwonly_optional": kwonly_optional,
+            "has_vararg": args.vararg is not None,
+            "has_kwarg": args.kwarg is not None,
+            "total_params": len(args.args),
+            "min_params": len(required_args),
+            "filepath": str(filepath),
+            "lineno": node.lineno,
         }
 
     def get_signature(self, func_name: str) -> Optional[Dict[str, Any]]:
@@ -132,14 +148,14 @@ class FunctionSignatureRegistry:
     def scan_common_modules(self, project_root: Path):
         """Scan common utility modules."""
         patterns = [
-            'streamlit_app/utils/*.py',
-            'streamlit_app/components/*.py',
-            'Python/structural_lib/*.py',
+            "streamlit_app/utils/*.py",
+            "streamlit_app/components/*.py",
+            "Python/structural_lib/*.py",
         ]
 
         for pattern in patterns:
             for filepath in project_root.glob(pattern):
-                if filepath.name != '__init__.py':
+                if filepath.name != "__init__.py":
                     self.scan_file(filepath)
 
 
@@ -162,14 +178,14 @@ class IgnoreConfig:
             )
             return
         try:
-            with open(config_path, 'r') as f:
+            with open(config_path, "r") as f:
                 config = yaml.safe_load(f) or {}
 
             # Parse false_positives section
-            false_positives = config.get('false_positives', [])
+            false_positives = config.get("false_positives", [])
             for item in false_positives:
-                file_pattern = item.get('file', '')
-                lines = item.get('lines', [])
+                file_pattern = item.get("file", "")
+                lines = item.get("lines", [])
 
                 # Store ignored lines per file
                 for line in lines:
@@ -200,8 +216,12 @@ class IgnoreConfig:
 class EnhancedIssueDetector(ast.NodeVisitor):
     """Enhanced AST visitor with scope tracking for NameError detection."""
 
-    def __init__(self, filepath: str, ignore_config: Optional[IgnoreConfig] = None,
-                 sig_registry: Optional[FunctionSignatureRegistry] = None):
+    def __init__(
+        self,
+        filepath: str,
+        ignore_config: Optional[IgnoreConfig] = None,
+        sig_registry: Optional[FunctionSignatureRegistry] = None,
+    ):
         self.filepath = filepath
         self.issues: List[Tuple[int, str, str]] = []  # (line, severity, message)
         self.ignore_config = ignore_config
@@ -212,15 +232,54 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.imported_names: Set[str] = set()  # Track imports
         # Add common builtins that are always available
         self.builtin_names: Set[str] = set(dir(__builtins__)) | {
-            'print', 'len', 'range', 'int', 'float', 'str', 'list', 'dict',
-            'tuple', 'set', 'frozenset', 'bool', 'type', 'isinstance',
-            'hasattr', 'getattr', 'setattr', 'sum', 'min', 'max', 'abs',
-            'round', 'sorted', 'reversed', 'enumerate', 'zip', 'map',
-            'filter', 'all', 'any', 'open', 'hash', 'id', 'ord', 'chr',
+            "print",
+            "len",
+            "range",
+            "int",
+            "float",
+            "str",
+            "list",
+            "dict",
+            "tuple",
+            "set",
+            "frozenset",
+            "bool",
+            "type",
+            "isinstance",
+            "hasattr",
+            "getattr",
+            "setattr",
+            "sum",
+            "min",
+            "max",
+            "abs",
+            "round",
+            "sorted",
+            "reversed",
+            "enumerate",
+            "zip",
+            "map",
+            "filter",
+            "all",
+            "any",
+            "open",
+            "hash",
+            "id",
+            "ord",
+            "chr",
             # Standard exception names
-            'Exception', 'ValueError', 'TypeError', 'KeyError', 'IndexError',
-            'AttributeError', 'NameError', 'ZeroDivisionError', 'RuntimeError',
-            'ImportError', 'IOError', 'OSError',
+            "Exception",
+            "ValueError",
+            "TypeError",
+            "KeyError",
+            "IndexError",
+            "AttributeError",
+            "NameError",
+            "ZeroDivisionError",
+            "RuntimeError",
+            "ImportError",
+            "IOError",
+            "OSError",
         }  # Python builtins
 
         # Track Path types for division operator detection
@@ -286,7 +345,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             return True
 
         # Special Streamlit names
-        streamlit_names = {'st', 'pd', 'np', 'plt'}
+        streamlit_names = {"st", "pd", "np", "plt"}
         if name in streamlit_names:
             return True
 
@@ -300,8 +359,8 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             self.add_defined_name(imported_name)
 
             # Phase 2: Track Path imports
-            if alias.name == 'pathlib' or alias.name.startswith('pathlib.'):
-                if 'Path' in alias.name or imported_name == 'Path':
+            if alias.name == "pathlib" or alias.name.startswith("pathlib."):
+                if "Path" in alias.name or imported_name == "Path":
                     self.path_like_vars.add(imported_name)
 
         # Detect imports inside functions (bad practice)
@@ -310,7 +369,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 self.add_issue(
                     node.lineno,
                     "HIGH",
-                    f"Import '{alias.name}' inside function '{self.function_name}' (move to module level)"
+                    f"Import '{alias.name}' inside function '{self.function_name}' (move to module level)",
                 )
 
         self.generic_visit(node)
@@ -319,12 +378,14 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         """Track from...import and detect inside functions."""
         for alias in node.names:
             imported_name = alias.asname if alias.asname else alias.name
-            if imported_name != '*':
+            if imported_name != "*":
                 self.imported_names.add(imported_name)
                 self.add_defined_name(imported_name)
 
                 # Phase 2: Track Path imports
-                if node.module == 'pathlib' and (alias.name == 'Path' or imported_name == 'Path'):
+                if node.module == "pathlib" and (
+                    alias.name == "Path" or imported_name == "Path"
+                ):
                     self.path_like_vars.add(imported_name)
 
         # Detect imports inside functions
@@ -333,7 +394,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             self.add_issue(
                 node.lineno,
                 "HIGH",
-                f"Import from '{module}' inside function '{self.function_name}' (move to module level)"
+                f"Import from '{module}' inside function '{self.function_name}' (move to module level)",
             )
 
         self.generic_visit(node)
@@ -372,7 +433,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                         self.add_issue(
                             node.lineno,
                             "MEDIUM",
-                            f"Function '{node.name}' returns dict without type hint"
+                            f"Function '{node.name}' returns dict without type hint",
                         )
                         break
 
@@ -389,12 +450,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # Check if assigning a Path object
         is_path_assignment = False
         if isinstance(node.value, ast.Call):
-            if isinstance(node.value.func, ast.Name) and node.value.func.id in self.path_like_vars:
+            if (
+                isinstance(node.value.func, ast.Name)
+                and node.value.func.id in self.path_like_vars
+            ):
                 is_path_assignment = True
 
             # Phase 2: Track MagicMock assignments for test files
             # Pattern: mock_streamlit.method = MagicMock()
-            if isinstance(node.value.func, ast.Name) and node.value.func.id == 'MagicMock':
+            if (
+                isinstance(node.value.func, ast.Name)
+                and node.value.func.id == "MagicMock"
+            ):
                 for target in node.targets:
                     if isinstance(target, ast.Attribute):
                         # Extract the full attribute path: mock_streamlit.method
@@ -422,9 +489,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             elif isinstance(target, ast.Subscript):
                 # Session state assignment: st.session_state["key"] = value
                 if isinstance(target.value, ast.Attribute):
-                    if (isinstance(target.value.value, ast.Name) and
-                        target.value.value.id == 'st' and
-                        target.value.attr == 'session_state'):
+                    if (
+                        isinstance(target.value.value, ast.Name)
+                        and target.value.value.id == "st"
+                        and target.value.attr == "session_state"
+                    ):
                         if isinstance(target.slice, ast.Constant):
                             key = target.slice.value
                             if isinstance(key, str):
@@ -433,10 +502,12 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Phase 6: Track attribute-style session state assignments
             # Pattern: st.session_state.key = value
             elif isinstance(target, ast.Attribute):
-                if (isinstance(target.value, ast.Attribute) and
-                    isinstance(target.value.value, ast.Name) and
-                    target.value.value.id == 'st' and
-                    target.value.attr == 'session_state'):
+                if (
+                    isinstance(target.value, ast.Attribute)
+                    and isinstance(target.value.value, ast.Name)
+                    and target.value.value.id == "st"
+                    and target.value.attr == "session_state"
+                ):
                     # This is st.session_state.key = value
                     key = target.attr
                     self.session_state_keys.add(key)
@@ -537,7 +608,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 self.add_issue(
                     node.lineno,
                     "CRITICAL",
-                    f"NameError: '{node.target.id}' used in augmented assignment but not defined"
+                    f"NameError: '{node.target.id}' used in augmented assignment but not defined",
                 )
         self.generic_visit(node)
 
@@ -547,11 +618,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Variable is being read
             if not self.is_defined(node.id):
                 # Filter out likely false positives
-                if node.id not in ['_', '__name__', '__file__']:
+                if node.id not in ["_", "__name__", "__file__"]:
                     self.add_issue(
                         node.lineno,
                         "CRITICAL",
-                        f"NameError: name '{node.id}' is not defined (used before assignment or import)"
+                        f"NameError: name '{node.id}' is not defined (used before assignment or import)",
                     )
 
         self.generic_visit(node)
@@ -568,12 +639,16 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             if isinstance(op, (ast.In, ast.NotIn)):
                 # Check if comparing against st.session_state
                 comparator = node.comparators[0]
-                if (isinstance(comparator, ast.Attribute) and
-                    isinstance(comparator.value, ast.Name) and
-                    comparator.value.id == 'st' and
-                    comparator.attr == 'session_state'):
+                if (
+                    isinstance(comparator, ast.Attribute)
+                    and isinstance(comparator.value, ast.Name)
+                    and comparator.value.id == "st"
+                    and comparator.attr == "session_state"
+                ):
                     # Extract the key being checked
-                    if isinstance(node.left, ast.Constant) and isinstance(node.left.value, str):
+                    if isinstance(node.left, ast.Constant) and isinstance(
+                        node.left.value, str
+                    ):
                         key = node.left.value
                         # Mark this key as validated
                         self.session_state_keys.add(key)
@@ -586,28 +661,40 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         if isinstance(node.value, ast.Name):
             var_name = node.value.id
             # Skip safe patterns (list indexing with int)
-            if isinstance(node.slice, ast.Constant) and isinstance(node.slice.value, str):
+            if isinstance(node.slice, ast.Constant) and isinstance(
+                node.slice.value, str
+            ):
                 # String key access - likely dict access
-                if var_name in ['result', 'inputs', 'design_result', 'flexure',
-                                'shear', 'detailing', 'data', 'config']:
+                if var_name in [
+                    "result",
+                    "inputs",
+                    "design_result",
+                    "flexure",
+                    "shear",
+                    "detailing",
+                    "data",
+                    "config",
+                ]:
                     self.add_issue(
                         node.lineno,
                         "HIGH",
-                        f"KeyError risk: '{var_name}[{repr(node.slice.value)}]' may raise KeyError (use .get() with default)"
+                        f"KeyError risk: '{var_name}[{repr(node.slice.value)}]' may raise KeyError (use .get() with default)",
                     )
 
         # Session state subscript: st.session_state["key"]
         if isinstance(node.value, ast.Attribute):
-            if (isinstance(node.value.value, ast.Name) and
-                node.value.value.id == 'st' and
-                node.value.attr == 'session_state'):
+            if (
+                isinstance(node.value.value, ast.Name)
+                and node.value.value.id == "st"
+                and node.value.attr == "session_state"
+            ):
                 if isinstance(node.slice, ast.Constant):
                     key = node.slice.value
                     if isinstance(key, str) and key not in self.session_state_keys:
                         self.add_issue(
                             node.lineno,
                             "HIGH",
-                            f"KeyError risk: st.session_state[{repr(key)}] may not exist (use .get() or check 'in')"
+                            f"KeyError risk: st.session_state[{repr(key)}] may not exist (use .get() or check 'in')",
                         )
 
         # IndexError: list/tuple access
@@ -623,18 +710,22 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                         # Phase 6: Skip if accessing [0] on result of split()
                         # str.split() always returns at least 1 element
                         if index_value == 0 and isinstance(node.value, ast.Call):
-                            if (isinstance(node.value.func, ast.Attribute) and
-                                node.value.func.attr == 'split'):
+                            if (
+                                isinstance(node.value.func, ast.Attribute)
+                                and node.value.func.attr == "split"
+                            ):
                                 # This is x.split(...)[0] - always safe
                                 self.generic_visit(node)
                                 return
 
                         # Check if bounds validated (look for len() checks)
-                        if not self._has_bounds_check_nearby(container_name, index_value):
+                        if not self._has_bounds_check_nearby(
+                            container_name, index_value
+                        ):
                             self.add_issue(
                                 node.lineno,
                                 "MEDIUM",
-                                f"IndexError risk: {container_name}[{index_value}] without bounds check (validate len() > {index_value})"
+                                f"IndexError risk: {container_name}[{index_value}] without bounds check (validate len() > {index_value})",
                             )
 
         self.generic_visit(node)
@@ -729,14 +820,14 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         elif isinstance(node, ast.Call):
             if isinstance(node.func, ast.Name):
                 # max(a, b) - if any argument is positive constant, result >= that constant
-                if node.func.id == 'max' and len(node.args) >= 2:
+                if node.func.id == "max" and len(node.args) >= 2:
                     for arg in node.args:
                         if isinstance(arg, ast.Constant):
                             if isinstance(arg.value, (int, float)) and arg.value > 0:
                                 return True
 
                 # min(a, b) - if any argument is negative constant, result <= that constant (non-zero)
-                if node.func.id == 'min' and len(node.args) >= 2:
+                if node.func.id == "min" and len(node.args) >= 2:
                     for arg in node.args:
                         if isinstance(arg, ast.Constant):
                             if isinstance(arg.value, (int, float)) and arg.value < 0:
@@ -765,7 +856,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 if denom_name and denom_name in validated_vars:
                     return True
             # Stop at statement boundaries
-            elif isinstance(parent, (ast.FunctionDef, ast.ClassDef, ast.If, ast.For, ast.While)):
+            elif isinstance(
+                parent, (ast.FunctionDef, ast.ClassDef, ast.If, ast.For, ast.While)
+            ):
                 break
         return False
 
@@ -788,7 +881,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             return
 
         # Count positional args provided (not including kwargs)
-        positional_count = len([arg for arg in node.args if not isinstance(arg, ast.Starred)])
+        positional_count = len(
+            [arg for arg in node.args if not isinstance(arg, ast.Starred)]
+        )
 
         # Extract keyword argument names
         keyword_names = {kw.arg for kw in node.keywords if kw.arg is not None}
@@ -797,14 +892,16 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         has_kwargs_spread = any(kw.arg is None for kw in node.keywords)
 
         # Check minimum positional args
-        min_required = sig['min_params']
-        total_required = len(sig['required_args'])
+        min_required = sig["min_params"]
+        total_required = len(sig["required_args"])
 
         # If they provide too few positional args and no matching keywords
         if positional_count < min_required:
             # Check if missing args are provided as keywords
-            missing_args = sig['required_args'][positional_count:]
-            missing_not_in_kwargs = [arg for arg in missing_args if arg not in keyword_names]
+            missing_args = sig["required_args"][positional_count:]
+            missing_not_in_kwargs = [
+                arg for arg in missing_args if arg not in keyword_names
+            ]
 
             if missing_not_in_kwargs and not has_kwargs_spread:
                 self.add_issue(
@@ -812,15 +909,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     "HIGH",
                     f"API signature mismatch: {func_name}() requires {total_required} args, "
                     f"but only {positional_count} positional provided. "
-                    f"Missing: {', '.join(missing_not_in_kwargs)}"
+                    f"Missing: {', '.join(missing_not_in_kwargs)}",
                 )
 
         # Check for invalid keyword argument names (if no **kwargs in signature)
-        if not sig['has_kwarg'] and not has_kwargs_spread:
-            valid_kwarg_names = (set(sig['required_args']) |
-                                set(sig['optional_args']) |
-                                set(sig['kwonly_required']) |
-                                set(sig['kwonly_optional']))
+        if not sig["has_kwarg"] and not has_kwargs_spread:
+            valid_kwarg_names = (
+                set(sig["required_args"])
+                | set(sig["optional_args"])
+                | set(sig["kwonly_required"])
+                | set(sig["kwonly_optional"])
+            )
 
             invalid_kwargs = keyword_names - valid_kwarg_names
             if invalid_kwargs:
@@ -828,18 +927,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     node.lineno,
                     "HIGH",
                     f"API signature mismatch: {func_name}() called with invalid keyword args: "
-                    f"{', '.join(invalid_kwargs)}. Valid: {', '.join(sorted(valid_kwarg_names))}"
+                    f"{', '.join(invalid_kwargs)}. Valid: {', '.join(sorted(valid_kwarg_names))}",
                 )
 
         # Check for too many positional args (if no *args in signature)
-        if not sig['has_vararg']:
-            max_positional = len(sig['required_args']) + len(sig['optional_args'])
+        if not sig["has_vararg"]:
+            max_positional = len(sig["required_args"]) + len(sig["optional_args"])
             if positional_count > max_positional:
                 self.add_issue(
                     node.lineno,
                     "HIGH",
                     f"API signature mismatch: {func_name}() accepts max {max_positional} positional args, "
-                    f"but {positional_count} provided"
+                    f"but {positional_count} provided",
                 )
 
     def _is_zero_check(self, test: ast.expr) -> Optional[str]:
@@ -984,11 +1083,13 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     is_safe = True
 
             if not is_safe:
-                op_name = {ast.Div: '/', ast.FloorDiv: '//', ast.Mod: '%'}[type(node.op)]
+                op_name = {ast.Div: "/", ast.FloorDiv: "//", ast.Mod: "%"}[
+                    type(node.op)
+                ]
                 self.add_issue(
                     node.lineno,
                     "CRITICAL",
-                    f"ZeroDivisionError risk: division '{op_name}' without obvious zero check (validate denominator)"
+                    f"ZeroDivisionError risk: division '{op_name}' without obvious zero check (validate denominator)",
                 )
 
         self.generic_visit(node)
@@ -1007,7 +1108,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             if isinstance(parent, ast.If):
                 # Check if test contains len(container)
                 try:
-                    test_str = ast.unparse(parent.test) if hasattr(ast, 'unparse') else ""
+                    test_str = (
+                        ast.unparse(parent.test) if hasattr(ast, "unparse") else ""
+                    )
                 except Exception:
                     continue
 
@@ -1031,12 +1134,16 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Also check ternary expressions in assignments
             elif isinstance(parent, ast.IfExp):
                 try:
-                    test_str = ast.unparse(parent.test) if hasattr(ast, 'unparse') else ""
+                    test_str = (
+                        ast.unparse(parent.test) if hasattr(ast, "unparse") else ""
+                    )
                 except Exception:
                     continue
 
                 if f"len({container})" in test_str:
-                    if index == 0 and any(p in test_str for p in ["> 0", ">= 1", "!= 0"]):
+                    if index == 0 and any(
+                        p in test_str for p in ["> 0", ">= 1", "!= 0"]
+                    ):
                         return True
 
         return False
@@ -1068,7 +1175,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             return
 
         # Check if it's a call on 'st' object
-        if not (isinstance(node.func.value, ast.Name) and node.func.value.id == 'st'):
+        if not (isinstance(node.func.value, ast.Name) and node.func.value.id == "st"):
             return
 
         widget_name = node.func.attr
@@ -1076,13 +1183,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # Define widgets and their required default parameters
         # Format: widget_name -> (default_param_name, severity, description)
         widget_defaults = {
-            'number_input': ('value', 'MEDIUM', 'returns 0.0 or min_value if no default'),
-            'text_input': ('value', 'LOW', 'returns empty string if no default'),
-            'text_area': ('value', 'LOW', 'returns empty string if no default'),
-            'selectbox': ('index', 'LOW', 'returns first option if no index'),
-            'multiselect': ('default', 'LOW', 'returns empty list if no default'),
-            'slider': ('value', 'LOW', 'returns min_value if no default'),
-            'radio': ('index', 'LOW', 'returns first option if no index'),
+            "number_input": (
+                "value",
+                "MEDIUM",
+                "returns 0.0 or min_value if no default",
+            ),
+            "text_input": ("value", "LOW", "returns empty string if no default"),
+            "text_area": ("value", "LOW", "returns empty string if no default"),
+            "selectbox": ("index", "LOW", "returns first option if no index"),
+            "multiselect": ("default", "LOW", "returns empty list if no default"),
+            "slider": ("value", "LOW", "returns min_value if no default"),
+            "radio": ("index", "LOW", "returns first option if no index"),
         }
 
         if widget_name not in widget_defaults:
@@ -1104,10 +1215,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # st.text_input(label, value) - value is 2nd positional
         # st.slider(label, min, max, value) - value is 4th positional
         positional_defaults = {
-            'number_input': 3,  # 4th arg (0-indexed: label, min, max, value)
-            'text_input': 1,    # 2nd arg (label, value)
-            'text_area': 1,     # 2nd arg (label, value)
-            'slider': 3,        # 4th arg (label, min, max, value)
+            "number_input": 3,  # 4th arg (0-indexed: label, min, max, value)
+            "text_input": 1,  # 2nd arg (label, value)
+            "text_area": 1,  # 2nd arg (label, value)
+            "slider": 3,  # 4th arg (label, min, max, value)
         }
 
         if widget_name in positional_defaults:
@@ -1119,7 +1230,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             self.add_issue(
                 node.lineno,
                 severity,
-                f"Widget st.{widget_name}() missing '{param_name}=' parameter ({description})"
+                f"Widget st.{widget_name}() missing '{param_name}=' parameter ({description})",
             )
 
     def _is_early_exit(self, body: List[ast.stmt]) -> bool:
@@ -1199,45 +1310,58 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
         # Phase 3+: Check API signature mismatches in test files AND page files
         # Extended from tests-only to catch API mismatches in Streamlit pages
-        critical_api_funcs = {'cached_design', 'cached_smart_analysis', 'run_cost_optimization',
-                              'run_compliance_checks', 'design_beam'}
+        critical_api_funcs = {
+            "cached_design",
+            "cached_smart_analysis",
+            "run_cost_optimization",
+            "run_compliance_checks",
+            "design_beam",
+        }
         if self.sig_registry and func_name:
             # Check all calls to critical API functions (regardless of file location)
             if func_name in critical_api_funcs:
                 self._check_api_signature(node, func_name)
             # Also check test files for all registered functions
-            elif '/tests/' in self.filepath:
+            elif "/tests/" in self.filepath:
                 self._check_api_signature(node, func_name)
 
         # Check for hash() with unhashable types
-        if func_name == 'hash':
+        if func_name == "hash":
             if node.args:
                 arg = node.args[0]
 
                 # Direct unhashable types: hash([...]), hash({...}), hash({x: y})
                 if isinstance(arg, (ast.List, ast.Set, ast.Dict)):
-                    type_name = {ast.List: "list", ast.Set: "set", ast.Dict: "dict"}[type(arg)]
+                    type_name = {ast.List: "list", ast.Set: "set", ast.Dict: "dict"}[
+                        type(arg)
+                    ]
                     self.add_issue(
                         node.lineno,
                         "CRITICAL",
-                        f"TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)"
+                        f"TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)",
                     )
 
                 # Risky pattern: hash(frozenset(dict.items()))
                 elif isinstance(arg, ast.Call):
-                    if (isinstance(arg.func, ast.Name) and arg.func.id == 'frozenset' and
-                        arg.args and isinstance(arg.args[0], ast.Call)):
+                    if (
+                        isinstance(arg.func, ast.Name)
+                        and arg.func.id == "frozenset"
+                        and arg.args
+                        and isinstance(arg.args[0], ast.Call)
+                    ):
                         inner_call = arg.args[0]
-                        if (isinstance(inner_call.func, ast.Attribute) and
-                            inner_call.func.attr == 'items'):
+                        if (
+                            isinstance(inner_call.func, ast.Attribute)
+                            and inner_call.func.attr == "items"
+                        ):
                             self.add_issue(
                                 node.lineno,
                                 "HIGH",
-                                "TypeError risk: hash(frozenset(dict.items()) fails if dict contains unhashable values (validate first)"
+                                "TypeError risk: hash(frozenset(dict.items()) fails if dict contains unhashable values (validate first)",
                             )
 
         # Check for frozenset() with unhashable types
-        if func_name == 'frozenset' and node.args:
+        if func_name == "frozenset" and node.args:
             arg = node.args[0]
 
             # Direct list/dict/set literals are unhashable
@@ -1245,21 +1369,21 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 self.add_issue(
                     node.lineno,
                     "CRITICAL",
-                    f"TypeError: frozenset() called on unhashable type (lists/dicts/sets cannot be hashed)"
+                    f"TypeError: frozenset() called on unhashable type (lists/dicts/sets cannot be hashed)",
                 )
 
             # Check for .items() which returns unhashable tuples containing unhashable values
             elif isinstance(arg, ast.Call):
-                if isinstance(arg.func, ast.Attribute) and arg.func.attr == 'items':
+                if isinstance(arg.func, ast.Attribute) and arg.func.attr == "items":
                     # dict.items() returns unhashable if dict values are unhashable
                     self.add_issue(
                         node.lineno,
                         "HIGH",
-                        f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper."
+                        f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper.",
                     )
 
         # Check for int() / float() without error handling
-        if func_name in ('int', 'float'):
+        if func_name in ("int", "float"):
             # Only flag if there are arguments (conversion attempt)
             if node.args:
                 # Check if inside try/except
@@ -1267,7 +1391,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     self.add_issue(
                         node.lineno,
                         "MEDIUM",
-                        f"ValueError risk: {func_name}() without try/except (invalid input will crash)"
+                        f"ValueError risk: {func_name}() without try/except (invalid input will crash)",
                     )
 
         # TASK-403: Widget return type validation
@@ -1291,18 +1415,32 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # === Session state detection (for all files) ===
         # Check for st.session_state.key pattern
         if isinstance(node.value, ast.Attribute):
-            if (isinstance(node.value.value, ast.Name) and
-                node.value.value.id == 'st' and
-                node.value.attr == 'session_state'):
+            if (
+                isinstance(node.value.value, ast.Name)
+                and node.value.value.id == "st"
+                and node.value.attr == "session_state"
+            ):
                 # This is st.session_state.some_key
                 attr_name = node.attr
 
                 # Phase 6: Safe dict-like methods are NOT risky attribute accesses
                 # These are standard dict methods that always exist on session_state
                 safe_dict_methods = {
-                    'get', 'setdefault', 'pop', 'update', 'keys', 'values',
-                    'items', 'clear', 'copy', '__contains__', '__getitem__',
-                    '__setitem__', '__delitem__', '__len__', '__iter__',
+                    "get",
+                    "setdefault",
+                    "pop",
+                    "update",
+                    "keys",
+                    "values",
+                    "items",
+                    "clear",
+                    "copy",
+                    "__contains__",
+                    "__getitem__",
+                    "__setitem__",
+                    "__delitem__",
+                    "__len__",
+                    "__iter__",
                 }
                 if attr_name in safe_dict_methods:
                     # This is a safe method call, not a key access - skip warning
@@ -1312,14 +1450,14 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     self.add_issue(
                         node.lineno,
                         "HIGH",
-                        f"AttributeError risk: st.session_state.{attr_name} may not exist (use .get() or check 'in')"
+                        f"AttributeError risk: st.session_state.{attr_name} may not exist (use .get() or check 'in')",
                     )
 
         # === Mock assertion anti-patterns (test files only) ===
         # Only check in test files
-        if '/tests/' in self.filepath or self.filepath.endswith('_test.py'):
+        if "/tests/" in self.filepath or self.filepath.endswith("_test.py"):
             # Check for .called, .call_count, .call_args patterns
-            if node.attr in ('called', 'call_count', 'call_args', 'call_args_list'):
+            if node.attr in ("called", "call_count", "call_args", "call_args_list"):
                 # Check if this is likely NOT a Mock object
                 # Heuristic: if it's mock_streamlit.method_name.called, flag it
                 # unless the method was explicitly set to MagicMock
@@ -1331,7 +1469,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     # Check if base looks like a mock fixture (mock_streamlit, mock_*, etc.)
                     if isinstance(base, ast.Name):
                         base_name = base.id
-                        if base_name.startswith('mock_'):
+                        if base_name.startswith("mock_"):
                             # Get the full path: mock_streamlit.method
                             attr_path = f"{base_name}.{method}"
 
@@ -1345,7 +1483,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                                     f"Mock assertion anti-pattern: '{attr_path}.{node.attr}' "
                                     f"will fail if {method} is not a MagicMock. "
                                     f"Either: (1) Set '{attr_path} = MagicMock()' first, "
-                                    f"or (2) Use 'assert True' to verify function ran without error."
+                                    f"or (2) Use 'assert True' to verify function ran without error.",
                                 )
 
         self.generic_visit(node)
@@ -1358,12 +1496,12 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         These should use the centralized fixtures from conftest.py instead.
         """
         # Only check in test files (not conftest.py itself)
-        if '/tests/' in self.filepath and not self.filepath.endswith('conftest.py'):
+        if "/tests/" in self.filepath and not self.filepath.endswith("conftest.py"):
             # Known centralized test fixtures
             centralized_classes = {
-                'MockStreamlit': 'streamlit_app/tests/conftest.py',
-                'MockSessionState': 'streamlit_app/tests/conftest.py',
-                'MockContext': 'streamlit_app/tests/conftest.py',
+                "MockStreamlit": "streamlit_app/tests/conftest.py",
+                "MockSessionState": "streamlit_app/tests/conftest.py",
+                "MockContext": "streamlit_app/tests/conftest.py",
             }
 
             if node.name in centralized_classes:
@@ -1372,7 +1510,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     node.lineno,
                     "MEDIUM",
                     f"Duplicate class definition: '{node.name}' shadows centralized fixture in {expected_location}. "
-                    f"Use the conftest.py fixture instead (via 'mock_streamlit' parameter in test functions)."
+                    f"Use the conftest.py fixture instead (via 'mock_streamlit' parameter in test functions).",
                 )
 
         # Track the class definition
@@ -1387,8 +1525,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.current_class = old_class
 
 
-def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None,
-               sig_registry: Optional[FunctionSignatureRegistry] = None) -> List[Tuple[int, str, str]]:
+def check_file(
+    filepath: Path,
+    ignore_config: Optional[IgnoreConfig] = None,
+    sig_registry: Optional[FunctionSignatureRegistry] = None,
+) -> List[Tuple[int, str, str]]:
     """Check a single file for issues.
 
     Args:
@@ -1397,14 +1538,15 @@ def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None,
         sig_registry: Optional signature registry for API validation
     """
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             source = f.read()
 
         # Parse AST
         tree = ast.parse(source, filename=str(filepath))
 
-        detector = EnhancedIssueDetector(str(filepath), ignore_config=ignore_config,
-                                        sig_registry=sig_registry)
+        detector = EnhancedIssueDetector(
+            str(filepath), ignore_config=ignore_config, sig_registry=sig_registry
+        )
         detector.visit(tree)
 
         return detector.issues
@@ -1415,8 +1557,11 @@ def check_file(filepath: Path, ignore_config: Optional[IgnoreConfig] = None,
         return [(0, "ERROR", f"Failed to parse file: {e}")]
 
 
-def scan_all_pages(pages_dir: Path, ignore_config: Optional[IgnoreConfig] = None,
-                   sig_registry: Optional[FunctionSignatureRegistry] = None) -> Dict[str, List[Tuple[int, str, str]]]:
+def scan_all_pages(
+    pages_dir: Path,
+    ignore_config: Optional[IgnoreConfig] = None,
+    sig_registry: Optional[FunctionSignatureRegistry] = None,
+) -> Dict[str, List[Tuple[int, str, str]]]:
     """Scan all Streamlit pages.
 
     Args:
@@ -1434,14 +1579,17 @@ def scan_all_pages(pages_dir: Path, ignore_config: Optional[IgnoreConfig] = None
         return results
 
     for page_file in page_files:
-        issues = check_file(page_file, ignore_config=ignore_config, sig_registry=sig_registry)
+        issues = check_file(
+            page_file, ignore_config=ignore_config, sig_registry=sig_registry
+        )
         results[page_file.name] = issues
 
     return results
 
 
-def print_results(results: Dict[str, List[Tuple[int, str, str]]],
-                  fail_on: List[str] = None) -> int:
+def print_results(
+    results: Dict[str, List[Tuple[int, str, str]]], fail_on: List[str] = None
+) -> int:
     """Print scan results and return exit code."""
     all_issues = []
     total_files = len(results)
@@ -1467,7 +1615,9 @@ def print_results(results: Dict[str, List[Tuple[int, str, str]]],
         errors = [i for i in issues if i[1] == "ERROR"]
 
         print(f"📄 {filename}:")
-        print(f"   Issues: {len(issues)} (Critical: {len(critical)}, High: {len(high)}, Medium: {len(medium)})")
+        print(
+            f"   Issues: {len(issues)} (Critical: {len(critical)}, High: {len(high)}, Medium: {len(medium)})"
+        )
 
         if errors:
             print("   ❌ ERRORS:")
@@ -1543,39 +1693,32 @@ def main():
     parser.add_argument(
         "--all-pages",
         action="store_true",
-        help="Scan all pages in streamlit_app/pages/"
+        help="Scan all pages in streamlit_app/pages/",
     )
     parser.add_argument(
         "--page",
         type=str,
-        help="Scan specific page (e.g., 'beam_design' for 01_beam_design.py)"
+        help="Scan specific page (e.g., 'beam_design' for 01_beam_design.py)",
     )
     parser.add_argument(
         "--fail-on",
         type=str,
-        help="Comma-separated list of severities to fail on (e.g., 'critical,high')"
+        help="Comma-separated list of severities to fail on (e.g., 'critical,high')",
     )
     parser.add_argument(
         "--fail-on-critical",
         action="store_true",
-        help="Shortcut for --fail-on critical (exit 1 if any critical issues found)"
+        help="Shortcut for --fail-on critical (exit 1 if any critical issues found)",
     )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Show detailed output"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Show detailed output")
     parser.add_argument(
         "--ignore-file",
         type=str,
         default=".scanner-ignore.yml",
-        help="Path to ignore configuration file (default: .scanner-ignore.yml)"
+        help="Path to ignore configuration file (default: .scanner-ignore.yml)",
     )
     parser.add_argument(
-        "filepath",
-        nargs="?",
-        type=str,
-        help="Optional: scan a specific file path"
+        "filepath", nargs="?", type=str, help="Optional: scan a specific file path"
     )
 
     args = parser.parse_args()
@@ -1583,9 +1726,9 @@ def main():
     # Parse fail-on severities
     fail_on_severities = None
     if args.fail_on_critical:
-        fail_on_severities = ['critical']
+        fail_on_severities = ["critical"]
     elif args.fail_on:
-        fail_on_severities = [s.strip() for s in args.fail_on.split(',')]
+        fail_on_severities = [s.strip() for s in args.fail_on.split(",")]
 
     # Determine project root
     project_root = Path(__file__).parent.parent
@@ -1593,7 +1736,9 @@ def main():
 
     # Load ignore configuration
     ignore_file_path = project_root / args.ignore_file
-    ignore_config = IgnoreConfig(ignore_file_path) if ignore_file_path.exists() else None
+    ignore_config = (
+        IgnoreConfig(ignore_file_path) if ignore_file_path.exists() else None
+    )
 
     if ignore_config and args.verbose:
         print(f"📋 Loaded ignore config from {ignore_file_path}")
@@ -1608,7 +1753,9 @@ def main():
 
     if args.verbose:
         elapsed = time.time() - start_time
-        print(f"✅ Scanned {len(sig_registry.signatures)} function signatures in {elapsed:.2f}s")
+        print(
+            f"✅ Scanned {len(sig_registry.signatures)} function signatures in {elapsed:.2f}s"
+        )
 
     if not pages_dir.exists():
         print(f"❌ Pages directory not found: {pages_dir}")
@@ -1623,12 +1770,16 @@ def main():
             return 1
 
         print(f"🔍 Checking {file_path}...\n")
-        issues = check_file(file_path, ignore_config=ignore_config, sig_registry=sig_registry)
+        issues = check_file(
+            file_path, ignore_config=ignore_config, sig_registry=sig_registry
+        )
         results = {file_path.name: issues}
         return print_results(results, fail_on_severities)
 
     elif args.all_pages:
-        results = scan_all_pages(pages_dir, ignore_config=ignore_config, sig_registry=sig_registry)
+        results = scan_all_pages(
+            pages_dir, ignore_config=ignore_config, sig_registry=sig_registry
+        )
         return print_results(results, fail_on_severities)
 
     elif args.page:
@@ -1641,7 +1792,9 @@ def main():
         page_file = matching_files[0]
         print(f"🔍 Checking {page_file.name}...\n")
 
-        issues = check_file(page_file, ignore_config=ignore_config, sig_registry=sig_registry)
+        issues = check_file(
+            page_file, ignore_config=ignore_config, sig_registry=sig_registry
+        )
         results = {page_file.name: issues}
         return print_results(results, fail_on_severities)
 

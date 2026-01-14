@@ -54,7 +54,7 @@ EXEMPT_FOLDERS = [
 # Files exempt from metadata requirements
 EXEMPT_FILES = [
     "README.md",  # Auto-generated indexes
-    "index.md",   # Auto-generated indexes
+    "index.md",  # Auto-generated indexes
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md",
@@ -65,7 +65,7 @@ EXEMPT_FILES = [
     "llms.txt",
     "CITATION.cff",
     "SESSION_LOG.md",  # Append-only log
-    "TASKS.md",        # Special format
+    "TASKS.md",  # Special format
     "next-session-brief.md",  # Short handoff doc
     "handoff.md",
 ]
@@ -76,17 +76,40 @@ REQUIRED_FIELDS = ["Type", "Audience", "Status"]
 # Valid values for each field
 VALID_VALUES = {
     "Type": [
-        "Guide", "Research", "Reference", "Architecture", "Decision",
-        "Implementation", "Plan", "Index", "Hub", "Session", "Catalog",
-        "Specification", "Blog", "Lesson",
+        "Guide",
+        "Research",
+        "Reference",
+        "Architecture",
+        "Decision",
+        "Implementation",
+        "Plan",
+        "Index",
+        "Hub",
+        "Session",
+        "Catalog",
+        "Specification",
+        "Blog",
+        "Lesson",
     ],
     "Audience": [
-        "All Agents", "Developers", "Users", "Maintainers", "Architects",
-        "Implementation Agents", "Support Agents",
+        "All Agents",
+        "Developers",
+        "Users",
+        "Maintainers",
+        "Architects",
+        "Implementation Agents",
+        "Support Agents",
     ],
     "Status": [
-        "Draft", "In Progress", "Review", "Approved", "Complete",
-        "Deprecated", "Production Ready", "Phase 1 Complete", "Phase 2 Complete",
+        "Draft",
+        "In Progress",
+        "Review",
+        "Approved",
+        "Complete",
+        "Deprecated",
+        "Production Ready",
+        "Phase 1 Complete",
+        "Phase 2 Complete",
     ],
     "Importance": ["Critical", "High", "Medium", "Low"],
 }
@@ -154,9 +177,7 @@ def extract_metadata(content: str) -> dict[str, str]:
     return metadata
 
 
-def validate_metadata(
-    file_path: Path, content: str
-) -> tuple[list[str], list[str]]:
+def validate_metadata(file_path: Path, content: str) -> tuple[list[str], list[str]]:
     """
     Validate metadata in a file.
 
@@ -220,9 +241,7 @@ def check_file(file_path: Path) -> tuple[int, int]:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Check documentation metadata headers"
-    )
+    parser = argparse.ArgumentParser(description="Check documentation metadata headers")
     parser.add_argument(
         "files",
         nargs="*",
@@ -289,7 +308,9 @@ def main():
     else:
         print(f"❌ {total_errors} error(s), {total_warnings} warning(s)")
         if args.strict:
-            print("\n💡 Tip: Use 'python scripts/create_doc.py <path> <title>' to create files with proper metadata")
+            print(
+                "\n💡 Tip: Use 'python scripts/create_doc.py <path> <title>' to create files with proper metadata"
+            )
             return 1
         else:
             print("   (Use --strict to enforce metadata requirements)")

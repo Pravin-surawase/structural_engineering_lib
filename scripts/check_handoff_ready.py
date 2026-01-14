@@ -101,7 +101,9 @@ def check_date_freshness(fix: bool = False) -> list[str]:
             # Find the most recent date in the doc
             dates = re.findall(r"20\d{2}-\d{2}-\d{2}", content)
             most_recent = max(dates) if dates else "no date found"
-            issues.append(f"{doc_path}: Last date is {most_recent}, not today ({today})")
+            issues.append(
+                f"{doc_path}: Last date is {most_recent}, not today ({today})"
+            )
 
     return issues
 
@@ -192,7 +194,9 @@ def check_version_consistency(fix: bool = False) -> list[str]:
         if match:
             issues.append(f"Version drift: {match.group(1)}")
 
-    return issues or ["Version drift detected (see scripts/check_doc_versions.py output)"]
+    return issues or [
+        "Version drift detected (see scripts/check_doc_versions.py output)"
+    ]
 
 
 def check_active_tasks() -> list[str]:
@@ -207,9 +211,7 @@ def check_active_tasks() -> list[str]:
     content = tasks_path.read_text()
 
     # Check if Active section exists and has content
-    active_match = re.search(
-        r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL
-    )
+    active_match = re.search(r"## 🔴 Active\s*\n(.*?)(?=\n## |\Z)", content, re.DOTALL)
     if active_match:
         active_content = active_match.group(1)
         if "Nothing" in active_content or active_content.strip() == "":

@@ -74,7 +74,11 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
                         has_focus = True
                 if "**Completed:**" in line:
                     has_completed = True
-                if has_completed and line.strip().startswith("-") and len(line.strip()) > 2:
+                if (
+                    has_completed
+                    and line.strip().startswith("-")
+                    and len(line.strip()) > 2
+                ):
                     if "<!--" not in line:
                         has_completed = True
 
@@ -88,7 +92,9 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
         return False, [f"Error reading SESSION_LOG: {e}"]
 
 
-def run_handoff_checker(fix: bool = False, skip_tests: bool = False) -> tuple[bool, str]:
+def run_handoff_checker(
+    fix: bool = False, skip_tests: bool = False
+) -> tuple[bool, str]:
     """Run the handoff checker script."""
     check_script = REPO_ROOT / "scripts" / "check_handoff_ready.py"
     if not check_script.exists():
@@ -188,7 +194,9 @@ def get_changed_doc_folders() -> list[Path]:
             text=True,
         )
 
-        changed_files = result.stdout.strip().split("\n") if result.stdout.strip() else []
+        changed_files = (
+            result.stdout.strip().split("\n") if result.stdout.strip() else []
+        )
 
         # Also check uncommitted changes
         result2 = subprocess.run(
@@ -282,8 +290,12 @@ def get_today_prs() -> list[str]:
 
 def main():
     parser = argparse.ArgumentParser(description="End-of-session checks")
-    parser.add_argument("--fix", action="store_true", help="Auto-fix issues where possible")
-    parser.add_argument("--quick", action="store_true", help="Skip test count verification")
+    parser.add_argument(
+        "--fix", action="store_true", help="Auto-fix issues where possible"
+    )
+    parser.add_argument(
+        "--quick", action="store_true", help="Skip test count verification"
+    )
     args = parser.parse_args()
 
     print()

@@ -248,13 +248,17 @@ def find_archivable_completed_research() -> List[Tuple[Path, str]]:
 
     # Patterns that indicate file is still active/in-progress
     active_patterns = [
-        re.compile(r"\*\*Status\*\*:.*(?:In Progress|Draft|WIP|Active|Pending)", re.IGNORECASE),
+        re.compile(
+            r"\*\*Status\*\*:.*(?:In Progress|Draft|WIP|Active|Pending)", re.IGNORECASE
+        ),
         re.compile(r"Status:.*(?:In Progress|Draft|WIP|Active|Pending)", re.IGNORECASE),
     ]
 
     # Complete status patterns - handle various formats including emojis
     complete_patterns = [
-        re.compile(r"\*\*Status\*\*:.*(?:Complete|Done|Implemented|Archived)", re.IGNORECASE),
+        re.compile(
+            r"\*\*Status\*\*:.*(?:Complete|Done|Implemented|Archived)", re.IGNORECASE
+        ),
         re.compile(r"Status:.*(?:Complete|Done|Implemented|Archived)", re.IGNORECASE),
     ]
 
@@ -329,7 +333,9 @@ def cmd_analyze(args):
 
     print("📁 Current File Counts:")
     print(f"   Total docs:     {counts['total_docs']}")
-    print(f"   Research:       {counts['research']} ({counts['research']/counts['total_docs']*100:.1f}%)")
+    print(
+        f"   Research:       {counts['research']} ({counts['research']/counts['total_docs']*100:.1f}%)"
+    )
     print(f"   Archived:       {counts['archived']}")
     print(f"   Contributing:   {counts['contributing']}")
     print(f"   Planning:       {counts['planning']}")
@@ -417,7 +423,9 @@ def cmd_archive(args):
     before_counts = get_file_counts()
     before_links = get_link_metrics()
 
-    print(f"📊 Before: {before_counts['total_docs']} files, {before_links['broken_links']} broken links")
+    print(
+        f"📊 Before: {before_counts['total_docs']} files, {before_links['broken_links']} broken links"
+    )
     print()
 
     total_archived = 0
@@ -446,7 +454,9 @@ def cmd_archive(args):
     # Category 3: Completed research files
     completed_files = find_archivable_completed_research()
     if completed_files:
-        print(f"📁 Category 3: Completed research files ({len(completed_files)} found):")
+        print(
+            f"📁 Category 3: Completed research files ({len(completed_files)} found):"
+        )
         total_candidates += len(completed_files)
         for source, reason in completed_files:
             if archive_file(source, "research-completed", dry_run=args.dry_run):
@@ -457,7 +467,9 @@ def cmd_archive(args):
         print("✓ No files to archive")
         return
 
-    print(f"{'Would archive' if args.dry_run else 'Archived'}: {total_archived}/{total_candidates} files")
+    print(
+        f"{'Would archive' if args.dry_run else 'Archived'}: {total_archived}/{total_candidates} files"
+    )
 
     if not args.dry_run:
         # Verify links after archival
@@ -466,9 +478,11 @@ def cmd_archive(args):
         after_links = get_link_metrics()
         after_counts = get_file_counts()
 
-        print(f"📊 After: {after_counts['total_docs']} files, {after_links['broken_links']} broken links")
+        print(
+            f"📊 After: {after_counts['total_docs']} files, {after_links['broken_links']} broken links"
+        )
 
-        reduction = before_counts['total_docs'] - after_counts['total_docs']
+        reduction = before_counts["total_docs"] - after_counts["total_docs"]
         print(f"📉 Reduction: {reduction} files")
 
         if after_links["broken_links"] > before_links["broken_links"]:
@@ -478,12 +492,15 @@ def cmd_archive(args):
             print("✅ No new broken links!")
 
         # Save after metrics
-        save_metrics("after_archive", {
-            "file_counts": after_counts,
-            "link_metrics": after_links,
-            "files_archived": total_archived,
-            "reduction": reduction,
-        })
+        save_metrics(
+            "after_archive",
+            {
+                "file_counts": after_counts,
+                "link_metrics": after_links,
+                "files_archived": total_archived,
+                "reduction": reduction,
+            },
+        )
 
     print()
     print("=" * 70)
@@ -554,7 +571,9 @@ Examples:
 
     # Archive command
     archive_parser = subparsers.add_parser("archive", help="Archive old session files")
-    archive_parser.add_argument("--dry-run", action="store_true", help="Preview without making changes")
+    archive_parser.add_argument(
+        "--dry-run", action="store_true", help="Preview without making changes"
+    )
     archive_parser.set_defaults(func=cmd_archive)
 
     # Report command

@@ -68,10 +68,7 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
 
 
 def update_links(
-    old_path: Path,
-    new_path: Path,
-    project_root: Path,
-    dry_run: bool = False
+    old_path: Path, new_path: Path, project_root: Path, dry_run: bool = False
 ) -> int:
     """Update all links from old_path to new_path.
 
@@ -119,17 +116,10 @@ def update_links(
                 # Replace patterns in markdown links
                 # [text](old_path) -> [text](new_path)
                 link_pattern = rf"\]\({re.escape(str(old_rel_from_file))}(\)?)"
-                content = re.sub(
-                    link_pattern,
-                    f"]({new_rel_from_file}\\1",
-                    content
-                )
+                content = re.sub(link_pattern, f"]({new_rel_from_file}\\1", content)
 
                 # Also replace exact filename matches in links
-                content = content.replace(
-                    f"]({old_path.name})",
-                    f"]({new_path.name})"
-                )
+                content = content.replace(f"]({old_path.name})", f"]({new_path.name})")
 
                 if content != original_content:
                     if dry_run:
@@ -172,7 +162,7 @@ def run_link_check(project_root: Path) -> bool:
         [sys.executable, str(check_script)],
         cwd=project_root,
         capture_output=True,
-        text=True
+        text=True,
     )
 
     if "Broken links: 0" in result.stdout or result.returncode == 0:
@@ -189,16 +179,15 @@ def main():
     parser.add_argument("source", help="Source file path")
     parser.add_argument("destination", help="Destination file path")
     parser.add_argument(
-        "--stub", action="store_true",
-        help="Create redirect stub at old location"
+        "--stub", action="store_true", help="Create redirect stub at old location"
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
-        help="Show what would happen without making changes"
+        "--dry-run",
+        action="store_true",
+        help="Show what would happen without making changes",
     )
     parser.add_argument(
-        "--force", action="store_true",
-        help="Proceed even if references are found"
+        "--force", action="store_true", help="Proceed even if references are found"
     )
 
     args = parser.parse_args()

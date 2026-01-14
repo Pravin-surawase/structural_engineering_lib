@@ -30,12 +30,10 @@ VERSION_FILES = {
     "Python/pyproject.toml": [
         (r'^version = "[^"]+"', 'version = "{version}"'),
     ],
-
     # Python fallback for dev mode (when package not installed)
     "Python/structural_lib/api.py": [
         (r'return "[0-9]+\.[0-9]+\.[0-9]+"', 'return "{version}"'),
     ],
-
     # VBA runtime (VBA can't read external files)
     "VBA/Modules/M08_API.bas": [
         (r'Get_Library_Version = "[^"]+"', 'Get_Library_Version = "{version}"'),
@@ -45,9 +43,18 @@ VERSION_FILES = {
 # Documentation references that should track the library version.
 DOC_VERSION_FILES = {
     "README.md": [
-        (r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+", "structural-lib-is456=={version}"),
-        (r"^🚀 \*\*Active \(v[0-9]+\.[0-9]+\.[0-9]+\)\*\*", "🚀 **Active (v{version})**"),
-        (r"^\*\*What's new in v[0-9]+\.[0-9]+\.[0-9]+:\*\*", "**What's new in v{version}:**"),
+        (
+            r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+",
+            "structural-lib-is456=={version}",
+        ),
+        (
+            r"^🚀 \*\*Active \(v[0-9]+\.[0-9]+\.[0-9]+\)\*\*",
+            "🚀 **Active (v{version})**",
+        ),
+        (
+            r"^\*\*What's new in v[0-9]+\.[0-9]+\.[0-9]+:\*\*",
+            "**What's new in v{version}:**",
+        ),
     ],
     "Python/README.md": [
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
@@ -58,7 +65,10 @@ DOC_VERSION_FILES = {
         # Now links to TASKS.md, no version to update
     ],
     "docs/ai-context-pack.md": [
-        (r"^\|\s*\*\*Current Release\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current Release** | v{version}"),
+        (
+            r"^\|\s*\*\*Current Release\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
+            "| **Current Release** | v{version}",
+        ),
     ],
     "docs/planning/production-roadmap.md": [
         (r"^(> \*\*Current Status:\*\* )v[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>v{version}"),
@@ -74,7 +84,10 @@ DOC_VERSION_FILES = {
         (r"(Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
     ],
     "docs/reference/api.md": [
-        (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
+        (
+            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
+            "**Document Version:** {version}",
+        ),
     ],
     "docs/getting-started/user-guide.md": [
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
@@ -83,7 +96,10 @@ DOC_VERSION_FILES = {
         (r"^(Version: )[0-9]+\.[0-9]+\.[0-9]+(.*)$", r"\g<1>{version}\g<2>"),
     ],
     "docs/reference/api-stability.md": [
-        (r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+", "structural-lib-is456=={version}"),
+        (
+            r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+",
+            "structural-lib-is456=={version}",
+        ),
     ],
     "docs/verification/validation-pack.md": [
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
@@ -92,10 +108,16 @@ DOC_VERSION_FILES = {
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
     ],
     "docs/TASKS.md": [
-        (r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current** | v{version}"),
+        (
+            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
+            "| **Current** | v{version}",
+        ),
     ],
     "docs/planning/next-session-brief.md": [
-        (r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+", "| **Current** | v{version}"),
+        (
+            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
+            "| **Current** | v{version}",
+        ),
     ],
     "docs/planning/v0.20-stabilization-checklist.md": [
         # Now links to TASKS.md, no version to update
@@ -111,7 +133,10 @@ DOC_DATE_FILES = {
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
     "docs/reference/api.md": [
-        (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
+        (
+            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
+            "**Document Version:** {version}",
+        ),
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
     "docs/verification/examples.md": [
@@ -132,7 +157,10 @@ DOC_DATE_FILES = {
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
     "docs/contributing/development-guide.md": [
-        (r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Document Version:** {version}"),
+        (
+            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
+            "**Document Version:** {version}",
+        ),
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
     "docs/planning/pre-release-checklist.md": [
@@ -318,7 +346,9 @@ def main():
         print("Expected: X.Y.Z (e.g., 0.9.2, 1.0.0)")
         return 1
 
-    print(f"{'[DRY RUN] ' if args.dry_run else ''}Bumping version: {current} → {new_version}")
+    print(
+        f"{'[DRY RUN] ' if args.dry_run else ''}Bumping version: {current} → {new_version}"
+    )
     print()
 
     changes = 0

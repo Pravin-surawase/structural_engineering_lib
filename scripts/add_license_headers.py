@@ -14,22 +14,24 @@ from pathlib import Path
 from typing import List, Tuple
 
 # Python license header template (SPDX format)
-PYTHON_HEADER = '''# SPDX-License-Identifier: MIT
+PYTHON_HEADER = """# SPDX-License-Identifier: MIT
 # Copyright (c) 2024-2026 Pravin Surawase
-'''
+"""
 
 # VBA license header template (aligned with VBA comment style)
-VBA_HEADER = '''
+VBA_HEADER = """
 ' ==============================================================================
 ' SPDX-License-Identifier: MIT
 ' Copyright (c) 2024-2026 Pravin Surawase
 ' ==============================================================================
-'''
+"""
+
 
 def has_spdx_header(content: str) -> bool:
     """Check if file already has SPDX license identifier."""
     # Check first 2000 chars (some VBA files have long comments before header)
-    return 'SPDX-License-Identifier' in content[:2000]
+    return "SPDX-License-Identifier" in content[:2000]
+
 
 def add_python_header(filepath: Path) -> Tuple[bool, str]:
     """
@@ -38,12 +40,12 @@ def add_python_header(filepath: Path) -> Tuple[bool, str]:
     Returns:
         (modified, message)
     """
-    content = filepath.read_text(encoding='utf-8')
+    content = filepath.read_text(encoding="utf-8")
 
     if has_spdx_header(content):
         return False, "Already has SPDX header"
 
-    lines = content.split('\n')
+    lines = content.split("\n")
 
     # Find docstring start
     docstring_start = None
@@ -60,9 +62,15 @@ def add_python_header(filepath: Path) -> Tuple[bool, str]:
         # Insert header before docstring
         lines_before = lines[:docstring_start]
         lines_after = lines[docstring_start:]
-        new_content = '\n'.join(lines_before) + ('\n' if lines_before else '') + PYTHON_HEADER + '\n'.join(lines_after)
+        new_content = (
+            "\n".join(lines_before)
+            + ("\n" if lines_before else "")
+            + PYTHON_HEADER
+            + "\n".join(lines_after)
+        )
 
     return True, new_content
+
 
 def add_vba_header(filepath: Path) -> Tuple[bool, str]:
     """
@@ -71,12 +79,12 @@ def add_vba_header(filepath: Path) -> Tuple[bool, str]:
     Returns:
         (modified, message)
     """
-    content = filepath.read_text(encoding='utf-8', errors='ignore')
+    content = filepath.read_text(encoding="utf-8", errors="ignore")
 
     if has_spdx_header(content):
         return False, "Already has SPDX header"
 
-    lines = content.split('\n')
+    lines = content.split("\n")
 
     # VBA files structure:
     # 1. Attribute VB_Name
@@ -89,10 +97,10 @@ def add_vba_header(filepath: Path) -> Tuple[bool, str]:
     insert_index = 0
     for i, line in enumerate(lines):
         stripped = line.strip()
-        if stripped.startswith('Option '):
+        if stripped.startswith("Option "):
             insert_index = i + 1
             break
-        elif stripped.startswith('Attribute '):
+        elif stripped.startswith("Attribute "):
             insert_index = i + 1
 
     # Clean up old standalone License lines
@@ -105,16 +113,22 @@ def add_vba_header(filepath: Path) -> Tuple[bool, str]:
         cleaned_lines.append(line)
 
     # Insert SPDX header after Attribute/Option block
-    new_lines = cleaned_lines[:insert_index] + ['', ''] + [
-        "' ==============================================================================",
-        "' SPDX-License-Identifier: MIT",
-        "' Copyright (c) 2024-2026 Pravin Surawase",
-        "' =============================================================================="
-    ] + cleaned_lines[insert_index:]
+    new_lines = (
+        cleaned_lines[:insert_index]
+        + ["", ""]
+        + [
+            "' ==============================================================================",
+            "' SPDX-License-Identifier: MIT",
+            "' Copyright (c) 2024-2026 Pravin Surawase",
+            "' ==============================================================================",
+        ]
+        + cleaned_lines[insert_index:]
+    )
 
-    new_content = '\n'.join(new_lines)
+    new_content = "\n".join(new_lines)
 
     return True, new_content
+
 
 def process_files(file_pattern: str, processor_func, apply: bool = False) -> List[str]:
     """Process files matching pattern with given processor function."""
@@ -131,10 +145,12 @@ def process_files(file_pattern: str, processor_func, apply: bool = False) -> Lis
             if modified:
                 modified_count += 1
                 if apply:
-                    filepath.write_text(result, encoding='utf-8')
+                    filepath.write_text(result, encoding="utf-8")
                     results.append(f"✅ {filepath.relative_to(project_root)}")
                 else:
-                    results.append(f"📝 {filepath.relative_to(project_root)} (would be modified)")
+                    results.append(
+                        f"📝 {filepath.relative_to(project_root)} (would be modified)"
+                    )
             else:
                 results.append(f"⏭️  {filepath.relative_to(project_root)} ({result})")
         except Exception as e:
@@ -142,11 +158,14 @@ def process_files(file_pattern: str, processor_func, apply: bool = False) -> Lis
 
     return results, modified_count
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Add license headers to source files')
+    parser = argparse.ArgumentParser(description="Add license headers to source files")
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--check', action='store_true', help='Dry run (show what would change)')
-    group.add_argument('--apply', action='store_true', help='Apply changes')
+    group.add_argument(
+        "--check", action="store_true", help="Dry run (show what would change)"
+    )
+    group.add_argument("--apply", action="store_true", help="Apply changes")
 
     args = parser.parse_args()
     apply_changes = args.apply
@@ -160,7 +179,9 @@ def main():
     # Process Python files
     print("Processing Python files...")
     print("-" * 80)
-    py_results, py_modified = process_files('Python/structural_lib/**/*.py', add_python_header, apply_changes)
+    py_results, py_modified = process_files(
+        "Python/structural_lib/**/*.py", add_python_header, apply_changes
+    )
     for result in py_results:
         print(result)
 
@@ -171,7 +192,9 @@ def main():
     # Process VBA files
     print("Processing VBA files...")
     print("-" * 80)
-    vba_results, vba_modified = process_files('VBA/**/*.bas', add_vba_header, apply_changes)
+    vba_results, vba_modified = process_files(
+        "VBA/**/*.bas", add_vba_header, apply_changes
+    )
     for result in vba_results:
         print(result)
 
@@ -194,5 +217,6 @@ def main():
 
     sys.exit(0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
