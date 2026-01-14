@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-15<br>
+**Last Updated:** 2026-01-17
 
 ---
 
@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 25 | **Commits:** 2
+**Last Session:** 28 | **Commits:** 5
 
 ---
 
@@ -32,9 +32,74 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-15
-- Focus: Fix stirrup diameter selection, PDF report data, and implement AppTest automation framework.
+- Date: 2026-01-17
+- Focus: Session 29 - Continue modern Streamlit patterns rollout (TASK-603)
+- Priority: Apply st.fragment to input sections for 80-90% faster input responses
 <!-- HANDOFF:END -->
+
+---
+
+## 🎯 Session 28 Achievements (Modern Streamlit Patterns)
+
+### TASK-602: Modern Patterns Adoption
+
+| Commit | Description |
+|--------|-------------|
+| `88ae05f` | feat(ui): CacheStatsFragment + status badges in beam_design.py |
+| `9425bc0` | feat(ui): st.badge for cost_optimizer.py Pareto results |
+| `f01ba3f` | refactor(ui): extract constants to utils/constants.py |
+| `35e5b34` | docs: TASKS.md cleanup (344→148 lines, 57% reduction) |
+| `6073deb` | docs: SESSION_LOG.md Session 28 entry |
+
+### Key Files Modified
+
+| File | Changes |
+|------|---------|
+| [beam_design.py](../../streamlit_app/pages/01_🏗️_beam_design.py) | CacheStatsFragment, show_status_badge |
+| [cost_optimizer.py](../../streamlit_app/pages/02_💰_cost_optimizer.py) | st.badge for Best Designs section |
+| [constants.py](../../streamlit_app/utils/constants.py) | **NEW** - Centralized UI constants |
+| [TASKS.md](../TASKS.md) | 57% reduction, focused on current work |
+
+### New Module: utils/constants.py
+
+```python
+# Key exports:
+CONCRETE_GRADE_MAP = {"M20": 20, "M25": 25, "M30": 30, "M35": 35, "M40": 40}
+STEEL_GRADE_MAP = {"Fe415": 415, "Fe500": 500, "Fe550": 550}
+EXPOSURE_COVER_MAP = {"Mild": {"cover": 20}, ...}  # IS 456 Table 16
+DEFAULT_BEAM_INPUTS = {...}  # Session state defaults
+get_cover_for_exposure(exposure: str) -> int
+```
+
+---
+
+## 🎯 Session 29 Priority: TASK-603
+
+### Goal: Complete Modern Patterns Rollout
+
+| ID | Task | Est | Pages |
+|----|------|-----|-------|
+| **TASK-603.1** | Add st.fragment to input sections | 2h | BBS, DXF, Compliance |
+| **TASK-603.2** | Add st.dialog for export modals | 1h | Beam, BBS, Report |
+| **TASK-603.3** | CacheStatsFragment rollout | 1h | BBS, DXF, Batch |
+| **TASK-603.4** | Performance measurement | 1h | Document improvements |
+
+### Expected Benefits
+- **80-90% faster input responses** with st.fragment
+- **Cleaner UX** with st.dialog for exports
+- **Consistent caching display** across all pages
+- **Measurable performance gains** documented
+
+---
+
+## 📊 Project Status
+
+| Metric | Value |
+|--------|-------|
+| Tests | ~1392 passing |
+| Scanner Issues | 11 (0 critical/high/medium) |
+| Pages | 12 Streamlit pages |
+| Code Quality | 8.4/10 (Senior Level) |
 
 ---
 
