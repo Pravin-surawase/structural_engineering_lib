@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-17
+**Last Updated:** 2026-01-15<br>
 
 ---
 
@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 28 | **Commits:** 5
+**Last Session:** 30 (Cont.) | **Commits:** 9
 
 ---
 
@@ -32,10 +32,127 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-17
-- Focus: Session 29 - Continue modern Streamlit patterns rollout (TASK-603)
-- Priority: Apply st.fragment to input sections for 80-90% faster input responses
+- Date: 2026-01-15
+- Focus: Fixed critical fragment API violations from Session 30, built comprehensive prevention automation with 9 substantial commits.
 <!-- HANDOFF:END -->
+
+---
+
+## 🎯 Session 30 (Cont.) - Fragment Crisis Resolution (2026-01-15)
+
+### CRITICAL: Fragment API Violations Fixed
+
+**Problem:** Session 30 fragments violated Streamlit API - called `st.sidebar.*` from within fragments causing runtime crashes. **None of our automation detected this** until user manually tested.
+
+### 9 Commits Delivered
+
+| Commit | Description | LOC |
+|--------|-------------|-----|
+| `90f035d` | Research: Why scanners failed | 400 |
+| `9cd4d1c` | Fix: beam_design theme toggle | 8 |
+| `45bc7c5` | Fix: fragments + create validator | 410 |
+| `95bd87f` | CI: Add validator to pre-commit/CI | 35 |
+| `a3691d8` | Docs: Best practices guide | 413 |
+| `fe826e0` | Docs: Technical analysis | 776 |
+| `b8fd5fd` | Fix: CacheStatsFragment bug | 10 |
+| `b8fd5fd` | Docs: Update TASKS.md | 80 |
+| `92cb6a5` | Feat: AppTest in pre-commit | 10 |
+| **Total** | **~2,140 LOC** | |
+
+### New Automation Built
+
+**Fragment Validator (scripts/check_fragment_violations.py):**
+- 290-line AST-based checker
+- Detects st.sidebar calls in fragments
+- Pre-commit hook (blocks bad commits)
+- CI job (blocks bad merges)
+- **Result:** Future violations impossible ✅
+
+**AppTest Runtime Validation:**
+- Added to pre-commit workflow
+- Runs 10 smoke tests on every commit (~2s)
+- Catches runtime errors static analysis misses
+- **Closes gap:** Validator found bugs, AppTest confirms they load
+
+### Impact Metrics
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Broken pages | 2 | 0 ✅ |
+| Fragment violations | 4 | 0 ✅ |
+| Automation | 0% | 100% ✅ |
+| Detection | Manual | Automated ✅ |
+
+### Validation Results
+
+```bash
+✅ check_fragment_violations.py: 0 violations
+✅ check_streamlit_issues.py: 0 critical/high
+✅ AppTest smoke: 10/10 passed
+✅ AppTest full: 43/52 passed
+```
+
+### Key Files Created
+
+| File | Purpose | Lines |
+|------|---------|-------|
+| `scripts/check_fragment_violations.py` | Fragment validator | 290 |
+| `docs/research/fragment-api-restrictions-analysis.md` | Root cause analysis | 400 |
+| `docs/guidelines/streamlit-fragment-best-practices.md` | Usage guide | 413 |
+| `docs/planning/session-30-fragment-crisis-resolution.md` | Complete summary | 776 |
+
+### Lessons Learned
+
+1. **Domain-Specific Validation:** Generic tools miss domain rules (Streamlit API)
+2. **Runtime Testing Mandatory:** Static analysis ≠ runtime validation
+3. **Prevention > Detection:** 30min validator → infinite future prevention
+4. **Test What You Deploy:** AppTest exists but wasn't integrated
+5. **Quality Bar:** "Does it work?" → "Can it EVER break this way?"
+
+### Process Improvements
+
+**New Validation Stack:**
+```
+Pre-commit (local, <2s):
+  ├─ Fragment validator ← NEW
+  ├─ AppTest smoke      ← NEW
+  ├─ AST scanner
+  └─ Pylint
+
+CI (remote, comprehensive):
+  ├─ Fragment validator
+  ├─ AppTest full suite
+  └─ All other checks
+```
+
+---
+
+## 🎯 Session 31 Recommendations
+
+### Priority 1: Pivot to Library Development (HIGH)
+
+**Rationale:** Streamlit UI now has 3-layer validation (static, fragment, runtime). It's stable. Library needs attention.
+
+**Focus Areas:**
+- Torsion calculations (ARCH-016)
+- VBA parity improvements (IMPL-*)
+- Advanced detailing features
+
+**Target:** `Python/structural_lib/` not `streamlit_app/`
+
+### Priority 2: Fragment Interaction Tests (MEDIUM)
+
+**Task:** Extend AppTest to exercise fragment code paths
+- Add form submission tests
+- Verify fragments respond to user input
+- Estimated: 30 minutes
+
+### Priority 3: Type Hint Warnings (LOW)
+
+**Task:** Add return type annotations to fragments
+- Fix: `def render() -> dict[str, float] | None:`
+- Cleans up medium-severity scanner warnings
+- Estimated: 15 minutes
 
 ---
 

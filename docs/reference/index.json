@@ -1,144 +1,179 @@
 {
   "folder": "docs/reference",
-  "description": "Lookup documentation for API, formulas, and troubleshooting. | Document | Purpose |",
-  "last_updated": "2026-01-10",
+  "description": "Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |",
+  "last_updated": "2026-01-15",
   "file_count": 19,
   "files": [
     {
       "name": "agent-automation-pitfalls.md",
       "title": "Agent Automation Pitfalls and Best Practices",
-      "description": "1. [Terminal and Shell Issues](#terminal-and-shell-issues) 2. [Git Operations](#git-operations)",
-      "last_updated": "2026-01-10",
-      "size_lines": 613,
-      "audience": "Developers building AI agents, automation scripts, or LLM integrations"
+      "description": "<!-- lint-ignore-git --> > ⚠️ **Note:** This document includes manual git examples only to illustrate pitfalls.",
+      "last_updated": "2026-01-13",
+      "size_lines": 622,
+      "audience": "All Agents",
+      "status": "Production Ready"
     },
     {
       "name": "api-stability.md",
       "title": "API Stability",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows [Semantic Versioning](https://semver.org/):",
-      "last_updated": "2026-01-08",
-      "size_lines": 280
+      "last_updated": "2026-01-14",
+      "size_lines": 396,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "api.md",
       "title": "IS 456 RC Beam Design Library — API Reference",
-      "description": "The library provides a unified command-line interface: ```bash",
-      "last_updated": "2026-01-10",
-      "size_lines": 1571
+      "description": "Machine-readable signatures live in `docs/reference/api-manifest.json`. ```bash",
+      "last_updated": "2026-01-15",
+      "size_lines": 2114,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "automation-catalog.md",
       "title": "Automation Script Catalog",
-      "description": "> **Purpose:** Complete reference of all 71 automation scripts in this project. > **For AI Agents:** Use this to discover available automation before implementing manually.",
-      "last_updated": "2026-01-10",
-      "size_lines": 2014
+      "description": "> **Purpose:** Complete reference of all automation scripts in this project. > **For AI Agents:** Use this to discover available automation before implementing manually.",
+      "last_updated": "2026-01-13",
+      "size_lines": 2039,
+      "audience": "All Agents",
+      "status": "Production Ready"
     },
     {
       "name": "bbs-dxf-contract.md",
       "title": "BBS + DXF Contract (v1.x)",
       "description": "This document defines the stable contracts for Bar Bending Schedule (BBS) and DXF outputs. It is beam-only (IS 456) and is intended for integrators who need",
-      "last_updated": "2025-12-30",
-      "size_lines": 98
+      "last_updated": "2026-01-13",
+      "size_lines": 107,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "deferred-integrations.md",
       "title": "Deferred Integrations Tracker",
       "description": "- Uses conservative default (0.7) in comparison scoring - Full integration requires `BeamDesignOutput` availability",
-      "last_updated": "2026-01-08",
-      "size_lines": 134
+      "last_updated": "2026-01-13",
+      "size_lines": 141,
+      "audience": "Developers",
+      "status": "In Progress"
     },
     {
       "name": "deprecation-policy.md",
       "title": "Deprecation Policy",
       "description": "This document defines the deprecation policy for the structural_engineering_lib project. It ensures users have advance notice before features are removed, maintaining backward compatibility while allo",
-      "last_updated": "2026-01-08",
-      "size_lines": 354
+      "last_updated": "2026-01-13",
+      "size_lines": 359,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "dxf-layer-standards.md",
       "title": "DXF Layer Standards & Drawing Conventions",
       "description": "This document defines CAD layer standards used in DXF drawings exported by the Structural Engineering Library. - [Layer Definitions](#layer-definitions)",
-      "last_updated": "2026-01-08",
-      "size_lines": 454
+      "last_updated": "2026-01-13",
+      "size_lines": 463,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "error-schema.md",
       "title": "Error Schema v1",
       "description": "*Structured error format for machine-readable and human-friendly errors* This document defines the standard error schema for all structural_lib errors. The goal is:",
-      "last_updated": "2026-01-07",
-      "size_lines": 250,
-      "status": "Implemented (v0.10.5)"
+      "last_updated": "2026-01-13",
+      "size_lines": 256,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "insights-api.md",
       "title": "Insights API Reference",
       "description": "> **Status:** Preview (v0.13.0+) > **Stability:** Experimental - API may change before v1.0",
-      "last_updated": "2026-01-06",
-      "size_lines": 976
+      "last_updated": "2026-01-13",
+      "size_lines": 985,
+      "audience": "Developers",
+      "status": "Draft"
     },
     {
       "name": "is456-formulas.md",
       "title": "IS 456:2000 Quick Reference — RC Beam Design Formulas",
       "description": "$$d = D - c_{clear} - \\phi_{stirrup} - \\frac{\\phi_{main}}{2}$$ | Symbol | Description | Unit |",
-      "last_updated": "2026-01-08",
-      "size_lines": 225
+      "last_updated": "2026-01-13",
+      "size_lines": 234,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "known-pitfalls.md",
       "title": "IS 456 RC Beam Design Library — Known Pitfalls and Traps",
       "description": "Use this as a checklist to avoid common mistakes when implementing or reviewing code. - Always convert Vu to N and Mu to N·mm before combining with b×d or τc.",
-      "last_updated": "2026-01-07",
-      "size_lines": 110
+      "last_updated": "2026-01-13",
+      "size_lines": 119,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "library-contract.md",
       "title": "Library Contract (v1) - Beam-Only IS 456",
       "description": "This document defines the stability promises for the beam design library. It is written for developers who want to depend on the library as a core",
-      "last_updated": "2026-01-08",
-      "size_lines": 84
+      "last_updated": "2026-01-13",
+      "size_lines": 93,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "repo-health-baseline-2026-01-07.md",
       "title": "Repository Health Baseline (2026-01-07)",
       "description": "- This baseline is a point-in-time snapshot for trend tracking. - Re-run monthly or before major releases.",
-      "last_updated": "2026-01-08",
-      "size_lines": 45
+      "last_updated": "2026-01-13",
+      "size_lines": 54,
+      "audience": "Maintainers",
+      "status": "Snapshot"
     },
     {
       "name": "streamlit-validation.md",
       "title": "Streamlit Code Validation Reference",
       "description": "> **For AI Agents:** This guide explains the automated validation system for Streamlit code. The Streamlit validation system consists of two layers:",
-      "last_updated": "2026-01-09",
-      "size_lines": 383,
-      "status": "✅ Production Ready (Phase 1B Complete)"
+      "last_updated": "2026-01-13",
+      "size_lines": 389,
+      "audience": "All Agents",
+      "status": "Production Ready"
     },
     {
       "name": "third-party-licenses.md",
       "title": "Third-Party Licenses",
       "description": "This repository is primarily standard-library based. Optional and development tools introduce third-party licenses. - Standard library only (core runtime)",
-      "last_updated": "2026-01-06",
-      "size_lines": 33
+      "last_updated": "2026-01-13",
+      "size_lines": 42,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "troubleshooting.md",
       "title": "Troubleshooting Guide",
-      "description": "```vb result = 0.85 * b * d / fy",
-      "last_updated": "2025-12-27",
-      "size_lines": 283
+      "description": "Use this when reporting bugs or debugging agent failures: ```bash",
+      "last_updated": "2026-01-13",
+      "size_lines": 313,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "vba-api-reference.md",
       "title": "VBA API Reference",
       "description": "All functions are prefixed with `IS456_` and available in any Excel worksheet once the add-in is loaded. - [Core Design Functions](#core-design-functions)",
-      "last_updated": "2026-01-08",
-      "size_lines": 856
+      "last_updated": "2026-01-13",
+      "size_lines": 865,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "vba-udt-reference.md",
       "title": "VBA User-Defined Types (UDT) Reference",
       "description": "This document describes all custom data types (UDTs) and enumerations used in the Structural Engineering Library VBA implementation. - [Enumerations](#enumerations)",
-      "last_updated": "2026-01-08",
-      "size_lines": 701
+      "last_updated": "2026-01-13",
+      "size_lines": 710,
+      "audience": "Developers",
+      "status": "Production Ready"
     }
   ],
   "subfolders": []

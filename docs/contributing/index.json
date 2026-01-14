@@ -1,8 +1,8 @@
 {
   "folder": "docs/contributing",
-  "description": "Guides for developers and maintainers. | Guide | Audience |",
-  "last_updated": "2026-01-10",
-  "file_count": 23,
+  "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |",
+  "last_updated": "2026-01-15",
+  "file_count": 28,
   "files": [
     {
       "name": "agent-collaboration-framework.md",
@@ -23,8 +23,8 @@
       "name": "background-agent-guide.md",
       "title": "Background Agent Parallel Work Guide",
       "description": "- **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatGPT) working on assigned tasks - **MAIN Agent/User:** You (the project owner) coordinating work and handling all remote G",
-      "last_updated": "2026-01-10",
-      "size_lines": 609,
+      "last_updated": "2026-01-13",
+      "size_lines": 585,
       "status": "v2.0 - Updated for multi-agent collaboration framework (2026-01-07)"
     },
     {
@@ -38,138 +38,208 @@
       "name": "development-guide.md",
       "title": "IS 456 RC Beam Design Library — Development Guide",
       "description": "1. [Overview](#1-overview) 2. [Project Structure](#2-project-structure)",
-      "last_updated": "2026-01-10",
-      "size_lines": 1499,
-      "audience": "Contributors, maintainers, and developers extending the library"
+      "last_updated": "2026-01-15",
+      "size_lines": 1512,
+      "audience": "Developers",
+      "status": "Approved"
+    },
+    {
+      "name": "doc-template.md",
+      "title": "Documentation Template",
+      "description": "Copy this header to new documentation files and fill in the metadata. - `owner`: Who maintains this doc (Main Agent, Agent 9, User)",
+      "last_updated": "2026-01-13",
+      "size_lines": 83,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "docstring-style-guide.md",
       "title": "Docstring Style Guide",
       "description": "> **Purpose:** Standard docstring format for all Python modules in structural_lib > **Style:** Google Style (readable, widely adopted in scientific Python)",
-      "last_updated": "2026-01-06",
-      "size_lines": 358
+      "last_updated": "2026-01-13",
+      "size_lines": 368,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "end-of-session-workflow.md",
       "title": "End-of-Session Workflow",
       "description": "> **Standard procedure for ALL agents when ending a session.** ```bash",
-      "last_updated": "2026-01-10",
-      "size_lines": 471
+      "last_updated": "2026-01-13",
+      "size_lines": 490,
+      "audience": "All Agents",
+      "status": "Approved"
     },
     {
       "name": "excel-addin-guide.md",
       "title": "How to Create and Use the Excel Add-in (.xlam)",
       "description": "This guide explains how to package the VBA library into a reusable Excel Add-in (`StructEngLib.xlam`). 1) Open a new blank Excel workbook.",
-      "last_updated": "2026-01-08",
-      "size_lines": 372
+      "last_updated": "2026-01-13",
+      "size_lines": 381,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
-      "name": "git-workflow-for-ai-agents.md",
-      "title": "This document has moved",
-      "description": "Please update your bookmarks. *This redirect will be removed in v1.0.*",
-      "last_updated": "2026-01-08",
-      "size_lines": 7
-    },
-    {
-      "name": "git-workflow-quick-reference.md",
-      "title": "Git Workflow Quick Reference",
-      "description": "```bash git add <files>",
-      "last_updated": "2026-01-08",
-      "size_lines": 187,
-      "status": "✅ Production Ready (tested with 13 scenarios)"
+      "name": "git-workflow-ai-agents.md",
+      "title": "Git Workflow for AI Agents (Canonical)",
+      "description": "**Never use manual git commit/push.** Always use the workflow scripts. Run:",
+      "last_updated": "2026-01-12",
+      "size_lines": 87
     },
     {
       "name": "git-workflow-testing.md",
       "title": "Git Workflow Testing Strategy",
       "description": "This document explains how we test and validate our git workflow to prevent merge conflicts, rebase issues, and other common git problems. 1. **Prevent merge conflicts** through automated conflict det",
-      "last_updated": "2026-01-08",
-      "size_lines": 337
+      "last_updated": "2026-01-13",
+      "size_lines": 334,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "github-workflow.md",
       "title": "GitHub Workflow Guide",
       "description": "```bash ./scripts/should_use_pr.sh --explain",
-      "last_updated": "2026-01-08",
-      "size_lines": 277
+      "last_updated": "2026-01-13",
+      "size_lines": 287,
+      "audience": "All Agents",
+      "status": "Approved"
+    },
+    {
+      "name": "handoff.md",
+      "title": "Handoff Quick Start",
+      "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: `./scripts/agent_start.sh --quick` (or with `--agent 9` for governance work)",
+      "last_updated": "2026-01-13",
+      "size_lines": 87
     },
     {
       "name": "learning-paths.md",
       "title": "Learning Paths for Contributors",
       "description": "Pick the smallest reading path that still protects quality. Each path lists the minimum docs to read before you work. | Task type | Path | Read first |",
-      "last_updated": "2026-01-08",
-      "size_lines": 80
+      "last_updated": "2026-01-13",
+      "size_lines": 90,
+      "audience": "All Agents",
+      "status": "Approved"
     },
     {
       "name": "lesson-incomplete-implementation.md",
       "title": "Lesson Learned: Incomplete Implementation (2026-01-09)",
       "description": "✅ \"Background agents work on worktrees (local commits only)\" ✅ \"Automatic detection, zero configuration\"",
-      "last_updated": "2026-01-09",
-      "size_lines": 353,
-      "status": "Fixed in commit ef1ce7f"
+      "last_updated": "2026-01-13",
+      "size_lines": 363,
+      "audience": "All Agents",
+      "status": "Approved"
     },
     {
       "name": "naming-conventions.md",
       "title": "Naming Conventions",
       "description": "This document defines naming standards for files, modules, and symbols in this repository.",
-      "last_updated": "2026-01-08",
-      "size_lines": 63,
-      "status": "Active"
+      "last_updated": "2026-01-13",
+      "size_lines": 68,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "quickstart-checklist.md",
       "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
       "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** `streamlit_app/pages/NN_📋_page_name.py`",
-      "last_updated": "2026-01-09",
-      "size_lines": 493
+      "last_updated": "2026-01-13",
+      "size_lines": 500,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "repo-professionalism.md",
       "title": "Repo Professionalism Playbook",
-      "description": "Purpose: keep the repo reliable, predictable, and safe to publish even when work is fast or done by multiple agents. This doc does not replace existing rules. It links to the canonical sources and add",
-      "last_updated": "2026-01-10",
-      "size_lines": 197
+      "description": "This doc does not replace existing rules. It links to the canonical sources and adds a practical \"what to do next\" map. ```bash",
+      "last_updated": "2026-01-13",
+      "size_lines": 207,
+      "audience": "All Agents",
+      "status": "Approved"
     },
     {
       "name": "session-issues.md",
       "title": "Session Issues and Fixes",
-      "description": "Purpose: capture recurring friction points and the fixes so we do not repeat them. - **Release script rewrote doc stamps** and introduced trailing whitespace in “Last Updated” lines, which caused pre-",
-      "last_updated": "2025-12-31",
-      "size_lines": 43
+      "description": "Purpose: capture recurring friction points and the fixes so we do not repeat them. - Pre-commit failures (files changed by hooks after staging)",
+      "last_updated": "2026-01-12",
+      "size_lines": 62
     },
     {
       "name": "solo-maintainer-operating-system.md",
       "title": "Solo Maintainer Operating System (Public)",
-      "description": "Purpose: keep a solo-maintained engineering library stable, trusted, and low-drift. Scope: applies to all public releases, schemas, and APIs.",
-      "last_updated": "2026-01-10",
-      "size_lines": 114
+      "description": "- Deterministic outputs, explicit units, stable contracts. - One active task at a time (WIP=1).",
+      "last_updated": "2026-01-13",
+      "size_lines": 124,
+      "audience": "Maintainers",
+      "status": "Approved"
+    },
+    {
+      "name": "streamlit-comprehensive-prevention-system.md",
+      "title": "Comprehensive Streamlit App Prevention System",
+      "description": "> **Context:** Built prevention system for cost_optimizer.py (PR #301), but discovered > NameError in beam_design.py that wasn't caught. Need app-wide solution.",
+      "last_updated": "2026-01-13",
+      "size_lines": 504,
+      "audience": "Developers",
+      "status": "Complete"
+    },
+    {
+      "name": "streamlit-issues-catalog.md",
+      "title": "Streamlit App Comprehensive Issue Catalog",
+      "description": "> **Purpose:** Complete catalog of all issues found across 5 Streamlit pages. > This document guides Phase 1B fixes and tracks progress.",
+      "last_updated": "2026-01-13",
+      "size_lines": 317,
+      "audience": "Developers",
+      "status": "Complete"
+    },
+    {
+      "name": "streamlit-maintenance-guide.md",
+      "title": "Streamlit Maintenance Guide",
+      "description": "> **Purpose:** Your complete reference for developing, testing, validating, and maintaining the Streamlit UI. 1. [Quick Start](#quick-start)",
+      "last_updated": "2026-01-13",
+      "size_lines": 758
+    },
+    {
+      "name": "streamlit-prevention-system-review.md",
+      "title": "Comprehensive Prevention System - Review & Refinements",
+      "description": "> **Purpose:** Critical review of the proposed comprehensive prevention system, > identifying gaps, refining approach, and prioritizing implementation.",
+      "last_updated": "2026-01-12",
+      "size_lines": 608,
+      "status": "📝 UNDER REVIEW"
     },
     {
       "name": "testing-strategy.md",
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
       "description": "- Location: `Python/tests/` - Runner: `pytest`",
-      "last_updated": "2025-12-30",
-      "size_lines": 162
+      "last_updated": "2026-01-13",
+      "size_lines": 276,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "vba-guide.md",
       "title": "VBA Library Guide",
       "description": "Practical guide to consume, ship, and maintain the VBA side of the Structural Engineering Library. - **Current modules:** `M01_Constants` through `M17_Serviceability` plus optional tests in `VBA/Tests",
-      "last_updated": "2026-01-08",
-      "size_lines": 56
+      "last_updated": "2026-01-13",
+      "size_lines": 65,
+      "audience": "Developers",
+      "status": "Production Ready"
     },
     {
       "name": "vba-testing-guide.md",
       "title": "VBA Testing Guide",
       "description": "1. **Open** the Excel workbook (`Excel/StructEng_BeamDesign_v0.5.xlsm` or `BeamDesignApp.xlsm`) 2. **Press** `Alt+F11` to open the VBA Editor",
-      "last_updated": "2026-01-10",
-      "size_lines": 240
+      "last_updated": "2026-01-15",
+      "size_lines": 247,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "workflow-professional-review.md",
       "title": "Git Workflow Professional Review & Recommendations",
       "description": "| Feature | Status | Notes | |---------|--------|-------|",
-      "last_updated": "2026-01-06",
-      "size_lines": 439
+      "last_updated": "2026-01-13",
+      "size_lines": 449,
+      "audience": "Developers",
+      "status": "Complete"
     }
   ],
   "subfolders": []

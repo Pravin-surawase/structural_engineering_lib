@@ -220,7 +220,7 @@
 | **INFRA-01** | Add check-api-signatures hook to pre-commit + CI api-signature-check job | DEVOPS | ✅ 2026-01-15 |
 | **IMPL-008** | Fix Streamlit API issues and UI improvements (advanced analysis, utilization display, session state) | DEV | ✅ PR #361 2026-01-14 |
 | **TASK-520** | Hypothesis property-based testing (strategies + 43 tests for flexure/shear/ductile) | DEV | ✅ 2026-01-14 |
-| **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests → all 2639 pass) | DEV | ✅ 2026-01-14 |
+| **TASK-521** | Fix deprecated error_message/remarks test patterns (10 tests → all 2742 pass) | DEV | ✅ 2026-01-14 |
 | **TASK-523** | Hypothesis docs + CI integration (testing-strategy.md, nightly.yml) | DOCS | ✅ PR #358 2026-01-14 |
 | **TASK-506** | Session 20-21 Validation & Test Fixes (17 broken tests → all pass, lint fixes) | MAIN | ✅ PR #357 2026-01-13 |
 | **IMP-02** | Add diagnostics reminders to agent_start.sh + end_session.py | DEVOPS | ✅ 2026-01-13 |
