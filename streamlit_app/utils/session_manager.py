@@ -164,8 +164,8 @@ class SessionStateManager:
     """
 
     @staticmethod
-    def initialize():
-        """Initialize session state with default values"""
+    def initialize() -> None:
+        """Initialize session state with default values."""
         # Current inputs
         if StateKeys.CURRENT_INPUTS not in st.session_state:
             st.session_state[StateKeys.CURRENT_INPUTS] = BeamInputs()
@@ -214,29 +214,28 @@ class SessionStateManager:
         return st.session_state[StateKeys.CURRENT_INPUTS]
 
     @staticmethod
-    def set_current_inputs(inputs: BeamInputs):
-        """Set current beam inputs"""
+    def set_current_inputs(inputs: BeamInputs) -> None:
+        """Set current beam inputs."""
         SessionStateManager.initialize()
         st.session_state[StateKeys.CURRENT_INPUTS] = inputs
         logger.debug(f"Updated current inputs: {inputs}")
 
     @staticmethod
     def get_current_result() -> Optional[DesignResult]:
-        """Get current design result"""
+        """Get current design result."""
         SessionStateManager.initialize()
         return st.session_state[StateKeys.CURRENT_RESULT]
 
     @staticmethod
-    def set_current_result(result: DesignResult):
-        """Set current design result"""
+    def set_current_result(result: DesignResult) -> None:
+        """Set current design result."""
         SessionStateManager.initialize()
         st.session_state[StateKeys.CURRENT_RESULT] = result
         logger.debug(f"Updated current result: status={result.status}, util={result.utilization_pct}%")
 
     @staticmethod
-    def add_to_history(inputs: BeamInputs, result: DesignResult):
-        """
-        Add design to history.
+    def add_to_history(inputs: BeamInputs, result: DesignResult) -> None:
+        """Add design to history.
 
         Args:
             inputs: Beam inputs
@@ -264,22 +263,21 @@ class SessionStateManager:
 
     @staticmethod
     def get_history() -> List[DesignResult]:
-        """Get design history"""
+        """Get design history."""
         SessionStateManager.initialize()
         return st.session_state[StateKeys.RESULT_HISTORY]
 
     @staticmethod
-    def clear_history():
-        """Clear design history"""
+    def clear_history() -> None:
+        """Clear design history."""
         SessionStateManager.initialize()
         st.session_state[StateKeys.INPUT_HISTORY] = []
         st.session_state[StateKeys.RESULT_HISTORY] = []
         logger.info("Cleared design history")
 
     @staticmethod
-    def cache_design(inputs: BeamInputs, result: DesignResult):
-        """
-        Cache design result.
+    def cache_design(inputs: BeamInputs, result: DesignResult) -> None:
+        """Cache design result.
 
         Args:
             inputs: Beam inputs (used as cache key)
@@ -364,9 +362,8 @@ class SessionStateManager:
         }
 
     @staticmethod
-    def import_state(state_dict: Dict[str, Any]):
-        """
-        Import session state from dictionary.
+    def import_state(state_dict: Dict[str, Any]) -> None:
+        """Import session state from dictionary.
 
         Args:
             state_dict: Dictionary with state data
@@ -427,9 +424,8 @@ class SessionStateManager:
         return st.session_state[StateKeys.USER_PREFERENCES].get(key, default)
 
     @staticmethod
-    def set_preference(key: str, value: Any):
-        """
-        Set user preference.
+    def set_preference(key: str, value: Any) -> None:
+        """Set user preference.
 
         Args:
             key: Preference key
@@ -440,8 +436,8 @@ class SessionStateManager:
         logger.debug(f"Updated preference: {key}={value}")
 
     @staticmethod
-    def reset_to_defaults():
-        """Reset all state to default values"""
+    def reset_to_defaults() -> None:
+        """Reset all state to default values."""
         st.session_state.clear()
         SessionStateManager.initialize()
         logger.info("Session state reset to defaults")
@@ -451,9 +447,9 @@ class SessionStateManager:
     # =========================================================================
 
     @staticmethod
-    def minimize_state():
-        """
-        Remove non-essential state to reduce memory footprint.
+    def minimize_state() -> None:
+        """Remove non-essential state to reduce memory footprint.
+
         Keeps only current inputs, result, and recent history.
         """
         SessionStateManager.initialize()
@@ -501,9 +497,8 @@ class SessionStateManager:
         return diff
 
     @staticmethod
-    def clear_stale_state(max_age_minutes: int = 30):
-        """
-        Clear state that hasn't been accessed recently.
+    def clear_stale_state(max_age_minutes: int = 30) -> None:
+        """Clear state that hasn't been accessed recently.
 
         Args:
             max_age_minutes: Maximum age for state entries
@@ -530,9 +525,9 @@ class SessionStateManager:
             logger.info(f"Cleared {len(result_history) - len(fresh_results)} stale results")
 
     @staticmethod
-    def compress_large_objects():
-        """
-        Compress large objects in state to reduce memory.
+    def compress_large_objects() -> None:
+        """Compress large objects in state to reduce memory.
+
         Currently a placeholder for future implementation.
         """
         # In future: could use pickle + gzip for large objects
@@ -562,9 +557,8 @@ class SessionStateManager:
         }
 
     @staticmethod
-    def optimize_state_on_interval(interval_seconds: int = 300):
-        """
-        Periodically optimize state (call every 5 minutes).
+    def optimize_state_on_interval(interval_seconds: int = 300) -> None:
+        """Periodically optimize state (call every 5 minutes).
 
         Args:
             interval_seconds: Optimization interval
@@ -602,9 +596,8 @@ def load_last_design() -> Optional[BeamInputs]:
     return None
 
 
-def save_design_to_file(filepath: str):
-    """
-    Save current design to JSON file.
+def save_design_to_file(filepath: str) -> None:
+    """Save current design to JSON file.
 
     Args:
         filepath: Path to save file
@@ -615,9 +608,8 @@ def save_design_to_file(filepath: str):
     logger.info(f"Design saved to {filepath}")
 
 
-def load_design_from_file(filepath: str):
-    """
-    Load design from JSON file.
+def load_design_from_file(filepath: str) -> None:
+    """Load design from JSON file.
 
     Args:
         filepath: Path to load file

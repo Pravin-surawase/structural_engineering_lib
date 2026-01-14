@@ -94,27 +94,28 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
     results = []
     total = len(df)
     if total > 0:
-        for idx, row in df.iterrows():
+        # Use itertuples() for better performance (vs iterrows())
+        for idx, row in enumerate(df.itertuples()):
             # Update progress
             progress = (idx + 1) / total
             progress_bar.progress(progress)
-            status_text.text(f"Processing {row['beam_id']}... ({idx + 1}/{total})")
+            status_text.text(f"Processing {row.beam_id}... ({idx + 1}/{total})")
 
             try:
                 # Calculate effective depth (D - assumed cover of 50mm)
-                D_mm = row["D_mm"]
+                D_mm = row.D_mm
                 cover_mm = 50
                 d_mm = D_mm - cover_mm
 
                 # Run design with correct API parameters
                 result = cached_design(
-                    mu_knm=row["Mu_kNm"],       # Already in kN·m
-                    vu_kn=row["Vu_kN"],         # Already in kN
-                    b_mm=row["b_mm"],
+                    mu_knm=row.Mu_kNm,       # Already in kN·m
+                    vu_kn=row.Vu_kN,         # Already in kN
+                    b_mm=row.b_mm,
                     D_mm=D_mm,
                     d_mm=d_mm,
-                    fck_nmm2=row["fck_MPa"],
-                    fy_nmm2=row["fy_MPa"],
+                    fck_nmm2=row.fck_MPa,
+                    fy_nmm2=row.fy_MPa,
                 )
 
                 # Extract key results
@@ -126,7 +127,7 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
                 num_bars = flexure.get("num_bars", 3)
                 bar_config = f"{num_bars}-{bar_dia}mm"
                 results.append({
-                    "beam_id": row["beam_id"],
+                    "beam_id": row.beam_id,
                     "status": "✅ OK" if status == "OK" else "❌ FAIL",
                     "Ast_req_mm2": flexure.get("ast_required", "-"),
                     "Ast_prov_mm2": flexure.get("ast_provided", "-"),
@@ -137,7 +138,7 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
 
             except Exception as e:
                 results.append({
-                    "beam_id": row["beam_id"],
+                    "beam_id": row.beam_id,
                     "status": f"❌ ERROR: {str(e)[:50]}",
                     "Ast_req_mm2": "-",
                     "Ast_prov_mm2": "-",
