@@ -162,12 +162,8 @@ with col_input:
     @st.fragment
     def render_inputs():
         """Render input form as an independent fragment."""
-        # Compact header with theme toggle inline
-        col_h1, col_h2 = st.columns([3, 1])
-        with col_h1:
-            st.subheader("📋 Inputs")
-        with col_h2:
-            render_theme_toggle()
+        # Compact header (NO theme toggle - it uses st.sidebar which is forbidden in fragments)
+        st.subheader("📋 Inputs")
 
         # Section 1: Geometry (compact)
         st.markdown("**📏 Geometry**")
