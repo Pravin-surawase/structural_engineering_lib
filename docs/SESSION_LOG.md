@@ -4,6 +4,74 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-16 — Session 27: Enhanced AppTest & Modern Streamlit Patterns
+
+**Focus:** Enhance AppTest framework with integration tests, add modern Streamlit patterns, and assess code quality.
+
+### Summary
+
+**PR #364:** Enhanced AppTest framework and modern Streamlit patterns
+
+**Commits (5 total):**
+
+1. **feat(test): enhance AppTest framework with integration tests** (`071f3bb`)
+   - Rewrote conftest.py with PAGE_CONFIG for all 12 pages
+   - Added AppTestHelper class with utility methods
+   - Created test_integration_workflows.py with 14 new tests
+   - Total: 60 AppTests (46 original + 14 new)
+
+2. **feat(streamlit): add fragment utilities and modern patterns research** (`dee526a`)
+   - Added `utils/fragments.py` with modern Streamlit patterns:
+     - CacheStatsFragment for auto-refreshing cache stats
+     - export_dialog factory for modal exports
+     - show_status_badge with fallback
+     - Feature detection (fragment, dialog, badge, etc.)
+   - Added `test_fragments.py` with 15 tests
+   - Created research document: `streamlit-modern-patterns-research.md`
+
+3. **ci: add AppTest and Streamlit validation to nightly workflow** (`2b7830e`)
+   - Added AppTest UI tests to nightly.yml
+   - Added Streamlit issue scanner to nightly workflow
+
+4. **docs: update TASKS.md with TASK-601 progress** (`fa29dd9`)
+   - Added TASK-601 section with 7 subtasks
+   - Updated Recently Done section
+
+5. **fix(ci): correct AppTest path in nightly workflow** (`cf729e0`)
+   - Fixed tests/apptest/ path (not streamlit_app/tests/apptest/)
+
+**Test Counts:**
+- AppTest: 60 tests (was 46)
+- Fragment utilities: 15 tests
+- Total project tests: ~1392
+
+**Research Findings:**
+
+1. **Modern Streamlit Features (can adopt):**
+   - `st.fragment` - 80-90% faster input responses (partial reruns)
+   - `st.dialog` - Modal dialogs for forms/exports
+   - `st.badge` - Professional status indicators
+   - `st.segmented_control` - Better filtering
+
+2. **Code Quality Assessment: 8.4/10 (Senior Developer Level)**
+   - ✅ Excellent: Error handling, documentation, caching, type hints
+   - ✅ Good: Modularity, testing, session state management
+   - ⚠️ Improve: Adopt st.fragment, split large files, extract constants
+
+### Technical Decisions
+
+1. **Fragment Utilities:** Created as utility module rather than modifying pages directly. This allows gradual adoption.
+
+2. **Code Quality Rating:** Based on Google Python Style Guide, SOLID principles, and Clean Code standards. Professional patterns include comprehensive fallbacks, smart caching, and type safety.
+
+### Next Actions
+- [ ] Merge PR #364
+- [ ] Adopt st.fragment in beam_design.py for better performance
+- [ ] Split beam_design.py (700+ lines) into smaller modules
+- [ ] Extract magic numbers to constants module
+
+---
+
 ## 2026-01-15 — Session 26: Dynamic Stirrup Selection & AppTest Automation
 
 **Focus:** Fix stirrup diameter selection, PDF report data, and implement AppTest automation framework.

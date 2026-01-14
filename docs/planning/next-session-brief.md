@@ -33,33 +33,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-15
-- Session: 25
-- Focus: v0.17.5 Release + API Signature Validation Infrastructure
-- Commits:
-  - `a99aa73` — ci: add API signature validation to pre-commit and CI workflow
-  - `d7f996f` — chore(release): bump version to 0.17.5
-- Release: v0.17.5 Tag pushed
-- Key Deliverables:
-  - **API Signature Validation:** Added to pre-commit hooks + CI workflow
-    - `.pre-commit-config.yaml`: `check-api-signatures` hook
-    - `.github/workflows/streamlit-validation.yml`: `api-signature-check` job
-  - **v0.17.5 Release:** Multi-Objective Pareto Optimization, 1317 tests passing
-  - **Version Sync:** 16 files updated (CHANGELOG, pyproject.toml, README, 13 docs)
-- Files Changed:
-  - `.pre-commit-config.yaml` (hook added)
-  - `.github/workflows/streamlit-validation.yml` (job added)
-  - `CHANGELOG.md` (v0.17.5 section)
-  - `Python/pyproject.toml` (version bump)
-  - `Python/README.md` (new features section)
-  - 13 doc files (version sync via check_doc_versions.py --fix)
-- Metrics:
-  - 1317 unit tests passing
-  - 0 CRITICAL scanner issues
-  - 19 HIGH issues (acceptable session state patterns)
-- Next Steps:
-  - Monitor CI for new api-signature-check job
-  - Continue v0.18.0 library expansion (anchorage, torsion, Level C serviceability)
-  - Address deferred cosmetic issues (ISSUE-007, ISSUE-009, ISSUE-011)
+- Focus: Fix stirrup diameter selection, PDF report data, and implement AppTest automation framework.
 <!-- HANDOFF:END -->
 
 ---
