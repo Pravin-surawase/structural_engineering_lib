@@ -23,9 +23,8 @@ from typing import List, Optional, Dict
 import streamlit as st
 
 
-def display_design_status(result: dict, show_icon: bool = True):
-    """
-    Display overall design status banner.
+def display_design_status(result: dict, show_icon: bool = True) -> None:
+    """Display overall design status banner.
 
     Args:
         result: Design result dict with 'is_safe' key
@@ -52,9 +51,8 @@ def display_design_status(result: dict, show_icon: bool = True):
         )
 
 
-def display_reinforcement_summary(result: dict, layout: str = "columns"):
-    """
-    Display reinforcement summary (main, shear, compression, side face steel).
+def display_reinforcement_summary(result: dict, layout: str = "columns") -> None:
+    """Display reinforcement summary (main, shear, compression, side face steel).
 
     Args:
         result: Full design result dict
@@ -144,9 +142,8 @@ def display_reinforcement_summary(result: dict, layout: str = "columns"):
 
 def display_flexure_result(
     flexure_result: dict = None, flexure: dict = None, compact: bool = False
-):
-    """
-    Display flexure design result details.
+) -> None:
+    """Display flexure design result details.
 
     Args:
         flexure_result: Flexure result dict (preferred parameter name)
@@ -198,9 +195,8 @@ def display_flexure_result(
 
 def display_shear_result(
     shear_result: dict = None, shear: dict = None, compact: bool = False
-):
-    """
-    Display shear design result details.
+) -> None:
+    """Display shear design result details.
 
     Args:
         shear_result: Shear result dict (preferred parameter name)
@@ -244,9 +240,8 @@ def display_shear_result(
             st.error("❌ Unsafe")
 
 
-def display_summary_metrics(result: dict, metrics: Optional[List[str]] = None):
-    """
-    Display key metrics in column layout.
+def display_summary_metrics(result: dict, metrics: Optional[List[str]] = None) -> None:
+    """Display key metrics in column layout.
 
     Args:
         result: Full design result dict
@@ -288,9 +283,8 @@ def display_summary_metrics(result: dict, metrics: Optional[List[str]] = None):
 
 def display_utilization_meters(
     result: dict, thresholds: Optional[Dict[str, float]] = None
-):
-    """
-    Display capacity utilization progress bars.
+) -> None:
+    """Display capacity utilization progress bars.
 
     Args:
         result: Full design result dict
@@ -357,9 +351,8 @@ def display_utilization_meters(
         st.caption(f"τv / τc: {tau_v:.2f} / {tau_c:.2f} N/mm²")
 
 
-def display_material_properties(concrete: dict, steel: dict, compact: bool = False):
-    """
-    Display material properties (concrete and steel grades).
+def display_material_properties(concrete: dict, steel: dict, compact: bool = False) -> None:
+    """Display material properties (concrete and steel grades).
 
     Args:
         concrete: Concrete dict with 'grade' and 'fck'
@@ -394,9 +387,8 @@ def display_material_properties(concrete: dict, steel: dict, compact: bool = Fal
         st.markdown(f"{grade} (fy = {fy} N/mm²)")
 
 
-def display_compliance_checks(compliance: dict, show_details: bool = True):
-    """
-    Display IS 456 compliance checks.
+def display_compliance_checks(compliance: dict, show_details: bool = True) -> None:
+    """Display IS 456 compliance checks.
 
     Args:
         compliance: Compliance dict with 'checks' list

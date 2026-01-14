@@ -82,11 +82,11 @@ class SmartCache:
         self._misses += 1
         return None
 
-    def set(self, key: str, value: Any):
+    def set(self, key: str, value: Any) -> None:
         """Set value in cache with current timestamp."""
         self._cache[key] = (value, time.time())
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all cache entries."""
         self._cache.clear()
         self._hits = 0
@@ -263,9 +263,8 @@ def cached_plotly_chart(
 
 
 @st.cache_resource
-def get_cached_theme():
-    """
-    Cache Plotly theme object (singleton).
+def get_cached_theme() -> Dict[str, Any]:
+    """Cache Plotly theme object (singleton).
 
     This caches the theme configuration as a resource that persists
     across reruns and is shared by all users.
@@ -283,9 +282,8 @@ def get_cached_theme():
 
 
 @st.cache_resource
-def get_design_system_tokens():
-    """
-    Cache design system tokens (singleton).
+def get_design_system_tokens() -> Any:
+    """Cache design system tokens (singleton).
 
     Returns:
         module: Design system tokens module
@@ -366,9 +364,8 @@ def cache_stats() -> Dict[str, Any]:
     }
 
 
-def clear_all_caches():
-    """
-    Clear all Streamlit caches.
+def clear_all_caches() -> None:
+    """Clear all Streamlit caches.
 
     Use this when:
     - Switching projects
@@ -384,9 +381,8 @@ def clear_all_caches():
     st.cache_resource.clear()
 
 
-def warm_caches():
-    """
-    Pre-load common data into caches on app startup.
+def warm_caches() -> None:
+    """Pre-load common data into caches on app startup.
 
     This reduces first-load latency by caching frequently used data.
     Call this in the main app initialization.
@@ -410,9 +406,8 @@ def warm_caches():
 
 
 # Performance decorator for custom caching logic
-def timed_cache(ttl: int = 300):
-    """
-    Decorator for custom caching with timing.
+def timed_cache(ttl: int = 300) -> Callable[[Callable], Callable]:
+    """Decorator for custom caching with timing.
 
     Args:
         ttl: Time to live in seconds
@@ -427,7 +422,7 @@ def timed_cache(ttl: int = 300):
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args, **kwargs) -> Any:
             # Use st.cache_data with specified TTL
             cached_func = st.cache_data(ttl=ttl)(func)
             return cached_func(*args, **kwargs)
