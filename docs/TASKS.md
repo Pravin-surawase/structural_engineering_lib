@@ -78,6 +78,86 @@
 - Reduces CPU load by avoiding unnecessary full page reruns
 - Better UX with instant feedback on input changes
 
+**Critical Bug Discovery & Resolution (2026-01-13):**
+- ❌ **Bug Found:** Session 30 fragments violated Streamlit API (st.sidebar in fragments)
+- ✅ **Root Cause:** AST scanner couldn't detect indirect violations through function calls
+- ✅ **Solution:** Built specialized fragment validator (290 lines)
+- ✅ **Prevention:** Added to pre-commit hooks + CI workflow
+- ✅ **Documentation:** Best practices guide (413 lines) + technical analysis (776 lines)
+- ✅ **Commits:** 7 substantial commits (research, fixes, automation, docs, summary)
+- ✅ **Result:** 0 violations, future bugs blocked, complete automation coverage
+
+---
+
+### TASK-605: Fragment API Violation Crisis Resolution ✅ COMPLETE (Session 30 Cont.)
+
+> **Goal:** Fix critical bug where fragments called st.sidebar, build prevention automation
+> **Context:** Session 30 fragments (commits 707c79a, 82d40f7) were broken at commit time
+> **Timeline:** 2026-01-13 (single request, 7 commits)
+> **Completion:** 2026-01-13
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-605.1** | Research why scanners missed violation | MAIN | 1h | 🔴 CRITICAL | ✅ Done (`90f035d`, 400 lines) |
+| **TASK-605.2** | Fix beam_design theme toggle in fragment | MAIN | 20m | 🔴 CRITICAL | ✅ Done (`9cd4d1c`) |
+| **TASK-605.3** | Fix cost_optimizer + compliance fragments | MAIN | 40m | 🔴 CRITICAL | ✅ Done (`45bc7c5`) |
+| **TASK-605.4** | Create fragment API validator (automation) | MAIN | 1h | 🔴 CRITICAL | ✅ Done (`45bc7c5`, 290 lines) |
+| **TASK-605.5** | Integrate validator into pre-commit + CI | MAIN | 30m | 🟠 MEDIUM | ✅ Done (`95bd87f`) |
+| **TASK-605.6** | Document fragment best practices | MAIN | 45m | 🟠 MEDIUM | ✅ Done (`a3691d8`, 413 lines) |
+| **TASK-605.7** | Comprehensive technical analysis | MAIN | 1h | 🟠 MEDIUM | ✅ Done (`fe826e0`, 776 lines) |
+
+**Problem:**
+- Session 30 added `@st.fragment` to cost_optimizer and compliance
+- Fragments called `st.sidebar.subheader()` and `st.sidebar.form()` - **FORBIDDEN** by Streamlit API
+- Runtime error: `StreamlitAPIException: Calling st.sidebar in a function wrapped with st.fragment is not supported`
+- No existing automation detected this (AST scanner, AppTest, pylint, pre-commit, CI)
+
+**Root Cause:**
+- AST scanner sees function calls, not internal implementations
+- Fragments called helper functions that used st.sidebar internally
+- Cannot trace across function boundaries without full call-graph analysis
+
+**Solution:**
+1. **Research:** 400-line analysis of why automation failed, Streamlit rules, detection strategies
+2. **Fix beam_design:** Remove theme toggle from fragment (uses sidebar internally)
+3. **Fix cost_optimizer + compliance:** Move fragments inside `with st.sidebar:` context
+4. **Build validator:** 290-line AST-based checker for fragment API violations
+5. **Automate:** Add validator to pre-commit hooks + CI (blocks bad code)
+6. **Document:** 413-line best practices guide with patterns, debugging, migration
+7. **Summarize:** 776-line technical analysis with lessons learned
+
+**Validation:**
+- Validator found 4 violations in Session 30 code (lines 636, 638, 478, 480)
+- After fixes: 0 violations detected
+- Pre-commit hook passes: `check-fragment-violations`
+- CI job added: `fragment-validator`
+- All pages load without errors
+
+**Impact:**
+- ✅ 3 broken pages fixed (beam_design, cost_optimizer, compliance)
+- ✅ Future violations blocked (pre-commit + CI)
+- ✅ Complete documentation (best practices + troubleshooting)
+- ✅ Process improvement (prevention > detection)
+- ✅ 7 substantial commits (~2,000 LOC)
+
+**Lessons Learned:**
+1. **Domain-specific validation:** Generic tools miss domain-specific rules
+2. **Prevention > detection:** Automation blocks bugs before commit
+3. **Specialization matters:** Streamlit-specific checker catches what generic AST scanner misses
+4. **Test what you deploy:** AppTest didn't exercise fragment code paths
+5. **Documentation is automation:** Guides enable future agents to self-serve fixes
+
+**Files Created/Modified:**
+- `docs/research/fragment-api-restrictions-analysis.md` (400 lines)
+- `scripts/check_fragment_violations.py` (290 lines)
+- `docs/guidelines/streamlit-fragment-best-practices.md` (413 lines)
+- `docs/planning/session-30-fragment-crisis-resolution.md` (776 lines)
+- `.pre-commit-config.yaml` (1 hook added)
+- `.github/workflows/streamlit-validation.yml` (1 job added)
+- `streamlit_app/pages/01_beam_design.py` (simplified header)
+- `streamlit_app/pages/02_cost_optimizer.py` (fragment moved inside sidebar)
+- `streamlit_app/pages/03_compliance.py` (fragment moved inside sidebar)
+
 ---
 
 ## Up Next (Session 31+)

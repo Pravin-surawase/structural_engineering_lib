@@ -604,15 +604,6 @@ def main():
         help="Use inputs from Beam Design page or enter manually",
     )
 
-    # Cache performance stats (auto-refresh every 5 seconds)
-    with st.sidebar.expander("⚡ Cache Performance", expanded=False):
-        cache_stats = CacheStatsFragment(
-            cache_func=cached_smart_analysis,
-            refresh_interval=5.0,
-            show_details=True,
-        )
-        cache_stats.render()
-
     inputs = None
 
     if input_source == "From Beam Design":
