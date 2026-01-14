@@ -174,11 +174,14 @@ with col_input:
         max_value=12000.0,
         default_value=st.session_state.beam_inputs["span_mm"],
         unit="mm",
-        help_text="Clear span between supports",
+        help_text="Clear span between supports (typ. 3000-8000mm)",
         key="input_span",
         show_validation=False,
     )
     st.session_state.beam_inputs["span_mm"] = span
+
+    # Span-based depth recommendation
+    recommended_D = span / 12  # span/10 to span/15 typical
 
     b, b_valid = dimension_input(
         label="Width",
@@ -186,7 +189,7 @@ with col_input:
         max_value=600.0,
         default_value=st.session_state.beam_inputs["b_mm"],
         unit="mm",
-        help_text="Beam width (smaller dimension)",
+        help_text="Beam width (typ. D/2 to D/3)",
         key="input_b",
         show_validation=False,
     )
@@ -198,11 +201,18 @@ with col_input:
         max_value=900.0,
         default_value=st.session_state.beam_inputs["D_mm"],
         unit="mm",
-        help_text="Total beam depth",
+        help_text=f"Recommended: {recommended_D:.0f}mm (span/12 for typical beam)",
         key="input_D",
         show_validation=False,
     )
     st.session_state.beam_inputs["D_mm"] = D
+
+    # Smart effective depth: suggest based on D and typical cover
+    # Get cover from current exposure selection
+    current_exposure = st.session_state.beam_inputs.get("exposure", "Moderate")
+    cover = get_cover_for_exposure(current_exposure)
+    # Typical effective depth = D - cover - bar_dia/2 (assume 20mm bar)
+    suggested_d = D - cover - 10  # cover + half bar diameter
 
     d, d_valid = dimension_input(
         label="Effective Depth",
@@ -210,16 +220,20 @@ with col_input:
         max_value=850.0,
         default_value=st.session_state.beam_inputs["d_mm"],
         unit="mm",
-        help_text="Distance from compression face to centroid of tension steel",
+        help_text=f"Suggested: {suggested_d:.0f}mm (D - cover - bar/2)",
         key="input_d",
         show_validation=False,
     )
     st.session_state.beam_inputs["d_mm"] = d
 
-    # Validation: d must be less than D
+    # Validation: d must be less than D with meaningful cover
+    min_cover_plus_bar = 40  # Minimum cover + half bar diameter
     if d >= D:
         st.error("❌ Effective depth must be less than total depth")
         d_valid = False
+    elif d > D - min_cover_plus_bar:
+        st.warning(f"⚠️ d={d:.0f}mm leaves only {D-d:.0f}mm cover. Minimum: {min_cover_plus_bar}mm")
+        # Still valid but warn user
 
     # Section 2: Materials (compact)
     st.markdown("**🧱 Materials**")

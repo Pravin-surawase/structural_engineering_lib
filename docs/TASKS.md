@@ -33,10 +33,10 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-604.1** | Hide 8 secondary pages (underscore prefix) | MAIN | 15m | 🔴 HIGH | ✅ Done |
-| **TASK-604.2** | Update sidebar navigation messaging | MAIN | 5m | 🔴 HIGH | ✅ Done |
-| **TASK-604.3** | Add input validation improvements to beam_design.py | MAIN | 30m | 🟠 MEDIUM | ⏳ In Progress |
-| **TASK-604.4** | Add Pareto explanation tooltips to cost_optimizer.py | MAIN | 30m | 🟠 MEDIUM | ⏳ Queued |
+| **TASK-604.1** | Hide 8 secondary pages (underscore prefix) | MAIN | 15m | 🔴 HIGH | ✅ Done (`1194f37`) |
+| **TASK-604.2** | Update sidebar navigation messaging | MAIN | 5m | 🔴 HIGH | ✅ Done (`1194f37`) |
+| **TASK-604.3** | Add input validation improvements to beam_design.py | MAIN | 30m | 🟠 MEDIUM | ✅ Done |
+| **TASK-604.4** | Add Pareto explanation tooltips to cost_optimizer.py | MAIN | 30m | 🟠 MEDIUM | ✅ Done |
 
 **Focus Pages (4 Visible):**
 - ✅ 01_beam_design.py - Core design functionality

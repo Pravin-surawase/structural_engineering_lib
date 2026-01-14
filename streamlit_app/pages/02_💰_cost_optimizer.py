@@ -747,6 +747,27 @@ def main():
 
             with tab2:
                 st.subheader("🎯 Pareto Multi-Objective Optimization")
+
+                # Explanation for users unfamiliar with Pareto optimization
+                with st.expander("ℹ️ What is Pareto Optimization?", expanded=False):
+                    st.markdown("""
+**Pareto optimization** finds designs that are optimal across multiple objectives simultaneously.
+
+**Three objectives balanced:**
+- **💰 Cost** — Minimize total material cost
+- **⚡ Utilization** — Maximize structural efficiency (closer to capacity = more efficient)
+- **🪶 Weight** — Minimize steel consumption for sustainability
+
+**Why Pareto?**
+No single design is "best" for everything. A cheaper design might use more steel.
+The **Pareto front** shows all designs where improving one objective means sacrificing another.
+
+**How to choose:**
+- **Budget-constrained?** → Pick the "Cheapest" design
+- **Need efficiency?** → Pick "Most Efficient" (highest utilization)
+- **Sustainability focus?** → Pick "Lightest" (least steel)
+                    """)
+
                 pareto_data = st.session_state.get("pareto_results")
                 if pareto_data:
                     # Summary metrics for Pareto
