@@ -227,6 +227,20 @@ repos:
         pass_filenames: false
         files: ^streamlit_app/pages/.*\.py$
         verbose: true
+      - id: check-type-annotations
+        name: Check type annotations (Streamlit utils)
+        entry: .venv/bin/python scripts/check_type_annotations.py --lenient
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/utils/.*\.py$
+        verbose: true
+      - id: check-performance-issues
+        name: Check Streamlit performance anti-patterns
+        entry: .venv/bin/python scripts/check_performance_issues.py --fail-threshold 1
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/.*\.py$
+        verbose: true
       - id: check-doc-metadata
         name: Check doc metadata (warning mode)
         entry: .venv/bin/python scripts/check_doc_metadata.py
