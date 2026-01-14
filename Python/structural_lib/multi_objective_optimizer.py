@@ -370,7 +370,7 @@ def _get_governing_clauses(
     Returns:
         List of governing clause references with descriptions
     """
-    clauses = []
+    clauses: list[str] = []
 
     if not design:
         return clauses
