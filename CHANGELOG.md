@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.17.5] - 2026-01-14
+
+### Added
+- **Multi-Objective Pareto Optimization (NSGA-II)**
+  - `multi_objective_optimizer.py` - Pure Python NSGA-II implementation
+  - `ParetoCandidate` dataclass with 17 attributes including governing IS 456 clauses
+  - `optimize_pareto_front()` for multi-objective beam optimization
+  - Fast non-dominated sorting and crowding distance algorithms
+  - `get_design_explanation()` with IS 456 clause references
+
+- **Cost Optimizer UI Enhancement**
+  - Dual optimization buttons: "Quick Optimization" vs "Pareto Multi-Objective"
+  - Interactive Pareto scatter plot visualization
+  - Best designs by cost/weight/utilization with governing clauses
+  - WHY explanations for design decisions with IS 456 references
+
+- **API Signature Validation**
+  - `scripts/check_api_signatures.py` - AST-based API contract testing
+  - Detects wrong parameter names, missing params, incorrect dict keys
+  - Smart false-positive reduction (ignores local functions, DataFrame access)
+  - Pre-commit hook integration
+  - CI workflow job for API validation
+
+- **Test Coverage**
+  - 13 new tests for multi-objective optimizer
+  - Pareto front generation, non-dominated sorting tests
+  - Crowding distance calculation tests
+
+### Changed
+- Updated CI workflow with API signature validation job
+- Enhanced pre-commit hooks with API signature checking
+
+### Fixed
+- Session 24 API signature mismatches across all Streamlit pages
+- Fixed 50+ tests passing, 0 CRITICAL scanner issues
+
 ## [0.17.0] - 2026-01-13
 
 ### Added

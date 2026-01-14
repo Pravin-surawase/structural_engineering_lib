@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.17.0 (development preview)
+**Version:** 0.17.5 (development preview)
 **Status:** [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -13,10 +13,10 @@ For full project overview and usage examples, see the repository root `README.md
 
 ```bash
 # Recommended (pinned to release tag)
-pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.17.0#subdirectory=Python"
+pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.17.5#subdirectory=Python"
 
 # With DXF support (pinned)
-pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.17.0#subdirectory=Python"
+pip install "structural-lib-is456[dxf] @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.17.5#subdirectory=Python"
 
 # PyPI (latest — may differ from pinned tag)
 pip install structural-lib-is456
@@ -92,7 +92,13 @@ report = api.check_beam_is456(
 print(f"Governing case: {report.governing_case_id}")
 ```
 
-## New in v0.17.0
+## New in v0.17.5
+
+- **NSGA-II Multi-Objective Pareto Optimization:** `optimize_pareto_front()` for multi-objective beam optimization with IS 456 clause references.
+- **API Contract Testing:** `check_api_signatures.py` for preventing API mismatches.
+- **Enhanced Cost Optimizer UI:** Interactive Pareto visualization with WHY explanations.
+
+## New in v0.17.5
 
 - **Library-first API wrappers:** `validate_*`, `compute_detailing`, `compute_bbs`, `export_bbs`, `compute_dxf`, `compute_report`, `compute_critical`.
 - **New CLI helpers:** `validate` for schema checks and `detail` for detailing JSON export.

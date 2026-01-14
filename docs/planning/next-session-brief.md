@@ -11,7 +11,7 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.17.0 | ✅ Released (2026-01-13) |
+| **Current** | v0.17.5 | ✅ Released (2026-01-13) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
 **Last Session:** 23 | **Commits:** 5

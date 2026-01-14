@@ -4,7 +4,7 @@
 **Audience:** Users
 **Status:** Approved
 **Importance:** High
-**Version:** 0.17.0
+**Version:** 0.17.5
 **Created:** 2025-12-15
 **Last Updated:** 2026-01-13
 
