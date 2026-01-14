@@ -4,6 +4,62 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-17 — Session 28: Modern Streamlit Patterns Adoption
+
+**Focus:** Apply modern Streamlit patterns (st.fragment, st.badge) from Session 27 research to beam_design.py and cost_optimizer.py.
+
+### Summary
+
+**TASK-602:** Modern Streamlit Patterns Adoption
+
+**Commits (4 total):**
+
+1. **feat(ui): add auto-refresh cache stats and status badges to beam design** (`88ae05f`)
+   - Added CacheStatsFragment from utils/fragments.py (10s auto-refresh)
+   - Replaced 30-line manual cache stats expander with fragment
+   - Added show_status_badge for SAFE/UNSAFE status display
+   - Scanner: ✅ No issues
+
+2. **feat(ui): add modern badges to cost optimizer Pareto results** (`9425bc0`)
+   - Added st.badge with fallback for Best Designs section
+   - Cheapest (green), Most Efficient (blue), Lightest (orange)
+   - Import show_status_badge from utils/fragments.py
+
+3. **refactor(ui): extract shared constants to utils/constants.py** (`f01ba3f`)
+   - Created streamlit_app/utils/constants.py with:
+     - CONCRETE_GRADE_MAP, STEEL_GRADE_MAP
+     - EXPOSURE_COVER_MAP with get_cover_for_exposure()
+     - DEFAULT_BEAM_INPUTS for session state
+     - Cache TTL, dimension limits, steel percentages
+   - Updated beam_design.py and cost_optimizer.py to use centralized constants
+   - Removed duplicated GRADE_MAP definitions
+
+4. **docs: clean up TASKS.md - 57% reduction (344→148 lines)** (`35e5b34`)
+   - Added TASK-602 with clear subtasks
+   - Added TASK-603 for next session planning
+   - Consolidated backlog, reduced Recently Done to 6 items
+   - Removed completed release sections
+
+### Key Deliverables
+- ✅ Auto-refreshing cache stats fragment (modern st.fragment pattern)
+- ✅ Badge-based status indicators (st.badge with fallback)
+- ✅ Centralized constants file (utils/constants.py)
+- ✅ Clean task board focused on current/next work
+
+### Next Session (29) - TASK-603
+
+1. **st.fragment for input sections** - Apply to 3-5 pages for 80-90% faster input responses
+2. **st.dialog for exports** - Modal export dialogs (cleaner UX)
+3. **CacheStatsFragment rollout** - Apply to BBS, DXF, and other cached pages
+4. **Performance optimization** - Measure and document fragment improvements
+
+### Technical Notes
+- Streamlit 1.52.2 has st.fragment, st.dialog, st.badge
+- hasattr() fallback pattern ensures compatibility with older versions
+- Scanner shows 11 total issues across all pages (0 critical/high/medium)
+
+---
+
 ## 2026-01-16 — Session 27: Enhanced AppTest & Modern Streamlit Patterns
 
 **Focus:** Enhance AppTest framework with integration tests, add modern Streamlit patterns, and assess code quality.
