@@ -19,6 +19,15 @@ project_root = Path(__file__).parent.parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
+# ============================================================================
+# IMPORTANT: Save reference to real streamlit before mocking
+# This is needed for AppTest-based tests in apptest/ subdirectory
+# ============================================================================
+import streamlit as _real_streamlit  # noqa: E402
+
+# Store the real module so AppTest can use it
+_REAL_STREAMLIT_MODULE = _real_streamlit
+
 
 class MockSessionState(dict):
     """Session state mock supporting both dict and attribute access."""
@@ -345,10 +354,35 @@ MockStreamlit.cache_resource.clear = (
     lambda: MockStreamlit._cache_resource_storage.clear()
 )
 
-# Replace streamlit module with enhanced mock
+# ============================================================================
+# Streamlit Module Mocking
+# ============================================================================
+# Replace streamlit module with enhanced mock for unit tests.
+# NOTE: AppTest-based tests in apptest/ subdirectory need the REAL streamlit
+# module. They should restore it using _REAL_STREAMLIT_MODULE.
+# ============================================================================
 sys.modules["streamlit"] = MockStreamlit()
 
 import streamlit as st
+
+
+def get_real_streamlit():
+    """Get the real streamlit module (for AppTest tests).
+
+    Returns the actual streamlit module that was saved before mocking.
+    Use this in AppTest-based tests that need the real streamlit.
+    """
+    return _REAL_STREAMLIT_MODULE
+
+
+@pytest.fixture
+def real_streamlit():
+    """Pytest fixture providing the real streamlit module.
+
+    Use this fixture in tests that need the real streamlit module
+    instead of the mock (e.g., AppTest-based tests).
+    """
+    return _REAL_STREAMLIT_MODULE
 
 
 @pytest.fixture
