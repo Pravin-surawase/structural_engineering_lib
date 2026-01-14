@@ -285,6 +285,7 @@ and `streamlit_app/tests/test_input_bridge.py`.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-600** | Streamlit page fixes: compliance key mismatch, practical stirrup spacing, dropdown visibility, PDF report session state, 20 regression tests | MAIN | ✅ PR #TBD 2026-01-15 |
 | **REL-0175** | Release v0.17.5: Multi-Objective Pareto Optimization, API Signature Validation CI, 1317 tests | MAIN | ✅ 2026-01-15 |
 | **INFRA-01** | Add check-api-signatures hook to pre-commit + CI api-signature-check job | DEVOPS | ✅ 2026-01-15 |
 | **IMPL-008** | Fix Streamlit API issues and UI improvements (advanced analysis, utilization display, session state) | DEV | ✅ PR #361 2026-01-14 |
