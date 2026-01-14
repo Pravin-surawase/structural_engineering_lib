@@ -68,6 +68,9 @@ from utils.cost_optimizer_error_boundary import (
     SafeSessionState,
 )
 
+# TASK-602: Modern Streamlit patterns
+from utils.fragments import show_status_badge
+
 # Setup logging
 logger = logging.getLogger(__name__)
 
@@ -772,7 +775,11 @@ def main():
                     best_col1, best_col2, best_col3 = st.columns(3)
 
                     with best_col1:
-                        st.markdown("**💰 Cheapest**")
+                        # TASK-602: Modern badge pattern
+                        if hasattr(st, "badge"):
+                            st.badge("💰 Cheapest", color="green")
+                        else:
+                            st.markdown("**💰 Cheapest**")
                         best_cost = pareto_data.get("best_by_cost")
                         if best_cost:
                             st.write(f"**{best_cost.get('bar_config', '')}**")
@@ -788,7 +795,11 @@ def main():
                                     st.caption(f"• {c}")
 
                     with best_col2:
-                        st.markdown("**⚡ Most Efficient**")
+                        # TASK-602: Modern badge pattern
+                        if hasattr(st, "badge"):
+                            st.badge("⚡ Most Efficient", color="blue")
+                        else:
+                            st.markdown("**⚡ Most Efficient**")
                         best_util = pareto_data.get("best_by_utilization")
                         if best_util:
                             st.write(f"**{best_util.get('bar_config', '')}**")
@@ -803,7 +814,11 @@ def main():
                                     st.caption(f"• {c}")
 
                     with best_col3:
-                        st.markdown("**🪶 Lightest**")
+                        # TASK-602: Modern badge pattern
+                        if hasattr(st, "badge"):
+                            st.badge("🪶 Lightest", color="orange")
+                        else:
+                            st.markdown("**🪶 Lightest**")
                         best_wt = pareto_data.get("best_by_weight")
                         if best_wt:
                             st.write(f"**{best_wt.get('bar_config', '')}**")
