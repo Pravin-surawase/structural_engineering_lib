@@ -29,6 +29,7 @@ class TestPageImports:
         """Test beam design page imports successfully"""
         # Import should not raise exception
         import pages
+
         # Verify pages directory exists
         pages_dir = Path(__file__).parent.parent / "pages"
         assert pages_dir.exists()
@@ -68,7 +69,7 @@ class TestMainApp:
         # Check for required imports
         assert "import streamlit as st" in content
         # Check for page config (either direct or via setup_page helper)
-        assert ("st.set_page_config" in content or "setup_page" in content)
+        assert "st.set_page_config" in content or "setup_page" in content
 
 
 class TestPageStructure:
@@ -84,12 +85,13 @@ class TestPageStructure:
 
             content = page_file.read_text()
             # Each page should set a title/header or use modern layout helpers
-            assert ("st.title" in content or
-                    "st.header" in content or
-                    "st.set_page_config" in content or
-                    "setup_page" in content or
-                    "page_header" in content), \
-                   f"Page {page_file.name} missing title/header"
+            assert (
+                "st.title" in content
+                or "st.header" in content
+                or "st.set_page_config" in content
+                or "setup_page" in content
+                or "page_header" in content
+            ), f"Page {page_file.name} missing title/header"
 
     def test_pages_import_streamlit(self):
         """Test all pages import streamlit"""
@@ -100,8 +102,9 @@ class TestPageStructure:
                 continue
 
             content = page_file.read_text()
-            assert "import streamlit" in content, \
-                   f"Page {page_file.name} doesn't import streamlit"
+            assert (
+                "import streamlit" in content
+            ), f"Page {page_file.name} doesn't import streamlit"
 
     def test_pages_use_components(self):
         """Test pages import custom components"""
@@ -214,8 +217,9 @@ class TestFileNaming:
         # Check numbering pattern
         for page_file in page_files:
             if not page_file.name.startswith("_"):
-                assert page_file.name[:2].isdigit(), \
-                       f"Page {page_file.name} should start with two digits"
+                assert page_file.name[
+                    :2
+                ].isdigit(), f"Page {page_file.name} should start with two digits"
 
     def test_pages_have_emojis(self):
         """Test pages use emoji icons"""
@@ -227,8 +231,9 @@ class TestFileNaming:
 
             # Page names should have format: NN_emoji_name.py
             name_parts = page_file.name.split("_")
-            assert len(name_parts) >= 2, \
-                   f"Page {page_file.name} should have format NN_emoji_name.py"
+            assert (
+                len(name_parts) >= 2
+            ), f"Page {page_file.name} should have format NN_emoji_name.py"
 
 
 if __name__ == "__main__":

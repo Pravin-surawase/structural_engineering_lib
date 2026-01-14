@@ -16,7 +16,7 @@ from components.preview import (
     create_beam_preview_diagram,
     calculate_quick_checks,
     calculate_rough_cost,
-    _get_min_cover
+    _get_min_cover,
 )
 from utils.design_system import ANIMATION
 
@@ -29,10 +29,7 @@ class TestCreateBeamPreviewDiagram:
         import plotly.graph_objects as go
 
         fig = create_beam_preview_diagram(
-            span_mm=5000.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            support_condition="Simply Supported"
+            span_mm=5000.0, b_mm=300.0, D_mm=500.0, support_condition="Simply Supported"
         )
 
         assert isinstance(fig, go.Figure)
@@ -40,10 +37,7 @@ class TestCreateBeamPreviewDiagram:
     def test_uses_numeric_duration(self):
         """CRITICAL: Must use integer duration for Plotly."""
         fig = create_beam_preview_diagram(
-            span_mm=5000.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            support_condition="Simply Supported"
+            span_mm=5000.0, b_mm=300.0, D_mm=500.0, support_condition="Simply Supported"
         )
 
         # Check transition duration is integer
@@ -57,20 +51,14 @@ class TestCreateBeamPreviewDiagram:
 
         for condition in conditions:
             fig = create_beam_preview_diagram(
-                span_mm=5000.0,
-                b_mm=300.0,
-                D_mm=500.0,
-                support_condition=condition
+                span_mm=5000.0, b_mm=300.0, D_mm=500.0, support_condition=condition
             )
             assert fig is not None
 
     def test_has_beam_shape(self):
         """Figure should contain beam rectangle shape."""
         fig = create_beam_preview_diagram(
-            span_mm=5000.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            support_condition="Simply Supported"
+            span_mm=5000.0, b_mm=300.0, D_mm=500.0, support_condition="Simply Supported"
         )
 
         # Check for at least one shape (beam rectangle)
@@ -83,11 +71,7 @@ class TestCalculateQuickChecks:
     def test_returns_list(self):
         """Should return a list of checks."""
         checks = calculate_quick_checks(
-            span_mm=5000.0,
-            d_mm=450.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            exposure="Moderate"
+            span_mm=5000.0, d_mm=450.0, b_mm=300.0, D_mm=500.0, exposure="Moderate"
         )
 
         assert isinstance(checks, list)
@@ -96,11 +80,7 @@ class TestCalculateQuickChecks:
     def test_check_structure(self):
         """Each check should have required fields."""
         checks = calculate_quick_checks(
-            span_mm=5000.0,
-            d_mm=450.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            exposure="Moderate"
+            span_mm=5000.0, d_mm=450.0, b_mm=300.0, D_mm=500.0, exposure="Moderate"
         )
 
         required_fields = ["name", "status", "value", "limit", "message"]
@@ -111,11 +91,7 @@ class TestCalculateQuickChecks:
     def test_status_values(self):
         """Status should be one of: pass, warning, fail."""
         checks = calculate_quick_checks(
-            span_mm=5000.0,
-            d_mm=450.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            exposure="Moderate"
+            span_mm=5000.0, d_mm=450.0, b_mm=300.0, D_mm=500.0, exposure="Moderate"
         )
 
         valid_statuses = {"pass", "warning", "fail"}
@@ -129,7 +105,7 @@ class TestCalculateQuickChecks:
             d_mm=450.0,  # span/d = 11.1, well under 20
             b_mm=300.0,
             D_mm=500.0,
-            exposure="Moderate"
+            exposure="Moderate",
         )
 
         span_d_check = next(c for c in checks if c["name"] == "Span/d Ratio")
@@ -142,7 +118,7 @@ class TestCalculateQuickChecks:
             d_mm=300.0,  # span/d = 33.3, over 20
             b_mm=300.0,
             D_mm=350.0,
-            exposure="Moderate"
+            exposure="Moderate",
         )
 
         span_d_check = next(c for c in checks if c["name"] == "Span/d Ratio")
@@ -152,11 +128,7 @@ class TestCalculateQuickChecks:
         """d < D check should work."""
         # Valid case
         checks_valid = calculate_quick_checks(
-            span_mm=5000.0,
-            d_mm=450.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            exposure="Moderate"
+            span_mm=5000.0, d_mm=450.0, b_mm=300.0, D_mm=500.0, exposure="Moderate"
         )
         d_D_check = next(c for c in checks_valid if c["name"] == "d < D")
         assert d_D_check["status"] == "pass"
@@ -167,7 +139,7 @@ class TestCalculateQuickChecks:
             d_mm=500.0,  # d == D, invalid
             b_mm=300.0,
             D_mm=500.0,
-            exposure="Moderate"
+            exposure="Moderate",
         )
         d_D_check = next(c for c in checks_invalid if c["name"] == "d < D")
         assert d_D_check["status"] == "fail"
@@ -196,11 +168,7 @@ class TestCalculateRoughCost:
     def test_returns_dict(self):
         """Should return a cost dict."""
         cost = calculate_rough_cost(
-            b_mm=300.0,
-            D_mm=500.0,
-            span_mm=5000.0,
-            concrete_grade="M25",
-            mu_knm=120.0
+            b_mm=300.0, D_mm=500.0, span_mm=5000.0, concrete_grade="M25", mu_knm=120.0
         )
 
         assert isinstance(cost, dict)
@@ -208,25 +176,23 @@ class TestCalculateRoughCost:
     def test_cost_structure(self):
         """Cost dict should have required fields."""
         cost = calculate_rough_cost(
-            b_mm=300.0,
-            D_mm=500.0,
-            span_mm=5000.0,
-            concrete_grade="M25",
-            mu_knm=120.0
+            b_mm=300.0, D_mm=500.0, span_mm=5000.0, concrete_grade="M25", mu_knm=120.0
         )
 
-        required = ["concrete_m3", "concrete_cost", "steel_kg", "steel_cost", "total_cost"]
+        required = [
+            "concrete_m3",
+            "concrete_cost",
+            "steel_kg",
+            "steel_cost",
+            "total_cost",
+        ]
         for field in required:
             assert field in cost, f"Missing {field}"
 
     def test_positive_values(self):
         """All costs should be positive."""
         cost = calculate_rough_cost(
-            b_mm=300.0,
-            D_mm=500.0,
-            span_mm=5000.0,
-            concrete_grade="M25",
-            mu_knm=120.0
+            b_mm=300.0, D_mm=500.0, span_mm=5000.0, concrete_grade="M25", mu_knm=120.0
         )
 
         assert cost["concrete_cost"] > 0
@@ -236,11 +202,7 @@ class TestCalculateRoughCost:
     def test_total_is_sum(self):
         """Total should be concrete + steel."""
         cost = calculate_rough_cost(
-            b_mm=300.0,
-            D_mm=500.0,
-            span_mm=5000.0,
-            concrete_grade="M25",
-            mu_knm=120.0
+            b_mm=300.0, D_mm=500.0, span_mm=5000.0, concrete_grade="M25", mu_knm=120.0
         )
 
         expected_total = cost["concrete_cost"] + cost["steel_cost"]
@@ -253,7 +215,7 @@ class TestCalculateRoughCost:
             D_mm=500.0,
             span_mm=5000.0,
             concrete_grade="M25",
-            mu_knm=50.0  # Low moment
+            mu_knm=50.0,  # Low moment
         )
 
         cost_high = calculate_rough_cost(
@@ -261,7 +223,7 @@ class TestCalculateRoughCost:
             D_mm=500.0,
             span_mm=5000.0,
             concrete_grade="M25",
-            mu_knm=200.0  # High moment
+            mu_knm=200.0,  # High moment
         )
 
         assert cost_high["steel_kg"] > cost_low["steel_kg"]
@@ -274,38 +236,24 @@ class TestIntegration:
         """Test complete preview generation without errors."""
         # This simulates what render_real_time_preview does
         fig = create_beam_preview_diagram(
-            span_mm=5000.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            support_condition="Simply Supported"
+            span_mm=5000.0, b_mm=300.0, D_mm=500.0, support_condition="Simply Supported"
         )
         assert fig is not None
 
         checks = calculate_quick_checks(
-            span_mm=5000.0,
-            d_mm=450.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            exposure="Moderate"
+            span_mm=5000.0, d_mm=450.0, b_mm=300.0, D_mm=500.0, exposure="Moderate"
         )
         assert len(checks) >= 4
 
         cost = calculate_rough_cost(
-            b_mm=300.0,
-            D_mm=500.0,
-            span_mm=5000.0,
-            concrete_grade="M25",
-            mu_knm=120.0
+            b_mm=300.0, D_mm=500.0, span_mm=5000.0, concrete_grade="M25", mu_knm=120.0
         )
         assert cost["total_cost"] > 0
 
     def test_preview_with_design_system_tokens(self):
         """Verify design system tokens are used correctly."""
         fig = create_beam_preview_diagram(
-            span_mm=5000.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            support_condition="Simply Supported"
+            span_mm=5000.0, b_mm=300.0, D_mm=500.0, support_condition="Simply Supported"
         )
 
         # CRITICAL: Verify Plotly gets integer duration

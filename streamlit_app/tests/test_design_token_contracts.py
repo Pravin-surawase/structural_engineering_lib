@@ -65,7 +65,9 @@ def get_all_python_files() -> List[Path]:
     return files
 
 
-def extract_design_token_usages(filepath: Path) -> Dict[str, List[Tuple[str, int, str]]]:
+def extract_design_token_usages(
+    filepath: Path,
+) -> Dict[str, List[Tuple[str, int, str]]]:
     """
     Extract all COLORS.*, TYPOGRAPHY.*, etc. usages from a file.
 
@@ -82,9 +84,9 @@ def extract_design_token_usages(filepath: Path) -> Dict[str, List[Tuple[str, int
         }
     """
     try:
-        with open(filepath, encoding='utf-8') as f:
+        with open(filepath, encoding="utf-8") as f:
             content = f.read()
-            lines = content.split('\n')
+            lines = content.split("\n")
     except (IOError, UnicodeDecodeError):
         return {}
 
@@ -101,7 +103,7 @@ def extract_design_token_usages(filepath: Path) -> Dict[str, List[Tuple[str, int
         for token_name in tokens.keys():
             # Match patterns like: COLORS.primary_500, ANIMATION.duration_normal
             # But exclude DARK_COLORS, LIGHT_COLORS (theme variants)
-            pattern = rf'(?<!DARK_)(?<!LIGHT_){token_name}\.(\w+)'
+            pattern = rf"(?<!DARK_)(?<!LIGHT_){token_name}\.(\w+)"
             for match in re.finditer(pattern, line):
                 attr_name = match.group(1)
                 context = line.strip()[:80]  # First 80 chars for context
@@ -139,8 +141,8 @@ class TestDesignTokenContracts:
 
         assert not errors, (
             f"❌ Found {len(errors)} invalid COLORS usage(s):\n"
-            + "".join(errors) +
-            "\n💡 Fix: Use valid COLORS attributes from design_system.py"
+            + "".join(errors)
+            + "\n💡 Fix: Use valid COLORS attributes from design_system.py"
         )
 
     def test_typography_usage_valid(self):
@@ -164,8 +166,8 @@ class TestDesignTokenContracts:
 
         assert not errors, (
             f"❌ Found {len(errors)} invalid TYPOGRAPHY usage(s):\n"
-            + "".join(errors) +
-            "\n💡 Fix: Use valid TYPOGRAPHY attributes from design_system.py"
+            + "".join(errors)
+            + "\n💡 Fix: Use valid TYPOGRAPHY attributes from design_system.py"
         )
 
     def test_spacing_usage_valid(self):
@@ -189,8 +191,8 @@ class TestDesignTokenContracts:
 
         assert not errors, (
             f"❌ Found {len(errors)} invalid SPACING usage(s):\n"
-            + "".join(errors) +
-            "\n💡 Fix: Use valid SPACING attributes from design_system.py"
+            + "".join(errors)
+            + "\n💡 Fix: Use valid SPACING attributes from design_system.py"
         )
 
     def test_elevation_usage_valid(self):
@@ -214,8 +216,8 @@ class TestDesignTokenContracts:
 
         assert not errors, (
             f"❌ Found {len(errors)} invalid ELEVATION usage(s):\n"
-            + "".join(errors) +
-            "\n💡 Fix: Use valid ELEVATION attributes from design_system.py"
+            + "".join(errors)
+            + "\n💡 Fix: Use valid ELEVATION attributes from design_system.py"
         )
 
     def test_animation_usage_valid(self):
@@ -243,8 +245,8 @@ class TestDesignTokenContracts:
 
         assert not errors, (
             f"❌ Found {len(errors)} invalid ANIMATION usage(s):\n"
-            + "".join(errors) +
-            "\n💡 Fix: Use valid ANIMATION attributes from design_system.py"
+            + "".join(errors)
+            + "\n💡 Fix: Use valid ANIMATION attributes from design_system.py"
         )
 
 
@@ -303,15 +305,15 @@ class TestDesignTokenConsistency:
         warnings = []
         for py_file in get_all_python_files():
             try:
-                with open(py_file, encoding='utf-8') as f:
+                with open(py_file, encoding="utf-8") as f:
                     content = f.read()
-                    lines = content.split('\n')
+                    lines = content.split("\n")
             except (IOError, UnicodeDecodeError):
                 continue
 
             # Look for hex colors like #FF5733
             for line_num, line in enumerate(lines, start=1):
-                hex_colors = re.findall(r'#[0-9A-Fa-f]{6}', line)
+                hex_colors = re.findall(r"#[0-9A-Fa-f]{6}", line)
                 if hex_colors:
                     for color in hex_colors:
                         warnings.append(
@@ -340,30 +342,36 @@ class TestDesignTokenConsistency:
                 continue
 
             # Skip files that define the tokens
-            if py_file.name in ["design_system.py", "theme_manager.py",
-                                 "plotly_theme.py", "global_styles.py",
-                                 "styled_components.py", "design_system_demo.py"]:
+            if py_file.name in [
+                "design_system.py",
+                "theme_manager.py",
+                "plotly_theme.py",
+                "global_styles.py",
+                "styled_components.py",
+                "design_system_demo.py",
+            ]:
                 continue
 
             # Verify imports
             try:
-                with open(py_file, encoding='utf-8') as f:
+                with open(py_file, encoding="utf-8") as f:
                     content = f.read()
             except (IOError, UnicodeDecodeError):
                 continue
 
             # Check for design_system imports
             has_import = (
-                "from utils.design_system import" in content or
-                "import utils.design_system" in content
+                "from utils.design_system import" in content
+                or "import utils.design_system" in content
             )
 
             if not has_import:
                 errors.append(f"  {py_file.name} uses tokens but doesn't import")
 
-        assert not errors, (
-            f"❌ Found {len(errors)} file(s) using tokens without import:\n"
-            + "\n".join(errors)
+        assert (
+            not errors
+        ), f"❌ Found {len(errors)} file(s) using tokens without import:\n" + "\n".join(
+            errors
         )
 
 
@@ -382,8 +390,9 @@ class TestRegressionPrevention:
         Root cause: Used semantic alias before it was defined
         """
         # This should now pass because we added shadow_sm
-        assert hasattr(ELEVATION, 'shadow_sm'), \
-            "REGRESSION: ELEVATION.shadow_sm removed"
+        assert hasattr(
+            ELEVATION, "shadow_sm"
+        ), "REGRESSION: ELEVATION.shadow_sm removed"
 
     def test_2026_01_08_body_md_regression(self):
         """
@@ -393,8 +402,7 @@ class TestRegressionPrevention:
         Root cause: Used semantic alias before it was defined
         """
         # This should now pass because we added body_md
-        assert hasattr(TYPOGRAPHY, 'body_md'), \
-            "REGRESSION: TYPOGRAPHY.body_md removed"
+        assert hasattr(TYPOGRAPHY, "body_md"), "REGRESSION: TYPOGRAPHY.body_md removed"
 
     def test_2026_01_08_duration_normal_regression(self):
         """
@@ -419,17 +427,17 @@ class TestRegressionPrevention:
 
         assert not errors, (
             "REGRESSION: Code uses ANIMATION.duration_* pattern:\n"
-            + "\n".join(errors) +
-            "\n💡 Either add duration_* aliases OR fix code to use 'normal', 'fast', etc."
+            + "\n".join(errors)
+            + "\n💡 Either add duration_* aliases OR fix code to use 'normal', 'fast', etc."
         )
 
 
 # Export test count for documentation
 __all__ = [
-    'TestDesignTokenContracts',
-    'TestDesignTokenCoverage',
-    'TestDesignTokenConsistency',
-    'TestRegressionPrevention',
+    "TestDesignTokenContracts",
+    "TestDesignTokenCoverage",
+    "TestDesignTokenConsistency",
+    "TestRegressionPrevention",
 ]
 
 # Test counts:

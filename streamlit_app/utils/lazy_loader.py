@@ -2,6 +2,7 @@
 Lazy Loading Utilities for Streamlit App Performance
 Defers expensive imports and component loading until needed.
 """
+
 from functools import wraps
 from typing import Any, Callable, Dict, Optional
 import streamlit as st
@@ -26,7 +27,7 @@ class LazyImporter:
         if module_name not in self._imports:
             try:
                 # Dynamic import
-                parts = module_name.split('.')
+                parts = module_name.split(".")
                 module = __import__(module_name)
                 for part in parts[1:]:
                     module = getattr(module, part)
@@ -76,6 +77,7 @@ def load_on_demand(component_key: str) -> Callable[[Callable], Callable]:
     Returns:
         Decorator function
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -93,10 +95,13 @@ def load_on_demand(component_key: str) -> Callable[[Callable], Callable]:
             return func(*args, **kwargs)
 
         return wrapper
+
     return decorator
 
 
-def defer_until_visible(container_type: str = "expander") -> Callable[[Callable], Callable]:
+def defer_until_visible(
+    container_type: str = "expander",
+) -> Callable[[Callable], Callable]:
     """Defer rendering until container is visible/expanded.
 
     Args:
@@ -105,6 +110,7 @@ def defer_until_visible(container_type: str = "expander") -> Callable[[Callable]
     Returns:
         Decorator function
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -121,6 +127,7 @@ def defer_until_visible(container_type: str = "expander") -> Callable[[Callable]
             return func(*args, **kwargs)
 
         return wrapper
+
     return decorator
 
 
@@ -153,8 +160,7 @@ _component_loader = ComponentLoader()
 
 
 def progressive_load(
-    component_id: str,
-    placeholder_text: str = "Loading component..."
+    component_id: str, placeholder_text: str = "Loading component..."
 ) -> Callable[[Callable], Callable]:
     """Load component progressively with placeholder.
 
@@ -171,6 +177,7 @@ def progressive_load(
     Returns:
         Decorator function
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -187,6 +194,7 @@ def progressive_load(
             return result
 
         return wrapper
+
     return decorator
 
 
@@ -209,6 +217,6 @@ def clear_component_cache() -> None:
     _component_loader.reset()
 
     # Clear session state loaded flags
-    keys_to_remove = [k for k in st.session_state.keys() if k.startswith('_loaded_')]
+    keys_to_remove = [k for k in st.session_state.keys() if k.startswith("_loaded_")]
     for key in keys_to_remove:
         del st.session_state[key]

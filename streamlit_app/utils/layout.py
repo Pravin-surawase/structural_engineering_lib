@@ -577,7 +577,9 @@ def page_header(
     st.markdown("<hr>", unsafe_allow_html=True)
 
 
-def section_header(title: str, icon: Optional[str] = None, divider: bool = True) -> None:
+def section_header(
+    title: str, icon: Optional[str] = None, divider: bool = True
+) -> None:
     """
     Render a section header (H2/H3) with optional icon and divider.
 
@@ -603,7 +605,10 @@ def section_header(title: str, icon: Optional[str] = None, divider: bool = True)
         )
 
     if divider:
-        st.markdown(f'<div style="height: 1px; background: {COLORS.gray_200}; margin: {SPACING.space_3} 0;"></div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div style="height: 1px; background: {COLORS.gray_200}; margin: {SPACING.space_3} 0;"></div>',
+            unsafe_allow_html=True,
+        )
 
 
 def card(
@@ -631,7 +636,9 @@ def card(
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-def metric_card(label: str, value: str, delta: Optional[str] = None, help_text: Optional[str] = None) -> None:
+def metric_card(
+    label: str, value: str, delta: Optional[str] = None, help_text: Optional[str] = None
+) -> None:
     """
     Render a metric in a professional card (wrapper around st.metric).
 

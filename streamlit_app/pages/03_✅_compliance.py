@@ -221,23 +221,41 @@ def run_compliance_checks(inputs: dict) -> dict:
             elif key == "shear_stress":
                 provided = f"{tau_v:.2f} N/mm²"
                 required = f"≤ {tau_c_max:.2f} N/mm²"
-                margin = ((tau_c_max - tau_v) / tau_c_max * 100) if tau_c_max > 0 else 100
+                margin = (
+                    ((tau_c_max - tau_v) / tau_c_max * 100) if tau_c_max > 0 else 100
+                )
                 status = "pass" if tau_v <= tau_c_max else "fail"
             elif key == "shear_spacing":
                 # Stirrup spacing check per IS 456 Cl. 26.5.1.5
                 stirrup_spacing = shear.get("spacing_mm") or shear.get("spacing") or 0
                 max_spacing = min(0.75 * d_mm, 300)  # IS 456 Cl. 26.5.1.5
-                provided = f"{stirrup_spacing:.0f} mm" if stirrup_spacing > 0 else "Not provided"
+                provided = (
+                    f"{stirrup_spacing:.0f} mm"
+                    if stirrup_spacing > 0
+                    else "Not provided"
+                )
                 required = f"≤ {max_spacing:.0f} mm"
-                margin = ((max_spacing - stirrup_spacing) / max_spacing * 100) if (max_spacing > 0 and stirrup_spacing > 0) else 0
-                status = "pass" if (stirrup_spacing > 0 and stirrup_spacing <= max_spacing) else "warning"
+                margin = (
+                    ((max_spacing - stirrup_spacing) / max_spacing * 100)
+                    if (max_spacing > 0 and stirrup_spacing > 0)
+                    else 0
+                )
+                status = (
+                    "pass"
+                    if (stirrup_spacing > 0 and stirrup_spacing <= max_spacing)
+                    else "warning"
+                )
             elif key == "shear_min_steel":
                 # Shear reinforcement required if tau_v > tau_c
                 shear_reinf_req = tau_v > tau_c
                 provided = "Yes" if shear.get("spacing_mm") else "No"
                 required = "Yes" if shear_reinf_req else "Not required"
                 margin = 100  # Binary check
-                status = "pass" if (not shear_reinf_req or shear.get("spacing_mm")) else "fail"
+                status = (
+                    "pass"
+                    if (not shear_reinf_req or shear.get("spacing_mm"))
+                    else "fail"
+                )
             elif key == "detailing_cover":
                 provided = f"{cover_req:.0f} mm"
                 required = f"≥ 25 mm"  # Typical minimum
@@ -249,8 +267,16 @@ def run_compliance_checks(inputs: dict) -> dict:
                 provided = f"{bar_spacing:.0f} mm" if bar_spacing > 0 else "N/A"
                 required = f"≥ {min_spacing} mm"
                 # min_spacing always >= 25 from max(), but check for scanner
-                margin = ((bar_spacing - min_spacing) / min_spacing * 100) if (bar_spacing > 0 and min_spacing > 0) else 0
-                status = "pass" if bar_spacing >= min_spacing else ("warning" if bar_spacing > 0 else "fail")
+                margin = (
+                    ((bar_spacing - min_spacing) / min_spacing * 100)
+                    if (bar_spacing > 0 and min_spacing > 0)
+                    else 0
+                )
+                status = (
+                    "pass"
+                    if bar_spacing >= min_spacing
+                    else ("warning" if bar_spacing > 0 else "fail")
+                )
             elif key == "detailing_side_face":
                 need_side_face = D_mm > 450  # IS 456 Cl. 26.5.1.3
                 provided = "Required" if need_side_face else "Not required"
@@ -261,7 +287,11 @@ def run_compliance_checks(inputs: dict) -> dict:
                 span_depth_actual = span_mm / D_mm if D_mm > 0 else 0
                 provided = f"{span_depth_actual:.1f}"
                 required = f"≤ {span_depth_basic}"
-                margin = ((span_depth_basic - span_depth_actual) / span_depth_basic * 100) if span_depth_basic > 0 else 0
+                margin = (
+                    ((span_depth_basic - span_depth_actual) / span_depth_basic * 100)
+                    if span_depth_basic > 0
+                    else 0
+                )
                 status = "pass" if span_depth_actual <= span_depth_basic else "warning"
             elif key == "serviceability_crack_width":
                 provided = "Design check"

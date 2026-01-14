@@ -129,7 +129,11 @@ def parametric_study_fck(base_params: Dict, fck_range: List[float]) -> pd.DataFr
                     "fck": fck,
                     "Ast_req": flexure.get("ast_required", 0),
                     "Ast_prov": flexure.get("ast_provided", 0),
-                    "xu_by_d": flexure.get("xu", 0) / (base_params["D_mm"] - 50) if (base_params["D_mm"] - 50) > 0 else 0,
+                    "xu_by_d": (
+                        flexure.get("xu", 0) / (base_params["D_mm"] - 50)
+                        if (base_params["D_mm"] - 50) > 0
+                        else 0
+                    ),
                     "stirrup_spacing": shear.get("spacing", 0),
                     "cost_per_m": result.get("cost_per_m", 0),
                 }

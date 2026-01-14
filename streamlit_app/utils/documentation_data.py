@@ -31,9 +31,9 @@ These assumptions form the basis for all flexural strength calculations.
         "equations": [
             "εc,max = 0.0035 (concrete compression strain)",
             "εs,max = 0.002 + 0.87fy/Es (steel tension strain)",
-            "xu/d ≤ 0.48 for Fe415 (under-reinforced section)"
+            "xu/d ≤ 0.48 for Fe415 (under-reinforced section)",
         ],
-        "related": ["26.5.2", "G-1.1"]
+        "related": ["26.5.2", "G-1.1"],
     },
     "26.5.2.1": {
         "title": "Moment of Resistance - Singly Reinforced Beams",
@@ -50,9 +50,9 @@ Mu = 0.87 fy Ast d [1 - (Ast fy)/(b d fck)]
         """,
         "equations": [
             "xu = (0.87 fy Ast)/(0.36 fck b)",
-            "Mu = 0.87 fy Ast (d - 0.42 xu)"
+            "Mu = 0.87 fy Ast (d - 0.42 xu)",
         ],
-        "related": ["26.5.1", "G-1.1", "38.1"]
+        "related": ["26.5.1", "G-1.1", "38.1"],
     },
     "40.1": {
         "title": "Shear Strength of Members without Shear Reinforcement",
@@ -71,11 +71,8 @@ For beams with concentrated loads:
 - Check at d from face of support
 - For UDL: check at face of support
         """,
-        "equations": [
-            "τv = Vu/(b × d)",
-            "τc = 0.85√(0.8 fck) × (Ast/bd)^(1/3) / (γm)"
-        ],
-        "related": ["40.2", "40.3", "40.4"]
+        "equations": ["τv = Vu/(b × d)", "τc = 0.85√(0.8 fck) × (Ast/bd)^(1/3) / (γm)"],
+        "related": ["40.2", "40.3", "40.4"],
     },
     "40.4": {
         "title": "Minimum Shear Reinforcement",
@@ -90,11 +87,8 @@ Asv/(b × sv) ≥ 0.4/0.87fy
 - Maximum spacing: 0.75d or 300mm, whichever is less
 - For τv > τc,max, increase section size
         """,
-        "equations": [
-            "sv,max = min(0.75d, 300mm)",
-            "Asv,min = 0.4 b sv / (0.87 fy)"
-        ],
-        "related": ["40.1", "40.2", "40.3"]
+        "equations": ["sv,max = min(0.75d, 300mm)", "Asv,min = 0.4 b sv / (0.87 fy)"],
+        "related": ["40.1", "40.2", "40.3"],
     },
     "26.2.1": {
         "title": "Minimum Tension Reinforcement",
@@ -113,11 +107,8 @@ Ast,min = 0.85 bd / fy (for rectangular sections)
 - For Fe415: Ast,min ≈ 0.2% of bd
 - For Fe500: Ast,min ≈ 0.17% of bd
         """,
-        "equations": [
-            "Ast,min = 0.85 bd / fy",
-            "ρmin = Ast,min/(bd) = 0.85/fy"
-        ],
-        "related": ["26.5.1.1", "26.5.2"]
+        "equations": ["Ast,min = 0.85 bd / fy", "ρmin = Ast,min/(bd) = 0.85/fy"],
+        "related": ["26.5.1.1", "26.5.2"],
     },
     "23.2.1": {
         "title": "Nominal Cover to Reinforcement",
@@ -137,7 +128,7 @@ Ast,min = 0.85 bd / fy (for rectangular sections)
 - Extreme: 75mm (beams)
         """,
         "equations": [],
-        "related": ["8.2", "16.1"]
+        "related": ["8.2", "16.1"],
     },
 }
 
@@ -157,7 +148,7 @@ FAQ_DATA = {
 - For concrete: γm = 1.5
 - For steel: γm = 1.15
 - Design strength is used in stress checks
-            """
+            """,
         },
         {
             "q": "When should I use doubly reinforced sections?",
@@ -168,7 +159,7 @@ Use doubly reinforced sections when:
 3. **Improve ductility:** Better behavior under seismic loads
 4. **Control long-term deflection:** Compression steel reduces creep
 5. **Moment reversal:** Continuous beams, wind/earthquake loads
-            """
+            """,
         },
         {
             "q": "What is the significance of xu/d ratio?",
@@ -185,8 +176,8 @@ Use doubly reinforced sections when:
 2. Steel yields before concrete crushes
 3. Large deflections warn of impending failure
 4. Prevent sudden brittle collapse
-            """
-        }
+            """,
+        },
     ],
     "Flexure": [
         {
@@ -198,7 +189,7 @@ d = D - cover - φstirrup - φbar/2
 **Example:**
 For D = 500mm, cover = 25mm, 8mm stirrups, 20mm main bars:
 d = 500 - 25 - 8 - 10 = 457 mm
-            """
+            """,
         },
         {
             "q": "What is the minimum and maximum steel percentage?",
@@ -211,8 +202,8 @@ d = 500 - 25 - 8 - 10 = 457 mm
 **Maximum Steel (Clause 26.5.1.2):**
 - Ast,max = 0.04 bD (4% of gross area)
 - Purpose: prevent congestion, ensure proper compaction
-            """
-        }
+            """,
+        },
     ],
     "Shear": [
         {
@@ -227,7 +218,7 @@ d = 500 - 25 - 8 - 10 = 457 mm
 - Uniformly distributed loads (UDL)
 - When required by code
 - For corbels and brackets
-            """
+            """,
         },
         {
             "q": "What if τv > τc,max?",
@@ -242,30 +233,48 @@ d = 500 - 25 - 8 - 10 = 457 mm
    - Also improves flexural capacity
 
 **Note:** Simply increasing stirrups won't help if τv > τc,max!
-            """
-        }
-    ]
+            """,
+        },
+    ],
 }
 
 # Glossary Data
 GLOSSARY_DATA = {
     "A": [
-        ("Anchorage Length", "Length required to develop full strength of reinforcing bar through bond."),
+        (
+            "Anchorage Length",
+            "Length required to develop full strength of reinforcing bar through bond.",
+        ),
         ("Ast", "Area of tension steel reinforcement (mm²)."),
         ("Asc", "Area of compression steel reinforcement (mm²)."),
     ],
     "B": [
-        ("Balanced Section", "Section where concrete and steel reach ultimate strain simultaneously."),
+        (
+            "Balanced Section",
+            "Section where concrete and steel reach ultimate strain simultaneously.",
+        ),
         ("Bond Stress (τbd)", "Shear stress at interface between concrete and steel."),
     ],
     "C": [
-        ("Clear Cover", "Distance from surface of concrete to nearest surface of reinforcement."),
-        ("Characteristic Strength", "Strength below which 5% of test results may fall."),
+        (
+            "Clear Cover",
+            "Distance from surface of concrete to nearest surface of reinforcement.",
+        ),
+        (
+            "Characteristic Strength",
+            "Strength below which 5% of test results may fall.",
+        ),
     ],
     "D": [
-        ("d", "Effective depth - distance from compression face to centroid of tension steel (mm)."),
+        (
+            "d",
+            "Effective depth - distance from compression face to centroid of tension steel (mm).",
+        ),
         ("D", "Overall depth of beam section (mm)."),
-        ("Development Length (Ld)", "Embedment length required to develop design stress in reinforcement."),
+        (
+            "Development Length (Ld)",
+            "Embedment length required to develop design stress in reinforcement.",
+        ),
     ],
     "F": [
         ("fck", "Characteristic compressive strength of concrete (N/mm²)."),
@@ -278,7 +287,10 @@ GLOSSARY_DATA = {
         ("Neutral Axis", "Line in cross-section where stress/strain is zero."),
     ],
     "S": [
-        ("Shear Reinforcement", "Stirrups or bent-up bars provided to resist shear forces."),
+        (
+            "Shear Reinforcement",
+            "Stirrups or bent-up bars provided to resist shear forces.",
+        ),
         ("sv", "Spacing of stirrups along beam length (mm)."),
     ],
     "T": [
@@ -287,7 +299,7 @@ GLOSSARY_DATA = {
     ],
     "X": [
         ("xu", "Depth of neutral axis from compression face (mm)."),
-    ]
+    ],
 }
 
 # Reference Tables
@@ -306,27 +318,27 @@ REFERENCE_TABLES = {
 - Interpolate for intermediate values
 - For pt > 3%: use τc for 3%
         """,
-        "hide_index": False
+        "hide_index": False,
     },
     "Table 20: Maximum Shear Stress (τc,max)": {
         "title": "IS 456 Table 20: Maximum Shear Stress (τc,max)",
         "data": {
             "Concrete Grade": ["M20", "M25", "M30", "M35", "M40"],
-            "τc,max (N/mm²)": [2.8, 3.1, 3.5, 3.7, 4.0]
+            "τc,max (N/mm²)": [2.8, 3.1, 3.5, 3.7, 4.0],
         },
         "notes": """
 **Important:**
 - If τv > τc,max, section dimensions must be increased
 - Simply providing more stirrups will not help
         """,
-        "hide_index": True
+        "hide_index": True,
     },
     "Table 16: Nominal Cover Requirements": {
         "title": "IS 456 Table 16: Nominal Cover to Meet Durability Requirements",
         "data": {
             "Exposure": ["Mild", "Moderate", "Severe", "Very Severe", "Extreme"],
             "Min Concrete": ["M20", "M25", "M30", "M35", "M40"],
-            "Cover - Beams (mm)": [20, 30, 45, 50, 75]
+            "Cover - Beams (mm)": [20, 30, 45, 50, 75],
         },
         "notes": """
 **Exposure Conditions:**
@@ -336,14 +348,14 @@ REFERENCE_TABLES = {
 - **Very Severe:** Structures in tidal zone
 - **Extreme:** Surfaces in seawater, industrial chemical exposure
         """,
-        "hide_index": True
+        "hide_index": True,
     },
     "Standard Bar Sizes and Areas": {
         "title": "Standard Bar Sizes and Cross-Sectional Areas",
         "data": {
             "Diameter (mm)": [8, 10, 12, 16, 20, 25, 32],
             "Area (mm²)": [50, 79, 113, 201, 314, 491, 804],
-            "Weight (kg/m)": [0.395, 0.617, 0.888, 1.578, 2.466, 3.854, 6.313]
+            "Weight (kg/m)": [0.395, 0.617, 0.888, 1.578, 2.466, 3.854, 6.313],
         },
         "notes": """
 **Common Usage:**
@@ -352,6 +364,6 @@ REFERENCE_TABLES = {
 - 20mm, 25mm: Main bars in beams (large spans), column bars
 - 32mm: Column bars (large columns)
         """,
-        "hide_index": True
-    }
+        "hide_index": True,
+    },
 }

@@ -58,14 +58,14 @@ def render_page():
 
     # Check if design results exist (check multiple possible locations)
     design_result = None
-    if 'design_results' in st.session_state:
-        design_result = st.session_state['design_results']
-    elif 'design_result' in st.session_state:
-        design_result = st.session_state['design_result']
-    elif 'beam_inputs' in st.session_state:
-        beam_inputs = st.session_state['beam_inputs']
+    if "design_results" in st.session_state:
+        design_result = st.session_state["design_results"]
+    elif "design_result" in st.session_state:
+        design_result = st.session_state["design_result"]
+    elif "beam_inputs" in st.session_state:
+        beam_inputs = st.session_state["beam_inputs"]
         if isinstance(beam_inputs, dict):
-            design_result = beam_inputs.get('design_result')
+            design_result = beam_inputs.get("design_result")
 
     if not design_result:
         st.warning(
@@ -78,7 +78,7 @@ def render_page():
         return
 
     # Store reference for later use
-    st.session_state['_current_design_result'] = design_result
+    st.session_state["_current_design_result"] = design_result
 
     st.divider()
 
@@ -91,38 +91,32 @@ def render_page():
         project_name = st.text_input(
             "Project Name",
             value="Residential Building - Ground Floor",
-            help="Enter the project name"
+            help="Enter the project name",
         )
 
         location = st.text_input(
-            "Location",
-            value="Mumbai, Maharashtra",
-            help="Project location"
+            "Location", value="Mumbai, Maharashtra", help="Project location"
         )
 
         client = st.text_input(
-            "Client",
-            value="ABC Developers Pvt. Ltd.",
-            help="Client name"
+            "Client", value="ABC Developers Pvt. Ltd.", help="Client name"
         )
 
     with col2:
         engineer = st.text_input(
             "Design Engineer",
             value="Pravin Surawase, M.Tech (Structures)",
-            help="Name and credentials of design engineer"
+            help="Name and credentials of design engineer",
         )
 
         checker = st.text_input(
-            "Checked By",
-            value="",
-            help="Name of checking engineer (optional)"
+            "Checked By", value="", help="Name of checking engineer (optional)"
         )
 
         company = st.text_input(
             "Company/Organization",
             value="XYZ Consultants",
-            help="Engineering firm name"
+            help="Engineering firm name",
         )
 
     st.divider()
@@ -136,29 +130,27 @@ def render_page():
         include_bbs = st.checkbox(
             "Include BBS Table",
             value=True,
-            help="Include Bar Bending Schedule table in report"
+            help="Include Bar Bending Schedule table in report",
         )
 
     with col2:
         include_diagrams = st.checkbox(
-            "Include Diagrams",
-            value=True,
-            help="Include beam cross-section diagrams"
+            "Include Diagrams", value=True, help="Include beam cross-section diagrams"
         )
 
     with col3:
         include_calcs = st.checkbox(
             "Show Detailed Calculations",
             value=True,
-            help="Include step-by-step calculation sheets"
+            help="Include step-by-step calculation sheets",
         )
 
     # Logo upload (optional)
     with st.expander("🖼️ Company Logo (Optional)"):
         logo_file = st.file_uploader(
             "Upload company logo",
-            type=['png', 'jpg', 'jpeg'],
-            help="Upload your company logo for the cover page (max 2MB)"
+            type=["png", "jpg", "jpeg"],
+            help="Upload your company logo for the cover page (max 2MB)",
         )
 
         if logo_file:
@@ -178,7 +170,9 @@ def render_page():
     if include_diagrams:
         sections_included.append("✓ Beam Diagrams")
 
-    sections_text = " | ".join(sections_included) if sections_included else "Basic report only"
+    sections_text = (
+        " | ".join(sections_included) if sections_included else "Basic report only"
+    )
 
     st.info(
         f"**Report will include:** {sections_text}\n\n"
@@ -186,19 +180,19 @@ def render_page():
     )
 
     # Design summary (from session state)
-    design_result = st.session_state.get('_current_design_result', {})
+    design_result = st.session_state.get("_current_design_result", {})
 
     # Get beam inputs for display (stored separately from design results)
-    beam_inputs = st.session_state.get('beam_inputs', {})
-    span_mm = beam_inputs.get('span_mm', 0)
-    b_mm = beam_inputs.get('b_mm', 0)
-    D_mm = beam_inputs.get('D_mm', 0)
+    beam_inputs = st.session_state.get("beam_inputs", {})
+    span_mm = beam_inputs.get("span_mm", 0)
+    b_mm = beam_inputs.get("b_mm", 0)
+    D_mm = beam_inputs.get("D_mm", 0)
     fck = 25  # Default
-    if beam_inputs.get('concrete_grade'):
+    if beam_inputs.get("concrete_grade"):
         # Extract grade number from "M25" -> 25
-        grade_str = beam_inputs.get('concrete_grade', 'M25')
+        grade_str = beam_inputs.get("concrete_grade", "M25")
         try:
-            fck = int(grade_str.replace('M', ''))
+            fck = int(grade_str.replace("M", ""))
         except (ValueError, AttributeError):
             fck = 25
 
@@ -206,40 +200,35 @@ def render_page():
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.metric(
-                "Span",
-                f"{span_mm / 1000:.1f} m"
-            )
-            st.metric(
-                "Width",
-                f"{b_mm:.0f} mm"
-            )
+            st.metric("Span", f"{span_mm / 1000:.1f} m")
+            st.metric("Width", f"{b_mm:.0f} mm")
 
         with col2:
-            flexure = design_result.get('flexure', {})
+            flexure = design_result.get("flexure", {})
             # Try multiple possible keys for steel area
-            ast_prov = flexure.get('Ast_prov_mm2') or flexure.get('ast_provided') or flexure.get('ast_prov') or 0
-            st.metric(
-                "Main Steel",
-                f"{ast_prov:.0f} mm²"
+            ast_prov = (
+                flexure.get("Ast_prov_mm2")
+                or flexure.get("ast_provided")
+                or flexure.get("ast_prov")
+                or 0
             )
+            st.metric("Main Steel", f"{ast_prov:.0f} mm²")
             st.metric(
                 "Status",
-                "✓ SAFE" if design_result.get('is_safe', False) else "✗ UNSAFE"
+                "✓ SAFE" if design_result.get("is_safe", False) else "✗ UNSAFE",
             )
 
         with col3:
-            shear = design_result.get('shear', {})
+            shear = design_result.get("shear", {})
             # Try multiple possible keys for spacing
-            spacing = shear.get('spacing_mm') or shear.get('spacing') or shear.get('sv_required_mm') or 0
-            st.metric(
-                "Stirrups",
-                f"@ {spacing:.0f} mm"
+            spacing = (
+                shear.get("spacing_mm")
+                or shear.get("spacing")
+                or shear.get("sv_required_mm")
+                or 0
             )
-            st.metric(
-                "Grade",
-                f"M{fck:.0f}"
-            )
+            st.metric("Stirrups", f"@ {spacing:.0f} mm")
+            st.metric("Grade", f"M{fck:.0f}")
 
     st.divider()
 
@@ -251,7 +240,7 @@ def render_page():
             "📄 Generate PDF",
             type="primary",
             width="stretch",
-            help="Generate and download PDF report"
+            help="Generate and download PDF report",
         )
 
     if generate_button:
@@ -265,12 +254,12 @@ def render_page():
             try:
                 # Prepare project info
                 project_info = {
-                    'project_name': project_name,
-                    'location': location,
-                    'client': client,
-                    'engineer': engineer,
-                    'checker': checker,
-                    'company': company,
+                    "project_name": project_name,
+                    "location": location,
+                    "client": client,
+                    "engineer": engineer,
+                    "checker": checker,
+                    "company": company,
                 }
 
                 # Handle logo if uploaded
@@ -278,7 +267,7 @@ def render_page():
                 if logo_file:
                     # Save temporarily
                     logo_path = f"/tmp/{logo_file.name}"
-                    with open(logo_path, 'wb') as f:
+                    with open(logo_path, "wb") as f:
                         f.write(logo_file.getbuffer())
 
                 # Generate PDF
@@ -288,7 +277,7 @@ def render_page():
                     project_info=project_info,
                     include_bbs=include_bbs,
                     include_diagrams=include_diagrams,
-                    logo_path=logo_path
+                    logo_path=logo_path,
                 )
 
                 st.success("✅ PDF report generated successfully!")
@@ -300,7 +289,7 @@ def render_page():
                     file_name=f"beam_design_report_{project_name.replace(' ', '_')}.pdf",
                     mime="application/pdf",
                     type="primary",
-                    width="stretch"
+                    width="stretch",
                 )
 
                 # Show file size
@@ -318,7 +307,8 @@ def render_page():
 
     # Help section
     with st.expander("ℹ️ How to Use"):
-        st.markdown("""
+        st.markdown(
+            """
         **Steps to generate a PDF report:**
 
         1. **Complete a beam design** on the Beam Design page first
@@ -341,11 +331,13 @@ def render_page():
         - Report is generated in professional format suitable for submission
         - All calculations include IS 456 clause references
         - PDF is print-ready (A4 size)
-        """)
+        """
+        )
 
     # Technical info
     with st.expander("🔧 Technical Information"):
-        st.markdown("""
+        st.markdown(
+            """
         **Report Standards:**
         - Design Code: IS 456:2000
         - Page Size: A4 (210 × 297 mm)
@@ -362,7 +354,8 @@ def render_page():
         - PDF/A compliant
         - Vector graphics (scalable)
         - Print-ready quality
-        """)
+        """
+        )
 
 
 if __name__ == "__main__":

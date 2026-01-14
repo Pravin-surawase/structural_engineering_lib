@@ -38,6 +38,7 @@ from utils.error_handler import (
 # Test Error Message Creation
 # =============================================================================
 
+
 class TestDimensionErrors:
     """Test dimension error message creation"""
 
@@ -131,7 +132,7 @@ class TestDesignFailureErrors:
             reason="Moment capacity insufficient",
             capacity=100.5,
             demand=120.0,
-            clause="Cl. 38.1"
+            clause="Cl. 38.1",
         )
 
         assert error.severity == ErrorSeverity.ERROR
@@ -159,7 +160,7 @@ class TestComplianceErrors:
             requirement="Minimum reinforcement",
             provided=450,
             required=500,
-            unit="mm²"
+            unit="mm²",
         )
 
         assert error.severity == ErrorSeverity.ERROR
@@ -176,7 +177,7 @@ class TestComplianceErrors:
             requirement="Maximum spacing",
             provided=200,
             required=180,
-            unit="mm"
+            unit="mm",
         )
 
         # Should show percentage over limit
@@ -203,8 +204,7 @@ class TestInputValidationErrors:
     def test_input_validation_error(self):
         """Test input validation error creation"""
         error = create_input_validation_error(
-            field_name="Span Length",
-            error_details="Must be a positive number"
+            field_name="Span Length", error_details="Must be a positive number"
         )
 
         assert error.severity == ErrorSeverity.WARNING
@@ -234,7 +234,7 @@ class TestGenericErrors:
             ValueError("value error"),
             KeyError("key error"),
             TypeError("type error"),
-            RuntimeError("runtime error")
+            RuntimeError("runtime error"),
         ]
 
         for exc in exceptions:
@@ -246,6 +246,7 @@ class TestGenericErrors:
 # =============================================================================
 # Test Validation Functions
 # =============================================================================
+
 
 class TestDimensionValidation:
     """Test dimension validation functions"""
@@ -358,7 +359,7 @@ class TestBeamInputValidation:
             fck_mpa=25,
             fy_mpa=500,
             mu_knm=120,
-            vu_kn=80
+            vu_kn=80,
         )
         assert len(errors) == 0
 
@@ -372,7 +373,7 @@ class TestBeamInputValidation:
             fck_mpa=25,
             fy_mpa=500,
             mu_knm=120,
-            vu_kn=80
+            vu_kn=80,
         )
         assert len(errors) >= 1
         assert any("Span" in e.title for e in errors)
@@ -387,7 +388,7 @@ class TestBeamInputValidation:
             fck_mpa=25,
             fy_mpa=500,
             mu_knm=120,
-            vu_kn=80
+            vu_kn=80,
         )
         assert len(errors) >= 1
         assert any("Width" in e.title for e in errors)
@@ -402,7 +403,7 @@ class TestBeamInputValidation:
             fck_mpa=25,
             fy_mpa=500,
             mu_knm=120,
-            vu_kn=80
+            vu_kn=80,
         )
         assert len(errors) >= 1
         assert any("depth" in e.title.lower() for e in errors)
@@ -417,7 +418,7 @@ class TestBeamInputValidation:
             fck_mpa=27,  # Invalid
             fy_mpa=450,  # Invalid
             mu_knm=120,
-            vu_kn=80
+            vu_kn=80,
         )
         assert len(errors) >= 1
         assert any("Material" in e.title for e in errors)
@@ -425,14 +426,14 @@ class TestBeamInputValidation:
     def test_multiple_errors(self):
         """Test validation catches multiple errors"""
         errors = validate_beam_inputs(
-            span_mm=500,      # Invalid (too small)
-            b_mm=50,          # Invalid (too small)
-            d_mm=100,         # Invalid (too small)
-            D_mm=50,          # Invalid (too small, also d > D)
-            fck_mpa=27,       # Invalid
-            fy_mpa=450,       # Invalid
-            mu_knm=0.5,       # Invalid (too small)
-            vu_kn=0.1         # Invalid (too small)
+            span_mm=500,  # Invalid (too small)
+            b_mm=50,  # Invalid (too small)
+            d_mm=100,  # Invalid (too small)
+            D_mm=50,  # Invalid (too small, also d > D)
+            fck_mpa=27,  # Invalid
+            fy_mpa=450,  # Invalid
+            mu_knm=0.5,  # Invalid (too small)
+            vu_kn=0.1,  # Invalid (too small)
         )
         # Should have multiple errors
         assert len(errors) >= 5
@@ -441,27 +442,27 @@ class TestBeamInputValidation:
         """Test validation at boundary values"""
         # Minimum valid values
         errors = validate_beam_inputs(
-            span_mm=1000,   # Minimum
-            b_mm=150,       # Minimum
-            d_mm=200,       # Minimum
-            D_mm=250,       # Minimum
-            fck_mpa=15,     # Minimum standard grade
-            fy_mpa=250,     # Minimum standard grade
-            mu_knm=1.0,     # Minimum
-            vu_kn=0.5       # Minimum
+            span_mm=1000,  # Minimum
+            b_mm=150,  # Minimum
+            d_mm=200,  # Minimum
+            D_mm=250,  # Minimum
+            fck_mpa=15,  # Minimum standard grade
+            fy_mpa=250,  # Minimum standard grade
+            mu_knm=1.0,  # Minimum
+            vu_kn=0.5,  # Minimum
         )
         assert len(errors) == 0
 
         # Maximum valid values
         errors = validate_beam_inputs(
             span_mm=15000,  # Maximum
-            b_mm=1000,      # Maximum
-            d_mm=2000,      # Maximum
-            D_mm=2500,      # Maximum
-            fck_mpa=50,     # Maximum standard grade
-            fy_mpa=550,     # Maximum standard grade
-            mu_knm=5000,    # Maximum
-            vu_kn=3000      # Maximum
+            b_mm=1000,  # Maximum
+            d_mm=2000,  # Maximum
+            D_mm=2500,  # Maximum
+            fck_mpa=50,  # Maximum standard grade
+            fy_mpa=550,  # Maximum standard grade
+            mu_knm=5000,  # Maximum
+            vu_kn=3000,  # Maximum
         )
         assert len(errors) == 0
 
@@ -469,6 +470,7 @@ class TestBeamInputValidation:
 # =============================================================================
 # Test Error Message Structure
 # =============================================================================
+
 
 class TestErrorMessageStructure:
     """Test ErrorMessage dataclass structure"""
@@ -481,7 +483,7 @@ class TestErrorMessageStructure:
             message="This is a test error message",
             fix_suggestions=["Fix 1", "Fix 2"],
             technical_details="Technical details here",
-            clause_reference="Cl. 26.1"
+            clause_reference="Cl. 26.1",
         )
 
         assert error.severity == ErrorSeverity.ERROR
@@ -497,7 +499,7 @@ class TestErrorMessageStructure:
             severity=ErrorSeverity.WARNING,
             title="Test Warning",
             message="Warning message",
-            fix_suggestions=[]
+            fix_suggestions=[],
         )
 
         assert error.technical_details is None
@@ -507,6 +509,7 @@ class TestErrorMessageStructure:
 # =============================================================================
 # Test Edge Cases
 # =============================================================================
+
 
 class TestEdgeCases:
     """Test edge cases and special scenarios"""
@@ -525,14 +528,7 @@ class TestEdgeCases:
     def test_zero_values(self):
         """Test handling of zero values"""
         errors = validate_beam_inputs(
-            span_mm=0,
-            b_mm=0,
-            d_mm=0,
-            D_mm=0,
-            fck_mpa=0,
-            fy_mpa=0,
-            mu_knm=0,
-            vu_kn=0
+            span_mm=0, b_mm=0, d_mm=0, D_mm=0, fck_mpa=0, fy_mpa=0, mu_knm=0, vu_kn=0
         )
         # Should have many errors for zero values
         assert len(errors) >= 5
@@ -547,7 +543,7 @@ class TestEdgeCases:
             fck_mpa=-25,
             fy_mpa=-500,
             mu_knm=-120,
-            vu_kn=-80
+            vu_kn=-80,
         )
         # Should have many errors for negative values
         assert len(errors) >= 5
@@ -563,13 +559,14 @@ class TestEdgeCases:
                 fck_mpa=25,
                 fy_mpa=500,
                 mu_knm=120,
-                vu_kn=80
+                vu_kn=80,
             )
 
 
 # =============================================================================
 # Test Integration
 # =============================================================================
+
 
 class TestIntegration:
     """Integration tests for error handler"""
@@ -578,14 +575,14 @@ class TestIntegration:
         """Test complete validation workflow"""
         # Start with invalid inputs
         errors = validate_beam_inputs(
-            span_mm=500,    # Too small
-            b_mm=100,       # Too small
-            d_mm=150,       # Too small
+            span_mm=500,  # Too small
+            b_mm=100,  # Too small
+            d_mm=150,  # Too small
             D_mm=200,
-            fck_mpa=27,     # Invalid
-            fy_mpa=450,     # Invalid
-            mu_knm=0.5,     # Too small
-            vu_kn=0.1       # Too small
+            fck_mpa=27,  # Invalid
+            fy_mpa=450,  # Invalid
+            mu_knm=0.5,  # Too small
+            vu_kn=0.1,  # Too small
         )
 
         # Should have multiple errors
@@ -623,6 +620,7 @@ class TestIntegration:
 # Performance Tests
 # =============================================================================
 
+
 class TestPerformance:
     """Test performance of error handling functions"""
 
@@ -632,9 +630,7 @@ class TestPerformance:
 
         start = time.time()
         for _ in range(1000):
-            validate_beam_inputs(
-                5000, 300, 450, 500, 25, 500, 120, 80
-            )
+            validate_beam_inputs(5000, 300, 450, 500, 25, 500, 120, 80)
         elapsed = time.time() - start
 
         # Should complete 1000 validations in under 0.5 seconds

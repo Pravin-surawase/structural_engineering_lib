@@ -150,22 +150,14 @@ class TestResponsiveColumns:
 
     def test_get_responsive_widths_asymmetric(self):
         """Test asymmetric responsive widths (sidebar layout)."""
-        widths = get_responsive_widths(
-            mobile=(1,),
-            tablet=(1, 2),
-            desktop=(1, 3)
-        )
+        widths = get_responsive_widths(mobile=(1,), tablet=(1, 2), desktop=(1, 3))
         assert isinstance(widths, list)
         # Should return based on device (desktop by default)
         assert len(widths) in [1, 2, 3]
 
     def test_responsive_widths_preserve_ratios(self):
         """Test responsive widths preserve specified ratios."""
-        widths = get_responsive_widths(
-            mobile=(1,),
-            tablet=(1, 1),
-            desktop=(1, 2, 1)
-        )
+        widths = get_responsive_widths(mobile=(1,), tablet=(1, 1), desktop=(1, 2, 1))
         # Sum should make sense for columns
         assert sum(widths) > 0
 
@@ -220,11 +212,7 @@ class TestResponsivePadding:
 
     def test_get_responsive_padding_custom(self):
         """Test custom responsive padding."""
-        padding = get_responsive_padding(
-            mobile="0.5rem",
-            tablet="1rem",
-            desktop="2rem"
-        )
+        padding = get_responsive_padding(mobile="0.5rem", tablet="1rem", desktop="2rem")
         assert isinstance(padding, str)
         # Should return one of the values based on device
         assert padding in ["0.5rem", "1rem", "2rem"]
@@ -232,11 +220,7 @@ class TestResponsivePadding:
     def test_responsive_padding_device_specific(self):
         """Test padding varies by device type."""
         # Default device is desktop
-        padding = get_responsive_padding(
-            mobile="8px",
-            tablet="16px",
-            desktop="24px"
-        )
+        padding = get_responsive_padding(mobile="8px", tablet="16px", desktop="24px")
         # Should return desktop value
         assert padding == "24px"
 

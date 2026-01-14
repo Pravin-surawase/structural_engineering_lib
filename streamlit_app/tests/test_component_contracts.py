@@ -33,9 +33,11 @@ sys.path.insert(0, str(streamlit_app_path))
 # Test Group 1: Input Components (10 tests)
 # ============================================================================
 
+
 def test_dimension_input_exists():
     """Test that dimension_input component exists."""
     from components.inputs import dimension_input
+
     assert callable(dimension_input)
 
 
@@ -47,23 +49,24 @@ def test_dimension_input_signature():
     params = list(sig.parameters.keys())
 
     # Check key parameters
-    assert 'label' in params, "dimension_input should have 'label' parameter"
-    assert 'key' in params, "dimension_input should have 'key' parameter"
+    assert "label" in params, "dimension_input should have 'label' parameter"
+    assert "key" in params, "dimension_input should have 'key' parameter"
 
 
 def test_dimension_input_has_docstring():
     """Test dimension_input has documentation."""
     from components.inputs import dimension_input
 
-    assert dimension_input.__doc__ is not None, \
-        "dimension_input should have docstring"
-    assert len(dimension_input.__doc__) > 50, \
-        "dimension_input docstring should be descriptive"
+    assert dimension_input.__doc__ is not None, "dimension_input should have docstring"
+    assert (
+        len(dimension_input.__doc__) > 50
+    ), "dimension_input docstring should be descriptive"
 
 
 def test_material_selector_exists():
     """Test that material_selector component exists."""
     from components.inputs import material_selector
+
     assert callable(material_selector)
 
 
@@ -75,24 +78,27 @@ def test_material_selector_signature():
     params = list(sig.parameters.keys())
 
     # Should accept material type selection
-    assert 'key' in params or 'kwargs' in params
+    assert "key" in params or "kwargs" in params
 
 
 def test_load_input_exists():
     """Test that load_input component exists."""
     from components.inputs import load_input
+
     assert callable(load_input)
 
 
 def test_exposure_selector_exists():
     """Test that exposure_selector component exists."""
     from components.inputs import exposure_selector
+
     assert callable(exposure_selector)
 
 
 def test_support_condition_selector_exists():
     """Test that support_condition_selector component exists."""
     from components.inputs import support_condition_selector
+
     assert callable(support_condition_selector)
 
 
@@ -104,8 +110,9 @@ def test_all_input_components_importable():
             material_selector,
             load_input,
             exposure_selector,
-            support_condition_selector
+            support_condition_selector,
         )
+
         assert True
     except ImportError as e:
         pytest.fail(f"Failed to import input components: {e}")
@@ -120,17 +127,20 @@ def test_input_components_have_key_param():
         params = list(sig.parameters.keys())
 
         # Streamlit widgets require 'key' for uniqueness
-        assert 'key' in params or 'kwargs' in params, \
-            f"{component.__name__} should accept 'key' parameter"
+        assert (
+            "key" in params or "kwargs" in params
+        ), f"{component.__name__} should accept 'key' parameter"
 
 
 # ============================================================================
 # Test Group 2: Visualization Components (10 tests)
 # ============================================================================
 
+
 def test_get_plotly_theme_exists():
     """Test that get_plotly_theme function exists."""
     from components.visualizations import get_plotly_theme
+
     assert callable(get_plotly_theme)
 
 
@@ -145,6 +155,7 @@ def test_get_plotly_theme_returns_dict():
 def test_create_beam_diagram_exists():
     """Test that create_beam_diagram function exists."""
     from components.visualizations import create_beam_diagram
+
     assert callable(create_beam_diagram)
 
 
@@ -162,6 +173,7 @@ def test_create_beam_diagram_signature():
 def test_create_cost_comparison_exists():
     """Test that create_cost_comparison function exists."""
     from components.visualizations import create_cost_comparison
+
     assert callable(create_cost_comparison)
 
 
@@ -172,25 +184,29 @@ def test_create_cost_comparison_signature():
     sig = inspect.signature(create_cost_comparison)
     params = list(sig.parameters.keys())
 
-    assert 'alternatives' in params, \
-        "create_cost_comparison should accept 'alternatives' parameter"
+    assert (
+        "alternatives" in params
+    ), "create_cost_comparison should accept 'alternatives' parameter"
 
 
 def test_create_utilization_gauge_exists():
     """Test that create_utilization_gauge function exists."""
     from components.visualizations import create_utilization_gauge
+
     assert callable(create_utilization_gauge)
 
 
 def test_create_sensitivity_tornado_exists():
     """Test that create_sensitivity_tornado function exists."""
     from components.visualizations import create_sensitivity_tornado
+
     assert callable(create_sensitivity_tornado)
 
 
 def test_create_compliance_visual_exists():
     """Test that create_compliance_visual function exists."""
     from components.visualizations import create_compliance_visual
+
     assert callable(create_compliance_visual)
 
 
@@ -203,8 +219,9 @@ def test_all_visualization_components_importable():
             create_cost_comparison,
             create_utilization_gauge,
             create_sensitivity_tornado,
-            create_compliance_visual
+            create_compliance_visual,
         )
+
         assert True
     except ImportError as e:
         pytest.fail(f"Failed to import visualization components: {e}")
@@ -214,9 +231,11 @@ def test_all_visualization_components_importable():
 # Test Group 3: Results Components (8 tests)
 # ============================================================================
 
+
 def test_display_flexure_result_exists():
     """Test that display_flexure_result function exists."""
     from components.results import display_flexure_result
+
     assert callable(display_flexure_result)
 
 
@@ -227,13 +246,15 @@ def test_display_flexure_result_signature():
     sig = inspect.signature(display_flexure_result)
     params = list(sig.parameters.keys())
 
-    assert 'flexure_result' in params, \
-        "display_flexure_result should accept 'flexure_result' parameter"
+    assert (
+        "flexure_result" in params
+    ), "display_flexure_result should accept 'flexure_result' parameter"
 
 
 def test_display_shear_result_exists():
     """Test that display_shear_result function exists."""
     from components.results import display_shear_result
+
     assert callable(display_shear_result)
 
 
@@ -244,19 +265,22 @@ def test_display_shear_result_signature():
     sig = inspect.signature(display_shear_result)
     params = list(sig.parameters.keys())
 
-    assert 'shear_result' in params, \
-        "display_shear_result should accept 'shear_result' parameter"
+    assert (
+        "shear_result" in params
+    ), "display_shear_result should accept 'shear_result' parameter"
 
 
 def test_display_summary_metrics_exists():
     """Test that display_summary_metrics function exists."""
     from components.results import display_summary_metrics
+
     assert callable(display_summary_metrics)
 
 
 def test_display_design_status_exists():
     """Test that display_design_status function exists."""
     from components.results import display_design_status
+
     assert callable(display_design_status)
 
 
@@ -267,8 +291,9 @@ def test_all_results_components_importable():
             display_flexure_result,
             display_shear_result,
             display_summary_metrics,
-            display_design_status
+            display_design_status,
         )
+
         assert True
     except ImportError as e:
         pytest.fail(f"Failed to import results components: {e}")
@@ -283,18 +308,21 @@ def test_results_components_accept_dict():
         params = sig.parameters
 
         # Should accept dict (result object)
-        assert len(params) >= 1, \
-            f"{component.__name__} should accept at least one parameter"
+        assert (
+            len(params) >= 1
+        ), f"{component.__name__} should accept at least one parameter"
 
 
 # ============================================================================
 # Test Group 4: Styled Components (7 tests)
 # ============================================================================
 
+
 def test_styled_components_module_exists():
     """Test that styled_components module exists."""
     try:
         from utils import styled_components
+
         assert styled_components is not None
     except ImportError as e:
         pytest.fail(f"Failed to import styled_components: {e}")
@@ -304,6 +332,7 @@ def test_styled_metric_exists():
     """Test that styled_metric function exists."""
     try:
         from utils.styled_components import styled_metric
+
         assert callable(styled_metric)
     except (ImportError, AttributeError):
         pytest.skip("styled_metric not yet implemented")
@@ -313,6 +342,7 @@ def test_styled_card_exists():
     """Test that styled_card function exists."""
     try:
         from utils.styled_components import styled_card
+
         assert callable(styled_card)
     except (ImportError, AttributeError):
         pytest.skip("styled_card not yet implemented")
@@ -322,6 +352,7 @@ def test_styled_alert_exists():
     """Test that styled_alert function exists."""
     try:
         from utils.styled_components import styled_alert
+
         assert callable(styled_alert)
     except (ImportError, AttributeError):
         pytest.skip("styled_alert not yet implemented")
@@ -336,8 +367,9 @@ def test_styled_components_use_design_system():
         source = inspect.getsource(sc_module)
 
         # Should import from design_system
-        assert 'design_system' in source or 'COLORS' in source, \
-            "Styled components should use design system tokens"
+        assert (
+            "design_system" in source or "COLORS" in source
+        ), "Styled components should use design system tokens"
     except (ImportError, AttributeError):
         pytest.skip("styled_components module not yet fully implemented")
 
@@ -362,6 +394,7 @@ def test_layout_helper_functions_exist():
 # Test Group 5: Error Handling (Additional 5 tests for robustness)
 # ============================================================================
 
+
 def test_component_error_handling_pattern():
     """Test that components follow error handling patterns."""
     from components.visualizations import create_beam_diagram
@@ -371,10 +404,10 @@ def test_component_error_handling_pattern():
 
     # Check for error handling patterns (not strict, just awareness)
     has_error_handling = (
-        'try:' in source or
-        'except' in source or
-        'if not' in source or
-        'raise' in source
+        "try:" in source
+        or "except" in source
+        or "if not" in source
+        or "raise" in source
     )
 
     # This is a soft check - just ensuring some error handling exists
@@ -387,8 +420,16 @@ def test_component_type_hints_exist():
     from components.results import display_flexure_result
 
     # Check if functions have type hints
-    dim_hints = get_type_hints(dimension_input) if hasattr(dimension_input, '__annotations__') else {}
-    result_hints = get_type_hints(display_flexure_result) if hasattr(display_flexure_result, '__annotations__') else {}
+    dim_hints = (
+        get_type_hints(dimension_input)
+        if hasattr(dimension_input, "__annotations__")
+        else {}
+    )
+    result_hints = (
+        get_type_hints(display_flexure_result)
+        if hasattr(display_flexure_result, "__annotations__")
+        else {}
+    )
 
     # At least some type hints should exist
     assert isinstance(dim_hints, dict)
@@ -415,7 +456,7 @@ def test_components_dont_use_global_state():
     # Should not use st.session_state directly in component
     # (should be passed as parameter instead)
     # This is a guideline check, not strict
-    assert 'def ' in source, "Component should be a function"
+    assert "def " in source, "Component should be a function"
 
 
 def test_all_component_modules_importable():

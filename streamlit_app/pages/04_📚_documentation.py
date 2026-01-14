@@ -287,13 +287,19 @@ elif section == "🧮 Formula Calculator":
 
             # Calculate τc (simplified)
             pt = 100 * Ast / denominator if denominator > 0 else 0
-            tau_c = 0.85 * (0.8 * fck) ** 0.5 * (pt / 100) ** (1 / 3) / 1.5 if pt > 0 else 0
+            tau_c = (
+                0.85 * (0.8 * fck) ** 0.5 * (pt / 100) ** (1 / 3) / 1.5 if pt > 0 else 0
+            )
 
             # Calculate required Asv/sv
             if tau_v > tau_c:
                 Vus = (tau_v - tau_c) * b * d / 1000
                 Asv = stirrup_legs * 3.14159 * (stirrup_dia / 2) ** 2
-                sv_req = (0.87 * fy_stirrup * Asv * d) / (Vus * 1000) if Vus > 0 else math.inf
+                sv_req = (
+                    (0.87 * fy_stirrup * Asv * d) / (Vus * 1000)
+                    if Vus > 0
+                    else math.inf
+                )
             else:
                 sv_req = math.inf
 

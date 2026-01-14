@@ -16,10 +16,7 @@ Status: Stub - To be implemented in STREAMLIT-IMPL-002
 
 
 def validate_dimension(
-    value: float,
-    min_val: float,
-    max_val: float,
-    name: str
+    value: float, min_val: float, max_val: float, name: str
 ) -> tuple[bool, str]:
     """
     Validate dimension value.
@@ -81,11 +78,6 @@ def format_error_message(error_type: str, details: str) -> str:
         >>> print(msg)
         ❌ Dimension Error: Span exceeds 12m
     """
-    icons = {
-        "DIMENSION": "❌",
-        "MATERIAL": "⚠️",
-        "LOAD": "❌",
-        "DESIGN": "❌"
-    }
+    icons = {"DIMENSION": "❌", "MATERIAL": "⚠️", "LOAD": "❌", "DESIGN": "❌"}
     icon = icons.get(error_type, "❌")
     return f"{icon} {error_type.title()} Error: {details}"

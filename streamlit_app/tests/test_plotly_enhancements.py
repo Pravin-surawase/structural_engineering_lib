@@ -26,7 +26,7 @@ from utils.plotly_enhancements import (
     apply_dark_mode_theme,
     ENGINEERING_CHART_CONFIG,
     PRESENTATION_CHART_CONFIG,
-    PRINT_CHART_CONFIG
+    PRINT_CHART_CONFIG,
 )
 
 
@@ -38,9 +38,9 @@ class TestAnimationConfig:
         fig = go.Figure()
         fig_animated = add_animation_config(fig)
 
-        assert 'transition' in fig_animated.layout
+        assert "transition" in fig_animated.layout
         assert fig_animated.layout.transition.duration == 300
-        assert fig_animated.layout.transition.easing == 'cubic-in-out'
+        assert fig_animated.layout.transition.easing == "cubic-in-out"
 
     def test_add_animation_custom_duration(self):
         """Test adding animation with custom duration."""
@@ -54,9 +54,9 @@ class TestAnimationConfig:
         fig = go.Figure()
         fig_animated = add_animation_config(fig)
 
-        assert hasattr(fig_animated.layout, 'updatemenus')
+        assert hasattr(fig_animated.layout, "updatemenus")
         assert len(fig_animated.layout.updatemenus) > 0
-        assert fig_animated.layout.updatemenus[0].type == 'buttons'
+        assert fig_animated.layout.updatemenus[0].type == "buttons"
 
 
 class TestExportConfig:
@@ -67,25 +67,25 @@ class TestExportConfig:
         fig = go.Figure()
         fig_export, config = add_export_config(fig)
 
-        assert 'toImageButtonOptions' in config
-        assert config['toImageButtonOptions']['format'] == 'png'
-        assert config['toImageButtonOptions']['scale'] == 2
-        assert config['displaylogo'] is False
+        assert "toImageButtonOptions" in config
+        assert config["toImageButtonOptions"]["format"] == "png"
+        assert config["toImageButtonOptions"]["scale"] == 2
+        assert config["displaylogo"] is False
 
     def test_add_export_config_custom_filename(self):
         """Test custom filename in export."""
         fig = go.Figure()
         fig_export, config = add_export_config(fig, filename="my_chart")
 
-        assert config['toImageButtonOptions']['filename'] == "my_chart"
+        assert config["toImageButtonOptions"]["filename"] == "my_chart"
 
     def test_modebar_configuration(self):
         """Test modebar styling."""
         fig = go.Figure()
         fig_export, config = add_export_config(fig)
 
-        assert hasattr(fig_export.layout, 'modebar')
-        assert fig_export.layout.modebar.orientation == 'v'
+        assert hasattr(fig_export.layout, "modebar")
+        assert fig_export.layout.modebar.orientation == "v"
 
 
 class TestHoverTemplates:
@@ -94,8 +94,7 @@ class TestHoverTemplates:
     def test_create_basic_hover_template(self):
         """Test basic hover template."""
         template = create_rich_hover_template(
-            "Test Title",
-            {'Field1': 'value1', 'Field2': 'value2'}
+            "Test Title", {"Field1": "value1", "Field2": "value2"}
         )
 
         assert "<b>Test Title</b>" in template
@@ -106,11 +105,7 @@ class TestHoverTemplates:
     def test_hover_template_with_formatting(self):
         """Test hover template with value formatting."""
         template = create_rich_hover_template(
-            "Cost Analysis",
-            {
-                'Cost': '₹%{x:.2f}/m',
-                'Area': '%{customdata}mm²'
-            }
+            "Cost Analysis", {"Cost": "₹%{x:.2f}/m", "Area": "%{customdata}mm²"}
         )
 
         assert "₹%{x:.2f}/m" in template
@@ -119,9 +114,7 @@ class TestHoverTemplates:
     def test_hover_template_show_extra(self):
         """Test hover template with extra info."""
         template = create_rich_hover_template(
-            "Title",
-            {'Field': 'value'},
-            show_extra=True
+            "Title", {"Field": "value"}, show_extra=True
         )
 
         assert "<extra></extra>" not in template
@@ -149,10 +142,10 @@ class TestResponsiveLayout:
     def test_add_responsive_layout_aspect_ratio(self):
         """Test responsive layout with aspect ratio."""
         fig = go.Figure()
-        fig_responsive = add_responsive_layout(fig, aspect_ratio=16/9)
+        fig_responsive = add_responsive_layout(fig, aspect_ratio=16 / 9)
 
-        assert hasattr(fig_responsive.layout, 'yaxis')
-        assert fig_responsive.layout.yaxis.scaleanchor == 'x'
+        assert hasattr(fig_responsive.layout, "yaxis")
+        assert fig_responsive.layout.yaxis.scaleanchor == "x"
 
 
 class TestGridlines:
@@ -192,21 +185,19 @@ class TestAnnotations:
     def test_add_single_annotation(self):
         """Test adding single annotation."""
         fig = go.Figure()
-        annotations = [
-            {'text': 'Point A', 'x': 1, 'y': 1}
-        ]
+        annotations = [{"text": "Point A", "x": 1, "y": 1}]
         fig_ann = add_annotations_layer(fig, annotations)
 
         assert len(fig_ann.layout.annotations) == 1
-        assert fig_ann.layout.annotations[0].text == 'Point A'
+        assert fig_ann.layout.annotations[0].text == "Point A"
 
     def test_add_multiple_annotations(self):
         """Test adding multiple annotations."""
         fig = go.Figure()
         annotations = [
-            {'text': 'Point A', 'x': 1, 'y': 1},
-            {'text': 'Point B', 'x': 2, 'y': 2},
-            {'text': 'Point C', 'x': 3, 'y': 3}
+            {"text": "Point A", "x": 1, "y": 1},
+            {"text": "Point B", "x": 2, "y": 2},
+            {"text": "Point C", "x": 3, "y": 3},
         ]
         fig_ann = add_annotations_layer(fig, annotations)
 
@@ -217,20 +208,20 @@ class TestAnnotations:
         fig = go.Figure()
         annotations = [
             {
-                'text': 'Custom',
-                'x': 1,
-                'y': 1,
-                'font_size': 16,
-                'font_color': '#FF0000',
-                'showarrow': True,
-                'arrowhead': 3
+                "text": "Custom",
+                "x": 1,
+                "y": 1,
+                "font_size": 16,
+                "font_color": "#FF0000",
+                "showarrow": True,
+                "arrowhead": 3,
             }
         ]
         fig_ann = add_annotations_layer(fig, annotations)
 
         ann = fig_ann.layout.annotations[0]
         assert ann.font.size == 16
-        assert ann.font.color == '#FF0000'
+        assert ann.font.color == "#FF0000"
         assert ann.showarrow is True
         assert ann.arrowhead == 3
 
@@ -289,26 +280,26 @@ class TestPresetConfigs:
         """Test engineering chart preset."""
         config = ENGINEERING_CHART_CONFIG
 
-        assert config['displayModeBar'] is True
-        assert config['scrollZoom'] is True
-        assert config['responsive'] is True
-        assert config['toImageButtonOptions']['format'] == 'png'
-        assert config['toImageButtonOptions']['scale'] == 2
+        assert config["displayModeBar"] is True
+        assert config["scrollZoom"] is True
+        assert config["responsive"] is True
+        assert config["toImageButtonOptions"]["format"] == "png"
+        assert config["toImageButtonOptions"]["scale"] == 2
 
     def test_presentation_chart_config(self):
         """Test presentation chart preset."""
         config = PRESENTATION_CHART_CONFIG
 
-        assert config['displayModeBar'] is False
-        assert config['staticPlot'] is False
-        assert config['responsive'] is True
+        assert config["displayModeBar"] is False
+        assert config["staticPlot"] is False
+        assert config["responsive"] is True
 
     def test_print_chart_config(self):
         """Test print chart preset."""
         config = PRINT_CHART_CONFIG
 
-        assert config['toImageButtonOptions']['format'] == 'svg'
-        assert config['staticPlot'] is True
+        assert config["toImageButtonOptions"]["format"] == "svg"
+        assert config["staticPlot"] is True
 
 
 class TestIntegration:
@@ -318,11 +309,7 @@ class TestIntegration:
         """Test applying multiple enhancements together."""
         # Create base figure
         fig = go.Figure()
-        fig.add_trace(go.Scatter(
-            x=[1, 2, 3],
-            y=[1, 4, 2],
-            mode='lines+markers'
-        ))
+        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[1, 4, 2], mode="lines+markers"))
 
         # Apply enhancements
         fig = add_gridlines(fig)
@@ -334,14 +321,14 @@ class TestIntegration:
         assert fig.layout.height == 500
         assert fig.layout.transition.duration == 400
         assert fig.layout.xaxis.showgrid is True
-        assert config['toImageButtonOptions']['filename'] == "test_chart"
+        assert config["toImageButtonOptions"]["filename"] == "test_chart"
 
     def test_dark_mode_with_annotations(self):
         """Test dark mode with annotations."""
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=[1, 2], y=[1, 2]))
 
-        annotations = [{'text': 'Test', 'x': 1, 'y': 1}]
+        annotations = [{"text": "Test", "x": 1, "y": 1}]
         fig = add_annotations_layer(fig, annotations)
         fig = apply_dark_mode_theme(fig)
 

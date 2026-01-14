@@ -32,7 +32,7 @@ def render_real_time_preview(
     mu_knm: float,
     vu_kn: float,
     exposure: str,
-    support_condition: str
+    support_condition: str,
 ) -> None:
     """
     Render the complete real-time preview panel.
@@ -55,21 +55,14 @@ def render_real_time_preview(
     # Section 1: Beam Diagram
     st.subheader("🏗️ Beam Elevation")
     fig = create_beam_preview_diagram(
-        span_mm=span_mm,
-        b_mm=b_mm,
-        D_mm=D_mm,
-        support_condition=support_condition
+        span_mm=span_mm, b_mm=b_mm, D_mm=D_mm, support_condition=support_condition
     )
     st.plotly_chart(fig, width="stretch", key="preview_beam_diagram")
 
     # Section 2: Quick Checks
     st.subheader("✅ Design Checks")
     checks = calculate_quick_checks(
-        span_mm=span_mm,
-        d_mm=d_mm,
-        b_mm=b_mm,
-        D_mm=D_mm,
-        exposure=exposure
+        span_mm=span_mm, d_mm=d_mm, b_mm=b_mm, D_mm=D_mm, exposure=exposure
     )
     render_status_dashboard(checks)
 
@@ -80,16 +73,13 @@ def render_real_time_preview(
         D_mm=D_mm,
         span_mm=span_mm,
         concrete_grade=concrete_grade,
-        mu_knm=mu_knm
+        mu_knm=mu_knm,
     )
     render_cost_summary(cost)
 
 
 def create_beam_preview_diagram(
-    span_mm: float,
-    b_mm: float,
-    D_mm: float,
-    support_condition: str
+    span_mm: float, b_mm: float, D_mm: float, support_condition: str
 ) -> go.Figure:
     """
     Create a simple beam elevation diagram with supports.
@@ -115,18 +105,21 @@ def create_beam_preview_diagram(
     # Draw beam (gray rectangle)
     fig.add_shape(
         type="rect",
-        x0=beam_left, y0=beam_bottom,
-        x1=beam_right, y1=beam_top,
+        x0=beam_left,
+        y0=beam_bottom,
+        x1=beam_right,
+        y1=beam_top,
         fillcolor="rgba(200, 200, 200, 0.5)",
-        line=dict(color=COLORS.primary_500, width=2)
+        line=dict(color=COLORS.primary_500, width=2),
     )
 
     # Beam label
     fig.add_annotation(
-        x=50, y=50,
+        x=50,
+        y=50,
         text=f"{span_mm/1000:.1f}m × {b_mm}×{D_mm}mm",
         showarrow=False,
-        font=dict(size=12, color=COLORS.gray_700)
+        font=dict(size=12, color=COLORS.gray_700),
     )
 
     # Support symbols based on condition
@@ -154,10 +147,10 @@ def create_beam_preview_diagram(
         yaxis=dict(visible=False, range=[0, 100], scaleanchor="x"),
         margin=dict(l=10, r=10, t=10, b=10),
         height=200,
-        paper_bgcolor='white',
-        plot_bgcolor='white',
+        paper_bgcolor="white",
+        plot_bgcolor="white",
         # Use integer duration for Plotly (CRITICAL!)
-        transition=dict(duration=ANIMATION.duration_normal_ms, easing='cubic-in-out')
+        transition=dict(duration=ANIMATION.duration_normal_ms, easing="cubic-in-out"),
     )
 
     return fig
@@ -166,40 +159,46 @@ def create_beam_preview_diagram(
 def _add_triangle_support(fig: go.Figure, x: float, y: float) -> None:
     """Add triangular (pinned) support symbol."""
     size = 5
-    fig.add_trace(go.Scatter(
-        x=[x - size, x, x + size, x - size],
-        y=[y - size, y, y - size, y - size],
-        fill="toself",
-        fillcolor=COLORS.gray_400,
-        line=dict(color=COLORS.gray_600, width=1),
-        mode="lines",
-        hoverinfo="skip",
-        showlegend=False
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=[x - size, x, x + size, x - size],
+            y=[y - size, y, y - size, y - size],
+            fill="toself",
+            fillcolor=COLORS.gray_400,
+            line=dict(color=COLORS.gray_600, width=1),
+            mode="lines",
+            hoverinfo="skip",
+            showlegend=False,
+        )
+    )
 
 
 def _add_roller_support(fig: go.Figure, x: float, y: float) -> None:
     """Add roller support symbol (triangle + circle)."""
     size = 5
     # Triangle
-    fig.add_trace(go.Scatter(
-        x=[x - size, x, x + size, x - size],
-        y=[y - size - 3, y - 3, y - size - 3, y - size - 3],
-        fill="toself",
-        fillcolor=COLORS.gray_400,
-        line=dict(color=COLORS.gray_600, width=1),
-        mode="lines",
-        hoverinfo="skip",
-        showlegend=False
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=[x - size, x, x + size, x - size],
+            y=[y - size - 3, y - 3, y - size - 3, y - size - 3],
+            fill="toself",
+            fillcolor=COLORS.gray_400,
+            line=dict(color=COLORS.gray_600, width=1),
+            mode="lines",
+            hoverinfo="skip",
+            showlegend=False,
+        )
+    )
     # Circles (rollers)
     for dx in [-3, 0, 3]:
         fig.add_shape(
             type="circle",
-            x0=x + dx - 1.5, y0=y - size - 5,
-            x1=x + dx + 1.5, y1=y - size - 2,
+            x0=x + dx - 1.5,
+            y0=y - size - 5,
+            x1=x + dx + 1.5,
+            y1=y - size - 2,
             fillcolor=COLORS.gray_300,
-            line=dict(color=COLORS.gray_500, width=1)
+            line=dict(color=COLORS.gray_500, width=1),
         )
 
 
@@ -215,28 +214,28 @@ def _add_fixed_support(fig: go.Figure, x: float, y_bottom: float, y_top: float) 
 
     fig.add_shape(
         type="rect",
-        x0=x0, y0=y_bottom,
-        x1=x1, y1=y_top,
+        x0=x0,
+        y0=y_bottom,
+        x1=x1,
+        y1=y_top,
         fillcolor="rgba(100, 100, 100, 0.3)",
-        line=dict(color=COLORS.gray_600, width=2)
+        line=dict(color=COLORS.gray_600, width=2),
     )
     # Hatching lines
     for i in range(5):
         y = y_bottom + i * (y_top - y_bottom) / 4
         fig.add_shape(
             type="line",
-            x0=x0, y0=y,
-            x1=x1, y1=y + 3,
-            line=dict(color=COLORS.gray_600, width=1)
+            x0=x0,
+            y0=y,
+            x1=x1,
+            y1=y + 3,
+            line=dict(color=COLORS.gray_600, width=1),
         )
 
 
 def calculate_quick_checks(
-    span_mm: float,
-    d_mm: float,
-    b_mm: float,
-    D_mm: float,
-    exposure: str
+    span_mm: float, d_mm: float, b_mm: float, D_mm: float, exposure: str
 ) -> List[Dict]:
     """
     Calculate quick design checks for status dashboard.
@@ -251,7 +250,7 @@ def calculate_quick_checks(
     checks = []
 
     # Check 1: Span/d ratio (IS 456 Cl. 23.2.1)
-    span_d = span_mm / d_mm if d_mm > 0 else float('inf')
+    span_d = span_mm / d_mm if d_mm > 0 else float("inf")
     span_d_limit = 20  # Simply supported basic limit
     if span_d <= span_d_limit:
         status = "pass"
@@ -263,18 +262,20 @@ def calculate_quick_checks(
         status = "fail"
         message = f"Exceeds ({span_d:.1f} >> {span_d_limit})"
 
-    checks.append({
-        "name": "Span/d Ratio",
-        "status": status,
-        "value": round(span_d, 1),
-        "limit": span_d_limit,
-        "message": message,
-        "clause": "IS 456 Cl. 23.2.1"
-    })
+    checks.append(
+        {
+            "name": "Span/d Ratio",
+            "status": status,
+            "value": round(span_d, 1),
+            "limit": span_d_limit,
+            "message": message,
+            "clause": "IS 456 Cl. 23.2.1",
+        }
+    )
 
     # Check 2: Cover adequacy
     cover_required = _get_min_cover(exposure)
-    cover_available = (D_mm - d_mm)  # Approximate from effective depth
+    cover_available = D_mm - d_mm  # Approximate from effective depth
     if cover_available >= cover_required:
         status = "pass"
         message = f"OK ({cover_available:.0f}mm ≥ {cover_required}mm)"
@@ -285,14 +286,16 @@ def calculate_quick_checks(
         status = "fail"
         message = f"Insufficient ({cover_available:.0f}mm < {cover_required}mm)"
 
-    checks.append({
-        "name": "Cover",
-        "status": status,
-        "value": round(cover_available, 0),
-        "limit": cover_required,
-        "message": message,
-        "clause": "IS 456 Cl. 26.4"
-    })
+    checks.append(
+        {
+            "name": "Cover",
+            "status": status,
+            "value": round(cover_available, 0),
+            "limit": cover_required,
+            "message": message,
+            "clause": "IS 456 Cl. 26.4",
+        }
+    )
 
     # Check 3: b/D ratio (reasonable proportions)
     b_D = b_mm / D_mm if D_mm > 0 else 0
@@ -306,14 +309,16 @@ def calculate_quick_checks(
         status = "fail"
         message = f"Check proportions ({b_D:.2f})"
 
-    checks.append({
-        "name": "b/D Ratio",
-        "status": status,
-        "value": round(b_D, 2),
-        "limit": "0.3-0.67",
-        "message": message,
-        "clause": "Practice"
-    })
+    checks.append(
+        {
+            "name": "b/D Ratio",
+            "status": status,
+            "value": round(b_D, 2),
+            "limit": "0.3-0.67",
+            "message": message,
+            "clause": "Practice",
+        }
+    )
 
     # Check 4: d < D
     if d_mm < D_mm:
@@ -323,14 +328,16 @@ def calculate_quick_checks(
         status = "fail"
         message = f"d ({d_mm}) must be < D ({D_mm})"
 
-    checks.append({
-        "name": "d < D",
-        "status": status,
-        "value": d_mm,
-        "limit": D_mm,
-        "message": message,
-        "clause": "Basic"
-    })
+    checks.append(
+        {
+            "name": "d < D",
+            "status": status,
+            "value": d_mm,
+            "limit": D_mm,
+            "message": message,
+            "clause": "Basic",
+        }
+    )
 
     return checks
 
@@ -342,7 +349,7 @@ def _get_min_cover(exposure: str) -> int:
         "Moderate": 30,
         "Severe": 45,
         "Very Severe": 50,
-        "Extreme": 75
+        "Extreme": 75,
     }
     return cover_map.get(exposure, 30)
 
@@ -371,7 +378,8 @@ def render_status_dashboard(checks: List[Dict]) -> None:
                 color = COLORS.error
 
             # Render metric-like display
-            st.markdown(f"""
+            st.markdown(
+                f"""
             <div style="
                 padding: 8px;
                 border-radius: 8px;
@@ -387,15 +395,13 @@ def render_status_dashboard(checks: List[Dict]) -> None:
                     {check['message']}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """,
+                unsafe_allow_html=True,
+            )
 
 
 def calculate_rough_cost(
-    b_mm: float,
-    D_mm: float,
-    span_mm: float,
-    concrete_grade: str,
-    mu_knm: float
+    b_mm: float, D_mm: float, span_mm: float, concrete_grade: str, mu_knm: float
 ) -> Dict:
     """
     Calculate rough cost estimate for beam.
@@ -416,13 +422,7 @@ def calculate_rough_cost(
     volume_m3 = b_m * D_m * span_m
 
     # Concrete rate (₹/m³) - approximate
-    concrete_rates = {
-        "M20": 5500,
-        "M25": 6000,
-        "M30": 6500,
-        "M35": 7500,
-        "M40": 8500
-    }
+    concrete_rates = {"M20": 5500, "M25": 6000, "M30": 6500, "M35": 7500, "M40": 8500}
     concrete_rate = concrete_rates.get(concrete_grade, 6000)
     concrete_cost = volume_m3 * concrete_rate
 
@@ -448,7 +448,7 @@ def calculate_rough_cost(
         "steel_kg": round(steel_kg, 1),
         "steel_rate": steel_rate,
         "steel_cost": round(steel_cost, 0),
-        "total_cost": round(total_cost, 0)
+        "total_cost": round(total_cost, 0),
     }
 
 
@@ -465,21 +465,21 @@ def render_cost_summary(cost: Dict) -> None:
         st.metric(
             label="Concrete",
             value=f"₹{cost['concrete_cost']:,.0f}",
-            help=f"{cost['concrete_m3']} m³ @ ₹{cost['concrete_rate']}/m³"
+            help=f"{cost['concrete_m3']} m³ @ ₹{cost['concrete_rate']}/m³",
         )
 
     with col2:
         st.metric(
             label="Steel (est.)",
             value=f"₹{cost['steel_cost']:,.0f}",
-            help=f"~{cost['steel_kg']:.0f} kg @ ₹{cost['steel_rate']}/kg"
+            help=f"~{cost['steel_kg']:.0f} kg @ ₹{cost['steel_rate']}/kg",
         )
 
     with col3:
         st.metric(
             label="Total (approx.)",
             value=f"₹{cost['total_cost']:,.0f}",
-            help="Preliminary estimate only"
+            help="Preliminary estimate only",
         )
 
     st.caption("⚠️ Estimates are approximate. Actual costs depend on detailed design.")
@@ -495,5 +495,5 @@ __all__ = [
     "calculate_quick_checks",
     "render_status_dashboard",
     "calculate_rough_cost",
-    "render_cost_summary"
+    "render_cost_summary",
 ]

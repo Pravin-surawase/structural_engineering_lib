@@ -51,8 +51,7 @@ class TestPlotlyAnimationTokens:
         # This should NOT raise ValueError
         fig.update_layout(
             transition=dict(
-                duration=ANIMATION.duration_normal_ms,
-                easing='cubic-in-out'
+                duration=ANIMATION.duration_normal_ms, easing="cubic-in-out"
             )
         )
 
@@ -61,13 +60,13 @@ class TestPlotlyAnimationTokens:
 
     def test_all_duration_ms_work_with_plotly(self):
         """All _ms duration tokens must work with Plotly."""
-        for duration_name in ['instant', 'fast', 'normal', 'slow']:
+        for duration_name in ["instant", "fast", "normal", "slow"]:
             fig = go.Figure()
-            duration_value = getattr(ANIMATION, f'duration_{duration_name}_ms')
+            duration_value = getattr(ANIMATION, f"duration_{duration_name}_ms")
 
             # Should not raise
             fig.update_layout(
-                transition=dict(duration=duration_value, easing='cubic-in-out')
+                transition=dict(duration=duration_value, easing="cubic-in-out")
             )
 
             assert fig.layout.transition.duration == duration_value
@@ -90,7 +89,7 @@ class TestPlotlyColorTokens:
 
         for color in colors_to_test:
             assert isinstance(color, str)
-            assert color.startswith('#')
+            assert color.startswith("#")
             assert len(color) in [4, 7]  # #RGB or #RRGGBB
 
     def test_plotly_accepts_color_tokens(self):
@@ -98,12 +97,14 @@ class TestPlotlyColorTokens:
         fig = go.Figure()
 
         # Should not raise
-        fig.add_trace(go.Scatter(
-            x=[1, 2, 3],
-            y=[1, 2, 3],
-            marker=dict(color=COLORS.primary_500),
-            line=dict(color=COLORS.accent_500)
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[1, 2, 3],
+                y=[1, 2, 3],
+                marker=dict(color=COLORS.primary_500),
+                line=dict(color=COLORS.accent_500),
+            )
+        )
 
         assert fig.data[0].marker.color == COLORS.primary_500
 
@@ -114,11 +115,7 @@ class TestPlotlyColorTokens:
         # Some tokens use rgba format
         rgba_color = "rgba(0, 51, 102, 0.1)"
 
-        fig.add_trace(go.Bar(
-            x=[1, 2, 3],
-            y=[4, 5, 6],
-            marker=dict(color=rgba_color)
-        ))
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[4, 5, 6], marker=dict(color=rgba_color)))
 
         assert fig.data[0].marker.color == rgba_color
 
@@ -139,7 +136,7 @@ class TestPlotlyVisualizationUsage:
             rebar_positions=[(50, 50), (250, 50)],
             xu=200,
             bar_dia=16,
-            cover=30
+            cover=30,
         )
 
         # Verify it's a valid figure (proves no type error occurred)
@@ -156,8 +153,12 @@ class TestPlotlyVisualizationUsage:
         # This should complete without ValueError about string types
         try:
             fig = create_beam_diagram(
-                b_mm=300, D_mm=600, d_mm=550,
-                rebar_positions=[(50, 50)], xu=200, bar_dia=16
+                b_mm=300,
+                D_mm=600,
+                d_mm=550,
+                rebar_positions=[(50, 50)],
+                xu=200,
+                bar_dia=16,
             )
             # If we got here, no type error occurred
             assert isinstance(fig, go.Figure)
@@ -201,15 +202,15 @@ class TestPlotlyThemeIntegration:
         config = get_chart_config(interactive=True)
 
         assert isinstance(config, dict)
-        assert 'displayModeBar' in config
-        assert 'toImageButtonOptions' in config
+        assert "displayModeBar" in config
+        assert "toImageButtonOptions" in config
 
     def test_chart_config_static(self):
         """get_chart_config must support static mode."""
         config = get_chart_config(interactive=False)
 
-        assert config['displayModeBar'] is False
-        assert config.get('staticPlot') is True
+        assert config["displayModeBar"] is False
+        assert config.get("staticPlot") is True
 
 
 class TestTokenContractCompliance:
@@ -224,18 +225,18 @@ class TestTokenContractCompliance:
 
         # Check for problematic patterns
         problematic_patterns = [
-            'ANIMATION.duration_normal)',  # Missing _ms suffix
-            'ANIMATION.duration_fast)',
-            'ANIMATION.instant)',
-            'ANIMATION.fast)',
-            'ANIMATION.normal)',
-            'ANIMATION.slow)',
+            "ANIMATION.duration_normal)",  # Missing _ms suffix
+            "ANIMATION.duration_fast)",
+            "ANIMATION.instant)",
+            "ANIMATION.fast)",
+            "ANIMATION.normal)",
+            "ANIMATION.slow)",
         ]
 
         for pattern in problematic_patterns:
             if pattern in source:
                 # Check if it's being used with update_layout
-                if 'update_layout' in source:
+                if "update_layout" in source:
                     # This is just a warning check - real validation in pre-commit
                     pass
 
@@ -247,15 +248,15 @@ class TestTokenContractCompliance:
         assert isinstance(ANIMATION.duration_slow, str)
 
         # Verify format
-        assert ANIMATION.duration_normal.endswith('ms')
+        assert ANIMATION.duration_normal.endswith("ms")
 
     def test_backwards_compatibility(self):
         """Old CSS token names must still work."""
         # These should exist and be strings
-        assert hasattr(ANIMATION, 'instant')
-        assert hasattr(ANIMATION, 'fast')
-        assert hasattr(ANIMATION, 'normal')
-        assert hasattr(ANIMATION, 'slow')
+        assert hasattr(ANIMATION, "instant")
+        assert hasattr(ANIMATION, "fast")
+        assert hasattr(ANIMATION, "normal")
+        assert hasattr(ANIMATION, "slow")
 
         assert isinstance(ANIMATION.instant, str)
 
@@ -277,9 +278,7 @@ class TestEdgeCases:
 
         # This is the original bug - verify it fails
         with pytest.raises(ValueError, match="Invalid value of type"):
-            fig.update_layout(
-                transition=dict(duration="300ms", easing='cubic-in-out')
-            )
+            fig.update_layout(transition=dict(duration="300ms", easing="cubic-in-out"))
 
     def test_invalid_color_format(self):
         """Plotly should handle invalid colors gracefully."""
@@ -287,10 +286,9 @@ class TestEdgeCases:
 
         # Invalid hex should fail
         with pytest.raises((ValueError, KeyError)):
-            fig.add_trace(go.Scatter(
-                x=[1, 2], y=[1, 2],
-                marker=dict(color='not-a-color')
-            ))
+            fig.add_trace(
+                go.Scatter(x=[1, 2], y=[1, 2], marker=dict(color="not-a-color"))
+            )
 
 
 class TestPreventRegression:
@@ -309,8 +307,7 @@ class TestPreventRegression:
         # This used to raise ValueError: Invalid value of type 'str'
         # Now should work fine
         fig = create_beam_diagram(
-            b_mm=300, D_mm=600, d_mm=550,
-            rebar_positions=[(50, 50)], xu=200, bar_dia=16
+            b_mm=300, D_mm=600, d_mm=550, rebar_positions=[(50, 50)], xu=200, bar_dia=16
         )
 
         # Verify it's a valid figure (proves no type error)
@@ -328,8 +325,12 @@ class TestPreventRegression:
         # Should not raise type error
         try:
             fig = create_beam_diagram(
-                b_mm=300, D_mm=600, d_mm=550,
-                rebar_positions=[(50, 50)], xu=200, bar_dia=16
+                b_mm=300,
+                D_mm=600,
+                d_mm=550,
+                rebar_positions=[(50, 50)],
+                xu=200,
+                bar_dia=16,
             )
             assert isinstance(fig, go.Figure)
         except ValueError as e:

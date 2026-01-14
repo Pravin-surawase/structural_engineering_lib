@@ -100,7 +100,7 @@ class TestBeamInputsValidation:
     def test_nan_values(self):
         """Test validation fails for NaN values."""
         inputs = {
-            "mu_knm": float('nan'),
+            "mu_knm": float("nan"),
             "vu_kn": 80.0,
             "b_mm": 300.0,
             "D_mm": 500.0,
@@ -148,7 +148,7 @@ class TestDesignResultValidation:
                     "_bar_alternatives": [
                         {"num": 4, "dia": 16, "area": 804.0},
                         {"num": 2, "dia": 25, "area": 982.0},
-                    ]
+                    ],
                 }
             }
         }
@@ -159,9 +159,7 @@ class TestDesignResultValidation:
 
     def test_missing_design_key(self):
         """Test validation fails when design key missing."""
-        result = {
-            "flexure": {}  # No 'design' wrapper
-        }
+        result = {"flexure": {}}  # No 'design' wrapper
 
         validation = validate_design_result(result)
         assert not validation.is_valid
@@ -185,7 +183,7 @@ class TestDesignResultValidation:
             "design": {
                 "flexure": {
                     "tension_steel": {"num": 3, "dia": 20, "area": 942.0},
-                    "_bar_alternatives": []  # Empty!
+                    "_bar_alternatives": [],  # Empty!
                 }
             }
         }
@@ -218,17 +216,17 @@ class TestSafeDivide:
 
     def test_zero_denominator_nan_default(self):
         """Test zero denominator can return NaN."""
-        result = safe_divide(10, 0, default=float('nan'))
+        result = safe_divide(10, 0, default=float("nan"))
         assert math.isnan(result)
 
     def test_nan_denominator(self):
         """Test NaN denominator returns default."""
-        result = safe_divide(10, float('nan'), default=0.0)
+        result = safe_divide(10, float("nan"), default=0.0)
         assert result == 0.0
 
     def test_inf_denominator(self):
         """Test Inf denominator returns default."""
-        result = safe_divide(10, float('inf'), default=0.0)
+        result = safe_divide(10, float("inf"), default=0.0)
         assert result == 0.0
 
     def test_result_is_nan(self):
@@ -255,11 +253,11 @@ class TestSafeFormatCurrency:
 
     def test_nan(self):
         """Test NaN returns N/A."""
-        assert safe_format_currency(float('nan')) == "N/A"
+        assert safe_format_currency(float("nan")) == "N/A"
 
     def test_inf(self):
         """Test Inf returns N/A."""
-        assert safe_format_currency(float('inf')) == "N/A"
+        assert safe_format_currency(float("inf")) == "N/A"
 
     def test_string(self):
         """Test string returns Invalid."""
@@ -287,11 +285,11 @@ class TestSafeFormatPercent:
 
     def test_nan(self):
         """Test NaN returns N/A."""
-        assert safe_format_percent(float('nan')) == "N/A"
+        assert safe_format_percent(float("nan")) == "N/A"
 
     def test_inf(self):
         """Test Inf returns N/A."""
-        assert safe_format_percent(float('inf')) == "N/A"
+        assert safe_format_percent(float("inf")) == "N/A"
 
     def test_string(self):
         """Test string returns Invalid."""

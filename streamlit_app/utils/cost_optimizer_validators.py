@@ -11,6 +11,7 @@ import math
 
 class BeamInputs(TypedDict):
     """Type-safe beam design inputs."""
+
     mu_knm: float
     vu_kn: float
     b_mm: float
@@ -23,12 +24,14 @@ class BeamInputs(TypedDict):
 
 class ValidationError(Exception):
     """Raised when validation fails."""
+
     pass
 
 
 @dataclass
 class ValidationResult:
     """Result of validation check."""
+
     is_valid: bool
     errors: list[str]
 
@@ -55,7 +58,16 @@ def validate_beam_inputs(inputs: dict) -> ValidationResult:
     errors = []
 
     # Required keys
-    required = ["mu_knm", "vu_kn", "b_mm", "D_mm", "d_mm", "span_mm", "fck_nmm2", "fy_nmm2"]
+    required = [
+        "mu_knm",
+        "vu_kn",
+        "b_mm",
+        "D_mm",
+        "d_mm",
+        "span_mm",
+        "fck_nmm2",
+        "fy_nmm2",
+    ]
     for key in required:
         if key not in inputs:
             errors.append(f"Missing required parameter: {key}")
@@ -107,7 +119,9 @@ def validate_beam_inputs(inputs: dict) -> ValidationResult:
     if d_mm < 100:
         errors.append(f"Effective depth {d_mm} mm is too small (minimum 100 mm)")
     if d_mm >= D_mm:
-        errors.append(f"Effective depth {d_mm} mm must be less than total depth {D_mm} mm")
+        errors.append(
+            f"Effective depth {d_mm} mm must be less than total depth {D_mm} mm"
+        )
 
     cover = D_mm - d_mm
     if cover < 20:
@@ -128,14 +142,20 @@ def validate_beam_inputs(inputs: dict) -> ValidationResult:
         errors.append(f"Span/depth ratio {span_to_depth:.1f} is too large (maximum 30)")
 
     if fck_nmm2 < 20:
-        errors.append(f"Concrete strength {fck_nmm2} N/mm² is below IS 456 minimum (M20)")
+        errors.append(
+            f"Concrete strength {fck_nmm2} N/mm² is below IS 456 minimum (M20)"
+        )
     if fck_nmm2 > 100:
         errors.append(f"Concrete strength {fck_nmm2} N/mm² is too high (maximum 100)")
 
     if fy_nmm2 < 250:
-        errors.append(f"Steel yield strength {fy_nmm2} N/mm² is below IS 456 minimum (Fe250)")
+        errors.append(
+            f"Steel yield strength {fy_nmm2} N/mm² is below IS 456 minimum (Fe250)"
+        )
     if fy_nmm2 > 600:
-        errors.append(f"Steel yield strength {fy_nmm2} N/mm² is above IS 456 maximum (Fe600)")
+        errors.append(
+            f"Steel yield strength {fy_nmm2} N/mm² is above IS 456 maximum (Fe600)"
+        )
 
     return ValidationResult(len(errors) == 0, errors)
 

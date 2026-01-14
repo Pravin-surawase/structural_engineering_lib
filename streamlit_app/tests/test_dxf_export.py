@@ -17,8 +17,10 @@ import io
 
 class MockContext:
     """Mock context manager for Streamlit."""
+
     def __enter__(self):
         return self
+
     def __exit__(self, *args):
         pass
 
@@ -49,7 +51,7 @@ def sample_beam_design():
             "num_bars": 4,
             "stirrup_diameter_mm": 8,
             "stirrup_spacing_mm": 150,
-        }
+        },
     }
 
 
@@ -133,6 +135,7 @@ EOF
 # Session State Tests
 # =============================================================================
 
+
 class TestSessionStateInitialization:
     """Test session state initialization."""
 
@@ -173,6 +176,7 @@ class TestSessionStateInitialization:
 # Detailing Creation Tests
 # =============================================================================
 
+
 class TestDetailingCreation:
     """Test detailing creation from beam design."""
 
@@ -207,6 +211,7 @@ class TestDetailingCreation:
 # =============================================================================
 # DXF Generation Tests
 # =============================================================================
+
 
 class TestDXFGeneration:
     """Test DXF file generation."""
@@ -243,6 +248,7 @@ class TestDXFGeneration:
 # Preview Generation Tests
 # =============================================================================
 
+
 class TestPreviewGeneration:
     """Test ASCII preview generation."""
 
@@ -275,6 +281,7 @@ class TestPreviewGeneration:
 # =============================================================================
 # Export Options Tests
 # =============================================================================
+
 
 class TestExportOptions:
     """Test export options handling."""
@@ -318,6 +325,7 @@ class TestExportOptions:
 # UI Component Tests
 # =============================================================================
 
+
 class TestUIComponents:
     """Test UI component rendering."""
 
@@ -327,7 +335,7 @@ class TestUIComponents:
             "size_kb": len(sample_dxf_bytes) / 1024,
             "format": "DXF R2010",
             "layers": 8,
-            "units": "Millimeters"
+            "units": "Millimeters",
         }
 
         assert file_info["size_kb"] > 0
@@ -348,7 +356,7 @@ class TestUIComponents:
         params = {
             "data": sample_dxf_bytes,
             "file_name": "B1_detail.dxf",
-            "mime": "application/dxf"
+            "mime": "application/dxf",
         }
 
         assert params["mime"] == "application/dxf"
@@ -359,6 +367,7 @@ class TestUIComponents:
 # =============================================================================
 # Layer Information Tests
 # =============================================================================
+
 
 class TestLayerInformation:
     """Test DXF layer information."""
@@ -389,6 +398,7 @@ class TestLayerInformation:
 # Integration Tests
 # =============================================================================
 
+
 class TestDXFIntegration:
     """Integration tests for DXF page."""
 
@@ -396,7 +406,9 @@ class TestDXFIntegration:
         """Test complete generation workflow."""
         # Setup session state
         mock_streamlit.session_state["beam_inputs"] = sample_beam_design["inputs"]
-        mock_streamlit.session_state["beam_inputs"]["design_result"] = sample_beam_design["result"]
+        mock_streamlit.session_state["beam_inputs"]["design_result"] = (
+            sample_beam_design["result"]
+        )
 
         # Check beam design is available
         if "beam_inputs" in mock_streamlit.session_state:
@@ -413,13 +425,15 @@ class TestDXFIntegration:
         beam_data = mock_streamlit.session_state.get("beam_inputs")
         assert beam_data is None
 
-    def test_generated_dxf_stored_in_session(self, mock_streamlit, sample_dxf_bytes, mock_detailing):
+    def test_generated_dxf_stored_in_session(
+        self, mock_streamlit, sample_dxf_bytes, mock_detailing
+    ):
         """Test that generated DXF is stored in session."""
         mock_streamlit.session_state["dxf_inputs"] = {
             "generated_dxf": {
                 "bytes": sample_dxf_bytes,
                 "detailing": mock_detailing,
-                "timestamp": "B1"
+                "timestamp": "B1",
             }
         }
 
@@ -433,6 +447,7 @@ class TestDXFIntegration:
 # =============================================================================
 # Error Handling Tests
 # =============================================================================
+
 
 class TestErrorHandling:
     """Test error handling scenarios."""

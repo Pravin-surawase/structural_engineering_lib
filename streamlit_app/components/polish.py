@@ -53,7 +53,7 @@ def show_empty_state(
     message: str,
     icon: str = "📭",
     action_label: Optional[str] = None,
-    action_key: Optional[str] = None
+    action_key: Optional[str] = None,
 ) -> bool:
     """
     Display a friendly empty state with icon, title, message, and optional action.
@@ -136,7 +136,7 @@ def show_empty_state(
 def show_toast(
     message: str,
     type: Literal["info", "success", "warning", "error"] = "info",
-    duration: int = 3000
+    duration: int = 3000,
 ) -> None:
     """
     Display a toast notification with auto-dismiss.
@@ -154,15 +154,10 @@ def show_toast(
         "info": "#3498db",
         "success": "#27ae60",
         "warning": "#f39c12",
-        "error": "#e74c3c"
+        "error": "#e74c3c",
     }
 
-    icons = {
-        "info": "ℹ️",
-        "success": "✅",
-        "warning": "⚠️",
-        "error": "❌"
-    }
+    icons = {"info": "ℹ️", "success": "✅", "warning": "⚠️", "error": "❌"}
 
     color = colors.get(type, colors["info"])
     icon = icons.get(type, icons["info"])
@@ -241,7 +236,7 @@ def show_progress(
     total: int,
     label: str = "",
     show_percentage: bool = True,
-    color: str = "#3498db"
+    color: str = "#3498db",
 ) -> None:
     """
     Display a custom progress bar with label and percentage.
@@ -321,7 +316,7 @@ def show_progress(
 def apply_hover_effect(
     element_selector: str = ".stButton button",
     hover_color: str = "#2980b9",
-    transition_duration: str = "0.2s"
+    transition_duration: str = "0.2s",
 ) -> None:
     """
     Apply hover effects to specified elements using CSS.
@@ -355,7 +350,9 @@ def apply_hover_effect(
     st.markdown(hover_css, unsafe_allow_html=True)
 
 
-def apply_smooth_transitions(duration: str = "0.3s", easing: str = "ease-in-out") -> None:
+def apply_smooth_transitions(
+    duration: str = "0.3s", easing: str = "ease-in-out"
+) -> None:
     """
     Apply smooth transitions to all interactive elements globally.
 

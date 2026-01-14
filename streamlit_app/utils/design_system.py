@@ -159,13 +159,13 @@ class TypographyScale:
     heading_xl: str = "28px"  # Same as h2_size
     heading_lg: str = "24px"  # Same as h3_size
     heading_sm: str = "20px"  # Same as h4_size
-    body_lg: str = "18px"     # Same as body_lg_size
-    body_md: str = "16px"     # Same as body_size
-    body_sm: str = "14px"     # Same as body_sm_size
-    text_xs: str = "12px"     # Same as caption_size
-    text_sm: str = "14px"     # Same as body_sm_size
-    text_base: str = "16px"   # Same as body_size
-    text_lg: str = "18px"     # Same as body_lg_size
+    body_lg: str = "18px"  # Same as body_lg_size
+    body_md: str = "16px"  # Same as body_size
+    body_sm: str = "14px"  # Same as body_sm_size
+    text_xs: str = "12px"  # Same as caption_size
+    text_sm: str = "14px"  # Same as body_sm_size
+    text_base: str = "16px"  # Same as body_size
+    text_lg: str = "18px"  # Same as body_lg_size
 
 
 TYPOGRAPHY = TypographyScale()
@@ -193,12 +193,12 @@ class SpacingScale:
     space_10: str = "80px"
 
     # Semantic T-shirt sizes (rem-based for responsive design)
-    xs: str = "0.5rem"   # 8px
+    xs: str = "0.5rem"  # 8px
     sm: str = "0.75rem"  # 12px
-    md: str = "1rem"     # 16px
-    lg: str = "1.5rem"   # 24px
-    xl: str = "2rem"     # 32px
-    xxl: str = "3rem"    # 48px
+    md: str = "1rem"  # 16px
+    lg: str = "1.5rem"  # 24px
+    xl: str = "2rem"  # 32px
+    xxl: str = "3rem"  # 48px
 
 
 SPACING = SpacingScale()
@@ -215,22 +215,24 @@ class ElevationSystem:
 
     level_0: str = "none"
     level_1: str = "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24)"
-    level_2: str = (
-        "0px 3px 6px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.12)"
-    )
-    level_3: str = (
-        "0px 10px 20px rgba(0, 0, 0, 0.15), 0px 3px 6px rgba(0, 0, 0, 0.10)"
-    )
-    level_4: str = (
-        "0px 15px 25px rgba(0, 0, 0, 0.15), 0px 5px 10px rgba(0, 0, 0, 0.05)"
-    )
+    level_2: str = "0px 3px 6px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.12)"
+    level_3: str = "0px 10px 20px rgba(0, 0, 0, 0.15), 0px 3px 6px rgba(0, 0, 0, 0.10)"
+    level_4: str = "0px 15px 25px rgba(0, 0, 0, 0.15), 0px 5px 10px rgba(0, 0, 0, 0.05)"
 
     # Semantic aliases for common use cases
     shadow_xs: str = "0px 1px 2px rgba(0, 0, 0, 0.1)"  # Extra small shadow
-    shadow_sm: str = "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24)"  # Same as level_1
-    shadow_md: str = "0px 3px 6px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.12)"  # Same as level_2
-    shadow_lg: str = "0px 10px 20px rgba(0, 0, 0, 0.15), 0px 3px 6px rgba(0, 0, 0, 0.10)"  # Same as level_3
-    shadow_xl: str = "0px 15px 25px rgba(0, 0, 0, 0.15), 0px 5px 10px rgba(0, 0, 0, 0.05)"  # Same as level_4
+    shadow_sm: str = (
+        "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24)"  # Same as level_1
+    )
+    shadow_md: str = (
+        "0px 3px 6px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.12)"  # Same as level_2
+    )
+    shadow_lg: str = (
+        "0px 10px 20px rgba(0, 0, 0, 0.15), 0px 3px 6px rgba(0, 0, 0, 0.10)"  # Same as level_3
+    )
+    shadow_xl: str = (
+        "0px 15px 25px rgba(0, 0, 0, 0.15), 0px 5px 10px rgba(0, 0, 0, 0.05)"  # Same as level_4
+    )
 
 
 ELEVATION = ElevationSystem()
@@ -253,9 +255,9 @@ class AnimationTimings:
 
     # Semantic aliases for CSS (PATTERN: duration_*)
     duration_instant: str = "100ms"  # Same as instant
-    duration_fast: str = "200ms"     # Same as fast
-    duration_normal: str = "300ms"   # Same as normal
-    duration_slow: str = "500ms"     # Same as slow
+    duration_fast: str = "200ms"  # Same as fast
+    duration_normal: str = "300ms"  # Same as normal
+    duration_slow: str = "500ms"  # Same as slow
 
     # Numeric durations for Plotly (milliseconds as int)
     # Plotly requires numeric values, not CSS strings

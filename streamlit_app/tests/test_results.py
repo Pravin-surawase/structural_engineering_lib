@@ -25,7 +25,7 @@ from components.results import (
     display_flexure_result,
     display_shear_result,
     display_summary_metrics,
-    display_design_status
+    display_design_status,
 )
 
 
@@ -34,12 +34,7 @@ class TestDisplayFunctions:
 
     def test_flexure_result_with_dict(self):
         """Test flexure display with dict input"""
-        result = {
-            "Ast_mm2": 804.0,
-            "bars": "3-16mm",
-            "is_safe": True,
-            "xu_mm": 124.5
-        }
+        result = {"Ast_mm2": 804.0, "bars": "3-16mm", "is_safe": True, "xu_mm": 124.5}
         # Should not raise exception
         display_flexure_result(result)
 
@@ -49,7 +44,7 @@ class TestDisplayFunctions:
             "spacing_mm": 150,
             "stirrup_config": "2L-8mm",
             "is_safe": True,
-            "tau_v": 1.25
+            "tau_v": 1.25,
         }
         # Should not raise exception
         display_shear_result(result)
@@ -59,7 +54,7 @@ class TestDisplayFunctions:
         result = {
             "flexure": {"Ast_mm2": 804.0, "is_safe": True},
             "shear": {"spacing_mm": 150, "is_safe": True},
-            "is_safe": True
+            "is_safe": True,
         }
         # Should not raise exception
         display_summary_metrics(result)
@@ -91,11 +86,7 @@ class TestEdgeCases:
 
     def test_none_values_handling(self):
         """Test functions handle None values gracefully"""
-        result_with_none = {
-            "Ast_mm2": None,
-            "bars": None,
-            "is_safe": None
-        }
+        result_with_none = {"Ast_mm2": None, "bars": None, "is_safe": None}
         # Should not raise exception
         display_flexure_result(result_with_none)
 
@@ -117,7 +108,7 @@ class TestInputVariations:
             "bars": "3-16mm",
             "is_safe": True,
             "extra_key": "ignored",
-            "another_key": 123
+            "another_key": 123,
         }
         # Should not raise exception
         display_flexure_result(result)
@@ -132,7 +123,7 @@ class TestInputVariations:
         """Test summary handles string conversions"""
         result = {
             "flexure": {"Ast_mm2": "804", "is_safe": "True"},
-            "shear": {"spacing_mm": "150", "is_safe": "True"}
+            "shear": {"spacing_mm": "150", "is_safe": "True"},
         }
         # Should not raise exception (may need conversion logic)
         display_summary_metrics(result)

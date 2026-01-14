@@ -35,11 +35,7 @@ from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import initialize_theme
 
 # Page setup
-setup_page(
-    title="Learning Center | IS 456 Beam Design",
-    icon="📚",
-    layout="wide"
-)
+setup_page(title="Learning Center | IS 456 Beam Design", icon="📚", layout="wide")
 
 initialize_theme()
 
@@ -70,7 +66,7 @@ we combine concrete (strong in compression) with steel (strong in tension) to cr
 4. Design shear reinforcement (stirrups)
 5. Check serviceability (deflection, crack width)
 6. Detailing per IS 456 requirements
-            """
+            """,
         },
         {
             "title": "🔢 How to Read Design Outputs",
@@ -101,7 +97,7 @@ Ast_req = 942 mm²
 Ast_prov = 943 mm² (3-#20)
 ```
 This means you need 942 mm², and 3 bars of 20mm (Area = 943 mm²) satisfy the requirement.
-            """
+            """,
         },
     ],
     "Intermediate": [
@@ -138,7 +134,7 @@ Steel: fyd = fy / γm = 0.87 × fy
 ### Practical Impact
 A beam with fck=25 N/mm² has design strength = 11.2 N/mm², not 25!
 This is why you need more steel than "theoretical" hand calculations suggest.
-            """
+            """,
         },
         {
             "title": "🔍 Understanding xu/d Limits",
@@ -172,7 +168,7 @@ If xu/d > 0.46:
 4. Option 4: Increase concrete grade (fck)
 
 **Best Practice**: Keep xu/d ≈ 0.35-0.40 for efficient design
-            """
+            """,
         },
     ],
     "Advanced": [
@@ -226,7 +222,7 @@ Safety Factor (SF) | Cost Multiplier
 2.0 (very safe)    | 1.65×
 ```
 **Recommendation**: SF = 1.15-1.20 for most projects
-            """
+            """,
         },
     ],
 }
@@ -304,7 +300,7 @@ Use 8mm 2-legged stirrups @ 200 mm c/c
 ✅ **230 × 450 mm beam**
 ✅ **3-#20 bars** (bottom)
 ✅ **8mm stirrups @ 200 mm c/c**
-        """
+        """,
     },
 ]
 
@@ -370,17 +366,19 @@ COMMON_MISTAKES = [
 
 page_header(
     title="📚 Learning Center",
-    subtitle="Interactive tutorials, IS 456 reference, and design guides"
+    subtitle="Interactive tutorials, IS 456 reference, and design guides",
 )
 
 # Main tabs
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📖 Tutorials",
-    "📝 Worked Examples",
-    "✅ Checklists",
-    "⚠️ Common Mistakes",
-    "📚 IS 456 Reference",
-])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    [
+        "📖 Tutorials",
+        "📝 Worked Examples",
+        "✅ Checklists",
+        "⚠️ Common Mistakes",
+        "📚 IS 456 Reference",
+    ]
+)
 
 # =============================================================================
 # TAB 1: TUTORIALS
@@ -390,9 +388,7 @@ with tab1:
     section_header("Interactive Tutorials")
 
     level = st.selectbox(
-        "Select Level",
-        options=["Beginner", "Intermediate", "Advanced"],
-        index=0
+        "Select Level", options=["Beginner", "Intermediate", "Advanced"], index=0
     )
 
     tutorials = TUTORIALS[level]
@@ -403,7 +399,9 @@ with tab1:
 
             # Interactive quiz (placeholder)
             if st.button(f"Test Your Understanding", key=f"quiz_{level}_{i}"):
-                st.info("🎯 Quiz feature coming soon! For now, review the content above.")
+                st.info(
+                    "🎯 Quiz feature coming soon! For now, review the content above."
+                )
 
 # =============================================================================
 # TAB 2: WORKED EXAMPLES
@@ -451,7 +449,7 @@ with tab3:
         label="📥 Download Checklist (TXT)",
         data=checklist_text,
         file_name="beam_design_checklist.txt",
-        mime="text/plain"
+        mime="text/plain",
     )
 
 # =============================================================================
@@ -481,7 +479,8 @@ with tab4:
 with tab5:
     section_header("Quick IS 456 Reference")
 
-    st.markdown("""
+    st.markdown(
+        """
     ### Key Clauses for Beam Design
 
     | Clause | Topic | Key Points |
@@ -523,13 +522,16 @@ with tab5:
     # Balanced section (xu/d = 0.46)
     Ast = 0.96 × (fck/fy) × b × d
     ```
-    """)
+    """
+    )
 
     # Interactive clause searcher
     st.divider()
     st.subheader("🔍 Clause Search")
 
-    search_query = st.text_input("Search for a topic (e.g., 'deflection', 'cover', 'spacing')")
+    search_query = st.text_input(
+        "Search for a topic (e.g., 'deflection', 'cover', 'spacing')"
+    )
 
     if search_query:
         # Simple keyword matching (can be enhanced)
@@ -553,15 +555,19 @@ with tab5:
             for result in results:
                 st.info(result)
         else:
-            st.warning("No results found. Try keywords like: deflection, cover, spacing, stirrup")
+            st.warning(
+                "No results found. Try keywords like: deflection, cover, spacing, stirrup"
+            )
 
 # Footer
 st.divider()
-st.markdown("""
+st.markdown(
+    """
 ### 📖 Additional Resources
 - [IS 456:2000 Full Text](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf) (External link)
 - [SP 16:1980 Design Aids](https://archive.org/details/gov.in.is.sp.16.1980) (External link)
 - Video Tutorials: Coming soon!
-""")
+"""
+)
 
 st.caption("💡 **Tip:** Bookmark this page for quick reference during design work!")

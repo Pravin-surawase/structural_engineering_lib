@@ -11,15 +11,28 @@ Date: 2026-01-09
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 
-from streamlit_app.utils.responsive import get_device_type, get_responsive_columns, apply_responsive_styles
+from streamlit_app.utils.responsive import (
+    get_device_type,
+    get_responsive_columns,
+    apply_responsive_styles,
+)
 from streamlit_app.utils.performance import lazy_load, measure_render_time, batch_render
-from streamlit_app.utils.accessibility import add_aria_label, validate_color_contrast, announce_to_screen_reader
-from streamlit_app.components.polish import show_skeleton_loader, show_empty_state, show_toast
+from streamlit_app.utils.accessibility import (
+    add_aria_label,
+    validate_color_contrast,
+    announce_to_screen_reader,
+)
+from streamlit_app.components.polish import (
+    show_skeleton_loader,
+    show_empty_state,
+    show_toast,
+)
 
 
 # =============================================================================
 # RESPONSIVE INTEGRATION TESTS
 # =============================================================================
+
 
 class TestResponsiveIntegration:
     """Test responsive design integration."""
@@ -68,6 +81,7 @@ class TestResponsiveIntegration:
 # =============================================================================
 # PERFORMANCE INTEGRATION TESTS
 # =============================================================================
+
 
 class TestPerformanceIntegration:
     """Test performance optimization integration."""
@@ -149,6 +163,7 @@ class TestPerformanceIntegration:
 # ACCESSIBILITY INTEGRATION TESTS
 # =============================================================================
 
+
 class TestAccessibilityIntegration:
     """Test accessibility feature integration."""
 
@@ -179,6 +194,7 @@ class TestAccessibilityIntegration:
 # POLISH INTEGRATION TESTS
 # =============================================================================
 
+
 class TestPolishIntegration:
     """Test visual polish integration."""
 
@@ -191,9 +207,7 @@ class TestPolishIntegration:
     def test_empty_state_when_no_results(self, mock_streamlit):
         """Test empty state displays correctly."""
         show_empty_state(
-            title="No Results",
-            message="Click Calculate to see results",
-            icon="📊"
+            title="No Results", message="Click Calculate to see results", icon="📊"
         )
         # Should render without errors
         assert True
@@ -216,6 +230,7 @@ class TestPolishIntegration:
 # =============================================================================
 # END-TO-END INTEGRATION TESTS
 # =============================================================================
+
 
 class TestEndToEndIntegration:
     """Test complete workflows with all features."""
@@ -275,6 +290,7 @@ class TestEndToEndIntegration:
 # INTEGRATION WITH EXISTING COMPONENTS
 # =============================================================================
 
+
 class TestExistingComponentIntegration:
     """Test integration with existing components."""
 
@@ -303,7 +319,7 @@ class TestExistingComponentIntegration:
                 ast_provided=800,
                 xu=100.0,
                 compression_bars=2,
-                tension_bars=3
+                tension_bars=3,
             )
             # If it returns, it works
             assert fig is not None
@@ -317,7 +333,9 @@ class TestExistingComponentIntegration:
 
         # Should work with accessibility features
         # Use correct signature: label, min_value, max_value, default_value
-        result = dimension_input("Span", min_value=1.0, max_value=20.0, default_value=5.0)
+        result = dimension_input(
+            "Span", min_value=1.0, max_value=20.0, default_value=5.0
+        )
 
         assert result is not None
 
@@ -325,6 +343,7 @@ class TestExistingComponentIntegration:
 # =============================================================================
 # PERFORMANCE IMPACT TESTS
 # =============================================================================
+
 
 class TestPerformanceImpact:
     """Test that polish features don't degrade performance."""
@@ -369,6 +388,7 @@ class TestPerformanceImpact:
 
         # Second call should be instant (cached)
         import time
+
         start = time.time()
         result2 = cached_design(mu_knm, vu_kn, b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2)
         duration = time.time() - start

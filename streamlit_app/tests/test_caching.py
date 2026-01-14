@@ -63,7 +63,7 @@ class TestCachedDesignBeam:
         """Design function should have caching decorator applied."""
         # Just verify the function exists and has cache attributes
         assert callable(cached_design_beam)
-        assert hasattr(cached_design_beam, 'clear')
+        assert hasattr(cached_design_beam, "clear")
 
     def test_design_accepts_parameters(self):
         """Design function should accept expected parameters."""
@@ -71,10 +71,11 @@ class TestCachedDesignBeam:
         try:
             # This will fail at runtime but validates signature
             import inspect
+
             sig = inspect.signature(cached_design_beam)
-            assert 'span_mm' in sig.parameters
-            assert 'width_mm' in sig.parameters
-            assert 'fck' in sig.parameters
+            assert "span_mm" in sig.parameters
+            assert "width_mm" in sig.parameters
+            assert "fck" in sig.parameters
         except Exception:
             # If inspection fails, at least function exists
             assert callable(cached_design_beam)
@@ -88,15 +89,15 @@ class TestCachedVisualizations:
         from streamlit_app.utils.caching import cached_beam_diagram
 
         assert callable(cached_beam_diagram)
-        assert hasattr(cached_beam_diagram, 'clear')
+        assert hasattr(cached_beam_diagram, "clear")
 
     def test_plotly_chart_caching_bar(self):
         """Bar charts should be cached."""
         from streamlit_app.utils.caching import cached_plotly_chart
 
-        data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
-        fig1 = cached_plotly_chart('bar', data)
-        fig2 = cached_plotly_chart('bar', data)
+        data = {"x": [1, 2, 3], "y": [4, 5, 6]}
+        fig1 = cached_plotly_chart("bar", data)
+        fig2 = cached_plotly_chart("bar", data)
 
         # Should be cached (same hash)
         assert fig1 is not None
@@ -106,8 +107,8 @@ class TestCachedVisualizations:
         """Line charts should be cached."""
         from streamlit_app.utils.caching import cached_plotly_chart
 
-        data = {'x': [1, 2, 3], 'y': [4, 5, 6], 'mode': 'lines'}
-        fig = cached_plotly_chart('line', data)
+        data = {"x": [1, 2, 3], "y": [4, 5, 6], "mode": "lines"}
+        fig = cached_plotly_chart("line", data)
 
         assert fig is not None
 
@@ -116,7 +117,7 @@ class TestCachedVisualizations:
         from streamlit_app.utils.caching import cached_plotly_chart
 
         with pytest.raises(ValueError, match="Unknown chart type"):
-            cached_plotly_chart('invalid', {})
+            cached_plotly_chart("invalid", {})
 
 
 class TestResourceCaching:
@@ -125,12 +126,12 @@ class TestResourceCaching:
     def test_theme_function_exists(self):
         """Theme function should exist and be cached."""
         assert callable(get_cached_theme)
-        assert hasattr(get_cached_theme, 'clear')
+        assert hasattr(get_cached_theme, "clear")
 
     def test_tokens_function_exists(self):
         """Design tokens function should exist and be cached."""
         assert callable(get_design_system_tokens)
-        assert hasattr(get_design_system_tokens, 'clear')
+        assert hasattr(get_design_system_tokens, "clear")
 
 
 class TestDatabaseCaching:
@@ -140,21 +141,21 @@ class TestDatabaseCaching:
         """Material database should have expected structure."""
         db = cached_material_database()
 
-        assert 'concrete' in db
-        assert 'steel' in db
-        assert 'M25' in db['concrete']
-        assert 'Fe415' in db['steel']
-        assert db['concrete']['M25']['fck'] == 25
-        assert db['steel']['Fe415']['fy'] == 415
+        assert "concrete" in db
+        assert "steel" in db
+        assert "M25" in db["concrete"]
+        assert "Fe415" in db["steel"]
+        assert db["concrete"]["M25"]["fck"] == 25
+        assert db["steel"]["Fe415"]["fy"] == 415
 
     def test_code_tables_structure(self):
         """Code tables should have expected structure."""
         tables = cached_code_tables()
 
-        assert 'table_16' in tables
-        assert 'table_19' in tables
-        assert tables['table_16']['moderate'] == 30
-        assert 'M25' in tables['table_19']
+        assert "table_16" in tables
+        assert "table_19" in tables
+        assert tables["table_16"]["moderate"] == 30
+        assert "M25" in tables["table_19"]
 
 
 class TestCacheManagement:
@@ -165,9 +166,9 @@ class TestCacheManagement:
         stats = cache_stats()
 
         assert isinstance(stats, dict)
-        assert 'cache_hit_rate' in stats
-        assert 'cache_size' in stats
-        assert 'note' in stats
+        assert "cache_hit_rate" in stats
+        assert "cache_size" in stats
+        assert "note" in stats
 
     def test_clear_all_caches_exists(self):
         """Clear all caches function should exist."""
@@ -201,7 +202,7 @@ class TestTimedCache:
         def expensive_function(x):
             nonlocal call_count
             call_count += 1
-            return x ** 2
+            return x**2
 
         result1 = expensive_function(5)
         result2 = expensive_function(5)
@@ -212,6 +213,7 @@ class TestTimedCache:
 
     def test_timed_cache_different_ttl(self):
         """Decorator should accept different TTL values."""
+
         @timed_cache(ttl=60)
         def short_cache(x):
             return x * 2
@@ -258,15 +260,16 @@ class TestCachePerformance:
     def test_cached_design_function_structure(self):
         """Cached design should have expected structure."""
         import inspect
+
         sig = inspect.signature(cached_design_beam)
 
         # Verify parameters
-        assert 'span_mm' in sig.parameters
-        assert 'fck' in sig.parameters
-        assert 'fy' in sig.parameters
+        assert "span_mm" in sig.parameters
+        assert "fck" in sig.parameters
+        assert "fy" in sig.parameters
 
         # Verify caching decorator applied
-        assert hasattr(cached_design_beam, 'clear')
+        assert hasattr(cached_design_beam, "clear")
 
 
 if __name__ == "__main__":

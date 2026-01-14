@@ -2,6 +2,7 @@
 Rendering Optimization Utilities
 Batch rendering, fragment management, and render cycle optimization.
 """
+
 from typing import Any, Callable, Dict, List, Optional
 import streamlit as st
 from functools import wraps
@@ -72,6 +73,7 @@ def batch_render(batch_id: str) -> Callable[[Callable], Callable]:
     Returns:
         Decorator function
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> None:
@@ -79,6 +81,7 @@ def batch_render(batch_id: str) -> Callable[[Callable], Callable]:
             _render_batcher.add_to_batch(batch_id, lambda: func(*args, **kwargs))
 
         return wrapper
+
     return decorator
 
 
@@ -95,7 +98,9 @@ class FragmentManager:
     """Manage Streamlit fragments for partial rerenders."""
 
     @staticmethod
-    def create_isolated_fragment(func: Callable, run_every: Optional[float] = None) -> Callable:
+    def create_isolated_fragment(
+        func: Callable, run_every: Optional[float] = None
+    ) -> Callable:
         """Create isolated fragment that doesn't trigger full rerun.
 
         Args:
@@ -158,6 +163,7 @@ def optimize_render_cycle(func: Callable) -> Callable:
     Returns:
         Optimized function
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs) -> Optional[Any]:
         # Create state key for this function
@@ -190,6 +196,7 @@ def debounce_render(delay_ms: int = 300) -> Callable[[Callable], Callable]:
     Returns:
         Decorator function
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Optional[Any]:
@@ -210,6 +217,7 @@ def debounce_render(delay_ms: int = 300) -> Callable[[Callable], Callable]:
             return result
 
         return wrapper
+
     return decorator
 
 
@@ -259,6 +267,7 @@ class ConditionalRenderer:
         Returns:
             Decorator function
         """
+
         def decorator(func: Callable) -> Callable:
             @wraps(func)
             def wrapper(*args, **kwargs) -> Any:
@@ -268,6 +277,7 @@ class ConditionalRenderer:
                 return func(*args, **kwargs)
 
             return wrapper
+
         return decorator
 
 
@@ -286,6 +296,7 @@ def render_with_profiling(func: Callable) -> Callable:
     Returns:
         Wrapped function that logs timing
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs) -> Any:
         start_time = time.time()
@@ -293,18 +304,19 @@ def render_with_profiling(func: Callable) -> Callable:
         elapsed = (time.time() - start_time) * 1000
 
         # Store timing metrics
-        metrics_key = '_render_metrics'
+        metrics_key = "_render_metrics"
         if metrics_key not in st.session_state:
             st.session_state[metrics_key] = {}
 
         st.session_state[metrics_key][func.__name__] = {
-            'last_render_ms': elapsed,
-            'timestamp': time.time()
+            "last_render_ms": elapsed,
+            "timestamp": time.time(),
         }
 
         # Log if slow
         if elapsed > 100:  # > 100ms
             import logging
+
             logger = logging.getLogger(__name__)
             logger.warning(f"Slow render: {func.__name__} took {elapsed:.1f}ms")
 
@@ -319,15 +331,18 @@ def get_render_metrics() -> Dict[str, Any]:
     Returns:
         Dictionary of metrics by function name
     """
-    metrics_key = '_render_metrics'
+    metrics_key = "_render_metrics"
     return st.session_state.get(metrics_key, {})
 
 
 def clear_render_cache() -> None:
     """Clear all render optimization caches."""
     keys_to_remove = [
-        k for k in st.session_state.keys()
-        if k.startswith('_render_') or k.startswith('_debounce_') or k.startswith('_watch_')
+        k
+        for k in st.session_state.keys()
+        if k.startswith("_render_")
+        or k.startswith("_debounce_")
+        or k.startswith("_watch_")
     ]
 
     for key in keys_to_remove:
@@ -338,14 +353,14 @@ def clear_render_cache() -> None:
 
 # Export utilities
 __all__ = [
-    'RenderBatcher',
-    'batch_render',
-    'flush_render_batch',
-    'FragmentManager',
-    'optimize_render_cycle',
-    'debounce_render',
-    'ConditionalRenderer',
-    'render_with_profiling',
-    'get_render_metrics',
-    'clear_render_cache',
+    "RenderBatcher",
+    "batch_render",
+    "flush_render_batch",
+    "FragmentManager",
+    "optimize_render_cycle",
+    "debounce_render",
+    "ConditionalRenderer",
+    "render_with_profiling",
+    "get_render_metrics",
+    "clear_render_cache",
 ]

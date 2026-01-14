@@ -31,6 +31,7 @@ sys.path.insert(0, str(python_lib_path))
 # Fixtures
 # ============================================================================
 
+
 @pytest.fixture
 def valid_beam_inputs():
     """Standard valid beam inputs for testing."""
@@ -62,6 +63,7 @@ def edge_case_inputs():
 # ============================================================================
 # Journey 1: Complete Beam Design (Most Important)
 # ============================================================================
+
 
 class TestJourney1_CompleteBeamDesign:
     """
@@ -129,6 +131,7 @@ class TestJourney1_CompleteBeamDesign:
 # Journey 2: Cost Optimization
 # ============================================================================
 
+
 class TestJourney2_CostOptimization:
     """
     User Journey: Engineer optimizes beam for cost
@@ -189,6 +192,7 @@ class TestJourney2_CostOptimization:
 # Journey 3: Compliance Checking
 # ============================================================================
 
+
 class TestJourney3_ComplianceChecking:
     """
     User Journey: Engineer verifies IS 456 compliance
@@ -207,10 +211,10 @@ class TestJourney3_ComplianceChecking:
 
             # Check compliance module exists with any checking function
             has_checking = (
-                hasattr(compliance, "run_compliance_checks") or
-                hasattr(compliance, "check_all") or
-                hasattr(compliance, "check_serviceability") or
-                hasattr(compliance, "check_beam_dimensions")
+                hasattr(compliance, "run_compliance_checks")
+                or hasattr(compliance, "check_all")
+                or hasattr(compliance, "check_serviceability")
+                or hasattr(compliance, "check_beam_dimensions")
             )
             assert has_checking or compliance is not None
         except ImportError:
@@ -235,6 +239,7 @@ class TestJourney3_ComplianceChecking:
 # Journey 4: BBS Generation
 # ============================================================================
 
+
 class TestJourney4_BBSGeneration:
     """
     User Journey: Engineer generates bar bending schedule
@@ -252,12 +257,8 @@ class TestJourney4_BBSGeneration:
 
             # Mock detailing data
             detailing = {
-                "bars": [
-                    {"mark": "B1", "dia": 16, "length": 6000, "count": 4}
-                ],
-                "stirrups": [
-                    {"mark": "S1", "dia": 8, "spacing": 150, "count": 40}
-                ],
+                "bars": [{"mark": "B1", "dia": 16, "length": 6000, "count": 4}],
+                "stirrups": [{"mark": "S1", "dia": 8, "spacing": 150, "count": 40}],
             }
 
             result = api.compute_bbs(detailing)
@@ -275,6 +276,7 @@ class TestJourney4_BBSGeneration:
 # ============================================================================
 # Journey 5: DXF Export
 # ============================================================================
+
 
 class TestJourney5_DXFExport:
     """
@@ -301,11 +303,13 @@ class TestJourney5_DXFExport:
             from structural_lib import api
 
             # Generate DXF data (not file)
-            result = api.compute_dxf({
-                "beam_id": "B1",
-                "b_mm": valid_beam_inputs["b_mm"],
-                "D_mm": valid_beam_inputs["D_mm"],
-            })
+            result = api.compute_dxf(
+                {
+                    "beam_id": "B1",
+                    "b_mm": valid_beam_inputs["b_mm"],
+                    "D_mm": valid_beam_inputs["D_mm"],
+                }
+            )
 
             assert result is not None
         except ImportError:
@@ -319,6 +323,7 @@ class TestJourney5_DXFExport:
 # ============================================================================
 # Journey 6: Batch Processing
 # ============================================================================
+
 
 class TestJourney6_BatchProcessing:
     """
@@ -338,10 +343,24 @@ class TestJourney6_BatchProcessing:
 
             # Simulate batch of beams with correct parameter names
             beams = [
-                {"b_mm": 300, "D_mm": 500, "d_mm": 450,
-                 "fck_nmm2": 25, "fy_nmm2": 500, "mu_knm": 100, "vu_kn": 80},
-                {"b_mm": 350, "D_mm": 600, "d_mm": 550,
-                 "fck_nmm2": 30, "fy_nmm2": 500, "mu_knm": 200, "vu_kn": 120},
+                {
+                    "b_mm": 300,
+                    "D_mm": 500,
+                    "d_mm": 450,
+                    "fck_nmm2": 25,
+                    "fy_nmm2": 500,
+                    "mu_knm": 100,
+                    "vu_kn": 80,
+                },
+                {
+                    "b_mm": 350,
+                    "D_mm": 600,
+                    "d_mm": 550,
+                    "fck_nmm2": 30,
+                    "fy_nmm2": 500,
+                    "mu_knm": 200,
+                    "vu_kn": 120,
+                },
             ]
 
             results = []
@@ -358,6 +377,7 @@ class TestJourney6_BatchProcessing:
 # ============================================================================
 # Journey 7: Learning Center
 # ============================================================================
+
 
 class TestJourney7_LearningCenter:
     """
@@ -393,6 +413,7 @@ class TestJourney7_LearningCenter:
 # ============================================================================
 # Journey 8: Error Recovery
 # ============================================================================
+
 
 class TestJourney8_ErrorRecovery:
     """
@@ -445,7 +466,7 @@ class TestJourney8_ErrorRecovery:
                 fck_nmm2=25,
                 fy_nmm2=500,
                 mu_knm=0,  # Zero moment
-                vu_kn=0,   # Zero shear
+                vu_kn=0,  # Zero shear
             )
             # Should not crash - may return minimum steel
             assert result is not None or result is None  # Either is OK

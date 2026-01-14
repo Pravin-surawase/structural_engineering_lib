@@ -17,8 +17,10 @@ import pandas as pd
 
 class MockContext:
     """Mock context manager for Streamlit."""
+
     def __enter__(self):
         return self
+
     def __exit__(self, *args):
         pass
 
@@ -49,7 +51,7 @@ def sample_beam_design():
             "num_bars": 4,
             "stirrup_diameter_mm": 8,
             "stirrup_spacing_mm": 150,
-        }
+        },
     }
 
 
@@ -71,7 +73,7 @@ def sample_bbs_document():
             total_length_mm=27520,
             unit_weight_kg=16.98,
             total_weight_kg=67.92,
-            remarks="Bottom tension steel"
+            remarks="Bottom tension steel",
         )
 
         item2 = BBSLineItem(
@@ -86,7 +88,7 @@ def sample_bbs_document():
             total_length_mm=52500,
             unit_weight_kg=0.59,
             total_weight_kg=20.72,
-            remarks="@ 150mm c/c"
+            remarks="@ 150mm c/c",
         )
 
         summary = BBSummary(
@@ -95,14 +97,14 @@ def sample_bbs_document():
             total_bars=39,
             total_length_m=80.02,
             total_weight_kg=88.64,
-            weight_by_diameter={20: 67.92, 8: 20.72}
+            weight_by_diameter={20: 67.92, 8: 20.72},
         )
 
         doc = BBSDocument(
             project_name="Test Project",
             member_ids=["B1"],
             items=[item1, item2],
-            summary=summary
+            summary=summary,
         )
 
         return doc
@@ -113,6 +115,7 @@ def sample_bbs_document():
 # =============================================================================
 # Session State Tests
 # =============================================================================
+
 
 class TestSessionStateInitialization:
     """Test session state initialization."""
@@ -147,6 +150,7 @@ class TestSessionStateInitialization:
 # BBS Generation Tests
 # =============================================================================
 
+
 class TestBBSGeneration:
     """Test BBS document generation."""
 
@@ -166,13 +170,17 @@ class TestBBSGeneration:
 
     def test_bbs_includes_main_bars(self, sample_bbs_document):
         """Test that BBS includes main bars."""
-        main_bars = [item for item in sample_bbs_document.items if item.location == "bottom"]
+        main_bars = [
+            item for item in sample_bbs_document.items if item.location == "bottom"
+        ]
         assert len(main_bars) >= 1
         assert main_bars[0].shape_code == "A"  # Straight bar
 
     def test_bbs_includes_stirrups(self, sample_bbs_document):
         """Test that BBS includes stirrups."""
-        stirrups = [item for item in sample_bbs_document.items if item.location == "stirrup"]
+        stirrups = [
+            item for item in sample_bbs_document.items if item.location == "stirrup"
+        ]
         assert len(stirrups) >= 1
         assert stirrups[0].shape_code == "E"  # Closed stirrup
 
@@ -188,7 +196,9 @@ class TestBBSGeneration:
     def test_bbs_summary_totals_match(self, sample_bbs_document):
         """Test that summary totals match item totals."""
         total_weight = sum(item.total_weight_kg for item in sample_bbs_document.items)
-        assert sample_bbs_document.summary.total_weight_kg == pytest.approx(total_weight, rel=0.01)
+        assert sample_bbs_document.summary.total_weight_kg == pytest.approx(
+            total_weight, rel=0.01
+        )
 
         total_bars = sum(item.no_of_bars for item in sample_bbs_document.items)
         assert sample_bbs_document.summary.total_bars == total_bars
@@ -198,6 +208,7 @@ class TestBBSGeneration:
 # DataFrame Conversion Tests
 # =============================================================================
 
+
 class TestDataFrameConversion:
     """Test BBS to DataFrame conversion."""
 
@@ -206,25 +217,34 @@ class TestDataFrameConversion:
         # Inline the function for testing
         data = []
         for item in sample_bbs_document.items:
-            data.append({
-                "Bar Mark": item.bar_mark,
-                "Shape": item.shape_code,
-                "Diameter (mm)": int(item.diameter_mm),
-                "Location": item.location.capitalize(),
-                "No. of Bars": item.no_of_bars,
-                "Cut Length (mm)": int(item.cut_length_mm),
-                "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
-                "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
-                "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
-                "Remarks": item.remarks
-            })
+            data.append(
+                {
+                    "Bar Mark": item.bar_mark,
+                    "Shape": item.shape_code,
+                    "Diameter (mm)": int(item.diameter_mm),
+                    "Location": item.location.capitalize(),
+                    "No. of Bars": item.no_of_bars,
+                    "Cut Length (mm)": int(item.cut_length_mm),
+                    "Total Length (m)": f"{item.total_length_mm/1000:.2f}",
+                    "Unit Wt (kg)": f"{item.unit_weight_kg:.2f}",
+                    "Total Wt (kg)": f"{item.total_weight_kg:.2f}",
+                    "Remarks": item.remarks,
+                }
+            )
 
         df = pd.DataFrame(data)
 
         expected_columns = [
-            "Bar Mark", "Shape", "Diameter (mm)", "Location",
-            "No. of Bars", "Cut Length (mm)", "Total Length (m)",
-            "Unit Wt (kg)", "Total Wt (kg)", "Remarks"
+            "Bar Mark",
+            "Shape",
+            "Diameter (mm)",
+            "Location",
+            "No. of Bars",
+            "Cut Length (mm)",
+            "Total Length (m)",
+            "Unit Wt (kg)",
+            "Total Wt (kg)",
+            "Remarks",
         ]
 
         assert list(df.columns) == expected_columns
@@ -243,6 +263,7 @@ class TestDataFrameConversion:
 # Export Tests
 # =============================================================================
 
+
 class TestBBSExport:
     """Test BBS export functionality."""
 
@@ -251,11 +272,13 @@ class TestBBSExport:
         # Inline the export function
         data = []
         for item in sample_bbs_document.items:
-            data.append({
-                "Bar Mark": item.bar_mark,
-                "Diameter (mm)": int(item.diameter_mm),
-                "No. of Bars": item.no_of_bars,
-            })
+            data.append(
+                {
+                    "Bar Mark": item.bar_mark,
+                    "Diameter (mm)": int(item.diameter_mm),
+                    "No. of Bars": item.no_of_bars,
+                }
+            )
 
         df = pd.DataFrame(data)
         csv_str = df.to_csv(index=False)
@@ -273,6 +296,7 @@ class TestBBSExport:
 # =============================================================================
 # UI Component Tests
 # =============================================================================
+
 
 class TestUIComponents:
     """Test UI component rendering."""
@@ -298,10 +322,12 @@ class TestUIComponents:
         """Test weight breakdown calculation."""
         weight_data = []
         for dia, weight in sample_bbs_document.summary.weight_by_diameter.items():
-            weight_data.append({
-                "Diameter (mm)": f"Ø{int(dia)}",
-                "Total Weight (kg)": f"{weight:.2f}",
-            })
+            weight_data.append(
+                {
+                    "Diameter (mm)": f"Ø{int(dia)}",
+                    "Total Weight (kg)": f"{weight:.2f}",
+                }
+            )
 
         assert len(weight_data) == 2  # 20mm and 8mm
         assert any("Ø20" in item["Diameter (mm)"] for item in weight_data)
@@ -312,6 +338,7 @@ class TestUIComponents:
 # Integration Tests
 # =============================================================================
 
+
 class TestBBSIntegration:
     """Integration tests for BBS page."""
 
@@ -319,7 +346,9 @@ class TestBBSIntegration:
         """Test complete auto-generation workflow."""
         # Setup session state
         mock_streamlit.session_state["beam_inputs"] = sample_beam_design["inputs"]
-        mock_streamlit.session_state["beam_inputs"]["design_result"] = sample_beam_design["result"]
+        mock_streamlit.session_state["beam_inputs"]["design_result"] = (
+            sample_beam_design["result"]
+        )
 
         # Check beam design is available
         if "beam_inputs" in mock_streamlit.session_state:

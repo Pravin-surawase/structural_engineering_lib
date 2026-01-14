@@ -351,7 +351,9 @@ def display_utilization_meters(
         st.caption(f"τv / τc: {tau_v:.2f} / {tau_c:.2f} N/mm²")
 
 
-def display_material_properties(concrete: dict, steel: dict, compact: bool = False) -> None:
+def display_material_properties(
+    concrete: dict, steel: dict, compact: bool = False
+) -> None:
     """Display material properties (concrete and steel grades).
 
     Args:

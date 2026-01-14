@@ -26,7 +26,7 @@ from .preview import (
     calculate_quick_checks,
     render_status_dashboard,
     calculate_rough_cost,
-    render_cost_summary
+    render_cost_summary,
 )
 
 # Report export component (TASK-276-279 Integration)

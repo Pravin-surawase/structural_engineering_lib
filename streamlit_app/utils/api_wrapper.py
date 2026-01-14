@@ -52,7 +52,9 @@ except ImportError as e:
     check_min_spacing = None
 
 
-def _manual_bar_arrangement(ast_required: float, b_mm: float, cover: float) -> tuple[dict, int]:
+def _manual_bar_arrangement(
+    ast_required: float, b_mm: float, cover: float
+) -> tuple[dict, int]:
     """Fallback manual bar arrangement when library optimizer is not available."""
     # Exclude 32mm for narrow beams, prefer practical sizes
     bar_dia_options = [12, 16, 20, 25]
@@ -154,13 +156,15 @@ def _flexure_result_to_dict(flexure: Any, **kwargs) -> dict:
                         )
                         if alt_result.is_feasible and alt_result.arrangement:
                             alt_arr = alt_result.arrangement
-                            alternatives.append({
-                                "dia": alt_arr.diameter,
-                                "num": alt_arr.count,
-                                "area": alt_arr.area_provided,
-                                "layers": alt_arr.layers,
-                                "spacing": alt_arr.spacing,
-                            })
+                            alternatives.append(
+                                {
+                                    "dia": alt_arr.diameter,
+                                    "num": alt_arr.count,
+                                    "area": alt_arr.area_provided,
+                                    "layers": alt_arr.layers,
+                                    "spacing": alt_arr.spacing,
+                                }
+                            )
                     except Exception:
                         pass  # Skip if alternative fails
 

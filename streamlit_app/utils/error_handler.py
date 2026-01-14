@@ -26,8 +26,7 @@ from contextlib import contextmanager
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -36,11 +35,13 @@ logger = logging.getLogger(__name__)
 # Error Severity Levels
 # =============================================================================
 
+
 class ErrorSeverity(Enum):
     """Error severity classification"""
-    INFO = "info"        # Informational, no action needed
+
+    INFO = "info"  # Informational, no action needed
     WARNING = "warning"  # Warning, but can proceed
-    ERROR = "error"      # Error, cannot proceed
+    ERROR = "error"  # Error, cannot proceed
     CRITICAL = "critical"  # Critical system error
 
 
@@ -57,6 +58,7 @@ class ErrorMessage:
         technical_details: Technical details (for logging)
         clause_reference: IS 456 clause reference (if applicable)
     """
+
     severity: ErrorSeverity
     title: str
     message: str
@@ -78,6 +80,7 @@ class ErrorContext:
         can_continue: Whether user can continue despite error
         fallback_value: Optional fallback value to use
     """
+
     severity: ErrorSeverity
     message: str
     technical_details: str
@@ -90,12 +93,9 @@ class ErrorContext:
 # Error Message Templates
 # =============================================================================
 
+
 def create_dimension_error(
-    dim_name: str,
-    actual: float,
-    minimum: float,
-    maximum: float,
-    unit: str = "mm"
+    dim_name: str, actual: float, minimum: float, maximum: float, unit: str = "mm"
 ) -> ErrorMessage:
     """
     Create error for dimension out of range.
@@ -118,9 +118,9 @@ def create_dimension_error(
             fix_suggestions=[
                 f"Increase {dim_name.lower()} to at least {minimum:,.0f}{unit}",
                 f"Check if you entered the value in correct units ({unit})",
-                "Refer to IS 456:2000 for minimum dimension requirements"
+                "Refer to IS 456:2000 for minimum dimension requirements",
             ],
-            technical_details=f"Dimension validation failed: {actual} < {minimum}"
+            technical_details=f"Dimension validation failed: {actual} < {minimum}",
         )
     else:  # actual > maximum
         return ErrorMessage(
@@ -130,16 +130,13 @@ def create_dimension_error(
             fix_suggestions=[
                 f"Reduce {dim_name.lower()} to at most {maximum:,.0f}{unit}",
                 "Consider using multiple beams or different structural system",
-                "Consult a structural engineer for large spans"
+                "Consult a structural engineer for large spans",
             ],
-            technical_details=f"Dimension validation failed: {actual} > {maximum}"
+            technical_details=f"Dimension validation failed: {actual} > {maximum}",
         )
 
 
-def create_material_error(
-    fck: float,
-    fy: float
-) -> ErrorMessage:
+def create_material_error(fck: float, fy: float) -> ErrorMessage:
     """
     Create error for invalid material combination.
 
@@ -162,22 +159,20 @@ def create_material_error(
     return ErrorMessage(
         severity=ErrorSeverity.ERROR,
         title="Invalid Material Grade",
-        message=f"Material combination fck={fck} MPa, fy={fy} MPa is not valid. " + " ".join(errors),
+        message=f"Material combination fck={fck} MPa, fy={fy} MPa is not valid. "
+        + " ".join(errors),
         fix_suggestions=[
             f"Use standard concrete grades: {', '.join(f'M{int(g)}' for g in valid_fck)}",
             f"Use standard steel grades: {', '.join(f'Fe{int(g)}' for g in valid_fy)}",
-            "Most common: M25 concrete with Fe500 steel"
+            "Most common: M25 concrete with Fe500 steel",
         ],
         technical_details=f"Invalid material: fck={fck}, fy={fy}",
-        clause_reference="IS 456:2000 Table 2 & Annex C"
+        clause_reference="IS 456:2000 Table 2 & Annex C",
     )
 
 
 def create_load_error(
-    load_type: str,
-    actual: float,
-    limit: float,
-    unit: str = "kN"
+    load_type: str, actual: float, limit: float, unit: str = "kN"
 ) -> ErrorMessage:
     """
     Create error for invalid load value.
@@ -199,9 +194,9 @@ def create_load_error(
             f"Check if {load_type.lower()} calculation is correct",
             f"Verify units are correct ({unit}, not N or kgf)",
             "Recalculate loads using IS 875 (Loads code)",
-            "For very large loads, consider larger section or prestressed concrete"
+            "For very large loads, consider larger section or prestressed concrete",
         ],
-        technical_details=f"Load validation failed: {load_type}={actual}{unit}, limit={limit}{unit}"
+        technical_details=f"Load validation failed: {load_type}={actual}{unit}, limit={limit}{unit}",
     )
 
 
@@ -209,7 +204,7 @@ def create_design_failure_error(
     reason: str,
     capacity: Optional[float] = None,
     demand: Optional[float] = None,
-    clause: Optional[str] = None
+    clause: Optional[str] = None,
 ) -> ErrorMessage:
     """
     Create error for design failure.
@@ -236,19 +231,15 @@ def create_design_failure_error(
             "Use higher grade concrete (e.g., M30 instead of M25)",
             "Use higher grade steel (e.g., Fe500 instead of Fe415)",
             "Reduce applied loads if possible",
-            "Add compression reinforcement (if moment failure)"
+            "Add compression reinforcement (if moment failure)",
         ],
         technical_details=f"Design failure: {reason}",
-        clause_reference=clause
+        clause_reference=clause,
     )
 
 
 def create_compliance_error(
-    clause: str,
-    requirement: str,
-    provided: float,
-    required: float,
-    unit: str = "mm"
+    clause: str, requirement: str, provided: float, required: float, unit: str = "mm"
 ) -> ErrorMessage:
     """
     Create error for IS 456 compliance violation.
@@ -270,22 +261,19 @@ def create_compliance_error(
         severity=ErrorSeverity.ERROR,
         title=f"IS 456 Compliance Failure - {clause}",
         message=f"{requirement}: Provided {provided:,.1f}{unit}, Required {required:,.1f}{unit}. "
-                f"Deficit: {-margin:,.1f}{unit} ({-margin_pct:.1f}%).",
+        f"Deficit: {-margin:,.1f}{unit} ({-margin_pct:.1f}%).",
         fix_suggestions=[
             f"Increase provided value to at least {required:,.1f}{unit}",
             "Review IS 456 clause requirements carefully",
             "Consider alternative design approach",
-            "Consult structural design manual (SP:16)"
+            "Consult structural design manual (SP:16)",
         ],
         technical_details=f"Compliance check failed: {clause}",
-        clause_reference=f"IS 456:2000 {clause}"
+        clause_reference=f"IS 456:2000 {clause}",
     )
 
 
-def create_convergence_error(
-    iterations: int,
-    tolerance: float
-) -> ErrorMessage:
+def create_convergence_error(iterations: int, tolerance: float) -> ErrorMessage:
     """
     Create error for convergence failure.
 
@@ -305,16 +293,13 @@ def create_convergence_error(
             "Try different initial section size",
             "Use higher concrete grade (M30 or M35)",
             "Check if loads are realistic for the span",
-            "This may indicate an over-reinforced section - increase section size"
+            "This may indicate an over-reinforced section - increase section size",
         ],
-        technical_details=f"Convergence failure: {iterations} iterations, tolerance={tolerance}"
+        technical_details=f"Convergence failure: {iterations} iterations, tolerance={tolerance}",
     )
 
 
-def create_input_validation_error(
-    field_name: str,
-    error_details: str
-) -> ErrorMessage:
+def create_input_validation_error(field_name: str, error_details: str) -> ErrorMessage:
     """
     Create error for input validation failure.
 
@@ -333,15 +318,13 @@ def create_input_validation_error(
             "Check if the value is in the correct range",
             "Verify units are correct (mm, kN, kNm, MPa)",
             "Ensure numeric values only (no letters or special characters)",
-            "Try using example values first to verify app works"
+            "Try using example values first to verify app works",
         ],
-        technical_details=f"Input validation: {field_name} - {error_details}"
+        technical_details=f"Input validation: {field_name} - {error_details}",
     )
 
 
-def create_generic_error(
-    error: Exception
-) -> ErrorMessage:
+def create_generic_error(error: Exception) -> ErrorMessage:
     """
     Create generic error message from exception.
 
@@ -355,20 +338,21 @@ def create_generic_error(
         severity=ErrorSeverity.CRITICAL,
         title="Unexpected Error",
         message="An unexpected error occurred while processing your request. "
-                "This has been logged and will be investigated.",
+        "This has been logged and will be investigated.",
         fix_suggestions=[
             "Try refreshing the page and entering values again",
             "Check if all inputs are filled correctly",
             "Try using example values to verify app works",
-            "If problem persists, please contact support with error details below"
+            "If problem persists, please contact support with error details below",
         ],
-        technical_details=f"{type(error).__name__}: {str(error)}"
+        technical_details=f"{type(error).__name__}: {str(error)}",
     )
 
 
 # =============================================================================
 # Display Functions
 # =============================================================================
+
 
 def display_error_message(error_msg: ErrorMessage):
     """
@@ -382,7 +366,7 @@ def display_error_message(error_msg: ErrorMessage):
         ErrorSeverity.INFO: "ℹ️",
         ErrorSeverity.WARNING: "⚠️",
         ErrorSeverity.ERROR: "❌",
-        ErrorSeverity.CRITICAL: "🚨"
+        ErrorSeverity.CRITICAL: "🚨",
     }
 
     # Display function mapping
@@ -390,7 +374,7 @@ def display_error_message(error_msg: ErrorMessage):
         ErrorSeverity.INFO: st.info,
         ErrorSeverity.WARNING: st.warning,
         ErrorSeverity.ERROR: st.error,
-        ErrorSeverity.CRITICAL: st.error
+        ErrorSeverity.CRITICAL: st.error,
     }
 
     icon = icons.get(error_msg.severity, "❌")
@@ -416,7 +400,9 @@ def display_error_message(error_msg: ErrorMessage):
 
     # Log technical details
     if error_msg.technical_details:
-        logger.error(f"[{error_msg.severity.value.upper()}] {error_msg.title}: {error_msg.technical_details}")
+        logger.error(
+            f"[{error_msg.severity.value.upper()}] {error_msg.title}: {error_msg.technical_details}"
+        )
 
         # Show technical details in expander (for debugging)
         with st.expander("🔍 Technical Details (for debugging)"):
@@ -427,9 +413,10 @@ def display_error_message(error_msg: ErrorMessage):
 # Error Handler Decorator
 # =============================================================================
 
+
 def handle_errors(
     default_message: str = "An error occurred during processing",
-    show_traceback: bool = False
+    show_traceback: bool = False,
 ):
     """
     Decorator for handling errors in Streamlit functions.
@@ -444,6 +431,7 @@ def handle_errors(
             # ... code that might raise exceptions ...
             pass
     """
+
     def decorator(func: Callable) -> Callable:
         def wrapper(*args, **kwargs) -> Any:
             try:
@@ -451,8 +439,7 @@ def handle_errors(
             except ValueError as e:
                 # Input validation errors
                 error_msg = create_input_validation_error(
-                    field_name=func.__name__,
-                    error_details=str(e)
+                    field_name=func.__name__, error_details=str(e)
                 )
                 display_error_message(error_msg)
                 return None
@@ -465,9 +452,9 @@ def handle_errors(
                     fix_suggestions=[
                         "Ensure all input fields are filled",
                         "Try refreshing the page",
-                        "Check if you navigated from another page (data may not be passed)"
+                        "Check if you navigated from another page (data may not be passed)",
                     ],
-                    technical_details=f"KeyError: {str(e)}"
+                    technical_details=f"KeyError: {str(e)}",
                 )
                 display_error_message(error_msg)
                 return None
@@ -480,12 +467,19 @@ def handle_errors(
                 logger.exception(f"Unhandled exception in {func.__name__}")
 
                 # Show traceback if requested
-                debug_enabled = os.getenv("DEBUG", "").lower() in {"1", "true", "yes", "on"}
+                debug_enabled = os.getenv("DEBUG", "").lower() in {
+                    "1",
+                    "true",
+                    "yes",
+                    "on",
+                }
                 if show_traceback or debug_enabled:
                     st.exception(e)
 
                 return None
+
         return wrapper
+
     return decorator
 
 
@@ -493,12 +487,9 @@ def handle_errors(
 # Validation Helper Functions
 # =============================================================================
 
+
 def validate_dimension_range(
-    value: float,
-    min_val: float,
-    max_val: float,
-    name: str,
-    unit: str = "mm"
+    value: float, min_val: float, max_val: float, name: str, unit: str = "mm"
 ) -> Optional[ErrorMessage]:
     """
     Validate dimension is within range.
@@ -518,10 +509,7 @@ def validate_dimension_range(
     return None
 
 
-def validate_material_grades(
-    fck: float,
-    fy: float
-) -> Optional[ErrorMessage]:
+def validate_material_grades(fck: float, fy: float) -> Optional[ErrorMessage]:
     """
     Validate material grades are standard.
 
@@ -545,7 +533,7 @@ def validate_load_value(
     load_type: str,
     min_val: float = 0.0,
     max_val: float = 10000.0,
-    unit: str = "kN"
+    unit: str = "kN",
 ) -> Optional[ErrorMessage]:
     """
     Validate load value is reasonable.
@@ -569,6 +557,7 @@ def validate_load_value(
 # Batch Validation
 # =============================================================================
 
+
 def validate_beam_inputs(
     span_mm: float,
     b_mm: float,
@@ -577,7 +566,7 @@ def validate_beam_inputs(
     fck_mpa: float,
     fy_mpa: float,
     mu_knm: float,
-    vu_kn: float
+    vu_kn: float,
 ) -> list[ErrorMessage]:
     """
     Validate all beam design inputs.
@@ -616,17 +605,19 @@ def validate_beam_inputs(
 
     # Check d < D
     if d_mm >= D_mm:
-        errors.append(ErrorMessage(
-            severity=ErrorSeverity.ERROR,
-            title="Invalid Depth Values",
-            message=f"Effective depth ({d_mm}mm) must be less than overall depth ({D_mm}mm).",
-            fix_suggestions=[
-                "Effective depth = Overall depth - Cover - Bar diameter/2",
-                "Typical: d = D - 30-50mm (for cover and bars)",
-                "Check if you swapped the values"
-            ],
-            technical_details=f"d={d_mm} >= D={D_mm}"
-        ))
+        errors.append(
+            ErrorMessage(
+                severity=ErrorSeverity.ERROR,
+                title="Invalid Depth Values",
+                message=f"Effective depth ({d_mm}mm) must be less than overall depth ({D_mm}mm).",
+                fix_suggestions=[
+                    "Effective depth = Overall depth - Cover - Bar diameter/2",
+                    "Typical: d = D - 30-50mm (for cover and bars)",
+                    "Check if you swapped the values",
+                ],
+                technical_details=f"d={d_mm} >= D={D_mm}",
+            )
+        )
 
     # Material validation
     error = validate_material_grades(fck_mpa, fy_mpa)
@@ -648,6 +639,7 @@ def validate_beam_inputs(
 # =============================================================================
 # Success Message
 # =============================================================================
+
 
 def display_success_message(message: str, details: Optional[str] = None):
     """
@@ -696,6 +688,7 @@ def display_info_message(message: str):
 # Enhanced Error Handlers (IMPL-004)
 # =============================================================================
 
+
 def handle_library_error(e: Exception, context: str) -> ErrorContext:
     """
     Handle errors from structural_lib with user-friendly messages.
@@ -720,10 +713,10 @@ def handle_library_error(e: Exception, context: str) -> ErrorContext:
                 "Increase beam depth by 50-100mm",
                 "Use higher concrete grade (M30 or M35)",
                 "Reduce applied loads if possible",
-                "Check if input values are realistic"
+                "Check if input values are realistic",
             ],
             can_continue=False,
-            fallback_value=None
+            fallback_value=None,
         )
     elif "xu_max" in error_msg.lower() or "neutral axis" in error_msg.lower():
         return ErrorContext(
@@ -734,10 +727,10 @@ def handle_library_error(e: Exception, context: str) -> ErrorContext:
                 "Increase beam depth significantly (+100mm or more)",
                 "Add compression reinforcement",
                 "Use higher concrete grade",
-                "Reduce moment demand"
+                "Reduce moment demand",
             ],
             can_continue=False,
-            fallback_value=None
+            fallback_value=None,
         )
     elif "ValueError" in error_type or "invalid" in error_msg.lower():
         return ErrorContext(
@@ -748,10 +741,10 @@ def handle_library_error(e: Exception, context: str) -> ErrorContext:
                 "Check all input values are correct",
                 "Verify units (mm, kN, kNm, MPa)",
                 "Ensure numeric values only",
-                "Try example values first"
+                "Try example values first",
             ],
             can_continue=True,
-            fallback_value=None
+            fallback_value=None,
         )
     else:
         # Generic library error
@@ -763,10 +756,10 @@ def handle_library_error(e: Exception, context: str) -> ErrorContext:
                 "Verify all inputs are correct",
                 "Try different section size",
                 "Check IS 456 compliance requirements",
-                "If problem persists, contact support"
+                "If problem persists, contact support",
             ],
             can_continue=False,
-            fallback_value=None
+            fallback_value=None,
         )
 
 
@@ -791,10 +784,10 @@ def handle_validation_error(e: Exception, field: str) -> ErrorContext:
             f"Check if '{field}' value is in correct range",
             "Verify units are correct",
             "Ensure numeric values only (no text)",
-            "Try using slider inputs for guidance"
+            "Try using slider inputs for guidance",
         ],
         can_continue=True,
-        fallback_value=None
+        fallback_value=None,
     )
 
 
@@ -821,10 +814,10 @@ def handle_visualization_error(e: Exception, chart_type: str) -> ErrorContext:
             recovery_steps=[
                 "This is a known issue - please report to developers",
                 "Try refreshing the page",
-                "Chart will be fixed in next update"
+                "Chart will be fixed in next update",
             ],
             can_continue=True,
-            fallback_value=None
+            fallback_value=None,
         )
     elif "NoneType" in error_msg:
         return ErrorContext(
@@ -834,10 +827,10 @@ def handle_visualization_error(e: Exception, chart_type: str) -> ErrorContext:
             recovery_steps=[
                 "Run design calculation first",
                 "Check if all required results are available",
-                "Some visualizations require specific calculation types"
+                "Some visualizations require specific calculation types",
             ],
             can_continue=True,
-            fallback_value=None
+            fallback_value=None,
         )
     else:
         return ErrorContext(
@@ -847,14 +840,16 @@ def handle_visualization_error(e: Exception, chart_type: str) -> ErrorContext:
             recovery_steps=[
                 "Try refreshing the page",
                 "Check if calculation completed successfully",
-                "Chart may require specific data format"
+                "Chart may require specific data format",
             ],
             can_continue=True,
-            fallback_value=None
+            fallback_value=None,
         )
 
 
-def display_error_with_recovery(e: Exception, severity: ErrorSeverity = ErrorSeverity.ERROR):
+def display_error_with_recovery(
+    e: Exception, severity: ErrorSeverity = ErrorSeverity.ERROR
+):
     """
     Display error with recovery suggestions.
 
@@ -870,7 +865,7 @@ def display_error_with_recovery(e: Exception, severity: ErrorSeverity = ErrorSev
         ErrorSeverity.INFO: st.info,
         ErrorSeverity.WARNING: st.warning,
         ErrorSeverity.ERROR: st.error,
-        ErrorSeverity.CRITICAL: st.error
+        ErrorSeverity.CRITICAL: st.error,
     }
 
     display_func = display_funcs.get(severity, st.error)
@@ -893,7 +888,7 @@ def error_boundary(
     fallback_value: Any = None,
     show_error: bool = True,
     severity: ErrorSeverity = ErrorSeverity.ERROR,
-    context: str = "operation"
+    context: str = "operation",
 ):
     """
     Context manager for graceful error handling with fallback.

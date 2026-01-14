@@ -71,7 +71,9 @@ def validate_beam_inputs(
     elif span_mm < 1000:
         warnings.append("Very short span (<1m) - check if mm units are correct")
     elif span_mm > 20000:
-        warnings.append("Very long span (>20m) - may need special design considerations")
+        warnings.append(
+            "Very long span (>20m) - may need special design considerations"
+        )
 
     # Validate width
     if width_mm <= 0:
@@ -130,9 +132,7 @@ def validate_beam_inputs(
     # Calculate effective depth
     d_eff = depth_mm - cover_mm - 8  # Assuming 16mm bar (8mm to centroid)
     if d_eff < 150:
-        errors.append(
-            f"Effective depth = {d_eff:.0f}mm is too low (minimum ~150mm)"
-        )
+        errors.append(f"Effective depth = {d_eff:.0f}mm is too low (minimum ~150mm)")
 
     is_valid = len(errors) == 0
     return ValidationResult(
@@ -240,9 +240,7 @@ def validate_loading_inputs(
     elif dead_load_kn_m == 0:
         warnings.append("Zero dead load - beam self-weight will be added")
     elif dead_load_kn_m > 500:
-        warnings.append(
-            "Very high dead load (>500 kN/m) - verify load calculations"
-        )
+        warnings.append("Very high dead load (>500 kN/m) - verify load calculations")
 
     # Validate live load
     if live_load_kn_m < 0:
@@ -250,9 +248,7 @@ def validate_loading_inputs(
     elif live_load_kn_m == 0:
         warnings.append("Zero live load - is this intentional?")
     elif live_load_kn_m > 200:
-        warnings.append(
-            "Very high live load (>200 kN/m) - verify load calculations"
-        )
+        warnings.append("Very high live load (>200 kN/m) - verify load calculations")
 
     # Check total load
     total_load = dead_load_kn_m + live_load_kn_m
@@ -267,8 +263,7 @@ def validate_loading_inputs(
         dl_ll_ratio = dead_load_kn_m / live_load_kn_m
         if dl_ll_ratio < 0.3:
             warnings.append(
-                f"DL/LL ratio = {dl_ll_ratio:.2f} is low. "
-                "Typical range: 0.5 to 4.0"
+                f"DL/LL ratio = {dl_ll_ratio:.2f} is low. " "Typical range: 0.5 to 4.0"
             )
         elif dl_ll_ratio > 5.0:
             warnings.append(

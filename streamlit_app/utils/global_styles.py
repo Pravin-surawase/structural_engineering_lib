@@ -689,6 +689,7 @@ GLOBAL_CSS_PART4 = f"""
 # COMBINE ALL CSS PARTS
 # ============================================================================
 
+
 def get_global_css(dark_mode: bool = False) -> str:
     """
     Get complete global CSS for the app.

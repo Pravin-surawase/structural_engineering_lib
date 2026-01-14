@@ -26,7 +26,7 @@ from components.inputs import (
     CONCRETE_GRADES,
     STEEL_GRADES,
     EXPOSURE_CONDITIONS,
-    SUPPORT_CONDITIONS
+    SUPPORT_CONDITIONS,
 )
 
 
@@ -141,7 +141,7 @@ class TestValidationLogic:
         """Test moment-shear ratio checks."""
         # Normal ratio (5m span)
         mu = 120  # kNm
-        vu = 80   # kN
+        vu = 80  # kN
         ratio = mu / vu
         assert 1.0 < ratio < 15.0  # Should be OK
 

@@ -101,6 +101,7 @@ class MockStreamlit:
     @staticmethod
     def expander(label, expanded=False):
         """Mock st.expander() - returns context manager"""
+
         class MockExpander:
             def __enter__(self):
                 return self
@@ -120,7 +121,7 @@ class MockStreamlit:
     def markdown(text, **kwargs):
         """Mock st.markdown() accepting arbitrary kwargs (e.g. unsafe_allow_html)."""
         MockStreamlit.markdown_called = True
-        MockStreamlit.markdown_calls.append({'text': text, 'kwargs': kwargs})
+        MockStreamlit.markdown_calls.append({"text": text, "kwargs": kwargs})
         pass
 
     @staticmethod
@@ -136,11 +137,14 @@ class MockStreamlit:
     @staticmethod
     def progress(value):
         """Mock st.progress() - returns object that can update progress"""
+
         class ProgressBar:
             def progress(self, value):
                 pass
+
             def empty(self):
                 pass
+
         return ProgressBar()
 
     @staticmethod
@@ -168,6 +172,7 @@ class MockStreamlit:
         Actually caches function results using args/kwargs as keys.
         Supports both @st.cache_data and @st.cache_data().
         """
+
         def decorator(f):
             import functools
             import json
@@ -181,7 +186,9 @@ class MockStreamlit:
                     hash(key)  # Test if hashable
                 except TypeError:
                     # Fall back to JSON-based key for unhashable args
-                    key = f.__name__ + json.dumps((args, kw), sort_keys=True, default=str)
+                    key = f.__name__ + json.dumps(
+                        (args, kw), sort_keys=True, default=str
+                    )
 
                 if key not in MockStreamlit._cache_data_storage:
                     MockStreamlit._cache_data_storage[key] = f(*args, **kw)
@@ -200,6 +207,7 @@ class MockStreamlit:
 
         Actually caches singleton resources using function name as key.
         """
+
         def decorator(f):
             import functools
             import json
@@ -213,7 +221,9 @@ class MockStreamlit:
                     hash(key)  # Test if hashable
                 except TypeError:
                     # Fall back to JSON-based key for unhashable args
-                    key = f.__name__ + json.dumps((args, kw), sort_keys=True, default=str)
+                    key = f.__name__ + json.dumps(
+                        (args, kw), sort_keys=True, default=str
+                    )
 
                 if key not in MockStreamlit._cache_resource_storage:
                     MockStreamlit._cache_resource_storage[key] = f(*args, **kw)
@@ -229,58 +239,78 @@ class MockStreamlit:
     @staticmethod
     def spinner(text="Loading..."):
         """Mock st.spinner() context manager"""
+
         class SpinnerContext:
             def __enter__(self):
                 return self
+
             def __exit__(self, *args):
                 pass
+
         return SpinnerContext()
 
     @staticmethod
     def status(label, expanded=False, state="running"):
         """Mock st.status() context manager"""
+
         class StatusContext:
             def __enter__(self):
                 return self
+
             def __exit__(self, *args):
                 pass
+
             def update(self, **kwargs):
                 pass
+
         return StatusContext()
 
     @staticmethod
     def tabs(labels):
         """Mock st.tabs() - returns list of tab contexts"""
+
         class TabContext:
             def __enter__(self):
                 return self
+
             def __exit__(self, *args):
                 pass
+
             def markdown(self, text, **kwargs):
                 MockStreamlit.markdown(text, **kwargs)
+
             def metric(self, label, value, delta=None):
                 pass
+
             def write(self, *args):
                 pass
+
         return [TabContext() for _ in labels]
 
     @staticmethod
     def container():
         """Mock st.container() context manager"""
         MockStreamlit.container_calls.append(True)
+
         class ContainerContext:
             def __enter__(self):
                 return self
+
             def __exit__(self, *args):
                 pass
+
             def markdown(self, text, **kwargs):
                 MockStreamlit.markdown(text, **kwargs)
+
             def write(self, *args):
                 pass
+
         return ContainerContext()
 
     @staticmethod
-    def plotly_chart(fig, width="stretch", use_container_width=None, key=None, **kwargs):
+    def plotly_chart(
+        fig, width="stretch", use_container_width=None, key=None, **kwargs
+    ):
         """Mock st.plotly_chart() - supports both old and new API."""
         pass
 
@@ -300,17 +330,23 @@ class MockStreamlit:
         return options[index] if options else None
 
     @staticmethod
-    def number_input(label, value=None, min_value=None, max_value=None, key=None, **kwargs):
+    def number_input(
+        label, value=None, min_value=None, max_value=None, key=None, **kwargs
+    ):
         """Mock st.number_input() - returns value or default"""
-        return value if value is not None else (min_value if min_value is not None else 0)
+        return (
+            value if value is not None else (min_value if min_value is not None else 0)
+        )
 
 
 # Add class-level clear methods for cache decorators
 MockStreamlit.cache_data.clear = lambda: MockStreamlit._cache_data_storage.clear()
-MockStreamlit.cache_resource.clear = lambda: MockStreamlit._cache_resource_storage.clear()
+MockStreamlit.cache_resource.clear = (
+    lambda: MockStreamlit._cache_resource_storage.clear()
+)
 
 # Replace streamlit module with enhanced mock
-sys.modules['streamlit'] = MockStreamlit()
+sys.modules["streamlit"] = MockStreamlit()
 
 import streamlit as st
 

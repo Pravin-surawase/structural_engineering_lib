@@ -14,6 +14,7 @@ from dataclasses import dataclass
 @dataclass
 class Breakpoint:
     """Device breakpoint configuration."""
+
     name: str
     min_width: int
     max_width: Optional[int]
@@ -46,7 +47,7 @@ def get_device_type() -> str:
     """
     try:
         # Try to get from session state (cached from previous detection)
-        if 'device_type' in st.session_state:
+        if "device_type" in st.session_state:
             return st.session_state.device_type
 
         # Fallback: Use JavaScript injection to detect (requires rerun)
@@ -77,9 +78,7 @@ def get_breakpoint(device_type: str) -> Breakpoint:
 
 
 def get_responsive_columns(
-    mobile: int = 1,
-    tablet: int = 2,
-    desktop: int = 3
+    mobile: int = 1, tablet: int = 2, desktop: int = 3
 ) -> List[int]:
     """
     Get responsive column counts based on device type.
@@ -110,7 +109,7 @@ def get_responsive_columns(
 def get_responsive_widths(
     mobile: Tuple[int, ...] = (1,),
     tablet: Tuple[int, ...] = (1, 1),
-    desktop: Tuple[int, ...] = (1, 2, 1)
+    desktop: Tuple[int, ...] = (1, 2, 1),
 ) -> List[int]:
     """
     Get responsive column width ratios based on device type.
@@ -147,7 +146,7 @@ def get_fluid_font_size(
     base_size: int,
     scale_factor: float = 1.2,
     min_size: Optional[int] = None,
-    max_size: Optional[int] = None
+    max_size: Optional[int] = None,
 ) -> str:
     """
     Calculate fluid typography size based on device type.
@@ -187,9 +186,7 @@ def get_fluid_font_size(
 
 
 def get_responsive_padding(
-    mobile: str = "1rem",
-    tablet: str = "1.5rem",
-    desktop: str = "2rem"
+    mobile: str = "1rem", tablet: str = "1.5rem", desktop: str = "2rem"
 ) -> str:
     """
     Get responsive padding based on device type.
@@ -372,7 +369,7 @@ def hide_on_mobile() -> None:
             }
             </style>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
 
@@ -404,5 +401,5 @@ def show_mobile_nav() -> None:
         }
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )

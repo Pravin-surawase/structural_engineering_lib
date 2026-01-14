@@ -22,7 +22,7 @@ from utils.error_handler import (
     handle_validation_error,
     handle_visualization_error,
     error_boundary,
-    display_error_with_recovery
+    display_error_with_recovery,
 )
 
 
@@ -37,7 +37,7 @@ class TestErrorContext:
             technical_details="ValueError: invalid input",
             recovery_steps=["Step 1", "Step 2"],
             can_continue=True,
-            fallback_value=None
+            fallback_value=None,
         )
 
         assert ctx.severity == ErrorSeverity.ERROR
@@ -53,7 +53,7 @@ class TestErrorContext:
             severity=ErrorSeverity.WARNING,
             message="Warning message",
             technical_details="debug info",
-            recovery_steps=[]
+            recovery_steps=[],
         )
 
         assert ctx.can_continue is False  # Default
@@ -81,7 +81,10 @@ class TestHandleLibraryError:
         ctx = handle_library_error(e, "flexure design")
 
         assert ctx.severity == ErrorSeverity.ERROR
-        assert "over-reinforced" in ctx.message.lower() or "neutral axis" in ctx.message.lower()
+        assert (
+            "over-reinforced" in ctx.message.lower()
+            or "neutral axis" in ctx.message.lower()
+        )
         assert len(ctx.recovery_steps) > 0
         assert ctx.can_continue is False
 
@@ -171,8 +174,8 @@ class TestHandleVisualizationError:
 class TestDisplayErrorWithRecovery:
     """Test display_error_with_recovery() function"""
 
-    @patch('utils.error_handler.st.error')
-    @patch('utils.error_handler.logger.error')
+    @patch("utils.error_handler.st.error")
+    @patch("utils.error_handler.logger.error")
     def test_display_error_message(self, mock_logger, mock_st_error):
         """Test error is displayed to user"""
         e = ValueError("Test error message")
@@ -186,8 +189,8 @@ class TestDisplayErrorWithRecovery:
         assert "ValueError" in call_args
         assert "Test error message" in call_args
 
-    @patch('utils.error_handler.st.warning')
-    @patch('utils.error_handler.logger.error')
+    @patch("utils.error_handler.st.warning")
+    @patch("utils.error_handler.logger.error")
     def test_display_warning_message(self, mock_logger, mock_st_warning):
         """Test warning is displayed to user"""
         e = ValueError("Test warning")
@@ -200,7 +203,7 @@ class TestDisplayErrorWithRecovery:
 class TestErrorBoundary:
     """Test error_boundary context manager"""
 
-    @patch('utils.error_handler.display_error_with_recovery')
+    @patch("utils.error_handler.display_error_with_recovery")
     def test_error_boundary_catches_exception(self, mock_display):
         """Test error_boundary catches and handles exception"""
         with error_boundary(fallback_value=None, context="test operation"):
@@ -209,7 +212,7 @@ class TestErrorBoundary:
         # Should not raise, should display error
         assert mock_display.called
 
-    @patch('utils.error_handler.display_error_with_recovery')
+    @patch("utils.error_handler.display_error_with_recovery")
     def test_error_boundary_no_exception(self, mock_display):
         """Test error_boundary does nothing if no exception"""
         result = []
@@ -219,7 +222,7 @@ class TestErrorBoundary:
         assert len(result) == 1
         assert not mock_display.called
 
-    @patch('utils.error_handler.display_error_with_recovery')
+    @patch("utils.error_handler.display_error_with_recovery")
     def test_error_boundary_show_error_false(self, mock_display):
         """Test error_boundary with show_error=False"""
         with error_boundary(fallback_value=None, show_error=False, context="test"):
@@ -228,7 +231,7 @@ class TestErrorBoundary:
         # Should not display error
         assert not mock_display.called
 
-    @patch('utils.error_handler.logger.exception')
+    @patch("utils.error_handler.logger.exception")
     def test_error_boundary_logs_error(self, mock_logger):
         """Test error_boundary logs exceptions"""
         with error_boundary(fallback_value=None, context="test operation"):
@@ -244,10 +247,11 @@ class TestErrorBoundary:
 # Integration Tests
 # =============================================================================
 
+
 class TestErrorHandlerIntegration:
     """Integration tests for complete error handling flow"""
 
-    @patch('utils.error_handler.st.error')
+    @patch("utils.error_handler.st.error")
     def test_library_error_end_to_end(self, mock_st_error):
         """Test complete flow: library error -> context -> display"""
         e = RuntimeError("Design convergence failed")
@@ -261,7 +265,7 @@ class TestErrorHandlerIntegration:
         display_error_with_recovery(e, ctx.severity)
         assert mock_st_error.called
 
-    @patch('utils.error_handler.st.warning')
+    @patch("utils.error_handler.st.warning")
     def test_validation_error_end_to_end(self, mock_st_warning):
         """Test complete flow: validation error -> context -> display"""
         e = ValueError("Invalid width value")
@@ -275,8 +279,8 @@ class TestErrorHandlerIntegration:
         display_error_with_recovery(e, ctx.severity)
         assert mock_st_warning.called
 
-    @patch('utils.error_handler.st.error')  # Changed from st.warning to st.error
-    @patch('utils.error_handler.logger.exception')
+    @patch("utils.error_handler.st.error")  # Changed from st.warning to st.error
+    @patch("utils.error_handler.logger.exception")
     def test_error_boundary_with_visualization(self, mock_logger, mock_st_error):
         """Test error_boundary handling visualization error"""
         with error_boundary(context="beam diagram rendering"):

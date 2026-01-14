@@ -45,11 +45,7 @@ from utils.api_wrapper import cached_design
 from utils.loading_states import loading_context
 
 # Page setup
-setup_page(
-    title="Batch Design | IS 456 Beam Design",
-    icon="📊",
-    layout="wide"
-)
+setup_page(title="Batch Design | IS 456 Beam Design", icon="📊", layout="wide")
 
 initialize_theme()
 
@@ -66,9 +62,19 @@ if "processing_status" not in st.session_state:
 # Helper Functions
 # =============================================================================
 
+
 def validate_csv_structure(df: pd.DataFrame) -> tuple[bool, str]:
     """Validate uploaded CSV has required columns."""
-    required_cols = ["beam_id", "L_mm", "b_mm", "D_mm", "fck_MPa", "fy_MPa", "Mu_kNm", "Vu_kN"]
+    required_cols = [
+        "beam_id",
+        "L_mm",
+        "b_mm",
+        "D_mm",
+        "fck_MPa",
+        "fy_MPa",
+        "Mu_kNm",
+        "Vu_kN",
+    ]
     missing = [col for col in required_cols if col not in df.columns]
 
     if missing:
@@ -109,8 +115,8 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
 
                 # Run design with correct API parameters
                 result = cached_design(
-                    mu_knm=row.Mu_kNm,       # Already in kN·m
-                    vu_kn=row.Vu_kN,         # Already in kN
+                    mu_knm=row.Mu_kNm,  # Already in kN·m
+                    vu_kn=row.Vu_kN,  # Already in kN
                     b_mm=row.b_mm,
                     D_mm=D_mm,
                     d_mm=d_mm,
@@ -126,26 +132,30 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
                 bar_dia = flexure.get("bar_dia", 16)
                 num_bars = flexure.get("num_bars", 3)
                 bar_config = f"{num_bars}-{bar_dia}mm"
-                results.append({
-                    "beam_id": row.beam_id,
-                    "status": "✅ OK" if status == "OK" else "❌ FAIL",
-                    "Ast_req_mm2": flexure.get("ast_required", "-"),
-                    "Ast_prov_mm2": flexure.get("ast_provided", "-"),
-                    "bar_config": bar_config,
-                    "stirrup_spacing_mm": shear.get("spacing", "-"),
-                    "cost_per_m_INR": result.get("cost_per_m", 0),
-                })
+                results.append(
+                    {
+                        "beam_id": row.beam_id,
+                        "status": "✅ OK" if status == "OK" else "❌ FAIL",
+                        "Ast_req_mm2": flexure.get("ast_required", "-"),
+                        "Ast_prov_mm2": flexure.get("ast_provided", "-"),
+                        "bar_config": bar_config,
+                        "stirrup_spacing_mm": shear.get("spacing", "-"),
+                        "cost_per_m_INR": result.get("cost_per_m", 0),
+                    }
+                )
 
             except Exception as e:
-                results.append({
-                    "beam_id": row.beam_id,
-                    "status": f"❌ ERROR: {str(e)[:50]}",
-                    "Ast_req_mm2": "-",
-                    "Ast_prov_mm2": "-",
-                    "bar_config": "-",
-                    "stirrup_spacing_mm": "-",
-                    "cost_per_m_INR": "-",
-                })
+                results.append(
+                    {
+                        "beam_id": row.beam_id,
+                        "status": f"❌ ERROR: {str(e)[:50]}",
+                        "Ast_req_mm2": "-",
+                        "Ast_prov_mm2": "-",
+                        "bar_config": "-",
+                        "stirrup_spacing_mm": "-",
+                        "cost_per_m_INR": "-",
+                    }
+                )
     else:
         return pd.DataFrame(results)
 
@@ -158,12 +168,13 @@ def process_batch(df: pd.DataFrame, progress_bar, status_text) -> pd.DataFrame:
 
 page_header(
     title="📊 Batch Design Processor",
-    subtitle="Process multiple beam designs from CSV upload"
+    subtitle="Process multiple beam designs from CSV upload",
 )
 
 # Instructions
 with st.expander("📖 How to Use"):
-    st.markdown("""
+    st.markdown(
+        """
     ### CSV Format
     Your CSV file must contain these columns:
 
@@ -181,7 +192,8 @@ with st.expander("📖 How to Use"):
     Optional columns: `d_mm` (effective depth), `cover_mm` (clear cover)
 
     ### Download Template
-    """)
+    """
+    )
 
     # Create template CSV
     template_data = {
@@ -201,7 +213,7 @@ with st.expander("📖 How to Use"):
         label="📥 Download CSV Template",
         data=template_csv,
         file_name="batch_design_template.csv",
-        mime="text/csv"
+        mime="text/csv",
     )
 
 st.divider()
@@ -210,9 +222,7 @@ st.divider()
 section_header("1️⃣ Upload CSV File")
 
 uploaded_file = st.file_uploader(
-    "Choose CSV file",
-    type=["csv"],
-    help="Upload CSV with beam parameters"
+    "Choose CSV file", type=["csv"], help="Upload CSV with beam parameters"
 )
 
 if uploaded_file:
@@ -259,9 +269,7 @@ if st.session_state.batch_data is not None:
 
         with loading_context("Processing batch designs..."):
             results_df = process_batch(
-                st.session_state.batch_data,
-                progress_bar,
-                status_text
+                st.session_state.batch_data, progress_bar, status_text
             )
             st.session_state.batch_results = results_df
             st.session_state.processing_status = "complete"
@@ -313,21 +321,21 @@ if st.session_state.batch_results is not None:
             label="📥 Download CSV",
             data=csv_data,
             file_name="batch_results.csv",
-            mime="text/csv"
+            mime="text/csv",
         )
 
     with col2:
         # Excel download (convert to bytes)
         buffer = io.BytesIO()
-        with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-            results_df.to_excel(writer, index=False, sheet_name='Results')
+        with pd.ExcelWriter(buffer, engine="xlsxwriter") as writer:
+            results_df.to_excel(writer, index=False, sheet_name="Results")
         excel_data = buffer.getvalue()
 
         st.download_button(
             label="📥 Download Excel",
             data=excel_data,
             file_name="batch_results.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
 
     with col3:
@@ -339,4 +347,6 @@ if st.session_state.batch_results is not None:
 
 # Footer
 st.divider()
-st.caption("💡 **Tip:** For large batches (>100 beams), consider running in headless mode via CLI.")
+st.caption(
+    "💡 **Tip:** For large batches (>100 beams), consider running in headless mode via CLI."
+)
