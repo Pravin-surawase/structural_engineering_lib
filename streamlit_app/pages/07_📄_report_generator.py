@@ -32,6 +32,137 @@ from streamlit_app.utils.pdf_generator import (
 )
 
 
+def _transform_design_data_for_pdf(design_result: dict, beam_inputs: dict) -> dict:
+    """Transform design result to format expected by PDF generator.
+
+    The PDF generator expects a specific data structure with keys like:
+    - inputs.span_m, inputs.width_mm, flexure.Mu_kNm, etc.
+
+    This function maps our actual data to that format.
+
+    Args:
+        design_result: Design result from api_wrapper
+        beam_inputs: Beam inputs from session state
+
+    Returns:
+        Transformed dict matching PDF generator expectations
+    """
+    # Get flexure and shear data with defaults
+    flexure = design_result.get("flexure", {})
+    shear = design_result.get("shear", {})
+    detailing = design_result.get("detailing", {})
+    compliance = design_result.get("compliance", {})
+
+    # Extract input values from beam_inputs
+    span_mm = beam_inputs.get("span_mm", 0)
+    b_mm = beam_inputs.get("b_mm", beam_inputs.get("width_mm", 0))
+    D_mm = beam_inputs.get("D_mm", beam_inputs.get("depth_mm", 0))
+    d_mm = beam_inputs.get("d_mm", 0)  # Already calculated
+    cover = beam_inputs.get("cover", beam_inputs.get("cover_mm", 30))
+
+    # Get factored moment and shear from inputs (the app uses these directly)
+    mu_knm = beam_inputs.get("mu_knm", 0)
+    vu_kn = beam_inputs.get("vu_kn", 0)
+
+    # Extract concrete grade (M25 -> 25)
+    fck = 25
+    grade_str = beam_inputs.get("concrete_grade", "M25")
+    if grade_str:
+        try:
+            fck = int(str(grade_str).replace("M", "").replace("m", ""))
+        except (ValueError, AttributeError):
+            fck = 25
+
+    # Steel grade (Fe500 -> 500)
+    fy = 500
+    steel_grade = beam_inputs.get("steel_grade", "Fe500")
+    if steel_grade:
+        try:
+            fy = int(str(steel_grade).replace("Fe", "").replace("fe", ""))
+        except (ValueError, AttributeError):
+            fy = 500
+
+    # Calculate effective depth if not provided
+    if d_mm <= 0 and D_mm > 0:
+        main_bar_dia = flexure.get("bar_dia", 16)
+        d_mm = D_mm - cover - main_bar_dia / 2
+
+    # Loading - the current app uses direct Mu and Vu inputs
+    # Try to get dead/live loads if available, otherwise estimate from factored values
+    dead_load = beam_inputs.get("dead_load", beam_inputs.get("dead_load_kN", 0))
+    live_load = beam_inputs.get("live_load", beam_inputs.get("live_load_kN", 0))
+
+    # If no dead/live loads but we have Mu, back-calculate an estimate
+    factored_load = 0.0
+    if dead_load == 0 and live_load == 0 and mu_knm > 0 and span_mm > 0:
+        # Mu = wu * L^2 / 8, so wu = 8 * Mu / L^2 (for simply supported)
+        span_m = span_mm / 1000
+        factored_load = (8 * mu_knm) / (span_m * span_m) if span_m > 0 else 0
+        # Assume 1.5 factor, so service load = factored / 1.5
+        service_load = factored_load / 1.5 if factored_load > 0 else 0
+        # Assume 60/40 dead/live split
+        dead_load = service_load * 0.6
+        live_load = service_load * 0.4
+    else:
+        factored_load = beam_inputs.get(
+            "factored_load", 1.5 * (dead_load + live_load) if (dead_load + live_load) > 0 else 0
+        )
+
+    # Build transformed dict
+    pdf_data = {
+        "inputs": {
+            "span_m": span_mm / 1000 if span_mm > 0 else 0,
+            "width_mm": b_mm,
+            "depth_mm": D_mm,
+            "effective_depth_mm": d_mm,
+            "cover_mm": cover,
+            "fck": fck,
+            "fy": fy,
+            "dead_load_kN": dead_load,
+            "live_load_kN": live_load,
+            "factored_load_kN": factored_load,
+        },
+        "flexure": {
+            # Use the input Mu, or the one from results
+            "Mu_kNm": mu_knm if mu_knm > 0 else flexure.get("mu_limit_knm", 0),
+            "Mu_lim_kNm": flexure.get("mu_limit_knm", flexure.get("Mu_lim_kNm", 0)),
+            "Ast_req_mm2": flexure.get("ast_required", flexure.get("Ast_req_mm2", 0)),
+            "Ast_min_mm2": flexure.get("ast_min", flexure.get("Ast_min_mm2", 0)),
+            "Ast_prov_mm2": flexure.get("ast_provided", flexure.get("Ast_prov_mm2", 0)),
+            "is_safe": flexure.get("is_safe", False),
+        },
+        "shear": {
+            # Use the input Vu, or the one from results
+            "Vu_kN": vu_kn if vu_kn > 0 else shear.get("vu_kn", 0),
+            "tau_v": shear.get("tv", shear.get("tau_v", 0)),
+            "tau_c": shear.get("tc", shear.get("tau_c", 0)),
+            "spacing_mm": shear.get("sv_required_mm", shear.get("spacing_mm", 0)),
+            "stirrup_legs": shear.get("stirrup_legs", 2),
+            "is_safe": shear.get("is_safe", False),
+        },
+        "detailing": {
+            "Ld_req_mm": detailing.get("ld_required", detailing.get("Ld_req_mm", 0)),
+            "Ld_avail_mm": detailing.get("ld_provided", detailing.get("Ld_avail_mm", 0)),
+            "is_safe": detailing.get("is_safe", True),  # Default to True if not checked
+        },
+        "compliance": {
+            "min_steel_ok": compliance.get("min_steel_ok", True),
+            "max_steel_ok": compliance.get("max_steel_ok", True),
+            "spacing_ok": compliance.get("spacing_ok", True),
+            "dev_length_ok": compliance.get("dev_length_ok", True),
+            "shear_reinf_ok": compliance.get("shear_reinf_ok", True),
+        },
+        "is_safe": design_result.get("is_safe", False),
+    }
+
+    # Copy BBS if present (using .get() for scanner compliance)
+    bbs_data = design_result.get("bbs")
+    if bbs_data is not None:
+        pdf_data["bbs"] = bbs_data
+
+    return pdf_data
+
+
 def render_page():
     """Render PDF Report Generator page."""
     st.title("📄 PDF Report Generator")
@@ -270,10 +401,17 @@ def render_page():
                     with open(logo_path, "wb") as f:
                         f.write(logo_file.getbuffer())
 
-                # Generate PDF
+                # Transform design data to PDF format
+                # Get beam_inputs from session state for full context
+                beam_inputs_for_pdf = st.session_state.get("beam_inputs", {})
+                pdf_design_data = _transform_design_data_for_pdf(
+                    design_result, beam_inputs_for_pdf
+                )
+
+                # Generate PDF with transformed data
                 generator = BeamDesignReportGenerator()
                 pdf_buffer = generator.generate_report(
-                    design_data=design_result,
+                    design_data=pdf_design_data,
                     project_info=project_info,
                     include_bbs=include_bbs,
                     include_diagrams=include_diagrams,
