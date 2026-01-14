@@ -39,6 +39,20 @@ except ImportError:
     HAS_COSTING = False
     STEEL_DENSITY_KG_PER_M3 = 7850000.0  # Fallback value
 
+# Import multi-objective optimizer for Pareto front
+try:
+    from structural_lib.multi_objective_optimizer import (
+        optimize_pareto_front,
+        get_design_explanation,
+        ParetoCandidate,
+    )
+
+    HAS_PARETO = True
+except ImportError:
+    HAS_PARETO = False
+    optimize_pareto_front = None
+    get_design_explanation = None
+
 from utils.api_wrapper import cached_smart_analysis
 from utils.layout import setup_page, page_header
 from utils.theme_manager import apply_dark_mode_theme, initialize_theme
@@ -237,6 +251,149 @@ def export_to_csv(comparison_data: list[dict]) -> bytes:
     output = io.StringIO()
     df.to_csv(output, index=False)
     return output.getvalue().encode("utf-8")
+
+
+def create_pareto_scatter(pareto_result: dict) -> go.Figure:
+    """
+    Create Pareto front scatter plot with 3 objectives.
+
+    Args:
+        pareto_result: Result from optimize_pareto_front().to_dict()
+
+    Returns:
+        Plotly Figure object
+    """
+    pareto_front = pareto_result.get("pareto_front", [])
+    if not pareto_front:
+        fig = go.Figure()
+        fig.add_annotation(
+            text="No Pareto-optimal designs found",
+            xref="paper",
+            yref="paper",
+            x=0.5,
+            y=0.5,
+            showarrow=False,
+            font=dict(size=16, color="gray"),
+        )
+        return fig
+
+    df = pd.DataFrame(pareto_front)
+
+    # Create 3D scatter plot for cost vs utilization vs steel weight
+    fig = go.Figure()
+
+    # Add Pareto front points
+    fig.add_trace(
+        go.Scatter(
+            x=df["utilization"],
+            y=df["cost"],
+            mode="markers+text",
+            marker=dict(
+                size=df["steel_weight_kg"] * 0.5 + 10,  # Size by weight
+                color=df["steel_weight_kg"],
+                colorscale="Viridis",
+                showscale=True,
+                colorbar=dict(title="Steel (kg)"),
+                line=dict(width=2, color="white"),
+            ),
+            text=df["bar_config"],
+            textposition="top center",
+            hovertemplate=(
+                "<b>%{text}</b><br>"
+                "Cost: ₹%{y:,.0f}<br>"
+                "Utilization: %{x:.1%}<br>"
+                "Steel: %{marker.color:.1f} kg<br>"
+                "<extra></extra>"
+            ),
+            name="Pareto Front",
+        )
+    )
+
+    # Highlight best designs
+    best_cost = pareto_result.get("best_by_cost")
+    if best_cost:
+        fig.add_trace(
+            go.Scatter(
+                x=[best_cost.get("utilization", 0)],
+                y=[best_cost.get("cost", 0)],
+                mode="markers",
+                marker=dict(size=20, color="green", symbol="star"),
+                name="Cheapest",
+                hovertemplate=(
+                    f"<b>Cheapest: {best_cost.get('bar_config', '')}</b><br>"
+                    f"Cost: ₹{best_cost.get('cost', 0):,.0f}<br>"
+                    "<extra></extra>"
+                ),
+            )
+        )
+
+    best_util = pareto_result.get("best_by_utilization")
+    if best_util and best_util != best_cost:
+        fig.add_trace(
+            go.Scatter(
+                x=[best_util.get("utilization", 0)],
+                y=[best_util.get("cost", 0)],
+                mode="markers",
+                marker=dict(size=20, color="blue", symbol="diamond"),
+                name="Most Efficient",
+                hovertemplate=(
+                    f"<b>Efficient: {best_util.get('bar_config', '')}</b><br>"
+                    f"Utilization: {best_util.get('utilization', 0):.1%}<br>"
+                    "<extra></extra>"
+                ),
+            )
+        )
+
+    fig.update_layout(
+        title="Pareto Front: Cost vs Utilization Trade-off",
+        xaxis=dict(
+            title="Capacity Utilization",
+            tickformat=".0%",
+            range=[0, 1.1],
+        ),
+        yaxis=dict(title="Total Cost (INR)", tickformat=","),
+        hovermode="closest",
+        height=500,
+        showlegend=True,
+        legend=dict(x=0.02, y=0.98),
+    )
+
+    return fig
+
+
+def run_pareto_optimization(inputs: dict) -> dict | None:
+    """
+    Run Pareto multi-objective optimization.
+
+    Args:
+        inputs: Design input parameters
+
+    Returns:
+        Dictionary with Pareto optimization results or None
+    """
+    if not HAS_PARETO or optimize_pareto_front is None:
+        st.error("❌ Multi-objective optimizer not available")
+        return None
+
+    # Validate inputs first
+    validation = validate_beam_inputs(inputs)
+    if not validation:
+        for error in validation.errors:
+            st.error(f"❌ Input validation failed: {error}")
+        return None
+
+    try:
+        result = optimize_pareto_front(
+            span_mm=inputs.get("span_mm", 5000),
+            mu_knm=inputs.get("mu_knm", 120),
+            vu_kn=inputs.get("vu_kn", 80),
+            objectives=["cost", "steel_weight", "utilization"],
+            max_candidates=50,
+        )
+        return result.to_dict()
+    except Exception as e:
+        st.error(f"❌ Pareto optimization failed: {str(e)}")
+        return None
 
 
 @error_boundary(fallback_value={"analysis": None, "comparison": []}, show_error=True)
@@ -509,17 +666,31 @@ def main():
 
     # Main area - Results
     if inputs:
-        # Run optimization button
-        if st.button("🚀 Run Cost Optimization", type="primary"):
-            with st.spinner("Optimizing design for minimum cost..."):
-                results = run_cost_optimization(inputs)
-                st.session_state.cost_results = results.get("analysis")
-                st.session_state.cost_comparison_data = results.get("comparison", [])
+        # Optimization mode selection
+        col_btn1, col_btn2 = st.columns(2)
+        with col_btn1:
+            if st.button("🚀 Quick Optimization", type="primary"):
+                with st.spinner("Optimizing design for minimum cost..."):
+                    results = run_cost_optimization(inputs)
+                    st.session_state.cost_results = results.get("analysis")
+                    st.session_state.cost_comparison_data = results.get(
+                        "comparison", []
+                    )
+
+        with col_btn2:
+            if HAS_PARETO:
+                if st.button("🎯 Pareto Multi-Objective", type="secondary"):
+                    with st.spinner("Finding Pareto-optimal designs..."):
+                        pareto_result = run_pareto_optimization(inputs)
+                        if pareto_result:
+                            st.session_state.pareto_results = pareto_result
 
         # Display results if available
         has_results = st.session_state.get("cost_results") is not None
         has_comparison = len(st.session_state.get("cost_comparison_data") or []) > 0
-        if has_results or has_comparison:
+        has_pareto = st.session_state.get("pareto_results") is not None
+
+        if has_results or has_comparison or has_pareto:
             st.success("✅ Optimization complete!")
 
             # Summary metrics
@@ -546,8 +717,13 @@ def main():
                 )
 
             # Tabs for different views
-            tab1, tab2, tab3 = st.tabs(
-                ["📈 Visualization", "📋 Comparison Table", "📥 Export"]
+            tab1, tab2, tab3, tab4 = st.tabs(
+                [
+                    "📈 Visualization",
+                    "🎯 Pareto Front",
+                    "📋 Comparison Table",
+                    "📥 Export",
+                ]
             )
 
             with tab1:
@@ -555,7 +731,7 @@ def main():
                 comparison_data = st.session_state.get("cost_comparison_data") or []
                 if comparison_data:
                     fig = create_cost_scatter(comparison_data)
-                    st.plotly_chart(fig, width="stretch")
+                    st.plotly_chart(fig, use_container_width=True)
 
                     st.markdown(
                         """
@@ -566,15 +742,208 @@ def main():
                     - **Target zone** = Lower-left (low cost, high efficiency)
                     """
                     )
+                else:
+                    st.info("Run Quick Optimization to see results.")
 
             with tab2:
+                st.subheader("🎯 Pareto Multi-Objective Optimization")
+                pareto_data = st.session_state.get("pareto_results")
+                if pareto_data:
+                    # Summary metrics for Pareto
+                    p_col1, p_col2, p_col3 = st.columns(3)
+                    p_col1.metric(
+                        "Pareto-Optimal Designs", pareto_data.get("pareto_count", 0)
+                    )
+                    p_col2.metric(
+                        "Total Candidates", pareto_data.get("total_candidates", 0)
+                    )
+                    p_col3.metric(
+                        "Computation Time",
+                        f"{pareto_data.get('computation_time_sec', 0):.3f}s",
+                    )
+
+                    # Pareto scatter plot
+                    fig = create_pareto_scatter(pareto_data)
+                    st.plotly_chart(fig, use_container_width=True)
+
+                    st.markdown("---")
+                    st.subheader("🏆 Best Designs by Objective")
+
+                    best_col1, best_col2, best_col3 = st.columns(3)
+
+                    with best_col1:
+                        st.markdown("**💰 Cheapest**")
+                        best_cost = pareto_data.get("best_by_cost")
+                        if best_cost:
+                            st.write(f"**{best_cost.get('bar_config', '')}**")
+                            st.write(f"Cost: ₹{best_cost.get('cost', 0):,.0f}")
+                            st.write(
+                                f"Utilization: {best_cost.get('utilization', 0):.1%}"
+                            )
+                            # Show governing clauses
+                            clauses = best_cost.get("governing_clauses", [])
+                            if clauses:
+                                st.markdown("**Why this design?**")
+                                for c in clauses[:2]:
+                                    st.caption(f"• {c}")
+
+                    with best_col2:
+                        st.markdown("**⚡ Most Efficient**")
+                        best_util = pareto_data.get("best_by_utilization")
+                        if best_util:
+                            st.write(f"**{best_util.get('bar_config', '')}**")
+                            st.write(f"Cost: ₹{best_util.get('cost', 0):,.0f}")
+                            st.write(
+                                f"Utilization: {best_util.get('utilization', 0):.1%}"
+                            )
+                            clauses = best_util.get("governing_clauses", [])
+                            if clauses:
+                                st.markdown("**Why this design?**")
+                                for c in clauses[:2]:
+                                    st.caption(f"• {c}")
+
+                    with best_col3:
+                        st.markdown("**🪶 Lightest**")
+                        best_wt = pareto_data.get("best_by_weight")
+                        if best_wt:
+                            st.write(f"**{best_wt.get('bar_config', '')}**")
+                            st.write(
+                                f"Steel: {best_wt.get('steel_weight_kg', 0):.1f} kg"
+                            )
+                            st.write(
+                                f"Utilization: {best_wt.get('utilization', 0):.1%}"
+                            )
+                            clauses = best_wt.get("governing_clauses", [])
+                            if clauses:
+                                st.markdown("**Why this design?**")
+                                for c in clauses[:2]:
+                                    st.caption(f"• {c}")
+
+                    # Interactive design selection
+                    st.markdown("---")
+                    st.subheader("📋 All Pareto-Optimal Designs")
+                    pareto_front = pareto_data.get("pareto_front", [])
+                    if pareto_front:
+                        # Create dataframe for display
+                        df_pareto = pd.DataFrame(pareto_front)
+                        display_cols = [
+                            "bar_config",
+                            "b_mm",
+                            "D_mm",
+                            "cost",
+                            "steel_weight_kg",
+                            "utilization",
+                        ]
+                        available_cols = [
+                            c for c in display_cols if c in df_pareto.columns
+                        ]
+                        df_display = df_pareto[available_cols].copy()
+                        df_display.columns = [
+                            "Config",
+                            "Width",
+                            "Depth",
+                            "Cost (₹)",
+                            "Steel (kg)",
+                            "Utilization",
+                        ]
+                        df_display["Cost (₹)"] = df_display["Cost (₹)"].apply(
+                            lambda x: f"₹{x:,.0f}"
+                        )
+                        df_display["Utilization"] = df_display["Utilization"].apply(
+                            lambda x: f"{x:.1%}"
+                        )
+                        df_display["Steel (kg)"] = df_display["Steel (kg)"].apply(
+                            lambda x: f"{x:.1f}"
+                        )
+                        st.dataframe(
+                            df_display, use_container_width=True, hide_index=True
+                        )
+
+                        # Design selection for WHY display
+                        st.markdown("---")
+                        st.subheader("🔍 Design Deep Dive")
+                        design_options = [
+                            d.get("bar_config", f"Design {i+1}")
+                            for i, d in enumerate(pareto_front)
+                        ]
+                        selected_design_idx = st.selectbox(
+                            "Select a design to see why it was chosen:",
+                            range(len(design_options)),
+                            format_func=lambda i: design_options[i],
+                        )
+
+                        if (
+                            selected_design_idx is not None
+                            and len(pareto_front) > selected_design_idx
+                        ):
+                            selected = pareto_front[selected_design_idx]
+                            st.markdown(
+                                f"### {selected.get('bar_config', '')} - {selected.get('b_mm', 0)}×{selected.get('D_mm', 0)}mm"
+                            )
+
+                            detail_col1, detail_col2 = st.columns(2)
+                            with detail_col1:
+                                st.markdown("**Design Parameters:**")
+                                st.write(f"- Width: {selected.get('b_mm', 0)} mm")
+                                st.write(f"- Depth: {selected.get('D_mm', 0)} mm")
+                                st.write(f"- Concrete: M{selected.get('fck_nmm2', 0)}")
+                                st.write(f"- Steel: Fe{selected.get('fy_nmm2', 0)}")
+
+                            with detail_col2:
+                                st.markdown("**Performance:**")
+                                st.write(
+                                    f"- Ast required: {selected.get('ast_required', 0):.0f} mm²"
+                                )
+                                st.write(
+                                    f"- Ast provided: {selected.get('ast_provided', 0):.0f} mm²"
+                                )
+                                st.write(
+                                    f"- Total cost: ₹{selected.get('cost', 0):,.0f}"
+                                )
+                                st.write(
+                                    f"- Steel weight: {selected.get('steel_weight_kg', 0):.2f} kg"
+                                )
+
+                            # WHY section - governing clauses
+                            st.markdown("---")
+                            st.markdown("### ⚖️ Why This Design? (IS 456 Clauses)")
+                            clauses = selected.get("governing_clauses", [])
+                            if clauses:
+                                for clause in clauses:
+                                    st.info(f"📖 {clause}")
+                            else:
+                                st.write(
+                                    "Standard flexural design per IS 456:2000 Cl. 38.1"
+                                )
+
+                            # Utilization insight
+                            util = selected.get("utilization", 0)
+                            if util > 0.85:
+                                st.success(
+                                    "✅ **High Efficiency** (>85% utilization) - Excellent use of material capacity"
+                                )
+                            elif util > 0.7:
+                                st.info(
+                                    "✅ **Good Efficiency** (70-85% utilization) - Well-balanced design"
+                                )
+                            else:
+                                st.warning(
+                                    "⚠️ **Low Efficiency** (<70% utilization) - Consider smaller section if possible"
+                                )
+                else:
+                    st.info(
+                        "👆 Click '🎯 Pareto Multi-Objective' button above to find "
+                        "Pareto-optimal designs with multiple trade-offs (cost vs efficiency vs weight)."
+                    )
+
+            with tab3:
                 st.subheader("Design Alternatives Comparison")
                 comparison_data = st.session_state.get("cost_comparison_data") or []
                 if comparison_data:
                     df_display = create_comparison_table(comparison_data)
                     st.dataframe(
                         df_display,
-                        width="stretch",
+                        use_container_width=True,
                         height=400,
                     )
 
@@ -582,30 +951,48 @@ def main():
                         "💡 Click column headers to sort. "
                         "Use Export tab to download as CSV."
                     )
+                else:
+                    st.info("Run Quick Optimization to see comparison table.")
 
-            with tab3:
+            with tab4:
                 st.subheader("Export Results")
                 comparison_data = st.session_state.get("cost_comparison_data") or []
+                pareto_data = st.session_state.get("pareto_results")
+
                 if comparison_data:
+                    st.markdown("**Quick Optimization Results:**")
                     csv_data = export_to_csv(comparison_data)
 
                     st.download_button(
-                        label="📥 Download CSV",
+                        label="📥 Download Quick Optimization CSV",
                         data=csv_data,
                         file_name="cost_optimization_results.csv",
                         mime="text/csv",
                     )
 
+                if pareto_data and pareto_data.get("pareto_front"):
+                    st.markdown("**Pareto Optimization Results:**")
+                    pareto_csv = export_to_csv(pareto_data.get("pareto_front", []))
+
+                    st.download_button(
+                        label="📥 Download Pareto Front CSV",
+                        data=pareto_csv,
+                        file_name="pareto_optimization_results.csv",
+                        mime="text/csv",
+                    )
+
+                if not comparison_data and not pareto_data:
+                    st.info("No data to export. Run optimization first.")
+                else:
                     st.markdown(
                         """
                     **CSV includes:**
                     - All design parameters (b, D, fck, fy)
-                    - Cost breakdown (concrete, steel, formwork)
+                    - Cost breakdown
                     - Performance metrics (utilization, steel area)
+                    - Governing IS 456 clauses (for Pareto results)
                     """
                     )
-                else:
-                    st.info("No data to export. Run optimization first.")
         else:
             st.info("👆 Click 'Run Cost Optimization' to see results")
 
