@@ -56,8 +56,18 @@ def render_page():
         )
         return
 
-    # Check if design results exist
-    if 'design_result' not in st.session_state:
+    # Check if design results exist (check multiple possible locations)
+    design_result = None
+    if 'design_results' in st.session_state:
+        design_result = st.session_state['design_results']
+    elif 'design_result' in st.session_state:
+        design_result = st.session_state['design_result']
+    elif 'beam_inputs' in st.session_state:
+        beam_inputs = st.session_state['beam_inputs']
+        if isinstance(beam_inputs, dict):
+            design_result = beam_inputs.get('design_result')
+
+    if not design_result:
         st.warning(
             "⚠️ No design results available. Please complete a beam design first."
         )
@@ -66,6 +76,9 @@ def render_page():
             "then return here to generate the report."
         )
         return
+
+    # Store reference for later use
+    st.session_state['_current_design_result'] = design_result
 
     st.divider()
 
@@ -173,7 +186,21 @@ def render_page():
     )
 
     # Design summary (from session state)
-    design_result = st.session_state['design_result']
+    design_result = st.session_state.get('_current_design_result', {})
+
+    # Get beam inputs for display (stored separately from design results)
+    beam_inputs = st.session_state.get('beam_inputs', {})
+    span_mm = beam_inputs.get('span_mm', 0)
+    b_mm = beam_inputs.get('b_mm', 0)
+    D_mm = beam_inputs.get('D_mm', 0)
+    fck = 25  # Default
+    if beam_inputs.get('concrete_grade'):
+        # Extract grade number from "M25" -> 25
+        grade_str = beam_inputs.get('concrete_grade', 'M25')
+        try:
+            fck = int(grade_str.replace('M', ''))
+        except (ValueError, AttributeError):
+            fck = 25
 
     with st.expander("📊 Design Summary (from current session)"):
         col1, col2, col3 = st.columns(3)
@@ -181,33 +208,37 @@ def render_page():
         with col1:
             st.metric(
                 "Span",
-                f"{design_result.get('inputs', {}).get('span_m', 0):.1f} m"
+                f"{span_mm / 1000:.1f} m"
             )
             st.metric(
                 "Width",
-                f"{design_result.get('inputs', {}).get('width_mm', 0):.0f} mm"
+                f"{b_mm:.0f} mm"
             )
 
         with col2:
             flexure = design_result.get('flexure', {})
+            # Try multiple possible keys for steel area
+            ast_prov = flexure.get('Ast_prov_mm2') or flexure.get('ast_provided') or flexure.get('ast_prov') or 0
             st.metric(
                 "Main Steel",
-                f"{flexure.get('Ast_prov_mm2', 0):.0f} mm²"
+                f"{ast_prov:.0f} mm²"
             )
             st.metric(
                 "Status",
-                "✓ SAFE" if flexure.get('is_safe', False) else "✗ UNSAFE"
+                "✓ SAFE" if design_result.get('is_safe', False) else "✗ UNSAFE"
             )
 
         with col3:
             shear = design_result.get('shear', {})
+            # Try multiple possible keys for spacing
+            spacing = shear.get('spacing_mm') or shear.get('spacing') or shear.get('sv_required_mm') or 0
             st.metric(
                 "Stirrups",
-                f"@ {shear.get('spacing_mm', 0):.0f} mm"
+                f"@ {spacing:.0f} mm"
             )
             st.metric(
                 "Grade",
-                f"M{design_result.get('inputs', {}).get('fck', 0):.0f}"
+                f"M{fck:.0f}"
             )
 
     st.divider()
