@@ -953,7 +953,8 @@ def get_creep_coefficient(
     theta = theta_0 * age_factor * rh_factor
 
     # Limit to reasonable range (0.8 to 4.0)
-    return max(0.8, min(4.0, theta))
+    result: float = max(0.8, min(4.0, theta))
+    return result
 
 
 def calculate_shrinkage_curvature(
@@ -1017,7 +1018,8 @@ def calculate_shrinkage_curvature(
 
     phi_sh = numerator / denominator
 
-    return abs(phi_sh)
+    result: float = abs(phi_sh)
+    return result
 
 
 def calculate_creep_deflection(
