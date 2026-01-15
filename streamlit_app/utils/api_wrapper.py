@@ -41,6 +41,8 @@ try:
     from structural_lib.rebar_optimizer import optimize_bar_arrangement
     from structural_lib.detailing import calculate_bar_spacing, check_min_spacing
     from structural_lib.codes.is456.shear import select_stirrup_diameter
+    from structural_lib.codes.is456.load_analysis import compute_bmd_sfd
+    from structural_lib.data_types import LoadDefinition, LoadType
 
     _LIBRARY_AVAILABLE = True
 except ImportError as e:
@@ -52,6 +54,9 @@ except ImportError as e:
     calculate_bar_spacing = None
     check_min_spacing = None
     select_stirrup_diameter = None
+    compute_bmd_sfd = None
+    LoadDefinition = None
+    LoadType = None
 
 
 def _manual_bar_arrangement(
@@ -710,6 +715,128 @@ def cached_smart_analysis(
         "cost": None,
         "suggestions": None,
         "analysis": None,
+        "_source": "fallback",
+        "_library_available": _LIBRARY_AVAILABLE,
+    }
+
+
+@st.cache_data
+def cached_bmd_sfd(
+    span_mm: float,
+    support_condition: str,
+    udl_kn_m: float = 0.0,
+    point_load_kn: float = 0.0,
+    point_load_position_mm: float = None,
+) -> dict:
+    """
+    Cached BMD/SFD computation using structural_lib.
+
+    Computes bending moment diagram and shear force diagram for a beam
+    with specified loading conditions.
+
+    Args:
+        span_mm: Beam span length (mm)
+        support_condition: "simply_supported" or "cantilever"
+        udl_kn_m: Uniformly distributed load (kN/m). Optional.
+        point_load_kn: Point load magnitude (kN). Optional.
+        point_load_position_mm: Position of point load from left (mm).
+                                Default: mid-span for simply supported,
+                                free end for cantilever.
+
+    Returns:
+        Dict with keys:
+        - positions_mm: List of positions along span
+        - bmd_knm: List of bending moments
+        - sfd_kn: List of shear forces
+        - max_moment: Maximum bending moment (kN·m)
+        - max_shear: Maximum shear force (kN)
+        - critical_points: List of critical points
+        - _source: "structural_lib" or "fallback"
+        - _library_available: bool
+
+    Example:
+        >>> result = cached_bmd_sfd(
+        ...     span_mm=6000, support_condition="simply_supported",
+        ...     udl_kn_m=20.0
+        ... )
+        >>> print(f"Max moment: {result['max_moment']:.1f} kN·m")
+        Max moment: 90.0 kN·m
+    """
+    if _LIBRARY_AVAILABLE and compute_bmd_sfd is not None:
+        try:
+            # Build load definitions
+            loads = []
+
+            if udl_kn_m > 0:
+                loads.append(LoadDefinition(LoadType.UDL, magnitude=udl_kn_m))
+
+            if point_load_kn > 0:
+                # Default position: mid-span for SS, free end for cantilever
+                if point_load_position_mm is None:
+                    if support_condition == "simply_supported":
+                        point_load_position_mm = span_mm / 2
+                    else:  # cantilever
+                        point_load_position_mm = span_mm
+
+                loads.append(
+                    LoadDefinition(
+                        LoadType.POINT,
+                        magnitude=point_load_kn,
+                        position_mm=point_load_position_mm,
+                    )
+                )
+
+            # If no loads specified, use minimal UDL
+            if not loads:
+                loads.append(LoadDefinition(LoadType.UDL, magnitude=1.0))
+
+            # Compute BMD/SFD
+            result = compute_bmd_sfd(span_mm, support_condition, loads)
+
+            return {
+                "positions_mm": result.positions_mm,
+                "bmd_knm": result.bmd_knm,
+                "sfd_kn": result.sfd_kn,
+                "max_moment": result.max_bm_knm,
+                "max_shear": result.max_sf_kn,
+                "critical_points": result.critical_points,
+                "_source": "structural_lib",
+                "_library_available": True,
+            }
+
+        except Exception as e:
+            st.warning(f"⚠️ BMD/SFD computation error: {str(e)[:100]}")
+
+    # Fallback - simple parabolic BMD for UDL, linear SFD
+    num_points = 101
+    positions_mm = [span_mm * i / (num_points - 1) for i in range(num_points)]
+
+    # Derive equivalent UDL from any available load
+    w = udl_kn_m if udl_kn_m > 0 else 10.0  # Default 10 kN/m
+    L = span_mm / 1000.0  # Convert to meters
+
+    if support_condition == "simply_supported":
+        # Parabolic BMD: M(x) = wx(L-x)/2
+        # Linear SFD: V(x) = wL/2 - wx
+        bmd_knm = [w * (x / 1000) * (L - x / 1000) / 2 for x in positions_mm]
+        sfd_kn = [w * L / 2 - w * (x / 1000) for x in positions_mm]
+        max_moment = w * L**2 / 8
+        max_shear = w * L / 2
+    else:  # cantilever
+        # BMD: M(x) = -wx²/2 (max at support)
+        # SFD: V(x) = w(L-x)
+        bmd_knm = [-w * (x / 1000) ** 2 / 2 for x in positions_mm]
+        sfd_kn = [w * (L - x / 1000) for x in positions_mm]
+        max_moment = w * L**2 / 2
+        max_shear = w * L
+
+    return {
+        "positions_mm": positions_mm,
+        "bmd_knm": bmd_knm,
+        "sfd_kn": sfd_kn,
+        "max_moment": max_moment,
+        "max_shear": max_shear,
+        "critical_points": [],
         "_source": "fallback",
         "_library_available": _LIBRARY_AVAILABLE,
     }
