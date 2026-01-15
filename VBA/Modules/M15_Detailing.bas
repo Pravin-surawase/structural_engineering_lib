@@ -538,3 +538,142 @@ Public Sub Create_Beam_Detailing(ByVal beam_id As String, _
         result.remarks = "Spacing violation: " & spacingWarnings
     End If
 End Sub
+
+
+' ==============================================================================
+' Anchorage Functions (v0.18+) - IS 456 Cl 26.2.2
+' ==============================================================================
+
+' ------------------------------------------------------------------------------
+' Function:     Get_Min_Bend_Radius
+' Description:  Returns minimum internal bend radius per IS 456 Cl 26.2.2.1
+' Args:         bar_dia - Bar diameter (mm)
+'               bar_type - "deformed" or "plain"
+' Returns:      Minimum internal radius (mm)
+' Reference:    IS 456:2000 Cl 26.2.2.1
+'               - Bars ? 25mm: 2?
+'               - Bars > 25mm: 3?
+'               - Plain bars: 2? (all sizes)
+' ------------------------------------------------------------------------------
+Public Function Get_Min_Bend_Radius(ByVal bar_dia As Double, _
+                                    Optional ByVal bar_type As String = "deformed") As Double
+    If bar_dia <= 0# Then
+        Get_Min_Bend_Radius = 0#
+        Exit Function
+    End If
+
+    If LCase(bar_type) = "plain" Then
+        Get_Min_Bend_Radius = 2# * bar_dia
+        Exit Function
+    End If
+
+    ' Deformed bars
+    If bar_dia <= 25# Then
+        Get_Min_Bend_Radius = 2# * bar_dia
+    Else
+        Get_Min_Bend_Radius = 3# * bar_dia
+    End If
+End Function
+
+
+' ------------------------------------------------------------------------------
+' Function:     Calculate_Standard_Hook
+' Description:  Calculates standard hook dimensions per IS 456 Cl 26.2.2
+' Args:         bar_dia - Bar diameter (mm)
+'               hook_type - "90", "135", or "180"
+'               bar_type - "deformed" or "plain"
+'               result - HookDimensions UDT to populate (ByRef)
+' Reference:    IS 456:2000 Cl 26.2.2, SP 34:1987
+'               - 180° hook: 4? extension minimum
+'               - 135° hook: 6? extension (seismic/stirrups)
+'               - 90° hook: 12? extension
+'               - Equivalent length: 8? deformed, 16? plain
+' ------------------------------------------------------------------------------
+Public Sub Calculate_Standard_Hook(ByVal bar_dia As Double, _
+                                   ByVal hook_type As String, _
+                                   Optional ByVal bar_type As String = "deformed", _
+                                   ByRef result As HookDimensions)
+    Dim r As Double
+    Dim ext As Double
+    Dim equiv As Double
+    Dim arc As Double
+    Dim angle_deg As Double
+
+    If bar_dia <= 0# Then Exit Sub
+
+    ' Validate hook type
+    If hook_type <> "90" And hook_type <> "135" And hook_type <> "180" Then
+        hook_type = "180"  ' Default
+    End If
+
+    ' Internal bend radius
+    r = Get_Min_Bend_Radius(bar_dia, bar_type)
+
+    ' Extension after bend
+    Select Case hook_type
+        Case "180"
+            ext = Application.WorksheetFunction.Max(4# * bar_dia, 65#)
+        Case "135"
+            ext = 6# * bar_dia
+        Case "90"
+            ext = 12# * bar_dia
+    End Select
+
+    ' Equivalent development length contribution
+    If LCase(bar_type) = "deformed" Then
+        equiv = 8# * bar_dia
+    Else
+        equiv = 16# * bar_dia
+    End If
+
+    ' Arc length calculation
+    angle_deg = CDbl(hook_type)
+    arc = (angle_deg * PI / 180#) * (r + bar_dia / 2#)
+
+    ' Populate result
+    result.HookType = hook_type
+    result.BarDia = bar_dia
+    result.InternalRadius = Round(r, 0)
+    result.Extension = Round(ext, 0)
+    result.EquivalentLength = Round(equiv, 0)
+    result.TotalLength = Round(arc + ext, 0)
+End Sub
+
+
+' ------------------------------------------------------------------------------
+' Function:     Calculate_Stirrup_Anchorage
+' Description:  Returns stirrup hook requirements per IS 456 Cl 26.2.2.2
+' Args:         stirrup_dia - Stirrup bar diameter (mm)
+'               is_seismic - True for IS 13920 requirements
+' Returns:      Required hook angle (135 for seismic, 90 otherwise)
+' Reference:    IS 456:2000 Cl 26.2.2.2, IS 13920:2016 Cl 6.3.5
+' ------------------------------------------------------------------------------
+Public Function Get_Stirrup_Hook_Angle(ByVal stirrup_dia As Double, _
+                                       Optional ByVal is_seismic As Boolean = False) As Long
+    If is_seismic Then
+        Get_Stirrup_Hook_Angle = 135  ' IS 13920 requirement
+    Else
+        Get_Stirrup_Hook_Angle = 90   ' Standard hook
+    End If
+End Function
+
+
+' ------------------------------------------------------------------------------
+' Function:     Get_Stirrup_Extension
+' Description:  Returns minimum stirrup hook extension
+' Args:         stirrup_dia - Stirrup bar diameter (mm)
+'               hook_angle - 90 or 135 degrees
+' Returns:      Extension length (mm)
+' Reference:    IS 456:2000 Cl 26.2.2.2
+'               - 90°: 6? or 75mm, whichever is greater
+'               - 135°: 6? extension
+' ------------------------------------------------------------------------------
+Public Function Get_Stirrup_Extension(ByVal stirrup_dia As Double, _
+                                      Optional ByVal hook_angle As Long = 90) As Double
+    If hook_angle = 135 Then
+        Get_Stirrup_Extension = 6# * stirrup_dia
+    Else
+        Get_Stirrup_Extension = Application.WorksheetFunction.Max(6# * stirrup_dia, 75#)
+    End If
+End Function
+

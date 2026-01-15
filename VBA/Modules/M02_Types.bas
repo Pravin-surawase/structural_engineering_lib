@@ -165,6 +165,28 @@ End Type
 ' BBS Types (v0.9+)
 ' ------------------------------------------------------------------------------
 
+' Slenderness check result (v0.18+) - IS 456 Cl 23.3
+Public Type SlendernessResult
+    IsOK As Boolean                 ' True if passes slenderness check
+    IsSlender As Boolean            ' True if utilization > 80%
+    SlendernessRatio As Double      ' l_eff / b
+    SlendernessLimit As Double      ' Limit per beam type
+    Utilization As Double           ' Ratio / Limit
+    DepthWidthRatio As Double       ' D / b
+    Remarks As String
+    Assumptions As String
+End Type
+
+' Hook dimensions (v0.18+) - IS 456 Cl 26.2.2
+Public Type HookDimensions
+    HookType As String              ' "90", "135", or "180"
+    BarDia As Double                ' Bar diameter (mm)
+    InternalRadius As Double        ' Internal bend radius (mm)
+    Extension As Double             ' Straight extension (mm)
+    EquivalentLength As Double      ' Anchorage contribution (mm)
+    TotalLength As Double           ' Total bar consumed (mm)
+End Type
+
 ' Single line item in a Bar Bending Schedule
 Public Type BBSLineItem
     bar_mark As String      ' Unique identifier (e.g., "A1", "B1", "S1")

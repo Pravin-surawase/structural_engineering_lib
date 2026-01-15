@@ -261,3 +261,127 @@ Public Function Check_CrackWidth(
     res.Assumptions = assumptions
     Check_CrackWidth = res
 End Function
+
+
+' ==============================================================================
+' Slenderness Check (IS 456 Cl 23.3) - v0.18+
+' ==============================================================================
+
+' Slenderness limits per beam type (IS 456 Cl 23.3)
+Private Const SLENDERNESS_LIMIT_SIMPLY_SUPPORTED As Double = 60#
+Private Const SLENDERNESS_LIMIT_CONTINUOUS As Double = 60#
+Private Const SLENDERNESS_LIMIT_CANTILEVER As Double = 25#
+Private Const DEPTH_WIDTH_WARNING As Double = 4#
+
+' ------------------------------------------------------------------------------
+' Function:     Get_Slenderness_Limit
+' Description:  Returns slenderness limit (l_eff/b) for beam type
+' Args:         support - SupportCondition enum
+' Returns:      Slenderness limit per IS 456 Cl 23.3
+' Reference:    IS 456:2000 Cl 23.3
+' ------------------------------------------------------------------------------
+Public Function Get_Slenderness_Limit(ByVal support As SupportCondition) As Double
+    Select Case support
+        Case SupportCondition.Cantilever
+            Get_Slenderness_Limit = SLENDERNESS_LIMIT_CANTILEVER
+        Case SupportCondition.SimplySupported
+            Get_Slenderness_Limit = SLENDERNESS_LIMIT_SIMPLY_SUPPORTED
+        Case SupportCondition.Continuous
+            Get_Slenderness_Limit = SLENDERNESS_LIMIT_CONTINUOUS
+        Case Else
+            Get_Slenderness_Limit = SLENDERNESS_LIMIT_SIMPLY_SUPPORTED
+    End Select
+End Function
+
+
+' ------------------------------------------------------------------------------
+' Function:     Calculate_Slenderness_Ratio
+' Description:  Calculates slenderness ratio l_eff/b
+' Args:         l_eff_mm - Effective unsupported length (mm)
+'               b_mm - Width of compression flange (mm)
+' Returns:      Slenderness ratio (dimensionless)
+' Reference:    IS 456:2000 Cl 23.3
+' ------------------------------------------------------------------------------
+Public Function Calculate_Slenderness_Ratio(ByVal l_eff_mm As Double, _
+                                            ByVal b_mm As Double) As Double
+    If l_eff_mm <= 0# Or b_mm <= 0# Then
+        Calculate_Slenderness_Ratio = 0#
+        Exit Function
+    End If
+
+    Calculate_Slenderness_Ratio = l_eff_mm / b_mm
+End Function
+
+
+' ------------------------------------------------------------------------------
+' Function:     Check_Beam_Slenderness
+' Description:  Comprehensive slenderness check per IS 456 Cl 23.3
+' Args:         b_mm - Beam width (mm)
+'               D_mm - Overall beam depth (mm)
+'               l_eff_mm - Effective unsupported length (mm)
+'               support_condition - "simply_supported", "continuous", "cantilever"
+'               has_lateral_restraint - True if slab on top restrains laterally
+' Returns:      SlendernessResult UDT
+' Reference:    IS 456:2000 Cl 23.3
+' ------------------------------------------------------------------------------
+Public Function Check_Beam_Slenderness(ByVal b_mm As Double, _
+                                       ByVal D_mm As Double, _
+                                       ByVal l_eff_mm As Double, _
+                                       Optional ByVal support_condition As String = "simply_supported", _
+                                       Optional ByVal has_lateral_restraint As Boolean = False) As SlendernessResult
+
+    Dim res As SlendernessResult
+    Dim assumptions As String
+    Dim support As SupportCondition
+
+    ' Validate inputs
+    If b_mm <= 0# Or D_mm <= 0# Or l_eff_mm <= 0# Then
+        res.IsOK = False
+        res.Remarks = "Invalid input: b_mm, D_mm, and l_eff_mm must be > 0."
+        res.Assumptions = "Invalid inputs provided"
+        Check_Beam_Slenderness = res
+        Exit Function
+    End If
+
+    ' Normalize support condition
+    support = _NormalizeSupport(support_condition, assumptions)
+
+    ' Calculate ratios
+    res.SlendernessRatio = l_eff_mm / b_mm
+    res.SlendernessLimit = Get_Slenderness_Limit(support)
+    res.DepthWidthRatio = D_mm / b_mm
+    res.Utilization = res.SlendernessRatio / res.SlendernessLimit
+
+    ' Check lateral restraint
+    If has_lateral_restraint Then
+        assumptions = _AppendAssumption(assumptions, "Beam has lateral restraint (slab on top).")
+        res.IsOK = True
+        res.IsSlender = False
+        res.Remarks = "OK: Laterally restrained beam"
+        res.Assumptions = assumptions
+        Check_Beam_Slenderness = res
+        Exit Function
+    End If
+
+    ' Check slenderness
+    res.IsOK = (res.SlendernessRatio <= res.SlendernessLimit)
+    res.IsSlender = (res.Utilization > 0.8)
+
+    ' Build remarks
+    If res.IsOK Then
+        res.Remarks = "OK: L/b=" & Format$(res.SlendernessRatio, "0.00") & _
+                      " <= limit=" & CStr(res.SlendernessLimit)
+    Else
+        res.Remarks = "NOT OK: L/b=" & Format$(res.SlendernessRatio, "0.00") & _
+                      " > limit=" & CStr(res.SlendernessLimit)
+    End If
+
+    ' Add warning for deep beams
+    If res.DepthWidthRatio > DEPTH_WIDTH_WARNING Then
+        res.Remarks = res.Remarks & " | Warning: D/b=" & Format$(res.DepthWidthRatio, "0.00") & _
+                      " > " & CStr(DEPTH_WIDTH_WARNING) & " - consider lateral buckling"
+    End If
+
+    res.Assumptions = assumptions
+    Check_Beam_Slenderness = res
+End Function
