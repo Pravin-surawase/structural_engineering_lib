@@ -438,6 +438,32 @@ class TestComputeRebarPositions:
 
         assert positions == []
 
+    def test_invalid_layers_raises(self):
+        """Test invalid layer count raises ValueError."""
+        with pytest.raises(ValueError):
+            compute_rebar_positions(
+                beam_width=300,
+                beam_depth=450,
+                cover=40,
+                bar_count=2,
+                bar_dia=16,
+                stirrup_dia=8,
+                layers=0,
+            )
+
+    def test_insufficient_width_raises(self):
+        """Test insufficient beam width raises ValueError."""
+        with pytest.raises(ValueError):
+            compute_rebar_positions(
+                beam_width=100,
+                beam_depth=450,
+                cover=40,
+                bar_count=2,
+                bar_dia=25,
+                stirrup_dia=8,
+                is_top=False,
+            )
+
     def test_4_bars_single_layer(self):
         """Test 4 bars evenly distributed."""
         positions = compute_rebar_positions(
@@ -598,6 +624,26 @@ class TestComputeStirrupPositions:
         )
 
         assert all(0 < p < 4000 for p in positions)
+
+    def test_invalid_spacing_raises(self):
+        """Test invalid spacing raises ValueError."""
+        with pytest.raises(ValueError):
+            compute_stirrup_positions(
+                span=4000,
+                stirrup_spacing_start=0,
+                stirrup_spacing_mid=150,
+                stirrup_spacing_end=100,
+            )
+
+    def test_invalid_span_raises(self):
+        """Test invalid span raises ValueError."""
+        with pytest.raises(ValueError):
+            compute_stirrup_positions(
+                span=0,
+                stirrup_spacing_start=100,
+                stirrup_spacing_mid=150,
+                stirrup_spacing_end=100,
+            )
 
 
 # =============================================================================

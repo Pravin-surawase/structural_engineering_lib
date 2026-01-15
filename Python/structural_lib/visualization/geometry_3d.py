@@ -384,6 +384,9 @@ def compute_rebar_positions(
     Returns:
         List of Point3D positions (x=0) for each bar
 
+    Raises:
+        ValueError: If geometry inputs are invalid or bars cannot fit.
+
     Example:
         >>> positions = compute_rebar_positions(
         ...     beam_width=300, beam_depth=450, cover=40,
@@ -399,6 +402,15 @@ def compute_rebar_positions(
     """
     if bar_count <= 0:
         return []
+
+    if beam_width <= 0 or beam_depth <= 0:
+        raise ValueError("beam_width and beam_depth must be positive.")
+    if cover < 0:
+        raise ValueError("cover must be non-negative.")
+    if bar_dia <= 0 or stirrup_dia <= 0:
+        raise ValueError("bar_dia and stirrup_dia must be positive.")
+    if layers <= 0:
+        raise ValueError("layers must be at least 1.")
 
     # Calculate Z position (height from soffit)
     edge_distance = cover + stirrup_dia + bar_dia / 2
@@ -416,6 +428,10 @@ def compute_rebar_positions(
     # Calculate Y positions (across width)
     # Available width between stirrups
     available_width = beam_width - 2 * (cover + stirrup_dia) - bar_dia
+    if available_width < 0:
+        raise ValueError(
+            "beam_width is too small for the specified cover/stirrup/bar diameters."
+        )
 
     # Distribute bars across layers
     bars_per_layer = math.ceil(bar_count / layers) if layers > 0 else bar_count
@@ -533,6 +549,9 @@ def compute_stirrup_positions(
     Returns:
         List of X positions for stirrup placement
 
+    Raises:
+        ValueError: If span or spacing inputs are non-positive.
+
     Example:
         >>> positions = compute_stirrup_positions(
         ...     span=4000,
@@ -546,6 +565,17 @@ def compute_stirrup_positions(
     Reference:
         IS 456:2000, Cl 26.5.1.5 (stirrup spacing requirements)
     """
+    if span <= 0:
+        raise ValueError("span must be positive.")
+    if stirrup_spacing_start <= 0:
+        raise ValueError("stirrup_spacing_start must be positive.")
+    if stirrup_spacing_mid <= 0:
+        raise ValueError("stirrup_spacing_mid must be positive.")
+    if stirrup_spacing_end <= 0:
+        raise ValueError("stirrup_spacing_end must be positive.")
+    if zone_length is not None and zone_length <= 0:
+        raise ValueError("zone_length must be positive when provided.")
+
     if zone_length is None:
         zone_length = span / 4
 

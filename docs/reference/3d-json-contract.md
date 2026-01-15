@@ -358,6 +358,9 @@ geometry = beam_to_3d_geometry(detailing, is_seismic=True)
 # Serialize to JSON
 json_str = json.dumps(geometry.to_dict(), indent=2)
 
+# Shortcut: direct JSON payload
+json_payload = detailing.to_3d_json(is_seismic=True)
+
 # Send via postMessage to iframe
 send_to_viewer(json_str)
 ```
