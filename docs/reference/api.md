@@ -2857,7 +2857,7 @@ geometry = Beam3DGeometry(
     concrete_outline=[...],  # 8 corner points
     rebars=[...],
     stirrups=[...],
-    metadata={"fck": 25, "fy": 500}
+    metadata={"cover": 40, "isValid": True, "remarks": "Detailing complete"}
 )
 geometry.to_dict()  # JSON for Three.js
 ```
