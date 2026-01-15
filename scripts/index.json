@@ -233,10 +233,14 @@
       }
     },
     "governance": {
-      "description": "Governance and compliance",
+      "description": "Governance, metrics, and compliance",
       "scripts": {
         "governance_session.sh": "Governance check session",
         "weekly_governance_check.sh": "Weekly governance audit",
+        "predict_velocity.py": "Predict development velocity and burnout risk (TASK-287)",
+        "governance_health_score.py": "Calculate governance health score 0-100 (TASK-289)",
+        "analyze_release_cadence.py": "Analyze and recommend optimal release cadence (TASK-288)",
+        "collect_metrics.sh": "Collect project metrics for governance analysis",
         "check_next_session_brief_length.py": "Check brief length limits",
         "copilot_setup.sh": "Setup copilot instructions",
         "lint_docs_git_examples.sh": "Lint git examples in docs"
