@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-16 (Session 35 - 3D Visualization Phase 0 Complete)
+**Updated:** 2026-01-16 (Session 35 - 3D Visualization Phase 0 in review)
 
-> **Session 35 Progress:** TASK-3D-01 through TASK-3D-05 completed. 3D visualization MVP: geometry_3d module (~700 LOC), Three.js iframe viewer, Streamlit component, 59 tests, API integration. 5 commits on PR branch `task/TASK-3D-01`.
+> **Session 35 Progress:** PR #373 open for TASK-3D-01 through TASK-3D-05 (Phase 0 MVP). CI fixes in progress before merge.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -58,7 +58,7 @@
 > **Goal:** Continue modern Streamlit patterns across remaining pages
 > **Estimated:** 4-6 hours across 2-3 sessions
 > **Actual:** 3 hours across 2 sessions (Sessions 29-30)
-> **Completion:** 2026-01-17
+> **Completion:** 2026-01-15
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
@@ -166,19 +166,19 @@
 
 > **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. All PRs merged.
 
-### 3D Visualization Program — Phase 0 (Feasibility + Library Prep) ✅ COMPLETE
+### 3D Visualization Program — Phase 0 (Feasibility + Library Prep) 🟡 IN REVIEW
 
 > **Goal:** Prove Streamlit iframe/postMessage in production, ship a professional 3D data contract, and prep core library geometry.
 > **Decision:** If iframe is blocked, ship Plotly 3D MVP while continuing library geometry work.
-> **Completion:** Session 35 (2026-01-16) - PR branch `task/TASK-3D-01`
+> **Completion:** Pending PR #373 merge (branch `task/TASK-3D-01`)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-3D-01** | Streamlit Cloud iframe + postMessage POC (go/no-go) | DEVOPS | 1d | 🔴 HIGH | ✅ Done (850e560) |
-| **TASK-3D-02** | Define 3D JSON contract + sample payload + api.md entry | DOCS | 1d | 🔴 HIGH | ✅ Done (850e560) |
-| **TASK-3D-03** | Add `structural_lib.visualization.geometry_3d` core dataclasses + compute functions | DEV | 2d | 🔴 HIGH | ✅ Done (850e560) |
-| **TASK-3D-04** | Implement `BeamDetailingResult.to_3d_json()` | DEV | 1d | 🟠 MEDIUM | ✅ Done (via beam_to_3d_geometry) |
-| **TASK-3D-05** | Geometry tests (>=90% module coverage) | TESTER | 1d | 🟠 MEDIUM | ✅ Done (59 tests, 2d51bff) |
+| **TASK-3D-01** | Streamlit Cloud iframe + postMessage POC (go/no-go) | DEVOPS | 1d | 🔴 HIGH | 🟡 In review (PR #373) |
+| **TASK-3D-02** | Define 3D JSON contract + sample payload + api.md entry | DOCS | 1d | 🔴 HIGH | 🟡 In review (PR #373) |
+| **TASK-3D-03** | Add `structural_lib.visualization.geometry_3d` core dataclasses + compute functions | DEV | 2d | 🔴 HIGH | 🟡 In review (PR #373) |
+| **TASK-3D-04** | Implement `BeamDetailingResult.to_3d_json()` | DEV | 1d | 🟠 MEDIUM | 🟡 In review (PR #373) |
+| **TASK-3D-05** | Geometry tests (>=90% module coverage) | TESTER | 1d | 🟠 MEDIUM | 🟡 In review (PR #373) |
 | **TASK-3D-06** | Automation: `check_3d_payload.py` + pre-commit/CI hook | DEVOPS | 1d | 🟠 MEDIUM | ⏳ Backlog (V1.1) |
 
 **Technical Achievements:**
@@ -281,11 +281,6 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| **TASK-3D-01** | Streamlit iframe POC: Three.js viewer, postMessage, demo page | MAIN | ✅ Session 35 (850e560) |
-| **TASK-3D-02** | 3D JSON contract: TypeScript types, sample payloads, coordinate system | MAIN | ✅ Session 35 (850e560) |
-| **TASK-3D-03** | geometry_3d module: 5 dataclasses, 5 functions, ~700 LOC | MAIN | ✅ Session 35 (850e560) |
-| **TASK-3D-04** | beam_to_3d_geometry(): Integration with BeamDetailingResult | MAIN | ✅ Session 35 (850e560) |
-| **TASK-3D-05** | Geometry tests: 59 tests (48 unit + 11 integration), 100% pass | MAIN | ✅ Session 35 (2d51bff) |
 | **TASK-287** | Predictive Velocity Modeling: EMA-based velocity prediction + burnout risk assessment | MAIN | ✅ Session 34 (59925cc) |
 | **TASK-288** | Release Cadence Optimization: Analyze releases + recommend optimal cadence | MAIN | ✅ Session 34 (59925cc) |
 | **TASK-289** | Governance Health Score: 0-100 composite score + 5-component breakdown | MAIN | ✅ Session 34 (59925cc) |

@@ -78,9 +78,15 @@ class TestBeamTo3DGeometryIntegration:
         # Should have both top and bottom bars
         assert len(geometry.rebars) > 0
 
-        bar_types = {r.bar_type for r in geometry.rebars}
-        assert "bottom" in bar_types
-        assert "top" in bar_types
+        bottom_rebars = [r for r in geometry.rebars if r.bar_type == "bottom"]
+        top_rebars = [r for r in geometry.rebars if r.bar_type == "top"]
+        assert bottom_rebars
+        assert top_rebars
+
+        expected_bottom = max(arr.count for arr in sample_detailing.bottom_bars)
+        expected_top = max(arr.count for arr in sample_detailing.top_bars)
+        assert len(bottom_rebars) == expected_bottom
+        assert len(top_rebars) == expected_top
 
         # Check bar IDs are unique
         bar_ids = [r.bar_id for r in geometry.rebars]
@@ -136,6 +142,13 @@ class TestBeamTo3DGeometryIntegration:
         assert parsed["beamId"] == "B1"
         assert parsed["version"] == "1.0.0"
 
+    def test_to_3d_json_method(self, sample_detailing):
+        """Test BeamDetailingResult.to_3d_json() convenience method."""
+        payload = sample_detailing.to_3d_json(is_seismic=True)
+
+        assert payload["beamId"] == "B1"
+        assert payload["metadata"]["isSeismic"] is True
+
     def test_json_schema_compliance(self, sample_detailing):
         """Test JSON output matches BeamGeometry3D schema."""
         geometry = beam_to_3d_geometry(sample_detailing)
@@ -143,8 +156,14 @@ class TestBeamTo3DGeometryIntegration:
 
         # Required top-level fields
         required_fields = [
-            "beamId", "story", "dimensions", "concreteOutline",
-            "rebars", "stirrups", "metadata", "version"
+            "beamId",
+            "story",
+            "dimensions",
+            "concreteOutline",
+            "rebars",
+            "stirrups",
+            "metadata",
+            "version",
         ]
         for field in required_fields:
             assert field in d, f"Missing required field: {field}"

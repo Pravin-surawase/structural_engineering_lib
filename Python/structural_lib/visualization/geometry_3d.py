@@ -647,6 +647,7 @@ def beam_to_3d_geometry(
     Note:
         Currently generates simplified geometry with:
         - Straight bars (no hooks/bends)
+        - Zone bars deduplicated (mid zone treated as full-length)
         - Uniform stirrup spacing per zone
 
         Future versions will add:
@@ -666,64 +667,61 @@ def beam_to_3d_geometry(
     rebars: list[RebarPath] = []
     bar_id_counter = 0
 
-    # Process bottom bars (3 zones: start, mid, end)
-    for zone_idx, zone_name in enumerate(["start", "mid", "end"]):
-        bar_arr = detailing.bottom_bars[zone_idx]
-        positions = compute_rebar_positions(
-            beam_width=b,
-            beam_depth=D,
-            cover=cover,
-            bar_count=bar_arr.count,
-            bar_dia=bar_arr.diameter,
-            stirrup_dia=detailing.stirrups[0].diameter,
-            is_top=False,
-            layers=bar_arr.layers,
-        )
+    def add_zone_rebars(
+        arrangements: list,
+        bar_type: str,
+        is_top: bool,
+    ) -> None:
+        nonlocal bar_id_counter
+        seen_positions: set[tuple[float, float]] = set()
 
-        for pos in positions:
-            bar_id_counter += 1
-            # Create straight segment along span
-            start = Point3D(0.0, pos.y, pos.z)
-            end = Point3D(span, pos.y, pos.z)
-            segment = RebarSegment(start, end, bar_arr.diameter, "straight")
-            path = RebarPath(
-                bar_id=f"B{bar_id_counter}",
-                segments=[segment],
-                diameter=bar_arr.diameter,
-                bar_type="bottom",
-                zone=zone_name if zone_name != "mid" else "full",
+        zone_specs = [
+            (1, "full"),  # mid zone as canonical full-length bars
+            (0, "start"),
+            (2, "end"),
+        ]
+
+        for zone_idx, zone_label in zone_specs:
+            if zone_idx >= len(arrangements):
+                continue
+
+            bar_arr = arrangements[zone_idx]
+            if bar_arr.count <= 0:
+                continue
+
+            positions = compute_rebar_positions(
+                beam_width=b,
+                beam_depth=D,
+                cover=cover,
+                bar_count=bar_arr.count,
+                bar_dia=bar_arr.diameter,
+                stirrup_dia=detailing.stirrups[0].diameter,
+                is_top=is_top,
+                layers=bar_arr.layers,
             )
-            rebars.append(path)
-            break  # Only process once per zone for now (TODO: zone-specific bars)
 
-    # Process top bars (3 zones: start, mid, end)
-    for zone_idx, zone_name in enumerate(["start", "mid", "end"]):
-        bar_arr = detailing.top_bars[zone_idx]
-        positions = compute_rebar_positions(
-            beam_width=b,
-            beam_depth=D,
-            cover=cover,
-            bar_count=bar_arr.count,
-            bar_dia=bar_arr.diameter,
-            stirrup_dia=detailing.stirrups[0].diameter,
-            is_top=True,
-            layers=bar_arr.layers,
-        )
+            for pos in positions:
+                key = (round(pos.y, 2), round(pos.z, 2))
+                if key in seen_positions:
+                    continue
+                seen_positions.add(key)
+                bar_id_counter += 1
 
-        for pos in positions:
-            bar_id_counter += 1
-            start = Point3D(0.0, pos.y, pos.z)
-            end = Point3D(span, pos.y, pos.z)
-            segment = RebarSegment(start, end, bar_arr.diameter, "straight")
-            path = RebarPath(
-                bar_id=f"T{bar_id_counter}",
-                segments=[segment],
-                diameter=bar_arr.diameter,
-                bar_type="top",
-                zone=zone_name if zone_name != "mid" else "full",
-            )
-            rebars.append(path)
-            break  # Only process once per zone for now
+                start = Point3D(0.0, pos.y, pos.z)
+                end = Point3D(span, pos.y, pos.z)
+                segment = RebarSegment(start, end, bar_arr.diameter, "straight")
+                path = RebarPath(
+                    bar_id=f"{'T' if is_top else 'B'}{bar_id_counter}",
+                    segments=[segment],
+                    diameter=bar_arr.diameter,
+                    bar_type=bar_type,
+                    zone=zone_label,
+                )
+                rebars.append(path)
+
+    # Process bottom and top bars (deduplicate across zones)
+    add_zone_rebars(detailing.bottom_bars, bar_type="bottom", is_top=False)
+    add_zone_rebars(detailing.top_bars, bar_type="top", is_top=True)
 
     # Generate stirrups
     stirrup_x_positions = compute_stirrup_positions(

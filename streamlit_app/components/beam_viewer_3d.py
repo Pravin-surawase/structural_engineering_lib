@@ -95,6 +95,7 @@ def render_beam_3d(
         html_content,
         height=height,
         scrolling=False,
+        key=key,
     )
 
 

@@ -18,75 +18,7 @@ st.set_page_config(
     layout="wide",
 )
 
-from streamlit_app.components.beam_viewer_3d import (
-    create_demo_geometry,
-    render_beam_3d,
-)
-
-
-def main():
-    """Main demo page."""
-    st.title("🏗️ 3D Beam Viewer Demo")
-    st.markdown("""
-    This page demonstrates the **Three.js-based 3D beam visualization** component.
-
-    **Features:**
-    - 🖱️ **Rotate**: Click and drag
-    - 🔍 **Zoom**: Scroll wheel
-    - 🎯 **Pan**: Right-click and drag
-    - 📊 **Info Panel**: Shows beam dimensions and rebar count
-    """)
-
-    st.divider()
-
-    # Sidebar controls
-    with st.sidebar:
-        st.header("⚙️ Beam Parameters")
-
-        beam_id = st.text_input("Beam ID", value="B1")
-        story = st.text_input("Story", value="Ground Floor")
-
-        st.subheader("Dimensions")
-        width = st.slider("Width (b)", 200, 600, 300, 25)
-        depth = st.slider("Depth (D)", 300, 900, 450, 25)
-        span = st.slider("Span", 2000, 8000, 4000, 500)
-
-        st.subheader("Reinforcement")
-        num_bottom_bars = st.slider("Bottom Bars", 2, 6, 3)
-        num_top_bars = st.slider("Top Bars", 2, 4, 2)
-        bottom_dia = st.selectbox("Bottom Bar Dia", [12, 16, 20, 25], index=1)
-        top_dia = st.selectbox("Top Bar Dia", [10, 12, 16, 20], index=1)
-
-        st.subheader("Stirrups")
-        stirrup_dia = st.selectbox("Stirrup Dia", [6, 8, 10], index=1)
-        stirrup_spacing = st.slider("Stirrup Spacing", 75, 200, 100, 25)
-        is_seismic = st.checkbox("Seismic Detailing (135° hooks)", value=True)
-
-        render_btn = st.button("🔄 Update 3D View", type="primary", use_container_width=True)
-
-    # Generate custom geometry based on inputs
-    geometry = generate_geometry(
-        beam_id=beam_id,
-        story=story,
-        b=width,
-        D=depth,
-        span=span,
-        num_bottom_bars=num_bottom_bars,
-        num_top_bars=num_top_bars,
-        bottom_dia=bottom_dia,
-        top_dia=top_dia,
-        stirrup_dia=stirrup_dia,
-        stirrup_spacing=stirrup_spacing,
-        is_seismic=is_seismic,
-    )
-
-    # Render the 3D viewer
-    st.subheader(f"📐 Beam {beam_id} — {story}")
-    render_beam_3d(geometry, height=650)
-
-    # Show geometry summary
-    with st.expander("📋 Geometry Data (JSON)", expanded=False):
-        st.json(geometry)
+from streamlit_app.components.beam_viewer_3d import render_beam_3d
 
 
 def generate_geometry(
@@ -209,6 +141,74 @@ def generate_geometry(
         },
         "version": "1.0.0",
     }
+
+
+def main():
+    """Main demo page."""
+    st.title("🏗️ 3D Beam Viewer Demo")
+    st.markdown("""
+    This page demonstrates the **Three.js-based 3D beam visualization** component.
+
+    **Features:**
+    - 🖱️ **Rotate**: Click and drag
+    - 🔍 **Zoom**: Scroll wheel
+    - 🎯 **Pan**: Right-click and drag
+    - 📊 **Info Panel**: Shows beam dimensions and rebar count
+    """)
+
+    st.divider()
+
+    # Sidebar controls
+    with st.sidebar:
+        st.header("⚙️ Beam Parameters")
+
+        beam_id = st.text_input("Beam ID", value="B1")
+        story = st.text_input("Story", value="Ground Floor")
+
+        st.subheader("Dimensions")
+        width = st.slider("Width (b)", 200, 600, 300, 25)
+        depth = st.slider("Depth (D)", 300, 900, 450, 25)
+        span = st.slider("Span", 2000, 8000, 4000, 500)
+
+        st.subheader("Reinforcement")
+        num_bottom_bars = st.slider("Bottom Bars", 2, 6, 3)
+        num_top_bars = st.slider("Top Bars", 2, 4, 2)
+        bottom_dia = st.selectbox("Bottom Bar Dia", [12, 16, 20, 25], index=1)
+        top_dia = st.selectbox("Top Bar Dia", [10, 12, 16, 20], index=1)
+
+        st.subheader("Stirrups")
+        stirrup_dia = st.selectbox("Stirrup Dia", [6, 8, 10], index=1)
+        stirrup_spacing = st.slider("Stirrup Spacing", 75, 200, 100, 25)
+        is_seismic = st.checkbox("Seismic Detailing (135° hooks)", value=True)
+
+        render_btn = st.button("🔄 Update 3D View", type="primary", use_container_width=True)
+
+    # Generate custom geometry based on inputs
+    if render_btn or "beam_geometry" not in st.session_state:
+        st.session_state["beam_geometry"] = generate_geometry(
+            beam_id=beam_id,
+            story=story,
+            b=width,
+            D=depth,
+            span=span,
+            num_bottom_bars=num_bottom_bars,
+            num_top_bars=num_top_bars,
+            bottom_dia=bottom_dia,
+            top_dia=top_dia,
+            stirrup_dia=stirrup_dia,
+            stirrup_spacing=stirrup_spacing,
+            is_seismic=is_seismic,
+        )
+
+    geometry = st.session_state["beam_geometry"]
+
+    # Render the 3D viewer
+    st.subheader(f"📐 Beam {beam_id} — {story}")
+    render_beam_3d(geometry, height=650)
+
+    # Show geometry summary
+    with st.expander("📋 Geometry Data (JSON)", expanded=False):
+        st.json(geometry)
 
 
 if __name__ == "__main__":

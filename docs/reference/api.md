@@ -2936,6 +2936,9 @@ geometry = beam_to_3d_geometry(detailing, is_seismic=True)
 
 # Step 3: Export to JSON for Three.js
 json_data = json.dumps(geometry.to_dict(), indent=2)
+
+# Shortcut: generate JSON directly from detailing
+json_payload = detailing.to_3d_json(is_seismic=True)
 ```
 
 ### 15.6 JSON Schema
