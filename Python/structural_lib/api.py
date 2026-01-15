@@ -73,6 +73,15 @@ from .torsion import (
     calculate_torsion_stirrup_area,
     design_torsion,
 )
+from .etabs_import import (
+    ETABSEnvelopeResult,
+    ETABSForceRow,
+    create_job_from_etabs,
+    create_jobs_from_etabs_csv,
+    load_etabs_csv,
+    normalize_etabs_forces,
+    validate_etabs_csv,
+)
 
 __all__ = [
     # Version
@@ -131,6 +140,14 @@ __all__ = [
     "calculate_torsion_stirrup_area",
     "calculate_longitudinal_torsion_steel",
     "TorsionResult",
+    # ETABS Integration (CSV Import)
+    "validate_etabs_csv",
+    "load_etabs_csv",
+    "normalize_etabs_forces",
+    "create_job_from_etabs",
+    "create_jobs_from_etabs_csv",
+    "ETABSForceRow",
+    "ETABSEnvelopeResult",
 ]
 
 

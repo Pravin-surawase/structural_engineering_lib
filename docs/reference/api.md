@@ -4,13 +4,13 @@
 **Audience:** Developers
 **Status:** Production Ready
 **Importance:** Critical
-**Version:** 0.17.5
+**Version:** 0.17.6
 **Created:** 2025-01-01
 **Last Updated:** 2026-01-15<br>
 
 ---
 
-**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI). All APIs protected against accidental breaking changes.
+**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI, torsion, serviceability Level A/B/C, ETABS import). All APIs protected against accidental breaking changes.
 
 ---
 
@@ -1498,6 +1498,142 @@ def calculate_short_term_deflection(
     support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
 ) -> float  # Returns delta_short in mm
 ```
+
+### 5.5 Deflection Check (Separate Creep/Shrinkage) — Level C (v0.17.6+)
+
+**Status:** New in v0.17.6. Full creep and shrinkage separation per IS 456 Annex C.
+
+Level C provides the most accurate deflection calculation by computing creep and shrinkage components separately, rather than using a combined long-term factor. This is recommended for:
+- Important structures requiring precise deflection estimates
+- Unusual loading durations or environmental conditions
+- Post-tensioned or long-span beams
+
+**Units:**
+- Dimensions: **mm**
+- Moments: **kN·m**
+- Areas: **mm²**
+- Stresses: **N/mm²**
+- Curvatures: **1/mm**
+
+**Python:**
+```python
+def check_deflection_level_c(
+    *,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    ma_total_knm: float,          # Total service moment
+    ma_sustained_knm: float,      # Sustained (DL + sustained LL) portion
+    ast_mm2: float,
+    fck_nmm2: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+    asc_mm2: float = 0.0,
+    age_at_loading_days: int = 28,
+    relative_humidity: float = 50.0,
+    shrinkage_strain: float = 0.0003,  # εcs, typical 0.0003
+    deflection_limit_ratio: float = 250.0,
+    es_nmm2: float = 200000.0,
+) -> DeflectionLevelCResult
+```
+
+**Behavior (Level C):**
+- Computes creep coefficient θ per IS 456 Annex C based on age and humidity
+- Calculates shrinkage curvature φsh from εcs and steel ratios
+- Computes separate deflection components:
+  - **Immediate:** From total service moment using Ieff
+  - **Creep:** From sustained moment × creep coefficient
+  - **Shrinkage:** From curvature × K × L² (K depends on support condition)
+- Total deflection: δtotal = δimmediate + δcreep + δshrinkage
+- Checks against limit L/250 (configurable)
+
+**Return Type:**
+- `DeflectionLevelCResult`: dataclass containing:
+  - `mcr_knm`: Cracking moment (kN·m)
+  - `igross_mm4`: Gross moment of inertia (mm⁴)
+  - `icr_mm4`: Cracked moment of inertia (mm⁴)
+  - `ieff_mm4`: Effective moment of inertia (mm⁴)
+  - `delta_immediate_mm`: Immediate deflection (mm)
+  - `delta_creep_mm`: Creep deflection component (mm)
+  - `delta_shrinkage_mm`: Shrinkage deflection component (mm)
+  - `delta_total_mm`: Total deflection (mm)
+  - `delta_limit_mm`: Allowable deflection (mm)
+  - `creep_coefficient`: θ value used
+  - `shrinkage_curvature`: φsh value used (1/mm)
+  - `is_ok`: Whether total deflection is within limit
+  - `remarks`: Status description
+
+**Example:**
+```python
+from structural_lib.codes.is456 import serviceability
+
+result = serviceability.check_deflection_level_c(
+    b_mm=300,
+    D_mm=500,
+    d_mm=450,
+    span_mm=6000,
+    ma_total_knm=80,       # Total service moment
+    ma_sustained_knm=50,   # DL + sustained LL portion
+    ast_mm2=1200,
+    fck_nmm2=25,
+    age_at_loading_days=28,
+    relative_humidity=60,
+    shrinkage_strain=0.0003,
+)
+
+print(f"Immediate: {result.delta_immediate_mm:.1f} mm")
+print(f"Creep: {result.delta_creep_mm:.1f} mm")
+print(f"Shrinkage: {result.delta_shrinkage_mm:.1f} mm")
+print(f"Total: {result.delta_total_mm:.1f} mm (limit: {result.delta_limit_mm:.1f} mm)")
+print(f"Status: {'OK' if result.is_ok else 'FAIL'}")
+```
+
+### 5.6 Level C Helper Functions
+
+```python
+def get_creep_coefficient(
+    *,
+    age_at_loading_days: int = 28,
+    relative_humidity: float = 50.0,
+    base_creep: float = 2.2,
+) -> float  # Returns θ (typically 0.8 to 4.0)
+
+def calculate_shrinkage_curvature(
+    *,
+    shrinkage_strain: float,      # εcs (typically 0.0003)
+    ast_mm2: float,
+    asc_mm2: float,
+    b_mm: float,
+    d_mm: float,
+    es_nmm2: float = 200000.0,
+    fck_nmm2: float = 25.0,
+) -> float  # Returns φsh in 1/mm
+
+def calculate_creep_deflection(
+    *,
+    delta_sustained_mm: float,    # Deflection from sustained loads
+    creep_coefficient: float,     # θ from get_creep_coefficient()
+) -> float  # Returns δcreep in mm
+
+def calculate_shrinkage_deflection(
+    *,
+    shrinkage_curvature: float,   # φsh from calculate_shrinkage_curvature()
+    span_mm: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+) -> float  # Returns δshrinkage in mm (uses K×L² formula)
+```
+
+**Comparison of Deflection Levels:**
+
+| Aspect | Level A | Level B | Level C |
+|--------|---------|---------|---------|
+| Method | Span/depth ratio | Curvature + combined factor | Separate creep/shrinkage |
+| Accuracy | Approximate | Good | Best |
+| Inputs needed | Span, depth | + Ast, moment | + Age, humidity, εcs |
+| Long-term handling | Implicit in L/d limits | Combined factor (1.5-2.0) | Separate θ and φsh |
+| Use case | Quick checks | Normal design | Critical structures |
+| IS 456 reference | Cl 23.2 | Cl 23.2 + Annex C | Full Annex C |
+
 ---
 ## 6. Compliance Checker (`compliance.py`) (v0.8+)
 **Goal:** One-click verdict across checks with clear “why fail” remarks.
@@ -2313,3 +2449,185 @@ python -m structural_lib design beams.csv -o results.json --insights
 - [Insights User Guide](../getting-started/insights-guide.md)
 - [Insights API Reference](insights-api.md)
 - [Sensitivity Analysis Blog Post](../publications/blog-posts/03-sensitivity-analysis/)
+
+---
+
+## 14. ETABS Integration Module (`etabs_import.py`) — v0.17.6+
+
+**Status:** New in v0.17.6. CSV-first workflow for ETABS beam force import.
+
+This module provides utilities for importing ETABS beam force exports and converting them to the structural_engineering_lib job format. The workflow is CSV-first (no COM/API dependencies), making it portable across Windows, Mac, and Linux.
+
+**Typical Workflow:**
+1. Export from ETABS: Display → Show Tables → Element Forces - Beams
+2. Save as CSV
+3. Use this module to normalize and convert to job.json format
+
+### 14.1 Data Classes
+
+**ETABSForceRow:**
+```python
+@dataclass
+class ETABSForceRow:
+    """Parsed row from ETABS beam forces export."""
+    story: str        # Floor/level name (e.g., "Story1", "Level 2")
+    beam_id: str      # Beam label (e.g., "B1", "B2")
+    case_id: str      # Load combination name (e.g., "1.5(DL+LL)")
+    station: float    # Location along beam (mm or m)
+    m3: float         # Bending moment M3 about local 3 axis (kN·m)
+    v2: float         # Shear force V2 in local 2 plane (kN)
+    unique_name: str = ""  # Internal ETABS ID (optional)
+    p: float = 0.0   # Axial force (kN), usually 0 for beams
+```
+
+**ETABSEnvelopeResult:**
+```python
+@dataclass
+class ETABSEnvelopeResult:
+    """Envelope result for a beam across all stations."""
+    story: str         # Floor/level name
+    beam_id: str       # Beam label
+    case_id: str       # Load combination name
+    mu_knm: float      # Maximum absolute moment (kN·m)
+    vu_kn: float       # Maximum absolute shear (kN)
+    station_count: int = 1  # Number of output stations processed
+```
+
+### 14.2 CSV Validation
+
+```python
+def validate_etabs_csv(
+    csv_path: str | Path,
+) -> tuple[bool, list[str], dict[str, str]]
+```
+
+Validates ETABS CSV file structure and returns:
+- `is_valid`: True if all required columns found
+- `issues`: List of issue messages
+- `column_map`: Mapping of internal names to actual column names
+
+**Supported Column Names (flexible matching):**
+- Story: `Story`, `Level`, `Floor`
+- Beam ID: `Label`, `Frame`, `Element`, `Beam`, `Name`
+- Case: `Output Case`, `Load Case/Combo`, `Load Case`, `Combo`, `Case`
+- Station: `Station`, `Distance`, `Location`, `Loc`
+- M3: `M3`, `Moment3`, `Mz`, `BendingMoment`
+- V2: `V2`, `Shear2`, `Vy`, `ShearForce`
+
+### 14.3 CSV Loading
+
+```python
+def load_etabs_csv(
+    csv_path: str | Path,
+    *,
+    station_multiplier: float = 1.0,
+) -> list[ETABSForceRow]
+```
+
+Loads and parses ETABS beam forces CSV file. Use `station_multiplier=1000` if stations are in meters.
+
+### 14.4 Force Normalization (Envelope)
+
+```python
+def normalize_etabs_forces(
+    csv_path: str | Path,
+    *,
+    station_multiplier: float = 1.0,
+) -> list[ETABSEnvelopeResult]
+```
+
+Normalizes forces to envelope values (max absolute per beam/case). Groups by `(story, beam_id, case_id)` and takes maximum absolute M3 and V2 across all stations.
+
+### 14.5 Job Creation
+
+**Single Beam:**
+```python
+def create_job_from_etabs(
+    envelope_data: ETABSEnvelopeResult,
+    *,
+    b_mm: float,
+    D_mm: float,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+    cover_mm: float = 40.0,
+    span_mm: float | None = None,
+) -> dict[str, Any]  # Returns JobSpec-compatible dict
+```
+
+**Batch Processing:**
+```python
+def create_jobs_from_etabs_csv(
+    csv_path: str | Path,
+    *,
+    beam_properties: dict[str, dict[str, Any]],  # beam_id -> {b_mm, D_mm, ...}
+    default_properties: dict[str, Any] | None = None,
+    station_multiplier: float = 1.0,
+    output_dir: str | Path | None = None,
+) -> list[dict[str, Any]]  # Returns list of JobSpecs
+```
+
+### 14.6 Complete Example
+
+```python
+from structural_lib.etabs_import import (
+    validate_etabs_csv,
+    normalize_etabs_forces,
+    create_job_from_etabs,
+    create_jobs_from_etabs_csv,
+)
+
+# Step 1: Validate CSV
+is_valid, issues, col_map = validate_etabs_csv("ETABS_export.csv")
+if not is_valid:
+    print("Issues:", issues)
+    exit(1)
+
+# Step 2: Get envelope forces
+envelope = normalize_etabs_forces("ETABS_export.csv")
+print(f"Found {len(envelope)} beam/case combinations")
+
+# Step 3: Create job for single beam
+for env in envelope:
+    if env.beam_id == "B1":
+        job = create_job_from_etabs(
+            env,
+            b_mm=300,
+            D_mm=500,
+            fck_nmm2=25,
+            span_mm=5000,
+        )
+        print(f"Job for {env.beam_id}: Mu={env.mu_knm:.1f} kN·m, Vu={env.vu_kn:.1f} kN")
+
+# Alternative: Batch process all beams
+beam_props = {
+    "B1": {"b_mm": 300, "D_mm": 500, "span_mm": 5000},
+    "B2": {"b_mm": 300, "D_mm": 600, "span_mm": 6000},
+}
+jobs = create_jobs_from_etabs_csv(
+    "ETABS_export.csv",
+    beam_properties=beam_props,
+    default_properties={"fck_nmm2": 25, "fy_nmm2": 500},
+    output_dir="./jobs/",
+)
+print(f"Generated {len(jobs)} job files")
+```
+
+### 14.7 API Access
+
+All ETABS functions are available from the main API:
+
+```python
+from structural_lib import api
+
+# Validate
+is_valid, issues, col_map = api.validate_etabs_csv("export.csv")
+
+# Load and normalize
+envelope = api.normalize_etabs_forces("export.csv")
+
+# Create jobs
+job = api.create_job_from_etabs(envelope[0], b_mm=300, D_mm=500)
+```
+
+**Further Reading:**
+- [ETABS Integration Guide](../_archive/misc/etabs-integration.md)
