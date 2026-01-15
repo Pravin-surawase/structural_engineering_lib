@@ -4,7 +4,7 @@
 **Audience:** Developers
 **Status:** Production Ready
 **Importance:** Critical
-**Version:** 0.16.6
+**Version:** 0.17.5
 **Created:** 2025-01-01
 **Last Updated:** 2026-01-15<br>
 
@@ -760,6 +760,7 @@ def get_library_version() -> str
 def validate_job_spec(path: str) -> ValidationReport
 def validate_design_results(path: str) -> ValidationReport
 def check_beam_ductility(b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float) -> DuctileBeamResult
+def check_beam_slenderness(b_mm: float, d_mm: float, l_eff_mm: float, beam_type: str = "simply_supported", has_lateral_restraint: bool = False) -> SlendernessResult
 def check_deflection_span_depth(span_mm: float, d_mm: float, support_condition: str = "simply_supported", ...) -> DeflectionResult
 def check_crack_width(exposure_class: str = "moderate", limit_mm: float | None = None, ...) -> CrackWidthResult
 def check_compliance_report(
@@ -815,6 +816,10 @@ def smart_analyze_design(
 ```
 
 Notes:
+- `check_beam_slenderness()` (v0.17.5+) checks lateral stability per IS 456 Cl 23.3.
+  Returns `SlendernessResult` with `is_ok`, `slenderness_ratio`, `limit`, and `message`.
+  Supports beam types: 'simply_supported', 'continuous', 'cantilever'.
+  Set `has_lateral_restraint=True` when slab provides lateral support to compression flange.
 - `check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m) and does
   not accept a `units` argument. Use `check_beam_is456()` when you want explicit
   unit validation at the API boundary.

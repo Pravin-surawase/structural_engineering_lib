@@ -1,8 +1,8 @@
 {
-  "generated": "2026-01-13",
+  "generated": "2026-01-15",
   "module": "structural_lib.api",
   "python": "3.11.14",
-  "count": 38,
+  "count": 39,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -78,6 +78,11 @@
       "name": "check_beam_is456",
       "kind": "function",
       "signature": "(*, units: 'str', cases: 'Sequence[dict[str, Any]]', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, deflection_defaults: 'DeflectionParams | None' = None, crack_width_defaults: 'CrackWidthParams | None' = None) -> 'ComplianceReport'"
+    },
+    {
+      "name": "check_beam_slenderness",
+      "kind": "function",
+      "signature": "(b_mm: 'float', d_mm: 'float', l_eff_mm: 'float', beam_type: 'str' = 'simply_supported', has_lateral_restraint: 'bool' = False) -> 'slenderness.SlendernessResult'"
     },
     {
       "name": "check_compliance_report",
