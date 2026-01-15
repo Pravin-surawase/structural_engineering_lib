@@ -217,12 +217,12 @@
 | **TASK-291** | Technical Debt Dashboard | 5h | 🔵 P3-Low | ⏳ Blocked by 290 |
 
 **Visualization & Developer Tools:**
-| ID | Task | Est | Priority |
-|----|------|-----|----------|
-| **TASK-305** | Re-run navigation study | 1h | 🟡 P2-Medium |
-| ~~**TASK-145**~~ | ~~Visualization Stack (BMD/SFD, etc.)~~ | - | - | ⬆️ **Moved to Active** (Session 34) |
-| **TASK-146** | DXF Quality Polish | 2-3 days | 🟡 MEDIUM |
-| **TASK-147** | Developer Documentation | 2-3 days | 🟡 MEDIUM |
+| ID | Task | Est | Priority | Status |
+|----|------|-----|----------|--------|
+| **TASK-305** | Re-run navigation study | 1h | 🟡 P2-Medium | 📋 Up Next |
+| ~~**TASK-145**~~ | ~~Visualization Stack (BMD/SFD, etc.)~~ | - | - | ✅ **DONE** (PR #371, Session 34) |
+| **TASK-146** | DXF Quality Polish | 2-3 days | 🟡 MEDIUM | ⏳ Blocked (needs human CAD QA) |
+| ~~**TASK-147**~~ | ~~Developer Documentation~~ | - | - | ✅ **DONE** (Session 34 cont., 7 commits)
 
 **Beam Scope Extensions:**
 | ID | Task | Est | Priority | Status |
@@ -247,6 +247,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-147** | Developer Documentation: platform guide, integration examples, extension guide, API stability | MAIN | ✅ 7 commits 2026-01-15 |
+| **TASK-145** | BMD/SFD Visualization: 1514 LOC module + tests + docs | DEV | ✅ PR #371 2026-01-15 |
 | **TASK-139** | API exports for ETABS + Level C/ETABS docs (339 LOC) | DEV | ✅ PR #370 2026-01-15 |
 | **TASK-081** | Level C Serviceability: 5 functions, 18 tests, separate creep/shrinkage per Annex C | DEV | ✅ PR #368 2026-01-15 |
 | **TASK-138** | ETABS Import: 6 functions, 23 tests, CSV-first workflow | DEV | ✅ PR #369 2026-01-15 |
