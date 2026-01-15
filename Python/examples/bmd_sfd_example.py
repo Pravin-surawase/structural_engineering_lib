@@ -61,8 +61,10 @@ def example_simply_supported_udl():
 
     print(f"\nCritical Points:")
     for cp in result.critical_points:
-        print(f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
-              f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN")
+        print(
+            f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
+            f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
+        )
 
     print(f"\nTheoretical (verification):")
     print(f"  Max BM = wL²/8 = {20 * 6**2 / 8:.2f} kN·m")
@@ -111,8 +113,10 @@ def example_simply_supported_point_load():
 
     print(f"\nCritical Points:")
     for cp in result.critical_points:
-        print(f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
-              f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN")
+        print(
+            f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
+            f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
+        )
 
     print(f"\nTheoretical (verification):")
     print(f"  Max BM = PL/4 = {100 * 8 / 4:.2f} kN·m")
@@ -167,8 +171,10 @@ def example_combined_loads():
 
     print(f"\nCritical Points:")
     for cp in result.critical_points:
-        print(f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
-              f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN")
+        print(
+            f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
+            f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
+        )
 
     return result
 
@@ -214,8 +220,10 @@ def example_cantilever():
 
     print(f"\nCritical Points:")
     for cp in result.critical_points:
-        print(f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
-              f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN")
+        print(
+            f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
+            f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
+        )
 
     print(f"\nTheoretical (verification):")
     print(f"  Max BM = wL²/2 = {25 * 3**2 / 2:.2f} kN·m (hogging)")
@@ -265,8 +273,10 @@ def example_cantilever_point_load():
 
     print(f"\nCritical Points:")
     for cp in result.critical_points:
-        print(f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
-              f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN")
+        print(
+            f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
+            f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
+        )
 
     print(f"\nTheoretical (verification):")
     print(f"  Max BM = PL = {80 * 4:.2f} kN·m (hogging)")
