@@ -154,7 +154,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 | PR | Description | Status |
 |----|-------------|--------|
-| #371 | TASK-145 BMD/SFD Visualization | 🔄 CI Running |
+| #371 | TASK-145 BMD/SFD Visualization | ✅ CI Passing (ready to merge) |
 
 ### Commits This Session Continuation
 
@@ -163,6 +163,32 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | `2c72df2` | feat(TASK-145): Add BMD/SFD computation module with 25 tests |
 | `30bb874` | docs(TASK-145): Add BMD/SFD API documentation to api.md |
 | `bba061c` | feat(TASK-145): Add create_bmd_sfd_diagram Plotly visualization with 7 tests |
+| `2a001c0` | style: fix Black formatting for load_analysis tests and visualizations |
+| `c599ac3` | docs(TASK-145): update session 34 docs and next-session-brief |
+| `d01e88a` | docs(TASK-145): add bmd_sfd_example.py with 5 verified examples |
+| `a862841` | style: fix Black formatting in bmd_sfd_example.py |
+| `9e16973` | feat(TASK-145.9): Integrate BMD/SFD visualization into Streamlit beam design page |
+| `a8f9322` | style: fix Black formatting in 5 Streamlit files |
+
+### TASK-145.9 Streamlit Integration ✅
+
+**Implementation:**
+- Added `cached_bmd_sfd()` function to `api_wrapper.py` (~120 lines):
+  - Cached wrapper for `compute_bmd_sfd()` with fallback
+  - Accepts UDL and point load parameters
+  - Returns dict with positions_mm, bmd_knm, sfd_kn, max values
+
+- Added `create_bmd_sfd_diagram` import to beam_design.py
+- Integrated BMD/SFD visualization into Tab2 (Visualization):
+  - Derives equivalent UDL from design moment (w = 8M/L²)
+  - Displays interactive Plotly BMD/SFD diagram
+  - Shows max moment and max shear metrics
+
+**Files modified:**
+| File | Changes |
+|------|---------|
+| `streamlit_app/utils/api_wrapper.py` | Added `cached_bmd_sfd()`, imports for load_analysis |
+| `streamlit_app/pages/01_beam_design.py` | Added BMD/SFD section in Tab2 (~60 lines) |
 
 ### Research: TASK-305 Navigation Study (Deferred)
 
@@ -175,17 +201,16 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 ### Metrics Update
 
 - **Tests:** 25 load_analysis + 7 visualization = 32 new tests (2888 total)
-- **New Python code:** ~600 lines (load_analysis + visualization)
+- **New Python code:** ~800 lines (load_analysis + visualization + api_wrapper)
 - **Documentation:** ~150 lines added to api.md
-- **Commits this continuation:** 3
+- **Commits this continuation:** 9 (including Streamlit integration)
 
 ### Next Steps
 
-1. Monitor PR #371 for CI completion
-2. Consider merging PR #371 when CI passes
-3. (Future) Add triangular load + applied moment support (TASK-145.8)
-4. (Future) Integrate BMD/SFD into Streamlit beam design page (TASK-145.9)
-5. Update next-session-brief.md
+1. ✅ PR #371 ready for merge (all CI checks passing)
+2. (Future) Add triangular load + applied moment support (TASK-145.8)
+3. (Backlog) TASK-146: DXF Quality Polish (2-3 days)
+4. (Backlog) TASK-147: Developer Documentation (2-3 days)
 
 ---
 

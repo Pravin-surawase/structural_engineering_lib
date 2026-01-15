@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 34 (Continued) | **Commits:** 4 (PR #371 in progress)
+**Last Session:** 34 (Continued) | **Commits:** 9 (PR #371 ready to merge)
 
 ---
 
@@ -33,16 +33,16 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-15
-- Focus: TASK-145 BMD/SFD Visualization. Added load_analysis.py (5 functions, ~450 LOC), visualizations (create_bmd_sfd_diagram), 32 new tests. PR #371 in progress.
+- Focus: TASK-145 BMD/SFD Visualization COMPLETE. Added load_analysis.py (5 functions, ~450 LOC), visualizations (create_bmd_sfd_diagram), Streamlit integration in beam_design.py Tab2, 32 new tests. PR #371 ready to merge.
 <!-- HANDOFF:END -->
 
 ---
 
 ## 🎯 Session 34 (Continued) Summary - BMD/SFD Visualization (2026-01-15)
 
-### TASK-145: BMD/SFD Visualization Stack 🚧 IN PROGRESS
+### TASK-145: BMD/SFD Visualization Stack ✅ COMPLETE
 
-**PR:** #371 | **Status:** CI running
+**PR:** #371 | **Status:** Ready to merge
 
 #### Implementation
 
@@ -52,6 +52,7 @@
 | Load Analysis | `load_analysis.py` | ~450 |
 | API Exports | `api.py` | ~10 |
 | Plotly Viz | `visualizations.py` | ~150 |
+| Streamlit Integration | `beam_design.py`, `api_wrapper.py` | ~180 |
 | Tests | `test_load_analysis.py`, `test_visualizations.py` | ~400 |
 | Docs | `api.md` Section 1B | ~150 |
 
@@ -65,6 +66,7 @@
 | `compute_cantilever_udl_bmd_sfd()` | UDL on cantilever beam |
 | `compute_cantilever_point_load_bmd_sfd()` | Point load on cantilever beam |
 | `create_bmd_sfd_diagram()` | Plotly visualization with subplots |
+| `cached_bmd_sfd()` | Streamlit cached wrapper with fallback |
 
 #### Commits This Continuation
 
@@ -74,6 +76,11 @@
 | `30bb874` | docs(TASK-145): Add BMD/SFD API documentation to api.md |
 | `bba061c` | feat(TASK-145): Add create_bmd_sfd_diagram Plotly visualization with 7 tests |
 | `2a001c0` | style: fix Black formatting for load_analysis tests and visualizations |
+| `c599ac3` | docs(TASK-145): update session 34 docs and next-session-brief |
+| `d01e88a` | docs(TASK-145): add bmd_sfd_example.py with 5 verified examples |
+| `a862841` | style: fix Black formatting in bmd_sfd_example.py |
+| `9e16973` | feat(TASK-145.9): Integrate BMD/SFD visualization into Streamlit beam design page |
+| `a8f9322` | style: fix Black formatting in 5 Streamlit files |
 
 ### TASK-305: Navigation Study (Deferred)
 

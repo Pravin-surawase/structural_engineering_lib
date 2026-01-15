@@ -166,11 +166,11 @@
 
 > **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. All PRs merged.
 
-### TASK-145: BMD/SFD Visualization Stack 🚧 IN PROGRESS (Session 34 Cont.)
+### TASK-145: BMD/SFD Visualization Stack ✅ COMPLETE (Session 34)
 
 > **Goal:** Add load diagram computation and visualization
 > **Timeline:** Session 34 (2026-01-15)
-> **PR:** #371 (CI running)
+> **PR:** #371 (Ready to merge)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
@@ -182,7 +182,7 @@
 | **TASK-145.6** | Add Plotly visualization helper (create_bmd_sfd_diagram) | DEV | 1h | 🟠 MEDIUM | ✅ Done (bba061c) |
 | **TASK-145.7** | Add visualization tests (7 tests) | DEV | 30m | 🟠 MEDIUM | ✅ Done (bba061c) |
 | **TASK-145.8** | (Future) Triangular load + applied moment support | DEV | 2h | 🟡 LOW | ⏳ Backlog |
-| **TASK-145.9** | (Future) Integrate BMD/SFD into Streamlit pages | DEV | 1h | 🟡 LOW | ⏳ Backlog |
+| **TASK-145.9** | Integrate BMD/SFD into Streamlit beam design page | DEV | 1h | 🟠 MEDIUM | ✅ Done (9e16973) |
 
 **Technical Implementation:**
 - `compute_bmd_sfd()`: Superposition-based load combination
