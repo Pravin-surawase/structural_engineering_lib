@@ -69,7 +69,11 @@ from utils.cost_optimizer_error_boundary import (
 )
 
 # TASK-602: Modern Streamlit patterns
-from utils.fragments import show_status_badge, fragment_input_section, CacheStatsFragment
+from utils.fragments import (
+    show_status_badge,
+    fragment_input_section,
+    CacheStatsFragment,
+)
 from utils.constants import CONCRETE_GRADE_MAP, STEEL_GRADE_MAP
 
 # Setup logging
@@ -93,7 +97,6 @@ def initialize_session_state():
         safe_state.set("cost_results", None)
     if not safe_state.exists("cost_comparison_data"):
         safe_state.set("cost_comparison_data", [])
-
 
 
 def get_beam_design_inputs() -> Optional[dict]:
@@ -623,6 +626,7 @@ def main():
     else:  # Manual Input
         # Fragment must be called INSIDE sidebar context (not write to sidebar from inside)
         with st.sidebar:
+
             @st.fragment
             def render_manual_inputs():
                 """Manual input form wrapped in fragment for better performance."""
@@ -645,17 +649,24 @@ def main():
                         "Total Depth D (mm)", min_value=150.0, value=500.0, step=50.0
                     )
                     d_mm = st.number_input(
-                        "Effective Depth d (mm)", min_value=100.0, value=450.0, step=50.0
+                        "Effective Depth d (mm)",
+                        min_value=100.0,
+                        value=450.0,
+                        step=50.0,
                     )
                     span_mm = st.number_input(
                         "Span (mm)", min_value=1000.0, value=5000.0, step=500.0
                     )
 
                     st.markdown("**Materials**")
-                    fck_nmm2 = st.selectbox("fck (N/mm²)", [20, 25, 30, 35, 40], index=1)
+                    fck_nmm2 = st.selectbox(
+                        "fck (N/mm²)", [20, 25, 30, 35, 40], index=1
+                    )
                     fy_nmm2 = st.selectbox("fy (N/mm²)", [415, 500], index=1)
 
-                    submitted = st.form_submit_button("Use These Inputs", type="primary")
+                    submitted = st.form_submit_button(
+                        "Use These Inputs", type="primary"
+                    )
 
                     if submitted:
                         return {
@@ -759,7 +770,8 @@ def main():
 
                 # Explanation for users unfamiliar with Pareto optimization
                 with st.expander("ℹ️ What is Pareto Optimization?", expanded=False):
-                    st.markdown("""
+                    st.markdown(
+                        """
 **Pareto optimization** finds designs that are optimal across multiple objectives simultaneously.
 
 **Three objectives balanced:**
@@ -775,7 +787,8 @@ The **Pareto front** shows all designs where improving one objective means sacri
 - **Budget-constrained?** → Pick the "Cheapest" design
 - **Need efficiency?** → Pick "Most Efficient" (highest utilization)
 - **Sustainability focus?** → Pick "Lightest" (least steel)
-                    """)
+                    """
+                    )
 
                 pareto_data = st.session_state.get("pareto_results")
                 if pareto_data:

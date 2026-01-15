@@ -15,6 +15,7 @@ Usage:
         DEFAULT_BEAM_INPUTS,
     )
 """
+
 from __future__ import annotations
 
 # =============================================================================
