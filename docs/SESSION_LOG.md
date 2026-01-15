@@ -4,6 +4,79 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-15 — Session 33: Torsion Module + VBA Parity
+
+**Focus:** Implement IS 456 Clause 41 torsion design module (TASK-085), add VBA parity for slenderness + anchorage (TASK-082).
+
+### TASK-085: Torsion Design Module (IS 456 Cl 41) ✅
+
+**Implementation:**
+- Created `codes/is456/torsion.py` (~400 lines, 6 functions)
+- Added `TorsionResult` dataclass with 16 attributes
+- Created wrapper at `structural_lib/torsion.py` for backward compatibility
+- Added 7 new clauses to `clauses.json` (41.1, 41.3, 41.3.1, 41.4, 41.4.2, 41.4.3)
+- Updated `api.py` with torsion exports
+- Added comprehensive documentation to `api.md` (Section 3A)
+
+**Functions:**
+| Function | Description | Reference |
+|----------|-------------|-----------|
+| `calculate_equivalent_shear` | Ve = Vu + 1.6×Tu/b | IS 456 Cl 41.3.1 |
+| `calculate_equivalent_moment` | Me = Mu + Mt | IS 456 Cl 41.4.2 |
+| `calculate_torsion_shear_stress` | τve = Ve/(b×d) | IS 456 Cl 41.3 |
+| `calculate_torsion_stirrup_area` | Asv/sv formula | IS 456 Cl 41.4.3 |
+| `calculate_longitudinal_torsion_steel` | Al for torsion | IS 456 Cl 41.4.2.1 |
+| `design_torsion` | Main entry point | IS 456 Cl 41 |
+
+**Tests:** 30 new tests in `test_torsion.py` (2788 total tests, up from 2758)
+
+### TASK-082: VBA Parity ✅
+
+**Implementation:**
+- Added `SlendernessResult` and `HookDimensions` types to `M02_Types.bas`
+- Added slenderness functions to `M17_Serviceability.bas`:
+  - `Get_Slenderness_Limit` - l_eff/b limit per beam type
+  - `Calculate_Slenderness_Ratio` - l_eff/b calculation
+  - `Check_Beam_Slenderness` - Comprehensive check (IS 456 Cl 23.3)
+- Added anchorage functions to `M15_Detailing.bas`:
+  - `Get_Min_Bend_Radius` - Minimum bend radius (IS 456 Cl 26.2.2.1)
+  - `Calculate_Standard_Hook` - 90°/135°/180° hooks (IS 456 Cl 26.2.2)
+  - `Get_Stirrup_Hook_Angle` - Stirrup hook requirements
+  - `Get_Stirrup_Extension` - Stirrup extension length
+- Updated `VBA/README.md` with new function documentation
+
+### Pull Requests
+
+| PR | Description | Status |
+|----|-------------|--------|
+| #366 | TASK-085 Torsion Design Module | Async merge pending |
+| #367 | TASK-082 VBA Parity Functions | Async merge pending |
+
+### Commits This Session
+
+| Commit | Description |
+|--------|-------------|
+| `1c75ccd` | feat(torsion): add IS 456 Cl 41 torsion module (TASK-085) |
+| `8dec0b9` | docs(torsion): add API exports, wrapper, clause refs & docs |
+| `2287fbb` | feat(vba): add slenderness + anchorage for Python parity (TASK-082) |
+
+### Metrics
+
+- **Tests:** 2788 passed (up from 2758)
+- **Coverage:** 85% overall maintained
+- **New Python code:** ~400 lines (torsion.py)
+- **New VBA code:** ~180 lines (slenderness + anchorage)
+- **New tests:** 30 test cases
+- **PRs created:** 2 (#366, #367)
+
+### Next Steps
+
+1. Monitor PR #366 and #367 for CI completion
+2. Level C Serviceability (TASK-081)
+3. ETABS mapping (TASK-138)
+
+---
+
 ## 2026-01-15 — Session 32: Validated Library Audit + Anchorage Implementation
 
 **Focus:** Deep code audit to validate actual state vs documentation, correct false backlog items, implement anchorage functions.

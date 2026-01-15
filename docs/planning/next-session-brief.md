@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 32 | **Commits:** 5
+**Last Session:** 33 | **Commits:** 3 (+ 2 PRs)
 
 ---
 
@@ -33,8 +33,92 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-15
-- Focus: Deep library audit validated 3 completed tasks wrongly in backlog. Implemented anchorage functions (TASK-087). Synced api.md to v0.17.5.
+- Focus: Implemented IS 456 Cl 41 Torsion module (TASK-085). Added VBA parity for slenderness + anchorage (TASK-082). 2 PRs created (#366, #367).
 <!-- HANDOFF:END -->
+
+---
+
+## 🎯 Session 33 Summary - Torsion + VBA Parity (2026-01-15)
+
+### TASK-085: Torsion Design Module ✅
+
+Implemented complete IS 456 Clause 41 torsion design:
+
+| Function | Description | Reference |
+|----------|-------------|-----------|
+| `calculate_equivalent_shear` | Ve = Vu + 1.6×Tu/b | IS 456 Cl 41.3.1 |
+| `calculate_equivalent_moment` | Me = Mu + Mt | IS 456 Cl 41.4.2 |
+| `calculate_torsion_shear_stress` | τve = Ve/(b×d) | IS 456 Cl 41.3 |
+| `calculate_torsion_stirrup_area` | Asv/sv formula | IS 456 Cl 41.4.3 |
+| `calculate_longitudinal_torsion_steel` | Al for torsion | IS 456 Cl 41.4.2.1 |
+| `design_torsion` | Main entry point | IS 456 Cl 41 |
+
+**Tests:** 30 new tests (2788 total tests)
+**PR:** #366 (async merge pending)
+
+### TASK-082: VBA Parity ✅
+
+Added VBA functions matching Python implementation:
+
+**Slenderness (M17_Serviceability.bas):**
+- `Get_Slenderness_Limit` - l_eff/b limit
+- `Calculate_Slenderness_Ratio` - l_eff/b
+- `Check_Beam_Slenderness` - Comprehensive check
+
+**Anchorage (M15_Detailing.bas):**
+- `Get_Min_Bend_Radius` - Minimum bend radius
+- `Calculate_Standard_Hook` - 90°/135°/180° hooks
+- `Get_Stirrup_Hook_Angle` - Stirrup requirements
+- `Get_Stirrup_Extension` - Extension length
+
+**PR:** #367 (async merge pending)
+
+### Session 33 Commits
+
+| Commit | Description |
+|--------|-------------|
+| `1c75ccd` | feat(torsion): add IS 456 Cl 41 torsion module |
+| `8dec0b9` | docs(torsion): add API exports, wrapper, clause refs |
+| `2287fbb` | feat(vba): add slenderness + anchorage functions |
+
+### Metrics
+
+- **Tests:** 2788 passed (up from 2758)
+- **Coverage:** 85% overall
+- **New Python code:** ~400 lines
+- **New VBA code:** ~180 lines
+- **PRs created:** 2 (#366, #367)
+
+---
+
+## 🎯 Session 34 Recommendations
+
+### Priority 1: Monitor PR Merges
+
+Both PRs (#366, #367) are being monitored by async daemon. Check status:
+```bash
+./scripts/pr_async_merge.sh status
+```
+
+### Priority 2: Level C Serviceability (TASK-081)
+
+Advanced deflection calculations for stringent requirements.
+
+### Priority 3: ETABS Mapping (TASK-138)
+
+Integration with ETABS analysis software.
+
+---
+
+## 📊 Project Status
+
+| Metric | Value |
+|--------|-------|
+| Tests | 2788 passing |
+| Coverage | 85% |
+| Python | 3.11+ baseline |
+| Version | v0.17.5 |
+| Internal Links | 870+ validated |
 
 ---
 
