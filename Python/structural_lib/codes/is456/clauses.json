@@ -120,6 +120,28 @@
       "keywords": ["bond stress", "deformed bars", "τbd"],
       "tables": ["Table 21 - Design Bond Stress"]
     },
+    "26.2.2": {
+      "title": "Anchoring Reinforcement",
+      "section": "26 - Detailing",
+      "text": "Anchorage of reinforcement shall be provided through development length, hooks, bends, or mechanical devices.",
+      "category": "detailing",
+      "keywords": ["anchorage", "hooks", "bends", "development length"]
+    },
+    "26.2.2.1": {
+      "title": "Minimum Bend Radius",
+      "section": "26 - Detailing",
+      "text": "Minimum internal radius of bend for bars shall be 2φ for bars ≤ 25mm and 3φ for bars > 25mm (deformed bars).",
+      "category": "detailing",
+      "formula": "r = 2φ (≤25mm) or 3φ (>25mm)",
+      "keywords": ["bend radius", "internal radius", "hooks"]
+    },
+    "26.2.2.2": {
+      "title": "Stirrup Anchorage",
+      "section": "26 - Detailing",
+      "text": "Stirrups and ties shall be anchored with hooks. For seismic zones, 135° hooks with 6d ≥ 75mm extension required.",
+      "category": "detailing",
+      "keywords": ["stirrup", "anchorage", "hook", "seismic"]
+    },
     "26.2.3": {
       "title": "Standard Hooks and Bends",
       "section": "26 - Detailing",
