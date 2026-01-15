@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-15 (Session 32 - Validated Audit)
+**Updated:** 2026-01-15 (Session 33 - Torsion + VBA Parity)
 
-> **Session 32 Note:** Deep code audit found TASK-088 (Slenderness), TASK-520 (Hypothesis), TASK-522 (Jinja2) were ALL COMPLETE but wrongly listed as pending. Backlog corrected.
+> **Session 33 Progress:** TASK-085 (Torsion module) and TASK-082 (VBA Parity) completed. PR #366 and #367 awaiting CI merge.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -162,15 +162,16 @@
 
 ---
 
-## Up Next (Session 32+)
+## Up Next (Session 33+)
 
-> **Session 32 Audit:** Validated actual code vs documentation. Found completed tasks wrongly in backlog.
+> **Session 33 Progress:** TASK-085 (Torsion) and TASK-082 (VBA Parity) completed. Both in PRs awaiting CI merge.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | **TASK-606** | Sync api.md to v0.17.5 (currently shows 0.16.6) | DOCS | 2h | 🟠 MEDIUM | ✅ Done (70a5290) |
 | **TASK-087** | Complete anchorage details (hooks, bends, bundled bars) | DEV | 4h | 🟠 MEDIUM | ✅ Done (fed2740) |
-| **TASK-085** | Torsion design module (IS 456 Cl 41) | DEV | 2-3d | 🟡 MEDIUM | Not Started |
+| **TASK-085** | Torsion design module (IS 456 Cl 41) | DEV | 2-3d | 🟡 MEDIUM | ✅ Done (PR #366) |
+| **TASK-082** | VBA parity - slenderness + anchorage | DEV | 1-2d | 🟡 MEDIUM | ✅ Done (PR #367) |
 
 ---
 
@@ -199,9 +200,9 @@
 | ID | Task | Est | Priority | Status |
 |----|------|-----|----------|--------|
 | **TASK-081** | Level C Serviceability | 1-2 days | 🟡 MEDIUM | Not Started |
-| **TASK-082** | VBA parity harness | 1-2 days | 🟡 MEDIUM | Not Started |
 | **TASK-138** | ETABS mapping | 1-2 days | 🟡 MEDIUM | Not Started |
-| ~~**TASK-085**~~ | ~~Torsion design~~ | - | - | Moved to Up Next |
+| ~~**TASK-082**~~ | ~~VBA parity harness~~ | - | - | ✅ **DONE** (PR #367, Session 33) |
+| ~~**TASK-085**~~ | ~~Torsion design~~ | - | - | ✅ **DONE** (PR #366, Session 33) |
 | ~~**TASK-087**~~ | ~~Anchorage check~~ | - | - | Moved to Up Next |
 | ~~**TASK-088**~~ | ~~Slenderness check~~ | - | - | ✅ **DONE** (validated Session 32) |
 
@@ -218,6 +219,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-085** | Torsion module: IS 456 Cl 41 - 6 functions, 30 tests, API docs | DEV | ✅ PR #366 2026-01-15 |
+| **TASK-082** | VBA parity: slenderness + anchorage functions (7 functions) | DEV | ✅ PR #367 2026-01-15 |
 | **TASK-087** | Anchorage functions: hooks (90°/135°/180°), bends, stirrup anchorage | DEV | ✅ 2026-01-15 (fed2740) |
 | **TASK-606** | API docs sync: version 0.17.5, check_beam_slenderness | DOCS | ✅ 2026-01-15 (70a5290) |
 | **SESSION-32** | Deep library audit: validated 3 completed tasks wrongly in backlog (TASK-088, 520, 522) | MAIN | ✅ 2026-01-15 |
