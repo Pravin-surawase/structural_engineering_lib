@@ -168,8 +168,8 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-606** | Sync api.md to v0.17.5 (currently shows 0.16.6) | DOCS | 2h | 🟠 MEDIUM | 🆕 New |
-| **TASK-087** | Complete anchorage details (hooks, bends, bundled bars) | DEV | 4h | 🟠 MEDIUM | Not Started |
+| **TASK-606** | Sync api.md to v0.17.5 (currently shows 0.16.6) | DOCS | 2h | 🟠 MEDIUM | ✅ Done (70a5290) |
+| **TASK-087** | Complete anchorage details (hooks, bends, bundled bars) | DEV | 4h | 🟠 MEDIUM | ✅ Done (fed2740) |
 | **TASK-085** | Torsion design module (IS 456 Cl 41) | DEV | 2-3d | 🟡 MEDIUM | Not Started |
 
 ---
@@ -218,6 +218,8 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-087** | Anchorage functions: hooks (90°/135°/180°), bends, stirrup anchorage | DEV | ✅ 2026-01-15 (fed2740) |
+| **TASK-606** | API docs sync: version 0.17.5, check_beam_slenderness | DOCS | ✅ 2026-01-15 (70a5290) |
 | **SESSION-32** | Deep library audit: validated 3 completed tasks wrongly in backlog (TASK-088, 520, 522) | MAIN | ✅ 2026-01-15 |
 | **TASK-088** | Slenderness check (IS 456 Cl 23.3) - **Was wrongly in backlog** | DEV | ✅ Validated 2026-01-15 |
 | **TASK-522** | Jinja2 report templates (3 templates: beam_design, summary, detailed) | DEV | ✅ PR #360 2026-01-14 |

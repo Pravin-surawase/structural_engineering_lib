@@ -1671,6 +1671,65 @@ def calculate_lap_length(
 
 **Multiplier:** 1.5× for tension zones, 1.0× for compression zones.
 
+### 9.2.1 Anchorage Functions (v0.17.5+)
+
+**Hook Dimensions:**
+```python
+@dataclass
+class HookDimensions:
+    hook_type: str            # "90", "135", "180"
+    bar_dia: float            # mm
+    internal_radius: float    # mm
+    extension: float          # mm (straight after bend)
+    equivalent_length: float  # mm (anchorage credit)
+    total_length: float       # mm (bar consumed)
+
+def get_min_bend_radius(
+    bar_dia: float,
+    bar_type: str = "deformed"
+) -> float  # Returns minimum internal radius (mm)
+
+def calculate_standard_hook(
+    bar_dia: float,
+    hook_type: str = "180",   # "90", "135", "180"
+    bar_type: str = "deformed"
+) -> HookDimensions
+```
+
+**Hook Extensions per IS 456 Cl 26.2.2:**
+- 180° hook: 4φ (min 65mm)
+- 135° hook: 6φ (seismic requirement)
+- 90° hook: 12φ
+
+**Equivalent Length:** 8φ for deformed bars, 16φ for plain bars.
+
+**Anchorage Calculation:**
+```python
+def calculate_anchorage_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    available_length: float,  # Straight length available (mm)
+    bar_type: str = "deformed",
+    use_hook: bool = True,
+    hook_type: str = "180",
+    stress_ratio: float = 0.87
+) -> dict
+# Returns: {required_ld, available_straight, shortfall,
+#           hook, total_provided, is_adequate, utilization}
+```
+
+**Stirrup Anchorage:**
+```python
+def calculate_stirrup_anchorage(
+    stirrup_dia: float,
+    is_seismic: bool = False
+) -> dict
+# Returns: {hook_type, internal_radius, extension, remarks}
+```
+
+**IS 13920 Seismic:** 135° hooks with 6d ≥ 75mm extension.
+
 ### 9.3 Bar Spacing Check
 **Python:**
 ```python
