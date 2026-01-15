@@ -1,5 +1,6 @@
 # Comprehensive Repository Deep-Dive Analysis
 **Date:** 2026-01-14
+**Last Updated:** 2026-01-15
 **Analyst:** AI Agent
 **Type:** Research
 **Audience:** All Agents
@@ -199,6 +200,29 @@ structural_lib/
 ├── optimization.py           # Multi-objective optimization
 ├── costing.py                # Cost calculation
 ├── codes/
+
+---
+
+## 9. 2026-01-15 Addendum — Library-First Direction
+
+**Context:** Streamlit is stable; next release focus should shift to core library expansion and API quality.
+
+**Grounding docs (yesterday’s research):**
+- [v018-library-expansion-feasibility.md](v018-library-expansion-feasibility.md)
+- [api-design-pattern-analysis.md](api-design-pattern-analysis.md)
+
+**Key takeaways:**
+1. **Infrastructure is ready** for feature-heavy releases; prioritize library growth.
+2. **API consistency gaps** (keyword-only usage, naming, error handling) are the highest leverage improvements.
+3. **New core features** should follow increasing complexity: Slenderness → Anchorage → Torsion.
+4. **Professional outputs** (Jinja2 report templates) unlock real-world adoption.
+5. **Property-based tests** should guard edge cases as functionality expands.
+
+**Recommended v0.18.0 focus:**
+- API consistency standardization
+- Slenderness check (quick win)
+- Jinja2 report generation (professional outputs)
+- Hypothesis tests for flexure/shear/ductile modules
 │   └── is456/
 │       ├── flexure.py        # Flexure design
 │       ├── shear.py          # Shear design
