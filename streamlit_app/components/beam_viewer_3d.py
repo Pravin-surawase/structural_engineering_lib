@@ -195,6 +195,7 @@ def _generate_viewer_html(geometry_json: str, height: int) -> str:
       <div class="stat"><span>Span:</span><span class="stat-value" id="dim-span">-</span></div>
       <div class="stat"><span>Rebars:</span><span class="stat-value" id="rebar-count">-</span></div>
       <div class="stat"><span>Stirrups:</span><span class="stat-value" id="stirrup-count">-</span></div>
+      <div class="stat"><span>Detailing:</span><span class="stat-value" id="detail-status">-</span></div>
       <div class="legend">
         <div class="legend-item"><div class="legend-dot bottom"></div>Bottom</div>
         <div class="legend-item"><div class="legend-dot top"></div>Top</div>
@@ -368,6 +369,14 @@ def _generate_viewer_html(geometry_json: str, height: int) -> str:
       document.getElementById('dim-span').textContent = `${{span}} mm`;
       document.getElementById('rebar-count').textContent = geometry.rebars ? geometry.rebars.length : 0;
       document.getElementById('stirrup-count').textContent = geometry.stirrups ? geometry.stirrups.length : 0;
+      const statusEl = document.getElementById('detail-status');
+      if (statusEl) {{
+        const isValid = geometry.metadata && typeof geometry.metadata.isValid === 'boolean'
+          ? geometry.metadata.isValid
+          : null;
+        statusEl.textContent = isValid === null ? '-' : (isValid ? 'Valid' : 'Check');
+        statusEl.style.color = isValid === null ? '#bbb' : (isValid ? '#4caf50' : '#ff5252');
+      }}
     }}
 
     window.addEventListener('load', init);
