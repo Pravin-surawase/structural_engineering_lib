@@ -93,7 +93,7 @@ recover_git_state.sh      # Emergency recovery
 | Docs/tests/scripts (<=150 lines, <=2 files) | Direct commit OK |
 
 **Session docs rule:**
-- Update `SESSION_LOG.md` + `next-session-brief.md` in same PR
+- Update [docs/SESSION_LOG.md](docs/SESSION_LOG.md) + [docs/planning/next-session-brief.md](docs/planning/next-session-brief.md) in same PR
 - Log **PR number** (not merge hash)
 - One commit at end: `./scripts/ai_commit.sh "docs: update session 31 progress"`
 
