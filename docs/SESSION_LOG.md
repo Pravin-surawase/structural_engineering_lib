@@ -29,7 +29,7 @@ Session 34 continuation after completing TASK-145 (BMD/SFD). User requested:
 - **PR Status:** MERGED (#371 with 12 commits)
 
 **PR #365 Validation (TASK-087 Anchorage):**
-- **Issue Found:** Complex merge conflicts in [detailing.py](Python/structural_lib/codes/is456/detailing.py)
+- **Issue Found:** Complex merge conflicts in detailing.py
 - **Root Cause:** Main branch added hook functions (990e8f9), PR added anchorage functions
 - **Fix:** Manual conflict resolution keeping both additions
   - Preserved hook functions (3 new: `calculate_hook_length`, `calculate_bend_length_for_stirrups`, `calculate_anchorage_length_stirrups`)
