@@ -27,7 +27,9 @@ from structural_lib.error_messages import (
     material_property_out_of_range,
 )
 from structural_lib.errors import (
+    DesignError,
     DimensionError,
+    E_TORSION_001,
     MaterialError,
 )
 
@@ -35,7 +37,7 @@ from . import tables
 from .traceability import clause
 
 if TYPE_CHECKING:
-    from structural_lib.errors import DesignError
+    pass
 
 
 __all__ = [
@@ -462,16 +464,7 @@ def design_torsion(
 
     if not is_safe:
         # Section is unsafe, return with zero reinforcement
-        from structural_lib.errors import ComplianceError
-
-        errors.append(
-            ComplianceError(
-                f"Equivalent shear stress τve = {tv_equiv:.2f} N/mm² exceeds "
-                f"τc,max = {tc_max:.2f} N/mm². Section must be redesigned. [Cl. 41.3]",
-                details={"tv_equiv": tv_equiv, "tc_max": tc_max},
-                clause_ref="Cl. 41.3",
-            )
-        )
+        errors.append(E_TORSION_001)
         return TorsionResult(
             tu_knm=tu_knm,
             vu_kn=vu_kn,

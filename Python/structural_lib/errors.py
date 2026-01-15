@@ -493,6 +493,16 @@ E_DUCTILE_003 = DesignError(
     hint="Depth must be > 0.",
 )
 
+# Torsion Errors
+E_TORSION_001 = DesignError(
+    code="E_TORSION_001",
+    severity=Severity.ERROR,
+    message="Equivalent shear stress exceeds τc,max. Section must be redesigned.",
+    field="tv_equiv",
+    hint="Increase section size (b or D).",
+    clause="Cl. 41.3",
+)
+
 
 def make_error(
     code: str,
