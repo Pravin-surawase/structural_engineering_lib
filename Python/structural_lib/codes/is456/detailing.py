@@ -29,10 +29,15 @@ __all__ = [
     "BarArrangement",
     "StirrupArrangement",
     "BeamDetailingResult",
+    "HookDimensions",
     # Functions
     "get_bond_stress",
     "calculate_development_length",
     "calculate_lap_length",
+    "get_min_bend_radius",
+    "calculate_standard_hook",
+    "calculate_anchorage_length",
+    "calculate_stirrup_anchorage",
     "calculate_bar_spacing",
     "check_min_spacing",
     "check_side_face_reinforcement",
@@ -283,6 +288,271 @@ def calculate_lap_length(
     lap = alpha * ld
 
     return round(lap, 0)
+
+
+# =============================================================================
+# Anchorage (IS 456 Cl 26.2.2 / SP 34)
+# =============================================================================
+
+
+@dataclass
+class HookDimensions:
+    """Dimensions for a standard hook per IS 456 Cl 26.2.2.
+
+    Attributes:
+        hook_type: Type of hook ("90", "135", "180")
+        bar_dia: Bar diameter in mm
+        internal_radius: Internal radius of bend in mm
+        extension: Straight extension after bend in mm
+        equivalent_length: Equivalent development length contribution in mm
+        total_length: Total bar length consumed by hook in mm
+    """
+
+    hook_type: str
+    bar_dia: float
+    internal_radius: float
+    extension: float
+    equivalent_length: float
+    total_length: float
+
+
+@clause("26.2.2.1")
+def get_min_bend_radius(bar_dia: float, bar_type: str = "deformed") -> float:
+    """
+    Get minimum internal bend radius per IS 456 Cl 26.2.2.1.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        bar_type: "deformed" or "plain"
+
+    Returns:
+        Minimum internal radius (mm)
+
+    Reference:
+        IS 456:2000, Clause 26.2.2.1
+        - Bars ≤ 25mm: 2φ
+        - Bars > 25mm: 3φ
+        - Plain bars: 2φ (all sizes)
+    """
+    if bar_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2.1"
+            ),
+            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            clause_ref="Cl. 26.2.2.1",
+        )
+
+    if bar_type == "plain":
+        return 2 * bar_dia
+
+    # Deformed bars
+    if bar_dia <= 25:
+        return 2 * bar_dia
+    else:
+        return 3 * bar_dia
+
+
+@clause("26.2.2")
+def calculate_standard_hook(
+    bar_dia: float,
+    hook_type: str = "180",
+    bar_type: str = "deformed",
+) -> HookDimensions:
+    """
+    Calculate standard hook dimensions per IS 456 Cl 26.2.2.
+
+    Standard hooks provide anchorage at bar ends where straight
+    development length is insufficient.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        hook_type: "90", "135", or "180"
+        bar_type: "deformed" or "plain"
+
+    Returns:
+        HookDimensions with all hook geometry
+
+    Raises:
+        ValueError: If hook_type is invalid
+        MaterialError: If bar_dia is invalid
+
+    Reference:
+        IS 456:2000, Clause 26.2.2
+        SP 34:1987, Section 3.2 (Hook details)
+
+    Notes:
+        - 180° hook: 4φ extension minimum
+        - 135° hook: 6φ extension minimum (seismic/stirrups)
+        - 90° hook: 12φ extension minimum
+        - Equivalent length = 8φ for deformed, 16φ for plain
+    """
+    if bar_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2"
+            ),
+            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            clause_ref="Cl. 26.2.2",
+        )
+
+    valid_hook_types = ("90", "135", "180")
+    if hook_type not in valid_hook_types:
+        raise ValueError(
+            f"Invalid hook_type '{hook_type}'. Must be one of {valid_hook_types}."
+        )
+
+    # Internal bend radius
+    r = get_min_bend_radius(bar_dia, bar_type)
+
+    # Extension after bend (straight portion)
+    if hook_type == "180":
+        extension = max(4 * bar_dia, 65)  # Min 4φ or 65mm
+    elif hook_type == "135":
+        extension = 6 * bar_dia  # Min 6φ (seismic requirement)
+    else:  # 90°
+        extension = 12 * bar_dia  # Min 12φ
+
+    # Equivalent development length contribution
+    # IS 456 Cl 26.2.2.4: Standard hook = 8φ for deformed, 16φ for plain
+    if bar_type == "deformed":
+        equivalent_length = 8 * bar_dia
+    else:
+        equivalent_length = 16 * bar_dia
+
+    # Total length of bar consumed by hook
+    # Arc length + extension
+    angle_rad = math.radians(int(hook_type))
+    arc_length = angle_rad * (r + bar_dia / 2)
+    total_length = arc_length + extension
+
+    return HookDimensions(
+        hook_type=hook_type,
+        bar_dia=bar_dia,
+        internal_radius=round(r, 0),
+        extension=round(extension, 0),
+        equivalent_length=round(equivalent_length, 0),
+        total_length=round(total_length, 0),
+    )
+
+
+@clause("26.2.3")
+def calculate_anchorage_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    available_length: float,
+    bar_type: str = "deformed",
+    use_hook: bool = True,
+    hook_type: str = "180",
+    stress_ratio: float = 0.87,
+) -> dict:
+    """
+    Calculate anchorage arrangement combining straight + hook.
+
+    When straight development length isn't available, this function
+    determines if a hook can make up the difference.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        fck: Concrete strength (N/mm²)
+        fy: Steel yield strength (N/mm²)
+        available_length: Available straight length (mm)
+        bar_type: "deformed" or "plain"
+        use_hook: If True, calculate hook to supplement
+        hook_type: "90", "135", or "180"
+        stress_ratio: σs/fy ratio (default 0.87)
+
+    Returns:
+        dict with:
+            - required_ld: Required development length (mm)
+            - available_straight: Provided straight length (mm)
+            - shortfall: Gap between required and available (mm)
+            - hook: HookDimensions if hook used, else None
+            - total_provided: Total anchorage provided (mm)
+            - is_adequate: True if total_provided >= required_ld
+            - utilization: total_provided / required_ld ratio
+
+    Reference:
+        IS 456:2000, Clause 26.2.3
+    """
+    ld = calculate_development_length(bar_dia, fck, fy, bar_type, stress_ratio)
+
+    shortfall = max(0, ld - available_length)
+
+    if use_hook and shortfall > 0:
+        hook = calculate_standard_hook(bar_dia, hook_type, bar_type)
+        total_provided = available_length + hook.equivalent_length
+    else:
+        hook = None
+        total_provided = available_length
+
+    is_adequate = total_provided >= ld
+    utilization = total_provided / ld if ld > 0 else 0
+
+    return {
+        "required_ld": round(ld, 0),
+        "available_straight": round(available_length, 0),
+        "shortfall": round(shortfall, 0),
+        "hook": hook,
+        "total_provided": round(total_provided, 0),
+        "is_adequate": is_adequate,
+        "utilization": round(utilization, 3),
+    }
+
+
+@clause("26.2.2.2")
+def calculate_stirrup_anchorage(
+    stirrup_dia: float,
+    is_seismic: bool = False,
+) -> dict:
+    """
+    Calculate stirrup anchorage hook requirements per IS 456.
+
+    Stirrups require hooks at ends to be properly anchored.
+
+    Args:
+        stirrup_dia: Stirrup bar diameter (mm)
+        is_seismic: If True, use IS 13920 135° hook requirement
+
+    Returns:
+        dict with:
+            - hook_type: "135" for seismic, "90" for regular
+            - internal_radius: Bend radius (mm)
+            - extension: Straight extension after bend (mm)
+            - remarks: Code requirement notes
+
+    Reference:
+        IS 456:2000, Clause 26.2.2.2 (stirrup bends)
+        IS 13920:2016, Clause 6.3.5 (seismic stirrups)
+    """
+    if stirrup_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "stirrup diameter", stirrup_dia, 0, 16, "Cl. 26.2.2.2"
+            ),
+            details={"stirrup_dia": stirrup_dia, "minimum": 0, "maximum": 16},
+            clause_ref="Cl. 26.2.2.2",
+        )
+
+    # Stirrups always use 2φ internal radius
+    internal_radius = 2 * stirrup_dia
+
+    if is_seismic:
+        hook_type = "135"
+        extension = max(6 * stirrup_dia, 75)  # IS 13920: 6d ≥ 75mm
+        remarks = "IS 13920 Cl 6.3.5: 135° hook, 6d ≥ 75mm extension"
+    else:
+        hook_type = "90"
+        extension = max(8 * stirrup_dia, 75)  # IS 456: 8d for 90° stirrup hook
+        remarks = "IS 456 Cl 26.2.2.2: 90° hook, 8d extension"
+
+    return {
+        "hook_type": hook_type,
+        "internal_radius": round(internal_radius, 0),
+        "extension": round(extension, 0),
+        "remarks": remarks,
+    }
 
 
 # =============================================================================

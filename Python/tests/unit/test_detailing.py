@@ -421,3 +421,173 @@ class TestSideFaceReinforcement:
         assert spacing1 == 300.0
         assert spacing2 == 300.0
         assert spacing3 == 300.0
+
+
+# =============================================================================
+# Tests for Anchorage Functions (IS 456 Cl 26.2.2)
+# =============================================================================
+
+
+class TestMinBendRadius:
+    """Tests for minimum bend radius per IS 456 Cl 26.2.2.1."""
+
+    def test_small_deformed_bar(self):
+        """Bars ≤ 25mm: 2φ internal radius."""
+        from structural_lib.detailing import get_min_bend_radius
+
+        assert get_min_bend_radius(16, "deformed") == 32  # 2 × 16
+        assert get_min_bend_radius(20, "deformed") == 40  # 2 × 20
+        assert get_min_bend_radius(25, "deformed") == 50  # 2 × 25
+
+    def test_large_deformed_bar(self):
+        """Bars > 25mm: 3φ internal radius."""
+        from structural_lib.detailing import get_min_bend_radius
+
+        assert get_min_bend_radius(32, "deformed") == 96  # 3 × 32
+
+    def test_plain_bar(self):
+        """Plain bars always use 2φ radius."""
+        from structural_lib.detailing import get_min_bend_radius
+
+        assert get_min_bend_radius(32, "plain") == 64  # 2 × 32
+
+    def test_invalid_diameter(self):
+        """Should raise MaterialError for invalid diameter."""
+        from structural_lib.detailing import get_min_bend_radius
+        from structural_lib.errors import MaterialError
+
+        with pytest.raises(MaterialError):
+            get_min_bend_radius(0)
+        with pytest.raises(MaterialError):
+            get_min_bend_radius(-10)
+
+
+class TestStandardHook:
+    """Tests for standard hook dimensions per IS 456 Cl 26.2.2."""
+
+    def test_180_hook_deformed_16mm(self):
+        """180° hook for 16mm deformed bar."""
+        from structural_lib.detailing import calculate_standard_hook
+
+        hook = calculate_standard_hook(16, "180", "deformed")
+        assert hook.hook_type == "180"
+        assert hook.bar_dia == 16
+        assert hook.internal_radius == 32  # 2 × 16
+        assert hook.extension == 65  # max(4×16=64, 65) = 65
+        assert hook.equivalent_length == 128  # 8 × 16
+
+    def test_90_hook_extension(self):
+        """90° hook has 12φ extension."""
+        from structural_lib.detailing import calculate_standard_hook
+
+        hook = calculate_standard_hook(20, "90", "deformed")
+        assert hook.hook_type == "90"
+        assert hook.extension == 240  # 12 × 20
+
+    def test_135_hook_seismic(self):
+        """135° hook with 6φ extension (seismic)."""
+        from structural_lib.detailing import calculate_standard_hook
+
+        hook = calculate_standard_hook(12, "135", "deformed")
+        assert hook.hook_type == "135"
+        assert hook.extension == 72  # 6 × 12
+
+    def test_plain_bar_equivalent_length(self):
+        """Plain bar hooks have 16φ equivalent length."""
+        from structural_lib.detailing import calculate_standard_hook
+
+        hook = calculate_standard_hook(16, "180", "plain")
+        assert hook.equivalent_length == 256  # 16 × 16
+
+    def test_invalid_hook_type(self):
+        """Should raise ValueError for invalid hook type."""
+        from structural_lib.detailing import calculate_standard_hook
+
+        with pytest.raises(ValueError, match="Invalid hook_type"):
+            calculate_standard_hook(16, "45")
+
+    def test_invalid_bar_diameter(self):
+        """Should raise MaterialError for invalid diameter."""
+        from structural_lib.detailing import calculate_standard_hook
+        from structural_lib.errors import MaterialError
+
+        with pytest.raises(MaterialError):
+            calculate_standard_hook(0, "180")
+
+
+class TestAnchorageLength:
+    """Tests for anchorage length calculation per IS 456 Cl 26.2.3."""
+
+    def test_adequate_straight_length(self):
+        """When straight length >= Ld, no hook needed."""
+        from structural_lib.detailing import calculate_anchorage_length
+
+        result = calculate_anchorage_length(
+            bar_dia=16,
+            fck=25,
+            fy=500,
+            available_length=800,  # More than required
+            use_hook=False,
+        )
+        assert result["is_adequate"] is True
+        assert result["hook"] is None
+
+    def test_shortfall_with_hook(self):
+        """When straight length < Ld, hook makes up difference."""
+        from structural_lib.detailing import calculate_anchorage_length
+
+        result = calculate_anchorage_length(
+            bar_dia=16,
+            fck=25,
+            fy=500,
+            available_length=400,  # Less than required
+            use_hook=True,
+            hook_type="180",
+        )
+        assert result["shortfall"] > 0
+        assert result["hook"] is not None
+        assert result["total_provided"] == 400 + 128  # 400 + 8×16
+
+    def test_utilization_ratio(self):
+        """Utilization ratio should be total/required."""
+        from structural_lib.detailing import calculate_anchorage_length
+
+        result = calculate_anchorage_length(
+            bar_dia=16,
+            fck=25,
+            fy=500,
+            available_length=600,
+            use_hook=True,
+        )
+        expected_util = result["total_provided"] / result["required_ld"]
+        assert result["utilization"] == pytest.approx(expected_util, rel=0.01)
+
+
+class TestStirrupAnchorage:
+    """Tests for stirrup anchorage hooks per IS 456 Cl 26.2.2.2."""
+
+    def test_regular_stirrup(self):
+        """Regular stirrup: 90° hook, 8d extension."""
+        from structural_lib.detailing import calculate_stirrup_anchorage
+
+        result = calculate_stirrup_anchorage(8, is_seismic=False)
+        assert result["hook_type"] == "90"
+        assert result["internal_radius"] == 16  # 2 × 8
+        assert result["extension"] == 75  # max(8×8=64, 75) = 75
+
+    def test_seismic_stirrup(self):
+        """Seismic stirrup: 135° hook, 6d ≥ 75mm."""
+        from structural_lib.detailing import calculate_stirrup_anchorage
+
+        result = calculate_stirrup_anchorage(10, is_seismic=True)
+        assert result["hook_type"] == "135"
+        assert result["extension"] == 75  # max(6×10=60, 75) = 75
+        assert "IS 13920" in result["remarks"]
+
+    def test_invalid_diameter(self):
+        """Should raise MaterialError for invalid diameter."""
+        from structural_lib.detailing import calculate_stirrup_anchorage
+        from structural_lib.errors import MaterialError
+
+        with pytest.raises(MaterialError):
+            calculate_stirrup_anchorage(0)
