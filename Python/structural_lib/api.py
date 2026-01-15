@@ -64,6 +64,15 @@ from .inputs import (
     MaterialsInput,
 )
 from .insights import cost_optimization, design_suggestions
+from .torsion import (
+    TorsionResult,
+    calculate_equivalent_moment,
+    calculate_equivalent_shear,
+    calculate_longitudinal_torsion_steel,
+    calculate_torsion_shear_stress,
+    calculate_torsion_stirrup_area,
+    design_torsion,
+)
 
 __all__ = [
     # Version
@@ -114,6 +123,14 @@ __all__ = [
     "optimize_beam_cost",
     "suggest_beam_design_improvements",
     "smart_analyze_design",
+    # Torsion Design (IS 456 Clause 41)
+    "design_torsion",
+    "calculate_equivalent_shear",
+    "calculate_equivalent_moment",
+    "calculate_torsion_shear_stress",
+    "calculate_torsion_stirrup_area",
+    "calculate_longitudinal_torsion_steel",
+    "TorsionResult",
 ]
 
 

@@ -34,6 +34,7 @@ from structural_lib.codes.is456 import (
     shear,
     slenderness,
     tables,
+    torsion,
     traceability,
 )
 
@@ -118,6 +119,7 @@ __all__ = [
     "compliance",
     "ductile",
     "slenderness",
+    "torsion",
     "traceability",
     # Traceability API (TASK-272)
     "clause",

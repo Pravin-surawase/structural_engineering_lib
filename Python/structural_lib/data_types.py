@@ -221,6 +221,47 @@ class ShearResult:
 
 
 @dataclass
+class TorsionResult:
+    """Result of torsion design per IS 456 Clause 41.
+
+    Attributes:
+        tu_knm: Applied torsional moment (kN·m)
+        vu_kn: Applied shear force (kN)
+        mu_knm: Applied bending moment (kN·m)
+        ve_kn: Equivalent shear force (kN)
+        me_knm: Equivalent bending moment (kN·m)
+        tv_equiv: Equivalent shear stress (N/mm²)
+        tc: Design shear strength of concrete (N/mm²)
+        tc_max: Maximum shear stress limit (N/mm²)
+        asv_torsion: Area of stirrups for torsion per unit length (mm²/mm)
+        asv_shear: Area of stirrups for shear per unit length (mm²/mm)
+        asv_total: Total stirrup area per unit length (mm²/mm)
+        stirrup_spacing: Designed stirrup spacing (mm)
+        al_torsion: Longitudinal steel for torsion (mm²)
+        is_safe: True if section is safe
+        requires_closed_stirrups: True (always for torsion)
+        errors: List of structured errors/warnings
+    """
+
+    tu_knm: float
+    vu_kn: float
+    mu_knm: float
+    ve_kn: float
+    me_knm: float
+    tv_equiv: float
+    tc: float
+    tc_max: float
+    asv_torsion: float
+    asv_shear: float
+    asv_total: float
+    stirrup_spacing: float
+    al_torsion: float
+    is_safe: bool
+    requires_closed_stirrups: bool = True
+    errors: list[DesignError] = field(default_factory=list)
+
+
+@dataclass
 class DeflectionResult:
     is_ok: bool
     remarks: str

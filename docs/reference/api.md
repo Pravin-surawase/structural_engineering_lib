@@ -1162,6 +1162,144 @@ def design_shear(
 
 ---
 
+## 3A. Torsion Module (`torsion.py`) — IS 456 Clause 41
+
+Design for combined torsion, shear, and flexure per IS 456:2000 Clause 41.
+
+### 3A.1 Calculate Equivalent Shear (Cl. 41.3.1)
+Computes equivalent shear force accounting for torsion: $V_e = V_u + 1.6 \times \frac{T_u}{b}$
+
+**Python:**
+```python
+def calculate_equivalent_shear(
+    vu_kn: float,  # Applied shear (kN)
+    tu_knm: float, # Applied torsion (kN·m)
+    b: float       # Beam width (mm)
+) -> float        # Equivalent shear Ve (kN)
+```
+
+### 3A.2 Calculate Equivalent Moment (Cl. 41.4.2)
+Computes equivalent bending moment accounting for torsion: $M_e = M_u + M_t$ where $M_t = \frac{T_u \times (1 + D/b)}{1.7}$
+
+**Python:**
+```python
+def calculate_equivalent_moment(
+    mu_knm: float, # Applied moment (kN·m)
+    tu_knm: float, # Applied torsion (kN·m)
+    d: float,      # Effective depth (mm)
+    b: float       # Beam width (mm)
+) -> float        # Equivalent moment Me (kN·m)
+```
+
+### 3A.3 Calculate Torsion Shear Stress (Cl. 41.3)
+Computes equivalent shear stress: $\tau_{ve} = \frac{V_e}{b \times d}$
+
+**Python:**
+```python
+def calculate_torsion_shear_stress(
+    ve_kn: float,  # Equivalent shear (kN)
+    b: float,      # Beam width (mm)
+    d: float       # Effective depth (mm)
+) -> float        # Equivalent shear stress (N/mm²)
+```
+
+### 3A.4 Calculate Torsion Stirrup Area (Cl. 41.4.3)
+Computes stirrup area per unit length for combined torsion and shear:
+$\frac{A_{sv}}{s_v} = \frac{T_u}{b_1 d_1 (0.87 f_y)} + \frac{V_u - \tau_c b d}{0.87 f_y \times d}$
+
+**Python:**
+```python
+def calculate_torsion_stirrup_area(
+    tu_knm: float, # Applied torsion (kN·m)
+    vu_kn: float,  # Applied shear (kN)
+    b: float,      # Beam width (mm)
+    d: float,      # Effective depth (mm)
+    b1: float,     # Core width (c/c stirrups) (mm)
+    d1: float,     # Core depth (c/c stirrups) (mm)
+    fy: float,     # Stirrup yield strength (N/mm²)
+    tc: float      # Design shear strength of concrete (N/mm²)
+) -> float        # Total Asv/sv (mm²/mm)
+```
+
+### 3A.5 Calculate Longitudinal Torsion Steel (Cl. 41.4.2.1)
+Computes additional longitudinal steel for torsion:
+$A_l = \frac{T_u (b_1 + d_1)}{1.7 \times b_1 d_1 \times 0.87 f_y}$ (simplified for combined action)
+
+**Python:**
+```python
+def calculate_longitudinal_torsion_steel(
+    tu_knm: float, # Applied torsion (kN·m)
+    vu_kn: float,  # Applied shear (kN)
+    b1: float,     # Core width (c/c stirrups) (mm)
+    d1: float,     # Core depth (c/c stirrups) (mm)
+    fy: float,     # Steel yield strength (N/mm²)
+    sv: float      # Stirrup spacing (mm)
+) -> float        # Longitudinal steel Al (mm²)
+```
+
+### 3A.6 Design Torsion (Main Entry Point)
+Comprehensive torsion design combining all calculations.
+
+**Python:**
+```python
+def design_torsion(
+    tu_knm: float,       # Applied torsion (kN·m)
+    vu_kn: float,        # Applied shear (kN)
+    mu_knm: float,       # Applied moment (kN·m)
+    b: float,            # Beam width (mm)
+    D: float,            # Overall depth (mm)
+    d: float,            # Effective depth (mm)
+    fck: float,          # Concrete strength (N/mm²)
+    fy: float,           # Steel yield strength (N/mm²)
+    cover: float = 40.0, # Clear cover (mm)
+    stirrup_dia: float = 8.0, # Stirrup diameter (mm)
+    pt: float = 0.5      # Tension steel percentage
+) -> TorsionResult
+```
+
+**Return Type (`TorsionResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `tu_knm` | float | Applied torsional moment (kN·m) |
+| `vu_kn` | float | Applied shear force (kN) |
+| `mu_knm` | float | Applied bending moment (kN·m) |
+| `ve_kn` | float | Equivalent shear force (kN) |
+| `me_knm` | float | Equivalent bending moment (kN·m) |
+| `tv_equiv` | float | Equivalent shear stress τve (N/mm²) |
+| `tc` | float | Design shear strength of concrete (N/mm²) |
+| `tc_max` | float | Maximum shear stress limit (N/mm²) |
+| `asv_torsion` | float | Stirrup area for torsion (mm²/mm) |
+| `asv_shear` | float | Stirrup area for shear (mm²/mm) |
+| `asv_total` | float | Total stirrup area (mm²/mm) |
+| `stirrup_spacing` | float | Designed stirrup spacing (mm) |
+| `al_torsion` | float | Longitudinal steel for torsion (mm²) |
+| `is_safe` | bool | True if section is safe |
+| `requires_closed_stirrups` | bool | Always True for torsion |
+| `errors` | list | List of structured errors/warnings |
+
+**Example:**
+```python
+from structural_lib.api import design_torsion
+
+result = design_torsion(
+    tu_knm=20.0,   # Torsion
+    vu_kn=80.0,    # Shear
+    mu_knm=120.0,  # Moment
+    b=300,         # 300mm wide
+    D=500,         # 500mm deep
+    d=450,         # 450mm effective
+    fck=25.0,      # M25 concrete
+    fy=500.0       # Fe500 steel
+)
+
+print(f"Equivalent shear: {result.ve_kn:.1f} kN")
+print(f"Stirrup spacing: {result.stirrup_spacing:.0f} mm")
+print(f"Longitudinal steel for torsion: {result.al_torsion:.0f} mm²")
+print(f"Safe: {result.is_safe}")
+```
+
+---
+
 ## 4. Ductile Detailing Module (`M10_Ductile` / `ductile.py`)
 
 ### 4.1 Check Beam Ductility
