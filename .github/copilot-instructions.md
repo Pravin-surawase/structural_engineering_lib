@@ -488,8 +488,8 @@ cd Python && pytest tests/ -v                 # Tests
 - [api.md](docs/reference/api.md) - API reference
 
 **Automation:**
-- `scripts/index.json` - All scripts catalog
-- `scripts/README.md` - Scripts overview
+- [scripts/index.json](scripts/index.json) - All scripts catalog
+- [scripts/README.md](scripts/README.md) - Scripts overview
 
 ### Emergency Procedures
 
