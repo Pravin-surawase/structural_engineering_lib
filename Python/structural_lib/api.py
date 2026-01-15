@@ -87,6 +87,18 @@ from .torsion import (
     calculate_torsion_stirrup_area,
     design_torsion,
 )
+from .visualization.geometry_3d import (
+    Beam3DGeometry,
+    Point3D,
+    RebarPath,
+    RebarSegment,
+    StirrupLoop,
+    beam_to_3d_geometry,
+    compute_beam_outline,
+    compute_rebar_positions,
+    compute_stirrup_path,
+    compute_stirrup_positions,
+)
 
 __all__ = [
     # Version
@@ -159,6 +171,17 @@ __all__ = [
     "LoadDefinition",
     "CriticalPoint",
     "LoadDiagramResult",
+    # 3D Visualization (TASK-3D-03)
+    "Point3D",
+    "RebarSegment",
+    "RebarPath",
+    "StirrupLoop",
+    "Beam3DGeometry",
+    "compute_rebar_positions",
+    "compute_stirrup_path",
+    "compute_stirrup_positions",
+    "compute_beam_outline",
+    "beam_to_3d_geometry",
 ]
 
 
