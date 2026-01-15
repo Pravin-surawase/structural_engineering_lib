@@ -606,9 +606,7 @@ def create_bmd_sfd_diagram(
     )
 
     # Zero line for BMD
-    fig.add_hline(
-        y=0, line_dash="dash", line_color="gray", line_width=1, row=1, col=1
-    )
+    fig.add_hline(y=0, line_dash="dash", line_color="gray", line_width=1, row=1, col=1)
 
     # SFD trace (filled area)
     fig.add_trace(
@@ -627,9 +625,7 @@ def create_bmd_sfd_diagram(
     )
 
     # Zero line for SFD
-    fig.add_hline(
-        y=0, line_dash="dash", line_color="gray", line_width=1, row=2, col=1
-    )
+    fig.add_hline(y=0, line_dash="dash", line_color="gray", line_width=1, row=2, col=1)
 
     # Add critical point annotations
     if critical_points:

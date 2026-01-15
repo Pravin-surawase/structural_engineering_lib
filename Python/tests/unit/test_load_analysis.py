@@ -208,7 +208,9 @@ class TestCriticalPoints:
         assert len(result.critical_points) >= 3
 
         # Find max_bm point
-        max_bm_points = [cp for cp in result.critical_points if cp.point_type == "max_bm"]
+        max_bm_points = [
+            cp for cp in result.critical_points if cp.point_type == "max_bm"
+        ]
         assert len(max_bm_points) == 1
         assert abs(max_bm_points[0].position_mm - 3000.0) < 100  # Near midspan
 
@@ -218,11 +220,15 @@ class TestCriticalPoints:
         result = compute_bmd_sfd(6000, "simply_supported", loads)
 
         # Find zero_sf point - UDL has continuous shear, so should have zero crossing
-        zero_sf_points = [cp for cp in result.critical_points if cp.point_type == "zero_sf"]
+        zero_sf_points = [
+            cp for cp in result.critical_points if cp.point_type == "zero_sf"
+        ]
 
         # Zero crossing should be detected for UDL (linear shear variation crosses zero)
         # If not found, check that max_bm is at midspan (where V=0)
-        max_bm_points = [cp for cp in result.critical_points if cp.point_type == "max_bm"]
+        max_bm_points = [
+            cp for cp in result.critical_points if cp.point_type == "max_bm"
+        ]
         assert len(max_bm_points) == 1
 
         # Max moment occurs where shear = 0, should be near midspan

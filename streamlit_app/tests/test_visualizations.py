@@ -243,9 +243,7 @@ class TestBmdSfdDiagram:
         bmd_knm = [0, 40, 40, 0]
         sfd_kn = [40, 0, 0, -40]
 
-        fig = create_bmd_sfd_diagram(
-            positions_mm, bmd_knm, sfd_kn, height=800
-        )
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn, height=800)
 
         assert isinstance(fig, go.Figure)
         assert fig.layout.height == 800
@@ -256,9 +254,7 @@ class TestBmdSfdDiagram:
         bmd_knm = [0, 40, 40, 0]
         sfd_kn = [40, 0, 0, -40]
 
-        fig = create_bmd_sfd_diagram(
-            positions_mm, bmd_knm, sfd_kn, show_grid=False
-        )
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn, show_grid=False)
 
         assert isinstance(fig, go.Figure)
 
@@ -268,9 +264,7 @@ class TestBmdSfdDiagram:
         bmd_knm = [0, 45, 0]
         sfd_kn = [30, 0, -30]
 
-        fig = create_bmd_sfd_diagram(
-            positions_mm, bmd_knm, sfd_kn, critical_points=[]
-        )
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn, critical_points=[])
 
         assert isinstance(fig, go.Figure)
         assert len(fig.data) == 2
