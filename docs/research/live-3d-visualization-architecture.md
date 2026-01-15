@@ -2867,74 +2867,279 @@ with col3:
 
 ---
 
-## 12. Implementation Roadmap (Recommended Sequence)
+## 12. Implementation Roadmap (8-Week Quality-Focused Development)
 
-### Phase 1: MVP (Week 1-2) ✅ Do This First
-- [x] Create `visualizations_3d.py` (Plotly implementation)
-- [x] Create `geometry_3d.py` (helper functions)
-- [x] Integrate into beam_design.py (basic layout)
-- [ ] Add live updates with @st.fragment
-- [ ] Test locally (5-10 test cases)
-- [ ] Write unit tests for geometry functions
-- [ ] Document usage
+> **Development Philosophy:** We have 2 months to build something exceptional. Focus on visual excellence, automation, and quality code. Delay nice-to-haves to V1.1.
 
-**Deliverable:** Working 3D preview for manual input.
+### **Weeks 1-2: Foundation + Live Preview** ✅ Critical Path
+**Goal:** Rock-solid 3D preview with live updates
 
-### Phase 2: CSV Import (Week 3)
-- [ ] Create `csv_import.py`
-- [ ] Implement CSV parser with validation
-- [ ] Add multi-beam 3D view
-- [ ] Add progressive loading
-- [ ] Test with 10, 50, 100 beam datasets
-- [ ] Add export to Excel/HTML
-- [ ] Document CSV format
+- [ ] Create `visualizations_3d.py` (Plotly, production-quality)
+  - [ ] Concrete mesh with realistic materials
+  - [ ] Rebar rendering with proper positioning
+  - [ ] Stirrup visualization with correct spacing
+  - [ ] Professional lighting and camera setup
 
-**Deliverable:** CSV import working, tested with realistic data.
+- [ ] Create `geometry_3d.py` (helper functions)
+  - [ ] Rebar position computation (multi-layer support)
+  - [ ] Stirrup position computation (variable spacing)
+  - [ ] Geometry hashing for cache invalidation
+  - [ ] Unit tests (95%+ coverage)
 
-### Phase 3: Design Data Upload (Week 4)
+- [ ] Integrate into `beam_design.py`
+  - [ ] Two-column layout (input | 3D view)
+  - [ ] @st.fragment for live updates (<100ms latency)
+  - [ ] Debouncing for smooth interaction
+  - [ ] Status display (safe/unsafe, metrics)
+
+- [ ] Quality assurance
+  - [ ] 20+ test cases (edge cases included)
+  - [ ] Fragment API validation (no sidebar violations)
+  - [ ] Performance benchmarks (mesh gen <50ms)
+  - [ ] Code review + documentation
+
+**Deliverable:** Flawless live 3D preview for manual input. Demo-ready.
+
+---
+
+### **Weeks 3-4: CSV Import + Multi-Beam Visualization** 🏗️ High Impact
+**Goal:** Handle real projects with multiple beams
+
+- [ ] Create `csv_import.py` (production-grade parser)
+  - [ ] CSV validation with detailed error messages
+  - [ ] Support for 1000+ beam projects
+  - [ ] Progressive loading with progress bar
+  - [ ] Smart LOD (Level of Detail) system
+
+- [ ] Multi-beam 3D rendering
+  - [ ] Building coordinate system
+  - [ ] Color-coding by story/status
+  - [ ] Interactive selection (click beam → details)
+  - [ ] Zoom to beam / Zoom to building
+
+- [ ] Export features
+  - [ ] Export to Excel (enhanced with calculations)
+  - [ ] Export 3D view as HTML (interactive)
+  - [ ] Export screenshots (high-res PNG)
+  - [ ] Export to CSV (filtered/modified data)
+
+- [ ] Performance optimization
+  - [ ] Test with 100, 500, 1000 beam datasets
+  - [ ] Caching strategy (aggressive)
+  - [ ] Memory profiling and optimization
+  - [ ] Browser compatibility testing
+
+**Deliverable:** CSV import handling large projects smoothly. Impressive demos.
+
+---
+
+### **Week 5: Design Integration + Reinforcement Visualization** 🎨 Visual Excellence
+**Goal:** Show design results in stunning 3D
+
 - [ ] Create `design_import.py`
-- [ ] Implement JSON parser
-- [ ] Add XML parser (optional)
-- [ ] Integrate with design API
-- [ ] Show designed reinforcement in 3D
-- [ ] Add status color-coding
-- [ ] Document JSON schema
+  - [ ] JSON schema v1 (structural_lib native format)
+  - [ ] XML parser (STAAD.Pro, ETABS compatibility)
+  - [ ] Schema validation with helpful errors
+  - [ ] Version migration support
 
-**Deliverable:** Upload design results, see reinforcement in 3D.
+- [ ] Post-analysis visualization
+  - [ ] Show ACTUAL reinforcement from design
+  - [ ] Color-code by utilization (green→yellow→red)
+  - [ ] Animated transitions (before/after design)
+  - [ ] Section cuts to show internal rebar
 
-### Phase 4: Performance & Polish (Week 5)
-- [ ] Implement caching (geometry_cache.py)
-- [ ] Add LOD system (lod_manager.py)
-- [ ] Optimize mesh generation
-- [ ] Add debouncing
-- [ ] Performance testing (benchmarks)
-- [ ] Fix performance bottlenecks
-- [ ] Mobile responsive testing
+- [ ] Advanced features
+  - [ ] Curtailment zones (variable stirrup spacing)
+  - [ ] Development lengths visualization
+  - [ ] Lap splice locations
+  - [ ] Bar marks and labels
 
-**Deliverable:** Smooth 60 FPS updates, <100ms latency.
+- [ ] Demo preparation
+  - [ ] Create 5 impressive demo projects
+  - [ ] Screenshot gallery
+  - [ ] Video walkthroughs (screen recording)
+  - [ ] User guide with visuals
 
-### Phase 5: Deployment (Week 6)
-- [ ] Cloud optimization config
-- [ ] Add error handling
-- [ ] Add loading states
-- [ ] Security audit (input validation)
-- [ ] Deploy to Streamlit Cloud
-- [ ] Load testing
-- [ ] User acceptance testing
-- [ ] Fix deployment issues
+**Deliverable:** Design results look professional. Ready to impress.
 
-**Deliverable:** Live app on Streamlit Cloud.
+---
 
-### Phase 6: PyVista (Future, Optional)
-- [ ] Install PyVista + stpyvista
+### **Week 6: PyVista Migration** 🚀 Next-Level Quality
+**Goal:** CAD-quality rendering with photorealistic materials
+
+- [ ] Setup PyVista + stpyvista
+  - [ ] Add to pyproject.toml
+  - [ ] Test on macOS/Linux/Windows
+  - [ ] Streamlit Cloud compatibility check
+
 - [ ] Create `visualizations_3d_pyvista.py`
-- [ ] Port all features to PyVista
-- [ ] Add advanced features (clipping, export)
-- [ ] Hybrid renderer (user choice)
-- [ ] Performance comparison
-- [ ] Upgrade documentation
+  - [ ] Port all Plotly features
+  - [ ] Add realistic materials (concrete, steel)
+  - [ ] Multi-light setup (ambient, directional, shadows)
+  - [ ] Camera presets (isometric, plan, elevation)
 
-**Deliverable:** Professional CAD-quality rendering.
+- [ ] Advanced CAD features
+  - [ ] Clipping planes (section views)
+  - [ ] Exploded view (disassemble beam)
+  - [ ] Measurement tools (dimensions)
+  - [ ] Export to STL/VTK (for FEA)
+
+- [ ] Hybrid renderer
+  - [ ] User can choose: Plotly (fast) or PyVista (beautiful)
+  - [ ] Automatic fallback (if PyVista fails)
+  - [ ] Performance comparison documentation
+
+**Deliverable:** Professional CAD-quality visualization. Competitive with commercial software.
+
+---
+
+### **Week 7: Automation + Developer Experience** 🤖 Work Smarter
+**Goal:** Automated workflows, no manual repetition
+
+- [ ] Code generation automation
+  - [ ] Auto-generate geometry from design code
+  - [ ] Template system for common beam types
+  - [ ] Parametric modeling (adjust and regenerate)
+
+- [ ] Smart defaults and suggestions
+  - [ ] AI-powered dimension suggestions
+  - [ ] Optimal reinforcement patterns
+  - [ ] Cost optimization automation
+  - [ ] Compliance checking automation
+
+- [ ] Developer tools
+  - [ ] Comprehensive API documentation
+  - [ ] Code examples for every function
+  - [ ] Jupyter notebook examples
+  - [ ] VS Code snippets for common patterns
+
+- [ ] Testing automation
+  - [ ] Automated visual regression tests
+  - [ ] Performance benchmarking suite
+  - [ ] CI/CD pipeline for 3D features
+  - [ ] Automated screenshot generation
+
+**Deliverable:** Highly automated workflow. Fast iteration.
+
+---
+
+### **Week 8: Polish + Launch Preparation** ✨ Ship It!
+**Goal:** Production-ready, impressive launch
+
+- [ ] Performance optimization (final pass)
+  - [ ] Profile and optimize bottlenecks
+  - [ ] Memory leak detection and fixes
+  - [ ] Browser performance testing (Chrome, Firefox, Safari)
+  - [ ] Mobile responsiveness (basic support)
+
+- [ ] User experience polish
+  - [ ] Smooth animations and transitions
+  - [ ] Helpful tooltips and hints
+  - [ ] Empty states and loading states
+  - [ ] Error messages (helpful, not scary)
+
+- [ ] Documentation (comprehensive)
+  - [ ] User guide with screenshots
+  - [ ] Video tutorials (5-10 minutes each)
+  - [ ] API reference (complete)
+  - [ ] Troubleshooting guide
+
+- [ ] Deployment
+  - [ ] Deploy to Streamlit Cloud (staging)
+  - [ ] Security audit (input validation)
+  - [ ] Load testing (100+ concurrent users)
+  - [ ] Public beta launch (gather feedback)
+
+- [ ] Launch materials
+  - [ ] Project showcase page
+  - [ ] Demo videos
+  - [ ] Social media announcements
+  - [ ] GitHub README update with GIFs
+
+**Deliverable:** Polished, production-ready app. Ready for public launch.
+
+---
+
+### **DELAYED to V1.1 (Post-Launch)** ⏰ Nice-to-Haves
+
+These are valuable but not critical for MVP. Push to V1.1 (3-6 months post-launch):
+
+- [ ] **Drawing Export (DXF/PDF)** - Engineers need this, but can wait
+- [ ] **Material Quantity Takeoff (BOM)** - Cost estimation feature
+- [ ] **Detailing Automation** - Bar cutoff, development lengths
+- [ ] **Load Combination Visualization** - Multi-load case analysis
+- [ ] **Deflection Visualization** - Deformed shape animation
+- [ ] **Multi-Span Continuous Beams** - More complex analysis
+- [ ] **Column Design Integration** - Expand beyond beams
+- [ ] **Slab Design Module** - Major feature addition
+- [ ] **Foundation Design** - Separate module
+- [ ] **Eurocode / ACI Support** - International codes
+
+**Rationale:** Focus on ONE thing done exceptionally well (3D beam visualization) before expanding scope.
+
+---
+
+### **Success Metrics for 2-Month Development**
+
+**Technical Metrics:**
+- ✅ <100ms update latency for live preview
+- ✅ Handle 1000+ beams without crash
+- ✅ 95%+ test coverage for core functions
+- ✅ Works on Chrome, Firefox, Safari
+- ✅ Zero critical bugs in beta testing
+
+**Quality Metrics:**
+- ✅ Code is clean, documented, maintainable
+- ✅ No technical debt (or documented for later)
+- ✅ Performance benchmarks documented
+- ✅ All code reviewed by AI agents
+
+**User Experience Metrics:**
+- ✅ 10+ beta testers say "WOW"
+- ✅ 5+ demo projects showcase features
+- ✅ User guide is clear (non-engineers can follow)
+- ✅ Visual quality rivals commercial software
+
+**Launch Readiness:**
+- ✅ Deployed to Streamlit Cloud (stable)
+- ✅ Security audit passed
+- ✅ Documentation complete
+- ✅ Marketing materials ready
+
+---
+
+### **Timeline Visualization**
+
+```
+Month 1 (Weeks 1-4): Core Features
+├─ Week 1-2: Live Preview (Plotly) ████████
+├─ Week 3-4: CSV Import + Multi-Beam ████████
+└─ Status: Foundation solid ✅
+
+Month 2 (Weeks 5-8): Excellence
+├─ Week 5: Design Integration ████████
+├─ Week 6: PyVista (CAD Quality) ████████
+├─ Week 7: Automation + DX ████████
+├─ Week 8: Polish + Launch ████████
+└─ Status: Production ready ✅
+
+Launch: March 2026 🚀
+```
+
+---
+
+### **Development Principles (Follow These)**
+
+1. **Visual Excellence First** - Every frame should look professional
+2. **Performance Matters** - <100ms latency is non-negotiable
+3. **Automation Over Manual** - Build tools that build features
+4. **Quality Over Speed** - We have 2 months, use them wisely
+5. **Demo-Driven Development** - If you can't demo it, it's not done
+6. **Document As You Build** - Code without docs is incomplete
+7. **Test Everything** - If it's not tested, it's broken
+8. **Delay Gracefully** - Push nice-to-haves without guilt
+
+---
 
 ---
 

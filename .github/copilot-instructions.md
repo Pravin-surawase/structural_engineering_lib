@@ -2,16 +2,47 @@
 
 > **FOR AI AGENTS:** Read this FIRST. Following these rules prevents 99% of errors and maximizes session value.
 > **Cost Model:** Per-request pricing → LONG sessions = better ROI. Target 5-10+ commits per session.
+> **DEVELOPMENT STATUS:** 🚧 8-week development phase (Jan 15 - Mar 15, 2026)
+> **CURRENT FOCUS:** 3D Visualization MVP - Quality over speed
 
 ---
 
 ## 🎯 Mission
 
-**Maximize value per session through automation-first workflows:**
-- 90-95% faster commits
-- 97.5% fewer errors
-- 100% conflict elimination
+**8-Week Development Phase (Current):**
+- 🎨 **Visual excellence** - Professional, CAD-quality 3D visualization
+- 🤖 **Automation first** - Tools that build features
+- 📦 **Quality code** - Long-term maintainability
+- 🚀 **Demo-driven** - Impressive showcases at every milestone
+- ⏰ **Strategic delays** - Nice-to-haves pushed to V1.1
+
+**Session Optimization:**
+- 90-95% faster commits via automation
+- 97.5% fewer errors via validation
+- 100% conflict elimination via git automation
 - 5-10+ commits per session (don't stop early!)
+
+---
+
+## 🚧 Development Phase Context
+
+### What We're Building (Current 8 Weeks)
+
+**✅ MVP Features (Must Ship):**
+1. Live 3D preview with <100ms latency
+2. CSV import (1000+ beams)
+3. JSON design result visualization
+4. PyVista CAD-quality rendering
+5. Automated workflows
+
+**⏰ Delayed to V1.1 (3-6 months):**
+1. DXF/PDF drawing export
+2. Material quantity takeoff
+3. Detailing automation
+4. Multi-span continuous beams
+5. Column/slab design modules
+
+**Priority Rule:** If it's not in the 8-week plan, delay it. Focus wins.
 
 ---
 
@@ -30,10 +61,13 @@
 
 **Essential Resources:**
 1. [copilot-instructions.md](/.github/copilot-instructions.md) ← **YOU ARE HERE**
-2. [agent-workflow-master-guide.md](docs/agents/guides/agent-workflow-master-guide.md) - Complete workflows
-3. [TASKS.md](docs/TASKS.md) - Current work
-4. [git-automation/README.md](docs/git-automation/README.md) - Git automation hub
-5. [folder-structure-governance.md](docs/guidelines/folder-structure-governance.md) - Project structure
+2. [8-week-development-plan.md](docs/planning/8-week-development-plan.md) - **Current roadmap**
+3. [DEVELOPMENT_TIMELINE.md](.github/DEVELOPMENT_TIMELINE.md) - Quick reference
+4. [live-3d-visualization-architecture.md](docs/research/live-3d-visualization-architecture.md) - Technical architecture
+5. [agent-workflow-master-guide.md](docs/agents/guides/agent-workflow-master-guide.md) - Complete workflows
+6. [TASKS.md](docs/TASKS.md) - Current work items
+7. [git-automation/README.md](docs/git-automation/README.md) - Git automation hub
+8. [folder-structure-governance.md](docs/guidelines/folder-structure-governance.md) - Project structure
 
 ---
 
