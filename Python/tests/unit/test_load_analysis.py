@@ -18,7 +18,6 @@ from __future__ import annotations
 import pytest
 
 from structural_lib.api import (
-    CriticalPoint,
     LoadDefinition,
     LoadDiagramResult,
     LoadType,
@@ -218,11 +217,6 @@ class TestCriticalPoints:
         """UDL should have zero shear crossing at midspan."""
         loads = [LoadDefinition(LoadType.UDL, magnitude=20.0)]
         result = compute_bmd_sfd(6000, "simply_supported", loads)
-
-        # Find zero_sf point - UDL has continuous shear, so should have zero crossing
-        zero_sf_points = [
-            cp for cp in result.critical_points if cp.point_type == "zero_sf"
-        ]
 
         # Zero crossing should be detected for UDL (linear shear variation crosses zero)
         # If not found, check that max_bm is at midspan (where V=0)

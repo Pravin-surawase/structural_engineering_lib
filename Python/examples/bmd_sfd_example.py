@@ -12,9 +12,9 @@ License: MIT
 """
 
 from structural_lib.api import (
-    compute_bmd_sfd,
     LoadDefinition,
     LoadType,
+    compute_bmd_sfd,
 )
 
 
@@ -53,20 +53,20 @@ def example_simply_supported_udl():
     # Print results
     print(f"Span: {result.span_mm} mm")
     print(f"Support: {result.support_condition}")
-    print(f"\nMax/Min Values:")
+    print("\nMax/Min Values:")
     print(f"  Max BM: {result.max_bm_knm:.2f} kN·m")
     print(f"  Min BM: {result.min_bm_knm:.2f} kN·m")
     print(f"  Max SF: {result.max_sf_kn:.2f} kN")
     print(f"  Min SF: {result.min_sf_kn:.2f} kN")
 
-    print(f"\nCritical Points:")
+    print("\nCritical Points:")
     for cp in result.critical_points:
         print(
             f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
             f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
         )
 
-    print(f"\nTheoretical (verification):")
+    print("\nTheoretical (verification):")
     print(f"  Max BM = wL²/8 = {20 * 6**2 / 8:.2f} kN·m")
     print(f"  Max SF = wL/2 = {20 * 6 / 2:.2f} kN")
 
@@ -106,19 +106,19 @@ def example_simply_supported_point_load():
     )
 
     print(f"Span: {result.span_mm} mm")
-    print(f"\nMax/Min Values:")
+    print("\nMax/Min Values:")
     print(f"  Max BM: {result.max_bm_knm:.2f} kN·m")
     print(f"  Max SF: {result.max_sf_kn:.2f} kN")
     print(f"  Min SF: {result.min_sf_kn:.2f} kN")
 
-    print(f"\nCritical Points:")
+    print("\nCritical Points:")
     for cp in result.critical_points:
         print(
             f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
             f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
         )
 
-    print(f"\nTheoretical (verification):")
+    print("\nTheoretical (verification):")
     print(f"  Max BM = PL/4 = {100 * 8 / 4:.2f} kN·m")
     print(f"  Max SF = P/2 = {100 / 2:.2f} kN")
 
@@ -164,12 +164,12 @@ def example_combined_loads():
     print(f"Span: {result.span_mm} mm")
     print(f"Loads: {len(loads)} (UDL + Point)")
 
-    print(f"\nMax/Min Values:")
+    print("\nMax/Min Values:")
     print(f"  Max BM: {result.max_bm_knm:.2f} kN·m")
     print(f"  Max SF: {result.max_sf_kn:.2f} kN")
     print(f"  Min SF: {result.min_sf_kn:.2f} kN")
 
-    print(f"\nCritical Points:")
+    print("\nCritical Points:")
     for cp in result.critical_points:
         print(
             f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
@@ -213,19 +213,19 @@ def example_cantilever():
     print(f"Span: {result.span_mm} mm")
     print(f"Support: {result.support_condition}")
 
-    print(f"\nMax/Min Values:")
+    print("\nMax/Min Values:")
     print(f"  Max BM: {result.max_bm_knm:.2f} kN·m")
     print(f"  Min BM: {result.min_bm_knm:.2f} kN·m (hogging)")
     print(f"  Max SF: {result.max_sf_kn:.2f} kN")
 
-    print(f"\nCritical Points:")
+    print("\nCritical Points:")
     for cp in result.critical_points:
         print(
             f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
             f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
         )
 
-    print(f"\nTheoretical (verification):")
+    print("\nTheoretical (verification):")
     print(f"  Max BM = wL²/2 = {25 * 3**2 / 2:.2f} kN·m (hogging)")
     print(f"  Max SF = wL = {25 * 3:.2f} kN")
 
@@ -266,19 +266,19 @@ def example_cantilever_point_load():
 
     print(f"Span: {result.span_mm} mm")
 
-    print(f"\nMax/Min Values:")
+    print("\nMax/Min Values:")
     print(f"  Max BM: {result.max_bm_knm:.2f} kN·m")
     print(f"  Min BM: {result.min_bm_knm:.2f} kN·m (hogging)")
     print(f"  Max SF: {result.max_sf_kn:.2f} kN")
 
-    print(f"\nCritical Points:")
+    print("\nCritical Points:")
     for cp in result.critical_points:
         print(
             f"  {cp.point_type}: x={cp.position_mm:.0f}mm, "
             f"BM={cp.bm_knm:.2f} kN·m, SF={cp.sf_kn:.2f} kN"
         )
 
-    print(f"\nTheoretical (verification):")
+    print("\nTheoretical (verification):")
     print(f"  Max BM = PL = {80 * 4:.2f} kN·m (hogging)")
     print(f"  Constant SF = P = {80:.2f} kN")
 
