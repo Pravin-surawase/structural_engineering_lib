@@ -28,7 +28,6 @@ Welcome to the developer documentation! This section is for developers who want 
 |----------|-------------|------|
 | **[Platform Guide](platform-guide.md)** | Build your first automation | 30 min |
 | **[Integration Examples](integration-examples.md)** | 10+ real-world code samples | 15 min |
-| **[Quick Start](quick-start.md)** | Zero to running code | 5 min |
 
 ### Advanced Topics
 
@@ -36,15 +35,12 @@ Welcome to the developer documentation! This section is for developers who want 
 |----------|-------------|
 | **[Extension Guide](extension-guide.md)** | Add features without modifying core |
 | **[API Stability](api-stability.md)** | Versioning, breaking changes, migration |
-| **[Best Practices](best-practices.md)** | Error handling, testing, performance |
-| **[Plugin Development](plugin-development.md)** | Build modular extensions |
 
 ### Reference
 
 | Document | Description |
 |----------|-------------|
 | **[API Reference](../reference/api.md)** | All 29 public functions |
-| **[Data Structures](data-structures.md)** | Input/output types |
 | **[Code Examples](../cookbook/)** | Reusable patterns |
 
 ---
@@ -83,7 +79,7 @@ Using this library as a foundation, developers have built:
 ## 📖 Learning Path
 
 ### 1. Understand What's Possible (5 minutes)
-→ Read [Platform Guide Introduction](platform-guide.md#introduction)
+→ Read [Platform Guide Introduction](platform-guide.md)
 
 ### 2. Run Your First Automation (15 minutes)
 → Follow [Quick Start Tutorial](platform-guide.md#quick-start)
@@ -94,16 +90,13 @@ Using this library as a foundation, developers have built:
 ### 4. Build Your Feature (1-2 hours)
 → Use [Extension Guide](extension-guide.md) for patterns
 
-### 5. Make It Production-Ready (1-2 hours)
-→ Apply [Best Practices](best-practices.md)
-
 ---
 
 ## 🤝 Community & Support
 
 **Questions?**
 - Open an [Issue on GitHub](https://github.com/Pravin-surawase/structural_engineering_lib/issues)
-- Check [FAQ](faq.md) for common questions
+- Check [Troubleshooting Guide](../reference/troubleshooting.md) for common issues
 
 **Want to contribute?**
 - See [Contributing Guide](../contributing/development-guide.md)
@@ -123,11 +116,8 @@ Using this library as a foundation, developers have built:
 | Integration Examples | ✅ Complete | 2026-01-15 |
 | Extension Guide | ✅ Complete | 2026-01-15 |
 | API Stability | ✅ Complete | 2026-01-15 |
-| Quick Start | 🔄 Planned | - |
-| Best Practices | 🔄 Planned | - |
-| Plugin Development | 🔄 Planned | - |
-| Data Structures | 🔄 Planned | - |
-| FAQ | 🔄 Planned | - |
+
+**Future Additions:** Quick Start (standalone), Best Practices, Plugin Development, Data Structures Reference, FAQ
 
 ---
 
