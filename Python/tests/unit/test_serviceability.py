@@ -349,3 +349,321 @@ class TestCheckDeflectionLevelB:
         assert result_with_asc.long_term_factor < result_no_asc.long_term_factor
         # Total deflection should be less
         assert result_with_asc.delta_total_mm < result_no_asc.delta_total_mm
+
+
+# =============================================================================
+# Level C Serviceability Tests (IS 456 Annex C - Separate Creep/Shrinkage)
+# =============================================================================
+
+
+class TestCreepCoefficient:
+    """Tests for get_creep_coefficient function."""
+
+    def test_creep_coefficient_default_conditions(self):
+        """Default conditions give reasonable creep coefficient."""
+        from structural_lib.serviceability import get_creep_coefficient
+
+        theta = get_creep_coefficient()
+        # Should be around 2.0-3.0 for standard conditions
+        assert 1.5 <= theta <= 3.5
+
+    def test_creep_coefficient_older_loading_age_less_creep(self):
+        """Older concrete at loading has less creep."""
+        from structural_lib.serviceability import get_creep_coefficient
+
+        theta_28 = get_creep_coefficient(age_at_loading_days=28)
+        theta_90 = get_creep_coefficient(age_at_loading_days=90)
+        assert theta_90 < theta_28
+
+    def test_creep_coefficient_higher_humidity_less_creep(self):
+        """Higher humidity reduces creep."""
+        from structural_lib.serviceability import get_creep_coefficient
+
+        theta_50 = get_creep_coefficient(relative_humidity_percent=50)
+        theta_80 = get_creep_coefficient(relative_humidity_percent=80)
+        assert theta_80 < theta_50
+
+    def test_creep_coefficient_limits(self):
+        """Creep coefficient stays within reasonable limits."""
+        from structural_lib.serviceability import get_creep_coefficient
+
+        theta_extreme_low = get_creep_coefficient(
+            age_at_loading_days=365,
+            relative_humidity_percent=95,
+        )
+        theta_extreme_high = get_creep_coefficient(
+            age_at_loading_days=3,
+            relative_humidity_percent=30,
+        )
+        assert theta_extreme_low >= 0.8
+        assert theta_extreme_high <= 4.0
+
+
+class TestShrinkageCurvature:
+    """Tests for calculate_shrinkage_curvature function."""
+
+    def test_shrinkage_curvature_typical_beam(self):
+        """Typical beam gives positive shrinkage curvature."""
+        from structural_lib.serviceability import calculate_shrinkage_curvature
+
+        phi = calculate_shrinkage_curvature(
+            d_mm=450,
+            ast_mm2=942,
+            b_mm=300,
+        )
+        assert phi > 0
+
+    def test_shrinkage_curvature_with_compression_steel_reduces(self):
+        """Compression steel reduces shrinkage curvature."""
+        from structural_lib.serviceability import calculate_shrinkage_curvature
+
+        phi_no_asc = calculate_shrinkage_curvature(
+            d_mm=450,
+            ast_mm2=942,
+            asc_mm2=0,
+            b_mm=300,
+        )
+        phi_with_asc = calculate_shrinkage_curvature(
+            d_mm=450,
+            ast_mm2=942,
+            asc_mm2=471,  # Half the tension steel
+            b_mm=300,
+        )
+        assert phi_with_asc < phi_no_asc
+
+    def test_shrinkage_curvature_invalid_inputs_return_zero(self):
+        """Invalid inputs return zero curvature."""
+        from structural_lib.serviceability import calculate_shrinkage_curvature
+
+        phi = calculate_shrinkage_curvature(d_mm=0, ast_mm2=942, b_mm=300)
+        assert phi == 0.0
+
+
+class TestCreepDeflection:
+    """Tests for calculate_creep_deflection function."""
+
+    def test_creep_deflection_basic(self):
+        """Basic creep deflection calculation."""
+        from structural_lib.serviceability import calculate_creep_deflection
+
+        delta_creep = calculate_creep_deflection(
+            delta_sustained_mm=5.0,
+            creep_coefficient=2.0,
+        )
+        assert delta_creep == pytest.approx(10.0)
+
+    def test_creep_deflection_zero_inputs(self):
+        """Zero inputs give zero creep deflection."""
+        from structural_lib.serviceability import calculate_creep_deflection
+
+        delta = calculate_creep_deflection(delta_sustained_mm=0, creep_coefficient=2.0)
+        assert delta == 0.0
+
+    def test_creep_deflection_negative_handled(self):
+        """Negative inputs treated as zero."""
+        from structural_lib.serviceability import calculate_creep_deflection
+
+        delta = calculate_creep_deflection(
+            delta_sustained_mm=-5.0, creep_coefficient=2.0
+        )
+        assert delta == 0.0
+
+
+class TestShrinkageDeflection:
+    """Tests for calculate_shrinkage_deflection function."""
+
+    def test_shrinkage_deflection_simply_supported(self):
+        """Simply supported gives positive shrinkage deflection."""
+        from structural_lib.serviceability import calculate_shrinkage_deflection
+
+        delta = calculate_shrinkage_deflection(
+            phi_sh=1e-6,  # Typical curvature
+            span_mm=6000,
+            support_condition="simply_supported",
+        )
+        assert delta > 0
+        # k = 1/8 for SS, delta = 0.125 * 1e-6 * 6000^2 = 4.5 mm
+        assert delta == pytest.approx(4.5, rel=0.01)
+
+    def test_shrinkage_deflection_cantilever_larger(self):
+        """Cantilever has larger shrinkage deflection coefficient."""
+        from structural_lib.serviceability import calculate_shrinkage_deflection
+
+        delta_ss = calculate_shrinkage_deflection(
+            phi_sh=1e-6, span_mm=3000, support_condition="simply_supported"
+        )
+        delta_cant = calculate_shrinkage_deflection(
+            phi_sh=1e-6, span_mm=3000, support_condition="cantilever"
+        )
+        assert delta_cant > delta_ss
+
+    def test_shrinkage_deflection_zero_curvature(self):
+        """Zero curvature gives zero deflection."""
+        from structural_lib.serviceability import calculate_shrinkage_deflection
+
+        delta = calculate_shrinkage_deflection(phi_sh=0, span_mm=6000)
+        assert delta == 0.0
+
+
+class TestCheckDeflectionLevelC:
+    """Tests for check_deflection_level_c function."""
+
+    def test_level_c_typical_beam_ok(self):
+        """Level C check passes for typical adequately sized beam."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=50,  # Dead + permanent live
+            ma_live_knm=20,  # Variable live
+            ast_mm2=942,  # 3-20φ
+            fck_nmm2=25,
+        )
+        assert result.mcr_knm > 0
+        assert result.igross_mm4 > 0
+        assert result.icr_mm4 > 0
+        assert result.ieff_mm4 > 0
+        assert result.delta_immediate_mm > 0
+        assert result.delta_creep_mm > 0
+        assert result.delta_shrinkage_mm > 0
+        assert result.delta_total_mm > result.delta_immediate_mm
+        assert result.creep_coefficient > 0
+        assert result.shrinkage_curvature > 0
+
+    def test_level_c_separate_components(self):
+        """Level C correctly separates creep and shrinkage."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ma_live_knm=0,
+            ast_mm2=942,
+            fck_nmm2=25,
+        )
+        # Total should equal immediate + creep + shrinkage
+        expected_total = (
+            result.delta_immediate_mm
+            + result.delta_creep_mm
+            + result.delta_shrinkage_mm
+        )
+        assert result.delta_total_mm == pytest.approx(expected_total)
+
+    def test_level_c_invalid_geometry(self):
+        """Level C handles invalid geometry."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result = check_deflection_level_c(
+            b_mm=-300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+        )
+        assert result.is_ok is False
+        assert "Invalid geometry" in result.remarks
+
+    def test_level_c_zero_moment(self):
+        """Level C with zero moment gives zero deflection."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=0,
+            ma_live_knm=0,
+            ast_mm2=942,
+            fck_nmm2=25,
+        )
+        assert result.is_ok is True
+        assert result.delta_total_mm == 0.0
+
+    def test_level_c_compression_steel_reduces_shrinkage(self):
+        """Compression steel reduces shrinkage deflection in Level C."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result_no_asc = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+            asc_mm2=0,
+        )
+        result_with_asc = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+            asc_mm2=314,  # 2-14φ
+        )
+        # Shrinkage deflection should be less with compression steel
+        assert result_with_asc.delta_shrinkage_mm < result_no_asc.delta_shrinkage_mm
+
+    def test_level_c_humidity_affects_creep(self):
+        """Higher humidity reduces creep deflection."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result_dry = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+            relative_humidity_percent=40,
+        )
+        result_humid = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+            relative_humidity_percent=80,
+        )
+        assert result_humid.delta_creep_mm < result_dry.delta_creep_mm
+        assert result_humid.creep_coefficient < result_dry.creep_coefficient
+
+    def test_level_c_age_affects_creep(self):
+        """Later loading age reduces creep deflection."""
+        from structural_lib.serviceability import check_deflection_level_c
+
+        result_early = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+            age_at_loading_days=14,
+        )
+        result_late = check_deflection_level_c(
+            b_mm=300,
+            D_mm=500,
+            d_mm=450,
+            span_mm=6000,
+            ma_sustained_knm=60,
+            ast_mm2=942,
+            fck_nmm2=25,
+            age_at_loading_days=90,
+        )
+        assert result_late.delta_creep_mm < result_early.delta_creep_mm
