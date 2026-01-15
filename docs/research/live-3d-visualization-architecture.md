@@ -5,7 +5,7 @@
 **Status:** Draft - For Discussion
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-16
 **Related Tasks:** TASK-3D-VIZ, TASK-POC-STREAMLIT
 
 ---
@@ -21,8 +21,9 @@ This document provides **in-depth technical analysis** for implementing a profes
 4. ✅ Post-analysis reinforcement visualization
 5. ✅ Professional "wow factor" with smooth performance
 
-**Recommended Stack:**
-- **Visualization Engine:** Plotly 3D (immediate) → PyVista with stpyvista (future upgrade)
+**Recommended Stack (Aligned):**
+- **Visualization Engine:** Three.js + react-three-fiber (primary, production)
+- **Fallback:** Plotly 3D MVP if Streamlit iframe/postMessage is blocked in Phase 0
 - **Live Updates:** Streamlit `@st.fragment` with auto-rerun
 - **State Management:** `st.session_state` with hash-based change detection
 - **Performance:** Aggressive caching + debouncing + geometry simplification
@@ -154,11 +155,12 @@ B3,1F,0,0,3000,6000,0,3000,300,450,110,75
 - Show development lengths and lap lengths
 - Annotate bar callouts (e.g., "3-20mm")
 
-**Visualization Features:**
+**Visualization Features (V1):**
 - Toggle layers: Concrete / Tension Steel / Compression Steel / Stirrups
 - Exploded view (separate components)
 - Section cuts at critical points
 - Dimension annotations
+ - AI Explain Mode (metrics-only; no clause citations in V1)
 
 **Acceptance Criteria:**
 - ✅ Click "Analyze" → 3D updates with reinforcement
@@ -177,22 +179,20 @@ B3,1F,0,0,3000,6000,0,3000,300,450,110,75
 |------------|------|------|---------|
 | **Plotly 3D** | • Already installed<br>• Works in Streamlit natively<br>• Interactive (rotate, zoom)<br>• No new dependencies | • Not photorealistic<br>• Limited geometry types<br>• Performance issues with >100 objects | ✅ **Start Here** (Quick MVP) |
 | **PyVista + stpyvista** | • Professional CAD-quality rendering<br>• Handles complex geometry<br>• VTK backend (industry standard)<br>• Export to many formats | • Requires new dependencies<br>• Steeper learning curve<br>• Streamlit integration via stpyvista | ✅ **Upgrade Path** (Production) |
-| **Three.js (React)** | • Best web 3D library<br>• Photorealistic rendering<br>• Huge ecosystem | • Requires separate React app<br>• Not Streamlit compatible<br>• Complex integration | ❌ **Not for Streamlit** |
+| **Three.js (React)** | • Best web 3D library<br>• Photorealistic rendering<br>• Huge ecosystem | • Requires separate React app<br>• iframe integration required<br>• Added build tooling | ✅ **Primary (Production)** |
 | **Babylon.js** | • Game engine quality<br>• Physics engine | • Overkill for CAD<br>• Large bundle size | ❌ **Not suitable** |
 
 ### 2.2 Recommended Technology Decision Matrix
 
-**Phase 1 (Immediate - 1 week):**
-- **3D Engine:** Plotly 3D
-- **Live Updates:** `@st.fragment` + `st.session_state`
+**Phase 0 (Feasibility Gate - 1 week):**
+- **3D Engine:** Three.js + react-three-fiber (iframe POC)
+- **Decision:** If iframe blocked, fall back to Plotly for MVP
+
+**Phase 1 (Production - 2-3 weeks):**
+- **3D Engine:** Three.js + react-three-fiber
+- **Live Updates:** postMessage + debounced updates
 - **CSV Parser:** `pandas`
 - **Caching:** `@st.cache_data`
-
-**Phase 2 (Production - 2-3 weeks):**
-- **3D Engine:** PyVista + stpyvista
-- **Performance:** Geometry LOD (Level of Detail)
-- **Export:** DXF, glTF, STL
-- **Multi-beam:** Spatial indexing for large projects
 
 ### 2.3 Plotly 3D vs PyVista: Detailed Comparison
 

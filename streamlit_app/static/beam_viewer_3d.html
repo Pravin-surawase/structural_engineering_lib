@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beam 3D Viewer POC</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+    }
+    #container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    #canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #info-panel {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      max-width: 280px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #info-panel h3 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: #4fc3f7;
+    }
+    #info-panel .stat {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+      color: #ccc;
+    }
+    #info-panel .stat-value {
+      color: #fff;
+      font-weight: 500;
+    }
+    #status {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #4fc3f7;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    #controls {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #888;
+    }
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #4fc3f7;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas id="canvas"></canvas>
+    <div id="info-panel">
+      <h3 id="beam-id">Waiting for data...</h3>
+      <div class="stat"><span>Width:</span><span class="stat-value" id="dim-b">-</span></div>
+      <div class="stat"><span>Depth:</span><span class="stat-value" id="dim-d">-</span></div>
+      <div class="stat"><span>Span:</span><span class="stat-value" id="dim-span">-</span></div>
+      <div class="stat"><span>Rebars:</span><span class="stat-value" id="rebar-count">-</span></div>
+      <div class="stat"><span>Stirrups:</span><span class="stat-value" id="stirrup-count">-</span></div>
+    </div>
+    <div id="status">⏳ Waiting for beam data...</div>
+    <div id="controls">🖱️ Drag to rotate | Scroll to zoom</div>
+  </div>
+
+  <!-- Three.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    // =============================================================================
+    // Three.js Beam 3D Viewer POC
+    // =============================================================================
+
+    let scene, camera, renderer, controls;
+    let beamGroup = null;
+
+    // Material definitions
+    const MATERIALS = {
+      concrete: new THREE.MeshLambertMaterial({
+        color: 0x888888,
+        transparent: true,
+        opacity: 0.3,
+        side: THREE.DoubleSide
+      }),
+      concreteWireframe: new THREE.LineBasicMaterial({
+        color: 0x555555,
+        transparent: true,
+        opacity: 0.5
+      }),
+      rebarBottom: new THREE.MeshPhongMaterial({
+        color: 0xe53935, // Red
+        shininess: 100
+      }),
+      rebarTop: new THREE.MeshPhongMaterial({
+        color: 0x1e88e5, // Blue
+        shininess: 100
+      }),
+      stirrup: new THREE.MeshPhongMaterial({
+        color: 0x43a047, // Green
+        shininess: 80
+      })
+    };
+
+    // =============================================================================
+    // Initialization
+    // =============================================================================
+
+    function init() {
+      const container = document.getElementById('container');
+      const canvas = document.getElementById('canvas');
+
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x1a1a2e);
+
+      // Camera
+      const aspect = container.clientWidth / container.clientHeight;
+      camera = new THREE.PerspectiveCamera(45, aspect, 1, 100000);
+      camera.position.set(3000, 2000, 2000);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true
+      });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+
+      // Controls
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.minDistance = 100;
+      controls.maxDistance = 20000;
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight.position.set(2000, 3000, 1500);
+      directionalLight.castShadow = true;
+      scene.add(directionalLight);
+
+      const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+      fillLight.position.set(-1000, 1000, -1000);
+      scene.add(fillLight);
+
+      // Grid helper (optional, for reference)
+      const gridHelper = new THREE.GridHelper(10000, 20, 0x444444, 0x333333);
+      gridHelper.rotation.x = Math.PI / 2; // Align with XY plane
+      scene.add(gridHelper);
+
+      // Axes helper
+      const axesHelper = new THREE.AxesHelper(500);
+      scene.add(axesHelper);
+
+      // Handle resize
+      window.addEventListener('resize', onWindowResize);
+
+      // Start render loop
+      animate();
+
+      // Listen for postMessage
+      window.addEventListener('message', handleMessage);
+
+      // Notify parent we're ready
+      notifyReady();
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('container');
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // =============================================================================
+    // postMessage Communication
+    // =============================================================================
+
+    function handleMessage(event) {
+      // Security: In production, validate event.origin
+      const data = event.data;
+
+      if (!data || !data.type) return;
+
+      switch (data.type) {
+        case 'BEAM_GEOMETRY':
+          updateStatus('📥 Received geometry data...');
+          renderBeam(data.payload);
+          break;
+
+        case 'CAMERA_RESET':
+          resetCamera();
+          break;
+
+        case 'TOGGLE_CONCRETE':
+          toggleConcreteVisibility();
+          break;
+
+        default:
+          console.log('Unknown message type:', data.type);
+      }
+    }
+
+    function notifyReady() {
+      // Notify parent (Streamlit) that viewer is ready
+      window.parent.postMessage({ type: 'VIEWER_READY' }, '*');
+      updateStatus('✅ Viewer ready');
+    }
+
+    function updateStatus(text) {
+      document.getElementById('status').textContent = text;
+    }
+
+    function updateInfoPanel(geometry) {
+      document.getElementById('beam-id').textContent =
+        `Beam ${geometry.beamId} (${geometry.story})`;
+      document.getElementById('dim-b').textContent =
+        `${geometry.dimensions.b} mm`;
+      document.getElementById('dim-d').textContent =
+        `${geometry.dimensions.D} mm`;
+      document.getElementById('dim-span').textContent =
+        `${geometry.dimensions.span} mm`;
+      document.getElementById('rebar-count').textContent =
+        geometry.rebars ? geometry.rebars.length : 0;
+      document.getElementById('stirrup-count').textContent =
+        geometry.stirrups ? geometry.stirrups.length : 0;
+    }
+
+    // =============================================================================
+    // Beam Rendering
+    // =============================================================================
+
+    function renderBeam(geometry) {
+      // Clear existing beam
+      if (beamGroup) {
+        scene.remove(beamGroup);
+        beamGroup = null;
+      }
+
+      beamGroup = new THREE.Group();
+
+      // 1. Render concrete outline
+      renderConcrete(geometry.dimensions);
+
+      // 2. Render rebars
+      if (geometry.rebars && geometry.rebars.length > 0) {
+        geometry.rebars.forEach(rebar => renderRebar(rebar));
+      }
+
+      // 3. Render stirrups
+      if (geometry.stirrups && geometry.stirrups.length > 0) {
+        geometry.stirrups.forEach(stirrup => renderStirrup(stirrup));
+      }
+
+      // Center beam at origin (optional)
+      beamGroup.position.x = -geometry.dimensions.span / 2;
+
+      scene.add(beamGroup);
+
+      // Update camera to frame the beam
+      frameBeam(geometry.dimensions);
+
+      // Update info panel
+      updateInfoPanel(geometry);
+
+      updateStatus(`✅ Rendered beam ${geometry.beamId}`);
+
+      // Notify parent of successful render
+      window.parent.postMessage({
+        type: 'RENDER_COMPLETE',
+        beamId: geometry.beamId
+      }, '*');
+    }
+
+    function renderConcrete(dimensions) {
+      const { b, D, span } = dimensions;
+
+      // Concrete box
+      const geometry = new THREE.BoxGeometry(span, b, D);
+      const mesh = new THREE.Mesh(geometry, MATERIALS.concrete);
+      mesh.position.set(span / 2, 0, D / 2);
+      beamGroup.add(mesh);
+
+      // Wireframe edges
+      const edges = new THREE.EdgesGeometry(geometry);
+      const wireframe = new THREE.LineSegments(edges, MATERIALS.concreteWireframe);
+      wireframe.position.copy(mesh.position);
+      beamGroup.add(wireframe);
+    }
+
+    function renderRebar(rebar) {
+      const material = rebar.barType === 'top'
+        ? MATERIALS.rebarTop
+        : MATERIALS.rebarBottom;
+
+      rebar.segments.forEach(segment => {
+        const start = new THREE.Vector3(segment.start.x, segment.start.y, segment.start.z);
+        const end = new THREE.Vector3(segment.end.x, segment.end.y, segment.end.z);
+
+        const direction = new THREE.Vector3().subVectors(end, start);
+        const length = direction.length();
+        direction.normalize();
+
+        // Create cylinder for bar
+        const radius = segment.diameter / 2;
+        const geometry = new THREE.CylinderGeometry(radius, radius, length, 16);
+        geometry.rotateZ(Math.PI / 2); // Align with X axis
+
+        const mesh = new THREE.Mesh(geometry, material);
+
+        // Position at midpoint
+        const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+        mesh.position.copy(midpoint);
+
+        // Orient along segment direction
+        const axis = new THREE.Vector3(1, 0, 0);
+        const quaternion = new THREE.Quaternion().setFromUnitVectors(axis, direction);
+        mesh.quaternion.copy(quaternion);
+
+        beamGroup.add(mesh);
+      });
+    }
+
+    function renderStirrup(stirrup) {
+      if (!stirrup.path || stirrup.path.length < 3) return;
+
+      const radius = stirrup.diameter / 2;
+      const points = stirrup.path.map(p => new THREE.Vector3(p.x, p.y, p.z));
+
+      // Close the loop
+      points.push(points[0].clone());
+
+      // Create tube geometry along path
+      const curve = new THREE.CatmullRomCurve3(points, false);
+      const geometry = new THREE.TubeGeometry(curve, 32, radius, 8, true);
+      const mesh = new THREE.Mesh(geometry, MATERIALS.stirrup);
+
+      beamGroup.add(mesh);
+    }
+
+    function frameBeam(dimensions) {
+      const { span, D, b } = dimensions;
+
+      // Calculate camera distance to frame beam
+      const maxDim = Math.max(span, D, b);
+      const distance = maxDim * 1.5;
+
+      camera.position.set(span * 0.6, b * 2, D * 2);
+      controls.target.set(0, 0, D / 2);
+      controls.update();
+    }
+
+    function resetCamera() {
+      camera.position.set(3000, 2000, 2000);
+      controls.target.set(0, 0, 0);
+      controls.update();
+    }
+
+    function toggleConcreteVisibility() {
+      MATERIALS.concrete.visible = !MATERIALS.concrete.visible;
+      MATERIALS.concreteWireframe.visible = !MATERIALS.concreteWireframe.visible;
+    }
+
+    // =============================================================================
+    // Demo Mode (for standalone testing)
+    // =============================================================================
+
+    function loadDemoBeam() {
+      const demoGeometry = {
+        beamId: "B1-DEMO",
+        story: "GF",
+        dimensions: { b: 300, D: 450, span: 4000 },
+        concreteOutline: [],
+        rebars: [
+          {
+            barId: "B1",
+            segments: [{
+              start: { x: 0, y: -96, z: 56 },
+              end: { x: 4000, y: -96, z: 56 },
+              diameter: 16,
+              type: "straight"
+            }],
+            diameter: 16,
+            barType: "bottom",
+            zone: "full"
+          },
+          {
+            barId: "B2",
+            segments: [{
+              start: { x: 0, y: 0, z: 56 },
+              end: { x: 4000, y: 0, z: 56 },
+              diameter: 16,
+              type: "straight"
+            }],
+            diameter: 16,
+            barType: "bottom",
+            zone: "full"
+          },
+          {
+            barId: "B3",
+            segments: [{
+              start: { x: 0, y: 96, z: 56 },
+              end: { x: 4000, y: 96, z: 56 },
+              diameter: 16,
+              type: "straight"
+            }],
+            diameter: 16,
+            barType: "bottom",
+            zone: "full"
+          },
+          {
+            barId: "T1",
+            segments: [{
+              start: { x: 0, y: -96, z: 394 },
+              end: { x: 4000, y: -96, z: 394 },
+              diameter: 12,
+              type: "straight"
+            }],
+            diameter: 12,
+            barType: "top",
+            zone: "full"
+          },
+          {
+            barId: "T2",
+            segments: [{
+              start: { x: 0, y: 96, z: 394 },
+              end: { x: 4000, y: 96, z: 394 },
+              diameter: 12,
+              type: "straight"
+            }],
+            diameter: 12,
+            barType: "top",
+            zone: "full"
+          }
+        ],
+        stirrups: generateDemoStirrups(),
+        metadata: { fck: 25, fy: 500, cover: 40 },
+        version: "1.0.0"
+      };
+
+      renderBeam(demoGeometry);
+    }
+
+    function generateDemoStirrups() {
+      const stirrups = [];
+      const spacing = 100;
+      const span = 4000;
+
+      for (let x = 50; x < span; x += spacing) {
+        stirrups.push({
+          positionX: x,
+          path: [
+            { x: x, y: -106, z: 44 },
+            { x: x, y: 106, z: 44 },
+            { x: x, y: 106, z: 406 },
+            { x: x, y: -106, z: 406 }
+          ],
+          diameter: 8,
+          legs: 2,
+          hookType: "135"
+        });
+      }
+      return stirrups;
+    }
+
+    // =============================================================================
+    // Initialize on Load
+    // =============================================================================
+
+    window.addEventListener('load', () => {
+      init();
+
+      // Check if running standalone (not in iframe)
+      if (window.self === window.top) {
+        console.log('Running in standalone mode - loading demo beam');
+        setTimeout(loadDemoBeam, 500);
+      }
+    });
+  </script>
+</body>
+</html>
