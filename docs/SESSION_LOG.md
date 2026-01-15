@@ -4,6 +4,68 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-15 — Session 32: Validated Library Audit + Anchorage Implementation
+
+**Focus:** Deep code audit to validate actual state vs documentation, correct false backlog items, implement anchorage functions.
+
+### Critical Findings: False Backlog Items
+
+Previous sessions and TASKS.md contained significant inaccuracies. Deep code inspection revealed:
+
+| Task | TASKS.md Status | Actual Status | Evidence |
+|------|----------------|---------------|----------|
+| TASK-088 Slenderness | Backlog (4 hrs) | ✅ **COMPLETE** | `slenderness.py` 307 lines, 94% coverage |
+| TASK-520 Hypothesis | Done (noted as future in research) | ✅ **COMPLETE** | `tests/property/test_shear_hypothesis.py` |
+| TASK-522 Jinja2 Reports | Up Next | ✅ **COMPLETE** | 3 templates, runtime verified |
+
+**Lesson:** Never trust documentation alone—validate with code inspection and runtime tests.
+
+### Implementation: Anchorage Functions (TASK-087)
+
+Added 4 new functions to `detailing.py` per IS 456 Cl 26.2.2:
+
+1. `get_min_bend_radius()` - Internal bend radius (2φ for ≤25mm, 3φ for >25mm)
+2. `calculate_standard_hook()` - 90°/135°/180° hook dimensions
+3. `calculate_anchorage_length()` - Straight + hook combination
+4. `calculate_stirrup_anchorage()` - Stirrup hook requirements (seismic-aware)
+
+New dataclass: `HookDimensions` with hook geometry and equivalent length.
+
+**Tests:** 16 new tests added (57 total detailing tests), all 2758 tests passing.
+
+### API Documentation Sync (TASK-606)
+
+- Updated api.md version from 0.16.6 to 0.17.5
+- Added `check_beam_slenderness()` to API Helpers section
+- Added anchorage functions documentation (Section 9.2.1)
+- Regenerated api-manifest.json
+
+### Commits This Session
+
+| Commit | Description |
+|--------|-------------|
+| `827a5a9` | docs: Session 32 validated audit - correct TASKS.md backlog |
+| `70a5290` | docs: sync api.md to v0.17.5, add check_beam_slenderness |
+| `fed2740` | feat(detailing): add anchorage functions for hooks and bends (TASK-087) |
+| `4273ac3` | docs: add anchorage functions to api.md, update TASKS.md |
+| `cdcf43b` | chore: add IS 456 Cl 26.2.2 anchorage clauses to database |
+
+### Metrics
+
+- **Tests:** 2758 passed (up from 2742)
+- **Coverage:** 85% overall
+- **New code:** ~270 lines in detailing.py
+- **New tests:** 16 test cases
+- **Backlog corrected:** 3 false pending items
+
+### Next Steps
+
+1. TASK-085 Torsion - Major feature (IS 456 Cl 41)
+2. Level C Serviceability - Advanced deflection calculations
+3. Column design - New structural element
+
+---
+
 ## 2026-01-15 — Session 31: VBA Smoke Validation + Governance Session
 
 **Focus:** Validate TASK-502 automation, complete TASK-284 governance checks, fix any detected issues.

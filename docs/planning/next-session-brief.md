@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 30 (Cont.) | **Commits:** 9
+**Last Session:** 32 | **Commits:** 5
 
 ---
 
@@ -33,8 +33,92 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-15
-- Focus: Fixed critical fragment API violations from Session 30, built comprehensive prevention automation with 9 substantial commits.
+- Focus: Deep library audit validated 3 completed tasks wrongly in backlog. Implemented anchorage functions (TASK-087). Synced api.md to v0.17.5.
 <!-- HANDOFF:END -->
+
+---
+
+## 🎯 Session 32 Summary - Validated Library Audit (2026-01-15)
+
+### Critical Finding: False Backlog Items
+
+Previous sessions and TASKS.md contained significant inaccuracies. Deep code inspection revealed:
+
+| Task | TASKS.md Status | Actual Status | Evidence |
+|------|----------------|---------------|----------|
+| TASK-088 Slenderness | Backlog (4 hrs) | ✅ **COMPLETE** | `slenderness.py` 307 lines, 94% coverage |
+| TASK-520 Hypothesis | Done (noted as future in research) | ✅ **COMPLETE** | `tests/property/test_shear_hypothesis.py` |
+| TASK-522 Jinja2 Reports | Up Next | ✅ **COMPLETE** | 3 templates, runtime verified |
+
+**Lesson:** Never trust documentation alone—validate with code inspection and runtime tests.
+
+### Session 32 Commits
+
+| Commit | Description |
+|--------|-------------|
+| `827a5a9` | docs: Session 32 validated audit - correct TASKS.md backlog |
+| `70a5290` | docs: sync api.md to v0.17.5, add check_beam_slenderness |
+| `fed2740` | feat(detailing): add anchorage functions for hooks and bends (TASK-087) |
+| `4273ac3` | docs: add anchorage functions to api.md, update TASKS.md |
+| `cdcf43b` | chore: add IS 456 Cl 26.2.2 anchorage clauses to database |
+
+### New Functionality: Anchorage (TASK-087) ✅
+
+Added 4 functions to `detailing.py` per IS 456 Cl 26.2.2:
+
+- `get_min_bend_radius()` - Internal bend radius (2φ for ≤25mm, 3φ for >25mm)
+- `calculate_standard_hook()` - 90°/135°/180° hook dimensions
+- `calculate_anchorage_length()` - Straight + hook combination
+- `calculate_stirrup_anchorage()` - Stirrup hook requirements (seismic-aware)
+
+**Tests:** 16 new tests added (57 total detailing tests)
+
+### Metrics
+
+- **Tests:** 2758 passed (up from 2742)
+- **Coverage:** 85% overall
+- **New code:** ~270 lines in detailing.py
+- **Backlog corrected:** 3 false pending items
+
+---
+
+## 🎯 Session 33 Recommendations
+
+### Priority 1: Torsion Module (TASK-085) - HIGH
+
+**Rationale:** Last major beam design feature missing. Required for spandrel beams, edge beams.
+
+**Scope:**
+- New file: `torsion.py` in `codes/is456/`
+- IS 456 Clause 41: Design for Torsion
+- Equivalent shear + longitudinal reinforcement
+- Integration with api.py
+
+**Estimated:** 2-3 days
+
+### Priority 2: VBA Parity (TASK-082) - MEDIUM
+
+**Rationale:** Excel users need same capabilities as Python library.
+
+**Focus Areas:**
+- Slenderness check already in Python, add to VBA
+- Anchorage functions for VBA
+
+### Priority 3: Level C Serviceability (TASK-081) - MEDIUM
+
+**Rationale:** Advanced deflection calculations for stringent requirements.
+
+---
+
+## 📊 Project Status
+
+| Metric | Value |
+|--------|-------|
+| Tests | 2758 passing |
+| Coverage | 85% |
+| Python | 3.11+ baseline |
+| Version | v0.17.5 |
+| Internal Links | 870+ validated |
 
 ---
 
