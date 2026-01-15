@@ -858,7 +858,6 @@ Notes:
 **Planned (not implemented yet, v0.17+; subject to change):**
 - `compute_beam_geometry(...) -> BeamGeometry`
 - `compute_rebar_layout(...) -> RebarLayout`
-- `compute_bmd_sfd(...) -> LoadDiagramResult`
 - `compute_section_properties(...) -> SectionProperties`
 - `build_preview_payload(...) -> PreviewPayload`
 - `generate_design_variants(...) -> list[DesignVariant]`
@@ -874,7 +873,135 @@ Notes:
 
 ---
 
-## 1B. Beam Pipeline (`beam_pipeline.py`)
+## 1B. Load Analysis (BMD/SFD)
+
+Compute Bending Moment Diagrams (BMD) and Shear Force Diagrams (SFD) for beams.
+Supports simply supported and cantilever beams with UDL and point loads.
+
+### 1B.1 Core Function
+
+```python
+from structural_lib.api import (
+    compute_bmd_sfd,
+    LoadType,
+    LoadDefinition,
+    LoadDiagramResult,
+)
+
+# Define loads
+loads = [
+    LoadDefinition(LoadType.UDL, magnitude=20.0),  # 20 kN/m
+    LoadDefinition(LoadType.POINT, magnitude=50.0, position_mm=3000.0),  # 50 kN at 3m
+]
+
+# Compute diagrams
+result = compute_bmd_sfd(
+    span_mm=6000,
+    support_condition="simply_supported",  # or "cantilever"
+    loads=loads,
+    num_points=101,  # optional, default 101
+)
+
+# Access results
+print(f"Max moment: {result.max_bm_knm:.1f} kN·m")
+print(f"Max shear: {result.max_sf_kn:.1f} kN")
+print(f"Critical points: {len(result.critical_points)}")
+```
+
+### 1B.2 Function Signature
+
+```python
+def compute_bmd_sfd(
+    span_mm: float,
+    support_condition: Literal["simply_supported", "cantilever"],
+    loads: list[LoadDefinition],
+    num_points: int = 101,
+) -> LoadDiagramResult:
+    """Compute BMD and SFD for a beam with specified loads.
+
+    Uses principle of superposition to combine multiple load effects.
+
+    Args:
+        span_mm: Span length (mm)
+        support_condition: "simply_supported" or "cantilever"
+        loads: List of LoadDefinition objects
+        num_points: Number of discretization points (default 101)
+
+    Returns:
+        LoadDiagramResult with positions, BMD, SFD, and critical points
+
+    Raises:
+        ValueError: If span is non-positive or support_condition invalid
+        NotImplementedError: For TRIANGULAR or MOMENT load types
+    """
+```
+
+### 1B.3 Data Types
+
+**LoadType** (Enum):
+```python
+class LoadType(Enum):
+    UDL = auto()        # Uniformly distributed load (kN/m)
+    POINT = auto()      # Concentrated load (kN)
+    TRIANGULAR = auto() # Triangular load (not yet implemented)
+    MOMENT = auto()     # Applied moment (not yet implemented)
+```
+
+**LoadDefinition** (Dataclass):
+```python
+@dataclass
+class LoadDefinition:
+    load_type: LoadType
+    magnitude: float        # kN/m for UDL, kN for POINT
+    position_mm: float = 0.0  # Position from left support
+    end_position_mm: float | None = None  # For partial loads
+```
+
+**CriticalPoint** (Dataclass):
+```python
+@dataclass
+class CriticalPoint:
+    position_mm: float      # Position from left support
+    point_type: str         # "max_bm", "min_bm", "max_sf", "min_sf", "zero_sf"
+    bm_knm: float          # Bending moment at this point
+    sf_kn: float           # Shear force at this point
+```
+
+**LoadDiagramResult** (Dataclass):
+```python
+@dataclass
+class LoadDiagramResult:
+    positions_mm: list[float]       # Positions along span (mm)
+    bmd_knm: list[float]           # Bending moments (kN·m)
+    sfd_kn: list[float]            # Shear forces (kN)
+    critical_points: list[CriticalPoint]
+    span_mm: float
+    support_condition: str
+    loads: list[LoadDefinition]
+    max_bm_knm: float
+    min_bm_knm: float
+    max_sf_kn: float
+    min_sf_kn: float
+```
+
+### 1B.4 Standard Formulas
+
+| Support | Load | Max Moment | Location | Max Shear |
+|---------|------|------------|----------|-----------|
+| Simply Supported | UDL (w) | wL²/8 | Midspan | wL/2 |
+| Simply Supported | Point (P) at midspan | PL/4 | Load point | P/2 |
+| Simply Supported | Point (P) at a from left | Pab/L | Load point | Pb/L or Pa/L |
+| Cantilever | UDL (w) | wL²/2 | Fixed end | wL |
+| Cantilever | Point (P) at tip | PL | Fixed end | P |
+
+### 1B.5 Sign Conventions
+
+- **Bending Moment**: Positive = sagging (tension at bottom fiber)
+- **Shear Force**: Positive = upward force on left face of section
+
+---
+
+## 1C. Beam Pipeline (`beam_pipeline.py`)
 
 These helpers power the CLI/job runner and return the canonical output schema
 (`BeamDesignOutput`, `MultiBeamOutput`). Use them when you want a full, structured
@@ -901,11 +1028,21 @@ may evolve before implementation.
 - `clear_spacing_mm: float`
 - `cover_mm: float`
 
-### LoadDiagramResult
-- `positions_mm: list[float]`
-- `bmd_knm: list[float]`
-- `sfd_kn: list[float]`
-- `critical_points: list[CriticalPoint]`
+### LoadDiagramResult ✅ IMPLEMENTED (v0.17.5+)
+
+See [Section 1B](#1b-load-analysis-bmdsfd) for full documentation.
+
+- `positions_mm: list[float]` - Positions along span (mm)
+- `bmd_knm: list[float]` - Bending moments (kN·m)
+- `sfd_kn: list[float]` - Shear forces (kN)
+- `critical_points: list[CriticalPoint]` - Max/min/zero points
+- `span_mm: float` - Span length (mm)
+- `support_condition: str` - "simply_supported" or "cantilever"
+- `loads: list[LoadDefinition]` - Applied loads
+- `max_bm_knm: float` - Maximum bending moment
+- `min_bm_knm: float` - Minimum bending moment
+- `max_sf_kn: float` - Maximum shear force
+- `min_sf_kn: float` - Minimum shear force
 
 ### SectionProperties
 - `area_mm2: float`

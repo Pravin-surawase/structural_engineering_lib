@@ -41,6 +41,7 @@ def create_auto_refresh_fragment(
         ...     stats = get_cache_stats()
         ...     st.metric("Hit Rate", f"{stats['hit_rate']:.1%}")
     """
+
     @st.fragment(run_every=f"{interval_seconds}s")
     def wrapper():
         return render_func()
@@ -74,6 +75,7 @@ def fragment_input_section(
         ...     }
         >>> inputs = fragment_input_section(my_inputs)
     """
+
     @st.fragment
     def input_fragment():
         values = render_inputs()
@@ -178,6 +180,7 @@ def create_validation_fragment() -> Callable:
         ...         errors.append("Effective depth must be < total depth")
         ...     return errors
     """
+
     def decorator(validate_func: Callable) -> Callable:
         @st.fragment
         def wrapper(*args, **kwargs):
@@ -212,6 +215,7 @@ def export_dialog(
         >>> if st.button("Export"):
         ...     show_export()
     """
+
     @st.dialog(title)
     def _dialog():
         st.markdown("### Export Settings")

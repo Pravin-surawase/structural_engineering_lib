@@ -66,10 +66,16 @@ PAGE_CONFIG = {
     "06_📐_dxf_export.py": {"name": "DXF Export", "has_calculation": False},
     "07_📄_report_generator.py": {"name": "Report Generator", "has_calculation": False},
     "08_📊_batch_design.py": {"name": "Batch Design", "has_calculation": True},
-    "09_🔬_advanced_analysis.py": {"name": "Advanced Analysis", "has_calculation": True},
+    "09_🔬_advanced_analysis.py": {
+        "name": "Advanced Analysis",
+        "has_calculation": True,
+    },
     "10_📚_learning_center.py": {"name": "Learning Center", "has_calculation": False},
     "11_🎬_demo_showcase.py": {"name": "Demo Showcase", "has_calculation": True},
-    "12_📖_clause_traceability.py": {"name": "Clause Traceability", "has_calculation": False},
+    "12_📖_clause_traceability.py": {
+        "name": "Clause Traceability",
+        "has_calculation": False,
+    },
 }
 
 
@@ -139,9 +145,15 @@ def create_app_test():
         pytest.skip("AppTest not available")
 
     def _create(page_name: str, default_timeout: int = 30) -> "AppTest":
+        # Check main pages directory first
         page_path = PAGES_DIR / page_name
         if not page_path.exists():
-            raise FileNotFoundError(f"Page not found: {page_path}")
+            # Check _hidden directory for hidden pages (prefixed with _)
+            hidden_path = PAGES_DIR / "_hidden" / page_name
+            if hidden_path.exists():
+                page_path = hidden_path
+            else:
+                raise FileNotFoundError(f"Page not found: {page_path} or {hidden_path}")
 
         # Change to streamlit_app directory for proper imports
         original_cwd = os.getcwd()

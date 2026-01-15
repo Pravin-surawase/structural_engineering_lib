@@ -474,6 +474,7 @@ def main():
     else:  # Manual Input
         # Fragment must be called INSIDE sidebar context (not write to sidebar from inside)
         with st.sidebar:
+
             @st.fragment
             def render_manual_inputs():
                 """Manual input form wrapped in fragment for better performance."""
@@ -496,17 +497,24 @@ def main():
                         "Total Depth D (mm)", min_value=150.0, value=500.0, step=50.0
                     )
                     d_mm = st.number_input(
-                        "Effective Depth d (mm)", min_value=100.0, value=450.0, step=50.0
+                        "Effective Depth d (mm)",
+                        min_value=100.0,
+                        value=450.0,
+                        step=50.0,
                     )
                     span_mm = st.number_input(
                         "Span (mm)", min_value=1000.0, value=5000.0, step=500.0
                     )
 
                     st.markdown("**Materials**")
-                    fck_nmm2 = st.selectbox("fck (N/mm²)", [20, 25, 30, 35, 40], index=1)
+                    fck_nmm2 = st.selectbox(
+                        "fck (N/mm²)", [20, 25, 30, 35, 40], index=1
+                    )
                     fy_nmm2 = st.selectbox("fy (N/mm²)", [415, 500], index=1)
 
-                    submitted = st.form_submit_button("Use These Inputs", type="primary")
+                    submitted = st.form_submit_button(
+                        "Use These Inputs", type="primary"
+                    )
 
                     if submitted:
                         return {

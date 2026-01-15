@@ -39,6 +39,7 @@ from components.inputs import (
 )
 from components.visualizations import (
     create_beam_diagram,
+    create_bmd_sfd_diagram,
     create_cost_comparison,
     create_compliance_visual,
 )
@@ -53,7 +54,7 @@ from components.results import (
     display_material_properties,
     display_compliance_checks,
 )
-from utils.api_wrapper import cached_design
+from utils.api_wrapper import cached_design, cached_bmd_sfd
 from utils.constants import (
     EXPOSURE_COVER_MAP,
     DEFAULT_BEAM_INPUTS,
@@ -71,7 +72,11 @@ from utils.loading_states import loading_context
 from utils.caching import SmartCache
 
 # TASK-602: Modern Streamlit patterns (Session 28)
-from utils.fragments import CacheStatsFragment, show_status_badge, fragment_input_section
+from utils.fragments import (
+    CacheStatsFragment,
+    show_status_badge,
+    fragment_input_section,
+)
 
 # TASK-276-279 Integration: Professional report export
 from components.report_export import show_export_options, show_audit_trail_summary
@@ -232,7 +237,9 @@ with col_input:
         st.error("❌ Effective depth must be less than total depth")
         d_valid = False
     elif d > D - min_cover_plus_bar:
-        st.warning(f"⚠️ d={d:.0f}mm leaves only {D-d:.0f}mm cover. Minimum: {min_cover_plus_bar}mm")
+        st.warning(
+            f"⚠️ d={d:.0f}mm leaves only {D-d:.0f}mm cover. Minimum: {min_cover_plus_bar}mm"
+        )
         # Still valid but warn user
 
     # Section 2: Materials (compact)
@@ -333,7 +340,9 @@ with col_input:
 
         if not all_valid:
             st.warning("⚠️ Fix validation errors before analyzing")
-        elif inputs_changed and st.session_state.beam_inputs.get("design_computed", False):
+        elif inputs_changed and st.session_state.beam_inputs.get(
+            "design_computed", False
+        ):
             st.info("ℹ️ Inputs changed. Click 'Analyze Design' to update results.")
 
         st.markdown("---")
@@ -706,6 +715,66 @@ with col_preview:
 
             df_schedule = pd.DataFrame(schedule_data)
             st.dataframe(df_schedule, width="stretch", hide_index=True)
+
+            # ----------------------------------------------------------------
+            # BMD/SFD Diagram Section (TASK-145.9)
+            # ----------------------------------------------------------------
+            st.divider()
+            st.subheader("📈 Bending Moment & Shear Force Diagrams")
+
+            # Derive equivalent UDL from design moment (for visualization)
+            # For simply supported beam with UDL: M_max = wL²/8 → w = 8M/L²
+            span_mm = st.session_state.beam_inputs.get("span_mm", 5000)
+            mu_knm = st.session_state.beam_inputs.get("mu_knm", 100)
+            span_m = span_mm / 1000.0
+
+            if span_m > 0:
+                # Derive equivalent UDL that would produce this moment
+                # Using M = wL²/8 for simply supported beam
+                derived_udl = 8 * mu_knm / (span_m**2) if span_m > 0 else 10.0
+
+                st.caption(
+                    f"ℹ️ Derived equivalent UDL: **{derived_udl:.2f} kN/m** "
+                    f"(from Mu = {mu_knm:.1f} kN·m, L = {span_m:.2f} m)"
+                )
+
+                # Compute BMD/SFD
+                bmd_sfd_result = cached_bmd_sfd(
+                    span_mm=span_mm,
+                    support_condition="simply_supported",
+                    udl_kn_m=derived_udl,
+                )
+
+                # Create visualization
+                fig_bmd_sfd = create_bmd_sfd_diagram(
+                    positions_mm=bmd_sfd_result["positions_mm"],
+                    bmd_knm=bmd_sfd_result["bmd_knm"],
+                    sfd_kn=bmd_sfd_result["sfd_kn"],
+                    critical_points=bmd_sfd_result.get("critical_points"),
+                    show_grid=True,
+                    height=450,
+                )
+
+                st.plotly_chart(
+                    fig_bmd_sfd, use_container_width=True, key="bmd_sfd_viz"
+                )
+
+                # Show key values
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric(
+                        label="Max Bending Moment",
+                        value=f"{bmd_sfd_result['max_moment']:.2f} kN·m",
+                        help="Maximum bending moment from load analysis",
+                    )
+                with col2:
+                    st.metric(
+                        label="Max Shear Force",
+                        value=f"{bmd_sfd_result['max_shear']:.2f} kN",
+                        help="Maximum shear force at supports",
+                    )
+            else:
+                st.warning("⚠️ Invalid span. Cannot compute BMD/SFD.")
 
         # ============================================================================
         # TAB 3: Cost Analysis

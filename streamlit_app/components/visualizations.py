@@ -534,6 +534,181 @@ def create_cost_comparison(alternatives: List[Dict[str, any]]) -> go.Figure:
     return fig
 
 
+def create_bmd_sfd_diagram(
+    positions_mm: list[float],
+    bmd_knm: list[float],
+    sfd_kn: list[float],
+    critical_points: Optional[list] = None,
+    show_grid: bool = True,
+    height: int = 500,
+) -> go.Figure:
+    """
+    Create combined BMD and SFD diagram using Plotly subplots.
+
+    Features:
+    - BMD (Bending Moment Diagram) on top subplot
+    - SFD (Shear Force Diagram) on bottom subplot
+    - Critical points marked with annotations
+    - Zero reference lines
+    - Filled area under curves
+    - Interactive hover tooltips
+    - IS 456 color theme
+
+    Args:
+        positions_mm: List of positions along span (mm)
+        bmd_knm: List of bending moments (kN·m)
+        sfd_kn: List of shear forces (kN)
+        critical_points: Optional list of CriticalPoint objects
+        show_grid: Show grid lines
+        height: Figure height in pixels
+
+    Returns:
+        Plotly figure with two subplots
+
+    Example:
+        >>> from structural_lib.api import compute_bmd_sfd, LoadDefinition, LoadType
+        >>> loads = [LoadDefinition(LoadType.UDL, magnitude=20.0)]
+        >>> result = compute_bmd_sfd(6000, "simply_supported", loads)
+        >>> fig = create_bmd_sfd_diagram(
+        ...     result.positions_mm, result.bmd_knm, result.sfd_kn,
+        ...     result.critical_points
+        ... )
+        >>> st.plotly_chart(fig, use_container_width=True)
+    """
+    theme = get_plotly_theme()
+
+    # Create subplots (BMD on top, SFD on bottom)
+    fig = make_subplots(
+        rows=2,
+        cols=1,
+        subplot_titles=("Bending Moment Diagram (BMD)", "Shear Force Diagram (SFD)"),
+        vertical_spacing=0.12,
+        row_heights=[0.5, 0.5],
+    )
+
+    # Convert positions to meters for display
+    positions_m = [x / 1000.0 for x in positions_mm]
+
+    # BMD trace (filled area)
+    fig.add_trace(
+        go.Scatter(
+            x=positions_m,
+            y=bmd_knm,
+            mode="lines",
+            name="BMD",
+            line=dict(color=CB_SAFE_BLUE, width=2),
+            fill="tozeroy",
+            fillcolor="rgba(1, 115, 178, 0.2)",
+            hovertemplate="Position: %{x:.2f} m<br>Moment: %{y:.2f} kN·m<extra></extra>",
+        ),
+        row=1,
+        col=1,
+    )
+
+    # Zero line for BMD
+    fig.add_hline(y=0, line_dash="dash", line_color="gray", line_width=1, row=1, col=1)
+
+    # SFD trace (filled area)
+    fig.add_trace(
+        go.Scatter(
+            x=positions_m,
+            y=sfd_kn,
+            mode="lines",
+            name="SFD",
+            line=dict(color=CB_SAFE_ORANGE, width=2),
+            fill="tozeroy",
+            fillcolor="rgba(222, 143, 5, 0.2)",
+            hovertemplate="Position: %{x:.2f} m<br>Shear: %{y:.2f} kN<extra></extra>",
+        ),
+        row=2,
+        col=1,
+    )
+
+    # Zero line for SFD
+    fig.add_hline(y=0, line_dash="dash", line_color="gray", line_width=1, row=2, col=1)
+
+    # Add critical point annotations
+    if critical_points:
+        for cp in critical_points:
+            x_m = cp.position_mm / 1000.0
+
+            # Annotation for BMD critical points
+            if cp.point_type in ("max_bm", "min_bm"):
+                fig.add_annotation(
+                    x=x_m,
+                    y=cp.bm_knm,
+                    text=f"{cp.bm_knm:.1f}",
+                    showarrow=True,
+                    arrowhead=2,
+                    arrowsize=1,
+                    arrowwidth=1,
+                    ax=0,
+                    ay=-30 if cp.bm_knm >= 0 else 30,
+                    font=dict(size=10, color=CB_SAFE_BLUE),
+                    row=1,
+                    col=1,
+                )
+
+            # Annotation for SFD critical points
+            if cp.point_type in ("max_sf", "min_sf"):
+                fig.add_annotation(
+                    x=x_m,
+                    y=cp.sf_kn,
+                    text=f"{cp.sf_kn:.1f}",
+                    showarrow=True,
+                    arrowhead=2,
+                    arrowsize=1,
+                    arrowwidth=1,
+                    ax=0,
+                    ay=-30 if cp.sf_kn >= 0 else 30,
+                    font=dict(size=10, color=CB_SAFE_ORANGE),
+                    row=2,
+                    col=1,
+                )
+
+    # Update layout
+    fig.update_layout(
+        height=height,
+        showlegend=False,
+        plot_bgcolor=theme["plot_bgcolor"],
+        paper_bgcolor=theme["paper_bgcolor"],
+        font=dict(family=theme["font_family"], color=theme["font_color"]),
+        margin=dict(l=60, r=40, t=60, b=50),
+    )
+
+    # Update axes
+    fig.update_xaxes(
+        title_text="Position (m)",
+        showgrid=show_grid,
+        gridcolor=theme["grid_color"],
+        row=1,
+        col=1,
+    )
+    fig.update_xaxes(
+        title_text="Position (m)",
+        showgrid=show_grid,
+        gridcolor=theme["grid_color"],
+        row=2,
+        col=1,
+    )
+    fig.update_yaxes(
+        title_text="Moment (kN·m)",
+        showgrid=show_grid,
+        gridcolor=theme["grid_color"],
+        row=1,
+        col=1,
+    )
+    fig.update_yaxes(
+        title_text="Shear (kN)",
+        showgrid=show_grid,
+        gridcolor=theme["grid_color"],
+        row=2,
+        col=1,
+    )
+
+    return fig
+
+
 def create_utilization_gauge(
     value: float, label: str, thresholds: Optional[Dict[str, float]] = None
 ) -> go.Figure:

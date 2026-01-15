@@ -390,10 +390,15 @@ class TestJourney7_LearningCenter:
     """
 
     def test_learning_center_page_exists(self):
-        """Learning center page exists."""
+        """Learning center page exists (visible or hidden)."""
         pages_dir = Path(__file__).parent.parent / "pages"
 
+        # Check main pages directory
         learning_pages = list(pages_dir.glob("*learning*.py"))
+        # Also check _hidden directory where some pages are located
+        hidden_dir = pages_dir / "_hidden"
+        if hidden_dir.exists():
+            learning_pages.extend(hidden_dir.glob("*learning*.py"))
 
         assert len(learning_pages) > 0, "Should have learning center page"
 

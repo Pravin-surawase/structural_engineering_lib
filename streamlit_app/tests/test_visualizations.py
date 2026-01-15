@@ -20,6 +20,7 @@ import plotly.graph_objects as go
 
 from components.visualizations import (
     create_beam_diagram,
+    create_bmd_sfd_diagram,
     create_cost_comparison,
     create_utilization_gauge,
     create_sensitivity_tornado,
@@ -147,6 +148,136 @@ class TestBeamDiagram:
         assert isinstance(fig, go.Figure)
         # Neutral axis is drawn as a trace in the figure
         assert len(fig.data) > 1  # Should have multiple traces including neutral axis
+
+
+class TestBmdSfdDiagram:
+    """Tests for create_bmd_sfd_diagram()"""
+
+    def test_basic_bmd_sfd_diagram(self):
+        """Test basic BMD/SFD diagram generation"""
+        # Simply supported beam with UDL - parabolic BMD, linear SFD
+        span_mm = 6000
+        num_points = 11
+        w = 20.0  # kN/m
+        L_m = span_mm / 1000.0
+
+        positions_mm = [span_mm * i / (num_points - 1) for i in range(num_points)]
+
+        # Calculate BMD and SFD for UDL
+        bmd_knm = []
+        sfd_kn = []
+        for x_mm in positions_mm:
+            x_m = x_mm / 1000.0
+            # BMD: M(x) = (wL/2)x - (w/2)x²
+            m = (w * L_m / 2) * x_m - (w / 2) * x_m**2
+            # SFD: V(x) = wL/2 - wx
+            v = (w * L_m / 2) - (w * x_m)
+            bmd_knm.append(m)
+            sfd_kn.append(v)
+
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn)
+
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 2  # BMD and SFD traces
+        # Verify it's a subplot figure
+        assert fig.layout.annotations  # Subplot titles as annotations
+
+    def test_bmd_sfd_with_critical_points(self):
+        """Test BMD/SFD diagram with critical point annotations"""
+        from dataclasses import dataclass
+
+        @dataclass
+        class MockCriticalPoint:
+            point_type: str
+            position_mm: float
+            bm_knm: float
+            sf_kn: float
+
+        positions_mm = [0, 1500, 3000, 4500, 6000]
+        bmd_knm = [0, 33.75, 45.0, 33.75, 0]  # Parabola
+        sfd_kn = [30, 15, 0, -15, -30]  # Linear
+
+        critical_points = [
+            MockCriticalPoint("max_bm", 3000, 45.0, 0.0),
+            MockCriticalPoint("max_sf", 0, 0.0, 30.0),
+            MockCriticalPoint("min_sf", 6000, 0.0, -30.0),
+        ]
+
+        fig = create_bmd_sfd_diagram(
+            positions_mm, bmd_knm, sfd_kn, critical_points=critical_points
+        )
+
+        assert isinstance(fig, go.Figure)
+        # Should have annotations for critical points (plus subplot titles)
+        assert len(fig.layout.annotations) >= 3
+
+    def test_bmd_sfd_cantilever(self):
+        """Test BMD/SFD for cantilever beam"""
+        # Cantilever with point load at tip
+        span_mm = 3000
+        P = 50.0  # kN at tip
+        num_points = 7
+
+        positions_mm = [span_mm * i / (num_points - 1) for i in range(num_points)]
+        L_m = span_mm / 1000.0
+
+        # BMD: M(x) = -P(L-x) for cantilever fixed at x=0
+        # SFD: V(x) = P (constant)
+        bmd_knm = []
+        sfd_kn = []
+        for x_mm in positions_mm:
+            x_m = x_mm / 1000.0
+            m = -P * (L_m - x_m)  # Negative for hogging
+            v = P  # Constant shear
+            bmd_knm.append(m)
+            sfd_kn.append(v)
+
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn)
+
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 2
+
+    def test_bmd_sfd_custom_height(self):
+        """Test BMD/SFD with custom height"""
+        positions_mm = [0, 2000, 4000, 6000]
+        bmd_knm = [0, 40, 40, 0]
+        sfd_kn = [40, 0, 0, -40]
+
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn, height=800)
+
+        assert isinstance(fig, go.Figure)
+        assert fig.layout.height == 800
+
+    def test_bmd_sfd_no_grid(self):
+        """Test BMD/SFD with grid lines disabled"""
+        positions_mm = [0, 2000, 4000, 6000]
+        bmd_knm = [0, 40, 40, 0]
+        sfd_kn = [40, 0, 0, -40]
+
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn, show_grid=False)
+
+        assert isinstance(fig, go.Figure)
+
+    def test_bmd_sfd_empty_critical_points(self):
+        """Test BMD/SFD with empty critical points list"""
+        positions_mm = [0, 3000, 6000]
+        bmd_knm = [0, 45, 0]
+        sfd_kn = [30, 0, -30]
+
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn, critical_points=[])
+
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 2
+
+    def test_bmd_sfd_zero_values(self):
+        """Test BMD/SFD with all zero values"""
+        positions_mm = [0, 3000, 6000]
+        bmd_knm = [0, 0, 0]
+        sfd_kn = [0, 0, 0]
+
+        fig = create_bmd_sfd_diagram(positions_mm, bmd_knm, sfd_kn)
+
+        assert isinstance(fig, go.Figure)
 
 
 class TestCostComparison:

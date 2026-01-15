@@ -105,7 +105,8 @@ def _transform_design_data_for_pdf(design_result: dict, beam_inputs: dict) -> di
         live_load = service_load * 0.4
     else:
         factored_load = beam_inputs.get(
-            "factored_load", 1.5 * (dead_load + live_load) if (dead_load + live_load) > 0 else 0
+            "factored_load",
+            1.5 * (dead_load + live_load) if (dead_load + live_load) > 0 else 0,
         )
 
     # Build transformed dict
@@ -142,7 +143,9 @@ def _transform_design_data_for_pdf(design_result: dict, beam_inputs: dict) -> di
         },
         "detailing": {
             "Ld_req_mm": detailing.get("ld_required", detailing.get("Ld_req_mm", 0)),
-            "Ld_avail_mm": detailing.get("ld_provided", detailing.get("Ld_avail_mm", 0)),
+            "Ld_avail_mm": detailing.get(
+                "ld_provided", detailing.get("Ld_avail_mm", 0)
+            ),
             "is_safe": detailing.get("is_safe", True),  # Default to True if not checked
         },
         "compliance": {

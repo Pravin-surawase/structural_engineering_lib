@@ -47,12 +47,17 @@ from .calculation_report import (
     ResultSection,
     generate_calculation_report,
 )
+from .codes.is456.load_analysis import compute_bmd_sfd
 from .costing import CostProfile
 from .data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
+    CriticalPoint,
     DeflectionParams,
+    LoadDefinition,
+    LoadDiagramResult,
+    LoadType,
     ValidationReport,
 )
 from .etabs_import import (
@@ -148,6 +153,12 @@ __all__ = [
     "create_jobs_from_etabs_csv",
     "ETABSForceRow",
     "ETABSEnvelopeResult",
+    # Load Analysis (BMD/SFD) (TASK-145)
+    "compute_bmd_sfd",
+    "LoadType",
+    "LoadDefinition",
+    "CriticalPoint",
+    "LoadDiagramResult",
 ]
 
 

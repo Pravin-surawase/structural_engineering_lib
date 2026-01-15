@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-15 (Session 34 - Level C + ETABS Import)
+**Updated:** 2026-01-15 (Session 34 Continued - BMD/SFD Visualization)
 
-> **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. PR #368, #369 (MERGED). PR #370 (API exports + docs) in CI.
+> **Session 34 Progress:** TASK-081 (Level C Serviceability), TASK-138 (ETABS Import), TASK-139 (API exports + docs) completed. PRs #368, #369, #370 MERGED. Now working on TASK-145 (BMD/SFD) - PR #371 in progress.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -166,6 +166,31 @@
 
 > **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. All PRs merged.
 
+### TASK-145: BMD/SFD Visualization Stack ✅ COMPLETE (Session 34)
+
+> **Goal:** Add load diagram computation and visualization
+> **Timeline:** Session 34 (2026-01-15)
+> **PR:** #371 (Ready to merge)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-145.1** | Add load diagram types (LoadType, LoadDefinition, CriticalPoint, LoadDiagramResult) | DEV | 30m | 🔴 HIGH | ✅ Done (2c72df2) |
+| **TASK-145.2** | Implement load_analysis.py core (5 functions, ~450 LOC) | DEV | 2h | 🔴 HIGH | ✅ Done (2c72df2) |
+| **TASK-145.3** | Add load_analysis tests (25 tests) | DEV | 1h | 🔴 HIGH | ✅ Done (2c72df2) |
+| **TASK-145.4** | Export compute_bmd_sfd + types from api.py | DEV | 15m | 🔴 HIGH | ✅ Done (2c72df2) |
+| **TASK-145.5** | Add API documentation for BMD/SFD | DOCS | 30m | 🟠 MEDIUM | ✅ Done (30bb874) |
+| **TASK-145.6** | Add Plotly visualization helper (create_bmd_sfd_diagram) | DEV | 1h | 🟠 MEDIUM | ✅ Done (bba061c) |
+| **TASK-145.7** | Add visualization tests (7 tests) | DEV | 30m | 🟠 MEDIUM | ✅ Done (bba061c) |
+| **TASK-145.8** | (Future) Triangular load + applied moment support | DEV | 2h | 🟡 LOW | ⏳ Backlog |
+| **TASK-145.9** | Integrate BMD/SFD into Streamlit beam design page | DEV | 1h | 🟠 MEDIUM | ✅ Done (9e16973) |
+
+**Technical Implementation:**
+- `compute_bmd_sfd()`: Superposition-based load combination
+- Simply supported: UDL + Point load
+- Cantilever: UDL + Point load
+- Critical points: max BM, max/min SF, zero SF crossing
+- Visualization: Plotly subplots with filled area + annotations
+
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | **TASK-606** | Sync api.md to v0.17.5 (currently shows 0.16.6) | DOCS | 2h | 🟠 MEDIUM | ✅ Done (70a5290) |
@@ -195,7 +220,7 @@
 | ID | Task | Est | Priority |
 |----|------|-----|----------|
 | **TASK-305** | Re-run navigation study | 1h | 🟡 P2-Medium |
-| **TASK-145** | Visualization Stack (BMD/SFD, etc.) | 3-4 days | 🟡 MEDIUM |
+| ~~**TASK-145**~~ | ~~Visualization Stack (BMD/SFD, etc.)~~ | - | - | ⬆️ **Moved to Active** (Session 34) |
 | **TASK-146** | DXF Quality Polish | 2-3 days | 🟡 MEDIUM |
 | **TASK-147** | Developer Documentation | 2-3 days | 🟡 MEDIUM |
 
