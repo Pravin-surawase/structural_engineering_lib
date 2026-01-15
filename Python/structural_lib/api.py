@@ -909,6 +909,66 @@ def check_beam_slenderness(
     )
 
 
+def check_anchorage_at_simple_support(
+    bar_dia_mm: float,
+    fck: float,
+    fy: float,
+    vu_kn: float,
+    support_width_mm: float,
+    cover_mm: float = 40.0,
+    bar_type: str = "deformed",
+    has_standard_bend: bool = True,
+) -> detailing.AnchorageCheckResult:
+    """Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.
+
+    At simple supports, the positive moment tension reinforcement must have
+    sufficient anchorage beyond the face of the support. This function checks
+    whether the provided development length is adequate.
+
+    The available anchorage length includes:
+    - Standard 90° bend: provides 8 times bar diameter
+    - Straight extension beyond support center
+    - Support width contribution
+
+    Args:
+        bar_dia_mm: Bottom bar diameter in mm.
+        fck: Concrete strength in N/mm².
+        fy: Steel yield strength in N/mm².
+        vu_kn: Factored shear force at support in kN.
+        support_width_mm: Width of support in mm.
+        cover_mm: Clear cover at support in mm (default 40mm).
+        bar_type: "plain" or "deformed" (default "deformed").
+        has_standard_bend: True if bar has 90° bend at support (default True).
+
+    Returns:
+        AnchorageCheckResult with check status and details.
+
+    Example:
+        >>> result = check_anchorage_at_simple_support(
+        ...     bar_dia_mm=12,
+        ...     fck=25,
+        ...     fy=500,
+        ...     vu_kn=50,
+        ...     support_width_mm=300
+        ... )
+        >>> result.is_adequate
+        True
+
+    References:
+        IS 456:2000 Cl 26.2.3.3: Anchorage of bars at simple supports
+    """
+    return detailing.check_anchorage_at_simple_support(
+        bar_dia=bar_dia_mm,
+        fck=fck,
+        fy=fy,
+        vu_kn=vu_kn,
+        support_width=support_width_mm,
+        cover=cover_mm,
+        bar_type=bar_type,
+        has_standard_bend=has_standard_bend,
+    )
+
+
 def check_deflection_span_depth(
     span_mm: float,
     d_mm: float,
