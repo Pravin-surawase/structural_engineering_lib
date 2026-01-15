@@ -785,13 +785,12 @@ def beam_to_3d_geometry(
 
     # Metadata
     metadata = {
-        "fck": 25.0,  # TODO: Pass from detailing result
-        "fy": 500.0,  # TODO: Pass from detailing result
         "cover": cover,
         "ldTension": detailing.ld_tension,
         "ldCompression": detailing.ld_compression,
         "lapLength": detailing.lap_length,
         "isSeismic": is_seismic,
+        "isValid": detailing.is_valid,
         "remarks": detailing.remarks,
     }
 

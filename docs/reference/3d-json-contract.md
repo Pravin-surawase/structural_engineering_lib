@@ -150,6 +150,7 @@ interface BeamMetadata {
   ldCompression?: number;  // Development length compression (mm)
   lapLength?: number;      // Lap splice length (mm)
   isSeismic?: boolean;     // Seismic detailing applied
+  isValid?: boolean;       // Detailing validity
   remarks?: string;        // Validation notes
 }
 ```

@@ -129,6 +129,7 @@ class TestBeamTo3DGeometryIntegration:
         assert geometry.metadata["ldCompression"] > 0
         assert geometry.metadata["lapLength"] > 0
         assert geometry.metadata["isSeismic"] is True
+        assert geometry.metadata["isValid"] is True
 
     def test_to_dict_produces_valid_json(self, sample_detailing):
         """Test to_dict() produces JSON-serializable output."""
