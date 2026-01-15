@@ -65,6 +65,16 @@ recover_git_state.sh      # Emergency recovery
 
 ---
 
+## ✅ Professionalism & Commit Hygiene
+
+**Be valuable, not noisy.**
+- **No micro-commits:** Batch small doc tweaks into a single meaningful commit.
+- **Avoid link spam:** Link only core navigation targets, not every mention.
+- **Prefer substance:** Fix root causes, add tests/automation, document decisions.
+- **Respect reviewability:** Each commit should stand on its own and explain why.
+
+---
+
 ## 📋 Essential Workflows
 
 ### A. Git & Commits
@@ -490,6 +500,24 @@ cd Python && pytest tests/ -v                 # Tests
 **Automation:**
 - [scripts/index.json](scripts/index.json) - All scripts catalog
 - [scripts/README.md](scripts/README.md) - Scripts overview
+
+---
+
+## ✅ Required Reading & Maintenance
+
+**Before coding:**
+- [docs/TASKS.md](docs/TASKS.md) - current work and priorities
+- [docs/SESSION_LOG.md](docs/SESSION_LOG.md) - recent decisions and lessons
+- [docs/guidelines/folder-structure-governance.md](docs/guidelines/folder-structure-governance.md) - structure rules
+
+**While working:**
+- Maintain code quality and validation (tests + scanners).
+- Keep [docs/SESSION_LOG.md](docs/SESSION_LOG.md) and [docs/planning/next-session-brief.md](docs/planning/next-session-brief.md) up to date for major work.
+- Update indexes/readmes when adding or moving files:
+    - [docs/README.md](docs/README.md)
+    - [docs/docs-index.json](docs/docs-index.json)
+    - [docs/index.json](docs/index.json)
+    - [scripts/index.json](scripts/index.json)
 
 ### Emergency Procedures
 

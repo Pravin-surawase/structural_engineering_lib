@@ -156,6 +156,41 @@ CI (remote, comprehensive):
 
 ---
 
+## ✅ Planned Next Tasks (Research + Subtasks)
+
+### TASK-502: VBA Smoke Test Automation (HIGH)
+
+**Research:** VBA automation needs a repeatable, minimal smoke harness that runs without Excel UI prompts and is CI-friendly.
+
+**Subtasks:**
+1. Identify target VBA entrypoints (e.g., beam design core macros) and list expected outputs.
+2. Define a minimal smoke dataset (1-2 cases) and expected result checks.
+3. Draft test harness script (PowerShell or Python via `xlwings`/COM) to run headless.
+4. Add a basic pass/fail report and logging to `logs/`.
+5. Document usage + add to automation index.
+
+### TASK-284: Weekly Governance Session (MEDIUM)
+
+**Research:** Governance checks prevent doc sprawl and keep structure compliant.
+
+**Subtasks:**
+1. Run structure validators: folder count, root file count, README presence.
+2. Audit orphan files + duplicate docs; propose archive or merge candidates.
+3. Verify docs indexes/readmes are current after changes.
+4. Summarize actions in SESSION_LOG and next-session brief.
+
+### TASK-305: Re-run Navigation Study (MEDIUM)
+
+**Research:** Navigation changes accumulate; a quick pass helps reduce UX friction.
+
+**Subtasks:**
+1. Capture current sidebar/pages list and intended audience flows.
+2. Compare against docs navigation index and streamlit page labels.
+3. Note top 3 friction points + propose improvements.
+4. Update documentation with findings and next steps.
+
+---
+
 ## 🎯 Session 28 Achievements (Modern Streamlit Patterns)
 
 ### TASK-602: Modern Patterns Adoption
