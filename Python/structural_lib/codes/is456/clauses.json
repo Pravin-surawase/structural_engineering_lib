@@ -334,6 +334,54 @@
       "keywords": ["maximum shear", "τc_max", "shear limit"],
       "tables": ["Table 20 - Maximum Shear Stress"]
     },
+    "41.1": {
+      "title": "General - Design for Torsion",
+      "section": "41 - Limit State of Collapse: Torsion",
+      "text": "In structures where torsion is required for equilibrium, members shall be designed for torsion. Where torsion is due to compatibility, redistribution of loads may occur with cracking.",
+      "category": "torsion",
+      "keywords": ["torsion", "equilibrium", "compatibility", "redistribution"]
+    },
+    "41.3": {
+      "title": "Critical Section for Torsion",
+      "section": "41 - Limit State of Collapse: Torsion",
+      "text": "Sections located at less than a distance d from face of support may be designed for torsion at distance d.",
+      "category": "torsion",
+      "keywords": ["torsion", "critical section", "support face"]
+    },
+    "41.3.1": {
+      "title": "Equivalent Shear",
+      "section": "41 - Limit State of Collapse: Torsion",
+      "text": "Equivalent shear Ve = Vu + 1.6(Tu/b). This equivalent shear is used to check against maximum shear stress.",
+      "category": "torsion",
+      "formula": "Ve = Vu + 1.6 * Tu / b",
+      "keywords": ["equivalent shear", "Ve", "torsion shear interaction"]
+    },
+    "41.4": {
+      "title": "Reinforcement for Torsion",
+      "section": "41 - Limit State of Collapse: Torsion",
+      "text": "When τve exceeds τc, both transverse and longitudinal reinforcement shall be provided.",
+      "category": "torsion",
+      "keywords": ["torsion reinforcement", "transverse", "longitudinal", "stirrups"]
+    },
+    "41.4.2": {
+      "title": "Longitudinal Reinforcement for Torsion",
+      "section": "41 - Limit State of Collapse: Torsion",
+      "text": "Longitudinal reinforcement shall be designed for equivalent moment Me = Mu + Mt, where Mt = Tu(1 + D/b)/1.7.",
+      "category": "torsion",
+      "formulas": {
+        "Mt": "Tu * (1 + D/b) / 1.7",
+        "Me": "Mu + Mt"
+      },
+      "keywords": ["equivalent moment", "Me", "Mt", "longitudinal steel"]
+    },
+    "41.4.3": {
+      "title": "Transverse Reinforcement for Torsion",
+      "section": "41 - Limit State of Collapse: Torsion",
+      "text": "Closed stirrups required. Asv/sv = Tu/(b1*d1*0.87*fy) + Vus/(2.5*d1*0.87*fy). Spacing ≤ (x1+y1)/4 or 300mm.",
+      "category": "torsion",
+      "formula": "Asv/sv = Tu/(b1*d1*0.87*fy) + Vus/(2.5*d1*0.87*fy)",
+      "keywords": ["closed stirrups", "torsion stirrups", "transverse reinforcement", "spacing"]
+    },
     "43.1": {
       "title": "Limit State of Serviceability: Deflection",
       "section": "43 - Limit State of Serviceability",

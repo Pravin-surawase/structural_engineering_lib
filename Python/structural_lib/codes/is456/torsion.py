@@ -43,6 +43,8 @@ __all__ = [
     "calculate_equivalent_shear",
     "calculate_equivalent_moment",
     "calculate_torsion_shear_stress",
+    "calculate_torsion_stirrup_area",
+    "calculate_longitudinal_torsion_steel",
     "design_torsion",
 ]
 
