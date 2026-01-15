@@ -32,6 +32,13 @@ This document consolidates all research on building a Chat + 3D visualization pr
 6. [Alternative Product Ideas](#6-alternative-product-ideas)
 7. [v0.25.0 Roadmap](#7-v0250-roadmap)
 8. [Recommendations](#8-recommendations)
+9. [Streamlit Cloud Deployment Plan (Beginner-Friendly)](#9-streamlit-cloud-deployment-plan-beginner-friendly)
+10. [Beam Design Page Simplification Plan](#10-beam-design-page-simplification-plan)
+11. [Minimum Proof-of-Concept Scope](#11-minimum-proof-of-concept-scope)
+12. [Prioritized Library Additions for Visuals and Optimization](#12-prioritized-library-additions-for-visuals-and-optimization)
+13. [Risks, Criticisms, and Positioning](#13-risks-criticisms-and-positioning)
+14. [Solo Developer Execution Strategy](#14-solo-developer-execution-strategy)
+15. [Task Breakdown (Numbered)](#15-task-breakdown-numbered)
 
 ---
 
@@ -710,6 +717,229 @@ v1.0.0 (future)
 1. **Complete column + slab** modules
 2. **API freeze** for stability
 3. **Evaluate dual licensing** if SaaS competition emerges
+
+---
+
+## 9. Streamlit Cloud Deployment Plan (Beginner-Friendly)
+
+### Goal
+
+Make the Streamlit app public, stable, and professional before deployment.
+
+### Step-by-Step (No Steps Skipped)
+
+#### Step 1: Prepare the app to run on any machine
+
+1. **Confirm the entry file**
+  - The Streamlit entry is [streamlit_app/app.py](streamlit_app/app.py).
+2. **Check dependencies**
+  - Ensure required Python packages are in [Python/pyproject.toml](Python/pyproject.toml).
+3. **Verify the app starts locally**
+  - You should be able to run it locally without errors.
+
+#### Step 2: Create a clean, professional front page
+
+1. Simplify the beam design page (see Section 10).
+2. Ensure the app loads fast and does not crash on empty input.
+3. Use consistent fonts, spacing, and section headers.
+
+#### Step 3: Prepare a Streamlit Cloud deployment branch
+
+1. Deploy directly from `main` (simplest for beginner).
+2. Ensure the repo is public or has Streamlit Cloud access.
+
+#### Step 4: Create a Streamlit Cloud app
+
+1. Go to https://streamlit.io/cloud
+2. Sign in with GitHub.
+3. Click **New app**.
+4. Select your repo: `Pravin-surawase/structural_engineering_lib`.
+5. Branch: `main`.
+6. Main file path: `streamlit_app/app.py`.
+7. Click **Deploy**.
+
+#### Step 5: Set environment and secrets (if needed)
+
+1. If the app needs secrets, go to **App Settings → Secrets**.
+2. Paste any API keys there.
+3. Save and restart the app.
+
+#### Step 6: Verify live app
+
+1. Check the live URL.
+2. Test: Beam design input, results, and visualizations.
+3. Fix any errors and redeploy.
+
+### Professionalization Checklist (Before Deploy)
+
+- [ ] App starts without errors on cold start
+- [ ] Beam design page simplified and polished
+- [ ] No broken links or missing assets
+- [ ] Input defaults are sensible and safe
+- [ ] Error messages are user-friendly
+- [ ] Results are clear and concise
+
+---
+
+## 10. Beam Design Page Simplification Plan
+
+### Current Issues
+
+The beam design page is feature-rich but complex for beginners. It mixes input, preview, results, and multiple advanced widgets.
+
+### Goal
+
+Create a **simple, subtle, advanced-looking** interface with **wow factor** while keeping it functional.
+
+### Proposed Layout (Simple + Advanced)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Beam Design (IS 456)                                    │
+├─────────────────────────────┬───────────────────────────┤
+│  INPUTS (Left)              │  VISUAL + RESULTS (Right) │
+│                             │                           │
+│  1. Geometry                │  • 3D Beam Preview        │
+│  2. Materials               │  • BMD/SFD toggle         │
+│  3. Loads                   │  • Optimization summary   │
+│  4. Exposure                │  • Status + key metrics   │
+│                             │                           │
+│  [Design Beam]              │  [Export] [Audit Trail]   │
+└─────────────────────────────┴───────────────────────────┘
+```
+
+### Design Principles
+
+1. **Less text, more structure**
+2. **Use visual hierarchy** (big title, small hints)
+3. **One primary action**: “Design Beam”
+4. **Progressive disclosure**: Advanced details in expandable sections
+
+### Simplification Actions
+
+1. Merge small widgets into grouped sections
+2. Remove rarely-used toggles from default view
+3. Keep results to 5 key metrics (Ast, status, utilization, deflection, cost)
+4. Move detailed compliance to an expandable panel
+5. Add a “Quick Preset” (Residential / Office / Industrial)
+
+### Visual Improvements
+
+1. Use a consistent card style for results
+2. Use subtle gradient background (light theme)
+3. Use icons sparingly (geometry, materials, loads)
+4. Provide a clear “Design status” badge
+
+---
+
+## 11. Minimum Proof-of-Concept Scope
+
+### Purpose
+
+Show a “wow” demo with minimal code.
+
+### Minimum PoC Features
+
+1. Chat input (one tool: `design_beam_is456()`)
+2. 3D beam visualization (concrete + bottom bars)
+3. Results card (Ast required, status, utilization)
+
+**Estimated build:** 1 week
+
+---
+
+## 12. Prioritized Library Additions for Visuals and Optimization
+
+These are the **highest-impact functions** for visuals and optimization.
+
+### Visuals (Immediate)
+
+1. `compute_beam_section_geometry()`
+  - Returns 2D geometry points for section drawing.
+2. `compute_rebar_layout()`
+  - Returns bar coordinates for 2D/3D rendering.
+3. `compute_stirrup_layout()`
+  - Returns stirrup positions for visuals.
+
+### Optimization (Immediate)
+
+1. `optimize_beam_cost()` (already exists) → Expose in UI
+2. `optimize_rebar_configuration()`
+  - Find cheapest bar arrangement meeting Ast.
+3. `suggest_design_alternatives()`
+  - Use `insights` module to show 2-3 alternatives.
+
+### BMD/SFD (Already exists)
+
+- `compute_bmd_sfd()` (already in API)
+- Add a simple BMD/SFD toggle in UI
+
+---
+
+## 13. Risks, Criticisms, and Positioning
+
+### Likely Criticisms
+
+1. “Not validated by authorities” → show verification examples
+2. “Open source = unreliable” → highlight tests and audit trail
+3. “No advanced analysis” → position as design-after-analysis tool
+
+### Positioning Statement
+
+“Use ETABS for analysis, use structural_lib for fast, auditable design with AI assistance.”
+
+---
+
+## 14. Solo Developer Execution Strategy
+
+### Your Focus (Most Important)
+
+1. Verify calculations manually
+2. Decide what features matter most
+3. Review AI output
+
+### What AI Should Do
+
+1. Code implementation
+2. Unit tests
+3. Documentation
+
+---
+
+## 15. Task Breakdown (Numbered)
+
+### Phase A: Research + Planning (This Week)
+
+1. Audit current Beam Design page
+2. Sketch simplified UI layout
+3. Identify 3 “wow” visuals (3D, BMD/SFD, optimization card)
+4. Define minimum PoC
+
+### Phase B: Beam Design Simplification (Next Week)
+
+1. Refactor input sections into compact cards
+2. Add “Quick Preset” selector
+3. Replace multi-tab results with 1 summary + 1 advanced tab
+4. Add clean result cards and status badge
+
+### Phase C: Visual Enhancements
+
+1. Add BMD/SFD toggle
+2. Add 3D beam preview (simple)
+3. Add reinforcement overlay
+
+### Phase D: Optimization Integration
+
+1. Add “Optimize Cost” action
+2. Show 2-3 alternative designs
+3. Display cost comparison chart
+
+### Phase E: Streamlit Cloud Deployment
+
+1. Verify local run
+2. Deploy to Streamlit Cloud
+3. Validate live app
+4. Share live demo link
 
 ---
 
