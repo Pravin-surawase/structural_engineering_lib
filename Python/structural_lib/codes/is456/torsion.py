@@ -27,9 +27,9 @@ from structural_lib.error_messages import (
     material_property_out_of_range,
 )
 from structural_lib.errors import (
+    E_TORSION_001,
     DesignError,
     DimensionError,
-    E_TORSION_001,
     MaterialError,
 )
 
