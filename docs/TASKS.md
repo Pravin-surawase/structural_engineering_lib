@@ -2,7 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-17 (Session 28)
+**Updated:** 2026-01-15 (Session 32 - Validated Audit)
+
+> **Session 32 Note:** Deep code audit found TASK-088 (Slenderness), TASK-520 (Hypothesis), TASK-522 (Jinja2) were ALL COMPLETE but wrongly listed as pending. Backlog corrected.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -160,11 +162,15 @@
 
 ---
 
-## Up Next (Session 31+)
+## Up Next (Session 32+)
+
+> **Session 32 Audit:** Validated actual code vs documentation. Found completed tasks wrongly in backlog.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-522** | Add Jinja2 report templates (3 templates, 25 tests) | DEV | 4h | 🟠 MEDIUM | ✅ PR #360 |
+| **TASK-606** | Sync api.md to v0.17.5 (currently shows 0.16.6) | DOCS | 2h | 🟠 MEDIUM | 🆕 New |
+| **TASK-087** | Complete anchorage details (hooks, bends, bundled bars) | DEV | 4h | 🟠 MEDIUM | Not Started |
+| **TASK-085** | Torsion design module (IS 456 Cl 41) | DEV | 2-3d | 🟡 MEDIUM | Not Started |
 
 ---
 
@@ -190,14 +196,14 @@
 | **TASK-147** | Developer Documentation | 2-3 days | 🟡 MEDIUM |
 
 **Beam Scope Extensions:**
-| ID | Task | Est | Priority |
-|----|------|-----|----------|
-| **TASK-081** | Level C Serviceability | 1-2 days | 🟡 MEDIUM |
-| **TASK-082** | VBA parity harness | 1-2 days | 🟡 MEDIUM |
-| **TASK-138** | ETABS mapping | 1-2 days | 🟡 MEDIUM |
-| **TASK-085** | Torsion design | 2-3 days | 🟡 MEDIUM |
-| **TASK-087** | Anchorage check | 1 day | 🟡 MEDIUM |
-| **TASK-088** | Slenderness check | 4 hrs | 🟡 MEDIUM |
+| ID | Task | Est | Priority | Status |
+|----|------|-----|----------|--------|
+| **TASK-081** | Level C Serviceability | 1-2 days | 🟡 MEDIUM | Not Started |
+| **TASK-082** | VBA parity harness | 1-2 days | 🟡 MEDIUM | Not Started |
+| **TASK-138** | ETABS mapping | 1-2 days | 🟡 MEDIUM | Not Started |
+| ~~**TASK-085**~~ | ~~Torsion design~~ | - | - | Moved to Up Next |
+| ~~**TASK-087**~~ | ~~Anchorage check~~ | - | - | Moved to Up Next |
+| ~~**TASK-088**~~ | ~~Slenderness check~~ | - | - | ✅ **DONE** (validated Session 32) |
 
 ### Research Tasks (Deferred - User Validation Required)
 
@@ -212,6 +218,9 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **SESSION-32** | Deep library audit: validated 3 completed tasks wrongly in backlog (TASK-088, 520, 522) | MAIN | ✅ 2026-01-15 |
+| **TASK-088** | Slenderness check (IS 456 Cl 23.3) - **Was wrongly in backlog** | DEV | ✅ Validated 2026-01-15 |
+| **TASK-522** | Jinja2 report templates (3 templates: beam_design, summary, detailed) | DEV | ✅ PR #360 2026-01-14 |
 | **TASK-284** | Weekly governance session: validation + link fixes + index refresh | MAIN | ✅ 2026-01-15 |
 | **TASK-502** | VBA smoke test automation (script + docs + index update) | MAIN | ✅ 2026-01-15 |
 | **TASK-601** | Enhanced AppTest framework: integration tests (14 new), fragment utilities, nightly workflow, code quality research | MAIN | ✅ PR #TBD 2026-01-16 |
