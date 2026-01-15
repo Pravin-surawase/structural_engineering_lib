@@ -54,7 +54,7 @@
 - **Reliability:** Pull-before-push prevents conflicts
 - **Enforcement:** Git hooks block manual commands
 
-**Key scripts (see scripts/index.json):**
+**Key scripts (see [scripts/index.json](scripts/index.json)):**
 ```bash
 ai_commit.sh              # PRIMARY - Commit + push
 should_use_pr.sh          # PR vs direct decision
