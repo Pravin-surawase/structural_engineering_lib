@@ -155,6 +155,99 @@ class BeamType(Enum):
     FLANGED_L = 3
 
 
+class LoadType(Enum):
+    """Type of applied load for BMD/SFD analysis."""
+
+    UDL = auto()  # Uniformly distributed load (w kN/m)
+    POINT = auto()  # Concentrated/point load (P kN at position a)
+    TRIANGULAR = auto()  # Triangularly distributed load (w_max at one end)
+    MOMENT = auto()  # Applied moment (M kN·m at position a)
+
+
+@dataclass
+class LoadDefinition:
+    """Definition of a single load for BMD/SFD computation.
+
+    Attributes:
+        load_type: Type of load (UDL, POINT, TRIANGULAR, MOMENT)
+        magnitude: Load magnitude (kN/m for UDL/TRI, kN for POINT, kN·m for MOMENT)
+        position_mm: Position from left support (mm), required for POINT/MOMENT
+        end_position_mm: End position (mm), optional for partial loads
+
+    Examples:
+        # UDL of 20 kN/m over full span
+        LoadDefinition(LoadType.UDL, magnitude=20.0)
+
+        # Point load of 50 kN at midspan (for 6000mm span)
+        LoadDefinition(LoadType.POINT, magnitude=50.0, position_mm=3000.0)
+
+        # Moment of 25 kN·m at support
+        LoadDefinition(LoadType.MOMENT, magnitude=25.0, position_mm=0.0)
+    """
+
+    load_type: LoadType
+    magnitude: float  # kN/m for UDL, kN for POINT, kN·m for MOMENT
+    position_mm: float = 0.0  # Position from left support (mm)
+    end_position_mm: float | None = None  # End position for partial loads (mm)
+
+
+@dataclass
+class CriticalPoint:
+    """Critical point on BMD/SFD diagram (max, min, zero crossing).
+
+    Attributes:
+        position_mm: Position from left support (mm)
+        point_type: Type of critical point ("max_bm", "min_bm", "max_sf", "zero_bm", etc.)
+        bm_knm: Bending moment at this point (kN·m)
+        sf_kn: Shear force at this point (kN)
+    """
+
+    position_mm: float
+    point_type: str  # "max_bm", "min_bm", "max_sf", "min_sf", "zero_bm", "zero_sf"
+    bm_knm: float
+    sf_kn: float
+
+
+@dataclass
+class LoadDiagramResult:
+    """Result of BMD/SFD computation for a beam.
+
+    Contains discretized BMD and SFD data along with critical points.
+    Use with Plotly or matplotlib for visualization.
+
+    Attributes:
+        positions_mm: List of positions along span (mm), typically 101 points
+        bmd_knm: Bending moment at each position (kN·m), positive = sagging
+        sfd_kn: Shear force at each position (kN), positive = upward on left face
+        critical_points: List of critical points (max/min/zero)
+        span_mm: Total span (mm)
+        support_condition: "simply_supported" or "cantilever"
+        loads: List of applied loads
+        max_bm_knm: Maximum bending moment (kN·m)
+        min_bm_knm: Minimum bending moment (kN·m)
+        max_sf_kn: Maximum shear force (kN)
+        min_sf_kn: Minimum shear force (kN)
+
+    Example:
+        >>> result = compute_bmd_sfd(span_mm=6000, support="simply_supported",
+        ...                          loads=[LoadDefinition(LoadType.UDL, 20)])
+        >>> print(f"Max moment: {result.max_bm_knm:.1f} kN·m")
+        Max moment: 90.0 kN·m
+    """
+
+    positions_mm: list[float]
+    bmd_knm: list[float]
+    sfd_kn: list[float]
+    critical_points: list[CriticalPoint]
+    span_mm: float
+    support_condition: str
+    loads: list[LoadDefinition]
+    max_bm_knm: float = 0.0
+    min_bm_knm: float = 0.0
+    max_sf_kn: float = 0.0
+    min_sf_kn: float = 0.0
+
+
 class DesignSectionType(Enum):
     UNDER_REINFORCED = 1
     BALANCED = 2
