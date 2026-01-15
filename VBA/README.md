@@ -84,6 +84,25 @@ When modifying VBA code:
 3. Compare results with Python: pytest tests/test_flexure.py
 ```
 
+### VBA Smoke Test Automation (macOS)
+
+Quick smoke tests can be run via Excel automation (macOS only):
+
+```
+.venv/bin/python scripts/run_vba_smoke_tests.py
+```
+
+Defaults:
+- Workbook: Excel/BeamDesignApp.xlsm
+- Macro: Test_RunAll.RunAllVBATests
+
+Examples:
+
+```
+.venv/bin/python scripts/run_vba_smoke_tests.py --workbook Excel/StructEng_BeamDesign_v0.5.xlsm
+.venv/bin/python scripts/run_vba_smoke_tests.py --macro Test_RunAll.RunAllVBATests --macro Integration_TestHarness.Run_Integration_TestSuite
+```
+
 ## Archive Policy
 
 - This folder is **not auto-archived**

@@ -169,6 +169,10 @@ CI (remote, comprehensive):
 4. Add a basic pass/fail report and logging to `logs/`.
 5. Document usage + add to automation index.
 
+**Status:** ✅ Completed (2026-01-15)
+**Delivered:** macOS Excel automation script + docs + scripts index update
+**Next:** Consider Windows/CI path (PowerShell + COM) if needed later.
+
 ### TASK-284: Weekly Governance Session (MEDIUM)
 
 **Research:** Governance checks prevent doc sprawl and keep structure compliant.

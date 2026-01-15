@@ -164,7 +164,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-502** | VBA test automation (smoke tests) | DEVOPS | 6-8h | 🔴 HIGH | ⏳ Deferred |
 | **TASK-522** | Add Jinja2 report templates (3 templates, 25 tests) | DEV | 4h | 🟠 MEDIUM | ✅ PR #360 |
 | **TASK-284** | Weekly Governance Sessions (80/20 rule) | AGENT_9 | 3h | 🟠 MEDIUM | ⏳ Queued |
 
@@ -214,6 +213,7 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-502** | VBA smoke test automation (script + docs + index update) | MAIN | ✅ 2026-01-15 |
 | **TASK-601** | Enhanced AppTest framework: integration tests (14 new), fragment utilities, nightly workflow, code quality research | MAIN | ✅ PR #TBD 2026-01-16 |
 | **TASK-600** | Streamlit fixes: stirrup diameter selection, PDF report data, AppTest automation (46 tests) | MAIN | ✅ PR #TBD 2026-01-15 |
 | **REL-0175** | Release v0.17.5: Multi-Objective Pareto Optimization, API Signature Validation CI, 1317 tests | MAIN | ✅ 2026-01-15 |

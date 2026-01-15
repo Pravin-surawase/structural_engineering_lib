@@ -175,7 +175,8 @@
         "update_test_stats.py": "Update test statistics",
         "watch_tests.sh": "Watch and run tests on change",
         "external_cli_test.py": "Test external CLI integration",
-        "validate_trial_data.py": "Validate trial/test data"
+        "validate_trial_data.py": "Validate trial/test data",
+        "run_vba_smoke_tests.py": "Run VBA smoke tests via Excel automation (macOS)"
       }
     },
     "release": {
