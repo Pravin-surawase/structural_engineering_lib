@@ -298,6 +298,41 @@ class DeflectionLevelBResult:
 
 
 @dataclass
+class DeflectionLevelCResult:
+    """Level C deflection result with separate creep and shrinkage.
+
+    IS 456 Annex C detailed deflection calculation with:
+    - Separate creep and shrinkage components
+    - Sustained vs live load differentiation
+    - Humidity and age of loading factors
+    """
+
+    is_ok: bool
+    remarks: str
+    support_condition: SupportCondition
+    assumptions: list[str]
+    inputs: dict[str, Any]
+    computed: dict[str, Any]
+
+    # Key computed values
+    mcr_knm: float = 0.0  # Cracking moment (kN·m)
+    igross_mm4: float = 0.0  # Gross moment of inertia (mm^4)
+    icr_mm4: float = 0.0  # Cracked moment of inertia (mm^4)
+    ieff_mm4: float = 0.0  # Effective moment of inertia (mm^4)
+
+    # Deflection components (Level C separates these)
+    delta_immediate_mm: float = 0.0  # Immediate deflection under total load (mm)
+    delta_creep_mm: float = 0.0  # Creep deflection component (mm)
+    delta_shrinkage_mm: float = 0.0  # Shrinkage deflection component (mm)
+    delta_total_mm: float = 0.0  # Total deflection (mm)
+    delta_limit_mm: float = 0.0  # Allowable deflection limit (mm)
+
+    # Factors
+    creep_coefficient: float = 0.0  # Creep coefficient (θ)
+    shrinkage_curvature: float = 0.0  # Shrinkage curvature (1/mm)
+
+
+@dataclass
 class CrackWidthResult:
     is_ok: bool
     remarks: str
