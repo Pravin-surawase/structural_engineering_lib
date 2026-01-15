@@ -232,11 +232,11 @@ consolidate_docs.py archive       # Archive completed research
 - No hidden conversions or assumptions
 
 **Key files:**
-- `Python/structural_lib/codes/is456/flexure.py` - Moment design (Mu, Ast)
-- `Python/structural_lib/codes/is456/shear.py` - Shear design (Vu, stirrups)
-- `Python/structural_lib/codes/is456/detailing.py` - Rebar layout, development lengths
-- `Python/structural_lib/api.py` - Main entry point for users
-- `streamlit_app/pages/01_beam_design.py` - Primary UI (4 visible pages, 8 hidden)
+- [Python/structural_lib/codes/is456/flexure.py](Python/structural_lib/codes/is456/flexure.py) - Moment design (Mu, Ast)
+- [Python/structural_lib/codes/is456/shear.py](Python/structural_lib/codes/is456/shear.py) - Shear design (Vu, stirrups)
+- [Python/structural_lib/codes/is456/detailing.py](Python/structural_lib/codes/is456/detailing.py) - Rebar layout, development lengths
+- [Python/structural_lib/api.py](Python/structural_lib/api.py) - Main entry point for users
+- [streamlit_app/pages/01_beam_design.py](streamlit_app/pages/01_beam_design.py) - Primary UI (4 visible pages, 8 hidden)
 
 ---
 
