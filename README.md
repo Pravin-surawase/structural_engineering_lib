@@ -339,6 +339,12 @@ python3 -m structural_lib report ./out_demo --format=html -o report.html
 - [Python Quickstart](docs/getting-started/python-quickstart.md) - API usage examples
 - [Insights Guide](docs/getting-started/insights-guide.md) - Advisory insights (precheck, sensitivity, constructability)
 
+**For Developers (Building on the Platform):**
+- [Platform Guide](docs/developers/platform-guide.md) - Design your first beam in 15 minutes, integration patterns, best practices
+- [Integration Examples](docs/developers/integration-examples.md) - PDF reports, REST APIs, ETABS batch processing
+- [Extension Guide](docs/developers/extension-guide.md) - Add custom features without modifying core
+- [API Stability Policy](docs/developers/api-stability.md) - Versioning, breaking changes, migration guides
+
 **Reference:**
 - [CLI Reference](docs/cookbook/cli-reference.md) - All CLI commands
 - [API Reference](docs/reference/api.md) - Function signatures and examples
