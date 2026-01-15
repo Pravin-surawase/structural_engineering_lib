@@ -29,7 +29,7 @@
 ```
 
 **Essential Resources:**
-1. [copilot-instructions-v2.md](/.github/copilot-instructions-v2.md) ← **YOU ARE HERE**
+1. [copilot-instructions.md](/.github/copilot-instructions.md) ← **YOU ARE HERE**
 2. [agent-workflow-master-guide.md](docs/agents/guides/agent-workflow-master-guide.md) - Complete workflows
 3. [TASKS.md](docs/TASKS.md) - Current work
 4. [git-automation/README.md](docs/git-automation/README.md) - Git automation hub
