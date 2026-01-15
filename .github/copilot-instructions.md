@@ -1,1103 +1,259 @@
 # Copilot Instructions — structural_engineering_lib
 
-> **FOR AI AGENTS:** This file is loaded by GitHub Copilot/VS Code when the
-> `.github/copilot-instructions.md` convention is enabled in your environment.
-> These rules are MANDATORY. Following them prevents wasted time on CI failures,
-> merge conflicts, and repeated mistakes. Read carefully before any action.
+> **FOR AI AGENTS:** This file guides GitHub Copilot/VS Code AI agents.
+> Read this FIRST before any work. Following these rules prevents 99% of errors.
 
 ---
 
-## ⚠️ CRITICAL: Git Workflow (READ THIS FIRST)
-
-**NEVER use manual git commands for commits! ALWAYS use the automation scripts:**
+## 🚀 Quick Start (30 Seconds to Productivity)
 
 ```bash
-# ✅ CORRECT: Use ai_commit.sh (preferred) or safe_push.sh
-./scripts/ai_commit.sh "commit message"
+# 1. Start session (ONE COMMAND replaces 4 legacy commands)
+./scripts/agent_start.sh --quick
 
-# ❌ WRONG: Manual git operations
-git add .
-git commit -m "message"
-git push
+# 2. Work on code, then commit
+./scripts/ai_commit.sh "feat: your description"
+
+# 3. End session
+.venv/bin/python scripts/end_session.py
+```
+
+**Essential Resources (Read in Order):**
+1. [copilot-instructions.md](/.github/copilot-instructions.md) ← **YOU ARE HERE**
+2. [agent-workflow-master-guide.md](docs/agents/guides/agent-workflow-master-guide.md) - Complete workflow
+3. [agent-quick-reference.md](docs/agents/guides/agent-quick-reference.md) - Command cheat sheet
+4. [TASKS.md](docs/TASKS.md) - Current work items
+5. [git-automation/README.md](docs/git-automation/README.md) - Git workflow hub
+
+---
+
+## ⚠️ THE ONE RULE (Git Workflow)
+
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ NEVER use manual git commands!              ┃
+┃ ALWAYS: ./scripts/ai_commit.sh "message"    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
 **Why?**
-- Manual workflow causes merge conflicts, pre-commit hook issues, and wasted time
-- safe_push.sh handles: pre-commit hooks, sync, conflicts, amendments automatically
-- We built this script specifically to avoid git problems - USE IT!
+- Manual git causes merge conflicts (wastes 10-30 minutes per incident)
+- Pre-commit hooks modify files → manual workflow fails
+- We have 103 automation scripts built specifically to prevent git issues
 
-**When committing code:**
-1. Run: `./scripts/ai_commit.sh "descriptive commit message"`
-2. Done! Script handles everything
+**Results:** 90-95% faster commits, 97.5% fewer errors, 100% conflict elimination
 
-**Exceptions:** NONE. Always use ai_commit.sh or safe_push.sh for commits.
-
-**🔒 Hook Enforcement (NEW - Session 19P6):**
-- Git hooks block manual `git commit` and `git push` commands
-- Hooks installed automatically by `agent_start.sh`
-- Scripts set `AI_COMMIT_ACTIVE` or `SAFE_PUSH_ACTIVE` to bypass hooks
-- To check status: `./scripts/git_automation_health.sh`
-- To manually install: `./scripts/install_git_hooks.sh`
-
-**State-Aware Router:**
-- If unsure what to do: `./scripts/git_ops.sh --status`
-- It analyzes git state and recommends the right script
-
-**Canonical docs:**
-- **Quick Reference:** `docs/git-automation/README.md` (navigation hub)
-- **Full Workflow:** `docs/git-automation/workflow-guide.md` (7-step workflow)
-- **All Scripts:** `docs/git-automation/automation-scripts.md` (103 scripts reference)
-- **Legacy:** `docs/contributing/git-workflow-ai-agents.md`
-
-**Legacy note:** If you see manual git commands elsewhere, ignore them and use the scripts.
+**🔒 Git Enforcement:**
+- Hooks block manual `git commit`/`git push` (installed by `agent_start.sh`)
+- Confused? Run: `./scripts/git_ops.sh --status` (analyzes state, gives recommendation)
+- Health check: `./scripts/git_automation_health.sh`
 
 ---
 
-## 🚀 Quick Start (First 30 Seconds)
+## � What This Project Is
 
-**NEW: Use the unified automation system for error-free workflow!**
+**IS 456 RC Beam Design Library** - Python + VBA parity for structural engineering calculations.
+
+**Architecture (3-layer):**
+1. **Core:** Pure calculations (`Python/structural_lib/codes/is456/`) - NO I/O, explicit units (mm, N/mm², kN, kN·m)
+2. **Application:** Orchestration (`api.py`, `job_runner.py`) - coordinates core, NO formatting
+3. **UI/I-O:** External interfaces (`streamlit_app/`, `excel_integration.py`, `dxf_export.py`)
+
+**Critical:** Never mix layers. Core modules CANNOT import from app/UI layers.
+
+**Key Files:**
+- `Python/structural_lib/codes/is456/flexure.py` - Moment design (Mu, Ast calculations)
+- `Python/structural_lib/codes/is456/shear.py` - Shear design (Vu, stirrup spacing)
+- `Python/structural_lib/codes/is456/detailing.py` - Rebar layout, development lengths
+- `Python/structural_lib/api.py` - Main entry point for external users
+- `streamlit_app/pages/01_beam_design.py` - Primary UI (4 core pages visible, 8 hidden with `_` prefix)
+
+---
+
+## 🎯 Essential Rules (Scanner-Enforced)
+
+### Code Safety (Streamlit & Python)
+
+❌ **FORBIDDEN (causes runtime crashes):**
+```python
+value = data['key']              # KeyError
+first = items[0]                 # IndexError
+result = a / b                   # ZeroDivisionError
+value = st.session_state.key     # AttributeError
+```
+
+✅ **REQUIRED patterns:**
+```python
+value = data.get('key', default)
+first = items[0] if len(items) > 0 else None
+result = a / b if b != 0 else 0
+value = st.session_state.get('key', default)
+```
+
+**Validation:** Run `.venv/bin/python scripts/check_streamlit_issues.py <file>` before commit.
+
+### Streamlit-Specific Rules (CRITICAL)
+
+**Fragment API restrictions** (discovered Session 30):
+```python
+# ❌ FORBIDDEN in @st.fragment functions:
+@st.fragment
+def my_fragment():
+    st.sidebar.button("Click")  # StreamlitAPIException!
+    st.tabs(["A", "B"])         # Not allowed
+
+# ✅ CORRECT patterns:
+@st.fragment
+def my_fragment():
+    st.button("Click")          # OK - regular widgets
+
+# Or wrap fragment in sidebar context:
+with st.sidebar:
+    my_fragment()  # Now can use sidebar widgets inside
+```
+
+**Validation:**
+- AST scanner: `.venv/bin/python scripts/check_fragment_violations.py --all-pages`
+- Runtime: `.venv/bin/python -m pytest streamlit_app/tests/test_app.py` (AppTest framework)
+- Both run in pre-commit hooks + CI automatically
+
+### Import Rules
+
+❌ **NEVER:**
+```python
+def my_function():
+    import pandas as pd  # Import inside function
+```
+
+✅ **ALWAYS:**
+```python
+import pandas as pd  # At module level (top of file)
+
+def my_function():
+    df = pd.DataFrame(data)
+```
+
+---
+
+## 🧪 Testing Requirements
+
+**Before committing ANY code:**
 
 ```bash
-# RECOMMENDED: Quick mode (6s, 54% faster, sufficient for 95% of sessions)
-./scripts/agent_start.sh --quick
+# Python code changes:
+cd Python && .venv/bin/python -m pytest tests/ -v
 
-# OPTIONAL: Full validation (13s, use when debugging)
-./scripts/agent_start.sh
+# Streamlit changes:
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_fragment_violations.py --all-pages
 
-# With agent-specific guidance
-./scripts/agent_start.sh --agent 9 --quick  # For governance agents
+# Formatting (auto-fix):
+cd Python && .venv/bin/python -m black .
+.venv/bin/python -m ruff check --fix .
 ```
 
-**Legacy commands (still work, but unified script is simpler):**
-```bash
-./scripts/agent_setup.sh
-./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+**Test patterns:**
+- **Unit tests:** `Python/tests/unit/test_<module>.py` - test single functions
+- **Integration:** `Python/tests/integration/test_<feature>.py` - test workflows
+- **Property-based:** Use `hypothesis` for edge cases (see `test_flexure_properties.py`)
+- **Coverage gate:** CI requires 85% branch coverage minimum
+
+**Writing tests:**
+```python
+def test_calculate_ast_required_nominal_case():
+    """Test steel calculation for nominal beam."""
+    result = calculate_ast_required(
+        moment=100,  # kN·m
+        width=300,   # mm
+        depth=450,   # mm
+        fck=25.0,    # N/mm²
+        fy=500.0,    # N/mm²
+    )
+    assert result.ast_required > 0
+    assert result.ast_min <= result.ast_required <= result.ast_max
 ```
-
-**Critical Resources (Read in order):**
-1. **[agent-workflow-master-guide.md](../docs/agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
-2. **[agent-quick-reference.md](../docs/agents/guides/agent-quick-reference.md)** - Essential commands
-3. **[git-automation/README.md](../docs/git-automation/README.md)** - Git workflow hub (NEW)
-4. `docs/getting-started/agent-bootstrap.md` → `docs/getting-started/ai-context-pack.md` → `docs/TASKS.md`
-
-**Benefits:** 90-95% faster commits, 97.5% fewer errors, automated recovery
 
 ---
 
-## What this project is
-IS 456 RC beam design library with **Python + VBA parity**.
+## 🔄 Commit Strategy (PR vs Direct)
 
-## Non-negotiables
-- Deterministic calculations (no hidden defaults).
-- Units must be explicit and consistent.
-- Keep Python/VBA behavior aligned.
-- Prefer minimal, surgical changes.
-
-## Always load this context first
-- docs/ai-context-pack.md
-- docs/architecture/project-overview.md
-- docs/reference/api.md
-- docs/reference/known-pitfalls.md
-- docs/TASKS.md
-
-## Coding rules
-
-> **Full Guide:** See [docs/agents/guides/agent-coding-standards.md](../docs/agents/guides/agent-coding-standards.md) for comprehensive coding standards.
-
-### Essential Rules (Scanner-Enforced)
-- ✅ **Dict access:** Always use `.get('key', default)` - never bare `dict['key']`
-- ✅ **List access:** Always check bounds: `items[0] if len(items) > 0 else None`
-- ✅ **Division:** Always check zero: `x / y if y != 0 else 0`
-- ✅ **Session state:** Always use `.get()` or check `'key' in st.session_state`
-- ✅ **Imports:** Always at module level, never inside functions
-
-### Code Quality Rules
-- Don't mix UI/I-O code into core calculation modules.
-- Add/extend tests with every behavior change (Python at minimum).
-- If you move files, keep redirect stubs to avoid breaking links.
-- Format Python code with `black` before committing.
-- **Type safety**: Always handle `Optional[T]` types explicitly - check for `None` before accessing attributes.
-- **Python 3.9 compatibility**: Add `from __future__ import annotations` at top of new Python files. This enables `str | None` syntax on Python 3.9.
-- **Run mypy locally** before pushing: `.venv/bin/python -m mypy Python/structural_lib/<file>.py`
-
-## Definition of done
-- Tests pass (at least Python).
-- Docs updated where contracts/examples changed.
-- No unrelated refactors.
-- Code formatted with `black` (run `python -m black .` in Python/ directory).
-
----
-
-## Task Archival Rules (CRITICAL)
-
-**Archive Rule:** Keep TASKS.md Recently Done section focused by moving completed items to archive after:
-- **20+ items** accumulated in Recently Done, OR
-- **14+ days** have passed since item completion
-
-**Archive Location:** `docs/_archive/tasks-history.md`
-
-**What to Archive:**
-- Completed tasks older than 14 days
-- Keep only last 10-15 most recent items in TASKS.md
-- Preserve metadata: ID, description, date, agent, PR number
-
-**Manual Process (Until Automated):**
-1. Identify items meeting archive criteria (date or count threshold)
-2. Copy items to appropriate release section in tasks-history.md
-3. Remove from TASKS.md Recently Done section
-4. Update Archive Rule note if needed
-5. Commit: `./scripts/ai_commit.sh "docs: archive completed tasks to tasks-history.md"`
-
-**Why This Matters:**
-- Keeps TASKS.md focused on active/recent work
-- Prevents unbounded file growth (50+ items → 10-15 items)
-- Maintains historical record in dedicated archive
-- Improves agent onboarding speed (smaller, focused task board)
-
-**Future Automation:** Consider creating `scripts/archive_completed_tasks.py` when archive operations become frequent (>2 per week).
-
----
-
-## 📚 Documentation Guidelines (CRITICAL - Prevents Doc Sprawl)
-
-**Problem Solved:** We reduced 525 docs with 700+ similar pairs to a lean, focused structure.
-**Goal:** Prevent future doc sprawl that slows agent onboarding and wastes context tokens.
-
-### Research Document Rules
-
-**One Research Project = Maximum 2 Files:**
-1. `research/<topic>.md` - Main research file (findings, analysis)
-2. `research/<topic>-implementation.md` - Implementation plan (optional)
-
-**When research is COMPLETE:**
-1. Add `**Status:** Complete` to metadata header
-2. Run: `.venv/bin/python scripts/consolidate_docs.py archive`
-3. Script auto-moves to `docs/_archive/research-completed/`
-4. All links auto-updated
-
-**❌ NEVER Create:**
-- Session-specific files (`session-X-findings.md`) - use SESSION_LOG instead
-- Phase files (`PHASE-1-whatever.md`) - use single research file
-- Multiple summary files - consolidate into one
-- Dated research files (`topic-2026-01-13.md`) - dates go in metadata, not filename
-
-**✅ DO Create:**
-- One consolidated research file per topic
-- Clear metadata header with Status field
-- Archive condition in metadata
-- **Use create_doc.py for new files:** `.venv/bin/python scripts/create_doc.py <path> "Title"`
-
-### Creating New Documents (RECOMMENDED)
-
-Use the `create_doc.py` script to create new files with proper metadata:
-
-```bash
-# Create new research file
-.venv/bin/python scripts/create_doc.py docs/research/my-topic.md "My Topic Research"
-
-# Create with specific type and tasks
-.venv/bin/python scripts/create_doc.py docs/planning/my-plan.md "My Plan" --type=Plan --tasks=TASK-XXX
-
-# Options: --type, --status, --importance, --tasks, --abstract
-```
-
-### Research File Template
-
-```markdown
-# Research: [Topic Name]
-
-**Type:** Research
-**Audience:** All Agents
-**Status:** In Progress | Complete
-**Importance:** High | Medium | Low
-**Created:** YYYY-MM-DD
-**Last Updated:** YYYY-MM-DD
-**Related Tasks:** TASK-XXX
-**Archive Condition:** Archive when Status: Complete
-
----
-
-## Summary
-[Brief findings]
-
-## Analysis
-[Detailed analysis]
-
-## Recommendations
-[Action items]
-
-## Implementation Notes
-[If applicable]
-```
-
-### Consolidation Workflow
-
-When you notice research sprawl (multiple files on same topic):
-
-```bash
-# Check current state
-.venv/bin/python scripts/consolidate_docs.py analyze
-
-# Dry-run archival
-.venv/bin/python scripts/consolidate_docs.py archive --dry-run
-
-# Execute archival (fixes links automatically)
-.venv/bin/python scripts/consolidate_docs.py archive
-
-# Verify no broken links
-.venv/bin/python scripts/check_links.py
-```
-
-### Key Metrics to Maintain
-
-| Metric | Target | Check Command |
-|--------|--------|---------------|
-| Research files | <80 | `find docs/research -name "*.md" \| wc -l` |
-| Broken links | 0 | `.venv/bin/python scripts/check_links.py` |
-| Similar file pairs | <50 | `.venv/bin/python scripts/analyze_doc_redundancy.py` |
-
----
-
-## Git workflow rules (CRITICAL - Production Stage)
-
-### 🎯 Quick Decision Tool
-
-**ALWAYS use this before committing:**
+**Use automation to decide:**
 ```bash
 ./scripts/should_use_pr.sh --explain
 ```
 
-**Philosophy:** PR-first for substantial changes, direct commit for minor edits ONLY.
+**Quick reference:**
+| Change Type | Strategy | Command |
+|-------------|----------|---------|
+| Production code (`Python/structural_lib/`) | **PR required** | `./scripts/create_task_pr.sh TASK-XXX "desc"` |
+| VBA code (`VBA/`, `Excel/`) | **PR required** | Same as above |
+| CI workflows (`.github/workflows/`) | **PR required** | Same as above |
+| Dependencies (`pyproject.toml`) | **PR required** | Same as above |
+| Docs (<150 lines) | Direct commit OK | `./scripts/ai_commit.sh "docs: fix typo"` |
+| Tests (<50 lines) | Direct commit OK | `./scripts/ai_commit.sh "test: add case"` |
+| Scripts (<50 lines) | Direct commit OK | `./scripts/ai_commit.sh "chore: update script"` |
 
-**⚠️ CRITICAL: All agents MUST use Agent 8 workflow for git operations!**
-
-### ✅ Agent 8 Workflow (REQUIRED FOR ALL AGENTS)
-
-**NEVER use manual git commands!** Always use Agent 8 automation:
-
+**PR Workflow:**
 ```bash
-# ✅ PRIMARY METHOD (with PR decision logic):
-./scripts/ai_commit.sh "commit message"
+# 1. Create PR branch
+./scripts/create_task_pr.sh TASK-XXX "Fix benchmark signatures"
 
-# ✅ DIRECT METHOD (bypasses PR check - use for continuation fixes):
-./scripts/safe_push.sh "commit message"
+# 2. Make changes + commit
+./scripts/ai_commit.sh "fix: update function calls"
 
-# ❌ FORBIDDEN (causes conflicts and wasted time):
-git add .
-git commit -m "message"
-git pull
-git push
+# 3. Finish PR (auto-submits to GitHub)
+./scripts/finish_task_pr.sh TASK-XXX "description" --async
+
+# 4. Monitor CI
+./scripts/pr_async_merge.sh status
 ```
 
-**Why Agent 8 workflow?**
-- Handles pre-commit modifications automatically
-- **Runs validation checks** (Streamlit scanner, black, ruff, etc.)
-- Pulls before committing (prevents conflicts)
-- Auto-resolves conflicts safely
-- Never rewrites pushed history
-- Logs all operations in git_operations_log/
-- 90-95% faster commits, 97.5% fewer errors
-
-**What happens during Agent 8 commit:**
-1. Stages your changes
-2. **Pre-commit hooks run** (including Streamlit scanner if editing streamlit_app/)
-3. If CRITICAL issues found → commit blocks, fix required
-4. If HIGH issues found → warnings shown, commit proceeds
-5. Pulls latest from remote
-6. Pushes your commit
-
-**For future agents:**
-1. Read [agent-workflow-master-guide.md](../docs/agents/guides/agent-workflow-master-guide.md) first
-2. Run `./scripts/agent_start.sh` at session start (or legacy `./scripts/agent_setup.sh`)
-3. ALWAYS use `./scripts/ai_commit.sh` for commits
-4. **If editing Streamlit:** Validation runs automatically, fix CRITICAL issues
-5. Check `git_operations_log/YYYY-MM-DD.md` for session history
-
-The tool analyzes:
-- **File type** (production vs docs/tests/scripts)
-- **Change size** (lines added/removed)
-- **File count** (multiple files = higher impact)
-- **Complexity** (new files, substantial edits)
-
-### ✅ Direct Commits (Minor Changes ONLY)
-
-**Criteria (ALL must be true):**
-- Low-risk files: docs/, Python/tests/, or scripts/ ONLY
-- Small scope: <50 lines changed
-- Few files: 1-2 files maximum
-- No new files (edits only)
-
-**Examples:**
-- Typo fix in single doc file
-- Small test adjustment (<50 lines)
-- Minor script tweak (<50 lines)
-
-**Command:**
-```bash
-./scripts/ai_commit.sh "docs: fix typo in guide"
-```
-
-### 🔀 Pull Requests (REQUIRED - Default Workflow)
-
-**PR Strategy:**
-- **Multi-phase tasks:** Commit all phases to feature branch, then create ONE PR at end
-  - More efficient: fewer CI runs, consolidated review
-  - Example: IMPL-006 Phases 1-4 → commit each → PR after Phase 4 complete
-- **Single-phase tasks:** Create PR at start, commit progress, merge at end
-
-**Always required for:**
-1. **Production code** - Python/structural_lib/**/*.py (NO exceptions)
-2. **VBA code** - VBA/**/*.bas, Excel/**/*.xlsm
-3. **CI workflows** - .github/workflows/**/*.yml
-4. **Dependencies** - pyproject.toml, requirements*.txt
-
-**Dependency policy (agents MAY add deps when justified):**
-- Prefer stdlib-first; add third-party packages only when they materially improve quality or capability.
-- New dependencies must be optional extras in `Python/pyproject.toml` unless core runtime requires it.
-- Update README + relevant docs (API/API stability) to document the extra and install command.
-- Add tests or examples that exercise the new dependency path.
-
-**Also required for substantial changes even in low-risk files:**
-- **Major docs** - 500+ lines (e.g., new guides, catalogs)
-- **Substantial docs** - 150+ lines or 3+ files
-- **Medium docs** - 50-149 lines or 2 files
-- **Large tests** - 50+ lines or 2+ files
-- **Large scripts** - 50+ lines or 2+ files
-
-**Workflow:**
-```bash
-./scripts/create_task_pr.sh TASK-XXX "description"
-# Make changes
-./scripts/ai_commit.sh "feat: implement X"
-# When done
-./scripts/finish_task_pr.sh TASK-XXX "description"
-```
-
-**Session docs rule (avoid commit loops):**
-- Update `docs/SESSION_LOG.md` + `docs/planning/next-session-brief.md` in the same PR.
-- Log **PR number** (not merge hash) in SESSION_LOG.
-- Optionally run: `./scripts/finish_task_pr.sh ... --with-session-docs`
-
-### ⛔ NEVER Direct Commit To Main For:
-- Production code changes (Python/structural_lib/)
-- VBA algorithm changes
-- CI workflow modifications
-- Dependency updates
-- Substantial documentation (>150 lines or 3+ files)
-- Large test suites (>50 lines or 2+ files)
-- Major script changes (>50 lines or 2+ files)
-
-**Reason:** CI validation + audit trail required for substantial changes
-- CI workflow modifications
-- Dependency updates
-
-**Reason:** CI validation + audit trail required for all production changes
+**Session docs:** Update `SESSION_LOG.md` + `next-session-brief.md` in the same PR, log PR number (not merge hash).
 
 ---
 
-## Git workflow rules (CRITICAL)
+## 🔧 Layer Architecture (NEVER Violate)
 
-### ⛔ STOP: Read This Before Any Commit
+| Layer | Python | Rules |
+|-------|--------|-------|
+| **Core** | `Python/structural_lib/codes/is456/*.py` | Pure functions, no I/O, explicit units |
+| **Application** | `api.py`, `job_runner.py` | Orchestrates core, NO formatting |
+| **UI/I-O** | `streamlit_app/`, `excel_integration.py` | External interfaces only |
 
-**DO NOT use manual git commands!** Use the automation:
-
-```bash
-# ✅ RECOMMENDED (decides PR vs direct automatically):
-./scripts/ai_commit.sh "commit message"
-
-# ✅ ALTERNATIVE (direct commit, skips PR check):
-./scripts/safe_push.sh "commit message"
-
-# ❌ FORBIDDEN (causes conflicts and wasted time):
-git add .
-git commit -m "message"
-git pull
-git push
-```
-
-**If you try manual git operations, you WILL:**
-- Get merge conflicts from pre-commit hooks
-- Waste 10+ minutes resolving issues
-- Need to redo work multiple times
-- Create diverged history
-
-**The safe_push.sh script does ALL of this correctly:**
-- Detects and completes unfinished merges
-- **Step 2.5: Checks and fixes whitespace BEFORE commit** ← CRITICAL FIX
-- Handles pre-commit modifications automatically
-- Pulls before committing (prevents conflicts)
-- Auto-resolves conflicts safely
-- Never rewrites pushed history
-
-### ✅ VERIFICATION: Proven to Work
-
-**The fix was tested and verified:**
-```bash
-# Run anytime to verify the fix works:
-./scripts/verify_git_fix.sh
-
-# Output: 7 tests, all passing
-# - Step 2.5 exists in safe_push.sh
-# - Git detects trailing whitespace
-# - Fix applied before commit
-# - Whitespace removed
-# - No warnings after fix
-# - Step 2.5 runs before commit
-# - Hash divergence prevented
-```
-
-**CI Protection:**
-- `verify_git_fix.sh` runs in CI on every push
-- Labeled as "CRITICAL" test
-- Build fails if regression occurs
-- Added to git-workflow-tests.yml
-
-**Why This Works (Root Cause Fixed):**
-
-The REAL problem was:
-```
-1. Edit file → creates trailing whitespace
-2. git add → stages file with whitespace
-3. git commit → DURING commit, pre-commit hook runs
-4. Hook removes whitespace → modifies file AFTER staging
-5. Different content → DIFFERENT SHA-1 hash
-6. Local hash ≠ Remote hash → push rejected
-```
-
-The SOLUTION:
-```
-1. Edit file → trailing whitespace exists
-2. git add → stages file with whitespace
-3. **Step 2.5 runs** → detects whitespace BEFORE commit
-4. **Auto-fixes** → removes whitespace, re-stages
-5. git commit → pre-commit hook has nothing to fix
-6. Same content → SAME hash
-7. Push succeeds ✅
-```
-
-**Never Again:**
-- ✅ Tests simulate the exact failure scenario
-- ✅ CI runs verification on every change
-- ✅ Step 2.5 prevents the root cause
-- ✅ Zero manual intervention needed
-
-### Commit Strategy (CRITICAL - Read This):
-**Philosophy:** Maximize VALUE per request, not commit count. Batch related changes into meaningful commits.
-
-**✅ Good Commit Patterns:**
-- Feature complete with tests + docs (1 commit)
-- Multiple related file updates (1 commit)
-- Research findings + consolidation plan (1 commit)
-- Batch of related fixes (1 commit)
-
-**❌ Bad Commit Patterns (Unprofessional):**
-- Artificially splitting to inflate count
-- Committing trivial updates separately to "hit a number"
-- Session docs as separate commit (batch with final work)
-
-**Rule:** Commit when work is **logically complete**, not to hit arbitrary counts. Users pay per request - deliver maximum value, not maximum commits.
-
-### Before committing Python code:
-1. Run tests locally: `pytest tests/test_<file>.py -v`
-2. **For Streamlit code:** Run scanner: `.venv/bin/python scripts/check_streamlit_issues.py <file>`
-3. Use ai_commit.sh or safe_push.sh (pre-commit hooks run automatically including scanner)
-
-### PR and merge workflow:
-1. `./scripts/create_task_pr.sh TASK-XXX "description"`
-2. Make changes and commit: `./scripts/ai_commit.sh "feat: ..."`
-3. `./scripts/finish_task_pr.sh TASK-XXX "description"`
-4. **WAIT for CI:** `gh pr checks <num> --watch` — do NOT try to merge immediately
-5. Only after all checks pass: `gh pr merge <num> --squash --delete-branch`
-
-> **Note:** Merge authority depends on project governance. If branch protection
-> requires human review, stop at step 4 and notify the user.
-
-### PR Merge Behavior (Updated Session 15):
-- `finish_task_pr.sh` now waits for all CI checks before merging
-- Removed `--auto` flag to prevent premature auto-merge
-- Script prompts for confirmation before merging
-- If CI is slow, merge manually: `gh pr merge <num> --squash --delete-branch`
-
-### When pre-commit modifies files:
-If pre-commit hooks fix files during commit, do NOT create a second commit:
-```bash
-git add -A && git commit --amend --no-edit   # Keep it atomic
-```
-
-### After merging a PR (sync local main):
-```bash
-# PREFERRED: safe, non-destructive
-git switch main && git pull --ff-only
-
-# AVOID: git reset --hard origin/main (destructive, can wipe local work)
-# Only use reset --hard when git status is clean AND you intend to discard changes
-```
-
-### When to merge (batch small changes):
-- ✅ Merge after: completing features, meaningful test additions, doc section completions
-- ❌ Don't merge for: single-line fixes, formatting-only, every tiny change
-- Batch related small changes into one PR instead of many micro-PRs
-
-### ⚠️ CRITICAL: How the updated safe_push.sh prevents ALL merge conflicts:
-
-**The problem we had:** The old workflow was:
-```bash
-1. Commit locally
-2. Amend commit (if hooks modified files)  ← This creates NEW commit hash
-3. Pull from remote
-4. Push
-```
-If remote changed between steps 1-2, our amended commit diverged from remote → CONFLICT!
-
-**The solution:** Pull BEFORE committing:
-```bash
-1. Pull from remote FIRST  ← Start with latest state
-2. Commit locally (with our changes)
-3. Amend if needed  ← Safe, nothing pushed yet
-4. Pull again  ← Catch any changes during our commit
-5. Push
-```
-
-**Why this works:**
-- **Pull-first** ensures we start with the absolute latest remote state
-- **Amend-before-push** means we never rewrite already-pushed history
-- **Pull-again** catches any race conditions during our commit
-- **Auto-resolve with --ours** is safe because we have the latest state
-
-**Usage (ALWAYS use this for direct pushes):**
-```bash
-./scripts/safe_push.sh "commit message"
-```
-
-The script handles EVERYTHING:
-- ✅ Detects and completes unfinished merges
-- ✅ Pulls before commit (gets latest state)
-- ✅ Handles pre-commit modifications
-- ✅ Pulls again before push (catches race conditions)
-- ✅ Auto-resolves conflicts (keeps your version - you have latest)
-- ✅ Verifies push safety
-- ✅ Never rewrites pushed history
-
-**Result:** Zero merge conflicts in TASKS.md (or any file). Tested and proven!
+**Units:** mm, N/mm², kN, kN·m (explicit everywhere)
 
 ---
 
-## Layer architecture (always respect)
-
-| Layer | Python | VBA | Rules |
-|-------|--------|-----|-------|
-| **Core** | `flexure.py`, `shear.py`, `detailing.py`, `serviceability.py`, `compliance.py`, `tables.py`, `ductile.py`, `materials.py`, `constants.py`, `types.py`, `utilities.py` | `M01-M07, M15-M17` | Pure functions, no I/O, explicit units |
-| **Application** | `api.py`, `job_runner.py`, `bbs.py`, `rebar_optimizer.py` | `M08_API` | Orchestrates core, no formatting |
-| **UI/I-O** | `excel_integration.py`, `dxf_export.py`, `job_cli.py` | `M09_UDFs`, macros | Reads/writes external data |
-
-## Units convention
-- **Inputs:** mm, N/mm², kN, kN·m
-- **Internal:** mm, N, N·mm (convert at layer boundaries)
-- **Outputs:** mm, N/mm², kN, kN·m
-
-## Mac VBA safety (critical for VBA changes)
-- Wrap dimension multiplications in `CDbl()`: `CDbl(b) * CDbl(d)`
-- Never pass inline boolean expressions to `ByVal` args — use local variable first
-- No `Debug.Print` interleaved with floating-point math
-- Prefer `Long` over `Integer`
-
-## Testing requirements
-- Each calculation function needs unit tests
-- Include edge cases: min/max values, boundary conditions
-- Tolerance: ±0.1% for areas, ±1mm for dimensions
-- Document source for expected values (SP:16, textbook, hand calc)
-
-## Module Migration Rules (CRITICAL - Learned from Session 5)
-
-### Before migrating a module:
-1. Run pre-flight check: `.venv/bin/python scripts/pre_migration_check.py`
-2. Check for private function usage in tests: `grep -r "module._" Python/tests/`
-3. Check for type annotation usage: `grep -r "module.\w*Result" Python/structural_lib/`
-
-### Stub Creation (Prevents 90% of migration issues):
-```python
-# ❌ WRONG: Just star import (misses private functions)
-from structural_lib.codes.is456.tables import *  # noqa: F401, F403
-
-# ✅ CORRECT: Star import + explicit private functions
-from structural_lib.codes.is456.tables import *  # noqa: F401, F403
-from structural_lib.codes.is456.tables import (  # noqa: F401
-    _get_tc_for_grade,
-    _PT_ROWS,
-    _TC_COLUMNS,
-)
-```
-
-### Type Annotation Re-exports:
-```python
-# If api.py uses `serviceability.DeflectionResult`, add to stub:
-from structural_lib.data_types import (  # noqa: F401
-    DeflectionResult,
-    CrackWidthResult,
-)
-```
-
-### Monkeypatch in Tests:
-```python
-# ❌ WRONG: Patching stub module (patch goes to wrong location)
-monkeypatch.setattr(flexure, "calculate_mu_lim", mock_fn)
-
-# ✅ CORRECT: Patch at source location
-from structural_lib.codes.is456 import flexure as flexure_source
-monkeypatch.setattr(flexure_source, "calculate_mu_lim", mock_fn)
-```
-
-### Import Order (Prevents E402):
-```python
-# ❌ WRONG: Logger before imports
-_logger = logging.getLogger(__name__)
-from structural_lib.data_types import Result  # E402!
-
-# ✅ CORRECT: All imports at top
-from structural_lib.data_types import Result
-_logger = logging.getLogger(__name__)
-```
-
-### Validation Commands:
-```bash
-# Validate all stub exports
-.venv/bin/python scripts/validate_stub_exports.py --all
-
-# Update __init__.py exports
-.venv/bin/python scripts/update_is456_init.py --apply
-
-# Full research doc: docs/research/migration-issues-analysis.md
-```
-
-## Test Writing Rules (CRITICAL - Prevents 80% of Test Failures)
-
-### Before writing ANY test:
-1. **READ the actual function signature** - don't assume args
-   ```bash
-   grep -A20 "def function_name" streamlit_app/utils/*.py
-   ```
-2. **CHECK conftest.py** for existing mocks - don't duplicate
-   ```bash
-   grep -E "class Mock|def mock_" streamlit_app/tests/conftest.py
-   ```
-3. **VERIFY return types** - dict vs bool vs tuple matters
-
-### Streamlit Mock Assertions:
-```python
-# ❌ WRONG: Regular methods don't have .called
-assert mock_streamlit.markdown.called  # AttributeError!
-
-# ✅ CORRECT Option 1: Just verify no exception
-show_skeleton_loader(rows=3)
-assert True  # Function ran without error
-
-# ✅ CORRECT Option 2: Set up MagicMock first
-from unittest.mock import MagicMock
-mock_streamlit.info = MagicMock()
-show_performance_stats()
-assert mock_streamlit.info.called  # Works because we used MagicMock
-```
-
-### Session State Patterns:
-```python
-# ❌ WRONG: Replaces MockSessionState with dict
-mock_streamlit.session_state = {"key": "value"}
-
-# ✅ CORRECT: Updates existing MockSessionState
-mock_streamlit.session_state["key"] = "value"
-```
-
-### Never Duplicate Mocks:
-- MockStreamlit lives in `streamlit_app/tests/conftest.py`
-- Never define your own MockStreamlit class in test files
-- If conftest mock is missing features, ADD to conftest, don't create local
-
-### API Signature Verification Checklist:
-Before testing a function, verify:
-- [ ] Number of required positional args
-- [ ] Keyword argument names (min_value vs min_val)
-- [ ] Return type (dict vs bool vs tuple)
-- [ ] Whether it's a context manager (use `with`)
-
-## Role context (see agents/*.md for full details)
-When working on specific task types, apply these focuses:
-- **Implementation:** Layer-aware, clause refs in comments, Mac-safe
-- **Testing:** Benchmark sources, edge cases, tolerance specs
-- **Integration:** Schema validation, unit mapping, error surfacing
-- **Docs:** API examples, units documented, changelog entries
----
-
-## Terminal and command rules (CRITICAL)
-
-### Python environment:
-- **Always use full venv path:** `"/path/to/.venv/bin/python"` not just `python`
-- Run `configure_python_environment` first if `python` command fails
-- The venv is at: `.venv/bin/python` relative to project root
-
-### Running tests locally:
-```bash
-# ALWAYS run tests locally before pushing new test files
-.venv/bin/python -m pytest tests/test_<file>.py -v
-
-# Check formatting/linting locally before commit
-.venv/bin/python -m black <file>
-.venv/bin/python -m ruff check <file>
-```
-
-### Streamlit validation (CRITICAL - read this!):
-```bash
-# Run AST scanner to check for NameError, ZeroDivisionError, etc.
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
-
-# Run pylint on Streamlit code
-.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
-
-# Both run automatically in CI and pre-commit hooks
-```
-
-**Scanner capabilities:**
-- ✅ Detects NameError (undefined variables)
-- ✅ Detects ZeroDivisionError (unprotected division)
-- ✅ Detects AttributeError (missing session state keys)
-- ✅ Detects KeyError (dict access without checks)
-- ✅ Detects ImportError (missing imports)
-- ✅ Intelligent: recognizes zero-validation patterns (ternary, if-blocks, compound conditions)
-- ✅ Zero false positives for division operations (as of 2026-01-09)
-
-**When editing Streamlit code:**
-1. Run scanner before committing: `.venv/bin/python scripts/check_streamlit_issues.py <file>`
-2. Fix any CRITICAL issues (scanner blocks on critical)
-3. HIGH issues are warnings (session state patterns - not blocking)
-4. Scanner runs automatically in pre-commit and CI
-
-### gh CLI commands:
-- `gh pr checks <num>` may show "no checks" if CI hasn't started — wait 5-10 seconds
-- If `gh pr merge` fails with "not mergeable", CI is still running — use `gh pr checks <num> --watch`
-- If `gh pr checks --watch` times out, rerun (or increase timeout) — checks are often still running
-- Network timeouts happen — retry the command once before investigating
-- If PR is **behind** base branch, update it: `gh pr update-branch <num>` then re-check CI
-
-### Git sync issues (CRITICAL - read this to avoid conflicts):
-
-**⚠️ RECOMMENDED: Use the automated script to prevent all issues:**
-```bash
-# This script handles everything automatically (pre-commit, pull, merge, push)
-./scripts/safe_push.sh "your commit message"
-
-# The script:
-# 1. Detects unfinished merges and completes them
-# 2. Handles pre-commit hook modifications
-# 3. Pulls before pushing (prevents conflicts)
-# 4. Auto-resolves conflicts (keeps your version)
-# 5. Pushes safely
-```
-
-**If you MUST do manual workflow:**
-
-```bash
-# ALWAYS check for unfinished merges FIRST!
-if [ -f .git/MERGE_HEAD ]; then
-  echo "Unfinished merge detected!"
-  git commit --no-edit  # Complete the merge
-  git push              # Push merged changes
-  exit 0               # Stop here, don't create new commit
-fi
-
-# Step 1: Stage files
-git add <files>
-
-# Step 2: Commit (pre-commit hooks will modify files)
-git commit -m "message"
-
-# Step 3: If pre-commit modified files, they're now unstaged
-# Re-stage them and amend the commit:
-if git status --porcelain | grep -q '^[MARC]'; then
-  git add -A
-  git commit --amend --no-edit
-fi
-
-# Step 4: ALWAYS pull before push (use merge, not rebase)
-git pull --no-rebase origin main
-
-# Step 5: If merge conflict, keep your version (you have latest changes)
-if [ -f .git/MERGE_HEAD ]; then
-  # There are conflicts
-  git checkout --ours docs/TASKS.md  # Or other conflicted files
-  git add docs/TASKS.md
-  git commit --no-edit
-fi
-
-# Step 6: Now safe to push
-git push
-```
-
-**Common issues:**
-- **Unfinished merge (MERGE_HEAD exists)** → Run `git commit --no-edit` then `git push` (DON'T create new commit!)
-- Push rejected (non-fast-forward) → Run `git pull --no-rebase` then push
-- Merge conflict in TASKS.md → Run `git checkout --ours docs/TASKS.md && git add docs/TASKS.md && git commit --no-edit`
-- Pre-commit modified files (NOT YET PUSHED) → Run `git add -A && git commit --amend --no-edit`
-- Pre-commit modified files (ALREADY PUSHED) → **NEVER AMEND!** Create new commit instead: `git add -A && git commit -m "chore: apply pre-commit fixes"`
-
-**⚠️ CRITICAL: Never use `git commit --amend` after already pushing to remote!**
-- Amending rewrites history and causes divergence
-- If you already pushed, make a new commit instead
-- If you accidentally amended after push: `git pull --no-rebase` then resolve merge
-
-**Why TASKS.md conflicts happen:**
-- Multiple terminals/sessions editing TASKS.md simultaneously
-- Solution: The safe_push.sh script handles this automatically
-- Manual solution: Always pull BEFORE committing
-
----
-
-## Common coding pitfalls (avoid these)
-
-### Import hygiene
-- ❌ **Don't** import classes inside functions if already imported at module level
-- ✅ **Do** import `DesignError`, `Severity` at top of module
-- 🔍 **Check** existing imports before adding new ones (ruff catches duplicates as F823)
-
-### Version drift check awareness
-- ✅ Research docs (`docs/research/`) are excluded from version checks
-- ✅ Archive docs (`docs/_archive/`) are excluded from version checks
-- 📝 These can reference external tool versions without triggering CI failure
-- 🔍 If adding new doc directories, check if they need exclusion in `scripts/check_doc_versions.py`
-
----
-
-## ⚠️ File Operations (Move, Delete, Rename) — CRITICAL
-
-**NEVER manually delete, move, or rename files!** Use the safe automation scripts:
-
-```bash
-# ✅ CORRECT: Use safe scripts
-.venv/bin/python scripts/safe_file_move.py old.md new.md
-.venv/bin/python scripts/safe_file_delete.py obsolete.md
-
-# ❌ WRONG: Manual operations (breaks links!)
-rm docs/old.md
-mv docs/a.md docs/b.md
-git rm docs/file.md
-```
-
-### Why?
-- Manual operations break internal markdown links (we have 719+ links!)
-- Safe scripts automatically check references and update links
-- Safe scripts create backups and run validation
-
-### Workflow
-
-```bash
-# Step 1: ALWAYS dry-run first
-.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
-
-# Step 2: Execute if safe
-.venv/bin/python scripts/safe_file_move.py old.md new.md
-
-# Step 3: Verify links
-.venv/bin/python scripts/check_links.py
-
-# Step 4: Commit
-./scripts/ai_commit.sh "refactor: move old.md to new location"
-```
-
-### Available Scripts
-| Script | Purpose |
-|--------|---------|
-| `safe_file_move.py` | Move/rename with link updates |
-| `safe_file_delete.py` | Delete with reference check + backup |
-| `find_orphan_files.py` | Find unreferenced docs |
-| `check_folder_readmes.py` | Verify folder documentation |
-
-**Full guide:** `docs/guidelines/file-operations-safety-guide.md`
-
----
-
-## 📄 Document Metadata Standard (NEW - Session 12)
-
-**All NEW documents MUST include this metadata block at the top:**
-
-```markdown
-# Document Title
-
-**Type:** [Guide|Research|Reference|Architecture|Decision|Implementation]
-**Audience:** [All Agents|Developers|Users|Maintainers]
-**Status:** [Draft|Review|Approved|Deprecated|Production Ready]
-**Importance:** [Critical|High|Medium|Low]
-**Version:** 1.0.0
-**Created:** YYYY-MM-DD
-**Last Updated:** YYYY-MM-DD
-**Related Tasks:** Task identifiers (see docs/planning/TASKS.md)
-**Location Rationale:** Why this folder? (Reference folder-structure-governance.md)
-**Archive/Supersede:** [If replacing old doc: "Supersedes: old-doc.md" or "Archive after: date"]
-
----
-```
-
-### Field Descriptions
-
-| Field | Purpose | Examples |
-|-------|---------|----------|
-| **Type** | Classifies document purpose | Guide, Research, Reference, Architecture, Decision |
-| **Audience** | Who should read this? | All Agents, Developers, Users |
-| **Status** | Development stage | Draft, Review, Approved, Deprecated |
-| **Importance** | Priority level | Critical (blocks work), High, Medium, Low |
-| **Version** | Semantic versioning | 1.0.0 (increment on breaking changes) |
-| **Created** | When written | YYYY-MM-DD format |
-| **Last Updated** | When last edited | YYYY-MM-DD format |
-| **Related Tasks** | Links to tracker | TASK-123, IMPL-456 |
-| **Location Rationale** | Why this folder? | "Research findings go in docs/research/" |
-| **Archive/Supersede** | Lifecycle management | "Supersedes: old-guide.md" or "Archive after: 2026-06-01" |
-
-### When to Update Metadata
-- ✅ **Last Updated:** Every time document changes
-- ✅ **Version:** When breaking changes made (major) or new sections added (minor)
-- ✅ **Status:** When development stage changes
-
-### Archival Guidelines
-- Mark as **Deprecated** when superseded by new doc
-- Add **Archive after:** date for time-limited docs (e.g., session research)
-- Move to `docs/_archive/` after archival date
-- Always link to replacement doc if deprecated
-
-**Full spec:** `docs/guidelines/folder-structure-governance.md` Section V
-
----
-
-## Common mistakes to AVOID
+## ⚠️ Common Mistakes (AVOID)
 
 | Mistake | Correct Approach |
 |---------|------------------|
-| **Using manual git commands (git add, commit, push)** | **ALWAYS use ./scripts/ai_commit.sh "message"** |
-| **Doing `git commit` then trying to fix pre-commit issues** | **Use ai_commit.sh or safe_push.sh - it handles pre-commit automatically** |
-| **Manual merge conflict resolution** | **Use safe_push.sh - it auto-resolves safely** |
-| **Unfinished merge (MERGE_HEAD exists)** | **Run:** `./scripts/recover_git_state.sh` (or `git commit --no-edit` then `git push`) |
-| **Using `git commit --amend` AFTER pushing** | **NEVER DO THIS!** Create new commit instead: `git add -A && git commit -m "fix: ..."` |
-| **Running checks on subdirectory when CI checks everything** | **CRITICAL: Run `cd Python && python -m black --check .` (not `black --check structural_lib/`) - CI checks ALL of Python/ including examples/** |
-| Creating Python file → commit → CI fails on black | Create → run black locally → commit (or rely on pre-commit hooks) |
-| `gh pr create` → immediately `gh pr merge` | Create → `gh pr checks --watch` → wait → merge |
-| Running `python` directly | Use full venv path or configure environment first |
-| Multiple micro-PRs for tiny changes | Batch related changes into one PR |
-| Reading a file already shown in context | Use the context provided, don't re-read |
-| Running dependent commands in parallel | Run sequentially, check output between |
-| Editing file without reading current content | Always read file first if there may be changes |
-| Unused variables in test code | Check with `ruff check` before commit |
-| Creating duplicate documentation | Check if doc exists first |
-| Committing unrelated staged files | Run `git status` before commit; stage only intended files |
-| Resolving merge conflicts + feature in one commit | Resolve conflicts in separate commit first, then add feature |
-| PR title/description doesn't match actual changes | List ALL changed files in PR body; update title if scope changes |
-| Pre-commit modifies files → new commit | Use `git add -A && git commit --amend --no-edit` **ONLY IF NOT YET PUSHED** |
-| Using `git reset --hard` without checking status | Use `git switch main && git pull --ff-only` after merge |
-| Claiming "focused commit" but batching unrelated changes | Either truly separate, or be honest about batching scope |
-| Tagging a release with a dirty working tree | Run `git status -sb` after `scripts/release.py`; tag only when clean |
-| Verifying PyPI in an existing venv | Use a fresh venv for `pip install structural-lib-is456==X.Y.Z` |
-| CI fails on formatting | Run `black`/`ruff` locally, commit, push |
-| Accessing Optional[T] attributes without None check | Always check: `obj.attr if obj else default` - run mypy locally first |
-| CI shows old formatting failure | Re-run checks after pushing formatting fix |
-| Importing classes both at module level AND in functions | Import at module level only (ruff F823); only use function-level for circular imports |
-| Adding docs with version numbers triggering drift check | Check if directory needs exclusion in `scripts/check_doc_versions.py` SKIP_FILES |
+| Using manual git commands | **ALWAYS** `./scripts/ai_commit.sh "message"` |
+| Mixing layers (Core imports UI) | Keep strict layer separation |
+| Manual file operations (`rm`, `mv`) | Use `scripts/safe_file_move.py` |
+| Using `git commit --amend` after push | **NEVER!** Create new commit instead |
+| Not running tests before commit | Run tests + scanner locally first |
 
 ---
 
-## Session workflow (CRITICAL)
+## 📚 Quick Resources
 
-### Starting a session:
+**Essential Commands:**
 ```bash
-# Run at the beginning of each session:
-.venv/bin/python scripts/start_session.py
-
-# Quick mode (skip test count check):
-.venv/bin/python scripts/start_session.py --quick
+./scripts/agent_start.sh --quick     # Start session
+./scripts/ai_commit.sh "message"     # Commit
+./scripts/should_use_pr.sh --explain # Check if PR needed
+.venv/bin/python scripts/end_session.py  # End session
 ```
 
-**What it does:**
-- Shows version, branch, uncommitted changes
-- Adds SESSION_LOG entry for today if missing
-- Shows Active tasks from TASKS.md
-- Runs doc freshness checks
-
-### Ending a session:
-```bash
-# Run before ending any session:
-.venv/bin/python scripts/end_session.py
-
-# Auto-fix issues:
-.venv/bin/python scripts/end_session.py --fix
-
-# Quick mode:
-.venv/bin/python scripts/end_session.py --quick
-```
-
-**What it checks:**
-- 📁 Uncommitted changes
-- 🔍 Handoff checks (date freshness, test counts, versions)
-- 📝 SESSION_LOG entry completeness
-- 🔗 Doc link validity
-- 📊 Today's activity summary
-
-### Manual handoff steps (if needed):
-1. Update `docs/planning/next-session-brief.md` with session summary
-2. Ensure TASKS.md reflects current state
-3. Commit any uncommitted doc changes
-4. Use `docs/handoff.md` as the short resume template
+**Key Docs:**
+- [TASKS.md](docs/TASKS.md) - Current work
+- [agent-workflow-master-guide.md](docs/agents/guides/agent-workflow-master-guide.md) - Complete guide
+- [git-automation/README.md](docs/git-automation/README.md) - Git automation
 
 ---
 
-## Efficiency rules
-
-1. **Don't re-read files in context** — If file content is shown, use it
-2. **Batch file edits** — Use multi_replace for multiple edits in same/different files
-3. **Check command exit codes** — Before proceeding, verify command succeeded
-4. **One terminal command at a time** — Don't run parallel terminal commands
-5. **Verify before declaring success** — Run tests, check output, confirm behavior
-6. **Read this file first** — Before starting any session, review these rules completely
----
-
-## 🧠 Automation-First Mentality (CRITICAL)
-
-**Core Principles for Every Session:**
-
-### 1. Pattern Recognition → Automation
-- If you see **10+ similar issues** → build automation script FIRST
-- Never manually fix repetitive issues one-by-one
-- Example: 396 broken links? Create `fix_broken_links.py`, not manual edits
-
-### 2. Research Before Action
-- Check existing scripts in `scripts/` before writing new ones
-- Understand the problem scope before starting work
-- Plan the approach, estimate effort, then execute
-
-### 3. Build Once, Use Many
-- Automation scripts save hours of future work
-- Document scripts in their docstrings and README
-- Example: `fix_broken_links.py` fixed 213 links in 5 seconds vs hours manually
-
-### 4. Commit Incrementally
-- Use Agent 8 workflow (`ai_commit.sh`) for EVERY git action
-- Commit working states frequently
-- Never accumulate too many changes before committing
-
-### 5. Full Sessions, More Work
-- **DO NOT stop a session early** — complete significant work chunks
-- Aim for **5-10+ commits per session** for substantial progress
-- If blocked on one task, move to the next rather than stopping
-- End sessions only after documenting progress and updating TASKS.md
-
-### 6. Document Everything
-- Update TASKS.md, SESSION_LOG.md, and relevant docs
-- Future agents (including yourself) will thank you
-- If you create automation, document it in the script and reference docs
-
-**Automation Script Examples:**
-```bash
-# Link fixing automation
-python scripts/fix_broken_links.py --fix
-
-# Folder structure validation
-python scripts/validate_folder_structure.py
-
-# Session management
-python scripts/start_session.py
-python scripts/end_session.py
-```
+**Remember:** When in doubt:
+1. `./scripts/git_ops.sh --status` for state analysis
+2. `./scripts/should_use_pr.sh --explain` for decisions
+3. Read the workflow guides for details
