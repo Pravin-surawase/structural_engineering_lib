@@ -20,6 +20,7 @@ Example:
 import json
 import os
 import sys
+import re
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
@@ -62,7 +63,16 @@ def extract_description(content: str) -> str:
             if len(description_lines) >= 2:  # Get up to 2 lines
                 break
 
-    return " ".join(description_lines[:2]).strip()[:200]  # Max 200 chars
+    description = " ".join(description_lines[:2]).strip()
+    description = _strip_markdown(description)
+    return description[:200]  # Max 200 chars
+
+
+def _strip_markdown(text: str) -> str:
+    """Strip links/code from descriptions to keep index entries safe."""
+    text = re.sub(r"\[([^\]]+)\]\([^\)]+\)", r"\1", text)
+    text = text.replace("`", "")
+    return text
 
 
 def extract_metadata(content: str) -> Dict[str, any]:

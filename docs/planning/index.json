@@ -7,7 +7,7 @@
     {
       "name": "agent-1-tasks.md",
       "title": "Background Agent 1 Tasks (RESEARCHER)",
-      "description": "<!-- lint-ignore-git --> 1. **Research Document:** `docs/research/blogging-strategy-research.md` (1000+ lines)",
+      "description": "<!-- lint-ignore-git --> 1. **Research Document:** docs/research/blogging-strategy-research.md (1000+ lines)",
       "last_updated": "2026-01-13",
       "size_lines": 373,
       "audience": "All Agents",
@@ -34,7 +34,7 @@
     {
       "name": "agent8-docs-consolidation-plan.md",
       "title": "Agent 8 Documentation Consolidation Plan",
-      "description": "Based on comprehensive research (see [agent-8-git-automation-comprehensive-research.md](../research/agent-8-git-automation-comprehensive-research.md)), this plan outlines consolidation actions to: - *",
+      "description": "Based on comprehensive research (see agent-8-git-automation-comprehensive-research.md), this plan outlines consolidation actions to: - **Archive 4 historical research documents** (no longer actively r",
       "last_updated": "2026-01-13",
       "size_lines": 552,
       "audience": "All Agents",
@@ -52,7 +52,7 @@
     {
       "name": "agent8-week1-handoff.md",
       "title": "Agent 8 Week 1 Implementation - Session Handoff",
-      "description": "1. **45-page optimization analysis** - [agent-8-optimization-research.md](../_archive/research-completed/agent-8-optimization-research.md) - Identified 13 optimization opportunities",
+      "description": "1. **45-page optimization analysis** - agent-8-optimization-research.md - Identified 13 optimization opportunities",
       "last_updated": "2026-01-13",
       "size_lines": 413,
       "audience": "All Agents",
@@ -79,7 +79,7 @@
     {
       "name": "data-model-compatibility-checklist.md",
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
-      "description": "- [ ] `span_mm` aligns with `design_beam_is456(span_mm=...)` semantics. - [ ] `b_mm`, `D_mm`, `d_mm` match `BeamDesignOutput.geometry` fields (if present).",
+      "description": "- [ ] span_mm aligns with design_beam_is456(span_mm=...) semantics. - [ ] b_mm, D_mm, d_mm match BeamDesignOutput.geometry fields (if present).",
       "last_updated": "2026-01-13",
       "size_lines": 56,
       "audience": "Developers",
@@ -126,7 +126,7 @@
       "title": "Next Session Briefing",
       "description": "| Release | Version | Status | |---------|---------|--------|",
       "last_updated": "2026-01-15",
-      "size_lines": 269,
+      "size_lines": 426,
       "audience": "All Agents",
       "status": "Active"
     },
@@ -151,7 +151,7 @@
     {
       "name": "project-status-deep-dive.md",
       "title": "IS 456 RC Beam Design Library — Deep Dive",
-      "description": "*Detailed architecture, module maps, and research directions* 1. [Audience](#1-audience)",
+      "description": "*Detailed architecture, module maps, and research directions* 1. Audience",
       "last_updated": "2026-01-13",
       "size_lines": 260,
       "audience": "Developers",
@@ -214,7 +214,7 @@
     {
       "name": "session-2026-01-10-session4-issues.md",
       "title": "Session 2026-01-10 Session 4 Issues & Resolutions",
-      "description": "- Step 2.5 in `safe_push.sh` auto-fixes whitespace before commit - No manual intervention needed",
+      "description": "- Step 2.5 in safe_push.sh auto-fixes whitespace before commit - No manual intervention needed",
       "last_updated": "2026-01-13",
       "size_lines": 152,
       "audience": "All Agents",
@@ -250,7 +250,7 @@
     {
       "name": "v020-stabilization-checklist.md",
       "title": "v0.20.0 Stabilization Checklist",
-      "description": "> **Version info:** See [TASKS.md](../TASKS.md) for current/next release status. - Tests: Run `python scripts/update_test_stats.py` for current count",
+      "description": "> **Version info:** See TASKS.md for current/next release status. - Tests: Run python scripts/update_test_stats.py for current count",
       "last_updated": "2026-01-13",
       "size_lines": 157,
       "audience": "Maintainers",

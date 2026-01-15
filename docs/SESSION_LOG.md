@@ -4,6 +4,48 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-15 — Session 31: VBA Smoke Validation + Governance Session
+
+**Focus:** Validate TASK-502 automation, complete TASK-284 governance checks, fix any detected issues.
+
+### Summary
+
+**TASK-502 Validation (VBA Smoke Tests)**
+- Initial run failed due to AppleScript `open workbook`/`wb` handling.
+- Updated automation to use `open (POSIX file ...)` + `active workbook`.
+- **Result:** VBA smoke tests run successfully on macOS.
+
+**TASK-284 Governance Session**
+- Ran folder structure + root file checks (all required pass).
+- README check: no required folders missing; optional folders flagged only.
+- **Issue found:** `scripts/index.json` missing entries; fixed and revalidated.
+- **Issue found:** `docs/planning/index.md` broken link due to truncated description.
+   - Updated generator to strip markdown links from descriptions.
+   - Regenerated planning index + verified links.
+
+### Validation Proof
+
+```bash
+✅ VBA smoke tests: scripts/run_vba_smoke_tests.py (success)
+✅ check_folder_structure.py: 11/11 passed
+✅ check_root_file_count.sh: 10/10 files
+✅ check_folder_readmes.py: required missing = 0
+✅ check_scripts_index.py: pass after fix
+✅ check_links.py: 0 broken links
+```
+
+### Deliverables
+
+- Fixed VBA smoke automation AppleScript robustness.
+- Added missing scripts to scripts index + updated totals.
+- Sanitized folder index generator to avoid broken links.
+- Regenerated planning index (index.json + index.md).
+
+### Notes
+
+- Optional README warnings are expected for hidden/ephemeral folders.
+- Follow-up: consider Windows/CI VBA automation path if required.
+
 ## 2026-01-15 — Session 30 (Cont.): Fragment API Crisis Resolution & Automation
 
 **Focus:** Fix critical fragment API violations from Session 30, build comprehensive prevention automation.

@@ -183,6 +183,9 @@ CI (remote, comprehensive):
 3. Verify docs indexes/readmes are current after changes.
 4. Summarize actions in SESSION_LOG and next-session brief.
 
+**Status:** ✅ Completed (2026-01-15)
+**Delivered:** All governance checks run; scripts index fixed; planning index regenerated; links validated.
+
 ### TASK-305: Re-run Navigation Study (MEDIUM)
 
 **Research:** Navigation changes accumulate; a quick pass helps reduce UX friction.

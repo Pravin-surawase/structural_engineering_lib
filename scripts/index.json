@@ -1,9 +1,9 @@
 {
   "$schema": "scripts-index-schema",
   "version": "1.0.0",
-  "updated": "2026-01-13",
+  "updated": "2026-01-15",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 128,
+  "total_scripts": 139,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -81,6 +81,7 @@
       "description": "Code quality, linting, and validation",
       "scripts": {
         "check_streamlit_issues.py": "AST scanner for Streamlit runtime errors",
+        "check_fragment_violations.py": "Detect Streamlit fragment API violations",
         "check_streamlit_imports.py": "Validate Streamlit page imports",
         "check_circular_imports.py": "Detect circular import issues",
         "check_type_annotations.py": "Validate type annotations",
@@ -154,6 +155,7 @@
     "api_validation": {
       "description": "API documentation and validation",
       "scripts": {
+        "check_api_signatures.py": "Check API function signatures",
         "check_api_doc_signatures.py": "Check API function signatures",
         "check_api_docs_sync.py": "Sync API docs with code",
         "validate_stub_exports.py": "Validate stub module exports",

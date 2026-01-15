@@ -49,10 +49,12 @@ def _run_osascript(script: str, timeout: int) -> subprocess.CompletedProcess[str
 
 def _build_applescript(workbook_path: Path, macros: List[str], excel_app: str) -> str:
     macro_list = ", ".join([f"\"{macro}\"" for macro in macros])
+    workbook_posix = workbook_path.resolve().as_posix()
     return f'''
     tell application "{excel_app}"
         set display alerts to false
-        set wb to open workbook (POSIX file "{workbook_path.as_posix()}")
+        open (POSIX file "{workbook_posix}")
+        set wb to active workbook
         repeat with macroName in {{{macro_list}}}
             run VB macro (contents of macroName)
         end repeat
