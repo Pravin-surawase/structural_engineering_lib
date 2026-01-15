@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-15 (Session 33 - Torsion + VBA Parity)
+**Updated:** 2026-01-15 (Session 34 - Level C + ETABS Import)
 
-> **Session 33 Progress:** TASK-085 (Torsion module) and TASK-082 (VBA Parity) completed. PR #366 and #367 awaiting CI merge.
+> **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. PR #368, #369 (MERGED). PR #370 (API exports + docs) in CI.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -162,9 +162,9 @@
 
 ---
 
-## Up Next (Session 33+)
+## Up Next (Session 34+)
 
-> **Session 33 Progress:** TASK-085 (Torsion) and TASK-082 (VBA Parity) completed. Both in PRs awaiting CI merge.
+> **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. All PRs merged.
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
@@ -172,6 +172,9 @@
 | **TASK-087** | Complete anchorage details (hooks, bends, bundled bars) | DEV | 4h | 🟠 MEDIUM | ✅ Done (fed2740) |
 | **TASK-085** | Torsion design module (IS 456 Cl 41) | DEV | 2-3d | 🟡 MEDIUM | ✅ Done (PR #366) |
 | **TASK-082** | VBA parity - slenderness + anchorage | DEV | 1-2d | 🟡 MEDIUM | ✅ Done (PR #367) |
+| **TASK-081** | Level C Serviceability (separate creep/shrinkage) | DEV | 1-2d | 🟡 MEDIUM | ✅ Done (PR #368, Session 34) |
+| **TASK-138** | ETABS CSV Import mapping | DEV | 1-2d | 🟡 MEDIUM | ✅ Done (PR #369, Session 34) |
+| **TASK-139** | ETABS API exports + documentation | DEV | 2h | 🟠 MEDIUM | ✅ Done (PR #370, Session 34) |
 
 ---
 
@@ -199,8 +202,8 @@
 **Beam Scope Extensions:**
 | ID | Task | Est | Priority | Status |
 |----|------|-----|----------|--------|
-| **TASK-081** | Level C Serviceability | 1-2 days | 🟡 MEDIUM | Not Started |
-| **TASK-138** | ETABS mapping | 1-2 days | 🟡 MEDIUM | Not Started |
+| ~~**TASK-081**~~ | ~~Level C Serviceability~~ | - | - | ✅ **DONE** (PR #368, Session 34) |
+| ~~**TASK-138**~~ | ~~ETABS mapping~~ | - | - | ✅ **DONE** (PR #369, Session 34) |
 | ~~**TASK-082**~~ | ~~VBA parity harness~~ | - | - | ✅ **DONE** (PR #367, Session 33) |
 | ~~**TASK-085**~~ | ~~Torsion design~~ | - | - | ✅ **DONE** (PR #366, Session 33) |
 | ~~**TASK-087**~~ | ~~Anchorage check~~ | - | - | Moved to Up Next |
@@ -219,6 +222,9 @@
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| **TASK-139** | API exports for ETABS + Level C/ETABS docs (339 LOC) | DEV | ✅ PR #370 2026-01-15 |
+| **TASK-081** | Level C Serviceability: 5 functions, 18 tests, separate creep/shrinkage per Annex C | DEV | ✅ PR #368 2026-01-15 |
+| **TASK-138** | ETABS Import: 6 functions, 23 tests, CSV-first workflow | DEV | ✅ PR #369 2026-01-15 |
 | **TASK-085** | Torsion module: IS 456 Cl 41 - 6 functions, 30 tests, API docs | DEV | ✅ PR #366 2026-01-15 |
 | **TASK-082** | VBA parity: slenderness + anchorage functions (7 functions) | DEV | ✅ PR #367 2026-01-15 |
 | **TASK-087** | Anchorage functions: hooks (90°/135°/180°), bends, stirrup anchorage | DEV | ✅ 2026-01-15 (fed2740) |

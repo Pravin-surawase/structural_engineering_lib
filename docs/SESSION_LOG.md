@@ -4,6 +4,95 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-15 — Session 34: Level C Serviceability + ETABS Import
+
+**Focus:** Implement Level C deflection with separate creep/shrinkage (TASK-081), add ETABS CSV import module (TASK-138).
+
+### TASK-081: Level C Serviceability ✅
+
+**Implementation:**
+- Added `DeflectionLevelCResult` dataclass to `data_types.py` (14 fields)
+- Implemented 5 Level C functions in `serviceability.py` (~400 lines):
+  - `get_creep_coefficient()` - Age/humidity-based θ per IS 456 Annex C
+  - `calculate_shrinkage_curvature()` - Steel ratio-based φsh
+  - `calculate_creep_deflection()` - Sustained load creep component
+  - `calculate_shrinkage_deflection()` - Curvature × K × L² formula
+  - `check_deflection_level_c()` - Full orchestrator with separate components
+- Added 18 unit tests across 5 test classes
+
+**Level C vs Level B:**
+| Aspect | Level B | Level C |
+|--------|---------|---------|
+| Long-term handling | Combined factor (1.5-2.0) | Separate θ (creep) + φsh (shrinkage) |
+| Inputs needed | Ast, moment, duration | + age, humidity, εcs |
+| Accuracy | Good | Best (per IS 456 Annex C) |
+| Use case | Normal design | Critical structures |
+
+**Fix during session:** Mypy errors on lines 956, 1020 (`max()`/`abs()` returning `Any`)
+- Solution: Explicit type annotations `result: float = max(...)`
+
+### TASK-138: ETABS Import Module ✅
+
+**Implementation:**
+- Created `etabs_import.py` module (~560 lines):
+  - `ETABSForceRow` dataclass - Parsed CSV row (story, beam_id, case_id, m3, v2)
+  - `ETABSEnvelopeResult` dataclass - Envelope per beam/case (mu_knm, vu_kn)
+  - `validate_etabs_csv()` - Flexible column detection for ETABS versions
+  - `load_etabs_csv()` - Parse with station_multiplier support
+  - `normalize_etabs_forces()` - Max absolute per beam/case
+  - `create_job_from_etabs()` - Single beam to JobSpec
+  - `create_jobs_from_etabs_csv()` - Batch process with properties dict
+- Added 23 tests in `test_etabs_import.py`
+- Updated `__init__.py` to export module
+
+**Design Decisions:**
+- CSV-first workflow (no COM/API dependencies) for cross-platform portability
+- Flexible column name detection handles ETABS version variations
+- Station multiplier for unit conversion (m → mm)
+
+### TASK-139: API Exports + Documentation ✅
+
+**Implementation:**
+- Added 7 ETABS items to `api.py` exports
+- Updated `api.md`:
+  - Version bump to 0.17.6
+  - Added scope: "torsion, serviceability Level A/B/C, ETABS import"
+  - Added Section 5.5: Level C Serviceability (~130 lines)
+  - Added Section 5.6: Level C Helper Functions
+  - Added Section 14: ETABS Integration Module (~170 lines)
+
+### Pull Requests
+
+| PR | Description | Status |
+|----|-------------|--------|
+| #368 | TASK-081 Level C Serviceability | ✅ MERGED |
+| #369 | TASK-138 ETABS Import Module | ✅ MERGED |
+| #370 | TASK-139 API Exports + Docs | Async merge pending |
+
+### Commits This Session
+
+| Commit | Description |
+|--------|-------------|
+| `(PR #368)` | feat(serviceability): add Level C with separate creep/shrinkage |
+| `(PR #369)` | feat(etabs): add ETABS CSV import module |
+| `7eb4f24` | feat(api): add ETABS import exports and update docs |
+
+### Metrics
+
+- **Tests:** 47 serviceability + 23 ETABS = 70 new tests
+- **New Python code:** ~960 lines (serviceability + etabs_import)
+- **Documentation:** ~300 lines added to api.md
+- **PRs created:** 3 (#368, #369, #370)
+- **PRs merged:** 2 (#368, #369)
+
+### Next Steps
+
+1. Monitor PR #370 for CI completion
+2. Explore additional backlog items (TASK-145 Visualization, TASK-147 Dev Docs)
+3. Consider v0.18.0 release scope
+
+---
+
 ## 2026-01-15 — Session 33: Torsion Module + VBA Parity
 
 **Focus:** Implement IS 456 Clause 41 torsion design module (TASK-085), add VBA parity for slenderness + anchorage (TASK-082).
