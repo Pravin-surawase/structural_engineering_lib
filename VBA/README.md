@@ -2,7 +2,7 @@
 
 > **Purpose:** VBA implementation of IS 456:2000 beam design calculations for Excel
 > **Owner:** Maintainers
-> **Last Updated:** 2026-01-10
+> **Last Updated:** 2026-01-15
 > **Parity With:** Python implementation in `Python/structural_lib/`
 
 ## Directory Structure
@@ -20,15 +20,36 @@ VBA/
 | Module | Purpose |
 |--------|---------|
 | `M01_Constants.bas` | Material and code constants |
-| `M02_Materials.bas` | Concrete and steel properties |
-| `M03_Flexure.bas` | Flexural design calculations |
-| `M04_Shear.bas` | Shear design calculations |
-| `M05_Detailing.bas` | Reinforcement detailing rules |
-| `M06_Tables.bas` | IS 456 table lookups |
-| `M07_Serviceability.bas` | Deflection and cracking |
+| `M02_Types.bas` | User-defined types (UDTs) |
+| `M03_Tables.bas` | IS 456 table lookups |
+| `M04_Utilities.bas` | Helper functions |
+| `M05_Materials.bas` | Concrete and steel properties |
+| `M06_Flexure.bas` | Flexural design calculations |
+| `M07_Shear.bas` | Shear design calculations |
 | `M08_API.bas` | Public API functions |
 | `M09_UDFs.bas` | Excel User Defined Functions |
-| `M15-M17` | Additional utilities |
+| `M10_Ductile.bas` | IS 13920 ductile detailing |
+| `M15_Detailing.bas` | Reinforcement detailing + anchorage |
+| `M17_Serviceability.bas` | Deflection, cracking, slenderness |
+
+## New Functions (v0.18+)
+
+### Slenderness Check (M17_Serviceability.bas)
+
+| Function | Description | Reference |
+|----------|-------------|-----------|
+| `Get_Slenderness_Limit` | Returns l_eff/b limit for beam type | IS 456 Cl 23.3 |
+| `Calculate_Slenderness_Ratio` | Calculates l_eff/b | IS 456 Cl 23.3 |
+| `Check_Beam_Slenderness` | Comprehensive slenderness check | IS 456 Cl 23.3 |
+
+### Anchorage (M15_Detailing.bas)
+
+| Function | Description | Reference |
+|----------|-------------|-----------|
+| `Get_Min_Bend_Radius` | Min internal bend radius | IS 456 Cl 26.2.2.1 |
+| `Calculate_Standard_Hook` | 90°/135°/180° hook geometry | IS 456 Cl 26.2.2 |
+| `Get_Stirrup_Hook_Angle` | Required stirrup hook angle | IS 456 Cl 26.2.2.2 |
+| `Get_Stirrup_Extension` | Stirrup hook extension | IS 456 Cl 26.2.2.2 |
 
 ## Guidelines
 
