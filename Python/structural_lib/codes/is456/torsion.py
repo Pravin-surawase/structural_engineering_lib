@@ -141,7 +141,9 @@ def calculate_equivalent_shear(vu_kn: float, tu_knm: float, b: float) -> float:
 
 
 @clause("41.4.2")
-def calculate_equivalent_moment(mu_knm: float, tu_knm: float, d: float, b: float) -> float:
+def calculate_equivalent_moment(
+    mu_knm: float, tu_knm: float, d: float, b: float
+) -> float:
     """
     Calculate equivalent bending moment per IS 456 Cl 41.4.2.
 

@@ -9,7 +9,6 @@ Tests cover:
 - Edge cases and validation
 """
 
-
 import pytest
 
 from structural_lib.codes.is456.torsion import (
