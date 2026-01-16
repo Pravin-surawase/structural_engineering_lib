@@ -400,57 +400,51 @@ with col_input:
 
 # Right column: Preview or Results
 with col_preview:
-    st.header("📊 Design Preview")
+    # Only show Design Preview header and geometry expander BEFORE design is computed
+    design_computed = st.session_state.beam_inputs.get("design_computed", False)
 
-    # Show geometry preview (without reinforcement until analyzed)
-    with st.expander(
-        "📐 Geometry Preview",
-        expanded=not st.session_state.beam_inputs.get("design_computed", False),
-    ):
-        # Get current exposure for cover (using centralized constants)
-        cover = get_cover_for_exposure(st.session_state.beam_inputs["exposure"])
+    if not design_computed:
+        st.header("📊 Design Preview")
 
-        # Only show reinforcement AFTER design is computed
-        if st.session_state.beam_inputs.get("design_computed", False):
-            bar_dia = 16  # Placeholder
-            rebar_y = cover + bar_dia / 2
-            rebar_positions = [
-                (cover + bar_dia / 2, rebar_y),
-                (st.session_state.beam_inputs["b_mm"] / 2, rebar_y),
-                (st.session_state.beam_inputs["b_mm"] - cover - bar_dia / 2, rebar_y),
-            ]
-            xu = st.session_state.beam_inputs["d_mm"] * 0.33
-        else:
+        # Show geometry preview (without reinforcement until analyzed)
+        with st.expander(
+            "📐 Geometry Preview",
+            expanded=True,
+        ):
+            # Get current exposure for cover (using centralized constants)
+            cover = get_cover_for_exposure(st.session_state.beam_inputs["exposure"])
+
             # No reinforcement shown before analysis
             rebar_positions = []
             xu = None
             bar_dia = 0
 
-        fig = create_cached_beam_diagram(
-            b_mm=st.session_state.beam_inputs["b_mm"],
-            D_mm=st.session_state.beam_inputs["D_mm"],
-            d_mm=st.session_state.beam_inputs["d_mm"],
-            rebar_positions=rebar_positions,
-            xu=xu,
-            bar_dia=bar_dia,
-            cover=cover,
-            compression_positions=None,  # No compression steel in preview
-            stirrup_dia=0,  # No stirrups in preview
-            stirrup_spacing=0,
-        )
-        st.plotly_chart(fig, width="stretch")
+            fig = create_cached_beam_diagram(
+                b_mm=st.session_state.beam_inputs["b_mm"],
+                D_mm=st.session_state.beam_inputs["D_mm"],
+                d_mm=st.session_state.beam_inputs["d_mm"],
+                rebar_positions=rebar_positions,
+                xu=xu,
+                bar_dia=bar_dia,
+                cover=cover,
+                compression_positions=None,  # No compression steel in preview
+                stirrup_dia=0,  # No stirrups in preview
+                stirrup_spacing=0,
+            )
+            st.plotly_chart(fig, width="stretch")
 
-        # Show dimensions
-        st.caption(
-            f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)"
-        )
-        if not st.session_state.beam_inputs.get("design_computed", False):
+            # Show dimensions
+            st.caption(
+                f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)"
+            )
             st.info("ℹ️ Click 'Analyze Design' to see reinforcement")
 
-    st.divider()
+        st.divider()
 
     # Show results if computed
-    if st.session_state.beam_inputs.get("design_computed", False):
+    if design_computed:
+        st.header("✅ Design Results")
+
         # Show full results (existing tabs - moved from main area)
         result = st.session_state.beam_inputs["design_result"]
 
