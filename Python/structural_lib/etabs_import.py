@@ -104,14 +104,33 @@ class ETABSEnvelopeResult:
 
 
 # =============================================================================
-# Column Name Mappings (ETABS versions vary)
+# Column Name Mappings (ETABS/SAFE versions vary)
 # =============================================================================
 
 # Possible column names for each field (case-insensitive matching)
+# Supports: ETABS, SAFE, and generic formats
 _COLUMN_MAPPINGS: dict[str, list[str]] = {
-    "story": ["Story", "Level", "Floor"],
-    "beam_id": ["Label", "Frame", "Element", "Beam", "Name"],
+    # Story/Level identification
+    "story": ["Story", "Level", "Floor", "Storey"],
+    # Beam/Strip identification
+    "beam_id": [
+        "Label",
+        "Frame",
+        "Element",
+        "Beam",
+        "Name",
+        # SAFE format additions
+        "Strip",
+        "SpanName",
+        "Band",
+        "StripID",
+        # Generic format
+        "beam_id",
+        "BeamID",
+        "ID",
+    ],
     "unique_name": ["Unique Name", "UniqueName", "Unique", "GUID"],
+    # Load case/combination
     "case_id": [
         "Output Case",
         "Load Case/Combo",
@@ -119,11 +138,52 @@ _COLUMN_MAPPINGS: dict[str, list[str]] = {
         "LoadCase",
         "Combo",
         "Case",
+        # SAFE format additions
+        "LoadCombo",
+        "Combination",
     ],
-    "station": ["Station", "Distance", "Location", "Loc"],
-    "m3": ["M3", "Moment3", "Mz", "BendingMoment"],
-    "v2": ["V2", "Shear2", "Vy", "ShearForce"],
-    "p": ["P", "Axial", "N", "AxialForce"],
+    # Station along element
+    "station": [
+        "Station",
+        "Distance",
+        "Location",
+        "Loc",
+        # SAFE format additions
+        "Position",
+        "Pos",
+    ],
+    # Moment (local 3 axis / about 2 axis)
+    "m3": [
+        "M3",
+        "Moment3",
+        "Mz",
+        "BendingMoment",
+        # SAFE format additions (M22 is moment about 2 axis)
+        "M22",
+        "Moment22",
+        "M2",
+        # Generic format
+        "mu_knm",
+        "Mu",
+        "Moment",
+    ],
+    # Shear (local 2 plane / 23 plane)
+    "v2": [
+        "V2",
+        "Shear2",
+        "Vy",
+        "ShearForce",
+        # SAFE format additions (V23 is shear in 23 plane)
+        "V23",
+        "Shear23",
+        "V3",
+        # Generic format
+        "vu_kn",
+        "Vu",
+        "Shear",
+    ],
+    # Axial force
+    "p": ["P", "Axial", "N", "AxialForce", "P1", "Axial1"],
 }
 
 
