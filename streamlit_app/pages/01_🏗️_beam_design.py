@@ -43,6 +43,10 @@ from components.visualizations import (
     create_cost_comparison,
     create_compliance_visual,
 )
+from components.visualizations_3d import (
+    create_beam_3d_figure,
+    compute_geometry_hash,
+)
 from components.preview import render_real_time_preview
 from components.results import (
     display_design_status,
@@ -715,6 +719,71 @@ with col_preview:
 
             df_schedule = pd.DataFrame(schedule_data)
             st.dataframe(df_schedule, width="stretch", hide_index=True)
+
+            # ----------------------------------------------------------------
+            # 3D Beam Visualization (TASK-3D-08)
+            # ----------------------------------------------------------------
+            st.divider()
+            st.subheader("🏗️ 3D Beam Visualization")
+
+            # Calculate 3D bar positions from design result
+            span_mm_3d = st.session_state.beam_inputs.get("span_mm", 4000)
+            cover_3d = detailing.get("cover", 40)
+            stirrup_dia_3d = shear.get("stirrup_dia", 8)
+
+            # Convert 2D rebar positions to 3D format
+            # Y in 3D = X in 2D (across width, centered at 0)
+            # Z in 3D = Y in 2D (depth from bottom)
+            bottom_bars_3d = []
+            for pos in rebar_positions:
+                if len(pos) >= 2:
+                    y_3d = pos[0] - b_mm / 2  # Center at Y=0
+                    z_3d = pos[1]  # Same as 2D (from bottom)
+                    bottom_bars_3d.append((0, y_3d, z_3d))
+
+            top_bars_3d = []
+            for pos in compression_positions:
+                if len(pos) >= 2:
+                    y_3d = pos[0] - b_mm / 2  # Center at Y=0
+                    z_3d = pos[1]  # Same as 2D
+                    top_bars_3d.append((0, y_3d, z_3d))
+
+            # If no top bars from compression, add default holding bars
+            if not top_bars_3d:
+                edge_dist = cover_3d + stirrup_dia_3d + bar_dia / 2
+                available_width = b_mm - 2 * edge_dist
+                top_bars_3d = [
+                    (0, -available_width / 2, D_mm - edge_dist),
+                    (0, available_width / 2, D_mm - edge_dist),
+                ]
+
+            # Generate stirrup positions (use safe int conversion)
+            stirrup_start = max(1, int(stirrup_spacing / 2)) if stirrup_spacing > 0 else 50
+            stirrup_end = max(1, int(span_mm_3d)) if span_mm_3d > 0 else 4000
+            stirrup_step = max(50, int(stirrup_spacing)) if stirrup_spacing > 0 else 100
+            stirrup_positions_3d = list(range(stirrup_start, stirrup_end, stirrup_step))
+
+            # Create 3D figure
+            fig_3d = create_beam_3d_figure(
+                b=b_mm,
+                D=D_mm,
+                span=span_mm_3d,
+                bottom_bars=bottom_bars_3d if bottom_bars_3d else None,
+                top_bars=top_bars_3d if top_bars_3d else None,
+                bar_diameter=bar_dia,
+                stirrup_positions=stirrup_positions_3d,
+                stirrup_diameter=stirrup_dia_3d,
+                cover=cover_3d,
+                height=500,
+                show_legend=True,
+                show_info_panel=True,
+            )
+
+            st.plotly_chart(fig_3d, use_container_width=True, key="beam_3d_viz")
+
+            st.caption(
+                "🖱️ **Controls:** Drag to rotate | Scroll to zoom | Right-click to pan"
+            )
 
             # ----------------------------------------------------------------
             # BMD/SFD Diagram Section (TASK-145.9)
