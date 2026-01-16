@@ -78,13 +78,15 @@ Implemented Phase 1 of 3D Visualization for beam design:
 
 **Result:** 26/26 tests passing
 
-### Commits (Branch: task/TASK-3D-07)
+### Commits (PR #376 - Merged ✅)
 
 | # | Hash | Description |
 |---|------|-------------|
 | 1 | `4ccdfe0` | feat(viz): add Plotly 3D mesh generation for beams |
 | 2 | `c2e6f12` | feat(beam): integrate Plotly 3D visualization into beam design page |
 | 3 | `144c677` | feat(beam): add @st.fragment for live 3D updates with caching |
+| 4 | `e54473d` | docs: update SESSION_LOG and TASKS for Session 36 progress |
+| 5 | `25a4ee0` | fix(beam): use consistent bar_dia key name for API compliance |
 
 ### Key Decisions
 

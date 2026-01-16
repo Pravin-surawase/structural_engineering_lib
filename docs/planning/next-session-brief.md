@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 35 | **Commits:** 4 (CI fixes + PR merge + docs)
+**Last Session:** 36 | **Commits:** 5 (3D viz + scanner improvements)
 
 ---
 
@@ -33,42 +33,57 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-16
-- Focus: Session 35 - 3D Visualization Phase 0 MVP COMPLETE. Fixed CI blockers (CodeQL path traversal, AppTest key parameter, AST scanner function order). PR #373 merged with 9,833 lines across 28 files. geometry_3d module, Three.js viewer, 59 tests, all CI passing.
+- Focus: Session 36 - Phase 1 3D Visualization MVP. Created visualizations_3d.py (650+ lines), integrated into beam_design.py, added @st.fragment for live updates, improved scanner for len()>=N and ternary guards. PR #376 merged with 5 commits.
 <!-- HANDOFF:END -->
 
 ---
 
-## 🎯 Session 35 Summary - 3D Visualization Complete (2026-01-16)
+## 🎯 Session 36 Summary - Plotly 3D Visualization (2026-01-16)
 
-### PR #373: 3D Visualization Phase 0 MVP ✅ MERGED
+### PR #376: Phase 1 3D Beam Visualization ✅ MERGED
 
-**Commits:** 15a9dbf, 2aa7618, 6270b83, 5fc35cd (merge), 7ff2efd (docs)
+**Commits:** 4ccdfe0, c2e6f12, 144c677, e54473d, 25a4ee0
 
-#### Issues Resolved
-
-| Issue | Root Cause | Solution |
-|-------|-----------|----------|
-| 413 Error | Context overflow from large reads | Added prevention docs |
-| CodeQL Alert | Path traversal in feedback page | Path sanitization |
-| AppTest Failure | `key` parameter unsupported | Removed parameter |
-| AST Scanner | Functions before definition | Reordered utilities |
-
-#### Files Added (9,833 lines across 28 files)
+#### Deliverables
 
 | File | Lines | Purpose |
 |------|-------|---------|
-| `visualization/geometry_3d.py` | 811 | Core 3D geometry computation |
-| `components/beam_viewer_3d.py` | 537 | Three.js Streamlit component |
-| `pages/05_3d_viewer_demo.py` | 219 | Interactive demo page |
-| `tests/test_visualization_geometry_3d.py` | 764 | 52 unit tests |
+| `components/visualizations_3d.py` | 650+ | Plotly 3D mesh generation |
+| `pages/01_beam_design.py` | +100 | 3D preview integration |
+| `tests/test_visualizations_3d.py` | 400+ | 26 unit tests |
+| `scripts/check_streamlit_issues.py` | +80 | Scanner improvements |
+
+#### Key Features
+
+- **Plotly 3D Meshes:** Cylinder rebars, box concrete, stirrup tubes
+- **Live Updates:** @st.fragment for independent re-rendering
+- **Caching:** Geometry hash-based cache invalidation
+- **Performance:** <50ms mesh generation verified
+
+#### Scanner Improvements
+
+| Enhancement | Problem | Solution |
+|-------------|---------|----------|
+| `len(x) >= N` patterns | Didn't recognize as bounds check | Regex extraction of comparison value |
+| Ternary guards | `int(x) if x > 0 else 0` flagged | Check for IfExp parents |
+| String input detection | False positives on math ops | `_could_be_string_input()` helper |
 
 ---
 
-## 🎯 Session 36 Recommendations
+## 🎯 Session 37 Recommendations
 
-**Goal:** Re-run navigation efficiency study
-- Quick win, provides data for optimization
-- 300 trials across 3 AI models
+### Priority 1: Status Display (TASK-3D-11) 🔴
+
+**Goal:** Add safe/unsafe status and utilization % to 3D preview
+- Visual indicator (green/amber/red) based on design status
+- Utilization percentage display
+- Quick win, ~2 hours
+
+### Priority 2: Performance Documentation (TASK-3D-12)
+
+**Goal:** Document performance benchmarks
+- Record <50ms mesh generation proof
+- Add to performance section in docs
 
 ### Priority 3: v1.0 Preparation (8-12h) 🔵
 
