@@ -4,6 +4,99 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-16 — Session 35 Part 2: Automation & Phase 1 Planning
+
+**Focus:** Streamlit launch automation, scanner improvements, commit validation, Phase 1 tasks
+
+### Overview
+
+User requested comprehensive improvements:
+1. Valuable commits (not chasing count)
+2. Plan Phase 1 (3D Visualization)
+3. Check agent bootstrap and automation
+4. Fix scanner issues (don't bypass)
+5. Document commit message limits
+6. Automate Streamlit launch
+7. Plan next tasks
+
+### Deliverables
+
+#### 1. Streamlit Launch Automation (`scripts/launch_streamlit.sh` - 285 lines)
+
+**Features:**
+- Environment verification (Python, venv, dependencies)
+- Port availability check
+- Config validation
+- Auto-open browser
+- Background mode (`--bg`)
+- Check-only mode (`--check`)
+
+**Usage:**
+```bash
+./scripts/launch_streamlit.sh              # Full launch
+./scripts/launch_streamlit.sh --check      # Verify only
+./scripts/launch_streamlit.sh --bg         # Background
+```
+
+#### 2. Scanner Fix: Optional Dependency Imports
+
+**Problem:** Scanner flagged imports inside try/except blocks as HIGH severity.
+**Solution:** Added `_is_in_try_except()` check to allow intentional optional dependency patterns.
+
+**Result:** 0 HIGH issues (was 1), 0 CRITICAL issues
+
+#### 3. Commit Message Validation
+
+**Created:**
+- `scripts/hooks/commit-msg` - Validates subject ≤72 chars, type prefix, no trailing period
+- `scripts/install_hooks.sh` - Hook installer
+- `docs/contributing/commit-message-conventions.md` - Full documentation
+
+**Rules:**
+- Subject: max 72 characters
+- Type prefix required: feat, fix, docs, style, refactor, perf, test, build, ci, chore
+- No period at end of subject
+- Body lines: max 72 characters
+
+#### 4. Phase 1 Tasks Planned
+
+| ID | Task | Priority | Status |
+|----|------|----------|--------|
+| TASK-3D-07 | Plotly 3D mesh generation | HIGH | Ready |
+| TASK-3D-08 | Integrate preview into beam_design.py | HIGH | Ready |
+| TASK-3D-09 | @st.fragment for live updates | HIGH | Ready |
+| TASK-3D-10 | Performance optimization (<50ms) | MEDIUM | Blocked |
+| TASK-3D-11 | Status display (safe/unsafe) | MEDIUM | Blocked |
+| TASK-3D-12 | Performance benchmarks docs | LOW | Blocked |
+
+### Commits
+
+| # | Hash | Description |
+|---|------|-------------|
+| 1 | `fd4967c` | feat(automation): add Streamlit launch and commit validation |
+| 2 | `427ab57` | PR #374 merged (automation improvements) |
+| 3 | `4144a07` | docs: add Streamlit launch and commit conventions to guide |
+
+### Key Decisions
+
+1. **Streamlit Launch:** Created comprehensive script with all checks instead of simple command
+2. **Scanner Fix:** Allow try/except imports (common pattern for optional dependencies)
+3. **Commit Validation:** 72-char limit enforced via hook (matches GitHub/terminal standards)
+4. **Phase 1 Scope:** Focus on Plotly 3D first, then integration with beam design page
+
+### Next Session Recommendations
+
+1. **Start TASK-3D-07:** Plotly 3D mesh generation for beams
+   - Use existing geometry_3d.py as data source
+   - Create visualizations_3d.py component
+   - Target <50ms mesh generation
+
+2. **TASK-3D-08:** Two-column layout on beam design page
+   - Left: inputs, Right: 3D preview
+   - @st.fragment for live updates
+
+---
+
 ## 2026-01-16 — Session 35: 3D Visualization MVP Complete (PR #373 Merged)
 
 **Focus:** Fix CI blockers, merge PR #373 (3D Visualization Phase 0 MVP)
