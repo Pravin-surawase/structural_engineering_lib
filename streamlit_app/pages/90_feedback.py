@@ -27,30 +27,80 @@ FEEDBACK_DIR = Path(__file__).parent.parent / "feedback"
 FEEDBACK_DIR.mkdir(exist_ok=True)
 
 
-def main():
-    st.set_page_config(
-        page_title="Tester Feedback",
-        page_icon="📝",
-        layout="wide",
-    )
+# =============================================================================
+# Utility Functions (defined first for AST scanner compatibility)
+# =============================================================================
 
-    st.title("📝 Tester Feedback")
-    st.markdown("""
-    Help us improve! Submit your feedback after testing any feature.
-    Your input directly shapes the library's development.
-    """)
-
-    # Tabs for submit and view
-    tab_submit, tab_history = st.tabs(["Submit Feedback", "View History"])
-
-    with tab_submit:
-        render_submit_form()
-
-    with tab_history:
-        render_feedback_history()
+def generate_feedback_id() -> str:
+    """Generate a unique feedback ID."""
+    now = datetime.now()
+    return f"FB-{now.strftime('%Y%m%d')}-{now.strftime('%H%M%S')}"
 
 
-def render_submit_form():
+def save_feedback(data: dict[str, Any]) -> Path:
+    """Save feedback to a JSON file.
+
+    Security: Validates that the generated filename doesn't contain
+    path traversal characters and stays within FEEDBACK_DIR.
+    """
+    # Sanitize ID to prevent path traversal (use .get() to avoid KeyError)
+    feedback_id = data.get('id', '')
+    if not feedback_id:
+        raise ValueError("Feedback data must have an 'id' field")
+    safe_id = "".join(c for c in feedback_id if c.isalnum() or c == '-')
+    filename = f"{safe_id}.json"
+    # Path join to build file path (FEEDBACK_DIR is a Path object)
+    filepath = Path(FEEDBACK_DIR) / filename
+
+    # Security: Verify path stays within feedback directory
+    resolved = filepath.resolve()
+    if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
+        raise ValueError("Invalid feedback path")
+
+    with open(resolved, "w") as f:
+        json.dump(data, f, indent=2)
+    return resolved
+
+
+def load_all_feedback() -> list[dict[str, Any]]:
+    """Load all feedback from the feedback directory.
+
+    Security: Only loads files matching strict FB-YYYYMMDD-HHMMSS.json pattern
+    from the designated feedback directory. Path traversal is prevented by:
+    1. Using glob with strict pattern (no user input in pattern)
+    2. Verifying resolved path is within FEEDBACK_DIR
+    """
+    feedback_list = []
+    for filepath in sorted(FEEDBACK_DIR.glob("FB-*.json")):
+        # Security: Ensure file is actually within feedback directory
+        try:
+            resolved = filepath.resolve()
+            if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
+                continue  # Skip files outside feedback directory
+            with open(resolved) as f:
+                feedback_list.append(json.load(f))
+        except (json.JSONDecodeError, OSError):
+            continue
+    return feedback_list
+
+
+def get_library_version() -> str:
+    """Get the library version.
+
+    Note: Import inside function to handle optional dependency gracefully.
+    """
+    try:
+        from structural_lib import api
+        return api.get_library_version()
+    except Exception:
+        return "unknown"
+
+
+# =============================================================================
+# Page Components
+# =============================================================================
+
+def render_submit_form() -> None:
     """Render the feedback submission form."""
 
     st.subheader("Submit New Feedback")
@@ -182,7 +232,7 @@ def render_submit_form():
                 st.balloons()
 
 
-def render_feedback_history():
+def render_feedback_history() -> None:
     """Render the feedback history view."""
 
     st.subheader("Feedback History")
@@ -259,68 +309,31 @@ def render_feedback_history():
 
 
 # =============================================================================
-# Utility Functions
+# Main Entry Point (defined after all dependencies for AST scanner)
 # =============================================================================
 
-def generate_feedback_id() -> str:
-    """Generate a unique feedback ID."""
-    now = datetime.now()
-    return f"FB-{now.strftime('%Y%m%d')}-{now.strftime('%H%M%S')}"
+def main() -> None:
+    """Main page entry point."""
+    st.set_page_config(
+        page_title="Tester Feedback",
+        page_icon="📝",
+        layout="wide",
+    )
 
+    st.title("📝 Tester Feedback")
+    st.markdown("""
+    Help us improve! Submit your feedback after testing any feature.
+    Your input directly shapes the library's development.
+    """)
 
-def save_feedback(data: dict[str, Any]) -> Path:
-    """Save feedback to a JSON file.
+    # Tabs for submit and view
+    tab_submit, tab_history = st.tabs(["Submit Feedback", "View History"])
 
-    Security: Validates that the generated filename doesn't contain
-    path traversal characters and stays within FEEDBACK_DIR.
-    """
-    # Sanitize ID to prevent path traversal (use .get() to avoid KeyError)
-    feedback_id = data.get('id', '')
-    if not feedback_id:
-        raise ValueError("Feedback data must have an 'id' field")
-    safe_id = "".join(c for c in feedback_id if c.isalnum() or c == '-')
-    filename = f"{safe_id}.json"
-    filepath = FEEDBACK_DIR / filename
+    with tab_submit:
+        render_submit_form()
 
-    # Security: Verify path stays within feedback directory
-    resolved = filepath.resolve()
-    if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
-        raise ValueError("Invalid feedback path")
-
-    with open(resolved, "w") as f:
-        json.dump(data, f, indent=2)
-    return resolved
-
-
-def load_all_feedback() -> list[dict[str, Any]]:
-    """Load all feedback from the feedback directory.
-
-    Security: Only loads files matching strict FB-YYYYMMDD-HHMMSS.json pattern
-    from the designated feedback directory. Path traversal is prevented by:
-    1. Using glob with strict pattern (no user input in pattern)
-    2. Verifying resolved path is within FEEDBACK_DIR
-    """
-    feedback_list = []
-    for filepath in sorted(FEEDBACK_DIR.glob("FB-*.json")):
-        # Security: Ensure file is actually within feedback directory
-        try:
-            resolved = filepath.resolve()
-            if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
-                continue  # Skip files outside feedback directory
-            with open(resolved) as f:
-                feedback_list.append(json.load(f))
-        except (json.JSONDecodeError, OSError):
-            continue
-    return feedback_list
-
-
-def get_library_version() -> str:
-    """Get the library version."""
-    try:
-        from structural_lib import api
-        return api.get_library_version()
-    except Exception:
-        return "unknown"
+    with tab_history:
+        render_feedback_history()
 
 
 if __name__ == "__main__":
