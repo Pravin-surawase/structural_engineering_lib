@@ -713,13 +713,12 @@ def compute_geometry_hash(geometry_dict: dict[str, Any]) -> str:
     """
     Compute a hash for geometry to enable efficient caching.
 
-    The hash is based on:
-    - Dimensions (b, D, span)
-    - Rebar count and positions
-    - Stirrup count and positions
+    Supports both:
+    - Flat dict: {"b": 300, "D": 450, "span": 4000, "bottom_bars": [...], ...}
+    - Nested JSON schema: {"dimensions": {...}, "rebars": [...], "stirrups": [...]}
 
     Args:
-        geometry_dict: Geometry dictionary
+        geometry_dict: Geometry dictionary (flat or nested format)
 
     Returns:
         MD5 hash string (32 chars)
@@ -728,30 +727,65 @@ def compute_geometry_hash(geometry_dict: dict[str, Any]) -> str:
         <1ms for typical geometry
 
     Example:
-        >>> hash_val = compute_geometry_hash({"dimensions": {...}})
-        >>> "abc123..." == hash_val
+        >>> hash_val = compute_geometry_hash({"b": 300, "D": 450, "span": 4000})
+        >>> len(hash_val) == 32
     """
-    # Build hashable representation
-    dims = geometry_dict.get("dimensions", {})
-    hash_input = f"{dims.get('b', 0)}_{dims.get('D', 0)}_{dims.get('span', 0)}"
+    hash_parts = []
 
-    # Add rebar summary
-    rebars = geometry_dict.get("rebars", [])
-    hash_input += f"_r{len(rebars)}"
-    for rebar in rebars[:10]:  # Limit to first 10 for performance
-        segs = rebar.get("segments", [])
-        if segs:
-            s = segs[0].get("start", {})
-            hash_input += f"_{s.get('y', 0):.0f}_{s.get('z', 0):.0f}"
+    # Handle flat dict format (from beam_design.py)
+    if "b" in geometry_dict:
+        hash_parts.append(f"b{geometry_dict.get('b', 0)}")
+        hash_parts.append(f"D{geometry_dict.get('D', 0)}")
+        hash_parts.append(f"span{geometry_dict.get('span', 0)}")
+        hash_parts.append(f"bar_dia{geometry_dict.get('bar_dia', 0)}")
+        hash_parts.append(f"stirrup_dia{geometry_dict.get('stirrup_dia', 0)}")
+        hash_parts.append(f"cover{geometry_dict.get('cover', 0)}")
 
-    # Add stirrup summary
-    stirrups = geometry_dict.get("stirrups", [])
-    hash_input += f"_s{len(stirrups)}"
-    if stirrups:
-        hash_input += f"_{stirrups[0].get('positionX', 0):.0f}"
-        if len(stirrups) > 1:
-            hash_input += f"_{stirrups[-1].get('positionX', 0):.0f}"
+        # Bottom bars
+        bottom_bars = geometry_dict.get("bottom_bars", [])
+        hash_parts.append(f"bb{len(bottom_bars)}")
+        for bar in bottom_bars[:10]:
+            if len(bar) >= 3:
+                hash_parts.append(f"{bar[1]:.0f}_{bar[2]:.0f}")
 
+        # Top bars
+        top_bars = geometry_dict.get("top_bars", [])
+        hash_parts.append(f"tb{len(top_bars)}")
+        for bar in top_bars[:10]:
+            if len(bar) >= 3:
+                hash_parts.append(f"{bar[1]:.0f}_{bar[2]:.0f}")
+
+        # Stirrup positions
+        stirrup_pos = geometry_dict.get("stirrup_positions", [])
+        hash_parts.append(f"sp{len(stirrup_pos)}")
+        if stirrup_pos:
+            hash_parts.append(f"{stirrup_pos[0]}_{stirrup_pos[-1] if len(stirrup_pos) > 1 else stirrup_pos[0]}")
+
+    # Handle nested JSON schema format (from JSON contract)
+    elif "dimensions" in geometry_dict:
+        dims = geometry_dict.get("dimensions", {})
+        hash_parts.append(f"b{dims.get('b', 0)}")
+        hash_parts.append(f"D{dims.get('D', 0)}")
+        hash_parts.append(f"span{dims.get('span', 0)}")
+
+        # Rebars
+        rebars = geometry_dict.get("rebars", [])
+        hash_parts.append(f"r{len(rebars)}")
+        for rebar in rebars[:10]:
+            segs = rebar.get("segments", [])
+            if segs:
+                s = segs[0].get("start", {})
+                hash_parts.append(f"{s.get('y', 0):.0f}_{s.get('z', 0):.0f}")
+
+        # Stirrups
+        stirrups = geometry_dict.get("stirrups", [])
+        hash_parts.append(f"s{len(stirrups)}")
+        if stirrups:
+            hash_parts.append(f"{stirrups[0].get('positionX', 0):.0f}")
+            if len(stirrups) > 1:
+                hash_parts.append(f"{stirrups[-1].get('positionX', 0):.0f}")
+
+    hash_input = "_".join(hash_parts)
     return hashlib.md5(hash_input.encode()).hexdigest()
 
 

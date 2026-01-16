@@ -842,7 +842,7 @@ with col_preview:
                         stirrup_positions=geom["stirrup_positions"],
                         stirrup_diameter=geom["stirrup_dia"],
                         cover=geom["cover"],
-                        height=500,
+                        height=450,
                         show_legend=True,
                         show_info_panel=True,
                     )
@@ -850,7 +850,11 @@ with col_preview:
                     st.session_state[cache_key] = {"hash": geom_hash, "figure": fig_3d}
                     cached = st.session_state[cache_key]
 
-                st.plotly_chart(cached["figure"], width="stretch", key="beam_3d_viz")
+                # Use hash in key to force Streamlit to re-render when geometry changes
+                st.plotly_chart(
+                    cached["figure"],
+                    key=f"beam_3d_viz_{geom_hash[:8]}",
+                )
                 st.caption(
                     "🖱️ **Controls:** Drag to rotate | Scroll to zoom | Right-click to pan"
                 )
