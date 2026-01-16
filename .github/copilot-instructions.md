@@ -521,6 +521,11 @@ cat scripts/index.json
 ./scripts/ai_commit.sh "message"              # Commit (5s)
 .venv/bin/python scripts/end_session.py       # End (3s)
 
+# Streamlit app
+./scripts/launch_streamlit.sh                 # Launch app
+./scripts/launch_streamlit.sh --check         # Check env only
+./scripts/launch_streamlit.sh --bg            # Background mode
+
 # Decision support
 ./scripts/should_use_pr.sh --explain          # PR check (1s)
 ./scripts/git_ops.sh --status                 # State analysis (2s)
@@ -535,6 +540,21 @@ cd Python && pytest tests/ -v                 # Tests
 .venv/bin/python scripts/safe_file_delete.py obsolete.md
 .venv/bin/python scripts/create_doc.py path/file.md "Title"
 ```
+
+### Commit Message Format
+
+**Rules:** Subject ≤72 chars, type prefix required, no period at end.
+
+```bash
+# Good commits
+feat(api): add beam export endpoint
+fix: resolve division by zero in shear
+docs: update installation guide
+
+# Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore
+```
+
+See [commit-message-conventions.md](docs/contributing/commit-message-conventions.md) for details.
 
 ### Key Documentation
 
