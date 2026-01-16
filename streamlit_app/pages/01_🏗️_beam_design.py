@@ -766,9 +766,9 @@ with col_preview:
                 "span": span_mm_3d,
                 "bottom_bars": bottom_bars_3d,
                 "top_bars": top_bars_3d,
-                "bar_diameter": bar_dia,
+                "bar_dia": bar_dia,
                 "stirrup_positions": stirrup_positions_3d,
-                "stirrup_diameter": stirrup_dia_3d,
+                "stirrup_dia": stirrup_dia_3d,
                 "cover": cover_3d,
             }
 
@@ -798,9 +798,9 @@ with col_preview:
                         span=geom["span"],
                         bottom_bars=geom["bottom_bars"] if geom["bottom_bars"] else None,
                         top_bars=geom["top_bars"] if geom["top_bars"] else None,
-                        bar_diameter=geom["bar_diameter"],
+                        bar_diameter=geom["bar_dia"],
                         stirrup_positions=geom["stirrup_positions"],
-                        stirrup_diameter=geom["stirrup_diameter"],
+                        stirrup_diameter=geom["stirrup_dia"],
                         cover=geom["cover"],
                         height=500,
                         show_legend=True,
