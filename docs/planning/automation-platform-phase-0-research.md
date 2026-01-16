@@ -124,6 +124,25 @@ We prioritize workflows that are high-frequency, prone to human error, and suffe
 #### W15) Library of Templates (Firm)
 - Standardized workflows per firm or school.
 
+### Step 1 Outputs (Draft)
+
+**Workflow priority matrix (initial):**
+
+| Workflow | Frequency | Error Risk | Automation Value | Notes |
+|---------|-----------|------------|------------------|-------|
+| Single beam design + report | Very High | High | Very High | Daily task across firms |
+| ETABS forensic check | High | High | High | Explains O/S failures |
+| Compliance audit | High | High | High | Senior review automation |
+| BBS + quantity summary | Medium | Medium | High | Direct construction value |
+| Sensitivity study | Medium | Medium | Medium | Fast iteration loop |
+
+**Top 5 Phase 0 candidates (draft):**
+1. Live single beam loop (design -> detailing -> 3D -> report)
+2. ETABS forensic check (force-only or mapped geometry)
+3. Compliance summary pack (red-line checks)
+4. BBS + quantity summary
+5. Report generator (PDF/HTML)
+
 ---
 
 ## Step 2 - Excel Dominance & The "Platform Schema"
@@ -140,6 +159,27 @@ We define a **Canonical Platform Schema** (JSON) that acts as the universal adap
 1.  **Input Tables:** Columns like `b_mm`, `D_mm`, `Mu_kNm` (Rows = Beams).
 2.  **Result Tables:** `Ast_required`, `Status`, `Remarks`.
 3.  **Station Data:** Handling 3-point envelopes (Start/Mid/End) vs 15-station outputs.
+
+### Platform Schema v1 (Draft Fields)
+- **project:** id, name, code, units, revision
+- **members:** id, type, geometry, material
+- **loads:** combos, envelopes, actions
+- **design_results:** capacity, utilization, pass/fail
+- **detailing:** bars, stirrups, spacing, zones
+- **checks:** clause references, failures, remarks
+- **visuals:** geometry_3d, highlights, labels
+- **provenance:** input source, tool versions, timestamps
+
+### Excel Compatibility Strategy
+- Import wizard with column mapping
+- Template generator (pre-filled headers)
+- Validation report (missing units, mixed types)
+- Round-trip export back to Excel for adoption
+
+### Risks (Step 2) + Mitigations
+- **Mixed units in one sheet** -> enforce unit columns + validation
+- **Merged cells / free-form notes** -> ignore or parse into remarks
+- **Hidden assumptions in formulas** -> require explicit input columns
 
 ---
 
