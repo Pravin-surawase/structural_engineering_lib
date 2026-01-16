@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-20
 **Related Tasks:** TASK-3D-VIZ
 **Timeline:** 8 weeks (Jan 15 - March 15, 2026)
 **Release Target:** March 2026
@@ -43,6 +43,13 @@ Build → Test → Polish → Demo → Iterate
 4. **Automation everywhere** - Build tools that build features
 5. **Quality code** - Readable, documented, tested
 6. **Delay gracefully** - Nice-to-haves go to V1.1
+
+---
+
+## Progress Update (Session 38)
+
+- Phase 1 complete: Plotly 3D preview, caching, status display, performance docs.
+- Phase 2 started: CSV schema spec done (`docs/specs/csv-import-schema.md`).
 
 ---
 

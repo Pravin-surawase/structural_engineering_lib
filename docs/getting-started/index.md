@@ -1,8 +1,8 @@
 # Getting Started Index
 
-Quick onboarding guides for new users of the structural engineering library. ```
+Quick onboarding guides for new users of the structural engineering library.
 
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-17
 **File Count:** 15
 
 ## Files
@@ -22,5 +22,5 @@ Quick onboarding guides for new users of the structural engineering library. ```
 | [fix-copilot-terminal.md](fix-copilot-terminal.md) | Copilot Agent's terminal is stuck in git pager mode. Commands open "alternate bu | 2026-01-13 | 148 |
 | [insights-guide.md](insights-guide.md) | > **Stability:** Experimental - API may change before v1.0 Advisory insights pro | 2026-01-13 | 537 |
 | [python-quickstart.md](python-quickstart.md) | This guide shows how to install, run, and verify the Python library with simple, | 2026-01-13 | 173 |
-| [releases.md](releases.md) | This document serves as the **immutable source of truth** for project releases.  | 2026-01-13 | 854 |
+| [releases.md](releases.md) | This document serves as the **immutable source of truth** for project releases.  | 2026-01-17 | 870 |
 | [user-guide.md](user-guide.md) | This guide walks you through a complete beam design workflow from start to finis | 2026-01-14 | 215 |

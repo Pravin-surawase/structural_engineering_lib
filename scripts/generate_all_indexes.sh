@@ -10,7 +10,6 @@ echo "🔍 Generating hierarchical indexes for navigation study..."
 
 # Folders to index (13 total)
 FOLDERS=(
-    "."
     "docs"
     "docs/getting-started"
     "docs/reference"
@@ -29,7 +28,11 @@ for folder in "${FOLDERS[@]}"; do
     if [ -d "$folder" ]; then
         echo ""
         echo "📂 Processing: $folder"
-        .venv/bin/python scripts/generate_folder_index.py "$folder"
+        if [ "$folder" == "docs" ]; then
+            .venv/bin/python scripts/generate_folder_index.py --json-only "$folder"
+        else
+            .venv/bin/python scripts/generate_folder_index.py "$folder"
+        fi
     else
         echo "⚠️  Skipping (not found): $folder"
     fi

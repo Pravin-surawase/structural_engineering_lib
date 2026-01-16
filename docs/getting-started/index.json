@@ -1,7 +1,7 @@
 {
   "folder": "docs/getting-started",
-  "description": "Quick onboarding guides for new users of the structural engineering library. ```",
-  "last_updated": "2026-01-15",
+  "description": "Quick onboarding guides for new users of the structural engineering library. ",
+  "last_updated": "2026-01-17",
   "file_count": 15,
   "files": [
     {
@@ -14,7 +14,7 @@
     {
       "name": "agent-bootstrap.md",
       "title": "Agent Bootstrap",
-      "description": "> **Read this first.** This is the fastest path to productive work. > **👤 For users onboarding a new agent:** See [../contributing/agent-onboarding-message.md](../contributing/agent-onboarding-message",
+      "description": "> **Read this first.** This is the fastest path to productive work. > **👤 For users onboarding a new agent:** See ../contributing/agent-onboarding-message.md for the exact message to send.",
       "last_updated": "2026-01-13",
       "size_lines": 128,
       "audience": "All Agents",
@@ -95,7 +95,7 @@
     {
       "name": "fix-copilot-terminal.md",
       "title": "Fix Copilot Terminal Lockup - Manual Steps",
-      "description": "Copilot Agent's terminal is stuck in git pager mode. Commands open \"alternate buffer\" and nothing works. ```",
+      "description": "Copilot Agent's terminal is stuck in git pager mode. Commands open \"alternate buffer\" and nothing works. ",
       "last_updated": "2026-01-13",
       "size_lines": 148,
       "audience": "All Agents",
@@ -113,7 +113,7 @@
     {
       "name": "python-quickstart.md",
       "title": "Python Quickstart (Beginner-Friendly)",
-      "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See [beginners-guide.md](beginners-guide",
+      "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See beginners-guide.md for comprehensive",
       "last_updated": "2026-01-13",
       "size_lines": 173,
       "audience": "Users",
@@ -123,15 +123,15 @@
       "name": "releases.md",
       "title": "Release Ledger",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "last_updated": "2026-01-13",
-      "size_lines": 854,
+      "last_updated": "2026-01-17",
+      "size_lines": 870,
       "audience": "Maintainers",
       "status": "Approved"
     },
     {
       "name": "user-guide.md",
       "title": "User Guide — Complete Workflow",
-      "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see [Beginner's Guide](beginners-guide.md). ```bash",
+      "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
       "last_updated": "2026-01-14",
       "size_lines": 215,
       "audience": "Users",

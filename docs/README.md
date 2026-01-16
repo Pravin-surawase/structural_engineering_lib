@@ -11,7 +11,7 @@
 
 | Role | Start With | Type | Complexity | Description |
 |------|-----------|------|------------|-------------|
-| **AI Agent (new)** | [agent-onboarding.md](_archive/2026-01/agent-onboarding.md) | guide | beginner | 60-second onboarding checklist |
+| **AI Agent (new)** | [agent-bootstrap.md](getting-started/agent-bootstrap.md) | guide | beginner | 60-second onboarding checklist |
 | **AI Agent (working)** | [agent-quick-reference.md](agents/guides/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
 | **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
 | **Excel User** | [excel-tutorial.md](getting-started/excel-tutorial.md) | tutorial | beginner | UDF usage, workbook setup |
@@ -61,7 +61,7 @@ python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```
 For VS Code AI-agent work, start with:
-- **[AGENT_ONBOARDING.md](_archive/2026-01/agent-onboarding.md)** - New agent checklist
+- **[agent-bootstrap.md](getting-started/agent-bootstrap.md)** - New agent checklist
 - **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
 - **[AGENT_QUICK_REFERENCE.md](agents/guides/agent-quick-reference.md)** - Essential commands
 - [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
@@ -69,6 +69,17 @@ For VS Code AI-agent work, start with:
 - [Handoff Quick Start](contributing/handoff.md) - Session handoff
 
 ---
+
+## Documentation Maintenance
+
+Keep indexes and link checks current after doc updates:
+
+```bash
+./scripts/generate_all_indexes.sh
+.venv/bin/python scripts/generate_docs_index.py --write
+.venv/bin/python scripts/check_docs_index.py
+.venv/bin/python scripts/check_docs_index_links.py
+```
 
 ## Canonical Sources Map
 

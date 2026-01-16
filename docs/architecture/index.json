@@ -1,57 +1,71 @@
 {
   "folder": "docs/architecture",
-  "description": "Deep dives into project structure and design decisions. | Document | Purpose |",
-  "last_updated": "2026-01-10",
+  "description": "Deep dives into project structure, design decisions, and system architecture. ",
+  "last_updated": "2026-01-17",
   "file_count": 7,
   "files": [
     {
       "name": "architecture-review-2025-12-27.md",
       "title": "Architecture Review — 2025-12-27",
-      "description": "Act as ARCHITECT. Use `docs/architecture/project-overview.md` and `docs/architecture/deep-project-map.md`. Review the current architecture for:",
-      "last_updated": "2026-01-08",
-      "size_lines": 71
+      "description": "Act as ARCHITECT. Use docs/architecture/project-overview.md and docs/architecture/deep-project-map.md. Review the current architecture for:",
+      "last_updated": "2026-01-13",
+      "size_lines": 81,
+      "audience": "Architects",
+      "status": "Complete"
     },
     {
       "name": "data-flow-diagrams.md",
       "title": "Pipeline Data Flow Diagrams",
       "description": "Focused pipeline diagrams for the two most complex execution paths. For layer and module overview, see:",
-      "last_updated": "2026-01-07",
-      "size_lines": 130
+      "last_updated": "2026-01-13",
+      "size_lines": 140,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "deep-project-map.md",
       "title": "Deep Project Map (Python + VBA parity)",
-      "description": "- `Python/` — Python package (`structural_lib`) + tests + examples + packaging config. - `VBA/` — VBA modules (core calc + Excel app layer + integration + detailing + DXF) + optional VBA tests.",
-      "last_updated": "2026-01-08",
-      "size_lines": 261
+      "description": "- Python/ — Python package (structural_lib) + tests + examples + packaging config. - VBA/ — VBA modules (core calc + Excel app layer + integration + detailing + DXF) + optional VBA tests.",
+      "last_updated": "2026-01-13",
+      "size_lines": 271,
+      "audience": "All Agents",
+      "status": "Approved"
     },
     {
       "name": "dependencies.md",
       "title": "Python Module Dependency Graph",
-      "description": "This graph shows direct imports between `structural_lib` modules. ![Python module dependency graph](dependencies.png)",
-      "last_updated": "2026-01-06",
-      "size_lines": 18
+      "description": "This graph shows direct imports between structural_lib modules. !Python module dependency graph",
+      "last_updated": "2026-01-13",
+      "size_lines": 28,
+      "audience": "Developers",
+      "status": "Approved"
     },
     {
       "name": "mission-and-principles.md",
       "title": "StructEng Automation – Mission, Vision & Principles",
       "description": "Structural engineering today, especially in everyday practice (beams, slabs, columns, walls), has a few recurring problems: *   Critical calculations are scattered across messy Excel sheets, half-reme",
-      "last_updated": "2026-01-06",
-      "size_lines": 282
+      "last_updated": "2026-01-13",
+      "size_lines": 292,
+      "audience": "All Agents",
+      "status": "Approved"
     },
     {
       "name": "project-overview.md",
       "title": "IS 456 RC Beam Design Library — Project Overview",
-      "description": "- [mission-and-principles.md](mission-and-principles.md) for the deeper \"why\" and product philosophy. - [docs/_internal/git-governance.md](../_internal/git-governance.md) for version control and contr",
-      "last_updated": "2026-01-08",
-      "size_lines": 149
+      "description": "- mission-and-principles.md for the deeper \"why\" and product philosophy. - docs/_internal/git-governance.md for version control and contribution rules.",
+      "last_updated": "2026-01-13",
+      "size_lines": 159,
+      "audience": "All Agents",
+      "status": "Production Ready"
     },
     {
       "name": "visual-architecture.md",
       "title": "Visual Architecture Diagrams",
-      "description": "Quick diagrams for layers, module groupings, and data flow. For detailed narrative, see: - [deep-project-map.md](deep-project-map.md)",
-      "last_updated": "2026-01-07",
-      "size_lines": 136
+      "description": "Quick diagrams for layers, module groupings, and data flow. For detailed narrative, see: - deep-project-map.md",
+      "last_updated": "2026-01-13",
+      "size_lines": 146,
+      "audience": "All Agents",
+      "status": "Approved"
     }
   ],
   "subfolders": [

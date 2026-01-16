@@ -84,9 +84,15 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 ## Status
 
-🚀 **Production-Ready Professional Tool (v0.17.0)** — Published on PyPI with enterprise-grade quality standards.
+🚀 **Production-Ready Professional Tool (v0.17.5)** — Published on PyPI with enterprise-grade quality standards.
 
-**What's new in v0.17.0 (Professional API + Debug Infrastructure - 2026-01-13):**
+**What's new in v0.17.5 (Multi-Objective Optimization + API Validation - 2026-01-14):**
+- **NSGA-II Pareto Optimization:** Multi-objective beam optimization with cost/weight/utilization tradeoffs
+- **Cost Optimizer UI Enhancements:** Pareto scatter plot + best-by-objective summaries
+- **API Signature Validation:** AST-based checks in pre-commit + CI to prevent contract drift
+- **Test Coverage:** 13 new tests for multi-objective optimizer and Pareto front sorting
+
+**Previous: v0.17.0 (Professional API + Debug Infrastructure - 2026-01-13):**
 - **Professional API Features:** BeamInput dataclasses, report generation, audit trail, testing strategies
 - **Debug Infrastructure:** 1-command diagnostics bundle (`collect_diagnostics.py`), API manifest tracking (38 symbols)
 - **Documentation System:** Metadata headers on 50+ docs, standardized doc creation workflow

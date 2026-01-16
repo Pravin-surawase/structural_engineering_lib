@@ -252,13 +252,29 @@ def generate_markdown(index: Dict, output_path: Path):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: generate_folder_index.py <folder>")
-        print("\nExample:")
-        print("  python scripts/generate_folder_index.py docs/getting-started/")
+    args = sys.argv[1:]
+    json_only = False
+    md_only = False
+
+    if "--json-only" in args:
+        json_only = True
+        args.remove("--json-only")
+    if "--md-only" in args:
+        md_only = True
+        args.remove("--md-only")
+
+    if json_only and md_only:
+        print("❌ Choose only one of --json-only or --md-only")
         sys.exit(1)
 
-    folder = Path(sys.argv[1])
+    if len(args) < 1:
+        print("Usage: generate_folder_index.py [--json-only|--md-only] <folder>")
+        print("\nExample:")
+        print("  python scripts/generate_folder_index.py docs/getting-started/")
+        print("  python scripts/generate_folder_index.py --json-only docs/")
+        sys.exit(1)
+
+    folder = Path(args[0])
     if not folder.exists():
         print(f"❌ Folder not found: {folder}")
         sys.exit(1)
@@ -274,8 +290,10 @@ def main():
         f"   Found {len(index['files'])} files, {len(index['subfolders'])} subfolders"
     )
 
-    generate_json(index, folder)
-    generate_markdown(index, folder)
+    if not md_only:
+        generate_json(index, folder)
+    if not json_only:
+        generate_markdown(index, folder)
 
     print(f"✅ Index generation complete for: {folder}")
 

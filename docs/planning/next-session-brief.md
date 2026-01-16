@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-16<br>
+**Last Updated:** 2026-01-20<br>
 
 ---
 
@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 36 | **Commits:** 5 (3D viz + scanner improvements)
+**Last Session:** 38 | **Commits:** 4 (UI fixes + CSV schema)
 
 ---
 
@@ -32,66 +32,50 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-16
-- Focus: Session 36 - Phase 1 3D Visualization MVP. Created visualizations_3d.py (650+ lines), integrated into beam_design.py, added @st.fragment for live updates, improved scanner for len()>=N and ternary guards. PR #376 merged with 5 commits.
+- Date: 2026-01-20
+- Focus: Session 38 - UI improvements + Phase 2 start. Fixed 3D cache hash mismatch, compacted input layout, refined selectbox CSS, hid design preview post-analysis, and added CSV schema spec + SAFE column mappings. PR #378 merged.
 <!-- HANDOFF:END -->
 
 ---
 
-## 🎯 Session 36 Summary - Plotly 3D Visualization (2026-01-16)
+## 🎯 Session 38 Summary - UI Improvements + Phase 2 Start (2026-01-20)
 
-### PR #376: Phase 1 3D Beam Visualization ✅ MERGED
+### PR #378: UI Improvements + CSV Schema ✅ MERGED
 
-**Commits:** 4ccdfe0, c2e6f12, 144c677, e54473d, 25a4ee0
+**Commit:** b318aa4
 
 #### Deliverables
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `components/visualizations_3d.py` | 650+ | Plotly 3D mesh generation |
-| `pages/01_beam_design.py` | +100 | 3D preview integration |
-| `tests/test_visualizations_3d.py` | 400+ | 26 unit tests |
-| `scripts/check_streamlit_issues.py` | +80 | Scanner improvements |
-
-#### Key Features
-
-- **Plotly 3D Meshes:** Cylinder rebars, box concrete, stirrup tubes
-- **Live Updates:** @st.fragment for independent re-rendering
-- **Caching:** Geometry hash-based cache invalidation
-- **Performance:** <50ms mesh generation verified
-
-#### Scanner Improvements
-
-| Enhancement | Problem | Solution |
-|-------------|---------|----------|
-| `len(x) >= N` patterns | Didn't recognize as bounds check | Regex extraction of comparison value |
-| Ternary guards | `int(x) if x > 0 else 0` flagged | Check for IfExp parents |
-| String input detection | False positives on math ops | `_could_be_string_input()` helper |
+| Area | File | Purpose |
+|------|------|---------|
+| 3D cache fix | `streamlit_app/components/visualizations_3d.py` | Hash handles flat + nested geometry |
+| Beam UI layout | `streamlit_app/pages/01_🏗️_beam_design.py` | Compact 2-column inputs + cleaner results |
+| UI polish | `streamlit_app/utils/layout.py` | Selectbox height + menu styling |
+| CSV schema | `docs/specs/csv-import-schema.md` | ETABS/SAFE/generic formats |
+| SAFE support | `Python/structural_lib/etabs_import.py` | SAFE column mappings |
 
 ---
 
-## 🎯 Session 37 Recommendations
+## 🎯 Session 39 Recommendations
 
-### Priority 1: Status Display (TASK-3D-11) 🔴
+### Priority 1: CSV Parser + Validation (TASK-CSV-02) 🔴
 
-**Goal:** Add safe/unsafe status and utilization % to 3D preview
-- Visual indicator (green/amber/red) based on design status
-- Utilization percentage display
-- Quick win, ~2 hours
+**Goal:** Parse CSV with validation + clear errors (ETABS/SAFE/generic)
+- Schema validation, per-row errors
+- Envelope computation for stations
+- Helpful error messages
 
-### Priority 2: Performance Documentation (TASK-3D-12)
+### Priority 2: File Uploader UI (TASK-CSV-03)
 
-**Goal:** Document performance benchmarks
-- Record <50ms mesh generation proof
-- Add to performance section in docs
+**Goal:** Add CSV upload UI with progress feedback
+- Size checks, preview table
+- Progress + cancel
 
-### Priority 3: v1.0 Preparation (8-12h) 🔵
+### Priority 3: Multi-Beam 3D Scene (TASK-CSV-04) 🔵
 
-**Goal:** Prepare for production release
-- API freeze decisions
-- Migration guides for breaking changes
-- Comprehensive changelog
-- User documentation review
+**Goal:** Multi-beam grid view + camera controls
+- Layout by story/grid
+- Selection highlights + details panel
 
 ---
 

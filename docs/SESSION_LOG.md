@@ -81,15 +81,11 @@ Session 38 completed critical UI fixes and started Phase 2 CSV import work:
 
 **Result:** All 23 ETABS import tests passing
 
-### Commits (PR #378 - Pending)
+### Commits (PR #378 - Merged)
 
 | Commit | Description |
 |--------|-------------|
-| `6902674` | fix(viz): resolve 3D beam cache not refreshing on design changes |
-| `390a5c9` | feat(ui): compact 2-column input layout for beam design |
-| `04d2006` | feat(ui): hide Design Preview after design is computed |
-| `27fb698` | feat(csv): add CSV import schema spec and SAFE format support |
-| TBD | docs: update TASKS.md and SESSION_LOG.md for Session 38 |
+| `b318aa4` | TASK-UI-01: UI improvements and Phase 2 CSV schema (#378) |
 
 ### Lessons Learned
 
@@ -162,13 +158,11 @@ Completed Phase 1 3D Visualization:
 | TASK-CSV-07 | Integration tests | MEDIUM |
 | TASK-CSV-08 | Documentation | LOW |
 
-### Commits (PR #377 - In Progress)
+### Commits (PR #377 - Merged)
 
 | Commit | Description |
 |--------|-------------|
-| `2ac6e26` | feat(ui): add status display with utilization percentages |
-| `204198c` | docs(tasks): update Phase 1 status + add Phase 2 planning |
-| `eef5fd9` | docs(perf): add 3D visualization performance benchmarks |
+| `29ef16b` | TASK-3D-11: Phase 1 completion - status display and performance docs (#377) |
 
 ### Lessons Learned
 

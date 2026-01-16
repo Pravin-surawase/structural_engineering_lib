@@ -141,6 +141,22 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.17.5
+**Date:** 2026-01-14
+**Status:** ✅ Locked & Verified
+**Mindset:** Multi-Objective Optimization + API Validation
+**Tag:** v0.17.5
+
+**Key Changes:**
+- NSGA-II multi-objective optimizer for Pareto-optimal beam designs
+- Cost optimizer UI enhancements with Pareto scatter + best-by-objective views
+- API signature validation in pre-commit + CI
+- Added optimizer tests for non-dominated sorting + crowding distance
+
+**Tests:** 1317 passing (per tag notes)
+
+---
+
 ## v0.16.5
 **Date:** 2026-01-11
 **Status:** ✅ Locked & Verified

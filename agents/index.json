@@ -1,99 +1,19 @@
 {
   "folder": "agents",
   "description": "Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.",
-  "last_updated": "2026-01-10",
-  "file_count": 12,
-  "files": [
-    {
-      "name": "ARCHITECT.md",
-      "title": "ARCHITECT Agent — Role Document",
-      "description": "- Layered architecture and dependency direction - Stable public APIs and schema contracts",
-      "last_updated": "2026-01-07",
-      "size_lines": 80
-    },
-    {
-      "name": "CLIENT.md",
-      "title": "CLIENT (Stakeholder) Agent — Role Document",
-      "description": "- User Stories and Acceptance Criteria - Workflow validation (\"Does this make sense for an engineer?\")",
-      "last_updated": "2025-12-11",
-      "size_lines": 52
-    },
-    {
-      "name": "DEV.md",
-      "title": "DEV Agent — Role Document",
-      "description": "- Clean architecture and proper layering - Library purity (no UI dependencies in core)",
-      "last_updated": "2026-01-08",
-      "size_lines": 100
-    },
-    {
-      "name": "DEVOPS.md",
-      "title": "DEVOPS Agent — Role Document",
-      "description": "- Repo layout and file organization - VBA module export/import workflows",
-      "last_updated": "2026-01-08",
-      "size_lines": 141
-    },
-    {
-      "name": "DOCS.md",
-      "title": "DOCS Agent — Role Document",
-      "description": "- Keep API/README/CHANGELOG/RELEASES/TASKS in sync with code and scope. - Write release notes and append-only ledger updates (respect immutability rules).",
-      "last_updated": "2026-01-08",
-      "size_lines": 32
-    },
-    {
-      "name": "GOVERNANCE.md",
-      "title": "Agent 9: Governance & Sustainability Agent",
-      "description": "> \"Keep the project sustainable, clean, and governable. Channel Agent 6 & Agent 8's exceptional velocity into predictable long-term gains through strategic governance.\" AI agents amplify existing disc",
-      "last_updated": "2026-01-10",
-      "size_lines": 832
-    },
-    {
-      "name": "INTEGRATION.md",
-      "title": "INTEGRATION Agent — Role Document",
-      "description": "- BEAM_INPUT/BEAM_DESIGN schema definitions and versioning. - ETABS/STAAD/CSV mapping rules and validation at import.",
-      "last_updated": "2025-12-11",
-      "size_lines": 49
-    },
-    {
-      "name": "PM.md",
-      "title": "PM (Product Manager) Agent — Role Document",
-      "description": "- **Orchestration:** Assigning tasks to the right specialist agent (DEV, UI, CLIENT, etc.). - **Governance:** Enforcing version control rules and immutable history.",
-      "last_updated": "2026-01-08",
-      "size_lines": 144
-    },
-    {
-      "name": "RESEARCHER.md",
-      "title": "RESEARCHER Agent — Role Document",
-      "description": "- IS Codes (IS 456:2000, IS 13920:2016, SP 16, SP 34) - Algorithms and Numerical Methods (e.g., Bisection method for NA)",
-      "last_updated": "2026-01-08",
-      "size_lines": 59
-    },
-    {
-      "name": "SUPPORT.md",
-      "title": "SUPPORT (Runbook) Agent — Role Document",
-      "description": "- Maintain `docs/reference/troubleshooting.md` and `docs/reference/known-pitfalls.md`. - Capture repro steps, probes, and fixes for recurrent issues (e.g., Mac VBA overflow).",
-      "last_updated": "2026-01-07",
-      "size_lines": 32
-    },
-    {
-      "name": "TESTER.md",
-      "title": "TESTER Agent — Role Document",
-      "description": "- Numerical correctness against hand calculations - Edge case coverage (min/max values, boundary conditions)",
-      "last_updated": "2026-01-08",
-      "size_lines": 98
-    },
-    {
-      "name": "UI.md",
-      "title": "UI (User Interface) Agent — Role Document",
-      "description": "- Worksheet layout and visual hierarchy - User interaction flow (Input -> Process -> Output)",
-      "last_updated": "2025-12-11",
-      "size_lines": 52
-    }
-  ],
+  "last_updated": "2026-01-17",
+  "file_count": 0,
+  "files": [],
   "subfolders": [
     {
       "name": "agent-9",
       "path": "agent-9/",
       "description": "| Document | Purpose | |----------|---------|"
+    },
+    {
+      "name": "roles",
+      "path": "roles/",
+      "description": ""
     }
   ]
 }

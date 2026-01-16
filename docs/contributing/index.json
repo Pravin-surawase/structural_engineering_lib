@@ -1,9 +1,18 @@
 {
   "folder": "docs/contributing",
   "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |",
-  "last_updated": "2026-01-15",
-  "file_count": 28,
+  "last_updated": "2026-01-17",
+  "file_count": 30,
   "files": [
+    {
+      "name": "agent-coding-standards.md",
+      "title": "Agent Coding Standards for structural_lib",
+      "description": "This guide ensures AI agents write code that is: - ✅ Compatible with existing structural_lib code",
+      "last_updated": "2026-01-15",
+      "size_lines": 744,
+      "audience": "AI Agents, Developers",
+      "status": "Approved"
+    },
     {
       "name": "agent-collaboration-framework.md",
       "title": "Agent Collaboration Framework",
@@ -15,7 +24,7 @@
     {
       "name": "agent-onboarding-message.md",
       "title": "First Message for New Agents",
-      "description": "> **Copy-paste this exact message to any new agent starting work on this project.** ```",
+      "description": "> **Copy-paste this exact message to any new agent starting work on this project.** ",
       "last_updated": "2026-01-08",
       "size_lines": 103
     },
@@ -30,14 +39,23 @@
     {
       "name": "changelog-deprecation-template.md",
       "title": "CHANGELOG Template for Deprecations",
-      "description": "This template guides you when adding deprecation entries to `CHANGELOG.md`. Deprecations go under the **`### Deprecated`** section for the **current unreleased version**.",
+      "description": "This template guides you when adding deprecation entries to CHANGELOG.md. Deprecations go under the **### Deprecated** section for the **current unreleased version**.",
       "last_updated": "2026-01-08",
       "size_lines": 177
     },
     {
+      "name": "commit-message-conventions.md",
+      "title": "Git Commit Message Conventions",
+      "description": " <type>(<scope>): <subject>",
+      "last_updated": "2026-01-17",
+      "size_lines": 208,
+      "audience": "All Agents",
+      "status": "Production Ready"
+    },
+    {
       "name": "development-guide.md",
       "title": "IS 456 RC Beam Design Library — Development Guide",
-      "description": "1. [Overview](#1-overview) 2. [Project Structure](#2-project-structure)",
+      "description": "1. Overview 2. Project Structure",
       "last_updated": "2026-01-15",
       "size_lines": 1512,
       "audience": "Developers",
@@ -46,7 +64,7 @@
     {
       "name": "doc-template.md",
       "title": "Documentation Template",
-      "description": "Copy this header to new documentation files and fill in the metadata. - `owner`: Who maintains this doc (Main Agent, Agent 9, User)",
+      "description": "Copy this header to new documentation files and fill in the metadata. - owner: Who maintains this doc (Main Agent, Agent 9, User)",
       "last_updated": "2026-01-13",
       "size_lines": 83,
       "audience": "Developers",
@@ -64,7 +82,7 @@
     {
       "name": "end-of-session-workflow.md",
       "title": "End-of-Session Workflow",
-      "description": "> **Standard procedure for ALL agents when ending a session.** ```bash",
+      "description": "> **Standard procedure for ALL agents when ending a session.** bash",
       "last_updated": "2026-01-13",
       "size_lines": 490,
       "audience": "All Agents",
@@ -73,7 +91,7 @@
     {
       "name": "excel-addin-guide.md",
       "title": "How to Create and Use the Excel Add-in (.xlam)",
-      "description": "This guide explains how to package the VBA library into a reusable Excel Add-in (`StructEngLib.xlam`). 1) Open a new blank Excel workbook.",
+      "description": "This guide explains how to package the VBA library into a reusable Excel Add-in (StructEngLib.xlam). 1) Open a new blank Excel workbook.",
       "last_updated": "2026-01-13",
       "size_lines": 381,
       "audience": "Developers",
@@ -98,7 +116,7 @@
     {
       "name": "github-workflow.md",
       "title": "GitHub Workflow Guide",
-      "description": "```bash ./scripts/should_use_pr.sh --explain",
+      "description": "bash ./scripts/should_use_pr.sh --explain",
       "last_updated": "2026-01-13",
       "size_lines": 287,
       "audience": "All Agents",
@@ -107,7 +125,7 @@
     {
       "name": "handoff.md",
       "title": "Handoff Quick Start",
-      "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: `./scripts/agent_start.sh --quick` (or with `--agent 9` for governance work)",
+      "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: ./scripts/agent_start.sh --quick (or with --agent 9 for governance work)",
       "last_updated": "2026-01-13",
       "size_lines": 87
     },
@@ -141,7 +159,7 @@
     {
       "name": "quickstart-checklist.md",
       "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
-      "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** `streamlit_app/pages/NN_📋_page_name.py`",
+      "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** streamlit_app/pages/NN_📋_page_name.py",
       "last_updated": "2026-01-13",
       "size_lines": 500,
       "audience": "Developers",
@@ -150,7 +168,7 @@
     {
       "name": "repo-professionalism.md",
       "title": "Repo Professionalism Playbook",
-      "description": "This doc does not replace existing rules. It links to the canonical sources and adds a practical \"what to do next\" map. ```bash",
+      "description": "This doc does not replace existing rules. It links to the canonical sources and adds a practical \"what to do next\" map. bash",
       "last_updated": "2026-01-13",
       "size_lines": 207,
       "audience": "All Agents",
@@ -193,7 +211,7 @@
     {
       "name": "streamlit-maintenance-guide.md",
       "title": "Streamlit Maintenance Guide",
-      "description": "> **Purpose:** Your complete reference for developing, testing, validating, and maintaining the Streamlit UI. 1. [Quick Start](#quick-start)",
+      "description": "> **Purpose:** Your complete reference for developing, testing, validating, and maintaining the Streamlit UI. 1. Quick Start",
       "last_updated": "2026-01-13",
       "size_lines": 758
     },
@@ -208,7 +226,7 @@
     {
       "name": "testing-strategy.md",
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
-      "description": "- Location: `Python/tests/` - Runner: `pytest`",
+      "description": "- Location: Python/tests/ - Runner: pytest",
       "last_updated": "2026-01-13",
       "size_lines": 276,
       "audience": "Developers",
@@ -217,7 +235,7 @@
     {
       "name": "vba-guide.md",
       "title": "VBA Library Guide",
-      "description": "Practical guide to consume, ship, and maintain the VBA side of the Structural Engineering Library. - **Current modules:** `M01_Constants` through `M17_Serviceability` plus optional tests in `VBA/Tests",
+      "description": "Practical guide to consume, ship, and maintain the VBA side of the Structural Engineering Library. - **Current modules:** M01_Constants through M17_Serviceability plus optional tests in VBA/Tests.",
       "last_updated": "2026-01-13",
       "size_lines": 65,
       "audience": "Developers",
@@ -226,7 +244,7 @@
     {
       "name": "vba-testing-guide.md",
       "title": "VBA Testing Guide",
-      "description": "1. **Open** the Excel workbook (`Excel/StructEng_BeamDesign_v0.5.xlsm` or `BeamDesignApp.xlsm`) 2. **Press** `Alt+F11` to open the VBA Editor",
+      "description": "1. **Open** the Excel workbook (Excel/StructEng_BeamDesign_v0.5.xlsm or BeamDesignApp.xlsm) 2. **Press** Alt+F11 to open the VBA Editor",
       "last_updated": "2026-01-15",
       "size_lines": 247,
       "audience": "Developers",

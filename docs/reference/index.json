@@ -1,22 +1,40 @@
 {
   "folder": "docs/reference",
   "description": "Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |",
-  "last_updated": "2026-01-15",
-  "file_count": 19,
+  "last_updated": "2026-01-17",
+  "file_count": 22,
   "files": [
+    {
+      "name": "3d-json-contract.md",
+      "title": "",
+      "description": "> **Version:** 1.0.0 > **Purpose:** Defines the JSON schema for exchanging 3D beam geometry between Python (structural_lib) and JavaScript/TypeScript (Three.js viewer).",
+      "last_updated": "2026-01-16",
+      "size_lines": 441,
+      "audience": "Developers, AI Agents",
+      "status": "Production Ready"
+    },
+    {
+      "name": "3d-visualization-performance.md",
+      "title": "3D Visualization Performance Benchmarks",
+      "description": "This document provides performance benchmarks for the 3D beam visualization module (streamlit_app/components/visualizations_3d.py). These benchmarks ensure the visualization meets the <100ms latency t",
+      "last_updated": "2026-01-17",
+      "size_lines": 165,
+      "audience": "Developers",
+      "status": "Production Ready"
+    },
     {
       "name": "agent-automation-pitfalls.md",
       "title": "Agent Automation Pitfalls and Best Practices",
       "description": "<!-- lint-ignore-git --> > ⚠️ **Note:** This document includes manual git examples only to illustrate pitfalls.",
-      "last_updated": "2026-01-13",
-      "size_lines": 622,
+      "last_updated": "2026-01-17",
+      "size_lines": 624,
       "audience": "All Agents",
       "status": "Production Ready"
     },
     {
       "name": "api-stability.md",
       "title": "API Stability",
-      "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows [Semantic Versioning](https://semver.org/):",
+      "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
       "last_updated": "2026-01-14",
       "size_lines": 396,
       "audience": "Developers",
@@ -25,9 +43,9 @@
     {
       "name": "api.md",
       "title": "IS 456 RC Beam Design Library — API Reference",
-      "description": "Machine-readable signatures live in `docs/reference/api-manifest.json`. ```bash",
-      "last_updated": "2026-01-15",
-      "size_lines": 2114,
+      "description": "Machine-readable signatures live in docs/reference/api-manifest.json. bash",
+      "last_updated": "2026-01-16",
+      "size_lines": 2980,
       "audience": "Developers",
       "status": "Production Ready"
     },
@@ -52,7 +70,7 @@
     {
       "name": "deferred-integrations.md",
       "title": "Deferred Integrations Tracker",
-      "description": "- Uses conservative default (0.7) in comparison scoring - Full integration requires `BeamDesignOutput` availability",
+      "description": "- Uses conservative default (0.7) in comparison scoring - Full integration requires BeamDesignOutput availability",
       "last_updated": "2026-01-13",
       "size_lines": 141,
       "audience": "Developers",
@@ -70,7 +88,7 @@
     {
       "name": "dxf-layer-standards.md",
       "title": "DXF Layer Standards & Drawing Conventions",
-      "description": "This document defines CAD layer standards used in DXF drawings exported by the Structural Engineering Library. - [Layer Definitions](#layer-definitions)",
+      "description": "This document defines CAD layer standards used in DXF drawings exported by the Structural Engineering Library. - Layer Definitions",
       "last_updated": "2026-01-13",
       "size_lines": 463,
       "audience": "Developers",
@@ -131,6 +149,15 @@
       "status": "Snapshot"
     },
     {
+      "name": "sdk-api-contract-v1.md",
+      "title": "Structural SDK API Contract — v1.0",
+      "description": "This document defines the public API contract for the Structural SDK. All functions documented here are considered stable and will follow semantic versioning. python",
+      "last_updated": "2026-01-16",
+      "size_lines": 919,
+      "audience": "All Agents, Developers, Testers",
+      "status": "Draft"
+    },
+    {
       "name": "streamlit-validation.md",
       "title": "Streamlit Code Validation Reference",
       "description": "> **For AI Agents:** This guide explains the automated validation system for Streamlit code. The Streamlit validation system consists of two layers:",
@@ -151,7 +178,7 @@
     {
       "name": "troubleshooting.md",
       "title": "Troubleshooting Guide",
-      "description": "Use this when reporting bugs or debugging agent failures: ```bash",
+      "description": "Use this when reporting bugs or debugging agent failures: bash",
       "last_updated": "2026-01-13",
       "size_lines": 313,
       "audience": "Developers",
@@ -160,7 +187,7 @@
     {
       "name": "vba-api-reference.md",
       "title": "VBA API Reference",
-      "description": "All functions are prefixed with `IS456_` and available in any Excel worksheet once the add-in is loaded. - [Core Design Functions](#core-design-functions)",
+      "description": "All functions are prefixed with IS456_ and available in any Excel worksheet once the add-in is loaded. - Core Design Functions",
       "last_updated": "2026-01-13",
       "size_lines": 865,
       "audience": "Developers",
@@ -169,7 +196,7 @@
     {
       "name": "vba-udt-reference.md",
       "title": "VBA User-Defined Types (UDT) Reference",
-      "description": "This document describes all custom data types (UDTs) and enumerations used in the Structural Engineering Library VBA implementation. - [Enumerations](#enumerations)",
+      "description": "This document describes all custom data types (UDTs) and enumerations used in the Structural Engineering Library VBA implementation. - Enumerations",
       "last_updated": "2026-01-13",
       "size_lines": 710,
       "audience": "Developers",
