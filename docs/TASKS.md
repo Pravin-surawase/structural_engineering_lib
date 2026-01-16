@@ -200,6 +200,31 @@
 - Z = height (0 at bottom, depth at top)
 - Units: millimeters throughout
 
+---
+
+### 3D Visualization Program — Phase 1 (Live Preview Foundation) 🔵 ACTIVE
+
+> **Goal:** Live 3D preview on beam design page with <100ms latency
+> **Timeline:** Week 1-2 of 8-week plan (Jan 16 - Jan 31, 2026)
+> **Reference:** [8-week-development-plan.md](planning/8-week-development-plan.md)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-3D-07** | Plotly 3D mesh generation - concrete beam, rebar, stirrups | DEV | 2-3d | 🔴 HIGH | ⏳ Ready |
+| **TASK-3D-08** | Integrate 3D preview into `01_beam_design.py` (two-column layout) | DEV | 1d | 🔴 HIGH | ⏳ Ready |
+| **TASK-3D-09** | Add `@st.fragment` for live updates + debouncing | DEV | 1d | 🔴 HIGH | ⏳ Ready |
+| **TASK-3D-10** | Performance optimization (<50ms mesh generation) | DEV | 1d | 🟠 MEDIUM | ⏳ Blocked by TASK-3D-07 |
+| **TASK-3D-11** | Add status display (safe/unsafe, utilization %) | DEV | 0.5d | 🟠 MEDIUM | ⏳ Blocked by TASK-3D-08 |
+| **TASK-3D-12** | Performance benchmarks documentation | DOCS | 0.5d | 🟡 LOW | ⏳ Blocked by TASK-3D-10 |
+
+**Deliverables:**
+- `streamlit_app/components/visualizations_3d.py` (Plotly mesh generation)
+- Updated `pages/01_beam_design.py` (live preview integration)
+- Unit tests (95%+ coverage)
+- Performance benchmarks documented
+
+---
+
 ### TASK-145: BMD/SFD Visualization Stack ✅ COMPLETE (Session 34)
 
 > **Goal:** Add load diagram computation and visualization

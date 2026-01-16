@@ -74,7 +74,9 @@
         "update_handoff.py": "Update handoff documentation",
         "check_handoff_ready.py": "Validate handoff completeness",
         "check_session_docs.py": "Validate session documentation",
-        "collect_diagnostics.py": "Bundle debug context (env, git, logs)"
+        "collect_diagnostics.py": "Bundle debug context (env, git, logs)",
+        "launch_streamlit.sh": "Launch Streamlit app with env checks",
+        "install_hooks.sh": "Install git hooks (commit-msg validation)"
       }
     },
     "code_validation": {

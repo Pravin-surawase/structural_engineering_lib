@@ -364,7 +364,8 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     self.path_like_vars.add(imported_name)
 
         # Detect imports inside functions (bad practice)
-        if self.in_function:
+        # Exception: Allow imports inside try/except blocks (optional dependencies)
+        if self.in_function and not self._is_in_try_except():
             for alias in node.names:
                 self.add_issue(
                     node.lineno,
@@ -389,7 +390,8 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     self.path_like_vars.add(imported_name)
 
         # Detect imports inside functions
-        if self.in_function:
+        # Exception: Allow imports inside try/except blocks (optional dependencies)
+        if self.in_function and not self._is_in_try_except():
             module = node.module or ""
             self.add_issue(
                 node.lineno,
