@@ -54,7 +54,6 @@ VIEWER_HTML_PATH = Path(__file__).parent.parent / "static" / "beam_viewer_3d.htm
 def render_beam_3d(
     geometry: dict[str, Any] | Beam3DGeometry,
     height: int = 600,
-    key: str | None = None,
 ) -> None:
     """
     Render a 3D beam visualization in Streamlit.
@@ -66,7 +65,6 @@ def render_beam_3d(
         geometry: Either a dict matching BeamGeometry3D schema,
                   or a Beam3DGeometry object with to_dict() method.
         height: Height of the viewer in pixels (default: 600).
-        key: Optional Streamlit key for the component.
 
     Example:
         >>> from structural_lib.visualization.geometry_3d import beam_to_3d_geometry
@@ -95,7 +93,6 @@ def render_beam_3d(
         html_content,
         height=height,
         scrolling=False,
-        key=key,
     )
 
 
@@ -390,7 +387,6 @@ def render_beam_3d_from_detailing(
     detailing: Any,
     is_seismic: bool = False,
     height: int = 600,
-    key: str | None = None,
 ) -> None:
     """
     Convenience function to render 3D view directly from BeamDetailingResult.
@@ -399,7 +395,6 @@ def render_beam_3d_from_detailing(
         detailing: BeamDetailingResult from detailing module.
         is_seismic: True to use 135° stirrup hooks.
         height: Height of viewer in pixels.
-        key: Optional Streamlit key.
 
     Example:
         >>> from structural_lib.codes.is456.detailing import create_beam_detailing
@@ -409,7 +404,7 @@ def render_beam_3d_from_detailing(
     from structural_lib.visualization.geometry_3d import beam_to_3d_geometry
 
     geometry = beam_to_3d_geometry(detailing, is_seismic=is_seismic)
-    render_beam_3d(geometry, height=height, key=key)
+    render_beam_3d(geometry, height=height)
 
 
 # =============================================================================
