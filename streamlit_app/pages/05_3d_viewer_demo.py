@@ -45,7 +45,6 @@ def generate_geometry(
 
     # Calculate bar positions
     half_width = b / 2
-    edge_dist = cover + stirrup_dia + bottom_dia / 2
     available_width = b - 2 * (cover + stirrup_dia) - bottom_dia
 
     # Bottom bars

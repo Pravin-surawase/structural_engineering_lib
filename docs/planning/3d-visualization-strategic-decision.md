@@ -9,6 +9,9 @@
 **Related Tasks:** TASK-3D-VIZ, PR #373
 **Decision Deadline:** January 24, 2026
 
+> NOTE: Three.js source of truth is `docs/research/threejs-visualization-source-of-truth.md`.
+> This decision record is retained for context; update decisions in the source of truth if they change.
+
 ---
 
 ## 🎯 Executive Summary

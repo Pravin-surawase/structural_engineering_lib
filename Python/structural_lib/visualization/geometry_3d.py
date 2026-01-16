@@ -753,6 +753,12 @@ def beam_to_3d_geometry(
     add_zone_rebars(detailing.bottom_bars, bar_type="bottom", is_top=False)
     add_zone_rebars(detailing.top_bars, bar_type="top", is_top=True)
 
+    # Validate stirrups array has expected 3 zones (start, mid, end)
+    if len(detailing.stirrups) < 3:
+        raise ValueError(
+            f"Expected 3 stirrup zones (start, mid, end), got {len(detailing.stirrups)}"
+        )
+
     # Generate stirrups
     stirrup_x_positions = compute_stirrup_positions(
         span=span,

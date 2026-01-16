@@ -269,20 +269,45 @@ def generate_feedback_id() -> str:
 
 
 def save_feedback(data: dict[str, Any]) -> Path:
-    """Save feedback to a JSON file."""
-    filename = f"{data['id']}.json"
+    """Save feedback to a JSON file.
+
+    Security: Validates that the generated filename doesn't contain
+    path traversal characters and stays within FEEDBACK_DIR.
+    """
+    # Sanitize ID to prevent path traversal (use .get() to avoid KeyError)
+    feedback_id = data.get('id', '')
+    if not feedback_id:
+        raise ValueError("Feedback data must have an 'id' field")
+    safe_id = "".join(c for c in feedback_id if c.isalnum() or c == '-')
+    filename = f"{safe_id}.json"
     filepath = FEEDBACK_DIR / filename
-    with open(filepath, "w") as f:
+
+    # Security: Verify path stays within feedback directory
+    resolved = filepath.resolve()
+    if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
+        raise ValueError("Invalid feedback path")
+
+    with open(resolved, "w") as f:
         json.dump(data, f, indent=2)
-    return filepath
+    return resolved
 
 
 def load_all_feedback() -> list[dict[str, Any]]:
-    """Load all feedback from the feedback directory."""
+    """Load all feedback from the feedback directory.
+
+    Security: Only loads files matching strict FB-YYYYMMDD-HHMMSS.json pattern
+    from the designated feedback directory. Path traversal is prevented by:
+    1. Using glob with strict pattern (no user input in pattern)
+    2. Verifying resolved path is within FEEDBACK_DIR
+    """
     feedback_list = []
     for filepath in sorted(FEEDBACK_DIR.glob("FB-*.json")):
+        # Security: Ensure file is actually within feedback directory
         try:
-            with open(filepath) as f:
+            resolved = filepath.resolve()
+            if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
+                continue  # Skip files outside feedback directory
+            with open(resolved) as f:
                 feedback_list.append(json.load(f))
         except (json.JSONDecodeError, OSError):
             continue

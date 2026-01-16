@@ -8,6 +8,9 @@
 **Last Updated:** 2026-01-16
 **Related Tasks:** TASK-3D-VIZ-TECH-EVAL
 
+> NOTE: Three.js source of truth is `docs/research/threejs-visualization-source-of-truth.md`.
+> This document is retained for historical context; avoid updating Three.js details here.
+
 ---
 
 ## Executive Summary
