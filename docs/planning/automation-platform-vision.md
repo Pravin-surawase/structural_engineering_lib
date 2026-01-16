@@ -105,6 +105,14 @@ These are the minimal primitives required to make the platform real:
    - A set of pre-built automations for common workflows
    - Users can fork and customize
 
+6. **Input Adapters**
+   - Excel/CSV import with schema mapping
+   - ETABS/SAP exports where possible
+
+7. **Export Adapters**
+   - PDF/HTML reports
+   - CSV/JSON for downstream tools
+
 ---
 
 ## 6) What Makes This Professional (Non-Negotiables)
@@ -123,6 +131,15 @@ These are the minimal primitives required to make the platform real:
 
 5. **Strict Schema Contracts**
    3D and report outputs must be versioned and validated.
+
+6. **Unit Safety**
+   All inputs and outputs must carry units and validation.
+
+7. **Safe Custom Automation**
+   User-defined workflows must be sandboxed and deterministic.
+
+8. **Data Portability**
+   Users can export inputs, outputs, and reports without lock-in.
 
 ---
 
@@ -177,10 +194,17 @@ Optional paid tiers can be considered later, but not now.
 | Workflow quality varies | Inconsistent results | Verification rules + example tests |
 | Heavy 3D slows UX | Adoption drop | LOD + caching + fallback visuals |
 | Too many features | Confusion | Guided onboarding + templates |
+| Messy imports | Bad inputs | Strict schema mapping + validation |
+| Over-flexibility | Invalid results | Guardrails + safe defaults |
 
 ---
 
 ## 11) Roadmap (Phased and Practical)
+
+### Phase 0: Research and Mapping (Now)
+- Complete Step 1 and Step 2 research
+- List top workflows and Excel patterns
+- Lock top 5 automation targets
 
 ### Phase A: Foundation (Now)
 - Tool registry + versioned APIs
@@ -204,12 +228,34 @@ Optional paid tiers can be considered later, but not now.
 
 ---
 
+## 11.1) Workable Phases (Execution Checklist)
+
+**Phase 0 (Research)**
+- Deliverable: workflow map + tooling gap report
+- Output: top 5 automation shortlist
+
+**Phase 1 (Core Automations)**
+- Deliverable: 3-5 production templates
+- Output: design + detailing + report loop
+
+**Phase 2 (Builder MVP)**
+- Deliverable: workflow schema + basic builder UI
+- Output: users can customize steps safely
+
+**Phase 3 (Scale + Reliability)**
+- Deliverable: batch processing + validation suite
+- Output: stable automation runs for 100+ beams
+
+---
+
 ## 12) Success Metrics
 
 ### Product
 - 80%+ automation success rate without manual intervention
 - <300ms visual update for single-beam changes
 - >90% workflows pass contract validation
+- 30-50% time savings on common workflows
+- <2% manual rework due to template errors
 
 ### Community
 - 50+ reusable automations in the library
@@ -223,20 +269,91 @@ Optional paid tiers can be considered later, but not now.
 This is a multi-step exploration to avoid blind spots:
 
 ### Step 1: User Journeys (Engineer + Student)
-- Map 10-15 repetitive workflows in daily practice
-- Identify where Excel is still dominant
-- Note pain points: time, errors, rework, compliance
+
+**Goal:** Capture real day-to-day workflows and where automation saves time.
+
+**Core engineer journeys (initial map):**
+1. Single beam design + detailing + report (most frequent)
+2. Multi-beam design from ETABS output (batch run)
+3. Compliance check and revision after review comments
+4. BBS and quantity summary for construction coordination
+5. Cost/optimization trade-offs (size vs. steel)
+6. Design review and re-check after client change
+7. Student learning loop: solve → visualize → explain → repeat
+
+**Excel dominance map (where spreadsheets still rule):**
+- Input capture (geometry, loads, materials)
+- Intermediate hand calculations (even after software)
+- Final report formatting and QA checklists
+- Quick sensitivity checks (change span, depth, steel)
+
+**Pain points to solve:**
+- Manual rework after every parameter change
+- Hard-to-track assumptions and revisions
+- Lack of visual validation for detailing
+- No single source of truth for calculations + reports
+- Inconsistent templates across firms
+
+**Outputs we must support:**
+- Calculation summary
+- Detailing summary (bars, spacing, layers)
+- Compliance check results
+- Visual confirmation (2D + 3D)
+- Exportable reports (PDF/HTML)
+
+**Initial findings (draft):**
+- The same 6-8 steps are repeated per beam across firms.
+- Excel persists because it is fast for "what-if" changes.
+- A one-click "recompute + re-render + report" loop saves the most time.
+
+**Deliverables for Step 1:**
+- A list of 10-15 workflows with inputs, outputs, and time cost
+- A list of spreadsheet formats we must ingest
+- A priority rank based on time saved and error reduction
 
 ### Step 2: Tooling Landscape
-- Compare ETABS, SAFE, STAAD, Tekla, Tedds, Excel templates
-- Identify what they do well vs. what they do not automate
-- Look for gaps in automation + explanation + visualization
+
+**Goal:** Identify what existing tools do well and where they break.
+
+**Tools and strengths:**
+- **ETABS/SAFE/STAAD**: Strong analysis + batch load combinations
+- **Tekla/Revit**: Excellent BIM and detailing visualization
+- **Tedds/Mathcad/Excel**: Flexible calculations and custom templates
+
+**Common weaknesses (gaps we can fill):**
+- Weak explainability (hard to trace steps)
+- Limited automation for repetitive workflows
+- Poor integration between calculation and visualization
+- Outputs not structured for reuse or AI tooling
+- Inconsistent QA across files/teams
+
+**Integration gaps to solve:**
+- ETABS → design → detailing → visualization loop
+- Excel → API → validated report
+- BIM model vs. code check mismatches
+
+**Opportunity map:**
+- A unified "calculate + validate + visualize + explain" loop
+- A repeatable template system for firms and students
+- A free core that replaces 80% of spreadsheet tasks
+
+**Initial findings (draft):**
+- Analysis tools are strong, but workflow glue is missing.
+- Visualization is not connected to code checks in most tools.
+- Students need a guided path, not a blank sheet.
+
+**Deliverables for Step 2:**
+- A short gap matrix (tool vs. capability)
+- A list of "must-integrate" formats (CSV, DXF, PDF)
+- A shortlist of features we can own (explain + visualize + validate)
 
 ### Step 3: Platform Angles (Multiple Value Paths)
 - Productivity: speed, repeatability, batch workflows
 - Education: explainable steps, visual feedback
 - QA/Compliance: traceability, audit logs
 - Collaboration: share templates within firms
+ - Interoperability: import/export to common formats
+ - Trust: deterministic results + reproducible reports
 
 ### Step 4: MVP Scope and Priorities
 - Identify top 5 automations with highest time savings
@@ -292,6 +409,26 @@ This is a multi-step exploration to avoid blind spots:
 - Allow users to add small scripts that call tools
 - Keep all outputs validated through contracts
 - Maintain deterministic execution
+
+### J) Parametric Study Pack
+- Sweep depth/width for cost and compliance
+- Produce "best" options with justification
+- Visualize changes in 3D
+
+### K) Drawing + BOQ Prep
+- Bar schedule export (CSV + PDF)
+- Quantity summary and material takeoff
+- Consistent naming conventions
+
+### L) Classroom Mode
+- Guided exercises with "check my work"
+- Auto-generated practice problems
+- Visual step-by-step feedback
+
+### M) Review Checklist Pack
+- Structural QA checklist automation
+- Recheck after edits and revision logs
+- Highlight deviations from initial assumptions
 
 ---
 
