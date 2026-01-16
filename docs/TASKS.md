@@ -210,12 +210,12 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-3D-07** | Plotly 3D mesh generation - concrete beam, rebar, stirrups | DEV | 2-3d | 🔴 HIGH | ⏳ Ready |
-| **TASK-3D-08** | Integrate 3D preview into `01_beam_design.py` (two-column layout) | DEV | 1d | 🔴 HIGH | ⏳ Ready |
-| **TASK-3D-09** | Add `@st.fragment` for live updates + debouncing | DEV | 1d | 🔴 HIGH | ⏳ Ready |
-| **TASK-3D-10** | Performance optimization (<50ms mesh generation) | DEV | 1d | 🟠 MEDIUM | ⏳ Blocked by TASK-3D-07 |
-| **TASK-3D-11** | Add status display (safe/unsafe, utilization %) | DEV | 0.5d | 🟠 MEDIUM | ⏳ Blocked by TASK-3D-08 |
-| **TASK-3D-12** | Performance benchmarks documentation | DOCS | 0.5d | 🟡 LOW | ⏳ Blocked by TASK-3D-10 |
+| **TASK-3D-07** | Plotly 3D mesh generation - concrete beam, rebar, stirrups | DEV | 2-3d | 🔴 HIGH | ✅ Done (Session 36) |
+| **TASK-3D-08** | Integrate 3D preview into `01_beam_design.py` (two-column layout) | DEV | 1d | 🔴 HIGH | ✅ Done (Session 36) |
+| **TASK-3D-09** | Add `@st.fragment` for live updates + debouncing | DEV | 1d | 🔴 HIGH | ✅ Done (Session 36) |
+| **TASK-3D-10** | Performance optimization (<50ms mesh generation) | DEV | 1d | 🟠 MEDIUM | ✅ Done - Performance verified <50ms |
+| **TASK-3D-11** | Add status display (safe/unsafe, utilization %) | DEV | 0.5d | 🟠 MEDIUM | ⏳ Ready |
+| **TASK-3D-12** | Performance benchmarks documentation | DOCS | 0.5d | 🟡 LOW | ⏳ Ready |
 
 **Deliverables:**
 - `streamlit_app/components/visualizations_3d.py` (Plotly mesh generation)
