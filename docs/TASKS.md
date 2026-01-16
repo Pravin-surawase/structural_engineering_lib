@@ -235,7 +235,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-CSV-01** | CSV schema definition (ETABS/SAFE format compatibility) | DEV | 0.5d | 🔴 HIGH | ⏳ Ready |
+| **TASK-CSV-01** | CSV schema definition (ETABS/SAFE format compatibility) | DEV | 0.5d | 🔴 HIGH | ✅ Done (Session 38) |
 | **TASK-CSV-02** | CSV parser with validation + error reporting | DEV | 1d | 🔴 HIGH | ⏳ Ready |
 | **TASK-CSV-03** | File uploader UI with progress feedback | DEV | 0.5d | 🔴 HIGH | ⏳ Blocked by CSV-02 |
 | **TASK-CSV-04** | Multi-beam 3D scene (grid layout, camera controls) | DEV | 1-2d | 🔴 HIGH | ⏳ Blocked by CSV-03 |

@@ -352,6 +352,57 @@ class TestComputeGeometryHash:
 
         assert hash1 == hash2
 
+    def test_hash_flat_dict_format(self):
+        """Test that flat dict format (from beam_design.py) works."""
+        geometry = {
+            "b": 300,
+            "D": 450,
+            "span": 4000,
+            "bottom_bars": [(0, -96, 52), (0, 0, 52), (0, 96, 52)],
+            "top_bars": [(0, -96, 398), (0, 96, 398)],
+            "bar_dia": 16,
+            "stirrup_positions": [100, 200, 300],
+            "stirrup_dia": 8,
+            "cover": 40,
+        }
+
+        hash1 = compute_geometry_hash(geometry)
+        hash2 = compute_geometry_hash(geometry)
+
+        assert hash1 == hash2
+        assert len(hash1) == 32
+
+    def test_hash_flat_changes_with_bars(self):
+        """Test that different bar positions produce different hash."""
+        geom1 = {
+            "b": 300,
+            "D": 450,
+            "span": 4000,
+            "bottom_bars": [(0, -96, 52), (0, 0, 52)],
+            "top_bars": [],
+            "bar_dia": 16,
+            "stirrup_positions": [],
+            "stirrup_dia": 8,
+            "cover": 40,
+        }
+
+        geom2 = {
+            "b": 300,
+            "D": 450,
+            "span": 4000,
+            "bottom_bars": [(0, -96, 52), (0, 0, 52), (0, 96, 52)],  # Added bar
+            "top_bars": [],
+            "bar_dia": 16,
+            "stirrup_positions": [],
+            "stirrup_dia": 8,
+            "cover": 40,
+        }
+
+        hash1 = compute_geometry_hash(geom1)
+        hash2 = compute_geometry_hash(geom2)
+
+        assert hash1 != hash2
+
     def test_hash_changes_with_dimensions(self):
         """Test that different dimensions produce different hash."""
         geom1 = {

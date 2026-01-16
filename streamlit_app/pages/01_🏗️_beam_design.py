@@ -174,47 +174,54 @@ with col_input:
         # Compact header (NO theme toggle - it uses st.sidebar which is forbidden in fragments)
         st.subheader("📋 Inputs")
 
-        # Section 1: Geometry (compact)
+        # Section 1: Geometry (compact 2-column layout)
         st.markdown("**📏 Geometry**")
 
-    span, span_valid = dimension_input(
-        label="Span",
-        min_value=1000.0,
-        max_value=12000.0,
-        default_value=st.session_state.beam_inputs["span_mm"],
-        unit="mm",
-        help_text="Clear span between supports (typ. 3000-8000mm)",
-        key="input_span",
-        show_validation=False,
-    )
-    st.session_state.beam_inputs["span_mm"] = span
+    # Row 1: Span + Width (side by side)
+    col_span, col_width = st.columns(2)
+    with col_span:
+        span, span_valid = dimension_input(
+            label="Span",
+            min_value=1000.0,
+            max_value=12000.0,
+            default_value=st.session_state.beam_inputs["span_mm"],
+            unit="mm",
+            help_text="Clear span (typ. 3000-8000mm)",
+            key="input_span",
+            show_validation=False,
+        )
+        st.session_state.beam_inputs["span_mm"] = span
+
+    with col_width:
+        b, b_valid = dimension_input(
+            label="Width",
+            min_value=150.0,
+            max_value=600.0,
+            default_value=st.session_state.beam_inputs["b_mm"],
+            unit="mm",
+            help_text="Beam width (typ. D/2 to D/3)",
+            key="input_b",
+            show_validation=False,
+        )
+        st.session_state.beam_inputs["b_mm"] = b
 
     # Span-based depth recommendation
     recommended_D = span / 12  # span/10 to span/15 typical
 
-    b, b_valid = dimension_input(
-        label="Width",
-        min_value=150.0,
-        max_value=600.0,
-        default_value=st.session_state.beam_inputs["b_mm"],
-        unit="mm",
-        help_text="Beam width (typ. D/2 to D/3)",
-        key="input_b",
-        show_validation=False,
-    )
-    st.session_state.beam_inputs["b_mm"] = b
-
-    D, D_valid = dimension_input(
-        label="Total Depth",
-        min_value=200.0,
-        max_value=900.0,
-        default_value=st.session_state.beam_inputs["D_mm"],
-        unit="mm",
-        help_text=f"Recommended: {recommended_D:.0f}mm (span/12 for typical beam)",
-        key="input_D",
-        show_validation=False,
-    )
-    st.session_state.beam_inputs["D_mm"] = D
+    # Row 2: Total Depth + Effective Depth (side by side)
+    col_D, col_d = st.columns(2)
+    with col_D:
+        D, D_valid = dimension_input(
+            label="Total Depth",
+            min_value=200.0,
+            max_value=900.0,
+            default_value=st.session_state.beam_inputs["D_mm"],
+            unit="mm",
+            help_text=f"Rec: {recommended_D:.0f}mm (span/12)",
+            key="input_D",
+            show_validation=False,
+        )
+        st.session_state.beam_inputs["D_mm"] = D
 
     # Smart effective depth: suggest based on D and typical cover
     # Get cover from current exposure selection
@@ -223,17 +230,18 @@ with col_input:
     # Typical effective depth = D - cover - bar_dia/2 (assume 20mm bar)
     suggested_d = D - cover - 10  # cover + half bar diameter
 
-    d, d_valid = dimension_input(
-        label="Effective Depth",
-        min_value=150.0,
-        max_value=850.0,
-        default_value=st.session_state.beam_inputs["d_mm"],
-        unit="mm",
-        help_text=f"Suggested: {suggested_d:.0f}mm (D - cover - bar/2)",
-        key="input_d",
-        show_validation=False,
-    )
-    st.session_state.beam_inputs["d_mm"] = d
+    with col_d:
+        d, d_valid = dimension_input(
+            label="Effective Depth",
+            min_value=150.0,
+            max_value=850.0,
+            default_value=st.session_state.beam_inputs["d_mm"],
+            unit="mm",
+            help_text=f"Suggested: {suggested_d:.0f}mm",
+            key="input_d",
+            show_validation=False,
+        )
+        st.session_state.beam_inputs["d_mm"] = d
 
     # Validation: d must be less than D with meaningful cover
     min_cover_plus_bar = 40  # Minimum cover + half bar diameter
@@ -242,28 +250,31 @@ with col_input:
         d_valid = False
     elif d > D - min_cover_plus_bar:
         st.warning(
-            f"⚠️ d={d:.0f}mm leaves only {D-d:.0f}mm cover. Minimum: {min_cover_plus_bar}mm"
+            f"⚠️ d={d:.0f}mm leaves only {D-d:.0f}mm cover. Min: {min_cover_plus_bar}mm"
         )
         # Still valid but warn user
 
-    # Section 2: Materials (compact)
+    # Section 2: Materials (compact 2-column layout)
     st.markdown("**🧱 Materials**")
 
-    concrete = material_selector(
-        material_type="concrete",
-        default_grade=st.session_state.beam_inputs["concrete_grade"],
-        key="input_concrete",
-        show_properties=False,
-    )
-    st.session_state.beam_inputs["concrete_grade"] = concrete["grade"]
+    col_conc, col_steel = st.columns(2)
+    with col_conc:
+        concrete = material_selector(
+            material_type="concrete",
+            default_grade=st.session_state.beam_inputs["concrete_grade"],
+            key="input_concrete",
+            show_properties=False,
+        )
+        st.session_state.beam_inputs["concrete_grade"] = concrete["grade"]
 
-    steel = material_selector(
-        material_type="steel",
-        default_grade=st.session_state.beam_inputs["steel_grade"],
-        key="input_steel",
-        show_properties=False,
-    )
-    st.session_state.beam_inputs["steel_grade"] = steel["grade"]
+    with col_steel:
+        steel = material_selector(
+            material_type="steel",
+            default_grade=st.session_state.beam_inputs["steel_grade"],
+            key="input_steel",
+            show_properties=False,
+        )
+        st.session_state.beam_inputs["steel_grade"] = steel["grade"]
 
     # Section 3: Loading (compact)
     st.markdown("**⚖️ Loading**")
@@ -276,7 +287,9 @@ with col_input:
     st.session_state.beam_inputs["mu_knm"] = loads["mu_knm"]
     st.session_state.beam_inputs["vu_kn"] = loads["vu_kn"]
 
-    # Section 4: Exposure & Support (compact - side by side)
+    # Section 4: Exposure & Support (compact 2-column layout)
+    st.markdown("**🌍 Environment**")
+
     col_exp, col_sup = st.columns(2)
 
     with col_exp:
@@ -387,57 +400,51 @@ with col_input:
 
 # Right column: Preview or Results
 with col_preview:
-    st.header("📊 Design Preview")
+    # Only show Design Preview header and geometry expander BEFORE design is computed
+    design_computed = st.session_state.beam_inputs.get("design_computed", False)
 
-    # Show geometry preview (without reinforcement until analyzed)
-    with st.expander(
-        "📐 Geometry Preview",
-        expanded=not st.session_state.beam_inputs.get("design_computed", False),
-    ):
-        # Get current exposure for cover (using centralized constants)
-        cover = get_cover_for_exposure(st.session_state.beam_inputs["exposure"])
+    if not design_computed:
+        st.header("📊 Design Preview")
 
-        # Only show reinforcement AFTER design is computed
-        if st.session_state.beam_inputs.get("design_computed", False):
-            bar_dia = 16  # Placeholder
-            rebar_y = cover + bar_dia / 2
-            rebar_positions = [
-                (cover + bar_dia / 2, rebar_y),
-                (st.session_state.beam_inputs["b_mm"] / 2, rebar_y),
-                (st.session_state.beam_inputs["b_mm"] - cover - bar_dia / 2, rebar_y),
-            ]
-            xu = st.session_state.beam_inputs["d_mm"] * 0.33
-        else:
+        # Show geometry preview (without reinforcement until analyzed)
+        with st.expander(
+            "📐 Geometry Preview",
+            expanded=True,
+        ):
+            # Get current exposure for cover (using centralized constants)
+            cover = get_cover_for_exposure(st.session_state.beam_inputs["exposure"])
+
             # No reinforcement shown before analysis
             rebar_positions = []
             xu = None
             bar_dia = 0
 
-        fig = create_cached_beam_diagram(
-            b_mm=st.session_state.beam_inputs["b_mm"],
-            D_mm=st.session_state.beam_inputs["D_mm"],
-            d_mm=st.session_state.beam_inputs["d_mm"],
-            rebar_positions=rebar_positions,
-            xu=xu,
-            bar_dia=bar_dia,
-            cover=cover,
-            compression_positions=None,  # No compression steel in preview
-            stirrup_dia=0,  # No stirrups in preview
-            stirrup_spacing=0,
-        )
-        st.plotly_chart(fig, width="stretch")
+            fig = create_cached_beam_diagram(
+                b_mm=st.session_state.beam_inputs["b_mm"],
+                D_mm=st.session_state.beam_inputs["D_mm"],
+                d_mm=st.session_state.beam_inputs["d_mm"],
+                rebar_positions=rebar_positions,
+                xu=xu,
+                bar_dia=bar_dia,
+                cover=cover,
+                compression_positions=None,  # No compression steel in preview
+                stirrup_dia=0,  # No stirrups in preview
+                stirrup_spacing=0,
+            )
+            st.plotly_chart(fig, width="stretch")
 
-        # Show dimensions
-        st.caption(
-            f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)"
-        )
-        if not st.session_state.beam_inputs.get("design_computed", False):
+            # Show dimensions
+            st.caption(
+                f"📏 {st.session_state.beam_inputs['b_mm']:.0f} × {st.session_state.beam_inputs['D_mm']:.0f} mm (d={st.session_state.beam_inputs['d_mm']:.0f}mm)"
+            )
             st.info("ℹ️ Click 'Analyze Design' to see reinforcement")
 
-    st.divider()
+        st.divider()
 
     # Show results if computed
-    if st.session_state.beam_inputs.get("design_computed", False):
+    if design_computed:
+        st.header("✅ Design Results")
+
         # Show full results (existing tabs - moved from main area)
         result = st.session_state.beam_inputs["design_result"]
 
@@ -842,7 +849,7 @@ with col_preview:
                         stirrup_positions=geom["stirrup_positions"],
                         stirrup_diameter=geom["stirrup_dia"],
                         cover=geom["cover"],
-                        height=500,
+                        height=450,
                         show_legend=True,
                         show_info_panel=True,
                     )
@@ -850,7 +857,11 @@ with col_preview:
                     st.session_state[cache_key] = {"hash": geom_hash, "figure": fig_3d}
                     cached = st.session_state[cache_key]
 
-                st.plotly_chart(cached["figure"], width="stretch", key="beam_3d_viz")
+                # Use hash in key to force Streamlit to re-render when geometry changes
+                st.plotly_chart(
+                    cached["figure"],
+                    key=f"beam_3d_viz_{geom_hash[:8]}",
+                )
                 st.caption(
                     "🖱️ **Controls:** Drag to rotate | Scroll to zoom | Right-click to pan"
                 )

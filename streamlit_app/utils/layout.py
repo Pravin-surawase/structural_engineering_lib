@@ -314,8 +314,7 @@ def inject_modern_css(config: LayoutConfig = DEFAULT_LAYOUT) -> None:
 
     /* ==================== INPUTS ==================== */
     .stNumberInput > div > div > input,
-    .stTextInput > div > div > input,
-    .stSelectbox > div > div > div {{
+    .stTextInput > div > div > input {{
         font-family: {TYPOGRAPHY.font_mono};
         font-size: {TYPOGRAPHY.body_md};
         padding: {SPACING.space_3};
@@ -325,9 +324,43 @@ def inject_modern_css(config: LayoutConfig = DEFAULT_LAYOUT) -> None:
         background: white;
     }}
 
+    /* Selectbox - fixed height and line-height for text visibility */
+    .stSelectbox > div > div {{
+        border: 2px solid {COLORS.gray_300};
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+        background: white;
+        min-height: 44px !important;
+    }}
+
+    .stSelectbox > div > div > div {{
+        font-family: {TYPOGRAPHY.font_ui};
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+        padding: 10px 12px !important;
+        min-height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }}
+
+    /* Dropdown menu options */
+    [data-baseweb="popover"] {{
+        z-index: 10000 !important;
+    }}
+
+    [data-baseweb="menu"] li {{
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+        min-height: 40px !important;
+        padding: 10px 12px !important;
+    }}
+
     .stNumberInput > div > div > input:focus,
     .stTextInput > div > div > input:focus,
-    .stSelectbox > div > div > div:focus-within {{
+    .stSelectbox > div > div:focus-within {{
         border-color: {COLORS.primary_500};
         box-shadow: 0 0 0 3px {COLORS.primary_100};
         outline: none;
