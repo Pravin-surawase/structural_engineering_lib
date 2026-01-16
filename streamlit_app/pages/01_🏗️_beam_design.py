@@ -721,34 +721,31 @@ with col_preview:
             st.dataframe(df_schedule, width="stretch", hide_index=True)
 
             # ----------------------------------------------------------------
-            # 3D Beam Visualization (TASK-3D-08)
+            # 3D Beam Visualization (TASK-3D-08 + TASK-3D-09 Live Updates)
             # ----------------------------------------------------------------
             st.divider()
             st.subheader("🏗️ 3D Beam Visualization")
 
-            # Calculate 3D bar positions from design result
+            # Prepare geometry data for 3D visualization
             span_mm_3d = st.session_state.beam_inputs.get("span_mm", 4000)
             cover_3d = detailing.get("cover", 40)
             stirrup_dia_3d = shear.get("stirrup_dia", 8)
 
             # Convert 2D rebar positions to 3D format
-            # Y in 3D = X in 2D (across width, centered at 0)
-            # Z in 3D = Y in 2D (depth from bottom)
             bottom_bars_3d = []
             for pos in rebar_positions:
                 if len(pos) >= 2:
-                    y_3d = pos[0] - b_mm / 2  # Center at Y=0
-                    z_3d = pos[1]  # Same as 2D (from bottom)
+                    y_3d = pos[0] - b_mm / 2
+                    z_3d = pos[1]
                     bottom_bars_3d.append((0, y_3d, z_3d))
 
             top_bars_3d = []
             for pos in compression_positions:
                 if len(pos) >= 2:
-                    y_3d = pos[0] - b_mm / 2  # Center at Y=0
-                    z_3d = pos[1]  # Same as 2D
+                    y_3d = pos[0] - b_mm / 2
+                    z_3d = pos[1]
                     top_bars_3d.append((0, y_3d, z_3d))
 
-            # If no top bars from compression, add default holding bars
             if not top_bars_3d:
                 edge_dist = cover_3d + stirrup_dia_3d + bar_dia / 2
                 available_width = b_mm - 2 * edge_dist
@@ -757,33 +754,69 @@ with col_preview:
                     (0, available_width / 2, D_mm - edge_dist),
                 ]
 
-            # Generate stirrup positions (use safe int conversion)
             stirrup_start = max(1, int(stirrup_spacing / 2)) if stirrup_spacing > 0 else 50
             stirrup_end = max(1, int(span_mm_3d)) if span_mm_3d > 0 else 4000
             stirrup_step = max(50, int(stirrup_spacing)) if stirrup_spacing > 0 else 100
             stirrup_positions_3d = list(range(stirrup_start, stirrup_end, stirrup_step))
 
-            # Create 3D figure
-            fig_3d = create_beam_3d_figure(
-                b=b_mm,
-                D=D_mm,
-                span=span_mm_3d,
-                bottom_bars=bottom_bars_3d if bottom_bars_3d else None,
-                top_bars=top_bars_3d if top_bars_3d else None,
-                bar_diameter=bar_dia,
-                stirrup_positions=stirrup_positions_3d,
-                stirrup_diameter=stirrup_dia_3d,
-                cover=cover_3d,
-                height=500,
-                show_legend=True,
-                show_info_panel=True,
-            )
+            # Build geometry dict for hashing and fragment
+            geometry_3d = {
+                "b": b_mm,
+                "D": D_mm,
+                "span": span_mm_3d,
+                "bottom_bars": bottom_bars_3d,
+                "top_bars": top_bars_3d,
+                "bar_diameter": bar_dia,
+                "stirrup_positions": stirrup_positions_3d,
+                "stirrup_diameter": stirrup_dia_3d,
+                "cover": cover_3d,
+            }
 
-            st.plotly_chart(fig_3d, use_container_width=True, key="beam_3d_viz")
+            # Compute geometry hash for cache invalidation
+            geometry_hash = compute_geometry_hash(geometry_3d)
 
-            st.caption(
-                "🖱️ **Controls:** Drag to rotate | Scroll to zoom | Right-click to pan"
-            )
+            # TASK-3D-09: Fragment for live 3D updates
+            @st.fragment
+            def render_3d_beam_preview(geom: dict, geom_hash: str):
+                """Render 3D beam preview with caching based on geometry hash.
+
+                Using @st.fragment allows this section to update independently
+                without triggering full page re-render.
+                """
+                # Use session state to cache figure by geometry hash
+                cache_key = "beam_3d_cache"
+                if cache_key not in st.session_state:
+                    st.session_state[cache_key] = {"hash": "", "figure": None}
+
+                cached = st.session_state[cache_key]
+
+                # Only regenerate if geometry changed
+                if cached["hash"] != geom_hash or cached["figure"] is None:
+                    fig_3d = create_beam_3d_figure(
+                        b=geom["b"],
+                        D=geom["D"],
+                        span=geom["span"],
+                        bottom_bars=geom["bottom_bars"] if geom["bottom_bars"] else None,
+                        top_bars=geom["top_bars"] if geom["top_bars"] else None,
+                        bar_diameter=geom["bar_diameter"],
+                        stirrup_positions=geom["stirrup_positions"],
+                        stirrup_diameter=geom["stirrup_diameter"],
+                        cover=geom["cover"],
+                        height=500,
+                        show_legend=True,
+                        show_info_panel=True,
+                    )
+                    # Update cache
+                    st.session_state[cache_key] = {"hash": geom_hash, "figure": fig_3d}
+                    cached = st.session_state[cache_key]
+
+                st.plotly_chart(cached["figure"], use_container_width=True, key="beam_3d_viz")
+                st.caption(
+                    "🖱️ **Controls:** Drag to rotate | Scroll to zoom | Right-click to pan"
+                )
+
+            # Call fragment with current geometry
+            render_3d_beam_preview(geometry_3d, geometry_hash)
 
             # ----------------------------------------------------------------
             # BMD/SFD Diagram Section (TASK-145.9)
