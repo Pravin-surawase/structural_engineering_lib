@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-16 (Session 35 - 3D Visualization Phase 0 in review)
+**Updated:** 2026-01-16 (Session 35 - 3D Visualization Phase 0 COMPLETE ✅)
 
-> **Session 35 Progress:** PR #373 open for TASK-3D-01 through TASK-3D-05 (Phase 0 MVP). CI fixes in progress before merge.
+> **Session 35 Completion:** PR #373 merged! 3D Visualization Phase 0 MVP complete. 9,833 lines added across 28 files.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -166,19 +166,19 @@
 
 > **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. All PRs merged.
 
-### 3D Visualization Program — Phase 0 (Feasibility + Library Prep) 🟡 IN REVIEW
+### 3D Visualization Program — Phase 0 (Feasibility + Library Prep) ✅ COMPLETE
 
 > **Goal:** Prove Streamlit iframe/postMessage in production, ship a professional 3D data contract, and prep core library geometry.
 > **Decision:** If iframe is blocked, ship Plotly 3D MVP while continuing library geometry work.
-> **Completion:** Pending PR #373 merge (branch `task/TASK-3D-01`)
+> **Completion:** PR #373 merged 2026-01-16 (Session 35)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-3D-01** | Streamlit Cloud iframe + postMessage POC (go/no-go) | DEVOPS | 1d | 🔴 HIGH | 🟡 In review (PR #373) |
-| **TASK-3D-02** | Define 3D JSON contract + sample payload + api.md entry | DOCS | 1d | 🔴 HIGH | 🟡 In review (PR #373) |
-| **TASK-3D-03** | Add `structural_lib.visualization.geometry_3d` core dataclasses + compute functions | DEV | 2d | 🔴 HIGH | 🟡 In review (PR #373) |
-| **TASK-3D-04** | Implement `BeamDetailingResult.to_3d_json()` | DEV | 1d | 🟠 MEDIUM | 🟡 In review (PR #373) |
-| **TASK-3D-05** | Geometry tests (>=90% module coverage) | TESTER | 1d | 🟠 MEDIUM | 🟡 In review (PR #373) |
+| **TASK-3D-01** | Streamlit Cloud iframe + postMessage POC (go/no-go) | DEVOPS | 1d | 🔴 HIGH | ✅ Complete (PR #373) |
+| **TASK-3D-02** | Define 3D JSON contract + sample payload + api.md entry | DOCS | 1d | 🔴 HIGH | ✅ Complete (PR #373) |
+| **TASK-3D-03** | Add `structural_lib.visualization.geometry_3d` core dataclasses + compute functions | DEV | 2d | 🔴 HIGH | ✅ Complete (PR #373) |
+| **TASK-3D-04** | Implement `BeamDetailingResult.to_3d_json()` | DEV | 1d | 🟠 MEDIUM | ✅ Complete (PR #373) |
+| **TASK-3D-05** | Geometry tests (>=90% module coverage) | TESTER | 1d | 🟠 MEDIUM | ✅ Complete (PR #373) |
 | **TASK-3D-06** | Automation: `check_3d_payload.py` + pre-commit/CI hook | DEVOPS | 1d | 🟠 MEDIUM | ⏳ Backlog (V1.1) |
 
 **Technical Achievements:**
