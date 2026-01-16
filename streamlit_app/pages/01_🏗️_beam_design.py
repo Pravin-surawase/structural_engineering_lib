@@ -726,6 +726,46 @@ with col_preview:
             st.divider()
             st.subheader("🏗️ 3D Beam Visualization")
 
+            # ----------------------------------------------------------------
+            # TASK-3D-11: Status Display (safe/unsafe, utilization %)
+            # ----------------------------------------------------------------
+            # Calculate utilization percentages
+            ast_req = flexure.get("ast_required", 0)
+            ast_prov = flexure.get("ast_provided", 0)
+            flexure_util = (ast_req / ast_prov * 100) if ast_prov > 0 else 0
+
+            vu = shear.get("vu", 0)
+            vu_capacity = shear.get("vu_capacity", shear.get("vu_c", 0))
+            shear_util = (vu / vu_capacity * 100) if vu_capacity > 0 else 0
+
+            # Determine overall status
+            is_flexure_safe = ast_prov >= ast_req if ast_req > 0 else True
+            is_shear_safe = vu_capacity >= vu if vu > 0 else True
+            is_safe = is_flexure_safe and is_shear_safe
+
+            # Status display with colored indicators
+            # Using tuple unpacking to avoid IndexError (scanner-safe pattern)
+            status_col1, status_col2, status_col3 = st.columns([1, 1, 1])
+            with status_col1:
+                if is_safe:
+                    st.success("✅ **SAFE**")
+                else:
+                    st.error("❌ **UNSAFE**")
+
+            with status_col2:
+                flexure_color = "green" if flexure_util <= 90 else "orange" if flexure_util <= 100 else "red"
+                st.markdown(
+                    f"**Flexure:** <span style='color:{flexure_color}'>{flexure_util:.1f}%</span>",
+                    unsafe_allow_html=True,
+                )
+
+            with status_col3:
+                shear_color = "green" if shear_util <= 90 else "orange" if shear_util <= 100 else "red"
+                st.markdown(
+                    f"**Shear:** <span style='color:{shear_color}'>{shear_util:.1f}%</span>",
+                    unsafe_allow_html=True,
+                )
+
             # Prepare geometry data for 3D visualization
             span_mm_3d = st.session_state.beam_inputs.get("span_mm", 4000)
             cover_3d = detailing.get("cover", 40)
