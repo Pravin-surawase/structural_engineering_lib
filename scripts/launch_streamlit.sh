@@ -244,6 +244,28 @@ else
     log_success "All critical dependencies installed"
 fi
 
+# Check 8: Run code scanner for runtime issues
+log_step "Running code scanner on Streamlit pages..."
+SCANNER_SCRIPT="$PROJECT_ROOT/scripts/check_streamlit_issues.py"
+if [ -f "$SCANNER_SCRIPT" ]; then
+    SCAN_OUTPUT=$("$PYTHON_CMD" "$SCANNER_SCRIPT" --all-pages 2>&1 || true)
+    # Parse only the summary line counts
+    CRITICAL_COUNT=$(echo "$SCAN_OUTPUT" | grep -E "^\s*- Critical:" | grep -oE "[0-9]+" | head -1 || echo "0")
+    HIGH_COUNT=$(echo "$SCAN_OUTPUT" | grep -E "^\s*- High:" | grep -oE "[0-9]+" | head -1 || echo "0")
+    CRITICAL_COUNT="${CRITICAL_COUNT:-0}"
+    HIGH_COUNT="${HIGH_COUNT:-0}"
+
+    if [ "$CRITICAL_COUNT" -gt 0 ] 2>/dev/null || [ "$HIGH_COUNT" -gt 0 ] 2>/dev/null; then
+        log_error "Code scanner found $CRITICAL_COUNT critical, $HIGH_COUNT high issues!"
+        echo "$SCAN_OUTPUT" | tail -20
+        CHECKS_PASSED=false
+    else
+        log_success "Code scanner: 0 critical/high issues"
+    fi
+else
+    log_warn "Code scanner not found (skipping)"
+fi
+
 # =============================================================================
 # Summary and Launch
 # =============================================================================
