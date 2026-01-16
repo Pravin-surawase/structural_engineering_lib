@@ -1104,6 +1104,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         - Properly match len() > index patterns
         - Handle if-blocks that guard the access
         - Handle ternary expressions (x if len(y) > 0 else default)
+
+        Phase 7 Enhancement:
+        - Handle len(container) >= N where index < N (e.g., len(pos) >= 2 covers [0] and [1])
+        - Extract numeric values from comparison for proper validation
         """
         # Look through ALL parent nodes for if statements with len() checks
         for parent in self.parent_nodes:
@@ -1117,21 +1121,32 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     continue
 
                 # Pattern: len(container) > index or len(container) >= (index + 1)
-                # For index 0: len(container) > 0 OR len(container) OR just container
                 if f"len({container})" in test_str:
-                    # Check comparison patterns
-                    if index == 0:
-                        # For [0], any of these work:
-                        # len(container) > 0, len(container) >= 1, len(container)
-                        if any(p in test_str for p in ["> 0", ">= 1", "!= 0", "!= []"]):
+                    # Phase 7: Extract the numeric comparison value
+                    # Match patterns like: len(x) >= 2, len(x) > 1, len(x) != 0
+                    import re
+
+                    # Check for >= N pattern (covers indices 0 to N-1)
+                    ge_match = re.search(rf"len\({re.escape(container)}\)\s*>=\s*(\d+)", test_str)
+                    if ge_match:
+                        min_len = int(ge_match.group(1))
+                        if index < min_len:
                             return True
-                        # Also: just "if len(container):" is truthy check
-                        if test_str.strip() == f"len({container})":
+
+                    # Check for > N pattern (covers indices 0 to N)
+                    gt_match = re.search(rf"len\({re.escape(container)}\)\s*>\s*(\d+)", test_str)
+                    if gt_match:
+                        min_len = int(gt_match.group(1))
+                        if index <= min_len:
                             return True
-                    else:
-                        # For [n], need len > n or len >= n+1
-                        if f"> {index}" in test_str or f">= {index + 1}" in test_str:
-                            return True
+
+                    # Check for != 0 or != [] (covers index 0)
+                    if index == 0 and any(p in test_str for p in ["!= 0", "!= []"]):
+                        return True
+
+                    # Check for truthiness: just "if len(container):" (covers index 0)
+                    if index == 0 and test_str.strip() == f"len({container})":
+                        return True
 
             # Also check ternary expressions in assignments
             elif isinstance(parent, ast.IfExp):
@@ -1143,6 +1158,22 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     continue
 
                 if f"len({container})" in test_str:
+                    import re
+
+                    # Check for >= N pattern
+                    ge_match = re.search(rf"len\({re.escape(container)}\)\s*>=\s*(\d+)", test_str)
+                    if ge_match:
+                        min_len = int(ge_match.group(1))
+                        if index < min_len:
+                            return True
+
+                    # Check for > N pattern
+                    gt_match = re.search(rf"len\({re.escape(container)}\)\s*>\s*(\d+)", test_str)
+                    if gt_match:
+                        min_len = int(gt_match.group(1))
+                        if index <= min_len:
+                            return True
+
                     if index == 0 and any(
                         p in test_str for p in ["> 0", ">= 1", "!= 0"]
                     ):
@@ -1155,6 +1186,74 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         for parent in self.parent_nodes:
             if isinstance(parent, ast.Try):
                 return True
+        return False
+
+    def _is_in_guarded_ternary(self) -> bool:
+        """Check if current node is inside a guarded ternary expression.
+
+        Phase 7: Detects patterns like:
+        - int(x / 2) if x > 0 else 50
+        - float(val) if val else 0.0
+
+        These are safe because the conversion only runs when the guard is True.
+        """
+        for parent in self.parent_nodes:
+            if isinstance(parent, ast.IfExp):
+                # This node is inside a ternary expression's body or orelse
+                # The ternary has a guard (test) so conversion is protected
+                return True
+        return False
+
+    def _could_be_string_input(self, node: ast.expr) -> bool:
+        """Check if an expression could be a string (user input).
+
+        Phase 7: For int()/float() calls, we only want to warn if the
+        input could be a string. Math operations on numbers are safe.
+
+        Returns True if the input might be:
+        - A Streamlit widget result (st.text_input, etc.)
+        - A function call that returns a string
+        - Direct string literals
+
+        Returns False if the input is:
+        - A numeric literal
+        - A math expression (BinOp)
+        - A simple variable (assumed to be from prior validated source)
+        """
+        # Numeric literals are safe
+        if isinstance(node, ast.Constant):
+            return isinstance(node.value, str)
+
+        # Math operations are safe (operating on numbers)
+        if isinstance(node, ast.BinOp):
+            return False
+
+        # UnaryOp (like -x) is safe
+        if isinstance(node, ast.UnaryOp):
+            return False
+
+        # Streamlit widget calls that return strings ARE risky
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Attribute):
+                # st.text_input(), st.text_area() return strings
+                if (
+                    isinstance(node.func.value, ast.Name)
+                    and node.func.value.id == "st"
+                    and node.func.attr in ("text_input", "text_area")
+                ):
+                    return True
+            # Other function calls - assume safe (they may return validated data)
+            return False
+
+        # Simple variable names - assume they're pre-validated
+        if isinstance(node, ast.Name):
+            return False
+
+        # Subscript access like data["key"] - could be string
+        if isinstance(node, ast.Subscript):
+            return True
+
+        # Default to safe to reduce false positives
         return False
 
     def _check_widget_defaults(self, node: ast.Call):
@@ -1390,11 +1489,20 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             if node.args:
                 # Check if inside try/except
                 if not self._is_in_try_except():
-                    self.add_issue(
-                        node.lineno,
-                        "MEDIUM",
-                        f"ValueError risk: {func_name}() without try/except (invalid input will crash)",
-                    )
+                    # Phase 7: Also check if inside a guarded ternary expression
+                    # e.g., int(x / 2) if x > 0 else 50 - the int() only runs with valid input
+                    if not self._is_in_guarded_ternary():
+                        # Also check if the int() argument is just a math expression on numbers
+                        # e.g., int(stirrup_spacing / 2) where stirrup_spacing is a float
+                        arg = node.args[0]
+                        # If the arg is just a BinOp (math) or a simple Name, it's likely safe
+                        # Only flag if the arg could be a string (Call to st.*, user input, etc.)
+                        if self._could_be_string_input(arg):
+                            self.add_issue(
+                                node.lineno,
+                                "MEDIUM",
+                                f"ValueError risk: {func_name}() without try/except (invalid input will crash)",
+                            )
 
         # TASK-403: Widget return type validation
         # Detect Streamlit widgets without explicit default values

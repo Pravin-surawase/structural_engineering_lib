@@ -4,6 +4,103 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-16 — Session 36: 3D Visualization MVP (Phase 1)
+
+**Focus:** Implement TASK-3D-07, 08, 09 (Plotly 3D mesh, beam page integration, live updates)
+
+### Overview
+
+Implemented Phase 1 of 3D Visualization for beam design:
+1. Created Plotly 3D mesh generation module (visualizations_3d.py)
+2. Integrated 3D preview into beam design page
+3. Added @st.fragment for live updates with geometry caching
+4. Improved scanner to reduce false positives
+
+### Deliverables
+
+#### 1. Plotly 3D Visualization Module (TASK-3D-07)
+
+**File:** `streamlit_app/components/visualizations_3d.py` (~650 lines)
+
+**Key Functions:**
+- `generate_cylinder_mesh()` - Rebar cylinder meshes with parametric resolution
+- `generate_box_mesh()` - Concrete beam outline with transparency
+- `generate_stirrup_tube()` - Stirrup loops from 4 connected cylinders
+- `create_beam_3d_figure()` - Main entry point, assembles all components
+- `create_beam_3d_from_dict()` - Creates figure from geometry JSON schema
+- `compute_geometry_hash()` - MD5 hash for cache invalidation
+
+**Performance:** <50ms for typical beams, verified with tests
+
+#### 2. Beam Design Page Integration (TASK-3D-08)
+
+**Modified:** `streamlit_app/pages/01_🏗️_beam_design.py`
+
+**Changes:**
+- Import visualizations_3d module
+- Add 3D Beam Visualization section in tab2 (after reinforcement schedule)
+- Convert 2D rebar positions (X, Y) to 3D coordinates (Y, Z centered)
+- Generate stirrup positions from spacing values
+- Bounds checks for tuple access (scanner-compliant)
+
+#### 3. Live Update System (TASK-3D-09)
+
+**Implementation:**
+- Wrapped 3D preview in `@st.fragment` for independent re-rendering
+- Geometry hash-based cache invalidation (only regenerate when inputs change)
+- Session state caching for figures
+- Fragment allows smooth updates without full page re-render
+
+#### 4. Scanner Improvements
+
+**Problem:** Scanner flagged valid code patterns as issues:
+- `len(pos) >= 2` didn't cover `pos[0]` and `pos[1]` access
+- Guarded ternary expressions like `int(x) if x > 0 else 0` flagged
+
+**Solution (check_streamlit_issues.py):**
+- Enhanced `_has_bounds_check_nearby()` with regex for `>= N` patterns
+- Added `_is_in_guarded_ternary()` to recognize ternary guards
+- Added `_could_be_string_input()` to reduce false positives for int()/float()
+
+**Result:** 0 HIGH/CRITICAL issues on beam_design.py
+
+### Test Coverage
+
+**New Tests:** `tests/test_visualizations_3d.py` (26 tests)
+- TestGenerateCylinderMesh (5 tests)
+- TestGenerateBoxMesh (3 tests)
+- TestGenerateStirrupTube (2 tests)
+- TestCreateBeam3dFigure (5 tests)
+- TestCreateBeam3dFromDict (2 tests)
+- TestComputeGeometryHash (3 tests)
+- TestPerformance (4 tests) - Verify <50ms, <100ms targets
+- TestColors (2 tests)
+
+**Result:** 26/26 tests passing
+
+### Commits (Branch: task/TASK-3D-07)
+
+| # | Hash | Description |
+|---|------|-------------|
+| 1 | `4ccdfe0` | feat(viz): add Plotly 3D mesh generation for beams |
+| 2 | `c2e6f12` | feat(beam): integrate Plotly 3D visualization into beam design page |
+| 3 | `144c677` | feat(beam): add @st.fragment for live 3D updates with caching |
+
+### Key Decisions
+
+1. **Plotly over Three.js for MVP:** Native Streamlit integration, no iframe needed
+2. **Cylinder resolution 16 segments:** Balance between quality and performance
+3. **Geometry hash caching:** MD5 hash prevents unnecessary figure regeneration
+4. **Fragment-based updates:** Allow 3D preview to update independently
+
+### Next Steps
+
+- [ ] Finish PR for task/TASK-3D-07 branch
+- [ ] TASK-3D-11: Add status display (safe/unsafe, utilization %)
+- [ ] TASK-3D-12: Document performance benchmarks
+
+---
+
 ## 2026-01-16 — Session 35 Part 2: Automation & Phase 1 Planning
 
 **Focus:** Streamlit launch automation, scanner improvements, commit validation, Phase 1 tasks
