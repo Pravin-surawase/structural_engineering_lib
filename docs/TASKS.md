@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-15 (Session 34 Part 3 - Agent 9 Advanced Optimization)
+**Updated:** 2026-01-16 (Session 35 - 3D Visualization Phase 0 in review)
 
-> **Session 34 Part 3 Progress:** TASK-287 (Predictive Velocity), TASK-288 (Release Cadence), TASK-289 (Governance Health Score) completed. 3 new governance scripts (1500+ LOC) with EMA algorithms, trend analysis, composite scoring. Health Score: 82/100 Grade A.
+> **Session 35 Progress:** PR #373 open for TASK-3D-01 through TASK-3D-05 (Phase 0 MVP). CI fixes in progress before merge.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -58,7 +58,7 @@
 > **Goal:** Continue modern Streamlit patterns across remaining pages
 > **Estimated:** 4-6 hours across 2-3 sessions
 > **Actual:** 3 hours across 2 sessions (Sessions 29-30)
-> **Completion:** 2026-01-17
+> **Completion:** 2026-01-15
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
@@ -165,6 +165,40 @@
 ## Up Next (Session 34+)
 
 > **Session 34 Progress:** TASK-081 (Level C Serviceability) and TASK-138 (ETABS Import) completed. All PRs merged.
+
+### 3D Visualization Program — Phase 0 (Feasibility + Library Prep) 🟡 IN REVIEW
+
+> **Goal:** Prove Streamlit iframe/postMessage in production, ship a professional 3D data contract, and prep core library geometry.
+> **Decision:** If iframe is blocked, ship Plotly 3D MVP while continuing library geometry work.
+> **Completion:** Pending PR #373 merge (branch `task/TASK-3D-01`)
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-3D-01** | Streamlit Cloud iframe + postMessage POC (go/no-go) | DEVOPS | 1d | 🔴 HIGH | 🟡 In review (PR #373) |
+| **TASK-3D-02** | Define 3D JSON contract + sample payload + api.md entry | DOCS | 1d | 🔴 HIGH | 🟡 In review (PR #373) |
+| **TASK-3D-03** | Add `structural_lib.visualization.geometry_3d` core dataclasses + compute functions | DEV | 2d | 🔴 HIGH | 🟡 In review (PR #373) |
+| **TASK-3D-04** | Implement `BeamDetailingResult.to_3d_json()` | DEV | 1d | 🟠 MEDIUM | 🟡 In review (PR #373) |
+| **TASK-3D-05** | Geometry tests (>=90% module coverage) | TESTER | 1d | 🟠 MEDIUM | 🟡 In review (PR #373) |
+| **TASK-3D-06** | Automation: `check_3d_payload.py` + pre-commit/CI hook | DEVOPS | 1d | 🟠 MEDIUM | ⏳ Backlog (V1.1) |
+
+**Technical Achievements:**
+- ✅ **Core Module:** `structural_lib/visualization/geometry_3d.py` (~700 LOC)
+  - 5 dataclasses: Point3D, RebarSegment, RebarPath, StirrupLoop, Beam3DGeometry
+  - 5 compute functions: rebar positions, stirrup paths, beam outline
+  - Full JSON serialization via `to_dict()` methods
+- ✅ **JSON Contract:** `docs/reference/3d-json-contract.md` with TypeScript types
+- ✅ **Three.js Viewer:** `streamlit_app/static/beam_viewer_3d.html` (CDN Three.js r128)
+- ✅ **Streamlit Component:** `streamlit_app/components/beam_viewer_3d.py`
+- ✅ **Demo Page:** `streamlit_app/pages/05_3d_viewer_demo.py`
+- ✅ **Tests:** 59 tests (48 unit + 11 integration), all passing
+- ✅ **API Exports:** Added to `structural_lib/api.py`
+- ✅ **API Docs:** Section 15 in `docs/reference/api.md`
+
+**Coordinate System:**
+- X = along span (0 to span_length)
+- Y = across width (-width/2 to +width/2)
+- Z = height (0 at bottom, depth at top)
+- Units: millimeters throughout
 
 ### TASK-145: BMD/SFD Visualization Stack ✅ COMPLETE (Session 34)
 

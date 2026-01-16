@@ -135,6 +135,20 @@ class BeamDetailingResult:
     is_valid: bool
     remarks: str
 
+    def to_3d_json(self, is_seismic: bool = False) -> dict:
+        """
+        Serialize this detailing result into 3D visualization JSON.
+
+        Args:
+            is_seismic: True to use 135° stirrup hooks.
+
+        Returns:
+            Dict matching the BeamGeometry3D schema.
+        """
+        from structural_lib.visualization.geometry_3d import beam_to_3d_geometry
+
+        return beam_to_3d_geometry(self, is_seismic=is_seismic).to_dict()
+
 
 # =============================================================================
 # Development Length (IS 456 Cl 26.2.1)

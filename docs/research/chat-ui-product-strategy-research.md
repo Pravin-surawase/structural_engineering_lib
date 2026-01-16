@@ -8,6 +8,9 @@
 **Last Updated:** 2026-01-15
 **Related Tasks:** Product Strategy, v0.25.0 Roadmap
 
+> NOTE: Three.js source of truth is `docs/research/threejs-visualization-source-of-truth.md`.
+> Section 3 remains for historical context; avoid updating Three.js details here.
+
 ---
 
 ## Executive Summary

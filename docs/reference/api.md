@@ -2768,3 +2768,212 @@ job = api.create_job_from_etabs(envelope[0], b_mm=300, D_mm=500)
 
 **Further Reading:**
 - [ETABS Integration Guide](../_archive/misc/etabs-integration.md)
+
+---
+
+## 15. 3D Visualization Module (`visualization/geometry_3d.py`) — v0.18+
+
+The visualization module provides 3D coordinate computation for rendering
+reinforced concrete beams in Three.js, PyVista, or similar 3D engines.
+
+### 15.1 Core Concept
+
+Structural design gives us **WHAT** reinforcement is needed (4-16φ bars).
+This module adds **WHERE** in 3D space those bars are placed.
+
+```
+┌─────────────────┐     JSON      ┌─────────────────┐
+│ Python Backend  │ ───────────►  │ Three.js Viewer │
+│ BeamDetailingR. │               │ (WebGL)         │
+│ + geometry_3d   │               │                 │
+└─────────────────┘               └─────────────────┘
+```
+
+### 15.2 Coordinate System
+
+```
++Z (up, height)
+│     +Y (front, width)
+│    /
+│   /
+O──────► +X (along span)
+```
+
+- **X:** Along beam span (0 = left support)
+- **Y:** Across beam width (0 = center, +Y = front face)
+- **Z:** Beam height (0 = soffit, +Z = up)
+- **Units:** All coordinates in millimeters (mm)
+
+### 15.3 Core Data Classes
+
+```python
+from structural_lib.api import (
+    Point3D,
+    RebarSegment,
+    RebarPath,
+    StirrupLoop,
+    Beam3DGeometry,
+)
+
+# Point3D — Immutable 3D coordinate
+p = Point3D(x=0.0, y=50.0, z=56.0)
+p.to_dict()  # {"x": 0.0, "y": 50.0, "z": 56.0}
+p.distance_to(other_point)  # Euclidean distance
+
+# RebarSegment — Single straight bar segment
+seg = RebarSegment(
+    start=Point3D(0, 50, 56),
+    end=Point3D(4000, 50, 56),
+    diameter=16.0,
+    segment_type="straight"
+)
+seg.length  # 4000.0
+
+# RebarPath — Complete bar with multiple segments
+path = RebarPath(
+    bar_id="B1",
+    segments=[seg],
+    diameter=16.0,
+    bar_type="bottom",
+    zone="full"
+)
+path.total_length  # Sum of all segment lengths
+
+# StirrupLoop — Closed stirrup at X position
+stirrup = StirrupLoop(
+    position_x=150.0,
+    path=[corner1, corner2, corner3, corner4],
+    diameter=8.0,
+    legs=2,
+    hook_type="135"
+)
+stirrup.perimeter  # Cutting length
+
+# Beam3DGeometry — Complete visualization data
+geometry = Beam3DGeometry(
+    beam_id="B1",
+    story="GF",
+    dimensions={"b": 300, "D": 450, "span": 4000},
+    concrete_outline=[...],  # 8 corner points
+    rebars=[...],
+    stirrups=[...],
+    metadata={"cover": 40, "isValid": True, "remarks": "Detailing complete"}
+)
+geometry.to_dict()  # JSON for Three.js
+```
+
+### 15.4 Coordinate Computation Functions
+
+```python
+from structural_lib.api import (
+    compute_rebar_positions,
+    compute_stirrup_path,
+    compute_stirrup_positions,
+    compute_beam_outline,
+    beam_to_3d_geometry,
+)
+
+# Compute Y-Z positions for bars in cross-section
+positions = compute_rebar_positions(
+    beam_width=300,
+    beam_depth=450,
+    cover=40,
+    bar_count=4,
+    bar_dia=16,
+    stirrup_dia=8,
+    is_top=False,  # bottom bars
+    layers=1
+)
+# Returns: [Point3D(0, -96, 56), Point3D(0, -32, 56), ...]
+
+# Compute stirrup corner points
+path = compute_stirrup_path(
+    beam_width=300,
+    beam_depth=450,
+    cover=40,
+    stirrup_dia=8,
+    position_x=150,
+    legs=2
+)
+# Returns: [Point3D(150, -106, 44), ...]
+
+# Compute X positions for stirrups along span
+x_positions = compute_stirrup_positions(
+    span=4000,
+    stirrup_spacing_start=100,
+    stirrup_spacing_mid=150,
+    stirrup_spacing_end=100
+)
+# Returns: [50.0, 150.0, 250.0, ...]
+
+# Compute 8 corners of concrete bounding box
+corners = compute_beam_outline(
+    beam_width=300,
+    beam_depth=450,
+    span=4000
+)
+# Returns 8 Point3D objects
+```
+
+### 15.5 Integration with Detailing
+
+```python
+from structural_lib.codes.is456.detailing import create_beam_detailing
+from structural_lib.api import beam_to_3d_geometry
+import json
+
+# Step 1: Create detailing result
+detailing = create_beam_detailing(
+    beam_id="B1",
+    story="GF",
+    b=300, D=450, span=4000,
+    cover=40, fck=25, fy=500,
+    ast_start=904, ast_mid=904, ast_end=904,
+)
+
+# Step 2: Convert to 3D geometry
+geometry = beam_to_3d_geometry(detailing, is_seismic=True)
+
+# Step 3: Export to JSON for Three.js
+json_data = json.dumps(geometry.to_dict(), indent=2)
+
+# Shortcut: generate JSON directly from detailing
+json_payload = detailing.to_3d_json(is_seismic=True)
+```
+
+### 15.6 JSON Schema
+
+The `to_dict()` output follows the BeamGeometry3D schema.
+See [3d-json-contract.md](3d-json-contract.md) for full TypeScript definitions.
+
+```json
+{
+  "beamId": "B1",
+  "story": "GF",
+  "dimensions": {"b": 300, "D": 450, "span": 4000},
+  "concreteOutline": [...],
+  "rebars": [...],
+  "stirrups": [...],
+  "metadata": {...},
+  "version": "1.0.0"
+}
+```
+
+### 15.7 Streamlit Component
+
+For Streamlit apps, use the beam_viewer_3d component:
+
+```python
+from streamlit_app.components.beam_viewer_3d import render_beam_3d
+
+# Render with dict
+render_beam_3d(geometry.to_dict(), height=600)
+
+# Or render from detailing result
+from streamlit_app.components.beam_viewer_3d import render_beam_3d_from_detailing
+render_beam_3d_from_detailing(detailing, is_seismic=True, height=600)
+```
+
+**Further Reading:**
+- [3D JSON Contract](3d-json-contract.md) — TypeScript types and schema
+- [3D Technology Research](../research/3d-technology-deep-dive-research.md) — Architecture decisions

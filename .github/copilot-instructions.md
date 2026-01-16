@@ -486,6 +486,28 @@ cat scripts/index.json
 | **Skipping validation** | Runtime errors in prod | Run before commit | `check_*` scripts |
 | **Creating files without metadata** | Poor discoverability | Use `create_doc.py` | - |
 | **Not checking PR need** | Wrong workflow | Use decision script | `should_use_pr.sh` |
+| **Reading too many large files** | 413 Request Entity Too Large | Read targeted sections, use grep_search | - |
+
+---
+
+## 🚨 Context Size Limits (413 Error Prevention)
+
+**Problem:** AI requests fail with "413 Request Entity Too Large" when context grows too large.
+
+**Common causes:**
+- Reading many large files in succession without clearing context
+- Fetching full PR diffs with 10+ file changes
+- Accumulating large conversation history
+- Multiple full file reads (>500 lines each)
+
+**Prevention strategies:**
+1. **Read targeted sections:** Use `offset` and `limit` parameters instead of full files
+2. **Use grep_search:** Get overview of file structure before reading specific parts
+3. **Summarize and continue:** If context grows large, summarize findings and continue
+4. **Avoid parallel large reads:** Don't read 5+ large files simultaneously
+5. **Work in phases:** Complete one large task, commit, then move to next
+
+**When it happens:** Start fresh request with focused scope. Previous context is lost.
 
 ---
 

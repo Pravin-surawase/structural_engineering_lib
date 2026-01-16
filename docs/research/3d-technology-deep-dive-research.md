@@ -5,8 +5,11 @@
 **Status:** Active - In Progress
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-16
 **Related Tasks:** TASK-3D-VIZ-TECH-EVAL
+
+> NOTE: Three.js source of truth is `docs/research/threejs-visualization-source-of-truth.md`.
+> This document is retained for historical context; avoid updating Three.js details here.
 
 ---
 
@@ -26,6 +29,23 @@
 | **Plotly 3D** | ⭐⭐⭐☆☆ | ⭐⭐☆☆☆ | ⭐⭐⭐⭐☆ | ⭐⭐⭐⭐⭐ | ❌ Quality insufficient |
 
 **Recommendation:** Implement **Three.js + react-three-fiber** with a phased migration strategy and comprehensive tooling for AI agents.
+
+---
+
+## 0. North Star Experience (Wow Factor)
+
+**Goal:** Engineers feel “AI-native automation” within 10 seconds of opening the page.
+
+**Wow Moments (V1):**
+1. **Time-to-Wow < 10s:** instant 3D beam render + smooth orbit + crisp materials.
+2. **AI Explain Mode:** click any bar → reason, safety margin, cost delta (no clause citations in V1).
+3. **Live What-If:** slider changes (span, loads) morph rebar in <100ms.
+4. **Compliance Heatmap:** green/yellow/red by utilization across beams.
+5. **One-click Evidence:** export 4K screenshot + captioned summary + link to calc report.
+
+**Platform Feel (Automation-First):**
+- CSV → auto-design → 3D scene without manual cleanup.
+- “Compare A/B” designs with side-by-side 3D + metrics delta.
 
 ---
 
@@ -662,9 +682,31 @@ plotly = "^5.24.0"  # Keep for fallback 2D viz
 
 ---
 
-## 5. Implementation Phases (Revised 8-Week Plan)
+## 5. Implementation Phases (Revised 10-Week Plan)
 
-### Phase 1: Foundation (Weeks 1-2) - 🎯 PRIORITY
+### Phase 0: Feasibility Gate (Week 1) - 🚦 GO/NO-GO
+
+**Goal:** Prove Streamlit iframe + postMessage works in production and lock data contract.
+
+**Tasks:**
+1. **Streamlit Cloud iframe POC** (Day 1-2)
+   - Confirm postMessage works in hosted environment
+   - Validate sandbox restrictions + origin handling
+2. **3D JSON contract** (Day 3-4)
+   - Define `Beam3DGeometry` schema + sample payload
+   - Implement `to_3d_json()` on `BeamDetailingResult`
+3. **Performance micro-bench** (Day 5)
+   - 100 beams: 60 FPS target
+   - 1000 beams: 30 FPS target
+
+**Decision Rule (explicit):**
+- If iframe/postMessage is blocked in Streamlit Cloud, **fail over to Plotly 3D MVP** for V1 while continuing `geometry_3d` library work. Three.js remains the production target.
+
+**Deliverable:** POC clip + decision memo (proceed or pivot to fallback).
+
+---
+
+### Phase 1: Foundation (Weeks 2-3) - 🎯 PRIORITY
 
 **Goal:** Basic Three.js viewer working in Streamlit iframe
 
@@ -695,7 +737,7 @@ plotly = "^5.24.0"  # Keep for fallback 2D viz
 
 ---
 
-### Phase 2: Reinforcement Rendering (Weeks 3-4)
+### Phase 2: Reinforcement Rendering (Weeks 4-5)
 
 **Goal:** Show rebar and stirrups with instancing
 
@@ -719,7 +761,7 @@ plotly = "^5.24.0"  # Keep for fallback 2D viz
 
 ---
 
-### Phase 3: CSV Import + Multi-Beam (Weeks 5-6)
+### Phase 3: CSV Import + Multi-Beam (Weeks 6-7)
 
 **Goal:** Handle 1000+ beams efficiently
 
@@ -743,7 +785,7 @@ plotly = "^5.24.0"  # Keep for fallback 2D viz
 
 ---
 
-### Phase 4: Advanced Features (Week 7)
+### Phase 4: AI Experience + Advanced Features (Week 8)
 
 **Goal:** Professional CAD features
 
@@ -753,12 +795,16 @@ plotly = "^5.24.0"  # Keep for fallback 2D viz
    - Outline shader
    - Bloom (subtle)
 
-2. **Section cuts** (Day 34-35)
+2. **AI Explain Mode** (Day 34-35)
+   - Click any bar → reason, clause, safety margin, cost delta
+   - Auto-generate labels/callouts (bar size, spacing, zone)
+
+3. **Section cuts** (Day 36-37)
    - Clipping planes
    - Cross-section view
    - Exploded view
 
-3. **Export features** (Day 36-37)
+4. **Export features** (Day 38-39)
    - High-res screenshots (4K)
    - 3D model export (GLTF)
    - Animation recording
@@ -767,7 +813,7 @@ plotly = "^5.24.0"  # Keep for fallback 2D viz
 
 ---
 
-### Phase 5: Performance & Polish (Week 8)
+### Phase 5: Performance & Polish (Weeks 9-10)
 
 **Goal:** Production-ready, optimized
 
@@ -979,7 +1025,7 @@ def test_curtailment_cutoff_safe():
     pass
 
 
-# Minimum 95% coverage required!
+# Target: 90%+ for visualization geometry tests (overall repo gate remains 85%).
 ```
 
 ---
@@ -1039,42 +1085,22 @@ fix/memory-leak-instancing
 hotfix/critical-render-crash
 ```
 
-### 7.3 Git Workflow
+### 7.3 Git Workflow (Automation-First)
 
-**For AI Agents:**
+**For AI Agents (no manual git commands):**
 
 ```bash
-# 1. Start new feature
-git checkout develop
-git pull origin develop
-git checkout -b feature/three-js-foundation
+# Start feature branch
+./scripts/create_task_pr.sh TASK-3D-VIZ "three.js foundation"
 
-# 2. Work in sub-features
-git checkout -b feat/basic-beam-mesh
+# Work + commit (repeat as needed)
+./scripts/ai_commit.sh "feat(mesh): add basic concrete beam geometry"
 
-# Make changes...
-git add .
-git commit -m "feat(mesh): add basic concrete beam geometry"
-
-# 3. Push sub-feature
-git push origin feat/basic-beam-mesh
-
-# 4. Create PR to feature branch
-# (GitHub UI or gh CLI)
-gh pr create --base feature/three-js-foundation \
-  --title "Add basic beam mesh" \
-  --body "Implements concrete box geometry with PBR material"
-
-# 5. Merge sub-feature to feature branch
-# (After review)
-
-# 6. When feature complete, PR to develop
-gh pr create --base develop \
-  --title "Complete Three.js foundation" \
-  --body "Implements basic 3D viewer with live preview"
-
-# 7. Finally, PR develop to main (for release)
+# Finish PR (async merge)
+./scripts/finish_task_pr.sh TASK-3D-VIZ "three.js foundation" --async
 ```
+
+Use `./scripts/should_use_pr.sh --explain` whenever unsure.
 
 ### 7.4 Commit Message Convention
 
@@ -2242,7 +2268,7 @@ if __name__ == "__main__":
 4. ✅ Update `BeamDetailingResult` with `to_3d_json()` method
 5. ✅ Test data export format with sample beams
 
-**Phase 1: Three.js Setup - 1 week**
+**Phase 1: Three.js Setup - 2 weeks**
 1. Initialize Three.js project structure
 2. Basic canvas with camera and lighting
 3. Streamlit iframe integration
@@ -2256,20 +2282,20 @@ if __name__ == "__main__":
 4. PBR materials (concrete, steel)
 5. 3-point lighting setup
 
-**Phase 3: Interactivity - 1 week**
+**Phase 3: Interactivity - 2 weeks**
 1. Orbit controls (camera rotation)
 2. Click to select beam/rebar
 3. Hover tooltip
 4. View presets (front, top, isometric)
 
-**Phase 4: Multi-Beam & CSV - 2 weeks**
+**Phase 4: Multi-Beam & CSV - 1 week**
 1. Multiple beam rendering
 2. Building-level view
 3. CSV import → 3D
 4. Color coding by status
 5. LOD for performance
 
-**Phase 5: Polish - 1 week**
+**Phase 5: Polish - 2 weeks**
 1. Post-processing effects
 2. Screenshot export
 3. Loading states
@@ -2310,6 +2336,36 @@ if __name__ == "__main__":
 - [ ] test_global_coordinates.py
 ```
 
+### Phase 0 (Library Prep) — Detailed Definition of Done
+
+**Core objectives:**
+1. **Professional library boundaries:** no UI/Three.js imports in `structural_lib`.
+2. **Stable geometry contract:** JSON schema versioned and documented.
+3. **Predictable coordinates:** explicit axis, origin, and units (mm).
+4. **Testable outputs:** deterministic geometry for repeated runs.
+
+**Definition of Done (Phase 0):**
+- `Python/structural_lib/visualization/geometry_3d.py` exists with:
+  - `compute_beam_3d_geometry()`, `compute_rebar_positions()`,
+    `compute_stirrup_path()`, `compute_stirrup_positions()`.
+- `BeamDetailingResult.to_3d_json()` implemented and documented.
+- `docs/reference/api.md` updated with new 3D JSON contract entry.
+- Tests added for geometry functions (>=90% coverage for the module).
+- Automation added:
+  - `scripts/check_3d_payload.py` (schema + bounds validation)
+  - Pre-commit/CI hook for `check_3d_payload.py`
+- Sample payload stored in `docs/reference/3d-geometry-sample.json`.
+
+**Edge Cases to cover in tests:**
+- Single-bar + multi-bar arrangements
+- Multiple layers + minimum cover
+- Variable stirrup spacing zones
+- Very short spans (min span constraints)
+
+**Non-goals for Phase 0:**
+- No rendering, no JS, no Streamlit component work.
+
+
 ---
 
 ## 13. Summary & Recommendations
@@ -2324,6 +2380,8 @@ if __name__ == "__main__":
 3. Massive ecosystem (30k+ GitHub stars, active community)
 4. AI-friendly (React patterns well-known to AI models)
 5. Proven in CAD applications (Buerli.io, Flux.ai)
+
+**Fallback Decision:** If Streamlit iframe/postMessage fails in Phase 0, ship a Plotly 3D MVP while keeping the Three.js path as the production target.
 
 ### 13.2 Library Enhancement Priorities
 
@@ -2361,6 +2419,8 @@ if __name__ == "__main__":
 | Time to first render | <2 seconds | Lighthouse |
 | Test coverage (Python viz) | >95% | pytest-cov |
 | Test coverage (JS) | >80% | Jest coverage |
+
+**UI Scope Note:** V1 AI Explain Mode is metrics-only (no IS 456 clause citations).
 
 ---
 
