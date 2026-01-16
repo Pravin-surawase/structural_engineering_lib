@@ -4,6 +4,110 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 38: UI Improvements + Phase 2 Start
+
+**Focus:** Fix 3D viz cache bug, compact UI layout, start Phase 2 (CSV schema)
+
+### Overview
+
+Session 38 completed critical UI fixes and started Phase 2 CSV import work:
+
+1. **3D Visualization Cache Bug Fix** - 3D beam viz now updates when design re-run
+2. **Compact 2-Column Input Layout** - ~50% vertical space reduction
+3. **Dropdown Text Height Fix** - Selectbox CSS for proper text visibility
+4. **Design Preview Hidden Post-Analysis** - Cleaner results view
+5. **TASK-CSV-01 Complete** - CSV schema specification + SAFE format support
+
+### Deliverables
+
+#### 1. 3D Visualization Cache Fix
+
+**Root Cause:** `compute_geometry_hash()` expected nested JSON format (`{dimensions: {...}, rebars: [...]}`) but was receiving flat dict format (`{b: 300, D: 450, ...}`).
+
+**Files Modified:**
+- `streamlit_app/components/visualizations_3d.py` - Handle both flat and nested dict formats
+- `streamlit_app/pages/01_🏗️_beam_design.py` - Dynamic chart key using hash prefix
+- `tests/test_visualizations_3d.py` - Added 2 new tests for flat dict format
+
+**Result:** 28/28 tests passing (was 26)
+
+#### 2. Compact 2-Column Input Layout
+
+**Files Modified:** `streamlit_app/pages/01_🏗️_beam_design.py`
+
+**Changes:**
+- Geometry: Span+Width side-by-side, Depth+EffDepth side-by-side
+- Materials: Concrete+Steel side-by-side
+- Added "🌍 Environment" section header for Exposure & Support
+
+**Result:** ~50% vertical space reduction in input panel
+
+#### 3. Dropdown Text Height Fix
+
+**Files Modified:** `streamlit_app/utils/layout.py`
+
+**Changes:**
+- Selectbox CSS min-height: 44px, line-height: 1.5
+- Dropdown menu styling: 40px min-height, 14px font
+- Proper z-index for popover menus
+
+#### 4. Design Preview Hidden Post-Analysis
+
+**Files Modified:** `streamlit_app/pages/01_🏗️_beam_design.py`
+
+**Changes:**
+- "📊 Design Preview" header + geometry expander only shown BEFORE analysis
+- "✅ Design Results" header shown AFTER analysis
+- Removes duplicate visualization (results tab has full viz with rebar)
+
+#### 5. Phase 2: CSV Schema (TASK-CSV-01)
+
+**New File:** `docs/specs/csv-import-schema.md`
+
+**Content:**
+- ETABS format specification (required + optional columns)
+- SAFE format specification (Strip, M22, V23 columns)
+- Generic format for custom data
+- Validation rules and performance targets
+- API usage examples
+
+**Files Modified:** `Python/structural_lib/etabs_import.py`
+
+**Changes:** Extended column mappings for SAFE format:
+- Strip, SpanName, Band identifiers
+- M22, V23 force columns
+- Position station column
+- LoadCombo case column
+
+**Result:** All 23 ETABS import tests passing
+
+### Commits (PR #378 - Pending)
+
+| Commit | Description |
+|--------|-------------|
+| `6902674` | fix(viz): resolve 3D beam cache not refreshing on design changes |
+| `390a5c9` | feat(ui): compact 2-column input layout for beam design |
+| `04d2006` | feat(ui): hide Design Preview after design is computed |
+| `27fb698` | feat(csv): add CSV import schema spec and SAFE format support |
+| TBD | docs: update TASKS.md and SESSION_LOG.md for Session 38 |
+
+### Lessons Learned
+
+1. **Geometry hash format mismatch:** When caching based on geometry, ensure hash function handles ALL formats that callers might pass. Use format detection and fallback.
+
+2. **Dynamic chart keys for refresh:** Plotly charts need unique keys to force refresh. Using hash prefix in key (`f"chart_{hash[:8]}"`) ensures updates when data changes.
+
+3. **CSS specificity for Streamlit:** Use `!important` sparingly but when needed for Streamlit component overrides. Target specific data-testid selectors.
+
+### Next Session
+
+- Merge PR #378
+- TASK-CSV-02: CSV parser with validation + error reporting
+- TASK-CSV-03: File uploader UI with progress feedback
+- Consider library upgrades for Three.js, LLM chat integration
+
+---
+
 ## 2026-01-18 — Session 37: Phase 1 Completion + Phase 2 Planning
 
 **Focus:** Complete TASK-3D-11, TASK-3D-12, plan Phase 2 (CSV Import + Multi-Beam)
