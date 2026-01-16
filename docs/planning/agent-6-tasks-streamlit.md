@@ -2963,7 +2963,7 @@ def render_export_panel(
 
     # PDF Export
     with col1:
-        if st.button("📄 PDF Report", use_container_width=True):
+        if st.button("📄 PDF Report", width="stretch"):
             with st.spinner("Generating PDF..."):
                 exporter = PDFExporter()
                 metadata = ReportMetadata(
@@ -2978,7 +2978,7 @@ def render_export_panel(
                     data=pdf_bytes,
                     file_name=f"beam_design_{datetime.now():%Y%m%d_%H%M}.pdf",
                     mime="application/pdf",
-                    use_container_width=True
+                    width="stretch"
                 )
 
     # CSV Export
@@ -2990,7 +2990,7 @@ def render_export_panel(
             data=csv_content,
             file_name=f"beam_design_{datetime.now():%Y%m%d_%H%M}.csv",
             mime="text/csv",
-            use_container_width=True
+            width="stretch"
         )
 
     # DXF Export (only if rebar positions available)
@@ -3008,27 +3008,27 @@ def render_export_panel(
                 data=dxf_bytes,
                 file_name=f"beam_section_{datetime.now():%Y%m%d_%H%M}.dxf",
                 mime="application/dxf",
-                use_container_width=True
+                width="stretch"
             )
         else:
-            st.button("📐 DXF Drawing", disabled=True, use_container_width=True,
+            st.button("📐 DXF Drawing", disabled=True, width="stretch",
                      help="Run analysis first to generate DXF")
 
     # Chart Export
     with col4:
         if figures:
             chart_name = st.selectbox("Chart to Export", list(figures.keys()))
-            if st.button("🖼️ Export Chart", use_container_width=True):
+            if st.button("🖼️ Export Chart", width="stretch"):
                 png_bytes = ChartExporter.to_png(figures[chart_name])
                 st.download_button(
                     label="⬇️ Download PNG",
                     data=png_bytes,
                     file_name=f"{chart_name}_{datetime.now():%Y%m%d_%H%M}.png",
                     mime="image/png",
-                    use_container_width=True
+                    width="stretch"
                 )
         else:
-            st.button("🖼️ Export Chart", disabled=True, use_container_width=True,
+            st.button("🖼️ Export Chart", disabled=True, width="stretch",
                      help="No charts available")
 ```
 
@@ -3809,7 +3809,7 @@ with tab5:
             data=json_content,
             file_name=f"beam_design_settings_{datetime.now():%Y%m%d}.json",
             mime="application/json",
-            use_container_width=True
+            width="stretch"
         )
 
     with col2:
@@ -3845,7 +3845,7 @@ with tab5:
 st.markdown("---")
 col1, col2, col3 = st.columns([2, 1, 2])
 with col2:
-    if st.button("💾 Save All Settings", type="primary", use_container_width=True):
+    if st.button("💾 Save All Settings", type="primary", width="stretch"):
         st.session_state.app_settings = settings
         save_current_settings()
         st.success("✅ Settings saved successfully!")
@@ -5187,7 +5187,7 @@ st.markdown("Find the most economical rebar arrangement for your design")
 # ── Load from Beam Design ──
 col1, col2 = st.columns([3, 1])
 with col1:
-    if st.button("📊 Load from Beam Design", use_container_width=True):
+    if st.button("📊 Load from Beam Design", width="stretch"):
         if 'beam_inputs' in st.session_state:
             st.session_state.optimizer_inputs = st.session_state.beam_inputs
             st.success("✅ Loaded design from Beam Design page")
@@ -5195,7 +5195,7 @@ with col1:
             st.warning("⚠️ No design found. Complete Beam Design first.")
 
 with col2:
-    st.button("🔄 Clear", use_container_width=True)
+    st.button("🔄 Clear", width="stretch")
 
 # ── Get Options ──
 if 'optimizer_inputs' in st.session_state:
@@ -5238,7 +5238,7 @@ if 'optimizer_inputs' in st.session_state:
         showlegend=False
     )
     fig.update_traces(textposition='top center')
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # ── Comparison Table ──
     st.subheader("📋 Comparison Table")
@@ -5250,7 +5250,7 @@ if 'optimizer_inputs' in st.session_state:
 
     st.dataframe(
         display_df,
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         column_config={
             'Arrangement': st.column_config.TextColumn(width='medium'),
@@ -5269,15 +5269,15 @@ if 'optimizer_inputs' in st.session_state:
             csv,
             "cost_comparison.csv",
             "text/csv",
-            use_container_width=True
+            width="stretch"
         )
 
     with col2:
-        st.button("📄 Export PDF", use_container_width=True, disabled=True)
+        st.button("📄 Export PDF", width="stretch", disabled=True)
         st.caption("Coming soon")
 
     with col3:
-        if st.button("🖨️ Print", use_container_width=True):
+        if st.button("🖨️ Print", width="stretch"):
             st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
 
 else:
@@ -5571,15 +5571,15 @@ if 'beam_result' in st.session_state:
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        if st.button("📜 Generate Certificate", use_container_width=True):
+        if st.button("📜 Generate Certificate", width="stretch"):
             st.balloons()
             st.success("Certificate generated!")
 
     with col2:
-        st.button("📥 Export PDF", use_container_width=True, disabled=True)
+        st.button("📥 Export PDF", width="stretch", disabled=True)
 
     with col3:
-        st.button("🖨️ Print", use_container_width=True)
+        st.button("🖨️ Print", width="stretch")
 
 else:
     st.info("👈 Complete a design in the Beam Design page first")
@@ -7679,7 +7679,7 @@ with st.sidebar:
         "🚀 Analyze Design",
         type="primary",
         disabled=not all_valid,
-        use_container_width=True
+        width="stretch"
     )
 
 # ─────────────────────────────────────────────────────────────
@@ -7804,7 +7804,7 @@ if st.session_state.beam_result:
         )
 
         fig = create_beam_diagram(viz_data)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         # Utilization gauges in a row
         st.subheader("Capacity Utilization")
@@ -7813,15 +7813,15 @@ if st.session_state.beam_result:
 
         with gauge_col1:
             fig = create_utilization_gauge(result.flexure_utilization, "Flexure")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
         with gauge_col2:
             fig = create_utilization_gauge(result.shear_utilization, "Shear")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
         with gauge_col3:
             fig = create_utilization_gauge(result.deflection_utilization, "Deflection")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
     # ── Tab 3: Cost Analysis ──
     with tab3:
@@ -7829,7 +7829,7 @@ if st.session_state.beam_result:
 
         if hasattr(result, 'alternatives') and result.alternatives:
             fig = create_cost_comparison(result.alternatives)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         else:
             st.info("ℹ️ Cost comparison requires rebar_optimizer module")
 
@@ -7838,7 +7838,7 @@ if st.session_state.beam_result:
 
         if hasattr(result, 'sensitivity_data') and result.sensitivity_data:
             fig = create_sensitivity_tornado(result.sensitivity_data)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         else:
             st.info("ℹ️ Sensitivity analysis not available for this design")
 
@@ -7848,7 +7848,7 @@ if st.session_state.beam_result:
 
         if hasattr(result, 'compliance_checks') and result.compliance_checks:
             fig = create_compliance_visual(result.compliance_checks)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
             # Summary
             passed = sum(1 for c in result.compliance_checks if c["passed"])
@@ -8403,7 +8403,7 @@ st.session_state.span_mm = span_mm  # Update
 st.plotly_chart(fig, width=800, height=600)
 
 # Good
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 ```
 
 ---

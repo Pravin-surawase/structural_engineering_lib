@@ -191,7 +191,7 @@ fig.update_layout(
     ]
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 ```
 
 **Result:** Same layout, **completely different feel**. Professional charts in Option 5 look better than "childish" charts in Option 1.
@@ -459,7 +459,7 @@ fig = create_professional_bar_chart(
     hover_template="<b>%{x}</b><br>Cost: ₹%{y:,.0f}<br>Click for breakdown"
 )
 
-st.plotly_chart(fig, use_container_width=True, key="cost_chart")
+st.plotly_chart(fig, width="stretch", key="cost_chart")
 ```
 **Output:** Navy bars with orange accents, rupee symbol, budget line, code reference, Inter font, hover details, click-to-explore
 

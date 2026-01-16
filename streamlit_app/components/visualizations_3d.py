@@ -51,7 +51,7 @@ Usage:
     ...     top_bars=[(0, -96, 398), (0, 96, 398)],
     ...     stirrup_positions=[100, 200, 300],
     ... )
-    >>> st.plotly_chart(fig, use_container_width=True)
+    >>> st.plotly_chart(fig, width="stretch")
 
 References:
     - IS 456:2000 (RC detailing)
@@ -422,7 +422,7 @@ def create_beam_3d_figure(
         ...     b=300, D=450, span=4000,
         ...     bottom_bars=[(0, -96, 52), (0, 0, 52), (0, 96, 52)],
         ... )
-        >>> st.plotly_chart(fig, use_container_width=True)
+        >>> st.plotly_chart(fig, width="stretch")
     """
     meshes: list[go.Mesh3d | go.Scatter3d] = []
 

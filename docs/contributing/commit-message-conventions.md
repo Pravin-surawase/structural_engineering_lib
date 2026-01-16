@@ -195,8 +195,8 @@ result object.
 
 ## Integration with CI
 
-The CI workflow validates commit messages on pull requests. Non-compliant
-messages will fail the "Commit Message Check" job.
+Commit message validation is enforced locally via the commit-msg hook.
+CI validation is not currently configured in this repo.
 
 ---
 

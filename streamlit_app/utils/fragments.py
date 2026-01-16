@@ -232,7 +232,7 @@ def export_dialog(
         col1, col2 = st.columns(2)
 
         with col1:
-            if st.button("📥 Export", type="primary", use_container_width=True):
+            if st.button("📥 Export", type="primary", width="stretch"):
                 settings = {
                     "format": format_option,
                     "include_charts": include_charts,
@@ -244,7 +244,7 @@ def export_dialog(
                 st.rerun()
 
         with col2:
-            if st.button("Cancel", use_container_width=True):
+            if st.button("Cancel", width="stretch"):
                 st.rerun()
 
     return _dialog

@@ -751,7 +751,7 @@ def main():
                 comparison_data = st.session_state.get("cost_comparison_data") or []
                 if comparison_data:
                     fig = create_cost_scatter(comparison_data)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
 
                     st.markdown(
                         """
@@ -807,7 +807,7 @@ The **Pareto front** shows all designs where improving one objective means sacri
 
                     # Pareto scatter plot
                     fig = create_pareto_scatter(pareto_data)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
 
                     st.markdown("---")
                     st.subheader("🏆 Best Designs by Objective")
@@ -910,9 +910,7 @@ The **Pareto front** shows all designs where improving one objective means sacri
                         df_display["Steel (kg)"] = df_display["Steel (kg)"].apply(
                             lambda x: f"{x:.1f}"
                         )
-                        st.dataframe(
-                            df_display, use_container_width=True, hide_index=True
-                        )
+                        st.dataframe(df_display, width="stretch", hide_index=True)
 
                         # Design selection for WHY display
                         st.markdown("---")
@@ -996,11 +994,7 @@ The **Pareto front** shows all designs where improving one objective means sacri
                 comparison_data = st.session_state.get("cost_comparison_data") or []
                 if comparison_data:
                     df_display = create_comparison_table(comparison_data)
-                    st.dataframe(
-                        df_display,
-                        use_container_width=True,
-                        height=400,
-                    )
+                    st.dataframe(df_display, width="stretch", height=400)
 
                     st.caption(
                         "💡 Click column headers to sort. "

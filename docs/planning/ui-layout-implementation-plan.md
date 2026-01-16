@@ -196,7 +196,7 @@ def render_real_time_preview(
     # Section 1: Beam Diagram
     st.subheader("Beam Preview")
     fig = create_beam_preview_diagram(span_mm, b_mm, D_mm, support_condition)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # Section 2: Status Dashboard
     st.subheader("Design Status")
@@ -556,15 +556,15 @@ st.subheader("📚 Example Designs")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button("5m Simply Supported", use_container_width=True):
+    if st.button("5m Simply Supported", width="stretch"):
         load_example_design('5m_simple')
 
 with col2:
-    if st.button("6m Continuous", use_container_width=True):
+    if st.button("6m Continuous", width="stretch"):
         load_example_design('6m_continuous')
 
 with col3:
-    if st.button("2m Cantilever", use_container_width=True):
+    if st.button("2m Cantilever", width="stretch"):
         load_example_design('2m_cantilever')
 
 def load_example_design(example_id: str) -> None:

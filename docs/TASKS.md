@@ -210,12 +210,12 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-3D-07** | Plotly 3D mesh generation - concrete beam, rebar, stirrups | DEV | 2-3d | 🔴 HIGH | ✅ Done (Session 36) |
-| **TASK-3D-08** | Integrate 3D preview into `01_beam_design.py` (two-column layout) | DEV | 1d | 🔴 HIGH | ✅ Done (Session 36) |
-| **TASK-3D-09** | Add `@st.fragment` for live updates + debouncing | DEV | 1d | 🔴 HIGH | ✅ Done (Session 36) |
-| **TASK-3D-10** | Performance optimization (<50ms mesh generation) | DEV | 1d | 🟠 MEDIUM | ✅ Done - Performance verified <50ms |
-| **TASK-3D-11** | Add status display (safe/unsafe, utilization %) | DEV | 0.5d | 🟠 MEDIUM | ⏳ Ready |
-| **TASK-3D-12** | Performance benchmarks documentation | DOCS | 0.5d | 🟡 LOW | ⏳ Ready |
+| **TASK-3D-07** | Plotly 3D mesh generation - concrete beam, rebar, stirrups | DEV | 2-3d | 🔴 HIGH | ⏳ Ready |
+| **TASK-3D-08** | Integrate 3D preview into `01_beam_design.py` (two-column layout) | DEV | 1d | 🔴 HIGH | ⏳ Ready |
+| **TASK-3D-09** | Add `@st.fragment` for live updates + debouncing | DEV | 1d | 🔴 HIGH | ⏳ Ready |
+| **TASK-3D-10** | Performance optimization (<50ms mesh generation) | DEV | 1d | 🟠 MEDIUM | ⏳ Blocked by TASK-3D-07 |
+| **TASK-3D-11** | Add status display (safe/unsafe, utilization %) | DEV | 0.5d | 🟠 MEDIUM | ⏳ Blocked by TASK-3D-08 |
+| **TASK-3D-12** | Performance benchmarks documentation | DOCS | 0.5d | 🟡 LOW | ⏳ Blocked by TASK-3D-10 |
 
 **Deliverables:**
 - `streamlit_app/components/visualizations_3d.py` (Plotly mesh generation)
@@ -340,7 +340,7 @@
 | **IMP-01** | Guardrail: fail CI if new scripts are added without updating `scripts/index.json` | DEVOPS | ✅ 2026-01-13 |
 | **DEBUG-01** | Diagnostics bundle script (env, versions, git, logs) | DEVOPS | ✅ 2026-01-13 |
 | **DEBUG-02** | Debug mode toggle + logging guidance (Streamlit + CLI) | DEV | ✅ 2026-01-13 |
-| **TASK-460** | Fix Streamlit runtime errors (page_header signature, reportlab, use_container_width deprecation, import checker) | DEV | ✅ PR #354 2026-01-13 |
+| **TASK-460** | Fix Streamlit runtime errors (page_header signature, reportlab, width="stretch" migration, import checker) | DEV | ✅ PR #354 2026-01-13 |
 | **TASK-457-P2** | Documentation Consolidation Phase 2: Archive 3 session-specific research files | DOCS | ✅ 2026-01-13 |
 | **GITDOC-15-28** | Hook enforcement system: versioned hooks, git_ops.sh router, automation-first recovery, health check, test suite (14 tasks, 4 commits) | MAIN | ✅ 2026-01-12 |
 | **GITDOC-01-14** | Git workflow automation-first: error clarity, hook capture, CI monitor, docs consolidation (14 tasks, PR #345) | MAIN | ✅ 2026-01-12 |

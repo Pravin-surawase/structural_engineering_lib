@@ -545,6 +545,8 @@ cd Python && pytest tests/ -v                 # Tests
 
 **Rules:** Subject ≤72 chars, type prefix required, no period at end.
 
+**Enforcement:** Local `commit-msg` hook validates subject/body line length (≤72). Install via `./scripts/install_hooks.sh`.
+
 ```bash
 # Good commits
 feat(api): add beam export endpoint

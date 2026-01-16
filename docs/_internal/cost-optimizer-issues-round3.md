@@ -766,7 +766,7 @@ fig.update_layout(
         # Add accessibility description
     )
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 st.markdown(
     '<span role="img" aria-label="Scatter plot showing cost versus utilization ratio for different bar configurations">',
     unsafe_allow_html=True
@@ -804,7 +804,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 setup_page(title="Cost Optimizer", icon="💰", layout="centered")  # Better for mobile
 
 # Make charts responsive
-st.plotly_chart(fig, use_container_width=True)  # Already done
+st.plotly_chart(fig, width="stretch")  # Already done
 
 # Add viewport meta tag
 st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1">', unsafe_allow_html=True)

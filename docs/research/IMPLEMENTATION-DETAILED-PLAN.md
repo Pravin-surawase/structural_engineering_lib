@@ -503,7 +503,7 @@ fig = px.scatter(
     color_continuous_scale='RdYlGn_r'  # Red (high CO2) to Green (low)
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # Detail view
 selected_idx = st.selectbox("Select Design", range(len(pareto)))

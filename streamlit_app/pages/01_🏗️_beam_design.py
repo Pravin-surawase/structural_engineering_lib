@@ -810,7 +810,7 @@ with col_preview:
                     st.session_state[cache_key] = {"hash": geom_hash, "figure": fig_3d}
                     cached = st.session_state[cache_key]
 
-                st.plotly_chart(cached["figure"], use_container_width=True, key="beam_3d_viz")
+                st.plotly_chart(cached["figure"], width="stretch", key="beam_3d_viz")
                 st.caption(
                     "🖱️ **Controls:** Drag to rotate | Scroll to zoom | Right-click to pan"
                 )
@@ -857,9 +857,7 @@ with col_preview:
                     height=450,
                 )
 
-                st.plotly_chart(
-                    fig_bmd_sfd, use_container_width=True, key="bmd_sfd_viz"
-                )
+                st.plotly_chart(fig_bmd_sfd, width="stretch", key="bmd_sfd_viz")
 
                 # Show key values
                 col1, col2 = st.columns(2)

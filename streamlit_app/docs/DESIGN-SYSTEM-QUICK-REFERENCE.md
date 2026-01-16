@@ -146,7 +146,7 @@ apply_theme(fig, dark_mode=False)
 config = get_chart_config(interactive=True)
 
 # Display in Streamlit
-st.plotly_chart(fig, config=config, use_container_width=True)
+st.plotly_chart(fig, config=config, width="stretch")
 ```
 
 ### With Custom Hover
@@ -223,7 +223,7 @@ with tab1:
 with tab2:
     fig = create_chart()  # Your chart function
     apply_theme(fig)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 with tab3:
     if compliant:
@@ -267,7 +267,7 @@ with st.expander("Show Chart"):
 
 - Layout automatically stacks on mobile
 - Use `st.columns()` for desktop, auto-stacks on mobile
-- Charts set with `use_container_width=True`
+- Charts set with `width="stretch"`
 - Tables scroll horizontally on mobile
 
 ---

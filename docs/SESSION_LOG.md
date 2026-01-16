@@ -1995,7 +1995,7 @@ Created professional HTML report generation system:
 
 1. **Page Header Fix** - Changed `description=` to `subtitle=` in 4 pages (08, 09, 10, 11) to match `page_header()` signature
 2. **Reportlab Dependency** - Added `[pdf]` optional extra to pyproject.toml; made pdf_generator.py gracefully handle missing reportlab
-3. **Deprecation Migration** - Migrated 49 occurrences of `use_container_width=True` to `width="stretch"` across 14 files
+3. **Deprecation Migration** - Migrated 49 occurrences of deprecated width flags to `width="stretch"` across 14 files
 4. **Import Checker** - Created `scripts/check_streamlit_imports.py` to catch import errors before deployment
 5. **Documentation Archival** - Moved 3 session-specific research files to `docs/_archive/2026-01/`
 6. **Metadata Headers** - Added metadata headers to 7 docs (TASK-458 Phase 3)
@@ -2019,7 +2019,7 @@ Created professional HTML report generation system:
 
 - **agent_start.sh vs --quick**: Full mode runs preflight + session checks; `--quick` skips detailed checks (no Streamlit app launch in either).
 - **Testing gap**: Current tests don't catch page import errors or signature mismatches
-- **Deprecation warning**: Streamlit `use_container_width` removed after 2025-12-31
+- **Deprecation warning**: Legacy width flag removed after 2025-12-31
 
 ### Tests
 

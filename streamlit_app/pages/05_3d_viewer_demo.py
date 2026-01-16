@@ -185,7 +185,7 @@ def main():
         stirrup_spacing = st.slider("Stirrup Spacing", 75, 200, 100, 25)
         is_seismic = st.checkbox("Seismic Detailing (135° hooks)", value=True)
 
-        render_btn = st.button("🔄 Update 3D View", type="primary", use_container_width=True)
+        render_btn = st.button("🔄 Update 3D View", type="primary", width="stretch")
 
     # Generate custom geometry based on inputs
     if render_btn or "beam_geometry" not in st.session_state:

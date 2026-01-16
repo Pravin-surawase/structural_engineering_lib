@@ -234,6 +234,15 @@ cd streamlit_app
 streamlit run app.py
 ```
 
+### "You can now view your Streamlit app in your browser"
+
+This is normal startup output and includes your local and network URLs.
+If you see a Watchdog performance tip, you can optionally install it:
+```bash
+xcode-select --install
+pip install watchdog
+```
+
 ### "AttributeError: 'dict' object has no attribute..."
 
 **Solution:** Initialize session state first:

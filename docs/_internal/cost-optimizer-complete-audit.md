@@ -572,13 +572,13 @@ def main():
                 st.subheader("Cost vs Utilization")
                 if st.session_state.cost_comparison_data:
                     fig = create_cost_scatter(st.session_state.cost_comparison_data)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
 ```
 
 **ISSUES FOUND (Lines 461-475):**
 - ❌ **Issue #200:** Tab selection not persisted across reruns
 - ❌ **Issue #201:** `create_cost_scatter()` could raise exception, no try/except
-- ❌ **Issue #202:** `use_container_width=True` deprecated warning
+- ❌ **Issue #202:** `width="stretch"` deprecated warning
 - ❌ **Issue #203:** No accessibility labels for chart
 - ❌ **Issue #204:** Chart not responsive on mobile
 
@@ -591,7 +591,7 @@ def main():
                     )
                     st.dataframe(
                         df_display,
-                        use_container_width=True,
+                        width="stretch",
                         height=400,
                     )
 ```

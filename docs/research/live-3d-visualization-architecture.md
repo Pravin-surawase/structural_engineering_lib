@@ -312,7 +312,7 @@ def live_3d_viewer():
 
     # Render
     fig = create_3d_figure(mesh_data)
-    st.plotly_chart(fig, use_container_width=True, key="3d_viewer")
+    st.plotly_chart(fig, width="stretch", key="3d_viewer")
 ```
 
 **How it works:**
@@ -848,7 +848,7 @@ with col_input:
     st.caption(f"💡 Suggested effective depth: {d_suggested:.0f} mm")
 
     # Design button
-    if st.button("🚀 Analyze Design", type="primary", use_container_width=True):
+    if st.button("🚀 Analyze Design", type="primary", width="stretch"):
         with st.spinner("Computing design..."):
             # Call design API
             from structural_lib import design_beam_is456
@@ -936,7 +936,7 @@ with col_3d:
         # Render with unique key
         st.plotly_chart(
             fig,
-            use_container_width=True,
+            width="stretch",
             key="live_3d_viewer",
         )
 
@@ -1163,7 +1163,7 @@ def render_csv_import_ui():
             'Width': [300, 300, 300],
             'Depth': [450, 500, 450],
         }
-        st.dataframe(pd.DataFrame(example_data), use_container_width=True)
+        st.dataframe(pd.DataFrame(example_data), width="stretch")
 
     # File uploader
     uploaded_file = st.file_uploader(
@@ -1182,7 +1182,7 @@ def render_csv_import_ui():
 
             # Show data preview
             with st.expander(f"📊 Data Preview ({len(beams_df)} beams)"):
-                st.dataframe(beams_df, use_container_width=True)
+                st.dataframe(beams_df, width="stretch")
 
             # Store in session state
             st.session_state.beams_collection = beams_df.to_dict('records')
@@ -1192,7 +1192,7 @@ def render_csv_import_ui():
 
             with st.spinner("Rendering 3D view..."):
                 fig = create_multi_beam_3d_view(beams_df)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
             # Statistics
             col1, col2, col3, col4 = st.columns(4)
@@ -1214,7 +1214,7 @@ def render_csv_import_ui():
             col_exp1, col_exp2 = st.columns(2)
 
             with col_exp1:
-                if st.button("📊 Export to Excel", use_container_width=True):
+                if st.button("📊 Export to Excel", width="stretch"):
                     # Convert to Excel
                     from io import BytesIO
                     output = BytesIO()
@@ -1229,7 +1229,7 @@ def render_csv_import_ui():
                     )
 
             with col_exp2:
-                if st.button("🎨 Export 3D as HTML", use_container_width=True):
+                if st.button("🎨 Export 3D as HTML", width="stretch"):
                     html_str = fig.to_html(include_plotlyjs='cdn')
                     st.download_button(
                         label="⬇️ Download HTML",
@@ -1453,7 +1453,7 @@ def render_design_import_ui():
                 with st.expander(f"{status_emoji} {beam_id} @ {story}", expanded=(len(beams) == 1)):
                     # Create 3D view
                     fig = create_designed_beam_3d(beam)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
 
                     # Design summary
                     col1, col2, col3, col4 = st.columns(4)
@@ -1680,7 +1680,7 @@ def render_progressive_multi_beam():
 
         df = pd.DataFrame(all_loaded)
         fig = create_multi_beam_3d_view(df)
-        viewer_container.plotly_chart(fig, use_container_width=True, key=f"progressive_{batch_idx}")
+        viewer_container.plotly_chart(fig, width="stretch", key=f"progressive_{batch_idx}")
 
     # Complete
     progress_bar.progress(1.0)
@@ -2374,7 +2374,7 @@ def render_beam_3d_hybrid(
             **kwargs
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     elif engine == RenderEngine.PYVISTA:
         from components.visualizations_3d_pyvista import (
@@ -2629,7 +2629,7 @@ with col2:
         margin=dict(l=0, r=0, t=0, b=0),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # Stats
     col_a, col_b, col_c = st.columns(3)
@@ -2675,7 +2675,7 @@ if uploaded_file is None:
 df = pd.read_csv(uploaded_file)
 
 st.subheader("Data Preview")
-st.dataframe(df, use_container_width=True)
+st.dataframe(df, width="stretch")
 
 # Create 3D view
 st.subheader("3D View")
@@ -2717,7 +2717,7 @@ fig.update_layout(
     margin=dict(l=0, r=0, t=40, b=0),
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 # Statistics
 col1, col2, col3 = st.columns(3)

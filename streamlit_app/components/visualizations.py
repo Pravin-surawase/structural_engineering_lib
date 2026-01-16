@@ -573,7 +573,7 @@ def create_bmd_sfd_diagram(
         ...     result.positions_mm, result.bmd_knm, result.sfd_kn,
         ...     result.critical_points
         ... )
-        >>> st.plotly_chart(fig, use_container_width=True)
+        >>> st.plotly_chart(fig, width="stretch")
     """
     theme = get_plotly_theme()
 

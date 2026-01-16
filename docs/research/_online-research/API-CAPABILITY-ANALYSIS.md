@@ -507,7 +507,7 @@ if st.button("Generate Pareto Frontier"):
         name='Pareto Frontier',
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # Details
     if st.checkbox("Show design details"):

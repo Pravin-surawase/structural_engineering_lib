@@ -178,10 +178,12 @@ export GIT_EDITOR=":"                # Noop editor
 export EDITOR="echo"                 # Echo editor
 export VISUAL="cat"                  # Cat editor
 
-# Or use heredoc for multi-line
+# Or use heredoc for multi-line (keep lines <= 72 chars)
 git commit -m "$(cat <<'EOF'
-Multi-line
-commit message
+docs: add watchdog note to Streamlit quick start
+
+Document optional watchdog install to suppress dev server warnings
+and improve local reload performance.
 EOF
 )"
 ```
