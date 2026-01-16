@@ -1,25 +1,29 @@
 # Automation Platform Vision - Structural Engineering + AI
 
-**Type:** Strategy / Product Vision
-**Audience:** Pravin, Agents
-**Status:** In Research
+**Type:** Architecture
+**Audience:** All Agents
+**Status:** Approved
 **Importance:** Critical
 **Created:** 2026-01-16
 **Last Updated:** 2026-01-16
-**Related:** 3D visualization strategy, AI chat layer, structural_lib roadmap
+**Related Tasks:** AUTOMATION-PHASE0
+**Abstract:** Strategic vision for a "Structural Automation Platform" (SDK + Runtime). Empowering engineers to build valid, verifiable, and visual tools using "Lego Block" primitives.
 
 ---
 
 ## 1) Core Idea (Refined)
 
-**We will build a platform where structural engineers and students can create custom automations** powered by:
+**We are building the "OS for Structural Engineering"**—a platform that empowers engineers to **build their own tools**.
+Instead of shipping a single "Beam Designer," we ship the **SDK (Structural Development Kit)** that lets any engineer build a compliant Beam Designer in 10 minutes.
 
-- A professional structural design library
-- An AI chat layer that calls verified tools
-- A 3D visualization engine for real-time views
-- Code and knowledge grounded in IS codes and best practices
+**The Pivot:**
+*   **From:** "We build apps for you."
+*   **To:** "We give you the blocks (Analysis, Design, Viz) to build apps yourself."
 
-This is not just a calculator or a viewer. It is a **structural engineering automation platform**.
+**Core Value:**
+1.  **Verified Primitives:** Don't write `M = wL^2/8`. Use `sk.analysis.simple_span()`.
+2.  **Instant Visualization:** One line to render 3D: `sk.viz.beam(result)`.
+3.  **Standardization:** All tools speak `StructJSON`, allowing data to flow from Beam Tool -> Column Tool.
 
 ---
 
@@ -205,6 +209,7 @@ Optional paid tiers can be considered later, but not now.
 - Complete Step 1 and Step 2 research
 - List top workflows and Excel patterns
 - Lock top 5 automation targets
+- Phase 0 outputs doc: [automation-platform-phase-0-research.md](automation-platform-phase-0-research.md)
 
 ### Phase A: Foundation (Now)
 - Tool registry + versioned APIs
@@ -233,6 +238,7 @@ Optional paid tiers can be considered later, but not now.
 **Phase 0 (Research)**
 - Deliverable: workflow map + tooling gap report
 - Output: top 5 automation shortlist
+- Reference: [automation-platform-phase-0-research.md](automation-platform-phase-0-research.md)
 
 **Phase 1 (Core Automations)**
 - Deliverable: 3-5 production templates
