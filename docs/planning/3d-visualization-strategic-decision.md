@@ -2,24 +2,24 @@
 
 **Type:** Decision Document
 **Audience:** All Agents, Pravin
-**Status:** For Discussion
+**Status:** In Review
 **Importance:** Critical
 **Created:** 2026-01-16
 **Last Updated:** 2026-01-16
 **Related Tasks:** TASK-3D-VIZ, PR #373
-**Decision Deadline:** January 17, 2026
+**Decision Deadline:** January 24, 2026
 
 ---
 
 ## 🎯 Executive Summary
 
-**Current Status:** PR #373 completed Phase 0 (Three.js POC) with 3,983 lines of code, 59 tests passing.
+**Current Status:** PR #373 contains Phase 0 (Three.js POC) with ~4K LOC and 59 tests; CI is still running.
 
-**Question:** What technology should power our 3D visualization for the next 3-5 years?
+**Question:** What technology should power our 3D visualization for the next 3-5 years **and** remain AI-ready for a chat-first product?
 
-**Recommendation:** **Hybrid Three.js + PyVista** approach for maximum long-term value.
+**Recommendation:** **Three.js as default + Plotly fallback + PyVista optional (later)**.
 
-**Why?** Best of both worlds - Three.js for production speed, PyVista for CAD quality when needed.
+**Why?** Three.js gives performance + web-native UX for chat workflows, Plotly is a safe fallback if iframe is blocked, and PyVista is a future CAD-quality tier when/if needed.
 
 ---
 
@@ -52,6 +52,33 @@ Client: "WOW. We want this."
 ```
 
 **This is the goal.** Not just working - but impressive.
+
+---
+
+## 🤖 AI-First Product Vision (Chat + 3D)
+
+We are not building only a beam designer. We are building an **AI-native engineering platform** where a chat agent:
+
+1. **Understands intent** (natural language)
+2. **Calls our APIs** (deterministic calculations)
+3. **Generates visuals** (3D + 2D)
+4. **Explains results** (clear, professional, grounded)
+
+**The product loop (LLM-assisted):**
+```
+User intent → Tool selection → Compute → Verify → Visualize → Explain → Iterate
+```
+
+**This changes the requirements** for 3D visualization:
+- **Must be tool-callable:** geometry generation is a function, not a manual UI step.
+- **Must be deterministic:** same inputs → same geometry → same rendering.
+- **Must be explainable:** visuals should map directly to computed values.
+- **Must be fast:** chat flow cannot wait 5-10s per update.
+
+**If we get this right**, the chat layer becomes a force multiplier:
+- “Show me rebar congestion at midspan” → highlights dense zones
+- “What changed after I increased depth?” → diff view, with before/after geometry
+- “Explain why this beam fails” → overlay utilization + key calculations
 
 ---
 
@@ -110,7 +137,7 @@ WebGL (GPU)
 - 10,000+ beams: Possible with aggressive LOD
 - GPU-accelerated, uses your graphics card
 
-**Current Status:** ✅ Working in PR #373, 59 tests passing
+**Current Status:** 🟡 In PR #373, tests running
 
 ---
 
@@ -230,9 +257,32 @@ Screen
 
 ---
 
-## 🏆 The Winning Strategy: HYBRID APPROACH
+## 🧠 AI-Readiness Criteria (Non-Negotiable)
 
-### Recommendation: Three.js Primary + PyVista Optional
+To support the chat layer long-term, the visualization stack must guarantee:
+
+1. **Stable 3D contract (versioned)**
+   - Schema changes are explicit, backward-compatible, and tested.
+2. **Deterministic geometry**
+   - Same inputs produce identical JSON. No hidden randomness.
+3. **Round-trip explainability**
+   - Every visible object maps to a computed value (bar, stirrup, cover, zone).
+4. **Event surfaces for AI**
+   - Selection, hover, and filtering should emit structured events.
+5. **Performance budgets**
+   - <150ms for single-beam update to keep chat fluid.
+6. **Debug/trace support**
+   - Ability to record “inputs → geometry → render snapshot” for audits.
+7. **Fallback rendering path**
+   - If iframe/postMessage breaks, Plotly must still show a basic 3D view.
+
+If a technology cannot meet these, it cannot be the core renderer.
+
+---
+
+## 🏆 The Winning Strategy: Layered Renderer Stack
+
+### Recommendation: Three.js Primary + Plotly Fallback + PyVista Optional
 
 **Architecture:**
 ```
@@ -243,64 +293,128 @@ Screen
 │            ↓                               │
 │  Python Core (geometry calculation)        │
 │            ↓                               │
-│  ┌──────────────────┬──────────────────┐  │
-│  │   Three.js       │   PyVista        │  │
-│  │   (Default)      │   (Optional)     │  │
-│  ├──────────────────┼──────────────────┤  │
-│  │ • Fast updates   │ • CAD quality    │  │
-│  │ • 1000+ beams    │ • Export to FEA  │  │
-│  │ • Professional   │ • Photorealistic │  │
-│  │ • Mobile works   │ • Advanced tools │  │
-│  └──────────────────┴──────────────────┘  │
+│  ┌──────────────────┬──────────────────┬──────────────────┐  │
+│  │   Three.js       │   Plotly         │   PyVista        │  │
+│  │   (Default)      │   (Fallback)     │   (Optional)     │  │
+│  ├──────────────────┼──────────────────┼──────────────────┤  │
+│  │ • Fast updates   │ • Always works   │ • CAD quality    │  │
+│  │ • 1000+ beams    │ • Minimal deps   │ • Export to FEA  │  │
+│  │ • Pro visuals    │ • No iframe      │ • Photorealistic │  │
+│  │ • Mobile works   │ • Lowest risk    │ • Advanced tools │  │
+│  └──────────────────┴──────────────────┴──────────────────┘  │
 │                                            │
-│  [Toggle: Fast Mode | Quality Mode]       │
+│  [Toggle: Fast | Fallback | Quality]     │
 └────────────────────────────────────────────┘
 ```
 
 **Why This Wins:**
 
-1. **✅ Three.js handles 99% of use cases** - Fast, beautiful, scalable
-2. **✅ PyVista available for special needs** - High-res exports, FEA integration
-3. **✅ User choice** - Let users pick based on their hardware
-4. **✅ Future-proof** - Can switch renderers as tech evolves
-5. **✅ Risk mitigation** - If one fails, fallback to other
+1. **✅ Three.js handles 95% of use cases** - Fast, beautiful, scalable
+2. **✅ Plotly saves the day** - If iframe/postMessage is blocked
+3. **✅ PyVista for premium workflows** - CAD-quality + exports
+4. **✅ User choice** - Match hardware and use case
+5. **✅ Future-proof** - Renderer can swap without changing core geometry
 
-### Implementation Timeline
+---
 
-**Phase 1 (Complete - PR #373):** Three.js POC ✅
+## 🧩 LLM-Ready Architecture (Required for Chat Layer)
+
+### 1) Stable Tool Surface (Function Contracts)
+We must expose **versioned, auditable functions** for AI:
+- `beam_to_3d_geometry(detailing) -> BeamGeometry3D`
+- `detailing.to_3d_json(is_seismic=False) -> dict`
+- `compute_*` helpers stay deterministic
+
+**Why it matters:** The agent must call tools and trust the result. No hidden UI-only logic.
+
+### 2) Scene Graph + Semantic Tags
+The 3D output should be more than geometry:
+- Every bar/stirrup has IDs and labels (`barType`, `zone`, `diameter`)
+- Every object maps to a computed value
+- Optional tags for “critical”, “congested”, “unsafe”
+
+**Why it matters:** The chat layer can highlight “problem areas” with confidence.
+
+### 3) Explainability Bridge
+We will need a thin layer that connects:
+```
+Calculation → Reference → Visual Element → Chat Explanation
+```
+This becomes the foundation for future clause citations and audits.
+
+### 4) Performance as a Product Requirement
+Chat UX needs fast visual feedback:
+- **Target:** <150ms for single-beam update
+- **Degradation:** LOD + partial updates, never “freeze”
+
+### 5) Observability + Replay
+Every visual should be reproducible:
+- Store `inputs → geometry JSON → render checksum`
+- Enables bug reproduction and regulatory audits later
+
+### 6) Three-Layer Data Model (Stable Backbone)
+```
+Design Result (engineering) → Geometry (3D contract) → View Model (UI state)
+```
+- **Design Result:** authoritative calculations (IS 456, load effects)
+- **Geometry:** pure coordinates + metadata (renderer-agnostic)
+- **View Model:** camera, filters, selection (UI only)
+
+**Why it matters:** the chat agent should only alter the Design or Geometry layer.
+
+### Implementation Timeline (AI-Ready)
+
+**Phase 0 (In Review - PR #373):** Three.js POC ✅
 - Basic rendering working
 - 59 tests passing
-- Foundation solid
+- JSON contract drafted
 
-**Phase 2 (Week 1-2):** Three.js Production ⏳
-- Add live updates with @st.fragment
-- Implement instancing for 1000+ beams
-- Add shadows, materials, lighting
-- Performance optimization
+**Phase 1 (Week 1-2):** Production-ready 3D Core ⏳
+- Contract versioning + validation helpers
+- Live updates with `@st.fragment`
+- Instancing for 1000+ beams
+- Lighting + PBR materials + shadows
 
-**Phase 3 (Week 3-4):** CSV Import + Multi-Beam ⏳
-- Parse ETABS CSV format
-- Render entire building (100-1000 beams)
-- Interactive selection
-- Export features
+**Phase 2 (Week 3-4):** Multi-Beam + AI Events ⏳
+- ETABS CSV import
+- Render 100–1000 beams
+- Click/hover events → structured payloads
+- Export shareable HTML snapshot
 
-**Phase 4 (Week 5-6):** Advanced Features ⏳
-- Post-analysis visualization
-- Stress colors, utilization gradients
-- Load path animations
-- Section cuts
+**Phase 3 (Week 5-6):** Advanced Visual Intelligence ⏳
+- Utilization colors + stress overlays
+- Congestion detection + highlighting
+- Section cuts (Three.js first)
+- Performance profiling + LOD
 
-**Phase 5 (Week 7):** PyVista Integration (Optional) ⏳
-- Add PyVista renderer (parallel to Three.js)
-- User toggle in UI
-- Export to STL/VTK
-- High-res screenshot mode
+**Phase 4 (Week 7):** PyVista Optional Tier ⏳
+- CAD-quality mode toggle
+- STL/VTK export
+- High-res render pipeline
 
-**Phase 6 (Week 8):** Polish + Launch ⏳
-- Performance tuning
-- Documentation
-- Demo videos
-- Deploy to Streamlit Cloud
+**Phase 5 (Week 8):** Polish + Launch ⏳
+- End-to-end docs
+- Demo workflows
+- Streamlit Cloud deploy
+
+---
+
+## 🗺️ AI Integration Roadmap (Parallel Track)
+
+**Stage A — Tool Surface (Now)**
+- Publish a minimal tool catalog for the LLM (JSON schema + examples)
+- Add contract validation tests in CI
+- Add a “replay payload” debug helper
+
+**Stage B — Chat-to-Visual Loop**
+- Chat triggers `beam_to_3d_geometry` and renders result
+- Add diff mode (before/after geometry comparison)
+- Add structured selection payloads to feed chat
+
+**Stage C — Explainability**
+- Link visual elements to calculation references
+- Add “why” responses for failure states
+- Prepare hooks for future clause citations (optional)
 
 ---
 
@@ -412,23 +526,45 @@ forces.animate({
 
 ---
 
+### Priority 3.5: Chat-Driven WOW (AI Layer)
+
+**9. “Explain This” Mode (Visual + Text)**
+- User asks: “Why is this beam failing?”
+- UI highlights critical zones + chat summarizes key checks
+
+**Impact:** Engineers trust the AI because visuals match calculations.
+
+**10. Before/After Diff**
+- “Increase depth to 500 and show changes”
+- 3D view shows delta (color-coded), chat summarizes impacts
+
+**Impact:** Feels like a professional design assistant, not a calculator.
+
+**11. Natural Language Selection**
+- “Show only beams over 80% utilization”
+- AI filters the scene based on metadata tags
+
+**Impact:** Turns visualization into a queryable engineering model.
+
+---
+
 ### Priority 4: CAD-Quality Features (Week 7 - PyVista)
 
-**9. Section Cuts (Clipping Planes)**
+**12. Section Cuts (Clipping Planes)**
 - Slice beam at any angle
 - See internal rebar layout
 - Measure distances
 
 **Impact:** Matches AutoCAD functionality.
 
-**10. Exploded View**
+**13. Exploded View**
 - Separate concrete, top bars, bottom bars, stirrups
 - Show assembly sequence
 - Educational + verification
 
 **Impact:** Unique feature, not in most software.
 
-**11. Export to FEA Formats**
+**14. Export to FEA Formats**
 - STL for 3D printing (physical models!)
 - VTK for Ansys/Abaqus
 - OBJ for Blender rendering
@@ -445,6 +581,7 @@ forces.animate({
 |----------|--------|------------|---------|
 | **Single beam render** | <50ms | <100ms | >200ms |
 | **Slider update** | <100ms | <150ms | >300ms |
+| **Chat request → updated view** | <300ms | <600ms | >1.5s |
 | **CSV 100 beams** | <2s | <5s | >10s |
 | **CSV 1000 beams** | <10s | <20s | >60s |
 | **Rotation (60fps)** | 16ms/frame | 33ms (30fps) | >50ms |
@@ -494,29 +631,43 @@ forces.animate({
 
 ---
 
+## ⚠️ AI + 3D Risk Register (With Mitigations)
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Contract drift between Python and JS | Visual bugs, broken AI tools | Versioned schema + contract tests |
+| LLM uses stale functions | Wrong results or hallucinations | Tool registry + API signature validation |
+| Slow render blocks chat flow | Poor UX, agent retries | Performance budgets + LOD + caching |
+| Hard to explain results | Low trust in AI | Visual → calculation trace mapping |
+| Streamlit iframe blocked | 3D fails entirely | Plotly fallback path |
+| Multi-beam scale overload | Browser crash | Instancing + view-dependent LOD |
+
+---
+
 ## 🎯 Final Recommendation
 
 ### What to Build (Priority Order)
 
 **✅ MUST HAVE (Weeks 1-6):**
 1. Three.js production-ready (live updates, 1000+ beams)
-2. CSV import with multi-beam visualization
-3. Professional lighting + shadows + PBR materials
-4. Stress visualization (utilization colors)
-5. Click-to-select with details panel
-6. Export to HTML (shareable 3D)
+2. Versioned 3D contract + validation helpers
+3. CSV import with multi-beam visualization
+4. Professional lighting + shadows + PBR materials
+5. Stress visualization (utilization colors)
+6. Click-to-select with structured events (AI-ready)
+7. Export to HTML (shareable 3D)
 
 **✨ SHOULD HAVE (Week 7):**
-7. PyVista CAD-quality mode (optional toggle)
-8. Load path animations
-9. Section cuts
-10. High-res export (4K screenshots)
+8. PyVista CAD-quality mode (optional toggle)
+9. Load path animations
+10. Section cuts
+11. High-res export (4K screenshots)
 
 **⏰ NICE TO HAVE (V1.1 - Later):**
-11. Exploded view
-12. FEA export (STL/VTK)
-13. VR mode
-14. Collaborative annotations
+12. Exploded view
+13. FEA export (STL/VTK)
+14. VR mode
+15. Collaborative annotations
 
 ---
 
@@ -532,36 +683,38 @@ Before finalizing, confirm:
 - [ ] **✅ Budget-friendly:** Works on Streamlit Cloud free tier (Three.js), optional paid for PyVista
 - [ ] **✅ Mobile support:** Three.js works on tablets (important for site engineers)
 - [ ] **✅ Future-proof:** Can add features incrementally without rewrite
+- [ ] **✅ AI-ready:** Stable schema + deterministic geometry + structured events
+- [ ] **✅ Debuggable:** Can reproduce visuals from recorded inputs
 
 ---
 
 ## 🚀 Next Steps
 
-### Immediate (Today - January 16)
+### Immediate (This Week)
 
-1. **✅ Fix import error** - Already done in this session
-2. **🤝 Confirm strategy** - Pravin approves hybrid approach
-3. **📋 Update TASKS.md** - Break down Phase 2 into tasks
+1. **🤝 Confirm strategy** - Three.js primary + Plotly fallback + PyVista optional
+2. **📋 Lock the 3D contract** - Versioned schema + validation helper
+3. **🧩 AI readiness checklist** - Determinism + event payloads + replay plan
 
-### This Week (January 17-23)
+### Next Week
 
-1. **🔨 Implement live updates** - Add @st.fragment to demo page
+1. **🔨 Implement live updates** - Add `@st.fragment` to demo page
 2. **🎨 Add professional lighting** - Shadows + PBR materials
-3. **⚡ Optimize performance** - Target <100ms updates
-4. **🧪 Write tests** - Cover edge cases
+3. **⚡ Optimize performance** - Target <150ms updates
+4. **🧪 Expand tests** - Contract + edge cases
 
-### Next Week (January 24-30)
+### Following Week
 
 1. **📊 CSV import** - Parse ETABS format
 2. **🏗️ Multi-beam rendering** - Instancing for 1000+ beams
 3. **🎨 Stress visualization** - Utilization colors
-4. **👆 Click-to-select** - Interactive beam selection
+4. **👆 Structured selection events** - For AI filtering
 
-### Month 2 (February)
+### Month 2
 
 1. **🎨 Advanced features** - Animations, section cuts
-2. **🖼️ PyVista integration** - CAD quality mode
-3. **✨ Polish** - Performance tuning, documentation
+2. **🖼️ PyVista integration** - CAD quality mode (optional)
+3. **✨ Polish** - Performance + docs + demo flows
 4. **🚀 Deploy** - Streamlit Cloud production
 
 ---
