@@ -2,17 +2,18 @@ Attribute VB_Name = "mod_ETABS_Core"
 Option Explicit
 
 '==============================================================================
-' ETABS EXPORT - CORE MODULE v2.1
+' ETABS EXPORT - CORE MODULE v2.2
 '==============================================================================
-' Purpose: Export ETABS data to CSV for Streamlit structural engineering app
+' Purpose: Export ETABS data to Excel/CSV for Streamlit structural engineering app
 ' Target:  structural_engineering_lib/streamlit_app
 '
 ' Features:
-'   - Connect to running ETABS instance
+'   - Connect to running ETABS instance (GetObject pattern)
 '   - Run/verify analysis
 '   - Export beam forces, sections, geometry
 '   - Base reactions and design results
-'   - Unit conversion (any ETABS units -> kN, mm, kN.m)
+'   - Excel-first pattern: Write to Excel worksheet, then export to CSV
+'   - Unit conversion (set to kN, m, then convert)
 '
 ' Usage:
 '   1. Open ETABS with your model
@@ -24,22 +25,35 @@ Option Explicit
 '   Story,Label,Output Case,Station,M3,V2,P
 '   Story1,B1,1.5DL+LL,0.000,125.500,85.200,0.000
 '
+' v2.2 Changes (fixes from legacy code analysis):
+'   - Use GetObject() for connection (more reliable)
+'   - SetPresentUnits() BEFORE any results retrieval
+'   - Write to Excel worksheet first, then export to CSV
+'   - Separate handling for LoadCases vs Combos
+'
 ' Author: Pravin Surawase
 ' License: MIT
-' Version: 2.1.0
+' Version: 2.2.0
 ' Date: 2026-01-17
 '==============================================================================
 
 '------------------------------------------------------------------------------
 ' CONFIGURATION
 '------------------------------------------------------------------------------
-Public Const APP_VERSION As String = "2.1.0"
+Public Const APP_VERSION As String = "2.2.0"
 Public Const LOG_LEVEL As Long = 0     ' 0=DEBUG, 1=INFO, 2=WARN, 3=ERROR
 
 ' Global state
 Public g_LogFile As String
 Public g_OutputFolder As String
 Public g_LogFileNum As Long
+
+' Global ETABS objects (like legacy code pattern)
+Public g_ETABSObject As Object
+Public g_SapModel As Object
+
+' Excel worksheet for intermediate storage
+Public Const WS_EXPORT_NAME As String = "ETABS_Export"
 
 '------------------------------------------------------------------------------
 ' TYPE DEFINITIONS
@@ -76,23 +90,17 @@ Public Sub ExportETABSData()
     Application.ScreenUpdating = False
     Application.StatusBar = "Connecting to ETABS..."
     
-    ' Connect to ETABS
-    Dim etabs As Object
-    Dim sapModel As Object
-    
-    Set etabs = ConnectToETABS()
-    If etabs Is Nothing Then
+    ' Connect to ETABS (using GetObject - legacy pattern)
+    If Not ConnectToETABS() Then
         MsgBox "Cannot connect to ETABS." & vbCrLf & _
                "Please ensure ETABS is running with a model loaded.", _
                vbCritical, "Connection Failed"
         GoTo Cleanup
     End If
     
-    Set sapModel = etabs.SapModel
-    
     ' Validate model is ready
     Dim modelPath As String
-    modelPath = sapModel.GetModelFilename
+    modelPath = g_SapModel.GetModelFilename
     If Len(modelPath) = 0 Then
         MsgBox "No model loaded in ETABS." & vbCrLf & _
                "Please open a model before running export.", _
@@ -101,20 +109,33 @@ Public Sub ExportETABSData()
     End If
     LogInfo "Model: " & modelPath
     
+    ' *** CRITICAL FIX: Set standard units FIRST (from legacy code) ***
+    LogInfo "Setting units to kN, m, C..."
+    Dim ret As Long
+    ret = g_SapModel.SetPresentUnits(6)  ' eUnits_kN_m_C = 6
+    If ret <> 0 Then
+        LogWarning "Could not set units: ret=" & ret
+    Else
+        LogInfo "? Units set to kN, m, C"
+    End If
+    
     ' Check/Run analysis
     Application.StatusBar = "Verifying analysis..."
-    If Not EnsureAnalysisComplete(sapModel) Then
+    If Not EnsureAnalysisComplete(g_SapModel) Then
         GoTo Cleanup
     End If
     
-    ' Get units
+    ' Get units (should now be kN, m, C)
     Application.StatusBar = "Detecting units..."
     Dim units As UnitConversion
-    units = GetETABSUnits(sapModel)
+    units = GetETABSUnits(g_SapModel)
     If units.ForceToKN = 0 Then
         MsgBox "Cannot determine ETABS units.", vbCritical, "Unit Error"
         GoTo Cleanup
     End If
+    
+    ' Setup Excel worksheet for intermediate data
+    Call SetupExportWorksheet
     
     ' Create output folders
     Dim rawFolder As String, normFolder As String
@@ -123,13 +144,13 @@ Public Sub ExportETABSData()
     If Not FolderExists(rawFolder) Then MkDir rawFolder
     If Not FolderExists(normFolder) Then MkDir normFolder
     
-    ' Export all data
+    ' Export all data (write to Excel first, then CSV)
     Application.StatusBar = "Exporting frame forces..."
     LogInfo ""
     LogInfo "=== EXPORTING DATA ==="
     
     Dim success As Boolean
-    success = ExportBeamForces(sapModel, rawFolder, units)
+    success = ExportBeamForces(g_SapModel, rawFolder, units)
     
     If Not success Then
         MsgBox "Frame forces export failed." & vbCrLf & _
@@ -139,22 +160,22 @@ Public Sub ExportETABSData()
     
     ' Export additional data (optional - continue on failure)
     Application.StatusBar = "Exporting base reactions..."
-    Call ExportBaseReactions(sapModel, rawFolder, units)
+    Call ExportBaseReactions(g_SapModel, rawFolder, units)
     
     Application.StatusBar = "Exporting column design..."
-    Call ExportColumnDesignResults(sapModel, rawFolder)
+    Call ExportColumnDesignResults(g_SapModel, rawFolder)
     
     Application.StatusBar = "Exporting beam design..."
-    Call ExportBeamDesignResults(sapModel, rawFolder)
+    Call ExportBeamDesignResults(g_SapModel, rawFolder)
     
     Application.StatusBar = "Exporting sections..."
-    Call ExportSections(sapModel, rawFolder)
+    Call ExportSections(g_SapModel, rawFolder)
     
     Application.StatusBar = "Exporting stories..."
-    Call ExportStories(sapModel, rawFolder)
+    Call ExportStories(g_SapModel, rawFolder)
     
     ' Create metadata
-    Call CreateMetadata(sapModel, normFolder, units)
+    Call CreateMetadata(g_SapModel, normFolder, units)
     
     ' Success!
     LogInfo ""
@@ -187,62 +208,85 @@ ErrorHandler:
 End Sub
 
 '------------------------------------------------------------------------------
-' CONNECTION
+' EXCEL WORKSHEET SETUP (for Excel-first pattern)
 '------------------------------------------------------------------------------
 
-' Connect to running ETABS instance
-Public Function ConnectToETABS() As Object
-    On Error GoTo TryLaunch
+' Create or clear the export worksheet
+Private Sub SetupExportWorksheet()
+    On Error Resume Next
+    Dim ws As Worksheet
     
+    ' Try to get existing worksheet
+    Set ws = ThisWorkbook.Worksheets(WS_EXPORT_NAME)
+    
+    If ws Is Nothing Then
+        ' Create new worksheet
+        Set ws = ThisWorkbook.Worksheets.Add
+        ws.Name = WS_EXPORT_NAME
+        LogInfo "Created worksheet: " & WS_EXPORT_NAME
+    Else
+        ' Clear existing data
+        ws.Cells.Clear
+        LogInfo "Cleared worksheet: " & WS_EXPORT_NAME
+    End If
+End Sub
+
+' Get export worksheet
+Public Function GetExportWorksheet() As Worksheet
+    On Error Resume Next
+    Set GetExportWorksheet = ThisWorkbook.Worksheets(WS_EXPORT_NAME)
+End Function
+
+'------------------------------------------------------------------------------
+' CONNECTION (Fixed: Using GetObject like legacy code)
+'------------------------------------------------------------------------------
+
+' Connect to running ETABS instance using GetObject (legacy pattern)
+Public Function ConnectToETABS() As Boolean
+    On Error GoTo ConnectionError
+    
+    LogInfo "Connecting to running ETABS..."
+    
+    ' Method 1: Direct GetObject (most reliable - from legacy code)
+    On Error Resume Next
+    Set g_ETABSObject = GetObject(, "CSI.ETABS.API.ETABSObject")
+    On Error GoTo ConnectionError
+    
+    If Not g_ETABSObject Is Nothing Then
+        Set g_SapModel = g_ETABSObject.SapModel
+        LogInfo "? Connected to ETABS (GetObject)"
+        ConnectToETABS = True
+        Exit Function
+    End If
+    
+    ' Method 2: Try ETABSv1.Helper as fallback
+    On Error Resume Next
     Dim helper As Object
     Set helper = CreateObject("ETABSv1.Helper")
     
-    If helper Is Nothing Then
-        LogError "Cannot create ETABSv1.Helper - is ETABS installed?"
-        Set ConnectToETABS = Nothing
-        Exit Function
+    If Not helper Is Nothing Then
+        Set g_ETABSObject = helper.GetObject("CSI.ETABS.API.ETABSObject")
+        If Not g_ETABSObject Is Nothing Then
+            Set g_SapModel = g_ETABSObject.SapModel
+            LogInfo "? Connected to ETABS (Helper)"
+            ConnectToETABS = True
+            Exit Function
+        End If
     End If
+    On Error GoTo ConnectionError
     
-    ' Try to attach to running instance
-    LogInfo "Connecting to running ETABS..."
-    Dim etabs As Object
-    Set etabs = helper.GetObject("CSI.ETABS.API.ETABSObject")
-    
-    If Not etabs Is Nothing Then
-        LogInfo "? Connected to ETABS"
-        Set ConnectToETABS = etabs
-        Exit Function
-    End If
-
-TryLaunch:
     ' No running instance - ask user
-    On Error GoTo LaunchError
-    
     Dim response As VbMsgBoxResult
     response = MsgBox("ETABS is not running." & vbCrLf & vbCrLf & _
-                     "Would you like to launch ETABS?", _
-                     vbYesNo + vbQuestion, "Launch ETABS")
+                     "Please start ETABS and open your model first.", _
+                     vbOKOnly + vbExclamation, "ETABS Not Running")
     
-    If response = vbNo Then
-        Set ConnectToETABS = Nothing
-        Exit Function
-    End If
-    
-    LogInfo "Launching ETABS..."
-    Set etabs = helper.CreateObjectProgID("CSI.ETABS.API.ETABSObject")
-    
-    If etabs Is Nothing Then
-        LogError "Failed to launch ETABS"
-        Set ConnectToETABS = Nothing
-    Else
-        LogInfo "? ETABS launched"
-        Set ConnectToETABS = etabs
-    End If
+    ConnectToETABS = False
     Exit Function
 
-LaunchError:
-    LogError "Launch error: " & Err.Description
-    Set ConnectToETABS = Nothing
+ConnectionError:
+    LogError "Connection error: " & Err.Description
+    ConnectToETABS = False
 End Function
 
 '------------------------------------------------------------------------------
@@ -291,27 +335,38 @@ AnalysisError:
 End Function
 
 '------------------------------------------------------------------------------
-' UNIT DETECTION
+' UNIT DETECTION (Fixed: Read units after SetPresentUnits)
 '------------------------------------------------------------------------------
 
 ' Get ETABS units and build conversion factors
+' Note: We call SetPresentUnits(kN,m,C) before this, so conversion should be 1.0
 Public Function GetETABSUnits(sapModel As Object) As UnitConversion
     On Error GoTo UnitError
     
     Dim units As UnitConversion
+    
+    ' Since we set to kN, m, C before calling this, conversion factors are 1.0
+    ' But let's verify by reading current units
     Dim forceUnits As Long, lengthUnits As Long, tempUnits As Long
     
     Dim ret As Long
     ret = sapModel.GetPresentUnits_2(forceUnits, lengthUnits, tempUnits)
     
+    LogDebug "GetPresentUnits_2: force=" & forceUnits & ", length=" & lengthUnits & ", temp=" & tempUnits
+    
     If ret <> 0 Then
         LogError "Cannot get units: ret=" & ret
-        units.ForceToKN = 0
+        ' Default to kN, m since we set it
+        units.ForceUnit = "kN"
+        units.LengthUnit = "m"
+        units.ForceToKN = 1#
+        units.LengthToMM = 1000#
+        units.MomentToKNM = 1#
         GetETABSUnits = units
         Exit Function
     End If
     
-    ' Force conversion to kN
+    ' Force units (should be 4 = kN after SetPresentUnits)
     Select Case forceUnits
         Case 1: units.ForceUnit = "lb": units.ForceToKN = 0.00444822
         Case 2: units.ForceUnit = "kip": units.ForceToKN = 4.44822
@@ -320,13 +375,12 @@ Public Function GetETABSUnits(sapModel As Object) As UnitConversion
         Case 5: units.ForceUnit = "kgf": units.ForceToKN = 0.00980665
         Case 6: units.ForceUnit = "tonf": units.ForceToKN = 9.80665
         Case Else
-            LogError "Unknown force unit: " & forceUnits
-            units.ForceToKN = 0
-            GetETABSUnits = units
-            Exit Function
+            LogWarning "Unknown force unit: " & forceUnits & " - assuming kN"
+            units.ForceUnit = "kN"
+            units.ForceToKN = 1#
     End Select
     
-    ' Length conversion to mm
+    ' Length units (should be 4 = m after SetPresentUnits)
     Select Case lengthUnits
         Case 1: units.LengthUnit = "in": units.LengthToMM = 25.4
         Case 2: units.LengthUnit = "ft": units.LengthToMM = 304.8
@@ -334,7 +388,7 @@ Public Function GetETABSUnits(sapModel As Object) As UnitConversion
         Case 4: units.LengthUnit = "m": units.LengthToMM = 1000#
         Case 5: units.LengthUnit = "cm": units.LengthToMM = 10#
         Case Else
-            LogWarning "Unknown length unit: " & lengthUnits & " - assuming meters"
+            LogWarning "Unknown length unit: " & lengthUnits & " - assuming m"
             units.LengthUnit = "m"
             units.LengthToMM = 1000#
     End Select
@@ -352,7 +406,12 @@ Public Function GetETABSUnits(sapModel As Object) As UnitConversion
 
 UnitError:
     LogError "Unit detection error: " & Err.Description
-    units.ForceToKN = 0
+    ' Default to kN, m since we set it
+    units.ForceUnit = "kN"
+    units.LengthUnit = "m"
+    units.ForceToKN = 1#
+    units.LengthToMM = 1000#
+    units.MomentToKNM = 1#
     GetETABSUnits = units
 End Function
 

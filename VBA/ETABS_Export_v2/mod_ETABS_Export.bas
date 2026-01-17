@@ -2,9 +2,9 @@ Attribute VB_Name = "mod_ETABS_Export"
 Option Explicit
 
 '==============================================================================
-' ETABS EXPORT - DATA EXPORT MODULE v2.1
+' ETABS EXPORT - DATA EXPORT MODULE v2.2
 '==============================================================================
-' Purpose: Export all ETABS data to CSV files
+' Purpose: Export all ETABS data to Excel worksheet first, then to CSV files
 '
 ' Exports:
 '   - Beam Forces (PRIMARY - required for Streamlit)
@@ -14,6 +14,12 @@ Option Explicit
 '   - Sections
 '   - Stories
 '
+' v2.2 Changes (fixes from legacy code analysis):
+'   - Write to Excel worksheet first, then export to CSV
+'   - Use SetCaseSelectedForOutput for load cases
+'   - Use SetComboSelectedForOutput for load combinations (separate!)
+'   - Better error handling for "No load cases" issue
+'
 ' Based on:
 '   - Legacy working code (2019-2021)
 '   - ETABS API patterns from CSI documentation
@@ -21,7 +27,7 @@ Option Explicit
 '
 ' Author: Pravin Surawase
 ' License: MIT
-' Version: 2.1.0
+' Version: 2.2.0
 '==============================================================================
 
 '------------------------------------------------------------------------------
@@ -105,42 +111,50 @@ Private Function ExportForcesDatabaseTables(sapModel As Object, csvPath As Strin
 End Function
 
 ' Method 2: Direct API export (more reliable, slower)
+' Fixed: Properly selects both load cases AND combos for output
 Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, units As UnitConversion) As Boolean
     On Error GoTo DirectError
     
     LogInfo "Using Direct API method..."
     
-    ' Deselect all, then select all cases for output
-    On Error Resume Next
-    sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
+    ' *** CRITICAL FIX: Deselect all first (from legacy BASE_REACTIONS.bas) ***
+    Dim ret As Long
+    ret = sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
+    LogDebug "DeselectAllCasesAndCombosForOutput: ret=" & ret
     
-    ' Get all load cases
+    ' *** Get and select all load CASES ***
     Dim numCases As Long
     Dim caseNames() As String
-    sapModel.LoadCases.GetNameList numCases, caseNames
+    ret = sapModel.LoadCases.GetNameList(numCases, caseNames)
+    LogInfo "Load cases found: " & numCases
     
-    If numCases = 0 Then
-        LogError "No load cases found"
+    If numCases > 0 Then
+        Dim c As Long
+        For c = LBound(caseNames) To UBound(caseNames)
+            ret = sapModel.Results.Setup.SetCaseSelectedForOutput(caseNames(c))
+            LogDebug "  Selected case: " & caseNames(c) & " ret=" & ret
+        Next c
+    End If
+    
+    ' *** Get and select all load COMBOS (separate API call!) ***
+    Dim numCombos As Long
+    Dim comboNames() As String
+    ret = sapModel.RespCombo.GetNameList(numCombos, comboNames)
+    LogInfo "Load combos found: " & numCombos
+    
+    If numCombos > 0 Then
+        For c = LBound(comboNames) To UBound(comboNames)
+            ret = sapModel.Results.Setup.SetComboSelectedForOutput(comboNames(c))
+            LogDebug "  Selected combo: " & comboNames(c) & " ret=" & ret
+        Next c
+    End If
+    
+    ' *** Check: If NO cases AND NO combos, we can't export ***
+    If numCases = 0 And numCombos = 0 Then
+        LogError "No load cases or combos found - run analysis first"
         ExportForcesDirectAPI = False
         Exit Function
     End If
-    
-    ' Select all cases for output
-    Dim c As Long
-    For c = LBound(caseNames) To UBound(caseNames)
-        sapModel.Results.Setup.SetCaseSelectedForOutput caseNames(c)
-    Next c
-    
-    ' Also select all combos
-    Dim numCombos As Long
-    Dim comboNames() As String
-    sapModel.RespCombo.GetNameList numCombos, comboNames
-    If numCombos > 0 Then
-        For c = LBound(comboNames) To UBound(comboNames)
-            sapModel.Results.Setup.SetComboSelectedForOutput comboNames(c)
-        Next c
-    End If
-    On Error GoTo DirectError
     
     ' Get ALL frames efficiently (from legacy COLUMNS.bas pattern)
     Dim NumberNames As Long
@@ -155,7 +169,6 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     Dim Offset1Z() As Double, Offset2Z() As Double
     Dim CardinalPoint() As Long
     
-    Dim ret As Long
     ret = sapModel.FrameObj.GetAllFrames(NumberNames, MyName, PropName, StoryName, _
         PointName1, PointName2, Point1X, Point1Y, Point1Z, Point2X, Point2Y, Point2Z, _
         Angle, Offset1X, Offset2X, Offset1Y, Offset2Y, Offset1Z, Offset2Z, CardinalPoint)
@@ -168,17 +181,30 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     
     LogInfo "Found " & NumberNames & " frames"
     
-    ' Create CSV file
-    Dim f As Integer
-    f = FreeFile
-    Open csvPath For Output As #f
+    ' *** EXCEL-FIRST PATTERN: Write to Excel worksheet first ***
+    Dim ws As Worksheet
+    Set ws = GetExportWorksheet()
+    If ws Is Nothing Then
+        ' Fallback to direct CSV if no worksheet
+        LogWarning "No Excel worksheet - writing directly to CSV"
+        ExportForcesDirectAPI = ExportForcesDirectToCSV(sapModel, csvPath, units, MyName, PropName, StoryName, NumberNames)
+        Exit Function
+    End If
     
-    ' Header matching Streamlit expected format
-    Print #f, "Story,Label,Output Case,Station,M3,V2,P"
+    ' Write header to Excel
+    ws.Cells.Clear
+    ws.Range("A1").Value = "Story"
+    ws.Range("B1").Value = "Label"
+    ws.Range("C1").Value = "Output Case"
+    ws.Range("D1").Value = "Station"
+    ws.Range("E1").Value = "M3"
+    ws.Range("F1").Value = "V2"
+    ws.Range("G1").Value = "P"
+    
+    Dim rowNum As Long
+    rowNum = 2  ' Start after header
     
     Dim i As Long
-    Dim totalRows As Long
-    totalRows = 0
     
     For i = LBound(MyName) To UBound(MyName)
         ' Get forces for this frame
@@ -187,27 +213,26 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
         Dim Elm() As String, ElmSta() As Double
         Dim LoadCase() As String, StepType() As String, StepNum() As Double
         Dim P() As Double, V2() As Double, V3() As Double
-        Dim T() As Double, M2() As Double, M3() As Double
+        Dim t() As Double, M2() As Double, M3() As Double
         
         On Error Resume Next
         ret = sapModel.Results.FrameForce( _
             MyName(i), 0, NumberResults, _
             obj, ObjSta, Elm, ElmSta, LoadCase, StepType, StepNum, _
-            P, V2, V3, T, M2, M3)
+            P, V2, V3, t, M2, M3)
         
         If Err.Number = 0 And ret = 0 And NumberResults > 0 Then
             Dim j As Long
             For j = LBound(LoadCase) To UBound(LoadCase)
-                ' Convert to standard units (kN, mm, kN.m)
-                Print #f, _
-                    StoryName(i) & "," & _
-                    MyName(i) & "," & _
-                    LoadCase(j) & "," & _
-                    Format(ElmSta(j) * units.LengthToMM, "0.000") & "," & _
-                    Format(M3(j) * units.MomentToKNM, "0.000") & "," & _
-                    Format(V2(j) * units.ForceToKN, "0.000") & "," & _
-                    Format(P(j) * units.ForceToKN, "0.000")
-                totalRows = totalRows + 1
+                ' Write to Excel (already in kN, m since we set units)
+                ws.Cells(rowNum, 1).Value = StoryName(i)
+                ws.Cells(rowNum, 2).Value = MyName(i)
+                ws.Cells(rowNum, 3).Value = LoadCase(j)
+                ws.Cells(rowNum, 4).Value = Round(ElmSta(j) * units.LengthToMM, 3)
+                ws.Cells(rowNum, 5).Value = Round(M3(j) * units.MomentToKNM, 3)
+                ws.Cells(rowNum, 6).Value = Round(V2(j) * units.ForceToKN, 3)
+                ws.Cells(rowNum, 7).Value = Round(P(j) * units.ForceToKN, 3)
+                rowNum = rowNum + 1
             Next j
         End If
         On Error GoTo DirectError
@@ -219,22 +244,120 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
         End If
     Next i
     
-    Close #f
+    Dim totalRows As Long
+    totalRows = rowNum - 2  ' Subtract header and 1-based offset
     
-    LogInfo "Exported " & totalRows & " force records"
-    ExportForcesDirectAPI = (totalRows > 0)
+    LogInfo "Written " & totalRows & " records to Excel"
+    
+    ' *** Now export Excel range to CSV ***
+    If totalRows > 0 Then
+        Call ExportRangeToCSV(ws, csvPath, 1, 7, rowNum - 1)
+        LogInfo "? Exported to CSV: " & csvPath
+        ExportForcesDirectAPI = True
+    Else
+        LogWarning "No force data retrieved"
+        ExportForcesDirectAPI = False
+    End If
     Exit Function
 
 DirectError:
-    On Error Resume Next
-    Close #f
     LogError "Direct API error: " & Err.Description
     ExportForcesDirectAPI = False
 End Function
 
+' Export Excel range to CSV file
+Private Sub ExportRangeToCSV(ws As Worksheet, csvPath As String, startRow As Long, numCols As Long, endRow As Long)
+    On Error GoTo ExportError
+    
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    Dim r As Long, c As Long
+    Dim lineStr As String
+    
+    For r = startRow To endRow
+        lineStr = ""
+        For c = 1 To numCols
+            If c > 1 Then lineStr = lineStr & ","
+            lineStr = lineStr & CStr(ws.Cells(r, c).Value)
+        Next c
+        Print #f, lineStr
+    Next r
+    
+    Close #f
+    Exit Sub
+    
+ExportError:
+    On Error Resume Next
+    Close #f
+    LogError "ExportRangeToCSV error: " & Err.Description
+End Sub
+
+' Fallback: Direct to CSV (if no Excel worksheet available)
+Private Function ExportForcesDirectToCSV(sapModel As Object, csvPath As String, units As UnitConversion, _
+    MyName() As String, PropName() As String, StoryName() As String, NumberNames As Long) As Boolean
+    
+    On Error GoTo WriteError
+    
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    ' Header
+    Print #f, "Story,Label,Output Case,Station,M3,V2,P"
+    
+    Dim i As Long, totalRows As Long
+    totalRows = 0
+    
+    For i = LBound(MyName) To UBound(MyName)
+        Dim NumberResults As Long
+        Dim obj() As String, ObjSta() As Double
+        Dim Elm() As String, ElmSta() As Double
+        Dim LoadCase() As String, StepType() As String, StepNum() As Double
+        Dim P() As Double, V2() As Double, V3() As Double
+        Dim t() As Double, M2() As Double, M3() As Double
+        Dim ret As Long
+        
+        On Error Resume Next
+        ret = sapModel.Results.FrameForce( _
+            MyName(i), 0, NumberResults, _
+            obj, ObjSta, Elm, ElmSta, LoadCase, StepType, StepNum, _
+            P, V2, V3, t, M2, M3)
+        
+        If Err.Number = 0 And ret = 0 And NumberResults > 0 Then
+            Dim j As Long
+            For j = LBound(LoadCase) To UBound(LoadCase)
+                Print #f, _
+                    StoryName(i) & "," & _
+                    MyName(i) & "," & _
+                    LoadCase(j) & "," & _
+                    Format(ElmSta(j) * units.LengthToMM, "0.000") & "," & _
+                    Format(M3(j) * units.MomentToKNM, "0.000") & "," & _
+                    Format(V2(j) * units.ForceToKN, "0.000") & "," & _
+                    Format(P(j) * units.ForceToKN, "0.000")
+                totalRows = totalRows + 1
+            Next j
+        End If
+        On Error GoTo WriteError
+    Next i
+    
+    Close #f
+    
+    LogInfo "Exported " & totalRows & " force records (direct CSV)"
+    ExportForcesDirectToCSV = (totalRows > 0)
+    Exit Function
+
+WriteError:
+    On Error Resume Next
+    Close #f
+    LogError "Direct CSV error: " & Err.Description
+    ExportForcesDirectToCSV = False
+End Function
+
 '------------------------------------------------------------------------------
 ' BASE REACTIONS EXPORT
-' From legacy BASE_REACTIONS.bas pattern
+' From legacy BASE_REACTIONS.bas pattern - Fixed in v2.2
 '------------------------------------------------------------------------------
 
 Public Function ExportBaseReactions(sapModel As Object, folder As String, units As UnitConversion) As Boolean
@@ -245,17 +368,36 @@ Public Function ExportBaseReactions(sapModel As Object, folder As String, units 
     
     LogInfo "Exporting base reactions..."
     
-    ' Deselect all, select all cases
-    sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
+    Dim ret As Long
     
+    ' *** CRITICAL: Deselect all first, then select cases AND combos ***
+    ret = sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
+    
+    ' Select all load cases
     Dim numCases As Long, caseNames() As String
-    sapModel.LoadCases.GetNameList numCases, caseNames
+    ret = sapModel.LoadCases.GetNameList(numCases, caseNames)
     
     If numCases > 0 Then
         Dim c As Long
         For c = LBound(caseNames) To UBound(caseNames)
-            sapModel.Results.Setup.SetCaseSelectedForOutput caseNames(c)
+            ret = sapModel.Results.Setup.SetCaseSelectedForOutput(caseNames(c))
         Next c
+    End If
+    
+    ' Select all combos (SEPARATE API call - from legacy code)
+    Dim numCombos As Long, comboNames() As String
+    ret = sapModel.RespCombo.GetNameList(numCombos, comboNames)
+    
+    If numCombos > 0 Then
+        For c = LBound(comboNames) To UBound(comboNames)
+            ret = sapModel.Results.Setup.SetComboSelectedForOutput(comboNames(c))
+        Next c
+    End If
+    
+    If numCases = 0 And numCombos = 0 Then
+        LogWarning "No load cases or combos for base reactions"
+        ExportBaseReactions = False
+        Exit Function
     End If
     
     ' Get base reactions
@@ -265,14 +407,46 @@ Public Function ExportBaseReactions(sapModel As Object, folder As String, units 
     Dim Mx() As Double, My() As Double, Mz() As Double
     Dim gx() As Double, gy() As Double, gz() As Double
     
-    Dim ret As Long
     ret = sapModel.Results.BaseReact(NumberResults, LoadCase, StepType, StepNum, _
         Fx, Fy, Fz, Mx, My, Mz, gx, gy, gz)
     
     If ret <> 0 Or NumberResults = 0 Then
-        LogWarning "No base reactions available"
+        LogWarning "No base reactions available (ret=" & ret & ", n=" & NumberResults & ")"
         ExportBaseReactions = False
         Exit Function
+    End If
+    
+    ' Write to Excel first
+    Dim ws As Worksheet
+    Set ws = GetExportWorksheet()
+    
+    If Not ws Is Nothing Then
+        ' Find next available section in worksheet
+        Dim startRow As Long
+        startRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 3
+        
+        ws.Cells(startRow, 1).Value = "=== BASE REACTIONS ==="
+        startRow = startRow + 1
+        
+        ws.Cells(startRow, 1).Value = "LoadCase"
+        ws.Cells(startRow, 2).Value = "Fx_kN"
+        ws.Cells(startRow, 3).Value = "Fy_kN"
+        ws.Cells(startRow, 4).Value = "Fz_kN"
+        ws.Cells(startRow, 5).Value = "Mx_kNm"
+        ws.Cells(startRow, 6).Value = "My_kNm"
+        ws.Cells(startRow, 7).Value = "Mz_kNm"
+        
+        Dim i As Long
+        For i = LBound(LoadCase) To UBound(LoadCase)
+            startRow = startRow + 1
+            ws.Cells(startRow, 1).Value = LoadCase(i)
+            ws.Cells(startRow, 2).Value = Round(Fx(i) * units.ForceToKN, 2)
+            ws.Cells(startRow, 3).Value = Round(Fy(i) * units.ForceToKN, 2)
+            ws.Cells(startRow, 4).Value = Round(Fz(i) * units.ForceToKN, 2)
+            ws.Cells(startRow, 5).Value = Round(Mx(i) * units.MomentToKNM, 2)
+            ws.Cells(startRow, 6).Value = Round(My(i) * units.MomentToKNM, 2)
+            ws.Cells(startRow, 7).Value = Round(Mz(i) * units.MomentToKNM, 2)
+        Next i
     End If
     
     ' Write CSV
@@ -282,7 +456,6 @@ Public Function ExportBaseReactions(sapModel As Object, folder As String, units 
     
     Print #f, "LoadCase,Fx_kN,Fy_kN,Fz_kN,Mx_kNm,My_kNm,Mz_kNm"
     
-    Dim i As Long
     For i = LBound(LoadCase) To UBound(LoadCase)
         Print #f, _
             LoadCase(i) & "," & _
