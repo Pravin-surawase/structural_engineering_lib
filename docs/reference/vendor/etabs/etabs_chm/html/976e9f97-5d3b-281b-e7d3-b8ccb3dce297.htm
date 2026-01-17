@@ -1,0 +1,199 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cFunctionRS.GetNTC2008 Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetNTC2008 method" /><meta name="System.Keywords" content="cFunctionRS.GetNTC2008 method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cFunctionRS.GetNTC2008" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cFunctionRS.GetNTC2008(System.String,System.Int32@,System.Double@,System.Double@,System.Int32@,System.Int32@,System.Int32@,System.Double@,System.Double@,System.Double@,System.Double@,System.Int32@,System.Int32@,System.Int32@,System.Double@,System.Double@,System.Double@)" /><meta name="Description" content="Retrieves the definition of a NTC2008 response spectrum function" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="976e9f97-5d3b-281b-e7d3-b8ccb3dce297" /><meta name="guid" content="976e9f97-5d3b-281b-e7d3-b8ccb3dce297" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cFunctionRS<span id="LST2E2F5F21_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_0?cpp=::|nu=.");</script>GetNTC2008 Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves the definition of a NTC2008 response spectrum function
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetNTC2008</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">ParamsOption</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Latitude</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Longitude</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">Island</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">LimitState</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">UsageClass</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">NomLife</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">PeakAccel</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">F0</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Tcs</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">SpecType</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">SoilType</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">Topography</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">hRatio</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Damping</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">q</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetNTC2008</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">ParamsOption</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Latitude</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Longitude</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Island</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">LimitState</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">UsageClass</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NomLife</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">PeakAccel</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">F0</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Tcs</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">SpecType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">SoilType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Topography</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">hRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Damping</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">q</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cFunctionRS</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">ParamsOption</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Latitude</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Longitude</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Island</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">LimitState</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">UsageClass</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">NomLife</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">PeakAccel</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">F0</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Tcs</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">SpecType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">SoilType</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Topography</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">hRatio</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Damping</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">q</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetNTC2008</span>(<span class="parameter">Name</span>,
+	<span class="parameter">ParamsOption</span>, <span class="parameter">Latitude</span>, <span class="parameter">Longitude</span>,
+	<span class="parameter">Island</span>, <span class="parameter">LimitState</span>, <span class="parameter">UsageClass</span>, <span class="parameter">NomLife</span>,
+	<span class="parameter">PeakAccel</span>, <span class="parameter">F0</span>, <span class="parameter">Tcs</span>, <span class="parameter">SpecType</span>, <span class="parameter">SoilType</span>,
+	<span class="parameter">Topography</span>, <span class="parameter">hRatio</span>, <span class="parameter">Damping</span>, <span class="parameter">q</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetNTC2008</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">int</span>% <span class="parameter">ParamsOption</span>,
+	<span class="identifier">double</span>% <span class="parameter">Latitude</span>,
+	<span class="identifier">double</span>% <span class="parameter">Longitude</span>,
+	<span class="identifier">int</span>% <span class="parameter">Island</span>,
+	<span class="identifier">int</span>% <span class="parameter">LimitState</span>,
+	<span class="identifier">int</span>% <span class="parameter">UsageClass</span>,
+	<span class="identifier">double</span>% <span class="parameter">NomLife</span>,
+	<span class="identifier">double</span>% <span class="parameter">PeakAccel</span>,
+	<span class="identifier">double</span>% <span class="parameter">F0</span>,
+	<span class="identifier">double</span>% <span class="parameter">Tcs</span>,
+	<span class="identifier">int</span>% <span class="parameter">SpecType</span>,
+	<span class="identifier">int</span>% <span class="parameter">SoilType</span>,
+	<span class="identifier">int</span>% <span class="parameter">Topography</span>,
+	<span class="identifier">double</span>% <span class="parameter">hRatio</span>,
+	<span class="identifier">double</span>% <span class="parameter">Damping</span>,
+	<span class="identifier">double</span>% <span class="parameter">q</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetNTC2008</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">ParamsOption</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Latitude</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Longitude</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Island</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">LimitState</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">UsageClass</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">NomLife</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">PeakAccel</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">F0</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Tcs</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">SpecType</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">SoilType</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Topography</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">hRatio</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Damping</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">q</span> : <span class="identifier">float</span> <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of a NTC2008 response spectrum function
+ </dd><dt><span class="parameter">ParamsOption</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_3?cpp=%");</script><br />
+ This is 1, 2, or 3, indicating the option for defining the parameters
+ <ol><li>by latitude and longitude</li><li>by island</li><li>user specified</li></ol></dd><dt><span class="parameter">Latitude</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_4?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_5?cpp=%");</script><br />
+ The latitude for which the seismic coefficients are obtained. This item is meaningful only when <span class="parameter">ParamsOption</span> = 1
+ </dd><dt><span class="parameter">Longitude</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_6?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_7?cpp=%");</script><br />
+ The longitude for which the seismic coefficients are obtained. This item is meaningful only when <span class="parameter">ParamsOption</span> = 1
+ </dd><dt><span class="parameter">Island</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_8?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_9?cpp=%");</script><br />
+ This is one of the following values. This item is used only when <span class="parameter">ParamsOption</span> = 2
+ <ol><li>Alicudi</li><li>Arcipelago Toscano</li><li>Filcudi</li><li>Isole Egadi</li><li>Lampedusa</li><li>Linosa</li><li>Lipari</li><li>Palmarola</li><li>Panarea</li><li>Pantelleria</li><li>Ponza</li><li>Salina</li><li>Santo Stefano</li><li>Sardegna</li><li>Stromboli</li><li>Tremiti</li><li>Ustica</li><li>Ventotene</li><li>Vulcano</li><li>Zannone</li></ol></dd><dt><span class="parameter">LimitState</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_10?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_11?cpp=%");</script><br />
+ This is 1, 2, 3, or 4, indicating the limit state
+ <ol><li>SLO</li><li>SLD</li><li>SLV</li><li>SLC</li></ol></dd><dt><span class="parameter">UsageClass</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_12?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_13?cpp=%");</script><br />
+ This is 1, 2, 3, or 4, indicating the usage class
+ <ol><li>I</li><li>II</li><li>III</li><li>IV</li></ol></dd><dt><span class="parameter">NomLife</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_14?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_15?cpp=%");</script><br />
+ The nominal life to be considered
+ </dd><dt><span class="parameter">PeakAccel</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_16?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_17?cpp=%");</script><br />
+ The peak ground acceleration, ag/g
+ </dd><dt><span class="parameter">F0</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_18?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_19?cpp=%");</script><br />
+ The magnitude factor
+ </dd><dt><span class="parameter">Tcs</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_20?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_21?cpp=%");</script><br />
+ The reference period, Tc*[s]
+ </dd><dt><span class="parameter">SpecType</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_22?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_23?cpp=%");</script><br />
+ This is 1, 2, 3, or 4, indicating the type of spectrum to consider
+ <ol><li>Elastic horizontal</li><li>Elastic vertical</li><li>Design horizontal</li><li>Design vertical</li></ol></dd><dt><span class="parameter">SoilType</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_24?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_25?cpp=%");</script><br />
+ This is 1, 2, 3, 4, or 5, indicating the subsoil type
+ <ol><li>A</li><li>B</li><li>C</li><li>D</li><li>E</li></ol></dd><dt><span class="parameter">Topography</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_26?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST2E2F5F21_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_27?cpp=%");</script><br />
+ This is 1, 2, 3, or 4, indicating the topography type
+ <ol><li>T1</li><li>T2</li><li>T3</li><li>T4</li></ol></dd><dt><span class="parameter">hRatio</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_28?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_29?cpp=%");</script><br />
+ The ratio for the site altitude at the base of the hill to the height of the hill
+ </dd><dt><span class="parameter">Damping</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_30?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_31?cpp=%");</script><br />
+ The damping, in percent. This is only applicable for <span class="parameter">SpecType</span> 1 and 2
+ </dd><dt><span class="parameter">q</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST2E2F5F21_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_32?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST2E2F5F21_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST2E2F5F21_33?cpp=%");</script><br />
+ The behavior correction factor. This is only applicable for <span class="parameter">SpecType</span> 3 and 4
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ returns zero if the function is successfully retrieved; otherwise it returns a nonzero value
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+
+   <span class="highlight-comment">'dimension variables</span>
+   <span class="highlight-keyword">Dim</span> SapObject <span class="highlight-keyword">as</span> cOAPI
+   <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+   <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> ParamsOption <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> Latitude <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> Longitude <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> Island <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> LimitState <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> UsageClass <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> NomLife <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> PeakAccel <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> F0 <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> Tcs <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> SpecType <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> SoilType <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> Topography <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> hRatio <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> Damping <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> q <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+   <span class="highlight-comment">'create ETABS object</span>
+       <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+       EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+   <span class="highlight-comment">'start ETABS application</span>
+       ret = EtabsObject.ApplicationStart()
+
+   <span class="highlight-comment">'create SapModel object</span>
+       SapModel = EtabsObject.SapModel
+
+   <span class="highlight-comment">'initialize model</span>
+       ret = SapModel.InitializeNewModel()
+
+   <span class="highlight-comment">'create steel deck template model</span>
+       ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>,<span class="highlight-number">12</span>,<span class="highlight-number">12</span>,<span class="highlight-number">4</span>,<span class="highlight-number">4</span>,<span class="highlight-number">24</span>,<span class="highlight-number">24</span>)
+
+   <span class="highlight-comment">'add NTC2008 RS function</span>
+       ret = SapModel.Func.FuncRS.SetNTC2008(<span class="highlight-literal">"RS-1"</span>, <span class="highlight-number">1</span>, <span class="highlight-number">45.9</span>, <span class="highlight-number">12.6</span>, <span class="highlight-number">1</span>, <span class="highlight-number">3</span>, <span class="highlight-number">2</span>, <span class="highlight-number">50</span>, <span class="highlight-number">0.2</span>, <span class="highlight-number">2.4</span>, <span class="highlight-number">0.3</span>, <span class="highlight-number">3</span>, <span class="highlight-number">2</span>, <span class="highlight-number">1</span>, <span class="highlight-number">1</span>, <span class="highlight-number">5</span>, <span class="highlight-number">1</span>)
+
+   <span class="highlight-comment">'get NTC2008 RS function</span>
+       ret = SapModel.Func.FuncRS.GetNTC2008(<span class="highlight-literal">"RS-1"</span>, ParamsOption, Latitude, Longitude, Island, LimitState, UsageClass, NomLife, PeakAccel, F0, Tcs, SpecType, SoilType, Topography, hRatio, Damping, q)
+
+   <span class="highlight-comment">'close ETABS</span>
+       EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+   <span class="highlight-comment">'clean up variables</span>
+       SapModel = <span class="highlight-keyword">Nothing</span>
+       EtabsObject = <span class="highlight-keyword">Nothing</span>
+   <span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="9b423d88-7e6a-4037-2460-c4f2fee04920.htm">cFunctionRS Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

@@ -1,0 +1,118 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cPropFrameSDShape.GetSolidRect Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetSolidRect method" /><meta name="System.Keywords" content="cPropFrameSDShape.GetSolidRect method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cPropFrameSDShape.GetSolidRect" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cPropFrameSDShape.GetSolidRect(System.String,System.String,System.String@,System.String@,System.Int32@,System.Double@,System.Double@,System.Double@,System.Double@,System.Double@,System.Boolean@,System.String@)" /><meta name="Description" content="Retrieves property data for a solid rectangular shape in a section designer section" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="9dd26933-e196-5a1d-8145-951c157be4ca" /><meta name="guid" content="9dd26933-e196-5a1d-8145-951c157be4ca" /><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cPropFrameSDShape<span id="LST7557A898_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_0?cpp=::|nu=.");</script>GetSolidRect Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves property data for a solid rectangular shape in a section designer section
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetSolidRect</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="identifier">string</span> <span class="parameter">ShapeName</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">MatProp</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">SSOverwrite</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">Color</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">XCenter</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">YCenter</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">H</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">W</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Rotation</span>,
+	<span class="keyword">ref</span> <span class="identifier">bool</span> <span class="parameter">Reinf</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">MatRebar</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetSolidRect</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="parameter">ShapeName</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">MatProp</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">SSOverwrite</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Color</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">XCenter</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">YCenter</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">H</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">W</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Rotation</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Reinf</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">MatRebar</span> <span class="keyword">As</span> <span class="identifier">String</span>
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cPropFrameSDShape</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">ShapeName</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">MatProp</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">SSOverwrite</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">Color</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">XCenter</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">YCenter</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">H</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">W</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Rotation</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Reinf</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>
+<span class="keyword">Dim</span> <span class="parameter">MatRebar</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetSolidRect</span>(<span class="parameter">Name</span>,
+	<span class="parameter">ShapeName</span>, <span class="parameter">MatProp</span>, <span class="parameter">SSOverwrite</span>,
+	<span class="parameter">Color</span>, <span class="parameter">XCenter</span>, <span class="parameter">YCenter</span>, <span class="parameter">H</span>, <span class="parameter">W</span>, <span class="parameter">Rotation</span>,
+	<span class="parameter">Reinf</span>, <span class="parameter">MatRebar</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetSolidRect</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">String</span>^ <span class="parameter">ShapeName</span>,
+	<span class="identifier">String</span>^% <span class="parameter">MatProp</span>,
+	<span class="identifier">String</span>^% <span class="parameter">SSOverwrite</span>,
+	<span class="identifier">int</span>% <span class="parameter">Color</span>,
+	<span class="identifier">double</span>% <span class="parameter">XCenter</span>,
+	<span class="identifier">double</span>% <span class="parameter">YCenter</span>,
+	<span class="identifier">double</span>% <span class="parameter">H</span>,
+	<span class="identifier">double</span>% <span class="parameter">W</span>,
+	<span class="identifier">double</span>% <span class="parameter">Rotation</span>,
+	<span class="identifier">bool</span>% <span class="parameter">Reinf</span>,
+	<span class="identifier">String</span>^% <span class="parameter">MatRebar</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetSolidRect</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">ShapeName</span> : <span class="identifier">string</span> *
+        <span class="parameter">MatProp</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">SSOverwrite</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">Color</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">XCenter</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">YCenter</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">H</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">W</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Rotation</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Reinf</span> : <span class="identifier">bool</span> <span class="keyword">byref</span> *
+        <span class="parameter">MatRebar</span> : <span class="identifier">string</span> <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing frame section property that is a section designer section
+ </dd><dt><span class="parameter">ShapeName</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing solid rectangle shape in the specified frame section property
+ </dd><dt><span class="parameter">MatProp</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_3?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST7557A898_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_4?cpp=%");</script><br />
+ The name of the material property for the shape
+ </dd><dt><span class="parameter">SSOverwrite</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_5?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST7557A898_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_6?cpp=%");</script><br />
+ This is a blank string, Default, or the name of a defined stress-strain curve.
+ <p>
+ If this item is a blank string or Default,
+ the shape stress-strain curve is based on the assigned material property.
+ </p></dd><dt><span class="parameter">Color</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_7?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST7557A898_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_8?cpp=%");</script><br />
+ The fill color assigned to the shape
+ </dd><dt><span class="parameter">XCenter</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_9?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST7557A898_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_10?cpp=%");</script><br />
+ The X-coordinate of the center of the shape in the section designer coordinate system. [L]
+ </dd><dt><span class="parameter">YCenter</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_11?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST7557A898_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_12?cpp=%");</script><br />
+ The Y-coordinate of the center of the shape in the section designer coordinate system. [L]
+ </dd><dt><span class="parameter">H</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_13?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST7557A898_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_14?cpp=%");</script><br />
+ The section depth. [L]
+ </dd><dt><span class="parameter">W</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_15?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST7557A898_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_16?cpp=%");</script><br />
+ The section width. [L]
+ </dd><dt><span class="parameter">Rotation</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_17?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST7557A898_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_18?cpp=%");</script><br />
+ The counter clockwise rotation of the shape from its default orientation. [deg]
+ </dd><dt><span class="parameter">Reinf</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.boolean" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_19?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Boolean</a><span id="LST7557A898_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_20?cpp=%");</script><br />
+ This item is <span class="code">True</span> when there is edge and corner reinforcing steel associated with the shape.
+ The <span class="parameter">MatProp</span> item must refer to a concrete material for this item to be <span class="code">True</span>.
+ </dd><dt><span class="parameter">MatRebar</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST7557A898_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_21?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST7557A898_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST7557A898_22?cpp=%");</script><br />
+ The material property for the edge and corner reinforcing steel associated with the shape.
+ This item applies only when the <span class="parameter">MatProp</span> item is a concrete material
+ and the <span class="parameter">Reinf</span> item is <span class="code">True</span>.
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the property data is successfully retrieved; otherwise it returns a nonzero value
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID2RBSection" class="collapsibleSection" /><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID3RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="a50f9a5e-4c7d-07d5-4326-58be7b557651.htm">cPropFrameSDShape Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

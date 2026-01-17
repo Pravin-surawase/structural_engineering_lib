@@ -1,0 +1,311 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cAnalysisResults.AreaForceShell Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="AreaForceShell method" /><meta name="System.Keywords" content="cAnalysisResults.AreaForceShell method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cAnalysisResults.AreaForceShell" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cAnalysisResults.AreaForceShell(System.String,ETABSv1.eItemTypeElm,System.Int32@,System.String[]@,System.String[]@,System.String[]@,System.String[]@,System.String[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@,System.Double[]@)" /><meta name="Description" content="Reports the area forces for the specified area elements that are assigned shell section properties (not plane or asolid properties). Note that the forces reported are per unit of in-plane length." /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="cc92bdd3-f712-d741-1805-4c7c9bbbb2d7" /><meta name="guid" content="cc92bdd3-f712-d741-1805-4c7c9bbbb2d7" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cAnalysisResults<span id="LSTBCB27CA5_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_0?cpp=::|nu=.");</script>AreaForceShell Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Reports the area forces for the specified area elements that are assigned
+ shell section properties (not plane or asolid properties).
+ Note that the forces reported are per unit of in-plane length.
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">AreaForceShell</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="identifier">eItemTypeElm</span> <span class="parameter">ItemTypeElm</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberResults</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Obj</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">Elm</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">PointElm</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">LoadCase</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">StepType</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">StepNum</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">F11</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">F22</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">F12</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">FMax</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">FMin</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">FAngle</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">FVM</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">M11</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">M22</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">M12</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">MMax</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">MMin</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">MAngle</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">V13</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">V23</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">VMax</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">VAngle</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">AreaForceShell</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="parameter">ItemTypeElm</span> <span class="keyword">As</span> <span class="identifier">eItemTypeElm</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberResults</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Obj</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">Elm</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">PointElm</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">LoadCase</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">StepType</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">StepNum</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">F11</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">F22</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">F12</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">FMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">FMin</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">FAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">FVM</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">M11</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">M22</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">M12</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MMin</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">MAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">V13</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">V23</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">VMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">VAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cAnalysisResults</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">ItemTypeElm</span> <span class="keyword">As</span> <span class="identifier">eItemTypeElm</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberResults</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Obj</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">Elm</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">PointElm</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">LoadCase</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">StepType</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">StepNum</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">F11</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">F22</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">F12</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">FMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">FMin</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">FAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">FVM</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">M11</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">M22</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">M12</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">MMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">MMin</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">MAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">V13</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">V23</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">VMax</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">VAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">AreaForceShell</span>(<span class="parameter">Name</span>,
+	<span class="parameter">ItemTypeElm</span>, <span class="parameter">NumberResults</span>, <span class="parameter">Obj</span>,
+	<span class="parameter">Elm</span>, <span class="parameter">PointElm</span>, <span class="parameter">LoadCase</span>, <span class="parameter">StepType</span>,
+	<span class="parameter">StepNum</span>, <span class="parameter">F11</span>, <span class="parameter">F22</span>, <span class="parameter">F12</span>, <span class="parameter">FMax</span>, <span class="parameter">FMin</span>,
+	<span class="parameter">FAngle</span>, <span class="parameter">FVM</span>, <span class="parameter">M11</span>, <span class="parameter">M22</span>, <span class="parameter">M12</span>, <span class="parameter">MMax</span>, <span class="parameter">MMin</span>,
+	<span class="parameter">MAngle</span>, <span class="parameter">V13</span>, <span class="parameter">V23</span>, <span class="parameter">VMax</span>, <span class="parameter">VAngle</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">AreaForceShell</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">eItemTypeElm</span> <span class="parameter">ItemTypeElm</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberResults</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Obj</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">Elm</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">PointElm</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">LoadCase</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">StepType</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">StepNum</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">F11</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">F22</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">F12</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">FMax</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">FMin</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">FAngle</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">FVM</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">M11</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">M22</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">M12</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">MMax</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">MMin</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">MAngle</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">V13</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">V23</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">VMax</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">VAngle</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">AreaForceShell</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">ItemTypeElm</span> : <span class="identifier">eItemTypeElm</span> *
+        <span class="parameter">NumberResults</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Obj</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">Elm</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">PointElm</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">LoadCase</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">StepType</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">StepNum</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">F11</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">F22</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">F12</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">FMax</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">FMin</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">FAngle</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">FVM</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">M11</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">M22</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">M12</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MMax</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MMin</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">MAngle</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">V13</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">V23</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">VMax</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">VAngle</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing area object, area element or group of objects,
+ depending on the value of the <span class="parameter">ItemTypeElm</span> item
+ </dd><dt><span class="parameter">ItemTypeElm</span></dt><dd>Type: <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">ETABSv1<span id="LSTBCB27CA5_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>eItemTypeElm</a><br />
+ This is one of the following items in the <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">eItemTypeElm</a>
+ enumeration.
+ <p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">ObjectElm</a>, the result request is for the area elements
+ corresponding to the area object specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">Element</a>, the result request is for the area
+ element specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">GroupElm</a>, the result request is for the area elements
+ corresponding to all area objects included in the group specified by the <span class="parameter">Name</span> item.
+ </p><p>
+ If this item is <a href="ff3650d4-84a5-c9b2-5803-d202e1a9a254.htm">SelectionElm</a>, the result request is for area elements
+ corresponding to all selected area objects and the <span class="parameter">Name</span> item is ignored.
+ </p></dd><dt><span class="parameter">NumberResults</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_3?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LSTBCB27CA5_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_4?cpp=%");</script><br />
+ The total number of results returned by the program
+ </dd><dt><span class="parameter">Obj</span></dt><dd>Type: <span id="LSTBCB27CA5_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_5?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_6?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTBCB27CA5_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_7?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_8?cpp=%");</script><br />
+ This is an array that includes the area object name associated with each result, if any
+ </dd><dt><span class="parameter">Elm</span></dt><dd>Type: <span id="LSTBCB27CA5_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_9?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_10?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTBCB27CA5_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_11?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_12?cpp=%");</script><br />
+ This is an array that includes the area element name associated with each result
+ </dd><dt><span class="parameter">PointElm</span></dt><dd>Type: <span id="LSTBCB27CA5_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_13?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_14?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTBCB27CA5_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_15?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_16?cpp=%");</script><br />
+ This is an array that includes the name of the point element where the results are reported
+ </dd><dt><span class="parameter">LoadCase</span></dt><dd>Type: <span id="LSTBCB27CA5_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_17?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_18?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTBCB27CA5_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_19?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_20?cpp=%");</script><br />
+ This is an array that includes the name of the analysis case or load combination associated with each result
+ </dd><dt><span class="parameter">StepType</span></dt><dd>Type: <span id="LSTBCB27CA5_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_21?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_22?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LSTBCB27CA5_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_23?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_24?cpp=%");</script><br />
+ This is an array that includes the step type, if any, for each result
+ </dd><dt><span class="parameter">StepNum</span></dt><dd>Type: <span id="LSTBCB27CA5_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_25?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_26"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_26?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_27"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_27?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_28"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_28?cpp=%");</script><br />
+ This is an array that includes the step number, if any, for each result
+ </dd><dt><span class="parameter">F11</span></dt><dd>Type: <span id="LSTBCB27CA5_29"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_29?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_30"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_30?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_31"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_31?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_32"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_32?cpp=%");</script><br />
+ The area element internal F11 membrane direct force per length reported
+ in the area element local coordinate system. [F/L]
+ </dd><dt><span class="parameter">F22</span></dt><dd>Type: <span id="LSTBCB27CA5_33"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_33?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_34"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_34?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_35"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_35?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_36"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_36?cpp=%");</script><br />
+ The area element internal F22 membrane direct force per length reported
+ in the area element local coordinate system. [F/L]
+ </dd><dt><span class="parameter">F12</span></dt><dd>Type: <span id="LSTBCB27CA5_37"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_37?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_38"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_38?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_39"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_39?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_40"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_40?cpp=%");</script><br />
+ The area element internal F12 membrane shear force per length reported
+ in the area element local coordinate system. [F/L]
+ </dd><dt><span class="parameter">FMax</span></dt><dd>Type: <span id="LSTBCB27CA5_41"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_41?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_42"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_42?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_43"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_43?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_44"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_44?cpp=%");</script><br />
+ The maximum principal membrane force per length. [F/L]
+ </dd><dt><span class="parameter">FMin</span></dt><dd>Type: <span id="LSTBCB27CA5_45"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_45?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_46"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_46?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_47"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_47?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_48"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_48?cpp=%");</script><br />
+ The minimum principal membrane force per length. [F/L]
+ </dd><dt><span class="parameter">FAngle</span></dt><dd>Type: <span id="LSTBCB27CA5_49"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_49?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_50"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_50?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_51"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_51?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_52"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_52?cpp=%");</script><br />
+ The angle measured counter clockwise (when the local 3 axis is pointing toward you)
+ from the area local 1 axis to the direction of the maximum principal membrane force. [deg]
+ </dd><dt><span class="parameter">FVM</span></dt><dd>Type: <span id="LSTBCB27CA5_53"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_53?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_54"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_54?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_55"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_55?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_56"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_56?cpp=%");</script><br />
+ The area element internal Von Mises membrane force per length. [F/L]
+ </dd><dt><span class="parameter">M11</span></dt><dd>Type: <span id="LSTBCB27CA5_57"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_57?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_58"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_58?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_59"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_59?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_60"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_60?cpp=%");</script><br />
+ The area element internal M11 plate bending moment per length reported in the area element local coordinate system.
+ This item is only reported for area elements with properties that allow plate bending behavior. [FL/L]
+ </dd><dt><span class="parameter">M22</span></dt><dd>Type: <span id="LSTBCB27CA5_61"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_61?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_62"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_62?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_63"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_63?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_64"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_64?cpp=%");</script><br />
+ The area element internal M22 plate bending moment per length reported in the area element local coordinate system.
+ This item is only reported for area elements with properties that allow plate bending behavior. [FL/L]
+ </dd><dt><span class="parameter">M12</span></dt><dd>Type: <span id="LSTBCB27CA5_65"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_65?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_66"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_66?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_67"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_67?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_68"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_68?cpp=%");</script><br />
+ The area element internal M12 plate twisting moment per length reported in the area element local coordinate system.
+ This item is only reported for area elements with properties that allow plate bending behavior. [FL/L]
+ </dd><dt><span class="parameter">MMax</span></dt><dd>Type: <span id="LSTBCB27CA5_69"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_69?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_70"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_70?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_71"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_71?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_72"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_72?cpp=%");</script><br />
+ The maximum principal plate moment per length.
+ This item is only reported for area elements with properties that allow plate bending behavior. [FL/L]
+ </dd><dt><span class="parameter">MMin</span></dt><dd>Type: <span id="LSTBCB27CA5_73"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_73?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_74"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_74?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_75"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_75?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_76"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_76?cpp=%");</script><br />
+ The minimum principal plate moment per length.
+ This item is only reported for area elements with properties that allow plate bending behavior. [FL/L]
+ </dd><dt><span class="parameter">MAngle</span></dt><dd>Type: <span id="LSTBCB27CA5_77"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_77?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_78"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_78?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_79"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_79?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_80"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_80?cpp=%");</script><br />
+ The angle measured counter clockwise (when the local 3 axis is pointing toward you) from the area local 1 axis to the direction of the maximum principal plate moment.
+ This item is only reported for area elements with properties that allow plate bending behavior. [deg]
+ </dd><dt><span class="parameter">V13</span></dt><dd>Type: <span id="LSTBCB27CA5_81"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_81?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_82"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_82?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_83"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_83?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_84"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_84?cpp=%");</script><br />
+ The area element internal V13 plate transverse shear force per length reported in the area element local coordinate system.
+ This item is only reported for area elements with properties that allow plate bending behavior. [F/L]
+ </dd><dt><span class="parameter">V23</span></dt><dd>Type: <span id="LSTBCB27CA5_85"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_85?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_86"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_86?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_87"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_87?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_88"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_88?cpp=%");</script><br />
+ The area element internal V23 plate transverse shear force per length reported in the area element local coordinate system.
+ This item is only reported for area elements with properties that allow plate bending behavior. [F/L]
+ </dd><dt><span class="parameter">VMax</span></dt><dd>Type: <span id="LSTBCB27CA5_89"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_89?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_90"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_90?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_91"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_91?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_92"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_92?cpp=%");</script><br />
+ The maximum plate transverse shear force.  It is equal to the square root of the sum of the squares of V13 and V23.
+ This item is only reported for area elements with properties that allow plate bending behavior. [F/L]
+ </dd><dt><span class="parameter">VAngle</span></dt><dd>Type: <span id="LSTBCB27CA5_93"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_93?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LSTBCB27CA5_94"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_94?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LSTBCB27CA5_95"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_95?cpp=&gt;|vb=()|nu=[]");</script><span id="LSTBCB27CA5_96"></span><script type="text/javascript">AddLanguageSpecificTextSet("LSTBCB27CA5_96?cpp=%");</script><br />
+ The angle measured counter clockwise (when the local 3 axis is pointing toward you) from the area local 1 axis to the direction of Vmax.
+ This item is only reported for area elements with properties that allow plate bending behavior. [deg]
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the forces are successfully recovered, otherwise it returns a nonzero value
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection">
+ See <a href="0c2bc8bd-2382-75be-9075-b0a8245283c3.htm">Results</a> for more information.
+ <div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+
+   <span class="highlight-comment">'dimension variables</span>
+   <span class="highlight-keyword">Dim</span> SapObject <span class="highlight-keyword">as</span> cOAPI
+   <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+   <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+   <span class="highlight-keyword">Dim</span> NumberResults <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> Obj() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> Elm() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> PointElm() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> LoadCase() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> StepType() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> StepNum() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> F11() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> F22() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> F12() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> FMax() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> FMin() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> FAngle() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> FVM() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> M11() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> M22() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> M12() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> MMax() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> MMin() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> MAngle() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> V13() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> V23() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> VMax() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> VAngle() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+   <span class="highlight-comment">'create ETABS object</span>
+       <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+       EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+   <span class="highlight-comment">'start ETABS application</span>
+       ret = EtabsObject.ApplicationStart()
+
+   <span class="highlight-comment">'create SapModel object</span>
+       SapModel = EtabsObject.SapModel
+
+   <span class="highlight-comment">'initialize model</span>
+       ret = SapModel.InitializeNewModel()
+
+   <span class="highlight-comment">'create steel deck template model</span>
+       ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>,<span class="highlight-number">12</span>,<span class="highlight-number">12</span>,<span class="highlight-number">4</span>,<span class="highlight-number">4</span>,<span class="highlight-number">24</span>,<span class="highlight-number">24</span>)
+
+   <span class="highlight-comment">'run analysis</span>
+       System.IO.Directory.CreateDirectory(<span class="highlight-literal">"c:\CSI_API_temp"</span>)
+       ret = SapModel.File.Save(<span class="highlight-literal">"C:\CSI_API_temp\example.edb"</span>)
+       ret = SapModel.Analyze.RunAnalysis()
+
+   <span class="highlight-comment">'deselect all cases and combos</span>
+       ret = SapModel.Results.Setup.DeselectAllCasesAndCombosForOutput()
+
+   <span class="highlight-comment">'set case selected for output</span>
+       ret = SapModel.Results.Setup.SetCaseSelectedForOutput(<span class="highlight-literal">"DEAD"</span>)
+
+   <span class="highlight-comment">'get area forces for area object "1"</span>
+       ret = SapModel.Results.AreaForceShell(<span class="highlight-literal">"1"</span>, eItemTypeElm.ObjectElm, NumberResults, Obj, Elm, PointElm, LoadCase, StepType, StepNum, F11, F22, F12, FMax, FMin, FAngle, FVM, M11, M22, M12, MMax, MMin, MAngle, V13, V23, VMax, VAngle)
+
+   <span class="highlight-comment">'close ETABS</span>
+       EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+   <span class="highlight-comment">'clean up variables</span>
+       SapModel = <span class="highlight-keyword">Nothing</span>
+       EtabsObject = <span class="highlight-keyword">Nothing</span>
+   <span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="b64f2f6e-9759-e542-faf2-0905474a04a7.htm">cAnalysisResults Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

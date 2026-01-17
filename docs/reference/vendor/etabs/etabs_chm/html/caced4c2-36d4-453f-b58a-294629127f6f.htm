@@ -1,0 +1,114 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Visual Basic for Applications (VBA) via Excel</title><meta name="Language" content="en-us" /><meta name="Microsoft.Help.Id" content="caced4c2-36d4-453f-b58a-294629127f6f" /><meta name="Microsoft.Help.ContentType" content="How To" /><meta name="BrandingAware" content="true" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>Visual Basic for Applications (VBA) via Excel</h1></td></tr></table><span class="introStyle"></span> <div class="introduction"><p /></div><div class="subSection"><ol><li><p>
+              Create a new VBA project.
+            </p></li><li><p>
+              Add a reference to “ETABSv1.tlb” to the VBA project.
+              This early binds to the API using the COM interface.
+            </p><p>
+				  With the release of ETABS v22.0.0, users will need to select the TLB file that
+				  corresponds to the bitness of their VBA development environment, e.g. 32-bit Excel or 64-bit Excel.
+				  To locate these files, the user should navigate to the directory where ETABS is installed.
+				  This is typically <strong>C:\Program Files\Computers and Structures\ETABS 22\</strong></p><p>
+				  Within this directory, the 32-bit library is found at <strong>NativeAPI\x86\ETABSv1.tlb</strong>
+				  The 64-bit library is found at <strong>NativeAPI\x64\ETABSv1.tlb</strong></p></li><li><p>
+              Add a new module to the VBA project and paste in the following,
+              ready-to-run code.
+            </p><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABGAAA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABGAAA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABGAAA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABGAAA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Sub</span> Main()
+
+  <span class="highlight-comment">'set the following flag to True to attach to an existing instance of the program</span>
+  <span class="highlight-comment">'otherwise a new instance of the program will be started</span>
+  <span class="highlight-keyword">Dim</span> AttachToInstance <span class="highlight-keyword">As</span> <span class="highlight-keyword">Boolean</span>
+  AttachToInstance = <span class="highlight-keyword">False</span>
+
+  <span class="highlight-comment">'set the following flag to True to manually specify the path to ETABS.exe</span>
+  <span class="highlight-comment">'this allows for a connection to a version of ETABS other than the latest installation</span>
+  <span class="highlight-comment">'otherwise the latest installed version of ETABS will be launched</span>
+  <span class="highlight-keyword">Dim</span> SpecifyPath <span class="highlight-keyword">As</span> <span class="highlight-keyword">Boolean</span>
+  SpecifyPath = <span class="highlight-keyword">False</span>
+
+  <span class="highlight-comment">'if the above flag is set to True, specify the path to ETABS below</span>
+  <span class="highlight-keyword">Dim</span> ProgramPath <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+  <span class="highlight-comment">'ProgramPath = "C:\Program Files\Computers and Structures\ETABS 22\ETABS.exe"</span>
+
+  <span class="highlight-comment">'full path to the model</span>
+  <span class="highlight-comment">'set it to the desired path of your model</span>
+  <span class="highlight-keyword">Dim</span> ModelDirectory <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+  ModelDirectory = <span class="highlight-literal">"C:\CSi_ETABS_API_Example"</span>
+  <span class="highlight-keyword">If</span> Len(Dir(ModelDirectory, vbDirectory)) = <span class="highlight-number">0</span> <span class="highlight-keyword">Then</span>
+    MkDir ModelDirectory
+  <span class="highlight-keyword">End</span> <span class="highlight-keyword">If</span>
+
+  <span class="highlight-keyword">Dim</span> ModelName <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+  ModelName = <span class="highlight-literal">"ETABS_API_Example.edb"</span>
+
+  <span class="highlight-keyword">Dim</span> ModelPath <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+  ModelPath = ModelDirectory &amp; Application.PathSeparator &amp; ModelName
+
+  <span class="highlight-comment">'create API helper object</span>
+  <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">As</span> ETABSv1.cHelper
+  <span class="highlight-keyword">Set</span> myHelper = <span class="highlight-keyword">New</span> ETABSv1.Helper
+
+  <span class="highlight-comment">'dimension the ETABS Object as cOAPI type</span>
+  <span class="highlight-keyword">Dim</span> myETABSObject <span class="highlight-keyword">As</span> ETABSv1.cOAPI
+  <span class="highlight-keyword">Set</span> myETABSObject = <span class="highlight-keyword">Nothing</span>
+
+  <span class="highlight-comment">'use ret to check return values of API calls</span>
+  <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Long</span>
+
+  <span class="highlight-keyword">If</span> AttachToInstance <span class="highlight-keyword">Then</span>
+    <span class="highlight-comment">'attach to a running instance of ETABS</span>
+    <span class="highlight-comment">'get the active ETABS object</span>
+    <span class="highlight-keyword">Set</span> myETABSObject = myHelper.GetObject(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+  <span class="highlight-keyword">Else</span>
+    <span class="highlight-keyword">If</span> SpecifyPath <span class="highlight-keyword">Then</span>
+      <span class="highlight-comment">'create an instance of the ETABS object from the specified path</span>
+      <span class="highlight-keyword">Set</span> myETABSObject = myHelper.CreateObject(ProgramPath)
+    <span class="highlight-keyword">Else</span>
+      <span class="highlight-comment">'create an instance of the ETABS object from the latest installed ETABS</span>
+      <span class="highlight-keyword">Set</span> myETABSObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+    <span class="highlight-keyword">End</span> <span class="highlight-keyword">If</span>
+    <span class="highlight-comment">'start ETABS application</span>
+    myETABSObject.ApplicationStart
+  <span class="highlight-keyword">End</span> <span class="highlight-keyword">If</span>
+
+  <span class="highlight-comment">'get a reference to cSapModel to access all API classes and functions</span>
+  <span class="highlight-keyword">Dim</span> mySapModel <span class="highlight-keyword">As</span> ETABSv1.cSapModel
+  <span class="highlight-keyword">Set</span> mySapModel = myETABSObject.SapModel
+
+  <span class="highlight-comment">'initialize model</span>
+  ret = mySapModel.InitializeNewModel()
+
+  <span class="highlight-comment">'create steel deck template model</span>
+  ret = mySapModel.File.NewSteelDeck(<span class="highlight-number">4</span>, <span class="highlight-number">12</span>, <span class="highlight-number">12</span>, <span class="highlight-number">4</span>, <span class="highlight-number">4</span>, <span class="highlight-number">24</span>, <span class="highlight-number">24</span>)
+
+  <span class="highlight-comment">'save model</span>
+  ret = mySapModel.File.Save(ModelPath)
+
+  <span class="highlight-comment">'run analysis</span>
+  ret = mySapModel.Analyze.RunAnalysis
+
+  <span class="highlight-comment">'close ETABS</span>
+  myETABSObject.ApplicationExit (<span class="highlight-keyword">False</span>)
+
+  <span class="highlight-comment">'clean up variables</span>
+  <span class="highlight-keyword">Set</span> mySapModel = <span class="highlight-keyword">Nothing</span>
+  <span class="highlight-keyword">Set</span> myETABSObject = <span class="highlight-keyword">Nothing</span>
+
+  <span class="highlight-keyword">If</span> ret = <span class="highlight-number">0</span> <span class="highlight-keyword">Then</span>
+    MsgBox <span class="highlight-literal">"API script completed successfully."</span>
+  <span class="highlight-keyword">Else</span>
+    MsgBox <span class="highlight-literal">"API script FAILED to complete."</span>
+  <span class="highlight-keyword">End</span> <span class="highlight-keyword">If</span>
+
+  <span class="highlight-keyword">Exit</span> <span class="highlight-keyword">Sub</span>
+
+  ErrHandler:
+    MsgBox <span class="highlight-literal">"Cannot run API script: "</span> &amp; Err.Description
+
+<span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABGAAA");</script></li></ol></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script></div></body></html>

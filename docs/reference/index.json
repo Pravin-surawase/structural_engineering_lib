@@ -203,5 +203,11 @@
       "status": "Production Ready"
     }
   ],
-  "subfolders": []
+  "subfolders": [
+    {
+      "name": "vendor",
+      "path": "vendor/",
+      "description": ""
+    }
+  ]
 }

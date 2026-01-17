@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-17T02:25:25.427798",
-  "total_docs": 309,
+  "generated": "2026-01-17T14:06:20.893979",
+  "total_docs": 313,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -510,6 +510,29 @@
       ],
       "size_bytes": 9475
     },
+    "docs/research/etabs-addin-integration.md": {
+      "title": "ETABS Add-In Integration \u2014 Detailed Plan (UX-First)",
+      "type": "research",
+      "complexity": "intermediate",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Evidence Status (External Docs Pending)",
+        "Goals",
+        "Non-Goals (v1)",
+        "UX Flow (Inside ETABS)",
+        "Data Requirements (Minimum v1)",
+        "Architecture Overview",
+        "Add-In Responsibilities",
+        "Unit Handling Strategy",
+        "Error Handling Matrix"
+      ],
+      "size_bytes": 6495
+    },
     "docs/research/ui-layout-final-decision.md": {
       "title": "UI Layout Final Decision - Professional Engineering Application",
       "type": "research",
@@ -684,6 +707,29 @@
         "Appendix B: Files Requiring No Changes"
       ],
       "size_bytes": 15111
+    },
+    "docs/research/etabs-automation-integration.md": {
+      "title": "ETABS Automation Integration \u2014 UX-First Options",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Constraints (Reality Check)",
+        "Evidence + Inputs (Current, Mostly Local)",
+        "Options (Ranked by UX + Reliability)",
+        "Quick Comparison Matrix",
+        "What We Must Pull (Minimum Data)",
+        "Data Retrieval Strategy (API vs Export)",
+        "Suggested API Bridge Endpoints",
+        "Recommended Path (Phased)",
+        "Open Questions"
+      ],
+      "size_bytes": 8008
     },
     "docs/research/security-best-practices-part1.md": {
       "title": "Security Best Practices for Engineering Software",
@@ -3819,6 +3865,27 @@
       ],
       "size_bytes": 5392
     },
+    "docs/planning/etabs-automation-bridge-plan.md": {
+      "title": "ETABS Automation Bridge \u2014 Implementation Plan",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Goal",
+        "Phase 0 \u2014 Feasibility + Option Gate (1 week)",
+        "Phase 1 \u2014 Local Bridge MVP (2 weeks)",
+        "Phase 2 \u2014 UX Polish + Installer (2 weeks)",
+        "Phase 3 \u2014 Optional ETABS Add-In (Parallel Track)",
+        "Phase 4 \u2014 Hosted Streamlit Support (Future)",
+        "Open Risks",
+        "Suggested Tasks (Backlog)"
+      ],
+      "size_bytes": 2568
+    },
     "docs/planning/agent8-git-docs-professional-consolidation.md": {
       "title": "Agent 8 & Git Automation Documentation: Professional Consolidation",
       "type": "documentation",
@@ -5935,9 +6002,10 @@
         "technical"
       ],
       "sections": [
-        "Files"
+        "Files",
+        "Subfolders"
       ],
-      "size_bytes": 3588
+      "size_bytes": 3625
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -6105,6 +6173,20 @@
       ],
       "size_bytes": 24037
     },
+    "docs/reference/vendor/etabs/README.md": {
+      "title": "CSI API ETABS v1 (Extracted CHM)",
+      "type": "index",
+      "complexity": "intermediate",
+      "folder": "etabs",
+      "tags": [],
+      "sections": [
+        "Purpose",
+        "Key API highlights for the add-in",
+        "Suggested workflow for the add-in",
+        "Next steps"
+      ],
+      "size_bytes": 4690
+    },
     "docs/developers/extension-guide.md": {
       "title": "Extension Guide: Adding Features Without Modifying Core",
       "type": "guide",
@@ -6195,6 +6277,7 @@
     "by_role": {
       "ai_agent": [
         "docs/research/ui-layout-options-comparison.md",
+        "docs/research/etabs-addin-integration.md",
         "docs/research/engineering-domain-apis.md",
         "docs/research/brainstorm-research-opportunities.md",
         "docs/research/product-strategy-followup.md",
@@ -6291,6 +6374,7 @@
         "docs/research/RESEARCH-SUMMARY-AND-PLAN.md",
         "docs/research/input-flexibility-data-interchange-part1.md",
         "docs/research/research-methodology.md",
+        "docs/research/etabs-addin-integration.md",
         "docs/research/ui-layout-final-decision.md",
         "docs/research/chat-ui-product-strategy-research.md",
         "docs/research/engineering-domain-apis.md",
@@ -6299,6 +6383,7 @@
         "docs/research/colab-output-review.md",
         "docs/research/streamlit-cloud-professional-deployment-plan.md",
         "docs/research/streamlit-code-files-analysis.md",
+        "docs/research/etabs-automation-integration.md",
         "docs/research/security-best-practices-part1.md",
         "docs/research/README.md",
         "docs/research/v018-library-expansion-feasibility.md",
@@ -6354,6 +6439,7 @@
         "docs/research/RESEARCH-SUMMARY-AND-PLAN.md",
         "docs/research/input-flexibility-data-interchange-part1.md",
         "docs/research/research-methodology.md",
+        "docs/research/etabs-addin-integration.md",
         "docs/research/ui-layout-final-decision.md",
         "docs/research/chat-ui-product-strategy-research.md",
         "docs/research/engineering-domain-apis.md",
@@ -6362,6 +6448,7 @@
         "docs/research/colab-output-review.md",
         "docs/research/streamlit-cloud-professional-deployment-plan.md",
         "docs/research/streamlit-code-files-analysis.md",
+        "docs/research/etabs-automation-integration.md",
         "docs/research/security-best-practices-part1.md",
         "docs/research/README.md",
         "docs/research/v018-library-expansion-feasibility.md",
@@ -6531,6 +6618,7 @@
         "docs/planning/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/index.md",
+        "docs/planning/etabs-automation-bridge-plan.md",
         "docs/planning/agent8-git-docs-professional-consolidation.md",
         "docs/planning/8-week-development-plan.md",
         "docs/planning/v020-stabilization-checklist.md",
@@ -6572,6 +6660,7 @@
         "docs/planning/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/index.md",
+        "docs/planning/etabs-automation-bridge-plan.md",
         "docs/planning/agent8-git-docs-professional-consolidation.md",
         "docs/planning/8-week-development-plan.md",
         "docs/planning/v020-stabilization-checklist.md",

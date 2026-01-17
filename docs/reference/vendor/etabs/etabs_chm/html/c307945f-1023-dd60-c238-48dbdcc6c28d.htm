@@ -1,0 +1,133 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cPropPointSpring.GetLinks Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetLinks method" /><meta name="System.Keywords" content="cPropPointSpring.GetLinks method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cPropPointSpring.GetLinks" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cPropPointSpring.GetLinks(System.String,System.Int32@,System.String[]@,System.Int32[]@,System.Double[]@)" /><meta name="Description" content="Retrieves the single joint links for a named point spring property" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="c307945f-1023-dd60-c238-48dbdcc6c28d" /><meta name="guid" content="c307945f-1023-dd60-c238-48dbdcc6c28d" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cPropPointSpring<span id="LST317A7AA4_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_0?cpp=::|nu=.");</script>GetLinks Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves the single joint links for a named point spring property
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetLinks</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">NumberLinks</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span>[] <span class="parameter">LinkNames</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span>[] <span class="parameter">LinkAxialDirs</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span>[] <span class="parameter">LinkAngles</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetLinks</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">NumberLinks</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">LinkNames</span> <span class="keyword">As</span> <span class="identifier">String</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">LinkAxialDirs</span> <span class="keyword">As</span> <span class="identifier">Integer</span>(),
+	<span class="keyword">ByRef</span> <span class="parameter">LinkAngles</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cPropPointSpring</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">NumberLinks</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">LinkNames</span> <span class="keyword">As</span> <span class="identifier">String</span>()
+<span class="keyword">Dim</span> <span class="parameter">LinkAxialDirs</span> <span class="keyword">As</span> <span class="identifier">Integer</span>()
+<span class="keyword">Dim</span> <span class="parameter">LinkAngles</span> <span class="keyword">As</span> <span class="identifier">Double</span>()
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetLinks</span>(<span class="parameter">Name</span>,
+	<span class="parameter">NumberLinks</span>, <span class="parameter">LinkNames</span>, <span class="parameter">LinkAxialDirs</span>,
+	<span class="parameter">LinkAngles</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetLinks</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">int</span>% <span class="parameter">NumberLinks</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">String</span>^&gt;^% <span class="parameter">LinkNames</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">int</span>&gt;^% <span class="parameter">LinkAxialDirs</span>,
+	<span class="keyword">array</span>&lt;<span class="identifier">double</span>&gt;^% <span class="parameter">LinkAngles</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetLinks</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">NumberLinks</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">LinkNames</span> : <span class="identifier">string</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">LinkAxialDirs</span> : <span class="identifier">int</span>[] <span class="keyword">byref</span> *
+        <span class="parameter">LinkAngles</span> : <span class="identifier">float</span>[] <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST317A7AA4_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing point spring property. This spring property must be of type option 1
+ </dd><dt><span class="parameter">NumberLinks</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST317A7AA4_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST317A7AA4_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_3?cpp=%");</script><br />
+ The number of links
+ </dd><dt><span class="parameter">LinkNames</span></dt><dd>Type: <span id="LST317A7AA4_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_4?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST317A7AA4_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_5?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST317A7AA4_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_6?cpp=&gt;|vb=()|nu=[]");</script><span id="LST317A7AA4_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_7?cpp=%");</script><br />
+ This array contains the names of existing link properties
+ </dd><dt><span class="parameter">LinkAxialDirs</span></dt><dd>Type: <span id="LST317A7AA4_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_8?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST317A7AA4_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_9?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST317A7AA4_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_10?cpp=&gt;|vb=()|nu=[]");</script><span id="LST317A7AA4_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_11?cpp=%");</script><br />
+ This array contains integers representing the axial direction of their respective link properties and can take one of six values:
+ <ul><li>-1 : -X</li><li>-2 : -Y</li><li>-3 : -Z</li><li>1 : +X</li><li>2 : +Y</li><li>3 : +Z</li></ul></dd><dt><span class="parameter">LinkAngles</span></dt><dd>Type: <span id="LST317A7AA4_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_12?cpp=array&lt;");</script><a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST317A7AA4_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_13?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST317A7AA4_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_14?cpp=&gt;|vb=()|nu=[]");</script><span id="LST317A7AA4_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST317A7AA4_15?cpp=%");</script><br />
+ This array contains the axis 2 angles of their respective link properties [deg]
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the links are successfully retrieved, otherwise returns nonzero
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+   <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+   <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+   <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+
+<span class="highlight-comment">'create ETABS object</span>
+   <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+   EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+<span class="highlight-comment">'start ETABS application</span>
+  ret = EtabsObject.ApplicationStart()
+
+<span class="highlight-comment">'create SapModel object</span>
+   SapModel = EtabsObject.SapModel
+
+<span class="highlight-comment">'initialize model</span>
+   ret = SapModel.InitializeNewModel()
+
+<span class="highlight-comment">'create steel deck template model</span>
+   ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>, <span class="highlight-number">12</span>, <span class="highlight-number">12</span>, <span class="highlight-number">4</span>, <span class="highlight-number">4</span>, <span class="highlight-number">24</span>, <span class="highlight-number">24</span>)
+
+<span class="highlight-comment">'define new link property</span>
+   <span class="highlight-keyword">Dim</span> DOF() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Boolean</span>
+   <span class="highlight-keyword">Dim</span> Fixed() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Boolean</span>
+   <span class="highlight-keyword">Dim</span> Ke() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> Ce() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">ReDim</span> DOF(<span class="highlight-number">5</span>)
+   <span class="highlight-keyword">ReDim</span> Fixed(<span class="highlight-number">5</span>)
+   <span class="highlight-keyword">ReDim</span> Ke(<span class="highlight-number">5</span>)
+   <span class="highlight-keyword">ReDim</span> Ce(<span class="highlight-number">5</span>)
+   DOF(<span class="highlight-number">0</span>) = <span class="highlight-keyword">True</span>
+   Ke(<span class="highlight-number">0</span>) = <span class="highlight-number">12</span>
+   ret = SapModel.PropLink.SetLinear(<span class="highlight-literal">"myLink1"</span>, DOF, Fixed, Ke, Ce, <span class="highlight-number">0</span>, <span class="highlight-number">0</span>)
+
+<span class="highlight-comment">'define new spring property</span>
+   <span class="highlight-keyword">Dim</span> k() <span class="highlight-keyword">as</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">ReDim</span> k(<span class="highlight-number">5</span>)
+   k(<span class="highlight-number">2</span>) = <span class="highlight-number">1</span>
+   ret = SapModel.PropPointSpring.SetPointSpringProp(<span class="highlight-literal">"myPtSpringProp"</span>, <span class="highlight-number">1</span>, k)
+
+<span class="highlight-comment">'set links in spring property</span>
+   <span class="highlight-keyword">Dim</span> NumberLinks <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> LinkNames() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> LinkAxialDirs() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> LinkAngles() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+   NumberLinks = <span class="highlight-number">1</span>
+   <span class="highlight-keyword">ReDim</span> LinkNames(NumberLinks - <span class="highlight-number">1</span>)
+   <span class="highlight-keyword">ReDim</span> LinkAxialDirs(NumberLinks - <span class="highlight-number">1</span>)
+   <span class="highlight-keyword">ReDim</span> LinkAngles(NumberLinks - <span class="highlight-number">1</span>)
+   LinkNames(<span class="highlight-number">0</span>) = <span class="highlight-literal">"myLink1"</span>
+   LinkAxialDirs(<span class="highlight-number">0</span>) = <span class="highlight-number">-2</span>
+   LinkAngles(<span class="highlight-number">0</span>) = <span class="highlight-number">45</span>
+
+   ret = SapModel.PropPointSpring.SetLinks(<span class="highlight-literal">"myPtSpringProp"</span>, NumberLinks, LinkNames, LinkAxialDirs, LinkAngles)
+
+<span class="highlight-comment">'get links</span>
+   <span class="highlight-keyword">Dim</span> outNumberLinks <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> outLinkNames() <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> outLinkAxialDirs() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+   <span class="highlight-keyword">Dim</span> outLinkAngles() <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+
+   ret = SapModel.PropPointSpring.GetLinks(<span class="highlight-literal">"myPtSpringProp"</span>, outNumberLinks, outLinkNames, outLinkAxialDirs, outLinkAngles)
+
+<span class="highlight-comment">'close ETABS</span>
+   EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+<span class="highlight-comment">'clean up variables</span>
+   SapModel = <span class="highlight-keyword">Nothing</span>
+   EtabsObject = <span class="highlight-keyword">Nothing</span>
+
+<span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="5aebc0c8-513b-c181-6c46-9a290a96c99b.htm">cPropPointSpring Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

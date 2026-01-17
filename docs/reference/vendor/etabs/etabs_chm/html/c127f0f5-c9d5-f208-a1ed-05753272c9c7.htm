@@ -1,0 +1,307 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cDStItalianNTC2018S.GetOverwrite Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetOverwrite method" /><meta name="System.Keywords" content="cDStItalianNTC2018S.GetOverwrite method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cDStItalianNTC2018S.GetOverwrite" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cDStItalianNTC2018S.GetOverwrite(System.String,System.Int32,System.String@,System.Double@,System.Boolean@)" /><meta name="Description" content="Retrieves the value of a steel design overwrite item" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="c127f0f5-c9d5-f208-a1ed-05753272c9c7" /><meta name="guid" content="c127f0f5-c9d5-f208-a1ed-05753272c9c7" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cDStItalianNTC2018S<span id="LST5356496E_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_0?cpp=::|nu=.");</script>GetOverwrite Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves the value of a steel design overwrite item
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetOverwrite</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="identifier">int</span> <span class="parameter">Item</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">textValue</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">numericValue</span>,
+	<span class="keyword">ref</span> <span class="identifier">bool</span> <span class="parameter">ProgDet</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetOverwrite</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="parameter">Item</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">textValue</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">numericValue</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">ProgDet</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cDStItalianNTC2018S</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">Item</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">textValue</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">numericValue</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">ProgDet</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetOverwrite</span>(<span class="parameter">Name</span>,
+	<span class="parameter">Item</span>, <span class="parameter">textValue</span>, <span class="parameter">numericValue</span>, <span class="parameter">ProgDet</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetOverwrite</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">int</span> <span class="parameter">Item</span>,
+	<span class="identifier">String</span>^% <span class="parameter">textValue</span>,
+	<span class="identifier">double</span>% <span class="parameter">numericValue</span>,
+	<span class="identifier">bool</span>% <span class="parameter">ProgDet</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetOverwrite</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">Item</span> : <span class="identifier">int</span> *
+        <span class="parameter">textValue</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">numericValue</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">ProgDet</span> : <span class="identifier">bool</span> <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST5356496E_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of a frame object with a steel frame design procedure
+ </dd><dt><span class="parameter">Item</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST5356496E_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><br />
+ This is an integer between 1 and 58, inclusive,
+ indicating the overwrite item considered.
+ <ol><li>Design Section</li><li>Framing Type</li><li>Section Class</li><li>Column buckling curve (y-y)</li><li>Column buckling curve (z-z)</li><li>Buckling curve for LTB</li><li>System Overstrength</li><li>Is Shape Rolled</li><li>Consider Deflection</li><li>Deflection check type</li><li>DL deflection limit, L/Value</li><li>SDL + LL deflection limits, L/Value</li><li>LL deflection limit, L/Value</li><li>Total load deflection limit, L/Value</li><li>Total camber limit, L/Value</li><li>DL deflection limit, absolute</li><li>SDL + LL deflection limit, absolute</li><li>LL deflection limit, absolute</li><li>Total load deflection limit, absolute</li><li>Total camber limit, absolute</li><li>Specified camber</li><li>Net area to total area ratio</li><li>Live load reduction factor</li><li>Unbraced length ratio, Ly</li><li>Unbraced length ratio, Lz</li><li>Unbraced length ratio, LLTB</li><li>Effective length factor, K1y</li><li>Effective length factor, K1z</li><li>Effective length factor, K2y</li><li>Effective length factor, K2z</li><li>Effective length factor, KLTB</li><li>Bending coefficient, C1</li><li>Moment coefficient, kyy</li><li>Moment coefficient, kzz</li><li>Moment coefficient, kzy</li><li>Moment coefficient, kyz</li><li>Yield stress, Fy</li><li>Material Overstrength, GammaOv</li><li>Compressive capacity, Nc,Rd</li><li>Tensile capacity Nt,Rd</li><li>Bending capacity Y-Y, Mcy,Rd</li><li>Bending capacity Z-Z, Mcz,Rd</li><li>Buckling resistance moment, Mb,Rd</li><li>Shear capacity Z-Z, Vz,Rd</li><li>Shear capacity Y-Y, Vy,Rd</li><li>Demand/capacity ratio limit</li></ol><ol start="49"><li>Bending coefficient, C2</li><li>Bending coefficient, C3</li><li>Warping constant, Iw</li><li>Elastic torsional buckling force, Ncr,T</li><li>Elastic torsional-flexural buckling force, Ncr,TF</li><li>Elastic critical moment for lateral-torsional buckling, Mcr</li><li>Warping coefficient, kw</li><li>Coordinate of load application, za</li><li>Coordinate of shear center, zs</li><li>Bending Coefficients Psi, C2, C3 Option</li></ol></dd><dt><span class="parameter">textValue</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST5356496E_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_3?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST5356496E_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_4?cpp=%");</script><br />
+ The string value of the considered overwrite item.
+
+ </dd><dt><span class="parameter">numericValue</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST5356496E_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_5?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST5356496E_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_6?cpp=%");</script><br />
+ The numeric value of the considered overwrite item.
+ <ol><li>
+ Design Section
+ </li><li>
+ Framing Type
+ <ul><li>0 = Program Default</li><li>1 = DCH-MRF </li><li>2 = DCL-MRF </li><li>3 = DCH-CBF </li><li>4 = DCL-CBF </li><li>5 = DCH-EBF </li><li>6 = DCL-EBF </li><li>7 = InvPendulum </li><li>8 = Non Dissipative </li></ul></li><li>
+ Section Class
+ <ul><li>0 = Program Default</li><li>1 = Class 1 </li><li>2 = Class 2 </li><li>3 = Class 3 </li><li>4 = Class 4 </li></ul></li><li>
+ Column buckling curve (y-y)
+ <ul><li>0 = Program Default</li><li>1 = a0 </li><li>2 = a </li><li>3 = b </li><li>4 = c </li><li>5 = d </li></ul></li><li>
+ Column buckling curve (z-z)
+ <ul><li>0 = Program Default</li><li>1 = a0 </li><li>2 = a </li><li>3 = b </li><li>4 = c </li><li>5 = d </li></ul></li><li>
+ Buckling curve for LTB
+ <ul><li>0 = Program Default</li><li>1 = a0 </li><li>2 = a </li><li>3 = b </li><li>4 = c </li><li>5 = d </li></ul></li><li>
+ System Overstrength
+ <p>
+ Value &gt;= 0; 0 means use a program determined value.
+ </p></li><li>
+ Is Shape Rolled
+ <ul><li>0 = Program Default</li><li>1 = No</li><li>2 = Yes</li></ul></li><li>
+ Consider Deflection
+ <ul><li>0 = Program Default</li><li>1 = No</li><li>2 = Yes</li></ul></li><li>
+ Deflection check type
+ <ul><li>0 = Program Default</li><li>1 = Ratio</li><li>2 = Absolute</li><li>3 = Both</li></ul></li><li>
+ DL deflection limit, L/Value
+ <p>
+ Value &gt;= 0; 0 means no check for this item.
+ </p></li><li>
+ SDL + LL deflection limits, L/Value
+ <p>
+ Value &gt;= 0; 0 means no check for this item.
+ </p></li><li><p>
+ Value &gt;= 0; 0 means no check for this item.
+ </p>LL deflection limit, L/Value
+ </li><li>
+ Total load deflection limit, L/Value
+ <p>
+ Value &gt;= 0; 0 means no check for this item.
+ </p></li><li>
+ Total camber limit, L/Value
+ <p>
+ Value &gt;= 0; 0 means no check for this item.
+ </p></li><li>
+ DL deflection limit, absolute
+ <p>
+ Value &gt;= 0; 0 means no check for this item. [L]
+ </p></li><li>
+ SDL + LL deflection limit, absolute
+ <p>
+ Value &gt;= 0; 0 means no check for this item. [L]
+ </p></li><li>
+ LL deflection limit, absolute
+ <p>
+ Value &gt;= 0; 0 means no check for this item. [L]
+ </p></li><li>
+ Total load deflection limit, absolute
+ <p>
+ Value &gt;= 0; 0 means no check for this item. [L]
+ </p></li><li>
+ Total camber limit, absolute
+ <p>
+ Value &gt;= 0; 0 means no check for this item. [L]
+ </p></li><li>
+ Specified camber
+ <p>
+ Value &gt;= 0; 0 means no check for this item. [L]
+ </p></li><li>
+ Net area to total area ratio
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Live load reduction factor
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Unbraced length ratio, Ly
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Unbraced length ratio, Lz
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Unbraced length ratio, LLTB
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Effective length factor, K1y
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Effective length factor, K1z
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Effective length factor, K2y
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Effective length factor, K2z
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Effective length factor, KLTB
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Bending coefficient, C1
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Moment coefficient, kyy
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Moment coefficient, kzz
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Moment coefficient, kzy
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Moment coefficient, kyz<p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Yield stress, Fy
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F/L^2]
+ </p></li><li>
+ Material Overstrength, GammaOv
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Compressive capacity, Nc,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F]
+ </p></li><li>
+ Tensile capacity, Nt,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F]
+ </p></li><li>
+ Bending capacity Y-Y, Mcy,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F.L]
+ </p></li><li>
+ Bending capacity Z-Z, Mcz,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F.L]
+ </p></li><li>
+ Buckling resistance moment, Mb,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F.L]
+ </p></li><li>
+ Shear capacity Z-Z, Vz,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F]
+ </p></li><li>
+ Shear capacity Y-Y, Vy,Rd
+ <p>
+ Value &gt;= 0; 0 means use program determined value. [F]
+ </p></li><li>
+ Demand/capacity ratio limit
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li></ol><ol start="49"><li>
+ Bending coefficient, C2
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Bending coefficient, C3
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Warping constant, Iw
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Elastic torsional buckling force, Ncr,T
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Elastic torsional-flexural buckling force, Ncr,TF
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Elastic critical moment for lateral-torsional buckling, Mcr
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Warping coefficient, kw
+ <p>
+ Value &gt;= 0; 0 means use program determined value.
+ </p></li><li>
+ Coordinate of load application, za
+ </li><li>
+ Coordinate of shear center, zs
+ </li><li>
+ Bending Coefficients Psi, C2, C3 Option
+ <ul><li>1 = Method 1 - EC3</li><li>2 = Method 2 - General</li><li>3 = Method 3 - User Defined</li></ul></li></ol></dd><dt><span class="parameter">ProgDet</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.boolean" target="_blank" rel="noopener noreferrer">System<span id="LST5356496E_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_7?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Boolean</a><span id="LST5356496E_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST5356496E_8?cpp=%");</script><br />
+ If this item is <span class="code">True</span>, the specified value is program determined.
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ Returns zero if the item is successfully retrieved;
+ otherwise it returns a nonzero value.
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+   <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+   <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+   <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+   <span class="highlight-keyword">Dim</span> textValue <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+   <span class="highlight-keyword">Dim</span> Value <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+   <span class="highlight-keyword">Dim</span> ProgDet <span class="highlight-keyword">As</span> <span class="highlight-keyword">Boolean</span>
+
+<span class="highlight-comment">'create ETABS object</span>
+   <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+   EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+<span class="highlight-comment">'start ETABS application</span>
+  ret = EtabsObject.ApplicationStart()
+
+<span class="highlight-comment">'create SapModel object</span>
+   SapModel = EtabsObject.SapModel
+
+<span class="highlight-comment">'initialize model</span>
+   ret = SapModel.InitializeNewModel()
+
+<span class="highlight-comment">'create steel deck template model</span>
+   ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>, <span class="highlight-number">12</span>, <span class="highlight-number">12</span>, <span class="highlight-number">4</span>, <span class="highlight-number">4</span>, <span class="highlight-number">24</span>, <span class="highlight-number">24</span>)
+
+<span class="highlight-comment">'set steel design code</span>
+   ret = SapModel.DesignSteel.SetCode(<span class="highlight-literal">"Italian NTC 2018"</span>)
+
+<span class="highlight-comment">'run analysis</span>
+   System.IO.Directory.CreateDirectory(<span class="highlight-literal">"c:\CSI_API_temp"</span>)
+   ret = SapModel.File.Save(<span class="highlight-literal">"C:\CSI_API_temp\example.edb"</span>)
+   ret = SapModel.Analyze.RunAnalysis
+
+<span class="highlight-comment">'start steel design</span>
+   ret = SapModel.DesignSteel.StartDesign
+
+<span class="highlight-comment">'get overwrite item</span>
+   ret = SapModel.DesignSteel.Italian_NTC_2018.GetOverwrite(<span class="highlight-literal">"8"</span>, <span class="highlight-number">1</span>, textValue, Value, ProgDet)
+
+<span class="highlight-comment">'close ETABS</span>
+   EtabsObject.ApplicationExit(<span class="highlight-keyword">False</span>)
+
+<span class="highlight-comment">'clean up variables</span>
+   SapModel = <span class="highlight-keyword">Nothing</span>
+   EtabsObject = <span class="highlight-keyword">Nothing</span>
+
+<span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="d1e0254d-07a1-346b-c39b-2c1b60926a31.htm">cDStItalianNTC2018S Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

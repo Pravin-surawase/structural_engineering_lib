@@ -31,3 +31,7 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | [troubleshooting.md](troubleshooting.md) | Use this when reporting bugs or debugging agent failures: bash | 2026-01-13 | 313 |
 | [vba-api-reference.md](vba-api-reference.md) | All functions are prefixed with IS456_ and available in any Excel worksheet once | 2026-01-13 | 865 |
 | [vba-udt-reference.md](vba-udt-reference.md) | This document describes all custom data types (UDTs) and enumerations used in th | 2026-01-13 | 710 |
+
+## Subfolders
+
+- [vendor/](vendor/)
