@@ -1,6 +1,0 @@
-ID,Story,Span,b_mm,D_mm,Cover_mm,fck,fy,Mu_kNm,Vu_kN,Flanged,Df_mm,bf_mm,Ast_req_mm2,Mu_lim_kNm,pt_pct,xu_mm,xu_max_mm,Section_Type,tv_Nmm2,tc_Nmm2,tc_max_Nmm2,Vus_kN,Sv_mm,is_safe,Remarks
-Singly_OK,S1,Mid,230,450,25,25,500,150,100,No,0,0,862.15,180.51,0.91,125.3,195.5,UNDER,0.97,0.56,3.1,38.4,180,TRUE,OK
-Flanged_OK,S2,Mid,300,550,30,25,500,200,120,Yes,120,800,918.42,352.18,0.64,85.2,239.25,UNDER,0.73,0.50,3.1,38.1,180,TRUE,OK
-High_Mu_Doubly,S3,Mid,250,500,25,30,415,260,110,No,0,0,1648.52,194.92,1.42,228.0,228.0,DOUBLY,0.98,0.72,3.5,31.2,180,TRUE,Compression steel required
-High_Vu_Shear,S4,Support,230,450,25,20,500,120,250,No,0,0,718.25,140.12,0.78,108.5,195.5,UNDER,2.42,0.56,2.8,192.4,95,TRUE,Close stirrup spacing
-Shear_Over_Tcmax,S5,Support,200,450,25,20,500,80,400,No,0,0,548.12,114.85,0.65,92.3,195.5,UNDER,4.44,0.45,2.8,N/A,N/A,FALSE,tv > tc_max - Section inadequate

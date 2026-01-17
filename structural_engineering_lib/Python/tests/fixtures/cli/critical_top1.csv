@@ -1,2 +1,0 @@
-case_id,utilization,flexure_util,shear_util,is_ok,json_path
-C1,0.6000,0.6000,0.4000,TRUE,cases[0]
