@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-17T14:13:59.886808",
-  "total_docs": 313,
+  "generated": "2026-01-17T14:31:35.537408",
+  "total_docs": 314,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -115,6 +115,22 @@
         "8. Phase 2: PyVista Migration"
       ],
       "size_bytes": 102123
+    },
+    "docs/research/etabs-vba-export-macro.md": {
+      "title": "ETABS VBA Export Macro \u2014 Testing Shortcut",
+      "type": "research",
+      "complexity": "intermediate",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Macro Flow (Excel + ETABS)",
+        "Post-Processing Guidance",
+        "Next Steps"
+      ],
+      "size_bytes": 2871
     },
     "docs/research/documentation-handoff-analysis.md": {
       "title": "Documentation & Agent Handoff Analysis",
@@ -6356,6 +6372,7 @@
     "by_topic": {
       "investigation": [
         "docs/research/live-3d-visualization-architecture.md",
+        "docs/research/etabs-vba-export-macro.md",
         "docs/research/documentation-handoff-analysis.md",
         "docs/research/blogging-strategy-research.md",
         "docs/research/index-per-folder-efficiency-research.md",
@@ -6421,6 +6438,7 @@
       ],
       "planning": [
         "docs/research/live-3d-visualization-architecture.md",
+        "docs/research/etabs-vba-export-macro.md",
         "docs/research/documentation-handoff-analysis.md",
         "docs/research/blogging-strategy-research.md",
         "docs/research/index-per-folder-efficiency-research.md",
