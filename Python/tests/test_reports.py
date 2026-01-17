@@ -14,6 +14,11 @@ from structural_lib.reports import (
     get_available_templates,
 )
 
+# Skip marker for tests requiring Jinja2
+requires_jinja2 = pytest.mark.skipif(
+    not JINJA2_AVAILABLE, reason="Jinja2 not installed (pip install jinja2)"
+)
+
 
 class TestReportContext:
     """Tests for ReportContext dataclass."""
@@ -86,6 +91,7 @@ class TestGetAvailableTemplates:
         assert "detailed" in templates
 
 
+@requires_jinja2
 class TestGenerateHtmlReport:
     """Tests for generate_html_report function."""
 
@@ -149,6 +155,7 @@ class TestGenerateHtmlReport:
         assert "status-fail" in html or "FAIL" in html
 
 
+@requires_jinja2
 class TestGenerateHtmlReportFromDict:
     """Tests for generate_html_report_from_dict function."""
 
@@ -185,6 +192,7 @@ class TestGenerateHtmlReportFromDict:
         assert isinstance(html, str)
 
 
+@requires_jinja2
 class TestFormatFilters:
     """Tests for template filters through full report generation."""
 
@@ -230,6 +238,7 @@ class TestJinja2Availability:
             assert JINJA2_FLAG is True
 
 
+@requires_jinja2
 class TestReportWithRealData:
     """Integration tests with realistic beam design data."""
 
@@ -355,6 +364,7 @@ class TestReportWithRealData:
         assert "Cl. 38" in html or "38.1" in html  # Code references
 
 
+@requires_jinja2
 class TestEdgeCases:
     """Tests for edge cases and error handling."""
 

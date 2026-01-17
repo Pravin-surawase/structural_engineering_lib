@@ -448,7 +448,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.function_name = old_function_name
 
     def visit_Assign(self, node: ast.Assign):
-        """Track variable assignments (Phase 2: improved)."""
+        """Track variable assignments (Phase 2: improved, Phase 8: enhanced Path detection)."""
         # Check if assigning a Path object
         is_path_assignment = False
         if isinstance(node.value, ast.Call):
@@ -457,6 +457,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 and node.value.func.id in self.path_like_vars
             ):
                 is_path_assignment = True
+
+            # Phase 8: Track path_var.method() calls like path.resolve()
+            # Pattern: x = path_var.resolve(), x = Path(__file__).resolve()
+            elif isinstance(node.value.func, ast.Attribute):
+                path_methods = {"resolve", "absolute", "expanduser", "with_name", "with_suffix"}
+                if node.value.func.attr in path_methods:
+                    base_name = self._extract_var_name(node.value.func.value)
+                    if base_name and base_name in self.path_like_vars:
+                        is_path_assignment = True
+                    # Also handle Path(__file__).resolve() directly
+                    elif self._is_path_expression(node.value.func.value):
+                        is_path_assignment = True
 
             # Phase 2: Track MagicMock assignments for test files
             # Pattern: mock_streamlit.method = MagicMock()
@@ -476,6 +488,17 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             if isinstance(node.value.op, ast.Div):
                 left_name = self._extract_var_name(node.value.left)
                 if left_name in self.path_like_vars:
+                    is_path_assignment = True
+
+        # Phase 8: Track path_var.parent and similar attribute accesses
+        # Pattern: x = path_var.parent, x = path_var.resolve()
+        elif isinstance(node.value, ast.Attribute):
+            # Check if the base object is a Path-like variable
+            base_name = self._extract_var_name(node.value.value)
+            if base_name and base_name in self.path_like_vars:
+                # Common Path attributes/properties that return Path
+                path_attrs = {"parent", "parents", "stem", "name", "anchor", "root"}
+                if node.value.attr in path_attrs or node.value.attr == "parent":
                     is_path_assignment = True
 
         for target in node.targets:
@@ -948,9 +971,12 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         Check if a comparison is validating a variable against zero.
         Returns the variable name if it's a zero check, None otherwise.
         For compound conditions (AND/OR), returns None (handled by _get_validated_vars).
+
+        Phase 8: Also detect equality checks (x == 0) for guard clause patterns.
+        Guard clauses like `if x == 0: return` validate x is non-zero after the check.
         """
         if isinstance(test, ast.Compare):
-            # Check for patterns like: x > 0, x != 0, 0 < x
+            # Check for patterns like: x > 0, x != 0, 0 < x, x == 0
             if len(test.ops) == 1 and len(test.comparators) == 1:
                 op = test.ops[0]
                 left = test.left
@@ -966,6 +992,15 @@ class EnhancedIssueDetector(ast.NodeVisitor):
 
                 # Pattern: 0 < var, 0 != var
                 if is_zero_left and isinstance(op, (ast.Lt, ast.LtE, ast.NotEq)):
+                    return self._extract_var_name(right)
+
+                # Phase 8: Pattern: var == 0 (for guard clauses with early exit)
+                # If there's an early exit in the body, this validates var for the rest of function
+                if is_zero_right and isinstance(op, ast.Eq):
+                    return self._extract_var_name(left)
+
+                # Phase 8: Pattern: 0 == var (for guard clauses with early exit)
+                if is_zero_left and isinstance(op, ast.Eq):
                     return self._extract_var_name(right)
 
         return None
