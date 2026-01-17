@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-17T14:06:20.893979",
+  "generated": "2026-01-17T14:12:50.885118",
   "total_docs": 313,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -729,7 +729,7 @@
         "Recommended Path (Phased)",
         "Open Questions"
       ],
-      "size_bytes": 8008
+      "size_bytes": 8002
     },
     "docs/research/security-best-practices-part1.md": {
       "title": "Security Best Practices for Engineering Software",
@@ -3876,15 +3876,15 @@
       ],
       "sections": [
         "Goal",
-        "Phase 0 \u2014 Feasibility + Option Gate (1 week)",
         "Phase 1 \u2014 Local Bridge MVP (2 weeks)",
         "Phase 2 \u2014 UX Polish + Installer (2 weeks)",
         "Phase 3 \u2014 Optional ETABS Add-In (Parallel Track)",
         "Phase 4 \u2014 Hosted Streamlit Support (Future)",
+        "Phase 4 \u2014 Hosted Streamlit Support (Future)",
         "Open Risks",
         "Suggested Tasks (Backlog)"
       ],
-      "size_bytes": 2568
+      "size_bytes": 4929
     },
     "docs/planning/agent8-git-docs-professional-consolidation.md": {
       "title": "Agent 8 & Git Automation Documentation: Professional Consolidation",
