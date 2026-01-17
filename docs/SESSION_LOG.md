@@ -189,6 +189,91 @@ Session 36 implemented the complete ETABS VBA export system spanning 2,302 lines
 
 ---
 
+## 2026-01-17 — Session 39: ETABS Import UI + Scanner Improvements
+
+**Focus:** Create ETABS CSV import Streamlit page, fix scanner false positives, improve CI
+
+### Overview
+
+Session 39 implemented the full ETABS Import workflow in Streamlit, connecting the existing `etabs_import.py` library to a user-friendly UI with batch design and 3D visualization.
+
+### Commits (6)
+
+| Hash | Type | Description |
+|------|------|-------------|
+| `b99640d6` | fix | Skip report tests when Jinja2 not installed |
+| `16fa61bc` | feat | Add ETABS CSV import page with batch design and 3D grid view |
+| `74e4ba6d` | fix | Improve scanner Path operator and guard clause detection (Phase 8) |
+| `38a46c7e` | test | Add sample ETABS export CSV for import testing |
+| `19a11289` | chore | Remove CHM internal folders with invalid names (CI fix) |
+| `03ec5a90` | fix | VBA robustness improvements (on PR #379 branch) |
+
+### Deliverables
+
+#### 1. ETABS Import Streamlit Page (700 lines)
+
+**File:** `streamlit_app/pages/06_📤_etabs_import.py`
+
+**Features:**
+- ETABS CSV upload with automatic column detection (ETABS 2019-2024 formats)
+- Envelope extraction (max |M|, max |V| per beam across load cases)
+- Batch design with progress tracking
+- 3D grid visualization color-coded by design status
+- Story-wise summary charts
+- Export to CSV/Excel
+- Default section properties with per-beam override support
+
+**Workflow:**
+```
+ETABS → VBA Export → CSV → Upload → Validate → Set Sections → Batch Design → View Results → Export
+```
+
+#### 2. Scanner Improvements (Phase 8)
+
+**File:** `scripts/check_streamlit_issues.py`
+
+**Fixes:**
+- Path attribute propagation (`x = path.parent` now tracked as Path)
+- Path method call detection (`x = path.resolve()` now tracked)
+- Guard clause pattern `if x == 0: return` now validates x for rest of function
+- Eliminates false positives for Path `/` operator and guarded divisions
+
+#### 3. Test Data
+
+**File:** `Python/examples/sample_etabs_export.csv`
+
+- 3 stories (Story1, Story2, Story3)
+- 3 beams per story (B1, B2, B3)
+- Multiple load cases (1.5DL+1.5LL, 1.2DL+1.2LL+1.2EQx)
+- 5 stations per beam with realistic force values
+
+#### 4. CI Fix
+
+- Deleted `$WWKeywordLinks` and `$WWAssociativeLinks` folders
+- These were Windows CHM internal files with special characters failing governance check
+- Updated PR #379 branch to include fix
+
+### Readiness Assessment
+
+| Feature | Status | Available |
+|---------|--------|-----------|
+| Single Beam 3D | ✅ Complete | NOW |
+| Plotly 3D Mesh | ✅ 840 lines | NOW |
+| Three.js Viewer | ✅ 538 lines | NOW |
+| Python CSV Parser | ✅ 623 lines | NOW |
+| ETABS Import UI | ✅ 700 lines | NOW |
+| VBA ETABS Export | ✅ PR #379 | After Windows test |
+| DXF/PDF Export | ⏰ Delayed | Week 5-6 |
+
+### Next Steps
+
+1. Merge PR #379 after CI passes (VBA implementation)
+2. User testing of ETABS Import page with real ETABS exports
+3. Consider individual beam 3D viewer in import results
+4. Start Phase 2 Week 4: Multi-beam 3D layout optimization
+
+---
+
 ## 2026-01-20 — Session 38: UI Improvements + Phase 2 Start
 
 **Focus:** Fix 3D viz cache bug, compact UI layout, start Phase 2 (CSV schema)
