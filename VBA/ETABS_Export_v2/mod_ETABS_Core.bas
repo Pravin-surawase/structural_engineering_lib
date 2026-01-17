@@ -238,54 +238,64 @@ Public Function GetExportWorksheet() As Worksheet
 End Function
 
 '------------------------------------------------------------------------------
-' CONNECTION (Fixed: Using GetObject like legacy code)
+' CONNECTION (Fixed: Try multiple connection methods)
 '------------------------------------------------------------------------------
 
-' Connect to running ETABS instance using GetObject (legacy pattern)
+' Connect to running ETABS instance - tries Helper first, then GetObject
 Public Function ConnectToETABS() As Boolean
     On Error GoTo ConnectionError
     
     LogInfo "Connecting to running ETABS..."
     
-    ' Method 1: Direct GetObject (most reliable - from legacy code)
-    On Error Resume Next
-    Set g_ETABSObject = GetObject(, "CSI.ETABS.API.ETABSObject")
-    On Error GoTo ConnectionError
-    
-    If Not g_ETABSObject Is Nothing Then
-        Set g_SapModel = g_ETABSObject.SapModel
-        LogInfo "? Connected to ETABS (GetObject)"
-        ConnectToETABS = True
-        Exit Function
-    End If
-    
-    ' Method 2: Try ETABSv1.Helper as fallback
+    ' Method 1: ETABSv1.Helper (most compatible with different ETABS versions)
     On Error Resume Next
     Dim helper As Object
     Set helper = CreateObject("ETABSv1.Helper")
     
     If Not helper Is Nothing Then
+        LogDebug "Helper created, attempting to get ETABS object..."
         Set g_ETABSObject = helper.GetObject("CSI.ETABS.API.ETABSObject")
+        
         If Not g_ETABSObject Is Nothing Then
             Set g_SapModel = g_ETABSObject.SapModel
-            LogInfo "? Connected to ETABS (Helper)"
+            LogInfo "? Connected to ETABS (Helper method)"
             ConnectToETABS = True
             Exit Function
+        Else
+            LogDebug "Helper.GetObject returned Nothing"
         End If
+    Else
+        LogDebug "Could not create ETABSv1.Helper"
+    End If
+    
+    ' Method 2: Direct GetObject (legacy pattern - may work for some ETABS versions)
+    Err.Clear
+    Set g_ETABSObject = GetObject(, "CSI.ETABS.API.ETABSObject")
+    
+    If Not g_ETABSObject Is Nothing Then
+        Set g_SapModel = g_ETABSObject.SapModel
+        LogInfo "? Connected to ETABS (GetObject method)"
+        ConnectToETABS = True
+        Exit Function
+    Else
+        LogDebug "GetObject returned Nothing"
     End If
     On Error GoTo ConnectionError
     
-    ' No running instance - ask user
-    Dim response As VbMsgBoxResult
-    response = MsgBox("ETABS is not running." & vbCrLf & vbCrLf & _
-                     "Please start ETABS and open your model first.", _
-                     vbOKOnly + vbExclamation, "ETABS Not Running")
+    ' No running instance found
+    LogError "Could not connect to ETABS using any method"
+    MsgBox "Cannot connect to ETABS." & vbCrLf & vbCrLf & _
+           "Please ensure:" & vbCrLf & _
+           "1. ETABS is running" & vbCrLf & _
+           "2. A model is loaded" & vbCrLf & _
+           "3. ETABS API is properly installed", _
+           vbCritical, "Connection Failed"
     
     ConnectToETABS = False
     Exit Function
 
 ConnectionError:
-    LogError "Connection error: " & Err.Description
+    LogError "Connection error: " & Err.Description & " (#" & Err.Number & ")"
     ConnectToETABS = False
 End Function
 
