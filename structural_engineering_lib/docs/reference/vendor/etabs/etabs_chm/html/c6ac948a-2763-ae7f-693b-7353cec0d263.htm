@@ -1,0 +1,168 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>cPropFrame.GetColdZ_1 Method </title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="GetColdZ_1 method" /><meta name="System.Keywords" content="cPropFrame.GetColdZ_1 method" /><meta name="Microsoft.Help.F1" content="ETABSv1.cPropFrame.GetColdZ_1" /><meta name="Microsoft.Help.Id" content="M:ETABSv1.cPropFrame.GetColdZ_1(System.String,System.String@,System.String@,System.Double@,System.Double@,System.Double@,System.Double@,System.Double@,System.Double@,System.Boolean@,System.Int32@,System.String@,System.String@)" /><meta name="Description" content="Retrieves frame section property data for a cold formed Z-type frame section." /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ETABSv1" /><meta name="file" content="c6ac948a-2763-ae7f-693b-7353cec0d263" /><meta name="guid" content="c6ac948a-2763-ae7f-693b-7353cec0d263" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>cPropFrame<span id="LST40F7FC37_0"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_0?cpp=::|nu=.");</script>GetColdZ_1 Method </h1></td></tr></table><span class="introStyle"></span> <div class="summary">
+ Retrieves frame section property data for a cold formed Z-type frame section.
+ </div><p> </p>
+    <strong>Namespace:</strong>
+   <a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1</a><br />
+    <strong>Assembly:</strong>
+   ETABSv1 (in ETABSv1.dll) Version: 1.0.0.0 (2.3.0.0)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EDCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cs','1','4');return false;">C#</a></div><div id="ID0EDCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','vb','2','4');return false;">VB</a></div><div id="ID0EDCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','cpp','3','4');return false;">C++</a></div><div id="ID0EDCA_tab4" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0EDCA','fs','4','4');return false;">F#</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EDCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EDCA');return false;" title="Copy">Copy</a></div></div><div id="ID0EDCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetColdZ_1</span>(
+	<span class="identifier">string</span> <span class="parameter">Name</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">FileName</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">MatProp</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">T3</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">T2</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Thickness</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">Radius</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">LipDepth</span>,
+	<span class="keyword">ref</span> <span class="identifier">double</span> <span class="parameter">LipAngle</span>,
+	<span class="keyword">ref</span> <span class="identifier">bool</span> <span class="parameter">MirrorAbout2</span>,
+	<span class="keyword">ref</span> <span class="identifier">int</span> <span class="parameter">Color</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">Notes</span>,
+	<span class="keyword">ref</span> <span class="identifier">string</span> <span class="parameter">GUID</span>
+)</pre></div><div id="ID0EDCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Function</span> <span class="identifier">GetColdZ_1</span> (
+	<span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">FileName</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">MatProp</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">T3</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">T2</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Thickness</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Radius</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">LipDepth</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">LipAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">MirrorAbout2</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Color</span> <span class="keyword">As</span> <span class="identifier">Integer</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">Notes</span> <span class="keyword">As</span> <span class="identifier">String</span>,
+	<span class="keyword">ByRef</span> <span class="parameter">GUID</span> <span class="keyword">As</span> <span class="identifier">String</span>
+) <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="keyword">Dim</span> <span class="parameter">instance</span> <span class="keyword">As</span> <span class="identifier">cPropFrame</span>
+<span class="keyword">Dim</span> <span class="parameter">Name</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">FileName</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">MatProp</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">T3</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">T2</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Thickness</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">Radius</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">LipDepth</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">LipAngle</span> <span class="keyword">As</span> <span class="identifier">Double</span>
+<span class="keyword">Dim</span> <span class="parameter">MirrorAbout2</span> <span class="keyword">As</span> <span class="identifier">Boolean</span>
+<span class="keyword">Dim</span> <span class="parameter">Color</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+<span class="keyword">Dim</span> <span class="parameter">Notes</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">GUID</span> <span class="keyword">As</span> <span class="identifier">String</span>
+<span class="keyword">Dim</span> <span class="parameter">returnValue</span> <span class="keyword">As</span> <span class="identifier">Integer</span>
+
+<span class="parameter">returnValue</span> = instance.<span class="identifier">GetColdZ_1</span>(<span class="parameter">Name</span>,
+	<span class="parameter">FileName</span>, <span class="parameter">MatProp</span>, <span class="parameter">T3</span>, <span class="parameter">T2</span>, <span class="parameter">Thickness</span>,
+	<span class="parameter">Radius</span>, <span class="parameter">LipDepth</span>, <span class="parameter">LipAngle</span>, <span class="parameter">MirrorAbout2</span>,
+	<span class="parameter">Color</span>, <span class="parameter">Notes</span>, <span class="parameter">GUID</span>)</pre></div><div id="ID0EDCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="identifier">int</span> <span class="identifier">GetColdZ_1</span>(
+	<span class="identifier">String</span>^ <span class="parameter">Name</span>,
+	<span class="identifier">String</span>^% <span class="parameter">FileName</span>,
+	<span class="identifier">String</span>^% <span class="parameter">MatProp</span>,
+	<span class="identifier">double</span>% <span class="parameter">T3</span>,
+	<span class="identifier">double</span>% <span class="parameter">T2</span>,
+	<span class="identifier">double</span>% <span class="parameter">Thickness</span>,
+	<span class="identifier">double</span>% <span class="parameter">Radius</span>,
+	<span class="identifier">double</span>% <span class="parameter">LipDepth</span>,
+	<span class="identifier">double</span>% <span class="parameter">LipAngle</span>,
+	<span class="identifier">bool</span>% <span class="parameter">MirrorAbout2</span>,
+	<span class="identifier">int</span>% <span class="parameter">Color</span>,
+	<span class="identifier">String</span>^% <span class="parameter">Notes</span>,
+	<span class="identifier">String</span>^% <span class="parameter">GUID</span>
+)</pre></div><div id="ID0EDCA_code_Div4" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">abstract</span> <span class="identifier">GetColdZ_1</span> :
+        <span class="parameter">Name</span> : <span class="identifier">string</span> *
+        <span class="parameter">FileName</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">MatProp</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">T3</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">T2</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Thickness</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">Radius</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">LipDepth</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">LipAngle</span> : <span class="identifier">float</span> <span class="keyword">byref</span> *
+        <span class="parameter">MirrorAbout2</span> : <span class="identifier">bool</span> <span class="keyword">byref</span> *
+        <span class="parameter">Color</span> : <span class="identifier">int</span> <span class="keyword">byref</span> *
+        <span class="parameter">Notes</span> : <span class="identifier">string</span> <span class="keyword">byref</span> *
+        <span class="parameter">GUID</span> : <span class="identifier">string</span> <span class="keyword">byref</span> <span class="keyword">-&gt;</span> <span class="identifier">int</span>
+</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EDCA");</script><h4 class="subHeading">Parameters</h4><dl><dt><span class="parameter">Name</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_1"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_1?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><br />
+ The name of an existing cold formed Z-type frame section property.
+ </dd><dt><span class="parameter">FileName</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_2"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_2?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST40F7FC37_3"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_3?cpp=%");</script><br />
+ If the section property was imported from a property file,
+ this is the name of that file. If the section property was not imported,
+ this item is blank.
+ </dd><dt><span class="parameter">MatProp</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_4"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_4?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST40F7FC37_5"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_5?cpp=%");</script><br />
+ The name of the material property for the section.
+ </dd><dt><span class="parameter">T3</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_6"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_6?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST40F7FC37_7"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_7?cpp=%");</script><br />
+ The section depth. [L]
+ </dd><dt><span class="parameter">T2</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_8"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_8?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST40F7FC37_9"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_9?cpp=%");</script><br />
+ The section width. [L]
+ </dd><dt><span class="parameter">Thickness</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_10"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_10?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST40F7FC37_11"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_11?cpp=%");</script><br />
+ The section thickness. [L]
+ </dd><dt><span class="parameter">Radius</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_12"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_12?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST40F7FC37_13"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_13?cpp=%");</script><br />
+ The corner radius, if any. [L]
+ </dd><dt><span class="parameter">LipDepth</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_14"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_14?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST40F7FC37_15"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_15?cpp=%");</script><br />
+ The lip depth, if any. [L]
+ </dd><dt><span class="parameter">LipAngle</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.double" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_16"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_16?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Double</a><span id="LST40F7FC37_17"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_17?cpp=%");</script><br />
+ The lip angle measured from horizontal (0 &lt;= LipAngle &lt;= 90). [deg]
+ </dd><dt><span class="parameter">MirrorAbout2</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.boolean" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_18"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_18?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Boolean</a><span id="LST40F7FC37_19"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_19?cpp=%");</script><br />Indicates whether the section is mirrored about the local 2-axis.</dd><dt><span class="parameter">Color</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_20"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_20?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>Int32</a><span id="LST40F7FC37_21"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_21?cpp=%");</script><br />
+ The display color assigned to the section.
+ </dd><dt><span class="parameter">Notes</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_22"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_22?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST40F7FC37_23"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_23?cpp=%");</script><br />
+ The notes, if any, assigned to the section.
+ </dd><dt><span class="parameter">GUID</span></dt><dd>Type: <a href="https://docs.microsoft.com/dotnet/api/system.string" target="_blank" rel="noopener noreferrer">System<span id="LST40F7FC37_24"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_24?cs=.|vb=.|cpp=::|nu=.|fs=.");</script>String</a><span id="LST40F7FC37_25"></span><script type="text/javascript">AddLanguageSpecificTextSet("LST40F7FC37_25?cpp=%");</script><br />
+ The GUID (global unique identifier), if any, assigned to the section.
+ </dd></dl><h4 class="subHeading">Return Value</h4>Type: <a href="https://docs.microsoft.com/dotnet/api/system.int32" target="_blank" rel="noopener noreferrer">Int32</a><br />
+ returns zero if the section property data is successfully retrieved;
+ otherwise it returns a nonzero value.
+ </div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID3RBSection" class="collapsibleSection"><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Examples</span></div><div id="ID2RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"> <span class="highlight-keyword">Public</span> <span class="highlight-keyword">Sub</span> Example()
+
+    <span class="highlight-keyword">Dim</span> SapModel <span class="highlight-keyword">As</span> cSapModel
+     <span class="highlight-keyword">Dim</span> EtabsObject <span class="highlight-keyword">As</span> cOAPI
+    <span class="highlight-keyword">Dim</span> ret <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span> = <span class="highlight-number">-1</span>
+    <span class="highlight-keyword">Dim</span> Name <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> FileName <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> MatProp <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> t3 <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> t2 <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> Thickness <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> LipDepth <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> LipAngle <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> Radius <span class="highlight-keyword">As</span> <span class="highlight-keyword">Double</span>
+    <span class="highlight-keyword">Dim</span> Color <span class="highlight-keyword">As</span> <span class="highlight-keyword">Integer</span>
+    <span class="highlight-keyword">Dim</span> Notes <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> GUID <span class="highlight-keyword">As</span> <span class="highlight-keyword">String</span>
+    <span class="highlight-keyword">Dim</span> Mirror2 <span class="highlight-keyword">As</span> <span class="highlight-keyword">Boolean</span>
+
+    <span class="highlight-comment">'create ETABS object</span>
+        <span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> cHelper = <span class="highlight-keyword">New</span> Helper
+        EtabsObject = myHelper.CreateObjectProgID(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+    <span class="highlight-comment">'start ETABS application</span>
+        ret = EtabsObject.ApplicationStart()
+
+    <span class="highlight-comment">'create SapModel object</span>
+        SapModel = EtabsObject.SapModel
+
+    <span class="highlight-comment">'initialize model</span>
+        ret = SapModel.InitializeNewModel()
+
+    <span class="highlight-comment">'create steel deck template model</span>
+        ret = SapModel.File.NewSteelDeck(<span class="highlight-number">4</span>,<span class="highlight-number">12</span>,<span class="highlight-number">12</span>,<span class="highlight-number">4</span>,<span class="highlight-number">4</span>,<span class="highlight-number">24</span>,<span class="highlight-number">24</span>)
+
+    <span class="highlight-comment">'add cold formed material</span>
+        ret = SapModel.PropMaterial.AddQuick(Name, MATERIAL_COLDFORMED, , , , MATERIAL_COLDFORMED_SUBTYPE_ASTM_A653SQGr50)
+
+    <span class="highlight-comment">'set new frame section property</span>
+        ret = SapModel.PropFrame.SetColdZ_1(<span class="highlight-literal">"CZ1"</span>, Name, <span class="highlight-number">10</span>, <span class="highlight-number">3.2</span>, <span class="highlight-number">0.08</span>, <span class="highlight-number">0.3</span>, <span class="highlight-number">0.6</span>, <span class="highlight-number">60</span>, <span class="highlight-keyword">False</span>)
+
+    <span class="highlight-comment">'get frame section property data</span>
+        ret = SapModel.PropFrame.GetColdZ_1(<span class="highlight-literal">"CZ1"</span>, FileName, MatProp, t3, t2, Thickness , Radius, LipDepth, LipAngle, Mirror2, Color, Notes, GUID)
+
+   close ETABS
+      EtabsObject.ApplicationExit(False_
+      SapModel = <span class="highlight-keyword">Nothing</span>
+      EtabsObject = <span class="highlight-keyword">Nothing</span>
+<span class="highlight-keyword">End</span> <span class="highlight-keyword">Sub</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABA");</script></div></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID4RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="818573fe-2b13-6183-8dc9-0cf3e8e02c7a.htm">cPropFrame Interface</a></div><div class="seeAlsoStyle"><a href="2780f1b8-2033-5289-2298-1cdb2a7508d9.htm">ETABSv1 Namespace</a></div></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script> </div></body></html>

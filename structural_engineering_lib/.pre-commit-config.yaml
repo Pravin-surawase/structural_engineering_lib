@@ -1,0 +1,268 @@
+# Pre-commit hooks for structural_engineering_lib
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # General file hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        files: \.(yml|yaml)$  # Only run on YAML files
+      - id: check-toml
+        files: \.toml$  # Only run on TOML files
+      - id: check-json
+        files: \.json$  # Only run on JSON files
+      - id: end-of-file-fixer
+        exclude: ^(VBA/|Excel/)
+      - id: trailing-whitespace
+        exclude: ^(VBA/|Excel/)
+      - id: mixed-line-ending
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+
+  # Python formatting
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+      - id: black
+        language_version: python3
+        files: ^Python/
+
+  # Python linting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        files: ^Python/
+
+  # Python type checking (local hook with correct working directory)
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (structural_lib)
+        entry: bash -c 'cd Python && ../.venv/bin/python -m mypy structural_lib/'
+        language: system
+        types: [python]
+        files: ^Python/structural_lib/.*\.py$
+        pass_filenames: false
+        verbose: true
+
+  # Python import sorting
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        files: ^Python/
+        args: ["--profile", "black"]
+
+  # Security linting
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.10
+    hooks:
+      - id: bandit
+        args: [--skip, B101]
+        files: ^Python/structural_lib/
+
+  # API contract testing (prevent breaking changes)
+  - repo: local
+    hooks:
+      - id: contract-tests
+        name: API contract tests (prevent breaking changes)
+        entry: bash -c "cd Python && ../.venv/bin/python -m pytest tests/integration/test_contracts.py -m contract -v --tb=short"
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: ^Python/structural_lib/(api|data_types|beam_pipeline)\.py$
+        verbose: true
+
+  # Doc version drift check (local script, non-blocking)
+  - repo: local
+    hooks:
+      - id: check-unfinished-merge
+        name: Check for unfinished merge
+        entry: bash scripts/check_unfinished_merge.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: check-repo-hygiene
+        name: Check repo hygiene artifacts
+        entry: .venv/bin/python scripts/check_repo_hygiene.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-doc-versions
+        name: Check doc version drift
+        entry: .venv/bin/python scripts/check_doc_versions.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-python-version
+        name: Check Python version consistency
+        entry: .venv/bin/python scripts/check_python_version.py --ci
+        language: system
+        pass_filenames: false
+        files: (pyproject\.toml|setup\.cfg|\.github/workflows/.*\.yml)$
+        verbose: true
+      - id: check-tasks-format
+        name: Check TASKS.md format
+        entry: .venv/bin/python scripts/check_tasks_format.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-docs-index
+        name: Check docs index structure
+        entry: .venv/bin/python scripts/check_docs_index.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-release-docs
+        name: Check release docs consistency
+        entry: .venv/bin/python scripts/check_release_docs.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-session-docs
+        name: Check session docs consistency
+        entry: .venv/bin/python scripts/check_session_docs.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-api-docs-sync
+        name: Check API docs sync
+        entry: .venv/bin/python scripts/check_api_docs_sync.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-pre-release-checklist
+        name: Check pre-release checklist structure
+        entry: .venv/bin/python scripts/check_pre_release_checklist.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-api-doc-signatures
+        name: Check API doc signatures
+        entry: .venv/bin/python scripts/check_api_doc_signatures.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-api-manifest
+        name: Check API manifest
+        entry: .venv/bin/python scripts/generate_api_manifest.py --check
+        language: system
+        pass_filenames: false
+        files: ^Python/structural_lib/api\.py$
+        verbose: true
+      - id: check-next-session-brief-length
+        name: Check next-session brief length
+        entry: .venv/bin/python scripts/check_next_session_brief_length.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-cli-reference
+        name: Check CLI reference commands
+        entry: .venv/bin/python scripts/check_cli_reference.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-scripts-index
+        name: Check scripts index
+        entry: .venv/bin/python scripts/check_scripts_index.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-docs-index-links
+        name: Check docs index links
+        entry: .venv/bin/python scripts/check_docs_index_links.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      - id: check-markdown-links
+        name: Check markdown internal links
+        entry: .venv/bin/python scripts/check_links.py
+        language: system
+        pass_filenames: false
+        files: ^docs/.*\.md$
+        verbose: true
+      - id: check-cost-optimizer-issues
+        name: Check cost optimizer code issues
+        entry: .venv/bin/python scripts/check_cost_optimizer_issues.py
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/02_.*cost_optimizer\.py$
+        verbose: true
+      - id: check-streamlit-issues
+        name: Check Streamlit app issues (AST scanner)
+        entry: .venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/.*\.py$
+        verbose: true
+      - id: check-fragment-violations
+        name: Check Streamlit fragment API violations
+        entry: .venv/bin/python scripts/check_fragment_violations.py
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/.*\.py$
+        verbose: true
+      - id: apptest-smoke
+        name: AppTest smoke tests (runtime validation)
+        entry: bash -c '.venv/bin/python -m pytest tests/apptest/test_all_pages_smoke.py -v --tb=short -x'
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/.*\.py$
+        verbose: true
+      - id: check-api-signatures
+        name: Check API function signatures
+        entry: .venv/bin/python scripts/check_api_signatures.py
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/.*\.py$
+        verbose: true
+      - id: pylint-streamlit
+        name: Pylint check for Streamlit app
+        entry: bash -c '.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit --exit-zero streamlit_app/pages/*.py'
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/pages/.*\.py$
+        verbose: true
+      - id: check-type-annotations
+        name: Check type annotations (Streamlit utils)
+        entry: .venv/bin/python scripts/check_type_annotations.py --lenient
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/utils/.*\.py$
+        verbose: true
+      - id: check-performance-issues
+        name: Check Streamlit performance anti-patterns
+        entry: .venv/bin/python scripts/check_performance_issues.py --fail-threshold 1
+        language: system
+        pass_filenames: false
+        files: ^streamlit_app/.*\.py$
+        verbose: true
+      - id: check-doc-metadata
+        name: Check doc metadata (warning mode)
+        entry: .venv/bin/python scripts/check_doc_metadata.py
+        language: system
+        pass_filenames: false
+        files: ^docs/.*\.md$
+        verbose: true
+        # Note: This runs in warning mode (non-blocking). Use --strict to enforce.
+
+# CI note: pre-commit hooks run locally only.
+# CI has separate lint/format checks in .github/workflows/python-tests.yml

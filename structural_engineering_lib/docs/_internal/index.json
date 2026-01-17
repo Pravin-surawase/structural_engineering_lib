@@ -1,0 +1,137 @@
+{
+  "folder": ".",
+  "description": "<div align=\"center\"> [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)",
+  "last_updated": "2026-01-10",
+  "file_count": 8,
+  "files": [
+    {
+      "name": "AUTHORS.md",
+      "title": "Authors and Contributors",
+      "description": "- Pravin Surawase - (Add contributors here in alphabetical order)",
+      "last_updated": "2026-01-06",
+      "size_lines": 8
+    },
+    {
+      "name": "BOOTSTRAP_REVIEW_SUMMARY.md",
+      "title": "Bootstrap Review - Complete Package Summary",
+      "description": "- ✅ Phase A completion status (TASK-280-283) - ✅ Research completion summary (14 tasks, 4,747 lines)",
+      "last_updated": "2026-01-10",
+      "size_lines": 212,
+      "status": "✅ All 3 documents created and committed"
+    },
+    {
+      "name": "CHANGELOG.md",
+      "title": "Changelog",
+      "description": "All notable changes to this project will be documented in this file. - **Streamlit UI Enhancement - Phase 2 Complete**",
+      "last_updated": "2026-01-10",
+      "size_lines": 765
+    },
+    {
+      "name": "CODE_OF_CONDUCT.md",
+      "title": "Code of Conduct",
+      "description": "This project follows a simple, professional standard: - Be respectful and constructive.",
+      "last_updated": "2025-12-15",
+      "size_lines": 11
+    },
+    {
+      "name": "CONTRIBUTING.md",
+      "title": "Contributing",
+      "description": "Thanks for helping improve **structural_engineering_lib**. - Install (editable) with dev tools:",
+      "last_updated": "2026-01-08",
+      "size_lines": 221
+    },
+    {
+      "name": "LICENSE_ENGINEERING.md",
+      "title": "Engineering Use Disclaimer",
+      "description": "This document supplements the main project license in `LICENSE` and applies to all engineering calculations, reports, and outputs produced by this library.",
+      "last_updated": "2026-01-08",
+      "size_lines": 47
+    },
+    {
+      "name": "SECURITY.md",
+      "title": "Security Policy",
+      "description": "This project is early-stage. Security fixes are provided for the latest `main` branch. If you believe you found a security issue:",
+      "last_updated": "2025-12-15",
+      "size_lines": 19
+    },
+    {
+      "name": "SUPPORT.md",
+      "title": "Support",
+      "description": "Start here: - `docs/getting-started/beginners-guide.md`",
+      "last_updated": "2026-01-07",
+      "size_lines": 22
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "Excel",
+      "path": "Excel/",
+      "description": "This folder contains **Excel-facing deliverables and examples** for the project. These binary files are intentionally versioned because they are part of the user-facing Excel workflow:"
+    },
+    {
+      "name": "Python",
+      "path": "Python/",
+      "description": "IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag."
+    },
+    {
+      "name": "VBA",
+      "path": "VBA/",
+      "description": ""
+    },
+    {
+      "name": "agents",
+      "path": "agents/",
+      "description": "Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues."
+    },
+    {
+      "name": "docs",
+      "path": "docs/",
+      "description": "If this folder feels “too big”, you’re right — most people only need a handful of docs. This page tells you which ones matter for which audience. > **Version info:** See [TASKS.md](TASKS.md) for curre"
+    },
+    {
+      "name": "files from external yser",
+      "path": "files from external yser/",
+      "description": ""
+    },
+    {
+      "name": "git_operations_log",
+      "path": "git_operations_log/",
+      "description": ""
+    },
+    {
+      "name": "learning-materials",
+      "path": "learning-materials/",
+      "description": ""
+    },
+    {
+      "name": "logs",
+      "path": "logs/",
+      "description": "This folder is for **local, machine-specific runtime logs** (debug output, ad-hoc run logs, temporary traces). - Logs are **not** part of the library’s source of truth and should not be committed."
+    },
+    {
+      "name": "metrics",
+      "path": "metrics/",
+      "description": ""
+    },
+    {
+      "name": "scripts",
+      "path": "scripts/",
+      "description": ""
+    },
+    {
+      "name": "streamlit_app",
+      "path": "streamlit_app/",
+      "description": "![Version](https://img.shields.io/badge/version-0.1.0-blue) ![Python](https://img.shields.io/badge/python-3.10+-blue)"
+    },
+    {
+      "name": "tests",
+      "path": "tests/",
+      "description": ""
+    },
+    {
+      "name": "tmp",
+      "path": "tmp/",
+      "description": ""
+    }
+  ]
+}

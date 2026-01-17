@@ -1,0 +1,119 @@
+{
+  "folder": "docs",
+  "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
+  "last_updated": "2026-01-17",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "SESSION_LOG.md",
+      "title": "Session Log",
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. Session 38 completed critical UI fixes and started Phase 2 CSV import work:",
+      "last_updated": "2026-01-17",
+      "size_lines": 6220
+    },
+    {
+      "name": "TASKS.md",
+      "title": "Task Board",
+      "description": "> Single source of truth for work. Keep it short and current. > **Session 35 Completion:** PR #373 merged! 3D Visualization Phase 0 MVP complete. 9,833 lines added across 28 files.",
+      "last_updated": "2026-01-17",
+      "size_lines": 384
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "adr",
+      "path": "adr/",
+      "description": "Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later. | ADR | Title | Status |"
+    },
+    {
+      "name": "agents",
+      "path": "agents/",
+      "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly. > **Start here** → Find your agent → Read Quick Start → Use Hub for details."
+    },
+    {
+      "name": "architecture",
+      "path": "architecture/",
+      "description": "Deep dives into project structure, design decisions, and system architecture. "
+    },
+    {
+      "name": "blog-drafts",
+      "path": "blog-drafts/",
+      "description": "Draft blog posts for publication about structural engineering software and IS 456 compliance. | File | Topic | Status |"
+    },
+    {
+      "name": "contributing",
+      "path": "contributing/",
+      "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |"
+    },
+    {
+      "name": "cookbook",
+      "path": "cookbook/",
+      "description": "Task-focused recipes and code snippets for common structural engineering workflows. | Recipe | Description | Status |"
+    },
+    {
+      "name": "developers",
+      "path": "developers/",
+      "description": "> **For developers building on top of the structural_engineering_lib platform** Welcome to the developer documentation! This section is for developers who want to **build structural automations** usin"
+    },
+    {
+      "name": "getting-started",
+      "path": "getting-started/",
+      "description": "Quick onboarding guides for new users of the structural engineering library. "
+    },
+    {
+      "name": "git-automation",
+      "path": "git-automation/",
+      "description": "bash ./scripts/ai_commit.sh \"your commit message\""
+    },
+    {
+      "name": "guidelines",
+      "path": "guidelines/",
+      "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |"
+    },
+    {
+      "name": "images",
+      "path": "images/",
+      "description": "This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams). | Category | Naming Pattern | Example |"
+    },
+    {
+      "name": "learning",
+      "path": "learning/",
+      "description": "A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the Python/VBA implementation. | I am... | Start Here |"
+    },
+    {
+      "name": "legal",
+      "path": "legal/",
+      "description": ""
+    },
+    {
+      "name": "planning",
+      "path": "planning/",
+      "description": "Internal planning documents and research notes. | Document | Purpose |"
+    },
+    {
+      "name": "publications",
+      "path": "publications/",
+      "description": "This directory contains blog posts, technical articles, and academic papers documenting the research and development work on this structural engineering library. Document and share:"
+    },
+    {
+      "name": "reference",
+      "path": "reference/",
+      "description": "Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |"
+    },
+    {
+      "name": "research",
+      "path": "research/",
+      "description": "> **For AI Agents:** This index uses semantic tags and complexity ratings. > Use **Tags** to filter by topic, **Complexity** to gauge reading time."
+    },
+    {
+      "name": "specs",
+      "path": "specs/",
+      "description": ""
+    },
+    {
+      "name": "verification",
+      "path": "verification/",
+      "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |"
+    }
+  ]
+}

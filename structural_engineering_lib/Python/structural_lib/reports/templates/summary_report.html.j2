@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Summary - {{ beam_id }}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            font-size: 12px;
+            color: #333;
+            background: #fff;
+        }
+        @media print {
+            body { padding: 5px; font-size: 10px; }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .header-meta {
+            text-align: right;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        .status-pass { background: #d4edda; color: #155724; }
+        .status-fail { background: #f8d7da; color: #721c24; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            padding: 6px 8px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+        }
+        th {
+            background: #f1f3f5;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        td.value { text-align: right; font-family: monospace; }
+        td.unit { color: #6c757d; width: 50px; font-size: 10px; }
+        td.status { text-align: center; width: 60px; }
+        .check-pass { color: #155724; font-weight: 600; }
+        .check-fail { color: #721c24; font-weight: 600; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #495057;
+            margin: 0 0 6px;
+            padding: 4px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .footer {
+            margin-top: 15px;
+            padding-top: 8px;
+            border-top: 1px solid #dee2e6;
+            font-size: 9px;
+            color: #6c757d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>{{ beam_id }} - Design Summary</h1>
+            <span class="status-badge {{ status_class }}">{{ status_text }}</span>
+        </div>
+        <div class="header-meta">
+            <div>{{ project_name }}</div>
+            <div>{{ code_reference }} | {{ date }}</div>
+        </div>
+    </header>
+
+    <div class="grid-2">
+        <!-- Key Inputs -->
+        <div>
+            <div class="section-title">Key Inputs</div>
+            <table>
+                <tr>
+                    <td>Section</td>
+                    <td class="value">{{ inputs.get('b_mm', inputs.get('b', '-')) | format_number(0) }} × {{ inputs.get('D_mm', inputs.get('D', '-')) | format_number(0) }}</td>
+                    <td class="unit">mm</td>
+                </tr>
+                <tr>
+                    <td>Span</td>
+                    <td class="value">{{ inputs.get('span_mm', inputs.get('span', '-')) | format_number(0) }}</td>
+                    <td class="unit">mm</td>
+                </tr>
+                <tr>
+                    <td>f<sub>ck</sub> / f<sub>y</sub></td>
+                    <td class="value">{{ inputs.get('fck', '-') | format_number(0) }} / {{ inputs.get('fy', '-') | format_number(0) }}</td>
+                    <td class="unit">N/mm²</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Design Checks -->
+        <div>
+            <div class="section-title">Design Checks</div>
+            <table>
+                <tr>
+                    <th>Check</th>
+                    <th>Status</th>
+                </tr>
+                {% if results.flexure %}
+                <tr>
+                    <td>Flexure</td>
+                    <td class="status {% if results.flexure.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
+                        {{ '✓' if results.flexure.get('is_ok', True) else '✗' }}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if results.shear %}
+                <tr>
+                    <td>Shear</td>
+                    <td class="status {% if results.shear.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
+                        {{ '✓' if results.shear.get('is_ok', True) else '✗' }}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if results.deflection %}
+                <tr>
+                    <td>Deflection</td>
+                    <td class="status {% if results.deflection.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
+                        {{ '✓' if results.deflection.get('is_ok', True) else '✗' }}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if results.crack_width %}
+                <tr>
+                    <td>Crack Width</td>
+                    <td class="status {% if results.crack_width.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
+                        {{ '✓' if results.crack_width.get('is_ok', True) else '✗' }}
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <!-- Key Results -->
+    <div class="section-title" style="margin-top: 12px;">Key Results</div>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Required</th>
+            <th>Provided</th>
+            <th>Unit</th>
+        </tr>
+        {% if results.flexure %}
+        <tr>
+            <td>Tension Steel (A<sub>st</sub>)</td>
+            <td class="value">{{ results.flexure.get('ast_required_mm2', results.flexure.get('ast_mm2', '-')) | format_number(0) }}</td>
+            <td class="value">{{ results.flexure.get('ast_provided_mm2', '-') | format_number(0) }}</td>
+            <td class="unit">mm²</td>
+        </tr>
+        {% endif %}
+        {% if results.shear %}
+        <tr>
+            <td>Stirrup Spacing (s<sub>v</sub>)</td>
+            <td class="value">{{ results.shear.get('sv_required_mm', '-') | format_number(0) }}</td>
+            <td class="value">{{ results.shear.get('sv_provided_mm', '-') | format_number(0) }}</td>
+            <td class="unit">mm</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    {% if results.detailing %}
+    <div class="section-title" style="margin-top: 12px;">Reinforcement Schedule</div>
+    <table>
+        <tr>
+            <th>Location</th>
+            <th>Bars</th>
+        </tr>
+        {% if results.detailing.get('bottom_bars') %}
+        <tr><td>Bottom</td><td>{{ results.detailing.bottom_bars }}</td></tr>
+        {% endif %}
+        {% if results.detailing.get('top_bars') %}
+        <tr><td>Top</td><td>{{ results.detailing.top_bars }}</td></tr>
+        {% endif %}
+        {% if results.detailing.get('stirrups') %}
+        <tr><td>Stirrups</td><td>{{ results.detailing.stirrups }}</td></tr>
+        {% endif %}
+    </table>
+    {% endif %}
+
+    <footer class="footer">
+        structural-lib-is456{% if software_version %} v{{ software_version }}{% endif %} | {{ code_reference }}
+    </footer>
+</body>
+</html>

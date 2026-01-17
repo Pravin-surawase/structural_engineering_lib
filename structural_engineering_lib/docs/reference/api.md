@@ -1,0 +1,2979 @@
+# IS 456 RC Beam Design Library — API Reference
+
+**Type:** Reference
+**Audience:** Developers
+**Status:** Production Ready
+**Importance:** Critical
+**Version:** 0.17.6
+**Created:** 2025-01-01
+**Last Updated:** 2026-01-15<br>
+
+---
+
+**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI, torsion, serviceability Level A/B/C, ETABS import). All APIs protected against accidental breaking changes.
+
+---
+
+## API Manifest (Public Signatures)
+
+Machine-readable signatures live in `docs/reference/api-manifest.json`.
+
+```bash
+.venv/bin/python scripts/generate_api_manifest.py
+```
+
+## 0. Unified CLI (v0.9.4+)
+
+The library provides a unified command-line interface:
+
+```bash
+# Design beams from CSV/JSON input
+python -m structural_lib design input.csv -o results.json
+
+# Design with advisory insights (v0.13.0+)
+python -m structural_lib design input.csv -o results.json --insights
+
+# Generate bar bending schedule
+python -m structural_lib bbs results.json -o schedule.csv
+
+# Generate DXF drawings (requires ezdxf)
+python -m structural_lib dxf results.json -o drawings.dxf
+
+# Check BBS vs DXF bar mark consistency
+python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
+
+# Render DXF to PNG/PDF (optional)
+python scripts/dxf_render.py drawings.dxf -o drawings.png
+
+# Run complete job from spec file
+python -m structural_lib job job.json -o ./output
+
+# Validate inputs/results
+python -m structural_lib validate job.json
+
+# Critical set from job outputs (sorted utilization)
+python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
+
+# Report from job outputs (JSON/HTML)
+python -m structural_lib report ./output --format=html -o report.html
+
+# Report from design results JSON (batch packaging)
+python -m structural_lib report design_results.json --format=html -o report/ --batch-threshold 80
+
+# Get help
+python -m structural_lib --help
+python -m structural_lib design --help
+```
+
+Notes:
+- `critical` and `report` accept the job output folder created by `python -m structural_lib job`.
+- `report` can also consume a `design_results.json` file for batch packaging (`--batch-threshold`).
+
+---
+
+## 1. Conventions
+- **Units:**
+  - Moments (`Mu`, `Mu_Lim`): **kN·m**
+  - Shear Forces (`Vu`, `Vus`): **kN**
+  - Dimensions (`b`, `d`, `D`): **mm**
+  - Areas (`Ast`, `Asv`): **mm²**
+  - Stresses (`fck`, `fy`, `Tv`, `Tc`): **N/mm²** (MPa)
+  - Percentages (`pt`): **%** (e.g., 1.2 for 1.2%)
+  - Boundary conversions (public -> internal):
+    - kN -> N (×1,000)
+    - kN·m -> N·mm (×1,000,000)
+- **Sign Conventions:**
+  - Inputs are generally treated as absolute values for design checks.
+  - UI/Application layer is responsible for handling signs before calling these libraries.
+- **Return Values:**
+  - VBA (planned): User Defined Types (UDTs) for complex results, or simple types (`Double`) for helpers.
+  - Python: `dataclasses` or simple types (`float`).
+  - Excel UDFs: wrapper functions (VBA) to expose selected helpers (TBD).
+
+---
+
+## 1A. Public Entry Points (Python) (`api.py`)
+
+These entrypoints are intended to remain stable even as internal modules evolve.
+
+### 1A.1 Single-Case Design/Check (`design_beam_is456`)
+
+**Notes:**
+- Strength checks are always run.
+- Serviceability checks run only when their params are provided.
+- `units` is **mandatory** to enforce explicit units at the API boundary.
+
+```python
+def design_beam_is456(
+    *,
+    units: str,
+    case_id: str = "CASE-1",
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    deflection_params: dict | None = None,
+    crack_width_params: dict | None = None,
+) -> ComplianceCaseResult
+```
+
+### 1A.2 Multi-Case Compliance (`check_beam_is456`)
+
+```python
+def check_beam_is456(
+    *,
+    units: str,
+    cases: Sequence[dict],
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    deflection_defaults: dict | None = None,
+    crack_width_defaults: dict | None = None,
+) -> ComplianceReport
+```
+
+### 1A.3 Detailing Output (`detail_beam_is456`)
+
+```python
+def detail_beam_is456(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    b_mm: float,
+    D_mm: float,
+    span_mm: float,
+    cover_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    ast_start_mm2: float,
+    ast_mid_mm2: float,
+    ast_end_mm2: float,
+    asc_start_mm2: float = 0.0,
+    asc_mid_mm2: float = 0.0,
+    asc_end_mm2: float = 0.0,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_start_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    stirrup_spacing_end_mm: float = 150.0,
+    is_seismic: bool = False,
+) -> BeamDetailingResult
+```
+
+### 1A.4 Combined Design + Detailing (`design_and_detail_beam_is456`)
+
+Convenience function that combines `design_beam_is456()` and `detail_beam_is456()` into a single call. Ideal for Streamlit dashboards and quick prototyping.
+
+```python
+def design_and_detail_beam_is456(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float | None = None,  # Auto-calculated if None
+    cover_mm: float = 40.0,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_support_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    is_seismic: bool = False,
+) -> DesignAndDetailResult
+```
+
+**Returns:** `DesignAndDetailResult` with:
+- `design`: ComplianceCaseResult (flexure, shear, serviceability)
+- `detailing`: BeamDetailingResult (bars, stirrups, development lengths)
+- `geometry`: Dict of geometric properties
+- `materials`: Dict of material properties
+- `is_ok`: True if design is safe and detailing is valid
+- `summary()`: Human-readable summary
+- `to_dict()`: Serialize to dictionary
+- `to_json()`: Serialize to JSON string
+
+**Example:**
+```python
+result = api.design_and_detail_beam_is456(
+    units="IS456",
+    beam_id="B1",
+    story="GF",
+    span_mm=5000,
+    mu_knm=150,
+    vu_kn=80,
+    b_mm=300,
+    D_mm=500,
+)
+print(result.summary())  # 'B1@GF: 300×500mm, Ast=856mm², OK'
+print(result.design.flexure.ast_required)  # 856.26
+```
+
+### 1A.4.1 Structured Input Classes (v0.17.0+)
+
+Professional input dataclasses for type-safe, validated beam design inputs.
+
+**Available classes:** `api.BeamInput`, `api.BeamGeometryInput`, `api.MaterialsInput`,
+`api.LoadsInput`, `api.LoadCaseInput`, `api.DetailingConfigInput`
+
+#### BeamGeometryInput (`api.BeamGeometryInput`)
+
+Beam geometry parameters with validation.
+
+```python
+@dataclass(frozen=True)
+class BeamGeometryInput:
+    b_mm: float       # Beam width (mm)
+    D_mm: float       # Overall depth (mm)
+    span_mm: float    # Clear span (mm)
+    d_mm: float | None = None  # Effective depth (auto-calculated if None)
+    cover_mm: float = 40.0     # Clear cover (mm)
+
+    # Properties
+    effective_depth: float  # d_mm or D_mm - cover_mm
+    span_depth_ratio: float  # L/d ratio
+
+    # Factory methods
+    @classmethod
+    def from_dict(cls, data: dict) -> BeamGeometryInput
+```
+
+#### MaterialsInput (`api.MaterialsInput`)
+
+Material properties with common grade factory methods.
+
+```python
+@dataclass(frozen=True)
+class MaterialsInput:
+    fck_nmm2: float   # Concrete strength (N/mm²)
+    fy_nmm2: float    # Steel yield strength (N/mm²)
+    es_nmm2: float = 200000.0  # Steel modulus
+
+    # Properties
+    concrete_grade: str  # "M25"
+    steel_grade: str     # "Fe 500"
+
+    # Factory methods
+    @classmethod
+    def m25_fe500(cls) -> MaterialsInput  # Most common
+    @classmethod
+    def m30_fe500(cls) -> MaterialsInput
+    @classmethod
+    def m20_fe415(cls) -> MaterialsInput  # Legacy
+```
+
+#### LoadsInput / LoadCaseInput (`api.LoadsInput`, `api.LoadCaseInput`)
+
+Load specifications for single and multi-case design.
+
+```python
+@dataclass(frozen=True)
+class LoadsInput:
+    mu_knm: float      # Factored moment (kN·m)
+    vu_kn: float       # Factored shear (kN)
+    case_id: str = "CASE-1"
+
+@dataclass(frozen=True)
+class LoadCaseInput:
+    case_id: str       # Load case identifier
+    mu_knm: float      # Factored moment (kN·m)
+    vu_kn: float       # Factored shear (kN)
+    description: str = ""
+```
+
+#### DetailingConfigInput (`api.DetailingConfigInput`)
+
+Detailing configuration with seismic presets.
+
+```python
+@dataclass(frozen=True)
+class DetailingConfigInput:
+    stirrup_dia_mm: float = 8.0
+    stirrup_spacing_start_mm: float = 150.0
+    stirrup_spacing_mid_mm: float = 200.0
+    is_seismic: bool = False
+
+    # Factory methods
+    @classmethod
+    def seismic(cls, zone: int = 3) -> DetailingConfigInput
+    @classmethod
+    def gravity_only(cls) -> DetailingConfigInput
+```
+
+#### BeamInput (`api.BeamInput`)
+
+Complete beam input container.
+
+```python
+@dataclass
+class BeamInput:
+    beam_id: str
+    story: str
+    geometry: BeamGeometryInput
+    materials: MaterialsInput
+    loads: LoadsInput | None = None
+    load_cases: list[LoadCaseInput] = field(default_factory=list)
+    detailing_config: DetailingConfigInput = field(default_factory=DetailingConfigInput)
+    units: str = "IS456"
+
+    # Properties
+    has_multiple_cases: bool
+    governing_moment: float
+    governing_shear: float
+
+    # Serialization
+    def to_dict(self) -> dict
+    def to_json(self) -> str
+    def to_json_file(self, path: str | Path) -> Path
+
+    @classmethod
+    def from_dict(cls, data: dict) -> BeamInput
+    @classmethod
+    def from_json(cls, json_string: str) -> BeamInput
+    @classmethod
+    def from_json_file(cls, path: str | Path) -> BeamInput
+```
+
+### 1A.4.2 Design from Structured Input (`design_from_input`)
+
+Design using `BeamInput` dataclass instead of individual parameters.
+
+```python
+def design_from_input(
+    beam: BeamInput,
+    *,
+    include_detailing: bool = True,
+) -> DesignAndDetailResult | ComplianceReport
+```
+
+**Example (simple):**
+```python
+from structural_lib.api import (
+    BeamInput, BeamGeometryInput, MaterialsInput, LoadsInput,
+    design_from_input
+)
+
+beam = BeamInput(
+    beam_id="B1",
+    story="GF",
+    geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),
+    materials=MaterialsInput.m25_fe500(),
+    loads=LoadsInput(mu_knm=150, vu_kn=80),
+)
+result = design_from_input(beam)
+print(result.summary())
+```
+
+**Example (from JSON file):**
+```python
+beam = BeamInput.from_json_file("inputs/B1.json")
+result = design_from_input(beam)
+```
+
+**Example (multi-case without detailing):**
+```python
+beam = BeamInput(
+    beam_id="B2",
+    story="1F",
+    geometry=BeamGeometryInput(b_mm=300, D_mm=600, span_mm=6000),
+    materials=MaterialsInput.m30_fe500(),
+    load_cases=[
+        LoadCaseInput("1.5DL+1.5LL", mu_knm=200, vu_kn=100),
+        LoadCaseInput("1.2DL+EQ", mu_knm=220, vu_kn=110),
+    ],
+)
+report = design_from_input(beam, include_detailing=False)
+print(f"Governing: {report.governing_case_id}")
+```
+
+### 1A.4.3 Verification & Audit Trail (v0.17.0+)
+
+Provides SHA-256 based verification and immutable audit logging for engineering calculations.
+
+**Available classes:** `api.AuditTrail`, `api.AuditLogEntry`, `api.CalculationHash`
+
+**Available functions:** `api.compute_hash`, `api.create_calculation_certificate`, `api.verify_calculation`
+
+#### CalculationHash (`api.CalculationHash`)
+
+Immutable hash of calculation inputs and outputs for integrity verification.
+
+```python
+@dataclass(frozen=True)
+class CalculationHash:
+    input_hash: str       # SHA-256 hash of inputs
+    output_hash: str      # SHA-256 hash of outputs
+    combined_hash: str    # Combined verification hash
+    algorithm: str        # "sha256"
+    timestamp: str        # ISO 8601 timestamp
+
+    @classmethod
+    def from_calculation(cls, inputs: dict, outputs: dict) -> CalculationHash
+
+    def verify_inputs(self, inputs: dict) -> bool
+    def verify_outputs(self, outputs: dict) -> bool
+    def to_dict(self) -> dict
+```
+
+#### AuditTrail (`api.AuditTrail`)
+
+Manages immutable audit trail for design calculations.
+
+```python
+@dataclass
+class AuditTrail:
+    project_id: str
+    entries: list[AuditLogEntry]
+    created_at: str
+    library_version: str
+
+    def log_design(self, beam_id: str, story: str, inputs: dict, outputs: dict, metadata: dict | None = None) -> AuditLogEntry
+    def log_verification(self, beam_id: str, story: str, original_hash: str, verification_result: bool) -> AuditLogEntry
+    def get_entry_by_id(self, entry_id: str) -> AuditLogEntry | None
+    def get_entries_for_beam(self, beam_id: str, story: str | None = None) -> list[AuditLogEntry]
+    def verify_entry(self, entry_id: str, inputs: dict, outputs: dict) -> tuple[bool, str]
+    def export_log(self, path: str | Path) -> Path
+    @classmethod
+    def from_json_file(cls, path: str | Path) -> AuditTrail
+```
+
+#### Convenience Functions
+
+```python
+# Create verification certificate
+def create_calculation_certificate(
+    inputs: dict, outputs: dict,
+    project_id: str = "", beam_id: str = "", engineer: str = ""
+) -> dict
+
+# Verify calculation against certificate
+def verify_calculation(inputs: dict, outputs: dict, certificate: dict) -> tuple[bool, str]
+
+# Compute SHA-256 hash of data
+def compute_hash(data: dict) -> str
+```
+
+**Example (audit trail usage):**
+```python
+from structural_lib import api
+
+# Create audit trail for project
+trail = api.AuditTrail(project_id="PROJECT-001")
+
+# After each design calculation
+result = api.design_beam_is456(...)
+entry = trail.log_design(
+    beam_id="B1",
+    story="GF",
+    inputs={"b_mm": 300, "D_mm": 500, ...},
+    outputs={"ast_required": 856, "is_ok": True, ...},
+)
+
+# Export for records
+trail.export_log("audit_log.json")
+
+# Later: verify a calculation hasn't been modified
+passed, message = trail.verify_entry(entry.entry_id, inputs, outputs)
+```
+
+**Example (calculation certificate):**
+```python
+from structural_lib import api
+
+# Create certificate for a calculation
+cert = api.create_calculation_certificate(
+    inputs={"b_mm": 300, "D_mm": 500},
+    outputs={"ast_required": 856},
+    project_id="PROJECT-001",
+    beam_id="B1",
+    engineer="J. Smith",
+)
+
+# Later: verify the certificate
+passed, msg = api.verify_calculation(inputs, outputs, cert)
+# Returns: (True, "Verification passed: calculation is authentic")
+```
+
+### 1A.4.4 Calculation Report Generation (v0.17.0+) (`api.CalculationReport`)
+
+Professional engineering calculation sheet generation supporting multiple output formats (HTML, JSON, Markdown).
+
+**Available classes:** `api.CalculationReport`, `api.ProjectInfo`, `api.InputSection`, `api.ResultSection`
+
+**Available functions:** `api.generate_calculation_report`
+
+#### ProjectInfo (`api.ProjectInfo`)
+
+Project and engineer metadata for reports.
+
+```python
+@dataclass
+class ProjectInfo:
+    project_name: str = "Untitled Project"
+    project_number: str = ""
+    client_name: str = ""
+    engineer_name: str = ""
+    checker_name: str = ""
+    revision: str = "A"
+    date: str = ""  # Auto-set if not provided
+```
+
+#### CalculationReport (`api.CalculationReport`)
+
+Complete calculation report container.
+
+```python
+@dataclass
+class CalculationReport:
+    report_id: str            # Unique report identifier
+    project_info: ProjectInfo
+    beam_id: str
+    story: str
+    inputs: InputSection
+    results: ResultSection
+    code_references: list[str] = []
+    notes: list[str] = []
+    verification_hash: str = ""
+    generated_at: str = ""    # Auto-set
+
+    @classmethod
+    def from_design_result(
+        cls, result, beam_id: str = "B1", story: str = "GF",
+        project_info: dict | None = None
+    ) -> CalculationReport
+
+    def to_dict(self) -> dict
+    def to_json(self, indent: int = 2) -> str
+    def export_json(self, path: str | Path) -> Path
+    def export_html(self, path: str | Path) -> Path
+    def export_markdown(self, path: str | Path) -> Path
+```
+
+#### Convenience Function
+
+```python
+def generate_calculation_report(
+    result,
+    beam_id: str = "B1",
+    story: str = "GF",
+    project_info: dict | None = None,
+    output_path: str | Path | None = None,
+    output_format: str = "html",
+) -> CalculationReport
+```
+
+**Example (HTML report generation):**
+```python
+from structural_lib import api
+
+# Design the beam
+result = api.design_and_detail_beam_is456(
+    b_mm=300, D_mm=500, d_mm=460, fck=25, fy=500,
+    mu_knm=150, vu_kn=100, span_mm=6000, cover_mm=40,
+)
+
+# Generate professional calculation report
+report = api.generate_calculation_report(
+    result=result,
+    beam_id="B1",
+    story="GF",
+    project_info={
+        "project_name": "Tower A Design",
+        "project_number": "PRJ-2026-001",
+        "client_name": "ABC Builders",
+        "engineer_name": "J. Smith",
+        "checker_name": "P. Johnson",
+    },
+    output_path="reports/B1_calculation.html",
+    output_format="html",
+)
+print(f"Report generated: {report.report_id}")
+```
+
+**Example (with audit trail integration):**
+```python
+from structural_lib import api
+
+# Design and create audit trail
+result = api.design_and_detail_beam_is456(...)
+cert = api.create_calculation_certificate(
+    inputs={"b_mm": 300, ...},
+    outputs={"ast_required": 856, ...},
+)
+
+# Create report with verification hash
+report = api.CalculationReport.from_design_result(
+    result=result,
+    beam_id="B1",
+    project_info={"project_name": "Tower A"},
+)
+report.verification_hash = cert["combined_hash"]
+report.export_html("B1_verified.html")
+```
+
+### 1A.4.5 Engineering Testing Utilities (v0.17.0+)
+
+Professional testing utilities for structural engineering calculations.
+
+**Available classes:** `testing_strategies.ToleranceSpec`, `testing_strategies.BoundaryValueGenerator`, `testing_strategies.BeamParameterRanges`, `testing_strategies.PropertyBasedTester`, `testing_strategies.RegressionTestSuite`
+
+**Predefined tolerances:** `AREA_TOLERANCE`, `LENGTH_TOLERANCE`, `FORCE_TOLERANCE`, `STRESS_TOLERANCE`, `RATIO_TOLERANCE`
+
+**Optional extras:** `dev` (Hypothesis), `report` (Jinja2 templates), `validation` (jsonschema helpers). Core stays stdlib-only.
+
+#### ToleranceSpec
+
+Numerical tolerance specification for engineering comparisons.
+
+```python
+@dataclass(frozen=True)
+class ToleranceSpec:
+    relative: float = 0.001  # 0.1% relative tolerance
+    absolute: float = 0.1    # 0.1 absolute tolerance
+    description: str = ""
+
+    def is_close(self, actual: float, expected: float) -> bool
+    def assert_close(self, actual: float, expected: float, message: str = "") -> None
+```
+
+#### BoundaryValueGenerator
+
+Generate boundary values for testing (min, min+ε, typical, max-ε, max).
+
+```python
+@dataclass
+class BoundaryValueGenerator:
+    min_val: float
+    max_val: float
+    typical_val: float | None = None
+    include_invalid: bool = False
+
+    def generate(self) -> list[float]
+```
+
+#### PropertyBasedTester
+
+Property-based testing using stdlib random (Hypothesis optional via `.[dev]`).
+
+```python
+class PropertyBasedTester:
+    def __init__(self, seed: int | None = None)
+    def generate_beam_cases(self, n: int = 100, ranges: BeamParameterRanges | None = None) -> list[RandomTestCase]
+    def reset(self, seed: int | None = None) -> None
+```
+
+**Optional:** If `hypothesis` is installed (via `pip install -e ".[dev]"`), you can use it
+directly for richer generators while keeping this module stdlib-only.
+
+#### RegressionTestSuite
+
+Manage regression test baselines for comparing across versions.
+
+```python
+class RegressionTestSuite:
+    def __init__(self, baseline_dir: str | Path)
+    def add_baseline(self, name: str, inputs: dict, outputs: dict, version: str = "") -> RegressionBaseline
+    def compare(self, name: str, actual_outputs: dict) -> list[tuple[str, bool, str]]
+    def save(self) -> None
+```
+
+#### BeamDesignInvariants
+
+Standard engineering invariants for beam design validation.
+
+```python
+class BeamDesignInvariants:
+    @staticmethod
+    def get_all() -> list[InvariantCheck]
+    @staticmethod
+    def check_all(result) -> list[tuple[bool, str]]
+
+# Convenience function
+def assert_beam_design_valid(result) -> None  # Raises AssertionError on failure
+```
+
+**Example (tolerance testing):**
+```python
+from structural_lib.testing_strategies import AREA_TOLERANCE
+
+# Compare steel area with engineering tolerance
+AREA_TOLERANCE.assert_close(
+    actual=1017.88,
+    expected=1018.0,
+    message="Steel area check"
+)  # Passes (0.1% tolerance)
+```
+
+**Example (property-based testing):**
+```python
+from structural_lib.testing_strategies import PropertyBasedTester
+from structural_lib import api
+
+tester = PropertyBasedTester(seed=42)  # Reproducible
+cases = tester.generate_beam_cases(n=100)
+
+for case in cases:
+    result = api.design_beam_is456(**case.inputs)
+    assert result.flexure.ast_provided >= result.flexure.ast_required
+```
+
+**Example (regression testing):**
+```python
+from structural_lib.testing_strategies import RegressionTestSuite
+
+suite = RegressionTestSuite("tests/baselines/")
+suite.add_baseline(
+    name="standard_beam",
+    inputs={"b_mm": 300, "D_mm": 500},
+    outputs={"ast_required": 856},
+    version="0.16.0"
+)
+suite.save()
+
+# Later: compare against baseline
+results = suite.compare("standard_beam", {"ast_required": 857})
+for name, passed, msg in results:
+    print(f"{name}: {'✓' if passed else '✗'} - {msg}")
+```
+
+### 1A.5 API Helpers
+
+```python
+def get_library_version() -> str
+def validate_job_spec(path: str) -> ValidationReport
+def validate_design_results(path: str) -> ValidationReport
+def check_beam_ductility(b: float, D: float, d: float, fck: float, fy: float, min_long_bar_dia: float) -> DuctileBeamResult
+def check_beam_slenderness(b_mm: float, d_mm: float, l_eff_mm: float, beam_type: str = "simply_supported", has_lateral_restraint: bool = False) -> SlendernessResult
+def check_deflection_span_depth(span_mm: float, d_mm: float, support_condition: str = "simply_supported", ...) -> DeflectionResult
+def check_crack_width(exposure_class: str = "moderate", limit_mm: float | None = None, ...) -> CrackWidthResult
+def check_compliance_report(
+    cases: Sequence[dict],
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    deflection_defaults: dict | None = None,
+    crack_width_defaults: dict | None = None,
+) -> ComplianceReport
+def optimize_beam_cost(
+    *,
+    units: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    cover_mm: float = 40,
+) -> dict
+def suggest_beam_design_improvements(
+    *,
+    units: str,
+    design: BeamDesignOutput,
+    span_mm: float | None = None,
+    mu_knm: float | None = None,
+    vu_kn: float | None = None,
+) -> dict
+def smart_analyze_design(
+    *,
+    units: str,
+    span_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    include_cost: bool = True,
+    include_suggestions: bool = True,
+    include_sensitivity: bool = True,
+    include_constructability: bool = True,
+    cost_profile: CostProfile | None = None,
+    weights: dict[str, float] | None = None,
+    output_format: str = "dict",
+) -> dict | str
+```
+
+Notes:
+- `check_beam_slenderness()` (v0.17.5+) checks lateral stability per IS 456 Cl 23.3.
+  Returns `SlendernessResult` with `is_ok`, `slenderness_ratio`, `limit`, and `message`.
+  Supports beam types: 'simply_supported', 'continuous', 'cantilever'.
+  Set `has_lateral_restraint=True` when slab provides lateral support to compression flange.
+- `check_compliance_report()` assumes IS456 units (mm, N/mm², kN, kN·m) and does
+  not accept a `units` argument. Use `check_beam_is456()` when you want explicit
+  unit validation at the API boundary.
+- `optimize_beam_cost()` (v0.14.0+) returns a dictionary with optimal design, alternatives,
+  baseline cost, savings, and metadata. Uses brute-force search over M25/M30 concrete grades
+  and Fe500 steel with standard dimensions.
+- `suggest_beam_design_improvements()` (v0.14.0+) returns AI-driven design improvement
+  suggestions covering geometry, steel, cost, constructability, serviceability, and materials.
+  Each suggestion includes impact level, confidence score, IS 456 clause references, and
+  actionable steps. See [Design Suggestions Guide](../getting-started/design-suggestions-guide.md).
+- `smart_analyze_design()` (v0.15.0+) returns unified smart design dashboard combining cost
+  optimization, design suggestions, sensitivity analysis, and constructability assessment.
+  Runs full design pipeline internally and returns comprehensive dashboard with overall scores,
+  ratings, and recommendations. Supports dict, JSON, or text output formats.
+
+---
+
+### Library-First Wrappers (v0.12)
+
+**Available now:**
+- `api.validate_job_spec(path)`
+- `api.validate_design_results(path)`
+- `api.compute_detailing(design_results, config=None)`
+- `api.compute_bbs(detailing_list, project_name="Beam BBS")`
+- `api.export_bbs(bbs_doc, path, fmt="csv")`
+- `api.compute_dxf(detailing_list, output, multi=False)`
+- `api.compute_report(source, format="html")`
+- `api.compute_critical(job_out, top=10, format="csv")`
+
+**ValidationReport fields:**
+- `ok` (bool)
+- `errors` (list[str])
+- `warnings` (list[str])
+- `details` (dict)
+
+**Planned (not implemented yet, v0.17+; subject to change):**
+- `compute_beam_geometry(...) -> BeamGeometry`
+- `compute_rebar_layout(...) -> RebarLayout`
+- `compute_section_properties(...) -> SectionProperties`
+- `build_preview_payload(...) -> PreviewPayload`
+- `generate_design_variants(...) -> list[DesignVariant]`
+- `evaluate_variants(...) -> list[VariantScore]`
+- `sensitivity_analysis(...) -> SensitivityResult`
+- `compare_designs(...) -> ComparisonResult`
+- `list_clause_checks(...) -> list[ClauseCheck]`
+- `explain_design(...) -> ExplanationResult`
+- `get_clause_reference(...) -> ClauseReference`
+- `validate_inputs_quick(...) -> ValidationSummary`
+- `estimate_cost_quick(...) -> CostEstimate`
+- `derive_default_inputs(...) -> BeamInput`
+
+---
+
+## 1B. Load Analysis (BMD/SFD)
+
+Compute Bending Moment Diagrams (BMD) and Shear Force Diagrams (SFD) for beams.
+Supports simply supported and cantilever beams with UDL and point loads.
+
+### 1B.1 Core Function
+
+```python
+from structural_lib.api import (
+    compute_bmd_sfd,
+    LoadType,
+    LoadDefinition,
+    LoadDiagramResult,
+)
+
+# Define loads
+loads = [
+    LoadDefinition(LoadType.UDL, magnitude=20.0),  # 20 kN/m
+    LoadDefinition(LoadType.POINT, magnitude=50.0, position_mm=3000.0),  # 50 kN at 3m
+]
+
+# Compute diagrams
+result = compute_bmd_sfd(
+    span_mm=6000,
+    support_condition="simply_supported",  # or "cantilever"
+    loads=loads,
+    num_points=101,  # optional, default 101
+)
+
+# Access results
+print(f"Max moment: {result.max_bm_knm:.1f} kN·m")
+print(f"Max shear: {result.max_sf_kn:.1f} kN")
+print(f"Critical points: {len(result.critical_points)}")
+```
+
+### 1B.2 Function Signature
+
+```python
+def compute_bmd_sfd(
+    span_mm: float,
+    support_condition: Literal["simply_supported", "cantilever"],
+    loads: list[LoadDefinition],
+    num_points: int = 101,
+) -> LoadDiagramResult:
+    """Compute BMD and SFD for a beam with specified loads.
+
+    Uses principle of superposition to combine multiple load effects.
+
+    Args:
+        span_mm: Span length (mm)
+        support_condition: "simply_supported" or "cantilever"
+        loads: List of LoadDefinition objects
+        num_points: Number of discretization points (default 101)
+
+    Returns:
+        LoadDiagramResult with positions, BMD, SFD, and critical points
+
+    Raises:
+        ValueError: If span is non-positive or support_condition invalid
+        NotImplementedError: For TRIANGULAR or MOMENT load types
+    """
+```
+
+### 1B.3 Data Types
+
+**LoadType** (Enum):
+```python
+class LoadType(Enum):
+    UDL = auto()        # Uniformly distributed load (kN/m)
+    POINT = auto()      # Concentrated load (kN)
+    TRIANGULAR = auto() # Triangular load (not yet implemented)
+    MOMENT = auto()     # Applied moment (not yet implemented)
+```
+
+**LoadDefinition** (Dataclass):
+```python
+@dataclass
+class LoadDefinition:
+    load_type: LoadType
+    magnitude: float        # kN/m for UDL, kN for POINT
+    position_mm: float = 0.0  # Position from left support
+    end_position_mm: float | None = None  # For partial loads
+```
+
+**CriticalPoint** (Dataclass):
+```python
+@dataclass
+class CriticalPoint:
+    position_mm: float      # Position from left support
+    point_type: str         # "max_bm", "min_bm", "max_sf", "min_sf", "zero_sf"
+    bm_knm: float          # Bending moment at this point
+    sf_kn: float           # Shear force at this point
+```
+
+**LoadDiagramResult** (Dataclass):
+```python
+@dataclass
+class LoadDiagramResult:
+    positions_mm: list[float]       # Positions along span (mm)
+    bmd_knm: list[float]           # Bending moments (kN·m)
+    sfd_kn: list[float]            # Shear forces (kN)
+    critical_points: list[CriticalPoint]
+    span_mm: float
+    support_condition: str
+    loads: list[LoadDefinition]
+    max_bm_knm: float
+    min_bm_knm: float
+    max_sf_kn: float
+    min_sf_kn: float
+```
+
+### 1B.4 Standard Formulas
+
+| Support | Load | Max Moment | Location | Max Shear |
+|---------|------|------------|----------|-----------|
+| Simply Supported | UDL (w) | wL²/8 | Midspan | wL/2 |
+| Simply Supported | Point (P) at midspan | PL/4 | Load point | P/2 |
+| Simply Supported | Point (P) at a from left | Pab/L | Load point | Pb/L or Pa/L |
+| Cantilever | UDL (w) | wL²/2 | Fixed end | wL |
+| Cantilever | Point (P) at tip | PL | Fixed end | P |
+
+### 1B.5 Sign Conventions
+
+- **Bending Moment**: Positive = sagging (tension at bottom fiber)
+- **Shear Force**: Positive = upward force on left face of section
+
+---
+
+## 1C. Beam Pipeline (`beam_pipeline.py`)
+
+These helpers power the CLI/job runner and return the canonical output schema
+(`BeamDesignOutput`, `MultiBeamOutput`). Use them when you want a full, structured
+pipeline without building it yourself.
+
+---
+
+## Appendix: Data Model Glossary (Planned Types)
+
+These models are **drafts** to support planned v0.17+ APIs. Field names and shapes
+may evolve before implementation.
+
+### BeamGeometry
+- `span_mm: float`
+- `b_mm: float`
+- `D_mm: float`
+- `cover_mm: float`
+- `d_mm: float`
+- `effective_span_mm: float`
+
+### RebarLayout
+- `bars: list[BarSpec]`
+- `positions_mm: list[tuple[float, float]]`
+- `clear_spacing_mm: float`
+- `cover_mm: float`
+
+### LoadDiagramResult ✅ IMPLEMENTED (v0.17.5+)
+
+See [Section 1B](#1b-load-analysis-bmdsfd) for full documentation.
+
+- `positions_mm: list[float]` - Positions along span (mm)
+- `bmd_knm: list[float]` - Bending moments (kN·m)
+- `sfd_kn: list[float]` - Shear forces (kN)
+- `critical_points: list[CriticalPoint]` - Max/min/zero points
+- `span_mm: float` - Span length (mm)
+- `support_condition: str` - "simply_supported" or "cantilever"
+- `loads: list[LoadDefinition]` - Applied loads
+- `max_bm_knm: float` - Maximum bending moment
+- `min_bm_knm: float` - Minimum bending moment
+- `max_sf_kn: float` - Maximum shear force
+- `min_sf_kn: float` - Minimum shear force
+
+### SectionProperties
+- `area_mm2: float`
+- `ixx_mm4: float`
+- `zxx_mm3: float`
+- `neutral_axis_mm: float`
+
+### PreviewPayload
+- `geometry: BeamGeometry`
+- `rebar: RebarLayout | None`
+- `bmd: LoadDiagramResult | None`
+- `checks: list[ClauseCheck]`
+- `status: str`
+
+### ValidationSummary
+- `is_valid: bool`
+- `issues: list[ValidationIssue]`
+
+### CostEstimate
+- `material_cost: float`
+- `labor_cost: float`
+- `total_cost: float`
+
+### SensitivityResult
+- `parameter: str`
+- `delta_inputs: dict[str, float]`
+- `delta_outputs: dict[str, float]`
+
+### ComparisonResult
+- `summary: str`
+- `deltas: dict[str, float]`
+- `winner: str`
+
+### 1B.1 Units Validation
+
+```python
+def validate_units(units: str) -> str
+```
+
+Returns canonical `"IS456"` or raises `UnitsValidationError`.
+
+### 1B.2 Single Beam Pipeline
+
+```python
+def design_single_beam(
+    *,
+    units: str,
+    beam_id: str,
+    story: str,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    cover_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    mu_knm: float,
+    vu_kn: float,
+    case_id: str = "CASE-1",
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    include_detailing: bool = True,
+    stirrup_dia_mm: float = 8.0,
+    stirrup_spacing_start_mm: float = 150.0,
+    stirrup_spacing_mid_mm: float = 200.0,
+    stirrup_spacing_end_mm: float = 150.0,
+    deflection_params: dict | None = None,
+    crack_width_params: dict | None = None,
+) -> BeamDesignOutput
+```
+
+### 1B.3 Multi-Beam Pipeline
+
+```python
+def design_multiple_beams(
+    *,
+    units: str,
+    beams: Sequence[dict],
+    include_detailing: bool = True,
+) -> MultiBeamOutput
+```
+
+---
+
+## 2. Flexure Module (`M06_Flexure` / `flexure.py`)
+
+### 2.1 Calculate Limiting Moment (`Mu_Lim`)
+Calculates the maximum moment a singly reinforced section can resist.
+
+**Python:**
+```python
+def calculate_mu_lim(
+    b: float,
+    d: float,
+    fck: float,
+    fy: float
+) -> float
+```
+
+### 2.2 Calculate Required Steel (`Ast_Required`)
+Calculates tension steel area for a given moment. Returns `-1` if `Mu > Mu_Lim`.
+
+**Python:**
+```python
+def calculate_ast_required(
+    b: float,
+    d: float,
+    mu_knm: float,
+    fck: float,
+    fy: float
+) -> float
+```
+
+### 2.3 Design Singly Reinforced Beam
+Performs full design check including under/over-reinforced status and min/max steel checks; flags when Mu exceeds Mu_lim.
+
+**Python:**
+```python
+def design_singly_reinforced(
+    b: float,
+    d: float,
+    d_total: float,
+    mu_knm: float,
+    fck: float,
+    fy: float
+) -> FlexureResult
+```
+
+### 2.4 Design Doubly Reinforced Beam
+Designs a beam that can be singly or doubly reinforced. If `Mu > Mu_lim`, calculates compression steel (`Asc`) and additional tension steel.
+
+**Python:**
+```python
+def design_doubly_reinforced(
+    b: float,
+    d: float,
+    d_dash: float,
+    d_total: float,
+    mu_knm: float,
+    fck: float,
+    fy: float
+) -> FlexureResult
+```
+
+**Return Type (`FlexureResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `mu_lim` | float | Limiting moment capacity (kN·m) |
+| `ast_required` | float | Required tension steel area (mm²) |
+| `asc_required` | float | Required compression steel area (mm²) |
+| `pt_provided` | float | Percentage of tension steel provided |
+| `section_type` | Enum | `UNDER_REINFORCED`, `BALANCED`, `OVER_REINFORCED` |
+| `xu` | float | Actual neutral axis depth (mm) |
+| `xu_max` | float | Max neutral axis depth (mm) |
+| `is_safe` | bool | True if design is valid |
+| `error_message` | str | Details if unsafe |
+
+---
+
+### 2.5 Calculate Limiting Moment (Flanged)
+Calculates the limiting moment of resistance for a T-beam section.
+
+**Python:**
+```python
+def calculate_mu_lim_flanged(
+    bw: float,
+    bf: float,
+    d: float,
+    Df: float,
+    fck: float,
+    fy: float
+) -> float
+```
+
+### 2.6 Design Flanged Beam
+Designs a flanged beam (T-beam). Handles neutral axis in flange (rectangular behavior), neutral axis in web (singly reinforced T), and doubly reinforced T-beams.
+
+**Python:**
+```python
+def design_flanged_beam(
+    bw: float,
+    bf: float,
+    d: float,
+    Df: float,
+    d_total: float,
+    mu_knm: float,
+    fck: float,
+    fy: float,
+    d_dash: float = 50.0
+) -> FlexureResult
+```
+
+### 2.7 Effective Flange Width Helper
+Calculates effective flange width per IS 456 Cl 23.1.2 using explicit geometry.
+
+**Python:**
+```python
+def calculate_effective_flange_width(
+    *,
+    bw_mm: float,
+    span_mm: float,
+    df_mm: float,
+    flange_overhang_left_mm: float,
+    flange_overhang_right_mm: float,
+    beam_type: BeamType | str,
+) -> float
+```
+
+---
+
+## 3. Shear Module (`M07_Shear` / `shear.py`)
+
+### 3.1 Calculate Nominal Shear Stress (`Tv`)
+Calculates $\tau_v = \frac{V_u}{bd}$.
+
+**Python:**
+```python
+def calculate_tv(
+    vu_kn: float,
+    b: float,
+    d: float
+) -> float
+```
+
+### 3.2 Design Shear Reinforcement
+Performs shear design: checks $\tau_v$ vs $\tau_{c,max}$, gets $\tau_c$ (Table 19), computes $V_{us}$ and stirrup spacing with code limits.
+- Table 19 policy: clamp pt to 0.15–3.0%; use nearest lower concrete grade column (no fck interpolation).
+- Table 20: if $\tau_v > \tau_{c,max}$, section is inadequate.
+
+**Python:**
+```python
+def design_shear(
+    vu_kn: float,
+    b: float,
+    d: float,
+    fck: float,
+    fy: float,
+    asv: float,
+    pt: float
+) -> ShearResult
+```
+
+**Return Type (`ShearResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `tv` | float | Nominal shear stress (N/mm²) |
+| `tc` | float | Design shear strength of concrete (N/mm²) |
+| `tc_max` | float | Max shear stress limit (N/mm²) |
+| `vus` | float | Shear to be resisted by stirrups (kN) |
+| `spacing` | float | Governing stirrup spacing (mm) |
+| `is_safe` | bool | True if $\tau_v \le \tau_{c,max}$ |
+| `remarks` | str | Design status (e.g., "Shear reinforcement required") |
+
+---
+
+## 3A. Torsion Module (`torsion.py`) — IS 456 Clause 41
+
+Design for combined torsion, shear, and flexure per IS 456:2000 Clause 41.
+
+### 3A.1 Calculate Equivalent Shear (Cl. 41.3.1)
+Computes equivalent shear force accounting for torsion: $V_e = V_u + 1.6 \times \frac{T_u}{b}$
+
+**Python:**
+```python
+def calculate_equivalent_shear(
+    vu_kn: float,  # Applied shear (kN)
+    tu_knm: float, # Applied torsion (kN·m)
+    b: float       # Beam width (mm)
+) -> float        # Equivalent shear Ve (kN)
+```
+
+### 3A.2 Calculate Equivalent Moment (Cl. 41.4.2)
+Computes equivalent bending moment accounting for torsion: $M_e = M_u + M_t$ where $M_t = \frac{T_u \times (1 + D/b)}{1.7}$
+
+**Python:**
+```python
+def calculate_equivalent_moment(
+    mu_knm: float, # Applied moment (kN·m)
+    tu_knm: float, # Applied torsion (kN·m)
+    d: float,      # Effective depth (mm)
+    b: float       # Beam width (mm)
+) -> float        # Equivalent moment Me (kN·m)
+```
+
+### 3A.3 Calculate Torsion Shear Stress (Cl. 41.3)
+Computes equivalent shear stress: $\tau_{ve} = \frac{V_e}{b \times d}$
+
+**Python:**
+```python
+def calculate_torsion_shear_stress(
+    ve_kn: float,  # Equivalent shear (kN)
+    b: float,      # Beam width (mm)
+    d: float       # Effective depth (mm)
+) -> float        # Equivalent shear stress (N/mm²)
+```
+
+### 3A.4 Calculate Torsion Stirrup Area (Cl. 41.4.3)
+Computes stirrup area per unit length for combined torsion and shear:
+$\frac{A_{sv}}{s_v} = \frac{T_u}{b_1 d_1 (0.87 f_y)} + \frac{V_u - \tau_c b d}{0.87 f_y \times d}$
+
+**Python:**
+```python
+def calculate_torsion_stirrup_area(
+    tu_knm: float, # Applied torsion (kN·m)
+    vu_kn: float,  # Applied shear (kN)
+    b: float,      # Beam width (mm)
+    d: float,      # Effective depth (mm)
+    b1: float,     # Core width (c/c stirrups) (mm)
+    d1: float,     # Core depth (c/c stirrups) (mm)
+    fy: float,     # Stirrup yield strength (N/mm²)
+    tc: float      # Design shear strength of concrete (N/mm²)
+) -> float        # Total Asv/sv (mm²/mm)
+```
+
+### 3A.5 Calculate Longitudinal Torsion Steel (Cl. 41.4.2.1)
+Computes additional longitudinal steel for torsion:
+$A_l = \frac{T_u (b_1 + d_1)}{1.7 \times b_1 d_1 \times 0.87 f_y}$ (simplified for combined action)
+
+**Python:**
+```python
+def calculate_longitudinal_torsion_steel(
+    tu_knm: float, # Applied torsion (kN·m)
+    vu_kn: float,  # Applied shear (kN)
+    b1: float,     # Core width (c/c stirrups) (mm)
+    d1: float,     # Core depth (c/c stirrups) (mm)
+    fy: float,     # Steel yield strength (N/mm²)
+    sv: float      # Stirrup spacing (mm)
+) -> float        # Longitudinal steel Al (mm²)
+```
+
+### 3A.6 Design Torsion (Main Entry Point)
+Comprehensive torsion design combining all calculations.
+
+**Python:**
+```python
+def design_torsion(
+    tu_knm: float,       # Applied torsion (kN·m)
+    vu_kn: float,        # Applied shear (kN)
+    mu_knm: float,       # Applied moment (kN·m)
+    b: float,            # Beam width (mm)
+    D: float,            # Overall depth (mm)
+    d: float,            # Effective depth (mm)
+    fck: float,          # Concrete strength (N/mm²)
+    fy: float,           # Steel yield strength (N/mm²)
+    cover: float = 40.0, # Clear cover (mm)
+    stirrup_dia: float = 8.0, # Stirrup diameter (mm)
+    pt: float = 0.5      # Tension steel percentage
+) -> TorsionResult
+```
+
+**Return Type (`TorsionResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `tu_knm` | float | Applied torsional moment (kN·m) |
+| `vu_kn` | float | Applied shear force (kN) |
+| `mu_knm` | float | Applied bending moment (kN·m) |
+| `ve_kn` | float | Equivalent shear force (kN) |
+| `me_knm` | float | Equivalent bending moment (kN·m) |
+| `tv_equiv` | float | Equivalent shear stress τve (N/mm²) |
+| `tc` | float | Design shear strength of concrete (N/mm²) |
+| `tc_max` | float | Maximum shear stress limit (N/mm²) |
+| `asv_torsion` | float | Stirrup area for torsion (mm²/mm) |
+| `asv_shear` | float | Stirrup area for shear (mm²/mm) |
+| `asv_total` | float | Total stirrup area (mm²/mm) |
+| `stirrup_spacing` | float | Designed stirrup spacing (mm) |
+| `al_torsion` | float | Longitudinal steel for torsion (mm²) |
+| `is_safe` | bool | True if section is safe |
+| `requires_closed_stirrups` | bool | Always True for torsion |
+| `errors` | list | List of structured errors/warnings |
+
+**Example:**
+```python
+from structural_lib.api import design_torsion
+
+result = design_torsion(
+    tu_knm=20.0,   # Torsion
+    vu_kn=80.0,    # Shear
+    mu_knm=120.0,  # Moment
+    b=300,         # 300mm wide
+    D=500,         # 500mm deep
+    d=450,         # 450mm effective
+    fck=25.0,      # M25 concrete
+    fy=500.0       # Fe500 steel
+)
+
+print(f"Equivalent shear: {result.ve_kn:.1f} kN")
+print(f"Stirrup spacing: {result.stirrup_spacing:.0f} mm")
+print(f"Longitudinal steel for torsion: {result.al_torsion:.0f} mm²")
+print(f"Safe: {result.is_safe}")
+```
+
+---
+
+## 4. Ductile Detailing Module (`M10_Ductile` / `ductile.py`)
+
+### 4.1 Check Beam Ductility
+Performs comprehensive checks for IS 13920:2016 compliance (geometry, min/max steel, confinement spacing).
+
+**Python:**
+```python
+def check_beam_ductility(
+    b: float,
+    D: float,
+    d: float,
+    fck: float,
+    fy: float,
+    min_long_bar_dia: float
+) -> DuctileBeamResult
+```
+
+**Return Type (`DuctileBeamResult`):**
+| Field | Type | Description |
+|-------|------|-------------|
+| `is_geometry_valid` | bool | True if b >= 200 and b/D >= 0.3 |
+| `min_pt` | float | Min tension steel % (Cl 6.2.1) |
+| `max_pt` | float | Max tension steel % (2.5%) |
+| `confinement_spacing` | float | Max hoop spacing in plastic hinge zone (mm) |
+| `remarks` | str | Compliance status or error details |
+
+### 4.2 Helper Functions
+- `check_geometry(b, D)`
+- `get_min_tension_steel_percentage(fck, fy)`
+- `calculate_confinement_spacing(d, min_long_bar_dia)`
+
+---
+
+## 5. Serviceability Module (`serviceability.py`) (v0.8 Level A + v0.9.7 Level B)
+
+**Status:** Level A (span/depth ratio) in v0.8, Level B (curvature-based deflection) in v0.9.7.
+
+### 5.1 Deflection Check (Span/Depth Method) — Level A
+
+**Units:**
+- `span_mm`, `d_mm`: **mm**
+
+**Python:**
+```python
+def check_deflection_span_depth(
+        *,
+        span_mm: float,
+        d_mm: float,
+        support_condition: SupportCondition | str = "simply_supported",
+        base_allowable_ld: float | None = None,
+        mf_tension_steel: float | None = None,
+        mf_compression_steel: float | None = None,
+        mf_flanged: float | None = None,
+) -> DeflectionResult
+```
+
+**Behavior (Level A):**
+- Computes `L/d` and compares to `allowable L/d`.
+- `allowable L/d` is computed as:
+    $$\text{allowable} = \text{base} \times mf_{tension} \times mf_{compression} \times mf_{flanged}$$
+- If base/modifiers are not provided, the result records explicit assumptions.
+
+### 5.2 Crack Width Check (Annex-F-style Estimate)
+
+**Units:**
+- Geometry inputs: **mm**
+- `fs_service_nmm2`: **N/mm²**
+- Result crack width: **mm**
+
+**Python:**
+```python
+def check_crack_width(
+        *,
+        exposure_class: ExposureClass | str = "moderate",
+        limit_mm: float | None = None,
+        acr_mm: float | None = None,
+        cmin_mm: float | None = None,
+        h_mm: float | None = None,
+        x_mm: float | None = None,
+        epsilon_m: float | None = None,
+        fs_service_nmm2: float | None = None,
+        es_nmm2: float = 200000.0,
+) -> CrackWidthResult
+```
+
+**Behavior (Level A):**
+- Computes an Annex-F-style crack width estimate using the configured inputs.
+- If `epsilon_m` is not provided, it can be estimated as `fs_service_nmm2 / es_nmm2` and recorded as an assumption.
+- If required parameters are missing, returns `is_ok=False` with a clear remark (no guessing).
+- `acr_mm` is the distance from the point considered to the nearest bar surface (mm).
+
+**Return Types:**
+- `DeflectionResult`: contains `is_ok`, `remarks`, `support_condition`, and `inputs/computed/assumptions` payloads.
+- `CrackWidthResult`: contains `is_ok`, `remarks`, `exposure_class`, and `inputs/computed/assumptions` payloads.
+### 5.3 Deflection Check (Curvature-Based) — Level B (v0.9.7+)
+
+**Status:** New in v0.9.7. Full curvature-based deflection calculation per IS 456 Cl 23.2 / Annex C.
+
+**Units:**
+- Dimensions: **mm**
+- Moments: **kN·m**
+- Areas: **mm²**
+- Stresses: **N/mm²**
+
+**Python:**
+```python
+def check_deflection_level_b(
+    *,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    ma_service_knm: float,
+    ast_mm2: float,
+    fck_nmm2: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+    asc_mm2: float = 0.0,
+    duration_months: int = 60,
+    deflection_limit_ratio: float = 250.0,
+    es_nmm2: float = 200000.0,
+) -> DeflectionLevelBResult
+```
+
+**Behavior (Level B):**
+- Computes cracking moment $M_{cr}$ per IS 456 Annex C
+- Calculates gross moment of inertia $I_{gross} = bD^3/12$
+- Calculates cracked moment of inertia $I_{cr}$ using transformed section analysis
+- Computes effective moment of inertia $I_{eff}$ using Branson's equation:
+  $$I_{eff} = I_{cr} + (I_{gross} - I_{cr}) \cdot \left(\frac{M_{cr}}{M_a}\right)^3$$
+- Determines short-term deflection using elastic theory
+- Applies long-term factor per IS 456 Cl 23.2.1 for creep/shrinkage
+- Checks against limit $L/250$ (configurable)
+
+**Return Type:**
+- `DeflectionLevelBResult`: dataclass containing:
+  - `mcr_knm`: Cracking moment (kN·m)
+  - `igross_mm4`: Gross moment of inertia (mm⁴)
+  - `icr_mm4`: Cracked moment of inertia (mm⁴)
+  - `ieff_mm4`: Effective moment of inertia (mm⁴)
+  - `delta_short_mm`: Short-term deflection (mm)
+  - `delta_long_mm`: Long-term deflection (mm)
+  - `delta_total_mm`: Total deflection (mm)
+  - `delta_limit_mm`: Allowable deflection (mm)
+  - `long_term_factor`: Long-term multiplier
+  - `is_ok`: Whether deflection is within limit
+  - `remarks`: Status description
+
+### 5.4 Level B Helper Functions
+
+```python
+def calculate_cracking_moment(
+    *,
+    b_mm: float,
+    D_mm: float,
+    fck_nmm2: float,
+    yt_mm: float | None = None,  # Distance to tension fiber; defaults to D/2
+) -> float  # Returns Mcr in kN·m
+
+def calculate_gross_moment_of_inertia(
+    *,
+    b_mm: float,
+    D_mm: float,
+) -> float  # Returns Igross in mm⁴
+
+def calculate_cracked_moment_of_inertia(
+    *,
+    b_mm: float,
+    d_mm: float,
+    ast_mm2: float,
+    fck_nmm2: float,
+    es_nmm2: float = 200000.0,
+) -> float  # Returns Icr in mm⁴
+
+def calculate_effective_moment_of_inertia(
+    *,
+    mcr_knm: float,
+    ma_knm: float,  # Service moment
+    igross_mm4: float,
+    icr_mm4: float,
+) -> float  # Returns Ieff in mm⁴
+
+def get_long_term_deflection_factor(
+    *,
+    duration_months: int = 60,
+    asc_mm2: float = 0.0,
+    b_mm: float = 0.0,
+    d_mm: float = 0.0,
+) -> float  # Returns multiplier (typically 1.5 to 2.0)
+
+def calculate_short_term_deflection(
+    *,
+    ma_knm: float,  # Service moment
+    span_mm: float,
+    ieff_mm4: float,
+    fck_nmm2: float,  # Used to compute Ec internally
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+) -> float  # Returns delta_short in mm
+```
+
+### 5.5 Deflection Check (Separate Creep/Shrinkage) — Level C (v0.17.6+)
+
+**Status:** New in v0.17.6. Full creep and shrinkage separation per IS 456 Annex C.
+
+Level C provides the most accurate deflection calculation by computing creep and shrinkage components separately, rather than using a combined long-term factor. This is recommended for:
+- Important structures requiring precise deflection estimates
+- Unusual loading durations or environmental conditions
+- Post-tensioned or long-span beams
+
+**Units:**
+- Dimensions: **mm**
+- Moments: **kN·m**
+- Areas: **mm²**
+- Stresses: **N/mm²**
+- Curvatures: **1/mm**
+
+**Python:**
+```python
+def check_deflection_level_c(
+    *,
+    b_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    ma_total_knm: float,          # Total service moment
+    ma_sustained_knm: float,      # Sustained (DL + sustained LL) portion
+    ast_mm2: float,
+    fck_nmm2: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+    asc_mm2: float = 0.0,
+    age_at_loading_days: int = 28,
+    relative_humidity: float = 50.0,
+    shrinkage_strain: float = 0.0003,  # εcs, typical 0.0003
+    deflection_limit_ratio: float = 250.0,
+    es_nmm2: float = 200000.0,
+) -> DeflectionLevelCResult
+```
+
+**Behavior (Level C):**
+- Computes creep coefficient θ per IS 456 Annex C based on age and humidity
+- Calculates shrinkage curvature φsh from εcs and steel ratios
+- Computes separate deflection components:
+  - **Immediate:** From total service moment using Ieff
+  - **Creep:** From sustained moment × creep coefficient
+  - **Shrinkage:** From curvature × K × L² (K depends on support condition)
+- Total deflection: δtotal = δimmediate + δcreep + δshrinkage
+- Checks against limit L/250 (configurable)
+
+**Return Type:**
+- `DeflectionLevelCResult`: dataclass containing:
+  - `mcr_knm`: Cracking moment (kN·m)
+  - `igross_mm4`: Gross moment of inertia (mm⁴)
+  - `icr_mm4`: Cracked moment of inertia (mm⁴)
+  - `ieff_mm4`: Effective moment of inertia (mm⁴)
+  - `delta_immediate_mm`: Immediate deflection (mm)
+  - `delta_creep_mm`: Creep deflection component (mm)
+  - `delta_shrinkage_mm`: Shrinkage deflection component (mm)
+  - `delta_total_mm`: Total deflection (mm)
+  - `delta_limit_mm`: Allowable deflection (mm)
+  - `creep_coefficient`: θ value used
+  - `shrinkage_curvature`: φsh value used (1/mm)
+  - `is_ok`: Whether total deflection is within limit
+  - `remarks`: Status description
+
+**Example:**
+```python
+from structural_lib.codes.is456 import serviceability
+
+result = serviceability.check_deflection_level_c(
+    b_mm=300,
+    D_mm=500,
+    d_mm=450,
+    span_mm=6000,
+    ma_total_knm=80,       # Total service moment
+    ma_sustained_knm=50,   # DL + sustained LL portion
+    ast_mm2=1200,
+    fck_nmm2=25,
+    age_at_loading_days=28,
+    relative_humidity=60,
+    shrinkage_strain=0.0003,
+)
+
+print(f"Immediate: {result.delta_immediate_mm:.1f} mm")
+print(f"Creep: {result.delta_creep_mm:.1f} mm")
+print(f"Shrinkage: {result.delta_shrinkage_mm:.1f} mm")
+print(f"Total: {result.delta_total_mm:.1f} mm (limit: {result.delta_limit_mm:.1f} mm)")
+print(f"Status: {'OK' if result.is_ok else 'FAIL'}")
+```
+
+### 5.6 Level C Helper Functions
+
+```python
+def get_creep_coefficient(
+    *,
+    age_at_loading_days: int = 28,
+    relative_humidity: float = 50.0,
+    base_creep: float = 2.2,
+) -> float  # Returns θ (typically 0.8 to 4.0)
+
+def calculate_shrinkage_curvature(
+    *,
+    shrinkage_strain: float,      # εcs (typically 0.0003)
+    ast_mm2: float,
+    asc_mm2: float,
+    b_mm: float,
+    d_mm: float,
+    es_nmm2: float = 200000.0,
+    fck_nmm2: float = 25.0,
+) -> float  # Returns φsh in 1/mm
+
+def calculate_creep_deflection(
+    *,
+    delta_sustained_mm: float,    # Deflection from sustained loads
+    creep_coefficient: float,     # θ from get_creep_coefficient()
+) -> float  # Returns δcreep in mm
+
+def calculate_shrinkage_deflection(
+    *,
+    shrinkage_curvature: float,   # φsh from calculate_shrinkage_curvature()
+    span_mm: float,
+    support_condition: SupportCondition | str = SupportCondition.SIMPLY_SUPPORTED,
+) -> float  # Returns δshrinkage in mm (uses K×L² formula)
+```
+
+**Comparison of Deflection Levels:**
+
+| Aspect | Level A | Level B | Level C |
+|--------|---------|---------|---------|
+| Method | Span/depth ratio | Curvature + combined factor | Separate creep/shrinkage |
+| Accuracy | Approximate | Good | Best |
+| Inputs needed | Span, depth | + Ast, moment | + Age, humidity, εcs |
+| Long-term handling | Implicit in L/d limits | Combined factor (1.5-2.0) | Separate θ and φsh |
+| Use case | Quick checks | Normal design | Critical structures |
+| IS 456 reference | Cl 23.2 | Cl 23.2 + Annex C | Full Annex C |
+
+---
+## 6. Compliance Checker (`compliance.py`) (v0.8+)
+**Goal:** One-click verdict across checks with clear “why fail” remarks.
+
+### 6.1 Multi-Case Compliance Report
+
+**Inputs:** already-factored per-case actions.
+
+**Units:**
+- `mu_knm`: **kN·m**
+- `vu_kn`: **kN**
+- `b_mm`, `D_mm`, `d_mm`, `d_dash_mm`: **mm**
+- `fck_nmm2`, `fy_nmm2`: **N/mm²**
+
+**Python:**
+```python
+def check_compliance_report(
+        *,
+        cases: Sequence[dict],
+        b_mm: float,
+        D_mm: float,
+        d_mm: float,
+        fck_nmm2: float,
+        fy_nmm2: float,
+        d_dash_mm: float = 50.0,
+        asv_mm2: float = 100.0,
+        pt_percent: float | None = None,
+        deflection_defaults: dict | None = None,
+        crack_width_defaults: dict | None = None,
+) -> ComplianceReport
+```
+
+**Behavior (MVP):**
+- Runs flexure + shear for each case.
+- Optionally runs deflection/crack checks when the corresponding defaults/params are provided.
+- Determines a deterministic governing case using utilization ratios (demand/limit):
+    - flexure: $|Mu|/Mu_{lim}$
+    - shear: $\tau_v/\tau_{c,max}$
+    - deflection: $(L/d)/(allowable\ L/d)$
+    - crack width: $w_{cr}/w_{lim}$
+- Governing case is the case with the highest utilization vector (sorted descending). Exact ties are broken by input order.
+
+**Outputs:**
+- `ComplianceReport.summary`: compact, Excel-friendly dict containing `num_cases`, `num_failed_cases`, governing identifiers, and per-check max utilizations.
+
+---
+
+## 4. Excel User Defined Functions (UDFs)
+Implemented in `M09_UDFs.bas` for direct worksheet use.
+
+| Function | Description | Returns |
+|----------|-------------|---------|
+| `IS456_MuLim(b, d, fck, fy)` | Limiting Moment of Resistance | kN·m |
+| `IS456_AstRequired(b, d, Mu, fck, fy)` | Required Tension Steel | mm² or "Over-Reinforced" |
+| `IS456_ShearSpacing(Vu, b, d, fck, fy, Asv, pt)` | Stirrup Spacing | mm or "Unsafe..." |
+| `IS456_MuLim_Flanged(bw, bf, d, Df, fck, fy)` | Limiting Moment (T-Beam) | kN·m |
+| `IS456_Design_Rectangular(...)` | Full Design (Singly/Doubly) | Array [Ast, Asc, Xu, Status] |
+| `IS456_Design_Flanged(...)` | Full Design (T-Beam) | Array [Ast, Asc, Xu, Status] |
+| `IS456_Check_Ductility(b, D, d, fck, fy, db)` | IS 13920 Compliance Check | "Compliant" or Error Msg |
+| `IS456_Tc(fck, pt)` | Table 19 Shear Strength | N/mm² |
+| `IS456_TcMax(fck)` | Table 20 Max Shear Stress | N/mm² |
+
+---
+
+## 5. Integration Module (`M13_Integration.bas`)
+
+This module handles data import from external analysis software (ETABS) into the BEAM_INPUT table.
+
+### 5.1 Import ETABS Data
+**VBA:**
+```vba
+Public Sub Import_ETABS_Data()
+```
+- Opens file picker (Mac/Windows compatible) or falls back to InputBox.
+- Parses CSV with robust handling of quoted values and header aliases.
+- Groups data by beam (Story|Label) and aggregates forces into Start/Mid/End buckets.
+- Falls back to sample data if no file is selected.
+
+### 5.2 Generate Sample ETABS CSV
+**VBA:**
+```vba
+Public Sub Generate_Sample_ETABS_CSV()
+```
+- Creates a sample ETABS-style CSV file for testing.
+- Outputs: Story, Label, Station, M3, V2, Output Case columns.
+
+### 5.3 Header Normalization
+The module recognizes these header aliases:
+| Standard | Aliases Recognized |
+|----------|-------------------|
+| `Story` | `Story`, `Story Name` |
+| `Label` | `Label`, `Beam` |
+| `Station` | `Station`, `Dist` |
+| `M3` | `M3`, `Moment` |
+| `V2` | `V2`, `Shear` |
+| `Output Case` | `Case`, `Combo` |
+
+### 5.4 Bucket Aggregation Logic
+Forces are aggregated into three zones based on station position:
+| Zone | Station Range | Use Case |
+|------|--------------|----------|
+| Start | 0% – 20% of span | Support hogging moment |
+| Mid | 20% – 80% of span | Midspan sagging moment |
+| End | 80% – 100% of span | Support hogging moment |
+
+Within each bucket, the value with maximum absolute magnitude is selected (preserving sign).
+
+---
+
+## 6. Reporting Module (`M14_Reporting.bas`)
+
+This module generates the Beam Schedule from design output.
+
+### 6.1 Generate Beam Schedule
+**VBA:**
+```vba
+Public Sub Generate_Beam_Schedule()
+```
+- Reads from `tbl_BeamDesign` on BEAM_DESIGN sheet.
+- Writes to `tbl_BeamSchedule` on BEAM_SCHEDULE sheet.
+- Auto-sorts input by Story/ID before grouping.
+- Uses dynamic column lookup for robustness.
+
+### 6.2 Schedule Output Format
+| Column | Description |
+|--------|-------------|
+| Story | Story identifier |
+| ID | Beam identifier |
+| Size | `bxD` (e.g., "230x450") |
+| Bot-Start, Bot-Mid, Bot-End | Bottom steel pattern |
+| Top-Start, Top-Mid, Top-End | Top steel pattern |
+| Stir-Start, Stir-Mid, Stir-End | Stirrup specification |
+
+### 6.3 Bar Pattern Conversion
+`Get_Bar_Pattern(area)` converts steel area to practical notation:
+| Area Range | Bar Diameter | Example Output |
+|------------|--------------|----------------|
+| < 300 mm² | 12 mm | "3-12 (#280)" |
+| 300–800 mm² | 16 mm | "3-16 (#600)" |
+| 800–1500 mm² | 20 mm | "3-20 (#942)" |
+| > 1500 mm² | 25 mm | "4-25 (#1963)" |
+
+### 6.4 Steel Placement Logic
+Based on moment sign:
+- **Negative Mu (Hogging):** Tension at top → `Ast` placed in Top row.
+- **Positive Mu (Sagging):** Tension at bottom → `Ast` placed in Bottom row.
+
+---
+
+## 7. Usage Examples
+
+### 7.1 Python Example
+```python
+from structural_lib.flexure import design_singly_reinforced
+
+# Design a beam for 150 kNm moment
+result = design_singly_reinforced(
+    b=230,
+    d=450,
+    d_total=500,
+    mu_knm=150.0,
+    fck=25,
+    fy=500
+)
+
+if result.is_safe:
+    print(f"Ast Required: {result.ast_required:.2f} mm²")
+    print(f"Pt Provided: {result.pt_provided:.2f}%")
+else:
+    print(f"Design Failed: {result.error_message}")
+```
+
+---
+
+## 8. Ductile Detailing (IS 13920:2016) — `ductile.py` / `M10_Ductile.bas`
+
+### 8.1 Geometry Check
+**Python:**
+```python
+check_geometry(b: float, D: float) -> Tuple[bool, str]
+```
+- Valid if b ≥ 200 mm and b/D ≥ 0.3.
+
+**VBA:**
+```vba
+Public Function Check_Geometry(b As Double, D As Double, ByRef ErrorMsg As String) As Boolean
+```
+
+### 8.2 Minimum/Maximum Tension Steel
+**Python:**
+```python
+get_min_tension_steel_percentage(fck: float, fy: float) -> float  # returns %
+get_max_tension_steel_percentage() -> float  # 2.5%
+```
+
+**VBA:**
+```vba
+Public Function Get_Min_Tension_Steel_Percentage(fck As Double, fy As Double) As Double
+Public Function Get_Max_Tension_Steel_Percentage() As Double
+```
+
+### 8.3 Confinement Spacing (Plastic Hinge Zones)
+**Python:**
+```python
+calculate_confinement_spacing(d: float, min_long_bar_dia: float) -> float  # mm
+```
+Spacing = min(d/4, 8*db_min, 100 mm).
+
+**VBA:**
+```vba
+Public Function Calculate_Confinement_Spacing(d As Double, min_long_bar_dia As Double) As Double
+```
+
+### 8.4 Aggregate Check
+**Python:**
+```python
+check_beam_ductility(
+    b: float, D: float, d: float,
+    fck: float, fy: float,
+    min_long_bar_dia: float
+) -> DuctileBeamResult
+```
+
+**VBA:**
+```vba
+Public Function Check_Beam_Ductility( _
+    b As Double, D As Double, d As Double, _
+    fck As Double, fy As Double, _
+    min_long_bar_dia As Double _
+) As DuctileBeamResult
+```
+
+**DuctileBeamResult Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `is_geometry_valid` | bool | Geometry check result |
+| `min_pt` | float | Minimum tension steel (%) |
+| `max_pt` | float | Maximum tension steel (%) |
+| `confinement_spacing` | float | Max hoop spacing in hinge zone (mm) |
+| `remarks` | str | "Compliant" or reason for failure |
+
+### 7.2 VBA Example
+```vba
+Sub TestBeam()
+    Dim res As FlexureResult
+    ' Design for 150 kNm
+    res = Design_Singly_Reinforced(230, 450, 500, 150, 25, 500)
+
+    If res.IsSafe Then
+        Debug.Print "Ast Required: " & res.Ast_Required
+    Else
+        Debug.Print "Design Failed: " & res.ErrorMessage
+    End If
+End Sub
+```
+
+### 7.3 Worked Examples (Reference Values)
+
+Use these to sanity-check outputs (within typical rounding tolerance: ±0.5 kN·m for moments, ±1% for areas/stresses, spacing capped to code limits).
+
+1) **Flexure — singly reinforced**
+- Inputs: b=230 mm, d=450 mm, D=500 mm, Mu=150 kN·m, fck=25, fy=500.
+- Expected: Mu_lim ≈ 163 kN·m; Ast_required ≈ 1040–1100 mm²; Pt ≈ 1.0–1.1%; xu_max = 0.46d.
+
+2) **Shear — stirrups required**
+- Inputs: b=230 mm, d=450 mm, Vu=100 kN, fck=20, fy_stirrup=415, pt=1.0%, 2-legged 8 mm stirrups (Asv≈100.5 mm²).
+- Expected: τv ≈ 0.97 N/mm²; τc (M20, pt=1.0%) = 0.62 N/mm²; τv < τc,max=2.8; Vus ≈ 35–36 kN; spacing governed by max limits → 300 mm.
+
+3) **Shear — unsafe section**
+- Inputs: b=230 mm, d=450 mm, Vu=300 kN, fck=20, fy_stirrup=415, pt=1.0%, Asv=100.5 mm².
+- Expected: τv ≈ 2.9 N/mm² > τc,max=2.8 → DesignStatus/remarks indicate section inadequate (increase b or d).
+
+4) **Flexure — minimum steel governed**
+- Inputs: b=230 mm, d=450 mm, D=500 mm, Mu=5 kN·m, fck=20, fy=415.
+- Expected: Ast_min = 0.85*b*d/fy ≈ 212 mm²; result should return Ast = Ast_min with a “Minimum steel” note.
+---
+
+## 9. Detailing Module (`detailing.py`) — v0.7+
+
+Calculates reinforcement detailing parameters per IS 456:2000 and SP 34:1987.
+
+### 9.1 Development Length
+**Python:**
+```python
+def calculate_development_length(
+    bar_dia: float,           # mm
+    fy: float,                # N/mm² (250, 415, 500, 550)
+    fck: float,               # N/mm² (15-50)
+    bar_type: str = "deformed", # "deformed" or "plain"
+    is_compression: bool = False
+) -> float  # Returns Ld in mm
+```
+
+**Formula:** `Ld = (φ × σs) / (4 × τbd)`
+- σs = 0.87 × fy (tension) or 0.67 × fy (compression)
+- τbd from bond stress table with 60% increase for deformed bars
+
+### 9.2 Lap Length
+**Python:**
+```python
+def calculate_lap_length(
+    bar_dia: float,
+    fy: float,
+    fck: float,
+    bar_type: str = "deformed",
+    lap_zone: str = "tension"  # "tension" or "compression"
+) -> float  # Returns lap length in mm
+```
+
+**Multiplier:** 1.5× for tension zones, 1.0× for compression zones.
+
+### 9.2.1 Anchorage Functions (v0.17.5+)
+
+**Hook Dimensions:**
+```python
+@dataclass
+class HookDimensions:
+    hook_type: str            # "90", "135", "180"
+    bar_dia: float            # mm
+    internal_radius: float    # mm
+    extension: float          # mm (straight after bend)
+    equivalent_length: float  # mm (anchorage credit)
+    total_length: float       # mm (bar consumed)
+
+def get_min_bend_radius(
+    bar_dia: float,
+    bar_type: str = "deformed"
+) -> float  # Returns minimum internal radius (mm)
+
+def calculate_standard_hook(
+    bar_dia: float,
+    hook_type: str = "180",   # "90", "135", "180"
+    bar_type: str = "deformed"
+) -> HookDimensions
+```
+
+**Hook Extensions per IS 456 Cl 26.2.2:**
+- 180° hook: 4φ (min 65mm)
+- 135° hook: 6φ (seismic requirement)
+- 90° hook: 12φ
+
+**Equivalent Length:** 8φ for deformed bars, 16φ for plain bars.
+
+**Anchorage Calculation:**
+```python
+def calculate_anchorage_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    available_length: float,  # Straight length available (mm)
+    bar_type: str = "deformed",
+    use_hook: bool = True,
+    hook_type: str = "180",
+    stress_ratio: float = 0.87
+) -> dict
+# Returns: {required_ld, available_straight, shortfall,
+#           hook, total_provided, is_adequate, utilization}
+```
+
+**Stirrup Anchorage:**
+```python
+def calculate_stirrup_anchorage(
+    stirrup_dia: float,
+    is_seismic: bool = False
+) -> dict
+# Returns: {hook_type, internal_radius, extension, remarks}
+```
+
+**IS 13920 Seismic:** 135° hooks with 6d ≥ 75mm extension.
+
+### 9.3 Bar Spacing Check
+**Python:**
+```python
+def calculate_bar_spacing(
+    b: float,                 # Beam width (mm)
+    cover: float,             # Clear cover (mm)
+    stirrup_dia: float,       # Stirrup diameter (mm)
+    bar_dia: float,           # Main bar diameter (mm)
+    bar_count: int            # Number of bars
+) -> float  # Returns c/c spacing (mm)
+
+def check_min_spacing(
+    spacing: float,
+    bar_dia: float,
+    agg_size: float = 20.0
+) -> Tuple[bool, str]  # (is_valid, message)
+
+def check_side_face_reinforcement(
+    D: float,             # Overall beam depth (mm)
+    b: float,             # Beam width (mm)
+    cover: float          # Clear cover (mm)
+) -> Tuple[bool, float, float]  # (is_required, area_per_face_mm2, max_spacing_mm)
+```
+
+**Minimum Spacing:** max(bar_dia, agg_size + 5mm, 25mm) per IS 456 Cl 26.3.2.
+
+**Side-Face Reinforcement (IS 456 Cl 26.5.1.3):**
+- Required when D > 750 mm
+- Area: 0.1% of web area per face
+- Maximum spacing: 300 mm
+
+### 9.4 Bar Arrangement Selection
+**Python:**
+```python
+def select_bar_arrangement(
+    ast_required: float,      # Required area (mm²)
+    b: float,                 # Beam width (mm)
+    cover: float,             # Clear cover (mm)
+    stirrup_dia: float = 8.0, # Stirrup diameter (mm)
+    preferred_dia: float = None,
+    max_layers: int = 2
+) -> BarArrangement
+```
+
+**BarArrangement Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `count` | int | Number of bars |
+| `diameter` | float | Bar diameter (mm) |
+| `area_provided` | float | Total area (mm²) |
+| `spacing` | float | C/C spacing (mm) |
+| `layers` | int | Number of layers |
+| `callout()` | method | Returns "3-16φ" format |
+
+### 9.5 Complete Beam Detailing
+**Python:**
+```python
+def create_beam_detailing(
+    beam_id: str,
+    story: str,
+    b: float, D: float, span: float, cover: float,
+    fck: float, fy: float,
+    ast_start: float, ast_mid: float, ast_end: float,
+    asc_start: float = 0, asc_mid: float = 0, asc_end: float = 0,
+    stirrup_dia: float = 8,
+    stirrup_spacing_start: float = 150,
+    stirrup_spacing_mid: float = 200,
+    stirrup_spacing_end: float = 150,
+    is_seismic: bool = False
+) -> BeamDetailingResult
+```
+
+**BeamDetailingResult Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `beam_id` | str | Beam identifier |
+| `story` | str | Story identifier |
+| `b`, `D`, `span`, `cover` | float | Geometry (mm) |
+| `top_bars` | List[BarArrangement] | [start, mid, end] |
+| `bottom_bars` | List[BarArrangement] | [start, mid, end] |
+| `stirrups` | List[StirrupArrangement] | [start, mid, end] |
+| `ld_tension` | float | Development length (mm) |
+| `ld_compression` | float | Compression Ld (mm) |
+| `lap_length` | float | Lap splice length (mm) |
+| `is_valid` | bool | Validity status |
+| `remarks` | str | Notes/warnings |
+
+---
+
+## 10. DXF Export Module (`dxf_export.py`) — v0.7+
+
+Generates CAD-ready DXF drawings from detailing results. **Requires:** `pip install ezdxf`
+
+### 10.1 Generate Beam DXF
+**Python:**
+```python
+def generate_beam_dxf(
+    result: BeamDetailingResult,
+    output_path: str,
+    scale: float = 1.0,
+    include_section: bool = True
+) -> None  # Creates DXF file at output_path
+```
+
+### 10.2 DXF Layers
+| Layer Name | Color | Content |
+|------------|-------|---------|
+| `BEAM_OUTLINE` | White (7) | Beam perimeter |
+| `REBAR_MAIN` | Red (1) | Main bars (top/bottom) |
+| `REBAR_STIRRUP` | Green (3) | Stirrup outlines |
+| `DIMENSIONS` | Cyan (4) | Dimension lines |
+| `TEXT` | Yellow (2) | Callouts, labels |
+| `CENTERLINE` | Magenta (6) | Center lines |
+
+### 10.3 Output Format
+- **DXF Version:** R2010 (AC1024) for wide compatibility
+- **Units:** mm (1:1 scale)
+- **Views:** Elevation + Cross-section
+- **Origin:** Bottom-left of beam at first support
+
+### 10.4 BBS/DXF Consistency Utilities
+**Python:**
+```python
+def extract_bar_marks_from_dxf(path: str) -> Dict[str, Set[str]]
+
+def compare_bbs_dxf_marks(
+    bbs_csv_path: str,
+    dxf_path: str,
+) -> Dict[str, object]  # ok + missing/extra per beam + summary counts
+```
+
+### 10.5 DXF Render Script (PNG/PDF)
+**CLI:**
+```bash
+python scripts/dxf_render.py drawings.dxf -o drawings.png
+python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+```
+Requires: `pip install "structural-lib-is456[render]"`
+
+---
+
+## 11. Excel Integration Module (`excel_integration.py`) — v0.7+
+
+Bridges Excel/CSV data with detailing and DXF generation.
+
+### 11.1 Load Beam Data
+**Python:**
+```python
+def load_beam_data_from_csv(filepath: str) -> List[BeamDesignData]
+def load_beam_data_from_json(filepath: str) -> List[BeamDesignData]
+```
+
+**BeamDesignData Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `beam_id` | str | Beam identifier |
+| `story` | str | Story level |
+| `b`, `D`, `d`, `span`, `cover` | float | Geometry (mm) |
+| `fck`, `fy` | float | Material grades |
+| `Mu`, `Vu` | float | Design forces |
+| `Ast_req`, `Asc_req` | float | Steel areas (mm²) |
+| `stirrup_dia`, `stirrup_spacing` | float | Stirrup details |
+
+### 11.2 Batch Processing
+**Python:**
+```python
+def batch_generate_dxf(
+    input_file: str,          # CSV or JSON file path
+    output_folder: str,       # DXF output directory
+    is_seismic: bool = False  # Apply IS 13920
+) -> List[ProcessingResult]
+
+def generate_summary_report(
+    results: List[ProcessingResult]
+) -> str  # Text summary
+
+def generate_detailing_schedule(
+    results: List[ProcessingResult]
+) -> List[Dict]  # Schedule rows for CSV export
+```
+
+### 11.3 CLI Usage
+```bash
+# Basic usage
+python -m structural_lib.excel_integration beam_design.csv -o ./dxf_output
+
+# With seismic detailing and schedule export
+python -m structural_lib.excel_integration beam_design.csv \
+    -o ./dxf_output \
+    --seismic \
+    --schedule detailing_schedule.csv
+```
+
+### 11.4 CSV Input Format
+```csv
+BeamID,Story,b,D,Span,Cover,fck,fy,Mu,Vu,Ast_req,Asc_req,Stirrup_Dia,Stirrup_Spacing,Status
+B1,Story1,300,500,4000,40,25,500,150,100,942.5,0,8,150,OK
+B2,Story1,300,450,3000,40,25,500,100,80,628.3,0,8,175,OK
+```
+
+---
+
+## 12. Bar Bending Schedule Module (`bbs.py`) — v0.10+
+
+Generates Bar Bending Schedules (BBS) and Bill of Materials (BOM) from detailing results.
+
+### 12.1 Data Types
+
+**BBSLineItem:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `bar_mark` | str | Project-unique mark (e.g., "B1-B-S-D16-01") |
+| `member_id` | str | Beam/element ID |
+| `location` | str | "bottom", "top", "stirrup" |
+| `zone` | str | "start", "mid", "end", "full" |
+| `shape_code` | str | Shape per IS 2502 (A, B, E, etc.) |
+| `diameter_mm` | float | Bar diameter |
+| `no_of_bars` | int | Quantity |
+| `cut_length_mm` | float | Length per bar (incl. hooks) |
+| `total_length_mm` | float | no_of_bars × cut_length |
+| `unit_weight_kg` | float | Weight per bar |
+| `total_weight_kg` | float | Total weight |
+
+**BBSummary:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `member_id` | str | Member or "PROJECT" for aggregate |
+| `total_items` | int | Number of line items |
+| `total_bars` | int | Total bar count |
+| `total_length_m` | float | Total length in meters |
+| `total_weight_kg` | float | Total weight |
+| `weight_by_diameter` | Dict[float, float] | Breakdown by dia |
+
+### 12.2 Weight Calculation
+**Python:**
+```python
+def calculate_bar_weight(diameter_mm: float, length_mm: float) -> float
+```
+Returns weight in kg (rounded to 0.01).
+
+### 12.3 Cut Length Calculations
+**Python:**
+```python
+def calculate_straight_bar_length(
+    span_mm: float,
+    cover_mm: float,
+    ld_mm: float,
+    location: str = "bottom",
+    zone: str = "full",
+) -> float
+
+def calculate_stirrup_cut_length(
+    b_mm: float,
+    D_mm: float,
+    cover_mm: float,
+    stirrup_dia_mm: float,
+    hook_length_mm: float = 0,
+) -> float
+```
+
+### 12.4 BBS Generation
+**Python:**
+```python
+def generate_bbs_from_detailing(
+    detailing: BeamDetailingResult,
+    include_hooks: bool = True,
+) -> List[BBSLineItem]
+
+def calculate_bbs_summary(
+    items: List[BBSLineItem],
+    member_id: str = "",
+) -> BBSummary
+
+def generate_bbs_document(
+    detailing_list: List[BeamDetailingResult],
+    project_name: str = "Beam BBS",
+) -> BBSDocument
+```
+
+### 12.5 Export Functions
+**Python:**
+```python
+def export_bbs_to_csv(
+    items: List[BBSLineItem],
+    output_path: str,
+    include_summary: bool = True,
+) -> str
+
+def export_bbs_to_json(
+    document: BBSDocument,
+    output_path: str,
+) -> str
+
+def export_bom_summary_csv(
+    summary: BBSummary,
+    output_path: str,
+) -> str
+```
+
+### 12.6 Bar Mark Utilities
+**Python:**
+```python
+def parse_bar_mark(mark: str) -> Optional[Dict[str, Any]]
+
+def extract_bar_marks_from_text(text: str) -> List[str]
+
+def extract_bar_marks_from_items(
+    items: List[BBSLineItem],
+) -> Dict[str, Set[str]]
+
+def extract_bar_marks_from_bbs_csv(path: str) -> Dict[str, Set[str]]
+```
+
+### 12.7 Example Usage
+```python
+from structural_lib.detailing import create_beam_detailing
+from structural_lib.bbs import generate_bbs_from_detailing, export_bbs_to_csv
+
+# Create detailing result
+detailing = create_beam_detailing(
+    beam_id="B1", story="Story1", b=300, D=500, span=4000, cover=40,
+    fck=25, fy=500, ast_start=600, ast_mid=800, ast_end=600,
+)
+
+# Generate BBS
+items = generate_bbs_from_detailing(detailing)
+
+# Export to CSV
+export_bbs_to_csv(items, "output/B1_bbs.csv")
+```
+
+### 12.8 CSV Output Format
+```csv
+bar_mark,member_id,location,zone,shape_code,diameter_mm,no_of_bars,cut_length_mm,total_length_mm,unit_weight_kg,total_weight_kg,remarks
+B1-B-S-D16-01,B1,bottom,start,A,16,3,2600,7800,4.11,12.33,Bottom start - 3-16φ
+B1-B-M-D16-02,B1,bottom,mid,A,16,4,3400,13600,5.38,21.52,Bottom mid - 4-16φ
+B1-S-S-D8-03,B1,stirrup,start,E,8,11,1440,15840,0.57,6.27,Stirrup start - 2L-8φ@100
+
+TOTAL,,,,,,18,,37240,,40.12,3 line items
+```
+
+---
+
+## 13. Advisory Insights Module (`insights/`) — v0.13.0+ (Preview)
+
+> **Status:** Experimental - API may change before v1.0
+
+Advisory insights provide quick heuristic assessments to help engineers make informed decisions early in the design process.
+
+**See [insights-api.md](insights-api.md) for complete documentation.**
+
+### 13.1 Quick Precheck
+
+Fast heuristic validation before detailed design.
+
+```python
+from structural_lib.insights import quick_precheck
+
+result = quick_precheck(
+    span_mm=5000,
+    b_mm=300,
+    d_mm=450,
+    D_mm=500,
+    mu_knm=140,
+    fck_nmm2=25,
+    fy_nmm2=500,
+)
+
+if result.risk_level == "HIGH":
+    print(f"Warning: {result.warnings[0].message}")
+```
+
+### 13.2 Sensitivity Analysis
+
+Identify critical design parameters using normalized sensitivity coefficients.
+
+```python
+from structural_lib.api import design_beam_is456
+from structural_lib.insights import sensitivity_analysis
+
+params = {
+    "units": "IS456",
+    "mu_knm": 140,
+    "vu_kn": 85,
+    "b_mm": 300,
+    "D_mm": 500,
+    "d_mm": 450,
+    "fck_nmm2": 25,
+    "fy_nmm2": 500,
+}
+
+sensitivities, robustness = sensitivity_analysis(
+    design_beam_is456,
+    params,
+    ["d_mm", "b_mm", "fck_nmm2"],
+)
+
+# Most critical parameter
+print(f"{sensitivities[0].parameter}: S={sensitivities[0].sensitivity:.2f}")
+print(f"Robustness: {robustness.score:.2f} ({robustness.rating})")
+```
+
+### 13.3 Constructability Scoring
+
+Assess ease of construction on 0-100 scale.
+
+```python
+from structural_lib.insights import calculate_constructability_score
+
+score = calculate_constructability_score(design, detailing)
+
+print(f"Constructability: {score.score:.0f}/100 ({score.rating})")
+for factor in score.factors:
+    if factor.penalty < 0:
+        print(f"❌ {factor.factor}: {factor.message}")
+```
+
+### 13.4 JSON Serialization
+
+All insights types provide `.to_dict()` methods for JSON export:
+
+```python
+import json
+
+precheck_json = json.dumps(precheck.to_dict(), indent=2)
+sens_json = json.dumps([s.to_dict() for s in sensitivities], indent=2)
+robust_json = json.dumps(robustness.to_dict(), indent=2)
+construct_json = json.dumps(constructability.to_dict(), indent=2)
+```
+
+### 13.5 CLI Integration
+
+```bash
+# Run design with insights
+python -m structural_lib design beams.csv -o results.json --insights
+
+# Creates two files:
+# - results.json (design results)
+# - results_insights.json (advisory insights)
+```
+
+**Further Reading:**
+- [Insights User Guide](../getting-started/insights-guide.md)
+- [Insights API Reference](insights-api.md)
+- [Sensitivity Analysis Blog Post](../publications/blog-posts/03-sensitivity-analysis/)
+
+---
+
+## 14. ETABS Integration Module (`etabs_import.py`) — v0.17.6+
+
+**Status:** New in v0.17.6. CSV-first workflow for ETABS beam force import.
+
+This module provides utilities for importing ETABS beam force exports and converting them to the structural_engineering_lib job format. The workflow is CSV-first (no COM/API dependencies), making it portable across Windows, Mac, and Linux.
+
+**Typical Workflow:**
+1. Export from ETABS: Display → Show Tables → Element Forces - Beams
+2. Save as CSV
+3. Use this module to normalize and convert to job.json format
+
+### 14.1 Data Classes
+
+**ETABSForceRow:**
+```python
+@dataclass
+class ETABSForceRow:
+    """Parsed row from ETABS beam forces export."""
+    story: str        # Floor/level name (e.g., "Story1", "Level 2")
+    beam_id: str      # Beam label (e.g., "B1", "B2")
+    case_id: str      # Load combination name (e.g., "1.5(DL+LL)")
+    station: float    # Location along beam (mm or m)
+    m3: float         # Bending moment M3 about local 3 axis (kN·m)
+    v2: float         # Shear force V2 in local 2 plane (kN)
+    unique_name: str = ""  # Internal ETABS ID (optional)
+    p: float = 0.0   # Axial force (kN), usually 0 for beams
+```
+
+**ETABSEnvelopeResult:**
+```python
+@dataclass
+class ETABSEnvelopeResult:
+    """Envelope result for a beam across all stations."""
+    story: str         # Floor/level name
+    beam_id: str       # Beam label
+    case_id: str       # Load combination name
+    mu_knm: float      # Maximum absolute moment (kN·m)
+    vu_kn: float       # Maximum absolute shear (kN)
+    station_count: int = 1  # Number of output stations processed
+```
+
+### 14.2 CSV Validation
+
+```python
+def validate_etabs_csv(
+    csv_path: str | Path,
+) -> tuple[bool, list[str], dict[str, str]]
+```
+
+Validates ETABS CSV file structure and returns:
+- `is_valid`: True if all required columns found
+- `issues`: List of issue messages
+- `column_map`: Mapping of internal names to actual column names
+
+**Supported Column Names (flexible matching):**
+- Story: `Story`, `Level`, `Floor`
+- Beam ID: `Label`, `Frame`, `Element`, `Beam`, `Name`
+- Case: `Output Case`, `Load Case/Combo`, `Load Case`, `Combo`, `Case`
+- Station: `Station`, `Distance`, `Location`, `Loc`
+- M3: `M3`, `Moment3`, `Mz`, `BendingMoment`
+- V2: `V2`, `Shear2`, `Vy`, `ShearForce`
+
+### 14.3 CSV Loading
+
+```python
+def load_etabs_csv(
+    csv_path: str | Path,
+    *,
+    station_multiplier: float = 1.0,
+) -> list[ETABSForceRow]
+```
+
+Loads and parses ETABS beam forces CSV file. Use `station_multiplier=1000` if stations are in meters.
+
+### 14.4 Force Normalization (Envelope)
+
+```python
+def normalize_etabs_forces(
+    csv_path: str | Path,
+    *,
+    station_multiplier: float = 1.0,
+) -> list[ETABSEnvelopeResult]
+```
+
+Normalizes forces to envelope values (max absolute per beam/case). Groups by `(story, beam_id, case_id)` and takes maximum absolute M3 and V2 across all stations.
+
+### 14.5 Job Creation
+
+**Single Beam:**
+```python
+def create_job_from_etabs(
+    envelope_data: ETABSEnvelopeResult,
+    *,
+    b_mm: float,
+    D_mm: float,
+    fck_nmm2: float = 25.0,
+    fy_nmm2: float = 500.0,
+    cover_mm: float = 40.0,
+    span_mm: float | None = None,
+) -> dict[str, Any]  # Returns JobSpec-compatible dict
+```
+
+**Batch Processing:**
+```python
+def create_jobs_from_etabs_csv(
+    csv_path: str | Path,
+    *,
+    beam_properties: dict[str, dict[str, Any]],  # beam_id -> {b_mm, D_mm, ...}
+    default_properties: dict[str, Any] | None = None,
+    station_multiplier: float = 1.0,
+    output_dir: str | Path | None = None,
+) -> list[dict[str, Any]]  # Returns list of JobSpecs
+```
+
+### 14.6 Complete Example
+
+```python
+from structural_lib.etabs_import import (
+    validate_etabs_csv,
+    normalize_etabs_forces,
+    create_job_from_etabs,
+    create_jobs_from_etabs_csv,
+)
+
+# Step 1: Validate CSV
+is_valid, issues, col_map = validate_etabs_csv("ETABS_export.csv")
+if not is_valid:
+    print("Issues:", issues)
+    exit(1)
+
+# Step 2: Get envelope forces
+envelope = normalize_etabs_forces("ETABS_export.csv")
+print(f"Found {len(envelope)} beam/case combinations")
+
+# Step 3: Create job for single beam
+for env in envelope:
+    if env.beam_id == "B1":
+        job = create_job_from_etabs(
+            env,
+            b_mm=300,
+            D_mm=500,
+            fck_nmm2=25,
+            span_mm=5000,
+        )
+        print(f"Job for {env.beam_id}: Mu={env.mu_knm:.1f} kN·m, Vu={env.vu_kn:.1f} kN")
+
+# Alternative: Batch process all beams
+beam_props = {
+    "B1": {"b_mm": 300, "D_mm": 500, "span_mm": 5000},
+    "B2": {"b_mm": 300, "D_mm": 600, "span_mm": 6000},
+}
+jobs = create_jobs_from_etabs_csv(
+    "ETABS_export.csv",
+    beam_properties=beam_props,
+    default_properties={"fck_nmm2": 25, "fy_nmm2": 500},
+    output_dir="./jobs/",
+)
+print(f"Generated {len(jobs)} job files")
+```
+
+### 14.7 API Access
+
+All ETABS functions are available from the main API:
+
+```python
+from structural_lib import api
+
+# Validate
+is_valid, issues, col_map = api.validate_etabs_csv("export.csv")
+
+# Load and normalize
+envelope = api.normalize_etabs_forces("export.csv")
+
+# Create jobs
+job = api.create_job_from_etabs(envelope[0], b_mm=300, D_mm=500)
+```
+
+**Further Reading:**
+- [ETABS Integration Guide](../_archive/misc/etabs-integration.md)
+
+---
+
+## 15. 3D Visualization Module (`visualization/geometry_3d.py`) — v0.18+
+
+The visualization module provides 3D coordinate computation for rendering
+reinforced concrete beams in Three.js, PyVista, or similar 3D engines.
+
+### 15.1 Core Concept
+
+Structural design gives us **WHAT** reinforcement is needed (4-16φ bars).
+This module adds **WHERE** in 3D space those bars are placed.
+
+```
+┌─────────────────┐     JSON      ┌─────────────────┐
+│ Python Backend  │ ───────────►  │ Three.js Viewer │
+│ BeamDetailingR. │               │ (WebGL)         │
+│ + geometry_3d   │               │                 │
+└─────────────────┘               └─────────────────┘
+```
+
+### 15.2 Coordinate System
+
+```
++Z (up, height)
+│     +Y (front, width)
+│    /
+│   /
+O──────► +X (along span)
+```
+
+- **X:** Along beam span (0 = left support)
+- **Y:** Across beam width (0 = center, +Y = front face)
+- **Z:** Beam height (0 = soffit, +Z = up)
+- **Units:** All coordinates in millimeters (mm)
+
+### 15.3 Core Data Classes
+
+```python
+from structural_lib.api import (
+    Point3D,
+    RebarSegment,
+    RebarPath,
+    StirrupLoop,
+    Beam3DGeometry,
+)
+
+# Point3D — Immutable 3D coordinate
+p = Point3D(x=0.0, y=50.0, z=56.0)
+p.to_dict()  # {"x": 0.0, "y": 50.0, "z": 56.0}
+p.distance_to(other_point)  # Euclidean distance
+
+# RebarSegment — Single straight bar segment
+seg = RebarSegment(
+    start=Point3D(0, 50, 56),
+    end=Point3D(4000, 50, 56),
+    diameter=16.0,
+    segment_type="straight"
+)
+seg.length  # 4000.0
+
+# RebarPath — Complete bar with multiple segments
+path = RebarPath(
+    bar_id="B1",
+    segments=[seg],
+    diameter=16.0,
+    bar_type="bottom",
+    zone="full"
+)
+path.total_length  # Sum of all segment lengths
+
+# StirrupLoop — Closed stirrup at X position
+stirrup = StirrupLoop(
+    position_x=150.0,
+    path=[corner1, corner2, corner3, corner4],
+    diameter=8.0,
+    legs=2,
+    hook_type="135"
+)
+stirrup.perimeter  # Cutting length
+
+# Beam3DGeometry — Complete visualization data
+geometry = Beam3DGeometry(
+    beam_id="B1",
+    story="GF",
+    dimensions={"b": 300, "D": 450, "span": 4000},
+    concrete_outline=[...],  # 8 corner points
+    rebars=[...],
+    stirrups=[...],
+    metadata={"cover": 40, "isValid": True, "remarks": "Detailing complete"}
+)
+geometry.to_dict()  # JSON for Three.js
+```
+
+### 15.4 Coordinate Computation Functions
+
+```python
+from structural_lib.api import (
+    compute_rebar_positions,
+    compute_stirrup_path,
+    compute_stirrup_positions,
+    compute_beam_outline,
+    beam_to_3d_geometry,
+)
+
+# Compute Y-Z positions for bars in cross-section
+positions = compute_rebar_positions(
+    beam_width=300,
+    beam_depth=450,
+    cover=40,
+    bar_count=4,
+    bar_dia=16,
+    stirrup_dia=8,
+    is_top=False,  # bottom bars
+    layers=1
+)
+# Returns: [Point3D(0, -96, 56), Point3D(0, -32, 56), ...]
+
+# Compute stirrup corner points
+path = compute_stirrup_path(
+    beam_width=300,
+    beam_depth=450,
+    cover=40,
+    stirrup_dia=8,
+    position_x=150,
+    legs=2
+)
+# Returns: [Point3D(150, -106, 44), ...]
+
+# Compute X positions for stirrups along span
+x_positions = compute_stirrup_positions(
+    span=4000,
+    stirrup_spacing_start=100,
+    stirrup_spacing_mid=150,
+    stirrup_spacing_end=100
+)
+# Returns: [50.0, 150.0, 250.0, ...]
+
+# Compute 8 corners of concrete bounding box
+corners = compute_beam_outline(
+    beam_width=300,
+    beam_depth=450,
+    span=4000
+)
+# Returns 8 Point3D objects
+```
+
+### 15.5 Integration with Detailing
+
+```python
+from structural_lib.codes.is456.detailing import create_beam_detailing
+from structural_lib.api import beam_to_3d_geometry
+import json
+
+# Step 1: Create detailing result
+detailing = create_beam_detailing(
+    beam_id="B1",
+    story="GF",
+    b=300, D=450, span=4000,
+    cover=40, fck=25, fy=500,
+    ast_start=904, ast_mid=904, ast_end=904,
+)
+
+# Step 2: Convert to 3D geometry
+geometry = beam_to_3d_geometry(detailing, is_seismic=True)
+
+# Step 3: Export to JSON for Three.js
+json_data = json.dumps(geometry.to_dict(), indent=2)
+
+# Shortcut: generate JSON directly from detailing
+json_payload = detailing.to_3d_json(is_seismic=True)
+```
+
+### 15.6 JSON Schema
+
+The `to_dict()` output follows the BeamGeometry3D schema.
+See [3d-json-contract.md](3d-json-contract.md) for full TypeScript definitions.
+
+```json
+{
+  "beamId": "B1",
+  "story": "GF",
+  "dimensions": {"b": 300, "D": 450, "span": 4000},
+  "concreteOutline": [...],
+  "rebars": [...],
+  "stirrups": [...],
+  "metadata": {...},
+  "version": "1.0.0"
+}
+```
+
+### 15.7 Streamlit Component
+
+For Streamlit apps, use the beam_viewer_3d component:
+
+```python
+from streamlit_app.components.beam_viewer_3d import render_beam_3d
+
+# Render with dict
+render_beam_3d(geometry.to_dict(), height=600)
+
+# Or render from detailing result
+from streamlit_app.components.beam_viewer_3d import render_beam_3d_from_detailing
+render_beam_3d_from_detailing(detailing, is_seismic=True, height=600)
+```
+
+**Further Reading:**
+- [3D JSON Contract](3d-json-contract.md) — TypeScript types and schema
+- [3D Technology Research](../research/3d-technology-deep-dive-research.md) — Architecture decisions

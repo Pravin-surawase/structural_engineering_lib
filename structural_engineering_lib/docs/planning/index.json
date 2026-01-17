@@ -1,0 +1,277 @@
+{
+  "folder": "docs/planning",
+  "description": "Internal planning documents and research notes. | Document | Purpose |",
+  "last_updated": "2026-01-15",
+  "file_count": 28,
+  "files": [
+    {
+      "name": "agent-1-tasks.md",
+      "title": "Background Agent 1 Tasks (RESEARCHER)",
+      "description": "<!-- lint-ignore-git --> 1. **Research Document:** docs/research/blogging-strategy-research.md (1000+ lines)",
+      "last_updated": "2026-01-13",
+      "size_lines": 373,
+      "audience": "All Agents",
+      "status": "Active"
+    },
+    {
+      "name": "agent-2-tasks.md",
+      "title": "Background Agent 2 Tasks (PROJECT HYGIENE & MAINTENANCE)",
+      "description": "<!-- lint-ignore-git --> Keep the repository **clean, compact, and efficient** by:",
+      "last_updated": "2026-01-13",
+      "size_lines": 895,
+      "audience": "All Agents",
+      "status": "Active"
+    },
+    {
+      "name": "agent-6-tasks-streamlit.md",
+      "title": "Background Agent 6 Tasks (STREAMLIT SPECIALIST)",
+      "description": "<!-- lint-ignore-git --> ✅ **DO:** Substantial, multi-hour implementations",
+      "last_updated": "2026-01-13",
+      "size_lines": 8415,
+      "audience": "All Agents",
+      "status": "Active"
+    },
+    {
+      "name": "agent8-docs-consolidation-plan.md",
+      "title": "Agent 8 Documentation Consolidation Plan",
+      "description": "Based on comprehensive research (see agent-8-git-automation-comprehensive-research.md), this plan outlines consolidation actions to: - **Archive 4 historical research documents** (no longer actively r",
+      "last_updated": "2026-01-13",
+      "size_lines": 552,
+      "audience": "All Agents",
+      "status": "Approved"
+    },
+    {
+      "name": "agent8-git-docs-professional-consolidation.md",
+      "title": "Agent 8 & Git Automation Documentation: Professional Consolidation",
+      "description": "After comprehensive research (8,116 lines analyzed) and initial consolidation, a deeper review reveals **remaining opportunities for professional improvement**: - ✅ 4 historical docs archived (Phase 1",
+      "last_updated": "2026-01-11",
+      "size_lines": 736,
+      "audience": "All Agents",
+      "status": "Draft → Production Ready"
+    },
+    {
+      "name": "agent8-week1-handoff.md",
+      "title": "Agent 8 Week 1 Implementation - Session Handoff",
+      "description": "1. **45-page optimization analysis** - agent-8-optimization-research.md - Identified 13 optimization opportunities",
+      "last_updated": "2026-01-13",
+      "size_lines": 413,
+      "audience": "All Agents",
+      "status": "Complete"
+    },
+    {
+      "name": "api-improvement-research-specs.md",
+      "title": "API Improvement Research Specifications",
+      "description": "This document specifies research tasks for improving the library's API design to match professional standards. Each task will be executed by agents to gather comprehensive information, which will then",
+      "last_updated": "2026-01-13",
+      "size_lines": 765,
+      "audience": "Developers",
+      "status": "Complete"
+    },
+    {
+      "name": "bbs-dxf-improvement-plan.md",
+      "title": "BBS + DXF Improvement Plan (Beam-Only)",
+      "description": "Goal: make BBS and DXF outputs fabrication-ready, deterministic, and consistent with each other, without changing the current 3-layer architecture.",
+      "last_updated": "2026-01-13",
+      "size_lines": 147,
+      "audience": "Developers",
+      "status": "Complete"
+    },
+    {
+      "name": "data-model-compatibility-checklist.md",
+      "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
+      "description": "- [ ] span_mm aligns with design_beam_is456(span_mm=...) semantics. - [ ] b_mm, D_mm, d_mm match BeamDesignOutput.geometry fields (if present).",
+      "last_updated": "2026-01-13",
+      "size_lines": 56,
+      "audience": "Developers",
+      "status": "Active"
+    },
+    {
+      "name": "folder-migration-progress.md",
+      "title": "Folder Structure Migration - Progress Tracker",
+      "description": "| Metric | Status | Target | |--------|--------|--------|",
+      "last_updated": "2026-01-11",
+      "size_lines": 227,
+      "audience": "All Agents",
+      "status": "✅ COMPLETE"
+    },
+    {
+      "name": "hygiene-suggestions-2026-01-07.md",
+      "title": "Repository Hygiene Audit Report - 2026-01-07",
+      "description": "<!-- lint-ignore-git --> Comprehensive hygiene audit of the structural_engineering_lib repository identified **61 actionable items** across 5 priority categories:",
+      "last_updated": "2026-01-13",
+      "size_lines": 1001,
+      "audience": "Maintainers",
+      "status": "Complete"
+    },
+    {
+      "name": "library-api-expansion.md",
+      "title": "Library API Expansion Plan (Beam-Only)",
+      "description": "Goal: make the library easy to embed by exposing stable, composable functions and thin CLI wrappers. This is library-first, not product-first.",
+      "last_updated": "2026-01-13",
+      "size_lines": 238,
+      "audience": "Developers",
+      "status": "Planned"
+    },
+    {
+      "name": "memory.md",
+      "title": "Project Memory - Persistent Context",
+      "description": "- **v0.15.0** released (2026-01-07) - Focus: Code Quality Excellence",
+      "last_updated": "2026-01-13",
+      "size_lines": 276,
+      "audience": "All Agents",
+      "status": "Active"
+    },
+    {
+      "name": "next-session-brief.md",
+      "title": "Next Session Briefing",
+      "description": "| Release | Version | Status | |---------|---------|--------|",
+      "last_updated": "2026-01-15",
+      "size_lines": 426,
+      "audience": "All Agents",
+      "status": "Active"
+    },
+    {
+      "name": "pre-release-checklist.md",
+      "title": "Pre-Release Checklist",
+      "description": "Version: 0.17.5 (current) Target: Public beta with library-first APIs + DXF/BBS quality gates",
+      "last_updated": "2026-01-14",
+      "size_lines": 128,
+      "audience": "Maintainers",
+      "status": "Active"
+    },
+    {
+      "name": "project-needs-assessment-2026-01-09.md",
+      "title": "Project Needs Assessment & Strategic Action Plan",
+      "description": "The structural_engineering_lib project is at a critical inflection point. The Python library core is 99.8% functional (539/540 tests), benchmarks are perfect (13/13), and Week 1-2 git workflow optimiz",
+      "last_updated": "2026-01-13",
+      "size_lines": 1090,
+      "audience": "Maintainers",
+      "status": "Complete"
+    },
+    {
+      "name": "project-status-deep-dive.md",
+      "title": "IS 456 RC Beam Design Library — Deep Dive",
+      "description": "*Detailed architecture, module maps, and research directions* 1. Audience",
+      "last_updated": "2026-01-13",
+      "size_lines": 260,
+      "audience": "Developers",
+      "status": "Review"
+    },
+    {
+      "name": "research-ai-enhancements.md",
+      "title": "Research Log — AI/High-Value Enhancements",
+      "description": "This log captures goals/mindset, a lightweight online-scan snapshot, and a prioritized shortlist of high-value additions (serviceability, rebar optimizer, BBS/BOM export, load-combo compliance checkin",
+      "last_updated": "2026-01-15",
+      "size_lines": 515,
+      "audience": "Developers",
+      "status": "Active"
+    },
+    {
+      "name": "research-detailing.md",
+      "title": "IS Code Detailing Research — RESEARCHER Agent",
+      "description": "| Exposure Condition | Minimum Cover (mm) | |-------------------|-------------------|",
+      "last_updated": "2026-01-13",
+      "size_lines": 288,
+      "audience": "Developers",
+      "status": "Complete"
+    },
+    {
+      "name": "session-12-planning.md",
+      "title": "Session 12+ Planning Document",
+      "description": "| File | Size | Purpose | Keep/Move | |------|------|---------|-----------|",
+      "last_updated": "2026-01-11",
+      "size_lines": 246,
+      "audience": "All Agents",
+      "status": "Active"
+    },
+    {
+      "name": "session-14-lessons-learned.md",
+      "title": "Session 14 Lessons Learned & Solutions",
+      "description": "<!-- lint-ignore-git --> Interpreted \"6+ commits per request\" as a target number, artificially splitting small doc updates into separate commits to hit the count (e.g., separate commits for session do",
+      "last_updated": "2026-01-13",
+      "size_lines": 201,
+      "audience": "All Agents",
+      "status": "Complete"
+    },
+    {
+      "name": "session-19p8-work-plan.md",
+      "title": "Session 19P8 Work Plan: Automation Governance & Prevention Systems",
+      "description": "Session 19P8 (Parts 1 & 2) establishes automation governance systems and prevention infrastructure to stop repeating the same mistakes across sessions. - ✅ All hook output visible to agents (not burie",
+      "last_updated": "2026-01-12",
+      "size_lines": 439,
+      "audience": "All Agents",
+      "status": "Production Ready"
+    },
+    {
+      "name": "session-2026-01-10-session3-issues.md",
+      "title": "Session 3 Issues and Solutions (2026-01-10)",
+      "description": "- Analyzed current folder structure in detail - Applied Python packaging best practices",
+      "last_updated": "2026-01-13",
+      "size_lines": 98,
+      "audience": "All Agents",
+      "status": "Complete"
+    },
+    {
+      "name": "session-2026-01-10-session4-issues.md",
+      "title": "Session 2026-01-10 Session 4 Issues & Resolutions",
+      "description": "- Step 2.5 in safe_push.sh auto-fixes whitespace before commit - No manual intervention needed",
+      "last_updated": "2026-01-13",
+      "size_lines": 152,
+      "audience": "All Agents",
+      "status": "Complete"
+    },
+    {
+      "name": "session-30-fragment-crisis-resolution.md",
+      "title": "Session 30 Fragment Crisis Resolution - Complete Analysis",
+      "description": "1. Research analysis (400+ lines) 2. Fix beam_design theme toggle",
+      "last_updated": "2026-01-15",
+      "size_lines": 777,
+      "audience": "All Agents",
+      "status": "Complete"
+    },
+    {
+      "name": "streamlit-phase-3-implementation-plan.md",
+      "title": "STREAMLIT PHASE 3 IMPLEMENTATION PLAN",
+      "description": "- Attribute mismatches cause runtime failures → **Solution:** Comprehensive integration tests BEFORE implementation - Design system changes break layouts → **Solution:** Test-driven development with l",
+      "last_updated": "2026-01-13",
+      "size_lines": 689,
+      "audience": "Developers",
+      "status": "Ready for Implementation"
+    },
+    {
+      "name": "ui-layout-implementation-plan.md",
+      "title": "UI Layout Redesign - Final Decision & Implementation Plan",
+      "description": "- Current sidebar layout wastes 80% of screen space - Industry standard pattern (ETABS, ClearCalcs, AutoCAD)",
+      "last_updated": "2026-01-13",
+      "size_lines": 1603,
+      "audience": "Developers",
+      "status": "Approved"
+    },
+    {
+      "name": "v020-stabilization-checklist.md",
+      "title": "v0.20.0 Stabilization Checklist",
+      "description": "> **Version info:** See TASKS.md for current/next release status. - Tests: Run python scripts/update_test_stats.py for current count",
+      "last_updated": "2026-01-13",
+      "size_lines": 157,
+      "audience": "Maintainers",
+      "status": "Active"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "research-findings-validation",
+      "path": "research-findings-validation/",
+      "description": "> **Template version:** 1.0 We need to validate and strengthen the evidence behind public-facing research claims (blog + roadmap) so statements are accurate, well-sourced, and defensible for engineers"
+    },
+    {
+      "name": "research-platform",
+      "path": "research-platform/",
+      "description": "> **Template version:** 1.0 > Created using multi-agent research workflow"
+    },
+    {
+      "name": "research-visual-design",
+      "path": "research-visual-design/",
+      "description": "> **Template version:** 1.0 > Created using multi-agent research workflow"
+    }
+  ]
+}

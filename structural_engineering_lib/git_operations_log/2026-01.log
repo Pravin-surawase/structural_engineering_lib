@@ -1,0 +1,22 @@
+
+[2025-01-08 23:05:00] BUGFIX PR - Duplicate Chart IDs and Empty Tabs
+Branch: BUGFIX-001-duplicate-chart-ids
+PR: #290
+Status: ✅ MERGED
+Risk: LOW
+Impact: HIGH
+
+Changes:
+- Added unique keys to 6 plotly_chart calls (fix duplicate ID crash)
+- Fixed tab4 indentation (compliance checklist was blank)
+- Documented placeholder API behavior (results hardcoded until IMPL-001)
+
+Files:
+- streamlit_app/pages/01_🏗️_beam_design.py (7 lines)
+- streamlit_app/docs/CRITICAL-BUG-FIXES.md (new, 331 lines)
+
+CI: All checks passed (CodeQL, Quick Validation, Full Test Info)
+Merge: Squash merge, branch deleted
+
+Agent: Agent 6 (Streamlit UI Specialist)
+Session: Phase 3 Implementation Session 2

@@ -1,0 +1,44 @@
+{
+  "folder": "docs/verification",
+  "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |",
+  "last_updated": "2026-01-15",
+  "file_count": 5,
+  "files": [
+    {
+      "name": "examples.md",
+      "title": "Verification Examples Pack",
+      "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
+      "last_updated": "2026-01-15",
+      "size_lines": 1541
+    },
+    {
+      "name": "external-cli-test.md",
+      "title": "External CLI Test (S-007)",
+      "description": "Purpose: capture a repeatable, human-run CLI test from a fresh user. Preferred: use the automated smoke script so the output is consistent and easy to share.",
+      "last_updated": "2025-12-29",
+      "size_lines": 89
+    },
+    {
+      "name": "insights-verification-pack.md",
+      "title": "Insights Module Verification Pack",
+      "description": "This pack provides benchmark test cases for the insights module to ensure accuracy and prevent regressions. Tests are automatically run in CI on every PR. Run all insights benchmark tests:",
+      "last_updated": "2026-01-06",
+      "size_lines": 91
+    },
+    {
+      "name": "pack.md",
+      "title": "Verification Pack",
+      "description": "This repo’s unit tests validate correctness and edge cases, but they don’t always answer the question: **“did the numerical design outputs change?”** The **Verification Pack** is a small set of **pinn",
+      "last_updated": "2026-01-08",
+      "size_lines": 47
+    },
+    {
+      "name": "validation-pack.md",
+      "title": "Validation Pack — Benchmark Beams",
+      "description": "This pack provides 5 benchmark beams with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trusted software. Run this co",
+      "last_updated": "2026-01-14",
+      "size_lines": 186
+    }
+  ],
+  "subfolders": []
+}

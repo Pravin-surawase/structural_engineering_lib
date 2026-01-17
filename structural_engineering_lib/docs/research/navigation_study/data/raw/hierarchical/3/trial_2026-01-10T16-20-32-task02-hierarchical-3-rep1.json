@@ -1,0 +1,21 @@
+{
+  "trial_id": "2026-01-10T16-20-32-task02-hierarchical-3-rep1",
+  "timestamp": "2026-01-10T16:20:32+05:30",
+  "condition": "hierarchical",
+  "agent_type": "3",
+  "task_id": "task02",
+  "task_description": "Find shear module API",
+  "ground_truth_file": "docs/reference/api.md",
+  "metrics": {
+    "time_to_complete_ms": 38,
+    "files_accessed": 3,
+    "bytes_loaded": 69075,
+    "tokens_loaded": 8371,
+    "wrong_files_opened": 2,
+    "navigation_path": ["docs/index.json","docs/reference/index.json","docs/reference/api.md"]
+  },
+  "outcome": {
+    "success": true,
+    "correct_file_found": true
+  }
+}

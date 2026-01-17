@@ -1,0 +1,30 @@
+# Streamlit Dashboard Requirements
+# For IS 456 Structural Engineering Library
+
+# Core framework
+streamlit>=1.30.0
+
+# Data manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+plotly>=5.18.0
+
+# Report generation (optional)
+jinja2>=3.1.0
+reportlab>=4.0.0
+
+# DXF export (optional)
+ezdxf>=1.0.0
+
+# Structural engineering library (local)
+# Install with: pip install -e ../Python
+# Or reference via path in development
+
+# Type hints (for development)
+typing-extensions>=4.8.0
+
+# Testing (optional, for component tests)
+pytest>=7.4.0
+pytest-mock>=3.12.0

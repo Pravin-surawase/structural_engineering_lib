@@ -1,0 +1,164 @@
+name: Leading Indicator Alerts
+
+# Agent 9 Governance - TASK-286
+# Purpose: Monitor leading indicators and warn before problems escalate
+# Research: Based on 6 indicators defined in METRICS_BASELINE.md
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run daily at 9 AM UTC (checks overnight activity)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  check-indicators:
+    name: Check Leading Indicators
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for trend analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install jq for JSON parsing
+        run: sudo apt-get update && sudo apt-get install -y jq bc
+
+      - name: Collect current metrics
+        run: |
+          chmod +x scripts/collect_metrics.sh
+          ./scripts/collect_metrics.sh
+
+      - name: Analyze leading indicators
+        id: analyze
+        run: |
+          # Get latest metrics file
+          LATEST_METRICS=$(ls -t metrics/metrics_*.json | head -1)
+
+          if [ ! -f "$LATEST_METRICS" ]; then
+            echo "error=No metrics file found" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Extract metrics
+          ALERT_COUNT=$(jq -r '.alert_count' "$LATEST_METRICS")
+          ALERTS=$(jq -r '.alerts[]' "$LATEST_METRICS" 2>/dev/null || echo "")
+
+          # Store for later steps
+          echo "alert_count=$ALERT_COUNT" >> $GITHUB_OUTPUT
+          echo "alerts<<EOF" >> $GITHUB_OUTPUT
+          echo "$ALERTS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # Extract specific indicators
+          ROOT_DOCS_CREATED=$(jq -r '.leading_indicators.root_docs_created_7d' "$LATEST_METRICS")
+          CRISIS_DOCS=$(jq -r '.leading_indicators.crisis_docs' "$LATEST_METRICS")
+          HANDOFF_DOCS=$(jq -r '.leading_indicators.handoff_docs' "$LATEST_METRICS")
+          COMPLETION_DOCS=$(jq -r '.leading_indicators.completion_docs' "$LATEST_METRICS")
+          COMMITS_PER_DAY=$(jq -r '.velocity.commits_per_day' "$LATEST_METRICS")
+          ROOT_FILES=$(jq -r '.documentation.root_files' "$LATEST_METRICS")
+
+          echo "root_docs_created=$ROOT_DOCS_CREATED" >> $GITHUB_OUTPUT
+          echo "crisis_docs=$CRISIS_DOCS" >> $GITHUB_OUTPUT
+          echo "handoff_docs=$HANDOFF_DOCS" >> $GITHUB_OUTPUT
+          echo "completion_docs=$COMPLETION_DOCS" >> $GITHUB_OUTPUT
+          echo "commits_per_day=$COMMITS_PER_DAY" >> $GITHUB_OUTPUT
+          echo "root_files=$ROOT_FILES" >> $GITHUB_OUTPUT
+
+      - name: Report status (No alerts)
+        if: steps.analyze.outputs.alert_count == '0'
+        run: |
+          echo "✅ All leading indicators are healthy"
+          echo ""
+          echo "Current status:"
+          echo "  • Root docs created (7d): ${{ steps.analyze.outputs.root_docs_created }} (threshold: 6)"
+          echo "  • Crisis docs: ${{ steps.analyze.outputs.crisis_docs }} (threshold: 3)"
+          echo "  • Handoff docs: ${{ steps.analyze.outputs.handoff_docs }} (threshold: 2)"
+          echo "  • Completion docs: ${{ steps.analyze.outputs.completion_docs }} (threshold: 5)"
+          echo "  • Commits/day: ${{ steps.analyze.outputs.commits_per_day }} (threshold: 100)"
+          echo "  • Root files: ${{ steps.analyze.outputs.root_files }} (threshold: 10)"
+
+      - name: Report warnings (Alerts present)
+        if: steps.analyze.outputs.alert_count != '0'
+        run: |
+          echo "⚠️ ${{ steps.analyze.outputs.alert_count }} leading indicator alert(s) detected"
+          echo ""
+          echo "Alerts:"
+          echo "${{ steps.analyze.outputs.alerts }}" | while read -r alert; do
+            echo "  ⚠️ $alert"
+          done
+          echo ""
+          echo "Current metrics:"
+          echo "  • Root docs created (7d): ${{ steps.analyze.outputs.root_docs_created }}"
+          echo "  • Crisis docs: ${{ steps.analyze.outputs.crisis_docs }}"
+          echo "  • Handoff docs: ${{ steps.analyze.outputs.handoff_docs }}"
+          echo "  • Completion docs: ${{ steps.analyze.outputs.completion_docs }}"
+          echo "  • Commits/day: ${{ steps.analyze.outputs.commits_per_day }}"
+          echo "  • Root files: ${{ steps.analyze.outputs.root_files }}"
+          echo ""
+          echo "Recommendations:"
+          echo "  1. Review active alerts and take action"
+          echo "  2. Run: ./scripts/governance_session.sh"
+          echo "  3. Consider archiving old files: ./scripts/archive_old_sessions.sh"
+          echo "  4. View dashboard: ./scripts/generate_dashboard.sh"
+
+      - name: Add PR comment (if PR and alerts present)
+        if: github.event_name == 'pull_request' && steps.analyze.outputs.alert_count != '0'
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const alertCount = '${{ steps.analyze.outputs.alert_count }}';
+            const alerts = `${{ steps.analyze.outputs.alerts }}`;
+
+            const comment = `## ⚠️ Leading Indicator Alerts
+
+            **${alertCount} alert(s) detected** in governance metrics:
+
+            ${alerts.split('\n').map(a => a ? `- ⚠️ ${a}` : '').join('\n')}
+
+            ### Current Metrics
+            - Root docs created (7d): ${{ steps.analyze.outputs.root_docs_created }}
+            - Crisis docs: ${{ steps.analyze.outputs.crisis_docs }}
+            - Handoff docs: ${{ steps.analyze.outputs.handoff_docs }}
+            - Completion docs: ${{ steps.analyze.outputs.completion_docs }}
+            - Commits/day: ${{ steps.analyze.outputs.commits_per_day }}
+            - Root files: ${{ steps.analyze.outputs.root_files }}
+
+            ### Recommendations
+            1. Review alerts before merging
+            2. Run governance session: \`./scripts/governance_session.sh\`
+            3. Consider cleanup: \`./scripts/archive_old_sessions.sh\`
+
+            ---
+            *Automated by [Leading Indicator Alerts](.github/workflows/leading-indicator-alerts.yml) (TASK-286)*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Fail if critical alerts (optional - currently disabled)
+        if: false  # Set to true to enforce stricter governance
+        run: |
+          ALERT_COUNT=${{ steps.analyze.outputs.alert_count }}
+          if [ "$ALERT_COUNT" -gt 2 ]; then
+            echo "❌ Too many alerts ($ALERT_COUNT) - governance intervention required"
+            exit 1
+          fi

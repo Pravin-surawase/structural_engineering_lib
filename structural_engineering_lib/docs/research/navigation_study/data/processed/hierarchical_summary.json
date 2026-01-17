@@ -1,0 +1,25 @@
+{
+  "condition": "hierarchical",
+  "timestamp": "2026-01-10T15:29:46.974788",
+  "agents": {
+    "gpt4_turbo": {
+      "total_trials": 9,
+      "time_to_complete": {
+        "mean_ms": 35.22222222222222,
+        "median_ms": 35,
+        "std_dev_ms": 4.437842318564782,
+        "min_ms": 30,
+        "max_ms": 44
+      },
+      "files_accessed": {
+        "mean": 2.6666666666666665,
+        "median": 3
+      },
+      "tokens_loaded": {
+        "mean": 4483,
+        "median": 3009
+      },
+      "error_rate": 0.6250000000000001
+    }
+  }
+}

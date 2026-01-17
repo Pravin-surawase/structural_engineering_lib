@@ -1,0 +1,9 @@
+# Local outputs for quality assessment runs
+outputs/
+*.dxf
+*.dwg
+*.png
+*.pdf
+htmlcov/
+.coverage
+coverage.xml

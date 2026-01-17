@@ -1,0 +1,58 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Attaching to a Manually Started Instance of ETABS</title><meta name="Language" content="en-us" /><meta name="Microsoft.Help.Id" content="3ceb8889-9028-4de3-9c87-69a12055ade7" /><meta name="Description" content="These instructions document the steps necessary to attach to instances of ETABS that were started manually. The example code is in VB.NET." /><meta name="Microsoft.Help.ContentType" content="How To" /><meta name="BrandingAware" content="true" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Help1.css" /></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">CSI API ETABS v1</div><div class="pageBody"><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn"><h1>Attaching to a Manually Started Instance of ETABS</h1></td></tr></table><span class="introStyle"></span> <div class="introduction"><p>
+				These instructions document the steps necessary to attach to instances
+				of ETABS that were started manually. The example code is in VB.NET.
+			</p></div><div class="subSection"><ol><li><p>
+							Start ETABS manually, e.g. by clicking on the program shortcut
+						</p></li><li><p>
+							Instead of creating a new <span class="code">ETABSObject</span>,
+							attach to the instance of the <span class="code">ETABSObject</span> that was created and added
+							to the Running Object Table by ETABS.
+						</p><p>
+							The code below creates an <span class="code">ETABSObject</span> and starts the program:
+						</p><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EACADBGAAA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EACADBGAAA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EACADBGAAA');return false;" title="Copy">Copy</a></div></div><div id="ID0EACADBGAAA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Dim</span> myETABSObject <span class="highlight-keyword">As</span> ETABSv1.cOAPI
+<span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> ETABSv1.cHelper = <span class="highlight-keyword">New</span> ETABSv1.Helper
+
+myETABSObject = myHelper.CreateObject(<span class="highlight-literal">"C:\Program Files\Computers and Structures\ETABS 22\ETABS.exe"</span>)
+
+ret = myETABSObject.ApplicationStart()
+
+<span class="highlight-keyword">Dim</span> mySapModel <span class="highlight-keyword">As</span> ETABSv1.cSapModel = myETABSObject.SapModel</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EACADBGAAA");</script><p>
+							Replace the code above with the code below to attach to the existing <span class="code">ETABSObject</span>.
+							Since the program is already started,
+							there is no need to call <span class="code">ETABSObject.ApplicationStart</span>:
+						</p><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAADBGAAA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAADBGAAA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAADBGAAA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAADBGAAA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Dim</span> myETABSObject <span class="highlight-keyword">As</span> ETABSv1.cOAPI
+<span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> ETABSv1.cHelper = <span class="highlight-keyword">New</span> ETABSv1.Helper
+
+myETABSObject = myHelper.GetObject(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>)
+
+<span class="highlight-keyword">Dim</span> mySapModel <span class="highlight-keyword">As</span> ETABSv1.cSapModel = myETABSObject.SapModel</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAADBGAAA");</script></li><li><p>
+							Other calls can then be made normally.
+							The program can be ended manually or by calling <span class="code">ETABSObject.ApplicationExit</span></p></li><li><p>
+							Please note that if multiple instances of ETABS are manually started,
+							the <span class="code">cHelper.GetObject()</span> function can only attach to the active instance,
+							which by default is the instance that was started first.
+						</p><p>
+							It is possible to change the active instance through the ETABS GUI.
+							Using the <strong>Tools</strong> menu &gt; <strong>Active Instance for API</strong>
+							command will make the current instance of ETABS the active instance so that
+							it will then respond to subsequent calls to <span class="code">cHelper.GetObject()</span>.
+							If the current instance is already the active instance, then this command is disabled.
+						</p></li><li><p>
+							The process ID of the current instance is displayed with the <strong>Active Instance for API</strong> menu command.
+							This process ID can be used to connect to any open instance of ETABS, not just the active instance.
+							The <span class="code">cHelper.GetObjectProcess()</span> API function takes the process ID as an additional argument,
+							but otherwise works identically to the <span class="code">cHelper.GetObject()</span> function.
+							As an example, if a running ETABS instance has process ID 27182 , it can be connected to as follows:
+						</p><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0EAAAABGAAA_tab1" class="codeSnippetContainerTabSingle">VB</div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0EAAAABGAAA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0EAAAABGAAA');return false;" title="Copy">Copy</a></div></div><div id="ID0EAAAABGAAA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="highlight-keyword">Dim</span> myETABSObject <span class="highlight-keyword">As</span> ETABSv1.cOAPI
+<span class="highlight-keyword">Dim</span> myHelper <span class="highlight-keyword">as</span> ETABSv1.cHelper = <span class="highlight-keyword">New</span> ETABSv1.Helper
+
+myETABSObject = myHelper.GetObjectProcess(<span class="highlight-literal">"CSI.ETABS.API.ETABSObject"</span>, <span class="highlight-number">27182</span>)
+
+<span class="highlight-keyword">Dim</span> mySapModel <span class="highlight-keyword">As</span> ETABSv1.cSapModel = myETABSObject.SapModel</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0EAAAABGAAA");</script></li></ol></div></div></div><div id="pageFooter" class="pageFooter">ETABS®, SAFE®, SAP2000® and CSiBridge® are registered trademarks of Computers and Structures, Inc.<br /><p><a href="https://www.csiamerica.com" target="_blank" rel="noopener noreferrer">Copyright © Computers and Structures, Inc. 2024. All rights reserved.</a></p><div class="feedbackLink">Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:support%40csiamerica.com?Subject=CSI%20API%20ETABS%20v1">support@csiamerica.com</a></div>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title + "\u0026body=" + encodeURIComponent("Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.");
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script></div></body></html>

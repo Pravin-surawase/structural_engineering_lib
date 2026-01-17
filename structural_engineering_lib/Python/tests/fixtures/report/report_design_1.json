@@ -1,0 +1,145 @@
+{
+  "beams": [
+    {
+      "beam": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "beam_id": "B1",
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "span_mm": 4000,
+        "story": "G"
+      },
+      "cases": [
+        {
+          "case_id": "G_B1",
+          "flexure": {
+            "pt_provided": 0.8695652173913043,
+            "section_type": "UNDER_REINFORCED"
+          },
+          "governing_utilization": 0.6,
+          "is_ok": true,
+          "mu_knm": 120,
+          "shear": {
+            "is_safe": true
+          },
+          "utilizations": {
+            "crack_width": 0.2,
+            "deflection": 0.3,
+            "flexure": 0.6,
+            "shear": 0.4
+          },
+          "vu_kn": 80
+        }
+      ],
+      "code": "IS456",
+      "governing_case_id": "G_B1",
+      "governing_utilization": 0.6,
+      "input_sanity": [
+        {
+          "field": "b_mm",
+          "json_path": "beam.b_mm",
+          "message": "within expected range",
+          "status": "OK",
+          "value": 230.0
+        },
+        {
+          "field": "D_mm",
+          "json_path": "beam.D_mm",
+          "message": "within expected range",
+          "status": "OK",
+          "value": 500.0
+        },
+        {
+          "field": "d_mm",
+          "json_path": "beam.d_mm",
+          "message": "within expected range",
+          "status": "OK",
+          "value": 450.0
+        },
+        {
+          "field": "b_over_D",
+          "json_path": "beam.b_mm",
+          "message": "b/D ratio within expected range",
+          "status": "OK",
+          "value": 0.46
+        },
+        {
+          "field": "fck_nmm2",
+          "json_path": "beam.fck_nmm2",
+          "message": "within expected range",
+          "status": "OK",
+          "value": 25.0
+        },
+        {
+          "field": "fy_nmm2",
+          "json_path": "beam.fy_nmm2",
+          "message": "within expected range",
+          "status": "OK",
+          "value": 500.0
+        },
+        {
+          "field": "d_dash_mm",
+          "json_path": "beam.d_dash_mm",
+          "message": "within expected range",
+          "status": "OK",
+          "value": 50.0
+        },
+        {
+          "field": "asv_mm2",
+          "json_path": "beam.asv_mm2",
+          "message": "missing value",
+          "status": "WARN",
+          "value": null
+        }
+      ],
+      "is_ok": true,
+      "job_id": "G/B1",
+      "stability_scorecard": [
+        {
+          "check": "over_reinforced",
+          "json_path": "cases[0].flexure.section_type",
+          "message": "under-reinforced section",
+          "status": "OK"
+        },
+        {
+          "check": "min_ductility",
+          "json_path": "cases[0].flexure.pt_provided",
+          "message": "min ductility OK",
+          "status": "OK"
+        },
+        {
+          "check": "max_ductility",
+          "json_path": "cases[0].flexure.pt_provided",
+          "message": "max ductility OK",
+          "status": "OK"
+        },
+        {
+          "check": "shear_margin",
+          "json_path": "cases[0].shear.is_safe",
+          "message": "shear margin OK",
+          "status": "OK"
+        },
+        {
+          "check": "governing_utilization",
+          "json_path": "governing_utilization",
+          "message": "overall utilization OK",
+          "status": "OK"
+        }
+      ],
+      "summary": {},
+      "units": "IS456",
+      "units_sentinel": []
+    }
+  ],
+  "code": "IS456",
+  "summary": {
+    "failed": 0,
+    "passed": 1,
+    "total_beams": 1
+  },
+  "units": "IS456"
+}

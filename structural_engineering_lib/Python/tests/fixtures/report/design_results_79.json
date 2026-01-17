@@ -1,0 +1,2856 @@
+{
+  "beams": [
+    {
+      "beam_id": "B1",
+      "flexure": {
+        "ast_required_mm2": 900,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B1",
+        "mu_knm": 120,
+        "vu_kn": 80
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B2",
+      "flexure": {
+        "ast_required_mm2": 901,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B2",
+        "mu_knm": 122,
+        "vu_kn": 81
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B3",
+      "flexure": {
+        "ast_required_mm2": 902,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B3",
+        "mu_knm": 124,
+        "vu_kn": 82
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B4",
+      "flexure": {
+        "ast_required_mm2": 903,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B4",
+        "mu_knm": 126,
+        "vu_kn": 83
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B5",
+      "flexure": {
+        "ast_required_mm2": 904,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B5",
+        "mu_knm": 128,
+        "vu_kn": 84
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B6",
+      "flexure": {
+        "ast_required_mm2": 905,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B6",
+        "mu_knm": 130,
+        "vu_kn": 85
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B7",
+      "flexure": {
+        "ast_required_mm2": 906,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B7",
+        "mu_knm": 132,
+        "vu_kn": 86
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B8",
+      "flexure": {
+        "ast_required_mm2": 907,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B8",
+        "mu_knm": 134,
+        "vu_kn": 87
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B9",
+      "flexure": {
+        "ast_required_mm2": 908,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B9",
+        "mu_knm": 136,
+        "vu_kn": 88
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B10",
+      "flexure": {
+        "ast_required_mm2": 909,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B10",
+        "mu_knm": 138,
+        "vu_kn": 89
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B11",
+      "flexure": {
+        "ast_required_mm2": 910,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B11",
+        "mu_knm": 140,
+        "vu_kn": 90
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B12",
+      "flexure": {
+        "ast_required_mm2": 911,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B12",
+        "mu_knm": 142,
+        "vu_kn": 91
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B13",
+      "flexure": {
+        "ast_required_mm2": 912,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B13",
+        "mu_knm": 144,
+        "vu_kn": 92
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B14",
+      "flexure": {
+        "ast_required_mm2": 913,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B14",
+        "mu_knm": 146,
+        "vu_kn": 93
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B15",
+      "flexure": {
+        "ast_required_mm2": 914,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B15",
+        "mu_knm": 148,
+        "vu_kn": 94
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B16",
+      "flexure": {
+        "ast_required_mm2": 915,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B16",
+        "mu_knm": 150,
+        "vu_kn": 95
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B17",
+      "flexure": {
+        "ast_required_mm2": 916,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B17",
+        "mu_knm": 152,
+        "vu_kn": 96
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B18",
+      "flexure": {
+        "ast_required_mm2": 917,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B18",
+        "mu_knm": 154,
+        "vu_kn": 97
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B19",
+      "flexure": {
+        "ast_required_mm2": 918,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B19",
+        "mu_knm": 156,
+        "vu_kn": 98
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B20",
+      "flexure": {
+        "ast_required_mm2": 919,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B20",
+        "mu_knm": 158,
+        "vu_kn": 99
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B21",
+      "flexure": {
+        "ast_required_mm2": 920,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B21",
+        "mu_knm": 160,
+        "vu_kn": 100
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B22",
+      "flexure": {
+        "ast_required_mm2": 921,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B22",
+        "mu_knm": 162,
+        "vu_kn": 101
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B23",
+      "flexure": {
+        "ast_required_mm2": 922,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B23",
+        "mu_knm": 164,
+        "vu_kn": 102
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B24",
+      "flexure": {
+        "ast_required_mm2": 923,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B24",
+        "mu_knm": 166,
+        "vu_kn": 103
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B25",
+      "flexure": {
+        "ast_required_mm2": 924,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B25",
+        "mu_knm": 168,
+        "vu_kn": 104
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B26",
+      "flexure": {
+        "ast_required_mm2": 925,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B26",
+        "mu_knm": 170,
+        "vu_kn": 105
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B27",
+      "flexure": {
+        "ast_required_mm2": 926,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B27",
+        "mu_knm": 172,
+        "vu_kn": 106
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B28",
+      "flexure": {
+        "ast_required_mm2": 927,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B28",
+        "mu_knm": 174,
+        "vu_kn": 107
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B29",
+      "flexure": {
+        "ast_required_mm2": 928,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B29",
+        "mu_knm": 176,
+        "vu_kn": 108
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B30",
+      "flexure": {
+        "ast_required_mm2": 929,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B30",
+        "mu_knm": 178,
+        "vu_kn": 109
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B31",
+      "flexure": {
+        "ast_required_mm2": 930,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B31",
+        "mu_knm": 180,
+        "vu_kn": 110
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B32",
+      "flexure": {
+        "ast_required_mm2": 931,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B32",
+        "mu_knm": 182,
+        "vu_kn": 111
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B33",
+      "flexure": {
+        "ast_required_mm2": 932,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B33",
+        "mu_knm": 184,
+        "vu_kn": 112
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B34",
+      "flexure": {
+        "ast_required_mm2": 933,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B34",
+        "mu_knm": 186,
+        "vu_kn": 113
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B35",
+      "flexure": {
+        "ast_required_mm2": 934,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B35",
+        "mu_knm": 188,
+        "vu_kn": 114
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B36",
+      "flexure": {
+        "ast_required_mm2": 935,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B36",
+        "mu_knm": 190,
+        "vu_kn": 115
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B37",
+      "flexure": {
+        "ast_required_mm2": 936,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B37",
+        "mu_knm": 192,
+        "vu_kn": 116
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B38",
+      "flexure": {
+        "ast_required_mm2": 937,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B38",
+        "mu_knm": 194,
+        "vu_kn": 117
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B39",
+      "flexure": {
+        "ast_required_mm2": 938,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B39",
+        "mu_knm": 196,
+        "vu_kn": 118
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B40",
+      "flexure": {
+        "ast_required_mm2": 939,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B40",
+        "mu_knm": 198,
+        "vu_kn": 119
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B41",
+      "flexure": {
+        "ast_required_mm2": 940,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B41",
+        "mu_knm": 200,
+        "vu_kn": 120
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B42",
+      "flexure": {
+        "ast_required_mm2": 941,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B42",
+        "mu_knm": 202,
+        "vu_kn": 121
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B43",
+      "flexure": {
+        "ast_required_mm2": 942,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B43",
+        "mu_knm": 204,
+        "vu_kn": 122
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B44",
+      "flexure": {
+        "ast_required_mm2": 943,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B44",
+        "mu_knm": 206,
+        "vu_kn": 123
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B45",
+      "flexure": {
+        "ast_required_mm2": 944,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B45",
+        "mu_knm": 208,
+        "vu_kn": 124
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B46",
+      "flexure": {
+        "ast_required_mm2": 945,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B46",
+        "mu_knm": 210,
+        "vu_kn": 125
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B47",
+      "flexure": {
+        "ast_required_mm2": 946,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B47",
+        "mu_knm": 212,
+        "vu_kn": 126
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B48",
+      "flexure": {
+        "ast_required_mm2": 947,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B48",
+        "mu_knm": 214,
+        "vu_kn": 127
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B49",
+      "flexure": {
+        "ast_required_mm2": 948,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B49",
+        "mu_knm": 216,
+        "vu_kn": 128
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B50",
+      "flexure": {
+        "ast_required_mm2": 949,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B50",
+        "mu_knm": 218,
+        "vu_kn": 129
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B51",
+      "flexure": {
+        "ast_required_mm2": 950,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B51",
+        "mu_knm": 220,
+        "vu_kn": 130
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B52",
+      "flexure": {
+        "ast_required_mm2": 951,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B52",
+        "mu_knm": 222,
+        "vu_kn": 131
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B53",
+      "flexure": {
+        "ast_required_mm2": 952,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B53",
+        "mu_knm": 224,
+        "vu_kn": 132
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B54",
+      "flexure": {
+        "ast_required_mm2": 953,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B54",
+        "mu_knm": 226,
+        "vu_kn": 133
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B55",
+      "flexure": {
+        "ast_required_mm2": 954,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B55",
+        "mu_knm": 228,
+        "vu_kn": 134
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B56",
+      "flexure": {
+        "ast_required_mm2": 955,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B56",
+        "mu_knm": 230,
+        "vu_kn": 135
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B57",
+      "flexure": {
+        "ast_required_mm2": 956,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B57",
+        "mu_knm": 232,
+        "vu_kn": 136
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B58",
+      "flexure": {
+        "ast_required_mm2": 957,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B58",
+        "mu_knm": 234,
+        "vu_kn": 137
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B59",
+      "flexure": {
+        "ast_required_mm2": 958,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B59",
+        "mu_knm": 236,
+        "vu_kn": 138
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B60",
+      "flexure": {
+        "ast_required_mm2": 959,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B60",
+        "mu_knm": 238,
+        "vu_kn": 139
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B61",
+      "flexure": {
+        "ast_required_mm2": 960,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B61",
+        "mu_knm": 240,
+        "vu_kn": 140
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B62",
+      "flexure": {
+        "ast_required_mm2": 961,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B62",
+        "mu_knm": 242,
+        "vu_kn": 141
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B63",
+      "flexure": {
+        "ast_required_mm2": 962,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B63",
+        "mu_knm": 244,
+        "vu_kn": 142
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B64",
+      "flexure": {
+        "ast_required_mm2": 963,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B64",
+        "mu_knm": 246,
+        "vu_kn": 143
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B65",
+      "flexure": {
+        "ast_required_mm2": 964,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B65",
+        "mu_knm": 248,
+        "vu_kn": 144
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B66",
+      "flexure": {
+        "ast_required_mm2": 965,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B66",
+        "mu_knm": 250,
+        "vu_kn": 145
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B67",
+      "flexure": {
+        "ast_required_mm2": 966,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B67",
+        "mu_knm": 252,
+        "vu_kn": 146
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B68",
+      "flexure": {
+        "ast_required_mm2": 967,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B68",
+        "mu_knm": 254,
+        "vu_kn": 147
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B69",
+      "flexure": {
+        "ast_required_mm2": 968,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B69",
+        "mu_knm": 256,
+        "vu_kn": 148
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B70",
+      "flexure": {
+        "ast_required_mm2": 969,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B70",
+        "mu_knm": 258,
+        "vu_kn": 149
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B71",
+      "flexure": {
+        "ast_required_mm2": 970,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B71",
+        "mu_knm": 260,
+        "vu_kn": 150
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B72",
+      "flexure": {
+        "ast_required_mm2": 971,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B72",
+        "mu_knm": 262,
+        "vu_kn": 151
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B73",
+      "flexure": {
+        "ast_required_mm2": 972,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B73",
+        "mu_knm": 264,
+        "vu_kn": 152
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B74",
+      "flexure": {
+        "ast_required_mm2": 973,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B74",
+        "mu_knm": 266,
+        "vu_kn": 153
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B75",
+      "flexure": {
+        "ast_required_mm2": 974,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.8
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.8,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B75",
+        "mu_knm": 268,
+        "vu_kn": 154
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B76",
+      "flexure": {
+        "ast_required_mm2": 975,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B76",
+        "mu_knm": 270,
+        "vu_kn": 155
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.55
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B77",
+      "flexure": {
+        "ast_required_mm2": 976,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.65
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 240,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.65,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B77",
+        "mu_knm": 272,
+        "vu_kn": 156
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B78",
+      "flexure": {
+        "ast_required_mm2": 977,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.7
+      },
+      "geometry": {
+        "D_mm": 550,
+        "b_mm": 250,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 500,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.7,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B78",
+        "mu_knm": 274,
+        "vu_kn": 157
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.45
+      },
+      "story": "G"
+    },
+    {
+      "beam_id": "B79",
+      "flexure": {
+        "ast_required_mm2": 978,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.75
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.75,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B79",
+        "mu_knm": 276,
+        "vu_kn": 158
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.5
+      },
+      "story": "G"
+    }
+  ],
+  "code": "IS456",
+  "schema_version": 1,
+  "summary": {
+    "failed": 0,
+    "passed": 79,
+    "total_beams": 79
+  },
+  "units": "IS456"
+}

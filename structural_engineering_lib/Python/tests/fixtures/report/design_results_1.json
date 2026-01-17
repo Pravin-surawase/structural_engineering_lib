@@ -1,0 +1,48 @@
+{
+  "beams": [
+    {
+      "beam_id": "B1",
+      "flexure": {
+        "ast_required_mm2": 900,
+        "section_type": "UNDER_REINFORCED",
+        "utilization": 0.6
+      },
+      "geometry": {
+        "D_mm": 500,
+        "b_mm": 230,
+        "cover_mm": 40,
+        "d_dash_mm": 50,
+        "d_mm": 450,
+        "span_mm": 4000
+      },
+      "governing_utilization": 0.6,
+      "is_ok": true,
+      "loads": {
+        "case_id": "G_B1",
+        "mu_knm": 120,
+        "vu_kn": 80
+      },
+      "materials": {
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "serviceability": {
+        "crack_width_utilization": 0.2,
+        "deflection_utilization": 0.3
+      },
+      "shear": {
+        "is_safe": true,
+        "utilization": 0.4
+      },
+      "story": "G"
+    }
+  ],
+  "code": "IS456",
+  "schema_version": 1,
+  "summary": {
+    "failed": 0,
+    "passed": 1,
+    "total_beams": 1
+  },
+  "units": "IS456"
+}

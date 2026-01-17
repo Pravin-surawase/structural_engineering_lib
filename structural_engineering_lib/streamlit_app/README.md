@@ -1,0 +1,250 @@
+# IS 456 Beam Design Dashboard
+
+**Professional Streamlit dashboard for RC beam design per IS 456:2000**
+
+![Version](https://img.shields.io/badge/version-0.17.0-blue)
+![Python](https://img.shields.io/badge/python-3.9+-blue)
+![Streamlit](https://img.shields.io/badge/streamlit-1.30+-red)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+---
+
+## 🎯 Features
+
+- **🏗️ Interactive Beam Design** - Complete flexure, shear, and detailing design with live visualization
+- **💰 Cost Optimization** - Find the most economical bar arrangements
+- **✅ Compliance Checking** - Automated IS 456 clause verification with pass/fail status
+- **📋 BBS Generator** - Generate bar bending schedules with quantity summaries
+- **📐 DXF Export** - CAD-ready drawings for beam sections and elevations
+- **📄 PDF Reports** - Professional design reports with IS 456 references
+- **📊 Batch Design** - Process multiple beams from CSV/Excel files
+- **🔬 Advanced Analysis** - Deflection, crack width, ductility analysis
+- **📚 Learning Center** - Interactive tutorials and IS 456 references
+- **📖 Clause Traceability** - Full IS 456 clause references for all calculations
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Web App (Recommended)
+
+Visit: **[https://your-app.streamlit.app](https://your-app.streamlit.app)**
+
+No installation needed!
+
+### Option 2: Local Installation
+
+**Requirements:**
+- Python 3.9 or higher
+- pip package manager
+
+**Installation:**
+
+```bash
+# Clone repository
+git clone https://github.com/your-repo/structural-lib.git
+cd structural-lib
+
+# Install the library with all dependencies
+pip install -e Python[full]
+
+# Run app
+cd streamlit_app
+streamlit run app.py
+```
+
+The app will open in your browser at `http://localhost:8501`
+
+---
+
+## 📖 Usage
+
+### Basic Workflow
+
+1. **Navigate** to the **Beam Design** page from the sidebar
+2. **Enter** your beam parameters:
+   - Geometry (span, width, depth)
+   - Materials (concrete grade, steel grade)
+   - Loading (moment, shear)
+3. **Click** "Analyze Design" to get instant results
+4. **Review** results in tabs:
+   - Summary (key metrics, utilization)
+   - Visualization (cross-section diagram with stirrups)
+   - Cost Analysis (bar arrangement options)
+   - Compliance (IS 456 checks with clause references)
+   - Export (PDF, DXF, BBS)
+5. **Export** your design in your preferred format
+
+### Example: 5m Simply Supported Beam
+
+```
+# Inputs
+Span: 5000 mm
+Width: 300 mm
+Depth: 500 mm
+Materials: M25 / Fe500
+Moment: 120 kNm
+Shear: 80 kN
+
+# Results
+✅ Design OK
+Steel: 3-16mm bars (603 mm²)
+Stirrups: 2L-8φ @ 175 mm c/c
+Utilization: 65%
+```
+
+---
+
+## 📁 Project Structure
+
+```
+streamlit_app/
+├── app.py                              # Home page
+├── pages/
+│   ├── 01_🏗️_beam_design.py            # Main design page
+│   ├── 02_💰_cost_optimizer.py          # Cost optimization
+│   ├── 03_✅_compliance.py              # IS 456 compliance checking
+│   ├── 04_📚_documentation.py           # Help & examples
+│   ├── 05_📋_bbs_generator.py           # Bar bending schedule
+│   ├── 06_📐_dxf_export.py              # CAD export
+│   ├── 07_📄_report_generator.py        # PDF reports
+│   ├── 08_📊_batch_design.py            # Batch processing
+│   ├── 09_🔬_advanced_analysis.py       # Serviceability analysis
+│   ├── 10_📚_learning_center.py         # Tutorials & learning
+│   ├── 11_🎬_demo_showcase.py           # Demo & showcase
+│   └── 12_📖_clause_traceability.py     # IS 456 clause references
+├── components/
+│   ├── __init__.py
+│   ├── inputs.py                       # Input widgets
+│   ├── visualizations.py               # Plotly charts & beam diagrams
+│   └── results.py                      # Result displays
+├── utils/
+│   ├── __init__.py
+│   ├── api_wrapper.py                  # Cached API calls
+│   ├── design_system.py                # Design tokens (colors, typography)
+│   ├── global_styles.py                # CSS styling
+│   ├── theme_manager.py                # Theme management
+│   ├── styled_components.py            # Reusable styled components
+│   ├── layout.py                       # Page layout utilities
+│   └── pdf_generator.py                # PDF report generation
+├── tests/
+│   ├── conftest.py                     # Test fixtures
+│   ├── test_page_smoke.py              # Page import tests
+│   ├── test_critical_journeys.py       # E2E journey tests
+│   └── test_page_fixes_2026_01_13.py   # Regression tests
+├── .streamlit/
+│   └── config.toml                     # Theme configuration
+├── requirements.txt                    # Dependencies
+└── README.md                           # This file
+```
+
+---
+
+## 🎨 Design Philosophy
+
+### Theme: IS 456 Professional
+
+- **Colors:** Navy blue (#003366), Orange (#FF6600), Colorblind-safe palette
+- **Accessibility:** WCAG 2.1 Level AA compliant
+- **Typography:** Inter (body), JetBrains Mono (code/numbers)
+
+### User Experience
+
+- **Input-Output Split:** Sidebar for inputs, main area for results
+- **Progressive Disclosure:** Advanced options hidden in expanders
+- **Real-Time Validation:** Immediate feedback as you type
+- **Friendly Errors:** Clear messages with fix suggestions
+- **Practical Values:** Stirrup spacings rounded to construction-friendly values (75, 100, 125... 300mm)
+
+---
+
+## 🧪 Testing
+
+### Run Tests
+
+```bash
+# All Streamlit tests
+cd streamlit_app
+pytest tests/ -v
+
+# Specific test file
+pytest tests/test_page_fixes_2026_01_13.py -v
+
+# Core library tests
+cd ../Python
+pytest tests/ -v
+```
+
+### Static Analysis
+
+```bash
+# Streamlit-specific scanner (checks for runtime errors)
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+
+# Pylint
+.venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
+```
+
+---
+
+## 📊 Test Coverage
+
+| Test Category | Tests | Description |
+|---------------|-------|-------------|
+| Page Smoke | 43 | Import tests, structure, design system |
+| Critical Journeys | 16 | E2E user workflows |
+| Regression | 20 | Bug fix verification |
+| Integration | 25+ | API wrapper, components |
+
+---
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+
+### Development Setup
+
+```bash
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dev dependencies
+pip install -e Python[dev,full]
+
+# Run in development mode
+cd streamlit_app
+streamlit run app.py --server.runOnSave true
+```
+
+---
+
+## 📚 Documentation
+
+- **User Guide:** [docs/getting-started/](../docs/getting-started/)
+- **API Reference:** [docs/reference/api.md](../docs/reference/api.md)
+- **Architecture:** [docs/architecture/](../docs/architecture/)
+- **Streamlit Research:** [docs/research/](../docs/research/)
+
+---
+
+## 📝 License
+
+MIT License - see [LICENSE](../LICENSE) for details
+
+---
+
+## 🙏 Acknowledgments
+
+- **IS 456:2000** - Bureau of Indian Standards
+- **Streamlit** - Amazing framework for data apps
+- **Plotly** - Interactive visualization library
+- **structural-lib-is456** - Core design library
+
+---
+
+**Version:** 0.17.0
+**Status:** ✅ Production Ready
+**Python:** 3.9+
+
+Built with ❤️ using Streamlit

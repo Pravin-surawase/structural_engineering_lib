@@ -1,0 +1,1185 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2024-2026 Pravin Surawase
+"""
+Detailing Module — IS 456:2000 / SP 34:1987 Reinforcement Detailing
+
+This module provides pure functions for calculating detailing parameters
+required for shop drawings and fabrication.
+
+References:
+- IS 456:2000, Cl 26.2 (Development/Anchorage)
+- IS 456:2000, Cl 26.3 (Spacing)
+- IS 456:2000, Cl 26.5 (Stirrups)
+- IS 13920:2016, Cl 6.2.6 (Splice locations for seismic)
+- SP 34:1987 (Handbook on Detailing)
+"""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass, field
+
+from structural_lib.error_messages import material_property_out_of_range
+from structural_lib.errors import ComplianceError, ConfigurationError, MaterialError
+
+from .traceability import clause
+
+__all__ = [
+    # Classes
+    "BarArrangement",
+    "StirrupArrangement",
+    "BeamDetailingResult",
+    "HookDimensions",
+    "AnchorageCheckResult",
+    # Functions
+    "get_bond_stress",
+    "calculate_development_length",
+    "calculate_lap_length",
+    "get_min_bend_radius",
+    "calculate_standard_hook",
+    "calculate_anchorage_length",
+    "calculate_stirrup_anchorage",
+    "check_anchorage_at_simple_support",
+    "calculate_bar_spacing",
+    "check_min_spacing",
+    "check_side_face_reinforcement",
+    "select_bar_arrangement",
+    "get_stirrup_legs",
+    "format_bar_callout",
+    "format_stirrup_callout",
+    "create_beam_detailing",
+    # Constants
+    "BOND_STRESS_DEFORMED",
+    "STANDARD_BAR_DIAMETERS",
+]
+
+# =============================================================================
+# Constants
+# =============================================================================
+
+# Design bond stress (τbd) for deformed bars — IS 456 Table 5.3 (60% increase)
+BOND_STRESS_DEFORMED = {
+    15: 1.60,  # M15
+    20: 1.92,  # M20
+    25: 2.24,  # M25
+    30: 2.40,  # M30
+    35: 2.72,  # M35
+    40: 3.04,  # M40
+    45: 3.20,  # M45
+    50: 3.36,  # M50
+}
+
+# Standard bar diameters (mm)
+STANDARD_BAR_DIAMETERS = [8, 10, 12, 16, 20, 25, 32]
+
+# Standard stirrup diameters (mm)
+STANDARD_STIRRUP_DIAMETERS = [6, 8, 10, 12]
+
+
+# =============================================================================
+# Data Classes
+# =============================================================================
+
+
+@dataclass
+class BarArrangement:
+    """Represents a reinforcement bar arrangement."""
+
+    count: int
+    diameter: float  # mm
+    area_provided: float  # mm²
+    spacing: float  # mm (center-to-center)
+    layers: int
+
+    def callout(self) -> str:
+        """Return standard callout notation (e.g., '3-16φ')."""
+        return f"{self.count}-{int(self.diameter)}φ"
+
+
+@dataclass
+class StirrupArrangement:
+    """Represents a stirrup arrangement for a zone."""
+
+    diameter: float  # mm
+    legs: int
+    spacing: float  # mm
+    zone_length: float  # mm
+
+    def callout(self) -> str:
+        """Return standard callout notation (e.g., '2L-8φ@150')."""
+        return f"{self.legs}L-{int(self.diameter)}φ@{int(self.spacing)}"
+
+
+@dataclass
+class BeamDetailingResult:
+    """Complete detailing result for a beam section."""
+
+    beam_id: str
+    story: str
+    b: float  # mm
+    D: float  # mm
+    span: float  # mm
+    cover: float  # mm
+
+    # Reinforcement
+    top_bars: list[BarArrangement]  # [start, mid, end]
+    bottom_bars: list[BarArrangement]  # [start, mid, end]
+    stirrups: list[StirrupArrangement]  # [start, mid, end]
+
+    # Detailing parameters
+    ld_tension: float  # Development length for tension bars (mm)
+    ld_compression: float  # Development length for compression bars (mm)
+    lap_length: float  # Lap splice length (mm)
+
+    # Validity
+    is_valid: bool
+    remarks: str
+
+    def to_3d_json(self, is_seismic: bool = False) -> dict:
+        """
+        Serialize this detailing result into 3D visualization JSON.
+
+        Args:
+            is_seismic: True to use 135° stirrup hooks.
+
+        Returns:
+            Dict matching the BeamGeometry3D schema.
+        """
+        from structural_lib.visualization.geometry_3d import beam_to_3d_geometry
+
+        return beam_to_3d_geometry(self, is_seismic=is_seismic).to_dict()
+
+
+# =============================================================================
+# Development Length (IS 456 Cl 26.2.1)
+# =============================================================================
+
+
+@clause("26.2.1.1")
+def get_bond_stress(fck: float, bar_type: str = "deformed") -> float:
+    """
+    Get design bond stress τbd.
+
+    Args:
+        fck: Characteristic compressive strength of concrete (N/mm²)
+        bar_type: "plain" or "deformed"
+
+    Returns:
+        τbd in N/mm²
+
+    Notes:
+        - Uses nearest lower concrete grade from IS 456 Table 5.3.
+        - "deformed" bars use the table value; "plain" bars reduce τbd by 1.6.
+    """
+    # Use nearest lower grade
+    available_grades = sorted(BOND_STRESS_DEFORMED.keys())
+    grade = available_grades[0]
+    for g in available_grades:
+        if g <= fck:
+            grade = g
+        else:
+            break
+
+    tau_bd = BOND_STRESS_DEFORMED[grade]
+
+    if bar_type == "plain":
+        tau_bd = tau_bd / 1.6  # Deformed bars have 60% increase
+
+    return tau_bd
+
+
+@clause("26.2.1")
+def calculate_development_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    bar_type: str = "deformed",
+    stress_ratio: float = 0.87,
+) -> float:
+    """
+    Calculate development length (Ld) per IS 456 Cl 26.2.1.
+
+    Ld = (φ × σs) / (4 × τbd)
+
+    Args:
+        bar_dia: Bar diameter φ (mm)
+        fck: Concrete strength (N/mm²)
+        fy: Steel yield strength (N/mm²)
+        bar_type: "plain" or "deformed"
+        stress_ratio: σs/fy ratio (default 0.87 for limit state)
+
+    Returns:
+        Development length Ld (mm)
+
+    Raises:
+        MaterialError: If inputs are invalid (bar_dia, fck, fy <= 0)
+        ComplianceError: If bond stress calculation fails
+
+    Reference:
+        IS 456:2000, Clause 26.2.1
+    """
+    if bar_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.1"
+            ),
+            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            clause_ref="Cl. 26.2.1",
+        )
+    if fck <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "concrete strength fck", fck, 0, 100, "Cl. 6.2"
+            ),
+            details={"fck": fck, "minimum": 0, "maximum": 100},
+            clause_ref="Cl. 6.2",
+        )
+    if fy <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "steel yield strength fy", fy, 0, 600, "Cl. 6.2"
+            ),
+            details={"fy": fy, "minimum": 0, "maximum": 600},
+            clause_ref="Cl. 6.2",
+        )
+
+    sigma_s = stress_ratio * fy
+    tau_bd = get_bond_stress(fck, bar_type)
+
+    if tau_bd <= 0:
+        raise ComplianceError(
+            f"Invalid bond stress tau_bd = {tau_bd:.2f} N/mm² for fck={fck} N/mm², bar_type='{bar_type}'. "
+            "Bond stress must be positive per IS 456 Table 21. Check input parameters. [Cl. 26.2.1.1]",
+            details={"tau_bd": tau_bd, "fck": fck, "bar_type": bar_type},
+            clause_ref="Cl. 26.2.1.1",
+        )
+
+    ld = (bar_dia * sigma_s) / (4 * tau_bd)
+
+    return round(ld, 0)
+
+
+@clause("26.2.5")
+def calculate_lap_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    bar_type: str = "deformed",
+    splice_percent: float = 50.0,
+    is_seismic: bool = False,
+    in_tension: bool = True,
+) -> float:
+    """
+    Calculate lap splice length per IS 456 Cl 26.2.5.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        fck: Concrete strength (N/mm²)
+        fy: Steel yield strength (N/mm²)
+        bar_type: "plain" or "deformed"
+        splice_percent: Percentage of bars spliced at section
+        is_seismic: If True, use IS 13920 requirements (1.5×Ld)
+        in_tension: If True, tension splice; else compression splice
+
+    Returns:
+        Lap length (mm)
+
+    Raises:
+        ValueError: If bar_dia, fck, or fy are invalid (via calculate_development_length).
+    """
+    ld = calculate_development_length(bar_dia, fck, fy, bar_type)
+
+    if not in_tension:
+        # Compression lap = Ld
+        return round(ld, 0)
+
+    # Tension lap with enhancement factor
+    if is_seismic:
+        alpha = 1.5  # IS 13920 requirement
+    elif splice_percent > 50:
+        alpha = 1.3  # More than 50% bars spliced
+    else:
+        alpha = 1.0  # 50% or less bars spliced
+
+    lap = alpha * ld
+
+    return round(lap, 0)
+
+
+# =============================================================================
+# Anchorage and Hooks (IS 456 Cl 26.2.2 / 26.2.3.3 / SP 34)
+# =============================================================================
+
+
+@dataclass
+class HookDimensions:
+    """Dimensions for a standard hook per IS 456 Cl 26.2.2.
+
+    Attributes:
+        hook_type: Type of hook ("90", "135", "180")
+        bar_dia: Bar diameter in mm
+        internal_radius: Internal radius of bend in mm
+        extension: Straight extension after bend in mm
+        equivalent_length: Equivalent development length contribution in mm
+        total_length: Total bar length consumed by hook in mm
+    """
+
+    hook_type: str
+    bar_dia: float
+    internal_radius: float
+    extension: float
+    equivalent_length: float
+    total_length: float
+
+
+@clause("26.2.2.1")
+def get_min_bend_radius(bar_dia: float, bar_type: str = "deformed") -> float:
+    """
+    Get minimum internal bend radius per IS 456 Cl 26.2.2.1.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        bar_type: "deformed" or "plain"
+
+    Returns:
+        Minimum internal radius (mm)
+
+    Reference:
+        IS 456:2000, Clause 26.2.2.1
+        - Bars ≤ 25mm: 2φ
+        - Bars > 25mm: 3φ
+        - Plain bars: 2φ (all sizes)
+    """
+    if bar_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2.1"
+            ),
+            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            clause_ref="Cl. 26.2.2.1",
+        )
+
+    if bar_type == "plain":
+        return 2 * bar_dia
+
+    # Deformed bars
+    if bar_dia <= 25:
+        return 2 * bar_dia
+    else:
+        return 3 * bar_dia
+
+
+@clause("26.2.2")
+def calculate_standard_hook(
+    bar_dia: float,
+    hook_type: str = "180",
+    bar_type: str = "deformed",
+) -> HookDimensions:
+    """
+    Calculate standard hook dimensions per IS 456 Cl 26.2.2.
+
+    Standard hooks provide anchorage at bar ends where straight
+    development length is insufficient.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        hook_type: "90", "135", or "180"
+        bar_type: "deformed" or "plain"
+
+    Returns:
+        HookDimensions with all hook geometry
+
+    Raises:
+        ValueError: If hook_type is invalid
+        MaterialError: If bar_dia is invalid
+
+    Reference:
+        IS 456:2000, Clause 26.2.2
+        SP 34:1987, Section 3.2 (Hook details)
+
+    Notes:
+        - 180° hook: 4φ extension minimum
+        - 135° hook: 6φ extension minimum (seismic/stirrups)
+        - 90° hook: 12φ extension minimum
+        - Equivalent length = 8φ for deformed, 16φ for plain
+    """
+    if bar_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "bar diameter", bar_dia, 0, 50, "Cl. 26.2.2"
+            ),
+            details={"bar_dia": bar_dia, "minimum": 0, "maximum": 50},
+            clause_ref="Cl. 26.2.2",
+        )
+
+    valid_hook_types = ("90", "135", "180")
+    if hook_type not in valid_hook_types:
+        raise ValueError(
+            f"Invalid hook_type '{hook_type}'. Must be one of {valid_hook_types}."
+        )
+
+    # Internal bend radius
+    r = get_min_bend_radius(bar_dia, bar_type)
+
+    # Extension after bend (straight portion)
+    if hook_type == "180":
+        extension = max(4 * bar_dia, 65)  # Min 4φ or 65mm
+    elif hook_type == "135":
+        extension = 6 * bar_dia  # Min 6φ (seismic requirement)
+    else:  # 90°
+        extension = 12 * bar_dia  # Min 12φ
+
+    # Equivalent development length contribution
+    # IS 456 Cl 26.2.2.4: Standard hook = 8φ for deformed, 16φ for plain
+    if bar_type == "deformed":
+        equivalent_length = 8 * bar_dia
+    else:
+        equivalent_length = 16 * bar_dia
+
+    # Total length of bar consumed by hook
+    # Arc length + extension
+    angle_rad = math.radians(int(hook_type))
+    arc_length = angle_rad * (r + bar_dia / 2)
+    total_length = arc_length + extension
+
+    return HookDimensions(
+        hook_type=hook_type,
+        bar_dia=bar_dia,
+        internal_radius=round(r, 0),
+        extension=round(extension, 0),
+        equivalent_length=round(equivalent_length, 0),
+        total_length=round(total_length, 0),
+    )
+
+
+@clause("26.2.3")
+def calculate_anchorage_length(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    available_length: float,
+    bar_type: str = "deformed",
+    use_hook: bool = True,
+    hook_type: str = "180",
+    stress_ratio: float = 0.87,
+) -> dict:
+    """
+    Calculate anchorage arrangement combining straight + hook.
+
+    When straight development length isn't available, this function
+    determines if a hook can make up the difference.
+
+    Args:
+        bar_dia: Bar diameter (mm)
+        fck: Concrete strength (N/mm²)
+        fy: Steel yield strength (N/mm²)
+        available_length: Available straight length (mm)
+        bar_type: "deformed" or "plain"
+        use_hook: If True, calculate hook to supplement
+        hook_type: "90", "135", or "180"
+        stress_ratio: σs/fy ratio (default 0.87)
+
+    Returns:
+        dict with:
+            - required_ld: Required development length (mm)
+            - available_straight: Provided straight length (mm)
+            - shortfall: Gap between required and available (mm)
+            - hook: HookDimensions if hook used, else None
+            - total_provided: Total anchorage provided (mm)
+            - is_adequate: True if total_provided >= required_ld
+            - utilization: total_provided / required_ld ratio
+
+    Reference:
+        IS 456:2000, Clause 26.2.3
+    """
+    ld = calculate_development_length(bar_dia, fck, fy, bar_type, stress_ratio)
+
+    shortfall = max(0, ld - available_length)
+
+    if use_hook and shortfall > 0:
+        hook = calculate_standard_hook(bar_dia, hook_type, bar_type)
+        total_provided = available_length + hook.equivalent_length
+    else:
+        hook = None
+        total_provided = available_length
+
+    is_adequate = total_provided >= ld
+    utilization = total_provided / ld if ld > 0 else 0
+
+    return {
+        "required_ld": round(ld, 0),
+        "available_straight": round(available_length, 0),
+        "shortfall": round(shortfall, 0),
+        "hook": hook,
+        "total_provided": round(total_provided, 0),
+        "is_adequate": is_adequate,
+        "utilization": round(utilization, 3),
+    }
+
+
+@clause("26.2.2.2")
+def calculate_stirrup_anchorage(
+    stirrup_dia: float,
+    is_seismic: bool = False,
+) -> dict:
+    """
+    Calculate stirrup anchorage hook requirements per IS 456.
+
+    Stirrups require hooks at ends to be properly anchored.
+
+    Args:
+        stirrup_dia: Stirrup bar diameter (mm)
+        is_seismic: If True, use IS 13920 135° hook requirement
+
+    Returns:
+        dict with:
+            - hook_type: "135" for seismic, "90" for regular
+            - internal_radius: Bend radius (mm)
+            - extension: Straight extension after bend (mm)
+            - remarks: Code requirement notes
+
+    Reference:
+        IS 456:2000, Clause 26.2.2.2 (stirrup bends)
+        IS 13920:2016, Clause 6.3.5 (seismic stirrups)
+    """
+    if stirrup_dia <= 0:
+        raise MaterialError(
+            material_property_out_of_range(
+                "stirrup diameter", stirrup_dia, 0, 16, "Cl. 26.2.2.2"
+            ),
+            details={"stirrup_dia": stirrup_dia, "minimum": 0, "maximum": 16},
+            clause_ref="Cl. 26.2.2.2",
+        )
+
+    # Stirrups always use 2φ internal radius
+    internal_radius = 2 * stirrup_dia
+
+    if is_seismic:
+        hook_type = "135"
+        extension = max(6 * stirrup_dia, 75)  # IS 13920: 6d ≥ 75mm
+        remarks = "IS 13920 Cl 6.3.5: 135° hook, 6d ≥ 75mm extension"
+    else:
+        hook_type = "90"
+        extension = max(8 * stirrup_dia, 75)  # IS 456: 8d for 90° stirrup hook
+        remarks = "IS 456 Cl 26.2.2.2: 90° hook, 8d extension"
+
+    return {
+        "hook_type": hook_type,
+        "internal_radius": round(internal_radius, 0),
+        "extension": round(extension, 0),
+        "remarks": remarks,
+    }
+
+
+@dataclass
+class AnchorageCheckResult:
+    """Result of anchorage check at simple support.
+
+    Attributes:
+        is_adequate: True if anchorage is sufficient.
+        ld_required: Development length required (mm).
+        ld_available: Available development length at support (mm).
+        m1_enhancement: Enhancement factor from Mu/Vu term.
+        utilization: ld_required / ld_available (>1.0 fails).
+        errors: List of issues found.
+        warnings: List of warnings.
+    """
+
+    is_adequate: bool
+    ld_required: float
+    ld_available: float
+    m1_enhancement: float
+    utilization: float
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+
+
+@clause("26.2.3.3")
+def check_anchorage_at_simple_support(
+    bar_dia: float,
+    fck: float,
+    fy: float,
+    vu_kn: float,
+    support_width: float,
+    cover: float = 40.0,
+    bar_type: str = "deformed",
+    has_standard_bend: bool = True,
+) -> AnchorageCheckResult:
+    """
+    Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.
+
+    At simple supports, the positive moment tension reinforcement shall be
+    limited to a diameter such that Ld computed for fd does not exceed:
+
+        Ld ≤ (M1/V) + Lo
+
+    Where:
+        M1 = Moment of resistance of the section (assuming all bars are stressed
+             to fd = 0.87*fy). For a quick conservative check, use zero or
+             compute from provided As.
+        V = Shear force at the support (kN)
+        Lo = Sum of anchorage beyond center of support:
+             - For standard bend: 8φ or support_width/2, whichever is greater
+             - For straight extension: support_width/2 - cover
+
+    Args:
+        bar_dia: Bottom bar diameter (mm).
+        fck: Concrete strength (N/mm²).
+        fy: Steel yield strength (N/mm²).
+        vu_kn: Factored shear force at support (kN).
+        support_width: Width of support (mm).
+        cover: Clear cover at support (mm).
+        bar_type: "plain" or "deformed".
+        has_standard_bend: True if bar has 90° bend at support.
+
+    Returns:
+        AnchorageCheckResult with check status and details.
+
+    Example:
+        >>> result = check_anchorage_at_simple_support(
+        ...     bar_dia=16, fck=25, fy=500, vu_kn=80,
+        ...     support_width=230, cover=40
+        ... )
+        >>> result.is_adequate
+        True
+    """
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    # Validate inputs
+    if bar_dia <= 0:
+        errors.append(f"Invalid bar diameter: {bar_dia} mm must be > 0")
+        return AnchorageCheckResult(
+            is_adequate=False,
+            ld_required=0.0,
+            ld_available=0.0,
+            m1_enhancement=0.0,
+            utilization=0.0,
+            errors=errors,
+        )
+
+    if vu_kn <= 0:
+        errors.append(f"Shear force must be > 0, got {vu_kn} kN")
+        return AnchorageCheckResult(
+            is_adequate=False,
+            ld_required=0.0,
+            ld_available=0.0,
+            m1_enhancement=0.0,
+            utilization=0.0,
+            errors=errors,
+        )
+
+    # Calculate development length required
+    ld_required = calculate_development_length(bar_dia, fck, fy, bar_type)
+
+    # Calculate Lo (anchorage beyond center of support)
+    if has_standard_bend:
+        # With 90° bend: 8φ or support_width/2, whichever is greater
+        lo_bend = 8 * bar_dia
+        lo_support = support_width / 2
+        lo = max(lo_bend, lo_support)
+    else:
+        # Straight extension: support_width/2 - cover
+        lo = (support_width / 2) - cover
+        if lo < 0:
+            warnings.append(
+                f"Cover ({cover}mm) exceeds half support width ({support_width/2}mm), "
+                "standard bend recommended"
+            )
+            lo = 0.0
+
+    # For a conservative check, we assume M1/V contribution is zero
+    # (This is the strictest interpretation)
+    # In practice, M1 can be calculated from As_provided × 0.87 × fy × (d - 0.42*xu)
+    m1_v_contribution = 0.0  # Conservative: no moment enhancement
+
+    # Available anchorage length
+    ld_available = m1_v_contribution + lo
+
+    # M1/V enhancement factor (for reporting)
+    m1_enhancement = m1_v_contribution / ld_required if ld_required > 0 else 0.0
+
+    # Check utilization
+    if ld_available > 0:
+        utilization = ld_required / ld_available
+    else:
+        utilization = float("inf")
+        errors.append("No available anchorage length")
+
+    is_adequate = ld_required <= ld_available
+
+    if not is_adequate and not errors:
+        shortage = ld_required - ld_available
+        suggestions = []
+        if not has_standard_bend:
+            suggestions.append("add 90° standard bend")
+        suggestions.append("increase support width")
+        suggestions.append("reduce bar diameter")
+        errors.append(
+            f"Anchorage insufficient by {shortage:.0f}mm. "
+            f"Consider: {', '.join(suggestions)}"
+        )
+
+    return AnchorageCheckResult(
+        is_adequate=is_adequate,
+        ld_required=ld_required,
+        ld_available=ld_available,
+        m1_enhancement=m1_enhancement,
+        utilization=utilization,
+        errors=errors,
+        warnings=warnings,
+    )
+
+
+# =============================================================================
+# Bar Spacing (IS 456 Cl 26.3)
+# =============================================================================
+
+
+def calculate_bar_spacing(
+    b: float, cover: float, stirrup_dia: float, bar_dia: float, bar_count: int
+) -> float:
+    """
+    Calculate center-to-center spacing of bars.
+
+    Args:
+        b: Beam width (mm)
+        cover: Clear cover (mm)
+        stirrup_dia: Stirrup diameter (mm)
+        bar_dia: Main bar diameter (mm)
+        bar_count: Number of bars in layer
+
+    Returns:
+        Center-to-center spacing (mm)
+
+    Raises:
+        ConfigurationError: If bar_count <= 1
+
+    Notes:
+        Does not validate b/cover/stirrup_dia positivity; caller should enforce.
+    """
+    if bar_count <= 1:
+        raise ConfigurationError(
+            f"Bar count must be > 1 to calculate spacing (need at least 2 bars). Got bar_count={bar_count}. "
+            "[IS 456 Cl. 26.3.2]",
+            details={"bar_count": bar_count, "minimum": 2},
+            suggestion="Provide at least 2 bars for spacing calculation",
+            clause_ref="Cl. 26.3.2",
+        )
+
+    # Available width = b - 2*(cover + stirrup_dia) - bar_dia
+    # For n bars, we have (n-1) spaces
+    available = b - 2 * (cover + stirrup_dia) - bar_dia
+    spacing = available / (bar_count - 1)
+
+    return round(spacing, 0)
+
+
+def check_min_spacing(
+    spacing: float, bar_dia: float, agg_size: float = 20.0
+) -> tuple[bool, str]:
+    """
+    Check if bar spacing meets IS 456 Cl 26.3.2 requirements.
+
+    Minimum = max(bar_dia, agg_size + 5mm, 25mm)
+
+    Args:
+        spacing: Actual center-to-center spacing (mm)
+        bar_dia: Bar diameter (mm)
+        agg_size: Maximum aggregate size (mm)
+
+    Returns:
+        (is_valid, message)
+
+    Reference:
+        IS 456:2000, Clause 26.3.2
+    """
+    min_spacing = max(bar_dia, agg_size + 5, 25)
+
+    if spacing >= min_spacing:
+        return True, f"OK (min {min_spacing} mm)"
+    else:
+        return False, f"FAIL: Spacing {spacing} mm < min {min_spacing} mm"
+
+
+@clause("26.5.1.3")
+def check_side_face_reinforcement(
+    D: float, b: float, cover: float
+) -> tuple[bool, float, float]:
+    """
+    Check if side-face reinforcement is required per IS 456 Cl 26.5.1.3.
+
+    For beams with depth > 750 mm, side-face reinforcement is required
+    to control thermal and shrinkage cracks.
+
+    Requirements (IS 456 Cl 26.5.1.3):
+    - Required when D > 750 mm
+    - Area: 0.1% of web area per face
+    - Spacing: ≤ 300 mm
+
+    Args:
+        D: Overall beam depth (mm)
+        b: Beam width (mm)
+        cover: Clear cover (mm)
+
+    Returns:
+        (is_required, area_per_face_mm2, max_spacing_mm)
+        - is_required: True if D > 750 mm
+        - area_per_face_mm2: Required area per face (0 if not required)
+        - max_spacing_mm: Maximum spacing (300 mm if required, 0 otherwise)
+
+    Reference:
+        IS 456:2000, Clause 26.5.1.3
+    """
+    # Threshold depth for side-face reinforcement
+    DEPTH_THRESHOLD = 750.0  # mm
+
+    # Required percentage of web area per face
+    PERCENTAGE_WEB_AREA = 0.001  # 0.1%
+
+    # Maximum spacing limit
+    MAX_SPACING = 300.0  # mm
+
+    if D <= DEPTH_THRESHOLD:
+        return False, 0.0, 0.0
+
+    # Web height = D - 2*cover (approximate; exact depends on bar diameters)
+    web_height = D - 2 * cover
+
+    # Web area per face = width * web height
+    web_area_per_face = b * web_height
+
+    # Required steel area per face = 0.1% of web area
+    area_per_face = PERCENTAGE_WEB_AREA * web_area_per_face
+
+    return True, round(area_per_face, 1), MAX_SPACING
+
+
+# =============================================================================
+# Bar Arrangement
+# =============================================================================
+
+
+def select_bar_arrangement(
+    ast_required: float,
+    b: float,
+    cover: float,
+    stirrup_dia: float = 8.0,
+    preferred_dia: float | None = None,
+    max_layers: int = 2,
+) -> BarArrangement:
+    """
+    Select a practical bar arrangement to provide required steel area.
+
+    Args:
+        ast_required: Required steel area (mm²)
+        b: Beam width (mm)
+        cover: Clear cover (mm)
+        stirrup_dia: Stirrup diameter (mm)
+        preferred_dia: Preferred bar diameter (mm), or None for auto-select
+        max_layers: Maximum number of layers allowed
+
+    Returns:
+        BarArrangement with practical bar selection
+
+    Notes:
+        - Returns a deterministic fallback (2-12mm) for invalid inputs.
+        - Tries preferred diameter first, then larger standard diameters.
+        - Uses max_layers to satisfy spacing before increasing bar size.
+    """
+    if ast_required <= 0:
+        return BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=0, layers=1
+        )
+
+    if b <= 0 or cover < 0 or stirrup_dia <= 0:
+        # Keep behavior deterministic; callers can mark invalid if needed.
+        return BarArrangement(
+            count=2, diameter=12, area_provided=226, spacing=0, layers=1
+        )
+
+    # Auto-select diameter based on area
+    if preferred_dia is None:
+        if ast_required < 400:
+            preferred_dia = 12
+        elif ast_required < 1000:
+            preferred_dia = 16
+        elif ast_required < 2000:
+            preferred_dia = 20
+        else:
+            preferred_dia = 25
+
+    # Try to satisfy min-spacing by increasing layers and/or increasing diameter.
+    # Deterministic order: start from preferred_dia, then larger standard diameters.
+    start_dia = float(preferred_dia)
+    dia_candidates = [start_dia] + [
+        float(d) for d in STANDARD_BAR_DIAMETERS if float(d) > start_dia
+    ]
+
+    last_count = 2
+    last_dia = float(dia_candidates[-1])
+    last_spacing = 0.0
+    last_layers = 1
+
+    for dia in dia_candidates:
+        dia = float(dia)
+        bar_area = math.pi * (dia / 2) ** 2
+        count_float = ast_required / bar_area
+        count = max(2, math.ceil(count_float))  # Minimum 2 bars
+
+        for layers in range(1, max_layers + 1):
+            bars_per_layer = math.ceil(count / layers)
+            spacing = calculate_bar_spacing(b, cover, stirrup_dia, dia, bars_per_layer)
+            is_valid, _ = check_min_spacing(spacing, dia)
+
+            last_count = count
+            last_dia = dia
+            last_spacing = spacing
+            last_layers = layers
+
+            if is_valid:
+                area_provided = count * bar_area
+                return BarArrangement(
+                    count=count,
+                    diameter=dia,
+                    area_provided=round(area_provided, 0),
+                    spacing=round(spacing, 0),
+                    layers=layers,
+                )
+
+    # If we cannot satisfy spacing, return the best-effort arrangement deterministically.
+    area_provided = last_count * (math.pi * (last_dia / 2) ** 2)
+    return BarArrangement(
+        count=last_count,
+        diameter=last_dia,
+        area_provided=round(area_provided, 0),
+        spacing=round(last_spacing, 0),
+        layers=last_layers,
+    )
+
+
+# =============================================================================
+# Stirrup Legs
+# =============================================================================
+
+
+def get_stirrup_legs(b: float) -> int:
+    """
+    Determine number of stirrup legs based on beam width.
+
+    IS 456 Cl 26.5.1.5: If width > 450mm, use more legs.
+
+    Args:
+        b: Beam width (mm)
+
+    Returns:
+        Number of legs (2, 4, or 6)
+
+    Notes:
+        Width thresholds follow IS 456 Cl. 26.5.1.5 guidance.
+    """
+    if b <= 300:
+        return 2
+    elif b <= 450:
+        return 2  # Can use 2 or 4
+    elif b <= 600:
+        return 4
+    else:
+        return 6
+
+
+# =============================================================================
+# Format Helpers
+# =============================================================================
+
+
+def format_bar_callout(count: int, diameter: float) -> str:
+    """
+    Format bar callout in standard notation.
+
+    Examples: "3-16φ", "4-20φ + 2-16φ"
+
+    Args:
+        count: Number of bars
+        diameter: Bar diameter (mm)
+
+    Returns:
+        Formatted string
+
+    Notes:
+        Diameter is formatted as an integer for standard callouts.
+    """
+    return f"{count}-{int(diameter)}φ"
+
+
+def format_stirrup_callout(legs: int, diameter: float, spacing: float) -> str:
+    """
+    Format stirrup callout.
+
+    Example: "2L-8φ@150 c/c"
+
+    Args:
+        legs: Number of legs
+        diameter: Stirrup diameter (mm)
+        spacing: Spacing (mm)
+
+    Returns:
+        Formatted string
+
+    Notes:
+        Diameter and spacing are formatted as integers for standard callouts.
+    """
+    return f"{legs}L-{int(diameter)}φ@{int(spacing)} c/c"
+
+
+# =============================================================================
+# Main Detailing Function
+# =============================================================================
+
+
+def create_beam_detailing(
+    beam_id: str,
+    story: str,
+    b: float,
+    D: float,
+    span: float,
+    cover: float,
+    fck: float,
+    fy: float,
+    ast_start: float,
+    ast_mid: float,
+    ast_end: float,
+    asc_start: float = 0,
+    asc_mid: float = 0,
+    asc_end: float = 0,
+    stirrup_dia: float = 8,
+    stirrup_spacing_start: float = 150,
+    stirrup_spacing_mid: float = 200,
+    stirrup_spacing_end: float = 150,
+    is_seismic: bool = False,
+) -> BeamDetailingResult:
+    """
+    Create complete beam detailing from design output.
+
+    Args:
+        beam_id: Beam identifier
+        story: Story identifier
+        b: Beam width (mm)
+        D: Beam depth (mm)
+        span: Beam span length (mm)
+        cover: Clear cover (mm)
+        fck: Concrete strength (N/mm²)
+        fy: Steel yield strength (N/mm²)
+        ast_start, ast_mid, ast_end: Required tension steel at each section (mm²)
+        asc_start, asc_mid, asc_end: Required compression steel (mm²)
+        stirrup_dia: Stirrup diameter (mm)
+        stirrup_spacing_start/mid/end: Stirrup spacing (mm)
+        is_seismic: Apply IS 13920 requirements
+
+    Returns:
+        BeamDetailingResult with complete detailing information
+
+    Notes:
+        - If Asc is not provided, uses 0.25 × Ast as a drafting heuristic.
+        - Uses the maximum bar diameter for development and lap lengths.
+        - Flags spacing violations via is_valid/remarks; does not raise.
+    """
+    assumption_notes: list[str] = []
+
+    # Select bar arrangements
+    # Note: At supports (start/end), tension is typically top; at mid, tension is bottom
+    # This simplification assumes Ast is always the tension side
+
+    # Note: If compression steel (Asc) is not provided, we use a heuristic 25% of Ast.
+    # This is a drafting aid only; callers should provide explicit Asc when known.
+    if asc_start <= 0 and ast_start > 0:
+        assumption_notes.append(
+            "Top steel at start defaulted to 0.25×Ast (Asc not provided)."
+        )
+    if asc_mid <= 0 and ast_mid > 0:
+        assumption_notes.append(
+            "Top steel at mid defaulted to 0.25×Ast (Asc not provided)."
+        )
+    if asc_end <= 0 and ast_end > 0:
+        assumption_notes.append(
+            "Top steel at end defaulted to 0.25×Ast (Asc not provided)."
+        )
+
+    top_start = select_bar_arrangement(
+        asc_start if asc_start > 0 else ast_start * 0.25, b, cover, stirrup_dia
+    )
+    top_mid = select_bar_arrangement(
+        asc_mid if asc_mid > 0 else ast_mid * 0.25, b, cover, stirrup_dia
+    )
+    top_end = select_bar_arrangement(
+        asc_end if asc_end > 0 else ast_end * 0.25, b, cover, stirrup_dia
+    )
+
+    bot_start = select_bar_arrangement(ast_start, b, cover, stirrup_dia)
+    bot_mid = select_bar_arrangement(ast_mid, b, cover, stirrup_dia)
+    bot_end = select_bar_arrangement(ast_end, b, cover, stirrup_dia)
+
+    # Use max diameter for Ld
+    max_dia = max(
+        top_start.diameter,
+        top_mid.diameter,
+        top_end.diameter,
+        bot_start.diameter,
+        bot_mid.diameter,
+        bot_end.diameter,
+    )
+
+    # Calculate development/lap lengths
+    ld_tension = calculate_development_length(max_dia, fck, fy)
+    ld_compression = ld_tension  # Same for compression
+    lap_length = calculate_lap_length(max_dia, fck, fy, is_seismic=is_seismic)
+
+    # Stirrup arrangements
+    legs = get_stirrup_legs(b)
+    zone_length = span / 4  # Approximate zone lengths
+
+    stirrups = [
+        StirrupArrangement(stirrup_dia, legs, stirrup_spacing_start, zone_length),
+        StirrupArrangement(stirrup_dia, legs, stirrup_spacing_mid, span / 2),
+        StirrupArrangement(stirrup_dia, legs, stirrup_spacing_end, zone_length),
+    ]
+
+    # Spacing sanity-check (horizontal clear spacing). Vertical layer clearance is not modeled.
+    spacing_violations: list[str] = []
+    for label, arr in [
+        ("top_start", top_start),
+        ("top_mid", top_mid),
+        ("top_end", top_end),
+        ("bot_start", bot_start),
+        ("bot_mid", bot_mid),
+        ("bot_end", bot_end),
+    ]:
+        ok, msg = check_min_spacing(arr.spacing, arr.diameter)
+        if not ok:
+            spacing_violations.append(f"{label}: {msg}")
+
+    is_valid = len(spacing_violations) == 0
+    remarks_parts: list[str] = []
+    if is_valid:
+        remarks_parts.append("Detailing complete")
+    else:
+        remarks_parts.append("Detailing has spacing violations")
+        remarks_parts.extend(spacing_violations)
+    remarks_parts.extend(assumption_notes)
+
+    return BeamDetailingResult(
+        beam_id=beam_id,
+        story=story,
+        b=b,
+        D=D,
+        span=span,
+        cover=cover,
+        top_bars=[top_start, top_mid, top_end],
+        bottom_bars=[bot_start, bot_mid, bot_end],
+        stirrups=stirrups,
+        ld_tension=ld_tension,
+        ld_compression=ld_compression,
+        lap_length=lap_length,
+        is_valid=is_valid,
+        remarks="; ".join(remarks_parts),
+    )

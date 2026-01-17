@@ -1,0 +1,109 @@
+{
+  "category": "developers",
+  "description": "Developer documentation for building applications on top of the library",
+  "files": [
+    {
+      "file": "README.md",
+      "title": "Developer Documentation Hub",
+      "type": "hub",
+      "description": "Central navigation for developers building on the platform",
+      "audience": "Developers",
+      "importance": "Critical",
+      "tags": ["navigation", "hub", "developers"]
+    },
+    {
+      "file": "platform-guide.md",
+      "title": "Build on Platform",
+      "type": "guide",
+      "description": "Comprehensive guide to integrating the library into your applications",
+      "audience": "Developers",
+      "importance": "Critical",
+      "sections": [
+        "Quick Start",
+        "Core Concepts",
+        "Integration Patterns",
+        "Advanced Topics",
+        "Best Practices"
+      ],
+      "tags": ["guide", "integration", "API", "quickstart", "examples"]
+    },
+    {
+      "file": "integration-examples.md",
+      "title": "Integration Examples",
+      "type": "examples",
+      "description": "Real-world copy-paste-runnable code samples for common integration scenarios",
+      "audience": "Developers",
+      "importance": "High",
+      "examples": [
+        "PDF Report Generation",
+        "ETABS CSV Batch Processing",
+        "REST API Microservice",
+        "Streamlit Dashboard",
+        "Excel VBA Integration",
+        "Django Integration",
+        "CLI Tool",
+        "JSON API Wrapper"
+      ],
+      "tags": ["examples", "code", "integration", "PDF", "REST API", "batch"]
+    },
+    {
+      "file": "extension-guide.md",
+      "title": "Extension Guide",
+      "type": "guide",
+      "description": "How to extend the library without modifying core code",
+      "audience": "Developers",
+      "importance": "High",
+      "patterns": [
+        "Wrapper Functions",
+        "Custom Design Codes",
+        "Custom Output Formats",
+        "Plugin Architecture"
+      ],
+      "tags": ["extension", "plugins", "customization", "design codes"]
+    },
+    {
+      "file": "api-stability.md",
+      "title": "API Stability & Versioning Policy",
+      "type": "policy",
+      "description": "Versioning scheme, breaking changes policy, and migration guides",
+      "audience": "Developers",
+      "importance": "Critical",
+      "sections": [
+        "Versioning Scheme",
+        "Stability Guarantees",
+        "Public API Surface",
+        "Breaking Change Policy",
+        "Safe Upgrade Practices",
+        "Version History",
+        "Migration Guides"
+      ],
+      "tags": ["versioning", "API", "stability", "migration", "policy"]
+    }
+  ],
+  "getting_started": {
+    "recommended_order": [
+      "README.md",
+      "platform-guide.md",
+      "integration-examples.md",
+      "extension-guide.md",
+      "api-stability.md"
+    ],
+    "quick_wins": [
+      "platform-guide.md#quick-start",
+      "integration-examples.md#pdf-report-generation",
+      "extension-guide.md#wrapper-functions"
+    ]
+  },
+  "related_docs": [
+    "../reference/api.md",
+    "../reference/api-stability.md",
+    "../getting-started/python-quickstart.md",
+    "../contributing/development-guide.md"
+  ],
+  "metadata": {
+    "last_updated": "2026-01-15",
+    "version": "1.0.0",
+    "total_files": 5,
+    "total_lines": 3800
+  }
+}

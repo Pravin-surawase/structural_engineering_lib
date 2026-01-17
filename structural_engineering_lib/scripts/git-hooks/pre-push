@@ -1,0 +1,69 @@
+#!/bin/bash
+# Pre-push hook that enforces automation scripts
+# This hook blocks manual git push unless AI_COMMIT_ACTIVE or SAFE_PUSH_ACTIVE is set
+#
+# Installed via: ./scripts/install_git_hooks.sh
+# Part of: Git Automation Framework (Session 19P6)
+#
+# When to bypass (set by automation scripts):
+#   AI_COMMIT_ACTIVE=1 - Set by ai_commit.sh
+#   SAFE_PUSH_ACTIVE=1 - Set by safe_push.sh
+
+# Skip if running through automation
+if [[ -n "$AI_COMMIT_ACTIVE" ]] || [[ -n "$SAFE_PUSH_ACTIVE" ]]; then
+    # Allow - running through proper automation
+    exit 0
+fi
+
+# Skip if running in CI
+if [[ -n "$CI" ]] || [[ -n "$GITHUB_ACTIONS" ]]; then
+    exit 0
+fi
+
+# Skip if explicitly bypassed (for emergencies only)
+if [[ -n "$GIT_HOOKS_BYPASS" ]]; then
+    echo "⚠️  Git hooks bypassed (GIT_HOOKS_BYPASS set)"
+    exit 0
+fi
+
+# Block manual push
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+# OPS-01: Log blocked event for analysis
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+LOG_FILE="$PROJECT_ROOT/logs/git_workflow.log"
+if [[ -d "$PROJECT_ROOT/logs" ]]; then
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] BLOCKED: Manual git push attempted (use ai_commit.sh)" >> "$LOG_FILE"
+fi
+
+echo ""
+echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${RED}❌ MANUAL GIT PUSH BLOCKED${NC}"
+echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+echo -e "${YELLOW}This repository requires pushes through automation scripts.${NC}"
+echo ""
+echo -e "${YELLOW}Why?${NC} Automation ensures:"
+echo "  • Conflict-free merges with automatic resolution"
+echo "  • Proper handling of pre-commit hook modifications"
+echo "  • Fast-forward only (clean history)"
+echo "  • Correct branch syncing before push"
+echo ""
+echo -e "${GREEN}✅ Quick Start:${NC}"
+echo "   ./scripts/ai_commit.sh \"your commit message\""
+echo ""
+echo -e "${YELLOW}That's it!${NC} The script handles all push logic automatically"
+echo ""
+echo -e "${YELLOW}Stuck? Try:${NC}"
+echo "   ./scripts/git_ops.sh --status    (shows what's wrong + recovery)"
+echo ""
+echo -e "${YELLOW}Last resort (NOT recommended):${NC}"
+echo "   GIT_HOOKS_BYPASS=1 git push"
+echo ""
+echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+
+exit 1

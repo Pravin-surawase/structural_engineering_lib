@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "description": "Parity test vectors for Python ↔ VBA validation",
+  "created": "2025-12-26",
+  "tolerance_rules": {
+    "ast_mm2": 1.0,
+    "asc_mm2": 1.0,
+    "mu_knm": 0.01,
+    "spacing_mm": 1.0,
+    "stress_nmm2": 0.01,
+    "length_mm": 1.0,
+    "ratio": 0.0001
+  },
+  "flexure_singly": [
+    {
+      "id": "FSR-001",
+      "description": "Standard M20/Fe415 beam - under-reinforced",
+      "inputs": {
+        "b_mm": 230,
+        "d_mm": 450,
+        "d_total_mm": 500,
+        "mu_knm": 100,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415
+      },
+      "expected": {
+        "mu_lim_knm": 128.513,
+        "ast_required_mm2": 719.62,
+        "xu_mm": 156.89,
+        "xu_max_mm": 216.0,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": true
+      }
+    },
+    {
+      "id": "FSR-002",
+      "description": "M25/Fe500 beam - under-reinforced",
+      "inputs": {
+        "b_mm": 300,
+        "d_mm": 450,
+        "d_total_mm": 500,
+        "mu_knm": 150,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "expected": {
+        "mu_lim_knm": 202.914,
+        "ast_required_mm2": 881.88,
+        "xu_mm": 143.20,
+        "xu_max_mm": 207.0,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": true
+      }
+    },
+    {
+      "id": "FSR-003",
+      "description": "Small beam - low moment",
+      "inputs": {
+        "b_mm": 200,
+        "d_mm": 350,
+        "d_total_mm": 400,
+        "mu_knm": 40,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415
+      },
+      "expected": {
+        "mu_lim_knm": 67.60,
+        "ast_required_mm2": 353.80,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": true
+      }
+    }
+  ],
+  "flexure_doubly": [
+    {
+      "id": "FDR-001",
+      "description": "Standard doubly reinforced beam",
+      "inputs": {
+        "b_mm": 300,
+        "d_mm": 450,
+        "d_dash_mm": 50,
+        "d_total_mm": 500,
+        "mu_knm": 250,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "expected": {
+        "mu_lim_knm": 202.914,
+        "ast_required_mm2": 1550.36,
+        "asc_required_mm2": 296.56,
+        "section_type": "OVER_REINFORCED",
+        "is_safe": true
+      }
+    },
+    {
+      "id": "FDR-002",
+      "description": "Heavy moment requiring compression steel",
+      "inputs": {
+        "b_mm": 300,
+        "d_mm": 550,
+        "d_dash_mm": 50,
+        "d_total_mm": 600,
+        "mu_knm": 400,
+        "fck_nmm2": 30,
+        "fy_nmm2": 500
+      },
+      "expected": {
+        "ast_required_mm2": 2043.66,
+        "asc_required_mm2": 181.19,
+        "section_type": "OVER_REINFORCED",
+        "is_safe": true
+      }
+    }
+  ],
+  "flexure_flanged": [
+    {
+      "id": "FFL-001",
+      "description": "T-beam with NA in flange",
+      "inputs": {
+        "bw_mm": 300,
+        "bf_mm": 1000,
+        "d_mm": 500,
+        "Df_mm": 150,
+        "d_total_mm": 550,
+        "mu_knm": 200,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "expected": {
+        "mu_lim_knm": 835.04,
+        "ast_required_mm2": 956.60,
+        "xu_mm": 46.24,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": true
+      }
+    },
+    {
+      "id": "FFL-002",
+      "description": "T-beam with NA in web",
+      "inputs": {
+        "bw_mm": 300,
+        "bf_mm": 800,
+        "d_mm": 450,
+        "Df_mm": 100,
+        "d_total_mm": 500,
+        "mu_knm": 300,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500
+      },
+      "expected": {
+        "ast_required_mm2": 1688.76,
+        "section_type": "UNDER_REINFORCED",
+        "is_safe": true
+      }
+    }
+  ],
+  "shear": [
+    {
+      "id": "SHR-001",
+      "description": "Shear design with stirrups required",
+      "inputs": {
+        "vu_kn": 150,
+        "b_mm": 230,
+        "d_mm": 450,
+        "fck_nmm2": 20,
+        "fy_nmm2": 415,
+        "asv_mm2": 100,
+        "pt_percent": 1.0
+      },
+      "expected": {
+        "tv_nmm2": 1.449,
+        "tc_nmm2": 0.62,
+        "tc_max_nmm2": 2.8,
+        "vus_kn": 85.83,
+        "spacing_mm": 175.0,
+        "is_safe": true
+      }
+    },
+    {
+      "id": "SHR-002",
+      "description": "Low shear - minimum stirrups only",
+      "inputs": {
+        "vu_kn": 50,
+        "b_mm": 300,
+        "d_mm": 450,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "asv_mm2": 100,
+        "pt_percent": 0.5
+      },
+      "expected": {
+        "tv_nmm2": 0.370,
+        "tc_nmm2": 0.49,
+        "is_safe": true
+      }
+    },
+    {
+      "id": "SHR-003",
+      "description": "High shear - close stirrup spacing",
+      "inputs": {
+        "vu_kn": 300,
+        "b_mm": 300,
+        "d_mm": 550,
+        "fck_nmm2": 30,
+        "fy_nmm2": 500,
+        "asv_mm2": 157,
+        "pt_percent": 1.5
+      },
+      "expected": {
+        "tv_nmm2": 1.818,
+        "tc_nmm2": 0.76,
+        "tc_max_nmm2": 3.5,
+        "is_safe": true
+      }
+    }
+  ],
+  "detailing": [
+    {
+      "id": "DET-001",
+      "description": "Development length - 16mm bar M25",
+      "inputs": {
+        "bar_dia_mm": 16,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "bar_type": "deformed"
+      },
+      "expected": {
+        "tau_bd_nmm2": 2.24,
+        "ld_mm": 777
+      }
+    },
+    {
+      "id": "DET-002",
+      "description": "Development length - 20mm bar M30",
+      "inputs": {
+        "bar_dia_mm": 20,
+        "fck_nmm2": 30,
+        "fy_nmm2": 500,
+        "bar_type": "deformed"
+      },
+      "expected": {
+        "tau_bd_nmm2": 2.40,
+        "ld_mm": 906
+      }
+    },
+    {
+      "id": "DET-003",
+      "description": "Lap length - seismic zone",
+      "inputs": {
+        "bar_dia_mm": 16,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "bar_type": "deformed",
+        "is_seismic": true,
+        "in_tension": true
+      },
+      "expected": {
+        "lap_length_mm": 1166
+      }
+    },
+    {
+      "id": "DET-004",
+      "description": "Bar spacing calculation",
+      "inputs": {
+        "b_mm": 300,
+        "cover_mm": 40,
+        "stirrup_dia_mm": 8,
+        "bar_dia_mm": 16,
+        "bar_count": 3
+      },
+      "expected": {
+        "spacing_mm": 94
+      }
+    }
+  ],
+  "serviceability": [
+    {
+      "id": "SVC-001",
+      "description": "Deflection check - simply supported",
+      "inputs": {
+        "span_mm": 4000,
+        "d_mm": 450,
+        "support_condition": "simply_supported"
+      },
+      "expected": {
+        "ld_ratio": 8.8889,
+        "allowable_ld": 20,
+        "is_ok": true
+      }
+    },
+    {
+      "id": "SVC-002",
+      "description": "Deflection check - continuous",
+      "inputs": {
+        "span_mm": 6000,
+        "d_mm": 500,
+        "support_condition": "continuous"
+      },
+      "expected": {
+        "ld_ratio": 12.0,
+        "allowable_ld": 26,
+        "is_ok": true
+      }
+    },
+    {
+      "id": "SVC-003",
+      "description": "Crack width check - moderate exposure",
+      "inputs": {
+        "exposure_class": "moderate",
+        "limit_mm": 0.3,
+        "acr_mm": 50,
+        "cmin_mm": 25,
+        "h_mm": 500,
+        "x_mm": 200,
+        "epsilon_m": 0.001
+      },
+      "expected": {
+        "wcr_mm": 0.129,
+        "is_ok": true
+      }
+    }
+  ],
+  "ductile": [
+    {
+      "id": "DUC-001",
+      "description": "IS 13920 ductility check - compliant",
+      "inputs": {
+        "b_mm": 300,
+        "D_mm": 500,
+        "span_mm": 4000,
+        "fck_nmm2": 25,
+        "fy_nmm2": 500,
+        "ast_top_mm2": 942,
+        "ast_bottom_mm2": 628,
+        "stirrup_dia_mm": 8,
+        "stirrup_spacing_mm": 100
+      },
+      "expected": {
+        "min_width_ok": true,
+        "min_depth_ok": true,
+        "ld_ratio_ok": true,
+        "min_steel_ok": true,
+        "overall_ok": true
+      }
+    }
+  ],
+  "bbs": [
+    {
+      "id": "BBS-001",
+      "description": "Bar weight calculation - 16mm, 1m",
+      "inputs": {
+        "diameter_mm": 16,
+        "length_mm": 1000
+      },
+      "expected": {
+        "weight_kg": 1.58
+      }
+    },
+    {
+      "id": "BBS-002",
+      "description": "Stirrup cut length",
+      "inputs": {
+        "b_mm": 300,
+        "D_mm": 500,
+        "cover_mm": 40,
+        "stirrup_dia_mm": 8
+      },
+      "expected": {
+        "cut_length_mm": 1410
+      }
+    }
+  ]
+}

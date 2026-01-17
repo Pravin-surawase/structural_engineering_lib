@@ -1,0 +1,43 @@
+name: Root File Limit Check
+
+# Agent 9 Governance - TASK-281
+# Purpose: Prevent documentation sprawl in project root
+# Target: ≤10 files (.md, .txt, .sh) in root directory
+# Research: Industry standard from case studies (Prettier: 5, Vitest: 2, tRPC: 2)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '*.md'
+      - '*.txt'
+      - '*.sh'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '*.md'
+      - '*.txt'
+      - '*.sh'
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  check-root-files:
+    name: Check Root File Count
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x scripts/check_root_file_count.sh
+
+      - name: Run root file count check
+        run: ./scripts/check_root_file_count.sh
+
+      - name: Report status
+        if: success()
+        run: |
+          echo "✅ Root file limit check passed"
+          echo "Documentation sprawl is under control"
