@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-17T14:12:50.885118",
+  "generated": "2026-01-17T14:13:59.886808",
   "total_docs": 313,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -3884,7 +3884,7 @@
         "Open Risks",
         "Suggested Tasks (Backlog)"
       ],
-      "size_bytes": 4929
+      "size_bytes": 4928
     },
     "docs/planning/agent8-git-docs-professional-consolidation.md": {
       "title": "Agent 8 & Git Automation Documentation: Professional Consolidation",

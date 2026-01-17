@@ -94,7 +94,6 @@ auto-run analysis if needed, pull required tables, and feed batch design + 3D.
 ---
 
 ## Phase 4 — Hosted Streamlit Support (Future)
-
 ---
 
 ## Phase 4 — Hosted Streamlit Support (Future)
