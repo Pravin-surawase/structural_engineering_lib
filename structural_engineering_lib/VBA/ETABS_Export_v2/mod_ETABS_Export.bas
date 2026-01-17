@@ -1,0 +1,698 @@
+Attribute VB_Name = "mod_ETABS_Export"
+Option Explicit
+
+'==============================================================================
+' ETABS EXPORT - DATA EXPORT MODULE v2.1
+'==============================================================================
+' Purpose: Export all ETABS data to CSV files
+'
+' Exports:
+'   - Beam Forces (PRIMARY - required for Streamlit)
+'   - Base Reactions
+'   - Column Design Results
+'   - Beam Design Results
+'   - Sections
+'   - Stories
+'
+' Based on:
+'   - Legacy working code (2019-2021)
+'   - ETABS API patterns from CSI documentation
+'   - Efficient GetAllFrames pattern
+'
+' Author: Pravin Surawase
+' License: MIT
+' Version: 2.1.0
+'==============================================================================
+
+'------------------------------------------------------------------------------
+' BEAM FORCES EXPORT (PRIMARY)
+' This is the main export for Streamlit app
+'------------------------------------------------------------------------------
+
+' Export beam forces - tries DatabaseTables first, falls back to Direct API
+Public Function ExportBeamForces(sapModel As Object, folder As String, units As UnitConversion) As Boolean
+    On Error GoTo ExportError
+    
+    Dim csvPath As String
+    csvPath = folder & "\beam_forces.csv"
+    
+    LogInfo "Exporting beam forces to: " & csvPath
+    
+    ' Method 1: Try DatabaseTables (fastest)
+    Dim success As Boolean
+    success = ExportForcesDatabaseTables(sapModel, csvPath)
+    
+    If success Then
+        LogInfo "? Beam forces exported (DatabaseTables method)"
+        ExportBeamForces = True
+        Exit Function
+    End If
+    
+    ' Method 2: Fallback to Direct API
+    LogWarning "DatabaseTables failed, using Direct API..."
+    success = ExportForcesDirectAPI(sapModel, csvPath, units)
+    
+    If success Then
+        LogInfo "? Beam forces exported (Direct API method)"
+        ExportBeamForces = True
+    Else
+        LogError "Both export methods failed"
+        ExportBeamForces = False
+    End If
+    Exit Function
+
+ExportError:
+    LogError "ExportBeamForces error: " & Err.Description
+    ExportBeamForces = False
+End Function
+
+' Method 1: DatabaseTables export (fastest)
+Private Function ExportForcesDatabaseTables(sapModel As Object, csvPath As String) As Boolean
+    On Error Resume Next
+    
+    ' Try multiple table name variants (ETABS versions differ)
+    Dim tableNames() As Variant
+    tableNames = Array( _
+        "Element Forces - Frames", _
+        "Element Forces-Frames", _
+        "Frame Element Forces", _
+        "Frame Forces")
+    
+    Dim ret As Long
+    Dim tableName As Variant
+    
+    For Each tableName In tableNames
+        Err.Clear
+        LogDebug "Trying table: " & tableName
+        
+        ret = sapModel.DatabaseTables.GetTableForDisplayCSVFile( _
+            CStr(tableName), csvPath, False, 0, "")
+        
+        If Err.Number = 0 And ret = 0 Then
+            If FileExists(csvPath) Then
+                Dim rows As Long
+                rows = CountCSVRows(csvPath)
+                If rows > 1 Then
+                    LogInfo "  Table '" & tableName & "' exported: " & rows & " rows"
+                    ExportForcesDatabaseTables = True
+                    Exit Function
+                End If
+            End If
+        End If
+    Next
+    
+    ExportForcesDatabaseTables = False
+End Function
+
+' Method 2: Direct API export (more reliable, slower)
+Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, units As UnitConversion) As Boolean
+    On Error GoTo DirectError
+    
+    LogInfo "Using Direct API method..."
+    
+    ' Deselect all, then select all cases for output
+    On Error Resume Next
+    sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
+    
+    ' Get all load cases
+    Dim numCases As Long
+    Dim caseNames() As String
+    sapModel.LoadCases.GetNameList numCases, caseNames
+    
+    If numCases = 0 Then
+        LogError "No load cases found"
+        ExportForcesDirectAPI = False
+        Exit Function
+    End If
+    
+    ' Select all cases for output
+    Dim c As Long
+    For c = LBound(caseNames) To UBound(caseNames)
+        sapModel.Results.Setup.SetCaseSelectedForOutput caseNames(c)
+    Next c
+    
+    ' Also select all combos
+    Dim numCombos As Long
+    Dim comboNames() As String
+    sapModel.RespCombo.GetNameList numCombos, comboNames
+    If numCombos > 0 Then
+        For c = LBound(comboNames) To UBound(comboNames)
+            sapModel.Results.Setup.SetComboSelectedForOutput comboNames(c)
+        Next c
+    End If
+    On Error GoTo DirectError
+    
+    ' Get ALL frames efficiently (from legacy COLUMNS.bas pattern)
+    Dim NumberNames As Long
+    Dim MyName() As String
+    Dim PropName() As String, StoryName() As String
+    Dim PointName1() As String, PointName2() As String
+    Dim Point1X() As Double, Point1Y() As Double, Point1Z() As Double
+    Dim Point2X() As Double, Point2Y() As Double, Point2Z() As Double
+    Dim Angle() As Double
+    Dim Offset1X() As Double, Offset2X() As Double
+    Dim Offset1Y() As Double, Offset2Y() As Double
+    Dim Offset1Z() As Double, Offset2Z() As Double
+    Dim CardinalPoint() As Long
+    
+    Dim ret As Long
+    ret = sapModel.FrameObj.GetAllFrames(NumberNames, MyName, PropName, StoryName, _
+        PointName1, PointName2, Point1X, Point1Y, Point1Z, Point2X, Point2Y, Point2Z, _
+        Angle, Offset1X, Offset2X, Offset1Y, Offset2Y, Offset1Z, Offset2Z, CardinalPoint)
+    
+    If ret <> 0 Or NumberNames = 0 Then
+        LogError "GetAllFrames failed: ret=" & ret
+        ExportForcesDirectAPI = False
+        Exit Function
+    End If
+    
+    LogInfo "Found " & NumberNames & " frames"
+    
+    ' Create CSV file
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    ' Header matching Streamlit expected format
+    Print #f, "Story,Label,Output Case,Station,M3,V2,P"
+    
+    Dim i As Long
+    Dim totalRows As Long
+    totalRows = 0
+    
+    For i = LBound(MyName) To UBound(MyName)
+        ' Get forces for this frame
+        Dim NumberResults As Long
+        Dim obj() As String, ObjSta() As Double
+        Dim Elm() As String, ElmSta() As Double
+        Dim LoadCase() As String, StepType() As String, StepNum() As Double
+        Dim P() As Double, V2() As Double, V3() As Double
+        Dim T() As Double, M2() As Double, M3() As Double
+        
+        On Error Resume Next
+        ret = sapModel.Results.FrameForce( _
+            MyName(i), 0, NumberResults, _
+            obj, ObjSta, Elm, ElmSta, LoadCase, StepType, StepNum, _
+            P, V2, V3, T, M2, M3)
+        
+        If Err.Number = 0 And ret = 0 And NumberResults > 0 Then
+            Dim j As Long
+            For j = LBound(LoadCase) To UBound(LoadCase)
+                ' Convert to standard units (kN, mm, kN.m)
+                Print #f, _
+                    StoryName(i) & "," & _
+                    MyName(i) & "," & _
+                    LoadCase(j) & "," & _
+                    Format(ElmSta(j) * units.LengthToMM, "0.000") & "," & _
+                    Format(M3(j) * units.MomentToKNM, "0.000") & "," & _
+                    Format(V2(j) * units.ForceToKN, "0.000") & "," & _
+                    Format(P(j) * units.ForceToKN, "0.000")
+                totalRows = totalRows + 1
+            Next j
+        End If
+        On Error GoTo DirectError
+        
+        ' Progress
+        If i Mod 50 = 0 Then
+            Application.StatusBar = "Exporting: " & i & "/" & NumberNames & " frames"
+            DoEvents
+        End If
+    Next i
+    
+    Close #f
+    
+    LogInfo "Exported " & totalRows & " force records"
+    ExportForcesDirectAPI = (totalRows > 0)
+    Exit Function
+
+DirectError:
+    On Error Resume Next
+    Close #f
+    LogError "Direct API error: " & Err.Description
+    ExportForcesDirectAPI = False
+End Function
+
+'------------------------------------------------------------------------------
+' BASE REACTIONS EXPORT
+' From legacy BASE_REACTIONS.bas pattern
+'------------------------------------------------------------------------------
+
+Public Function ExportBaseReactions(sapModel As Object, folder As String, units As UnitConversion) As Boolean
+    On Error GoTo ReactionError
+    
+    Dim csvPath As String
+    csvPath = folder & "\base_reactions.csv"
+    
+    LogInfo "Exporting base reactions..."
+    
+    ' Deselect all, select all cases
+    sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
+    
+    Dim numCases As Long, caseNames() As String
+    sapModel.LoadCases.GetNameList numCases, caseNames
+    
+    If numCases > 0 Then
+        Dim c As Long
+        For c = LBound(caseNames) To UBound(caseNames)
+            sapModel.Results.Setup.SetCaseSelectedForOutput caseNames(c)
+        Next c
+    End If
+    
+    ' Get base reactions
+    Dim NumberResults As Long
+    Dim LoadCase() As String, StepType() As String, StepNum() As Double
+    Dim Fx() As Double, Fy() As Double, Fz() As Double
+    Dim Mx() As Double, My() As Double, Mz() As Double
+    Dim gx() As Double, gy() As Double, gz() As Double
+    
+    Dim ret As Long
+    ret = sapModel.Results.BaseReact(NumberResults, LoadCase, StepType, StepNum, _
+        Fx, Fy, Fz, Mx, My, Mz, gx, gy, gz)
+    
+    If ret <> 0 Or NumberResults = 0 Then
+        LogWarning "No base reactions available"
+        ExportBaseReactions = False
+        Exit Function
+    End If
+    
+    ' Write CSV
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    Print #f, "LoadCase,Fx_kN,Fy_kN,Fz_kN,Mx_kNm,My_kNm,Mz_kNm"
+    
+    Dim i As Long
+    For i = LBound(LoadCase) To UBound(LoadCase)
+        Print #f, _
+            LoadCase(i) & "," & _
+            Format(Fx(i) * units.ForceToKN, "0.00") & "," & _
+            Format(Fy(i) * units.ForceToKN, "0.00") & "," & _
+            Format(Fz(i) * units.ForceToKN, "0.00") & "," & _
+            Format(Mx(i) * units.MomentToKNM, "0.00") & "," & _
+            Format(My(i) * units.MomentToKNM, "0.00") & "," & _
+            Format(Mz(i) * units.MomentToKNM, "0.00")
+    Next i
+    
+    Close #f
+    
+    LogInfo "? Base reactions: " & NumberResults & " entries"
+    ExportBaseReactions = True
+    Exit Function
+
+ReactionError:
+    LogWarning "Base reactions error: " & Err.Description
+    ExportBaseReactions = False
+End Function
+
+'------------------------------------------------------------------------------
+' COLUMN DESIGN RESULTS
+' From legacy COLUMNS.bas pattern
+'------------------------------------------------------------------------------
+
+Public Function ExportColumnDesignResults(sapModel As Object, folder As String) As Boolean
+    On Error GoTo DesignError
+    
+    Dim csvPath As String
+    csvPath = folder & "\column_design.csv"
+    
+    LogInfo "Exporting column design results..."
+    
+    ' Check if design results available
+    Dim ResultsAvailable As Boolean
+    On Error Resume Next
+    ResultsAvailable = sapModel.DesignConcrete.GetResultsAvailable
+    On Error GoTo DesignError
+    
+    If Not ResultsAvailable Then
+        LogWarning "Column design not run - skipping"
+        ExportColumnDesignResults = False
+        Exit Function
+    End If
+    
+    ' Get all frames
+    Dim NumberNames As Long
+    Dim MyName() As String
+    Dim PropName() As String, StoryName() As String
+    Dim PointName1() As String, PointName2() As String
+    Dim Point1X() As Double, Point1Y() As Double, Point1Z() As Double
+    Dim Point2X() As Double, Point2Y() As Double, Point2Z() As Double
+    Dim Angle() As Double
+    Dim Offset1X() As Double, Offset2X() As Double
+    Dim Offset1Y() As Double, Offset2Y() As Double
+    Dim Offset1Z() As Double, Offset2Z() As Double
+    Dim CardinalPoint() As Long
+    
+    Dim ret As Long
+    ret = sapModel.FrameObj.GetAllFrames(NumberNames, MyName, PropName, StoryName, _
+        PointName1, PointName2, Point1X, Point1Y, Point1Z, Point2X, Point2Y, Point2Z, _
+        Angle, Offset1X, Offset2X, Offset1Y, Offset2Y, Offset1Z, Offset2Z, CardinalPoint)
+    
+    If ret <> 0 Or NumberNames = 0 Then
+        LogWarning "Cannot get frames"
+        ExportColumnDesignResults = False
+        Exit Function
+    End If
+    
+    ' Create CSV
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    Print #f, "Story,Label,Section,Location,PMMCombo,PMMRatio,VmajorCombo,AVmajor,Error,Warning"
+    
+    Dim i As Long, colCount As Long
+    colCount = 0
+    
+    For i = LBound(MyName) To UBound(MyName)
+        ' Check if column (Frame_Type = 1)
+        Dim Frame_Type As Long
+        On Error Resume Next
+        ret = sapModel.PropFrame.GetTypeRebar(PropName(i), Frame_Type)
+        If Err.Number <> 0 Then Frame_Type = 0
+        On Error GoTo DesignError
+        
+        If Frame_Type = 1 Then
+            ' Get column design results
+            Dim NumberItems As Long
+            Dim FrameName() As String, MyOption() As Long, Location() As Double
+            Dim PMMCombo() As String, PMMArea() As Double, PMMRatio() As Double
+            Dim VmajorCombo() As String, AVmajor() As Double
+            Dim VminorCombo() As String, AVminor() As Double
+            Dim ErrorSummary() As String, WarningSummary() As String
+            
+            On Error Resume Next
+            ret = sapModel.DesignConcrete.GetSummaryResultsColumn( _
+                MyName(i), NumberItems, FrameName, MyOption, Location, _
+                PMMCombo, PMMArea, PMMRatio, _
+                VmajorCombo, AVmajor, VminorCombo, AVminor, _
+                ErrorSummary, WarningSummary, 0)
+            
+            If Err.Number = 0 And ret = 0 And NumberItems > 0 Then
+                Dim j As Long
+                For j = LBound(FrameName) To UBound(FrameName)
+                    Print #f, _
+                        StoryName(i) & "," & _
+                        MyName(i) & "," & _
+                        PropName(i) & "," & _
+                        Format(Location(j), "0.00") & "," & _
+                        PMMCombo(j) & "," & _
+                        Format(PMMRatio(j), "0.000") & "," & _
+                        VmajorCombo(j) & "," & _
+                        Format(AVmajor(j), "0.00") & "," & _
+                        ErrorSummary(j) & "," & _
+                        WarningSummary(j)
+                Next j
+                colCount = colCount + 1
+            End If
+            On Error GoTo DesignError
+        End If
+    Next i
+    
+    Close #f
+    
+    LogInfo "? Column design: " & colCount & " columns"
+    ExportColumnDesignResults = (colCount > 0)
+    Exit Function
+
+DesignError:
+    On Error Resume Next
+    Close #f
+    LogWarning "Column design error: " & Err.Description
+    ExportColumnDesignResults = False
+End Function
+
+'------------------------------------------------------------------------------
+' BEAM DESIGN RESULTS
+' From legacy BEAM_DESIGN.bas pattern
+'------------------------------------------------------------------------------
+
+Public Function ExportBeamDesignResults(sapModel As Object, folder As String) As Boolean
+    On Error GoTo DesignError
+    
+    Dim csvPath As String
+    csvPath = folder & "\beam_design.csv"
+    
+    LogInfo "Exporting beam design results..."
+    
+    ' Check if design results available
+    Dim ResultsAvailable As Boolean
+    On Error Resume Next
+    ResultsAvailable = sapModel.DesignConcrete.GetResultsAvailable
+    On Error GoTo DesignError
+    
+    If Not ResultsAvailable Then
+        LogWarning "Beam design not run - skipping"
+        ExportBeamDesignResults = False
+        Exit Function
+    End If
+    
+    ' Get all frames
+    Dim NumberNames As Long
+    Dim MyName() As String
+    Dim PropName() As String, StoryName() As String
+    Dim PointName1() As String, PointName2() As String
+    Dim Point1X() As Double, Point1Y() As Double, Point1Z() As Double
+    Dim Point2X() As Double, Point2Y() As Double, Point2Z() As Double
+    Dim Angle() As Double
+    Dim Offset1X() As Double, Offset2X() As Double
+    Dim Offset1Y() As Double, Offset2Y() As Double
+    Dim Offset1Z() As Double, Offset2Z() As Double
+    Dim CardinalPoint() As Long
+    
+    Dim ret As Long
+    ret = sapModel.FrameObj.GetAllFrames(NumberNames, MyName, PropName, StoryName, _
+        PointName1, PointName2, Point1X, Point1Y, Point1Z, Point2X, Point2Y, Point2Z, _
+        Angle, Offset1X, Offset2X, Offset1Y, Offset2Y, Offset1Z, Offset2Z, CardinalPoint)
+    
+    If ret <> 0 Or NumberNames = 0 Then
+        LogWarning "Cannot get frames"
+        ExportBeamDesignResults = False
+        Exit Function
+    End If
+    
+    ' Create CSV
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    Print #f, "Story,Label,Section,Location,TopCombo,TopArea,BotCombo,BotArea,ShearCombo,ShearArea,Error,Warning"
+    
+    Dim i As Long, beamCount As Long
+    beamCount = 0
+    
+    For i = LBound(MyName) To UBound(MyName)
+        ' Check if beam (Frame_Type = 2)
+        Dim Frame_Type As Long
+        On Error Resume Next
+        ret = sapModel.PropFrame.GetTypeRebar(PropName(i), Frame_Type)
+        If Err.Number <> 0 Then Frame_Type = 0
+        On Error GoTo DesignError
+        
+        If Frame_Type = 2 Then
+            ' Get beam design results
+            Dim NumberItems As Long
+            Dim FrameName() As String, Location() As Double
+            Dim TopCombo() As String, TopArea() As Double
+            Dim TopAreaReq() As Double, TopAreaMin() As Double, TopAreaProvided() As Double
+            Dim BotCombo() As String, BotArea() As Double
+            Dim BotAreaReq() As Double, BotAreaMin() As Double, BotAreaProvided() As Double
+            Dim VmajorCombo() As String, VmajorArea() As Double
+            Dim VmajorAreaReq() As Double, VmajorAreaMin() As Double, VmajorAreaProvided() As Double
+            Dim TLCombo() As String, TLArea() As Double
+            Dim TTCombo() As String, TTArea() As Double
+            Dim ErrorSummary() As String, WarningSummary() As String
+            
+            On Error Resume Next
+            ret = sapModel.DesignConcrete.GetSummaryResultsBeam_2( _
+                MyName(i), NumberItems, FrameName, Location, _
+                TopCombo, TopArea, TopAreaReq, TopAreaMin, TopAreaProvided, _
+                BotCombo, BotArea, BotAreaReq, BotAreaMin, BotAreaProvided, _
+                VmajorCombo, VmajorArea, VmajorAreaReq, VmajorAreaMin, VmajorAreaProvided, _
+                TLCombo, TLArea, TTCombo, TTArea, _
+                ErrorSummary, WarningSummary, 0)
+            
+            If Err.Number = 0 And ret = 0 And NumberItems > 0 Then
+                Dim j As Long
+                For j = LBound(FrameName) To UBound(FrameName)
+                    Print #f, _
+                        StoryName(i) & "," & _
+                        MyName(i) & "," & _
+                        PropName(i) & "," & _
+                        Format(Location(j), "0.00") & "," & _
+                        TopCombo(j) & "," & _
+                        Format(TopArea(j), "0.00") & "," & _
+                        BotCombo(j) & "," & _
+                        Format(BotArea(j), "0.00") & "," & _
+                        VmajorCombo(j) & "," & _
+                        Format(VmajorArea(j), "0.00") & "," & _
+                        ErrorSummary(j) & "," & _
+                        WarningSummary(j)
+                Next j
+                beamCount = beamCount + 1
+            End If
+            On Error GoTo DesignError
+        End If
+    Next i
+    
+    Close #f
+    
+    LogInfo "? Beam design: " & beamCount & " beams"
+    ExportBeamDesignResults = (beamCount > 0)
+    Exit Function
+
+DesignError:
+    On Error Resume Next
+    Close #f
+    LogWarning "Beam design error: " & Err.Description
+    ExportBeamDesignResults = False
+End Function
+
+'------------------------------------------------------------------------------
+' SECTIONS EXPORT
+'------------------------------------------------------------------------------
+
+Public Function ExportSections(sapModel As Object, folder As String) As Boolean
+    On Error GoTo SectionError
+    
+    Dim csvPath As String
+    csvPath = folder & "\sections.csv"
+    
+    LogInfo "Exporting sections..."
+    
+    Dim ret As Long
+    ret = sapModel.DatabaseTables.GetTableForDisplayCSVFile( _
+        "Frame Section Assignments", csvPath, False, 0, "")
+    
+    If ret = 0 And FileExists(csvPath) Then
+        LogInfo "? Sections exported"
+        ExportSections = True
+    Else
+        LogWarning "Sections export failed: ret=" & ret
+        ExportSections = False
+    End If
+    Exit Function
+
+SectionError:
+    LogWarning "Sections error: " & Err.Description
+    ExportSections = False
+End Function
+
+'------------------------------------------------------------------------------
+' STORIES EXPORT
+'------------------------------------------------------------------------------
+
+Public Function ExportStories(sapModel As Object, folder As String) As Boolean
+    On Error GoTo StoryError
+    
+    Dim csvPath As String
+    csvPath = folder & "\stories.csv"
+    
+    LogInfo "Exporting stories..."
+    
+    Dim ret As Long
+    ret = sapModel.DatabaseTables.GetTableForDisplayCSVFile( _
+        "Story Definitions", csvPath, False, 0, "")
+    
+    If ret = 0 And FileExists(csvPath) Then
+        LogInfo "? Stories exported"
+        ExportStories = True
+    Else
+        LogWarning "Stories export failed: ret=" & ret
+        ExportStories = False
+    End If
+    Exit Function
+
+StoryError:
+    LogWarning "Stories error: " & Err.Description
+    ExportStories = False
+End Function
+
+'------------------------------------------------------------------------------
+' JOINT DISPLACEMENTS (Bonus - for drift checks)
+' From legacy torsional_irregularity.bas pattern
+'------------------------------------------------------------------------------
+
+Public Function ExportJointDisplacements(sapModel As Object, folder As String, units As UnitConversion) As Boolean
+    On Error GoTo DispError
+    
+    Dim csvPath As String
+    csvPath = folder & "\joint_displacements.csv"
+    
+    LogInfo "Exporting joint displacements..."
+    
+    ' Get all joints
+    Dim NumberNames As Long
+    Dim MyName() As String
+    Dim ret As Long
+    
+    ret = sapModel.PointObj.GetNameList(NumberNames, MyName)
+    
+    If ret <> 0 Or NumberNames = 0 Then
+        LogWarning "No joints found"
+        ExportJointDisplacements = False
+        Exit Function
+    End If
+    
+    ' Create CSV
+    Dim f As Integer
+    f = FreeFile
+    Open csvPath For Output As #f
+    
+    Print #f, "Story,Joint,LoadCase,U1_mm,U2_mm,U3_mm,R1_rad,R2_rad,R3_rad"
+    
+    Dim i As Long, count As Long
+    count = 0
+    
+    For i = LBound(MyName) To UBound(MyName)
+        Dim NumberResults As Long
+        Dim obj() As String, Elm() As String
+        Dim LoadCase() As String, StepType() As String, StepNum() As Double
+        Dim U1() As Double, U2() As Double, U3() As Double
+        Dim R1() As Double, R2() As Double, R3() As Double
+        
+        On Error Resume Next
+        ret = sapModel.Results.JointDispl(MyName(i), 0, NumberResults, _
+            obj, Elm, LoadCase, StepType, StepNum, U1, U2, U3, R1, R2, R3)
+        
+        If Err.Number = 0 And ret = 0 And NumberResults > 0 Then
+            ' Get story
+            Dim label As String, story As String
+            sapModel.PointObj.GetLabelFromName MyName(i), label, story
+            
+            Dim j As Long
+            For j = LBound(LoadCase) To UBound(LoadCase)
+                Print #f, _
+                    story & "," & _
+                    label & "," & _
+                    LoadCase(j) & "," & _
+                    Format(U1(j) * units.LengthToMM, "0.0000") & "," & _
+                    Format(U2(j) * units.LengthToMM, "0.0000") & "," & _
+                    Format(U3(j) * units.LengthToMM, "0.0000") & "," & _
+                    Format(R1(j), "0.000000") & "," & _
+                    Format(R2(j), "0.000000") & "," & _
+                    Format(R3(j), "0.000000")
+                count = count + 1
+            Next j
+        End If
+        On Error GoTo DispError
+        
+        ' Progress
+        If i Mod 100 = 0 Then
+            Application.StatusBar = "Exporting displacements: " & i & "/" & NumberNames
+            DoEvents
+        End If
+    Next i
+    
+    Close #f
+    
+    LogInfo "? Joint displacements: " & count & " records"
+    ExportJointDisplacements = (count > 0)
+    Exit Function
+
+DispError:
+    On Error Resume Next
+    Close #f
+    LogWarning "Displacement error: " & Err.Description
+    ExportJointDisplacements = False
+End Function
