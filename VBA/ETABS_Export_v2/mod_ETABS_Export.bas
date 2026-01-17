@@ -111,66 +111,15 @@ Private Function ExportForcesDatabaseTables(sapModel As Object, csvPath As Strin
 End Function
 
 ' Method 2: Direct API export (more reliable, slower)
-' Fixed: Properly selects both load cases AND combos for output
+' Fixed v2.3: Don't enumerate cases - use ItemTypeElm=0 to get ALL results
 Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, units As UnitConversion) As Boolean
     On Error GoTo DirectError
     
     LogInfo "Using Direct API method..."
     
-    ' *** CRITICAL FIX: Deselect all first (from legacy BASE_REACTIONS.bas) ***
-    Dim ret As Long
-    ret = sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
-    LogDebug "DeselectAllCasesAndCombosForOutput: ret=" & ret
-    
-    ' *** Get and select all load CASES ***
-    Dim numCases As Long
-    Dim caseNames() As String
-    
-    On Error Resume Next
-    ret = sapModel.LoadCases.GetNameList(numCases, caseNames)
-    If Err.Number <> 0 Then
-        LogError "LoadCases.GetNameList error: " & Err.Description & " (#" & Err.Number & ")"
-        numCases = 0
-    End If
-    On Error GoTo DirectError
-    
-    LogInfo "Load cases found: " & numCases
-    
-    If numCases > 0 Then
-        Dim c As Long
-        For c = LBound(caseNames) To UBound(caseNames)
-            ret = sapModel.Results.Setup.SetCaseSelectedForOutput(caseNames(c))
-            LogDebug "  Selected case: " & caseNames(c) & " ret=" & ret
-        Next c
-    End If
-    
-    ' *** Get and select all load COMBOS (separate API call!) ***
-    Dim numCombos As Long
-    Dim comboNames() As String
-    
-    On Error Resume Next
-    ret = sapModel.RespCombo.GetNameList(numCombos, comboNames)
-    If Err.Number <> 0 Then
-        LogError "RespCombo.GetNameList error: " & Err.Description & " (#" & Err.Number & ")"
-        numCombos = 0
-    End If
-    On Error GoTo DirectError
-    
-    LogInfo "Load combos found: " & numCombos
-    
-    If numCombos > 0 Then
-        For c = LBound(comboNames) To UBound(comboNames)
-            ret = sapModel.Results.Setup.SetComboSelectedForOutput(comboNames(c))
-            LogDebug "  Selected combo: " & comboNames(c) & " ret=" & ret
-        Next c
-    End If
-    
-    ' *** Check: If NO cases AND NO combos, we can't export ***
-    If numCases = 0 And numCombos = 0 Then
-        LogError "No load cases or combos found - run analysis first"
-        ExportForcesDirectAPI = False
-        Exit Function
-    End If
+    ' *** FIX: Don't try to enumerate/select cases ***
+    ' The legacy code doesn't do this! It just calls Results.FrameForce
+    ' with ItemTypeElm=0 which returns ALL load cases automatically
     
     ' Get ALL frames efficiently (from legacy COLUMNS.bas pattern)
     Dim NumberNames As Long
@@ -185,6 +134,7 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     Dim Offset1Z() As Double, Offset2Z() As Double
     Dim CardinalPoint() As Long
     
+    Dim ret As Long
     ret = sapModel.FrameObj.GetAllFrames(NumberNames, MyName, PropName, StoryName, _
         PointName1, PointName2, Point1X, Point1Y, Point1Z, Point2X, Point2Y, Point2Z, _
         Angle, Offset1X, Offset2X, Offset1Y, Offset2Y, Offset1Z, Offset2Z, CardinalPoint)
@@ -224,6 +174,7 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     
     For i = LBound(MyName) To UBound(MyName)
         ' Get forces for this frame
+        ' *** KEY FIX: Use ItemTypeElm=0 (Object element) to get ALL cases ***
         Dim NumberResults As Long
         Dim obj() As String, ObjSta() As Double
         Dim Elm() As String, ElmSta() As Double
@@ -373,7 +324,7 @@ End Function
 
 '------------------------------------------------------------------------------
 ' BASE REACTIONS EXPORT
-' From legacy BASE_REACTIONS.bas pattern - Fixed in v2.2
+' From legacy BASE_REACTIONS.bas pattern - Simplified v2.3
 '------------------------------------------------------------------------------
 
 Public Function ExportBaseReactions(sapModel As Object, folder As String, units As UnitConversion) As Boolean
@@ -384,39 +335,12 @@ Public Function ExportBaseReactions(sapModel As Object, folder As String, units 
     
     LogInfo "Exporting base reactions..."
     
+    ' *** FIX: Don't enumerate cases - just call BaseReact ***
+    ' The legacy code gets case names from Excel, we'll get all results
+    
     Dim ret As Long
     
-    ' *** CRITICAL: Deselect all first, then select cases AND combos ***
-    ret = sapModel.Results.Setup.DeselectAllCasesAndCombosForOutput
-    
-    ' Select all load cases
-    Dim numCases As Long, caseNames() As String
-    ret = sapModel.LoadCases.GetNameList(numCases, caseNames)
-    
-    If numCases > 0 Then
-        Dim c As Long
-        For c = LBound(caseNames) To UBound(caseNames)
-            ret = sapModel.Results.Setup.SetCaseSelectedForOutput(caseNames(c))
-        Next c
-    End If
-    
-    ' Select all combos (SEPARATE API call - from legacy code)
-    Dim numCombos As Long, comboNames() As String
-    ret = sapModel.RespCombo.GetNameList(numCombos, comboNames)
-    
-    If numCombos > 0 Then
-        For c = LBound(comboNames) To UBound(comboNames)
-            ret = sapModel.Results.Setup.SetComboSelectedForOutput(comboNames(c))
-        Next c
-    End If
-    
-    If numCases = 0 And numCombos = 0 Then
-        LogWarning "No load cases or combos for base reactions"
-        ExportBaseReactions = False
-        Exit Function
-    End If
-    
-    ' Get base reactions
+    ' Get base reactions (returns all analyzed cases)
     Dim NumberResults As Long
     Dim LoadCase() As String, StepType() As String, StepNum() As Double
     Dim Fx() As Double, Fy() As Double, Fz() As Double

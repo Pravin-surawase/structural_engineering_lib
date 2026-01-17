@@ -40,7 +40,7 @@ Option Explicit
 '------------------------------------------------------------------------------
 ' CONFIGURATION
 '------------------------------------------------------------------------------
-Public Const APP_VERSION As String = "2.2.0"
+Public Const APP_VERSION As String = "2.3.0"
 Public Const LOG_LEVEL As Long = 0     ' 0=DEBUG, 1=INFO, 2=WARN, 3=ERROR
 
 ' Global state
