@@ -125,7 +125,15 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     ' *** Get and select all load CASES ***
     Dim numCases As Long
     Dim caseNames() As String
+    
+    On Error Resume Next
     ret = sapModel.LoadCases.GetNameList(numCases, caseNames)
+    If Err.Number <> 0 Then
+        LogError "LoadCases.GetNameList error: " & Err.Description & " (#" & Err.Number & ")"
+        numCases = 0
+    End If
+    On Error GoTo DirectError
+    
     LogInfo "Load cases found: " & numCases
     
     If numCases > 0 Then
@@ -139,7 +147,15 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     ' *** Get and select all load COMBOS (separate API call!) ***
     Dim numCombos As Long
     Dim comboNames() As String
+    
+    On Error Resume Next
     ret = sapModel.RespCombo.GetNameList(numCombos, comboNames)
+    If Err.Number <> 0 Then
+        LogError "RespCombo.GetNameList error: " & Err.Description & " (#" & Err.Number & ")"
+        numCombos = 0
+    End If
+    On Error GoTo DirectError
+    
     LogInfo "Load combos found: " & numCombos
     
     If numCombos > 0 Then

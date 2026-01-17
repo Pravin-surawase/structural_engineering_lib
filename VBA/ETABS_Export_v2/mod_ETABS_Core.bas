@@ -391,12 +391,14 @@ Public Function GetETABSUnits(sapModel As Object) As UnitConversion
     End Select
     
     ' Length units (should be 4 = m after SetPresentUnits)
+    ' Note: GetPresentUnits_2 uses eLength enum which may differ from SetPresentUnits
     Select Case lengthUnits
         Case 1: units.LengthUnit = "in": units.LengthToMM = 25.4
         Case 2: units.LengthUnit = "ft": units.LengthToMM = 304.8
         Case 3: units.LengthUnit = "mm": units.LengthToMM = 1#
         Case 4: units.LengthUnit = "m": units.LengthToMM = 1000#
         Case 5: units.LengthUnit = "cm": units.LengthToMM = 10#
+        Case 6: units.LengthUnit = "m": units.LengthToMM = 1000#   ' ETABS may return 6 for meters
         Case Else
             LogWarning "Unknown length unit: " & lengthUnits & " - assuming m"
             units.LengthUnit = "m"
