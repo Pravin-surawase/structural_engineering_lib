@@ -134,13 +134,23 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
     Dim Offset1Z() As Double, Offset2Z() As Double
     Dim CardinalPoint() As Long
     
+    LogDebug "Calling FrameObj.GetAllFrames..."
+    
     Dim ret As Long
+    On Error Resume Next
     ret = sapModel.FrameObj.GetAllFrames(NumberNames, MyName, PropName, StoryName, _
         PointName1, PointName2, Point1X, Point1Y, Point1Z, Point2X, Point2Y, Point2Z, _
         Angle, Offset1X, Offset2X, Offset1Y, Offset2Y, Offset1Z, Offset2Z, CardinalPoint)
     
+    If Err.Number <> 0 Then
+        LogError "GetAllFrames error: " & Err.Description & " (#" & Err.Number & ")"
+        ExportForcesDirectAPI = False
+        Exit Function
+    End If
+    On Error GoTo DirectError
+    
     If ret <> 0 Or NumberNames = 0 Then
-        LogError "GetAllFrames failed: ret=" & ret
+        LogError "GetAllFrames failed: ret=" & ret & ", NumberNames=" & NumberNames
         ExportForcesDirectAPI = False
         Exit Function
     End If
@@ -182,11 +192,32 @@ Private Function ExportForcesDirectAPI(sapModel As Object, csvPath As String, un
         Dim P() As Double, V2() As Double, V3() As Double
         Dim t() As Double, M2() As Double, M3() As Double
         
+        ' Log first frame attempt
+        If i = LBound(MyName) Then
+            LogDebug "Calling Results.FrameForce for first frame: " & MyName(i)
+        End If
+        
         On Error Resume Next
         ret = sapModel.Results.FrameForce( _
             MyName(i), 0, NumberResults, _
             obj, ObjSta, Elm, ElmSta, LoadCase, StepType, StepNum, _
             P, V2, V3, t, M2, M3)
+        
+        ' Check for errors on first frame
+        If i = LBound(MyName) Then
+            If Err.Number <> 0 Then
+                LogError "Results.FrameForce error on first frame: " & Err.Description & " (#" & Err.Number & ")"
+                LogError "This API call may not be supported in your ETABS version"
+                ExportForcesDirectAPI = False
+                Exit Function
+            ElseIf ret <> 0 Then
+                LogError "Results.FrameForce returned ret=" & ret & " on first frame"
+                ExportForcesDirectAPI = False
+                Exit Function
+            Else
+                LogDebug "Results.FrameForce succeeded: " & NumberResults & " results"
+            End If
+        End If
         
         If Err.Number = 0 And ret = 0 And NumberResults > 0 Then
             Dim j As Long
