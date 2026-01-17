@@ -128,17 +128,37 @@ Public Function ValidateAndNormalizeCSV(rawCSVPath As String, _
         End If
     Next
     
-    ' Validate required columns exist
+    ' Validate required columns exist (with alternate names)
+    ' ETABS exports may use variations like "OutputCase" vs "Output Case"
     Dim requiredCols() As Variant
-    requiredCols = Array("Story", "Label", "OutputCase", "M3", "V2")
+    requiredCols = Array("Story", "Label", "OutputCase|Output Case|LoadCase|Load Case", "M3", "V2")
     
     Dim missing As String
     missing = ""
     
     Dim colName As Variant
     For Each colName In requiredCols
-        If Not colMap.Exists(CStr(colName)) Then
-            missing = missing & colName & ", "
+        ' Support alternate column names with pipe separator
+        Dim colVariants() As String
+        colVariants = Split(CStr(colName), "|")
+        
+        Dim found As Boolean
+        found = False
+        
+        Dim variant As Variant
+        For Each variant In colVariants
+            If colMap.Exists(Trim(CStr(variant))) Then
+                ' Normalize to first name
+                If CStr(variant) <> CStr(colVariants(0)) Then
+                    colMap(CStr(colVariants(0))) = colMap(Trim(CStr(variant)))
+                End If
+                found = True
+                Exit For
+            End If
+        Next
+        
+        If Not found Then
+            missing = missing & CStr(colVariants(0)) & ", "
         End If
     Next
     
@@ -182,10 +202,16 @@ Public Function ValidateAndNormalizeCSV(rawCSVPath As String, _
         wsOut.Cells(outRow, 2).Value = ws.Cells(row, colMap("Label")).Value
         wsOut.Cells(outRow, 3).Value = ws.Cells(row, colMap("OutputCase")).Value
         
-        ' Station (optional)
-        If colMap.Exists("Station") Then
+        ' Station (with multiple possible column names)
+        Dim stationCol As Long
+        stationCol = 0
+        If colMap.Exists("Station") Then stationCol = colMap("Station")
+        If stationCol = 0 And colMap.Exists("ObjSta") Then stationCol = colMap("ObjSta")
+        If stationCol = 0 And colMap.Exists("Object Station") Then stationCol = colMap("Object Station")
+        
+        If stationCol > 0 Then
             Dim station As Double
-            station = Val(ws.Cells(row, colMap("Station")).Value)
+            station = Val(ws.Cells(row, stationCol).Value)
             wsOut.Cells(outRow, 4).Value = station * units.LengthToMM
         Else
             wsOut.Cells(outRow, 4).Value = 0

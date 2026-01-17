@@ -285,17 +285,37 @@ ExportError:
     ExportStories = False
 End Function
 
-' Helper: Get frame story
+' Helper: Get frame story using PointObj parent
 Private Function GetFrameStory(sapModel As Object, frameName As String) As String
     On Error Resume Next
-
+    
+    ' Try to get story from frame label (ETABS stores story in label)
+    Dim label As String
     Dim story As String
     Dim ret As Long
-    ret = sapModel.FrameObj.GetLabelFromName(frameName, story)
-
-    If Err.Number <> 0 Or ret <> 0 Then
-        GetFrameStory = ""
-    Else
+    
+    ret = sapModel.FrameObj.GetLabelFromName(frameName, label, story)
+    
+    If Err.Number = 0 And ret = 0 And Len(story) > 0 Then
         GetFrameStory = story
+        Exit Function
     End If
+    
+    ' Fallback: Try to get from point object
+    Dim point1 As String, point2 As String
+    ret = sapModel.FrameObj.GetPoints(frameName, point1, point2)
+    
+    If Err.Number = 0 And ret = 0 Then
+        ' Get story from point
+        Dim pointLabel As String, pointStory As String
+        ret = sapModel.PointObj.GetLabelFromName(point1, pointLabel, pointStory)
+        
+        If Err.Number = 0 And ret = 0 Then
+            GetFrameStory = pointStory
+            Exit Function
+        End If
+    End If
+    
+    ' Ultimate fallback
+    GetFrameStory = "Unknown"
 End Function

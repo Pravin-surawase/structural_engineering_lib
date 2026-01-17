@@ -61,6 +61,14 @@ Public Sub ExportETABSData()
 
     Dim sapModel As Object
     Set sapModel = etabs.SapModel
+    
+    ' Validate model is ready
+    If Not ValidateModelReady(sapModel) Then
+        MsgBox "No model loaded in ETABS." & vbCrLf & _
+               "Please open a model before running export." & vbCrLf & vbCrLf & _
+               "Log: " & g_LogFile, vbExclamation, "No Model"
+        GoTo Cleanup
+    End If
     EndCheckpoint 1, True
 
     ' Phase 1: Ensure analysis is complete

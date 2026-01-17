@@ -97,6 +97,40 @@ Public Function GetETABSVersion(helper As Object) As String
     End If
 End Function
 
+' Check if model is loaded and has frames
+Public Function ValidateModelReady(sapModel As Object) As Boolean
+    On Error Resume Next
+    
+    ' Check model exists
+    Dim modelPath As String
+    modelPath = sapModel.GetModelFilename
+    
+    If Err.Number <> 0 Or Len(modelPath) = 0 Then
+        LogError "No model loaded in ETABS"
+        ValidateModelReady = False
+        Exit Function
+    End If
+    
+    LogInfo "Model: " & modelPath
+    
+    ' Check for frames
+    Dim frameCount As Long
+    Dim frameNames() As String
+    Dim ret As Long
+    
+    ret = sapModel.FrameObj.GetNameList(frameCount, frameNames)
+    
+    If Err.Number <> 0 Or ret <> 0 Then
+        LogWarning "Cannot get frame count"
+    ElseIf frameCount = 0 Then
+        LogWarning "Model has no frame objects"
+    Else
+        LogInfo "Model has " & frameCount & " frame objects"
+    End If
+    
+    ValidateModelReady = True
+End Function
+
 ' Safe API call wrapper with retry
 Public Function SafeAPICall(ByRef etabs As Object, _
                            operationName As String, _
