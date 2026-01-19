@@ -4,6 +4,42 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 42 (Continued): Multi-Format Import + LOD System
+
+**Focus:** Validate PR #381 code, add multi-format import page, implement LOD for 1000+ beams
+
+**Completed:**
+1. **Validated PR #381 code with proof** - 3164 tests passing, adapter imports verified
+2. **Created multi-format import page** (`07_📥_multi_format_import.py`)
+   - Supports ETABS, SAFE, STAAD.Pro, GenericCSV formats
+   - Auto-detect format from file content
+   - Batch design with progress tracking
+3. **Implemented LOD manager** (`streamlit_app/utils/lod_manager.py`)
+   - 5 LOD levels: FULL, HIGH, MEDIUM, LOW, ULTRA_LOW
+   - Automatic simplification based on beam count
+   - Stirrup/rebar reduction for performance
+   - 23 unit tests
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `bce7888b` | feat: add multi-format import page and LOD manager |
+
+### Key Findings
+
+- **Correct adapter names:** `ETABSAdapter`, `SAFEAdapter`, `STAADAdapter`, `GenericCSVAdapter` (not *ImportAdapter)
+- **BeamGeometry model fields:** Uses `id`, `label`, `story` (not `unique_name`)
+- **LOD thresholds:** FULL (1), HIGH (≤50), MEDIUM (≤200), LOW (≤1000), ULTRA_LOW (>1000)
+
+### Next Session
+
+1. Integrate LOD manager with 3D viewer component
+2. Add column toggle and building stats (TASK-3D-003.2)
+3. Performance profiling with real 1000-beam dataset
+
+---
+
 ## 2026-01-19 — Session 44: Create Task PR Hardening + Bootstrap Python
 
 **Focus:** Make task PR creation safer and standardize bootstrap commands to venv Python
