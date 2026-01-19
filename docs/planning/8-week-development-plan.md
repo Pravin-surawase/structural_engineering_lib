@@ -12,14 +12,14 @@
 
 ---
 
-## 📊 Current Status (Session 39)
+## 📊 Current Status (Session 46+)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1-2 | Live Preview Foundation | ✅ **COMPLETE** |
-| **Phase 2** | 3-4 | CSV Import + Multi-Beam | 🚧 In Progress (60%) |
-| **Phase 3** | 5 | Design Integration | 📋 Not Started |
-| **Phase 4** | 6 | PyVista CAD Quality | 📋 Not Started |
+| **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **90% COMPLETE** |
+| **Phase 3** | 5 | Design Integration | 🚧 In Progress |
+| **Phase 4** | 6 | PyVista CAD Quality | 📋 Upcoming |
 
 ### Phase 1 Evidence (Exceeds All Targets)
 
@@ -31,27 +31,37 @@
 | Caching + performance | <50ms | Geometry hashing | ✅ Complete |
 | Fragment API validation | Tests pass | Automated | ✅ Complete |
 
-### Phase 2 Progress (In Progress)
+### Phase 2 Progress (Near Complete)
 
 | Task | Est | Status | Notes |
 |------|-----|--------|-------|
 | CSV schema spec | 2d | ✅ Done | `csv-import-schema.md` |
 | FrameGeometry dataclass | 1d | ✅ Done | 15 fields, tested |
 | `load_frames_geometry()` | 1d | ✅ Done | 225 frames parsed |
-| ETABS import page | 2d | ⚠️ Partial | Has imports, needs real 3D |
-| Real coordinate 3D viz | 2d | 📋 TODO | Replace fake grid |
+| ETABS import page (page 06) | 2d | ✅ Done | VBA format detection added |
+| Multi-format import (page 07) | 2d | ✅ Done | ETABS/SAFE/STAAD/Generic |
+| Real coordinate 3D viz | 2d | ✅ Done | **Solid 3D boxes with lighting** |
+| VBA ETABS integration | 1d | ✅ Done | 153 beams tested |
 | LOD system (1000+ beams) | 1d | 📋 TODO | Performance optimization |
-| Multi-file upload | 1d | 📋 TODO | beam_forces + geometry |
+
+### Session 46 Achievements
+
+- ✅ **3D solid beam boxes** with proper lighting and materials
+- ✅ **Story-based color coding** (8-color palette)
+- ✅ **Design status coloring** (green/red/orange)
+- ✅ **Hover tooltips** with full beam details
+- ✅ **VBA CSV import** working end-to-end
+- ✅ **Documentation cleanup** (archived obsolete files)
 
 ### Three.js vs Plotly Decision
 
-**Decision:** Continue with Plotly for Phase 2, evaluate alternatives for Phase 4.
+**Decision:** Continue with Plotly for Phase 2-3, evaluate PyVista for Phase 4.
 
 **Rationale:**
-- ✅ Plotly proven (839 lines working code)
-- ✅ Good enough for building visualization
-- ❌ Three.js = new complexity (npm, React bridge)
-- 🎯 Phase 4 will evaluate PyVista for CAD quality
+- ✅ Plotly proven (839+ lines working code)
+- ✅ Solid 3D boxes look professional
+- ✅ Native Streamlit integration
+- 🎯 Phase 4: Evaluate PyVista for CAD-quality rendering
 
 ---
 
@@ -60,7 +70,7 @@
 ### Why 8 Weeks?
 
 **Not rushing to production.** We have time to build something exceptional:
-- ✅ **Visual excellence** - Every detail polished
+- ✅ **Visual excellence** - Solid 3D beams with lighting
 - ✅ **Quality code** - Long-term maintainability
 - ✅ **Automation** - Efficient workflows
 - ✅ **Impressive demos** - Ready to showcase
@@ -89,16 +99,19 @@ Build → Test → Polish → Demo → Iterate
 
 ---
 
-## Progress Update (Session 38)
+## Progress Update (Session 46+)
 
 - Phase 1 complete: Plotly 3D preview, caching, status display, performance docs.
-- Phase 2 started: CSV schema spec done (`docs/specs/csv-import-schema.md`).
+- Phase 2 near complete: CSV import, multi-format adapters, solid 3D visualization.
+- Phase 3 starting: Design integration working in multi-format page.
 
-**Session 39 Update:**
-- ✅ Phase 1 formally marked COMPLETE with evidence metrics
-- ✅ Phase 2 progress: FrameGeometry (15 fields), load_frames_geometry() tested with 225 frames
-- ✅ Three.js vs Plotly decision: Continue Plotly, evaluate alternatives in Phase 4
-- 🚧 Next: Implement real coordinate 3D visualization in ETABS import page
+**Session 46+ Updates:**
+- ✅ Upgraded 3D visualization from lines to **solid beam boxes with lighting**
+- ✅ VBA ETABS import integration tested with 153 real beams
+- ✅ Story-based color coding working correctly
+- ✅ Design status coloring (pass/fail/no-forces)
+- ✅ Documentation consolidated (archived 8+ obsolete planning files)
+- 🚧 Next: LOD optimization for 1000+ beams, PyVista evaluation
 
 ---
 
