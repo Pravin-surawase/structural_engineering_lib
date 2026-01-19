@@ -174,6 +174,10 @@ class ETABSAdapter(InputAdapter):
         "m3": ["M3", "Moment", "M", "Mu", "MomentY", "Myy"],
         "v2": ["V2", "Shear", "V", "Vu", "ShearY", "Vyy"],
         "p": ["P", "Axial", "N", "Pu", "AxialForce"],
+        # VBA envelope export format
+        "mu_max": ["Mu_max_kNm", "Mu_max", "MuMax", "Mu"],
+        "mu_min": ["Mu_min_kNm", "Mu_min", "MuMin"],
+        "vu_max": ["Vu_max_kN", "Vu_max", "VuMax", "Vu"],
     }
 
     def __init__(self):
@@ -403,7 +407,9 @@ class ETABSAdapter(InputAdapter):
 
                 # Extract source ID
                 source_id_col = column_map.get("unique_name")
-                source_id = row.get(source_id_col, "").strip() if source_id_col else None
+                source_id = (
+                    row.get(source_id_col, "").strip() if source_id_col else None
+                )
 
                 # Extract angle
                 angle_col = column_map.get("angle")
@@ -434,8 +440,11 @@ class ETABSAdapter(InputAdapter):
     ) -> list[BeamForces]:
         """Load beam forces from ETABS beam forces CSV.
 
-        Processes force envelope - takes maximum absolute values
-        across all stations for each beam/load case combination.
+        Supports two formats:
+        1. Raw ETABS station data (M3, V2, case_id columns)
+           - Takes maximum absolute values across all stations
+        2. VBA envelope export (Mu_max_kNm, Vu_max_kN columns)
+           - Uses pre-computed envelope values directly
 
         Args:
             source: Path to beam_forces.csv
@@ -459,8 +468,28 @@ class ETABSAdapter(InputAdapter):
             headers = reader.fieldnames or []
             column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
 
-            # Check required columns
-            required = ["beam_id", "case_id", "m3", "v2"]
+            # Detect format: VBA envelope vs raw ETABS
+            is_vba_envelope = "mu_max" in column_map or "vu_max" in column_map
+            is_raw_etabs = "m3" in column_map and "v2" in column_map
+
+            if is_vba_envelope:
+                # VBA envelope format - pre-computed envelope values
+                required = ["beam_id"]
+                # mu_max or vu_max must exist (at least one)
+                if "mu_max" not in column_map and "vu_max" not in column_map:
+                    raise ValueError(
+                        "VBA envelope format requires Mu_max_kNm or Vu_max_kN column"
+                    )
+            elif is_raw_etabs:
+                # Raw ETABS format with station data
+                required = ["beam_id", "case_id", "m3", "v2"]
+            else:
+                raise ValueError(
+                    "Could not detect format. Need either M3/V2 columns "
+                    "(raw ETABS) or Mu_max_kNm/Vu_max_kN columns (VBA envelope). "
+                    f"Available: {list(column_map.keys())}"
+                )
+
             missing = [r for r in required if r not in column_map]
             if missing:
                 raise ValueError(
@@ -471,34 +500,68 @@ class ETABSAdapter(InputAdapter):
             for row in reader:
                 try:
                     beam_id = row[column_map["beam_id"]].strip()
-                    case_id = row[column_map["case_id"]].strip()
                     story_col = column_map.get("story")
                     story = row.get(story_col, "").strip() if story_col else ""
 
-                    m3 = abs(float(row[column_map["m3"]]))
-                    v2 = abs(float(row[column_map["v2"]]))
+                    if is_vba_envelope:
+                        # VBA envelope format - values already enveloped
+                        case_id = "Envelope"  # Default case name for envelope data
 
-                    p_col = column_map.get("p")
-                    p = abs(float(row.get(p_col, 0))) if p_col else 0.0
+                        # Get Mu - try mu_max first, then use max of mu_max and mu_min
+                        mu_max_col = column_map.get("mu_max")
+                        mu_min_col = column_map.get("mu_min")
 
-                    key = (beam_id, story, case_id)
+                        mu = 0.0
+                        if mu_max_col:
+                            mu_max_val = abs(float(row.get(mu_max_col, 0) or 0))
+                            mu = mu_max_val
+                        if mu_min_col:
+                            mu_min_val = abs(float(row.get(mu_min_col, 0) or 0))
+                            mu = max(mu, mu_min_val)
 
-                    if key not in envelopes:
+                        # Get Vu
+                        vu_col = column_map.get("vu_max")
+                        vu = abs(float(row.get(vu_col, 0) or 0)) if vu_col else 0.0
+
+                        key = (beam_id, story, case_id)
                         envelopes[key] = {
                             "beam_id": beam_id,
                             "story": story,
                             "case_id": case_id,
-                            "mu_max": m3,
-                            "vu_max": v2,
-                            "pu_max": p,
+                            "mu_max": mu,
+                            "vu_max": vu,
+                            "pu_max": 0.0,
                             "station_count": 1,
                         }
+
                     else:
-                        env = envelopes[key]
-                        env["mu_max"] = max(env["mu_max"], m3)
-                        env["vu_max"] = max(env["vu_max"], v2)
-                        env["pu_max"] = max(env["pu_max"], p)
-                        env["station_count"] += 1
+                        # Raw ETABS format - need to compute envelope
+                        case_id = row[column_map["case_id"]].strip()
+
+                        m3 = abs(float(row[column_map["m3"]]))
+                        v2 = abs(float(row[column_map["v2"]]))
+
+                        p_col = column_map.get("p")
+                        p = abs(float(row.get(p_col, 0))) if p_col else 0.0
+
+                        key = (beam_id, story, case_id)
+
+                        if key not in envelopes:
+                            envelopes[key] = {
+                                "beam_id": beam_id,
+                                "story": story,
+                                "case_id": case_id,
+                                "mu_max": m3,
+                                "vu_max": v2,
+                                "pu_max": p,
+                                "station_count": 1,
+                            }
+                        else:
+                            env = envelopes[key]
+                            env["mu_max"] = max(env["mu_max"], m3)
+                            env["vu_max"] = max(env["vu_max"], v2)
+                            env["pu_max"] = max(env["pu_max"], p)
+                            env["station_count"] += 1
 
                 except (KeyError, ValueError):
                     # Skip invalid rows

@@ -35,6 +35,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from structural_lib.models import (
+    BeamForces,
+    BeamGeometry,
+    FrameType,
+    Point3D,
+    SectionProperties,
+)
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -50,6 +58,11 @@ __all__ = [
     "validate_etabs_csv",
     "load_frames_geometry",
     "merge_forces_and_geometry",
+    # Pydantic model conversion
+    "to_beam_geometry",
+    "to_beam_forces",
+    "frames_to_beam_geometries",
+    "envelopes_to_beam_forces",
 ]
 
 
@@ -820,3 +833,182 @@ def merge_forces_and_geometry(
         merged[key] = (env, geom)
 
     return merged
+
+
+# =============================================================================
+# Pydantic Model Conversion Functions
+# =============================================================================
+
+
+def to_beam_geometry(
+    frame: FrameGeometry,
+    *,
+    width_mm: float = 300.0,
+    depth_mm: float = 500.0,
+    fck_mpa: float = 25.0,
+    fy_mpa: float = 500.0,
+    cover_mm: float = 40.0,
+) -> BeamGeometry:
+    """Convert FrameGeometry dataclass to Pydantic BeamGeometry model.
+
+    This function bridges the existing etabs_import workflow with the new
+    canonical data format. It converts the dataclass-based FrameGeometry
+    to a validated Pydantic BeamGeometry model.
+
+    Args:
+        frame: FrameGeometry dataclass from load_frames_geometry()
+        width_mm: Section width in mm (default: 300)
+        depth_mm: Section depth in mm (default: 500)
+        fck_mpa: Concrete strength in MPa (default: 25)
+        fy_mpa: Steel yield strength in MPa (default: 500)
+        cover_mm: Clear cover in mm (default: 40)
+
+    Returns:
+        Validated BeamGeometry Pydantic model
+
+    Example:
+        >>> frames = load_frames_geometry("frames_geometry.csv")
+        >>> beam = to_beam_geometry(frames[0], width_mm=300, depth_mm=500)
+        >>> print(beam.model_dump_json())
+    """
+    # Map frame_type string to FrameType enum
+    frame_type_map = {
+        "Beam": FrameType.BEAM,
+        "Column": FrameType.COLUMN,
+        "Brace": FrameType.BRACE,
+    }
+    frame_type = frame_type_map.get(frame.frame_type, FrameType.BEAM)
+
+    return BeamGeometry(
+        id=f"{frame.label}_{frame.story}",
+        label=frame.label,
+        story=frame.story,
+        frame_type=frame_type,
+        point1=Point3D(x=frame.point1_x, y=frame.point1_y, z=frame.point1_z),
+        point2=Point3D(x=frame.point2_x, y=frame.point2_y, z=frame.point2_z),
+        section=SectionProperties(
+            width_mm=width_mm,
+            depth_mm=depth_mm,
+            fck_mpa=fck_mpa,
+            fy_mpa=fy_mpa,
+            cover_mm=cover_mm,
+        ),
+        angle=frame.angle,
+        source_id=frame.unique_name,
+    )
+
+
+def to_beam_forces(envelope: ETABSEnvelopeResult) -> BeamForces:
+    """Convert ETABSEnvelopeResult dataclass to Pydantic BeamForces model.
+
+    This function bridges the existing etabs_import workflow with the new
+    canonical data format. It converts the dataclass-based envelope result
+    to a validated Pydantic BeamForces model.
+
+    Args:
+        envelope: ETABSEnvelopeResult from normalize_etabs_forces()
+
+    Returns:
+        Validated BeamForces Pydantic model
+
+    Example:
+        >>> envelopes = normalize_etabs_forces("beam_forces.csv")
+        >>> forces = to_beam_forces(envelopes[0])
+        >>> print(forces.model_dump_json())
+    """
+    return BeamForces(
+        id=f"{envelope.beam_id}_{envelope.story}",
+        load_case=envelope.case_id,
+        mu_knm=envelope.mu_knm,
+        vu_kn=envelope.vu_kn,
+        pu_kn=0.0,  # Axial not in envelope
+        station_count=envelope.station_count,
+    )
+
+
+def frames_to_beam_geometries(
+    frames: list[FrameGeometry],
+    section_map: dict[str, dict[str, float]] | None = None,
+    *,
+    default_width_mm: float = 300.0,
+    default_depth_mm: float = 500.0,
+    default_fck_mpa: float = 25.0,
+    default_fy_mpa: float = 500.0,
+    default_cover_mm: float = 40.0,
+    beam_only: bool = True,
+) -> list[BeamGeometry]:
+    """Convert list of FrameGeometry to list of BeamGeometry models.
+
+    Batch conversion with optional section property lookup by section_name.
+
+    Args:
+        frames: List of FrameGeometry from load_frames_geometry()
+        section_map: Optional dict mapping section_name to properties.
+            Each entry can have: width_mm, depth_mm, fck_mpa, fy_mpa, cover_mm
+        default_width_mm: Default width if not in section_map
+        default_depth_mm: Default depth if not in section_map
+        default_fck_mpa: Default concrete strength
+        default_fy_mpa: Default steel strength
+        default_cover_mm: Default cover
+        beam_only: If True (default), filter to only "Beam" type frames
+
+    Returns:
+        List of validated BeamGeometry Pydantic models
+
+    Example:
+        >>> frames = load_frames_geometry("frames_geometry.csv")
+        >>> section_map = {
+        ...     "B300x500": {"width_mm": 300, "depth_mm": 500},
+        ...     "B400x600": {"width_mm": 400, "depth_mm": 600},
+        ... }
+        >>> beams = frames_to_beam_geometries(frames, section_map)
+        >>> print(f"Converted {len(beams)} beams")
+    """
+    section_map = section_map or {}
+    result: list[BeamGeometry] = []
+
+    for frame in frames:
+        # Filter by frame type if requested
+        if beam_only and frame.frame_type != "Beam":
+            continue
+
+        # Get section properties from map or use defaults
+        props = section_map.get(frame.section_name, {})
+        width_mm = props.get("width_mm", default_width_mm)
+        depth_mm = props.get("depth_mm", default_depth_mm)
+        fck_mpa = props.get("fck_mpa", default_fck_mpa)
+        fy_mpa = props.get("fy_mpa", default_fy_mpa)
+        cover_mm = props.get("cover_mm", default_cover_mm)
+
+        beam = to_beam_geometry(
+            frame,
+            width_mm=width_mm,
+            depth_mm=depth_mm,
+            fck_mpa=fck_mpa,
+            fy_mpa=fy_mpa,
+            cover_mm=cover_mm,
+        )
+        result.append(beam)
+
+    return result
+
+
+def envelopes_to_beam_forces(
+    envelopes: list[ETABSEnvelopeResult],
+) -> list[BeamForces]:
+    """Convert list of ETABSEnvelopeResult to list of BeamForces models.
+
+    Batch conversion for all envelope results.
+
+    Args:
+        envelopes: List of ETABSEnvelopeResult from normalize_etabs_forces()
+
+    Returns:
+        List of validated BeamForces Pydantic models
+
+    Example:
+        >>> envelopes = normalize_etabs_forces("beam_forces.csv")
+        >>> forces = envelopes_to_beam_forces(envelopes)
+        >>> print(f"Converted {len(forces)} force records")
+    """
+    return [to_beam_forces(env) for env in envelopes]
