@@ -76,9 +76,9 @@ Keep indexes and link checks current after doc updates:
 
 ```bash
 ./scripts/generate_all_indexes.sh
-.venv/bin/python scripts/generate_docs_index.py --write
-.venv/bin/python scripts/check_docs_index.py
-.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/.venv/bin/python scripts/generate_docs_index.py --write
+.venv/bin/.venv/bin/python scripts/check_docs_index.py
+.venv/bin/.venv/bin/python scripts/check_docs_index_links.py
 ```
 
 ## Canonical Sources Map
@@ -185,8 +185,8 @@ python -m structural_lib report results.json --format=html -o report/ --batch-th
 Render DXF outputs to PNG/PDF for quick sharing:
 
 ```bash
-python scripts/dxf_render.py drawings.dxf -o drawings.png
-python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.png
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
 ```
 
 Requires: `pip install "structural-lib-is456[render]"`

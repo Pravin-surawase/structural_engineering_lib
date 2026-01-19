@@ -44,7 +44,7 @@ Entries here represent "locked" versions that have been verified and approved.
 
 6. **Recommended: clean-venv verification**
    ```bash
-   python scripts/verify_release.py --version X.Y.Z --source pypi
+   .venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi
    ```
 
 ### TestPyPI (for testing before release)

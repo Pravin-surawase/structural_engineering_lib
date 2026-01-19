@@ -98,7 +98,7 @@ git checkout -b backup/cleanup-2026-01-10
 rm path/to/file.md
 
 # Step 4: Run link check
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Step 5: If links broken - fix or restore
 git restore path/to/file.md  # Restore if needed
@@ -267,7 +267,7 @@ git show <commit>:path/to/file.md > restored.md  # Restore
 grep -r "filename" docs/ agents/ --include="*.md" | head -20
 
 # 2. Run link check (baseline)
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # 3. Use safe scripts when available
 ./scripts/safe_file_move.py old/path new/path

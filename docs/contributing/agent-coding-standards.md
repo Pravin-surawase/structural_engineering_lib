@@ -650,8 +650,8 @@ mypy structural_lib/
 
 # 5. If adding Streamlit code
 cd ..
-python scripts/check_streamlit_issues.py --all-pages
-python scripts/check_fragment_violations.py
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_fragment_violations.py
 ```
 
 ### All-in-One

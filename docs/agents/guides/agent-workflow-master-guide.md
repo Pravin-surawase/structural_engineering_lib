@@ -36,7 +36,7 @@
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+.venv/bin/.venv/bin/python scripts/start_session.py
 ```
 
 ### Step 2: Work & Commit
@@ -48,7 +48,7 @@
 ### Step 3: End Session
 ```bash
 # Run BEFORE ending session:
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 ```
 
 ---
@@ -112,13 +112,13 @@
 ### Example Automation Scripts
 ```bash
 # Fix broken links automatically (fixed 213 links in 5 seconds)
-python scripts/fix_broken_links.py --fix
+.venv/bin/python scripts/fix_broken_links.py --fix
 
 # Validate folder structure
-python scripts/validate_folder_structure.py
+.venv/bin/python scripts/validate_folder_structure.py
 
 # Check doc version drift
-python scripts/check_doc_versions.py
+.venv/bin/python scripts/check_doc_versions.py
 ```
 
 ### Session Duration Guidelines
@@ -195,7 +195,7 @@ START
 
 # 4. Update session docs in this PR
 # - Log PR number (not merge hash) in SESSION_LOG
-python3 scripts/update_handoff.py
+.venv/bin/.venv/bin/python scripts/update_handoff.py
 
 # 5. Finish and create PR
 ./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async --with-session-docs
@@ -343,7 +343,7 @@ cd ..
 **Solution:**
 ```bash
 # Auto-fix all version references
-.venv/bin/python scripts/check_doc_versions.py --fix
+.venv/bin/.venv/bin/python scripts/check_doc_versions.py --fix
 
 # Commit the fixes
 ./scripts/ai_commit.sh "chore: sync version references"
@@ -419,7 +419,7 @@ cd $PROJECT_ROOT
 ### Streamlit Validation (Automatic in CI/Pre-commit)
 ```bash
 # AST Scanner - detects runtime errors before they happen
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
 # Pylint - code quality checks
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
@@ -439,7 +439,7 @@ cd $PROJECT_ROOT
 ### Pre-Release Gates
 ```bash
 # Comprehensive check
-.venv/bin/python scripts/check_handoff_ready.py
+.venv/bin/.venv/bin/python scripts/check_handoff_ready.py
 
 # Checks:
 # - All session docs updated
@@ -631,7 +631,7 @@ All agents MUST follow the published governance spec. Key rules:
 **ALWAYS check:** Does this file need folder migration pre-approval?
 ```bash
 # BEFORE creating a file:
-python scripts/check_governance_compliance.py --strict
+.venv/bin/python scripts/check_governance_compliance.py --strict
 
 # WHEN creating a file:
 # Include metadata header (see next section)
@@ -643,8 +643,8 @@ python scripts/check_governance_compliance.py --strict
 **NEVER use:** `rm`, `mv`, or `git rm` manually
 ```bash
 # ✅ ALWAYS USE these scripts:
-python scripts/safe_file_move.py old.md new.md
-python scripts/safe_file_delete.py old.md
+.venv/bin/python scripts/safe_file_move.py old.md new.md
+.venv/bin/python scripts/safe_file_delete.py old.md
 
 # Why? Auto-updates all links (789+ internal links to protect!)
 ```
@@ -652,11 +652,11 @@ python scripts/safe_file_delete.py old.md
 ### Pre-Migration Checklist
 Before moving files or creating new folder structures:
 - [ ] Check [folder-structure-governance.md](../../guidelines/folder-structure-governance.md)
-- [ ] Run `python scripts/check_governance_compliance.py --strict`
+- [ ] Run `.venv/bin/python scripts/check_governance_compliance.py --strict`
 - [ ] Verify target folder is compliant with governance
 - [ ] Document migration in TASKS.md
 - [ ] Use safe_file_move.py for all moves
-- [ ] Validate links after migration: `python scripts/check_links.py`
+- [ ] Validate links after migration: `.venv/bin/python scripts/check_links.py`
 
 ---
 

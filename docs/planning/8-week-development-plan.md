@@ -432,10 +432,10 @@ Build → Test → Polish → Demo → Iterate
 - **Git:** `./scripts/ai_commit.sh "message"` (5s commits)
 - **Testing:** `cd Python && pytest tests/ -v`
 - **Streamlit:** `streamlit run streamlit_app/app.py`
-- **Validation:** `.venv/bin/python scripts/check_streamlit_issues.py`
+- **Validation:** `.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py`
 
 ### Weekly Use
-- **Performance:** `.venv/bin/python scripts/performance_benchmark.py`
+- **Performance:** `.venv/bin/.venv/bin/python scripts/performance_benchmark.py`
 - **Coverage:** `cd Python && pytest --cov=structural_lib tests/`
 - **Docs:** `./scripts/generate_all_indexes.sh`
 

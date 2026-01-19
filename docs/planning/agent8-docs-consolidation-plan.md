@@ -76,24 +76,24 @@ Based on comprehensive research (see [agent-8-git-automation-comprehensive-resea
 mkdir -p docs/_archive/research/agent-8/
 
 # Move files safely (checks links automatically)
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-week1-reality-check.md \
   docs/_archive/research/agent-8/agent-8-week1-reality-check.md
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-week1-summary.md \
   docs/_archive/research/agent-8/agent-8-week1-summary.md
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-implementation-priority.md \
   docs/_archive/research/agent-8/agent-8-implementation-priority.md
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-week1-implementation-blocker.md \
   docs/_archive/research/agent-8/agent-8-week1-implementation-blocker.md
 
 # Verify no broken links
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 ```
 
 **Expected Result:**
@@ -157,7 +157,7 @@ No loss of information, proper archival per governance.
 # Option 1: Legacy commands (still work, but unified script is simpler)
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+.venv/bin/.venv/bin/python scripts/start_session.py
 ```
 
 <!-- AFTER -->
@@ -173,7 +173,7 @@ No loss of information, proper archival per governance.
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+.venv/bin/.venv/bin/python scripts/start_session.py
 ```
 ```
 
@@ -191,7 +191,7 @@ No loss of information, proper archival per governance.
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+.venv/bin/.venv/bin/python scripts/start_session.py
 ```
 
 <!-- AFTER -->
@@ -209,7 +209,7 @@ No loss of information, proper archival per governance.
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/python scripts/start_session.py
+.venv/bin/.venv/bin/python scripts/start_session.py
 ```
 **Rationale:**
 - Quick mode is now explicitly "DEFAULT"
@@ -397,7 +397,7 @@ Analysis: docs/research/agent-start-modes-analysis.md
 ### Validation ✅
 ```bash
 # After archival
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 # → Should show: "Broken links: 0"
 
 # After recommendation updates
@@ -406,7 +406,7 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 # → Should show all 4 files with "RECOMMENDED" or "DEFAULT"
 
 # Final validation
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 # → Should pass all checks
 ```
 
@@ -437,7 +437,7 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 
 **If Links Break:**
 1. Revert with: `git revert <commit-hash>`
-2. Investigate broken link: `.venv/bin/python scripts/check_links.py`
+2. Investigate broken link: `.venv/bin/.venv/bin/python scripts/check_links.py`
 3. Fix manually, then re-attempt archival
 
 **If Agent Start Issues:**

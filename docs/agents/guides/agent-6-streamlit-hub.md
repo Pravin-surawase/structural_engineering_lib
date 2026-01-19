@@ -58,7 +58,7 @@ Start here, find what you need, get back to work.
 cd streamlit_app && pytest tests/ -v
 
 # Check for code issues (AST scanner)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
 # Run pylint on Streamlit code
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/

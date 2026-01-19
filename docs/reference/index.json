@@ -44,7 +44,7 @@
       "name": "api.md",
       "title": "IS 456 RC Beam Design Library — API Reference",
       "description": "Machine-readable signatures live in docs/reference/api-manifest.json. bash",
-      "last_updated": "2026-01-16",
+      "last_updated": "2026-01-19",
       "size_lines": 2980,
       "audience": "Developers",
       "status": "Production Ready"
@@ -53,7 +53,7 @@
       "name": "automation-catalog.md",
       "title": "Automation Script Catalog",
       "description": "> **Purpose:** Complete reference of all automation scripts in this project. > **For AI Agents:** Use this to discover available automation before implementing manually.",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 2039,
       "audience": "All Agents",
       "status": "Production Ready"
@@ -161,7 +161,7 @@
       "name": "streamlit-validation.md",
       "title": "Streamlit Code Validation Reference",
       "description": "> **For AI Agents:** This guide explains the automated validation system for Streamlit code. The Streamlit validation system consists of two layers:",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 389,
       "audience": "All Agents",
       "status": "Production Ready"
@@ -179,7 +179,7 @@
       "name": "troubleshooting.md",
       "title": "Troubleshooting Guide",
       "description": "Use this when reporting bugs or debugging agent failures: bash",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 313,
       "audience": "Developers",
       "status": "Production Ready"

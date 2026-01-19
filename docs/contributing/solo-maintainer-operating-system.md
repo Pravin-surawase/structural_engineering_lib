@@ -47,7 +47,7 @@ Everything else waits for the next stabilization week.
 ## Weekly Operating Loop
 
 Start of week:
-- `.venv/bin/python scripts/start_session.py`
+- `.venv/bin/.venv/bin/python scripts/start_session.py`
 - Pick exactly one task.
 
 During week:
@@ -55,7 +55,7 @@ During week:
 - No parallel tasks.
 
 End of week:
-- `.venv/bin/python scripts/end_session.py`
+- `.venv/bin/.venv/bin/python scripts/end_session.py`
 - Summarize in `docs/SESSION_LOG.md`.
 
 ---
@@ -83,7 +83,7 @@ End of week:
 
 Required before tagging:
 - `./scripts/ci_local.sh`
-- `.venv/bin/python scripts/check_doc_versions.py --ci`
+- `.venv/bin/.venv/bin/python scripts/check_doc_versions.py --ci`
 - Update `CHANGELOG.md`, `docs/releases.md`, `docs/SESSION_LOG.md`
 
 If any gate fails, do not release.

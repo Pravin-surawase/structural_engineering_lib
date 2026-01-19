@@ -1365,10 +1365,10 @@ jobs:
         run: pytest --doctest-modules structural_lib/ -v
 
       - name: Check example coverage
-        run: python scripts/check_example_coverage.py
+        run: .venv/bin/python scripts/check_example_coverage.py
 
       - name: Validate docstring completeness
-        run: python scripts/check_api_docstrings.py
+        run: .venv/bin/python scripts/check_api_docstrings.py
 ```
 
 ---

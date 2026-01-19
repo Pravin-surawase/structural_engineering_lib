@@ -11,14 +11,14 @@
 ```bash
 # Phase 0: Setup (2 days)
 ./scripts/generate_all_indexes.sh          # Generate hierarchical indexes
-python scripts/measure_agent_navigation.py --baseline  # Run baseline measurements
+.venv/bin/python scripts/measure_agent_navigation.py --baseline  # Run baseline measurements
 
 # Phase 1-3: Data collection (8 days)
 # Collect 300 trials (150 baseline, 150 hierarchical) across 3 AI models
 
 # Phase 4: Analysis (5 days)
-python scripts/analyze_navigation_data.py  # Statistical analysis
-python scripts/generate_figures.py         # Create visualizations
+.venv/bin/python scripts/analyze_navigation_data.py  # Statistical analysis
+.venv/bin/python scripts/generate_figures.py         # Create visualizations
 
 # Phase 5: Submission (2 days)
 # Package for publication and submit to arXiv

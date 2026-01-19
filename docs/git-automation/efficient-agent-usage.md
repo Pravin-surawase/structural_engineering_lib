@@ -35,7 +35,7 @@ For 95% of agent sessions, you need only 3 commands:
 ./scripts/ai_commit.sh "scope: description"
 
 # 3. END (30 seconds)
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 ```
 
 **That's it.** Everything else is automated.
@@ -63,7 +63,7 @@ For 95% of agent sessions, you need only 3 commands:
 gh pr merge <num> --squash --delete-branch
 
 # End
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 ```
 
 ### 2.2 Implementation Agent (Code Focus)
@@ -188,7 +188,7 @@ When you're certain (small doc edits):
 |-------|---------|------|
 | Start | `./scripts/agent_start.sh --quick` | 6s |
 | Preflight | `./scripts/agent_preflight.sh` | 2s |
-| End | `.venv/bin/python scripts/end_session.py` | 30s |
+| End | `.venv/bin/.venv/bin/python scripts/end_session.py` | 30s |
 
 ### Commit Workflow
 | Action | Command | Time |

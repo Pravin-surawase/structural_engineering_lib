@@ -20,7 +20,7 @@
 
 ```bash
 # 1. Run automated checks
-.venv/bin/python scripts/end_session.py --fix
+.venv/bin/.venv/bin/python scripts/end_session.py --fix
 
 # 2. Review output and fix any issues
 # 3. Commit uncommitted work (if any)
@@ -38,7 +38,7 @@
 
 ```bash
 cd /path/to/structural_engineering_lib
-.venv/bin/python scripts/end_session.py --fix
+.venv/bin/.venv/bin/python scripts/end_session.py --fix
 ```
 
 **What it checks:**
@@ -198,7 +198,7 @@ cd Python && .venv/bin/python -m pytest -q
 .venv/bin/python -m black Python/ --check
 
 # Verify docs links aren't broken (if docs changed)
-.venv/bin/python scripts/check_links.py docs/
+.venv/bin/.venv/bin/python scripts/check_links.py docs/
 ```
 
 **Don't run full CI locally** - that's what CI is for. Just catch obvious issues.

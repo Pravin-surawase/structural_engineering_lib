@@ -7,9 +7,9 @@
     {
       "name": "SESSION_LOG.md",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Refreshed agent bootstrap guidance and governance quick-start docs",
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Hardened create_task_pr.sh with stash restore guard and hash detection",
       "last_updated": "2026-01-19",
-      "size_lines": 6850
+      "size_lines": 6867
     },
     {
       "name": "TASKS.md",

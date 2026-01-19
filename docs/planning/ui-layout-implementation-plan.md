@@ -767,7 +767,7 @@ def test_quick_checks_calculation():
 ```yaml
 - id: check-plotly-token-usage
   name: Check Plotly token usage
-  entry: python scripts/check_plotly_tokens.py
+  entry: .venv/bin/python scripts/check_plotly_tokens.py
   language: system
   files: ^streamlit_app/(components|pages)/.*\.py$
   pass_filenames: true

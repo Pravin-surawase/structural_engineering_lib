@@ -8,7 +8,7 @@
       "name": "agent-coding-standards.md",
       "title": "Agent Coding Standards for structural_lib",
       "description": "This guide ensures AI agents write code that is: - ✅ Compatible with existing structural_lib code",
-      "last_updated": "2026-01-15",
+      "last_updated": "2026-01-19",
       "size_lines": 744,
       "audience": "AI Agents, Developers",
       "status": "Approved"
@@ -25,14 +25,14 @@
       "name": "agent-onboarding-message.md",
       "title": "First Message for New Agents",
       "description": "> **Copy-paste this exact message to any new agent starting work on this project.** ",
-      "last_updated": "2026-01-08",
+      "last_updated": "2026-01-19",
       "size_lines": 103
     },
     {
       "name": "background-agent-guide.md",
       "title": "Background Agent Parallel Work Guide",
       "description": "- **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatGPT) working on assigned tasks - **MAIN Agent/User:** You (the project owner) coordinating work and handling all remote G",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 585,
       "status": "v2.0 - Updated for multi-agent collaboration framework (2026-01-07)"
     },
@@ -56,7 +56,7 @@
       "name": "development-guide.md",
       "title": "IS 456 RC Beam Design Library — Development Guide",
       "description": "1. Overview 2. Project Structure",
-      "last_updated": "2026-01-15",
+      "last_updated": "2026-01-19",
       "size_lines": 1512,
       "audience": "Developers",
       "status": "Approved"
@@ -83,7 +83,7 @@
       "name": "end-of-session-workflow.md",
       "title": "End-of-Session Workflow",
       "description": "> **Standard procedure for ALL agents when ending a session.** bash",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 490,
       "audience": "All Agents",
       "status": "Approved"
@@ -126,7 +126,7 @@
       "name": "handoff.md",
       "title": "Handoff Quick Start",
       "description": "Goal: enable the next agent to resume in under 2 minutes. 1. Run: ./scripts/agent_start.sh --quick (or with --agent 9 for governance work)",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 87
     },
     {
@@ -160,7 +160,7 @@
       "name": "quickstart-checklist.md",
       "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
       "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** streamlit_app/pages/NN_📋_page_name.py",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 500,
       "audience": "Developers",
       "status": "Approved"
@@ -169,7 +169,7 @@
       "name": "repo-professionalism.md",
       "title": "Repo Professionalism Playbook",
       "description": "This doc does not replace existing rules. It links to the canonical sources and adds a practical \"what to do next\" map. bash",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 207,
       "audience": "All Agents",
       "status": "Approved"
@@ -185,7 +185,7 @@
       "name": "solo-maintainer-operating-system.md",
       "title": "Solo Maintainer Operating System (Public)",
       "description": "- Deterministic outputs, explicit units, stable contracts. - One active task at a time (WIP=1).",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 124,
       "audience": "Maintainers",
       "status": "Approved"
@@ -194,7 +194,7 @@
       "name": "streamlit-comprehensive-prevention-system.md",
       "title": "Comprehensive Streamlit App Prevention System",
       "description": "> **Context:** Built prevention system for cost_optimizer.py (PR #301), but discovered > NameError in beam_design.py that wasn't caught. Need app-wide solution.",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 504,
       "audience": "Developers",
       "status": "Complete"
@@ -212,14 +212,14 @@
       "name": "streamlit-maintenance-guide.md",
       "title": "Streamlit Maintenance Guide",
       "description": "> **Purpose:** Your complete reference for developing, testing, validating, and maintaining the Streamlit UI. 1. Quick Start",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 758
     },
     {
       "name": "streamlit-prevention-system-review.md",
       "title": "Comprehensive Prevention System - Review & Refinements",
       "description": "> **Purpose:** Critical review of the proposed comprehensive prevention system, > identifying gaps, refining approach, and prioritizing implementation.",
-      "last_updated": "2026-01-12",
+      "last_updated": "2026-01-19",
       "size_lines": 608,
       "status": "📝 UNDER REVIEW"
     },
@@ -227,7 +227,7 @@
       "name": "testing-strategy.md",
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
       "description": "- Location: Python/tests/ - Runner: pytest",
-      "last_updated": "2026-01-13",
+      "last_updated": "2026-01-19",
       "size_lines": 276,
       "audience": "Developers",
       "status": "Production Ready"
