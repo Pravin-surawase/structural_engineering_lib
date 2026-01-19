@@ -14,23 +14,25 @@
 | **Current** | v0.17.6 | 🚧 In Progress |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 47 | **Focus:** Strategic 3D differentiation + interactive controls
+**Last Session:** 47b | **Focus:** Democratization vision + strategic expansion
 
 ---
 
-## The Core Strategic Insight
+## 🎯 The Big Picture
 
-> **"Just boxes isn't enough. ETABS shows that too. We need to show what ETABS CAN'T."**
+> **"What was not possible few years back, or only possible for big firms — now everyone can use them free."**
 
-**Our Differentiator:** We're not analysis software. We're **DETAILING VISUALIZATION** software.
+**4 Pillars of Democratization:**
+| Pillar | Description | Timeline |
+|--------|-------------|----------|
+| 🎨 Visual Excellence | Rebar 3D, CAD quality | 8-week MVP |
+| 🤖 AI Chat Interface | "Help me design this beam" | V1.1 |
+| 🔧 User Automation | Build your own workflows | V1.1 |
+| 📚 Library Evolution | Columns, slabs, multi-code | V2.0 |
 
-| ETABS Shows | We Show (and ETABS doesn't) |
-|-------------|----------------------------|
-| Beam geometry | ✅ Same |
-| Design status | 🔥 **Color-coded utilization heat maps** |
-| Reinforcement | 🔥 **Actual 3D rebar cylinders** |
-| Stirrups | 🔥 **Variable spacing zones** |
-| Detailing | 🔥 **Ld, lap lengths, bar marks** |
+**Strategic Docs:**
+- [democratization-vision.md](democratization-vision.md) — Full vision
+- [8-week-development-plan.md](8-week-development-plan.md) — Current roadmap
 
 ---
 
@@ -47,18 +49,18 @@
 
 ## Latest Handoff
 
-**Session 47 (2026-01-19)**
-- ✅ Story filter dropdown - view one story at a time
-- ✅ Color mode selector - Status / Story / Utilization heat map
-- ✅ Camera presets - Isometric / Front / Top / Side
-- ✅ Show/Hide edges toggle
-- 📝 Created [3D Visualization Differentiation Strategy](../research/3d-visualization-differentiation-strategy.md)
-- 📝 Updated 8-week plan with Phase 2.5 and Phase 3 details
+**Session 47b (2026-01-19) — Strategic Expansion**
+- 🔬 Deep research into library capabilities
+- 💎 Discovered SmartDesigner already built but not exposed!
+- 📝 Created [democratization-vision.md](democratization-vision.md)
+- 📝 Updated 8-week plan with Phase 3.5 (Smart Insights)
+- 📝 Updated TASKS.md with TASK-3D-008
 
-**Key Commits:**
-- `22dc991d` - Differentiation strategy research
-- `b13b41a2` - 8-week plan Phase 2.5/3 updates
-- `a20e9419` - Story filter, color modes, camera presets
+**Key Finding:** We have 36+ API functions, AI-like insights engine (`SmartDesigner`), and 70%+ library completeness for AI chat integration. Just need to expose it!
+
+**Session 47a (2026-01-19) — 3D Differentiation**
+- ✅ Story filter, color modes, camera presets
+- 📝 Differentiation strategy document
 
 ---
 
@@ -66,49 +68,51 @@
 
 ### What Works ✅
 - Page 07: VBA CSV → Design → **Interactive 3D View**
-- Story filter: View single story or all
-- Color modes: Design Status / By Story / Utilization
-- Camera presets: Isometric / Front / Top / Side
+- Story filter, color modes, camera presets
 - Solid 3D beam boxes with lighting
+- SmartDesigner (backend) — **Not exposed in UI yet!**
 
 ### 8-Week Plan Progress
 - **Phase 1:** ✅ Complete (Live Preview)
 - **Phase 2:** ✅ Complete (Data Import)
 - **Phase 2.5:** ✅ Complete (Visualization Polish)
-- **Phase 3:** 🚧 Next (Detailing Visualization) ← **THE KILLER FEATURE**
+- **Phase 3:** 🚧 Next (Rebar Visualization) ← **THE KILLER FEATURE**
+- **Phase 3.5:** 📋 New (Smart Insights Dashboard)
 
 ---
 
-## 🔥 Next Session Priority: REBAR VISUALIZATION
+## 🔥 Next Session Priorities
 
-**This is our differentiator. This is why users will choose us over ETABS.**
+### Priority 1: SmartDesigner Dashboard (Quick Win!)
 
-### Infrastructure Already Exists:
+**We already built AI-like intelligence — just need to show it!**
 
 ```python
-# In BeamDetailingResult:
-def to_3d_json(self, is_seismic: bool = False) -> dict:
-    """Serialize detailing to 3D geometry with rebar positions."""
+from structural_lib.insights import SmartDesigner
 
-# In visualizations_3d.py:
-def generate_cylinder_mesh(start, end, radius, color) -> go.Mesh3d:
-    """Create 3D cylinder for rebar bar."""
+designer = SmartDesigner()
+report = designer.analyze(result, geometry, materials)
+# Returns: overall_score, key_issues, quick_wins, cost_analysis
 ```
 
-### The Path:
-1. Run design → Get `BeamDetailingResult`
-2. Call `to_3d_json()` → Get 3D geometry with bar positions
-3. Render each bar as cylinder → Show actual reinforcement
-4. User sees what they're building, not just boxes
+| Task | Est | Notes |
+|------|-----|-------|
+| Add SmartDesigner panel to beam design | 2h | Use existing `analyze()` |
+| Show cost optimization summary | 1h | Current vs optimal |
+| Display design suggestions | 1h | High/medium/low impact |
 
-### Tasks:
+### Priority 2: Rebar Visualization (THE Differentiator)
 
-| Priority | Task | Est | Notes |
-|----------|------|-----|-------|
-| 🔥 Critical | TASK-3D-008: Rebar in 3D | 8h | The killer feature |
-| 🔥 Critical | TASK-3D-009: Stirrup zones | 6h | Variable spacing |
-| 🟡 Medium | TASK-3D-010: Section view | 4h | Click → see cross-section |
-| 🟡 Medium | TASK-PERF-001: LOD | 2h | 1000+ beams |
+**This is why users will choose us over ETABS.**
+
+Infrastructure exists:
+- `BeamDetailingResult.to_3d_json()` — bar positions
+- `generate_cylinder_mesh()` — 3D cylinders
+
+| Task | Est | Notes |
+|------|-----|-------|
+| TASK-3D-008: Rebar in 3D | 8h | The killer feature |
+| TASK-3D-009: Stirrup zones | 6h | Variable spacing |
 
 ---
 
@@ -136,8 +140,8 @@ cd Python && .venv/bin/python -m pytest tests/ -v
 |---------|----------|
 | Task tracking | [docs/TASKS.md](../TASKS.md) |
 | Session history | [docs/SESSION_LOG.md](../SESSION_LOG.md) |
-| Agent instructions | [.github/copilot-instructions.md](../../.github/copilot-instructions.md) |
-| **Differentiation strategy** | [docs/research/3d-visualization-differentiation-strategy.md](../research/3d-visualization-differentiation-strategy.md) |
+| **Democratization vision** | [docs/planning/democratization-vision.md](democratization-vision.md) |
+| **8-week plan** | [docs/planning/8-week-development-plan.md](8-week-development-plan.md) |
+| **SmartDesigner** | [Python/structural_lib/insights/smart_designer.py](../../Python/structural_lib/insights/smart_designer.py) |
 | 3D visualization | [streamlit_app/pages/07_📥_multi_format_import.py](../../streamlit_app/pages/07_📥_multi_format_import.py) |
-| Rebar geometry | [visualizations_3d.py](../../streamlit_app/components/visualizations_3d.py) |
-| Detailing result | [detailing.py](../../Python/structural_lib/codes/is456/detailing.py) |
+| API reference | [docs/reference/api.md](../reference/api.md) |

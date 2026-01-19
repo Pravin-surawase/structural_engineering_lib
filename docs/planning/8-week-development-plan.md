@@ -6,9 +6,22 @@
 **Importance:** Critical
 **Created:** 2026-01-15
 **Last Updated:** 2026-01-19
-**Related Tasks:** TASK-3D-VIZ, TASK-3D-002
+**Related Tasks:** TASK-3D-VIZ, TASK-3D-002, TASK-AI-001
 **Timeline:** 8 weeks (Jan 15 - March 15, 2026)
 **Release Target:** March 2026
+
+---
+
+## 🎯 The Bigger Picture
+
+> **"What was not possible few years back, or only possible for big firms — now everyone can use them free."**
+
+This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](democratization-vision.md) for the full roadmap including:
+- 🤖 **AI Chat Interface** — "Help me design this beam" (V1.1)
+- 🔧 **User Automation** — Build your own workflows (V1.1)
+- 📚 **Library Evolution** — Columns, slabs, multi-code (V2.0)
+
+**For now, we focus on visual excellence** — the killer feature that differentiates us.
 
 ---
 
@@ -18,8 +31,9 @@
 |-------|------|------|--------|
 | **Phase 1** | 1-2 | Live Preview Foundation | ✅ **COMPLETE** |
 | **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **90% COMPLETE** |
-| **Phase 2.5** | 4 | Visualization Polish | 🚧 **IN PROGRESS** |
+| **Phase 2.5** | 4 | Visualization Polish | ✅ **COMPLETE** |
 | **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
+| **Phase 3.5** | 6 | Smart Insights Dashboard | 📋 NEW |
 | **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
 
 ### The Differentiation Problem (Session 47)
@@ -32,8 +46,32 @@
 - ✅ Our Tool: **Stirrup zones** with variable spacing
 - ✅ Our Tool: **Detailing data** (Ld, lap lengths, bar marks)
 - ✅ Our Tool: **Utilization heat maps** and interactive exploration
+- ✅ Our Tool: **AI-powered insights** (SmartDesigner already built!)
 
 See: [3D Visualization Differentiation Strategy](../research/3d-visualization-differentiation-strategy.md)
+
+### Hidden Gem: SmartDesigner (Discovered Session 47)
+
+We already have AI-like intelligence built! Just need to expose it in the UI:
+
+```python
+from structural_lib.insights import SmartDesigner
+
+designer = SmartDesigner()
+report = designer.analyze(result, geometry, materials)
+
+# Returns:
+# - overall_score: 0-100 rating
+# - key_issues: ["High steel ratio", "Consider deeper beam"]
+# - quick_wins: ["Reduce width 25mm → save ₹150/m"]
+# - cost_analysis: current vs optimal cost
+# - sensitivity: which parameters matter most
+# - constructability: congestion risk, bar complexity
+```
+
+**Action:** Add SmartDesigner dashboard panel to beam design page.
+
+See: [Python/structural_lib/insights/smart_designer.py](../../Python/structural_lib/insights/smart_designer.py)
 
 ### Phase 1 Evidence (Exceeds All Targets)
 
@@ -58,18 +96,32 @@ See: [3D Visualization Differentiation Strategy](../research/3d-visualization-di
 | VBA ETABS integration | 1d | ✅ Done | 153 beams tested |
 | BuildingStatistics model | 1d | ✅ Done | Volume, length metrics |
 
-### Phase 2.5: Visualization Polish (This Week)
+### Phase 2.5: Visualization Polish ✅ COMPLETE
 
 **Goal:** Make the 3D view interactive and insightful (not "just boxes")
 
 | Task | Est | Status | Priority |
 |------|-----|--------|----------|
-| Story filter dropdown | 1h | 🚧 TODO | 🔴 High |
-| Utilization heat map mode | 2h | 🚧 TODO | 🔴 High |
-| Camera presets (front/top/iso) | 1h | 🚧 TODO | 🔴 High |
-| Toggle solid/wireframe | 30m | 🚧 TODO | 🟡 Medium |
-| Beam click → highlight | 2h | 🚧 TODO | 🟡 Medium |
-| LOD for 1000+ beams | 2h | 🚧 TODO | 🟡 Medium |
+| Story filter dropdown | 1h | ✅ Done | 🔴 High |
+| Utilization heat map mode | 2h | ✅ Done | 🔴 High |
+| Camera presets (front/top/iso) | 1h | ✅ Done | 🔴 High |
+| Color mode selector | 30m | ✅ Done | 🟡 Medium |
+| Show/Hide edges toggle | 30m | ✅ Done | 🟡 Medium |
+
+### Phase 3.5: Smart Insights Dashboard 📋 NEW
+
+**Goal:** Expose existing AI-like intelligence in the UI
+
+| Task | Est | Status | Priority |
+|------|-----|--------|----------|
+| SmartDesigner panel in beam design | 2h | 📋 TODO | 🔴 High |
+| Cost optimization summary | 1h | 📋 TODO | 🔴 High |
+| Design suggestions display | 1h | 📋 TODO | 🔴 High |
+| Quick wins callout box | 1h | 📋 TODO | 🟡 Medium |
+| "Why is this unsafe?" explainer | 2h | 📋 TODO | 🟡 Medium |
+
+**Rationale:** We already built SmartDesigner but never exposed it in the UI!
+This is a quick win that makes the tool feel intelligent without building AI chat.
 
 ### Session 46+ Achievements
 
@@ -466,18 +518,27 @@ Build → Test → Polish → Demo → Iterate
 
 **Valuable but not MVP-critical:**
 
+### Major Features (V1.1 - Month 4-6)
+
 | Feature | Why Delayed | V1.1 Timeline |
 |---------|-------------|---------------|
+| **🤖 AI Chat Interface** | Requires Vercel AI SDK + FastAPI setup | Month 4-5 |
+| **🔧 User Automation** | Plugin system + webhooks | Month 5-6 |
 | DXF/PDF Drawing Export | Engineers need, but can export screenshots for now | Month 4 |
 | Material Quantity Takeoff | Nice-to-have for cost estimation | Month 4 |
 | Detailing Automation | Complex, can do manually for now | Month 5 |
 | Load Combination Viz | Advanced feature, focus on single load case first | Month 5 |
-| Deflection Visualization | Important but secondary to design | Month 6 |
-| Multi-Span Beams | Scope expansion, focus on simple spans first | Month 6 |
-| Column Design | Major feature addition | Month 7+ |
-| Slab Design | Separate module | Month 8+ |
-| Foundation Design | Separate module | Month 9+ |
+
+### Module Expansion (V2.0 - Month 7+)
+
+| Feature | Why Delayed | Timeline |
+|---------|-------------|----------|
+| **Column Design** | Major feature addition | Month 7-8 |
+| **Slab Design** | Separate module | Month 8-9 |
+| Foundation Design | Separate module | Month 9-10 |
 | Eurocode/ACI Support | International expansion | Month 10+ |
+| Multi-Span Beams | Scope expansion | Month 6 |
+| Deflection Visualization | Important but secondary | Month 6 |
 
 **Rationale:** Do ONE thing exceptionally well before expanding.
 

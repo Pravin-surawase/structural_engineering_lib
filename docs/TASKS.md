@@ -16,14 +16,30 @@
 ## Current Focus
 
 - **Version:** v0.17.6 (in progress)
-- **Focus:** 3D Visualization Excellence - Differentiation from ETABS
-- **8-Week Plan:** Phase 2.5 in progress, Phase 3 (rebar viz) planned
+- **Focus:** 3D Visualization Excellence + Smart Insights
+- **8-Week Plan:** Phase 2.5 ✅ COMPLETE, Phase 3 (rebar) + Phase 3.5 (insights) planned
 - **Next Milestone:** March 2026 (v0.18.0)
-- **Key Insight:** "Just boxes" isn't enough - show what ETABS can't
+- **Key Insight:** We have SmartDesigner built — just need to expose it!
+- **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
 
 ## Active Tasks
+
+### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) 🚧 NEW
+
+**Goal:** Expose existing AI-like intelligence in the UI
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| SmartDesigner panel in beam design | 📋 TODO | 2h - Use existing `SmartDesigner.analyze()` |
+| Cost optimization summary | 📋 TODO | 1h - Show current vs optimal cost |
+| Design suggestions display | 📋 TODO | 1h - High/medium/low impact |
+| Quick wins callout box | 📋 TODO | 1h - Actionable improvements |
+| "Why is this unsafe?" explainer | 📋 TODO | 2h - Educational feedback |
+
+**Why:** We built `SmartDesigner` in `structural_lib/insights/` but never exposed it in the UI!
+This makes the tool feel intelligent without building full AI chat.
 
 ### TASK-3D-007: 3D View Interactive Controls ✅ COMPLETE
 
