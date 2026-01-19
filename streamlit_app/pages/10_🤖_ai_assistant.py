@@ -316,7 +316,7 @@ Would you like me to:
 
                 return response
             else:
-                return "I need a design first. Please ask me to design a beam."
+                return f"Analysis failed: {analysis.get('error', 'Unknown error')}. Try redesigning the beam first."
         else:
             return "Please design a beam first, then I can help optimize the cost."
 
@@ -358,7 +358,10 @@ Would you like me to:
                         response += f"- {win}\n"
 
                 return response
-        return "Please design a beam first, then I can analyze it."
+            else:
+                return f"Analysis failed: {analysis.get('error', 'Unknown error')}. Try redesigning the beam first."
+        else:
+            return "Please design a beam first, then I can analyze it."
 
     # Check for 3D view request
     elif any(word in msg_lower for word in ["3d", "visual", "show", "view"]):
@@ -596,19 +599,18 @@ def render_workspace_panel():
     # Tab 1: 3D View
     with tabs[1]:
         if st.session_state.current_design:
-            design = st.session_state.current_design
             params = st.session_state.design_params
 
-            # Get dimensions from params (not design.geometry)
-            b_mm = params.get("b_mm", 300)
-            D_mm = params.get("D_mm", 500)
+            # Get dimensions from params
+            b = params.get("b_mm", 300)
+            D = params.get("D_mm", 500)
+            span = params.get("span_m", 5.0) * 1000
 
             try:
                 fig = create_beam_3d_figure(
-                    b_mm=b_mm,
-                    D_mm=D_mm,
-                    span_mm=params.get("span_m", 5.0) * 1000,
-                    title="Beam 3D Preview",
+                    b=b,
+                    D=D,
+                    span=span,
                 )
                 st.plotly_chart(fig, use_container_width=True)
             except Exception as e:
@@ -707,24 +709,19 @@ def main():
     """Main function."""
     init_session_state()
 
-    # Header
-    st.title("🤖 StructEng AI Assistant")
-    st.caption(
-        "Your intelligent structural engineering companion | IS 456 Beam Design"
-    )
+    # Compact header
+    st.markdown("## 🤖 StructEng AI Assistant")
 
-    # API status indicator with model info
-    client = get_openai_client()
-    if client:
-        config = get_openai_config()
-        st.success(f"🟢 Connected to OpenAI **{config['model']}**", icon="✅")
-    else:
-        st.info(
-            "🟡 Using local SmartDesigner (Add OPENAI_API_KEY for full AI features)",
-            icon="ℹ️",
-        )
-
-    st.divider()
+    # Subtle status in sidebar instead of main area
+    with st.sidebar:
+        st.markdown("### AI Status")
+        client = get_openai_client()
+        if client:
+            config = get_openai_config()
+            st.caption(f"✅ OpenAI {config['model']}")
+        else:
+            st.caption("💡 Local SmartDesigner mode")
+            st.caption("Add OPENAI_API_KEY in secrets for GPT")
 
     # Main layout: 40% chat, 60% workspace
     chat_col, workspace_col = st.columns([0.4, 0.6])
