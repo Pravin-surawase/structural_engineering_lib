@@ -374,12 +374,27 @@ def get_ai_response(user_message: str) -> str:
         return simulate_ai_response(user_message)
 
 
+def _handle_quick_action(message: str) -> None:
+    """Handle quick action button clicks - helper to avoid code duplication."""
+    st.session_state.ai_messages.append({"role": "user", "content": message})
+    response = get_ai_response(message)
+    st.session_state.ai_messages.append({"role": "assistant", "content": response})
+    st.rerun()
+
+
 def render_chat_panel():
     """Render the chat panel (left side)."""
     st.markdown("### 💬 Chat")
 
+    # Welcome message if no history
+    if len(st.session_state.ai_messages) == 0:
+        st.info(
+            "👋 **Welcome!** I'm your AI structural engineering assistant.\n\n"
+            "Try asking: *\"Design a beam for 150 kN·m moment\"* or click a quick action below."
+        )
+
     # Chat container with fixed height
-    chat_container = st.container(height=500)
+    chat_container = st.container(height=450)
 
     with chat_container:
         # Display message history
@@ -388,7 +403,7 @@ def render_chat_panel():
                 st.markdown(msg["content"])
 
     # Chat input - use traditional pattern for scanner compatibility
-    prompt = st.chat_input("Ask about beam design...")
+    prompt = st.chat_input("Ask about beam design, costs, IS 456 clauses...")
     if prompt:
         # Add user message
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
@@ -403,48 +418,26 @@ def render_chat_panel():
         # Rerun to show new messages
         st.rerun()
 
-    # Quick action buttons
+    # Quick action buttons with Clear option
     st.markdown("**Quick Actions:**")
-    cols = st.columns(4)
+    cols = st.columns(5)
     with cols[0]:
-        if st.button("🏗️ Design", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Design a beam for current parameters"}
-            )
-            response = get_ai_response("Design a beam for current parameters")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+        if st.button("🏗️ Design", use_container_width=True, help="Design a beam"):
+            _handle_quick_action("Design a beam for current parameters")
     with cols[1]:
-        if st.button("💰 Optimize", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Optimize the cost"}
-            )
-            response = get_ai_response("Optimize the cost")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+        if st.button("💰 Cost", use_container_width=True, help="Optimize cost"):
+            _handle_quick_action("Optimize the cost")
     with cols[2]:
-        if st.button("📊 Analyze", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Run smart analysis"}
-            )
-            response = get_ai_response("Run smart analysis")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+        if st.button("📊 Analyze", use_container_width=True, help="Smart analysis"):
+            _handle_quick_action("Run smart analysis")
     with cols[3]:
-        if st.button("🎨 3D View", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Show 3D view"}
-            )
-            response = get_ai_response("Show 3D view")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
+        if st.button("🎨 3D", use_container_width=True, help="Show 3D view"):
+            _handle_quick_action("Show 3D view")
+    with cols[4]:
+        if st.button("🗑️ Clear", use_container_width=True, help="Clear chat"):
+            st.session_state.ai_messages = []
+            st.session_state.current_design = None
+            st.session_state.smart_dashboard = None
             st.rerun()
 
 
@@ -659,10 +652,11 @@ def main():
         "Your intelligent structural engineering companion | IS 456 Beam Design"
     )
 
-    # API status indicator
+    # API status indicator with model info
     client = get_openai_client()
     if client:
-        st.success("🟢 Connected to OpenAI GPT-4", icon="✅")
+        config = get_openai_config()
+        st.success(f"🟢 Connected to OpenAI **{config['model']}**", icon="✅")
     else:
         st.info(
             "🟡 Using local SmartDesigner (Add OPENAI_API_KEY for full AI features)",
