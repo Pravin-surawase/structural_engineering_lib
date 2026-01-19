@@ -11,10 +11,10 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.17.5 | ✅ Released (2026-01-15) |
+| **Current** | v0.17.6 | 🚧 In Progress |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 46 | **Focus:** VBA bug fixes + 3D visualization + docs cleanup
+**Last Session:** 46+ | **Focus:** 3D solid beams + BuildingStatistics + docs
 
 ---
 
@@ -31,38 +31,41 @@
 
 ## Latest Handoff
 
-**Session 46 (2026-01-24)**
-- Fixed VBA import bugs in pages 06 and 07
-- Added 3D building visualization tab to page 07 (Plotly, professional dark theme)
-- Cleaned up TASKS.md (removed session log data, focused structure)
-- Archived obsolete planning files (agent-*-tasks.md, old session plans)
+**Session 46+ (2026-01-24)**
+- **Major Upgrade:** 3D viz from lines → solid beam boxes with lighting
+- **New Model:** `BuildingStatistics` in `models.py` with 4 unit tests
+- **Metrics:** Concrete volume, total length, beams per story in 3D tab
+- **Docs:** Updated 8-week plan (Phase 2 at 90%), TASKS.md, SESSION_LOG
 
 **Key Commits:**
-- `897da5dd` - VBA import fixes
-- `efe825d3` - 3D building visualization
-- `67faaca6` - TASKS.md cleanup
+- `7414a7e0` - Solid 3D beam boxes with Mesh3d + lighting
+- `907684b5` - BuildingStatistics model with from_beams()
+- `9351bdc8` - Statistics integration in 3D view
+- `9b278a88` - 8-week plan update (Phase 2 → 90%)
 
 ---
 
 ## Current Status
 
 ### What Works ✅
-- Page 07 Multi-Format Import: VBA CSV → Design → 3D View
-- Page 06 ETABS Import: Detects VBA format, redirects to page 07
-- 3D visualization with story colors, design status, hover tooltips
+- Page 07: VBA CSV → Design → **Solid 3D View** with metrics
+- BuildingStatistics: total_length_m, total_concrete_m3, beams_per_story
+- 3D visualization: Mesh3d boxes, edge lines, lighting, story colors
 
-### Active Work
-- Documentation consolidation (in progress)
-- Planning next phase work
+### 8-Week Plan Progress
+- **Phase 1:** ✅ Complete (Live Preview)
+- **Phase 2:** ✅ 90% Complete (Data Import)
+- **Phase 3:** 🚧 Starting (Professional Visualization)
 
 ---
 
 ## Next Session Priorities
 
-1. **TASK-3D-005:** Three.js rebar visualization (detailed bar view) - 4h
-2. **TASK-PERF-001:** LOD optimization for 1000+ beams - 2h
-3. **TASK-DATA-003:** Column/slab import support - 4h
-4. **TASK-UX-001:** Streamlit UI polish and consistency - 2h
+| Priority | Task | Est | Notes |
+|----------|------|-----|-------|
+| 🔴 High | Camera presets (front/top/iso) | 1h | Quick navigation |
+| 🔴 High | LOD for 1000+ beams | 2h | Performance critical |
+| 🟡 Medium | VBA workflow user guide | 2h | Documentation |
 
 See [TASKS.md](../TASKS.md) for full backlog.
 
@@ -94,3 +97,4 @@ cd Python && .venv/bin/python -m pytest tests/ -v
 | Session history | [docs/SESSION_LOG.md](../SESSION_LOG.md) |
 | Agent instructions | [.github/copilot-instructions.md](../../.github/copilot-instructions.md) |
 | 3D visualization | [streamlit_app/pages/07_📥_multi_format_import.py](../../streamlit_app/pages/07_📥_multi_format_import.py) |
+| BuildingStatistics | [Python/structural_lib/models.py](../../Python/structural_lib/models.py) |
