@@ -84,21 +84,21 @@ class TestLODManager:
         assert lod_manager.get_recommended_level(1) == LODLevel.HIGH
 
     def test_get_recommended_level_small_building(self, lod_manager):
-        """Up to 150 beams (small-medium buildings) should get HIGH LOD."""
+        """Up to 250 beams (small-medium-large buildings) should get HIGH LOD."""
         assert lod_manager.get_recommended_level(10) == LODLevel.HIGH
-        assert lod_manager.get_recommended_level(75) == LODLevel.HIGH
         assert lod_manager.get_recommended_level(150) == LODLevel.HIGH
+        assert lod_manager.get_recommended_level(250) == LODLevel.HIGH
 
     def test_get_recommended_level_medium_building(self, lod_manager):
-        """151-400 beams (large buildings) should get MEDIUM LOD."""
-        assert lod_manager.get_recommended_level(151) == LODLevel.MEDIUM
-        assert lod_manager.get_recommended_level(200) == LODLevel.MEDIUM
-        assert lod_manager.get_recommended_level(400) == LODLevel.MEDIUM
+        """251-500 beams (large buildings) should get MEDIUM LOD."""
+        assert lod_manager.get_recommended_level(251) == LODLevel.MEDIUM
+        assert lod_manager.get_recommended_level(300) == LODLevel.MEDIUM
+        assert lod_manager.get_recommended_level(500) == LODLevel.MEDIUM
 
     def test_get_recommended_level_large_building(self, lod_manager):
-        """401-1000 beams (very large buildings) should get LOW LOD."""
-        assert lod_manager.get_recommended_level(401) == LODLevel.LOW
-        assert lod_manager.get_recommended_level(500) == LODLevel.LOW
+        """501-1000 beams (very large buildings) should get LOW LOD."""
+        assert lod_manager.get_recommended_level(501) == LODLevel.LOW
+        assert lod_manager.get_recommended_level(750) == LODLevel.LOW
         assert lod_manager.get_recommended_level(1000) == LODLevel.LOW
 
     def test_get_recommended_level_complex(self, lod_manager):
@@ -237,7 +237,7 @@ class TestConvenienceFunctions:
 
         assert isinstance(summary, str)
         assert "LOD" in summary
-        assert "LOW" in summary  # 500 beams = LOW LOD (201-1000 range)
+        assert "MEDIUM" in summary  # 500 beams = MEDIUM LOD (251-500 range)
         assert "Performance" in summary
 
     def test_simplify_for_overview(self, sample_geometries):
@@ -312,3 +312,254 @@ class TestCustomConfigs:
         # MEDIUM should still be default
         medium_config = lod.get_config(LODLevel.MEDIUM)
         assert medium_config.show_stirrups is True  # Default behavior
+
+
+class TestGeometryCache:
+    """Tests for geometry caching system."""
+
+    @pytest.fixture
+    def sample_geometry(self) -> dict:
+        """Create sample beam geometry."""
+        return {
+            "beamId": "B1",
+            "section": {"width": 300, "depth": 500},
+            "bars": [
+                {"barId": "B1", "diameter": 20, "barType": "bottom"},
+                {"barId": "B2", "diameter": 20, "barType": "bottom"},
+            ],
+            "stirrups": [{"position": i * 100} for i in range(10)],
+        }
+
+    def test_cache_import(self):
+        """Cache classes should be importable."""
+        from streamlit_app.utils.lod_manager import GeometryCache, GeometryCacheEntry
+
+        assert GeometryCache is not None
+        assert GeometryCacheEntry is not None
+
+    def test_cache_entry_dataclass(self):
+        """GeometryCacheEntry should be a valid dataclass."""
+        from streamlit_app.utils.lod_manager import GeometryCacheEntry
+
+        entry = GeometryCacheEntry(
+            geometry_hash="abc123",
+            simplified_geometry={"beamId": "B1"},
+            lod_level=LODLevel.HIGH,
+            created_at=1000.0,
+            access_count=1,
+        )
+
+        assert entry.geometry_hash == "abc123"
+        assert entry.access_count == 1
+
+    def test_cache_hash_consistency(self, sample_geometry):
+        """Same geometry should produce same hash."""
+        from streamlit_app.utils.lod_manager import GeometryCache
+
+        cache = GeometryCache()
+        hash1 = cache._compute_hash(sample_geometry, LODLevel.HIGH)
+        hash2 = cache._compute_hash(sample_geometry, LODLevel.HIGH)
+
+        assert hash1 == hash2
+
+    def test_cache_hash_differs_by_lod(self, sample_geometry):
+        """Different LOD levels should produce different hashes."""
+        from streamlit_app.utils.lod_manager import GeometryCache
+
+        cache = GeometryCache()
+        hash_high = cache._compute_hash(sample_geometry, LODLevel.HIGH)
+        hash_low = cache._compute_hash(sample_geometry, LODLevel.LOW)
+
+        assert hash_high != hash_low
+
+    def test_cache_get_or_simplify(self, sample_geometry):
+        """get_or_simplify should return simplified geometry."""
+        from streamlit_app.utils.lod_manager import GeometryCache
+
+        cache = GeometryCache()
+        result = cache.get_or_simplify(sample_geometry, LODLevel.HIGH)
+
+        assert "_lod" in result
+        assert result["_lod"]["level"] == "HIGH"
+
+    def test_cache_hit_tracking(self, sample_geometry):
+        """Cache should track hits correctly."""
+        from streamlit_app.utils.lod_manager import GeometryCache
+
+        cache = GeometryCache()
+
+        # First call - miss
+        cache.get_or_simplify(sample_geometry, LODLevel.HIGH)
+        stats1 = cache.get_stats()
+        assert stats1["misses"] == 1
+        assert stats1["hits"] == 0
+
+        # Second call with same geometry - hit
+        cache.get_or_simplify(sample_geometry, LODLevel.HIGH)
+        stats2 = cache.get_stats()
+        assert stats2["misses"] == 1
+        assert stats2["hits"] == 1
+
+    def test_cache_clear(self, sample_geometry):
+        """Cache clear should reset everything."""
+        from streamlit_app.utils.lod_manager import GeometryCache
+
+        cache = GeometryCache()
+        cache.get_or_simplify(sample_geometry, LODLevel.HIGH)
+
+        cache.clear()
+        stats = cache.get_stats()
+
+        assert stats["cache_size"] == 0
+        assert stats["hits"] == 0
+        assert stats["misses"] == 0
+
+
+class TestProgressiveLoader:
+    """Tests for progressive loading system."""
+
+    @pytest.fixture
+    def sample_geometries(self) -> list[dict]:
+        """Create list of sample geometries."""
+        return [
+            {
+                "beamId": f"B{i}",
+                "section": {"width": 300, "depth": 500},
+                "bars": [{"barId": "B1", "diameter": 20, "barType": "bottom"}],
+                "stirrups": [{"position": 0}],
+            }
+            for i in range(100)
+        ]
+
+    def test_progressive_loader_import(self):
+        """ProgressiveLoader should be importable."""
+        from streamlit_app.utils.lod_manager import (
+            ProgressiveLoader,
+            ProgressiveLoadState,
+        )
+
+        assert ProgressiveLoader is not None
+        assert ProgressiveLoadState is not None
+
+    def test_progressive_load_state_dataclass(self):
+        """ProgressiveLoadState should be a valid dataclass."""
+        from streamlit_app.utils.lod_manager import ProgressiveLoadState
+
+        state = ProgressiveLoadState(
+            total_beams=100,
+            loaded_beams=50,
+            current_batch=2,
+            total_batches=4,
+            is_complete=False,
+            elapsed_ms=1000.0,
+            estimated_remaining_ms=1000.0,
+        )
+
+        assert state.total_beams == 100
+        assert state.loaded_beams == 50
+        assert not state.is_complete
+
+    def test_progressive_loader_batch_size(self, sample_geometries):
+        """Loader should respect batch size."""
+        from streamlit_app.utils.lod_manager import ProgressiveLoader
+
+        loader = ProgressiveLoader(batch_size=25)
+        batches = list(loader.load_progressively(sample_geometries, use_cache=False))
+
+        # 100 geometries / 25 per batch = 4 batches
+        assert len(batches) == 4
+
+    def test_progressive_loader_yields_all_geometries(self, sample_geometries):
+        """Loader should yield all geometries."""
+        from streamlit_app.utils.lod_manager import ProgressiveLoader
+
+        loader = ProgressiveLoader(batch_size=30)
+        all_results = []
+
+        for batch, state in loader.load_progressively(sample_geometries, use_cache=False):
+            all_results.extend(batch)
+
+        assert len(all_results) == 100
+
+    def test_progressive_loader_final_state_is_complete(self, sample_geometries):
+        """Final state should indicate completion."""
+        from streamlit_app.utils.lod_manager import ProgressiveLoader
+
+        loader = ProgressiveLoader(batch_size=50)
+        final_state = None
+
+        for _, state in loader.load_progressively(sample_geometries, use_cache=False):
+            final_state = state
+
+        assert final_state is not None
+        assert final_state.is_complete
+        assert final_state.loaded_beams == 100
+
+    def test_load_with_progress(self, sample_geometries):
+        """load_with_progress convenience function should work."""
+        from streamlit_app.utils.lod_manager import load_with_progress
+
+        progress_calls = []
+
+        def callback(loaded, total, elapsed):
+            progress_calls.append((loaded, total))
+
+        result = load_with_progress(
+            sample_geometries,
+            progress_callback=callback,
+            batch_size=25,
+        )
+
+        assert len(result) == 100
+        assert len(progress_calls) == 4  # 4 batches
+
+
+class TestBenchmark:
+    """Benchmark tests for LOD performance."""
+
+    def test_200_beam_benchmark(self):
+        """200 beams should complete within reasonable time."""
+        import time
+
+        from streamlit_app.utils.lod_manager import GeometryCache, LODLevel
+
+        # Create 200 geometries with 5 unique section types
+        geometries = []
+        section_types = [
+            {"width": 300, "depth": 500},
+            {"width": 300, "depth": 600},
+            {"width": 350, "depth": 550},
+            {"width": 400, "depth": 600},
+            {"width": 250, "depth": 450},
+        ]
+
+        for i in range(200):
+            section = section_types[i % 5]
+            geometries.append({
+                "beamId": f"B{i}",
+                "section": section,
+                "bars": [
+                    {"barId": "B1", "diameter": 20, "barType": "bottom"},
+                    {"barId": "B2", "diameter": 20, "barType": "bottom"},
+                    {"barId": "T1", "diameter": 16, "barType": "top"},
+                    {"barId": "T2", "diameter": 16, "barType": "top"},
+                ],
+                "stirrups": [{"position": i * 100, "diameter": 8} for i in range(50)],
+            })
+
+        cache = GeometryCache()
+        start = time.time()
+
+        # Process all geometries with caching
+        results, stats = cache.get_or_simplify_batch(geometries)
+        elapsed_ms = (time.time() - start) * 1000
+
+        # Verify results
+        assert len(results) == 200
+
+        # Verify caching effectiveness (5 unique sections = ~95% hit rate)
+        assert stats["hit_rate_percent"] >= 90
+
+        # Verify timing (should be fast with caching)
+        # First 5 are misses, rest are hits
+        assert elapsed_ms < 500  # Should complete in <500ms with caching
