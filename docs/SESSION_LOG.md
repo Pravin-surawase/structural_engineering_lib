@@ -4,6 +4,74 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-24 — Session 46: Critical Bug Fixes for VBA Import Pages
+
+**Focus:** Fix critical bugs preventing VBA ETABS CSV imports in pages 06 and 07
+
+**Issues Reported by User:**
+1. **Page 06 (ETABS Import):** "Required column 'case_id' not found... 'm3' not found..."
+2. **Page 07 (Multi-Format Import):** "pydantic_core._pydantic_core.ValidationError: width_mm Extra inputs are not permitted"
+
+### Root Cause Analysis
+
+| Issue | Root Cause | Location |
+|-------|------------|----------|
+| Pydantic ValidationError | `width_mm`/`depth_mm` passed to `DesignDefaults` which has `extra="forbid"` | [07_multi_format_import.py](../streamlit_app/pages/07_📥_multi_format_import.py#L160) |
+| Column Not Found | Page 06 uses `etabs_import.py` which expects raw ETABS format, not VBA envelope | [06_etabs_import.py](../streamlit_app/pages/06_📤_etabs_import.py) |
+
+### Two Import Module Problem
+
+**Two separate import paths exist:**
+
+| Module | Page | Required Columns | VBA Envelope Support |
+|--------|------|------------------|----------------------|
+| `etabs_import.py` | 06 | case_id, m3, v2, story | ❌ NO (raw ETABS only) |
+| `adapters.py` ETABSAdapter | 07 | Mu_max_kNm, Vu_max_kN | ✅ YES |
+
+**VBA Export Format (what user has):**
+```csv
+UniqueName,Label,Story,SectionName,Width_mm,Depth_mm,Span_m,Mu_max_kNm,Mu_min_kNm,Vu_max_kN
+```
+
+### Fixes Applied
+
+1. **Page 07 DesignDefaults Fix:**
+   - Removed `width_mm` and `depth_mm` from `DesignDefaults()` constructor
+   - These fields belong in `SectionProperties`, not design defaults
+   - Adapters handle section dimensions internally from CSV
+
+2. **Page 06 VBA Format Detection:**
+   - Added `_is_vba_envelope_format()` helper function
+   - Detects VBA envelope columns (Mu_max_kNm, Vu_max_kN)
+   - Shows helpful redirect message to Page 07 for VBA files
+
+3. **New Test Added:**
+   - `test_rejects_unknown_fields` in `test_models.py`
+   - Ensures DesignDefaults rejects unknown fields (width_mm, depth_mm)
+   - Prevents similar bugs in future
+
+### Lessons Learned
+
+| Problem | Root Cause | Prevention |
+|---------|------------|------------|
+| Used wrong model fields | Assumed DesignDefaults had width/depth | Read model definitions before using |
+| Didn't test with real files | Only unit tests, no integration | Add end-to-end tests with actual VBA CSV |
+| Two separate import modules | Historical design | Document the difference clearly |
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| 897da5dd | fix: resolve VBA import errors in pages 06 and 07 |
+
+### Next Steps
+
+1. Test the fixes with actual VBA CSV files
+2. Consider consolidating page 06 and 07 import logic
+3. Add more integration tests that use real VBA export files
+
+---
+
 ## 2026-01-24 — Session 43: LOD Threshold Research & Validation
 
 **Focus:** Research and validate LOD threshold strategy based on user challenge about 200-beam visualization feasibility
