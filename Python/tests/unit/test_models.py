@@ -403,6 +403,30 @@ class TestDesignDefaults:
         assert defaults.fck_mpa == 30
         assert defaults.fy_mpa == 415
 
+    def test_rejects_unknown_fields(self):
+        """Test that DesignDefaults rejects unknown fields.
+
+        This is critical because DesignDefaults uses `extra="forbid"`.
+        Section dimensions (width_mm, depth_mm) belong in SectionProperties,
+        not DesignDefaults.
+
+        See Session 46: Bug where width_mm/depth_mm were incorrectly
+        passed to DesignDefaults in Streamlit page 07.
+        """
+        with pytest.raises(ValidationError) as exc_info:
+            DesignDefaults(
+                fck_mpa=25,
+                fy_mpa=500,
+                width_mm=300,  # Invalid - not allowed in DesignDefaults
+                depth_mm=500,  # Invalid - not allowed in DesignDefaults
+            )
+
+        # Verify the error mentions the extra fields
+        errors = exc_info.value.errors()
+        extra_fields = {e.get("loc", (None,))[0] for e in errors}
+        assert "width_mm" in extra_fields
+        assert "depth_mm" in extra_fields
+
 
 class TestBeamBatchInput:
     """Tests for BeamBatchInput model."""

@@ -157,12 +157,12 @@ def process_uploaded_files(
     forces = []
 
     # Create DesignDefaults from dict
+    # Note: width_mm/depth_mm are section properties, not design defaults
+    # They come from the CSV or are set per-beam by the adapter
     design_defaults = DesignDefaults(
         fck_mpa=defaults["fck_mpa"],
         fy_mpa=defaults["fy_mpa"],
         cover_mm=defaults["cover_mm"],
-        width_mm=defaults.get("width_mm", 300.0),
-        depth_mm=defaults.get("depth_mm", 500.0),
     )
 
     # Process geometry file
