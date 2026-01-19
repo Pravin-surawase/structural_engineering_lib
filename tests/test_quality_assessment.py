@@ -28,7 +28,11 @@ try:
         print("      Install: pip install ezdxf")
     else:
         print("   ✅ DXF export module available")
-        funcs = [f for f in dir(dxf_export) if not f.startswith("_") and callable(getattr(dxf_export, f, None))]
+        funcs = [
+            f
+            for f in dir(dxf_export)
+            if not f.startswith("_") and callable(getattr(dxf_export, f, None))
+        ]
         print(f"      Functions: {len(funcs)}")
         for func in funcs[:5]:
             print(f"        - {func}()")
@@ -66,7 +70,9 @@ try:
         funcs = [
             f
             for f in dir(module)
-            if any(kw in f.lower() for kw in ["plot", "visual", "chart", "diagram", "draw"])
+            if any(
+                kw in f.lower() for kw in ["plot", "visual", "chart", "diagram", "draw"]
+            )
             and not f.startswith("_")
         ]
         if funcs:
@@ -90,7 +96,9 @@ print("\n1. Testing Precheck (Feasibility)...")
 try:
     from structural_lib.insights import quick_precheck
 
-    result = quick_precheck(span_mm=6000, b_mm=300, d_mm=500, D_mm=550, mu_knm=150, fck_nmm2=25)
+    result = quick_precheck(
+        span_mm=6000, b_mm=300, d_mm=500, D_mm=550, mu_knm=150, fck_nmm2=25
+    )
     print(f"   ✅ Precheck working")
     print(f"      Risk: {result.risk_level}, Warnings: {len(result.warnings)}")
 except Exception as e:
@@ -100,7 +108,9 @@ print("\n2. Testing Sensitivity Analysis...")
 try:
     from structural_lib.insights import sensitivity_analysis
 
-    result = sensitivity_analysis(span_mm=5000, b_mm=300, mu_knm=120, fck_nmm2=25, fy_nmm2=500)
+    result = sensitivity_analysis(
+        span_mm=5000, b_mm=300, mu_knm=120, fck_nmm2=25, fy_nmm2=500
+    )
     print(f"   ✅ Sensitivity analysis working")
     print(f"      Parameters varied: {len(result.parameters)}")
 except Exception as e:
@@ -111,7 +121,12 @@ try:
     from structural_lib.insights import calculate_constructability_score
 
     result = calculate_constructability_score(
-        b_mm=230, d_mm=400, ast_main_mm2=2000, bar_dia_main_mm=20, stirrup_dia_mm=8, stirrup_spacing_mm=150
+        b_mm=230,
+        d_mm=400,
+        ast_main_mm2=2000,
+        bar_dia_main_mm=20,
+        stirrup_dia_mm=8,
+        stirrup_spacing_mm=150,
     )
     print(f"   ✅ Constructability scoring working")
     print(f"      Score: {result.score}/100, Issues: {len(result.factors)}")
@@ -140,10 +155,17 @@ print("\n1. Checking public API stability...")
 try:
     from structural_lib import api
 
-    api_funcs = [f for f in dir(api) if not f.startswith("_") and callable(getattr(api, f))]
+    api_funcs = [
+        f for f in dir(api) if not f.startswith("_") and callable(getattr(api, f))
+    ]
     print(f"   ✅ Public API has {len(api_funcs)} functions")
     print("      Key functions:")
-    key_funcs = ["design_beam_is456", "check_beam_is456", "detail_beam_is456", "optimize_beam_cost"]
+    key_funcs = [
+        "design_beam_is456",
+        "check_beam_is456",
+        "detail_beam_is456",
+        "optimize_beam_cost",
+    ]
     for func in key_funcs:
         if hasattr(api, func):
             print(f"        ✅ {func}()")
@@ -185,9 +207,13 @@ for feature, (module_name, expected_funcs) in modules_check.items():
         module = __import__(f"structural_lib.{module_name}", fromlist=[module_name])
         funcs_present = [f for f in expected_funcs if hasattr(module, f)]
         if len(funcs_present) == len(expected_funcs):
-            print(f"   ✅ {feature}: All functions present ({len(funcs_present)}/{len(expected_funcs)})")
+            print(
+                f"   ✅ {feature}: All functions present ({len(funcs_present)}/{len(expected_funcs)})"
+            )
         else:
-            print(f"   ⚠️  {feature}: Partial ({len(funcs_present)}/{len(expected_funcs)})")
+            print(
+                f"   ⚠️  {feature}: Partial ({len(funcs_present)}/{len(expected_funcs)})"
+            )
     except ImportError:
         print(f"   ❌ {feature}: Module not found")
 

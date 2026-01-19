@@ -5,22 +5,24 @@
 **Status:** Draft
 **Importance:** High
 **Created:** 2026-01-20
-**Last Updated:** 2026-01-20
-**Related Tasks:** TASK-CSV-01, TASK-CSV-02
+**Last Updated:** 2026-01-21
+**Related Tasks:** TASK-CSV-01, TASK-CSV-02, TASK-3D-002
 
 ---
 
 ## Overview
 
-This document defines the CSV schema for importing beam data from structural analysis software (ETABS, SAFE, and generic formats) into structural_engineering_lib for design and visualization.
+This document defines the CSV schemas for importing beam data and geometry from structural analysis software (ETABS, SAFE, and generic formats) into structural_engineering_lib for design and visualization.
 
 **Scope:**
-- ETABS beam force exports
+- ETABS beam force exports (beam_forces.csv)
+- ETABS frame geometry exports (frames_geometry.csv) — **NEW in Session 39**
 - SAFE beam force exports
 - Generic/custom CSV format
 
 **Goals:**
 - Import 1000+ beams efficiently
+- Support real 3D building visualization
 - Support multiple analysis software formats
 - Clear validation and error reporting
 
@@ -59,6 +61,73 @@ Story1,B1,1.5(DL+LL),2500,180.2,0,0
 Story1,B1,1.5(DL+LL),5000,0,125.5,0
 Story1,B2,1.5(DL+LL),0,0,-98.3,0
 Story1,B2,1.5(DL+LL),3000,145.6,0,0
+```
+
+---
+
+### 1b. ETABS Frames Geometry Format (NEW)
+
+ETABS exports frame geometry via the VBA export tool (frames_geometry.csv).
+This provides 3D coordinates for real building visualization.
+
+#### Required Columns
+
+| Column | Description | Units | Example |
+|--------|-------------|-------|---------|
+| `UniqueName` | Internal ETABS ID | Text | "C1", "B23" |
+| `Label` | User-friendly label | Text | "B1", "C2" |
+| `Story` | Floor/level name | Text | "Story1", "Ground" |
+| `FrameType` | Element type | Text | "Beam" or "Column" |
+| `SectionName` | Section identifier | Text | "B230X450M20" |
+| `Point1Name` | Node at start | Text | "1" |
+| `Point2Name` | Node at end | Text | "2" |
+| `Point1X` | X coordinate of start | m | 0.0 |
+| `Point1Y` | Y coordinate of start | m | 0.0 |
+| `Point1Z` | Z coordinate of start | m | 3.0 |
+| `Point2X` | X coordinate of end | m | 4.5 |
+| `Point2Y` | Y coordinate of end | m | 0.0 |
+| `Point2Z` | Z coordinate of end | m | 3.0 |
+
+#### Optional Columns
+
+| Column | Description | Units | Default |
+|--------|-------------|-------|---------|
+| `Angle` | Rotation angle | degrees | 0.0 |
+| `CardinalPoint` | Insertion point | 1-11 | 10 |
+
+#### Example Frames Geometry CSV
+
+```csv
+UniqueName,Label,Story,FrameType,SectionName,Point1Name,Point2Name,Point1X,Point1Y,Point1Z,Point2X,Point2Y,Point2Z,Angle,CardinalPoint
+B1,B1,Story1,Beam,RB300x500,1,2,0.0,0.0,3.0,4.5,0.0,3.0,0.0,10
+B2,B2,Story1,Beam,RB300x500,2,3,4.5,0.0,3.0,9.0,0.0,3.0,0.0,10
+C1,C1,Story1,Column,RC300x300,4,5,0.0,0.0,0.0,0.0,0.0,3.0,90.0,10
+```
+
+#### Python API for Geometry
+
+```python
+from structural_lib.etabs_import import (
+    load_frames_geometry,
+    merge_forces_and_geometry,
+    FrameGeometry,
+)
+
+# Load geometry
+frames = load_frames_geometry("frames_geometry.csv")
+print(f"Loaded {len(frames)} frames")
+
+# Filter by type
+beams = [f for f in frames if f.frame_type == "Beam"]
+columns = [f for f in frames if f.frame_type == "Column"]
+
+# Access properties
+for beam in beams[:5]:
+    print(f"{beam.label}: {beam.length_m:.2f} m at Z={beam.point1_z} m")
+
+# Merge with forces for visualization
+envelopes = normalize_etabs_forces("beam_forces.csv")
+merged = merge_forces_and_geometry(envelopes, frames)
 ```
 
 ---
@@ -243,4 +312,5 @@ if uploaded:
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-01-21 | 1.1 | Added frames_geometry.csv schema for 3D visualization |
 | 2026-01-20 | 1.0 | Initial schema definition |

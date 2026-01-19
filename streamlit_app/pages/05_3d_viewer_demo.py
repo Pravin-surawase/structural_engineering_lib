@@ -21,6 +21,7 @@ st.set_page_config(
 # Add parent directory to path for imports
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from components.beam_viewer_3d import render_beam_3d
@@ -54,24 +55,30 @@ def generate_geometry(
     else:
         denominator = num_bottom_bars - 1
         spacing = available_width / denominator if denominator > 0 else 0
-        y_positions = [-available_width/2 + i * spacing for i in range(num_bottom_bars)]
+        y_positions = [
+            -available_width / 2 + i * spacing for i in range(num_bottom_bars)
+        ]
 
     z_bottom = cover + stirrup_dia + bottom_dia / 2
     for i, y in enumerate(y_positions):
-        bottom_bars.append({
-            "barId": f"B{i+1}",
-            "segments": [{
-                "start": {"x": 0, "y": round(y, 1), "z": round(z_bottom, 1)},
-                "end": {"x": span, "y": round(y, 1), "z": round(z_bottom, 1)},
+        bottom_bars.append(
+            {
+                "barId": f"B{i+1}",
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": round(y, 1), "z": round(z_bottom, 1)},
+                        "end": {"x": span, "y": round(y, 1), "z": round(z_bottom, 1)},
+                        "diameter": bottom_dia,
+                        "type": "straight",
+                        "length": span,
+                    }
+                ],
                 "diameter": bottom_dia,
-                "type": "straight",
-                "length": span,
-            }],
-            "diameter": bottom_dia,
-            "barType": "bottom",
-            "zone": "full",
-            "totalLength": span,
-        })
+                "barType": "bottom",
+                "zone": "full",
+                "totalLength": span,
+            }
+        )
 
     # Top bars
     top_bars = []
@@ -81,23 +88,29 @@ def generate_geometry(
     else:
         denominator_top = num_top_bars - 1
         spacing = available_width / denominator_top if denominator_top > 0 else 0
-        y_positions_top = [-available_width/2 + i * spacing for i in range(num_top_bars)]
+        y_positions_top = [
+            -available_width / 2 + i * spacing for i in range(num_top_bars)
+        ]
 
     for i, y in enumerate(y_positions_top):
-        top_bars.append({
-            "barId": f"T{i+1}",
-            "segments": [{
-                "start": {"x": 0, "y": round(y, 1), "z": round(z_top, 1)},
-                "end": {"x": span, "y": round(y, 1), "z": round(z_top, 1)},
+        top_bars.append(
+            {
+                "barId": f"T{i+1}",
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": round(y, 1), "z": round(z_top, 1)},
+                        "end": {"x": span, "y": round(y, 1), "z": round(z_top, 1)},
+                        "diameter": top_dia,
+                        "type": "straight",
+                        "length": span,
+                    }
+                ],
                 "diameter": top_dia,
-                "type": "straight",
-                "length": span,
-            }],
-            "diameter": top_dia,
-            "barType": "top",
-            "zone": "full",
-            "totalLength": span,
-        })
+                "barType": "top",
+                "zone": "full",
+                "totalLength": span,
+            }
+        )
 
     # Stirrups
     stirrups = []
@@ -106,19 +119,23 @@ def generate_geometry(
     z_top_stirrup = D - cover - stirrup_dia / 2
 
     for x in range(stirrup_spacing // 2, span, stirrup_spacing):
-        stirrups.append({
-            "positionX": x,
-            "path": [
-                {"x": x, "y": round(-y_outer, 1), "z": round(z_bottom_stirrup, 1)},
-                {"x": x, "y": round(y_outer, 1), "z": round(z_bottom_stirrup, 1)},
-                {"x": x, "y": round(y_outer, 1), "z": round(z_top_stirrup, 1)},
-                {"x": x, "y": round(-y_outer, 1), "z": round(z_top_stirrup, 1)},
-            ],
-            "diameter": stirrup_dia,
-            "legs": 2,
-            "hookType": "135" if is_seismic else "90",
-            "perimeter": round(2 * (2 * y_outer) + 2 * (z_top_stirrup - z_bottom_stirrup), 1),
-        })
+        stirrups.append(
+            {
+                "positionX": x,
+                "path": [
+                    {"x": x, "y": round(-y_outer, 1), "z": round(z_bottom_stirrup, 1)},
+                    {"x": x, "y": round(y_outer, 1), "z": round(z_bottom_stirrup, 1)},
+                    {"x": x, "y": round(y_outer, 1), "z": round(z_top_stirrup, 1)},
+                    {"x": x, "y": round(-y_outer, 1), "z": round(z_top_stirrup, 1)},
+                ],
+                "diameter": stirrup_dia,
+                "legs": 2,
+                "hookType": "135" if is_seismic else "90",
+                "perimeter": round(
+                    2 * (2 * y_outer) + 2 * (z_top_stirrup - z_bottom_stirrup), 1
+                ),
+            }
+        )
 
     return {
         "beamId": beam_id,
@@ -150,7 +167,8 @@ def generate_geometry(
 def main():
     """Main demo page."""
     st.title("🏗️ 3D Beam Viewer Demo")
-    st.markdown("""
+    st.markdown(
+        """
     This page demonstrates the **Three.js-based 3D beam visualization** component.
 
     **Features:**
@@ -158,7 +176,8 @@ def main():
     - 🔍 **Zoom**: Scroll wheel
     - 🎯 **Pan**: Right-click and drag
     - 📊 **Info Panel**: Shows beam dimensions and rebar count
-    """)
+    """
+    )
 
     st.divider()
 

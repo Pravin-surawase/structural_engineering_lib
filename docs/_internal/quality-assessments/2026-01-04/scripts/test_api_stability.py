@@ -38,12 +38,15 @@ for name, module in modules:
 
         has_doc = func.__doc__ is not None and len(func.__doc__) > 10
         has_types = any(
-            p.annotation != inspect.Parameter.empty
-            for p in sig.parameters.values()
+            p.annotation != inspect.Parameter.empty for p in sig.parameters.values()
         )
         has_return_type = sig.return_annotation != inspect.Signature.empty
 
-        status = "OK" if (has_doc and has_types and has_return_type) else "WARN" if has_doc else "FAIL"
+        status = (
+            "OK"
+            if (has_doc and has_types and has_return_type)
+            else "WARN" if has_doc else "FAIL"
+        )
 
         print(f"  {status} {func_name}()")
         if not has_doc:
@@ -78,6 +81,7 @@ except Exception as exc:
 
 print("\n3. Can developers build on top?")
 try:
+
     def my_custom_beam_designer(span, load, fck=25, fy=500):
         """Example of building on the platform."""
         from structural_lib.flexure import design_singly_reinforced

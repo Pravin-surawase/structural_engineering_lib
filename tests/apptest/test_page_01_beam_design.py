@@ -64,7 +64,9 @@ class TestBeamDesignPageLoad:
 
         # Check that we have some content
         # Note: at.title returns list of st.title elements
-        assert len(at.title) > 0 or len(at.header) > 0, "Page should have a title or header"
+        assert (
+            len(at.title) > 0 or len(at.header) > 0
+        ), "Page should have a title or header"
 
     def test_page_has_input_widgets(self, beam_design_app):
         """Page should have input widgets for beam parameters."""

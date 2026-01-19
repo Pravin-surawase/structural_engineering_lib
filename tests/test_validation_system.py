@@ -20,7 +20,7 @@ from autonomous_fixer import AutoFixer, AutoFixRunner
 @pytest.fixture
 def temp_py_file():
     """Create a temporary Python file for testing."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
         yield f.name
     Path(f.name).unlink(missing_ok=True)
 
@@ -41,7 +41,7 @@ class TestComprehensiveValidator:
 
     def test_validate_syntax_error(self, temp_py_file):
         """Test detection of syntax errors."""
-        with open(temp_py_file, 'w') as f:
+        with open(temp_py_file, "w") as f:
             f.write("def broken(\n")
 
         validator = ComprehensiveValidator()

@@ -643,7 +643,7 @@ Function GetAndValidateUnits(sapModel As Object, logFile As String) As UnitSyste
     ret = sapModel.GetPresentUnits_2(forceUnits, lengthUnits, tempUnits)
 
     ' Enum values from eForce, eLength, eTemperature
-    ' See: docs/reference/vendor/etabs/etabs_chm/html/...
+    ' See: docs/reference/vendor/etabs/etabs-chm/html/...
 
     ' Map force units
     Select Case forceUnits
@@ -1193,13 +1193,13 @@ wsOut.Cells(row, col).Value = stationValue
 - [ETABS VBA Export Macro Recipe](etabs-vba-export-macro.md)
 - [CSV Import Schema](../specs/csv-import-schema.md)
 - [ETABS Automation Bridge Plan](../planning/etabs-automation-bridge-plan.md)
-- [ETABS CHM API Documentation](../reference/vendor/etabs/etabs_chm/)
+- [ETABS CHM API Documentation](../reference/vendor/etabs/etabs-chm/)
 - ETABS OAPI Method Reference:
-  - GetObject: `docs/reference/vendor/etabs/etabs_chm/html/10421d6a-9180-f71a-b493-a7e7785053f1.htm`
-  - RunAnalysis: `docs/reference/vendor/etabs/etabs_chm/html/516e7b74-8cb4-af27-31d5-38bb95b3c1d1.htm`
-  - GetCaseStatus: `docs/reference/vendor/etabs/etabs_chm/html/94fc4a33-5784-228c-62ad-edcc74eaf034.htm`
-  - DatabaseTables: `docs/reference/vendor/etabs/etabs_chm/html/e39eded9-8da2-c558-ecbc-a942b9bb42a3.htm`
-  - GetPresentUnits_2: `docs/reference/vendor/etabs/etabs_chm/html/bbeca1c7-a471-6d04-bd18-2df96a44a7a3.htm`
+  - GetObject: `docs/reference/vendor/etabs/etabs-chm/html/10421d6a-9180-f71a-b493-a7e7785053f1.htm`
+  - RunAnalysis: `docs/reference/vendor/etabs/etabs-chm/html/516e7b74-8cb4-af27-31d5-38bb95b3c1d1.htm`
+  - GetCaseStatus: `docs/reference/vendor/etabs/etabs-chm/html/94fc4a33-5784-228c-62ad-edcc74eaf034.htm`
+  - DatabaseTables: `docs/reference/vendor/etabs/etabs-chm/html/e39eded9-8da2-c558-ecbc-a942b9bb42a3.htm`
+  - GetPresentUnits_2: `docs/reference/vendor/etabs/etabs-chm/html/bbeca1c7-a471-6d04-bd18-2df96a44a7a3.htm`
 
 ---
 

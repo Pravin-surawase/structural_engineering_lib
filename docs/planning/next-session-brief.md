@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-20<br>
+**Last Updated:** 2026-01-21<br>
 
 ---
 
@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 38 | **Commits:** 4 (UI fixes + CSV schema)
+**Last Session:** 39 | **Commits:** 5 (real 3D coordinates + tests + docs)
 
 ---
 
@@ -32,23 +32,47 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-20
-- Focus: Session 38 - UI improvements + Phase 2 start. Fixed 3D cache hash mismatch, compacted input layout, refined selectbox CSS, hid design preview post-analysis, and added CSV schema spec + SAFE column mappings. PR #378 merged.
+- Date: 2026-01-21
+- Focus: Session 39 - Real 3D building visualization from frames_geometry.csv. Phase 1 marked complete, Phase 2 60% done. Branch task/TASK-3D-002 ready for PR.
 <!-- HANDOFF:END -->
 
 ---
 
-## 🎯 Session 38 Summary - UI Improvements + Phase 2 Start (2026-01-20)
+## 🎯 Session 39 Summary - Real 3D Building Visualization (2026-01-21)
 
-### PR #378: UI Improvements + CSV Schema ✅ MERGED
+### Branch: task/TASK-3D-002 (5 commits, ready for PR)
 
-**Commit:** b318aa4
+#### Strategic Decision
+**Three.js vs Plotly:** Continue Plotly for Phase 2 (proven), evaluate Three.js/PyVista in Phase 4.
 
 #### Deliverables
 
 | Area | File | Purpose |
 |------|------|---------|
-| 3D cache fix | `streamlit_app/components/visualizations_3d.py` | Hash handles flat + nested geometry |
+| Real 3D viz | `06_📤_etabs_import.py` | Uses actual building coordinates |
+| Multi-file upload | `06_📤_etabs_import.py` | beam_forces + frames_geometry |
+| Tests | `test_etabs_import.py` | 32 tests, FrameGeometry coverage |
+| Schema docs | `csv-import-schema.md` | frames_geometry.csv format |
+| Plan update | `8-week-development-plan.md` | Phase 1 complete, Phase 2 status |
+| TASKS.md | `TASKS.md` | TASK-3D-002 added, VBA complete |
+
+#### Phase Completion
+
+| Phase | Status | Evidence |
+|-------|--------|----------|
+| Phase 1 (Week 1-2) | ✅ COMPLETE | 839 + 811 lines (targets 300 + 200) |
+| Phase 2 (Week 3-4) | 🚧 60% | Real coords done, LOD pending |
+
+#### Next Session Priorities
+
+1. **Complete PR for task/TASK-3D-002**
+2. **Implement LOD system** for 1000+ beams performance
+3. **Add column toggle** and building stats display
+4. **Start Phase 3** (Week 5): Design Integration
+
+---
+
+## 🎯 Session 38 Summary - UI Improvements + Phase 2 Start (2026-01-20)
 | Beam UI layout | `streamlit_app/pages/01_🏗️_beam_design.py` | Compact 2-column inputs + cleaner results |
 | UI polish | `streamlit_app/utils/layout.py` | Selectbox height + menu styling |
 | CSV schema | `docs/specs/csv-import-schema.md` | ETABS/SAFE/generic formats |

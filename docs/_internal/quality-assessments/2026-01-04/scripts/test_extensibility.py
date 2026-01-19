@@ -33,6 +33,7 @@ except Exception as exc:
 
 print("\n2. Custom validation rule")
 try:
+
     class CustomValidator:
         def check_seismic_requirements(self, beam_design):
             return {"compliant": True, "warnings": []}

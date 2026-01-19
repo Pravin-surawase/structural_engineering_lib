@@ -24,6 +24,7 @@ except PackageNotFoundError:
 
 # Expose key modules
 from . import (
+    adapters,
     api,
     audit,
     bbs,
@@ -34,7 +35,9 @@ from . import (
     etabs_import,
     flexure,
     inputs,
+    models,
     result_base,
+    serialization,
     serviceability,
     shear,
     testing_strategies,
@@ -57,6 +60,7 @@ except ImportError:
 
 __all__ = [
     "__version__",
+    "adapters",
     "api",
     "audit",
     "bbs",
@@ -68,8 +72,10 @@ __all__ = [
     "etabs_import",
     "flexure",
     "inputs",
+    "models",
     "reports",
     "result_base",
+    "serialization",
     "serviceability",
     "shear",
     "testing_strategies",

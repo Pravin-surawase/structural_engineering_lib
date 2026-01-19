@@ -72,7 +72,9 @@ class TestCostOptimizerPageLoad:
         has_message = len(at.info) > 0 or len(at.warning) > 0
         # Don't fail if no message - some implementations may just show empty widgets
         if not has_message:
-            pytest.skip("No info/warning shown - page may have different empty state handling")
+            pytest.skip(
+                "No info/warning shown - page may have different empty state handling"
+            )
 
 
 @skip_if_no_apptest

@@ -4,6 +4,261 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 40: Canonical Data Format Architecture (TASK-DATA-001)
+
+**Focus:** Create stable, AI-friendly Pydantic-based canonical data format for input handling
+
+### Overview
+
+Session 40 implemented a comprehensive canonical data format system using Pydantic v2. This addresses the core problem: CSV formats vary between ETABS versions, making the codebase fragile. The new architecture provides a stable internal representation with adapters for each input source.
+
+### Strategic Decision: Pydantic vs Dataclasses
+
+**Decision:** Use Pydantic v2 for all canonical models.
+
+**Rationale:**
+| Feature | dataclasses | Pydantic v2 |
+|---------|------------|-------------|
+| Type validation | ❌ None | ✅ Automatic |
+| JSON serialization | Manual | ✅ Built-in |
+| JSON Schema | Manual | ✅ Auto-generated |
+| Error messages | Generic | ✅ Field-specific |
+| AI-agent friendly | ⚠️ Low | ✅ High |
+
+### Deliverables
+
+#### 1. Canonical Pydantic Models (models.py)
+
+**File Created:** `Python/structural_lib/models.py` (400 lines)
+
+**Classes:**
+- `Point3D` - Frozen 3D coordinate with distance_to() method
+- `SectionProperties` - Beam section (width_mm, depth_mm, fck_mpa, fy_mpa, cover_mm)
+- `BeamGeometry` - Full beam definition with computed length_m and is_vertical
+- `BeamForces` - Force envelope (mu_knm, vu_kn, pu_kn)
+- `BeamDesignResult` - Design output with status, utilization
+- `DesignDefaults` - Default parameters for batch processing
+- `BeamBatchInput` - Aggregated input with get_merged_data(), get_unmatched_beams()
+- `BeamBatchResult` - Results with from_results() factory
+- Enums: `FrameType`, `DesignStatus`
+
+**Key Features:**
+- All models use `ConfigDict(frozen=True, extra="forbid")` for immutability
+- Computed fields (length_m, effective_depth_mm, pass_rate, is_acceptable)
+- Validators for business rules (positive dimensions, forces, etc.)
+
+**Tests:** 44 tests in `test_models.py`
+
+#### 2. ETABS Adapter (adapters.py)
+
+**File Created:** `Python/structural_lib/adapters.py` (500 lines)
+
+**Classes:**
+- `InputAdapter` - Abstract base class for all adapters
+- `ETABSAdapter` - Handles ETABS CSV exports
+- `ManualInputAdapter` - Handles manual/programmatic input
+
+**ETABS Adapter Features:**
+- Column name mappings for ETABS 2019-2024 formats
+- Section name parsing (B230X450M25 → width=230, depth=450, fck=25)
+- Force envelope calculation (max across stations)
+- Graceful handling of missing/invalid data
+
+**Tests:** 39 tests in `test_adapters.py`
+
+#### 3. JSON Serialization (serialization.py)
+
+**File Created:** `Python/structural_lib/serialization.py` (450 lines)
+
+**Functions:**
+- `save_geometry()` / `load_geometry()` - BeamGeometry list
+- `save_forces()` / `load_forces()` - BeamForces list
+- `save_batch_input()` / `load_batch_input()` - BeamBatchInput
+- `save_batch_result()` / `load_batch_result()` - BeamBatchResult
+- `generate_schema()` / `generate_all_schemas()` - JSON Schema
+- `cache_exists()` / `get_cache_metadata()` - Cache utilities
+
+**Key Features:**
+- Proper exclusion of computed fields (frozen models reject extra fields)
+- Metadata headers (version, model_type, count, created_at)
+- Type validation on load
+
+**Tests:** 29 tests in `test_serialization.py`
+
+#### 4. CI Fix
+
+**Issue:** PR #381 had 2 failing CI checks (Quick Validation, Format Check)
+**Root Cause:** 32 Python files outside Python/ needed black formatting
+**Solution:** Ran `black .` from repo root
+**Commit:** 956e69d4
+
+### Architecture Summary
+
+```
+CSV Files (ETABS, SAFE, Manual)
+          ↓
+    ┌─────────────────┐
+    │  Adapters       │  ← Format-specific parsing
+    │  (ETABSAdapter) │
+    └─────────────────┘
+          ↓
+    ┌─────────────────┐
+    │  Canonical      │  ← Pydantic models
+    │  Models         │     (validated, immutable)
+    └─────────────────┘
+          ↓
+    ┌─────────────────┐
+    │  Serialization  │  ← JSON cache/transfer
+    └─────────────────┘
+          ↓
+    ┌─────────────────┐
+    │  Business Logic │  ← Core design calculations
+    │  (flexure.py)   │
+    └─────────────────┘
+```
+
+### Commits (Branch: task/TASK-3D-002)
+
+| Commit | Description | Lines |
+|--------|-------------|-------|
+| 956e69d4 | style: fix black formatting across all Python files | 32 files |
+| bf1015ac | feat(models): add Pydantic-based canonical data models | 400+ |
+| 40dd460e | feat(adapters): add ETABS CSV adapter | 500+ |
+| 5146ab25 | feat(serialization): add JSON serialization utilities | 450+ |
+
+### Test Summary
+
+| Module | Tests | Status |
+|--------|-------|--------|
+| models.py | 44 | ✅ Pass |
+| adapters.py | 39 | ✅ Pass |
+| serialization.py | 29 | ✅ Pass |
+| **Total** | **112** | ✅ Pass |
+
+### Next Steps (Session 41+)
+
+1. **Integrate with etabs_import.py** - Update existing import to use new adapters
+2. **Generate JSON Schemas** - Create schema files for API documentation
+3. **Complete PR #381** - Merge full feature set
+4. **Phase 2 continuation** - LOD system, column toggle, building stats
+
+### Lessons Learned
+
+1. **Pydantic computed_field quirk:** When using `extra="forbid"`, computed fields in JSON must be excluded during save, otherwise load fails
+2. **Set syntax:** Python sets cannot contain dicts - use `{"field": True}` format for Pydantic exclude
+3. **CI coverage:** Format checks apply to all Python files, not just Python/ directory
+
+---
+
+## 2026-01-21 — Session 39: Real 3D Building Visualization (TASK-3D-002)
+
+**Focus:** Replace fake grid 3D with real building coordinates from frames_geometry.csv
+
+### Overview
+
+Session 39 completed TASK-3D-002 Phase 2 deliverables: real 3D building visualization using actual coordinates from ETABS frame geometry export. Updated 8-week plan to mark Phase 1 complete and Phase 2 in progress.
+
+### Strategic Decision: Three.js vs Plotly
+
+**Decision:** Continue with Plotly for Phase 2, evaluate Three.js/PyVista for Phase 4.
+
+**Rationale:**
+- ✅ Plotly already proven (839 lines working code)
+- ✅ Good enough for building-scale visualization (tested 225 frames)
+- ❌ Three.js = new complexity (npm build, React bridge)
+- 🎯 Phase 4 will evaluate PyVista for CAD-quality rendering
+
+### Deliverables
+
+#### 1. Real 3D Building Visualization
+
+**File Modified:** `streamlit_app/pages/06_📤_etabs_import.py`
+
+**Changes:**
+- Updated `create_beam_grid_3d()` to use real coordinates from FrameGeometry
+- Added dual file uploader (beam_forces.csv + frames_geometry.csv)
+- Shows building extents (X/Y/Z ranges) when geometry loaded
+- Automatic aspect ratio calculation based on building dimensions
+- Graceful fallback to grid layout when geometry unavailable
+- Fixed ZeroDivisionError risk (safe division with denominator check)
+
+**Before (Fake Grid):**
+```python
+z = story_map.get(story, 0) * 4  # Fake vertical spacing
+x = beams_per_story.get(beam_id, 0) * 2  # Fake horizontal
+```
+
+**After (Real Coordinates):**
+```python
+geom = geometry_map.get(beam_id)
+x1, y1, z1 = geom.point1_x, geom.point1_y, geom.point1_z
+x2, y2, z2 = geom.point2_x, geom.point2_y, geom.point2_z
+```
+
+#### 2. Documentation Updates
+
+**8-Week Plan Update:**
+- Marked Phase 1 (Week 1-2) as ✅ COMPLETE
+- Added Phase status table with evidence metrics
+- Updated Phase 2 progress (60% complete)
+- Documented Three.js vs Plotly decision
+
+**TASKS.md Update:**
+- Added TASK-3D-002 to Active section
+- Updated TASK-VBA-001 to COMPLETE status
+- Changed release focus to "3D Visualization Excellence"
+
+**CSV Schema Spec:**
+- Added frames_geometry.csv schema (14 columns)
+- Documented FrameGeometry Python API
+- Updated changelog to v1.1
+
+#### 3. Tests Added
+
+**File Modified:** `Python/tests/unit/test_etabs_import.py`
+
+**New Test Classes (180 lines):**
+- `TestFrameGeometry` - length_m, is_vertical properties
+- `TestLoadFramesGeometry` - CSV parsing, beam/column counts, building extents
+- `TestMergeForcesAndGeometry` - Force/geometry merging
+
+**Total Tests:** 32 (all passing)
+
+### Phase Completion Status
+
+**Phase 1 (Week 1-2) — ✅ COMPLETE:**
+- visualizations_3d.py: 839 lines (target: 300+)
+- geometry_3d.py: 811 lines (target: 200+)
+- beam_design.py integration: Working
+- Caching + performance: Geometry hashing
+
+**Phase 2 (Week 3-4) — 🚧 60% Complete:**
+- ✅ CSV schema spec (csv-import-schema.md)
+- ✅ FrameGeometry dataclass (15 fields)
+- ✅ load_frames_geometry() function
+- ✅ Real coordinate 3D visualization
+- ✅ Multi-file upload (forces + geometry)
+- ⏳ LOD system for 1000+ beams
+- ⏳ Column toggle and building stats
+
+### Commits (Branch: task/TASK-3D-002)
+
+| Commit | Description | Lines |
+|--------|-------------|-------|
+| 1c6fc140 | docs(plan): mark Phase 1 complete, add TASK-3D-002 | +98 |
+| d89538c1 | feat(etabs): implement real 3D building coordinates | +232 |
+| de14f344 | test(etabs): add FrameGeometry tests | +180 |
+| 7ddd24f2 | docs(specs): add frames_geometry.csv schema | +74 |
+
+### Next Steps
+
+1. Complete PR for TASK-3D-002
+2. Implement LOD system for 1000+ beams (Phase 2 remaining)
+3. Add column toggle and building extent display
+4. Continue to Phase 3 (Week 5): Design Integration
+
+---
+
 ## 2026-01-17 — Session 36: ETABS VBA Export Implementation
 
 **Focus:** Complete production-ready ETABS VBA export macro with 7 modules

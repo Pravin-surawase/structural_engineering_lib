@@ -370,9 +370,7 @@ class GovernanceHealthCalculator:
         recommendations = []
         for component in components:
             if component.score < component.max_score * 0.7:
-                recommendations.append(
-                    f"Improve {component.name}: {component.details}"
-                )
+                recommendations.append(f"Improve {component.name}: {component.details}")
 
         return HealthScore(
             total_score=total_score,
@@ -431,9 +429,7 @@ GRADE SCALE:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Calculate governance health score"
-    )
+    parser = argparse.ArgumentParser(description="Calculate governance health score")
     parser.add_argument(
         "--output",
         type=Path,

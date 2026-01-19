@@ -103,7 +103,7 @@ def _generate_viewer_html(geometry_json: str, height: int) -> str:
     This embeds the geometry directly in the HTML to avoid CORS issues
     and postMessage timing problems on Streamlit Cloud.
     """
-    return f'''
+    return f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -380,7 +380,7 @@ def _generate_viewer_html(geometry_json: str, height: int) -> str:
   </script>
 </body>
 </html>
-'''
+"""
 
 
 def render_beam_3d_from_detailing(
@@ -422,19 +422,21 @@ def create_demo_geometry() -> dict[str, Any]:
     # Generate stirrups
     stirrups = []
     for x in range(50, 4000, 100):
-        stirrups.append({
-            "positionX": x,
-            "path": [
-                {"x": x, "y": -106, "z": 44},
-                {"x": x, "y": 106, "z": 44},
-                {"x": x, "y": 106, "z": 406},
-                {"x": x, "y": -106, "z": 406},
-            ],
-            "diameter": 8,
-            "legs": 2,
-            "hookType": "135",
-            "perimeter": 936,
-        })
+        stirrups.append(
+            {
+                "positionX": x,
+                "path": [
+                    {"x": x, "y": -106, "z": 44},
+                    {"x": x, "y": 106, "z": 44},
+                    {"x": x, "y": 106, "z": 406},
+                    {"x": x, "y": -106, "z": 406},
+                ],
+                "diameter": 8,
+                "legs": 2,
+                "hookType": "135",
+                "perimeter": 936,
+            }
+        )
 
     return {
         "beamId": "B1-DEMO",
@@ -453,13 +455,15 @@ def create_demo_geometry() -> dict[str, Any]:
         "rebars": [
             {
                 "barId": "B1",
-                "segments": [{
-                    "start": {"x": 0, "y": -96, "z": 56},
-                    "end": {"x": 4000, "y": -96, "z": 56},
-                    "diameter": 16,
-                    "type": "straight",
-                    "length": 4000,
-                }],
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": -96, "z": 56},
+                        "end": {"x": 4000, "y": -96, "z": 56},
+                        "diameter": 16,
+                        "type": "straight",
+                        "length": 4000,
+                    }
+                ],
                 "diameter": 16,
                 "barType": "bottom",
                 "zone": "full",
@@ -467,13 +471,15 @@ def create_demo_geometry() -> dict[str, Any]:
             },
             {
                 "barId": "B2",
-                "segments": [{
-                    "start": {"x": 0, "y": 0, "z": 56},
-                    "end": {"x": 4000, "y": 0, "z": 56},
-                    "diameter": 16,
-                    "type": "straight",
-                    "length": 4000,
-                }],
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": 0, "z": 56},
+                        "end": {"x": 4000, "y": 0, "z": 56},
+                        "diameter": 16,
+                        "type": "straight",
+                        "length": 4000,
+                    }
+                ],
                 "diameter": 16,
                 "barType": "bottom",
                 "zone": "full",
@@ -481,13 +487,15 @@ def create_demo_geometry() -> dict[str, Any]:
             },
             {
                 "barId": "B3",
-                "segments": [{
-                    "start": {"x": 0, "y": 96, "z": 56},
-                    "end": {"x": 4000, "y": 96, "z": 56},
-                    "diameter": 16,
-                    "type": "straight",
-                    "length": 4000,
-                }],
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": 96, "z": 56},
+                        "end": {"x": 4000, "y": 96, "z": 56},
+                        "diameter": 16,
+                        "type": "straight",
+                        "length": 4000,
+                    }
+                ],
                 "diameter": 16,
                 "barType": "bottom",
                 "zone": "full",
@@ -495,13 +503,15 @@ def create_demo_geometry() -> dict[str, Any]:
             },
             {
                 "barId": "T1",
-                "segments": [{
-                    "start": {"x": 0, "y": -96, "z": 394},
-                    "end": {"x": 4000, "y": -96, "z": 394},
-                    "diameter": 12,
-                    "type": "straight",
-                    "length": 4000,
-                }],
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": -96, "z": 394},
+                        "end": {"x": 4000, "y": -96, "z": 394},
+                        "diameter": 12,
+                        "type": "straight",
+                        "length": 4000,
+                    }
+                ],
                 "diameter": 12,
                 "barType": "top",
                 "zone": "full",
@@ -509,13 +519,15 @@ def create_demo_geometry() -> dict[str, Any]:
             },
             {
                 "barId": "T2",
-                "segments": [{
-                    "start": {"x": 0, "y": 96, "z": 394},
-                    "end": {"x": 4000, "y": 96, "z": 394},
-                    "diameter": 12,
-                    "type": "straight",
-                    "length": 4000,
-                }],
+                "segments": [
+                    {
+                        "start": {"x": 0, "y": 96, "z": 394},
+                        "end": {"x": 4000, "y": 96, "z": 394},
+                        "diameter": 12,
+                        "type": "straight",
+                        "length": 4000,
+                    }
+                ],
                 "diameter": 12,
                 "barType": "top",
                 "zone": "full",

@@ -395,7 +395,7 @@ Each phase has a **validation gate** that MUST pass before proceeding:
 - [ ] Access to Windows machine with ETABS v22 installed
 - [ ] Test ETABS model with 100+ beams loaded
 - [ ] Excel 64-bit installed (match ETABS bitness)
-- [ ] ETABS CHM documentation extracted: `docs/reference/vendor/etabs/etabs_chm/`
+- [ ] ETABS CHM documentation extracted: `docs/reference/vendor/etabs/etabs-chm/`
 - [ ] CSV schema reviewed: `docs/specs/csv-import-schema.md`
 
 **Test Model Requirements:**

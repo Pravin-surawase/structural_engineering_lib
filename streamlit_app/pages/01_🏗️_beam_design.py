@@ -760,14 +760,22 @@ with col_preview:
                     st.error("❌ **UNSAFE**")
 
             with status_col2:
-                flexure_color = "green" if flexure_util <= 90 else "orange" if flexure_util <= 100 else "red"
+                flexure_color = (
+                    "green"
+                    if flexure_util <= 90
+                    else "orange" if flexure_util <= 100 else "red"
+                )
                 st.markdown(
                     f"**Flexure:** <span style='color:{flexure_color}'>{flexure_util:.1f}%</span>",
                     unsafe_allow_html=True,
                 )
 
             with status_col3:
-                shear_color = "green" if shear_util <= 90 else "orange" if shear_util <= 100 else "red"
+                shear_color = (
+                    "green"
+                    if shear_util <= 90
+                    else "orange" if shear_util <= 100 else "red"
+                )
                 st.markdown(
                     f"**Shear:** <span style='color:{shear_color}'>{shear_util:.1f}%</span>",
                     unsafe_allow_html=True,
@@ -801,7 +809,9 @@ with col_preview:
                     (0, available_width / 2, D_mm - edge_dist),
                 ]
 
-            stirrup_start = max(1, int(stirrup_spacing / 2)) if stirrup_spacing > 0 else 50
+            stirrup_start = (
+                max(1, int(stirrup_spacing / 2)) if stirrup_spacing > 0 else 50
+            )
             stirrup_end = max(1, int(span_mm_3d)) if span_mm_3d > 0 else 4000
             stirrup_step = max(50, int(stirrup_spacing)) if stirrup_spacing > 0 else 100
             stirrup_positions_3d = list(range(stirrup_start, stirrup_end, stirrup_step))
@@ -843,7 +853,9 @@ with col_preview:
                         b=geom["b"],
                         D=geom["D"],
                         span=geom["span"],
-                        bottom_bars=geom["bottom_bars"] if geom["bottom_bars"] else None,
+                        bottom_bars=(
+                            geom["bottom_bars"] if geom["bottom_bars"] else None
+                        ),
                         top_bars=geom["top_bars"] if geom["top_bars"] else None,
                         bar_diameter=geom["bar_dia"],
                         stirrup_positions=geom["stirrup_positions"],

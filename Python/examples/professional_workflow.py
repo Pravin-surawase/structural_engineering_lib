@@ -220,8 +220,7 @@ def main() -> None:
     print("\n" + "=" * 60)
     print("✅ Professional Workflow Complete")
     print("=" * 60)
-    print(
-        """
+    print("""
 Summary:
 1. ✅ Input validated with BeamInput dataclass
 2. ✅ Design calculated with IS 456 API
@@ -234,8 +233,7 @@ This workflow ensures:
 - Reproducible calculations with version control
 - Print-ready reports for client delivery
 - Quality assurance through automated testing
-"""
-    )
+""")
 
 
 if __name__ == "__main__":

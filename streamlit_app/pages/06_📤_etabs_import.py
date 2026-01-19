@@ -60,6 +60,9 @@ try:
         load_etabs_csv,
         normalize_etabs_forces,
         ETABSEnvelopeResult,
+        load_frames_geometry,
+        merge_forces_and_geometry,
+        FrameGeometry,
     )
 
     ETABS_IMPORT_AVAILABLE = True
@@ -82,6 +85,10 @@ if "etabs_design_results" not in st.session_state:
     st.session_state.etabs_design_results = None
 if "etabs_beam_sections" not in st.session_state:
     st.session_state.etabs_beam_sections = {}  # beam_id -> {b_mm, D_mm}
+if "etabs_frames_geometry" not in st.session_state:
+    st.session_state.etabs_frames_geometry = None  # list[FrameGeometry]
+if "etabs_geometry_map" not in st.session_state:
+    st.session_state.etabs_geometry_map = {}  # beam_id -> FrameGeometry
 
 # Default section properties (can be overridden per beam)
 DEFAULT_SECTION = {
@@ -193,7 +200,9 @@ def get_governing_envelope(
     # Use governing case as the one with higher utilization (simplified)
     # In practice, might want to design for both cases separately
     governing_case = (
-        max_mu_env.case_id if max_mu_env.mu_knm >= max_vu_env.vu_kn else max_vu_env.case_id
+        max_mu_env.case_id
+        if max_mu_env.mu_knm >= max_vu_env.vu_kn
+        else max_vu_env.case_id
     )
 
     return max_mu_env.mu_knm, max_vu_env.vu_kn, governing_case
@@ -347,89 +356,176 @@ def create_story_summary_chart(results_df: pd.DataFrame) -> go.Figure:
 
 
 def create_beam_grid_3d(results_df: pd.DataFrame) -> go.Figure:
-    """Create a 3D grid visualization of all beams colored by status."""
+    """Create a 3D grid visualization of all beams colored by status.
+
+    Uses real building coordinates from frames_geometry if available,
+    otherwise falls back to grid layout.
+
+    Session 39: Updated to use real 3D coordinates from FrameGeometry.
+    """
     if results_df.empty:
         return go.Figure()
 
-    # Get unique stories and beams for grid layout
-    stories = results_df["Story"].unique()
-    story_map = {s: i for i, s in enumerate(sorted(stories, reverse=True))}
-
-    beams_per_story = {}
-    for story in stories:
-        story_beams = results_df[results_df["Story"] == story]["Beam ID"].unique()
-        beams_per_story[story] = {b: j for j, b in enumerate(sorted(story_beams))}
+    # Check if we have real geometry data
+    geometry_map = st.session_state.get("etabs_geometry_map", {})
+    has_real_coords = bool(geometry_map)
 
     fig = go.Figure()
 
-    # Add beams as 3D boxes
-    for _, row in results_df.iterrows():
-        story = row["Story"]
-        beam_id = row["Beam ID"]
-        is_safe = row["_is_safe"]
+    if has_real_coords:
+        # Use REAL building coordinates from frames_geometry.csv
+        for _, row in results_df.iterrows():
+            beam_id = row["Beam ID"]
+            is_safe = row["_is_safe"]
+            story = row["Story"]
 
-        z = story_map.get(story, 0) * 4  # Vertical spacing
-        x = beams_per_story.get(story, {}).get(beam_id, 0) * 2  # Horizontal spacing
-        y = 0
+            geom = geometry_map.get(beam_id)
+            if geom is None:
+                continue  # Skip beams without geometry
 
-        # Parse section dimensions
-        section_str = row["b×D (mm)"]
-        try:
-            b, D = map(float, section_str.split("×"))
-            b = b / 1000 * 0.5  # Scale for visualization
-            D = D / 1000 * 0.5
-        except (ValueError, AttributeError):
-            b, D = 0.15, 0.25
+            # Real 3D coordinates (meters)
+            x1, y1, z1 = geom.point1_x, geom.point1_y, geom.point1_z
+            x2, y2, z2 = geom.point2_x, geom.point2_y, geom.point2_z
 
-        color = "rgb(40, 167, 69)" if is_safe else "rgb(220, 53, 69)"
+            color = "rgb(40, 167, 69)" if is_safe else "rgb(220, 53, 69)"
 
-        # Add beam as a line with markers
-        fig.add_trace(
-            go.Scatter3d(
-                x=[x - 0.5, x + 0.5],
-                y=[y, y],
-                z=[z, z],
-                mode="lines+markers",
-                line=dict(color=color, width=10),
-                marker=dict(size=5, color=color),
-                name=f"{story}/{beam_id}",
-                hovertemplate=(
-                    f"<b>{story}/{beam_id}</b><br>"
-                    f"Mu: {row['Mu (kN·m)']} kN·m<br>"
-                    f"Vu: {row['Vu (kN)']} kN<br>"
-                    f"Bars: {row['Bars']}<br>"
-                    f"Status: {row['Status']}<extra></extra>"
-                ),
-                showlegend=False,
+            # Add beam as a 3D line with real coordinates
+            fig.add_trace(
+                go.Scatter3d(
+                    x=[x1, x2],
+                    y=[y1, y2],
+                    z=[z1, z2],
+                    mode="lines+markers",
+                    line=dict(color=color, width=8),
+                    marker=dict(size=4, color=color),
+                    name=f"{story}/{beam_id}",
+                    hovertemplate=(
+                        f"<b>{story}/{beam_id}</b><br>"
+                        f"Length: {geom.length_m:.2f} m<br>"
+                        f"Mu: {row['Mu (kN·m)']} kN·m<br>"
+                        f"Vu: {row['Vu (kN)']} kN<br>"
+                        f"Bars: {row['Bars']}<br>"
+                        f"Status: {row['Status']}<extra></extra>"
+                    ),
+                    showlegend=False,
+                )
             )
+
+        # Calculate building extents for axis labels
+        all_geoms = list(geometry_map.values())
+        if all_geoms:
+            x_min = min(g.point1_x for g in all_geoms)
+            x_max = max(g.point2_x for g in all_geoms)
+            y_min = min(g.point1_y for g in all_geoms)
+            y_max = max(g.point2_y for g in all_geoms)
+            z_max = max(g.point2_z for g in all_geoms)
+
+            # Calculate aspect ratio based on building dimensions
+            x_range = max(x_max - x_min, 0.1)
+            y_range = max(y_max - y_min, 0.1)
+            z_range = max(z_max, 0.1)
+            max_range = max(x_range, y_range, z_range, 0.1)  # Ensure non-zero
+
+            # Safe division with guaranteed non-zero denominator
+            aspect_x = x_range / max_range if max_range > 0 else 1.0
+            aspect_y = y_range / max_range if max_range > 0 else 1.0
+            aspect_z = z_range / max_range if max_range > 0 else 1.0
+
+            title = f"3D Building View - Real Coordinates ({len(geometry_map)} beams)"
+        else:
+            aspect_x, aspect_y, aspect_z = 1, 1, 1
+            title = "3D Building View"
+
+        fig.update_layout(
+            title=title,
+            scene=dict(
+                xaxis_title="X (m)",
+                yaxis_title="Y (m)",
+                zaxis_title="Z (m)",
+                aspectmode="manual",
+                aspectratio=dict(x=aspect_x, y=aspect_y, z=aspect_z),
+            ),
+            height=600,
+            margin=dict(l=0, r=0, t=40, b=0),
         )
 
-    # Add story labels
-    for story, z_idx in story_map.items():
-        fig.add_trace(
-            go.Scatter3d(
-                x=[-1],
-                y=[0],
-                z=[z_idx * 4],
-                mode="text",
-                text=[story],
-                textfont=dict(size=14, color="white"),
-                showlegend=False,
-            )
-        )
+    else:
+        # FALLBACK: Use grid layout when geometry not available
+        stories = results_df["Story"].unique()
+        story_map = {s: i for i, s in enumerate(sorted(stories, reverse=True))}
 
-    fig.update_layout(
-        title="3D Beam Grid - Color by Design Status",
-        scene=dict(
-            xaxis_title="Beam Position",
-            yaxis_title="",
-            zaxis_title="Story",
-            aspectmode="manual",
-            aspectratio=dict(x=2, y=0.5, z=1.5),
-        ),
-        height=600,
-        margin=dict(l=0, r=0, t=40, b=0),
-    )
+        beams_per_story: dict[str, dict[str, int]] = {}
+        for story in stories:
+            story_beams = results_df[results_df["Story"] == story]["Beam ID"].unique()
+            beams_per_story[story] = {b: j for j, b in enumerate(sorted(story_beams))}
+
+        for _, row in results_df.iterrows():
+            story = row["Story"]
+            beam_id = row["Beam ID"]
+            is_safe = row["_is_safe"]
+
+            z = story_map.get(story, 0) * 4  # Vertical spacing
+            x = beams_per_story.get(story, {}).get(beam_id, 0) * 2  # Horizontal spacing
+            y = 0
+
+            # Parse section dimensions
+            section_str = row["b×D (mm)"]
+            try:
+                b, D = map(float, section_str.split("×"))
+                b = b / 1000 * 0.5  # Scale for visualization
+                D = D / 1000 * 0.5
+            except (ValueError, AttributeError):
+                b, D = 0.15, 0.25
+
+            color = "rgb(40, 167, 69)" if is_safe else "rgb(220, 53, 69)"
+
+            # Add beam as a line with markers
+            fig.add_trace(
+                go.Scatter3d(
+                    x=[x - 0.5, x + 0.5],
+                    y=[y, y],
+                    z=[z, z],
+                    mode="lines+markers",
+                    line=dict(color=color, width=10),
+                    marker=dict(size=5, color=color),
+                    name=f"{story}/{beam_id}",
+                    hovertemplate=(
+                        f"<b>{story}/{beam_id}</b><br>"
+                        f"Mu: {row['Mu (kN·m)']} kN·m<br>"
+                        f"Vu: {row['Vu (kN)']} kN<br>"
+                        f"Bars: {row['Bars']}<br>"
+                        f"Status: {row['Status']}<extra></extra>"
+                    ),
+                    showlegend=False,
+                )
+            )
+
+        # Add story labels
+        for story, z_idx in story_map.items():
+            fig.add_trace(
+                go.Scatter3d(
+                    x=[-1],
+                    y=[0],
+                    z=[z_idx * 4],
+                    mode="text",
+                    text=[story],
+                    textfont=dict(size=14, color="white"),
+                    showlegend=False,
+                )
+            )
+
+        fig.update_layout(
+            title="3D Beam Grid (Grid Layout - No Geometry Data)",
+            scene=dict(
+                xaxis_title="Beam Position",
+                yaxis_title="",
+                zaxis_title="Story",
+                aspectmode="manual",
+                aspectratio=dict(x=2, y=0.5, z=1.5),
+            ),
+            height=600,
+            margin=dict(l=0, r=0, t=40, b=0),
+        )
 
     return fig
 
@@ -488,14 +584,81 @@ with st.expander("📖 How to Use", expanded=False):
 
 st.divider()
 
-# Step 1: Upload
-section_header("1️⃣ Upload ETABS CSV")
+# Step 1: Upload Files
+section_header("1️⃣ Upload ETABS CSV Files")
 
-uploaded_file = st.file_uploader(
-    "Choose ETABS CSV export file",
-    type=["csv"],
-    help="Upload CSV exported from ETABS Frame Forces or Element Forces",
-)
+# Create two columns for file uploaders
+upload_col1, upload_col2 = st.columns(2)
+
+with upload_col1:
+    uploaded_file = st.file_uploader(
+        "📊 Beam Forces CSV (required)",
+        type=["csv"],
+        help="Upload beam_forces.csv exported from ETABS VBA tool",
+        key="beam_forces_upload",
+    )
+
+with upload_col2:
+    geometry_file = st.file_uploader(
+        "📐 Frames Geometry CSV (optional)",
+        type=["csv"],
+        help="Upload frames_geometry.csv for real 3D building coordinates",
+        key="geometry_upload",
+    )
+
+# Process geometry file if uploaded
+if geometry_file is not None:
+    try:
+        # Save to temp file for parsing
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".csv", delete=False
+        ) as tmp_file:
+            content = geometry_file.getvalue().decode("utf-8")
+            tmp_file.write(content)
+            tmp_path = Path(tmp_file.name)
+
+        # Load frames geometry
+        frames_geometry = load_frames_geometry(tmp_path)
+        st.session_state.etabs_frames_geometry = frames_geometry
+
+        # Build geometry map (beam_id -> FrameGeometry)
+        geometry_map = {g.unique_name: g for g in frames_geometry}
+        st.session_state.etabs_geometry_map = geometry_map
+
+        # Count beams and columns
+        beams = [g for g in frames_geometry if g.frame_type.lower() == "beam"]
+        columns = [g for g in frames_geometry if g.frame_type.lower() == "column"]
+
+        st.success(
+            f"✅ Loaded geometry for {len(frames_geometry)} frames "
+            f"({len(beams)} beams, {len(columns)} columns)"
+        )
+
+        # Show building extents
+        if frames_geometry:
+            x_coords = [g.point1_x for g in frames_geometry] + [
+                g.point2_x for g in frames_geometry
+            ]
+            y_coords = [g.point1_y for g in frames_geometry] + [
+                g.point2_y for g in frames_geometry
+            ]
+            z_coords = [g.point1_z for g in frames_geometry] + [
+                g.point2_z for g in frames_geometry
+            ]
+            st.info(
+                f"🏢 Building extents: "
+                f"X: {min(x_coords):.1f} to {max(x_coords):.1f} m | "
+                f"Y: {min(y_coords):.1f} to {max(y_coords):.1f} m | "
+                f"Z: {min(z_coords):.1f} to {max(z_coords):.1f} m"
+            )
+
+        # Cleanup temp file
+        tmp_path.unlink(missing_ok=True)
+
+    except Exception as e:
+        st.error(f"Error loading geometry: {e}")
+        st.session_state.etabs_frames_geometry = None
+        st.session_state.etabs_geometry_map = {}
 
 if uploaded_file is not None:
     success, message, envelopes = process_etabs_csv(uploaded_file)
@@ -650,7 +813,9 @@ if st.session_state.etabs_design_results is not None:
         )
 
     with tab2:
-        st.plotly_chart(create_story_summary_chart(results_df), use_container_width=True)
+        st.plotly_chart(
+            create_story_summary_chart(results_df), use_container_width=True
+        )
 
     with tab3:
         st.plotly_chart(create_beam_grid_3d(results_df), use_container_width=True)

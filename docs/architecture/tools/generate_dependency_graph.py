@@ -13,10 +13,12 @@ OUTPUT_PATH = ROOT / "docs" / "architecture" / "dependencies.png"
 EXCLUDE_FILES = {"__init__.py", "__main__.py"}
 
 
-def resolve_relative(current: str, level: int, module: str | None, name: str | None) -> str:
+def resolve_relative(
+    current: str, level: int, module: str | None, name: str | None
+) -> str:
     parts = current.split(".")
     if level:
-        parts = parts[: -level]
+        parts = parts[:-level]
     if module:
         parts.extend(module.split("."))
     if name:
@@ -26,9 +28,7 @@ def resolve_relative(current: str, level: int, module: str | None, name: str | N
 
 def build_graph() -> nx.DiGraph:
     module_files = [
-        path
-        for path in SOURCE_ROOT.rglob("*.py")
-        if path.name not in EXCLUDE_FILES
+        path for path in SOURCE_ROOT.rglob("*.py") if path.name not in EXCLUDE_FILES
     ]
 
     module_names = {}
@@ -63,7 +63,9 @@ def build_graph() -> nx.DiGraph:
                 if base in modules:
                     edges.add((current, base))
                 for alias in node.names:
-                    candidate = resolve_relative(current, node.level, node.module, alias.name)
+                    candidate = resolve_relative(
+                        current, node.level, node.module, alias.name
+                    )
                     if candidate in modules:
                         edges.add((current, candidate))
 

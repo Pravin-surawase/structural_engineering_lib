@@ -97,8 +97,10 @@ features_to_check = [
     "code_compliance_ai",
 ]
 for feature in features_to_check:
-    if hasattr(precheck, feature) or hasattr(sensitivity, feature) or hasattr(
-        constructability, feature
+    if (
+        hasattr(precheck, feature)
+        or hasattr(sensitivity, feature)
+        or hasattr(constructability, feature)
     ):
         print(f"   OK {feature} module found")
     else:

@@ -759,7 +759,9 @@ def compute_geometry_hash(geometry_dict: dict[str, Any]) -> str:
         stirrup_pos = geometry_dict.get("stirrup_positions", [])
         hash_parts.append(f"sp{len(stirrup_pos)}")
         if stirrup_pos:
-            hash_parts.append(f"{stirrup_pos[0]}_{stirrup_pos[-1] if len(stirrup_pos) > 1 else stirrup_pos[0]}")
+            hash_parts.append(
+                f"{stirrup_pos[0]}_{stirrup_pos[-1] if len(stirrup_pos) > 1 else stirrup_pos[0]}"
+            )
 
     # Handle nested JSON schema format (from JSON contract)
     elif "dimensions" in geometry_dict:
