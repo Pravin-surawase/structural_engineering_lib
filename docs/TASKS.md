@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 47b)
+**Updated:** 2026-01-25 (Session 49)
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## Active Tasks
 
-### TASK-AI-CHAT: AI Chat Assistant Interface 🚧 NEW
+### TASK-AI-CHAT: AI Chat Assistant Interface 🚧 IN PROGRESS
 
 **Goal:** ChatGPT-like UI with 40% chat / 60% workspace split
 
@@ -36,8 +36,11 @@
 | SmartDashboard component | ✅ Done | `b6cb036a` - Score gauges, issues |
 | LLM tool definitions | ✅ Done | `edb9379a` - 7 tools for function calling |
 | Architecture research doc | ✅ Done | `6b139dbd` - OpenAI/Streamlit patterns |
+| **Fix ComplianceCaseResult.geometry bug** | ✅ Done | Session 49 - `fef3ae12` |
+| **GPT-5-mini model support** | ✅ Done | Session 49 - Configurable via secrets |
+| **Fix workspace panel attributes** | ✅ Done | Session 49 - `4d0a9c7c` |
+| **Add welcome message + Clear button** | ✅ Done | Session 49 - `37e0a21f` |
 | Connect SmartDesigner to chat | 📋 TODO | Use existing analyze() |
-| OpenAI API integration | 📋 TODO | Add secrets config |
 | Streaming responses | 📋 TODO | Typewriter effect |
 | Tool execution handlers | 📋 TODO | Map tools to library functions |
 
@@ -122,6 +125,9 @@ Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 
 | Date | Task | Commit | Notes |
 |------|------|--------|-------|
+| 2026-01-25 | Fix AI page bugs | `fef3ae12`, `4d0a9c7c` | Session 49 - geometry/attribute errors |
+| 2026-01-25 | Add GPT-5-mini support | `fef3ae12` | Session 49 - configurable model |
+| 2026-01-25 | Chat panel improvements | `37e0a21f` | Session 49 - welcome msg, clear btn |
 | 2026-01-24 | 3D building view tab | `efe825d3` | Session 46 |
 | 2026-01-24 | Fix VBA import errors | `897da5dd` | Session 46 |
 | 2026-01-24 | Docs cleanup | `67faaca6`, `2317a2b9` | Session 46 |
