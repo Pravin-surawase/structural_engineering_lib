@@ -447,9 +447,7 @@ class BuildingStatistics(BaseModel):
     total_beams: int = Field(description="Total number of beams")
     total_stories: int = Field(description="Number of unique stories")
     stories: list[str] = Field(description="List of story names (sorted)")
-    beams_per_story: dict[str, int] = Field(
-        description="Count of beams per story"
-    )
+    beams_per_story: dict[str, int] = Field(description="Count of beams per story")
     total_length_m: float = Field(description="Total beam length in meters")
     total_concrete_m3: float = Field(
         description="Total concrete volume in cubic meters"

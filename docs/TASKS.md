@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-19 (Session 47)
+**Updated:** 2026-01-20 (Session 47b)
 
 ---
 
@@ -15,31 +15,41 @@
 
 ## Current Focus
 
-- **Version:** v0.17.6 (in progress)
-- **Focus:** 3D Visualization Excellence + Smart Insights
-- **8-Week Plan:** Phase 2.5 ✅ COMPLETE, Phase 3 (rebar) + Phase 3.5 (insights) planned
-- **Next Milestone:** March 2026 (v0.18.0)
-- **Key Insight:** We have SmartDesigner built — just need to expose it!
+- **Version:** v0.17.6 → v0.18.0 (AI Chat MVP)
+- **Focus:** AI Chat Interface + SmartDesigner UI Integration
+- **8-Week Plan:** Phase 3.5 (AI/Insights) - IN PROGRESS
+- **Next Milestone:** v0.18.0 - AI Chat MVP (Jan 2026)
+- **Key Insight:** ChatGPT-like UI with library function calling
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
 
 ## Active Tasks
 
-### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) 🚧 NEW
+### TASK-AI-CHAT: AI Chat Assistant Interface 🚧 NEW
 
-**Goal:** Expose existing AI-like intelligence in the UI
+**Goal:** ChatGPT-like UI with 40% chat / 60% workspace split
 
 | Sub-task | Status | Notes |
 |----------|--------|-------|
-| SmartDesigner panel in beam design | 📋 TODO | 2h - Use existing `SmartDesigner.analyze()` |
-| Cost optimization summary | 📋 TODO | 1h - Show current vs optimal cost |
-| Design suggestions display | 📋 TODO | 1h - High/medium/low impact |
-| Quick wins callout box | 📋 TODO | 1h - Actionable improvements |
-| "Why is this unsafe?" explainer | 📋 TODO | 2h - Educational feedback |
+| AI Assistant page (10_🤖_ai_assistant.py) | ✅ Done | `c5a9bdaa` - Split layout working |
+| SmartDashboard component | ✅ Done | `b6cb036a` - Score gauges, issues |
+| LLM tool definitions | ✅ Done | `edb9379a` - 7 tools for function calling |
+| Architecture research doc | ✅ Done | `6b139dbd` - OpenAI/Streamlit patterns |
+| Connect SmartDesigner to chat | 📋 TODO | Use existing analyze() |
+| OpenAI API integration | 📋 TODO | Add secrets config |
+| Streaming responses | 📋 TODO | Typewriter effect |
+| Tool execution handlers | 📋 TODO | Map tools to library functions |
 
-**Why:** We built `SmartDesigner` in `structural_lib/insights/` but never exposed it in the UI!
-This makes the tool feel intelligent without building full AI chat.
+**Why:** Make structural engineering accessible through natural language.
+Users can say "Design a beam for 150 kN·m" and get results + 3D view.
+
+### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) 🔄 MERGED
+
+**Goal:** Expose existing AI-like intelligence in the UI
+**Status:** Merged into TASK-AI-CHAT — SmartDesigner now displayed in AI workspace
+
+---
 
 ### TASK-3D-007: 3D View Interactive Controls ✅ COMPLETE
 

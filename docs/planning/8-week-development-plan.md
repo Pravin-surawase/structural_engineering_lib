@@ -5,8 +5,8 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-19
-**Related Tasks:** TASK-3D-VIZ, TASK-3D-002, TASK-AI-001
+**Last Updated:** 2026-01-20
+**Related Tasks:** TASK-3D-VIZ, TASK-3D-002, TASK-AI-CHAT
 **Timeline:** 8 weeks (Jan 15 - March 15, 2026)
 **Release Target:** March 2026
 
@@ -17,15 +17,15 @@
 > **"What was not possible few years back, or only possible for big firms — now everyone can use them free."**
 
 This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](democratization-vision.md) for the full roadmap including:
-- 🤖 **AI Chat Interface** — "Help me design this beam" (V1.1)
+- 🤖 **AI Chat Interface** — "Help me design this beam" (**NOW IN PROGRESS** - Session 47b)
 - 🔧 **User Automation** — Build your own workflows (V1.1)
 - 📚 **Library Evolution** — Columns, slabs, multi-code (V2.0)
 
-**For now, we focus on visual excellence** — the killer feature that differentiates us.
+**For now, we focus on visual excellence + AI chat** — the killer features that differentiate us.
 
 ---
 
-## 📊 Current Status (Session 47)
+## 📊 Current Status (Session 47b)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
@@ -33,8 +33,47 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 | **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **90% COMPLETE** |
 | **Phase 2.5** | 4 | Visualization Polish | ✅ **COMPLETE** |
 | **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
-| **Phase 3.5** | 6 | Smart Insights Dashboard | 📋 NEW |
+| **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
 | **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
+| **Phase AI** | 6+ | **AI Chat Interface** | 🚧 **IN PROGRESS** |
+
+### Phase AI: ChatGPT-like Interface (NEW - Session 47b)
+
+> "like chatgpt. chat, and when users asks something chat goes to left 40% like chatgpt
+> and on right window our work, tables, 3d and all come"
+
+**Implemented:**
+- ✅ AI Assistant page with 40% chat / 60% workspace split
+- ✅ SmartDashboard component for visual scores and insights
+- ✅ LLM tool definitions for OpenAI function calling (7 tools)
+- ✅ Architecture research document with modern patterns
+
+**UI Layout:**
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🤖 StructEng AI Assistant                                       │
+├─────────────────────────┬────────────────────────────────────────┤
+│  💬 CHAT (40%)          │  📊 WORKSPACE (60%)                    │
+│                         │  ┌───────────────────────────────────┐ │
+│  User: Design a beam    │  │ Results │ 3D View │ Cost │ Smart │ │
+│  for 150 kN·m           │  └───────────────────────────────────┘ │
+│                         │                                        │
+│  AI: I've designed a    │  Section: 300×500mm                   │
+│  beam for you:          │  Steel: 1234 mm²                      │
+│  - 300×500mm section    │  Status: ✅ SAFE                       │
+│  - 1234 mm² steel       │                                        │
+│                         │  [3D Beam Visualization]               │
+│  [Design] [Optimize]    │                                        │
+└─────────────────────────┴────────────────────────────────────────┘
+```
+
+**Technology Stack:**
+- OpenAI GPT-4 with function calling (strict mode)
+- Streamlit `st.chat_message`, `st.chat_input`
+- SmartDesigner for AI-like intelligence without API calls
+- 7 tools: design_beam, optimize_cost, get_suggestions, analyze_design, compare_options, explain_code_clause, show_3d_view
+
+See: [ai-chat-architecture-v2.md](../research/ai-chat-architecture-v2.md)
 
 ### The Differentiation Problem (Session 47)
 
