@@ -1,22 +1,22 @@
 {
   "folder": "docs",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
-  "last_updated": "2026-01-17",
+  "last_updated": "2026-01-19",
   "file_count": 2,
   "files": [
     {
       "name": "SESSION_LOG.md",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. Session 38 completed critical UI fixes and started Phase 2 CSV import work:",
-      "last_updated": "2026-01-17",
-      "size_lines": 6220
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. Sessions 41-42 completed the multi-format import system by resolving all CI failures on PR #381. The P",
+      "last_updated": "2026-01-19",
+      "size_lines": 6832
     },
     {
       "name": "TASKS.md",
       "title": "Task Board",
-      "description": "> Single source of truth for work. Keep it short and current. > **Session 35 Completion:** PR #373 merged! 3D Visualization Phase 0 MVP complete. 9,833 lines added across 28 files.",
-      "last_updated": "2026-01-17",
-      "size_lines": 384
+      "description": "> Single source of truth for work. Keep it short and current. > **Session 41-42 Progress:**",
+      "last_updated": "2026-01-19",
+      "size_lines": 458
     }
   ],
   "subfolders": [
@@ -71,6 +71,11 @@
       "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |"
     },
     {
+      "name": "guides",
+      "path": "guides/",
+      "description": ""
+    },
+    {
       "name": "images",
       "path": "images/",
       "description": "This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams). | Category | Naming Pattern | Example |"
@@ -108,6 +113,11 @@
     {
       "name": "specs",
       "path": "specs/",
+      "description": ""
+    },
+    {
+      "name": "vba",
+      "path": "vba/",
       "description": ""
     },
     {

@@ -2,7 +2,7 @@
 
 Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.
 
-**Last Updated:** 2026-01-17
+**Last Updated:** 2026-01-19
 **File Count:** 0
 
 ## Subfolders

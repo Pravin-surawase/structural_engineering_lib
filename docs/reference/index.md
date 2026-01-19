@@ -2,7 +2,7 @@
 
 Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |
 
-**Last Updated:** 2026-01-17
+**Last Updated:** 2026-01-19
 **File Count:** 22
 
 ## Files

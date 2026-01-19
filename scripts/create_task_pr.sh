@@ -38,11 +38,13 @@ if [[ "$CURRENT_BRANCH" != "main" ]]; then
     exit 1
 fi
 
-# Ensure clean state
+# Ensure clean state (auto-stash if needed)
+AUTO_STASHED="false"
 if [[ -n $(git status --porcelain) ]]; then
-    echo -e "${RED}✗ Working tree has uncommitted changes${NC}"
-    echo "Please commit or stash changes first"
-    exit 1
+    echo -e "${YELLOW}⚠ Working tree has uncommitted changes${NC}"
+    echo "→ Auto-stashing local changes before branch creation..."
+    git stash push -u -m "create_task_pr auto-stash" >/dev/null
+    AUTO_STASHED="true"
 fi
 
 # Pull latest
@@ -53,6 +55,15 @@ git pull --ff-only
 BRANCH_NAME="task/${TASK_ID}"
 echo "→ Creating branch: $BRANCH_NAME"
 git checkout -b "$BRANCH_NAME"
+
+if [[ "$AUTO_STASHED" == "true" ]]; then
+    echo -e "${YELLOW}→ Restoring auto-stashed changes...${NC}"
+    if ! git stash pop >/dev/null; then
+        echo -e "${RED}✗ Auto-stash restore failed${NC}"
+        echo "Resolve stash conflicts, then re-run create_task_pr.sh"
+        exit 1
+    fi
+fi
 
 echo ""
 echo -e "${GREEN}✓ Branch created: $BRANCH_NAME${NC}"

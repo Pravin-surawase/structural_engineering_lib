@@ -428,8 +428,8 @@ function App() {
 | File | Purpose |
 |------|---------|
 | [geometry_3d.py](../../Python/structural_lib/visualization/geometry_3d.py) | Python dataclasses and serialization |
-| [types.ts](../../three_viewer/src/types.ts) | TypeScript type definitions (future) |
-| [BeamViewer.tsx](../../three_viewer/src/components/BeamViewer.tsx) | React component (future) |
+| `types.ts` | TypeScript type definitions (future, external) |
+| `BeamViewer.tsx` | React component (future, external) |
 
 ## Changelog
 

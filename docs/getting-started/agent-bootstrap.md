@@ -4,9 +4,9 @@
 **Audience:** All Agents
 **Status:** Approved
 **Importance:** Critical
-**Version:** 2.1.0
+**Version:** 2.1.1
 **Created:** 2026-01-08
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-19
 
 ---
 
@@ -16,7 +16,7 @@
 
 ---
 
-## � Guide Hierarchy
+## Guide Hierarchy
 
 **You are here:** Quick Start (Bootstrap)
 
@@ -28,7 +28,7 @@
 
 ---
 
-## �🚀 First 30 Seconds
+## First 30 Seconds
 
 ```bash
 # RECOMMENDED: Quick mode (6s, 54% faster, sufficient for 95% of sessions)
@@ -41,6 +41,9 @@
 ./scripts/agent_start.sh --agent 9 --quick   # For governance agents
 ./scripts/agent_start.sh --agent 8 --quick   # For git/automation agents
 ./scripts/agent_start.sh --agent 6 --quick   # For UI agents
+
+# Background agent worktree:
+./scripts/agent_start.sh --worktree AGENT_5 --quick
 ```
 
 This shows: version, branch, active tasks, blockers, and agent-specific commands.
@@ -81,7 +84,6 @@ Keep public signatures stable unless explicitly approved.
 
 # Streamlit validation (run before committing Streamlit changes)
 .venv/bin/python scripts/check_streamlit_issues.py --all-pages
-# Expected: Critical: 0, High: 123 (as of 2026-01-09)
 
 # End session
 .venv/bin/python scripts/end_session.py
@@ -100,7 +102,8 @@ Keep public signatures stable unless explicitly approved.
 - **Known pitfalls:** [../reference/known-pitfalls.md](../reference/known-pitfalls.md)
 - **Recent issues:** [../contributing/session-issues.md](../contributing/session-issues.md)
 - **Agent roles:** [../agents/README.md](../agents/README.md)
-- **Project status:** [../planning/project-status.md](../_archive/planning/project-status.md) (quick) or [../planning/project-status-deep-dive.md](../planning/project-status-deep-dive.md) (detailed)
+- **Project status (archived):** [../_archive/planning/project-status.md](../_archive/planning/project-status.md)
+- **Project status (deep dive):** [../planning/project-status-deep-dive.md](../planning/project-status-deep-dive.md)
 
 ---
 
@@ -120,8 +123,11 @@ Keep public signatures stable unless explicitly approved.
 python scripts/fix_broken_links.py --fix      # Fix links
 python scripts/validate_folder_structure.py   # Check structure
 python scripts/check_doc_versions.py --fix    # Fix versions
+python scripts/check_repo_hygiene.py          # Hygiene audit
+python scripts/safe_file_move.py --dry-run old.md new.md
+python scripts/safe_file_delete.py --dry-run old.md
 ```
 
 ---
 
-*Don't hardcode stats here — run `start_session.py` for live data.*
+*Don't hardcode stats here — run `./scripts/agent_start.sh --quick` for live data.*

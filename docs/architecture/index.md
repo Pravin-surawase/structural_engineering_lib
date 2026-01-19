@@ -2,14 +2,15 @@
 
 Deep dives into project structure, design decisions, and system architecture.
 
-**Last Updated:** 2026-01-17
-**File Count:** 7
+**Last Updated:** 2026-01-19
+**File Count:** 8
 
 ## Files
 
 | File | Description | Updated | Lines |
 |------|-------------|---------|-------|
 | [architecture-review-2025-12-27.md](architecture-review-2025-12-27.md) | Act as ARCHITECT. Use docs/architecture/project-overview.md and docs/architectur | 2026-01-13 | 81 |
+| [canonical-data-format.md](canonical-data-format.md) | This document defines the canonical data format architecture for the structural_ | 2026-01-19 | 361 |
 | [data-flow-diagrams.md](data-flow-diagrams.md) | Focused pipeline diagrams for the two most complex execution paths. For layer an | 2026-01-13 | 140 |
 | [deep-project-map.md](deep-project-map.md) | - Python/ — Python package (structural_lib) + tests + examples + packaging confi | 2026-01-13 | 271 |
 | [dependencies.md](dependencies.md) | This graph shows direct imports between structural_lib modules. !Python module d | 2026-01-13 | 28 |

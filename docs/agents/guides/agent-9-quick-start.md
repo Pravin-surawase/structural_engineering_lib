@@ -100,11 +100,11 @@ Is this a script?
 # 1. Check if it violates rules
 .venv/bin/python scripts/validate_folder_structure.py
 
-# 2. Use git mv (preserves history)
-git mv old/path.md new/path.md
+# 2. Use safe_file_move.py (preserves history + updates links)
+.venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
 
 # 3. Update all references
-grep -r "old/path.md" docs/ agents/ .github/
+rg "old/path.md" docs/ agents/ .github/
 
 # 4. Validate links
 .venv/bin/python scripts/check_links.py
@@ -142,6 +142,18 @@ open docs/guidelines/migration-workflow-guide.md
 .venv/bin/python scripts/check_links.py
 ```
 
+### Task 4: Archive Old Docs (Safe)
+```bash
+# 1. Preview archive candidates
+.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --dry-run
+
+# 2. Execute with stub redirect
+.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --stub
+
+# 3. Validate links
+.venv/bin/python scripts/check_links.py
+```
+
 ---
 
 ## Governance Documents (Full Detail)
@@ -167,8 +179,8 @@ open docs/guidelines/migration-workflow-guide.md
 # 1. Create task branch
 ./scripts/create_task_pr.sh GOV-001 "Reorganize X per rules"
 
-# 2. Make changes (git mv for moves)
-git mv old/path.md new/path.md
+# 2. Make changes (safe_file_move.py for moves)
+.venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
 
 # 3. Update references
 # ... edit files ...
@@ -194,7 +206,7 @@ gh pr merge <num> --squash --delete-branch
 | Mistake | Correct Approach |
 |---------|------------------|
 | Moving scripts out of scripts/ | Scripts MUST stay in scripts/ (Rule 3.2) |
-| Manual mv without git mv | Use git mv to preserve history |
+| Manual mv without safe_file_move.py | Use safe_file_move.py to preserve history |
 | Creating deep nesting (>3 levels) | Keep 2-3 levels max |
 | Root file accumulation | Move to folders, keep root <10 |
 | Case-only renames on macOS | Avoid or use content-preserving method |

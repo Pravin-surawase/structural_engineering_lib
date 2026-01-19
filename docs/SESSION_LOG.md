@@ -378,7 +378,7 @@ Session 36 implemented the complete ETABS VBA export system spanning 2,302 lines
 
 - **Performance:** DatabaseTables API provides 100-200x speedup vs Direct API
 - **Unit Conversion:** Supports 6 force units (lb, kip, N, kN, kgf, tonf) and 5 length units (in, ft, mm, m, cm)
-- **Output Format:** Matches [csv-import-schema.md](../specs/csv-import-schema.md) exactly
+- **Output Format:** Matches [csv-import-schema.md](specs/csv-import-schema.md) exactly
 - **Target Units:** kN (forces), kN·m (moments), mm (dimensions)
 
 **Export Phases:**
