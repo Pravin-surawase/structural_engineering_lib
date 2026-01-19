@@ -942,22 +942,47 @@ with tab4:
         fig = create_building_3d_view(beams, results_df)
         st.plotly_chart(fig, use_container_width=True)
 
-        # Summary stats
+        # Summary stats using BuildingStatistics
         st.markdown("---")
-        col1, col2, col3, col4 = st.columns(4)
+        st.markdown("##### 📈 Building Statistics")
 
-        stories = set(b.story for b in beams)
-        col1.metric("📊 Total Beams", len(beams))
-        col2.metric("🏢 Stories", len(stories))
+        # Import BuildingStatistics if available
+        try:
+            from structural_lib.models import BuildingStatistics
+            stats = BuildingStatistics.from_beams(beams)
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("📊 Total Beams", stats.total_beams)
+            col2.metric("🏢 Stories", stats.total_stories)
+            col3.metric("📏 Total Length", f"{stats.total_length_m:.1f} m")
+            col4.metric("🧱 Concrete Vol.", f"{stats.total_concrete_m3:.2f} m³")
 
+            # Story breakdown
+            if stats.total_stories > 1:
+                with st.expander(f"📋 Beams per Story ({stats.total_stories} stories)"):
+                    for story in stats.stories:
+                        count = stats.beams_per_story.get(story, 0)
+                        st.write(f"• **{story}**: {count} beams")
+        except ImportError:
+            # Fallback if import fails
+            col1, col2, col3, col4 = st.columns(4)
+            stories = set(b.story for b in beams)
+            col1.metric("📊 Total Beams", len(beams))
+            col2.metric("🏢 Stories", len(stories))
+            col3.metric("📏 Total Length", "-")
+            col4.metric("🧱 Concrete Vol.", "-")
+
+        # Design results summary
         if results_df is not None and not results_df.empty:
+            st.markdown("##### 🔧 Design Status")
+            col1, col2, col3, col4 = st.columns(4)
             passed = len(results_df[results_df["_is_safe"] == True])
             failed = len(results_df[results_df["_is_safe"] == False])
-            col3.metric("✅ Passed", passed)
-            col4.metric("❌ Failed", failed)
-        else:
-            col3.metric("✅ Passed", "-")
-            col4.metric("❌ Failed", "-")
+            no_forces = len(results_df[results_df["_is_safe"].isna()])
+            success_rate = (passed / len(results_df) * 100) if len(results_df) > 0 else 0
+            col1.metric("✅ Passed", passed)
+            col2.metric("❌ Failed", failed)
+            col3.metric("⚠️ No Forces", no_forces)
+            col4.metric("📊 Success Rate", f"{success_rate:.1f}%")
 
         # Tips
         with st.expander("💡 3D Viewer Controls"):
