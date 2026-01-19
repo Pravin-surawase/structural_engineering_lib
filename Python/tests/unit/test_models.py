@@ -27,6 +27,7 @@ from structural_lib.models import (
     BeamDesignResult,
     BeamForces,
     BeamGeometry,
+    BuildingStatistics,
     DesignDefaults,
     DesignStatus,
     FrameType,
@@ -593,3 +594,90 @@ class TestJSONSchemaGeneration:
         # Schema should be valid JSON
         parsed = json.loads(json_str)
         assert "properties" in parsed
+
+
+# =============================================================================
+# BuildingStatistics Tests
+# =============================================================================
+
+
+class TestBuildingStatistics:
+    """Tests for BuildingStatistics utility model."""
+
+    def test_empty_beams_list(self):
+        """Test statistics for empty beam list."""
+        stats = BuildingStatistics.from_beams([])
+        assert stats.total_beams == 0
+        assert stats.total_stories == 0
+        assert stats.stories == []
+        assert stats.beams_per_story == {}
+        assert stats.total_length_m == 0.0
+        assert stats.total_concrete_m3 == 0.0
+
+    def test_single_beam_statistics(self):
+        """Test statistics for single beam."""
+        beam = BeamGeometry(
+            id="B1_Story1",
+            label="B1",
+            story="Story1",
+            point1=Point3D(x=0, y=0, z=3),
+            point2=Point3D(x=5, y=0, z=3),
+            section=SectionProperties(width_mm=300, depth_mm=500),
+        )
+        stats = BuildingStatistics.from_beams([beam])
+
+        assert stats.total_beams == 1
+        assert stats.total_stories == 1
+        assert stats.stories == ["Story1"]
+        assert stats.beams_per_story == {"Story1": 1}
+        assert stats.total_length_m == 5.0
+        # Volume: 5m × 0.3m × 0.5m = 0.75 m³
+        assert stats.total_concrete_m3 == 0.75
+        assert stats.bounding_box["x"] == (0, 5)
+        assert stats.bounding_box["z"] == (3, 3)
+
+    def test_multi_story_statistics(self):
+        """Test statistics for multi-story building."""
+        beams = [
+            BeamGeometry(
+                id="B1_Story1",
+                label="B1",
+                story="Story1",
+                point1=Point3D(x=0, y=0, z=3),
+                point2=Point3D(x=4, y=0, z=3),
+                section=SectionProperties(width_mm=300, depth_mm=450),
+            ),
+            BeamGeometry(
+                id="B2_Story1",
+                label="B2",
+                story="Story1",
+                point1=Point3D(x=0, y=5, z=3),
+                point2=Point3D(x=4, y=5, z=3),
+                section=SectionProperties(width_mm=300, depth_mm=450),
+            ),
+            BeamGeometry(
+                id="B1_Story2",
+                label="B1",
+                story="Story2",
+                point1=Point3D(x=0, y=0, z=6),
+                point2=Point3D(x=4, y=0, z=6),
+                section=SectionProperties(width_mm=300, depth_mm=450),
+            ),
+        ]
+        stats = BuildingStatistics.from_beams(beams)
+
+        assert stats.total_beams == 3
+        assert stats.total_stories == 2
+        assert "Story1" in stats.stories
+        assert "Story2" in stats.stories
+        assert stats.beams_per_story["Story1"] == 2
+        assert stats.beams_per_story["Story2"] == 1
+        assert stats.total_length_m == 12.0  # 3 beams × 4m
+        assert stats.bounding_box["y"] == (0, 5)
+        assert stats.bounding_box["z"] == (3, 6)
+
+    def test_statistics_is_immutable(self):
+        """Test that BuildingStatistics is frozen/immutable."""
+        stats = BuildingStatistics.from_beams([])
+        with pytest.raises(ValidationError):
+            stats.total_beams = 10  # Should fail - frozen model

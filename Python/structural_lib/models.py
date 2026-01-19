@@ -56,6 +56,8 @@ __all__ = [
     "DesignDefaults",
     "BeamBatchInput",
     "BeamBatchResult",
+    # Utilities
+    "BuildingStatistics",
 ]
 
 
@@ -426,4 +428,99 @@ class BeamBatchResult(BaseModel):
             failed=failed,
             warnings=warnings,
             metadata=metadata or {},
+        )
+
+
+# =============================================================================
+# Utility Functions
+# =============================================================================
+
+
+class BuildingStatistics(BaseModel):
+    """Statistics for a building/project from beam geometry data.
+
+    Useful for 3D visualization, reports, and analysis summary.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    total_beams: int = Field(description="Total number of beams")
+    total_stories: int = Field(description="Number of unique stories")
+    stories: list[str] = Field(description="List of story names (sorted)")
+    beams_per_story: dict[str, int] = Field(
+        description="Count of beams per story"
+    )
+    total_length_m: float = Field(description="Total beam length in meters")
+    total_concrete_m3: float = Field(
+        description="Total concrete volume in cubic meters"
+    )
+    bounding_box: dict[str, tuple[float, float]] = Field(
+        description="Building bounds: x, y, z ranges in meters"
+    )
+
+    @classmethod
+    def from_beams(cls, beams: list[BeamGeometry]) -> BuildingStatistics:
+        """Compute building statistics from beam geometry list.
+
+        Args:
+            beams: List of BeamGeometry objects
+
+        Returns:
+            BuildingStatistics with computed metrics
+
+        Example:
+            >>> stats = BuildingStatistics.from_beams(beams)
+            >>> print(f"Building has {stats.total_stories} stories")
+        """
+        if not beams:
+            return cls(
+                total_beams=0,
+                total_stories=0,
+                stories=[],
+                beams_per_story={},
+                total_length_m=0.0,
+                total_concrete_m3=0.0,
+                bounding_box={"x": (0, 0), "y": (0, 0), "z": (0, 0)},
+            )
+
+        # Count beams per story
+        story_counts: dict[str, int] = {}
+        for beam in beams:
+            story_counts[beam.story] = story_counts.get(beam.story, 0) + 1
+
+        # Sort stories (try numeric sort first, then alphabetic)
+        stories = sorted(story_counts.keys())
+
+        # Compute total length and volume
+        total_length = sum(beam.length_m for beam in beams)
+        total_volume = sum(
+            beam.length_m
+            * (beam.section.width_mm / 1000)
+            * (beam.section.depth_mm / 1000)
+            for beam in beams
+        )
+
+        # Compute bounding box
+        x_coords = []
+        y_coords = []
+        z_coords = []
+        for beam in beams:
+            x_coords.extend([beam.point1.x, beam.point2.x])
+            y_coords.extend([beam.point1.y, beam.point2.y])
+            z_coords.extend([beam.point1.z, beam.point2.z])
+
+        bounding_box = {
+            "x": (min(x_coords), max(x_coords)),
+            "y": (min(y_coords), max(y_coords)),
+            "z": (min(z_coords), max(z_coords)),
+        }
+
+        return cls(
+            total_beams=len(beams),
+            total_stories=len(stories),
+            stories=stories,
+            beams_per_story=story_counts,
+            total_length_m=round(total_length, 2),
+            total_concrete_m3=round(total_volume, 3),
+            bounding_box=bounding_box,
         )
