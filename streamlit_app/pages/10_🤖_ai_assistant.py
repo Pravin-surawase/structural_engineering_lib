@@ -30,6 +30,8 @@ import time
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
+
 # Check for OpenAI availability
 try:
     from openai import OpenAI
@@ -139,6 +141,12 @@ def init_session_state():
 
     if "smart_dashboard" not in st.session_state:
         st.session_state.smart_dashboard = None
+
+    if "imported_beams" not in st.session_state:
+        st.session_state.imported_beams = None  # DataFrame of imported beams
+
+    if "batch_results" not in st.session_state:
+        st.session_state.batch_results = None  # List of design results
 
 
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
@@ -509,8 +517,8 @@ def render_workspace_panel():
     """Render the workspace panel (right side)."""
     st.markdown("### 📊 Workspace")
 
-    # Tabs for different views
-    tabs = st.tabs(["📋 Results", "🎨 3D View", "💰 Cost", "📊 Smart Dashboard"])
+    # Tabs for different views (compact)
+    tabs = st.tabs(["📋 Results", "🎨 3D", "📥 Import", "💰 Cost", "📊 Dashboard"])
 
     # Tab 0: Design Results
     with tabs[0]:
@@ -618,8 +626,68 @@ def render_workspace_panel():
         else:
             st.info("Design a beam to see 3D visualization.")
 
-    # Tab 2: Cost Analysis
+    # Tab 2: Import CSV
     with tabs[2]:
+        st.markdown("**Quick CSV Import**")
+        st.caption("Upload beam data from ETABS, SAFE, or custom CSV")
+
+        uploaded_file = st.file_uploader(
+            "Upload CSV",
+            type=["csv"],
+            help="Upload beam geometry and forces",
+            label_visibility="collapsed",
+        )
+
+        if uploaded_file is not None:
+            try:
+                df = pd.read_csv(uploaded_file)
+                st.session_state.imported_beams = df
+                st.success(f"✅ Loaded {len(df)} beams")
+
+                # Show preview
+                with st.expander("Preview data", expanded=True):
+                    st.dataframe(df.head(10), use_container_width=True)
+
+                # Quick column mapping
+                st.markdown("**Map Columns**")
+                cols = list(df.columns)
+                col1, col2 = st.columns(2)
+                with col1:
+                    b_col = st.selectbox("Width (b)", ["--"] + cols, key="b_col")
+                    d_col = st.selectbox("Depth (D)", ["--"] + cols, key="d_col")
+                with col2:
+                    mu_col = st.selectbox("Moment (Mu)", ["--"] + cols, key="mu_col")
+                    vu_col = st.selectbox("Shear (Vu)", ["--"] + cols, key="vu_col")
+
+                # Design button
+                if st.button("🏗️ Design All Beams", type="primary"):
+                    if b_col != "--" and d_col != "--" and mu_col != "--":
+                        with st.spinner(f"Designing {len(df)} beams..."):
+                            results = []
+                            for _, row in df.iterrows():
+                                params = {
+                                    "b_mm": int(row.get(b_col, 300)),
+                                    "D_mm": int(row.get(d_col, 500)),
+                                    "mu_knm": float(row.get(mu_col, 100)),
+                                    "vu_kn": float(row.get(vu_col, 50)) if vu_col != "--" else 50,
+                                    "fck": 25,
+                                    "fy": 500,
+                                }
+                                result = run_design(params)
+                                results.append(result)
+                            st.session_state.batch_results = results
+                            safe_count = sum(1 for r in results if r.get("is_safe", False))
+                            st.success(f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results)-safe_count} UNSAFE")
+                    else:
+                        st.warning("Please map at least Width, Depth, and Moment columns")
+            except Exception as e:
+                st.error(f"Error reading CSV: {e}")
+        else:
+            st.info("Upload a CSV file to batch design beams.")
+            st.caption("Required columns: beam width, depth, moment. Optional: shear.")
+
+    # Tab 3: Cost Analysis
+    with tabs[3]:
         if st.session_state.smart_dashboard and st.session_state.smart_dashboard.cost:
             cost = st.session_state.smart_dashboard.cost
 
@@ -650,8 +718,8 @@ def render_workspace_panel():
         else:
             st.info("Run cost optimization to see analysis. Ask 'Optimize cost'.")
 
-    # Tab 3: Smart Dashboard
-    with tabs[3]:
+    # Tab 4: Smart Dashboard
+    with tabs[4]:
         if st.session_state.smart_dashboard:
             dashboard = st.session_state.smart_dashboard
             s = dashboard.summary
