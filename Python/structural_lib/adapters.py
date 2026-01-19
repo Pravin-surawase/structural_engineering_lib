@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import csv
 from abc import ABC, abstractmethod
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
@@ -179,7 +180,7 @@ class ETABSAdapter(InputAdapter):
         "vu_max": ["Vu_max_kN", "Vu_max", "VuMax", "Vu"],
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ETABS adapter."""
         self._column_cache: dict[str, dict[str, str]] = {}
 
@@ -213,7 +214,7 @@ class ETABSAdapter(InputAdapter):
             return False
 
     def _detect_column(
-        self, headers: list[str], field: str, mapping: dict[str, list[str]]
+        self, headers: Sequence[str], field: str, mapping: dict[str, list[str]]
     ) -> str | None:
         """Detect the actual column name for a logical field.
 
@@ -236,7 +237,7 @@ class ETABSAdapter(InputAdapter):
 
     def _build_column_map(
         self,
-        headers: list[str],
+        headers: Sequence[str],
         mapping: dict[str, list[str]],
     ) -> dict[str, str]:
         """Build a mapping from logical field names to actual column names.
@@ -274,7 +275,7 @@ class ETABSAdapter(InputAdapter):
         Returns:
             SectionProperties model
         """
-        defaults = defaults or DesignDefaults()
+        defaults = defaults or DesignDefaults()  # type: ignore[call-arg]
 
         # Try to parse "BwidthXdepthMfck" pattern
         import re
@@ -342,7 +343,7 @@ class ETABSAdapter(InputAdapter):
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
-        defaults = defaults or DesignDefaults()
+        defaults = defaults or DesignDefaults()  # type: ignore[call-arg]
         beams: list[BeamGeometry] = []
 
         with open(path, encoding="utf-8-sig") as f:
@@ -647,7 +648,7 @@ class ManualInputAdapter(InputAdapter):
             ...     "depth_mm": 500,
             ... })
         """
-        defaults = defaults or DesignDefaults()
+        defaults = defaults or DesignDefaults()  # type: ignore[call-arg]
 
         # Handle nested point data
         point1 = Point3D.model_validate(data["point1"])
@@ -752,7 +753,7 @@ class SAFEAdapter(InputAdapter):
         "vu_max": ["Vu_max", "VuMax", "V23_max", "MaxShear"],
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SAFE adapter."""
         self._column_cache: dict[str, dict[str, str]] = {}
 
@@ -783,7 +784,7 @@ class SAFEAdapter(InputAdapter):
             return False
 
     def _build_column_map(
-        self, headers: list[str], mappings: dict[str, list[str]]
+        self, headers: Sequence[str], mappings: dict[str, list[str]]
     ) -> dict[str, str]:
         """Build mapping from internal names to actual column names.
 
@@ -826,7 +827,7 @@ class SAFEAdapter(InputAdapter):
         if not path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
-        defaults = defaults or DesignDefaults()
+        defaults = defaults or DesignDefaults()  # type: ignore[call-arg]
         beams: list[BeamGeometry] = []
 
         with open(path, encoding="utf-8-sig") as f:
@@ -1188,7 +1189,7 @@ class STAADAdapter(InputAdapter):
             return False
 
     def _build_column_map(
-        self, headers: list[str], column_spec: dict[str, list[str]]
+        self, headers: Sequence[str], column_spec: dict[str, list[str]]
     ) -> dict[str, str]:
         """Build mapping from internal names to actual column names.
 
@@ -1231,7 +1232,7 @@ class STAADAdapter(InputAdapter):
             FileNotFoundError: If file doesn't exist
         """
         if defaults is None:
-            defaults = DesignDefaults()
+            defaults = DesignDefaults()  # type: ignore[call-arg]
 
         path = Path(source)
         if not path.exists():
@@ -1668,7 +1669,7 @@ class GenericCSVAdapter(InputAdapter):
             return False
 
     def _build_column_map(
-        self, headers: list[str], column_spec: dict[str, list[str]]
+        self, headers: Sequence[str], column_spec: dict[str, list[str]]
     ) -> dict[str, str]:
         """Build mapping from internal names to actual column names.
 
@@ -1713,7 +1714,7 @@ class GenericCSVAdapter(InputAdapter):
             List of BeamGeometry models
         """
         if defaults is None:
-            defaults = DesignDefaults()
+            defaults = DesignDefaults()  # type: ignore[call-arg]
 
         path = Path(source)
         if not path.exists():
