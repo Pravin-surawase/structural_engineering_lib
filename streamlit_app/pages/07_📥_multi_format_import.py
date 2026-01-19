@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import plotly.graph_objects as go
 import streamlit as st
 
 # Fix import path
@@ -358,6 +359,223 @@ def design_all_beams(
     return pd.DataFrame(results)
 
 
+def create_building_3d_view(
+    beams: list[BeamGeometry],
+    results_df: pd.DataFrame | None = None,
+) -> go.Figure:
+    """Create a professional 3D building visualization.
+
+    Features:
+    - Real 3D beam positions from geometry coordinates
+    - Color coding by design status (pass/fail)
+    - Hover information with beam details
+    - Story grouping with visual separation
+    - Professional dark theme with lighting effects
+    """
+    fig = go.Figure()
+
+    if not beams:
+        return fig
+
+    # Build result lookup for status coloring
+    result_lookup = {}
+    if results_df is not None and not results_df.empty:
+        for _, row in results_df.iterrows():
+            result_lookup[row["ID"]] = {
+                "is_safe": row.get("_is_safe"),
+                "mu": row.get("Mu (kN·m)", 0),
+                "vu": row.get("Vu (kN)", 0),
+                "bars": row.get("Bars", "-"),
+                "status": row.get("Status", "-"),
+            }
+
+    # Group beams by story for legend organization
+    stories = sorted(set(b.story for b in beams))
+    story_colors = {}
+    color_palette = [
+        "#2196F3",  # Blue
+        "#4CAF50",  # Green
+        "#FF9800",  # Orange
+        "#9C27B0",  # Purple
+        "#00BCD4",  # Cyan
+        "#E91E63",  # Pink
+        "#FFEB3B",  # Yellow
+        "#795548",  # Brown
+    ]
+    # Safe modulo: palette is never empty (hardcoded list)
+    palette_len = len(color_palette)
+    if palette_len > 0:
+        for i, story in enumerate(stories):
+            story_colors[story] = color_palette[i % palette_len]
+
+    # Calculate building extents
+    x_coords = []
+    y_coords = []
+    z_coords = []
+    for beam in beams:
+        x_coords.extend([beam.point1.x, beam.point2.x])
+        y_coords.extend([beam.point1.y, beam.point2.y])
+        z_coords.extend([beam.point1.z, beam.point2.z])
+
+    x_min, x_max = min(x_coords), max(x_coords)
+    y_min, y_max = min(y_coords), max(y_coords)
+    z_min, z_max = min(z_coords), max(z_coords)
+
+    # Add beams as 3D cylinders (lines with thickness)
+    for beam in beams:
+        # Determine color based on design result
+        result = result_lookup.get(beam.id)
+        if result:
+            is_safe = result.get("is_safe")
+            if is_safe is True:
+                color = "rgba(76, 175, 80, 0.9)"  # Green - passed
+            elif is_safe is False:
+                color = "rgba(244, 67, 54, 0.9)"  # Red - failed
+            else:
+                color = "rgba(255, 152, 0, 0.9)"  # Orange - no forces
+        else:
+            # No design results yet - use story color
+            color = story_colors.get(beam.story, "#2196F3")
+
+        # Create hover text
+        hover_text = (
+            f"<b>{beam.id}</b><br>"
+            f"Story: {beam.story}<br>"
+            f"Length: {beam.length_m:.2f} m<br>"
+            f"Section: {beam.section.width_mm}×{beam.section.depth_mm} mm"
+        )
+        if result:
+            hover_text += (
+                f"<br>Mu: {result.get('mu', 0)} kN·m<br>"
+                f"Vu: {result.get('vu', 0)} kN<br>"
+                f"Bars: {result.get('bars', '-')}<br>"
+                f"Status: {result.get('status', '-')}"
+            )
+
+        # Add beam as 3D line
+        fig.add_trace(
+            go.Scatter3d(
+                x=[beam.point1.x, beam.point2.x],
+                y=[beam.point1.y, beam.point2.y],
+                z=[beam.point1.z, beam.point2.z],
+                mode="lines",
+                line=dict(
+                    color=color,
+                    width=10,  # Thick lines for visibility
+                ),
+                name=f"{beam.story}/{beam.label}",
+                hovertemplate=hover_text + "<extra></extra>",
+                showlegend=False,
+            )
+        )
+
+        # Add joint markers at beam ends
+        fig.add_trace(
+            go.Scatter3d(
+                x=[beam.point1.x, beam.point2.x],
+                y=[beam.point1.y, beam.point2.y],
+                z=[beam.point1.z, beam.point2.z],
+                mode="markers",
+                marker=dict(
+                    size=4,
+                    color="white",
+                    line=dict(color="gray", width=1),
+                ),
+                showlegend=False,
+                hoverinfo="skip",
+            )
+        )
+
+    # Add legend traces for stories
+    for story in stories:
+        fig.add_trace(
+            go.Scatter3d(
+                x=[None], y=[None], z=[None],
+                mode="markers",
+                marker=dict(size=10, color=story_colors[story]),
+                name=story,
+                showlegend=True,
+            )
+        )
+
+    # Add status legend if results available
+    if result_lookup:
+        fig.add_trace(go.Scatter3d(
+            x=[None], y=[None], z=[None],
+            mode="markers", marker=dict(size=10, color="rgba(76, 175, 80, 0.9)"),
+            name="✅ Passed", showlegend=True,
+        ))
+        fig.add_trace(go.Scatter3d(
+            x=[None], y=[None], z=[None],
+            mode="markers", marker=dict(size=10, color="rgba(244, 67, 54, 0.9)"),
+            name="❌ Failed", showlegend=True,
+        ))
+
+    # Calculate aspect ratio (with safe division)
+    x_range = max(x_max - x_min, 0.1)
+    y_range = max(y_max - y_min, 0.1)
+    z_range = max(z_max - z_min, 0.1)
+    max_range = max(x_range, y_range, z_range, 1.0)  # Ensure non-zero
+
+    # Safe aspect ratio calculation
+    aspect_x = x_range / max_range if max_range > 0 else 1.0
+    aspect_y = y_range / max_range if max_range > 0 else 1.0
+    aspect_z = z_range / max_range if max_range > 0 else 1.0
+
+    # Professional layout with dark theme
+    fig.update_layout(
+        title=dict(
+            text=f"🏗️ 3D Building View — {len(beams)} Beams, {len(stories)} Stories",
+            font=dict(size=20, color="#E0E0E0"),
+        ),
+        scene=dict(
+            xaxis=dict(
+                title="X (m)",
+                backgroundcolor="rgba(20, 20, 30, 0.9)",
+                gridcolor="rgba(100, 100, 120, 0.3)",
+                showbackground=True,
+            ),
+            yaxis=dict(
+                title="Y (m)",
+                backgroundcolor="rgba(20, 20, 30, 0.9)",
+                gridcolor="rgba(100, 100, 120, 0.3)",
+                showbackground=True,
+            ),
+            zaxis=dict(
+                title="Z (m)",
+                backgroundcolor="rgba(20, 20, 30, 0.9)",
+                gridcolor="rgba(100, 100, 120, 0.3)",
+                showbackground=True,
+            ),
+            aspectmode="manual",
+            aspectratio=dict(
+                x=aspect_x,
+                y=aspect_y,
+                z=aspect_z,
+            ),
+            camera=dict(
+                eye=dict(x=1.5, y=1.5, z=1.0),  # Isometric view
+            ),
+        ),
+        paper_bgcolor="rgba(26, 26, 46, 1)",  # Dark blue background
+        plot_bgcolor="rgba(26, 26, 46, 1)",
+        font=dict(color="#E0E0E0"),
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="right",
+            x=0.99,
+            bgcolor="rgba(40, 40, 60, 0.8)",
+            bordercolor="rgba(100, 100, 120, 0.5)",
+            borderwidth=1,
+        ),
+        margin=dict(l=0, r=0, t=50, b=0),
+        height=700,
+    )
+
+    return fig
+
+
 # =============================================================================
 # Main Page
 # =============================================================================
@@ -412,7 +630,7 @@ with st.sidebar:
     )
 
 # Main content area
-tab1, tab2, tab3 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design"])
+tab1, tab2, tab3, tab4 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design", "🏗️ 3D View"])
 
 with tab1:
     section_header("Upload Files")
@@ -582,6 +800,73 @@ with tab3:
                 "design_results.csv",
                 "text/csv",
             )
+
+with tab4:
+    section_header("3D Building Visualization")
+
+    beams = st.session_state.mf_beams
+    results_df = st.session_state.mf_design_results
+
+    if not beams:
+        st.info("""
+        👆 **Upload geometry files first** to see 3D visualization.
+
+        The 3D view will show:
+        - Real beam positions from your structural model
+        - Color-coded design status after running batch design
+        - Interactive rotation, zoom, and pan controls
+        """)
+
+        # Show a demo placeholder
+        st.markdown("---")
+        st.markdown("##### 🎬 Preview: What you'll see")
+        st.image(
+            "https://placehold.co/800x400/1a1a2e/e0e0e0?text=3D+Building+View+-+Upload+geometry+to+visualize",
+            use_container_width=True,
+        )
+    else:
+        # Controls
+        col1, col2, col3 = st.columns([2, 2, 2])
+        with col1:
+            show_all = st.checkbox("Show all beams", value=True)
+        with col2:
+            if results_df is not None and not results_df.empty:
+                show_passed_only = st.checkbox("Highlight passed only", value=False)
+            else:
+                show_passed_only = False
+        with col3:
+            st.write("")  # Spacer
+
+        # Generate and display 3D view
+        fig = create_building_3d_view(beams, results_df)
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Summary stats
+        st.markdown("---")
+        col1, col2, col3, col4 = st.columns(4)
+
+        stories = set(b.story for b in beams)
+        col1.metric("📊 Total Beams", len(beams))
+        col2.metric("🏢 Stories", len(stories))
+
+        if results_df is not None and not results_df.empty:
+            passed = len(results_df[results_df["_is_safe"] == True])
+            failed = len(results_df[results_df["_is_safe"] == False])
+            col3.metric("✅ Passed", passed)
+            col4.metric("❌ Failed", failed)
+        else:
+            col3.metric("✅ Passed", "-")
+            col4.metric("❌ Failed", "-")
+
+        # Tips
+        with st.expander("💡 3D Viewer Controls"):
+            st.markdown("""
+            - **🖱️ Rotate**: Click and drag
+            - **🔍 Zoom**: Scroll wheel or pinch
+            - **🎯 Pan**: Right-click and drag (or Shift + drag)
+            - **📍 Reset**: Double-click to reset view
+            - **📷 Save**: Use camera icon in toolbar to save image
+            """)
 
 # Footer
 st.divider()
