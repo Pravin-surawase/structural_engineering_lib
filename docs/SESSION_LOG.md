@@ -4,6 +4,60 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 50: AI Page Polish & CSV Import
+
+**Focus:** Fix remaining AI page bugs, add CSV import, update documentation
+
+**User Requests:**
+1. Fix 3D view error: `create_beam_3d_figure() got unexpected keyword argument 'b_mm'`
+2. Fix AI context issues (losing design state)
+3. Remove/improve SmartDesigner notice
+4. Research AI model effective usage
+5. Add CSV upload to AI page (from page 7)
+6. Make UI more compact/subtle
+7. Update 8-week plan with AI work
+
+### Implementation (4 commits)
+
+| Commit | Description |
+|--------|-------------|
+| PR #390 merge | TASK-AI-FIX Session 49 work (auto-merged after scanner fix) |
+| `c53b21c6` | fix(ai): correct 3D figure params (b_mm→b) and improve error messages |
+| `8b848122` | feat(ai): add CSV import tab with batch design capability |
+| `9a780600` | docs: update 8-week plan and add AI usage research |
+
+### Bugs Fixed
+
+1. **3D View params** — Fixed `b_mm=` → `b=`, `D_mm=` → `D=`, `span_mm=` → `span=`
+2. **Error messages** — "I need a design first" → "Analysis failed: {error}"
+3. **secrets.toml in git** — .gitignore now properly ignores (line 114)
+
+### Features Added
+
+1. **CSV Import tab** — 5th tab in workspace for batch design from ETABS/SAFE/custom CSV
+2. **Compact header** — Status moved to sidebar, cleaner main area
+3. **Batch design** — Upload CSV, map columns, design all beams at once
+4. **AI usage research doc** — `docs/research/ai-effective-usage-patterns.md`
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py` — 3D fix, CSV import, compact UI
+- `docs/planning/8-week-development-plan.md` — Session 50 status
+- `docs/TASKS.md` — AI Chat marked MVP COMPLETE
+
+### Files Created
+
+- `docs/research/ai-effective-usage-patterns.md` — AI model selection, prompts, patterns
+
+### Status
+
+- **Phase AI: MVP COMPLETE** ✅
+- **AI Chat tests:** 11 passing
+- **Scanner:** 0 CRITICAL issues
+- **Next:** Phase 3 (Detailing/Rebar Visualization)
+
+---
+
 ## 2026-01-25 — Session 49: AI Assistant Bug Fixes & Enhancements
 
 **Focus:** Fix AI page runtime errors, add GPT-5-mini support, enhance chat UX
