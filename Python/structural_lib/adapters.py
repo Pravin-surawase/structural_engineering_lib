@@ -47,6 +47,7 @@ from .models import (
 __all__ = [
     "InputAdapter",
     "ETABSAdapter",
+    "SAFEAdapter",
     "ManualInputAdapter",
 ]
 
@@ -689,3 +690,364 @@ class ManualInputAdapter(InputAdapter):
             Validated BeamForces model
         """
         return BeamForces.model_validate(data)
+
+
+# =============================================================================
+# SAFE Adapter
+# =============================================================================
+
+
+class SAFEAdapter(InputAdapter):
+    """Adapter for CSI SAFE slab strip forces CSV exports.
+
+    SAFE exports strip forces via: Display → Show Tables → Strip Forces
+
+    Column Mappings:
+    - Strip/SpanName → beam_id (strip/band identifier)
+    - LoadCombo → case_id (load combination)
+    - M22/Moment22 → m3 (moment about 2 axis, kN·m)
+    - V23/Shear23 → v2 (shear in 23 plane, kN)
+    - Position → station (location along strip)
+
+    Example CSV:
+        Strip,SpanName,LoadCombo,Position,M22,V23
+        Strip1-A,Span1,1.5DL+1.5LL,0,0,-85.2
+        Strip1-A,Span1,1.5DL+1.5LL,1500,120.5,0
+    """
+
+    name = "SAFE"
+    supported_formats = [".csv"]
+
+    # Column name mappings (internal name -> possible CSV column names)
+    GEOMETRY_COLUMNS: dict[str, list[str]] = {
+        "story": ["Story", "Level", "Floor"],
+        "beam_id": ["Strip", "SpanName", "StripName", "Label", "Name"],
+        "unique_name": ["Unique Name", "UniqueName", "GUID"],
+        "point1_x": ["Point1X", "X1", "Start X", "StartX"],
+        "point1_y": ["Point1Y", "Y1", "Start Y", "StartY"],
+        "point1_z": ["Point1Z", "Z1", "Start Z", "StartZ", "Elevation"],
+        "point2_x": ["Point2X", "X2", "End X", "EndX"],
+        "point2_y": ["Point2Y", "Y2", "End Y", "EndY"],
+        "point2_z": ["Point2Z", "Z2", "End Z", "EndZ"],
+        "width_mm": ["Width", "Width_mm", "b", "B_mm", "StripWidth"],
+        "depth_mm": ["Depth", "Depth_mm", "t", "D_mm", "SlabThick", "Thickness"],
+        "fck_mpa": ["fck", "Fck", "fc", "ConcreteStrength"],
+        "fy_mpa": ["fy", "Fy", "SteelStrength"],
+    }
+
+    FORCES_COLUMNS: dict[str, list[str]] = {
+        "story": ["Story", "Level", "Floor"],
+        "beam_id": ["Strip", "SpanName", "StripName", "Label", "Name"],
+        "case_id": [
+            "LoadCombo",
+            "Load Combo",
+            "Output Case",
+            "Load Case",
+            "Combo",
+        ],
+        "station": ["Position", "Station", "Location", "Distance"],
+        "m3": ["M22", "Moment22", "M", "Mu", "Moment"],
+        "v2": ["V23", "Shear23", "V", "Vu", "Shear"],
+        "p": ["P", "Axial", "N", "AxialForce"],
+        # SAFE envelope format (pre-computed)
+        "mu_max": ["Mu_max", "MuMax", "M22_max", "MaxMoment"],
+        "vu_max": ["Vu_max", "VuMax", "V23_max", "MaxShear"],
+    }
+
+    def __init__(self):
+        """Initialize SAFE adapter."""
+        self._column_cache: dict[str, dict[str, str]] = {}
+
+    def can_handle(self, source: Path | str) -> bool:
+        """Check if source is a valid SAFE CSV.
+
+        Args:
+            source: Path to file
+
+        Returns:
+            True if file is CSV and contains SAFE-like headers
+        """
+        path = Path(source)
+        if not path.exists() or path.suffix.lower() != ".csv":
+            return False
+
+        try:
+            with open(path, encoding="utf-8-sig") as f:
+                reader = csv.reader(f)
+                headers = next(reader, [])
+
+                # Check for SAFE-specific columns
+                headers_lower = {h.lower().strip() for h in headers}
+                safe_indicators = {"strip", "spanname", "m22", "v23", "loadcombo"}
+                return len(headers_lower & safe_indicators) >= 2
+
+        except (UnicodeDecodeError, csv.Error):
+            return False
+
+    def _build_column_map(
+        self, headers: list[str], mappings: dict[str, list[str]]
+    ) -> dict[str, str]:
+        """Build mapping from internal names to actual column names.
+
+        Args:
+            headers: CSV header row
+            mappings: Internal name to possible column names
+
+        Returns:
+            Dictionary mapping internal names to actual column names
+        """
+        headers_lower = {h.lower().strip(): h for h in headers}
+        result: dict[str, str] = {}
+
+        for internal_name, possible_names in mappings.items():
+            for name in possible_names:
+                if name.lower() in headers_lower:
+                    result[internal_name] = headers_lower[name.lower()]
+                    break
+
+        return result
+
+    def load_geometry(
+        self,
+        source: Path | str,
+        defaults: DesignDefaults | None = None,
+    ) -> list[BeamGeometry]:
+        """Load strip geometry from SAFE geometry CSV.
+
+        Note: SAFE geometry is typically less detailed than ETABS.
+        For slab strips, geometry is often inferred from section properties.
+
+        Args:
+            source: Path to geometry CSV
+            defaults: Default section properties
+
+        Returns:
+            List of BeamGeometry models for strips
+        """
+        path = Path(source)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+
+        defaults = defaults or DesignDefaults()
+        beams: list[BeamGeometry] = []
+
+        with open(path, encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            column_map = self._build_column_map(headers, self.GEOMETRY_COLUMNS)
+
+            # Check required columns
+            if "beam_id" not in column_map:
+                raise ValueError(
+                    "Missing strip identifier column. "
+                    "Expected: Strip, SpanName, or StripName"
+                )
+
+            for row in reader:
+                try:
+                    beam_id_col = column_map["beam_id"]
+                    label = row[beam_id_col].strip()
+                    story_col = column_map.get("story")
+                    story = row.get(story_col, "").strip() if story_col else "Slab"
+                    beam_id = f"{label}_{story}"
+
+                    # Handle coordinates if available
+                    # SAFE strips often don't have full 3D geometry
+                    has_coords = all(
+                        k in column_map
+                        for k in ["point1_x", "point1_y", "point2_x", "point2_y"]
+                    )
+
+                    if has_coords:
+                        point1 = Point3D(
+                            x=float(row.get(column_map["point1_x"], 0)),
+                            y=float(row.get(column_map["point1_y"], 0)),
+                            z=float(row.get(column_map.get("point1_z", ""), 0) or 0),
+                        )
+                        point2 = Point3D(
+                            x=float(row.get(column_map["point2_x"], 0)),
+                            y=float(row.get(column_map["point2_y"], 0)),
+                            z=float(row.get(column_map.get("point2_z", ""), 0) or 0),
+                        )
+                    else:
+                        # Default to unit length strip if no coordinates
+                        point1 = Point3D(x=0.0, y=0.0, z=0.0)
+                        point2 = Point3D(x=1.0, y=0.0, z=0.0)
+
+                    # Section properties
+                    width_col = column_map.get("width_mm")
+                    depth_col = column_map.get("depth_mm")
+                    fck_col = column_map.get("fck_mpa")
+                    fy_col = column_map.get("fy_mpa")
+
+                    section = SectionProperties(
+                        width_mm=(
+                            float(row.get(width_col, 1000) or 1000)
+                            if width_col
+                            else 1000
+                        ),  # Default strip width
+                        depth_mm=(
+                            float(row.get(depth_col, 200) or 200) if depth_col else 200
+                        ),  # Default slab depth
+                        fck_mpa=(
+                            float(
+                                row.get(fck_col, defaults.fck_mpa) or defaults.fck_mpa
+                            )
+                            if fck_col
+                            else defaults.fck_mpa
+                        ),
+                        fy_mpa=(
+                            float(row.get(fy_col, defaults.fy_mpa) or defaults.fy_mpa)
+                            if fy_col
+                            else defaults.fy_mpa
+                        ),
+                        cover_mm=defaults.cover_mm,
+                    )
+
+                    try:
+                        beam = BeamGeometry(
+                            id=beam_id,
+                            label=label,
+                            story=story,
+                            frame_type=FrameType.BEAM,
+                            point1=point1,
+                            point2=point2,
+                            section=section,
+                            angle=0.0,
+                            source_id=None,
+                        )
+                        beams.append(beam)
+                    except Exception:
+                        # Skip invalid strips (e.g., too short)
+                        continue
+
+                except (KeyError, ValueError):
+                    continue
+
+        return beams
+
+    def load_forces(
+        self,
+        source: Path | str,
+    ) -> list[BeamForces]:
+        """Load strip forces from SAFE forces CSV.
+
+        Processes force envelope - takes maximum absolute values
+        across all positions for each strip/load case combination.
+
+        Args:
+            source: Path to strip forces CSV
+
+        Returns:
+            List of BeamForces models (one per strip per load case)
+
+        Raises:
+            ValueError: If required columns are missing
+            FileNotFoundError: If file doesn't exist
+        """
+        path = Path(source)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+
+        envelopes: dict[tuple[str, str, str], dict[str, Any]] = {}
+
+        with open(path, encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
+
+            # Detect format: envelope vs station data
+            is_envelope = "mu_max" in column_map or "vu_max" in column_map
+            is_station_data = "m3" in column_map and "v2" in column_map
+
+            if is_envelope:
+                required = ["beam_id"]
+            elif is_station_data:
+                required = ["beam_id", "case_id", "m3", "v2"]
+            else:
+                raise ValueError(
+                    "Missing force columns. Expected M22/V23 or Mu_max/Vu_max. "
+                    f"Available: {list(column_map.keys())}"
+                )
+
+            missing = [r for r in required if r not in column_map]
+            if missing:
+                raise ValueError(
+                    f"Missing required columns: {missing}. "
+                    f"Available: {list(column_map.keys())}"
+                )
+
+            for row in reader:
+                try:
+                    beam_id = row[column_map["beam_id"]].strip()
+                    story_col = column_map.get("story")
+                    story = row.get(story_col, "").strip() if story_col else ""
+
+                    if is_envelope:
+                        case_id = "Envelope"
+
+                        mu_col = column_map.get("mu_max")
+                        vu_col = column_map.get("vu_max")
+
+                        mu = abs(float(row.get(mu_col, 0) or 0)) if mu_col else 0.0
+                        vu = abs(float(row.get(vu_col, 0) or 0)) if vu_col else 0.0
+
+                        key = (beam_id, story, case_id)
+                        envelopes[key] = {
+                            "beam_id": beam_id,
+                            "story": story,
+                            "case_id": case_id,
+                            "mu_max": mu,
+                            "vu_max": vu,
+                            "pu_max": 0.0,
+                            "station_count": 1,
+                        }
+                    else:
+                        case_id = row[column_map["case_id"]].strip()
+                        m3 = abs(float(row[column_map["m3"]]))
+                        v2 = abs(float(row[column_map["v2"]]))
+
+                        p_col = column_map.get("p")
+                        p = abs(float(row.get(p_col, 0))) if p_col else 0.0
+
+                        key = (beam_id, story, case_id)
+
+                        if key not in envelopes:
+                            envelopes[key] = {
+                                "beam_id": beam_id,
+                                "story": story,
+                                "case_id": case_id,
+                                "mu_max": m3,
+                                "vu_max": v2,
+                                "pu_max": p,
+                                "station_count": 1,
+                            }
+                        else:
+                            env = envelopes[key]
+                            env["mu_max"] = max(env["mu_max"], m3)
+                            env["vu_max"] = max(env["vu_max"], v2)
+                            env["pu_max"] = max(env["pu_max"], p)
+                            env["station_count"] += 1
+
+                except (KeyError, ValueError):
+                    continue
+
+        # Convert to BeamForces models
+        forces: list[BeamForces] = []
+        for env in envelopes.values():
+            beam_id = env["beam_id"]
+            story = env["story"]
+            full_id = f"{beam_id}_{story}" if story else beam_id
+
+            forces.append(
+                BeamForces(
+                    id=full_id,
+                    load_case=env["case_id"],
+                    mu_knm=env["mu_max"],
+                    vu_kn=env["vu_max"],
+                    pu_kn=env["pu_max"],
+                    station_count=env["station_count"],
+                )
+            )
+
+        return forces
