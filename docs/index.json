@@ -7,9 +7,9 @@
     {
       "name": "SESSION_LOG.md",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. Sessions 41-42 completed the multi-format import system by resolving all CI failures on PR #381. The P",
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Refreshed agent bootstrap guidance and governance quick-start docs",
       "last_updated": "2026-01-19",
-      "size_lines": 6832
+      "size_lines": 6850
     },
     {
       "name": "TASKS.md",

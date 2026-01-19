@@ -33,9 +33,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-19
-- Focus: Refresh onboarding/governance docs, fix broken links, and clean indexes
-- Completed: Refreshed agent bootstrap guidance and governance quick-start docs; Fixed broken links across planning/reference/VBA docs; Regenerated docs indexes and updated README feature list
-- PRs: #382
+- Focus: Make task PR creation safer and standardize bootstrap commands to venv Python
+- Completed: Hardened `create_task_pr.sh` with stash restore guard and hash detection; Standardized bootstrap automation examples to `.venv/bin/python`; Regenerated docs indexes
+- PRs: #383
 <!-- HANDOFF:END -->
 
 ---

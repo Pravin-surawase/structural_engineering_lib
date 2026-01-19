@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-19T18:03:34.941693",
+  "generated": "2026-01-19T19:47:42.111384",
   "total_docs": 321,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -10,6 +10,7 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-01-19 \u2014 Session 43: Onboarding Refresh + Link Fixes",
         "2026-01-19 \u2014 Session 41-42: PR #381 Merged - Multi-Format Import System",
         "2026-01-19 \u2014 Session 40: Canonical Data Format Architecture (TASK-DATA-001)",
         "2026-01-21 \u2014 Session 39: Real 3D Building Visualization (TASK-3D-002)",
@@ -18,10 +19,9 @@
         "2026-01-20 \u2014 Session 38: UI Improvements + Phase 2 Start",
         "2026-01-18 \u2014 Session 37: Phase 1 Completion + Phase 2 Planning",
         "2026-01-16 \u2014 Session 36: 3D Visualization MVP (Phase 1)",
-        "2026-01-16 \u2014 Session 35 Part 2: Automation & Phase 1 Planning",
-        "2026-01-16 \u2014 Session 35: 3D Visualization MVP Complete (PR #373 Merged)"
+        "2026-01-16 \u2014 Session 35 Part 2: Automation & Phase 1 Planning"
       ],
-      "size_bytes": 281818
+      "size_bytes": 282384
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -2469,7 +2469,7 @@
         "Enforcement",
         "Common Patterns"
       ],
-      "size_bytes": 5159
+      "size_bytes": 5158
     },
     "docs/contributing/learning-paths.md": {
       "title": "Learning Paths for Contributors",
@@ -3441,7 +3441,7 @@
         "Key Learnings for Future Agents",
         "Performance Notes"
       ],
-      "size_bytes": 10727
+      "size_bytes": 10735
     },
     "docs/vba/etabs-export-production-plan.md": {
       "title": "ETABS Export Production Plan",
@@ -3502,7 +3502,7 @@
         "Next Session Priorities",
         "Quick Commands"
       ],
-      "size_bytes": 2124
+      "size_bytes": 2249
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3761,7 +3761,7 @@
         "Parameters",
         "Returns"
       ],
-      "size_bytes": 11527
+      "size_bytes": 11464
     },
     "docs/planning/ui-layout-implementation-plan.md": {
       "title": "UI Layout Redesign - Final Decision & Implementation Plan",
@@ -4308,7 +4308,7 @@
         "Related Files",
         "Risks & Mitigation"
       ],
-      "size_bytes": 7951
+      "size_bytes": 7953
     },
     "docs/planning/project-needs-assessment-2026-01-09.md": {
       "title": "Project Needs Assessment & Strategic Action Plan",
@@ -5314,7 +5314,7 @@
         "\ud83d\udccd Quick Reference",
         "\ud83e\udde0 Automation-First Mentality"
       ],
-      "size_bytes": 4724
+      "size_bytes": 4784
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -6224,7 +6224,7 @@
         "Related Files",
         "Changelog"
       ],
-      "size_bytes": 11973
+      "size_bytes": 11910
     },
     "docs/reference/agent-automation-pitfalls.md": {
       "title": "Agent Automation Pitfalls and Best Practices",
@@ -6346,7 +6346,7 @@
         "Suggested workflow for the add-in",
         "Next steps"
       ],
-      "size_bytes": 4690
+      "size_bytes": 4688
     },
     "docs/developers/extension-guide.md": {
       "title": "Extension Guide: Adding Features Without Modifying Core",

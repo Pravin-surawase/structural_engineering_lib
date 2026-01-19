@@ -4,6 +4,23 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 44: Create Task PR Hardening + Bootstrap Python
+
+**Focus:** Make task PR creation safer and standardize bootstrap commands to venv Python
+
+**Completed:**
+- Hardened `create_task_pr.sh` with stash restore guard and hash detection
+- Standardized bootstrap automation examples to `.venv/bin/python`
+- Regenerated docs indexes
+
+### PRs
+
+| PR | Description | Status |
+|----|-------------|--------|
+| #383 | Harden create_task_pr and standardize bootstrap Python | ⏳ Open |
+
+---
+
 ## 2026-01-19 — Session 43: Onboarding Refresh + Link Fixes
 
 **Focus:** Refresh onboarding/governance docs, fix broken links, and clean indexes
