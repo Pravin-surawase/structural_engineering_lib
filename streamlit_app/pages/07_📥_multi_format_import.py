@@ -26,6 +26,7 @@ Status: ✅ IMPLEMENTED
 
 from __future__ import annotations
 
+import math
 import sys
 import tempfile
 from pathlib import Path
@@ -363,14 +364,15 @@ def create_building_3d_view(
     beams: list[BeamGeometry],
     results_df: pd.DataFrame | None = None,
 ) -> go.Figure:
-    """Create a professional 3D building visualization.
+    """Create a professional 3D building visualization with solid beam volumes.
 
     Features:
-    - Real 3D beam positions from geometry coordinates
-    - Color coding by design status (pass/fail)
+    - Real 3D beam volumes (not just lines) from geometry coordinates
+    - Color coding by design status (pass/fail) or story
     - Hover information with beam details
     - Story grouping with visual separation
     - Professional dark theme with lighting effects
+    - Semi-transparent concrete for visual depth
     """
     fig = go.Figure()
 
@@ -421,21 +423,30 @@ def create_building_3d_view(
     y_min, y_max = min(y_coords), max(y_coords)
     z_min, z_max = min(z_coords), max(z_coords)
 
-    # Add beams as 3D cylinders (lines with thickness)
+    # Add beams as 3D solid boxes
     for beam in beams:
         # Determine color based on design result
         result = result_lookup.get(beam.id)
         if result:
             is_safe = result.get("is_safe")
             if is_safe is True:
-                color = "rgba(76, 175, 80, 0.9)"  # Green - passed
+                color = "rgba(76, 175, 80, 0.85)"  # Green - passed
+                edge_color = "rgba(56, 142, 60, 1)"
             elif is_safe is False:
-                color = "rgba(244, 67, 54, 0.9)"  # Red - failed
+                color = "rgba(244, 67, 54, 0.85)"  # Red - failed
+                edge_color = "rgba(198, 40, 40, 1)"
             else:
-                color = "rgba(255, 152, 0, 0.9)"  # Orange - no forces
+                color = "rgba(255, 152, 0, 0.85)"  # Orange - no forces
+                edge_color = "rgba(230, 126, 0, 1)"
         else:
-            # No design results yet - use story color
-            color = story_colors.get(beam.story, "#2196F3")
+            # No design results yet - use story color with opacity
+            base_color = story_colors.get(beam.story, "#2196F3")
+            # Convert hex to rgba
+            r = int(base_color[1:3], 16)
+            g = int(base_color[3:5], 16)
+            b = int(base_color[5:7], 16)
+            color = f"rgba({r}, {g}, {b}, 0.75)"
+            edge_color = f"rgba({max(0,r-40)}, {max(0,g-40)}, {max(0,b-40)}, 1)"
 
         # Create hover text
         hover_text = (
@@ -452,39 +463,129 @@ def create_building_3d_view(
                 f"Status: {result.get('status', '-')}"
             )
 
-        # Add beam as 3D line
+        # Get beam dimensions in meters for 3D box
+        width_m = beam.section.width_mm / 1000  # Convert mm to m
+        depth_m = beam.section.depth_mm / 1000  # Convert mm to m
+
+        # Calculate beam orientation (direction vector)
+        dx = beam.point2.x - beam.point1.x
+        dy = beam.point2.y - beam.point1.y
+        dz = beam.point2.z - beam.point1.z
+        length = (dx**2 + dy**2 + dz**2) ** 0.5
+
+        if length < 0.001:  # Skip zero-length beams
+            continue
+
+        # Normalize direction (length already checked > 0.001)
+        dir_x = dx / length
+        dir_y = dy / length
+        dir_z = dz / length
+
+        # Create perpendicular vectors for width and depth
+        # For most beams: width is horizontal perpendicular, depth is vertical
+        if abs(dir_z) < 0.99:  # Not vertical
+            # Horizontal perpendicular (for width)
+            perp_x = -dir_y
+            perp_y = dir_x
+            perp_z = 0
+            perp_len = (perp_x**2 + perp_y**2) ** 0.5
+            # Safe division: perp_len > 0.001, else use default
+            if perp_len > 0.001:
+                perp_x = perp_x / perp_len
+                perp_y = perp_y / perp_len
+                perp_z = 0
+            else:
+                perp_x, perp_y, perp_z = 1, 0, 0
+            # Depth is primarily in Z direction (vertical)
+            up_x, up_y, up_z = 0, 0, 1
+        else:
+            # Vertical beam - use X for width, Y for depth
+            perp_x, perp_y, perp_z = 1, 0, 0
+            up_x, up_y, up_z = 0, 1, 0
+
+        # Half dimensions
+        hw = width_m / 2
+        hd = depth_m / 2
+
+        # Build 8 corners of the beam box (always exactly 8 corners)
+        # Order: [4 at point1] + [4 at point2], each with ±width ±depth offsets
+        corners = []
+        for end_pt in [beam.point1, beam.point2]:
+            for w_sign in [-1, 1]:
+                for d_sign in [-1, 1]:
+                    cx = end_pt.x + w_sign * hw * perp_x + d_sign * hd * up_x
+                    cy = end_pt.y + w_sign * hw * perp_y + d_sign * hd * up_y
+                    cz = end_pt.z + w_sign * hw * perp_z + d_sign * hd * up_z
+                    corners.append((cx, cy, cz))
+
+        # Create mesh vertices (corners list always has exactly 8 elements)
+        x_mesh = [c[0] for c in corners]
+        y_mesh = [c[1] for c in corners]
+        z_mesh = [c[2] for c in corners]
+
+        # Define 12 triangular faces (6 faces × 2 triangles)
+        # Corner ordering: [0-3] at point1, [4-7] at point2
+        # At each end: 0=(-w,-d), 1=(+w,-d), 2=(-w,+d), 3=(+w,+d)
+        i_faces = [0, 0, 4, 4, 0, 1, 2, 3, 0, 2, 1, 3]
+        j_faces = [1, 2, 5, 6, 4, 5, 6, 7, 1, 6, 5, 7]
+        k_faces = [3, 3, 7, 7, 5, 4, 4, 5, 2, 4, 3, 6]
+
+        # Add solid beam mesh
         fig.add_trace(
-            go.Scatter3d(
-                x=[beam.point1.x, beam.point2.x],
-                y=[beam.point1.y, beam.point2.y],
-                z=[beam.point1.z, beam.point2.z],
-                mode="lines",
-                line=dict(
-                    color=color,
-                    width=10,  # Thick lines for visibility
+            go.Mesh3d(
+                x=x_mesh,
+                y=y_mesh,
+                z=z_mesh,
+                i=i_faces,
+                j=j_faces,
+                k=k_faces,
+                color=color,
+                opacity=0.85,
+                flatshading=True,
+                lighting=dict(
+                    ambient=0.6,
+                    diffuse=0.8,
+                    specular=0.3,
+                    roughness=0.5,
                 ),
-                name=f"{beam.story}/{beam.label}",
+                lightposition=dict(x=100, y=200, z=300),
                 hovertemplate=hover_text + "<extra></extra>",
+                name=f"{beam.story}/{beam.label}",
                 showlegend=False,
             )
         )
 
-        # Add joint markers at beam ends
-        fig.add_trace(
-            go.Scatter3d(
-                x=[beam.point1.x, beam.point2.x],
-                y=[beam.point1.y, beam.point2.y],
-                z=[beam.point1.z, beam.point2.z],
-                mode="markers",
-                marker=dict(
-                    size=4,
-                    color="white",
-                    line=dict(color="gray", width=1),
-                ),
-                showlegend=False,
-                hoverinfo="skip",
+        # Add edge lines for definition
+        edges = [
+            # Bottom face at point1
+            ([corners[0][0], corners[1][0]], [corners[0][1], corners[1][1]], [corners[0][2], corners[1][2]]),
+            ([corners[1][0], corners[3][0]], [corners[1][1], corners[3][1]], [corners[1][2], corners[3][2]]),
+            ([corners[3][0], corners[2][0]], [corners[3][1], corners[2][1]], [corners[3][2], corners[2][2]]),
+            ([corners[2][0], corners[0][0]], [corners[2][1], corners[0][1]], [corners[2][2], corners[0][2]]),
+            # Bottom face at point2
+            ([corners[4][0], corners[5][0]], [corners[4][1], corners[5][1]], [corners[4][2], corners[5][2]]),
+            ([corners[5][0], corners[7][0]], [corners[5][1], corners[7][1]], [corners[5][2], corners[7][2]]),
+            ([corners[7][0], corners[6][0]], [corners[7][1], corners[6][1]], [corners[7][2], corners[6][2]]),
+            ([corners[6][0], corners[4][0]], [corners[6][1], corners[4][1]], [corners[6][2], corners[4][2]]),
+            # Connecting edges (length edges)
+            ([corners[0][0], corners[4][0]], [corners[0][1], corners[4][1]], [corners[0][2], corners[4][2]]),
+            ([corners[1][0], corners[5][0]], [corners[1][1], corners[5][1]], [corners[1][2], corners[5][2]]),
+            ([corners[2][0], corners[6][0]], [corners[2][1], corners[6][1]], [corners[2][2], corners[6][2]]),
+            ([corners[3][0], corners[7][0]], [corners[3][1], corners[7][1]], [corners[3][2], corners[7][2]]),
+        ]
+
+        for edge in edges:
+            fig.add_trace(
+                go.Scatter3d(
+                    x=edge[0],
+                    y=edge[1],
+                    z=edge[2],
+                    mode="lines",
+                    line=dict(color=edge_color, width=2),
+                    showlegend=False,
+                    hoverinfo="skip",
+                )
             )
-        )
 
     # Add legend traces for stories
     for story in stories:
@@ -492,8 +593,8 @@ def create_building_3d_view(
             go.Scatter3d(
                 x=[None], y=[None], z=[None],
                 mode="markers",
-                marker=dict(size=10, color=story_colors[story]),
-                name=story,
+                marker=dict(size=12, color=story_colors[story], symbol="square"),
+                name=f"📍 {story}",
                 showlegend=True,
             )
         )
@@ -502,12 +603,12 @@ def create_building_3d_view(
     if result_lookup:
         fig.add_trace(go.Scatter3d(
             x=[None], y=[None], z=[None],
-            mode="markers", marker=dict(size=10, color="rgba(76, 175, 80, 0.9)"),
+            mode="markers", marker=dict(size=12, color="rgba(76, 175, 80, 0.9)", symbol="square"),
             name="✅ Passed", showlegend=True,
         ))
         fig.add_trace(go.Scatter3d(
             x=[None], y=[None], z=[None],
-            mode="markers", marker=dict(size=10, color="rgba(244, 67, 54, 0.9)"),
+            mode="markers", marker=dict(size=12, color="rgba(244, 67, 54, 0.9)", symbol="square"),
             name="❌ Failed", showlegend=True,
         ))
 
