@@ -4,6 +4,86 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 47b (continued): AI Chat Implementation
+
+**Focus:** Implement ChatGPT-like AI assistant with SmartDesigner integration
+
+**User Request (Verbatim):**
+> "like chatgpt. chat, and when users asks something chat goes to left 40% like chatgpt
+> and on right window our work, tables, 3d and all come"
+> "we will add a simple gpt 4 or some llm model which will help us. like it can use our lib functions"
+> "please try to do good amount research online too, so we wont be using old tech"
+
+### Research Completed
+
+**Online Technology Research:**
+- OpenAI Function Calling API — tool definitions, strict mode, streaming
+- Streamlit Chat Elements — `st.chat_message`, `st.chat_input`, `st.write_stream`
+- Vercel AI SDK 6.x — multi-provider support, React hooks
+
+**Library Audit:**
+- 36+ public API functions confirmed
+- SmartDesigner.analyze() returns comprehensive DashboardReport
+- All intelligence needed already exists — just needed UI exposure
+
+### Implementation (7 commits)
+
+| Commit | Description |
+|--------|-------------|
+| `6b139dbd` | docs: AI chat architecture v2 research |
+| `c5a9bdaa` | feat(ui): AI assistant page 40%/60% split |
+| `b6cb036a` | feat(ui): SmartDashboard visual component |
+| `edb9379a` | feat(ai): LLM tool definitions (7 tools) |
+| `39b8796e` | docs: update TASKS.md and 8-week plan |
+| `04a71a98` | docs: secrets.toml.example for API config |
+| **PR #388** | AI Chat Assistant feature branch |
+
+### Files Created
+
+**New Pages:**
+- `streamlit_app/pages/10_🤖_ai_assistant.py` — ChatGPT-like split UI
+
+**New Components:**
+- `streamlit_app/components/smart_dashboard.py` — Score gauges, issues, suggestions
+
+**New Utils:**
+- `streamlit_app/utils/llm_tools.py` — 7 OpenAI function calling tool definitions
+
+**Documentation:**
+- `docs/research/ai-chat-architecture-v2.md` — Full architecture design
+
+### Architecture Summary
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🤖 StructEng AI Assistant                                       │
+├─────────────────────────┬────────────────────────────────────────┤
+│  💬 CHAT (40%)          │  📊 WORKSPACE (60%)                    │
+│  • st.chat_message      │  • Results tab                        │
+│  • st.chat_input        │  • 3D View tab                        │
+│  • Message history      │  • Cost tab                           │
+│  • Quick action buttons │  • Smart Dashboard tab                │
+└─────────────────────────┴────────────────────────────────────────┘
+```
+
+**7 LLM Tools:**
+1. `design_beam` — Design RC beam per IS 456
+2. `optimize_cost` — Find cheapest valid section
+3. `get_suggestions` — Improvement recommendations
+4. `analyze_design` — SmartDesigner comprehensive analysis
+5. `compare_options` — Compare design alternatives
+6. `explain_code_clause` — Explain IS 456 clauses
+7. `show_3d_view` — Switch to 3D visualization
+
+### Next Steps
+
+1. PR #388 auto-merging (CI monitoring)
+2. Add OpenAI API integration test
+3. Connect streaming responses
+4. Add more tool handlers
+
+---
+
 ## 2026-01-19 — Session 47b: Democratization Vision & Strategic Expansion
 
 **Focus:** Expand from "just 3D" to full democratization platform
