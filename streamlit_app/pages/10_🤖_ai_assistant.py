@@ -60,6 +60,31 @@ def get_openai_client() -> OpenAI | None:
     return OpenAI(api_key=api_key)
 
 
+def get_openai_config() -> dict[str, Any]:
+    """Get OpenAI configuration from secrets.
+
+    Returns config dict with model, temperature, max_tokens.
+    Defaults to gpt-5-mini if not specified.
+    """
+    config = {
+        "model": "gpt-5-mini",  # Default: fast, cost-efficient
+        "temperature": 0.7,
+        "max_tokens": 2000,
+    }
+
+    # Read from secrets if available
+    if "openai" in st.secrets:
+        openai_config = st.secrets.get("openai", {})
+        if "model" in openai_config:
+            config["model"] = openai_config["model"]
+        if "temperature" in openai_config:
+            config["temperature"] = float(openai_config["temperature"])
+        if "max_tokens" in openai_config:
+            config["max_tokens"] = int(openai_config["max_tokens"])
+
+    return config
+
+
 # System prompt for structural engineering assistant
 SYSTEM_PROMPT = """You are StructEng AI, an expert structural engineering assistant specializing in
 IS 456 reinforced concrete design. You help engineers design beams, optimize costs,
@@ -119,11 +144,14 @@ def init_session_state():
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
     """Run beam design with given parameters."""
     try:
+        b_mm = params.get("b_mm", 300)
+        D_mm = params.get("D_mm", 500)
+
         result = structural_api.design_beam_is456(
             units="IS456",
-            b_mm=params.get("b_mm", 300),
-            D_mm=params.get("D_mm", 500),
-            d_mm=params.get("D_mm", 500) - 50,
+            b_mm=b_mm,
+            D_mm=D_mm,
+            d_mm=D_mm - 50,
             fck_nmm2=params.get("fck", 25),
             fy_nmm2=params.get("fy", 500),
             mu_knm=params.get("mu_knm", 100),
@@ -134,8 +162,8 @@ def run_design(params: dict[str, Any]) -> dict[str, Any]:
             "success": True,
             "is_safe": result.is_ok,
             "result": result,
-            "section": f"{result.geometry.b_mm}×{result.geometry.D_mm}mm",
-            "ast_mm2": result.flexure.ast_required_mm2,
+            "section": f"{b_mm}×{D_mm}mm",
+            "ast_mm2": result.flexure.ast_required,
             "utilization": result.governing_utilization,
         }
     except Exception as e:
@@ -317,6 +345,8 @@ def get_ai_response(user_message: str) -> str:
 
     if client:
         try:
+            config = get_openai_config()
+
             # Build messages
             messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
@@ -326,19 +356,19 @@ def get_ai_response(user_message: str) -> str:
 
             messages.append({"role": "user", "content": user_message})
 
-            # Call OpenAI
+            # Call OpenAI with configured model
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=config["model"],
                 messages=messages,
-                max_tokens=1000,
-                temperature=0.7,
+                max_tokens=config["max_tokens"],
+                temperature=config["temperature"],
             )
 
             return response.choices[0].message.content
 
         except Exception as e:
-            # Fallback to simulation on error
-            return simulate_ai_response(user_message)
+            # Fallback to simulation on error with error info
+            return f"⚠️ API Error: {str(e)[:100]}... Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
     else:
         # No API key - use simulation
         return simulate_ai_response(user_message)
