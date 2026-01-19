@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-19 (Session 46+)
+**Updated:** 2026-01-19 (Session 47)
 
 ---
 
@@ -16,13 +16,28 @@
 ## Current Focus
 
 - **Version:** v0.17.6 (in progress)
-- **Focus:** 3D Visualization Excellence & Library Improvements
-- **8-Week Plan:** Phase 2 at 90%, Phase 3 starting
+- **Focus:** 3D Visualization Excellence - Differentiation from ETABS
+- **8-Week Plan:** Phase 2.5 in progress, Phase 3 (rebar viz) planned
 - **Next Milestone:** March 2026 (v0.18.0)
+- **Key Insight:** "Just boxes" isn't enough - show what ETABS can't
 
 ---
 
 ## Active Tasks
+
+### TASK-3D-007: 3D View Interactive Controls ✅ COMPLETE
+
+**Goal:** Make 3D view useful, not just pretty. Differentiate from ETABS.
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| Story filter dropdown | ✅ Done | `a20e9419` - View one story at a time |
+| Color mode selector | ✅ Done | Design Status / By Story / Utilization |
+| Camera presets | ✅ Done | Isometric / Front / Top / Side |
+| Show/Hide edges toggle | ✅ Done | Reduce visual noise when needed |
+| Utilization heat map | ✅ Done | Green → Yellow → Red gradient |
+
+---
 
 ### TASK-3D-004: 3D Building Visualization ✅ COMPLETE
 
@@ -48,25 +63,16 @@
 
 ---
 
-### TASK-LIB-001: Library Utility Functions 🚧 IN PROGRESS
-
-| Sub-task | Status | Notes |
-|----------|--------|-------|
-| BuildingStatistics model | ✅ Done | `907684b5` - 4 tests added |
-| Concrete volume calculation | ✅ Done | Included in BuildingStatistics |
-| Story breakdown metrics | ✅ Done | beams_per_story dict |
-
----
-
 ## Backlog (Prioritized)
 
-### High Priority
+### High Priority 🔥 THE KILLER FEATURE
 
 | ID | Task | Est | Notes |
 |----|------|-----|-------|
-| TASK-PERF-001 | LOD optimization for 1000+ beams | 2h | Use lod_manager.py |
-| TASK-3D-006 | Camera presets (front/top/iso) | 1h | Quick navigation |
-| TASK-DATA-003 | Column/slab support | 4h | Extend adapter system |
+| TASK-3D-008 | **Rebar visualization in 3D** | 8h | Show actual bars from design! |
+| TASK-3D-009 | Stirrup rendering with zones | 6h | Variable spacing near supports |
+| TASK-3D-010 | Cross-section view mode | 4h | Click beam → see 2D section |
+| TASK-PERF-001 | LOD optimization for 1000+ beams | 2h | Performance critical |
 
 ### Medium Priority
 

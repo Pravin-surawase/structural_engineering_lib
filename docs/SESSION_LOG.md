@@ -4,6 +4,112 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 47: Strategic 3D Differentiation & Interactive Controls
+
+**Focus:** Answer "Why use our tool instead of ETABS?" with features ETABS doesn't have
+
+**User Feedback:**
+> "the 3d view is just boxes, look everyone can see it in etabs too, why will they use our product then"
+> "we need filter which will way we can just see one story at a time"
+> "already designed the beams, why dont we start on rebar and other data for 3d view"
+
+### Strategic Analysis
+
+**The Core Problem:**
+ETABS shows geometry (boxes). If we only show boxes, we add no value.
+
+**The Solution:**
+We show what ETABS CAN'T: **Actual reinforcement from IS 456 design**
+
+| Feature | ETABS | Our Tool |
+|---------|-------|----------|
+| Beam geometry | ✅ | ✅ |
+| Applied forces | ✅ | ✅ |
+| Design status | ⚠️ Basic | ✅ **Color-coded** |
+| **Actual reinforcement** | ❌ NO | 🔥 **3D rebar cylinders** |
+| **Stirrup positions** | ❌ NO | 🔥 **Variable zones** |
+| **Detailing data** | ❌ NO | 🔥 **Ld, lap lengths** |
+
+**Key Insight:** We're not analysis software. We're DETAILING VISUALIZATION software.
+
+### Features Implemented
+
+**1. Story Filter Dropdown** (`a20e9419`)
+- Select "All Stories" or specific story
+- Filter beams in 3D view
+- Quick view count feedback
+
+**2. Color Mode Selector**
+- Design Status (pass/fail)
+- By Story (colored by story)
+- Utilization (heat map: green → yellow → red)
+
+**3. Camera Presets**
+- Isometric (default)
+- Front (X-Z plane)
+- Top (X-Y plane)
+- Side (Y-Z plane)
+
+**4. Show/Hide Edges Toggle**
+- Reduce visual noise for large models
+- Improve performance
+
+### Documentation Created
+
+**New:** [3D Visualization Differentiation Strategy](research/3d-visualization-differentiation-strategy.md)
+- Analysis of ETABS vs our tool
+- What we already compute (BeamDetailingResult)
+- Feature roadmap for Phase 3 (rebar visualization)
+- Quick wins vs killer features
+
+### 8-Week Plan Updates
+
+**Added Phase 2.5:** Visualization Polish (quick wins)
+- Story filter ✅
+- Utilization heat map ✅
+- Camera presets ✅
+- Show/hide edges ✅
+
+**Updated Phase 3:** Detailing Visualization (THE KILLER FEATURE)
+- Rebar visualization in 3D (8h)
+- Stirrup rendering with zones (6h)
+- Cross-section view mode (4h)
+- Detailing overlays (4h)
+
+### Commits
+
+| Hash | Description |
+|------|-------------|
+| `22dc991d` | docs: add 3D visualization differentiation strategy research |
+| `b13b41a2` | docs: add Phase 2.5 polish and Phase 3 rebar visualization to 8-week plan |
+| `a20e9419` | feat: add story filter, color modes, and camera presets to 3D view |
+| (pending) | docs: update TASKS.md and SESSION_LOG |
+
+### Next Session Priorities
+
+| Priority | Task | Est | Impact |
+|----------|------|-----|--------|
+| 🔥 Critical | **Rebar visualization in 3D** | 8h | Killer differentiator |
+| 🔥 Critical | Stirrup rendering with zones | 6h | Professional |
+| 🟡 Medium | Cross-section view mode | 4h | User-friendly |
+| 🟡 Medium | LOD for 1000+ beams | 2h | Performance |
+
+### Key Technical Notes
+
+**Infrastructure already exists:**
+- `BeamDetailingResult.to_3d_json()` converts detailing to 3D geometry
+- `generate_cylinder_mesh()` creates 3D rebar bars
+- `geometry_3d.py` has `Beam3DGeometry` dataclass
+- Just need to integrate into multi-beam view
+
+**The path is clear:**
+1. Run design → Get `BeamDetailingResult`
+2. Call `to_3d_json()` → Get 3D geometry with rebar positions
+3. Pass to renderer → Show actual reinforcement in 3D
+4. User clicks beam → See cross-section with bars
+
+---
+
 ## 2026-01-24 — Session 46+: 3D Visualization Upgrade & Library Enhancements
 
 **Focus:** Upgrade 3D visualization from simple lines to professional solid beams, add library utilities
