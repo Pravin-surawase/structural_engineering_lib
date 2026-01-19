@@ -21,6 +21,22 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 45: Standardize Python Command Examples
+
+**Focus:** Align documentation commands to use `.venv/bin/python` consistently
+
+**Completed:**
+- Standardized `python scripts/...` command examples across active docs
+- Regenerated docs indexes and verified link integrity
+
+### PRs
+
+| PR | Description | Status |
+|----|-------------|--------|
+| #384 | Standardize python command examples | ✅ Merged |
+
+---
+
 ## 2026-01-19 — Session 43: Onboarding Refresh + Link Fixes
 
 **Focus:** Refresh onboarding/governance docs, fix broken links, and clean indexes
