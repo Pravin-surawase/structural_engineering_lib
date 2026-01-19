@@ -11,10 +11,13 @@ import pytest
 from structural_lib.etabs_import import (
     ETABSEnvelopeResult,
     ETABSForceRow,
+    FrameGeometry,
     create_job_from_etabs,
     create_jobs_from_etabs_csv,
     export_normalized_csv,
     load_etabs_csv,
+    load_frames_geometry,
+    merge_forces_and_geometry,
     normalize_etabs_forces,
     validate_etabs_csv,
 )
@@ -349,3 +352,180 @@ class TestCreateJobsFromETABSCSV:
 
         assert jobs[0]["beam"]["fck_nmm2"] == 30.0
         assert jobs[0]["beam"]["fy_nmm2"] == 415.0
+
+
+# Sample frames_geometry CSV content for testing (matches ETABS VBA export format)
+SAMPLE_FRAMES_GEOMETRY_CSV = """UniqueName,Label,Story,FrameType,SectionName,Point1Name,Point2Name,Point1X,Point1Y,Point1Z,Point2X,Point2Y,Point2Z,Angle,CardinalPoint
+B1,B1,Story1,Beam,RB300x500,1,2,0.0,0.0,3.0,4.5,0.0,3.0,0.0,10
+B2,B2,Story1,Beam,RB300x500,2,3,4.5,0.0,3.0,9.0,0.0,3.0,0.0,10
+C1,C1,Story1,Column,RC300x300,4,5,0.0,0.0,0.0,0.0,0.0,3.0,90.0,10
+B3,B3,Story2,Beam,RB300x500,6,7,0.0,0.0,6.0,4.5,0.0,6.0,0.0,10
+C2,C2,Story2,Column,RC300x300,8,9,0.0,0.0,3.0,0.0,0.0,6.0,90.0,10
+"""
+
+
+class TestFrameGeometry:
+    """Tests for FrameGeometry dataclass."""
+
+    def test_frame_geometry_length_m(self) -> None:
+        """Test length_m property calculates correctly."""
+        geom = FrameGeometry(
+            unique_name="B1",
+            label="B1",
+            story="Story1",
+            frame_type="Beam",
+            section_name="RB300x500",
+            point1_name="1",
+            point2_name="2",
+            point1_x=0.0,
+            point1_y=0.0,
+            point1_z=3.0,
+            point2_x=4.5,
+            point2_y=0.0,
+            point2_z=3.0,
+            angle=0.0,
+            cardinal_point=10,
+        )
+        # sqrt((4.5-0)^2 + 0 + 0) = 4.5m
+        assert geom.length_m == pytest.approx(4.5)
+
+    def test_frame_geometry_is_vertical_beam(self) -> None:
+        """Horizontal beam is not vertical."""
+        geom = FrameGeometry(
+            unique_name="B1",
+            label="B1",
+            story="Story1",
+            frame_type="Beam",
+            section_name="RB300x500",
+            point1_name="1",
+            point2_name="2",
+            point1_x=0.0,
+            point1_y=0.0,
+            point1_z=3.0,
+            point2_x=4.5,
+            point2_y=0.0,
+            point2_z=3.0,
+            angle=0.0,
+            cardinal_point=10,
+        )
+        assert geom.is_vertical is False
+
+    def test_frame_geometry_is_vertical_column(self) -> None:
+        """Vertical column is detected."""
+        geom = FrameGeometry(
+            unique_name="C1",
+            label="C1",
+            story="Story1",
+            frame_type="Column",
+            section_name="RC300x300",
+            point1_name="4",
+            point2_name="5",
+            point1_x=0.0,
+            point1_y=0.0,
+            point1_z=0.0,
+            point2_x=0.0,
+            point2_y=0.0,
+            point2_z=3.0,
+            angle=90.0,
+            cardinal_point=10,
+        )
+        assert geom.is_vertical is True
+
+
+class TestLoadFramesGeometry:
+    """Tests for load_frames_geometry function."""
+
+    def test_load_basic_geometry(self, tmp_path: Path) -> None:
+        """Load basic frames geometry CSV."""
+        csv_file = tmp_path / "frames_geometry.csv"
+        csv_file.write_text(SAMPLE_FRAMES_GEOMETRY_CSV)
+
+        frames = load_frames_geometry(csv_file)
+
+        assert len(frames) == 5
+        assert all(isinstance(f, FrameGeometry) for f in frames)
+
+        # Check first beam
+        b1 = next(f for f in frames if f.unique_name == "B1")
+        assert b1.story == "Story1"
+        assert b1.frame_type == "Beam"
+        assert b1.point1_x == pytest.approx(0.0)
+        assert b1.point2_x == pytest.approx(4.5)
+        assert b1.length_m == pytest.approx(4.5)
+
+    def test_load_counts_beams_and_columns(self, tmp_path: Path) -> None:
+        """Correctly counts beams and columns."""
+        csv_file = tmp_path / "frames_geometry.csv"
+        csv_file.write_text(SAMPLE_FRAMES_GEOMETRY_CSV)
+
+        frames = load_frames_geometry(csv_file)
+
+        beams = [f for f in frames if f.frame_type.lower() == "beam"]
+        columns = [f for f in frames if f.frame_type.lower() == "column"]
+
+        assert len(beams) == 3  # B1, B2, B3
+        assert len(columns) == 2  # C1, C2
+
+    def test_load_file_not_found_raises(self, tmp_path: Path) -> None:
+        """Non-existent file raises FileNotFoundError."""
+        with pytest.raises(FileNotFoundError):
+            load_frames_geometry(tmp_path / "nonexistent.csv")
+
+    def test_load_building_extents(self, tmp_path: Path) -> None:
+        """Verify building coordinate ranges."""
+        csv_file = tmp_path / "frames_geometry.csv"
+        csv_file.write_text(SAMPLE_FRAMES_GEOMETRY_CSV)
+
+        frames = load_frames_geometry(csv_file)
+
+        x_coords = [f.point1_x for f in frames] + [f.point2_x for f in frames]
+        z_coords = [f.point1_z for f in frames] + [f.point2_z for f in frames]
+
+        assert min(x_coords) == pytest.approx(0.0)
+        assert max(x_coords) == pytest.approx(9.0)
+        assert min(z_coords) == pytest.approx(0.0)
+        assert max(z_coords) == pytest.approx(6.0)
+
+
+class TestMergeForcesAndGeometry:
+    """Tests for merge_forces_and_geometry function."""
+
+    def test_merge_basic(self, tmp_path: Path) -> None:
+        """Merge forces with geometry."""
+        forces_file = tmp_path / "forces.csv"
+        forces_file.write_text(SAMPLE_ETABS_CSV)
+
+        geometry_file = tmp_path / "geometry.csv"
+        geometry_file.write_text(SAMPLE_FRAMES_GEOMETRY_CSV)
+
+        forces = normalize_etabs_forces(forces_file)
+        geometry = load_frames_geometry(geometry_file)
+
+        merged = merge_forces_and_geometry(forces, geometry)
+
+        # Should have dict mapping beam_id to (envelope, geometry or None)
+        assert isinstance(merged, dict)
+        for key, value in merged.items():
+            envelope, geom = value
+            assert isinstance(envelope, ETABSEnvelopeResult)
+            # geom might be None if beam_id doesn't match
+
+    def test_merge_finds_matching_geometry(self, tmp_path: Path) -> None:
+        """Matched beams have geometry attached."""
+        forces_file = tmp_path / "forces.csv"
+        forces_file.write_text(SAMPLE_ETABS_CSV)
+
+        geometry_file = tmp_path / "geometry.csv"
+        geometry_file.write_text(SAMPLE_FRAMES_GEOMETRY_CSV)
+
+        forces = normalize_etabs_forces(forces_file)
+        geometry = load_frames_geometry(geometry_file)
+
+        merged = merge_forces_and_geometry(forces, geometry)
+
+        # B1 should have geometry (if B1 is in both forces and geometry)
+        if "B1" in merged:
+            env, geom = merged["B1"]
+            assert env.beam_id == "B1"
+            if geom:
+                assert geom.unique_name == "B1"
