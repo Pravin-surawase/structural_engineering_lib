@@ -117,26 +117,40 @@ def init_session_state():
 
 
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
-    """Run beam design with given parameters."""
+    """Run beam design with given parameters.
+
+    Returns a dict with success status and design results.
+    Uses params for section dimensions since ComplianceCaseResult
+    doesn't store geometry (it's an input, not output).
+    """
     try:
+        b_mm = params.get("b_mm", 300)
+        D_mm = params.get("D_mm", 500)
+
         result = structural_api.design_beam_is456(
             units="IS456",
-            b_mm=params.get("b_mm", 300),
-            D_mm=params.get("D_mm", 500),
-            d_mm=params.get("D_mm", 500) - 50,
+            b_mm=b_mm,
+            D_mm=D_mm,
+            d_mm=D_mm - 50,
             fck_nmm2=params.get("fck", 25),
             fy_nmm2=params.get("fy", 500),
             mu_knm=params.get("mu_knm", 100),
             vu_kn=params.get("vu_kn", 50),
         )
 
+        # ComplianceCaseResult structure:
+        # - flexure.ast_required (not ast_required_mm2)
+        # - governing_utilization
+        # - is_ok
         return {
             "success": True,
             "is_safe": result.is_ok,
             "result": result,
-            "section": f"{result.geometry.b_mm}×{result.geometry.D_mm}mm",
-            "ast_mm2": result.flexure.ast_required_mm2,
+            "section": f"{b_mm}×{D_mm}mm",
+            "ast_mm2": result.flexure.ast_required,
             "utilization": result.governing_utilization,
+            "b_mm": b_mm,
+            "D_mm": D_mm,
         }
     except Exception as e:
         return {"success": False, "error": str(e)}
@@ -431,14 +445,18 @@ def render_workspace_panel():
             design = st.session_state.current_design
             params = st.session_state.design_params
 
+            # Extract dimensions from params (not from result)
+            b_mm = params.get("b_mm", 300)
+            D_mm = params.get("D_mm", 500)
+
             col1, col2 = st.columns(2)
 
             with col1:
-                st.metric("Section", f"{design.geometry.b_mm}×{design.geometry.D_mm}mm")
+                st.metric("Section", f"{b_mm}×{D_mm}mm")
                 st.metric(
                     "Concrete",
-                    f"M{params['fck']}",
-                    help=f"fck = {params['fck']} N/mm²",
+                    f"M{params.get('fck', 25)}",
+                    help=f"fck = {params.get('fck', 25)} N/mm²",
                 )
 
             with col2:
@@ -449,23 +467,28 @@ def render_workspace_panel():
                     delta_color="normal" if design.is_ok else "inverse",
                 )
                 st.metric(
-                    "Steel", f"Fe{params['fy']}", help=f"fy = {params['fy']} N/mm²"
+                    "Steel",
+                    f"Fe{params.get('fy', 500)}",
+                    help=f"fy = {params.get('fy', 500)} N/mm²",
                 )
 
             st.divider()
 
+            # FlexureResult: ast_required (not ast_required_mm2)
             st.markdown("**Flexure Design:**")
             st.write(
-                f"- Steel Required: **{design.flexure.ast_required_mm2:.0f} mm²**"
+                f"- Steel Required: **{design.flexure.ast_required:.0f} mm²**"
             )
-            st.write(f"- Min Steel: {design.flexure.ast_min_mm2:.0f} mm²")
-            st.write(f"- Max Steel: {design.flexure.ast_max_mm2:.0f} mm²")
+            st.write(f"- Section Type: {design.flexure.section_type.name}")
+            st.write(f"- Mu_lim: {design.flexure.mu_lim:.1f} kN·m")
 
+            # ShearResult: tv, tc, tc_max, is_safe
             if design.shear:
                 st.markdown("**Shear Design:**")
-                st.write(f"- Status: **{design.shear.shear_status}**")
-                st.write(f"- τv = {design.shear.tau_v_nmm2:.2f} N/mm²")
-                st.write(f"- τc = {design.shear.tau_c_nmm2:.2f} N/mm²")
+                status = "✅ SAFE" if design.shear.is_safe else "❌ Unsafe"
+                st.write(f"- Status: **{status}**")
+                st.write(f"- τv = {design.shear.tv:.2f} N/mm²")
+                st.write(f"- τc = {design.shear.tc:.2f} N/mm²")
         else:
             st.info(
                 "No design yet. Ask the AI to design a beam or click 🏗️ Design button."
@@ -506,14 +529,13 @@ def render_workspace_panel():
     # Tab 1: 3D View
     with tabs[1]:
         if st.session_state.current_design:
-            design = st.session_state.current_design
             params = st.session_state.design_params
 
             try:
                 fig = create_beam_3d_figure(
-                    b_mm=design.geometry.b_mm,
-                    D_mm=design.geometry.D_mm,
-                    span_mm=params["span_m"] * 1000,
+                    b_mm=params.get("b_mm", 300),
+                    D_mm=params.get("D_mm", 500),
+                    span_mm=params.get("span_m", 5.0) * 1000,
                     title="Beam 3D Preview",
                 )
                 st.plotly_chart(fig, use_container_width=True)
