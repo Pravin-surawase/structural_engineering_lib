@@ -38,29 +38,62 @@ def generate_feedback_id() -> str:
     return f"FB-{now.strftime('%Y%m%d')}-{now.strftime('%H%M%S')}"
 
 
+def _sanitize_feedback_id(feedback_id: str) -> str:
+    """Sanitize feedback ID to prevent path traversal.
+
+    Only allows alphanumeric characters and hyphens.
+    This is a separate function to help CodeQL track the sanitization.
+    """
+    return "".join(c for c in feedback_id if c.isalnum() or c == "-")
+
+
+def _get_safe_feedback_path(feedback_id: str) -> Path:
+    """Get a safe path for feedback storage.
+
+    Security: Constructs path from sanitized ID and verifies
+    the resolved path is within FEEDBACK_DIR to prevent
+    path traversal attacks.
+    """
+    safe_id = _sanitize_feedback_id(feedback_id)
+    if not safe_id:
+        raise ValueError("Invalid feedback ID after sanitization")
+
+    # Construct filename (now only alphanumeric and hyphens)
+    filename = f"{safe_id}.json"
+
+    # Build path within feedback directory
+    target = FEEDBACK_DIR / filename
+
+    # Security check: verify path stays within feedback directory
+    resolved_target = target.resolve()
+    resolved_base = FEEDBACK_DIR.resolve()
+
+    if (
+        resolved_base not in resolved_target.parents
+        and resolved_target != resolved_base
+    ):
+        if not str(resolved_target).startswith(str(resolved_base) + "/"):
+            raise ValueError("Path traversal attempt detected")
+
+    return resolved_target
+
+
 def save_feedback(data: dict[str, Any]) -> Path:
     """Save feedback to a JSON file.
 
-    Security: Validates that the generated filename doesn't contain
-    path traversal characters and stays within FEEDBACK_DIR.
+    Security: Uses sanitized ID and validated path within FEEDBACK_DIR.
     """
-    # Sanitize ID to prevent path traversal (use .get() to avoid KeyError)
     feedback_id = data.get("id", "")
     if not feedback_id:
         raise ValueError("Feedback data must have an 'id' field")
-    safe_id = "".join(c for c in feedback_id if c.isalnum() or c == "-")
-    filename = f"{safe_id}.json"
-    # Path join to build file path (FEEDBACK_DIR is a Path object)
-    filepath = Path(FEEDBACK_DIR) / filename
 
-    # Security: Verify path stays within feedback directory
-    resolved = filepath.resolve()
-    if not str(resolved).startswith(str(FEEDBACK_DIR.resolve())):
-        raise ValueError("Invalid feedback path")
+    # Get validated safe path
+    safe_path = _get_safe_feedback_path(feedback_id)
 
-    with open(resolved, "w") as f:
+    # Write to validated path
+    with safe_path.open("w") as f:
         json.dump(data, f, indent=2)
-    return resolved
+    return safe_path
 
 
 def load_all_feedback() -> list[dict[str, Any]]:
@@ -333,12 +366,10 @@ def main() -> None:
     )
 
     st.title("📝 Tester Feedback")
-    st.markdown(
-        """
+    st.markdown("""
     Help us improve! Submit your feedback after testing any feature.
     Your input directly shapes the library's development.
-    """
-    )
+    """)
 
     # Tabs for submit and view
     tab_submit, tab_history = st.tabs(["Submit Feedback", "View History"])
