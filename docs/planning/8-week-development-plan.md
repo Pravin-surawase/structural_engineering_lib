@@ -5,21 +5,35 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-01-19
 **Related Tasks:** TASK-3D-VIZ, TASK-3D-002
 **Timeline:** 8 weeks (Jan 15 - March 15, 2026)
 **Release Target:** March 2026
 
 ---
 
-## 📊 Current Status (Session 46+)
+## 📊 Current Status (Session 47)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1-2 | Live Preview Foundation | ✅ **COMPLETE** |
 | **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **90% COMPLETE** |
-| **Phase 3** | 5 | Design Integration | 🚧 In Progress |
-| **Phase 4** | 6 | PyVista CAD Quality | 📋 Upcoming |
+| **Phase 2.5** | 4 | Visualization Polish | 🚧 **IN PROGRESS** |
+| **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
+| **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
+
+### The Differentiation Problem (Session 47)
+
+> "The 3D view is just boxes. ETABS shows that too. Why will they use our product?"
+
+**Solution:** We show what ETABS CAN'T:
+- ❌ ETABS: Geometry only (boxes)
+- ✅ Our Tool: **Actual reinforcement** from IS 456 design
+- ✅ Our Tool: **Stirrup zones** with variable spacing
+- ✅ Our Tool: **Detailing data** (Ld, lap lengths, bar marks)
+- ✅ Our Tool: **Utilization heat maps** and interactive exploration
+
+See: [3D Visualization Differentiation Strategy](../research/3d-visualization-differentiation-strategy.md)
 
 ### Phase 1 Evidence (Exceeds All Targets)
 
@@ -42,15 +56,29 @@
 | Multi-format import (page 07) | 2d | ✅ Done | ETABS/SAFE/STAAD/Generic |
 | Real coordinate 3D viz | 2d | ✅ Done | **Solid 3D boxes with lighting** |
 | VBA ETABS integration | 1d | ✅ Done | 153 beams tested |
-| LOD system (1000+ beams) | 1d | 📋 TODO | Performance optimization |
+| BuildingStatistics model | 1d | ✅ Done | Volume, length metrics |
 
-### Session 46 Achievements
+### Phase 2.5: Visualization Polish (This Week)
+
+**Goal:** Make the 3D view interactive and insightful (not "just boxes")
+
+| Task | Est | Status | Priority |
+|------|-----|--------|----------|
+| Story filter dropdown | 1h | 🚧 TODO | 🔴 High |
+| Utilization heat map mode | 2h | 🚧 TODO | 🔴 High |
+| Camera presets (front/top/iso) | 1h | 🚧 TODO | 🔴 High |
+| Toggle solid/wireframe | 30m | 🚧 TODO | 🟡 Medium |
+| Beam click → highlight | 2h | 🚧 TODO | 🟡 Medium |
+| LOD for 1000+ beams | 2h | 🚧 TODO | 🟡 Medium |
+
+### Session 46+ Achievements
 
 - ✅ **3D solid beam boxes** with proper lighting and materials
 - ✅ **Story-based color coding** (8-color palette)
 - ✅ **Design status coloring** (green/red/orange)
 - ✅ **Hover tooltips** with full beam details
 - ✅ **VBA CSV import** working end-to-end
+- ✅ **BuildingStatistics** model with concrete volume metrics
 - ✅ **Documentation cleanup** (archived obsolete files)
 
 ### Three.js vs Plotly Decision
@@ -74,6 +102,16 @@
 - ✅ **Quality code** - Long-term maintainability
 - ✅ **Automation** - Efficient workflows
 - ✅ **Impressive demos** - Ready to showcase
+
+### The Core Differentiator
+
+```
+ETABS:    Geometry → Analysis → Design → "SAFE" ← STOPS HERE
+Our Tool: Geometry → Analysis → Design → DETAILING → 3D VIZ
+                                          ↑ WE OWN THIS SPACE
+```
+
+**We're not analysis software. We're DETAILING VISUALIZATION software.**
 
 ### What We're NOT Doing
 
@@ -99,19 +137,18 @@ Build → Test → Polish → Demo → Iterate
 
 ---
 
-## Progress Update (Session 46+)
+## Progress Update (Session 47)
 
 - Phase 1 complete: Plotly 3D preview, caching, status display, performance docs.
 - Phase 2 near complete: CSV import, multi-format adapters, solid 3D visualization.
-- Phase 3 starting: Design integration working in multi-format page.
+- Phase 2.5 starting: Quick wins to differentiate from ETABS.
+- Phase 3 planned: Actual rebar and stirrup visualization.
 
-**Session 46+ Updates:**
-- ✅ Upgraded 3D visualization from lines to **solid beam boxes with lighting**
-- ✅ VBA ETABS import integration tested with 153 real beams
-- ✅ Story-based color coding working correctly
-- ✅ Design status coloring (pass/fail/no-forces)
-- ✅ Documentation consolidated (archived 8+ obsolete planning files)
-- 🚧 Next: LOD optimization for 1000+ beams, PyVista evaluation
+**Session 47 Updates:**
+- 📝 Created differentiation strategy document
+- 🎯 Identified quick wins: story filter, utilization, presets
+- 🎯 Planned rebar visualization (Phase 3)
+- 📋 Updated 8-week plan with Phase 2.5
 
 ---
 
@@ -199,48 +236,92 @@ Build → Test → Polish → Demo → Iterate
 
 ---
 
-### **Month 2: Excellence (Weeks 5-8)**
+#### Week 4.5: Visualization Polish 🎨
+**Goal:** Differentiate from ETABS - Make 3D view interactive and insightful
 
-#### Week 5: Design Integration 🎨
-**Goal:** Stunning visualization of design results
+**The Problem:** "3D view is just boxes, ETABS shows that too"
+**The Solution:** Add features ETABS doesn't have
 
-**Priorities:**
-1. **Design data import** (2 days)
-   - JSON parser (structural_lib format)
-   - XML parser (ETABS/STAAD.Pro)
-   - Schema validation
-   - Version migration support
+**Quick Wins (4-6 hours):**
+1. **Story filter** (1h)
+   - Dropdown to select single story
+   - "All Stories" option
+   - Filter applied to 3D view
 
-2. **Post-analysis visualization** (2 days)
-   - Show ACTUAL reinforcement from design
-   - Color-code by utilization (0-100%)
-   - Animated transitions (before/after)
-   - Section cuts (show internal rebar)
+2. **Utilization heat map** (2h)
+   - Color gradient: green (0%) → yellow (50%) → red (100%)
+   - Based on Mu_actual / Mu_capacity
+   - Toggle between status/utilization modes
 
-3. **Advanced features** (1-2 days)
-   - Curtailment zones visualization
-   - Development lengths shown
-   - Lap splice locations
-   - Bar marks and labels
+3. **Camera presets** (1h)
+   - Front view (X-Z plane)
+   - Top view (X-Y plane)
+   - Isometric (default)
+   - Per-beam focus
 
-4. **Demo creation** (1 day)
-   - 5 impressive demo projects
-   - Screenshot gallery
-   - Video walkthroughs
-   - User guide with visuals
+4. **Beam selection** (2h)
+   - Click beam → highlight
+   - Show detail panel
+   - Option to isolate selected beam
 
 **Deliverables:**
-- ✅ `streamlit_app/components/design_import.py` (300+ lines)
-- ✅ JSON schema v1 documented
-- ✅ 5 demo projects ready
-- ✅ User guide with screenshots
-- ✅ Video tutorials (5-10 min)
+- 📋 Story filter dropdown
+- 📋 Utilization color mode
+- 📋 Camera preset buttons
+- 📋 Interactive beam selection
 
-**Demo Ready:** Design results looking professional
+**Demo Ready:** Interactive 3D exploration
 
 ---
 
-#### Week 6: PyVista CAD Quality 🚀
+### **Month 2: Excellence (Weeks 5-8)**
+
+#### Week 5-6: Detailing Visualization (THE KILLER FEATURE) 🔥
+**Goal:** Show what ETABS CAN'T - Actual reinforcement in 3D
+
+**This is our differentiator:** ETABS stops at "SAFE". We show the actual bars.
+
+**Already Built:**
+- `BeamDetailingResult` computes: top_bars, bottom_bars, stirrups, ld, lap_length
+- `visualizations_3d.py` has `generate_cylinder_mesh()` for 3D bars
+- `geometry_3d.py` has `beam_to_3d_geometry()` conversion
+
+**Priorities:**
+1. **Rebar visualization** (8h)
+   - 3D cylinders for each bar at actual positions
+   - Colors: red (tension) / blue (compression)
+   - Multi-layer support (1st, 2nd layer)
+   - Toggle: Show/Hide rebar
+
+2. **Stirrup rendering** (6h)
+   - Show stirrups at actual spacing
+   - Variable zones (dense at supports, sparse at mid)
+   - Green color, accurate geometry
+   - LOD: Representative stirrups for 100+ beams
+
+3. **Cross-section view** (4h)
+   - Click beam → show 2D cross-section
+   - Bars, stirrups, cover dimensioned
+   - Export as PNG
+   - Compare designed vs required
+
+4. **Detailing overlays** (4h)
+   - Development length markers
+   - Lap splice locations
+   - Bar marks and labels
+   - Curtailment points
+
+**Deliverables:**
+- 📋 `rebar_3d_renderer.py` (300+ lines)
+- 📋 Cross-section view component
+- 📋 Detailing overlay system
+- 📋 5 demo projects with full detailing
+
+**Demo Ready:** "This is what you're building" - Complete RC beam visualization
+
+---
+
+#### Week 7: PyVista CAD Quality 🚀
 **Goal:** Next-level rendering quality
 
 **Priorities:**
