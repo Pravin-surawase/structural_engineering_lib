@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-19
+**Last Updated:** 2026-01-24
 
 ---
 
@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 42 | **Commits:** 17 (PR #381 merged)
+**Last Session:** 46 | **Focus:** VBA bug fixes + 3D visualization + docs cleanup
 
 ---
 
@@ -29,56 +29,68 @@
 
 ---
 
-## Latest Handoff (auto)
+## Latest Handoff
 
-<!-- HANDOFF:START -->
-- Date: 2026-01-19
-- Focus: Make task PR creation safer and standardize bootstrap commands to venv Python
-- Completed: Hardened `create_task_pr.sh` with stash restore guard and hash detection; Standardized bootstrap automation examples to `.venv/bin/python`; Regenerated docs indexes
-- PRs: #383
-<!-- HANDOFF:END -->
+**Session 46 (2026-01-24)**
+- Fixed VBA import bugs in pages 06 and 07
+- Added 3D building visualization tab to page 07 (Plotly, professional dark theme)
+- Cleaned up TASKS.md (removed session log data, focused structure)
+- Archived obsolete planning files (agent-*-tasks.md, old session plans)
+
+**Key Commits:**
+- `897da5dd` - VBA import fixes
+- `efe825d3` - 3D building visualization
+- `67faaca6` - TASKS.md cleanup
 
 ---
 
-## Session 41-42 Summary - PR #381 Merged (2026-01-19)
+## Current Status
 
-**Deliverables**
-- Pydantic canonical models (`Python/structural_lib/models.py`)
-- Adapter layer for ETABS/SAFE/STAAD/Excel (`Python/structural_lib/adapters.py`)
-- Serialization utilities (`Python/structural_lib/serialization.py`)
-- 111 new tests across adapters and models
+### What Works ✅
+- Page 07 Multi-Format Import: VBA CSV → Design → 3D View
+- Page 06 ETABS Import: Detects VBA format, redirects to page 07
+- 3D visualization with story colors, design status, hover tooltips
 
-**CI/Governance Fixes Applied**
-- Black 26.1.0: added explicit `line-length = 88`
-- Mypy: typed adapter interfaces and overrides
-- Pydantic v2: ConfigDict updates and field exclusions
-- Governance: kebab-case naming + root file count compliance
-- Security: refactored feedback path handling
+### Active Work
+- Documentation consolidation (in progress)
+- Planning next phase work
 
 ---
 
 ## Next Session Priorities
 
-1. **TASK-DATA-002.1:** Integrate new adapters with existing `etabs_import.py`
-2. **TASK-DATA-002.2:** Update Streamlit pages for multi-format input
-3. **TASK-DATA-002.3:** Add integration tests with real CSV data
-4. **TASK-DATA-002.4:** Update API documentation
-5. **TASK-3D-003:** LOD/performance for 1000+ beams (after TASK-DATA-002)
+1. **TASK-3D-005:** Three.js rebar visualization (detailed bar view) - 4h
+2. **TASK-PERF-001:** LOD optimization for 1000+ beams - 2h
+3. **TASK-DATA-003:** Column/slab import support - 4h
+4. **TASK-UX-001:** Streamlit UI polish and consistency - 2h
+
+See [TASKS.md](../TASKS.md) for full backlog.
 
 ---
 
 ## Quick Commands
 
 ```bash
-# Governance health check
-.venv/bin/.venv/bin/python scripts/governance_health_score.py
-
-# Run all tests
+# Run tests
 cd Python && .venv/bin/python -m pytest tests/ -v
 
-# Check links
-.venv/bin/.venv/bin/python scripts/check_links.py
+# Check Streamlit issues
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
-# Refresh docs indexes
-./scripts/generate_all_indexes.sh
+# Launch app
+./scripts/launch_streamlit.sh
+
+# Commit changes
+./scripts/ai_commit.sh "type: description"
 ```
+
+---
+
+## Key Files
+
+| Purpose | Location |
+|---------|----------|
+| Task tracking | [docs/TASKS.md](../TASKS.md) |
+| Session history | [docs/SESSION_LOG.md](../SESSION_LOG.md) |
+| Agent instructions | [.github/copilot-instructions.md](../../.github/copilot-instructions.md) |
+| 3D visualization | [streamlit_app/pages/07_📥_multi_format_import.py](../../streamlit_app/pages/07_📥_multi_format_import.py) |
