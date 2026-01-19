@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 47b)
+**Updated:** 2026-01-20 (Session 48)
 
 ---
 
@@ -17,7 +17,7 @@
 
 - **Version:** v0.17.6 → v0.18.0 (AI Chat MVP)
 - **Focus:** AI Chat Interface + SmartDesigner UI Integration
-- **8-Week Plan:** Phase 3.5 (AI/Insights) - IN PROGRESS
+- **8-Week Plan:** Phase 3.5 (AI/Insights) - COMPLETING
 - **Next Milestone:** v0.18.0 - AI Chat MVP (Jan 2026)
 - **Key Insight:** ChatGPT-like UI with library function calling
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
@@ -26,7 +26,7 @@
 
 ## Active Tasks
 
-### TASK-AI-CHAT: AI Chat Assistant Interface 🚧 NEW
+### TASK-AI-CHAT: AI Chat Assistant Interface ✅ COMPLETE
 
 **Goal:** ChatGPT-like UI with 40% chat / 60% workspace split
 
@@ -36,13 +36,18 @@
 | SmartDashboard component | ✅ Done | `b6cb036a` - Score gauges, issues |
 | LLM tool definitions | ✅ Done | `edb9379a` - 7 tools for function calling |
 | Architecture research doc | ✅ Done | `6b139dbd` - OpenAI/Streamlit patterns |
-| Connect SmartDesigner to chat | 📋 TODO | Use existing analyze() |
-| OpenAI API integration | 📋 TODO | Add secrets config |
-| Streaming responses | 📋 TODO | Typewriter effect |
-| Tool execution handlers | 📋 TODO | Map tools to library functions |
+| Connect SmartDesigner to chat | ✅ Done | Session 48 - analyze() integration |
+| OpenAI API integration | ✅ Done | Session 48 - configurable secrets.toml |
+| Fix ComplianceCaseResult errors | ✅ Done | Session 48 - `7a2a2181` |
+| Compact professional UI | ✅ Done | Session 48 - `38149184` |
+| ETABS import integration | ✅ Done | Session 48 - Import tab, beam loading |
+| Streaming responses | 📋 V1.1 | Deferred - typewriter effect |
+| Tool execution handlers | 📋 V1.1 | Deferred - full function calling |
 
 **Why:** Make structural engineering accessible through natural language.
 Users can say "Design a beam for 150 kN·m" and get results + 3D view.
+
+**PR:** #XXX (task/TASK-AI-ASSISTANT) - Session 48
 
 ### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) 🔄 MERGED
 

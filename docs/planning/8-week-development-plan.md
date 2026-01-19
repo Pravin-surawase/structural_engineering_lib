@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-20 (Session 48)
 **Related Tasks:** TASK-3D-VIZ, TASK-3D-002, TASK-AI-CHAT
 **Timeline:** 8 weeks (Jan 15 - March 15, 2026)
 **Release Target:** March 2026
@@ -35,40 +35,50 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 | **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
 | **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
 | **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
-| **Phase AI** | 6+ | **AI Chat Interface** | 🚧 **IN PROGRESS** |
+| **Phase AI** | 6+ | **AI Chat Interface** | ✅ **MVP COMPLETE** |
 
-### Phase AI: ChatGPT-like Interface (NEW - Session 47b)
+### Phase AI: ChatGPT-like Interface (Session 48 - MVP COMPLETE)
 
 > "like chatgpt. chat, and when users asks something chat goes to left 40% like chatgpt
 > and on right window our work, tables, 3d and all come"
 
-**Implemented:**
-- ✅ AI Assistant page with 40% chat / 60% workspace split
+**Implemented (Session 47b + 48):**
+- ✅ AI Assistant page with 45% chat / 55% workspace split
 - ✅ SmartDashboard component for visual scores and insights
 - ✅ LLM tool definitions for OpenAI function calling (7 tools)
 - ✅ Architecture research document with modern patterns
+- ✅ OpenAI API integration with configurable model (secrets.toml)
+- ✅ Fixed ComplianceCaseResult attribute errors
+- ✅ Compact professional UI with custom CSS
+- ✅ ETABS import integration (load beams from page 7)
+- ✅ Welcome message and improved quick actions
+
+**Deferred to V1.1:**
+- Streaming responses (typewriter effect)
+- Full OpenAI function calling execution
+- Voice input/output
 
 **UI Layout:**
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  🤖 StructEng AI Assistant                                       │
+│  🤖 StructEng AI Assistant           [🟢 gpt-4o-mini]           │
 ├─────────────────────────┬────────────────────────────────────────┤
-│  💬 CHAT (40%)          │  📊 WORKSPACE (60%)                    │
+│  💬 CHAT (45%)          │  📊 WORKSPACE (55%)                    │
 │                         │  ┌───────────────────────────────────┐ │
-│  User: Design a beam    │  │ Results │ 3D View │ Cost │ Smart │ │
-│  for 150 kN·m           │  └───────────────────────────────────┘ │
-│                         │                                        │
-│  AI: I've designed a    │  Section: 300×500mm                   │
-│  beam for you:          │  Steel: 1234 mm²                      │
-│  - 300×500mm section    │  Status: ✅ SAFE                       │
-│  - 1234 mm² steel       │                                        │
-│                         │  [3D Beam Visualization]               │
-│  [Design] [Optimize]    │                                        │
+│  [Welcome message]      │  │Results│3D│Cost│Dashboard│Import│  │
+│                         │  └───────────────────────────────────┘ │
+│  User: Design a beam    │                                        │
+│  for 150 kN·m           │  ┌─────┬─────┬─────┬─────┐            │
+│                         │  │300× │ 85% │1234 │ ✅  │            │
+│  AI: I've designed...   │  │500  │util │mm²  │safe │            │
+│                         │  └─────┴─────┴─────┴─────┘            │
+│  [Design][Cost][Analyze]│                                        │
+│  [________________________]                                      │
 └─────────────────────────┴────────────────────────────────────────┘
 ```
 
 **Technology Stack:**
-- OpenAI GPT-4 with function calling (strict mode)
+- OpenAI GPT-4o-mini with function calling (configurable)
 - Streamlit `st.chat_message`, `st.chat_input`
 - SmartDesigner for AI-like intelligence without API calls
 - 7 tools: design_beam, optimize_cost, get_suggestions, analyze_design, compare_options, explain_code_clause, show_3d_view
