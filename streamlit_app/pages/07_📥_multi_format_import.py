@@ -363,16 +363,24 @@ def design_all_beams(
 def create_building_3d_view(
     beams: list[BeamGeometry],
     results_df: pd.DataFrame | None = None,
+    color_mode: str = "Design Status",
+    show_edges: bool = True,
 ) -> go.Figure:
     """Create a professional 3D building visualization with solid beam volumes.
 
     Features:
     - Real 3D beam volumes (not just lines) from geometry coordinates
-    - Color coding by design status (pass/fail) or story
+    - Color coding by design status (pass/fail), story, or utilization
     - Hover information with beam details
     - Story grouping with visual separation
     - Professional dark theme with lighting effects
     - Semi-transparent concrete for visual depth
+
+    Args:
+        beams: List of BeamGeometry objects to visualize
+        results_df: Optional DataFrame with design results
+        color_mode: "Design Status", "By Story", or "Utilization"
+        show_edges: Whether to show beam edge lines
     """
     fig = go.Figure()
 
@@ -389,6 +397,8 @@ def create_building_3d_view(
                 "vu": row.get("Vu (kN)", 0),
                 "bars": row.get("Bars", "-"),
                 "status": row.get("Status", "-"),
+                "ast_req": row.get("Ast_req", 0),
+                "ast_prov": row.get("Ast_prov", 0),
             }
 
     # Group beams by story for legend organization
@@ -425,9 +435,10 @@ def create_building_3d_view(
 
     # Add beams as 3D solid boxes
     for beam in beams:
-        # Determine color based on design result
         result = result_lookup.get(beam.id)
-        if result:
+
+        # Determine color based on color mode
+        if color_mode == "Design Status" and result:
             is_safe = result.get("is_safe")
             if is_safe is True:
                 color = "rgba(76, 175, 80, 0.85)"  # Green - passed
@@ -438,8 +449,33 @@ def create_building_3d_view(
             else:
                 color = "rgba(255, 152, 0, 0.85)"  # Orange - no forces
                 edge_color = "rgba(230, 126, 0, 1)"
+        elif color_mode == "Utilization" and result:
+            # Utilization = Ast_req / Ast_prov (capacity utilization)
+            ast_req = result.get("ast_req", 0)
+            ast_prov = result.get("ast_prov", 0)
+            try:
+                ast_req_float = float(ast_req) if ast_req != "-" else 0
+                ast_prov_float = float(ast_prov) if ast_prov != "-" else 1
+                util_ratio = ast_req_float / ast_prov_float if ast_prov_float > 0 else 0
+            except (ValueError, TypeError):
+                util_ratio = 0
+            # Clamp to 0-1.2 range (over 100% is over-utilized)
+            util_clamped = min(max(util_ratio, 0), 1.2)
+            # Color gradient: green (0) -> yellow (0.5) -> red (1+)
+            if util_clamped < 0.5:
+                # Green to yellow
+                r = int(util_clamped * 2 * 255)
+                g = 200
+                b = 50
+            else:
+                # Yellow to red
+                r = 255
+                g = int((1 - (util_clamped - 0.5) * 2) * 200)
+                b = 50
+            color = f"rgba({r}, {g}, {b}, 0.85)"
+            edge_color = f"rgba({max(0,r-40)}, {max(0,g-40)}, {max(0,b-40)}, 1)"
         else:
-            # No design results yet - use story color with opacity
+            # By Story mode or no results - use story color
             base_color = story_colors.get(beam.story, "#2196F3")
             # Convert hex to rgba
             r = int(base_color[1:3], 16)
@@ -555,37 +591,38 @@ def create_building_3d_view(
             )
         )
 
-        # Add edge lines for definition
-        edges = [
-            # Bottom face at point1
-            ([corners[0][0], corners[1][0]], [corners[0][1], corners[1][1]], [corners[0][2], corners[1][2]]),
-            ([corners[1][0], corners[3][0]], [corners[1][1], corners[3][1]], [corners[1][2], corners[3][2]]),
-            ([corners[3][0], corners[2][0]], [corners[3][1], corners[2][1]], [corners[3][2], corners[2][2]]),
-            ([corners[2][0], corners[0][0]], [corners[2][1], corners[0][1]], [corners[2][2], corners[0][2]]),
-            # Bottom face at point2
-            ([corners[4][0], corners[5][0]], [corners[4][1], corners[5][1]], [corners[4][2], corners[5][2]]),
-            ([corners[5][0], corners[7][0]], [corners[5][1], corners[7][1]], [corners[5][2], corners[7][2]]),
-            ([corners[7][0], corners[6][0]], [corners[7][1], corners[6][1]], [corners[7][2], corners[6][2]]),
-            ([corners[6][0], corners[4][0]], [corners[6][1], corners[4][1]], [corners[6][2], corners[4][2]]),
-            # Connecting edges (length edges)
-            ([corners[0][0], corners[4][0]], [corners[0][1], corners[4][1]], [corners[0][2], corners[4][2]]),
-            ([corners[1][0], corners[5][0]], [corners[1][1], corners[5][1]], [corners[1][2], corners[5][2]]),
-            ([corners[2][0], corners[6][0]], [corners[2][1], corners[6][1]], [corners[2][2], corners[6][2]]),
-            ([corners[3][0], corners[7][0]], [corners[3][1], corners[7][1]], [corners[3][2], corners[7][2]]),
-        ]
+        # Add edge lines for definition (optional)
+        if show_edges:
+            edges = [
+                # Bottom face at point1
+                ([corners[0][0], corners[1][0]], [corners[0][1], corners[1][1]], [corners[0][2], corners[1][2]]),
+                ([corners[1][0], corners[3][0]], [corners[1][1], corners[3][1]], [corners[1][2], corners[3][2]]),
+                ([corners[3][0], corners[2][0]], [corners[3][1], corners[2][1]], [corners[3][2], corners[2][2]]),
+                ([corners[2][0], corners[0][0]], [corners[2][1], corners[0][1]], [corners[2][2], corners[0][2]]),
+                # Bottom face at point2
+                ([corners[4][0], corners[5][0]], [corners[4][1], corners[5][1]], [corners[4][2], corners[5][2]]),
+                ([corners[5][0], corners[7][0]], [corners[5][1], corners[7][1]], [corners[5][2], corners[7][2]]),
+                ([corners[7][0], corners[6][0]], [corners[7][1], corners[6][1]], [corners[7][2], corners[6][2]]),
+                ([corners[6][0], corners[4][0]], [corners[6][1], corners[4][1]], [corners[6][2], corners[4][2]]),
+                # Connecting edges (length edges)
+                ([corners[0][0], corners[4][0]], [corners[0][1], corners[4][1]], [corners[0][2], corners[4][2]]),
+                ([corners[1][0], corners[5][0]], [corners[1][1], corners[5][1]], [corners[1][2], corners[5][2]]),
+                ([corners[2][0], corners[6][0]], [corners[2][1], corners[6][1]], [corners[2][2], corners[6][2]]),
+                ([corners[3][0], corners[7][0]], [corners[3][1], corners[7][1]], [corners[3][2], corners[7][2]]),
+            ]
 
-        for edge in edges:
-            fig.add_trace(
-                go.Scatter3d(
-                    x=edge[0],
-                    y=edge[1],
-                    z=edge[2],
-                    mode="lines",
-                    line=dict(color=edge_color, width=2),
-                    showlegend=False,
-                    hoverinfo="skip",
+            for edge in edges:
+                fig.add_trace(
+                    go.Scatter3d(
+                        x=edge[0],
+                        y=edge[1],
+                        z=edge[2],
+                        mode="lines",
+                        line=dict(color=edge_color, width=2),
+                        showlegend=False,
+                        hoverinfo="skip",
+                    )
                 )
-            )
 
     # Add legend traces for stories
     for story in stories:
@@ -926,21 +963,71 @@ with tab4:
             use_container_width=True,
         )
     else:
-        # Controls
-        col1, col2, col3 = st.columns([2, 2, 2])
-        with col1:
-            show_all = st.checkbox("Show all beams", value=True)
-        with col2:
-            if results_df is not None and not results_df.empty:
-                show_passed_only = st.checkbox("Highlight passed only", value=False)
-            else:
-                show_passed_only = False
-        with col3:
-            st.write("")  # Spacer
+        # === ENHANCED CONTROLS ===
+        st.markdown("##### 🎮 View Controls")
 
-        # Generate and display 3D view
-        fig = create_building_3d_view(beams, results_df)
-        st.plotly_chart(fig, use_container_width=True)
+        # Row 1: Story filter and color mode
+        col1, col2, col3, col4 = st.columns([2, 2, 2, 2])
+        with col1:
+            # Story filter - get unique stories
+            all_stories = sorted(set(b.story for b in beams))
+            story_options = ["All Stories"] + all_stories
+            selected_story = st.selectbox(
+                "🏢 Story Filter",
+                story_options,
+                help="View beams from a specific story",
+            )
+        with col2:
+            # Color mode
+            color_modes = ["Design Status", "By Story", "Utilization"]
+            color_mode = st.selectbox(
+                "🎨 Color Mode",
+                color_modes,
+                help="Choose how beams are colored",
+            )
+        with col3:
+            # View preset
+            view_presets = ["Isometric", "Front (X-Z)", "Top (X-Y)", "Side (Y-Z)"]
+            view_preset = st.selectbox(
+                "📷 Camera View",
+                view_presets,
+                help="Preset camera angles",
+            )
+        with col4:
+            show_edges = st.checkbox("Show Edges", value=True, help="Show beam edge lines")
+
+        # Filter beams by selected story
+        if selected_story == "All Stories":
+            filtered_beams = beams
+        else:
+            filtered_beams = [b for b in beams if b.story == selected_story]
+
+        if not filtered_beams:
+            st.warning(f"No beams found for story: {selected_story}")
+        else:
+            # Generate 3D view with filtered beams
+            fig = create_building_3d_view(
+                filtered_beams,
+                results_df,
+                color_mode=color_mode,
+                show_edges=show_edges,
+            )
+
+            # Apply camera preset
+            camera_settings = {
+                "Isometric": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},
+                "Front (X-Z)": {"eye": {"x": 0, "y": -2.5, "z": 0.5}, "up": {"x": 0, "y": 0, "z": 1}},
+                "Top (X-Y)": {"eye": {"x": 0, "y": 0, "z": 2.5}, "up": {"x": 0, "y": 1, "z": 0}},
+                "Side (Y-Z)": {"eye": {"x": 2.5, "y": 0, "z": 0.5}, "up": {"x": 0, "y": 0, "z": 1}},
+            }
+            camera = camera_settings.get(view_preset, camera_settings["Isometric"])
+            fig.update_layout(scene_camera=camera)
+
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Quick stats for filtered view
+            st.markdown(f"**Showing:** {len(filtered_beams)} beams" +
+                       (f" from {selected_story}" if selected_story != "All Stories" else ""))
 
         # Summary stats using BuildingStatistics
         st.markdown("---")
