@@ -4,6 +4,86 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-25 — Session 49: AI Assistant Bug Fixes & Enhancements
+
+**Focus:** Fix AI page runtime errors, add GPT-5-mini support, enhance chat UX
+
+**User Requests:**
+1. "still the ai page not working" — Runtime bugs on AI page
+2. "gpt 5 mini is latest model please check on web" — Research new models
+3. "make it better" — UI improvements
+4. "follow plan and implement plan one by one" — Continue 8-week plan
+5. "make sure 6+ valuable commits" — Productivity target
+
+### Research Completed
+
+**OpenAI Models (January 2026):**
+- `gpt-5-mini` — Fast, cost-efficient ($0.25/1M tokens) — **USER WAS RIGHT**
+- `gpt-5` — Full reasoning ($1.75/1M tokens)
+- `gpt-5.2` — Best for coding/agentic tasks
+- `gpt-4.1` — Non-reasoning, fast
+
+**Data Type Analysis:**
+- `ComplianceCaseResult` has NO `geometry` attribute — bug identified
+- `FlexureResult.ast_required` (NOT `ast_required_mm2`)
+- `ShearResult.tv`, `.tc` (NOT `tau_v_nmm2`, `tau_c_nmm2`)
+- `ShearResult.is_safe` (NOT `shear_status`)
+
+### Implementation (6 commits)
+
+| Commit | Description |
+|--------|-------------|
+| `fef3ae12` | fix(ai): resolve ComplianceCaseResult.geometry bug + GPT-5-mini support |
+| `4d0a9c7c` | fix(ai): fix workspace panel attribute errors in Results and 3D tabs |
+| `37e0a21f` | feat(ai): welcome message, Clear button, helper function |
+| `4e0c78ba` | docs: update 8-week plan and TASKS with Session 49 progress |
+| `03f92de0` | feat(ai): natural language parameter parsing from user messages |
+| `7ff2d1e9` | test(ai): add tests for AI assistant page (11 tests) |
+
+### Bugs Fixed
+
+1. **ComplianceCaseResult.geometry** — Used `params` dict instead of non-existent attribute
+2. **FlexureResult.ast_required_mm2** — Fixed to `ast_required`
+3. **ShearResult.shear_status** — Fixed to `is_safe` (boolean)
+4. **ShearResult.tau_v/tau_c** — Fixed to `tv`, `tc`
+5. **GitHub push protection** — Added secrets.toml to .gitignore
+
+### Features Added
+
+1. **GPT-5-mini support** — Configurable model via secrets.toml
+2. **Welcome message** — Shows when chat history is empty
+3. **Clear chat button** — 5th quick action to reset chat
+4. **Parameter parsing** — Parse "150 kN·m", "300x500mm", "M25" from user input
+5. **Test suite** — 11 tests covering page load, parsing, SmartDesigner
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py` — Major bug fixes + features
+- `streamlit_app/.streamlit/secrets.toml.example` — GPT-5-mini as default
+- `.gitignore` — Protect secrets.toml from commits
+- `docs/TASKS.md` — Updated progress
+- `docs/planning/8-week-development-plan.md` — Updated Phase AI status
+
+### Files Created
+
+- `tests/apptest/test_page_10_ai_assistant.py` — 11 tests for AI page
+
+### PR Status
+
+- Branch: `task/TASK-AI-FIX`
+- 6 commits ready to merge
+- All tests passing (11 new + existing)
+- Scanner: 0 Critical issues
+
+### Next Steps
+
+1. Finish PR and merge to main
+2. Continue Phase 3 (Rebar Visualization)
+3. Add streaming responses for OpenAI integration
+4. Connect tool execution handlers
+
+---
+
 ## 2026-01-20 — Session 47b (continued): AI Chat Implementation
 
 **Focus:** Implement ChatGPT-like AI assistant with SmartDesigner integration

@@ -25,7 +25,7 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 
 ---
 
-## 📊 Current Status (Session 47b)
+## 📊 Current Status (Session 49)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
@@ -35,9 +35,9 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 | **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
 | **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
 | **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
-| **Phase AI** | 6+ | **AI Chat Interface** | 🚧 **IN PROGRESS** |
+| **Phase AI** | 6+ | **AI Chat Interface** | 🚧 **IN PROGRESS** (Session 48-49 bugs fixed) |
 
-### Phase AI: ChatGPT-like Interface (NEW - Session 47b)
+### Phase AI: ChatGPT-like Interface (Session 47b-49)
 
 > "like chatgpt. chat, and when users asks something chat goes to left 40% like chatgpt
 > and on right window our work, tables, 3d and all come"
@@ -47,6 +47,9 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 - ✅ SmartDashboard component for visual scores and insights
 - ✅ LLM tool definitions for OpenAI function calling (7 tools)
 - ✅ Architecture research document with modern patterns
+- ✅ **GPT-5-mini support** (Session 49) - Configurable model via secrets.toml
+- ✅ **Bug fixes** (Session 49) - Fixed ComplianceCaseResult.geometry errors
+- ✅ **UI improvements** (Session 49) - Welcome message, Clear button, helper function
 
 **UI Layout:**
 ```

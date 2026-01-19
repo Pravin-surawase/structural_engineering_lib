@@ -60,6 +60,31 @@ def get_openai_client() -> OpenAI | None:
     return OpenAI(api_key=api_key)
 
 
+def get_openai_config() -> dict[str, Any]:
+    """Get OpenAI configuration from secrets.
+
+    Returns config dict with model, temperature, max_tokens.
+    Defaults to gpt-5-mini if not specified.
+    """
+    config = {
+        "model": "gpt-5-mini",  # Default: fast, cost-efficient
+        "temperature": 0.7,
+        "max_tokens": 2000,
+    }
+
+    # Read from secrets if available
+    if "openai" in st.secrets:
+        openai_config = st.secrets.get("openai", {})
+        if "model" in openai_config:
+            config["model"] = openai_config["model"]
+        if "temperature" in openai_config:
+            config["temperature"] = float(openai_config["temperature"])
+        if "max_tokens" in openai_config:
+            config["max_tokens"] = int(openai_config["max_tokens"])
+
+    return config
+
+
 # System prompt for structural engineering assistant
 SYSTEM_PROMPT = """You are StructEng AI, an expert structural engineering assistant specializing in
 IS 456 reinforced concrete design. You help engineers design beams, optimize costs,
@@ -119,11 +144,14 @@ def init_session_state():
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
     """Run beam design with given parameters."""
     try:
+        b_mm = params.get("b_mm", 300)
+        D_mm = params.get("D_mm", 500)
+
         result = structural_api.design_beam_is456(
             units="IS456",
-            b_mm=params.get("b_mm", 300),
-            D_mm=params.get("D_mm", 500),
-            d_mm=params.get("D_mm", 500) - 50,
+            b_mm=b_mm,
+            D_mm=D_mm,
+            d_mm=D_mm - 50,
             fck_nmm2=params.get("fck", 25),
             fy_nmm2=params.get("fy", 500),
             mu_knm=params.get("mu_knm", 100),
@@ -134,8 +162,8 @@ def run_design(params: dict[str, Any]) -> dict[str, Any]:
             "success": True,
             "is_safe": result.is_ok,
             "result": result,
-            "section": f"{result.geometry.b_mm}×{result.geometry.D_mm}mm",
-            "ast_mm2": result.flexure.ast_required_mm2,
+            "section": f"{b_mm}×{D_mm}mm",
+            "ast_mm2": result.flexure.ast_required,
             "utilization": result.governing_utilization,
         }
     except Exception as e:
@@ -160,6 +188,61 @@ def run_smart_analysis(design_result: Any, params: dict[str, Any]) -> dict[str, 
         return {"success": False, "error": str(e)}
 
 
+def _parse_design_request(msg_lower: str, params: dict[str, Any]) -> tuple[dict[str, Any], str]:
+    """
+    Parse design request from user message and extract parameters.
+
+    Returns updated params and a description of what was parsed.
+    """
+    updated_params = params.copy()
+    parsed_items = []
+
+    # Parse moment (e.g., "150 kN·m", "150 knm", "moment 150")
+    moment_match = re.search(r"(\d+(?:\.\d+)?)\s*(?:kn[·\-]?m|knm)", msg_lower)
+    if moment_match:
+        updated_params["mu_knm"] = float(moment_match.group(1))
+        parsed_items.append(f"Moment: {moment_match.group(1)} kN·m")
+    else:
+        # Try "moment 150" pattern
+        moment_match2 = re.search(r"moment\s+(\d+(?:\.\d+)?)", msg_lower)
+        if moment_match2:
+            updated_params["mu_knm"] = float(moment_match2.group(1))
+            parsed_items.append(f"Moment: {moment_match2.group(1)} kN·m")
+
+    # Parse shear (e.g., "80 kN", "shear 80")
+    shear_match = re.search(r"(\d+(?:\.\d+)?)\s*kn(?!\s*[·\-]?m)", msg_lower)
+    if shear_match:
+        updated_params["vu_kn"] = float(shear_match.group(1))
+        parsed_items.append(f"Shear: {shear_match.group(1)} kN")
+    else:
+        shear_match2 = re.search(r"shear\s+(\d+(?:\.\d+)?)", msg_lower)
+        if shear_match2:
+            updated_params["vu_kn"] = float(shear_match2.group(1))
+            parsed_items.append(f"Shear: {shear_match2.group(1)} kN")
+
+    # Parse dimensions (e.g., "300x500", "300×500mm")
+    dim_match = re.search(r"(\d+)\s*[x×]\s*(\d+)\s*(?:mm)?", msg_lower)
+    if dim_match:
+        updated_params["b_mm"] = int(dim_match.group(1))
+        updated_params["D_mm"] = int(dim_match.group(2))
+        parsed_items.append(f"Section: {dim_match.group(1)}×{dim_match.group(2)}mm")
+
+    # Parse span (e.g., "5m span", "span 5m")
+    span_match = re.search(r"(?:span\s+)?(\d+(?:\.\d+)?)\s*m(?:\s+span)?", msg_lower)
+    if span_match and "mm" not in msg_lower[max(0, span_match.start()-5):span_match.end()+5]:
+        updated_params["span_m"] = float(span_match.group(1))
+        parsed_items.append(f"Span: {span_match.group(1)}m")
+
+    # Parse concrete grade (e.g., "M25", "M30 concrete")
+    grade_match = re.search(r"m\s*(\d+)\s*(?:concrete)?", msg_lower)
+    if grade_match and int(grade_match.group(1)) in [20, 25, 30, 35, 40]:
+        updated_params["fck"] = int(grade_match.group(1))
+        parsed_items.append(f"Concrete: M{grade_match.group(1)}")
+
+    parsed_desc = ", ".join(parsed_items) if parsed_items else "Using current parameters"
+    return updated_params, parsed_desc
+
+
 def simulate_ai_response(user_message: str) -> str:
     """
     Simulate AI response when OpenAI is not available.
@@ -169,24 +252,30 @@ def simulate_ai_response(user_message: str) -> str:
 
     # Check for design request
     if any(word in msg_lower for word in ["design", "beam", "moment", "shear"]):
-        # Extract numbers if present (re imported at module level)
-        numbers = re.findall(r"(\d+(?:\.\d+)?)\s*(?:kn|knm|kn·m|mm|m)", msg_lower)
+        # Parse user input for parameters
+        updated_params, parsed_desc = _parse_design_request(msg_lower, st.session_state.design_params)
 
-        # Run design with current parameters
-        result = run_design(st.session_state.design_params)
+        # Update session state with parsed parameters
+        st.session_state.design_params = updated_params
+
+        # Run design with updated parameters
+        result = run_design(updated_params)
 
         if result.get("success", False):
             st.session_state.current_design = result.get("result")
 
-            response = f"""I've designed a beam for your requirements:
+            # Show what was parsed
+            parsed_info = f"\n📝 *Parsed from your request: {parsed_desc}*\n" if parsed_desc != "Using current parameters" else ""
 
+            response = f"""I've designed a beam for your requirements:
+{parsed_info}
 **Design Summary:**
 - Section: **{result.get('section', 'N/A')}**
 - Steel Area Required: **{result.get('ast_mm2', 0):.0f} mm²**
 - Utilization: **{result.get('utilization', 0):.1%}**
 - Status: {"✅ **SAFE**" if result.get('is_safe', False) else "❌ **UNSAFE**"}
 
-The design uses M{st.session_state.design_params.get('fck', 25)} concrete and Fe{st.session_state.design_params.get('fy', 500)} steel.
+The design uses M{updated_params.get('fck', 25)} concrete and Fe{updated_params.get('fy', 500)} steel.
 
 Would you like me to:
 1. 💰 Optimize for cost?
@@ -317,6 +406,8 @@ def get_ai_response(user_message: str) -> str:
 
     if client:
         try:
+            config = get_openai_config()
+
             # Build messages
             messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
@@ -326,30 +417,45 @@ def get_ai_response(user_message: str) -> str:
 
             messages.append({"role": "user", "content": user_message})
 
-            # Call OpenAI
+            # Call OpenAI with configured model
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=config["model"],
                 messages=messages,
-                max_tokens=1000,
-                temperature=0.7,
+                max_tokens=config["max_tokens"],
+                temperature=config["temperature"],
             )
 
             return response.choices[0].message.content
 
         except Exception as e:
-            # Fallback to simulation on error
-            return simulate_ai_response(user_message)
+            # Fallback to simulation on error with error info
+            return f"⚠️ API Error: {str(e)[:100]}... Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
     else:
         # No API key - use simulation
         return simulate_ai_response(user_message)
+
+
+def _handle_quick_action(message: str) -> None:
+    """Handle quick action button clicks - helper to avoid code duplication."""
+    st.session_state.ai_messages.append({"role": "user", "content": message})
+    response = get_ai_response(message)
+    st.session_state.ai_messages.append({"role": "assistant", "content": response})
+    st.rerun()
 
 
 def render_chat_panel():
     """Render the chat panel (left side)."""
     st.markdown("### 💬 Chat")
 
+    # Welcome message if no history
+    if len(st.session_state.ai_messages) == 0:
+        st.info(
+            "👋 **Welcome!** I'm your AI structural engineering assistant.\n\n"
+            "Try asking: *\"Design a beam for 150 kN·m moment\"* or click a quick action below."
+        )
+
     # Chat container with fixed height
-    chat_container = st.container(height=500)
+    chat_container = st.container(height=450)
 
     with chat_container:
         # Display message history
@@ -358,7 +464,7 @@ def render_chat_panel():
                 st.markdown(msg["content"])
 
     # Chat input - use traditional pattern for scanner compatibility
-    prompt = st.chat_input("Ask about beam design...")
+    prompt = st.chat_input("Ask about beam design, costs, IS 456 clauses...")
     if prompt:
         # Add user message
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
@@ -373,48 +479,26 @@ def render_chat_panel():
         # Rerun to show new messages
         st.rerun()
 
-    # Quick action buttons
+    # Quick action buttons with Clear option
     st.markdown("**Quick Actions:**")
-    cols = st.columns(4)
+    cols = st.columns(5)
     with cols[0]:
-        if st.button("🏗️ Design", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Design a beam for current parameters"}
-            )
-            response = get_ai_response("Design a beam for current parameters")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+        if st.button("🏗️ Design", use_container_width=True, help="Design a beam"):
+            _handle_quick_action("Design a beam for current parameters")
     with cols[1]:
-        if st.button("💰 Optimize", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Optimize the cost"}
-            )
-            response = get_ai_response("Optimize the cost")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+        if st.button("💰 Cost", use_container_width=True, help="Optimize cost"):
+            _handle_quick_action("Optimize the cost")
     with cols[2]:
-        if st.button("📊 Analyze", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Run smart analysis"}
-            )
-            response = get_ai_response("Run smart analysis")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+        if st.button("📊 Analyze", use_container_width=True, help="Smart analysis"):
+            _handle_quick_action("Run smart analysis")
     with cols[3]:
-        if st.button("🎨 3D View", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Show 3D view"}
-            )
-            response = get_ai_response("Show 3D view")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
+        if st.button("🎨 3D", use_container_width=True, help="Show 3D view"):
+            _handle_quick_action("Show 3D view")
+    with cols[4]:
+        if st.button("🗑️ Clear", use_container_width=True, help="Clear chat"):
+            st.session_state.ai_messages = []
+            st.session_state.current_design = None
+            st.session_state.smart_dashboard = None
             st.rerun()
 
 
@@ -431,14 +515,18 @@ def render_workspace_panel():
             design = st.session_state.current_design
             params = st.session_state.design_params
 
+            # Get dimensions from params (not design.geometry which doesn't exist)
+            b_mm = params.get("b_mm", 300)
+            D_mm = params.get("D_mm", 500)
+
             col1, col2 = st.columns(2)
 
             with col1:
-                st.metric("Section", f"{design.geometry.b_mm}×{design.geometry.D_mm}mm")
+                st.metric("Section", f"{b_mm}×{D_mm}mm")
                 st.metric(
                     "Concrete",
-                    f"M{params['fck']}",
-                    help=f"fck = {params['fck']} N/mm²",
+                    f"M{params.get('fck', 25)}",
+                    help=f"fck = {params.get('fck', 25)} N/mm²",
                 )
 
             with col2:
@@ -449,23 +537,25 @@ def render_workspace_panel():
                     delta_color="normal" if design.is_ok else "inverse",
                 )
                 st.metric(
-                    "Steel", f"Fe{params['fy']}", help=f"fy = {params['fy']} N/mm²"
+                    "Steel", f"Fe{params.get('fy', 500)}", help=f"fy = {params.get('fy', 500)} N/mm²"
                 )
 
             st.divider()
 
             st.markdown("**Flexure Design:**")
             st.write(
-                f"- Steel Required: **{design.flexure.ast_required_mm2:.0f} mm²**"
+                f"- Steel Required: **{design.flexure.ast_required:.0f} mm²**"
             )
-            st.write(f"- Min Steel: {design.flexure.ast_min_mm2:.0f} mm²")
-            st.write(f"- Max Steel: {design.flexure.ast_max_mm2:.0f} mm²")
+            st.write(f"- Section Type: {design.flexure.section_type.value}")
+            st.write(f"- Mu,lim: {design.flexure.mu_lim:.1f} kN·m")
 
             if design.shear:
                 st.markdown("**Shear Design:**")
-                st.write(f"- Status: **{design.shear.shear_status}**")
-                st.write(f"- τv = {design.shear.tau_v_nmm2:.2f} N/mm²")
-                st.write(f"- τc = {design.shear.tau_c_nmm2:.2f} N/mm²")
+                st.write(f"- Status: **{'SAFE' if design.shear.is_safe else 'UNSAFE'}**")
+                st.write(f"- τv = {design.shear.tv:.2f} N/mm²")
+                st.write(f"- τc = {design.shear.tc:.2f} N/mm²")
+                if design.shear.spacing > 0:
+                    st.write(f"- Stirrup Spacing: {design.shear.spacing:.0f} mm")
         else:
             st.info(
                 "No design yet. Ask the AI to design a beam or click 🏗️ Design button."
@@ -509,11 +599,15 @@ def render_workspace_panel():
             design = st.session_state.current_design
             params = st.session_state.design_params
 
+            # Get dimensions from params (not design.geometry)
+            b_mm = params.get("b_mm", 300)
+            D_mm = params.get("D_mm", 500)
+
             try:
                 fig = create_beam_3d_figure(
-                    b_mm=design.geometry.b_mm,
-                    D_mm=design.geometry.D_mm,
-                    span_mm=params["span_m"] * 1000,
+                    b_mm=b_mm,
+                    D_mm=D_mm,
+                    span_mm=params.get("span_m", 5.0) * 1000,
                     title="Beam 3D Preview",
                 )
                 st.plotly_chart(fig, use_container_width=True)
@@ -619,10 +713,11 @@ def main():
         "Your intelligent structural engineering companion | IS 456 Beam Design"
     )
 
-    # API status indicator
+    # API status indicator with model info
     client = get_openai_client()
     if client:
-        st.success("🟢 Connected to OpenAI GPT-4", icon="✅")
+        config = get_openai_config()
+        st.success(f"🟢 Connected to OpenAI **{config['model']}**", icon="✅")
     else:
         st.info(
             "🟡 Using local SmartDesigner (Add OPENAI_API_KEY for full AI features)",
