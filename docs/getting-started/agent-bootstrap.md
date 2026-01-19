@@ -120,12 +120,12 @@ Keep public signatures stable unless explicitly approved.
 
 ### Quick Automation
 ```bash
-python scripts/fix_broken_links.py --fix      # Fix links
-python scripts/validate_folder_structure.py   # Check structure
-python scripts/check_doc_versions.py --fix    # Fix versions
-python scripts/check_repo_hygiene.py          # Hygiene audit
-python scripts/safe_file_move.py --dry-run old.md new.md
-python scripts/safe_file_delete.py --dry-run old.md
+.venv/bin/python scripts/fix_broken_links.py --fix      # Fix links
+.venv/bin/python scripts/validate_folder_structure.py   # Check structure
+.venv/bin/python scripts/check_doc_versions.py --fix    # Fix versions
+.venv/bin/python scripts/check_repo_hygiene.py          # Hygiene audit
+.venv/bin/python scripts/safe_file_move.py --dry-run old.md new.md
+.venv/bin/python scripts/safe_file_delete.py --dry-run old.md
 ```
 
 ---

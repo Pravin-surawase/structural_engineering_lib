@@ -14,7 +14,7 @@ Guides for developers and maintainers of the structural engineering library. | I
 | [agent-onboarding-message.md](agent-onboarding-message.md) | > **Copy-paste this exact message to any new agent starting work on this project | 2026-01-08 | 103 |
 | [background-agent-guide.md](background-agent-guide.md) | - **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatG | 2026-01-13 | 585 |
 | [changelog-deprecation-template.md](changelog-deprecation-template.md) | This template guides you when adding deprecation entries to CHANGELOG.md. Deprec | 2026-01-08 | 177 |
-| [commit-message-conventions.md](commit-message-conventions.md) |  <type>(<scope>): <subject> | 2026-01-17 | 208 |
+| [commit-message-conventions.md](commit-message-conventions.md) |  <type>(<scope>): <subject> | 2026-01-19 | 208 |
 | [development-guide.md](development-guide.md) | 1. Overview 2. Project Structure | 2026-01-15 | 1512 |
 | [doc-template.md](doc-template.md) | Copy this header to new documentation files and fill in the metadata. - owner: W | 2026-01-13 | 83 |
 | [docstring-style-guide.md](docstring-style-guide.md) | > **Purpose:** Standard docstring format for all Python modules in structural_li | 2026-01-13 | 368 |

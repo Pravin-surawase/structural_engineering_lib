@@ -9,7 +9,7 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 
 | File | Description | Updated | Lines |
 |------|-------------|---------|-------|
-| [3d-json-contract.md](3d-json-contract.md) | > **Version:** 1.0.0 > **Purpose:** Defines the JSON schema for exchanging 3D be | 2026-01-16 | 441 |
+| [3d-json-contract.md](3d-json-contract.md) | > **Version:** 1.0.0 > **Purpose:** Defines the JSON schema for exchanging 3D be | 2026-01-19 | 441 |
 | [3d-visualization-performance.md](3d-visualization-performance.md) | This document provides performance benchmarks for the 3D beam visualization modu | 2026-01-17 | 165 |
 | [agent-automation-pitfalls.md](agent-automation-pitfalls.md) | <!-- lint-ignore-git --> > ⚠️ **Note:** This document includes manual git exampl | 2026-01-17 | 624 |
 | [api-stability.md](api-stability.md) | > This document defines which parts of the library are safe to depend on and whi | 2026-01-14 | 396 |

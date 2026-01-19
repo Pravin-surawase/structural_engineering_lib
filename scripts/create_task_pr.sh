@@ -40,11 +40,35 @@ fi
 
 # Ensure clean state (auto-stash if needed)
 AUTO_STASHED="false"
+STASH_REF=""
+RESTORED="false"
+restore_stash() {
+    if [[ "$AUTO_STASHED" == "true" && "$RESTORED" == "false" && -n "$STASH_REF" ]]; then
+        RESTORED="true"
+        echo -e "${YELLOW}→ Restoring auto-stashed changes...${NC}"
+        if git stash list --format=%H | grep -q "$STASH_REF"; then
+            if ! git stash pop "$STASH_REF" >/dev/null; then
+                echo -e "${RED}✗ Auto-stash restore failed${NC}"
+                echo "Resolve stash conflicts, then re-run create_task_pr.sh"
+                return 1
+            fi
+        else
+            echo -e "${YELLOW}⚠ Auto-stash not found (${STASH_REF}); nothing to restore${NC}"
+        fi
+    fi
+}
+trap 'restore_stash' EXIT
+
 if [[ -n $(git status --porcelain) ]]; then
     echo -e "${YELLOW}⚠ Working tree has uncommitted changes${NC}"
     echo "→ Auto-stashing local changes before branch creation..."
+    PRE_STASH_REF=$(git stash list --format=%H | head -1)
     git stash push -u -m "create_task_pr auto-stash" >/dev/null
-    AUTO_STASHED="true"
+    POST_STASH_REF=$(git stash list --format=%H | head -1)
+    if [[ -n "$POST_STASH_REF" && "$POST_STASH_REF" != "$PRE_STASH_REF" ]]; then
+        AUTO_STASHED="true"
+        STASH_REF="$POST_STASH_REF"
+    fi
 fi
 
 # Pull latest
@@ -57,12 +81,7 @@ echo "→ Creating branch: $BRANCH_NAME"
 git checkout -b "$BRANCH_NAME"
 
 if [[ "$AUTO_STASHED" == "true" ]]; then
-    echo -e "${YELLOW}→ Restoring auto-stashed changes...${NC}"
-    if ! git stash pop >/dev/null; then
-        echo -e "${RED}✗ Auto-stash restore failed${NC}"
-        echo "Resolve stash conflicts, then re-run create_task_pr.sh"
-        exit 1
-    fi
+    restore_stash || exit 1
 fi
 
 echo ""

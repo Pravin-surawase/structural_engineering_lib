@@ -8,7 +8,7 @@
       "name": "3d-json-contract.md",
       "title": "",
       "description": "> **Version:** 1.0.0 > **Purpose:** Defines the JSON schema for exchanging 3D beam geometry between Python (structural_lib) and JavaScript/TypeScript (Three.js viewer).",
-      "last_updated": "2026-01-16",
+      "last_updated": "2026-01-19",
       "size_lines": 441,
       "audience": "Developers, AI Agents",
       "status": "Production Ready"
