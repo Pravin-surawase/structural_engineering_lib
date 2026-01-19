@@ -23,6 +23,10 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
 ]
 
+dependencies = [
+  "pydantic>=2.0",  # Canonical data model validation (TASK-DATA-001)
+]
+
 [project.urls]
 Homepage = "https://github.com/Pravin-surawase/structural_engineering_lib"
 Repository = "https://github.com/Pravin-surawase/structural_engineering_lib"

@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-21 (Session 39 - 3D Visualization Phase 2)
+**Updated:** 2026-01-19 (Session 40 - Canonical Data Format)
 
-> **Session 39 Progress:** TASK-3D-002 - Implementing real 3D building coordinates for ETABS import. Phase 1 complete, Phase 2 in progress.
+> **Session 40 Progress:** Fixed PR #381 CI failures. Starting TASK-DATA-001 for future-proof canonical data format architecture.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -28,7 +28,31 @@
 
 ## Active
 
-### TASK-3D-002: ETABS Real 3D Building Visualization 🚀 IN PROGRESS
+### TASK-DATA-001: Canonical Data Format Architecture 🚀 IN PROGRESS
+
+> **Goal:** Create stable, AI-friendly Pydantic-based canonical data format for all inputs
+> **Timeline:** Session 40 (2026-01-19)
+> **Architecture:** [canonical-data-format.md](architecture/canonical-data-format.md)
+> **Rationale:** CSV input formats vary between ETABS versions - need stable internal format
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-DATA-001.1** | Create architecture document | MAIN | 1h | 🔴 CRITICAL | ✅ Done |
+| **TASK-DATA-001.2** | Implement Pydantic models (models.py) | MAIN | 2h | 🔴 CRITICAL | 📋 In Progress |
+| **TASK-DATA-001.3** | Add unit tests for all models | MAIN | 1h | 🔴 HIGH | 📋 TODO |
+| **TASK-DATA-001.4** | Create ETABS adapter | MAIN | 2h | 🟠 HIGH | 📋 TODO |
+| **TASK-DATA-001.5** | Update etabs_import.py to use new models | MAIN | 2h | 🟠 MEDIUM | 📋 TODO |
+| **TASK-DATA-001.6** | Add JSON serialization tests | MAIN | 30m | 🟡 LOW | 📋 TODO |
+
+**Key Benefits:**
+- **Validation at boundaries:** Clear errors for invalid data
+- **JSON Schema generation:** Self-documenting APIs
+- **AI-Agent friendly:** Single format to understand
+- **Future-proof:** Adapters handle format variations
+
+---
+
+### TASK-3D-002: ETABS Real 3D Building Visualization ✅ PR #381 (CI Fixed)
 
 > **Goal:** Replace fake grid 3D with real building coordinates from frames_geometry.csv
 > **Timeline:** Session 38-39 (2026-01-20 to 2026-01-21)
