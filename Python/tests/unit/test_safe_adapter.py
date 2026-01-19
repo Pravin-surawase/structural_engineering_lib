@@ -16,7 +16,6 @@ import pytest
 from structural_lib.adapters import SAFEAdapter
 from structural_lib.models import BeamForces, BeamGeometry
 
-
 # =============================================================================
 # Test Fixtures
 # =============================================================================

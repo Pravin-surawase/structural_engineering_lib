@@ -505,7 +505,7 @@ class TestMergeForcesAndGeometry:
 
         # Should have dict mapping beam_id to (envelope, geometry or None)
         assert isinstance(merged, dict)
-        for key, value in merged.items():
+        for _key, value in merged.items():
             envelope, geom = value
             assert isinstance(envelope, ETABSEnvelopeResult)
             # geom might be None if beam_id doesn't match

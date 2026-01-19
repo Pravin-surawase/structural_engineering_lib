@@ -34,7 +34,6 @@ from structural_lib.models import (
     SectionProperties,
 )
 
-
 # =============================================================================
 # Point3D Tests
 # =============================================================================
@@ -111,9 +110,7 @@ class TestSectionProperties:
 
     def test_section_effective_depth(self):
         """Test effective depth calculation."""
-        section = SectionProperties(
-            width_mm=300, depth_mm=500, cover_mm=40
-        )
+        section = SectionProperties(width_mm=300, depth_mm=500, cover_mm=40)
         # d = D - cover - bar_dia/2 = 500 - 40 - 12.5 = 447.5
         assert section.effective_depth_mm == 447.5
 

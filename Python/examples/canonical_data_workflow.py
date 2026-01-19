@@ -18,7 +18,6 @@ from __future__ import annotations
 from pathlib import Path
 
 # Import the new canonical data format modules
-from structural_lib.adapters import ETABSAdapter, ManualInputAdapter
 from structural_lib.models import (
     BeamBatchInput,
     BeamBatchResult,
@@ -31,13 +30,9 @@ from structural_lib.models import (
     SectionProperties,
 )
 from structural_lib.serialization import (
-    cache_exists,
     generate_all_schemas,
     get_cache_metadata,
-    load_batch_input,
     load_geometry,
-    save_batch_input,
-    save_batch_result,
     save_geometry,
 )
 
@@ -202,7 +197,7 @@ def example_json_caching(tmp_dir: Path) -> None:
 
     # Check cache metadata without loading
     metadata = get_cache_metadata(cache_file)
-    print(f"\nCache metadata:")
+    print("\nCache metadata:")
     print(f"  Model type: {metadata['model_type']}")
     print(f"  Count: {metadata['count']}")
     print(f"  Created: {metadata['created_at']}")
@@ -261,7 +256,7 @@ def example_design_results() -> None:
     # Create batch result
     batch_result = BeamBatchResult.from_results(results)
 
-    print(f"Design Summary:")
+    print("Design Summary:")
     print(f"  Total beams: {batch_result.total_beams}")
     print(f"  Passed: {batch_result.passed}")
     print(f"  Failed: {batch_result.failed}")

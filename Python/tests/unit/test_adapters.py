@@ -10,10 +10,10 @@ Tests cover:
 from __future__ import annotations
 
 import csv
-import tempfile
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from structural_lib.adapters import (
     ETABSAdapter,
@@ -24,9 +24,7 @@ from structural_lib.models import (
     BeamForces,
     BeamGeometry,
     DesignDefaults,
-    Point3D,
 )
-
 
 # =============================================================================
 # Test Fixtures
@@ -51,19 +49,64 @@ def sample_geometry_csv(tmp_path: Path) -> Path:
     csv_path = tmp_path / "frames_geometry.csv"
 
     headers = [
-        "Story", "Label", "UniqueName", "ObjType", "AnalSect",
-        "XI", "YI", "ZI", "XJ", "YJ", "ZJ", "Angle"
+        "Story",
+        "Label",
+        "UniqueName",
+        "ObjType",
+        "AnalSect",
+        "XI",
+        "YI",
+        "ZI",
+        "XJ",
+        "YJ",
+        "ZJ",
+        "Angle",
     ]
 
     rows = [
-        ["Ground", "B1", "GUID1", "Beam", "B230X450M25",
-         "0", "0", "0", "5", "0", "0", "0"],
-        ["Ground", "B2", "GUID2", "Beam", "B300X600M30",
-         "5", "0", "0", "10", "0", "0", "0"],
-        ["Ground", "C1", "GUID3", "Column", "C400X400M40",
-         "0", "0", "0", "0", "0", "3", "0"],
-        ["First", "B3", "GUID4", "Beam", "B230X450",
-         "0", "0", "3", "5", "0", "3", "0"],
+        [
+            "Ground",
+            "B1",
+            "GUID1",
+            "Beam",
+            "B230X450M25",
+            "0",
+            "0",
+            "0",
+            "5",
+            "0",
+            "0",
+            "0",
+        ],
+        [
+            "Ground",
+            "B2",
+            "GUID2",
+            "Beam",
+            "B300X600M30",
+            "5",
+            "0",
+            "0",
+            "10",
+            "0",
+            "0",
+            "0",
+        ],
+        [
+            "Ground",
+            "C1",
+            "GUID3",
+            "Column",
+            "C400X400M40",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "3",
+            "0",
+        ],
+        ["First", "B3", "GUID4", "Beam", "B230X450", "0", "0", "3", "5", "0", "3", "0"],
     ]
 
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
@@ -79,9 +122,7 @@ def sample_forces_csv(tmp_path: Path) -> Path:
     """Create sample ETABS forces CSV."""
     csv_path = tmp_path / "beam_forces.csv"
 
-    headers = [
-        "Story", "Label", "Output Case", "Station", "M3", "V2", "P"
-    ]
+    headers = ["Story", "Label", "Output Case", "Station", "M3", "V2", "P"]
 
     rows = [
         # Beam B1 with multiple stations
@@ -110,13 +151,22 @@ def alternate_column_geometry_csv(tmp_path: Path) -> Path:
 
     # Use alternate column names
     headers = [
-        "Level", "Frame", "Unique Name", "Type", "Section",
-        "X1", "Y1", "Z1", "X2", "Y2", "Z2", "Rotation"
+        "Level",
+        "Frame",
+        "Unique Name",
+        "Type",
+        "Section",
+        "X1",
+        "Y1",
+        "Z1",
+        "X2",
+        "Y2",
+        "Z2",
+        "Rotation",
     ]
 
     rows = [
-        ["Story1", "FB1", "U1", "Beam", "RC250x500",
-         "0", "0", "3", "6", "0", "3", "0"],
+        ["Story1", "FB1", "U1", "Beam", "RC250x500", "0", "0", "3", "6", "0", "3", "0"],
     ]
 
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
@@ -187,9 +237,7 @@ class TestETABSAdapterCanHandle:
 class TestETABSAdapterLoadGeometry:
     """Test geometry loading from CSV."""
 
-    def test_loads_beams(
-        self, etabs_adapter: ETABSAdapter, sample_geometry_csv: Path
-    ):
+    def test_loads_beams(self, etabs_adapter: ETABSAdapter, sample_geometry_csv: Path):
         """Should load beam geometry from CSV."""
         beams = etabs_adapter.load_geometry(sample_geometry_csv)
 
@@ -289,9 +337,7 @@ class TestETABSAdapterLoadGeometry:
 class TestETABSAdapterLoadForces:
     """Test force loading from CSV."""
 
-    def test_loads_forces(
-        self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path
-    ):
+    def test_loads_forces(self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path):
         """Should load beam forces from CSV."""
         forces = etabs_adapter.load_forces(sample_forces_csv)
 
@@ -321,9 +367,7 @@ class TestETABSAdapterLoadForces:
         # Stations: 80, 20, -90 -> max abs = 90
         assert b1_forces.vu_kn == 90
 
-    def test_station_count(
-        self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path
-    ):
+    def test_station_count(self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path):
         """Should count stations per beam/case."""
         forces = etabs_adapter.load_forces(sample_forces_csv)
 
@@ -345,9 +389,7 @@ class TestETABSAdapterLoadForces:
         assert "1.2DL+1.5LL" in load_cases
         assert "DL" in load_cases
 
-    def test_beam_id_format(
-        self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path
-    ):
+    def test_beam_id_format(self, etabs_adapter: ETABSAdapter, sample_forces_csv: Path):
         """Should format beam ID as label_story."""
         forces = etabs_adapter.load_forces(sample_forces_csv)
 
@@ -486,7 +528,7 @@ class TestManualInputAdapterGeometry:
             "point2": {"x": 5, "y": 0, "z": 0},
         }
 
-        with pytest.raises(Exception):  # Pydantic validation error
+        with pytest.raises(ValidationError):
             ManualInputAdapter.geometry_from_dict(data)
 
 
@@ -519,7 +561,7 @@ class TestManualInputAdapterForces:
             "vu_kn": 50,
         }
 
-        with pytest.raises(Exception):  # Pydantic validation error
+        with pytest.raises(ValidationError):
             ManualInputAdapter.forces_from_dict(data)
 
 
@@ -569,5 +611,5 @@ class TestAdapterIntegration:
         """Loaded models should be immutable."""
         beams = etabs_adapter.load_geometry(sample_geometry_csv)
 
-        with pytest.raises(Exception):  # Frozen model
+        with pytest.raises(ValidationError):  # Frozen model
             beams[0].story = "Modified"

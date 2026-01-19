@@ -43,7 +43,6 @@ from .models import (
     DesignDefaults,
 )
 
-
 __all__ = [
     "save_geometry",
     "load_geometry",
@@ -140,10 +139,7 @@ def save_geometry(
     }
     data = {
         "metadata": _create_metadata("BeamGeometry", len(beams)),
-        "beams": [
-            b.model_dump(mode="json", exclude=exclude_fields)
-            for b in beams
-        ],
+        "beams": [b.model_dump(mode="json", exclude=exclude_fields) for b in beams],
     }
 
     with open(path, "w", encoding="utf-8") as f:
@@ -258,8 +254,7 @@ def save_batch_input(
         "section": {"effective_depth_mm"},
     }
     beams_data = [
-        b.model_dump(mode="json", exclude=exclude_fields)
-        for b in batch.beams
+        b.model_dump(mode="json", exclude=exclude_fields) for b in batch.beams
     ]
 
     forces_data = [f.model_dump(mode="json") for f in batch.forces]
@@ -322,8 +317,7 @@ def save_batch_result(
 
     # Exclude computed fields (pass_rate, and is_acceptable in each result)
     results_data = [
-        r.model_dump(mode="json", exclude={"is_acceptable"})
-        for r in result.results
+        r.model_dump(mode="json", exclude={"is_acceptable"}) for r in result.results
     ]
     data = {
         "metadata": _create_metadata("BeamBatchResult", result.total_beams),

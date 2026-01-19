@@ -149,7 +149,7 @@ class FrameGeometry:
         """Check if element is vertical (column-like)."""
         dx = abs(self.point2_x - self.point1_x)
         dy = abs(self.point2_y - self.point1_y)
-        dz = abs(self.point2_z - self.point1_z)
+        abs(self.point2_z - self.point1_z)
         horizontal_length = (dx**2 + dy**2) ** 0.5
         return horizontal_length < 0.01  # < 10mm horizontal movement
 

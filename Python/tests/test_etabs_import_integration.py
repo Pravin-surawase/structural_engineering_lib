@@ -18,12 +18,10 @@ from structural_lib.etabs_import import (
     envelopes_to_beam_forces,
     frames_to_beam_geometries,
     load_frames_geometry,
-    normalize_etabs_forces,
     to_beam_forces,
     to_beam_geometry,
 )
 from structural_lib.models import BeamForces, BeamGeometry, FrameType
-
 
 # =============================================================================
 # Test Fixtures

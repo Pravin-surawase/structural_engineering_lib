@@ -35,7 +35,6 @@ from structural_lib.serialization import (
     save_geometry,
 )
 
-
 # =============================================================================
 # Test Fixtures
 # =============================================================================
@@ -167,9 +166,7 @@ def sample_batch_result() -> BeamBatchResult:
 class TestSaveGeometry:
     """Test save_geometry function."""
 
-    def test_saves_to_file(
-        self, tmp_path: Path, sample_beams: list[BeamGeometry]
-    ):
+    def test_saves_to_file(self, tmp_path: Path, sample_beams: list[BeamGeometry]):
         """Should create JSON file."""
         filepath = tmp_path / "beams.json"
         save_geometry(sample_beams, filepath)
@@ -185,9 +182,7 @@ class TestSaveGeometry:
 
         assert filepath.exists()
 
-    def test_saves_all_beams(
-        self, tmp_path: Path, sample_beams: list[BeamGeometry]
-    ):
+    def test_saves_all_beams(self, tmp_path: Path, sample_beams: list[BeamGeometry]):
         """Should save all beam data."""
         filepath = tmp_path / "beams.json"
         save_geometry(sample_beams, filepath)
@@ -197,9 +192,7 @@ class TestSaveGeometry:
 
         assert len(data["beams"]) == 3
 
-    def test_includes_metadata(
-        self, tmp_path: Path, sample_beams: list[BeamGeometry]
-    ):
+    def test_includes_metadata(self, tmp_path: Path, sample_beams: list[BeamGeometry]):
         """Should include metadata."""
         filepath = tmp_path / "beams.json"
         save_geometry(sample_beams, filepath)
@@ -212,9 +205,7 @@ class TestSaveGeometry:
         assert data["metadata"]["count"] == 3
         assert "created_at" in data["metadata"]
 
-    def test_pretty_formatting(
-        self, tmp_path: Path, sample_beams: list[BeamGeometry]
-    ):
+    def test_pretty_formatting(self, tmp_path: Path, sample_beams: list[BeamGeometry]):
         """Default should be pretty formatted."""
         filepath = tmp_path / "beams.json"
         save_geometry(sample_beams, filepath)
@@ -223,9 +214,7 @@ class TestSaveGeometry:
         assert "\n" in content  # Has newlines
         assert "  " in content  # Has indentation
 
-    def test_compact_formatting(
-        self, tmp_path: Path, sample_beams: list[BeamGeometry]
-    ):
+    def test_compact_formatting(self, tmp_path: Path, sample_beams: list[BeamGeometry]):
         """Should support compact formatting."""
         filepath = tmp_path / "beams.json"
         save_geometry(sample_beams, filepath, pretty=False)
@@ -238,9 +227,7 @@ class TestSaveGeometry:
 class TestLoadGeometry:
     """Test load_geometry function."""
 
-    def test_loads_saved_beams(
-        self, tmp_path: Path, sample_beams: list[BeamGeometry]
-    ):
+    def test_loads_saved_beams(self, tmp_path: Path, sample_beams: list[BeamGeometry]):
         """Should load beams that were saved."""
         filepath = tmp_path / "beams.json"
         save_geometry(sample_beams, filepath)
@@ -295,9 +282,7 @@ class TestLoadGeometry:
         with pytest.raises(FileNotFoundError):
             load_geometry(tmp_path / "nonexistent.json")
 
-    def test_wrong_model_type(
-        self, tmp_path: Path, sample_forces: list[BeamForces]
-    ):
+    def test_wrong_model_type(self, tmp_path: Path, sample_forces: list[BeamForces]):
         """Should raise ValueError for wrong model type."""
         filepath = tmp_path / "forces.json"
         save_forces(sample_forces, filepath)
@@ -314,18 +299,14 @@ class TestLoadGeometry:
 class TestSaveForces:
     """Test save_forces function."""
 
-    def test_saves_to_file(
-        self, tmp_path: Path, sample_forces: list[BeamForces]
-    ):
+    def test_saves_to_file(self, tmp_path: Path, sample_forces: list[BeamForces]):
         """Should create JSON file."""
         filepath = tmp_path / "forces.json"
         save_forces(sample_forces, filepath)
 
         assert filepath.exists()
 
-    def test_includes_metadata(
-        self, tmp_path: Path, sample_forces: list[BeamForces]
-    ):
+    def test_includes_metadata(self, tmp_path: Path, sample_forces: list[BeamForces]):
         """Should include metadata."""
         filepath = tmp_path / "forces.json"
         save_forces(sample_forces, filepath)
@@ -339,9 +320,7 @@ class TestSaveForces:
 class TestLoadForces:
     """Test load_forces function."""
 
-    def test_loads_saved_forces(
-        self, tmp_path: Path, sample_forces: list[BeamForces]
-    ):
+    def test_loads_saved_forces(self, tmp_path: Path, sample_forces: list[BeamForces]):
         """Should load forces that were saved."""
         filepath = tmp_path / "forces.json"
         save_forces(sample_forces, filepath)
@@ -375,9 +354,7 @@ class TestLoadForces:
 class TestSaveBatchInput:
     """Test save_batch_input function."""
 
-    def test_saves_to_file(
-        self, tmp_path: Path, sample_batch_input: BeamBatchInput
-    ):
+    def test_saves_to_file(self, tmp_path: Path, sample_batch_input: BeamBatchInput):
         """Should create JSON file."""
         filepath = tmp_path / "batch_input.json"
         save_batch_input(sample_batch_input, filepath)
@@ -420,9 +397,7 @@ class TestLoadBatchInput:
 class TestSaveBatchResult:
     """Test save_batch_result function."""
 
-    def test_saves_to_file(
-        self, tmp_path: Path, sample_batch_result: BeamBatchResult
-    ):
+    def test_saves_to_file(self, tmp_path: Path, sample_batch_result: BeamBatchResult):
         """Should create JSON file."""
         filepath = tmp_path / "batch_result.json"
         save_batch_result(sample_batch_result, filepath)

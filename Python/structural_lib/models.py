@@ -42,7 +42,6 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 
-
 __all__ = [
     # Enums
     "FrameType",
@@ -175,16 +174,12 @@ class BeamGeometry(BaseModel):
     id: str = Field(..., min_length=1, description="Unique identifier")
     label: str = Field(..., min_length=1, description="User-friendly label")
     story: str = Field(..., min_length=1, description="Story/level name")
-    frame_type: FrameType = Field(
-        default=FrameType.BEAM, description="Element type"
-    )
+    frame_type: FrameType = Field(default=FrameType.BEAM, description="Element type")
     point1: Point3D = Field(..., description="Start point (meters)")
     point2: Point3D = Field(..., description="End point (meters)")
     section: SectionProperties = Field(..., description="Section properties")
     angle: float = Field(0.0, ge=-180, le=180, description="Rotation angle (degrees)")
-    source_id: str | None = Field(
-        None, description="Original ID from source system"
-    )
+    source_id: str | None = Field(None, description="Original ID from source system")
 
     @computed_field
     @property
