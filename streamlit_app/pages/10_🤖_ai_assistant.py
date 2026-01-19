@@ -527,6 +527,14 @@ def get_ai_response(user_message: str) -> str:
         return simulate_ai_response(user_message)
 
 
+def _handle_quick_action(message: str) -> None:
+    """Handle quick action button clicks."""
+    st.session_state.ai_messages.append({"role": "user", "content": message})
+    response = get_ai_response(message)
+    st.session_state.ai_messages.append({"role": "assistant", "content": response})
+    st.rerun()
+
+
 def render_chat_panel():
     """Render the chat panel - compact design with welcome message."""
     # Welcome message if no history
@@ -591,14 +599,6 @@ def render_chat_panel():
         # Add assistant response
         st.session_state.ai_messages.append({"role": "assistant", "content": response})
         st.rerun()
-
-
-def _handle_quick_action(message: str) -> None:
-    """Handle quick action button clicks."""
-    st.session_state.ai_messages.append({"role": "user", "content": message})
-    response = get_ai_response(message)
-    st.session_state.ai_messages.append({"role": "assistant", "content": response})
-    st.rerun()
 
 
 def render_workspace_panel():
