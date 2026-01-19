@@ -48,16 +48,54 @@ from structural_lib import api as structural_api
 from structural_lib.insights import SmartDesigner
 
 
+# Default model configuration
+DEFAULT_MODEL = "gpt-4o-mini"  # Fast and cost-effective for engineering tasks
+DEFAULT_TEMPERATURE = 0.7
+DEFAULT_MAX_TOKENS = 1500
+
+
+def get_openai_config() -> dict[str, Any]:
+    """Get OpenAI configuration from secrets.
+
+    Reads from secrets.toml:
+        OPENAI_API_KEY = "sk-..."
+        [openai]
+        model = "gpt-4o-mini"  # or gpt-4, gpt-4o, etc.
+        temperature = 0.7
+        max_tokens = 1500
+
+    Returns dict with api_key, model, temperature, max_tokens.
+    """
+    config = {
+        "api_key": None,
+        "model": DEFAULT_MODEL,
+        "temperature": DEFAULT_TEMPERATURE,
+        "max_tokens": DEFAULT_MAX_TOKENS,
+    }
+
+    # Get API key (top-level secret)
+    config["api_key"] = st.secrets.get("OPENAI_API_KEY", None)
+
+    # Get optional model settings from [openai] section
+    if "openai" in st.secrets:
+        openai_config = st.secrets["openai"]
+        config["model"] = openai_config.get("model", DEFAULT_MODEL)
+        config["temperature"] = openai_config.get("temperature", DEFAULT_TEMPERATURE)
+        config["max_tokens"] = int(openai_config.get("max_tokens", DEFAULT_MAX_TOKENS))
+
+    return config
+
+
 def get_openai_client() -> OpenAI | None:
     """Get OpenAI client if API key is available."""
     if not OPENAI_AVAILABLE:
         return None
 
-    api_key = st.secrets.get("OPENAI_API_KEY", None)
-    if not api_key:
+    config = get_openai_config()
+    if not config["api_key"]:
         return None
 
-    return OpenAI(api_key=api_key)
+    return OpenAI(api_key=config["api_key"])
 
 
 # System prompt for structural engineering assistant
@@ -331,6 +369,8 @@ def get_ai_response(user_message: str) -> str:
 
     if client:
         try:
+            config = get_openai_config()
+
             # Build messages
             messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
@@ -340,19 +380,19 @@ def get_ai_response(user_message: str) -> str:
 
             messages.append({"role": "user", "content": user_message})
 
-            # Call OpenAI
+            # Call OpenAI with configured model
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=config["model"],
                 messages=messages,
-                max_tokens=1000,
-                temperature=0.7,
+                max_tokens=config["max_tokens"],
+                temperature=config["temperature"],
             )
 
             return response.choices[0].message.content
 
         except Exception as e:
             # Fallback to simulation on error
-            return simulate_ai_response(user_message)
+            return f"⚠️ API Error: {str(e)[:100]}... Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
     else:
         # No API key - use simulation
         return simulate_ai_response(user_message)
@@ -644,7 +684,9 @@ def main():
     # API status indicator
     client = get_openai_client()
     if client:
-        st.success("🟢 Connected to OpenAI GPT-4", icon="✅")
+        config = get_openai_config()
+        model_name = config["model"]
+        st.success(f"🟢 Connected to OpenAI ({model_name})", icon="✅")
     else:
         st.info(
             "🟡 Using local SmartDesigner (Add OPENAI_API_KEY for full AI features)",
