@@ -493,7 +493,11 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Path / "string" creates new Path
             if isinstance(node.value.op, ast.Div):
                 left_name = self._extract_var_name(node.value.left)
-                if left_name in self.path_like_vars:
+                # Check direct variable OR complex Path expression
+                # e.g., Path(__file__).parent.parent / "folder"
+                if left_name in self.path_like_vars or self._is_path_expression(
+                    node.value.left
+                ):
                     is_path_assignment = True
 
         # Phase 8: Track path_var.parent and similar attribute accesses
