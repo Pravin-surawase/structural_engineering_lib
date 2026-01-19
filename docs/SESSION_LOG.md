@@ -4,6 +4,80 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-21 — Session 48: AI Assistant Bug Fixes & UI Redesign
+
+**Focus:** Fix runtime bugs in AI Assistant, improve UI, add ETABS integration
+
+**User Feedback:**
+- Error: `'ComplianceCaseResult' object has no attribute 'geometry'`
+- OpenAI model "gpt-5-mini" commented out (doesn't exist)
+- UI "too basic" — needs compact, professional design
+- Should read ETABS results from page 7 (Multi-Format Import)
+
+### Bug Fixes
+
+**Issue 1: ComplianceCaseResult Attribute Errors**
+- Root cause: Code assumed `result.geometry` exists — it doesn't
+- `design_beam_is456()` returns `ComplianceCaseResult` with `flexure`, `shear`, `is_ok`
+- Fixed: Use input `params` for dimensions, correct attribute names
+
+**Issue 2: OpenAI API Configuration**
+- Root cause: Hardcoded `model="gpt-4"`, user had invalid "gpt-5-mini"
+- Fixed: Added `get_openai_config()` to read from secrets.toml
+- Corrected user's config to `gpt-4o-mini`
+
+**Issue 3: GitHub Push Protection**
+- Added secrets.toml to .gitignore to prevent API key exposure
+
+### UI Redesign
+
+**New Features:**
+- Custom CSS with gradient header, status badges, mini-metrics
+- `render_compact_header()` — Professional header with model status badge
+- `render_quick_params_bar()` — Collapsible quick parameters
+- Welcome message for empty chat state
+- 45/55 layout split (was 40/60)
+- Quick action buttons: Design, Cost, Analyze, Clear
+
+**ETABS Integration:**
+- Added Import tab (tabs[4]) to workspace panel
+- Reads `mf_beams`, `mf_forces`, `mf_design_results` from session state
+- Beam selector with auto-population of design params
+- "Load into AI Chat" and "Analyze All Results" buttons
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `7a2a2181` | fix(ai): resolve ComplianceCaseResult attribute errors |
+| `b767581e` | feat(ai): add configurable OpenAI model with secrets.toml |
+| `38149184` | feat(ai): redesign UI with compact professional layout and ETABS integration |
+| `c2117321` | docs: update TASKS.md and 8-week plan with Session 48 progress |
+| `0d6bc638` | refactor(ai): move _handle_quick_action before usage for static analyzer |
+| *pending* | docs: Session 48 log and summary |
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py` — Bug fixes + UI redesign + ETABS import
+- `streamlit_app/.streamlit/secrets.toml.example` — Updated with model options
+- `.gitignore` — Added secrets.toml patterns
+- `docs/TASKS.md` — Marked TASK-AI-CHAT complete
+- `docs/planning/8-week-development-plan.md` — Updated Phase AI status
+
+### Validation
+
+- ✅ 3146 Python tests passed
+- ✅ No fragment API violations
+- ✅ Critical scanner issues resolved
+
+### Next Steps
+
+1. Finish PR for Session 48 changes
+2. Test ETABS integration end-to-end
+3. Add more quick action buttons if needed
+
+---
+
 ## 2026-01-20 — Session 47b (continued): AI Chat Implementation
 
 **Focus:** Implement ChatGPT-like AI assistant with SmartDesigner integration
