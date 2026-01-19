@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-24 (Session 46)
+**Updated:** 2026-01-19 (Session 46+)
 
 ---
 
@@ -16,7 +16,8 @@
 ## Current Focus
 
 - **Version:** v0.17.6 (in progress)
-- **Focus:** 3D Visualization & VBA Integration
+- **Focus:** 3D Visualization Excellence & Library Improvements
+- **8-Week Plan:** Phase 2 at 90%, Phase 3 starting
 - **Next Milestone:** March 2026 (v0.18.0)
 
 ---
@@ -27,11 +28,12 @@
 
 | Sub-task | Status | Notes |
 |----------|--------|-------|
-| Add 3D View tab to multi-format import | ✅ Done | Session 46 - `efe825d3` |
+| Add 3D View tab to multi-format import | ✅ Done | Session 46 |
 | Story-based color coding | ✅ Done | 8-color palette |
 | Design status coloring (pass/fail) | ✅ Done | Green/Red/Orange |
 | Hover tooltips with beam details | ✅ Done | Mu, Vu, bars, status |
-| Professional dark theme | ✅ Done | Plotly 3D with lighting |
+| **Solid 3D beam boxes** | ✅ Done | `7414a7e0` - Upgraded from lines! |
+| **BuildingStatistics integration** | ✅ Done | `9351bdc8` - Volume metrics |
 
 ---
 
@@ -46,13 +48,13 @@
 
 ---
 
-### TASK-DOC-002: Documentation Cleanup ✅ COMPLETE
+### TASK-LIB-001: Library Utility Functions 🚧 IN PROGRESS
 
 | Sub-task | Status | Notes |
 |----------|--------|-------|
-| Clean TASKS.md (remove session data) | ✅ Done | `67faaca6` |
-| Archive obsolete planning files | ✅ Done | `2317a2b9` |
-| Update next-session-brief | ✅ Done | Session 46 |
+| BuildingStatistics model | ✅ Done | `907684b5` - 4 tests added |
+| Concrete volume calculation | ✅ Done | Included in BuildingStatistics |
+| Story breakdown metrics | ✅ Done | beams_per_story dict |
 
 ---
 
@@ -62,9 +64,9 @@
 
 | ID | Task | Est | Notes |
 |----|------|-----|-------|
-| TASK-3D-005 | Three.js rebar visualization | 4h | Show detailed rebar in 3D |
-| TASK-DATA-003 | Column/slab support | 4h | Extend adapter system |
 | TASK-PERF-001 | LOD optimization for 1000+ beams | 2h | Use lod_manager.py |
+| TASK-3D-006 | Camera presets (front/top/iso) | 1h | Quick navigation |
+| TASK-DATA-003 | Column/slab support | 4h | Extend adapter system |
 
 ### Medium Priority
 
