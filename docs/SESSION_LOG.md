@@ -4,6 +4,24 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 43: Onboarding Refresh + Link Fixes
+
+**Focus:** Refresh onboarding/governance docs, fix broken links, and clean indexes
+
+**Completed:**
+- Refreshed agent bootstrap guidance and governance quick-start docs
+- Fixed broken links across planning/reference/VBA docs
+- Regenerated docs indexes and updated README feature list
+- Added auto-stash support to create_task_pr.sh and worktree guard to agent_setup.sh
+
+### PRs
+
+| PR | Description | Status |
+|----|-------------|--------|
+| #382 | Refresh onboarding docs and fix links | ✅ Merged |
+
+---
+
 ## 2026-01-19 — Session 41-42: PR #381 Merged - Multi-Format Import System
 
 **Focus:** Complete PR #381 by fixing all CI failures and merge to main

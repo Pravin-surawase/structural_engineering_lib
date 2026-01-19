@@ -33,7 +33,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-19
-- Focus: Sessions 41-42 - PR #381 merged. Multi-format import system complete (ETABS, SAFE, STAAD, Excel adapters). 17 commits, 111 tests. All CI checks passed.
+- Focus: Refresh onboarding/governance docs, fix broken links, and clean indexes
+- Completed: Refreshed agent bootstrap guidance and governance quick-start docs; Fixed broken links across planning/reference/VBA docs; Regenerated docs indexes and updated README feature list
+- PRs: #382
 <!-- HANDOFF:END -->
 
 ---
