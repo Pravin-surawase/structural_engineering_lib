@@ -41,12 +41,15 @@ if TYPE_CHECKING:
 __all__ = [
     "ETABSForceRow",
     "ETABSEnvelopeResult",
+    "FrameGeometry",
     "normalize_etabs_forces",
     "load_etabs_csv",
     "create_job_from_etabs",
     "create_jobs_from_etabs_csv",
     "export_normalized_csv",
     "validate_etabs_csv",
+    "load_frames_geometry",
+    "merge_forces_and_geometry",
 ]
 
 
@@ -78,6 +81,64 @@ class ETABSForceRow:
     v2: float
     unique_name: str = ""
     p: float = 0.0
+
+
+@dataclass
+class FrameGeometry:
+    """Frame element geometry from ETABS frames_geometry export.
+
+    Contains 3D coordinates and section properties for beams and columns.
+
+    Attributes:
+        unique_name: Internal ETABS ID (e.g., "C1")
+        label: User-friendly label (e.g., "B1", "C2")
+        story: Floor/level name (e.g., "Ground", "Story 1")
+        frame_type: Element type ("Beam" or "Column")
+        section_name: Section identifier (e.g., "B230X450M20")
+        point1_name: Node name at start (e.g., "1")
+        point2_name: Node name at end (e.g., "2")
+        point1_x: X coordinate of Point 1 (m)
+        point1_y: Y coordinate of Point 1 (m)
+        point1_z: Z coordinate of Point 1 (m)
+        point2_x: X coordinate of Point 2 (m)
+        point2_y: Y coordinate of Point 2 (m)
+        point2_z: Z coordinate of Point 2 (m)
+        angle: Rotation angle (degrees)
+        cardinal_point: Section insertion point (1-11)
+    """
+
+    unique_name: str
+    label: str
+    story: str
+    frame_type: str
+    section_name: str
+    point1_name: str
+    point2_name: str
+    point1_x: float
+    point1_y: float
+    point1_z: float
+    point2_x: float
+    point2_y: float
+    point2_z: float
+    angle: float = 0.0
+    cardinal_point: int = 10
+
+    @property
+    def length_m(self) -> float:
+        """Calculate element length in meters."""
+        dx = self.point2_x - self.point1_x
+        dy = self.point2_y - self.point1_y
+        dz = self.point2_z - self.point1_z
+        return (dx**2 + dy**2 + dz**2) ** 0.5
+
+    @property
+    def is_vertical(self) -> bool:
+        """Check if element is vertical (column-like)."""
+        dx = abs(self.point2_x - self.point1_x)
+        dy = abs(self.point2_y - self.point1_y)
+        dz = abs(self.point2_z - self.point1_z)
+        horizontal_length = (dx**2 + dy**2) ** 0.5
+        return horizontal_length < 0.01  # < 10mm horizontal movement
 
 
 @dataclass
@@ -620,3 +681,142 @@ def create_jobs_from_etabs_csv(
                 json.dump(job, f, indent=2)
 
     return jobs
+
+
+# =============================================================================
+# Geometry Import Functions
+# =============================================================================
+
+
+def load_frames_geometry(
+    csv_path: str | Path, *, validate: bool = True
+) -> list[FrameGeometry]:
+    """Load frame geometry from ETABS frames_geometry.csv export.
+
+    Args:
+        csv_path: Path to frames_geometry.csv file
+        validate: If True, validate coordinates (default: True)
+
+    Returns:
+        List of FrameGeometry objects with 3D coordinates
+
+    Raises:
+        ValueError: If CSV format is invalid or required columns missing
+        FileNotFoundError: If csv_path does not exist
+
+    Example:
+        >>> frames = load_frames_geometry("frames_geometry.csv")
+        >>> print(f"Loaded {len(frames)} frames")
+        >>> beams = [f for f in frames if f.frame_type == "Beam"]
+        >>> print(f"Found {len(beams)} beams")
+
+    Expected CSV columns:
+        UniqueName, Label, Story, FrameType, SectionName,
+        Point1Name, Point2Name, Point1X, Point1Y, Point1Z,
+        Point2X, Point2Y, Point2Z, Angle, CardinalPoint
+    """
+    path = Path(csv_path)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {csv_path}")
+
+    required_cols = {
+        "UniqueName",
+        "Label",
+        "Story",
+        "FrameType",
+        "SectionName",
+        "Point1X",
+        "Point1Y",
+        "Point1Z",
+        "Point2X",
+        "Point2Y",
+        "Point2Z",
+    }
+
+    frames: list[FrameGeometry] = []
+
+    with open(path, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        header = set(reader.fieldnames or [])
+
+        # Check required columns
+        missing = required_cols - header
+        if missing:
+            raise ValueError(
+                f"Missing required columns in frames_geometry.csv: {', '.join(missing)}"
+            )
+
+        for row_idx, row in enumerate(reader, start=2):  # Row 2 = first data row
+            try:
+                frame = FrameGeometry(
+                    unique_name=row["UniqueName"],
+                    label=row["Label"],
+                    story=row["Story"],
+                    frame_type=row["FrameType"],
+                    section_name=row["SectionName"],
+                    point1_name=row.get("Point1Name", ""),
+                    point2_name=row.get("Point2Name", ""),
+                    point1_x=float(row["Point1X"]),
+                    point1_y=float(row["Point1Y"]),
+                    point1_z=float(row["Point1Z"]),
+                    point2_x=float(row["Point2X"]),
+                    point2_y=float(row["Point2Y"]),
+                    point2_z=float(row["Point2Z"]),
+                    angle=float(row.get("Angle", 0.0)),
+                    cardinal_point=int(row.get("CardinalPoint", 10)),
+                )
+
+                # Validation
+                if validate:
+                    # Check element has length
+                    if frame.length_m < 0.001:  # < 1mm
+                        raise ValueError(
+                            f"Row {row_idx}: Element {frame.label} has zero length"
+                        )
+
+                    # Check vertical elements are marked as columns
+                    if frame.is_vertical and frame.frame_type != "Column":
+                        pass  # Warning only, don't fail
+
+                frames.append(frame)
+
+            except (ValueError, KeyError) as e:
+                raise ValueError(
+                    f"Row {row_idx}: Failed to parse frame data: {e}"
+                ) from e
+
+    return frames
+
+
+def merge_forces_and_geometry(
+    envelopes: list[ETABSEnvelopeResult], frames: list[FrameGeometry]
+) -> dict[str, tuple[ETABSEnvelopeResult, FrameGeometry | None]]:
+    """Merge force envelopes with frame geometry by UniqueName.
+
+    Args:
+        envelopes: Force envelopes from beam_forces.csv
+        frames: Frame geometry from frames_geometry.csv
+
+    Returns:
+        Dictionary mapping UniqueName to (envelope, geometry)
+        geometry will be None if no match found
+
+    Example:
+        >>> envelopes = normalize_etabs_forces("beam_forces.csv")
+        >>> frames = load_frames_geometry("frames_geometry.csv")
+        >>> merged = merge_forces_and_geometry(envelopes, frames)
+        >>> for uid, (env, geom) in merged.items():
+        ...     if geom:
+        ...         print(f"{uid}: {env.mu_knm} kNm at ({geom.point1_x}, {geom.point1_y})")
+    """
+    # Build geometry lookup by label (beam_id in envelopes)
+    geom_by_label = {f.label: f for f in frames}
+
+    merged = {}
+    for env in envelopes:
+        # Try to match by beam_id (which is Label in frames_geometry)
+        geom = geom_by_label.get(env.beam_id)
+        key = env.beam_id  # Use beam_id as key
+        merged[key] = (env, geom)
+
+    return merged
