@@ -43,11 +43,11 @@ from .models import (
     SectionProperties,
 )
 
-
 __all__ = [
     "InputAdapter",
     "ETABSAdapter",
     "SAFEAdapter",
+    "STAADAdapter",
     "ManualInputAdapter",
 ]
 
@@ -81,7 +81,6 @@ class InputAdapter(ABC):
         Returns:
             True if this adapter can process the source
         """
-        pass
 
     @abstractmethod
     def load_geometry(
@@ -98,7 +97,6 @@ class InputAdapter(ABC):
         Returns:
             List of BeamGeometry models
         """
-        pass
 
     @abstractmethod
     def load_forces(
@@ -113,7 +111,6 @@ class InputAdapter(ABC):
         Returns:
             List of BeamForces models (envelope values)
         """
-        pass
 
 
 # =============================================================================
@@ -1042,6 +1039,438 @@ class SAFEAdapter(InputAdapter):
             forces.append(
                 BeamForces(
                     id=full_id,
+                    load_case=env["case_id"],
+                    mu_knm=env["mu_max"],
+                    vu_kn=env["vu_max"],
+                    pu_kn=env["pu_max"],
+                    station_count=env["station_count"],
+                )
+            )
+
+        return forces
+
+
+class STAADAdapter(InputAdapter):
+    """Adapter for STAAD.Pro beam data imports.
+
+    STAAD.Pro uses different column naming conventions than ETABS/SAFE:
+    - Member/Beam: Member identifier
+    - Node: Node number
+    - Dist/Distance: Station location along member
+    - Fx: Axial force
+    - Fy: Shear force (major axis, corresponds to V2)
+    - Fz: Shear force (minor axis)
+    - Mx: Torsion
+    - My: Bending moment (major axis)
+    - Mz: Bending moment (minor axis, corresponds to M3 in ETABS)
+    - LC/Load/Case: Load case identifier
+
+    Note: STAAD.Pro's local axis convention may differ from ETABS.
+    In STAAD, My is typically the major axis moment for beam bending
+    while Mz is for minor axis. This adapter maps appropriately.
+
+    Example:
+        >>> adapter = STAADAdapter()
+        >>> if adapter.can_handle("staad_forces.csv"):
+        ...     forces = adapter.load_forces("staad_forces.csv")
+    """
+
+    name = "STAAD.Pro"
+    supported_formats = [".csv", ".txt"]
+
+    # Default section dimensions (mm) when not provided in CSV
+    DEFAULT_WIDTH_MM = 300.0
+    DEFAULT_DEPTH_MM = 500.0
+
+    # Column mappings for geometry
+    GEOMETRY_COLUMNS: dict[str, list[str]] = {
+        "beam_id": ["Member", "Beam", "Element", "MemberNo", "Memb"],
+        "label": ["Label", "Name", "MemberLabel"],
+        "story": ["Story", "Level", "Floor", "Group"],
+        "node1": ["Node1", "StartNode", "NodeI", "I"],
+        "node2": ["Node2", "EndNode", "NodeJ", "J"],
+        "point1_x": ["X1", "StartX", "Xi", "Ix"],
+        "point1_y": ["Y1", "StartY", "Yi", "Iy"],
+        "point1_z": ["Z1", "StartZ", "Zi", "Iz"],
+        "point2_x": ["X2", "EndX", "Xj", "Jx"],
+        "point2_y": ["Y2", "EndY", "Yj", "Jy"],
+        "point2_z": ["Z2", "EndZ", "Zj", "Jz"],
+        "section": ["Section", "SecName", "Profile", "Property"],
+        "width_mm": ["Width", "B", "b", "Width_mm"],
+        "depth_mm": ["Depth", "D", "d", "Depth_mm", "Height", "H"],
+        "fck_mpa": ["fck", "Fck", "Fc", "ConcreteStrength"],
+        "fy_mpa": ["fy", "Fy", "SteelStrength"],
+    }
+
+    # Column mappings for forces
+    FORCES_COLUMNS: dict[str, list[str]] = {
+        "beam_id": ["Member", "Beam", "Element", "MemberNo", "Memb"],
+        "case_id": [
+            "LC",
+            "Load",
+            "Case",
+            "LoadCase",
+            "Load Case",
+            "Combo",
+            "LoadCombo",
+        ],
+        "station": ["Dist", "Distance", "Loc", "Location", "Station", "X"],
+        # STAAD uses My for major axis bending (like M3 in ETABS)
+        # and Fy for major axis shear (like V2 in ETABS)
+        "m3": ["My", "Mz", "Moment", "BendingMoment", "M"],
+        "v2": ["Fy", "Fz", "Shear", "ShearForce", "V"],
+        "p": ["Fx", "Axial", "AxialForce", "N", "P"],
+        # Envelope format columns
+        "mu_max": ["My_max", "Mz_max", "Moment_max", "Mu_max", "M_max"],
+        "mu_min": ["My_min", "Mz_min", "Moment_min", "Mu_min", "M_min"],
+        "vu_max": ["Fy_max", "Fz_max", "Shear_max", "Vu_max", "V_max"],
+    }
+
+    def can_handle(self, source: Path | str) -> bool:
+        """Check if source is a STAAD.Pro export file.
+
+        Detection strategy:
+        1. Check file extension (.csv, .txt)
+        2. Look for STAAD-specific column names (Member, My, Fy, etc.)
+        3. Differentiate from ETABS (which uses Frame, M3, V2)
+
+        Args:
+            source: Path to input file
+
+        Returns:
+            True if this looks like a STAAD.Pro export
+        """
+        path = Path(source)
+
+        # Check extension
+        if path.suffix.lower() not in self.supported_formats:
+            return False
+
+        if not path.exists():
+            return False
+
+        # Check for STAAD-specific columns
+        try:
+            with open(path, encoding="utf-8-sig") as f:
+                reader = csv.reader(f)
+                headers = next(reader, [])
+                headers_lower = [h.lower().strip() for h in headers]
+
+                # STAAD-specific column names
+                staad_markers = [
+                    "member",
+                    "memb",
+                    "memberno",
+                    "my",
+                    "mz",
+                    "fy",
+                    "fz",
+                    "fx",
+                    "lc",
+                    "dist",
+                ]
+
+                # ETABS-specific markers (to exclude)
+                etabs_markers = ["frame", "m3", "v2", "uniquename", "story"]
+
+                staad_count = sum(
+                    1 for h in headers_lower if any(m == h for m in staad_markers)
+                )
+                etabs_count = sum(
+                    1 for h in headers_lower if any(m == h for m in etabs_markers)
+                )
+
+                # Consider STAAD if it has STAAD markers but not ETABS markers
+                return staad_count >= 2 and etabs_count < 2
+
+        except Exception:
+            return False
+
+    def _build_column_map(
+        self, headers: list[str], column_spec: dict[str, list[str]]
+    ) -> dict[str, str]:
+        """Build mapping from internal names to actual column names.
+
+        Args:
+            headers: Column headers from CSV
+            column_spec: Specification of column aliases
+
+        Returns:
+            Dict mapping internal names to actual header names
+        """
+        column_map = {}
+        headers_lower = {h.lower(): h for h in headers}
+
+        for internal_name, aliases in column_spec.items():
+            for alias in aliases:
+                if alias.lower() in headers_lower:
+                    column_map[internal_name] = headers_lower[alias.lower()]
+                    break
+
+        return column_map
+
+    def load_geometry(
+        self,
+        source: Path | str,
+        defaults: DesignDefaults | None = None,
+    ) -> list[BeamGeometry]:
+        """Load member geometry from STAAD.Pro geometry export.
+
+        STAAD.Pro exports member connectivity with node coordinates.
+
+        Args:
+            source: Path to geometry CSV file
+            defaults: Default material properties
+
+        Returns:
+            List of BeamGeometry models
+
+        Raises:
+            ValueError: If required columns are missing
+            FileNotFoundError: If file doesn't exist
+        """
+        if defaults is None:
+            defaults = DesignDefaults()
+
+        path = Path(source)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+
+        beams: list[BeamGeometry] = []
+
+        with open(path, encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            column_map = self._build_column_map(headers, self.GEOMETRY_COLUMNS)
+
+            # Must have beam_id at minimum
+            if "beam_id" not in column_map:
+                raise ValueError(
+                    f"Missing beam identifier column. Expected one of: "
+                    f"{self.GEOMETRY_COLUMNS['beam_id']}. "
+                    f"Available: {headers}"
+                )
+
+            for row in reader:
+                try:
+                    beam_id = row[column_map["beam_id"]].strip()
+                    if not beam_id:
+                        continue
+
+                    # Label (use beam_id if not provided)
+                    label_col = column_map.get("label")
+                    label = (
+                        row.get(label_col, beam_id).strip() if label_col else beam_id
+                    )
+
+                    # Story/group (use "Default" if not provided - BeamGeometry requires non-empty)
+                    story_col = column_map.get("story")
+                    story_from_csv = row.get(story_col, "").strip() if story_col else ""
+                    story = story_from_csv if story_from_csv else "Default"
+
+                    # Coordinates
+                    has_coords = all(
+                        k in column_map
+                        for k in ["point1_x", "point1_y", "point2_x", "point2_y"]
+                    )
+
+                    if has_coords:
+                        # STAAD typically uses meters or feet - assume meters
+                        point1 = Point3D(
+                            x=float(row.get(column_map["point1_x"], 0) or 0),
+                            y=float(row.get(column_map["point1_y"], 0) or 0),
+                            z=float(row.get(column_map.get("point1_z", ""), 0) or 0),
+                        )
+                        point2 = Point3D(
+                            x=float(row.get(column_map["point2_x"], 0) or 0),
+                            y=float(row.get(column_map["point2_y"], 0) or 0),
+                            z=float(row.get(column_map.get("point2_z", ""), 0) or 0),
+                        )
+                    else:
+                        # Default placeholder coordinates
+                        point1 = Point3D(x=0.0, y=0.0, z=0.0)
+                        point2 = Point3D(x=1.0, y=0.0, z=0.0)
+
+                    # Section properties - use class constants for default dimensions
+                    width_col = column_map.get("width_mm")
+                    depth_col = column_map.get("depth_mm")
+                    fck_col = column_map.get("fck_mpa")
+                    fy_col = column_map.get("fy_mpa")
+
+                    section = SectionProperties(
+                        width_mm=(
+                            float(
+                                row.get(width_col, self.DEFAULT_WIDTH_MM)
+                                or self.DEFAULT_WIDTH_MM
+                            )
+                            if width_col
+                            else self.DEFAULT_WIDTH_MM
+                        ),
+                        depth_mm=(
+                            float(
+                                row.get(depth_col, self.DEFAULT_DEPTH_MM)
+                                or self.DEFAULT_DEPTH_MM
+                            )
+                            if depth_col
+                            else self.DEFAULT_DEPTH_MM
+                        ),
+                        fck_mpa=(
+                            float(
+                                row.get(fck_col, defaults.fck_mpa) or defaults.fck_mpa
+                            )
+                            if fck_col
+                            else defaults.fck_mpa
+                        ),
+                        fy_mpa=(
+                            float(row.get(fy_col, defaults.fy_mpa) or defaults.fy_mpa)
+                            if fy_col
+                            else defaults.fy_mpa
+                        ),
+                        cover_mm=defaults.cover_mm,
+                    )
+
+                    # Build full ID (append story only if explicitly provided in CSV)
+                    full_id = f"{beam_id}_{story}" if story_from_csv else beam_id
+
+                    try:
+                        beam = BeamGeometry(
+                            id=full_id,
+                            label=label,
+                            story=story,
+                            frame_type=FrameType.BEAM,
+                            point1=point1,
+                            point2=point2,
+                            section=section,
+                            angle=0.0,
+                            source_id=beam_id,
+                        )
+                        beams.append(beam)
+                    except Exception:
+                        # Skip invalid members
+                        continue
+
+                except (KeyError, ValueError):
+                    continue
+
+        return beams
+
+    def load_forces(
+        self,
+        source: Path | str,
+    ) -> list[BeamForces]:
+        """Load member forces from STAAD.Pro force export.
+
+        Handles both:
+        - Station data: Multiple rows per member with different Dist values
+        - Envelope data: Pre-computed max values (My_max, Fy_max columns)
+
+        Args:
+            source: Path to forces CSV file
+
+        Returns:
+            List of BeamForces models (envelope per member/load case)
+
+        Raises:
+            ValueError: If required columns are missing
+            FileNotFoundError: If file doesn't exist
+        """
+        path = Path(source)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+
+        envelopes: dict[tuple[str, str], dict[str, Any]] = {}
+
+        with open(path, encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
+
+            # Detect format
+            is_envelope = "mu_max" in column_map or "vu_max" in column_map
+            is_station_data = "m3" in column_map and "v2" in column_map
+
+            if is_envelope:
+                required = ["beam_id"]
+            elif is_station_data:
+                required = ["beam_id", "m3", "v2"]
+            else:
+                raise ValueError(
+                    "Missing force columns. Expected My/Fy or My_max/Fy_max. "
+                    f"Available: {list(column_map.keys())}"
+                )
+
+            missing = [r for r in required if r not in column_map]
+            if missing:
+                raise ValueError(
+                    f"Missing required columns: {missing}. " f"Available: {headers}"
+                )
+
+            for row in reader:
+                try:
+                    beam_id = row[column_map["beam_id"]].strip()
+                    if not beam_id:
+                        continue
+
+                    # Load case (default to "Default" if not provided)
+                    case_col = column_map.get("case_id")
+                    case_id = (
+                        row.get(case_col, "Default").strip() if case_col else "Default"
+                    )
+                    if not case_id:
+                        case_id = "Default"
+
+                    if is_envelope:
+                        # Pre-computed envelope format
+                        mu_col = column_map.get("mu_max")
+                        vu_col = column_map.get("vu_max")
+
+                        mu = abs(float(row.get(mu_col, 0) or 0)) if mu_col else 0.0
+                        vu = abs(float(row.get(vu_col, 0) or 0)) if vu_col else 0.0
+
+                        key = (beam_id, case_id)
+                        envelopes[key] = {
+                            "beam_id": beam_id,
+                            "case_id": case_id,
+                            "mu_max": mu,
+                            "vu_max": vu,
+                            "pu_max": 0.0,
+                            "station_count": 1,
+                        }
+                    else:
+                        # Station data - build envelope
+                        m3 = abs(float(row[column_map["m3"]]))
+                        v2 = abs(float(row[column_map["v2"]]))
+
+                        p_col = column_map.get("p")
+                        p = abs(float(row.get(p_col, 0) or 0)) if p_col else 0.0
+
+                        key = (beam_id, case_id)
+
+                        if key not in envelopes:
+                            envelopes[key] = {
+                                "beam_id": beam_id,
+                                "case_id": case_id,
+                                "mu_max": m3,
+                                "vu_max": v2,
+                                "pu_max": p,
+                                "station_count": 1,
+                            }
+                        else:
+                            env = envelopes[key]
+                            env["mu_max"] = max(env["mu_max"], m3)
+                            env["vu_max"] = max(env["vu_max"], v2)
+                            env["pu_max"] = max(env["pu_max"], p)
+                            env["station_count"] += 1
+
+                except (KeyError, ValueError):
+                    continue
+
+        # Convert to BeamForces models
+        forces: list[BeamForces] = []
+        for env in envelopes.values():
+            forces.append(
+                BeamForces(
+                    id=env["beam_id"],
                     load_case=env["case_id"],
                     mu_knm=env["mu_max"],
                     vu_kn=env["vu_max"],
