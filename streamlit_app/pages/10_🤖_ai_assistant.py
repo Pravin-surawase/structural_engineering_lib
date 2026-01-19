@@ -3,12 +3,15 @@
 """
 AI Assistant Page — ChatGPT-like structural engineering assistant.
 
-Layout: 40% chat (left) + 60% workspace (right)
+Layout: Compact professional design with chat + workspace
 Features:
-- Natural language beam design
-- Cost optimization suggestions
-- SmartDesigner insights
+- Natural language beam design with OpenAI GPT
+- Real-time design feedback
+- SmartDesigner cost & constructability insights
 - Interactive 3D visualization
+- ETABS import integration
+
+UI/UX: Compact, professional, responsive design with cards
 """
 
 from __future__ import annotations
@@ -17,7 +20,7 @@ import streamlit as st
 
 # Page configuration - must be first Streamlit command
 st.set_page_config(
-    page_title="StructEng AI Assistant",
+    page_title="AI Assistant | StructEng",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -26,7 +29,6 @@ st.set_page_config(
 # Imports after page config
 import re
 import sys
-import time
 from pathlib import Path
 from typing import Any
 
@@ -46,6 +48,15 @@ from components.visualizations_3d import create_beam_3d_figure
 # Import structural_lib at module level
 from structural_lib import api as structural_api
 from structural_lib.insights import SmartDesigner
+
+# Import layout utilities
+try:
+    from utils.layout import inject_modern_css
+    from utils.theme_manager import apply_dark_mode_theme, initialize_theme
+
+    HAS_LAYOUT = True
+except ImportError:
+    HAS_LAYOUT = False
 
 
 # Default model configuration
@@ -96,6 +107,124 @@ def get_openai_client() -> OpenAI | None:
         return None
 
     return OpenAI(api_key=config["api_key"])
+
+
+def inject_ai_page_css() -> None:
+    """Inject custom CSS for AI Assistant page - compact professional styling."""
+    st.markdown(
+        """
+        <style>
+        /* Compact header styling */
+        .ai-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        .ai-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .ai-header p {
+            margin: 0.25rem 0 0 0;
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+
+        /* Status badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-connected {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .status-local {
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        /* Chat container styling */
+        .chat-section {
+            background: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            height: 100%;
+        }
+
+        /* Message styling */
+        [data-testid="stChatMessage"] {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Quick action buttons - compact grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 0.5rem;
+        }
+
+        /* Metric cards - compact */
+        .metric-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .mini-metric {
+            flex: 1;
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .mini-metric .value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        .mini-metric .label {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Results card */
+        .results-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        /* Hide default streamlit padding for tighter layout */
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Tab styling - compact */
+        [data-testid="stTabs"] button {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 # System prompt for structural engineering assistant
@@ -399,11 +528,31 @@ def get_ai_response(user_message: str) -> str:
 
 
 def render_chat_panel():
-    """Render the chat panel (left side)."""
-    st.markdown("### 💬 Chat")
+    """Render the chat panel - compact design with welcome message."""
+    # Welcome message if no history
+    if len(st.session_state.ai_messages) == 0:
+        st.markdown(
+            """
+            <div style="
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                border: 1px solid #bae6fd;
+                border-radius: 12px;
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+            ">
+                <div style="font-weight: 600; color: #0369a1; margin-bottom: 0.5rem;">
+                    👋 Welcome! I'm your AI structural engineering assistant.
+                </div>
+                <div style="font-size: 0.85rem; color: #0c4a6e;">
+                    Try: <b>"Design a beam for 150 kN·m"</b> or click a quick action below.
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    # Chat container with fixed height
-    chat_container = st.container(height=500)
+    # Chat container with fixed height - taller for better UX
+    chat_container = st.container(height=420)
 
     with chat_container:
         # Display message history
@@ -411,8 +560,26 @@ def render_chat_panel():
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
 
-    # Chat input - use traditional pattern for scanner compatibility
-    prompt = st.chat_input("Ask about beam design...")
+    # Quick action buttons ABOVE chat input for better flow
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        if st.button("🏗️ Design", use_container_width=True, help="Design a beam"):
+            _handle_quick_action("Design a beam for current parameters")
+    with c2:
+        if st.button("💰 Cost", use_container_width=True, help="Optimize cost"):
+            _handle_quick_action("Optimize the cost")
+    with c3:
+        if st.button("📊 Analyze", use_container_width=True, help="Smart analysis"):
+            _handle_quick_action("Run smart analysis")
+    with c4:
+        if st.button("🔄 Clear", use_container_width=True, help="Clear chat"):
+            st.session_state.ai_messages = []
+            st.session_state.current_design = None
+            st.session_state.smart_dashboard = None
+            st.rerun()
+
+    # Chat input
+    prompt = st.chat_input("Ask about beam design, costs, or IS 456...")
     if prompt:
         # Add user message
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
@@ -423,61 +590,21 @@ def render_chat_panel():
 
         # Add assistant response
         st.session_state.ai_messages.append({"role": "assistant", "content": response})
-
-        # Rerun to show new messages
         st.rerun()
 
-    # Quick action buttons
-    st.markdown("**Quick Actions:**")
-    cols = st.columns(4)
-    with cols[0]:
-        if st.button("🏗️ Design", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Design a beam for current parameters"}
-            )
-            response = get_ai_response("Design a beam for current parameters")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
-    with cols[1]:
-        if st.button("💰 Optimize", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Optimize the cost"}
-            )
-            response = get_ai_response("Optimize the cost")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
-    with cols[2]:
-        if st.button("📊 Analyze", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Run smart analysis"}
-            )
-            response = get_ai_response("Run smart analysis")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
-    with cols[3]:
-        if st.button("🎨 3D View", use_container_width=True):
-            st.session_state.ai_messages.append(
-                {"role": "user", "content": "Show 3D view"}
-            )
-            response = get_ai_response("Show 3D view")
-            st.session_state.ai_messages.append(
-                {"role": "assistant", "content": response}
-            )
-            st.rerun()
+
+def _handle_quick_action(message: str) -> None:
+    """Handle quick action button clicks."""
+    st.session_state.ai_messages.append({"role": "user", "content": message})
+    response = get_ai_response(message)
+    st.session_state.ai_messages.append({"role": "assistant", "content": response})
+    st.rerun()
 
 
 def render_workspace_panel():
     """Render the workspace panel (right side)."""
-    st.markdown("### 📊 Workspace")
-
-    # Tabs for different views
-    tabs = st.tabs(["📋 Results", "🎨 3D View", "💰 Cost", "📊 Smart Dashboard"])
+    # Tabs for different views - added Import tab
+    tabs = st.tabs(["📋 Results", "🎨 3D View", "💰 Cost", "📊 Dashboard", "📥 Import"])
 
     # Tab 0: Design Results
     with tabs[0]:
@@ -489,50 +616,52 @@ def render_workspace_panel():
             b_mm = params.get("b_mm", 300)
             D_mm = params.get("D_mm", 500)
 
-            col1, col2 = st.columns(2)
-
-            with col1:
-                st.metric("Section", f"{b_mm}×{D_mm}mm")
-                st.metric(
-                    "Concrete",
-                    f"M{params.get('fck', 25)}",
-                    help=f"fck = {params.get('fck', 25)} N/mm²",
-                )
-
-            with col2:
-                st.metric(
-                    "Utilization",
-                    f"{design.governing_utilization:.1%}",
-                    delta="SAFE" if design.is_ok else "UNSAFE",
-                    delta_color="normal" if design.is_ok else "inverse",
-                )
-                st.metric(
-                    "Steel",
-                    f"Fe{params.get('fy', 500)}",
-                    help=f"fy = {params.get('fy', 500)} N/mm²",
-                )
-
-            st.divider()
-
-            # FlexureResult: ast_required (not ast_required_mm2)
-            st.markdown("**Flexure Design:**")
-            st.write(
-                f"- Steel Required: **{design.flexure.ast_required:.0f} mm²**"
+            # Compact metric cards
+            st.markdown(
+                f"""
+                <div class="metric-row">
+                    <div class="mini-metric">
+                        <div class="value">{b_mm}×{D_mm}</div>
+                        <div class="label">Section (mm)</div>
+                    </div>
+                    <div class="mini-metric">
+                        <div class="value">{design.governing_utilization:.0%}</div>
+                        <div class="label">Utilization</div>
+                    </div>
+                    <div class="mini-metric">
+                        <div class="value">{design.flexure.ast_required:.0f}</div>
+                        <div class="label">Ast (mm²)</div>
+                    </div>
+                    <div class="mini-metric">
+                        <div class="value">{"✅" if design.is_ok else "❌"}</div>
+                        <div class="label">Status</div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
             )
-            st.write(f"- Section Type: {design.flexure.section_type.name}")
-            st.write(f"- Mu_lim: {design.flexure.mu_lim:.1f} kN·m")
 
-            # ShearResult: tv, tc, tc_max, is_safe
+            # Detailed results in expanders
+            with st.expander("📐 Flexure Details", expanded=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write(f"**Steel Required:** {design.flexure.ast_required:.0f} mm²")
+                    st.write(f"**Section Type:** {design.flexure.section_type.name}")
+                with col2:
+                    st.write(f"**Mu_lim:** {design.flexure.mu_lim:.1f} kN·m")
+                    st.write(f"**Materials:** M{params.get('fck', 25)} / Fe{params.get('fy', 500)}")
+
             if design.shear:
-                st.markdown("**Shear Design:**")
-                status = "✅ SAFE" if design.shear.is_safe else "❌ Unsafe"
-                st.write(f"- Status: **{status}**")
-                st.write(f"- τv = {design.shear.tv:.2f} N/mm²")
-                st.write(f"- τc = {design.shear.tc:.2f} N/mm²")
+                with st.expander("⚔️ Shear Details"):
+                    status = "✅ SAFE" if design.shear.is_safe else "❌ Unsafe"
+                    st.write(f"**Status:** {status}")
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.write(f"**τv:** {design.shear.tv:.2f} N/mm²")
+                    with col2:
+                        st.write(f"**τc:** {design.shear.tc:.2f} N/mm²")
         else:
-            st.info(
-                "No design yet. Ask the AI to design a beam or click 🏗️ Design button."
-            )
+            st.info("💡 Ask the AI to design a beam or click the 🏗️ Design button.")
 
         # Design parameters editor
         with st.expander("⚙️ Design Parameters", expanded=False):
@@ -670,33 +799,201 @@ def render_workspace_panel():
         else:
             st.info("Run smart analysis to see dashboard. Ask 'Run smart analysis'.")
 
+    # Tab 4: Import from ETABS/Multi-Format
+    with tabs[4]:
+        st.markdown("**📥 Import ETABS / Analysis Results**")
 
-def main():
-    """Main function."""
-    init_session_state()
+        # Check if there's data from Multi-Format Import page
+        has_import_data = (
+            st.session_state.get("mf_beams") or
+            st.session_state.get("mf_forces") or
+            st.session_state.get("mf_design_results")
+        )
 
-    # Header
-    st.title("🤖 StructEng AI Assistant")
-    st.caption(
-        "Your intelligent structural engineering companion | IS 456 Beam Design"
-    )
+        if has_import_data:
+            st.success("✅ Import data found from Multi-Format Import page!")
 
-    # API status indicator
+            # Show summary of imported data
+            beams = st.session_state.get("mf_beams", [])
+            forces = st.session_state.get("mf_forces", [])
+            results = st.session_state.get("mf_design_results")
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Beams", len(beams))
+            with col2:
+                st.metric("Load Cases", len(forces))
+            with col3:
+                st.metric("Results", "Yes" if results else "No")
+
+            st.divider()
+
+            # Allow selecting a beam to analyze
+            if beams:
+                beam_labels = [f"{b.beam_id} ({b.width_mm}×{b.depth_mm}mm)" for b in beams]
+                selected = st.selectbox("Select beam to analyze:", beam_labels)
+
+                if st.button("📊 Load into AI Chat", use_container_width=True):
+                    # Get selected beam index
+                    idx = beam_labels.index(selected)
+                    beam = beams[idx]
+
+                    # Update design params from imported beam
+                    st.session_state.design_params["b_mm"] = beam.width_mm
+                    st.session_state.design_params["D_mm"] = beam.depth_mm
+
+                    # Find forces for this beam if available
+                    if forces:
+                        beam_forces = [f for f in forces if f.beam_id == beam.beam_id]
+                        if beam_forces:
+                            max_mu = max(abs(f.mu_knm) for f in beam_forces)
+                            max_vu = max(abs(f.vu_kn) for f in beam_forces)
+                            st.session_state.design_params["mu_knm"] = max_mu
+                            st.session_state.design_params["vu_kn"] = max_vu
+
+                    # Add message to chat
+                    msg = f"I've loaded beam **{beam.beam_id}** ({beam.width_mm}×{beam.depth_mm}mm) from your ETABS import. Please design this beam."
+                    st.session_state.ai_messages.append({"role": "user", "content": msg})
+                    response = get_ai_response("Design a beam for current parameters")
+                    st.session_state.ai_messages.append({"role": "assistant", "content": response})
+                    st.rerun()
+
+            # Chat about all results
+            if results:
+                if st.button("💬 Analyze All Results", use_container_width=True):
+                    msg = f"I have {len(beams)} beams imported from ETABS. Can you give me a summary of the design results and highlight any issues?"
+                    st.session_state.ai_messages.append({"role": "user", "content": msg})
+                    # For now, use simulation since we can't pass structured data to OpenAI easily
+                    response = f"""Based on your imported data:
+
+**Summary:**
+- **Total Beams:** {len(beams)}
+- **Analyzed:** {len(results.cases) if hasattr(results, 'cases') else 'N/A'} load cases
+
+**Recommendations:**
+1. Review beams with utilization > 90%
+2. Check shear capacity for heavily loaded spans
+3. Consider optimization for under-utilized sections
+
+Would you like me to analyze a specific beam in detail?"""
+                    st.session_state.ai_messages.append({"role": "assistant", "content": response})
+                    st.rerun()
+        else:
+            st.info(
+                """No import data found.
+
+**To import ETABS/Analysis results:**
+1. Go to **📥 Multi-Format Import** page (page 7)
+2. Upload your ETABS geometry and forces CSV files
+3. Return here to chat about the results
+
+Or use the quick parameters above to design a beam manually."""
+            )
+
+            if st.button("➡️ Go to Multi-Format Import", use_container_width=True):
+                st.switch_page("pages/07_📥_multi_format_import.py")
+
+
+def render_compact_header() -> None:
+    """Render a compact professional header with status indicator."""
     client = get_openai_client()
+
+    # Build status badge HTML
     if client:
         config = get_openai_config()
         model_name = config["model"]
-        st.success(f"🟢 Connected to OpenAI ({model_name})", icon="✅")
+        status_html = f"""
+        <span class="status-badge status-connected">
+            🟢 {model_name}
+        </span>
+        """
     else:
-        st.info(
-            "🟡 Using local SmartDesigner (Add OPENAI_API_KEY for full AI features)",
-            icon="ℹ️",
-        )
+        status_html = """
+        <span class="status-badge status-local">
+            🟡 Local SmartDesigner
+        </span>
+        """
 
-    st.divider()
+    # Compact header with gradient background
+    st.markdown(
+        f"""
+        <div class="ai-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>🤖 StructEng AI Assistant</h1>
+                    <p>Your intelligent structural engineering companion • IS 456 Beam Design</p>
+                </div>
+                <div>
+                    {status_html}
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # Main layout: 40% chat, 60% workspace
-    chat_col, workspace_col = st.columns([0.4, 0.6])
+
+def render_quick_params_bar() -> None:
+    """Render a compact parameters bar at the top."""
+    params = st.session_state.design_params
+
+    with st.expander("⚙️ Quick Parameters", expanded=False):
+        cols = st.columns(7)
+        with cols[0]:
+            st.session_state.design_params["b_mm"] = st.number_input(
+                "Width", value=params.get("b_mm", 300), step=25, key="qp_b"
+            )
+        with cols[1]:
+            st.session_state.design_params["D_mm"] = st.number_input(
+                "Depth", value=params.get("D_mm", 500), step=25, key="qp_D"
+            )
+        with cols[2]:
+            st.session_state.design_params["span_m"] = st.number_input(
+                "Span (m)", value=params.get("span_m", 5.0), step=0.5, key="qp_span"
+            )
+        with cols[3]:
+            st.session_state.design_params["mu_knm"] = st.number_input(
+                "Mu (kN·m)", value=params.get("mu_knm", 100), step=10, key="qp_mu"
+            )
+        with cols[4]:
+            st.session_state.design_params["vu_kn"] = st.number_input(
+                "Vu (kN)", value=params.get("vu_kn", 50), step=5, key="qp_vu"
+            )
+        with cols[5]:
+            st.session_state.design_params["fck"] = st.selectbox(
+                "Concrete",
+                [20, 25, 30, 35, 40],
+                index=[20, 25, 30, 35, 40].index(params.get("fck", 25)),
+                key="qp_fck",
+            )
+        with cols[6]:
+            st.session_state.design_params["fy"] = st.selectbox(
+                "Steel",
+                [415, 500, 550],
+                index=[415, 500, 550].index(params.get("fy", 500)),
+                key="qp_fy",
+            )
+
+
+def main():
+    """Main function - compact professional layout."""
+    # Initialize
+    init_session_state()
+
+    # Apply theme and styling
+    if HAS_LAYOUT:
+        initialize_theme()
+        apply_dark_mode_theme()
+    inject_ai_page_css()
+
+    # Compact header with status
+    render_compact_header()
+
+    # Quick parameters bar (collapsed by default)
+    render_quick_params_bar()
+
+    # Main layout: 45% chat, 55% workspace (slightly more balanced)
+    chat_col, workspace_col = st.columns([0.45, 0.55], gap="medium")
 
     with chat_col:
         render_chat_panel()
