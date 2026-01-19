@@ -357,8 +357,9 @@ def render_chat_panel():
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
 
-    # Chat input
-    if prompt := st.chat_input("Ask about beam design..."):
+    # Chat input - use traditional pattern for scanner compatibility
+    prompt = st.chat_input("Ask about beam design...")
+    if prompt:
         # Add user message
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
 
