@@ -58,17 +58,44 @@ UniqueName,Label,Story,SectionName,Width_mm,Depth_mm,Span_m,Mu_max_kNm,Mu_min_kN
 | Didn't test with real files | Only unit tests, no integration | Add end-to-end tests with actual VBA CSV |
 | Two separate import modules | Historical design | Document the difference clearly |
 
+### 3D Building Visualization Added
+
+**User Request:** "I need good high graphics. We can use this for our product wow factor right?"
+
+**Implementation (Plotly 3D):**
+- Professional dark theme with isometric camera
+- Story-based color coding (8-color palette)
+- Design status coloring: ✅ green (pass), ❌ red (fail), 🔶 orange (no forces)
+- Hover tooltips with beam details (Mu, Vu, bars, status)
+- Metrics sidebar showing pass/fail counts per story
+
+**New Tab:** Added "🏗️ 3D View" as 4th tab in page 07
+
+### Documentation Cleanup
+
+**Problem:** TASKS.md was 472 lines with session log data mixed in
+**Solution:** Created clean focused TASKS.md (~100 lines)
+**Archived:** Old version to `docs/_archive/TASKS_old_20260119.md`
+
+**Obsolete Planning Files Archived:**
+- agent-1-tasks.md, agent-2-tasks.md, agent-6-tasks-streamlit.md
+- session-12-planning.md, session-14-lessons-learned.md
+- session-19p8-work-plan.md, session-2026-01-10-session3/4-issues.md
+
 ### Commits
 
 | Hash | Description |
 |------|-------------|
 | 897da5dd | fix: resolve VBA import errors in pages 06 and 07 |
+| efe825d3 | feat: add 3D building visualization to multi-format import page |
+| 67faaca6 | docs: clean up TASKS.md - archive bloated version |
+| 2317a2b9 | docs: archive obsolete planning files and update next-session-brief |
 
-### Next Steps
+### Session Statistics
 
-1. Test the fixes with actual VBA CSV files
-2. Consider consolidating page 06 and 07 import logic
-3. Add more integration tests that use real VBA export files
+- **Commits:** 5 (including session log update)
+- **Files Changed:** 12+
+- **Value Delivered:** Bug fixes, 3D visualization, docs cleanup
 
 ---
 

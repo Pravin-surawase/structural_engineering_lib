@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-19 (Session 46)
+**Updated:** 2026-01-24 (Session 46)
 
 ---
 
@@ -46,6 +46,16 @@
 
 ---
 
+### TASK-DOC-002: Documentation Cleanup ✅ COMPLETE
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| Clean TASKS.md (remove session data) | ✅ Done | `67faaca6` |
+| Archive obsolete planning files | ✅ Done | `2317a2b9` |
+| Update next-session-brief | ✅ Done | Session 46 |
+
+---
+
 ## Backlog (Prioritized)
 
 ### High Priority
@@ -78,8 +88,9 @@
 
 | Date | Task | Commit | Notes |
 |------|------|--------|-------|
-| 2026-01-19 | 3D building view tab | `efe825d3` | Session 46 |
-| 2026-01-19 | Fix VBA import errors | `897da5dd` | Session 46 |
+| 2026-01-24 | 3D building view tab | `efe825d3` | Session 46 |
+| 2026-01-24 | Fix VBA import errors | `897da5dd` | Session 46 |
+| 2026-01-24 | Docs cleanup | `67faaca6`, `2317a2b9` | Session 46 |
 | 2026-01-18 | LOD threshold validation | PR #385 | Session 43 |
 | 2026-01-17 | VBA ETABS export macro | PR #379 | Session 36 |
 | 2026-01-16 | Multi-format adapter system | PR #381 | Session 42 |
