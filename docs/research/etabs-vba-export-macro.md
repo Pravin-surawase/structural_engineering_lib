@@ -105,28 +105,28 @@ End Sub
 
 ## API References (ETABS v22 CHM)
 
-- OAPI entry points: `docs/reference/vendor/etabs/etabs_chm/html/26c23d4c-221d-7bb7-4ae5-e9d97657cdcf.htm`
-- Attach to running ETABS: `docs/reference/vendor/etabs/etabs_chm/html/10421d6a-9180-f71a-b493-a7e7785053f1.htm`
-- Launch ETABS by ProgID: `docs/reference/vendor/etabs/etabs_chm/html/3f1a3df2-006a-723d-f97c-4fd19fd4fa03.htm`
-- OAPI version check: `docs/reference/vendor/etabs/etabs_chm/html/d28f3634-a3f5-f333-0f77-748e390c4742.htm`
-- Analyze property: `docs/reference/vendor/etabs/etabs_chm/html/60fd8343-7468-5e79-c5e7-0d9f5712e439.htm`
-- Run analysis: `docs/reference/vendor/etabs/etabs_chm/html/516e7b74-8cb4-af27-31d5-38bb95b3c1d1.htm`
-- Get case status: `docs/reference/vendor/etabs/etabs_chm/html/94fc4a33-5784-228c-62ad-edcc74eaf034.htm`
-- Results property: `docs/reference/vendor/etabs/etabs_chm/html/0c2bc8bd-2382-75be-9075-b0a8245283c3.htm`
-- Select case output: `docs/reference/vendor/etabs/etabs_chm/html/9a897e48-fbcd-d8cc-90f3-8aab80ae0e51.htm`
-- Select combo output: `docs/reference/vendor/etabs/etabs_chm/html/50252dbb-7c20-eee8-ac7f-a58d8d50a695.htm`
-- Named set enum: `docs/reference/vendor/etabs/etabs_chm/html/9d098515-2fc5-166c-50d2-af5259893c96.htm`
-- Frame forces: `docs/reference/vendor/etabs/etabs_chm/html/5efb0061-e25c-363c-1191-6fb001f48978.htm`
-- Joint reactions: `docs/reference/vendor/etabs/etabs_chm/html/10645966-190c-ff74-46f2-a87da774df65.htm`
-- Frame geometry: `docs/reference/vendor/etabs/etabs_chm/html/71f957cb-61ed-208a-c949-e015256b9740.htm`
-- Point coordinates: `docs/reference/vendor/etabs/etabs_chm/html/b0b9bcdc-9d1c-0f0e-c0c1-b3d457335cb2.htm`
-- Story list: `docs/reference/vendor/etabs/etabs_chm/html/f5de53a1-c6a3-5d9f-df6f-f838de3d5563.htm`
-- Frame section property: `docs/reference/vendor/etabs/etabs_chm/html/2e4b87d5-ce74-99e8-4f36-afb0dfd47019.htm`
-- Units (get/set): `docs/reference/vendor/etabs/etabs_chm/html/bbeca1c7-a471-6d04-bd18-2df96a44a7a3.htm`,
-  `docs/reference/vendor/etabs/etabs_chm/html/78a3d044-770b-6a3e-1bcc-39c132a5ab0d.htm`
-- Database tables: `docs/reference/vendor/etabs/etabs_chm/html/e39eded9-8da2-c558-ecbc-a942b9bb42a3.htm`
-- Export tables to Excel: `docs/reference/vendor/etabs/etabs_chm/html/a240d8bb-e778-1fea-ca53-8938ec0fa4a6.htm`
-- Export CSV table: `docs/reference/vendor/etabs/etabs_chm/html/3ffd7174-be56-d9cc-7802-781240f0581b.htm`
+- OAPI entry points: `docs/reference/vendor/etabs/etabs-chm/html/26c23d4c-221d-7bb7-4ae5-e9d97657cdcf.htm`
+- Attach to running ETABS: `docs/reference/vendor/etabs/etabs-chm/html/10421d6a-9180-f71a-b493-a7e7785053f1.htm`
+- Launch ETABS by ProgID: `docs/reference/vendor/etabs/etabs-chm/html/3f1a3df2-006a-723d-f97c-4fd19fd4fa03.htm`
+- OAPI version check: `docs/reference/vendor/etabs/etabs-chm/html/d28f3634-a3f5-f333-0f77-748e390c4742.htm`
+- Analyze property: `docs/reference/vendor/etabs/etabs-chm/html/60fd8343-7468-5e79-c5e7-0d9f5712e439.htm`
+- Run analysis: `docs/reference/vendor/etabs/etabs-chm/html/516e7b74-8cb4-af27-31d5-38bb95b3c1d1.htm`
+- Get case status: `docs/reference/vendor/etabs/etabs-chm/html/94fc4a33-5784-228c-62ad-edcc74eaf034.htm`
+- Results property: `docs/reference/vendor/etabs/etabs-chm/html/0c2bc8bd-2382-75be-9075-b0a8245283c3.htm`
+- Select case output: `docs/reference/vendor/etabs/etabs-chm/html/9a897e48-fbcd-d8cc-90f3-8aab80ae0e51.htm`
+- Select combo output: `docs/reference/vendor/etabs/etabs-chm/html/50252dbb-7c20-eee8-ac7f-a58d8d50a695.htm`
+- Named set enum: `docs/reference/vendor/etabs/etabs-chm/html/9d098515-2fc5-166c-50d2-af5259893c96.htm`
+- Frame forces: `docs/reference/vendor/etabs/etabs-chm/html/5efb0061-e25c-363c-1191-6fb001f48978.htm`
+- Joint reactions: `docs/reference/vendor/etabs/etabs-chm/html/10645966-190c-ff74-46f2-a87da774df65.htm`
+- Frame geometry: `docs/reference/vendor/etabs/etabs-chm/html/71f957cb-61ed-208a-c949-e015256b9740.htm`
+- Point coordinates: `docs/reference/vendor/etabs/etabs-chm/html/b0b9bcdc-9d1c-0f0e-c0c1-b3d457335cb2.htm`
+- Story list: `docs/reference/vendor/etabs/etabs-chm/html/f5de53a1-c6a3-5d9f-df6f-f838de3d5563.htm`
+- Frame section property: `docs/reference/vendor/etabs/etabs-chm/html/2e4b87d5-ce74-99e8-4f36-afb0dfd47019.htm`
+- Units (get/set): `docs/reference/vendor/etabs/etabs-chm/html/bbeca1c7-a471-6d04-bd18-2df96a44a7a3.htm`,
+  `docs/reference/vendor/etabs/etabs-chm/html/78a3d044-770b-6a3e-1bcc-39c132a5ab0d.htm`
+- Database tables: `docs/reference/vendor/etabs/etabs-chm/html/e39eded9-8da2-c558-ecbc-a942b9bb42a3.htm`
+- Export tables to Excel: `docs/reference/vendor/etabs/etabs-chm/html/a240d8bb-e778-1fea-ca53-8938ec0fa4a6.htm`
+- Export CSV table: `docs/reference/vendor/etabs/etabs-chm/html/3ffd7174-be56-d9cc-7802-781240f0581b.htm`
 
 ## Post-Processing Guidance
 

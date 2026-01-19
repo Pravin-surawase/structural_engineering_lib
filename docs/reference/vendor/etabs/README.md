@@ -11,7 +11,7 @@
 
 This folder now contains the extracted HTML tree of `CSI API ETABS v1.chm` (the
 latest ETABS COM/.NET API reference). I installed `chmlib` via Homebrew and ran
-`extract_chmLib "docs/reference/CSI API ETABS v1.chm" docs/reference/vendor/etabs/etabs_chm`.
+`extract_chmLib "docs/reference/CSI API ETABS v1.chm" docs/reference/vendor/etabs/etabs-chm`.
 
 ## Purpose
 
@@ -26,38 +26,38 @@ Use this document whenever you need canonical answers about:
 
 1. **Bootstrapping cOAPI + SapModel** – The `cOAPI` interface is the root object
    inside `ETABSv1.dll`. It exposes [`ApplicationStart` / `ApplicationExit` /
-   `SetAsActiveObject`]-(etabs_chm/html/85e13e9c-4b05-a5ed-4bfe-08903fdb79e1.htm)
+   `SetAsActiveObject`]-(etabs-chm/html/85e13e9c-4b05-a5ed-4bfe-08903fdb79e1.htm)
    and the `SapModel` property that gives you a `cSapModel` instance. Always call
    `cHelper.GetOAPIVersionNumber` before using the interface so you confirm the
    version you are automating.
 
 2. **Running analysis** – Use
-   [`SapModel.Analyze.RunAnalysis`](etabs_chm/html/516e7b74-8cb4-af27-31d5-38bb95b3c1d1.htm)
+   [`SapModel.Analyze.RunAnalysis`](etabs-chm/html/516e7b74-8cb4-af27-31d5-38bb95b3c1d1.htm)
    to ensure the model is up-to-date. Build simple UI feedback around this call and
    map the return code to our helper messages.
 
 3. **Result selection** – `SapModel.Results` (see
-   [`cSapModel.Results Property`](etabs_chm/html/0c2bc8bd-2382-75be-9075-b0a8245283c3.htm))
+   [`cSapModel.Results Property`](etabs-chm/html/0c2bc8bd-2382-75be-9075-b0a8245283c3.htm))
    exposes `Setup.SetCaseSelectedForOutput`, `Setup.SetComboSelectedForOutput`,
    and the methods that fetch forces (e.g., `FrameForce`, `JointReact`). We can
    mirror our current CSV schema by calling `FrameForce(...)` for beams, then
    walking `NumberResults` to build Mu/Vu envelopes.
 
 4. **Geometry + topology** – Use `FrameObj.GetPoints`
-   ([`cFrameObj.GetPoints`](etabs_chm/html/71f957cb-61ed-208a-c949-e015256b9740.htm))
+   ([`cFrameObj.GetPoints`](etabs-chm/html/71f957cb-61ed-208a-c949-e015256b9740.htm))
    together with `PointObj.GetCoordCartesian`
-   ([`cPointObj.GetCoordCartesian`](etabs_chm/html/b0b9bcdc-9d1c-0f0e-c0c1-b3d457335cb2.htm))
+   ([`cPointObj.GetCoordCartesian`](etabs-chm/html/b0b9bcdc-9d1c-0f0e-c0c1-b3d457335cb2.htm))
    to reconstruct beam geometry. For stories and levels, `cStory.GetNameList`
-   (`etabs_chm/html/f5de53a1-c6a3-5d9f-df6f-f838de3d5563.htm`) returns a list of
+   (`etabs-chm/html/f5de53a1-c6a3-5d9f-df6f-f838de3d5563.htm`) returns a list of
    all level names and a boolean per story that you can use to set elevations.
 
 5. **Section + material metadata** – `SapModel.PropFrame` and
-   `SapModel.PropMaterial` (`etabs_chm/html/2e4b87d5-ce74-99e8-4f36-afb0dfd47019.htm`)
+   `SapModel.PropMaterial` (`etabs-chm/html/2e4b87d5-ce74-99e8-4f36-afb0dfd47019.htm`)
    provide section depth/width/area and the material grade (fck/fy) required to
    map into our concrete design schema.
 
 6. **Load cases, combos, enums** – The
-   [`eNamedSetType`](etabs_chm/html/9d098515-2fc5-166c-50d2-af5259893c96.htm)
+   [`eNamedSetType`](etabs-chm/html/9d098515-2fc5-166c-50d2-af5259893c96.htm)
    enumeration shows how the API tags built-in case/combination requests. Use
    these values when you automate case selection (RunAnalysis, TableForm).
 
@@ -88,5 +88,5 @@ Use this document whenever you need canonical answers about:
 - Automate version checks by reading `cHelper.GetOAPIVersionNumber` at startup
   and ensuring the user has ETABS 20+ before enabling the export button.
 
-> All HTML topics live inside `docs/reference/vendor/etabs/etabs_chm/html/…`.
+> All HTML topics live inside `docs/reference/vendor/etabs/etabs-chm/html/…`.
 > Link to a topic to give peers machine-readable proof for any claim in this doc.

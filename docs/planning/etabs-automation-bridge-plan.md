@@ -12,7 +12,7 @@
 
 # Documentation Reference (CSI API CHM)
 
-- The CSI API ETABS CHM has been extracted under `docs/reference/vendor/etabs/etabs_chm/`.
+- The CSI API ETABS CHM has been extracted under `docs/reference/vendor/etabs/etabs-chm/`.
 - Use it as the canonical source for `cOAPI`, `cSapModel`, `Results`, `FrameObj`, and the
   load combo enums (`eNamedSetType`). Link to specific HTML topics when you cite a method
   in the add-in doc so we keep traceable proof.
