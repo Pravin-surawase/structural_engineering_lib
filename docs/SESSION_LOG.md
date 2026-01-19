@@ -4,6 +4,152 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 40: Canonical Data Format Architecture (TASK-DATA-001)
+
+**Focus:** Create stable, AI-friendly Pydantic-based canonical data format for input handling
+
+### Overview
+
+Session 40 implemented a comprehensive canonical data format system using Pydantic v2. This addresses the core problem: CSV formats vary between ETABS versions, making the codebase fragile. The new architecture provides a stable internal representation with adapters for each input source.
+
+### Strategic Decision: Pydantic vs Dataclasses
+
+**Decision:** Use Pydantic v2 for all canonical models.
+
+**Rationale:**
+| Feature | dataclasses | Pydantic v2 |
+|---------|------------|-------------|
+| Type validation | ❌ None | ✅ Automatic |
+| JSON serialization | Manual | ✅ Built-in |
+| JSON Schema | Manual | ✅ Auto-generated |
+| Error messages | Generic | ✅ Field-specific |
+| AI-agent friendly | ⚠️ Low | ✅ High |
+
+### Deliverables
+
+#### 1. Canonical Pydantic Models (models.py)
+
+**File Created:** `Python/structural_lib/models.py` (400 lines)
+
+**Classes:**
+- `Point3D` - Frozen 3D coordinate with distance_to() method
+- `SectionProperties` - Beam section (width_mm, depth_mm, fck_mpa, fy_mpa, cover_mm)
+- `BeamGeometry` - Full beam definition with computed length_m and is_vertical
+- `BeamForces` - Force envelope (mu_knm, vu_kn, pu_kn)
+- `BeamDesignResult` - Design output with status, utilization
+- `DesignDefaults` - Default parameters for batch processing
+- `BeamBatchInput` - Aggregated input with get_merged_data(), get_unmatched_beams()
+- `BeamBatchResult` - Results with from_results() factory
+- Enums: `FrameType`, `DesignStatus`
+
+**Key Features:**
+- All models use `ConfigDict(frozen=True, extra="forbid")` for immutability
+- Computed fields (length_m, effective_depth_mm, pass_rate, is_acceptable)
+- Validators for business rules (positive dimensions, forces, etc.)
+
+**Tests:** 44 tests in `test_models.py`
+
+#### 2. ETABS Adapter (adapters.py)
+
+**File Created:** `Python/structural_lib/adapters.py` (500 lines)
+
+**Classes:**
+- `InputAdapter` - Abstract base class for all adapters
+- `ETABSAdapter` - Handles ETABS CSV exports
+- `ManualInputAdapter` - Handles manual/programmatic input
+
+**ETABS Adapter Features:**
+- Column name mappings for ETABS 2019-2024 formats
+- Section name parsing (B230X450M25 → width=230, depth=450, fck=25)
+- Force envelope calculation (max across stations)
+- Graceful handling of missing/invalid data
+
+**Tests:** 39 tests in `test_adapters.py`
+
+#### 3. JSON Serialization (serialization.py)
+
+**File Created:** `Python/structural_lib/serialization.py` (450 lines)
+
+**Functions:**
+- `save_geometry()` / `load_geometry()` - BeamGeometry list
+- `save_forces()` / `load_forces()` - BeamForces list
+- `save_batch_input()` / `load_batch_input()` - BeamBatchInput
+- `save_batch_result()` / `load_batch_result()` - BeamBatchResult
+- `generate_schema()` / `generate_all_schemas()` - JSON Schema
+- `cache_exists()` / `get_cache_metadata()` - Cache utilities
+
+**Key Features:**
+- Proper exclusion of computed fields (frozen models reject extra fields)
+- Metadata headers (version, model_type, count, created_at)
+- Type validation on load
+
+**Tests:** 29 tests in `test_serialization.py`
+
+#### 4. CI Fix
+
+**Issue:** PR #381 had 2 failing CI checks (Quick Validation, Format Check)
+**Root Cause:** 32 Python files outside Python/ needed black formatting
+**Solution:** Ran `black .` from repo root
+**Commit:** 956e69d4
+
+### Architecture Summary
+
+```
+CSV Files (ETABS, SAFE, Manual)
+          ↓
+    ┌─────────────────┐
+    │  Adapters       │  ← Format-specific parsing
+    │  (ETABSAdapter) │
+    └─────────────────┘
+          ↓
+    ┌─────────────────┐
+    │  Canonical      │  ← Pydantic models
+    │  Models         │     (validated, immutable)
+    └─────────────────┘
+          ↓
+    ┌─────────────────┐
+    │  Serialization  │  ← JSON cache/transfer
+    └─────────────────┘
+          ↓
+    ┌─────────────────┐
+    │  Business Logic │  ← Core design calculations
+    │  (flexure.py)   │
+    └─────────────────┘
+```
+
+### Commits (Branch: task/TASK-3D-002)
+
+| Commit | Description | Lines |
+|--------|-------------|-------|
+| 956e69d4 | style: fix black formatting across all Python files | 32 files |
+| bf1015ac | feat(models): add Pydantic-based canonical data models | 400+ |
+| 40dd460e | feat(adapters): add ETABS CSV adapter | 500+ |
+| 5146ab25 | feat(serialization): add JSON serialization utilities | 450+ |
+
+### Test Summary
+
+| Module | Tests | Status |
+|--------|-------|--------|
+| models.py | 44 | ✅ Pass |
+| adapters.py | 39 | ✅ Pass |
+| serialization.py | 29 | ✅ Pass |
+| **Total** | **112** | ✅ Pass |
+
+### Next Steps (Session 41+)
+
+1. **Integrate with etabs_import.py** - Update existing import to use new adapters
+2. **Generate JSON Schemas** - Create schema files for API documentation
+3. **Complete PR #381** - Merge full feature set
+4. **Phase 2 continuation** - LOD system, column toggle, building stats
+
+### Lessons Learned
+
+1. **Pydantic computed_field quirk:** When using `extra="forbid"`, computed fields in JSON must be excluded during save, otherwise load fails
+2. **Set syntax:** Python sets cannot contain dicts - use `{"field": True}` format for Pydantic exclude
+3. **CI coverage:** Format checks apply to all Python files, not just Python/ directory
+
+---
+
 ## 2026-01-21 — Session 39: Real 3D Building Visualization (TASK-3D-002)
 
 **Focus:** Replace fake grid 3D with real building coordinates from frames_geometry.csv
