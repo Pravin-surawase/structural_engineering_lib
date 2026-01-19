@@ -4,6 +4,115 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-21 — Session 39: Real 3D Building Visualization (TASK-3D-002)
+
+**Focus:** Replace fake grid 3D with real building coordinates from frames_geometry.csv
+
+### Overview
+
+Session 39 completed TASK-3D-002 Phase 2 deliverables: real 3D building visualization using actual coordinates from ETABS frame geometry export. Updated 8-week plan to mark Phase 1 complete and Phase 2 in progress.
+
+### Strategic Decision: Three.js vs Plotly
+
+**Decision:** Continue with Plotly for Phase 2, evaluate Three.js/PyVista for Phase 4.
+
+**Rationale:**
+- ✅ Plotly already proven (839 lines working code)
+- ✅ Good enough for building-scale visualization (tested 225 frames)
+- ❌ Three.js = new complexity (npm build, React bridge)
+- 🎯 Phase 4 will evaluate PyVista for CAD-quality rendering
+
+### Deliverables
+
+#### 1. Real 3D Building Visualization
+
+**File Modified:** `streamlit_app/pages/06_📤_etabs_import.py`
+
+**Changes:**
+- Updated `create_beam_grid_3d()` to use real coordinates from FrameGeometry
+- Added dual file uploader (beam_forces.csv + frames_geometry.csv)
+- Shows building extents (X/Y/Z ranges) when geometry loaded
+- Automatic aspect ratio calculation based on building dimensions
+- Graceful fallback to grid layout when geometry unavailable
+- Fixed ZeroDivisionError risk (safe division with denominator check)
+
+**Before (Fake Grid):**
+```python
+z = story_map.get(story, 0) * 4  # Fake vertical spacing
+x = beams_per_story.get(beam_id, 0) * 2  # Fake horizontal
+```
+
+**After (Real Coordinates):**
+```python
+geom = geometry_map.get(beam_id)
+x1, y1, z1 = geom.point1_x, geom.point1_y, geom.point1_z
+x2, y2, z2 = geom.point2_x, geom.point2_y, geom.point2_z
+```
+
+#### 2. Documentation Updates
+
+**8-Week Plan Update:**
+- Marked Phase 1 (Week 1-2) as ✅ COMPLETE
+- Added Phase status table with evidence metrics
+- Updated Phase 2 progress (60% complete)
+- Documented Three.js vs Plotly decision
+
+**TASKS.md Update:**
+- Added TASK-3D-002 to Active section
+- Updated TASK-VBA-001 to COMPLETE status
+- Changed release focus to "3D Visualization Excellence"
+
+**CSV Schema Spec:**
+- Added frames_geometry.csv schema (14 columns)
+- Documented FrameGeometry Python API
+- Updated changelog to v1.1
+
+#### 3. Tests Added
+
+**File Modified:** `Python/tests/unit/test_etabs_import.py`
+
+**New Test Classes (180 lines):**
+- `TestFrameGeometry` - length_m, is_vertical properties
+- `TestLoadFramesGeometry` - CSV parsing, beam/column counts, building extents
+- `TestMergeForcesAndGeometry` - Force/geometry merging
+
+**Total Tests:** 32 (all passing)
+
+### Phase Completion Status
+
+**Phase 1 (Week 1-2) — ✅ COMPLETE:**
+- visualizations_3d.py: 839 lines (target: 300+)
+- geometry_3d.py: 811 lines (target: 200+)
+- beam_design.py integration: Working
+- Caching + performance: Geometry hashing
+
+**Phase 2 (Week 3-4) — 🚧 60% Complete:**
+- ✅ CSV schema spec (csv-import-schema.md)
+- ✅ FrameGeometry dataclass (15 fields)
+- ✅ load_frames_geometry() function
+- ✅ Real coordinate 3D visualization
+- ✅ Multi-file upload (forces + geometry)
+- ⏳ LOD system for 1000+ beams
+- ⏳ Column toggle and building stats
+
+### Commits (Branch: task/TASK-3D-002)
+
+| Commit | Description | Lines |
+|--------|-------------|-------|
+| 1c6fc140 | docs(plan): mark Phase 1 complete, add TASK-3D-002 | +98 |
+| d89538c1 | feat(etabs): implement real 3D building coordinates | +232 |
+| de14f344 | test(etabs): add FrameGeometry tests | +180 |
+| 7ddd24f2 | docs(specs): add frames_geometry.csv schema | +74 |
+
+### Next Steps
+
+1. Complete PR for TASK-3D-002
+2. Implement LOD system for 1000+ beams (Phase 2 remaining)
+3. Add column toggle and building extent display
+4. Continue to Phase 3 (Week 5): Design Integration
+
+---
+
 ## 2026-01-17 — Session 36: ETABS VBA Export Implementation
 
 **Focus:** Complete production-ready ETABS VBA export macro with 7 modules
