@@ -2,9 +2,9 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-17 (Session 36 - ETABS VBA Export Implementation)
+**Updated:** 2026-01-21 (Session 39 - 3D Visualization Phase 2)
 
-> **Session 36 Progress:** PR #379 - Complete ETABS VBA export macro with 7 modules (2,302 lines). Production-ready with DatabaseTables API, unit conversion, error handling, and comprehensive user guide.
+> **Session 39 Progress:** TASK-3D-002 - Implementing real 3D building coordinates for ETABS import. Phase 1 complete, Phase 2 in progress.
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -21,59 +21,61 @@
 ## Current Release
 
 - **Version:** v0.17.5 ✅ Released
-- **Focus:** Multi-Objective Optimization + API Validation
-- **Next:** v0.18.0 (Q1 2026)
+- **Focus:** 3D Visualization Excellence (8-Week Plan)
+- **Next:** v0.18.0 (March 2026)
 
 ---
 
 ## Active
 
-### TASK-VBA-001: ETABS VBA Export Implementation (PR #379) 🚀 IN REVIEW
+### TASK-3D-002: ETABS Real 3D Building Visualization 🚀 IN PROGRESS
 
-> **Goal:** Complete production-ready ETABS VBA export macro for beam forces
-> **Timeline:** Session 36 (2026-01-17)
-> **Status:** PR #379 created, CI running, async merge enabled
+> **Goal:** Replace fake grid 3D with real building coordinates from frames_geometry.csv
+> **Timeline:** Session 38-39 (2026-01-20 to 2026-01-21)
+> **Branch:** task/TASK-3D-002 (2 commits ahead of main)
+> **Plan:** [8-week-development-plan.md](planning/8-week-development-plan.md)
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-VBA-001.1** | Create 7 VBA modules (2,302 lines) | MAIN | 2h | 🔴 CRITICAL | ✅ Done (PR #379) |
-| **TASK-VBA-001.2** | Add comprehensive user setup guide | MAIN | 1h | 🔴 HIGH | ✅ Done (PR #379) |
-| **TASK-VBA-001.3** | Test on Windows with ETABS v22 | USER | 1h | 🟠 MEDIUM | ⏳ Pending |
+| **TASK-3D-002.1** | Add FrameGeometry dataclass (15 fields) | MAIN | 1h | 🔴 CRITICAL | ✅ Done (d8e9baff) |
+| **TASK-3D-002.2** | Add load_frames_geometry() parser | MAIN | 1h | 🔴 CRITICAL | ✅ Done (d8e9baff) |
+| **TASK-3D-002.3** | Replace fake grid with real coords | MAIN | 2h | 🔴 CRITICAL | 📋 In Progress |
+| **TASK-3D-002.4** | Add multi-file upload (forces + geometry) | MAIN | 1h | 🟠 HIGH | 📋 TODO |
+| **TASK-3D-002.5** | Add LOD for 1000+ beams | MAIN | 2h | 🟠 MEDIUM | 📋 TODO |
+| **TASK-3D-002.6** | Add column toggle and building stats | MAIN | 30m | 🟡 LOW | 📋 TODO |
+
+**What was built (Session 38):**
+- **FrameGeometry dataclass:** 15 fields (unique_name, label, story, frame_type, point1_x/y/z, point2_x/y/z, etc.)
+- **load_frames_geometry():** Parses frames_geometry.csv, tested with 225 frames (153 beams + 72 columns)
+- **merge_forces_and_geometry():** Cross-references beam_forces with geometry
+- **Implementation plan:** task-3d-002-implementation-plan.md (309 lines)
+
+**Test Data:**
+- Location: `VBA/ETABS_Export_v2/Etabs_output/2026-01-17_222801/`
+- Building: 10.5m × 9m × 17m, 6 stories
+- Frames: 225 total (153 beams + 72 columns)
+
+**Next Steps (Session 39):**
+1. Update create_beam_grid_3d() to use real Point1/Point2 coordinates
+2. Add multi-file upload for beam_forces + frames_geometry
+3. Create PR for completion
+
+---
+
+### TASK-VBA-001: ETABS VBA Export Implementation ✅ COMPLETE (PR #379 MERGED)
+
+> **Goal:** Complete production-ready ETABS VBA export macro for beam forces
+> **Timeline:** Session 36 (2026-01-17)
+> **Status:** ✅ PR #379 merged successfully
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-VBA-001.1** | Create 7 VBA modules (2,302 lines) | MAIN | 2h | 🔴 CRITICAL | ✅ Done |
+| **TASK-VBA-001.2** | Add comprehensive user setup guide | MAIN | 1h | 🔴 HIGH | ✅ Done |
+| **TASK-VBA-001.3** | Test on Windows with ETABS v22 | USER | 1h | 🟠 MEDIUM | ⏳ Pending user |
 | **TASK-VBA-001.4** | Create Excel workbook template | MAIN | 30m | 🟠 MEDIUM | 📋 Backlog |
 
-**What was built:**
-- **7 VBA Modules** (2,302 lines total):
-  - mod_Main: Entry point with ExportETABSData() orchestration
-  - mod_Connection: ETABS COM API connection with retry logic
-  - mod_Analysis: Analysis status checking and execution management
-  - mod_Export: DatabaseTables + Direct API fallback (100-200x speedup)
-  - mod_Validation: Unit conversion (6 force, 5 length units) + CSV normalization
-  - mod_Logging: Multi-level logging with checkpoint tracking system
-  - mod_Types: Type definitions and enums
-  - mod_Utils: 11 utility functions for file/folder operations
-
-- **Production Features:**
-  - 5-layer error architecture (validation, checkpoints, retry, degradation, logging)
-  - Automatic unit conversion to kN, kN·m, mm (matches Streamlit import)
-  - CSV schema matches [csv-import-schema.md](../specs/csv-import-schema.md)
-  - DatabaseTables API primary method (100-200x faster than Direct API)
-  - Progress tracking with checkpoints for resume capability
-  - Comprehensive logging for debugging
-
-- **User Guide:** 345 lines covering:
-  - Quick start (5 minutes)
-  - Detailed Windows setup
-  - ETABS API registration
-  - Excel VBA editor configuration
-  - Import instructions
-  - Troubleshooting
-  - Performance tips
-  - Best practices
-
-**Next Steps:**
-1. Merge PR #379 (automated when CI passes)
-2. User testing on Windows with ETABS v22
-3. Create Excel workbook template (optional enhancement)
+**Completed:** 7 VBA modules (2,302 lines), user guide (345 lines), CSV schema documented.
 
 ---
 
