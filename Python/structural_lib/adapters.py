@@ -48,6 +48,7 @@ __all__ = [
     "ETABSAdapter",
     "SAFEAdapter",
     "STAADAdapter",
+    "GenericCSVAdapter",
     "ManualInputAdapter",
 ]
 
@@ -1480,3 +1481,492 @@ class STAADAdapter(InputAdapter):
             )
 
         return forces
+
+
+# =============================================================================
+# Generic CSV Adapter (Excel/Manual Entry)
+# =============================================================================
+
+
+class GenericCSVAdapter(InputAdapter):
+    """Adapter for generic/manual CSV input (Excel templates, user-created files).
+
+    Handles the simplified "Generic Format" defined in csv-import-schema.md,
+    as well as Excel BeamDesignSchedule template format.
+
+    Supports two primary use cases:
+    1. Generic format: beam_id, mu_knm, vu_kn, b_mm, D_mm, etc.
+    2. Excel template: BeamID, b (mm), D (mm), Mu (kN-m), Vu (kN), etc.
+
+    Column Mappings (case-insensitive, with flexible aliases):
+    - BeamID/beam_id → beam_id
+    - b (mm)/b_mm/b/Width → width_mm
+    - D (mm)/D_mm/D/Depth → depth_mm
+    - Mu (kN-m)/mu_knm/Mu → mu_knm
+    - Vu (kN)/vu_kn/Vu → vu_kn
+
+    Example Generic CSV:
+        beam_id,story,mu_knm,vu_kn,b_mm,D_mm,fck_nmm2
+        B1,GF,180.5,125.0,300,500,25
+        B2,GF,145.2,98.3,300,450,25
+
+    Example Excel Template CSV:
+        BeamID,b (mm),D (mm),d (mm),fck,fy,Mu (kN-m),Vu (kN),Cover (mm)
+        B1,300,500,450,25,500,150,100,40
+        B2,300,450,400,25,500,120,80,40
+    """
+
+    name = "Generic"
+    supported_formats = [".csv", ".txt"]
+
+    # Default dimensions for generic input
+    DEFAULT_WIDTH_MM = 300.0
+    DEFAULT_DEPTH_MM = 500.0
+
+    # Column mappings for geometry/section properties
+    GEOMETRY_COLUMNS: dict[str, list[str]] = {
+        "beam_id": [
+            "BeamID",
+            "Beam ID",
+            "beam_id",
+            "ID",
+            "Name",
+            "Label",
+            "Element",
+        ],
+        "story": ["Story", "Floor", "Level", "story"],
+        "label": ["Label", "Name", "Description"],
+        "span_mm": ["Span (mm)", "span_mm", "Span", "Length", "L (mm)"],
+        "width_mm": [
+            "b (mm)",
+            "b_mm",
+            "b",
+            "Width",
+            "Width (mm)",
+            "width_mm",
+            "B",
+        ],
+        "depth_mm": [
+            "D (mm)",
+            "D_mm",
+            "D",
+            "Depth",
+            "Depth (mm)",
+            "depth_mm",
+            "H",
+            "Height",
+        ],
+        "eff_depth_mm": ["d (mm)", "d_mm", "d", "Effective Depth"],
+        "fck_mpa": ["fck", "fck_nmm2", "Fck", "fck (N/mm2)", "Concrete Grade"],
+        "fy_mpa": ["fy", "fy_nmm2", "Fy", "fy (N/mm2)", "Steel Grade"],
+        "cover_mm": ["Cover (mm)", "cover_mm", "Cover", "c"],
+    }
+
+    # Column mappings for forces
+    FORCES_COLUMNS: dict[str, list[str]] = {
+        "beam_id": [
+            "BeamID",
+            "Beam ID",
+            "beam_id",
+            "ID",
+            "Name",
+            "Label",
+            "Element",
+        ],
+        "story": ["Story", "Floor", "Level", "story"],
+        "mu_knm": [
+            "Mu (kN-m)",
+            "mu_knm",
+            "Mu",
+            "Moment",
+            "Bending Moment",
+            "M (kNm)",
+        ],
+        "vu_kn": ["Vu (kN)", "vu_kn", "Vu", "Shear", "Shear Force", "V (kN)"],
+        "pu_kn": ["Pu (kN)", "pu_kn", "Pu", "Axial", "Axial Force", "P (kN)"],
+        "load_case": ["Load Case", "Combo", "Case", "LoadCase", "LC"],
+        # Section properties may also appear in forces file
+        "width_mm": [
+            "b (mm)",
+            "b_mm",
+            "b",
+            "Width",
+            "Width (mm)",
+            "width_mm",
+            "B",
+        ],
+        "depth_mm": [
+            "D (mm)",
+            "D_mm",
+            "D",
+            "Depth",
+            "Depth (mm)",
+            "depth_mm",
+            "H",
+        ],
+        "fck_mpa": ["fck", "fck_nmm2", "Fck", "fck (N/mm2)"],
+        "fy_mpa": ["fy", "fy_nmm2", "Fy", "fy (N/mm2)"],
+        "cover_mm": ["Cover (mm)", "cover_mm", "Cover"],
+    }
+
+    def can_handle(self, source: Path | str) -> bool:
+        """Check if source is a generic/Excel CSV file.
+
+        Returns True for CSV files that have beam_id and at least one
+        recognizable column (mu_knm, vu_kn, b_mm, D_mm).
+
+        This adapter has the lowest priority - it handles files that
+        don't match more specific formats (ETABS, SAFE, STAAD).
+        """
+        path = Path(source)
+
+        # Basic file checks
+        if not path.exists():
+            return False
+        if path.suffix.lower() not in self.supported_formats:
+            return False
+
+        try:
+            with open(path, encoding="utf-8-sig") as f:
+                reader = csv.reader(f)
+                headers = next(reader, [])
+                headers_lower = [h.lower().strip() for h in headers]
+
+                # Build column map to check recognition
+                column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
+
+                # Must have beam_id
+                if "beam_id" not in column_map:
+                    return False
+
+                # Must have at least one force or geometry column
+                recognized = {
+                    "mu_knm",
+                    "vu_kn",
+                    "width_mm",
+                    "depth_mm",
+                    "fck_mpa",
+                    "fy_mpa",
+                }
+                has_recognized = any(k in column_map for k in recognized)
+
+                if not has_recognized:
+                    return False
+
+                # Exclude ETABS-specific patterns
+                etabs_markers = ["m3", "v2", "uniquename", "output case"]
+                has_etabs = any(m in headers_lower for m in etabs_markers)
+
+                # Exclude STAAD-specific patterns
+                staad_markers = ["my", "fy", "fx", "lc", "dist"]
+                staad_count = sum(1 for m in staad_markers if m in headers_lower)
+
+                # Accept if not clearly ETABS or STAAD
+                return not has_etabs and staad_count < 3
+
+        except Exception:
+            return False
+
+    def _build_column_map(
+        self, headers: list[str], column_spec: dict[str, list[str]]
+    ) -> dict[str, str]:
+        """Build mapping from internal names to actual column names.
+
+        Prefers exact case matches over case-insensitive matches to handle
+        situations like both 'D (mm)' and 'd (mm)' being present.
+        """
+        column_map = {}
+        headers_set = set(headers)
+        headers_lower = {h.lower(): h for h in headers}
+
+        for internal_name, aliases in column_spec.items():
+            # First pass: try exact match
+            for alias in aliases:
+                if alias in headers_set:
+                    column_map[internal_name] = alias
+                    break
+            else:
+                # Second pass: case-insensitive match
+                for alias in aliases:
+                    if alias.lower() in headers_lower:
+                        column_map[internal_name] = headers_lower[alias.lower()]
+                        break
+
+        return column_map
+
+    def load_geometry(
+        self,
+        source: Path | str,
+        defaults: DesignDefaults | None = None,
+    ) -> list[BeamGeometry]:
+        """Load beam geometry from generic CSV.
+
+        Creates BeamGeometry models with section properties from CSV.
+        Uses placeholder coordinates since generic format typically
+        doesn't include 3D geometry.
+
+        Args:
+            source: Path to geometry/beam schedule CSV
+            defaults: Default material properties
+
+        Returns:
+            List of BeamGeometry models
+        """
+        if defaults is None:
+            defaults = DesignDefaults()
+
+        path = Path(source)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+
+        beams: list[BeamGeometry] = []
+
+        with open(path, encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            column_map = self._build_column_map(headers, self.GEOMETRY_COLUMNS)
+
+            if "beam_id" not in column_map:
+                raise ValueError(
+                    f"Missing beam identifier column. Expected one of: "
+                    f"{self.GEOMETRY_COLUMNS['beam_id']}. "
+                    f"Available: {headers}"
+                )
+
+            for row in reader:
+                try:
+                    beam_id = row[column_map["beam_id"]].strip()
+                    if not beam_id:
+                        continue
+
+                    # Label (use beam_id if not provided)
+                    label_col = column_map.get("label")
+                    label = (
+                        row.get(label_col, beam_id).strip() if label_col else beam_id
+                    )
+
+                    # Story
+                    story_col = column_map.get("story")
+                    story_from_csv = row.get(story_col, "").strip() if story_col else ""
+                    story = story_from_csv if story_from_csv else "Default"
+
+                    # Span (for calculating placeholder coordinates)
+                    span_col = column_map.get("span_mm")
+                    span_mm = 5000.0  # Default 5m span
+                    if span_col:
+                        span_val = row.get(span_col, "")
+                        if span_val and str(span_val).strip():
+                            try:
+                                span_mm = float(span_val)
+                            except ValueError:
+                                pass
+
+                    # Placeholder coordinates based on span
+                    point1 = Point3D(x=0.0, y=0.0, z=0.0)
+                    point2 = Point3D(x=span_mm / 1000.0, y=0.0, z=0.0)  # Convert to m
+
+                    # Section properties
+                    width_col = column_map.get("width_mm")
+                    depth_col = column_map.get("depth_mm")
+                    fck_col = column_map.get("fck_mpa")
+                    fy_col = column_map.get("fy_mpa")
+                    cover_col = column_map.get("cover_mm")
+
+                    section = SectionProperties(
+                        width_mm=(
+                            float(
+                                row.get(width_col, self.DEFAULT_WIDTH_MM)
+                                or self.DEFAULT_WIDTH_MM
+                            )
+                            if width_col
+                            else self.DEFAULT_WIDTH_MM
+                        ),
+                        depth_mm=(
+                            float(
+                                row.get(depth_col, self.DEFAULT_DEPTH_MM)
+                                or self.DEFAULT_DEPTH_MM
+                            )
+                            if depth_col
+                            else self.DEFAULT_DEPTH_MM
+                        ),
+                        fck_mpa=(
+                            float(
+                                row.get(fck_col, defaults.fck_mpa) or defaults.fck_mpa
+                            )
+                            if fck_col
+                            else defaults.fck_mpa
+                        ),
+                        fy_mpa=(
+                            float(row.get(fy_col, defaults.fy_mpa) or defaults.fy_mpa)
+                            if fy_col
+                            else defaults.fy_mpa
+                        ),
+                        cover_mm=(
+                            float(
+                                row.get(cover_col, defaults.cover_mm)
+                                or defaults.cover_mm
+                            )
+                            if cover_col
+                            else defaults.cover_mm
+                        ),
+                    )
+
+                    # Build full ID
+                    full_id = f"{beam_id}_{story}" if story_from_csv else beam_id
+
+                    try:
+                        beam = BeamGeometry(
+                            id=full_id,
+                            label=label,
+                            story=story,
+                            frame_type=FrameType.BEAM,
+                            point1=point1,
+                            point2=point2,
+                            section=section,
+                            angle=0.0,
+                            source_id=beam_id,
+                        )
+                        beams.append(beam)
+                    except Exception:
+                        # Skip invalid members
+                        continue
+
+                except (KeyError, ValueError):
+                    continue
+
+        return beams
+
+    def load_forces(
+        self,
+        source: Path | str,
+    ) -> list[BeamForces]:
+        """Load beam forces from generic/Excel CSV.
+
+        Generic format typically has one row per beam with design forces.
+        No envelope processing needed.
+
+        Args:
+            source: Path to forces/beam schedule CSV
+
+        Returns:
+            List of BeamForces models
+
+        Raises:
+            ValueError: If required columns are missing
+            FileNotFoundError: If file doesn't exist
+        """
+        path = Path(source)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+
+        forces: list[BeamForces] = []
+
+        with open(path, encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            column_map = self._build_column_map(headers, self.FORCES_COLUMNS)
+
+            if "beam_id" not in column_map:
+                raise ValueError(
+                    f"Missing beam identifier column. Expected one of: "
+                    f"{self.FORCES_COLUMNS['beam_id']}. "
+                    f"Available: {headers}"
+                )
+
+            # Need at least mu or vu
+            has_forces = "mu_knm" in column_map or "vu_kn" in column_map
+            if not has_forces:
+                raise ValueError(
+                    "Missing force columns. Expected Mu (kN-m) or Vu (kN). "
+                    f"Available: {headers}"
+                )
+
+            for row in reader:
+                try:
+                    beam_id = row[column_map["beam_id"]].strip()
+                    if not beam_id:
+                        continue
+
+                    # Story for unique ID
+                    story_col = column_map.get("story")
+                    story = row.get(story_col, "").strip() if story_col else ""
+
+                    # Load case
+                    lc_col = column_map.get("load_case")
+                    load_case = (
+                        row.get(lc_col, "Design").strip() if lc_col else "Design"
+                    )
+                    if not load_case:
+                        load_case = "Design"
+
+                    # Forces
+                    mu_col = column_map.get("mu_knm")
+                    vu_col = column_map.get("vu_kn")
+                    pu_col = column_map.get("pu_kn")
+
+                    mu = 0.0
+                    vu = 0.0
+                    pu = 0.0
+
+                    if mu_col:
+                        mu_val = row.get(mu_col, "0")
+                        if mu_val and str(mu_val).strip():
+                            try:
+                                mu = abs(float(mu_val))
+                            except ValueError:
+                                pass
+
+                    if vu_col:
+                        vu_val = row.get(vu_col, "0")
+                        if vu_val and str(vu_val).strip():
+                            try:
+                                vu = abs(float(vu_val))
+                            except ValueError:
+                                pass
+
+                    if pu_col:
+                        pu_val = row.get(pu_col, "0")
+                        if pu_val and str(pu_val).strip():
+                            try:
+                                pu = abs(float(pu_val))
+                            except ValueError:
+                                pass
+
+                    # Build unique ID
+                    full_id = f"{beam_id}_{story}" if story else beam_id
+
+                    force = BeamForces(
+                        id=full_id,
+                        load_case=load_case,
+                        mu_knm=mu,
+                        vu_kn=vu,
+                        pu_kn=pu,
+                        station_count=1,  # Single row = 1 station
+                    )
+                    forces.append(force)
+
+                except (KeyError, ValueError):
+                    continue
+
+        return forces
+
+    def load_combined(
+        self,
+        source: Path | str,
+        defaults: DesignDefaults | None = None,
+    ) -> tuple[list[BeamGeometry], list[BeamForces]]:
+        """Load both geometry and forces from a combined CSV.
+
+        Many Excel templates have both section properties and forces
+        in the same file. This method loads both in one pass.
+
+        Args:
+            source: Path to combined beam schedule CSV
+            defaults: Default material properties
+
+        Returns:
+            Tuple of (geometry list, forces list)
+        """
+        geometry = self.load_geometry(source, defaults)
+        forces = self.load_forces(source)
+        return geometry, forces
