@@ -30,8 +30,7 @@ def safe_adapter() -> SAFEAdapter:
 @pytest.fixture
 def sample_safe_forces_csv(tmp_path: Path) -> Path:
     """Create sample SAFE forces CSV with station data."""
-    content = dedent(
-        """\
+    content = dedent("""\
         Strip,SpanName,LoadCombo,Position,M22,V23
         Strip1-A,Span1,1.5DL+1.5LL,0,0,-85.2
         Strip1-A,Span1,1.5DL+1.5LL,1500,120.5,0
@@ -40,8 +39,7 @@ def sample_safe_forces_csv(tmp_path: Path) -> Path:
         Strip2-B,Span2,1.5DL+1.5LL,2000,95.3,0
         Strip2-B,Span2,DL,0,0,-45.0
         Strip2-B,Span2,DL,2000,55.0,0
-    """
-    )
+    """)
     filepath = tmp_path / "safe_forces.csv"
     filepath.write_text(content)
     return filepath
@@ -50,14 +48,12 @@ def sample_safe_forces_csv(tmp_path: Path) -> Path:
 @pytest.fixture
 def sample_safe_envelope_csv(tmp_path: Path) -> Path:
     """Create sample SAFE envelope format CSV."""
-    content = dedent(
-        """\
+    content = dedent("""\
         Strip,Story,Mu_max,Vu_max,Width,Thickness
         Strip1,Slab1,120.5,85.2,1000,200
         Strip2,Slab1,95.3,72.1,1000,200
         Strip3,Slab2,145.0,98.5,1000,250
-    """
-    )
+    """)
     filepath = tmp_path / "safe_envelope.csv"
     filepath.write_text(content)
     return filepath
@@ -66,14 +62,12 @@ def sample_safe_envelope_csv(tmp_path: Path) -> Path:
 @pytest.fixture
 def sample_safe_geometry_csv(tmp_path: Path) -> Path:
     """Create sample SAFE geometry CSV."""
-    content = dedent(
-        """\
+    content = dedent("""\
         Strip,Story,Width,Depth_mm,Point1X,Point1Y,Point2X,Point2Y
         Strip1,Slab1,1000,200,0.0,0.0,5.0,0.0
         Strip2,Slab1,1000,200,0.0,3.0,5.0,3.0
         Strip3,Slab2,1200,250,0.0,0.0,6.0,0.0
-    """
-    )
+    """)
     filepath = tmp_path / "safe_geometry.csv"
     filepath.write_text(content)
     return filepath
