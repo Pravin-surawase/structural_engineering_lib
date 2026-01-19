@@ -60,6 +60,9 @@ try:
         load_etabs_csv,
         normalize_etabs_forces,
         ETABSEnvelopeResult,
+        load_frames_geometry,
+        merge_forces_and_geometry,
+        FrameGeometry,
     )
 
     ETABS_IMPORT_AVAILABLE = True
@@ -82,6 +85,10 @@ if "etabs_design_results" not in st.session_state:
     st.session_state.etabs_design_results = None
 if "etabs_beam_sections" not in st.session_state:
     st.session_state.etabs_beam_sections = {}  # beam_id -> {b_mm, D_mm}
+if "etabs_frames_geometry" not in st.session_state:
+    st.session_state.etabs_frames_geometry = None  # list[FrameGeometry]
+if "etabs_geometry_map" not in st.session_state:
+    st.session_state.etabs_geometry_map = {}  # beam_id -> FrameGeometry
 
 # Default section properties (can be overridden per beam)
 DEFAULT_SECTION = {
