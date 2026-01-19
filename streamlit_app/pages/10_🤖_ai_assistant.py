@@ -188,6 +188,61 @@ def run_smart_analysis(design_result: Any, params: dict[str, Any]) -> dict[str, 
         return {"success": False, "error": str(e)}
 
 
+def _parse_design_request(msg_lower: str, params: dict[str, Any]) -> tuple[dict[str, Any], str]:
+    """
+    Parse design request from user message and extract parameters.
+
+    Returns updated params and a description of what was parsed.
+    """
+    updated_params = params.copy()
+    parsed_items = []
+
+    # Parse moment (e.g., "150 kN·m", "150 knm", "moment 150")
+    moment_match = re.search(r"(\d+(?:\.\d+)?)\s*(?:kn[·\-]?m|knm)", msg_lower)
+    if moment_match:
+        updated_params["mu_knm"] = float(moment_match.group(1))
+        parsed_items.append(f"Moment: {moment_match.group(1)} kN·m")
+    else:
+        # Try "moment 150" pattern
+        moment_match2 = re.search(r"moment\s+(\d+(?:\.\d+)?)", msg_lower)
+        if moment_match2:
+            updated_params["mu_knm"] = float(moment_match2.group(1))
+            parsed_items.append(f"Moment: {moment_match2.group(1)} kN·m")
+
+    # Parse shear (e.g., "80 kN", "shear 80")
+    shear_match = re.search(r"(\d+(?:\.\d+)?)\s*kn(?!\s*[·\-]?m)", msg_lower)
+    if shear_match:
+        updated_params["vu_kn"] = float(shear_match.group(1))
+        parsed_items.append(f"Shear: {shear_match.group(1)} kN")
+    else:
+        shear_match2 = re.search(r"shear\s+(\d+(?:\.\d+)?)", msg_lower)
+        if shear_match2:
+            updated_params["vu_kn"] = float(shear_match2.group(1))
+            parsed_items.append(f"Shear: {shear_match2.group(1)} kN")
+
+    # Parse dimensions (e.g., "300x500", "300×500mm")
+    dim_match = re.search(r"(\d+)\s*[x×]\s*(\d+)\s*(?:mm)?", msg_lower)
+    if dim_match:
+        updated_params["b_mm"] = int(dim_match.group(1))
+        updated_params["D_mm"] = int(dim_match.group(2))
+        parsed_items.append(f"Section: {dim_match.group(1)}×{dim_match.group(2)}mm")
+
+    # Parse span (e.g., "5m span", "span 5m")
+    span_match = re.search(r"(?:span\s+)?(\d+(?:\.\d+)?)\s*m(?:\s+span)?", msg_lower)
+    if span_match and "mm" not in msg_lower[max(0, span_match.start()-5):span_match.end()+5]:
+        updated_params["span_m"] = float(span_match.group(1))
+        parsed_items.append(f"Span: {span_match.group(1)}m")
+
+    # Parse concrete grade (e.g., "M25", "M30 concrete")
+    grade_match = re.search(r"m\s*(\d+)\s*(?:concrete)?", msg_lower)
+    if grade_match and int(grade_match.group(1)) in [20, 25, 30, 35, 40]:
+        updated_params["fck"] = int(grade_match.group(1))
+        parsed_items.append(f"Concrete: M{grade_match.group(1)}")
+
+    parsed_desc = ", ".join(parsed_items) if parsed_items else "Using current parameters"
+    return updated_params, parsed_desc
+
+
 def simulate_ai_response(user_message: str) -> str:
     """
     Simulate AI response when OpenAI is not available.
@@ -197,24 +252,30 @@ def simulate_ai_response(user_message: str) -> str:
 
     # Check for design request
     if any(word in msg_lower for word in ["design", "beam", "moment", "shear"]):
-        # Extract numbers if present (re imported at module level)
-        numbers = re.findall(r"(\d+(?:\.\d+)?)\s*(?:kn|knm|kn·m|mm|m)", msg_lower)
+        # Parse user input for parameters
+        updated_params, parsed_desc = _parse_design_request(msg_lower, st.session_state.design_params)
 
-        # Run design with current parameters
-        result = run_design(st.session_state.design_params)
+        # Update session state with parsed parameters
+        st.session_state.design_params = updated_params
+
+        # Run design with updated parameters
+        result = run_design(updated_params)
 
         if result.get("success", False):
             st.session_state.current_design = result.get("result")
 
-            response = f"""I've designed a beam for your requirements:
+            # Show what was parsed
+            parsed_info = f"\n📝 *Parsed from your request: {parsed_desc}*\n" if parsed_desc != "Using current parameters" else ""
 
+            response = f"""I've designed a beam for your requirements:
+{parsed_info}
 **Design Summary:**
 - Section: **{result.get('section', 'N/A')}**
 - Steel Area Required: **{result.get('ast_mm2', 0):.0f} mm²**
 - Utilization: **{result.get('utilization', 0):.1%}**
 - Status: {"✅ **SAFE**" if result.get('is_safe', False) else "❌ **UNSAFE**"}
 
-The design uses M{st.session_state.design_params.get('fck', 25)} concrete and Fe{st.session_state.design_params.get('fy', 500)} steel.
+The design uses M{updated_params.get('fck', 25)} concrete and Fe{updated_params.get('fy', 500)} steel.
 
 Would you like me to:
 1. 💰 Optimize for cost?
