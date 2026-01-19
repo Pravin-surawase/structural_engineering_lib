@@ -14,7 +14,7 @@
 > **Version info:** See [TASKS.md](../TASKS.md) for current/next release status.
 
 **Current State:**
-- Tests: Run `python scripts/update_test_stats.py` for current count
+- Tests: Run `.venv/bin/python scripts/update_test_stats.py` for current count
 - Coverage: ~92% branch coverage
 - Linting: Clean (0 ruff/mypy issues)
 
@@ -114,10 +114,10 @@ cd Python && ../.venv/bin/python -m mypy structural_lib
 cd Python && ../.venv/bin/python -m ruff check .
 
 # Doc version drift
-.venv/bin/python scripts/check_doc_versions.py
+.venv/bin/.venv/bin/python scripts/check_doc_versions.py
 
 # Test stats
-.venv/bin/python scripts/update_test_stats.py
+.venv/bin/.venv/bin/python scripts/update_test_stats.py
 ```
 
 ---
@@ -151,6 +151,6 @@ Before tagging v0.20.0:
 
 ## Notes
 
-- Run `python scripts/update_test_stats.py` to get current test counts
-- Use `python scripts/update_test_stats.py --json` for machine-readable output
+- Run `.venv/bin/python scripts/update_test_stats.py` to get current test counts
+- Use `.venv/bin/python scripts/update_test_stats.py --json` for machine-readable output
 - This checklist lives at `docs/planning/v0.20-stabilization-checklist.md`

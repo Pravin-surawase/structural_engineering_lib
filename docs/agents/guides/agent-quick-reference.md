@@ -34,7 +34,7 @@
 | `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
 | `./scripts/git_ops.sh --status` | **Analyze git state & get recommendation** |
 | `./scripts/agent_mistakes_report.sh` | **Common mistakes reminder** |
-| `.venv/bin/python scripts/end_session.py` | **End session** |
+| `.venv/bin/.venv/bin/python scripts/end_session.py` | **End session** |
 
 ---
 
@@ -140,7 +140,7 @@ cd $PROJECT_ROOT
 | **Don't know what to do** | `./scripts/git_ops.sh --status` |
 | **Check git health** | `./scripts/git_automation_health.sh` |
 | **CI failed on format** | `cd Python && python -m black . && cd .. && ./scripts/ai_commit.sh "style: format"` |
-| **Version drift** | `python scripts/check_doc_versions.py --fix` |
+| **Version drift** | `.venv/bin/python scripts/check_doc_versions.py --fix` |
 | **Hooks not installed** | `./scripts/install_git_hooks.sh` |
 
 ---
@@ -232,9 +232,9 @@ docs/agents/
 
 ### Quick Automation Commands
 ```bash
-python scripts/fix_broken_links.py --fix      # Fix links
-python scripts/validate_folder_structure.py   # Check structure
-python scripts/check_doc_versions.py --fix    # Fix versions
+.venv/bin/python scripts/fix_broken_links.py --fix      # Fix links
+.venv/bin/python scripts/validate_folder_structure.py   # Check structure
+.venv/bin/python scripts/check_doc_versions.py --fix    # Fix versions
 ```
 
 ---

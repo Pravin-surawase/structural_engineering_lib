@@ -1429,7 +1429,7 @@ Before tagging a release or distributing an add-in/wheel:
     - `python -m black --check .`
     - `python -m ruff check .`
     - `python -m mypy`
- - [ ] Clean-venv release verification: `python scripts/verify_release.py --version X.Y.Z --source pypi`
+ - [ ] Clean-venv release verification: `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi`
     - `python -m pytest`
     - `python -m build`
     - wheel smoke test: `python -m pip install --force-reinstall dist/*.whl && python -c "import structural_lib"`

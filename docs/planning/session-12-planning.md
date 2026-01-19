@@ -84,14 +84,14 @@ Consolidated:
 
 ```bash
 # Phase 1: Move to .github/
-.venv/bin/python scripts/safe_file_move.py SECURITY.md .github/SECURITY.md
-.venv/bin/python scripts/safe_file_move.py SUPPORT.md .github/SUPPORT.md
-.venv/bin/python scripts/safe_file_move.py CITATION.cff .github/CITATION.cff
+.venv/bin/.venv/bin/python scripts/safe_file_move.py SECURITY.md .github/SECURITY.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py SUPPORT.md .github/SUPPORT.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py CITATION.cff .github/CITATION.cff
 
 # Phase 2: Move to docs/
-.venv/bin/python scripts/safe_file_move.py AUTHORS.md docs/contributing/AUTHORS.md
-.venv/bin/python scripts/safe_file_move.py LICENSE_ENGINEERING.md docs/legal/LICENSE_ENGINEERING.md
-.venv/bin/python scripts/safe_file_move.py colab_workflow.ipynb docs/getting-started/colab-workflow.ipynb
+.venv/bin/.venv/bin/python scripts/safe_file_move.py AUTHORS.md docs/contributing/AUTHORS.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py LICENSE_ENGINEERING.md docs/legal/LICENSE_ENGINEERING.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py colab_workflow.ipynb docs/getting-started/colab-workflow.ipynb
 
 # Phase 3: Consolidate index files
 # Manually merge index.json content into index.md or agents/index.json

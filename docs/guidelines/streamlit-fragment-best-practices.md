@@ -150,7 +150,7 @@ StreamlitAPIException: Calling st.sidebar in a function wrapped with st.fragment
 
 2. **Check for direct sidebar calls:**
    ```bash
-   python scripts/check_fragment_violations.py --file <file>.py
+   .venv/bin/python scripts/check_fragment_violations.py --file <file>.py
    ```
 
 3. **Check for indirect sidebar calls:**
@@ -229,13 +229,13 @@ git commit -m "fix: update page"
 
 ```bash
 # Check single file
-python scripts/check_fragment_violations.py --file streamlit_app/pages/beam_design.py
+.venv/bin/python scripts/check_fragment_violations.py --file streamlit_app/pages/beam_design.py
 
 # Check all Streamlit files
-python scripts/check_fragment_violations.py
+.venv/bin/python scripts/check_fragment_violations.py
 
 # Verbose mode (shows fragments found)
-python scripts/check_fragment_violations.py --verbose
+.venv/bin/python scripts/check_fragment_violations.py --verbose
 ```
 
 ### CI Integration
@@ -250,7 +250,7 @@ fragment-validator:
   steps:
     - uses: actions/checkout@v4
     - name: Run Fragment API Validator
-      run: python scripts/check_fragment_violations.py
+      run: .venv/bin/python scripts/check_fragment_violations.py
 ```
 
 ---
@@ -308,8 +308,8 @@ When adding fragments to existing pages:
 - [ ] Test locally (load page, interact with widgets)
 
 ### Phase 3: Validation
-- [ ] Run fragment validator: `python scripts/check_fragment_violations.py`
-- [ ] Run AST scanner: `python scripts/check_streamlit_issues.py --all-pages`
+- [ ] Run fragment validator: `.venv/bin/python scripts/check_fragment_violations.py`
+- [ ] Run AST scanner: `.venv/bin/python scripts/check_streamlit_issues.py --all-pages`
 - [ ] Run AppTest: `pytest tests/apptest/test_<page>.py`
 - [ ] Manual browser test: Load page, verify no exceptions
 
@@ -367,7 +367,7 @@ def input_group():
 
 **Solution:** Run validator, fix violations:
 ```bash
-python scripts/check_fragment_violations.py --verbose
+.venv/bin/python scripts/check_fragment_violations.py --verbose
 # Shows: Line X: Direct st.sidebar in 'function_name'
 ```
 
@@ -388,7 +388,7 @@ python scripts/check_fragment_violations.py --verbose
 **Solution:** CI uses Python 3.11, check locally:
 ```bash
 python --version  # Should match CI
-python scripts/check_fragment_violations.py  # Should pass
+.venv/bin/python scripts/check_fragment_violations.py  # Should pass
 ```
 
 ---

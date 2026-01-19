@@ -71,13 +71,13 @@
 
 ```bash
 # Governance health check
-.venv/bin/python scripts/governance_health_score.py
+.venv/bin/.venv/bin/python scripts/governance_health_score.py
 
 # Run all tests
 cd Python && .venv/bin/python -m pytest tests/ -v
 
 # Check links
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Refresh docs indexes
 ./scripts/generate_all_indexes.sh

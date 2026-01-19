@@ -65,9 +65,9 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 1. Update exports in `Python/structural_lib/api.py` (`__all__`).
 2. Update docs in `docs/reference/api.md` and `docs/reference/api-stability.md`.
 3. Regenerate the manifest:
-   `./.venv/bin/python scripts/generate_api_manifest.py`
+   `./.venv/bin/.venv/bin/python scripts/generate_api_manifest.py`
 4. Run API checks:
-   `./.venv/bin/python scripts/check_api_doc_signatures.py`
+   `./.venv/bin/.venv/bin/python scripts/check_api_doc_signatures.py`
 
 Keep public signatures stable unless explicitly approved.
 
@@ -83,10 +83,10 @@ Keep public signatures stable unless explicitly approved.
 .venv/bin/python -m black Python/ --check
 
 # Streamlit validation (run before committing Streamlit changes)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
 # End session
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 ```
 
 ---
@@ -120,12 +120,12 @@ Keep public signatures stable unless explicitly approved.
 
 ### Quick Automation
 ```bash
-.venv/bin/python scripts/fix_broken_links.py --fix      # Fix links
-.venv/bin/python scripts/validate_folder_structure.py   # Check structure
-.venv/bin/python scripts/check_doc_versions.py --fix    # Fix versions
-.venv/bin/python scripts/check_repo_hygiene.py          # Hygiene audit
-.venv/bin/python scripts/safe_file_move.py --dry-run old.md new.md
-.venv/bin/python scripts/safe_file_delete.py --dry-run old.md
+.venv/bin/.venv/bin/python scripts/fix_broken_links.py --fix      # Fix links
+.venv/bin/.venv/bin/python scripts/validate_folder_structure.py   # Check structure
+.venv/bin/.venv/bin/python scripts/check_doc_versions.py --fix    # Fix versions
+.venv/bin/.venv/bin/python scripts/check_repo_hygiene.py          # Hygiene audit
+.venv/bin/.venv/bin/python scripts/safe_file_move.py --dry-run old.md new.md
+.venv/bin/.venv/bin/python scripts/safe_file_delete.py --dry-run old.md
 ```
 
 ---

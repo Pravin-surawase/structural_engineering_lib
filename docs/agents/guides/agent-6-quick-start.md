@@ -25,7 +25,7 @@ cd streamlit_app && streamlit run Home.py
 cd streamlit_app && pytest tests/ -v
 
 # 4. Check for code issues (AST scanner)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ---

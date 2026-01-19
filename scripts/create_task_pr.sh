@@ -62,9 +62,9 @@ trap 'restore_stash' EXIT
 if [[ -n $(git status --porcelain) ]]; then
     echo -e "${YELLOW}⚠ Working tree has uncommitted changes${NC}"
     echo "→ Auto-stashing local changes before branch creation..."
-    PRE_STASH_REF=$(git stash list --format=%H | head -1)
+    PRE_STASH_REF=$(git stash list --format='%gd' | head -1)
     git stash push -u -m "create_task_pr auto-stash" >/dev/null
-    POST_STASH_REF=$(git stash list --format=%H | head -1)
+    POST_STASH_REF=$(git stash list --format='%gd' | head -1)
     if [[ -n "$POST_STASH_REF" && "$POST_STASH_REF" != "$PRE_STASH_REF" ]]; then
         AUTO_STASHED="true"
         STASH_REF="$POST_STASH_REF"

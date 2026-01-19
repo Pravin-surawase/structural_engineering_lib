@@ -28,13 +28,13 @@ This workflow provides a systematic approach to cleaning up folders:
 
 ```bash
 # Find orphan files (not linked anywhere)
-.venv/bin/python scripts/find_orphan_files.py --all --age
+.venv/bin/.venv/bin/python scripts/find_orphan_files.py --all --age
 
 # Check folder README coverage
-.venv/bin/python scripts/check_folder_readmes.py --verbose
+.venv/bin/.venv/bin/python scripts/check_folder_readmes.py --verbose
 
 # Verify current link health (baseline)
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 ```
 
 ### Step 1.2: Document Current State
@@ -115,14 +115,14 @@ Create a script or checklist:
 # Cleanup script for [folder] - [date]
 
 # Phase 1: Deletions
-.venv/bin/python scripts/safe_file_delete.py docs/duplicate.md
-.venv/bin/python scripts/safe_file_delete.py docs/empty.md
+.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/duplicate.md
+.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/empty.md
 
 # Phase 2: Archives
-.venv/bin/python scripts/safe_file_move.py docs/old-plan.md docs/_archive/2026-01/old-plan.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/old-plan.md docs/_archive/2026-01/old-plan.md
 
 # Phase 3: Reorganization
-.venv/bin/python scripts/safe_file_move.py docs/misplaced.md docs/correct-folder/misplaced.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/misplaced.md docs/correct-folder/misplaced.md
 ```
 
 ### Step 3.3: Backup Branch (Optional but Recommended)
@@ -143,7 +143,7 @@ Create a script or checklist:
 git status
 
 # Verify link baseline
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Verify on correct branch
 git branch --show-current
@@ -155,20 +155,20 @@ git branch --show-current
 
 ```bash
 # Batch 1: Delete duplicates
-.venv/bin/python scripts/safe_file_delete.py docs/file1.md
-.venv/bin/python scripts/safe_file_delete.py docs/file2.md
-.venv/bin/python scripts/check_links.py  # Verify after each batch
+.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/file1.md
+.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/file2.md
+.venv/bin/.venv/bin/python scripts/check_links.py  # Verify after each batch
 ./scripts/ai_commit.sh "chore: remove duplicate files"
 
 # Batch 2: Archive old planning
-.venv/bin/python scripts/safe_file_move.py docs/planning/old1.md docs/_archive/planning/old1.md
-.venv/bin/python scripts/safe_file_move.py docs/planning/old2.md docs/_archive/planning/old2.md
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/planning/old1.md docs/_archive/planning/old1.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/planning/old2.md docs/_archive/planning/old2.md
+.venv/bin/.venv/bin/python scripts/check_links.py
 ./scripts/ai_commit.sh "chore: archive old planning docs"
 
 # Batch 3: Reorganize
-.venv/bin/python scripts/safe_file_move.py docs/misplaced.md docs/correct/misplaced.md
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/misplaced.md docs/correct/misplaced.md
+.venv/bin/.venv/bin/python scripts/check_links.py
 ./scripts/ai_commit.sh "refactor: reorganize documentation"
 ```
 
@@ -187,13 +187,13 @@ After each commit:
 
 ```bash
 # Links still valid
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Folder structure valid
-.venv/bin/python scripts/check_folder_structure.py
+.venv/bin/.venv/bin/python scripts/check_folder_structure.py
 
 # No new orphans created
-.venv/bin/python scripts/find_orphan_files.py
+.venv/bin/.venv/bin/python scripts/find_orphan_files.py
 
 # Pre-commit hooks pass
 .venv/bin/python -m pre_commit run --all-files
@@ -206,7 +206,7 @@ After each commit:
 - [ ] Update TASKS.md if cleanup was a task
 
 ```bash
-.venv/bin/python scripts/generate_docs_index.py
+.venv/bin/.venv/bin/python scripts/generate_docs_index.py
 ./scripts/ai_commit.sh "chore: regenerate docs index after cleanup"
 ```
 

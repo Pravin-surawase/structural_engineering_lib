@@ -134,9 +134,9 @@ Complete reference for all 103 git automation scripts. Organized by use case for
 
 **`end_session.py`** - Session End
 ```bash
-.venv/bin/python scripts/end_session.py
-.venv/bin/python scripts/end_session.py --fix   # Auto-fix issues
-.venv/bin/python scripts/end_session.py --quick # Skip slow checks
+.venv/bin/.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py --fix   # Auto-fix issues
+.venv/bin/.venv/bin/python scripts/end_session.py --quick # Skip slow checks
 ```
 - **Purpose:** Session cleanup and handoff
 - **Checks:**
@@ -314,28 +314,28 @@ Complete reference for all 103 git automation scripts. Organized by use case for
 
 **`check_links.py`** - Link Validation
 ```bash
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 ```
 - **Purpose:** Validate all internal markdown links
 - **Checks:** 831+ internal links across 238 files
 
 **`check_doc_versions.py`** - Version Drift
 ```bash
-.venv/bin/python scripts/check_doc_versions.py
-.venv/bin/python scripts/check_doc_versions.py --fix  # Auto-fix
+.venv/bin/.venv/bin/python scripts/check_doc_versions.py
+.venv/bin/.venv/bin/python scripts/check_doc_versions.py --fix  # Auto-fix
 ```
 - **Purpose:** Detect version inconsistencies
 
 **`fix_broken_links.py`** - Link Repair
 ```bash
-.venv/bin/python scripts/fix_broken_links.py --fix
+.venv/bin/.venv/bin/python scripts/fix_broken_links.py --fix
 ```
 - **Purpose:** Auto-fix broken links
 
 **`safe_file_move.py`** - Safe File Operations
 ```bash
-.venv/bin/python scripts/safe_file_move.py old.md new.md
-.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
+.venv/bin/.venv/bin/python scripts/safe_file_move.py old.md new.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
 ```
 - **Purpose:** Move files while preserving links
 - **Updates:** All references automatically

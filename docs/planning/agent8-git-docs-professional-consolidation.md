@@ -323,12 +323,12 @@ rg -i "pull.*before.*commit" docs/git-automation/*.md | wc -l
 
 ```bash
 # Move comprehensive research (keep as-is)
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-git-automation-comprehensive-research.md \
   docs/git-automation/research/comprehensive-analysis.md
 
 # Move optimization research (keep as-is)
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-optimization-research.md \
   docs/git-automation/research/performance-optimization.md
 
@@ -397,15 +397,15 @@ NEW: Automation Scripts → git-automation/automation-scripts.md
 # Archive old Agent 8 guides (superseded by git-automation/)
 mkdir -p docs/_archive/agents/agent-8-guides/
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/agents/guides/agent-8-git-ops.md \
   docs/_archive/agents/agent-8-guides/agent-8-git-ops.md
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/agents/guides/agent-8-automation.md \
   docs/_archive/agents/agent-8-guides/agent-8-automation.md
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/agents/guides/agent-8-multi-agent-coordination.md \
   docs/_archive/agents/agent-8-guides/agent-8-multi-agent-coordination.md
 
@@ -416,11 +416,11 @@ mkdir -p docs/_archive/agents/agent-8-guides/
 # Archive old research (consolidated)
 mkdir -p docs/_archive/research/git-workflow/
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/git-workflow-production-stage.md \
   docs/_archive/research/git-workflow/git-workflow-production-stage.md
 
-.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/.venv/bin/python scripts/safe_file_move.py \
   docs/research/git-workflow-recurring-issues.md \
   docs/_archive/research/git-workflow/git-workflow-recurring-issues.md
 ```
@@ -515,7 +515,7 @@ Decision Helper:
 
 ```bash
 # 1. Check no broken links
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 # → Should show: "Broken links: 0"
 
 # 2. Check no duplicate content

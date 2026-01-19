@@ -913,7 +913,7 @@ cd Python
 .venv/bin/python -m pytest tests/ -v
 
 # Check for Streamlit issues
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ### Git Operations

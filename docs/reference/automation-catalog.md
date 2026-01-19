@@ -49,10 +49,10 @@
 **Usage:**
 ```bash
 # Full check (recommended)
-.venv/bin/python scripts/start_session.py
+.venv/bin/.venv/bin/python scripts/start_session.py
 
 # Quick mode (skip test count check)
-.venv/bin/python scripts/start_session.py --quick
+.venv/bin/.venv/bin/python scripts/start_session.py --quick
 ```
 
 **What It Does:**
@@ -99,13 +99,13 @@
 **Usage:**
 ```bash
 # Check only
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 
 # Auto-fix issues
-.venv/bin/python scripts/end_session.py --fix
+.venv/bin/.venv/bin/python scripts/end_session.py --fix
 
 # Quick mode
-.venv/bin/python scripts/end_session.py --quick
+.venv/bin/.venv/bin/python scripts/end_session.py --quick
 ```
 
 **What It Checks:**
@@ -153,7 +153,7 @@ Checking handoff readiness...
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/update_handoff.py
+.venv/bin/.venv/bin/python scripts/update_handoff.py
 ```
 
 **What It Does:**
@@ -662,10 +662,10 @@ Tests failed: 0
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Check specific directory
-.venv/bin/python scripts/check_links.py --dir docs/reference
+.venv/bin/.venv/bin/python scripts/check_links.py --dir docs/reference
 ```
 
 **What It Checks:**
@@ -695,7 +695,7 @@ Checking links in 193 markdown files...
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_docs_index.py
+.venv/bin/.venv/bin/python scripts/check_docs_index.py
 ```
 
 **What It Checks:**
@@ -719,7 +719,7 @@ Checking links in 193 markdown files...
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/.venv/bin/python scripts/check_docs_index_links.py
 ```
 
 **What It Checks:**
@@ -742,7 +742,7 @@ Checking links in 193 markdown files...
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_doc_versions.py
+.venv/bin/.venv/bin/python scripts/check_doc_versions.py
 ```
 
 **What It Checks:**
@@ -775,7 +775,7 @@ Current version: 0.14.0
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_api_docs_sync.py
+.venv/bin/.venv/bin/python scripts/check_api_docs_sync.py
 ```
 
 **What It Checks:**
@@ -799,7 +799,7 @@ Current version: 0.14.0
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_api_doc_signatures.py
+.venv/bin/.venv/bin/python scripts/check_api_doc_signatures.py
 ```
 
 **What It Checks:**
@@ -822,7 +822,7 @@ Current version: 0.14.0
 
 **Usage:**
 ```bash
-python3 scripts/check_repo_hygiene.py
+.venv/bin/.venv/bin/python scripts/check_repo_hygiene.py
 ```
 
 **What It Checks:**
@@ -849,7 +849,7 @@ python3 scripts/check_repo_hygiene.py
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_cli_reference.py
+.venv/bin/.venv/bin/python scripts/check_cli_reference.py
 ```
 
 **What It Checks:**
@@ -873,7 +873,7 @@ python3 scripts/check_repo_hygiene.py
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_next_session_brief_length.py
+.venv/bin/.venv/bin/python scripts/check_next_session_brief_length.py
 ```
 
 **What It Checks:**
@@ -923,9 +923,9 @@ next-session-brief.md: 142 lines ✅ (target <150)
 
 **Usage:**
 ```bash
-python scripts/validate_folder_structure.py
-python scripts/validate_folder_structure.py --fix
-python scripts/validate_folder_structure.py --report
+.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/validate_folder_structure.py --fix
+.venv/bin/python scripts/validate_folder_structure.py --report
 ```
 
 **What It Checks:**
@@ -993,10 +993,10 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 **Usage:**
 ```bash
 # Interactive mode (recommended)
-.venv/bin/python scripts/release.py
+.venv/bin/.venv/bin/python scripts/release.py
 
 # Specify version
-.venv/bin/python scripts/release.py --version 0.15.0
+.venv/bin/.venv/bin/python scripts/release.py --version 0.15.0
 ```
 
 **What It Does:**
@@ -1023,7 +1023,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/bump_version.py 0.15.0
+.venv/bin/.venv/bin/python scripts/bump_version.py 0.15.0
 ```
 
 **What It Updates:**
@@ -1049,10 +1049,10 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 **Usage:**
 ```bash
 # Verify local wheel (pre-release)
-.venv/bin/python scripts/verify_release.py --source wheel --wheel-dir Python/dist
+.venv/bin/.venv/bin/python scripts/verify_release.py --source wheel --wheel-dir Python/dist
 
 # Verify PyPI (post-release)
-.venv/bin/python scripts/verify_release.py --version 0.14.0 --source pypi
+.venv/bin/.venv/bin/python scripts/verify_release.py --version 0.14.0 --source pypi
 ```
 
 **What It Tests:**
@@ -1080,7 +1080,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_release_docs.py
+.venv/bin/.venv/bin/python scripts/check_release_docs.py
 ```
 
 **What It Checks:**
@@ -1170,7 +1170,7 @@ DRY_RUN=1 ./scripts/archive_old_sessions.sh
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_pre_release_checklist.py
+.venv/bin/.venv/bin/python scripts/check_pre_release_checklist.py
 ```
 
 **What It Checks:**
@@ -1210,7 +1210,7 @@ Pre-Release Checklist:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_tasks_format.py
+.venv/bin/.venv/bin/python scripts/check_tasks_format.py
 ```
 
 **What It Checks:**
@@ -1235,7 +1235,7 @@ Pre-Release Checklist:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_session_docs.py
+.venv/bin/.venv/bin/python scripts/check_session_docs.py
 ```
 
 **What It Checks:**
@@ -1259,7 +1259,7 @@ Pre-Release Checklist:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/check_handoff_ready.py
+.venv/bin/.venv/bin/python scripts/check_handoff_ready.py
 ```
 
 **What It Checks:**
@@ -1307,8 +1307,8 @@ Pre-Release Checklist:
 
 **Usage:**
 ```bash
-python scripts/create_test_scaffold.py ClassName module.path
-python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page
+.venv/bin/python scripts/create_test_scaffold.py ClassName module.path
+.venv/bin/python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_design streamlit_page
 ```
 
 **What It Does:**
@@ -1350,7 +1350,7 @@ python scripts/create_test_scaffold.py BeamDesign streamlit_app.pages.beam_desig
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/audit_error_handling.py
+.venv/bin/.venv/bin/python scripts/audit_error_handling.py
 ```
 
 **What It Checks:**
@@ -1385,10 +1385,10 @@ Error Handling Audit:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/lint_vba.py
+.venv/bin/.venv/bin/python scripts/lint_vba.py
 
 # Check specific module
-.venv/bin/python scripts/lint_vba.py VBA/M01_Flexure.bas
+.venv/bin/.venv/bin/python scripts/lint_vba.py VBA/M01_Flexure.bas
 ```
 
 **What It Checks:**
@@ -1413,7 +1413,7 @@ Error Handling Audit:
 
 **Usage:**
 ```bash
-.venv/bin/python scripts/update_test_stats.py
+.venv/bin/.venv/bin/python scripts/update_test_stats.py
 ```
 
 **What It Does:**
@@ -1449,10 +1449,10 @@ Error Handling Audit:
 **Usage:**
 ```bash
 # Dry run (show what would change)
-.venv/bin/python scripts/add_license_headers.py --check
+.venv/bin/.venv/bin/python scripts/add_license_headers.py --check
 
 # Apply changes
-.venv/bin/python scripts/add_license_headers.py --apply
+.venv/bin/.venv/bin/python scripts/add_license_headers.py --apply
 ```
 
 **What It Does:**
@@ -1542,9 +1542,9 @@ Summary:
 
 **Usage:**
 ```bash
-python scripts/check_streamlit_issues.py --all-pages
-python scripts/check_streamlit_issues.py --page beam_design
-python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --page beam_design
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
 ```
 
 **What It Checks:**
@@ -1567,7 +1567,7 @@ python scripts/check_streamlit_issues.py --all-pages --fail-on critical,high
 
 **Usage:**
 ```bash
-python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py
+.venv/bin/python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py
 ```
 
 **Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
@@ -1626,7 +1626,7 @@ python scripts/validate_streamlit_page.py streamlit_app/pages/01_beam_design.py
 
 **Usage:**
 ```bash
-python scripts/auto_fix_page.py streamlit_app/pages/01_beam_design.py
+.venv/bin/python scripts/auto_fix_page.py streamlit_app/pages/01_beam_design.py
 ```
 
 **What It Fixes:**
@@ -1648,7 +1648,7 @@ python scripts/auto_fix_page.py streamlit_app/pages/01_beam_design.py
 
 **Usage:**
 ```bash
-python scripts/check_cost_optimizer_issues.py streamlit_app/pages/cost_optimizer.py
+.venv/bin/python scripts/check_cost_optimizer_issues.py streamlit_app/pages/cost_optimizer.py
 ```
 
 **What It Checks:**
@@ -1743,7 +1743,7 @@ python scripts/check_cost_optimizer_issues.py streamlit_app/pages/cost_optimizer
 
 **Usage:**
 ```bash
-python scripts/comprehensive_validator.py streamlit_app/pages/01_beam_design.py
+.venv/bin/python scripts/comprehensive_validator.py streamlit_app/pages/01_beam_design.py
 ```
 
 ---
@@ -1795,10 +1795,10 @@ source scripts/risk_cache.sh
 **Usage:**
 ```bash
 # Render to PNG
-.venv/bin/python scripts/dxf_render.py input.dxf output.png
+.venv/bin/.venv/bin/python scripts/dxf_render.py input.dxf output.png
 
 # Render to PDF
-.venv/bin/python scripts/dxf_render.py input.dxf output.pdf
+.venv/bin/.venv/bin/python scripts/dxf_render.py input.dxf output.pdf
 ```
 
 **Requirements:** Optional dependencies (ezdxf + matplotlib or reportlab)
@@ -1824,10 +1824,10 @@ pip install ezdxf matplotlib reportlab
 **Usage:**
 ```bash
 # Run from repository
-.venv/bin/python scripts/external_cli_test.py
+.venv/bin/.venv/bin/python scripts/external_cli_test.py
 
 # Or test installed package
-python scripts/external_cli_test.py
+.venv/bin/python scripts/external_cli_test.py
 ```
 
 **What It Tests:**
@@ -1854,8 +1854,8 @@ python scripts/external_cli_test.py
 
 **Usage:**
 ```bash
-python scripts/autonomous_fixer.py streamlit_app/pages/01_beam_design.py
-python scripts/autonomous_fixer.py streamlit_app/pages --dry-run
+.venv/bin/python scripts/autonomous_fixer.py streamlit_app/pages/01_beam_design.py
+.venv/bin/python scripts/autonomous_fixer.py streamlit_app/pages --dry-run
 ```
 
 **Options:**
@@ -2003,7 +2003,7 @@ cd /path/to/structural_engineering_lib
 chmod +x scripts/*.sh
 
 # Use full path for Python scripts
-.venv/bin/python scripts/script_name.py
+.venv/bin/.venv/bin/python scripts/script_name.py
 ```
 
 ### Git Workflow Issues

@@ -14,7 +14,7 @@
 Use this when reporting bugs or debugging agent failures:
 
 ```bash
-.venv/bin/python scripts/collect_diagnostics.py --out logs/diagnostics.txt
+.venv/bin/.venv/bin/python scripts/collect_diagnostics.py --out logs/diagnostics.txt
 ```
 
 This captures: environment, git state, and recent automation logs.

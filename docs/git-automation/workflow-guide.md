@@ -106,7 +106,7 @@ For code, VBA, CI, dependencies:
 # 3. Update session docs (in the SAME PR)
 # - Record PR number (not merge hash) in SESSION_LOG
 # - Sync handoff from SESSION_LOG
-python3 scripts/update_handoff.py
+.venv/bin/.venv/bin/python scripts/update_handoff.py
 
 # 4. Finish and create PR
 ./scripts/finish_task_pr.sh TASK-270 "Fix benchmark signatures" --async --with-session-docs

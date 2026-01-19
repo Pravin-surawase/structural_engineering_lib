@@ -162,7 +162,7 @@ Total Documentation: 193 markdown files
   - Active tasks from TASKS.md
   - Document freshness warnings
 - **Quality:** ✅ Excellent — Automated, comprehensive
-- **Usage:** `python scripts/start_session.py [--quick]`
+- **Usage:** `.venv/bin/python scripts/start_session.py [--quick]`
 
 **2. `scripts/end_session.py`**
 - **Purpose:** Validate session completeness before handoff
@@ -172,7 +172,7 @@ Total Documentation: 193 markdown files
   - Session log completeness
   - Link validity
 - **Quality:** ✅ Excellent — Catches common handoff issues
-- **Usage:** `python scripts/end_session.py [--fix] [--quick]`
+- **Usage:** `.venv/bin/python scripts/end_session.py [--fix] [--quick]`
 
 ### 3.2 Handoff Documents
 
@@ -469,7 +469,7 @@ Total: 4 minutes to clean handoff
 
 ## Session Management
 - **start_session.py** — Initialize agent with project state
-  - Usage: `python scripts/start_session.py [--quick]`
+  - Usage: `.venv/bin/python scripts/start_session.py [--quick]`
   - When: At start of every session
 
 ## Git Workflow

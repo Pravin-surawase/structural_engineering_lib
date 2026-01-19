@@ -92,10 +92,10 @@
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| `safe_file_move.py` | Move files with link updates | `python scripts/safe_file_move.py old new [--dry-run]` |
-| `safe_file_delete.py` | Delete with reference check | `python scripts/safe_file_delete.py file [--dry-run]` |
-| `check_folder_readmes.py` | Verify README presence | `python scripts/check_folder_readmes.py [--fix]` |
-| `find_orphan_files.py` | Find unreferenced docs | `python scripts/find_orphan_files.py [--age]` |
+| `safe_file_move.py` | Move files with link updates | `.venv/bin/python scripts/safe_file_move.py old new [--dry-run]` |
+| `safe_file_delete.py` | Delete with reference check | `.venv/bin/python scripts/safe_file_delete.py file [--dry-run]` |
+| `check_folder_readmes.py` | Verify README presence | `.venv/bin/python scripts/check_folder_readmes.py [--fix]` |
+| `find_orphan_files.py` | Find unreferenced docs | `.venv/bin/python scripts/find_orphan_files.py [--age]` |
 
 ---
 
@@ -123,10 +123,10 @@ Use the new automation to actually clean up orphan files:
 
 ```bash
 # Run orphan finder
-.venv/bin/python scripts/find_orphan_files.py --age
+.venv/bin/.venv/bin/python scripts/find_orphan_files.py --age
 
 # Archive old planning docs
-.venv/bin/python scripts/safe_file_move.py docs/planning/old-file.md docs/_archive/planning/old-file.md
+.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/planning/old-file.md docs/_archive/planning/old-file.md
 
 # Commit
 ./scripts/ai_commit.sh "chore: archive old planning docs"

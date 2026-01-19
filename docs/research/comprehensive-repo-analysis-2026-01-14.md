@@ -763,7 +763,7 @@ This is an **exceptionally well-engineered project** demonstrating:
 ./scripts/agent_start.sh --quick
 
 # End session
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 ```
 
 ### Git Operations
@@ -791,19 +791,19 @@ cd Python && .venv/bin/python -m pytest --cov
 ### Validation
 ```bash
 # Check links
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Check API signatures
-.venv/bin/python scripts/check_api_signatures.py
+.venv/bin/.venv/bin/python scripts/check_api_signatures.py
 
 # Streamlit scanner
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ### Diagnostics
 ```bash
 # Collect diagnostics (96% faster)
-.venv/bin/python scripts/collect_diagnostics.py
+.venv/bin/.venv/bin/python scripts/collect_diagnostics.py
 
 # Check git health
 ./scripts/git_automation_health.sh

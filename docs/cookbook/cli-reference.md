@@ -304,8 +304,8 @@ Use the helper script if you need a shareable preview:
 pip install "structural-lib-is456[dxf]" matplotlib
 
 # Render to PNG or PDF
-python scripts/dxf_render.py drawings.dxf -o drawings.png
-python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.png
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
 ```
 - Multi-beam grid layout (when multiple beams)
 - Optional deliverable border + title block (use `--title-block`)

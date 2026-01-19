@@ -1115,7 +1115,7 @@ All serve distinct purposes, no redundancy.
 ./scripts/ai_commit.sh "feat: implement X"    # One command does all
 
 # End session
-.venv/bin/python scripts/end_session.py
+.venv/bin/.venv/bin/python scripts/end_session.py
 ```
 
 ### Emergency Recovery

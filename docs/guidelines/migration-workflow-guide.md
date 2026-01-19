@@ -15,17 +15,17 @@
 
 ```bash
 # Pre-flight check (run first!)
-.venv/bin/python scripts/pre_migration_check.py
+.venv/bin/.venv/bin/python scripts/pre_migration_check.py
 
 # Migrate a single module
-.venv/bin/python scripts/migrate_module.py tables --dry-run
-.venv/bin/python scripts/migrate_module.py tables
+.venv/bin/.venv/bin/python scripts/migrate_module.py tables --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py tables
 
 # Check migration status
-.venv/bin/python scripts/migrate_module.py --list
+.venv/bin/.venv/bin/python scripts/migrate_module.py --list
 
 # Validate after migration
-.venv/bin/python scripts/validate_migration.py --verbose
+.venv/bin/.venv/bin/python scripts/validate_migration.py --verbose
 ```
 
 ---
@@ -71,12 +71,12 @@ structural_lib/flexure.py              (re-export stub)
 
 ### Step 0.1: Initialize Session
 ```bash
-.venv/bin/python scripts/start_session.py --quick
+.venv/bin/.venv/bin/python scripts/start_session.py --quick
 ```
 
 ### Step 0.2: Run Pre-Flight Checks
 ```bash
-.venv/bin/python scripts/pre_migration_check.py
+.venv/bin/.venv/bin/python scripts/pre_migration_check.py
 ```
 
 **Expected output:**
@@ -109,7 +109,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### Step 1.1: Preview Migration
 ```bash
-.venv/bin/python scripts/migrate_module.py tables --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py tables --dry-run
 ```
 
 **Review:**
@@ -119,7 +119,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### Step 1.2: Execute Migration
 ```bash
-.venv/bin/python scripts/migrate_module.py tables
+.venv/bin/.venv/bin/python scripts/migrate_module.py tables
 ```
 
 **Expected:**
@@ -147,8 +147,8 @@ Tests should pass unchanged.
 
 ### Step 2.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py shear --dry-run
-.venv/bin/python scripts/migrate_module.py shear
+.venv/bin/.venv/bin/python scripts/migrate_module.py shear --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py shear
 ```
 
 ### Step 2.2: Verify
@@ -168,8 +168,8 @@ Tests should pass unchanged.
 
 ### Step 3.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py flexure --dry-run
-.venv/bin/python scripts/migrate_module.py flexure
+.venv/bin/.venv/bin/python scripts/migrate_module.py flexure --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py flexure
 ```
 
 ### Step 3.2: Verify
@@ -189,8 +189,8 @@ Tests should pass unchanged.
 
 ### Step 4.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py detailing --dry-run
-.venv/bin/python scripts/migrate_module.py detailing
+.venv/bin/.venv/bin/python scripts/migrate_module.py detailing --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py detailing
 ```
 
 ### Step 4.2: Verify
@@ -209,8 +209,8 @@ Tests should pass unchanged.
 
 ### Step 5.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py serviceability --dry-run
-.venv/bin/python scripts/migrate_module.py serviceability
+.venv/bin/.venv/bin/python scripts/migrate_module.py serviceability --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py serviceability
 ```
 
 ### Step 5.2: Verify
@@ -229,8 +229,8 @@ Tests should pass unchanged.
 
 ### Step 6.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py compliance --dry-run
-.venv/bin/python scripts/migrate_module.py compliance
+.venv/bin/.venv/bin/python scripts/migrate_module.py compliance --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py compliance
 ```
 
 ### Step 6.2: Verify
@@ -249,8 +249,8 @@ Tests should pass unchanged.
 
 ### Step 7.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py ductile --dry-run
-.venv/bin/python scripts/migrate_module.py ductile
+.venv/bin/.venv/bin/python scripts/migrate_module.py ductile --dry-run
+.venv/bin/.venv/bin/python scripts/migrate_module.py ductile
 ```
 
 ### Step 7.2: Verify
@@ -269,7 +269,7 @@ Tests should pass unchanged.
 
 ### Step 8.1: Full Validation
 ```bash
-.venv/bin/python scripts/validate_migration.py --verbose --run-tests
+.venv/bin/.venv/bin/python scripts/validate_migration.py --verbose --run-tests
 ```
 
 **Expected:**
@@ -344,7 +344,7 @@ git checkout main
 git branch -D feat/migrate-is456-modules
 
 # Verify clean state
-.venv/bin/python scripts/pre_migration_check.py
+.venv/bin/.venv/bin/python scripts/pre_migration_check.py
 ```
 
 ---
@@ -363,7 +363,7 @@ git branch -D feat/migrate-is456-modules
 ls Python/structural_lib/codes/is456/flexure.py
 
 # If missing, re-run migration
-.venv/bin/python scripts/migrate_module.py flexure
+.venv/bin/.venv/bin/python scripts/migrate_module.py flexure
 ```
 
 ### Circular Import Error
@@ -390,7 +390,7 @@ cat Python/structural_lib/flexure.py
 
 # Should show "Backward compatibility stub"
 # If not, recreate:
-.venv/bin/python scripts/create_reexport_stub.py flexure
+.venv/bin/.venv/bin/python scripts/create_reexport_stub.py flexure
 ```
 
 ### Stub Has Wrong Content
@@ -402,7 +402,7 @@ cat Python/structural_lib/flexure.py
 **Fix:**
 ```bash
 # Manually create stub
-.venv/bin/python scripts/create_reexport_stub.py flexure
+.venv/bin/.venv/bin/python scripts/create_reexport_stub.py flexure
 ```
 
 ---

@@ -270,17 +270,17 @@ streamlit_app/
 
 ```bash
 # Check current state
-.venv/bin/python scripts/find_orphan_files.py
-.venv/bin/python scripts/check_folder_readmes.py
-.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/find_orphan_files.py
+.venv/bin/.venv/bin/python scripts/check_folder_readmes.py
+.venv/bin/.venv/bin/python scripts/check_links.py
 
 # Safe file operations
-.venv/bin/python scripts/safe_file_move.py <old> <new> --dry-run
-.venv/bin/python scripts/safe_file_delete.py <file> --dry-run
+.venv/bin/.venv/bin/python scripts/safe_file_move.py <old> <new> --dry-run
+.venv/bin/.venv/bin/python scripts/safe_file_delete.py <file> --dry-run
 
 # Validate after changes
-.venv/bin/python scripts/check_links.py
-.venv/bin/python scripts/check_folder_structure.py
+.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/.venv/bin/python scripts/check_folder_structure.py
 ```
 
 ---

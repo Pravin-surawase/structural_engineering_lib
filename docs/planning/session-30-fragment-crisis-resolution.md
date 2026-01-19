@@ -202,7 +202,7 @@ with st.sidebar:
 # .pre-commit-config.yaml
 - id: check-fragment-violations
   name: Check Streamlit fragment API violations
-  entry: .venv/bin/python scripts/check_fragment_violations.py
+  entry: .venv/bin/.venv/bin/python scripts/check_fragment_violations.py
   language: system
   pass_filenames: false
   files: ^streamlit_app/.*\.py$
@@ -225,7 +225,7 @@ fragment-validator:
   steps:
     - uses: actions/checkout@v4
     - name: Run Fragment API Validator
-      run: python scripts/check_fragment_violations.py
+      run: .venv/bin/python scripts/check_fragment_violations.py
 ```
 
 **Triggers:** Every push/PR to main
@@ -424,11 +424,11 @@ with st.sidebar:
 
 ```bash
 # Fragment validator
-$ python scripts/check_fragment_violations.py
+$ .venv/bin/python scripts/check_fragment_violations.py
 ✅ No fragment API violations detected
 
 # AST scanner (all pages)
-$ python scripts/check_streamlit_issues.py --all-pages
+$ .venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ✅ 01_🏗️_beam_design.py: No issues found
 📄 02_💰_cost_optimizer.py: 2 issues (Medium: type hints only)
 📄 03_✅_compliance.py: 2 issues (Medium: type hints only)

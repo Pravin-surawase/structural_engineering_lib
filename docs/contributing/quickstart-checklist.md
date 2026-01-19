@@ -44,7 +44,7 @@ Quick reference for common development tasks with step-by-step checklists.
 
 - [ ] **4. Create test scaffold:**
   ```bash
-  python scripts/create_test_scaffold.py PageName \
+  .venv/bin/python scripts/create_test_scaffold.py PageName \
     streamlit_app.pages.page_name streamlit_page
   ```
 
@@ -54,7 +54,7 @@ Quick reference for common development tasks with step-by-step checklists.
 
 - [ ] **7. Run scanner:**
   ```bash
-  python scripts/check_streamlit_issues.py --page page_name
+  .venv/bin/python scripts/check_streamlit_issues.py --page page_name
   ```
 
 - [ ] **8. Write tests** (minimum 5 tests):
@@ -284,7 +284,7 @@ class TestFeatureErrors:
 
 - [ ] **3. Create test scaffold:**
   ```bash
-  python scripts/create_test_scaffold.py UtilityName \
+  .venv/bin/python scripts/create_test_scaffold.py UtilityName \
     streamlit_app.utils.utility_name
   ```
 
@@ -303,7 +303,7 @@ class TestFeatureErrors:
 
 - [ ] **7. Run scanner:**
   ```bash
-  python scripts/check_streamlit_issues.py --file streamlit_app/utils/utility_name.py
+  .venv/bin/python scripts/check_streamlit_issues.py --file streamlit_app/utils/utility_name.py
   ```
 
 - [ ] **8. Commit:**
@@ -327,7 +327,7 @@ class TestFeatureErrors:
 ### Manual Workflow (if quick_check unavailable)
 ```bash
 # 1. Scanner
-python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
 
 # 2. Type check
 mypy changed_files.py --ignore-missing-imports
@@ -481,10 +481,10 @@ except Exception as e:
 ./scripts/test_page.sh page_name            # Test specific page
 
 # Test Generation
-python scripts/create_test_scaffold.py ClassName module.path
+.venv/bin/python scripts/create_test_scaffold.py ClassName module.path
 
 # Validation
-python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 pytest tests/ -v
 mypy file.py --ignore-missing-imports
 

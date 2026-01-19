@@ -138,8 +138,8 @@ The tests need to be updated to check the `errors` list instead of string fields
 After fixes:
 - [ ] All unit tests pass: `pytest Python/tests/unit/ -v`
 - [ ] Critical journey tests pass: `pytest streamlit_app/tests/test_critical_journeys.py -v`
-- [ ] Doc version check passes: `python scripts/check_doc_versions.py --ci`
-- [ ] Comprehensive validator passes: `python scripts/comprehensive_validator.py streamlit_app/`
+- [ ] Doc version check passes: `.venv/bin/python scripts/check_doc_versions.py --ci`
+- [ ] Comprehensive validator passes: `.venv/bin/python scripts/comprehensive_validator.py streamlit_app/`
 
 ---
 

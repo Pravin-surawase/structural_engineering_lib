@@ -27,8 +27,8 @@
 - From `Python/`: `python -m pytest -q`
 
 **Fast checks before commit (pick what changed):**
-- Docs-only: from repo root, `python scripts/check_doc_versions.py`
-- Links touched: from repo root, `python scripts/check_links.py`
+- Docs-only: from repo root, `.venv/bin/python scripts/check_doc_versions.py`
+- Links touched: from repo root, `.venv/bin/python scripts/check_links.py`
 - Code + tests: from `Python/`, `python -m pytest -q`
 
 **How to run with coverage:**

@@ -127,7 +127,7 @@ EOF
 # ALWAYS run these before committing
 
 # 1. AST Scanner (detects runtime errors)
-.venv/bin/python scripts/check_streamlit_issues.py --page "12_🎨_new_feature"
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --page "12_🎨_new_feature"
 
 # 2. Pylint (code quality)
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/pages/12_🎨_new_feature.py
@@ -192,16 +192,16 @@ touch streamlit_app/tests/test_new_feature.py
 
 ```bash
 # Scan single page
-.venv/bin/python scripts/check_streamlit_issues.py --page "01_🏗️_beam_design"
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --page "01_🏗️_beam_design"
 
 # Scan all pages
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
 # Fail on CRITICAL issues only (CI mode)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
 
 # Verbose mode (shows all details)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages --verbose
+.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages --verbose
 ```
 
 **Issue Severity:**

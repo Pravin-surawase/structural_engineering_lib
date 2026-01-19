@@ -214,7 +214,7 @@ FOLDERS=(
 
 for folder in "${FOLDERS[@]}"; do
     echo "Generating indexes for: $folder"
-    .venv/bin/python scripts/generate_folder_index.py "$folder"
+    .venv/bin/.venv/bin/python scripts/generate_folder_index.py "$folder"
 done
 
 echo "✅ All indexes generated"
@@ -1845,13 +1845,13 @@ docs/research/navigation_study/
 - [ ] **Create all figures** (6 required)
   ```python
   # Generate publication-quality plots
-  python scripts/generate_figures.py --output docs/research/navigation_study/figures/
+  .venv/bin/python scripts/generate_figures.py --output docs/research/navigation_study/figures/
   ```
 
 - [ ] **Create all tables** (5 required)
   ```python
   # Generate LaTeX and Markdown tables
-  python scripts/generate_tables.py --format latex --output docs/research/navigation_study/tables/
+  .venv/bin/python scripts/generate_tables.py --format latex --output docs/research/navigation_study/tables/
   ```
 
 **Deliverable:** 6 PNG figures + 5 LaTeX tables

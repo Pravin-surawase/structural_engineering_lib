@@ -19,7 +19,7 @@
 Machine-readable signatures live in `docs/reference/api-manifest.json`.
 
 ```bash
-.venv/bin/python scripts/generate_api_manifest.py
+.venv/bin/.venv/bin/python scripts/generate_api_manifest.py
 ```
 
 ## 0. Unified CLI (v0.9.4+)
@@ -43,7 +43,7 @@ python -m structural_lib dxf results.json -o drawings.dxf
 python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 
 # Render DXF to PNG/PDF (optional)
-python scripts/dxf_render.py drawings.dxf -o drawings.png
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.png
 
 # Run complete job from spec file
 python -m structural_lib job job.json -o ./output
@@ -2275,8 +2275,8 @@ def compare_bbs_dxf_marks(
 ### 10.5 DXF Render Script (PNG/PDF)
 **CLI:**
 ```bash
-python scripts/dxf_render.py drawings.dxf -o drawings.png
-python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.png
+.venv/bin/python scripts/dxf_render.py drawings.dxf -o drawings.pdf --dpi 200
 ```
 Requires: `pip install "structural-lib-is456[render]"`
 
