@@ -24,6 +24,7 @@ except PackageNotFoundError:
 
 # Expose key modules
 from . import (
+    adapters,
     api,
     audit,
     bbs,
@@ -58,6 +59,7 @@ except ImportError:
 
 __all__ = [
     "__version__",
+    "adapters",
     "api",
     "audit",
     "bbs",
