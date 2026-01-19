@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-21<br>
+**Last Updated:** 2026-01-19<br>
 
 ---
 
@@ -14,7 +14,7 @@
 | **Current** | v0.17.5 | ✅ Released (2026-01-15) |
 | **Next** | v0.18.0 | Professional Features Pipeline |
 
-**Last Session:** 39 | **Commits:** 5 (real 3D coordinates + tests + docs)
+**Last Session:** 42 | **Commits:** 17 (PR #381 merged)
 
 ---
 
@@ -32,47 +32,45 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-21
-- Focus: Session 39 - Real 3D building visualization from frames_geometry.csv. Phase 1 marked complete, Phase 2 60% done. Branch task/TASK-3D-002 ready for PR.
+- Date: 2026-01-19
+- Focus: Sessions 41-42 - PR #381 merged! Multi-format import system complete (ETABS, SAFE, STAAD, Excel adapters). 17 commits, 111 tests. All CI checks passed.
 <!-- HANDOFF:END -->
 
 ---
 
-## 🎯 Session 39 Summary - Real 3D Building Visualization (2026-01-21)
+## 🎯 Session 41-42 Summary - PR #381 Merged (2026-01-19)
 
-### Branch: task/TASK-3D-002 (5 commits, ready for PR)
-
-#### Strategic Decision
-**Three.js vs Plotly:** Continue Plotly for Phase 2 (proven), evaluate Three.js/PyVista in Phase 4.
+### PR #381 MERGED (dd4296f7)
 
 #### Deliverables
 
-| Area | File | Purpose |
-|------|------|---------|
-| Real 3D viz | `06_📤_etabs_import.py` | Uses actual building coordinates |
-| Multi-file upload | `06_📤_etabs_import.py` | beam_forces + frames_geometry |
-| Tests | `test_etabs_import.py` | 32 tests, FrameGeometry coverage |
-| Schema docs | `csv-import-schema.md` | frames_geometry.csv format |
-| Plan update | `8-week-development-plan.md` | Phase 1 complete, Phase 2 status |
-| TASKS.md | `TASKS.md` | TASK-3D-002 added, VBA complete |
+| Area | File | Tests |
+|------|------|-------|
+| Pydantic models | `models.py` | 44 tests |
+| Adapters (4 formats) | `adapters.py` | 39 tests |
+| Serialization | `serialization.py` | 29 tests |
+| **Total** | 3 files | **111 tests** |
 
-#### Phase Completion
+#### CI Fixes Applied
 
-| Phase | Status | Evidence |
-|-------|--------|----------|
-| Phase 1 (Week 1-2) | ✅ COMPLETE | 839 + 811 lines (targets 300 + 200) |
-| Phase 2 (Week 3-4) | 🚧 60% | Real coords done, LOD pending |
+| Issue | Solution |
+|-------|----------|
+| Black 26.1.0 | Added `line-length = 88` to pyproject.toml |
+| Mypy types | Added annotations, pyproject.toml overrides |
+| Pydantic v2 | ConfigDict, Field(exclude=True) |
+| Governance | Renamed snake_case to kebab-case |
+| Root files | Moved 2 files (12→10) |
+| Security | Refactored feedback path handling |
 
 #### Next Session Priorities
 
-1. **Complete PR for task/TASK-3D-002**
-2. **Implement LOD system** for 1000+ beams performance
-3. **Add column toggle** and building stats display
-4. **Start Phase 3** (Week 5): Design Integration
+1. **TASK-DATA-002:** Integrate adapters with existing etabs_import.py
+2. **TASK-DATA-002:** Update Streamlit pages for multi-format input
+3. **TASK-3D-003:** Add LOD for 1000+ beam visualization
 
 ---
 
-## 🎯 Session 38 Summary - UI Improvements + Phase 2 Start (2026-01-20)
+## 🎯 Session 39 Summary - Real 3D Building Visualization (2026-01-21)
 | Beam UI layout | `streamlit_app/pages/01_🏗️_beam_design.py` | Compact 2-column inputs + cleaner results |
 | UI polish | `streamlit_app/utils/layout.py` | Selectbox height + menu styling |
 | CSV schema | `docs/specs/csv-import-schema.md` | ETABS/SAFE/generic formats |

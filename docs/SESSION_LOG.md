@@ -4,6 +4,93 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-19 — Session 41-42: PR #381 Merged - Multi-Format Import System
+
+**Focus:** Complete PR #381 by fixing all CI failures and merge to main
+
+### Overview
+
+Sessions 41-42 completed the multi-format import system by resolving all CI failures on PR #381. The PR was successfully merged with 17 commits, delivering a comprehensive adapter-based import system supporting ETABS, SAFE, STAAD, and Excel formats.
+
+### PR #381 Summary
+
+**Merge Commit:** dd4296f7
+**Total Commits:** 17
+**Tests:** 111 passing (85%+ coverage)
+
+### CI Fixes Applied
+
+| Issue | Root Cause | Solution |
+|-------|------------|----------|
+| Format Check (Python) | black 26.1.0 requires explicit line-length | Added `line-length = 88` to pyproject.toml |
+| Mypy type errors | Pydantic model attribute access | Added type annotations, overrides in pyproject.toml |
+| Pydantic v2 compatibility | model_config vs class Config | Used `ConfigDict(frozen=True)`, `Field(exclude=True)` |
+| Governance: snake_case naming | `etabs_chm` folder, `brainstorming_platform_pivot.md` | Renamed to kebab-case |
+| Governance: root file count | 12 files (max 10) | Moved VALIDATION_COMPLETE.md, test_setup.py |
+| Governance: uppercase doc names | ETABS-Export-*.md | Renamed to lowercase kebab-case |
+| CodeQL security | Path injection in feedback page | Refactored with separate sanitization functions |
+
+### Key Commits (17 total)
+
+1. **Initial implementation** - Pydantic models, adapters, serialization
+2. **Black formatting** - Line-length in pyproject.toml
+3. **Mypy fixes** - Type annotations for adapters
+4. **Pydantic v2** - ConfigDict, field exclusion
+5. **SAFE adapter** - Parse .fdb export files
+6. **STAAD adapter** - Parse STAAD.Pro output
+7. **Excel adapter** - Parse manual input spreadsheets
+8. **Test coverage** - 111 tests total
+9-15. **Various fixes** - Import errors, type hints
+16. **Governance** - Rename snake_case to kebab-case
+17. **Security** - Refactor feedback path handling
+
+### Architecture Delivered
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Input Sources                              │
+├───────────────┬───────────────┬───────────────┬──────────────┤
+│   ETABS       │    SAFE       │   STAAD       │    Excel     │
+│   .e2k/.csv   │    .fdb       │   .out        │    .xlsx     │
+└───────┬───────┴───────┬───────┴───────┬───────┴───────┬──────┘
+        │               │               │               │
+        ▼               ▼               ▼               ▼
+┌───────────────────────────────────────────────────────────────┐
+│                   Adapter Layer (adapters.py)                  │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌──────────┐ │
+│  │ETABSAdapter │ │SAFEAdapter  │ │STAADAdapter │ │ExcelAdapt│ │
+│  └─────────────┘ └─────────────┘ └─────────────┘ └──────────┘ │
+└───────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌───────────────────────────────────────────────────────────────┐
+│               Canonical Models (models.py)                     │
+│  Point3D, BeamGeometry, BeamForces, SectionProperties         │
+│  BeamDesignResult, BeamBatchInput, BeamBatchResult            │
+└───────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌───────────────────────────────────────────────────────────────┐
+│               Serialization (serialization.py)                 │
+│  save_*/load_* functions, JSON Schema generation              │
+└───────────────────────────────────────────────────────────────┘
+```
+
+### Next Steps (Session 43)
+
+1. **TASK-DATA-002:** Integrate adapters with existing etabs_import.py
+2. **TASK-DATA-002:** Update Streamlit pages for multi-format input
+3. **TASK-3D-003:** Add LOD for 1000+ beam visualization
+
+### Lessons Learned
+
+1. **Black 26.1.0 breaking change:** Requires explicit `line-length` in pyproject.toml
+2. **macOS case-insensitivity:** Must use temp file to rename case changes
+3. **ai_commit.sh stash bug:** Has issues with case-changed files on macOS
+4. **Pydantic v2 frozen + computed:** Use `Field(exclude=True)` for computed properties
+
+---
+
 ## 2026-01-19 — Session 40: Canonical Data Format Architecture (TASK-DATA-001)
 
 **Focus:** Create stable, AI-friendly Pydantic-based canonical data format for input handling

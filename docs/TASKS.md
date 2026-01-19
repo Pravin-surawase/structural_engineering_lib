@@ -2,14 +2,17 @@
 
 > Single source of truth for work. Keep it short and current.
 
-**Updated:** 2026-01-19 (Session 40 - Canonical Data Format)
+**Updated:** 2026-01-19 (Session 42 - PR #381 Merged)
 
-> **Session 40 Progress (5 commits):**
-> 1. ✅ Fixed PR #381 CI failures (black formatting)
-> 2. ✅ Created Pydantic canonical models (10 classes, 44 tests)
-> 3. ✅ Created ETABS adapter (39 tests)
-> 4. ✅ Created JSON serialization utilities (29 tests)
-> 5. 📋 Next: Integration with existing etabs_import.py
+> **Session 41-42 Progress:**
+> ✅ PR #381 MERGED (dd4296f7) - Multi-format import system complete
+> - 17 commits total on PR branch
+> - Fixed black 26.1.0 formatting (pyproject.toml line-length)
+> - Fixed mypy type annotations for all adapters
+> - Fixed Pydantic v2 compatibility (ConfigDict, field serialization)
+> - Fixed governance (kebab-case naming, root file count ≤10)
+> - Fixed security path handling in feedback page
+> - 111 passing tests with 85%+ coverage
 
 > **Note:** For detailed specifications, see [docs/planning/](planning/) folder.
 
@@ -33,71 +36,56 @@
 
 ## Active
 
-### TASK-DATA-001: Canonical Data Format Architecture 🚀 IN PROGRESS
+### TASK-DATA-002: Complete Import System Integration 📋 NEXT
 
-> **Goal:** Create stable, AI-friendly Pydantic-based canonical data format for all inputs
-> **Timeline:** Session 40 (2026-01-19)
-> **Architecture:** [canonical-data-format.md](architecture/canonical-data-format.md)
-> **Rationale:** CSV input formats vary between ETABS versions - need stable internal format
-
-| ID | Task | Agent | Est | Priority | Status |
-|----|------|-------|-----|----------|--------|
-| **TASK-DATA-001.1** | Create architecture document | MAIN | 1h | 🔴 CRITICAL | ✅ Done |
-| **TASK-DATA-001.2** | Implement Pydantic models (models.py) | MAIN | 2h | 🔴 CRITICAL | ✅ Done (44 tests) |
-| **TASK-DATA-001.3** | Create ETABS CSV adapter | MAIN | 2h | 🔴 HIGH | ✅ Done (39 tests) |
-| **TASK-DATA-001.4** | Add JSON serialization (serialization.py) | MAIN | 1h | 🟠 HIGH | ✅ Done (29 tests) |
-| **TASK-DATA-001.5** | Update etabs_import.py to use new models | MAIN | 2h | 🟠 MEDIUM | 📋 TODO |
-| **TASK-DATA-001.6** | Integration tests with real CSV data | MAIN | 1h | 🟡 LOW | 📋 TODO |
-
-**Key Benefits:**
-- **Validation at boundaries:** Clear errors for invalid data
-- **JSON Schema generation:** Self-documenting APIs
-- **AI-Agent friendly:** Single format to understand
-- **Future-proof:** Adapters handle format variations
-
-**Files Created:**
-- `Python/structural_lib/models.py` - 10 Pydantic model classes
-- `Python/structural_lib/adapters.py` - ETABS adapter + base interface
-- `Python/structural_lib/serialization.py` - JSON save/load utilities
-- Tests: 112 total (44 + 39 + 29)
-
----
-
-### TASK-3D-002: ETABS Real 3D Building Visualization ✅ PR #381 (CI Fixed)
-
-> **Goal:** Replace fake grid 3D with real building coordinates from frames_geometry.csv
-> **Timeline:** Session 38-39 (2026-01-20 to 2026-01-21)
-> **Branch:** task/TASK-3D-002 (2 commits ahead of main)
-> **Plan:** [8-week-development-plan.md](planning/8-week-development-plan.md)
+> **Goal:** Integrate new adapters with existing etabs_import.py and Streamlit pages
+> **Timeline:** Session 43 (2026-01-20)
+> **Dependencies:** PR #381 merged ✅
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| **TASK-3D-002.1** | Add FrameGeometry dataclass (15 fields) | MAIN | 1h | 🔴 CRITICAL | ✅ Done (d8e9baff) |
-| **TASK-3D-002.2** | Add load_frames_geometry() parser | MAIN | 1h | 🔴 CRITICAL | ✅ Done (d8e9baff) |
-| **TASK-3D-002.3** | Replace fake grid with real coords | MAIN | 2h | 🔴 CRITICAL | 📋 In Progress |
-| **TASK-3D-002.4** | Add multi-file upload (forces + geometry) | MAIN | 1h | 🟠 HIGH | 📋 TODO |
-| **TASK-3D-002.5** | Add LOD for 1000+ beams | MAIN | 2h | 🟠 MEDIUM | 📋 TODO |
-| **TASK-3D-002.6** | Add column toggle and building stats | MAIN | 30m | 🟡 LOW | 📋 TODO |
-
-**What was built (Session 38):**
-- **FrameGeometry dataclass:** 15 fields (unique_name, label, story, frame_type, point1_x/y/z, point2_x/y/z, etc.)
-- **load_frames_geometry():** Parses frames_geometry.csv, tested with 225 frames (153 beams + 72 columns)
-- **merge_forces_and_geometry():** Cross-references beam_forces with geometry
-- **Implementation plan:** task-3d-002-implementation-plan.md (309 lines)
-
-**Test Data:**
-- Location: `VBA/ETABS_Export_v2/Etabs_output/2026-01-17_222801/`
-- Building: 10.5m × 9m × 17m, 6 stories
-- Frames: 225 total (153 beams + 72 columns)
-
-**Next Steps (Session 39):**
-1. Update create_beam_grid_3d() to use real Point1/Point2 coordinates
-2. Add multi-file upload for beam_forces + frames_geometry
-3. Create PR for completion
+| **TASK-DATA-002.1** | Update etabs_import.py to use new adapters | MAIN | 2h | 🔴 CRITICAL | 📋 TODO |
+| **TASK-DATA-002.2** | Update Streamlit pages for multi-format input | MAIN | 2h | 🔴 CRITICAL | 📋 TODO |
+| **TASK-DATA-002.3** | Integration tests with real CSV data | MAIN | 1h | 🟠 HIGH | 📋 TODO |
+| **TASK-DATA-002.4** | Update API documentation | MAIN | 1h | 🟡 MEDIUM | 📋 TODO |
 
 ---
 
-### TASK-VBA-001: ETABS VBA Export Implementation ✅ COMPLETE (PR #379 MERGED)
+### TASK-3D-003: 3D Visualization Enhancement 📋 NEXT
+
+> **Goal:** Improve 3D visualization with LOD, performance optimization for 1000+ beams
+> **Timeline:** Week 5-6 of 8-week plan
+> **Dependencies:** TASK-DATA-002 complete
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| **TASK-3D-003.1** | Add LOD (Level of Detail) for 1000+ beams | MAIN | 2h | 🔴 HIGH | 📋 TODO |
+| **TASK-3D-003.2** | Add column toggle and building stats | MAIN | 30m | 🟡 MEDIUM | 📋 TODO |
+| **TASK-3D-003.3** | Performance profiling and optimization | MAIN | 2h | 🟡 MEDIUM | 📋 TODO |
+
+---
+
+## Completed (Archive after 20 items)
+
+### TASK-DATA-001: Canonical Data Format Architecture ✅ COMPLETE (PR #381 MERGED)
+
+> **PR:** #381 (dd4296f7)
+> **Merged:** 2026-01-19
+
+**Deliverables:**
+- `Python/structural_lib/models.py` - 10 Pydantic model classes (44 tests)
+- `Python/structural_lib/adapters.py` - 4 adapters: ETABS, SAFE, STAAD, Excel (39 tests)
+- `Python/structural_lib/serialization.py` - JSON save/load utilities (29 tests)
+
+**Key Achievements:**
+- Multi-format import system with adapter pattern
+- Pydantic v2 models with validation
+- 111 passing tests with 85%+ coverage
+- Full CI compliance (black, mypy, governance, security)
+
+---
+
+### TASK-3D-002: ETABS Real 3D Building Visualization ✅ COMPLETE (PR #381 MERGED)
 
 > **Goal:** Complete production-ready ETABS VBA export macro for beam forces
 > **Timeline:** Session 36 (2026-01-17)
