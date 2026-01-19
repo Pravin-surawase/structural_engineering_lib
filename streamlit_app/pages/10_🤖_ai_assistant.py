@@ -461,14 +461,18 @@ def render_workspace_panel():
             design = st.session_state.current_design
             params = st.session_state.design_params
 
+            # Get dimensions from params (not design.geometry which doesn't exist)
+            b_mm = params.get("b_mm", 300)
+            D_mm = params.get("D_mm", 500)
+
             col1, col2 = st.columns(2)
 
             with col1:
-                st.metric("Section", f"{design.geometry.b_mm}×{design.geometry.D_mm}mm")
+                st.metric("Section", f"{b_mm}×{D_mm}mm")
                 st.metric(
                     "Concrete",
-                    f"M{params['fck']}",
-                    help=f"fck = {params['fck']} N/mm²",
+                    f"M{params.get('fck', 25)}",
+                    help=f"fck = {params.get('fck', 25)} N/mm²",
                 )
 
             with col2:
@@ -479,23 +483,25 @@ def render_workspace_panel():
                     delta_color="normal" if design.is_ok else "inverse",
                 )
                 st.metric(
-                    "Steel", f"Fe{params['fy']}", help=f"fy = {params['fy']} N/mm²"
+                    "Steel", f"Fe{params.get('fy', 500)}", help=f"fy = {params.get('fy', 500)} N/mm²"
                 )
 
             st.divider()
 
             st.markdown("**Flexure Design:**")
             st.write(
-                f"- Steel Required: **{design.flexure.ast_required_mm2:.0f} mm²**"
+                f"- Steel Required: **{design.flexure.ast_required:.0f} mm²**"
             )
-            st.write(f"- Min Steel: {design.flexure.ast_min_mm2:.0f} mm²")
-            st.write(f"- Max Steel: {design.flexure.ast_max_mm2:.0f} mm²")
+            st.write(f"- Section Type: {design.flexure.section_type.value}")
+            st.write(f"- Mu,lim: {design.flexure.mu_lim:.1f} kN·m")
 
             if design.shear:
                 st.markdown("**Shear Design:**")
-                st.write(f"- Status: **{design.shear.shear_status}**")
-                st.write(f"- τv = {design.shear.tau_v_nmm2:.2f} N/mm²")
-                st.write(f"- τc = {design.shear.tau_c_nmm2:.2f} N/mm²")
+                st.write(f"- Status: **{'SAFE' if design.shear.is_safe else 'UNSAFE'}**")
+                st.write(f"- τv = {design.shear.tv:.2f} N/mm²")
+                st.write(f"- τc = {design.shear.tc:.2f} N/mm²")
+                if design.shear.spacing > 0:
+                    st.write(f"- Stirrup Spacing: {design.shear.spacing:.0f} mm")
         else:
             st.info(
                 "No design yet. Ask the AI to design a beam or click 🏗️ Design button."
@@ -539,11 +545,15 @@ def render_workspace_panel():
             design = st.session_state.current_design
             params = st.session_state.design_params
 
+            # Get dimensions from params (not design.geometry)
+            b_mm = params.get("b_mm", 300)
+            D_mm = params.get("D_mm", 500)
+
             try:
                 fig = create_beam_3d_figure(
-                    b_mm=design.geometry.b_mm,
-                    D_mm=design.geometry.D_mm,
-                    span_mm=params["span_m"] * 1000,
+                    b_mm=b_mm,
+                    D_mm=D_mm,
+                    span_mm=params.get("span_m", 5.0) * 1000,
                     title="Beam 3D Preview",
                 )
                 st.plotly_chart(fig, use_container_width=True)
