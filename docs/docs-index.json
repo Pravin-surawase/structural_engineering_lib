@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-17T14:31:35.537408",
-  "total_docs": 314,
+  "generated": "2026-01-19T18:03:34.941693",
+  "total_docs": 321,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,18 +10,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-01-19 \u2014 Session 41-42: PR #381 Merged - Multi-Format Import System",
+        "2026-01-19 \u2014 Session 40: Canonical Data Format Architecture (TASK-DATA-001)",
+        "2026-01-21 \u2014 Session 39: Real 3D Building Visualization (TASK-3D-002)",
+        "2026-01-17 \u2014 Session 36: ETABS VBA Export Implementation",
+        "2026-01-17 \u2014 Session 39: ETABS Import UI + Scanner Improvements",
         "2026-01-20 \u2014 Session 38: UI Improvements + Phase 2 Start",
         "2026-01-18 \u2014 Session 37: Phase 1 Completion + Phase 2 Planning",
         "2026-01-16 \u2014 Session 36: 3D Visualization MVP (Phase 1)",
         "2026-01-16 \u2014 Session 35 Part 2: Automation & Phase 1 Planning",
-        "2026-01-16 \u2014 Session 35: 3D Visualization MVP Complete (PR #373 Merged)",
-        "2026-01-15 \u2014 Session 34 Part 3: Agent 9 Advanced Optimization (TASK-287,288,289)",
-        "2026-01-15 \u2014 Session 34 Continued (Part 2): Developer Documentation (TASK-147)",
-        "2026-01-15 \u2014 Session 34: Level C Serviceability + ETABS Import",
-        "2026-01-15 \u2014 Session 34 Continued: BMD/SFD Visualization (TASK-145)",
-        "2026-01-15 \u2014 Session 33: Torsion Module + VBA Parity"
+        "2026-01-16 \u2014 Session 35: 3D Visualization MVP Complete (PR #373 Merged)"
       ],
-      "size_bytes": 255461
+      "size_bytes": 281818
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -53,12 +53,13 @@
         "Rules (read first)",
         "Current Release",
         "Active",
+        "Completed (Archive after 20 items)",
         "Up Next (Session 34+)",
         "Backlog",
         "Recently Done",
         "Archive"
       ],
-      "size_bytes": 23641
+      "size_bytes": 26831
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -126,11 +127,16 @@
         "planning"
       ],
       "sections": [
+        "Target Environment (Windows + ETABS v22)",
+        "One-Time Setup on the Windows Machine",
+        "Implementation Plan (Phased)",
+        "Data Outputs (Minimum Viable Set)",
         "Macro Flow (Excel + ETABS)",
+        "API References (ETABS v22 CHM)",
         "Post-Processing Guidance",
         "Next Steps"
       ],
-      "size_bytes": 2871
+      "size_bytes": 7577
     },
     "docs/research/documentation-handoff-analysis.md": {
       "title": "Documentation & Agent Handoff Analysis",
@@ -845,6 +851,29 @@
       ],
       "size_bytes": 15049
     },
+    "docs/research/etabs-vba-implementation-plan.md": {
+      "title": "ETABS VBA Export \u2014 In-Depth Implementation Plan",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Table of Contents",
+        "1. Performance Strategy",
+        "2. Error Handling Architecture",
+        "3. Debug & Logging System",
+        "4. API Call Optimization",
+        "5. Data Validation Pipeline",
+        "6. Implementation Phases",
+        "7. VBA Module Structure",
+        "8. Testing Strategy"
+      ],
+      "size_bytes": 36209
+    },
     "docs/research/product-strategy-followup.md": {
       "title": "Product Strategy Follow-up - Detailed Answers",
       "type": "research",
@@ -1407,6 +1436,26 @@
         "Document Control"
       ],
       "size_bytes": 10822
+    },
+    "docs/research/etabs-vba-questions-answered.md": {
+      "title": "ETABS VBA Export \u2014 Questions Answered",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Your Questions",
+        "\u2705 Answers & Decisions",
+        "\ud83d\udcca Decision Matrix",
+        "\ud83c\udfaf Implementation Roadmap",
+        "\ud83d\udcdd Next Actions",
+        "\ud83d\udcda Resources Created",
+        "\u2705 Summary"
+      ],
+      "size_bytes": 22150
     },
     "docs/research/background-agent-parallel-work.md": {
       "title": "Background Agent Parallel Work Research (2026-01-07)",
@@ -2128,7 +2177,7 @@
     "docs/specs/csv-import-schema.md": {
       "title": "CSV Import Schema Specification",
       "type": "specification",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "specs",
       "tags": [
         "design",
@@ -2144,7 +2193,7 @@
         "References",
         "Changelog"
       ],
-      "size_bytes": 6530
+      "size_bytes": 8979
     },
     "docs/specs/v0.9-job-schema.md": {
       "title": "v0.9 \u2014 Job Schema (Draft)",
@@ -3374,6 +3423,46 @@
       ],
       "size_bytes": 1678
     },
+    "docs/vba/etabs-export-journey-session-31.md": {
+      "title": "ETABS Export v2 Development Journey - Session 31",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "vba",
+      "tags": [],
+      "sections": [
+        "Executive Summary",
+        "Error Timeline & Solutions",
+        "Key Technical Discoveries",
+        "Diagnostic Modules Created",
+        "Files Evolution",
+        "Production Requirements (Next Phase)",
+        "Next Data Layers",
+        "Code Archive Plan",
+        "Key Learnings for Future Agents",
+        "Performance Notes"
+      ],
+      "size_bytes": 10727
+    },
+    "docs/vba/etabs-export-production-plan.md": {
+      "title": "ETABS Export Production Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "vba",
+      "tags": [],
+      "sections": [
+        "Current State",
+        "Problem",
+        "Phase 1: Data Requirements Analysis",
+        "Phase 2: Data Filtering Strategy",
+        "Phase 3: VBA Implementation Plan",
+        "Phase 4: Configuration Module",
+        "Phase 5: Archive Strategy",
+        "Phase 6: Implementation Order",
+        "Phase 7: Streamlit Integration Plan",
+        "Success Metrics"
+      ],
+      "size_bytes": 11838
+    },
     "docs/planning/automation-platform-vision.md": {
       "title": "Automation Platform Vision - Structural Engineering + AI",
       "type": "documentation",
@@ -3400,25 +3489,20 @@
     "docs/planning/next-session-brief.md": {
       "title": "Next Session Briefing",
       "type": "documentation",
-      "complexity": "advanced",
+      "complexity": "intermediate",
       "folder": "planning",
       "tags": [
         "roadmap",
         "tasks"
       ],
       "sections": [
-        "\ud83d\ude80 Session Start Checklist",
+        "Session Start Checklist",
         "Latest Handoff (auto)",
-        "\ud83c\udfaf Session 38 Summary - UI Improvements + Phase 2 Start (2026-01-20)",
-        "\ud83c\udfaf Session 39 Recommendations",
-        "\ud83d\udcca Production-Ready Assessment",
-        "Quick Commands",
-        "\ud83d\udcca Project Status",
-        "\ud83c\udfaf Session 34 Summary - Level C + ETABS Import (2026-01-15)",
-        "\ud83c\udfaf Session 34 Recommendations",
-        "\ud83d\udcca Project Status"
+        "Session 41-42 Summary - PR #381 Merged (2026-01-19)",
+        "Next Session Priorities",
+        "Quick Commands"
       ],
-      "size_bytes": 22175
+      "size_bytes": 2124
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3761,6 +3845,29 @@
       ],
       "size_bytes": 3611
     },
+    "docs/planning/brainstorming-platform-pivot.md": {
+      "title": "Brainstorming: Structural Automation Platform",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "The Core Problem We're Solving",
+        "The Big Question: How Will Engineers Actually Use This?",
+        "Model A: Web Platform (Streamlit Cloud / Hosted)",
+        "Model B: Excel Add-in (PyXLL / xlwings Powered)",
+        "Model C: Drag-and-Drop Automation Builder (No-Code)",
+        "Model D: Python SDK (Pro-Code for Power Users)",
+        "Model E: Chat-First Interface (LLM-Powered)",
+        "Model F: Hybrid Desktop App (Electron/Tauri)",
+        "Recommendation: Start with a Hybrid Approach",
+        "Competitive Landscape Analysis"
+      ],
+      "size_bytes": 17141
+    },
     "docs/planning/README.md": {
       "title": "Planning",
       "type": "index",
@@ -3935,6 +4042,7 @@
         "tasks"
       ],
       "sections": [
+        "\ud83d\udcca Current Status (Session 39)",
         "Strategic Context",
         "Progress Update (Session 38)",
         "8-Week Roadmap",
@@ -3943,10 +4051,9 @@
         "Weekly Check-in Template",
         "Week X Check-in",
         "Development Tools & Resources",
-        "Communication Guidelines",
-        "FAQ for AI Agents"
+        "Communication Guidelines"
       ],
-      "size_bytes": 14177
+      "size_bytes": 16345
     },
     "docs/planning/v020-stabilization-checklist.md": {
       "title": "v0.20.0 Stabilization Checklist",
@@ -4142,29 +4249,6 @@
       ],
       "size_bytes": 15558
     },
-    "docs/planning/brainstorming_platform_pivot.md": {
-      "title": "Brainstorming: Structural Automation Platform",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "The Core Problem We're Solving",
-        "The Big Question: How Will Engineers Actually Use This?",
-        "Model A: Web Platform (Streamlit Cloud / Hosted)",
-        "Model B: Excel Add-in (PyXLL / xlwings Powered)",
-        "Model C: Drag-and-Drop Automation Builder (No-Code)",
-        "Model D: Python SDK (Pro-Code for Power Users)",
-        "Model E: Chat-First Interface (LLM-Powered)",
-        "Model F: Hybrid Desktop App (Electron/Tauri)",
-        "Recommendation: Start with a Hybrid Approach",
-        "Competitive Landscape Analysis"
-      ],
-      "size_bytes": 17141
-    },
     "docs/planning/library-improvement-master-plan.md": {
       "title": "Library Improvement Master Plan \u2014 v1.0",
       "type": "documentation",
@@ -4204,6 +4288,27 @@
         "Recommendations for Future Sessions"
       ],
       "size_bytes": 3217
+    },
+    "docs/planning/task-3d-002-implementation-plan.md": {
+      "title": "TASK-3D-002: ETABS 3D Visualization Implementation Plan",
+      "type": "tracking",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Objective",
+        "Current Status",
+        "Implementation Steps",
+        "Technical Decisions",
+        "Success Criteria",
+        "Next Session Tasks",
+        "Related Files",
+        "Risks & Mitigation"
+      ],
+      "size_bytes": 7951
     },
     "docs/planning/project-needs-assessment-2026-01-09.md": {
       "title": "Project Needs Assessment & Strategic Action Plan",
@@ -4395,7 +4500,7 @@
         "Common Mistakes to Avoid",
         "Emergency Recovery"
       ],
-      "size_bytes": 7094
+      "size_bytes": 7549
     },
     "docs/agents/guides/agent-8-git-ops.md": {
       "title": "Agent 8: GIT OPERATIONS SPECIALIST",
@@ -4451,21 +4556,20 @@
     "docs/agents/guides/agent-bootstrap-complete-review.md": {
       "title": "Agent Bootstrap - Complete Review & Link Analysis",
       "type": "documentation",
-      "complexity": "advanced",
+      "complexity": "intermediate",
       "folder": "guides",
       "tags": [],
       "sections": [
         "Overview",
-        "\ud83d\udccb Quick Reference: Bootstrap Links Map",
-        "\ud83c\udfaf PRIORITY 1: CRITICAL PATH (Read These First)",
-        "\ud83d\udfe0 PRIORITY 2: ESSENTIAL REFERENCE",
-        "\ud83d\udfe1 PRIORITY 3: REFERENCE & TROUBLESHOOTING",
-        "\ud83d\udcca Analysis Summary",
-        "\u2705 Quick Checklist: Bootstrap Coverage",
-        "\ud83c\udfaf Key Insights",
-        "\ud83d\udcdd For Future Agents"
+        "Quick Reference: Bootstrap Links Map",
+        "P1 - Critical Path (Read First)",
+        "P2 - Essential Workflow",
+        "P3 - Reference & Background",
+        "Non-Link References in Bootstrap (Still Important)",
+        "Startup Flow Notes",
+        "Suggested Reading Path"
       ],
-      "size_bytes": 17053
+      "size_bytes": 4359
     },
     "docs/agents/guides/agent-quick-reference.md": {
       "title": "Agent Workflow Quick Reference Card",
@@ -4592,7 +4696,7 @@
         "Common Workflows",
         "Need Help?"
       ],
-      "size_bytes": 3751
+      "size_bytes": 3825
     },
     "docs/agents/guides/agent-8-mistakes-prevention-guide.md": {
       "title": "Agent 8: Mistakes Prevention Guide (Lessons Learned)",
@@ -4952,7 +5056,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 1364
+      "size_bytes": 1523
     },
     "docs/architecture/mission-and-principles.md": {
       "title": "StructEng Automation \u2013 Mission, Vision & Principles",
@@ -4998,6 +5102,28 @@
         "Agent Workflow (Cheat Sheet)"
       ],
       "size_bytes": 8535
+    },
+    "docs/architecture/canonical-data-format.md": {
+      "title": "Canonical Data Format Architecture",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "architecture",
+      "tags": [
+        "design",
+        "structure"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Problem Statement",
+        "Solution: Pydantic-Based Canonical Models",
+        "Canonical Model Definitions",
+        "Adapter Pattern for Input Sources",
+        "Benefits",
+        "Migration Path",
+        "Related Files",
+        "Decision Record"
+      ],
+      "size_bytes": 16464
     },
     "docs/getting-started/copilot-quick-start.md": {
       "title": "GitHub Copilot Agent Quick Start",
@@ -5180,15 +5306,15 @@
         "tutorial"
       ],
       "sections": [
-        "\ufffd Guide Hierarchy",
-        "\ufffd\ud83d\ude80 First 30 Seconds",
+        "Guide Hierarchy",
+        "First 30 Seconds",
         "\ud83d\udcd6 Required Context",
         "\u2705 API Touchpoints Checklist (When Changing Public API)",
         "\u2699\ufe0f Key Commands",
         "\ud83d\udccd Quick Reference",
         "\ud83e\udde0 Automation-First Mentality"
       ],
-      "size_bytes": 4489
+      "size_bytes": 4724
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -5358,6 +5484,25 @@
         "API Reference"
       ],
       "size_bytes": 13903
+    },
+    "docs/guides/etabs-vba-user-guide.md": {
+      "title": "ETABS VBA Export Macro - User Setup Guide",
+      "type": "guide",
+      "complexity": "advanced",
+      "folder": "guides",
+      "tags": [],
+      "sections": [
+        "Overview",
+        "Quick Start (5 Minutes)",
+        "Detailed Setup Instructions",
+        "Usage Instructions",
+        "Troubleshooting",
+        "Performance Tips",
+        "Best Practices",
+        "Appendix",
+        "Quick Reference Card"
+      ],
+      "size_bytes": 17806
     },
     "docs/guidelines/documentation-standard.md": {
       "title": "API Documentation & Discoverability Standard",
@@ -6309,10 +6454,10 @@
         "docs/learning/glossary.md",
         "docs/git-automation/README.md",
         "docs/planning/automation-platform-vision.md",
+        "docs/planning/brainstorming-platform-pivot.md",
         "docs/planning/research-detailing.md",
         "docs/planning/research-ai-enhancements.md",
         "docs/planning/agent-2-tasks.md",
-        "docs/planning/brainstorming_platform_pivot.md",
         "docs/agents/README.md",
         "docs/agents/guides/agent-coding-standards.md",
         "docs/getting-started/ai-context-pack.md"
@@ -6366,6 +6511,7 @@
         "docs/contributing/handoff.md",
         "docs/contributing/testing-strategy.md",
         "docs/contributing/changelog-deprecation-template.md",
+        "docs/vba/etabs-export-journey-session-31.md",
         "docs/planning/8-week-development-plan.md"
       ]
     },
@@ -6406,6 +6552,7 @@
         "docs/research/v018-library-expansion-feasibility.md",
         "docs/research/IMPLEMENTATION-DETAILED-PLAN.md",
         "docs/research/UNSOLVED-PROBLEMS-RESEARCH.md",
+        "docs/research/etabs-vba-implementation-plan.md",
         "docs/research/product-strategy-followup.md",
         "docs/research/professional-api-patterns.md",
         "docs/research/hygiene-research-review.md",
@@ -6432,6 +6579,7 @@
         "docs/research/folder-cleanup-research.md",
         "docs/research/agent-8-git-automation-comprehensive-research.md",
         "docs/research/input-flexibility-data-interchange-part3.md",
+        "docs/research/etabs-vba-questions-answered.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/ui-layout-best-practices.md",
         "docs/git-automation/research/README.md"
@@ -6472,6 +6620,7 @@
         "docs/research/v018-library-expansion-feasibility.md",
         "docs/research/IMPLEMENTATION-DETAILED-PLAN.md",
         "docs/research/UNSOLVED-PROBLEMS-RESEARCH.md",
+        "docs/research/etabs-vba-implementation-plan.md",
         "docs/research/product-strategy-followup.md",
         "docs/research/professional-api-patterns.md",
         "docs/research/hygiene-research-review.md",
@@ -6498,6 +6647,7 @@
         "docs/research/folder-cleanup-research.md",
         "docs/research/agent-8-git-automation-comprehensive-research.md",
         "docs/research/input-flexibility-data-interchange-part3.md",
+        "docs/research/etabs-vba-questions-answered.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/ui-layout-best-practices.md",
         "docs/git-automation/research/README.md"
@@ -6514,7 +6664,8 @@
         "docs/architecture/README.md",
         "docs/architecture/index.md",
         "docs/architecture/mission-and-principles.md",
-        "docs/architecture/project-overview.md"
+        "docs/architecture/project-overview.md",
+        "docs/architecture/canonical-data-format.md"
       ],
       "requirements": [
         "docs/specs/csv-import-schema.md",
@@ -6630,6 +6781,7 @@
         "docs/planning/library-api-expansion.md",
         "docs/planning/agent-1-tasks.md",
         "docs/planning/pre-release-checklist.md",
+        "docs/planning/brainstorming-platform-pivot.md",
         "docs/planning/README.md",
         "docs/planning/project-status-deep-dive.md",
         "docs/planning/session-2026-01-10-session4-issues.md",
@@ -6648,9 +6800,9 @@
         "docs/planning/bbs-dxf-improvement-plan.md",
         "docs/planning/agent-2-tasks.md",
         "docs/planning/session-19p8-work-plan.md",
-        "docs/planning/brainstorming_platform_pivot.md",
         "docs/planning/library-improvement-master-plan.md",
         "docs/planning/session-2026-01-10-session3-issues.md",
+        "docs/planning/task-3d-002-implementation-plan.md",
         "docs/planning/project-needs-assessment-2026-01-09.md"
       ],
       "tasks": [
@@ -6672,6 +6824,7 @@
         "docs/planning/library-api-expansion.md",
         "docs/planning/agent-1-tasks.md",
         "docs/planning/pre-release-checklist.md",
+        "docs/planning/brainstorming-platform-pivot.md",
         "docs/planning/README.md",
         "docs/planning/project-status-deep-dive.md",
         "docs/planning/session-2026-01-10-session4-issues.md",
@@ -6690,9 +6843,9 @@
         "docs/planning/bbs-dxf-improvement-plan.md",
         "docs/planning/agent-2-tasks.md",
         "docs/planning/session-19p8-work-plan.md",
-        "docs/planning/brainstorming_platform_pivot.md",
         "docs/planning/library-improvement-master-plan.md",
         "docs/planning/session-2026-01-10-session3-issues.md",
+        "docs/planning/task-3d-002-implementation-plan.md",
         "docs/planning/project-needs-assessment-2026-01-09.md"
       ],
       "ai": [
@@ -6738,7 +6891,8 @@
         "docs/architecture/README.md",
         "docs/architecture/index.md",
         "docs/architecture/mission-and-principles.md",
-        "docs/architecture/project-overview.md"
+        "docs/architecture/project-overview.md",
+        "docs/architecture/canonical-data-format.md"
       ],
       "beginner": [
         "docs/getting-started/copilot-quick-start.md",

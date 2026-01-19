@@ -74,8 +74,8 @@ Documents with dates go in `sessions/YYYY-MM/` (e.g., `sessions/2026-01/`)
 - **Public entry points:** `docs/agents/guides/`
 - **Internal details:** `agents/agent-N/`
 
-### Rule 6: Git History Preservation
-Always use `git mv` for file moves, never manual `mv`
+### Rule 6: Safe Moves Preserve History + Links
+Always use `scripts/safe_file_move.py`, never manual `mv`
 
 ---
 
@@ -103,11 +103,11 @@ open docs/guidelines/folder-structure-governance.md
 
 ### Workflow 2: Move a Document
 ```bash
-# Use git mv to preserve history
-git mv old/path.md new/folder/path.md
+# Use safe_file_move.py to preserve history and update links
+.venv/bin/python scripts/safe_file_move.py old/path.md new/folder/path.md
 
-# Update references
-grep -r "old/path.md" docs/ agents/
+# Review references
+rg "old/path.md" docs/ agents/
 
 # Validate
 .venv/bin/python scripts/check_links.py

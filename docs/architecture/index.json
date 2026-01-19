@@ -1,8 +1,8 @@
 {
   "folder": "docs/architecture",
   "description": "Deep dives into project structure, design decisions, and system architecture. ",
-  "last_updated": "2026-01-17",
-  "file_count": 7,
+  "last_updated": "2026-01-19",
+  "file_count": 8,
   "files": [
     {
       "name": "architecture-review-2025-12-27.md",
@@ -12,6 +12,15 @@
       "size_lines": 81,
       "audience": "Architects",
       "status": "Complete"
+    },
+    {
+      "name": "canonical-data-format.md",
+      "title": "Canonical Data Format Architecture",
+      "description": "This document defines the canonical data format architecture for the structural_engineering_lib project. The goal is to create a stable, efficient, AI-agent-friendly internal data representation that ",
+      "last_updated": "2026-01-19",
+      "size_lines": 361,
+      "audience": "All Agents, Developers",
+      "status": "Draft"
     },
     {
       "name": "data-flow-diagrams.md",

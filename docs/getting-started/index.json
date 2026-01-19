@@ -1,7 +1,7 @@
 {
   "folder": "docs/getting-started",
   "description": "Quick onboarding guides for new users of the structural engineering library. ",
-  "last_updated": "2026-01-17",
+  "last_updated": "2026-01-19",
   "file_count": 15,
   "files": [
     {
@@ -15,8 +15,8 @@
       "name": "agent-bootstrap.md",
       "title": "Agent Bootstrap",
       "description": "> **Read this first.** This is the fastest path to productive work. > **👤 For users onboarding a new agent:** See ../contributing/agent-onboarding-message.md for the exact message to send.",
-      "last_updated": "2026-01-13",
-      "size_lines": 128,
+      "last_updated": "2026-01-19",
+      "size_lines": 134,
       "audience": "All Agents",
       "status": "Approved"
     },

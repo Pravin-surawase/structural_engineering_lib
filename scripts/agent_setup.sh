@@ -40,6 +40,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+if [[ "$WORKTREE_MODE" == true ]] && [[ -z "$AGENT_NAME" ]]; then
+    echo -e "${RED}Missing agent name for --worktree${NC}"
+    echo "Usage: $0 [--worktree AGENT_NAME] [--quick]"
+    exit 1
+fi
+
 # Get project root
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
@@ -58,7 +64,7 @@ fi
 echo ""
 
 # Step 1: Check Git repository
-echo -e "${BLUE}[1/8]${NC} Checking Git repository..."
+echo -e "${BLUE}[1/9]${NC} Checking Git repository..."
 if [[ ! -d .git ]]; then
     echo -e "${RED}✗ Not a git repository${NC}"
     exit 1
@@ -66,7 +72,7 @@ fi
 echo -e "${GREEN}✓ Git repository OK${NC}"
 
 # Step 2: Check branch
-echo -e "${BLUE}[2/8]${NC} Checking branch..."
+echo -e "${BLUE}[2/9]${NC} Checking branch..."
 CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
 if [[ -z "$CURRENT_BRANCH" ]]; then
     echo -e "${RED}✗ Detached HEAD state${NC}"
@@ -75,7 +81,7 @@ fi
 echo -e "${GREEN}✓ Branch: $CURRENT_BRANCH${NC}"
 
 # Step 3: Check for uncommitted changes
-echo -e "${BLUE}[3/8]${NC} Checking working tree..."
+echo -e "${BLUE}[3/9]${NC} Checking working tree..."
 if [[ -n $(git status --porcelain) ]]; then
     echo -e "${YELLOW}⚠ Working tree has uncommitted changes${NC}"
     git status --short | head -10
@@ -87,7 +93,7 @@ else
 fi
 
 # Step 4: Check Python virtual environment
-echo -e "${BLUE}[4/8]${NC} Checking Python environment..."
+echo -e "${BLUE}[4/9]${NC} Checking Python environment..."
 if [[ ! -d .venv ]]; then
     echo -e "${YELLOW}⚠ Virtual environment not found${NC}"
     echo "Creating .venv..."
@@ -102,7 +108,7 @@ PYTHON_VERSION=$(python --version)
 echo -e "${GREEN}✓ Version: $PYTHON_VERSION${NC}"
 
 # Step 5: Install/update dependencies
-echo -e "${BLUE}[5/8]${NC} Checking dependencies..."
+echo -e "${BLUE}[5/9]${NC} Checking dependencies..."
 if [[ "$QUICK_MODE" == false ]]; then
     cd Python
     pip install -q -e ".[dev]" 2>&1 | grep -v "already satisfied" || true
@@ -113,13 +119,13 @@ else
 fi
 
 # Step 6: Make scripts executable
-echo -e "${BLUE}[6/8]${NC} Setting script permissions..."
+echo -e "${BLUE}[6/9]${NC} Setting script permissions..."
 chmod +x scripts/*.sh 2>/dev/null || true
 chmod +x scripts/*.py 2>/dev/null || true
 echo -e "${GREEN}✓ Script permissions set${NC}"
 
 # Step 7: Check key scripts exist
-echo -e "${BLUE}[7/8]${NC} Validating workflow scripts..."
+echo -e "${BLUE}[7/9]${NC} Validating workflow scripts..."
 REQUIRED_SCRIPTS=(
     "scripts/ai_commit.sh"
     "scripts/safe_push.sh"

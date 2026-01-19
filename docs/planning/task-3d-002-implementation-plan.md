@@ -190,7 +190,7 @@ st.info(f"""
 
 **Update files:**
 - [docs/specs/csv-import-schema.md](../specs/csv-import-schema.md) - Add frames_geometry schema
-- [docs/guides/etabs-import-guide.md](../guides/etabs-import-guide.md) - New user guide with screenshots
+- [docs/guides/etabs-vba-user-guide.md](../guides/etabs-vba-user-guide.md) - ETABS export workflow guide
 - [docs/planning/8-week-development-plan.md](8-week-development-plan.md) - Mark Week 3-4 as in-progress
 
 ---
@@ -250,7 +250,7 @@ st.info(f"""
 
 **Updated (planned):**
 - `docs/specs/csv-import-schema.md`
-- `docs/guides/etabs-import-guide.md`
+- `docs/guides/etabs-vba-user-guide.md`
 - `docs/planning/8-week-development-plan.md`
 
 ---

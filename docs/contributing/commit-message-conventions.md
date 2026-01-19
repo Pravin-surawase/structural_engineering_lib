@@ -202,6 +202,6 @@ CI validation is not currently configured in this repo.
 
 ## Related Documents
 
-- [CONTRIBUTING.md](/CONTRIBUTING.md) - Overall contribution guidelines
-- [Git Automation Guide](/docs/git-automation/README.md) - Git workflow automation
-- [Agent Workflow Guide](/docs/agents/guides/agent-workflow-master-guide.md) - AI agent git usage
+- [CONTRIBUTING.md](../../CONTRIBUTING.md) - Overall contribution guidelines
+- [Git Automation Guide](../git-automation/README.md) - Git workflow automation
+- [Agent Workflow Guide](../agents/guides/agent-workflow-master-guide.md) - AI agent git usage

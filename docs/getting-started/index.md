@@ -2,7 +2,7 @@
 
 Quick onboarding guides for new users of the structural engineering library.
 
-**Last Updated:** 2026-01-17
+**Last Updated:** 2026-01-19
 **File Count:** 15
 
 ## Files
@@ -10,7 +10,7 @@ Quick onboarding guides for new users of the structural engineering library.
 | File | Description | Updated | Lines |
 |------|-------------|---------|-------|
 | [NEW-DEVELOPER-ONBOARDING.md](NEW-DEVELOPER-ONBOARDING.md) | **Welcome to structural_engineering_lib! 🎓** This guide is for you if: | 2026-01-13 | 368 |
-| [agent-bootstrap.md](agent-bootstrap.md) | > **Read this first.** This is the fastest path to productive work. > **👤 For us | 2026-01-13 | 128 |
+| [agent-bootstrap.md](agent-bootstrap.md) | > **Read this first.** This is the fastest path to productive work. > **👤 For us | 2026-01-19 | 134 |
 | [ai-context-pack.md](ai-context-pack.md) | > **For AI Agents:** Use this as your single entrypoint when working in VS Code. | 2026-01-13 | 264 |
 | [beginners-guide.md](beginners-guide.md) | This guide is written for engineers and students who are new to coding. Follow t | 2026-01-15 | 150 |
 | [colab-workflow.md](colab-workflow.md) | This guide runs the full pipeline in Google Colab: install → generate inputs → d | 2026-01-13 | 515 |

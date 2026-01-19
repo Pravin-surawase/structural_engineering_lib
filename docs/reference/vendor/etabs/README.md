@@ -75,7 +75,7 @@ Use this document whenever you need canonical answers about:
 5. Normalize units (the CHM methods always mention `System.String` names but
    your converter must inspect `SapModel.GetUnit` / `PropFrame.GetUnits` to map
    to `N`, `mm`, `kN-m` etc). Embed unit metadata in the JSON/CSV payload.
-6. POST the JSON to the [local bridge](../../docs/planning/etabs-automation-bridge-plan.md)
+6. POST the JSON to the [local bridge](../../../planning/etabs-automation-bridge-plan.md)
    endpoint if available; otherwise write a single `structural-engineering-lib.json`
    payload in the download folder and let Streamlit pick it up.
 

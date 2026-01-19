@@ -60,6 +60,7 @@ This software is intended to assist qualified structural engineers with IS 456:2
 - **Bar Bending Schedule:** IS 2502-compliant CSV/JSON with weights, cut lengths, bar marks
 - **DXF Export:** CAD-ready reinforcement drawings with title blocks and annotations
 - **Batch Processing:** CSV/JSON job runner for 100+ beams, critical set reports, HTML summaries
+- **Multi-Format Import:** Adapter-based ETABS/SAFE/STAAD/Excel intake with canonical models
 
 ### Advisory Tools (v0.13.0+) & Smart Library (v0.15.0)
 - **Quick Precheck:** Heuristic validation (deflection risk, width adequacy, steel estimates) in <1ms

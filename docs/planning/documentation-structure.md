@@ -206,9 +206,9 @@ print(f"Steel required: {result.flexure.ast_required_mm2:.0f} mm²")
 
 ## See Also
 
-- [`verify_beam`](verify_beam.md) — Verify with provided reinforcement
-- [`batch_design`](batch_design.md) — Design multiple beams
-- [`optimize_beam`](optimize_beam.md) — Find optimal dimensions
+- `verify_beam` — Verify with provided reinforcement
+- `batch_design` — Design multiple beams
+- `optimize_beam` — Find optimal dimensions
 
 ## References
 
@@ -229,7 +229,7 @@ Brief explanation of the workflow.
 
 ## Prerequisites
 
-- Completed: [Previous Tutorial](link)
+- Completed: Previous tutorial (TBD)
 - Installed: structural-sdk
 
 ## Step 1: [Action]
@@ -262,8 +262,8 @@ Expected output
 
 ## Next Steps
 
-- [Next Tutorial](link)
-- [Related API Reference](link)
+- Next tutorial (TBD)
+- Related API reference (TBD)
 ```
 
 ---
