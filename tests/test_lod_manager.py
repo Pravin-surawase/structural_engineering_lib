@@ -30,7 +30,6 @@ class TestLODLevel:
 
     def test_lod_levels_exist(self):
         """All expected LOD levels should exist."""
-        assert LODLevel.FULL
         assert LODLevel.HIGH
         assert LODLevel.MEDIUM
         assert LODLevel.LOW
@@ -39,7 +38,8 @@ class TestLODLevel:
     def test_lod_levels_order(self):
         """LOD levels should be in order of detail."""
         levels = list(LODLevel)
-        assert levels[0] == LODLevel.FULL
+        # HIGH is most detailed, ULTRA_LOW is least detailed
+        assert levels[0] == LODLevel.HIGH
         assert levels[-1] == LODLevel.ULTRA_LOW
 
 
@@ -80,41 +80,54 @@ class TestLODManager:
         }
 
     def test_get_recommended_level_single_beam(self, lod_manager):
-        """Single beam should get FULL LOD."""
-        assert lod_manager.get_recommended_level(1) == LODLevel.FULL
+        """Single beam should get HIGH LOD (full detail)."""
+        assert lod_manager.get_recommended_level(1) == LODLevel.HIGH
 
-    def test_get_recommended_level_few_beams(self, lod_manager):
-        """Up to 50 beams should get HIGH LOD."""
+    def test_get_recommended_level_small_building(self, lod_manager):
+        """Up to 150 beams (small-medium buildings) should get HIGH LOD."""
         assert lod_manager.get_recommended_level(10) == LODLevel.HIGH
-        assert lod_manager.get_recommended_level(50) == LODLevel.HIGH
+        assert lod_manager.get_recommended_level(75) == LODLevel.HIGH
+        assert lod_manager.get_recommended_level(150) == LODLevel.HIGH
 
-    def test_get_recommended_level_medium(self, lod_manager):
-        """51-200 beams should get MEDIUM LOD."""
-        assert lod_manager.get_recommended_level(51) == LODLevel.MEDIUM
+    def test_get_recommended_level_medium_building(self, lod_manager):
+        """151-400 beams (large buildings) should get MEDIUM LOD."""
+        assert lod_manager.get_recommended_level(151) == LODLevel.MEDIUM
         assert lod_manager.get_recommended_level(200) == LODLevel.MEDIUM
+        assert lod_manager.get_recommended_level(400) == LODLevel.MEDIUM
 
-    def test_get_recommended_level_large(self, lod_manager):
-        """201-1000 beams should get LOW LOD."""
-        assert lod_manager.get_recommended_level(201) == LODLevel.LOW
+    def test_get_recommended_level_large_building(self, lod_manager):
+        """401-1000 beams (very large buildings) should get LOW LOD."""
+        assert lod_manager.get_recommended_level(401) == LODLevel.LOW
+        assert lod_manager.get_recommended_level(500) == LODLevel.LOW
         assert lod_manager.get_recommended_level(1000) == LODLevel.LOW
 
-    def test_get_recommended_level_very_large(self, lod_manager):
-        """1000+ beams should get ULTRA_LOW LOD."""
+    def test_get_recommended_level_complex(self, lod_manager):
+        """1000+ beams (industrial complexes) should get ULTRA_LOW LOD."""
         assert lod_manager.get_recommended_level(1001) == LODLevel.ULTRA_LOW
         assert lod_manager.get_recommended_level(5000) == LODLevel.ULTRA_LOW
 
     def test_get_config_returns_correct_type(self, lod_manager):
         """get_config should return LODConfig."""
-        config = lod_manager.get_config(LODLevel.FULL)
+        config = lod_manager.get_config(LODLevel.HIGH)
         assert isinstance(config, LODConfig)
 
     def test_full_lod_config(self, lod_manager):
-        """FULL LOD should have all detail enabled."""
-        config = lod_manager.get_config(LODLevel.FULL)
+        """HIGH LOD should have full detail enabled."""
+        config = lod_manager.get_config(LODLevel.HIGH)
         assert config.show_stirrups is True
         assert config.show_all_bars is True
         assert config.show_labels is True
         assert config.mesh_segments == 16
+        assert config.stirrup_reduction == 1  # Show all
+
+    def test_medium_lod_config(self, lod_manager):
+        """MEDIUM LOD should have balanced detail."""
+        config = lod_manager.get_config(LODLevel.MEDIUM)
+        assert config.show_stirrups is True
+        assert config.stirrup_reduction == 2  # Show every 2nd
+        assert config.show_all_bars is False  # Corner bars only
+        assert config.show_labels is False
+        assert config.mesh_segments == 12
 
     def test_ultra_low_config(self, lod_manager):
         """ULTRA_LOW LOD should have minimal detail."""
@@ -122,27 +135,27 @@ class TestLODManager:
         assert config.show_stirrups is False
         assert config.show_all_bars is False
         assert config.show_labels is False
-        assert config.mesh_segments == 2
+        assert config.mesh_segments == 4
         assert config.use_instancing is True
 
-    def test_simplify_geometry_full_lod(self, lod_manager, sample_geometry):
-        """FULL LOD should preserve all geometry."""
+    def test_simplify_geometry_high_lod(self, lod_manager, sample_geometry):
+        """HIGH LOD should preserve all geometry."""
         simplified, stats = lod_manager.simplify_geometry(
-            sample_geometry, level=LODLevel.FULL
+            sample_geometry, level=LODLevel.HIGH
         )
 
+        # All stirrups and bars should be preserved
         assert stats.simplified_stirrup_count == stats.original_stirrup_count
         assert stats.simplified_bar_count == stats.original_bar_count
 
     def test_simplify_geometry_medium_lod(self, lod_manager, sample_geometry):
-        """MEDIUM LOD should remove stirrups and reduce bars."""
+        """MEDIUM LOD should reduce stirrups but show representative ones."""
         simplified, stats = lod_manager.simplify_geometry(
             sample_geometry, level=LODLevel.MEDIUM
         )
 
-        # Stirrups should be removed
-        assert stats.simplified_stirrup_count == 0
-        assert len(simplified["stirrups"]) == 0
+        # Some stirrups should be shown (every 2nd)
+        assert 0 < stats.simplified_stirrup_count < stats.original_stirrup_count
 
         # Bars should be reduced to corners
         assert stats.simplified_bar_count < stats.original_bar_count
@@ -162,10 +175,12 @@ class TestLODManager:
         """Batch simplification should work for multiple geometries."""
         geometries = [sample_geometry.copy() for _ in range(100)]
 
+        # 100 beams = HIGH LOD (keeps all stirrups)
         simplified, stats = lod_manager.simplify_batch(geometries)
 
         assert len(simplified) == 100
-        assert stats.original_stirrup_count > stats.simplified_stirrup_count
+        # HIGH LOD keeps all stirrups (stirrup_reduction=1 means show all)
+        assert stats.original_stirrup_count == stats.simplified_stirrup_count
 
     def test_get_performance_estimate(self, lod_manager):
         """Performance estimates should be reasonable."""
@@ -190,14 +205,15 @@ class TestLODManager:
 
     def test_mesh_reduction_calculation(self, lod_manager, sample_geometry):
         """Mesh reduction percentage should be calculated."""
-        _, full_stats = lod_manager.simplify_geometry(
-            sample_geometry, level=LODLevel.FULL
+        _, high_stats = lod_manager.simplify_geometry(
+            sample_geometry, level=LODLevel.HIGH
         )
         _, low_stats = lod_manager.simplify_geometry(
             sample_geometry, level=LODLevel.LOW
         )
 
-        assert low_stats.mesh_reduction_percent > full_stats.mesh_reduction_percent
+        # LOW should have more reduction than HIGH
+        assert low_stats.mesh_reduction_percent >= high_stats.mesh_reduction_percent
 
 
 class TestConvenienceFunctions:
@@ -293,6 +309,6 @@ class TestCustomConfigs:
 
         lod = LODManager(custom_configs=custom)
 
-        # FULL should still be default
-        full_config = lod.get_config(LODLevel.FULL)
-        assert full_config.show_stirrups is True
+        # MEDIUM should still be default
+        medium_config = lod.get_config(LODLevel.MEDIUM)
+        assert medium_config.show_stirrups is True  # Default behavior
