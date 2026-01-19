@@ -15,12 +15,15 @@ Features:
 - Unified column mapping across all formats
 - Batch design with progress tracking
 - Export to canonical JSON format
+- **NEW (Session 45):** Load Sample Data button (153 beams from VBA export)
+- **NEW (Session 45):** 3D Building Viewer integration
 
 Integration:
     Analysis Software → Export → CSV → This Page → Design → 3D Viewer
 
-Author: Session 42 Agent
+Author: Session 42 Agent (Updated Session 45)
 Task: TASK-DATA-001 (Multi-format import integration)
+       TASK-1, TASK-2 (Sample Data + 3D Viewer integration)
 Status: ✅ IMPLEMENTED
 """
 
@@ -84,6 +87,21 @@ setup_page(title="Multi-Format Import | IS 456 Beam Design", icon="📥", layout
 initialize_theme()
 
 # =============================================================================
+# Constants
+# =============================================================================
+
+# Sample data location (VBA ETABS export with 153 beams)
+SAMPLE_DATA_DIR = (
+    Path(__file__).resolve().parents[2]
+    / "VBA"
+    / "ETABS_Export_v2"
+    / "Etabs_output"
+    / "2026-01-17_222801"
+)
+SAMPLE_FORCES_FILE = SAMPLE_DATA_DIR / "beam_forces.csv"
+SAMPLE_GEOMETRY_FILE = SAMPLE_DATA_DIR / "frames_geometry.csv"
+
+# =============================================================================
 # Session State
 # =============================================================================
 
@@ -95,6 +113,8 @@ if "mf_forces" not in st.session_state:
     st.session_state.mf_forces = []  # list[BeamForces]
 if "mf_design_results" not in st.session_state:
     st.session_state.mf_design_results = None
+if "mf_sample_loaded" not in st.session_state:
+    st.session_state.mf_sample_loaded = False
 if "mf_defaults" not in st.session_state:
     st.session_state.mf_defaults = {
         "width_mm": 300,
@@ -131,6 +151,60 @@ def detect_format(file_content: str, filename: str) -> str:
 
     # Default to generic CSV
     return "Generic CSV"
+
+
+def load_sample_data(
+    defaults: dict[str, float],
+) -> tuple[bool, str, list, list]:
+    """Load sample data from VBA ETABS export (153 beams).
+
+    Returns:
+        (success, message, beams_list, forces_list)
+    """
+    if not ADAPTERS_AVAILABLE:
+        return False, f"Adapters not available: {_import_error}", [], []
+
+    # Check if sample data exists
+    if not SAMPLE_FORCES_FILE.exists():
+        return False, f"Sample forces file not found: {SAMPLE_FORCES_FILE}", [], []
+    if not SAMPLE_GEOMETRY_FILE.exists():
+        return False, f"Sample geometry file not found: {SAMPLE_GEOMETRY_FILE}", [], []
+
+    adapter = ADAPTERS["ETABS"]
+    beams = []
+    forces = []
+
+    # Create DesignDefaults from dict
+    design_defaults = DesignDefaults(
+        fck_mpa=defaults["fck_mpa"],
+        fy_mpa=defaults["fy_mpa"],
+        cover_mm=defaults["cover_mm"],
+        width_mm=defaults.get("width_mm", 300.0),
+        depth_mm=defaults.get("depth_mm", 500.0),
+    )
+
+    try:
+        # Load forces (uses envelope format: Mu_max_kNm, Mu_min_kNm, Vu_max_kN)
+        forces = adapter.load_forces(str(SAMPLE_FORCES_FILE))
+
+        # Load geometry (uses frame coordinates: Point1X/Y/Z, Point2X/Y/Z)
+        beams = adapter.load_geometry(str(SAMPLE_GEOMETRY_FILE), defaults=design_defaults)
+
+        # Match forces to beams
+        beam_ids = {b.id for b in beams}
+        matched_forces = [f for f in forces if f.id in beam_ids]
+
+        msg = f"""✅ Sample data loaded (VBA ETABS Export):
+- **{len(beams)} beams** with 3D geometry
+- **{len(forces)} force records**
+- **{len(matched_forces)} matched** beam-force pairs
+- Stories: {len(set(b.story for b in beams))}
+- Building size: ~10m × 13m × 6 stories"""
+
+        return True, msg, beams, forces
+
+    except Exception as e:
+        return False, f"Error loading sample data: {e}", [], []
 
 
 def process_uploaded_files(
@@ -412,7 +486,7 @@ with st.sidebar:
     )
 
 # Main content area
-tab1, tab2, tab3 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design"])
+tab1, tab2, tab3, tab4 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design", "🏗️ 3D View"])
 
 with tab1:
     section_header("Upload Files")
@@ -424,6 +498,41 @@ with tab1:
 
     You can upload just forces if geometry is embedded in the force file.
     """)
+
+    # Quick Start: Load Sample Data
+    sample_data_available = SAMPLE_FORCES_FILE.exists() and SAMPLE_GEOMETRY_FILE.exists()
+
+    with st.expander("🚀 **Quick Start: Load Sample Data**", expanded=not st.session_state.mf_sample_loaded):
+        if sample_data_available:
+            st.markdown("""
+            Load a complete **6-story building** with 153 beams from our VBA ETABS export.
+            Perfect for testing the full workflow: **Import → Design → 3D Viewer**
+            """)
+
+            if st.button(
+                "📊 Load Sample Building (153 Beams)",
+                type="primary",
+                use_container_width=True,
+                key="load_sample_btn",
+            ):
+                with loading_context("Loading sample data..."):
+                    success, message, beams, forces = load_sample_data(
+                        st.session_state.mf_defaults,
+                    )
+
+                if success:
+                    st.session_state.mf_beams = beams
+                    st.session_state.mf_forces = forces
+                    st.session_state.mf_sample_loaded = True
+                    st.session_state.mf_design_results = None  # Reset design
+                    st.success(message)
+                    st.rerun()
+                else:
+                    st.error(message)
+        else:
+            st.info("Sample data not available in this installation.")
+
+    st.divider()
 
     col1, col2 = st.columns(2)
 
@@ -582,6 +691,105 @@ with tab3:
                 "design_results.csv",
                 "text/csv",
             )
+
+with tab4:
+    section_header("3D Building View")
+
+    beams = st.session_state.mf_beams
+
+    if not beams:
+        st.info("📦 Load or upload beam data to enable 3D visualization")
+    else:
+        # Import 3D visualization components
+        try:
+            from components.visualizations_3d import (
+                create_beam_3d_from_dict,
+                create_multi_beam_3d_figure,
+            )
+
+            VIZ_3D_AVAILABLE = True
+        except ImportError:
+            VIZ_3D_AVAILABLE = False
+
+        if not VIZ_3D_AVAILABLE:
+            st.warning("3D visualization components not available")
+        else:
+            # Story filter
+            stories = sorted(set(b.story for b in beams), key=lambda s: s.lower())
+            all_stories = ["All Stories"] + stories
+
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                selected_story = st.selectbox("Filter by Story", all_stories)
+            with col2:
+                show_forces = st.checkbox("Color by Force Utilization", value=True)
+
+            # Filter beams by story
+            if selected_story == "All Stories":
+                visible_beams = beams
+            else:
+                visible_beams = [b for b in beams if b.story == selected_story]
+
+            st.markdown(f"**Showing {len(visible_beams)} beams**")
+
+            # Create building 3D view
+            if len(visible_beams) > 0:
+                try:
+                    # Build geometry data for multi-beam view
+                    beam_data = []
+                    for beam in visible_beams:
+                        # Get force data if available
+                        mu, vu, _ = get_governing_forces(
+                            st.session_state.mf_forces,
+                            beam.id,
+                        )
+
+                        # Access Point3D coordinates (in meters, convert to mm)
+                        beam_data.append({
+                            "id": beam.id,
+                            "story": beam.story,
+                            "label": beam.label,
+                            "x1": beam.point1.x * 1000,
+                            "y1": beam.point1.y * 1000,
+                            "z1": beam.point1.z * 1000,
+                            "x2": beam.point2.x * 1000,
+                            "y2": beam.point2.y * 1000,
+                            "z2": beam.point2.z * 1000,
+                            "width": beam.section.width_mm,
+                            "depth": beam.section.depth_mm,
+                            "mu_knm": mu,
+                            "vu_kn": vu,
+                        })
+
+                    # Create multi-beam 3D figure
+                    fig = create_multi_beam_3d_figure(
+                        beam_data,
+                        show_forces=show_forces,
+                        title=f"Building View: {selected_story}",
+                    )
+
+                    st.plotly_chart(fig, use_container_width=True)
+
+                    # Show beam info on click
+                    with st.expander("📋 Beam List", expanded=False):
+                        beam_df = pd.DataFrame([
+                            {
+                                "ID": b["id"],
+                                "Story": b["story"],
+                                "Size": f"{b['width']}×{b['depth']}",
+                                "Mu (kN·m)": round(b["mu_knm"], 1),
+                                "Vu (kN)": round(b["vu_kn"], 1),
+                            }
+                            for b in beam_data
+                        ])
+                        st.dataframe(beam_df, use_container_width=True, height=300)
+
+                except Exception as e:
+                    st.error(f"Error creating 3D view: {e}")
+                    import traceback
+                    st.code(traceback.format_exc())
+            else:
+                st.info("No beams to display for selected story")
 
 # Footer
 st.divider()
