@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-25 (Session 49)
+**Updated:** 2026-01-20 (Session 50)
 
 ---
 
@@ -17,8 +17,8 @@
 
 - **Version:** v0.17.6 → v0.18.0 (AI Chat MVP)
 - **Focus:** AI Chat Interface + SmartDesigner UI Integration
-- **8-Week Plan:** Phase 3.5 (AI/Insights) - IN PROGRESS
-- **Next Milestone:** v0.18.0 - AI Chat MVP (Jan 2026)
+- **8-Week Plan:** Phase AI COMPLETE, Phase 3 upcoming
+- **Next Milestone:** v0.18.0 - AI Chat MVP ✅ READY
 - **Key Insight:** ChatGPT-like UI with library function calling
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
@@ -26,28 +26,32 @@
 
 ## Active Tasks
 
-### TASK-AI-CHAT: AI Chat Assistant Interface 🚧 IN PROGRESS
+### TASK-AI-CHAT: AI Chat Assistant Interface ✅ MVP COMPLETE
 
 **Goal:** ChatGPT-like UI with 40% chat / 60% workspace split
 
 | Sub-task | Status | Notes |
 |----------|--------|-------|
-| AI Assistant page (10_🤖_ai_assistant.py) | ✅ Done | `c5a9bdaa` - Split layout working |
-| SmartDashboard component | ✅ Done | `b6cb036a` - Score gauges, issues |
-| LLM tool definitions | ✅ Done | `edb9379a` - 7 tools for function calling |
-| Architecture research doc | ✅ Done | `6b139dbd` - OpenAI/Streamlit patterns |
-| **Fix ComplianceCaseResult.geometry bug** | ✅ Done | Session 49 - `fef3ae12` |
+| AI Assistant page (10_🤖_ai_assistant.py) | ✅ Done | Split layout working |
+| SmartDashboard component | ✅ Done | Score gauges, issues |
+| LLM tool definitions | ✅ Done | 7 tools for function calling |
+| Architecture research doc | ✅ Done | OpenAI/Streamlit patterns |
+| **Fix ComplianceCaseResult.geometry bug** | ✅ Done | Session 49 |
 | **GPT-5-mini model support** | ✅ Done | Session 49 - Configurable via secrets |
-| **Fix workspace panel attributes** | ✅ Done | Session 49 - `4d0a9c7c` |
-| **Add welcome message + Clear button** | ✅ Done | Session 49 - `37e0a21f` |
-| Connect SmartDesigner to chat | 📋 TODO | Use existing analyze() |
-| Streaming responses | 📋 TODO | Typewriter effect |
-| Tool execution handlers | 📋 TODO | Map tools to library functions |
+| **Fix workspace panel attributes** | ✅ Done | Session 49 |
+| **Add welcome message + Clear button** | ✅ Done | Session 49 |
+| **Fix 3D view params (b_mm→b)** | ✅ Done | Session 50 - `c53b21c6` |
+| **Add CSV Import tab** | ✅ Done | Session 50 - `8b848122` |
+| **Compact UI (moved status to sidebar)** | ✅ Done | Session 50 |
+| **AI usage research doc** | ✅ Done | Session 50 |
+| Connect SmartDesigner to chat | ✅ Done | Using existing analyze() |
+| Streaming responses | 📋 V1.1 | Typewriter effect |
+| Tool execution handlers | 📋 V1.1 | Map tools to library functions |
 
 **Why:** Make structural engineering accessible through natural language.
 Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 
-### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) 🔄 MERGED
+### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) ✅ MERGED
 
 **Goal:** Expose existing AI-like intelligence in the UI
 **Status:** Merged into TASK-AI-CHAT — SmartDesigner now displayed in AI workspace

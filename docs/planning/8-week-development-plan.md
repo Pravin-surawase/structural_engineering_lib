@@ -25,19 +25,19 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 
 ---
 
-## 📊 Current Status (Session 49)
+## 📊 Current Status (Session 50)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1-2 | Live Preview Foundation | ✅ **COMPLETE** |
-| **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **90% COMPLETE** |
+| **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **COMPLETE** |
 | **Phase 2.5** | 4 | Visualization Polish | ✅ **COMPLETE** |
 | **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
 | **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
 | **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
-| **Phase AI** | 6+ | **AI Chat Interface** | 🚧 **IN PROGRESS** (Session 48-49 bugs fixed) |
+| **Phase AI** | 6+ | **AI Chat Interface** | ✅ **MVP COMPLETE** (Session 50) |
 
-### Phase AI: ChatGPT-like Interface (Session 47b-49)
+### Phase AI: ChatGPT-like Interface (Session 47b-50)
 
 > "like chatgpt. chat, and when users asks something chat goes to left 40% like chatgpt
 > and on right window our work, tables, 3d and all come"
@@ -48,30 +48,32 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 - ✅ LLM tool definitions for OpenAI function calling (7 tools)
 - ✅ Architecture research document with modern patterns
 - ✅ **GPT-5-mini support** (Session 49) - Configurable model via secrets.toml
-- ✅ **Bug fixes** (Session 49) - Fixed ComplianceCaseResult.geometry errors
-- ✅ **UI improvements** (Session 49) - Welcome message, Clear button, helper function
+- ✅ **Bug fixes** (Session 49-50) - Fixed geometry errors, 3D view params
+- ✅ **UI improvements** (Session 49-50) - Welcome message, Clear button, compact header
+- ✅ **CSV Import Tab** (Session 50) - Batch design from ETABS/SAFE/custom CSV
+- ✅ **5-tab workspace** (Session 50) - Results | 3D | Import | Cost | Dashboard
 
-**UI Layout:**
+**UI Layout (Updated Session 50):**
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │  🤖 StructEng AI Assistant                                       │
 ├─────────────────────────┬────────────────────────────────────────┤
 │  💬 CHAT (40%)          │  📊 WORKSPACE (60%)                    │
 │                         │  ┌───────────────────────────────────┐ │
-│  User: Design a beam    │  │ Results │ 3D View │ Cost │ Smart │ │
+│  User: Design a beam    │  │ Results │ 3D │ Import│ Cost│ Dash│ │
 │  for 150 kN·m           │  └───────────────────────────────────┘ │
 │                         │                                        │
-│  AI: I've designed a    │  Section: 300×500mm                   │
-│  beam for you:          │  Steel: 1234 mm²                      │
-│  - 300×500mm section    │  Status: ✅ SAFE                       │
-│  - 1234 mm² steel       │                                        │
-│                         │  [3D Beam Visualization]               │
-│  [Design] [Optimize]    │                                        │
+│  AI: I've designed a    │  [CSV Upload / Batch Design]          │
+│  beam for you:          │  [3D Beam Visualization]               │
+│  - 300×500mm section    │                                        │
+│  - 1234 mm² steel       │  Status: ✅ SAFE                       │
+│                         │                                        │
+│  [Design] [💰] [📊] [3D]│                                        │
 └─────────────────────────┴────────────────────────────────────────┘
 ```
 
 **Technology Stack:**
-- OpenAI GPT-4 with function calling (strict mode)
+- OpenAI GPT-5-mini (configurable via secrets.toml)
 - Streamlit `st.chat_message`, `st.chat_input`
 - SmartDesigner for AI-like intelligence without API calls
 - 7 tools: design_beam, optimize_cost, get_suggestions, analyze_design, compare_options, explain_code_clause, show_3d_view
