@@ -14,8 +14,16 @@ print("=" * 60)
 
 features_by_area = {
     "Flexure": [
-        ("Singly reinforced beams", "structural_lib.flexure", "design_singly_reinforced"),
-        ("Doubly reinforced beams", "structural_lib.flexure", "design_doubly_reinforced"),
+        (
+            "Singly reinforced beams",
+            "structural_lib.flexure",
+            "design_singly_reinforced",
+        ),
+        (
+            "Doubly reinforced beams",
+            "structural_lib.flexure",
+            "design_doubly_reinforced",
+        ),
         ("Flanged beams (T/L)", "structural_lib.flexure", "design_flanged_beam"),
         ("Limiting moment", "structural_lib.flexure", "calculate_mu_lim"),
         ("Ast required", "structural_lib.flexure", "calculate_ast_required"),
@@ -25,17 +33,33 @@ features_by_area = {
         ("Shear stress", "structural_lib.shear", "calculate_tv"),
     ],
     "Detailing": [
-        ("Development length", "structural_lib.detailing", "calculate_development_length"),
+        (
+            "Development length",
+            "structural_lib.detailing",
+            "calculate_development_length",
+        ),
         ("Lap length", "structural_lib.detailing", "calculate_lap_length"),
         ("Bar spacing", "structural_lib.detailing", "calculate_bar_spacing"),
         ("Min spacing check", "structural_lib.detailing", "check_min_spacing"),
-        ("Side-face reinforcement", "structural_lib.detailing", "check_side_face_reinforcement"),
+        (
+            "Side-face reinforcement",
+            "structural_lib.detailing",
+            "check_side_face_reinforcement",
+        ),
         ("Create beam detailing", "structural_lib.detailing", "create_beam_detailing"),
     ],
     "Serviceability": [
-        ("Deflection span/depth", "structural_lib.serviceability", "check_deflection_span_depth"),
+        (
+            "Deflection span/depth",
+            "structural_lib.serviceability",
+            "check_deflection_span_depth",
+        ),
         ("Crack width", "structural_lib.serviceability", "check_crack_width"),
-        ("Level B deflection", "structural_lib.serviceability", "check_deflection_level_b"),
+        (
+            "Level B deflection",
+            "structural_lib.serviceability",
+            "check_deflection_level_b",
+        ),
     ],
     "Compliance": [
         ("Compliance case", "structural_lib.compliance", "check_compliance_case"),

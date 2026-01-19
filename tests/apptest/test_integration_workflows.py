@@ -69,9 +69,9 @@ class TestBeamDesignWorkflow:
         calc_btn = helper.get_button_by_label("calculate")
         if calc_btn:
             at = calc_btn.click().run()
-            assert not helper.has_critical_error(), (
-                f"Calculation failed with errors: {helper.get_error_messages()}"
-            )
+            assert (
+                not helper.has_critical_error()
+            ), f"Calculation failed with errors: {helper.get_error_messages()}"
 
     def test_invalid_inputs_handled(self, beam_design_app, app_helper):
         """Test that invalid inputs are handled gracefully."""
@@ -218,8 +218,7 @@ class TestEdgeCaseHandling:
                         # Check if it's a validation error (acceptable) vs crash
                         exc_str = str(at.exception).lower()
                         assert any(
-                            kw in exc_str
-                            for kw in ["validation", "value", "invalid"]
+                            kw in exc_str for kw in ["validation", "value", "invalid"]
                         ), f"Unhandled exception for option {opt}: {at.exception}"
                 except Exception as e:
                     pytest.fail(f"Failed to set option {opt}: {e}")
@@ -242,7 +241,9 @@ class TestPerformance:
             # Should load within 10 seconds (generous for CI)
             assert elapsed < 10, f"{page_file.name} took {elapsed:.2f}s to load"
 
-    def test_calculation_completes_in_reasonable_time(self, beam_design_app, app_helper):
+    def test_calculation_completes_in_reasonable_time(
+        self, beam_design_app, app_helper
+    ):
         """Beam calculation should complete within reasonable time."""
         import time
 

@@ -46,12 +46,12 @@ class ReleaseCadenceAnalyzer:
     """Analyzes release history to recommend optimal cadence."""
 
     CADENCE_THRESHOLDS = {
-        "daily": (0, 2),          # 0-2 days between releases
-        "bi-daily": (2, 4),       # 2-4 days
-        "weekly": (4, 10),        # ~1 week
-        "bi-weekly": (10, 18),    # ~2 weeks
-        "monthly": (18, 45),      # ~1 month
-        "quarterly": (45, 120),   # ~3 months
+        "daily": (0, 2),  # 0-2 days between releases
+        "bi-daily": (2, 4),  # 2-4 days
+        "weekly": (4, 10),  # ~1 week
+        "bi-weekly": (10, 18),  # ~2 weeks
+        "monthly": (18, 45),  # ~1 month
+        "quarterly": (45, 120),  # ~3 months
     }
 
     def __init__(self, repo_path: Path | None = None):
@@ -71,9 +71,7 @@ class ReleaseCadenceAnalyzer:
 
     def get_release_tags(self, count: int = 10) -> list[str]:
         """Get recent release tags sorted by date."""
-        result = self._run_command(
-            ["git", "tag", "--sort=-creatordate", "-l", "v*"]
-        )
+        result = self._run_command(["git", "tag", "--sort=-creatordate", "-l", "v*"])
         if not result:
             return []
         tags = result.split("\n")
@@ -81,25 +79,19 @@ class ReleaseCadenceAnalyzer:
 
     def get_tag_date(self, tag: str) -> str:
         """Get date when tag was created."""
-        result = self._run_command(
-            ["git", "log", "-1", "--format=%ci", tag]
-        )
+        result = self._run_command(["git", "log", "-1", "--format=%ci", tag])
         if result:
             return result.split()[0]  # Just the date part
         return "unknown"
 
     def count_commits_between(self, tag1: str, tag2: str) -> int:
         """Count commits between two tags."""
-        result = self._run_command(
-            ["git", "rev-list", "--count", f"{tag2}..{tag1}"]
-        )
+        result = self._run_command(["git", "rev-list", "--count", f"{tag2}..{tag1}"])
         return int(result) if result.isdigit() else 0
 
     def count_commit_types(self, tag1: str, tag2: str) -> dict[str, int]:
         """Count different types of commits between tags."""
-        result = self._run_command(
-            ["git", "log", "--oneline", f"{tag2}..{tag1}"]
-        )
+        result = self._run_command(["git", "log", "--oneline", f"{tag2}..{tag1}"])
 
         counts = {"bug_fixes": 0, "features": 0, "docs": 0, "other": 0}
 
@@ -262,11 +254,15 @@ class ReleaseCadenceAnalyzer:
         elif score >= 70:
             rationale.append(f"Score {score}/100: Good release quality")
         elif score >= 50:
-            rationale.append(f"Score {score}/100: Fair release quality, room for improvement")
+            rationale.append(
+                f"Score {score}/100: Fair release quality, room for improvement"
+            )
         else:
             rationale.append(f"Score {score}/100: Needs attention")
 
-        rationale.append(f"Average {avg_days:.1f} days between releases ({current_cadence} cadence)")
+        rationale.append(
+            f"Average {avg_days:.1f} days between releases ({current_cadence} cadence)"
+        )
 
         avg_commits = sum(r.commits for r in releases) / len(releases)
         rationale.append(f"Average {avg_commits:.0f} commits per release")
@@ -276,7 +272,9 @@ class ReleaseCadenceAnalyzer:
         rationale.append(f"Feature/Bug ratio: {total_features}:{total_bugs}")
 
         if recommended_cadence != current_cadence:
-            rationale.append(f"Recommend changing from {current_cadence} to {recommended_cadence}")
+            rationale.append(
+                f"Recommend changing from {current_cadence} to {recommended_cadence}"
+            )
         else:
             rationale.append(f"Current {current_cadence} cadence is appropriate")
 

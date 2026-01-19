@@ -461,7 +461,13 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Phase 8: Track path_var.method() calls like path.resolve()
             # Pattern: x = path_var.resolve(), x = Path(__file__).resolve()
             elif isinstance(node.value.func, ast.Attribute):
-                path_methods = {"resolve", "absolute", "expanduser", "with_name", "with_suffix"}
+                path_methods = {
+                    "resolve",
+                    "absolute",
+                    "expanduser",
+                    "with_name",
+                    "with_suffix",
+                }
                 if node.value.func.attr in path_methods:
                     base_name = self._extract_var_name(node.value.func.value)
                     if base_name and base_name in self.path_like_vars:
@@ -1162,14 +1168,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     import re
 
                     # Check for >= N pattern (covers indices 0 to N-1)
-                    ge_match = re.search(rf"len\({re.escape(container)}\)\s*>=\s*(\d+)", test_str)
+                    ge_match = re.search(
+                        rf"len\({re.escape(container)}\)\s*>=\s*(\d+)", test_str
+                    )
                     if ge_match:
                         min_len = int(ge_match.group(1))
                         if index < min_len:
                             return True
 
                     # Check for > N pattern (covers indices 0 to N)
-                    gt_match = re.search(rf"len\({re.escape(container)}\)\s*>\s*(\d+)", test_str)
+                    gt_match = re.search(
+                        rf"len\({re.escape(container)}\)\s*>\s*(\d+)", test_str
+                    )
                     if gt_match:
                         min_len = int(gt_match.group(1))
                         if index <= min_len:
@@ -1196,14 +1206,18 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     import re
 
                     # Check for >= N pattern
-                    ge_match = re.search(rf"len\({re.escape(container)}\)\s*>=\s*(\d+)", test_str)
+                    ge_match = re.search(
+                        rf"len\({re.escape(container)}\)\s*>=\s*(\d+)", test_str
+                    )
                     if ge_match:
                         min_len = int(ge_match.group(1))
                         if index < min_len:
                             return True
 
                     # Check for > N pattern
-                    gt_match = re.search(rf"len\({re.escape(container)}\)\s*>\s*(\d+)", test_str)
+                    gt_match = re.search(
+                        rf"len\({re.escape(container)}\)\s*>\s*(\d+)", test_str
+                    )
                     if gt_match:
                         min_len = int(gt_match.group(1))
                         if index <= min_len:

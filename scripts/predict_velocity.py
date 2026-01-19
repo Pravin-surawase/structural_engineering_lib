@@ -161,7 +161,11 @@ class VelocityPredictor:
 
     def generate_report(self, prediction: VelocityPrediction) -> str:
         """Generate human-readable report."""
-        trend_direction = "📈 Increasing" if prediction.trend_per_day > 0 else "📉 Decreasing" if prediction.trend_per_day < 0 else "➡️ Stable"
+        trend_direction = (
+            "📈 Increasing"
+            if prediction.trend_per_day > 0
+            else "📉 Decreasing" if prediction.trend_per_day < 0 else "➡️ Stable"
+        )
 
         report = f"""
 ╔══════════════════════════════════════════════════════════════════╗

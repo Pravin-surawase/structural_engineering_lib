@@ -31,6 +31,7 @@ FEEDBACK_DIR.mkdir(exist_ok=True)
 # Utility Functions (defined first for AST scanner compatibility)
 # =============================================================================
 
+
 def generate_feedback_id() -> str:
     """Generate a unique feedback ID."""
     now = datetime.now()
@@ -44,10 +45,10 @@ def save_feedback(data: dict[str, Any]) -> Path:
     path traversal characters and stays within FEEDBACK_DIR.
     """
     # Sanitize ID to prevent path traversal (use .get() to avoid KeyError)
-    feedback_id = data.get('id', '')
+    feedback_id = data.get("id", "")
     if not feedback_id:
         raise ValueError("Feedback data must have an 'id' field")
-    safe_id = "".join(c for c in feedback_id if c.isalnum() or c == '-')
+    safe_id = "".join(c for c in feedback_id if c.isalnum() or c == "-")
     filename = f"{safe_id}.json"
     # Path join to build file path (FEEDBACK_DIR is a Path object)
     filepath = Path(FEEDBACK_DIR) / filename
@@ -91,6 +92,7 @@ def get_library_version() -> str:
     """
     try:
         from structural_lib import api
+
         return api.get_library_version()
     except Exception:
         return "unknown"
@@ -99,6 +101,7 @@ def get_library_version() -> str:
 # =============================================================================
 # Page Components
 # =============================================================================
+
 
 def render_submit_form() -> None:
     """Render the feedback submission form."""
@@ -119,7 +122,7 @@ def render_submit_form() -> None:
                 "✅ Works Well (Positive)",
                 "❓ Other",
             ],
-            help="Select the type of feedback"
+            help="Select the type of feedback",
         )
 
         # Feature tested
@@ -139,7 +142,7 @@ def render_submit_form() -> None:
                 "Documentation",
                 "Other",
             ],
-            help="Which feature did you test?"
+            help="Which feature did you test?",
         )
 
         # Severity
@@ -147,7 +150,7 @@ def render_submit_form() -> None:
             "Severity",
             options=["Low", "Medium", "High", "Critical"],
             value="Medium",
-            help="How severe is the issue?"
+            help="How severe is the issue?",
         )
 
         # Description
@@ -155,7 +158,7 @@ def render_submit_form() -> None:
             "Description",
             placeholder="Describe what happened, what you expected, and steps to reproduce...",
             height=150,
-            help="Be as specific as possible"
+            help="Be as specific as possible",
         )
 
         # Input values (optional)
@@ -164,10 +167,16 @@ def render_submit_form() -> None:
         with col1:
             b_mm = st.number_input("b (mm)", value=0, min_value=0, help="Beam width")
             D_mm = st.number_input("D (mm)", value=0, min_value=0, help="Beam depth")
-            span_mm = st.number_input("Span (mm)", value=0, min_value=0, help="Beam span")
+            span_mm = st.number_input(
+                "Span (mm)", value=0, min_value=0, help="Beam span"
+            )
         with col2:
-            mu_knm = st.number_input("Mu (kN·m)", value=0.0, min_value=0.0, help="Applied moment")
-            vu_kn = st.number_input("Vu (kN)", value=0.0, min_value=0.0, help="Applied shear")
+            mu_knm = st.number_input(
+                "Mu (kN·m)", value=0.0, min_value=0.0, help="Applied moment"
+            )
+            vu_kn = st.number_input(
+                "Vu (kN)", value=0.0, min_value=0.0, help="Applied shear"
+            )
             fck = st.selectbox("fck (N/mm²)", [0, 20, 25, 30, 35, 40], index=0)
 
         # Expected vs actual
@@ -187,14 +196,14 @@ def render_submit_form() -> None:
         reference = st.text_input(
             "Reference (optional)",
             placeholder="Hand calculation, Excel, reference book, etc.",
-            help="How did you verify the expected result?"
+            help="How did you verify the expected result?",
         )
 
         # Tester info
         tester_name = st.text_input(
             "Your Name/Initials",
             placeholder="e.g., PS, John D.",
-            help="So we know who to follow up with"
+            help="So we know who to follow up with",
         )
 
         # Submit button
@@ -228,7 +237,9 @@ def render_submit_form() -> None:
                 }
 
                 save_feedback(feedback_data)
-                st.success(f"✅ Feedback submitted! Reference: **{feedback_data['id']}**")
+                st.success(
+                    f"✅ Feedback submitted! Reference: **{feedback_data['id']}**"
+                )
                 st.balloons()
 
 
@@ -263,7 +274,7 @@ def render_feedback_history() -> None:
     filter_type = st.selectbox(
         "Filter by type",
         ["All"] + list(set(f.get("type", "Unknown") for f in feedback_list)),
-        key="filter_type"
+        key="filter_type",
     )
 
     # Display feedback
@@ -273,7 +284,7 @@ def render_feedback_history() -> None:
 
         with st.expander(
             f"**{fb['id']}** — {fb.get('type', 'Unknown')} — {fb.get('feature', 'Unknown')}",
-            expanded=False
+            expanded=False,
         ):
             st.markdown(f"**Timestamp:** {fb.get('timestamp', 'Unknown')}")
             st.markdown(f"**Severity:** {fb.get('severity', 'Unknown')}")
@@ -281,19 +292,19 @@ def render_feedback_history() -> None:
             st.markdown(f"**Status:** {fb.get('status', 'new')}")
             st.divider()
             st.markdown("**Description:**")
-            st.text(fb.get('description', 'No description'))
+            st.text(fb.get("description", "No description"))
 
-            if fb.get('inputs'):
-                inputs = {k: v for k, v in fb['inputs'].items() if v is not None}
+            if fb.get("inputs"):
+                inputs = {k: v for k, v in fb["inputs"].items() if v is not None}
                 if inputs:
                     st.markdown("**Test Inputs:**")
                     st.json(inputs)
 
-            if fb.get('expected') or fb.get('actual'):
+            if fb.get("expected") or fb.get("actual"):
                 st.markdown(f"**Expected:** {fb.get('expected', '-')}")
                 st.markdown(f"**Actual:** {fb.get('actual', '-')}")
 
-            if fb.get('reference'):
+            if fb.get("reference"):
                 st.markdown(f"**Reference:** {fb.get('reference')}")
 
     # Export button
@@ -304,13 +315,14 @@ def render_feedback_history() -> None:
             "Download JSON",
             data=json_str,
             file_name=f"feedback_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-            mime="application/json"
+            mime="application/json",
         )
 
 
 # =============================================================================
 # Main Entry Point (defined after all dependencies for AST scanner)
 # =============================================================================
+
 
 def main() -> None:
     """Main page entry point."""
@@ -321,10 +333,12 @@ def main() -> None:
     )
 
     st.title("📝 Tester Feedback")
-    st.markdown("""
+    st.markdown(
+        """
     Help us improve! Submit your feedback after testing any feature.
     Your input directly shapes the library's development.
-    """)
+    """
+    )
 
     # Tabs for submit and view
     tab_submit, tab_history = st.tabs(["Submit Feedback", "View History"])

@@ -45,6 +45,7 @@ def get_severity_count(issues: list, severity: str) -> int:
 # TypeError Detection Tests
 # =============================================================================
 
+
 class TestTypeErrorDetection:
     """Test TypeError detection (CRITICAL from research)."""
 
@@ -101,6 +102,7 @@ class TestTypeErrorDetection:
 # IndexError Detection Tests
 # =============================================================================
 
+
 class TestIndexErrorDetection:
     """Test IndexError detection (NEW from research)."""
 
@@ -152,6 +154,7 @@ for idx, item in enumerate(items):
 # ValueError Detection Tests
 # =============================================================================
 
+
 class TestValueErrorDetection:
     """Test ValueError detection (NEW from research)."""
 
@@ -190,6 +193,7 @@ except ValueError:
 # =============================================================================
 # ZeroDivisionError Tests (Existing - Verify Still Works)
 # =============================================================================
+
 
 class TestZeroDivisionErrorDetection:
     """Test ZeroDivisionError detection (existing, verify it works)."""
@@ -261,6 +265,7 @@ lib_path = Path(__file__).resolve().parents[2] / 'Python'
 # NameError Tests (Existing - Verify Still Works)
 # =============================================================================
 
+
 class TestNameErrorDetection:
     """Test NameError detection (existing, verify it works)."""
 
@@ -296,6 +301,7 @@ st.title("Test")
 # Session State Tests (Existing - Verify Still Works)
 # =============================================================================
 
+
 class TestSessionStateDetection:
     """Test session state validation (existing, verify it works)."""
 
@@ -318,13 +324,16 @@ value = st.session_state.my_key
 """
         issues = scan_code(code)
         # Should not flag AttributeError for checked access
-        attr_errors = [i for i in issues if "AttributeError" in i[2] and "my_key" in i[2]]
+        attr_errors = [
+            i for i in issues if "AttributeError" in i[2] and "my_key" in i[2]
+        ]
         assert len(attr_errors) == 0
 
 
 # =============================================================================
 # Widget Default Detection Tests (TASK-403)
 # =============================================================================
+
 
 class TestWidgetDefaultDetection:
     """Test widget return type validation (TASK-403).
@@ -433,6 +442,7 @@ val = st.slider("Adjust", min_value=0, max_value=100, value=50)
 # Integration Tests
 # =============================================================================
 
+
 class TestScannerIntegration:
     """Test scanner on realistic code."""
 
@@ -495,6 +505,7 @@ st.title("Clean Page")
 # Performance Tests
 # =============================================================================
 
+
 class TestScannerPerformance:
     """Test scanner performance."""
 
@@ -503,13 +514,16 @@ class TestScannerPerformance:
         import time
 
         # Generate large code file (500 functions)
-        code = """
+        code = (
+            """
 import streamlit as st
 
 def safe_divide(a, b):
     return a / b if b != 0 else 0
 
-""" * 500
+"""
+            * 500
+        )
 
         start = time.time()
         issues = scan_code(code)

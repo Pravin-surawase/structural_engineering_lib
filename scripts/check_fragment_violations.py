@@ -53,8 +53,7 @@ class FragmentViolationDetector(ast.NodeVisitor):
         """Visit function definitions to check if they're fragments."""
         # Check if function is decorated with @st.fragment
         is_fragment = any(
-            self._is_fragment_decorator(decorator)
-            for decorator in node.decorator_list
+            self._is_fragment_decorator(decorator) for decorator in node.decorator_list
         )
 
         if is_fragment:
@@ -78,13 +77,15 @@ class FragmentViolationDetector(ast.NodeVisitor):
         """Visit attribute access (e.g., st.sidebar)."""
         if self.current_fragment:
             # Check for st.sidebar.* patterns
-            if isinstance(node.value, ast.Name) and node.value.id == 'st':
-                if node.attr == 'sidebar':
-                    self.violations.append((
-                        node.lineno,
-                        self.current_fragment,
-                        f"Direct st.sidebar access in fragment '{self.current_fragment}'"
-                    ))
+            if isinstance(node.value, ast.Name) and node.value.id == "st":
+                if node.attr == "sidebar":
+                    self.violations.append(
+                        (
+                            node.lineno,
+                            self.current_fragment,
+                            f"Direct st.sidebar access in fragment '{self.current_fragment}'",
+                        )
+                    )
 
         self.generic_visit(node)
 
@@ -93,11 +94,13 @@ class FragmentViolationDetector(ast.NodeVisitor):
         if self.current_fragment:
             for item in node.items:
                 if self._is_sidebar_context(item.context_expr):
-                    self.violations.append((
-                        node.lineno,
-                        self.current_fragment,
-                        f"'with st.sidebar:' context manager in fragment '{self.current_fragment}'"
-                    ))
+                    self.violations.append(
+                        (
+                            node.lineno,
+                            self.current_fragment,
+                            f"'with st.sidebar:' context manager in fragment '{self.current_fragment}'",
+                        )
+                    )
 
         self.generic_visit(node)
 
@@ -105,17 +108,21 @@ class FragmentViolationDetector(ast.NodeVisitor):
         """Check if decorator is @st.fragment."""
         # Handle @st.fragment
         if isinstance(decorator, ast.Attribute):
-            if (isinstance(decorator.value, ast.Name) and
-                decorator.value.id == 'st' and
-                decorator.attr == 'fragment'):
+            if (
+                isinstance(decorator.value, ast.Name)
+                and decorator.value.id == "st"
+                and decorator.attr == "fragment"
+            ):
                 return True
 
         # Handle @st.fragment()
         if isinstance(decorator, ast.Call):
             if isinstance(decorator.func, ast.Attribute):
-                if (isinstance(decorator.func.value, ast.Name) and
-                    decorator.func.value.id == 'st' and
-                    decorator.func.attr == 'fragment'):
+                if (
+                    isinstance(decorator.func.value, ast.Name)
+                    and decorator.func.value.id == "st"
+                    and decorator.func.attr == "fragment"
+                ):
                     return True
 
         return False
@@ -123,9 +130,11 @@ class FragmentViolationDetector(ast.NodeVisitor):
     def _is_sidebar_context(self, expr: ast.expr) -> bool:
         """Check if expression is st.sidebar (for with statement)."""
         if isinstance(expr, ast.Attribute):
-            if (isinstance(expr.value, ast.Name) and
-                expr.value.id == 'st' and
-                expr.attr == 'sidebar'):
+            if (
+                isinstance(expr.value, ast.Name)
+                and expr.value.id == "st"
+                and expr.attr == "sidebar"
+            ):
                 return True
         return False
 
@@ -141,7 +150,7 @@ def check_file(filepath: Path) -> List[Tuple[str, int, str, str]]:
         List of violations: (filename, line_number, fragment_name, message)
     """
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             source = f.read()
 
         tree = ast.parse(source, filename=str(filepath))
@@ -164,7 +173,9 @@ def check_file(filepath: Path) -> List[Tuple[str, int, str, str]]:
         return []
 
 
-def check_directory(directory: Path, pattern: str = "*.py") -> List[Tuple[str, int, str, str]]:
+def check_directory(
+    directory: Path, pattern: str = "*.py"
+) -> List[Tuple[str, int, str, str]]:
     """
     Check all Python files in directory for fragment violations.
 
@@ -179,7 +190,7 @@ def check_directory(directory: Path, pattern: str = "*.py") -> List[Tuple[str, i
 
     for filepath in directory.rglob(pattern):
         # Skip test files and utilities
-        if '/tests/' in str(filepath) or '/__pycache__/' in str(filepath):
+        if "/tests/" in str(filepath) or "/__pycache__/" in str(filepath):
             continue
 
         violations = check_file(filepath)
@@ -198,6 +209,7 @@ def print_violations(violations: List[Tuple[str, int, str, str]]) -> None:
 
     # Group by file
     from collections import defaultdict
+
     by_file = defaultdict(list)
     for filepath, lineno, fragment, msg in violations:
         by_file[filepath].append((lineno, fragment, msg))
@@ -231,27 +243,19 @@ Exit codes:
     0 - No violations found
     1 - Violations detected
     2 - Error during analysis
-        """
+        """,
     )
 
+    parser.add_argument("--file", type=Path, help="Check specific file")
+
     parser.add_argument(
-        '--file',
+        "--dir",
         type=Path,
-        help='Check specific file'
+        default=Path("streamlit_app"),
+        help="Check all files in directory (default: streamlit_app)",
     )
 
-    parser.add_argument(
-        '--dir',
-        type=Path,
-        default=Path('streamlit_app'),
-        help='Check all files in directory (default: streamlit_app)'
-    )
-
-    parser.add_argument(
-        '--verbose',
-        action='store_true',
-        help='Print verbose output'
-    )
+    parser.add_argument("--verbose", action="store_true", help="Print verbose output")
 
     args = parser.parse_args()
 
@@ -279,9 +283,10 @@ Exit codes:
         print(f"❌ Fatal error: {e}", file=sys.stderr)
         if args.verbose:
             import traceback
+
             traceback.print_exc()
         return 2
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

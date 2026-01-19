@@ -29,8 +29,7 @@ for module in modules:
         has_doc = func.__doc__ is not None and len(func.__doc__) > 10
         sig = inspect.signature(func)
         has_param_types = any(
-            p.annotation != inspect.Parameter.empty
-            for p in sig.parameters.values()
+            p.annotation != inspect.Parameter.empty for p in sig.parameters.values()
         )
         has_return = sig.return_annotation != inspect.Signature.empty
         if has_doc:

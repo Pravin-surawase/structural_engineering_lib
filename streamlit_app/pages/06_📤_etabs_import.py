@@ -200,7 +200,9 @@ def get_governing_envelope(
     # Use governing case as the one with higher utilization (simplified)
     # In practice, might want to design for both cases separately
     governing_case = (
-        max_mu_env.case_id if max_mu_env.mu_knm >= max_vu_env.vu_kn else max_vu_env.case_id
+        max_mu_env.case_id
+        if max_mu_env.mu_knm >= max_vu_env.vu_kn
+        else max_vu_env.case_id
     )
 
     return max_mu_env.mu_knm, max_vu_env.vu_kn, governing_case
@@ -811,7 +813,9 @@ if st.session_state.etabs_design_results is not None:
         )
 
     with tab2:
-        st.plotly_chart(create_story_summary_chart(results_df), use_container_width=True)
+        st.plotly_chart(
+            create_story_summary_chart(results_df), use_container_width=True
+        )
 
     with tab3:
         st.plotly_chart(create_beam_grid_3d(results_df), use_container_width=True)

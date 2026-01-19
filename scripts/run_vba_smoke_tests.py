@@ -48,9 +48,9 @@ def _run_osascript(script: str, timeout: int) -> subprocess.CompletedProcess[str
 
 
 def _build_applescript(workbook_path: Path, macros: List[str], excel_app: str) -> str:
-    macro_list = ", ".join([f"\"{macro}\"" for macro in macros])
+    macro_list = ", ".join([f'"{macro}"' for macro in macros])
     workbook_posix = workbook_path.resolve().as_posix()
-    return f'''
+    return f"""
     tell application "{excel_app}"
         set display alerts to false
         open (POSIX file "{workbook_posix}")
@@ -60,10 +60,12 @@ def _build_applescript(workbook_path: Path, macros: List[str], excel_app: str) -
         end repeat
         close wb saving no
     end tell
-    '''
+    """
 
 
-def run_smoke_tests(workbook_path: Path, macros: List[str], excel_app: str, log_path: Path, timeout: int) -> int:
+def run_smoke_tests(
+    workbook_path: Path, macros: List[str], excel_app: str, log_path: Path, timeout: int
+) -> int:
     if sys.platform != "darwin":
         _log("Skipping VBA smoke tests: macOS required for Excel automation.", log_path)
         print("VBA smoke tests skipped: macOS required.")
@@ -75,7 +77,9 @@ def run_smoke_tests(workbook_path: Path, macros: List[str], excel_app: str, log_
         return 2
 
     script = _build_applescript(workbook_path, macros, excel_app)
-    _log(f"Starting VBA smoke tests: workbook={workbook_path}, macros={macros}", log_path)
+    _log(
+        f"Starting VBA smoke tests: workbook={workbook_path}, macros={macros}", log_path
+    )
 
     try:
         result = _run_osascript(script, timeout=timeout)
@@ -87,7 +91,9 @@ def run_smoke_tests(workbook_path: Path, macros: List[str], excel_app: str, log_
     if result.returncode != 0:
         stderr = (result.stderr or "").strip()
         stdout = (result.stdout or "").strip()
-        _log(f"ERROR: VBA smoke tests failed. stderr={stderr} stdout={stdout}", log_path)
+        _log(
+            f"ERROR: VBA smoke tests failed. stderr={stderr} stdout={stdout}", log_path
+        )
         print("ERROR: VBA smoke tests failed.")
         if stderr:
             print(stderr)
@@ -99,7 +105,9 @@ def run_smoke_tests(workbook_path: Path, macros: List[str], excel_app: str, log_
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run VBA smoke tests via Excel (macOS).")
+    parser = argparse.ArgumentParser(
+        description="Run VBA smoke tests via Excel (macOS)."
+    )
     parser.add_argument(
         "--workbook",
         type=Path,
@@ -136,7 +144,9 @@ def main() -> int:
     args = _parse_args()
     macros = args.macros or DEFAULT_MACROS
     workbook_path = Path(args.workbook)
-    return run_smoke_tests(workbook_path, macros, args.excel_app, args.log, args.timeout)
+    return run_smoke_tests(
+        workbook_path, macros, args.excel_app, args.log, args.timeout
+    )
 
 
 if __name__ == "__main__":

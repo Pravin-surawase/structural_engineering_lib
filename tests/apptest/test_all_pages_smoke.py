@@ -77,9 +77,7 @@ class TestAllPagesSmokeTest:
             # Get exception details
             exc_type = type(at.exception[0]).__name__ if at.exception else "Unknown"
             exc_msg = str(at.exception[0]) if at.exception else "No message"
-            pytest.fail(
-                f"Page '{page_path.name}' raised {exc_type}: {exc_msg}"
-            )
+            pytest.fail(f"Page '{page_path.name}' raised {exc_type}: {exc_msg}")
 
     def test_pages_directory_exists(self):
         """Verify pages directory exists."""
@@ -93,7 +91,9 @@ class TestAllPagesSmokeTest:
     def test_all_pages_have_py_extension(self):
         """All page files should have .py extension."""
         for page_path in get_all_page_files():
-            assert page_path.suffix == ".py", f"Page {page_path.name} has wrong extension"
+            assert (
+                page_path.suffix == ".py"
+            ), f"Page {page_path.name} has wrong extension"
 
 
 @skip_if_no_apptest

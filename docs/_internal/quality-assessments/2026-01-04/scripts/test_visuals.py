@@ -29,7 +29,10 @@ try:
     modules = [
         ("flexure", flexure),
         ("shear", shear),
-        ("insights.precheck", insights.precheck if hasattr(insights, "precheck") else None),
+        (
+            "insights.precheck",
+            insights.precheck if hasattr(insights, "precheck") else None,
+        ),
         ("report", report),
         ("report_svg", report_svg),
     ]
@@ -69,7 +72,9 @@ try:
     ax.set_title("Sample Beam Design Results")
     ax.grid(axis="y", alpha=0.3)
 
-    output_path = Path(__file__).resolve().parents[1] / "outputs" / "test_basic_visual.png"
+    output_path = (
+        Path(__file__).resolve().parents[1] / "outputs" / "test_basic_visual.png"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
     fig.savefig(output_path, dpi=150)
