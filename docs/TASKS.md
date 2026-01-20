@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 55)
+**Updated:** 2026-01-21 (Session 56)
 
 ---
 
@@ -15,16 +15,34 @@
 
 ## Current Focus
 
-- **Version:** v0.18.0 🎉 (AI v2 Production Ready)
-- **Focus:** Release v0.18.0, then Phase 4 CAD quality
-- **8-Week Plan:** Phase AI v2 COMPLETE ✅, Release in progress
-- **Next Milestone:** v0.19.0 - CAD Quality + DXF Export
-- **Key Achievement:** 9-state dynamic workspace with GPT-5-mini, building 3D, rebar editor, export
+- **Version:** v0.18.1 (AI v2 Bugfix + Adapter Integration)
+- **Focus:** Fix CSV import using adapter system, update docs
+- **Key Fix:** AI v2 CSV import now uses proven adapter infrastructure from page 07
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
 
 ## Active Tasks
+
+### TASK-AI-IMPORT-FIX: AI v2 CSV Import Fix 🚧 IN PROGRESS
+
+**Goal:** Fix AI v2 CSV import to use proven adapter infrastructure from multi-format import page
+
+**Problem:** AI v2 page showed "0 inf% ❌ FAIL" for all beams because it used simple
+auto_map_columns() instead of the robust adapter system.
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| Research multi-format import adapters | ✅ Done | Session 56 - Identified root cause |
+| Refactor to use adapters | ✅ Done | Session 56 - `56602b28` |
+| Update copilot-instructions (AI model names) | ✅ Done | Session 56 - `bf06c66f` |
+| Add lesson about reusing infrastructure | ✅ Done | Session 56 - `f05b6753` |
+| Add adapter integration tests | ✅ Done | Session 56 - `0bba1afd` |
+| Update TASKS.md + SESSION_LOG.md | 🔄 WIP | Session 56 |
+| Create PR and merge | 📋 TODO | |
+
+**Root Cause:** Depth column showed "5" instead of "500" due to incorrect column mapping.
+The adapter system handles format-specific column detection and unit handling.
 
 ### TASK-AI-V2: AI Assistant v2 with Dynamic Workspace ✅ COMPLETE
 
@@ -197,7 +215,7 @@ Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 | 2026-01-20 | Fix AI page bugs | `c5fd8bc8` | Session 51 - geometry/type errors |
 | 2026-01-20 | Phase 3 rebar viz | `4a89dc9a` | Session 51 - Variable stirrups |
 | 2026-01-25 | Fix AI page bugs | `fef3ae12`, `4d0a9c7c` | Session 49 - geometry/attribute errors |
-| 2026-01-25 | Add GPT-5-mini support | `fef3ae12` | Session 49 - configurable model |
+| 2026-01-25 | Add GPT-4o-mini support | `fef3ae12` | Session 49 - configurable model |
 | 2026-01-25 | Chat panel improvements | `37e0a21f` | Session 49 - welcome msg, clear btn |
 | 2026-01-24 | 3D building view tab | `efe825d3` | Session 46 |
 
