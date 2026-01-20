@@ -739,14 +739,10 @@ def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
             r, g, b_col = int(base[1:3], 16), int(base[3:5], 16), int(base[5:7], 16)
             color = f"rgba({r}, {g}, {b_col}, 0.8)"
 
-        # Hover info
-        hover = (
-            f"<b>{beam_id}</b><br>"
-            f"Story: {story}<br>"
-            f"Section: {row['b_mm']:.0f}×{row['D_mm']:.0f} mm<br>"
-            f"Mu: {row.get('mu_knm', 0):.1f} kN·m<br>"
-            f"Status: {status}"
-        )
+        # Concise hover info - just beam name, utilization, pass/fail
+        util_pct = row.get("utilization", 0) * 100
+        status_icon = "✅" if "SAFE" in str(status).upper() else "❌" if "FAIL" in str(status).upper() else "⏳"
+        hover = f"<b>{beam_id}</b> {status_icon}<br>Util: {util_pct:.0f}%"
 
         fig.add_trace(go.Mesh3d(
             x=x_mesh, y=y_mesh, z=z_mesh,
@@ -810,8 +806,6 @@ def render_building_3d() -> None:
     if df is None:
         df = st.session_state.ws_beams_df
 
-    st.markdown("### 🏗️ Building 3D Visualization")
-
     if df is None or df.empty:
         st.warning("No beam data to visualize.")
         if st.button("← Back"):
@@ -819,42 +813,39 @@ def render_building_3d() -> None:
             st.rerun()
         return
 
-    # Quick stats
-    col1, col2, col3, col4 = st.columns(4)
+    # Compact header with stats inline
     total = len(df)
     stories = df["story"].nunique()
     safe_count = len(df[df.get("status", "").str.contains("SAFE", case=False, na=False)]) if "status" in df.columns else 0
-    col1.metric("Total Beams", total)
-    col2.metric("Stories", stories)
-    col3.metric("Designed", safe_count)
-    col4.metric("Pass Rate", f"{safe_count/total*100:.0f}%" if total > 0 else "N/A")
+    pass_rate = f"{safe_count/total*100:.0f}%" if total > 0 else "N/A"
 
-    # Create 3D figure
+    st.markdown(f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass")
+
+    # Create 3D figure with larger height
     fig = create_building_3d_figure(df)
-    fig.update_layout(height=500)
+    fig.update_layout(height=550)
     st.plotly_chart(fig, use_container_width=True, key="ws_building_3d")
 
-    # Controls
-    st.caption("💡 **Tip:** Click and drag to rotate, scroll to zoom, double-click to reset")
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("← Back to Results"):
+    # Compact controls in single row
+    c1, c2, c3, c4 = st.columns([1, 2, 1, 1])
+    with c1:
+        if st.button("← Back", key="bldg_back"):
             set_workspace_state(WorkspaceState.DESIGN)
             st.rerun()
-    with col2:
-        # Beam selector for detail view
+    with c2:
         beam_ids = df["beam_id"].tolist() if len(df) > 0 else []
         if beam_ids:
-            selected = st.selectbox("Jump to beam:", ["Select..."] + beam_ids, key="bldg_beam_select")
-            if selected != "Select...":
+            selected = st.selectbox("Select beam:", ["—"] + beam_ids, key="bldg_beam_select", label_visibility="collapsed")
+            if selected != "—":
                 st.session_state.ws_selected_beam = selected
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
-    with col3:
-        if st.button("📊 Dashboard"):
+    with c3:
+        if st.button("📊 Dashboard", key="bldg_dash"):
             set_workspace_state(WorkspaceState.DASHBOARD)
             st.rerun()
+    with c4:
+        st.caption("Drag to rotate")
 
 
 def calculate_rebar_checks(
