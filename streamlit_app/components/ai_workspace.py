@@ -423,23 +423,25 @@ def design_all_beams_ws() -> pd.DataFrame:
 
 def render_welcome_panel() -> None:
     """Render welcome state with quick start cards."""
-    st.markdown("### 🚀 Get Started")
-    st.caption("Choose how to import beam data for design")
+    st.markdown("""
+    ### 🏗️ Beam Design Workspace
+    *Import data → Auto-design → 3D visualization → Customize reinforcement*
+    """)
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
         with st.container(border=True):
-            st.markdown("**📂 Sample Data**")
-            st.caption("Try with 10 beams from ETABS-like export")
-            if st.button("Load Sample", key="ws_sample", use_container_width=True):
+            st.markdown("#### 📂 Quick Demo")
+            st.caption("10 beams · 3 stories · ETABS format")
+            if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary"):
                 load_sample_data()
                 st.rerun()
 
     with col2:
         with st.container(border=True):
-            st.markdown("**📤 Upload CSV**")
-            st.caption("From ETABS, SAFE, or custom format")
+            st.markdown("#### 📤 Your Data")
+            st.caption("CSV from ETABS, SAFE, Excel")
             uploaded = st.file_uploader(
                 "Upload CSV", type=["csv"], key="ws_upload", label_visibility="collapsed"
             )
@@ -454,10 +456,10 @@ def render_welcome_panel() -> None:
 
     with col3:
         with st.container(border=True):
-            st.markdown("**✏️ Manual Input**")
-            st.caption("Enter beam parameters directly")
-            if st.button("Start Manual", key="ws_manual", use_container_width=True):
-                # Create empty dataframe with one row
+            st.markdown("#### ✏️ New Beam")
+            st.caption("Design single beam manually")
+            if st.button("Create Beam", key="ws_manual", use_container_width=True):
+                # Create empty dataframe with one row and generate coords
                 st.session_state.ws_beams_df = pd.DataFrame([{
                     "beam_id": "B1",
                     "b_mm": 300,
@@ -469,9 +471,15 @@ def render_welcome_panel() -> None:
                     "fck": 25.0,
                     "fy": 500.0,
                     "cover_mm": 40.0,
+                    "x1": 0, "y1": 0, "z1": 3,
+                    "x2": 5, "y2": 0, "z2": 3,
                 }])
                 st.session_state.ws_state = WorkspaceState.EDIT
                 st.rerun()
+
+    # Feature highlights
+    st.divider()
+    st.caption("**Features:** Auto-column mapping · IS 456 design · 3D building view · Interactive rebar editor · Real-time checks")
 
 
 def render_import_preview() -> None:
@@ -520,8 +528,6 @@ def render_design_results() -> None:
     """Render design results with interactive table."""
     df = st.session_state.ws_design_results
 
-    st.markdown("### 📊 Design Results")
-
     if df is None or df.empty:
         st.warning("No design results. Design beams first.")
         if st.button("← Back to Import"):
@@ -529,57 +535,71 @@ def render_design_results() -> None:
             st.rerun()
         return
 
-    # Summary metrics
+    # Summary metrics in compact row
     total = len(df)
     passed = len(df[df["is_safe"] == True])
     failed = total - passed
     avg_util = df["utilization"].mean() * 100
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Beams", total)
-    col2.metric("Passed ✅", passed, delta=f"{100*passed/max(total,1):.0f}%")
-    col3.metric("Failed ❌", failed)
-    col4.metric("Avg Utilization", f"{avg_util:.1f}%")
+    # Compact header with metrics
+    c1, c2, c3, c4, c5 = st.columns([1.5, 1, 1, 1, 1.5])
+    c1.markdown("### 📊 Results")
+    c2.metric("Total", total)
+    c3.metric("✅ Pass", passed)
+    c4.metric("❌ Fail", failed)
+    c5.metric("Util", f"{avg_util:.1f}%")
 
-    # Results table with selection
-    st.markdown("**Click a beam row to view 3D details:**")
-    display_df = df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "ast_req", "status"]].copy()
-    display_df.columns = ["ID", "Story", "b (mm)", "D (mm)", "Mu (kN·m)", "Vu (kN)", "Ast_req", "Status"]
+    # Filter row
+    fc1, fc2, fc3 = st.columns([1, 1, 2])
+    with fc1:
+        story_filter = st.selectbox("📍 Story", ["All"] + sorted(df["story"].unique().tolist()), key="ws_story_filter")
+    with fc2:
+        status_filter = st.selectbox("🎯 Status", ["All", "Safe", "Failed"], key="ws_status_filter")
 
-    # Beam selector (since st.dataframe selection has limitations)
-    beam_options = ["Select a beam..."] + df["beam_id"].tolist()
-    selected = st.selectbox("🔍 Select Beam", beam_options, key="ws_beam_select")
+    # Apply filters
+    filtered_df = df.copy()
+    if story_filter != "All":
+        filtered_df = filtered_df[filtered_df["story"] == story_filter]
+    if status_filter == "Safe":
+        filtered_df = filtered_df[filtered_df["is_safe"] == True]
+    elif status_filter == "Failed":
+        filtered_df = filtered_df[filtered_df["is_safe"] == False]
 
-    st.dataframe(display_df, use_container_width=True, height=200)
+    # Results table with styled status
+    display_df = filtered_df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "ast_req", "utilization", "status"]].copy()
+    display_df.columns = ["ID", "Story", "b", "D", "Mu", "Vu", "Ast", "Util", "Status"]
+    display_df["Util"] = display_df["Util"].apply(lambda x: f"{x*100:.0f}%")
 
-    # Action buttons based on selection
-    if selected != "Select a beam...":
+    st.dataframe(display_df, use_container_width=True, height=180, hide_index=True)
+
+    # Beam selector with quick actions
+    beam_options = filtered_df["beam_id"].tolist()
+    if beam_options:
+        selected = st.selectbox("🔍 Select beam for details:", beam_options, key="ws_beam_select2")
         st.session_state.ws_selected_beam = selected
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            if st.button("🎨 View 3D", use_container_width=True, type="primary"):
+            if st.button("🎨 3D View", use_container_width=True, type="primary"):
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
         with col2:
-            if st.button("✏️ Edit Beam", use_container_width=True):
-                set_workspace_state(WorkspaceState.EDIT)
+            if st.button("🔧 Edit Rebar", use_container_width=True):
+                set_workspace_state(WorkspaceState.REBAR_EDIT)
                 st.rerun()
         with col3:
+            if st.button("🏗️ Building", use_container_width=True):
+                set_workspace_state(WorkspaceState.BUILDING_3D)
+                st.rerun()
+        with col4:
             if st.button("📊 Dashboard", use_container_width=True):
                 set_workspace_state(WorkspaceState.DASHBOARD)
                 st.rerun()
 
     st.divider()
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("← Back to Import"):
-            set_workspace_state(WorkspaceState.IMPORT)
-            st.rerun()
-    with col2:
-        if st.button("🏗️ Building 3D View", type="primary"):
-            set_workspace_state(WorkspaceState.BUILDING_3D)
-            st.rerun()
+    if st.button("← Back to Import"):
+        set_workspace_state(WorkspaceState.IMPORT)
+        st.rerun()
 
 
 def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:

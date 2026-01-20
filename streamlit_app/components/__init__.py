@@ -45,6 +45,8 @@ from .ai_workspace import (
     load_sample_data,
     design_all_beams_ws,
     render_dynamic_workspace,
+    create_building_3d_figure,
+    calculate_rebar_checks,
 )
 
 # This file will be populated in STREAMLIT-IMPL-002
