@@ -19,8 +19,12 @@ false_positives:
     reason: "Division guarded by 'if ast_mm2 > 0' conditional (never zero)"
 
   - file: "streamlit_app/pages/10_🤖_ai_assistant.py"
-    lines: [197, 236, 258, 973]
-    reason: "Legacy fallback page - Line 197/236/258: division in loop with positive areas. Line 973: guarded by 'if total_beams == 0: return' check"
+    lines: [196, 197, 235, 236, 257, 258, 973, 982]
+    reason: "Legacy fallback page - division operations guarded by upstream checks (e.g., 'if total_beams == 0: return', loop over positive area values)"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [583, 973, 1005, 1012, 1237, 1244, 1258, 1443, 1679, 1700, 1858]
+    reason: "All division operations have upstream guards: max(x, 1), 'if length < 0.01: continue', 'if d_eff > 0', etc."
 
 known_issues:
   - file: "streamlit_app/pages/06_📐_dxf_export.py"

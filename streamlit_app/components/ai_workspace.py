@@ -31,8 +31,10 @@ from __future__ import annotations
 
 import io
 import math
+import tempfile
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -47,6 +49,37 @@ try:
     VISUALIZATION_AVAILABLE = True
 except ImportError:
     VISUALIZATION_AVAILABLE = False
+
+# Import adapter system (reusing proven infrastructure from multi-format import)
+try:
+    from structural_lib.adapters import (
+        ETABSAdapter,
+        SAFEAdapter,
+        GenericCSVAdapter,
+    )
+    from structural_lib.models import (
+        BeamGeometry,
+        BeamForces,
+        DesignDefaults,
+    )
+
+    ADAPTERS_AVAILABLE = True
+    ADAPTERS = {
+        "ETABS": ETABSAdapter(),
+        "SAFE": SAFEAdapter(),
+        "Generic": GenericCSVAdapter(),
+    }
+except ImportError:
+    ADAPTERS_AVAILABLE = False
+    ADAPTERS = {}
+
+# Import cached design from api_wrapper (used by multi-format import)
+try:
+    from utils.api_wrapper import cached_design
+
+    CACHED_DESIGN_AVAILABLE = True
+except ImportError:
+    CACHED_DESIGN_AVAILABLE = False
 
 
 class WorkspaceState(Enum):
@@ -265,9 +298,163 @@ def load_sample_data() -> None:
     st.session_state.ws_state = WorkspaceState.IMPORT
 
 
+def detect_format_from_content(content: str, filename: str) -> str:
+    """Auto-detect file format from content and filename."""
+    content_lower = content.lower()
+    filename_lower = filename.lower()
+
+    # Check for ETABS patterns
+    etabs_patterns = ["story", "unique name", "m3", "v2", "output case", "xi", "xj"]
+    if any(p in content_lower for p in etabs_patterns):
+        return "ETABS"
+
+    # Check for SAFE patterns
+    safe_patterns = ["strip", "m22", "v23"]
+    if any(p in content_lower for p in safe_patterns):
+        return "SAFE"
+
+    return "Generic"
+
+
+def process_with_adapters(
+    geometry_file,
+    forces_file,
+    defaults: dict[str, float],
+) -> tuple[bool, str, list, list]:
+    """Process files using the adapter system (reuses multi-format import infrastructure).
+
+    Returns:
+        (success, message, beams_list, forces_list)
+    """
+    if not ADAPTERS_AVAILABLE:
+        return False, "Adapter system not available. Install structural_lib.", [], []
+
+    # Create DesignDefaults from dict
+    design_defaults = DesignDefaults(
+        fck_mpa=defaults.get("fck", 25.0),
+        fy_mpa=defaults.get("fy", 500.0),
+        cover_mm=defaults.get("cover_mm", 40.0),
+    )
+
+    beams = []
+    forces = []
+    detected_format = "Generic"
+
+    # Process geometry file
+    if geometry_file is not None:
+        content = geometry_file.getvalue().decode("utf-8")
+        detected_format = detect_format_from_content(content, geometry_file.name)
+        adapter = ADAPTERS.get(detected_format, ADAPTERS.get("Generic"))
+
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".csv", delete=False, encoding="utf-8"
+        ) as f:
+            f.write(content)
+            temp_path = f.name
+
+        try:
+            if adapter and adapter.can_handle(temp_path):
+                beams = adapter.load_geometry(temp_path, defaults=design_defaults)
+        except Exception as e:
+            return False, f"Error loading geometry: {e}", [], []
+        finally:
+            Path(temp_path).unlink(missing_ok=True)
+
+    # Process forces file
+    if forces_file is not None:
+        content = forces_file.getvalue().decode("utf-8")
+        if detected_format == "Generic":
+            detected_format = detect_format_from_content(content, forces_file.name)
+        adapter = ADAPTERS.get(detected_format, ADAPTERS.get("Generic"))
+
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".csv", delete=False, encoding="utf-8"
+        ) as f:
+            f.write(content)
+            temp_path = f.name
+
+        try:
+            if adapter:
+                forces = adapter.load_forces(temp_path)
+        except Exception as e:
+            return False, f"Error loading forces: {e}", [], []
+        finally:
+            Path(temp_path).unlink(missing_ok=True)
+
+    msg = f"✅ Loaded from {detected_format}:"
+    if beams:
+        msg += f"\n- {len(beams)} beams with geometry"
+    if forces:
+        msg += f"\n- {len(forces)} force records"
+
+    return True, msg, beams, forces
+
+
+def beams_to_dataframe(beams: list, forces: list, defaults: dict) -> pd.DataFrame:
+    """Convert BeamGeometry and BeamForces lists to unified DataFrame.
+
+    This replicates the logic from multi-format import page.
+    """
+    # Create lookup for forces by beam ID
+    force_lookup = {}
+    for force in forces:
+        if force.id not in force_lookup:
+            force_lookup[force.id] = []
+        force_lookup[force.id].append(force)
+
+    rows = []
+    for idx, beam in enumerate(beams):
+        # Get governing forces for this beam
+        beam_forces = force_lookup.get(beam.id, [])
+        if beam_forces:
+            max_mu = max(f.mu_knm for f in beam_forces)
+            max_vu = max(f.vu_kn for f in beam_forces)
+        else:
+            max_mu = defaults.get("mu_knm", 100.0)
+            max_vu = defaults.get("vu_kn", 50.0)
+
+        rows.append({
+            "beam_id": beam.id,
+            "story": beam.story,
+            "b_mm": beam.section.width_mm,
+            "D_mm": beam.section.depth_mm,
+            "span_mm": beam.length_m * 1000,
+            "mu_knm": max_mu,
+            "vu_kn": max_vu,
+            "fck": beam.section.fck_mpa,
+            "fy": beam.section.fy_mpa,
+            "cover_mm": beam.section.cover_mm,
+            "x1": beam.point1.x if beam.point1 else 0,
+            "y1": beam.point1.y if beam.point1 else 0,
+            "z1": beam.point1.z if beam.point1 else 0,
+            "x2": beam.point2.x if beam.point2 else beam.length_m,
+            "y2": beam.point2.y if beam.point2 else 0,
+            "z2": beam.point2.z if beam.point2 else 0,
+        })
+
+    return pd.DataFrame(rows)
+
+
 def process_uploaded_file(file) -> tuple[bool, str]:
-    """Process uploaded CSV with auto-mapping."""
+    """Process uploaded CSV with auto-mapping.
+
+    Uses adapter system if available, falls back to simple mapping.
+    """
+    if ADAPTERS_AVAILABLE:
+        # Use adapter system (same as multi-format import)
+        success, msg, beams, forces = process_with_adapters(
+            file, None, st.session_state.ws_defaults
+        )
+        if success and beams:
+            st.session_state.ws_beams_df = beams_to_dataframe(
+                beams, forces, st.session_state.ws_defaults
+            )
+            return True, msg
+        # Fall through to simple mapping if adapter fails
+
+    # Fallback: simple auto-mapping
     try:
+        file.seek(0)  # Reset file position
         df = pd.read_csv(file)
         mapping = auto_map_columns(df)
 
@@ -286,11 +473,22 @@ def process_uploaded_file(file) -> tuple[bool, str]:
 
 
 def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
-    """Process separate geometry and forces files and merge them.
+    """Process separate geometry and forces files.
 
-    Supports ETABS-style exports where geometry (Connectivity - Frame) and
-    forces (Element Forces - Beams) are in separate CSVs.
+    Uses adapter system if available (same as multi-format import page).
     """
+    if ADAPTERS_AVAILABLE:
+        success, msg, beams, forces = process_with_adapters(
+            geometry_file, forces_file, st.session_state.ws_defaults
+        )
+        if success and (beams or forces):
+            if beams:
+                st.session_state.ws_beams_df = beams_to_dataframe(
+                    beams, forces, st.session_state.ws_defaults
+                )
+            return True, msg
+
+    # Fallback to simple merge
     try:
         geo_df = None
         forces_df = None
@@ -441,20 +639,53 @@ def calculate_rebar_layout(
 
 
 def design_beam_row(row: pd.Series) -> dict[str, Any]:
-    """Design a single beam and return results."""
-    try:
-        from structural_lib import api as structural_api
+    """Design a single beam and return results.
 
-        result = structural_api.design_beam_is456(
-            units="IS456",
-            b_mm=float(row["b_mm"]),
-            D_mm=float(row["D_mm"]),
-            d_mm=float(row["D_mm"]) - 50,
-            fck_nmm2=float(row["fck"]),
-            fy_nmm2=float(row["fy"]),
-            mu_knm=float(row["mu_knm"]),
-            vu_kn=float(row["vu_kn"]),
-        )
+    Uses cached_design when available (same as multi-format import page).
+    """
+    try:
+        b_mm = float(row["b_mm"])
+        D_mm = float(row["D_mm"])
+        d_mm = D_mm - float(row.get("cover_mm", 50)) - 8  # cover + stirrup radius
+        fck = float(row["fck"])
+        fy = float(row["fy"])
+        mu_knm = float(row["mu_knm"])
+        vu_kn = float(row["vu_kn"])
+
+        # Validate dimensions before design
+        if D_mm < 100 or b_mm < 100:
+            return {
+                "is_safe": False,
+                "ast_req": 0,
+                "utilization": float("inf"),
+                "status": f"❌ Invalid dims: {b_mm}x{D_mm}",
+            }
+
+        # Use cached_design if available (consistent with multi-format import)
+        if CACHED_DESIGN_AVAILABLE:
+            result = cached_design(
+                mu_knm=mu_knm,
+                vu_kn=vu_kn,
+                b_mm=b_mm,
+                D_mm=D_mm,
+                d_mm=d_mm,
+                fck_nmm2=fck,
+                fy_nmm2=fy,
+            )
+        else:
+            # Fallback to direct API call
+            from structural_lib import api as structural_api
+
+            result = structural_api.design_beam_is456(
+                units="IS456",
+                b_mm=b_mm,
+                D_mm=D_mm,
+                d_mm=d_mm,
+                fck_nmm2=fck,
+                fy_nmm2=fy,
+                mu_knm=mu_knm,
+                vu_kn=vu_kn,
+            )
 
         return {
             "is_safe": result.is_ok,
@@ -467,7 +698,7 @@ def design_beam_row(row: pd.Series) -> dict[str, Any]:
             "is_safe": False,
             "ast_req": 0,
             "utilization": 0,
-            "status": f"❌ {str(e)[:20]}",
+            "status": f"❌ {str(e)[:30]}",
         }
 
 

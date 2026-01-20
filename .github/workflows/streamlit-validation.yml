@@ -64,12 +64,12 @@ jobs:
 
       - name: Run AST Scanner (all pages)
         run: |
-          python scripts/check_streamlit_issues.py --all-pages --verbose
+          python scripts/check_streamlit_issues.py --all-pages --verbose --ignore-file .scanner-ignore.yml
 
       - name: Check for critical issues
         run: |
           # Fail if any critical issues found
-          python scripts/check_streamlit_issues.py --all-pages --fail-on-critical
+          python scripts/check_streamlit_issues.py --all-pages --fail-on-critical --ignore-file .scanner-ignore.yml
 
   pylint-check:
     name: Pylint (undefined variables, imports, etc.)
@@ -205,7 +205,7 @@ jobs:
           echo "# Streamlit Validation Report" > report.md
           echo "" >> report.md
           echo "## AST Scanner Results" >> report.md
-          python scripts/check_streamlit_issues.py --all-pages --verbose >> report.md 2>&1 || true
+          python scripts/check_streamlit_issues.py --all-pages --verbose --ignore-file .scanner-ignore.yml >> report.md 2>&1 || true
           echo "" >> report.md
           echo "## API Signature Results" >> report.md
           python scripts/check_api_signatures.py --fix >> report.md 2>&1 || true

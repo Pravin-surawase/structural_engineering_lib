@@ -4,6 +4,91 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-21 — Session 57: AI v2 CSV Import Fix (Critical)
+
+**Focus:** Fix broken CSV import in AI v2 page by reusing proven adapter infrastructure
+
+**User Report:**
+- AI v2 page shows "0 inf% ❌ FAIL" for all beams after CSV import
+- Example: `1	1	300	5	100	50	0	inf%	❌ FAIL` - Depth=5 instead of 500!
+- Multi-format import page (07) works perfectly - designs all beams, shows 3D building
+- "Why are we not using the same code in AI v2?"
+
+### Root Cause
+
+AI v2's `ai_workspace.py` had simple `auto_map_columns()` that didn't use the proven
+adapter system from multi-format import page:
+
+- ❌ **Wrong:** Simple pattern matching missed unit conversions
+- ❌ **Wrong:** Direct `structural_api.design_beam_is456` instead of `cached_design`
+- ✅ **Right:** Use `structural_lib.adapters` (ETABSAdapter, SAFEAdapter, GenericCSVAdapter)
+- ✅ **Right:** Use `utils/api_wrapper.cached_design()` for consistent design calls
+
+### Implementation (5 commits on PR branch)
+
+| Commit | Description |
+|--------|-------------|
+| `56602b28` | fix(ai-workspace): reuse adapter infrastructure from multi-format import |
+| `bf06c66f` | docs(copilot-instructions): add AI model knowledge limits section |
+| `f05b6753` | docs(copilot-instructions): add lesson about reusing infrastructure |
+| `0bba1afd` | test: add adapter integration tests for ai_workspace |
+| (pending) | docs: update TASKS.md and SESSION_LOG.md |
+
+### Changes Made
+
+1. **Adapter Integration (ai_workspace.py):**
+   - Added imports: ETABSAdapter, SAFEAdapter, GenericCSVAdapter from structural_lib.adapters
+   - Added imports: BeamGeometry, BeamForces, DesignDefaults from structural_lib.models
+   - Added `process_with_adapters()` - reuses adapter loading logic
+   - Added `beams_to_dataframe()` - converts Pydantic models to DataFrame
+   - Added `detect_format_from_content()` - auto-detects ETABS/SAFE/Generic
+   - Updated `design_beam_row()` to use `cached_design()` when available
+   - Added dimension validation (catches D<100mm errors)
+
+2. **Documentation Updates:**
+   - Added "AI Model Knowledge Limits" section to copilot-instructions
+   - Warned against inventing model names (like gpt-5-mini)
+   - Added guidance to use web search for current AI models
+   - Added "Reinventing existing infra" to Common Mistakes table
+   - Documented the AI v2 CSV import bug as a critical example
+
+3. **Test Coverage:**
+   - Added `test_ai_workspace_adapters.py` with 7 tests:
+     - Adapter imports available
+     - cached_design available
+     - Format detection from content
+     - beams_to_dataframe structure
+     - design_beam_row dimension validation
+     - Sample data has valid depths
+     - ETABS adapter column mapping
+
+### Lessons Learned
+
+1. **Always check existing infrastructure before adding new code:**
+   - `Python/structural_lib/adapters.py` - File format parsing
+   - `streamlit_app/utils/api_wrapper.py` - Cached API calls
+   - `streamlit_app/pages/07_📥_multi_format_import.py` - Working example
+
+2. **AI model names evolve rapidly:**
+   - Never guess model names like "gpt-5-mini"
+   - Use web search to verify current model availability
+   - Stick to verified models: gpt-4o, gpt-4o-mini, gpt-4-turbo
+
+### PR
+
+- Branch: `task/TASK-AI-IMPORT-FIX`
+- Status: In progress
+- Files: ai_workspace.py, copilot-instructions.md, test_ai_workspace_adapters.py
+
+### Next Steps
+
+1. Update next-session-brief.md
+2. Finish PR and merge
+3. Test with real ETABS exports
+4. Verify 3D building view works with proper dimensions
+
+---
+
 ## 2026-01-20 — Session 56: AI Chat Improvements
 
 **Focus:** Multi-file upload, chat-about-design, mobile-friendly UI, quick calculations
