@@ -487,6 +487,20 @@ cat scripts/index.json
 | **Creating files without metadata** | Poor discoverability | Use `create_doc.py` | - |
 | **Not checking PR need** | Wrong workflow | Use decision script | `should_use_pr.sh` |
 | **Reading too many large files** | 413 Request Entity Too Large | Read targeted sections, use grep_search | - |
+| **Reinventing existing infra** | Broken features, bugs | Search for adapters/utils first | `semantic_search` |
+
+**Critical Example - Reusing Infrastructure:**
+The AI v2 page had broken CSV import (showing "0 inf% FAIL") because it reinvented column mapping
+instead of reusing the proven adapter system from multi-format import page:
+
+- ❌ **Wrong:** Simple `auto_map_columns()` that missed unit conversions
+- ✅ **Right:** Use `structural_lib.adapters` (ETABSAdapter, SAFEAdapter, GenericCSVAdapter)
+- ✅ **Right:** Use `utils/api_wrapper.cached_design()` for consistent design calls
+
+**Before adding new code, always check:**
+1. `Python/structural_lib/adapters.py` - File format parsing
+2. `streamlit_app/utils/api_wrapper.py` - Cached API calls
+3. `streamlit_app/pages/07_📥_multi_format_import.py` - Working import example
 
 ---
 
