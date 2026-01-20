@@ -31,11 +31,14 @@ st.set_page_config(
 )
 
 # Imports after page config
+import math
 import re
 import sys
 import time
 from pathlib import Path
 from typing import Any
+
+import pandas as pd
 
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -253,6 +256,82 @@ def get_ai_response(user_message: str) -> str:
     if "dashboard" in msg_lower or "insights" in msg_lower:
         set_workspace_state(WorkspaceState.DASHBOARD)
         return "📊 Showing smart insights dashboard."
+
+    # Quick calculation commands using structural_lib
+    # "quick design 300x500 beam 150 kn.m" or "design 300x500 150"
+    quick_design_match = re.search(
+        r'(?:quick\s+)?design\s+(\d+)\s*[x×]\s*(\d+)(?:\s+(?:beam|section))?\s+(\d+(?:\.\d+)?)\s*(?:kn\.?m|knm)?',
+        msg_lower
+    )
+    if quick_design_match:
+        try:
+            b = int(quick_design_match.group(1))
+            D = int(quick_design_match.group(2))
+            Mu = float(quick_design_match.group(3))
+            # Quick calculation using IS 456 formulas
+            d = D - 50  # Assume 50mm cover
+            fck, fy = 25.0, 500.0  # Default materials
+            # Ast calculation (simplified)
+            Mu_lim = 0.138 * fck * b * d * d / 1e6  # kN.m
+            if Mu <= Mu_lim:
+                Ast = (0.5 * fck / fy) * (1 - math.sqrt(1 - 4.6 * Mu * 1e6 / (fck * b * d * d))) * b * d
+                status = "✅ Singly reinforced"
+            else:
+                Ast = 0.04 * b * D  # Max steel (conservative)
+                status = "⚠️ Doubly reinforced needed"
+
+            Ast_min = max(0.85 * b * d / fy, 0.0012 * b * D)
+            Ast_prov = max(Ast, Ast_min)
+            pt = 100 * Ast_prov / (b * d)
+
+            return f"""📐 **Quick Design: {b}×{D} mm beam**
+- **Moment:** {Mu} kN·m
+- **Effective depth:** {d} mm
+- **Mu,lim:** {Mu_lim:.1f} kN·m
+- **Ast required:** {Ast:.0f} mm² ({pt:.2f}%)
+- **{status}**
+
+💡 For detailed design, load this as a beam:
+Say **"add beam {b}x{D} {Mu}"** to add to project."""
+        except Exception:
+            pass
+
+    # Add beam to project
+    add_beam_match = re.search(
+        r'add\s+beam\s+(\d+)\s*[x×]\s*(\d+)\s+(\d+(?:\.\d+)?)',
+        msg_lower
+    )
+    if add_beam_match:
+        try:
+            b = int(add_beam_match.group(1))
+            D = int(add_beam_match.group(2))
+            Mu = float(add_beam_match.group(3))
+
+            new_beam = {
+                "beam_id": f"B-{b}x{D}",
+                "b_mm": b,
+                "D_mm": D,
+                "span_mm": 5000,
+                "mu_knm": Mu,
+                "vu_kn": Mu * 0.4,  # Rough shear estimate
+                "story": "Story1",
+                "fck": 25.0,
+                "fy": 500.0,
+                "cover_mm": 40.0,
+                "x1": 0, "y1": 0, "z1": 3,
+                "x2": 5, "y2": 0, "z2": 3,
+            }
+
+            if st.session_state.get("ws_beams_df") is not None:
+                existing = st.session_state.ws_beams_df
+                st.session_state.ws_beams_df = pd.concat([existing, pd.DataFrame([new_beam])], ignore_index=True)
+            else:
+                st.session_state.ws_beams_df = pd.DataFrame([new_beam])
+
+            set_workspace_state(WorkspaceState.IMPORT)
+            return f"✅ Added beam **B-{b}x{D}** ({Mu} kN·m) to project.\n\nSay **'design all'** to run design or view in workspace."
+        except Exception:
+            pass
 
     # Beam selection commands
     beam_match = re.search(r'select\s+(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
