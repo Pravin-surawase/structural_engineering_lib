@@ -4,6 +4,79 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-01-20
+
+### Added
+- **AI Assistant v2 with Dynamic Workspace** 🎉
+  - Complete redesign with 35% chat / 65% dynamic workspace layout
+  - 9-state workflow: WELCOME → IMPORT → DESIGN → BUILDING_3D → VIEW_3D → CROSS_SECTION → REBAR_EDIT → EDIT → DASHBOARD
+  - Auto-column-mapping for ETABS/SAFE CSV imports
+  - Built-in sample data (10 beams, 3 stories) for quick demos
+  - Smart chat commands: `load sample`, `design all`, `building 3d`, `edit rebar`, `cross section`
+
+- **Building 3D Visualization**
+  - Full building view with all beams in 3D
+  - Story-based color coding (Story1=blue, Story2=green, Story3=orange)
+  - Hover info with beam details
+  - Summary stats (beams per story, pass/fail counts)
+
+- **Interactive Rebar Editor**
+  - Bottom/top layer configuration with bar diameter and count
+  - Stirrup diameter and spacing controls
+  - Real-time IS 456 design checks:
+    - Flexure capacity (Mu = 0.87 × fy × Ast × 0.9 × d)
+    - Shear capacity (τc from IS 456 Table 19 + stirrups)
+    - Min/max reinforcement (IS 456 Cl 26.5.1.1)
+    - Bar spacing check
+  - Pass/fail indicators with utilization percentage
+
+- **Cross-Section View**
+  - Professional 2D cross-section using Plotly
+  - Dimension annotations (b, D, cover)
+  - Bar positions with hover info
+  - Color-coded: bottom (blue), top (green), stirrups (gray)
+  - Rebar schedule table
+
+- **Material Takeoff & Cost Estimation**
+  - Concrete volume (m³), steel weight (kg)
+  - Per-story breakdown
+  - Cost estimation (₹8000/m³ concrete, ₹85/kg steel)
+  - Cost per running meter
+  - Pie chart visualization
+
+- **Dashboard Export Tab**
+  - CSV download with all design results
+  - Text summary with material takeoff and costs
+
+- **Phase 3 Rebar Visualization**
+  - Variable stirrup zones per IS 456 2d rule (tighter at supports)
+  - Development length and lap length calculations
+  - Beam detail 3D view in Page 07
+
+### Changed
+- **OpenAI Model Upgrade**
+  - Updated default model from `gpt-4o-mini` to `gpt-5-mini`
+  - Improved response quality for structural engineering tasks
+
+- **UI/UX Improvements**
+  - Loading spinners on data operations
+  - Feature highlights with icons on welcome panel
+  - Helpful tooltips on all action buttons
+  - Chat tips for workflow guidance
+  - Contextual warnings for failed beams
+
+- **Package Updates**
+  - Streamlit 1.52.2 → 1.53.0
+  - Plotly 6.5.1 → 6.5.2
+  - Ruff 0.14.11 → 0.14.13
+  - Rich 13.9.4 → 14.2.0
+  - Reportlab 4.4.7 → 4.4.9
+
+### Fixed
+- Zero-division guards in rebar checks and progress calculation
+- Safe float conversion in data processing
+- API signature validation for `bar_diameter` parameter
+
 ## [0.17.5] - 2026-01-14
 
 ### Added
