@@ -110,6 +110,12 @@ def set_workspace_state(new_state: WorkspaceState) -> None:
     st.session_state.ws_state = new_state
 
 
+def get_workspace_state() -> WorkspaceState:
+    """Get current workspace state."""
+    init_workspace_state()  # Ensure state is initialized
+    return st.session_state.ws_state
+
+
 def auto_map_columns(df: pd.DataFrame) -> dict[str, str]:
     """Auto-detect column mapping from CSV headers."""
     mapping = {}
