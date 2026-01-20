@@ -68,13 +68,25 @@ except ImportError:
 
 
 def get_openai_client() -> OpenAI | None:
-    """Get OpenAI client if API key is available."""
+    """Get OpenAI client if API key is available.
+
+    Supports both OpenAI and OpenRouter API keys:
+    - OpenAI: sk-...
+    - OpenRouter: sk-or-v1-...
+    """
     if not OPENAI_AVAILABLE:
         return None
 
     api_key = st.secrets.get("OPENAI_API_KEY", None)
     if not api_key:
         return None
+
+    # OpenRouter uses different base URL
+    if api_key.startswith("sk-or-"):
+        return OpenAI(
+            api_key=api_key,
+            base_url="https://openrouter.ai/api/v1",
+        )
 
     return OpenAI(api_key=api_key)
 

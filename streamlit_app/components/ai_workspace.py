@@ -672,6 +672,11 @@ def design_beam_row(row: pd.Series) -> dict[str, Any]:
                 fck_nmm2=fck,
                 fy_nmm2=fy,
             )
+            # cached_design returns dict, not object
+            is_safe = result.get("is_safe", False)
+            flexure = result.get("flexure", {})
+            ast_req = flexure.get("ast_required", 0) if isinstance(flexure, dict) else 0
+            utilization = result.get("governing_utilization", 0)
         else:
             # Fallback to direct API call
             from structural_lib import api as structural_api
@@ -686,12 +691,16 @@ def design_beam_row(row: pd.Series) -> dict[str, Any]:
                 mu_knm=mu_knm,
                 vu_kn=vu_kn,
             )
+            # API returns object with attributes
+            is_safe = result.is_ok
+            ast_req = result.flexure.ast_required
+            utilization = result.governing_utilization
 
         return {
-            "is_safe": result.is_ok,
-            "ast_req": result.flexure.ast_required,
-            "utilization": result.governing_utilization,
-            "status": "✅ OK" if result.is_ok else "❌ FAIL",
+            "is_safe": is_safe,
+            "ast_req": ast_req,
+            "utilization": utilization,
+            "status": "✅ OK" if is_safe else "❌ FAIL",
         }
     except Exception as e:
         return {
