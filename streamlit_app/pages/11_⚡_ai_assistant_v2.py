@@ -427,20 +427,14 @@ def _handle_quick_action(prompt: str) -> None:
 
 def render_chat_panel():
     """Render the chat panel (left side)."""
-    # Chat container with maximum height
-    chat_container = st.container(height=500)
+    # Chat container with maximum height - more space for conversation
+    chat_container = st.container(height=550)
 
     with chat_container:
-        # Welcome message if no messages
+        # Compact welcome message if no messages
         if not st.session_state.ai_messages:
             st.markdown("""
-            👋 **Welcome to StructEng AI v2!**
-
-            Quick start:
-            - Say **"load sample"** to try sample data
-            - Or upload a CSV in the workspace →
-
-            Type a message below to begin.
+            👋 **StructEng AI** | Say **"load sample"** or upload CSV →
             """)
 
         # Display messages
@@ -449,7 +443,7 @@ def render_chat_panel():
                 st.markdown(message["content"])
 
     # Chat input (always visible)
-    prompt = st.chat_input("Ask about beam design, or say 'help'...")
+    prompt = st.chat_input("Ask about beam design...")
 
     if prompt:
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
@@ -458,19 +452,22 @@ def render_chat_panel():
         st.session_state.ai_messages.append({"role": "assistant", "content": response})
         st.rerun()
 
-    # Quick actions row (compact)
-    cols = st.columns(4)
-    with cols[0]:
-        if st.button("📂 Sample", use_container_width=True, help="Load sample data"):
+    # Quick actions row - 5 compact buttons
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c1:
+        if st.button("📂", use_container_width=True, help="Load sample data"):
             _handle_quick_action("load sample")
-    with cols[1]:
-        if st.button("🚀 Design", use_container_width=True, help="Design all beams"):
+    with c2:
+        if st.button("🚀", use_container_width=True, help="Design all beams"):
             _handle_quick_action("design all beams")
-    with cols[2]:
-        if st.button("📊 Insights", use_container_width=True, help="Show dashboard"):
+    with c3:
+        if st.button("🏗️", use_container_width=True, help="Building 3D"):
+            _handle_quick_action("building 3d")
+    with c4:
+        if st.button("📊", use_container_width=True, help="Show insights"):
             _handle_quick_action("show dashboard")
-    with cols[3]:
-        if st.button("🗑️ Clear", use_container_width=True, help="Clear chat"):
+    with c5:
+        if st.button("🗑️", use_container_width=True, help="Clear chat"):
             st.session_state.ai_messages = []
             st.rerun()
 
@@ -480,18 +477,72 @@ def main():
     init_chat_state()
     init_workspace_state()
 
-    # Minimal header (uses only ~3% of screen)
-    col1, col2 = st.columns([0.7, 0.3])
-    with col1:
+    # Mobile-friendly CSS - compact fonts and reduced padding
+    st.markdown("""
+    <style>
+    /* Reduce overall padding for more content space */
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    /* Compact fonts for data-dense views */
+    .stDataFrame td, .stDataFrame th {
+        font-size: 0.85rem !important;
+        padding: 4px 8px !important;
+    }
+
+    /* Smaller captions */
+    .stCaption {
+        font-size: 0.75rem !important;
+    }
+
+    /* Compact buttons */
+    .stButton button {
+        font-size: 0.85rem !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+
+    /* Better chat messages on mobile */
+    @media (max-width: 768px) {
+        .stColumns {
+            flex-direction: column !important;
+        }
+        .stColumn {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+        }
+        .block-container {
+            padding: 0.5rem !important;
+        }
+    }
+
+    /* Reduce markdown spacing */
+    .stMarkdown p {
+        margin-bottom: 0.5rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Minimal header (single line with status)
+    hdr_left, hdr_mid, hdr_right = st.columns([0.4, 0.3, 0.3])
+    with hdr_left:
         st.markdown("## ⚡ StructEng AI")
-    with col2:
+    with hdr_mid:
         # Compact status indicator
         client = get_openai_client()
         if client:
             config = get_openai_config()
-            st.caption(f"✅ {config['model']}")
+            st.caption(f"🟢 {config['model']}")
         else:
-            st.caption("💡 Local mode")
+            st.caption("🟡 Local mode")
+    with hdr_right:
+        # Quick stats if design results exist
+        results_df = st.session_state.get("ws_design_results")
+        if results_df is not None and not results_df.empty:
+            total = len(results_df)
+            passed = len(results_df[results_df.get("is_safe", True) == True]) if "is_safe" in results_df.columns else 0
+            st.caption(f"📊 {passed}/{total} beams OK")
 
     # Main layout: 35% chat, 65% workspace (maximized)
     chat_col, workspace_col = st.columns([0.35, 0.65])
