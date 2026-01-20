@@ -4,6 +4,77 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 54: AI v2 Polish & Quality
+
+**Focus:** Code quality fixes, UI polish, helpful tooltips, export functionality
+
+**User Requests:**
+1. Check work and update plans
+2. Identify improvements
+3. Start implementation with high efficiency
+4. Target 6+ commits
+
+### Implementation (5 commits on PR branch + 2 on main)
+
+| Commit | Description |
+|--------|-------------|
+| `4c2d9952` | docs: update 8-week plan and TASKS with AI v2 feature complete status |
+| `6c2b088c` | fix(ai): add zero-division guards in rebar checks and progress calc |
+| `8d4efd73` | style(ai): add loading spinners, feature icons, chat tips, and improved navigation |
+| `10d28584` | style(ai): add helpful tooltips to all main action buttons |
+| `4c37cc2a` | feat(ai): add CSV and summary export in dashboard |
+
+### Improvements Made
+
+1. **Safety Fixes:**
+   - Zero-division guards for `fy` in `calculate_rebar_checks()`
+   - Safe progress percentage calculation with `max(len, 1)`
+
+2. **Loading States:**
+   - Spinner on "Load Sample" button
+   - Spinner on CSV file processing
+
+3. **Feature Highlights:**
+   - 5-column layout with icons: Auto-mapping, Building 3D, Cross-section, Rebar editor, Cost estimate
+
+4. **Chat Tip:**
+   - Info box: "Try: `load sample` → `design all` → `building 3d`"
+
+5. **Helpful Tooltips:**
+   - All main action buttons now have help text on hover
+   - Explains what each button does
+
+6. **Cross-Section Button:**
+   - Added "📐 Section" to design results navigation
+   - Now 4-button row: 3D View, Section, Rebar, Building
+
+7. **Failed Beam Warning:**
+   - Contextual warning when beams fail: "X beams failed. Select one and use Edit Rebar to increase reinforcement."
+
+8. **Export Tab in Dashboard:**
+   - Download CSV with all design results
+   - Download text summary with material takeoff and costs
+   - Tip for Excel integration
+
+### Files Modified
+
+- [streamlit_app/components/ai_workspace.py](../streamlit_app/components/ai_workspace.py) — UI polish, safety fixes, export
+- [docs/planning/8-week-development-plan.md](planning/8-week-development-plan.md) — AI v2 marked complete
+- [docs/TASKS.md](TASKS.md) — Updated task status
+
+### PR
+
+- Branch: `task/TASK-AI-V2-POLISH`
+- Status: Ready for merge
+
+### Next Steps
+
+1. Merge PR to main
+2. Continue Phase 4: Performance & Integration
+3. Add JSON design result upload for 3D visualization
+
+---
+
 ## 2026-01-20 — Session 53: AI v2 Advanced Features
 
 **Focus:** Enhance AI v2 with building 3D view, interactive rebar editor, cross-section view, material takeoff
