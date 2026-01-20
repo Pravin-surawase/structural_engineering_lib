@@ -150,7 +150,7 @@ def get_ai_response(user_message: str) -> str:
     # Check for workspace commands first
     if "load sample" in msg_lower or "sample data" in msg_lower:
         load_sample_data()
-        return "✅ Loaded sample data with 10 beams. Click **Design All** in the workspace to run design."
+        return "✅ Loaded sample data with 10 beams (3 stories). Click **Design All** in the workspace or say **'design all'**."
 
     if "design all" in msg_lower or "design beams" in msg_lower:
         if st.session_state.get("ws_beams_df") is not None:
@@ -158,21 +158,48 @@ def get_ai_response(user_message: str) -> str:
             set_workspace_state(WorkspaceState.DESIGN)
             df = st.session_state.ws_design_results
             passed = len(df[df["is_safe"] == True])
-            return f"✅ Designed {len(df)} beams. **{passed}/{len(df)}** passed. See results in workspace."
+            return f"✅ Designed **{len(df)} beams** — **{passed}** passed, **{len(df)-passed}** need review.\n\nSay **'building 3d'** to see the full structure or select a beam for details."
         else:
-            return "📂 No beam data loaded. Say 'load sample' or upload a CSV first."
+            return "📂 No beam data loaded. Say **'load sample'** or upload a CSV first."
 
-    if "show 3d" in msg_lower or "3d view" in msg_lower:
-        selected_beam = st.session_state.get("ws_selected_beam", None)
+    if "building 3d" in msg_lower or "building view" in msg_lower or "full 3d" in msg_lower:
+        set_workspace_state(WorkspaceState.BUILDING_3D)
+        return "🏗️ Showing full building 3D visualization. Click any beam to see details."
+
+    if "edit rebar" in msg_lower or "rebar editor" in msg_lower:
+        selected_beam = st.session_state.get("ws_selected_beam")
+        if selected_beam:
+            set_workspace_state(WorkspaceState.REBAR_EDIT)
+            return f"🔧 Opening rebar editor for **{selected_beam}**. Adjust bars and stirrups to see real-time checks."
+        else:
+            return "Select a beam first from design results."
+
+    if "show 3d" in msg_lower or "3d view" in msg_lower or "beam 3d" in msg_lower:
+        selected_beam = st.session_state.get("ws_selected_beam")
         if selected_beam:
             set_workspace_state(WorkspaceState.VIEW_3D)
-            return f"🎨 Showing 3D view for **{selected_beam}**"
+            return f"🎨 Showing 3D view for **{selected_beam}** with actual reinforcement."
         else:
             return "Select a beam first from the design results."
 
     if "dashboard" in msg_lower or "insights" in msg_lower:
         set_workspace_state(WorkspaceState.DASHBOARD)
         return "📊 Showing smart insights dashboard."
+
+    # Beam selection commands
+    beam_match = re.search(r'select\s+(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
+    if beam_match:
+        beam_id = beam_match.group(2).upper()
+        df = st.session_state.get("ws_design_results")
+        if df is not None and beam_id in df["beam_id"].str.upper().values:
+            # Find exact match
+            match_row = df[df["beam_id"].str.upper() == beam_id]
+            if not match_row.empty:
+                actual_id = match_row.iloc[0]["beam_id"]
+                st.session_state.ws_selected_beam = actual_id
+                set_workspace_state(WorkspaceState.VIEW_3D)
+                return f"Selected **{actual_id}** — showing 3D view with reinforcement details."
+        return f"Beam '{beam_id}' not found. Available: {', '.join(df['beam_id'].tolist()[:5])}..."
 
     # OpenAI API if available
     client = get_openai_client()
@@ -215,34 +242,44 @@ def _local_response(msg: str) -> str:
 - Or **upload a CSV** in the workspace
 
 **I can help with:**
-- IS 456 beam design
-- Cost optimization
-- 3D visualization with rebar details
+- IS 456 beam design & optimization
+- Building 3D visualization
+- Interactive rebar editor with live checks
 - Batch design from ETABS/SAFE exports"""
 
-    if "help" in msg_lower:
+    if "help" in msg_lower or "command" in msg_lower:
         return """**Available Commands:**
-- **load sample** - Load 10 sample beams
-- **design all** - Design all imported beams
-- **show 3d** - View selected beam in 3D
-- **dashboard** - Show insights dashboard
+
+📂 **Data**
+- **load sample** — Load 10 sample beams (3 stories)
+- **design all** — Run IS 456 design on all beams
+
+🎨 **Visualization**
+- **building 3d** — Full building 3D view
+- **show 3d** — Selected beam 3D view
+- **select B1** — Select beam by ID
+
+🔧 **Design**
+- **edit rebar** — Interactive reinforcement editor
+- **dashboard** — Insights & analytics
 
 **Workflow:**
-1. Import data (sample or CSV upload)
-2. Design all beams
-3. Select beam → View 3D → Edit if needed"""
+1. Import → Design All → Building 3D
+2. Select Beam → 3D View → Edit Rebar"""
 
     if any(w in msg_lower for w in ["design", "beam", "moment", "shear"]):
         return """To design beams:
-1. First load data: say **"load sample"** or upload CSV
-2. Then say **"design all"** to run IS 456 design
-3. Click any beam in results for 3D view"""
+1. Say **"load sample"** or upload CSV
+2. Say **"design all"** to run IS 456 design
+3. Say **"building 3d"** to see full structure
+4. Click any beam → **"edit rebar"** to customize"""
 
-    return """I understand your request. Here are some things I can help with:
+    return """I can help you with structural beam design. Try:
 
-- **"load sample"** - Try with sample ETABS data
-- **"design all"** - Run batch design on imported beams
-- **"help"** - See all available commands
+🚀 **"load sample"** — Quick start with demo data
+📐 **"design all"** — Run batch design
+🏗️ **"building 3d"** — See full structure
+❓ **"help"** — All commands
 
 For full AI capabilities, add your OpenAI API key to secrets.toml."""
 
