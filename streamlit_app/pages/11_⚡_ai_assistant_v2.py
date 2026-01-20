@@ -31,14 +31,11 @@ st.set_page_config(
 )
 
 # Imports after page config
-import math
 import re
 import sys
 import time
 from pathlib import Path
 from typing import Any
-
-import pandas as pd
 
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -86,28 +83,31 @@ def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets."""
     # Default to GPT-5-mini (fast, cost-efficient) for structural engineering tasks
     # GPT-5.2 is best but expensive; GPT-5-mini is optimal for defined tasks
-    config = {
-        "model": "gpt-5-mini",
-        "temperature": 0.7,
-        "max_tokens": 2000,
-    }
+    model = "gpt-5-mini"
+    temperature = 0.7
+    max_tokens = 2000
 
     if "openai" in st.secrets:
         openai_config = st.secrets.get("openai", {})
-        if "model" in openai_config:
-            config["model"] = openai_config.get("model", config["model"])
-        if "temperature" in openai_config:
-            try:
-                config["temperature"] = float(openai_config.get("temperature", config["temperature"]))
-            except (ValueError, TypeError):
-                pass
-        if "max_tokens" in openai_config:
-            try:
-                config["max_tokens"] = int(openai_config.get("max_tokens", config["max_tokens"]))
-            except (ValueError, TypeError):
-                pass
+        if isinstance(openai_config, dict):
+            if "model" in openai_config:
+                model = openai_config.get("model", "gpt-5-mini")
+            if "temperature" in openai_config:
+                try:
+                    temperature = float(openai_config.get("temperature", 0.7))
+                except (ValueError, TypeError):
+                    pass
+            if "max_tokens" in openai_config:
+                try:
+                    max_tokens = int(openai_config.get("max_tokens", 2000))
+                except (ValueError, TypeError):
+                    pass
 
-    return config
+    return {
+        "model": model,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
 
 
 # System prompt for structural engineering assistant
@@ -146,64 +146,6 @@ def init_chat_state():
     """Initialize chat session state."""
     if "ai_messages" not in st.session_state:
         st.session_state.ai_messages = []
-
-
-def get_design_context() -> str:
-    """Generate context string from current design results for AI."""
-    context_parts = []
-
-    # Check for loaded beams
-    beams_df = st.session_state.get("ws_beams_df")
-    if beams_df is not None:
-        context_parts.append(f"## Loaded Beams: {len(beams_df)} beams")
-
-    # Check for design results
-    results_df = st.session_state.get("ws_design_results")
-    if results_df is not None and not results_df.empty:
-        total = len(results_df)
-        passed = len(results_df[results_df.get("is_safe", results_df.get("status", "")) == True]) if "is_safe" in results_df.columns else 0
-        if "status" in results_df.columns:
-            passed = len(results_df[results_df["status"].str.upper().str.contains("SAFE|PASS", na=False)])
-        failed = total - passed
-
-        context_parts.append(f"""
-## Design Results Summary
-- **Total Beams:** {total}
-- **Passed:** {passed} ({100*passed/total:.0f}%)
-- **Failed/Review:** {failed} ({100*failed/total:.0f}%)
-""")
-
-        # Add beam details (limit to top 10 for context size)
-        beam_details = []
-        for _, row in results_df.head(10).iterrows():
-            beam_id = row.get("beam_id", "?")
-            util = row.get("utilization", 0)
-            util_pct = util * 100 if util <= 1 else util
-            status = row.get("status", row.get("is_safe", "?"))
-            width = row.get("width", row.get("b", "?"))
-            depth = row.get("depth", row.get("D", "?"))
-            ast = row.get("Ast_prov", row.get("ast_provided", row.get("ast_required", "?")))
-            beam_details.append(f"- {beam_id}: {width}x{depth}mm, Util={util_pct:.0f}%, {status}, Ast={ast}")
-
-        if beam_details:
-            context_parts.append("## Beam Details (first 10):\n" + "\n".join(beam_details))
-
-        # Find critical beams (highest utilization)
-        if "utilization" in results_df.columns:
-            sorted_df = results_df.sort_values("utilization", ascending=False)
-            top_3 = sorted_df.head(3)
-            critical_list = [f"{row['beam_id']} ({row['utilization']*100:.0f}%)" for _, row in top_3.iterrows()]
-            context_parts.append(f"## Critical Beams (highest utilization): {', '.join(critical_list)}")
-
-    # Selected beam
-    selected = st.session_state.get("ws_selected_beam")
-    if selected:
-        context_parts.append(f"## Currently Selected: {selected}")
-
-    if not context_parts:
-        return ""
-
-    return "\n\n---\n**Current Project Context:**\n" + "\n".join(context_parts)
 
 
 def get_ai_response(user_message: str) -> str:
@@ -257,82 +199,6 @@ def get_ai_response(user_message: str) -> str:
         set_workspace_state(WorkspaceState.DASHBOARD)
         return "📊 Showing smart insights dashboard."
 
-    # Quick calculation commands using structural_lib
-    # "quick design 300x500 beam 150 kn.m" or "design 300x500 150"
-    quick_design_match = re.search(
-        r'(?:quick\s+)?design\s+(\d+)\s*[x×]\s*(\d+)(?:\s+(?:beam|section))?\s+(\d+(?:\.\d+)?)\s*(?:kn\.?m|knm)?',
-        msg_lower
-    )
-    if quick_design_match:
-        try:
-            b = int(quick_design_match.group(1))
-            D = int(quick_design_match.group(2))
-            Mu = float(quick_design_match.group(3))
-            # Quick calculation using IS 456 formulas
-            d = D - 50  # Assume 50mm cover
-            fck, fy = 25.0, 500.0  # Default materials
-            # Ast calculation (simplified)
-            Mu_lim = 0.138 * fck * b * d * d / 1e6  # kN.m
-            if Mu <= Mu_lim:
-                Ast = (0.5 * fck / fy) * (1 - math.sqrt(1 - 4.6 * Mu * 1e6 / (fck * b * d * d))) * b * d
-                status = "✅ Singly reinforced"
-            else:
-                Ast = 0.04 * b * D  # Max steel (conservative)
-                status = "⚠️ Doubly reinforced needed"
-
-            Ast_min = max(0.85 * b * d / fy, 0.0012 * b * D)
-            Ast_prov = max(Ast, Ast_min)
-            pt = 100 * Ast_prov / (b * d)
-
-            return f"""📐 **Quick Design: {b}×{D} mm beam**
-- **Moment:** {Mu} kN·m
-- **Effective depth:** {d} mm
-- **Mu,lim:** {Mu_lim:.1f} kN·m
-- **Ast required:** {Ast:.0f} mm² ({pt:.2f}%)
-- **{status}**
-
-💡 For detailed design, load this as a beam:
-Say **"add beam {b}x{D} {Mu}"** to add to project."""
-        except Exception:
-            pass
-
-    # Add beam to project
-    add_beam_match = re.search(
-        r'add\s+beam\s+(\d+)\s*[x×]\s*(\d+)\s+(\d+(?:\.\d+)?)',
-        msg_lower
-    )
-    if add_beam_match:
-        try:
-            b = int(add_beam_match.group(1))
-            D = int(add_beam_match.group(2))
-            Mu = float(add_beam_match.group(3))
-
-            new_beam = {
-                "beam_id": f"B-{b}x{D}",
-                "b_mm": b,
-                "D_mm": D,
-                "span_mm": 5000,
-                "mu_knm": Mu,
-                "vu_kn": Mu * 0.4,  # Rough shear estimate
-                "story": "Story1",
-                "fck": 25.0,
-                "fy": 500.0,
-                "cover_mm": 40.0,
-                "x1": 0, "y1": 0, "z1": 3,
-                "x2": 5, "y2": 0, "z2": 3,
-            }
-
-            if st.session_state.get("ws_beams_df") is not None:
-                existing = st.session_state.ws_beams_df
-                st.session_state.ws_beams_df = pd.concat([existing, pd.DataFrame([new_beam])], ignore_index=True)
-            else:
-                st.session_state.ws_beams_df = pd.DataFrame([new_beam])
-
-            set_workspace_state(WorkspaceState.IMPORT)
-            return f"✅ Added beam **B-{b}x{D}** ({Mu} kN·m) to project.\n\nSay **'design all'** to run design or view in workspace."
-        except Exception:
-            pass
-
     # Beam selection commands
     beam_match = re.search(r'select\s+(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
     if beam_match:
@@ -353,14 +219,7 @@ Say **"add beam {b}x{D} {Mu}"** to add to project."""
     if client:
         try:
             config = get_openai_config()
-
-            # Build system message with design context
-            design_context = get_design_context()
-            system_content = SYSTEM_PROMPT
-            if design_context:
-                system_content += "\n\n" + design_context
-
-            messages = [{"role": "system", "content": system_content}]
+            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
             # Add conversation history (last 10 messages)
             for msg in st.session_state.ai_messages[-10:]:
@@ -369,10 +228,10 @@ Say **"add beam {b}x{D} {Mu}"** to add to project."""
             messages.append({"role": "user", "content": user_message})
 
             response = client.chat.completions.create(
-                model=config["model"],
+                model=config.get("model", "gpt-5-mini"),
                 messages=messages,
-                temperature=config["temperature"],
-                max_tokens=config["max_tokens"],
+                temperature=config.get("temperature", 0.7),
+                max_tokens=config.get("max_tokens", 2000),
             )
 
             return response.choices[0].message.content
@@ -387,64 +246,6 @@ Say **"add beam {b}x{D} {Mu}"** to add to project."""
 def _local_response(msg: str) -> str:
     """Generate local response without OpenAI."""
     msg_lower = msg.lower()
-
-    # Check for design-related questions with local data
-    results_df = st.session_state.get("ws_design_results")
-    if results_df is not None and not results_df.empty:
-        # Questions about specific beams
-        if "highest utilization" in msg_lower or "most utilized" in msg_lower or "critical" in msg_lower:
-            if "utilization" in results_df.columns:
-                sorted_df = results_df.sort_values("utilization", ascending=False)
-                top = sorted_df.head(3)
-                lines = [f"- **{row['beam_id']}**: {row['utilization']*100:.1f}% utilization" for _, row in top.iterrows()]
-                return f"🔴 **Highest Utilization Beams:**\n" + "\n".join(lines) + "\n\nSay **'select {top.iloc[0]['beam_id']}'** to view details."
-
-        if "lowest utilization" in msg_lower or "least utilized" in msg_lower:
-            if "utilization" in results_df.columns:
-                sorted_df = results_df.sort_values("utilization", ascending=True)
-                bottom = sorted_df.head(3)
-                lines = [f"- **{row['beam_id']}**: {row['utilization']*100:.1f}% utilization" for _, row in bottom.iterrows()]
-                return f"🟢 **Lowest Utilization Beams:**\n" + "\n".join(lines)
-
-        if "fail" in msg_lower or "unsafe" in msg_lower or "not pass" in msg_lower:
-            failed = results_df[~results_df.get("is_safe", True) | results_df.get("status", "").str.upper().str.contains("FAIL", na=False)] if "status" in results_df.columns else results_df[results_df.get("is_safe", True) == False]
-            if len(failed) > 0:
-                lines = [f"- **{row.get('beam_id', '?')}**: {row.get('status', 'Failed')}" for _, row in failed.head(5).iterrows()]
-                return f"❌ **Failed/Unsafe Beams ({len(failed)} total):**\n" + "\n".join(lines)
-            else:
-                return "✅ All beams passed design checks!"
-
-        if "summary" in msg_lower or "overview" in msg_lower or "stats" in msg_lower:
-            total = len(results_df)
-            passed = len(results_df[results_df.get("is_safe", results_df.get("status", "")) == True]) if "is_safe" in results_df.columns else 0
-            if "status" in results_df.columns:
-                passed = len(results_df[results_df["status"].str.upper().str.contains("SAFE|PASS", na=False)])
-            avg_util = results_df["utilization"].mean() * 100 if "utilization" in results_df.columns else 0
-            return f"""📊 **Design Summary:**
-- **Total Beams:** {total}
-- **Passed:** {passed} ({100*passed/total:.0f}%)
-- **Failed:** {total-passed}
-- **Avg Utilization:** {avg_util:.1f}%
-
-Say **'building 3d'** to visualize or **'highest utilization'** to see critical beams."""
-
-        # Question about specific beam
-        beam_match = re.search(r'(about|tell me|show|info)\s*(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
-        if beam_match:
-            beam_id = beam_match.group(3).upper()
-            match_row = results_df[results_df["beam_id"].str.upper() == beam_id]
-            if not match_row.empty:
-                row = match_row.iloc[0]
-                util = row.get("utilization", 0) * 100
-                status = row.get("status", row.get("is_safe", "?"))
-                width = row.get("width", row.get("b", "?"))
-                depth = row.get("depth", row.get("D", "?"))
-                return f"""📐 **{row['beam_id']}:**
-- **Size:** {width} x {depth} mm
-- **Utilization:** {util:.1f}%
-- **Status:** {status}
-
-Say **'select {row['beam_id']}'** to view 3D or **'edit rebar'** after selecting."""
 
     if "hello" in msg_lower or "hi" in msg_lower:
         return """👋 Hello! I'm StructEng AI, your structural engineering assistant.
@@ -506,14 +307,20 @@ def _handle_quick_action(prompt: str) -> None:
 
 def render_chat_panel():
     """Render the chat panel (left side)."""
-    # Chat container with maximum height - more space for conversation
-    chat_container = st.container(height=550)
+    # Chat container with maximum height
+    chat_container = st.container(height=500)
 
     with chat_container:
-        # Compact welcome message if no messages
+        # Welcome message if no messages
         if not st.session_state.ai_messages:
             st.markdown("""
-            👋 **StructEng AI** | Say **"load sample"** or upload CSV →
+            👋 **Welcome to StructEng AI v2!**
+
+            Quick start:
+            - Say **"load sample"** to try sample data
+            - Or upload a CSV in the workspace →
+
+            Type a message below to begin.
             """)
 
         # Display messages
@@ -522,7 +329,7 @@ def render_chat_panel():
                 st.markdown(message["content"])
 
     # Chat input (always visible)
-    prompt = st.chat_input("Ask about beam design...")
+    prompt = st.chat_input("Ask about beam design, or say 'help'...")
 
     if prompt:
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
@@ -531,24 +338,29 @@ def render_chat_panel():
         st.session_state.ai_messages.append({"role": "assistant", "content": response})
         st.rerun()
 
-    # Quick actions row - 5 compact buttons
-    c1, c2, c3, c4, c5 = st.columns(5)
-    with c1:
-        if st.button("📂", use_container_width=True, help="Load sample data"):
-            _handle_quick_action("load sample")
-    with c2:
-        if st.button("🚀", use_container_width=True, help="Design all beams"):
-            _handle_quick_action("design all beams")
-    with c3:
-        if st.button("🏗️", use_container_width=True, help="Building 3D"):
-            _handle_quick_action("building 3d")
-    with c4:
-        if st.button("📊", use_container_width=True, help="Show insights"):
-            _handle_quick_action("show dashboard")
-    with c5:
-        if st.button("🗑️", use_container_width=True, help="Clear chat"):
-            st.session_state.ai_messages = []
-            st.rerun()
+    # Quick actions row (compact)
+    cols = st.columns(5)
+    if len(cols) > 0:
+        with cols[0]:
+            if st.button("📂", use_container_width=True, help="Load sample data"):
+                _handle_quick_action("load sample")
+    if len(cols) > 1:
+        with cols[1]:
+            if st.button("🚀", use_container_width=True, help="Design all beams"):
+                _handle_quick_action("design all beams")
+    if len(cols) > 2:
+        with cols[2]:
+            if st.button("🏗️", use_container_width=True, help="Building 3D"):
+                _handle_quick_action("building 3d")
+    if len(cols) > 3:
+        with cols[3]:
+            if st.button("📊", use_container_width=True, help="Show insights"):
+                _handle_quick_action("show dashboard")
+    if len(cols) > 4:
+        with cols[4]:
+            if st.button("🗑️", use_container_width=True, help="Clear chat"):
+                st.session_state.ai_messages = []
+                st.rerun()
 
 
 def main():
@@ -556,72 +368,18 @@ def main():
     init_chat_state()
     init_workspace_state()
 
-    # Mobile-friendly CSS - compact fonts and reduced padding
-    st.markdown("""
-    <style>
-    /* Reduce overall padding for more content space */
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-
-    /* Compact fonts for data-dense views */
-    .stDataFrame td, .stDataFrame th {
-        font-size: 0.85rem !important;
-        padding: 4px 8px !important;
-    }
-
-    /* Smaller captions */
-    .stCaption {
-        font-size: 0.75rem !important;
-    }
-
-    /* Compact buttons */
-    .stButton button {
-        font-size: 0.85rem !important;
-        padding: 0.25rem 0.5rem !important;
-    }
-
-    /* Better chat messages on mobile */
-    @media (max-width: 768px) {
-        .stColumns {
-            flex-direction: column !important;
-        }
-        .stColumn {
-            width: 100% !important;
-            flex: 1 1 100% !important;
-        }
-        .block-container {
-            padding: 0.5rem !important;
-        }
-    }
-
-    /* Reduce markdown spacing */
-    .stMarkdown p {
-        margin-bottom: 0.5rem;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Minimal header (single line with status)
-    hdr_left, hdr_mid, hdr_right = st.columns([0.4, 0.3, 0.3])
-    with hdr_left:
+    # Minimal header (uses only ~3% of screen)
+    col1, col2 = st.columns([0.7, 0.3])
+    with col1:
         st.markdown("## ⚡ StructEng AI")
-    with hdr_mid:
+    with col2:
         # Compact status indicator
         client = get_openai_client()
         if client:
             config = get_openai_config()
-            st.caption(f"🟢 {config['model']}")
+            st.caption(f"✅ {config.get('model', 'gpt-5-mini')}")
         else:
-            st.caption("🟡 Local mode")
-    with hdr_right:
-        # Quick stats if design results exist
-        results_df = st.session_state.get("ws_design_results")
-        if results_df is not None and not results_df.empty:
-            total = len(results_df)
-            passed = len(results_df[results_df.get("is_safe", True) == True]) if "is_safe" in results_df.columns else 0
-            st.caption(f"📊 {passed}/{total} beams OK")
+            st.caption("💡 Local mode")
 
     # Main layout: 35% chat, 65% workspace (maximized)
     chat_col, workspace_col = st.columns([0.35, 0.65])
