@@ -182,6 +182,14 @@ def get_ai_response(user_message: str) -> str:
         else:
             return "Select a beam first from the design results."
 
+    if "cross section" in msg_lower or "section view" in msg_lower or "2d section" in msg_lower:
+        selected_beam = st.session_state.get("ws_selected_beam")
+        if selected_beam:
+            set_workspace_state(WorkspaceState.CROSS_SECTION)
+            return f"📐 Showing professional cross-section for **{selected_beam}** with bar layout and dimensions."
+        else:
+            return "Select a beam first from design results."
+
     if "dashboard" in msg_lower or "insights" in msg_lower:
         set_workspace_state(WorkspaceState.DASHBOARD)
         return "📊 Showing smart insights dashboard."

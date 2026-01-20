@@ -57,6 +57,7 @@ class WorkspaceState(Enum):
     DESIGN = "design"
     BUILDING_3D = "building_3d"  # Full building view
     VIEW_3D = "view_3d"  # Single beam detail
+    CROSS_SECTION = "cross_section"  # Beautiful cross-section view
     REBAR_EDIT = "rebar_edit"  # Interactive reinforcement editor
     EDIT = "edit"
     DASHBOARD = "dashboard"
@@ -1097,6 +1098,332 @@ def render_rebar_editor() -> None:
                 st.rerun()
 
 
+def create_cross_section_figure(
+    b: float,
+    D: float,
+    cover: float,
+    bottom_bars: list[tuple[float, float, float]],
+    top_bars: list[tuple[float, float, float]],
+    stirrup_dia: float = 8,
+    rebar_config: dict | None = None,
+) -> go.Figure:
+    """Create professional cross-section 2D view using Plotly.
+
+    Args:
+        b: Beam width in mm
+        D: Beam depth in mm
+        cover: Clear cover in mm
+        bottom_bars: List of (x, y, dia) for bottom reinforcement
+        top_bars: List of (x, y, dia) for top reinforcement
+        stirrup_dia: Stirrup diameter in mm
+        rebar_config: Optional config from rebar editor
+
+    Returns:
+        Plotly figure showing cross-section
+    """
+    fig = go.Figure()
+
+    # Colors for professional look
+    concrete_color = "#e8e4e0"
+    stirrup_color = "#666666"
+    main_bar_color = "#1a5276"
+    top_bar_color = "#28b463"
+
+    # Concrete outline (filled rectangle)
+    fig.add_shape(
+        type="rect",
+        x0=0, y0=0, x1=b, y1=D,
+        line=dict(color="#333", width=2),
+        fillcolor=concrete_color,
+        layer="below",
+    )
+
+    # Stirrup (inner rectangle)
+    stirrup_offset = cover + stirrup_dia / 2
+    fig.add_shape(
+        type="rect",
+        x0=stirrup_offset,
+        y0=stirrup_offset,
+        x1=b - stirrup_offset,
+        y1=D - stirrup_offset,
+        line=dict(color=stirrup_color, width=3),
+        fillcolor="rgba(0,0,0,0)",
+    )
+
+    # Draw bottom bars
+    for bx, by, dia in bottom_bars:
+        fig.add_trace(go.Scatter(
+            x=[bx], y=[by],
+            mode="markers",
+            marker=dict(
+                size=max(10, dia * 0.6),
+                color=main_bar_color,
+                line=dict(color="#000", width=1),
+            ),
+            name=f"Bottom Bar Φ{dia:.0f}",
+            hovertemplate=f"Bottom Bar<br>Φ{dia:.0f}mm<br>x: {bx:.1f}, y: {by:.1f}<extra></extra>",
+            showlegend=False,
+        ))
+
+    # Draw top bars
+    for tx, ty, dia in top_bars:
+        fig.add_trace(go.Scatter(
+            x=[tx], y=[ty],
+            mode="markers",
+            marker=dict(
+                size=max(10, dia * 0.6),
+                color=top_bar_color,
+                line=dict(color="#000", width=1),
+            ),
+            name=f"Top Bar Φ{dia:.0f}",
+            hovertemplate=f"Top Bar<br>Φ{dia:.0f}mm<br>x: {tx:.1f}, y: {ty:.1f}<extra></extra>",
+            showlegend=False,
+        ))
+
+    # Dimension lines and annotations
+    # Width dimension
+    fig.add_annotation(
+        x=b/2, y=-30,
+        text=f"b = {b:.0f} mm",
+        showarrow=False,
+        font=dict(size=12, color="#333"),
+    )
+    fig.add_shape(
+        type="line", x0=0, y0=-15, x1=b, y1=-15,
+        line=dict(color="#666", width=1),
+    )
+    fig.add_shape(type="line", x0=0, y0=-5, x1=0, y1=-25, line=dict(color="#666", width=1))
+    fig.add_shape(type="line", x0=b, y0=-5, x1=b, y1=-25, line=dict(color="#666", width=1))
+
+    # Depth dimension
+    fig.add_annotation(
+        x=b+40, y=D/2,
+        text=f"D = {D:.0f} mm",
+        showarrow=False,
+        font=dict(size=12, color="#333"),
+        textangle=-90,
+    )
+    fig.add_shape(
+        type="line", x0=b+15, y0=0, x1=b+15, y1=D,
+        line=dict(color="#666", width=1),
+    )
+    fig.add_shape(type="line", x0=b+5, y0=0, x1=b+25, y1=0, line=dict(color="#666", width=1))
+    fig.add_shape(type="line", x0=b+5, y0=D, x1=b+25, y1=D, line=dict(color="#666", width=1))
+
+    # Cover annotation
+    fig.add_annotation(
+        x=cover/2, y=cover/2,
+        text=f"{cover:.0f}",
+        showarrow=False,
+        font=dict(size=9, color="#888"),
+    )
+
+    # Legend/key
+    legend_items = [
+        (b+60, D-30, main_bar_color, "Bottom Bars"),
+        (b+60, D-60, top_bar_color, "Top Bars"),
+        (b+60, D-90, stirrup_color, "Stirrups"),
+    ]
+    for lx, ly, color, text in legend_items:
+        fig.add_trace(go.Scatter(
+            x=[lx], y=[ly],
+            mode="markers+text",
+            marker=dict(size=10, color=color),
+            text=[f"  {text}"],
+            textposition="middle right",
+            showlegend=False,
+            hoverinfo="skip",
+        ))
+
+    # Layout
+    fig.update_layout(
+        title=dict(
+            text="Beam Cross-Section",
+            font=dict(size=16, color="#333"),
+            x=0.5,
+        ),
+        xaxis=dict(
+            scaleanchor="y",
+            scaleratio=1,
+            showgrid=False,
+            zeroline=False,
+            showticklabels=False,
+            range=[-50, b + 120],
+        ),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showticklabels=False,
+            range=[-60, D + 30],
+        ),
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        margin=dict(l=20, r=20, t=50, b=20),
+        height=400,
+    )
+
+    return fig
+
+
+def render_cross_section() -> None:
+    """Render beautiful 2D cross-section view for selected beam."""
+    beam_id = st.session_state.ws_selected_beam
+    df = st.session_state.ws_design_results
+
+    st.markdown(f"### 📐 Cross-Section: {beam_id}")
+
+    if not beam_id or df is None:
+        st.warning("No beam selected.")
+        if st.button("← Back to Results"):
+            set_workspace_state(WorkspaceState.DESIGN)
+            st.rerun()
+        return
+
+    row = df[df["beam_id"] == beam_id]
+    if row.empty:
+        st.error(f"Beam {beam_id} not found")
+        return
+
+    row = row.iloc[0]
+    b = row["b_mm"]
+    D = row["D_mm"]
+    cover = row.get("cover_mm", 40)
+
+    # Get rebar layout
+    rebar = calculate_rebar_layout(
+        ast_mm2=row["ast_req"],
+        b_mm=b,
+        D_mm=D,
+        span_mm=row["span_mm"],
+        vu_kn=row["vu_kn"],
+        cover_mm=cover,
+    )
+
+    # Check for custom config from rebar editor
+    rebar_config = st.session_state.get("ws_rebar_config")
+
+    # Calculate bar positions for cross-section
+    bottom_bars = []
+    top_bars = []
+
+    if rebar_config:
+        # Use custom rebar configuration
+        bottom_dia_1 = rebar_config.get("bottom_dia_1", 16)
+        bottom_count_1 = rebar_config.get("bottom_count_1", 3)
+        bottom_dia_2 = rebar_config.get("bottom_dia_2", 0)
+        bottom_count_2 = rebar_config.get("bottom_count_2", 0)
+        top_dia = rebar_config.get("top_dia", 12)
+        top_count = rebar_config.get("top_count", 2)
+    else:
+        # Use calculated values
+        bottom_dia_1 = rebar.get("bar_diameter", 16)
+        n_bars = len(rebar["bottom_bars"])
+        bottom_count_1 = min(n_bars, 4)
+        bottom_count_2 = max(0, n_bars - 4)
+        bottom_dia_2 = bottom_dia_1 if bottom_count_2 > 0 else 0
+        top_dia = 12
+        top_count = len(rebar["top_bars"])
+
+    # Calculate bottom layer 1 positions
+    layer1_y = cover + 8 + bottom_dia_1 / 2  # stirrup + half bar dia
+    available_width = b - 2 * cover - 2 * 8  # inside stirrups
+    if bottom_count_1 > 1:
+        spacing_1 = available_width / (bottom_count_1 - 1)
+    else:
+        spacing_1 = 0
+    for i in range(bottom_count_1):
+        bx = cover + 8 + bottom_dia_1/2 + i * spacing_1 if bottom_count_1 > 1 else b/2
+        bottom_bars.append((bx, layer1_y, bottom_dia_1))
+
+    # Calculate bottom layer 2 positions (if any)
+    if bottom_count_2 > 0 and bottom_dia_2 > 0:
+        layer2_y = layer1_y + bottom_dia_1/2 + 25 + bottom_dia_2/2  # vertical spacing
+        if bottom_count_2 > 1:
+            spacing_2 = available_width / (bottom_count_2 - 1)
+        else:
+            spacing_2 = 0
+        for i in range(bottom_count_2):
+            bx = cover + 8 + bottom_dia_2/2 + i * spacing_2 if bottom_count_2 > 1 else b/2
+            bottom_bars.append((bx, layer2_y, bottom_dia_2))
+
+    # Calculate top bar positions
+    top_y = D - cover - 8 - top_dia / 2
+    if top_count > 1:
+        spacing_top = available_width / (top_count - 1)
+    else:
+        spacing_top = 0
+    for i in range(top_count):
+        tx = cover + 8 + top_dia/2 + i * spacing_top if top_count > 1 else b/2
+        top_bars.append((tx, top_y, top_dia))
+
+    # Display metrics
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Section", f"{b:.0f} × {D:.0f}")
+    col2.metric("Cover", f"{cover:.0f} mm")
+
+    # Calculate total Ast
+    total_ast = sum(3.14159 * (d/2)**2 for _, _, d in bottom_bars)
+    col3.metric("Ast Provided", f"{total_ast:.0f} mm²")
+
+    utilization = (row["ast_req"] / total_ast * 100) if total_ast > 0 else 0
+    col4.metric("Utilization", f"{utilization:.0f}%")
+
+    # Create and display cross-section
+    if VISUALIZATION_AVAILABLE:
+        fig = create_cross_section_figure(
+            b=b,
+            D=D,
+            cover=cover,
+            bottom_bars=bottom_bars,
+            top_bars=top_bars,
+            stirrup_dia=8,
+            rebar_config=rebar_config,
+        )
+        st.plotly_chart(fig, use_container_width=True, key="cross_section_fig")
+    else:
+        st.warning("Plotly not available for visualization")
+        st.write(f"Section: {b}×{D} mm")
+        st.write(f"Bottom bars: {len(bottom_bars)}")
+        st.write(f"Top bars: {len(top_bars)}")
+
+    # Rebar schedule table
+    st.markdown("#### 📋 Rebar Schedule")
+    schedule_data = {
+        "Location": ["Bottom Layer 1", "Bottom Layer 2", "Top Bars"],
+        "Bars": [
+            f"{bottom_count_1}Φ{bottom_dia_1}",
+            f"{bottom_count_2}Φ{bottom_dia_2}" if bottom_count_2 > 0 else "-",
+            f"{top_count}Φ{top_dia}",
+        ],
+        "Ast (mm²)": [
+            f"{bottom_count_1 * 3.14159 * (bottom_dia_1/2)**2:.0f}",
+            f"{bottom_count_2 * 3.14159 * (bottom_dia_2/2)**2:.0f}" if bottom_count_2 > 0 else "-",
+            f"{top_count * 3.14159 * (top_dia/2)**2:.0f}",
+        ],
+    }
+    st.dataframe(schedule_data, hide_index=True, use_container_width=True)
+
+    # Navigation
+    st.divider()
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        if st.button("← Back to 3D"):
+            set_workspace_state(WorkspaceState.VIEW_3D)
+            st.rerun()
+    with c2:
+        if st.button("🔧 Edit Rebar"):
+            set_workspace_state(WorkspaceState.REBAR_EDIT)
+            st.rerun()
+    with c3:
+        if st.button("🏗️ Building"):
+            set_workspace_state(WorkspaceState.BUILDING_3D)
+            st.rerun()
+    with c4:
+        if st.button("📊 Results"):
+            set_workspace_state(WorkspaceState.DESIGN)
+            st.rerun()
+
+
 def render_3d_view() -> None:
     """Render detailed 3D view for selected beam."""
     beam_id = st.session_state.ws_selected_beam
@@ -1157,21 +1484,25 @@ def render_3d_view() -> None:
     else:
         st.info("3D visualization not available")
 
-    # Navigation - compact 4-button row
-    col1, col2, col3, col4 = st.columns(4)
+    # Navigation - compact 5-button row
+    col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         if st.button("← Results", use_container_width=True):
             set_workspace_state(WorkspaceState.DESIGN)
             st.rerun()
     with col2:
+        if st.button("📐 Section", use_container_width=True):
+            set_workspace_state(WorkspaceState.CROSS_SECTION)
+            st.rerun()
+    with col3:
         if st.button("🔧 Edit Rebar", use_container_width=True, type="primary"):
             set_workspace_state(WorkspaceState.REBAR_EDIT)
             st.rerun()
-    with col3:
+    with col4:
         if st.button("🏗️ Building", use_container_width=True):
             set_workspace_state(WorkspaceState.BUILDING_3D)
             st.rerun()
-    with col4:
+    with col5:
         # Next beam button
         beam_list = df["beam_id"].tolist() if df is not None and len(df) > 0 else []
         if len(beam_list) > 1:
@@ -1351,6 +1682,7 @@ def render_dynamic_workspace() -> None:
         WorkspaceState.DESIGN: "📊 Design",
         WorkspaceState.BUILDING_3D: "🏗️ Building 3D",
         WorkspaceState.VIEW_3D: "🎨 Beam 3D",
+        WorkspaceState.CROSS_SECTION: "📐 Cross-Section",
         WorkspaceState.REBAR_EDIT: "🔧 Rebar Edit",
         WorkspaceState.EDIT: "✏️ Edit",
         WorkspaceState.DASHBOARD: "📈 Dashboard",
@@ -1368,6 +1700,8 @@ def render_dynamic_workspace() -> None:
         render_building_3d()
     elif state == WorkspaceState.VIEW_3D:
         render_3d_view()
+    elif state == WorkspaceState.CROSS_SECTION:
+        render_cross_section()
     elif state == WorkspaceState.REBAR_EDIT:
         render_rebar_editor()
     elif state == WorkspaceState.EDIT:

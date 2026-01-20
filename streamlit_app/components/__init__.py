@@ -46,6 +46,7 @@ from .ai_workspace import (
     design_all_beams_ws,
     render_dynamic_workspace,
     create_building_3d_figure,
+    create_cross_section_figure,
     calculate_rebar_checks,
 )
 
