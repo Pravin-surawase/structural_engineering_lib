@@ -155,6 +155,130 @@ def init_session_state():
         st.session_state.batch_results = None  # List of design results
 
 
+def calculate_rebar_layout(
+    ast_mm2: float,
+    b_mm: float,
+    D_mm: float,
+    span_mm: float,
+    cover_mm: float = 40.0,
+    stirrup_dia: float = 8.0,
+    vu_kn: float = 50.0,
+    fck: float = 25.0,
+) -> dict[str, Any]:
+    """Calculate actual rebar layout from design requirements.
+
+    Returns:
+        dict with:
+            - bottom_bars: List of (x, y, z) positions
+            - top_bars: List of (x, y, z) positions
+            - stirrup_positions: List of x positions
+            - bar_diameter: Selected bar size (mm)
+            - stirrup_spacing: Variable spacing zones [(start, end, spacing), ...]
+            - summary: Text summary of reinforcement
+    """
+    import math
+
+    # Standard bar diameters and areas
+    BAR_OPTIONS = [
+        (12, 113.1),
+        (16, 201.1),
+        (20, 314.2),
+        (25, 490.9),
+        (32, 804.2),
+    ]
+
+    # Find optimal bar combination (prefer 3-5 bars)
+    best_config = None
+    for dia, area in BAR_OPTIONS:
+        num_bars = math.ceil(ast_mm2 / area)
+        if 2 <= num_bars <= 6:
+            ast_provided = num_bars * area
+            best_config = (dia, num_bars, ast_provided)
+            break
+
+    if best_config is None:
+        # Fallback to 4T16
+        best_config = (16, 4, 4 * 201.1)
+
+    bar_dia, num_bars, ast_provided = best_config
+
+    # Calculate bar positions
+    edge_dist = cover_mm + stirrup_dia + bar_dia / 2
+    z_bottom = edge_dist
+    z_top = D_mm - edge_dist
+    available_width = b_mm - 2 * edge_dist
+
+    bottom_bars = []
+    if num_bars == 1:
+        bottom_bars = [(0, 0, z_bottom)]
+    elif num_bars == 2:
+        bottom_bars = [(0, -available_width / 2, z_bottom), (0, available_width / 2, z_bottom)]
+    else:
+        spacing = available_width / (num_bars - 1) if num_bars > 1 else 0
+        for i in range(num_bars):
+            y = -available_width / 2 + i * spacing
+            bottom_bars.append((0, y, z_bottom))
+
+    # Top bars (usually 2 for hanger bars)
+    top_bars = [
+        (0, -available_width / 2, z_top),
+        (0, available_width / 2, z_top),
+    ]
+
+    # Calculate stirrup spacing zones (IS 456 requirements)
+    # Zone 1: Within 2d from support - closer spacing (0.75 * Sv)
+    # Zone 2: Middle span - normal spacing
+    d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
+
+    # Calculate base stirrup spacing from shear
+    # Simplified: Sv_max = 0.87 * fy * Asv / (0.4 * b) for minimum shear
+    # Practical range: 100-200mm
+    sv_base = min(200, max(100, 0.75 * d_mm))  # Practical limits
+
+    # If high shear, reduce spacing
+    tau_v = (vu_kn * 1000) / (b_mm * d_mm)  # Approximate shear stress
+    if tau_v > 0.5:  # Higher shear stress
+        sv_base = min(sv_base, 150)
+    if tau_v > 1.0:
+        sv_base = min(sv_base, 100)
+
+    # Generate stirrup positions with variable spacing
+    stirrup_positions = []
+    zone_2d = 2 * d_mm  # Distance of 2d from supports
+
+    # Zone 1: Support zone (tighter spacing)
+    sv_support = sv_base * 0.75
+    x = 50  # Start from support
+    while x < zone_2d:
+        stirrup_positions.append(x)
+        x += sv_support
+
+    # Zone 2: Middle span (normal spacing)
+    while x < span_mm - zone_2d:
+        stirrup_positions.append(x)
+        x += sv_base
+
+    # Zone 3: Other support (tighter spacing)
+    while x < span_mm - 50:
+        stirrup_positions.append(x)
+        x += sv_support
+
+    # Summary text
+    summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²) + 2T{bar_dia} hanger"
+    spacing_summary = f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (support), @{sv_base:.0f}mm (mid)"
+
+    return {
+        "bottom_bars": bottom_bars,
+        "top_bars": top_bars,
+        "stirrup_positions": stirrup_positions,
+        "bar_diameter": bar_dia,
+        "stirrup_diameter": stirrup_dia,
+        "ast_provided": ast_provided,
+        "summary": summary,
+        "spacing_summary": spacing_summary,
+    }
+
+
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
     """Run beam design with given parameters."""
     try:
@@ -678,21 +802,44 @@ def render_workspace_panel():
                     ),
                 )
 
-    # Tab 1: 3D View
+    # Tab 1: 3D View with Actual Reinforcement
     with tabs[1]:
         if st.session_state.current_design:
             params = st.session_state.design_params
+            design = st.session_state.current_design
 
             # Get dimensions from params
             b = params.get("b_mm", 300)
             D = params.get("D_mm", 500)
             span = params.get("span_m", 5.0) * 1000
+            ast_mm2 = design.flexure.ast_required
+            vu_kn = params.get("vu_kn", 50)
+            fck = params.get("fck", 25)
+
+            # Calculate actual reinforcement layout
+            rebar_layout = calculate_rebar_layout(
+                ast_mm2=ast_mm2,
+                b_mm=b,
+                D_mm=D,
+                span_mm=span,
+                vu_kn=vu_kn,
+                fck=fck,
+            )
+
+            # Show rebar summary
+            st.markdown(f"**Reinforcement:** {rebar_layout['summary']}")
+            st.caption(rebar_layout['spacing_summary'])
 
             try:
                 fig = create_beam_3d_figure(
                     b=b,
                     D=D,
                     span=span,
+                    bottom_bars=rebar_layout["bottom_bars"],
+                    top_bars=rebar_layout["top_bars"],
+                    bar_diameter=rebar_layout["bar_diameter"],
+                    stirrup_positions=rebar_layout["stirrup_positions"],
+                    stirrup_diameter=rebar_layout["stirrup_diameter"],
                 )
                 st.plotly_chart(fig, use_container_width=True)
             except Exception as e:
