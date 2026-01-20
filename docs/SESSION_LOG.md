@@ -4,6 +4,75 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 51: Phase 3 Rebar Visualization & Bug Fixes
+
+**Focus:** Fix user-reported bugs, implement Phase 3 rebar visualization in 3D
+
+**User Requests:**
+1. Fix "Analysis failed: 'ComplianceCaseResult' object has no attribute 'geometry'"
+2. Fix "StreamlitMixedNumericTypesError: value has float type, step has int type"
+3. Update CSV import for multiple files (ETABS Geometry + Forces)
+4. Fix GPT model name (gpt-5-mini doesn't exist → gpt-4o-mini)
+5. Start Phase 3: Rebar visualization in 3D with variable stirrup zones
+6. Target 6+ commits for high-value session
+
+### Implementation (3 commits)
+
+| Commit | Description |
+|--------|-------------|
+| `c5fd8bc8` | fix(ai): resolve SmartDesigner geometry error and type mismatch |
+| `9383385c` | fix(ai): fix GPT model name and scanner issues |
+| `4a89dc9a` | feat(ai): add Phase 3 rebar visualization with variable stirrup zones |
+
+### Bugs Fixed
+
+1. **SmartDesigner geometry error** — `ComplianceCaseResult` has no `.geometry`/`.materials`. Created `SimpleNamespace` wrapper in `run_smart_analysis()` to bridge interface gap.
+2. **number_input type mismatch** — Changed session state defaults to floats (300.0, 500.0, etc.) and steps to floats (25.0, 10.0, 5.0).
+3. **GPT model name** — `gpt-5-mini` doesn't exist! Fixed to `gpt-4o-mini` (actual OpenAI model).
+4. **Division by zero** — Scanner flagged `progress.progress((idx + 1) / len(combined_df))` — added guard for empty DataFrame.
+5. **Single CSV import** — ETABS exports separate files. Changed to dual file uploaders (Geometry CSV + Forces CSV) with column mapping and merge.
+
+### Features Added (Phase 3)
+
+1. **`calculate_rebar_layout()` function** — 118-line function that:
+   - Takes Ast required, dimensions, span
+   - Calculates optimal bar combination (2-6 bars, 12mm-32mm)
+   - Generates bar positions for bottom and top bars
+   - Calculates variable stirrup zones per IS 456 (2d from support = tighter spacing)
+   - Returns complete rebar layout for 3D visualization
+
+2. **3D View tab enhancement** — Now shows:
+   - Actual reinforcement from design (e.g., "4T16 + 2T16 hanger")
+   - Variable stirrup positions
+   - Integration with `create_beam_3d_figure()`
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py`:
+  - `run_smart_analysis()` — Added SimpleNamespace wrapper for BeamDesignOutput interface
+  - `calculate_rebar_layout()` — NEW function for Phase 3 rebar calculation
+  - `get_openai_config()` — Fixed model name, added error handling
+  - Session state defaults — Changed to floats
+  - CSV Import tab — Dual file uploaders for Geometry + Forces
+  - 3D View tab — Shows actual reinforcement from design
+
+- `streamlit_app/.streamlit/secrets.toml`:
+  - Changed `model = "gpt-5-mini"` → `model = "gpt-4o-mini"`
+
+### Validation
+
+- **AI Assistant tests:** 11/11 passing
+- **Python syntax:** Verified
+- **Scanner:** Division by zero fixed
+
+### Status
+
+- **Phase 3: Rebar Visualization** — IN PROGRESS (core function done)
+- **Next:** Add rebar viz to Beam Design page, detailing data (Ld, lap lengths)
+- **Commits this session:** 3 (user goal: 6+)
+
+---
+
 ## 2026-01-20 — Session 50: AI Page Polish & CSV Import
 
 **Focus:** Fix remaining AI page bugs, add CSV import, update documentation

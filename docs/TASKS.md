@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 50)
+**Updated:** 2026-01-20 (Session 51)
 
 ---
 
@@ -15,16 +15,31 @@
 
 ## Current Focus
 
-- **Version:** v0.17.6 → v0.18.0 (AI Chat MVP)
-- **Focus:** AI Chat Interface + SmartDesigner UI Integration
-- **8-Week Plan:** Phase AI COMPLETE, Phase 3 upcoming
-- **Next Milestone:** v0.18.0 - AI Chat MVP ✅ READY
-- **Key Insight:** ChatGPT-like UI with library function calling
+- **Version:** v0.18.0 → v0.18.1 (Phase 3 - Rebar Visualization)
+- **Focus:** Actual reinforcement visualization from design results
+- **8-Week Plan:** Phase AI COMPLETE ✅, Phase 3 IN PROGRESS
+- **Next Milestone:** v0.18.1 - 3D Rebar Visualization
+- **Key Insight:** Show real bars (3T16, 4T20) not placeholders
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
 
 ## Active Tasks
+
+### TASK-REBAR-3D: Phase 3 - Rebar Visualization 🚧 IN PROGRESS
+
+**Goal:** Show actual reinforcement bars from design in 3D view
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| `calculate_rebar_layout()` function | ✅ Done | Session 51 - From Ast → nTdia |
+| Variable stirrup zones (2d rule) | ✅ Done | Session 51 - Tighter at supports |
+| Integrate with AI 3D tab | ✅ Done | Session 51 - Shows actual bars |
+| Rebar summary display | ✅ Done | Session 51 - "4T16 + 2T16 hanger" |
+| Add to Beam Design page | 📋 Next | Same rebar viz for page 01 |
+| Detailing data (Ld, lap lengths) | 📋 Next | Development length calcs |
+
+---
 
 ### TASK-AI-CHAT: AI Chat Assistant Interface ✅ MVP COMPLETE
 
@@ -35,16 +50,11 @@
 | AI Assistant page (10_🤖_ai_assistant.py) | ✅ Done | Split layout working |
 | SmartDashboard component | ✅ Done | Score gauges, issues |
 | LLM tool definitions | ✅ Done | 7 tools for function calling |
-| Architecture research doc | ✅ Done | OpenAI/Streamlit patterns |
-| **Fix ComplianceCaseResult.geometry bug** | ✅ Done | Session 49 |
-| **GPT-5-mini model support** | ✅ Done | Session 49 - Configurable via secrets |
-| **Fix workspace panel attributes** | ✅ Done | Session 49 |
-| **Add welcome message + Clear button** | ✅ Done | Session 49 |
-| **Fix 3D view params (b_mm→b)** | ✅ Done | Session 50 - `c53b21c6` |
-| **Add CSV Import tab** | ✅ Done | Session 50 - `8b848122` |
-| **Compact UI (moved status to sidebar)** | ✅ Done | Session 50 |
-| **AI usage research doc** | ✅ Done | Session 50 |
-| Connect SmartDesigner to chat | ✅ Done | Using existing analyze() |
+| **Fix SmartDesigner geometry bug** | ✅ Done | Session 51 - Wrapper object |
+| **Fix number_input type mismatch** | ✅ Done | Session 51 - All floats |
+| **Fix GPT model name (gpt-4o-mini)** | ✅ Done | Session 51 - Corrected |
+| **Multi-file CSV import** | ✅ Done | Session 51 - Geom + Forces |
+| **Phase 3 rebar visualization** | ✅ Done | Session 51 - `4a89dc9a` |
 | Streaming responses | 📋 V1.1 | Typewriter effect |
 | Tool execution handlers | 📋 V1.1 | Map tools to library functions |
 
