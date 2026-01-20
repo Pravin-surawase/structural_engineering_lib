@@ -511,6 +511,28 @@ cat scripts/index.json
 
 ---
 
+## 🤖 AI Model Knowledge Limits
+
+**Problem:** AI models have training data cutoffs and don't know current model names/versions.
+
+**Key Rules:**
+1. **Do NOT invent model names:** Never guess model names like "gpt-5-mini" or "claude-4"
+2. **Use web search:** When asked about current AI model options, use `fetch_webpage` to check official docs
+3. **Verify before suggesting:** Don't assume model availability without verification
+4. **Stick to known models:** For OpenAI, use verified models like `gpt-4o-mini`, `gpt-4o`, `gpt-4-turbo`
+5. **Admit uncertainty:** Say "I'd need to verify current model availability" instead of guessing
+
+**Current verified models (as of last update):**
+- **OpenAI:** gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-3.5-turbo
+- **Anthropic:** claude-sonnet-4-20250514, claude-3-opus, claude-3-sonnet, claude-3-haiku
+
+**When updating code with AI model references:**
+1. Check official API documentation via web search
+2. Use conservative, well-documented model names
+3. Prefer models that have been stable for >3 months
+
+---
+
 ## 📚 Essential Resources
 
 ### Daily Commands
