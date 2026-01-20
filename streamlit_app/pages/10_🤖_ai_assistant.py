@@ -66,10 +66,10 @@ def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets.
 
     Returns config dict with model, temperature, max_tokens.
-    Defaults to gpt-5-mini if not specified.
+    Defaults to gpt-4o-mini if not specified.
     """
     config = {
-        "model": "gpt-5-mini",  # Default: fast, cost-efficient
+        "model": "gpt-4o-mini",  # Default: fast, cost-efficient GPT-4o Mini
         "temperature": 0.7,
         "max_tokens": 2000,
     }
@@ -78,11 +78,17 @@ def get_openai_config() -> dict[str, Any]:
     if "openai" in st.secrets:
         openai_config = st.secrets.get("openai", {})
         if "model" in openai_config:
-            config["model"] = openai_config["model"]
+            config["model"] = openai_config.get("model", config["model"])
         if "temperature" in openai_config:
-            config["temperature"] = float(openai_config["temperature"])
+            try:
+                config["temperature"] = float(openai_config.get("temperature", config["temperature"]))
+            except (ValueError, TypeError):
+                pass  # Keep default
         if "max_tokens" in openai_config:
-            config["max_tokens"] = int(openai_config["max_tokens"])
+            try:
+                config["max_tokens"] = int(openai_config.get("max_tokens", config["max_tokens"]))
+            except (ValueError, TypeError):
+                pass  # Keep default
 
     return config
 
@@ -769,42 +775,46 @@ def render_workspace_panel():
                 # Design button
                 if st.button("🏗️ Design All Beams", type="primary", key="batch_design_btn"):
                     if mu_col != "--":
-                        with st.spinner(f"Designing {len(combined_df)} beams..."):
-                            results = []
-                            progress = st.progress(0)
-                            for idx, row in combined_df.iterrows():
-                                # Get dimensions from columns or use defaults
-                                b_val = row.get(b_col, default_b) if b_col != "--" else default_b
-                                d_val = row.get(d_col, default_d) if d_col != "--" else default_d
+                        total_beams = len(combined_df)
+                        if total_beams == 0:
+                            st.warning("No beams to design. Check your CSV file.")
+                        else:
+                            with st.spinner(f"Designing {total_beams} beams..."):
+                                results = []
+                                progress = st.progress(0)
+                                for idx, row in combined_df.iterrows():
+                                    # Get dimensions from columns or use defaults
+                                    b_val = row.get(b_col, default_b) if b_col != "--" else default_b
+                                    d_val = row.get(d_col, default_d) if d_col != "--" else default_d
 
-                                params = {
-                                    "b_mm": float(b_val) if pd.notna(b_val) else default_b,
-                                    "D_mm": float(d_val) if pd.notna(d_val) else default_d,
-                                    "mu_knm": float(row.get(mu_col, 100)),
-                                    "vu_kn": float(row.get(vu_col, 50)) if vu_col != "--" and pd.notna(row.get(vu_col)) else 50.0,
-                                    "fck": 25,
-                                    "fy": 500,
-                                }
-                                result = run_design(params)
-                                result["beam_id"] = row.get(id_col, f"B{idx+1}") if id_col != "--" else f"B{idx+1}"
-                                results.append(result)
-                                progress.progress((idx + 1) / len(combined_df))
+                                    params = {
+                                        "b_mm": float(b_val) if pd.notna(b_val) else default_b,
+                                        "D_mm": float(d_val) if pd.notna(d_val) else default_d,
+                                        "mu_knm": float(row.get(mu_col, 100)),
+                                        "vu_kn": float(row.get(vu_col, 50)) if vu_col != "--" and pd.notna(row.get(vu_col)) else 50.0,
+                                        "fck": 25,
+                                        "fy": 500,
+                                    }
+                                    result = run_design(params)
+                                    result["beam_id"] = row.get(id_col, f"B{idx+1}") if id_col != "--" else f"B{idx+1}"
+                                    results.append(result)
+                                    progress.progress((idx + 1) / total_beams)
 
-                            st.session_state.batch_results = results
-                            safe_count = sum(1 for r in results if r.get("is_safe", False))
-                            st.success(f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results)-safe_count} UNSAFE")
+                                st.session_state.batch_results = results
+                                safe_count = sum(1 for r in results if r.get("is_safe", False))
+                                st.success(f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results)-safe_count} UNSAFE")
 
-                            # Show results summary
-                            results_data = []
-                            for r in results:
-                                results_data.append({
-                                    "ID": r.get("beam_id", "-"),
-                                    "Section": r.get("section", "-"),
-                                    "Ast (mm²)": round(r.get("ast_mm2", 0)),
-                                    "Util": f"{r.get('utilization', 0):.0%}",
-                                    "Status": "✅" if r.get("is_safe") else "❌",
-                                })
-                            st.dataframe(pd.DataFrame(results_data), use_container_width=True)
+                                # Show results summary
+                                results_data = []
+                                for r in results:
+                                    results_data.append({
+                                        "ID": r.get("beam_id", "-"),
+                                        "Section": r.get("section", "-"),
+                                        "Ast (mm²)": round(r.get("ast_mm2", 0)),
+                                        "Util": f"{r.get('utilization', 0):.0%}",
+                                        "Status": "✅" if r.get("is_safe") else "❌",
+                                    })
+                                st.dataframe(pd.DataFrame(results_data), use_container_width=True)
                     else:
                         st.warning("Please map at least the Moment (Mu) column")
             except Exception as e:
