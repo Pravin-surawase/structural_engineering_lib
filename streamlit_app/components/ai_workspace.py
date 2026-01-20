@@ -868,14 +868,14 @@ def calculate_rebar_checks(
     # 1. Flexure capacity (approximate)
     # Mu = 0.87 * fy * Ast * (d - 0.42 * xu)
     # Simplified: Mu ≈ 0.87 * fy * Ast * 0.9 * d / 1e6 (for under-reinforced)
-    mu_capacity = 0.87 * fy * ast_bottom * 0.9 * d_eff / 1e6
+    mu_capacity = 0.87 * fy * ast_bottom * 0.9 * d_eff / 1e6 if fy > 0 else 0
     flexure_util = mu_knm / mu_capacity if mu_capacity > 0 else 999
     results["mu_capacity_knm"] = mu_capacity
     results["flexure_util"] = flexure_util
     results["flexure_ok"] = flexure_util <= 1.0
 
     # 2. Minimum reinforcement (IS 456 Cl 26.5.1.1)
-    ast_min = 0.85 * b_mm * d_eff / fy
+    ast_min = 0.85 * b_mm * d_eff / fy if fy > 0 else 0
     results["ast_min"] = ast_min
     results["min_reinf_ok"] = ast_bottom >= ast_min
 
@@ -1820,7 +1820,8 @@ def render_dynamic_workspace() -> None:
     ]
 
     current_idx = states_order.index(state) if state in states_order else 0
-    progress = (current_idx + 1) / len(states_order)
+    # Calculate progress (safe division - states_order always has 5 items)
+    progress = (current_idx + 1) / max(len(states_order), 1)
 
     # Compact state badge instead of progress bar
     state_labels = {
