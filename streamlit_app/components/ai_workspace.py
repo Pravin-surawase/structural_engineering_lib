@@ -285,6 +285,89 @@ def process_uploaded_file(file) -> tuple[bool, str]:
         return False, f"Error reading file: {e}"
 
 
+def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
+    """Process separate geometry and forces files and merge them.
+
+    Supports ETABS-style exports where geometry (Connectivity - Frame) and
+    forces (Element Forces - Beams) are in separate CSVs.
+    """
+    try:
+        geo_df = None
+        forces_df = None
+
+        # Read geometry file
+        if geometry_file:
+            if geometry_file.name.endswith('.xlsx'):
+                geo_df = pd.read_excel(geometry_file)
+            else:
+                geo_df = pd.read_csv(geometry_file)
+
+        # Read forces file
+        if forces_file:
+            if forces_file.name.endswith('.xlsx'):
+                forces_df = pd.read_excel(forces_file)
+            else:
+                forces_df = pd.read_csv(forces_file)
+
+        # If only one file, process as single
+        if geo_df is not None and forces_df is None:
+            mapping = auto_map_columns(geo_df)
+            st.session_state.ws_beams_df = standardize_dataframe(
+                geo_df, mapping, st.session_state.ws_defaults
+            )
+            return True, f"✅ Loaded geometry with {len(geo_df)} beams"
+
+        if forces_df is not None and geo_df is None:
+            mapping = auto_map_columns(forces_df)
+            st.session_state.ws_beams_df = standardize_dataframe(
+                forces_df, mapping, st.session_state.ws_defaults
+            )
+            return True, f"✅ Loaded forces with {len(forces_df)} entries"
+
+        # Merge both files
+        if geo_df is not None and forces_df is not None:
+            # Auto-map columns for both
+            geo_mapping = auto_map_columns(geo_df)
+            forces_mapping = auto_map_columns(forces_df)
+
+            # Find common key (beam_id / unique name)
+            geo_id_col = geo_mapping.get("beam_id")
+            forces_id_col = forces_mapping.get("beam_id")
+
+            if geo_id_col and forces_id_col:
+                # Merge on beam ID
+                merged_df = geo_df.merge(
+                    forces_df,
+                    left_on=geo_id_col,
+                    right_on=forces_id_col,
+                    how="outer",
+                    suffixes=("", "_forces")
+                )
+
+                # Combine mappings
+                combined_mapping = {**geo_mapping}
+                for key, col in forces_mapping.items():
+                    if key not in combined_mapping:
+                        combined_mapping[key] = col
+
+                st.session_state.ws_beams_df = standardize_dataframe(
+                    merged_df, combined_mapping, st.session_state.ws_defaults
+                )
+                return True, f"✅ Merged {len(geo_df)} geometry + {len(forces_df)} forces → {len(merged_df)} beams"
+            else:
+                # Fallback: just use geometry with defaults for forces
+                mapping = auto_map_columns(geo_df)
+                st.session_state.ws_beams_df = standardize_dataframe(
+                    geo_df, mapping, st.session_state.ws_defaults
+                )
+                return True, f"⚠️ Could not match beam IDs. Using geometry with default forces."
+
+        return False, "No files provided"
+
+    except Exception as e:
+        return False, f"Error processing files: {e}"
+
+
 def calculate_rebar_layout(
     ast_mm2: float,
     b_mm: float,
@@ -424,32 +507,30 @@ def design_all_beams_ws() -> pd.DataFrame:
 
 def render_welcome_panel() -> None:
     """Render welcome state with quick start cards."""
-    st.markdown("""
-    ### 🏗️ Beam Design Workspace
-    *Import data → Auto-design → 3D visualization → Customize reinforcement*
-    """)
+    st.markdown("### 🏗️ Beam Design Workspace")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
         with st.container(border=True):
             st.markdown("#### 📂 Quick Demo")
-            st.caption("10 beams · 3 stories · ETABS format")
+            st.caption("10 beams · 3 stories")
             if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary",
-                        help="Load 10 sample beams from an ETABS export to try the workflow"):
-                with st.spinner("Loading sample data..."):
+                        help="Load sample ETABS data"):
+                with st.spinner("⏳"):
                     load_sample_data()
                 st.rerun()
 
     with col2:
         with st.container(border=True):
             st.markdown("#### 📤 Your Data")
-            st.caption("CSV from ETABS, SAFE, Excel")
+            st.caption("Combined or separate files")
             uploaded = st.file_uploader(
-                "Upload CSV", type=["csv"], key="ws_upload", label_visibility="collapsed"
+                "Upload CSV", type=["csv", "xlsx"], key="ws_upload", label_visibility="collapsed",
+                help="Single file with geometry+forces, or use Advanced for separate files"
             )
             if uploaded:
-                with st.spinner("Processing CSV..."):
+                with st.spinner("⏳"):
                     success, message = process_uploaded_file(uploaded)
                 if success:
                     st.success(message)
@@ -461,10 +542,9 @@ def render_welcome_panel() -> None:
     with col3:
         with st.container(border=True):
             st.markdown("#### ✏️ New Beam")
-            st.caption("Design single beam manually")
+            st.caption("Manual input")
             if st.button("Create Beam", key="ws_manual", use_container_width=True,
-                        help="Start a new beam design from scratch with your own parameters"):
-                # Create empty dataframe with one row and generate coords
+                        help="Design single beam manually"):
                 st.session_state.ws_beams_df = pd.DataFrame([{
                     "beam_id": "B1",
                     "b_mm": 300,
@@ -482,18 +562,35 @@ def render_welcome_panel() -> None:
                 st.session_state.ws_state = WorkspaceState.EDIT
                 st.rerun()
 
-    # Feature highlights
-    st.divider()
-    st.markdown("**✨ Features:**")
-    feat_cols = st.columns(5)
-    feat_cols[0].caption("📊 Auto-mapping")
-    feat_cols[1].caption("🏗️ Building 3D")
-    feat_cols[2].caption("📐 Cross-section")
-    feat_cols[3].caption("🔧 Rebar editor")
-    feat_cols[4].caption("💰 Cost estimate")
+    # Advanced multi-file upload
+    with st.expander("📁 **Advanced: Separate Geometry + Forces Files**", expanded=False):
+        st.caption("Upload geometry and forces as separate CSV files (like ETABS exports)")
+        gcol, fcol = st.columns(2)
+        with gcol:
+            st.markdown("**Geometry** (beam IDs, sections, coordinates)")
+            geometry_file = st.file_uploader(
+                "Geometry CSV", type=["csv", "xlsx"], key="ws_geometry_upload", label_visibility="collapsed"
+            )
+        with fcol:
+            st.markdown("**Forces** (moments, shears from analysis)")
+            forces_file = st.file_uploader(
+                "Forces CSV", type=["csv", "xlsx"], key="ws_forces_upload", label_visibility="collapsed"
+            )
 
-    # Quick tip
-    st.info("💡 **Tip:** Use the chat on the left! Try: `load sample` → `design all` → `building 3d`")
+        if geometry_file or forces_file:
+            if st.button("🔄 Merge & Process Files", type="primary", use_container_width=True):
+                with st.spinner("Processing files..."):
+                    success, message = process_multi_files(geometry_file, forces_file)
+                if success:
+                    st.success(message)
+                    st.session_state.ws_state = WorkspaceState.IMPORT
+                    st.rerun()
+                else:
+                    st.error(message)
+
+    # Compact features row
+    st.markdown("**✨ Workflow:** Import → Design → 3D View → Edit Rebar → Dashboard")
+    st.info("💡 **Chat commands:** `load sample` → `design all` → `building 3d`", icon="💬")
 
 
 def render_import_preview() -> None:
@@ -739,14 +836,10 @@ def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
             r, g, b_col = int(base[1:3], 16), int(base[3:5], 16), int(base[5:7], 16)
             color = f"rgba({r}, {g}, {b_col}, 0.8)"
 
-        # Hover info
-        hover = (
-            f"<b>{beam_id}</b><br>"
-            f"Story: {story}<br>"
-            f"Section: {row['b_mm']:.0f}×{row['D_mm']:.0f} mm<br>"
-            f"Mu: {row.get('mu_knm', 0):.1f} kN·m<br>"
-            f"Status: {status}"
-        )
+        # Concise hover info - just beam name, utilization, pass/fail
+        util_pct = row.get("utilization", 0) * 100
+        status_icon = "✅" if "SAFE" in str(status).upper() else "❌" if "FAIL" in str(status).upper() else "⏳"
+        hover = f"<b>{beam_id}</b> {status_icon}<br>Util: {util_pct:.0f}%"
 
         fig.add_trace(go.Mesh3d(
             x=x_mesh, y=y_mesh, z=z_mesh,
@@ -810,8 +903,6 @@ def render_building_3d() -> None:
     if df is None:
         df = st.session_state.ws_beams_df
 
-    st.markdown("### 🏗️ Building 3D Visualization")
-
     if df is None or df.empty:
         st.warning("No beam data to visualize.")
         if st.button("← Back"):
@@ -819,42 +910,39 @@ def render_building_3d() -> None:
             st.rerun()
         return
 
-    # Quick stats
-    col1, col2, col3, col4 = st.columns(4)
+    # Compact header with stats inline
     total = len(df)
     stories = df["story"].nunique()
     safe_count = len(df[df.get("status", "").str.contains("SAFE", case=False, na=False)]) if "status" in df.columns else 0
-    col1.metric("Total Beams", total)
-    col2.metric("Stories", stories)
-    col3.metric("Designed", safe_count)
-    col4.metric("Pass Rate", f"{safe_count/total*100:.0f}%" if total > 0 else "N/A")
+    pass_rate = f"{safe_count/total*100:.0f}%" if total > 0 else "N/A"
 
-    # Create 3D figure
+    st.markdown(f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass")
+
+    # Create 3D figure with larger height
     fig = create_building_3d_figure(df)
-    fig.update_layout(height=500)
+    fig.update_layout(height=550)
     st.plotly_chart(fig, use_container_width=True, key="ws_building_3d")
 
-    # Controls
-    st.caption("💡 **Tip:** Click and drag to rotate, scroll to zoom, double-click to reset")
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("← Back to Results"):
+    # Compact controls in single row
+    c1, c2, c3, c4 = st.columns([1, 2, 1, 1])
+    with c1:
+        if st.button("← Back", key="bldg_back"):
             set_workspace_state(WorkspaceState.DESIGN)
             st.rerun()
-    with col2:
-        # Beam selector for detail view
+    with c2:
         beam_ids = df["beam_id"].tolist() if len(df) > 0 else []
         if beam_ids:
-            selected = st.selectbox("Jump to beam:", ["Select..."] + beam_ids, key="bldg_beam_select")
-            if selected != "Select...":
+            selected = st.selectbox("Select beam:", ["—"] + beam_ids, key="bldg_beam_select", label_visibility="collapsed")
+            if selected != "—":
                 st.session_state.ws_selected_beam = selected
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
-    with col3:
-        if st.button("📊 Dashboard"):
+    with c3:
+        if st.button("📊 Dashboard", key="bldg_dash"):
             set_workspace_state(WorkspaceState.DASHBOARD)
             st.rerun()
+    with c4:
+        st.caption("Drag to rotate")
 
 
 def calculate_rebar_checks(
