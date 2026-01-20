@@ -104,6 +104,90 @@ Tools implemented:
 
 ---
 
+## 2026-01-20 — Session 58 Part 2: AI Workspace Expansion Research
+
+**Focus:** Expand AI capabilities based on user feedback showing excellent AI performance
+
+**User Feedback (Key Insights):**
+- "our ai llm model is really good, it can work a lot"
+- "we are limiting its capabilities as our workspace is limited"
+- "like a table where llm can optimize beams, each beam, or floor wise"
+- "show changes, savings"
+- "even llm can use our lib functions which will increase its efficiency"
+
+### Research Conducted
+
+Created comprehensive expansion research document:
+- [docs/research/ai-workspace-expansion-v2.md](research/ai-workspace-expansion-v2.md)
+
+**Key Expansion Areas:**
+
+1. **Optimization Workspace** (P0)
+   - Interactive table for beam-by-beam optimization
+   - Floor-wise batch optimization
+   - Real-time cost/savings tracking
+   - Select/deselect beams from chat
+
+2. **Direct Library Access** (P0)
+   - `call_structural_lib` generic tool
+   - Access to 50+ API functions
+   - design_beam_is456, optimize_beam_cost, smart_analyze_design
+   - Whitelisted function security
+
+3. **Project Overview** (P1)
+   - Total cost tracking across all beams
+   - Floor-by-floor summaries
+   - Before/after comparisons
+   - Design history with undo
+
+4. **New Tools Proposed (8 new)**
+   - `show_optimization_workspace`
+   - `apply_optimization`
+   - `get_project_summary`
+   - `call_structural_lib`
+   - `compare_designs`
+   - `modify_beam_design`
+   - `save_design_state`
+   - `undo_last_change`
+
+### Implementation Roadmap
+
+| Phase | Focus | Effort |
+|-------|-------|--------|
+| Phase 1 | Optimization Workspace UI | 2-3 days |
+| Phase 2 | Library Function Integration | 2-3 days |
+| Phase 3 | Project Overview & Costs | 1-2 days |
+| Phase 4 | Advanced Features (undo, compare) | 2-3 days |
+
+### Key Decisions
+
+1. **Generic API caller over individual tools** - More flexible, less maintenance
+2. **Interactive table for optimization** - Users want visual control
+3. **Batch operations by floor** - Common structural engineering workflow
+4. **Undo/history essential** - Can't have destructive operations without recovery
+
+### Documentation Created
+
+| Document | Purpose |
+|----------|---------|
+| [ai-workspace-expansion-v2.md](research/ai-workspace-expansion-v2.md) | Detailed expansion research |
+
+### Updated Files
+
+| File | Changes |
+|------|---------|
+| [ai-assistant-workspace-integration.md](research/ai-assistant-workspace-integration.md) | Updated Next Steps to reference V2 expansion |
+
+### Session Summary
+
+- Completed in-depth research on expanding AI workspace capabilities
+- Identified 8 new tools needed for interactive optimization
+- Planned generic `call_structural_lib` for direct library access
+- Designed optimization workspace UI with interactive table
+- Created comprehensive research document with implementation roadmap
+
+---
+
 ## 2026-01-21 — Session 57: AI v2 CSV Import Fix (Critical)
 
 **Focus:** Fix broken CSV import in AI v2 page by reusing proven adapter infrastructure

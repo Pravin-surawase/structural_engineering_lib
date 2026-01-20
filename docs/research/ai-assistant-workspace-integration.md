@@ -589,7 +589,7 @@ def generate_dynamic_context() -> str:
 
 ## 9. Next Steps
 
-### ✅ Completed (This Session)
+### ✅ Completed (Session 58 - Phase 1 & 2)
 
 - [x] Research OpenAI function calling
 - [x] Research OpenRouter models
@@ -603,12 +603,28 @@ def generate_dynamic_context() -> str:
 - [x] Add action-oriented system prompt (no clarifying questions)
 - [x] Implement 10 tools: design_beam, design_all, get_beam_details, select_beam, show_visualization, filter_3d_view, get_critical_beams, start_optimization, suggest_optimization, export_results
 
-### Next Session
+### 🔄 In Progress (Session 58 - Phase 3: Expansion)
 
-- [ ] Test with actual user queries (filter floor, list critical beams, optimize)
-- [ ] Fine-tune system prompt based on test results
-- [ ] Add more workspace actions (export screenshots, rebar schedule)
-- [ ] Optimize token usage with context trimming
+See **[AI Workspace Expansion V2](ai-workspace-expansion-v2.md)** for detailed expansion plans.
+
+**Key Expansions Planned:**
+- [ ] Optimization Workspace UI (interactive table for batch optimization)
+- [ ] Direct library function access (`call_structural_lib` tool)
+- [ ] Project summary with cost tracking
+- [ ] Design comparison and history
+- [ ] Floor-wise batch optimization
+
+**New Tools to Implement:**
+1. `show_optimization_workspace` - Interactive optimization table
+2. `apply_optimization` - Apply batch changes
+3. `get_project_summary` - Overall project cost/status
+4. `call_structural_lib` - Generic API caller (50+ functions)
+5. `compare_designs` - Before/after comparison
+6. `modify_beam_design` - Change beam properties
+7. `save_design_state` - Save for undo
+8. `undo_last_change` - Revert changes
+
+### Future Enhancements
 
 - [ ] Add code generation capabilities
 - [ ] Implement multi-step reasoning chains
