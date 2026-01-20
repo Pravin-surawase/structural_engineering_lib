@@ -435,8 +435,10 @@ def render_welcome_panel() -> None:
         with st.container(border=True):
             st.markdown("#### 📂 Quick Demo")
             st.caption("10 beams · 3 stories · ETABS format")
-            if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary"):
-                load_sample_data()
+            if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary",
+                        help="Load 10 sample beams from an ETABS export to try the workflow"):
+                with st.spinner("Loading sample data..."):
+                    load_sample_data()
                 st.rerun()
 
     with col2:
@@ -447,7 +449,8 @@ def render_welcome_panel() -> None:
                 "Upload CSV", type=["csv"], key="ws_upload", label_visibility="collapsed"
             )
             if uploaded:
-                success, message = process_uploaded_file(uploaded)
+                with st.spinner("Processing CSV..."):
+                    success, message = process_uploaded_file(uploaded)
                 if success:
                     st.success(message)
                     st.session_state.ws_state = WorkspaceState.IMPORT
@@ -459,7 +462,8 @@ def render_welcome_panel() -> None:
         with st.container(border=True):
             st.markdown("#### ✏️ New Beam")
             st.caption("Design single beam manually")
-            if st.button("Create Beam", key="ws_manual", use_container_width=True):
+            if st.button("Create Beam", key="ws_manual", use_container_width=True,
+                        help="Start a new beam design from scratch with your own parameters"):
                 # Create empty dataframe with one row and generate coords
                 st.session_state.ws_beams_df = pd.DataFrame([{
                     "beam_id": "B1",
@@ -480,7 +484,16 @@ def render_welcome_panel() -> None:
 
     # Feature highlights
     st.divider()
-    st.caption("**Features:** Auto-column mapping · IS 456 design · 3D building view · Interactive rebar editor · Real-time checks")
+    st.markdown("**✨ Features:**")
+    feat_cols = st.columns(5)
+    feat_cols[0].caption("📊 Auto-mapping")
+    feat_cols[1].caption("🏗️ Building 3D")
+    feat_cols[2].caption("📐 Cross-section")
+    feat_cols[3].caption("🔧 Rebar editor")
+    feat_cols[4].caption("💰 Cost estimate")
+
+    # Quick tip
+    st.info("💡 **Tip:** Use the chat on the left! Try: `load sample` → `design all` → `building 3d`")
 
 
 def render_import_preview() -> None:
@@ -513,13 +526,15 @@ def render_import_preview() -> None:
     # Action buttons
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🚀 Design All Beams", type="primary", use_container_width=True):
+        if st.button("🚀 Design All Beams", type="primary", use_container_width=True,
+                    help="Run IS456 flexure & shear design on all beams"):
             with st.spinner("Designing beams..."):
                 st.session_state.ws_design_results = design_all_beams_ws()
             st.session_state.ws_state = WorkspaceState.DESIGN
             st.rerun()
     with col2:
-        if st.button("← Back to Welcome", use_container_width=True):
+        if st.button("← Back to Welcome", use_container_width=True,
+                    help="Clear data and return to start screen"):
             st.session_state.ws_beams_df = None
             set_workspace_state(WorkspaceState.WELCOME)
             st.rerun()
@@ -581,26 +596,42 @@ def render_design_results() -> None:
 
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            if st.button("🎨 3D View", use_container_width=True, type="primary"):
+            if st.button("🎨 3D View", use_container_width=True, type="primary",
+                        help="Interactive 3D visualization of the selected beam"):
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
         with col2:
-            if st.button("🔧 Edit Rebar", use_container_width=True):
-                set_workspace_state(WorkspaceState.REBAR_EDIT)
+            if st.button("📐 Section", use_container_width=True,
+                        help="View cross-section with reinforcement layout"):
+                set_workspace_state(WorkspaceState.CROSS_SECTION)
                 st.rerun()
         with col3:
-            if st.button("🏗️ Building", use_container_width=True):
-                set_workspace_state(WorkspaceState.BUILDING_3D)
+            if st.button("🔧 Rebar", use_container_width=True,
+                        help="Edit reinforcement to fix failed designs"):
+                set_workspace_state(WorkspaceState.REBAR_EDIT)
                 st.rerun()
         with col4:
-            if st.button("📊 Dashboard", use_container_width=True):
-                set_workspace_state(WorkspaceState.DASHBOARD)
+            if st.button("🏗️ Building", use_container_width=True,
+                        help="See all beams in 3D building context"):
+                set_workspace_state(WorkspaceState.BUILDING_3D)
                 st.rerun()
 
+    # Help tip for failed beams
+    if failed > 0:
+        st.warning(f"💡 **{failed} beams failed.** Select one and use **Edit Rebar** to increase reinforcement.")
+
     st.divider()
-    if st.button("← Back to Import"):
-        set_workspace_state(WorkspaceState.IMPORT)
-        st.rerun()
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("📊 Dashboard", use_container_width=True,
+                    help="See summary stats, cost breakdown, and export options"):
+            set_workspace_state(WorkspaceState.DASHBOARD)
+            st.rerun()
+    with c2:
+        if st.button("← Import", use_container_width=True,
+                    help="Go back to review or modify imported data"):
+            set_workspace_state(WorkspaceState.IMPORT)
+            st.rerun()
 
 
 def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
@@ -1691,7 +1722,7 @@ def render_dashboard() -> None:
     st.divider()
 
     # Tabs for different insights
-    tab1, tab2, tab3 = st.tabs(["📈 Analysis", "📦 Material Takeoff", "💰 Cost Estimate"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📈 Analysis", "📦 Material Takeoff", "💰 Cost Estimate", "📥 Export"])
 
     with tab1:
         # Utilization distribution
@@ -1788,6 +1819,67 @@ def render_dashboard() -> None:
                 legend=dict(orientation="h", yanchor="bottom", y=-0.1),
             )
             st.plotly_chart(fig, use_container_width=True, key="cost_pie")
+
+    with tab4:
+        # Export options
+        st.markdown("##### Download Design Results")
+        st.caption("Export your beam designs for documentation or further analysis")
+
+        # Prepare export data with key columns
+        export_cols = ["beam_id", "b_mm", "D_mm", "span_mm", "mu_knm", "vu_kn",
+                       "is_safe", "utilization", "ast_provided_mm2", "ast_required_mm2",
+                       "main_bars", "stirrup_spacing_mm"]
+        export_df = df[[c for c in export_cols if c in df.columns]].copy()
+
+        # Add status column for clarity
+        export_df.insert(0, "status", export_df["is_safe"].apply(lambda x: "PASS" if x else "FAIL"))
+
+        # CSV download
+        csv_data = export_df.to_csv(index=False)
+        st.download_button(
+            label="📥 Download CSV",
+            data=csv_data,
+            file_name="beam_design_results.csv",
+            mime="text/csv",
+            use_container_width=True,
+            help="Download all beam design results as CSV file",
+        )
+
+        # Summary download
+        takeoff = calculate_material_takeoff(df)
+        summary_text = f"""BEAM DESIGN SUMMARY
+====================
+Generated by: structural_engineering_lib AI Assistant v2
+Date: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}
+
+DESIGN SUMMARY
+--------------
+Total Beams: {len(df)}
+Passed: {len(df[df['is_safe']==True])}
+Failed: {len(df[df['is_safe']==False])}
+Average Utilization: {df['utilization'].mean()*100:.1f}%
+
+MATERIAL TAKEOFF
+----------------
+Concrete: {takeoff['concrete_m3']:.2f} m³
+Steel: {takeoff['steel_kg']:.0f} kg ({takeoff['steel_kg']/1000:.2f} tonnes)
+
+COST ESTIMATE (INR)
+-------------------
+Concrete (@₹8000/m³): ₹{takeoff['concrete_cost']:,.0f}
+Steel (@₹85/kg): ₹{takeoff['steel_cost']:,.0f}
+TOTAL: ₹{takeoff['total_cost']:,.0f}
+"""
+        st.download_button(
+            label="📄 Download Summary",
+            data=summary_text,
+            file_name="beam_design_summary.txt",
+            mime="text/plain",
+            use_container_width=True,
+            help="Download material takeoff and cost summary",
+        )
+
+        st.info("💡 **Tip:** Use CSV export to import results into Excel for detailed reporting.")
 
     # Navigation
     st.divider()

@@ -81,8 +81,10 @@ def get_openai_client() -> OpenAI | None:
 
 def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets."""
+    # Default to GPT-5-mini (fast, cost-efficient) for structural engineering tasks
+    # GPT-5.2 is best but expensive; GPT-5-mini is optimal for defined tasks
     config = {
-        "model": "gpt-4o-mini",
+        "model": "gpt-5-mini",
         "temperature": 0.7,
         "max_tokens": 2000,
     }
