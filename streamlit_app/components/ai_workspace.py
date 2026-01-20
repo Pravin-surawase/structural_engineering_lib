@@ -1610,8 +1610,62 @@ def render_beam_editor() -> None:
         st.rerun()
 
 
+def calculate_material_takeoff(df: pd.DataFrame) -> dict:
+    """Calculate material takeoff from design results.
+
+    Args:
+        df: Design results DataFrame
+
+    Returns:
+        Dictionary with material quantities and costs
+    """
+    total_concrete = 0  # m³
+    total_steel = 0  # kg
+
+    for _, row in df.iterrows():
+        # Concrete volume
+        b = row["b_mm"] / 1000  # m
+        D = row["D_mm"] / 1000  # m
+        span = row["span_mm"] / 1000  # m
+        concrete_vol = b * D * span
+        total_concrete += concrete_vol
+
+        # Steel weight (approximate from Ast)
+        ast = row.get("ast_req", 0)
+        # Bottom bars
+        bottom_area = ast  # mm²
+        # Top bars (approx 30% of bottom)
+        top_area = ast * 0.3
+        # Stirrups (approx 25% of main)
+        stirrup_area = ast * 0.25
+
+        total_area = bottom_area + top_area + stirrup_area
+        # Weight = area × length × density
+        # area in mm², length in mm, density = 7850 kg/m³
+        steel_weight = total_area * (span * 1000) * 7850 / 1e9
+        total_steel += steel_weight
+
+    # Costs (₹ per unit)
+    concrete_rate = 8000  # ₹/m³ for M25 RCC
+    steel_rate = 85  # ₹/kg for Fe500
+
+    concrete_cost = total_concrete * concrete_rate
+    steel_cost = total_steel * steel_rate
+    total_cost = concrete_cost + steel_cost
+
+    return {
+        "concrete_m3": total_concrete,
+        "steel_kg": total_steel,
+        "concrete_cost": concrete_cost,
+        "steel_cost": steel_cost,
+        "total_cost": total_cost,
+        "concrete_rate": concrete_rate,
+        "steel_rate": steel_rate,
+    }
+
+
 def render_dashboard() -> None:
-    """Render SmartDesigner dashboard."""
+    """Render SmartDesigner dashboard with material takeoff."""
     st.markdown("### 📊 Smart Dashboard")
 
     df = st.session_state.ws_design_results
@@ -1623,40 +1677,133 @@ def render_dashboard() -> None:
             st.rerun()
         return
 
-    # Summary stats
+    # Summary stats row
     total = len(df)
     passed = len(df[df["is_safe"] == True])
     avg_util = df["utilization"].mean() * 100
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Success Rate", f"{100*passed/max(total,1):.1f}%")
-    col2.metric("Avg Utilization", f"{avg_util:.1f}%")
-    col3.metric("Total Beams", total)
-
-    # Utilization distribution
-    st.markdown("**Utilization Distribution:**")
-    low = len(df[df["utilization"] < 0.6])
-    optimal = len(df[(df["utilization"] >= 0.6) & (df["utilization"] <= 0.85)])
-    high = len(df[df["utilization"] > 0.85])
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("🟢 Under-utilized (<60%)", low, help="Consider reducing section")
-    col2.metric("🟡 Optimal (60-85%)", optimal, help="Good design efficiency")
-    col3.metric("🔴 Near Capacity (>85%)", high, help="Check if OK or increase section")
-
-    # Quick wins
-    st.markdown("**💡 Suggestions:**")
-    if low > total * 0.3:
-        st.success(f"💰 {low} beams are under-utilized. Consider reducing sections to save material.")
-    if high > 0:
-        st.warning(f"⚠️ {high} beams near capacity. Verify adequacy under all load combinations.")
-    if passed == total:
-        st.success("✅ All beams pass design checks!")
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Beams", total)
+    c2.metric("Pass Rate", f"{100*passed/max(total,1):.0f}%")
+    c3.metric("Avg Util", f"{avg_util:.0f}%")
+    c4.metric("Failed", total - passed, delta=f"-{total-passed}" if total > passed else None, delta_color="inverse")
 
     st.divider()
-    if st.button("← Back to Results"):
-        set_workspace_state(WorkspaceState.DESIGN)
-        st.rerun()
+
+    # Tabs for different insights
+    tab1, tab2, tab3 = st.tabs(["📈 Analysis", "📦 Material Takeoff", "💰 Cost Estimate"])
+
+    with tab1:
+        # Utilization distribution
+        st.markdown("##### Utilization Distribution")
+        low = len(df[df["utilization"] < 0.6])
+        optimal = len(df[(df["utilization"] >= 0.6) & (df["utilization"] <= 0.85)])
+        high = len(df[df["utilization"] > 0.85])
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("🟢 Under-utilized", low, help="<60% - consider reducing section")
+        col2.metric("🟡 Optimal", optimal, help="60-85% - good efficiency")
+        col3.metric("🔴 Near Capacity", high, help=">85% - check carefully")
+
+        # Quick wins
+        st.markdown("##### 💡 Suggestions")
+        if low > total * 0.3:
+            st.success(f"💰 {low} beams under-utilized. Reduce sections to save {low*5:.0f}% material.")
+        if high > 0:
+            st.warning(f"⚠️ {high} beams near capacity. Verify under all load combinations.")
+        if passed == total:
+            st.success("✅ All beams pass design checks!")
+        else:
+            failed_beams = df[df["is_safe"] == False]["beam_id"].tolist()[:3]
+            st.error(f"❌ Failed: {', '.join(failed_beams)}{'...' if len(failed_beams) > 3 else ''}")
+
+    with tab2:
+        # Material takeoff
+        takeoff = calculate_material_takeoff(df)
+
+        st.markdown("##### Material Quantities")
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric("🧱 Concrete", f"{takeoff['concrete_m3']:.1f} m³")
+            st.caption("All beams combined")
+
+        with col2:
+            st.metric("🔩 Reinforcement", f"{takeoff['steel_kg']:.0f} kg")
+            st.caption(f"≈ {takeoff['steel_kg']/1000:.2f} tonnes")
+
+        # Steel ratio
+        steel_ratio = takeoff['steel_kg'] / (takeoff['concrete_m3'] * 2400) * 100 if takeoff['concrete_m3'] > 0 else 0
+        st.metric("Steel Ratio", f"{steel_ratio:.1f}%", help="kg steel per kg concrete")
+
+        # Per-story breakdown if multiple stories
+        if "story" in df.columns:
+            st.markdown("##### Per-Story Breakdown")
+            story_data = []
+            for story in df["story"].unique():
+                story_df = df[df["story"] == story]
+                story_takeoff = calculate_material_takeoff(story_df)
+                story_data.append({
+                    "Story": story,
+                    "Beams": len(story_df),
+                    "Concrete (m³)": f"{story_takeoff['concrete_m3']:.1f}",
+                    "Steel (kg)": f"{story_takeoff['steel_kg']:.0f}",
+                })
+            st.dataframe(story_data, hide_index=True, use_container_width=True)
+
+    with tab3:
+        # Cost estimate
+        takeoff = calculate_material_takeoff(df)
+
+        st.markdown("##### Cost Estimate (INR)")
+        st.caption("Rates: Concrete ₹8000/m³ | Steel ₹85/kg")
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Concrete", f"₹{takeoff['concrete_cost']:,.0f}")
+        col2.metric("Steel", f"₹{takeoff['steel_cost']:,.0f}")
+        col3.metric("**Total**", f"₹{takeoff['total_cost']:,.0f}")
+
+        # Cost per meter
+        total_length = df["span_mm"].sum() / 1000  # m
+        cost_per_m = takeoff['total_cost'] / total_length if total_length > 0 else 0
+
+        st.metric("Cost per Running Meter", f"₹{cost_per_m:,.0f}/m", help="Total cost / total beam length")
+
+        # Visualization
+        if VISUALIZATION_AVAILABLE:
+            cost_data = {
+                "Item": ["Concrete", "Steel"],
+                "Cost (₹)": [takeoff['concrete_cost'], takeoff['steel_cost']],
+            }
+            fig = go.Figure(data=[go.Pie(
+                labels=cost_data["Item"],
+                values=cost_data["Cost (₹)"],
+                hole=0.4,
+                marker_colors=["#2ecc71", "#3498db"],
+            )])
+            fig.update_layout(
+                height=250,
+                margin=dict(l=0, r=0, t=30, b=0),
+                showlegend=True,
+                legend=dict(orientation="h", yanchor="bottom", y=-0.1),
+            )
+            st.plotly_chart(fig, use_container_width=True, key="cost_pie")
+
+    # Navigation
+    st.divider()
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("← Results", use_container_width=True):
+            set_workspace_state(WorkspaceState.DESIGN)
+            st.rerun()
+    with c2:
+        if st.button("🏗️ Building 3D", use_container_width=True):
+            set_workspace_state(WorkspaceState.BUILDING_3D)
+            st.rerun()
+    with c3:
+        if st.button("📥 New Import", use_container_width=True):
+            set_workspace_state(WorkspaceState.IMPORT)
+            st.rerun()
 
 
 def render_dynamic_workspace() -> None:
