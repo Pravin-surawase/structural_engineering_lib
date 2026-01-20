@@ -127,12 +127,12 @@ def init_session_state():
 
     if "design_params" not in st.session_state:
         st.session_state.design_params = {
-            "b_mm": 300,
-            "D_mm": 500,
+            "b_mm": 300.0,
+            "D_mm": 500.0,
             "fck": 25,
             "fy": 500,
-            "mu_knm": 100,
-            "vu_kn": 50,
+            "mu_knm": 100.0,
+            "vu_kn": 50.0,
             "span_m": 5.0,
         }
 
@@ -179,10 +179,78 @@ def run_design(params: dict[str, Any]) -> dict[str, Any]:
 
 
 def run_smart_analysis(design_result: Any, params: dict[str, Any]) -> dict[str, Any]:
-    """Run SmartDesigner analysis on a design."""
+    """Run SmartDesigner analysis on a design.
+
+    Note: SmartDesigner.analyze expects BeamDesignOutput (with .geometry, .materials).
+    Since we use design_beam_is456 which returns ComplianceCaseResult, we need to
+    create a wrapper object with the expected attributes.
+    """
     try:
+        # Create a wrapper object that mimics BeamDesignOutput structure
+        # SmartDesigner needs: design.geometry.b_mm, design.geometry.D_mm,
+        #                      design.geometry.d_mm, design.materials.fck_nmm2,
+        #                      design.materials.fy_nmm2, design.flexure, design.shear
+        from types import SimpleNamespace
+
+        b_mm = params.get("b_mm", 300)
+        D_mm = params.get("D_mm", 500)
+        d_mm = D_mm - 50
+        fck = params.get("fck", 25)
+        fy = params.get("fy", 500)
+
+        # Create geometry object
+        geometry = SimpleNamespace(
+            b_mm=b_mm,
+            D_mm=D_mm,
+            d_mm=d_mm,
+            span_mm=params.get("span_m", 5.0) * 1000,
+            cover_mm=50,
+            d_dash_mm=50,
+        )
+
+        # Create materials object
+        materials = SimpleNamespace(
+            fck_nmm2=fck,
+            fy_nmm2=fy,
+        )
+
+        # Create flexure wrapper that matches expected interface
+        # design_result.flexure has ast_required, we need ast_required_mm2
+        flexure_wrapper = SimpleNamespace(
+            ast_required_mm2=design_result.flexure.ast_required,
+            asc_required_mm2=getattr(design_result.flexure, 'asc', 0),
+            xu_mm=getattr(design_result.flexure, 'xu', 0),
+            xu_max_mm=getattr(design_result.flexure, 'xu_max', 0),
+            mu_lim_knm=getattr(design_result.flexure, 'mu_lim', 0),
+            xu_d_ratio=getattr(design_result.flexure, 'xu_d', 0),
+            section_type=getattr(design_result.flexure, 'section_type', 'UNDER_REINFORCED'),
+            is_safe=design_result.flexure.is_safe,
+            utilization=getattr(design_result.flexure, 'utilization', 0),
+        )
+
+        # Create shear wrapper
+        shear_wrapper = SimpleNamespace(
+            tau_v_nmm2=getattr(design_result.shear, 'tv', 0),
+            tau_c_nmm2=getattr(design_result.shear, 'tc', 0),
+            tau_c_max_nmm2=getattr(design_result.shear, 'tc_max', 0),
+            vus_kn=getattr(design_result.shear, 'vus', 0),
+            sv_required_mm=getattr(design_result.shear, 'spacing', 0),
+            is_safe=design_result.shear.is_safe if design_result.shear else True,
+            utilization=getattr(design_result.shear, 'utilization', 0) if design_result.shear else 0,
+        )
+
+        # Create wrapper that mimics BeamDesignOutput
+        design_wrapper = SimpleNamespace(
+            geometry=geometry,
+            materials=materials,
+            flexure=flexure_wrapper,
+            shear=shear_wrapper,
+            is_ok=design_result.is_ok,
+            governing_utilization=design_result.governing_utilization,
+        )
+
         dashboard = SmartDesigner.analyze(
-            design=design_result,
+            design=design_wrapper,
             span_mm=params.get("span_m", 5.0) * 1000,
             mu_knm=params.get("mu_knm", 100),
             vu_kn=params.get("vu_kn", 50),
@@ -577,24 +645,24 @@ def render_workspace_panel():
             col1, col2 = st.columns(2)
             with col1:
                 st.session_state.design_params["b_mm"] = st.number_input(
-                    "Width (mm)", value=st.session_state.design_params["b_mm"], step=25
+                    "Width (mm)", value=float(st.session_state.design_params["b_mm"]), step=25.0
                 )
                 st.session_state.design_params["D_mm"] = st.number_input(
-                    "Depth (mm)", value=st.session_state.design_params["D_mm"], step=25
+                    "Depth (mm)", value=float(st.session_state.design_params["D_mm"]), step=25.0
                 )
                 st.session_state.design_params["span_m"] = st.number_input(
                     "Span (m)",
-                    value=st.session_state.design_params["span_m"],
+                    value=float(st.session_state.design_params["span_m"]),
                     step=0.5,
                 )
             with col2:
                 st.session_state.design_params["mu_knm"] = st.number_input(
                     "Moment (kN·m)",
-                    value=st.session_state.design_params["mu_knm"],
-                    step=10,
+                    value=float(st.session_state.design_params["mu_knm"]),
+                    step=10.0,
                 )
                 st.session_state.design_params["vu_kn"] = st.number_input(
-                    "Shear (kN)", value=st.session_state.design_params["vu_kn"], step=5
+                    "Shear (kN)", value=float(st.session_state.design_params["vu_kn"]), step=5.0
                 )
                 st.session_state.design_params["fck"] = st.selectbox(
                     "Concrete Grade",
@@ -626,65 +694,125 @@ def render_workspace_panel():
         else:
             st.info("Design a beam to see 3D visualization.")
 
-    # Tab 2: Import CSV
+    # Tab 2: Import CSV (Multiple Files Support)
     with tabs[2]:
-        st.markdown("**Quick CSV Import**")
-        st.caption("Upload beam data from ETABS, SAFE, or custom CSV")
+        st.markdown("**Multi-File CSV Import**")
+        st.caption("Upload beam data from ETABS, SAFE, or custom CSV files")
 
-        uploaded_file = st.file_uploader(
-            "Upload CSV",
-            type=["csv"],
-            help="Upload beam geometry and forces",
-            label_visibility="collapsed",
-        )
+        # Two file uploaders for geometry and forces (like ETABS export)
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**📐 Geometry CSV** (optional)")
+            geom_file = st.file_uploader(
+                "Beam geometry",
+                type=["csv"],
+                help="Beam IDs, dimensions (b, D)",
+                key="geom_csv",
+                label_visibility="collapsed",
+            )
+        with col2:
+            st.markdown("**📊 Forces CSV** (required)")
+            forces_file = st.file_uploader(
+                "Beam forces",
+                type=["csv"],
+                help="Beam IDs, Mu, Vu values",
+                key="forces_csv",
+                label_visibility="collapsed",
+            )
 
-        if uploaded_file is not None:
+        # Process uploaded files
+        if forces_file is not None:
             try:
-                df = pd.read_csv(uploaded_file)
-                st.session_state.imported_beams = df
-                st.success(f"✅ Loaded {len(df)} beams")
+                forces_df = pd.read_csv(forces_file)
+                geom_df = pd.read_csv(geom_file) if geom_file else None
+
+                st.success(f"✅ Loaded {len(forces_df)} force records" +
+                          (f" + {len(geom_df)} geometry records" if geom_df is not None else ""))
 
                 # Show preview
-                with st.expander("Preview data", expanded=True):
-                    st.dataframe(df.head(10), use_container_width=True)
+                with st.expander("Preview data", expanded=False):
+                    if geom_df is not None:
+                        st.markdown("**Geometry:**")
+                        st.dataframe(geom_df.head(5), use_container_width=True)
+                    st.markdown("**Forces:**")
+                    st.dataframe(forces_df.head(5), use_container_width=True)
 
-                # Quick column mapping
+                # Column mapping
                 st.markdown("**Map Columns**")
-                cols = list(df.columns)
-                col1, col2 = st.columns(2)
+                force_cols = list(forces_df.columns)
+                geom_cols = list(geom_df.columns) if geom_df is not None else force_cols
+
+                col1, col2, col3 = st.columns(3)
                 with col1:
-                    b_col = st.selectbox("Width (b)", ["--"] + cols, key="b_col")
-                    d_col = st.selectbox("Depth (D)", ["--"] + cols, key="d_col")
+                    st.markdown("*Geometry*")
+                    id_col = st.selectbox("Beam ID", ["--"] + force_cols, key="id_col_ai")
+                    b_col = st.selectbox("Width (b)", ["--"] + geom_cols, key="b_col_ai")
+                    d_col = st.selectbox("Depth (D)", ["--"] + geom_cols, key="d_col_ai")
                 with col2:
-                    mu_col = st.selectbox("Moment (Mu)", ["--"] + cols, key="mu_col")
-                    vu_col = st.selectbox("Shear (Vu)", ["--"] + cols, key="vu_col")
+                    st.markdown("*Forces*")
+                    mu_col = st.selectbox("Moment (Mu)", ["--"] + force_cols, key="mu_col_ai")
+                    vu_col = st.selectbox("Shear (Vu)", ["--"] + force_cols, key="vu_col_ai")
+                with col3:
+                    st.markdown("*Defaults*")
+                    default_b = st.number_input("Default b (mm)", value=300.0, step=25.0, key="def_b")
+                    default_d = st.number_input("Default D (mm)", value=500.0, step=25.0, key="def_d")
+
+                # Combine data
+                if geom_df is not None and id_col != "--":
+                    # Merge geometry and forces on beam ID
+                    combined_df = forces_df.merge(geom_df, on=id_col, how="left", suffixes=("", "_geom"))
+                else:
+                    combined_df = forces_df
+
+                st.session_state.imported_beams = combined_df
 
                 # Design button
-                if st.button("🏗️ Design All Beams", type="primary"):
-                    if b_col != "--" and d_col != "--" and mu_col != "--":
-                        with st.spinner(f"Designing {len(df)} beams..."):
+                if st.button("🏗️ Design All Beams", type="primary", key="batch_design_btn"):
+                    if mu_col != "--":
+                        with st.spinner(f"Designing {len(combined_df)} beams..."):
                             results = []
-                            for _, row in df.iterrows():
+                            progress = st.progress(0)
+                            for idx, row in combined_df.iterrows():
+                                # Get dimensions from columns or use defaults
+                                b_val = row.get(b_col, default_b) if b_col != "--" else default_b
+                                d_val = row.get(d_col, default_d) if d_col != "--" else default_d
+
                                 params = {
-                                    "b_mm": int(row.get(b_col, 300)),
-                                    "D_mm": int(row.get(d_col, 500)),
+                                    "b_mm": float(b_val) if pd.notna(b_val) else default_b,
+                                    "D_mm": float(d_val) if pd.notna(d_val) else default_d,
                                     "mu_knm": float(row.get(mu_col, 100)),
-                                    "vu_kn": float(row.get(vu_col, 50)) if vu_col != "--" else 50,
+                                    "vu_kn": float(row.get(vu_col, 50)) if vu_col != "--" and pd.notna(row.get(vu_col)) else 50.0,
                                     "fck": 25,
                                     "fy": 500,
                                 }
                                 result = run_design(params)
+                                result["beam_id"] = row.get(id_col, f"B{idx+1}") if id_col != "--" else f"B{idx+1}"
                                 results.append(result)
+                                progress.progress((idx + 1) / len(combined_df))
+
                             st.session_state.batch_results = results
                             safe_count = sum(1 for r in results if r.get("is_safe", False))
                             st.success(f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results)-safe_count} UNSAFE")
+
+                            # Show results summary
+                            results_data = []
+                            for r in results:
+                                results_data.append({
+                                    "ID": r.get("beam_id", "-"),
+                                    "Section": r.get("section", "-"),
+                                    "Ast (mm²)": round(r.get("ast_mm2", 0)),
+                                    "Util": f"{r.get('utilization', 0):.0%}",
+                                    "Status": "✅" if r.get("is_safe") else "❌",
+                                })
+                            st.dataframe(pd.DataFrame(results_data), use_container_width=True)
                     else:
-                        st.warning("Please map at least Width, Depth, and Moment columns")
+                        st.warning("Please map at least the Moment (Mu) column")
             except Exception as e:
                 st.error(f"Error reading CSV: {e}")
         else:
-            st.info("Upload a CSV file to batch design beams.")
-            st.caption("Required columns: beam width, depth, moment. Optional: shear.")
+            st.info("📁 Upload CSV files to batch design beams.")
+            st.caption("**ETABS workflow:** Export 'Connectivity - Frame' and 'Element Forces - Beams'")
+            st.caption("**Simple CSV:** Just needs columns for Mu (moment) values")
 
     # Tab 3: Cost Analysis
     with tabs[3]:
