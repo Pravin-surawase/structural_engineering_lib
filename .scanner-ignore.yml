@@ -14,6 +14,14 @@ false_positives:
     lines: [36, 328, 440, 486]
     reason: "Division on hardcoded demo scenario values (never zero)"
 
+  - file: "streamlit_app/pages/07_📥_multi_format_import.py"
+    lines: [296]
+    reason: "Division guarded by 'if ast_mm2 > 0' conditional (never zero)"
+
+  - file: "streamlit_app/pages/10_🤖_ai_assistant.py"
+    lines: [197, 236, 258, 973]
+    reason: "Legacy fallback page - Line 197/236/258: division in loop with positive areas. Line 973: guarded by 'if total_beams == 0: return' check"
+
 known_issues:
   - file: "streamlit_app/pages/06_📐_dxf_export.py"
     lines: [222]

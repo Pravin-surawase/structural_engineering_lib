@@ -227,6 +227,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.ignore_config = ignore_config
         self.sig_registry = sig_registry  # Phase 3: API signature checking
 
+        # Module-level definitions (collected in preprocess pass)
+        self.module_level_defs: Set[str] = set()  # Functions/classes defined at module level
+
         # Scope tracking for NameError detection
         self.scopes: List[Set[str]] = [set()]  # Stack of scopes (sets of defined vars)
         self.imported_names: Set[str] = set()  # Track imports
@@ -344,12 +347,35 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         if name in self.builtin_names:
             return True
 
+        # Check module-level definitions (functions/classes defined later in file)
+        if name in self.module_level_defs:
+            return True
+
         # Special Streamlit names
         streamlit_names = {"st", "pd", "np", "plt"}
         if name in streamlit_names:
             return True
 
         return False
+
+    def preprocess(self, tree: ast.AST):
+        """Pre-scan AST to collect module-level function and class definitions.
+
+        This allows functions to call other functions defined later in the file,
+        which is valid Python (resolved at runtime, not parse time).
+        """
+        for node in ast.iter_child_nodes(tree):
+            if isinstance(node, ast.FunctionDef):
+                self.module_level_defs.add(node.name)
+            elif isinstance(node, ast.AsyncFunctionDef):
+                self.module_level_defs.add(node.name)
+            elif isinstance(node, ast.ClassDef):
+                self.module_level_defs.add(node.name)
+            elif isinstance(node, ast.Assign):
+                # Module-level variable assignments
+                for target in node.targets:
+                    if isinstance(target, ast.Name):
+                        self.module_level_defs.add(target.id)
 
     def visit_Import(self, node: ast.Import):
         """Track imports and detect imports inside functions."""
@@ -1710,6 +1736,8 @@ def check_file(
         detector = EnhancedIssueDetector(
             str(filepath), ignore_config=ignore_config, sig_registry=sig_registry
         )
+        # Pre-scan to collect module-level definitions (allows forward references)
+        detector.preprocess(tree)
         detector.visit(tree)
 
         return detector.issues
