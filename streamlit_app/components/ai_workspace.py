@@ -436,7 +436,8 @@ def render_welcome_panel() -> None:
             st.markdown("#### 📂 Quick Demo")
             st.caption("10 beams · 3 stories · ETABS format")
             if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary"):
-                load_sample_data()
+                with st.spinner("Loading sample data..."):
+                    load_sample_data()
                 st.rerun()
 
     with col2:
@@ -447,7 +448,8 @@ def render_welcome_panel() -> None:
                 "Upload CSV", type=["csv"], key="ws_upload", label_visibility="collapsed"
             )
             if uploaded:
-                success, message = process_uploaded_file(uploaded)
+                with st.spinner("Processing CSV..."):
+                    success, message = process_uploaded_file(uploaded)
                 if success:
                     st.success(message)
                     st.session_state.ws_state = WorkspaceState.IMPORT
@@ -480,7 +482,16 @@ def render_welcome_panel() -> None:
 
     # Feature highlights
     st.divider()
-    st.caption("**Features:** Auto-column mapping · IS 456 design · 3D building view · Interactive rebar editor · Real-time checks")
+    st.markdown("**✨ Features:**")
+    feat_cols = st.columns(5)
+    feat_cols[0].caption("📊 Auto-mapping")
+    feat_cols[1].caption("🏗️ Building 3D")
+    feat_cols[2].caption("📐 Cross-section")
+    feat_cols[3].caption("🔧 Rebar editor")
+    feat_cols[4].caption("💰 Cost estimate")
+
+    # Quick tip
+    st.info("💡 **Tip:** Use the chat on the left! Try: `load sample` → `design all` → `building 3d`")
 
 
 def render_import_preview() -> None:
@@ -585,22 +596,32 @@ def render_design_results() -> None:
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
         with col2:
-            if st.button("🔧 Edit Rebar", use_container_width=True):
-                set_workspace_state(WorkspaceState.REBAR_EDIT)
+            if st.button("� Section", use_container_width=True):
+                set_workspace_state(WorkspaceState.CROSS_SECTION)
                 st.rerun()
         with col3:
+            if st.button("🔧 Rebar", use_container_width=True):
+                set_workspace_state(WorkspaceState.REBAR_EDIT)
+                st.rerun()
+        with col4:
             if st.button("🏗️ Building", use_container_width=True):
                 set_workspace_state(WorkspaceState.BUILDING_3D)
                 st.rerun()
-        with col4:
-            if st.button("📊 Dashboard", use_container_width=True):
-                set_workspace_state(WorkspaceState.DASHBOARD)
-                st.rerun()
+
+    # Help tip for failed beams
+    if failed > 0:
+        st.warning(f"💡 **{failed} beams failed.** Select one and use **Edit Rebar** to increase reinforcement.")
 
     st.divider()
-    if st.button("← Back to Import"):
-        set_workspace_state(WorkspaceState.IMPORT)
-        st.rerun()
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("📊 Dashboard", use_container_width=True):
+            set_workspace_state(WorkspaceState.DASHBOARD)
+            st.rerun()
+    with c2:
+        if st.button("← Import", use_container_width=True):
+            set_workspace_state(WorkspaceState.IMPORT)
+            st.rerun()
 
 
 def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
