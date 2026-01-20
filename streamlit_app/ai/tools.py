@@ -29,10 +29,6 @@ TOOLS = [
                         "type": "number",
                         "description": "Overall depth in mm"
                     },
-                    "d_mm": {
-                        "type": "number",
-                        "description": "Effective depth in mm (default: D - 50)"
-                    },
                     "span_mm": {
                         "type": "number",
                         "description": "Clear span in mm"
@@ -127,6 +123,85 @@ TOOLS = [
                     }
                 },
                 "required": ["view_type"],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "filter_3d_view",
+            "description": "Filter the 3D building view to show only a specific floor/story. Use this when user asks to 'show floor 2' or 'filter to story 1'.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "floor": {
+                        "type": "string",
+                        "description": "Floor/story name to filter (e.g., 'Floor 2', 'Story1', 'Level 0'). Use 'all' to show entire building."
+                    },
+                    "show_rebar": {
+                        "type": "boolean",
+                        "description": "Whether to show reinforcement (default: true)"
+                    }
+                },
+                "required": ["floor"],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_critical_beams",
+            "description": "Get list of most critical beams by moment, shear, or utilization. Use this for 'list top 3 critical beams' requests.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "criterion": {
+                        "type": "string",
+                        "enum": ["moment", "shear", "utilization"],
+                        "description": "Criterion for ranking beams (default: moment)"
+                    },
+                    "count": {
+                        "type": "number",
+                        "description": "Number of beams to return (default: 3)"
+                    },
+                    "floor": {
+                        "type": "string",
+                        "description": "Optional floor/story filter"
+                    }
+                },
+                "required": [],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "start_optimization",
+            "description": "Start cost/weight optimization for beams. Automatically finds the most critical beam if not specified.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "floor": {
+                        "type": "string",
+                        "description": "Floor/story to optimize beams on (e.g., 'Level 0', 'Story1')"
+                    },
+                    "beam_id": {
+                        "type": "string",
+                        "description": "Specific beam ID to optimize"
+                    },
+                    "target": {
+                        "type": "string",
+                        "enum": ["cost", "weight", "constructability"],
+                        "description": "Optimization target (default: cost)"
+                    }
+                },
+                "required": [],
                 "additionalProperties": False
             },
             "strict": True

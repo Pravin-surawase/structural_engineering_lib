@@ -12,14 +12,17 @@ Key Improvements over v1:
 - Built-in sample data for quick start
 - Beam-by-beam editing with live 3D preview
 - State machine for workflow transitions
+- **Function calling** for AI to execute workspace actions
+- **Action-oriented AI** that just does things (no clarifying questions)
 
 States: WELCOME → IMPORT → DESIGN → VIEW_3D → EDIT → DASHBOARD
 
-Author: Session 52 Agent
+Author: Session 52-58 Agents
 """
 
 from __future__ import annotations
 
+import json
 import streamlit as st
 
 # Page configuration - must be first Streamlit command
@@ -33,7 +36,6 @@ st.set_page_config(
 # Imports after page config
 import re
 import sys
-import time
 from pathlib import Path
 from typing import Any
 
@@ -56,6 +58,16 @@ try:
     OPENAI_AVAILABLE = True
 except ImportError:
     OPENAI_AVAILABLE = False
+
+# Import AI module for context and tools
+try:
+    from ai.context import load_system_prompt, generate_workspace_context, build_messages
+    from ai.tools import get_tools
+    from ai.handlers import handle_tool_call
+
+    AI_MODULE_AVAILABLE = True
+except ImportError:
+    AI_MODULE_AVAILABLE = False
 
 # Import structural_lib
 try:
@@ -93,7 +105,7 @@ def get_openai_client() -> OpenAI | None:
 
 def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets."""
-    # Default to GPT-5-mini (fast, cost-efficient) for structural engineering tasks
+    # Default model - user's configured model from secrets
     model = "gpt-5-mini"
     temperature = 0.7
     max_tokens = 2000
@@ -121,38 +133,6 @@ def get_openai_config() -> dict[str, Any]:
     }
 
 
-# System prompt for structural engineering assistant
-SYSTEM_PROMPT = """You are StructEng AI, an expert structural engineering assistant specializing in
-IS 456 reinforced concrete design. You help engineers design beams, optimize costs,
-and understand code requirements.
-
-## Your Capabilities:
-- Design RC beams for moment and shear (IS 456:2000)
-- Optimize designs for cost, safety, or constructability
-- Explain code clauses in simple terms
-- Provide practical engineering advice
-- Import data from ETABS, SAFE, and other formats
-- Show 3D visualizations with actual reinforcement
-
-## Guidelines:
-1. Be practical: Engineers want actionable advice, not theory.
-2. Be specific: Always include numbers (dimensions, costs, percentages).
-3. Show your work: Explain the reasoning behind recommendations.
-4. Follow IS 456: All designs must comply with IS 456:2000.
-
-## Available Commands:
-- "load sample" - Load sample ETABS data
-- "design all" - Design all imported beams
-- "show 3d" - Show 3D view for selected beam
-- "dashboard" - Show smart insights dashboard
-
-## Response Format:
-- Start with a brief answer
-- Present results clearly with key metrics
-- Offer follow-up options
-"""
-
-
 def init_chat_state():
     """Initialize chat session state."""
     if "ai_messages" not in st.session_state:
@@ -160,13 +140,17 @@ def init_chat_state():
 
 
 def get_ai_response(user_message: str) -> str:
-    """Get AI response for user message."""
+    """Get AI response for user message.
+
+    Uses function calling when AI module is available, falls back to
+    hardcoded commands and local responses otherwise.
+    """
     msg_lower = user_message.lower()
 
-    # Check for workspace commands first
+    # Check for workspace commands first (fast path)
     if "load sample" in msg_lower or "sample data" in msg_lower:
         load_sample_data()
-        return "✅ Loaded sample data with 10 beams (3 stories). Click **Design All** in the workspace or say **'design all'**."
+        return "✅ **Loaded sample data** — 10 beams across 3 stories.\n\nSay **'design all'** to run IS 456 design."
 
     if "design all" in msg_lower or "design beams" in msg_lower:
         if st.session_state.get("ws_beams_df") is not None:
@@ -174,19 +158,21 @@ def get_ai_response(user_message: str) -> str:
             set_workspace_state(WorkspaceState.DESIGN)
             df = st.session_state.ws_design_results
             passed = len(df[df["is_safe"] == True])
-            return f"✅ Designed **{len(df)} beams** — **{passed}** passed, **{len(df)-passed}** need review.\n\nSay **'building 3d'** to see the full structure or select a beam for details."
+            failed = len(df) - passed
+            avg_util = df["utilization"].mean() * 100
+            return f"✅ **Designed {len(df)} beams** — {passed} passed, {failed} failed, avg util {avg_util:.0f}%\n\nSay **'building 3d'** to see the structure or click a beam for details."
         else:
             return "📂 No beam data loaded. Say **'load sample'** or upload a CSV first."
 
     if "building 3d" in msg_lower or "building view" in msg_lower or "full 3d" in msg_lower:
         set_workspace_state(WorkspaceState.BUILDING_3D)
-        return "🏗️ Showing full building 3D visualization. Click any beam to see details."
+        return "🏗️ **Showing full building 3D view.** Click any beam to see details."
 
     if "edit rebar" in msg_lower or "rebar editor" in msg_lower:
         selected_beam = st.session_state.get("ws_selected_beam")
         if selected_beam:
             set_workspace_state(WorkspaceState.REBAR_EDIT)
-            return f"🔧 Opening rebar editor for **{selected_beam}**. Adjust bars and stirrups to see real-time checks."
+            return f"🔧 **Opening rebar editor for {selected_beam}.** Adjust bars and stirrups."
         else:
             return "Select a beam first from design results."
 
@@ -194,7 +180,7 @@ def get_ai_response(user_message: str) -> str:
         selected_beam = st.session_state.get("ws_selected_beam")
         if selected_beam:
             set_workspace_state(WorkspaceState.VIEW_3D)
-            return f"🎨 Showing 3D view for **{selected_beam}** with actual reinforcement."
+            return f"🎨 **Showing 3D view for {selected_beam}** with reinforcement."
         else:
             return "Select a beam first from the design results."
 
@@ -202,13 +188,13 @@ def get_ai_response(user_message: str) -> str:
         selected_beam = st.session_state.get("ws_selected_beam")
         if selected_beam:
             set_workspace_state(WorkspaceState.CROSS_SECTION)
-            return f"📐 Showing professional cross-section for **{selected_beam}** with bar layout and dimensions."
+            return f"📐 **Showing cross-section for {selected_beam}** with bar layout."
         else:
             return "Select a beam first from design results."
 
     if "dashboard" in msg_lower or "insights" in msg_lower:
         set_workspace_state(WorkspaceState.DASHBOARD)
-        return "📊 Showing smart insights dashboard."
+        return "📊 **Showing smart insights dashboard.**"
 
     # Beam selection commands
     beam_match = re.search(r'select\s+(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
@@ -216,53 +202,124 @@ def get_ai_response(user_message: str) -> str:
         beam_id = beam_match.group(2).upper()
         df = st.session_state.get("ws_design_results")
         if df is not None and beam_id in df["beam_id"].str.upper().values:
-            # Find exact match
             match_row = df[df["beam_id"].str.upper() == beam_id]
             if not match_row.empty:
                 actual_id = match_row.iloc[0]["beam_id"]
                 st.session_state.ws_selected_beam = actual_id
                 set_workspace_state(WorkspaceState.VIEW_3D)
-                return f"Selected **{actual_id}** — showing 3D view with reinforcement details."
+                return f"✅ **Selected {actual_id}** — showing 3D view with reinforcement."
         return f"Beam '{beam_id}' not found. Available: {', '.join(df['beam_id'].tolist()[:5])}..."
 
-    # OpenAI API if available
+    # Use AI with function calling if available
     client = get_openai_client()
     if client:
         try:
-            config = get_openai_config()
-            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-
-            # Add conversation history (last 10 messages)
-            for msg in st.session_state.ai_messages[-10:]:
-                messages.append({"role": msg["role"], "content": msg["content"]})
-
-            messages.append({"role": "user", "content": user_message})
-
-            response = client.chat.completions.create(
-                model=config.get("model", "gpt-5-mini"),
-                messages=messages,
-                temperature=config.get("temperature", 0.7),
-                max_tokens=config.get("max_tokens", 2000),
-            )
-
-            return response.choices[0].message.content
-
+            return _get_ai_response_with_tools(client, user_message)
         except Exception as e:
             error_str = str(e)
-            # Handle common API errors gracefully
             if "429" in error_str or "quota" in error_str.lower():
-                # Quota exceeded - use local mode silently
                 return _local_response(user_message)
             elif "401" in error_str or "auth" in error_str.lower():
-                return "🔑 API key invalid. Please check your OpenAI API key in secrets.toml. Using local mode.\n\n" + _local_response(user_message)
+                return "🔑 API key invalid. Using local mode.\n\n" + _local_response(user_message)
             elif "timeout" in error_str.lower() or "connect" in error_str.lower():
                 return "⏱️ Connection timeout. Using local mode.\n\n" + _local_response(user_message)
             else:
-                # Other errors - still provide local response
                 return _local_response(user_message)
 
     # Local SmartDesigner fallback
     return _local_response(user_message)
+
+
+def _get_ai_response_with_tools(client: OpenAI, user_message: str) -> str:
+    """Get AI response using function calling for workspace actions."""
+    config = get_openai_config()
+
+    # Build messages with context
+    if AI_MODULE_AVAILABLE:
+        system_prompt = load_system_prompt()
+        workspace_context = generate_workspace_context()
+        system_content = f"{system_prompt}\n\n## Current Workspace State\n\n{workspace_context}"
+    else:
+        system_content = SYSTEM_PROMPT
+
+    messages = [{"role": "system", "content": system_content}]
+
+    # Add conversation history (last 10 messages)
+    for msg in st.session_state.ai_messages[-10:]:
+        messages.append({"role": msg["role"], "content": msg["content"]})
+
+    messages.append({"role": "user", "content": user_message})
+
+    # Get tools if available
+    tools = get_tools() if AI_MODULE_AVAILABLE else None
+
+    # First API call
+    response = client.chat.completions.create(
+        model=config.get("model", "gpt-5-mini"),
+        messages=messages,
+        tools=tools,
+        tool_choice="auto" if tools else None,
+        temperature=config.get("temperature", 0.7),
+        max_tokens=config.get("max_tokens", 2000),
+    )
+
+    assistant_message = response.choices[0].message
+
+    # Check if AI wants to use tools
+    if assistant_message.tool_calls:
+        # Execute tool calls
+        tool_results = []
+        for tool_call in assistant_message.tool_calls:
+            tool_name = tool_call.function.name
+            try:
+                tool_args = json.loads(tool_call.function.arguments)
+            except json.JSONDecodeError:
+                tool_args = {}
+
+            # Execute the tool
+            result = handle_tool_call(tool_name, tool_args)
+            tool_results.append({
+                "tool_call_id": tool_call.id,
+                "role": "tool",
+                "content": result,
+            })
+
+        # Add assistant message and tool results
+        messages.append(assistant_message)
+        messages.extend(tool_results)
+
+        # Second API call to get final response
+        final_response = client.chat.completions.create(
+            model=config.get("model", "gpt-5-mini"),
+            messages=messages,
+            temperature=config.get("temperature", 0.7),
+            max_tokens=config.get("max_tokens", 2000),
+        )
+
+        return final_response.choices[0].message.content
+
+    # No tool calls, return direct response
+    return assistant_message.content
+
+
+# Fallback system prompt (used when AI module not available)
+SYSTEM_PROMPT = """You are StructEng AI, an expert structural engineering assistant.
+
+⚡ CRITICAL: ACTION-ORIENTED BEHAVIOR
+- DO NOT ASK CLARIFYING QUESTIONS. JUST DO IT.
+- Use sensible defaults when information is missing
+- Show results first, then ask if they want changes
+
+Available commands:
+- "load sample" - Load sample ETABS data
+- "design all" - Design all imported beams
+- "building 3d" - Show full building 3D view
+- "show 3d" - Show selected beam 3D view
+- "dashboard" - Show smart insights
+- "select B1" - Select beam by ID
+
+When asked to filter floors, list critical beams, or optimize:
+Execute immediately using defaults. Don't ask for confirmation."""
 
 
 def _local_response(msg: str) -> str:
