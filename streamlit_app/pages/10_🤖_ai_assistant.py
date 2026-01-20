@@ -3,15 +3,12 @@
 """
 AI Assistant Page — ChatGPT-like structural engineering assistant.
 
-Layout: Compact professional design with chat + workspace
+Layout: 40% chat (left) + 60% workspace (right)
 Features:
-- Natural language beam design with OpenAI GPT
-- Real-time design feedback
-- SmartDesigner cost & constructability insights
+- Natural language beam design
+- Cost optimization suggestions
+- SmartDesigner insights
 - Interactive 3D visualization
-- ETABS import integration
-
-UI/UX: Compact, professional, responsive design with cards
 """
 
 from __future__ import annotations
@@ -20,7 +17,7 @@ import streamlit as st
 
 # Page configuration - must be first Streamlit command
 st.set_page_config(
-    page_title="AI Assistant | StructEng",
+    page_title="StructEng AI Assistant",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -29,8 +26,11 @@ st.set_page_config(
 # Imports after page config
 import re
 import sys
+import time
 from pathlib import Path
 from typing import Any
+
+import pandas as pd
 
 # Check for OpenAI availability
 try:
@@ -47,54 +47,8 @@ from components.visualizations_3d import create_beam_3d_figure
 
 # Import structural_lib at module level
 from structural_lib import api as structural_api
+from structural_lib.codes.is456.detailing import calculate_development_length
 from structural_lib.insights import SmartDesigner
-
-# Import layout utilities
-try:
-    from utils.layout import inject_modern_css
-    from utils.theme_manager import apply_dark_mode_theme, initialize_theme
-
-    HAS_LAYOUT = True
-except ImportError:
-    HAS_LAYOUT = False
-
-
-# Default model configuration
-DEFAULT_MODEL = "gpt-4o-mini"  # Fast and cost-effective for engineering tasks
-DEFAULT_TEMPERATURE = 0.7
-DEFAULT_MAX_TOKENS = 1500
-
-
-def get_openai_config() -> dict[str, Any]:
-    """Get OpenAI configuration from secrets.
-
-    Reads from secrets.toml:
-        OPENAI_API_KEY = "sk-..."
-        [openai]
-        model = "gpt-4o-mini"  # or gpt-4, gpt-4o, etc.
-        temperature = 0.7
-        max_tokens = 1500
-
-    Returns dict with api_key, model, temperature, max_tokens.
-    """
-    config = {
-        "api_key": None,
-        "model": DEFAULT_MODEL,
-        "temperature": DEFAULT_TEMPERATURE,
-        "max_tokens": DEFAULT_MAX_TOKENS,
-    }
-
-    # Get API key (top-level secret)
-    config["api_key"] = st.secrets.get("OPENAI_API_KEY", None)
-
-    # Get optional model settings from [openai] section
-    if "openai" in st.secrets:
-        openai_config = st.secrets["openai"]
-        config["model"] = openai_config.get("model", DEFAULT_MODEL)
-        config["temperature"] = openai_config.get("temperature", DEFAULT_TEMPERATURE)
-        config["max_tokens"] = int(openai_config.get("max_tokens", DEFAULT_MAX_TOKENS))
-
-    return config
 
 
 def get_openai_client() -> OpenAI | None:
@@ -102,129 +56,42 @@ def get_openai_client() -> OpenAI | None:
     if not OPENAI_AVAILABLE:
         return None
 
-    config = get_openai_config()
-    if not config["api_key"]:
+    api_key = st.secrets.get("OPENAI_API_KEY", None)
+    if not api_key:
         return None
 
-    return OpenAI(api_key=config["api_key"])
+    return OpenAI(api_key=api_key)
 
 
-def inject_ai_page_css() -> None:
-    """Inject custom CSS for AI Assistant page - compact professional styling."""
-    st.markdown(
-        """
-        <style>
-        /* Compact header styling */
-        .ai-header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            color: white;
-        }
-        .ai-header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        .ai-header p {
-            margin: 0.25rem 0 0 0;
-            opacity: 0.8;
-            font-size: 0.85rem;
-        }
+def get_openai_config() -> dict[str, Any]:
+    """Get OpenAI configuration from secrets.
 
-        /* Status badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        .status-connected {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-        .status-local {
-            background: rgba(234, 179, 8, 0.15);
-            color: #eab308;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-        }
+    Returns config dict with model, temperature, max_tokens.
+    Defaults to gpt-5-mini (fast, cost-efficient).
+    """
+    config = {
+        "model": "gpt-5-mini",  # Default: fast, cost-efficient GPT-5 Mini
+        "temperature": 0.7,
+        "max_tokens": 2000,
+    }
 
-        /* Chat container styling */
-        .chat-section {
-            background: #fafafa;
-            border-radius: 12px;
-            border: 1px solid #e5e5e5;
-            height: 100%;
-        }
+    # Read from secrets if available
+    if "openai" in st.secrets:
+        openai_config = st.secrets.get("openai", {})
+        if "model" in openai_config:
+            config["model"] = openai_config.get("model", config["model"])
+        if "temperature" in openai_config:
+            try:
+                config["temperature"] = float(openai_config.get("temperature", config["temperature"]))
+            except (ValueError, TypeError):
+                pass  # Keep default
+        if "max_tokens" in openai_config:
+            try:
+                config["max_tokens"] = int(openai_config.get("max_tokens", config["max_tokens"]))
+            except (ValueError, TypeError):
+                pass  # Keep default
 
-        /* Message styling */
-        [data-testid="stChatMessage"] {
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Quick action buttons - compact grid */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 0.5rem;
-        }
-
-        /* Metric cards - compact */
-        .metric-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .mini-metric {
-            flex: 1;
-            background: white;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-        }
-        .mini-metric .value {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-        .mini-metric .label {
-            font-size: 0.7rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Results card */
-        .results-card {
-            background: white;
-            border: 1px solid #e5e5e5;
-            border-radius: 12px;
-            padding: 1rem;
-        }
-
-        /* Hide default streamlit padding for tighter layout */
-        .block-container {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-
-        /* Tab styling - compact */
-        [data-testid="stTabs"] button {
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    return config
 
 
 # System prompt for structural engineering assistant
@@ -267,12 +134,12 @@ def init_session_state():
 
     if "design_params" not in st.session_state:
         st.session_state.design_params = {
-            "b_mm": 300,
-            "D_mm": 500,
+            "b_mm": 300.0,
+            "D_mm": 500.0,
             "fck": 25,
             "fy": 500,
-            "mu_knm": 100,
-            "vu_kn": 50,
+            "mu_knm": 100.0,
+            "vu_kn": 50.0,
             "span_m": 5.0,
         }
 
@@ -282,14 +149,161 @@ def init_session_state():
     if "smart_dashboard" not in st.session_state:
         st.session_state.smart_dashboard = None
 
+    if "imported_beams" not in st.session_state:
+        st.session_state.imported_beams = None  # DataFrame of imported beams
+
+    if "batch_results" not in st.session_state:
+        st.session_state.batch_results = None  # List of design results
+
+
+def calculate_rebar_layout(
+    ast_mm2: float,
+    b_mm: float,
+    D_mm: float,
+    span_mm: float,
+    cover_mm: float = 40.0,
+    stirrup_dia: float = 8.0,
+    vu_kn: float = 50.0,
+    fck: float = 25.0,
+    fy: float = 500.0,
+) -> dict[str, Any]:
+    """Calculate actual rebar layout from design requirements.
+
+    Returns:
+        dict with:
+            - bottom_bars: List of (x, y, z) positions
+            - top_bars: List of (x, y, z) positions
+            - stirrup_positions: List of x positions
+            - bar_diameter: Selected bar size (mm)
+            - stirrup_spacing: Variable spacing zones [(start, end, spacing), ...]
+            - summary: Text summary of reinforcement
+            - ld_tension: Development length (mm)
+            - lap_length: Lap splice length (mm)
+    """
+    import math
+
+    # Standard bar diameters and areas
+    BAR_OPTIONS = [
+        (12, 113.1),
+        (16, 201.1),
+        (20, 314.2),
+        (25, 490.9),
+        (32, 804.2),
+    ]
+
+    # Find optimal bar combination (prefer 3-5 bars)
+    best_config = None
+    for dia, area in BAR_OPTIONS:
+        num_bars = math.ceil(ast_mm2 / area)
+        if 2 <= num_bars <= 6:
+            ast_provided = num_bars * area
+            best_config = (dia, num_bars, ast_provided)
+            break
+
+    if best_config is None:
+        # Fallback to 4T16
+        best_config = (16, 4, 4 * 201.1)
+
+    bar_dia, num_bars, ast_provided = best_config
+
+    # Calculate development length per IS 456 Cl 26.2.1
+    try:
+        ld_tension = calculate_development_length(
+            bar_dia=bar_dia,
+            fck=fck,
+            fy=fy,
+            bar_type="deformed",
+        )
+    except Exception:
+        # Fallback: approximate Ld = 47φ for Fe500 with M25
+        ld_tension = 47 * bar_dia
+
+    # Lap length = 1.3 × Ld for tension splices (IS 456 Cl 26.2.5.1)
+    lap_length = 1.3 * ld_tension
+
+    # Calculate bar positions
+    edge_dist = cover_mm + stirrup_dia + bar_dia / 2
+    z_bottom = edge_dist
+    z_top = D_mm - edge_dist
+    available_width = b_mm - 2 * edge_dist
+
+    bottom_bars = []
+    if num_bars == 1:
+        bottom_bars = [(0, 0, z_bottom)]
+    elif num_bars == 2:
+        bottom_bars = [(0, -available_width / 2, z_bottom), (0, available_width / 2, z_bottom)]
+    else:
+        spacing = available_width / (num_bars - 1) if num_bars > 1 else 0
+        for i in range(num_bars):
+            y = -available_width / 2 + i * spacing
+            bottom_bars.append((0, y, z_bottom))
+
+    # Top bars (usually 2 for hanger bars)
+    top_bars = [
+        (0, -available_width / 2, z_top),
+        (0, available_width / 2, z_top),
+    ]
+
+    # Calculate stirrup spacing zones (IS 456 requirements)
+    # Zone 1: Within 2d from support - closer spacing (0.75 * Sv)
+    # Zone 2: Middle span - normal spacing
+    d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
+
+    # Calculate base stirrup spacing from shear
+    # Simplified: Sv_max = 0.87 * fy * Asv / (0.4 * b) for minimum shear
+    # Practical range: 100-200mm
+    sv_base = min(200, max(100, 0.75 * d_mm))  # Practical limits
+
+    # If high shear, reduce spacing
+    tau_v = (vu_kn * 1000) / (b_mm * d_mm)  # Approximate shear stress
+    if tau_v > 0.5:  # Higher shear stress
+        sv_base = min(sv_base, 150)
+    if tau_v > 1.0:
+        sv_base = min(sv_base, 100)
+
+    # Generate stirrup positions with variable spacing
+    stirrup_positions = []
+    zone_2d = 2 * d_mm  # Distance of 2d from supports
+
+    # Zone 1: Support zone (tighter spacing)
+    sv_support = sv_base * 0.75
+    x = 50  # Start from support
+    while x < zone_2d:
+        stirrup_positions.append(x)
+        x += sv_support
+
+    # Zone 2: Middle span (normal spacing)
+    while x < span_mm - zone_2d:
+        stirrup_positions.append(x)
+        x += sv_base
+
+    # Zone 3: Other support (tighter spacing)
+    while x < span_mm - 50:
+        stirrup_positions.append(x)
+        x += sv_support
+
+    # Summary text
+    summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²) + 2T{bar_dia} hanger"
+    spacing_summary = f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (support), @{sv_base:.0f}mm (mid)"
+    detailing_summary = f"Ld = {ld_tension:.0f}mm, Lap = {lap_length:.0f}mm"
+
+    return {
+        "bottom_bars": bottom_bars,
+        "top_bars": top_bars,
+        "stirrup_positions": stirrup_positions,
+        "bar_diameter": bar_dia,
+        "stirrup_diameter": stirrup_dia,
+        "ast_provided": ast_provided,
+        "summary": summary,
+        "spacing_summary": spacing_summary,
+        "detailing_summary": detailing_summary,
+        "ld_tension": ld_tension,
+        "lap_length": lap_length,
+    }
+
 
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
-    """Run beam design with given parameters.
-
-    Returns a dict with success status and design results.
-    Uses params for section dimensions since ComplianceCaseResult
-    doesn't store geometry (it's an input, not output).
-    """
+    """Run beam design with given parameters."""
     try:
         b_mm = params.get("b_mm", 300)
         D_mm = params.get("D_mm", 500)
@@ -305,10 +319,6 @@ def run_design(params: dict[str, Any]) -> dict[str, Any]:
             vu_kn=params.get("vu_kn", 50),
         )
 
-        # ComplianceCaseResult structure:
-        # - flexure.ast_required (not ast_required_mm2)
-        # - governing_utilization
-        # - is_ok
         return {
             "success": True,
             "is_safe": result.is_ok,
@@ -316,18 +326,84 @@ def run_design(params: dict[str, Any]) -> dict[str, Any]:
             "section": f"{b_mm}×{D_mm}mm",
             "ast_mm2": result.flexure.ast_required,
             "utilization": result.governing_utilization,
-            "b_mm": b_mm,
-            "D_mm": D_mm,
         }
     except Exception as e:
         return {"success": False, "error": str(e)}
 
 
 def run_smart_analysis(design_result: Any, params: dict[str, Any]) -> dict[str, Any]:
-    """Run SmartDesigner analysis on a design."""
+    """Run SmartDesigner analysis on a design.
+
+    Note: SmartDesigner.analyze expects BeamDesignOutput (with .geometry, .materials).
+    Since we use design_beam_is456 which returns ComplianceCaseResult, we need to
+    create a wrapper object with the expected attributes.
+    """
     try:
+        # Create a wrapper object that mimics BeamDesignOutput structure
+        # SmartDesigner needs: design.geometry.b_mm, design.geometry.D_mm,
+        #                      design.geometry.d_mm, design.materials.fck_nmm2,
+        #                      design.materials.fy_nmm2, design.flexure, design.shear
+        from types import SimpleNamespace
+
+        b_mm = params.get("b_mm", 300)
+        D_mm = params.get("D_mm", 500)
+        d_mm = D_mm - 50
+        fck = params.get("fck", 25)
+        fy = params.get("fy", 500)
+
+        # Create geometry object
+        geometry = SimpleNamespace(
+            b_mm=b_mm,
+            D_mm=D_mm,
+            d_mm=d_mm,
+            span_mm=params.get("span_m", 5.0) * 1000,
+            cover_mm=50,
+            d_dash_mm=50,
+        )
+
+        # Create materials object
+        materials = SimpleNamespace(
+            fck_nmm2=fck,
+            fy_nmm2=fy,
+        )
+
+        # Create flexure wrapper that matches expected interface
+        # design_result.flexure has ast_required, we need ast_required_mm2
+        flexure_wrapper = SimpleNamespace(
+            ast_required_mm2=design_result.flexure.ast_required,
+            asc_required_mm2=getattr(design_result.flexure, 'asc', 0),
+            xu_mm=getattr(design_result.flexure, 'xu', 0),
+            xu_max_mm=getattr(design_result.flexure, 'xu_max', 0),
+            mu_lim_knm=getattr(design_result.flexure, 'mu_lim', 0),
+            xu_d_ratio=getattr(design_result.flexure, 'xu_d', 0),
+            section_type=getattr(design_result.flexure, 'section_type', 'UNDER_REINFORCED'),
+            is_safe=design_result.flexure.is_safe,
+            utilization=getattr(design_result.flexure, 'utilization', 0),
+        )
+
+        # Create shear wrapper
+        shear_wrapper = SimpleNamespace(
+            tau_v_nmm2=getattr(design_result.shear, 'tv', 0),
+            tau_c_nmm2=getattr(design_result.shear, 'tc', 0),
+            tau_c_max_nmm2=getattr(design_result.shear, 'tc_max', 0),
+            vus_kn=getattr(design_result.shear, 'vus', 0),
+            sv_required_mm=getattr(design_result.shear, 'spacing', 0),
+            is_safe=design_result.shear.is_safe if design_result.shear else True,
+            utilization=getattr(design_result.shear, 'utilization', 0) if design_result.shear else 0,
+        )
+
+        # Create wrapper that mimics BeamDesignOutput
+        design_wrapper = SimpleNamespace(
+            geometry=geometry,
+            materials=materials,
+            flexure=flexure_wrapper,
+            shear=shear_wrapper,
+            is_ok=design_result.is_ok,
+            governing_utilization=design_result.governing_utilization,
+        )
+
         dashboard = SmartDesigner.analyze(
-            design=design_result,
+            design=design_wrapper,
             span_mm=params.get("span_m", 5.0) * 1000,
             mu_knm=params.get("mu_knm", 100),
             vu_kn=params.get("vu_kn", 50),
@@ -341,6 +417,61 @@ def run_smart_analysis(design_result: Any, params: dict[str, Any]) -> dict[str, 
         return {"success": False, "error": str(e)}
 
 
+def _parse_design_request(msg_lower: str, params: dict[str, Any]) -> tuple[dict[str, Any], str]:
+    """
+    Parse design request from user message and extract parameters.
+
+    Returns updated params and a description of what was parsed.
+    """
+    updated_params = params.copy()
+    parsed_items = []
+
+    # Parse moment (e.g., "150 kN·m", "150 knm", "moment 150")
+    moment_match = re.search(r"(\d+(?:\.\d+)?)\s*(?:kn[·\-]?m|knm)", msg_lower)
+    if moment_match:
+        updated_params["mu_knm"] = float(moment_match.group(1))
+        parsed_items.append(f"Moment: {moment_match.group(1)} kN·m")
+    else:
+        # Try "moment 150" pattern
+        moment_match2 = re.search(r"moment\s+(\d+(?:\.\d+)?)", msg_lower)
+        if moment_match2:
+            updated_params["mu_knm"] = float(moment_match2.group(1))
+            parsed_items.append(f"Moment: {moment_match2.group(1)} kN·m")
+
+    # Parse shear (e.g., "80 kN", "shear 80")
+    shear_match = re.search(r"(\d+(?:\.\d+)?)\s*kn(?!\s*[·\-]?m)", msg_lower)
+    if shear_match:
+        updated_params["vu_kn"] = float(shear_match.group(1))
+        parsed_items.append(f"Shear: {shear_match.group(1)} kN")
+    else:
+        shear_match2 = re.search(r"shear\s+(\d+(?:\.\d+)?)", msg_lower)
+        if shear_match2:
+            updated_params["vu_kn"] = float(shear_match2.group(1))
+            parsed_items.append(f"Shear: {shear_match2.group(1)} kN")
+
+    # Parse dimensions (e.g., "300x500", "300×500mm")
+    dim_match = re.search(r"(\d+)\s*[x×]\s*(\d+)\s*(?:mm)?", msg_lower)
+    if dim_match:
+        updated_params["b_mm"] = int(dim_match.group(1))
+        updated_params["D_mm"] = int(dim_match.group(2))
+        parsed_items.append(f"Section: {dim_match.group(1)}×{dim_match.group(2)}mm")
+
+    # Parse span (e.g., "5m span", "span 5m")
+    span_match = re.search(r"(?:span\s+)?(\d+(?:\.\d+)?)\s*m(?:\s+span)?", msg_lower)
+    if span_match and "mm" not in msg_lower[max(0, span_match.start()-5):span_match.end()+5]:
+        updated_params["span_m"] = float(span_match.group(1))
+        parsed_items.append(f"Span: {span_match.group(1)}m")
+
+    # Parse concrete grade (e.g., "M25", "M30 concrete")
+    grade_match = re.search(r"m\s*(\d+)\s*(?:concrete)?", msg_lower)
+    if grade_match and int(grade_match.group(1)) in [20, 25, 30, 35, 40]:
+        updated_params["fck"] = int(grade_match.group(1))
+        parsed_items.append(f"Concrete: M{grade_match.group(1)}")
+
+    parsed_desc = ", ".join(parsed_items) if parsed_items else "Using current parameters"
+    return updated_params, parsed_desc
+
+
 def simulate_ai_response(user_message: str) -> str:
     """
     Simulate AI response when OpenAI is not available.
@@ -350,24 +481,30 @@ def simulate_ai_response(user_message: str) -> str:
 
     # Check for design request
     if any(word in msg_lower for word in ["design", "beam", "moment", "shear"]):
-        # Extract numbers if present (re imported at module level)
-        numbers = re.findall(r"(\d+(?:\.\d+)?)\s*(?:kn|knm|kn·m|mm|m)", msg_lower)
+        # Parse user input for parameters
+        updated_params, parsed_desc = _parse_design_request(msg_lower, st.session_state.design_params)
 
-        # Run design with current parameters
-        result = run_design(st.session_state.design_params)
+        # Update session state with parsed parameters
+        st.session_state.design_params = updated_params
+
+        # Run design with updated parameters
+        result = run_design(updated_params)
 
         if result.get("success", False):
             st.session_state.current_design = result.get("result")
 
-            response = f"""I've designed a beam for your requirements:
+            # Show what was parsed
+            parsed_info = f"\n📝 *Parsed from your request: {parsed_desc}*\n" if parsed_desc != "Using current parameters" else ""
 
+            response = f"""I've designed a beam for your requirements:
+{parsed_info}
 **Design Summary:**
 - Section: **{result.get('section', 'N/A')}**
 - Steel Area Required: **{result.get('ast_mm2', 0):.0f} mm²**
 - Utilization: **{result.get('utilization', 0):.1%}**
 - Status: {"✅ **SAFE**" if result.get('is_safe', False) else "❌ **UNSAFE**"}
 
-The design uses M{st.session_state.design_params.get('fck', 25)} concrete and Fe{st.session_state.design_params.get('fy', 500)} steel.
+The design uses M{updated_params.get('fck', 25)} concrete and Fe{updated_params.get('fy', 500)} steel.
 
 Would you like me to:
 1. 💰 Optimize for cost?
@@ -408,7 +545,7 @@ Would you like me to:
 
                 return response
             else:
-                return "I need a design first. Please ask me to design a beam."
+                return f"Analysis failed: {analysis.get('error', 'Unknown error')}. Try redesigning the beam first."
         else:
             return "Please design a beam first, then I can help optimize the cost."
 
@@ -450,7 +587,10 @@ Would you like me to:
                         response += f"- {win}\n"
 
                 return response
-        return "Please design a beam first, then I can analyze it."
+            else:
+                return f"Analysis failed: {analysis.get('error', 'Unknown error')}. Try redesigning the beam first."
+        else:
+            return "Please design a beam first, then I can analyze it."
 
     # Check for 3D view request
     elif any(word in msg_lower for word in ["3d", "visual", "show", "view"]):
@@ -520,7 +660,7 @@ def get_ai_response(user_message: str) -> str:
             return response.choices[0].message.content
 
         except Exception as e:
-            # Fallback to simulation on error
+            # Fallback to simulation on error with error info
             return f"⚠️ API Error: {str(e)[:100]}... Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
     else:
         # No API key - use simulation
@@ -528,7 +668,7 @@ def get_ai_response(user_message: str) -> str:
 
 
 def _handle_quick_action(message: str) -> None:
-    """Handle quick action button clicks."""
+    """Handle quick action button clicks - helper to avoid code duplication."""
     st.session_state.ai_messages.append({"role": "user", "content": message})
     response = get_ai_response(message)
     st.session_state.ai_messages.append({"role": "assistant", "content": response})
@@ -536,31 +676,18 @@ def _handle_quick_action(message: str) -> None:
 
 
 def render_chat_panel():
-    """Render the chat panel - compact design with welcome message."""
+    """Render the chat panel (left side)."""
+    st.markdown("### 💬 Chat")
+
     # Welcome message if no history
     if len(st.session_state.ai_messages) == 0:
-        st.markdown(
-            """
-            <div style="
-                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-                border: 1px solid #bae6fd;
-                border-radius: 12px;
-                padding: 1rem;
-                margin-bottom: 0.5rem;
-            ">
-                <div style="font-weight: 600; color: #0369a1; margin-bottom: 0.5rem;">
-                    👋 Welcome! I'm your AI structural engineering assistant.
-                </div>
-                <div style="font-size: 0.85rem; color: #0c4a6e;">
-                    Try: <b>"Design a beam for 150 kN·m"</b> or click a quick action below.
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.info(
+            "👋 **Welcome!** I'm your AI structural engineering assistant.\n\n"
+            "Try asking: *\"Design a beam for 150 kN·m moment\"* or click a quick action below."
         )
 
-    # Chat container with fixed height - taller for better UX
-    chat_container = st.container(height=420)
+    # Chat container with fixed height
+    chat_container = st.container(height=450)
 
     with chat_container:
         # Display message history
@@ -568,26 +695,8 @@ def render_chat_panel():
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
 
-    # Quick action buttons ABOVE chat input for better flow
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        if st.button("🏗️ Design", use_container_width=True, help="Design a beam"):
-            _handle_quick_action("Design a beam for current parameters")
-    with c2:
-        if st.button("💰 Cost", use_container_width=True, help="Optimize cost"):
-            _handle_quick_action("Optimize the cost")
-    with c3:
-        if st.button("📊 Analyze", use_container_width=True, help="Smart analysis"):
-            _handle_quick_action("Run smart analysis")
-    with c4:
-        if st.button("🔄 Clear", use_container_width=True, help="Clear chat"):
-            st.session_state.ai_messages = []
-            st.session_state.current_design = None
-            st.session_state.smart_dashboard = None
-            st.rerun()
-
-    # Chat input
-    prompt = st.chat_input("Ask about beam design, costs, or IS 456...")
+    # Chat input - use traditional pattern for scanner compatibility
+    prompt = st.chat_input("Ask about beam design, costs, IS 456 clauses...")
     if prompt:
         # Add user message
         st.session_state.ai_messages.append({"role": "user", "content": prompt})
@@ -598,13 +707,39 @@ def render_chat_panel():
 
         # Add assistant response
         st.session_state.ai_messages.append({"role": "assistant", "content": response})
+
+        # Rerun to show new messages
         st.rerun()
+
+    # Quick action buttons with Clear option
+    st.markdown("**Quick Actions:**")
+    cols = st.columns(5)
+    with cols[0]:
+        if st.button("🏗️ Design", use_container_width=True, help="Design a beam"):
+            _handle_quick_action("Design a beam for current parameters")
+    with cols[1]:
+        if st.button("💰 Cost", use_container_width=True, help="Optimize cost"):
+            _handle_quick_action("Optimize the cost")
+    with cols[2]:
+        if st.button("📊 Analyze", use_container_width=True, help="Smart analysis"):
+            _handle_quick_action("Run smart analysis")
+    with cols[3]:
+        if st.button("🎨 3D", use_container_width=True, help="Show 3D view"):
+            _handle_quick_action("Show 3D view")
+    with cols[4]:
+        if st.button("🗑️ Clear", use_container_width=True, help="Clear chat"):
+            st.session_state.ai_messages = []
+            st.session_state.current_design = None
+            st.session_state.smart_dashboard = None
+            st.rerun()
 
 
 def render_workspace_panel():
     """Render the workspace panel (right side)."""
-    # Tabs for different views - added Import tab
-    tabs = st.tabs(["📋 Results", "🎨 3D View", "💰 Cost", "📊 Dashboard", "📥 Import"])
+    st.markdown("### 📊 Workspace")
+
+    # Tabs for different views (compact)
+    tabs = st.tabs(["📋 Results", "🎨 3D", "📥 Import", "💰 Cost", "📊 Dashboard"])
 
     # Tab 0: Design Results
     with tabs[0]:
@@ -612,80 +747,75 @@ def render_workspace_panel():
             design = st.session_state.current_design
             params = st.session_state.design_params
 
-            # Extract dimensions from params (not from result)
+            # Get dimensions from params (not design.geometry which doesn't exist)
             b_mm = params.get("b_mm", 300)
             D_mm = params.get("D_mm", 500)
 
-            # Compact metric cards
-            st.markdown(
-                f"""
-                <div class="metric-row">
-                    <div class="mini-metric">
-                        <div class="value">{b_mm}×{D_mm}</div>
-                        <div class="label">Section (mm)</div>
-                    </div>
-                    <div class="mini-metric">
-                        <div class="value">{design.governing_utilization:.0%}</div>
-                        <div class="label">Utilization</div>
-                    </div>
-                    <div class="mini-metric">
-                        <div class="value">{design.flexure.ast_required:.0f}</div>
-                        <div class="label">Ast (mm²)</div>
-                    </div>
-                    <div class="mini-metric">
-                        <div class="value">{"✅" if design.is_ok else "❌"}</div>
-                        <div class="label">Status</div>
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            col1, col2 = st.columns(2)
 
-            # Detailed results in expanders
-            with st.expander("📐 Flexure Details", expanded=True):
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.write(f"**Steel Required:** {design.flexure.ast_required:.0f} mm²")
-                    st.write(f"**Section Type:** {design.flexure.section_type.name}")
-                with col2:
-                    st.write(f"**Mu_lim:** {design.flexure.mu_lim:.1f} kN·m")
-                    st.write(f"**Materials:** M{params.get('fck', 25)} / Fe{params.get('fy', 500)}")
+            with col1:
+                st.metric("Section", f"{b_mm}×{D_mm}mm")
+                st.metric(
+                    "Concrete",
+                    f"M{params.get('fck', 25)}",
+                    help=f"fck = {params.get('fck', 25)} N/mm²",
+                )
+
+            with col2:
+                st.metric(
+                    "Utilization",
+                    f"{design.governing_utilization:.1%}",
+                    delta="SAFE" if design.is_ok else "UNSAFE",
+                    delta_color="normal" if design.is_ok else "inverse",
+                )
+                st.metric(
+                    "Steel", f"Fe{params.get('fy', 500)}", help=f"fy = {params.get('fy', 500)} N/mm²"
+                )
+
+            st.divider()
+
+            st.markdown("**Flexure Design:**")
+            st.write(
+                f"- Steel Required: **{design.flexure.ast_required:.0f} mm²**"
+            )
+            st.write(f"- Section Type: {design.flexure.section_type.value}")
+            st.write(f"- Mu,lim: {design.flexure.mu_lim:.1f} kN·m")
 
             if design.shear:
-                with st.expander("⚔️ Shear Details"):
-                    status = "✅ SAFE" if design.shear.is_safe else "❌ Unsafe"
-                    st.write(f"**Status:** {status}")
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.write(f"**τv:** {design.shear.tv:.2f} N/mm²")
-                    with col2:
-                        st.write(f"**τc:** {design.shear.tc:.2f} N/mm²")
+                st.markdown("**Shear Design:**")
+                st.write(f"- Status: **{'SAFE' if design.shear.is_safe else 'UNSAFE'}**")
+                st.write(f"- τv = {design.shear.tv:.2f} N/mm²")
+                st.write(f"- τc = {design.shear.tc:.2f} N/mm²")
+                if design.shear.spacing > 0:
+                    st.write(f"- Stirrup Spacing: {design.shear.spacing:.0f} mm")
         else:
-            st.info("💡 Ask the AI to design a beam or click the 🏗️ Design button.")
+            st.info(
+                "No design yet. Ask the AI to design a beam or click 🏗️ Design button."
+            )
 
         # Design parameters editor
         with st.expander("⚙️ Design Parameters", expanded=False):
             col1, col2 = st.columns(2)
             with col1:
                 st.session_state.design_params["b_mm"] = st.number_input(
-                    "Width (mm)", value=st.session_state.design_params["b_mm"], step=25
+                    "Width (mm)", value=float(st.session_state.design_params["b_mm"]), step=25.0
                 )
                 st.session_state.design_params["D_mm"] = st.number_input(
-                    "Depth (mm)", value=st.session_state.design_params["D_mm"], step=25
+                    "Depth (mm)", value=float(st.session_state.design_params["D_mm"]), step=25.0
                 )
                 st.session_state.design_params["span_m"] = st.number_input(
                     "Span (m)",
-                    value=st.session_state.design_params["span_m"],
+                    value=float(st.session_state.design_params["span_m"]),
                     step=0.5,
                 )
             with col2:
                 st.session_state.design_params["mu_knm"] = st.number_input(
                     "Moment (kN·m)",
-                    value=st.session_state.design_params["mu_knm"],
-                    step=10,
+                    value=float(st.session_state.design_params["mu_knm"]),
+                    step=10.0,
                 )
                 st.session_state.design_params["vu_kn"] = st.number_input(
-                    "Shear (kN)", value=st.session_state.design_params["vu_kn"], step=5
+                    "Shear (kN)", value=float(st.session_state.design_params["vu_kn"]), step=5.0
                 )
                 st.session_state.design_params["fck"] = st.selectbox(
                     "Concrete Grade",
@@ -695,17 +825,46 @@ def render_workspace_panel():
                     ),
                 )
 
-    # Tab 1: 3D View
+    # Tab 1: 3D View with Actual Reinforcement
     with tabs[1]:
         if st.session_state.current_design:
             params = st.session_state.design_params
+            design = st.session_state.current_design
+
+            # Get dimensions from params
+            b = params.get("b_mm", 300)
+            D = params.get("D_mm", 500)
+            span = params.get("span_m", 5.0) * 1000
+            ast_mm2 = design.flexure.ast_required
+            vu_kn = params.get("vu_kn", 50)
+            fck = params.get("fck", 25)
+
+            # Calculate actual reinforcement layout
+            rebar_layout = calculate_rebar_layout(
+                ast_mm2=ast_mm2,
+                b_mm=b,
+                D_mm=D,
+                span_mm=span,
+                vu_kn=vu_kn,
+                fck=fck,
+                fy=params.get("fy", 500),
+            )
+
+            # Show rebar summary with detailing
+            st.markdown(f"**Reinforcement:** {rebar_layout['summary']}")
+            st.caption(rebar_layout['spacing_summary'])
+            st.caption(f"📏 {rebar_layout['detailing_summary']}")
 
             try:
                 fig = create_beam_3d_figure(
-                    b_mm=params.get("b_mm", 300),
-                    D_mm=params.get("D_mm", 500),
-                    span_mm=params.get("span_m", 5.0) * 1000,
-                    title="Beam 3D Preview",
+                    b=b,
+                    D=D,
+                    span=span,
+                    bottom_bars=rebar_layout["bottom_bars"],
+                    top_bars=rebar_layout["top_bars"],
+                    bar_diameter=rebar_layout["bar_diameter"],
+                    stirrup_positions=rebar_layout["stirrup_positions"],
+                    stirrup_diameter=rebar_layout["stirrup_diameter"],
                 )
                 st.plotly_chart(fig, use_container_width=True)
             except Exception as e:
@@ -713,8 +872,132 @@ def render_workspace_panel():
         else:
             st.info("Design a beam to see 3D visualization.")
 
-    # Tab 2: Cost Analysis
+    # Tab 2: Import CSV (Multiple Files Support)
     with tabs[2]:
+        st.markdown("**Multi-File CSV Import**")
+        st.caption("Upload beam data from ETABS, SAFE, or custom CSV files")
+
+        # Two file uploaders for geometry and forces (like ETABS export)
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**📐 Geometry CSV** (optional)")
+            geom_file = st.file_uploader(
+                "Beam geometry",
+                type=["csv"],
+                help="Beam IDs, dimensions (b, D)",
+                key="geom_csv",
+                label_visibility="collapsed",
+            )
+        with col2:
+            st.markdown("**📊 Forces CSV** (required)")
+            forces_file = st.file_uploader(
+                "Beam forces",
+                type=["csv"],
+                help="Beam IDs, Mu, Vu values",
+                key="forces_csv",
+                label_visibility="collapsed",
+            )
+
+        # Process uploaded files
+        if forces_file is not None:
+            try:
+                forces_df = pd.read_csv(forces_file)
+                geom_df = pd.read_csv(geom_file) if geom_file else None
+
+                st.success(f"✅ Loaded {len(forces_df)} force records" +
+                          (f" + {len(geom_df)} geometry records" if geom_df is not None else ""))
+
+                # Show preview
+                with st.expander("Preview data", expanded=False):
+                    if geom_df is not None:
+                        st.markdown("**Geometry:**")
+                        st.dataframe(geom_df.head(5), use_container_width=True)
+                    st.markdown("**Forces:**")
+                    st.dataframe(forces_df.head(5), use_container_width=True)
+
+                # Column mapping
+                st.markdown("**Map Columns**")
+                force_cols = list(forces_df.columns)
+                geom_cols = list(geom_df.columns) if geom_df is not None else force_cols
+
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.markdown("*Geometry*")
+                    id_col = st.selectbox("Beam ID", ["--"] + force_cols, key="id_col_ai")
+                    b_col = st.selectbox("Width (b)", ["--"] + geom_cols, key="b_col_ai")
+                    d_col = st.selectbox("Depth (D)", ["--"] + geom_cols, key="d_col_ai")
+                with col2:
+                    st.markdown("*Forces*")
+                    mu_col = st.selectbox("Moment (Mu)", ["--"] + force_cols, key="mu_col_ai")
+                    vu_col = st.selectbox("Shear (Vu)", ["--"] + force_cols, key="vu_col_ai")
+                with col3:
+                    st.markdown("*Defaults*")
+                    default_b = st.number_input("Default b (mm)", value=300.0, step=25.0, key="def_b")
+                    default_d = st.number_input("Default D (mm)", value=500.0, step=25.0, key="def_d")
+
+                # Combine data
+                if geom_df is not None and id_col != "--":
+                    # Merge geometry and forces on beam ID
+                    combined_df = forces_df.merge(geom_df, on=id_col, how="left", suffixes=("", "_geom"))
+                else:
+                    combined_df = forces_df
+
+                st.session_state.imported_beams = combined_df
+
+                # Design button
+                if st.button("🏗️ Design All Beams", type="primary", key="batch_design_btn"):
+                    if mu_col != "--":
+                        total_beams = len(combined_df)
+                        if total_beams == 0:
+                            st.warning("No beams to design. Check your CSV file.")
+                        else:
+                            with st.spinner(f"Designing {total_beams} beams..."):
+                                results = []
+                                progress = st.progress(0)
+                                for idx, row in combined_df.iterrows():
+                                    # Get dimensions from columns or use defaults
+                                    b_val = row.get(b_col, default_b) if b_col != "--" else default_b
+                                    d_val = row.get(d_col, default_d) if d_col != "--" else default_d
+
+                                    params = {
+                                        "b_mm": float(b_val) if pd.notna(b_val) else default_b,
+                                        "D_mm": float(d_val) if pd.notna(d_val) else default_d,
+                                        "mu_knm": float(row.get(mu_col, 100)),
+                                        "vu_kn": float(row.get(vu_col, 50)) if vu_col != "--" and pd.notna(row.get(vu_col)) else 50.0,
+                                        "fck": 25,
+                                        "fy": 500,
+                                    }
+                                    result = run_design(params)
+                                    result["beam_id"] = row.get(id_col, f"B{idx+1}") if id_col != "--" else f"B{idx+1}"
+                                    results.append(result)
+                                    progress.progress((idx + 1) / total_beams)
+
+                                st.session_state.batch_results = results
+                                safe_count = sum(1 for r in results if r.get("is_safe", False))
+                                st.success(f"✅ Designed {len(results)} beams: {safe_count} SAFE, {len(results)-safe_count} UNSAFE")
+
+                                # Show results summary
+                                results_data = []
+                                for r in results:
+                                    results_data.append({
+                                        "ID": r.get("beam_id", "-"),
+                                        "Section": r.get("section", "-"),
+                                        "Ast (mm²)": round(r.get("ast_mm2", 0)),
+                                        "Util": f"{r.get('utilization', 0):.0%}",
+                                        "Status": "✅" if r.get("is_safe") else "❌",
+                                    })
+                                st.dataframe(pd.DataFrame(results_data), use_container_width=True)
+                    else:
+                        st.warning("Please map at least the Moment (Mu) column")
+            except Exception as e:
+                st.error(f"Error reading CSV: {e}")
+        else:
+            st.info("📁 Upload CSV files to batch design beams.")
+            st.caption("**ETABS workflow:** Export 'Connectivity - Frame' and 'Element Forces - Beams'")
+            st.caption("**Simple CSV:** Just needs columns for Mu (moment) values")
+
+    # Tab 3: Cost Analysis
+    with tabs[3]:
         if st.session_state.smart_dashboard and st.session_state.smart_dashboard.cost:
             cost = st.session_state.smart_dashboard.cost
 
@@ -745,8 +1028,8 @@ def render_workspace_panel():
         else:
             st.info("Run cost optimization to see analysis. Ask 'Optimize cost'.")
 
-    # Tab 3: Smart Dashboard
-    with tabs[3]:
+    # Tab 4: Smart Dashboard
+    with tabs[4]:
         if st.session_state.smart_dashboard:
             dashboard = st.session_state.smart_dashboard
             s = dashboard.summary
@@ -799,201 +1082,27 @@ def render_workspace_panel():
         else:
             st.info("Run smart analysis to see dashboard. Ask 'Run smart analysis'.")
 
-    # Tab 4: Import from ETABS/Multi-Format
-    with tabs[4]:
-        st.markdown("**📥 Import ETABS / Analysis Results**")
-
-        # Check if there's data from Multi-Format Import page
-        has_import_data = (
-            st.session_state.get("mf_beams") or
-            st.session_state.get("mf_forces") or
-            st.session_state.get("mf_design_results")
-        )
-
-        if has_import_data:
-            st.success("✅ Import data found from Multi-Format Import page!")
-
-            # Show summary of imported data
-            beams = st.session_state.get("mf_beams", [])
-            forces = st.session_state.get("mf_forces", [])
-            results = st.session_state.get("mf_design_results")
-
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Beams", len(beams))
-            with col2:
-                st.metric("Load Cases", len(forces))
-            with col3:
-                st.metric("Results", "Yes" if results else "No")
-
-            st.divider()
-
-            # Allow selecting a beam to analyze
-            if beams:
-                beam_labels = [f"{b.beam_id} ({b.width_mm}×{b.depth_mm}mm)" for b in beams]
-                selected = st.selectbox("Select beam to analyze:", beam_labels)
-
-                if st.button("📊 Load into AI Chat", use_container_width=True):
-                    # Get selected beam index
-                    idx = beam_labels.index(selected)
-                    beam = beams[idx]
-
-                    # Update design params from imported beam
-                    st.session_state.design_params["b_mm"] = beam.width_mm
-                    st.session_state.design_params["D_mm"] = beam.depth_mm
-
-                    # Find forces for this beam if available
-                    if forces:
-                        beam_forces = [f for f in forces if f.beam_id == beam.beam_id]
-                        if beam_forces:
-                            max_mu = max(abs(f.mu_knm) for f in beam_forces)
-                            max_vu = max(abs(f.vu_kn) for f in beam_forces)
-                            st.session_state.design_params["mu_knm"] = max_mu
-                            st.session_state.design_params["vu_kn"] = max_vu
-
-                    # Add message to chat
-                    msg = f"I've loaded beam **{beam.beam_id}** ({beam.width_mm}×{beam.depth_mm}mm) from your ETABS import. Please design this beam."
-                    st.session_state.ai_messages.append({"role": "user", "content": msg})
-                    response = get_ai_response("Design a beam for current parameters")
-                    st.session_state.ai_messages.append({"role": "assistant", "content": response})
-                    st.rerun()
-
-            # Chat about all results
-            if results:
-                if st.button("💬 Analyze All Results", use_container_width=True):
-                    msg = f"I have {len(beams)} beams imported from ETABS. Can you give me a summary of the design results and highlight any issues?"
-                    st.session_state.ai_messages.append({"role": "user", "content": msg})
-                    # For now, use simulation since we can't pass structured data to OpenAI easily
-                    response = f"""Based on your imported data:
-
-**Summary:**
-- **Total Beams:** {len(beams)}
-- **Analyzed:** {len(results.cases) if hasattr(results, 'cases') else 'N/A'} load cases
-
-**Recommendations:**
-1. Review beams with utilization > 90%
-2. Check shear capacity for heavily loaded spans
-3. Consider optimization for under-utilized sections
-
-Would you like me to analyze a specific beam in detail?"""
-                    st.session_state.ai_messages.append({"role": "assistant", "content": response})
-                    st.rerun()
-        else:
-            st.info(
-                """No import data found.
-
-**To import ETABS/Analysis results:**
-1. Go to **📥 Multi-Format Import** page (page 7)
-2. Upload your ETABS geometry and forces CSV files
-3. Return here to chat about the results
-
-Or use the quick parameters above to design a beam manually."""
-            )
-
-            if st.button("➡️ Go to Multi-Format Import", use_container_width=True):
-                st.switch_page("pages/07_📥_multi_format_import.py")
-
-
-def render_compact_header() -> None:
-    """Render a compact professional header with status indicator."""
-    client = get_openai_client()
-
-    # Build status badge HTML
-    if client:
-        config = get_openai_config()
-        model_name = config["model"]
-        status_html = f"""
-        <span class="status-badge status-connected">
-            🟢 {model_name}
-        </span>
-        """
-    else:
-        status_html = """
-        <span class="status-badge status-local">
-            🟡 Local SmartDesigner
-        </span>
-        """
-
-    # Compact header with gradient background
-    st.markdown(
-        f"""
-        <div class="ai-header">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h1>🤖 StructEng AI Assistant</h1>
-                    <p>Your intelligent structural engineering companion • IS 456 Beam Design</p>
-                </div>
-                <div>
-                    {status_html}
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_quick_params_bar() -> None:
-    """Render a compact parameters bar at the top."""
-    params = st.session_state.design_params
-
-    with st.expander("⚙️ Quick Parameters", expanded=False):
-        cols = st.columns(7)
-        with cols[0]:
-            st.session_state.design_params["b_mm"] = st.number_input(
-                "Width", value=params.get("b_mm", 300), step=25, key="qp_b"
-            )
-        with cols[1]:
-            st.session_state.design_params["D_mm"] = st.number_input(
-                "Depth", value=params.get("D_mm", 500), step=25, key="qp_D"
-            )
-        with cols[2]:
-            st.session_state.design_params["span_m"] = st.number_input(
-                "Span (m)", value=params.get("span_m", 5.0), step=0.5, key="qp_span"
-            )
-        with cols[3]:
-            st.session_state.design_params["mu_knm"] = st.number_input(
-                "Mu (kN·m)", value=params.get("mu_knm", 100), step=10, key="qp_mu"
-            )
-        with cols[4]:
-            st.session_state.design_params["vu_kn"] = st.number_input(
-                "Vu (kN)", value=params.get("vu_kn", 50), step=5, key="qp_vu"
-            )
-        with cols[5]:
-            st.session_state.design_params["fck"] = st.selectbox(
-                "Concrete",
-                [20, 25, 30, 35, 40],
-                index=[20, 25, 30, 35, 40].index(params.get("fck", 25)),
-                key="qp_fck",
-            )
-        with cols[6]:
-            st.session_state.design_params["fy"] = st.selectbox(
-                "Steel",
-                [415, 500, 550],
-                index=[415, 500, 550].index(params.get("fy", 500)),
-                key="qp_fy",
-            )
-
 
 def main():
-    """Main function - compact professional layout."""
-    # Initialize
+    """Main function."""
     init_session_state()
 
-    # Apply theme and styling
-    if HAS_LAYOUT:
-        initialize_theme()
-        apply_dark_mode_theme()
-    inject_ai_page_css()
+    # Compact header
+    st.markdown("## 🤖 StructEng AI Assistant")
 
-    # Compact header with status
-    render_compact_header()
+    # Subtle status in sidebar instead of main area
+    with st.sidebar:
+        st.markdown("### AI Status")
+        client = get_openai_client()
+        if client:
+            config = get_openai_config()
+            st.caption(f"✅ OpenAI {config['model']}")
+        else:
+            st.caption("💡 Local SmartDesigner mode")
+            st.caption("Add OPENAI_API_KEY in secrets for GPT")
 
-    # Quick parameters bar (collapsed by default)
-    render_quick_params_bar()
-
-    # Main layout: 45% chat, 55% workspace (slightly more balanced)
-    chat_col, workspace_col = st.columns([0.45, 0.55], gap="medium")
+    # Main layout: 40% chat, 60% workspace
+    chat_col, workspace_col = st.columns([0.4, 0.6])
 
     with chat_col:
         render_chat_panel()

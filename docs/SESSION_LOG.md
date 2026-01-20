@@ -4,77 +4,601 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-21 — Session 48: AI Assistant Bug Fixes & UI Redesign
+## 2026-01-20 — Session 56: AI Chat Improvements
 
-**Focus:** Fix runtime bugs in AI Assistant, improve UI, add ETABS integration
+**Focus:** Multi-file upload, chat-about-design, mobile-friendly UI, quick calculations
 
-**User Feedback:**
-- Error: `'ComplianceCaseResult' object has no attribute 'geometry'`
-- OpenAI model "gpt-5-mini" commented out (doesn't exist)
-- UI "too basic" — needs compact, professional design
-- Should read ETABS results from page 7 (Multi-Format Import)
+**User Requests:**
+1. Research ChatGPT usage and improve AI integration
+2. Multi-file upload (geometry + forces separately)
+3. Chat should talk about design results after completion
+4. Use library effectively in chat
+5. Fix 3D building view (was showing correctly but hover too verbose)
+6. Concise hover tooltips (beam name + utilization + pass/fail only)
+7. Mobile-friendly compact UI
+8. 6+ valuable commits
 
-### Bug Fixes
-
-**Issue 1: ComplianceCaseResult Attribute Errors**
-- Root cause: Code assumed `result.geometry` exists — it doesn't
-- `design_beam_is456()` returns `ComplianceCaseResult` with `flexure`, `shear`, `is_ok`
-- Fixed: Use input `params` for dimensions, correct attribute names
-
-**Issue 2: OpenAI API Configuration**
-- Root cause: Hardcoded `model="gpt-4"`, user had invalid "gpt-5-mini"
-- Fixed: Added `get_openai_config()` to read from secrets.toml
-- Corrected user's config to `gpt-4o-mini`
-
-**Issue 3: GitHub Push Protection**
-- Added secrets.toml to .gitignore to prevent API key exposure
-
-### UI Redesign
-
-**New Features:**
-- Custom CSS with gradient header, status badges, mini-metrics
-- `render_compact_header()` — Professional header with model status badge
-- `render_quick_params_bar()` — Collapsible quick parameters
-- Welcome message for empty chat state
-- 45/55 layout split (was 40/60)
-- Quick action buttons: Design, Cost, Analyze, Clear
-
-**ETABS Integration:**
-- Added Import tab (tabs[4]) to workspace panel
-- Reads `mf_beams`, `mf_forces`, `mf_design_results` from session state
-- Beam selector with auto-population of design params
-- "Load into AI Chat" and "Analyze All Results" buttons
-
-### Commits
+### Implementation (5 commits on PR branch)
 
 | Commit | Description |
 |--------|-------------|
-| `7a2a2181` | fix(ai): resolve ComplianceCaseResult attribute errors |
-| `b767581e` | feat(ai): add configurable OpenAI model with secrets.toml |
-| `38149184` | feat(ai): redesign UI with compact professional layout and ETABS integration |
-| `c2117321` | docs: update TASKS.md and 8-week plan with Session 48 progress |
-| `0d6bc638` | refactor(ai): move _handle_quick_action before usage for static analyzer |
-| *pending* | docs: Session 48 log and summary |
+| `31f2bdf6` | feat(ai): concise hover tooltips and compact building 3D UI |
+| `68b6a2d2` | feat(ai): add multi-file upload for separate geometry and forces CSVs |
+| `cf00d4e2` | feat(ai): add design context awareness to chat for intelligent Q&A |
+| `31ff6fac` | feat(ai): add mobile-friendly CSS and compact UI layout |
+| `8071702c` | feat(ai): add quick design and add-beam chat commands |
 
-### Files Modified
+### Features Added
 
-- `streamlit_app/pages/10_🤖_ai_assistant.py` — Bug fixes + UI redesign + ETABS import
-- `streamlit_app/.streamlit/secrets.toml.example` — Updated with model options
-- `.gitignore` — Added secrets.toml patterns
-- `docs/TASKS.md` — Marked TASK-AI-CHAT complete
-- `docs/planning/8-week-development-plan.md` — Updated Phase AI status
+1. **Multi-File Upload:**
+   - Expander for separate geometry + forces CSV files
+   - Auto-mapping columns using COLUMN_PATTERNS
+   - Merge on beam_id with outer join
 
-### Validation
+2. **Chat Context Awareness:**
+   - `get_design_context()` generates summary for OpenAI
+   - Includes beam count, pass/fail stats, critical beams, selected beam
+   - Local fallback answers: "highest utilization", "failed beams", "summary", "about B1"
 
-- ✅ 3146 Python tests passed
-- ✅ No fragment API violations
-- ✅ Critical scanner issues resolved
+3. **Quick Design Commands:**
+   - `"design 300x500 150"` → instant Ast calculation with Mu,lim check
+   - `"add beam 300x500 150"` → adds beam to project
+   - Uses IS 456 formulas for singly/doubly reinforced decision
+
+4. **UI Polish:**
+   - Mobile-friendly CSS with reduced padding and compact fonts
+   - Header shows quick stats (X/Y beams OK)
+   - 5 icon-only quick action buttons (📂🚀🏗️📊🗑️)
+   - Chat container height increased to 550px
+
+5. **Concise Tooltips:**
+   - Changed from 5-line hover to 2-line: `"<b>B1</b> ✅<br>Util: 75%"`
+   - Status icons: ✅ SAFE, ❌ FAIL, ⏳ pending
+
+### PR
+
+- Branch: `task/TASK-AI-IMPROVE`
+- Status: Ready to finish
+- Files: ai_workspace.py, 11_ai_assistant_v2.py
 
 ### Next Steps
 
-1. Finish PR for Session 48 changes
-2. Test ETABS integration end-to-end
-3. Add more quick action buttons if needed
+1. Finish PR and merge
+2. Test multi-file upload with real ETABS exports
+3. Consider adding Excel (.xlsx) support for forces
+4. Plan Phase 4 tasks
+
+---
+
+## 2026-01-20 — Session 55: v0.18.0 Release Prep
+
+**Focus:** Cleanup, dependency updates, GPT-5-mini upgrade, release v0.18.0
+
+**User Requests:**
+1. Check all work
+2. Find old/unused pages and code
+3. Update dependencies and tools
+4. Check venv and update packages
+5. Research and fix OpenAI model (GPT-5 mini)
+6. Find more things to fix
+7. Update all docs
+8. Pre-release automation and checks
+9. Release v0.18.0
+10. Plan next tasks
+
+### Implementation
+
+| Commit | Description |
+|--------|-------------|
+| `56bd0eb4` | feat: upgrade to OpenAI GPT-5-mini model and fix API signature check |
+| `a882e68d` | chore: bump version to 0.18.0 and update CHANGELOG |
+
+### Key Changes
+
+1. **OpenAI Model Upgrade:**
+   - Updated default from `gpt-4o-mini` to `gpt-5-mini` (latest cost-efficient model)
+   - Updated in both AI v1 (page 10) and AI v2 (page 11)
+
+2. **Package Updates:**
+   - Streamlit 1.52.2 → 1.53.0
+   - Plotly 6.5.1 → 6.5.2
+   - Ruff 0.14.11 → 0.14.13
+   - Rich 13.9.4 → 14.2.0
+   - Reportlab 4.4.7 → 4.4.9
+
+3. **API Signature Fix:**
+   - Removed false positive for `bar_diameter` parameter
+   - UI layer uses `bar_diameter`, core uses `bar_dia`
+
+4. **Version Bump:**
+   - 0.17.5 → 0.18.0
+   - Comprehensive CHANGELOG with all AI v2 features
+
+### Pages Analysis
+
+| Page | Status | Notes |
+|------|--------|-------|
+| 01_beam_design.py | ✅ Active | Main beam design page |
+| 02_cost_optimizer.py | ✅ Active | Cost optimization with Pareto |
+| 03_compliance.py | ✅ Active | IS 456 compliance checks |
+| 04_documentation.py | ✅ Active | API documentation |
+| 05_3d_viewer_demo.py | ✅ Active | 3D visualization demo |
+| 06_etabs_import.py | ✅ Active | ETABS CSV import |
+| 07_multi_format_import.py | ✅ Active | Multi-file import |
+| 10_ai_assistant.py | 🔄 Legacy | Keep as fallback for AI v2 |
+| 11_ai_assistant_v2.py | ✅ Active | New primary AI interface |
+| 90_feedback.py | ✅ Active | User feedback collection |
+
+### PR
+
+- Branch: `task/TASK-AI-V2-POLISH`
+- PR: #391
+- Status: CI running
+
+### Next Steps
+
+1. Wait for CI to pass
+2. Merge PR #391
+3. Create v0.18.0 release tag
+4. Plan Phase 4 tasks
+
+---
+
+## 2026-01-20 — Session 54: AI v2 Polish & Quality
+
+**Focus:** Code quality fixes, UI polish, helpful tooltips, export functionality
+
+**User Requests:**
+1. Check work and update plans
+2. Identify improvements
+3. Start implementation with high efficiency
+4. Target 6+ commits
+
+### Implementation (5 commits on PR branch + 2 on main)
+
+| Commit | Description |
+|--------|-------------|
+| `4c2d9952` | docs: update 8-week plan and TASKS with AI v2 feature complete status |
+| `6c2b088c` | fix(ai): add zero-division guards in rebar checks and progress calc |
+| `8d4efd73` | style(ai): add loading spinners, feature icons, chat tips, and improved navigation |
+| `10d28584` | style(ai): add helpful tooltips to all main action buttons |
+| `4c37cc2a` | feat(ai): add CSV and summary export in dashboard |
+
+### Improvements Made
+
+1. **Safety Fixes:**
+   - Zero-division guards for `fy` in `calculate_rebar_checks()`
+   - Safe progress percentage calculation with `max(len, 1)`
+
+2. **Loading States:**
+   - Spinner on "Load Sample" button
+   - Spinner on CSV file processing
+
+3. **Feature Highlights:**
+   - 5-column layout with icons: Auto-mapping, Building 3D, Cross-section, Rebar editor, Cost estimate
+
+4. **Chat Tip:**
+   - Info box: "Try: `load sample` → `design all` → `building 3d`"
+
+5. **Helpful Tooltips:**
+   - All main action buttons now have help text on hover
+   - Explains what each button does
+
+6. **Cross-Section Button:**
+   - Added "📐 Section" to design results navigation
+   - Now 4-button row: 3D View, Section, Rebar, Building
+
+7. **Failed Beam Warning:**
+   - Contextual warning when beams fail: "X beams failed. Select one and use Edit Rebar to increase reinforcement."
+
+8. **Export Tab in Dashboard:**
+   - Download CSV with all design results
+   - Download text summary with material takeoff and costs
+   - Tip for Excel integration
+
+### Files Modified
+
+- [streamlit_app/components/ai_workspace.py](../streamlit_app/components/ai_workspace.py) — UI polish, safety fixes, export
+- [docs/planning/8-week-development-plan.md](planning/8-week-development-plan.md) — AI v2 marked complete
+- [docs/TASKS.md](TASKS.md) — Updated task status
+
+### PR
+
+- Branch: `task/TASK-AI-V2-POLISH`
+- Status: Ready for merge
+
+### Next Steps
+
+1. Merge PR to main
+2. Continue Phase 4: Performance & Integration
+3. Add JSON design result upload for 3D visualization
+
+---
+
+## 2026-01-20 — Session 53: AI v2 Advanced Features
+
+**Focus:** Enhance AI v2 with building 3D view, interactive rebar editor, cross-section view, material takeoff
+
+**User Requests:**
+1. Impressive 3D view of ALL beams and floors (building view)
+2. Interactive rebar editor with immediate effect feedback
+3. Make UI more slick, compact, and advanced
+4. Find more improvements
+5. Target 6+ valuable commits
+
+### Implementation (5 commits)
+
+| Commit | Description |
+|--------|-------------|
+| `c11a3359` | feat(ai): add building 3D view and interactive rebar editor |
+| `8eb091eb` | style(ai): polish UI with filters, better layout, feature highlights |
+| `6faaed7d` | feat(ai): enhance chat commands with building 3d, rebar editor, beam selection |
+| `cfead753` | feat(ai): add professional cross-section view with dimensions and rebar schedule |
+| `56efdbbc` | feat(ai): add material takeoff and cost estimation to dashboard |
+
+### Features Added
+
+1. **Building 3D View** (BUILDING_3D state):
+   - Full building visualization with all beams
+   - Story-based color coding (Story1=blue, Story2=green, Story3=orange)
+   - Hover info with beam details
+   - Summary stats (beams per story, safe/failed)
+
+2. **Interactive Rebar Editor** (REBAR_EDIT state):
+   - Bottom layer 1 & 2 configuration (dia + count)
+   - Top reinforcement controls
+   - Stirrup diameter and spacing
+   - Real-time design checks:
+     - Flexure capacity (Mu = 0.87 × fy × Ast × 0.9 × d)
+     - Shear capacity (τc from IS 456 Table 19 + stirrups)
+     - Min/max reinforcement (IS 456 Cl 26.5.1.1)
+     - Bar spacing check
+   - Pass/fail indicators with utilization %
+
+3. **Cross-Section View** (CROSS_SECTION state):
+   - Professional 2D cross-section using Plotly
+   - Dimension annotations (b, D, cover)
+   - Bar positions with hover info
+   - Color-coded: bottom bars (blue), top bars (green), stirrups (gray)
+   - Rebar schedule table (Location, Bars, Ast)
+
+4. **Material Takeoff & Cost Estimation** (Dashboard tabs):
+   - Concrete volume (m³)
+   - Steel weight (kg) with ratio
+   - Per-story breakdown
+   - Cost estimation (₹):
+     - Concrete @ ₹8000/m³
+     - Steel @ ₹85/kg
+     - Cost per running meter
+   - Pie chart visualization
+
+5. **Enhanced Chat Commands:**
+   - `building 3d` / `building view` → BUILDING_3D state
+   - `edit rebar` / `rebar editor` → REBAR_EDIT state
+   - `cross section` / `section view` → CROSS_SECTION state
+   - `select B1` → Select beam by ID
+   - Improved help with categorized commands
+
+6. **UI Polish:**
+   - Story and status filters in design results
+   - Utilization column in results table
+   - Compact navigation (4-5 button rows)
+   - Feature highlights on welcome panel
+   - Better card layout with icons
+
+### New States Added
+
+```python
+class WorkspaceState(Enum):
+    WELCOME = "welcome"
+    IMPORT = "import"
+    DESIGN = "design"
+    BUILDING_3D = "building_3d"    # NEW: Full building view
+    VIEW_3D = "view_3d"
+    CROSS_SECTION = "cross_section"  # NEW: 2D section view
+    REBAR_EDIT = "rebar_edit"       # NEW: Interactive editor
+    EDIT = "edit"
+    DASHBOARD = "dashboard"
+```
+
+### New Functions
+
+- `create_building_3d_figure(df)` — Full building 3D mesh
+- `render_building_3d()` — Building 3D state renderer
+- `calculate_rebar_checks()` — Real-time design checks
+- `render_rebar_editor()` — Interactive rebar editor
+- `create_cross_section_figure()` — Professional 2D section
+- `render_cross_section()` — Cross-section state renderer
+- `calculate_material_takeoff(df)` — Material quantities and costs
+
+### Files Modified
+
+- `streamlit_app/components/ai_workspace.py` — Added 1000+ lines
+- `streamlit_app/pages/11_⚡_ai_assistant_v2.py` — Enhanced chat commands
+- `streamlit_app/components/__init__.py` — Updated exports
+
+### Validation
+
+- **Python tests:** All passing ✅
+- **All new functions:** Import verified ✅
+- **Streamlit app:** Functional ✅
+
+### Lessons Learned
+
+- Cross-section views add significant value for engineering review
+- Material takeoff is essential for project estimation
+- Interactive editors need real-time feedback for good UX
+
+---
+
+## 2026-01-20 — Session 52: AI Assistant v2 with Dynamic Workspace
+
+**Focus:** Implement AI v2 redesign with dynamic single-panel workspace, add 3D rebar view to multi-format import
+
+**User Requests:**
+1. Start work on AI v2 redesign (from Session 51 plan)
+2. Add complete 3D view with detailing to multi-format import page
+3. Fix any existing issues
+4. Target 6+ valuable commits
+
+### Implementation (3 commits so far)
+
+| Commit | Description |
+|--------|-------------|
+| `e1189937` | feat(page07): add beam detail 3D view with rebar visualization |
+| `1e9061b4` | feat(ai): add dynamic workspace component with state machine |
+| `6ba16b62` | feat(ai): add AI assistant v2 page with dynamic workspace |
+
+### Features Added
+
+1. **Page 07 Beam Detail 3D View** (Commit 1):
+   - Added `calculate_rebar_layout_for_beam()` function
+   - Beam selector in design results section
+   - 3D visualization with actual rebars and stirrups
+   - Rebar summary display (e.g., "4T16 bottom, 2T12 hanger")
+
+2. **AI Workspace Component** (Commit 2) — `streamlit_app/components/ai_workspace.py`:
+   - `WorkspaceState` enum with 6 states: WELCOME, IMPORT, DESIGN, VIEW_3D, EDIT, DASHBOARD
+   - State machine with transitions
+   - Built-in sample ETABS data (10 beams)
+   - Auto-column-mapping for CSV import
+   - Render functions for each state
+
+3. **AI Assistant v2 Page** (Commit 3) — `streamlit_app/pages/11_⚡_ai_assistant_v2.py`:
+   - 35% chat / 65% workspace layout (maximized)
+   - Minimal header (3% screen usage vs 20% before)
+   - Chat commands: "load sample", "design all", "show 3d", "dashboard"
+   - OpenAI integration with local fallback
+   - Dynamic workspace rendering based on state
+
+### Files Created/Modified
+
+- **NEW:** `streamlit_app/components/ai_workspace.py` (753 lines)
+- **NEW:** `streamlit_app/pages/11_⚡_ai_assistant_v2.py` (338 lines)
+- **ENHANCED:** `streamlit_app/pages/07_📥_multi_format_import.py`
+
+### Architecture Decision
+
+**Dynamic Workspace over 5 Tabs:**
+- Single panel that transforms based on state
+- State machine controls transitions
+- Much cleaner UX than tab switching
+- Same codebase for AI and standalone use
+
+### Validation
+
+- **Python tests:** 3144/3144 passing ✅
+- **Component imports:** Verified ✅
+- **Streamlit app:** Running and accessible ✅
+
+### Status
+
+- **Session commits:** 3 (target: 6+)
+- **AI v2 MVP:** COMPLETE ✅
+- **Next:** Documentation, testing, refinements
+
+---
+
+## 2026-01-20 — Session 51: Phase 3 Rebar Visualization & Bug Fixes
+
+**Focus:** Fix user-reported bugs, implement Phase 3 rebar visualization in 3D
+
+**User Requests:**
+1. Fix "Analysis failed: 'ComplianceCaseResult' object has no attribute 'geometry'"
+2. Fix "StreamlitMixedNumericTypesError: value has float type, step has int type"
+3. Update CSV import for multiple files (ETABS Geometry + Forces)
+4. Fix GPT model name (gpt-5-mini doesn't exist → gpt-4o-mini)
+5. Start Phase 3: Rebar visualization in 3D with variable stirrup zones
+6. Target 6+ commits for high-value session
+
+### Implementation (3 commits)
+
+| Commit | Description |
+|--------|-------------|
+| `c5fd8bc8` | fix(ai): resolve SmartDesigner geometry error and type mismatch |
+| `9383385c` | fix(ai): fix GPT model name and scanner issues |
+| `4a89dc9a` | feat(ai): add Phase 3 rebar visualization with variable stirrup zones |
+
+### Bugs Fixed
+
+1. **SmartDesigner geometry error** — `ComplianceCaseResult` has no `.geometry`/`.materials`. Created `SimpleNamespace` wrapper in `run_smart_analysis()` to bridge interface gap.
+2. **number_input type mismatch** — Changed session state defaults to floats (300.0, 500.0, etc.) and steps to floats (25.0, 10.0, 5.0).
+3. **GPT model name** — `gpt-5-mini` doesn't exist! Fixed to `gpt-4o-mini` (actual OpenAI model).
+4. **Division by zero** — Scanner flagged `progress.progress((idx + 1) / len(combined_df))` — added guard for empty DataFrame.
+5. **Single CSV import** — ETABS exports separate files. Changed to dual file uploaders (Geometry CSV + Forces CSV) with column mapping and merge.
+
+### Features Added (Phase 3)
+
+1. **`calculate_rebar_layout()` function** — 118-line function that:
+   - Takes Ast required, dimensions, span
+   - Calculates optimal bar combination (2-6 bars, 12mm-32mm)
+   - Generates bar positions for bottom and top bars
+   - Calculates variable stirrup zones per IS 456 (2d from support = tighter spacing)
+   - Returns complete rebar layout for 3D visualization
+
+2. **3D View tab enhancement** — Now shows:
+   - Actual reinforcement from design (e.g., "4T16 + 2T16 hanger")
+   - Variable stirrup positions
+   - Integration with `create_beam_3d_figure()`
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py`:
+  - `run_smart_analysis()` — Added SimpleNamespace wrapper for BeamDesignOutput interface
+  - `calculate_rebar_layout()` — NEW function for Phase 3 rebar calculation
+  - `get_openai_config()` — Fixed model name, added error handling
+  - Session state defaults — Changed to floats
+  - CSV Import tab — Dual file uploaders for Geometry + Forces
+  - 3D View tab — Shows actual reinforcement from design
+
+- `streamlit_app/.streamlit/secrets.toml`:
+  - Changed `model = "gpt-5-mini"` → `model = "gpt-4o-mini"`
+
+### Validation
+
+- **AI Assistant tests:** 11/11 passing
+- **Python syntax:** Verified
+- **Scanner:** Division by zero fixed
+
+### Status
+
+- **Phase 3: Rebar Visualization** — IN PROGRESS (core function done)
+- **Next:** Add rebar viz to Beam Design page, detailing data (Ld, lap lengths)
+- **Commits this session:** 3 (user goal: 6+)
+
+---
+
+## 2026-01-20 — Session 50: AI Page Polish & CSV Import
+
+**Focus:** Fix remaining AI page bugs, add CSV import, update documentation
+
+**User Requests:**
+1. Fix 3D view error: `create_beam_3d_figure() got unexpected keyword argument 'b_mm'`
+2. Fix AI context issues (losing design state)
+3. Remove/improve SmartDesigner notice
+4. Research AI model effective usage
+5. Add CSV upload to AI page (from page 7)
+6. Make UI more compact/subtle
+7. Update 8-week plan with AI work
+
+### Implementation (4 commits)
+
+| Commit | Description |
+|--------|-------------|
+| PR #390 merge | TASK-AI-FIX Session 49 work (auto-merged after scanner fix) |
+| `c53b21c6` | fix(ai): correct 3D figure params (b_mm→b) and improve error messages |
+| `8b848122` | feat(ai): add CSV import tab with batch design capability |
+| `9a780600` | docs: update 8-week plan and add AI usage research |
+
+### Bugs Fixed
+
+1. **3D View params** — Fixed `b_mm=` → `b=`, `D_mm=` → `D=`, `span_mm=` → `span=`
+2. **Error messages** — "I need a design first" → "Analysis failed: {error}"
+3. **secrets.toml in git** — .gitignore now properly ignores (line 114)
+
+### Features Added
+
+1. **CSV Import tab** — 5th tab in workspace for batch design from ETABS/SAFE/custom CSV
+2. **Compact header** — Status moved to sidebar, cleaner main area
+3. **Batch design** — Upload CSV, map columns, design all beams at once
+4. **AI usage research doc** — `docs/research/ai-effective-usage-patterns.md`
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py` — 3D fix, CSV import, compact UI
+- `docs/planning/8-week-development-plan.md` — Session 50 status
+- `docs/TASKS.md` — AI Chat marked MVP COMPLETE
+
+### Files Created
+
+- `docs/research/ai-effective-usage-patterns.md` — AI model selection, prompts, patterns
+
+### Status
+
+- **Phase AI: MVP COMPLETE** ✅
+- **AI Chat tests:** 11 passing
+- **Scanner:** 0 CRITICAL issues
+- **Next:** Phase 3 (Detailing/Rebar Visualization)
+
+---
+
+## 2026-01-25 — Session 49: AI Assistant Bug Fixes & Enhancements
+
+**Focus:** Fix AI page runtime errors, add GPT-5-mini support, enhance chat UX
+
+**User Requests:**
+1. "still the ai page not working" — Runtime bugs on AI page
+2. "gpt 5 mini is latest model please check on web" — Research new models
+3. "make it better" — UI improvements
+4. "follow plan and implement plan one by one" — Continue 8-week plan
+5. "make sure 6+ valuable commits" — Productivity target
+
+### Research Completed
+
+**OpenAI Models (January 2026):**
+- `gpt-5-mini` — Fast, cost-efficient ($0.25/1M tokens) — **USER WAS RIGHT**
+- `gpt-5` — Full reasoning ($1.75/1M tokens)
+- `gpt-5.2` — Best for coding/agentic tasks
+- `gpt-4.1` — Non-reasoning, fast
+
+**Data Type Analysis:**
+- `ComplianceCaseResult` has NO `geometry` attribute — bug identified
+- `FlexureResult.ast_required` (NOT `ast_required_mm2`)
+- `ShearResult.tv`, `.tc` (NOT `tau_v_nmm2`, `tau_c_nmm2`)
+- `ShearResult.is_safe` (NOT `shear_status`)
+
+### Implementation (6 commits)
+
+| Commit | Description |
+|--------|-------------|
+| `fef3ae12` | fix(ai): resolve ComplianceCaseResult.geometry bug + GPT-5-mini support |
+| `4d0a9c7c` | fix(ai): fix workspace panel attribute errors in Results and 3D tabs |
+| `37e0a21f` | feat(ai): welcome message, Clear button, helper function |
+| `4e0c78ba` | docs: update 8-week plan and TASKS with Session 49 progress |
+| `03f92de0` | feat(ai): natural language parameter parsing from user messages |
+| `7ff2d1e9` | test(ai): add tests for AI assistant page (11 tests) |
+
+### Bugs Fixed
+
+1. **ComplianceCaseResult.geometry** — Used `params` dict instead of non-existent attribute
+2. **FlexureResult.ast_required_mm2** — Fixed to `ast_required`
+3. **ShearResult.shear_status** — Fixed to `is_safe` (boolean)
+4. **ShearResult.tau_v/tau_c** — Fixed to `tv`, `tc`
+5. **GitHub push protection** — Added secrets.toml to .gitignore
+
+### Features Added
+
+1. **GPT-5-mini support** — Configurable model via secrets.toml
+2. **Welcome message** — Shows when chat history is empty
+3. **Clear chat button** — 5th quick action to reset chat
+4. **Parameter parsing** — Parse "150 kN·m", "300x500mm", "M25" from user input
+5. **Test suite** — 11 tests covering page load, parsing, SmartDesigner
+
+### Files Modified
+
+- `streamlit_app/pages/10_🤖_ai_assistant.py` — Major bug fixes + features
+- `streamlit_app/.streamlit/secrets.toml.example` — GPT-5-mini as default
+- `.gitignore` — Protect secrets.toml from commits
+- `docs/TASKS.md` — Updated progress
+- `docs/planning/8-week-development-plan.md` — Updated Phase AI status
+
+### Files Created
+
+- `tests/apptest/test_page_10_ai_assistant.py` — 11 tests for AI page
+
+### PR Status
+
+- Branch: `task/TASK-AI-FIX`
+- 6 commits ready to merge
+- All tests passing (11 new + existing)
+- Scanner: 0 Critical issues
+
+### Next Steps
+
+1. Finish PR and merge to main
+2. Continue Phase 3 (Rebar Visualization)
+3. Add streaming responses for OpenAI integration
+4. Connect tool execution handlers
 
 ---
 

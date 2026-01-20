@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 48)
+**Updated:** 2026-01-20 (Session 55)
 
 ---
 
@@ -15,41 +15,105 @@
 
 ## Current Focus
 
-- **Version:** v0.17.6 → v0.18.0 (AI Chat MVP)
-- **Focus:** AI Chat Interface + SmartDesigner UI Integration
-- **8-Week Plan:** Phase 3.5 (AI/Insights) - COMPLETING
-- **Next Milestone:** v0.18.0 - AI Chat MVP (Jan 2026)
-- **Key Insight:** ChatGPT-like UI with library function calling
+- **Version:** v0.18.0 🎉 (AI v2 Production Ready)
+- **Focus:** Release v0.18.0, then Phase 4 CAD quality
+- **8-Week Plan:** Phase AI v2 COMPLETE ✅, Release in progress
+- **Next Milestone:** v0.19.0 - CAD Quality + DXF Export
+- **Key Achievement:** 9-state dynamic workspace with GPT-5-mini, building 3D, rebar editor, export
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
 
 ## Active Tasks
 
-### TASK-AI-CHAT: AI Chat Assistant Interface ✅ COMPLETE
+### TASK-AI-V2: AI Assistant v2 with Dynamic Workspace ✅ COMPLETE
+
+**Goal:** Redesign AI chat with single dynamic workspace panel (35% chat / 65% workspace)
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| AI workspace component | ✅ Done | Session 52 - `ai_workspace.py` |
+| State machine (9 states) | ✅ Done | Session 53 - Added BUILDING_3D, CROSS_SECTION, REBAR_EDIT |
+| Auto-column-mapping | ✅ Done | Session 52 - Detect ETABS columns |
+| Sample data (10 beams) | ✅ Done | Session 52 - Built-in demo |
+| AI v2 page | ✅ Done | Session 52 - `11_⚡_ai_assistant_v2.py` |
+| Chat commands | ✅ Done | Session 53 - building 3d, edit rebar, cross section, select |
+| Page 07 beam detail 3D | ✅ Done | Session 52 - `e1189937` |
+| **Building 3D view** | ✅ Done | Session 53 - Full building visualization |
+| **Interactive rebar editor** | ✅ Done | Session 53 - Live design checks |
+| **Cross-section view** | ✅ Done | Session 53 - Professional 2D with dimensions |
+| **Material takeoff** | ✅ Done | Session 53 - Concrete m³, steel kg, cost |
+| **Cost estimation** | ✅ Done | Session 53 - ₹/m³, ₹/kg, per-meter cost |
+
+**Session 52-53 Commits: 12 total**
+
+### TASK-AI-V2-POLISH: AI v2 Production Polish ✅ COMPLETE
+
+**Goal:** Bug fixes, edge cases, polish for production
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| Safety fixes (zero-division) | ✅ Done | Session 54 - Guards for fy, progress calc |
+| Loading states/spinners | ✅ Done | Session 54 - Sample load, CSV processing |
+| Feature highlights | ✅ Done | Session 54 - 5-column icons |
+| Chat tips | ✅ Done | Session 54 - Info box with workflow |
+| Helpful tooltips | ✅ Done | Session 54 - All action buttons |
+| Cross-section button | ✅ Done | Session 54 - Added to results navigation |
+| Failed beam warning | ✅ Done | Session 54 - Contextual guidance |
+| CSV/Summary export | ✅ Done | Session 54 - Dashboard export tab |
+
+**Session 54 Commits: 5 on PR + 2 on main**
+
+### TASK-PHASE4: CAD Quality + Launch Prep 🚧 IN PROGRESS
+
+**Goal:** Polish for production launch, CAD-quality rendering
+
+| Sub-task | Status | Priority |
+|----------|--------|----------|
+| PyVista evaluation | 📋 TODO | 🔴 High |
+| Export to DXF/PDF | 📋 TODO | 🔴 High |
+| Print-ready reports | 📋 TODO | 🟡 Medium |
+| Performance optimization | 📋 TODO | 🟡 Medium |
+| User testing feedback | 📋 TODO | 🟡 Medium |
+
+### TASK-REBAR-3D: Phase 3 - Rebar Visualization ✅ COMPLETE
+
+**Goal:** Show actual reinforcement bars from design in 3D view
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| `calculate_rebar_layout()` function | ✅ Done | Session 51 - From Ast → nTdia |
+| Variable stirrup zones (2d rule) | ✅ Done | Session 51 - Tighter at supports |
+| Integrate with AI 3D tab | ✅ Done | Session 51 - Shows actual bars |
+| Rebar summary display | ✅ Done | Session 51 - "4T16 + 2T16 hanger" |
+| Development length (Ld) | ✅ Done | Session 51 - IS 456 Cl 26.2.1 |
+| Lap length calculation | ✅ Done | Session 51 - 1.3 × Ld |
+| Add to Beam Design page | ✅ Done | Session 51 - Variable stirrups |
+| Bar marks/schedules | 📋 Next | Generate bar mark IDs |
+
+---
+
+### TASK-AI-CHAT: AI Chat Assistant Interface ✅ MVP COMPLETE
 
 **Goal:** ChatGPT-like UI with 40% chat / 60% workspace split
 
 | Sub-task | Status | Notes |
 |----------|--------|-------|
-| AI Assistant page (10_🤖_ai_assistant.py) | ✅ Done | `c5a9bdaa` - Split layout working |
-| SmartDashboard component | ✅ Done | `b6cb036a` - Score gauges, issues |
-| LLM tool definitions | ✅ Done | `edb9379a` - 7 tools for function calling |
-| Architecture research doc | ✅ Done | `6b139dbd` - OpenAI/Streamlit patterns |
-| Connect SmartDesigner to chat | ✅ Done | Session 48 - analyze() integration |
-| OpenAI API integration | ✅ Done | Session 48 - configurable secrets.toml |
-| Fix ComplianceCaseResult errors | ✅ Done | Session 48 - `7a2a2181` |
-| Compact professional UI | ✅ Done | Session 48 - `38149184` |
-| ETABS import integration | ✅ Done | Session 48 - Import tab, beam loading |
-| Streaming responses | 📋 V1.1 | Deferred - typewriter effect |
-| Tool execution handlers | 📋 V1.1 | Deferred - full function calling |
+| AI Assistant page (10_🤖_ai_assistant.py) | ✅ Done | Split layout working |
+| SmartDashboard component | ✅ Done | Score gauges, issues |
+| LLM tool definitions | ✅ Done | 7 tools for function calling |
+| **Fix SmartDesigner geometry bug** | ✅ Done | Session 51 - Wrapper object |
+| **Fix number_input type mismatch** | ✅ Done | Session 51 - All floats |
+| **Fix GPT model name (gpt-4o-mini)** | ✅ Done | Session 51 - Corrected |
+| **Multi-file CSV import** | ✅ Done | Session 51 - Geom + Forces |
+| **Phase 3 rebar visualization** | ✅ Done | Session 51 - `4a89dc9a` |
+| Streaming responses | 📋 V1.1 | Typewriter effect |
+| Tool execution handlers | 📋 V1.1 | Map tools to library functions |
 
 **Why:** Make structural engineering accessible through natural language.
 Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 
-**PR:** #XXX (task/TASK-AI-ASSISTANT) - Session 48
-
-### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) 🔄 MERGED
+### TASK-3D-008: Smart Insights Dashboard (Phase 3.5) ✅ MERGED
 
 **Goal:** Expose existing AI-like intelligence in the UI
 **Status:** Merged into TASK-AI-CHAT — SmartDesigner now displayed in AI workspace
@@ -127,12 +191,15 @@ Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 
 | Date | Task | Commit | Notes |
 |------|------|--------|-------|
+| 2026-01-20 | AI v2 workspace component | `1e9061b4` | Session 52 - State machine |
+| 2026-01-20 | AI v2 page | `6ba16b62` | Session 52 - Dynamic workspace |
+| 2026-01-20 | Page 07 beam detail 3D | `e1189937` | Session 52 - Rebar viz |
+| 2026-01-20 | Fix AI page bugs | `c5fd8bc8` | Session 51 - geometry/type errors |
+| 2026-01-20 | Phase 3 rebar viz | `4a89dc9a` | Session 51 - Variable stirrups |
+| 2026-01-25 | Fix AI page bugs | `fef3ae12`, `4d0a9c7c` | Session 49 - geometry/attribute errors |
+| 2026-01-25 | Add GPT-5-mini support | `fef3ae12` | Session 49 - configurable model |
+| 2026-01-25 | Chat panel improvements | `37e0a21f` | Session 49 - welcome msg, clear btn |
 | 2026-01-24 | 3D building view tab | `efe825d3` | Session 46 |
-| 2026-01-24 | Fix VBA import errors | `897da5dd` | Session 46 |
-| 2026-01-24 | Docs cleanup | `67faaca6`, `2317a2b9` | Session 46 |
-| 2026-01-18 | LOD threshold validation | PR #385 | Session 43 |
-| 2026-01-17 | VBA ETABS export macro | PR #379 | Session 36 |
-| 2026-01-16 | Multi-format adapter system | PR #381 | Session 42 |
 
 ---
 
