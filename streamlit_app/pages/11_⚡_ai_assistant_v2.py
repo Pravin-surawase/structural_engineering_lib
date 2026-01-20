@@ -83,28 +83,31 @@ def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets."""
     # Default to GPT-5-mini (fast, cost-efficient) for structural engineering tasks
     # GPT-5.2 is best but expensive; GPT-5-mini is optimal for defined tasks
-    config = {
-        "model": "gpt-5-mini",
-        "temperature": 0.7,
-        "max_tokens": 2000,
-    }
+    model = "gpt-5-mini"
+    temperature = 0.7
+    max_tokens = 2000
 
     if "openai" in st.secrets:
         openai_config = st.secrets.get("openai", {})
-        if "model" in openai_config:
-            config["model"] = openai_config.get("model", config["model"])
-        if "temperature" in openai_config:
-            try:
-                config["temperature"] = float(openai_config.get("temperature", config["temperature"]))
-            except (ValueError, TypeError):
-                pass
-        if "max_tokens" in openai_config:
-            try:
-                config["max_tokens"] = int(openai_config.get("max_tokens", config["max_tokens"]))
-            except (ValueError, TypeError):
-                pass
+        if isinstance(openai_config, dict):
+            if "model" in openai_config:
+                model = openai_config.get("model", "gpt-5-mini")
+            if "temperature" in openai_config:
+                try:
+                    temperature = float(openai_config.get("temperature", 0.7))
+                except (ValueError, TypeError):
+                    pass
+            if "max_tokens" in openai_config:
+                try:
+                    max_tokens = int(openai_config.get("max_tokens", 2000))
+                except (ValueError, TypeError):
+                    pass
 
-    return config
+    return {
+        "model": model,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
 
 
 # System prompt for structural engineering assistant
@@ -225,10 +228,10 @@ def get_ai_response(user_message: str) -> str:
             messages.append({"role": "user", "content": user_message})
 
             response = client.chat.completions.create(
-                model=config["model"],
+                model=config.get("model", "gpt-5-mini"),
                 messages=messages,
-                temperature=config["temperature"],
-                max_tokens=config["max_tokens"],
+                temperature=config.get("temperature", 0.7),
+                max_tokens=config.get("max_tokens", 2000),
             )
 
             return response.choices[0].message.content
@@ -336,20 +339,28 @@ def render_chat_panel():
         st.rerun()
 
     # Quick actions row (compact)
-    cols = st.columns(4)
-    with cols[0]:
-        if st.button("📂 Sample", use_container_width=True, help="Load sample data"):
-            _handle_quick_action("load sample")
-    with cols[1]:
-        if st.button("🚀 Design", use_container_width=True, help="Design all beams"):
-            _handle_quick_action("design all beams")
-    with cols[2]:
-        if st.button("📊 Insights", use_container_width=True, help="Show dashboard"):
-            _handle_quick_action("show dashboard")
-    with cols[3]:
-        if st.button("🗑️ Clear", use_container_width=True, help="Clear chat"):
-            st.session_state.ai_messages = []
-            st.rerun()
+    cols = st.columns(5)
+    if len(cols) > 0:
+        with cols[0]:
+            if st.button("📂", use_container_width=True, help="Load sample data"):
+                _handle_quick_action("load sample")
+    if len(cols) > 1:
+        with cols[1]:
+            if st.button("🚀", use_container_width=True, help="Design all beams"):
+                _handle_quick_action("design all beams")
+    if len(cols) > 2:
+        with cols[2]:
+            if st.button("🏗️", use_container_width=True, help="Building 3D"):
+                _handle_quick_action("building 3d")
+    if len(cols) > 3:
+        with cols[3]:
+            if st.button("📊", use_container_width=True, help="Show insights"):
+                _handle_quick_action("show dashboard")
+    if len(cols) > 4:
+        with cols[4]:
+            if st.button("🗑️", use_container_width=True, help="Clear chat"):
+                st.session_state.ai_messages = []
+                st.rerun()
 
 
 def main():
@@ -366,7 +377,7 @@ def main():
         client = get_openai_client()
         if client:
             config = get_openai_config()
-            st.caption(f"✅ {config['model']}")
+            st.caption(f"✅ {config.get('model', 'gpt-5-mini')}")
         else:
             st.caption("💡 Local mode")
 
