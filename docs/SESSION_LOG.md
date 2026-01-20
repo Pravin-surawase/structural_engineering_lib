@@ -63,13 +63,44 @@ Created comprehensive research document:
 |--------|-------------|
 | `6354a7e4` | docs: add AI assistant workspace integration research plan |
 | `264ccf59` | feat(ai): add AI module with context injection and tool definitions |
+| `40060098` | docs: add Session 58 to session log |
+| `40303eb5` | feat(ai): implement function calling with tool handlers for workspace actions |
+
+### Implementation Details
+
+**Phase 1 - Context & Tools (Complete):**
+- Created `streamlit_app/ai/` module with:
+  - `prompts/system.md` - Action-oriented system prompt
+  - `context.py` - Dynamic workspace context injection
+  - `tools.py` - 10 tool definitions for function calling
+  - `handlers.py` - Tool execution handlers
+
+**Phase 2 - Integration (Complete):**
+- Integrated AI module into `pages/11_⚡_ai_assistant_v2.py`
+- Added `_get_ai_response_with_tools()` for function calling flow
+- Tool handlers execute workspace actions (design, filter, optimize)
+
+**Key Behavior Fix:**
+The system prompt now explicitly says:
+> **DO NOT ASK CLARIFYING QUESTIONS. JUST DO IT.**
+
+Tools implemented:
+1. `design_beam` - Single beam design
+2. `design_all_beams` - Batch design
+3. `get_beam_details` - Detailed results
+4. `select_beam` - Select for visualization
+5. `show_visualization` - Trigger views
+6. `filter_3d_view` - Filter building by floor
+7. `get_critical_beams` - List top N beams by criterion
+8. `start_optimization` - Run cost optimization
+9. `suggest_optimization` - Get suggestions
+10. `export_results` - Export to CSV/JSON
 
 ### Next Steps
 
-1. Integrate AI module into page 11 (ai_assistant_v2.py)
-2. Implement tool handlers for function execution
-3. Add streaming support for tool results
-4. Test with various queries
+1. Test with real queries to verify action-oriented behavior
+2. Fine-tune prompt based on user feedback
+3. Add more tools as needed (rebar schedule, screenshots)
 
 ---
 

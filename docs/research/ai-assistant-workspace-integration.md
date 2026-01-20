@@ -589,22 +589,26 @@ def generate_dynamic_context() -> str:
 
 ## 9. Next Steps
 
-### Immediate (This Session)
+### ✅ Completed (This Session)
 
 - [x] Research OpenAI function calling
 - [x] Research OpenRouter models
 - [x] Document current state
 - [x] Create this research document
+- [x] Create `streamlit_app/ai/` directory structure
+- [x] Write `prompts/system.md` with library reference
+- [x] Implement tool definitions in `tools.py`
+- [x] Create `handlers.py` with tool execution logic
+- [x] Refactor AI assistant to use new architecture
+- [x] Add action-oriented system prompt (no clarifying questions)
+- [x] Implement 10 tools: design_beam, design_all, get_beam_details, select_beam, show_visualization, filter_3d_view, get_critical_beams, start_optimization, suggest_optimization, export_results
 
 ### Next Session
 
-- [ ] Create `streamlit_app/ai/` directory structure
-- [ ] Write `prompts/system.md` with library reference
-- [ ] Implement tool definitions in `tools.py`
-- [ ] Refactor AI assistant to use new architecture
-- [ ] Test with sample queries
-
-### Future Enhancements
+- [ ] Test with actual user queries (filter floor, list critical beams, optimize)
+- [ ] Fine-tune system prompt based on test results
+- [ ] Add more workspace actions (export screenshots, rebar schedule)
+- [ ] Optimize token usage with context trimming
 
 - [ ] Add code generation capabilities
 - [ ] Implement multi-step reasoning chains
