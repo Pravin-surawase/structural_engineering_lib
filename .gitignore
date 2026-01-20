@@ -109,6 +109,11 @@ Excel/Book*.xlsx
 .env.local
 *.local.json
 
+# Streamlit secrets (never commit API keys!)
+streamlit_app/.streamlit/secrets.toml
+**/secrets.toml
+!**/secrets.toml.example
+
 # Scratch / temp files
 scratch/
 temp/

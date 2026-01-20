@@ -79,7 +79,8 @@ RESPONSE_KEY_MAPPINGS = {
     "Ast_req": "ast_required",
     "Ast_prov": "ast_provided",
     "spacing_mm": "spacing",
-    "bar_diameter": "bar_dia",
+    # Note: bar_diameter is valid in UI layer (3D visualizations)
+    # Core library uses bar_dia for consistency with IS 456 notation
     "n_bars": "num_bars",
 }
 

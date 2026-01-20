@@ -105,6 +105,22 @@ DEFAULT_SECTION = {
 # =============================================================================
 
 
+def _is_vba_envelope_format(content: str) -> bool:
+    """Check if CSV is VBA envelope format (pre-processed by VBA macro).
+
+    VBA envelope format has columns like Mu_max_kNm, Vu_max_kN instead of
+    raw ETABS M3, V2 station data.
+    """
+    first_line = content.split("\n")[0].lower()
+    vba_indicators = ["mu_max_knm", "vu_max_kn", "mu_min_knm"]
+    raw_indicators = ["m3", "v2", "output case", "station"]
+
+    has_vba = any(ind in first_line for ind in vba_indicators)
+    has_raw = any(ind in first_line for ind in raw_indicators)
+
+    return has_vba and not has_raw
+
+
 def process_etabs_csv(uploaded_file) -> tuple[bool, str, list | None]:
     """Process uploaded ETABS CSV file.
 
@@ -115,10 +131,24 @@ def process_etabs_csv(uploaded_file) -> tuple[bool, str, list | None]:
         return False, "ETABS import library not available", None
 
     # Save to temp file for processing
+    content = uploaded_file.getvalue().decode("utf-8")
+
+    # Check for VBA envelope format (already processed by VBA macro)
+    if _is_vba_envelope_format(content):
+        return (
+            False,
+            "**VBA Envelope Format Detected**\n\n"
+            "This file has been pre-processed by the VBA macro and contains "
+            "envelope values (Mu_max_kNm, Vu_max_kN).\n\n"
+            "👉 **Please use [Page 07: Multi-Format Import](/📥_multi_format_import) "
+            "with the 'ETABS (VBA Envelope)' format** for this file type.\n\n"
+            "This page expects raw ETABS exports with M3, V2, Station columns.",
+            None,
+        )
+
     with tempfile.NamedTemporaryFile(
         mode="w", suffix=".csv", delete=False, encoding="utf-8"
     ) as f:
-        content = uploaded_file.getvalue().decode("utf-8")
         f.write(content)
         temp_path = f.name
 
