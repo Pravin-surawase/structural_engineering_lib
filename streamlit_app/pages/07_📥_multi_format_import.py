@@ -52,6 +52,7 @@ from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import initialize_theme
 from utils.api_wrapper import cached_design
 from utils.loading_states import loading_context
+from components.visualizations_3d import create_beam_3d_figure
 
 # Import adapter system
 try:
@@ -105,6 +106,8 @@ if "mf_defaults" not in st.session_state:
         "fy_mpa": 500.0,
         "cover_mm": 40.0,
     }
+if "mf_selected_beam" not in st.session_state:
+    st.session_state.mf_selected_beam = None  # Selected beam ID for detail view
 
 
 # =============================================================================
@@ -260,6 +263,110 @@ def get_governing_forces(
     governing = max_mu_force.load_case
 
     return max_mu_force.mu_knm, max_vu_force.vu_kn, governing
+
+
+def calculate_rebar_layout_for_beam(
+    ast_mm2: float,
+    b_mm: float,
+    D_mm: float,
+    span_mm: float,
+    vu_kn: float = 50.0,
+    cover_mm: float = 40.0,
+    stirrup_dia: float = 8.0,
+    fck: float = 25.0,
+    fy: float = 500.0,
+) -> dict[str, Any]:
+    """Calculate rebar layout for a beam.
+
+    Returns:
+        dict with bottom_bars, top_bars, stirrup_positions, and summary info.
+    """
+    # Standard bar diameters and areas
+    BAR_OPTIONS = [
+        (12, 113.1),
+        (16, 201.1),
+        (20, 314.2),
+        (25, 490.9),
+        (32, 804.2),
+    ]
+
+    # Find optimal bar combination (prefer 3-5 bars)
+    best_config = None
+    for dia, area in BAR_OPTIONS:
+        num_bars = math.ceil(ast_mm2 / area) if ast_mm2 > 0 else 2
+        if 2 <= num_bars <= 6:
+            ast_provided = num_bars * area
+            best_config = (dia, num_bars, ast_provided)
+            break
+
+    if best_config is None:
+        best_config = (16, 3, 3 * 201.1)
+
+    bar_dia, num_bars, ast_provided = best_config
+
+    # Calculate bar positions
+    edge_dist = cover_mm + stirrup_dia + bar_dia / 2
+    z_bottom = edge_dist
+    z_top = D_mm - edge_dist
+    available_width = b_mm - 2 * edge_dist
+
+    bottom_bars = []
+    if num_bars == 1:
+        bottom_bars = [(0, 0, z_bottom)]
+    elif num_bars == 2:
+        bottom_bars = [(0, -available_width / 2, z_bottom), (0, available_width / 2, z_bottom)]
+    else:
+        spacing = available_width / max(num_bars - 1, 1)
+        for i in range(num_bars):
+            y = -available_width / 2 + i * spacing
+            bottom_bars.append((0, y, z_bottom))
+
+    # Top bars (2 hanger bars)
+    top_bars = [
+        (0, -available_width / 2, z_top),
+        (0, available_width / 2, z_top),
+    ]
+
+    # Calculate stirrup spacing zones
+    d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
+    sv_base = min(200, max(100, 0.75 * d_mm))
+
+    tau_v = (vu_kn * 1000) / max(b_mm * d_mm, 1)
+    if tau_v > 0.5:
+        sv_base = min(sv_base, 150)
+    if tau_v > 1.0:
+        sv_base = min(sv_base, 100)
+
+    stirrup_positions = []
+    zone_2d = 2 * d_mm
+    sv_support = sv_base * 0.75
+
+    x = 50
+    while x < min(zone_2d, span_mm - 50):
+        stirrup_positions.append(x)
+        x += sv_support
+
+    while x < max(span_mm - zone_2d, zone_2d):
+        stirrup_positions.append(x)
+        x += sv_base
+
+    while x < span_mm - 50:
+        stirrup_positions.append(x)
+        x += sv_support
+
+    summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²)"
+    spacing_summary = f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (ends), @{sv_base:.0f}mm (mid)"
+
+    return {
+        "bottom_bars": bottom_bars,
+        "top_bars": top_bars,
+        "stirrup_positions": stirrup_positions,
+        "bar_diameter": bar_dia,
+        "stirrup_diameter": stirrup_dia,
+        "ast_provided": ast_provided,
+        "summary": summary,
+        "spacing_summary": spacing_summary,
+    }
 
 
 def design_all_beams(
@@ -1081,6 +1188,123 @@ with tab4:
             - **📍 Reset**: Double-click to reset view
             - **📷 Save**: Use camera icon in toolbar to save image
             """)
+
+        # === BEAM DETAIL VIEW WITH REBAR ===
+        if results_df is not None and not results_df.empty:
+            st.markdown("---")
+            st.markdown("##### 🔬 Beam Detail View (with Rebar)")
+            st.caption("Select a beam to see its detailed 3D model with reinforcement")
+
+            # Create beam selector from results
+            beam_ids = results_df["ID"].tolist()
+            beam_options = ["Select a beam..."] + beam_ids
+
+            selected_beam_id = st.selectbox(
+                "🔍 Select Beam for Detail View",
+                beam_options,
+                key="mf_beam_detail_selector",
+            )
+
+            if selected_beam_id != "Select a beam...":
+                # Find the beam and its design result
+                beam_data = None
+                for b in beams:
+                    if b.id == selected_beam_id:
+                        beam_data = b
+                        break
+
+                result_row = results_df[results_df["ID"] == selected_beam_id]
+
+                if beam_data is not None and not result_row.empty:
+                    row = result_row.iloc[0]
+
+                    # Get beam properties
+                    b_mm = beam_data.section.width_mm
+                    D_mm = beam_data.section.depth_mm
+                    span_mm = beam_data.length_m * 1000
+                    fck = beam_data.section.fck_mpa
+                    fy = beam_data.section.fy_mpa
+                    cover = beam_data.section.cover_mm
+
+                    # Get design results
+                    ast_req = row.get("Ast_req", 0)
+                    vu_kn = row.get("Vu (kN)", 50)
+
+                    try:
+                        ast_req = float(ast_req) if ast_req != "-" else 400
+                        vu_kn = float(vu_kn) if vu_kn != "-" else 50
+                    except (ValueError, TypeError):
+                        ast_req = 400
+                        vu_kn = 50
+
+                    # Calculate rebar layout
+                    rebar_layout = calculate_rebar_layout_for_beam(
+                        ast_mm2=ast_req,
+                        b_mm=b_mm,
+                        D_mm=D_mm,
+                        span_mm=span_mm,
+                        vu_kn=vu_kn,
+                        cover_mm=cover,
+                        fck=fck,
+                        fy=fy,
+                    )
+
+                    # Display beam info
+                    col1, col2, col3, col4 = st.columns(4)
+                    col1.metric("Section", f"{b_mm}×{D_mm} mm")
+                    col2.metric("Span", f"{beam_data.length_m:.2f} m")
+                    col3.metric("Bars", rebar_layout["summary"])
+                    col4.metric("Status", row.get("Status", "-"))
+
+                    st.caption(rebar_layout["spacing_summary"])
+
+                    # Create detailed 3D figure with rebar
+                    detail_fig = create_beam_3d_figure(
+                        b=b_mm,
+                        D=D_mm,
+                        span=span_mm,
+                        bottom_bars=rebar_layout["bottom_bars"],
+                        top_bars=rebar_layout["top_bars"],
+                        stirrup_positions=rebar_layout["stirrup_positions"],
+                        bar_diameter=rebar_layout.get("bar_diameter", 16),
+                        stirrup_diameter=rebar_layout.get("stirrup_diameter", 8),
+                    )
+
+                    # Update layout for this view
+                    detail_fig.update_layout(
+                        title=dict(
+                            text=f"🔬 {selected_beam_id} — {rebar_layout['summary']}",
+                            font=dict(size=18, color="#E0E0E0"),
+                        ),
+                        height=500,
+                    )
+
+                    st.plotly_chart(detail_fig, use_container_width=True, key="beam_detail_3d")
+
+                    # Show detailing info
+                    with st.expander("📐 Detailing Information"):
+                        st.markdown(f"""
+                        **Beam: {selected_beam_id}** ({beam_data.story})
+
+                        | Property | Value |
+                        |----------|-------|
+                        | Section | {b_mm} × {D_mm} mm |
+                        | Span | {beam_data.length_m:.2f} m |
+                        | Concrete | M{fck:.0f} |
+                        | Steel | Fe{fy:.0f} |
+                        | Clear Cover | {cover} mm |
+
+                        **Reinforcement:**
+                        - Bottom: {rebar_layout['summary']}
+                        - Top: 2T{rebar_layout.get('bar_diameter', 16)} (hanger)
+                        - {rebar_layout['spacing_summary']}
+
+                        **Design Forces:**
+                        - Mu = {row.get('Mu (kN·m)', '-')} kN·m
+                        - Vu = {row.get('Vu (kN)', '-')} kN
+                        """)
+                else:
+                    st.warning(f"Could not find beam data for {selected_beam_id}")
 
 # Footer
 st.divider()
