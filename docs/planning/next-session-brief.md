@@ -11,10 +11,10 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.17.6 | 🚧 In Progress |
-| **Next** | v0.18.0 | Professional Features Pipeline |
+| **Current** | v0.18.1 | 🚧 Bugfix Release |
+| **Next** | v0.19.0 | CAD Quality + DXF Export |
 
-**Last Session:** 48 | **Focus:** AI Assistant bug fixes + UI redesign
+**Last Session:** 57 | **Focus:** Fix AI v2 CSV import to use adapter infrastructure
 
 ---
 
@@ -26,7 +26,7 @@
 | Pillar | Description | Timeline |
 |--------|-------------|----------|
 | 🎨 Visual Excellence | Rebar 3D, CAD quality | 8-week MVP |
-| 🤖 AI Chat Interface | ✅ **MVP COMPLETE** (Page 10) | 8-week MVP |
+| 🤖 AI Chat Interface | ✅ **MVP COMPLETE** (Page 11) | 8-week MVP |
 | 🔧 User Automation | Build your own workflows | V1.1 |
 | 📚 Library Evolution | Columns, slabs, multi-code | V2.0 |
 
@@ -49,57 +49,73 @@
 
 ## Latest Handoff
 
-**Session 48 (2026-01-21) — AI Assistant Bug Fixes & UI Redesign**
-- 🐛 Fixed `ComplianceCaseResult` attribute errors (used `params` instead of `result.geometry`)
-- ⚙️ Added configurable OpenAI model from secrets.toml (fixed "gpt-5-mini" → "gpt-4o-mini")
-- 🎨 Redesigned UI with compact professional layout (gradient header, mini-metrics, welcome message)
-- 📥 Added ETABS integration via Import tab (reads from page 7)
-- ✅ All 3146 tests passing, no fragment violations
+**Session 57 (2026-01-21) — AI v2 CSV Import Fix (CRITICAL)**
 
-**Key Files Modified:**
-- `streamlit_app/pages/10_🤖_ai_assistant.py` — Complete rewrite
-- `docs/TASKS.md` — TASK-AI-CHAT marked complete
-- `docs/planning/8-week-development-plan.md` — Phase AI marked complete
+**Problem:** AI v2 page showed "0 inf% ❌ FAIL" for all beams after CSV import.
+Example: `1	1	300	5	100	50	0	inf%	❌ FAIL` — Depth=5 instead of 500!
 
-**PR Branch:** `task/TASK-AI-ASSISTANT` (6 commits)
+**Root Cause:** ai_workspace.py used simple auto_map_columns() instead of the
+proven adapter system from multi-format import page (07).
 
-**Session 47b (2026-01-19) — AI Chat Implementation**
-- 🆕 Created AI Assistant page (ChatGPT-like split UI)
-- 🛠️ Implemented 7 LLM tool definitions
-- 📊 Created SmartDashboard component
-- **PR #388** submitted
+**Solution:** Refactored ai_workspace.py to use:
+- `structural_lib.adapters` (ETABSAdapter, SAFEAdapter, GenericCSVAdapter)
+- `utils/api_wrapper.cached_design()` for consistent design calls
+- Proper dimension validation (catches D<100mm errors)
+
+**Commits (5 on PR #393):**
+| Commit | Description |
+|--------|-------------|
+| `56602b28` | fix(ai-workspace): reuse adapter infrastructure from multi-format import |
+| `bf06c66f` | docs(copilot-instructions): add AI model knowledge limits section |
+| `f05b6753` | docs(copilot-instructions): add lesson about reusing infrastructure |
+| `0bba1afd` | test: add adapter integration tests for ai_workspace (7 tests) |
+| `2c490da5` | docs: update TASKS.md and SESSION_LOG.md for session 57 |
+
+**Key Lessons Added to copilot-instructions.md:**
+1. Never reinvent existing infrastructure — check adapters.py, api_wrapper.py first
+2. Never guess AI model names (gpt-5 doesn't exist) — use web search to verify
+3. Reference multi-format import page (07) as working example for CSV handling
+
+**PR:** #393 — submitted for async merge
 
 ---
 
 ## Current Status
 
 ### What Works ✅
-- **Page 10:** 🤖 AI Assistant with ChatGPT-like UI
-- **Page 07:** VBA CSV → Design → **Interactive 3D View**
+- **Page 11:** ⚡ AI Assistant v2 with 9-state dynamic workspace
+- **Page 07:** 📥 Multi-format import with ETABS/SAFE adapters
+- **Adapter System:** Proven infrastructure for CSV parsing
 - Story filter, color modes, camera presets
-- SmartDesigner integration in chat
-- ETABS import integration between pages
+- Interactive rebar editor, cross-section view
+
+### What Needs Testing
+- AI v2 CSV import with real ETABS exports (after PR merge)
+- 3D building view with correct beam dimensions
+- Design results with proper Ast calculations
 
 ### 8-Week Plan Progress
 - **Phase 1:** ✅ Complete (Live Preview)
 - **Phase 2:** ✅ Complete (Data Import)
 - **Phase 2.5:** ✅ Complete (Visualization Polish)
-- **Phase 3:** 🚧 Next (Rebar Visualization) ← **THE KILLER FEATURE**
+- **Phase 3:** ✅ Complete (Rebar Visualization)
 - **Phase 3.5:** ✅ Complete (Smart Insights Dashboard)
-- **Phase AI:** ✅ **MVP COMPLETE** (AI Assistant)
+- **Phase AI:** ✅ **MVP COMPLETE** (AI Assistant v2)
+- **Phase 4:** 📋 Next (CAD Quality + DXF Export)
 
 ---
 
 ## 🔥 Next Session Priorities
 
-### Priority 1: SmartDesigner Dashboard (Quick Win!)
+### Priority 1: Verify AI v2 Fix Works
 
-**We already built AI-like intelligence — just need to show it!**
+After PR #393 merges:
+1. Test AI v2 with real ETABS exports (geometry + forces CSVs)
+2. Verify beam dimensions are correct (D=500, not D=5)
+3. Verify 3D building view shows proper proportions
+4. Verify design results show real Ast values, not "inf%"
 
-```python
-from structural_lib.insights import SmartDesigner
-
-designer = SmartDesigner()
+### Priority 2: Phase 4 - CAD Qualitydesigner = SmartDesigner()
 report = designer.analyze(result, geometry, materials)
 # Returns: overall_score, key_issues, quick_wins, cost_analysis
 ```
