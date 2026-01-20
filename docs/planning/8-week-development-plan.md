@@ -25,17 +25,18 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 
 ---
 
-## 📊 Current Status (Session 50)
+## 📊 Current Status (Session 51)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1-2 | Live Preview Foundation | ✅ **COMPLETE** |
 | **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **COMPLETE** |
 | **Phase 2.5** | 4 | Visualization Polish | ✅ **COMPLETE** |
-| **Phase 3** | 5-6 | Detailing Visualization | 📋 Upcoming |
+| **Phase 3** | 5-6 | Detailing Visualization | ✅ **COMPLETE** (Session 51) |
 | **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
 | **Phase 4** | 7-8 | CAD Quality + Launch | 📋 Upcoming |
 | **Phase AI** | 6+ | **AI Chat Interface** | ✅ **MVP COMPLETE** (Session 50) |
+| **Phase AI v2** | 7+ | **Professional Redesign** | 📋 **PLANNED** (Sessions 52-55) |
 
 ### Phase AI: ChatGPT-like Interface (Session 47b-50)
 
@@ -79,6 +80,31 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 - 7 tools: design_beam, optimize_cost, get_suggestions, analyze_design, compare_options, explain_code_clause, show_3d_view
 
 See: [ai-chat-architecture-v2.md](../research/ai-chat-architecture-v2.md)
+
+### Phase AI v2: Professional Redesign (Session 52+)
+
+> "The top 20% of page is unused... looks like something an intern would do"
+
+**Problem:** Current 5-tab workspace is fragmented and doesn't maximize screen space.
+
+**Solution:** Complete UI redesign with:
+- **100% screen utilization** (minimal 3% header)
+- **Single dynamic workspace** (not 5 tabs - state-based transitions)
+- **Smart auto-import** (like Page 7 multi-format import)
+- **Built-in sample data** (ETABS 10-beam demo)
+- **Beam-by-beam editing** with live 3D preview
+
+**Workspace States:**
+1. WELCOME → Quick start cards (Sample / Upload / Manual)
+2. IMPORT → Auto-mapped preview table
+3. DESIGN → Interactive results with row selection
+4. 3D VIEW → Selected beam with rebar visualization
+5. EDIT → Single beam editor with live preview
+6. DASHBOARD → SmartDesigner insights, cost analysis
+
+**Timeline:** 4 sessions (Sessions 52-55)
+
+📋 **Full Plan:** [ai-chat-redesign-plan.md](ai-chat-redesign-plan.md)
 
 ### The Differentiation Problem (Session 47)
 
