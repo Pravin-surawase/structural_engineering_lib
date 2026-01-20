@@ -4,6 +4,80 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 55: v0.18.0 Release Prep
+
+**Focus:** Cleanup, dependency updates, GPT-5-mini upgrade, release v0.18.0
+
+**User Requests:**
+1. Check all work
+2. Find old/unused pages and code
+3. Update dependencies and tools
+4. Check venv and update packages
+5. Research and fix OpenAI model (GPT-5 mini)
+6. Find more things to fix
+7. Update all docs
+8. Pre-release automation and checks
+9. Release v0.18.0
+10. Plan next tasks
+
+### Implementation
+
+| Commit | Description |
+|--------|-------------|
+| `56bd0eb4` | feat: upgrade to OpenAI GPT-5-mini model and fix API signature check |
+| `a882e68d` | chore: bump version to 0.18.0 and update CHANGELOG |
+
+### Key Changes
+
+1. **OpenAI Model Upgrade:**
+   - Updated default from `gpt-4o-mini` to `gpt-5-mini` (latest cost-efficient model)
+   - Updated in both AI v1 (page 10) and AI v2 (page 11)
+
+2. **Package Updates:**
+   - Streamlit 1.52.2 → 1.53.0
+   - Plotly 6.5.1 → 6.5.2
+   - Ruff 0.14.11 → 0.14.13
+   - Rich 13.9.4 → 14.2.0
+   - Reportlab 4.4.7 → 4.4.9
+
+3. **API Signature Fix:**
+   - Removed false positive for `bar_diameter` parameter
+   - UI layer uses `bar_diameter`, core uses `bar_dia`
+
+4. **Version Bump:**
+   - 0.17.5 → 0.18.0
+   - Comprehensive CHANGELOG with all AI v2 features
+
+### Pages Analysis
+
+| Page | Status | Notes |
+|------|--------|-------|
+| 01_beam_design.py | ✅ Active | Main beam design page |
+| 02_cost_optimizer.py | ✅ Active | Cost optimization with Pareto |
+| 03_compliance.py | ✅ Active | IS 456 compliance checks |
+| 04_documentation.py | ✅ Active | API documentation |
+| 05_3d_viewer_demo.py | ✅ Active | 3D visualization demo |
+| 06_etabs_import.py | ✅ Active | ETABS CSV import |
+| 07_multi_format_import.py | ✅ Active | Multi-file import |
+| 10_ai_assistant.py | 🔄 Legacy | Keep as fallback for AI v2 |
+| 11_ai_assistant_v2.py | ✅ Active | New primary AI interface |
+| 90_feedback.py | ✅ Active | User feedback collection |
+
+### PR
+
+- Branch: `task/TASK-AI-V2-POLISH`
+- PR: #391
+- Status: CI running
+
+### Next Steps
+
+1. Wait for CI to pass
+2. Merge PR #391
+3. Create v0.18.0 release tag
+4. Plan Phase 4 tasks
+
+---
+
 ## 2026-01-20 — Session 54: AI v2 Polish & Quality
 
 **Focus:** Code quality fixes, UI polish, helpful tooltips, export functionality

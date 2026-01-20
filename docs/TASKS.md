@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 54)
+**Updated:** 2026-01-20 (Session 55)
 
 ---
 
@@ -15,11 +15,11 @@
 
 ## Current Focus
 
-- **Version:** v0.18.2 → v0.19.0 (AI v2 Feature Complete)
-- **Focus:** Phase 4 CAD quality, performance
-- **8-Week Plan:** Phase AI v2 COMPLETE ✅, Phase 4 In Progress
-- **Next Milestone:** v0.19.0 - AI v2 Production Ready
-- **Key Achievement:** 9-state dynamic workspace with building 3D, rebar editor, export
+- **Version:** v0.18.0 🎉 (AI v2 Production Ready)
+- **Focus:** Release v0.18.0, then Phase 4 CAD quality
+- **8-Week Plan:** Phase AI v2 COMPLETE ✅, Release in progress
+- **Next Milestone:** v0.19.0 - CAD Quality + DXF Export
+- **Key Achievement:** 9-state dynamic workspace with GPT-5-mini, building 3D, rebar editor, export
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
