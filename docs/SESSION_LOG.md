@@ -4,6 +4,75 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-21 — Session 58: AI Workspace Integration Research & Planning
+
+**Focus:** Research and plan how to connect AI assistant to Streamlit workspace
+
+**User Feedback:**
+- AI chat is working (OpenRouter integration complete ✅)
+- But AI is not connected to the workspace (can't see loaded beams, design results)
+- Need a context file for AI to understand library functions
+- Research first, then implement properly
+- Keep all research in one document
+
+### Research Conducted
+
+1. **OpenAI Function Calling** - Tool schemas, strict mode, best practices
+2. **OpenRouter Models** - Available models, pricing, context windows
+3. **Prompt Engineering** - Message roles, context injection, RAG patterns
+4. **Streamlit Chat** - st.chat_message, st.chat_input, session state
+
+### Implementation
+
+Created new `streamlit_app/ai/` module with:
+
+| File | Purpose |
+|------|---------|
+| `prompts/system.md` | System prompt with IS 456 reference, tool docs |
+| `context.py` | Dynamic context generation from workspace state |
+| `tools.py` | Function calling tool definitions (7 tools) |
+| `__init__.py` | Module exports |
+| `README.md` | Integration guide |
+
+**Tools Defined:**
+1. `design_beam` - Single beam design
+2. `design_all_beams` - Batch design
+3. `get_beam_details` - Detailed results
+4. `select_beam` - Select for visualization
+5. `show_visualization` - Trigger 3D/dashboard
+6. `suggest_optimization` - Cost/weight optimization
+7. `export_results` - Export to CSV/JSON
+
+**Context Injection:**
+- Workspace state in XML format
+- Beams loaded, design summary, selected beam details
+- Dynamic injection per request
+
+### Documentation
+
+Created comprehensive research document:
+- [docs/research/ai-assistant-workspace-integration.md](research/ai-assistant-workspace-integration.md)
+- Architecture options analysis (A, B, C)
+- Decision matrix → Hybrid approach recommended
+- 7-day implementation plan
+- Token budget estimates
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `6354a7e4` | docs: add AI assistant workspace integration research plan |
+| `264ccf59` | feat(ai): add AI module with context injection and tool definitions |
+
+### Next Steps
+
+1. Integrate AI module into page 11 (ai_assistant_v2.py)
+2. Implement tool handlers for function execution
+3. Add streaming support for tool results
+4. Test with various queries
+
+---
+
 ## 2026-01-21 — Session 57: AI v2 CSV Import Fix (Critical)
 
 **Focus:** Fix broken CSV import in AI v2 page by reusing proven adapter infrastructure
