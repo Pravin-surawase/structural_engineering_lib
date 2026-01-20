@@ -324,13 +324,17 @@ def render_chat_panel():
         # Welcome message if no messages
         if not st.session_state.ai_messages:
             st.markdown("""
-            👋 **Welcome to StructEng AI v2!**
+👋 **Welcome to StructEng AI v2!**
 
-            Quick start:
-            - Say **"load sample"** to try sample data
-            - Or upload a CSV in the workspace →
+**Quick Start (try these commands):**
+1. `load sample` — Load demo building data
+2. `design all` — Run IS 456 design on all beams
+3. `building 3d` — See interactive 3D visualization
+4. `edit rebar` — Customize reinforcement
 
-            Type a message below to begin.
+**Or upload your CSV** in the workspace →
+
+💡 *Tip: Click the buttons below for quick actions*
             """)
 
         # Display messages
