@@ -24,6 +24,7 @@ st.set_page_config(
 )
 
 # Imports after page config
+import math
 import re
 import sys
 import time
@@ -180,8 +181,6 @@ def calculate_rebar_layout(
             - ld_tension: Development length (mm)
             - lap_length: Lap splice length (mm)
     """
-    import math
-
     # Standard bar diameters and areas
     BAR_OPTIONS = [
         (12, 113.1),
