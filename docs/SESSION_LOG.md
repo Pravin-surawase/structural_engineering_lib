@@ -4,6 +4,72 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 56: AI Chat Improvements
+
+**Focus:** Multi-file upload, chat-about-design, mobile-friendly UI, quick calculations
+
+**User Requests:**
+1. Research ChatGPT usage and improve AI integration
+2. Multi-file upload (geometry + forces separately)
+3. Chat should talk about design results after completion
+4. Use library effectively in chat
+5. Fix 3D building view (was showing correctly but hover too verbose)
+6. Concise hover tooltips (beam name + utilization + pass/fail only)
+7. Mobile-friendly compact UI
+8. 6+ valuable commits
+
+### Implementation (5 commits on PR branch)
+
+| Commit | Description |
+|--------|-------------|
+| `31f2bdf6` | feat(ai): concise hover tooltips and compact building 3D UI |
+| `68b6a2d2` | feat(ai): add multi-file upload for separate geometry and forces CSVs |
+| `cf00d4e2` | feat(ai): add design context awareness to chat for intelligent Q&A |
+| `31ff6fac` | feat(ai): add mobile-friendly CSS and compact UI layout |
+| `8071702c` | feat(ai): add quick design and add-beam chat commands |
+
+### Features Added
+
+1. **Multi-File Upload:**
+   - Expander for separate geometry + forces CSV files
+   - Auto-mapping columns using COLUMN_PATTERNS
+   - Merge on beam_id with outer join
+
+2. **Chat Context Awareness:**
+   - `get_design_context()` generates summary for OpenAI
+   - Includes beam count, pass/fail stats, critical beams, selected beam
+   - Local fallback answers: "highest utilization", "failed beams", "summary", "about B1"
+
+3. **Quick Design Commands:**
+   - `"design 300x500 150"` → instant Ast calculation with Mu,lim check
+   - `"add beam 300x500 150"` → adds beam to project
+   - Uses IS 456 formulas for singly/doubly reinforced decision
+
+4. **UI Polish:**
+   - Mobile-friendly CSS with reduced padding and compact fonts
+   - Header shows quick stats (X/Y beams OK)
+   - 5 icon-only quick action buttons (📂🚀🏗️📊🗑️)
+   - Chat container height increased to 550px
+
+5. **Concise Tooltips:**
+   - Changed from 5-line hover to 2-line: `"<b>B1</b> ✅<br>Util: 75%"`
+   - Status icons: ✅ SAFE, ❌ FAIL, ⏳ pending
+
+### PR
+
+- Branch: `task/TASK-AI-IMPROVE`
+- Status: Ready to finish
+- Files: ai_workspace.py, 11_ai_assistant_v2.py
+
+### Next Steps
+
+1. Finish PR and merge
+2. Test multi-file upload with real ETABS exports
+3. Consider adding Excel (.xlsx) support for forces
+4. Plan Phase 4 tasks
+
+---
+
 ## 2026-01-20 — Session 55: v0.18.0 Release Prep
 
 **Focus:** Cleanup, dependency updates, GPT-5-mini upgrade, release v0.18.0
