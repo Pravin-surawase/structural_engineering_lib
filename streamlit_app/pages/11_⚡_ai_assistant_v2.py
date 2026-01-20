@@ -237,7 +237,18 @@ def get_ai_response(user_message: str) -> str:
             return response.choices[0].message.content
 
         except Exception as e:
-            return f"OpenAI error: {str(e)[:100]}. Using local mode."
+            error_str = str(e)
+            # Handle common API errors gracefully
+            if "429" in error_str or "quota" in error_str.lower():
+                # Quota exceeded - use local mode silently
+                return _local_response(user_message)
+            elif "401" in error_str or "auth" in error_str.lower():
+                return "🔑 API key invalid. Please check your OpenAI API key in secrets.toml. Using local mode.\n\n" + _local_response(user_message)
+            elif "timeout" in error_str.lower() or "connect" in error_str.lower():
+                return "⏱️ Connection timeout. Using local mode.\n\n" + _local_response(user_message)
+            else:
+                # Other errors - still provide local response
+                return _local_response(user_message)
 
     # Local SmartDesigner fallback
     return _local_response(user_message)

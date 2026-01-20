@@ -77,18 +77,18 @@ BAR_OPTIONS = [
 STIRRUP_OPTIONS = [(6, 28.3), (8, 50.3), (10, 78.5)]
 
 
-# Sample ETABS-like data for quick start
+# Sample ETABS-like data for quick start - with proper 3D building coordinates
 SAMPLE_ETABS_DATA = """Unique Name,Width,Depth,Length,M3,V2,Story,X1,Y1,Z1,X2,Y2,Z2
-B1-L1,300,500,5000,120.5,45.2,Story1,0,0,3,5,0,3
-B2-L1,300,500,5000,145.3,52.1,Story1,5,0,3,10,0,3
-B3-L1,300,600,6000,185.7,68.3,Story1,0,5,3,6,5,3
-B4-L1,350,600,6000,210.2,75.4,Story1,6,5,3,12,5,3
-B5-L2,300,500,4500,95.6,38.9,Story2,0,0,6,4.5,0,6
-B6-L2,300,500,4500,110.3,42.5,Story2,4.5,0,6,9,0,6
-B7-L2,300,550,5500,155.8,55.7,Story2,0,5,6,5.5,5,6
-B8-L3,350,650,7000,245.6,88.2,Story3,0,0,9,7,0,9
-B9-L3,350,650,7000,265.3,95.1,Story3,7,0,9,14,0,9
-B10-L3,400,700,8000,320.5,112.4,Story3,0,5,9,8,5,9
+B1-G1,300,500,6000,120.5,45.2,Story1,0,0,3,6,0,3
+B2-G1,300,500,6000,135.3,48.1,Story1,6,0,3,12,0,3
+B3-G1,300,500,5000,110.7,42.3,Story1,0,6,3,5,6,3
+B4-G1,350,600,5000,145.2,55.4,Story1,5,6,3,10,6,3
+B1-G2,300,500,6000,155.6,58.9,Story2,0,0,6,6,0,6
+B2-G2,300,500,6000,165.3,62.1,Story2,6,0,6,12,0,6
+B3-G2,300,550,5000,140.8,52.7,Story2,0,6,6,5,6,6
+B4-G2,350,600,5000,175.2,65.4,Story2,5,6,6,10,6,6
+B1-G3,350,650,6000,195.6,72.2,Story3,0,0,9,6,0,9
+B2-G3,350,650,6000,210.3,78.1,Story3,6,0,9,12,0,9
 """
 
 # Column name patterns for auto-mapping
@@ -480,7 +480,7 @@ def design_all_beams_ws() -> pd.DataFrame:
     results = []
     for idx, row in df.iterrows():
         design = design_beam_row(row)
-        results.append({
+        result_row = {
             "beam_id": row["beam_id"],
             "story": row["story"],
             "b_mm": row["b_mm"],
@@ -495,7 +495,12 @@ def design_all_beams_ws() -> pd.DataFrame:
             "utilization": design["utilization"],
             "is_safe": design["is_safe"],
             "status": design["status"],
-        })
+        }
+        # Preserve coordinate columns for 3D view
+        for coord in ["x1", "y1", "z1", "x2", "y2", "z2"]:
+            if coord in row:
+                result_row[coord] = row[coord]
+        results.append(result_row)
 
     return pd.DataFrame(results)
 
@@ -509,88 +514,65 @@ def render_welcome_panel() -> None:
     """Render welcome state with quick start cards."""
     st.markdown("### 🏗️ Beam Design Workspace")
 
-    col1, col2, col3 = st.columns(3)
+    # Compact intro
+    st.caption("Import your ETABS/SAFE data or start with sample beams")
+
+    col1, col2 = st.columns([1, 1])
 
     with col1:
         with st.container(border=True):
             st.markdown("#### 📂 Quick Demo")
-            st.caption("10 beams · 3 stories")
-            if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary",
-                        help="Load sample ETABS data"):
-                with st.spinner("⏳"):
+            st.caption("10 beams · 3 stories · Ready to design")
+            if st.button("▶ Load Sample Data", key="ws_sample", use_container_width=True, type="primary",
+                        help="Load sample ETABS data with 3D coordinates"):
+                with st.spinner("Loading sample data..."):
                     load_sample_data()
                 st.rerun()
 
     with col2:
         with st.container(border=True):
-            st.markdown("#### 📤 Your Data")
-            st.caption("Combined or separate files")
-            uploaded = st.file_uploader(
-                "Upload CSV", type=["csv", "xlsx"], key="ws_upload", label_visibility="collapsed",
-                help="Single file with geometry+forces, or use Advanced for separate files"
+            st.markdown("#### 📤 Import CSV Files")
+            st.caption("Geometry + Forces (1 or 2 files)")
+
+            # Single unified file uploader that accepts multiple files
+            uploaded_files = st.file_uploader(
+                "Upload CSV/Excel",
+                type=["csv", "xlsx"],
+                key="ws_multi_upload",
+                label_visibility="collapsed",
+                accept_multiple_files=True,
+                help="Upload 1 file (combined) or 2 files (geometry + forces)"
             )
-            if uploaded:
-                with st.spinner("⏳"):
-                    success, message = process_uploaded_file(uploaded)
-                if success:
-                    st.success(message)
-                    st.session_state.ws_state = WorkspaceState.IMPORT
-                    st.rerun()
+
+            if uploaded_files:
+                if len(uploaded_files) == 1:
+                    # Single file - process as combined
+                    with st.spinner("Processing file..."):
+                        success, message = process_uploaded_file(uploaded_files[0])
+                    if success:
+                        st.success(message)
+                        st.session_state.ws_state = WorkspaceState.IMPORT
+                        st.rerun()
+                    else:
+                        st.error(message)
+                elif len(uploaded_files) == 2:
+                    # Two files - merge geometry + forces
+                    st.info(f"📁 {uploaded_files[0].name} + {uploaded_files[1].name}")
+                    if st.button("🔄 Merge & Import", type="primary", use_container_width=True):
+                        with st.spinner("Merging files..."):
+                            success, message = process_multi_files(uploaded_files[0], uploaded_files[1])
+                        if success:
+                            st.success(message)
+                            st.session_state.ws_state = WorkspaceState.IMPORT
+                            st.rerun()
+                        else:
+                            st.error(message)
                 else:
-                    st.error(message)
+                    st.warning("Please upload 1 or 2 files only")
 
-    with col3:
-        with st.container(border=True):
-            st.markdown("#### ✏️ New Beam")
-            st.caption("Manual input")
-            if st.button("Create Beam", key="ws_manual", use_container_width=True,
-                        help="Design single beam manually"):
-                st.session_state.ws_beams_df = pd.DataFrame([{
-                    "beam_id": "B1",
-                    "b_mm": 300,
-                    "D_mm": 500,
-                    "span_mm": 5000,
-                    "mu_knm": 100,
-                    "vu_kn": 50,
-                    "story": "Story1",
-                    "fck": 25.0,
-                    "fy": 500.0,
-                    "cover_mm": 40.0,
-                    "x1": 0, "y1": 0, "z1": 3,
-                    "x2": 5, "y2": 0, "z2": 3,
-                }])
-                st.session_state.ws_state = WorkspaceState.EDIT
-                st.rerun()
-
-    # Advanced multi-file upload
-    with st.expander("📁 **Advanced: Separate Geometry + Forces Files**", expanded=False):
-        st.caption("Upload geometry and forces as separate CSV files (like ETABS exports)")
-        gcol, fcol = st.columns(2)
-        with gcol:
-            st.markdown("**Geometry** (beam IDs, sections, coordinates)")
-            geometry_file = st.file_uploader(
-                "Geometry CSV", type=["csv", "xlsx"], key="ws_geometry_upload", label_visibility="collapsed"
-            )
-        with fcol:
-            st.markdown("**Forces** (moments, shears from analysis)")
-            forces_file = st.file_uploader(
-                "Forces CSV", type=["csv", "xlsx"], key="ws_forces_upload", label_visibility="collapsed"
-            )
-
-        if geometry_file or forces_file:
-            if st.button("🔄 Merge & Process Files", type="primary", use_container_width=True):
-                with st.spinner("Processing files..."):
-                    success, message = process_multi_files(geometry_file, forces_file)
-                if success:
-                    st.success(message)
-                    st.session_state.ws_state = WorkspaceState.IMPORT
-                    st.rerun()
-                else:
-                    st.error(message)
-
-    # Compact features row
-    st.markdown("**✨ Workflow:** Import → Design → 3D View → Edit Rebar → Dashboard")
-    st.info("💡 **Chat commands:** `load sample` → `design all` → `building 3d`", icon="💬")
+    # Compact workflow hint
+    st.markdown("---")
+    st.markdown("**Workflow:** `load sample` → `design all` → `building 3d` → Select beam → `edit rebar`")
 
 
 def render_import_preview() -> None:
@@ -899,21 +881,33 @@ def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
 
 def render_building_3d() -> None:
     """Render impressive full building 3D view."""
-    df = st.session_state.ws_design_results
-    if df is None:
-        df = st.session_state.ws_beams_df
+    # Get design results for status, but use beams_df for coordinates
+    results_df = st.session_state.ws_design_results
+    beams_df = st.session_state.ws_beams_df
 
-    if df is None or df.empty:
-        st.warning("No beam data to visualize.")
+    if beams_df is None or beams_df.empty:
+        st.warning("No beam data to visualize. Load data first.")
         if st.button("← Back"):
-            set_workspace_state(WorkspaceState.DESIGN)
+            set_workspace_state(WorkspaceState.WELCOME)
             st.rerun()
         return
+
+    # Merge status from results into beams data if available
+    df = beams_df.copy()
+    if results_df is not None and not results_df.empty:
+        # Add status and utilization from design results
+        status_map = dict(zip(results_df["beam_id"], results_df["status"]))
+        util_map = dict(zip(results_df["beam_id"], results_df["utilization"]))
+        df["status"] = df["beam_id"].map(status_map).fillna("⏳ Pending")
+        df["utilization"] = df["beam_id"].map(util_map).fillna(0)
+    else:
+        df["status"] = "⏳ Pending"
+        df["utilization"] = 0
 
     # Compact header with stats inline
     total = len(df)
     stories = df["story"].nunique()
-    safe_count = len(df[df.get("status", "").str.contains("SAFE", case=False, na=False)]) if "status" in df.columns else 0
+    safe_count = len(df[df["status"].str.contains("OK|SAFE", case=False, na=False)]) if "status" in df.columns else 0
     pass_rate = f"{safe_count/total*100:.0f}%" if total > 0 else "N/A"
 
     st.markdown(f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass")
@@ -927,7 +921,11 @@ def render_building_3d() -> None:
     c1, c2, c3, c4 = st.columns([1, 2, 1, 1])
     with c1:
         if st.button("← Back", key="bldg_back"):
-            set_workspace_state(WorkspaceState.DESIGN)
+            # Go back to design if results exist, else import
+            if results_df is not None:
+                set_workspace_state(WorkspaceState.DESIGN)
+            else:
+                set_workspace_state(WorkspaceState.IMPORT)
             st.rerun()
     with c2:
         beam_ids = df["beam_id"].tolist() if len(df) > 0 else []
