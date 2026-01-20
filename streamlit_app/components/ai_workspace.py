@@ -435,7 +435,8 @@ def render_welcome_panel() -> None:
         with st.container(border=True):
             st.markdown("#### 📂 Quick Demo")
             st.caption("10 beams · 3 stories · ETABS format")
-            if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary"):
+            if st.button("▶ Load Sample", key="ws_sample", use_container_width=True, type="primary",
+                        help="Load 10 sample beams from an ETABS export to try the workflow"):
                 with st.spinner("Loading sample data..."):
                     load_sample_data()
                 st.rerun()
@@ -461,7 +462,8 @@ def render_welcome_panel() -> None:
         with st.container(border=True):
             st.markdown("#### ✏️ New Beam")
             st.caption("Design single beam manually")
-            if st.button("Create Beam", key="ws_manual", use_container_width=True):
+            if st.button("Create Beam", key="ws_manual", use_container_width=True,
+                        help="Start a new beam design from scratch with your own parameters"):
                 # Create empty dataframe with one row and generate coords
                 st.session_state.ws_beams_df = pd.DataFrame([{
                     "beam_id": "B1",
@@ -524,13 +526,15 @@ def render_import_preview() -> None:
     # Action buttons
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🚀 Design All Beams", type="primary", use_container_width=True):
+        if st.button("🚀 Design All Beams", type="primary", use_container_width=True,
+                    help="Run IS456 flexure & shear design on all beams"):
             with st.spinner("Designing beams..."):
                 st.session_state.ws_design_results = design_all_beams_ws()
             st.session_state.ws_state = WorkspaceState.DESIGN
             st.rerun()
     with col2:
-        if st.button("← Back to Welcome", use_container_width=True):
+        if st.button("← Back to Welcome", use_container_width=True,
+                    help="Clear data and return to start screen"):
             st.session_state.ws_beams_df = None
             set_workspace_state(WorkspaceState.WELCOME)
             st.rerun()
@@ -592,19 +596,23 @@ def render_design_results() -> None:
 
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            if st.button("🎨 3D View", use_container_width=True, type="primary"):
+            if st.button("🎨 3D View", use_container_width=True, type="primary",
+                        help="Interactive 3D visualization of the selected beam"):
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
         with col2:
-            if st.button("� Section", use_container_width=True):
+            if st.button("📐 Section", use_container_width=True,
+                        help="View cross-section with reinforcement layout"):
                 set_workspace_state(WorkspaceState.CROSS_SECTION)
                 st.rerun()
         with col3:
-            if st.button("🔧 Rebar", use_container_width=True):
+            if st.button("🔧 Rebar", use_container_width=True,
+                        help="Edit reinforcement to fix failed designs"):
                 set_workspace_state(WorkspaceState.REBAR_EDIT)
                 st.rerun()
         with col4:
-            if st.button("🏗️ Building", use_container_width=True):
+            if st.button("🏗️ Building", use_container_width=True,
+                        help="See all beams in 3D building context"):
                 set_workspace_state(WorkspaceState.BUILDING_3D)
                 st.rerun()
 
@@ -615,11 +623,13 @@ def render_design_results() -> None:
     st.divider()
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("📊 Dashboard", use_container_width=True):
+        if st.button("📊 Dashboard", use_container_width=True,
+                    help="See summary stats, cost breakdown, and export options"):
             set_workspace_state(WorkspaceState.DASHBOARD)
             st.rerun()
     with c2:
-        if st.button("← Import", use_container_width=True):
+        if st.button("← Import", use_container_width=True,
+                    help="Go back to review or modify imported data"):
             set_workspace_state(WorkspaceState.IMPORT)
             st.rerun()
 
