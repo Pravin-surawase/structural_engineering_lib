@@ -11,16 +11,14 @@
 
 ## 🎯 Features
 
+- **⚡ AI Assistant v2** - Chat-based structural design with dynamic workspace, 3D building visualization, and interactive rebar editor
 - **🏗️ Interactive Beam Design** - Complete flexure, shear, and detailing design with live visualization
 - **💰 Cost Optimization** - Find the most economical bar arrangements
 - **✅ Compliance Checking** - Automated IS 456 clause verification with pass/fail status
-- **📋 BBS Generator** - Generate bar bending schedules with quantity summaries
+- **📥 Multi-Format Import** - Import beam data from ETABS, SAFE, and custom CSV files
 - **📐 DXF Export** - CAD-ready drawings for beam sections and elevations
 - **📄 PDF Reports** - Professional design reports with IS 456 references
-- **📊 Batch Design** - Process multiple beams from CSV/Excel files
-- **🔬 Advanced Analysis** - Deflection, crack width, ductility analysis
-- **📚 Learning Center** - Interactive tutorials and IS 456 references
-- **📖 Clause Traceability** - Full IS 456 clause references for all calculations
+- **📚 Documentation** - Interactive tutorials and IS 456 references
 
 ---
 
@@ -105,35 +103,34 @@ streamlit_app/
 │   ├── 02_💰_cost_optimizer.py          # Cost optimization
 │   ├── 03_✅_compliance.py              # IS 456 compliance checking
 │   ├── 04_📚_documentation.py           # Help & examples
-│   ├── 05_📋_bbs_generator.py           # Bar bending schedule
-│   ├── 06_📐_dxf_export.py              # CAD export
-│   ├── 07_📄_report_generator.py        # PDF reports
-│   ├── 08_📊_batch_design.py            # Batch processing
-│   ├── 09_🔬_advanced_analysis.py       # Serviceability analysis
-│   ├── 10_📚_learning_center.py         # Tutorials & learning
-│   ├── 11_🎬_demo_showcase.py           # Demo & showcase
-│   └── 12_📖_clause_traceability.py     # IS 456 clause references
+│   ├── 05_3d_viewer_demo.py             # 3D visualization demo
+│   ├── 06_📤_etabs_import.py            # ETABS import
+│   ├── 07_📥_multi_format_import.py     # Multi-format CSV/Excel import
+│   ├── 10_🤖_ai_assistant.py            # AI Assistant v1 (legacy)
+│   ├── 11_⚡_ai_assistant_v2.py          # AI Assistant v2 (recommended)
+│   └── 90_feedback.py                   # User feedback
 ├── components/
 │   ├── __init__.py
+│   ├── ai_workspace.py                 # Dynamic workspace for AI v2
 │   ├── inputs.py                       # Input widgets
 │   ├── visualizations.py               # Plotly charts & beam diagrams
+│   ├── visualizations_3d.py            # 3D beam visualization
 │   └── results.py                      # Result displays
 ├── utils/
 │   ├── __init__.py
 │   ├── api_wrapper.py                  # Cached API calls
 │   ├── design_system.py                # Design tokens (colors, typography)
 │   ├── global_styles.py                # CSS styling
-│   ├── theme_manager.py                # Theme management
-│   ├── styled_components.py            # Reusable styled components
-│   ├── layout.py                       # Page layout utilities
-│   └── pdf_generator.py                # PDF report generation
+│   ├── error_handler.py                # Input validation
+│   ├── session_manager.py              # State management
+│   └── layout.py                       # Page layout utilities
 ├── tests/
 │   ├── conftest.py                     # Test fixtures
 │   ├── test_page_smoke.py              # Page import tests
-│   ├── test_critical_journeys.py       # E2E journey tests
-│   └── test_page_fixes_2026_01_13.py   # Regression tests
+│   └── test_critical_journeys.py       # E2E journey tests
 ├── .streamlit/
-│   └── config.toml                     # Theme configuration
+│   ├── config.toml                     # Theme configuration
+│   └── secrets.toml.example            # Example secrets (OpenAI API key)
 ├── requirements.txt                    # Dependencies
 └── README.md                           # This file
 ```
