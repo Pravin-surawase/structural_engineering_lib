@@ -36,8 +36,10 @@
 | Variable stirrup zones (2d rule) | ✅ Done | Session 51 - Tighter at supports |
 | Integrate with AI 3D tab | ✅ Done | Session 51 - Shows actual bars |
 | Rebar summary display | ✅ Done | Session 51 - "4T16 + 2T16 hanger" |
-| Add to Beam Design page | 📋 Next | Same rebar viz for page 01 |
-| Detailing data (Ld, lap lengths) | 📋 Next | Development length calcs |
+| Development length (Ld) | ✅ Done | Session 51 - IS 456 Cl 26.2.1 |
+| Lap length calculation | ✅ Done | Session 51 - 1.3 × Ld |
+| Add to Beam Design page | ✅ Done | Session 51 - Variable stirrups |
+| Bar marks/schedules | 📋 Next | Generate bar mark IDs |
 
 ---
 
