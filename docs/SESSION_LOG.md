@@ -4,6 +4,74 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-20 — Session 52: AI Assistant v2 with Dynamic Workspace
+
+**Focus:** Implement AI v2 redesign with dynamic single-panel workspace, add 3D rebar view to multi-format import
+
+**User Requests:**
+1. Start work on AI v2 redesign (from Session 51 plan)
+2. Add complete 3D view with detailing to multi-format import page
+3. Fix any existing issues
+4. Target 6+ valuable commits
+
+### Implementation (3 commits so far)
+
+| Commit | Description |
+|--------|-------------|
+| `e1189937` | feat(page07): add beam detail 3D view with rebar visualization |
+| `1e9061b4` | feat(ai): add dynamic workspace component with state machine |
+| `6ba16b62` | feat(ai): add AI assistant v2 page with dynamic workspace |
+
+### Features Added
+
+1. **Page 07 Beam Detail 3D View** (Commit 1):
+   - Added `calculate_rebar_layout_for_beam()` function
+   - Beam selector in design results section
+   - 3D visualization with actual rebars and stirrups
+   - Rebar summary display (e.g., "4T16 bottom, 2T12 hanger")
+
+2. **AI Workspace Component** (Commit 2) — `streamlit_app/components/ai_workspace.py`:
+   - `WorkspaceState` enum with 6 states: WELCOME, IMPORT, DESIGN, VIEW_3D, EDIT, DASHBOARD
+   - State machine with transitions
+   - Built-in sample ETABS data (10 beams)
+   - Auto-column-mapping for CSV import
+   - Render functions for each state
+
+3. **AI Assistant v2 Page** (Commit 3) — `streamlit_app/pages/11_⚡_ai_assistant_v2.py`:
+   - 35% chat / 65% workspace layout (maximized)
+   - Minimal header (3% screen usage vs 20% before)
+   - Chat commands: "load sample", "design all", "show 3d", "dashboard"
+   - OpenAI integration with local fallback
+   - Dynamic workspace rendering based on state
+
+### Files Created/Modified
+
+- **NEW:** `streamlit_app/components/ai_workspace.py` (753 lines)
+- **NEW:** `streamlit_app/pages/11_⚡_ai_assistant_v2.py` (338 lines)
+- **ENHANCED:** `streamlit_app/pages/07_📥_multi_format_import.py`
+
+### Architecture Decision
+
+**Dynamic Workspace over 5 Tabs:**
+- Single panel that transforms based on state
+- State machine controls transitions
+- Much cleaner UX than tab switching
+- Same codebase for AI and standalone use
+
+### Validation
+
+- **Python tests:** 3144/3144 passing ✅
+- **Component imports:** Verified ✅
+- **Streamlit app:** Running and accessible ✅
+
+### Status
+
+- **Session commits:** 3 (target: 6+)
+- **AI v2 MVP:** COMPLETE ✅
+- **Next:** Documentation, testing, refinements
+
+---
+
 ## 2026-01-20 — Session 51: Phase 3 Rebar Visualization & Bug Fixes
 
 **Focus:** Fix user-reported bugs, implement Phase 3 rebar visualization in 3D

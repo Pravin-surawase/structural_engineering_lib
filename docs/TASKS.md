@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-20 (Session 51)
+**Updated:** 2026-01-20 (Session 52)
 
 ---
 
@@ -15,18 +15,33 @@
 
 ## Current Focus
 
-- **Version:** v0.18.0 → v0.18.1 (Phase 3 - Rebar Visualization)
-- **Focus:** Actual reinforcement visualization from design results
-- **8-Week Plan:** Phase AI COMPLETE ✅, Phase 3 IN PROGRESS
-- **Next Milestone:** v0.18.1 - 3D Rebar Visualization
-- **Key Insight:** Show real bars (3T16, 4T20) not placeholders
+- **Version:** v0.18.0 → v0.18.2 (AI v2 + Rebar Visualization)
+- **Focus:** AI Assistant v2 with dynamic workspace
+- **8-Week Plan:** Phase AI COMPLETE ✅, AI v2 IN PROGRESS
+- **Next Milestone:** v0.18.2 - AI v2 with Dynamic Workspace
+- **Key Insight:** Single dynamic panel > 5 tabs
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
 ---
 
 ## Active Tasks
 
-### TASK-REBAR-3D: Phase 3 - Rebar Visualization 🚧 IN PROGRESS
+### TASK-AI-V2: AI Assistant v2 with Dynamic Workspace 🚧 IN PROGRESS
+
+**Goal:** Redesign AI chat with single dynamic workspace panel (35% chat / 65% workspace)
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| AI workspace component | ✅ Done | Session 52 - `ai_workspace.py` |
+| State machine (6 states) | ✅ Done | Session 52 - WELCOME → DASHBOARD |
+| Auto-column-mapping | ✅ Done | Session 52 - Detect ETABS columns |
+| Sample data (10 beams) | ✅ Done | Session 52 - Built-in demo |
+| AI v2 page | ✅ Done | Session 52 - `11_⚡_ai_assistant_v2.py` |
+| Chat commands | ✅ Done | Session 52 - load/design/view/dashboard |
+| Page 07 beam detail 3D | ✅ Done | Session 52 - `e1189937` |
+| Test and polish | 📋 Next | Verify all states work |
+
+### TASK-REBAR-3D: Phase 3 - Rebar Visualization ✅ COMPLETE
 
 **Goal:** Show actual reinforcement bars from design in 3D view
 
@@ -141,15 +156,15 @@ Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 
 | Date | Task | Commit | Notes |
 |------|------|--------|-------|
+| 2026-01-20 | AI v2 workspace component | `1e9061b4` | Session 52 - State machine |
+| 2026-01-20 | AI v2 page | `6ba16b62` | Session 52 - Dynamic workspace |
+| 2026-01-20 | Page 07 beam detail 3D | `e1189937` | Session 52 - Rebar viz |
+| 2026-01-20 | Fix AI page bugs | `c5fd8bc8` | Session 51 - geometry/type errors |
+| 2026-01-20 | Phase 3 rebar viz | `4a89dc9a` | Session 51 - Variable stirrups |
 | 2026-01-25 | Fix AI page bugs | `fef3ae12`, `4d0a9c7c` | Session 49 - geometry/attribute errors |
 | 2026-01-25 | Add GPT-5-mini support | `fef3ae12` | Session 49 - configurable model |
 | 2026-01-25 | Chat panel improvements | `37e0a21f` | Session 49 - welcome msg, clear btn |
 | 2026-01-24 | 3D building view tab | `efe825d3` | Session 46 |
-| 2026-01-24 | Fix VBA import errors | `897da5dd` | Session 46 |
-| 2026-01-24 | Docs cleanup | `67faaca6`, `2317a2b9` | Session 46 |
-| 2026-01-18 | LOD threshold validation | PR #385 | Session 43 |
-| 2026-01-17 | VBA ETABS export macro | PR #379 | Session 36 |
-| 2026-01-16 | Multi-format adapter system | PR #381 | Session 42 |
 
 ---
 
