@@ -47,6 +47,7 @@ from components.visualizations_3d import create_beam_3d_figure
 
 # Import structural_lib at module level
 from structural_lib import api as structural_api
+from structural_lib.codes.is456.detailing import calculate_development_length
 from structural_lib.insights import SmartDesigner
 
 
@@ -164,6 +165,7 @@ def calculate_rebar_layout(
     stirrup_dia: float = 8.0,
     vu_kn: float = 50.0,
     fck: float = 25.0,
+    fy: float = 500.0,
 ) -> dict[str, Any]:
     """Calculate actual rebar layout from design requirements.
 
@@ -175,6 +177,8 @@ def calculate_rebar_layout(
             - bar_diameter: Selected bar size (mm)
             - stirrup_spacing: Variable spacing zones [(start, end, spacing), ...]
             - summary: Text summary of reinforcement
+            - ld_tension: Development length (mm)
+            - lap_length: Lap splice length (mm)
     """
     import math
 
@@ -201,6 +205,21 @@ def calculate_rebar_layout(
         best_config = (16, 4, 4 * 201.1)
 
     bar_dia, num_bars, ast_provided = best_config
+
+    # Calculate development length per IS 456 Cl 26.2.1
+    try:
+        ld_tension = calculate_development_length(
+            bar_dia=bar_dia,
+            fck=fck,
+            fy=fy,
+            bar_type="deformed",
+        )
+    except Exception:
+        # Fallback: approximate Ld = 47φ for Fe500 with M25
+        ld_tension = 47 * bar_dia
+
+    # Lap length = 1.3 × Ld for tension splices (IS 456 Cl 26.2.5.1)
+    lap_length = 1.3 * ld_tension
 
     # Calculate bar positions
     edge_dist = cover_mm + stirrup_dia + bar_dia / 2
@@ -266,6 +285,7 @@ def calculate_rebar_layout(
     # Summary text
     summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²) + 2T{bar_dia} hanger"
     spacing_summary = f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (support), @{sv_base:.0f}mm (mid)"
+    detailing_summary = f"Ld = {ld_tension:.0f}mm, Lap = {lap_length:.0f}mm"
 
     return {
         "bottom_bars": bottom_bars,
@@ -276,6 +296,9 @@ def calculate_rebar_layout(
         "ast_provided": ast_provided,
         "summary": summary,
         "spacing_summary": spacing_summary,
+        "detailing_summary": detailing_summary,
+        "ld_tension": ld_tension,
+        "lap_length": lap_length,
     }
 
 
@@ -824,11 +847,13 @@ def render_workspace_panel():
                 span_mm=span,
                 vu_kn=vu_kn,
                 fck=fck,
+                fy=params.get("fy", 500),
             )
 
-            # Show rebar summary
+            # Show rebar summary with detailing
             st.markdown(f"**Reinforcement:** {rebar_layout['summary']}")
             st.caption(rebar_layout['spacing_summary'])
+            st.caption(f"📏 {rebar_layout['detailing_summary']}")
 
             try:
                 fig = create_beam_3d_figure(
