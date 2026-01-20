@@ -145,6 +145,64 @@ def init_chat_state():
         st.session_state.ai_messages = []
 
 
+def get_design_context() -> str:
+    """Generate context string from current design results for AI."""
+    context_parts = []
+
+    # Check for loaded beams
+    beams_df = st.session_state.get("ws_beams_df")
+    if beams_df is not None:
+        context_parts.append(f"## Loaded Beams: {len(beams_df)} beams")
+
+    # Check for design results
+    results_df = st.session_state.get("ws_design_results")
+    if results_df is not None and not results_df.empty:
+        total = len(results_df)
+        passed = len(results_df[results_df.get("is_safe", results_df.get("status", "")) == True]) if "is_safe" in results_df.columns else 0
+        if "status" in results_df.columns:
+            passed = len(results_df[results_df["status"].str.upper().str.contains("SAFE|PASS", na=False)])
+        failed = total - passed
+
+        context_parts.append(f"""
+## Design Results Summary
+- **Total Beams:** {total}
+- **Passed:** {passed} ({100*passed/total:.0f}%)
+- **Failed/Review:** {failed} ({100*failed/total:.0f}%)
+""")
+
+        # Add beam details (limit to top 10 for context size)
+        beam_details = []
+        for _, row in results_df.head(10).iterrows():
+            beam_id = row.get("beam_id", "?")
+            util = row.get("utilization", 0)
+            util_pct = util * 100 if util <= 1 else util
+            status = row.get("status", row.get("is_safe", "?"))
+            width = row.get("width", row.get("b", "?"))
+            depth = row.get("depth", row.get("D", "?"))
+            ast = row.get("Ast_prov", row.get("ast_provided", row.get("ast_required", "?")))
+            beam_details.append(f"- {beam_id}: {width}x{depth}mm, Util={util_pct:.0f}%, {status}, Ast={ast}")
+
+        if beam_details:
+            context_parts.append("## Beam Details (first 10):\n" + "\n".join(beam_details))
+
+        # Find critical beams (highest utilization)
+        if "utilization" in results_df.columns:
+            sorted_df = results_df.sort_values("utilization", ascending=False)
+            top_3 = sorted_df.head(3)
+            critical_list = [f"{row['beam_id']} ({row['utilization']*100:.0f}%)" for _, row in top_3.iterrows()]
+            context_parts.append(f"## Critical Beams (highest utilization): {', '.join(critical_list)}")
+
+    # Selected beam
+    selected = st.session_state.get("ws_selected_beam")
+    if selected:
+        context_parts.append(f"## Currently Selected: {selected}")
+
+    if not context_parts:
+        return ""
+
+    return "\n\n---\n**Current Project Context:**\n" + "\n".join(context_parts)
+
+
 def get_ai_response(user_message: str) -> str:
     """Get AI response for user message."""
     msg_lower = user_message.lower()
@@ -216,7 +274,14 @@ def get_ai_response(user_message: str) -> str:
     if client:
         try:
             config = get_openai_config()
-            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+            # Build system message with design context
+            design_context = get_design_context()
+            system_content = SYSTEM_PROMPT
+            if design_context:
+                system_content += "\n\n" + design_context
+
+            messages = [{"role": "system", "content": system_content}]
 
             # Add conversation history (last 10 messages)
             for msg in st.session_state.ai_messages[-10:]:
@@ -243,6 +308,64 @@ def get_ai_response(user_message: str) -> str:
 def _local_response(msg: str) -> str:
     """Generate local response without OpenAI."""
     msg_lower = msg.lower()
+
+    # Check for design-related questions with local data
+    results_df = st.session_state.get("ws_design_results")
+    if results_df is not None and not results_df.empty:
+        # Questions about specific beams
+        if "highest utilization" in msg_lower or "most utilized" in msg_lower or "critical" in msg_lower:
+            if "utilization" in results_df.columns:
+                sorted_df = results_df.sort_values("utilization", ascending=False)
+                top = sorted_df.head(3)
+                lines = [f"- **{row['beam_id']}**: {row['utilization']*100:.1f}% utilization" for _, row in top.iterrows()]
+                return f"🔴 **Highest Utilization Beams:**\n" + "\n".join(lines) + "\n\nSay **'select {top.iloc[0]['beam_id']}'** to view details."
+
+        if "lowest utilization" in msg_lower or "least utilized" in msg_lower:
+            if "utilization" in results_df.columns:
+                sorted_df = results_df.sort_values("utilization", ascending=True)
+                bottom = sorted_df.head(3)
+                lines = [f"- **{row['beam_id']}**: {row['utilization']*100:.1f}% utilization" for _, row in bottom.iterrows()]
+                return f"🟢 **Lowest Utilization Beams:**\n" + "\n".join(lines)
+
+        if "fail" in msg_lower or "unsafe" in msg_lower or "not pass" in msg_lower:
+            failed = results_df[~results_df.get("is_safe", True) | results_df.get("status", "").str.upper().str.contains("FAIL", na=False)] if "status" in results_df.columns else results_df[results_df.get("is_safe", True) == False]
+            if len(failed) > 0:
+                lines = [f"- **{row.get('beam_id', '?')}**: {row.get('status', 'Failed')}" for _, row in failed.head(5).iterrows()]
+                return f"❌ **Failed/Unsafe Beams ({len(failed)} total):**\n" + "\n".join(lines)
+            else:
+                return "✅ All beams passed design checks!"
+
+        if "summary" in msg_lower or "overview" in msg_lower or "stats" in msg_lower:
+            total = len(results_df)
+            passed = len(results_df[results_df.get("is_safe", results_df.get("status", "")) == True]) if "is_safe" in results_df.columns else 0
+            if "status" in results_df.columns:
+                passed = len(results_df[results_df["status"].str.upper().str.contains("SAFE|PASS", na=False)])
+            avg_util = results_df["utilization"].mean() * 100 if "utilization" in results_df.columns else 0
+            return f"""📊 **Design Summary:**
+- **Total Beams:** {total}
+- **Passed:** {passed} ({100*passed/total:.0f}%)
+- **Failed:** {total-passed}
+- **Avg Utilization:** {avg_util:.1f}%
+
+Say **'building 3d'** to visualize or **'highest utilization'** to see critical beams."""
+
+        # Question about specific beam
+        beam_match = re.search(r'(about|tell me|show|info)\s*(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
+        if beam_match:
+            beam_id = beam_match.group(3).upper()
+            match_row = results_df[results_df["beam_id"].str.upper() == beam_id]
+            if not match_row.empty:
+                row = match_row.iloc[0]
+                util = row.get("utilization", 0) * 100
+                status = row.get("status", row.get("is_safe", "?"))
+                width = row.get("width", row.get("b", "?"))
+                depth = row.get("depth", row.get("D", "?"))
+                return f"""📐 **{row['beam_id']}:**
+- **Size:** {width} x {depth} mm
+- **Utilization:** {util:.1f}%
+- **Status:** {status}
+
+Say **'select {row['beam_id']}'** to view 3D or **'edit rebar'** after selecting."""
 
     if "hello" in msg_lower or "hi" in msg_lower:
         return """👋 Hello! I'm StructEng AI, your structural engineering assistant.
