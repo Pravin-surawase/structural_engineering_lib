@@ -81,9 +81,8 @@ def get_openai_client() -> OpenAI | None:
 
 def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets."""
-    # Default to GPT-5-mini (fast, cost-efficient) for structural engineering tasks
-    # GPT-5.2 is best but expensive; GPT-5-mini is optimal for defined tasks
-    model = "gpt-5-mini"
+    # Default to GPT-4o-mini (fast, cost-efficient) for structural engineering tasks
+    model = "gpt-4o-mini"
     temperature = 0.7
     max_tokens = 2000
 
@@ -91,7 +90,7 @@ def get_openai_config() -> dict[str, Any]:
         openai_config = st.secrets.get("openai", {})
         if isinstance(openai_config, dict):
             if "model" in openai_config:
-                model = openai_config.get("model", "gpt-5-mini")
+                model = openai_config.get("model", "gpt-4o-mini")
             if "temperature" in openai_config:
                 try:
                     temperature = float(openai_config.get("temperature", 0.7))
@@ -228,7 +227,7 @@ def get_ai_response(user_message: str) -> str:
             messages.append({"role": "user", "content": user_message})
 
             response = client.chat.completions.create(
-                model=config.get("model", "gpt-5-mini"),
+                model=config.get("model", "gpt-4o-mini"),
                 messages=messages,
                 temperature=config.get("temperature", 0.7),
                 max_tokens=config.get("max_tokens", 2000),

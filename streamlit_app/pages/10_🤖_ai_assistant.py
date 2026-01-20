@@ -67,10 +67,10 @@ def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets.
 
     Returns config dict with model, temperature, max_tokens.
-    Defaults to gpt-5-mini (fast, cost-efficient).
+    Defaults to gpt-4o-mini (fast, cost-efficient).
     """
     config = {
-        "model": "gpt-5-mini",  # Default: fast, cost-efficient GPT-5 Mini
+        "model": "gpt-4o-mini",  # Default: fast, cost-efficient GPT-4o Mini
         "temperature": 0.7,
         "max_tokens": 2000,
     }
@@ -660,8 +660,18 @@ def get_ai_response(user_message: str) -> str:
             return response.choices[0].message.content
 
         except Exception as e:
-            # Fallback to simulation on error with error info
-            return f"⚠️ API Error: {str(e)[:100]}... Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
+            error_str = str(e)
+            # Handle common API errors gracefully
+            if "429" in error_str or "quota" in error_str.lower():
+                # Quota exceeded - use local mode silently
+                return simulate_ai_response(user_message)
+            elif "401" in error_str or "auth" in error_str.lower():
+                return "🔑 API key invalid. Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
+            elif "timeout" in error_str.lower() or "connect" in error_str.lower():
+                return "⏱️ Connection timeout. Using local SmartDesigner.\n\n" + simulate_ai_response(user_message)
+            else:
+                # Other errors - still provide local response
+                return simulate_ai_response(user_message)
     else:
         # No API key - use simulation
         return simulate_ai_response(user_message)
