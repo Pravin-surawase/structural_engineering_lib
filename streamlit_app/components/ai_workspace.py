@@ -579,12 +579,15 @@ def render_3d_view() -> None:
             st.rerun()
     with col3:
         # Next beam button
-        beam_list = df["beam_id"].tolist()
-        curr_idx = beam_list.index(beam_id) if beam_id in beam_list else 0
-        next_idx = (curr_idx + 1) % len(beam_list)
-        if st.button("▶ Next Beam", use_container_width=True):
-            st.session_state.ws_selected_beam = beam_list[next_idx]
-            st.rerun()
+        beam_list = df["beam_id"].tolist() if df is not None and len(df) > 0 else []
+        if len(beam_list) > 1:
+            curr_idx = beam_list.index(beam_id) if beam_id in beam_list else 0
+            next_idx = (curr_idx + 1) % len(beam_list)
+            if st.button("▶ Next Beam", use_container_width=True):
+                st.session_state.ws_selected_beam = beam_list[next_idx]
+                st.rerun()
+        else:
+            st.button("▶ Next Beam", use_container_width=True, disabled=True)
 
 
 def render_beam_editor() -> None:
@@ -610,17 +613,24 @@ def render_beam_editor() -> None:
     else:
         row = df.iloc[0]
 
+    # Safe float conversion helper
+    def safe_float(val, default: float) -> float:
+        try:
+            return float(val) if val is not None and not pd.isna(val) else default
+        except (ValueError, TypeError):
+            return default
+
     col1, col2 = st.columns([0.4, 0.6])
 
     with col1:
         st.markdown("**Geometry**")
-        b = st.number_input("Width b (mm)", value=float(row["b_mm"]), step=25.0, key="edit_b")
-        D = st.number_input("Depth D (mm)", value=float(row["D_mm"]), step=25.0, key="edit_D")
-        span = st.number_input("Span (mm)", value=float(row["span_mm"]), step=100.0, key="edit_span")
+        b = st.number_input("Width b (mm)", value=safe_float(row.get("b_mm"), 300.0), step=25.0, key="edit_b")
+        D = st.number_input("Depth D (mm)", value=safe_float(row.get("D_mm"), 500.0), step=25.0, key="edit_D")
+        span = st.number_input("Span (mm)", value=safe_float(row.get("span_mm"), 5000.0), step=100.0, key="edit_span")
 
         st.markdown("**Loading**")
-        mu = st.number_input("Moment Mu (kN·m)", value=float(row["mu_knm"]), step=10.0, key="edit_mu")
-        vu = st.number_input("Shear Vu (kN)", value=float(row["vu_kn"]), step=5.0, key="edit_vu")
+        mu = st.number_input("Moment Mu (kN·m)", value=safe_float(row.get("mu_knm"), 100.0), step=10.0, key="edit_mu")
+        vu = st.number_input("Shear Vu (kN)", value=safe_float(row.get("vu_kn"), 50.0), step=5.0, key="edit_vu")
 
         st.markdown("**Materials**")
         fck = st.selectbox("Concrete", [20, 25, 30, 35, 40], index=1, key="edit_fck")
