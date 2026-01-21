@@ -80,6 +80,7 @@ except ImportError as e:
     ADAPTERS_AVAILABLE = False
     ADAPTERS = {}
     import traceback
+
     _import_error = str(e)
 
 # Import DXF export module
@@ -90,6 +91,7 @@ try:
         EZDXF_AVAILABLE,
     )
     from structural_lib.detailing import BeamDetailingResult, create_beam_detailing
+
     HAS_DXF = True
 except ImportError:
     HAS_DXF = False
@@ -232,15 +234,17 @@ def beams_to_dataframe(beams: list[BeamGeometry]) -> pd.DataFrame:
     """Convert BeamGeometry list to DataFrame."""
     data = []
     for beam in beams:
-        data.append({
-            "ID": beam.id,
-            "Label": beam.label,
-            "Story": beam.story,
-            "Length (m)": round(beam.length_m, 2),
-            "Width (mm)": beam.section.width_mm,
-            "Depth (mm)": beam.section.depth_mm,
-            "fck (MPa)": beam.section.fck_mpa,
-        })
+        data.append(
+            {
+                "ID": beam.id,
+                "Label": beam.label,
+                "Story": beam.story,
+                "Length (m)": round(beam.length_m, 2),
+                "Width (mm)": beam.section.width_mm,
+                "Depth (mm)": beam.section.depth_mm,
+                "fck (MPa)": beam.section.fck_mpa,
+            }
+        )
     return pd.DataFrame(data)
 
 
@@ -248,14 +252,16 @@ def forces_to_dataframe(forces: list[BeamForces]) -> pd.DataFrame:
     """Convert BeamForces list to DataFrame."""
     data = []
     for force in forces:
-        data.append({
-            "Beam ID": force.id,
-            "Load Case": force.load_case,
-            "Mu (kN·m)": round(force.mu_knm, 2),
-            "Vu (kN)": round(force.vu_kn, 2),
-            "Pu (kN)": round(force.pu_kn, 2),
-            "Stations": force.station_count,
-        })
+        data.append(
+            {
+                "Beam ID": force.id,
+                "Load Case": force.load_case,
+                "Mu (kN·m)": round(force.mu_knm, 2),
+                "Vu (kN)": round(force.vu_kn, 2),
+                "Pu (kN)": round(force.pu_kn, 2),
+                "Stations": force.station_count,
+            }
+        )
     return pd.DataFrame(data)
 
 
@@ -306,7 +312,7 @@ def calculate_rebar_layout_for_beam(
     # Find optimal bar combination (prefer 3-5 bars)
     best_config = None
     for dia, area in BAR_OPTIONS:
-        num_bars = math.ceil(ast_mm2 / area) if ast_mm2 > 0 else 2
+        num_bars = math.ceil(ast_mm2 / area) if ast_mm2 > 0 and area > 0 else 2
         if 2 <= num_bars <= 6:
             ast_provided = num_bars * area
             best_config = (dia, num_bars, ast_provided)
@@ -327,7 +333,10 @@ def calculate_rebar_layout_for_beam(
     if num_bars == 1:
         bottom_bars = [(0, 0, z_bottom)]
     elif num_bars == 2:
-        bottom_bars = [(0, -available_width / 2, z_bottom), (0, available_width / 2, z_bottom)]
+        bottom_bars = [
+            (0, -available_width / 2, z_bottom),
+            (0, available_width / 2, z_bottom),
+        ]
     else:
         spacing = available_width / max(num_bars - 1, 1)
         for i in range(num_bars):
@@ -368,7 +377,9 @@ def calculate_rebar_layout_for_beam(
         x += sv_support
 
     summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²)"
-    spacing_summary = f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (ends), @{sv_base:.0f}mm (mid)"
+    spacing_summary = (
+        f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (ends), @{sv_base:.0f}mm (mid)"
+    )
 
     return {
         "bottom_bars": bottom_bars,
@@ -412,19 +423,21 @@ def design_all_beams(
 
         if mu == 0 and vu == 0:
             # No forces found for this beam
-            results.append({
-                "ID": beam.id,
-                "Story": beam.story,
-                "Label": beam.label,
-                "Load Case": "-",
-                "Mu (kN·m)": 0,
-                "Vu (kN)": 0,
-                "b×D (mm)": f"{beam.section.width_mm}×{beam.section.depth_mm}",
-                "Ast_req": "-",
-                "Ast_prov": "-",
-                "Status": "⚠️ No forces",
-                "_is_safe": None,
-            })
+            results.append(
+                {
+                    "ID": beam.id,
+                    "Story": beam.story,
+                    "Label": beam.label,
+                    "Load Case": "-",
+                    "Mu (kN·m)": 0,
+                    "Vu (kN)": 0,
+                    "b×D (mm)": f"{beam.section.width_mm}×{beam.section.depth_mm}",
+                    "Ast_req": "-",
+                    "Ast_prov": "-",
+                    "Status": "⚠️ No forces",
+                    "_is_safe": None,
+                }
+            )
             continue
 
         try:
@@ -446,36 +459,40 @@ def design_all_beams(
             num_bars = flexure.get("num_bars", 3)
             bar_config = f"{num_bars}T{bar_dia}"
 
-            results.append({
-                "ID": beam.id,
-                "Story": beam.story,
-                "Label": beam.label,
-                "Load Case": case,
-                "Mu (kN·m)": round(mu, 1),
-                "Vu (kN)": round(vu, 1),
-                "b×D (mm)": f"{beam.section.width_mm}×{beam.section.depth_mm}",
-                "Ast_req": round(flexure.get("ast_required", 0), 0),
-                "Ast_prov": round(flexure.get("ast_provided", 0), 0),
-                "Bars": bar_config,
-                "Sv (mm)": shear.get("spacing", "-"),
-                "Status": "✅ OK" if is_safe else "❌ FAIL",
-                "_is_safe": is_safe,
-            })
+            results.append(
+                {
+                    "ID": beam.id,
+                    "Story": beam.story,
+                    "Label": beam.label,
+                    "Load Case": case,
+                    "Mu (kN·m)": round(mu, 1),
+                    "Vu (kN)": round(vu, 1),
+                    "b×D (mm)": f"{beam.section.width_mm}×{beam.section.depth_mm}",
+                    "Ast_req": round(flexure.get("ast_required", 0), 0),
+                    "Ast_prov": round(flexure.get("ast_provided", 0), 0),
+                    "Bars": bar_config,
+                    "Sv (mm)": shear.get("spacing", "-"),
+                    "Status": "✅ OK" if is_safe else "❌ FAIL",
+                    "_is_safe": is_safe,
+                }
+            )
 
         except Exception as e:
-            results.append({
-                "ID": beam.id,
-                "Story": beam.story,
-                "Label": beam.label,
-                "Load Case": case,
-                "Mu (kN·m)": round(mu, 1),
-                "Vu (kN)": round(vu, 1),
-                "b×D (mm)": f"{beam.section.width_mm}×{beam.section.depth_mm}",
-                "Ast_req": "-",
-                "Ast_prov": "-",
-                "Status": f"❌ {str(e)[:30]}",
-                "_is_safe": False,
-            })
+            results.append(
+                {
+                    "ID": beam.id,
+                    "Story": beam.story,
+                    "Label": beam.label,
+                    "Load Case": case,
+                    "Mu (kN·m)": round(mu, 1),
+                    "Vu (kN)": round(vu, 1),
+                    "b×D (mm)": f"{beam.section.width_mm}×{beam.section.depth_mm}",
+                    "Ast_req": "-",
+                    "Ast_prov": "-",
+                    "Status": f"❌ {str(e)[:30]}",
+                    "_is_safe": False,
+                }
+            )
 
     return pd.DataFrame(results)
 
@@ -716,20 +733,68 @@ def create_building_3d_view(
         if show_edges:
             edges = [
                 # Bottom face at point1
-                ([corners[0][0], corners[1][0]], [corners[0][1], corners[1][1]], [corners[0][2], corners[1][2]]),
-                ([corners[1][0], corners[3][0]], [corners[1][1], corners[3][1]], [corners[1][2], corners[3][2]]),
-                ([corners[3][0], corners[2][0]], [corners[3][1], corners[2][1]], [corners[3][2], corners[2][2]]),
-                ([corners[2][0], corners[0][0]], [corners[2][1], corners[0][1]], [corners[2][2], corners[0][2]]),
+                (
+                    [corners[0][0], corners[1][0]],
+                    [corners[0][1], corners[1][1]],
+                    [corners[0][2], corners[1][2]],
+                ),
+                (
+                    [corners[1][0], corners[3][0]],
+                    [corners[1][1], corners[3][1]],
+                    [corners[1][2], corners[3][2]],
+                ),
+                (
+                    [corners[3][0], corners[2][0]],
+                    [corners[3][1], corners[2][1]],
+                    [corners[3][2], corners[2][2]],
+                ),
+                (
+                    [corners[2][0], corners[0][0]],
+                    [corners[2][1], corners[0][1]],
+                    [corners[2][2], corners[0][2]],
+                ),
                 # Bottom face at point2
-                ([corners[4][0], corners[5][0]], [corners[4][1], corners[5][1]], [corners[4][2], corners[5][2]]),
-                ([corners[5][0], corners[7][0]], [corners[5][1], corners[7][1]], [corners[5][2], corners[7][2]]),
-                ([corners[7][0], corners[6][0]], [corners[7][1], corners[6][1]], [corners[7][2], corners[6][2]]),
-                ([corners[6][0], corners[4][0]], [corners[6][1], corners[4][1]], [corners[6][2], corners[4][2]]),
+                (
+                    [corners[4][0], corners[5][0]],
+                    [corners[4][1], corners[5][1]],
+                    [corners[4][2], corners[5][2]],
+                ),
+                (
+                    [corners[5][0], corners[7][0]],
+                    [corners[5][1], corners[7][1]],
+                    [corners[5][2], corners[7][2]],
+                ),
+                (
+                    [corners[7][0], corners[6][0]],
+                    [corners[7][1], corners[6][1]],
+                    [corners[7][2], corners[6][2]],
+                ),
+                (
+                    [corners[6][0], corners[4][0]],
+                    [corners[6][1], corners[4][1]],
+                    [corners[6][2], corners[4][2]],
+                ),
                 # Connecting edges (length edges)
-                ([corners[0][0], corners[4][0]], [corners[0][1], corners[4][1]], [corners[0][2], corners[4][2]]),
-                ([corners[1][0], corners[5][0]], [corners[1][1], corners[5][1]], [corners[1][2], corners[5][2]]),
-                ([corners[2][0], corners[6][0]], [corners[2][1], corners[6][1]], [corners[2][2], corners[6][2]]),
-                ([corners[3][0], corners[7][0]], [corners[3][1], corners[7][1]], [corners[3][2], corners[7][2]]),
+                (
+                    [corners[0][0], corners[4][0]],
+                    [corners[0][1], corners[4][1]],
+                    [corners[0][2], corners[4][2]],
+                ),
+                (
+                    [corners[1][0], corners[5][0]],
+                    [corners[1][1], corners[5][1]],
+                    [corners[1][2], corners[5][2]],
+                ),
+                (
+                    [corners[2][0], corners[6][0]],
+                    [corners[2][1], corners[6][1]],
+                    [corners[2][2], corners[6][2]],
+                ),
+                (
+                    [corners[3][0], corners[7][0]],
+                    [corners[3][1], corners[7][1]],
+                    [corners[3][2], corners[7][2]],
+                ),
             ]
 
             for edge in edges:
@@ -749,7 +814,9 @@ def create_building_3d_view(
     for story in stories:
         fig.add_trace(
             go.Scatter3d(
-                x=[None], y=[None], z=[None],
+                x=[None],
+                y=[None],
+                z=[None],
                 mode="markers",
                 marker=dict(size=12, color=story_colors[story], symbol="square"),
                 name=f"📍 {story}",
@@ -759,16 +826,28 @@ def create_building_3d_view(
 
     # Add status legend if results available
     if result_lookup:
-        fig.add_trace(go.Scatter3d(
-            x=[None], y=[None], z=[None],
-            mode="markers", marker=dict(size=12, color="rgba(76, 175, 80, 0.9)", symbol="square"),
-            name="✅ Passed", showlegend=True,
-        ))
-        fig.add_trace(go.Scatter3d(
-            x=[None], y=[None], z=[None],
-            mode="markers", marker=dict(size=12, color="rgba(244, 67, 54, 0.9)", symbol="square"),
-            name="❌ Failed", showlegend=True,
-        ))
+        fig.add_trace(
+            go.Scatter3d(
+                x=[None],
+                y=[None],
+                z=[None],
+                mode="markers",
+                marker=dict(size=12, color="rgba(76, 175, 80, 0.9)", symbol="square"),
+                name="✅ Passed",
+                showlegend=True,
+            )
+        )
+        fig.add_trace(
+            go.Scatter3d(
+                x=[None],
+                y=[None],
+                z=[None],
+                mode="markers",
+                marker=dict(size=12, color="rgba(244, 67, 54, 0.9)", symbol="square"),
+                name="❌ Failed",
+                showlegend=True,
+            )
+        )
 
     # Calculate aspect ratio (with safe division)
     x_range = max(x_max - x_min, 0.1)
@@ -889,7 +968,9 @@ with st.sidebar:
     )
 
 # Main content area
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design", "🏗️ 3D View", "📐 Export"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    ["📤 Upload", "📊 Preview", "🔧 Design", "🏗️ 3D View", "📐 Export"]
+)
 
 with tab1:
     section_header("Upload Files")
@@ -1006,9 +1087,7 @@ with tab3:
             status_text = st.empty()
 
             with loading_context("Designing beams..."):
-                results_df = design_all_beams(
-                    beams, forces, progress_bar, status_text
-                )
+                results_df = design_all_beams(beams, forces, progress_bar, status_text)
 
             st.session_state.mf_design_results = results_df
             progress_bar.empty()
@@ -1115,7 +1194,9 @@ with tab4:
                 help="Preset camera angles",
             )
         with col4:
-            show_edges = st.checkbox("Show Edges", value=True, help="Show beam edge lines")
+            show_edges = st.checkbox(
+                "Show Edges", value=True, help="Show beam edge lines"
+            )
 
         # Filter beams by selected story
         if selected_story == "All Stories":
@@ -1137,9 +1218,18 @@ with tab4:
             # Apply camera preset
             camera_settings = {
                 "Isometric": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},
-                "Front (X-Z)": {"eye": {"x": 0, "y": -2.5, "z": 0.5}, "up": {"x": 0, "y": 0, "z": 1}},
-                "Top (X-Y)": {"eye": {"x": 0, "y": 0, "z": 2.5}, "up": {"x": 0, "y": 1, "z": 0}},
-                "Side (Y-Z)": {"eye": {"x": 2.5, "y": 0, "z": 0.5}, "up": {"x": 0, "y": 0, "z": 1}},
+                "Front (X-Z)": {
+                    "eye": {"x": 0, "y": -2.5, "z": 0.5},
+                    "up": {"x": 0, "y": 0, "z": 1},
+                },
+                "Top (X-Y)": {
+                    "eye": {"x": 0, "y": 0, "z": 2.5},
+                    "up": {"x": 0, "y": 1, "z": 0},
+                },
+                "Side (Y-Z)": {
+                    "eye": {"x": 2.5, "y": 0, "z": 0.5},
+                    "up": {"x": 0, "y": 0, "z": 1},
+                },
             }
             camera = camera_settings.get(view_preset, camera_settings["Isometric"])
             fig.update_layout(scene_camera=camera)
@@ -1147,8 +1237,10 @@ with tab4:
             st.plotly_chart(fig, use_container_width=True)
 
             # Quick stats for filtered view
-            st.markdown(f"**Showing:** {len(filtered_beams)} beams" +
-                       (f" from {selected_story}" if selected_story != "All Stories" else ""))
+            st.markdown(
+                f"**Showing:** {len(filtered_beams)} beams"
+                + (f" from {selected_story}" if selected_story != "All Stories" else "")
+            )
 
         # Summary stats using BuildingStatistics
         st.markdown("---")
@@ -1157,6 +1249,7 @@ with tab4:
         # Import BuildingStatistics if available
         try:
             from structural_lib.models import BuildingStatistics
+
             stats = BuildingStatistics.from_beams(beams)
             col1, col2, col3, col4 = st.columns(4)
             col1.metric("📊 Total Beams", stats.total_beams)
@@ -1186,7 +1279,9 @@ with tab4:
             passed = len(results_df[results_df["_is_safe"] == True])
             failed = len(results_df[results_df["_is_safe"] == False])
             no_forces = len(results_df[results_df["_is_safe"].isna()])
-            success_rate = (passed / len(results_df) * 100) if len(results_df) > 0 else 0
+            success_rate = (
+                (passed / len(results_df) * 100) if len(results_df) > 0 else 0
+            )
             col1.metric("✅ Passed", passed)
             col2.metric("❌ Failed", failed)
             col3.metric("⚠️ No Forces", no_forces)
@@ -1292,7 +1387,9 @@ with tab4:
                         height=500,
                     )
 
-                    st.plotly_chart(detail_fig, use_container_width=True, key="beam_detail_3d")
+                    st.plotly_chart(
+                        detail_fig, use_container_width=True, key="beam_detail_3d"
+                    )
 
                     # Show detailing info
                     with st.expander("📐 Detailing Information"):
@@ -1365,7 +1462,9 @@ with tab5:
         with col3:
             # Summary metrics
             total = len(results_df)
-            passed = len(results_df[results_df.get("_is_safe", pd.Series([False])) == True])
+            passed = len(
+                results_df[results_df.get("_is_safe", pd.Series([False])) == True]
+            )
             st.metric("Beams Designed", f"{passed}/{total} ✅")
 
         st.divider()
@@ -1381,7 +1480,9 @@ with tab5:
             """)
         else:
             # Select beam for DXF export - use "ID" column from design_all_beams()
-            beam_ids = results_df["ID"].unique().tolist() if "ID" in results_df.columns else []
+            beam_ids = (
+                results_df["ID"].unique().tolist() if "ID" in results_df.columns else []
+            )
 
             if not beam_ids:
                 st.info("No beams available for DXF export.")
@@ -1393,7 +1494,11 @@ with tab5:
                 )
 
                 # Get beam data - match on beam.id, not beam.label
-                row = results_df[results_df["ID"] == selected_for_dxf].iloc[0] if selected_for_dxf else None
+                row = (
+                    results_df[results_df["ID"] == selected_for_dxf].iloc[0]
+                    if selected_for_dxf
+                    else None
+                )
                 beam_data = next((b for b in beams if b.id == selected_for_dxf), None)
 
                 if row is not None and beam_data:
@@ -1411,8 +1516,16 @@ with tab5:
                         with st.spinner("Generating DXF drawing..."):
                             try:
                                 # Get section dimensions - access via section property
-                                b_mm = int(beam_data.section.width_mm if beam_data.section else 300)
-                                D_mm = int(beam_data.section.depth_mm if beam_data.section else 500)
+                                b_mm = int(
+                                    beam_data.section.width_mm
+                                    if beam_data.section
+                                    else 300
+                                )
+                                D_mm = int(
+                                    beam_data.section.depth_mm
+                                    if beam_data.section
+                                    else 500
+                                )
                                 span_mm = int(beam_data.length_m * 1000)
                                 cover = int(st.session_state.mf_defaults["cover_mm"])
                                 fck = int(st.session_state.mf_defaults["fck_mpa"])
@@ -1420,7 +1533,11 @@ with tab5:
 
                                 # Get reinforcement from design result - column is "Ast_req"
                                 ast_val = row.get("Ast_req", 1000)
-                                ast_required = float(ast_val) if ast_val and str(ast_val) not in ("nan", "-") else 1000
+                                ast_required = (
+                                    float(ast_val)
+                                    if ast_val and str(ast_val) not in ("nan", "-")
+                                    else 1000
+                                )
 
                                 # Create detailing
                                 detailing = create_beam_detailing(
@@ -1449,7 +1566,9 @@ with tab5:
                                     help="Download AutoCAD DXF file",
                                 )
 
-                                st.success(f"✅ DXF generated for {selected_for_dxf} ({len(dxf_bytes) / 1024:.1f} KB)")
+                                st.success(
+                                    f"✅ DXF generated for {selected_for_dxf} ({len(dxf_bytes) / 1024:.1f} KB)"
+                                )
 
                                 # Show preview info
                                 with st.expander("📋 Drawing Information"):
@@ -1492,10 +1611,16 @@ with tab5:
             col1, col2, col3 = st.columns(3)
             with col1:
                 batch_columns = st.number_input(
-                    "Columns per row", min_value=1, max_value=4, value=2, key="batch_cols"
+                    "Columns per row",
+                    min_value=1,
+                    max_value=4,
+                    value=2,
+                    key="batch_cols",
                 )
             with col2:
-                batch_include_title = st.checkbox("Include Title Block", True, key="batch_title")
+                batch_include_title = st.checkbox(
+                    "Include Title Block", True, key="batch_title"
+                )
             with col3:
                 st.metric("Total Beams", len(results_df))
 
@@ -1510,15 +1635,33 @@ with tab5:
 
                         for _, row in results_df.iterrows():
                             beam_id = row.get("ID", "BEAM")
-                            beam_data = next((b for b in beams if b.id == beam_id), None)
+                            beam_data = next(
+                                (b for b in beams if b.id == beam_id), None
+                            )
 
                             if beam_data and row.get("_is_safe") is not None:
-                                b_mm = int(beam_data.section.width_mm if beam_data.section else 300)
-                                D_mm = int(beam_data.section.depth_mm if beam_data.section else 500)
-                                span_mm = int(beam_data.length_m * 1000) if beam_data.length_m else 3000
+                                b_mm = int(
+                                    beam_data.section.width_mm
+                                    if beam_data.section
+                                    else 300
+                                )
+                                D_mm = int(
+                                    beam_data.section.depth_mm
+                                    if beam_data.section
+                                    else 500
+                                )
+                                span_mm = (
+                                    int(beam_data.length_m * 1000)
+                                    if beam_data.length_m
+                                    else 3000
+                                )
 
                                 ast_val = row.get("Ast_req", 1000)
-                                ast_required = float(ast_val) if ast_val and str(ast_val) not in ("nan", "-") else 1000
+                                ast_required = (
+                                    float(ast_val)
+                                    if ast_val and str(ast_val) not in ("nan", "-")
+                                    else 1000
+                                )
 
                                 detailing = create_beam_detailing(
                                     beam_id=beam_id,
@@ -1537,7 +1680,9 @@ with tab5:
 
                         if detailings:
                             # Generate multi-beam DXF
-                            with tempfile.NamedTemporaryFile(suffix=".dxf", delete=False) as tmp:
+                            with tempfile.NamedTemporaryFile(
+                                suffix=".dxf", delete=False
+                            ) as tmp:
                                 output_path = generate_multi_beam_dxf(
                                     detailings=detailings,
                                     output_path=tmp.name,
@@ -1559,6 +1704,7 @@ with tab5:
 
                             # Calculate grouping stats
                             from structural_lib.dxf_export import group_similar_beams
+
                             groups = group_similar_beams(detailings)
                             n_types = len(groups)
 
@@ -1571,26 +1717,39 @@ with tab5:
                             )
 
                             if n_types < len(detailings):
-                                st.success(f"✅ Generated DXF: {len(detailings)} beams → {n_types} types ({len(dxf_bytes) / 1024:.1f} KB)")
-                                st.info(f"💡 Similar beams grouped: {len(detailings) - n_types} drawings saved!")
+                                st.success(
+                                    f"✅ Generated DXF: {len(detailings)} beams → {n_types} types ({len(dxf_bytes) / 1024:.1f} KB)"
+                                )
+                                st.info(
+                                    f"💡 Similar beams grouped: {len(detailings) - n_types} drawings saved!"
+                                )
                             else:
-                                st.success(f"✅ Generated DXF with {len(detailings)} beams ({len(dxf_bytes) / 1024:.1f} KB)")
+                                st.success(
+                                    f"✅ Generated DXF with {len(detailings)} beams ({len(dxf_bytes) / 1024:.1f} KB)"
+                                )
 
                             # Show beam schedule summary (grouped)
-                            with st.expander("📋 Beam Schedule Summary (Industry Format)"):
-                                from structural_lib.dxf_export import generate_beam_schedule_table
+                            with st.expander(
+                                "📋 Beam Schedule Summary (Industry Format)"
+                            ):
+                                from structural_lib.dxf_export import (
+                                    generate_beam_schedule_table,
+                                )
+
                                 schedule = generate_beam_schedule_table(detailings)
                                 schedule_df = pd.DataFrame(schedule)
                                 # Rename columns for display
-                                display_df = schedule_df.rename(columns={
-                                    "beam_ids": "Beam IDs",
-                                    "count": "Qty",
-                                    "size": "Size (mm)",
-                                    "span": "Span (mm)",
-                                    "top_steel": "Top Steel",
-                                    "bottom_steel": "Bottom Steel",
-                                    "stirrups": "Stirrups",
-                                })
+                                display_df = schedule_df.rename(
+                                    columns={
+                                        "beam_ids": "Beam IDs",
+                                        "count": "Qty",
+                                        "size": "Size (mm)",
+                                        "span": "Span (mm)",
+                                        "top_steel": "Top Steel",
+                                        "bottom_steel": "Bottom Steel",
+                                        "stirrups": "Stirrups",
+                                    }
+                                )
                                 # Drop internal key
                                 if "type_key" in display_df.columns:
                                     display_df = display_df.drop(columns=["type_key"])
