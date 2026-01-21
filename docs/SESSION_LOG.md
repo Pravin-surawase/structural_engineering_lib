@@ -4,6 +4,60 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-22 — Session 60: DXF Export Bug Fix & Batch Export
+
+**Focus:** Fix critical DXF export bug, add batch export, page numbering cleanup
+
+### Bug Fixed: "No beams available for DXF export"
+
+**Root Cause:** Column name mismatch in multi-format import page
+- `design_all_beams()` returns DataFrame with column `"ID"`
+- DXF export section was checking for `"Beam ID"` → always empty list
+
+**Additional Issues Found:**
+- Wrong attribute: `beam_data.section_width_mm` → `beam_data.section.width_mm`
+- Wrong column: `"Ast (mm²)"` → `"Ast_req"`
+- Wrong match: `b.label == selected` → `b.id == selected`
+
+### Work Completed
+
+| Task | Result |
+|------|--------|
+| DXF export bug | Fixed column/attribute mismatches in 06_multi_format_import.py |
+| Batch export | Added `generate_multi_beam_dxf()` integration with beam schedule |
+| Page numbering | Fixed duplicate 08 pages, renamed DXF to 09, removed duplicate AI assistant |
+| Tests validated | 1169 tests pass, 28 warnings |
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `536cbc1f` | fix(dxf): fix column name mismatch preventing DXF export |
+| `a2a8b07b` | fix(pages): fix duplicate page numbers and remove redundant AI assistant |
+
+### Page Structure (After Fix)
+
+```
+01_🏗️_beam_design.py
+02_💰_cost_optimizer.py
+03_✅_compliance.py
+04_📚_documentation.py
+05_3d_viewer_demo.py
+06_📥_multi_format_import.py
+07_📄_report_generator.py
+08_⚡_ai_assistant.py
+09_📐_dxf_export.py
+90_feedback.py
+```
+
+### Next Tasks
+
+1. Test DXF export end-to-end with real beam data
+2. Add beam schedule table to DXF (similar beams grouped)
+3. Continue Phase 3 work (PDF polish, user testing)
+
+---
+
 ## 2026-01-21 — Session 59 (Phase 3): DXF/PDF Export & Performance
 
 **Focus:** Enable export functionality, LOD performance optimization, tests
