@@ -9,7 +9,6 @@ import logging
 from typing import Any, Callable, TypeVar, Optional
 import streamlit as st
 
-
 logger = logging.getLogger(__name__)
 
 F = TypeVar("F", bound=Callable[..., Any])

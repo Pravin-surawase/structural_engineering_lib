@@ -340,10 +340,8 @@ divider()
 # ============================================================================
 
 st.markdown("---")
-st.caption(
-    """
+st.caption("""
 **Design System v1.0** | UI-001 Implementation | Agent 6 (Streamlit Specialist)
 Based on: RESEARCH-004, RESEARCH-005, RESEARCH-006
 WCAG 2.1 AA Compliant | Colorblind-Safe | Responsive Design
-"""
-)
+""")

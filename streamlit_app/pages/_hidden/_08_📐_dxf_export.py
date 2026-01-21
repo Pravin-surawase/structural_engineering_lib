@@ -294,8 +294,7 @@ if not HAS_DXF:
 
 # Check if ezdxf library is available
 if not EZDXF_AVAILABLE:
-    st.error(
-        """
+    st.error("""
     ⚠️ **ezdxf library not installed!**
 
     To enable DXF export, install ezdxf:
@@ -304,8 +303,7 @@ if not EZDXF_AVAILABLE:
     ```
 
     ezdxf is required for generating AutoCAD-compatible DXF files.
-    """
-    )
+    """)
     st.stop()
 
 # Export options section
@@ -343,16 +341,14 @@ st.markdown("---")
 beam_data = get_beam_design_from_session()
 
 if beam_data is None:
-    st.warning(
-        """
+    st.warning("""
     **No beam design found!**
 
     Please go to the **Beam Design** page and:
     1. Enter beam geometry and loading
     2. Click "Run Design Analysis"
     3. Return here to generate DXF drawing
-    """
-    )
+    """)
 
     if st.button("🔗 Go to Beam Design Page"):
         st.switch_page("pages/01_🏗️_beam_design.py")
@@ -517,8 +513,7 @@ with st.expander("📖 Reference: DXF Layer Information"):
     st.table(layer_df)
 
 with st.expander("🎨 Reference: CAD Color Codes"):
-    st.markdown(
-        """
+    st.markdown("""
     #### AutoCAD Color Index (ACI)
 
     | Code | Color   | Usage in Drawing |
@@ -530,12 +525,10 @@ with st.expander("🎨 Reference: CAD Color Codes"):
     | 6    | Magenta | Centerlines |
     | 7    | White   | Outlines & borders |
     | 8    | Gray    | Hidden lines |
-    """
-    )
+    """)
 
 with st.expander("💡 Tips: Working with DXF Files"):
-    st.markdown(
-        """
+    st.markdown("""
     #### Opening DXF Files
 
     **Free Software:**
@@ -563,12 +556,10 @@ with st.expander("💡 Tips: Working with DXF Files"):
     - Use as underlays in structural software
     - Convert to PDF for documentation
     - Overlay with architectural drawings
-    """
-    )
+    """)
 
 with st.expander("🔧 Advanced: Customization Options"):
-    st.markdown(
-        """
+    st.markdown("""
     #### Available Customizations (Future Enhancements)
 
     **Phase 2 Features:**
@@ -587,8 +578,7 @@ with st.expander("🔧 Advanced: Customization Options"):
     - [ ] Compare drawings (before/after)
     - [ ] Cloud storage integration
     - [ ] Email drawings directly
-    """
-    )
+    """)
 
 # Footer
 st.markdown("---")

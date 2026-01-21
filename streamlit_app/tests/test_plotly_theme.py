@@ -19,7 +19,6 @@ from streamlit_app.utils.plotly_theme import (
 )
 from streamlit_app.utils.design_system import COLORS
 
-
 # ============================================================================
 # TEST: THEME CONFIGURATION
 # ============================================================================

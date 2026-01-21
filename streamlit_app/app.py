@@ -42,12 +42,10 @@ page_header(
 # Welcome message
 st.markdown("## Welcome to the Professional Beam Design Tool")
 
-st.markdown(
-    """
+st.markdown("""
 This dashboard provides comprehensive RC beam design capabilities following **IS 456:2000** standards.
 Design with confidence using our intelligent analysis tools and instant cost optimization.
-"""
-)
+""")
 
 # Feature overview
 section_header("Key Features", icon="🎯")
@@ -88,8 +86,7 @@ with col2:
 st.markdown("---")
 section_header("Quick Start", icon="🚀")
 
-st.markdown(
-    """
+st.markdown("""
 1. **Navigate** to the **Beam Design** page from the sidebar
 2. **Enter** your beam parameters (span, dimensions, materials, loading)
 3. **Click** "Analyze Design" to get instant results
@@ -97,8 +94,7 @@ st.markdown(
 5. **Export** drawings, BBS, or reports as needed
 
 💡 **Tip:** Use the example designs in each section to get started quickly!
-"""
-)
+""")
 
 # Status indicators
 st.markdown("---")
@@ -133,8 +129,7 @@ st.markdown(
 # Sidebar
 with st.sidebar:
     st.markdown("### 📋 Navigation")
-    st.info(
-        """
+    st.info("""
     **Core Features:**
 
     - **🏗️ Beam Design:** Main design workflow
@@ -143,27 +138,23 @@ with st.sidebar:
     - **📚 Documentation:** Help & examples
 
     *More features coming soon!*
-    """
-    )
+    """)
 
     # Theme toggle
     render_theme_toggle()
 
     st.markdown("---")
     st.markdown("### 🎨 Theme")
-    st.markdown(
-        """
+    st.markdown("""
     This dashboard uses the **IS 456 Professional Theme**:
     - **Navy Blue** (#003366) - Primary text
     - **Orange** (#FF6600) - Highlights
     - **Colorblind-safe** palette
-    """
-    )
+    """)
 
     st.markdown("---")
     st.markdown("### ℹ️ About")
-    st.markdown(
-        """
+    st.markdown("""
     **Version:** 0.19.0
     **Library:** structural-lib-is456
     **Code:** IS 456:2000
@@ -172,15 +163,12 @@ with st.sidebar:
     [🐛 Report Bug](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=bug_report.yml)
     [✨ Request Feature](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=feature_request.yml)
     [❓ Ask Question](https://github.com/Pravin-surawase/structural_engineering_lib/issues/new?template=support.yml)
-    """
-    )
+    """)
 
     st.markdown("---")
     st.markdown("### 💬 Feedback")
-    st.markdown(
-        """
+    st.markdown("""
     Help us improve! Your feedback shapes future versions.
 
     [![PyPI Stats](https://img.shields.io/pypi/dm/structural-lib-is456)](https://pypistats.org/packages/structural-lib-is456)
-    """
-    )
+    """)

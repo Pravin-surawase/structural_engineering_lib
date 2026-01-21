@@ -333,23 +333,19 @@ if demo_mode == "🎯 Single Demo":
                 steel_pct = (flexure.get("Ast_prov", 0) / section_area) * 100
             else:
                 steel_pct = 0.0
-            st.markdown(
-                f"""
+            st.markdown(f"""
             - **Moment Capacity**: {flexure.get('Mu_capacity', 0)/1e6:.1f} kN·m
             - **xu/d Ratio**: {flexure.get('xu_by_d', 0):.3f} {'✅' if flexure.get('xu_by_d', 0) <= 0.46 else '❌'}
             - **Steel Percentage**: {steel_pct:.2f}%
-            """
-            )
+            """)
 
         with tab2:
-            st.markdown(
-                f"""
+            st.markdown(f"""
             - **Shear Stress (τv)**: {shear.get('tau_v', 0):.2f} N/mm²
             - **Concrete Capacity (τc)**: {shear.get('tau_c', 0):.2f} N/mm²
             - **Stirrup Legs**: {shear.get('legs', 2)}
             - **Stirrup Diameter**: {shear.get('diameter_mm', 8)} mm
-            """
-            )
+            """)
 
         with tab3:
             st.success("✅ All IS 456 compliance checks passed")
@@ -459,23 +455,19 @@ elif demo_mode == "🔀 Compare Demos":
             col1, col2 = st.columns(2)
 
             with col1:
-                st.success(
-                    f"""
+                st.success(f"""
                 **Most Economical:** {selected_demos[cheapest_idx]}
                 - Cost: ₹{min_cost:.2f}/m
                 - Savings: {savings_pct:.1f}% vs most expensive
-                """
-                )
+                """)
 
             with col2:
-                st.info(
-                    f"""
+                st.info(f"""
                 **Premium Design:** {selected_demos[expensive_idx]}
                 - Cost: ₹{max_cost:.2f}/m
                 - Higher grade materials
                 - Increased capacity
-                """
-                )
+                """)
 
 
 # =============================================================================
@@ -485,12 +477,10 @@ elif demo_mode == "🔀 Compare Demos":
 else:  # Auto-Tour
     section_header("🎥 Automated Demo Tour")
 
-    st.write(
-        """
+    st.write("""
     Sit back and watch as we automatically demonstrate all features of the app.
     The tour will run through each demo scenario with a brief pause between designs.
-    """
-    )
+    """)
 
     tour_speed = st.select_slider(
         "Tour Speed",
@@ -556,14 +546,12 @@ else:  # Auto-Tour
 
 # Footer
 st.divider()
-st.markdown(
-    """
+st.markdown("""
 ### 🎯 What's Next?
 - **Try the Calculator**: Navigate to "01_🏗️_beam_design" to input your own parameters
 - **Export Results**: Use "📋_bbs_generator" and "📐_dxf_export" for detailed outputs
 - **Learn More**: Visit "📚_learning_center" for tutorials and IS 456 reference
-"""
-)
+""")
 
 st.caption(
     "💡 **Pro Tip:** Use demo mode to showcase capabilities to clients or team members!"

@@ -287,7 +287,9 @@ class BeamDesignReportGenerator:
         story = []
 
         # Cover page with project summary
-        story.extend(self._create_batch_cover_page(project_info, design_data_list, logo_path))
+        story.extend(
+            self._create_batch_cover_page(project_info, design_data_list, logo_path)
+        )
         story.append(PageBreak())
 
         # Table of Contents
@@ -303,10 +305,12 @@ class BeamDesignReportGenerator:
             beam_id = design_data.get("beam_id", f"Beam_{idx + 1}")
 
             # Section header with bookmark
-            story.append(Paragraph(
-                f'<a name="beam_{beam_id}"/>BEAM: {beam_id}',
-                self.styles["SectionHeading"]
-            ))
+            story.append(
+                Paragraph(
+                    f'<a name="beam_{beam_id}"/>BEAM: {beam_id}',
+                    self.styles["SectionHeading"],
+                )
+            )
             story.append(Spacer(1, 12))
 
             # Input summary for this beam
@@ -373,7 +377,7 @@ class BeamDesignReportGenerator:
         # Title
         title = Paragraph(
             "STRUCTURAL DESIGN REPORT<br/>RC Beam Design - Batch Report",
-            self.styles["CustomTitle"]
+            self.styles["CustomTitle"],
         )
         elements.append(title)
         elements.append(Spacer(1, 30))
@@ -390,16 +394,18 @@ class BeamDesignReportGenerator:
 
         project_table = Table(project_data, colWidths=[60 * mm, 100 * mm])
         project_table.setStyle(
-            TableStyle([
-                ("BACKGROUND", (0, 0), (0, -1), colors.HexColor("#ecf0f1")),
-                ("TEXTCOLOR", (0, 0), (-1, -1), colors.HexColor("#2c3e50")),
-                ("ALIGN", (0, 0), (0, -1), "RIGHT"),
-                ("ALIGN", (1, 0), (1, -1), "LEFT"),
-                ("FONTNAME", (0, 0), (-1, -1), "Helvetica"),
-                ("FONTSIZE", (0, 0), (-1, -1), 11),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
-                ("GRID", (0, 0), (-1, -1), 1, colors.HexColor("#bdc3c7")),
-            ])
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (0, -1), colors.HexColor("#ecf0f1")),
+                    ("TEXTCOLOR", (0, 0), (-1, -1), colors.HexColor("#2c3e50")),
+                    ("ALIGN", (0, 0), (0, -1), "RIGHT"),
+                    ("ALIGN", (1, 0), (1, -1), "LEFT"),
+                    ("FONTNAME", (0, 0), (-1, -1), "Helvetica"),
+                    ("FONTSIZE", (0, 0), (-1, -1), 11),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
+                    ("GRID", (0, 0), (-1, -1), 1, colors.HexColor("#bdc3c7")),
+                ]
+            )
         )
         elements.append(project_table)
         elements.append(Spacer(1, 30))
@@ -416,8 +422,14 @@ class BeamDesignReportGenerator:
         summary_data = [
             ["Metric", "Value"],
             ["Total Beams Designed", str(total_beams)],
-            ["Safe Designs", f"{safe_beams} ({100*safe_beams/max(total_beams,1):.0f}%)"],
-            ["Requires Review", f"{unsafe_beams} ({100*unsafe_beams/max(total_beams,1):.0f}%)"],
+            [
+                "Safe Designs",
+                f"{safe_beams} ({100*safe_beams/max(total_beams,1):.0f}%)",
+            ],
+            [
+                "Requires Review",
+                f"{unsafe_beams} ({100*unsafe_beams/max(total_beams,1):.0f}%)",
+            ],
         ]
 
         summary_table = self._create_styled_table(summary_data)
@@ -451,28 +463,37 @@ class BeamDesignReportGenerator:
             is_safe = design_data.get("is_safe", False)
             status = "✓ SAFE" if is_safe else "⚠ REVIEW"
 
-            toc_data.append([
-                str(idx + 1),
-                beam_id,
-                str(story),
-                status,
-            ])
+            toc_data.append(
+                [
+                    str(idx + 1),
+                    beam_id,
+                    str(story),
+                    status,
+                ]
+            )
 
         toc_table = Table(toc_data, colWidths=[15 * mm, 50 * mm, 50 * mm, 40 * mm])
         toc_table.setStyle(
-            TableStyle([
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498db")),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
-                ("FONTSIZE", (0, 0), (-1, -1), 10),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-                ("TOPPADDING", (0, 0), (-1, 0), 12),
-                ("BOTTOMPADDING", (0, 1), (-1, -1), 8),
-                ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#bdc3c7")),
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f5f5f5")]),
-            ])
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#3498db")),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
+                    ("FONTSIZE", (0, 0), (-1, -1), 10),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                    ("TOPPADDING", (0, 0), (-1, 0), 12),
+                    ("BOTTOMPADDING", (0, 1), (-1, -1), 8),
+                    ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#bdc3c7")),
+                    (
+                        "ROWBACKGROUNDS",
+                        (0, 1),
+                        (-1, -1),
+                        [colors.white, colors.HexColor("#f5f5f5")],
+                    ),
+                ]
+            )
         )
         elements.append(toc_table)
 
@@ -485,15 +506,19 @@ class BeamDesignReportGenerator:
         elements.append(Paragraph("EXECUTIVE SUMMARY", self.styles["SectionHeading"]))
         elements.append(Spacer(1, 12))
 
-        elements.append(Paragraph(
-            "This section provides a consolidated view of all beam design results. "
-            "Detailed calculations for each beam follow in subsequent sections.",
-            self.styles["Normal"]
-        ))
+        elements.append(
+            Paragraph(
+                "This section provides a consolidated view of all beam design results. "
+                "Detailed calculations for each beam follow in subsequent sections.",
+                self.styles["Normal"],
+            )
+        )
         elements.append(Spacer(1, 12))
 
         # Summary table header
-        summary_data = [["Beam ID", "b×D (mm)", "Mu (kN·m)", "Ast Req.", "Utilization", "Status"]]
+        summary_data = [
+            ["Beam ID", "b×D (mm)", "Mu (kN·m)", "Ast Req.", "Utilization", "Status"]
+        ]
 
         for design_data in design_data_list:
             beam_id = design_data.get("beam_id", "N/A")
@@ -507,50 +532,63 @@ class BeamDesignReportGenerator:
             utilization = flexure.get("utilization", 0)
             is_safe = design_data.get("is_safe", False)
 
-            summary_data.append([
-                str(beam_id),
-                f"{b:.0f}×{D:.0f}",
-                f"{mu:.1f}",
-                f"{ast:.0f} mm²",
-                f"{utilization*100:.0f}%",
-                "SAFE" if is_safe else "REVIEW",
-            ])
+            summary_data.append(
+                [
+                    str(beam_id),
+                    f"{b:.0f}×{D:.0f}",
+                    f"{mu:.1f}",
+                    f"{ast:.0f} mm²",
+                    f"{utilization*100:.0f}%",
+                    "SAFE" if is_safe else "REVIEW",
+                ]
+            )
 
         summary_table = Table(
             summary_data,
-            colWidths=[30 * mm, 30 * mm, 25 * mm, 30 * mm, 25 * mm, 25 * mm]
+            colWidths=[30 * mm, 30 * mm, 25 * mm, 30 * mm, 25 * mm, 25 * mm],
         )
         summary_table.setStyle(
-            TableStyle([
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2c3e50")),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
-                ("FONTSIZE", (0, 0), (-1, -1), 9),
-                ("BOTTOMPADDING", (0, 0), (-1, 0), 10),
-                ("TOPPADDING", (0, 0), (-1, 0), 10),
-                ("BOTTOMPADDING", (0, 1), (-1, -1), 6),
-                ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#bdc3c7")),
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f8f9fa")]),
-            ])
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2c3e50")),
+                    ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                    ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                    ("FONTNAME", (0, 1), (-1, -1), "Helvetica"),
+                    ("FONTSIZE", (0, 0), (-1, -1), 9),
+                    ("BOTTOMPADDING", (0, 0), (-1, 0), 10),
+                    ("TOPPADDING", (0, 0), (-1, 0), 10),
+                    ("BOTTOMPADDING", (0, 1), (-1, -1), 6),
+                    ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#bdc3c7")),
+                    (
+                        "ROWBACKGROUNDS",
+                        (0, 1),
+                        (-1, -1),
+                        [colors.white, colors.HexColor("#f8f9fa")],
+                    ),
+                ]
+            )
         )
         elements.append(summary_table)
 
         return elements
 
-    def _create_batch_compliance_summary(self, design_data_list: List[Dict[str, Any]]) -> List:
+    def _create_batch_compliance_summary(
+        self, design_data_list: List[Dict[str, Any]]
+    ) -> List:
         """Create compliance summary for all beams."""
         elements = []
 
         elements.append(Paragraph("COMPLIANCE SUMMARY", self.styles["SectionHeading"]))
         elements.append(Spacer(1, 12))
 
-        elements.append(Paragraph(
-            "This section summarizes code compliance status for all designed members. "
-            "Each beam has been checked against IS 456:2000 requirements.",
-            self.styles["Normal"]
-        ))
+        elements.append(
+            Paragraph(
+                "This section summarizes code compliance status for all designed members. "
+                "Each beam has been checked against IS 456:2000 requirements.",
+                self.styles["Normal"],
+            )
+        )
         elements.append(Spacer(1, 12))
 
         # Compliance checks
@@ -583,14 +621,14 @@ class BeamDesignReportGenerator:
         canvas_obj.setFont("Helvetica", 9)
         canvas_obj.setFillColorRGB(0.5, 0.5, 0.5)
         canvas_obj.drawString(
-            20 * mm, self.page_height - 15 * mm,
-            "Structural Design Report - RC Beam Batch Report"
+            20 * mm,
+            self.page_height - 15 * mm,
+            "Structural Design Report - RC Beam Batch Report",
         )
 
         # Footer
         canvas_obj.drawString(
-            20 * mm, 15 * mm,
-            f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+            20 * mm, 15 * mm, f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         )
         canvas_obj.drawRightString(
             self.page_width - 20 * mm, 15 * mm, f"Page {doc.page}"

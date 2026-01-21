@@ -448,8 +448,7 @@ def render_page():
 
     # Help section
     with st.expander("ℹ️ How to Use"):
-        st.markdown(
-            """
+        st.markdown("""
         **Steps to generate a PDF report:**
 
         1. **Complete a beam design** on the Beam Design page first
@@ -472,13 +471,11 @@ def render_page():
         - Report is generated in professional format suitable for submission
         - All calculations include IS 456 clause references
         - PDF is print-ready (A4 size)
-        """
-        )
+        """)
 
     # Technical info
     with st.expander("🔧 Technical Information"):
-        st.markdown(
-            """
+        st.markdown("""
         **Report Standards:**
         - Design Code: IS 456:2000
         - Page Size: A4 (210 × 297 mm)
@@ -495,8 +492,7 @@ def render_page():
         - PDF/A compliant
         - Vector graphics (scalable)
         - Print-ready quality
-        """
-        )
+        """)
 
 
 if __name__ == "__main__":

@@ -11,7 +11,6 @@ import streamlit as st
 from typing import Literal
 from utils.design_system import generate_css_variables, DARK_COLORS, COLORS
 
-
 ThemeMode = Literal["light", "dark", "auto"]
 
 

@@ -55,30 +55,34 @@ def _handle_design_beam(args: dict) -> str:
     from components.ai_workspace import design_beam_row
 
     # Build row from arguments
-    row = pd.Series({
-        "beam_id": args.get("beam_id", "Custom"),
-        "b_mm": args.get("b_mm", 300),
-        "D_mm": args.get("D_mm", 500),
-        "span_mm": args.get("span_mm", 5000),
-        "mu_knm": args.get("mu_knm", 100),
-        "vu_kn": args.get("vu_kn", 50),
-        "fck": args.get("fck", 25),
-        "fy": args.get("fy", 500),
-        "cover_mm": 40,
-    })
+    row = pd.Series(
+        {
+            "beam_id": args.get("beam_id", "Custom"),
+            "b_mm": args.get("b_mm", 300),
+            "D_mm": args.get("D_mm", 500),
+            "span_mm": args.get("span_mm", 5000),
+            "mu_knm": args.get("mu_knm", 100),
+            "vu_kn": args.get("vu_kn", 50),
+            "fck": args.get("fck", 25),
+            "fy": args.get("fy", 500),
+            "cover_mm": 40,
+        }
+    )
 
     result = design_beam_row(row)
 
-    return json.dumps({
-        "beam_id": row["beam_id"],
-        "is_safe": result["is_safe"],
-        "ast_required_mm2": round(result["ast_req"], 0),
-        "utilization_pct": round(result["utilization"] * 100, 1),
-        "status": result["status"],
-        "section": f"{row['b_mm']}x{row['D_mm']} mm",
-        "moment_knm": row["mu_knm"],
-        "shear_kn": row["vu_kn"],
-    })
+    return json.dumps(
+        {
+            "beam_id": row["beam_id"],
+            "is_safe": result["is_safe"],
+            "ast_required_mm2": round(result["ast_req"], 0),
+            "utilization_pct": round(result["utilization"] * 100, 1),
+            "status": result["status"],
+            "section": f"{row['b_mm']}x{row['D_mm']} mm",
+            "moment_knm": row["mu_knm"],
+            "shear_kn": row["vu_kn"],
+        }
+    )
 
 
 def _handle_design_all(args: dict) -> str:
@@ -101,14 +105,16 @@ def _handle_design_all(args: dict) -> str:
     # Get failed beam IDs
     failed_beams = results[~results["is_safe"]]["beam_id"].tolist()[:5]
 
-    return json.dumps({
-        "total_beams": total,
-        "passed": passed,
-        "failed": failed,
-        "pass_rate_pct": round(passed / total * 100, 1) if total > 0 else 0,
-        "avg_utilization_pct": round(avg_util, 1),
-        "failed_beam_ids": failed_beams,
-    })
+    return json.dumps(
+        {
+            "total_beams": total,
+            "passed": passed,
+            "failed": failed,
+            "pass_rate_pct": round(passed / total * 100, 1) if total > 0 else 0,
+            "avg_utilization_pct": round(avg_util, 1),
+            "failed_beam_ids": failed_beams,
+        }
+    )
 
 
 def _handle_get_beam_details(args: dict) -> str:
@@ -123,23 +129,27 @@ def _handle_get_beam_details(args: dict) -> str:
     mask = results_df["beam_id"].str.upper() == beam_id.upper()
     if not mask.any():
         available = results_df["beam_id"].tolist()[:10]
-        return json.dumps({"error": f"Beam '{beam_id}' not found", "available": available})
+        return json.dumps(
+            {"error": f"Beam '{beam_id}' not found", "available": available}
+        )
 
     row = results_df[mask].iloc[0]
 
-    return json.dumps({
-        "beam_id": row["beam_id"],
-        "story": row.get("story", "Unknown"),
-        "section_mm": f"{row['b_mm']}x{row['D_mm']}",
-        "span_mm": row["span_mm"],
-        "moment_knm": row["mu_knm"],
-        "shear_kn": row["vu_kn"],
-        "ast_required_mm2": round(row["ast_req"], 0),
-        "utilization_pct": round(row["utilization"] * 100, 1),
-        "is_safe": row["is_safe"],
-        "status": row["status"],
-        "materials": f"M{row['fck']}/Fe{row['fy']}",
-    })
+    return json.dumps(
+        {
+            "beam_id": row["beam_id"],
+            "story": row.get("story", "Unknown"),
+            "section_mm": f"{row['b_mm']}x{row['D_mm']}",
+            "span_mm": row["span_mm"],
+            "moment_knm": row["mu_knm"],
+            "shear_kn": row["vu_kn"],
+            "ast_required_mm2": round(row["ast_req"], 0),
+            "utilization_pct": round(row["utilization"] * 100, 1),
+            "is_safe": row["is_safe"],
+            "status": row["status"],
+            "materials": f"M{row['fck']}/Fe{row['fy']}",
+        }
+    )
 
 
 def _handle_select_beam(args: dict) -> str:
@@ -160,19 +170,23 @@ def _handle_select_beam(args: dict) -> str:
 
     if not mask.any():
         available = results_df["beam_id"].tolist()[:10]
-        return json.dumps({"error": f"Beam '{beam_id}' not found", "available": available})
+        return json.dumps(
+            {"error": f"Beam '{beam_id}' not found", "available": available}
+        )
 
     actual_id = results_df[mask].iloc[0]["beam_id"]
     st.session_state.ws_selected_beam = actual_id
     st.session_state.ws_state = WorkspaceState.VIEW_3D
 
     row = results_df[mask].iloc[0]
-    return json.dumps({
-        "selected": actual_id,
-        "section": f"{row['b_mm']}x{row['D_mm']} mm",
-        "status": row["status"],
-        "view": "3D with reinforcement",
-    })
+    return json.dumps(
+        {
+            "selected": actual_id,
+            "section": f"{row['b_mm']}x{row['D_mm']} mm",
+            "status": row["status"],
+            "view": "3D with reinforcement",
+        }
+    )
 
 
 def _handle_show_visualization(args: dict) -> str:
@@ -192,10 +206,12 @@ def _handle_show_visualization(args: dict) -> str:
     new_state = view_map.get(view_type, WorkspaceState.BUILDING_3D)
     st.session_state.ws_state = new_state
 
-    return json.dumps({
-        "view": view_type,
-        "status": "displayed",
-    })
+    return json.dumps(
+        {
+            "view": view_type,
+            "status": "displayed",
+        }
+    )
 
 
 def _handle_suggest_optimization(args: dict) -> str:
@@ -219,39 +235,49 @@ def _handle_suggest_optimization(args: dict) -> str:
 
     # Check if over-designed
     if util < 0.5:
-        suggestions.append({
-            "type": "reduce_section",
-            "message": f"Section is over-designed (util={util*100:.0f}%). Consider reducing depth by 50mm.",
-            "savings_pct": 10,
-        })
+        suggestions.append(
+            {
+                "type": "reduce_section",
+                "message": f"Section is over-designed (util={util*100:.0f}%). Consider reducing depth by 50mm.",
+                "savings_pct": 10,
+            }
+        )
     elif util < 0.7:
-        suggestions.append({
-            "type": "reduce_steel",
-            "message": f"Steel could be reduced (util={util*100:.0f}%). Try smaller bar diameters.",
-            "savings_pct": 5,
-        })
+        suggestions.append(
+            {
+                "type": "reduce_steel",
+                "message": f"Steel could be reduced (util={util*100:.0f}%). Try smaller bar diameters.",
+                "savings_pct": 5,
+            }
+        )
 
     # Check if under-designed
     if util > 1.0:
-        suggestions.append({
-            "type": "increase_section",
-            "message": f"Section fails (util={util*100:.0f}%). Increase depth by 50-100mm.",
-            "savings_pct": 0,
-        })
+        suggestions.append(
+            {
+                "type": "increase_section",
+                "message": f"Section fails (util={util*100:.0f}%). Increase depth by 50-100mm.",
+                "savings_pct": 0,
+            }
+        )
 
     # General suggestions
-    suggestions.append({
-        "type": "stirrup_optimization",
-        "message": "Consider variable stirrup spacing: closer at supports, wider at mid-span.",
-        "savings_pct": 3,
-    })
+    suggestions.append(
+        {
+            "type": "stirrup_optimization",
+            "message": "Consider variable stirrup spacing: closer at supports, wider at mid-span.",
+            "savings_pct": 3,
+        }
+    )
 
-    return json.dumps({
-        "beam_id": beam_id,
-        "current_utilization_pct": round(util * 100, 1),
-        "target": target,
-        "suggestions": suggestions,
-    })
+    return json.dumps(
+        {
+            "beam_id": beam_id,
+            "current_utilization_pct": round(util * 100, 1),
+            "target": target,
+            "suggestions": suggestions,
+        }
+    )
 
 
 def _handle_export_results(args: dict) -> str:
@@ -271,12 +297,14 @@ def _handle_export_results(args: dict) -> str:
         "df": results_df,
     }
 
-    return json.dumps({
-        "format": export_format,
-        "filename": filename,
-        "rows": len(results_df),
-        "status": "ready_for_download",
-    })
+    return json.dumps(
+        {
+            "format": export_format,
+            "filename": filename,
+            "rows": len(results_df),
+            "status": "ready_for_download",
+        }
+    )
 
 
 def _handle_filter_3d(args: dict) -> str:
@@ -311,22 +339,26 @@ def _handle_filter_3d(args: dict) -> str:
             st.session_state.ws_show_rebar = show_rebar
             filtered_count = len(df[df["story"] == matched_floor])
         else:
-            return json.dumps({
-                "error": f"Floor '{floor}' not found",
-                "available_floors": floors,
-            })
+            return json.dumps(
+                {
+                    "error": f"Floor '{floor}' not found",
+                    "available_floors": floors,
+                }
+            )
     else:
         st.session_state.ws_filter_floor = None
         filtered_count = len(df)
 
     st.session_state.ws_state = WorkspaceState.BUILDING_3D
 
-    return json.dumps({
-        "floor": floor if floor.lower() != "all" else "all",
-        "beams_shown": filtered_count,
-        "rebar_visible": show_rebar,
-        "view": "3D building",
-    })
+    return json.dumps(
+        {
+            "floor": floor if floor.lower() != "all" else "all",
+            "beams_shown": filtered_count,
+            "rebar_visible": show_rebar,
+            "view": "3D building",
+        }
+    )
 
 
 def _handle_get_critical_beams(args: dict) -> str:
@@ -360,21 +392,25 @@ def _handle_get_critical_beams(args: dict) -> str:
 
     beam_list = []
     for _, row in top_beams.iterrows():
-        beam_list.append({
-            "beam_id": row["beam_id"],
-            "story": row.get("story", "Unknown"),
-            "moment_knm": round(row["mu_knm"], 1),
-            "shear_kn": round(row["vu_kn"], 1),
-            "utilization_pct": round(row["utilization"] * 100, 1),
-            "status": row["status"],
-        })
+        beam_list.append(
+            {
+                "beam_id": row["beam_id"],
+                "story": row.get("story", "Unknown"),
+                "moment_knm": round(row["mu_knm"], 1),
+                "shear_kn": round(row["vu_kn"], 1),
+                "utilization_pct": round(row["utilization"] * 100, 1),
+                "status": row["status"],
+            }
+        )
 
-    return json.dumps({
-        "criterion": criterion,
-        "count": len(beam_list),
-        "floor_filter": floor,
-        "beams": beam_list,
-    })
+    return json.dumps(
+        {
+            "criterion": criterion,
+            "count": len(beam_list),
+            "floor_filter": floor,
+            "beams": beam_list,
+        }
+    )
 
 
 def _handle_start_optimization(args: dict) -> str:
@@ -424,30 +460,32 @@ def _handle_start_optimization(args: dict) -> str:
     optimized_weight = optimized_ast * 1e-6 * span_m * steel_density
     cost_savings = (current_weight - optimized_weight) * steel_rate
 
-    return json.dumps({
-        "beam_id": row["beam_id"],
-        "story": row.get("story", "Unknown"),
-        "target": target,
-        "current": {
-            "ast_mm2": round(current_ast, 0),
-            "utilization_pct": round(current_util * 100, 1),
-            "steel_kg": round(current_weight, 1),
-        },
-        "optimized": {
-            "ast_mm2": round(optimized_ast, 0),
-            "utilization_pct": round(current_util * 0.95 * 100, 1),
-            "steel_kg": round(optimized_weight, 1),
-        },
-        "savings": {
-            "steel_pct": round(steel_savings, 1),
-            "cost_inr": round(cost_savings, 0),
-        },
-        "recommendations": [
-            f"Reduce bar diameter from current to next lower size",
-            "Use variable stirrup spacing (tighter at supports)",
-            f"Current section {row['b_mm']}x{row['D_mm']}mm is adequate",
-        ],
-    })
+    return json.dumps(
+        {
+            "beam_id": row["beam_id"],
+            "story": row.get("story", "Unknown"),
+            "target": target,
+            "current": {
+                "ast_mm2": round(current_ast, 0),
+                "utilization_pct": round(current_util * 100, 1),
+                "steel_kg": round(current_weight, 1),
+            },
+            "optimized": {
+                "ast_mm2": round(optimized_ast, 0),
+                "utilization_pct": round(current_util * 0.95 * 100, 1),
+                "steel_kg": round(optimized_weight, 1),
+            },
+            "savings": {
+                "steel_pct": round(steel_savings, 1),
+                "cost_inr": round(cost_savings, 0),
+            },
+            "recommendations": [
+                f"Reduce bar diameter from current to next lower size",
+                "Use variable stirrup spacing (tighter at supports)",
+                f"Current section {row['b_mm']}x{row['D_mm']}mm is adequate",
+            ],
+        }
+    )
 
 
 def _handle_export_dxf(args: dict) -> str:
@@ -537,28 +575,32 @@ def _handle_export_dxf(args: dict) -> str:
         beam_ids = selected_df["beam_id"].tolist()
         st.session_state.ai_export_dxf = {
             "bytes": dxf_bytes,
-            "filename": f"beam_design_{len(beam_ids)}_beams.dxf"
-            if len(beam_ids) > 1
-            else f"beam_{beam_ids[0]}.dxf",
+            "filename": (
+                f"beam_design_{len(beam_ids)}_beams.dxf"
+                if len(beam_ids) > 1
+                else f"beam_{beam_ids[0]}.dxf"
+            ),
             "beam_count": len(detailing_list),
         }
 
-        return json.dumps({
-            "status": "ready_for_download",
-            "beam_count": len(detailing_list),
-            "filename": st.session_state.ai_export_dxf["filename"],
-            "includes": {
-                "cross_sections": True,
-                "reinforcement_layout": True,
-                "schedule_table": include_schedule,
-                "title_block": include_title_block,
-            },
-        })
+        return json.dumps(
+            {
+                "status": "ready_for_download",
+                "beam_count": len(detailing_list),
+                "filename": st.session_state.ai_export_dxf["filename"],
+                "includes": {
+                    "cross_sections": True,
+                    "reinforcement_layout": True,
+                    "schedule_table": include_schedule,
+                    "title_block": include_title_block,
+                },
+            }
+        )
 
     except ImportError:
-        return json.dumps({
-            "error": "DXF export not available. Install ezdxf: pip install ezdxf"
-        })
+        return json.dumps(
+            {"error": "DXF export not available. Install ezdxf: pip install ezdxf"}
+        )
     except Exception as e:
         return json.dumps({"error": f"DXF generation failed: {str(e)}"})
 
@@ -651,24 +693,27 @@ def _handle_generate_report(args: dict) -> str:
             "content": report_content,
             "format": report_format,
             "beam_count": len(beams_for_report),
-            "filename": f"beam_report_{len(beam_ids)}.{report_format}"
-            if len(beam_ids) > 1
-            else f"beam_{beam_ids[0]}_report.{report_format}",
+            "filename": (
+                f"beam_report_{len(beam_ids)}.{report_format}"
+                if len(beam_ids) > 1
+                else f"beam_{beam_ids[0]}_report.{report_format}"
+            ),
         }
 
-        return json.dumps({
-            "status": "ready",
-            "format": report_format,
-            "beam_count": len(beams_for_report),
-            "filename": st.session_state.ai_report["filename"],
-            "includes": {
-                "design_checks": True,
-                "reinforcement_details": True,
-                "is456_compliance": True,
-                "bar_bending_schedule": include_bbs,
-            },
-        })
+        return json.dumps(
+            {
+                "status": "ready",
+                "format": report_format,
+                "beam_count": len(beams_for_report),
+                "filename": st.session_state.ai_report["filename"],
+                "includes": {
+                    "design_checks": True,
+                    "reinforcement_details": True,
+                    "is456_compliance": True,
+                    "bar_bending_schedule": include_bbs,
+                },
+            }
+        )
 
     except Exception as e:
         return json.dumps({"error": f"Report generation failed: {str(e)}"})
-

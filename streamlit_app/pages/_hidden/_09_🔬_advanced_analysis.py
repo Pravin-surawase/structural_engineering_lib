@@ -259,12 +259,10 @@ st.divider()
 if analysis_type == "📊 Parametric Study":
     section_header("Parametric Study")
 
-    st.write(
-        """
+    st.write("""
     Study how design changes as you vary a parameter across a range.
     Useful for understanding design behavior and finding optimal values.
-    """
-    )
+    """)
 
     # Base design parameters
     col1, col2 = st.columns(2)
@@ -485,12 +483,10 @@ if analysis_type == "📊 Parametric Study":
 elif analysis_type == "🎯 Sensitivity Analysis":
     section_header("Sensitivity Analysis")
 
-    st.write(
-        """
+    st.write("""
     Determine which parameters have the most impact on design.
     Shows % change in steel area for a given % change in each parameter.
-    """
-    )
+    """)
 
     # Base design parameters
     col1, col2 = st.columns(2)
@@ -589,12 +585,10 @@ elif analysis_type == "🎯 Sensitivity Analysis":
 
             # Insights
             most_sensitive = sens_df.iloc[-1]
-            st.info(
-                f"""
+            st.info(f"""
             **Key Insight:** The design is most sensitive to changes in **{most_sensitive['parameter']}**.
             A {variation}% increase causes a {most_sensitive['sensitivity_plus']:.1f}% change in steel area.
-            """
-            )
+            """)
 
 
 # =============================================================================
@@ -604,12 +598,10 @@ elif analysis_type == "🎯 Sensitivity Analysis":
 else:  # Loading Scenarios
     section_header("Multiple Loading Scenarios")
 
-    st.write(
-        """
+    st.write("""
     Compare designs for different loading conditions.
     Useful for envelope design or understanding load path effects.
-    """
-    )
+    """)
 
     # Base beam geometry
     col1, col2 = st.columns(2)
@@ -747,13 +739,11 @@ else:  # Loading Scenarios
                 results_df["Ast_prov (mm²)"].idxmax(), "Scenario"
             ]
 
-            st.success(
-                f"""
+            st.success(f"""
             **Envelope Design Recommendation:**
             Use steel area from **{max_scenario}**: {max_ast:.0f} mm²
             This will satisfy all loading scenarios.
-            """
-            )
+            """)
 
 # Footer
 st.divider()

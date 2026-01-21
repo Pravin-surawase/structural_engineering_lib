@@ -229,18 +229,24 @@ def standardize_dataframe(
         result["D_mm"] = 500
 
     if "span_mm" in mapping:
-        result["span_mm"] = pd.to_numeric(df[mapping["span_mm"]], errors="coerce").fillna(5000)
+        result["span_mm"] = pd.to_numeric(
+            df[mapping["span_mm"]], errors="coerce"
+        ).fillna(5000)
     else:
         result["span_mm"] = 5000
 
     # Forces
     if "mu_knm" in mapping:
-        result["mu_knm"] = pd.to_numeric(df[mapping["mu_knm"]], errors="coerce").fillna(100)
+        result["mu_knm"] = pd.to_numeric(df[mapping["mu_knm"]], errors="coerce").fillna(
+            100
+        )
     else:
         result["mu_knm"] = 100
 
     if "vu_kn" in mapping:
-        result["vu_kn"] = pd.to_numeric(df[mapping["vu_kn"]], errors="coerce").fillna(50)
+        result["vu_kn"] = pd.to_numeric(df[mapping["vu_kn"]], errors="coerce").fillna(
+            50
+        )
     else:
         result["vu_kn"] = 50
 
@@ -260,7 +266,9 @@ def standardize_dataframe(
     else:
         # Generate grid layout based on story and index
         stories = result["story"].unique()
-        story_heights = {s: i * 3.0 for i, s in enumerate(sorted(stories))}  # 3m per story
+        story_heights = {
+            s: i * 3.0 for i, s in enumerate(sorted(stories))
+        }  # 3m per story
 
         x_pos = 0.0
         coords_data = {"x1": [], "y1": [], "z1": [], "x2": [], "y2": [], "z2": []}
@@ -421,24 +429,26 @@ def beams_to_dataframe(beams: list, forces: list, defaults: dict) -> pd.DataFram
             max_mu = defaults.get("mu_knm", 100.0)
             max_vu = defaults.get("vu_kn", 50.0)
 
-        rows.append({
-            "beam_id": beam.id,
-            "story": beam.story,
-            "b_mm": beam.section.width_mm,
-            "D_mm": beam.section.depth_mm,
-            "span_mm": beam.length_m * 1000,
-            "mu_knm": max_mu,
-            "vu_kn": max_vu,
-            "fck": beam.section.fck_mpa,
-            "fy": beam.section.fy_mpa,
-            "cover_mm": beam.section.cover_mm,
-            "x1": beam.point1.x if beam.point1 else 0,
-            "y1": beam.point1.y if beam.point1 else 0,
-            "z1": beam.point1.z if beam.point1 else 0,
-            "x2": beam.point2.x if beam.point2 else beam.length_m,
-            "y2": beam.point2.y if beam.point2 else 0,
-            "z2": beam.point2.z if beam.point2 else 0,
-        })
+        rows.append(
+            {
+                "beam_id": beam.id,
+                "story": beam.story,
+                "b_mm": beam.section.width_mm,
+                "D_mm": beam.section.depth_mm,
+                "span_mm": beam.length_m * 1000,
+                "mu_knm": max_mu,
+                "vu_kn": max_vu,
+                "fck": beam.section.fck_mpa,
+                "fy": beam.section.fy_mpa,
+                "cover_mm": beam.section.cover_mm,
+                "x1": beam.point1.x if beam.point1 else 0,
+                "y1": beam.point1.y if beam.point1 else 0,
+                "z1": beam.point1.z if beam.point1 else 0,
+                "x2": beam.point2.x if beam.point2 else beam.length_m,
+                "y2": beam.point2.y if beam.point2 else 0,
+                "z2": beam.point2.z if beam.point2 else 0,
+            }
+        )
 
     return pd.DataFrame(rows)
 
@@ -503,14 +513,14 @@ def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
 
         # Read geometry file
         if geometry_file:
-            if geometry_file.name.endswith('.xlsx'):
+            if geometry_file.name.endswith(".xlsx"):
                 geo_df = pd.read_excel(geometry_file)
             else:
                 geo_df = pd.read_csv(geometry_file)
 
         # Read forces file
         if forces_file:
-            if forces_file.name.endswith('.xlsx'):
+            if forces_file.name.endswith(".xlsx"):
                 forces_df = pd.read_excel(forces_file)
             else:
                 forces_df = pd.read_csv(forces_file)
@@ -547,7 +557,7 @@ def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
                     left_on=geo_id_col,
                     right_on=forces_id_col,
                     how="outer",
-                    suffixes=("", "_forces")
+                    suffixes=("", "_forces"),
                 )
 
                 # Combine mappings
@@ -559,14 +569,20 @@ def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
                 st.session_state.ws_beams_df = standardize_dataframe(
                     merged_df, combined_mapping, st.session_state.ws_defaults
                 )
-                return True, f"✅ Merged {len(geo_df)} geometry + {len(forces_df)} forces → {len(merged_df)} beams"
+                return (
+                    True,
+                    f"✅ Merged {len(geo_df)} geometry + {len(forces_df)} forces → {len(merged_df)} beams",
+                )
             else:
                 # Fallback: just use geometry with defaults for forces
                 mapping = auto_map_columns(geo_df)
                 st.session_state.ws_beams_df = standardize_dataframe(
                     geo_df, mapping, st.session_state.ws_defaults
                 )
-                return True, f"⚠️ Could not match beam IDs. Using geometry with default forces."
+                return (
+                    True,
+                    f"⚠️ Could not match beam IDs. Using geometry with default forces.",
+                )
 
         return False, "No files provided"
 
@@ -771,8 +787,13 @@ def render_welcome_panel() -> None:
         with st.container(border=True):
             st.markdown("#### 📂 Quick Demo")
             st.caption("10 beams · 3 stories · Ready to design")
-            if st.button("▶ Load Sample Data", key="ws_sample", use_container_width=True, type="primary",
-                        help="Load sample ETABS data with 3D coordinates"):
+            if st.button(
+                "▶ Load Sample Data",
+                key="ws_sample",
+                use_container_width=True,
+                type="primary",
+                help="Load sample ETABS data with 3D coordinates",
+            ):
                 with st.spinner("Loading sample data..."):
                     load_sample_data()
                 st.rerun()
@@ -789,7 +810,7 @@ def render_welcome_panel() -> None:
                 key="ws_multi_upload",
                 label_visibility="collapsed",
                 accept_multiple_files=True,
-                help="Upload 1 file (combined) or 2 files (geometry + forces)"
+                help="Upload 1 file (combined) or 2 files (geometry + forces)",
             )
 
             if uploaded_files:
@@ -806,9 +827,13 @@ def render_welcome_panel() -> None:
                 elif len(uploaded_files) == 2:
                     # Two files - merge geometry + forces
                     st.info(f"📁 {uploaded_files[0].name} + {uploaded_files[1].name}")
-                    if st.button("🔄 Merge & Import", type="primary", use_container_width=True):
+                    if st.button(
+                        "🔄 Merge & Import", type="primary", use_container_width=True
+                    ):
                         with st.spinner("Merging files..."):
-                            success, message = process_multi_files(uploaded_files[0], uploaded_files[1])
+                            success, message = process_multi_files(
+                                uploaded_files[0], uploaded_files[1]
+                            )
                         if success:
                             st.success(message)
                             st.session_state.ws_state = WorkspaceState.IMPORT
@@ -820,7 +845,9 @@ def render_welcome_panel() -> None:
 
     # Compact workflow hint
     st.markdown("---")
-    st.markdown("**Workflow:** `load sample` → `design all` → `building 3d` → Select beam → `edit rebar`")
+    st.markdown(
+        "**Workflow:** `load sample` → `design all` → `building 3d` → Select beam → `edit rebar`"
+    )
 
 
 def render_import_preview() -> None:
@@ -853,15 +880,22 @@ def render_import_preview() -> None:
     # Action buttons
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🚀 Design All Beams", type="primary", use_container_width=True,
-                    help="Run IS456 flexure & shear design on all beams"):
+        if st.button(
+            "🚀 Design All Beams",
+            type="primary",
+            use_container_width=True,
+            help="Run IS456 flexure & shear design on all beams",
+        ):
             with st.spinner("Designing beams..."):
                 st.session_state.ws_design_results = design_all_beams_ws()
             st.session_state.ws_state = WorkspaceState.DESIGN
             st.rerun()
     with col2:
-        if st.button("← Back to Welcome", use_container_width=True,
-                    help="Clear data and return to start screen"):
+        if st.button(
+            "← Back to Welcome",
+            use_container_width=True,
+            help="Clear data and return to start screen",
+        ):
             st.session_state.ws_beams_df = None
             set_workspace_state(WorkspaceState.WELCOME)
             st.rerun()
@@ -1032,7 +1066,9 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
             use_container_width=True,
         )
 
-        st.success(f"✅ Professional PDF report ready ({len(design_data_list)} beam(s))")
+        st.success(
+            f"✅ Professional PDF report ready ({len(design_data_list)} beam(s))"
+        )
 
     except Exception as e:
         st.error(f"PDF generation failed: {str(e)}")
@@ -1142,11 +1178,21 @@ def render_design_results() -> None:
     # Filter row
     fc1, fc2, fc3 = st.columns([1, 1, 2])
     with fc1:
-        story_filter = st.selectbox("📍 Story", ["All"] + sorted(df["story"].unique().tolist()), key="ws_story_filter")
+        story_filter = st.selectbox(
+            "📍 Story",
+            ["All"] + sorted(df["story"].unique().tolist()),
+            key="ws_story_filter",
+        )
     with fc2:
-        status_filter = st.selectbox("🎯 Status", ["All", "Safe", "Failed"], key="ws_status_filter")
+        status_filter = st.selectbox(
+            "🎯 Status", ["All", "Safe", "Failed"], key="ws_status_filter"
+        )
     with fc3:
-        edit_mode = st.checkbox("✏️ Enable inline editing", key="ws_edit_mode", help="Edit rebar directly in the table")
+        edit_mode = st.checkbox(
+            "✏️ Enable inline editing",
+            key="ws_edit_mode",
+            help="Edit rebar directly in the table",
+        )
 
     # Apply filters
     filtered_df = df.copy()
@@ -1162,48 +1208,91 @@ def render_design_results() -> None:
         _render_editable_results_table(filtered_df, df)
     else:
         # Read-only mode - standard display
-        display_df = filtered_df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "ast_req", "utilization", "status"]].copy()
-        display_df.columns = ["ID", "Story", "b", "D", "Mu", "Vu", "Ast", "Util", "Status"]
+        display_df = filtered_df[
+            [
+                "beam_id",
+                "story",
+                "b_mm",
+                "D_mm",
+                "mu_knm",
+                "vu_kn",
+                "ast_req",
+                "utilization",
+                "status",
+            ]
+        ].copy()
+        display_df.columns = [
+            "ID",
+            "Story",
+            "b",
+            "D",
+            "Mu",
+            "Vu",
+            "Ast",
+            "Util",
+            "Status",
+        ]
         display_df["Util"] = display_df["Util"].apply(lambda x: f"{x*100:.0f}%")
         st.dataframe(display_df, use_container_width=True, height=180, hide_index=True)
 
     # Beam selector with quick actions
     beam_options = filtered_df["beam_id"].tolist()
     if beam_options:
-        selected = st.selectbox("🔍 Select beam for details:", beam_options, key="ws_beam_select2")
+        selected = st.selectbox(
+            "🔍 Select beam for details:", beam_options, key="ws_beam_select2"
+        )
         st.session_state.ws_selected_beam = selected
 
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            if st.button("🎨 3D View", use_container_width=True, type="primary",
-                        help="Interactive 3D visualization of the selected beam"):
+            if st.button(
+                "🎨 3D View",
+                use_container_width=True,
+                type="primary",
+                help="Interactive 3D visualization of the selected beam",
+            ):
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
         with col2:
-            if st.button("📐 Section", use_container_width=True,
-                        help="View cross-section with reinforcement layout"):
+            if st.button(
+                "📐 Section",
+                use_container_width=True,
+                help="View cross-section with reinforcement layout",
+            ):
                 set_workspace_state(WorkspaceState.CROSS_SECTION)
                 st.rerun()
         with col3:
-            if st.button("🔧 Rebar", use_container_width=True,
-                        help="Edit reinforcement to fix failed designs"):
+            if st.button(
+                "🔧 Rebar",
+                use_container_width=True,
+                help="Edit reinforcement to fix failed designs",
+            ):
                 set_workspace_state(WorkspaceState.REBAR_EDIT)
                 st.rerun()
         with col4:
-            if st.button("🏗️ Building", use_container_width=True,
-                        help="See all beams in 3D building context"):
+            if st.button(
+                "🏗️ Building",
+                use_container_width=True,
+                help="See all beams in 3D building context",
+            ):
                 set_workspace_state(WorkspaceState.BUILDING_3D)
                 st.rerun()
 
     # Help tip for failed beams
     if failed > 0:
         if edit_mode:
-            st.info("💡 **Tip:** Increase bar count or diameter for failed beams. Changes update live!")
+            st.info(
+                "💡 **Tip:** Increase bar count or diameter for failed beams. Changes update live!"
+            )
         else:
-            st.warning(f"💡 **{failed} beams failed.** Enable **inline editing** or select one and use **Edit Rebar**.")
+            st.warning(
+                f"💡 **{failed} beams failed.** Enable **inline editing** or select one and use **Edit Rebar**."
+            )
 
 
-def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFrame) -> None:
+def _render_editable_results_table(
+    filtered_df: pd.DataFrame, full_df: pd.DataFrame
+) -> None:
     """Render editable results table with live design checks.
 
     Allows engineers to modify rebar configuration (bar count, diameter, layers)
@@ -1213,44 +1302,88 @@ def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFr
     from structural_lib import api
 
     # Prepare editable dataframe
-    edit_df = filtered_df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "fck", "fy"]].copy()
+    edit_df = filtered_df[
+        ["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "fck", "fy"]
+    ].copy()
 
     # Add editable rebar columns with default values
-    edit_df["bot_bars"] = filtered_df.get("bottom_bar_count", pd.Series([4] * len(filtered_df))).fillna(4).astype(int)
-    edit_df["bot_dia"] = filtered_df.get("bottom_bar_dia", pd.Series([16] * len(filtered_df))).fillna(16).astype(int)
-    edit_df["top_bars"] = filtered_df.get("top_bar_count", pd.Series([2] * len(filtered_df))).fillna(2).astype(int)
-    edit_df["top_dia"] = filtered_df.get("top_bar_dia", pd.Series([12] * len(filtered_df))).fillna(12).astype(int)
-    edit_df["stirrup_sp"] = filtered_df.get("stirrup_spacing", pd.Series([150] * len(filtered_df))).fillna(150).astype(int)
+    edit_df["bot_bars"] = (
+        filtered_df.get("bottom_bar_count", pd.Series([4] * len(filtered_df)))
+        .fillna(4)
+        .astype(int)
+    )
+    edit_df["bot_dia"] = (
+        filtered_df.get("bottom_bar_dia", pd.Series([16] * len(filtered_df)))
+        .fillna(16)
+        .astype(int)
+    )
+    edit_df["top_bars"] = (
+        filtered_df.get("top_bar_count", pd.Series([2] * len(filtered_df)))
+        .fillna(2)
+        .astype(int)
+    )
+    edit_df["top_dia"] = (
+        filtered_df.get("top_bar_dia", pd.Series([12] * len(filtered_df)))
+        .fillna(12)
+        .astype(int)
+    )
+    edit_df["stirrup_sp"] = (
+        filtered_df.get("stirrup_spacing", pd.Series([150] * len(filtered_df)))
+        .fillna(150)
+        .astype(int)
+    )
 
     # Display columns for editing
     column_config = {
         "beam_id": st.column_config.TextColumn("ID", disabled=True, width="small"),
         "story": st.column_config.TextColumn("Story", disabled=True, width="small"),
-        "b_mm": st.column_config.NumberColumn("b", disabled=True, width="small", format="%d"),
-        "D_mm": st.column_config.NumberColumn("D", disabled=True, width="small", format="%d"),
-        "mu_knm": st.column_config.NumberColumn("Mu", disabled=True, width="small", format="%.0f"),
-        "vu_kn": st.column_config.NumberColumn("Vu", disabled=True, width="small", format="%.0f"),
+        "b_mm": st.column_config.NumberColumn(
+            "b", disabled=True, width="small", format="%d"
+        ),
+        "D_mm": st.column_config.NumberColumn(
+            "D", disabled=True, width="small", format="%d"
+        ),
+        "mu_knm": st.column_config.NumberColumn(
+            "Mu", disabled=True, width="small", format="%.0f"
+        ),
+        "vu_kn": st.column_config.NumberColumn(
+            "Vu", disabled=True, width="small", format="%.0f"
+        ),
         "fck": st.column_config.NumberColumn("fck", disabled=True, width="small"),
         "fy": st.column_config.NumberColumn("fy", disabled=True, width="small"),
         "bot_bars": st.column_config.NumberColumn(
-            "Bot#", min_value=2, max_value=12, step=1, width="small",
-            help="Number of bottom bars"
+            "Bot#",
+            min_value=2,
+            max_value=12,
+            step=1,
+            width="small",
+            help="Number of bottom bars",
         ),
         "bot_dia": st.column_config.SelectboxColumn(
-            "ϕBot", options=[10, 12, 16, 20, 25, 32], width="small",
-            help="Bottom bar diameter (mm)"
+            "ϕBot",
+            options=[10, 12, 16, 20, 25, 32],
+            width="small",
+            help="Bottom bar diameter (mm)",
         ),
         "top_bars": st.column_config.NumberColumn(
-            "Top#", min_value=2, max_value=8, step=1, width="small",
-            help="Number of top (hanger) bars"
+            "Top#",
+            min_value=2,
+            max_value=8,
+            step=1,
+            width="small",
+            help="Number of top (hanger) bars",
         ),
         "top_dia": st.column_config.SelectboxColumn(
-            "ϕTop", options=[10, 12, 16, 20, 25], width="small",
-            help="Top bar diameter (mm)"
+            "ϕTop",
+            options=[10, 12, 16, 20, 25],
+            width="small",
+            help="Top bar diameter (mm)",
         ),
         "stirrup_sp": st.column_config.SelectboxColumn(
-            "Sv", options=[100, 125, 150, 175, 200, 250], width="small",
-            help="Stirrup spacing (mm)"
+            "Sv",
+            options=[100, 125, 150, 175, 200, 250],
+            width="small",
+            help="Stirrup spacing (mm)",
         ),
     }
 
@@ -1290,7 +1423,12 @@ def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFr
             mu_lim = 0.36 * fck * b * xu_max * (d_eff - 0.416 * xu_max)
 
             if mu_nm <= mu_lim:
-                ast_req = (0.5 * fck / fy) * (1 - math.sqrt(1 - 4.6 * mu_nm / (fck * b * d_eff**2))) * b * d_eff
+                ast_req = (
+                    (0.5 * fck / fy)
+                    * (1 - math.sqrt(1 - 4.6 * mu_nm / (fck * b * d_eff**2)))
+                    * b
+                    * d_eff
+                )
             else:
                 ast_req = mu_nm / (0.87 * fy * (d_eff - 0.416 * xu_max))
 
@@ -1314,13 +1452,15 @@ def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFr
             status = "⚠️ Error"
             ast_req = 0
 
-        check_results.append({
-            "ID": beam_id,
-            "Ast Req": f"{ast_req:.0f}",
-            "Ast Prov": f"{ast_prov:.0f}",
-            "Util": f"{utilization*100:.0f}%",
-            "Status": status,
-        })
+        check_results.append(
+            {
+                "ID": beam_id,
+                "Ast Req": f"{ast_req:.0f}",
+                "Ast Prov": f"{ast_prov:.0f}",
+                "Util": f"{utilization*100:.0f}%",
+                "Status": status,
+            }
+        )
 
     # Display check results
     check_df = pd.DataFrame(check_results)
@@ -1350,23 +1490,31 @@ def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFr
     exp1, exp2, exp3, exp4 = st.columns(4)
 
     with exp1:
-        if st.button("📄 HTML", use_container_width=True,
-                    help="Design report in HTML format (web viewable)"):
+        if st.button(
+            "📄 HTML",
+            use_container_width=True,
+            help="Design report in HTML format (web viewable)",
+        ):
             _generate_and_download_report(filtered_df)
 
     with exp2:
-        if st.button("📑 PDF", use_container_width=True,
-                    help="Professional PDF report (printable)"):
+        if st.button(
+            "📑 PDF",
+            use_container_width=True,
+            help="Professional PDF report (printable)",
+        ):
             _generate_and_download_pdf_report(filtered_df)
 
     with exp3:
-        if st.button("📐 DXF", use_container_width=True,
-                    help="Export CAD drawings for detailing"):
+        if st.button(
+            "📐 DXF", use_container_width=True, help="Export CAD drawings for detailing"
+        ):
             _generate_and_download_dxf(filtered_df)
 
     with exp4:
-        if st.button("📊 CSV", use_container_width=True,
-                    help="Export results as CSV spreadsheet"):
+        if st.button(
+            "📊 CSV", use_container_width=True, help="Export results as CSV spreadsheet"
+        ):
             csv_data = filtered_df.to_csv(index=False)
             st.download_button(
                 label="⬇️ Download CSV",
@@ -1378,13 +1526,19 @@ def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFr
 
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("📊 Dashboard", use_container_width=True,
-                    help="See summary stats, cost breakdown, and export options"):
+        if st.button(
+            "📊 Dashboard",
+            use_container_width=True,
+            help="See summary stats, cost breakdown, and export options",
+        ):
             set_workspace_state(WorkspaceState.DASHBOARD)
             st.rerun()
     with c2:
-        if st.button("← Import", use_container_width=True,
-                    help="Go back to review or modify imported data"):
+        if st.button(
+            "← Import",
+            use_container_width=True,
+            help="Go back to review or modify imported data",
+        ):
             set_workspace_state(WorkspaceState.IMPORT)
             st.rerun()
 
@@ -1423,7 +1577,9 @@ def create_building_3d_figure(
         "#e91e63",  # Pink
         "#00bcd4",  # Cyan
     ]
-    story_colors = {s: color_palette[i % len(color_palette)] for i, s in enumerate(stories)}
+    story_colors = {
+        s: color_palette[i % len(color_palette)] for i, s in enumerate(stories)
+    }
 
     # Track extents for camera
     all_x, all_y, all_z = [], [], []
@@ -1474,7 +1630,7 @@ def create_building_3d_figure(
 
         # Build 8 corners
         corners = []
-        for (ex, ey, ez) in [(x1, y1, z1), (x2, y2, z2)]:
+        for ex, ey, ez in [(x1, y1, z1), (x2, y2, z2)]:
             for ws in [-1, 1]:
                 for ds in [-1, 1]:
                     cx = ex + ws * hw * perp_x + ds * hd * up_x
@@ -1515,32 +1671,53 @@ def create_building_3d_figure(
         # Concise hover info - just beam name, utilization, pass/fail
         util_pct = row.get("utilization", 0) * 100
         status = row.get("status", "")
-        status_icon = "✅" if "SAFE" in str(status).upper() else "❌" if "FAIL" in str(status).upper() else "⏳"
+        status_icon = (
+            "✅"
+            if "SAFE" in str(status).upper()
+            else "❌" if "FAIL" in str(status).upper() else "⏳"
+        )
         selected_label = "★ SELECTED " if is_selected else ""
-        hover = f"<b>{selected_label}{beam_id}</b> {status_icon}<br>Util: {util_pct:.0f}%"
+        hover = (
+            f"<b>{selected_label}{beam_id}</b> {status_icon}<br>Util: {util_pct:.0f}%"
+        )
 
-        fig.add_trace(go.Mesh3d(
-            x=x_mesh, y=y_mesh, z=z_mesh,
-            i=i_faces, j=j_faces, k=k_faces,
-            color=color,
-            opacity=opacity,
-            flatshading=True,
-            lighting=dict(ambient=0.7 if is_selected else 0.6, diffuse=0.9 if is_selected else 0.8, specular=0.6 if is_selected else 0.4, roughness=0.2 if is_selected else 0.3),
-            lightposition=dict(x=100, y=200, z=300),
-            hovertemplate=hover + "<extra></extra>",
-            name=beam_id,
-            showlegend=False,
-        ))
+        fig.add_trace(
+            go.Mesh3d(
+                x=x_mesh,
+                y=y_mesh,
+                z=z_mesh,
+                i=i_faces,
+                j=j_faces,
+                k=k_faces,
+                color=color,
+                opacity=opacity,
+                flatshading=True,
+                lighting=dict(
+                    ambient=0.7 if is_selected else 0.6,
+                    diffuse=0.9 if is_selected else 0.8,
+                    specular=0.6 if is_selected else 0.4,
+                    roughness=0.2 if is_selected else 0.3,
+                ),
+                lightposition=dict(x=100, y=200, z=300),
+                hovertemplate=hover + "<extra></extra>",
+                name=beam_id,
+                showlegend=False,
+            )
+        )
 
     # Add story legend
     for story in stories:
         base = story_colors[story]
-        fig.add_trace(go.Scatter3d(
-            x=[None], y=[None], z=[None],
-            mode="markers",
-            marker=dict(size=10, color=base, symbol="square"),
-            name=f"📍 {story}",
-        ))
+        fig.add_trace(
+            go.Scatter3d(
+                x=[None],
+                y=[None],
+                z=[None],
+                mode="markers",
+                marker=dict(size=10, color=base, symbol="square"),
+                name=f"📍 {story}",
+            )
+        )
 
     # Calculate scene range
     if all_x and all_y and all_z:
@@ -1552,9 +1729,24 @@ def create_building_3d_figure(
 
     fig.update_layout(
         scene=dict(
-            xaxis=dict(range=x_range, title="X (m)", showgrid=True, gridcolor="rgba(255,255,255,0.1)"),
-            yaxis=dict(range=y_range, title="Y (m)", showgrid=True, gridcolor="rgba(255,255,255,0.1)"),
-            zaxis=dict(range=z_range, title="Z (m)", showgrid=True, gridcolor="rgba(255,255,255,0.1)"),
+            xaxis=dict(
+                range=x_range,
+                title="X (m)",
+                showgrid=True,
+                gridcolor="rgba(255,255,255,0.1)",
+            ),
+            yaxis=dict(
+                range=y_range,
+                title="Y (m)",
+                showgrid=True,
+                gridcolor="rgba(255,255,255,0.1)",
+            ),
+            zaxis=dict(
+                range=z_range,
+                title="Z (m)",
+                showgrid=True,
+                gridcolor="rgba(255,255,255,0.1)",
+            ),
             aspectmode="data",
             camera=dict(
                 eye=dict(x=1.5, y=1.5, z=1.0),
@@ -1567,7 +1759,10 @@ def create_building_3d_figure(
         font=dict(color="white"),
         margin=dict(l=0, r=0, t=30, b=0),
         legend=dict(
-            yanchor="top", y=0.99, xanchor="left", x=0.01,
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.01,
             bgcolor="rgba(30, 30, 40, 0.8)",
         ),
     )
@@ -1603,10 +1798,16 @@ def render_building_3d() -> None:
     # Compact header with stats inline
     total = len(df)
     stories = df["story"].nunique()
-    safe_count = len(df[df["status"].str.contains("OK|SAFE", case=False, na=False)]) if "status" in df.columns else 0
+    safe_count = (
+        len(df[df["status"].str.contains("OK|SAFE", case=False, na=False)])
+        if "status" in df.columns
+        else 0
+    )
     pass_rate = f"{safe_count/total*100:.0f}%" if total > 0 else "N/A"
 
-    st.markdown(f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass")
+    st.markdown(
+        f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass"
+    )
 
     # Beam selection UI with highlighting
     beam_ids = df["beam_id"].tolist() if len(df) > 0 else []
@@ -1616,9 +1817,11 @@ def render_building_3d() -> None:
             "🎯 Highlight beam:",
             ["None (show all)"] + beam_ids,
             key="bldg_highlight_select",
-            help="Select a beam to highlight it in the 3D view"
+            help="Select a beam to highlight it in the 3D view",
         )
-        selected_beam = None if highlighted_beam == "None (show all)" else highlighted_beam
+        selected_beam = (
+            None if highlighted_beam == "None (show all)" else highlighted_beam
+        )
 
     with info_col:
         if selected_beam and selected_beam in df["beam_id"].values:
@@ -1626,7 +1829,9 @@ def render_building_3d() -> None:
             status = beam_row.get("status", "N/A")
             util = beam_row.get("utilization", 0)
             dims = f"{beam_row['b_mm']:.0f}×{beam_row['D_mm']:.0f}"
-            st.info(f"**{selected_beam}** | {dims}mm | Util: {util*100:.0f}% | {status}")
+            st.info(
+                f"**{selected_beam}** | {dims}mm | Util: {util*100:.0f}% | {status}"
+            )
 
     # Create 3D figure with highlighting
     fig = create_building_3d_figure(df, selected_beam=selected_beam)
@@ -1835,8 +2040,12 @@ def calculate_rebar_checks(
     - Development length
     """
     # Calculate areas
-    ast_bottom = sum(count * math.pi * (dia/2)**2 for dia, count in bottom_bars)
-    ast_top = sum(count * math.pi * (dia/2)**2 for dia, count in top_bars) if top_bars else 0
+    ast_bottom = sum(count * math.pi * (dia / 2) ** 2 for dia, count in bottom_bars)
+    ast_top = (
+        sum(count * math.pi * (dia / 2) ** 2 for dia, count in top_bars)
+        if top_bars
+        else 0
+    )
     ast_total = ast_bottom + ast_top
 
     # Effective depth
@@ -1872,7 +2081,7 @@ def calculate_rebar_checks(
     # 4. Shear capacity
     # τc from IS 456 Table 19 (approximate)
     pt = 100 * ast_bottom / (b_mm * d_eff) if d_eff > 0 else 0
-    tau_c = min(0.28 * (pt ** 0.5) * (fck ** 0.33), 0.62 * (fck ** 0.5))  # Simplified
+    tau_c = min(0.28 * (pt**0.5) * (fck**0.33), 0.62 * (fck**0.5))  # Simplified
     vc_concrete = tau_c * b_mm * d_eff / 1000  # kN
 
     # Stirrup contribution
@@ -1899,7 +2108,9 @@ def calculate_rebar_checks(
             layer_spacing = (available_width - total_bar_width_layer) / (count - 1)
             layer_spacings.append((layer_spacing, dia))
         elif count == 1:
-            layer_spacings.append((available_width - dia, dia))  # Single bar, plenty of space
+            layer_spacings.append(
+                (available_width - dia, dia)
+            )  # Single bar, plenty of space
 
     # Minimum spacing across all layers (worst case)
     if layer_spacings:
@@ -1916,13 +2127,15 @@ def calculate_rebar_checks(
     results["spacing_ok"] = spacing >= min_spacing
 
     # Overall status
-    all_ok = all([
-        results["flexure_ok"],
-        results["min_reinf_ok"],
-        results["max_reinf_ok"],
-        results["shear_ok"],
-        results["spacing_ok"],
-    ])
+    all_ok = all(
+        [
+            results["flexure_ok"],
+            results["min_reinf_ok"],
+            results["max_reinf_ok"],
+            results["shear_ok"],
+            results["spacing_ok"],
+        ]
+    )
     results["all_ok"] = all_ok
     results["status"] = "✅ SAFE" if all_ok else "❌ REVISE"
 
@@ -1962,14 +2175,18 @@ def render_rebar_editor() -> None:
     cover_mm = float(row.get("cover_mm", 40))
 
     # Show fixed properties
-    st.markdown(f"**Section:** {b_mm:.0f}×{D_mm:.0f} mm | **Span:** {span_mm/1000:.1f} m | **Mu:** {mu_knm:.1f} kN·m | **Vu:** {vu_kn:.1f} kN")
+    st.markdown(
+        f"**Section:** {b_mm:.0f}×{D_mm:.0f} mm | **Span:** {span_mm/1000:.1f} m | **Mu:** {mu_knm:.1f} kN·m | **Vu:** {vu_kn:.1f} kN"
+    )
 
     # Initialize rebar config from session state or defaults
     config = st.session_state.ws_rebar_config
     if config is None or config.get("beam_id") != beam_id:
         # Initialize with design suggestion
         ast_req = float(row.get("ast_req", 500))
-        suggested = calculate_rebar_layout(ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm)
+        suggested = calculate_rebar_layout(
+            ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm
+        )
         config = {
             "beam_id": beam_id,
             "bottom_layer1_dia": suggested.get("bar_diameter", 16),
@@ -1990,46 +2207,74 @@ def render_rebar_editor() -> None:
         st.markdown("##### Bottom Reinforcement")
         c1, c2 = st.columns(2)
         with c1:
-            l1_dia = st.selectbox("Layer 1 Dia (mm)", [10, 12, 16, 20, 25, 32],
-                                  index=[10, 12, 16, 20, 25, 32].index(config["bottom_layer1_dia"]),
-                                  key="re_l1_dia")
-            l2_dia = st.selectbox("Layer 2 Dia (mm)", [0, 10, 12, 16, 20, 25, 32],
-                                  index=[0, 10, 12, 16, 20, 25, 32].index(config.get("bottom_layer2_dia", 0)),
-                                  key="re_l2_dia")
+            l1_dia = st.selectbox(
+                "Layer 1 Dia (mm)",
+                [10, 12, 16, 20, 25, 32],
+                index=[10, 12, 16, 20, 25, 32].index(config["bottom_layer1_dia"]),
+                key="re_l1_dia",
+            )
+            l2_dia = st.selectbox(
+                "Layer 2 Dia (mm)",
+                [0, 10, 12, 16, 20, 25, 32],
+                index=[0, 10, 12, 16, 20, 25, 32].index(
+                    config.get("bottom_layer2_dia", 0)
+                ),
+                key="re_l2_dia",
+            )
         with c2:
-            l1_count = st.number_input("Count", 2, 8, config["bottom_layer1_count"], key="re_l1_cnt")
-            l2_count = st.number_input("Count", 0, 6, config.get("bottom_layer2_count", 0), key="re_l2_cnt")
+            l1_count = st.number_input(
+                "Count", 2, 8, config["bottom_layer1_count"], key="re_l1_cnt"
+            )
+            l2_count = st.number_input(
+                "Count", 0, 6, config.get("bottom_layer2_count", 0), key="re_l2_cnt"
+            )
 
         st.markdown("##### Top Reinforcement")
         c1, c2 = st.columns(2)
         with c1:
-            top_dia = st.selectbox("Dia (mm)", [10, 12, 16, 20],
-                                   index=[10, 12, 16, 20].index(config.get("top_dia", 12)),
-                                   key="re_top_dia")
+            top_dia = st.selectbox(
+                "Dia (mm)",
+                [10, 12, 16, 20],
+                index=[10, 12, 16, 20].index(config.get("top_dia", 12)),
+                key="re_top_dia",
+            )
         with c2:
-            top_count = st.number_input("Count", 2, 6, config.get("top_count", 2), key="re_top_cnt")
+            top_count = st.number_input(
+                "Count", 2, 6, config.get("top_count", 2), key="re_top_cnt"
+            )
 
         st.markdown("##### Stirrups")
         c1, c2 = st.columns(2)
         with c1:
-            stir_dia = st.selectbox("Dia (mm)", [6, 8, 10],
-                                    index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
-                                    key="re_stir_dia")
+            stir_dia = st.selectbox(
+                "Dia (mm)",
+                [6, 8, 10],
+                index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
+                key="re_stir_dia",
+            )
         with c2:
-            stir_spacing = st.number_input("Spacing (mm)", 75, 300, config.get("stirrup_spacing", 150),
-                                           step=25, key="re_stir_sp")
+            stir_spacing = st.number_input(
+                "Spacing (mm)",
+                75,
+                300,
+                config.get("stirrup_spacing", 150),
+                step=25,
+                key="re_stir_sp",
+            )
 
     # Update config
-    config.update({
-        "bottom_layer1_dia": l1_dia,
-        "bottom_layer1_count": l1_count,
-        "bottom_layer2_dia": l2_dia,
-        "bottom_layer2_count": l2_count,
-        "top_dia": top_dia,
-        "top_count": top_count,
-        "stirrup_dia": stir_dia,
-        "stirrup_spacing": stir_spacing,
-    })
+    config.update(
+        {
+            "bottom_layer1_dia": l1_dia,
+            "bottom_layer1_count": l1_count,
+            "bottom_layer2_dia": l2_dia,
+            "bottom_layer2_count": l2_count,
+            "top_dia": top_dia,
+            "top_count": top_count,
+            "stirrup_dia": stir_dia,
+            "stirrup_spacing": stir_spacing,
+        }
+    )
     st.session_state.ws_rebar_config = config
 
     # Build bar lists
@@ -2040,8 +2285,17 @@ def render_rebar_editor() -> None:
 
     # Calculate checks
     checks = calculate_rebar_checks(
-        b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm,
-        bottom_bars, top_bars, stir_dia, stir_spacing
+        b_mm,
+        D_mm,
+        mu_knm,
+        vu_kn,
+        fck,
+        fy,
+        cover_mm,
+        bottom_bars,
+        top_bars,
+        stir_dia,
+        stir_spacing,
     )
 
     with col2:
@@ -2049,19 +2303,27 @@ def render_rebar_editor() -> None:
 
         # Flexure
         flex_color = "🟢" if checks["flexure_ok"] else "🔴"
-        st.markdown(f"{flex_color} **Flexure:** {checks['flexure_util']*100:.1f}% (Mu = {checks['mu_capacity_knm']:.1f} kN·m)")
+        st.markdown(
+            f"{flex_color} **Flexure:** {checks['flexure_util']*100:.1f}% (Mu = {checks['mu_capacity_knm']:.1f} kN·m)"
+        )
 
         # Shear
         shear_color = "🟢" if checks["shear_ok"] else "🔴"
-        st.markdown(f"{shear_color} **Shear:** {checks['shear_util']*100:.1f}% (Vu = {checks['vu_capacity_kn']:.1f} kN)")
+        st.markdown(
+            f"{shear_color} **Shear:** {checks['shear_util']*100:.1f}% (Vu = {checks['vu_capacity_kn']:.1f} kN)"
+        )
 
         # Min reinforcement
         min_color = "🟢" if checks["min_reinf_ok"] else "🔴"
-        st.markdown(f"{min_color} **Min Ast:** {checks['ast_provided']:.0f} ≥ {checks['ast_min']:.0f} mm²")
+        st.markdown(
+            f"{min_color} **Min Ast:** {checks['ast_provided']:.0f} ≥ {checks['ast_min']:.0f} mm²"
+        )
 
         # Max reinforcement
         max_color = "🟢" if checks["max_reinf_ok"] else "🔴"
-        st.markdown(f"{max_color} **Max Ast:** {checks['ast_provided']:.0f} ≤ {checks['ast_max']:.0f} mm²")
+        st.markdown(
+            f"{max_color} **Max Ast:** {checks['ast_provided']:.0f} ≤ {checks['ast_max']:.0f} mm²"
+        )
 
         # Spacing
         sp_color = "🟢" if checks["spacing_ok"] else "🔴"
@@ -2072,7 +2334,9 @@ def render_rebar_editor() -> None:
         # Overall status with big indicator
         if checks["all_ok"]:
             st.success(f"### {checks['status']}")
-            st.caption(f"Ast provided: {checks['ast_provided']:.0f} mm² | d_eff: {checks['d_eff']:.0f} mm")
+            st.caption(
+                f"Ast provided: {checks['ast_provided']:.0f} mm² | d_eff: {checks['d_eff']:.0f} mm"
+            )
         else:
             st.error(f"### {checks['status']}")
             st.caption("Adjust reinforcement to satisfy all checks")
@@ -2082,13 +2346,25 @@ def render_rebar_editor() -> None:
         constructability = calculate_constructability_score(
             bottom_bars, top_bars, stir_spacing, b_mm
         )
-        const_icon = "🟢" if constructability["score"] >= 80 else ("🟡" if constructability["score"] >= 60 else "🔴")
-        st.markdown(f"##### {const_icon} Construction Ease: {constructability['score']}/100")
+        const_icon = (
+            "🟢"
+            if constructability["score"] >= 80
+            else ("🟡" if constructability["score"] >= 60 else "🔴")
+        )
+        st.markdown(
+            f"##### {const_icon} Construction Ease: {constructability['score']}/100"
+        )
         st.caption(constructability["summary"])
 
         # Quick optimization button
-        if st.button("⚡ Auto-Optimize", use_container_width=True, help="Optimize for cost while maintaining safety"):
-            optimized = suggest_optimal_rebar(b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm)
+        if st.button(
+            "⚡ Auto-Optimize",
+            use_container_width=True,
+            help="Optimize for cost while maintaining safety",
+        ):
+            optimized = suggest_optimal_rebar(
+                b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm
+            )
             if optimized:
                 # Preserve top bars and stirrups, only optimize bottom
                 optimized["top_dia"] = config.get("top_dia", 12)
@@ -2158,7 +2434,10 @@ def create_cross_section_figure(
     # Concrete outline (filled rectangle)
     fig.add_shape(
         type="rect",
-        x0=0, y0=0, x1=b, y1=D,
+        x0=0,
+        y0=0,
+        x1=b,
+        y1=D,
         line=dict(color="#333", width=2),
         fillcolor=concrete_color,
         layer="below",
@@ -2178,67 +2457,92 @@ def create_cross_section_figure(
 
     # Draw bottom bars
     for bx, by, dia in bottom_bars:
-        fig.add_trace(go.Scatter(
-            x=[bx], y=[by],
-            mode="markers",
-            marker=dict(
-                size=max(10, dia * 0.6),
-                color=main_bar_color,
-                line=dict(color="#000", width=1),
-            ),
-            name=f"Bottom Bar Φ{dia:.0f}",
-            hovertemplate=f"Bottom Bar<br>Φ{dia:.0f}mm<br>x: {bx:.1f}, y: {by:.1f}<extra></extra>",
-            showlegend=False,
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[bx],
+                y=[by],
+                mode="markers",
+                marker=dict(
+                    size=max(10, dia * 0.6),
+                    color=main_bar_color,
+                    line=dict(color="#000", width=1),
+                ),
+                name=f"Bottom Bar Φ{dia:.0f}",
+                hovertemplate=f"Bottom Bar<br>Φ{dia:.0f}mm<br>x: {bx:.1f}, y: {by:.1f}<extra></extra>",
+                showlegend=False,
+            )
+        )
 
     # Draw top bars
     for tx, ty, dia in top_bars:
-        fig.add_trace(go.Scatter(
-            x=[tx], y=[ty],
-            mode="markers",
-            marker=dict(
-                size=max(10, dia * 0.6),
-                color=top_bar_color,
-                line=dict(color="#000", width=1),
-            ),
-            name=f"Top Bar Φ{dia:.0f}",
-            hovertemplate=f"Top Bar<br>Φ{dia:.0f}mm<br>x: {tx:.1f}, y: {ty:.1f}<extra></extra>",
-            showlegend=False,
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[tx],
+                y=[ty],
+                mode="markers",
+                marker=dict(
+                    size=max(10, dia * 0.6),
+                    color=top_bar_color,
+                    line=dict(color="#000", width=1),
+                ),
+                name=f"Top Bar Φ{dia:.0f}",
+                hovertemplate=f"Top Bar<br>Φ{dia:.0f}mm<br>x: {tx:.1f}, y: {ty:.1f}<extra></extra>",
+                showlegend=False,
+            )
+        )
 
     # Dimension lines and annotations
     # Width dimension
     fig.add_annotation(
-        x=b/2, y=-30,
+        x=b / 2,
+        y=-30,
         text=f"b = {b:.0f} mm",
         showarrow=False,
         font=dict(size=12, color="#333"),
     )
     fig.add_shape(
-        type="line", x0=0, y0=-15, x1=b, y1=-15,
+        type="line",
+        x0=0,
+        y0=-15,
+        x1=b,
+        y1=-15,
         line=dict(color="#666", width=1),
     )
-    fig.add_shape(type="line", x0=0, y0=-5, x1=0, y1=-25, line=dict(color="#666", width=1))
-    fig.add_shape(type="line", x0=b, y0=-5, x1=b, y1=-25, line=dict(color="#666", width=1))
+    fig.add_shape(
+        type="line", x0=0, y0=-5, x1=0, y1=-25, line=dict(color="#666", width=1)
+    )
+    fig.add_shape(
+        type="line", x0=b, y0=-5, x1=b, y1=-25, line=dict(color="#666", width=1)
+    )
 
     # Depth dimension
     fig.add_annotation(
-        x=b+40, y=D/2,
+        x=b + 40,
+        y=D / 2,
         text=f"D = {D:.0f} mm",
         showarrow=False,
         font=dict(size=12, color="#333"),
         textangle=-90,
     )
     fig.add_shape(
-        type="line", x0=b+15, y0=0, x1=b+15, y1=D,
+        type="line",
+        x0=b + 15,
+        y0=0,
+        x1=b + 15,
+        y1=D,
         line=dict(color="#666", width=1),
     )
-    fig.add_shape(type="line", x0=b+5, y0=0, x1=b+25, y1=0, line=dict(color="#666", width=1))
-    fig.add_shape(type="line", x0=b+5, y0=D, x1=b+25, y1=D, line=dict(color="#666", width=1))
+    fig.add_shape(
+        type="line", x0=b + 5, y0=0, x1=b + 25, y1=0, line=dict(color="#666", width=1)
+    )
+    fig.add_shape(
+        type="line", x0=b + 5, y0=D, x1=b + 25, y1=D, line=dict(color="#666", width=1)
+    )
 
     # Cover annotation
     fig.add_annotation(
-        x=cover/2, y=cover/2,
+        x=cover / 2,
+        y=cover / 2,
         text=f"{cover:.0f}",
         showarrow=False,
         font=dict(size=9, color="#888"),
@@ -2246,20 +2550,23 @@ def create_cross_section_figure(
 
     # Legend/key
     legend_items = [
-        (b+60, D-30, main_bar_color, "Bottom Bars"),
-        (b+60, D-60, top_bar_color, "Top Bars"),
-        (b+60, D-90, stirrup_color, "Stirrups"),
+        (b + 60, D - 30, main_bar_color, "Bottom Bars"),
+        (b + 60, D - 60, top_bar_color, "Top Bars"),
+        (b + 60, D - 90, stirrup_color, "Stirrups"),
     ]
     for lx, ly, color, text in legend_items:
-        fig.add_trace(go.Scatter(
-            x=[lx], y=[ly],
-            mode="markers+text",
-            marker=dict(size=10, color=color),
-            text=[f"  {text}"],
-            textposition="middle right",
-            showlegend=False,
-            hoverinfo="skip",
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[lx],
+                y=[ly],
+                mode="markers+text",
+                marker=dict(size=10, color=color),
+                text=[f"  {text}"],
+                textposition="middle right",
+                showlegend=False,
+                hoverinfo="skip",
+            )
+        )
 
     # Layout
     fig.update_layout(
@@ -2358,18 +2665,28 @@ def render_cross_section() -> None:
     else:
         spacing_1 = 0
     for i in range(bottom_count_1):
-        bx = cover + 8 + bottom_dia_1/2 + i * spacing_1 if bottom_count_1 > 1 else b/2
+        bx = (
+            cover + 8 + bottom_dia_1 / 2 + i * spacing_1
+            if bottom_count_1 > 1
+            else b / 2
+        )
         bottom_bars.append((bx, layer1_y, bottom_dia_1))
 
     # Calculate bottom layer 2 positions (if any)
     if bottom_count_2 > 0 and bottom_dia_2 > 0:
-        layer2_y = layer1_y + bottom_dia_1/2 + 25 + bottom_dia_2/2  # vertical spacing
+        layer2_y = (
+            layer1_y + bottom_dia_1 / 2 + 25 + bottom_dia_2 / 2
+        )  # vertical spacing
         if bottom_count_2 > 1:
             spacing_2 = available_width / (bottom_count_2 - 1)
         else:
             spacing_2 = 0
         for i in range(bottom_count_2):
-            bx = cover + 8 + bottom_dia_2/2 + i * spacing_2 if bottom_count_2 > 1 else b/2
+            bx = (
+                cover + 8 + bottom_dia_2 / 2 + i * spacing_2
+                if bottom_count_2 > 1
+                else b / 2
+            )
             bottom_bars.append((bx, layer2_y, bottom_dia_2))
 
     # Calculate top bar positions
@@ -2379,7 +2696,7 @@ def render_cross_section() -> None:
     else:
         spacing_top = 0
     for i in range(top_count):
-        tx = cover + 8 + top_dia/2 + i * spacing_top if top_count > 1 else b/2
+        tx = cover + 8 + top_dia / 2 + i * spacing_top if top_count > 1 else b / 2
         top_bars.append((tx, top_y, top_dia))
 
     # Display metrics
@@ -2388,7 +2705,7 @@ def render_cross_section() -> None:
     col2.metric("Cover", f"{cover:.0f} mm")
 
     # Calculate total Ast
-    total_ast = sum(3.14159 * (d/2)**2 for _, _, d in bottom_bars)
+    total_ast = sum(3.14159 * (d / 2) ** 2 for _, _, d in bottom_bars)
     col3.metric("Ast Provided", f"{total_ast:.0f} mm²")
 
     utilization = (row["ast_req"] / total_ast * 100) if total_ast > 0 else 0
@@ -2423,7 +2740,11 @@ def render_cross_section() -> None:
         ],
         "Ast (mm²)": [
             f"{bottom_count_1 * 3.14159 * (bottom_dia_1/2)**2:.0f}",
-            f"{bottom_count_2 * 3.14159 * (bottom_dia_2/2)**2:.0f}" if bottom_count_2 > 0 else "-",
+            (
+                f"{bottom_count_2 * 3.14159 * (bottom_dia_2/2)**2:.0f}"
+                if bottom_count_2 > 0
+                else "-"
+            ),
             f"{top_count * 3.14159 * (top_dia/2)**2:.0f}",
         ],
     }
@@ -2575,13 +2896,38 @@ def render_beam_editor() -> None:
 
     with col1:
         st.markdown("**Geometry**")
-        b = st.number_input("Width b (mm)", value=safe_float(row.get("b_mm"), 300.0), step=25.0, key="edit_b")
-        D = st.number_input("Depth D (mm)", value=safe_float(row.get("D_mm"), 500.0), step=25.0, key="edit_D")
-        span = st.number_input("Span (mm)", value=safe_float(row.get("span_mm"), 5000.0), step=100.0, key="edit_span")
+        b = st.number_input(
+            "Width b (mm)",
+            value=safe_float(row.get("b_mm"), 300.0),
+            step=25.0,
+            key="edit_b",
+        )
+        D = st.number_input(
+            "Depth D (mm)",
+            value=safe_float(row.get("D_mm"), 500.0),
+            step=25.0,
+            key="edit_D",
+        )
+        span = st.number_input(
+            "Span (mm)",
+            value=safe_float(row.get("span_mm"), 5000.0),
+            step=100.0,
+            key="edit_span",
+        )
 
         st.markdown("**Loading**")
-        mu = st.number_input("Moment Mu (kN·m)", value=safe_float(row.get("mu_knm"), 100.0), step=10.0, key="edit_mu")
-        vu = st.number_input("Shear Vu (kN)", value=safe_float(row.get("vu_kn"), 50.0), step=5.0, key="edit_vu")
+        mu = st.number_input(
+            "Moment Mu (kN·m)",
+            value=safe_float(row.get("mu_knm"), 100.0),
+            step=10.0,
+            key="edit_mu",
+        )
+        vu = st.number_input(
+            "Shear Vu (kN)",
+            value=safe_float(row.get("vu_kn"), 50.0),
+            step=5.0,
+            key="edit_vu",
+        )
 
         st.markdown("**Materials**")
         fck = st.selectbox("Concrete", [20, 25, 30, 35, 40], index=1, key="edit_fck")
@@ -2591,7 +2937,9 @@ def render_beam_editor() -> None:
             # Update dataframe
             idx = df[df["beam_id"] == row["beam_id"]].index
             if len(idx) > 0:
-                df.loc[idx[0], ["b_mm", "D_mm", "span_mm", "mu_knm", "vu_kn", "fck", "fy"]] = [b, D, span, mu, vu, fck, fy]
+                df.loc[
+                    idx[0], ["b_mm", "D_mm", "span_mm", "mu_knm", "vu_kn", "fck", "fy"]
+                ] = [b, D, span, mu, vu, fck, fy]
                 st.session_state.ws_beams_df = df
                 st.session_state.ws_design_results = design_all_beams_ws()
                 st.success("✅ Redesigned!")
@@ -2599,11 +2947,18 @@ def render_beam_editor() -> None:
 
     with col2:
         # Live preview with current values
-        updated_row = pd.Series({
-            "b_mm": b, "D_mm": D, "span_mm": span,
-            "mu_knm": mu, "vu_kn": vu, "fck": fck, "fy": fy,
-            "cover_mm": row.get("cover_mm", 40),
-        })
+        updated_row = pd.Series(
+            {
+                "b_mm": b,
+                "D_mm": D,
+                "span_mm": span,
+                "mu_knm": mu,
+                "vu_kn": vu,
+                "fck": fck,
+                "fy": fy,
+                "cover_mm": row.get("cover_mm", 40),
+            }
+        )
         design = design_beam_row(updated_row)
 
         st.metric("Status", design["status"])
@@ -2620,7 +2975,9 @@ def render_beam_editor() -> None:
             )
             try:
                 fig = create_beam_3d_figure(
-                    b=b, D=D, span=span,
+                    b=b,
+                    D=D,
+                    span=span,
                     bottom_bars=rebar["bottom_bars"],
                     top_bars=rebar["top_bars"],
                     stirrup_positions=rebar["stirrup_positions"],
@@ -2712,12 +3069,19 @@ def render_dashboard() -> None:
     c1.metric("Beams", total)
     c2.metric("Pass Rate", f"{100*passed/max(total,1):.0f}%")
     c3.metric("Avg Util", f"{avg_util:.0f}%")
-    c4.metric("Failed", total - passed, delta=f"-{total-passed}" if total > passed else None, delta_color="inverse")
+    c4.metric(
+        "Failed",
+        total - passed,
+        delta=f"-{total-passed}" if total > passed else None,
+        delta_color="inverse",
+    )
 
     st.divider()
 
     # Tabs for different insights
-    tab1, tab2, tab3, tab4 = st.tabs(["📈 Analysis", "📦 Material Takeoff", "💰 Cost Estimate", "📥 Export"])
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ["📈 Analysis", "📦 Material Takeoff", "💰 Cost Estimate", "📥 Export"]
+    )
 
     with tab1:
         # Utilization distribution
@@ -2734,14 +3098,20 @@ def render_dashboard() -> None:
         # Quick wins
         st.markdown("##### 💡 Suggestions")
         if low > total * 0.3:
-            st.success(f"💰 {low} beams under-utilized. Reduce sections to save {low*5:.0f}% material.")
+            st.success(
+                f"💰 {low} beams under-utilized. Reduce sections to save {low*5:.0f}% material."
+            )
         if high > 0:
-            st.warning(f"⚠️ {high} beams near capacity. Verify under all load combinations.")
+            st.warning(
+                f"⚠️ {high} beams near capacity. Verify under all load combinations."
+            )
         if passed == total:
             st.success("✅ All beams pass design checks!")
         else:
             failed_beams = df[df["is_safe"] == False]["beam_id"].tolist()[:3]
-            st.error(f"❌ Failed: {', '.join(failed_beams)}{'...' if len(failed_beams) > 3 else ''}")
+            st.error(
+                f"❌ Failed: {', '.join(failed_beams)}{'...' if len(failed_beams) > 3 else ''}"
+            )
 
     with tab2:
         # Material takeoff
@@ -2759,7 +3129,11 @@ def render_dashboard() -> None:
             st.caption(f"≈ {takeoff['steel_kg']/1000:.2f} tonnes")
 
         # Steel ratio
-        steel_ratio = takeoff['steel_kg'] / (takeoff['concrete_m3'] * 2400) * 100 if takeoff['concrete_m3'] > 0 else 0
+        steel_ratio = (
+            takeoff["steel_kg"] / (takeoff["concrete_m3"] * 2400) * 100
+            if takeoff["concrete_m3"] > 0
+            else 0
+        )
         st.metric("Steel Ratio", f"{steel_ratio:.1f}%", help="kg steel per kg concrete")
 
         # Per-story breakdown if multiple stories
@@ -2769,12 +3143,14 @@ def render_dashboard() -> None:
             for story in df["story"].unique():
                 story_df = df[df["story"] == story]
                 story_takeoff = calculate_material_takeoff(story_df)
-                story_data.append({
-                    "Story": story,
-                    "Beams": len(story_df),
-                    "Concrete (m³)": f"{story_takeoff['concrete_m3']:.1f}",
-                    "Steel (kg)": f"{story_takeoff['steel_kg']:.0f}",
-                })
+                story_data.append(
+                    {
+                        "Story": story,
+                        "Beams": len(story_df),
+                        "Concrete (m³)": f"{story_takeoff['concrete_m3']:.1f}",
+                        "Steel (kg)": f"{story_takeoff['steel_kg']:.0f}",
+                    }
+                )
             st.dataframe(story_data, hide_index=True, use_container_width=True)
 
     with tab3:
@@ -2791,22 +3167,30 @@ def render_dashboard() -> None:
 
         # Cost per meter
         total_length = df["span_mm"].sum() / 1000  # m
-        cost_per_m = takeoff['total_cost'] / total_length if total_length > 0 else 0
+        cost_per_m = takeoff["total_cost"] / total_length if total_length > 0 else 0
 
-        st.metric("Cost per Running Meter", f"₹{cost_per_m:,.0f}/m", help="Total cost / total beam length")
+        st.metric(
+            "Cost per Running Meter",
+            f"₹{cost_per_m:,.0f}/m",
+            help="Total cost / total beam length",
+        )
 
         # Visualization
         if VISUALIZATION_AVAILABLE:
             cost_data = {
                 "Item": ["Concrete", "Steel"],
-                "Cost (₹)": [takeoff['concrete_cost'], takeoff['steel_cost']],
+                "Cost (₹)": [takeoff["concrete_cost"], takeoff["steel_cost"]],
             }
-            fig = go.Figure(data=[go.Pie(
-                labels=cost_data["Item"],
-                values=cost_data["Cost (₹)"],
-                hole=0.4,
-                marker_colors=["#2ecc71", "#3498db"],
-            )])
+            fig = go.Figure(
+                data=[
+                    go.Pie(
+                        labels=cost_data["Item"],
+                        values=cost_data["Cost (₹)"],
+                        hole=0.4,
+                        marker_colors=["#2ecc71", "#3498db"],
+                    )
+                ]
+            )
             fig.update_layout(
                 height=250,
                 margin=dict(l=0, r=0, t=30, b=0),
@@ -2821,13 +3205,26 @@ def render_dashboard() -> None:
         st.caption("Export your beam designs for documentation or further analysis")
 
         # Prepare export data with key columns
-        export_cols = ["beam_id", "b_mm", "D_mm", "span_mm", "mu_knm", "vu_kn",
-                       "is_safe", "utilization", "ast_provided_mm2", "ast_required_mm2",
-                       "main_bars", "stirrup_spacing_mm"]
+        export_cols = [
+            "beam_id",
+            "b_mm",
+            "D_mm",
+            "span_mm",
+            "mu_knm",
+            "vu_kn",
+            "is_safe",
+            "utilization",
+            "ast_provided_mm2",
+            "ast_required_mm2",
+            "main_bars",
+            "stirrup_spacing_mm",
+        ]
         export_df = df[[c for c in export_cols if c in df.columns]].copy()
 
         # Add status column for clarity
-        export_df.insert(0, "status", export_df["is_safe"].apply(lambda x: "PASS" if x else "FAIL"))
+        export_df.insert(
+            0, "status", export_df["is_safe"].apply(lambda x: "PASS" if x else "FAIL")
+        )
 
         # CSV download
         csv_data = export_df.to_csv(index=False)
@@ -2874,7 +3271,9 @@ TOTAL: ₹{takeoff['total_cost']:,.0f}
             help="Download material takeoff and cost summary",
         )
 
-        st.info("💡 **Tip:** Use CSV export to import results into Excel for detailed reporting.")
+        st.info(
+            "💡 **Tip:** Use CSV export to import results into Excel for detailed reporting."
+        )
 
     # Navigation
     st.divider()

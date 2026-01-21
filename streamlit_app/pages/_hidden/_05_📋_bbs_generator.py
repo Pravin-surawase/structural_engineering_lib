@@ -339,16 +339,14 @@ if mode == "auto":
     beam_data = get_beam_design_from_session()
 
     if beam_data is None:
-        st.warning(
-            """
+        st.warning("""
         **No beam design found!**
 
         Please go to the **Beam Design** page and:
         1. Enter beam geometry and loading
         2. Click "Run Design Analysis"
         3. Return here to generate BBS
-        """
-        )
+        """)
 
         if st.button("🔗 Go to Beam Design Page"):
             st.switch_page("pages/01_🏗️_beam_design.py")

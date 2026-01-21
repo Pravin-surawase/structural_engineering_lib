@@ -173,8 +173,7 @@ page_header(
 
 # Instructions
 with st.expander("📖 How to Use"):
-    st.markdown(
-        """
+    st.markdown("""
     ### CSV Format
     Your CSV file must contain these columns:
 
@@ -192,8 +191,7 @@ with st.expander("📖 How to Use"):
     Optional columns: `d_mm` (effective depth), `cover_mm` (clear cover)
 
     ### Download Template
-    """
-    )
+    """)
 
     # Create template CSV
     template_data = {
