@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-21 (Session 56)
+**Updated:** 2026-01-21 (Session 59)
 
 ---
 
@@ -15,10 +15,21 @@
 
 ## Current Focus
 
-- **Version:** v0.18.1 (AI v2 Bugfix + Adapter Integration)
-- **Focus:** Fix CSV import using adapter system, update docs
-- **Key Fix:** AI v2 CSV import now uses proven adapter infrastructure from page 07
+- **Version:** v0.18.1 → v0.19 (Phase 4 + Launch)
+- **Focus:** Complete Phase 4, prepare launch, then foundation for V3
+- **Target:** March 2026 Launch → V3 React migration
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
+
+---
+
+## Release Roadmap
+
+| Version | Focus | Status | Key Deliverables |
+|---------|-------|--------|------------------|
+| **v0.18.1** | AI v2 Bugfix | ✅ READY | PR #393 (CSV import fix) |
+| **v0.19** | Phase 4 + Launch | 🚧 NEXT | DXF/PDF export, PyVista, performance, polish |
+| **v0.20** | V3 Foundation | 📋 PLANNED | Library API additions for React migration |
+| **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
 
 ---
 
@@ -82,17 +93,48 @@ The adapter system handles format-specific column detection and unit handling.
 
 **Session 54 Commits: 5 on PR + 2 on main**
 
-### TASK-PHASE4: CAD Quality + Launch Prep 🚧 IN PROGRESS
+### TASK-PHASE4: CAD Quality + Launch Prep (v0.19) 🚧 NEXT
 
 **Goal:** Polish for production launch, CAD-quality rendering
+**Target:** March 2026 Launch
 
-| Sub-task | Status | Priority |
-|----------|--------|----------|
-| PyVista evaluation | 📋 TODO | 🔴 High |
-| Export to DXF/PDF | 📋 TODO | 🔴 High |
-| Print-ready reports | 📋 TODO | 🟡 Medium |
-| Performance optimization | 📋 TODO | 🟡 Medium |
-| User testing feedback | 📋 TODO | 🟡 Medium |
+| Sub-task | Status | Priority | Est | Notes |
+|----------|--------|----------|-----|-------|
+| Merge PR #393 (CSV import fix) | 📋 TODO | 🔴 High | 1h | READY to merge |
+| PyVista evaluation | 📋 TODO | 🔴 High | 2d | CAD-quality comparison |
+| DXF/PDF export | 📋 TODO | 🔴 High | 4d | Engineers need this |
+| Print-ready reports | 📋 TODO | 🟡 Medium | 2d | Professional PDF output |
+| Performance optimization | 📋 TODO | 🟡 Medium | 2d | 1000+ beams benchmark |
+| User testing + feedback | 📋 TODO | 🟡 Medium | 3d | Beta testing cycle |
+| Documentation polish | 📋 TODO | 🟡 Medium | 2d | User guide, tutorials |
+
+### TASK-V3-FOUNDATION: Library APIs for V3 (v0.20) 📋 PLANNED
+
+**Goal:** Add library functions needed for React V3 migration
+**Prerequisite:** Complete v0.19 launch first
+
+| API Function | Status | Priority | Notes |
+|--------------|--------|----------|-------|
+| `modify_beam_reinforcement()` | 📋 TODO | 🔴 P0 | Edit rebar API |
+| `validate_beam_design()` | 📋 TODO | 🔴 P0 | Real-time validation (<100ms) |
+| `compare_beam_designs()` | 📋 TODO | 🔴 P0 | Before/after diff |
+| `compute_beam_cost()` | 📋 TODO | 🔴 P0 | Standardized cost calc |
+| `detect_beam_lines()` | 📋 TODO | 🟡 P1 | Multi-beam intelligence |
+| `analyze_beam_line()` | 📋 TODO | 🟡 P1 | Line analysis |
+| `optimize_beam_line()` | 📋 TODO | 🟡 P1 | Line optimization |
+| `score_constructability()` | 📋 TODO | 🟡 P1 | Congestion scoring |
+| Professional API docs | 📋 TODO | 🔴 P0 | OpenAPI-ready docs |
+
+**Why Before V3:** V3 FastAPI wrapper needs stable, well-documented APIs.
+See: [ai-workspace-expansion-v3.md](research/ai-workspace-expansion-v3.md)
+
+### TASK-V3-REACT: React Migration (v0.21+) 📋 POST-LAUNCH
+
+**Goal:** 6-week React + R3F + FastAPI migration
+**Status:** DO NOT START before March 2026 launch
+**Stack:** React + React Three Fiber + Dockview + AG Grid + FastAPI
+
+See: [ai-workspace-expansion-v3.md](research/ai-workspace-expansion-v3.md)
 
 ### TASK-REBAR-3D: Phase 3 - Rebar Visualization ✅ COMPLETE
 
