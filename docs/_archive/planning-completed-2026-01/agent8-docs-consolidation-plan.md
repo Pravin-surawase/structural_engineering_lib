@@ -14,7 +14,7 @@
 
 ## Executive Summary
 
-Based on comprehensive research (see [agent-8-git-automation-comprehensive-research.md](../research/agent-8-git-automation-comprehensive-research.md)), this plan outlines consolidation actions to:
+Based on comprehensive research (see [agent-8-git-automation-comprehensive-research.md](../../research/agent-8-git-automation-comprehensive-research.md)), this plan outlines consolidation actions to:
 - **Archive 4 historical research documents** (no longer actively referenced)
 - **Update agent_start.sh default recommendation** to --quick mode
 - **Maintain current 5 active guides** (all essential, no redundancy)
@@ -76,24 +76,24 @@ Based on comprehensive research (see [agent-8-git-automation-comprehensive-resea
 mkdir -p docs/_archive/research/agent-8/
 
 # Move files safely (checks links automatically)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-week1-reality-check.md \
   docs/_archive/research/agent-8/agent-8-week1-reality-check.md
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-week1-summary.md \
   docs/_archive/research/agent-8/agent-8-week1-summary.md
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-implementation-priority.md \
   docs/_archive/research/agent-8/agent-8-implementation-priority.md
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-week1-implementation-blocker.md \
   docs/_archive/research/agent-8/agent-8-week1-implementation-blocker.md
 
 # Verify no broken links
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 ```
 
 **Expected Result:**
@@ -157,7 +157,7 @@ No loss of information, proper archival per governance.
 # Option 1: Legacy commands (still work, but unified script is simpler)
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/start_session.py
 ```
 
 <!-- AFTER -->
@@ -173,7 +173,7 @@ No loss of information, proper archival per governance.
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/start_session.py
 ```
 ```
 
@@ -191,7 +191,7 @@ No loss of information, proper archival per governance.
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/start_session.py
 ```
 
 <!-- AFTER -->
@@ -209,7 +209,7 @@ No loss of information, proper archival per governance.
 # Legacy commands (still work):
 ./scripts/agent_setup.sh
 ./scripts/agent_preflight.sh
-.venv/bin/.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/start_session.py
 ```
 **Rationale:**
 - Quick mode is now explicitly "DEFAULT"
@@ -397,7 +397,7 @@ Analysis: docs/research/agent-start-modes-analysis.md
 ### Validation ✅
 ```bash
 # After archival
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 # → Should show: "Broken links: 0"
 
 # After recommendation updates
@@ -406,7 +406,7 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 # → Should show all 4 files with "RECOMMENDED" or "DEFAULT"
 
 # Final validation
-.venv/bin/.venv/bin/python scripts/end_session.py
+.venv/bin/python scripts/end_session.py
 # → Should pass all checks
 ```
 
@@ -437,7 +437,7 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 
 **If Links Break:**
 1. Revert with: `git revert <commit-hash>`
-2. Investigate broken link: `.venv/bin/.venv/bin/python scripts/check_links.py`
+2. Investigate broken link: `.venv/bin/python scripts/check_links.py`
 3. Fix manually, then re-attempt archival
 
 **If Agent Start Issues:**
@@ -473,19 +473,19 @@ grep -r "agent_start.sh --quick" .github/copilot-instructions.md
 ## Related Documents
 
 ### Research & Analysis
-- [agent-8-git-automation-comprehensive-research.md](../research/agent-8-git-automation-comprehensive-research.md) - Complete system analysis
-- [agent-start-modes-analysis.md](../_archive/research-completed/agent-start-modes-analysis.md) - Full vs quick comparison
+- [agent-8-git-automation-comprehensive-research.md](../../research/agent-8-git-automation-comprehensive-research.md) - Complete system analysis
+- [agent-start-modes-analysis.md](../research-completed/agent-start-modes-analysis.md) - Full vs quick comparison
 
 ### Active Guides (No Changes)
-- [agent-8-automation.md](../agents/guides/agent-8-automation.md) - Script index
-- [agent-8-git-ops.md](../agents/guides/agent-8-git-ops.md) - Core protocol
-- [agent-8-multi-agent-coordination.md](../agents/guides/agent-8-multi-agent-coordination.md) - Worktrees
-- [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md) - Historical lessons
-- [agent-8-operations-log-spec.md](../agents/guides/agent-8-operations-log-spec.md) - Audit format
+- [agent-8-automation.md](../../agents/guides/agent-8-automation.md) - Script index
+- [agent-8-git-ops.md](../../agents/guides/agent-8-git-ops.md) - Core protocol
+- [agent-8-multi-agent-coordination.md](../../agents/guides/agent-8-multi-agent-coordination.md) - Worktrees
+- [agent-8-mistakes-prevention-guide.md](../../agents/guides/agent-8-mistakes-prevention-guide.md) - Historical lessons
+- [agent-8-operations-log-spec.md](../../agents/guides/agent-8-operations-log-spec.md) - Audit format
 
 ### Governance
-- [folder-structure-governance.md](../guidelines/folder-structure-governance.md) - Archival rules
-- [file-operations-safety-guide.md](../guidelines/file-operations-safety-guide.md) - Safe move procedures
+- [folder-structure-governance.md](../../guidelines/folder-structure-governance.md) - Archival rules
+- [file-operations-safety-guide.md](../../guidelines/file-operations-safety-guide.md) - Safe move procedures
 
 ---
 

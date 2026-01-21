@@ -36,7 +36,7 @@ Start here, find what you need, get back to work.
 
 | Document | Purpose |
 |----------|---------|
-| [Agent 6 Tasks](../../planning/agent-6-tasks-streamlit.md) | Full task history + details |
+| [Agent 6 Tasks](../../_archive/planning-20260119/agent-6-tasks-streamlit.md) | Full task history + details |
 | [v0.17.5 Tasks in TASKS.md](../../TASKS.md) | Current sprint tasks (TASK-401-437) |
 
 ### App Structure
@@ -58,7 +58,7 @@ Start here, find what you need, get back to work.
 cd streamlit_app && pytest tests/ -v
 
 # Check for code issues (AST scanner)
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
 # Run pylint on Streamlit code
 .venv/bin/python -m pylint --rcfile=.pylintrc-streamlit streamlit_app/
@@ -89,7 +89,7 @@ Agent 6 uses a **3-layer prevention system** to catch issues before they reach u
 
 ## Session Workflow
 
-1. **Start:** Check [agent-6-tasks-streamlit.md](../../planning/agent-6-tasks-streamlit.md) for priorities
+1. **Start:** Check [agent-6-tasks-streamlit.md](../../_archive/planning-20260119/agent-6-tasks-streamlit.md) for priorities
 2. **Develop:** Implement features with tests
 3. **Validate:** Run scanner + pylint + tests
 4. **Commit:** Use Agent 8 workflow (`./scripts/ai_commit.sh`)

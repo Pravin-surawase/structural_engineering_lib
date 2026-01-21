@@ -734,7 +734,7 @@ Make the Streamlit app public, stable, and professional before deployment.
 #### Step 1: Prepare the app to run on any machine
 
 1. **Confirm the entry file**
-  - The Streamlit entry is [streamlit_app/app.py](streamlit_app/app.py).
+  - The Streamlit entry is [streamlit_app/app.py](../../streamlit_app/app.py).
 2. **Check dependencies**
   - Ensure required Python packages are in [Python/pyproject.toml](Python/pyproject.toml).
 3. **Verify the app starts locally**

@@ -16,8 +16,8 @@
 - ✅ CI checks passed (Fast PR Checks: success)
 
 ### 2. Agent Task Files Created
-- ✅ [agent-1-tasks.md](../../planning/agent-1-tasks.md) - RESEARCHER role
-- ✅ [agent-2-tasks.md](../../planning/agent-2-tasks.md) - DEV/TESTER role (flexible)
+- ✅ [agent-1-tasks.md](../planning-20260119/agent-1-tasks.md) - RESEARCHER role
+- ✅ [agent-2-tasks.md](../planning-20260119/agent-2-tasks.md) - DEV/TESTER role (flexible)
 
 ### 3. Git State
 - ✅ Worktree clean
@@ -215,8 +215,8 @@ As the MAIN agent, you handle:
 **For Background Agents:**
 - [Background Agent Guide](../../contributing/background-agent-guide.md) - How to work safely
 - [Background Agent Research](../../research/background-agent-parallel-work.md) - Why it works
-- [Agent 1 Tasks](../../planning/agent-1-tasks.md) - RESEARCHER task board
-- [Agent 2 Tasks](../../planning/agent-2-tasks.md) - DEV/TESTER task board
+- [Agent 1 Tasks](../planning-20260119/agent-1-tasks.md) - RESEARCHER task board
+- [Agent 2 Tasks](../planning-20260119/agent-2-tasks.md) - DEV/TESTER task board
 
 **For MAIN Agent:**
 - [Main TASKS.md](../../TASKS.md) - Primary task board

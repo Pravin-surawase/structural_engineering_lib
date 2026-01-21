@@ -6235,7 +6235,7 @@ All folder structure governance tasks are complete. See [folder-migration-progre
 
 ### 📄 New Documents Created
 - [session-11-review-and-analysis.md](_archive/research-sessions/session-11-review-and-analysis.md) - Comprehensive review with root cause analysis
-- [session-12-planning.md](planning/session-12-planning.md) - Detailed planning for root file reduction
+- [session-12-planning.md](_archive/planning-20260119/session-12-planning.md) - Detailed planning for root file reduction
 
 ### 🛠️ Automation Improvements
 1. **end_session.py enhanced**: Now runs governance compliance check
@@ -6752,7 +6752,7 @@ All 7 IS 456-specific modules migrated to `codes/is456/` with backward compatibi
 - 6 folders missing README → Created comprehensive READMEs
 - 50+ orphan files → Documented, ready for cleanup
 
-**See:** [docs/planning/session-2026-01-10-session4-issues.md](planning/session-2026-01-10-session4-issues.md)
+**See:** [docs/planning/session-2026-01-10-session4-issues.md](_archive/planning-20260119/session-2026-01-10-session4-issues.md)
 
 ### Metrics
 - 4 new automation scripts
@@ -6801,7 +6801,7 @@ All 7 IS 456-specific modules migrated to `codes/is456/` with backward compatibi
 - Pre-commit N806/mypy failures → Fixed variable naming + return types
 - Leading Indicator CI failure → Infrastructure issue (non-blocking)
 
-**See:** [docs/planning/session-2026-01-10-session3-issues.md](planning/session-2026-01-10-session3-issues.md)
+**See:** [docs/planning/session-2026-01-10-session3-issues.md](_archive/planning-20260119/session-2026-01-10-session3-issues.md)
 
 ### Metrics
 - 8,087 lines added

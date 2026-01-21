@@ -114,10 +114,10 @@ cd Python && ../.venv/bin/python -m mypy structural_lib
 cd Python && ../.venv/bin/python -m ruff check .
 
 # Doc version drift
-.venv/bin/.venv/bin/python scripts/check_doc_versions.py
+.venv/bin/python scripts/check_doc_versions.py
 
 # Test stats
-.venv/bin/.venv/bin/python scripts/update_test_stats.py
+.venv/bin/python scripts/update_test_stats.py
 ```
 
 ---

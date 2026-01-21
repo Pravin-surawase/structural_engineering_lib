@@ -1,9 +1,9 @@
 {
   "$schema": "scripts-index-schema",
   "version": "1.0.0",
-  "updated": "2026-01-15",
+  "updated": "2026-01-21",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 139,
+  "total_scripts": 143,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -180,7 +180,11 @@
         "watch_tests.sh": "Watch and run tests on change",
         "external_cli_test.py": "Test external CLI integration",
         "validate_trial_data.py": "Validate trial/test data",
-        "run_vba_smoke_tests.py": "Run VBA smoke tests via Excel automation (macOS)"
+        "run_vba_smoke_tests.py": "Run VBA smoke tests via Excel automation (macOS)",
+        "test_import_3d_pipeline.py": "Integration test for import → design → 3D pipeline",
+        "test_setup.py": "Quick test of structural_lib installation",
+        "test_vba_adapter.py": "Test ETABSAdapter with VBA ETABS export data",
+        "vba_validator.py": "VBA syntax validator (no Excel/Office required)"
       }
     },
     "release": {

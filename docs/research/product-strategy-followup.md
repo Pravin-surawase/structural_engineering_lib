@@ -84,7 +84,7 @@ def check_column_slenderness(
 
 This document has been consolidated into the single source of truth:
 
-- [docs/research/chat-ui-product-strategy-research.md](docs/research/chat-ui-product-strategy-research.md)
+- [docs/research/chat-ui-product-strategy-research.md](chat-ui-product-strategy-research.md)
 
 Please use that file for all current research and planning.
     """One-way slab design (span/depth > 2)."""

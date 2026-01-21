@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-19T19:54:22.546739",
-  "total_docs": 321,
+  "generated": "2026-01-21T15:18:26.299319",
+  "total_docs": 313,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,18 +10,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
-        "2026-01-19 \u2014 Session 44: Create Task PR Hardening + Bootstrap Python",
-        "2026-01-19 \u2014 Session 43: Onboarding Refresh + Link Fixes",
-        "2026-01-19 \u2014 Session 41-42: PR #381 Merged - Multi-Format Import System",
-        "2026-01-19 \u2014 Session 40: Canonical Data Format Architecture (TASK-DATA-001)",
-        "2026-01-21 \u2014 Session 39: Real 3D Building Visualization (TASK-3D-002)",
-        "2026-01-17 \u2014 Session 36: ETABS VBA Export Implementation",
-        "2026-01-17 \u2014 Session 39: ETABS Import UI + Scanner Improvements",
-        "2026-01-20 \u2014 Session 38: UI Improvements + Phase 2 Start",
-        "2026-01-18 \u2014 Session 37: Phase 1 Completion + Phase 2 Planning",
-        "2026-01-16 \u2014 Session 36: 3D Visualization MVP (Phase 1)"
+        "2026-01-21 \u2014 Session 58: AI Workspace Integration Research & Planning",
+        "2026-01-20 \u2014 Session 58 Part 2: AI Workspace Expansion Research",
+        "2026-01-21 \u2014 Session 57: AI v2 CSV Import Fix (Critical)",
+        "2026-01-20 \u2014 Session 56: AI Chat Improvements",
+        "2026-01-20 \u2014 Session 55: v0.18.0 Release Prep",
+        "2026-01-20 \u2014 Session 54: AI v2 Polish & Quality",
+        "2026-01-20 \u2014 Session 53: AI v2 Advanced Features",
+        "2026-01-20 \u2014 Session 52: AI Assistant v2 with Dynamic Workspace",
+        "2026-01-20 \u2014 Session 51: Phase 3 Rebar Visualization & Bug Fixes",
+        "2026-01-20 \u2014 Session 50: AI Page Polish & CSV Import"
       ],
-      "size_bytes": 282886
+      "size_bytes": 336518
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -50,16 +50,14 @@
       "folder": "root",
       "tags": [],
       "sections": [
-        "Rules (read first)",
-        "Current Release",
-        "Active",
-        "Completed (Archive after 20 items)",
-        "Up Next (Session 34+)",
-        "Backlog",
-        "Recently Done",
-        "Archive"
+        "Rules",
+        "Current Focus",
+        "Active Tasks",
+        "Backlog (Prioritized)",
+        "Recently Completed (Last 7 Days)",
+        "Notes"
       ],
-      "size_bytes": 26831
+      "size_bytes": 9945
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -116,6 +114,28 @@
         "8. Phase 2: PyVista Migration"
       ],
       "size_bytes": 102123
+    },
+    "docs/research/lod-threshold-validation.md": {
+      "title": "LOD Threshold Validation Research",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Research Data",
+        "Performance Estimates (Proposed New Thresholds)",
+        "Feasibility Analysis: 200 Beams with Full Detail",
+        "Decision: Updated LOD Thresholds",
+        "Migration Path",
+        "Appendix: Technical Deep Dive",
+        "References",
+        "Related Documentation"
+      ],
+      "size_bytes": 12776
     },
     "docs/research/etabs-vba-export-macro.md": {
       "title": "ETABS VBA Export Macro \u2014 Testing Shortcut",
@@ -230,6 +250,29 @@
       ],
       "size_bytes": 43533
     },
+    "docs/research/ai-workspace-expansion-v2.md": {
+      "title": "AI Workspace Expansion - Research & Architecture (V2)",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Table of Contents",
+        "1. Current State (Verified)",
+        "2. User Vision and Workflow",
+        "3. Product Architecture (Dynamic Workspace)",
+        "4. UI Modernization Plan (Streamlit-First)",
+        "5. Technology Stack Assessment",
+        "6. Library Expansion Plan (Critical Path)",
+        "7. Multi-Beam Intelligence",
+        "8. Optimization Workspace"
+      ],
+      "size_bytes": 11636
+    },
     "docs/research/agent-efficiency-research.md": {
       "title": "Agent Efficiency Research: Reducing Requests & Preventing Mistakes",
       "type": "research",
@@ -271,29 +314,6 @@
       ],
       "size_bytes": 11050
     },
-    "docs/research/documentation-consolidation-research-2026-01-13.md": {
-      "title": "Documentation Consolidation Research",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "research",
-      "tags": [
-        "investigation",
-        "planning"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Key Findings",
-        "Consolidation Opportunities",
-        "AI Agent Efficiency Impact",
-        "Implementation Plan",
-        "Success Metrics",
-        "Risks and Mitigation",
-        "Consolidation Rules (For Future)",
-        "Next Steps (Prioritized)",
-        "Automation Opportunities"
-      ],
-      "size_bytes": 13747
-    },
     "docs/research/agent-research-review-and-validation.md": {
       "title": "ChatGPT Agent Research Review & Validation",
       "type": "research",
@@ -315,28 +335,6 @@
         "Approval Status"
       ],
       "size_bytes": 11943
-    },
-    "docs/research/streamlit-app-issues-2026-01-14.md": {
-      "title": "Streamlit App Issues Analysis",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "research",
-      "tags": [
-        "investigation",
-        "planning"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Issue Catalog",
-        "Git Workflow Issues (Session 23 Learnings)",
-        "API Compatibility Matrix",
-        "Fix Priority and Effort",
-        "Root Cause Analysis: Why Weren't These Caught?",
-        "Prevention System Implemented",
-        "Clarification on Jinja2 Reports vs Streamlit UI",
-        "Action Plan (Session 24 Completion)"
-      ],
-      "size_bytes": 9543
     },
     "docs/research/critical-infrastructure-gaps-v018.md": {
       "title": "Critical Infrastructure Gap Analysis (Pre-v0.18.0)",
@@ -509,6 +507,29 @@
       ],
       "size_bytes": 14515
     },
+    "docs/research/ai-chat-architecture-v2.md": {
+      "title": "AI Chat Architecture V2 \u2014 Streamlit Implementation",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "1. UI Layout Design",
+        "2. LLM Tool Functions",
+        "3. System Prompt",
+        "Your Capabilities:",
+        "Guidelines:",
+        "Response Format:",
+        "Important:",
+        "4. Implementation Plan",
+        "5. Technology Stack"
+      ],
+      "size_bytes": 16978
+    },
     "docs/research/research-methodology.md": {
       "title": "Research Methodology for Smart Library",
       "type": "research",
@@ -578,6 +599,29 @@
       ],
       "size_bytes": 27950
     },
+    "docs/research/3d-visualization-differentiation-strategy.md": {
+      "title": "3D Visualization Differentiation Strategy",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "The Core Problem",
+        "What ETABS Shows vs What We Should Show",
+        "Our Competitive Advantage",
+        "What Engineers Actually Want",
+        "Proposed Feature Roadmap",
+        "Implementation Strategy",
+        "Decision: What to Build This Week",
+        "Answering User's Questions",
+        "Updated 8-Week Plan Additions",
+        "Conclusion"
+      ],
+      "size_bytes": 8943
+    },
     "docs/research/chat-ui-product-strategy-research.md": {
       "title": "Chat UI & Product Strategy Research - Consolidated Findings",
       "type": "research",
@@ -599,7 +643,7 @@
         "7. v0.25.0 Roadmap",
         "8. Recommendations"
       ],
-      "size_bytes": 33376
+      "size_bytes": 33382
     },
     "docs/research/engineering-domain-apis.md": {
       "title": "Engineering Domain API Patterns Research",
@@ -623,27 +667,6 @@
         "8. Unit Handling Strategies"
       ],
       "size_bytes": 30143
-    },
-    "docs/research/session-32-library-audit.md": {
-      "title": "Session 32: Validated Library Audit & Gap Analysis",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "research",
-      "tags": [
-        "investigation",
-        "planning"
-      ],
-      "sections": [
-        "Executive Summary",
-        "1. Core Module Audit",
-        "2. Infrastructure Audit",
-        "3. Actual Gap Analysis",
-        "4. Corrected Priority Matrix",
-        "5. Recommended Next Steps",
-        "Validation Commands Used",
-        "Conclusion"
-      ],
-      "size_bytes": 9851
     },
     "docs/research/brainstorm-research-opportunities.md": {
       "title": "IS 456 RC Beam Design \u2014 Research Opportunities Brainstorm",
@@ -705,7 +728,7 @@
         "7. Task Breakdown (Numbered Phases)",
         "8. Technical Specifications"
       ],
-      "size_bytes": 31489
+      "size_bytes": 31515
     },
     "docs/research/streamlit-code-files-analysis.md": {
       "title": "Streamlit Code Quality Deep Research",
@@ -887,7 +910,7 @@
         "Table of Contents",
         "1. Columns & Slabs Expansion Strategy"
       ],
-      "size_bytes": 2808
+      "size_bytes": 2794
     },
     "docs/research/professional-api-patterns.md": {
       "title": "Professional Python Library API Patterns Research",
@@ -1149,7 +1172,7 @@
         "Implementation Sequence",
         "Next Steps"
       ],
-      "size_bytes": 8071
+      "size_bytes": 8102
     },
     "docs/research/agent-9-advanced-optimization-research.md": {
       "title": "Agent 9 Advanced Optimization Research",
@@ -1173,26 +1196,6 @@
         "Success Criteria"
       ],
       "size_bytes": 10865
-    },
-    "docs/research/sessions-20-21-review-2026-01-13.md": {
-      "title": "Sessions 20-21 Review & Validation Report",
-      "type": "research",
-      "complexity": "intermediate",
-      "folder": "research",
-      "tags": [
-        "investigation",
-        "planning"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Session 20 Validation \u2705",
-        "Session 21 Validation \u274c",
-        "Implementation Plan",
-        "Commit Plan (5+ commits)",
-        "Validation Checklist",
-        "Next Steps"
-      ],
-      "size_bytes": 5918
     },
     "docs/research/api-design-pattern-analysis.md": {
       "title": "API Design Pattern Analysis Report",
@@ -1263,29 +1266,6 @@
       ],
       "size_bytes": 11431
     },
-    "docs/research/comprehensive-repo-analysis-2026-01-14.md": {
-      "title": "Comprehensive Repository Deep-Dive Analysis",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "research",
-      "tags": [
-        "investigation",
-        "planning"
-      ],
-      "sections": [
-        "Executive Summary",
-        "1. Files, Folders, Goals & Overview",
-        "2. Automations & Workflows",
-        "3. Code Architecture",
-        "9. 2026-01-15 Addendum \u2014 Library-First Direction",
-        "4. Testing Strategy",
-        "5. Git State & History",
-        "6. Research & Documentation",
-        "7. Last 5 Days Work Summary",
-        "8. Current In-Progress Work"
-      ],
-      "size_bytes": 26005
-    },
     "docs/research/streamlit-modern-patterns-research.md": {
       "title": "Streamlit Modern Patterns & Code Quality Assessment",
       "type": "research",
@@ -1306,6 +1286,29 @@
         "Version History"
       ],
       "size_bytes": 10584
+    },
+    "docs/research/ai-effective-usage-patterns.md": {
+      "title": "Effective AI Usage Patterns for Structural Engineering",
+      "type": "research",
+      "complexity": "intermediate",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Overview",
+        "1. Model Selection (January 2026)",
+        "2. System Prompt Engineering",
+        "Your Capabilities:",
+        "Guidelines:",
+        "Important:",
+        "3. Function Calling Integration",
+        "4. Usage Patterns",
+        "5. Response Formatting",
+        "6. Error Handling"
+      ],
+      "size_bytes": 5839
     },
     "docs/research/autonomous-agent-workflow-research.md": {
       "title": "\ud83d\udd2c Autonomous Agent Workflow - Deep Research",
@@ -1456,6 +1459,29 @@
         "\u2705 Summary"
       ],
       "size_bytes": 22150
+    },
+    "docs/research/ai-assistant-workspace-integration.md": {
+      "title": "AI Assistant Workspace Integration \u2014 Research & Planning",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Table of Contents",
+        "1. Current State Analysis",
+        "2. Research Findings",
+        "3. Architecture Options",
+        "4. Implementation Plan",
+        "5. Context Document Design",
+        "Identity",
+        "Capabilities",
+        "Guidelines"
+      ],
+      "size_bytes": 21777
     },
     "docs/research/background-agent-parallel-work.md": {
       "title": "Background Agent Parallel Work Research (2026-01-07)",
@@ -2593,7 +2619,7 @@
       "sections": [
         "Files"
       ],
-      "size_bytes": 4867
+      "size_bytes": 4865
     },
     "docs/contributing/streamlit-issues-catalog.md": {
       "title": "Streamlit App Comprehensive Issue Catalog",
@@ -3406,7 +3432,7 @@
         "Research Documents",
         "Related Documentation"
       ],
-      "size_bytes": 1304
+      "size_bytes": 1322
     },
     "docs/_references/README.md": {
       "title": "Reference Materials (Local)",
@@ -3496,13 +3522,15 @@
         "tasks"
       ],
       "sections": [
+        "\ud83c\udfaf The Big Picture",
         "Session Start Checklist",
-        "Latest Handoff (auto)",
-        "Session 41-42 Summary - PR #381 Merged (2026-01-19)",
-        "Next Session Priorities",
-        "Quick Commands"
+        "Latest Handoff",
+        "Current Status",
+        "\ud83d\udd25 Next Session Priorities",
+        "Quick Commands",
+        "Key Files"
       ],
-      "size_bytes": 2260
+      "size_bytes": 5760
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3540,7 +3568,7 @@
         "\ud83d\ude80 Success Metrics",
         "\ud83d\udcda Resources & References"
       ],
-      "size_bytes": 24477
+      "size_bytes": 24507
     },
     "docs/planning/3d-visualization-strategic-decision.md": {
       "title": "3D Visualization Strategic Decision - Long-Term Excellence",
@@ -3565,26 +3593,6 @@
       ],
       "size_bytes": 24861
     },
-    "docs/planning/session-12-planning.md": {
-      "title": "Session 12+ Planning Document",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "I. Priority 1: Root File Reduction (14 \u2192 10)",
-        "II. Priority 2: Document Metadata Adoption",
-        "III. Priority 3: Quarterly Governance Audit System",
-        "IV. Research: Preventing Future Issues",
-        "V. Next Session Priorities",
-        "VI. Estimated Effort",
-        "VII. Success Criteria"
-      ],
-      "size_bytes": 7617
-    },
     "docs/planning/folder-migration-progress.md": {
       "title": "Folder Structure Migration - Progress Tracker",
       "type": "documentation",
@@ -3606,49 +3614,6 @@
         "\ud83d\udcc6 Timeline"
       ],
       "size_bytes": 8057
-    },
-    "docs/planning/agent-6-tasks-streamlit.md": {
-      "title": "Background Agent 6 Tasks (STREAMLIT SPECIALIST)",
-      "type": "tracking",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "\ud83c\udfaf Agent 6 Workflow Philosophy (CRITICAL - READ FIRST!)",
-        "\ud83d\udcca Progress Tracker",
-        "\ud83d\udccb PHASE 3: Feature Expansion \u2705 RESEARCH COMPLETE (100%)",
-        "\u2705 COMPLETED: STREAMLIT-RESEARCH-004 to 008 - UI Modernization Research",
-        "\ud83d\udd34 CRITICAL: STREAMLIT-UI-001 - Design System & Component Library",
-        "1. Color Palette",
-        "2. Typography Scale",
-        "3. Spacing System",
-        "4. Border Radius",
-        "5. Shadow System"
-      ],
-      "size_bytes": 276970
-    },
-    "docs/planning/session-14-lessons-learned.md": {
-      "title": "Session 14 Lessons Learned & Solutions",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Issue 1: Commit Strategy Misunderstanding",
-        "Issue 2: Multiple Push Rejections (Non-Fast-Forward)",
-        "Issue 3: Pre-commit Hook Modifications",
-        "Issue 4: No Issues with Core Workflow",
-        "Summary: Issues & Actions",
-        "Next Session Tasks",
-        "Long-Term Improvements"
-      ],
-      "size_bytes": 6302
     },
     "docs/planning/automation-platform-phase-0-research.md": {
       "title": "Automation Platform Phase 0 - Research & Mapping",
@@ -3694,8 +3659,8 @@
       ],
       "size_bytes": 19608
     },
-    "docs/planning/agent8-docs-consolidation-plan.md": {
-      "title": "Agent 8 Documentation Consolidation Plan",
+    "docs/planning/ai-chat-redesign-plan.md": {
+      "title": "AI Chat Page Redesign Plan",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -3705,17 +3670,17 @@
       ],
       "sections": [
         "Executive Summary",
-        "Current State Analysis",
-        "Consolidation Actions",
-        "\ud83d\ude80 Quick Start (First 30 Seconds)",
-        "\ud83d\ude80 Quick Start (First 30 Seconds)",
-        "Implementation Timeline",
-        "Success Criteria",
-        "Risk Assessment",
-        "Post-Implementation Monitoring",
-        "Related Documents"
+        "Current Problems",
+        "Proposed Design: Single Dynamic Workspace",
+        "Implementation Plan",
+        "New Dependencies",
+        "Sample Data (Built-in)",
+        "Migration Path",
+        "Success Metrics",
+        "Files to Modify",
+        "Timeline"
       ],
-      "size_bytes": 17960
+      "size_bytes": 19313
     },
     "docs/planning/api-improvement-research-specs.md": {
       "title": "API Improvement Research Specifications",
@@ -3808,25 +3773,6 @@
       ],
       "size_bytes": 8492
     },
-    "docs/planning/agent-1-tasks.md": {
-      "title": "Background Agent 1 Tasks (RESEARCHER)",
-      "type": "tracking",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Active Tasks",
-        "Backlog",
-        "Completed",
-        "Guidelines for Agent 1",
-        "Handoff: RESEARCHER (Agent 1) \u2192 MAIN",
-        "Next Steps for Agent 1"
-      ],
-      "size_bytes": 13343
-    },
     "docs/planning/pre-release-checklist.md": {
       "title": "Pre-Release Checklist",
       "type": "documentation",
@@ -3910,23 +3856,6 @@
       ],
       "size_bytes": 8239
     },
-    "docs/planning/session-2026-01-10-session4-issues.md": {
-      "title": "Session 2026-01-10 Session 4 Issues & Resolutions",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Issues Encountered",
-        "Automation Created This Session",
-        "Documentation Created",
-        "Recommendations for Future Sessions"
-      ],
-      "size_bytes": 4446
-    },
     "docs/planning/research-detailing.md": {
       "title": "IS Code Detailing Research \u2014 RESEARCHER Agent",
       "type": "research",
@@ -3986,7 +3915,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 5392
+      "size_bytes": 5749
     },
     "docs/planning/etabs-automation-bridge-plan.md": {
       "title": "ETABS Automation Bridge \u2014 Implementation Plan",
@@ -4009,29 +3938,6 @@
       ],
       "size_bytes": 4928
     },
-    "docs/planning/agent8-git-docs-professional-consolidation.md": {
-      "title": "Agent 8 & Git Automation Documentation: Professional Consolidation",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Problems Identified",
-        "Proposed Solution: Professional Restructuring",
-        "Detailed Migration Plan",
-        "Navigation Map",
-        "Common Tasks",
-        "Philosophy",
-        "Architecture",
-        "Emergency",
-        "Research"
-      ],
-      "size_bytes": 23315
-    },
     "docs/planning/8-week-development-plan.md": {
       "title": "8-Week Development Plan: 3D Visualization Excellence",
       "type": "documentation",
@@ -4042,18 +3948,18 @@
         "tasks"
       ],
       "sections": [
-        "\ud83d\udcca Current Status (Session 39)",
+        "\ud83c\udfaf The Bigger Picture",
+        "\ud83d\udcca Current Status (Session 53)",
         "Strategic Context",
-        "Progress Update (Session 38)",
+        "Progress Update (Session 47)",
         "8-Week Roadmap",
         "Success Metrics (8-Week Targets)",
         "Delayed to V1.1 (Post-Launch)",
         "Weekly Check-in Template",
         "Week X Check-in",
-        "Development Tools & Resources",
-        "Communication Guidelines"
+        "Development Tools & Resources"
       ],
-      "size_bytes": 16365
+      "size_bytes": 26310
     },
     "docs/planning/v020-stabilization-checklist.md": {
       "title": "v0.20.0 Stabilization Checklist",
@@ -4115,29 +4021,6 @@
         "Research Update (Pass 2 \u2014 Repo-Aware Design Notes, Dec 15, 2025)"
       ],
       "size_bytes": 30680
-    },
-    "docs/planning/agent8-week1-handoff.md": {
-      "title": "Agent 8 Week 1 Implementation - Session Handoff",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "What Was Accomplished",
-        "The Blocker",
-        "Week 1 Objectives (NOT YET IMPLEMENTED)",
-        "Implementation Approach",
-        "Success Metrics (Week 1 Targets)",
-        "Files to Create/Modify",
-        "Code Samples (Copy-Paste Ready)",
-        "Validation Checklist",
-        "Next Session Priorities"
-      ],
-      "size_bytes": 12183
     },
     "docs/planning/hygiene-suggestions-2026-01-07.md": {
       "title": "Repository Hygiene Audit Report - 2026-01-07",
@@ -4204,31 +4087,8 @@
       ],
       "size_bytes": 4560
     },
-    "docs/planning/agent-2-tasks.md": {
-      "title": "Background Agent 2 Tasks (PROJECT HYGIENE & MAINTENANCE)",
-      "type": "tracking",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Mission Statement",
-        "Work Modes",
-        "Active Tasks",
-        "Handoff: HYGIENE (Agent 2) \u2192 MAIN",
-        "Summary",
-        "Worktrees Status",
-        "Recommended Actions",
-        "Follow-up",
-        "Priority 1: Clear Duplicates (Safe to Consolidate)",
-        "Priority 2: Ambiguous Cases (Need Review)"
-      ],
-      "size_bytes": 25624
-    },
-    "docs/planning/session-19p8-work-plan.md": {
-      "title": "Session 19P8 Work Plan: Automation Governance & Prevention Systems",
+    "docs/planning/democratization-vision.md": {
+      "title": "Democratizing Structural Engineering",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -4237,17 +4097,16 @@
         "tasks"
       ],
       "sections": [
-        "\ud83c\udfaf Session Overview",
-        "\ud83d\udcca Current State Assessment",
-        "\ud83d\udd34 Root Cause Deep Dive",
-        "\ud83d\udccb Execution Plan: 6+ Commits",
-        "\ud83d\udcca Execution Timeline",
-        "\u2705 Success Metrics (Verifiable)",
-        "\ud83c\udf93 Lessons & Prevention Systems",
-        "\ud83d\ude80 Future Sessions (P9/P10)",
-        "\ud83d\udcdd Version History"
+        "The Big Picture",
+        "The Vision: 4 Pillars",
+        "What This Means for the 8-Week Plan",
+        "Technology Leadership",
+        "Success Metrics",
+        "Development Philosophy",
+        "Next Steps",
+        "References"
       ],
-      "size_bytes": 15558
+      "size_bytes": 8913
     },
     "docs/planning/library-improvement-master-plan.md": {
       "title": "Library Improvement Master Plan \u2014 v1.0",
@@ -4271,23 +4130,6 @@
         "Success Metrics"
       ],
       "size_bytes": 22061
-    },
-    "docs/planning/session-2026-01-10-session3-issues.md": {
-      "title": "Session 3 Issues and Solutions (2026-01-10)",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Issues Encountered",
-        "Automation Improvements Made",
-        "Session Metrics",
-        "Recommendations for Future Sessions"
-      ],
-      "size_bytes": 3217
     },
     "docs/planning/task-3d-002-implementation-plan.md": {
       "title": "TASK-3D-002: ETABS 3D Visualization Implementation Plan",
@@ -4480,7 +4322,7 @@
         "Common Patterns",
         "Next Step"
       ],
-      "size_bytes": 2044
+      "size_bytes": 2062
     },
     "docs/agents/guides/agent-9-quick-start.md": {
       "title": "Agent 9 Quick Start - Governance & Documentation Structure",
@@ -4658,7 +4500,7 @@
         "Related Agents",
         "Archived Documentation"
       ],
-      "size_bytes": 3274
+      "size_bytes": 3310
     },
     "docs/agents/guides/agent-8-automation.md": {
       "title": "Agent 8 Automation - Scripts & Tools Index",
@@ -4754,7 +4596,7 @@
         "Implementation Status",
         "Testing"
       ],
-      "size_bytes": 7655
+      "size_bytes": 7682
     },
     "docs/cookbook/README.md": {
       "title": "Cookbook",
@@ -5056,7 +4898,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 1523
+      "size_bytes": 1520
     },
     "docs/architecture/mission-and-principles.md": {
       "title": "StructEng Automation \u2013 Mission, Vision & Principles",
@@ -5314,7 +5156,7 @@
         "\ud83d\udccd Quick Reference",
         "\ud83e\udde0 Automation-First Mentality"
       ],
-      "size_bytes": 4884
+      "size_bytes": 4784
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -5351,7 +5193,7 @@
       "sections": [
         "Files"
       ],
-      "size_bytes": 2479
+      "size_bytes": 2476
     },
     "docs/getting-started/beginners-guide.md": {
       "title": "Beginner's Guide (No Coding Required)",
@@ -6166,7 +6008,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 3625
+      "size_bytes": 3623
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -6437,14 +6279,18 @@
   "navigation": {
     "by_role": {
       "ai_agent": [
+        "docs/research/ai-workspace-expansion-v2.md",
         "docs/research/ui-layout-options-comparison.md",
+        "docs/research/ai-chat-architecture-v2.md",
         "docs/research/etabs-addin-integration.md",
         "docs/research/engineering-domain-apis.md",
         "docs/research/brainstorm-research-opportunities.md",
         "docs/research/product-strategy-followup.md",
         "docs/research/EXECUTIVE-SUMMARY.md",
         "docs/research/file-metadata-standards-research.md",
+        "docs/research/ai-effective-usage-patterns.md",
         "docs/research/folder-cleanup-research.md",
+        "docs/research/ai-assistant-workspace-integration.md",
         "docs/research/navigation_study/README.md",
         "docs/research/literature-review/week-3-carbon-automation/00-PAPERS-SUMMARY.md",
         "docs/research/01-function-catalog-research/FUNCTION-GUIDE.md",
@@ -6454,10 +6300,10 @@
         "docs/learning/glossary.md",
         "docs/git-automation/README.md",
         "docs/planning/automation-platform-vision.md",
+        "docs/planning/ai-chat-redesign-plan.md",
         "docs/planning/brainstorming-platform-pivot.md",
         "docs/planning/research-detailing.md",
         "docs/planning/research-ai-enhancements.md",
-        "docs/planning/agent-2-tasks.md",
         "docs/agents/README.md",
         "docs/agents/guides/agent-coding-standards.md",
         "docs/getting-started/ai-context-pack.md"
@@ -6518,16 +6364,16 @@
     "by_topic": {
       "investigation": [
         "docs/research/live-3d-visualization-architecture.md",
+        "docs/research/lod-threshold-validation.md",
         "docs/research/etabs-vba-export-macro.md",
         "docs/research/documentation-handoff-analysis.md",
         "docs/research/blogging-strategy-research.md",
         "docs/research/index-per-folder-efficiency-research.md",
         "docs/research/ux-patterns-for-technical-apis.md",
+        "docs/research/ai-workspace-expansion-v2.md",
         "docs/research/agent-efficiency-research.md",
         "docs/research/enterprise-folder-structure-research.md",
-        "docs/research/documentation-consolidation-research-2026-01-13.md",
         "docs/research/agent-research-review-and-validation.md",
-        "docs/research/streamlit-app-issues-2026-01-14.md",
         "docs/research/critical-infrastructure-gaps-v018.md",
         "docs/research/v017-security-liability-plan.md",
         "docs/research/RESEARCH-JOURNEY-STATUS.md",
@@ -6536,12 +6382,13 @@
         "docs/research/research-backlog-review.md",
         "docs/research/RESEARCH-SUMMARY-AND-PLAN.md",
         "docs/research/input-flexibility-data-interchange-part1.md",
+        "docs/research/ai-chat-architecture-v2.md",
         "docs/research/research-methodology.md",
         "docs/research/etabs-addin-integration.md",
         "docs/research/ui-layout-final-decision.md",
+        "docs/research/3d-visualization-differentiation-strategy.md",
         "docs/research/chat-ui-product-strategy-research.md",
         "docs/research/engineering-domain-apis.md",
-        "docs/research/session-32-library-audit.md",
         "docs/research/brainstorm-research-opportunities.md",
         "docs/research/colab-output-review.md",
         "docs/research/streamlit-cloud-professional-deployment-plan.md",
@@ -6567,12 +6414,11 @@
         "docs/research/3d-technology-deep-dive-research.md",
         "docs/research/doc-onb-01-02-consolidation-plan.md",
         "docs/research/agent-9-advanced-optimization-research.md",
-        "docs/research/sessions-20-21-review-2026-01-13.md",
         "docs/research/api-design-pattern-analysis.md",
         "docs/research/threejs-visualization-source-of-truth.md",
         "docs/research/streamlit-code-quality-research.md",
-        "docs/research/comprehensive-repo-analysis-2026-01-14.md",
         "docs/research/streamlit-modern-patterns-research.md",
+        "docs/research/ai-effective-usage-patterns.md",
         "docs/research/autonomous-agent-workflow-research.md",
         "docs/research/input-flexibility-data-interchange-part2.md",
         "docs/research/streamlit-automation-testing-research.md",
@@ -6580,22 +6426,23 @@
         "docs/research/agent-8-git-automation-comprehensive-research.md",
         "docs/research/input-flexibility-data-interchange-part3.md",
         "docs/research/etabs-vba-questions-answered.md",
+        "docs/research/ai-assistant-workspace-integration.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/ui-layout-best-practices.md",
         "docs/git-automation/research/README.md"
       ],
       "planning": [
         "docs/research/live-3d-visualization-architecture.md",
+        "docs/research/lod-threshold-validation.md",
         "docs/research/etabs-vba-export-macro.md",
         "docs/research/documentation-handoff-analysis.md",
         "docs/research/blogging-strategy-research.md",
         "docs/research/index-per-folder-efficiency-research.md",
         "docs/research/ux-patterns-for-technical-apis.md",
+        "docs/research/ai-workspace-expansion-v2.md",
         "docs/research/agent-efficiency-research.md",
         "docs/research/enterprise-folder-structure-research.md",
-        "docs/research/documentation-consolidation-research-2026-01-13.md",
         "docs/research/agent-research-review-and-validation.md",
-        "docs/research/streamlit-app-issues-2026-01-14.md",
         "docs/research/critical-infrastructure-gaps-v018.md",
         "docs/research/v017-security-liability-plan.md",
         "docs/research/RESEARCH-JOURNEY-STATUS.md",
@@ -6604,12 +6451,13 @@
         "docs/research/research-backlog-review.md",
         "docs/research/RESEARCH-SUMMARY-AND-PLAN.md",
         "docs/research/input-flexibility-data-interchange-part1.md",
+        "docs/research/ai-chat-architecture-v2.md",
         "docs/research/research-methodology.md",
         "docs/research/etabs-addin-integration.md",
         "docs/research/ui-layout-final-decision.md",
+        "docs/research/3d-visualization-differentiation-strategy.md",
         "docs/research/chat-ui-product-strategy-research.md",
         "docs/research/engineering-domain-apis.md",
-        "docs/research/session-32-library-audit.md",
         "docs/research/brainstorm-research-opportunities.md",
         "docs/research/colab-output-review.md",
         "docs/research/streamlit-cloud-professional-deployment-plan.md",
@@ -6635,12 +6483,11 @@
         "docs/research/3d-technology-deep-dive-research.md",
         "docs/research/doc-onb-01-02-consolidation-plan.md",
         "docs/research/agent-9-advanced-optimization-research.md",
-        "docs/research/sessions-20-21-review-2026-01-13.md",
         "docs/research/api-design-pattern-analysis.md",
         "docs/research/threejs-visualization-source-of-truth.md",
         "docs/research/streamlit-code-quality-research.md",
-        "docs/research/comprehensive-repo-analysis-2026-01-14.md",
         "docs/research/streamlit-modern-patterns-research.md",
+        "docs/research/ai-effective-usage-patterns.md",
         "docs/research/autonomous-agent-workflow-research.md",
         "docs/research/input-flexibility-data-interchange-part2.md",
         "docs/research/streamlit-automation-testing-research.md",
@@ -6648,6 +6495,7 @@
         "docs/research/agent-8-git-automation-comprehensive-research.md",
         "docs/research/input-flexibility-data-interchange-part3.md",
         "docs/research/etabs-vba-questions-answered.md",
+        "docs/research/ai-assistant-workspace-integration.md",
         "docs/research/background-agent-parallel-work.md",
         "docs/research/ui-layout-best-practices.md",
         "docs/git-automation/research/README.md"
@@ -6768,40 +6616,31 @@
         "docs/planning/data-model-compatibility-checklist.md",
         "docs/planning/streamlit-phase-3-implementation-plan.md",
         "docs/planning/3d-visualization-strategic-decision.md",
-        "docs/planning/session-12-planning.md",
         "docs/planning/folder-migration-progress.md",
-        "docs/planning/agent-6-tasks-streamlit.md",
-        "docs/planning/session-14-lessons-learned.md",
         "docs/planning/automation-platform-phase-0-research.md",
         "docs/planning/multi-code-architecture.md",
-        "docs/planning/agent8-docs-consolidation-plan.md",
+        "docs/planning/ai-chat-redesign-plan.md",
         "docs/planning/api-improvement-research-specs.md",
         "docs/planning/documentation-structure.md",
         "docs/planning/ui-layout-implementation-plan.md",
         "docs/planning/library-api-expansion.md",
-        "docs/planning/agent-1-tasks.md",
         "docs/planning/pre-release-checklist.md",
         "docs/planning/brainstorming-platform-pivot.md",
         "docs/planning/README.md",
         "docs/planning/project-status-deep-dive.md",
-        "docs/planning/session-2026-01-10-session4-issues.md",
         "docs/planning/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/index.md",
         "docs/planning/etabs-automation-bridge-plan.md",
-        "docs/planning/agent8-git-docs-professional-consolidation.md",
         "docs/planning/8-week-development-plan.md",
         "docs/planning/v020-stabilization-checklist.md",
         "docs/planning/structural-automation-platform-phase-0-research-plan.md",
         "docs/planning/research-ai-enhancements.md",
-        "docs/planning/agent8-week1-handoff.md",
         "docs/planning/hygiene-suggestions-2026-01-07.md",
         "docs/planning/session-30-fragment-crisis-resolution.md",
         "docs/planning/bbs-dxf-improvement-plan.md",
-        "docs/planning/agent-2-tasks.md",
-        "docs/planning/session-19p8-work-plan.md",
+        "docs/planning/democratization-vision.md",
         "docs/planning/library-improvement-master-plan.md",
-        "docs/planning/session-2026-01-10-session3-issues.md",
         "docs/planning/task-3d-002-implementation-plan.md",
         "docs/planning/project-needs-assessment-2026-01-09.md"
       ],
@@ -6811,40 +6650,31 @@
         "docs/planning/data-model-compatibility-checklist.md",
         "docs/planning/streamlit-phase-3-implementation-plan.md",
         "docs/planning/3d-visualization-strategic-decision.md",
-        "docs/planning/session-12-planning.md",
         "docs/planning/folder-migration-progress.md",
-        "docs/planning/agent-6-tasks-streamlit.md",
-        "docs/planning/session-14-lessons-learned.md",
         "docs/planning/automation-platform-phase-0-research.md",
         "docs/planning/multi-code-architecture.md",
-        "docs/planning/agent8-docs-consolidation-plan.md",
+        "docs/planning/ai-chat-redesign-plan.md",
         "docs/planning/api-improvement-research-specs.md",
         "docs/planning/documentation-structure.md",
         "docs/planning/ui-layout-implementation-plan.md",
         "docs/planning/library-api-expansion.md",
-        "docs/planning/agent-1-tasks.md",
         "docs/planning/pre-release-checklist.md",
         "docs/planning/brainstorming-platform-pivot.md",
         "docs/planning/README.md",
         "docs/planning/project-status-deep-dive.md",
-        "docs/planning/session-2026-01-10-session4-issues.md",
         "docs/planning/research-detailing.md",
         "docs/planning/memory.md",
         "docs/planning/index.md",
         "docs/planning/etabs-automation-bridge-plan.md",
-        "docs/planning/agent8-git-docs-professional-consolidation.md",
         "docs/planning/8-week-development-plan.md",
         "docs/planning/v020-stabilization-checklist.md",
         "docs/planning/structural-automation-platform-phase-0-research-plan.md",
         "docs/planning/research-ai-enhancements.md",
-        "docs/planning/agent8-week1-handoff.md",
         "docs/planning/hygiene-suggestions-2026-01-07.md",
         "docs/planning/session-30-fragment-crisis-resolution.md",
         "docs/planning/bbs-dxf-improvement-plan.md",
-        "docs/planning/agent-2-tasks.md",
-        "docs/planning/session-19p8-work-plan.md",
+        "docs/planning/democratization-vision.md",
         "docs/planning/library-improvement-master-plan.md",
-        "docs/planning/session-2026-01-10-session3-issues.md",
         "docs/planning/task-3d-002-implementation-plan.md",
         "docs/planning/project-needs-assessment-2026-01-09.md"
       ],

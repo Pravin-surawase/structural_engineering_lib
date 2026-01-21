@@ -204,10 +204,10 @@ docs/contributing/
 
 | Need | File | Lines |
 |------|------|-------|
-| **Learn workflow** | [workflow-guide.md](../git-automation/workflow-guide.md) | 300 |
-| **Find commands** | [automation-scripts.md](../git-automation/automation-scripts.md) | 400 |
-| **Avoid mistakes** | [mistakes-prevention.md](../git-automation/mistakes-prevention.md) | 600 |
-| **Advanced patterns** | [advanced-coordination.md](../git-automation/advanced-coordination.md) | 300 |
+| **Learn workflow** | [workflow-guide.md](../../git-automation/workflow-guide.md) | 300 |
+| **Find commands** | [automation-scripts.md](../../git-automation/automation-scripts.md) | 400 |
+| **Avoid mistakes** | [mistakes-prevention.md](../../git-automation/mistakes-prevention.md) | 600 |
+| **Advanced patterns** | [advanced-coordination.md](../../git-automation/advanced-coordination.md) | 300 |
 | **Deep research** | [research/](../git-automation/research/) | 2,292 |
 
 ## Common Tasks
@@ -228,7 +228,7 @@ docs/contributing/
 
 ## Architecture
 
-Built on 103 automation scripts (see [automation-scripts.md](../git-automation/automation-scripts.md)):
+Built on 103 automation scripts (see [automation-scripts.md](../../git-automation/automation-scripts.md)):
 - 59 Python scripts
 - 43 Shell scripts
 - 24/24 git workflow tests passing
@@ -242,7 +242,7 @@ Built on 103 automation scripts (see [automation-scripts.md](../git-automation/a
 
 ## Research
 
-See [research/README.md](../git-automation/research/README.md) for:
+See [research/README.md](../README.md) for:
 - 8,116 lines of research across 26 documents
 - Historical issues and solutions
 - Performance metrics (90-95% faster)
@@ -323,12 +323,12 @@ rg -i "pull.*before.*commit" docs/git-automation/*.md | wc -l
 
 ```bash
 # Move comprehensive research (keep as-is)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-git-automation-comprehensive-research.md \
   docs/git-automation/research/comprehensive-analysis.md
 
 # Move optimization research (keep as-is)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/agent-8-optimization-research.md \
   docs/git-automation/research/performance-optimization.md
 
@@ -397,15 +397,15 @@ NEW: Automation Scripts → git-automation/automation-scripts.md
 # Archive old Agent 8 guides (superseded by git-automation/)
 mkdir -p docs/_archive/agents/agent-8-guides/
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/agents/guides/agent-8-git-ops.md \
   docs/_archive/agents/agent-8-guides/agent-8-git-ops.md
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/agents/guides/agent-8-automation.md \
   docs/_archive/agents/agent-8-guides/agent-8-automation.md
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/agents/guides/agent-8-multi-agent-coordination.md \
   docs/_archive/agents/agent-8-guides/agent-8-multi-agent-coordination.md
 
@@ -416,11 +416,11 @@ mkdir -p docs/_archive/agents/agent-8-guides/
 # Archive old research (consolidated)
 mkdir -p docs/_archive/research/git-workflow/
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/git-workflow-production-stage.md \
   docs/_archive/research/git-workflow/git-workflow-production-stage.md
 
-.venv/bin/.venv/bin/python scripts/safe_file_move.py \
+.venv/bin/python scripts/safe_file_move.py \
   docs/research/git-workflow-recurring-issues.md \
   docs/_archive/research/git-workflow/git-workflow-recurring-issues.md
 ```
@@ -443,10 +443,10 @@ mkdir -p docs/_archive/research/git-workflow/
 ```
 
 **Documentation:**
-- [Git Automation Hub](../git-automation/README.md) - Entry point
-- [Workflow Guide](../git-automation/workflow-guide.md) - Core process
-- [Script Reference](../git-automation/automation-scripts.md) - All commands
-- [Mistakes Prevention](../git-automation/mistakes-prevention.md) - Lessons learned
+- [Git Automation Hub](../README.md) - Entry point
+- [Workflow Guide](../../git-automation/workflow-guide.md) - Core process
+- [Script Reference](../../git-automation/automation-scripts.md) - All commands
+- [Mistakes Prevention](../../git-automation/mistakes-prevention.md) - Lessons learned
 ```
 
 **2. docs/README.md** (Add git-automation section)
@@ -455,7 +455,7 @@ mkdir -p docs/_archive/research/git-workflow/
 
 **For AI agents:** Single source of truth for git operations.
 
-- **[Git Automation Hub](../git-automation/README.md)** - Start here
+- **[Git Automation Hub](../README.md)** - Start here
 - **Essential Commands:**
   - `./scripts/ai_commit.sh "message"` - Commit & push
   - `./scripts/should_use_pr.sh --explain` - PR decision
@@ -515,7 +515,7 @@ Decision Helper:
 
 ```bash
 # 1. Check no broken links
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 # → Should show: "Broken links: 0"
 
 # 2. Check no duplicate content

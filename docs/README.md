@@ -76,9 +76,9 @@ Keep indexes and link checks current after doc updates:
 
 ```bash
 ./scripts/generate_all_indexes.sh
-.venv/bin/.venv/bin/python scripts/generate_docs_index.py --write
-.venv/bin/.venv/bin/python scripts/check_docs_index.py
-.venv/bin/.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/python scripts/generate_docs_index.py --write
+.venv/bin/python scripts/check_docs_index.py
+.venv/bin/python scripts/check_docs_index_links.py
 ```
 
 ## Canonical Sources Map

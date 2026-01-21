@@ -396,7 +396,7 @@ Without instancing: 696,000 × 0.001 = 696ms ≈ 0.7s ✅ Acceptable
 
 ## Related Documentation
 
-- [3d-visualization-performance.md](3d-visualization-performance.md) - Measured performance data
+- [3d-visualization-performance.md](../reference/3d-visualization-performance.md) - Measured performance data
 - [8-week-development-plan.md](../planning/8-week-development-plan.md) - Project timeline
 - [lod_manager.py](../../streamlit_app/utils/lod_manager.py) - Implementation
 - [test_lod_manager.py](../../tests/test_lod_manager.py) - Test suite

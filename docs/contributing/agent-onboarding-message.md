@@ -11,7 +11,7 @@ Hi! You're working on the structural_engineering_lib project - an IS 456 RC beam
 
 🚀 FIRST: Run this command immediately:
 ```bash
-.venv/bin/.venv/bin/python scripts/start_session.py
+.venv/bin/python scripts/start_session.py
 ```
 
 This shows: version, branch, active tasks, blockers, and doc freshness.

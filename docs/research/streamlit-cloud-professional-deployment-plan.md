@@ -49,7 +49,7 @@ This document is the **single source of truth** for making the Streamlit app pro
 
 ### 1.1 Beam Design Page Analysis
 
-**File:** [streamlit_app/pages/01_🏗️_beam_design.py](streamlit_app/pages/01_🏗️_beam_design.py)
+**File:** [streamlit_app/pages/01_🏗️_beam_design.py](../../streamlit_app/pages/01_🏗️_beam_design.py)
 
 | Metric | Value | Issue |
 |--------|-------|-------|
@@ -204,7 +204,7 @@ detailing_list = compute_detailing(
 
 ### 2.2 Visualization Functions Ready
 
-These visualization functions exist in [streamlit_app/components/visualizations.py](streamlit_app/components/visualizations.py):
+These visualization functions exist in [streamlit_app/components/visualizations.py](../../streamlit_app/components/visualizations.py):
 
 ```python
 # All these already exist!
@@ -619,7 +619,7 @@ BEAM_PRESETS = {
 
 ### 5.3 Implementation Location
 
-Add new file: [streamlit_app/components/visualizations_3d.py](streamlit_app/components/visualizations_3d.py)
+Add new file: [streamlit_app/components/visualizations_3d.py](../../streamlit_app/components/visualizations_3d.py)
 
 ---
 
@@ -913,7 +913,7 @@ cd Python
 .venv/bin/python -m pytest tests/ -v
 
 # Check for Streamlit issues
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ### Git Operations
@@ -945,9 +945,9 @@ diff requirements.txt requirements.txt.check
 - Streamlit Cloud Docs: https://docs.streamlit.io/streamlit-community-cloud
 - Plotly 3D Surface: https://plotly.com/python/3d-surface-plots/
 - Plotly 3D Scatter: https://plotly.com/python/3d-scatter-plots/
-- Library API: [Python/structural_lib/api.py](Python/structural_lib/api.py)
-- Current Visualizations: [streamlit_app/components/visualizations.py](streamlit_app/components/visualizations.py)
-- Previous Research: [docs/research/chat-ui-product-strategy-research.md](docs/research/chat-ui-product-strategy-research.md)
+- Library API: [Python/structural_lib/api.py](../../Python/build/lib/structural_lib/api.py)
+- Current Visualizations: [streamlit_app/components/visualizations.py](../../streamlit_app/components/visualizations.py)
+- Previous Research: [docs/research/chat-ui-product-strategy-research.md](chat-ui-product-strategy-research.md)
 
 ---
 

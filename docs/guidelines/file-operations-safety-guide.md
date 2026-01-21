@@ -46,17 +46,17 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Step 1: Preview (ALWAYS do this first)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md --dry-run
+.venv/bin/python scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md --dry-run
 
 # Step 2: Review output
 # - Check references that will be updated
 # - Verify destination path is correct
 
 # Step 3: Execute move
-.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md
+.venv/bin/python scripts/safe_file_move.py docs/old-location/file.md docs/new-location/file.md
 
 # Step 4: Verify
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # Step 5: Commit
 ./scripts/ai_commit.sh "refactor: move file.md to new location"
@@ -66,22 +66,22 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Step 1: Preview (ALWAYS do this first)
-.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md --dry-run
+.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md --dry-run
 
 # Step 2: Review output
 # - Check if file has references (will be shown)
 # - Decide: fix references first, or use --force
 
 # Step 3a: If no references - delete
-.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md
+.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md
 
 # Step 3b: If has references - fix first OR use force
 # Option A: Fix references manually
 # Option B: Force delete (creates backup)
-.venv/bin/.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md --force
+.venv/bin/python scripts/safe_file_delete.py docs/obsolete-file.md --force
 
 # Step 4: Verify
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # Step 5: Commit
 ./scripts/ai_commit.sh "chore: remove obsolete file.md"
@@ -91,13 +91,13 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Step 1: Find archive candidates
-.venv/bin/.venv/bin/python scripts/find_orphan_files.py --age
+.venv/bin/python scripts/find_orphan_files.py --age
 
 # Step 2: Move to archive (with redirect stub)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/planning/old-plan.md docs/_archive/2026-01/old-plan.md --stub
+.venv/bin/python scripts/safe_file_move.py docs/planning/old-plan.md docs/_archive/2026-01/old-plan.md --stub
 
 # Step 3: Verify
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # Step 4: Commit
 ./scripts/ai_commit.sh "chore: archive old planning docs"
@@ -107,8 +107,8 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Renaming is just moving to same folder with new name
-.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md --dry-run
-.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md
+.venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md --dry-run
+.venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md
 ./scripts/ai_commit.sh "refactor: rename old-name.md to new-name.md"
 ```
 
@@ -116,16 +116,16 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Step 1: Archive specific files
-.venv/bin/.venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md --dry-run
+.venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md --dry-run
 
 # Step 2: Archive by pattern
-.venv/bin/.venv/bin/python scripts/batch_archive.py --pattern "streamlit_app/AGENT*.md" --dry-run
+.venv/bin/python scripts/batch_archive.py --pattern "streamlit_app/AGENT*.md" --dry-run
 
 # Step 3: Use built-in streamlit cleanup
-.venv/bin/.venv/bin/python scripts/batch_archive.py --streamlit-cleanup --dry-run
+.venv/bin/python scripts/batch_archive.py --streamlit-cleanup --dry-run
 
 # Step 4: Execute (after reviewing dry-run)
-.venv/bin/.venv/bin/python scripts/batch_archive.py --streamlit-cleanup
+.venv/bin/python scripts/batch_archive.py --streamlit-cleanup
 
 # Step 5: Commit
 ./scripts/ai_commit.sh "chore: archive agent completion docs"
@@ -135,17 +135,17 @@ File operations (delete, move, rename) can break:
 
 ```bash
 # Step 1: Preview (finds all references)
-.venv/bin/.venv/bin/python scripts/rename_folder_safe.py "old folder name" "new_folder_name" --dry-run
+.venv/bin/python scripts/rename_folder_safe.py "old folder name" "new_folder_name" --dry-run
 
 # Step 2: Review references that will be updated
 # - Check how many files link to this folder
 # - Verify .gitignore entries
 
 # Step 3: Execute rename
-.venv/bin/.venv/bin/python scripts/rename_folder_safe.py "old folder name" "new_folder_name"
+.venv/bin/python scripts/rename_folder_safe.py "old folder name" "new_folder_name"
 
 # Step 4: Verify links
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # Step 5: Update .gitignore if folder was listed
 # (Script warns but doesn't auto-edit .gitignore)
@@ -210,10 +210,10 @@ git restore path/to/original/file.md
 
 ```bash
 # After any operation, run link check
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # If broken links found, auto-fix
-.venv/bin/.venv/bin/python scripts/fix_broken_links.py --fix
+.venv/bin/python scripts/fix_broken_links.py --fix
 ```
 
 ---

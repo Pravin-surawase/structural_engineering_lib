@@ -10,8 +10,8 @@ Use this checklist to ensure you're set up correctly and following the project's
 
 ### 1. Read Core Documentation (5 minutes)
 - [ ] Read [.github/copilot-instructions.md](../../../.github/copilot-instructions.md) - **MANDATORY**
-- [ ] Read [agent-workflow-master-guide.md](agent-workflow-master-guide.md) - Complete workflow
-- [ ] Print [agent-quick-reference.md](agent-quick-reference.md) - Keep visible
+- [ ] Read [agent-workflow-master-guide.md](../../agents/guides/agent-workflow-master-guide.md) - Complete workflow
+- [ ] Print [agent-quick-reference.md](../../agents/guides/agent-quick-reference.md) - Keep visible
 - [ ] Skim [TASKS.md](../../TASKS.md) - Current work items
 
 ### 2. Environment Setup (30 seconds - ONE COMMAND!)
@@ -214,9 +214,9 @@ cd worktree-AGENT_NAME-*
 ## 📚 Reference Links
 
 ### Essential Documentation
-- **[agent-workflow-master-guide.md](agent-workflow-master-guide.md)** - Complete guide (400+ lines)
-- **[agent-quick-reference.md](agent-quick-reference.md)** - Quick reference (200+ lines)
-- **[agent-automation-system.md](agent-automation-system.md)** - System overview (600+ lines)
+- **[agent-workflow-master-guide.md](../../agents/guides/agent-workflow-master-guide.md)** - Complete guide (400+ lines)
+- **[agent-quick-reference.md](../../agents/guides/agent-quick-reference.md)** - Quick reference (200+ lines)
+- **[agent-automation-system.md](../../agents/guides/agent-automation-system.md)** - System overview (600+ lines)
 - **[git-workflow-ai-agents.md](../../contributing/git-workflow-ai-agents.md)** - Core workflow rules
 
 ### Project Documentation
@@ -308,6 +308,6 @@ I have completed the onboarding checklist and:
 
 **Remember:** The automation system prevents 99% of errors. Trust the scripts!
 
-**Questions?** Check [agent-workflow-master-guide.md](agent-workflow-master-guide.md) or run `./scripts/agent_start.sh`
+**Questions?** Check [agent-workflow-master-guide.md](../../agents/guides/agent-workflow-master-guide.md) or run `./scripts/agent_start.sh`
 
 **Last Updated:** 2026-01-11 | **Version:** 2.0.0

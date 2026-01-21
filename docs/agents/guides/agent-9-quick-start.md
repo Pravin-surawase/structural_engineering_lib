@@ -29,9 +29,9 @@ open docs/guidelines/migration-workflow-guide.md
 ### 3. Validate Changes
 ```bash
 # Run validation bundle after any structure changes
-.venv/bin/.venv/bin/python scripts/validate_folder_structure.py
-.venv/bin/.venv/bin/python scripts/check_links.py
-.venv/bin/.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_docs_index_links.py
 ```
 
 **That's it!** Agent 9 ensures:
@@ -98,16 +98,16 @@ Is this a script?
 ### Task 1: Move a Document
 ```bash
 # 1. Check if it violates rules
-.venv/bin/.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/validate_folder_structure.py
 
 # 2. Use safe_file_move.py (preserves history + updates links)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
+.venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
 
 # 3. Update all references
 rg "old/path.md" docs/ agents/ .github/
 
 # 4. Validate links
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # 5. Commit with Agent 8
 ./scripts/ai_commit.sh "docs: move X to follow governance rules"
@@ -124,13 +124,13 @@ rg "old/path.md" docs/ agents/ .github/
 #    (Agent role definitions)
 
 # 4. Validate
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 ```
 
 ### Task 3: Run Structure Validation
 ```bash
 # 1. Run governance compliance check
-.venv/bin/.venv/bin/python scripts/check_governance_compliance.py
+.venv/bin/python scripts/check_governance_compliance.py
 
 # 2. Read governance spec
 open docs/guidelines/folder-structure-governance.md
@@ -139,19 +139,19 @@ open docs/guidelines/folder-structure-governance.md
 open docs/guidelines/migration-workflow-guide.md
 
 # 4. Validate after each batch
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 ```
 
 ### Task 4: Archive Old Docs (Safe)
 ```bash
 # 1. Preview archive candidates
-.venv/bin/.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --dry-run
+.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --dry-run
 
 # 2. Execute with stub redirect
-.venv/bin/.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --stub
+.venv/bin/python scripts/batch_archive.py --files file1.md file2.md --stub
 
 # 3. Validate links
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 ```
 
 ---
@@ -180,14 +180,14 @@ open docs/guidelines/migration-workflow-guide.md
 ./scripts/create_task_pr.sh GOV-001 "Reorganize X per rules"
 
 # 2. Make changes (safe_file_move.py for moves)
-.venv/bin/.venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
+.venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
 
 # 3. Update references
 # ... edit files ...
 
 # 4. Validate
-.venv/bin/.venv/bin/python scripts/validate_folder_structure.py
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/check_links.py
 
 # 5. Commit
 ./scripts/ai_commit.sh "docs: reorganize X per governance rules"
@@ -222,12 +222,12 @@ If structure changes cause issues:
 
 1. **Check validation errors:**
    ```bash
-   .venv/bin/.venv/bin/python scripts/validate_folder_structure.py
+   .venv/bin/python scripts/validate_folder_structure.py
    ```
 
 2. **Find broken links:**
    ```bash
-   .venv/bin/.venv/bin/python scripts/check_links.py --fix
+   .venv/bin/python scripts/check_links.py --fix
    ```
 
 3. **Review recent changes:**

@@ -214,7 +214,7 @@ FOLDERS=(
 
 for folder in "${FOLDERS[@]}"; do
     echo "Generating indexes for: $folder"
-    .venv/bin/.venv/bin/python scripts/generate_folder_index.py "$folder"
+    .venv/bin/python scripts/generate_folder_index.py "$folder"
 done
 
 echo "✅ All indexes generated"

@@ -379,7 +379,7 @@ if __name__ == "__main__":
   hooks:
     - id: check-fragment-violations
       name: Check Streamlit Fragment API Violations
-      entry: .venv/bin/.venv/bin/python scripts/check_fragment_violations.py
+      entry: .venv/bin/python scripts/check_fragment_violations.py
       language: system
       files: ^streamlit_app/.*\.py$
       pass_filenames: false
@@ -389,7 +389,7 @@ if __name__ == "__main__":
 ```yaml
 - name: Check Fragment API Violations
   run: |
-    .venv/bin/.venv/bin/python scripts/check_fragment_violations.py
+    .venv/bin/python scripts/check_fragment_violations.py
 ```
 
 ### Documentation (Commit 4)

@@ -15,11 +15,11 @@
 
 ```bash
 # Run all pre-migration checks automatically
-.venv/bin/.venv/bin/python scripts/pre_migration_check.py
+.venv/bin/python scripts/pre_migration_check.py
 
 # Or run individually
 .venv/bin/python -m pytest Python/tests/ -v --tb=short    # All tests pass
-.venv/bin/.venv/bin/python scripts/check_links.py                    # Doc links valid
+.venv/bin/python scripts/check_links.py                    # Doc links valid
 gh run list -L 5                                           # CI is green
 ```
 
@@ -136,13 +136,13 @@ print('✅ Core module ready')
 
 ### 4.1 Link Check
 ```bash
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 ```
 - [ ] 0 broken links (expected: 719+ links, 0 broken)
 
 ### 4.2 Docs Index Valid
 ```bash
-.venv/bin/.venv/bin/python scripts/check_docs_index.py
+.venv/bin/python scripts/check_docs_index.py
 ```
 - [ ] Docs index is valid
 

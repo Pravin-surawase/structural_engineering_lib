@@ -637,7 +637,7 @@ def test_issue_2026_01_08_validation_error():
 1. ✅ Review this plan (DONE - reading now)
 2. ⏳ Approve implementation priority order
 3. ⏳ Assign IMPL-000 to Agent 6 or Dev Agent
-4. ⏳ Update [docs/planning/agent-6-tasks-streamlit.md](agent-6-tasks-streamlit.md)
+4. ⏳ Update [docs/planning/agent-6-tasks-streamlit.md](../_archive/planning-20260119/agent-6-tasks-streamlit.md)
 5. ⏳ Create git_operations_log entry
 
 ### For Agent 6 (Next Session):

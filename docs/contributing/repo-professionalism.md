@@ -93,12 +93,12 @@ Recommended minimal labels:
 
 | Stage | Command | Why it matters |
 | --- | --- | --- |
-| Docs-only | `.venv/bin/.venv/bin/python scripts/check_doc_versions.py` | Prevent version drift |
-| Links touched | `.venv/bin/.venv/bin/python scripts/check_links.py` | Avoid broken docs |
+| Docs-only | `.venv/bin/python scripts/check_doc_versions.py` | Prevent version drift |
+| Links touched | `.venv/bin/python scripts/check_links.py` | Avoid broken docs |
 | Fast code check | `./scripts/quick_check.sh` | Catch basic issues early |
 | Full local CI | `./scripts/ci_local.sh` | CI parity before PR |
-| External CLI test | `.venv/bin/.venv/bin/python scripts/external_cli_test.py` | S-007 cold-start validation |
-| Release verify | `.venv/bin/.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi` | Confirm PyPI artifact |
+| External CLI test | `.venv/bin/python scripts/external_cli_test.py` | S-007 cold-start validation |
+| Release verify | `.venv/bin/python scripts/verify_release.py --version X.Y.Z --source pypi` | Confirm PyPI artifact |
 
 If any check modifies files, re-stage and re-commit.
 

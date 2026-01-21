@@ -34,7 +34,7 @@
 | `./scripts/should_use_pr.sh --explain` | **PR or direct?** |
 | `./scripts/git_ops.sh --status` | **Analyze git state & get recommendation** |
 | `./scripts/agent_mistakes_report.sh` | **Common mistakes reminder** |
-| `.venv/bin/.venv/bin/python scripts/end_session.py` | **End session** |
+| `.venv/bin/python scripts/end_session.py` | **End session** |
 
 ---
 

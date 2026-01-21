@@ -28,7 +28,7 @@ This folder contains research documents related to git automation and workflow o
 - **Status:** Complete
 
 ### Historical Issues Analysis
-- **File:** [session-14-lessons-learned.md](../../planning/session-14-lessons-learned.md)
+- **File:** [session-14-lessons-learned.md](../../_archive/planning-20260119/session-14-lessons-learned.md)
 - **Purpose:** Session-specific lessons and resolutions
 - **Status:** Complete
 

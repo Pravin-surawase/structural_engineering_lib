@@ -186,7 +186,7 @@ Fixed 7-8 broken internal links across docs/ directory.
 ---
 
 For current planning, see:
-- [TASKS.md](../TASKS.md)
+- [TASKS.md](../../TASKS.md)
 - Next Session Brief: next-session-brief.md
 ```
 4. Update links in referring docs

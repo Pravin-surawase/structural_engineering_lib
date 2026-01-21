@@ -30,8 +30,8 @@
 ## 📚 Quick Access
 
 - **Full Documentation:** [README_ARCHIVE.md](README_ARCHIVE.md)
-- **Validation Report:** [../../VALIDATION_COMPLETE.md](../../VALIDATION_COMPLETE.md)
-- **Testing Guide:** [../../VBA/ETABS_Export/TESTING_CHECKLIST.md](../../VBA/ETABS_Export/TESTING_CHECKLIST.md)
+- **Validation Report:** [../../VALIDATION_COMPLETE.md](../../docs/_archive/VALIDATION_COMPLETE.md)
+- **Testing Guide:** [../../VBA/ETABS_Export/TESTING_CHECKLIST.md](../../VBA/ETABS_Export_v2/TESTING_CHECKLIST.md)
 - **VBA Modules:** `../../VBA/ETABS_Export/` (10 files)
 
 ## 🔄 When to Use Again

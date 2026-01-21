@@ -228,7 +228,7 @@ Keep wording precise; no claims about untested tooling.
 
 **AST Scanner:** Detects runtime errors before they happen
 ```bash
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 **Capabilities:**
@@ -260,4 +260,4 @@ Keep wording precise; no claims about untested tooling.
 | Merging before CI passes | Wait for `./scripts/pr_async_merge.sh status` |
 | Multiple micro-PRs | Batch related changes |
 | Editing without reading | Check file content first |
-| Editing Streamlit without scanner | Run `.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py <file>` |
+| Editing Streamlit without scanner | Run `.venv/bin/python scripts/check_streamlit_issues.py <file>` |

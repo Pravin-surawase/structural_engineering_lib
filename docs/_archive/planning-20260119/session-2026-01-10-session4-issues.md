@@ -123,10 +123,10 @@ Use the new automation to actually clean up orphan files:
 
 ```bash
 # Run orphan finder
-.venv/bin/.venv/bin/python scripts/find_orphan_files.py --age
+.venv/bin/python scripts/find_orphan_files.py --age
 
 # Archive old planning docs
-.venv/bin/.venv/bin/python scripts/safe_file_move.py docs/planning/old-file.md docs/_archive/planning/old-file.md
+.venv/bin/python scripts/safe_file_move.py docs/planning/old-file.md docs/_archive/planning/old-file.md
 
 # Commit
 ./scripts/ai_commit.sh "chore: archive old planning docs"

@@ -31,13 +31,13 @@ Both run automatically on every commit (pre-commit hooks) and in CI for every PR
 
 ```bash
 # Scan all Streamlit pages
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 
 # Scan single file
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py streamlit_app/pages/01_🏗️_beam_design.py
+.venv/bin/python scripts/check_streamlit_issues.py streamlit_app/pages/01_🏗️_beam_design.py
 
 # Get help
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --help
+.venv/bin/python scripts/check_streamlit_issues.py --help
 ```
 
 ### What It Detects
@@ -172,7 +172,7 @@ Both checks run in GitHub Actions:
 ```bash
 # Editing Streamlit pages
 1. Make changes to streamlit_app/pages/*.py
-2. Run scanner: .venv/bin/.venv/bin/python scripts/check_streamlit_issues.py <file>
+2. Run scanner: .venv/bin/python scripts/check_streamlit_issues.py <file>
 3. Fix any CRITICAL issues
 4. Commit: ./scripts/ai_commit.sh "feat: ..."
    # Pre-commit hooks run automatically
@@ -222,7 +222,7 @@ Both checks run in GitHub Actions:
 
 ```bash
 # Before committing Streamlit changes
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ### 2. Fix Critical Issues First
@@ -350,7 +350,7 @@ max-locals=20
 **Issue:** Commit blocked by scanner
 **Solution:** Run manually to see details:
 ```bash
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ### CI Fails But Local Passes
@@ -359,7 +359,7 @@ max-locals=20
 **Solution:** Ensure you're on latest main:
 ```bash
 ./scripts/recover_git_state.sh
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ### Too Many Warnings

@@ -19,7 +19,7 @@
 Machine-readable signatures live in `docs/reference/api-manifest.json`.
 
 ```bash
-.venv/bin/.venv/bin/python scripts/generate_api_manifest.py
+.venv/bin/python scripts/generate_api_manifest.py
 ```
 
 ## 0. Unified CLI (v0.9.4+)

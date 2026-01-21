@@ -12,7 +12,7 @@ If this folder feels “too big”, you’re right — most people only need a h
 | [AGENT_AUTOMATION_IMPLEMENTATION.md](../agents/guides/agent-automation-implementation.md) | Complete workflow guide covering: - Quick start (30 seconds) | 2026-01-08 | 404 |
 | [AGENT_AUTOMATION_SYSTEM.md](../../agents/guides/agent-automation-system.md) | Comprehensive automation system for error-free AI agent workflows. Prevents 99%  | 2026-01-08 | 322 |
 | [AGENT_BOOTSTRAP_COMPLETE_REVIEW.md](../../agents/guides/agent-bootstrap-complete-review.md) | The **agent-bootstrap.md** file is a 65-line quick-start guide designed to get n | 2026-01-10 | 498 |
-| [AGENT_ONBOARDING.md](../../agents/guides/agent-onboarding.md) | **For New AI Agents Starting Work on This Project** Use this checklist to ensure | 2026-01-08 | 272 |
+| [AGENT_ONBOARDING.md](agent-onboarding.md) | **For New AI Agents Starting Work on This Project** Use this checklist to ensure | 2026-01-08 | 272 |
 | [AGENT_QUICK_REFERENCE.md](../../agents/guides/agent-quick-reference.md) | | Command | Purpose | |---------|---------| | 2026-01-08 | 238 |
 | [AGENT_WORKFLOW_MASTER_GUIDE.md](../../agents/guides/agent-workflow-master-guide.md) | > **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations. >  | 2026-01-09 | 586 |
 | [BOOTSTRAP_AND_PROJECT_STRUCTURE_SUMMARY.md](bootstrap-and-project-structure-summary.md) | You asked me to read the agent bootstrap file and every link in it. I've complet | 2026-01-10 | 313 |

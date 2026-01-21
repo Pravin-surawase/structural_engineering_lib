@@ -126,9 +126,9 @@
 
 | Need | Guide | Use When |
 |------|-------|----------|
-| **Quick Start** | [agent-bootstrap.md](../../getting-started/agent-bootstrap.md) | First 30 seconds, immediate productivity |
-| **Quick Reference** | [agent-quick-reference.md](agent-quick-reference.md) | Cheat sheet, emergency commands, first session |
-| **Complete Guide** | [agent-workflow-master-guide.md](agent-workflow-master-guide.md) | Decision trees, troubleshooting, patterns |
+| **Quick Start** | [agent-bootstrap.md](../getting-started/agent-bootstrap.md) | First 30 seconds, immediate productivity |
+| **Quick Reference** | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) | Cheat sheet, emergency commands, first session |
+| **Complete Guide** | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) | Decision trees, troubleshooting, patterns |
 ```
 
 **Estimated additions:** +15 lines per file

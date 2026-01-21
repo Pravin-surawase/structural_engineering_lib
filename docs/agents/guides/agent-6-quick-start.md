@@ -25,7 +25,7 @@ cd streamlit_app && streamlit run Home.py
 cd streamlit_app && pytest tests/ -v
 
 # 4. Check for code issues (AST scanner)
-.venv/bin/.venv/bin/python scripts/check_streamlit_issues.py --all-pages
+.venv/bin/python scripts/check_streamlit_issues.py --all-pages
 ```
 
 ---
@@ -44,7 +44,7 @@ cd streamlit_app && pytest tests/ -v
 
 ## Your Workflow
 
-1. **Check current tasks:** [agent-6-tasks-streamlit.md](../../planning/agent-6-tasks-streamlit.md)
+1. **Check current tasks:** [agent-6-tasks-streamlit.md](../../_archive/planning-20260119/agent-6-tasks-streamlit.md)
 2. **Understand prevention system:** [streamlit-comprehensive-prevention-system.md](../../contributing/streamlit-comprehensive-prevention-system.md)
 3. **Review issues catalog:** [streamlit-issues-catalog.md](../../contributing/streamlit-issues-catalog.md)
 

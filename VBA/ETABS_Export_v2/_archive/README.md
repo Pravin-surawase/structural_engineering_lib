@@ -121,7 +121,7 @@ These files remain in `VBA/ETABS_Export_v2/`:
 - [docs/vba/ETABS-Export-Journey-Session31.md](../../docs/vba/ETABS-Export-Journey-Session31.md)
 
 **Production Plan:**
-- [docs/vba/ETABS-Export-Production-Plan.md](../../docs/vba/ETABS-Export-Production-Plan.md)
+- [docs/vba/ETABS-Export-Production-Plan.md](../../../docs/vba/etabs-export-production-plan.md)
 
 **Legacy Working Code:**
 - [VBA/Legacy_2019_2021/BASE_REACTIONS.bas](../Legacy_2019_2021/BASE_REACTIONS.bas)

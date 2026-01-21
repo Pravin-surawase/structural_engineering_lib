@@ -42,13 +42,13 @@ Run these after any structure changes:
 
 ```bash
 # Check folder structure compliance
-.venv/bin/.venv/bin/python scripts/validate_folder_structure.py
+.venv/bin/python scripts/validate_folder_structure.py
 
 # Find broken links
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 
 # Verify doc index
-.venv/bin/.venv/bin/python scripts/check_docs_index_links.py
+.venv/bin/python scripts/check_docs_index_links.py
 
 # Check root file count
 ./scripts/check_root_file_count.sh
@@ -104,13 +104,13 @@ open docs/guidelines/folder-structure-governance.md
 ### Workflow 2: Move a Document
 ```bash
 # Use safe_file_move.py to preserve history and update links
-.venv/bin/.venv/bin/python scripts/safe_file_move.py old/path.md new/folder/path.md
+.venv/bin/python scripts/safe_file_move.py old/path.md new/folder/path.md
 
 # Review references
 rg "old/path.md" docs/ agents/
 
 # Validate
-.venv/bin/.venv/bin/python scripts/check_links.py
+.venv/bin/python scripts/check_links.py
 ```
 
 ---

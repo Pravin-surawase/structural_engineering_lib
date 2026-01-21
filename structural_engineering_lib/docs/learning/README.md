@@ -11,9 +11,9 @@ A guided learning path for engineers new to this codebase. Written for those who
 | I am... | Start Here | Time |
 |---------|------------|------|
 | **New to coding** | [learning-plan.md](learning-plan.md) | 2-4 weeks |
-| **Python developer** | [concepts-map.md](concepts-map.md) then [../architecture/](../architecture/README.md) | 2-3 days |
-| **Structural engineer** | [../getting-started/beginners-guide.md](../getting-started/beginners-guide.md) | 1-2 hours |
-| **Project owner** | [owner-learning-plan.md](owner-learning-plan.md) | 1 week |
+| **Python developer** | [concepts-map.md](concepts-map.md) then [../architecture/](README.md) | 2-3 days |
+| **Structural engineer** | [../getting-started/beginners-guide.md](../../../docs/getting-started/beginners-guide.md) | 1-2 hours |
+| **Project owner** | [owner-learning-plan.md](../../../docs/learning/owner-learning-plan.md) | 1 week |
 
 ---
 
@@ -33,9 +33,9 @@ A guided learning path for engineers new to this codebase. Written for those who
 
 | File | Description |
 |------|-------------|
-| [owner-learning-plan.md](owner-learning-plan.md) | Project owner learning plan |
-| [week-01-start-here.md](week-01-start-here.md) | Week 1 getting started guide |
-| [phase-coverage-audit.md](phase-coverage-audit.md) | Learning phase coverage audit |
+| [owner-learning-plan.md](../../../docs/learning/owner-learning-plan.md) | Project owner learning plan |
+| [week-01-start-here.md](../../../docs/learning/week-01-start-here.md) | Week 1 getting started guide |
+| [phase-coverage-audit.md](../../../docs/learning/phase-coverage-audit.md) | Learning phase coverage audit |
 
 ---
 
@@ -76,10 +76,10 @@ Step 4: docs/contributing/testing-strategy.md       → Testing patterns
 
 | Document | Purpose |
 |----------|---------|
-| [Getting Started](../getting-started/README.md) | Quick setup guides |
-| [Cookbook](../cookbook/README.md) | Task-focused recipes |
-| [Reference](../reference/README.md) | API documentation |
+| [Getting Started](README.md) | Quick setup guides |
+| [Cookbook](README.md) | Task-focused recipes |
+| [Reference](README.md) | API documentation |
 
 ---
 
-**Parent:** [docs/README.md](../README.md)
+**Parent:** [docs/README.md](README.md)

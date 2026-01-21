@@ -202,7 +202,7 @@ with st.sidebar:
 # .pre-commit-config.yaml
 - id: check-fragment-violations
   name: Check Streamlit fragment API violations
-  entry: .venv/bin/.venv/bin/python scripts/check_fragment_violations.py
+  entry: .venv/bin/python scripts/check_fragment_violations.py
   language: system
   pass_filenames: false
   files: ^streamlit_app/.*\.py$
