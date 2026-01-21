@@ -979,6 +979,12 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
 
     Uses BeamDesignReportGenerator with reportlab for CAD-quality output.
     Generates a combined batch report for all beams with TOC and summary.
+
+    The PDF generator expects specific data keys. This function transforms
+    the DataFrame columns to match the expected structure:
+    - inputs: span_m, width_mm, depth_mm, effective_depth_mm, cover_mm, fck, fy
+    - flexure: Mu_kNm, Mu_lim_kNm, Ast_req_mm2, Ast_min_mm2, Ast_prov_mm2
+    - shear: Vu_kN, tau_v, tau_c
     """
     if results_df is None or results_df.empty:
         st.error("No results to export")
@@ -992,36 +998,57 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
         generator = BeamDesignReportGenerator()
 
         # Convert DataFrame rows to design data format expected by PDF generator
+        # PDF generator expects 'inputs' dict with specific keys
         design_data_list = []
         for _, row in results_df.iterrows():
+            b_mm = float(row["b_mm"])
+            D_mm = float(row["D_mm"])
+            span_mm = float(row["span_mm"])
+            cover_mm = float(row.get("cover_mm", 40))
+            fck = float(row["fck"])
+            fy = float(row["fy"])
+            mu_knm = float(row["mu_knm"])
+            vu_kn = float(row["vu_kn"])
+            ast_req = float(row.get("ast_req", 0))
+            ast_prov = float(row.get("ast_prov", ast_req * 1.1))
+            d_eff = D_mm - cover_mm - 8 - 8  # Assume 8mm stirrup + 8mm half bar dia
+
+            # Calculate limiting moment and other values for PDF
+            xu_max = 0.48 * d_eff  # For Fe500
+            mu_lim = 0.138 * fck * b_mm * d_eff**2 / 1e6  # kN·m
+            ast_min = 0.85 * b_mm * d_eff / fy
+
             design_data = {
                 "beam_id": str(row["beam_id"]),
                 "story": str(row.get("story", "")),
                 "is_safe": bool(row.get("is_safe", False)),
-                "geometry": {
-                    "b_mm": float(row["b_mm"]),
-                    "D_mm": float(row["D_mm"]),
-                    "d_mm": float(row["D_mm"]) - float(row.get("cover_mm", 40)) - 8,
-                    "span_mm": float(row["span_mm"]),
-                    "cover_mm": float(row.get("cover_mm", 40)),
-                },
-                "materials": {
-                    "fck": float(row["fck"]),
-                    "fy": float(row["fy"]),
-                },
-                "loads": {
-                    "case_id": "DESIGN",
-                    "Mu_kNm": float(row["mu_knm"]),
-                    "Vu_kN": float(row["vu_kn"]),
+                # PDF generator looks for 'inputs' key
+                "inputs": {
+                    "span_m": span_mm / 1000,
+                    "width_mm": b_mm,
+                    "depth_mm": D_mm,
+                    "effective_depth_mm": d_eff,
+                    "cover_mm": cover_mm,
+                    "fck": fck,
+                    "fy": fy,
+                    "dead_load_kN": 0,  # Not available from import
+                    "live_load_kN": 0,  # Not available from import
+                    "factored_load_kN": 0,  # Not available
                 },
                 "flexure": {
-                    "Ast_required": float(row.get("ast_req", 0)),
+                    "Mu_kNm": mu_knm,
+                    "Mu_lim_kNm": mu_lim,
+                    "Ast_req_mm2": ast_req,
+                    "Ast_min_mm2": ast_min,
+                    "Ast_prov_mm2": ast_prov,
                     "utilization": float(row.get("utilization", 0)),
-                    "section_type": "under-reinforced",
+                    "section_type": "under-reinforced" if mu_knm < mu_lim else "doubly",
                 },
                 "shear": {
+                    "Vu_kN": vu_kn,
+                    "tau_v": vu_kn * 1000 / (b_mm * d_eff) if d_eff > 0 else 0,
+                    "tau_c": 0.36,  # Approximate for M25, 0.5% steel
                     "is_safe": bool(row.get("is_safe", False)),
-                    "utilization": 0.5,
                 },
             }
             design_data_list.append(design_data)
