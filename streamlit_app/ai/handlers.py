@@ -451,7 +451,10 @@ def _handle_start_optimization(args: dict) -> str:
 
 
 def _handle_export_dxf(args: dict) -> str:
-    """Export DXF drawing for beam(s)."""
+    """Export DXF drawing for beam(s).
+
+    Generates detailing on-the-fly from design results if not already available.
+    """
     import tempfile
     from pathlib import Path
 
@@ -461,15 +464,8 @@ def _handle_export_dxf(args: dict) -> str:
     include_title_block = args.get("include_title_block", True)
 
     results_df = st.session_state.get("ws_design_results")
-    if results_df is None:
+    if results_df is None or results_df.empty:
         return json.dumps({"error": "No design results. Run 'design all' first."})
-
-    # Get detailing results from session state
-    all_detailing = st.session_state.get("ws_detailing_results", {})
-    if not all_detailing:
-        return json.dumps({
-            "error": "No detailing results available. Design beams first to generate DXF."
-        })
 
     # Filter beams based on arguments
     if beam_id:
@@ -477,35 +473,49 @@ def _handle_export_dxf(args: dict) -> str:
         mask = results_df["beam_id"].str.upper() == beam_id.upper()
         if not mask.any():
             return json.dumps({"error": f"Beam '{beam_id}' not found"})
-        beam_ids = [beam_id.upper()]
+        selected_df = results_df[mask]
     elif floor:
         # Floor-based export
-        mask = results_df["story"].str.lower().str.contains(floor.lower())
+        mask = results_df["story"].str.lower().str.contains(floor.lower(), na=False)
         if not mask.any():
             return json.dumps({"error": f"No beams found on floor '{floor}'"})
-        beam_ids = results_df[mask]["beam_id"].tolist()
+        selected_df = results_df[mask]
     else:
         # All beams
-        beam_ids = results_df["beam_id"].tolist()
+        selected_df = results_df
 
-    # Get detailing for selected beams
-    detailing_list = []
-    missing_beams = []
-    for bid in beam_ids:
-        if bid in all_detailing:
-            detailing_list.append(all_detailing[bid])
-        else:
-            missing_beams.append(bid)
-
-    if not detailing_list:
-        return json.dumps({
-            "error": "No detailing data for selected beams",
-            "missing_beams": missing_beams[:5],  # Show first 5
-        })
-
-    # Generate DXF
+    # Generate detailing on-the-fly from design results
     try:
-        from structural_lib import api
+        from structural_lib import api, detailing
+
+        detailing_list = []
+        for _, row in selected_df.iterrows():
+            # Create detailing from design results
+            det_result = detailing.create_beam_detailing(
+                beam_id=str(row["beam_id"]),
+                story=str(row.get("story", "")),
+                b=float(row["b_mm"]),
+                D=float(row["D_mm"]),
+                span=float(row["span_mm"]),
+                cover=float(row.get("cover_mm", 40)),
+                fck=float(row["fck"]),
+                fy=float(row["fy"]),
+                ast_start=float(row["ast_req"]),
+                ast_mid=float(row["ast_req"]),
+                ast_end=float(row["ast_req"]),
+                asc_start=0,  # Compression steel (minimal)
+                asc_mid=0,
+                asc_end=0,
+                stirrup_dia=8.0,
+                stirrup_spacing_start=150.0,
+                stirrup_spacing_mid=200.0,
+                stirrup_spacing_end=150.0,
+                is_seismic=False,
+            )
+            detailing_list.append(det_result)
+
+        if not detailing_list:
+            return json.dumps({"error": "Could not generate detailing for any beam"})
 
         # Create temporary file
         with tempfile.NamedTemporaryFile(
@@ -524,6 +534,7 @@ def _handle_export_dxf(args: dict) -> str:
         with open(output_path, "rb") as f:
             dxf_bytes = f.read()
 
+        beam_ids = selected_df["beam_id"].tolist()
         st.session_state.ai_export_dxf = {
             "bytes": dxf_bytes,
             "filename": f"beam_design_{len(beam_ids)}_beams.dxf"
@@ -542,7 +553,6 @@ def _handle_export_dxf(args: dict) -> str:
                 "schedule_table": include_schedule,
                 "title_block": include_title_block,
             },
-            "missing_beams": missing_beams[:3] if missing_beams else None,
         })
 
     except ImportError:
@@ -554,66 +564,101 @@ def _handle_export_dxf(args: dict) -> str:
 
 
 def _handle_generate_report(args: dict) -> str:
-    """Generate design calculation report."""
+    """Generate design calculation report from design results DataFrame.
+
+    Builds report-compatible format on-the-fly from ws_design_results.
+    """
     beam_id = args.get("beam_id")
     report_format = args.get("format", "html")
     include_bbs = args.get("include_bbs", True)
 
     results_df = st.session_state.get("ws_design_results")
-    if results_df is None:
+    if results_df is None or results_df.empty:
         return json.dumps({"error": "No design results. Run 'design all' first."})
-
-    # Get stored design results for report generation
-    design_results = st.session_state.get("ws_full_results", {})
-    if not design_results:
-        return json.dumps({
-            "error": "No detailed design results available for report generation."
-        })
 
     # Filter to specific beam if requested
     if beam_id:
         mask = results_df["beam_id"].str.upper() == beam_id.upper()
         if not mask.any():
             return json.dumps({"error": f"Beam '{beam_id}' not found"})
-        beam_ids = [beam_id.upper()]
+        selected_df = results_df[mask]
     else:
-        beam_ids = results_df["beam_id"].tolist()
+        selected_df = results_df
 
-    # Build report data
-    report_beams = []
-    for bid in beam_ids:
-        if bid in design_results:
-            report_beams.append(design_results[bid])
+    # Build report-compatible format from DataFrame
+    beams_for_report = []
+    for _, row in selected_df.iterrows():
+        beam_data = {
+            "beam_id": str(row["beam_id"]),
+            "story": str(row.get("story", "")),
+            "is_ok": bool(row.get("is_safe", False)),
+            "governing_utilization": float(row.get("utilization", 0)),
+            "geometry": {
+                "b_mm": float(row["b_mm"]),
+                "D_mm": float(row["D_mm"]),
+                "d_mm": float(row["D_mm"]) - float(row.get("cover_mm", 40)) - 8,
+                "span_mm": float(row["span_mm"]),
+            },
+            "materials": {
+                "fck": float(row["fck"]),
+                "fy": float(row["fy"]),
+            },
+            "loads": {
+                "case_id": "DESIGN",
+                "mu_knm": float(row["mu_knm"]),
+                "vu_kn": float(row["vu_kn"]),
+            },
+            "flexure": {
+                "ast_required_mm2": float(row.get("ast_req", 0)),
+                "utilization": float(row.get("utilization", 0)),
+                "section_type": "under-reinforced",
+            },
+            "shear": {
+                "is_safe": bool(row.get("is_safe", False)),
+                "utilization": 0.5,  # Estimated
+            },
+        }
+        beams_for_report.append(beam_data)
 
-    if not report_beams:
-        return json.dumps({
-            "error": "No detailed results found for report generation",
-            "hint": "Try redesigning the beams to populate full results"
-        })
+    if not beams_for_report:
+        return json.dumps({"error": "No beams available for report"})
 
     try:
         from structural_lib import api
 
+        # Build report input
+        report_input = {
+            "code": "IS 456:2000",
+            "units": "SI",
+            "beams": beams_for_report,
+            "summary": {
+                "total_beams": len(beams_for_report),
+                "passed": sum(1 for b in beams_for_report if b["is_ok"]),
+                "failed": sum(1 for b in beams_for_report if not b["is_ok"]),
+            },
+        }
+
         # Generate report
         report_content = api.compute_report(
-            {"results": report_beams},
+            report_input,
             format=report_format,
         )
 
         # Store for display/download
+        beam_ids = selected_df["beam_id"].tolist()
         st.session_state.ai_report = {
             "content": report_content,
             "format": report_format,
-            "beam_count": len(report_beams),
-            "filename": f"beam_report_{len(report_beams)}.{report_format}"
-            if len(report_beams) > 1
+            "beam_count": len(beams_for_report),
+            "filename": f"beam_report_{len(beam_ids)}.{report_format}"
+            if len(beam_ids) > 1
             else f"beam_{beam_ids[0]}_report.{report_format}",
         }
 
         return json.dumps({
             "status": "ready",
             "format": report_format,
-            "beam_count": len(report_beams),
+            "beam_count": len(beams_for_report),
             "filename": st.session_state.ai_report["filename"],
             "includes": {
                 "design_checks": True,

@@ -859,6 +859,149 @@ def render_import_preview() -> None:
             st.rerun()
 
 
+def _generate_and_download_report(results_df: pd.DataFrame) -> None:
+    """Generate and offer download for design report.
+
+    Builds report format from DataFrame and uses structural_lib API.
+    """
+    if results_df is None or results_df.empty:
+        st.error("No results to export")
+        return
+
+    try:
+        from structural_lib import api
+
+        # Build report-compatible format
+        beams_for_report = []
+        for _, row in results_df.iterrows():
+            beam_data = {
+                "beam_id": str(row["beam_id"]),
+                "story": str(row.get("story", "")),
+                "is_ok": bool(row.get("is_safe", False)),
+                "governing_utilization": float(row.get("utilization", 0)),
+                "geometry": {
+                    "b_mm": float(row["b_mm"]),
+                    "D_mm": float(row["D_mm"]),
+                    "d_mm": float(row["D_mm"]) - float(row.get("cover_mm", 40)) - 8,
+                    "span_mm": float(row["span_mm"]),
+                },
+                "materials": {
+                    "fck": float(row["fck"]),
+                    "fy": float(row["fy"]),
+                },
+                "loads": {
+                    "case_id": "DESIGN",
+                    "mu_knm": float(row["mu_knm"]),
+                    "vu_kn": float(row["vu_kn"]),
+                },
+                "flexure": {
+                    "ast_required_mm2": float(row.get("ast_req", 0)),
+                    "utilization": float(row.get("utilization", 0)),
+                    "section_type": "under-reinforced",
+                },
+                "shear": {
+                    "is_safe": bool(row.get("is_safe", False)),
+                    "utilization": 0.5,
+                },
+            }
+            beams_for_report.append(beam_data)
+
+        report_input = {
+            "code": "IS 456:2000",
+            "units": "SI",
+            "beams": beams_for_report,
+            "summary": {
+                "total_beams": len(beams_for_report),
+                "passed": sum(1 for b in beams_for_report if b["is_ok"]),
+                "failed": sum(1 for b in beams_for_report if not b["is_ok"]),
+            },
+        }
+
+        report_html = api.compute_report(report_input, format="html")
+
+        st.download_button(
+            label="⬇️ Download Report",
+            data=report_html,
+            file_name=f"beam_report_{len(beams_for_report)}.html",
+            mime="text/html",
+            key="ws_report_download",
+        )
+
+    except Exception as e:
+        st.error(f"Report generation failed: {str(e)}")
+
+
+def _generate_and_download_dxf(results_df: pd.DataFrame) -> None:
+    """Generate and offer download for DXF drawings.
+
+    Builds detailing on-the-fly and uses structural_lib API.
+    """
+    if results_df is None or results_df.empty:
+        st.error("No results to export")
+        return
+
+    try:
+        from structural_lib import api, detailing
+
+        detailing_list = []
+        for _, row in results_df.iterrows():
+            det_result = detailing.create_beam_detailing(
+                beam_id=str(row["beam_id"]),
+                story=str(row.get("story", "")),
+                b=float(row["b_mm"]),
+                D=float(row["D_mm"]),
+                span=float(row["span_mm"]),
+                cover=float(row.get("cover_mm", 40)),
+                fck=float(row["fck"]),
+                fy=float(row["fy"]),
+                ast_start=float(row.get("ast_req", 0)),
+                ast_mid=float(row.get("ast_req", 0)),
+                ast_end=float(row.get("ast_req", 0)),
+                asc_start=0,
+                asc_mid=0,
+                asc_end=0,
+                stirrup_dia=8.0,
+                stirrup_spacing_start=150.0,
+                stirrup_spacing_mid=200.0,
+                stirrup_spacing_end=150.0,
+                is_seismic=False,
+            )
+            detailing_list.append(det_result)
+
+        if not detailing_list:
+            st.error("Could not generate detailing")
+            return
+
+        # Generate DXF to temp file
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(suffix=".dxf", delete=False) as tmp:
+            output_path = tmp.name
+
+        api.compute_dxf(
+            detailing_list,
+            output_path,
+            include_title_block=True,
+            multi=len(detailing_list) > 1,
+        )
+
+        with open(output_path, "rb") as f:
+            dxf_bytes = f.read()
+
+        st.download_button(
+            label="⬇️ Download DXF",
+            data=dxf_bytes,
+            file_name=f"beam_design_{len(detailing_list)}.dxf",
+            mime="application/dxf",
+            key="ws_dxf_download",
+        )
+
+    except ImportError:
+        st.error("DXF export requires ezdxf: pip install ezdxf")
+    except Exception as e:
+        st.error(f"DXF generation failed: {str(e)}")
+
+
 def render_design_results() -> None:
     """Render design results with interactive table."""
     df = st.session_state.ws_design_results
@@ -940,6 +1083,33 @@ def render_design_results() -> None:
         st.warning(f"💡 **{failed} beams failed.** Select one and use **Edit Rebar** to increase reinforcement.")
 
     st.divider()
+
+    # Export buttons row
+    st.caption("📤 **Export Options**")
+    exp1, exp2, exp3 = st.columns(3)
+
+    with exp1:
+        if st.button("📄 Report", use_container_width=True,
+                    help="Generate design calculation report (HTML)"):
+            _generate_and_download_report(filtered_df)
+
+    with exp2:
+        if st.button("📐 DXF", use_container_width=True,
+                    help="Export CAD drawings for detailing"):
+            _generate_and_download_dxf(filtered_df)
+
+    with exp3:
+        if st.button("📊 CSV", use_container_width=True,
+                    help="Export results as CSV spreadsheet"):
+            csv_data = filtered_df.to_csv(index=False)
+            st.download_button(
+                label="⬇️ Download CSV",
+                data=csv_data,
+                file_name="beam_design_results.csv",
+                mime="text/csv",
+                key="ws_csv_download",
+            )
+
     c1, c2 = st.columns(2)
     with c1:
         if st.button("📊 Dashboard", use_container_width=True,

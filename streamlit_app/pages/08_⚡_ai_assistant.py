@@ -504,18 +504,51 @@ def main():
     init_chat_state()
     init_workspace_state()
 
-    # Minimal header (uses only ~3% of screen)
-    col1, col2 = st.columns([0.7, 0.3])
+    # Custom CSS for compact layout - reduce top padding
+    st.markdown("""
+    <style>
+        /* Reduce top padding of main content */
+        .main .block-container {
+            padding-top: 1rem;
+            padding-bottom: 0rem;
+            max-width: 100%;
+        }
+        /* Compact header styling */
+        .compact-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+            margin-bottom: 0.5rem;
+        }
+        /* Hide default Streamlit header spacing */
+        header[data-testid="stHeader"] {
+            height: 2.5rem;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Inline compact header - single row
+    col1, col2, col3 = st.columns([0.45, 0.35, 0.2])
     with col1:
-        st.markdown("## ⚡ StructEng AI")
+        st.markdown("**⚡ StructEng AI**")
     with col2:
-        # Compact status indicator
+        # Compact status
         client = get_openai_client()
         if client:
             config = get_openai_config()
-            st.caption(f"✅ {config.get('model', 'gpt-4o-mini')}")
+            model_name = config.get('model', 'gpt-4o-mini')
+            # Shorten model name for display
+            if '/' in model_name:
+                model_name = model_name.split('/')[-1]
+            st.caption(f"✅ {model_name}")
         else:
             st.caption("💡 Local mode")
+    with col3:
+        # Quick access links
+        workspace_state = st.session_state.get("ws_state", WorkspaceState.WELCOME)
+        st.caption(f"📍 {workspace_state.value.title()}")
 
     # Main layout: 35% chat, 65% workspace (maximized)
     chat_col, workspace_col = st.columns([0.35, 0.65])
