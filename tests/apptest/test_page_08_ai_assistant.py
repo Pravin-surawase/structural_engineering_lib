@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2024-2026 Pravin Surawase
 """
-Tests for AI Assistant page (10_🤖_ai_assistant.py).
+Tests for AI Assistant page (08_⚡_ai_assistant.py).
 
 These tests verify:
 1. Page loads without errors
@@ -23,7 +23,7 @@ class TestAIAssistantPageLoads:
     def app(self):
         """Create AppTest instance for AI assistant page."""
         return AppTest.from_file(
-            "streamlit_app/pages/10_🤖_ai_assistant.py",
+            "streamlit_app/pages/08_⚡_ai_assistant.py",
             default_timeout=30,
         )
 

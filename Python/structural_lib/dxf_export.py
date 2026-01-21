@@ -235,7 +235,7 @@ def group_similar_beams(
 
 def generate_beam_schedule_table(
     detailings: list[BeamDetailingResult],
-) -> list[dict[str, str | int | float]]:
+) -> list[dict[str, Any]]:
     """
     Generate a beam schedule in industry-standard format.
 
