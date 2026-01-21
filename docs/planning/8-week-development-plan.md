@@ -25,7 +25,7 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 
 ---
 
-## 📊 Current Status (Session 58)
+## 📊 Current Status (Session 61)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
@@ -34,12 +34,12 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 | **Phase 2.5** | 4 | Visualization Polish | ✅ **COMPLETE** |
 | **Phase 3** | 5-6 | Detailing Visualization | ✅ **COMPLETE** (Session 51) |
 | **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
-| **Phase 4** | 7-8 | CAD Quality + Launch | 📋 **NEXT** |
+| **Phase 4** | 7-8 | CAD Quality + Launch | ✅ **COMPLETE** (v0.19.0) |
 | **Phase AI** | 6+ | **AI Chat Interface** | ✅ **MVP COMPLETE** (Session 50) |
 | **Phase AI v2** | 7+ | **Professional Redesign** | ✅ **FEATURE COMPLETE** (Session 53) |
 | **Phase AI v2 Fix** | 7 | CSV Import Fix | ✅ **PR #393** (Session 57) |
 
-### Session 54-58 Progress
+### Session 54-61 Progress
 
 | Session | Focus | Status |
 |---------|-------|--------|
@@ -47,14 +47,16 @@ This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](
 | 55-56 | Research and AI function calling | ✅ Complete |
 | 57 | AI v2 CSV import fix (adapter integration) | ✅ PR #393 |
 | 58 | Quality control guides, V3 research | ✅ Complete |
+| 59 | DXF/PDF export enable + LOD performance | ✅ Complete |
+| 60 | DXF schedule improvements + CAD polish | ✅ Complete |
+| 61 | v0.19.0 release + docs sync | ✅ Complete |
 
-### Next Steps: Phase 4
+### Phase 4 Complete (Post-Release Focus)
 
-Phase 4 is the final phase before launch. Focus areas:
-1. CAD-quality DXF export
-2. Print-ready reports
-3. Performance optimization (1000+ beams)
-4. User testing and feedback
+Phase 4 shipped in v0.19.0. Post-release priorities:
+1. User testing and feedback
+2. Documentation polish
+3. V3 foundation API planning
 
 ### Future: V3 React Migration (Post-Launch)
 
@@ -95,7 +97,7 @@ See: [ai-workspace-expansion-v3.md](../research/ai-workspace-expansion-v3.md)
 **UI Layout (Session 52-53):**
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  ⚡ StructEng AI                                    ✅ gpt-5-mini │
+│  ⚡ StructEng AI                                    ✅ gpt-4o-mini │
 ├─────────────────────────┬────────────────────────────────────────┤
 │  💬 CHAT (35%)          │  📊 DYNAMIC WORKSPACE (65%)            │
 │                         │  ┌───────────────────────────────────┐ │

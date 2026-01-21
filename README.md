@@ -15,7 +15,7 @@
 
 ## Quick Links
 
-📚 [Documentation](docs/README.md) • 🚀 [Quick Start](#quick-start) • 💡 [Examples](Python/examples/) • 🔧 [API Reference](docs/reference/api.md) • 📊 [Insights Guide](docs/getting-started/insights-guide.md) • 🤖 [AI Summary](llms.txt)
+📚 [Documentation](docs/README.md) • 🚀 [Quick Start](#quick-start) • 💡 [Examples](Python/examples/) • 🔧 [API Reference](docs/reference/api.md) • 🧭 [Streamlit API Index](streamlit_app/API_INDEX.md) • 🧪 [AI Agent Coding Guide](docs/guides/AI_AGENT_CODING_GUIDE.md) • 🤖 [AI Summary](llms.txt)
 
 > **🤖 For GitHub Copilot Users:** See [copilot quick start](docs/getting-started/copilot-quick-start.md) to prevent terminal lockup issues
 
@@ -26,11 +26,11 @@
 ## At a glance
 
 - **Scope:** Professional-grade IS 456 RC beam design library (Python + VBA) with multi-code foundation
-- **Quality:** Contract-tested APIs, 2430 tests, 86% coverage, comprehensive validation utilities, 103 automation scripts
+- **Quality:** Contract-tested APIs, 134 test files (Python + Streamlit), 13 CI workflows, 156 automation scripts
 - **Outputs:** Deterministic, auditable `results.json`, `schedule.csv`, `drawings.dxf`, HTML reports
-- **Automation:** Batch-ready CLI + public API wrappers + unified agent onboarding (90% faster workflow)
+- **Automation:** Batch-ready CLI + public API wrappers + unified agent onboarding (automation-first workflow)
 - **Smart Insights:** Cost optimization, design suggestions, comparison tools, sensitivity analysis, constructability scoring
-- **Documentation:** 870 validated internal links, zero orphan files, semantic folder structure with CI enforcement
+- **Documentation:** Structured indexes, agent playbooks, automated link checks, CI-enforced folder structure
 
 ---
 
@@ -85,40 +85,25 @@ This software is intended to assist qualified structural engineers with IS 456:2
 
 ## Status
 
-🚀 **Production-Ready Professional Tool (v0.17.5)** — Published on PyPI with enterprise-grade quality standards.
+🚀 **Current Release (v0.19.0)** — DXF polish, AI model fix, Streamlit API index.
 
-**What's new in v0.17.5 (Multi-Objective Optimization + API Validation - 2026-01-14):**
-- **NSGA-II Pareto Optimization:** Multi-objective beam optimization with cost/weight/utilization tradeoffs
-- **Cost Optimizer UI Enhancements:** Pareto scatter plot + best-by-objective summaries
-- **API Signature Validation:** AST-based checks in pre-commit + CI to prevent contract drift
-- **Test Coverage:** 13 new tests for multi-objective optimizer and Pareto front sorting
+**What's new in v0.19.0 (2026-01-21):**
+- **DXF Schedule Polish:** Wider columns, smaller text height, smart truncation
+- **AI Model Fix:** `gpt-4o-mini` now the default (no fictional model names)
+- **Streamlit API Index:** Centralized component/function map for reuse
 
-**Previous: v0.17.0 (Professional API + Debug Infrastructure - 2026-01-13):**
-- **Professional API Features:** BeamInput dataclasses, report generation, audit trail, testing strategies
-- **Debug Infrastructure:** 1-command diagnostics bundle (`collect_diagnostics.py`), API manifest tracking (38 symbols)
-- **Documentation System:** Metadata headers on 50+ docs, standardized doc creation workflow
-- **Git Workflow:** Enforcement hooks blocking manual git, improved error clarity and recovery
-- **Pre-commit Validation:** API manifest check, scripts index check, doc metadata check
+**Previous: v0.18.0 (AI Assistant v2 - 2026-01-20):**
+- **Dynamic Workspace:** 9-state UI with 35% chat / 65% workspace
+- **Rebar Editor + Cross Section:** Interactive detailing views
+- **Material Takeoff:** Concrete + steel quantities with cost
 
-**Previous: v0.16.6 (Python 3.11 Baseline - 2026-01-12):**
-- **Python 3.11 Baseline:** Minimum Python version raised from 3.9 to 3.11 for faster runtime
-- **CI Optimization:** Test matrix reduced from 4 versions to 2 (50% faster CI)
-- **Type Hint Modernization:** PEP 604 syntax (`X | None` instead of `Optional[X]`) across all modules
-
-**Previous: v0.16.5 (Developer Experience & Automation - 2026-01-11):**
-- **Unified Agent Onboarding:** Single `./scripts/agent_start.sh` command replaces 4-command workflow (90% faster)
-- **Folder Structure Governance:** 115 validation errors → 0, CI-enforced folder limits, comprehensive spec
-- **Git Workflow Automation:** 90-95% faster commits (45-60s → 5s), 103 automation scripts
-
-**Previous: v0.15.0 (Code Quality Excellence - 2026-01-07):**
-- **SPDX License Headers:** All 73 source files with standardized copyright
-- **PEP 585/604 Type Modernization:** 398 type hints updated to modern syntax
-- **Performance Benchmarks:** 13 comprehensive benchmarks with regression tracking
-- **Test Organization:** 2270 tests, 86% coverage, structured into 5 categories
+**Previous: v0.17.5 (Multi-Objective Optimization - 2026-01-14):**
+- **NSGA-II Pareto Optimization:** Multi-objective beam optimization
+- **API Signature Validation:** Pre-commit + CI contract checks
 
 See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
-**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.17.5`).
+**Stability note:** While in active development, prefer pinning to a release version (example: `structural-lib-is456==0.19.0`).
 
 ## Quick Start
 

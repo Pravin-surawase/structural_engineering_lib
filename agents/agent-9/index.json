@@ -1,0 +1,88 @@
+{
+  "folder": "agents/agent-9",
+  "description": "| Document | Purpose | |----------|---------|",
+  "last_updated": "2026-01-21",
+  "file_count": 9,
+  "files": [
+    {
+      "name": "AGENT_9_IMPLEMENTATION_ROADMAP.md",
+      "title": "Agent 9 Implementation Roadmap",
+      "description": "- **Phase A (v0.17.0):** Critical infrastructure (archive, CI checks, metrics) - **Phase B (v0.18.0):** Automation & observability (dashboards, alerts)",
+      "last_updated": "2026-01-10",
+      "size_lines": 1159,
+      "status": "Ready for Implementation"
+    },
+    {
+      "name": "AUTOMATION.md",
+      "title": "Agent 9: Automation Scripts Specifications",
+      "description": "1. Archive Old Sessions Script 2. Check WIP Limits Script",
+      "last_updated": "2026-01-10",
+      "size_lines": 840,
+      "audience": "Developers implementing or maintaining governance scripts"
+    },
+    {
+      "name": "CHECKLISTS.md",
+      "title": "Agent 9: Operational Checklists",
+      "description": "1. Weekly Maintenance Checklist 2. Pre-Release Checklist",
+      "last_updated": "2026-01-10",
+      "size_lines": 504
+    },
+    {
+      "name": "KNOWLEDGE_BASE.md",
+      "title": "Agent 9: Git & CI Governance Knowledge Base",
+      "description": "1. Git Workflow Best Practices 2. Pre-Commit Hooks & CI",
+      "last_updated": "2026-01-10",
+      "size_lines": 631
+    },
+    {
+      "name": "METRICS.md",
+      "title": "Agent 9: Metrics & Tracking Templates",
+      "description": "1. Weekly Metrics Dashboard 2. Monthly Metrics Dashboard",
+      "last_updated": "2026-01-10",
+      "size_lines": 598,
+      "audience": "AI agents executing governance sessions"
+    },
+    {
+      "name": "RESEARCH_PLAN.md",
+      "title": "Agent 9 Research Plan",
+      "description": "- ✅ Research complete in 3-5 hours - ✅ Findings documented with citations",
+      "last_updated": "2026-01-10",
+      "size_lines": 811,
+      "status": "📋 Planning Phase"
+    },
+    {
+      "name": "RESEARCH_QUICK_REF.md",
+      "title": "Agent 9 Research Plan - Quick Reference Card",
+      "description": "**⚡ Print/Pin This | 1-Page Essentials** Research evidence-based governance for sustainable AI-assisted development (3-5 hours, 5-10 actionable tasks)",
+      "last_updated": "2026-01-13",
+      "size_lines": 259
+    },
+    {
+      "name": "SESSION_TEMPLATES.md",
+      "title": "Agent 9: Session Planning Templates",
+      "description": "1. Weekly Maintenance Session Template 2. Pre-Release Session Template",
+      "last_updated": "2026-01-10",
+      "size_lines": 975
+    },
+    {
+      "name": "WORKFLOWS.md",
+      "title": "Agent 9: Operational Workflows",
+      "description": "1. Weekly Maintenance Session 2. Pre-Release Governance",
+      "last_updated": "2026-01-10",
+      "size_lines": 646,
+      "audience": "AI agents executing governance tasks"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "research",
+      "path": "research/",
+      "description": ""
+    },
+    {
+      "name": "workflows",
+      "path": "workflows/",
+      "description": ""
+    }
+  ]
+}

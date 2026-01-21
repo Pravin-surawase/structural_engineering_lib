@@ -11,7 +11,7 @@ Features:
 - Export to DXF, BBS
 
 Author: STREAMLIT UI SPECIALIST (Agent 6)
-Version: 0.2.0 (UI-002: Modern Page Layout Redesign)
+Version: 0.19.0 (Streamlit app release)
 """
 
 import streamlit as st
@@ -107,10 +107,10 @@ section_header("System Status", icon="📊")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Version", "0.2.0", help="Dashboard version")
+    st.metric("Version", "0.19.0", help="Dashboard version")
 
 with col2:
-    st.metric("Library", "0.15.0", help="structural-lib-is456 version")
+    st.metric("Library", "0.19.0", help="structural-lib-is456 version")
 
 with col3:
     st.metric("Code", "IS 456:2000", help="Design code standard")
@@ -164,7 +164,7 @@ with st.sidebar:
     st.markdown("### ℹ️ About")
     st.markdown(
         """
-    **Version:** 0.17.0
+    **Version:** 0.19.0
     **Library:** structural-lib-is456
     **Code:** IS 456:2000
 

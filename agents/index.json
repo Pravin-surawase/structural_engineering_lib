@@ -1,7 +1,7 @@
 {
   "folder": "agents",
   "description": "Use these snippets to quickly engage the right agent with the right context. The role docs in this folder can guide **GitHub Copilot Coding Agent** when you create well-scoped GitHub Issues.",
-  "last_updated": "2026-01-19",
+  "last_updated": "2026-01-21",
   "file_count": 0,
   "files": [],
   "subfolders": [

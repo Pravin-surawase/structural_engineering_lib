@@ -13,6 +13,7 @@
 |------|-----------|------|------------|-------------|
 | **AI Agent (new)** | [agent-bootstrap.md](getting-started/agent-bootstrap.md) | guide | beginner | 60-second onboarding checklist |
 | **AI Agent (working)** | [agent-quick-reference.md](agents/guides/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
+| **AI Agent (coding)** | [AI_AGENT_CODING_GUIDE.md](guides/AI_AGENT_CODING_GUIDE.md) | guide | intermediate | Coding standards, tests, reviews |
 | **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
 | **Excel User** | [excel-tutorial.md](getting-started/excel-tutorial.md) | tutorial | beginner | UDF usage, workbook setup |
 | **Contributor** | [development-guide.md](contributing/development-guide.md) | guide | intermediate | PR process, code style, tests |
@@ -28,6 +29,7 @@
 | **Testing** | [testing-strategy.md](contributing/testing-strategy.md) | guide | intermediate | Test categories, coverage, CI |
 | **Git Workflow** | [git-automation/README.md](git-automation/README.md) | hub | beginner | Git automation hub, scripts, workflow |
 | **Git Workflow (legacy)** | [git-workflow-ai-agents.md](contributing/git-workflow-ai-agents.md) | guide | beginner | Commit, PR, merge rules |
+| **Streamlit API Index** | [../streamlit_app/API_INDEX.md](../streamlit_app/API_INDEX.md) | reference | intermediate | Streamlit components/functions |
 | **Troubleshooting** | [troubleshooting.md](reference/troubleshooting.md) | reference | beginner | Common errors, fixes |
 | **Tasks** | [TASKS.md](TASKS.md) | index | beginner | What to work on next |
 | **Session Log** | [SESSION_LOG.md](SESSION_LOG.md) | log | beginner | Recent work history |
@@ -64,6 +66,7 @@ For VS Code AI-agent work, start with:
 - **[agent-bootstrap.md](getting-started/agent-bootstrap.md)** - New agent checklist
 - **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
 - **[AGENT_QUICK_REFERENCE.md](agents/guides/agent-quick-reference.md)** - Essential commands
+- **[AI_AGENT_CODING_GUIDE.md](guides/AI_AGENT_CODING_GUIDE.md)** - Coding standards and quality gates
 - [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
 - [AI summary](../llms.txt) - LLM-friendly summary
 - [Handoff Quick Start](contributing/handoff.md) - Session handoff

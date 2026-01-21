@@ -5,7 +5,7 @@
 **Status:** Draft
 **Importance:** High
 **Created:** 2026-01-20
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
 **Related Tasks:** TASK-AI-CHAT
 
 ---
@@ -22,17 +22,14 @@ This document captures research and best practices for effective AI integration 
 
 | Model | Speed | Cost | Best For |
 |-------|-------|------|----------|
-| **gpt-5-mini** | ⚡ Fast | $0.25/1M tokens | **RECOMMENDED** - Quick design assistance |
-| gpt-5 | Medium | $1.75/1M tokens | Complex reasoning, code generation |
-| gpt-5.2 | Medium | ~$2/1M tokens | Agentic tasks, multi-step workflows |
+| **gpt-4o-mini** | ⚡ Fast | $0.15/1M tokens | **RECOMMENDED** - Quick design assistance |
 | gpt-4.1 | Fast | $0.50/1M tokens | Non-reasoning, simple queries |
-| gpt-4o-mini | Fast | $0.15/1M tokens | Legacy support, budget-conscious |
 
 ### Configuration in `secrets.toml`
 
 ```toml
 [openai]
-model = "gpt-5-mini"
+model = "gpt-4o-mini"
 temperature = 0.7
 max_tokens = 2000
 ```
