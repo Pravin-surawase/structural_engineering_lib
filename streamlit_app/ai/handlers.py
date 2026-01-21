@@ -638,10 +638,11 @@ def _handle_generate_report(args: dict) -> str:
             },
         }
 
-        # Generate report
+        # Generate report (high threshold forces single-report mode for in-memory)
         report_content = api.compute_report(
             report_input,
             format=report_format,
+            batch_threshold=10000,  # Avoid batch mode for in-memory generation
         )
 
         # Store for display/download

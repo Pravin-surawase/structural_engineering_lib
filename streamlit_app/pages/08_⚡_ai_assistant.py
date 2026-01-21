@@ -111,20 +111,25 @@ def get_openai_config() -> dict[str, Any]:
     max_tokens = 2000
 
     if "openai" in st.secrets:
-        openai_config = st.secrets.get("openai", {})
-        if isinstance(openai_config, dict):
-            if "model" in openai_config:
-                model = openai_config.get("model", "gpt-4o-mini")
-            if "temperature" in openai_config:
-                try:
-                    temperature = float(openai_config.get("temperature", 0.7))
-                except (ValueError, TypeError):
-                    pass
-            if "max_tokens" in openai_config:
-                try:
-                    max_tokens = int(openai_config.get("max_tokens", 2000))
-                except (ValueError, TypeError):
-                    pass
+        # st.secrets returns AttrDict, access directly with get() or bracket
+        openai_config = st.secrets["openai"]
+        if hasattr(openai_config, "get") or isinstance(openai_config, dict):
+            # Try to read model - supports both dict and AttrDict
+            try:
+                model = openai_config.get("model", model)
+            except (AttributeError, TypeError):
+                if hasattr(openai_config, "model"):
+                    model = openai_config.model
+            try:
+                temperature = float(openai_config.get("temperature", temperature))
+            except (ValueError, TypeError, AttributeError):
+                if hasattr(openai_config, "temperature"):
+                    temperature = float(openai_config.temperature)
+            try:
+                max_tokens = int(openai_config.get("max_tokens", max_tokens))
+            except (ValueError, TypeError, AttributeError):
+                if hasattr(openai_config, "max_tokens"):
+                    max_tokens = int(openai_config.max_tokens)
 
     return {
         "model": model,
@@ -218,13 +223,16 @@ def get_ai_response(user_message: str) -> str:
         except Exception as e:
             error_str = str(e)
             if "429" in error_str or "quota" in error_str.lower():
-                return _local_response(user_message)
+                return "⚠️ Rate limit hit. Try again shortly.\n\n" + _local_response(user_message)
             elif "401" in error_str or "auth" in error_str.lower():
                 return "🔑 API key invalid. Using local mode.\n\n" + _local_response(user_message)
             elif "timeout" in error_str.lower() or "connect" in error_str.lower():
                 return "⏱️ Connection timeout. Using local mode.\n\n" + _local_response(user_message)
             else:
-                return _local_response(user_message)
+                # Log error for debugging but still provide fallback
+                import logging
+                logging.warning(f"AI API error: {error_str}")
+                return f"⚠️ AI error: {error_str[:100]}\n\n" + _local_response(user_message)
 
     # Local SmartDesigner fallback
     return _local_response(user_message)

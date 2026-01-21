@@ -81,6 +81,14 @@ try:
 except ImportError:
     CACHED_DESIGN_AVAILABLE = False
 
+# Import PDF generator (professional reportlab-based reports)
+try:
+    from utils.pdf_generator import BeamDesignReportGenerator, is_reportlab_available
+
+    PDF_AVAILABLE = is_reportlab_available()
+except ImportError:
+    PDF_AVAILABLE = False
+
 
 class WorkspaceState(Enum):
     """Workspace state machine states."""
@@ -917,7 +925,10 @@ def _generate_and_download_report(results_df: pd.DataFrame) -> None:
             },
         }
 
-        report_html = api.compute_report(report_input, format="html")
+        # High threshold forces single-report mode for in-memory generation
+        report_html = api.compute_report(
+            report_input, format="html", batch_threshold=10000
+        )
 
         st.download_button(
             label="⬇️ Download Report",
@@ -929,6 +940,85 @@ def _generate_and_download_report(results_df: pd.DataFrame) -> None:
 
     except Exception as e:
         st.error(f"Report generation failed: {str(e)}")
+
+
+def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
+    """Generate and offer download for professional PDF report.
+
+    Uses BeamDesignReportGenerator with reportlab for CAD-quality output.
+    """
+    if results_df is None or results_df.empty:
+        st.error("No results to export")
+        return
+
+    if not PDF_AVAILABLE:
+        st.error("PDF export requires reportlab. Install with: pip install reportlab")
+        return
+
+    try:
+        generator = BeamDesignReportGenerator()
+
+        # Convert DataFrame rows to design data format expected by PDF generator
+        for _, row in results_df.iterrows():
+            design_data = {
+                "beam_id": str(row["beam_id"]),
+                "story": str(row.get("story", "")),
+                "is_safe": bool(row.get("is_safe", False)),
+                "geometry": {
+                    "b_mm": float(row["b_mm"]),
+                    "D_mm": float(row["D_mm"]),
+                    "d_mm": float(row["D_mm"]) - float(row.get("cover_mm", 40)) - 8,
+                    "span_mm": float(row["span_mm"]),
+                    "cover_mm": float(row.get("cover_mm", 40)),
+                },
+                "materials": {
+                    "fck": float(row["fck"]),
+                    "fy": float(row["fy"]),
+                },
+                "loads": {
+                    "case_id": "DESIGN",
+                    "Mu_kNm": float(row["mu_knm"]),
+                    "Vu_kN": float(row["vu_kn"]),
+                },
+                "flexure": {
+                    "Ast_required": float(row.get("ast_req", 0)),
+                    "utilization": float(row.get("utilization", 0)),
+                    "section_type": "under-reinforced",
+                },
+                "shear": {
+                    "is_safe": bool(row.get("is_safe", False)),
+                    "utilization": 0.5,
+                },
+            }
+
+            project_info = {
+                "name": f"Beam {row['beam_id']}",
+                "location": str(row.get("story", "N/A")),
+                "engineer": "Structural Engineer",
+                "date": "",
+            }
+
+            pdf_buffer = generator.generate_report(
+                design_data,
+                project_info,
+                include_bbs=False,
+                include_diagrams=False,
+            )
+
+            st.download_button(
+                label=f"⬇️ {row['beam_id']} PDF",
+                data=pdf_buffer.getvalue(),
+                file_name=f"beam_{row['beam_id']}_report.pdf",
+                mime="application/pdf",
+                key=f"pdf_{row['beam_id']}",
+            )
+            break  # For now, just the first beam (batch PDF can be added later)
+
+        if len(results_df) > 1:
+            st.info(f"📋 Showing PDF for first beam. {len(results_df)} beams total.")
+
+    except Exception as e:
+        st.error(f"PDF generation failed: {str(e)}")
 
 
 def _generate_and_download_dxf(results_df: pd.DataFrame) -> None:
@@ -1086,19 +1176,24 @@ def render_design_results() -> None:
 
     # Export buttons row
     st.caption("📤 **Export Options**")
-    exp1, exp2, exp3 = st.columns(3)
+    exp1, exp2, exp3, exp4 = st.columns(4)
 
     with exp1:
-        if st.button("📄 Report", use_container_width=True,
-                    help="Generate design calculation report (HTML)"):
+        if st.button("📄 HTML", use_container_width=True,
+                    help="Design report in HTML format (web viewable)"):
             _generate_and_download_report(filtered_df)
 
     with exp2:
+        if st.button("📑 PDF", use_container_width=True,
+                    help="Professional PDF report (printable)"):
+            _generate_and_download_pdf_report(filtered_df)
+
+    with exp3:
         if st.button("📐 DXF", use_container_width=True,
                     help="Export CAD drawings for detailing"):
             _generate_and_download_dxf(filtered_df)
 
-    with exp3:
+    with exp4:
         if st.button("📊 CSV", use_container_width=True,
                     help="Export results as CSV spreadsheet"):
             csv_data = filtered_df.to_csv(index=False)
