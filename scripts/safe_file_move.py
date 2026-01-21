@@ -45,6 +45,13 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
     search_dirs = ["docs", "agents", "Python", "VBA", "streamlit_app"]
     extensions = [".md", ".py", ".bas", ".txt", ".json"]
 
+    # Directories to exclude (performance optimization)
+    exclude_dirs = {
+        ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache",
+        "build", "dist", "htmlcov", ".mypy_cache", ".ruff_cache",
+        "*.egg-info", ".git", ".github", "logs", "tmp"
+    }
+
     for search_dir in search_dirs:
         search_path = project_root / search_dir
         if not search_path.exists():
@@ -52,6 +59,9 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
 
         for ext in extensions:
             for file in search_path.rglob(f"*{ext}"):
+                # Skip if file is in excluded directory
+                if any(excluded in file.parts for excluded in exclude_dirs):
+                    continue
                 if file == file_path:
                     continue
                 try:
