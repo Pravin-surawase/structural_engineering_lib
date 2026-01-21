@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-21 (Session 61)
+**Updated:** 2026-01-22 (Session 62b)
 
 ---
 
@@ -28,8 +28,23 @@
 |---------|-------|--------|------------------|
 | **v0.18.1** | AI v2 Bugfix | ✅ DONE | PR #393 (CSV import fix) |
 | **v0.19.0** | Phase 4 + Launch | ✅ RELEASED | DXF polish, AI model fix, Streamlit API index |
-| **v0.20** | V3 Foundation | 🚧 NEXT | Library API additions for React migration |
+| **v0.19.1** | AI Tools + UX | 🚧 IN PROGRESS | DXF/report AI tools, rebar optimization |
+| **v0.20** | V3 Foundation | 📋 NEXT | Library API additions for React migration |
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
+
+---
+
+## Session 62b Completed (2026-01-22)
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Fix bar spacing for multi-layer rebar | ✅ Done | `4f3bdfde` |
+| Add DXF export AI tool | ✅ Done | `4f3bdfde` |
+| Add report generation AI tool | ✅ Done | `4f3bdfde` |
+| Add optimization button | ✅ Done | `5e44773c` |
+| Add constructability score | ✅ Done | `5e44773c` |
+| Industry report research | ✅ Done | `e7b15959` |
+| Update agent bootstrap (indexes) | ✅ Done | `ece436ca` |
 
 ---
 

@@ -4,6 +4,64 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-22 — Session 62b: Rebar Editor & AI Tools Enhancement
+
+**Focus:** Improve AI assistant tools, rebar editor UX, industry report research
+
+### Work Completed
+
+1. ✅ **Fixed bar spacing calculation** - Multi-layer bars now calculated per layer (min spacing)
+2. ✅ **Added DXF export AI tool** - Users can say "export DXF for B1" in chat
+3. ✅ **Added report generation AI tool** - Users can request design reports via chat
+4. ✅ **Added optimization button** - Quick auto-optimize for rebar configuration
+5. ✅ **Added constructability score** - Construction ease rating (0-100) with notes
+6. ✅ **Created industry report research** - IS 456 clause references, template recommendations
+7. ✅ **Updated agent bootstrap** - Added index file references for discovery
+8. ✅ **Expanded generate_all_indexes.sh** - More folders covered
+
+### AI Tools Added
+
+| Tool | Purpose | Example Command |
+|------|---------|-----------------|
+| `export_dxf` | Generate CAD drawing | "export DXF for beam B1" |
+| `generate_report` | Create design report | "generate report for all beams" |
+
+### Rebar Editor Improvements
+
+| Feature | Description |
+|---------|-------------|
+| **Auto-Optimize** | One-click optimization for cost/weight |
+| **Constructability Score** | 0-100 rating based on placement difficulty |
+| **Bar Spacing Fix** | Multi-layer reinforcement now calculates minimum spacing per layer |
+
+### Bug Fix: Bar Spacing Calculation
+
+**Problem:** Bar spacing showed 6mm for beams with multi-layer reinforcement
+**Root Cause:** All bars (Layer 1 + Layer 2) were treated as single horizontal layer
+**Fix:** Calculate spacing for each layer separately, take minimum (worst case)
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `4f3bdfde` | feat(ai): add DXF and report generation tools |
+| `5e44773c` | feat(rebar): add optimization button and constructability score |
+| `e7b15959` | docs: add industry report practices research |
+| `ece436ca` | docs: update agent bootstrap with index references |
+
+### Test Status
+
+Streamlit validation: ✅ All pages passed
+
+### Next Session Tasks
+
+1. **Report Enhancement** - Add IS 456 clause references to design checks
+2. **PDF Export** - Add PDF output format for reports
+3. **Rebar Table Edit** - Allow inline editing of reinforcement table
+4. **DXF Testing** - User test CAD export workflow
+
+---
+
 ## 2026-01-21 — Session 62: Post-Release Doc Sync
 
 **Focus:** Align docs and indexes with v0.19.0 release status
