@@ -9,6 +9,15 @@
 
 ---
 
+## Latest Handoff (auto)
+
+<!-- HANDOFF:START -->
+- Date: 2026-01-21
+- Focus: Align docs and indexes with v0.19.0 release status
+<!-- HANDOFF:END -->
+
+
+
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.19.0 | ✅ Released |

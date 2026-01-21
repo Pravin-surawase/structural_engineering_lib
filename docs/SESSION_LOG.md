@@ -15,6 +15,7 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 3. ✅ Synced AI agent docs (context pack, coding guide references)
 4. ✅ Updated next-session brief to post-release priorities
 5. ✅ Fixed stale version markers in user guides
+6. ✅ Opened PR #394 for docs/index sync
 
 ### Files Updated
 
