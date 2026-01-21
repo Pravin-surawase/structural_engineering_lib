@@ -5,20 +5,20 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2025-06-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-21
 
 ---
 
-Version: 0.17.5 (current)
+Version: 0.19.0 (current)
 Target: Public beta with library-first APIs + DXF/BBS quality gates
 
 ---
 
-## Current State (last verified 2025-12-30)
+## Current State (last verified 2026-01-21)
 
 | Area | Status | Evidence |
 |------|--------|----------|
-| Test Suite | ✅ 2047 tests run (1956 passed, 91 skipped) | `pytest tests` on 2025-12-30 |
+| Test Suite | ✅ See CI dashboard | `.venv/bin/python -m pytest Python/tests` |
 | PyPI | ✅ Live | `pip install structural-lib-is456` |
 | CLI | ✅ Functional | `python -m structural_lib --help` works |
 | Excel Integration | ⚠️ Functional (not parity-verified) | CSV/JSON workflows work; VBA outputs not compared |
@@ -61,7 +61,7 @@ Target: Public beta with library-first APIs + DXF/BBS quality gates
   - [ ] Seismic detailing case (if applicable)
 - [x] **Document results** in `docs/verification/validation-pack.md` with source refs
 - [ ] **One external engineer tries CLI cold** — note friction points
-- [x] **All tests pass** (`pytest tests` on 2025-12-30)
+- [x] **All tests pass** (see CI and local runs)
 - [ ] **PyPI install verified in clean venv** — `scripts/verify_release.py --version X.Y.Z --source pypi`
 
 ### Nice-to-Have Before Beta

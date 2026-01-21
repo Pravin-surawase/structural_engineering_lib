@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-21T15:18:26.299319",
-  "total_docs": 313,
+  "generated": "2026-01-21T22:51:01.155822",
+  "total_docs": 321,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,18 +10,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-01-21 \u2014 Session 62: Post-Release Doc Sync",
+        "2026-01-21 \u2014 Session 61: V0.19.0 Release",
+        "2026-01-22 \u2014 Session 60: DXF Export Bug Fix & Industry-Standard CAD Improvements",
+        "2026-01-21 \u2014 Session 59 (Phase 3): DXF/PDF Export & Performance",
+        "2026-01-21 \u2014 Session 59 (Phase 2): PyVista Evaluation & Automation",
+        "2026-01-21 \u2014 Session 59: Comprehensive Doc Governance Cleanup",
         "2026-01-21 \u2014 Session 58: AI Workspace Integration Research & Planning",
         "2026-01-20 \u2014 Session 58 Part 2: AI Workspace Expansion Research",
         "2026-01-21 \u2014 Session 57: AI v2 CSV Import Fix (Critical)",
-        "2026-01-20 \u2014 Session 56: AI Chat Improvements",
-        "2026-01-20 \u2014 Session 55: v0.18.0 Release Prep",
-        "2026-01-20 \u2014 Session 54: AI v2 Polish & Quality",
-        "2026-01-20 \u2014 Session 53: AI v2 Advanced Features",
-        "2026-01-20 \u2014 Session 52: AI Assistant v2 with Dynamic Workspace",
-        "2026-01-20 \u2014 Session 51: Phase 3 Rebar Visualization & Bug Fixes",
-        "2026-01-20 \u2014 Session 50: AI Page Polish & CSV Import"
+        "2026-01-20 \u2014 Session 56: AI Chat Improvements"
       ],
-      "size_bytes": 336518
+      "size_bytes": 347419
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -41,7 +41,7 @@
         "DXF Rendering (optional)",
         "For Beginners (more explanation, slower pace)"
       ],
-      "size_bytes": 12298
+      "size_bytes": 12670
     },
     "docs/TASKS.md": {
       "title": "Task Board",
@@ -52,12 +52,13 @@
       "sections": [
         "Rules",
         "Current Focus",
+        "Release Roadmap",
         "Active Tasks",
         "Backlog (Prioritized)",
         "Recently Completed (Last 7 Days)",
         "Notes"
       ],
-      "size_bytes": 9945
+      "size_bytes": 12647
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -225,7 +226,7 @@
         "Comprehensive Test Plan",
         "Agentic AI Insights (Publication Section)"
       ],
-      "size_bytes": 66763
+      "size_bytes": 66753
     },
     "docs/research/ux-patterns-for-technical-apis.md": {
       "title": "User Experience Patterns for Technical APIs",
@@ -271,7 +272,7 @@
         "7. Multi-Beam Intelligence",
         "8. Optimization Workspace"
       ],
-      "size_bytes": 11636
+      "size_bytes": 11912
     },
     "docs/research/agent-efficiency-research.md": {
       "title": "Agent Efficiency Research: Reducing Requests & Preventing Mistakes",
@@ -335,6 +336,29 @@
         "Approval Status"
       ],
       "size_bytes": 11943
+    },
+    "docs/research/ai-workspace-expansion-v3.md": {
+      "title": "AI Workspace Expansion - Research & Architecture (V3)",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "1. Scope and Non-Goals",
+        "2. Stack Decision: Three.js + React Three Fiber",
+        "3. Premium Workspace UX (Non-Negotiable)",
+        "4. Architecture: Command/Event Model + Delta Updates",
+        "5. Library as the Core Advantage",
+        "6. Automation for Normal Engineers (Feasibility)",
+        "7. Execution Reality: VS Code + AI Agents",
+        "8. Reuse Map (What We Can Leverage Now)",
+        "9. Research Agenda (Beams-Only)"
+      ],
+      "size_bytes": 26500
     },
     "docs/research/critical-infrastructure-gaps-v018.md": {
       "title": "Critical Infrastructure Gap Analysis (Pre-v0.18.0)",
@@ -445,7 +469,7 @@
         "Session 6 Issues Review",
         "Files to Archive Immediately"
       ],
-      "size_bytes": 10705
+      "size_bytes": 10635
     },
     "docs/research/research-backlog-review.md": {
       "title": "Research Backlog Review: 27 Tasks Validation",
@@ -622,6 +646,28 @@
       ],
       "size_bytes": 8943
     },
+    "docs/research/industry-cad-standards-bbs.md": {
+      "title": "Industry CAD Standards for Structural Engineering Deliverables",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "1. Industry Standard Drawing Set Organization",
+        "2. Bar Bending Schedule (BBS) Format - IS 2502",
+        "3. Beam Schedule Format (Industry Standard)",
+        "4. Drawing Layout Standards",
+        "5. Recommendations for Our Implementation",
+        "6. Client Delivery Checklist",
+        "7. References",
+        "8. Next Steps"
+      ],
+      "size_bytes": 9452
+    },
     "docs/research/chat-ui-product-strategy-research.md": {
       "title": "Chat UI & Product Strategy Research - Consolidated Findings",
       "type": "research",
@@ -728,7 +774,30 @@
         "7. Task Breakdown (Numbered Phases)",
         "8. Technical Specifications"
       ],
-      "size_bytes": 31515
+      "size_bytes": 31505
+    },
+    "docs/research/pyvista-evaluation.md": {
+      "title": "PyVista Evaluation for CAD-Quality 3D Visualization",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "0. Professional CAD Quality Guidelines",
+        "1. Technology Comparison",
+        "2. PyVista Capabilities",
+        "3. Deployment Challenges",
+        "4. Recommended Implementation Strategy",
+        "5. Implementation Plan for v0.19",
+        "6. Code Prototype",
+        "7. Decision Matrix",
+        "8. Conclusion"
+      ],
+      "size_bytes": 10676
     },
     "docs/research/streamlit-code-files-analysis.md": {
       "title": "Streamlit Code Quality Deep Research",
@@ -1043,7 +1112,7 @@
         "Technical Details",
         "Action Plan"
       ],
-      "size_bytes": 15777
+      "size_bytes": 15757
     },
     "docs/research/calculation-report-generation-part2.md": {
       "title": "Calculation Report Generation - Part 2/2",
@@ -1308,7 +1377,7 @@
         "5. Response Formatting",
         "6. Error Handling"
       ],
-      "size_bytes": 5839
+      "size_bytes": 5616
     },
     "docs/research/autonomous-agent-workflow-research.md": {
       "title": "\ud83d\udd2c Autonomous Agent Workflow - Deep Research",
@@ -1395,7 +1464,7 @@
         "5. Automation Requirements",
         "6. Immediate Cleanup Plan"
       ],
-      "size_bytes": 9312
+      "size_bytes": 9292
     },
     "docs/research/agent-8-git-automation-comprehensive-research.md": {
       "title": "Agent 8 & Git Automation: Comprehensive Research",
@@ -1418,7 +1487,7 @@
         "6. Historical Issues & Solutions",
         "7. Documentation Inventory"
       ],
-      "size_bytes": 36670
+      "size_bytes": 36660
     },
     "docs/research/input-flexibility-data-interchange-part3.md": {
       "title": "Input Flexibility & Data Interchange - Part 3/3",
@@ -2559,7 +2628,7 @@
         "External Trust Signals",
         "Stop List (Scope Control)"
       ],
-      "size_bytes": 2921
+      "size_bytes": 2891
     },
     "docs/contributing/github-workflow.md": {
       "title": "GitHub Workflow Guide",
@@ -2619,7 +2688,7 @@
       "sections": [
         "Files"
       ],
-      "size_bytes": 4865
+      "size_bytes": 4867
     },
     "docs/contributing/streamlit-issues-catalog.md": {
       "title": "Streamlit App Comprehensive Issue Catalog",
@@ -2665,7 +2734,7 @@
         "8) Confidence loop (minimal but effective)",
         "9) Quick links"
       ],
-      "size_bytes": 7222
+      "size_bytes": 7182
     },
     "docs/contributing/docstring-style-guide.md": {
       "title": "Docstring Style Guide",
@@ -2734,7 +2803,7 @@
         "\ud83d\udca1 Pro Tips",
         "\ud83d\udcdd Templates"
       ],
-      "size_bytes": 13373
+      "size_bytes": 13343
     },
     "docs/contributing/session-issues.md": {
       "title": "Session Issues and Fixes",
@@ -2767,7 +2836,7 @@
         "\ud83d\udcdd Usage Examples",
         "\ud83d\udd04 Maintenance"
       ],
-      "size_bytes": 3069
+      "size_bytes": 3059
     },
     "docs/contributing/streamlit-prevention-system-review.md": {
       "title": "Comprehensive Prevention System - Review & Refinements",
@@ -2813,7 +2882,7 @@
         "Question: [ROLE] \u2192 MAIN",
         "Parallel Coordination Rules (Strict)"
       ],
-      "size_bytes": 16363
+      "size_bytes": 16353
     },
     "docs/contributing/agent-collaboration-framework.md": {
       "title": "Agent Collaboration Framework",
@@ -2859,7 +2928,7 @@
         "\ud83d\udcd6 Best Practices",
         "\ud83d\udcca Current Status (Jan 2026)"
       ],
-      "size_bytes": 19244
+      "size_bytes": 19194
     },
     "docs/contributing/git-workflow-ai-agents.md": {
       "title": "Git Workflow for AI Agents (Canonical)",
@@ -2895,7 +2964,7 @@
         "Debug Snapshot Checklist",
         "Common Traps (fast fixes)"
       ],
-      "size_bytes": 3051
+      "size_bytes": 2971
     },
     "docs/contributing/testing-strategy.md": {
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
@@ -3319,7 +3388,7 @@
         "\ud83d\udcc1 Related Infrastructure",
         "\ud83d\udd17 Related Documentation"
       ],
-      "size_bytes": 11677
+      "size_bytes": 11587
     },
     "docs/git-automation/workflow-guide.md": {
       "title": "Git Workflow Guide",
@@ -3339,7 +3408,7 @@
         "\ud83d\udcc8 Success Metrics",
         "\ud83d\udd17 Related Documentation"
       ],
-      "size_bytes": 8138
+      "size_bytes": 8128
     },
     "docs/git-automation/mistakes-prevention.md": {
       "title": "Git Automation: Mistakes Prevention Guide",
@@ -3376,7 +3445,7 @@
         "\ud83d\udcda Related Documentation",
         "\ud83d\udcca Success Metrics"
       ],
-      "size_bytes": 6993
+      "size_bytes": 6983
     },
     "docs/git-automation/efficient-agent-usage.md": {
       "title": "Efficient Agent Usage for Git Automation",
@@ -3396,7 +3465,7 @@
         "8. Troubleshooting",
         "Related Documents"
       ],
-      "size_bytes": 8823
+      "size_bytes": 8793
     },
     "docs/git-automation/advanced-coordination.md": {
       "title": "Git Automation: Multi-Agent Coordination",
@@ -3530,7 +3599,7 @@
         "Quick Commands",
         "Key Files"
       ],
-      "size_bytes": 5760
+      "size_bytes": 5677
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3635,6 +3704,28 @@
         "Execution Plan & Next Steps"
       ],
       "size_bytes": 12284
+    },
+    "docs/planning/industry-usability-plan.md": {
+      "title": "Industry Usability Plan",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Executive Summary",
+        "1. Current State Assessment",
+        "2. Priority Roadmap",
+        "3. Technical Improvements",
+        "4. User Experience Improvements",
+        "5. Competitive Positioning",
+        "6. Success Metrics",
+        "7. Next Steps",
+        "References"
+      ],
+      "size_bytes": 7268
     },
     "docs/planning/multi-code-architecture.md": {
       "title": "Multi-Code Architecture Design",
@@ -3783,13 +3874,13 @@
         "tasks"
       ],
       "sections": [
-        "Current State (last verified 2025-12-30)",
+        "Current State (last verified 2026-01-21)",
         "Versioning & Release Rules (from now on)",
         "Beta Readiness Checklist",
         "Validation Template",
         "Status Log"
       ],
-      "size_bytes": 3611
+      "size_bytes": 3593
     },
     "docs/planning/brainstorming-platform-pivot.md": {
       "title": "Brainstorming: Structural Automation Platform",
@@ -3915,7 +4006,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 5749
+      "size_bytes": 5850
     },
     "docs/planning/etabs-automation-bridge-plan.md": {
       "title": "ETABS Automation Bridge \u2014 Implementation Plan",
@@ -3949,7 +4040,7 @@
       ],
       "sections": [
         "\ud83c\udfaf The Bigger Picture",
-        "\ud83d\udcca Current Status (Session 53)",
+        "\ud83d\udcca Current Status (Session 61)",
         "Strategic Context",
         "Progress Update (Session 47)",
         "8-Week Roadmap",
@@ -3959,7 +4050,7 @@
         "Week X Check-in",
         "Development Tools & Resources"
       ],
-      "size_bytes": 26310
+      "size_bytes": 27288
     },
     "docs/planning/v020-stabilization-checklist.md": {
       "title": "v0.20.0 Stabilization Checklist",
@@ -3979,7 +4070,7 @@
         "Progress Tracker",
         "Notes"
       ],
-      "size_bytes": 5049
+      "size_bytes": 5029
     },
     "docs/planning/structural-automation-platform-phase-0-research-plan.md": {
       "title": "Structural Automation Platform \u2014 Phase 0 Research Plan",
@@ -4066,7 +4157,7 @@
         "Recommendations for Future Work",
         "Process Improvements Implemented"
       ],
-      "size_bytes": 24069
+      "size_bytes": 24059
     },
     "docs/planning/bbs-dxf-improvement-plan.md": {
       "title": "BBS + DXF Improvement Plan (Beam-Only)",
@@ -4322,7 +4413,7 @@
         "Common Patterns",
         "Next Step"
       ],
-      "size_bytes": 2062
+      "size_bytes": 2052
     },
     "docs/agents/guides/agent-9-quick-start.md": {
       "title": "Agent 9 Quick Start - Governance & Documentation Structure",
@@ -4342,7 +4433,7 @@
         "Common Mistakes to Avoid",
         "Emergency Recovery"
       ],
-      "size_bytes": 7719
+      "size_bytes": 7549
     },
     "docs/agents/guides/agent-8-git-ops.md": {
       "title": "Agent 8: GIT OPERATIONS SPECIALIST",
@@ -4382,7 +4473,7 @@
         "\ud83d\udccb Current Tasks (v0.17.5)",
         "\ud83d\udd17 Quick Links"
       ],
-      "size_bytes": 13119
+      "size_bytes": 13059
     },
     "docs/agents/guides/agent-8-operations-log-spec.md": {
       "title": "Agent 8 Operations Log Spec",
@@ -4431,7 +4522,7 @@
         "\ud83d\udcca Cheat Sheet Matrix",
         "\ud83c\udfaf Critical Dos and Don'ts"
       ],
-      "size_bytes": 9029
+      "size_bytes": 9019
     },
     "docs/agents/guides/README.md": {
       "title": "Agent Guides",
@@ -4465,6 +4556,17 @@
       ],
       "size_bytes": 8868
     },
+    "docs/agents/guides/index.md": {
+      "title": "Guides Index",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "guides",
+      "tags": [],
+      "sections": [
+        "Files"
+      ],
+      "size_bytes": 2627
+    },
     "docs/agents/guides/agent-workflow-master-guide.md": {
       "title": "Agent Workflow Master Guide",
       "type": "guide",
@@ -4483,7 +4585,7 @@
         "\ud83c\udfad Agent Role Patterns",
         "\ud83d\udcca Quality Gates"
       ],
-      "size_bytes": 20047
+      "size_bytes": 19987
     },
     "docs/agents/guides/agent-6-streamlit-hub.md": {
       "title": "Agent 6 Streamlit Hub",
@@ -4500,7 +4602,7 @@
         "Related Agents",
         "Archived Documentation"
       ],
-      "size_bytes": 3310
+      "size_bytes": 3300
     },
     "docs/agents/guides/agent-8-automation.md": {
       "title": "Agent 8 Automation - Scripts & Tools Index",
@@ -4538,7 +4640,7 @@
         "Common Workflows",
         "Need Help?"
       ],
-      "size_bytes": 3875
+      "size_bytes": 3825
     },
     "docs/agents/guides/agent-8-mistakes-prevention-guide.md": {
       "title": "Agent 8: Mistakes Prevention Guide (Lessons Learned)",
@@ -4898,7 +5000,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 1520
+      "size_bytes": 1523
     },
     "docs/architecture/mission-and-principles.md": {
       "title": "StructEng Automation \u2013 Mission, Vision & Principles",
@@ -5052,7 +5154,7 @@
         "v0.13.0",
         "v0.12.0"
       ],
-      "size_bytes": 36187
+      "size_bytes": 36747
     },
     "docs/getting-started/cost-optimization-guide.md": {
       "title": "Cost Optimization Guide",
@@ -5193,7 +5295,7 @@
       "sections": [
         "Files"
       ],
-      "size_bytes": 2476
+      "size_bytes": 2479
     },
     "docs/getting-started/beginners-guide.md": {
       "title": "Beginner's Guide (No Coding Required)",
@@ -5227,13 +5329,13 @@
         "\ud83d\udcd6 Required Reading",
         "\ud83c\udfd7\ufe0f Project Structure",
         "\u2699\ufe0f Development Workflow",
-        "\ud83e\udd16 Automation Scripts (42 Total)",
+        "\ud83e\udd16 Automation Scripts (156 Total)",
         "\ud83e\udd16 Agent Roles",
         "\ud83d\udccb Prompt Recipes",
         "\ud83d\udcda Additional Resources",
         "\ud83d\udd0d Streamlit Code Validation"
       ],
-      "size_bytes": 7641
+      "size_bytes": 7723
     },
     "docs/getting-started/design-suggestions-guide.md": {
       "title": "Design Suggestions Guide",
@@ -5327,6 +5429,62 @@
       ],
       "size_bytes": 13903
     },
+    "docs/guides/AI_AGENT_CODING_GUIDE.md": {
+      "title": "AI Agent Coding Guide",
+      "type": "guide",
+      "complexity": "advanced",
+      "folder": "guides",
+      "tags": [],
+      "sections": [
+        "Executive Summary",
+        "Infrastructure Audit Summary (Snapshot)",
+        "Table of Contents",
+        "1. Before Writing Any Code",
+        "2. Code Organization",
+        "3. Python Coding Standards",
+        "4. TypeScript/JavaScript Standards",
+        "5. Testing Requirements",
+        "6. Error Handling",
+        "7. Documentation Standards"
+      ],
+      "size_bytes": 24665
+    },
+    "docs/guides/CODE_REUSE_AND_LIBRARY_STRUCTURE.md": {
+      "title": "Code Reuse and Library Structure",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "guides",
+      "tags": [],
+      "sections": [
+        "Core Principle",
+        "1. Library Architecture",
+        "2. Code Reuse Matrix",
+        "3. Function Design Principles",
+        "4. Preventing Duplication",
+        "5. API Entry Points",
+        "6. Adapter Pattern",
+        "7. Visualization Separation",
+        "8. Testing Reusable Code",
+        "9. Dependency Management"
+      ],
+      "size_bytes": 17648
+    },
+    "docs/guides/TESTING_AND_CICD_STRATEGY.md": {
+      "title": "Testing and CI/CD Strategy",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "guides",
+      "tags": [],
+      "sections": [
+        "Current Status: 89% Complete",
+        "1. What Already Exists",
+        "2. What's Missing (To Add)",
+        "3. Quick Reference",
+        "4. Implementation Checklist",
+        "Summary"
+      ],
+      "size_bytes": 6135
+    },
     "docs/guides/etabs-vba-user-guide.md": {
       "title": "ETABS VBA Export Macro - User Setup Guide",
       "type": "guide",
@@ -5381,7 +5539,7 @@
         "\ud83d\udcc1 Special Folder Rules",
         "\ud83e\udd16 For AI Agents"
       ],
-      "size_bytes": 8840
+      "size_bytes": 8630
     },
     "docs/guidelines/folder-cleanup-workflow.md": {
       "title": "Folder Cleanup Workflow",
@@ -5401,7 +5559,7 @@
         "Phase 3: Plan (Prepare Operations)",
         "Phase 4: Execute (Apply Changes)"
       ],
-      "size_bytes": 6784
+      "size_bytes": 6584
     },
     "docs/guidelines/migration-workflow-guide.md": {
       "title": "IS 456 Module Migration Workflow",
@@ -5421,7 +5579,7 @@
         "Phase 6: Migrate compliance.py",
         "Phase 7: Migrate ductile.py"
       ],
-      "size_bytes": 9974
+      "size_bytes": 9714
     },
     "docs/guidelines/streamlit-fragment-best-practices.md": {
       "title": "Streamlit Fragment Best Practices",
@@ -5566,7 +5724,7 @@
         "\ud83d\udea8 Stop Conditions",
         "\ud83d\udccb Summary Checklist"
       ],
-      "size_bytes": 6640
+      "size_bytes": 6600
     },
     "docs/guidelines/blog-writing-guide.md": {
       "title": "Blog Writing Guidelines for Structural Engineering Library",
@@ -5697,7 +5855,7 @@
         "3. Shear Module (`M07_Shear` / `shear.py`)",
         "3A. Torsion Module (`torsion.py`) \u2014 IS 456 Clause 41"
       ],
-      "size_bytes": 87860
+      "size_bytes": 87850
     },
     "docs/reference/known-pitfalls.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Known Pitfalls and Traps",
@@ -5786,7 +5944,7 @@
         "Mac VBA Debugging Log (Dec 2025)",
         "Retrospective & Best Practices (Mac VBA)"
       ],
-      "size_bytes": 14448
+      "size_bytes": 14438
     },
     "docs/reference/api-stability.md": {
       "title": "API Stability",
@@ -5893,7 +6051,7 @@
         "\ud83d\udcca Current Stats (2026-01-09)",
         "\ud83d\ude80 Future Enhancements"
       ],
-      "size_bytes": 8908
+      "size_bytes": 8838
     },
     "docs/reference/error-schema.md": {
       "title": "Error Schema v1",
@@ -6008,7 +6166,7 @@
         "Files",
         "Subfolders"
       ],
-      "size_bytes": 3623
+      "size_bytes": 3625
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -6151,7 +6309,7 @@
         "Governance & Monitoring",
         "Specialized"
       ],
-      "size_bytes": 47750
+      "size_bytes": 47390
     },
     "docs/reference/insights-api.md": {
       "title": "Insights API Reference",
@@ -6280,6 +6438,7 @@
     "by_role": {
       "ai_agent": [
         "docs/research/ai-workspace-expansion-v2.md",
+        "docs/research/ai-workspace-expansion-v3.md",
         "docs/research/ui-layout-options-comparison.md",
         "docs/research/ai-chat-architecture-v2.md",
         "docs/research/etabs-addin-integration.md",
@@ -6306,7 +6465,8 @@
         "docs/planning/research-ai-enhancements.md",
         "docs/agents/README.md",
         "docs/agents/guides/agent-coding-standards.md",
-        "docs/getting-started/ai-context-pack.md"
+        "docs/getting-started/ai-context-pack.md",
+        "docs/guides/AI_AGENT_CODING_GUIDE.md"
       ],
       "python_dev": [
         "docs/research/professional-api-patterns.md",
@@ -6374,6 +6534,7 @@
         "docs/research/agent-efficiency-research.md",
         "docs/research/enterprise-folder-structure-research.md",
         "docs/research/agent-research-review-and-validation.md",
+        "docs/research/ai-workspace-expansion-v3.md",
         "docs/research/critical-infrastructure-gaps-v018.md",
         "docs/research/v017-security-liability-plan.md",
         "docs/research/RESEARCH-JOURNEY-STATUS.md",
@@ -6387,11 +6548,13 @@
         "docs/research/etabs-addin-integration.md",
         "docs/research/ui-layout-final-decision.md",
         "docs/research/3d-visualization-differentiation-strategy.md",
+        "docs/research/industry-cad-standards-bbs.md",
         "docs/research/chat-ui-product-strategy-research.md",
         "docs/research/engineering-domain-apis.md",
         "docs/research/brainstorm-research-opportunities.md",
         "docs/research/colab-output-review.md",
         "docs/research/streamlit-cloud-professional-deployment-plan.md",
+        "docs/research/pyvista-evaluation.md",
         "docs/research/streamlit-code-files-analysis.md",
         "docs/research/etabs-automation-integration.md",
         "docs/research/security-best-practices-part1.md",
@@ -6443,6 +6606,7 @@
         "docs/research/agent-efficiency-research.md",
         "docs/research/enterprise-folder-structure-research.md",
         "docs/research/agent-research-review-and-validation.md",
+        "docs/research/ai-workspace-expansion-v3.md",
         "docs/research/critical-infrastructure-gaps-v018.md",
         "docs/research/v017-security-liability-plan.md",
         "docs/research/RESEARCH-JOURNEY-STATUS.md",
@@ -6456,11 +6620,13 @@
         "docs/research/etabs-addin-integration.md",
         "docs/research/ui-layout-final-decision.md",
         "docs/research/3d-visualization-differentiation-strategy.md",
+        "docs/research/industry-cad-standards-bbs.md",
         "docs/research/chat-ui-product-strategy-research.md",
         "docs/research/engineering-domain-apis.md",
         "docs/research/brainstorm-research-opportunities.md",
         "docs/research/colab-output-review.md",
         "docs/research/streamlit-cloud-professional-deployment-plan.md",
+        "docs/research/pyvista-evaluation.md",
         "docs/research/streamlit-code-files-analysis.md",
         "docs/research/etabs-automation-integration.md",
         "docs/research/security-best-practices-part1.md",
@@ -6618,6 +6784,7 @@
         "docs/planning/3d-visualization-strategic-decision.md",
         "docs/planning/folder-migration-progress.md",
         "docs/planning/automation-platform-phase-0-research.md",
+        "docs/planning/industry-usability-plan.md",
         "docs/planning/multi-code-architecture.md",
         "docs/planning/ai-chat-redesign-plan.md",
         "docs/planning/api-improvement-research-specs.md",
@@ -6652,6 +6819,7 @@
         "docs/planning/3d-visualization-strategic-decision.md",
         "docs/planning/folder-migration-progress.md",
         "docs/planning/automation-platform-phase-0-research.md",
+        "docs/planning/industry-usability-plan.md",
         "docs/planning/multi-code-architecture.md",
         "docs/planning/ai-chat-redesign-plan.md",
         "docs/planning/api-improvement-research-specs.md",

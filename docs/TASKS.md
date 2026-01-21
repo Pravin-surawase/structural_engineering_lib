@@ -49,8 +49,8 @@ auto_map_columns() instead of the robust adapter system.
 | Update copilot-instructions (AI model names) | ✅ Done | Session 56 - `bf06c66f` |
 | Add lesson about reusing infrastructure | ✅ Done | Session 56 - `f05b6753` |
 | Add adapter integration tests | ✅ Done | Session 56 - `0bba1afd` |
-| Update TASKS.md + SESSION_LOG.md | 🔄 WIP | Session 56 |
-| Create PR and merge | 📋 TODO | |
+| Update TASKS.md + SESSION_LOG.md | ✅ Done | Session 61 |
+| Create PR and merge | ✅ Done | PR #393 |
 
 **Root Cause:** Depth column showed "5" instead of "500" due to incorrect column mapping.
 The adapter system handles format-specific column detection and unit handling.

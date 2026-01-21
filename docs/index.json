@@ -1,22 +1,22 @@
 {
   "folder": "docs",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
-  "last_updated": "2026-01-19",
+  "last_updated": "2026-01-21",
   "file_count": 2,
   "files": [
     {
       "name": "SESSION_LOG.md",
       "title": "Session Log",
-      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. - Hardened create_task_pr.sh with stash restore guard and hash detection",
-      "last_updated": "2026-01-19",
-      "size_lines": 6867
+      "description": "Append-only record of decisions, PRs, and next actions. For detailed task tracking, see TASKS.md. 1. ✅ Refreshed README status and version references to v0.19.0",
+      "last_updated": "2026-01-21",
+      "size_lines": 8649
     },
     {
       "name": "TASKS.md",
       "title": "Task Board",
-      "description": "> Single source of truth for work. Keep it short and current. > **Session 41-42 Progress:**",
-      "last_updated": "2026-01-19",
-      "size_lines": 458
+      "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
+      "last_updated": "2026-01-21",
+      "size_lines": 280
     }
   ],
   "subfolders": [

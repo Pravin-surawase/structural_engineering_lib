@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 1.0.0
 **Created:** 2026-01-08
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-21
 **Tags:** ai-agent, onboarding, context
 
 ---
@@ -15,11 +15,11 @@
 
 | Metric | Value |
 |--------|-------|
-| **Current Release** | v0.16.0 (on PyPI, 2026-01-06) |
-| **Next Planned Release** | v0.15.0 (smart insights ecosystem) |
-| **Tests** | 2231+ passed, 0 skipped (as of 2026-01-06) |
-| **Coverage** | 86% overall, 100% on 10 modules |
-| **Recent Features** | SmartDesigner, comparison module, cost optimization, design suggestions |
+| **Current Release** | v0.19.0 (2026-01-21) |
+| **Next Planned Release** | v0.20 (V3 foundation APIs) |
+| **Tests** | 134 test files (Python + Streamlit) |
+| **Coverage** | See CI dashboard (coverage target 80%+) |
+| **Recent Features** | DXF polish, AI model fix, Streamlit API index |
 
 > **Status details:** See [TASKS.md](../TASKS.md) and [next-session-brief.md](../planning/next-session-brief.md).
 
@@ -90,7 +90,8 @@ scripts/                   ← Automation scripts
 ### Python
 ```bash
 # Run tests
-.venv/bin/python -m pytest tests/ -v
+.venv/bin/python -m pytest Python/tests -v
+.venv/bin/python -m pytest streamlit_app/tests -v
 
 # Format
 .venv/bin/python -m black Python/
@@ -119,7 +120,9 @@ scripts/                   ← Automation scripts
 
 ---
 
-## 🤖 Automation Scripts (42 Total)
+## 🤖 Automation Scripts (156 Total)
+
+**Current count:** 90 Python scripts + 55 shell scripts (rest are helpers/templates).
 
 **Before implementing manually, check if a script exists!**
 

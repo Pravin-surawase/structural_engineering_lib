@@ -13,14 +13,12 @@ FOLDERS=(
     "docs"
     "docs/getting-started"
     "docs/reference"
-    "docs/reference/standards"
     "docs/contributing"
     "docs/architecture"
-    "agents/agent-9/governance"
+    "docs/agents/guides"
     "agents"
-    "agents/quickstart"
+    "agents/agent-9"
     "agents/roles"
-    "agents/guides"
     "Python"
 )
 

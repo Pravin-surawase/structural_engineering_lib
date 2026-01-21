@@ -240,8 +240,8 @@ MIT License - see [LICENSE](../LICENSE) for details
 
 ---
 
-**Version:** 0.17.0
+**Version:** 0.19.0
 **Status:** ✅ Production Ready
-**Python:** 3.9+
+**Python:** 3.11+
 
 Built with ❤️ using Streamlit

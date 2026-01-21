@@ -4,6 +4,43 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-21 — Session 62: Post-Release Doc Sync
+
+**Focus:** Align docs and indexes with v0.19.0 release status
+
+### Work Completed
+
+1. ✅ Refreshed README status and version references to v0.19.0
+2. ✅ Updated Streamlit API index with current components/functions
+3. ✅ Synced AI agent docs (context pack, coding guide references)
+4. ✅ Updated next-session brief to post-release priorities
+5. ✅ Fixed stale version markers in user guides
+6. ✅ Opened PR #394 for docs/index sync
+
+### Files Updated
+
+- `README.md`
+- `streamlit_app/API_INDEX.md`
+- `docs/README.md`
+- `docs/getting-started/ai-context-pack.md`
+- `docs/getting-started/user-guide.md`
+- `docs/getting-started/beginners-guide.md`
+- `docs/getting-started/excel-tutorial.md`
+- `docs/planning/next-session-brief.md`
+- `docs/planning/8-week-development-plan.md`
+- `streamlit_app/README.md`
+- `streamlit_app/app.py`
+- `docs/planning/pre-release-checklist.md`
+- `docs/getting-started/releases.md`
+- `docs/TASKS.md`
+- `docs/research/ai-effective-usage-patterns.md`
+
+### Test Status
+
+Not run (docs-only + UI metadata changes).
+
+---
+
 ## 2026-01-21 — Session 61: V0.19.0 Release
 
 **Focus:** DXF polish, AI model fix, documentation, release

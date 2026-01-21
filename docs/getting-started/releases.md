@@ -6,7 +6,7 @@
 **Importance:** Critical
 **Version:** 1.0.0
 **Created:** 2025-12-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-21
 
 ---
 
@@ -867,3 +867,28 @@ To keep `docs/` cleaner, several top-level redirect stubs were removed.
   - `docs/_archive/research-and-findings.md`
 
 Older release notes may reference the historical stub paths that existed at the time; prefer the canonical locations above.
+
+---
+
+## v0.18.0
+**Date:** 2026-01-20
+**Status:** ✅ Locked & Verified
+**Tag:** `v0.18.0`
+
+**Key Changes:**
+- AI Assistant v2 with dynamic workspace (9 states)
+- Interactive rebar editor + cross-section views
+- Material takeoff and cost estimation panel
+- Model configuration defaulted to `gpt-4o-mini`
+
+---
+
+## v0.19.0
+**Date:** 2026-01-21
+**Status:** ✅ Locked & Verified
+**Tag:** `v0.19.0`
+
+**Key Changes:**
+- DXF schedule polish (column widths, text sizing, smart truncation)
+- AI model name fix (`gpt-4o-mini`)
+- Streamlit API index for component reuse
