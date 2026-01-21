@@ -76,6 +76,7 @@ def check_pyvista_available() -> bool:
     """
     try:
         import pyvista  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -199,9 +200,12 @@ def _create_beam_box(
 
 
 def _create_box_mesh(
-    x_min: float, x_max: float,
-    y_min: float, y_max: float,
-    z_min: float, z_max: float,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    z_min: float,
+    z_max: float,
 ) -> Any:
     """Create a PyVista box mesh from bounds."""
     import pyvista as pv
@@ -263,32 +267,32 @@ def _create_stirrup_mesh(
 
     # Bottom horizontal
     bottom = _create_cylinder_mesh(
-        (x_pos, -inner_width/2, cover),
-        (x_pos, inner_width/2, cover),
+        (x_pos, -inner_width / 2, cover),
+        (x_pos, inner_width / 2, cover),
         radius,
     )
     meshes.append(bottom)
 
     # Top horizontal
     top = _create_cylinder_mesh(
-        (x_pos, -inner_width/2, d - cover),
-        (x_pos, inner_width/2, d - cover),
+        (x_pos, -inner_width / 2, d - cover),
+        (x_pos, inner_width / 2, d - cover),
         radius,
     )
     meshes.append(top)
 
     # Left vertical
     left = _create_cylinder_mesh(
-        (x_pos, -inner_width/2, cover),
-        (x_pos, -inner_width/2, d - cover),
+        (x_pos, -inner_width / 2, cover),
+        (x_pos, -inner_width / 2, d - cover),
         radius,
     )
     meshes.append(left)
 
     # Right vertical
     right = _create_cylinder_mesh(
-        (x_pos, inner_width/2, cover),
-        (x_pos, inner_width/2, d - cover),
+        (x_pos, inner_width / 2, cover),
+        (x_pos, inner_width / 2, d - cover),
         radius,
     )
     meshes.append(right)
@@ -336,23 +340,26 @@ def geometry_to_pyvista_meshes(geometry: dict[str, Any]) -> dict[str, Any]:
     """
     _ensure_pyvista()
 
-    b = geometry.get('b', 300)
-    d = geometry.get('D', 450)
-    span = geometry.get('span', 4000)
-    cover = geometry.get('cover', 40)
+    b = geometry.get("b", 300)
+    d = geometry.get("D", 450)
+    span = geometry.get("span", 4000)
+    cover = geometry.get("cover", 40)
 
     result = {}
 
     # Concrete beam
-    result['concrete'] = _create_box_mesh(
-        x_min=0, x_max=span,
-        y_min=-b/2, y_max=b/2,
-        z_min=0, z_max=d,
+    result["concrete"] = _create_box_mesh(
+        x_min=0,
+        x_max=span,
+        y_min=-b / 2,
+        y_max=b / 2,
+        z_min=0,
+        z_max=d,
     )
 
     # Bottom bars (tension)
     bottom_bars = []
-    for bar in geometry.get('bottom_bars', []):
+    for bar in geometry.get("bottom_bars", []):
         if len(bar) >= 4:
             x_start, y, z, dia = bar[:4]
             x_end = span  # Full span
@@ -369,11 +376,11 @@ def geometry_to_pyvista_meshes(geometry: dict[str, Any]) -> dict[str, Any]:
             radius=dia / 2,
         )
         bottom_bars.append(mesh)
-    result['bottom_bars'] = bottom_bars
+    result["bottom_bars"] = bottom_bars
 
     # Top bars (compression)
     top_bars = []
-    for bar in geometry.get('top_bars', []):
+    for bar in geometry.get("top_bars", []):
         if len(bar) >= 4:
             x_start, y, z, dia = bar[:4]
             x_end = span
@@ -390,15 +397,15 @@ def geometry_to_pyvista_meshes(geometry: dict[str, Any]) -> dict[str, Any]:
             radius=dia / 2,
         )
         top_bars.append(mesh)
-    result['top_bars'] = top_bars
+    result["top_bars"] = top_bars
 
     # Stirrups
     stirrups = []
-    stirrup_dia = geometry.get('stirrup_diameter', 8)
-    for x_pos in geometry.get('stirrup_positions', []):
+    stirrup_dia = geometry.get("stirrup_diameter", 8)
+    for x_pos in geometry.get("stirrup_positions", []):
         mesh = _create_stirrup_mesh(x_pos, b, d, cover, stirrup_dia)
         stirrups.append(mesh)
-    result['stirrups'] = stirrups
+    result["stirrups"] = stirrups
 
     return result
 
@@ -435,14 +442,14 @@ def export_beam_stl(
     meshes = geometry_to_pyvista_meshes(geometry)
 
     # Combine all meshes
-    combined = meshes['concrete']
+    combined = meshes["concrete"]
 
     if include_rebar:
-        for bar in meshes['bottom_bars']:
+        for bar in meshes["bottom_bars"]:
             combined = combined.merge(bar)
-        for bar in meshes['top_bars']:
+        for bar in meshes["top_bars"]:
             combined = combined.merge(bar)
-        for stirrup in meshes['stirrups']:
+        for stirrup in meshes["stirrups"]:
             combined = combined.merge(stirrup)
 
     # Export
@@ -472,12 +479,12 @@ def export_beam_vtk(
     meshes = geometry_to_pyvista_meshes(geometry)
 
     # Combine all meshes
-    combined = meshes['concrete']
-    for bar in meshes['bottom_bars']:
+    combined = meshes["concrete"]
+    for bar in meshes["bottom_bars"]:
         combined = combined.merge(bar)
-    for bar in meshes['top_bars']:
+    for bar in meshes["top_bars"]:
         combined = combined.merge(bar)
-    for stirrup in meshes['stirrups']:
+    for stirrup in meshes["stirrups"]:
         combined = combined.merge(stirrup)
 
     # Export as VTK
@@ -524,7 +531,7 @@ def create_pyvista_plotter(
 
     # Add concrete beam (semi-transparent)
     plotter.add_mesh(
-        meshes['concrete'],
+        meshes["concrete"],
         color=COLORS["concrete"],
         opacity=0.3,
         pbr=use_pbr,
@@ -533,7 +540,7 @@ def create_pyvista_plotter(
     )
 
     # Add bottom bars (tension - red)
-    for bar in meshes['bottom_bars']:
+    for bar in meshes["bottom_bars"]:
         plotter.add_mesh(
             bar,
             color=COLORS["rebar_bottom"],
@@ -543,7 +550,7 @@ def create_pyvista_plotter(
         )
 
     # Add top bars (compression - blue)
-    for bar in meshes['top_bars']:
+    for bar in meshes["top_bars"]:
         plotter.add_mesh(
             bar,
             color=COLORS["rebar_top"],
@@ -553,7 +560,7 @@ def create_pyvista_plotter(
         )
 
     # Add stirrups (green)
-    for stirrup in meshes['stirrups']:
+    for stirrup in meshes["stirrups"]:
         plotter.add_mesh(
             stirrup,
             color=COLORS["stirrup"],
@@ -563,7 +570,7 @@ def create_pyvista_plotter(
         )
 
     # Camera and lighting
-    plotter.camera_position = 'iso'
+    plotter.camera_position = "iso"
     plotter.add_light(pv.Light(position=(1, 1, 1), intensity=0.8))
 
     return plotter
@@ -574,7 +581,7 @@ def render_beam_screenshot(
     output_path: str | Path,
     resolution: int = 2048,
     background: str = COLORS["background"],
-    camera_position: str = 'iso',
+    camera_position: str = "iso",
 ) -> Path:
     """
     Render high-quality beam screenshot using PyVista.
@@ -613,24 +620,27 @@ def render_beam_screenshot(
 
     # Add meshes with PBR materials
     plotter.add_mesh(
-        meshes['concrete'],
+        meshes["concrete"],
         color=COLORS["concrete"],
         opacity=0.3,
         pbr=True,
         roughness=0.8,
     )
 
-    for bar in meshes['bottom_bars']:
-        plotter.add_mesh(bar, color=COLORS["rebar_bottom"],
-                        pbr=True, metallic=0.8, roughness=0.3)
+    for bar in meshes["bottom_bars"]:
+        plotter.add_mesh(
+            bar, color=COLORS["rebar_bottom"], pbr=True, metallic=0.8, roughness=0.3
+        )
 
-    for bar in meshes['top_bars']:
-        plotter.add_mesh(bar, color=COLORS["rebar_top"],
-                        pbr=True, metallic=0.8, roughness=0.3)
+    for bar in meshes["top_bars"]:
+        plotter.add_mesh(
+            bar, color=COLORS["rebar_top"], pbr=True, metallic=0.8, roughness=0.3
+        )
 
-    for stirrup in meshes['stirrups']:
-        plotter.add_mesh(stirrup, color=COLORS["stirrup"],
-                        pbr=True, metallic=0.6, roughness=0.4)
+    for stirrup in meshes["stirrups"]:
+        plotter.add_mesh(
+            stirrup, color=COLORS["stirrup"], pbr=True, metallic=0.6, roughness=0.4
+        )
 
     # Configure camera
     plotter.camera_position = camera_position
@@ -686,5 +696,6 @@ def show_pyvista_in_streamlit(geometry: dict[str, Any], key: str = "pyvista") ->
 
     except ImportError as e:
         import streamlit as st
+
         st.warning(f"stpyvista not available: {e}")
         st.info("Install with: pip install stpyvista")

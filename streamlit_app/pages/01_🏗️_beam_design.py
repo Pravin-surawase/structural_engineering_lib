@@ -844,7 +844,14 @@ with col_preview:
                 pos += sv_tight
 
             # Zone 2: Mid-span zone (zone_length to span - zone_length)
-            mid_start = max(zone_length, stirrup_positions_3d[-1] + sv_base if stirrup_positions_3d else zone_length)
+            mid_start = max(
+                zone_length,
+                (
+                    stirrup_positions_3d[-1] + sv_base
+                    if stirrup_positions_3d
+                    else zone_length
+                ),
+            )
             mid_end = span_mm_3d - zone_length
             pos = mid_start
             while pos < mid_end:
@@ -852,14 +859,24 @@ with col_preview:
                 pos += sv_base
 
             # Zone 3: Right support zone (span - zone_length to span)
-            right_start = max(mid_end, stirrup_positions_3d[-1] + sv_tight if stirrup_positions_3d else mid_end)
+            right_start = max(
+                mid_end,
+                (
+                    stirrup_positions_3d[-1] + sv_tight
+                    if stirrup_positions_3d
+                    else mid_end
+                ),
+            )
             pos = right_start
             while pos < span_mm_3d - sv_tight / 2:
                 stirrup_positions_3d.append(int(pos))
                 pos += sv_tight
 
             # Ensure last stirrup near right support
-            if stirrup_positions_3d and stirrup_positions_3d[-1] < span_mm_3d - sv_tight:
+            if (
+                stirrup_positions_3d
+                and stirrup_positions_3d[-1] < span_mm_3d - sv_tight
+            ):
                 stirrup_positions_3d.append(int(span_mm_3d - sv_tight / 2))
 
             # Build geometry dict for hashing and fragment
@@ -1022,15 +1039,13 @@ with col_preview:
             fig_cost = create_cost_comparison(alternatives)
             st.plotly_chart(fig_cost, width="stretch", key="cost_comparison")
 
-            st.info(
-                """
+            st.info("""
             💡 **Cost Optimization Tips:**
             - Use standard bar sizes (12, 16, 20, 25 mm)
             - Minimize number of bar diameters
             - Consider constructability and spacing
             - Balance material cost vs labor cost
-            """
-            )
+            """)
 
         # ============================================================================
         # TAB 4: Compliance

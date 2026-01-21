@@ -19,42 +19,30 @@ TOOLS = [
                 "properties": {
                     "beam_id": {
                         "type": "string",
-                        "description": "Beam identifier (e.g., 'B1_Ground')"
+                        "description": "Beam identifier (e.g., 'B1_Ground')",
                     },
-                    "b_mm": {
-                        "type": "number",
-                        "description": "Beam width in mm"
-                    },
-                    "D_mm": {
-                        "type": "number",
-                        "description": "Overall depth in mm"
-                    },
-                    "span_mm": {
-                        "type": "number",
-                        "description": "Clear span in mm"
-                    },
+                    "b_mm": {"type": "number", "description": "Beam width in mm"},
+                    "D_mm": {"type": "number", "description": "Overall depth in mm"},
+                    "span_mm": {"type": "number", "description": "Clear span in mm"},
                     "mu_knm": {
                         "type": "number",
-                        "description": "Factored moment in kN·m"
+                        "description": "Factored moment in kN·m",
                     },
-                    "vu_kn": {
-                        "type": "number",
-                        "description": "Factored shear in kN"
-                    },
+                    "vu_kn": {"type": "number", "description": "Factored shear in kN"},
                     "fck": {
                         "type": "number",
-                        "description": "Concrete grade in N/mm² (default: 25)"
+                        "description": "Concrete grade in N/mm² (default: 25)",
                     },
                     "fy": {
                         "type": "number",
-                        "description": "Steel grade in N/mm² (default: 500)"
-                    }
+                        "description": "Steel grade in N/mm² (default: 500)",
+                    },
                 },
                 "required": ["b_mm", "D_mm", "span_mm", "mu_knm", "vu_kn"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -65,10 +53,10 @@ TOOLS = [
                 "type": "object",
                 "properties": {},
                 "required": [],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -80,14 +68,14 @@ TOOLS = [
                 "properties": {
                     "beam_id": {
                         "type": "string",
-                        "description": "Beam identifier to query"
+                        "description": "Beam identifier to query",
                     }
                 },
                 "required": ["beam_id"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -99,14 +87,14 @@ TOOLS = [
                 "properties": {
                     "beam_id": {
                         "type": "string",
-                        "description": "Beam identifier to select"
+                        "description": "Beam identifier to select",
                     }
                 },
                 "required": ["beam_id"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -119,14 +107,14 @@ TOOLS = [
                     "view_type": {
                         "type": "string",
                         "enum": ["3d", "cross_section", "building", "dashboard"],
-                        "description": "Type of visualization to display"
+                        "description": "Type of visualization to display",
                     }
                 },
                 "required": ["view_type"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -138,18 +126,18 @@ TOOLS = [
                 "properties": {
                     "floor": {
                         "type": "string",
-                        "description": "Floor/story name to filter (e.g., 'Floor 2', 'Story1', 'Level 0'). Use 'all' to show entire building."
+                        "description": "Floor/story name to filter (e.g., 'Floor 2', 'Story1', 'Level 0'). Use 'all' to show entire building.",
                     },
                     "show_rebar": {
                         "type": "boolean",
-                        "description": "Whether to show reinforcement (default: true)"
-                    }
+                        "description": "Whether to show reinforcement (default: true)",
+                    },
                 },
                 "required": ["floor"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -162,22 +150,22 @@ TOOLS = [
                     "criterion": {
                         "type": "string",
                         "enum": ["moment", "shear", "utilization"],
-                        "description": "Criterion for ranking beams (default: moment)"
+                        "description": "Criterion for ranking beams (default: moment)",
                     },
                     "count": {
                         "type": "number",
-                        "description": "Number of beams to return (default: 3)"
+                        "description": "Number of beams to return (default: 3)",
                     },
                     "floor": {
                         "type": "string",
-                        "description": "Optional floor/story filter"
-                    }
+                        "description": "Optional floor/story filter",
+                    },
                 },
                 "required": [],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -189,23 +177,23 @@ TOOLS = [
                 "properties": {
                     "floor": {
                         "type": "string",
-                        "description": "Floor/story to optimize beams on (e.g., 'Level 0', 'Story1')"
+                        "description": "Floor/story to optimize beams on (e.g., 'Level 0', 'Story1')",
                     },
                     "beam_id": {
                         "type": "string",
-                        "description": "Specific beam ID to optimize"
+                        "description": "Specific beam ID to optimize",
                     },
                     "target": {
                         "type": "string",
                         "enum": ["cost", "weight", "constructability"],
-                        "description": "Optimization target (default: cost)"
-                    }
+                        "description": "Optimization target (default: cost)",
+                    },
                 },
                 "required": [],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -217,19 +205,19 @@ TOOLS = [
                 "properties": {
                     "beam_id": {
                         "type": "string",
-                        "description": "Beam identifier to optimize"
+                        "description": "Beam identifier to optimize",
                     },
                     "target": {
                         "type": "string",
                         "enum": ["cost", "weight", "constructability"],
-                        "description": "Optimization target (default: cost)"
-                    }
+                        "description": "Optimization target (default: cost)",
+                    },
                 },
                 "required": ["beam_id"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -242,18 +230,18 @@ TOOLS = [
                     "format": {
                         "type": "string",
                         "enum": ["csv", "json", "excel"],
-                        "description": "Export file format"
+                        "description": "Export file format",
                     },
                     "filename": {
                         "type": "string",
-                        "description": "Custom filename (auto-generated if not specified)"
-                    }
+                        "description": "Custom filename (auto-generated if not specified)",
+                    },
                 },
                 "required": ["format"],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -265,26 +253,26 @@ TOOLS = [
                 "properties": {
                     "beam_id": {
                         "type": "string",
-                        "description": "Single beam ID to export (e.g., 'B1', 'B101'). If not specified, exports all designed beams."
+                        "description": "Single beam ID to export (e.g., 'B1', 'B101'). If not specified, exports all designed beams.",
                     },
                     "floor": {
                         "type": "string",
-                        "description": "Export all beams on a specific floor/story (e.g., 'Level 0', 'Story1')"
+                        "description": "Export all beams on a specific floor/story (e.g., 'Level 0', 'Story1')",
                     },
                     "include_schedule": {
                         "type": "boolean",
-                        "description": "Include beam schedule table in DXF (default: true)"
+                        "description": "Include beam schedule table in DXF (default: true)",
                     },
                     "include_title_block": {
                         "type": "boolean",
-                        "description": "Include standard title block (default: true)"
-                    }
+                        "description": "Include standard title block (default: true)",
+                    },
                 },
                 "required": [],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
+            "strict": True,
+        },
     },
     {
         "type": "function",
@@ -296,24 +284,24 @@ TOOLS = [
                 "properties": {
                     "beam_id": {
                         "type": "string",
-                        "description": "Single beam ID for report (e.g., 'B1'). If not specified, generates summary report for all beams."
+                        "description": "Single beam ID for report (e.g., 'B1'). If not specified, generates summary report for all beams.",
                     },
                     "format": {
                         "type": "string",
                         "enum": ["html", "json"],
-                        "description": "Report format (default: html)"
+                        "description": "Report format (default: html)",
                     },
                     "include_bbs": {
                         "type": "boolean",
-                        "description": "Include Bar Bending Schedule in report (default: true)"
-                    }
+                        "description": "Include Bar Bending Schedule in report (default: true)",
+                    },
                 },
                 "required": [],
-                "additionalProperties": False
+                "additionalProperties": False,
             },
-            "strict": True
-        }
-    }
+            "strict": True,
+        },
+    },
 ]
 
 

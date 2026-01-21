@@ -578,8 +578,7 @@ if not ETABS_IMPORT_AVAILABLE:
 
 # Instructions
 with st.expander("📖 How to Use", expanded=False):
-    st.markdown(
-        """
+    st.markdown("""
     ### Workflow
     1. **Export from ETABS** using VBA tool or manually
     2. **Upload CSV** here - automatic column detection
@@ -609,8 +608,7 @@ with st.expander("📖 How to Use", expanded=False):
     Story1,B1,1.5DL+1.5LL,1.5,98.3,42.1
     ...
     ```
-    """
-    )
+    """)
 
 st.divider()
 
@@ -886,9 +884,7 @@ if st.session_state.etabs_design_results is not None:
 
 # Footer
 st.divider()
-st.caption(
-    """
+st.caption("""
 💡 **Integration:** Export from ETABS using the VBA tool, then import here for batch design.
 See [VBA Export Documentation](https://github.com/your-repo/docs/vba) for setup.
-"""
-)
+""")

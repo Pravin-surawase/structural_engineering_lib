@@ -4,25 +4,213 @@
     <meta charset="UTF-8">
     <title>Beam Design Report (Batch)</title>
     <style>
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; }
-h1, h2 { color: #333; }
-.summary { margin-bottom: 20px; }
-.section { margin: 20px 0; }
-.beam-section { margin-top: 30px; padding-top: 10px; border-top: 1px solid #e5e5e5; }
-.index-table, .sanity-table, .scorecard-table, .units-table { border-collapse: collapse; width: 100%; max-width: 900px; }
+/* Professional Structural Engineering Report Styles */
+* { box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 24px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2c3e50;
+    background: #ffffff;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Print styles */
+@media print {
+    body { padding: 0; font-size: 12px; max-width: none; }
+    .section, .beam-section { break-inside: avoid; }
+}
+
+/* Typography */
+h1 {
+    margin: 0 0 20px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a365d;
+    border-bottom: 3px solid #3182ce;
+    padding-bottom: 12px;
+}
+
+h2 {
+    margin: 24px 0 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d3748;
+    border-left: 4px solid #3182ce;
+    padding-left: 12px;
+    background: linear-gradient(90deg, #ebf8ff 0%, transparent 100%);
+    padding: 8px 12px;
+    margin-left: -12px;
+}
+
+/* Summary header */
+.summary {
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.summary p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.summary strong {
+    color: #4a5568;
+    min-width: 160px;
+    display: inline-block;
+}
+
+/* Status badges */
+.status-pass {
+    color: #22543d;
+    background: #c6f6d5;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.status-fail {
+    color: #742a2a;
+    background: #fed7d7;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.status-warn {
+    color: #744210;
+    background: #fefcbf;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* Sections */
+.section {
+    margin: 24px 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.beam-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid #e2e8f0;
+}
+
+/* Tables */
+.index-table, .sanity-table, .scorecard-table, .units-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 900px;
+    font-size: 13px;
+}
+
 .index-table th, .index-table td,
 .sanity-table th, .sanity-table td,
 .scorecard-table th, .scorecard-table td,
-.units-table th, .units-table td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
-.index-table th, .sanity-table th, .scorecard-table th, .units-table th { background: #f5f5f5; font-weight: 600; }
-.sanity-ok, .scorecard-ok, .units-ok { background: #f7fff7; }
-.sanity-warn, .scorecard-warn, .units-warn { background: #fff8e1; }
-.svg-wrap { border: 1px solid #eee; padding: 10px; display: inline-block; }
-.svg-legend { font-size: 12px; color: #555; margin-top: 6px; }
-.svg-legend span { margin-right: 12px; }
-.status-pass { color: #1b5e20; font-weight: 600; }
-.status-fail { color: #b71c1c; font-weight: 600; }
-.status-warn { color: #e65100; font-weight: 600; }
+.units-table th, .units-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid #e2e8f0;
+}
+
+.index-table th, .sanity-table th, .scorecard-table th, .units-table th {
+    background: #2d3748;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.index-table tr:nth-child(even),
+.sanity-table tr:nth-child(even),
+.scorecard-table tr:nth-child(even),
+.units-table tr:nth-child(even) {
+    background: #f7fafc;
+}
+
+.index-table tr:hover,
+.sanity-table tr:hover,
+.scorecard-table tr:hover,
+.units-table tr:hover {
+    background: #ebf8ff;
+}
+
+.index-table a {
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.index-table a:hover {
+    text-decoration: underline;
+}
+
+/* Status cells */
+.sanity-ok, .scorecard-ok, .units-ok {
+    background: #f0fff4 !important;
+    color: #22543d;
+}
+
+.sanity-warn, .scorecard-warn, .units-warn {
+    background: #fffbeb !important;
+    color: #744210;
+}
+
+/* SVG container */
+.svg-wrap {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 16px;
+    display: inline-block;
+    background: #fafafa;
+}
+
+.svg-legend {
+    font-size: 12px;
+    color: #718096;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.svg-legend span {
+    margin-right: 16px;
+}
+
+/* Code reference styling */
+.code-ref {
+    background: #edf2f7;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "SF Mono", Monaco, "Consolas", monospace;
+    font-size: 12px;
+    color: #4a5568;
+}
+
+/* Footer */
+.footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 12px;
+    color: #a0aec0;
+}
 </style>
 </head>
 <body>

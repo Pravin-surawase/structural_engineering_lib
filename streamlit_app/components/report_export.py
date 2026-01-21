@@ -342,8 +342,7 @@ def show_dxf_export(
 
     if not dxf_available:
         st.warning(
-            "⚠️ DXF export requires ezdxf library. "
-            "Install with: `pip install ezdxf`"
+            "⚠️ DXF export requires ezdxf library. " "Install with: `pip install ezdxf`"
         )
         st.info("💡 For full DXF functionality, visit the **📐 DXF Export** page.")
         return
@@ -351,12 +350,10 @@ def show_dxf_export(
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        st.markdown(
-            """
+        st.markdown("""
             Quick export of beam reinforcement drawing to DXF format
             (AutoCAD R2010 compatible, 1:1 scale in mm).
-            """
-        )
+            """)
         st.caption(
             "For advanced options (layers, title block, batch export), "
             "use the **📐 DXF Export** page."

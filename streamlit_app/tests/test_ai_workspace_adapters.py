@@ -97,7 +97,9 @@ class TestAdapterIntegration:
 
         # Verify dimensions are correct
         assert df.iloc[0]["b_mm"] == 300.0
-        assert df.iloc[0]["D_mm"] == 500.0  # This was the bug - depth was 5 instead of 500
+        assert (
+            df.iloc[0]["D_mm"] == 500.0
+        )  # This was the bug - depth was 5 instead of 500
         assert df.iloc[0]["span_mm"] == 5000.0
 
     def test_design_beam_row_validates_dimensions(self):
@@ -107,29 +109,33 @@ class TestAdapterIntegration:
         from components.ai_workspace import design_beam_row
 
         # Valid dimensions
-        valid_row = pd.Series({
-            "b_mm": 300,
-            "D_mm": 500,
-            "cover_mm": 40,
-            "fck": 25,
-            "fy": 500,
-            "mu_knm": 100,
-            "vu_kn": 50,
-        })
+        valid_row = pd.Series(
+            {
+                "b_mm": 300,
+                "D_mm": 500,
+                "cover_mm": 40,
+                "fck": 25,
+                "fy": 500,
+                "mu_knm": 100,
+                "vu_kn": 50,
+            }
+        )
         result = design_beam_row(valid_row)
         # Should not show "Invalid dims" error
         assert "Invalid dims" not in result.get("status", "")
 
         # Invalid dimensions (the bug case - depth=5)
-        invalid_row = pd.Series({
-            "b_mm": 300,
-            "D_mm": 5,  # Wrong! Should be 500
-            "cover_mm": 40,
-            "fck": 25,
-            "fy": 500,
-            "mu_knm": 100,
-            "vu_kn": 50,
-        })
+        invalid_row = pd.Series(
+            {
+                "b_mm": 300,
+                "D_mm": 5,  # Wrong! Should be 500
+                "cover_mm": 40,
+                "fck": 25,
+                "fy": 500,
+                "mu_knm": 100,
+                "vu_kn": 50,
+            }
+        )
         result = design_beam_row(invalid_row)
         # Should detect and report invalid dimensions
         assert result["is_safe"] is False

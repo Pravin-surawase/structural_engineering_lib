@@ -42,7 +42,9 @@ def generate_workspace_context() -> str:
         if len(beam_ids) <= 10:
             ctx_parts.append(f"  <beam_ids>{beam_ids}</beam_ids>")
         else:
-            ctx_parts.append(f"  <beam_ids>{beam_ids[:10]} (and {len(beam_ids) - 10} more)</beam_ids>")
+            ctx_parts.append(
+                f"  <beam_ids>{beam_ids[:10]} (and {len(beam_ids) - 10} more)</beam_ids>"
+            )
     else:
         ctx_parts.append("  <beams_loaded>0</beams_loaded>")
 
@@ -98,7 +100,9 @@ def _add_selected_beam_details(ctx_parts: list[str], beam_id: str) -> None:
     mu_capacity = row.get("mu_capacity_knm", row.get("mu_capacity", 0))
     if mu_knm and mu_capacity:
         utilization = (mu_knm / mu_capacity * 100) if mu_capacity > 0 else 0
-        ctx_parts.append(f"    <moment_utilization>{utilization:.1f}%</moment_utilization>")
+        ctx_parts.append(
+            f"    <moment_utilization>{utilization:.1f}%</moment_utilization>"
+        )
 
     # Shear results
     sv_required = row.get("sv_required", 0)
@@ -131,9 +135,7 @@ def _add_design_summary(ctx_parts: list[str], results_df) -> None:
 
 
 def build_messages(
-    user_message: str,
-    history: list[dict] | None = None,
-    include_workspace: bool = True
+    user_message: str, history: list[dict] | None = None, include_workspace: bool = True
 ) -> list[dict]:
     """
     Build the complete message list for API call.
@@ -156,24 +158,17 @@ def build_messages(
         workspace_context = generate_workspace_context()
         system_content += f"\n\n## Current Workspace State\n\n{workspace_context}"
 
-    messages.append({
-        "role": "system",
-        "content": system_content
-    })
+    messages.append({"role": "system", "content": system_content})
 
     # Add conversation history
     if history:
         for msg in history:
             if msg.get("role") in ("user", "assistant"):
-                messages.append({
-                    "role": msg["role"],
-                    "content": msg.get("content", "")
-                })
+                messages.append(
+                    {"role": msg["role"], "content": msg.get("content", "")}
+                )
 
     # Add current user message
-    messages.append({
-        "role": "user",
-        "content": user_message
-    })
+    messages.append({"role": "user", "content": user_message})
 
     return messages

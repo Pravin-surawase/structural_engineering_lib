@@ -14,7 +14,6 @@ from contextlib import contextmanager
 from utils.design_system import COLORS, ANIMATION
 from utils.theme_manager import get_theme_colors
 
-
 LoaderType = Literal["skeleton", "spinner", "progress", "dots", "pulse"]
 
 

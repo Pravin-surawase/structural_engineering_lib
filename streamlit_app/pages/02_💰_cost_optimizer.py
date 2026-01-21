@@ -753,15 +753,13 @@ def main():
                     fig = create_cost_scatter(comparison_data)
                     st.plotly_chart(fig, width="stretch")
 
-                    st.markdown(
-                        """
+                    st.markdown("""
                     **Interpretation:**
                     - **Green dots** = Optimal design (lowest cost)
                     - **Blue dots** = Alternative designs
                     - **Size** = Steel area (larger = more steel)
                     - **Target zone** = Lower-left (low cost, high efficiency)
-                    """
-                    )
+                    """)
                 else:
                     st.info("Run Quick Optimization to see results.")
 
@@ -770,8 +768,7 @@ def main():
 
                 # Explanation for users unfamiliar with Pareto optimization
                 with st.expander("ℹ️ What is Pareto Optimization?", expanded=False):
-                    st.markdown(
-                        """
+                    st.markdown("""
 **Pareto optimization** finds designs that are optimal across multiple objectives simultaneously.
 
 **Three objectives balanced:**
@@ -787,8 +784,7 @@ The **Pareto front** shows all designs where improving one objective means sacri
 - **Budget-constrained?** → Pick the "Cheapest" design
 - **Need efficiency?** → Pick "Most Efficient" (highest utilization)
 - **Sustainability focus?** → Pick "Lightest" (least steel)
-                    """
-                    )
+                    """)
 
                 pareto_data = st.session_state.get("pareto_results")
                 if pareto_data:
@@ -1033,15 +1029,13 @@ The **Pareto front** shows all designs where improving one objective means sacri
                 if not comparison_data and not pareto_data:
                     st.info("No data to export. Run optimization first.")
                 else:
-                    st.markdown(
-                        """
+                    st.markdown("""
                     **CSV includes:**
                     - All design parameters (b, D, fck, fy)
                     - Cost breakdown
                     - Performance metrics (utilization, steel area)
                     - Governing IS 456 clauses (for Pareto results)
-                    """
-                    )
+                    """)
         else:
             st.info("👆 Click 'Run Cost Optimization' to see results")
 

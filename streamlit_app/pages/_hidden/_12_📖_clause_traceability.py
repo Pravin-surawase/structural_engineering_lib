@@ -237,12 +237,10 @@ def main():
     with tab3:
         section_header("Function → Clause Mapping")
 
-        st.markdown(
-            """
+        st.markdown("""
         This table shows which IS 456 clauses are implemented by which functions
         in the `structural_lib.codes.is456` module.
-        """
-        )
+        """)
 
         # Use module-level registry (already imported)
         try:
@@ -290,12 +288,10 @@ def main():
     with tab4:
         section_header("Traceability Report")
 
-        st.markdown(
-            """
+        st.markdown("""
         Generate a comprehensive traceability report showing the coverage
         of IS 456 clauses in the codebase.
-        """
-        )
+        """)
 
         if st.button("📄 Generate Report", type="primary"):
             try:

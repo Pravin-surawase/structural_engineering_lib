@@ -278,16 +278,18 @@ def generate_beam_schedule_table(
         else:
             stirrups = "-"
 
-        schedule.append({
-            "beam_ids": ", ".join(beam_ids),
-            "count": len(beams),
-            "size": f"{int(representative.b)} x {int(representative.D)}",
-            "span": int(representative.span),
-            "top_steel": top_steel,
-            "bottom_steel": bottom_steel,
-            "stirrups": stirrups,
-            "type_key": type_key,
-        })
+        schedule.append(
+            {
+                "beam_ids": ", ".join(beam_ids),
+                "count": len(beams),
+                "size": f"{int(representative.b)} x {int(representative.D)}",
+                "span": int(representative.span),
+                "top_steel": top_steel,
+                "bottom_steel": bottom_steel,
+                "stirrups": stirrups,
+                "type_key": type_key,
+            }
+        )
 
     return schedule
 
@@ -322,7 +324,7 @@ def draw_beam_schedule_table(
     # Column widths - optimized to prevent text overlap
     col_widths = [
         500.0 * scale,  # Beam IDs - wider for multiple IDs
-        70.0 * scale,   # Count - compact
+        70.0 * scale,  # Count - compact
         180.0 * scale,  # Size - e.g., "300 x 600"
         100.0 * scale,  # Span - mm value
         140.0 * scale,  # Top Steel - e.g., "4-T16"
@@ -387,10 +389,15 @@ def draw_beam_schedule_table(
             # Approx char width ~= text_height * 0.5
             char_width = text_height * 0.6 * 0.6  # 60% of text height for data
             max_chars = max(3, int(width / char_width) - 2)  # Leave margin
-            display_value = value if len(value) <= max_chars else value[:max_chars - 2] + ".."
+            display_value = (
+                value if len(value) <= max_chars else value[: max_chars - 2] + ".."
+            )
             msp.add_text(
                 display_value,
-                dxfattribs={"layer": "TEXT", "height": text_height * 0.6},  # Smaller data text
+                dxfattribs={
+                    "layer": "TEXT",
+                    "height": text_height * 0.6,
+                },  # Smaller data text
             ).set_placement(
                 (x_pos + width / 2, y_pos - row_height / 2),
                 align=_text_align("MIDDLE_CENTER"),

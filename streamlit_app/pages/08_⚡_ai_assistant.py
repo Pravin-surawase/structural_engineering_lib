@@ -61,7 +61,11 @@ except ImportError:
 
 # Import AI module for context and tools
 try:
-    from ai.context import load_system_prompt, generate_workspace_context, build_messages
+    from ai.context import (
+        load_system_prompt,
+        generate_workspace_context,
+        build_messages,
+    )
     from ai.tools import get_tools
     from ai.handlers import handle_tool_call
 
@@ -167,9 +171,15 @@ def get_ai_response(user_message: str) -> str:
             avg_util = df["utilization"].mean() * 100
             return f"✅ **Designed {len(df)} beams** — {passed} passed, {failed} failed, avg util {avg_util:.0f}%\n\nSay **'building 3d'** to see the structure or click a beam for details."
         else:
-            return "📂 No beam data loaded. Say **'load sample'** or upload a CSV first."
+            return (
+                "📂 No beam data loaded. Say **'load sample'** or upload a CSV first."
+            )
 
-    if "building 3d" in msg_lower or "building view" in msg_lower or "full 3d" in msg_lower:
+    if (
+        "building 3d" in msg_lower
+        or "building view" in msg_lower
+        or "full 3d" in msg_lower
+    ):
         set_workspace_state(WorkspaceState.BUILDING_3D)
         return "🏗️ **Showing full building 3D view.** Click any beam to see details."
 
@@ -189,7 +199,11 @@ def get_ai_response(user_message: str) -> str:
         else:
             return "Select a beam first from the design results."
 
-    if "cross section" in msg_lower or "section view" in msg_lower or "2d section" in msg_lower:
+    if (
+        "cross section" in msg_lower
+        or "section view" in msg_lower
+        or "2d section" in msg_lower
+    ):
         selected_beam = st.session_state.get("ws_selected_beam")
         if selected_beam:
             set_workspace_state(WorkspaceState.CROSS_SECTION)
@@ -202,7 +216,7 @@ def get_ai_response(user_message: str) -> str:
         return "📊 **Showing smart insights dashboard.**"
 
     # Beam selection commands
-    beam_match = re.search(r'select\s+(beam\s+)?([a-zA-Z0-9_-]+)', msg_lower)
+    beam_match = re.search(r"select\s+(beam\s+)?([a-zA-Z0-9_-]+)", msg_lower)
     if beam_match:
         beam_id = beam_match.group(2).upper()
         df = st.session_state.get("ws_design_results")
@@ -212,7 +226,9 @@ def get_ai_response(user_message: str) -> str:
                 actual_id = match_row.iloc[0]["beam_id"]
                 st.session_state.ws_selected_beam = actual_id
                 set_workspace_state(WorkspaceState.VIEW_3D)
-                return f"✅ **Selected {actual_id}** — showing 3D view with reinforcement."
+                return (
+                    f"✅ **Selected {actual_id}** — showing 3D view with reinforcement."
+                )
         return f"Beam '{beam_id}' not found. Available: {', '.join(df['beam_id'].tolist()[:5])}..."
 
     # Use AI with function calling if available
@@ -223,16 +239,25 @@ def get_ai_response(user_message: str) -> str:
         except Exception as e:
             error_str = str(e)
             if "429" in error_str or "quota" in error_str.lower():
-                return "⚠️ Rate limit hit. Try again shortly.\n\n" + _local_response(user_message)
+                return "⚠️ Rate limit hit. Try again shortly.\n\n" + _local_response(
+                    user_message
+                )
             elif "401" in error_str or "auth" in error_str.lower():
-                return "🔑 API key invalid. Using local mode.\n\n" + _local_response(user_message)
+                return "🔑 API key invalid. Using local mode.\n\n" + _local_response(
+                    user_message
+                )
             elif "timeout" in error_str.lower() or "connect" in error_str.lower():
-                return "⏱️ Connection timeout. Using local mode.\n\n" + _local_response(user_message)
+                return "⏱️ Connection timeout. Using local mode.\n\n" + _local_response(
+                    user_message
+                )
             else:
                 # Log error for debugging but still provide fallback
                 import logging
+
                 logging.warning(f"AI API error: {error_str}")
-                return f"⚠️ AI error: {error_str[:100]}\n\n" + _local_response(user_message)
+                return f"⚠️ AI error: {error_str[:100]}\n\n" + _local_response(
+                    user_message
+                )
 
     # Local SmartDesigner fallback
     return _local_response(user_message)
@@ -246,7 +271,9 @@ def _get_ai_response_with_tools(client: OpenAI, user_message: str) -> str:
     if AI_MODULE_AVAILABLE:
         system_prompt = load_system_prompt()
         workspace_context = generate_workspace_context()
-        system_content = f"{system_prompt}\n\n## Current Workspace State\n\n{workspace_context}"
+        system_content = (
+            f"{system_prompt}\n\n## Current Workspace State\n\n{workspace_context}"
+        )
     else:
         system_content = SYSTEM_PROMPT
 
@@ -286,11 +313,13 @@ def _get_ai_response_with_tools(client: OpenAI, user_message: str) -> str:
 
             # Execute the tool
             result = handle_tool_call(tool_name, tool_args)
-            tool_results.append({
-                "tool_call_id": tool_call.id,
-                "role": "tool",
-                "content": result,
-            })
+            tool_results.append(
+                {
+                    "tool_call_id": tool_call.id,
+                    "role": "tool",
+                    "content": result,
+                }
+            )
 
         # Add assistant message and tool results
         messages.append(assistant_message)
@@ -513,7 +542,8 @@ def main():
     init_workspace_state()
 
     # Custom CSS for compact layout - reduce top padding
-    st.markdown("""
+    st.markdown(
+        """
     <style>
         /* Reduce top padding of main content */
         .main .block-container {
@@ -535,7 +565,9 @@ def main():
             height: 2.5rem;
         }
     </style>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
     # Inline compact header - single row
     col1, col2, col3 = st.columns([0.45, 0.35, 0.2])
@@ -546,10 +578,10 @@ def main():
         client = get_openai_client()
         if client:
             config = get_openai_config()
-            model_name = config.get('model', 'gpt-4o-mini')
+            model_name = config.get("model", "gpt-4o-mini")
             # Shorten model name for display
-            if '/' in model_name:
-                model_name = model_name.split('/')[-1]
+            if "/" in model_name:
+                model_name = model_name.split("/")[-1]
             st.caption(f"✅ {model_name}")
         else:
             st.caption("💡 Local mode")

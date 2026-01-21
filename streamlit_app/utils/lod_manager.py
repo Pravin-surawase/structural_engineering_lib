@@ -50,9 +50,9 @@ class LODLevel(Enum):
     - ULTRA_LOW: Industrial complexes (1000+ beams)
     """
 
-    HIGH = auto()       # 1-250 beams, full detail
-    MEDIUM = auto()     # 251-500 beams, balanced detail
-    LOW = auto()        # 501-1000 beams, minimal detail
+    HIGH = auto()  # 1-250 beams, full detail
+    MEDIUM = auto()  # 251-500 beams, balanced detail
+    LOW = auto()  # 501-1000 beams, minimal detail
     ULTRA_LOW = auto()  # 1000+ beams, box outline only
 
 
@@ -64,10 +64,10 @@ class LODConfig:
     max_beams: int
     show_stirrups: bool
     stirrup_reduction: int  # Show every Nth stirrup (1 = all, 0 = none)
-    show_all_bars: bool     # False = corner bars only
+    show_all_bars: bool  # False = corner bars only
     show_labels: bool
-    use_instancing: bool    # Use WebGL instancing for performance
-    mesh_segments: int      # Cylinder segments (lower = faster)
+    use_instancing: bool  # Use WebGL instancing for performance
+    mesh_segments: int  # Cylinder segments (lower = faster)
     show_section_outline: bool
 
 
@@ -228,7 +228,7 @@ class LODManager:
             stats.simplified_stirrup_count = 0
         elif config.stirrup_reduction > 1:
             # Keep every Nth stirrup
-            simplified["stirrups"] = stirrups[::config.stirrup_reduction]
+            simplified["stirrups"] = stirrups[:: config.stirrup_reduction]
             stats.simplified_stirrup_count = len(simplified["stirrups"])
         else:
             stats.simplified_stirrup_count = len(stirrups)
@@ -604,9 +604,7 @@ class GeometryCache:
 
         # Cache miss - simplify and store
         self._misses += 1
-        simplified, _ = self._lod_manager.simplify_geometry(
-            geometry, level, beam_count
-        )
+        simplified, _ = self._lod_manager.simplify_geometry(geometry, level, beam_count)
 
         # Store in cache
         entry = GeometryCacheEntry(

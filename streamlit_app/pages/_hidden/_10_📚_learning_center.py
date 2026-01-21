@@ -479,8 +479,7 @@ with tab4:
 with tab5:
     section_header("Quick IS 456 Reference")
 
-    st.markdown(
-        """
+    st.markdown("""
     ### Key Clauses for Beam Design
 
     | Clause | Topic | Key Points |
@@ -522,8 +521,7 @@ with tab5:
     # Balanced section (xu/d = 0.46)
     Ast = 0.96 × (fck/fy) × b × d
     ```
-    """
-    )
+    """)
 
     # Interactive clause searcher
     st.divider()
@@ -561,13 +559,11 @@ with tab5:
 
 # Footer
 st.divider()
-st.markdown(
-    """
+st.markdown("""
 ### 📖 Additional Resources
 - [IS 456:2000 Full Text](https://law.resource.org/pub/in/bis/S03/is.456.2000.pdf) (External link)
 - [SP 16:1980 Design Aids](https://archive.org/details/gov.in.is.sp.16.1980) (External link)
 - Video Tutorials: Coming soon!
-"""
-)
+""")
 
 st.caption("💡 **Tip:** Bookmark this page for quick reference during design work!")

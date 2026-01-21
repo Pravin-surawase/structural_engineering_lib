@@ -350,8 +350,7 @@ elif section == "📋 Examples":
         col1, col2 = st.columns([1, 1])
 
         with col1:
-            st.markdown(
-                """
+            st.markdown("""
 **Given Data:**
 - Span: 4.0 m (c/c of supports)
 - Dead load: 10 kN/m (including self-weight)
@@ -368,12 +367,10 @@ elif section == "📋 Examples":
 2. Design for shear
 3. Check deflection
 4. Detailing
-            """
-            )
+            """)
 
         with col2:
-            st.markdown(
-                """
+            st.markdown("""
 **Solution:**
 
 **Step 1: Load Calculation**
@@ -398,8 +395,7 @@ elif section == "📋 Examples":
 - τc = 0.49 N/mm² (from Table 19)
 - τv > τc → Provide shear reinforcement
 - Use 2L-8mm @ 150mm c/c ✅
-            """
-            )
+            """)
 
         st.success("✅ Design Complete: 3-16mm + 2L-8mm @ 150mm c/c")
 

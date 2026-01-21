@@ -22,7 +22,6 @@ from dataclasses import dataclass
 
 from utils.design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION
 
-
 # ============================================================================
 # LAYOUT CONFIGURATION
 # ============================================================================

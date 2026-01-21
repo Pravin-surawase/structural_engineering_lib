@@ -34,6 +34,7 @@ try:
         render_beam_screenshot,
         SCREENSHOT_RESOLUTIONS,
     )
+
     PYVISTA_AVAILABLE = check_pyvista_available()
 except ImportError:
     PYVISTA_AVAILABLE = False
@@ -179,8 +180,7 @@ def generate_geometry(
 def main():
     """Main demo page."""
     st.title("🏗️ 3D Beam Viewer Demo")
-    st.markdown(
-        """
+    st.markdown("""
     This page demonstrates the **Three.js-based 3D beam visualization** component.
 
     **Features:**
@@ -188,8 +188,7 @@ def main():
     - 🔍 **Zoom**: Scroll wheel
     - 🎯 **Pan**: Right-click and drag
     - 📊 **Info Panel**: Shows beam dimensions and rebar count
-    """
-    )
+    """)
 
     st.divider()
 
@@ -256,7 +255,9 @@ def main():
 
         with col1:
             st.markdown("**📐 STL Export** (for CAD software)")
-            include_rebar = st.checkbox("Include reinforcement", value=True, key="stl_rebar")
+            include_rebar = st.checkbox(
+                "Include reinforcement", value=True, key="stl_rebar"
+            )
             if st.button("⬇️ Generate STL", key="export_stl"):
                 with st.spinner("Generating STL..."):
                     import tempfile
@@ -288,7 +289,9 @@ def main():
                                     file_name=f"beam_{beam_id}.stl",
                                     mime="application/octet-stream",
                                 )
-                            st.success(f"✅ STL generated: {os.path.getsize(output_path) / 1024:.1f} KB")
+                            st.success(
+                                f"✅ STL generated: {os.path.getsize(output_path) / 1024:.1f} KB"
+                            )
                         except Exception as e:
                             st.error(f"Export failed: {e}")
                         finally:
@@ -302,7 +305,11 @@ def main():
                 ["1080p (1920×1080)", "2K (2560×1440)", "4K (3840×2160)"],
                 key="screenshot_res",
             )
-            res_map = {"1080p (1920×1080)": 1920, "2K (2560×1440)": 2560, "4K (3840×2160)": 3840}
+            res_map = {
+                "1080p (1920×1080)": 1920,
+                "2K (2560×1440)": 2560,
+                "4K (3840×2160)": 3840,
+            }
             res_value = res_map.get(resolution, 1920)
 
             if st.button("📷 Render Screenshot", key="render_screenshot"):
