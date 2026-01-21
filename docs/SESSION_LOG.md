@@ -4,9 +4,9 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-22 — Session 60: DXF Export Bug Fix & Batch Export
+## 2026-01-22 — Session 60: DXF Export Bug Fix & Industry-Standard CAD Improvements
 
-**Focus:** Fix critical DXF export bug, add batch export, page numbering cleanup
+**Focus:** Fix critical DXF export bug, add industry-standard features (beam grouping, BBS table)
 
 ### Bug Fixed: "No beams available for DXF export"
 
@@ -19,13 +19,33 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 - Wrong column: `"Ast (mm²)"` → `"Ast_req"`
 - Wrong match: `b.label == selected` → `b.id == selected`
 
+### Industry-Standard CAD Features Added
+
+| Feature | Description | Standard |
+|---------|-------------|----------|
+| **Beam Grouping** | `group_similar_beams()` groups by size/reinforcement | Industry practice |
+| **Beam Schedule Table** | `generate_beam_schedule_table()` | IS 2502 format |
+| **DXF Schedule Drawing** | `draw_beam_schedule_table()` draws on sheet | CAD standard |
+| **Rebar Unit Weights** | `REBAR_UNIT_WEIGHT` constants | IS 2502 |
+
+### Key Learning: How Industry Does CAD Export
+
+1. **Beam Grouping**: Similar beams (same size + reinforcement) shown once with references
+2. **Beam Schedule**: Table format per IS 2502 with columns: ID, Size, Span, Top Steel, Bottom Steel, Stirrups
+3. **Efficiency**: 50 beams → 8-12 beam types (reduces drawing pages significantly)
+4. **Client Delivery**: Schedule table + representative details + BBS
+
 ### Work Completed
 
 | Task | Result |
 |------|--------|
-| DXF export bug | Fixed column/attribute mismatches in 06_multi_format_import.py |
-| Batch export | Added `generate_multi_beam_dxf()` integration with beam schedule |
-| Page numbering | Fixed duplicate 08 pages, renamed DXF to 09, removed duplicate AI assistant |
+| DXF export bug fix | Fixed column/attribute mismatches in 06_multi_format_import.py |
+| Redundant DXF page | Removed 09_📐_dxf_export.py (integrated in multi-format page) |
+| Duplicate AI assistant | Removed 10_🤖_ai_assistant.py (duplicate of 08_⚡) |
+| Industry research | Created [docs/research/industry-cad-standards-bbs.md](research/industry-cad-standards-bbs.md) |
+| Beam grouping | Added `group_similar_beams()` to dxf_export.py |
+| Beam schedule | Added `generate_beam_schedule_table()` and `draw_beam_schedule_table()` |
+| Streamlit integration | Updated batch export to use grouping + show schedule |
 | Tests validated | 1169 tests pass, 28 warnings |
 
 ### Commits
@@ -33,9 +53,12 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 | Commit | Description |
 |--------|-------------|
 | `536cbc1f` | fix(dxf): fix column name mismatch preventing DXF export |
-| `a2a8b07b` | fix(pages): fix duplicate page numbers and remove redundant AI assistant |
+| `a2a8b07b` | fix(pages): fix duplicate page numbers |
+| `988e28e6` | docs: add Session 60 entry |
+| `57948237` | refactor(pages): remove redundant DXF export page |
+| `d26d79e2` | feat(dxf): add industry-standard beam grouping and schedule table |
 
-### Page Structure (After Fix)
+### Page Structure (After Cleanup)
 
 ```
 01_🏗️_beam_design.py
@@ -43,18 +66,18 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 03_✅_compliance.py
 04_📚_documentation.py
 05_3d_viewer_demo.py
-06_📥_multi_format_import.py
+06_📥_multi_format_import.py  ← DXF export integrated here
 07_📄_report_generator.py
 08_⚡_ai_assistant.py
-09_📐_dxf_export.py
 90_feedback.py
 ```
 
 ### Next Tasks
 
-1. Test DXF export end-to-end with real beam data
-2. Add beam schedule table to DXF (similar beams grouped)
-3. Continue Phase 3 work (PDF polish, user testing)
+1. **End-to-end testing** with real ETABS/SAFE data files
+2. **User feedback cycle** on new grouping feature
+3. **Documentation** - Update user guides for CAD export
+4. **V0.19 preparation** - Review release checklist
 
 ---
 
