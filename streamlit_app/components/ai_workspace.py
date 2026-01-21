@@ -2397,6 +2397,14 @@ def render_rebar_editor() -> None:
                 optimized["stirrup_spacing"] = config.get("stirrup_spacing", 150)
                 optimized["beam_id"] = beam_id
                 st.session_state.ws_rebar_config = optimized
+
+                # CRITICAL: Also update widget session state keys directly
+                # Widgets with keys read from st.session_state[key], not config
+                st.session_state.re_l1_dia = optimized["bottom_layer1_dia"]
+                st.session_state.re_l1_cnt = optimized["bottom_layer1_count"]
+                st.session_state.re_l2_dia = optimized.get("bottom_layer2_dia", 0)
+                st.session_state.re_l2_cnt = optimized.get("bottom_layer2_count", 0)
+
                 st.toast("✅ Optimized rebar configuration applied!")
                 st.rerun()
             else:
