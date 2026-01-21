@@ -86,6 +86,7 @@ except ImportError as e:
 try:
     from structural_lib.dxf_export import (
         quick_dxf_bytes,
+        generate_multi_beam_dxf,
         EZDXF_AVAILABLE,
     )
     from structural_lib.detailing import BeamDetailingResult, create_beam_detailing
@@ -1379,8 +1380,8 @@ with tab5:
             Install with: `pip install ezdxf`
             """)
         else:
-            # Select beam for DXF export
-            beam_ids = results_df["Beam ID"].unique().tolist() if "Beam ID" in results_df.columns else []
+            # Select beam for DXF export - use "ID" column from design_all_beams()
+            beam_ids = results_df["ID"].unique().tolist() if "ID" in results_df.columns else []
 
             if not beam_ids:
                 st.info("No beams available for DXF export.")
@@ -1391,9 +1392,9 @@ with tab5:
                     key="dxf_beam_select",
                 )
 
-                # Get beam data
-                row = results_df[results_df["Beam ID"] == selected_for_dxf].iloc[0] if selected_for_dxf else None
-                beam_data = next((b for b in beams if b.label == selected_for_dxf), None)
+                # Get beam data - match on beam.id, not beam.label
+                row = results_df[results_df["ID"] == selected_for_dxf].iloc[0] if selected_for_dxf else None
+                beam_data = next((b for b in beams if b.id == selected_for_dxf), None)
 
                 if row is not None and beam_data:
                     # DXF options
@@ -1409,17 +1410,17 @@ with tab5:
                     if st.button("🔧 Generate DXF", type="primary"):
                         with st.spinner("Generating DXF drawing..."):
                             try:
-                                # Get section dimensions
-                                b_mm = int(beam_data.section_width_mm or 300)
-                                D_mm = int(beam_data.section_depth_mm or 500)
+                                # Get section dimensions - access via section property
+                                b_mm = int(beam_data.section.width_mm if beam_data.section else 300)
+                                D_mm = int(beam_data.section.depth_mm if beam_data.section else 500)
                                 span_mm = int(beam_data.length_m * 1000)
                                 cover = int(st.session_state.mf_defaults["cover_mm"])
                                 fck = int(st.session_state.mf_defaults["fck_mpa"])
                                 fy = int(st.session_state.mf_defaults["fy_mpa"])
 
-                                # Get reinforcement from design result
-                                ast_val = row.get("Ast (mm²)", 1000)
-                                ast_required = float(ast_val) if ast_val and str(ast_val) != "nan" else 1000
+                                # Get reinforcement from design result - column is "Ast_req"
+                                ast_val = row.get("Ast_req", 1000)
+                                ast_required = float(ast_val) if ast_val and str(ast_val) not in ("nan", "-") else 1000
 
                                 # Create detailing
                                 detailing = create_beam_detailing(
@@ -1474,15 +1475,116 @@ with tab5:
 
         st.divider()
 
-        # Batch DXF Export (future feature indicator)
-        with st.expander("🔜 Batch Export (Coming Soon)"):
+        # Batch DXF Export Section
+        st.markdown("##### 🏗️ Batch Export - All Beams")
+
+        if not HAS_DXF or not EZDXF_AVAILABLE:
+            st.info("Install ezdxf for batch DXF export: `pip install ezdxf`")
+        else:
+            # Group similar beams for efficient export
             st.markdown("""
-            **Planned features for v1.1:**
-            - Export all beams to a single DXF with multiple layouts
-            - PDF drawing sheets with title blocks
-            - Bar Bending Schedule (BBS) generation
-            - Material quantity takeoff report
+            Export all designed beams to a single DXF drawing with:
+            - Grid layout (beams arranged in rows)
+            - Similar beams grouped together
+            - Beam schedule table
             """)
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                batch_columns = st.number_input(
+                    "Columns per row", min_value=1, max_value=4, value=2, key="batch_cols"
+                )
+            with col2:
+                batch_include_title = st.checkbox("Include Title Block", True, key="batch_title")
+            with col3:
+                st.metric("Total Beams", len(results_df))
+
+            if st.button("📐 Generate Batch DXF", type="primary"):
+                with st.spinner(f"Generating DXF for {len(results_df)} beams..."):
+                    try:
+                        # Create detailing for each beam
+                        detailings = []
+                        cover = int(st.session_state.mf_defaults["cover_mm"])
+                        fck = int(st.session_state.mf_defaults["fck_mpa"])
+                        fy = int(st.session_state.mf_defaults["fy_mpa"])
+
+                        for _, row in results_df.iterrows():
+                            beam_id = row.get("ID", "BEAM")
+                            beam_data = next((b for b in beams if b.id == beam_id), None)
+
+                            if beam_data and row.get("_is_safe") is not None:
+                                b_mm = int(beam_data.section.width_mm if beam_data.section else 300)
+                                D_mm = int(beam_data.section.depth_mm if beam_data.section else 500)
+                                span_mm = int(beam_data.length_m * 1000) if beam_data.length_m else 3000
+
+                                ast_val = row.get("Ast_req", 1000)
+                                ast_required = float(ast_val) if ast_val and str(ast_val) not in ("nan", "-") else 1000
+
+                                detailing = create_beam_detailing(
+                                    beam_id=beam_id,
+                                    story=beam_data.story or "S1",
+                                    b=b_mm,
+                                    D=D_mm,
+                                    span=span_mm,
+                                    cover=cover,
+                                    fck=fck,
+                                    fy=fy,
+                                    ast_start=ast_required * 0.8,
+                                    ast_mid=ast_required,
+                                    ast_end=ast_required * 0.8,
+                                )
+                                detailings.append(detailing)
+
+                        if detailings:
+                            # Generate multi-beam DXF
+                            with tempfile.NamedTemporaryFile(suffix=".dxf", delete=False) as tmp:
+                                output_path = generate_multi_beam_dxf(
+                                    detailings=detailings,
+                                    output_path=tmp.name,
+                                    columns=int(batch_columns),
+                                    include_title_block=batch_include_title,
+                                    title_block={
+                                        "title": f"BEAM SCHEDULE - {len(detailings)} Beams",
+                                        "count_line": f"Qty: {len(detailings)} beams",
+                                        "project": "IS 456 Design",
+                                        "date": pd.Timestamp.now().strftime("%Y-%m-%d"),
+                                    },
+                                )
+
+                                # Read the file for download
+                                with open(output_path, "rb") as f:
+                                    dxf_bytes = f.read()
+
+                            st.download_button(
+                                "📥 Download Batch DXF",
+                                dxf_bytes,
+                                f"beam_schedule_{len(detailings)}_beams.dxf",
+                                "application/dxf",
+                                help="Download all beams in single DXF file",
+                            )
+
+                            st.success(f"✅ Generated DXF with {len(detailings)} beams ({len(dxf_bytes) / 1024:.1f} KB)")
+
+                            # Show beam schedule summary
+                            with st.expander("📋 Beam Schedule Summary"):
+                                schedule_data = []
+                                for d in detailings:
+                                    bottom_bars = len(d.bottom_bars) if d.bottom_bars else 0
+                                    top_bars = len(d.top_bars) if d.top_bars else 0
+                                    schedule_data.append({
+                                        "Beam ID": d.beam_id,
+                                        "Story": d.story,
+                                        "Size (mm)": f"{d.b}×{d.D}",
+                                        "Span (m)": f"{d.span / 1000:.2f}",
+                                        "Bottom Bars": bottom_bars,
+                                        "Top Bars": top_bars,
+                                    })
+                                st.dataframe(pd.DataFrame(schedule_data), use_container_width=True)
+                        else:
+                            st.warning("No beams with valid design results for export.")
+
+                    except Exception as e:
+                        st.error(f"Error generating batch DXF: {e}")
 
 # Footer
 st.divider()
