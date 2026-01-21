@@ -103,8 +103,8 @@ Before writing ANY code, you MUST:
 
 ```
 □ Read the relevant research docs in docs/research/
-□ Read docs/guides/TESTING_AND_CICD_STRATEGY.md
-□ Read docs/guides/CODE_REUSE_AND_LIBRARY_STRUCTURE.md
+□ Read docs/guides/testing-and-cicd-strategy.md
+□ Read docs/guides/code-reuse-and-library-structure.md
 □ Check docs/planning/8-week-development-plan.md for current phase
 □ Search existing code for similar functionality
 □ Review docs/adr/ for architectural decisions
@@ -979,8 +979,8 @@ rg -n "function_name\\(" --glob="*.py" .
 | --- | --- |
 | Research docs | `docs/research/` |
 | Development plan | `docs/planning/8-week-development-plan.md` |
-| Coding guide | `docs/guides/AI_AGENT_CODING_GUIDE.md` |
-| Testing strategy | `docs/guides/TESTING_AND_CICD_STRATEGY.md` |
+| Coding guide | `docs/guides/ai-agent-coding-guide.md` |
+| Testing strategy | `docs/guides/testing-and-cicd-strategy.md` |
 | Session log | `docs/SESSION_LOG.md` |
 | Library API | `Python/structural_lib/api.py` |
 | AI tools | `streamlit_app/ai/tools.py` |

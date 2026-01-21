@@ -13,7 +13,7 @@
 |------|-----------|------|------------|-------------|
 | **AI Agent (new)** | [agent-bootstrap.md](getting-started/agent-bootstrap.md) | guide | beginner | 60-second onboarding checklist |
 | **AI Agent (working)** | [agent-quick-reference.md](agents/guides/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
-| **AI Agent (coding)** | [AI_AGENT_CODING_GUIDE.md](guides/AI_AGENT_CODING_GUIDE.md) | guide | intermediate | Coding standards, tests, reviews |
+| **AI Agent (coding)** | [ai-agent-coding-guide.md](guides/ai-agent-coding-guide.md) | guide | intermediate | Coding standards, tests, reviews |
 | **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
 | **Excel User** | [excel-tutorial.md](getting-started/excel-tutorial.md) | tutorial | beginner | UDF usage, workbook setup |
 | **Contributor** | [development-guide.md](contributing/development-guide.md) | guide | intermediate | PR process, code style, tests |
@@ -66,7 +66,7 @@ For VS Code AI-agent work, start with:
 - **[agent-bootstrap.md](getting-started/agent-bootstrap.md)** - New agent checklist
 - **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
 - **[AGENT_QUICK_REFERENCE.md](agents/guides/agent-quick-reference.md)** - Essential commands
-- **[AI_AGENT_CODING_GUIDE.md](guides/AI_AGENT_CODING_GUIDE.md)** - Coding standards and quality gates
+- **[ai-agent-coding-guide.md](guides/ai-agent-coding-guide.md)** - Coding standards and quality gates
 - [ai-context-pack.md](getting-started/ai-context-pack.md) - Project context
 - [AI summary](../llms.txt) - LLM-friendly summary
 - [Handoff Quick Start](contributing/handoff.md) - Session handoff

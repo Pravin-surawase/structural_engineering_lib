@@ -15,7 +15,7 @@
 
 ## Quick Links
 
-📚 [Documentation](docs/README.md) • 🚀 [Quick Start](#quick-start) • 💡 [Examples](Python/examples/) • 🔧 [API Reference](docs/reference/api.md) • 🧭 [Streamlit API Index](streamlit_app/API_INDEX.md) • 🧪 [AI Agent Coding Guide](docs/guides/AI_AGENT_CODING_GUIDE.md) • 🤖 [AI Summary](llms.txt)
+📚 [Documentation](docs/README.md) • 🚀 [Quick Start](#quick-start) • 💡 [Examples](Python/examples/) • 🔧 [API Reference](docs/reference/api.md) • 🧭 [Streamlit API Index](streamlit_app/API_INDEX.md) • 🧪 [AI Agent Coding Guide](docs/guides/ai-agent-coding-guide.md) • 🤖 [AI Summary](llms.txt)
 
 > **🤖 For GitHub Copilot Users:** See [copilot quick start](docs/getting-started/copilot-quick-start.md) to prevent terminal lockup issues
 
