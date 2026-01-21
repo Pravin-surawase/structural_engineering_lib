@@ -1534,53 +1534,70 @@ def suggest_optimal_rebar(
     """Suggest optimal reinforcement for given loads.
 
     Tries to minimize steel while maintaining safety and constructability.
+    Returns config compatible with rebar editor session state keys.
     """
-    # Calculate required steel area
-    d_eff = D_mm - cover_mm - 8 - 16/2  # Assume 8mm stirrup, 16mm bar
-    ast_req = mu_knm * 1e6 / (0.87 * fy * 0.9 * d_eff) if d_eff > 0 and fy > 0 else 500
+    # Calculate required steel area (IS 456 simplified)
+    d_eff = D_mm - cover_mm - 8 - 16 / 2  # Assume 8mm stirrup, 16mm bar
+    if d_eff <= 0 or fy <= 0:
+        return None
 
-    # Add 10% safety margin
-    ast_target = ast_req * 1.1
+    ast_req = mu_knm * 1e6 / (0.87 * fy * 0.9 * d_eff)
 
-    # Try different bar configurations
-    bar_options = [12, 16, 20, 25]
+    # Ensure minimum steel (IS 456 Cl 26.5.1.1)
+    ast_min = 0.85 * b_mm * d_eff / fy
+    ast_target = max(ast_req * 1.1, ast_min)  # 10% margin or minimum
+
+    # Try different bar configurations - prefer smaller bars first (economy)
+    bar_options = [10, 12, 16, 20, 25, 32]  # All supported diameters
     best_config = None
-    best_waste = float('inf')
+    best_waste = float("inf")
 
     for dia in bar_options:
         area_per_bar = math.pi * (dia / 2) ** 2
         count = max(2, math.ceil(ast_target / area_per_bar))
 
-        # Check if fits in width
+        # Check if fits in width (clear spacing >= max(dia, 25mm) per IS 456)
         clear_cover = cover_mm + 8  # Assuming 8mm stirrup
-        available = b_mm - 2 * clear_cover
-        bar_width_needed = count * dia + (count - 1) * max(dia, 25)
+        available = b_mm - 2 * clear_cover - 2 * (dia / 2)  # Inner edge to edge
+        min_spacing = max(dia, 25)
+        max_bars_single = int(available / (dia + min_spacing)) + 1
 
-        if bar_width_needed > available:
+        if count <= max_bars_single and count <= 6:
+            # Single layer works
+            waste = count * area_per_bar - ast_target
+            if waste >= 0 and waste < best_waste:
+                best_waste = waste
+                best_config = {
+                    "bottom_layer1_dia": dia,
+                    "bottom_layer1_count": count,
+                    "bottom_layer2_dia": 0,
+                    "bottom_layer2_count": 0,
+                }
+        elif count > max_bars_single:
             # Need 2 layers
-            layer1 = count // 2 + count % 2
+            layer1 = min(count // 2 + count % 2, 6)
             layer2 = count - layer1
-            if layer1 <= 6 and layer2 <= 4:
-                waste = count * area_per_bar - ast_target
-                if 0 <= waste < best_waste:
+            if layer1 >= 2 and layer2 >= 0 and layer2 <= 4:
+                total = layer1 + layer2
+                waste = total * area_per_bar - ast_target
+                if waste >= 0 and waste < best_waste:
                     best_waste = waste
                     best_config = {
                         "bottom_layer1_dia": dia,
                         "bottom_layer1_count": layer1,
-                        "bottom_layer2_dia": dia,
+                        "bottom_layer2_dia": dia if layer2 > 0 else 0,
                         "bottom_layer2_count": layer2,
                     }
-        else:
-            if count <= 6:
-                waste = count * area_per_bar - ast_target
-                if 0 <= waste < best_waste:
-                    best_waste = waste
-                    best_config = {
-                        "bottom_layer1_dia": dia,
-                        "bottom_layer1_count": count,
-                        "bottom_layer2_dia": 0,
-                        "bottom_layer2_count": 0,
-                    }
+
+    # Fallback: if nothing found, use a safe default
+    if best_config is None:
+        # Conservative fallback: 4-16mm bars
+        best_config = {
+            "bottom_layer1_dia": 16,
+            "bottom_layer1_count": 4,
+            "bottom_layer2_dia": 0,
+            "bottom_layer2_count": 0,
+        }
 
     return best_config
 
@@ -1864,9 +1881,17 @@ def render_rebar_editor() -> None:
         if st.button("⚡ Auto-Optimize", use_container_width=True, help="Optimize for cost while maintaining safety"):
             optimized = suggest_optimal_rebar(b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm)
             if optimized:
-                config.update(optimized)
-                st.session_state.ws_rebar_config = config
+                # Preserve top bars and stirrups, only optimize bottom
+                optimized["top_dia"] = config.get("top_dia", 12)
+                optimized["top_count"] = config.get("top_count", 2)
+                optimized["stirrup_dia"] = config.get("stirrup_dia", 8)
+                optimized["stirrup_spacing"] = config.get("stirrup_spacing", 150)
+                optimized["beam_id"] = beam_id
+                st.session_state.ws_rebar_config = optimized
+                st.toast("✅ Optimized rebar configuration applied!")
                 st.rerun()
+            else:
+                st.warning("Could not find better configuration")
 
     # Navigation
     st.divider()
