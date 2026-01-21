@@ -384,6 +384,56 @@ def _handle_quick_action(prompt: str) -> None:
     st.rerun()
 
 
+def _render_ai_export_downloads() -> None:
+    """Render download buttons for AI-generated exports (DXF, reports)."""
+    # DXF export download
+    dxf_data = st.session_state.get("ai_export_dxf")
+    if dxf_data:
+        st.markdown("---")
+        col1, col2 = st.columns([0.7, 0.3])
+        with col1:
+            st.caption(f"📐 DXF Ready: {dxf_data.get('beam_count', 1)} beam(s)")
+        with col2:
+            if st.download_button(
+                label="📥 DXF",
+                data=dxf_data.get("bytes", b""),
+                file_name=dxf_data.get("filename", "beam_export.dxf"),
+                mime="application/dxf",
+                use_container_width=True,
+                help="Download CAD drawing",
+                key="ai_dxf_download",
+            ):
+                # Clear after download
+                st.session_state.pop("ai_export_dxf", None)
+
+    # Report download
+    report_data = st.session_state.get("ai_report")
+    if report_data:
+        if not dxf_data:  # Only show divider if DXF wasn't shown
+            st.markdown("---")
+        col1, col2 = st.columns([0.7, 0.3])
+        with col1:
+            st.caption(f"📄 Report Ready: {report_data.get('beam_count', 1)} beam(s)")
+        with col2:
+            content = report_data.get("content", "")
+            if isinstance(content, str):
+                content = content.encode("utf-8")
+            fmt = report_data.get("format", "html")
+            mime = "text/html" if fmt == "html" else "application/json"
+
+            if st.download_button(
+                label="📄 Report",
+                data=content,
+                file_name=report_data.get("filename", f"beam_report.{fmt}"),
+                mime=mime,
+                use_container_width=True,
+                help="Download design report",
+                key="ai_report_download",
+            ):
+                # Clear after download
+                st.session_state.pop("ai_report", None)
+
+
 def render_chat_panel():
     """Render the chat panel (left side)."""
     # Chat container with maximum height
@@ -410,6 +460,9 @@ def render_chat_panel():
         for message in st.session_state.ai_messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
+
+        # Render download buttons for AI-generated exports
+        _render_ai_export_downloads()
 
     # Chat input (always visible)
     prompt = st.chat_input("Ask about beam design, or say 'help'...")

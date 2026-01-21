@@ -1259,15 +1259,31 @@ def calculate_rebar_checks(
     results["shear_ok"] = shear_util <= 1.0
 
     # 5. Spacing check (min clear spacing = max(bar_dia, 25mm))
+    # For multi-layer reinforcement, calculate spacing per layer and take minimum
     clear_cover = cover_mm + stirrup_dia
-    total_bar_width = sum(count * dia for dia, count in bottom_bars)
     available_width = b_mm - 2 * clear_cover
-    num_bars = sum(count for _, count in bottom_bars)
-    if num_bars > 1:
-        spacing = (available_width - total_bar_width) / (num_bars - 1)
+
+    # Calculate spacing for each layer separately
+    layer_spacings = []
+    for dia, count in bottom_bars:
+        if count > 1:
+            total_bar_width_layer = count * dia
+            layer_spacing = (available_width - total_bar_width_layer) / (count - 1)
+            layer_spacings.append((layer_spacing, dia))
+        elif count == 1:
+            layer_spacings.append((available_width - dia, dia))  # Single bar, plenty of space
+
+    # Minimum spacing across all layers (worst case)
+    if layer_spacings:
+        min_layer_spacing = min(sp for sp, _ in layer_spacings)
+        # Min required is max(bar_dia, 25mm) for the layer with smallest spacing
+        worst_layer = min(layer_spacings, key=lambda x: x[0])
+        min_spacing = max(worst_layer[1], 25)
+        spacing = min_layer_spacing
     else:
         spacing = available_width
-    min_spacing = max(max_dia_bottom, 25)
+        min_spacing = 25
+
     results["bar_spacing"] = spacing
     results["spacing_ok"] = spacing >= min_spacing
 

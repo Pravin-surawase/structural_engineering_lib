@@ -36,6 +36,8 @@ def handle_tool_call(tool_name: str, arguments: dict[str, Any]) -> str:
         "filter_3d_view": _handle_filter_3d,
         "get_critical_beams": _handle_get_critical_beams,
         "start_optimization": _handle_start_optimization,
+        "export_dxf": _handle_export_dxf,
+        "generate_report": _handle_generate_report,
     }
 
     handler = handlers.get(tool_name)
@@ -446,3 +448,181 @@ def _handle_start_optimization(args: dict) -> str:
             f"Current section {row['b_mm']}x{row['D_mm']}mm is adequate",
         ],
     })
+
+
+def _handle_export_dxf(args: dict) -> str:
+    """Export DXF drawing for beam(s)."""
+    import tempfile
+    from pathlib import Path
+
+    beam_id = args.get("beam_id")
+    floor = args.get("floor")
+    include_schedule = args.get("include_schedule", True)
+    include_title_block = args.get("include_title_block", True)
+
+    results_df = st.session_state.get("ws_design_results")
+    if results_df is None:
+        return json.dumps({"error": "No design results. Run 'design all' first."})
+
+    # Get detailing results from session state
+    all_detailing = st.session_state.get("ws_detailing_results", {})
+    if not all_detailing:
+        return json.dumps({
+            "error": "No detailing results available. Design beams first to generate DXF."
+        })
+
+    # Filter beams based on arguments
+    if beam_id:
+        # Single beam export
+        mask = results_df["beam_id"].str.upper() == beam_id.upper()
+        if not mask.any():
+            return json.dumps({"error": f"Beam '{beam_id}' not found"})
+        beam_ids = [beam_id.upper()]
+    elif floor:
+        # Floor-based export
+        mask = results_df["story"].str.lower().str.contains(floor.lower())
+        if not mask.any():
+            return json.dumps({"error": f"No beams found on floor '{floor}'"})
+        beam_ids = results_df[mask]["beam_id"].tolist()
+    else:
+        # All beams
+        beam_ids = results_df["beam_id"].tolist()
+
+    # Get detailing for selected beams
+    detailing_list = []
+    missing_beams = []
+    for bid in beam_ids:
+        if bid in all_detailing:
+            detailing_list.append(all_detailing[bid])
+        else:
+            missing_beams.append(bid)
+
+    if not detailing_list:
+        return json.dumps({
+            "error": "No detailing data for selected beams",
+            "missing_beams": missing_beams[:5],  # Show first 5
+        })
+
+    # Generate DXF
+    try:
+        from structural_lib import api
+
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(
+            suffix=".dxf", delete=False, prefix="beam_export_"
+        ) as tmp:
+            output_path = Path(tmp.name)
+
+        api.compute_dxf(
+            detailing_list,
+            str(output_path),
+            include_title_block=include_title_block,
+            multi=len(detailing_list) > 1,
+        )
+
+        # Store for download
+        with open(output_path, "rb") as f:
+            dxf_bytes = f.read()
+
+        st.session_state.ai_export_dxf = {
+            "bytes": dxf_bytes,
+            "filename": f"beam_design_{len(beam_ids)}_beams.dxf"
+            if len(beam_ids) > 1
+            else f"beam_{beam_ids[0]}.dxf",
+            "beam_count": len(detailing_list),
+        }
+
+        return json.dumps({
+            "status": "ready_for_download",
+            "beam_count": len(detailing_list),
+            "filename": st.session_state.ai_export_dxf["filename"],
+            "includes": {
+                "cross_sections": True,
+                "reinforcement_layout": True,
+                "schedule_table": include_schedule,
+                "title_block": include_title_block,
+            },
+            "missing_beams": missing_beams[:3] if missing_beams else None,
+        })
+
+    except ImportError:
+        return json.dumps({
+            "error": "DXF export not available. Install ezdxf: pip install ezdxf"
+        })
+    except Exception as e:
+        return json.dumps({"error": f"DXF generation failed: {str(e)}"})
+
+
+def _handle_generate_report(args: dict) -> str:
+    """Generate design calculation report."""
+    beam_id = args.get("beam_id")
+    report_format = args.get("format", "html")
+    include_bbs = args.get("include_bbs", True)
+
+    results_df = st.session_state.get("ws_design_results")
+    if results_df is None:
+        return json.dumps({"error": "No design results. Run 'design all' first."})
+
+    # Get stored design results for report generation
+    design_results = st.session_state.get("ws_full_results", {})
+    if not design_results:
+        return json.dumps({
+            "error": "No detailed design results available for report generation."
+        })
+
+    # Filter to specific beam if requested
+    if beam_id:
+        mask = results_df["beam_id"].str.upper() == beam_id.upper()
+        if not mask.any():
+            return json.dumps({"error": f"Beam '{beam_id}' not found"})
+        beam_ids = [beam_id.upper()]
+    else:
+        beam_ids = results_df["beam_id"].tolist()
+
+    # Build report data
+    report_beams = []
+    for bid in beam_ids:
+        if bid in design_results:
+            report_beams.append(design_results[bid])
+
+    if not report_beams:
+        return json.dumps({
+            "error": "No detailed results found for report generation",
+            "hint": "Try redesigning the beams to populate full results"
+        })
+
+    try:
+        from structural_lib import api
+
+        # Generate report
+        report_content = api.compute_report(
+            {"results": report_beams},
+            format=report_format,
+        )
+
+        # Store for display/download
+        st.session_state.ai_report = {
+            "content": report_content,
+            "format": report_format,
+            "beam_count": len(report_beams),
+            "filename": f"beam_report_{len(report_beams)}.{report_format}"
+            if len(report_beams) > 1
+            else f"beam_{beam_ids[0]}_report.{report_format}",
+        }
+
+        return json.dumps({
+            "status": "ready",
+            "format": report_format,
+            "beam_count": len(report_beams),
+            "filename": st.session_state.ai_report["filename"],
+            "includes": {
+                "design_checks": True,
+                "reinforcement_details": True,
+                "is456_compliance": True,
+                "bar_bending_schedule": include_bbs,
+            },
+        })
+
+    except Exception as e:
+        return json.dumps({"error": f"Report generation failed: {str(e)}"})
+

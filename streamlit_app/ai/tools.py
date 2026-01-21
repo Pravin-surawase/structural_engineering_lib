@@ -254,6 +254,65 @@ TOOLS = [
             },
             "strict": True
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "export_dxf",
+            "description": "Generate CAD DXF drawing for beam(s) with cross-section, reinforcement layout, and schedule table. Can export single beam or batch of beams.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "beam_id": {
+                        "type": "string",
+                        "description": "Single beam ID to export (e.g., 'B1', 'B101'). If not specified, exports all designed beams."
+                    },
+                    "floor": {
+                        "type": "string",
+                        "description": "Export all beams on a specific floor/story (e.g., 'Level 0', 'Story1')"
+                    },
+                    "include_schedule": {
+                        "type": "boolean",
+                        "description": "Include beam schedule table in DXF (default: true)"
+                    },
+                    "include_title_block": {
+                        "type": "boolean",
+                        "description": "Include standard title block (default: true)"
+                    }
+                },
+                "required": [],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "generate_report",
+            "description": "Generate design calculation report for beam(s). Creates HTML report with design checks, reinforcement details, and IS 456 code compliance.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "beam_id": {
+                        "type": "string",
+                        "description": "Single beam ID for report (e.g., 'B1'). If not specified, generates summary report for all beams."
+                    },
+                    "format": {
+                        "type": "string",
+                        "enum": ["html", "json"],
+                        "description": "Report format (default: html)"
+                    },
+                    "include_bbs": {
+                        "type": "boolean",
+                        "description": "Include Bar Bending Schedule in report (default: true)"
+                    }
+                },
+                "required": [],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
     }
 ]
 
