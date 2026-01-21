@@ -204,5 +204,5 @@ cd Python && .venv/bin/python -m pytest tests/ -v
 | **PyVista research** | [docs/research/pyvista-evaluation.md](../research/pyvista-evaluation.md) |
 | **CAD export module** | [streamlit_app/components/visualization_export.py](../../streamlit_app/components/visualization_export.py) |
 | **8-week plan** | [docs/planning/8-week-development-plan.md](8-week-development-plan.md) |
-| 3D visualization | [streamlit_app/pages/07_📥_multi_format_import.py](../../streamlit_app/pages/07_📥_multi_format_import.py) |
+| 3D visualization | [streamlit_app/pages/06_📥_multi_format_import.py](../../streamlit_app/pages/06_📥_multi_format_import.py) |
 | API reference | [docs/reference/api.md](../reference/api.md) |

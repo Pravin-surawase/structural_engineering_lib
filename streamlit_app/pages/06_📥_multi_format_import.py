@@ -82,6 +82,18 @@ except ImportError as e:
     import traceback
     _import_error = str(e)
 
+# Import DXF export module
+try:
+    from structural_lib.dxf_export import (
+        quick_dxf_bytes,
+        EZDXF_AVAILABLE,
+    )
+    from structural_lib.detailing import BeamDetailingResult, create_beam_detailing
+    HAS_DXF = True
+except ImportError:
+    HAS_DXF = False
+    EZDXF_AVAILABLE = False
+
 # Page setup
 setup_page(title="Multi-Format Import | IS 456 Beam Design", icon="📥", layout="wide")
 initialize_theme()
@@ -876,7 +888,7 @@ with st.sidebar:
     )
 
 # Main content area
-tab1, tab2, tab3, tab4 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design", "🏗️ 3D View"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["📤 Upload", "📊 Preview", "🔧 Design", "🏗️ 3D View", "📐 Export"])
 
 with tab1:
     section_header("Upload Files")
@@ -1305,6 +1317,172 @@ with tab4:
                         """)
                 else:
                     st.warning(f"Could not find beam data for {selected_beam_id}")
+
+with tab5:
+    section_header("Export & CAD Drawings")
+
+    results_df = st.session_state.mf_design_results
+    beams = st.session_state.mf_beams
+
+    if results_df is None or results_df.empty:
+        st.info("""
+        👆 **Complete batch design first** to enable export options.
+
+        Available exports after design:
+        - 📊 **CSV** - Design results spreadsheet
+        - 📐 **DXF** - AutoCAD-compatible beam detailing drawings
+        - 📦 **STL** - 3D model for CAD/BIM import (requires PyVista)
+        """)
+    else:
+        # Export options
+        st.markdown("##### 📊 Design Results Export")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            # CSV Export
+            csv_data = results_df.to_csv(index=False)
+            st.download_button(
+                "📥 Download CSV",
+                csv_data,
+                "beam_design_results.csv",
+                "text/csv",
+                help="Download all design results as CSV spreadsheet",
+            )
+
+        with col2:
+            # JSON Export
+            json_data = results_df.to_json(orient="records", indent=2)
+            st.download_button(
+                "📥 Download JSON",
+                json_data,
+                "beam_design_results.json",
+                "application/json",
+                help="Download design results in JSON format",
+            )
+
+        with col3:
+            # Summary metrics
+            total = len(results_df)
+            passed = len(results_df[results_df.get("_is_safe", pd.Series([False])) == True])
+            st.metric("Beams Designed", f"{passed}/{total} ✅")
+
+        st.divider()
+
+        # DXF Export Section
+        st.markdown("##### 📐 DXF Drawing Export")
+
+        if not HAS_DXF or not EZDXF_AVAILABLE:
+            st.warning("""
+            **DXF export requires ezdxf library.**
+
+            Install with: `pip install ezdxf`
+            """)
+        else:
+            # Select beam for DXF export
+            beam_ids = results_df["Beam ID"].unique().tolist() if "Beam ID" in results_df.columns else []
+
+            if not beam_ids:
+                st.info("No beams available for DXF export.")
+            else:
+                selected_for_dxf = st.selectbox(
+                    "Select beam for DXF export",
+                    beam_ids,
+                    key="dxf_beam_select",
+                )
+
+                # Get beam data
+                row = results_df[results_df["Beam ID"] == selected_for_dxf].iloc[0] if selected_for_dxf else None
+                beam_data = next((b for b in beams if b.label == selected_for_dxf), None)
+
+                if row is not None and beam_data:
+                    # DXF options
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        include_dims = st.checkbox("Include Dimensions", True)
+                    with col2:
+                        include_annot = st.checkbox("Include Annotations", True)
+                    with col3:
+                        include_title = st.checkbox("Include Title Block", True)
+
+                    # Generate DXF button
+                    if st.button("🔧 Generate DXF", type="primary"):
+                        with st.spinner("Generating DXF drawing..."):
+                            try:
+                                # Get section dimensions
+                                b_mm = int(beam_data.section_width_mm or 300)
+                                D_mm = int(beam_data.section_depth_mm or 500)
+                                span_mm = int(beam_data.length_m * 1000)
+                                cover = int(st.session_state.mf_defaults["cover_mm"])
+                                fck = int(st.session_state.mf_defaults["fck_mpa"])
+                                fy = int(st.session_state.mf_defaults["fy_mpa"])
+
+                                # Get reinforcement from design result
+                                ast_val = row.get("Ast (mm²)", 1000)
+                                ast_required = float(ast_val) if ast_val and str(ast_val) != "nan" else 1000
+
+                                # Create detailing
+                                detailing = create_beam_detailing(
+                                    beam_id=selected_for_dxf,
+                                    story=beam_data.story or "S1",
+                                    b=b_mm,
+                                    D=D_mm,
+                                    span=span_mm,
+                                    cover=cover,
+                                    fck=fck,
+                                    fy=fy,
+                                    ast_start=ast_required * 0.8,
+                                    ast_mid=ast_required,
+                                    ast_end=ast_required * 0.8,
+                                )
+
+                                # Generate DXF bytes
+                                dxf_bytes = quick_dxf_bytes(detailing)
+
+                                # Download button
+                                st.download_button(
+                                    "📥 Download DXF",
+                                    dxf_bytes,
+                                    f"beam_{selected_for_dxf}_detail.dxf",
+                                    "application/dxf",
+                                    help="Download AutoCAD DXF file",
+                                )
+
+                                st.success(f"✅ DXF generated for {selected_for_dxf} ({len(dxf_bytes) / 1024:.1f} KB)")
+
+                                # Show preview info
+                                with st.expander("📋 Drawing Information"):
+                                    st.markdown(f"""
+                                    **Beam:** {selected_for_dxf}
+                                    **Section:** {b_mm} × {D_mm} mm
+                                    **Span:** {span_mm} mm
+                                    **Cover:** {cover} mm
+
+                                    **Reinforcement:**
+                                    - Bottom: As per design ({ast_required:.0f} mm²)
+                                    - Stirrups: Per IS 456 spacing rules
+
+                                    **Compatible with:**
+                                    - AutoCAD 2010+
+                                    - LibreCAD
+                                    - DraftSight
+                                    - FreeCAD
+                                    """)
+
+                            except Exception as e:
+                                st.error(f"Error generating DXF: {e}")
+
+        st.divider()
+
+        # Batch DXF Export (future feature indicator)
+        with st.expander("🔜 Batch Export (Coming Soon)"):
+            st.markdown("""
+            **Planned features for v1.1:**
+            - Export all beams to a single DXF with multiple layouts
+            - PDF drawing sheets with title blocks
+            - Bar Bending Schedule (BBS) generation
+            - Material quantity takeoff report
+            """)
 
 # Footer
 st.divider()

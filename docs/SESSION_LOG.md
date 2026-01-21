@@ -403,7 +403,7 @@ adapter system from multi-format import page:
 1. **Always check existing infrastructure before adding new code:**
    - `Python/structural_lib/adapters.py` - File format parsing
    - `streamlit_app/utils/api_wrapper.py` - Cached API calls
-   - `streamlit_app/pages/07_📥_multi_format_import.py` - Working example
+   - `streamlit_app/pages/06_📥_multi_format_import.py` - Working example
 
 2. **AI model names evolve rapidly:**
    - Never guess model names like "gpt-5-mini"
@@ -796,7 +796,7 @@ class WorkspaceState(Enum):
 
 - **NEW:** `streamlit_app/components/ai_workspace.py` (753 lines)
 - **NEW:** `streamlit_app/pages/11_⚡_ai_assistant_v2.py` (338 lines)
-- **ENHANCED:** `streamlit_app/pages/07_📥_multi_format_import.py`
+- **ENHANCED:** `streamlit_app/pages/06_📥_multi_format_import.py`
 
 ### Architecture Decision
 
@@ -1410,8 +1410,8 @@ class BuildingStatistics(BaseModel):
 
 | Issue | Root Cause | Location |
 |-------|------------|----------|
-| Pydantic ValidationError | `width_mm`/`depth_mm` passed to `DesignDefaults` which has `extra="forbid"` | [07_multi_format_import.py](../streamlit_app/pages/07_📥_multi_format_import.py#L160) |
-| Column Not Found | Page 06 uses `etabs_import.py` which expects raw ETABS format, not VBA envelope | [06_etabs_import.py](../streamlit_app/pages/06_📤_etabs_import.py) |
+| Pydantic ValidationError | `width_mm`/`depth_mm` passed to `DesignDefaults` which has `extra="forbid"` | [07_multi_format_import.py](../streamlit_app/pages/06_📥_multi_format_import.py#L160) |
+| Column Not Found | Page 06 uses `etabs_import.py` which expects raw ETABS format, not VBA envelope | [06_etabs_import.py](../streamlit_app/pages/_hidden/_06_📤_etabs_import.py) |
 
 ### Two Import Module Problem
 
@@ -1586,7 +1586,7 @@ Performance Estimates (with WebGL instancing):
 
 **Completed:**
 1. **Validated PR #381 code with proof** - 3164 tests passing, adapter imports verified
-2. **Created multi-format import page** (`07_📥_multi_format_import.py`)
+2. **Created multi-format import page** (`06_📥_multi_format_import.py`)
    - Supports ETABS, SAFE, STAAD.Pro, GenericCSV formats
    - Auto-detect format from file content
    - Batch design with progress tracking
@@ -1922,7 +1922,7 @@ Session 39 completed TASK-3D-002 Phase 2 deliverables: real 3D building visualiz
 
 #### 1. Real 3D Building Visualization
 
-**File Modified:** `streamlit_app/pages/06_📤_etabs_import.py`
+**File Modified:** `streamlit_app/pages/_hidden/_06_📤_etabs_import.py`
 
 **Changes:**
 - Updated `create_beam_grid_3d()` to use real coordinates from FrameGeometry
@@ -2217,7 +2217,7 @@ Session 39 implemented the full ETABS Import workflow in Streamlit, connecting t
 
 #### 1. ETABS Import Streamlit Page (700 lines)
 
-**File:** `streamlit_app/pages/06_📤_etabs_import.py`
+**File:** `streamlit_app/pages/_hidden/_06_📤_etabs_import.py`
 
 **Features:**
 - ETABS CSV upload with automatic column detection (ETABS 2019-2024 formats)

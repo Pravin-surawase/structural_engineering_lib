@@ -18,6 +18,46 @@ PyVista offers superior CAD-quality rendering and export capabilities (STL, VTK,
 
 ---
 
+## 0. Professional CAD Quality Guidelines
+
+### 0.1 Beam Count to LOD Mapping
+
+| Beam Count | LOD Level | Rendering Strategy | Target FPS |
+|------------|-----------|-------------------|------------|
+| 1-50 | ULTRA_HIGH | Full rebar + stirrups + PBR | 60 |
+| 51-250 | HIGH | Simplified rebar + stirrups | 45 |
+| 251-500 | MEDIUM | Box beams + simplified bars | 30 |
+| 501-1000 | LOW | Simple boxes only | 20 |
+| 1000+ | ULTRA_LOW | Billboards/lines + clustering | 15 |
+
+### 0.2 Industry-Standard CAD Output
+
+For professional CAD output (DXF/DWG/STL):
+
+```python
+# Always use maximum detail for export
+export_config = {
+    "mesh_resolution": "high",      # Don't simplify for export
+    "include_rebar": True,          # Full reinforcement geometry
+    "include_stirrups": True,       # Include shear reinforcement
+    "pbr_materials": True,          # Physical-based rendering
+    "dimension_lines": True,        # CAD dimension annotations
+    "layer_separation": True,       # Separate layers for CAD editing
+}
+```
+
+### 0.3 Quality Targets by Use Case
+
+| Use Case | Resolution | Detail Level | Format |
+|----------|------------|--------------|--------|
+| Screen preview | 1080p | LOD-based | Plotly/WebGL |
+| Report images | 2K | Full detail | PNG/SVG |
+| CAD import | N/A | Full detail | STL/VTK/DXF |
+| Print drawings | 4K+ | Full detail | PDF/DXF |
+| BIM integration | N/A | Full detail | IFC/STL |
+
+---
+
 ## 1. Technology Comparison
 
 | Feature | Plotly (Current) | PyVista | Three.js (V3) |
