@@ -83,7 +83,11 @@ from utils.fragments import (
 )
 
 # TASK-276-279 Integration: Professional report export
-from components.report_export import show_export_options, show_audit_trail_summary
+from components.report_export import (
+    show_export_options,
+    show_audit_trail_summary,
+    show_dxf_export,
+)
 from utils.input_bridge import log_design_to_audit
 import hashlib
 import json
@@ -1094,12 +1098,23 @@ with col_preview:
             beam_id = st.session_state.get("current_beam_id", "B1")
             story = st.session_state.get("current_story", "GF")
 
-            # Report export section
-            show_export_options(
-                result=result,
-                beam_id=beam_id,
-                story=story,
-            )
+            # Export options in columns
+            col_pdf, col_dxf = st.columns(2)
+
+            with col_pdf:
+                # Report export section (HTML/JSON/Markdown)
+                show_export_options(
+                    result=result,
+                    beam_id=beam_id,
+                    story=story,
+                )
+
+            with col_dxf:
+                # DXF export section
+                show_dxf_export(
+                    result=result,
+                    beam_id=beam_id,
+                )
 
             st.divider()
 

@@ -310,3 +310,102 @@ def show_audit_trail_summary() -> None:
             mime="application/json",
             key="download_audit_btn",
         )
+
+
+def show_dxf_export(
+    result: DesignResult | None = None,
+    beam_id: str = "B1",
+) -> None:
+    """Display quick DXF export option for beam drawings.
+
+    Args:
+        result: Current design result (uses session state if None)
+        beam_id: Beam identifier for drawing
+    """
+    if result is None:
+        result = st.session_state.get("current_result", None)
+
+    if result is None:
+        st.info("💡 Complete a design calculation to enable DXF export.")
+        return
+
+    st.subheader("📐 DXF Drawing Export")
+
+    # Check if DXF module is available
+    try:
+        from structural_lib.dxf_export import quick_dxf_bytes, EZDXF_AVAILABLE
+        from structural_lib.detailing import create_beam_detailing
+
+        dxf_available = EZDXF_AVAILABLE
+    except ImportError:
+        dxf_available = False
+
+    if not dxf_available:
+        st.warning(
+            "⚠️ DXF export requires ezdxf library. "
+            "Install with: `pip install ezdxf`"
+        )
+        st.info("💡 For full DXF functionality, visit the **📐 DXF Export** page.")
+        return
+
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.markdown(
+            """
+            Quick export of beam reinforcement drawing to DXF format
+            (AutoCAD R2010 compatible, 1:1 scale in mm).
+            """
+        )
+        st.caption(
+            "For advanced options (layers, title block, batch export), "
+            "use the **📐 DXF Export** page."
+        )
+
+    with col2:
+        include_dims = st.checkbox("Include Dimensions", value=True, key="dxf_dims")
+
+    # Generate DXF button
+    if st.button("🔄 Generate DXF", type="secondary", key="generate_dxf_btn"):
+        with st.spinner("Generating DXF drawing..."):
+            try:
+                # Create detailing result from design
+                detailing = create_beam_detailing(
+                    span_mm=result.inputs.span_mm,
+                    b_mm=result.inputs.b_mm,
+                    D_mm=result.inputs.D_mm,
+                    d_mm=result.inputs.d_mm,
+                    cover_mm=result.inputs.cover_mm,
+                    fck_mpa=result.inputs.fck_mpa,
+                    fy_mpa=result.inputs.fy_mpa,
+                    ast_mm2=result.ast_mm2,
+                    stirrup_dia_mm=8,
+                    stirrup_spacing_mm=150,
+                )
+
+                # Generate DXF bytes
+                dxf_bytes = quick_dxf_bytes(
+                    detailing,
+                    include_dimensions=include_dims,
+                    include_annotations=True,
+                )
+
+                # Store for download
+                st.session_state["dxf_content"] = dxf_bytes
+                st.session_state["dxf_filename"] = f"{beam_id}_detail.dxf"
+
+                st.success(f"✅ DXF generated: {beam_id}_detail.dxf")
+
+            except Exception as e:
+                logger.exception("DXF generation failed")
+                st.error(f"❌ Failed to generate DXF: {e}")
+
+    # Download button
+    if "dxf_content" in st.session_state:
+        st.download_button(
+            label="📥 Download DXF",
+            data=st.session_state.get("dxf_content", b""),
+            file_name=st.session_state.get("dxf_filename", "beam.dxf"),
+            mime="application/dxf",
+            key="download_dxf_btn",
+        )
