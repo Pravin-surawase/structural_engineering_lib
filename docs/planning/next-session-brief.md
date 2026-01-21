@@ -11,10 +11,10 @@
 
 | Release | Version | Status |
 |---------|---------|--------|
-| **Current** | v0.18.1 | 🚧 Bugfix Release |
-| **Next** | v0.19.0 | CAD Quality + DXF Export |
+| **Current** | v0.18.1 | ✅ Stable |
+| **Next** | v0.19.0 | 🚧 CAD Quality + DXF Export |
 
-**Last Session:** 57 | **Focus:** Fix AI v2 CSV import to use adapter infrastructure
+**Last Session:** 59 Phase 2 | **Focus:** PyVista evaluation, automation improvements
 
 ---
 
@@ -49,34 +49,34 @@
 
 ## Latest Handoff
 
-**Session 57 (2026-01-21) — AI v2 CSV Import Fix (CRITICAL)**
+**Session 59 Phase 2 (2026-01-21) — PyVista Evaluation & Automation**
 
-**Problem:** AI v2 page showed "0 inf% ❌ FAIL" for all beams after CSV import.
-Example: `1	1	300	5	100	50	0	inf%	❌ FAIL` — Depth=5 instead of 500!
+**Completed:**
+1. ✅ PR #393 confirmed merged (2026-01-20)
+2. ✅ PyVista evaluation - comprehensive research document
+3. ✅ CAD export prototype - `visualization_export.py` module
+4. ✅ Branch cleanup automation - `cleanup_stale_branches.py`
+5. ✅ Governance health check - 92/100 (A+)
 
-**Root Cause:** ai_workspace.py used simple auto_map_columns() instead of the
-proven adapter system from multi-format import page (07).
+**PyVista Decision:** Hybrid approach
+- **Keep Plotly:** Interactive web visualization (current)
+- **Add PyVista:** CAD export (STL, VTK, 4K screenshots)
 
-**Solution:** Refactored ai_workspace.py to use:
-- `structural_lib.adapters` (ETABSAdapter, SAFEAdapter, GenericCSVAdapter)
-- `utils/api_wrapper.cached_design()` for consistent design calls
-- Proper dimension validation (catches D<100mm errors)
+**New Files Created:**
+| File | Purpose |
+|------|---------|
+| `docs/research/pyvista-evaluation.md` | Full technology comparison |
+| `streamlit_app/components/visualization_export.py` | CAD export module |
+| `scripts/cleanup_stale_branches.py` | Branch hygiene automation |
 
-**Commits (5 on PR #393):**
+**New Dependency:** `cad = ["pyvista>=0.43", "stpyvista>=0.1.4"]` (optional)
+
+**Commits:**
 | Commit | Description |
 |--------|-------------|
-| `56602b28` | fix(ai-workspace): reuse adapter infrastructure from multi-format import |
-| `bf06c66f` | docs(copilot-instructions): add AI model knowledge limits section |
-| `f05b6753` | docs(copilot-instructions): add lesson about reusing infrastructure |
-| `0bba1afd` | test: add adapter integration tests for ai_workspace (7 tests) |
-| `2c490da5` | docs: update TASKS.md and SESSION_LOG.md for session 57 |
-
-**Key Lessons Added to copilot-instructions.md:**
-1. Never reinvent existing infrastructure — check adapters.py, api_wrapper.py first
-2. Never guess AI model names (gpt-5 doesn't exist) — use web search to verify
-3. Reference multi-format import page (07) as working example for CSV handling
-
-**PR:** #393 — submitted for async merge
+| `b5bbbd3f` | docs: add v0.19/v0.20 release roadmap |
+| `06feb7ad` | feat(viz): add PyVista CAD export module |
+| `2312af41` | chore(scripts): add branch cleanup script |
 
 ---
 
@@ -86,13 +86,9 @@ proven adapter system from multi-format import page (07).
 - **Page 11:** ⚡ AI Assistant v2 with 9-state dynamic workspace
 - **Page 07:** 📥 Multi-format import with ETABS/SAFE adapters
 - **Adapter System:** Proven infrastructure for CSV parsing
+- **PyVista Export:** Module ready for CAD-quality output
 - Story filter, color modes, camera presets
 - Interactive rebar editor, cross-section view
-
-### What Needs Testing
-- AI v2 CSV import with real ETABS exports (after PR merge)
-- 3D building view with correct beam dimensions
-- Design results with proper Ast calculations
 
 ### 8-Week Plan Progress
 - **Phase 1:** ✅ Complete (Live Preview)
@@ -101,43 +97,50 @@ proven adapter system from multi-format import page (07).
 - **Phase 3:** ✅ Complete (Rebar Visualization)
 - **Phase 3.5:** ✅ Complete (Smart Insights Dashboard)
 - **Phase AI:** ✅ **MVP COMPLETE** (AI Assistant v2)
-- **Phase 4:** 📋 Next (CAD Quality + DXF Export)
+- **Phase 4:** 🚧 **IN PROGRESS** (CAD Quality + DXF Export)
+
+### Phase 4 Sub-task Status
+| Task | Status |
+|------|--------|
+| Merge PR #393 | ✅ Done (2026-01-20) |
+| PyVista evaluation | ✅ Done |
+| DXF/PDF export | 📋 Next |
+| Print-ready reports | 📋 TODO |
+| Performance optimization | 📋 TODO |
 
 ---
 
 ## 🔥 Next Session Priorities
 
-### Priority 1: Verify AI v2 Fix Works
+### Priority 1: DXF/PDF Export (High)
 
-After PR #393 merges:
-1. Test AI v2 with real ETABS exports (geometry + forces CSVs)
-2. Verify beam dimensions are correct (D=500, not D=5)
-3. Verify 3D building view shows proper proportions
-4. Verify design results show real Ast values, not "inf%"
-
-### Priority 2: Phase 4 - CAD Qualitydesigner = SmartDesigner()
-report = designer.analyze(result, geometry, materials)
-# Returns: overall_score, key_issues, quick_wins, cost_analysis
-```
+**Goal:** Engineers need CAD-compatible drawings
 
 | Task | Est | Notes |
 |------|-----|-------|
-| Add SmartDesigner panel to beam design | 2h | Use existing `analyze()` |
-| Show cost optimization summary | 1h | Current vs optimal |
-| Display design suggestions | 1h | High/medium/low impact |
+| DXF export for beam sections | 4h | Using ezdxf library |
+| PDF report generation | 4h | Using reportlab/fpdf |
+| Integrate with export panel | 2h | Add to UI |
 
-### Priority 2: Rebar Visualization (THE Differentiator)
+### Priority 2: Performance Optimization
 
-**This is why users will choose us over ETABS.**
-
-Infrastructure exists:
-- `BeamDetailingResult.to_3d_json()` — bar positions
-- `generate_cylinder_mesh()` — 3D cylinders
+**Goal:** Handle 1000+ beams smoothly
 
 | Task | Est | Notes |
 |------|-----|-------|
-| TASK-3D-008: Rebar in 3D | 8h | The killer feature |
-| TASK-3D-009: Stirrup zones | 6h | Variable spacing |
+| Benchmark current performance | 2h | Identify bottlenecks |
+| Optimize 3D mesh generation | 4h | Level-of-detail system |
+| Add progress indicators | 2h | For large datasets |
+
+### Priority 3: Print-Ready Reports
+
+**Goal:** Professional PDF output for clients
+
+| Task | Est | Notes |
+|------|-----|-------|
+| Design report template | 2h | Professional layout |
+| Add company logo/branding | 1h | Configurable |
+| Include 3D screenshots | 2h | Use PyVista renderer |
 
 ---
 
@@ -165,8 +168,8 @@ cd Python && .venv/bin/python -m pytest tests/ -v
 |---------|----------|
 | Task tracking | [docs/TASKS.md](../TASKS.md) |
 | Session history | [docs/SESSION_LOG.md](../SESSION_LOG.md) |
-| **Democratization vision** | [docs/planning/democratization-vision.md](democratization-vision.md) |
+| **PyVista research** | [docs/research/pyvista-evaluation.md](../research/pyvista-evaluation.md) |
+| **CAD export module** | [streamlit_app/components/visualization_export.py](../../streamlit_app/components/visualization_export.py) |
 | **8-week plan** | [docs/planning/8-week-development-plan.md](8-week-development-plan.md) |
-| **SmartDesigner** | [Python/structural_lib/insights/smart_designer.py](../../Python/structural_lib/insights/smart_designer.py) |
 | 3D visualization | [streamlit_app/pages/07_📥_multi_format_import.py](../../streamlit_app/pages/07_📥_multi_format_import.py) |
 | API reference | [docs/reference/api.md](../reference/api.md) |

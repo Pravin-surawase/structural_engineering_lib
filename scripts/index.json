@@ -56,7 +56,7 @@
         "git_ops.sh": "State-aware router and recommendation",
         "git_automation_health.sh": "Check all git automation systems",
         "install_git_hooks.sh": "Install hook enforcement",
-        "cleanup_stale_branches.sh": "Remove old task branches",
+        "cleanup_stale_branches.py": "Remove old task branches (dry run + delete)",
         "worktree_manager.sh": "Manage git worktrees for parallel work",
         "check_not_main.sh": "Verify not on main branch",
         "quick_push.sh": "Quick push (use ai_commit.sh instead)"

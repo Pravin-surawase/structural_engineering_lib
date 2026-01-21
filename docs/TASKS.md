@@ -93,15 +93,15 @@ The adapter system handles format-specific column detection and unit handling.
 
 **Session 54 Commits: 5 on PR + 2 on main**
 
-### TASK-PHASE4: CAD Quality + Launch Prep (v0.19) 🚧 NEXT
+### TASK-PHASE4: CAD Quality + Launch Prep (v0.19) 🚧 IN PROGRESS
 
 **Goal:** Polish for production launch, CAD-quality rendering
 **Target:** March 2026 Launch
 
 | Sub-task | Status | Priority | Est | Notes |
 |----------|--------|----------|-----|-------|
-| Merge PR #393 (CSV import fix) | 📋 TODO | 🔴 High | 1h | READY to merge |
-| PyVista evaluation | 📋 TODO | 🔴 High | 2d | CAD-quality comparison |
+| Merge PR #393 (CSV import fix) | ✅ DONE | 🔴 High | 1h | Merged 2026-01-20 |
+| PyVista evaluation | ✅ DONE | 🔴 High | 2d | Hybrid: Plotly+PyVista export |
 | DXF/PDF export | 📋 TODO | 🔴 High | 4d | Engineers need this |
 | Print-ready reports | 📋 TODO | 🟡 Medium | 2d | Professional PDF output |
 | Performance optimization | 📋 TODO | 🟡 Medium | 2d | 1000+ beams benchmark |
