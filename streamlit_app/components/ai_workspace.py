@@ -1183,6 +1183,143 @@ def render_building_3d() -> None:
         st.caption("Drag to rotate")
 
 
+def calculate_constructability_score(
+    bottom_bars: list[tuple[int, int]],
+    top_bars: list[tuple[int, int]],
+    stirrup_spacing: int,
+    b_mm: float,
+) -> dict[str, Any]:
+    """Calculate constructability score for rebar configuration.
+
+    Factors considered:
+    - Fewer bars = easier to place (score: +20 for <=3 bars)
+    - Same diameter = easier cutting (score: +20 for uniform dia)
+    - Wider stirrup spacing = easier (score: +20 for >=150mm)
+    - Single layer = easier (score: +20 for no Layer 2)
+    - Good width/bar ratio = easier (score: +20 for spacing >50mm)
+    """
+    score = 0
+    notes = []
+
+    # Count total bottom bars
+    total_bottom = sum(count for _, count in bottom_bars)
+    if total_bottom <= 3:
+        score += 20
+        notes.append("Few bars")
+    elif total_bottom <= 5:
+        score += 10
+        notes.append("Moderate bars")
+    else:
+        notes.append("Many bars - harder placement")
+
+    # Check if all same diameter
+    diameters = set(dia for dia, count in bottom_bars if count > 0)
+    top_dias = set(dia for dia, count in top_bars if count > 0)
+    if len(diameters) == 1:
+        score += 20
+        notes.append("Uniform dia")
+    elif len(diameters) <= 2:
+        score += 10
+
+    if top_dias and diameters.intersection(top_dias):
+        score += 5
+        notes.append("Same as top")
+
+    # Stirrup spacing
+    if stirrup_spacing >= 200:
+        score += 20
+        notes.append("Wide stirrups")
+    elif stirrup_spacing >= 150:
+        score += 15
+        notes.append("OK stirrups")
+    elif stirrup_spacing >= 100:
+        score += 5
+        notes.append("Tight stirrups")
+    else:
+        notes.append("Very tight stirrups")
+
+    # Single layer bonus
+    if len(bottom_bars) == 1 or (len(bottom_bars) == 2 and bottom_bars[1][1] == 0):
+        score += 20
+        notes.append("Single layer")
+    else:
+        notes.append("Multi-layer")
+
+    # Width/bar ratio
+    bar_spacing_approx = b_mm / max(total_bottom, 1)
+    if bar_spacing_approx >= 80:
+        score += 20
+        notes.append("Good spacing")
+    elif bar_spacing_approx >= 50:
+        score += 10
+
+    summary = " | ".join(notes[:3])  # First 3 notes
+    return {"score": min(score, 100), "summary": summary, "notes": notes}
+
+
+def suggest_optimal_rebar(
+    b_mm: float,
+    D_mm: float,
+    mu_knm: float,
+    vu_kn: float,
+    fck: float,
+    fy: float,
+    cover_mm: float,
+) -> dict | None:
+    """Suggest optimal reinforcement for given loads.
+
+    Tries to minimize steel while maintaining safety and constructability.
+    """
+    # Calculate required steel area
+    d_eff = D_mm - cover_mm - 8 - 16/2  # Assume 8mm stirrup, 16mm bar
+    ast_req = mu_knm * 1e6 / (0.87 * fy * 0.9 * d_eff) if d_eff > 0 and fy > 0 else 500
+
+    # Add 10% safety margin
+    ast_target = ast_req * 1.1
+
+    # Try different bar configurations
+    bar_options = [12, 16, 20, 25]
+    best_config = None
+    best_waste = float('inf')
+
+    for dia in bar_options:
+        area_per_bar = math.pi * (dia / 2) ** 2
+        count = max(2, math.ceil(ast_target / area_per_bar))
+
+        # Check if fits in width
+        clear_cover = cover_mm + 8  # Assuming 8mm stirrup
+        available = b_mm - 2 * clear_cover
+        bar_width_needed = count * dia + (count - 1) * max(dia, 25)
+
+        if bar_width_needed > available:
+            # Need 2 layers
+            layer1 = count // 2 + count % 2
+            layer2 = count - layer1
+            if layer1 <= 6 and layer2 <= 4:
+                waste = count * area_per_bar - ast_target
+                if 0 <= waste < best_waste:
+                    best_waste = waste
+                    best_config = {
+                        "bottom_layer1_dia": dia,
+                        "bottom_layer1_count": layer1,
+                        "bottom_layer2_dia": dia,
+                        "bottom_layer2_count": layer2,
+                    }
+        else:
+            if count <= 6:
+                waste = count * area_per_bar - ast_target
+                if 0 <= waste < best_waste:
+                    best_waste = waste
+                    best_config = {
+                        "bottom_layer1_dia": dia,
+                        "bottom_layer1_count": count,
+                        "bottom_layer2_dia": 0,
+                        "bottom_layer2_count": 0,
+                    }
+
+    return best_config
+
+
 def calculate_rebar_checks(
     b_mm: float,
     D_mm: float,
@@ -1448,6 +1585,23 @@ def render_rebar_editor() -> None:
         else:
             st.error(f"### {checks['status']}")
             st.caption("Adjust reinforcement to satisfy all checks")
+
+        # Constructability rating
+        st.divider()
+        constructability = calculate_constructability_score(
+            bottom_bars, top_bars, stir_spacing, b_mm
+        )
+        const_icon = "🟢" if constructability["score"] >= 80 else ("🟡" if constructability["score"] >= 60 else "🔴")
+        st.markdown(f"##### {const_icon} Construction Ease: {constructability['score']}/100")
+        st.caption(constructability["summary"])
+
+        # Quick optimization button
+        if st.button("⚡ Auto-Optimize", use_container_width=True, help="Optimize for cost while maintaining safety"):
+            optimized = suggest_optimal_rebar(b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm)
+            if optimized:
+                config.update(optimized)
+                st.session_state.ws_rebar_config = config
+                st.rerun()
 
     # Navigation
     st.divider()
