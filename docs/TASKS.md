@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-21 (Session 59)
+**Updated:** 2026-01-21 (Session 61)
 
 ---
 
@@ -15,8 +15,8 @@
 
 ## Current Focus
 
-- **Version:** v0.18.1 → v0.19 (Phase 4 + Launch)
-- **Focus:** Complete Phase 4, prepare launch, then foundation for V3
+- **Version:** v0.19.0 ✅ RELEASED → v0.20 (V3 Foundation)
+- **Focus:** Library API additions for React V3 migration
 - **Target:** March 2026 Launch → V3 React migration
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
@@ -26,16 +26,16 @@
 
 | Version | Focus | Status | Key Deliverables |
 |---------|-------|--------|------------------|
-| **v0.18.1** | AI v2 Bugfix | ✅ READY | PR #393 (CSV import fix) |
-| **v0.19** | Phase 4 + Launch | 🚧 NEXT | DXF/PDF export, PyVista, performance, polish |
-| **v0.20** | V3 Foundation | 📋 PLANNED | Library API additions for React migration |
+| **v0.18.1** | AI v2 Bugfix | ✅ DONE | PR #393 (CSV import fix) |
+| **v0.19.0** | Phase 4 + Launch | ✅ RELEASED | DXF polish, AI model fix, Streamlit API index |
+| **v0.20** | V3 Foundation | 🚧 NEXT | Library API additions for React migration |
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
 
 ---
 
 ## Active Tasks
 
-### TASK-AI-IMPORT-FIX: AI v2 CSV Import Fix 🚧 IN PROGRESS
+### TASK-AI-IMPORT-FIX: AI v2 CSV Import Fix ✅ COMPLETE
 
 **Goal:** Fix AI v2 CSV import to use proven adapter infrastructure from multi-format import page
 

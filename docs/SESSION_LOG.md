@@ -4,6 +4,47 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-21 — Session 61: V0.19.0 Release
+
+**Focus:** DXF polish, AI model fix, documentation, release
+
+### Issues Fixed
+
+| Issue | Fix |
+|-------|-----|
+| DXF schedule text overlap | Increased column widths, reduced text height, smart truncation |
+| Invalid AI model name (`gpt-5-mini`) | Changed to `gpt-4o-mini` (actual OpenAI model) |
+| Outdated version references | Updated to 0.19.0 in pyproject.toml, api.md, README.md |
+| No Streamlit function index | Created `streamlit_app/API_INDEX.md` |
+
+### V0.19.0 Release Summary
+
+**Key Deliverables:**
+1. **Industry-Standard DXF Export** - Beam grouping, schedule tables, IS 2502 format
+2. **AI Model Fix** - Corrected fictional `gpt-5-mini` to real `gpt-4o-mini`
+3. **Documentation** - Streamlit API Index for maintainability
+4. **Polish** - Text fit improvements in DXF tables
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `ccdcd754` | feat: release v0.19.0 - DXF polish, model fix, Streamlit API index |
+| Tag `v0.19.0` | Release tag pushed |
+
+### Test Status
+
+✅ 3146 tests passing, 3 skipped, 328 warnings
+
+### Next Session Tasks
+
+1. **User Testing** - Get feedback on DXF export and AI assistant
+2. **V0.20 Planning** - Library APIs for React V3 migration
+3. **Documentation** - Update user guide for CAD export
+4. **Performance** - Profile batch design for 1000+ beams
+
+---
+
 ## 2026-01-22 — Session 60: DXF Export Bug Fix & Industry-Standard CAD Improvements
 
 **Focus:** Fix critical DXF export bug, add industry-standard features (beam grouping, BBS table)
