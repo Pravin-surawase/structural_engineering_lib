@@ -8,7 +8,7 @@ cd "$PROJECT_ROOT"
 
 echo "🔍 Generating hierarchical indexes for navigation study..."
 
-# Folders to index (13 total)
+# Folders to index (expanded list)
 FOLDERS=(
     "docs"
     "docs/getting-started"
@@ -16,10 +16,16 @@ FOLDERS=(
     "docs/contributing"
     "docs/architecture"
     "docs/agents/guides"
+    "docs/guidelines"
+    "docs/planning"
+    "docs/verification"
+    "docs/developers"
+    "docs/research"
     "agents"
     "agents/agent-9"
     "agents/roles"
     "Python"
+    "scripts"
 )
 
 for folder in "${FOLDERS[@]}"; do

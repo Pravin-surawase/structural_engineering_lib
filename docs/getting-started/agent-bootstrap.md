@@ -107,6 +107,22 @@ Keep public signatures stable unless explicitly approved.
 
 ---
 
+## 📇 Index Files (Machine-Readable)
+
+These JSON indexes help agents discover content programmatically:
+
+| Index | Purpose | Use When |
+|-------|---------|----------|
+| [scripts/index.json](../../scripts/index.json) | All automation scripts | Finding automation tools |
+| [docs/index.json](../index.json) | Documentation structure | Navigating docs |
+| [docs/docs-index.json](../docs-index.json) | Document catalog | Finding specific docs |
+| [Python/index.json](../../Python/index.json) | Python module structure | Understanding code layout |
+| [streamlit_app/API_INDEX.md](../../streamlit_app/API_INDEX.md) | UI components & functions | Working on Streamlit pages |
+
+**Folder-specific indexes:** Each major folder has its own `index.json` for local navigation.
+
+---
+
 ## 🧠 Automation-First Mentality
 
 > **CRITICAL: If you see 10+ similar issues → Build automation FIRST!**
