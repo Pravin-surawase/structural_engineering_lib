@@ -49,6 +49,10 @@ __all__ = [
     "render_beam_screenshot",
     "create_pyvista_plotter",
     "geometry_to_pyvista_meshes",
+    "show_pyvista_in_streamlit",
+    "SCREENSHOT_RESOLUTIONS",
+    "DEFAULT_MATERIALS",
+    "_create_beam_box",  # For testing
 ]
 
 
@@ -98,10 +102,100 @@ COLORS = {
     "background": "#1a1a2e",  # Dark background
 }
 
+# =============================================================================
+# Screenshot Resolution Presets
+# =============================================================================
+
+SCREENSHOT_RESOLUTIONS: dict[str, tuple[int, int]] = {
+    "HD": (1280, 720),
+    "Full HD": (1920, 1080),
+    "2K": (2560, 1440),
+    "4K": (3840, 2160),
+}
+
+# =============================================================================
+# Material Configurations for PBR Rendering
+# =============================================================================
+
+DEFAULT_MATERIALS: dict[str, dict[str, Any]] = {
+    "concrete": {
+        "color": "#D1D5DB",
+        "metallic": 0.0,
+        "roughness": 0.8,
+        "opacity": 1.0,
+    },
+    "rebar": {
+        "color": "#DC2626",
+        "metallic": 0.8,
+        "roughness": 0.3,
+        "opacity": 1.0,
+    },
+    "stirrup": {
+        "color": "#16A34A",
+        "metallic": 0.7,
+        "roughness": 0.4,
+        "opacity": 1.0,
+    },
+}
+
 
 # =============================================================================
 # Mesh Generation Helpers
 # =============================================================================
+
+
+def _create_beam_box(
+    start: list[float],
+    end: list[float],
+    width: float,
+    depth: float,
+) -> Any | None:
+    """
+    Create a beam box mesh from start/end points and dimensions.
+
+    Args:
+        start: [x, y, z] start point in mm
+        end: [x, y, z] end point in mm
+        width: Beam width in mm
+        depth: Beam depth in mm
+
+    Returns:
+        PyVista mesh or None if invalid dimensions
+    """
+    if not check_pyvista_available():
+        return None
+
+    import numpy as np
+
+    start_arr = np.array(start)
+    end_arr = np.array(end)
+    length = np.linalg.norm(end_arr - start_arr)
+
+    # Validate dimensions
+    if length < 1 or width <= 0 or depth <= 0:
+        return None
+
+    try:
+        # Use bounds-based box for simplicity
+        x_min = min(start[0], end[0])
+        x_max = max(start[0], end[0])
+        y_min = start[1] - width / 2
+        y_max = start[1] + width / 2
+        z_min = start[2]
+        z_max = start[2] + depth
+
+        # Ensure non-zero dimensions
+        if x_max - x_min < 1:
+            x_max = x_min + length
+        if y_max - y_min < 1:
+            y_max = y_min + width
+        if z_max - z_min < 1:
+            z_max = z_min + depth
+
+        return _create_box_mesh(x_min, x_max, y_min, y_max, z_min, z_max)
+    except Exception as e:
+        logger.warning(f"Failed to create beam box: {e}")
+        return None
 
 
 def _create_box_mesh(
