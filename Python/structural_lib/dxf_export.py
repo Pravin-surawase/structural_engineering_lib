@@ -384,7 +384,9 @@ def draw_beam_schedule_table(
         ]
 
         x_pos = x0
-        for _col_idx, (value, width) in enumerate(zip(values, col_widths, strict=False)):
+        for _col_idx, (value, width) in enumerate(
+            zip(values, col_widths, strict=False)
+        ):
             # Smart truncation based on column width
             # Approx char width ~= text_height * 0.5
             char_width = text_height * 0.6 * 0.6  # 60% of text height for data
