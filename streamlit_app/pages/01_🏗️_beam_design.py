@@ -159,11 +159,15 @@ with st.expander("📥 Import from ETABS/SAFE?", expanded=False):
     - Import SAFE strip beam data
     - Batch design with 3D building view
     """)
-    st.page_link(
-        "pages/07_📥_multi_format_import.py",
-        label="Go to Multi-Format Import →",
-        icon="📥",
-    )
+    try:
+        st.page_link(
+            "pages/07_📥_multi_format_import.py",
+            label="Go to Multi-Format Import →",
+            icon="📥",
+        )
+    except (KeyError, Exception):
+        # st.page_link doesn't work in AppTest environment
+        st.markdown("[Go to Multi-Format Import →](pages/07_📥_multi_format_import.py)")
 
 # ============================================================================
 # TWO-COLUMN LAYOUT: Input + Preview/Results

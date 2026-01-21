@@ -979,6 +979,12 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
 
     Uses BeamDesignReportGenerator with reportlab for CAD-quality output.
     Generates a combined batch report for all beams with TOC and summary.
+
+    The PDF generator expects specific data keys. This function transforms
+    the DataFrame columns to match the expected structure:
+    - inputs: span_m, width_mm, depth_mm, effective_depth_mm, cover_mm, fck, fy
+    - flexure: Mu_kNm, Mu_lim_kNm, Ast_req_mm2, Ast_min_mm2, Ast_prov_mm2
+    - shear: Vu_kN, tau_v, tau_c
     """
     if results_df is None or results_df.empty:
         st.error("No results to export")
@@ -992,36 +998,57 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
         generator = BeamDesignReportGenerator()
 
         # Convert DataFrame rows to design data format expected by PDF generator
+        # PDF generator expects 'inputs' dict with specific keys
         design_data_list = []
         for _, row in results_df.iterrows():
+            b_mm = float(row["b_mm"])
+            D_mm = float(row["D_mm"])
+            span_mm = float(row["span_mm"])
+            cover_mm = float(row.get("cover_mm", 40))
+            fck = float(row["fck"])
+            fy = float(row["fy"])
+            mu_knm = float(row["mu_knm"])
+            vu_kn = float(row["vu_kn"])
+            ast_req = float(row.get("ast_req", 0))
+            ast_prov = float(row.get("ast_prov", ast_req * 1.1))
+            d_eff = D_mm - cover_mm - 8 - 8  # Assume 8mm stirrup + 8mm half bar dia
+
+            # Calculate limiting moment and other values for PDF
+            xu_max = 0.48 * d_eff  # For Fe500
+            mu_lim = 0.138 * fck * b_mm * d_eff**2 / 1e6  # kN·m
+            ast_min = 0.85 * b_mm * d_eff / fy
+
             design_data = {
                 "beam_id": str(row["beam_id"]),
                 "story": str(row.get("story", "")),
                 "is_safe": bool(row.get("is_safe", False)),
-                "geometry": {
-                    "b_mm": float(row["b_mm"]),
-                    "D_mm": float(row["D_mm"]),
-                    "d_mm": float(row["D_mm"]) - float(row.get("cover_mm", 40)) - 8,
-                    "span_mm": float(row["span_mm"]),
-                    "cover_mm": float(row.get("cover_mm", 40)),
-                },
-                "materials": {
-                    "fck": float(row["fck"]),
-                    "fy": float(row["fy"]),
-                },
-                "loads": {
-                    "case_id": "DESIGN",
-                    "Mu_kNm": float(row["mu_knm"]),
-                    "Vu_kN": float(row["vu_kn"]),
+                # PDF generator looks for 'inputs' key
+                "inputs": {
+                    "span_m": span_mm / 1000,
+                    "width_mm": b_mm,
+                    "depth_mm": D_mm,
+                    "effective_depth_mm": d_eff,
+                    "cover_mm": cover_mm,
+                    "fck": fck,
+                    "fy": fy,
+                    "dead_load_kN": 0,  # Not available from import
+                    "live_load_kN": 0,  # Not available from import
+                    "factored_load_kN": 0,  # Not available
                 },
                 "flexure": {
-                    "Ast_required": float(row.get("ast_req", 0)),
+                    "Mu_kNm": mu_knm,
+                    "Mu_lim_kNm": mu_lim,
+                    "Ast_req_mm2": ast_req,
+                    "Ast_min_mm2": ast_min,
+                    "Ast_prov_mm2": ast_prov,
                     "utilization": float(row.get("utilization", 0)),
-                    "section_type": "under-reinforced",
+                    "section_type": "under-reinforced" if mu_knm < mu_lim else "doubly",
                 },
                 "shear": {
+                    "Vu_kN": vu_kn,
+                    "tau_v": vu_kn * 1000 / (b_mm * d_eff) if d_eff > 0 else 0,
+                    "tau_c": 0.36,  # Approximate for M25, 0.5% steel
                     "is_safe": bool(row.get("is_safe", False)),
-                    "utilization": 0.5,
                 },
             }
             design_data_list.append(design_data)
@@ -2370,10 +2397,74 @@ def render_rebar_editor() -> None:
                 optimized["stirrup_spacing"] = config.get("stirrup_spacing", 150)
                 optimized["beam_id"] = beam_id
                 st.session_state.ws_rebar_config = optimized
+
+                # CRITICAL: Also update widget session state keys directly
+                # Widgets with keys read from st.session_state[key], not config
+                st.session_state.re_l1_dia = optimized["bottom_layer1_dia"]
+                st.session_state.re_l1_cnt = optimized["bottom_layer1_count"]
+                st.session_state.re_l2_dia = optimized.get("bottom_layer2_dia", 0)
+                st.session_state.re_l2_cnt = optimized.get("bottom_layer2_count", 0)
+
                 st.toast("✅ Optimized rebar configuration applied!")
                 st.rerun()
             else:
                 st.warning("Could not find better configuration")
+
+    # Live cross-section preview (updates as user edits)
+    st.divider()
+    st.markdown("##### 📐 Live Cross-Section Preview")
+
+    if VISUALIZATION_AVAILABLE:
+        # Calculate bar positions for visualization
+        bottom_bars_vis = []
+        top_bars_vis = []
+
+        # Bottom layer 1 positions
+        layer1_y = cover_mm + 8 + l1_dia / 2  # stirrup + half bar dia
+        available_width = b_mm - 2 * cover_mm - 16  # inside stirrups
+        if l1_count > 1:
+            spacing_1 = available_width / (l1_count - 1)
+            for i in range(l1_count):
+                bx = cover_mm + 8 + l1_dia / 2 + i * spacing_1
+                bottom_bars_vis.append((bx, layer1_y, l1_dia))
+        else:
+            bottom_bars_vis.append((b_mm / 2, layer1_y, l1_dia))
+
+        # Bottom layer 2 positions (if any)
+        if l2_count > 0 and l2_dia > 0:
+            layer2_y = layer1_y + l1_dia / 2 + 25 + l2_dia / 2
+            if l2_count > 1:
+                spacing_2 = available_width / (l2_count - 1)
+                for i in range(l2_count):
+                    bx = cover_mm + 8 + l2_dia / 2 + i * spacing_2
+                    bottom_bars_vis.append((bx, layer2_y, l2_dia))
+            else:
+                bottom_bars_vis.append((b_mm / 2, layer2_y, l2_dia))
+
+        # Top bar positions
+        top_y = D_mm - cover_mm - 8 - top_dia / 2
+        if top_count > 1:
+            spacing_top = available_width / (top_count - 1)
+            for i in range(top_count):
+                tx = cover_mm + 8 + top_dia / 2 + i * spacing_top
+                top_bars_vis.append((tx, top_y, top_dia))
+        else:
+            top_bars_vis.append((b_mm / 2, top_y, top_dia))
+
+        # Create and display cross-section figure
+        fig = create_cross_section_figure(
+            b=b_mm,
+            D=D_mm,
+            cover=cover_mm,
+            bottom_bars=bottom_bars_vis,
+            top_bars=top_bars_vis,
+            stirrup_dia=stir_dia,
+            rebar_config=config,
+        )
+        st.plotly_chart(fig, use_container_width=True, key="rebar_editor_cross_section")
+    else:
+        # Fallback text display
+        st.info(f"Section: {b_mm:.0f}×{D_mm:.0f} mm | Bottom: {l1_count}Φ{l1_dia} + {l2_count}Φ{l2_dia} | Top: {top_count}Φ{top_dia}")
 
     # Navigation
     st.divider()

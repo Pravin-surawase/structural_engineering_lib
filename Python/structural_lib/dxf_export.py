@@ -235,7 +235,7 @@ def group_similar_beams(
 
 def generate_beam_schedule_table(
     detailings: list[BeamDetailingResult],
-) -> list[dict[str, str | int | float]]:
+) -> list[dict[str, Any]]:
     """
     Generate a beam schedule in industry-standard format.
 
@@ -345,7 +345,7 @@ def draw_beam_schedule_table(
 
     # Draw header text
     x_pos = x0
-    for i, (header, width) in enumerate(zip(headers, col_widths)):
+    for i, (header, width) in enumerate(zip(headers, col_widths, strict=False)):
         msp.add_text(
             header,
             dxfattribs={"layer": "TEXT", "height": text_height * 0.9},
@@ -384,7 +384,9 @@ def draw_beam_schedule_table(
         ]
 
         x_pos = x0
-        for col_idx, (value, width) in enumerate(zip(values, col_widths)):
+        for _col_idx, (value, width) in enumerate(
+            zip(values, col_widths, strict=False)
+        ):
             # Smart truncation based on column width
             # Approx char width ~= text_height * 0.5
             char_width = text_height * 0.6 * 0.6  # 60% of text height for data
@@ -1365,7 +1367,7 @@ def generate_multi_beam_dxf(
         # Use representative beam from each group
         draw_list = [beams[0] for beams in groups.values()]
         # Update beam_id to show all beams in group
-        for type_key, beams in groups.items():
+        for _type_key, beams in groups.items():
             representative = beams[0]
             if len(beams) > 1:
                 beam_ids = [b.beam_id or f"B{i+1}" for i, b in enumerate(beams)]
