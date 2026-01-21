@@ -4,6 +4,54 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-22 — Session 62c: AI Export Fixes & UI Modernization
+
+**Focus:** Fix DXF/report downloads from AI, add manual export buttons, reduce wasted space
+
+### Work Completed
+
+1. ✅ **Fixed DXF export handler** - Now generates detailing on-the-fly from design results
+2. ✅ **Fixed report generation handler** - Builds report format from DataFrame (was using missing session state)
+3. ✅ **Added manual export buttons** - Report, DXF, CSV buttons in design results panel
+4. ✅ **Reduced top wasted space** - Custom CSS for compact layout, padding optimization
+5. ✅ **Modernized header** - Inline compact header with workspace state indicator
+6. ✅ **Improved AI model display** - Cleaner model name display in header
+
+### Bug Fixes
+
+**Problem:** DXF and Report download from AI chat not working
+**Root Cause:** Handlers expected `ws_full_results` and `ws_detailing_results` session state variables that were never populated
+**Fix:** Generate data on-the-fly from the actual `ws_design_results` DataFrame
+
+### UI Improvements
+
+| Change | Before | After |
+|--------|--------|-------|
+| Header | `## ⚡ StructEng AI` large heading | Inline compact header |
+| Top padding | Default Streamlit (~1.5rem) | Reduced to 1rem |
+| Export access | Only via AI chat | Direct buttons in workspace |
+| State visibility | None | Workspace state indicator |
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `4237b8a5` | feat(ai): fix DXF/report exports and add manual export buttons |
+
+### Test Status
+
+- Streamlit validation: ✅ All pages passed
+- Python tests: ✅ 3146 passed
+
+### Next Session Tasks
+
+1. **Test DXF export** - Verify DXF downloads work end-to-end
+2. **Test report generation** - Verify HTML reports render correctly
+3. **Further UI polish** - Consider additional space savings
+4. **Chat UX** - Quick action buttons could be more prominent
+
+---
+
 ## 2026-01-22 — Session 62b: Rebar Editor & AI Tools Enhancement
 
 **Focus:** Improve AI assistant tools, rebar editor UX, industry report research

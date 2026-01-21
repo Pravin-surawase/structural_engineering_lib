@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-22 (Session 62b)
+**Updated:** 2026-01-22 (Session 62c)
 
 ---
 
@@ -28,11 +28,21 @@
 |---------|-------|--------|------------------|
 | **v0.18.1** | AI v2 Bugfix | ✅ DONE | PR #393 (CSV import fix) |
 | **v0.19.0** | Phase 4 + Launch | ✅ RELEASED | DXF polish, AI model fix, Streamlit API index |
-| **v0.19.1** | AI Tools + UX | 🚧 IN PROGRESS | DXF/report AI tools, rebar optimization |
+| **v0.19.1** | AI Tools + UX | 🚧 IN PROGRESS | DXF/report export fixes, manual export buttons |
 | **v0.20** | V3 Foundation | 📋 NEXT | Library API additions for React migration |
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
 
 ---
+
+## Session 62c Completed (2026-01-22)
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Fix DXF export handler (generate on-the-fly) | ✅ Done | `4237b8a5` |
+| Fix report generation handler | ✅ Done | `4237b8a5` |
+| Add manual export buttons (Report/DXF/CSV) | ✅ Done | `4237b8a5` |
+| Reduce top wasted space (CSS) | ✅ Done | `4237b8a5` |
+| Modernize header with state indicator | ✅ Done | `4237b8a5` |
 
 ## Session 62b Completed (2026-01-22)
 
