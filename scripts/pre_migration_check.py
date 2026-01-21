@@ -262,7 +262,7 @@ def main() -> int:
         if result.passed:
             print(f"✅ {result.message}")
         else:
-            print(f"❌ FAILED")
+            print("❌ FAILED")
             print(f"   {result.message}")
             if result.fixable and fix_mode:
                 print("   (Attempting auto-fix...)")

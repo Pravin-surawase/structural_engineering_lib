@@ -11,7 +11,7 @@ import streamlit as st
 import time
 from typing import Generator, Optional, Literal
 from contextlib import contextmanager
-from utils.design_system import COLORS, ANIMATION
+from utils.design_system import ANIMATION
 from utils.theme_manager import get_theme_colors
 
 LoaderType = Literal["skeleton", "spinner", "progress", "dots", "pulse"]
@@ -250,7 +250,7 @@ def add_loading_dots(message: str = "Loading", dot_count: int = 3) -> None:
 
     <div class="loading-dots-container">
         <span>{message}</span>
-        {''.join([f'<div class="loading-dot"></div>' for _ in range(dot_count)])}
+        {''.join(['<div class="loading-dot"></div>' for _ in range(dot_count)])}
     </div>
     """
 

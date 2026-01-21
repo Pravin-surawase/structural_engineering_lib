@@ -232,7 +232,7 @@ def main() -> int:
         return 0
 
     # Print summary
-    print(f"\n📊 Front-Matter Report")
+    print("\n📊 Front-Matter Report")
     print(f"{'=' * 40}")
     print(f"Total docs checked: {report['total']}")
     print(f"With front-matter: {report['with_frontmatter']}")

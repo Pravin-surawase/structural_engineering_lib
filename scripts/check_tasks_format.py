@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
-import sys
 
 TASKS_PATH = Path("docs/TASKS.md")
 TASK_ID_RE = re.compile(r"TASK-\\d{3}", re.IGNORECASE)

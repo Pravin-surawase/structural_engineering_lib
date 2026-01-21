@@ -16,10 +16,8 @@ Phase: STREAMLIT-IMPL-005 | UI-002: Page Layout Redesign
 """
 
 import io
-import itertools
 import logging
 import math
-import traceback
 from typing import Optional
 
 import pandas as pd
@@ -60,8 +58,6 @@ from utils.cost_optimizer_validators import (
     validate_beam_inputs,
     validate_design_result,
     safe_divide,
-    safe_format_currency,
-    safe_format_percent,
 )
 from utils.cost_optimizer_error_boundary import (
     error_boundary,
@@ -69,11 +65,6 @@ from utils.cost_optimizer_error_boundary import (
 )
 
 # TASK-602: Modern Streamlit patterns
-from utils.fragments import (
-    show_status_badge,
-    fragment_input_section,
-    CacheStatsFragment,
-)
 from utils.constants import CONCRETE_GRADE_MAP, STEEL_GRADE_MAP
 
 # Setup logging

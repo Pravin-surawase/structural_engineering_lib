@@ -13,10 +13,8 @@ Usage:
 """
 
 import sys
-import ast
 import re
 from pathlib import Path
-from typing import List, Tuple
 
 
 class AutoFixer:

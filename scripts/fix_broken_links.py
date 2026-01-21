@@ -15,7 +15,7 @@ Usage:
 import re
 import argparse
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Set
+from typing import Dict, List, Optional, Tuple
 from collections import defaultdict
 
 
@@ -274,18 +274,18 @@ def main() -> int:
                 print(msg)
 
     print(f"\n{'='*60}")
-    print(f"📊 Summary:")
+    print("📊 Summary:")
     print(f"   Links checked: {total_checked}")
     print(f"   Links {'fixed' if args.fix else 'to fix'}: {total_fixed}")
     print(f"   Files {'modified' if args.fix else 'to modify'}: {files_modified}")
 
     if not args.fix and total_fixed > 0:
-        print(f"\n💡 Run with --fix to apply changes:")
-        print(f"   python scripts/fix_broken_links.py --fix")
+        print("\n💡 Run with --fix to apply changes:")
+        print("   python scripts/fix_broken_links.py --fix")
 
     if args.fix and total_fixed > 0:
         print(f"\n✅ Fixed {total_fixed} broken links!")
-        print(f"\n🔄 Re-running link checker to verify...")
+        print("\n🔄 Re-running link checker to verify...")
         import subprocess
 
         result = subprocess.run(

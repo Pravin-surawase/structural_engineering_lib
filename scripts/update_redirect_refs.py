@@ -141,11 +141,11 @@ def update_references(
         if not refs:
             print(f"\n📄 {stub_path.relative_to(docs_dir)}")
             print(f"   → Target: {target_path.relative_to(docs_dir)}")
-            print(f"   ✅ No references found - safe to remove")
+            print("   ✅ No references found - safe to remove")
             if fix and remove_stubs:
                 stub_path.unlink()
                 stubs_removed += 1
-                print(f"   🗑️  Removed stub")
+                print("   🗑️  Removed stub")
             continue
 
         print(f"\n📄 {stub_path.relative_to(docs_dir)}")
@@ -198,7 +198,7 @@ def update_references(
             if not remaining_refs and remove_stubs:
                 stub_path.unlink()
                 stubs_removed += 1
-                print(f"   🗑️  Removed stub (all refs updated)")
+                print("   🗑️  Removed stub (all refs updated)")
 
     return refs_updated, len(files_modified), stubs_removed
 

@@ -32,12 +32,10 @@ from __future__ import annotations
 import io
 import math
 import tempfile
-from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -581,7 +579,7 @@ def process_multi_files(geometry_file, forces_file) -> tuple[bool, str]:
                 )
                 return (
                     True,
-                    f"⚠️ Could not match beam IDs. Using geometry with default forces.",
+                    "⚠️ Could not match beam IDs. Using geometry with default forces.",
                 )
 
         return False, "No files provided"
@@ -1299,7 +1297,6 @@ def _render_editable_results_table(
     directly in the table, similar to Excel workflows. Design checks update
     automatically as values change.
     """
-    from structural_lib import api
 
     # Prepare editable dataframe
     edit_df = filtered_df[

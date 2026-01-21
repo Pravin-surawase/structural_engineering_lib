@@ -219,7 +219,7 @@ def main():
     if not args.no_backup:
         print("💾 Step 3: Creating backup...")
         if args.dry_run:
-            print(f"   Would backup to: tmp/deleted_backups/")
+            print("   Would backup to: tmp/deleted_backups/")
         else:
             backup_path = create_backup(file_path, project_root)
             print(f"   Backed up to: {backup_path.relative_to(project_root)}")

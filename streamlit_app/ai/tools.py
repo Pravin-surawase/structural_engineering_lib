@@ -5,7 +5,6 @@ This module defines the tool schemas and handlers for the AI assistant
 to interact with the structural engineering workspace.
 """
 
-from typing import Any
 
 # Tool definitions for OpenAI/OpenRouter function calling
 TOOLS = [

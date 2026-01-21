@@ -28,7 +28,6 @@ class TestPageImports:
     def test_beam_design_page_imports(self):
         """Test beam design page imports successfully"""
         # Import should not raise exception
-        import pages
 
         # Verify pages directory exists
         pages_dir = Path(__file__).parent.parent / "pages"

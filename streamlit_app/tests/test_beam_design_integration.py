@@ -16,7 +16,6 @@ Date: 2026-01-08
 """
 
 import pytest
-from unittest.mock import patch, MagicMock
 
 # ============================================================================
 # TEST 1: Visualization handles None values (CRITICAL BUG FIX)

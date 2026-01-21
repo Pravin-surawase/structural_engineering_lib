@@ -13,8 +13,8 @@ import sys
 # Add scripts to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from comprehensive_validator import ComprehensiveValidator, ValidationRunner
-from autonomous_fixer import AutoFixer, AutoFixRunner
+from comprehensive_validator import ComprehensiveValidator
+from autonomous_fixer import AutoFixer
 
 
 @pytest.fixture

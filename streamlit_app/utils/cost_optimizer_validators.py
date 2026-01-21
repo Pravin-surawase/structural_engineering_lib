@@ -4,7 +4,7 @@ Validation helpers for cost optimizer.
 Provides type-safe validation of beam inputs and design results.
 """
 
-from typing import Optional, TypedDict, Any
+from typing import TypedDict, Any
 from dataclasses import dataclass
 import math
 

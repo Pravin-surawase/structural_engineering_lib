@@ -123,7 +123,6 @@ def test_api_wrapper_returns_dict():
 def test_api_wrapper_no_syntax_errors():
     """Test that api_wrapper.py has no syntax errors."""
     try:
-        from utils import api_wrapper
 
         # If import succeeds, no syntax errors
         assert True

@@ -83,7 +83,7 @@ def main():
         except Exception as e:
             print(f"❌ {trial_file.name}: {e}")
 
-    print(f"\n📊 Validation Results:")
+    print("\n📊 Validation Results:")
     print(f"   Total files: {total}")
     print(f"   Valid: {valid}")
     print(f"   Invalid: {total - valid}")

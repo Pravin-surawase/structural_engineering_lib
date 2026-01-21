@@ -20,12 +20,10 @@ Status: ✅ COMPLETE
 import io
 import sys
 from pathlib import Path
-from typing import List, Dict, Optional
 import time
 
 import pandas as pd
 import streamlit as st
-import plotly.graph_objects as go
 
 # Fix import path
 current_file = Path(__file__).resolve()

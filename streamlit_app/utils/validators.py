@@ -381,7 +381,7 @@ def validate_reinforcement_inputs(
 
     # Validate stirrup diameter
     if stirrup_dia not in [6, 8, 10, 12]:
-        errors.append(f"Stirrup diameter should be 6, 8, 10, or 12mm")
+        errors.append("Stirrup diameter should be 6, 8, 10, or 12mm")
     elif stirrup_dia > main_bar_dia / 4:
         warnings.append(
             f"Stirrup diameter ({stirrup_dia}mm) seems large "

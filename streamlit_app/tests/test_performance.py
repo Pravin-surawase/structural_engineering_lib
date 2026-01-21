@@ -3,10 +3,8 @@ Tests for performance optimization utilities.
 """
 
 import time
-from io import BytesIO
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-import pytest
 
 from streamlit_app.utils.performance import (
     batch_render,

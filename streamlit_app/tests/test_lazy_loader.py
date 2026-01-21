@@ -2,8 +2,6 @@
 Tests for lazy loading utilities
 """
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
 from streamlit_app.utils.lazy_loader import (
     LazyImporter,
     lazy_import,

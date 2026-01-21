@@ -13,7 +13,6 @@ Default workbook: Excel/BeamDesignApp.xlsm
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 import subprocess
 from pathlib import Path

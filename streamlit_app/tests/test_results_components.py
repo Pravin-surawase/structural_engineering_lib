@@ -9,7 +9,7 @@ Task: IMPL-002
 """
 
 import pytest
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, patch
 import sys
 from pathlib import Path
 

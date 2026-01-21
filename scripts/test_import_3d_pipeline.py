@@ -190,7 +190,7 @@ def main() -> int:
     print()
     print("📊 Performance Estimates for 153 beams:")
     print(f"   Design: ~{design_time * 15:.0f}ms ({design_time / len(sample_beams):.1f}ms/beam)")
-    print(f"   3D Render: ~150ms (3ms/beam)")
+    print("   3D Render: ~150ms (3ms/beam)")
     print()
     print("🎉 Pipeline test passed!")
     print()

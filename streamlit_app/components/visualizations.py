@@ -1042,7 +1042,7 @@ def create_compliance_visual(checks: List[Dict[str, any]]) -> None:
     elif warnings > 0:
         st.warning(f"⚠️ Design complies with warnings ({warnings} warnings)")
     else:
-        st.success(f"✅ Design fully complies with IS 456:2000")
+        st.success("✅ Design fully complies with IS 456:2000")
 
     st.divider()
 

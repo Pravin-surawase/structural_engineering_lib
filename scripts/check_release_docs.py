@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
-import sys
 
 CHANGELOG = Path("CHANGELOG.md")
 RELEASES = Path("docs/getting-started/releases.md")

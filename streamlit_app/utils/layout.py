@@ -17,7 +17,7 @@ Created: 2026-01-08 (UI-002: Page Layout Redesign)
 """
 
 import streamlit as st
-from typing import Optional, Literal, Callable, Any
+from typing import Optional, Literal, Callable
 from dataclasses import dataclass
 
 from utils.design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION

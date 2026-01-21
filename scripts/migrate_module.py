@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import argparse
 import re
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -260,7 +259,7 @@ def migrate_module(module_name: str, dry_run: bool = False) -> bool:
         if src.exists():
             content = src.read_text()
             if "Backward compatibility stub" in content:
-                print(f"   (stub exists at original location)")
+                print("   (stub exists at original location)")
                 return True
         return True
 

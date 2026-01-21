@@ -5,7 +5,6 @@ Tests caching strategies, cache hits/misses, TTL behavior, and performance.
 """
 
 import time
-from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 

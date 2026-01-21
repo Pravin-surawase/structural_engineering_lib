@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from io import BytesIO
 from datetime import datetime
-from typing import Dict, Any, Optional, List, TYPE_CHECKING
+from typing import Dict, Any, Optional, List
 import os
 
 # Optional dependency: reportlab for PDF generation

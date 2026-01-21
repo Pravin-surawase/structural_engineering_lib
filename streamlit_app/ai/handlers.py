@@ -8,7 +8,6 @@ Each handler modifies session state and returns results for the AI to report.
 from __future__ import annotations
 
 import json
-import math
 from typing import Any
 
 import pandas as pd
@@ -480,7 +479,7 @@ def _handle_start_optimization(args: dict) -> str:
                 "cost_inr": round(cost_savings, 0),
             },
             "recommendations": [
-                f"Reduce bar diameter from current to next lower size",
+                "Reduce bar diameter from current to next lower size",
                 "Use variable stirrup spacing (tighter at supports)",
                 f"Current section {row['b_mm']}x{row['D_mm']}mm is adequate",
             ],

@@ -52,7 +52,7 @@ def main():
 
         if forces:
             f = forces[0]
-            print(f"\n   Sample force record:")
+            print("\n   Sample force record:")
             print(f"   - ID: {f.id}")
             print(f"   - Mu: {f.mu_knm:.2f} kN·m")
             print(f"   - Vu: {f.vu_kn:.2f} kN")
@@ -62,7 +62,7 @@ def main():
             # Statistics
             mu_values = [f.mu_knm for f in forces]
             vu_values = [f.vu_kn for f in forces]
-            print(f"\n   Force statistics:")
+            print("\n   Force statistics:")
             print(f"   - Mu range: {min(mu_values):.1f} - {max(mu_values):.1f} kN·m")
             print(f"   - Vu range: {min(vu_values):.1f} - {max(vu_values):.1f} kN")
     except Exception as e:
@@ -84,7 +84,7 @@ def main():
 
         if beams:
             b = beams[0]
-            print(f"\n   Sample beam:")
+            print("\n   Sample beam:")
             print(f"   - ID: {b.id}")
             print(f"   - Label: {b.label}")
             print(f"   - Story: {b.story}")
@@ -98,7 +98,7 @@ def main():
             stories = set(b.story for b in beams)
             labels = set(b.label for b in beams)
             lengths = [b.length_m for b in beams]
-            print(f"\n   Geometry statistics:")
+            print("\n   Geometry statistics:")
             print(f"   - Stories: {sorted(stories)}")
             print(f"   - Unique beam labels: {len(labels)}")
             print(f"   - Span range: {min(lengths):.2f} - {max(lengths):.2f} m")
@@ -139,8 +139,8 @@ def main():
             ready_for_3d += 1
 
     print(f"   Beams ready for 3D visualization: {ready_for_3d}/{len(beams)}")
-    print(f"   All have 3D coordinates: ✅")
-    print(f"   All have section dimensions: ✅")
+    print("   All have 3D coordinates: ✅")
+    print("   All have section dimensions: ✅")
 
     # Sample 3D geometry data
     if beams:
@@ -158,8 +158,8 @@ def main():
     print(f"   • {len(forces)} force records from VBA export")
     print(f"   • {len(beams)} beams with 3D geometry")
     print(f"   • {len(matched)} fully matched beam-force pairs")
-    print(f"   • Section parsing: B230X450M20 → 230×450mm ✅")
-    print(f"   • Envelope format: Mu_max_kNm, Vu_max_kN ✅")
+    print("   • Section parsing: B230X450M20 → 230×450mm ✅")
+    print("   • Envelope format: Mu_max_kNm, Vu_max_kN ✅")
 
     return 0
 

@@ -10,7 +10,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 # Import design system
-from design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION, RADIUS
+from design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION
 from plotly_theme import apply_theme, get_chart_config
 from styled_components import (
     styled_card,

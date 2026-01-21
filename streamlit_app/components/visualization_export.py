@@ -33,12 +33,11 @@ Note:
 from __future__ import annotations
 
 import logging
-import math
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from structural_lib.visualization.geometry_3d import Beam3DGeometry
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -255,7 +254,6 @@ def _create_stirrup_mesh(
     bar_diameter: float = 8.0,
 ) -> Any:
     """Create a rectangular stirrup mesh at given x position."""
-    import pyvista as pv
 
     # Stirrup dimensions (inside cover)
     inner_width = b - 2 * cover
@@ -436,7 +434,6 @@ def export_beam_stl(
         >>> print(f"Exported to {path}")
     """
     _ensure_pyvista()
-    import pyvista as pv
 
     output_path = Path(output_path)
     meshes = geometry_to_pyvista_meshes(geometry)

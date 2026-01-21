@@ -79,7 +79,6 @@ try:
 except ImportError as e:
     ADAPTERS_AVAILABLE = False
     ADAPTERS = {}
-    import traceback
 
     _import_error = str(e)
 

@@ -18,7 +18,6 @@ from streamlit_app.utils.lod_manager import (
     LODLevel,
     LODManager,
     LODConfig,
-    LODStats,
     generate_lod_summary,
     simplify_for_overview,
     simplify_for_large_model,
@@ -521,7 +520,7 @@ class TestBenchmark:
         """200 beams should complete within reasonable time."""
         import time
 
-        from streamlit_app.utils.lod_manager import GeometryCache, LODLevel
+        from streamlit_app.utils.lod_manager import GeometryCache
 
         # Create 200 geometries with 5 unique section types
         geometries = []

@@ -10,7 +10,6 @@ import io
 import tempfile
 from pathlib import Path
 
-import pytest
 
 
 class TestAdapterIntegration:

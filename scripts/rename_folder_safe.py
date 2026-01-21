@@ -158,7 +158,7 @@ def rename_folder(
         return True
 
     # Rename folder
-    print(f"\n🔄 Renaming folder...")
+    print("\n🔄 Renaming folder...")
     if use_git:
         try:
             result = subprocess.run(
@@ -169,7 +169,7 @@ def rename_folder(
             )
             if result.returncode != 0:
                 # Fall back to regular rename
-                print(f"   git mv failed, using shutil.move")
+                print("   git mv failed, using shutil.move")
                 shutil.move(str(old_path), str(new_path))
         except Exception:
             shutil.move(str(old_path), str(new_path))
@@ -180,7 +180,7 @@ def rename_folder(
 
     # Update links
     if refs:
-        print(f"\n🔗 Updating links...")
+        print("\n🔗 Updating links...")
         updated = update_folder_links(old_path, new_path, dry_run=False)
         print(f"   ✅ Updated {updated} file(s)")
 

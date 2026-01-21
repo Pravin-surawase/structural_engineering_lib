@@ -14,7 +14,7 @@ Task: IMPL-004
 """
 
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from utils.error_handler import (
     ErrorSeverity,
     ErrorContext,

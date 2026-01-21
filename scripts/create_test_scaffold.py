@@ -413,7 +413,7 @@ def main():
         f.write(test_content)
 
     print(f"✅ Test scaffold created: {test_file}")
-    print(f"📝 TODO: Fill in test implementations (search for 'TODO')")
+    print("📝 TODO: Fill in test implementations (search for 'TODO')")
     print(f"🧪 Run with: pytest {test_file} -v")
     print(
         f"📊 Coverage: pytest {test_file} --cov={module_path.replace('.', '/')} --cov-report=term-missing"

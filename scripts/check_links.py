@@ -12,7 +12,7 @@ import re
 import json
 import argparse
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Dict
 
 
 # Skip these patterns - they are placeholders/examples, not real links
@@ -193,10 +193,10 @@ def main() -> int:
             print(f"✅ Fixed {fixed_count} links in {len(files_to_update)} files")
 
             # Re-check
-            print(f"\n🔄 Re-checking after fixes...")
+            print("\n🔄 Re-checking after fixes...")
             return main()  # Recursively check again
         elif args.fix and not link_map:
-            print(f"⚠️  --fix requires --map with link mapping JSON")
+            print("⚠️  --fix requires --map with link mapping JSON")
 
         return 1
     else:

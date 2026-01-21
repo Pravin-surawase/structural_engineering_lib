@@ -581,7 +581,6 @@ class TestDesignSystemPerformance:
             del sys.modules["utils.design_system"]
 
         start = time.time()
-        from utils import design_system
 
         duration = time.time() - start
 

@@ -4,7 +4,7 @@ Defers expensive imports and component loading until needed.
 """
 
 from functools import wraps
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict
 import streamlit as st
 
 

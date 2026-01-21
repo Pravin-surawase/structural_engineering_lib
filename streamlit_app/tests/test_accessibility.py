@@ -5,7 +5,6 @@ Tests ARIA labels, keyboard navigation, screen reader support,
 and WCAG 2.1 compliance helpers.
 """
 
-import pytest
 from streamlit_app.utils.accessibility import (
     add_aria_label,
     announce_to_screen_reader,

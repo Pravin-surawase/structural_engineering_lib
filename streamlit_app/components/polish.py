@@ -45,7 +45,7 @@ def show_skeleton_loader(rows: int = 3, height: int = 60) -> None:
     st.markdown(skeleton_css, unsafe_allow_html=True)
 
     for i in range(rows):
-        st.markdown(f'<div class="skeleton"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="skeleton"></div>', unsafe_allow_html=True)
 
 
 def show_empty_state(

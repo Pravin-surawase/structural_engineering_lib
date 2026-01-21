@@ -28,13 +28,10 @@ Benefits:
 - Zero maintenance overhead
 """
 
-import ast
-import glob
 import re
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-import pytest
 
 from utils.design_system import (
     ANIMATION,

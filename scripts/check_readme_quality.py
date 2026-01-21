@@ -227,7 +227,7 @@ def main() -> int:
         # Summary
         avg_score = sum(r.score for r in results) / len(results) if results else 0
         print("=" * 70)
-        print(f"📈 Summary:")
+        print("📈 Summary:")
         print(f"   Total READMEs: {len(results)}")
         print(f"   Passing: {len(passing)} ({len(passing) * 100 // len(results)}%)")
         print(f"   Failing: {len(failing)} ({len(failing) * 100 // len(results)}%)")

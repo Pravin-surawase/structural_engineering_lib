@@ -14,7 +14,6 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import os
 from pathlib import Path
 
 
@@ -120,7 +119,7 @@ def generate_readme_content(folder_path: Path, analysis: dict) -> str:
     lines = [
         f"# {title}",
         "",
-        f"[Add description of what this folder contains]",
+        "[Add description of what this folder contains]",
         "",
         f"**Files:** {total_files} | **Updated:** 2026-01-11",
         "",
@@ -168,7 +167,7 @@ def generate_readme_content(folder_path: Path, analysis: dict) -> str:
             [
                 "---",
                 "",
-                f"**Parent:** [../README.md](../README.md)",
+                "**Parent:** [../README.md](../README.md)",
             ]
         )
 

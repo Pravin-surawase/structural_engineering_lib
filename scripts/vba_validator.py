@@ -8,7 +8,7 @@ import re
 import sys
 import io
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 
 # Force UTF-8 output on Windows
 if sys.platform == "win32":
@@ -139,7 +139,7 @@ class VBAValidator:
                     self.warnings.append(
                         (
                             i,
-                            f"Consider using 'As Long' instead of 'As Integer' for loop/size variables",
+                            "Consider using 'As Long' instead of 'As Integer' for loop/size variables",
                         )
                     )
 

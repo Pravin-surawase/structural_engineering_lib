@@ -10,9 +10,8 @@ Usage:
 
 import sys
 import ast
-import importlib.util
 from pathlib import Path
-from typing import List, Tuple, Dict, Any
+from typing import List, Dict, Any
 
 
 class StreamlitPageValidator:

@@ -8,8 +8,6 @@ Priority: HIGH (new code must have tests)
 Coverage Target: 80%
 """
 
-import pytest
-from unittest.mock import Mock, patch
 
 # Import preview functions
 from components.preview import (

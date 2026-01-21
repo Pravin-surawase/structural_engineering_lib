@@ -8,7 +8,6 @@ for injection into AI prompts.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import streamlit as st
 

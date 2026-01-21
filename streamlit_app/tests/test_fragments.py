@@ -7,13 +7,10 @@ Tests modern Streamlit fragment patterns.
 Note: These tests run without AppTest to avoid MockStreamlit conflicts.
 """
 
-import pytest
-import sys
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, patch
 
 # Skip conftest's MockStreamlit by importing streamlit directly first
 # This ensures we test against real streamlit, not mocks
-import streamlit as real_st
 
 
 class TestFragmentFeatureDetection:

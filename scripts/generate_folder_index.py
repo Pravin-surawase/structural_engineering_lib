@@ -18,12 +18,11 @@ Example:
 """
 
 import json
-import os
 import sys
 import re
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict
 
 
 def extract_title(content: str) -> str:

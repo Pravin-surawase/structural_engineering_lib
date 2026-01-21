@@ -40,7 +40,6 @@ import json
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-import streamlit as st
 import streamlit.components.v1 as components
 
 if TYPE_CHECKING:

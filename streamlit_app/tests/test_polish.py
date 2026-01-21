@@ -8,7 +8,6 @@ Author: Agent 6 (STREAMLIT SPECIALIST)
 Date: 2026-01-09
 """
 
-import pytest
 from unittest.mock import patch, MagicMock
 from streamlit_app.components.polish import (
     show_skeleton_loader,

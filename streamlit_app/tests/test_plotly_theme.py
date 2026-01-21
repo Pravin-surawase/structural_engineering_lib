@@ -4,7 +4,6 @@ Unit tests for plotly_theme module.
 Tests Plotly theme configuration, color scales, and chart utilities.
 """
 
-import pytest
 import plotly.graph_objects as go
 from streamlit_app.utils.plotly_theme import (
     IS456_THEME,

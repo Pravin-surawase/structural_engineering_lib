@@ -34,7 +34,7 @@ class TestLODManager:
 
     def test_lod_manager_import(self):
         """Test LODManager can be imported."""
-        from utils.lod_manager import LODManager, LODLevel
+        from utils.lod_manager import LODManager
 
         manager = LODManager()
         assert manager is not None
@@ -67,7 +67,7 @@ class TestLODManager:
     )
     def test_lod_level_detection(self, beam_count: int, expected_level: str):
         """Test LOD level is correctly detected for various beam counts."""
-        from utils.lod_manager import LODManager, LODLevel
+        from utils.lod_manager import LODManager
 
         manager = LODManager()
         level = manager.get_recommended_level(beam_count)

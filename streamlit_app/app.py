@@ -16,7 +16,6 @@ Version: 0.19.0 (Streamlit app release)
 
 import streamlit as st
 from utils.layout import setup_page, page_header, info_panel, section_header
-from utils.design_system import COLORS
 from utils.theme_manager import (
     apply_dark_mode_theme,
     render_theme_toggle,

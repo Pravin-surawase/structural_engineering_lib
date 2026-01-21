@@ -74,7 +74,7 @@ def create_stub(module_name: str, dry_run: bool = False) -> bool:
     # Check if migration target exists
     if not migrated_path.exists():
         print(f"❌ Migration target not found: {migrated_path}")
-        print(f"   Run migrate_module.py first to move the module")
+        print("   Run migrate_module.py first to move the module")
         return False
 
     # Check if stub already exists and is a stub

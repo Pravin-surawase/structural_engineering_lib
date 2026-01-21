@@ -9,7 +9,7 @@ Created: 2026-01-08
 """
 
 from dataclasses import dataclass
-from typing import Dict, Literal
+from typing import Literal
 
 # ============================================================================
 # PART 1: COLOR SYSTEM

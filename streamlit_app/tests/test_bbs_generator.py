@@ -9,7 +9,6 @@ Task: STREAMLIT-FEAT-001
 """
 
 import pytest
-from unittest.mock import Mock, patch
 import pandas as pd
 
 # Use centralized MockStreamlit from conftest.py - no local mock needed

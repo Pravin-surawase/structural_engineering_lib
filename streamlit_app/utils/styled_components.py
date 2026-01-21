@@ -9,7 +9,7 @@ Created: 2026-01-08
 """
 
 import streamlit as st
-from typing import Optional, Literal, List, Dict, Any
+from typing import Optional, Literal, List
 from .design_system import (
     COLORS,
     SPACING,

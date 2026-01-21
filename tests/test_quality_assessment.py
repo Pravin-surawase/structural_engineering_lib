@@ -99,7 +99,7 @@ try:
     result = quick_precheck(
         span_mm=6000, b_mm=300, d_mm=500, D_mm=550, mu_knm=150, fck_nmm2=25
     )
-    print(f"   ✅ Precheck working")
+    print("   ✅ Precheck working")
     print(f"      Risk: {result.risk_level}, Warnings: {len(result.warnings)}")
 except Exception as e:
     print(f"   ❌ Precheck failed: {e}")
@@ -111,7 +111,7 @@ try:
     result = sensitivity_analysis(
         span_mm=5000, b_mm=300, mu_knm=120, fck_nmm2=25, fy_nmm2=500
     )
-    print(f"   ✅ Sensitivity analysis working")
+    print("   ✅ Sensitivity analysis working")
     print(f"      Parameters varied: {len(result.parameters)}")
 except Exception as e:
     print(f"   ❌ Sensitivity analysis failed: {e}")
@@ -128,7 +128,7 @@ try:
         stirrup_dia_mm=8,
         stirrup_spacing_mm=150,
     )
-    print(f"   ✅ Constructability scoring working")
+    print("   ✅ Constructability scoring working")
     print(f"      Score: {result.score}/100, Issues: {len(result.factors)}")
 except Exception as e:
     print(f"   ❌ Constructability failed: {e}")
@@ -138,7 +138,7 @@ try:
     from structural_lib.insights import optimize_beam_design
 
     result = optimize_beam_design(span_mm=5000, mu_knm=120, vu_kn=80, cover_mm=40)
-    print(f"   ✅ Cost optimization working")
+    print("   ✅ Cost optimization working")
     print(f"      Optimal: {result.optimal_design.b_mm}×{result.optimal_design.D_mm}mm")
     print(f"      Cost: ₹{result.optimal_design.cost_breakdown.total_cost:.2f}")
 except Exception as e:

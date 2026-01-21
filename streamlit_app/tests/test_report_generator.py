@@ -9,9 +9,6 @@ Task: STREAMLIT-FEAT-003
 """
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock
-import sys
-from pathlib import Path
 from io import BytesIO
 
 # Skip all tests if reportlab is not installed

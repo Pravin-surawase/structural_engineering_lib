@@ -9,9 +9,7 @@ Status: ✅ IMPL-004 Part 2 Tests
 Created: 2026-01-09
 """
 
-import pytest
 from streamlit_app.utils.validators import (
-    ValidationResult,
     validate_beam_inputs,
     validate_material_inputs,
     validate_loading_inputs,

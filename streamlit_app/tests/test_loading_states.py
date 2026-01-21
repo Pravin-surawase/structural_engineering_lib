@@ -7,7 +7,6 @@ Tests skeleton loaders, spinners, progress bars, and loading context.
 import pytest
 import time
 from utils.loading_states import (
-    LoaderType,
     add_loading_skeleton,
     add_loading_spinner,
     add_loading_progress,

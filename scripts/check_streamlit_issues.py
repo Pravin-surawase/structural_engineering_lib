@@ -52,7 +52,6 @@ try:
     import yaml
 except ModuleNotFoundError:
     yaml = None
-import inspect
 import time
 from pathlib import Path
 from typing import List, Tuple, Set, Dict, Optional, Any
@@ -95,7 +94,7 @@ class FunctionSignatureRegistry:
                         self.signatures[node.name] = sig_info
 
             self._scanned_files.add(filepath)
-        except Exception as e:
+        except Exception:
             # Silently skip files that can't be parsed
             pass
 
@@ -1518,7 +1517,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     self.add_issue(
                         node.lineno,
                         "CRITICAL",
-                        f"TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)",
+                        "TypeError: hash() called on unhashable type (lists/dicts/sets cannot be hashed)",
                     )
 
                 # Risky pattern: hash(frozenset(dict.items()))
@@ -1549,7 +1548,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 self.add_issue(
                     node.lineno,
                     "CRITICAL",
-                    f"TypeError: frozenset() called on unhashable type (lists/dicts/sets cannot be hashed)",
+                    "TypeError: frozenset() called on unhashable type (lists/dicts/sets cannot be hashed)",
                 )
 
             # Check for .items() which returns unhashable tuples containing unhashable values
@@ -1559,7 +1558,7 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     self.add_issue(
                         node.lineno,
                         "HIGH",
-                        f"TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper.",
+                        "TypeError risk: frozenset(dict.items()) may fail if dict contains unhashable values (lists, dicts). Use make_hashable() helper.",
                     )
 
         # Check for int() / float() without error handling
@@ -1937,7 +1936,7 @@ def main():
     # Phase 3: Initialize signature registry for API validation
     sig_registry = FunctionSignatureRegistry()
     if args.verbose:
-        print(f"🔧 Building function signature registry...")
+        print("🔧 Building function signature registry...")
         start_time = time.time()
 
     sig_registry.scan_common_modules(project_root)

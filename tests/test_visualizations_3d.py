@@ -8,7 +8,6 @@ Run: cd Python && pytest ../tests/test_visualizations_3d.py -v
 
 from __future__ import annotations
 
-import math
 import sys
 import time
 from pathlib import Path

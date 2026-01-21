@@ -9,8 +9,7 @@ Task: STREAMLIT-FEAT-002
 """
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock
-import io
+from unittest.mock import Mock
 
 # Use centralized MockStreamlit from conftest.py - no local mock needed
 

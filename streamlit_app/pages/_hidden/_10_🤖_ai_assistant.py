@@ -27,7 +27,6 @@ st.set_page_config(
 import math
 import re
 import sys
-import time
 from pathlib import Path
 from typing import Any
 
@@ -584,7 +583,7 @@ Would you like me to:
                     response += f"- {win}\n"
 
                 if dashboard.suggestions:
-                    response += f"\n**Top Recommendations:**\n"
+                    response += "\n**Top Recommendations:**\n"
                     for sug in dashboard.suggestions.top_3[:2]:
                         response += f"- [{sug.get('impact', 'MEDIUM')}] {sug.get('category', '')}: {sug.get('description', '')[:100]}...\n"
 

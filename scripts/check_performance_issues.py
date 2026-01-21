@@ -33,7 +33,7 @@ import json
 import argparse
 from pathlib import Path
 from typing import Dict, List, Set, Any, Optional
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, asdict
 from enum import Enum
 
 

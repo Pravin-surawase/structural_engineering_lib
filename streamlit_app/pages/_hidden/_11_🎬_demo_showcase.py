@@ -263,7 +263,7 @@ if demo_mode == "🎯 Single Demo":
                 for highlight in scenario["highlights"]:
                     st.markdown(f"• {highlight}")
 
-                if st.button(f"Run This Demo", key=f"run_{name}", width="stretch"):
+                if st.button("Run This Demo", key=f"run_{name}", width="stretch"):
                     st.session_state.current_demo = name
 
                     with loading_context(f"Running {name} demo..."):

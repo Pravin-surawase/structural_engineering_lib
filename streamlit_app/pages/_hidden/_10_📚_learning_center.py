@@ -398,7 +398,7 @@ with tab1:
             st.markdown(tutorial["content"])
 
             # Interactive quiz (placeholder)
-            if st.button(f"Test Your Understanding", key=f"quiz_{level}_{i}"):
+            if st.button("Test Your Understanding", key=f"quiz_{level}_{i}"):
                 st.info(
                     "🎯 Quiz feature coming soon! For now, review the content above."
                 )
@@ -414,7 +414,7 @@ with tab2:
         with st.expander(f"{example['title']} [{example['difficulty']}]"):
             st.markdown(example["content"])
 
-            if st.button(f"Try This in Calculator", key=f"try_{example['title']}"):
+            if st.button("Try This in Calculator", key=f"try_{example['title']}"):
                 st.info("💡 Navigate to '01_🏗️_beam_design' page to try these values!")
 
 # =============================================================================

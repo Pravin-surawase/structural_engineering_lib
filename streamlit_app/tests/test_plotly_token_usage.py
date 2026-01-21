@@ -10,7 +10,7 @@ Priority: CRITICAL (prevents production runtime errors)
 
 import pytest
 import plotly.graph_objects as go
-from utils.design_system import ANIMATION, COLORS, SPACING, TYPOGRAPHY
+from utils.design_system import ANIMATION, COLORS
 from utils.plotly_theme import apply_theme, get_chart_config
 
 

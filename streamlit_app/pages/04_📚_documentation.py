@@ -18,7 +18,6 @@ Phase: STREAMLIT-IMPL-008 | UI-002: Page Layout Redesign
 import streamlit as st
 import pandas as pd
 import math
-from typing import Dict, List, Optional
 
 # Import clause data and other helpers
 from utils.documentation_data import (
@@ -27,10 +26,9 @@ from utils.documentation_data import (
     GLOSSARY_DATA,
     REFERENCE_TABLES,
 )
-from utils.layout import setup_page, page_header, section_header, info_panel
+from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import (
     apply_dark_mode_theme,
-    render_theme_toggle,
     initialize_theme,
 )
 
@@ -313,7 +311,7 @@ elif section == "🧮 Formula Calculator":
             st.metric("τc", f"{tau_c:.3f} N/mm²")
 
             if tau_v > tau_c:
-                st.warning(f"⚠️ Shear reinforcement required (τv > τc)")
+                st.warning("⚠️ Shear reinforcement required (τv > τc)")
                 st.metric("Required Spacing", f"{sv_req:.0f} mm")
             else:
                 st.success("✅ Shear reinforcement not required (provide minimum)")

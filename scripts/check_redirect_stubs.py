@@ -16,7 +16,6 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
-from typing import Optional
 
 # Directories to skip
 SKIP_DIRS = {"_archive", "node_modules", ".git", "__pycache__", ".venv"}
@@ -165,7 +164,7 @@ def main():
             safe_to_remove.append(stub)
         print()
 
-    print(f"\n📊 Summary:")
+    print("\n📊 Summary:")
     print(f"  Safe to remove: {len(safe_to_remove)}")
     print(f"  Has references: {len(has_references)}")
 

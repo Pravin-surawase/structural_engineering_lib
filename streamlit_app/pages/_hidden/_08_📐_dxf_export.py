@@ -17,10 +17,9 @@ Task: STREAMLIT-FEAT-002
 Status: ✅ PRODUCTION READY
 """
 
-import io
 import sys
 from pathlib import Path
-from typing import Optional, Dict, List
+from typing import Optional, Dict
 
 import streamlit as st
 
@@ -39,7 +38,7 @@ if str(python_lib_dir) not in sys.path:
 
 
 # Streamlit imports
-from utils.layout import setup_page, page_header, section_header
+from utils.layout import setup_page, page_header
 from utils.theme_manager import initialize_theme, apply_dark_mode_theme
 from utils.caching import SmartCache
 from utils.loading_states import loading_context
@@ -57,7 +56,7 @@ try:
 
     HAS_DXF = True
     EZDXF_INSTALLED = EZDXF_AVAILABLE
-except ImportError as e:
+except ImportError:
     HAS_DXF = False
     EZDXF_INSTALLED = False
     # Define fallback LAYERS for error handling paths

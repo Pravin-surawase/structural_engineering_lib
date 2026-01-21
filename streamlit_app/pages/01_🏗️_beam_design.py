@@ -51,23 +51,15 @@ from components.preview import render_real_time_preview
 from components.results import (
     display_design_status,
     display_reinforcement_summary,
-    display_flexure_result,
-    display_shear_result,
-    display_summary_metrics,
     display_utilization_meters,
-    display_material_properties,
-    display_compliance_checks,
 )
 from utils.api_wrapper import cached_design, cached_bmd_sfd
 from utils.constants import (
-    EXPOSURE_COVER_MAP,
     DEFAULT_BEAM_INPUTS,
     get_cover_for_exposure,
 )
 from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import (
-    apply_dark_mode_theme,
-    render_theme_toggle,
     initialize_theme,
 )
 from utils.loading_states import loading_context
@@ -79,7 +71,6 @@ from utils.caching import SmartCache
 from utils.fragments import (
     CacheStatsFragment,
     show_status_badge,
-    fragment_input_section,
 )
 
 # TASK-276-279 Integration: Professional report export
@@ -88,9 +79,7 @@ from components.report_export import (
     show_audit_trail_summary,
     show_dxf_export,
 )
-from utils.input_bridge import log_design_to_audit
 import hashlib
-import json
 
 # TODO Phase 2+: Uncomment as needed when implementing those phases
 # from utils.session_manager import SessionStateManager

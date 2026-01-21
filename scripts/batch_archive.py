@@ -18,7 +18,6 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
 
 # Project root
@@ -149,7 +148,7 @@ def archive_file(
         updated = update_links(file_path, dest_file, dry_run=False)
         print(f"  ✅ Moved and updated {updated} link(s)")
     else:
-        print(f"  ✅ Moved (no links to update)")
+        print("  ✅ Moved (no links to update)")
 
     return True
 

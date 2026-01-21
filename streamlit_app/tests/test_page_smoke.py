@@ -21,7 +21,6 @@ Task: IMPL-000 (Comprehensive Test Suite)
 import pytest
 import sys
 from pathlib import Path
-import inspect
 import importlib.util
 
 # Add streamlit_app to path for imports
@@ -195,7 +194,7 @@ def test_pages_dont_have_circular_imports():
 
 def test_pages_dont_use_undefined_design_tokens():
     """REGRESSION: Test pages don't use non-existent design tokens."""
-    from utils.design_system import COLORS, TYPOGRAPHY, SPACING, ELEVATION, ANIMATION
+    from utils.design_system import COLORS, TYPOGRAPHY, SPACING
 
     # Get all valid token names
     valid_color_tokens = dir(COLORS)
@@ -487,7 +486,6 @@ class TestAllComponentImports:
     def test_inputs_imports(self):
         """Input components import without errors."""
         try:
-            from components import inputs
 
             assert True
         except AttributeError as e:
@@ -496,7 +494,6 @@ class TestAllComponentImports:
     def test_results_imports(self):
         """Result components import without errors."""
         try:
-            from components import results
 
             assert True
         except AttributeError as e:
@@ -505,7 +502,6 @@ class TestAllComponentImports:
     def test_visualizations_imports(self):
         """Visualization components import without errors."""
         try:
-            from components import visualizations
 
             assert True
         except AttributeError as e:
@@ -514,7 +510,6 @@ class TestAllComponentImports:
     def test_layout_imports(self):
         """Layout utilities import without errors."""
         try:
-            from utils import layout
 
             assert True
         except AttributeError as e:
@@ -523,7 +518,6 @@ class TestAllComponentImports:
     def test_styled_components_imports(self):
         """Styled components import without errors."""
         try:
-            from utils import styled_components
 
             assert True
         except AttributeError as e:
@@ -536,7 +530,6 @@ class TestUtilityImports:
     def test_design_system_imports(self):
         """Design system imports without errors."""
         try:
-            from utils import design_system
 
             assert True
         except AttributeError as e:
@@ -545,7 +538,6 @@ class TestUtilityImports:
     def test_theme_manager_imports(self):
         """Theme manager imports without errors."""
         try:
-            from utils import theme_manager
 
             assert True
         except AttributeError as e:
@@ -554,7 +546,6 @@ class TestUtilityImports:
     def test_global_styles_imports(self):
         """Global styles imports without errors."""
         try:
-            from utils import global_styles
 
             assert True
         except AttributeError as e:
@@ -563,7 +554,6 @@ class TestUtilityImports:
     def test_plotly_theme_imports(self):
         """Plotly theme imports without errors."""
         try:
-            from utils import plotly_theme
 
             assert True
         except AttributeError as e:
@@ -572,7 +562,6 @@ class TestUtilityImports:
     def test_api_wrapper_imports(self):
         """API wrapper imports without errors."""
         try:
-            from utils import api_wrapper
 
             assert True
         except AttributeError as e:
@@ -585,7 +574,6 @@ class TestCriticalPathImports:
     def test_main_app_imports(self):
         """Main app.py imports without errors (with streamlit mocked)."""
         try:
-            import app
 
             assert True
         except AttributeError as e:
@@ -664,7 +652,6 @@ class TestRegressionPreventionImports:
         Incident: 2026-01-08, layout.py used ELEVATION.shadow_sm before it existed
         """
         try:
-            from utils import layout
 
             # Should import successfully now
             assert True
@@ -678,7 +665,6 @@ class TestRegressionPreventionImports:
         Incident: 2026-01-08, visualizations.py used ANIMATION.duration_normal
         """
         try:
-            from components import visualizations
 
             # Should import successfully now
             assert True

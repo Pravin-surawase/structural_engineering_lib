@@ -14,11 +14,10 @@ Exit codes:
     1: Violations found
 """
 
-import os
 import re
 import sys
 from pathlib import Path
-from typing import List, Tuple, Dict
+from typing import List
 import argparse
 
 # Governance rules - MUST match FOLDER_STRUCTURE_GOVERNANCE.md

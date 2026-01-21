@@ -16,7 +16,6 @@ This script:
 """
 
 import argparse
-import re
 import subprocess
 import sys
 from datetime import date
@@ -373,7 +372,7 @@ def main():
         if args.fix and updated:
             print(f"  ✅ Updated {updated} README file(s)")
         elif not args.fix:
-            print(f"  ℹ️  Run with --fix to auto-update READMEs")
+            print("  ℹ️  Run with --fix to auto-update READMEs")
     else:
         print("  ✅ No doc folder changes detected")
     print()

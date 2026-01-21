@@ -12,7 +12,6 @@ Reference: https://docs.streamlit.io/develop/api-reference/app-testing
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import pytest

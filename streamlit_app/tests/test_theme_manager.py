@@ -12,7 +12,6 @@ from utils.theme_manager import (
     set_theme,
     toggle_theme,
     get_theme_colors,
-    ThemeMode,
 )
 
 

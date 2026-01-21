@@ -17,7 +17,6 @@ Phase: STREAMLIT-IMPL-007
 import time
 
 import pytest
-import streamlit as st
 
 from utils.api_wrapper import cached_design, cached_smart_analysis, clear_cache
 

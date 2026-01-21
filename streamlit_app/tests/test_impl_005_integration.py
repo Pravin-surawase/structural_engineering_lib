@@ -8,8 +8,6 @@ Author: Agent 6 (Streamlit UI Specialist)
 Date: 2026-01-09
 """
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
 
 from streamlit_app.utils.responsive import (
     get_device_type,

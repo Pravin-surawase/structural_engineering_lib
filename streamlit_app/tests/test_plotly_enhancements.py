@@ -13,7 +13,6 @@ Author: STREAMLIT UI SPECIALIST (Agent 6)
 Status: ✅ IMPLEMENTED (STREAMLIT-UI-003)
 """
 
-import pytest
 import plotly.graph_objects as go
 from utils.plotly_enhancements import (
     add_animation_config,

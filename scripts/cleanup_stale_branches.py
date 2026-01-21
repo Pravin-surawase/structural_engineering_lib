@@ -23,8 +23,7 @@ from __future__ import annotations
 
 import argparse
 import subprocess
-import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 def run_git(args: list[str]) -> str:
@@ -157,8 +156,8 @@ def cleanup_branches(delete: bool = False, min_age_days: int = 30) -> None:
 
         print(f"\n✅ Cleaned up {len(stale_branches)} branches")
     else:
-        print(f"\n💡 Run with --delete to remove these branches:")
-        print(f"   python scripts/cleanup_stale_branches.py --delete")
+        print("\n💡 Run with --delete to remove these branches:")
+        print("   python scripts/cleanup_stale_branches.py --delete")
 
 
 def main() -> None:

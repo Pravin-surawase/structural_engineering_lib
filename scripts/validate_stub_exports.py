@@ -206,7 +206,7 @@ def validate_module(
     if show_fix and (missing_privates or missing_types):
         print(f"\n🔧 Fix for {module_name}.py stub:")
         if missing_privates:
-            print(f"\n# Add private function imports:")
+            print("\n# Add private function imports:")
             print(
                 f"from structural_lib.codes.is456.{module_name} import (  # noqa: F401"
             )
@@ -215,7 +215,7 @@ def validate_module(
             print(")")
 
         if missing_types:
-            print(f"\n# Add data type re-exports:")
+            print("\n# Add data type re-exports:")
             print("from structural_lib.data_types import (  # noqa: F401")
             for name in sorted(missing_types):
                 print(f"    {name},")

@@ -5,7 +5,6 @@ Tests breakpoint detection, responsive columns, fluid typography,
 and mobile-first CSS injection.
 """
 
-import pytest
 import sys
 from pathlib import Path
 

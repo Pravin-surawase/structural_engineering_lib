@@ -2,7 +2,6 @@
 Tests for data lazy loading utilities
 """
 
-import pytest
 from streamlit_app.utils.data_loader import (
     load_material_database,
     load_code_tables,

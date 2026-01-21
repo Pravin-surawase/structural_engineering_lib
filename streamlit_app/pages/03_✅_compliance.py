@@ -23,7 +23,6 @@ import streamlit as st
 from utils.api_wrapper import cached_smart_analysis
 from utils.layout import setup_page, page_header
 from utils.theme_manager import apply_dark_mode_theme, initialize_theme
-from utils.fragments import fragment_input_section
 
 # Initialize theme
 initialize_theme()
@@ -259,7 +258,7 @@ def run_compliance_checks(inputs: dict) -> dict:
                 )
             elif key == "detailing_cover":
                 provided = f"{cover_req:.0f} mm"
-                required = f"≥ 25 mm"  # Typical minimum
+                required = "≥ 25 mm"  # Typical minimum
                 margin = ((cover_req - 25) / 25 * 100) if cover_req >= 25 else -10
                 status = "pass" if cover_req >= 25 else "fail"
             elif key == "detailing_spacing":

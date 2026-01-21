@@ -84,12 +84,11 @@ def mock_session_state(monkeypatch):
     mock_st = MockSessionState()
 
     # Create a mock streamlit module
-    import sys
     from unittest.mock import MagicMock
 
     # Import first to get the module
     try:
-        import streamlit as st_original
+        pass
     except:
         pass
 

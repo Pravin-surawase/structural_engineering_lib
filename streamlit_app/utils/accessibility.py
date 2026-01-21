@@ -6,8 +6,7 @@ and WCAG 2.1 AA compliance helpers.
 """
 
 import streamlit as st
-from typing import Callable, Optional
-import re
+from typing import Optional
 
 
 def add_aria_label(element_key: str, label: str, role: Optional[str] = None) -> str:

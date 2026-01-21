@@ -17,7 +17,6 @@ Task: Autonomous Validation System (Option B)
 Expected: 80% of validation issues auto-fixable
 """
 
-import ast
 import re
 from pathlib import Path
 from typing import List, Tuple, Optional
@@ -347,7 +346,7 @@ class AutoFixer:
                         continue  # Skip third blank line
 
             # Fix spacing around operators (simple cases)
-            if "=" in line and not "==" in line and not "!=" in line:
+            if "=" in line and "==" not in line and "!=" not in line:
                 line = re.sub(r"(\w+)=(\w+)", r"\1 = \2", line)
 
             if line != original and original.strip():

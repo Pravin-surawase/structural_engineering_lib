@@ -288,9 +288,9 @@ def validate_tests(result: ValidationResult, verbose: bool) -> None:
         result.add_pass("All tests passed")
     else:
         # Extract failure info
-        result.add_fail(f"Tests failed")
+        result.add_fail("Tests failed")
         if verbose:
-            print(f"  ❌ Test failures detected")
+            print("  ❌ Test failures detected")
             for line in stderr.split("\n")[:10]:
                 print(f"     {line}")
 

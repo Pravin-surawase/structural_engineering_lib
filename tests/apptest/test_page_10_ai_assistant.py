@@ -63,7 +63,6 @@ class TestParameterParsing:
         # Add streamlit_app to path
         sys.path.insert(0, os.path.join(os.getcwd(), "streamlit_app", "pages"))
 
-        from importlib import import_module
 
         # Import with dynamic import for special character filename
         # We can't test this directly due to module naming, so we use regex

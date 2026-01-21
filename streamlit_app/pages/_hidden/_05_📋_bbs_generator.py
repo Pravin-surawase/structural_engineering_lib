@@ -20,7 +20,7 @@ Status: 🚧 IN DEVELOPMENT
 import io
 import sys
 from pathlib import Path
-from typing import Optional, Dict, List
+from typing import Optional, Dict
 
 import pandas as pd
 import streamlit as st
@@ -40,9 +40,8 @@ if str(python_lib_dir) not in sys.path:
 
 
 # Streamlit imports
-from utils.layout import setup_page, page_header, section_header
+from utils.layout import setup_page, page_header
 from utils.theme_manager import initialize_theme, apply_dark_mode_theme
-from utils.api_wrapper import cached_design
 from utils.caching import SmartCache
 from utils.loading_states import loading_context
 

@@ -14,7 +14,6 @@ This script analyzes 524+ markdown files in docs/ to identify:
 """
 from __future__ import annotations
 
-import os
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -231,7 +230,7 @@ def generate_report():
     # Metadata compliance
     with_type = sum(1 for m in metadata_list if m.get("has_type_metadata", False))
     with_status = sum(1 for m in metadata_list if m.get("has_status_metadata", False))
-    print(f"📋 Metadata compliance:")
+    print("📋 Metadata compliance:")
     print(
         f"   Files with **Type:** metadata: {with_type} ({with_type/len(all_files)*100:.1f}%)"
     )
