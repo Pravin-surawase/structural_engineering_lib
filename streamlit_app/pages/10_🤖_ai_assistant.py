@@ -259,6 +259,7 @@ def calculate_rebar_layout(
     # Zone 1: Within 2d from support - closer spacing (0.75 * Sv)
     # Zone 2: Middle span - normal spacing
     d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
+    d_mm = max(d_mm, 1)  # Prevent division by zero
 
     # Calculate base stirrup spacing from shear
     # Simplified: Sv_max = 0.87 * fy * Asv / (0.4 * b) for minimum shear
@@ -266,7 +267,8 @@ def calculate_rebar_layout(
     sv_base = min(200, max(100, 0.75 * d_mm))  # Practical limits
 
     # If high shear, reduce spacing
-    tau_v = (vu_kn * 1000) / (b_mm * d_mm)  # Approximate shear stress
+    denominator = b_mm * d_mm
+    tau_v = (vu_kn * 1000) / denominator if denominator > 0 else 0  # Approximate shear stress
     if tau_v > 0.5:  # Higher shear stress
         sv_base = min(sv_base, 150)
     if tau_v > 1.0:

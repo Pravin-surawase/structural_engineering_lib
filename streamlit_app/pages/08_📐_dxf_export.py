@@ -56,20 +56,10 @@ try:
     from structural_lib.detailing import BeamDetailingResult, create_beam_detailing
 
     HAS_DXF = True
+    EZDXF_INSTALLED = EZDXF_AVAILABLE
 except ImportError as e:
-    # Define fallback LAYERS for error handling paths
-    LAYERS = {
-        "BEAM": (1, "CONTINUOUS"),
-        "REBAR_MAIN": (2, "CONTINUOUS"),
-        "REBAR_STIRRUPS": (3, "DASHED"),
-        "DIMENSIONS": (4, "CONTINUOUS"),
-        "TEXT": (7, "CONTINUOUS"),
-        "SUPPORT": (5, "CONTINUOUS"),
-        "HATCHING": (8, "CONTINUOUS"),
-        "CENTERLINE": (6, "DASHDOT"),
-    }
-    st.error(f"⚠️ DXF module not available: {e}")
     HAS_DXF = False
+    EZDXF_INSTALLED = False
     # Define fallback LAYERS for error handling paths
     LAYERS = {
         "BEAM": (1, "CONTINUOUS"),

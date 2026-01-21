@@ -162,6 +162,20 @@ page_header(
     icon="🏗️",
 )
 
+# Quick navigation to multi-format import for ETABS/SAFE data
+with st.expander("📥 Import from ETABS/SAFE?", expanded=False):
+    st.markdown("""
+    **For batch design from analysis software:**
+    - Import ETABS geometry & forces CSV
+    - Import SAFE strip beam data
+    - Batch design with 3D building view
+    """)
+    st.page_link(
+        "pages/07_📥_multi_format_import.py",
+        label="Go to Multi-Format Import →",
+        icon="📥",
+    )
+
 # ============================================================================
 # TWO-COLUMN LAYOUT: Input + Preview/Results
 # ============================================================================

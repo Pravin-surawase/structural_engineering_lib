@@ -26,6 +26,18 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from components.beam_viewer_3d import render_beam_3d
 
+# PyVista CAD export integration (optional)
+try:
+    from components.visualization_export import (
+        check_pyvista_available,
+        export_beam_stl,
+        render_beam_screenshot,
+        SCREENSHOT_RESOLUTIONS,
+    )
+    PYVISTA_AVAILABLE = check_pyvista_available()
+except ImportError:
+    PYVISTA_AVAILABLE = False
+
 
 def generate_geometry(
     beam_id: str,
@@ -232,6 +244,108 @@ def main():
     # Show geometry summary
     with st.expander("📋 Geometry Data (JSON)", expanded=False):
         st.json(geometry)
+
+    # CAD Export Section (PyVista integration)
+    st.divider()
+    st.subheader("📦 CAD Export")
+
+    if PYVISTA_AVAILABLE:
+        st.success("✅ PyVista available — CAD export enabled")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("**📐 STL Export** (for CAD software)")
+            include_rebar = st.checkbox("Include reinforcement", value=True, key="stl_rebar")
+            if st.button("⬇️ Generate STL", key="export_stl"):
+                with st.spinner("Generating STL..."):
+                    import tempfile
+                    import os
+
+                    # Prepare geometry dict for export
+                    beam_data = geometry.get("beamGeometry", {})
+                    export_geom = {
+                        "b": beam_data.get("b_mm", 300),
+                        "D": beam_data.get("D_mm", 450),
+                        "span": beam_data.get("span_mm", 4000),
+                        "cover": 40,
+                        "bottom_bars": [(0, 0, 60), (0, -100, 60), (0, 100, 60)],
+                        "top_bars": [(0, -100, 390), (0, 100, 390)],
+                        "stirrup_positions": list(range(100, 4000, 150)),
+                        "bar_diameter": 16,
+                        "stirrup_diameter": 8,
+                    }
+
+                    with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as f:
+                        try:
+                            output_path = export_beam_stl(
+                                export_geom, f.name, include_rebar=include_rebar
+                            )
+                            with open(output_path, "rb") as stl_file:
+                                st.download_button(
+                                    label="⬇️ Download STL",
+                                    data=stl_file.read(),
+                                    file_name=f"beam_{beam_id}.stl",
+                                    mime="application/octet-stream",
+                                )
+                            st.success(f"✅ STL generated: {os.path.getsize(output_path) / 1024:.1f} KB")
+                        except Exception as e:
+                            st.error(f"Export failed: {e}")
+                        finally:
+                            if os.path.exists(f.name):
+                                os.unlink(f.name)
+
+        with col2:
+            st.markdown("**📷 High-Resolution Screenshot**")
+            resolution = st.selectbox(
+                "Resolution",
+                ["1080p (1920×1080)", "2K (2560×1440)", "4K (3840×2160)"],
+                key="screenshot_res",
+            )
+            res_map = {"1080p (1920×1080)": 1920, "2K (2560×1440)": 2560, "4K (3840×2160)": 3840}
+            res_value = res_map.get(resolution, 1920)
+
+            if st.button("📷 Render Screenshot", key="render_screenshot"):
+                with st.spinner(f"Rendering at {resolution}..."):
+                    import tempfile
+                    import os
+
+                    beam_data = geometry.get("beamGeometry", {})
+                    export_geom = {
+                        "b": beam_data.get("b_mm", 300),
+                        "D": beam_data.get("D_mm", 450),
+                        "span": beam_data.get("span_mm", 4000),
+                        "cover": 40,
+                        "bottom_bars": [(0, 0, 60), (0, -100, 60), (0, 100, 60)],
+                        "top_bars": [(0, -100, 390), (0, 100, 390)],
+                        "stirrup_positions": list(range(100, 4000, 150)),
+                        "bar_diameter": 16,
+                        "stirrup_diameter": 8,
+                    }
+
+                    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
+                        try:
+                            render_beam_screenshot(
+                                export_geom, f.name, resolution=res_value
+                            )
+                            with open(f.name, "rb") as img_file:
+                                st.download_button(
+                                    label="⬇️ Download PNG",
+                                    data=img_file.read(),
+                                    file_name=f"beam_{beam_id}_{resolution.split()[0]}.png",
+                                    mime="image/png",
+                                )
+                            st.success(f"✅ Screenshot rendered at {resolution}")
+                        except Exception as e:
+                            st.error(f"Render failed: {e}")
+                        finally:
+                            if os.path.exists(f.name):
+                                os.unlink(f.name)
+    else:
+        st.info(
+            "💡 **PyVista not installed** — CAD export disabled\n\n"
+            "Install with: `pip install pyvista stpyvista`"
+        )
 
 
 if __name__ == "__main__":
