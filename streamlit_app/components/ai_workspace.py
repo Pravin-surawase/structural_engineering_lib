@@ -946,6 +946,7 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
     """Generate and offer download for professional PDF report.
 
     Uses BeamDesignReportGenerator with reportlab for CAD-quality output.
+    Generates a combined batch report for all beams with TOC and summary.
     """
     if results_df is None or results_df.empty:
         st.error("No results to export")
@@ -959,6 +960,7 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
         generator = BeamDesignReportGenerator()
 
         # Convert DataFrame rows to design data format expected by PDF generator
+        design_data_list = []
         for _, row in results_df.iterrows():
             design_data = {
                 "beam_id": str(row["beam_id"]),
@@ -990,32 +992,47 @@ def _generate_and_download_pdf_report(results_df: pd.DataFrame) -> None:
                     "utilization": 0.5,
                 },
             }
+            design_data_list.append(design_data)
 
-            project_info = {
-                "name": f"Beam {row['beam_id']}",
-                "location": str(row.get("story", "N/A")),
-                "engineer": "Structural Engineer",
-                "date": "",
-            }
+        # Project info for the batch report
+        project_info = {
+            "project_name": st.session_state.get("project_name", "Beam Design Project"),
+            "location": st.session_state.get("project_location", "N/A"),
+            "client": st.session_state.get("project_client", "N/A"),
+            "engineer": st.session_state.get("engineer_name", "Structural Engineer"),
+        }
 
-            pdf_buffer = generator.generate_report(
-                design_data,
+        # Generate batch report if multiple beams, single report otherwise
+        if len(design_data_list) > 1:
+            pdf_buffer = generator.generate_batch_report(
+                design_data_list,
                 project_info,
                 include_bbs=False,
                 include_diagrams=False,
             )
-
-            st.download_button(
-                label=f"⬇️ {row['beam_id']} PDF",
-                data=pdf_buffer.getvalue(),
-                file_name=f"beam_{row['beam_id']}_report.pdf",
-                mime="application/pdf",
-                key=f"pdf_{row['beam_id']}",
+            file_name = f"beam_design_report_{len(design_data_list)}_beams.pdf"
+            label = f"⬇️ Download Report ({len(design_data_list)} beams)"
+        else:
+            pdf_buffer = generator.generate_report(
+                design_data_list[0],
+                project_info,
+                include_bbs=False,
+                include_diagrams=False,
             )
-            break  # For now, just the first beam (batch PDF can be added later)
+            beam_id = design_data_list[0]["beam_id"]
+            file_name = f"beam_{beam_id}_report.pdf"
+            label = f"⬇️ Download Report ({beam_id})"
 
-        if len(results_df) > 1:
-            st.info(f"📋 Showing PDF for first beam. {len(results_df)} beams total.")
+        st.download_button(
+            label=label,
+            data=pdf_buffer.getvalue(),
+            file_name=file_name,
+            mime="application/pdf",
+            key="pdf_batch_report",
+            use_container_width=True,
+        )
+
+        st.success(f"✅ Professional PDF report ready ({len(design_data_list)} beam(s))")
 
     except Exception as e:
         st.error(f"PDF generation failed: {str(e)}")
