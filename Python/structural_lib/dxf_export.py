@@ -315,19 +315,19 @@ def draw_beam_schedule_table(
         return 0.0
 
     x0, y0 = origin
-    row_height = 60.0 * scale
-    header_height = 80.0 * scale
-    text_height = 35.0 * scale
+    row_height = 70.0 * scale  # Increased row height
+    header_height = 90.0 * scale  # Increased header height
+    text_height = 30.0 * scale  # Reduced text height for fit
 
-    # Column widths
+    # Column widths - optimized to prevent text overlap
     col_widths = [
-        400.0 * scale,  # Beam IDs
-        80.0 * scale,   # Count
-        150.0 * scale,  # Size
-        120.0 * scale,  # Span
-        120.0 * scale,  # Top Steel
-        120.0 * scale,  # Bottom Steel
-        150.0 * scale,  # Stirrups
+        500.0 * scale,  # Beam IDs - wider for multiple IDs
+        70.0 * scale,   # Count - compact
+        180.0 * scale,  # Size - e.g., "300 x 600"
+        100.0 * scale,  # Span - mm value
+        140.0 * scale,  # Top Steel - e.g., "4-T16"
+        140.0 * scale,  # Bottom Steel - e.g., "4-T20"
+        180.0 * scale,  # Stirrups - e.g., "8φ@150 c/c"
     ]
     total_width = sum(col_widths)
 
@@ -382,12 +382,15 @@ def draw_beam_schedule_table(
         ]
 
         x_pos = x0
-        for value, width in zip(values, col_widths):
-            # Truncate long beam ID lists
-            display_value = value if len(value) < 40 else value[:37] + "..."
+        for col_idx, (value, width) in enumerate(zip(values, col_widths)):
+            # Smart truncation based on column width
+            # Approx char width ~= text_height * 0.5
+            char_width = text_height * 0.6 * 0.6  # 60% of text height for data
+            max_chars = max(3, int(width / char_width) - 2)  # Leave margin
+            display_value = value if len(value) <= max_chars else value[:max_chars - 2] + ".."
             msp.add_text(
                 display_value,
-                dxfattribs={"layer": "TEXT", "height": text_height * 0.7},
+                dxfattribs={"layer": "TEXT", "height": text_height * 0.6},  # Smaller data text
             ).set_placement(
                 (x_pos + width / 2, y_pos - row_height / 2),
                 align=_text_align("MIDDLE_CENTER"),

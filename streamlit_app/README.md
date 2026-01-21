@@ -2,9 +2,9 @@
 
 **Professional Streamlit dashboard for RC beam design per IS 456:2000**
 
-![Version](https://img.shields.io/badge/version-0.17.0-blue)
-![Python](https://img.shields.io/badge/python-3.9+-blue)
-![Streamlit](https://img.shields.io/badge/streamlit-1.30+-red)
+![Version](https://img.shields.io/badge/version-0.19.0-blue)
+![Python](https://img.shields.io/badge/python-3.11+-blue)
+![Streamlit](https://img.shields.io/badge/streamlit-1.53+-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ---

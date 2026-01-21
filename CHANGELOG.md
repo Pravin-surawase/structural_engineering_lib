@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-01-21
+
+### Added
+- **Industry-Standard DXF Export Improvements**
+  - Beam grouping by type (size + span + reinforcement)
+  - Beam schedule table in IS 2502 format
+  - Rebar unit weights per IS 2502:1963
+  - Smart text truncation to prevent overlap
+
+- **Streamlit API Index**
+  - Comprehensive function/component reference
+  - Easy lookup for reusable code
+  - Pattern examples for safe coding
+
+### Changed
+- **DXF Schedule Table**
+  - Increased column widths for better text fit
+  - Reduced text height for data cells
+  - Smarter text truncation based on column width
+  - Higher row/header heights for readability
+
+### Fixed
+- **AI Assistant Model Name**
+  - Fixed invalid `gpt-5-mini` to `gpt-4o-mini`
+  - Updated all occurrences in code and secrets
+
 ## [0.18.0] - 2026-01-20
 
 ### Added
@@ -54,9 +80,9 @@ All notable changes to this project will be documented in this file.
   - Beam detail 3D view in Page 07
 
 ### Changed
-- **OpenAI Model Upgrade**
-  - Updated default model from `gpt-4o-mini` to `gpt-5-mini`
-  - Improved response quality for structural engineering tasks
+- **OpenAI Model Configuration**
+  - Default model: `gpt-4o-mini` (fast, cost-efficient)
+  - Configurable via secrets.toml for OpenAI or OpenRouter
 
 - **UI/UX Improvements**
   - Loading spinners on data operations

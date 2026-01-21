@@ -105,8 +105,8 @@ def get_openai_client() -> OpenAI | None:
 
 def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets."""
-    # Default model - user's configured model from secrets
-    model = "gpt-5-mini"
+    # Default model - gpt-4o-mini is fast, cost-efficient
+    model = "gpt-4o-mini"
     temperature = 0.7
     max_tokens = 2000
 
@@ -114,7 +114,7 @@ def get_openai_config() -> dict[str, Any]:
         openai_config = st.secrets.get("openai", {})
         if isinstance(openai_config, dict):
             if "model" in openai_config:
-                model = openai_config.get("model", "gpt-5-mini")
+                model = openai_config.get("model", "gpt-4o-mini")
             if "temperature" in openai_config:
                 try:
                     temperature = float(openai_config.get("temperature", 0.7))
@@ -255,7 +255,7 @@ def _get_ai_response_with_tools(client: OpenAI, user_message: str) -> str:
 
     # First API call
     response = client.chat.completions.create(
-        model=config.get("model", "gpt-5-mini"),
+        model=config.get("model", "gpt-4o-mini"),
         messages=messages,
         tools=tools,
         tool_choice="auto" if tools else None,
@@ -290,7 +290,7 @@ def _get_ai_response_with_tools(client: OpenAI, user_message: str) -> str:
 
         # Second API call to get final response
         final_response = client.chat.completions.create(
-            model=config.get("model", "gpt-5-mini"),
+            model=config.get("model", "gpt-4o-mini"),
             messages=messages,
             temperature=config.get("temperature", 0.7),
             max_tokens=config.get("max_tokens", 2000),
@@ -460,7 +460,7 @@ def main():
         client = get_openai_client()
         if client:
             config = get_openai_config()
-            st.caption(f"✅ {config.get('model', 'gpt-5-mini')}")
+            st.caption(f"✅ {config.get('model', 'gpt-4o-mini')}")
         else:
             st.caption("💡 Local mode")
 

@@ -80,10 +80,10 @@ def get_openai_config() -> dict[str, Any]:
     """Get OpenAI configuration from secrets.
 
     Returns config dict with model, temperature, max_tokens.
-    Defaults to gpt-5-mini (fast, cost-efficient).
+    Defaults to gpt-4o-mini (fast, cost-efficient).
     """
     config = {
-        "model": "gpt-5-mini",  # Default: fast, cost-efficient GPT-5 Mini
+        "model": "gpt-4o-mini",  # Default: fast, cost-efficient
         "temperature": 0.7,
         "max_tokens": 2000,
     }

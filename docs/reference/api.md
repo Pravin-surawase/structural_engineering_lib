@@ -4,9 +4,9 @@
 **Audience:** Developers
 **Status:** Production Ready
 **Importance:** Critical
-**Version:** 0.17.6
+**Version:** 0.19.0
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-15<br>
+**Last Updated:** 2026-01-21<br>
 
 ---
 
