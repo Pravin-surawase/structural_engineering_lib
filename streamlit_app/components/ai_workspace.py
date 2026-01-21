@@ -1110,7 +1110,12 @@ def _generate_and_download_dxf(results_df: pd.DataFrame) -> None:
 
 
 def render_design_results() -> None:
-    """Render design results with interactive table."""
+    """Render design results with interactive editable table.
+
+    Features Excel-like inline editing for rebar configuration with live
+    design checks that update as you type, similar to how engineers work
+    in spreadsheets.
+    """
     df = st.session_state.ws_design_results
 
     if df is None or df.empty:
@@ -1140,6 +1145,8 @@ def render_design_results() -> None:
         story_filter = st.selectbox("📍 Story", ["All"] + sorted(df["story"].unique().tolist()), key="ws_story_filter")
     with fc2:
         status_filter = st.selectbox("🎯 Status", ["All", "Safe", "Failed"], key="ws_status_filter")
+    with fc3:
+        edit_mode = st.checkbox("✏️ Enable inline editing", key="ws_edit_mode", help="Edit rebar directly in the table")
 
     # Apply filters
     filtered_df = df.copy()
@@ -1150,12 +1157,15 @@ def render_design_results() -> None:
     elif status_filter == "Failed":
         filtered_df = filtered_df[filtered_df["is_safe"] == False]
 
-    # Results table with styled status
-    display_df = filtered_df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "ast_req", "utilization", "status"]].copy()
-    display_df.columns = ["ID", "Story", "b", "D", "Mu", "Vu", "Ast", "Util", "Status"]
-    display_df["Util"] = display_df["Util"].apply(lambda x: f"{x*100:.0f}%")
-
-    st.dataframe(display_df, use_container_width=True, height=180, hide_index=True)
+    if edit_mode:
+        # Editable mode - allows changing rebar configuration inline
+        _render_editable_results_table(filtered_df, df)
+    else:
+        # Read-only mode - standard display
+        display_df = filtered_df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "ast_req", "utilization", "status"]].copy()
+        display_df.columns = ["ID", "Story", "b", "D", "Mu", "Vu", "Ast", "Util", "Status"]
+        display_df["Util"] = display_df["Util"].apply(lambda x: f"{x*100:.0f}%")
+        st.dataframe(display_df, use_container_width=True, height=180, hide_index=True)
 
     # Beam selector with quick actions
     beam_options = filtered_df["beam_id"].tolist()
@@ -1187,7 +1197,151 @@ def render_design_results() -> None:
 
     # Help tip for failed beams
     if failed > 0:
-        st.warning(f"💡 **{failed} beams failed.** Select one and use **Edit Rebar** to increase reinforcement.")
+        if edit_mode:
+            st.info("💡 **Tip:** Increase bar count or diameter for failed beams. Changes update live!")
+        else:
+            st.warning(f"💡 **{failed} beams failed.** Enable **inline editing** or select one and use **Edit Rebar**.")
+
+
+def _render_editable_results_table(filtered_df: pd.DataFrame, full_df: pd.DataFrame) -> None:
+    """Render editable results table with live design checks.
+
+    Allows engineers to modify rebar configuration (bar count, diameter, layers)
+    directly in the table, similar to Excel workflows. Design checks update
+    automatically as values change.
+    """
+    from structural_lib import api
+
+    # Prepare editable dataframe
+    edit_df = filtered_df[["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn", "fck", "fy"]].copy()
+
+    # Add editable rebar columns with default values
+    edit_df["bot_bars"] = filtered_df.get("bottom_bar_count", pd.Series([4] * len(filtered_df))).fillna(4).astype(int)
+    edit_df["bot_dia"] = filtered_df.get("bottom_bar_dia", pd.Series([16] * len(filtered_df))).fillna(16).astype(int)
+    edit_df["top_bars"] = filtered_df.get("top_bar_count", pd.Series([2] * len(filtered_df))).fillna(2).astype(int)
+    edit_df["top_dia"] = filtered_df.get("top_bar_dia", pd.Series([12] * len(filtered_df))).fillna(12).astype(int)
+    edit_df["stirrup_sp"] = filtered_df.get("stirrup_spacing", pd.Series([150] * len(filtered_df))).fillna(150).astype(int)
+
+    # Display columns for editing
+    column_config = {
+        "beam_id": st.column_config.TextColumn("ID", disabled=True, width="small"),
+        "story": st.column_config.TextColumn("Story", disabled=True, width="small"),
+        "b_mm": st.column_config.NumberColumn("b", disabled=True, width="small", format="%d"),
+        "D_mm": st.column_config.NumberColumn("D", disabled=True, width="small", format="%d"),
+        "mu_knm": st.column_config.NumberColumn("Mu", disabled=True, width="small", format="%.0f"),
+        "vu_kn": st.column_config.NumberColumn("Vu", disabled=True, width="small", format="%.0f"),
+        "fck": st.column_config.NumberColumn("fck", disabled=True, width="small"),
+        "fy": st.column_config.NumberColumn("fy", disabled=True, width="small"),
+        "bot_bars": st.column_config.NumberColumn(
+            "Bot#", min_value=2, max_value=12, step=1, width="small",
+            help="Number of bottom bars"
+        ),
+        "bot_dia": st.column_config.SelectboxColumn(
+            "ϕBot", options=[10, 12, 16, 20, 25, 32], width="small",
+            help="Bottom bar diameter (mm)"
+        ),
+        "top_bars": st.column_config.NumberColumn(
+            "Top#", min_value=2, max_value=8, step=1, width="small",
+            help="Number of top (hanger) bars"
+        ),
+        "top_dia": st.column_config.SelectboxColumn(
+            "ϕTop", options=[10, 12, 16, 20, 25], width="small",
+            help="Top bar diameter (mm)"
+        ),
+        "stirrup_sp": st.column_config.SelectboxColumn(
+            "Sv", options=[100, 125, 150, 175, 200, 250], width="small",
+            help="Stirrup spacing (mm)"
+        ),
+    }
+
+    # Editable data editor
+    edited_df = st.data_editor(
+        edit_df,
+        column_config=column_config,
+        hide_index=True,
+        use_container_width=True,
+        num_rows="fixed",
+        key="ws_edit_table",
+    )
+
+    # Calculate live checks for edited values
+    st.markdown("#### Live Design Checks")
+    check_results = []
+
+    for idx, row in edited_df.iterrows():
+        beam_id = row["beam_id"]
+        b, D = row["b_mm"], row["D_mm"]
+        mu, vu = row["mu_knm"], row["vu_kn"]
+        fck, fy = row["fck"], row["fy"]
+        bot_bars, bot_dia = int(row["bot_bars"]), int(row["bot_dia"])
+        top_bars, top_dia = int(row["top_bars"]), int(row["top_dia"])
+        stirrup_sp = int(row["stirrup_sp"])
+
+        # Calculate provided steel area
+        ast_prov = bot_bars * (math.pi * bot_dia**2 / 4)
+        cover = 40  # Assume 40mm cover
+        d_eff = D - cover - 8 - bot_dia / 2
+
+        # Calculate required steel (simplified)
+        try:
+            # Use IS 456 formula for Ast required
+            mu_nm = mu * 1e6  # kN·m to N·mm
+            xu_max = 0.48 * d_eff  # For Fe500
+            mu_lim = 0.36 * fck * b * xu_max * (d_eff - 0.416 * xu_max)
+
+            if mu_nm <= mu_lim:
+                ast_req = (0.5 * fck / fy) * (1 - math.sqrt(1 - 4.6 * mu_nm / (fck * b * d_eff**2))) * b * d_eff
+            else:
+                ast_req = mu_nm / (0.87 * fy * (d_eff - 0.416 * xu_max))
+
+            # Minimum steel
+            ast_min = 0.85 * b * d_eff / fy
+
+            is_flexure_ok = ast_prov >= max(ast_req, ast_min)
+            utilization = ast_req / ast_prov if ast_prov > 0 else 999
+
+            # Shear check (simplified)
+            tv = vu * 1000 / (b * d_eff)  # N/mm²
+            tc_max = 0.63 * math.sqrt(fck)  # Approximate
+            is_shear_ok = tv < tc_max
+
+            is_safe = is_flexure_ok and is_shear_ok
+            status = "✅ SAFE" if is_safe else "❌ FAIL"
+
+        except Exception:
+            is_safe = False
+            utilization = 1.0
+            status = "⚠️ Error"
+            ast_req = 0
+
+        check_results.append({
+            "ID": beam_id,
+            "Ast Req": f"{ast_req:.0f}",
+            "Ast Prov": f"{ast_prov:.0f}",
+            "Util": f"{utilization*100:.0f}%",
+            "Status": status,
+        })
+
+    # Display check results
+    check_df = pd.DataFrame(check_results)
+    st.dataframe(check_df, hide_index=True, use_container_width=True, height=150)
+
+    # Apply changes button
+    if st.button("💾 Apply Changes to All", type="primary", use_container_width=True):
+        # Update the main results DataFrame with edited values
+        for idx, row in edited_df.iterrows():
+            beam_id = row["beam_id"]
+            mask = full_df["beam_id"] == beam_id
+            if mask.any():
+                full_df.loc[mask, "bottom_bar_count"] = int(row["bot_bars"])
+                full_df.loc[mask, "bottom_bar_dia"] = int(row["bot_dia"])
+                full_df.loc[mask, "top_bar_count"] = int(row["top_bars"])
+                full_df.loc[mask, "top_bar_dia"] = int(row["top_dia"])
+                full_df.loc[mask, "stirrup_spacing"] = int(row["stirrup_sp"])
+
+        st.session_state.ws_design_results = full_df
+        st.success("✅ Changes applied! Recalculating design checks...")
+        st.rerun()
 
     st.divider()
 
@@ -1235,14 +1389,22 @@ def render_design_results() -> None:
             st.rerun()
 
 
-def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
+def create_building_3d_figure(
+    df: pd.DataFrame,
+    selected_beam: str | None = None,
+) -> go.Figure:
     """Create impressive 3D building visualization with all beams.
 
     Features:
     - Real 3D beam volumes with proper orientation
     - Color by story or design status
+    - Selected beam highlighted with glow effect
     - Hover details for each beam
     - Professional lighting and camera
+
+    Args:
+        df: DataFrame with beam data (beam_id, b_mm, D_mm, coordinates)
+        selected_beam: Optional beam ID to highlight (bright yellow + larger)
     """
     fig = go.Figure()
 
@@ -1329,29 +1491,41 @@ def create_building_3d_figure(df: pd.DataFrame) -> go.Figure:
         j_faces = [1, 2, 5, 6, 4, 5, 6, 7, 1, 6, 5, 7]
         k_faces = [3, 3, 7, 7, 5, 4, 4, 5, 2, 4, 3, 6]
 
-        # Color based on status or story
-        status = row.get("status", "")
-        if "SAFE" in str(status).upper():
-            color = "rgba(46, 204, 113, 0.85)"
-        elif "FAIL" in str(status).upper():
-            color = "rgba(231, 76, 60, 0.85)"
+        # Check if this beam is selected for highlighting
+        is_selected = selected_beam and beam_id == selected_beam
+
+        # Color based on selection, status, or story
+        if is_selected:
+            # Bright yellow highlight for selected beam
+            color = "rgba(255, 215, 0, 1.0)"  # Gold
+            opacity = 1.0
         else:
-            base = story_colors.get(story, "#3498db")
-            r, g, b_col = int(base[1:3], 16), int(base[3:5], 16), int(base[5:7], 16)
-            color = f"rgba({r}, {g}, {b_col}, 0.8)"
+            status = row.get("status", "")
+            if "SAFE" in str(status).upper():
+                color = "rgba(46, 204, 113, 0.85)"
+            elif "FAIL" in str(status).upper():
+                color = "rgba(231, 76, 60, 0.85)"
+            else:
+                base = story_colors.get(story, "#3498db")
+                r, g, b_col = int(base[1:3], 16), int(base[3:5], 16), int(base[5:7], 16)
+                color = f"rgba({r}, {g}, {b_col}, 0.8)"
+            # Dim non-selected beams when one is selected
+            opacity = 0.4 if selected_beam else 0.9
 
         # Concise hover info - just beam name, utilization, pass/fail
         util_pct = row.get("utilization", 0) * 100
+        status = row.get("status", "")
         status_icon = "✅" if "SAFE" in str(status).upper() else "❌" if "FAIL" in str(status).upper() else "⏳"
-        hover = f"<b>{beam_id}</b> {status_icon}<br>Util: {util_pct:.0f}%"
+        selected_label = "★ SELECTED " if is_selected else ""
+        hover = f"<b>{selected_label}{beam_id}</b> {status_icon}<br>Util: {util_pct:.0f}%"
 
         fig.add_trace(go.Mesh3d(
             x=x_mesh, y=y_mesh, z=z_mesh,
             i=i_faces, j=j_faces, k=k_faces,
             color=color,
-            opacity=0.9,
+            opacity=opacity,
             flatshading=True,
-            lighting=dict(ambient=0.6, diffuse=0.8, specular=0.4, roughness=0.3),
+            lighting=dict(ambient=0.7 if is_selected else 0.6, diffuse=0.9 if is_selected else 0.8, specular=0.6 if is_selected else 0.4, roughness=0.2 if is_selected else 0.3),
             lightposition=dict(x=100, y=200, z=300),
             hovertemplate=hover + "<extra></extra>",
             name=beam_id,
@@ -1434,8 +1608,28 @@ def render_building_3d() -> None:
 
     st.markdown(f"### 🏗️ Building 3D — {total} beams, {stories} stories, {pass_rate} pass")
 
-    # Create 3D figure with larger height
-    fig = create_building_3d_figure(df)
+    # Beam selection UI with highlighting
+    beam_ids = df["beam_id"].tolist() if len(df) > 0 else []
+    select_col, info_col = st.columns([2, 3])
+    with select_col:
+        highlighted_beam = st.selectbox(
+            "🎯 Highlight beam:",
+            ["None (show all)"] + beam_ids,
+            key="bldg_highlight_select",
+            help="Select a beam to highlight it in the 3D view"
+        )
+        selected_beam = None if highlighted_beam == "None (show all)" else highlighted_beam
+
+    with info_col:
+        if selected_beam and selected_beam in df["beam_id"].values:
+            beam_row = df[df["beam_id"] == selected_beam].iloc[0]
+            status = beam_row.get("status", "N/A")
+            util = beam_row.get("utilization", 0)
+            dims = f"{beam_row['b_mm']:.0f}×{beam_row['D_mm']:.0f}"
+            st.info(f"**{selected_beam}** | {dims}mm | Util: {util*100:.0f}% | {status}")
+
+    # Create 3D figure with highlighting
+    fig = create_building_3d_figure(df, selected_beam=selected_beam)
     fig.update_layout(height=550)
     st.plotly_chart(fig, use_container_width=True, key="ws_building_3d")
 
@@ -1450,11 +1644,9 @@ def render_building_3d() -> None:
                 set_workspace_state(WorkspaceState.IMPORT)
             st.rerun()
     with c2:
-        beam_ids = df["beam_id"].tolist() if len(df) > 0 else []
-        if beam_ids:
-            selected = st.selectbox("Select beam:", ["—"] + beam_ids, key="bldg_beam_select", label_visibility="collapsed")
-            if selected != "—":
-                st.session_state.ws_selected_beam = selected
+        if beam_ids and selected_beam:
+            if st.button(f"🔍 View {selected_beam} Details", key="view_selected_beam"):
+                st.session_state.ws_selected_beam = selected_beam
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
     with c3:
