@@ -35,7 +35,9 @@ def main() -> None:
             design_results_80, output_path=out, batch_threshold=80
         )
         shutil.copy(out / "index.html", fixtures / "report_batch_index_80.html")
-        shutil.copy(out / "beams" / "G_B1.html", fixtures / "report_batch_beam_G_B1.html")
+        shutil.copy(
+            out / "beams" / "G_B1.html", fixtures / "report_batch_beam_G_B1.html"
+        )
 
     print("Updated: report_batch_index_80.html")
     print("Updated: report_batch_beam_G_B1.html")
