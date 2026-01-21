@@ -2410,6 +2410,62 @@ def render_rebar_editor() -> None:
             else:
                 st.warning("Could not find better configuration")
 
+    # Live cross-section preview (updates as user edits)
+    st.divider()
+    st.markdown("##### 📐 Live Cross-Section Preview")
+
+    if VISUALIZATION_AVAILABLE:
+        # Calculate bar positions for visualization
+        bottom_bars_vis = []
+        top_bars_vis = []
+
+        # Bottom layer 1 positions
+        layer1_y = cover_mm + 8 + l1_dia / 2  # stirrup + half bar dia
+        available_width = b_mm - 2 * cover_mm - 16  # inside stirrups
+        if l1_count > 1:
+            spacing_1 = available_width / (l1_count - 1)
+            for i in range(l1_count):
+                bx = cover_mm + 8 + l1_dia / 2 + i * spacing_1
+                bottom_bars_vis.append((bx, layer1_y, l1_dia))
+        else:
+            bottom_bars_vis.append((b_mm / 2, layer1_y, l1_dia))
+
+        # Bottom layer 2 positions (if any)
+        if l2_count > 0 and l2_dia > 0:
+            layer2_y = layer1_y + l1_dia / 2 + 25 + l2_dia / 2
+            if l2_count > 1:
+                spacing_2 = available_width / (l2_count - 1)
+                for i in range(l2_count):
+                    bx = cover_mm + 8 + l2_dia / 2 + i * spacing_2
+                    bottom_bars_vis.append((bx, layer2_y, l2_dia))
+            else:
+                bottom_bars_vis.append((b_mm / 2, layer2_y, l2_dia))
+
+        # Top bar positions
+        top_y = D_mm - cover_mm - 8 - top_dia / 2
+        if top_count > 1:
+            spacing_top = available_width / (top_count - 1)
+            for i in range(top_count):
+                tx = cover_mm + 8 + top_dia / 2 + i * spacing_top
+                top_bars_vis.append((tx, top_y, top_dia))
+        else:
+            top_bars_vis.append((b_mm / 2, top_y, top_dia))
+
+        # Create and display cross-section figure
+        fig = create_cross_section_figure(
+            b=b_mm,
+            D=D_mm,
+            cover=cover_mm,
+            bottom_bars=bottom_bars_vis,
+            top_bars=top_bars_vis,
+            stirrup_dia=stir_dia,
+            rebar_config=config,
+        )
+        st.plotly_chart(fig, use_container_width=True, key="rebar_editor_cross_section")
+    else:
+        # Fallback text display
+        st.info(f"Section: {b_mm:.0f}×{D_mm:.0f} mm | Bottom: {l1_count}Φ{l1_dia} + {l2_count}Φ{l2_dia} | Top: {top_count}Φ{top_dia}")
+
     # Navigation
     st.divider()
     col1, col2, col3 = st.columns(3)
