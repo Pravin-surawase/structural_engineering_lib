@@ -1543,6 +1543,8 @@ with tab5:
                                     output_path=tmp.name,
                                     columns=int(batch_columns),
                                     include_title_block=batch_include_title,
+                                    include_beam_schedule=True,  # Industry standard
+                                    group_similar_beams_opt=True,  # Efficient grouping
                                     title_block={
                                         "title": f"BEAM SCHEDULE - {len(detailings)} Beams",
                                         "count_line": f"Qty: {len(detailings)} beams",
@@ -1555,31 +1557,44 @@ with tab5:
                                 with open(output_path, "rb") as f:
                                     dxf_bytes = f.read()
 
+                            # Calculate grouping stats
+                            from structural_lib.dxf_export import group_similar_beams
+                            groups = group_similar_beams(detailings)
+                            n_types = len(groups)
+
                             st.download_button(
                                 "📥 Download Batch DXF",
                                 dxf_bytes,
                                 f"beam_schedule_{len(detailings)}_beams.dxf",
                                 "application/dxf",
-                                help="Download all beams in single DXF file",
+                                help="Download all beams in single DXF file with beam schedule",
                             )
 
-                            st.success(f"✅ Generated DXF with {len(detailings)} beams ({len(dxf_bytes) / 1024:.1f} KB)")
+                            if n_types < len(detailings):
+                                st.success(f"✅ Generated DXF: {len(detailings)} beams → {n_types} types ({len(dxf_bytes) / 1024:.1f} KB)")
+                                st.info(f"💡 Similar beams grouped: {len(detailings) - n_types} drawings saved!")
+                            else:
+                                st.success(f"✅ Generated DXF with {len(detailings)} beams ({len(dxf_bytes) / 1024:.1f} KB)")
 
-                            # Show beam schedule summary
-                            with st.expander("📋 Beam Schedule Summary"):
-                                schedule_data = []
-                                for d in detailings:
-                                    bottom_bars = len(d.bottom_bars) if d.bottom_bars else 0
-                                    top_bars = len(d.top_bars) if d.top_bars else 0
-                                    schedule_data.append({
-                                        "Beam ID": d.beam_id,
-                                        "Story": d.story,
-                                        "Size (mm)": f"{d.b}×{d.D}",
-                                        "Span (m)": f"{d.span / 1000:.2f}",
-                                        "Bottom Bars": bottom_bars,
-                                        "Top Bars": top_bars,
-                                    })
-                                st.dataframe(pd.DataFrame(schedule_data), use_container_width=True)
+                            # Show beam schedule summary (grouped)
+                            with st.expander("📋 Beam Schedule Summary (Industry Format)"):
+                                from structural_lib.dxf_export import generate_beam_schedule_table
+                                schedule = generate_beam_schedule_table(detailings)
+                                schedule_df = pd.DataFrame(schedule)
+                                # Rename columns for display
+                                display_df = schedule_df.rename(columns={
+                                    "beam_ids": "Beam IDs",
+                                    "count": "Qty",
+                                    "size": "Size (mm)",
+                                    "span": "Span (mm)",
+                                    "top_steel": "Top Steel",
+                                    "bottom_steel": "Bottom Steel",
+                                    "stirrups": "Stirrups",
+                                })
+                                # Drop internal key
+                                if "type_key" in display_df.columns:
+                                    display_df = display_df.drop(columns=["type_key"])
+                                st.dataframe(display_df, use_container_width=True)
                         else:
                             st.warning("No beams with valid design results for export.")
 

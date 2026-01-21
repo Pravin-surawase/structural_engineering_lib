@@ -156,6 +156,249 @@ def _bar_mark_map(detailing: BeamDetailingResult) -> dict:
     return marks
 
 
+# =============================================================================
+# Beam Grouping and Schedule Functions (Industry Standard)
+# =============================================================================
+
+# Standard unit weights for reinforcement (kg/m) - per IS 2502
+REBAR_UNIT_WEIGHT = {
+    6: 0.222,
+    8: 0.395,
+    10: 0.617,
+    12: 0.888,
+    16: 1.579,
+    20: 2.467,
+    25: 3.854,
+    32: 6.313,
+    40: 9.864,
+}
+
+
+def _get_beam_type_key(detailing: BeamDetailingResult) -> str:
+    """
+    Generate a type key for grouping similar beams.
+
+    Beams with same size, span (±100mm), and reinforcement are grouped.
+    """
+    # Round span to nearest 100mm for grouping tolerance
+    span_rounded = round(detailing.span / 100) * 100
+
+    # Get bottom bar summary (primary identifier)
+    if detailing.bottom_bars:
+        mid_idx = len(detailing.bottom_bars) // 2
+        bot = detailing.bottom_bars[mid_idx]
+        bot_str = f"{bot.count}T{int(bot.diameter)}"
+    else:
+        bot_str = "0T0"
+
+    # Get top bar summary
+    if detailing.top_bars:
+        mid_idx = len(detailing.top_bars) // 2
+        top = detailing.top_bars[mid_idx]
+        top_str = f"{top.count}T{int(top.diameter)}"
+    else:
+        top_str = "0T0"
+
+    # Get stirrup summary
+    if detailing.stirrups:
+        stir = detailing.stirrups[0]
+        stir_str = f"{int(stir.diameter)}@{int(stir.spacing)}"
+    else:
+        stir_str = "0@0"
+
+    return f"{int(detailing.b)}x{int(detailing.D)}_{span_rounded}_{bot_str}_{top_str}_{stir_str}"
+
+
+def group_similar_beams(
+    detailings: list[BeamDetailingResult],
+) -> dict[str, list[BeamDetailingResult]]:
+    """
+    Group beams by type (size + span + reinforcement).
+
+    Industry standard: Similar beams are shown once with references to all
+    beam IDs that use the same detail.
+
+    Args:
+        detailings: List of beam detailing results
+
+    Returns:
+        Dict mapping type_key to list of beams with that type
+    """
+    groups: dict[str, list[BeamDetailingResult]] = {}
+    for detailing in detailings:
+        type_key = _get_beam_type_key(detailing)
+        if type_key not in groups:
+            groups[type_key] = []
+        groups[type_key].append(detailing)
+    return groups
+
+
+def generate_beam_schedule_table(
+    detailings: list[BeamDetailingResult],
+) -> list[dict[str, str | int | float]]:
+    """
+    Generate a beam schedule in industry-standard format.
+
+    Returns list of dicts with:
+    - beam_ids: Comma-separated list of beam IDs
+    - count: Number of beams with this type
+    - size: "b x D" format
+    - span: Span in mm
+    - top_steel: e.g., "3-T16"
+    - bottom_steel: e.g., "4-T20"
+    - stirrups: e.g., "8φ@150 c/c"
+    """
+    groups = group_similar_beams(detailings)
+    schedule = []
+
+    for type_key, beams in groups.items():
+        representative = beams[0]
+
+        # Collect beam IDs
+        beam_ids = [b.beam_id or f"B{i+1}" for i, b in enumerate(beams)]
+
+        # Format reinforcement
+        if representative.bottom_bars:
+            mid_idx = len(representative.bottom_bars) // 2
+            bot = representative.bottom_bars[mid_idx]
+            bottom_steel = f"{bot.count}-T{int(bot.diameter)}"
+        else:
+            bottom_steel = "-"
+
+        if representative.top_bars:
+            mid_idx = len(representative.top_bars) // 2
+            top = representative.top_bars[mid_idx]
+            top_steel = f"{top.count}-T{int(top.diameter)}"
+        else:
+            top_steel = "-"
+
+        if representative.stirrups:
+            stir = representative.stirrups[0]
+            stirrups = f"{int(stir.diameter)}φ@{int(stir.spacing)} c/c"
+        else:
+            stirrups = "-"
+
+        schedule.append({
+            "beam_ids": ", ".join(beam_ids),
+            "count": len(beams),
+            "size": f"{int(representative.b)} x {int(representative.D)}",
+            "span": int(representative.span),
+            "top_steel": top_steel,
+            "bottom_steel": bottom_steel,
+            "stirrups": stirrups,
+            "type_key": type_key,
+        })
+
+    return schedule
+
+
+def draw_beam_schedule_table(
+    msp: Any,
+    detailings: list[BeamDetailingResult],
+    origin: tuple[float, float] = (0, 0),
+    scale: float = 1.0,
+) -> float:
+    """
+    Draw a beam schedule table on the DXF drawing.
+
+    Args:
+        msp: DXF modelspace
+        detailings: List of beam detailing results
+        origin: Table origin (top-left)
+        scale: Scale factor for text
+
+    Returns:
+        Table height in mm
+    """
+    schedule = generate_beam_schedule_table(detailings)
+    if not schedule:
+        return 0.0
+
+    x0, y0 = origin
+    row_height = 60.0 * scale
+    header_height = 80.0 * scale
+    text_height = 35.0 * scale
+
+    # Column widths
+    col_widths = [
+        400.0 * scale,  # Beam IDs
+        80.0 * scale,   # Count
+        150.0 * scale,  # Size
+        120.0 * scale,  # Span
+        120.0 * scale,  # Top Steel
+        120.0 * scale,  # Bottom Steel
+        150.0 * scale,  # Stirrups
+    ]
+    total_width = sum(col_widths)
+
+    # Headers
+    headers = ["BEAM IDs", "QTY", "SIZE (mm)", "SPAN", "TOP", "BOTTOM", "STIRRUPS"]
+
+    # Draw table border
+    total_height = header_height + len(schedule) * row_height
+    draw_rectangle(msp, x0, y0 - total_height, x0 + total_width, y0, "BORDER")
+
+    # Draw header row
+    draw_rectangle(msp, x0, y0 - header_height, x0 + total_width, y0, "BORDER")
+
+    # Draw header text
+    x_pos = x0
+    for i, (header, width) in enumerate(zip(headers, col_widths)):
+        msp.add_text(
+            header,
+            dxfattribs={"layer": "TEXT", "height": text_height * 0.9},
+        ).set_placement(
+            (x_pos + width / 2, y0 - header_height / 2),
+            align=_text_align("MIDDLE_CENTER"),
+        )
+        # Draw column separator
+        if i < len(headers) - 1:
+            msp.add_line(
+                (x_pos + width, y0),
+                (x_pos + width, y0 - total_height),
+                dxfattribs={"layer": "BORDER"},
+            )
+        x_pos += width
+
+    # Draw data rows
+    y_pos = y0 - header_height
+    for row in schedule:
+        # Draw row separator
+        msp.add_line(
+            (x0, y_pos - row_height),
+            (x0 + total_width, y_pos - row_height),
+            dxfattribs={"layer": "BORDER"},
+        )
+
+        # Draw cell values
+        values = [
+            str(row["beam_ids"]),
+            str(row["count"]),
+            str(row["size"]),
+            str(row["span"]),
+            str(row["top_steel"]),
+            str(row["bottom_steel"]),
+            str(row["stirrups"]),
+        ]
+
+        x_pos = x0
+        for value, width in zip(values, col_widths):
+            # Truncate long beam ID lists
+            display_value = value if len(value) < 40 else value[:37] + "..."
+            msp.add_text(
+                display_value,
+                dxfattribs={"layer": "TEXT", "height": text_height * 0.7},
+            ).set_placement(
+                (x_pos + width / 2, y_pos - row_height / 2),
+                align=_text_align("MIDDLE_CENTER"),
+            )
+            x_pos += width
+
+        y_pos -= row_height
+
+    return total_height
+
+
 def extract_bar_marks_from_dxf(path: str | Path) -> dict[str, set[str]]:
     """Extract bar marks from a DXF file, grouped by beam."""
     check_ezdxf()
@@ -1060,6 +1303,8 @@ def generate_multi_beam_dxf(
     include_annotations: bool = True,
     include_section_cuts: bool = True,
     include_title_block: bool = False,
+    include_beam_schedule: bool = False,
+    group_similar_beams_opt: bool = False,
     title_block: dict | None = None,
     sheet_margin_mm: float = DEFAULT_SHEET_MARGIN,
     title_block_width_mm: float = DEFAULT_TITLE_BLOCK_WIDTH,
@@ -1067,6 +1312,11 @@ def generate_multi_beam_dxf(
 ) -> str:
     """
     Generate a single DXF file containing multiple beam details in a grid layout.
+
+    Industry-standard features:
+    - Groups similar beams together (same size/reinforcement)
+    - Includes beam schedule table
+    - Shows representative detail for each beam type
 
     Args:
         detailings: List of BeamDetailingResult objects to draw
@@ -1078,8 +1328,9 @@ def generate_multi_beam_dxf(
         include_annotations: Add text annotations
         include_section_cuts: Add cross-section views
         include_title_block: Draw a deliverable border + title block
-        title_block: Optional dict to override title block fields (title, count_line,
-            units, scale, project, date, drawn_by, version)
+        include_beam_schedule: Add beam schedule table at bottom (industry standard)
+        group_similar_beams_opt: Group similar beams (show one detail per type)
+        title_block: Optional dict to override title block fields
         sheet_margin_mm: Sheet margin for deliverable layout (mm)
         title_block_width_mm: Title block width (mm)
         title_block_height_mm: Title block height (mm)
@@ -1098,6 +1349,23 @@ def generate_multi_beam_dxf(
     if columns < 1:
         raise ValueError("columns must be >= 1")
 
+    # Group similar beams if requested (industry standard)
+    if group_similar_beams_opt:
+        groups = group_similar_beams(detailings)
+        # Use representative beam from each group
+        draw_list = [beams[0] for beams in groups.values()]
+        # Update beam_id to show all beams in group
+        for type_key, beams in groups.items():
+            representative = beams[0]
+            if len(beams) > 1:
+                beam_ids = [b.beam_id or f"B{i+1}" for i, b in enumerate(beams)]
+                # Create a new beam_id showing all grouped beams
+                representative.beam_id = ", ".join(beam_ids[:3])
+                if len(beam_ids) > 3:
+                    representative.beam_id += f" (+{len(beam_ids) - 3} more)"
+    else:
+        draw_list = detailings
+
     # Create new DXF document (R2010 for compatibility)
     doc = ezdxf.new("R2010")
     if units is not None:
@@ -1111,14 +1379,14 @@ def generate_multi_beam_dxf(
 
     # --- Pre-compute per-column widths and per-row heights ---
     # This ensures beams in the same column/row don't overlap
-    n_beams = len(detailings)
+    n_beams = len(draw_list)
     n_rows = (n_beams + columns - 1) // columns  # Ceiling division
 
     # Calculate cell width for each column (max of all beams in that column)
     col_widths = [0.0] * columns
     row_heights = [0.0] * n_rows
 
-    for idx, detailing in enumerate(detailings):
+    for idx, detailing in enumerate(draw_list):
         col = idx % columns
         row = idx // columns
 
@@ -1151,7 +1419,7 @@ def generate_multi_beam_dxf(
         row_y_offsets[r] = row_y_offsets[r - 1] + row_heights[r - 1] + row_spacing
 
     # --- Draw each beam at its computed position ---
-    for idx, detailing in enumerate(detailings):
+    for idx, detailing in enumerate(draw_list):
         # Calculate row and column
         row = idx // columns
         col = idx % columns
@@ -1276,12 +1544,28 @@ def generate_multi_beam_dxf(
                 title="SECTION B-B",
             )
 
+    # Add beam schedule table (industry standard)
+    schedule_height = 0.0
+    if include_beam_schedule and len(detailings) > 1:
+        # Position schedule below all beam details
+        schedule_y = -400.0  # Below origin with spacing
+        if include_title_block:
+            schedule_y = sheet_margin_mm - 100.0  # Above title block area
+        schedule_height = draw_beam_schedule_table(
+            msp,
+            detailings,  # Use original list for full beam count
+            origin=(sheet_margin_mm if include_title_block else 0.0, schedule_y),
+            scale=0.8,
+        )
+
     # Save file
     if include_title_block:
         total_width = col_x_offsets[-1] + col_widths[-1]
         total_height = row_y_offsets[-1] + row_heights[-1]
         sheet_width = total_width + sheet_margin_mm * 2
-        sheet_height = total_height + sheet_margin_mm * 2 + title_block_height_mm
+        sheet_height = (
+            total_height + sheet_margin_mm * 2 + title_block_height_mm + schedule_height
+        )
 
         draw_rectangle(msp, 0, 0, sheet_width, sheet_height, "BORDER")
 
@@ -1294,8 +1578,14 @@ def generate_multi_beam_dxf(
         block_x = sheet_width - sheet_margin_mm - block_width
         block_y = sheet_margin_mm
 
+        # Count unique beam types vs total beams
+        n_types = len(draw_list)
+        n_total = len(detailings)
         title = "RC BEAM DETAIL SHEET"
-        count_line = f"Beams: {len(detailings)}"
+        if group_similar_beams_opt and n_types < n_total:
+            count_line = f"Beams: {n_total} ({n_types} types)"
+        else:
+            count_line = f"Beams: {n_total}"
         size_range_line = _format_size_range_line(
             [d.b for d in detailings],
             [d.D for d in detailings],
