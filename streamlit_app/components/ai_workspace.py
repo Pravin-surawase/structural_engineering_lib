@@ -1161,7 +1161,7 @@ def render_design_results() -> None:
 
     # Summary metrics in compact row
     total = len(df)
-    passed = len(df[df["is_safe"] == True])
+    passed = len(df[df["is_safe"]])
     failed = total - passed
     avg_util = df["utilization"].mean() * 100
 
@@ -1197,9 +1197,9 @@ def render_design_results() -> None:
     if story_filter != "All":
         filtered_df = filtered_df[filtered_df["story"] == story_filter]
     if status_filter == "Safe":
-        filtered_df = filtered_df[filtered_df["is_safe"] == True]
+        filtered_df = filtered_df[filtered_df["is_safe"]]
     elif status_filter == "Failed":
-        filtered_df = filtered_df[filtered_df["is_safe"] == False]
+        filtered_df = filtered_df[~filtered_df["is_safe"]]
 
     if edit_mode:
         # Editable mode - allows changing rebar configuration inline
@@ -3059,7 +3059,7 @@ def render_dashboard() -> None:
 
     # Summary stats row
     total = len(df)
-    passed = len(df[df["is_safe"] == True])
+    passed = len(df[df["is_safe"]])
     avg_util = df["utilization"].mean() * 100
 
     c1, c2, c3, c4 = st.columns(4)
@@ -3105,7 +3105,7 @@ def render_dashboard() -> None:
         if passed == total:
             st.success("✅ All beams pass design checks!")
         else:
-            failed_beams = df[df["is_safe"] == False]["beam_id"].tolist()[:3]
+            failed_beams = df[~df["is_safe"]]["beam_id"].tolist()[:3]
             st.error(
                 f"❌ Failed: {', '.join(failed_beams)}{'...' if len(failed_beams) > 3 else ''}"
             )
@@ -3244,8 +3244,8 @@ Date: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}
 DESIGN SUMMARY
 --------------
 Total Beams: {len(df)}
-Passed: {len(df[df['is_safe']==True])}
-Failed: {len(df[df['is_safe']==False])}
+Passed: {len(df[df['is_safe']])}
+Failed: {len(df[~df['is_safe']])}
 Average Utilization: {df['utilization'].mean()*100:.1f}%
 
 MATERIAL TAKEOFF

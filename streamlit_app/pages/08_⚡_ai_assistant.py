@@ -166,7 +166,7 @@ def get_ai_response(user_message: str) -> str:
             st.session_state.ws_design_results = design_all_beams_ws()
             set_workspace_state(WorkspaceState.DESIGN)
             df = st.session_state.ws_design_results
-            passed = len(df[df["is_safe"] == True])
+            passed = len(df[df["is_safe"]])
             failed = len(df) - passed
             avg_util = df["utilization"].mean() * 100
             return f"✅ **Designed {len(df)} beams** — {passed} passed, {failed} failed, avg util {avg_util:.0f}%\n\nSay **'building 3d'** to see the structure or click a beam for details."

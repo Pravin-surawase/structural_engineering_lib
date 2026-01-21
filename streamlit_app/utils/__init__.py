@@ -16,7 +16,7 @@ Author: STREAMLIT UI SPECIALIST (Agent 6)
 
 # Input bridge for TASK-276-279 integration
 from .input_bridge import (
-    InputBridge,
-    get_beam_input_from_session,
-    log_design_to_audit,
+    InputBridge as InputBridge,
+    get_beam_input_from_session as get_beam_input_from_session,
+    log_design_to_audit as log_design_to_audit,
 )

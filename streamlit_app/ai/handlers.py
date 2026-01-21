@@ -97,7 +97,7 @@ def _handle_design_all(args: dict) -> str:
     st.session_state.ws_state = WorkspaceState.DESIGN
 
     total = len(results)
-    passed = len(results[results["is_safe"] == True])
+    passed = len(results[results["is_safe"]])
     failed = total - passed
     avg_util = results["utilization"].mean() * 100
 

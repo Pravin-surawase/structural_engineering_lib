@@ -1100,8 +1100,8 @@ with tab3:
 
         # Summary metrics
         total = len(results_df)
-        passed = len(results_df[results_df["_is_safe"] == True])
-        failed = len(results_df[results_df["_is_safe"] == False])
+        passed = len(results_df[results_df["_is_safe"].fillna(False)])
+        failed = len(results_df[~results_df["_is_safe"].fillna(True)])
         no_forces = len(results_df[results_df["_is_safe"].isna()])
 
         col1, col2, col3, col4 = st.columns(4)
@@ -1119,9 +1119,9 @@ with tab3:
 
         display_df = results_df.copy()
         if filter_option == "Passed Only":
-            display_df = display_df[display_df["_is_safe"] == True]
+            display_df = display_df[display_df["_is_safe"].fillna(False)]
         elif filter_option == "Failed Only":
-            display_df = display_df[display_df["_is_safe"] == False]
+            display_df = display_df[~display_df["_is_safe"].fillna(True)]
 
         # Drop internal column for display
         display_df = display_df.drop(columns=["_is_safe"], errors="ignore")
@@ -1275,8 +1275,8 @@ with tab4:
         if results_df is not None and not results_df.empty:
             st.markdown("##### 🔧 Design Status")
             col1, col2, col3, col4 = st.columns(4)
-            passed = len(results_df[results_df["_is_safe"] == True])
-            failed = len(results_df[results_df["_is_safe"] == False])
+            passed = len(results_df[results_df["_is_safe"].fillna(False)])
+            failed = len(results_df[~results_df["_is_safe"].fillna(True)])
             no_forces = len(results_df[results_df["_is_safe"].isna()])
             success_rate = (
                 (passed / len(results_df) * 100) if len(results_df) > 0 else 0
@@ -1462,7 +1462,7 @@ with tab5:
             # Summary metrics
             total = len(results_df)
             passed = len(
-                results_df[results_df.get("_is_safe", pd.Series([False])) == True]
+                results_df[results_df.get("_is_safe", pd.Series([False])).fillna(False)]
             )
             st.metric("Beams Designed", f"{passed}/{total} ✅")
 

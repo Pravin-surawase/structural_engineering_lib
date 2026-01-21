@@ -233,7 +233,7 @@ class ComprehensiveValidator:
         """Level 2: Semantic analysis."""
         try:
             tree = ast.parse(code)
-        except:
+        except SyntaxError:
             return  # Already caught in syntax validation
 
         # Track defined names

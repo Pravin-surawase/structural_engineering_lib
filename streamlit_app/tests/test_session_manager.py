@@ -89,7 +89,7 @@ def mock_session_state(monkeypatch):
     # Import first to get the module
     try:
         pass
-    except:
+    except Exception:
         pass
 
     mock_streamlit = MagicMock()
@@ -202,7 +202,7 @@ class TestDesignResult:
         """Test compliance checks dictionary"""
         assert isinstance(sample_result.compliance_checks, dict)
         assert "min_steel" in sample_result.compliance_checks
-        assert sample_result.compliance_checks["min_steel"] == True
+        assert sample_result.compliance_checks["min_steel"] is True
 
 
 # =============================================================================
@@ -414,7 +414,7 @@ class TestHelperFunctions:
         comparison = compare_designs(sample_result, result2)
         # Savings = (87.45 - 70) / 87.45 * 100 ≈ 19.97%
         assert comparison["cost_savings_pct"] == pytest.approx(19.97, rel=0.01)
-        assert comparison["more_economical"] == True
+        assert comparison["more_economical"] is True
 
     def test_format_design_summary_structure(self, sample_result):
         """Test format_design_summary produces valid output"""

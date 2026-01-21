@@ -171,7 +171,7 @@ def scan_folder(folder_path: Path) -> Dict:
             try:
                 readme_content = subfolder_readme.read_text(encoding="utf-8")
                 subfolder_description = extract_description(readme_content)
-            except:
+            except (OSError, UnicodeDecodeError):
                 pass
 
         index["subfolders"].append(

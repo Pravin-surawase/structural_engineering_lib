@@ -22,32 +22,30 @@ Phase: Implementation (STREAMLIT-IMPL-002)
 
 # Preview component (Phase 3 UI Layout)
 from .preview import (
-    render_real_time_preview,
-    create_beam_preview_diagram,
-    calculate_quick_checks,
-    render_status_dashboard,
-    calculate_rough_cost,
-    render_cost_summary,
+    render_real_time_preview as render_real_time_preview,
+    create_beam_preview_diagram as create_beam_preview_diagram,
+    calculate_quick_checks as calculate_quick_checks,
+    render_status_dashboard as render_status_dashboard,
+    calculate_rough_cost as calculate_rough_cost,
+    render_cost_summary as render_cost_summary,
 )
 
 # Report export component (TASK-276-279 Integration)
 from .report_export import (
-    show_export_options,
-    show_audit_trail_summary,
+    show_export_options as show_export_options,
+    show_audit_trail_summary as show_audit_trail_summary,
 )
 
 # AI Workspace component (Session 52 - AI v2)
 from .ai_workspace import (
-    WorkspaceState,
-    init_workspace_state,
-    set_workspace_state,
-    get_workspace_state,
-    load_sample_data,
-    design_all_beams_ws,
-    render_dynamic_workspace,
-    create_building_3d_figure,
-    create_cross_section_figure,
-    calculate_rebar_checks,
+    WorkspaceState as WorkspaceState,
+    init_workspace_state as init_workspace_state,
+    set_workspace_state as set_workspace_state,
+    get_workspace_state as get_workspace_state,
+    load_sample_data as load_sample_data,
+    design_all_beams_ws as design_all_beams_ws,
+    render_dynamic_workspace as render_dynamic_workspace,
+    create_building_3d_figure as create_building_3d_figure,
+    create_cross_section_figure as create_cross_section_figure,
+    calculate_rebar_checks as calculate_rebar_checks,
 )
-
-# This file will be populated in STREAMLIT-IMPL-002
