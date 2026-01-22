@@ -98,6 +98,7 @@ class WorkspaceState(Enum):
     VIEW_3D = "view_3d"  # Single beam detail
     CROSS_SECTION = "cross_section"  # Beautiful cross-section view
     REBAR_EDIT = "rebar_edit"  # Interactive reinforcement editor
+    UNIFIED_EDITOR = "unified_editor"  # Full-width unified editor mode
     EDIT = "edit"
     DASHBOARD = "dashboard"
 
@@ -173,6 +174,17 @@ def init_workspace_state() -> None:
             "fck": 25.0,
             "fy": 500.0,
             "cover_mm": 40.0,
+        }
+
+    # Unified editor mode state
+    if "ws_editor_mode" not in st.session_state:
+        st.session_state.ws_editor_mode = {
+            "active": False,
+            "current_beam_idx": 0,
+            "beam_queue": [],
+            "filter_mode": "all",  # "all", "failed", "story", "beam_line"
+            "undo_stack": [],
+            "redo_stack": [],
         }
 
 
@@ -1268,17 +1280,29 @@ def render_design_results() -> None:
         )
         st.session_state.ws_selected_beam = selected
 
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3, col4, col5 = st.columns(5)
         with col1:
+            if st.button(
+                "✏️ Editor",
+                use_container_width=True,
+                type="primary",
+                help="Full-width unified editor with live checks",
+            ):
+                # Initialize editor mode
+                st.session_state.ws_editor_mode["beam_queue"] = beam_options
+                st.session_state.ws_editor_mode["current_beam_idx"] = beam_options.index(selected)
+                st.session_state.ws_editor_mode["filter_mode"] = "all"
+                set_workspace_state(WorkspaceState.UNIFIED_EDITOR)
+                st.rerun()
+        with col2:
             if st.button(
                 "🎨 3D View",
                 use_container_width=True,
-                type="primary",
                 help="Interactive 3D visualization of the selected beam",
             ):
                 set_workspace_state(WorkspaceState.VIEW_3D)
                 st.rerun()
-        with col2:
+        with col3:
             if st.button(
                 "📐 Section",
                 use_container_width=True,
@@ -1286,7 +1310,7 @@ def render_design_results() -> None:
             ):
                 set_workspace_state(WorkspaceState.CROSS_SECTION)
                 st.rerun()
-        with col3:
+        with col4:
             if st.button(
                 "🔧 Rebar",
                 use_container_width=True,
@@ -1294,7 +1318,7 @@ def render_design_results() -> None:
             ):
                 set_workspace_state(WorkspaceState.REBAR_EDIT)
                 st.rerun()
-        with col4:
+        with col5:
             if st.button(
                 "🏗️ Building",
                 use_container_width=True,
@@ -3394,6 +3418,439 @@ TOTAL: ₹{takeoff['total_cost']:,.0f}
             st.rerun()
 
 
+# =============================================================================
+# UNIFIED EDITOR - Full-width design editor with integrated 3D and checks
+# =============================================================================
+
+
+def _get_beam_queue(df: pd.DataFrame, filter_mode: str = "all") -> list[str]:
+    """Get ordered list of beams based on filter mode."""
+    if df is None or df.empty:
+        return []
+
+    if filter_mode == "failed":
+        filtered = df[~df["is_safe"]]
+    elif filter_mode == "passed":
+        filtered = df[df["is_safe"]]
+    else:
+        filtered = df
+
+    return filtered["beam_id"].tolist()
+
+
+def _save_current_beam_changes(beam_id: str, config: dict, df: pd.DataFrame) -> pd.DataFrame:
+    """Save current rebar configuration to the dataframe."""
+    if config is None or df is None:
+        return df
+
+    mask = df["beam_id"] == beam_id
+    if not mask.any():
+        return df
+
+    # Update rebar columns
+    df.loc[mask, "bottom_bar_count"] = config.get("bottom_layer1_count", 3)
+    df.loc[mask, "bottom_bar_dia"] = config.get("bottom_layer1_dia", 16)
+    df.loc[mask, "top_bar_count"] = config.get("top_count", 2)
+    df.loc[mask, "top_bar_dia"] = config.get("top_dia", 12)
+    df.loc[mask, "stirrup_spacing"] = config.get("stirrup_spacing", 150)
+
+    return df
+
+
+def render_unified_editor() -> None:
+    """Render full-width unified design editor.
+
+    Features:
+    - Compact header with navigation
+    - Live 2D cross-section preview
+    - Side-by-side controls and checks
+    - Beam navigation bar at bottom
+    """
+    df = st.session_state.ws_design_results
+    editor_state = st.session_state.ws_editor_mode
+
+    if df is None or df.empty:
+        st.warning("No design results. Run design first.")
+        if st.button("← Back to Design"):
+            set_workspace_state(WorkspaceState.DESIGN)
+            st.rerun()
+        return
+
+    # Initialize editor state if needed
+    if not editor_state.get("beam_queue"):
+        editor_state["beam_queue"] = _get_beam_queue(df, editor_state.get("filter_mode", "all"))
+        editor_state["current_beam_idx"] = 0
+        st.session_state.ws_editor_mode = editor_state
+
+    beam_queue = editor_state["beam_queue"]
+    if not beam_queue:
+        st.warning("No beams match current filter.")
+        if st.button("← Back"):
+            set_workspace_state(WorkspaceState.DESIGN)
+            st.rerun()
+        return
+
+    current_idx = editor_state.get("current_beam_idx", 0)
+    current_idx = min(current_idx, len(beam_queue) - 1)
+    beam_id = beam_queue[current_idx]
+    st.session_state.ws_selected_beam = beam_id
+
+    # Get beam data
+    row = df[df["beam_id"] == beam_id]
+    if row.empty:
+        st.error(f"Beam {beam_id} not found")
+        return
+    row = row.iloc[0]
+
+    # Extract beam properties
+    b_mm = float(row["b_mm"])
+    D_mm = float(row["D_mm"])
+    span_mm = float(row["span_mm"])
+    mu_knm = float(row.get("mu_knm", 100))
+    vu_kn = float(row.get("vu_kn", 50))
+    fck = float(row.get("fck", 25))
+    fy = float(row.get("fy", 500))
+    cover_mm = float(row.get("cover_mm", 40))
+
+    # Initialize config for this beam
+    config = st.session_state.ws_rebar_config
+    if config is None or config.get("beam_id") != beam_id:
+        ast_req = float(row.get("ast_req", 500))
+        suggested = calculate_rebar_layout(ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm)
+        config = {
+            "beam_id": beam_id,
+            "bottom_layer1_dia": suggested.get("bar_diameter", 16),
+            "bottom_layer1_count": len(suggested.get("bottom_bars", [])),
+            "bottom_layer2_dia": 0,
+            "bottom_layer2_count": 0,
+            "top_dia": 12,
+            "top_count": 2,
+            "stirrup_dia": 8,
+            "stirrup_spacing": 150,
+        }
+        st.session_state.ws_rebar_config = config
+
+    # =========================================================================
+    # HEADER: Beam info + navigation
+    # =========================================================================
+    hdr1, hdr2, hdr3, hdr4 = st.columns([0.35, 0.25, 0.25, 0.15])
+    with hdr1:
+        st.markdown(f"### ✏️ {beam_id}")
+    with hdr2:
+        st.caption(f"**{b_mm:.0f}×{D_mm:.0f}** mm | **{span_mm/1000:.1f}** m")
+    with hdr3:
+        st.caption(f"Mu={mu_knm:.0f} kN·m | Vu={vu_kn:.0f} kN")
+    with hdr4:
+        if st.button("✕ Exit", use_container_width=True):
+            # Save changes before exit
+            df = _save_current_beam_changes(beam_id, config, df)
+            st.session_state.ws_design_results = df
+            set_workspace_state(WorkspaceState.DESIGN)
+            st.rerun()
+
+    st.divider()
+
+    # =========================================================================
+    # MAIN CONTENT: Controls + Checks + Preview
+    # =========================================================================
+    col_controls, col_checks, col_preview = st.columns([0.3, 0.35, 0.35])
+
+    # --- LEFT: Reinforcement Controls ---
+    with col_controls:
+        st.markdown("##### 🔧 Reinforcement")
+
+        # Bottom bars
+        st.caption("**Bottom Bars**")
+        bc1, bc2 = st.columns(2)
+        with bc1:
+            l1_dia = st.selectbox(
+                "Dia",
+                [10, 12, 16, 20, 25, 32],
+                index=[10, 12, 16, 20, 25, 32].index(config["bottom_layer1_dia"]),
+                key="ue_l1_dia",
+                label_visibility="collapsed",
+            )
+        with bc2:
+            l1_count = st.number_input(
+                "Cnt", 2, 8, config["bottom_layer1_count"], key="ue_l1_cnt", label_visibility="collapsed"
+            )
+        st.caption(f"{l1_count}×Φ{l1_dia}")
+
+        # Second layer (optional)
+        with st.expander("Layer 2 (optional)", expanded=False):
+            l2c1, l2c2 = st.columns(2)
+            with l2c1:
+                l2_dia = st.selectbox(
+                    "Dia2",
+                    [0, 10, 12, 16, 20, 25],
+                    index=[0, 10, 12, 16, 20, 25].index(config.get("bottom_layer2_dia", 0)),
+                    key="ue_l2_dia",
+                    label_visibility="collapsed",
+                )
+            with l2c2:
+                l2_count = st.number_input(
+                    "Cnt2", 0, 6, config.get("bottom_layer2_count", 0), key="ue_l2_cnt", label_visibility="collapsed"
+                )
+
+        # Top bars
+        st.caption("**Top Bars**")
+        tc1, tc2 = st.columns(2)
+        with tc1:
+            top_dia = st.selectbox(
+                "TDia",
+                [10, 12, 16, 20],
+                index=[10, 12, 16, 20].index(config.get("top_dia", 12)),
+                key="ue_top_dia",
+                label_visibility="collapsed",
+            )
+        with tc2:
+            top_count = st.number_input(
+                "TCnt", 2, 6, config.get("top_count", 2), key="ue_top_cnt", label_visibility="collapsed"
+            )
+        st.caption(f"{top_count}×Φ{top_dia}")
+
+        # Stirrups
+        st.caption("**Stirrups**")
+        sc1, sc2 = st.columns(2)
+        with sc1:
+            stir_dia = st.selectbox(
+                "SDia",
+                [6, 8, 10],
+                index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
+                key="ue_stir_dia",
+                label_visibility="collapsed",
+            )
+        with sc2:
+            stir_spacing = st.number_input(
+                "Sp", 75, 300, config.get("stirrup_spacing", 150), step=25, key="ue_stir_sp", label_visibility="collapsed"
+            )
+        st.caption(f"Φ{stir_dia}@{stir_spacing}mm")
+
+    # Update config with new values
+    config.update({
+        "bottom_layer1_dia": l1_dia,
+        "bottom_layer1_count": l1_count,
+        "bottom_layer2_dia": l2_dia,
+        "bottom_layer2_count": l2_count,
+        "top_dia": top_dia,
+        "top_count": top_count,
+        "stirrup_dia": stir_dia,
+        "stirrup_spacing": stir_spacing,
+    })
+    st.session_state.ws_rebar_config = config
+
+    # Build bar lists for checks
+    bottom_bars = [(l1_dia, l1_count)]
+    if l2_dia > 0 and l2_count > 0:
+        bottom_bars.append((l2_dia, l2_count))
+    top_bars = [(top_dia, top_count)]
+
+    # Calculate checks
+    checks = calculate_rebar_checks(
+        b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm,
+        bottom_bars, top_bars, stir_dia, stir_spacing,
+    )
+
+    # --- CENTER: Design Checks ---
+    with col_checks:
+        st.markdown("##### ✓ Design Checks")
+
+        # Flexure
+        flex_icon = "🟢" if checks["flexure_ok"] else "🔴"
+        st.markdown(f"{flex_icon} **Flexure:** {checks['flexure_util']*100:.0f}%")
+        st.caption(f"Mu_cap = {checks['mu_capacity_knm']:.0f} kN·m")
+
+        # Shear
+        shear_icon = "🟢" if checks["shear_ok"] else "🔴"
+        st.markdown(f"{shear_icon} **Shear:** {checks['shear_util']*100:.0f}%")
+        st.caption(f"Vu_cap = {checks['vu_capacity_kn']:.0f} kN")
+
+        # Min/Max steel
+        min_icon = "🟢" if checks["min_reinf_ok"] else "🔴"
+        st.markdown(f"{min_icon} **Min Ast:** {checks['ast_provided']:.0f} ≥ {checks['ast_min']:.0f} mm²")
+
+        max_icon = "🟢" if checks["max_reinf_ok"] else "🔴"
+        st.markdown(f"{max_icon} **Max Ast:** {checks['ast_provided']:.0f} ≤ {checks['ast_max']:.0f} mm²")
+
+        # Spacing
+        sp_icon = "🟢" if checks["spacing_ok"] else "🔴"
+        st.markdown(f"{sp_icon} **Spacing:** {checks['bar_spacing']:.0f} mm")
+
+        st.divider()
+
+        # Overall status
+        if checks["all_ok"]:
+            st.success(f"### {checks['status']}")
+        else:
+            st.error(f"### {checks['status']}")
+
+        # Quick actions
+        act1, act2 = st.columns(2)
+        with act1:
+            if st.button("⚡ Optimize", use_container_width=True, help="Auto-optimize rebar"):
+                optimized = suggest_optimal_rebar(b_mm, D_mm, mu_knm, vu_kn, fck, fy, cover_mm)
+                if optimized:
+                    optimized["beam_id"] = beam_id
+                    optimized["top_dia"] = config.get("top_dia", 12)
+                    optimized["top_count"] = config.get("top_count", 2)
+                    optimized["stirrup_dia"] = config.get("stirrup_dia", 8)
+                    optimized["stirrup_spacing"] = config.get("stirrup_spacing", 150)
+                    st.session_state.ws_rebar_config = optimized
+                    st.toast("✅ Optimized!")
+                    st.rerun()
+        with act2:
+            if st.button("🔄 Reset", use_container_width=True, help="Reset to calculated"):
+                st.session_state.ws_rebar_config = None
+                st.rerun()
+
+    # --- RIGHT: Cross-Section Preview ---
+    with col_preview:
+        st.markdown("##### 📐 Cross-Section")
+
+        if VISUALIZATION_AVAILABLE:
+            # Calculate bar positions
+            bottom_bars_vis = []
+            top_bars_vis = []
+            stirrup_dia_val = stir_dia
+
+            # Bottom layer 1
+            layer1_y = cover_mm + stirrup_dia_val + l1_dia / 2
+            x_start = cover_mm + stirrup_dia_val + l1_dia / 2
+            x_end = b_mm - cover_mm - stirrup_dia_val - l1_dia / 2
+            if l1_count > 1:
+                spacing = (x_end - x_start) / (l1_count - 1)
+                for i in range(l1_count):
+                    bottom_bars_vis.append((x_start + i * spacing, layer1_y, l1_dia))
+            else:
+                bottom_bars_vis.append((b_mm / 2, layer1_y, l1_dia))
+
+            # Bottom layer 2
+            if l2_count > 0 and l2_dia > 0:
+                layer2_y = layer1_y + l1_dia / 2 + 25 + l2_dia / 2
+                x_start_2 = cover_mm + stirrup_dia_val + l2_dia / 2
+                x_end_2 = b_mm - cover_mm - stirrup_dia_val - l2_dia / 2
+                if l2_count > 1:
+                    spacing_2 = (x_end_2 - x_start_2) / (l2_count - 1)
+                    for i in range(l2_count):
+                        bottom_bars_vis.append((x_start_2 + i * spacing_2, layer2_y, l2_dia))
+                else:
+                    bottom_bars_vis.append((b_mm / 2, layer2_y, l2_dia))
+
+            # Top bars
+            top_y = D_mm - cover_mm - stirrup_dia_val - top_dia / 2
+            x_start_t = cover_mm + stirrup_dia_val + top_dia / 2
+            x_end_t = b_mm - cover_mm - stirrup_dia_val - top_dia / 2
+            if top_count > 1:
+                spacing_t = (x_end_t - x_start_t) / (top_count - 1)
+                for i in range(top_count):
+                    top_bars_vis.append((x_start_t + i * spacing_t, top_y, top_dia))
+            else:
+                top_bars_vis.append((b_mm / 2, top_y, top_dia))
+
+            fig = create_cross_section_figure(
+                b=b_mm, D=D_mm, cover=cover_mm,
+                bottom_bars=bottom_bars_vis, top_bars=top_bars_vis,
+                stirrup_dia=stirrup_dia_val, rebar_config=config,
+            )
+            st.plotly_chart(fig, use_container_width=True, key="ue_cross_section")
+        else:
+            st.info(f"{b_mm:.0f}×{D_mm:.0f} | Bot: {l1_count}Φ{l1_dia} | Top: {top_count}Φ{top_dia}")
+
+    # =========================================================================
+    # FOOTER: Beam Navigation
+    # =========================================================================
+    st.divider()
+
+    # Progress bar showing position in queue
+    progress_pct = (current_idx + 1) / len(beam_queue)
+    st.progress(progress_pct, text=f"Beam {current_idx + 1} of {len(beam_queue)}")
+
+    # Navigation buttons
+    nav1, nav2, nav3, nav4, nav5 = st.columns([0.15, 0.25, 0.2, 0.25, 0.15])
+
+    with nav1:
+        if st.button("◀◀ First", use_container_width=True, disabled=current_idx == 0):
+            # Save current beam
+            df = _save_current_beam_changes(beam_id, config, df)
+            st.session_state.ws_design_results = df
+            editor_state["current_beam_idx"] = 0
+            st.session_state.ws_rebar_config = None
+            st.rerun()
+
+    with nav2:
+        if st.button("◀ Previous", use_container_width=True, disabled=current_idx == 0):
+            df = _save_current_beam_changes(beam_id, config, df)
+            st.session_state.ws_design_results = df
+            editor_state["current_beam_idx"] = current_idx - 1
+            st.session_state.ws_rebar_config = None
+            st.rerun()
+
+    with nav3:
+        # Quick jump
+        jump_to = st.selectbox(
+            "Jump to",
+            beam_queue,
+            index=current_idx,
+            key="ue_jump_beam",
+            label_visibility="collapsed",
+        )
+        if jump_to != beam_id:
+            df = _save_current_beam_changes(beam_id, config, df)
+            st.session_state.ws_design_results = df
+            editor_state["current_beam_idx"] = beam_queue.index(jump_to)
+            st.session_state.ws_rebar_config = None
+            st.rerun()
+
+    with nav4:
+        if st.button("Next ▶", use_container_width=True, type="primary", disabled=current_idx >= len(beam_queue) - 1):
+            df = _save_current_beam_changes(beam_id, config, df)
+            st.session_state.ws_design_results = df
+            editor_state["current_beam_idx"] = current_idx + 1
+            st.session_state.ws_rebar_config = None
+            st.rerun()
+
+    with nav5:
+        if st.button("Last ▶▶", use_container_width=True, disabled=current_idx >= len(beam_queue) - 1):
+            df = _save_current_beam_changes(beam_id, config, df)
+            st.session_state.ws_design_results = df
+            editor_state["current_beam_idx"] = len(beam_queue) - 1
+            st.session_state.ws_rebar_config = None
+            st.rerun()
+
+    # Filter options
+    with st.expander("🔍 Filter beams", expanded=False):
+        filter_cols = st.columns(4)
+        with filter_cols[0]:
+            if st.button("All Beams", use_container_width=True):
+                editor_state["filter_mode"] = "all"
+                editor_state["beam_queue"] = _get_beam_queue(df, "all")
+                editor_state["current_beam_idx"] = 0
+                st.session_state.ws_rebar_config = None
+                st.rerun()
+        with filter_cols[1]:
+            failed_count = len(df[~df["is_safe"]])
+            if st.button(f"Failed ({failed_count})", use_container_width=True, disabled=failed_count == 0):
+                editor_state["filter_mode"] = "failed"
+                editor_state["beam_queue"] = _get_beam_queue(df, "failed")
+                editor_state["current_beam_idx"] = 0
+                st.session_state.ws_rebar_config = None
+                st.rerun()
+        with filter_cols[2]:
+            passed_count = len(df[df["is_safe"]])
+            if st.button(f"Passed ({passed_count})", use_container_width=True):
+                editor_state["filter_mode"] = "passed"
+                editor_state["beam_queue"] = _get_beam_queue(df, "passed")
+                editor_state["current_beam_idx"] = 0
+                st.session_state.ws_rebar_config = None
+                st.rerun()
+        with filter_cols[3]:
+            if st.button("📊 Back to Results", use_container_width=True):
+                df = _save_current_beam_changes(beam_id, config, df)
+                st.session_state.ws_design_results = df
+                set_workspace_state(WorkspaceState.DESIGN)
+                st.rerun()
+
+
 def render_dynamic_workspace() -> None:
     """Main workspace renderer - routes to correct state panel."""
     state = st.session_state.ws_state
@@ -3420,6 +3877,7 @@ def render_dynamic_workspace() -> None:
         WorkspaceState.VIEW_3D: "🎨 Beam 3D",
         WorkspaceState.CROSS_SECTION: "📐 Cross-Section",
         WorkspaceState.REBAR_EDIT: "🔧 Rebar Edit",
+        WorkspaceState.UNIFIED_EDITOR: "✏️ Unified Editor",
         WorkspaceState.EDIT: "✏️ Edit",
         WorkspaceState.DASHBOARD: "📈 Dashboard",
     }
@@ -3440,6 +3898,8 @@ def render_dynamic_workspace() -> None:
         render_cross_section()
     elif state == WorkspaceState.REBAR_EDIT:
         render_rebar_editor()
+    elif state == WorkspaceState.UNIFIED_EDITOR:
+        render_unified_editor()
     elif state == WorkspaceState.EDIT:
         render_beam_editor()
     elif state == WorkspaceState.DASHBOARD:

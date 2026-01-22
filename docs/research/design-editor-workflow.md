@@ -2,7 +2,7 @@
 
 **Type:** Research
 **Audience:** Developers, UX Designers
-**Status:** Draft
+**Status:** Approved
 **Importance:** High
 **Created:** 2026-01-22
 **Last Updated:** 2026-01-22
@@ -14,48 +14,48 @@
 
 This document researches the optimal workflow for structural engineers using the design editor. The current implementation has UX issues that prevent practical use. This research proposes a **unified editor experience** with integrated 3D visualization and AI-assisted design checks.
 
+**Key Insight:** Engineers don't want to "switch views" - they want to see everything at once and make quick decisions. The ideal interface mimics how they work with spreadsheets: instant feedback, batch operations, and visual confirmation.
+
 ---
 
-## 2. Current State Analysis
+## 2. Engineer's Mental Model
 
-### 2.1 Current Issues
+### 2.1 How Engineers Actually Work
 
-| Issue | Impact | Priority |
-|-------|--------|----------|
-| **Separate edit and check views** | Engineers must switch between panels to see results | Critical |
-| **No contextual 3D feedback** | Can't visualize changes while editing | High |
-| **Chat panel takes space during editing** | Reduces editor workspace | Medium |
-| **No beam-line navigation** | Hard to work through beams systematically | Medium |
-| **No undo/redo capability** | Risky edits without safety net | High |
+**Real-world workflow (observed):**
+1. **Scan for problems:** Look at all beams, find failures quickly
+2. **Prioritize:** Focus on critical beams first (high utilization, failures)
+3. **Standardize:** Group similar beams, apply same reinforcement
+4. **Verify visually:** Quick glance at section to confirm bars fit
+5. **Document:** Generate report showing all designs
 
-### 2.2 Current Layout (35% Chat + 65% Workspace)
+**Key behaviors:**
+- **Batch thinking:** "All 6m beams on this floor can use 4×16 bottom"
+- **Pattern recognition:** "This beam line should be consistent"
+- **Quick decisions:** Spend <30 seconds per simple beam, more on complex ones
+- **Visual verification:** Cross-section is critical for constructability check
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│ ⚡ StructEng AI                                    📍 Design         │
-├──────────────────┬───────────────────────────────────────────────────┤
-│                  │                                                   │
-│    AI CHAT       │              WORKSPACE                            │
-│    (35%)         │              (65%)                                │
-│                  │                                                   │
-│  Messages        │   Results Table / Editor / 3D Views               │
-│  ...             │                                                   │
-│                  │                                                   │
-│  ─────────────   │                                                   │
-│  Input           │                                                   │
-│                  │                                                   │
-└──────────────────┴───────────────────────────────────────────────────┘
-```
+### 2.2 Pain Points with Current UI
 
-**Problem:** During editing, the 35% chat column wastes valuable screen space.
+| Pain Point | Engineer's Thought | Solution |
+|------------|-------------------|----------|
+| "I can't see the checks while editing" | "I need to toggle between tabs constantly" | Side-by-side layout |
+| "The 3D is in a different view" | "How do I know if bars will fit?" | Inline 3D preview |
+| "I lose context switching beams" | "What was I doing?" | Keep all context visible |
+| "No way to apply same rebar to similar beams" | "Tedious! I have 50 beams!" | Batch apply feature |
+| "Chat takes up space" | "I need more room for the editor" | Collapsible chat |
 
 ---
 
 ## 3. Proposed Solution: Unified Editor Mode
 
-### 3.1 Full-Width Editor Layout (When Editing)
+### 3.1 Design Principles (Engineer-First)
 
-When an engineer enters edit mode, collapse the chat panel and maximize the editor:
+1. **Single-screen workflow:** Everything needed for one beam visible at once
+2. **Progressive disclosure:** Simple beams need simple UI, complex get more options
+3. **Batch operations first-class:** Apply to multiple beams easily
+4. **Visual confidence:** 3D and 2D views update instantly
+5. **Zero-click saves:** Auto-save on navigation (like spreadsheets)
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
