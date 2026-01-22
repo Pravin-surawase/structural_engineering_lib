@@ -143,25 +143,27 @@ Import Data → Overview → Filter/Group → Review Issues → Fix Issues → V
 
 ## 4. Implementation Plan
 
-### 4.1 Phase 1: Critical Fixes (This Session)
+### 4.1 Phase 1: Critical Fixes (Session 33 - COMPLETED)
+
+| Priority | Task | Status | Notes |
+|----------|------|--------|-------|
+| P1 | Remove duplicate "Optimize All" button | ✅ Done | Single button in toolbar |
+| P1 | Fix beam-line filter state bug | ✅ Done | Recalculate is_safe on init |
+| P2 | Make 3D view always visible | ✅ Done | Above table, 280px height |
+| P2 | Add beam selection → 3D focus | ✅ Done | Click selectbox → focused view |
+| P2 | Show reinforcement in focused beam | ✅ Done | Uses create_beam_3d_figure |
+| P3 | Improve column widths (smart sizing) | ✅ Done | 45-80px based on content |
+| P3 | Stirrup optimization (8/10/12mm) | ✅ Done | 100-300mm spacing range |
+| P3 | Auto-layout when no coordinates | ✅ Done | Grid based on beam_line |
+
+### 4.2 Phase 2: Enhanced Features (Next Session)
 
 | Priority | Task | Effort | Impact |
 |----------|------|--------|--------|
-| P1 | Remove duplicate "Optimize All" button | 5 min | Low |
-| P1 | Fix beam-line filter state bug | 15 min | High |
-| P2 | Make 3D view always visible (not expander) | 20 min | High |
-| P2 | Add per-row optimize button in table | 15 min | Medium |
-| P3 | Improve column widths (smart sizing) | 10 min | Medium |
-| P3 | Highlight cells >100% utilization | 10 min | Medium |
-
-### 4.2 Phase 2: Enhanced 3D Interaction (Next Session)
-
-| Priority | Task | Effort | Impact |
-|----------|------|--------|--------|
-| P1 | Add beam selection → 3D focus transition | 30 min | WOW factor |
-| P1 | Show reinforcement in focused beam | 30 min | WOW factor |
-| P2 | Click beam in 3D → select table row | 20 min | Medium |
-| P3 | Floor selector syncs 3D + table | 10 min | Medium |
+| P1 | Show reinforcement in ALL floor beams | 45 min | WOW factor |
+| P2 | Click beam in 3D → select table row | 30 min | Two-way sync |
+| P2 | Highlight cells >100% utilization | 15 min | Visual clarity |
+| P3 | Dynamic table (click cell → update 3D) | 45 min | Complex - needs workaround |
 
 ### 4.3 Phase 3: Polish (Future)
 
@@ -232,35 +234,32 @@ column_config = {
 
 ---
 
-## 6. Bugs to Fix
+## 6. Bugs Fixed (Session 33)
 
-### 6.1 Duplicate Optimize Buttons
+### 6.1 Duplicate Optimize Buttons ✅ Fixed
 
-**Current code has TWO buttons:**
-1. Line ~3640: `⚡ Auto-Optimize All` (toolbar row)
-2. Line ~3785: `⚡ Optimize All` (above table)
+**Was:** Two buttons - toolbar row + above table.
+**Now:** Single "Fix N Failed" button in toolbar.
 
-**Fix:** Remove one, keep the prominent one.
+### 6.2 Beam-Line Filter State Bug ✅ Fixed
 
-### 6.2 Beam-Line Filter State Bug
+**Was:** After filter, beams showed as failed even after optimization.
+**Fix:** Added `is_safe` and `status` recalculation in initialization loop.
 
-**Symptom:** After selecting beam line filter, some beams show as failed even after optimization.
+### 6.3 Stirrup Optimization Limited to 8mm ✅ Fixed
 
-**Root Cause:** The optimization modifies `df` but the `is_safe` calculation happens based on stale values.
+**Was:** `suggest_optimal_rebar()` only used 8mm stirrups.
+**Now:** Supports 8/10/12mm with IS 456 shear calculation.
+**Spacing:** 100, 125, 150, 175, 200, 250, 300mm options.
 
-**Fix:** Ensure status recalculation after any df modification.
+### 6.4 3D View All Beams Overlap ✅ Fixed
 
-### 6.3 Filter Changes Results (Suspected)
-
-**Symptom:** Grouping/filtering appears to change beam status.
-
-**Root Cause:** Likely same as 6.2 - stale state between filtered_df and df.
-
-**Fix:** Always recalculate from source df, not filtered copy.
+**Was:** Without coordinates, all beams at (0,0,0)→(1000,0,0).
+**Now:** Auto-layout grid based on beam_line naming convention.
 
 ---
 
-## 7. Success Metrics
+## 7. Known Issues (For Next Session)
 
 | Metric | Current | Target |
 |--------|---------|--------|

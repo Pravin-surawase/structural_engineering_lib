@@ -2012,6 +2012,8 @@ def suggest_optimal_rebar(
 
     Tries to minimize steel while maintaining safety and constructability.
     Returns config compatible with rebar editor session state keys.
+
+    Session 33: Now includes shear reinforcement optimization (stirrups).
     """
     # Calculate required steel area (IS 456 simplified)
     d_eff = D_mm - cover_mm - 8 - 16 / 2  # Assume 8mm stirrup, 16mm bar
@@ -2075,6 +2077,87 @@ def suggest_optimal_rebar(
             "bottom_layer2_dia": 0,
             "bottom_layer2_count": 0,
         }
+
+    # =========================================================================
+    # Session 33: SHEAR REINFORCEMENT (Stirrup) Optimization
+    # =========================================================================
+    # Calculate shear stress (IS 456 Cl 40.1)
+    tau_v = (vu_kn * 1000) / (b_mm * d_eff) if d_eff > 0 else 0  # N/mm²
+
+    # Permissible shear stress in concrete (IS 456 Table 19, simplified)
+    # For fck=25: tau_c varies from 0.36-0.79 based on Ast%
+    ast_provided = best_config["bottom_layer1_count"] * math.pi * (best_config["bottom_layer1_dia"] ** 2) / 4
+    if best_config.get("bottom_layer2_count", 0) > 0:
+        ast_provided += best_config["bottom_layer2_count"] * math.pi * (best_config.get("bottom_layer2_dia", 0) ** 2) / 4
+
+    pt = 100 * ast_provided / (b_mm * d_eff) if d_eff > 0 else 0
+
+    # Simplified tau_c calculation (IS 456 Table 19 for fck=25)
+    if pt <= 0.15:
+        tau_c = 0.28
+    elif pt <= 0.25:
+        tau_c = 0.36
+    elif pt <= 0.50:
+        tau_c = 0.48
+    elif pt <= 0.75:
+        tau_c = 0.56
+    elif pt <= 1.00:
+        tau_c = 0.62
+    elif pt <= 1.50:
+        tau_c = 0.71
+    else:
+        tau_c = 0.79
+
+    # Adjust for concrete grade (simplified)
+    tau_c = tau_c * (fck / 25) ** 0.5 if fck != 25 else tau_c
+
+    # Shear to be resisted by stirrups
+    vus = (tau_v - tau_c) * b_mm * d_eff / 1000  # kN
+
+    # Select stirrup configuration
+    stirrup_options = [8, 10, 12]  # mm diameter options
+    spacing_options = [100, 125, 150, 175, 200, 250, 300]  # mm spacing options
+
+    best_stirrup_dia = 8
+    best_stirrup_spacing = 150  # Default
+
+    if vus > 0:
+        # Need calculated stirrups
+        for st_dia in stirrup_options:
+            asv = 2 * math.pi * (st_dia / 2) ** 2  # 2-legged stirrup
+            for sv in spacing_options:
+                # Capacity: Vus = 0.87 * fy * Asv * d / sv (IS 456 Cl 40.4)
+                capacity = 0.87 * fy * asv * d_eff / sv / 1000  # kN
+                if capacity >= vus:
+                    # Check maximum spacing (IS 456 Cl 26.5.1.5)
+                    max_sv = min(0.75 * d_eff, 300)
+                    if sv <= max_sv:
+                        best_stirrup_dia = st_dia
+                        best_stirrup_spacing = sv
+                        break
+            else:
+                continue
+            break
+    else:
+        # Minimum stirrups only (IS 456 Cl 26.5.1.6)
+        # Asv/bsv >= 0.4/fy
+        for st_dia in stirrup_options:
+            asv = 2 * math.pi * (st_dia / 2) ** 2
+            for sv in spacing_options:
+                ratio = asv / (b_mm * sv)
+                min_ratio = 0.4 / fy
+                max_sv = min(0.75 * d_eff, 300)
+                if ratio >= min_ratio and sv <= max_sv:
+                    best_stirrup_dia = st_dia
+                    best_stirrup_spacing = sv
+                    break
+            else:
+                continue
+            break
+
+    # Add stirrup config to result
+    best_config["stirrup_dia"] = best_stirrup_dia
+    best_config["stirrup_spacing"] = int(best_stirrup_spacing)
 
     return best_config
 
@@ -3612,8 +3695,12 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     fcover = float(row.get("cover_mm", 40))
                     opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
                     if opt:
+                        # Apply flexural reinforcement
                         df.at[idx, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
                         df.at[idx, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
+                        # Apply shear reinforcement (Session 33: 8/10/12mm, 100-300mm)
+                        df.at[idx, "stirrup_dia"] = opt.get("stirrup_dia", 8)
+                        df.at[idx, "stirrup_spacing"] = opt.get("stirrup_spacing", 150)
                         ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
                         ast_req = float(row.get("ast_req", 500))
                         if ast_prov >= ast_req:
@@ -3717,8 +3804,12 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
                     if opt:
                         mask = df["beam_id"] == selected_beam_id
+                        # Apply flexural reinforcement
                         df.loc[mask, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
                         df.loc[mask, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
+                        # Apply shear reinforcement (Session 33: 8/10/12mm, 100-300mm)
+                        df.loc[mask, "stirrup_dia"] = opt.get("stirrup_dia", 8)
+                        df.loc[mask, "stirrup_spacing"] = opt.get("stirrup_spacing", 150)
                         ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
                         ast_req = float(beam_row.get("ast_req", 500))
                         df.loc[mask, "is_safe"] = ast_prov >= ast_req
@@ -3749,15 +3840,53 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         else:
             # BUILDING VIEW: Multi-beam floor plan
             beam_data = []
-            for _, row in view_df.iterrows():
+
+            # Check if real coordinates exist
+            has_real_coords = "x1" in view_df.columns and view_df["x1"].notna().any()
+
+            # Auto-layout: Generate grid coordinates if missing
+            if not has_real_coords:
+                # Group by beam_line for smart layout
+                beam_lines = view_df["beam_line"].unique().tolist() if "beam_line" in view_df.columns else []
+                grid_spacing = 5000  # 5m between parallel beams
+                beam_length = 4000   # 4m default span
+
+            for i, (_, row) in enumerate(view_df.iterrows()):
+                if has_real_coords:
+                    # Use actual coordinates
+                    x1 = float(row.get("x1", 0))
+                    y1 = float(row.get("y1", 0))
+                    z1 = float(row.get("z1", 0))
+                    x2 = float(row.get("x2", x1 + 4000))
+                    y2 = float(row.get("y2", y1))
+                    z2 = float(row.get("z2", z1))
+                else:
+                    # Auto-generate grid layout
+                    beam_line = row.get("beam_line", f"BL{i}")
+                    try:
+                        line_idx = beam_lines.index(beam_line) if beam_lines else i
+                    except (ValueError, AttributeError):
+                        line_idx = i
+                    # Alternate X/Y direction based on beam_line naming (A/B/C vs 1/2/3)
+                    beam_name = str(beam_line)
+                    if beam_name and beam_name[0].isalpha():
+                        # Horizontal beam (A1, B2, etc.)
+                        x1, y1 = 0, line_idx * grid_spacing
+                        x2, y2 = float(row.get("span_mm", beam_length)), line_idx * grid_spacing
+                    else:
+                        # Vertical beam (1A, 2B, etc.)
+                        x1, y1 = line_idx * grid_spacing, 0
+                        x2, y2 = line_idx * grid_spacing, float(row.get("span_mm", beam_length))
+                    z1 = z2 = 0
+
                 beam_entry = {
                     "id": row.get("beam_id", ""),
-                    "x1": float(row.get("x1", 0)),
-                    "y1": float(row.get("y1", 0)),
-                    "z1": float(row.get("z1", 0)),
-                    "x2": float(row.get("x2", 1000)),
-                    "y2": float(row.get("y2", 0)),
-                    "z2": float(row.get("z2", 0)),
+                    "x1": x1,
+                    "y1": y1,
+                    "z1": z1,
+                    "x2": x2,
+                    "y2": y2,
+                    "z2": z2,
                     "width": float(row.get("b_mm", 300)),
                     "depth": float(row.get("D_mm", 500)),
                     "mu_knm": float(row.get("mu_knm", 0)),
@@ -3771,16 +3900,17 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                 passed = sum(1 for b in beam_data if b["is_safe"])
                 failed = len(beam_data) - passed
                 title_status = f"✅ {passed}" if failed == 0 else f"✅ {passed} | ❌ {failed}"
+                auto_note = " (auto-layout)" if not has_real_coords else ""
 
                 fig, lod_stats = create_multi_beam_3d_figure(
                     beam_data=beam_data,
                     show_forces=True,
-                    title=f"{selected_floor} — {title_status}",
+                    title=f"{selected_floor} — {title_status}{auto_note}",
                     height=280,
                 )
                 st.plotly_chart(fig, use_container_width=True, key="table_3d_view")
             else:
-                st.info("No beams with coordinate data for this floor")
+                st.info("No beams found for this floor")
     else:
         st.caption("💡 3D view available when coordinate data present (x1, y1, z1, x2, y2, z2)")
 
