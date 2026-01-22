@@ -597,13 +597,27 @@ def main():
             # Quick access links
             st.caption(f"📍 {workspace_state.value.title()}")
 
-        # Main layout: 35% chat, 65% workspace (maximized)
-        chat_col, workspace_col = st.columns([0.35, 0.65])
+        # Session 32: Make chat collapsible - maximize workspace by default
+        # User can expand chat when needed with toggle
+        show_chat = st.session_state.get("show_chat_panel", False)
 
-        with chat_col:
-            render_chat_panel()
+        # Toggle in header
+        chat_toggle_col, spacer_col = st.columns([0.15, 0.85])
+        with chat_toggle_col:
+            if st.button("💬" if not show_chat else "✕ Hide Chat", key="toggle_chat",
+                        type="secondary" if not show_chat else "primary"):
+                st.session_state.show_chat_panel = not show_chat
+                st.rerun()
 
-        with workspace_col:
+        if show_chat:
+            # Layout: 30% chat, 70% workspace when chat visible
+            chat_col, workspace_col = st.columns([0.30, 0.70])
+            with chat_col:
+                render_chat_panel()
+            with workspace_col:
+                render_dynamic_workspace()
+        else:
+            # Full-width workspace when chat hidden
             render_dynamic_workspace()
 
 

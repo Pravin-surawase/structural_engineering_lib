@@ -358,4 +358,50 @@ def navigate_to_beam(direction: str):
 
 ---
 
+## 10. Session 32 - Table Editor Overhaul (Jan 22, 2026)
+
+### 10.1 Issues Identified (User Testing)
+
+| # | Issue | Impact | Priority |
+|---|-------|--------|----------|
+| 1 | Code duplication - section view logic in 3 places | Maintenance burden, bugs | High |
+| 2 | Section bar position fix not applied in Rebar Editor | Visual inconsistency | Critical |
+| 3a | No stirrup diameter column in table | Feature gap | High |
+| 3b | No optimize button per row | Feature gap | High |
+| 3c | Simple fail message - no context | UX issue | Medium |
+| 3d | No utilization column | Feature gap | High |
+| 3e | Beams fail when switching to beam line | Bug | Critical |
+| 3f | No 3D view in table format | Feature gap | Medium |
+| 3g | 3D should focus on selected beam's floor | UX improvement | Medium |
+| 4 | AI mode always visible | UI clutter | Medium |
+| 5 | Wasted space at top, font sizes | UX issue | High |
+
+### 10.2 Root Cause Analysis
+
+#### Code Duplication (Issues 1 & 2)
+
+**Problem:** Bar position calculations exist in 3 places with different formulas.
+
+**Solution:** Create shared `calculate_bar_positions()` in `utils/section_geometry.py`
+
+#### Beam Line Bug (Issue 3e)
+
+**Root Cause:** `filtered_df` copy doesn't preserve session state rebar configs.
+
+**Solution:** Sync config to dataframe BEFORE filtering.
+
+### 10.3 Implementation Plan
+
+1. **Extract shared bar position calculator** - Create `section_geometry.py`
+2. **Fix beam-line grouping bug** - Sync session state to df
+3. **Add stirrup_dia column** - SelectboxColumn [8, 10, 12]
+4. **Add utilization column** - ProgressColumn with color coding
+5. **Add row selection + Optimize Selected button**
+6. **Add 3D floor view above table** - `create_multi_beam_3d_figure()`
+7. **Add camera focus on selection**
+8. **Move AI to on-demand sidebar**
+9. **Compact header layout**
+
+---
+
 *Document created based on UX research session on 2026-01-22*

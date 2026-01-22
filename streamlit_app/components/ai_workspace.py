@@ -42,7 +42,7 @@ import streamlit as st
 
 # Try to import visualization components
 try:
-    from components.visualizations_3d import create_beam_3d_figure
+    from components.visualizations_3d import create_beam_3d_figure, create_multi_beam_3d_figure
 
     VISUALIZATION_AVAILABLE = True
 except ImportError:
@@ -86,6 +86,9 @@ try:
     PDF_AVAILABLE = is_reportlab_available()
 except ImportError:
     PDF_AVAILABLE = False
+
+# Import shared section geometry (Session 32 - consolidated bar position calculations)
+from utils.section_geometry import calculate_bar_positions
 
 
 class WorkspaceState(Enum):
@@ -2562,41 +2565,19 @@ def render_rebar_editor() -> None:
     st.markdown("##### 📐 Live Cross-Section Preview")
 
     if VISUALIZATION_AVAILABLE:
-        # Calculate bar positions for visualization
-        bottom_bars_vis = []
-        top_bars_vis = []
-
-        # Bottom layer 1 positions
-        layer1_y = cover_mm + 8 + l1_dia / 2  # stirrup + half bar dia
-        available_width = b_mm - 2 * cover_mm - 16  # inside stirrups
-        if l1_count > 1:
-            spacing_1 = available_width / (l1_count - 1)
-            for i in range(l1_count):
-                bx = cover_mm + 8 + l1_dia / 2 + i * spacing_1
-                bottom_bars_vis.append((bx, layer1_y, l1_dia))
-        else:
-            bottom_bars_vis.append((b_mm / 2, layer1_y, l1_dia))
-
-        # Bottom layer 2 positions (if any)
-        if l2_count > 0 and l2_dia > 0:
-            layer2_y = layer1_y + l1_dia / 2 + 25 + l2_dia / 2
-            if l2_count > 1:
-                spacing_2 = available_width / (l2_count - 1)
-                for i in range(l2_count):
-                    bx = cover_mm + 8 + l2_dia / 2 + i * spacing_2
-                    bottom_bars_vis.append((bx, layer2_y, l2_dia))
-            else:
-                bottom_bars_vis.append((b_mm / 2, layer2_y, l2_dia))
-
-        # Top bar positions
-        top_y = D_mm - cover_mm - 8 - top_dia / 2
-        if top_count > 1:
-            spacing_top = available_width / (top_count - 1)
-            for i in range(top_count):
-                tx = cover_mm + 8 + top_dia / 2 + i * spacing_top
-                top_bars_vis.append((tx, top_y, top_dia))
-        else:
-            top_bars_vis.append((b_mm / 2, top_y, top_dia))
+        # Use shared bar position calculator (Session 32 fix - uses actual stirrup_dia)
+        bottom_bars_vis, top_bars_vis = calculate_bar_positions(
+            b_mm=b_mm,
+            D_mm=D_mm,
+            cover_mm=cover_mm,
+            stirrup_dia=stir_dia,  # Uses actual stirrup diameter, not hardcoded 8
+            l1_count=l1_count,
+            l1_dia=l1_dia,
+            l2_count=l2_count,
+            l2_dia=l2_dia,
+            top_count=top_count,
+            top_dia=top_dia,
+        )
 
         # Create and display cross-section figure
         fig = create_cross_section_figure(
@@ -3577,6 +3558,60 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     - Smart "Apply to Similar" feature
     - Live status updates as you edit
     """
+    # Session 32: Add compact 3D floor view above table
+    with st.expander("🏗️ 3D Floor View", expanded=False):
+        if VISUALIZATION_AVAILABLE and len(df) > 0:
+            # Get unique stories for floor selection
+            stories = sorted(df["story"].unique().tolist()) if "story" in df.columns else ["All"]
+
+            # Floor selector
+            v_col1, v_col2 = st.columns([1, 3])
+            with v_col1:
+                selected_floor = st.selectbox(
+                    "Floor",
+                    ["All Floors"] + stories,
+                    key="table_3d_floor",
+                    label_visibility="collapsed",
+                )
+
+            # Filter beams for selected floor
+            if selected_floor == "All Floors":
+                view_df = df
+            else:
+                view_df = df[df["story"] == selected_floor]
+
+            # Prepare beam data for 3D view
+            beam_data = []
+            for _, row in view_df.iterrows():
+                beam_entry = {
+                    "id": row.get("beam_id", ""),
+                    "x1": float(row.get("x1", 0)),
+                    "y1": float(row.get("y1", 0)),
+                    "z1": float(row.get("z1", 0)),
+                    "x2": float(row.get("x2", 1000)),
+                    "y2": float(row.get("y2", 0)),
+                    "z2": float(row.get("z2", 0)),
+                    "width": float(row.get("b_mm", 300)),
+                    "depth": float(row.get("D_mm", 500)),
+                    "mu_knm": float(row.get("mu_knm", 0)),
+                    "vu_kn": float(row.get("vu_kn", 0)),
+                    "is_safe": bool(row.get("is_safe", True)),
+                }
+                beam_data.append(beam_entry)
+
+            if beam_data:
+                fig, lod_stats = create_multi_beam_3d_figure(
+                    beam_data=beam_data,
+                    show_forces=True,
+                    title=f"{selected_floor} ({len(beam_data)} beams)",
+                    height=350,
+                )
+                st.plotly_chart(fig, use_container_width=True, key="table_3d_view")
+            else:
+                st.info("No beams with coordinate data")
+        else:
+            st.info("3D visualization requires coordinate data (x1, y1, z1, x2, y2, z2)")
+
     st.caption("💡 Edit values directly in the table. Changes apply when you leave a cell.")
 
     # Toolbar with batch operations
@@ -3627,6 +3662,35 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             set_workspace_state(WorkspaceState.DESIGN)
             st.rerun()
 
+    # Initialize rebar columns in MAIN df (not just filtered) - fixes beam line grouping bug
+    # Session 32: Adding columns to df ensures they persist across grouping changes
+    rebar_init_needed = "bottom_bar_count" not in df.columns
+    if rebar_init_needed:
+        # Smart defaults based on ast_req
+        for idx, row in df.iterrows():
+            ast_req = float(row.get("ast_req", 500))
+            # Estimate bar count/dia based on ast_req
+            # Default: 4Φ16 = 804 mm² - good for ~500-800 mm² requirement
+            if ast_req > 1200:
+                df.at[idx, "bottom_bar_count"] = 4
+                df.at[idx, "bottom_bar_dia"] = 20
+            elif ast_req > 800:
+                df.at[idx, "bottom_bar_count"] = 4
+                df.at[idx, "bottom_bar_dia"] = 16
+            else:
+                df.at[idx, "bottom_bar_count"] = 3
+                df.at[idx, "bottom_bar_dia"] = 16
+        df["top_bar_count"] = 2
+        df["top_bar_dia"] = 12
+        df["stirrup_spacing"] = 150
+        df["stirrup_dia"] = 8  # NEW: Stirrup diameter column
+        st.session_state.ws_design_results = df
+
+    # Ensure stirrup_dia column exists (may be missing from older data)
+    if "stirrup_dia" not in df.columns:
+        df["stirrup_dia"] = 8
+        st.session_state.ws_design_results = df
+
     # Apply filter
     filtered_df = df.copy()
     if filter_status == "Failed Only":
@@ -3643,26 +3707,27 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     filtered_df["_beam_line"] = filtered_df["beam_id"].apply(get_beam_line)
     filtered_df["_section"] = filtered_df["b_mm"].astype(str) + "x" + filtered_df["D_mm"].astype(str)
 
+    # Calculate utilization for each beam (Ast provided / Ast required * 100)
+    def calc_util(row):
+        ast_req = float(row.get("ast_req", 500))
+        if ast_req <= 0:
+            return 100.0
+        bar_count = int(row.get("bottom_bar_count", 4))
+        bar_dia = float(row.get("bottom_bar_dia", 16))
+        ast_prov = bar_count * math.pi * (bar_dia ** 2) / 4
+        return (ast_req / ast_prov) * 100 if ast_prov > 0 else 999.0
+
+    filtered_df["_utilization"] = filtered_df.apply(calc_util, axis=1)
+
     # Prepare editable columns
     edit_cols = ["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn"]
 
-    # Add rebar columns with defaults
-    if "bottom_bar_count" not in filtered_df.columns:
-        filtered_df["bottom_bar_count"] = 4
-    if "bottom_bar_dia" not in filtered_df.columns:
-        filtered_df["bottom_bar_dia"] = 16
-    if "top_bar_count" not in filtered_df.columns:
-        filtered_df["top_bar_count"] = 2
-    if "top_bar_dia" not in filtered_df.columns:
-        filtered_df["top_bar_dia"] = 12
-    if "stirrup_spacing" not in filtered_df.columns:
-        filtered_df["stirrup_spacing"] = 150
-
     # Ensure integer types for rebar columns
-    for col in ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_spacing"]:
-        filtered_df[col] = filtered_df[col].fillna(4 if "count" in col else 16 if "dia" in col else 150).astype(int)
+    for col in ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_spacing", "stirrup_dia"]:
+        if col in filtered_df.columns:
+            filtered_df[col] = filtered_df[col].fillna(4 if "count" in col else 16 if "bar_dia" in col else 8 if col == "stirrup_dia" else 150).astype(int)
 
-    edit_cols += ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_spacing", "status"]
+    edit_cols += ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_dia", "stirrup_spacing", "_utilization", "status"]
 
     # Group display
     if group_by == "Story":
@@ -3701,13 +3766,68 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         "top_bar_dia": st.column_config.SelectboxColumn(
             "ϕTop", options=[10, 12, 16, 20], width="small"
         ),
+        "stirrup_dia": st.column_config.SelectboxColumn(
+            "ϕSt", options=[8, 10, 12], width="small",
+            help="Stirrup diameter (mm)"
+        ),
         "stirrup_spacing": st.column_config.SelectboxColumn(
             "Sv", options=[100, 125, 150, 175, 200, 250], width="small"
+        ),
+        "_utilization": st.column_config.ProgressColumn(
+            "Util%",
+            help="Utilization: Ast required / Ast provided. <100 = over-designed, >100 = under-designed",
+            min_value=0,
+            max_value=150,
+            format="%.0f%%",
         ),
         "status": st.column_config.TextColumn("Status", disabled=True, width="small"),
     }
 
-    # Render editable table
+    # Per-row optimize button row
+    opt_col1, opt_col2, opt_col3 = st.columns([1, 1, 2])
+    with opt_col1:
+        if st.button("⚡ Optimize Selected", key="opt_selected_btn", type="primary"):
+            # Get selected rows from session state
+            selected_rows = st.session_state.get("ue_table_selection", {}).get("rows", [])
+            if selected_rows:
+                optimized_count = 0
+                for row_idx in selected_rows:
+                    if row_idx < len(display_df):
+                        beam_id = display_df.iloc[row_idx]["beam_id"]
+                        row = df[df["beam_id"] == beam_id].iloc[0]
+                        fb = float(row.get("b_mm", 300))
+                        fD = float(row.get("D_mm", 500))
+                        fmu = float(row.get("mu_knm", 100))
+                        fvu = float(row.get("vu_kn", 50))
+                        ffck = float(row.get("fck", 25))
+                        ffy = float(row.get("fy", 500))
+                        fcover = float(row.get("cover_mm", 40))
+                        opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
+                        if opt:
+                            mask = df["beam_id"] == beam_id
+                            df.loc[mask, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
+                            df.loc[mask, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
+                            # Recalculate
+                            ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
+                            ast_req = float(row.get("ast_req", 500))
+                            if ast_prov >= ast_req:
+                                df.loc[mask, "is_safe"] = True
+                                util = (ast_req / ast_prov * 100) if ast_prov > 0 else 0
+                                df.loc[mask, "status"] = f"✅ {util:.0f}%"
+                                optimized_count += 1
+                st.session_state.ws_design_results = df
+                st.toast(f"✅ Optimized {optimized_count} beams!")
+                st.rerun()
+            else:
+                st.warning("Select rows first (click row numbers)")
+    with opt_col2:
+        selected_count = len(st.session_state.get("ue_table_selection", {}).get("rows", []))
+        if selected_count > 0:
+            st.caption(f"📌 {selected_count} selected")
+    with opt_col3:
+        st.caption("💡 Click row numbers to select, then optimize")
+
+    # Render editable table with row selection enabled
     edited_df = st.data_editor(
         display_df,
         column_config=column_config,
@@ -3716,7 +3836,14 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         height=400,
         num_rows="fixed",
         key="ue_smart_table",
+        selection_mode="multi-row",  # Enable row selection
+        on_select="rerun",  # Rerun on selection change
     )
+
+    # Store selection in session state for optimize button
+    if hasattr(st.session_state, "ue_smart_table") and st.session_state.ue_smart_table:
+        selection = st.session_state.ue_smart_table.get("selection", {})
+        st.session_state["ue_table_selection"] = selection
 
     # Sync changes back to main dataframe
     if edited_df is not None:
@@ -3728,17 +3855,24 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                 df.loc[mask, "bottom_bar_dia"] = row.get("bottom_bar_dia", 16)
                 df.loc[mask, "top_bar_count"] = row.get("top_bar_count", 2)
                 df.loc[mask, "top_bar_dia"] = row.get("top_bar_dia", 12)
+                df.loc[mask, "stirrup_dia"] = row.get("stirrup_dia", 8)  # NEW
                 df.loc[mask, "stirrup_spacing"] = row.get("stirrup_spacing", 150)
 
-                # Recalculate status
-                ast_prov = row.get("bottom_bar_count", 4) * math.pi * (row.get("bottom_bar_dia", 16) ** 2) / 4
+                # Recalculate status with detailed utilization
+                bar_count = row.get("bottom_bar_count", 4)
+                bar_dia = row.get("bottom_bar_dia", 16)
+                ast_prov = bar_count * math.pi * (bar_dia ** 2) / 4
                 ast_req = float(df.loc[mask, "ast_req"].iloc[0]) if "ast_req" in df.columns else 500
+                util = (ast_req / ast_prov * 100) if ast_prov > 0 else 999
+
                 if ast_prov >= ast_req:
                     df.loc[mask, "is_safe"] = True
-                    df.loc[mask, "status"] = "✅ PASS"
+                    # More informative status with utilization
+                    df.loc[mask, "status"] = f"✅ {util:.0f}%"
                 else:
                     df.loc[mask, "is_safe"] = False
-                    df.loc[mask, "status"] = "❌ FAIL"
+                    shortfall = ast_req - ast_prov
+                    df.loc[mask, "status"] = f"❌ Need +{shortfall:.0f}mm²"
 
         st.session_state.ws_design_results = df
 
@@ -4124,49 +4258,24 @@ def render_unified_editor() -> None:
         if view_2d_3d == "📐 2D Section":
             # 2D Cross-Section View
             if VISUALIZATION_AVAILABLE:
-                # Calculate bar positions
-                bottom_bars_vis = []
-                top_bars_vis = []
-                stirrup_dia_val = stir_dia
-
-                # Bottom layer 1
-                layer1_y = cover_mm + stirrup_dia_val + l1_dia / 2
-                x_start = cover_mm + stirrup_dia_val + l1_dia / 2
-                x_end = b_mm - cover_mm - stirrup_dia_val - l1_dia / 2
-                if l1_count > 1:
-                    spacing = (x_end - x_start) / (l1_count - 1)
-                    for i in range(l1_count):
-                        bottom_bars_vis.append((x_start + i * spacing, layer1_y, l1_dia))
-                else:
-                    bottom_bars_vis.append((b_mm / 2, layer1_y, l1_dia))
-
-                # Bottom layer 2
-                if l2_count > 0 and l2_dia > 0:
-                    layer2_y = layer1_y + l1_dia / 2 + 25 + l2_dia / 2
-                    x_start_2 = cover_mm + stirrup_dia_val + l2_dia / 2
-                    x_end_2 = b_mm - cover_mm - stirrup_dia_val - l2_dia / 2
-                    if l2_count > 1:
-                        spacing_2 = (x_end_2 - x_start_2) / (l2_count - 1)
-                        for i in range(l2_count):
-                            bottom_bars_vis.append((x_start_2 + i * spacing_2, layer2_y, l2_dia))
-                    else:
-                        bottom_bars_vis.append((b_mm / 2, layer2_y, l2_dia))
-
-                # Top bars
-                top_y = D_mm - cover_mm - stirrup_dia_val - top_dia / 2
-                x_start_t = cover_mm + stirrup_dia_val + top_dia / 2
-                x_end_t = b_mm - cover_mm - stirrup_dia_val - top_dia / 2
-                if top_count > 1:
-                    spacing_t = (x_end_t - x_start_t) / (top_count - 1)
-                    for i in range(top_count):
-                        top_bars_vis.append((x_start_t + i * spacing_t, top_y, top_dia))
-                else:
-                    top_bars_vis.append((b_mm / 2, top_y, top_dia))
+                # Use shared bar position calculator (Session 32 - DRY refactor)
+                bottom_bars_vis, top_bars_vis = calculate_bar_positions(
+                    b_mm=b_mm,
+                    D_mm=D_mm,
+                    cover_mm=cover_mm,
+                    stirrup_dia=stir_dia,
+                    l1_count=l1_count,
+                    l1_dia=l1_dia,
+                    l2_count=l2_count,
+                    l2_dia=l2_dia,
+                    top_count=top_count,
+                    top_dia=top_dia,
+                )
 
                 fig = create_cross_section_figure(
                     b=b_mm, D=D_mm, cover=cover_mm,
                     bottom_bars=bottom_bars_vis, top_bars=top_bars_vis,
-                    stirrup_dia=stirrup_dia_val, rebar_config=config,
+                    stirrup_dia=stir_dia, rebar_config=config,
                 )
                 st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_cross_section")
             else:
