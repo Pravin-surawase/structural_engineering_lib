@@ -1432,7 +1432,7 @@ def _render_editable_results_table(
         ),
         "stirrup_sp": st.column_config.SelectboxColumn(
             "Sv",
-            options=[100, 125, 150, 175, 200, 250],
+            options=[100, 125, 150, 175, 200, 225, 250, 275, 300],
             width="small",
             help="Stirrup spacing (mm)",
         ),
@@ -2508,8 +2508,8 @@ def render_rebar_editor() -> None:
         with c1:
             stir_dia = st.selectbox(
                 "Dia (mm)",
-                [6, 8, 10],
-                index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
+                [6, 8, 10, 12],
+                index=[6, 8, 10, 12].index(config.get("stirrup_dia", 8)),
                 key=f"{re_key_prefix}_stir_dia",
             )
         with c2:
@@ -3671,12 +3671,19 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         # Floor filter for 3D sync
         stories = sorted(df["story"].unique().tolist()) if "story" in df.columns else []
         floor_options = ["All Floors"] + stories
+        # Session 34: Use session state for floor filter (allows auto-sync when beam selected)
+        default_floor = st.session_state.get("ue_floor_filter", "All Floors")
+        if default_floor not in floor_options:
+            default_floor = "All Floors"
         selected_floor = st.selectbox(
             "Floor",
             floor_options,
+            index=floor_options.index(default_floor),
             key="table_3d_floor",
             label_visibility="collapsed",
         )
+        # Sync back to session state
+        st.session_state.ue_floor_filter = selected_floor
     with tool4:
         # Single optimize button (removed duplicate from below)
         failed_count = len(df[~df.get("is_safe", True)]) if "is_safe" in df.columns else 0
@@ -3838,81 +3845,13 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
 
             st.plotly_chart(fig, use_container_width=True, key="focused_beam_3d")
         else:
-            # BUILDING VIEW: Multi-beam floor plan
-            beam_data = []
-
-            # Check if real coordinates exist
-            has_real_coords = "x1" in view_df.columns and view_df["x1"].notna().any()
-
-            # Auto-layout: Generate grid coordinates if missing
-            if not has_real_coords:
-                # Group by beam_line for smart layout
-                beam_lines = view_df["beam_line"].unique().tolist() if "beam_line" in view_df.columns else []
-                grid_spacing = 5000  # 5m between parallel beams
-                beam_length = 4000   # 4m default span
-
-            for i, (_, row) in enumerate(view_df.iterrows()):
-                if has_real_coords:
-                    # Use actual coordinates
-                    x1 = float(row.get("x1", 0))
-                    y1 = float(row.get("y1", 0))
-                    z1 = float(row.get("z1", 0))
-                    x2 = float(row.get("x2", x1 + 4000))
-                    y2 = float(row.get("y2", y1))
-                    z2 = float(row.get("z2", z1))
-                else:
-                    # Auto-generate grid layout
-                    beam_line = row.get("beam_line", f"BL{i}")
-                    try:
-                        line_idx = beam_lines.index(beam_line) if beam_lines else i
-                    except (ValueError, AttributeError):
-                        line_idx = i
-                    # Alternate X/Y direction based on beam_line naming (A/B/C vs 1/2/3)
-                    beam_name = str(beam_line)
-                    if beam_name and beam_name[0].isalpha():
-                        # Horizontal beam (A1, B2, etc.)
-                        x1, y1 = 0, line_idx * grid_spacing
-                        x2, y2 = float(row.get("span_mm", beam_length)), line_idx * grid_spacing
-                    else:
-                        # Vertical beam (1A, 2B, etc.)
-                        x1, y1 = line_idx * grid_spacing, 0
-                        x2, y2 = line_idx * grid_spacing, float(row.get("span_mm", beam_length))
-                    z1 = z2 = 0
-
-                beam_entry = {
-                    "id": row.get("beam_id", ""),
-                    "x1": x1,
-                    "y1": y1,
-                    "z1": z1,
-                    "x2": x2,
-                    "y2": y2,
-                    "z2": z2,
-                    "width": float(row.get("b_mm", 300)),
-                    "depth": float(row.get("D_mm", 500)),
-                    "mu_knm": float(row.get("mu_knm", 0)),
-                    "vu_kn": float(row.get("vu_kn", 0)),
-                    "is_safe": bool(row.get("is_safe", True)),
-                }
-                beam_data.append(beam_entry)
-
-            if beam_data:
-                # Count passed/failed for title
-                passed = sum(1 for b in beam_data if b["is_safe"])
-                failed = len(beam_data) - passed
-                title_status = f"✅ {passed}" if failed == 0 else f"✅ {passed} | ❌ {failed}"
-                auto_note = " (auto-layout)" if not has_real_coords else ""
-
-                fig, lod_stats = create_multi_beam_3d_figure(
-                    beam_data=beam_data,
-                    show_forces=True,
-                    title=f"{selected_floor} — {title_status}{auto_note}",
-                    height=280,
-                )
-                st.plotly_chart(fig, use_container_width=True, key="table_3d_view")
-            else:
-                st.info("No beams found for this floor")
+            # BUILDING VIEW: Use the same proven create_building_3d_figure as "3D Building" button
+            # Session 34: Simplified to reuse working implementation
+            fig = create_building_3d_figure(view_df, selected_beam=None)
+            fig.update_layout(height=280)
+            st.plotly_chart(fig, use_container_width=True, key="table_3d_view")
     else:
-        st.caption("💡 3D view available when coordinate data present (x1, y1, z1, x2, y2, z2)")
+        st.caption("💡 Load data with coordinates to see 3D view")
 
 
     # Initialize rebar columns in MAIN df (not just filtered) - fixes beam line grouping bug
@@ -4047,7 +3986,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             help="Stirrup diameter (mm)"
         ),
         "stirrup_spacing": st.column_config.SelectboxColumn(
-            "Sv", options=[100, 125, 150, 175, 200, 250], width=55,
+            "Sv", options=[100, 125, 150, 175, 200, 225, 250, 275, 300], width=55,
             help="Stirrup spacing (mm)"
         ),
         "_utilization": st.column_config.ProgressColumn(
@@ -4065,6 +4004,10 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     # Calculate table height based on row count (max 600px, min 200px)
     table_height = min(600, max(200, len(display_df) * 35 + 40))
 
+    # Track if table was edited (for dynamic refresh)
+    def on_table_change():
+        st.session_state.ue_table_edited = True
+
     edited_df = st.data_editor(
         display_df,
         column_config=column_config,
@@ -4073,6 +4016,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         height=table_height,
         num_rows="fixed",
         key="ue_smart_table",
+        on_change=on_table_change,
     )
 
     # Tip for selecting beams
@@ -4082,7 +4026,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     # We'll add a selectbox for beam selection as fallback
     beam_ids = display_df["beam_id"].tolist()
     if beam_ids:
-        sel_col1, sel_col2 = st.columns([2, 3])
+        sel_col1, sel_col2, sel_col3 = st.columns([2, 2, 1])
         with sel_col1:
             focus_beam = st.selectbox(
                 "Focus beam",
@@ -4093,7 +4037,16 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             )
             if focus_beam != "(none)" and focus_beam != st.session_state.get("ue_selected_beam_id"):
                 st.session_state.ue_selected_beam_id = focus_beam
+                # Session 34: Auto-filter to the beam's story for better context
+                beam_story = df[df["beam_id"] == focus_beam]["story"].iloc[0] if focus_beam in df["beam_id"].values else None
+                if beam_story and beam_story != selected_floor:
+                    st.session_state.ue_floor_filter = beam_story
                 st.rerun()
+        with sel_col3:
+            if st.session_state.get("ue_selected_beam_id"):
+                if st.button("Clear", key="clear_focus", use_container_width=True):
+                    st.session_state.ue_selected_beam_id = None
+                    st.rerun()
 
     # Sync changes back to main dataframe
     if edited_df is not None:
@@ -4125,6 +4078,11 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     df.loc[mask, "status"] = f"❌ Need +{shortfall:.0f}mm²"
 
         st.session_state.ws_design_results = df
+
+        # Session 34: Trigger rerun if table was edited to refresh status display
+        if st.session_state.get("ue_table_edited", False):
+            st.session_state.ue_table_edited = False
+            st.rerun()
 
     # Beam Line Optimization Section (only when grouped by Beam Line)
     if group_by == "Beam Line" and "_beam_line" in filtered_df.columns:

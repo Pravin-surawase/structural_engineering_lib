@@ -512,8 +512,8 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
         st.caption("**Stirrups**")
         sc1, sc2 = st.columns(2)
         with sc1:
-            stir_dia = st.selectbox("SDia", [6, 8, 10],
-                index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
+            stir_dia = st.selectbox("SDia", [6, 8, 10, 12],
+                index=[6, 8, 10, 12].index(config.get("stirrup_dia", 8)),
                 key="mf_stir_dia", label_visibility="collapsed")
         with sc2:
             stir_spacing = st.number_input("Sp", 75, 300, config.get("stirrup_spacing", 150),
