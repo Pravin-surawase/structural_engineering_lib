@@ -2263,6 +2263,10 @@ def render_rebar_editor() -> None:
     # Editable rebar configuration
     col1, col2 = st.columns([0.45, 0.55])
 
+    # Use version counter in keys to force refresh on optimize
+    re_version = config.get("_version", 0)
+    re_key_prefix = f"re_{beam_id}_{re_version}"
+
     with col1:
         st.markdown("##### Bottom Reinforcement")
         c1, c2 = st.columns(2)
@@ -2271,7 +2275,7 @@ def render_rebar_editor() -> None:
                 "Layer 1 Dia (mm)",
                 [10, 12, 16, 20, 25, 32],
                 index=[10, 12, 16, 20, 25, 32].index(config["bottom_layer1_dia"]),
-                key="re_l1_dia",
+                key=f"{re_key_prefix}_l1_dia",
             )
             l2_dia = st.selectbox(
                 "Layer 2 Dia (mm)",
@@ -2279,14 +2283,14 @@ def render_rebar_editor() -> None:
                 index=[0, 10, 12, 16, 20, 25, 32].index(
                     config.get("bottom_layer2_dia", 0)
                 ),
-                key="re_l2_dia",
+                key=f"{re_key_prefix}_l2_dia",
             )
         with c2:
             l1_count = st.number_input(
-                "Count", 2, 8, config["bottom_layer1_count"], key="re_l1_cnt"
+                "Count", 2, 8, config["bottom_layer1_count"], key=f"{re_key_prefix}_l1_cnt"
             )
             l2_count = st.number_input(
-                "Count", 0, 6, config.get("bottom_layer2_count", 0), key="re_l2_cnt"
+                "Count", 0, 6, config.get("bottom_layer2_count", 0), key=f"{re_key_prefix}_l2_cnt"
             )
 
         st.markdown("##### Top Reinforcement")
@@ -2296,11 +2300,11 @@ def render_rebar_editor() -> None:
                 "Dia (mm)",
                 [10, 12, 16, 20],
                 index=[10, 12, 16, 20].index(config.get("top_dia", 12)),
-                key="re_top_dia",
+                key=f"{re_key_prefix}_top_dia",
             )
         with c2:
             top_count = st.number_input(
-                "Count", 2, 6, config.get("top_count", 2), key="re_top_cnt"
+                "Count", 2, 6, config.get("top_count", 2), key=f"{re_key_prefix}_top_cnt"
             )
 
         st.markdown("##### Stirrups")
@@ -2310,7 +2314,7 @@ def render_rebar_editor() -> None:
                 "Dia (mm)",
                 [6, 8, 10],
                 index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
-                key="re_stir_dia",
+                key=f"{re_key_prefix}_stir_dia",
             )
         with c2:
             stir_spacing = st.number_input(
@@ -2319,7 +2323,7 @@ def render_rebar_editor() -> None:
                 300,
                 config.get("stirrup_spacing", 150),
                 step=25,
-                key="re_stir_sp",
+                key=f"{re_key_prefix}_stir_sp",
             )
 
     # Update config
@@ -2432,15 +2436,12 @@ def render_rebar_editor() -> None:
                 optimized["stirrup_dia"] = config.get("stirrup_dia", 8)
                 optimized["stirrup_spacing"] = config.get("stirrup_spacing", 150)
                 optimized["beam_id"] = beam_id
+                # Increment version to force widget refresh (new keys)
+                optimized["_version"] = config.get("_version", 0) + 1
                 st.session_state.ws_rebar_config = optimized
 
-                # CRITICAL: Also update widget session state keys directly
-                # Widgets with keys read from st.session_state[key], not config
-                st.session_state.re_l1_dia = optimized["bottom_layer1_dia"]
-                st.session_state.re_l1_cnt = optimized["bottom_layer1_count"]
-                st.session_state.re_l2_dia = optimized.get("bottom_layer2_dia", 0)
-                st.session_state.re_l2_cnt = optimized.get("bottom_layer2_count", 0)
-
+                # NOTE: Don't modify widget keys directly - that causes
+                # StreamlitAPIException. The rerun will use the new config.
                 st.toast("✅ Optimized rebar configuration applied!")
                 st.rerun()
             else:
@@ -4155,7 +4156,6 @@ def render_unified_editor() -> None:
                     opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
                     if opt:
                         # Apply to dataframe (simulate re-design)
-                        import math
                         l1_dia = opt.get("bottom_layer1_dia", 16)
                         l1_cnt = opt.get("bottom_layer1_count", 4)
                         ast_prov = l1_cnt * math.pi * (l1_dia ** 2) / 4
@@ -4185,7 +4185,6 @@ def render_unified_editor() -> None:
                     fcover = float(row.get("cover_mm", 40))
                     opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
                     if opt:
-                        import math
                         l1_dia = opt.get("bottom_layer1_dia", 16)
                         l1_cnt = opt.get("bottom_layer1_count", 4)
                         ast_prov = l1_cnt * math.pi * (l1_dia ** 2) / 4

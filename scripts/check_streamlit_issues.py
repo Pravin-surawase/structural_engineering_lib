@@ -11,6 +11,13 @@ Scans ALL Streamlit pages for common issues:
 - TypeError (wrong function args)
 - API signature mismatches (Phase 3: test files)
 - Widget default values (Phase 5: TASK-403)
+- Widget key conflicts (Phase 7: session_state modification after widget)
+
+**Phase 7 Enhancements:**
+- Widget key conflict detection: Tracks widget keys and detects when
+  st.session_state.key = value is called after a widget with that key was created
+- This causes StreamlitAPIException at runtime ("cannot be modified after widget")
+- Recommends versioned keys pattern to avoid conflicts
 
 **Phase 6 Enhancements (TASK-425):**
 - Safe dict-like methods: Recognizes .get(), .setdefault(), .pop(), .update(),
@@ -290,6 +297,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # Session state tracking
         self.session_state_keys: Set[str] = set()  # Track keys set in session state
 
+        # Phase 7: Widget key conflict detection (TASK-XXX)
+        # Track widget keys to detect session_state modification after widget instantiation
+        self.widget_keys: Dict[str, int] = {}  # key -> line number where widget was created
+
         # Function tracking
         self.in_function = False
         self.function_name = ""
@@ -558,6 +569,15 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                             key = target.slice.value
                             if isinstance(key, str):
                                 self.session_state_keys.add(key)
+                                # Phase 7: Check for widget key conflict
+                                if key in self.widget_keys:
+                                    widget_line = self.widget_keys[key]
+                                    self.add_issue(
+                                        node.lineno,
+                                        "CRITICAL",
+                                        f"StreamlitAPIException risk: st.session_state['{key}'] modified after widget "
+                                        f"with key='{key}' was created at line {widget_line} (use versioned keys)",
+                                    )
 
             # Phase 6: Track attribute-style session state assignments
             # Pattern: st.session_state.key = value
@@ -571,6 +591,15 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                     # This is st.session_state.key = value
                     key = target.attr
                     self.session_state_keys.add(key)
+                    # Phase 7: Check for widget key conflict
+                    if key in self.widget_keys:
+                        widget_line = self.widget_keys[key]
+                        self.add_issue(
+                            node.lineno,
+                            "CRITICAL",
+                            f"StreamlitAPIException risk: st.session_state.{key} modified after widget "
+                            f"with key='{key}' was created at line {widget_line} (use versioned keys)",
+                        )
 
         self.generic_visit(node)
 
@@ -1412,6 +1441,50 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                 f"Widget st.{widget_name}() missing '{param_name}=' parameter ({description})",
             )
 
+    def _track_widget_keys(self, node: ast.Call):
+        """Phase 7: Track widget keys for conflict detection.
+
+        When a Streamlit widget is created with a key= parameter,
+        track that key so we can detect if session_state is later
+        modified with the same key (which would cause RuntimeError).
+
+        Example of problematic code:
+            st.number_input("Value", key="my_key")  # Widget created
+            st.session_state.my_key = 10  # ERROR! Can't modify after widget
+
+        This is a common mistake when trying to reset or update widgets.
+        The correct pattern is to use a version counter in the key.
+        """
+        # Only check st.widget_name() calls
+        if not isinstance(node.func, ast.Attribute):
+            return
+
+        # Check if it's a call on 'st' object
+        if not (isinstance(node.func.value, ast.Name) and node.func.value.id == "st"):
+            return
+
+        widget_name = node.func.attr
+
+        # All Streamlit widgets that accept key= parameter
+        widgets_with_keys = {
+            "number_input", "text_input", "text_area", "selectbox", "multiselect",
+            "slider", "radio", "checkbox", "button", "toggle", "select_slider",
+            "date_input", "time_input", "file_uploader", "color_picker",
+            "data_editor", "download_button", "form_submit_button",
+            "camera_input", "chat_input", "audio_input",
+        }
+
+        if widget_name not in widgets_with_keys:
+            return
+
+        # Look for key= parameter
+        for kw in node.keywords:
+            if kw.arg == "key":
+                # Extract the key value if it's a string constant
+                if isinstance(kw.value, ast.Constant) and isinstance(kw.value.value, str):
+                    key_value = kw.value.value
+                    self.widget_keys[key_value] = node.lineno
+
     def _is_early_exit(self, body: List[ast.stmt]) -> bool:
         """Check if a code block contains early exit (return/raise).
 
@@ -1585,6 +1658,9 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # TASK-403: Widget return type validation
         # Detect Streamlit widgets without explicit default values
         self._check_widget_defaults(node)
+
+        # Phase 7: Track widget keys for conflict detection
+        self._track_widget_keys(node)
 
         self.generic_visit(node)
 
