@@ -2076,6 +2076,116 @@ def suggest_optimal_rebar(
     return best_config
 
 
+def optimize_beam_line(
+    beam_ids: list[str],
+    df: "pd.DataFrame",
+    fck: float = 25.0,
+    fy: float = 500.0,
+    cover_mm: float = 40.0,
+) -> dict[str, dict]:
+    """Optimize all beams in a beam line together for consistency.
+
+    This function considers:
+    1. IS 456 requirements for each beam
+    2. Construction consistency (same bar sizes where possible)
+    3. Maximum bar size governs for uniformity
+
+    Args:
+        beam_ids: List of beam IDs in the same beam line
+        df: DataFrame with beam design data
+        fck: Concrete grade (N/mm²)
+        fy: Steel grade (N/mm²)
+        cover_mm: Cover to reinforcement (mm)
+
+    Returns:
+        Dict mapping beam_id -> optimized rebar config
+    """
+    if not beam_ids:
+        return {}
+
+    # Step 1: Get individual optimal configs for each beam
+    individual_configs = {}
+    for beam_id in beam_ids:
+        row = df[df["beam_id"] == beam_id]
+        if row.empty:
+            continue
+        row = row.iloc[0]
+        config = suggest_optimal_rebar(
+            b_mm=float(row.get("b_mm", 300)),
+            D_mm=float(row.get("D_mm", 450)),
+            mu_knm=float(row.get("mu_knm", 100)),
+            vu_kn=float(row.get("vu_kn", 50)),
+            fck=fck,
+            fy=fy,
+            cover_mm=cover_mm,
+        )
+        if config:
+            individual_configs[beam_id] = config
+
+    if not individual_configs:
+        return {}
+
+    # Step 2: Find the maximum bar size needed across all beams
+    # This ensures consistency for construction
+    max_bottom_dia = max(
+        (c.get("bottom_layer1_dia", 16) for c in individual_configs.values()),
+        default=16
+    )
+
+    # Step 3: Calculate required bar counts at the unified diameter
+    unified_configs = {}
+    for beam_id in beam_ids:
+        row = df[df["beam_id"] == beam_id]
+        if row.empty:
+            continue
+        row = row.iloc[0]
+
+        # Calculate required steel area for this beam
+        D_mm = float(row.get("D_mm", 450))
+        b_mm = float(row.get("b_mm", 300))
+        mu_knm = float(row.get("mu_knm", 100))
+        d_eff = D_mm - cover_mm - 8 - max_bottom_dia / 2
+
+        if d_eff <= 0 or fy <= 0:
+            continue
+
+        ast_req = mu_knm * 1e6 / (0.87 * fy * 0.9 * d_eff)
+        ast_min = 0.85 * b_mm * d_eff / fy
+        ast_target = max(ast_req * 1.1, ast_min)
+
+        # Calculate bar count at unified diameter
+        area_per_bar = math.pi * (max_bottom_dia / 2) ** 2
+        count = max(2, math.ceil(ast_target / area_per_bar))
+
+        # Check if fits in single layer
+        clear_cover = cover_mm + 8
+        available = b_mm - 2 * clear_cover - 2 * (max_bottom_dia / 2)
+        min_spacing = max(max_bottom_dia, 25)
+        max_bars_single = int(available / (max_bottom_dia + min_spacing)) + 1
+
+        if count <= max_bars_single and count <= 6:
+            unified_configs[beam_id] = {
+                "bottom_layer1_dia": max_bottom_dia,
+                "bottom_layer1_count": count,
+                "bottom_layer2_dia": 0,
+                "bottom_layer2_count": 0,
+                "_version": 1,  # Force widget refresh
+            }
+        else:
+            # Need 2 layers
+            layer1 = min(count // 2 + count % 2, 6)
+            layer2 = count - layer1
+            unified_configs[beam_id] = {
+                "bottom_layer1_dia": max_bottom_dia,
+                "bottom_layer1_count": layer1,
+                "bottom_layer2_dia": max_bottom_dia if layer2 > 0 else 0,
+                "bottom_layer2_count": max(0, layer2),
+                "_version": 1,  # Force widget refresh
+            }
+
+    return unified_configs
+
+
 def calculate_rebar_checks(
     b_mm: float,
     D_mm: float,
@@ -3631,6 +3741,64 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     df.loc[mask, "status"] = "❌ FAIL"
 
         st.session_state.ws_design_results = df
+
+    # Beam Line Optimization Section (only when grouped by Beam Line)
+    if group_by == "Beam Line" and "_beam_line" in filtered_df.columns:
+        st.divider()
+        st.subheader("🔗 Beam Line Optimization")
+        st.caption("Optimize all beams in a line for consistent reinforcement (construction-friendly)")
+
+        # Get unique beam lines
+        beam_lines = filtered_df["_beam_line"].unique()
+
+        # Display beam lines with optimize buttons
+        line_cols = st.columns(min(len(beam_lines), 4))
+        for i, beam_line in enumerate(beam_lines):
+            col_idx = i % len(line_cols)
+            with line_cols[col_idx]:
+                line_beams = filtered_df[filtered_df["_beam_line"] == beam_line]["beam_id"].tolist()
+                failed_count = len(filtered_df[(filtered_df["_beam_line"] == beam_line) & (~filtered_df["is_safe"])])
+
+                # Status badge
+                if failed_count > 0:
+                    badge = f"❌ {failed_count}/{len(line_beams)}"
+                else:
+                    badge = f"✅ {len(line_beams)}"
+
+                if st.button(
+                    f"⚡ {beam_line} ({badge})",
+                    key=f"opt_line_{beam_line}",
+                    use_container_width=True,
+                    type="primary" if failed_count > 0 else "secondary",
+                ):
+                    # Get material properties from first beam
+                    first_row = df[df["beam_id"] == line_beams[0]].iloc[0] if line_beams else {}
+                    fck = float(first_row.get("fck", 25))
+                    fy = float(first_row.get("fy", 500))
+                    cover = float(first_row.get("cover_mm", 40))
+
+                    # Optimize the beam line
+                    unified = optimize_beam_line(line_beams, df, fck, fy, cover)
+
+                    # Apply to dataframe
+                    for beam_id, config in unified.items():
+                        mask = df["beam_id"] == beam_id
+                        if mask.any():
+                            df.loc[mask, "bottom_bar_count"] = config.get("bottom_layer1_count", 4)
+                            df.loc[mask, "bottom_bar_dia"] = config.get("bottom_layer1_dia", 16)
+                            # Recalculate status
+                            ast_prov = config.get("bottom_layer1_count", 4) * math.pi * (config.get("bottom_layer1_dia", 16) ** 2) / 4
+                            ast_req = float(df.loc[mask, "ast_req"].iloc[0]) if "ast_req" in df.columns else 500
+                            if ast_prov >= ast_req:
+                                df.loc[mask, "is_safe"] = True
+                                df.loc[mask, "status"] = "✅ PASS"
+                            else:
+                                df.loc[mask, "is_safe"] = False
+                                df.loc[mask, "status"] = "❌ FAIL"
+
+                    st.session_state.ws_design_results = df
+                    st.toast(f"✅ Optimized beam line {beam_line} ({len(unified)} beams) with unified ϕ{unified[line_beams[0]].get('bottom_layer1_dia', 16)}mm bars")
+                    st.rerun()
 
     # Summary row at bottom
     st.divider()
