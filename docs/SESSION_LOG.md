@@ -4,6 +4,71 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-22 — Session 32: Table Editor Comprehensive Overhaul
+
+**Focus:** Fix code duplication, section view bugs, add missing table features, improve space usage
+
+### Issues Reported (User Testing)
+
+| # | Issue | Priority |
+|---|-------|----------|
+| 1 | Code duplication - section view logic in 3 places | High |
+| 2 | Section bar position fix not applied in Rebar Editor | Critical |
+| 3a | No stirrup diameter column in table | High |
+| 3b | No optimize button per row | High |
+| 3c | Simple fail message - no context | Medium |
+| 3d | No utilization column | High |
+| 3e | Beams fail when switching to beam line | Critical |
+| 3f | No 3D view in table format | Medium |
+| 4 | AI mode always visible | Medium |
+| 5 | Wasted space at top | High |
+
+### Work Completed
+
+1. ✅ **Created section_geometry.py** - Shared `calculate_bar_positions()` function
+2. ✅ **Fixed bar position bug** - Rebar Editor now uses actual stirrup_dia (not hardcoded 8)
+3. ✅ **Fixed beam-line grouping bug** - Init rebar columns on main df before filtering
+4. ✅ **Added stirrup_dia column** - SelectboxColumn [8, 10, 12]
+5. ✅ **Added utilization column** - ProgressColumn with color coding
+6. ✅ **Added per-row selection** - Multi-row selection + "Optimize Selected" button
+7. ✅ **Added 3D floor view** - Collapsible 3D view above table with floor filter
+8. ✅ **Made chat panel collapsible** - Toggle button to show/hide AI chat
+9. ✅ **Improved status messages** - Show utilization % for pass, shortfall for fail
+
+### Root Cause Analysis
+
+**Bar Position Bug:** Formula used hardcoded `8` instead of actual `stirrup_dia`:
+```python
+# OLD (buggy): bx = cover_mm + 8 + bar_dia / 2
+# NEW (fixed): bx = cover_mm + stirrup_dia + bar_dia / 2
+```
+
+**Beam-Line Bug:** Rebar columns were added to `filtered_df` (copy) but not synced back to main `df` before filtering.
+
+### Files Changed
+
+| File | Changes |
+|------|---------|
+| `streamlit_app/utils/section_geometry.py` | NEW - Shared bar position calculator |
+| `streamlit_app/components/ai_workspace.py` | Fixed bar positions, added table features |
+| `streamlit_app/pages/08_⚡_ai_assistant.py` | Made chat panel collapsible |
+| `docs/research/design-editor-workflow.md` | Added Section 10 with research findings |
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `b59c353c` | feat(table-editor): comprehensive Session 32 overhaul |
+
+### Next Session Tasks
+
+1. **Test all fixes** - Verify bar positions, beam-line grouping, utilization display
+2. **Test 3D floor view** - Ensure coordinate-based beams render correctly
+3. **Camera focus on selection** - When user clicks a beam in table, camera should focus
+4. **Performance testing** - Check table with 500+ beams
+
+---
+
 ## 2026-01-22 — Session 62c: AI Export Fixes & UI Modernization
 
 **Focus:** Fix DXF/report downloads from AI, add manual export buttons, reduce wasted space

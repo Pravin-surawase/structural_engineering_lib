@@ -34,6 +34,19 @@
 
 ---
 
+## Session 32 Completed (2026-01-22)
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Create section_geometry.py (shared bar calc) | ✅ Done | `b59c353c` |
+| Fix bar position bug in Rebar Editor | ✅ Done | `b59c353c` |
+| Fix beam-line grouping bug | ✅ Done | `b59c353c` |
+| Add stirrup_dia column to table | ✅ Done | `b59c353c` |
+| Add utilization ProgressColumn | ✅ Done | `b59c353c` |
+| Add per-row selection + Optimize Selected | ✅ Done | `b59c353c` |
+| Add 3D floor view above table | ✅ Done | `b59c353c` |
+| Make chat panel collapsible | ✅ Done | `b59c353c` |
+
 ## Session 62c Completed (2026-01-22)
 
 | Task | Status | Commit |
