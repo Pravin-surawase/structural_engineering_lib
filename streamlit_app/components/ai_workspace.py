@@ -3785,50 +3785,40 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     }
 
     # Per-row optimize button row
-    opt_col1, opt_col2, opt_col3 = st.columns([1, 1, 2])
+    opt_col1, opt_col2 = st.columns([1, 3])
     with opt_col1:
-        if st.button("⚡ Optimize Selected", key="opt_selected_btn", type="primary"):
-            # Get selected rows from session state
-            selected_rows = st.session_state.get("ue_table_selection", {}).get("rows", [])
-            if selected_rows:
-                optimized_count = 0
-                for row_idx in selected_rows:
-                    if row_idx < len(display_df):
-                        beam_id = display_df.iloc[row_idx]["beam_id"]
-                        row = df[df["beam_id"] == beam_id].iloc[0]
-                        fb = float(row.get("b_mm", 300))
-                        fD = float(row.get("D_mm", 500))
-                        fmu = float(row.get("mu_knm", 100))
-                        fvu = float(row.get("vu_kn", 50))
-                        ffck = float(row.get("fck", 25))
-                        ffy = float(row.get("fy", 500))
-                        fcover = float(row.get("cover_mm", 40))
-                        opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
-                        if opt:
-                            mask = df["beam_id"] == beam_id
-                            df.loc[mask, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
-                            df.loc[mask, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
-                            # Recalculate
-                            ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
-                            ast_req = float(row.get("ast_req", 500))
-                            if ast_prov >= ast_req:
-                                df.loc[mask, "is_safe"] = True
-                                util = (ast_req / ast_prov * 100) if ast_prov > 0 else 0
-                                df.loc[mask, "status"] = f"✅ {util:.0f}%"
-                                optimized_count += 1
-                st.session_state.ws_design_results = df
-                st.toast(f"✅ Optimized {optimized_count} beams!")
-                st.rerun()
-            else:
-                st.warning("Select rows first (click row numbers)")
+        if st.button("⚡ Optimize All", key="opt_all_btn", type="primary", use_container_width=True):
+            optimized_count = 0
+            for _, display_row in display_df.iterrows():
+                beam_id = display_row["beam_id"]
+                row = df[df["beam_id"] == beam_id].iloc[0]
+                fb = float(row.get("b_mm", 300))
+                fD = float(row.get("D_mm", 500))
+                fmu = float(row.get("mu_knm", 100))
+                fvu = float(row.get("vu_kn", 50))
+                ffck = float(row.get("fck", 25))
+                ffy = float(row.get("fy", 500))
+                fcover = float(row.get("cover_mm", 40))
+                opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
+                if opt:
+                    mask = df["beam_id"] == beam_id
+                    df.loc[mask, "bottom_bar_count"] = opt.get("bottom_layer1_count", 4)
+                    df.loc[mask, "bottom_bar_dia"] = opt.get("bottom_layer1_dia", 16)
+                    # Recalculate
+                    ast_prov = opt.get("bottom_layer1_count", 4) * math.pi * (opt.get("bottom_layer1_dia", 16) ** 2) / 4
+                    ast_req = float(row.get("ast_req", 500))
+                    if ast_prov >= ast_req:
+                        df.loc[mask, "is_safe"] = True
+                        util = (ast_req / ast_prov * 100) if ast_prov > 0 else 0
+                        df.loc[mask, "status"] = f"✅ {util:.0f}%"
+                        optimized_count += 1
+            st.session_state.ws_design_results = df
+            st.toast(f"✅ Optimized {optimized_count} beams!")
+            st.rerun()
     with opt_col2:
-        selected_count = len(st.session_state.get("ue_table_selection", {}).get("rows", []))
-        if selected_count > 0:
-            st.caption(f"📌 {selected_count} selected")
-    with opt_col3:
-        st.caption("💡 Click row numbers to select, then optimize")
+        st.caption(f"💡 Optimizes all {len(display_df)} visible beams with current filters")
 
-    # Render editable table with row selection enabled
+    # Render editable table (selection_mode removed for compatibility)
     edited_df = st.data_editor(
         display_df,
         column_config=column_config,
@@ -3837,14 +3827,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         height=400,
         num_rows="fixed",
         key="ue_smart_table",
-        selection_mode="multi-row",  # Enable row selection
-        on_select="rerun",  # Rerun on selection change
     )
-
-    # Store selection in session state for optimize button
-    if hasattr(st.session_state, "ue_smart_table") and st.session_state.ue_smart_table:
-        selection = st.session_state.ue_smart_table.get("selection", {})
-        st.session_state["ue_table_selection"] = selection
 
     # Sync changes back to main dataframe
     if edited_df is not None:
