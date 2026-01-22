@@ -3982,7 +3982,7 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
             help="Top bar diameter (mm)"
         ),
         "stirrup_dia": st.column_config.SelectboxColumn(
-            "st", options=[8, 10, 12], width=45,
+            "st", options=[6, 8, 10, 12], width=45,
             help="Stirrup diameter (mm)"
         ),
         "stirrup_spacing": st.column_config.SelectboxColumn(
@@ -4048,41 +4048,87 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
                     st.session_state.ue_selected_beam_id = None
                     st.rerun()
 
-    # Sync changes back to main dataframe
-    if edited_df is not None:
+    # Sync changes back to main dataframe (ONLY when table was actually edited)
+    # This optimization avoids recalculating all beams on every filter/sort
+    if edited_df is not None and st.session_state.get("ue_table_edited", False):
+        changed_beams = []
         for idx, row in edited_df.iterrows():
             beam_id = row["beam_id"]
             mask = df["beam_id"] == beam_id
-            if mask.any():
-                df.loc[mask, "bottom_bar_count"] = row.get("bottom_bar_count", 4)
-                df.loc[mask, "bottom_bar_dia"] = row.get("bottom_bar_dia", 16)
-                df.loc[mask, "top_bar_count"] = row.get("top_bar_count", 2)
-                df.loc[mask, "top_bar_dia"] = row.get("top_bar_dia", 12)
-                df.loc[mask, "stirrup_dia"] = row.get("stirrup_dia", 8)  # NEW
-                df.loc[mask, "stirrup_spacing"] = row.get("stirrup_spacing", 150)
+            if not mask.any():
+                continue
 
-                # Recalculate status with detailed utilization
-                bar_count = row.get("bottom_bar_count", 4)
-                bar_dia = row.get("bottom_bar_dia", 16)
-                ast_prov = bar_count * math.pi * (bar_dia ** 2) / 4
-                ast_req = float(df.loc[mask, "ast_req"].iloc[0]) if "ast_req" in df.columns else 500
-                util = (ast_req / ast_prov * 100) if ast_prov > 0 else 999
+            # Check if values actually changed
+            orig = df.loc[mask].iloc[0]
+            bottom_count = row.get("bottom_bar_count", 4)
+            bottom_dia = row.get("bottom_bar_dia", 16)
+            top_count = row.get("top_bar_count", 2)
+            top_dia = row.get("top_bar_dia", 12)
+            stirrup_d = row.get("stirrup_dia", 8)
+            stirrup_s = row.get("stirrup_spacing", 150)
 
-                if ast_prov >= ast_req:
-                    df.loc[mask, "is_safe"] = True
-                    # More informative status with utilization
+            # Only recalculate if something changed
+            if (orig.get("bottom_bar_count", 4) != bottom_count or
+                orig.get("bottom_bar_dia", 16) != bottom_dia or
+                orig.get("top_bar_count", 2) != top_count or
+                orig.get("top_bar_dia", 12) != top_dia or
+                orig.get("stirrup_dia", 8) != stirrup_d or
+                orig.get("stirrup_spacing", 150) != stirrup_s):
+
+                # Update rebar configuration
+                df.loc[mask, "bottom_bar_count"] = bottom_count
+                df.loc[mask, "bottom_bar_dia"] = bottom_dia
+                df.loc[mask, "top_bar_count"] = top_count
+                df.loc[mask, "top_bar_dia"] = top_dia
+                df.loc[mask, "stirrup_dia"] = stirrup_d
+                df.loc[mask, "stirrup_spacing"] = stirrup_s
+
+                # Full design checks (flexure + shear + spacing)
+                beam_row = df.loc[mask].iloc[0]
+                checks = calculate_rebar_checks(
+                    b_mm=float(beam_row.get("b_mm", 300)),
+                    D_mm=float(beam_row.get("D_mm", 450)),
+                    mu_knm=float(beam_row.get("mu_knm", 100)),
+                    vu_kn=float(beam_row.get("vu_kn", 50)),
+                    fck=float(beam_row.get("fck", 25)),
+                    fy=float(beam_row.get("fy", 500)),
+                    cover_mm=float(beam_row.get("cover_mm", 40)),
+                    bottom_bars=[(bottom_dia, bottom_count)],
+                    top_bars=[(top_dia, top_count)],
+                    stirrup_dia=stirrup_d,
+                    stirrup_spacing=stirrup_s,
+                )
+
+                # Update status with comprehensive check
+                is_safe = checks["all_ok"]
+                df.loc[mask, "is_safe"] = is_safe
+
+                # Show most critical issue in status
+                if is_safe:
+                    util = max(checks["flexure_util"], checks["shear_util"]) * 100
                     df.loc[mask, "status"] = f"✅ {util:.0f}%"
                 else:
-                    df.loc[mask, "is_safe"] = False
-                    shortfall = ast_req - ast_prov
-                    df.loc[mask, "status"] = f"❌ Need +{shortfall:.0f}mm²"
+                    # Find which check failed
+                    issues = []
+                    if not checks["flexure_ok"]:
+                        issues.append(f"M:{checks['flexure_util']*100:.0f}%")
+                    if not checks["shear_ok"]:
+                        issues.append(f"V:{checks['shear_util']*100:.0f}%")
+                    if not checks["spacing_ok"]:
+                        issues.append("Sp")
+                    if not checks["min_reinf_ok"]:
+                        issues.append("Min")
+                    df.loc[mask, "status"] = f"❌ {', '.join(issues)}"
 
-        st.session_state.ws_design_results = df
+                changed_beams.append(beam_id)
 
-        # Session 34: Trigger rerun if table was edited to refresh status display
-        if st.session_state.get("ue_table_edited", False):
-            st.session_state.ue_table_edited = False
-            st.rerun()
+        if changed_beams:
+            st.session_state.ws_design_results = df
+            st.toast(f"✅ Updated {len(changed_beams)} beam(s)")
+
+        # Reset edit flag and refresh
+        st.session_state.ue_table_edited = False
+        st.rerun()
 
     # Beam Line Optimization Section (only when grouped by Beam Line)
     if group_by == "Beam Line" and "_beam_line" in filtered_df.columns:
