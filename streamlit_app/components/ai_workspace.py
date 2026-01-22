@@ -1425,14 +1425,26 @@ def _render_editable_results_table(
     st.markdown("#### Live Design Checks")
     check_results = []
 
+    def safe_int(val, default=0):
+        """Safely convert value to int, handling NaN and None."""
+        if pd.isna(val) or val is None:
+            return default
+        try:
+            return int(val)
+        except (ValueError, TypeError):
+            return default
+
     for idx, row in edited_df.iterrows():
         beam_id = row["beam_id"]
-        b, D = row["b_mm"], row["D_mm"]
-        mu, vu = row["mu_knm"], row["vu_kn"]
-        fck, fy = row["fck"], row["fy"]
-        bot_bars, bot_dia = int(row["bot_bars"]), int(row["bot_dia"])
-        top_bars, top_dia = int(row["top_bars"]), int(row["top_dia"])
-        stirrup_sp = int(row["stirrup_sp"])
+        b = safe_int(row.get("b_mm", 300), 300)
+        D = safe_int(row.get("D_mm", 450), 450)
+        mu = row.get("mu_knm", 0) if pd.notna(row.get("mu_knm")) else 0
+        vu = row.get("vu_kn", 0) if pd.notna(row.get("vu_kn")) else 0
+        fck = row.get("fck", 25) if pd.notna(row.get("fck")) else 25
+        fy = row.get("fy", 500) if pd.notna(row.get("fy")) else 500
+        bot_bars, bot_dia = safe_int(row.get("bot_bars"), 2), safe_int(row.get("bot_dia"), 16)
+        top_bars, top_dia = safe_int(row.get("top_bars"), 2), safe_int(row.get("top_dia"), 12)
+        stirrup_sp = safe_int(row.get("stirrup_sp"), 150)
 
         # Calculate provided steel area
         ast_prov = bot_bars * (math.pi * bot_dia**2 / 4)
@@ -1497,11 +1509,11 @@ def _render_editable_results_table(
             beam_id = row["beam_id"]
             mask = full_df["beam_id"] == beam_id
             if mask.any():
-                full_df.loc[mask, "bottom_bar_count"] = int(row["bot_bars"])
-                full_df.loc[mask, "bottom_bar_dia"] = int(row["bot_dia"])
-                full_df.loc[mask, "top_bar_count"] = int(row["top_bars"])
-                full_df.loc[mask, "top_bar_dia"] = int(row["top_dia"])
-                full_df.loc[mask, "stirrup_spacing"] = int(row["stirrup_sp"])
+                full_df.loc[mask, "bottom_bar_count"] = safe_int(row.get("bot_bars"), 2)
+                full_df.loc[mask, "bottom_bar_dia"] = safe_int(row.get("bot_dia"), 16)
+                full_df.loc[mask, "top_bar_count"] = safe_int(row.get("top_bars"), 2)
+                full_df.loc[mask, "top_bar_dia"] = safe_int(row.get("top_dia"), 12)
+                full_df.loc[mask, "stirrup_spacing"] = safe_int(row.get("stirrup_sp"), 150)
 
         st.session_state.ws_design_results = full_df
         st.success("✅ Changes applied! Recalculating design checks...")
@@ -2746,18 +2758,18 @@ def render_cross_section() -> None:
         top_count = len(rebar["top_bars"])
 
     # Calculate bottom layer 1 positions
-    layer1_y = cover + 8 + bottom_dia_1 / 2  # stirrup + half bar dia
-    available_width = b - 2 * cover - 2 * 8  # inside stirrups
+    stirrup_dia = 8
+    layer1_y = cover + stirrup_dia + bottom_dia_1 / 2  # stirrup + half bar dia
+    # Available width for bar centers (inside stirrups, accounting for bar radius on both sides)
+    x_start = cover + stirrup_dia + bottom_dia_1 / 2  # First bar center position
+    x_end = b - cover - stirrup_dia - bottom_dia_1 / 2  # Last bar center position
+    available_width_for_spacing = x_end - x_start
     if bottom_count_1 > 1:
-        spacing_1 = available_width / (bottom_count_1 - 1)
+        spacing_1 = available_width_for_spacing / (bottom_count_1 - 1)
     else:
         spacing_1 = 0
     for i in range(bottom_count_1):
-        bx = (
-            cover + 8 + bottom_dia_1 / 2 + i * spacing_1
-            if bottom_count_1 > 1
-            else b / 2
-        )
+        bx = x_start + i * spacing_1 if bottom_count_1 > 1 else b / 2
         bottom_bars.append((bx, layer1_y, bottom_dia_1))
 
     # Calculate bottom layer 2 positions (if any)
@@ -2765,26 +2777,28 @@ def render_cross_section() -> None:
         layer2_y = (
             layer1_y + bottom_dia_1 / 2 + 25 + bottom_dia_2 / 2
         )  # vertical spacing
+        x_start_2 = cover + stirrup_dia + bottom_dia_2 / 2
+        x_end_2 = b - cover - stirrup_dia - bottom_dia_2 / 2
+        available_width_2 = x_end_2 - x_start_2
         if bottom_count_2 > 1:
-            spacing_2 = available_width / (bottom_count_2 - 1)
+            spacing_2 = available_width_2 / (bottom_count_2 - 1)
         else:
             spacing_2 = 0
         for i in range(bottom_count_2):
-            bx = (
-                cover + 8 + bottom_dia_2 / 2 + i * spacing_2
-                if bottom_count_2 > 1
-                else b / 2
-            )
+            bx = x_start_2 + i * spacing_2 if bottom_count_2 > 1 else b / 2
             bottom_bars.append((bx, layer2_y, bottom_dia_2))
 
     # Calculate top bar positions
-    top_y = D - cover - 8 - top_dia / 2
+    top_y = D - cover - stirrup_dia - top_dia / 2
+    x_start_top = cover + stirrup_dia + top_dia / 2
+    x_end_top = b - cover - stirrup_dia - top_dia / 2
+    available_width_top = x_end_top - x_start_top
     if top_count > 1:
-        spacing_top = available_width / (top_count - 1)
+        spacing_top = available_width_top / (top_count - 1)
     else:
         spacing_top = 0
     for i in range(top_count):
-        tx = cover + 8 + top_dia / 2 + i * spacing_top if top_count > 1 else b / 2
+        tx = x_start_top + i * spacing_top if top_count > 1 else b / 2
         top_bars.append((tx, top_y, top_dia))
 
     # Display metrics
