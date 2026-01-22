@@ -46,6 +46,7 @@ from components.ai_workspace import (
     WorkspaceState,
     init_workspace_state,
     render_dynamic_workspace,
+    render_unified_editor,
     set_workspace_state,
     load_sample_data,
     design_all_beams_ws,
@@ -569,35 +570,41 @@ def main():
         unsafe_allow_html=True,
     )
 
-    # Inline compact header - single row
-    col1, col2, col3 = st.columns([0.45, 0.35, 0.2])
-    with col1:
-        st.markdown("**⚡ StructEng AI**")
-    with col2:
-        # Compact status
-        client = get_openai_client()
-        if client:
-            config = get_openai_config()
-            model_name = config.get("model", "gpt-4o-mini")
-            # Shorten model name for display
-            if "/" in model_name:
-                model_name = model_name.split("/")[-1]
-            st.caption(f"✅ {model_name}")
-        else:
-            st.caption("💡 Local mode")
-    with col3:
-        # Quick access links
-        workspace_state = st.session_state.get("ws_state", WorkspaceState.WELCOME)
-        st.caption(f"📍 {workspace_state.value.title()}")
+    # Check if unified editor mode (full-width, no chat column)
+    workspace_state = st.session_state.get("ws_state", WorkspaceState.WELCOME)
 
-    # Main layout: 35% chat, 65% workspace (maximized)
-    chat_col, workspace_col = st.columns([0.35, 0.65])
+    if workspace_state == WorkspaceState.UNIFIED_EDITOR:
+        # Full-width editor mode - no header, no chat, maximize space
+        render_unified_editor()
+    else:
+        # Inline compact header - single row
+        col1, col2, col3 = st.columns([0.45, 0.35, 0.2])
+        with col1:
+            st.markdown("**⚡ StructEng AI**")
+        with col2:
+            # Compact status
+            client = get_openai_client()
+            if client:
+                config = get_openai_config()
+                model_name = config.get("model", "gpt-4o-mini")
+                # Shorten model name for display
+                if "/" in model_name:
+                    model_name = model_name.split("/")[-1]
+                st.caption(f"✅ {model_name}")
+            else:
+                st.caption("💡 Local mode")
+        with col3:
+            # Quick access links
+            st.caption(f"📍 {workspace_state.value.title()}")
 
-    with chat_col:
-        render_chat_panel()
+        # Main layout: 35% chat, 65% workspace (maximized)
+        chat_col, workspace_col = st.columns([0.35, 0.65])
 
-    with workspace_col:
-        render_dynamic_workspace()
+        with chat_col:
+            render_chat_panel()
+
+        with workspace_col:
+            render_dynamic_workspace()
 
 
 if __name__ == "__main__":

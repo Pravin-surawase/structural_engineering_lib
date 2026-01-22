@@ -122,6 +122,12 @@ if "mf_defaults" not in st.session_state:
     }
 if "mf_selected_beam" not in st.session_state:
     st.session_state.mf_selected_beam = None  # Selected beam ID for detail view
+if "mf_editor_mode" not in st.session_state:
+    st.session_state.mf_editor_mode = False  # Editor mode toggle
+if "mf_editor_beam_idx" not in st.session_state:
+    st.session_state.mf_editor_beam_idx = 0  # Current beam index in editor
+if "mf_rebar_config" not in st.session_state:
+    st.session_state.mf_rebar_config = None  # Current rebar configuration
 
 
 # =============================================================================
@@ -390,6 +396,211 @@ def calculate_rebar_layout_for_beam(
         "summary": summary,
         "spacing_summary": spacing_summary,
     }
+
+
+def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
+    """Render inline beam editor for multi-import page.
+
+    Features:
+    - Beam navigation with progress bar
+    - Rebar editing controls
+    - Live design checks
+    - 2D cross-section preview
+    """
+    if results_df is None or results_df.empty:
+        st.warning("No design results to edit.")
+        return
+
+    beam_ids = results_df["ID"].tolist()
+    if not beam_ids:
+        st.warning("No beams available.")
+        return
+
+    # Get current beam
+    current_idx = st.session_state.get("mf_editor_beam_idx", 0)
+    current_idx = min(current_idx, len(beam_ids) - 1)
+    beam_id = beam_ids[current_idx]
+
+    # Get beam data
+    row = results_df[results_df["ID"] == beam_id]
+    if row.empty:
+        st.error(f"Beam {beam_id} not found")
+        return
+    row = row.iloc[0]
+
+    # Get beam geometry
+    beam_data = next((b for b in beams if b.id == beam_id), None)
+    if not beam_data:
+        st.warning(f"No geometry for {beam_id}")
+        return
+
+    b_mm = float(beam_data.section.width_mm)
+    D_mm = float(beam_data.section.depth_mm)
+    span_mm = float(beam_data.length_m * 1000)
+    fck = float(beam_data.section.fck_mpa)
+    fy = float(beam_data.section.fy_mpa)
+    cover_mm = float(beam_data.section.cover_mm)
+    mu_knm = float(row.get("Mu (kN·m)", 100))
+    vu_kn = float(row.get("Vu (kN)", 50))
+
+    # Initialize rebar config
+    config = st.session_state.mf_rebar_config
+    if config is None or config.get("beam_id") != beam_id:
+        ast_req = float(row.get("Ast_req", 500)) if row.get("Ast_req") != "-" else 500
+        layout = calculate_rebar_layout_for_beam(ast_req, b_mm, D_mm, span_mm, vu_kn, cover_mm)
+        config = {
+            "beam_id": beam_id,
+            "bottom_layer1_dia": layout.get("bar_diameter", 16),
+            "bottom_layer1_count": len(layout.get("bottom_bars", [])),
+            "bottom_layer2_dia": 0,
+            "bottom_layer2_count": 0,
+            "top_dia": 12,
+            "top_count": 2,
+            "stirrup_dia": 8,
+            "stirrup_spacing": 150,
+        }
+        st.session_state.mf_rebar_config = config
+
+    # =========================================================================
+    # HEADER
+    # =========================================================================
+    hdr1, hdr2, hdr3 = st.columns([0.4, 0.4, 0.2])
+    with hdr1:
+        st.markdown(f"### ✏️ {beam_id}")
+    with hdr2:
+        st.caption(f"**{b_mm:.0f}×{D_mm:.0f}** mm | Mu={mu_knm:.0f} | Vu={vu_kn:.0f}")
+    with hdr3:
+        if st.button("✕ Exit Editor", use_container_width=True):
+            st.session_state.mf_editor_mode = False
+            st.session_state.mf_rebar_config = None
+            st.rerun()
+
+    st.divider()
+
+    # =========================================================================
+    # MAIN: Controls + Preview
+    # =========================================================================
+    col_ctrl, col_preview = st.columns([0.45, 0.55])
+
+    with col_ctrl:
+        st.markdown("##### 🔧 Reinforcement")
+
+        # Bottom bars
+        st.caption("**Bottom Bars**")
+        bc1, bc2 = st.columns(2)
+        with bc1:
+            l1_dia = st.selectbox("Dia", [10, 12, 16, 20, 25, 32],
+                index=[10, 12, 16, 20, 25, 32].index(config["bottom_layer1_dia"]),
+                key="mf_l1_dia", label_visibility="collapsed")
+        with bc2:
+            l1_count = st.number_input("Cnt", 2, 8, config["bottom_layer1_count"],
+                key="mf_l1_cnt", label_visibility="collapsed")
+        st.caption(f"{l1_count}×Φ{l1_dia}")
+
+        # Top bars
+        st.caption("**Top Bars**")
+        tc1, tc2 = st.columns(2)
+        with tc1:
+            top_dia = st.selectbox("TDia", [10, 12, 16, 20],
+                index=[10, 12, 16, 20].index(config.get("top_dia", 12)),
+                key="mf_top_dia", label_visibility="collapsed")
+        with tc2:
+            top_count = st.number_input("TCnt", 2, 6, config.get("top_count", 2),
+                key="mf_top_cnt", label_visibility="collapsed")
+
+        # Stirrups
+        st.caption("**Stirrups**")
+        sc1, sc2 = st.columns(2)
+        with sc1:
+            stir_dia = st.selectbox("SDia", [6, 8, 10],
+                index=[6, 8, 10].index(config.get("stirrup_dia", 8)),
+                key="mf_stir_dia", label_visibility="collapsed")
+        with sc2:
+            stir_spacing = st.number_input("Sp", 75, 300, config.get("stirrup_spacing", 150),
+                step=25, key="mf_stir_sp", label_visibility="collapsed")
+        st.caption(f"Φ{stir_dia}@{stir_spacing}mm")
+
+        # Update config
+        config.update({
+            "bottom_layer1_dia": l1_dia,
+            "bottom_layer1_count": l1_count,
+            "top_dia": top_dia,
+            "top_count": top_count,
+            "stirrup_dia": stir_dia,
+            "stirrup_spacing": stir_spacing,
+        })
+        st.session_state.mf_rebar_config = config
+
+        # Calculate checks
+        import math
+        ast_provided = l1_count * math.pi * (l1_dia ** 2) / 4
+        ast_req = float(row.get("Ast_req", 500)) if row.get("Ast_req") != "-" else 500
+        d_mm = D_mm - cover_mm - stir_dia - l1_dia / 2
+        ast_min = 0.85 * b_mm * d_mm / fy
+        ast_max = 0.04 * b_mm * D_mm
+
+        flex_ok = ast_provided >= ast_req
+        min_ok = ast_provided >= ast_min
+        max_ok = ast_provided <= ast_max
+
+        st.divider()
+        st.markdown("##### ✓ Checks")
+        st.markdown(f"{'🟢' if flex_ok else '🔴'} **Ast:** {ast_provided:.0f} {'≥' if flex_ok else '<'} {ast_req:.0f} mm²")
+        st.markdown(f"{'🟢' if min_ok else '🔴'} **Min:** {ast_provided:.0f} ≥ {ast_min:.0f} mm²")
+        st.markdown(f"{'🟢' if max_ok else '🔴'} **Max:** {ast_provided:.0f} ≤ {ast_max:.0f} mm²")
+
+        all_ok = flex_ok and min_ok and max_ok
+        if all_ok:
+            st.success("✅ ALL CHECKS PASS")
+        else:
+            st.error("❌ CHECKS FAILED")
+
+    with col_preview:
+        st.markdown("##### 📐 Cross-Section")
+        # Simple text preview (Plotly integration available in full version)
+        st.info(f"""
+        **Section:** {b_mm:.0f} × {D_mm:.0f} mm
+        **Bottom:** {l1_count}×Φ{l1_dia}
+        **Top:** {top_count}×Φ{top_dia}
+        **Stirrups:** Φ{stir_dia}@{stir_spacing}
+        **Ast provided:** {ast_provided:.0f} mm²
+        """)
+
+    # =========================================================================
+    # NAVIGATION
+    # =========================================================================
+    st.divider()
+    progress_pct = (current_idx + 1) / len(beam_ids)
+    st.progress(progress_pct, text=f"Beam {current_idx + 1} of {len(beam_ids)}")
+
+    nav1, nav2, nav3, nav4, nav5 = st.columns([0.15, 0.25, 0.2, 0.25, 0.15])
+
+    with nav1:
+        if st.button("◀◀", use_container_width=True, disabled=current_idx == 0):
+            st.session_state.mf_editor_beam_idx = 0
+            st.session_state.mf_rebar_config = None
+            st.rerun()
+    with nav2:
+        if st.button("◀ Prev", use_container_width=True, disabled=current_idx == 0):
+            st.session_state.mf_editor_beam_idx = current_idx - 1
+            st.session_state.mf_rebar_config = None
+            st.rerun()
+    with nav3:
+        jump_to = st.selectbox("Jump", beam_ids, index=current_idx, key="mf_jump", label_visibility="collapsed")
+        if jump_to != beam_id:
+            st.session_state.mf_editor_beam_idx = beam_ids.index(jump_to)
+            st.session_state.mf_rebar_config = None
+            st.rerun()
+    with nav4:
+        if st.button("Next ▶", use_container_width=True, type="primary", disabled=current_idx >= len(beam_ids) - 1):
+            st.session_state.mf_editor_beam_idx = current_idx + 1
+            st.session_state.mf_rebar_config = None
+            st.rerun()
+    with nav5:
+        if st.button("▶▶", use_container_width=True, disabled=current_idx >= len(beam_ids) - 1):
+            st.session_state.mf_editor_beam_idx = len(beam_ids) - 1
+            st.session_state.mf_rebar_config = None
+            st.rerun()
 
 
 def design_all_beams(
@@ -1074,69 +1285,82 @@ with tab3:
     beams = st.session_state.mf_beams
     forces = st.session_state.mf_forces
 
-    if not beams:
-        st.info("Upload geometry file first to enable batch design")
-    elif not forces:
-        st.warning("⚠️ No forces loaded. Upload forces file for complete design.")
+    # Check if in editor mode
+    if st.session_state.get("mf_editor_mode", False):
+        # Render inline editor
+        render_inline_editor(st.session_state.mf_design_results, beams)
     else:
-        st.markdown(f"Ready to design **{len(beams)} beams**")
+        # Normal design view
+        if not beams:
+            st.info("Upload geometry file first to enable batch design")
+        elif not forces:
+            st.warning("⚠️ No forces loaded. Upload forces file for complete design.")
+        else:
+            st.markdown(f"Ready to design **{len(beams)} beams**")
 
-        if st.button("🚀 Design All Beams", type="primary", use_container_width=True):
-            progress_bar = st.progress(0)
-            status_text = st.empty()
+            if st.button("🚀 Design All Beams", type="primary", use_container_width=True):
+                progress_bar = st.progress(0)
+                status_text = st.empty()
 
-            with loading_context("Designing beams..."):
-                results_df = design_all_beams(beams, forces, progress_bar, status_text)
+                with loading_context("Designing beams..."):
+                    results_df = design_all_beams(beams, forces, progress_bar, status_text)
 
-            st.session_state.mf_design_results = results_df
-            progress_bar.empty()
-            status_text.empty()
-            st.rerun()
+                st.session_state.mf_design_results = results_df
+                progress_bar.empty()
+                status_text.empty()
+                st.rerun()
 
-    # Show results if available
-    results_df = st.session_state.mf_design_results
-    if results_df is not None and not results_df.empty:
-        st.markdown("### Design Results")
+        # Show results if available
+        results_df = st.session_state.mf_design_results
+        if results_df is not None and not results_df.empty:
+            st.markdown("### Design Results")
 
-        # Summary metrics
-        total = len(results_df)
-        passed = len(results_df[results_df["_is_safe"].fillna(False)])
-        failed = len(results_df[~results_df["_is_safe"].fillna(True)])
-        no_forces = len(results_df[results_df["_is_safe"].isna()])
+            # Summary metrics
+            total = len(results_df)
+            passed = len(results_df[results_df["_is_safe"].fillna(False)])
+            failed = len(results_df[~results_df["_is_safe"].fillna(True)])
+            no_forces = len(results_df[results_df["_is_safe"].isna()])
 
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Total", total)
-        col2.metric("Passed ✅", passed)
-        col3.metric("Failed ❌", failed)
-        col4.metric("No Forces ⚠️", no_forces)
+            col1, col2, col3, col4, col5 = st.columns(5)
+            col1.metric("Total", total)
+            col2.metric("Passed ✅", passed)
+            col3.metric("Failed ❌", failed)
+            col4.metric("No Forces ⚠️", no_forces)
+            with col5:
+                if st.button("✏️ Edit", type="primary", use_container_width=True,
+                            help="Open unified editor to adjust reinforcement"):
+                    st.session_state.mf_editor_mode = True
+                    st.session_state.mf_editor_beam_idx = 0
+                    st.session_state.mf_rebar_config = None
+                    st.rerun()
 
-        # Filter options
-        filter_option = st.radio(
-            "Filter",
-            ["All", "Passed Only", "Failed Only"],
-            horizontal=True,
-        )
-
-        display_df = results_df.copy()
-        if filter_option == "Passed Only":
-            display_df = display_df[display_df["_is_safe"].fillna(False)]
-        elif filter_option == "Failed Only":
-            display_df = display_df[~display_df["_is_safe"].fillna(True)]
-
-        # Drop internal column for display
-        display_df = display_df.drop(columns=["_is_safe"], errors="ignore")
-
-        st.dataframe(display_df, use_container_width=True, height=400)
-
-        # Export button
-        if st.button("📥 Export to CSV"):
-            csv = display_df.to_csv(index=False)
-            st.download_button(
-                "Download CSV",
-                csv,
-                "design_results.csv",
-                "text/csv",
+            # Filter options
+            filter_option = st.radio(
+                "Filter",
+                ["All", "Passed Only", "Failed Only"],
+                horizontal=True,
             )
+
+            display_df = results_df.copy()
+            if filter_option == "Passed Only":
+                display_df = display_df[display_df["_is_safe"].fillna(False)]
+            elif filter_option == "Failed Only":
+                display_df = display_df[~display_df["_is_safe"].fillna(True)]
+
+            # Drop internal column for display
+            display_df = display_df.drop(columns=["_is_safe"], errors="ignore")
+
+            st.dataframe(display_df, use_container_width=True, height=400)
+
+            # Export button
+            if st.button("📥 Export to CSV"):
+                csv = display_df.to_csv(index=False)
+                st.download_button(
+                    "Download CSV",
+                    csv,
+                    "design_results.csv",
+                    "text/csv",
+                )
 
 with tab4:
     section_header("3D Building Visualization")
