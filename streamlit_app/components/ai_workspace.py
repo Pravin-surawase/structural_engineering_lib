@@ -3707,7 +3707,16 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
     filtered_df["_beam_line"] = filtered_df["beam_id"].apply(get_beam_line)
     filtered_df["_section"] = filtered_df["b_mm"].astype(str) + "x" + filtered_df["D_mm"].astype(str)
 
+    # Prepare editable columns
+    edit_cols = ["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn"]
+
+    # Ensure integer types for rebar columns FIRST (before utilization calc)
+    for col in ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_spacing", "stirrup_dia"]:
+        if col in filtered_df.columns:
+            filtered_df[col] = filtered_df[col].fillna(4 if "count" in col else 16 if "bar_dia" in col else 8 if col == "stirrup_dia" else 150).astype(int)
+
     # Calculate utilization for each beam (Ast provided / Ast required * 100)
+    # Must happen AFTER column cleanup to avoid NaN conversion errors
     def calc_util(row):
         ast_req = float(row.get("ast_req", 500))
         if ast_req <= 0:
@@ -3718,14 +3727,6 @@ def _render_smart_table_editor(df: pd.DataFrame, editor_state: dict) -> None:
         return (ast_req / ast_prov) * 100 if ast_prov > 0 else 999.0
 
     filtered_df["_utilization"] = filtered_df.apply(calc_util, axis=1)
-
-    # Prepare editable columns
-    edit_cols = ["beam_id", "story", "b_mm", "D_mm", "mu_knm", "vu_kn"]
-
-    # Ensure integer types for rebar columns
-    for col in ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_spacing", "stirrup_dia"]:
-        if col in filtered_df.columns:
-            filtered_df[col] = filtered_df[col].fillna(4 if "count" in col else 16 if "bar_dia" in col else 8 if col == "stirrup_dia" else 150).astype(int)
 
     edit_cols += ["bottom_bar_count", "bottom_bar_dia", "top_bar_count", "top_bar_dia", "stirrup_dia", "stirrup_spacing", "_utilization", "status"]
 
