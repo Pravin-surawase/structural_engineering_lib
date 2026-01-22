@@ -292,14 +292,18 @@ def navigate_to_beam(direction: str):
 - [x] Reset to original values (reloads from dataframe)
 - [x] Full-width mode in AI Assistant page (bypasses 35/65 split)
 - [x] Inline editor in Multi-Import page (with Edit button in results)
+- [x] Widget key versioning for proper refresh on optimize/reset
 - [ ] Undo/redo support (deferred to V1.1)
-- [ ] 3D preview integration (deferred - stpyvista optional)
 
-### Phase 3: Batch Operations ✅ COMPLETED
+### Phase 3: Batch Operations & Views ✅ COMPLETED
 - [x] Batch Optimize All Failed (one-click fix for failed beams)
 - [x] Batch Optimize All (apply optimization to all beams)
-- [ ] Beam-line standardization (V1.1)
-- [ ] Cost estimation (V1.1)
+- [x] Table View mode (Excel-like editing for revisions)
+- [x] Group by Story/Beam Line/Section Size
+- [x] 2D/3D View toggle (switch between section and isometric view)
+- [x] Status indicators and area calculation display
+- [ ] Beam-line standardization (V1.1 - apply same rebar to beam line)
+- [ ] Cost estimation integration (V1.1)
 
 ---
 
