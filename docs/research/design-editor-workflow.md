@@ -286,18 +286,20 @@ def navigate_to_beam(direction: str):
 - [x] Beam navigation bar (First/Prev/Jump/Next/Last buttons)
 - [x] Filter options (All/Failed/Passed)
 
-### Phase 2: Navigation & Workflow (V1.0 - In Progress)
+### Phase 2: Navigation & Workflow ✅ COMPLETED
 - [x] Auto-save on navigation (implemented in `_save_current_beam_changes()`)
-- [ ] Undo/redo support
-- [ ] 3D preview integration (stpyvista)
-- [ ] Quick optimize button implementation
-- [ ] Reset to original values
+- [x] Quick optimize button implementation (uses `suggest_optimal_rebar()`)
+- [x] Reset to original values (reloads from dataframe)
+- [x] Full-width mode in AI Assistant page (bypasses 35/65 split)
+- [x] Inline editor in Multi-Import page (with Edit button in results)
+- [ ] Undo/redo support (deferred to V1.1)
+- [ ] 3D preview integration (deferred - stpyvista optional)
 
-### Phase 3: Optimization Features (V1.1)
-- [ ] Beam-line standardization
-- [ ] Auto-optimize with strategies
-- [ ] Batch operations
-- [ ] Cost estimation
+### Phase 3: Batch Operations ✅ COMPLETED
+- [x] Batch Optimize All Failed (one-click fix for failed beams)
+- [x] Batch Optimize All (apply optimization to all beams)
+- [ ] Beam-line standardization (V1.1)
+- [ ] Cost estimation (V1.1)
 
 ---
 

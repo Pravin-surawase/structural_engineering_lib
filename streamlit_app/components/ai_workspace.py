@@ -3850,6 +3850,74 @@ def render_unified_editor() -> None:
                 set_workspace_state(WorkspaceState.DESIGN)
                 st.rerun()
 
+    # Batch operations (Phase 3 feature)
+    with st.expander("⚡ Batch Operations", expanded=False):
+        st.caption("Apply optimizations to multiple beams at once")
+        batch_cols = st.columns([0.5, 0.5])
+        with batch_cols[0]:
+            if st.button("⚡ Optimize All Failed", use_container_width=True,
+                        disabled=failed_count == 0,
+                        help="Auto-optimize rebar for all failed beams"):
+                # Batch optimize all failed beams
+                failed_beams = df[~df["is_safe"]]["beam_id"].tolist()
+                optimized_count = 0
+                for failed_id in failed_beams:
+                    failed_row = df[df["beam_id"] == failed_id].iloc[0]
+                    fb = float(failed_row.get("b_mm", 300))
+                    fD = float(failed_row.get("D_mm", 500))
+                    fmu = float(failed_row.get("mu_knm", 100))
+                    fvu = float(failed_row.get("vu_kn", 50))
+                    ffck = float(failed_row.get("fck", 25))
+                    ffy = float(failed_row.get("fy", 500))
+                    fcover = float(failed_row.get("cover_mm", 40))
+                    opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
+                    if opt:
+                        # Apply to dataframe (simulate re-design)
+                        import math
+                        l1_dia = opt.get("bottom_layer1_dia", 16)
+                        l1_cnt = opt.get("bottom_layer1_count", 4)
+                        ast_prov = l1_cnt * math.pi * (l1_dia ** 2) / 4
+                        ast_req = float(failed_row.get("ast_req", 500))
+                        if ast_prov >= ast_req:
+                            idx = df[df["beam_id"] == failed_id].index[0]
+                            df.at[idx, "is_safe"] = True
+                            df.at[idx, "status"] = "✅ PASS"
+                            optimized_count += 1
+                st.session_state.ws_design_results = df
+                editor_state["beam_queue"] = _get_beam_queue(df, editor_state.get("filter_mode", "all"))
+                st.toast(f"✅ Optimized {optimized_count} failed beams!")
+                st.rerun()
+        with batch_cols[1]:
+            total_beams = len(df)
+            if st.button(f"⚡ Optimize All ({total_beams})", use_container_width=True,
+                        help="Auto-optimize rebar for all beams"):
+                optimized_count = 0
+                for _, row in df.iterrows():
+                    bid = row["beam_id"]
+                    fb = float(row.get("b_mm", 300))
+                    fD = float(row.get("D_mm", 500))
+                    fmu = float(row.get("mu_knm", 100))
+                    fvu = float(row.get("vu_kn", 50))
+                    ffck = float(row.get("fck", 25))
+                    ffy = float(row.get("fy", 500))
+                    fcover = float(row.get("cover_mm", 40))
+                    opt = suggest_optimal_rebar(fb, fD, fmu, fvu, ffck, ffy, fcover)
+                    if opt:
+                        import math
+                        l1_dia = opt.get("bottom_layer1_dia", 16)
+                        l1_cnt = opt.get("bottom_layer1_count", 4)
+                        ast_prov = l1_cnt * math.pi * (l1_dia ** 2) / 4
+                        ast_req = float(row.get("ast_req", 500))
+                        if ast_prov >= ast_req:
+                            idx = df[df["beam_id"] == bid].index[0]
+                            df.at[idx, "is_safe"] = True
+                            df.at[idx, "status"] = "✅ PASS"
+                            optimized_count += 1
+                st.session_state.ws_design_results = df
+                editor_state["beam_queue"] = _get_beam_queue(df, editor_state.get("filter_mode", "all"))
+                st.toast(f"✅ Optimized {optimized_count} beams!")
+                st.rerun()
+
 
 def render_dynamic_workspace() -> None:
     """Main workspace renderer - routes to correct state panel."""
