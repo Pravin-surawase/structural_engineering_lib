@@ -277,17 +277,21 @@ def navigate_to_beam(direction: str):
 
 ## 6. Implementation Roadmap
 
-### Phase 1: Core Editor Improvements (Current Sprint)
+### Phase 1: Core Editor Improvements ✅ COMPLETED
 - [x] Fix NaN handling in editable table
 - [x] Fix 2D section bar positioning
-- [ ] Add full-width editor mode toggle
-- [ ] Integrate 3D preview in editor
+- [x] Add full-width editor mode toggle (unified editor button)
+- [x] Integrate 2D preview in editor (cross-section preview column)
+- [x] Live design checks display (checks column with pass/fail indicators)
+- [x] Beam navigation bar (First/Prev/Jump/Next/Last buttons)
+- [x] Filter options (All/Failed/Passed)
 
-### Phase 2: Navigation & Workflow (V1.0)
-- [ ] Beam navigation bar
-- [ ] Auto-save on navigation
+### Phase 2: Navigation & Workflow (V1.0 - In Progress)
+- [x] Auto-save on navigation (implemented in `_save_current_beam_changes()`)
 - [ ] Undo/redo support
-- [ ] Filter-then-edit workflow
+- [ ] 3D preview integration (stpyvista)
+- [ ] Quick optimize button implementation
+- [ ] Reset to original values
 
 ### Phase 3: Optimization Features (V1.1)
 - [ ] Beam-line standardization
