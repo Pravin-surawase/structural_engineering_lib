@@ -412,11 +412,14 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
         st.caption("**Bottom Bars**")
         bc1, bc2 = st.columns(2)
         with bc1:
+            # Use .get() with defaults to avoid KeyError
+            bottom_dia = config.get("bottom_layer1_dia", 16)
             l1_dia = st.selectbox("Dia", [10, 12, 16, 20, 25, 32],
-                index=[10, 12, 16, 20, 25, 32].index(config["bottom_layer1_dia"]),
+                index=[10, 12, 16, 20, 25, 32].index(bottom_dia) if bottom_dia in [10, 12, 16, 20, 25, 32] else 2,
                 key="mf_l1_dia", label_visibility="collapsed")
         with bc2:
-            l1_count = st.number_input("Cnt", 2, 8, config["bottom_layer1_count"],
+            bottom_count = config.get("bottom_layer1_count", 4)
+            l1_count = st.number_input("Cnt", 2, 8, bottom_count,
                 key="mf_l1_cnt", label_visibility="collapsed")
         st.caption(f"{l1_count}×Φ{l1_dia}")
 
@@ -454,12 +457,12 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
         })
         st.session_state.mf_rebar_config = config
 
-        # Calculate checks
-        import math
+        # Calculate checks (math imported at module level)
         ast_provided = l1_count * math.pi * (l1_dia ** 2) / 4
         ast_req = float(row.get("Ast_req", 500)) if row.get("Ast_req") != "-" else 500
         d_mm = D_mm - cover_mm - stir_dia - l1_dia / 2
-        ast_min = 0.85 * b_mm * d_mm / fy
+        # Guard: fy should always be positive (typical: 415, 500 N/mm²)
+        ast_min = (0.85 * b_mm * d_mm / fy) if fy > 0 else 0
         ast_max = 0.04 * b_mm * D_mm
 
         flex_ok = ast_provided >= ast_req
@@ -493,7 +496,9 @@ def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:
     # NAVIGATION
     # =========================================================================
     st.divider()
-    progress_pct = (current_idx + 1) / len(beam_ids)
+    # Guard: beam_ids should never be empty here, but safety check
+    total_beams = max(1, len(beam_ids) if beam_ids else 1)
+    progress_pct = (current_idx + 1) / total_beams if total_beams > 0 else 0
     st.progress(progress_pct, text=f"Beam {current_idx + 1} of {len(beam_ids)}")
 
     nav1, nav2, nav3, nav4, nav5 = st.columns([0.15, 0.25, 0.2, 0.25, 0.15])
