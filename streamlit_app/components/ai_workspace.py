@@ -81,11 +81,23 @@ except ImportError:
 
 # Import shared utilities (Session 63 consolidation)
 try:
-    from utils.rebar_layout import calculate_rebar_layout as shared_rebar_layout
+    from utils.rebar_layout import (
+        calculate_rebar_layout as shared_rebar_layout,
+        BAR_OPTIONS,
+    )
 
     SHARED_REBAR_AVAILABLE = True
 except ImportError:
     SHARED_REBAR_AVAILABLE = False
+    # Fallback BAR_OPTIONS if import fails
+    BAR_OPTIONS = [
+        (10, 78.5),
+        (12, 113.1),
+        (16, 201.1),
+        (20, 314.2),
+        (25, 490.9),
+        (32, 804.2),
+    ]
 
 # Import shared batch design utilities (Session 63 consolidation)
 try:
@@ -125,15 +137,8 @@ class WorkspaceState(Enum):
     DASHBOARD = "dashboard"
 
 
-# Bar options for rebar editor
-BAR_OPTIONS = [
-    (10, 78.5),
-    (12, 113.1),
-    (16, 201.1),
-    (20, 314.2),
-    (25, 490.9),
-    (32, 804.2),
-]
+# BAR_OPTIONS imported from utils.rebar_layout (Session 63 consolidation)
+# Fallback defined in import block above if import fails
 
 # Stirrup options
 STIRRUP_OPTIONS = [(6, 28.3), (8, 50.3), (10, 78.5)]
@@ -651,8 +656,7 @@ def calculate_rebar_layout(
         )
 
     # Fallback implementation (legacy, for backward compatibility)
-    BAR_OPTIONS = [(12, 113.1), (16, 201.1), (20, 314.2), (25, 490.9), (32, 804.2)]
-
+    # Uses module-level BAR_OPTIONS (imported from utils.rebar_layout or fallback)
     best_config = None
     for dia, area in BAR_OPTIONS:
         num_bars = math.ceil(ast_mm2 / area) if ast_mm2 > 0 else 2
