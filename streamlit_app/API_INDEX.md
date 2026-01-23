@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2026-01-21
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-01-24
 
 ---
 
@@ -184,6 +184,16 @@ UI polish helpers.
 | `clear_cache()` | Clear local cache |
 | `get_library_status()` | Library status check |
 
+### batch_design.py *(Session 63)*
+
+Shared batch design utilities for designing multiple beams.
+
+| Function | Purpose |
+|----------|---------|
+| `design_single_beam()` | Design one beam, returns standardized dict |
+| `design_beam_row()` | Design from DataFrame row |
+| `design_all_beams_df()` | Batch design with progress callback |
+
 ### caching.py
 
 | Function | Purpose |
@@ -224,6 +234,24 @@ UI polish helpers.
 | `generate_beam_report()` | Single beam PDF |
 | `generate_batch_report()` | Batch report PDF |
 | `add_is456_references()` | Clause citations |
+
+### rebar_layout.py *(Session 63)*
+
+Shared rebar layout calculations for 3D visualization.
+
+| Function | Purpose |
+|----------|---------|
+| `calculate_rebar_layout()` | Full layout with dev length, stirrup zones |
+| `calculate_rebar_layout_simple()` | Quick layout for previews |
+
+### rebar_optimization.py *(Session 63)*
+
+Shared rebar optimization using library functions.
+
+| Function | Purpose |
+|----------|---------|
+| `suggest_optimal_rebar()` | Optimal bar config using `select_bar_arrangement()` |
+| `optimize_beam_line()` | Unified bar sizes across beam line |
 
 ### session_manager.py
 

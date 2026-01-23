@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-23 (Session 63)
+**Updated:** 2026-01-24 (Session 63+)
 
 ---
 
@@ -84,6 +84,45 @@
 ---
 
 ## Active Tasks
+
+### TASK-354: Scanner Critical Fixes - ai_workspace.py 📋 NEW
+
+**Goal:** Fix 37 critical ZeroDivisionError risks and 24 high-severity KeyError risks
+
+**Priority:** 🔴 CRITICAL - Prevents runtime crashes
+
+| Phase | Sub-task | Lines | Status |
+|-------|----------|-------|--------|
+| 1 | Fix geometry division guards | 662, 1091, 1121 | 📋 TODO |
+| 1 | Fix steel percentage guards | 2080-2150 | 📋 TODO |
+| 1 | Fix utilization guards | 2187-2307 | 📋 TODO |
+| 1 | Fix cost calculation guards | 2396-2421 | 📋 TODO |
+| 1 | Fix remaining critical | 1547-1562, 2753, 3024, 3053, 3215, 3835, 4202, 4628 | 📋 TODO |
+| 2 | Fix KeyError (use .get()) | 255-339, 2530, 2543, 4413, 4420 | 📋 TODO |
+| 2 | Move imports to module level | 3816, 3839, 3971 | 📋 TODO |
+
+**Estimate:** 3.5 hours total
+
+**Reference:** [library-refactoring-strategy.md](research/library-refactoring-strategy.md#83-critical-issues-deep-dive-ai_workspacepy)
+
+---
+
+### TASK-355: Scanner Fixes - Other Pages 📋 NEW
+
+**Goal:** Fix remaining scanner issues in other pages
+
+**Priority:** 🟡 MEDIUM
+
+| File | Issues | Type | Status |
+|------|--------|------|--------|
+| 05_3d_viewer_demo.py | 4 high | Move imports to module level | 📋 TODO |
+| 06_multi_format_import.py | 153 medium | Add bounds checks for `corners[n]` | 📋 TODO |
+| 02_cost_optimizer.py | 2 medium | Add type hints | 📋 TODO |
+| 03_compliance.py | 2 medium | Add type hints | 📋 TODO |
+
+**Estimate:** 1.5 hours total
+
+---
 
 ### TASK-350: UI Consolidation - rebar_layout.py ✅ COMPLETE
 
