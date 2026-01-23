@@ -87,6 +87,17 @@ try:
 except ImportError:
     SHARED_REBAR_AVAILABLE = False
 
+# Import shared batch design utilities (Session 63 consolidation)
+try:
+    from utils.batch_design import (
+        design_beam_row as shared_design_beam_row,
+        design_all_beams_df as shared_design_all_beams,
+    )
+
+    SHARED_BATCH_DESIGN_AVAILABLE = True
+except ImportError:
+    SHARED_BATCH_DESIGN_AVAILABLE = False
+
 # Import PDF generator (professional reportlab-based reports)
 try:
     from utils.pdf_generator import BeamDesignReportGenerator, is_reportlab_available
@@ -705,8 +716,23 @@ def calculate_rebar_layout(
 def design_beam_row(row: pd.Series) -> dict[str, Any]:
     """Design a single beam and return results.
 
-    Uses cached_design when available (same as multi-format import page).
+    Uses shared batch_design implementation when available.
+    Falls back to local implementation for robustness.
+
+    Session 63: Consolidated to use utils/batch_design.py
     """
+    # Use shared implementation when available
+    if SHARED_BATCH_DESIGN_AVAILABLE:
+        result = shared_design_beam_row(row)
+        # Ensure backward-compatible format (simpler keys for local use)
+        return {
+            "is_safe": result.get("is_safe", False),
+            "ast_req": result.get("ast_req", 0),
+            "utilization": result.get("utilization", 0),
+            "status": result.get("status", "❌ Error"),
+        }
+
+    # Fallback to local implementation
     try:
         b_mm = float(row["b_mm"])
         D_mm = float(row["D_mm"])

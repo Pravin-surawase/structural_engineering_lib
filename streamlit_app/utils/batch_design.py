@@ -63,6 +63,19 @@ def design_single_beam(
             - shear: Full shear result dict
             - error: Error message if design failed
     """
+    # Validate dimensions first (from ai_workspace.py consolidation)
+    if D_mm < 100 or b_mm < 100:
+        return {
+            "ast_req": 0,
+            "ast_prov": None,
+            "utilization": float("inf"),
+            "is_safe": False,
+            "status": f"❌ Invalid dims: {b_mm}x{D_mm}",
+            "flexure": {},
+            "shear": {},
+            "error": f"Invalid dimensions: {b_mm}x{D_mm}mm",
+        }
+
     try:
         d_mm = D_mm - cover_mm - 8 - 8  # Effective depth (stirrup + half bar)
 

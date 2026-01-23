@@ -73,6 +73,37 @@
 
 ## Active Tasks
 
+### TASK-350: UI Consolidation - rebar_layout.py ✅ COMPLETE
+
+**Goal:** Consolidate 3 duplicate `calculate_rebar_layout` implementations
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| Create utils/rebar_layout.py | ✅ Done | Session 63 - `7ec11ad9` |
+| Update ai_workspace.py | ✅ Done | Session 63 - Uses shared import |
+| Update 06_multi_format_import.py | ✅ Done | Session 63 - 70 lines removed |
+| Update _10_ai_assistant.py | ✅ Done | Session 63 - 100 lines removed |
+
+**Result:** Removed ~227 lines of duplicate code. Single source of truth with:
+- Development length calculation (IS 456 Cl 26.2.1)
+- Tau_v > 1.0 check for tighter stirrups
+- Variable stirrup zones (2d rule)
+
+### TASK-351: UI Consolidation - batch_design.py ✅ COMPLETE
+
+**Goal:** Create shared batch design utilities
+
+| Sub-task | Status | Notes |
+|----------|--------|-------|
+| Create utils/batch_design.py | ✅ Done | Session 63 - `7ec11ad9` |
+| design_single_beam() | ✅ Done | Wraps cached_design with error handling |
+| design_beam_row() | ✅ Done | DataFrame row → design dict |
+| design_all_beams_df() | ✅ Done | Batch design with progress callback |
+
+**Note:** Pages will be migrated to use these in future sessions.
+
+---
+
 ### TASK-AI-IMPORT-FIX: AI v2 CSV Import Fix ✅ COMPLETE
 
 **Goal:** Fix AI v2 CSV import to use proven adapter infrastructure from multi-format import page
