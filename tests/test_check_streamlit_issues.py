@@ -151,6 +151,82 @@ for idx, item in enumerate(items):
 
 
 # =============================================================================
+# Phase 9: Fixed-Size Container Detection Tests
+# =============================================================================
+
+
+class TestPhase9FixedSizeContainers:
+    """Test Phase 9: structural guarantee detection for fixed-size containers."""
+
+    def test_detects_single_loop_container_size(self):
+        """Verify scanner tracks list built with single fixed loop."""
+        code = """
+items = []
+for i in range(5):
+    items.append(i * 2)
+value = items[4]  # Should be safe - 5 elements guaranteed
+"""
+        issues = scan_code(code)
+        # Should NOT flag IndexError - container has 5 guaranteed elements
+        index_errors = [i for i in issues if "IndexError" in i[2]]
+        assert len(index_errors) == 0
+
+    def test_detects_nested_loop_container_size(self):
+        """Verify scanner multiplies nested loop counts correctly."""
+        # Real pattern from multi_format_import.py: 2×2×2 = 8 elements
+        code = """
+corners = []
+for x in [0, 1]:
+    for y in [0, 1]:
+        for z in [0, 1]:
+            corners.append((x, y, z))
+# Access all 8 corners
+c0 = corners[0]
+c7 = corners[7]
+"""
+        issues = scan_code(code)
+        # Should NOT flag IndexError for corners[0] through corners[7]
+        index_errors = [i for i in issues if "IndexError" in i[2]]
+        assert len(index_errors) == 0
+
+    def test_flags_access_beyond_guaranteed_bounds(self):
+        """Verify scanner flags access beyond guaranteed size."""
+        code = """
+items = []
+for i in range(3):
+    items.append(i)
+value = items[5]  # Only 3 elements - this should fail!
+"""
+        issues = scan_code(code)
+        # Should flag IndexError - only 3 elements, accessing index 5
+        assert has_issue_type(issues, "IndexError")
+
+    def test_detects_tuple_iteration_count(self):
+        """Verify scanner counts tuple elements correctly."""
+        code = """
+results = []
+for x in (1, 2, 3, 4):
+    results.append(x * 2)
+value = results[3]  # Safe - 4 elements
+"""
+        issues = scan_code(code)
+        index_errors = [i for i in issues if "IndexError" in i[2]]
+        assert len(index_errors) == 0
+
+    def test_flags_unknown_iteration_source(self):
+        """Verify scanner still flags when iteration count is unknown."""
+        code = """
+items = []
+for x in get_data():  # Unknown count
+    items.append(x)
+value = items[0]  # Risky - could be empty!
+"""
+        issues = scan_code(code)
+        # Should still flag - iteration count is unknown
+        assert has_issue_type(issues, "IndexError")
+
+
+# =============================================================================
 # ValueError Detection Tests
 # =============================================================================
 

@@ -2,30 +2,24 @@
 # Used by check_streamlit_issues.py to suppress false positives.
 # Document WHY each item is ignored to prevent hiding real bugs.
 #
-# Updated: 2026-01-20
+# Updated: 2026-01-23 (Phase 9 reduces need for many entries)
 
 false_positives:
   # ============================================================================
-  # 06_📥_multi_format_import.py - Structurally guaranteed corners list
+  # 06_📥_multi_format_import.py - Tuple element access in comprehensions
   # ============================================================================
-  # The corners list is ALWAYS built with exactly 8 elements via:
-  #   for end_pt in [point1, point2]:    # 2 iterations
-  #     for w_sign in [-1, 1]:           # 2 iterations
-  #       for d_sign in [-1, 1]:         # 2 iterations = 8 total
-  # Accessing corners[0-7] is structurally guaranteed safe.
+  # NOTE: Phase 9 now automatically handles corners[0-7] access.
+  # These remaining entries are for TUPLE ELEMENT access (c[0], edge[0], etc.)
+  # where c/edge are loop variables iterating over containers of 3-tuples.
+  # Each tuple is (x, y, z) so indices 0-2 are always safe.
   - file: "streamlit_app/pages/06_📥_multi_format_import.py"
-    lines: [834, 835, 836, 875, 876, 877, 880, 881, 882, 885, 886, 887, 890, 891, 892, 896, 897, 898, 901, 902, 903, 906, 907, 908, 911, 912, 913, 917, 918, 919, 922, 923]
-    reason: "corners list is structurally guaranteed to have 8 elements (2×2×2 loop)"
+    lines: [834, 835, 836, 941, 942, 943]
+    reason: "Tuple element access in list comprehension - each c is a 3-tuple (cx, cy, cz)"
 
   # int() conversions on hex color strings - known format
   - file: "streamlit_app/pages/06_📥_multi_format_import.py"
     lines: [756, 757, 758]
     reason: "Converting hex color components - known 2-char format from base_color[n:m]"
-
-  # Additional corners list access lines (924-943) and edge tuple access
-  - file: "streamlit_app/pages/06_📥_multi_format_import.py"
-    lines: [924, 927, 928, 929, 932, 933, 934, 941, 942, 943]
-    reason: "corners list (8 elements guaranteed) and edge tuples (3 elements guaranteed)"
 
   # ============================================================================
   # 05_3d_viewer_demo.py - Lazy imports inside button handlers

@@ -4,6 +4,67 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 63 (Part 3): Scanner Phase 9 Implementation
+
+**Focus:** Implement Phase 9 structural guarantee detection, fix pre-existing test failures
+
+### Key Accomplishments
+
+1. **Fixed 3 pre-existing test failures** - ValueError detection was broken
+   - Enhanced `_could_be_string_input()` to detect input-like variable names
+   - Variables with `input`, `raw`, `user`, `text`, `string`, `str_` now trigger ValueError checks
+
+2. **Implemented Scanner Phase 9** - Structural guarantee detection
+   - Tracks empty list assignments (`var = []` or `var = list()`)
+   - Detects fixed-iteration loops (list literals, tuple literals, range literals)
+   - Calculates guaranteed container size via nested loop multiplication
+   - Eliminates ~150 false positives on `corners[0-7]` in multi_format_import.py
+
+3. **Added 5 unit tests** for Phase 9 (43 total tests now)
+   - `test_detects_single_loop_container_size`
+   - `test_detects_nested_loop_container_size`
+   - `test_flags_access_beyond_guaranteed_bounds`
+   - `test_detects_tuple_iteration_count`
+   - `test_flags_unknown_iteration_source`
+
+4. **Minimized `.scanner-ignore.yml`**
+   - Removed 42+ `corners[0-7]` entries (Phase 9 handles automatically)
+   - Kept only 6 lines for tuple element access (`c[0]`, `edge[0]`, etc.)
+
+### Scanner Results
+
+| Metric | Before Phase 9 | After Phase 9 |
+|--------|----------------|---------------|
+| Critical | 0 | 0 |
+| High | 0 | 0 |
+| Medium | ~150 (false positives) | 0 |
+| Low | 21 | 21 |
+| Total tests | 38 | 43 |
+
+### Technical Details
+
+**New tracking in `StreamlitIssueScanner`:**
+```python
+self.fixed_size_containers: Dict[str, int] = {}  # container → guaranteed size
+self.empty_list_assignments: Dict[str, int] = {}  # container → assignment line
+```
+
+**New methods:**
+- `_get_fixed_iteration_count(iter_node)` - Returns count for list/tuple/range literals
+- `_count_nested_fixed_loops(node)` - Multiplies nested loop counts for `.append()` calls
+
+### Documentation Updated
+
+- [scanner-improvements.md](research/scanner-improvements.md) - Marked Phase 9 complete, updated status
+
+### Next Session Tasks
+
+1. Complete remaining documentation updates
+2. Consider Phase 10 severity tuning if needed
+3. Continue V3 Foundation work
+
+---
+
 ## 2026-01-23 — Session 63 (Part 2): Validation & Critical Fixes
 
 **Focus:** Validate Session 63 Part 1 work, fix critical issues, update TASKS.md

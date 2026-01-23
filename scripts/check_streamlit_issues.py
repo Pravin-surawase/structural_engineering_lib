@@ -301,6 +301,12 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         # Track widget keys to detect session_state modification after widget instantiation
         self.widget_keys: Dict[str, int] = {}  # key -> line number where widget was created
 
+        # Phase 9: Fixed-size container tracking
+        # Track containers built with guaranteed minimum lengths
+        # e.g., corners = [] followed by 2×2×2 nested loops with .append()
+        self.fixed_size_containers: Dict[str, int] = {}  # container_name -> guaranteed_min_length
+        self.empty_list_assignments: Dict[str, int] = {}  # container_name -> line_number (for tracking)
+
         # Function tracking
         self.in_function = False
         self.function_name = ""
@@ -486,7 +492,20 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         self.function_name = old_function_name
 
     def visit_Assign(self, node: ast.Assign):
-        """Track variable assignments (Phase 2: improved, Phase 8: enhanced Path detection)."""
+        """Track variable assignments (Phase 2: improved, Phase 8: enhanced Path detection, Phase 9: empty list tracking)."""
+        # Phase 9: Track empty list assignments for fixed-size container detection
+        # Pattern: corners = [], items = list()
+        if isinstance(node.value, ast.List) and len(node.value.elts) == 0:
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    self.empty_list_assignments[target.id] = node.lineno
+        elif isinstance(node.value, ast.Call):
+            if isinstance(node.value.func, ast.Name) and node.value.func.id == "list":
+                if not node.value.args:  # list() with no args
+                    for target in node.targets:
+                        if isinstance(target, ast.Name):
+                            self.empty_list_assignments[target.id] = node.lineno
+
         # Check if assigning a Path object
         is_path_assignment = False
         if isinstance(node.value, ast.Call):
@@ -806,6 +825,14 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                                 and node.value.func.attr == "split"
                             ):
                                 # This is x.split(...)[0] - always safe
+                                self.generic_visit(node)
+                                return
+
+                        # Phase 9: Check if container has guaranteed minimum size
+                        if container_name in self.fixed_size_containers:
+                            guaranteed_size = self.fixed_size_containers[container_name]
+                            if index_value < guaranteed_size:
+                                # Index is within guaranteed bounds - skip warning
                                 self.generic_visit(node)
                                 return
 
@@ -1340,15 +1367,19 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         Phase 7: For int()/float() calls, we only want to warn if the
         input could be a string. Math operations on numbers are safe.
 
+        Phase 9: More aggressive detection for variable names that suggest
+        user input (e.g., user_input, input_value, raw_input).
+
         Returns True if the input might be:
         - A Streamlit widget result (st.text_input, etc.)
         - A function call that returns a string
         - Direct string literals
+        - Variables with names suggesting user input
 
         Returns False if the input is:
         - A numeric literal
         - A math expression (BinOp)
-        - A simple variable (assumed to be from prior validated source)
+        - A variable that looks numeric (e.g., spacing, width)
         """
         # Numeric literals are safe
         if isinstance(node, ast.Constant):
@@ -1375,8 +1406,14 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             # Other function calls - assume safe (they may return validated data)
             return False
 
-        # Simple variable names - assume they're pre-validated
+        # Phase 9: Check variable names for input-like patterns
         if isinstance(node, ast.Name):
+            var_name = node.id.lower()
+            # Variables that suggest user input are risky
+            input_patterns = ("input", "raw", "user", "text", "string", "str_")
+            if any(pattern in var_name for pattern in input_patterns):
+                return True
+            # Otherwise assume pre-validated
             return False
 
         # Subscript access like data["key"] - could be string
@@ -1535,9 +1572,79 @@ class EnhancedIssueDetector(ast.NodeVisitor):
         return False
 
     def visit_For(self, node: ast.For):
-        """Track for loop variables (Phase 2: improved tuple unpacking)."""
+        """Track for loop variables (Phase 2: improved tuple unpacking, Phase 9: fixed-size containers)."""
         self._add_target_names(node.target)
+
+        # Phase 9: Detect fixed-iteration loops that append to containers
+        # Pattern: for x in [a, b, c]: container.append(...)
+        # This gives container a guaranteed minimum length equal to len([a, b, c])
+        iteration_count = self._get_fixed_iteration_count(node.iter)
+        if iteration_count > 0:
+            # Find all .append() calls in the loop body
+            for stmt in ast.walk(node):
+                if isinstance(stmt, ast.Call):
+                    if isinstance(stmt.func, ast.Attribute) and stmt.func.attr == "append":
+                        container_name = self._extract_var_name(stmt.func.value)
+                        if container_name and container_name in self.empty_list_assignments:
+                            # Multiply by nested loop count
+                            total_appends = iteration_count * self._count_nested_fixed_loops(node)
+                            # Update or set the guaranteed size
+                            current = self.fixed_size_containers.get(container_name, 0)
+                            self.fixed_size_containers[container_name] = max(current, total_appends)
+
         self.generic_visit(node)
+
+    def _get_fixed_iteration_count(self, iter_node: ast.expr) -> int:
+        """Get the fixed iteration count for a loop iterable.
+
+        Phase 9: Returns the number of iterations if known at parse time.
+        Returns 0 if unknown/variable.
+
+        Examples:
+        - [a, b, c] -> 3
+        - [-1, 1] -> 2
+        - range(5) -> 5
+        - some_variable -> 0 (unknown)
+        """
+        if isinstance(iter_node, ast.List):
+            return len(iter_node.elts)
+        elif isinstance(iter_node, ast.Tuple):
+            return len(iter_node.elts)
+        elif isinstance(iter_node, ast.Set):
+            return len(iter_node.elts)
+        elif isinstance(iter_node, ast.Call):
+            if isinstance(iter_node.func, ast.Name) and iter_node.func.id == "range":
+                # range(n) -> n iterations, range(a, b) -> b-a iterations
+                if len(iter_node.args) == 1:
+                    if isinstance(iter_node.args[0], ast.Constant):
+                        return int(iter_node.args[0].value)
+                elif len(iter_node.args) >= 2:
+                    if isinstance(iter_node.args[0], ast.Constant) and isinstance(iter_node.args[1], ast.Constant):
+                        start = int(iter_node.args[0].value)
+                        end = int(iter_node.args[1].value)
+                        return max(0, end - start)
+        return 0
+
+    def _count_nested_fixed_loops(self, for_node: ast.For) -> int:
+        """Count the product of nested fixed-iteration loops.
+
+        Phase 9: For nested loops like:
+            for a in [1, 2]:       # 2
+                for b in [-1, 1]:  # 2
+                    for c in [0, 1]:  # 2
+                        container.append(x)  # Total: 2*2*2 = 8
+
+        Returns the multiplier for appends inside this loop.
+        """
+        multiplier = 1
+        for stmt in for_node.body:
+            if isinstance(stmt, ast.For):
+                nested_count = self._get_fixed_iteration_count(stmt.iter)
+                if nested_count > 0:
+                    multiplier *= nested_count
+                    # Recursively count deeper nesting
+                    multiplier *= self._count_nested_fixed_loops(stmt)
+        return multiplier
 
     def _add_target_names(self, target):
         """Recursively add names from assignment targets (handles nested unpacking)."""
