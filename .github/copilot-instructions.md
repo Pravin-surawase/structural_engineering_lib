@@ -488,6 +488,72 @@ cat scripts/index.json
 | **Not checking PR need** | Wrong workflow | Use decision script | `should_use_pr.sh` |
 | **Reading too many large files** | 413 Request Entity Too Large | Read targeted sections, use grep_search | - |
 | **Reinventing existing infra** | Broken features, bugs | Search for adapters/utils first | `semantic_search` |
+| **Creating duplicate docs** | Clutter, confusion | Check canonical registry first | `check_doc_similarity.py` |
+| **Using outdated AI model names** | API errors | Verify online before using | `fetch_webpage` |
+| **Manual file operations** | Broken links | Use safe_file scripts | `safe_file_move.py` |
+
+---
+
+## 🤖 AI Agent-Specific Rules (CRITICAL)
+
+### Knowledge Cutoff Awareness
+
+**Your training data is outdated!** Before using any of these, verify online:
+
+| Category | Action Required |
+|----------|-----------------|
+| AI model names | `fetch_webpage("https://platform.openai.com/docs/models")` |
+| Library versions | Check actual `pyproject.toml` in project |
+| Framework APIs | Verify current official documentation |
+| Cloud service configs | Check provider's current docs |
+
+**Verified as of 2026-01-23:**
+- OpenAI: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`
+- Anthropic: `claude-sonnet-4-20250514`, `claude-3-opus`, `claude-3-haiku`
+
+### Preventing Document Duplication
+
+**Before creating ANY new document:**
+
+```bash
+# 1. Check if canonical doc exists for topic
+.venv/bin/python scripts/check_doc_similarity.py "your topic"
+
+# 2. Check the canonical registry
+cat docs/docs-canonical.json | jq '.topics["your-topic"]'
+
+# 3. If match found → UPDATE existing doc, don't create new
+```
+
+**Canonical Document Registry:** [docs/docs-canonical.json](docs/docs-canonical.json)
+
+### Finding Automation Scripts
+
+**Before doing manual work:**
+
+```bash
+# Find existing automation
+.venv/bin/python scripts/find_automation.py "your task"
+
+# Or browse by category
+.venv/bin/python scripts/find_automation.py --list
+.venv/bin/python scripts/find_automation.py --category git_workflow
+```
+
+**Automation Map:** [scripts/automation-map.json](scripts/automation-map.json)
+
+### Minimum Context Loading
+
+**Load these FIRST (50 lines total):**
+- [docs/getting-started/agent-essentials.md](docs/getting-started/agent-essentials.md)
+
+**Load ONLY when needed:**
+| Task | Load This |
+|------|-----------|
+| Git operations | [docs/git-automation/workflow-guide.md](docs/git-automation/workflow-guide.md) |
+| Streamlit UI | [docs/guidelines/streamlit-fragment-best-practices.md](docs/guidelines/streamlit-fragment-best-practices.md) |
+| API changes | [docs/reference/api.md](docs/reference/api.md) |
+| Architecture | [docs/architecture/project-overview.md](docs/architecture/project-overview.md) |
 
 **Critical Example - Reusing Infrastructure:**
 The AI v2 page had broken CSV import (showing "0 inf% FAIL") because it reinvented column mapping
