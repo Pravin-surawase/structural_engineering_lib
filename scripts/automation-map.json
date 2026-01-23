@@ -1,0 +1,137 @@
+{
+  "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
+  "_updated": "2026-01-23",
+  "_usage": "Before doing a task manually, check this file to find an automation script",
+
+  "tasks": {
+    "commit code": {
+      "script": "./scripts/ai_commit.sh \"message\"",
+      "description": "Stage, commit, and push with all safety checks",
+      "never_use": ["git add", "git commit", "git push"]
+    },
+    "move file": {
+      "script": ".venv/bin/python scripts/safe_file_move.py old.md new.md",
+      "description": "Move file and update all internal links automatically",
+      "never_use": ["mv", "git mv"]
+    },
+    "delete file": {
+      "script": ".venv/bin/python scripts/safe_file_delete.py file.md",
+      "description": "Delete file after checking for references",
+      "never_use": ["rm", "git rm"]
+    },
+    "create document": {
+      "script": ".venv/bin/python scripts/create_doc.py path/file.md \"Title\"",
+      "description": "Create document with proper metadata headers",
+      "prereq": ".venv/bin/python scripts/check_doc_similarity.py \"topic\""
+    },
+    "fix broken links": {
+      "script": ".venv/bin/python scripts/fix_broken_links.py --fix",
+      "description": "Find and auto-fix broken internal links"
+    },
+    "check streamlit code": {
+      "script": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
+      "description": "Detect runtime errors before they happen"
+    },
+    "run tests": {
+      "script": ".venv/bin/python -m pytest Python/tests -q",
+      "description": "Run Python test suite"
+    },
+    "format code": {
+      "script": "cd Python && .venv/bin/python -m black . && .venv/bin/python -m ruff check --fix .",
+      "description": "Auto-format Python code"
+    },
+    "check folder structure": {
+      "script": ".venv/bin/python scripts/check_folder_structure.py",
+      "description": "Validate project organization"
+    },
+    "check for duplicates": {
+      "script": ".venv/bin/python scripts/check_doc_similarity.py \"topic\"",
+      "description": "Find similar documents before creating new ones"
+    },
+    "start session": {
+      "script": "./scripts/agent_start.sh --quick",
+      "description": "Initialize agent environment (6 seconds)"
+    },
+    "end session": {
+      "script": ".venv/bin/python scripts/end_session.py",
+      "description": "Validate handoff and update session docs"
+    },
+    "check git state": {
+      "script": "./scripts/git_ops.sh --status",
+      "description": "Analyze git state and get recommendations"
+    },
+    "recover git": {
+      "script": "./scripts/recover_git_state.sh",
+      "description": "Fix common git issues automatically"
+    },
+    "decide pr vs direct": {
+      "script": "./scripts/should_use_pr.sh --explain",
+      "description": "Determine if PR is required for changes"
+    },
+    "create pr branch": {
+      "script": "./scripts/create_task_pr.sh TASK-XXX \"description\"",
+      "description": "Start PR workflow for production code"
+    },
+    "finish pr": {
+      "script": "./scripts/finish_task_pr.sh TASK-XXX \"description\" --async",
+      "description": "Submit PR and trigger async merge"
+    },
+    "check api docs": {
+      "script": ".venv/bin/python scripts/check_api_doc_signatures.py",
+      "description": "Verify API documentation matches code"
+    },
+    "generate api manifest": {
+      "script": ".venv/bin/python scripts/generate_api_manifest.py",
+      "description": "Regenerate API manifest after changes"
+    },
+    "validate doc metadata": {
+      "script": ".venv/bin/python scripts/check_doc_metadata.py",
+      "description": "Ensure all docs have proper metadata headers"
+    },
+    "archive old files": {
+      "script": "./scripts/archive_old_files.sh",
+      "description": "Move files older than 90 days to archive"
+    },
+    "launch streamlit": {
+      "script": "./scripts/launch_streamlit.sh",
+      "description": "Start the Streamlit development server"
+    }
+  },
+
+  "categories": {
+    "git_workflow": [
+      "commit code",
+      "check git state",
+      "recover git",
+      "decide pr vs direct",
+      "create pr branch",
+      "finish pr"
+    ],
+    "file_operations": [
+      "move file",
+      "delete file",
+      "create document"
+    ],
+    "validation": [
+      "check streamlit code",
+      "check folder structure",
+      "check for duplicates",
+      "check api docs",
+      "validate doc metadata"
+    ],
+    "development": [
+      "run tests",
+      "format code",
+      "launch streamlit"
+    ],
+    "session_management": [
+      "start session",
+      "end session"
+    ],
+    "maintenance": [
+      "fix broken links",
+      "archive old files",
+      "generate api manifest"
+    ]
+  }
+}
