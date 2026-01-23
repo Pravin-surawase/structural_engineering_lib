@@ -16,7 +16,7 @@ import argparse
 import json
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -67,7 +67,9 @@ def get_type_from_path(file_path: Path) -> str:
     """Infer document type from file path."""
     path_str = str(file_path)
 
-    if "research" in path_str:
+    if "docs/agents/sessions" in path_str or "agents/sessions" in path_str:
+        return "Session"
+    elif "research" in path_str:
         return "Research"
     elif "planning" in path_str:
         return "Plan"
@@ -97,8 +99,15 @@ def get_audience_from_type(doc_type: str) -> str:
         "Decision": "All Agents",
         "Plan": "All Agents",
         "Index": "All Agents",
+        "Session": "All Agents",
     }
     return type_audience.get(doc_type, "All Agents")
+
+
+def is_session_doc(file_path: Path) -> bool:
+    """Return True if this is a session artifact path."""
+    path_str = str(file_path)
+    return "docs/agents/sessions" in path_str
 
 
 def check_for_similar_docs(title: str) -> dict:
@@ -197,18 +206,36 @@ def main():
     # Determine type
     doc_type = args.doc_type or get_type_from_path(file_path)
     audience = get_audience_from_type(doc_type)
+    status = args.status
+
+    # Lifecycle defaults for session docs
+    lifecycle_block = ""
+    if is_session_doc(file_path):
+        if args.status == "In Progress":
+            status = "Active"
+        archive_after = (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
+        lifecycle_block = (
+            f"**Lifecycle:** Session\n"
+            f"**Archive After:** {archive_after}\n"
+        )
 
     # Generate content
     content = TEMPLATE.format(
         title=args.title,
         doc_type=doc_type,
         audience=audience,
-        status=args.status,
+        status=status,
         importance=args.importance,
         created=date.today().strftime("%Y-%m-%d"),
         tasks=args.tasks or "None",
         abstract=args.abstract,
     )
+
+    if lifecycle_block:
+        content = content.replace(
+            "**Abstract:** {abstract}\n".format(abstract=args.abstract),
+            f"**Abstract:** {args.abstract}\n{lifecycle_block}\n",
+        )
 
     # Write file
     file_path.write_text(content)
