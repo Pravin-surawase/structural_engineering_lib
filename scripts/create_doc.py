@@ -13,6 +13,8 @@ This script:
 """
 
 import argparse
+import json
+import subprocess
 import sys
 from datetime import date
 from pathlib import Path
@@ -99,6 +101,28 @@ def get_audience_from_type(doc_type: str) -> str:
     return type_audience.get(doc_type, "All Agents")
 
 
+def check_for_similar_docs(title: str) -> dict:
+    """Run similarity checks to prevent duplicate docs."""
+    script_path = REPO_ROOT / "scripts" / "check_doc_similarity.py"
+    if not script_path.exists():
+        return {}
+
+    result = subprocess.run(
+        [sys.executable, str(script_path), title, "--json"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    if result.returncode != 0 or not result.stdout.strip():
+        return {}
+
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return {}
+
+
 def main():
     parser = argparse.ArgumentParser(description="Create a new doc with metadata")
     parser.add_argument(
@@ -117,12 +141,49 @@ def main():
         help="One-line abstract",
     )
     parser.add_argument("--force", action="store_true", help="Overwrite existing file")
+    parser.add_argument(
+        "--allow-duplicate",
+        action="store_true",
+        help="Allow creation even if similar docs exist",
+    )
+    parser.add_argument(
+        "--skip-similarity-check",
+        action="store_true",
+        help="Skip duplicate/similarity check",
+    )
 
     args = parser.parse_args()
 
     file_path = Path(args.filepath)
     if not file_path.is_absolute():
         file_path = REPO_ROOT / file_path
+
+    # Check for similar or canonical docs (avoid duplication)
+    if not args.skip_similarity_check and not args.allow_duplicate:
+        results = check_for_similar_docs(args.title)
+        canonical = results.get("canonical_matches", []) if results else []
+        similar = results.get("similar_docs", []) if results else []
+        high_similar = [d for d in similar if d.get("similarity", 0) >= 0.7]
+
+        if canonical or high_similar:
+            print("⚠️  Similar or canonical documents detected:")
+            for match in canonical:
+                print(f"  • Canonical: {match.get('path')} ({match.get('title')})")
+            for doc in high_similar[:5]:
+                print(
+                    f"  • Similar: {doc.get('path')} "
+                    f"({doc.get('reason', 'similar')})"
+                )
+            print()
+            print("→ Update existing docs instead of creating a new one.")
+            print("→ Use --allow-duplicate to proceed anyway.")
+            return 1
+        elif similar:
+            print("⚠️  Possible related docs found (low similarity):")
+            for doc in similar[:5]:
+                print(f"  • {doc.get('path')} ({doc.get('reason', 'similar')})")
+            print("→ Proceeding, but review existing docs if possible.")
+            print()
 
     # Check if file exists
     if file_path.exists() and not args.force:
