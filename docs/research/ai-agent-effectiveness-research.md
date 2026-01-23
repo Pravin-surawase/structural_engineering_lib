@@ -12,666 +12,296 @@
 
 ## Executive Summary
 
-This project uses AI agents (GitHub Copilot, Claude, GPT-4) for **100% of code development and maintenance**. We have built significant infrastructure:
+This project uses AI agents for **100% of code development and maintenance**. We have strong infrastructure, but agent effectiveness is still bottlenecked by knowledge freshness, context limits, and documentation sprawl.
 
-- **Bootstrap system:** Agent onboarding in <30 seconds
-- **156 automation scripts:** Git, validation, testing, documentation
-- **15+ onboarding documents:** 7,000+ lines of guidance
-- **Pre-commit hooks:** Blocking manual git, enforcing quality
+**Current strengths (real, working):**
+- **Unified onboarding:** `./scripts/agent_start.sh` + `scripts/start_session.py`
+- **Automation catalog:** 143 scripts tracked in `scripts/index.json` (updated 2026-01-21)
+- **Duplication controls:** `docs/docs-canonical.json`, `scripts/check_doc_similarity.py`, `scripts/check_duplicate_docs.py`
+- **Enforcement:** Git hooks + pre-commit checks block manual git and enforce metadata
 
-**However, significant problems persist:**
+**Persistent issues (observed in this repo):**
+- **Knowledge cutoff / tool drift** → agents suggest outdated models/libs/commands
+- **Context limits** → partial reading and missed rules
+- **Document duplication + naming drift** → multiple files for one topic
+- **Automation underuse** → manual work despite existing scripts
+- **Session clutter** → new docs created each session, hard to find the canonical source
 
-| Problem Category | Impact | Root Cause |
-|------------------|--------|------------|
-| **Knowledge Cutoff** | Agents use outdated libs/models | Training data limits |
-| **Context Window Limits** | Miss important docs | Token limits (~128K-200K) |
-| **Document Duplication** | 800+ lines removed in Session 64 | Agents create vs update |
-| **Inconsistent Naming** | Same topic = 5 different filenames | No naming conventions |
-| **Automation Underuse** | Manual work despite 156 scripts | Discovery problem |
-| **Partial Document Reading** | Important sections missed | Context optimization gone wrong |
-
-**This document researches solutions and proposes an actionable improvement plan.**
+**Goal:** make the system *practical* for real agents: shorter context, clearer canonical docs, stronger duplication gates, and mandatory verification for volatile info.
 
 ---
 
 ## Table of Contents
 
 1. [Current Infrastructure Inventory](#1-current-infrastructure-inventory)
-2. [Problem Analysis: Deep Dive](#2-problem-analysis-deep-dive)
-3. [Industry Best Practices](#3-industry-best-practices)
-4. [Proposed Solutions](#4-proposed-solutions)
-5. [Implementation Roadmap](#5-implementation-roadmap)
-6. [Success Metrics](#6-success-metrics)
+2. [Problem Analysis (Repo Reality)](#2-problem-analysis-repo-reality)
+3. [External Best Practices & Research](#3-external-best-practices--research)
+4. [Gap Analysis](#4-gap-analysis)
+5. [Proposed Improvements (Practical)](#5-proposed-improvements-practical)
+6. [Implementation Roadmap](#6-implementation-roadmap)
+7. [Success Metrics](#7-success-metrics)
+8. [Appendix: Evidence & References](#8-appendix-evidence--references)
 
 ---
 
 ## 1. Current Infrastructure Inventory
 
-### 1.1 Onboarding Documents (15+)
+### 1.1 Onboarding System (Working Today)
 
-| Document | Purpose | Lines | Priority |
-|----------|---------|-------|----------|
-| [agent-bootstrap.md](../getting-started/agent-bootstrap.md) | Entry point, first 30 seconds | ~100 | P0 |
-| [ai-context-pack.md](../getting-started/ai-context-pack.md) | Project summary, golden rules | ~250 | P1 |
-| [copilot-instructions.md](../../.github/copilot-instructions.md) | All rules, CRITICAL | ~700 | P1 |
-| [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) | Complete workflows | ~700 | P1 |
-| [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) | Cheat sheet | ~350 | P2 |
-| [known-pitfalls.md](../reference/known-pitfalls.md) | Common mistakes | ~180 | P2 |
-| [session-issues.md](../contributing/session-issues.md) | Recurring friction | ~100 | P3 |
-| [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md) | Historical lessons | ~800 | P3 |
+**Primary entrypoint:** `docs/getting-started/agent-bootstrap.md`
 
-**Total:** ~7,000+ lines of onboarding documentation
+**Mandatory flow:**
+1. `./scripts/agent_start.sh --quick`
+2. Read: `agent-essentials.md → ai-context-pack.md → TASKS.md`
+3. Follow `.github/copilot-instructions.md` rules
 
-### 1.2 Automation Scripts (156)
+### 1.2 Core Onboarding Docs (Active)
 
-| Category | Count | Key Scripts |
-|----------|-------|-------------|
-| Git Workflow | 10 | `ai_commit.sh`, `safe_push.sh`, `should_use_pr.sh` |
-| Validation | 25+ | `check_links.py`, `check_streamlit_issues.py`, `check_folder_structure.py` |
-| Documentation | 8 | `create_doc.py`, `fix_broken_links.py`, `check_doc_metadata.py` |
-| Testing | 5 | `ci_local.sh`, `quick_check.sh` |
-| File Operations | 3 | `safe_file_move.py`, `safe_file_delete.py` |
-| Session Management | 3 | `agent_start.sh`, `end_session.py`, `update_handoff.py` |
+| Document | Purpose | Priority |
+|----------|---------|----------|
+| `docs/getting-started/agent-bootstrap.md` | First 30 seconds | P0 |
+| `docs/getting-started/agent-essentials.md` | 50-line critical rules | P0 |
+| `docs/getting-started/ai-context-pack.md` | Project summary, golden rules | P1 |
+| `.github/copilot-instructions.md` | All rules, mandatory | P1 |
+| `docs/agents/guides/agent-quick-reference.md` | Emergency cheat sheet | P2 |
+| `docs/agents/guides/agent-workflow-master-guide.md` | Complete workflows | P1 |
+| `docs/reference/known-pitfalls.md` | Engineering mistakes | P2 |
+| `docs/contributing/session-issues.md` | Recurring friction + fixes | P2 |
 
-**Discovery Method:** `scripts/index.json` catalogs all scripts
+**Reality:** These docs total **7,000+ lines** and exceed a typical agent context window. The system *must* be selective and task-specific.
 
-### 1.3 Enforcement Mechanisms
+### 1.3 Automation (143 Scripts)
 
-| Mechanism | What It Does | Effectiveness |
-|-----------|--------------|---------------|
-| Pre-commit hooks | Block manual git, run formatters | 100% for git |
-| `.scanner-ignore.yml` | Suppress false positives | Works well |
-| CI checks | Format, lint, test, coverage | 100% enforcement |
-| Git hooks | Block `git commit` without script | 100% |
+**Catalog:** `scripts/index.json` and `scripts/automation-map.json`
 
----
+**Discovery:** `scripts/find_automation.py "task"`
 
-## 2. Problem Analysis: Deep Dive
+**Key automation areas:**
+- Git workflow (commit/PR automation)
+- Validation + scanners
+- Documentation tooling (metadata, duplication checks)
+- Safe file operations
+- Session management
 
-### 2.1 Knowledge Cutoff Issues
+### 1.4 Enforcement & Guardrails
 
-**Problem:** AI agents have training data cutoffs (typically 6-18 months old). They:
-- Suggest deprecated library versions
-- Use outdated API patterns
-- Hallucinate model names (e.g., "gpt-5-mini")
-- Miss new framework features
-
-**Evidence from this project:**
-```markdown
-# From copilot-instructions.md:
-> **Do NOT invent model names:** Never guess model names like "gpt-5-mini" or "claude-4"
-> **Use verified models:** gpt-4o, gpt-4o-mini, claude-sonnet-4-20250514
-```
-
-**Real incidents:**
-- Session 51: Agent suggested invalid `gpt-4o-turbo` (doesn't exist)
-- Session 56: Agent used wrong model name, required fix commit
-
-**Root cause:** Agents don't know what they don't know. They confidently use outdated information.
-
-**Current mitigation (partial):**
-- `copilot-instructions.md` lists verified model names
-- Agents instructed to use `fetch_webpage` for verification
-
-**Gap:** No systematic way to tell agents "this information is likely outdated."
-
-### 2.2 Context Window Limitations
-
-**Problem:** Agents have limited context windows (128K-200K tokens). In large projects:
-- Cannot load all relevant docs simultaneously
-- May miss critical sections of long files
-- Forget earlier context in long sessions
-
-**Evidence:**
-```
-# From copilot-instructions.md warnings:
-> Reading too many large files → 413 Request Entity Too Large
-> Read targeted sections, use grep_search
-```
-
-**Symptoms in this project:**
-- Agents skip reading entire `copilot-instructions.md` (700 lines)
-- Miss critical rules buried in the middle of documents
-- Duplicate code because they didn't find existing implementation
-
-**Impact:** The ~7,000 lines of onboarding docs exceed what agents can absorb in context.
-
-### 2.3 Document Duplication Epidemic
-
-**Problem:** Agents create new documents instead of updating existing ones.
-
-**Evidence from Session 64:**
-```markdown
-# Session 64 Key Accomplishment:
-> Documentation Consolidation (removed 817 duplicate lines)
-> - Deleted docs/developers/api-stability.md (duplicate of docs/reference/api-stability.md)
-> - Deleted docs/agents/guides/agent-coding-standards.md (duplicate of docs/contributing/agent-coding-standards.md)
-```
-
-**Pattern observed:**
-1. Agent needs to document something
-2. Agent creates NEW file instead of finding existing
-3. Over time: 2-5 files covering same topic
-4. Human must periodically consolidate
-
-**Why this happens:**
-- Finding existing docs requires reading/searching
-- Creating new file is "easier" (lower cognitive load)
-- No validation script catches duplicates before commit
-
-### 2.4 Inconsistent Naming Conventions
-
-**Problem:** Same topic = multiple naming patterns.
-
-**Examples from this project:**
-```
-# Topic: Agent Bootstrap
-agent-bootstrap.md
-bootstrap-review-summary.md
-bootstrap-and-project-structure-summary.md
-AGENT_BOOTSTRAP_COMPLETE_REVIEW.md
-
-# Topic: Git Workflow
-git-workflow-ai-agents.md
-workflow-guide.md
-agent-8-git-ops.md
-agent-workflow-master-guide.md
-```
-
-**Why this is a problem:**
-- Hard to find "the" document on a topic
-- Multiple "final" versions exist
-- Agents don't know which to update
-- Increases duplication
-
-### 2.5 Automation Script Underutilization
-
-**Problem:** Despite 156 automation scripts, agents frequently do work manually.
-
-**Evidence from project:**
-```markdown
-# From known-pitfalls.md:
-> Before adding new code, always check:
-> 1. Python/structural_lib/adapters.py - File format parsing
-> 2. streamlit_app/utils/api_wrapper.py - Cached API calls
-```
-
-**Why scripts aren't used:**
-1. **Discovery problem:** Agents don't know scripts exist
-2. **Catalog too long:** `scripts/index.json` has 156 entries
-3. **No task-to-script mapping:** Agent working on X doesn't know script Y helps
-4. **Context not loaded:** Script catalog rarely in agent context
-
-**Impact:** Agents reinvent infrastructure that already exists (e.g., CSV adapter issue in Session 56).
-
-### 2.6 Partial Document Reading
-
-**Problem:** Agents optimize for speed by reading doc summaries, missing critical details.
-
-**Evidence:**
-```markdown
-# From copilot-instructions.md:
-> The AI v2 page had broken CSV import because it reinvented column mapping
-> instead of reusing the proven adapter system from multi-format import page
-```
-
-**Pattern:**
-1. Agent reads doc header/summary
-2. Assumes it understands
-3. Misses critical implementation detail in middle of doc
-4. Creates incorrect implementation
-
-### 2.7 Session Document Clutter
-
-**Problem:** Agents create session-specific documents that accumulate.
-
-**Current state:**
-```
-docs/_archive/2026-01/  # Contains old session artifacts
-docs/agents/sessions/2026-01/  # Agent-specific session docs
-```
-
-**Issues:**
-- Documents created "just in case" often not needed
-- No clear lifecycle (when to archive?)
-- Folder bloat slows navigation
+| Mechanism | Purpose | Effect |
+|----------|---------|--------|
+| Git hooks | Block manual git | Prevents conflicts + policy violations |
+| Pre-commit checks | Metadata/formatting | Enforces documentation hygiene |
+| Automation maps | Discovery | Helps agents find scripts quickly |
 
 ---
 
-## 3. Industry Best Practices
+## 2. Problem Analysis (Repo Reality)
 
-### 3.1 Cursor/Windsurf Rules Files
+### 2.1 Knowledge Cutoff & Tool Drift
 
-**Pattern:** IDE-integrated AI coding assistants use `.cursorrules` or similar files:
+**Observed:** Agents propose outdated models, commands, or APIs. Example: invalid model names and deprecated CLI flags have appeared in session work.
 
-```
-# .cursorrules example
-- Always use TypeScript strict mode
-- Prefer functional components over class components
-- Run `npm test` before committing
-- Check /docs/api-reference.md before creating new endpoints
-```
+**Root cause:** Agents cannot know which info is stale unless explicitly forced to verify.
 
-**Advantages:**
-- Loaded automatically for every session
-- Short, focused rules (not 7,000 lines)
-- Task-specific guidance
+**Impact:** Rework, broken builds, incorrect docs.
 
-**Application to this project:**
-- Our `copilot-instructions.md` is too long (700 lines)
-- Need a shorter "active rules" subset
+**Required fix:** Explicit *verify-online* workflow for volatile info (models, versions, APIs, commands).
 
-### 3.2 Anthropic's Model Context Protocol (MCP)
+### 2.2 Context Window Limits → Partial Reading
 
-**Pattern:** Structured context provision with:
-- Tools for specific operations
-- Resources for context injection
-- Clear capability boundaries
+**Observed:** Agents skip mid-file rules and miss critical details (especially in long docs).
 
-**Application:**
-- Define "check outdated info" as a tool
-- Provide "current verified versions" as a resource
-- Make agents ask before using potentially stale info
+**Root cause:** Long docs + token limits → agents read only headers/summary.
 
-### 3.3 Agentic RAG Patterns
+**Impact:** Repeated mistakes, duplicated implementations.
 
-**Pattern:** Rather than loading full docs, use:
-1. **Semantic search** to find relevant sections
-2. **Chunked retrieval** for specific context
-3. **Summarization** for long documents
+**Required fix:** Shorter rule tiers + task-specific context packs.
 
-**Application:**
-- Create embeddings for our docs
-- Agent queries for "CSV import" → gets relevant section
-- Reduces context pollution
+### 2.3 Document Duplication & Naming Drift
 
-### 3.4 Task-Based Context Injection
+**Observed:** Multiple documents for the same topic (e.g., bootstrap, git workflow, AI guides). Agents create new docs instead of updating canonical ones.
 
-**Pattern:** Different tasks need different context:
+**Root cause:** No hard gate at doc creation time; naming conventions are informal.
 
-| Task Type | Context Needed |
-|-----------|----------------|
-| Git operation | Git workflow guide only |
-| Streamlit UI | Fragment rules, scanner info |
-| Library code | API reference, architecture |
-| Documentation | Style guide, metadata standards |
+**Impact:** Search fatigue, contradictory guidance, higher onboarding time.
 
-**Application:**
-- Create task-specific "context packs"
-- Agent declares task type → gets relevant subset
+**Required fix:** Pre-creation similarity checks + enforced naming conventions.
 
-### 3.5 Explicit Freshness Markers
+### 2.4 Automation Underuse
 
-**Pattern:** Mark information with freshness/confidence:
+**Observed:** Agents do manual work even when scripts exist (link fixing, file moves, git operations, doc checks).
 
-```markdown
-<!-- FRESHNESS: 2026-01-23, HIGH confidence -->
-Current OpenAI models: gpt-4o, gpt-4o-mini, gpt-4-turbo
+**Root cause:** Discovery friction (catalog too long, not in context).
 
-<!-- FRESHNESS: 2025-06-01, LOW confidence - verify before use -->
-Streamlit version requirements: >=1.28.0
-```
+**Impact:** Higher error rate, slower delivery.
 
-**Application:**
-- Add freshness markers to technology-specific sections
-- Instruct agents to verify LOW confidence items online
+**Required fix:** “Before You Do It Manually” checklist + automation prompts inside onboarding.
+
+### 2.5 Session Document Clutter
+
+**Observed:** Session-specific docs accumulate and are hard to find; multiple “final” files exist.
+
+**Root cause:** No lifecycle enforcement at document creation time.
+
+**Impact:** Navigation friction, duplication, stale docs.
+
+**Required fix:** Lifecycle metadata + automated archiving rules.
+
+### 2.6 Past Errors and Mistakes (From Repo Logs)
+
+**Recurring issues captured in `docs/contributing/session-issues.md`:**
+- Doc stamps introducing whitespace → pre-commit failures
+- `gh pr checks --watch` timeouts → use async polling scripts
+- Manual git attempts blocked by hooks
+
+**Engineering pitfalls captured in `docs/reference/known-pitfalls.md`:**
+- Unit conversion errors (kN vs N, kN·m vs N·mm)
+- CI scope mismatch (local checks too narrow)
+- Cross-language parity drift (Python vs VBA)
+
+**Learning:** Even strong automation needs explicit reminders in onboarding and daily workflow.
 
 ---
 
-## 4. Proposed Solutions
+## 3. External Best Practices & Research
 
-### 4.1 Knowledge Cutoff Mitigation
+### 3.1 Rules Files for Always-On Guidance
 
-#### Solution A: Freshness Markers System
+- **Cursor**: rules stored in `.cursor/rules` (or legacy `.cursorrules`), with guidance to keep them short and focused.
+- **Windsurf**: rules live in `.windsurf/rules`, with explicit rule types and size limits.
 
-**Concept:** Mark sections with confidence levels and dates.
+**Takeaway:** Always-on, *short* rules reduce context load and errors.
 
-```markdown
-<!-- VERIFY_ONLINE: AI model names change frequently -->
-**Verified AI Models (as of 2026-01-23):**
-- OpenAI: gpt-4o, gpt-4o-mini, gpt-4-turbo
-- Anthropic: claude-sonnet-4-20250514, claude-3-opus
+### 3.2 Model Context Protocol (MCP)
 
-<!-- END_VERIFY_ONLINE -->
-```
+- MCP standardizes how tools and resources are provided to agents.
+- Emphasizes structured context injection instead of dumping long docs.
 
-**Implementation:**
-1. Add `<!-- VERIFY_ONLINE -->` markers to volatile sections
-2. Create script to extract marked sections
-3. Add to agent bootstrap: "Verify marked sections online before use"
+**Takeaway:** Prefer structured resources + tool interfaces over long “read everything” docs.
 
-#### Solution B: Online Verification Prompt
+### 3.3 Long-Context Degradation ("Lost in the Middle")
 
-**Add to copilot-instructions.md:**
+- Research shows long-context models perform worse when relevant info is buried mid-context.
 
-```markdown
-## When to Verify Online
+**Takeaway:** Put critical rules at the top, or surface them with targeted retrieval.
 
-BEFORE using any of these, verify via `fetch_webpage`:
-1. AI model names (OpenAI, Anthropic, etc.)
-2. Library version requirements
-3. Framework-specific APIs (Streamlit, React, etc.)
-4. Cloud service configurations
+### 3.4 Retrieval-Augmented Generation (RAG)
 
-Example verification:
-> fetch_webpage("https://platform.openai.com/docs/models")
-> to confirm current model availability
-```
+- RAG combines retrieval with generation to improve factual accuracy on knowledge-intensive tasks.
 
-### 4.2 Context Efficiency Improvements
+**Takeaway:** Internal doc retrieval (semantic search) is better than loading entire docs.
 
-#### Solution A: Tiered Documentation
+### 3.5 Official Model Catalogs & Deprecations
 
-**Concept:** Create layers of documentation depth:
+- OpenAI and Anthropic publish official model lists and deprecation timelines.
 
-| Tier | Content | When to Load |
-|------|---------|--------------|
-| **Tier 0** | 50-line essentials | Every session |
-| **Tier 1** | 200-line core rules | Most sessions |
-| **Tier 2** | Full guides | When task-specific |
-| **Tier 3** | Reference docs | On-demand only |
-
-**Implementation:**
-1. Create `docs/getting-started/agent-essentials.md` (50 lines MAX)
-2. Reference longer docs for deep dives
-3. Update bootstrap to load Tier 0 always
-
-#### Solution B: Task-Context Mapping
-
-**Create `scripts/get_task_context.sh`:**
-
-```bash
-#!/bin/bash
-# Returns relevant docs for a task type
-
-case $1 in
-  "git")
-    echo "docs/git-automation/workflow-guide.md"
-    ;;
-  "streamlit")
-    echo "docs/guidelines/streamlit-fragment-best-practices.md"
-    echo "scripts/check_streamlit_issues.py --help"
-    ;;
-  "api")
-    echo "docs/reference/api.md"
-    echo "docs/architecture/project-overview.md"
-    ;;
-  "docs")
-    echo "docs/guidelines/folder-structure-governance.md"
-    echo "docs/contributing/commit-message-conventions.md"
-    ;;
-esac
-```
-
-### 4.3 Document Duplication Prevention
-
-#### Solution A: Pre-Creation Check
-
-**Modify `scripts/create_doc.py`:**
-
-```python
-def check_for_similar_docs(title: str, path: str) -> List[str]:
-    """Find potentially duplicate documents before creation."""
-    keywords = extract_keywords(title)
-    similar = []
-
-    for doc in glob.glob("docs/**/*.md", recursive=True):
-        doc_keywords = extract_keywords_from_file(doc)
-        if similarity(keywords, doc_keywords) > 0.6:
-            similar.append(doc)
-
-    return similar
-
-# Before creating, warn:
-# "Found 3 similar documents. Are you sure you need a new one?"
-```
-
-#### Solution B: Canonical Document Registry
-
-**Create `docs/docs-canonical.json`:**
-
-```json
-{
-  "topics": {
-    "git-workflow": "docs/git-automation/workflow-guide.md",
-    "agent-onboarding": "docs/getting-started/agent-bootstrap.md",
-    "api-reference": "docs/reference/api.md",
-    "streamlit-patterns": "docs/guidelines/streamlit-fragment-best-practices.md"
-  }
-}
-```
-
-**Add to copilot-instructions.md:**
-```markdown
-Before creating a document, check `docs/docs-canonical.json` for existing canonical docs on that topic.
-```
-
-### 4.4 Naming Convention Enforcement
-
-#### Solution A: Naming Standard
-
-**Add to `docs/guidelines/naming-conventions.md`:**
-
-```markdown
-## Document Naming Conventions
-
-### Pattern: `{scope}-{topic}.md`
-
-| Scope | Use For | Example |
-|-------|---------|---------|
-| `guide-` | How-to guides | `guide-git-workflow.md` |
-| `reference-` | API/reference docs | `reference-api.md` |
-| `research-` | Investigation docs | `research-pyvista-evaluation.md` |
-| `decision-` | ADRs | `decision-hybrid-viz-approach.md` |
-
-### Forbidden Patterns
-- ALL_CAPS_NAMES.md (except README, CHANGELOG)
-- Numbered prefixes (01_, 02_) for non-ordered content
-- Agent-specific prefixes (agent-8-, session-64-)
-```
-
-#### Solution B: Pre-Commit Naming Check
-
-**Add `scripts/check_doc_naming.py`:**
-
-```python
-def validate_doc_name(path: str) -> List[str]:
-    """Check document follows naming conventions."""
-    issues = []
-    filename = os.path.basename(path)
-
-    # Check for forbidden patterns
-    if filename.isupper() and filename not in ["README.md", "CHANGELOG.md"]:
-        issues.append(f"ALL_CAPS not allowed: {filename}")
-
-    if re.match(r"^\d+[-_]", filename):
-        issues.append(f"Numbered prefix not allowed: {filename}")
-
-    return issues
-```
-
-### 4.5 Automation Discovery Enhancement
-
-#### Solution A: Task-to-Script Mapping
-
-**Create `scripts/automation-map.json`:**
-
-```json
-{
-  "tasks": {
-    "commit code": ["ai_commit.sh"],
-    "fix broken links": ["fix_broken_links.py"],
-    "move file": ["safe_file_move.py"],
-    "check streamlit": ["check_streamlit_issues.py"],
-    "create document": ["create_doc.py"],
-    "validate structure": ["check_folder_structure.py"]
-  }
-}
-```
-
-**Usage in bootstrap:**
-```bash
-# Tell agents: "Before doing X manually, run:"
-./scripts/find_automation.sh "commit code"
-# Output: Use ./scripts/ai_commit.sh "message"
-```
-
-#### Solution B: Inline Help in Copilot Instructions
-
-**Add "Before You Do It Manually" section:**
-
-```markdown
-## Before You Do It Manually
-
-| Action | STOP! Use This Instead |
-|--------|------------------------|
-| `git add/commit/push` | `./scripts/ai_commit.sh "msg"` |
-| `rm docs/file.md` | `./scripts/safe_file_delete.py file.md` |
-| `mv old.md new.md` | `./scripts/safe_file_move.py old.md new.md` |
-| Create new doc | `./scripts/create_doc.py path "Title"` |
-| Check Streamlit | `./scripts/check_streamlit_issues.py --all-pages` |
-| Fix links | `./scripts/fix_broken_links.py --fix` |
-```
-
-### 4.6 Document Lifecycle Management
-
-#### Solution A: Automatic Archival Triggers
-
-**Add to `scripts/check_doc_lifecycle.py`:**
-
-```python
-def should_archive(doc_path: str) -> Tuple[bool, str]:
-    """Determine if document should be archived."""
-    metadata = extract_metadata(doc_path)
-
-    # Session docs older than 30 days
-    if "session" in doc_path.lower():
-        if metadata.get("created"):
-            age = days_since(metadata["created"])
-            if age > 30:
-                return True, f"Session doc older than 30 days ({age}d)"
-
-    # Research docs marked complete
-    if metadata.get("status") == "Complete":
-        return True, "Research marked complete"
-
-    return False, ""
-```
-
-#### Solution B: Document Metadata Enforcement
-
-**Require in `create_doc.py`:**
-
-```python
-REQUIRED_METADATA = {
-    "Type": ["Guide", "Research", "Reference", "Decision"],
-    "Status": ["Draft", "Active", "Approved", "Deprecated"],
-    "Lifecycle": ["Permanent", "Session", "Project-Phase"],
-}
-
-# Session docs get auto-archive date
-if metadata["Lifecycle"] == "Session":
-    metadata["Archive-After"] = (datetime.now() + timedelta(days=30)).isoformat()
-```
+**Takeaway:** Agents must verify model names and versions *online* before use.
 
 ---
 
-## 5. Implementation Roadmap
+## 4. Gap Analysis
 
-### Phase 1: Quick Wins (1 session)
-
-| Item | Effort | Impact |
-|------|--------|--------|
-| Add freshness markers to volatile sections | 30 min | High |
-| Create `agent-essentials.md` (50 lines) | 30 min | High |
-| Add "Before You Do It Manually" table | 15 min | High |
-| Create `docs-canonical.json` | 30 min | Medium |
-
-### Phase 2: Infrastructure (2-3 sessions)
-
-| Item | Effort | Impact |
-|------|--------|--------|
-| Build `check_doc_duplicates.py` | 2 hours | High |
-| Build `check_doc_naming.py` | 1 hour | Medium |
-| Create task-to-script mapping | 1 hour | High |
-| Add to pre-commit hooks | 30 min | High |
-
-### Phase 3: Culture Change (Ongoing)
-
-| Item | Effort | Impact |
-|------|--------|--------|
-| Update copilot-instructions.md | 1 hour | High |
-| Training/examples in bootstrap | 30 min | Medium |
-| Regular dedup audits | 30 min/month | Medium |
+| Area | Current State | Gap |
+|------|---------------|-----|
+| Freshness | Manual reminders | No mandatory online verification step |
+| Naming | Informal conventions | No enforced naming checks |
+| Duplication | Similarity scripts exist | Not enforced at doc creation time |
+| Context | Tiered docs exist | No task-context selection automation |
+| Automation | Catalog exists | Not surfaced in day-to-day workflow |
+| Lifecycle | Archive scripts exist | No consistent triggers or metadata |
 
 ---
 
-## 6. Success Metrics
+## 5. Proposed Improvements (Practical)
 
-### Quantitative Metrics
+### 5.1 Freshness & Verification
 
-| Metric | Current | Target | How to Measure |
-|--------|---------|--------|----------------|
-| Duplicate docs per month | 5-10 | <1 | `check_duplicate_docs.py` |
-| Scripts discovered/used | ~30% | >80% | Audit commit messages |
-| Context errors (413s) | 2-3/week | 0 | Session logs |
-| Automation misses | Unknown | Track | Script usage logs |
+**Add a visible rule in onboarding + copilot instructions:**
+- “If info is likely to change (models, versions, commands), verify online.”
 
-### Qualitative Metrics
+**Add lightweight markers for volatile sections:**
+```
+<!-- VERIFY_ONLINE: model names -->
+```
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| Agent onboarding time | ~10 min | <5 min |
-| Time to find relevant doc | Variable | <1 min |
-| Confidence in doc currency | Low | High (with markers) |
+### 5.2 Naming Conventions + Enforcement
 
----
+- Publish a short naming standard for docs.
+- Add a validation check in doc metadata tooling.
 
-## 7. Related Documents
+### 5.3 Duplication Gate at Doc Creation
 
-| Document | Relationship |
-|----------|--------------|
-| [agent-bootstrap.md](../getting-started/agent-bootstrap.md) | Primary onboarding |
-| [copilot-instructions.md](../../.github/copilot-instructions.md) | Core rules |
-| [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) | Complete workflows |
-| [agent-8-mistakes-prevention-guide.md](../agents/guides/agent-8-mistakes-prevention-guide.md) | Historical lessons |
-| [folder-structure-governance.md](../guidelines/folder-structure-governance.md) | Structure rules |
+- Extend `create_doc.py` to run `check_doc_similarity.py` before creating new docs.
+- Require explicit `--allow-duplicate` override.
 
----
+### 5.4 Automation-First Prompts
 
-## 8. Appendix: Existing Documents to Consolidate
+Add a “Before You Do It Manually” table to onboarding docs and copilot instructions.
 
-### Potential Duplicates Found
+### 5.5 Lifecycle Enforcement
 
-| Topic | Documents | Recommended Canonical |
-|-------|-----------|----------------------|
-| Agent Bootstrap | 4 files | `agent-bootstrap.md` |
-| Git Workflow | 5 files | `git-automation/workflow-guide.md` |
-| API Reference | 2 files | `reference/api.md` |
-| Coding Standards | 2 files | `contributing/agent-coding-standards.md` |
-
-### Archive Candidates
-
-| Document | Reason | Archive Date |
-|----------|--------|--------------|
-| `bootstrap-review-summary.md` | Session 10 artifact | Already archived |
-| `bootstrap-and-project-structure-summary.md` | Superseded | Already archived |
-| Session-specific docs >30 days | Lifecycle policy | Auto-archive |
+- Tag session docs with lifecycle metadata.
+- Use `archive_old_sessions.sh` monthly (or automate in CI).
 
 ---
 
-## 9. Next Steps
+## 6. Implementation Roadmap
 
-After reviewing this research:
+### Phase 1 (This session)
+- Update research doc with repo reality + external references
+- Add doc naming conventions doc + index entries
+- Wire naming checks into doc metadata validation
+- Add duplication warnings to `create_doc.py`
+- Reinforce automation + online verification in onboarding docs
 
-1. **Prioritize solutions** - Which have highest impact/effort ratio?
-2. **Create implementation tasks** - Add to TASKS.md
-3. **Start with Phase 1** - Quick wins in this session
-4. **Iterate** - Measure and adjust
+### Phase 2 (Next 1–2 sessions)
+- Add lightweight task-context routing (`task → docs/scripts`)
+- Add lifecycle metadata defaults for session docs
+- Tighten automation prompts in start_session output
 
-**Recommendation:** Start with:
-1. `agent-essentials.md` (50-line critical rules)
-2. `docs-canonical.json` (topic → canonical doc mapping)
-3. "Before You Do It Manually" table in copilot-instructions
+### Phase 3 (Ongoing)
+- Monthly dedup + archive run
+- Track automation usage
+- Review onboarding time and context issues
 
-These three items address the highest-impact problems with minimal effort.
+---
+
+## 7. Success Metrics
+
+| Metric | Current | Target | Measurement |
+|--------|---------|--------|-------------|
+| Duplicate docs created/month | 5–10 | <1 | `check_duplicate_docs.py` |
+| Automation usage | ~30% | >80% | commit + script logs |
+| Onboarding time | ~10 min | <5 min | agent self-report |
+| Context errors (missed rules) | frequent | rare | session reviews |
+| Doc discovery time | variable | <1 min | time-on-task tests |
+
+---
+
+## 8. Appendix: Evidence & References
+
+### Internal Evidence (Repo)
+- `docs/contributing/session-issues.md` — recurring mistakes and fixes
+- `docs/reference/known-pitfalls.md` — engineering pitfalls
+- `docs/docs-canonical.json` — canonical registry
+- `scripts/check_doc_similarity.py` — duplication detection
+- `scripts/check_duplicate_docs.py` — content overlap detection
+- `scripts/automation-map.json` — task → script mapping
+- `scripts/find_automation.py` — automation discovery
+
+### External References (Best Practices)
+- Cursor rules system (`.cursor/rules`): https://docs.cursor.com/context/rules
+- Windsurf rules system (`.windsurf/rules`): https://docs.windsurf.com/windsurf/cascade/memories
+- Anthropic MCP overview: https://docs.anthropic.com/en/docs/mcp
+- "Lost in the Middle" long-context research (TACL 2024): https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00638/119630/Lost-in-the-Middle-How-Language-Models-Use-Long
+- RAG (retrieval-augmented generation) paper (NeurIPS 2020): https://proceedings.neurips.cc/paper_files/paper/2020/file/6b493230205f780e1bc26945df7481e5-Paper.pdf
+- OpenAI model catalog: https://platform.openai.com/docs/models
+- OpenAI deprecations: https://platform.openai.com/docs/deprecations/overview
+- Anthropic model overview: https://docs.anthropic.com/en/docs/models-overview
+
+---
+
+## 9. Next Steps (Actionable)
+
+1. Implement Phase 1 items (doc naming + duplicate gate + onboarding updates).
+2. Add tasks to `docs/TASKS.md` once changes are scoped.
+3. Run a short onboarding drill: new agent → measure time to productivity.
+4. Review outcomes in the next session log.
