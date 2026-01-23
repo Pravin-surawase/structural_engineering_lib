@@ -5,15 +5,15 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-23
+**Last Updated:** 2026-01-24
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-23
-- Focus: Session 63 completed UI consolidation + critical fix
+- Date: 2026-01-24
+- Focus: Session 64 completed migration cleanup + doc consolidation
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,19 +21,25 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 63 | **Focus:** UI consolidation + library audit
+**Last Session:** 64 | **Focus:** Migration cleanup + doc consolidation
 
 ---
 
-## 🔑 Key Discovery from Session 63
+## 🔑 Session 64 Summary
 
-**TASK-352 was INVALID** — The library already has `select_bar_arrangement()` in
-`codes/is456/detailing.py:863`. This function does exactly what was planned:
-- Takes `ast_required`, width, cover, stirrup_dia
-- Returns `BarArrangement` dataclass with count, diameter, area_provided
+**Migration Complete:** iCloud → local storage verified working:
+- Performance: 0.46s (vs 9+ minutes on iCloud) = ~1200x faster
+- All 3146 tests pass
+- Dependencies installed, requirements.txt created
+- Duplicate docs consolidated (817 lines removed)
 
-**Correct Approach:** Created UI wrapper in `utils/rebar_optimization.py` that calls
-the existing library function instead of duplicating logic.
+**Key Improvements:**
+- `agent_start.sh` now verifies critical deps (Step 2.5)
+- Root `requirements.txt` consolidates all dependencies
+- README updated with "Full Development Setup" section
+
+**Pending (1 week):**
+- Delete old iCloud copy (2026-01-30) after verification period
 
 ---
 
