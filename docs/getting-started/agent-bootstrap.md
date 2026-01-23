@@ -22,9 +22,16 @@
 
 | Need | Guide | Use When |
 |------|-------|----------|
+| **50-Line Essentials** | [agent-essentials.md](agent-essentials.md) | Critical rules only, fits in context |
 | **Quick Start** | This document | First 30 seconds, immediate productivity ← **YOU ARE HERE** |
-| **Quick Reference** | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) | Cheat sheet, emergency commands, first session |
+| **Quick Reference** | [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) | Cheat sheet, emergency commands |
 | **Complete Guide** | [agent-workflow-master-guide.md](../agents/guides/agent-workflow-master-guide.md) | Decision trees, troubleshooting, deep patterns |
+
+---
+
+## ⚡ Ultra-Short Version (Context-Efficient)
+
+For minimal context loading, just read [agent-essentials.md](agent-essentials.md) — 50 lines with the critical rules.
 
 ---
 
@@ -54,9 +61,23 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 
 | Priority | Document | Why |
 |----------|----------|-----|
+| 0 | [agent-essentials.md](agent-essentials.md) | **50 lines** — Critical rules, fits in any context |
 | 1 | [ai-context-pack.md](ai-context-pack.md) | Project summary, layers, golden rules |
 | 2 | [TASKS.md](../TASKS.md) | Current work: Active, Up Next, Backlog |
 | 3 | [next-session-brief.md](../planning/next-session-brief.md) | What happened last, what's blocked |
+
+---
+
+## 📚 Duplication Prevention
+
+**Before creating ANY new document:**
+
+```bash
+# Check if a canonical doc already exists
+.venv/bin/python scripts/check_doc_similarity.py "your topic"
+```
+
+**Canonical registry:** [docs-canonical.json](../docs-canonical.json) maps topics → single source of truth.
 
 ---
 
@@ -129,13 +150,18 @@ These JSON indexes help agents discover content programmatically:
 
 | Index | Purpose | Use When |
 |-------|---------|----------|
+| [scripts/automation-map.json](../../scripts/automation-map.json) | Task → script mapping | **Finding automation for a task** |
+| [docs/docs-canonical.json](../docs-canonical.json) | Topic → canonical doc | **Before creating new docs** |
 | [scripts/index.json](../../scripts/index.json) | All automation scripts | Finding automation tools |
 | [docs/index.json](../index.json) | Documentation structure | Navigating docs |
 | [docs/docs-index.json](../docs-index.json) | Document catalog | Finding specific docs |
 | [Python/index.json](../../Python/index.json) | Python module structure | Understanding code layout |
 | [streamlit_app/API_INDEX.md](../../streamlit_app/API_INDEX.md) | UI components & functions | Working on Streamlit pages |
 
-**Folder-specific indexes:** Each major folder has its own `index.json` for local navigation.
+**Quick automation lookup:**
+```bash
+.venv/bin/python scripts/find_automation.py "your task"
+```
 
 ---
 
