@@ -92,110 +92,31 @@ If information is likely to change, verify it online before using it:
 
 ---
 
-## ✅ API Touchpoints Checklist (When Changing Public API)
+## ⚙️ Quick Commands & Checklists
 
-1. Update exports in `Python/structural_lib/api.py` (`__all__`).
-2. Update docs in `docs/reference/api.md` and `docs/reference/api-stability.md`.
-3. Regenerate the manifest:
-   `./.venv/bin/python scripts/generate_api_manifest.py`
-4. Run API checks:
-   `./.venv/bin/python scripts/check_api_doc_signatures.py`
-
-Keep public signatures stable unless explicitly approved.
+Use the [agent-quick-reference.md](../agents/guides/agent-quick-reference.md) card for
+commands, API touchpoints, scanner usage, and emergency workflows.
 
 ---
 
-## ⚙️ Key Commands
-
-```bash
-# Tests
-.venv/bin/python -m pytest Python/tests -q
-
-# Format check
-.venv/bin/python -m black Python/ --check
-
-# Streamlit validation (run before committing Streamlit changes)
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
-
-# End session
-.venv/bin/python scripts/end_session.py
-```
-
----
-
-## � Scanner & Validation
-
-The scanner (`check_streamlit_issues.py`) detects runtime crash risks:
-- **ZeroDivisionError** - Division without zero checks
-- **KeyError/IndexError** - Dict/list access without validation
-- **NameError** - Undefined variables
-- **Import issues** - Imports inside functions
-
-**Key files:**
-- [.scanner-ignore.yml](../../.scanner-ignore.yml) - False positive suppressions
-- [docs/research/scanner-improvements.md](../research/scanner-improvements.md) - Scanner research
-
-**Current state (2026-01-23):** 25 issues (0 critical, 0 high) across all pages.
-
----
-
-## �📍 Quick Reference
+## 📍 Essential Links
 
 - **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
 - **Automation scripts:** [../reference/automation-catalog.md](../reference/automation-catalog.md) 🤖
-- **Handoff quick start:** [../contributing/handoff.md](../contributing/handoff.md)
-- **Background agent guide:** [../contributing/background-agent-guide.md](../contributing/background-agent-guide.md)
-- **API docs:** [../reference/api.md](../reference/api.md)
 - **Known pitfalls:** [../reference/known-pitfalls.md](../reference/known-pitfalls.md)
-- **Recent issues:** [../contributing/session-issues.md](../contributing/session-issues.md)
-- **Agent roles:** [../agents/README.md](../agents/README.md)
-- **Project status (archived):** [../_archive/planning/project-status.md](../_archive/planning/project-status.md)
-- **Project status (deep dive):** [../planning/project-status-deep-dive.md](../planning/project-status-deep-dive.md)
+- **Session issues:** [../contributing/session-issues.md](../contributing/session-issues.md)
+- **API docs:** [../reference/api.md](../reference/api.md)
 
 ---
 
-## 📇 Index Files (Machine-Readable)
+## 📇 Machine-Readable Indexes
 
-These JSON indexes help agents discover content programmatically:
+- `scripts/automation-map.json` (task → script)
+- `docs/docs-canonical.json` (topic → canonical doc)
+- `scripts/index.json` + `docs/docs-index.json` (automation + docs catalog)
 
-| Index | Purpose | Use When |
-|-------|---------|----------|
-| [scripts/automation-map.json](../../scripts/automation-map.json) | Task → script mapping | **Finding automation for a task** |
-| [docs/docs-canonical.json](../docs-canonical.json) | Topic → canonical doc | **Before creating new docs** |
-| [scripts/index.json](../../scripts/index.json) | All automation scripts | Finding automation tools |
-| [docs/index.json](../index.json) | Documentation structure | Navigating docs |
-| [docs/docs-index.json](../docs-index.json) | Document catalog | Finding specific docs |
-| [Python/index.json](../../Python/index.json) | Python module structure | Understanding code layout |
-| [streamlit_app/API_INDEX.md](../../streamlit_app/API_INDEX.md) | UI components & functions | Working on Streamlit pages |
-
-**Quick automation lookup:**
-```bash
-.venv/bin/python scripts/find_automation.py "your task"
-```
-
----
-
-## 🧠 Automation-First Mentality
-
-> **CRITICAL: If you see 10+ similar issues → Build automation FIRST!**
-
-| Principle | What It Means |
-|-----------|---------------|
-| **Pattern Recognition** | 10+ issues = automation script, not manual fixes |
-| **Research First** | Check `scripts/` before writing new tools |
-| **Full Sessions** | 5-10+ commits, don't stop early |
-| **Document Always** | Update TASKS.md, SESSION_LOG after work |
-
-### Quick Automation
-```bash
-.venv/bin/python scripts/fix_broken_links.py --fix      # Fix links
-.venv/bin/python scripts/validate_folder_structure.py   # Check structure
-.venv/bin/python scripts/check_doc_versions.py --fix    # Fix versions
-.venv/bin/python scripts/check_repo_hygiene.py          # Hygiene audit
-.venv/bin/python scripts/safe_file_move.py --dry-run old.md new.md
-.venv/bin/python scripts/safe_file_delete.py --dry-run old.md
-```
+**Automation lookup:** `.venv/bin/python scripts/find_automation.py "your task"`
 
 ---
 
