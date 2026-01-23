@@ -79,6 +79,14 @@ try:
 except ImportError:
     CACHED_DESIGN_AVAILABLE = False
 
+# Import shared utilities (Session 63 consolidation)
+try:
+    from utils.rebar_layout import calculate_rebar_layout as shared_rebar_layout
+
+    SHARED_REBAR_AVAILABLE = True
+except ImportError:
+    SHARED_REBAR_AVAILABLE = False
+
 # Import PDF generator (professional reportlab-based reports)
 try:
     from utils.pdf_generator import BeamDesignReportGenerator, is_reportlab_available
@@ -611,8 +619,27 @@ def calculate_rebar_layout(
     vu_kn: float = 50.0,
     cover_mm: float = 40.0,
     stirrup_dia: float = 8.0,
+    fck: float = 25.0,
+    fy: float = 500.0,
 ) -> dict[str, Any]:
-    """Calculate rebar layout for visualization."""
+    """Calculate rebar layout for visualization.
+
+    Session 63: Now uses shared implementation from utils/rebar_layout.py
+    """
+    if SHARED_REBAR_AVAILABLE:
+        return shared_rebar_layout(
+            ast_mm2=ast_mm2,
+            b_mm=b_mm,
+            D_mm=D_mm,
+            span_mm=span_mm,
+            vu_kn=vu_kn,
+            cover_mm=cover_mm,
+            stirrup_dia=stirrup_dia,
+            fck=fck,
+            fy=fy,
+        )
+
+    # Fallback implementation (legacy, for backward compatibility)
     BAR_OPTIONS = [(12, 113.1), (16, 201.1), (20, 314.2), (25, 490.9), (32, 804.2)]
 
     best_config = None

@@ -52,6 +52,7 @@ from utils.layout import setup_page, page_header, section_header
 from utils.theme_manager import initialize_theme
 from utils.api_wrapper import cached_design
 from utils.loading_states import loading_context
+from utils.rebar_layout import calculate_rebar_layout as shared_rebar_layout
 from components.visualizations_3d import create_beam_3d_figure
 
 # Import adapter system
@@ -302,100 +303,22 @@ def calculate_rebar_layout_for_beam(
 ) -> dict[str, Any]:
     """Calculate rebar layout for a beam.
 
+    Session 63: Now uses shared implementation from utils/rebar_layout.py
+
     Returns:
         dict with bottom_bars, top_bars, stirrup_positions, and summary info.
     """
-    # Standard bar diameters and areas
-    BAR_OPTIONS = [
-        (12, 113.1),
-        (16, 201.1),
-        (20, 314.2),
-        (25, 490.9),
-        (32, 804.2),
-    ]
-
-    # Find optimal bar combination (prefer 3-5 bars)
-    best_config = None
-    for dia, area in BAR_OPTIONS:
-        num_bars = math.ceil(ast_mm2 / area) if ast_mm2 > 0 and area > 0 else 2
-        if 2 <= num_bars <= 6:
-            ast_provided = num_bars * area
-            best_config = (dia, num_bars, ast_provided)
-            break
-
-    if best_config is None:
-        best_config = (16, 3, 3 * 201.1)
-
-    bar_dia, num_bars, ast_provided = best_config
-
-    # Calculate bar positions
-    edge_dist = cover_mm + stirrup_dia + bar_dia / 2
-    z_bottom = edge_dist
-    z_top = D_mm - edge_dist
-    available_width = b_mm - 2 * edge_dist
-
-    bottom_bars = []
-    if num_bars == 1:
-        bottom_bars = [(0, 0, z_bottom)]
-    elif num_bars == 2:
-        bottom_bars = [
-            (0, -available_width / 2, z_bottom),
-            (0, available_width / 2, z_bottom),
-        ]
-    else:
-        spacing = available_width / max(num_bars - 1, 1)
-        for i in range(num_bars):
-            y = -available_width / 2 + i * spacing
-            bottom_bars.append((0, y, z_bottom))
-
-    # Top bars (2 hanger bars)
-    top_bars = [
-        (0, -available_width / 2, z_top),
-        (0, available_width / 2, z_top),
-    ]
-
-    # Calculate stirrup spacing zones
-    d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
-    sv_base = min(200, max(100, 0.75 * d_mm))
-
-    tau_v = (vu_kn * 1000) / max(b_mm * d_mm, 1)
-    if tau_v > 0.5:
-        sv_base = min(sv_base, 150)
-    if tau_v > 1.0:
-        sv_base = min(sv_base, 100)
-
-    stirrup_positions = []
-    zone_2d = 2 * d_mm
-    sv_support = sv_base * 0.75
-
-    x = 50
-    while x < min(zone_2d, span_mm - 50):
-        stirrup_positions.append(x)
-        x += sv_support
-
-    while x < max(span_mm - zone_2d, zone_2d):
-        stirrup_positions.append(x)
-        x += sv_base
-
-    while x < span_mm - 50:
-        stirrup_positions.append(x)
-        x += sv_support
-
-    summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²)"
-    spacing_summary = (
-        f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (ends), @{sv_base:.0f}mm (mid)"
+    return shared_rebar_layout(
+        ast_mm2=ast_mm2,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        span_mm=span_mm,
+        vu_kn=vu_kn,
+        cover_mm=cover_mm,
+        stirrup_dia=stirrup_dia,
+        fck=fck,
+        fy=fy,
     )
-
-    return {
-        "bottom_bars": bottom_bars,
-        "top_bars": top_bars,
-        "stirrup_positions": stirrup_positions,
-        "bar_diameter": bar_dia,
-        "stirrup_diameter": stirrup_dia,
-        "ast_provided": ast_provided,
-        "summary": summary,
-        "spacing_summary": spacing_summary,
-    }
 
 
 def render_inline_editor(results_df: pd.DataFrame, beams: list) -> None:

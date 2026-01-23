@@ -42,8 +42,10 @@ except ImportError:
 
 # Add parent directory for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))  # For utils
 
 from components.visualizations_3d import create_beam_3d_figure
+from utils.rebar_layout import calculate_rebar_layout as shared_rebar_layout
 
 # Import structural_lib at module level
 from structural_lib import api as structural_api
@@ -185,144 +187,29 @@ def calculate_rebar_layout(
 ) -> dict[str, Any]:
     """Calculate actual rebar layout from design requirements.
 
-    Returns:
-        dict with:
-            - bottom_bars: List of (x, y, z) positions
-            - top_bars: List of (x, y, z) positions
-            - stirrup_positions: List of x positions
-            - bar_diameter: Selected bar size (mm)
-            - stirrup_spacing: Variable spacing zones [(start, end, spacing), ...]
-            - summary: Text summary of reinforcement
-            - ld_tension: Development length (mm)
-            - lap_length: Lap splice length (mm)
+    Session 63: Now uses shared implementation from utils/rebar_layout.py.
+    This is a thin wrapper that adds legacy keys for backward compatibility.
     """
-    # Standard bar diameters and areas
-    BAR_OPTIONS = [
-        (12, 113.1),
-        (16, 201.1),
-        (20, 314.2),
-        (25, 490.9),
-        (32, 804.2),
-    ]
-
-    # Find optimal bar combination (prefer 3-5 bars)
-    best_config = None
-    for dia, area in BAR_OPTIONS:
-        num_bars = math.ceil(ast_mm2 / area)
-        if 2 <= num_bars <= 6:
-            ast_provided = num_bars * area
-            best_config = (dia, num_bars, ast_provided)
-            break
-
-    if best_config is None:
-        # Fallback to 4T16
-        best_config = (16, 4, 4 * 201.1)
-
-    bar_dia, num_bars, ast_provided = best_config
-
-    # Calculate development length per IS 456 Cl 26.2.1
-    try:
-        ld_tension = calculate_development_length(
-            bar_dia=bar_dia,
-            fck=fck,
-            fy=fy,
-            bar_type="deformed",
-        )
-    except Exception:
-        # Fallback: approximate Ld = 47φ for Fe500 with M25
-        ld_tension = 47 * bar_dia
-
-    # Lap length = 1.3 × Ld for tension splices (IS 456 Cl 26.2.5.1)
-    lap_length = 1.3 * ld_tension
-
-    # Calculate bar positions
-    edge_dist = cover_mm + stirrup_dia + bar_dia / 2
-    z_bottom = edge_dist
-    z_top = D_mm - edge_dist
-    available_width = b_mm - 2 * edge_dist
-
-    bottom_bars = []
-    if num_bars == 1:
-        bottom_bars = [(0, 0, z_bottom)]
-    elif num_bars == 2:
-        bottom_bars = [
-            (0, -available_width / 2, z_bottom),
-            (0, available_width / 2, z_bottom),
-        ]
-    else:
-        spacing = available_width / (num_bars - 1) if num_bars > 1 else 0
-        for i in range(num_bars):
-            y = -available_width / 2 + i * spacing
-            bottom_bars.append((0, y, z_bottom))
-
-    # Top bars (usually 2 for hanger bars)
-    top_bars = [
-        (0, -available_width / 2, z_top),
-        (0, available_width / 2, z_top),
-    ]
-
-    # Calculate stirrup spacing zones (IS 456 requirements)
-    # Zone 1: Within 2d from support - closer spacing (0.75 * Sv)
-    # Zone 2: Middle span - normal spacing
-    d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
-    d_mm = max(d_mm, 1)  # Prevent division by zero
-
-    # Calculate base stirrup spacing from shear
-    # Simplified: Sv_max = 0.87 * fy * Asv / (0.4 * b) for minimum shear
-    # Practical range: 100-200mm
-    sv_base = min(200, max(100, 0.75 * d_mm))  # Practical limits
-
-    # If high shear, reduce spacing
-    denominator = b_mm * d_mm
-    tau_v = (
-        (vu_kn * 1000) / denominator if denominator > 0 else 0
-    )  # Approximate shear stress
-    if tau_v > 0.5:  # Higher shear stress
-        sv_base = min(sv_base, 150)
-    if tau_v > 1.0:
-        sv_base = min(sv_base, 100)
-
-    # Generate stirrup positions with variable spacing
-    stirrup_positions = []
-    zone_2d = 2 * d_mm  # Distance of 2d from supports
-
-    # Zone 1: Support zone (tighter spacing)
-    sv_support = sv_base * 0.75
-    x = 50  # Start from support
-    while x < zone_2d:
-        stirrup_positions.append(x)
-        x += sv_support
-
-    # Zone 2: Middle span (normal spacing)
-    while x < span_mm - zone_2d:
-        stirrup_positions.append(x)
-        x += sv_base
-
-    # Zone 3: Other support (tighter spacing)
-    while x < span_mm - 50:
-        stirrup_positions.append(x)
-        x += sv_support
-
-    # Summary text
-    summary = f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²) + 2T{bar_dia} hanger"
-    spacing_summary = (
-        f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (support), @{sv_base:.0f}mm (mid)"
+    # Get layout from shared implementation
+    layout = shared_rebar_layout(
+        ast_mm2=ast_mm2,
+        b_mm=b_mm,
+        D_mm=D_mm,
+        span_mm=span_mm,
+        vu_kn=vu_kn,
+        cover_mm=cover_mm,
+        stirrup_dia=stirrup_dia,
+        fck=fck,
+        fy=fy,
     )
-    detailing_summary = f"Ld = {ld_tension:.0f}mm, Lap = {lap_length:.0f}mm"
 
-    return {
-        "bottom_bars": bottom_bars,
-        "top_bars": top_bars,
-        "stirrup_positions": stirrup_positions,
-        "bar_diameter": bar_dia,
-        "stirrup_diameter": stirrup_dia,
-        "ast_provided": ast_provided,
-        "summary": summary,
-        "spacing_summary": spacing_summary,
-        "detailing_summary": detailing_summary,
-        "ld_tension": ld_tension,
-        "lap_length": lap_length,
-    }
+    # Add legacy keys that this page expects
+    layout["detailing_summary"] = (
+        f"Ld = {layout.get('ld_tension', 0):.0f}mm, "
+        f"Lap = {layout.get('lap_length', 0):.0f}mm"
+    )
+
+    return layout
 
 
 def run_design(params: dict[str, Any]) -> dict[str, Any]:
