@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-23
-- Focus: Session 67 - Bootstrap Slimming + Task Context Routing
+- Focus: Session 68 - PR Merges + Lifecycle Defaults
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,20 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 67 | **Focus:** Bootstrap Slimming + Task Context Routing
+**Last Session:** 68 | **Focus:** PR Merges + Lifecycle Defaults
+
+---
+
+## 🔑 Session 68 Summary
+
+**Merged PRs:**
+- #401: create_doc duplicate guard + lifecycle defaults + task→context quick start
+- #402: task context routing + start_session automation reminders
+
+**Governance Fix:**
+- Root files reduced to pass folder-structure CI
+- `INSTALLATION_NOTES.md` → `docs/getting-started/installation-notes.md`
+- Root `SECURITY.md` removed (policy kept in `.github/SECURITY.md`)
 
 ---
 

@@ -4,6 +4,39 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 68: PR Merges + Lifecycle Defaults
+
+**Focus:** Merge open PRs, fix governance CI, and add lifecycle defaults for session docs
+
+### Key Accomplishments
+
+1. **Merged PRs**
+   - ✅ PR #401: guard `create_doc.py` against duplicates + add lifecycle defaults
+   - ✅ PR #402: task context routing (`context_docs` + `find_automation` output)
+
+2. **Governance CI Fix**
+   - Reduced root files to pass folder-structure checks
+   - Moved `INSTALLATION_NOTES.md` → `docs/getting-started/installation-notes.md`
+   - Removed duplicate root `SECURITY.md` (policy already in `.github/SECURITY.md`)
+
+3. **Task → Context Quick Start**
+   - Added a short “task → context” section to agent bootstrap
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `3e7c168` | chore: reduce root files to pass governance |
+
+### PRs
+
+| PR | Summary |
+|----|---------|
+| #401 | create_doc duplicate guard + lifecycle defaults + task→context quick start |
+| #402 | task context routing + start_session automation reminders |
+
+---
+
 ## 2026-01-23 — Session 67: Bootstrap Slimming + Task Context Routing
 
 **Focus:** Reduce bootstrap size and add task-context routing for faster onboarding
