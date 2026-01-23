@@ -30,6 +30,7 @@ This shows: version, branch, active tasks, blockers, and doc freshness.
 - Production code → ALWAYS use PR (never direct commit)
 - Docs/tests/scripts → Check size first: `./scripts/should_use_pr.sh --explain`
 - Run tests locally before pushing: `pytest tests/test_<file>.py -v`
+- If info is likely outdated (models, versions, CLI flags), verify online first
 
 📍 You are here: [Describe current task or "Ready to receive instructions"]
 

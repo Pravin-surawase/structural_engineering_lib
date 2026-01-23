@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-23
-- Focus: Session 65 - AI Agent Effectiveness Research & Improvements
+- Focus: Session 67 - Bootstrap Slimming + Task Context Routing
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,33 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 65 | **Focus:** AI Agent Effectiveness Research & Improvements
+**Last Session:** 67 | **Focus:** Bootstrap Slimming + Task Context Routing
+
+---
+
+## 🔑 Session 67 Summary
+
+**Bootstrap Reduction:**
+- `agent-bootstrap.md` reduced from 202 → 123 lines
+- API touchpoints + scanner details moved to quick reference
+
+**Task Context Routing (PR #402):**
+- `scripts/automation-map.json` now includes `context_docs`
+- `find_automation.py` prints context docs per task
+- `start_session.py` surfaces automation lookup + context routing
+
+---
+
+## 🔑 Session 66 Summary
+
+**Hardening Improvements:**
+1. **Research refresh:** Updated AI agent effectiveness research with repo reality + external references
+2. **Naming conventions:** Added [doc-naming-conventions.md](../guidelines/doc-naming-conventions.md)
+3. **Metadata enforcement:** Naming warnings added to `check_doc_metadata.py`
+4. **Duplication gate:** `create_doc.py` now checks canonical + similarity (PR #401)
+5. **Onboarding updates:** Online verification rule + automation table in copilot instructions
+
+**PR:** #401 — guard `create_doc.py` against duplicates
 
 ---
 

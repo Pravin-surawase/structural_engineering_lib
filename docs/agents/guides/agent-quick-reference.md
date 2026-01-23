@@ -145,6 +145,25 @@ cd $PROJECT_ROOT
 
 ---
 
+## ✅ API Touchpoints (Public API Changes)
+
+1. Update exports in `Python/structural_lib/api.py` (`__all__`).
+2. Update docs in `docs/reference/api.md` and `docs/reference/api-stability.md`.
+3. Regenerate manifest: `./.venv/bin/python scripts/generate_api_manifest.py`.
+4. Run checks: `./.venv/bin/python scripts/check_api_doc_signatures.py`.
+
+Keep public signatures stable unless explicitly approved.
+
+---
+
+## 🔎 Scanner & Validation (Streamlit)
+
+- Run: `.venv/bin/python scripts/check_streamlit_issues.py --all-pages`
+- False positives: `.scanner-ignore.yml`
+- Research: `docs/research/scanner-improvements.md`
+
+---
+
 ## 📊 Cheat Sheet Matrix
 
 | Scenario | Command |
@@ -196,6 +215,14 @@ scripts/
 docs/agents/
 └── agent-workflow-master-guide.md  # Full guide
 ```
+
+---
+
+## 📇 Machine-Readable Indexes
+
+- `scripts/automation-map.json` (task → script)
+- `docs/docs-canonical.json` (topic → canonical doc)
+- `scripts/index.json` + `docs/docs-index.json` (automation + docs catalog)
 
 ---
 
