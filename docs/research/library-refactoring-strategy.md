@@ -2,40 +2,82 @@
 
 **Type:** Research
 **Audience:** All Agents, Developers
-**Status:** In Progress
+**Status:** Mostly Complete ✅
 **Importance:** Critical
 **Created:** 2026-01-22
-**Last Updated:** 2026-01-23
-**Related Tasks:** TASK-034, PR #398, PR #399, PR #400
+**Last Updated:** 2026-01-24
+**Related Tasks:** TASK-034
 
 ---
 
-## Implementation Progress (Session 34)
+## Session 35 Audit Findings
 
-### ✅ Phase 1: Core Design Checks (COMPLETE)
-- **PR #398** - `beam_checks.py` module
-- `BeamDesignCheckResult` dataclass with 18 fields
-- `check_beam_design()` function with full IS 456 verification
-- 21 comprehensive tests
-- Integrated in `ai_workspace.py` sync loop
+### What Already Exists in Library (on main branch)
 
-### ✅ Phase 2: Optimization Functions (COMPLETE)
-- **PR #399** - `optimization.py` additions
-- `ConstructabilityResult` and `RebarOptimizationResult` dataclasses
-- `calculate_constructability_score()` for buildability scoring
-- `suggest_optimal_rebar()` for IS 456 compliant optimization
-- 18 comprehensive tests
+The library already has comprehensive framework-agnostic implementations:
 
-### ✅ Phase 3: Material Takeoff (COMPLETE)
-- **PR #400** - `bbs.py` additions
-- `BeamQuantity` and `MaterialTakeoffResult` dataclasses
-- `calculate_material_takeoff()` for cost estimation
-- 10 comprehensive tests
+| Module | Functions | Status |
+|--------|-----------|--------|
+| `insights/constructability.py` | `calculate_constructability_score()` → `ConstructabilityScore` | ✅ Complete |
+| `insights/design_suggestions.py` | `suggest_improvements()` → `SuggestionReport` | ✅ Complete (540+ lines) |
+| `insights/cost_optimization.py` | `optimize_beam_design()` | ✅ Complete |
+| `optimization.py` | `optimize_beam_cost()` → `CostOptimizationResult` | ✅ Complete |
+| `bbs.py` | `calculate_bbs_summary()` → steel weights/summary | ✅ Complete |
+| `api.py` | `check_beam_is456()`, `design_beam_is456()`, etc. | ✅ Complete |
+| `beam_pipeline.py` | `design_beam_end_to_end()` → `BeamDesignOutput` | ✅ Complete |
+| `compliance.py` | `check_compliance_case()` → `ComplianceCaseResult` | ✅ Complete |
 
-### ⏳ Remaining Work
-- Update UI to use library functions (after PRs merge)
-- Multi-beam geometry functions
-- Column mapping adapter improvements
+### What's in ai_workspace.py (UI Layer)
+
+| Function | Purpose | Library Equivalent | Action Needed |
+|----------|---------|-------------------|---------------|
+| `calculate_constructability_score()` | Simple 0-100 scoring | `insights/constructability.py` (more comprehensive) | **Keep as UI simplification** |
+| `suggest_optimal_rebar()` | Config from demands | None | ⚠️ Consider extraction |
+| `optimize_beam_line()` | Multi-beam consistency | None | ⚠️ Consider extraction |
+| `calculate_material_takeoff()` | Simple costs | `bbs.calculate_bbs_summary()` | **Use library version** |
+| `calculate_rebar_checks()` | Full verification | `compliance.run_full_compliance_check()` | **Use library version** |
+| `calculate_rebar_layout()` | Bar positions for 3D | `geometry_3d.compute_rebar_positions()` | **Use library version** |
+| `design_beam_row()` | Single beam design | `api.design_beam_is456()` | Already uses library |
+| `render_*()` functions | UI rendering | None | **Keep in UI layer** |
+| `create_*_figure()` | Plotly figures | None | **Keep in UI layer** |
+
+### Abandoned PRs (Session 35 Earlier Work)
+
+Three PRs (#398, #399, #400) were created but have CI failures and are not merged:
+- **PR #398:** BLOCKED (4 CI failures)
+- **PR #399:** BEHIND main
+- **PR #400:** BEHIND main
+
+These PRs attempted to add functions that mostly **already exist** in the library under different names/modules. The previous approach of creating new modules (`beam_checks.py`) was incorrect - the library already has `compliance.py`, `insights/`, etc.
+
+### ✅ Conclusion: Work Is ~90% Complete
+
+The library refactoring strategy goal was to ensure framework-agnostic functions exist in `structural_lib`. **This is already achieved:**
+
+1. ✅ **Design checks:** `compliance.py` + `api.check_beam_is456()`
+2. ✅ **Constructability scoring:** `insights/constructability.py`
+3. ✅ **Design suggestions:** `insights/design_suggestions.py` (540+ lines)
+4. ✅ **Cost optimization:** `insights/cost_optimization.py` + `optimization.py`
+5. ✅ **Material quantities:** `bbs.py` with full BBS generation
+6. ✅ **3D geometry:** `visualization/geometry_3d.py`
+
+### ⏳ Minor Remaining Work (Phase 7-9)
+
+**Phase 7: UI Consolidation (Optional)**
+- Update `ai_workspace.py` to call library functions instead of local implementations
+- Example: `calculate_material_takeoff()` → use `bbs.calculate_bbs_summary()`
+- **Impact:** Reduces code duplication, improves maintainability
+- **Risk:** Low - just changing function calls, logic stays same
+
+**Phase 8: Beam Line Optimization (Optional)**
+- `optimize_beam_line()` is currently UI-only
+- Could extract to `optimization.py` if needed for REST API
+- **Decision:** Defer to V1.1 unless explicitly needed
+
+**Phase 9: Documentation Cleanup**
+- Close abandoned PRs #398, #399, #400
+- Archive this research document
+- Update API docs with correct function locations
 
 ---
 
