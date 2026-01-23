@@ -120,4 +120,12 @@ commands, API touchpoints, scanner usage, and emergency workflows.
 
 ---
 
+## 🧭 Task → Context Quick Start
+
+1. Run: `.venv/bin/python scripts/find_automation.py "your task"`
+2. Open the **Context docs** listed in the output
+3. If none, check `scripts/automation-map.json` + `docs/docs-index.json`
+
+---
+
 *Don't hardcode stats here — run `./scripts/agent_start.sh --quick` for live data.*
