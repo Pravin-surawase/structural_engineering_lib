@@ -2,7 +2,7 @@
 """Safe file move script with automatic link updates.
 
 This script safely moves/renames files by:
-1. Checking for references in docs and code
+1. Checking for references in docs and code (using fast git grep)
 2. Updating all internal links
 3. Optionally creating redirect stubs
 4. Running link validation
@@ -29,27 +29,109 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
     """Find all references to a file in docs and code.
 
     Returns list of (file, line_content, line_number) tuples.
+
+    Uses git grep for fast searching (works in git repos), falls back to Python if not.
+    """
+    filename = file_path.name
+
+    try:
+        relative_path = str(file_path.relative_to(project_root))
+    except ValueError:
+        relative_path = str(file_path)
+
+    # Try using git grep for fast search (uses git's index, much faster)
+    references = _find_references_git_grep(filename, project_root)
+    if references is not None:
+        # Filter out self-references
+        return [(f, line, num) for f, line, num in references if f != file_path]
+
+    # Fallback to Python-based search (slower but always works)
+    return _find_references_python(file_path, project_root)
+
+
+def _find_references_git_grep(
+    pattern: str, project_root: Path
+) -> list[tuple[Path, str, int]] | None:
+    """Fast reference search using git grep.
+
+    Git grep uses the git index which is much faster than filesystem search.
+    Returns None if not in a git repo or git grep fails.
+    """
+    references = []
+
+    try:
+        # Use git grep - it's fast because it uses git's index
+        result = subprocess.run(
+            [
+                "git",
+                "grep",
+                "-n",  # Show line numbers
+                "-I",  # Skip binary files
+                "--no-color",
+                "-F",  # Fixed string (literal)
+                pattern,
+            ],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=10,  # 10 second timeout
+        )
+
+        if result.returncode not in (0, 1):  # 0=found, 1=not found
+            return None
+
+        # Parse output: filename:lineno:content
+        for line in result.stdout.strip().split("\n"):
+            if not line:
+                continue
+            parts = line.split(":", 2)
+            if len(parts) >= 3:
+                file_match = project_root / parts[0]
+                try:
+                    line_num = int(parts[1])
+                    content = parts[2].strip()[:100]
+                    references.append((file_match, content, line_num))
+                except (ValueError, IndexError):
+                    continue
+
+        return references
+
+    except (subprocess.TimeoutExpired, OSError, FileNotFoundError):
+        return None
+
+
+def _find_references_python(
+    file_path: Path, project_root: Path
+) -> list[tuple[Path, str, int]]:
+    """Python-based reference search (slower fallback).
+
+    Note: This can be slow for large projects on iCloud or network drives.
     """
     references = []
     filename = file_path.name
-    relative_path = str(file_path.relative_to(project_root))
+    stem = file_path.stem
 
-    # Patterns to search for
+    try:
+        relative_path = str(file_path.relative_to(project_root))
+    except ValueError:
+        relative_path = str(file_path)
+
     patterns = [
         filename,
+        stem,
         relative_path,
-        relative_path.replace("/", "\\"),  # Windows paths
+        relative_path.replace("/", "\\"),
     ]
 
-    # Search in docs and agents
-    search_dirs = ["docs", "agents", "Python", "VBA", "streamlit_app"]
-    extensions = [".md", ".py", ".bas", ".txt", ".json"]
+    # Search directories
+    search_dirs = ["docs", "agents", "Python", "VBA", "streamlit_app", ".github"]
+    extensions = [".md", ".py", ".bas", ".txt", ".json", ".yml", ".yaml"]
 
     # Directories to exclude (performance optimization)
     exclude_dirs = {
         ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache",
         "build", "dist", "htmlcov", ".mypy_cache", ".ruff_cache",
-        "*.egg-info", ".git", ".github", "logs", "tmp"
+        "*.egg-info", ".git", "logs", "tmp"
     }
 
     for search_dir in search_dirs:
@@ -69,7 +151,7 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
                     for i, line in enumerate(content.split("\n"), 1):
                         for pattern in patterns:
                             if pattern in line:
-                                references.append((file, line.strip(), i))
+                                references.append((file, line.strip()[:100], i))
                                 break
                 except (OSError, UnicodeDecodeError):
                     continue
