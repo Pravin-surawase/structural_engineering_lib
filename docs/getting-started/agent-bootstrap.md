@@ -68,6 +68,15 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 
 ---
 
+## 🌐 Verify Online for Volatile Info
+
+If information is likely to change, verify it online before using it:
+- Model names and availability
+- Library/framework versions
+- CLI flags and API endpoints
+
+---
+
 ## 📚 Duplication Prevention
 
 **Before creating ANY new document:**
@@ -78,6 +87,8 @@ This shows: version, branch, active tasks, blockers, and agent-specific commands
 ```
 
 **Canonical registry:** [docs-canonical.json](../docs-canonical.json) maps topics → single source of truth.
+
+**Naming rules:** [doc-naming-conventions.md](../guidelines/doc-naming-conventions.md)
 
 ---
 

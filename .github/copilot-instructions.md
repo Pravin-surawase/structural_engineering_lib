@@ -71,6 +71,19 @@
 
 ---
 
+## 🌐 Verify Online for Volatile Info
+
+**Rule:** If information is likely to change, verify it online before using it.
+
+**Always verify:**
+- Model names and availability (OpenAI, Anthropic, etc.)
+- Library/framework versions (Streamlit, PyVista, etc.)
+- CLI flags and API endpoints
+
+**Why:** Agents have knowledge cutoffs; stale details cause broken builds and wasted time.
+
+---
+
 ## ⚠️ THE ONE RULE: Git Automation
 
 ```
@@ -238,6 +251,10 @@ git rm docs/file.md
   --type=Plan --status=Draft --importance=High --tasks=TASK-XXX
 ```
 
+**Naming rules:** See [doc-naming-conventions.md](docs/guidelines/doc-naming-conventions.md).
+
+**Duplication guard:** `create_doc.py` checks `docs/docs-canonical.json` + similarity before creation (use `--allow-duplicate` only when justified).
+
 **Maintaining docs:**
 ```bash
 check_links.py                    # Validate all internal links
@@ -246,6 +263,17 @@ check_doc_metadata.py             # Validate metadata headers
 check_duplicate_docs.py           # Find duplicate content
 consolidate_docs.py archive       # Archive completed research
 ```
+
+**Before you do it manually:**
+
+| Action | STOP! Use This Instead |
+|--------|-------------------------|
+| `git add/commit/push` | `./scripts/ai_commit.sh "msg"` |
+| `rm docs/file.md` | `.venv/bin/python scripts/safe_file_delete.py docs/file.md` |
+| `mv old.md new.md` | `.venv/bin/python scripts/safe_file_move.py old.md new.md` |
+| Create new doc | `.venv/bin/python scripts/create_doc.py path \"Title\"` |
+| Find automation | `.venv/bin/python scripts/find_automation.py \"task\"` |
+| Fix links | `.venv/bin/python scripts/fix_broken_links.py --fix` |
 
 **Document metadata (REQUIRED for new files):**
 ```markdown
