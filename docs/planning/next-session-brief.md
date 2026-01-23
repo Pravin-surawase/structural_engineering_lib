@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-23
-- Focus: Session 65 - AI Agent Effectiveness Research & Improvements
+- Focus: Session 66 - Agent Effectiveness Hardening (Naming + Duplication)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,20 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 65 | **Focus:** AI Agent Effectiveness Research & Improvements
+**Last Session:** 66 | **Focus:** Agent Effectiveness Hardening (Naming + Duplication)
+
+---
+
+## 🔑 Session 66 Summary
+
+**Hardening Improvements:**
+1. **Research refresh:** Updated AI agent effectiveness research with repo reality + external references
+2. **Naming conventions:** Added [doc-naming-conventions.md](../guidelines/doc-naming-conventions.md)
+3. **Metadata enforcement:** Naming warnings added to `check_doc_metadata.py`
+4. **Duplication gate:** `create_doc.py` now checks canonical + similarity (PR #401)
+5. **Onboarding updates:** Online verification rule + automation table in copilot instructions
+
+**PR:** #401 — guard `create_doc.py` against duplicates
 
 ---
 

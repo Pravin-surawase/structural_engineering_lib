@@ -4,6 +4,54 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 66: Agent Effectiveness Hardening (Naming + Duplication)
+
+**Focus:** Harden agent workflows with naming enforcement, duplicate-prevention gates, and online verification guidance
+
+### Key Accomplishments
+
+1. **Research Refresh**
+   - Updated [ai-agent-effectiveness-research.md](research/ai-agent-effectiveness-research.md)
+   - Added repo reality gaps + external references section
+
+2. **Naming Standards**
+   - Added [doc-naming-conventions.md](guidelines/doc-naming-conventions.md)
+   - Updated guidelines indexes + README counts
+
+3. **Metadata Enforcement**
+   - Added naming warnings to `scripts/check_doc_metadata.py`
+
+4. **Duplicate Prevention Gate**
+   - `create_doc.py` now checks canonical + similarity before new doc creation
+   - PR created for script change: **#401**
+
+5. **Onboarding Reinforcement**
+   - Added explicit “verify online” guidance for volatile info
+   - Added “Before You Do It Manually” automation table
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `d474933` | docs: refresh ai-agent effectiveness research |
+| `591433a` | docs: add document naming conventions |
+| `d2f1015` | chore: add doc naming checks to metadata |
+| `044a504` | docs: reinforce online verification guidance |
+
+### PRs
+
+| PR | Summary |
+|----|---------|
+| #401 | feat: guard create_doc against duplicates |
+
+### Next Session
+
+- [ ] Verify PR #401 merged and backfill docs/SESSION_LOG.md if needed
+- [ ] Add task-context routing (task → docs/scripts) to reduce context load
+- [ ] Add lifecycle metadata defaults for session docs
+
+---
+
 ## 2026-01-23 — Session 65: AI Agent Effectiveness Research & Improvements
 
 **Focus:** Research AI agent problems, implement practical solutions to prevent duplication, improve automation discovery, address knowledge cutoff issues
