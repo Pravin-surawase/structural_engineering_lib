@@ -1,0 +1,96 @@
+{
+  "_comment": "Canonical document registry - prevents duplication by mapping topics to single source of truth",
+  "_updated": "2026-01-23",
+  "_usage": "Before creating a new document, check if a canonical doc exists for that topic",
+
+  "topics": {
+    "agent-onboarding": {
+      "canonical": "docs/getting-started/agent-bootstrap.md",
+      "description": "Primary entry point for new agents",
+      "also_see": ["docs/getting-started/agent-essentials.md", "docs/getting-started/ai-context-pack.md"]
+    },
+    "git-workflow": {
+      "canonical": "docs/git-automation/workflow-guide.md",
+      "description": "Git automation patterns and scripts",
+      "also_see": ["docs/git-automation/automation-scripts.md"]
+    },
+    "api-reference": {
+      "canonical": "docs/reference/api.md",
+      "description": "Public API documentation",
+      "also_see": ["docs/reference/api-stability.md"]
+    },
+    "coding-standards": {
+      "canonical": "docs/contributing/agent-coding-standards.md",
+      "description": "Code style and quality standards",
+      "also_see": []
+    },
+    "streamlit-patterns": {
+      "canonical": "docs/guidelines/streamlit-fragment-best-practices.md",
+      "description": "Streamlit UI patterns and fragment rules",
+      "also_see": ["docs/research/scanner-improvements.md"]
+    },
+    "folder-structure": {
+      "canonical": "docs/guidelines/folder-structure-governance.md",
+      "description": "Project organization rules",
+      "also_see": []
+    },
+    "known-issues": {
+      "canonical": "docs/reference/known-pitfalls.md",
+      "description": "Common mistakes and how to avoid them",
+      "also_see": ["docs/contributing/session-issues.md"]
+    },
+    "testing-strategy": {
+      "canonical": "docs/contributing/testing-strategy.md",
+      "description": "Test patterns and coverage requirements",
+      "also_see": []
+    },
+    "architecture": {
+      "canonical": "docs/architecture/project-overview.md",
+      "description": "System architecture and layer design",
+      "also_see": []
+    },
+    "agent-mistakes": {
+      "canonical": "docs/agents/guides/agent-8-mistakes-prevention-guide.md",
+      "description": "Historical mistakes and prevention patterns",
+      "also_see": []
+    },
+    "session-handoff": {
+      "canonical": "docs/planning/next-session-brief.md",
+      "description": "Current work status and next steps",
+      "also_see": ["docs/SESSION_LOG.md"]
+    },
+    "task-tracking": {
+      "canonical": "docs/TASKS.md",
+      "description": "Active work items and backlog",
+      "also_see": []
+    },
+    "commit-conventions": {
+      "canonical": "docs/contributing/commit-message-conventions.md",
+      "description": "Commit message format and types",
+      "also_see": []
+    },
+    "automation-catalog": {
+      "canonical": "docs/reference/automation-catalog.md",
+      "description": "All automation scripts with usage",
+      "also_see": ["scripts/index.json"]
+    },
+    "3d-visualization": {
+      "canonical": "docs/research/live-3d-visualization-architecture.md",
+      "description": "3D rendering architecture and patterns",
+      "also_see": ["docs/research/pyvista-evaluation.md"]
+    }
+  },
+
+  "naming_conventions": {
+    "guides": "guide-{topic}.md or {topic}-guide.md",
+    "references": "reference-{topic}.md or {topic}.md in reference/",
+    "research": "research-{topic}.md or {topic}-research.md",
+    "decisions": "decision-{topic}.md or adr-NNN-{topic}.md"
+  },
+
+  "forbidden_patterns": [
+    "ALL_CAPS_NAMES.md (except README, CHANGELOG, TASKS, SESSION_LOG)",
+    "Numbered prefixes (01_, 02_) for non-ordered content",
+    "Agent-specific session docs outside _archive/ after 30 days"
+  ]
+}
