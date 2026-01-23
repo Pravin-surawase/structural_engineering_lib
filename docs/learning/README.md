@@ -13,7 +13,7 @@ A guided learning path for engineers new to this codebase. Written for those who
 | **New to coding** | [learning-plan.md](learning-plan.md) | 2-4 weeks |
 | **Python developer** | [concepts-map.md](concepts-map.md) then [../architecture/](../architecture/README.md) | 2-3 days |
 | **Structural engineer** | [../getting-started/beginners-guide.md](../getting-started/beginners-guide.md) | 1-2 hours |
-| **Project owner** | [owner-learning-plan.md](owner-learning-plan.md) | 1 week |
+| **Project owner** | [learning-plan.md](learning-plan.md) (follow advanced exercises) | 1 week |
 
 ---
 
@@ -26,16 +26,6 @@ A guided learning path for engineers new to this codebase. Written for those who
 | 3 | [glossary.md](glossary.md) | Terminology definitions | All |
 | 4 | [exercises.md](exercises.md) | Practice exercises with solutions | Learners |
 | 5 | [guides.md](guides.md) | Additional learning resources | All |
-
----
-
-## 📖 Additional Resources
-
-| File | Description |
-|------|-------------|
-| [owner-learning-plan.md](owner-learning-plan.md) | Project owner learning plan |
-| [week-01-start-here.md](week-01-start-here.md) | Week 1 getting started guide |
-| [phase-coverage-audit.md](phase-coverage-audit.md) | Learning phase coverage audit |
 
 ---
 
