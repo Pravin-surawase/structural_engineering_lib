@@ -302,3 +302,259 @@ def _check_compliance(
         violations.append(f"pt ({pt:.3f}%) > pt_max ({pt_max:.3f}%)")
 
     return (len(violations) == 0, violations)
+
+
+# =============================================================================
+# Beam Line Optimization
+# =============================================================================
+
+
+@dataclass
+class BeamLineInput:
+    """Input data for a single beam in beam line optimization."""
+
+    beam_id: str
+    b_mm: float
+    D_mm: float
+    mu_knm: float
+    vu_kn: float = 50.0
+
+
+@dataclass
+class BeamConfig:
+    """Optimized rebar configuration for a single beam."""
+
+    beam_id: str
+    bottom_layer1_dia: int
+    bottom_layer1_count: int
+    bottom_layer2_dia: int = 0
+    bottom_layer2_count: int = 0
+    ast_provided_mm2: float = 0.0
+    ast_required_mm2: float = 0.0
+
+    def to_dict(self) -> dict:
+        """Return JSON-serializable dict."""
+        return {
+            "beam_id": self.beam_id,
+            "bottom_layer1_dia": self.bottom_layer1_dia,
+            "bottom_layer1_count": self.bottom_layer1_count,
+            "bottom_layer2_dia": self.bottom_layer2_dia,
+            "bottom_layer2_count": self.bottom_layer2_count,
+            "ast_provided_mm2": round(self.ast_provided_mm2, 1),
+            "ast_required_mm2": round(self.ast_required_mm2, 1),
+        }
+
+
+@dataclass
+class BeamLineOptimizationResult:
+    """Result of beam line optimization for construction consistency.
+
+    Beam line optimization ensures adjacent beams use the same bar sizes
+    where possible, improving construction efficiency and reducing errors.
+    """
+
+    beam_configs: list[BeamConfig]
+    unified_bar_dia: int
+    total_steel_kg: float
+    beams_processed: int
+    beams_skipped: int
+
+    def to_dict(self) -> dict:
+        """Return JSON-serializable dict for REST API."""
+        return {
+            "beam_configs": [c.to_dict() for c in self.beam_configs],
+            "unified_bar_dia": self.unified_bar_dia,
+            "total_steel_kg": round(self.total_steel_kg, 2),
+            "beams_processed": self.beams_processed,
+            "beams_skipped": self.beams_skipped,
+        }
+
+
+def optimize_beam_line(
+    beams: list[BeamLineInput] | list[dict],
+    *,
+    fck: float = 25.0,
+    fy: float = 500.0,
+    cover_mm: float = 40.0,
+    stirrup_dia_mm: float = 8.0,
+    unify_diameters: bool = True,
+) -> BeamLineOptimizationResult:
+    """Optimize multiple beams in a line for construction consistency.
+
+    This function ensures all beams in a continuous line use the same
+    bar diameter where possible, improving construction efficiency.
+
+    The algorithm:
+    1. Calculate individual optimal configs for each beam
+    2. Find the maximum bar diameter needed across all beams
+    3. Recalculate bar counts at the unified diameter
+
+    Args:
+        beams: List of BeamLineInput objects or dicts with keys:
+               beam_id, b_mm, D_mm, mu_knm, vu_kn
+        fck: Concrete grade (N/mm²)
+        fy: Steel grade (N/mm²)
+        cover_mm: Cover to reinforcement (mm)
+        stirrup_dia_mm: Stirrup diameter (mm)
+        unify_diameters: If True, use same bar diameter across all beams
+
+    Returns:
+        BeamLineOptimizationResult with unified configurations
+
+    Example:
+        >>> beams = [
+        ...     {"beam_id": "B1", "b_mm": 300, "D_mm": 450, "mu_knm": 80, "vu_kn": 50},
+        ...     {"beam_id": "B2", "b_mm": 300, "D_mm": 450, "mu_knm": 120, "vu_kn": 60},
+        ...     {"beam_id": "B3", "b_mm": 300, "D_mm": 450, "mu_knm": 100, "vu_kn": 55},
+        ... ]
+        >>> result = optimize_beam_line(beams)
+        >>> print(f"Unified diameter: {result.unified_bar_dia}mm")
+        >>> for cfg in result.beam_configs:
+        ...     print(f"{cfg.beam_id}: {cfg.bottom_layer1_count}-{cfg.bottom_layer1_dia}φ")
+
+    References:
+        - SP 34:1987, Section on construction practicality
+        - IS 456:2000, Cl 26.5.1.1 (Spacing requirements)
+    """
+    import math
+
+    if not beams:
+        return BeamLineOptimizationResult(
+            beam_configs=[],
+            unified_bar_dia=0,
+            total_steel_kg=0.0,
+            beams_processed=0,
+            beams_skipped=0,
+        )
+
+    # Normalize input to BeamLineInput
+    beam_inputs: list[BeamLineInput] = []
+    for b in beams:
+        if isinstance(b, BeamLineInput):
+            beam_inputs.append(b)
+        elif isinstance(b, dict):
+            beam_inputs.append(
+                BeamLineInput(
+                    beam_id=str(b.get("beam_id", "UNKNOWN")),
+                    b_mm=float(b.get("b_mm", 300)),
+                    D_mm=float(b.get("D_mm", 450)),
+                    mu_knm=float(b.get("mu_knm", 100)),
+                    vu_kn=float(b.get("vu_kn", 50)),
+                )
+            )
+
+    # Standard bar diameters
+    BAR_DIAMETERS = [12, 16, 20, 25, 32]
+    BAR_AREAS = {d: math.pi * (d / 2) ** 2 for d in BAR_DIAMETERS}
+
+    # Step 1: Calculate required steel area for each beam
+    beam_requirements: list[tuple[BeamLineInput, float, int]] = []
+    for beam in beam_inputs:
+        d_eff = beam.D_mm - cover_mm - stirrup_dia_mm - 8  # Assume 16mm bar initially
+
+        if d_eff <= 0 or fy <= 0:
+            continue
+
+        # Required steel area (approximate)
+        ast_req = beam.mu_knm * 1e6 / (0.87 * fy * 0.9 * d_eff)
+        ast_min = 0.85 * beam.b_mm * d_eff / fy
+        ast_target = max(ast_req * 1.1, ast_min)
+
+        # Find minimum bar diameter that works
+        best_dia = 16
+        for dia in BAR_DIAMETERS:
+            area = BAR_AREAS[dia]
+            count = math.ceil(ast_target / area)
+            if 2 <= count <= 8:
+                best_dia = dia
+                break
+
+        beam_requirements.append((beam, ast_target, best_dia))
+
+    if not beam_requirements:
+        return BeamLineOptimizationResult(
+            beam_configs=[],
+            unified_bar_dia=0,
+            total_steel_kg=0.0,
+            beams_processed=0,
+            beams_skipped=len(beam_inputs),
+        )
+
+    # Step 2: Find maximum bar diameter if unifying
+    if unify_diameters:
+        max_dia = max(req[2] for req in beam_requirements)
+    else:
+        max_dia = 16  # Default
+
+    # Step 3: Calculate bar counts at unified diameter
+    configs: list[BeamConfig] = []
+    total_steel_mm3 = 0.0
+    skipped = 0
+
+    for beam, ast_target, _ in beam_requirements:
+        d_eff = beam.D_mm - cover_mm - stirrup_dia_mm - max_dia / 2
+
+        if d_eff <= 0:
+            skipped += 1
+            continue
+
+        # Recalculate with correct effective depth
+        ast_req = beam.mu_knm * 1e6 / (0.87 * fy * 0.9 * d_eff)
+        ast_min = 0.85 * beam.b_mm * d_eff / fy
+        ast_target = max(ast_req * 1.1, ast_min)
+
+        # Calculate bar count at unified diameter
+        area_per_bar = BAR_AREAS[max_dia]
+        count = max(2, math.ceil(ast_target / area_per_bar))
+
+        # Check if fits in single layer
+        clear_cover = cover_mm + stirrup_dia_mm
+        available = beam.b_mm - 2 * clear_cover - max_dia
+        min_spacing = max(max_dia, 25)
+        max_bars_single = int(available / (max_dia + min_spacing)) + 1
+
+        if count <= max_bars_single and count <= 6:
+            # Single layer
+            ast_provided = count * area_per_bar
+            configs.append(
+                BeamConfig(
+                    beam_id=beam.beam_id,
+                    bottom_layer1_dia=max_dia,
+                    bottom_layer1_count=count,
+                    bottom_layer2_dia=0,
+                    bottom_layer2_count=0,
+                    ast_provided_mm2=ast_provided,
+                    ast_required_mm2=ast_target,
+                )
+            )
+        else:
+            # Need 2 layers
+            layer1 = min(count // 2 + count % 2, 6)
+            layer2 = count - layer1
+            ast_provided = (layer1 + layer2) * area_per_bar
+            configs.append(
+                BeamConfig(
+                    beam_id=beam.beam_id,
+                    bottom_layer1_dia=max_dia,
+                    bottom_layer1_count=layer1,
+                    bottom_layer2_dia=max_dia if layer2 > 0 else 0,
+                    bottom_layer2_count=max(0, layer2),
+                    ast_provided_mm2=ast_provided,
+                    ast_required_mm2=ast_target,
+                )
+            )
+
+        # Estimate steel weight (assuming 1m length for simplicity)
+        # Real weight needs span which we don't have here
+        total_steel_mm3 += configs[-1].ast_provided_mm2 * 1000  # per meter
+
+    # Convert to kg (steel density 7850 kg/m³)
+    total_steel_kg = total_steel_mm3 * 7850 / 1e9
+
+    return BeamLineOptimizationResult(
+        beam_configs=configs,
+        unified_bar_dia=max_dia,
+        total_steel_kg=total_steel_kg,
+        beams_processed=len(configs),
+        beams_skipped=skipped + (len(beam_inputs) - len(beam_requirements)),
+    )

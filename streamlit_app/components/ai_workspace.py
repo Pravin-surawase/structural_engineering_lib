@@ -79,6 +79,15 @@ try:
 except ImportError:
     CACHED_DESIGN_AVAILABLE = False
 
+# Import library rebar layout functions (Phase 5-6 refactoring)
+try:
+    from structural_lib.visualization.geometry_3d import compute_rebar_layout
+    from structural_lib.optimization import optimize_beam_line as lib_optimize_beam_line
+
+    LIBRARY_LAYOUT_AVAILABLE = True
+except ImportError:
+    LIBRARY_LAYOUT_AVAILABLE = False
+
 # Import PDF generator (professional reportlab-based reports)
 try:
     from utils.pdf_generator import BeamDesignReportGenerator, is_reportlab_available
@@ -612,7 +621,25 @@ def calculate_rebar_layout(
     cover_mm: float = 40.0,
     stirrup_dia: float = 8.0,
 ) -> dict[str, Any]:
-    """Calculate rebar layout for visualization."""
+    """Calculate rebar layout for visualization.
+
+    Uses library function when available (Phase 6 integration).
+    Falls back to local implementation for backwards compatibility.
+    """
+    # Use library version when available (Phase 6 refactoring)
+    if LIBRARY_LAYOUT_AVAILABLE:
+        result = compute_rebar_layout(
+            ast_mm2=ast_mm2,
+            b_mm=b_mm,
+            D_mm=D_mm,
+            span_mm=span_mm,
+            vu_kn=vu_kn,
+            cover_mm=cover_mm,
+            stirrup_dia=stirrup_dia,
+        )
+        return result.to_dict()
+
+    # Fallback: local implementation (for backwards compatibility)
     BAR_OPTIONS = [(12, 113.1), (16, 201.1), (20, 314.2), (25, 490.9), (32, 804.2)]
 
     best_config = None
@@ -2176,6 +2203,9 @@ def optimize_beam_line(
     2. Construction consistency (same bar sizes where possible)
     3. Maximum bar size governs for uniformity
 
+    Uses library function when available (Phase 6 integration).
+    Falls back to local implementation for backwards compatibility.
+
     Args:
         beam_ids: List of beam IDs in the same beam line
         df: DataFrame with beam design data
@@ -2189,6 +2219,47 @@ def optimize_beam_line(
     if not beam_ids:
         return {}
 
+    # Use library version when available (Phase 6 refactoring)
+    if LIBRARY_LAYOUT_AVAILABLE:
+        # Convert DataFrame rows to library input format
+        beam_inputs = []
+        for beam_id in beam_ids:
+            row = df[df["beam_id"] == beam_id]
+            if row.empty:
+                continue
+            row = row.iloc[0]
+            beam_inputs.append({
+                "beam_id": beam_id,
+                "b_mm": float(row.get("b_mm", 300)),
+                "D_mm": float(row.get("D_mm", 450)),
+                "mu_knm": float(row.get("mu_knm", 100)),
+                "vu_kn": float(row.get("vu_kn", 50)),
+            })
+
+        if not beam_inputs:
+            return {}
+
+        # Call library function
+        result = lib_optimize_beam_line(
+            beams=beam_inputs,
+            fck=fck,
+            fy=fy,
+            cover_mm=cover_mm,
+        )
+
+        # Convert library result to UI format
+        unified_configs = {}
+        for cfg in result.beam_configs:
+            unified_configs[cfg.beam_id] = {
+                "bottom_layer1_dia": cfg.bottom_layer1_dia,
+                "bottom_layer1_count": cfg.bottom_layer1_count,
+                "bottom_layer2_dia": cfg.bottom_layer2_dia,
+                "bottom_layer2_count": cfg.bottom_layer2_count,
+                "_version": 1,  # Force widget refresh
+            }
+        return unified_configs
+
+    # Fallback: local implementation (for backwards compatibility)
     # Step 1: Get individual optimal configs for each beam
     individual_configs = {}
     for beam_id in beam_ids:

@@ -61,8 +61,10 @@ __all__ = [
     "RebarPath",
     "StirrupLoop",
     "Beam3DGeometry",
+    "RebarLayoutResult",
     # Computation functions
     "compute_rebar_positions",
+    "compute_rebar_layout",
     "compute_stirrup_path",
     "compute_stirrup_positions",
     "compute_beam_outline",
@@ -808,4 +810,183 @@ def beam_to_3d_geometry(
         rebars=rebars,
         stirrups=stirrups,
         metadata=metadata,
+    )
+
+
+# =============================================================================
+# Unified Rebar Layout Computation
+# =============================================================================
+
+
+@dataclass
+class RebarLayoutResult:
+    """
+    Complete rebar layout result for visualization.
+
+    This is a unified result combining bar selection, positions,
+    and stirrup positions - ready for 3D visualization.
+
+    Attributes:
+        bottom_bars: List of (x, y, z) tuples for bottom bar positions
+        top_bars: List of (x, y, z) tuples for top bar positions
+        stirrup_positions: List of X positions along span
+        bar_diameter: Main bar diameter (mm)
+        bar_count: Number of main bars
+        stirrup_diameter: Stirrup diameter (mm)
+        summary: Human-readable bar summary (e.g. "4T16")
+        spacing_summary: Human-readable stirrup summary
+        ast_provided_mm2: Area of steel provided (mm²)
+        ast_required_mm2: Area of steel required (mm²)
+    """
+
+    bottom_bars: list[tuple[float, float, float]]
+    top_bars: list[tuple[float, float, float]]
+    stirrup_positions: list[float]
+    bar_diameter: float
+    bar_count: int
+    stirrup_diameter: float
+    summary: str
+    spacing_summary: str
+    ast_provided_mm2: float
+    ast_required_mm2: float
+
+    def to_dict(self) -> dict:
+        """Convert to JSON-serializable dictionary."""
+        return {
+            "bottom_bars": self.bottom_bars,
+            "top_bars": self.top_bars,
+            "stirrup_positions": self.stirrup_positions,
+            "bar_diameter": self.bar_diameter,
+            "bar_count": self.bar_count,
+            "stirrup_diameter": self.stirrup_diameter,
+            "summary": self.summary,
+            "spacing_summary": self.spacing_summary,
+            "ast_provided_mm2": self.ast_provided_mm2,
+            "ast_required_mm2": self.ast_required_mm2,
+        }
+
+
+def compute_rebar_layout(
+    ast_mm2: float,
+    b_mm: float,
+    D_mm: float,
+    span_mm: float,
+    vu_kn: float = 50.0,
+    cover_mm: float = 40.0,
+    stirrup_dia: float = 8.0,
+    fck: float = 25.0,
+) -> RebarLayoutResult:
+    """
+    Compute complete rebar layout for a beam cross-section.
+
+    This function unifies bar selection, position computation, and
+    stirrup layout into a single call. It's the library equivalent
+    of the UI-level calculate_rebar_layout function.
+
+    Args:
+        ast_mm2: Required steel area (mm²)
+        b_mm: Beam width (mm)
+        D_mm: Beam depth (mm)
+        span_mm: Beam span (mm)
+        vu_kn: Shear force (kN), used for stirrup spacing
+        cover_mm: Clear cover (mm)
+        stirrup_dia: Stirrup diameter (mm)
+        fck: Concrete grade (N/mm²), for tau_c calculation
+
+    Returns:
+        RebarLayoutResult with all layout information
+
+    Example:
+        >>> result = compute_rebar_layout(
+        ...     ast_mm2=800, b_mm=300, D_mm=450,
+        ...     span_mm=4000, vu_kn=50
+        ... )
+        >>> print(result.summary)
+        '4T16 (804 mm²)'
+        >>> len(result.bottom_bars)
+        4
+
+    Reference:
+        IS 456:2000, Cl 26.3 (Spacing), Cl 26.5 (Stirrups)
+    """
+    # Standard bar options: (diameter, area)
+    BAR_OPTIONS = [(12, 113.1), (16, 201.1), (20, 314.2), (25, 490.9), (32, 804.2)]
+
+    # Select bar configuration
+    best_config = None
+    for dia, area in BAR_OPTIONS:
+        num_bars = math.ceil(ast_mm2 / area) if ast_mm2 > 0 else 2
+        num_bars = max(2, num_bars)  # Minimum 2 bars
+        if num_bars <= 6:  # Prefer single layer
+            best_config = (dia, num_bars, num_bars * area)
+            break
+
+    if best_config is None:
+        # Fallback: use 16mm with required count
+        num_bars = max(2, math.ceil(ast_mm2 / 201.1))
+        best_config = (16, num_bars, num_bars * 201.1)
+
+    bar_dia, num_bars, ast_provided = best_config
+
+    # Compute bar positions
+    edge_dist = cover_mm + stirrup_dia + bar_dia / 2
+    z_bottom = edge_dist
+    z_top = D_mm - edge_dist
+    available_width = b_mm - 2 * edge_dist
+
+    # Bottom bar positions
+    bottom_bars: list[tuple[float, float, float]] = []
+    spacing = available_width / max(num_bars - 1, 1)
+    for i in range(num_bars):
+        y = -available_width / 2 + i * spacing
+        bottom_bars.append((0.0, round(y, 1), round(z_bottom, 1)))
+
+    # Top bars (nominal 2 bars)
+    top_bars: list[tuple[float, float, float]] = [
+        (0.0, round(-available_width / 2, 1), round(z_top, 1)),
+        (0.0, round(available_width / 2, 1), round(z_top, 1)),
+    ]
+
+    # Stirrup spacing calculation
+    d_mm = D_mm - cover_mm - stirrup_dia - bar_dia / 2
+    sv_base = min(200.0, max(100.0, 0.75 * d_mm))
+
+    # Reduce spacing if shear stress is high
+    tau_v = (vu_kn * 1000) / max(b_mm * d_mm, 1.0)
+    if tau_v > 0.5:  # High shear stress
+        sv_base = min(sv_base, 150.0)
+
+    sv_support = sv_base * 0.75  # Closer at supports
+    zone_2d = 2 * d_mm  # Shear-critical zone
+
+    # Compute stirrup positions
+    stirrup_positions: list[float] = []
+    x = 50.0  # Start 50mm from face
+
+    # Support zone (start)
+    while x < min(zone_2d, span_mm - 50):
+        stirrup_positions.append(round(x, 1))
+        x += sv_support
+
+    # Mid zone
+    while x < max(span_mm - zone_2d, zone_2d):
+        stirrup_positions.append(round(x, 1))
+        x += sv_base
+
+    # Support zone (end)
+    while x < span_mm - 50:
+        stirrup_positions.append(round(x, 1))
+        x += sv_support
+
+    return RebarLayoutResult(
+        bottom_bars=bottom_bars,
+        top_bars=top_bars,
+        stirrup_positions=stirrup_positions,
+        bar_diameter=bar_dia,
+        bar_count=num_bars,
+        stirrup_diameter=stirrup_dia,
+        summary=f"{num_bars}T{bar_dia} ({ast_provided:.0f} mm²)",
+        spacing_summary=f"Stirrups: Ø{stirrup_dia}@{sv_support:.0f}mm (ends), @{sv_base:.0f}mm (mid)",
+        ast_provided_mm2=round(ast_provided, 1),
+        ast_required_mm2=round(ast_mm2, 1),
     )
