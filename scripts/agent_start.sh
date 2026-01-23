@@ -148,6 +148,28 @@ fi
 
 # Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
 echo -e "${BLUE}[3/6]${NC} Running pre-flight checks..."
+
+# Step 2.5: Dependency Verification (quick check for critical packages)
+if [ -z "$QUICK" ]; then
+    echo -e "${BLUE}[2.5/6]${NC} Verifying critical dependencies..."
+    MISSING_DEPS=""
+
+    # Check critical dependencies (fail fast if missing)
+    "$PROJECT_ROOT/.venv/bin/python" -c "import pydantic" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pydantic"
+    "$PROJECT_ROOT/.venv/bin/python" -c "import streamlit" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS streamlit"
+    "$PROJECT_ROOT/.venv/bin/python" -c "import pandas" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pandas"
+    "$PROJECT_ROOT/.venv/bin/python" -c "import numpy" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS numpy"
+
+    if [ -n "$MISSING_DEPS" ]; then
+        echo -e "  ${YELLOW}⚠${NC} Missing dependencies:$MISSING_DEPS"
+        echo -e "  ${YELLOW}→${NC} Run: .venv/bin/pip install -r requirements.txt"
+        echo -e "  ${YELLOW}→${NC} Or:  .venv/bin/pip install -e \"Python[dev,dxf,render,report,pdf,validation,cad]\""
+    else
+        echo -e "  ${GREEN}✓${NC} Critical dependencies verified"
+    fi
+else
+    echo -e "  ${YELLOW}⊘${NC} Dependency check skipped (quick mode)"
+fi
 if [ -n "$SKIP_PREFLIGHT" ]; then
     echo -e "  ${YELLOW}⊘${NC} Skipped (--skip-preflight)"
 elif [ -n "$QUICK" ]; then

@@ -1,0 +1,80 @@
+# Structural Engineering Library - Consolidated Requirements
+# ============================================================
+# This file provides a unified installation for all dependencies.
+#
+# Quick Install (all features):
+#   pip install -r requirements.txt
+#
+# Or install the package with optional dependencies:
+#   pip install -e "Python[dev,dxf,render,report,pdf,validation,cad]"
+#
+# For development, also install pre-commit hooks:
+#   pre-commit install
+#
+# Generated: 2026-01-23
+# ============================================================
+
+# ===========================================
+# Core Library (required)
+# ===========================================
+pydantic>=2.0
+
+# ===========================================
+# Development Tools
+# ===========================================
+pytest>=9.0
+pytest-cov>=7.0
+pytest-benchmark>=5.0
+black>=26.0
+mypy>=1.19
+pre-commit>=4.5
+ruff>=0.14
+bandit>=1.9
+isort>=7.0
+hypothesis>=6.0
+
+# ===========================================
+# DXF/CAD Export
+# ===========================================
+ezdxf>=1.0
+
+# ===========================================
+# Rendering & Visualization
+# ===========================================
+matplotlib>=3.5
+plotly>=5.18
+
+# ===========================================
+# Reports (HTML/PDF)
+# ===========================================
+jinja2>=3.1
+reportlab>=4.0
+
+# ===========================================
+# Schema Validation
+# ===========================================
+jsonschema>=4.21
+
+# ===========================================
+# 3D CAD & Visualization
+# ===========================================
+pyvista>=0.43
+stpyvista>=0.1.4
+
+# ===========================================
+# Streamlit App
+# ===========================================
+streamlit>=1.30
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+
+# ===========================================
+# Excel Integration (macOS/Windows)
+# ===========================================
+xlwings>=0.33
+
+# ===========================================
+# Typing (backports for Python 3.11)
+# ===========================================
+typing-extensions>=4.8

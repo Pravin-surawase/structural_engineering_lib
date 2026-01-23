@@ -254,3 +254,135 @@ The iCloud performance issues will continue to cause problems with:
 - Any tool that scans the filesystem
 
 **Recommended action:** Perform migration during next session start.
+
+---
+
+## Post-Migration Issues Found (2026-01-23 Deep Review)
+
+### 🔴 Critical Issues
+
+#### 1. Missing Dependencies in venv
+The venv is missing most optional and app dependencies:
+
+| Package | Status | Required For |
+|---------|--------|--------------|
+| pydantic | ✅ Installed (2.12.5) | Core library |
+| ezdxf | ❌ **Missing** | DXF export |
+| matplotlib | ❌ **Missing** | Rendering/plots |
+| jinja2 | ❌ **Missing** | HTML reports |
+| reportlab | ❌ **Missing** | PDF reports |
+| jsonschema | ❌ **Missing** | Input validation |
+| pyvista | ❌ **Missing** | 3D CAD export |
+| stpyvista | ❌ **Missing** | Streamlit 3D |
+| streamlit | ❌ **Missing** | Web app |
+| pandas | ❌ **Missing** | Data manipulation |
+| numpy | ❌ **Missing** | Numerical computing |
+| plotly | ❌ **Missing** | Interactive charts |
+| scipy | ❌ **Missing** | Scientific computing |
+| xlwings | ❌ **Missing** | Excel integration |
+
+**Fix Required:**
+```bash
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
+.venv/bin/pip install -e "Python[dev,dxf,render,report,pdf,validation,cad]"
+.venv/bin/pip install -r streamlit_app/requirements.txt
+.venv/bin/pip install xlwings
+```
+
+#### 2. Old iCloud Location Still Exists
+The old iCloud copy is still present and is ONE COMMIT BEHIND:
+- **Local (new):** 26f83cd (main)
+- **iCloud (old):** c89a0d9 (1 commit behind)
+
+**Risk:** Accidentally working in old location causes confusion.
+
+**Fix Required (after 1 week verification):**
+```bash
+rm -rf "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib"
+rm -rf "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib.worktrees"
+```
+
+#### 3. Old Symlink Still Exists
+There's a symlink pointing to the OLD iCloud location:
+```
+/Users/Pravin/structural_engineering_lib → [old iCloud path]
+```
+
+**Fix Required:**
+```bash
+rm /Users/Pravin/structural_engineering_lib
+# Optional: Create new symlink to local
+ln -s /Users/Pravin/Project_VS_code/structural_engineering_lib /Users/Pravin/structural_engineering_lib
+```
+
+### 🟡 Medium Issues
+
+#### 4. `.xlwings.conf` Has Old Symlink Path
+The xlwings config references the old symlink path:
+```
+INTERPRETER,/Users/Pravin/structural_engineering_lib/.venv/bin/python
+PYTHONPATH,/Users/Pravin/structural_engineering_lib/Python
+```
+
+**Fix Required:** Update to new path or update symlink (item 3).
+
+#### 5. No `requirements.txt` at Root Level
+The project lacks a root-level `requirements.txt`. Dependencies are only in:
+- `Python/pyproject.toml` (core library)
+- `streamlit_app/requirements.txt` (app only)
+
+**Recommendation:** Create consolidated requirements file or document installation steps better.
+
+### 🟢 Low Issues (Informational)
+
+#### 6. Bandit Security Scan Results
+6 low-severity issues found (all acceptable):
+- 5x `try-except-continue` patterns (intentional)
+- 1x medium confidence issue
+
+No high-severity or critical security issues.
+
+#### 7. Secrets Handling
+- ✅ No hardcoded secrets in code
+- ✅ `secrets.toml` is in `.gitignore`
+- ✅ Only `secrets.toml.example` is tracked
+- ✅ GitHub Actions use `${{ secrets.GITHUB_TOKEN }}`
+
+#### 8. File Permissions
+- ✅ No world-writable files
+- ✅ 146 executable scripts (expected)
+- ✅ Workflow files have proper permissions
+
+---
+
+## Action Items Checklist
+
+### Immediate (Before Continuing Work)
+
+- [x] **Install missing dependencies:** ✅ Completed 2026-01-23
+  ```bash
+  .venv/bin/pip install -e "Python[dev,dxf,render,report,pdf,validation,cad]"
+  .venv/bin/pip install plotly scipy xlwings
+  ```
+
+- [x] **Fix symlink:** ✅ Updated to new target 2026-01-23
+  ```bash
+  rm /Users/Pravin/structural_engineering_lib
+  ln -s /Users/Pravin/Project_VS_code/structural_engineering_lib /Users/Pravin/structural_engineering_lib
+  ```
+
+- [x] **`.xlwings.conf` now works:** ✅ Uses symlink path which resolves correctly
+
+### After 1 Week Verification
+
+- [ ] **Delete old iCloud copy (scheduled for 2026-01-30):**
+  ```bash
+  rm -rf "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib"
+  rm -rf "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib.worktrees"
+  ```
+
+### Optional Improvements - ✅ ALL COMPLETED 2026-01-23
+
+- [x] Create root-level `requirements.txt` consolidating all deps
+- [x] Document installation steps in README (added "Full Development Setup" section)
+- [x] Add dependency verification to `agent_start.sh` (Step 2.5)

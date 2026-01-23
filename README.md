@@ -410,6 +410,50 @@ View detailed download statistics: [pypistats.org/packages/structural-lib-is456]
 
 ### Manual Development
 
+**Full Development Setup (One-Time):**
+
+```bash
+# 1. Clone repository
+git clone https://github.com/Pravin-surawase/structural_engineering_lib.git
+cd structural_engineering_lib
+
+# 2. Create virtual environment
+python3.11 -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate   # Windows
+
+# 3. Install all dependencies (choose one):
+
+# Option A: Quick install (core + all optional features)
+pip install -r requirements.txt
+pip install -e Python/
+
+# Option B: Minimal core library only
+pip install -e Python/
+
+# Option C: With specific extras
+pip install -e "Python[dev,dxf,render,report,pdf,validation,cad]"
+
+# 4. Install pre-commit hooks
+pre-commit install
+./scripts/install_git_hooks.sh
+
+# 5. Verify installation
+python -c "import structural_lib; print('✅ structural_lib imported')"
+pytest Python/tests/ -q --collect-only | tail -5
+```
+
+**Dependency Groups:**
+| Extra | Packages | Use Case |
+|-------|----------|----------|
+| `dev` | pytest, black, mypy, ruff, bandit | Development & testing |
+| `dxf` | ezdxf | DXF drawing export |
+| `render` | ezdxf, matplotlib | DXF render to PNG/PDF |
+| `report` | jinja2 | HTML report generation |
+| `pdf` | reportlab | PDF report generation |
+| `validation` | jsonschema | Input/output schema validation |
+| `cad` | pyvista, stpyvista | 3D CAD visualization |
+
 | Task | Command | Where |
 | --- | --- | --- |
 | Install dev deps | `cd Python && python3 -m pip install -e ".[dev]"` (includes Hypothesis) | repo root |
