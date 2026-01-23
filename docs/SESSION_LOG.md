@@ -4,7 +4,79 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-23 — Session 63: UI Consolidation Audit
+## 2026-01-23 — Session 63: UI Consolidation Implementation
+
+**Focus:** Implement UI consolidation based on audit - create shared utility modules
+
+### Summary
+
+Completed TASK-350 and TASK-351 by creating shared utility modules for duplicate UI functions.
+**Removed 227+ lines of duplicate code** across 3 files.
+
+### Commits This Session (5 total)
+
+| Commit | Description |
+|--------|-------------|
+| `eae1c65d` | docs: add UI consolidation audit and Session 63 notes |
+| `7ec11ad9` | feat(utils): add rebar_layout.py and batch_design.py consolidation modules |
+| `344d116e` | refactor: consolidate rebar layout to use shared utils |
+| `7e44ddab` | refactor: use shared batch_design utilities in ai_workspace.py |
+| `fbd202c1` | refactor: import BAR_OPTIONS from shared rebar_layout module |
+
+### New Shared Modules Created
+
+**1. utils/rebar_layout.py (220 lines)**
+- `calculate_rebar_layout()` - Full implementation with:
+  - Development length calculation (IS 456 Cl 26.2.1)
+  - Lap length calculation (1.3 × Ld)
+  - Variable stirrup zones (75% at supports)
+  - fck/fy parameters for accurate Ld
+- `calculate_rebar_layout_simple()` - Quick UI version
+- `BAR_OPTIONS` constant - Single source of truth for bar sizes
+
+**2. utils/batch_design.py (263 lines)**
+- `design_single_beam()` - Standardized design with:
+  - Dimension validation (b_mm, D_mm > 100)
+  - Error handling and status formatting
+- `design_beam_row()` - DataFrame row wrapper
+- `design_all_beams_df()` - Batch design with progress callback
+- `design_beams_with_streamlit_progress()` - Streamlit-specific wrapper
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `components/ai_workspace.py` | Import shared modules, use fallback pattern |
+| `pages/06_multi_format_import.py` | Replace 70 lines with shared import |
+| `pages/_hidden/_10_ai_assistant.py` | Replace 100 lines with shared import |
+
+### Code Reduction
+
+- **Before:** 3 duplicate `calculate_rebar_layout` implementations
+- **After:** 1 shared implementation with fallback
+- **Lines removed:** 227+ duplicate lines
+- **Maintainability:** Single source of truth
+
+### Test Results
+
+- **3143 passed, 1 failed (pre-existing), 5 skipped**
+- Streamlit scanner: No new issues introduced
+
+### Tasks Completed
+
+- ✅ TASK-350: Create utils/rebar_layout.py
+- ✅ TASK-351: Create utils/batch_design.py
+
+### Next Session Tasks
+
+1. **TASK-352:** Add `suggest_rebar_configuration()` to library (4h)
+2. **TASK-353:** Add `optimize_beam_line()` to library (4h)
+3. Consider more consolidation opportunities
+4. Address pre-existing streamlit scanner warnings (103 in ai_workspace.py)
+
+---
+
+## 2026-01-23 — Session 63 (Part 1): UI Consolidation Audit
 
 **Focus:** Comprehensive audit of ai_workspace.py, validate previous agent's library refactoring claims, identify true duplicates
 
