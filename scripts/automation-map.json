@@ -7,34 +7,61 @@
     "commit code": {
       "script": "./scripts/ai_commit.sh \"message\"",
       "description": "Stage, commit, and push with all safety checks",
+      "context_docs": [
+        ".github/copilot-instructions.md",
+        "docs/contributing/git-workflow-ai-agents.md",
+        "docs/git-automation/README.md"
+      ],
       "never_use": ["git add", "git commit", "git push"]
     },
     "move file": {
       "script": ".venv/bin/python scripts/safe_file_move.py old.md new.md",
       "description": "Move file and update all internal links automatically",
+      "context_docs": [
+        "docs/guidelines/file-operations-safety-guide.md"
+      ],
       "never_use": ["mv", "git mv"]
     },
     "delete file": {
       "script": ".venv/bin/python scripts/safe_file_delete.py file.md",
       "description": "Delete file after checking for references",
+      "context_docs": [
+        "docs/guidelines/file-operations-safety-guide.md"
+      ],
       "never_use": ["rm", "git rm"]
     },
     "create document": {
       "script": ".venv/bin/python scripts/create_doc.py path/file.md \"Title\"",
       "description": "Create document with proper metadata headers",
+      "context_docs": [
+        "docs/guidelines/doc-naming-conventions.md",
+        "docs/guidelines/documentation-standard.md",
+        "docs/docs-canonical.json"
+      ],
       "prereq": ".venv/bin/python scripts/check_doc_similarity.py \"topic\""
     },
     "fix broken links": {
       "script": ".venv/bin/python scripts/fix_broken_links.py --fix",
-      "description": "Find and auto-fix broken internal links"
+      "description": "Find and auto-fix broken internal links",
+      "context_docs": [
+        "docs/reference/automation-catalog.md",
+        "docs/guidelines/documentation-standard.md"
+      ]
     },
     "check streamlit code": {
       "script": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
-      "description": "Detect runtime errors before they happen"
+      "description": "Detect runtime errors before they happen",
+      "context_docs": [
+        "docs/guidelines/streamlit-fragment-best-practices.md",
+        "docs/reference/streamlit-validation.md"
+      ]
     },
     "run tests": {
       "script": ".venv/bin/python -m pytest Python/tests -q",
-      "description": "Run Python test suite"
+      "description": "Run Python test suite",
+      "context_docs": [
+        "docs/contributing/testing-strategy.md"
+      ]
     },
     "format code": {
       "script": "cd Python && .venv/bin/python -m black . && .venv/bin/python -m ruff check --fix .",
@@ -42,19 +69,36 @@
     },
     "check folder structure": {
       "script": ".venv/bin/python scripts/check_folder_structure.py",
-      "description": "Validate project organization"
+      "description": "Validate project organization",
+      "context_docs": [
+        "docs/guidelines/folder-structure-governance.md"
+      ]
     },
     "check for duplicates": {
       "script": ".venv/bin/python scripts/check_doc_similarity.py \"topic\"",
-      "description": "Find similar documents before creating new ones"
+      "description": "Find similar documents before creating new ones",
+      "context_docs": [
+        "docs/docs-canonical.json",
+        "docs/guidelines/doc-naming-conventions.md"
+      ]
     },
     "start session": {
       "script": "./scripts/agent_start.sh --quick",
-      "description": "Initialize agent environment (6 seconds)"
+      "description": "Initialize agent environment (6 seconds)",
+      "context_docs": [
+        "docs/getting-started/agent-essentials.md",
+        "docs/getting-started/agent-bootstrap.md",
+        "docs/TASKS.md"
+      ]
     },
     "end session": {
       "script": ".venv/bin/python scripts/end_session.py",
-      "description": "Validate handoff and update session docs"
+      "description": "Validate handoff and update session docs",
+      "context_docs": [
+        "docs/contributing/handoff.md",
+        "docs/SESSION_LOG.md",
+        "docs/planning/next-session-brief.md"
+      ]
     },
     "check git state": {
       "script": "./scripts/git_ops.sh --status",
@@ -66,7 +110,11 @@
     },
     "decide pr vs direct": {
       "script": "./scripts/should_use_pr.sh --explain",
-      "description": "Determine if PR is required for changes"
+      "description": "Determine if PR is required for changes",
+      "context_docs": [
+        ".github/copilot-instructions.md",
+        "docs/contributing/git-workflow-ai-agents.md"
+      ]
     },
     "create pr branch": {
       "script": "./scripts/create_task_pr.sh TASK-XXX \"description\"",
@@ -78,19 +126,37 @@
     },
     "check api docs": {
       "script": ".venv/bin/python scripts/check_api_doc_signatures.py",
-      "description": "Verify API documentation matches code"
+      "description": "Verify API documentation matches code",
+      "context_docs": [
+        "docs/reference/api.md",
+        "docs/reference/api-stability.md",
+        "docs/guidelines/api-evolution-standard.md"
+      ]
     },
     "generate api manifest": {
       "script": ".venv/bin/python scripts/generate_api_manifest.py",
-      "description": "Regenerate API manifest after changes"
+      "description": "Regenerate API manifest after changes",
+      "context_docs": [
+        "docs/reference/api.md",
+        "docs/reference/api-stability.md",
+        "docs/guidelines/api-evolution-standard.md"
+      ]
     },
     "validate doc metadata": {
       "script": ".venv/bin/python scripts/check_doc_metadata.py",
-      "description": "Ensure all docs have proper metadata headers"
+      "description": "Ensure all docs have proper metadata headers",
+      "context_docs": [
+        "docs/guidelines/documentation-standard.md",
+        "docs/guidelines/doc-naming-conventions.md"
+      ]
     },
     "archive old files": {
       "script": "./scripts/archive_old_files.sh",
-      "description": "Move files older than 90 days to archive"
+      "description": "Move files older than 90 days to archive",
+      "context_docs": [
+        "docs/guidelines/folder-cleanup-workflow.md",
+        "docs/guidelines/file-operations-safety-guide.md"
+      ]
     },
     "launch streamlit": {
       "script": "./scripts/launch_streamlit.sh",
