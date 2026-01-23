@@ -29,17 +29,93 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
     """Find all references to a file in docs and code.
 
     Returns list of (file, line_content, line_number) tuples.
+
+    Uses git grep for fast searching (works in git repos), falls back to Python if not.
     """
-    references = []
     filename = file_path.name
-    stem = file_path.stem  # filename without extension
 
     try:
         relative_path = str(file_path.relative_to(project_root))
     except ValueError:
         relative_path = str(file_path)
 
-    # Patterns to search for
+    # Try using git grep for fast search (uses git's index, much faster)
+    references = _find_references_git_grep(filename, project_root)
+    if references is not None:
+        # Filter out self-references
+        return [(f, line, num) for f, line, num in references if f != file_path]
+
+    # Fallback to Python-based search (slower but always works)
+    return _find_references_python(file_path, project_root)
+
+
+def _find_references_git_grep(
+    pattern: str, project_root: Path
+) -> list[tuple[Path, str, int]] | None:
+    """Fast reference search using git grep.
+
+    Git grep uses the git index which is much faster than filesystem search.
+    Returns None if not in a git repo or git grep fails.
+    """
+    references = []
+
+    try:
+        # Use git grep - it's fast because it uses git's index
+        result = subprocess.run(
+            [
+                "git",
+                "grep",
+                "-n",  # Show line numbers
+                "-I",  # Skip binary files
+                "--no-color",
+                "-F",  # Fixed string (literal)
+                pattern,
+            ],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=10,  # 10 second timeout
+        )
+
+        if result.returncode not in (0, 1):  # 0=found, 1=not found
+            return None
+
+        # Parse output: filename:lineno:content
+        for line in result.stdout.strip().split("\n"):
+            if not line:
+                continue
+            parts = line.split(":", 2)
+            if len(parts) >= 3:
+                file_match = project_root / parts[0]
+                try:
+                    line_num = int(parts[1])
+                    content = parts[2].strip()[:100]
+                    references.append((file_match, content, line_num))
+                except (ValueError, IndexError):
+                    continue
+
+        return references
+
+    except (subprocess.TimeoutExpired, OSError, FileNotFoundError):
+        return None
+
+
+def _find_references_python(
+    file_path: Path, project_root: Path
+) -> list[tuple[Path, str, int]]:
+    """Python-based reference search (slower fallback).
+
+    Note: This can be slow for large projects.
+    """
+    references = []
+    filename = file_path.name
+    stem = file_path.stem
+
+    try:
+        relative_path = str(file_path.relative_to(project_root))
+    except ValueError:
+        relative_path = str(file_path)
+
     patterns = [
         filename,
         stem,
