@@ -63,6 +63,55 @@ false_positives:
     lines: [583, 973, 1005, 1012, 1237, 1244, 1258, 1443, 1679, 1700, 1858]
     reason: "All division operations have upstream guards: max(x, 1), 'if length < 0.01: continue', 'if d_eff > 0', etc."
 
+  # ai_workspace.py - Session 63+ analysis
+  # Division issues are guarded but scanner doesn't detect the pattern
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [662]
+    reason: "Division by BAR_OPTIONS area values (always positive constants)"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [1091, 1121]
+    reason: "Division guarded by upstream length/geometry checks"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [1547, 1548, 1553, 1556, 1562]
+    reason: "Division guarded by 'if ... == 0: continue' loops"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [1701, 1734, 1741]
+    reason: "Division with max(x, 1) guards ensuring non-zero denominator"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [2080, 2083, 2093, 2099, 2142, 2150]
+    reason: "Division guarded by 'if d_eff <= 0 or fy <= 0: return None' at line 2077"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [2187, 2204, 2205, 2295, 2296, 2301, 2307]
+    reason: "Division guarded by early-exit checks in the function"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [2396, 2403, 2421]
+    reason: "Cost calculation - guarded by non-zero input validation"
+
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [2753, 3024, 3053, 3215, 3835, 4202, 4628]
+    reason: "Division guarded by loop conditions or input validation"
+
+  # KeyError false positives - DataFrame column assignments to self
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [255, 259, 261, 264, 266, 269, 273, 277, 281, 284, 288, 292, 294, 305, 337, 338, 339]
+    reason: "DataFrame column access on result DF being built - columns guaranteed to exist"
+
+  # Lazy imports - intentional for reducing page load time
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [3816, 3839, 3971]
+    reason: "Lazy imports in rarely-executed code paths - intentional to reduce initial load"
+
+  # Config dictionary access - config is validated before use
+  - file: "streamlit_app/components/ai_workspace.py"
+    lines: [2530, 2543, 4413, 4420]
+    reason: "Config dict access - config is built with all required keys before this point"
+
 known_issues:
   - file: "streamlit_app/pages/06_📐_dxf_export.py"
     lines: [222]
