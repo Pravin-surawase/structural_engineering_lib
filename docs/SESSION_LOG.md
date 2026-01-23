@@ -4,6 +4,86 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 65: AI Agent Effectiveness Research & Improvements
+
+**Focus:** Research AI agent problems, implement practical solutions to prevent duplication, improve automation discovery, address knowledge cutoff issues
+
+### Key Accomplishments
+
+1. **Comprehensive Research Document**
+   - Created [ai-agent-effectiveness-research.md](research/ai-agent-effectiveness-research.md) (677 lines)
+   - Analyzed 7 major problem categories with evidence
+   - Documented industry best practices (Cursor rules, MCP, RAG patterns)
+   - Proposed actionable solutions with implementation roadmap
+
+2. **Agent Essentials (50-line Context-Efficient Guide)**
+   - Created [agent-essentials.md](getting-started/agent-essentials.md)
+   - Contains ONLY critical rules that fit in any context window
+   - References canonical docs for deeper dives
+
+3. **Document Duplication Prevention**
+   - Created [docs-canonical.json](docs-canonical.json) — topic → canonical doc registry
+   - Created `scripts/check_doc_similarity.py` — fuzzy matching before doc creation
+   - Agents can now check if canonical doc exists before creating new ones
+
+4. **Automation Discovery Enhancement**
+   - Created [scripts/automation-map.json](../scripts/automation-map.json) — task → script mapping
+   - Created `scripts/find_automation.py` — natural language task lookup
+   - Example: `find_automation.py "commit code"` → `ai_commit.sh`
+
+5. **Copilot Instructions Updates**
+   - Added "AI Agent-Specific Rules" section
+   - Added knowledge cutoff awareness with verification steps
+   - Added duplication prevention workflow
+   - Added automation discovery references
+
+6. **Bootstrap Integration**
+   - Updated [agent-bootstrap.md](getting-started/agent-bootstrap.md)
+   - Added agent-essentials.md as Priority 0 (fits in context)
+   - Added duplication prevention workflow
+   - Added automation-map and find_automation references
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `1aa0362` | docs(research): add AI agent effectiveness research with improvement roadmap |
+| `ea488d2` | feat(agents): add agent-essentials.md, canonical doc registry, and similarity checker |
+| `a9a20a7` | feat(scripts): add task-to-script mapping and automation finder |
+| `e0b4fd0` | docs(copilot): add AI agent rules for knowledge cutoff and duplication prevention |
+| `62122d5` | docs(bootstrap): integrate essentials, canonical registry, and automation map references |
+
+### Files Created
+
+| File | Purpose | Lines |
+|------|---------|-------|
+| `docs/research/ai-agent-effectiveness-research.md` | Comprehensive research | 677 |
+| `docs/getting-started/agent-essentials.md` | 50-line critical rules | 53 |
+| `docs/docs-canonical.json` | Topic → canonical doc registry | 85 |
+| `scripts/check_doc_similarity.py` | Duplicate detection before creation | 195 |
+| `scripts/automation-map.json` | Task → script mapping | 110 |
+| `scripts/find_automation.py` | Automation discovery tool | 130 |
+
+### Problem Categories Addressed
+
+| Problem | Solution |
+|---------|----------|
+| Knowledge cutoff (outdated AI models/libs) | Verification workflow + freshness markers |
+| Context window limits | 50-line essentials file, tiered docs |
+| Document duplication | Canonical registry + similarity checker |
+| Inconsistent naming | Naming conventions in canonical.json |
+| Automation underuse | Task-to-script mapping + finder tool |
+| Partial document reading | Context-efficient essentials file |
+
+### Next Session
+
+- [ ] Test new tools in real workflow sessions
+- [ ] Add more topics to docs-canonical.json as discovered
+- [ ] Consider pre-commit hook for duplicate detection
+- [ ] Continue with V3 Foundation APIs (TASK-V3-FOUNDATION)
+
+---
+
 ## 2026-01-24 — Session 64: Post-Migration Cleanup & Documentation Consolidation
 
 **Focus:** Complete iCloud → local migration, install dependencies, consolidate duplicate docs

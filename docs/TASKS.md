@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-24 (Session 63+)
+**Updated:** 2026-01-23 (Session 65)
 
 ---
 
@@ -33,6 +33,28 @@
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
 
 ---
+
+## Session 65 Completed (2026-01-23)
+
+**Focus:** AI Agent Effectiveness Research & Improvements
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Create AI agent effectiveness research | ✅ Done | `1aa0362` |
+| Create agent-essentials.md (50 lines) | ✅ Done | `ea488d2` |
+| Create docs-canonical.json registry | ✅ Done | `ea488d2` |
+| Create check_doc_similarity.py | ✅ Done | `ea488d2` |
+| Create automation-map.json | ✅ Done | `a9a20a7` |
+| Create find_automation.py | ✅ Done | `a9a20a7` |
+| Update copilot-instructions.md | ✅ Done | `e0b4fd0` |
+| Update agent-bootstrap.md | ✅ Done | `62122d5` |
+
+**Key Deliverables:**
+- **Research:** [docs/research/ai-agent-effectiveness-research.md](research/ai-agent-effectiveness-research.md)
+- **50-line essentials:** [docs/getting-started/agent-essentials.md](getting-started/agent-essentials.md)
+- **Canonical registry:** [docs/docs-canonical.json](docs-canonical.json)
+- **Duplicate checker:** `scripts/check_doc_similarity.py`
+- **Automation finder:** `scripts/find_automation.py`
 
 ## Session 63 Completed (2026-01-23)
 
