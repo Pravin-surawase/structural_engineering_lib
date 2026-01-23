@@ -62,6 +62,10 @@ def print_task(task_name: str, task_info: dict):
     print(f"  📋 {task_name}")
     print(f"     Script: {task_info['script']}")
     print(f"     {task_info.get('description', '')}")
+    if "context_docs" in task_info:
+        print("     📚 Context docs:")
+        for doc in task_info["context_docs"]:
+            print(f"        - {doc}")
     if "never_use" in task_info:
         never = ", ".join(task_info["never_use"])
         print(f"     ⚠️  Never use: {never}")
