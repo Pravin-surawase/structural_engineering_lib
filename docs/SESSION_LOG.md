@@ -4,6 +4,55 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 63: UI Consolidation Audit
+
+**Focus:** Comprehensive audit of ai_workspace.py, validate previous agent's library refactoring claims, identify true duplicates
+
+### Summary
+
+Performed 10-point audit as requested. Key finding: **Previous agent (Session 35) was CORRECT** - library functions and UI functions are **intentionally different**, not duplicates.
+
+### Key Findings
+
+| Function | Library Location | UI Location | Verdict |
+|----------|------------------|-------------|---------|
+| `calculate_constructability_score` | `insights/constructability.py:25` | `ai_workspace.py:1928` | **Different interfaces** - Library uses dataclasses, UI uses raw values |
+| `suggest_optimal_rebar` | Not in library | `ai_workspace.py:2002` | UI-only (widget format) |
+| `calculate_rebar_layout` | `visualization/geometry_3d.py` | `ai_workspace.py:606` (3 copies in UI) | Library returns geometry, UI returns widget dicts |
+
+### True Duplications Found (Within UI Layer)
+
+| Function | Copies | Files | Action |
+|----------|--------|-------|--------|
+| `calculate_rebar_layout` | 3 | ai_workspace, 06_multi_format, _10_ai_assistant | TASK-350: Create utils/rebar_layout.py |
+| `design_all_beams` | 2 | ai_workspace, 06_multi_format | TASK-351: Create utils/batch_design.py |
+
+### Decisions
+
+1. **Do NOT refactor ai_workspace.py** - It's working correctly, functions serve different purposes
+2. **Consolidate within UI layer** - Create shared utils for the 3 duplicate functions
+3. **Optionally add to library later** - TASK-352, TASK-353 for suggest_rebar and optimize_beam_line
+
+### Files Created
+
+- [docs/research/ui-consolidation-audit.md](research/ui-consolidation-audit.md) - Full audit report
+
+### Tasks Added to TASKS.md
+
+- TASK-350: UI consolidation (utils/rebar_layout.py) - 2h
+- TASK-351: UI consolidation (utils/batch_design.py) - 2h
+- TASK-352: Add suggest_rebar_configuration() to library - 4h
+- TASK-353: Add optimize_beam_line() to library - 4h
+
+### Next Session Tasks
+
+1. **Start TASK-350** - Create utils/rebar_layout.py with shared function
+2. **Complete TASK-351** - Create utils/batch_design.py with shared function
+3. **Test all pages** - Verify no regressions after consolidation
+4. **Consider TASK-352/353** - Evaluate if library additions are needed for V3
+
+---
+
 ## 2026-01-22 — Session 32: Table Editor Comprehensive Overhaul
 
 **Focus:** Fix code duplication, section view bugs, add missing table features, improve space usage

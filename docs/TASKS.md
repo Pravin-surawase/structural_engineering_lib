@@ -267,28 +267,32 @@ Users can say "Design a beam for 150 kN·m" and get results + 3D view.
 
 ## Backlog (Prioritized)
 
-### High Priority 🔥 THE KILLER FEATURE
+### High Priority 🔥 V3 Foundation
 
 | ID | Task | Est | Notes |
 |----|------|-----|-------|
-| TASK-3D-008 | **Rebar visualization in 3D** | 8h | Show actual bars from design! |
-| TASK-3D-009 | Stirrup rendering with zones | 6h | Variable spacing near supports |
-| TASK-3D-010 | Cross-section view mode | 4h | Click beam → see 2D section |
-| TASK-PERF-001 | LOD optimization for 1000+ beams | 2h | Performance critical |
+| TASK-350 | UI consolidation (utils/rebar_layout.py) | 2h | Dedupe 3 copies of calculate_rebar_layout |
+| TASK-351 | UI consolidation (utils/batch_design.py) | 2h | Dedupe design_all_beams patterns |
+| TASK-3D-008 | ✅ **Rebar visualization in 3D** | 8h | DONE - Session 51 |
+| TASK-3D-009 | ✅ Stirrup rendering with zones | 6h | DONE - Variable spacing |
+| TASK-3D-010 | ✅ Cross-section view mode | 4h | DONE - Session 53 |
+| TASK-PERF-001 | ✅ LOD optimization for 1000+ beams | 2h | DONE - Session 59 |
 
 ### Medium Priority
 
 | ID | Task | Est | Notes |
 |----|------|-----|-------|
+| TASK-352 | Add suggest_rebar_configuration() to library | 4h | Move suggest_optimal_rebar logic |
+| TASK-353 | Add optimize_beam_line() to library | 4h | Move multi-beam optimization |
 | TASK-DOC-001 | User guide for VBA workflow | 2h | Step-by-step with screenshots |
 | TASK-TEST-001 | Integration tests with real VBA CSV | 2h | End-to-end validation |
-| TASK-EXPORT-001 | DXF drawing export | 4h | V1.1 feature |
+| TASK-EXPORT-001 | ✅ DXF drawing export | 4h | DONE - Session 59 |
 
 ### Low Priority (V1.1+)
 
 | ID | Task | Est | Notes |
 |----|------|-----|-------|
-| TASK-REPORT-001 | PDF report generation | 4h | Delayed to V1.1 |
+| TASK-REPORT-001 | ✅ PDF report generation | 4h | DONE - Session 59 |
 | TASK-BBS-001 | Bar bending schedule | 4h | Delayed to V1.1 |
 | TASK-MULTI-001 | Multi-span continuous beams | 8h | Delayed to V1.1 |
 
