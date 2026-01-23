@@ -4,6 +4,68 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 63 (Part 2): Validation & Critical Fixes
+
+**Focus:** Validate Session 63 Part 1 work, fix critical issues, update TASKS.md
+
+### Key Finding: TASK-352 is INVALID
+
+During in-depth audit, discovered that **library already has `select_bar_arrangement()`** in
+`codes/is456/detailing.py:863`. This function does exactly what TASK-352 proposed:
+- Takes `ast_required`, width, cover, stirrup_dia
+- Returns `BarArrangement` dataclass with count, diameter, area_provided
+
+**Correct approach:** Created a UI wrapper in `utils/rebar_optimization.py` that:
+1. Calls the library's `select_bar_arrangement()` internally
+2. Converts `BarArrangement` dataclass to widget-compatible dict
+3. Adds `optimize_beam_line()` for multi-beam consistency
+
+### Commits This Session (4 total)
+
+| Commit | Description |
+|--------|-------------|
+| `93ab3cd9` | docs: update library refactoring strategy with Session 63 audit findings |
+| `eea4c39d` | feat(utils): add shared rebar_optimization using library functions |
+| `15a46620` | fix(ui): resolve critical ZeroDivisionError risks in multi-format import |
+| `81d3ee5a` | docs: update TASKS.md with Session 63 findings |
+
+### Critical Issues Fixed
+
+Fixed in **06_multi_format_import.py** (was 2 critical, 3 high → now 0 critical, 0 high):
+
+| Issue | Line | Fix |
+|-------|------|-----|
+| ZeroDivisionError | 462 | Added `if fy > 0` guard for ast_min calculation |
+| ZeroDivisionError | 496 | Added `max(1, ...)` guard for progress calculation |
+| KeyError | 416/419 | Changed `config[]` to `config.get()` with defaults |
+| Import inside function | 458 | Removed duplicate `import math` (already at module level) |
+
+### Tasks Status Update
+
+| Task | Original Status | New Status | Notes |
+|------|-----------------|------------|-------|
+| TASK-352 | 📋 TODO | ❌ INVALID | Library already has `select_bar_arrangement()` |
+| TASK-353 | 📋 TODO | ✅ DONE | Implemented in `rebar_optimization.py` |
+
+### Code Efficiency Analysis
+
+| Category | Lines Removable |
+|----------|-----------------|
+| Already Removed (Part 1) | 227 lines |
+| `suggest_optimal_rebar` refactor | ~120 lines |
+| `optimize_beam_line` refactor | ~40 lines |
+| `calculate_constructability_score` | ~50 lines |
+| **Total Potential** | **~450 lines** |
+
+### Next Session Tasks
+
+1. Migrate pages to use `rebar_optimization.py` wrapper
+2. Verify `select_bar_arrangement()` integration works end-to-end
+3. Address remaining medium-severity scanner issues
+4. Continue V3 Foundation work (TASK-V3-FOUNDATION)
+
+---
+
 ## 2026-01-23 — Session 63: UI Consolidation Implementation
 
 **Focus:** Implement UI consolidation based on audit - create shared utility modules

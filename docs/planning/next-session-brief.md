@@ -5,25 +5,60 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-21<br>
+**Last Updated:** 2026-01-23
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-21
-- Focus: Align docs and indexes with v0.19.0 release status
+- Date: 2026-01-23
+- Focus: Session 63 completed UI consolidation + critical fix
 <!-- HANDOFF:END -->
-
-
 
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 61 Release | **Focus:** v0.19.0 release + docs sync
+**Last Session:** 63 | **Focus:** UI consolidation + library audit
+
+---
+
+## 🔑 Key Discovery from Session 63
+
+**TASK-352 was INVALID** — The library already has `select_bar_arrangement()` in
+`codes/is456/detailing.py:863`. This function does exactly what was planned:
+- Takes `ast_required`, width, cover, stirrup_dia
+- Returns `BarArrangement` dataclass with count, diameter, area_provided
+
+**Correct Approach:** Created UI wrapper in `utils/rebar_optimization.py` that calls
+the existing library function instead of duplicating logic.
+
+---
+
+## Session 63 Completed Work
+
+| Part | Commits | Key Deliverables |
+|------|---------|------------------|
+| Part 1 | 6 | `rebar_layout.py`, `batch_design.py`, 227 lines removed |
+| Part 2 | 4 | `rebar_optimization.py`, critical fixes, TASK-352 invalidation |
+| **Total** | **10** | ~450 lines of code reduction potential |
+
+### New Shared Modules
+
+| Module | Purpose |
+|--------|---------|
+| `utils/rebar_layout.py` | Bar layout calculation, Ld, stirrup zones |
+| `utils/batch_design.py` | Batch design with progress callbacks |
+| `utils/rebar_optimization.py` | Library wrapper for bar selection |
+
+### Critical Issues Fixed
+
+Fixed in **06_multi_format_import.py**:
+- 2 ZeroDivisionError risks → guards added
+- 3 KeyError risks → `.get()` with defaults
+- Scanner: 0 critical, 0 high (was 2 critical, 3 high)
 
 ---
 
@@ -136,23 +171,24 @@
 
 ## 🔥 Next Session Priorities
 
-### Priority 1: Post-Release Validation
+### Priority 1: Migrate Pages to Use Shared Wrappers
 
-**Goal:** Confirm v0.19.0 quality in real usage
-
-| Task | Est | Notes |
-|------|-----|-------|
-| User testing cycle | 3d | Collect feedback from engineers |
-| DXF export review | 1d | Validate CAD readability |
-
-### Priority 2: Documentation Sync
-
-**Goal:** Remove stale version references
+**Goal:** Update pages to use new `rebar_optimization.py` module
 
 | Task | Est | Notes |
 |------|-----|-------|
-| Update top-level READMEs | 2h | Version 0.19.0 |
-| Update agent docs + indexes | 2h | Ensure AI agent efficiency |
+| Update `ai_workspace.py` | 2h | Replace `suggest_optimal_rebar()` with shared |
+| Update `11_ai_assistant_v2.py` | 1h | If it uses rebar suggestions |
+| Verify end-to-end | 1h | Test `select_bar_arrangement()` integration |
+
+### Priority 2: Address Scanner Warnings
+
+**Goal:** Reduce remaining medium-severity issues
+
+| File | Issues | Priority |
+|------|--------|----------|
+| `06_multi_format_import.py` | 153 medium | IndexError guards |
+| `ai_workspace.py` | 103 medium | Mixed issues |
 
 ### Priority 3: V3 Foundation APIs (v0.20)
 
@@ -160,8 +196,10 @@
 
 | Task | Est | Notes |
 |------|-----|-------|
-| Add modify/validate/compare/cost APIs | 3-4d | P0 functions |
-| Draft FastAPI contract | 2d | Commands + deltas |
+| `modify_beam_reinforcement()` | 4h | Edit rebar API |
+| `validate_beam_design()` | 4h | Real-time validation |
+| `compare_beam_designs()` | 4h | Before/after diff |
+| `compute_beam_cost()` | 4h | Standardized cost calc |
 
 ---
 
