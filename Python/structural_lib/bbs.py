@@ -1132,3 +1132,205 @@ def _format_summary_text(summary: BBSummary) -> str:
     lines.append(f"{summary.total_items} line items")
 
     return "\n".join(lines)
+
+
+# =============================================================================
+# Session 34: Material Takeoff (Phase 3 - Library Refactoring)
+# =============================================================================
+
+
+@dataclass
+class BeamQuantity:
+    """Quantity data for a single beam.
+
+    Attributes:
+        beam_id: Unique beam identifier
+        concrete_m3: Concrete volume in cubic meters
+        steel_kg: Steel weight in kilograms
+        bottom_steel_kg: Bottom reinforcement weight
+        top_steel_kg: Top reinforcement weight
+        stirrup_steel_kg: Stirrup weight
+    """
+
+    beam_id: str
+    concrete_m3: float
+    steel_kg: float
+    bottom_steel_kg: float
+    top_steel_kg: float
+    stirrup_steel_kg: float
+
+
+@dataclass
+class MaterialTakeoffResult:
+    """Complete material takeoff result for a project.
+
+    Attributes:
+        total_concrete_m3: Total concrete volume in m³
+        total_steel_kg: Total steel weight in kg
+        concrete_cost: Concrete cost in currency units
+        steel_cost: Steel cost in currency units
+        total_cost: Total material cost
+        concrete_rate: Unit rate for concrete (per m³)
+        steel_rate: Unit rate for steel (per kg)
+        beam_quantities: Individual beam quantities
+        by_diameter: Steel breakdown by bar diameter
+    """
+
+    total_concrete_m3: float
+    total_steel_kg: float
+    concrete_cost: float
+    steel_cost: float
+    total_cost: float
+    concrete_rate: float
+    steel_rate: float
+    beam_quantities: list[BeamQuantity]
+    by_diameter: dict[int, float]
+
+    def to_dict(self) -> dict:
+        """Convert to JSON-serializable dictionary."""
+        return {
+            "total_concrete_m3": round(self.total_concrete_m3, 3),
+            "total_steel_kg": round(self.total_steel_kg, 2),
+            "concrete_cost": round(self.concrete_cost, 2),
+            "steel_cost": round(self.steel_cost, 2),
+            "total_cost": round(self.total_cost, 2),
+            "concrete_rate": self.concrete_rate,
+            "steel_rate": self.steel_rate,
+            "beam_count": len(self.beam_quantities),
+            "by_diameter": {str(k): round(v, 2) for k, v in self.by_diameter.items()},
+        }
+
+
+def calculate_material_takeoff(
+    beams: list[dict],
+    *,
+    concrete_rate: float = 8000.0,
+    steel_rate: float = 85.0,
+    wastage_percent: float = 5.0,
+) -> MaterialTakeoffResult:
+    """Calculate material takeoff from beam design data.
+
+    This function computes concrete volume and steel weight for all beams,
+    including cost estimation.
+
+    Args:
+        beams: List of beam dictionaries with keys:
+            - beam_id: Unique identifier
+            - b_mm: Width in mm
+            - D_mm: Depth in mm
+            - span_mm: Span in mm
+            - bottom_bar_count: Number of bottom bars
+            - bottom_bar_dia: Bottom bar diameter (mm)
+            - top_bar_count: Number of top bars
+            - top_bar_dia: Top bar diameter (mm)
+            - stirrup_dia: Stirrup diameter (mm)
+            - stirrup_spacing: Stirrup spacing (mm)
+        concrete_rate: Cost per m³ of concrete (default: ₹8000)
+        steel_rate: Cost per kg of steel (default: ₹85)
+        wastage_percent: Steel wastage allowance (default: 5%)
+
+    Returns:
+        MaterialTakeoffResult with quantities and costs.
+
+    Example:
+        >>> beams = [
+        ...     {"beam_id": "B1", "b_mm": 300, "D_mm": 450, "span_mm": 4000,
+        ...      "bottom_bar_count": 4, "bottom_bar_dia": 16,
+        ...      "top_bar_count": 2, "top_bar_dia": 12,
+        ...      "stirrup_dia": 8, "stirrup_spacing": 150}
+        ... ]
+        >>> result = calculate_material_takeoff(beams)
+        >>> result.total_concrete_m3 > 0
+        True
+
+    References:
+        - IS 2502:1999 (Steel for Reinforcement)
+        - IS 1786:2008 (Bar unit weights)
+    """
+    total_concrete = 0.0
+    total_steel = 0.0
+    beam_quantities: list[BeamQuantity] = []
+    by_diameter: dict[int, float] = {}
+    wastage_factor = 1 + wastage_percent / 100
+
+    for beam in beams:
+        beam_id = beam.get("beam_id", "unknown")
+        b_m = beam.get("b_mm", 300) / 1000  # Convert to m
+        D_m = beam.get("D_mm", 450) / 1000
+        span_m = beam.get("span_mm", 4000) / 1000
+
+        # Concrete volume
+        concrete_vol = b_m * D_m * span_m
+        total_concrete += concrete_vol
+
+        # Bottom steel
+        bottom_count = beam.get("bottom_bar_count", 4)
+        bottom_dia = beam.get("bottom_bar_dia", 16)
+        bottom_area = bottom_count * math.pi * (bottom_dia / 2) ** 2  # mm²
+        bottom_length = span_m + 0.3  # Add development length (approx)
+        bottom_weight = (
+            bottom_area / 1e6 * bottom_length * STEEL_DENSITY_KG_M3 * wastage_factor
+        )
+
+        # Top steel
+        top_count = beam.get("top_bar_count", 2)
+        top_dia = beam.get("top_bar_dia", 12)
+        top_area = top_count * math.pi * (top_dia / 2) ** 2
+        top_length = span_m + 0.3
+        top_weight = top_area / 1e6 * top_length * STEEL_DENSITY_KG_M3 * wastage_factor
+
+        # Stirrup steel
+        stirrup_dia = beam.get("stirrup_dia", 8)
+        stirrup_spacing = beam.get("stirrup_spacing", 150) / 1000  # m
+        num_stirrups = max(1, int(span_m / stirrup_spacing) + 1)
+        # Stirrup perimeter (2 legs + hooks)
+        cover = 0.040  # 40mm cover
+        stirrup_perimeter = 2 * (b_m - 2 * cover) + 2 * (D_m - 2 * cover)
+        stirrup_perimeter += 20 * stirrup_dia / 1000  # Hook allowance (10d each end)
+        stirrup_area = math.pi * (stirrup_dia / 2) ** 2
+        stirrup_weight = (
+            stirrup_area
+            / 1e6
+            * stirrup_perimeter
+            * num_stirrups
+            * STEEL_DENSITY_KG_M3
+            * wastage_factor
+        )
+
+        total_beam_steel = bottom_weight + top_weight + stirrup_weight
+        total_steel += total_beam_steel
+
+        # Track by diameter
+        for dia, wt in [
+            (bottom_dia, bottom_weight),
+            (top_dia, top_weight),
+            (stirrup_dia, stirrup_weight),
+        ]:
+            by_diameter[dia] = by_diameter.get(dia, 0) + wt
+
+        beam_quantities.append(
+            BeamQuantity(
+                beam_id=beam_id,
+                concrete_m3=concrete_vol,
+                steel_kg=total_beam_steel,
+                bottom_steel_kg=bottom_weight,
+                top_steel_kg=top_weight,
+                stirrup_steel_kg=stirrup_weight,
+            )
+        )
+
+    concrete_cost = total_concrete * concrete_rate
+    steel_cost = total_steel * steel_rate
+    total_cost = concrete_cost + steel_cost
+
+    return MaterialTakeoffResult(
+        total_concrete_m3=total_concrete,
+        total_steel_kg=total_steel,
+        concrete_cost=concrete_cost,
+        steel_cost=steel_cost,
+        total_cost=total_cost,
+        concrete_rate=concrete_rate,
+        steel_rate=steel_rate,
+        beam_quantities=beam_quantities,
+        by_diameter=by_diameter,
+    )
