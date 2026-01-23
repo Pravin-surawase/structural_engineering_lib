@@ -226,7 +226,7 @@ Next: Build BeamDesignSchedule template (Task 1.1)
 
 **Project root:**
 ```
-/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/
+/Users/Pravin/Project_VS_code/structural_engineering_lib/
 ```
 
 **Key directories:**

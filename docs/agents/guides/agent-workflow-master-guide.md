@@ -535,7 +535,7 @@ chmod +x scripts/*.sh
 ### Problem: Can't find script
 ```bash
 # Always run from project root
-cd "/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib"
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 ```
 
 ### Problem: Python venv not found

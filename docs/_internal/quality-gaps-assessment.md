@@ -29,7 +29,7 @@
 **Run these commands to generate test DXF files:**
 
 ```bash
-cd /Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 
 # Activate virtual environment
 source .venv/bin/activate
@@ -175,7 +175,7 @@ Open generated DXF file and check:
 #### Step 1: Search for Visualization Code (5 minutes)
 
 ```bash
-cd /Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 
 # Search for matplotlib imports
 grep -r "import matplotlib" Python/structural_lib/
@@ -395,7 +395,7 @@ python test_visuals.py
 #### Step 1: Review Existing Smart Code (10 minutes)
 
 ```bash
-cd /Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 
 # List insights directory
 ls -la Python/structural_lib/insights/
@@ -652,7 +652,7 @@ python test_smart_features.py
 **Check current API structure:**
 
 ```bash
-cd /Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 
 # Check public API
 cat Python/structural_lib/__init__.py
@@ -969,7 +969,7 @@ python test_extensibility.py
 #### Step 1: Feature Inventory (10 minutes)
 
 ```bash
-cd /Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 
 # List all Python modules
 ls -la Python/structural_lib/*.py

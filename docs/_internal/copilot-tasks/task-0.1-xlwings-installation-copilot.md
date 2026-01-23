@@ -316,8 +316,8 @@ Create `.xlwings.conf` file in project root:
 
 ```bash
 cat > .xlwings.conf << 'EOF'
-PYTHONPATH,/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/Python
-CONDA_PATH,/Users/Pravin/Library/Mobile Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/.venv/bin/python
+PYTHONPATH,/Users/Pravin/Project_VS_code/structural_engineering_lib/Python
+CONDA_PATH,/Users/Pravin/Project_VS_code/structural_engineering_lib/.venv/bin/python
 EOF
 ```
 

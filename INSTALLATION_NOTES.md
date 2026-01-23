@@ -53,7 +53,7 @@ pip install <package_name>
 ### "ModuleNotFoundError: No module named 'X'"
 Use the full path to pip:
 ```bash
-/Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib/.venv/bin/pip install <package>
+/Users/Pravin/Project_VS_code/structural_engineering_lib/.venv/bin/pip install <package>
 ```
 
 ### Streamlit Not Found

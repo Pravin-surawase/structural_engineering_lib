@@ -8,7 +8,7 @@ This is the **fastest way to run real code** without setup headaches.
 
 ### Step 1: Activate the Python environment
 ```bash
-cd /Users/Pravin/Library/Mobile\ Documents/com~apple~CloudDocs/pravin/projects/project_21_dec_25/structural_engineering_lib
+cd /Users/Pravin/Project_VS_code/structural_engineering_lib
 source .venv/bin/activate
 ```
 
