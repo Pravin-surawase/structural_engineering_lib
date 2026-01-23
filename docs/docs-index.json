@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-23T19:58:57.468801",
-  "total_docs": 326,
+  "generated": "2026-01-23T22:43:42.143410",
+  "total_docs": 322,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,6 +10,8 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-01-24 \u2014 Session 64: Post-Migration Cleanup & Documentation Consolidation",
+        "2026-01-23 \u2014 Session 63 (Part 3): Scanner Phase 9 Implementation",
         "2026-01-23 \u2014 Session 63 (Part 2): Validation & Critical Fixes",
         "2026-01-23 \u2014 Session 63: UI Consolidation Implementation",
         "2026-01-23 \u2014 Session 63 (Part 1): UI Consolidation Audit",
@@ -17,11 +19,9 @@
         "2026-01-22 \u2014 Session 62c: AI Export Fixes & UI Modernization",
         "2026-01-22 \u2014 Session 62b: Rebar Editor & AI Tools Enhancement",
         "2026-01-21 \u2014 Session 62: Post-Release Doc Sync",
-        "2026-01-21 \u2014 Session 61: V0.19.0 Release",
-        "2026-01-22 \u2014 Session 60: DXF Export Bug Fix & Industry-Standard CAD Improvements",
-        "2026-01-21 \u2014 Session 59 (Phase 3): DXF/PDF Export & Performance"
+        "2026-01-21 \u2014 Session 61: V0.19.0 Release"
       ],
-      "size_bytes": 361884
+      "size_bytes": 366395
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -41,7 +41,7 @@
         "DXF Rendering (optional)",
         "For Beginners (more explanation, slower pace)"
       ],
-      "size_bytes": 12670
+      "size_bytes": 12669
     },
     "docs/TASKS.md": {
       "title": "Task Board",
@@ -61,7 +61,7 @@
         "Backlog (Prioritized)",
         "Recently Completed (Last 7 Days)"
       ],
-      "size_bytes": 18750
+      "size_bytes": 18920
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -1424,7 +1424,7 @@
         "4. Code Review Checklist",
         "Part 5: Task Conversion Plan"
       ],
-      "size_bytes": 11431
+      "size_bytes": 11430
     },
     "docs/research/streamlit-modern-patterns-research.md": {
       "title": "Streamlit Modern Patterns & Code Quality Assessment",
@@ -1646,7 +1646,7 @@
     "docs/research/scanner-improvements.md": {
       "title": "Scanner Improvements Research",
       "type": "research",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "research",
       "tags": [
         "investigation",
@@ -1655,16 +1655,16 @@
       "sections": [
         "Executive Summary",
         "Current Scanner Capabilities",
-        "False Positive Analysis",
+        "Phase 9: Structural Guarantee Detection (COMPLETED)",
+        "False Positive Analysis (RESOLVED)",
         "Missing Detections",
         "Performance Analysis",
-        "Recommended Improvements",
+        "Recommended Future Improvements",
         "Implementation Plan",
-        "Scripts Performance Research",
-        "Next Steps",
-        "Related Documents"
+        "Scripts Performance Research (RESOLVED)",
+        "Next Steps"
       ],
-      "size_bytes": 7704
+      "size_bytes": 8414
     },
     "docs/research/background-agent-parallel-work.md": {
       "title": "Background Agent Parallel Work Research (2026-01-07)",
@@ -2232,7 +2232,7 @@
         "Troubleshooting",
         "Next Step"
       ],
-      "size_bytes": 5700
+      "size_bytes": 5636
     },
     "docs/research/01-function-catalog-research/README.md": {
       "title": "Function Catalog Research",
@@ -3123,25 +3123,6 @@
       ],
       "size_bytes": 4306
     },
-    "docs/learning/phase-coverage-audit.md": {
-      "title": "Phase Coverage Audit (2026-01-08)",
-      "type": "tutorial",
-      "complexity": "intermediate",
-      "folder": "learning",
-      "tags": [
-        "education",
-        "training"
-      ],
-      "sections": [
-        "Summary",
-        "File Inventory",
-        "Phase Coverage Analysis",
-        "Key Strengths of Current Structure",
-        "Recommendations",
-        "Conclusion"
-      ],
-      "size_bytes": 7834
-    },
     "docs/learning/exercises.md": {
       "title": "Exercises (Hands-On, Beginner Friendly)",
       "type": "tutorial",
@@ -3187,12 +3168,11 @@
       "sections": [
         "\ud83c\udfaf Choose Your Track",
         "\ud83d\udcda Core Learning Materials",
-        "\ud83d\udcd6 Additional Resources",
         "\ud83d\udee4\ufe0f Two Tracks (Pick One)",
         "\u2705 What You Will Be Able To Do",
         "\ud83d\udcda Related Documentation"
       ],
-      "size_bytes": 3045
+      "size_bytes": 2727
     },
     "docs/learning/guides.md": {
       "title": "Guides (Simple and Practical)",
@@ -3230,29 +3210,6 @@
       ],
       "size_bytes": 2179
     },
-    "docs/learning/owner-learning-plan.md": {
-      "title": "Owner Learning Plan (2 hours per day)",
-      "type": "tutorial",
-      "complexity": "intermediate",
-      "folder": "learning",
-      "tags": [
-        "education",
-        "training"
-      ],
-      "sections": [
-        "Index",
-        "Goals (clear, measurable)",
-        "Milestones (high level)",
-        "Daily routine (2 hours)",
-        "12-week roadmap (2 hours/day)",
-        "Week 1 starter kit (start here)",
-        "To-do lists (owner skill building)",
-        "Progress log (weekly)",
-        "Owner notes (private scratchpad)",
-        "Founder Appendix (for future venture)"
-      ],
-      "size_bytes": 5447
-    },
     "docs/learning/learning-plan.md": {
       "title": "Learning Plan (Beginner Friendly)",
       "type": "tutorial",
@@ -3273,24 +3230,6 @@
         "Suggested weekly schedule (6 weeks)"
       ],
       "size_bytes": 3027
-    },
-    "docs/learning/week-01-start-here.md": {
-      "title": "Week 1: Owner's First Week",
-      "type": "tutorial",
-      "complexity": "advanced",
-      "folder": "learning",
-      "tags": [
-        "education",
-        "training"
-      ],
-      "sections": [
-        "\ud83c\udfaf What You'll Achieve This Week",
-        "\ud83d\udcca The Big Picture",
-        "\ud83d\uddd3\ufe0f Day-by-Day Plan",
-        "\ud83d\udcda Quick Reference",
-        "\ud83c\udfaf End of Week 1"
-      ],
-      "size_bytes": 18135
     },
     "docs/publications/README.md": {
       "title": "Publications & Blog Posts",
@@ -3706,7 +3645,7 @@
       ],
       "sections": [
         "Latest Handoff (auto)",
-        "\ud83d\udd11 Key Discovery from Session 63",
+        "\ud83d\udd11 Session 64 Summary",
         "Session 63 Completed Work",
         "\ud83c\udfaf The Big Picture",
         "Session Start Checklist",
@@ -3716,7 +3655,7 @@
         "Quick Commands",
         "Key Files"
       ],
-      "size_bytes": 7386
+      "size_bytes": 7488
     },
     "docs/planning/data-model-compatibility-checklist.md": {
       "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
@@ -3755,6 +3694,29 @@
         "\ud83d\udcda Resources & References"
       ],
       "size_bytes": 24507
+    },
+    "docs/planning/icloud-to-local-move-analysis.md": {
+      "title": "iCloud to Local Move Analysis",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Migration Results",
+        "Post-Migration Cleanup",
+        "Original Analysis",
+        "Options Analysis",
+        "Recommendation Decision Matrix",
+        "Migration Plan (If Approved)",
+        "Risks and Mitigations",
+        "Conclusion",
+        "Post-Migration Issues Found (2026-01-23 Deep Review)"
+      ],
+      "size_bytes": 12912
     },
     "docs/planning/3d-visualization-strategic-decision.md": {
       "title": "3D Visualization Strategic Decision - Long-Term Excellence",
@@ -4590,7 +4552,7 @@
         "\ud83d\udccb Current Tasks (v0.17.5)",
         "\ud83d\udd17 Quick Links"
       ],
-      "size_bytes": 13059
+      "size_bytes": 13097
     },
     "docs/agents/guides/agent-8-operations-log-spec.md": {
       "title": "Agent 8 Operations Log Spec",
@@ -4654,25 +4616,6 @@
       ],
       "size_bytes": 2217
     },
-    "docs/agents/guides/agent-coding-standards.md": {
-      "title": "AI Agent Coding Standards Guide",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "guides",
-      "tags": [],
-      "sections": [
-        "Overview",
-        "1. Streamlit-Specific Rules (CRITICAL)",
-        "2. Python Best Practices",
-        "3. Scanner Awareness",
-        "4. Testing Requirements",
-        "5. Code Review Checklist",
-        "6. Quick Reference",
-        "7. Common Mistakes by Agent Role",
-        "Version History"
-      ],
-      "size_bytes": 8868
-    },
     "docs/agents/guides/index.md": {
       "title": "Guides Index",
       "type": "documentation",
@@ -4682,7 +4625,7 @@
       "sections": [
         "Files"
       ],
-      "size_bytes": 2625
+      "size_bytes": 2644
     },
     "docs/agents/guides/agent-workflow-master-guide.md": {
       "title": "Agent Workflow Master Guide",
@@ -4702,7 +4645,7 @@
         "\ud83c\udfad Agent Role Patterns",
         "\ud83d\udcca Quality Gates"
       ],
-      "size_bytes": 19987
+      "size_bytes": 19922
     },
     "docs/agents/guides/agent-6-streamlit-hub.md": {
       "title": "Agent 6 Streamlit Hub",
@@ -6500,26 +6443,6 @@
       ],
       "size_bytes": 27241
     },
-    "docs/developers/api-stability.md": {
-      "title": "API Stability & Versioning Policy",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "developers",
-      "tags": [],
-      "sections": [
-        "Overview",
-        "Versioning Scheme",
-        "Stability Guarantees",
-        "Public API Surface",
-        "Breaking Change Policy",
-        "Safe Upgrade Practices",
-        "Version History",
-        "Migration Guides",
-        "API Compatibility Promise",
-        "Release Channels"
-      ],
-      "size_bytes": 8316
-    },
     "docs/developers/README.md": {
       "title": "Developer Documentation",
       "type": "index",
@@ -6535,7 +6458,7 @@
         "\ud83e\udd1d Community & Support",
         "\ud83d\udcdd Documentation Status"
       ],
-      "size_bytes": 4352
+      "size_bytes": 4365
     },
     "docs/developers/integration-examples.md": {
       "title": "Integration Examples: Real-World Code Samples",
@@ -6583,7 +6506,6 @@
         "docs/planning/research-detailing.md",
         "docs/planning/research-ai-enhancements.md",
         "docs/agents/README.md",
-        "docs/agents/guides/agent-coding-standards.md",
         "docs/getting-started/ai-context-pack.md",
         "docs/guides/ai-agent-coding-guide.md"
       ],
@@ -6884,32 +6806,27 @@
         "docs/contributing/changelog-deprecation-template.md"
       ],
       "education": [
-        "docs/learning/phase-coverage-audit.md",
         "docs/learning/exercises.md",
         "docs/learning/glossary.md",
         "docs/learning/README.md",
         "docs/learning/guides.md",
         "docs/learning/concepts-map.md",
-        "docs/learning/owner-learning-plan.md",
-        "docs/learning/learning-plan.md",
-        "docs/learning/week-01-start-here.md"
+        "docs/learning/learning-plan.md"
       ],
       "training": [
-        "docs/learning/phase-coverage-audit.md",
         "docs/learning/exercises.md",
         "docs/learning/glossary.md",
         "docs/learning/README.md",
         "docs/learning/guides.md",
         "docs/learning/concepts-map.md",
-        "docs/learning/owner-learning-plan.md",
-        "docs/learning/learning-plan.md",
-        "docs/learning/week-01-start-here.md"
+        "docs/learning/learning-plan.md"
       ],
       "roadmap": [
         "docs/planning/automation-platform-vision.md",
         "docs/planning/next-session-brief.md",
         "docs/planning/data-model-compatibility-checklist.md",
         "docs/planning/streamlit-phase-3-implementation-plan.md",
+        "docs/planning/icloud-to-local-move-analysis.md",
         "docs/planning/3d-visualization-strategic-decision.md",
         "docs/planning/folder-migration-progress.md",
         "docs/planning/automation-platform-phase-0-research.md",
@@ -6945,6 +6862,7 @@
         "docs/planning/next-session-brief.md",
         "docs/planning/data-model-compatibility-checklist.md",
         "docs/planning/streamlit-phase-3-implementation-plan.md",
+        "docs/planning/icloud-to-local-move-analysis.md",
         "docs/planning/3d-visualization-strategic-decision.md",
         "docs/planning/folder-migration-progress.md",
         "docs/planning/automation-platform-phase-0-research.md",
