@@ -115,6 +115,41 @@ VALID_VALUES = {
 }
 
 
+def validate_doc_name(file_path: Path) -> list[str]:
+    """Validate document naming conventions."""
+    issues = []
+    name = file_path.name
+    path_str = str(file_path)
+
+    # Exempt common index files
+    if name in {"README.md", "index.md"}:
+        return issues
+
+    # Enforce lowercase for new docs (warn only)
+    if re.search(r"[A-Z]", name):
+        issues.append("Use lowercase filenames (avoid uppercase letters).")
+
+    # Discourage underscores
+    if "_" in name:
+        issues.append("Prefer hyphens over underscores in filenames.")
+
+    # Disallow numbered prefixes for non-ordered content
+    if re.match(r"^\\d+[-_]", name):
+        issues.append("Avoid numbered prefixes (e.g., 01- or 02_).")
+
+    # Discourage agent/session prefixes outside agent-specific folders
+    if re.match(r"^(agent|session)-", name) and not (
+        "docs/agents/" in path_str or path_str.startswith("agents/")
+    ):
+        issues.append("Avoid agent/session prefixes for canonical docs.")
+
+    # Basic allowed pattern (warn if unexpected)
+    if not re.match(r"^(adr-\\d+-)?[a-z0-9][a-z0-9.-]*\\.md$", name):
+        issues.append("Filename pattern is unusual; prefer lowercase + hyphens.")
+
+    return issues
+
+
 def is_exempt_path(file_path: Path) -> bool:
     """Check if file path is exempt from metadata requirements."""
     path_str = str(file_path)
@@ -229,6 +264,8 @@ def check_file(file_path: Path) -> tuple[int, int]:
         return 0, 1
 
     errors, warnings = validate_metadata(file_path, content)
+    naming_issues = validate_doc_name(file_path)
+    warnings.extend(naming_issues)
 
     if errors or warnings:
         print(f"\n📄 {file_path}")
