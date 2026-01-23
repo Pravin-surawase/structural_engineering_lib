@@ -4,6 +4,40 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-23 — Session 67: Bootstrap Slimming + Task Context Routing
+
+**Focus:** Reduce bootstrap size and add task-context routing for faster onboarding
+
+### Key Accomplishments
+
+1. **Bootstrap Slimming**
+   - Reduced `agent-bootstrap.md` from 202 → 123 lines
+   - Moved API touchpoints + scanner details into quick reference card
+
+2. **Task Context Routing (PR #402)**
+   - Added `context_docs` to `scripts/automation-map.json`
+   - `find_automation.py` now prints context docs per task
+   - `start_session.py` now reminds automation lookup + context routing
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `a125c0a` | docs: slim agent bootstrap and move checklists |
+
+### PRs
+
+| PR | Summary |
+|----|---------|
+| #402 | feat: add task context routing (automation-map + find_automation + start_session) |
+
+### Next Session
+
+- [ ] Verify PR #401 and PR #402 merged
+- [ ] Consider adding lifecycle metadata defaults for session docs
+
+---
+
 ## 2026-01-23 — Session 66: Agent Effectiveness Hardening (Naming + Duplication)
 
 **Focus:** Harden agent workflows with naming enforcement, duplicate-prevention gates, and online verification guidance

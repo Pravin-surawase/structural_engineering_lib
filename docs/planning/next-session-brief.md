@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-23
-- Focus: Session 66 - Agent Effectiveness Hardening (Naming + Duplication)
+- Focus: Session 67 - Bootstrap Slimming + Task Context Routing
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,20 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 66 | **Focus:** Agent Effectiveness Hardening (Naming + Duplication)
+**Last Session:** 67 | **Focus:** Bootstrap Slimming + Task Context Routing
+
+---
+
+## 🔑 Session 67 Summary
+
+**Bootstrap Reduction:**
+- `agent-bootstrap.md` reduced from 202 → 123 lines
+- API touchpoints + scanner details moved to quick reference
+
+**Task Context Routing (PR #402):**
+- `scripts/automation-map.json` now includes `context_docs`
+- `find_automation.py` prints context docs per task
+- `start_session.py` surfaces automation lookup + context routing
 
 ---
 
