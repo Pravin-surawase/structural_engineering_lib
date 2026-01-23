@@ -464,8 +464,10 @@ class EnhancedIssueDetector(ast.NodeVisitor):
             self.add_defined_name(node.args.kwarg.arg)
 
         # Check for missing type hints on functions returning dict
+        # Phase 9: Skip nested functions - only check direct returns in this function
         if node.returns is None:
-            for child in ast.walk(node):
+            # Use direct iteration over body to avoid walking into nested functions
+            for child in self._iter_direct_children_no_nested_funcs(node):
                 if isinstance(child, ast.Return) and child.value:
                     if isinstance(child.value, ast.Dict):
                         self.add_issue(
@@ -818,6 +820,27 @@ class EnhancedIssueDetector(ast.NodeVisitor):
                             )
 
         self.generic_visit(node)
+
+    def _iter_direct_children_no_nested_funcs(self, node: ast.AST):
+        """
+        Iterate over all descendants of node EXCEPT nested function bodies.
+
+        Phase 9 Enhancement: This prevents false positives where a nested function's
+        return statement is attributed to the outer function.
+
+        Example:
+            def outer():
+                def inner():
+                    return {}  # This should NOT count as outer returning dict
+                return None
+        """
+        for child in ast.iter_child_nodes(node):
+            # Skip nested function definitions entirely
+            if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            yield child
+            # Recursively yield from children (also skipping nested functions)
+            yield from self._iter_direct_children_no_nested_funcs(child)
 
     def _get_attribute_path(self, node: ast.expr) -> Optional[str]:
         """

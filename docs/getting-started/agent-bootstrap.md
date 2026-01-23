@@ -4,9 +4,9 @@
 **Audience:** All Agents
 **Status:** Approved
 **Importance:** Critical
-**Version:** 2.1.1
+**Version:** 2.2.0
 **Created:** 2026-01-08
-**Last Updated:** 2026-01-19
+**Last Updated:** 2026-01-23
 
 ---
 
@@ -91,7 +91,23 @@ Keep public signatures stable unless explicitly approved.
 
 ---
 
-## 📍 Quick Reference
+## � Scanner & Validation
+
+The scanner (`check_streamlit_issues.py`) detects runtime crash risks:
+- **ZeroDivisionError** - Division without zero checks
+- **KeyError/IndexError** - Dict/list access without validation
+- **NameError** - Undefined variables
+- **Import issues** - Imports inside functions
+
+**Key files:**
+- [.scanner-ignore.yml](../../.scanner-ignore.yml) - False positive suppressions
+- [docs/research/scanner-improvements.md](../research/scanner-improvements.md) - Scanner research
+
+**Current state (2026-01-23):** 25 issues (0 critical, 0 high) across all pages.
+
+---
+
+## �📍 Quick Reference
 
 - **Copilot rules:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 - **Git workflow (CRITICAL):** [../contributing/git-workflow-ai-agents.md](../contributing/git-workflow-ai-agents.md) ⚠️
