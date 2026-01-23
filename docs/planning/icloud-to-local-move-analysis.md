@@ -50,7 +50,7 @@ The project has been successfully moved from iCloud to local storage. Performanc
 
 | File | Status |
 |------|--------|
-| `INSTALLATION_NOTES.md` | ✅ Fixed |
+| `docs/getting-started/installation-notes.md` | ✅ Fixed |
 | `docs/agents/guides/agent-workflow-master-guide.md` | ✅ Fixed |
 | `docs/_internal/quality-gaps-assessment.md` | ✅ Fixed |
 | `docs/_internal/copilot-tasks/handoff-to-copilot.md` | ✅ Fixed |
