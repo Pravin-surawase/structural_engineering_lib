@@ -115,7 +115,7 @@ streamlit_app/                # ~20,000 lines total
 
 ### Rule 3: Follow Coding Standards
 
-**Full guide:** [agent-coding-standards.md](agent-coding-standards.md)
+**Full guide:** [agent-coding-standards.md](../../contributing/agent-coding-standards.md)
 
 **Quick Reference:**
 
@@ -429,7 +429,7 @@ Reference: `docs/TASKS.md` > v0.17.5 section
 ## 🔗 Quick Links
 
 ### Essential Reading
-1. [agent-coding-standards.md](agent-coding-standards.md) - Coding rules
+1. [agent-coding-standards.md](../../contributing/agent-coding-standards.md) - Coding rules
 2. [copilot-instructions.md](../../../.github/copilot-instructions.md) - All project rules
 3. [agent-workflow-master-guide.md](agent-workflow-master-guide.md) - Git workflow
 

@@ -144,7 +144,7 @@ Single source per topic. If you see a legacy filename, use the canonical path be
 1. **[Platform Guide](developers/platform-guide.md)** - Design your first beam in 15 minutes
 2. **[Integration Examples](developers/integration-examples.md)** - PDF reports, REST APIs, batch processing
 3. **[Extension Guide](developers/extension-guide.md)** - Add custom features without modifying core
-4. **[API Stability Policy](developers/api-stability.md)** - Versioning, breaking changes, migration guides
+4. **[API Stability Policy](reference/api-stability.md)** - Versioning, breaking changes, migration guides
 
 **Full developer hub:** [developers/README.md](developers/README.md)
 

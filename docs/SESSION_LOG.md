@@ -3527,7 +3527,7 @@ Session 34 continuation after completing TASK-145 (BMD/SFD). User requested:
    - Pattern 4: Plugin Architecture (SeismicPlugin, CostEstimationPlugin, PluginManager)
    - Best Practices: Don't modify core, reuse data structures, test extensions
 
-5. **[docs/developers/api-stability.md](developers/api-stability.md)** - 600+ lines
+5. **[docs/reference/api-stability.md](reference/api-stability.md)** - 400+ lines
    - Versioning scheme (SemVer 2.0)
    - Stability guarantees (pre-1.0 vs post-1.0)
    - Public API surface (29 stable functions)

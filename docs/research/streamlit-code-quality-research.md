@@ -187,7 +187,7 @@ When using `finish_task_pr.sh`:
 
 ### 4.1 Proposed Guide Structure
 
-**File:** `docs/agents/guides/agent-coding-standards.md`
+**File:** `docs/contributing/agent-coding-standards.md`
 
 ```markdown
 # AI Agent Coding Standards

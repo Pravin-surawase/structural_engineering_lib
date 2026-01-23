@@ -21,6 +21,6 @@
 | [agent-9-quick-start.md](agent-9-quick-start.md) | **Get started with Agent 9 in 60 seconds.** Agent 9 is the **governance and docu | 2026-01-21 | 268 |
 | [agent-automation-system.md](agent-automation-system.md) | Comprehensive automation system for error-free AI agent workflows. Prevents 99%  | 2026-01-21 | 354 |
 | [agent-bootstrap-complete-review.md](agent-bootstrap-complete-review.md) | docs/getting-started/agent-bootstrap.md is the 60-second onboarding entrypoint f | 2026-01-21 | 118 |
-| [agent-coding-standards.md](agent-coding-standards.md) | This guide establishes coding standards for AI agents working on this project. F | 2026-01-21 | 410 |
+| [agent-coding-standards.md](../../contributing/agent-coding-standards.md) | This guide establishes coding standards for AI agents working on this project. F | 2026-01-21 | 743 |
 | [agent-quick-reference.md](agent-quick-reference.md) | | Need | Guide | Use When | |------|-------|----------| | 2026-01-21 | 309 |
 | [agent-workflow-master-guide.md](agent-workflow-master-guide.md) | > **FOR ALL AI AGENTS:** This is your ONE SOURCE OF TRUTH for all operations. >  | 2026-01-21 | 717 |

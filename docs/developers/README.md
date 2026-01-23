@@ -34,7 +34,7 @@ Welcome to the developer documentation! This section is for developers who want 
 | Document | Description |
 |----------|-------------|
 | **[Extension Guide](extension-guide.md)** | Add features without modifying core |
-| **[API Stability](api-stability.md)** | Versioning, breaking changes, migration |
+| **[API Stability](../reference/api-stability.md)** | Versioning, breaking changes, migration |
 
 ### Reference
 
