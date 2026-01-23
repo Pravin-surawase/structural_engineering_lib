@@ -1,8 +1,8 @@
 {
   "folder": "docs/guidelines",
   "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |",
-  "last_updated": "2026-01-15",
-  "file_count": 13,
+  "last_updated": "2026-01-23",
+  "file_count": 14,
   "files": [
     {
       "name": "api-design-guidelines.md",
@@ -39,6 +39,15 @@
       "size_lines": 1605,
       "audience": "Developers",
       "status": "Active"
+    },
+    {
+      "name": "doc-naming-conventions.md",
+      "title": "Document Naming Conventions",
+      "description": "Naming conventions to reduce duplication and improve findability.",
+      "last_updated": "2026-01-23",
+      "size_lines": 82,
+      "audience": "All Agents",
+      "status": "Draft"
     },
     {
       "name": "error-handling-standard.md",

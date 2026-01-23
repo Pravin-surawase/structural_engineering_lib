@@ -2,8 +2,8 @@
 
 Development standards and best practices for the structural engineering library. | Need To... | Read This |
 
-**Last Updated:** 2026-01-15
-**File Count:** 13
+**Last Updated:** 2026-01-23
+**File Count:** 14
 
 ## Files
 
@@ -13,6 +13,7 @@ Development standards and best practices for the structural engineering library.
 | [api-evolution-standard.md](api-evolution-standard.md) | > **Standard for API versioning, deprecation, and backward compatibility** > Par | 2026-01-13 | 1682 |
 | [blog-writing-guide.md](blog-writing-guide.md) | **Style Guide & Technical Writing Standards** | Audience | Tone | Example | | 2026-01-13 | 851 |
 | [documentation-standard.md](documentation-standard.md) | > **Standard for documentation, docstrings, and API discoverability** > Part of: | 2026-01-13 | 1605 |
+| [doc-naming-conventions.md](doc-naming-conventions.md) | Naming conventions to reduce duplication and improve findability. | 2026-01-23 | 82 |
 | [error-handling-standard.md](error-handling-standard.md) | > **Standard for exception design, error messages, and validation patterns** > P | 2026-01-13 | 1926 |
 | [file-operations-safety-guide.md](file-operations-safety-guide.md) | File operations (delete, move, rename) can break: - Internal markdown links | 2026-01-13 | 298 |
 | [folder-cleanup-workflow.md](folder-cleanup-workflow.md) | This workflow provides a systematic approach to cleaning up folders: 1. **Audit* | 2026-01-13 | 279 |

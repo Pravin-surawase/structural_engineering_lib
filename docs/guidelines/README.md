@@ -5,13 +5,13 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-23
 
 ---
 
 Development standards and best practices for the structural engineering library.
 
-**Files:** 12 | **Updated:** 2026-01-13
+**Files:** 14 | **Updated:** 2026-01-23
 
 ---
 
@@ -44,6 +44,7 @@ Development standards and best practices for the structural engineering library.
 | File | Description | Key Takeaway |
 |------|-------------|--------------|
 | [documentation-standard.md](documentation-standard.md) | Documentation requirements | Every public function documented |
+| [doc-naming-conventions.md](doc-naming-conventions.md) | Document naming rules | One topic, one canonical doc |
 | [blog-writing-guide.md](blog-writing-guide.md) | Blog writing style guide | Practical, example-first |
 
 ---
