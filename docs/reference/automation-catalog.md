@@ -135,6 +135,19 @@
 - `docs/audit/audit-evidence-YYYY-MM-DD.md` (checklist with tool outputs)
 - `scripts/audit_readiness_report.py` (machine-generated report)
 
+**Audit Evidence Checklist (Draft)**
+
+| Evidence Item | Automation Source | Frequency | Notes |
+|---|---|---|---|
+| Test results + coverage | `pytest --cov`, CI artifacts | Each merge | Must include branch coverage gate |
+| Lint/typecheck | `black`, `ruff`, `mypy` | Each merge | Fail on errors |
+| API doc sync | `check_api_docs_sync.py` | Each merge | Prevents doc drift |
+| API manifest diff | `generate_api_manifest.py --check` | Each merge | Detect breaking changes |
+| Streamlit scanner | `check_streamlit_issues.py` | PR + main | Critical errors fail |
+| Fragment validator | `check_fragment_violations.py` | PR + main | Prevents sidebar API misuse |
+| Dependency risk | (planned) vuln scan | Release | SBOM + advisory report |
+| Release readiness | (planned) release gate script | Release | One-command evidence pack |
+
 ### 5) Git Workflow Upgrade (World-Class)
 
 **Goal:** Faster + safer workflow with auditable traceability.
