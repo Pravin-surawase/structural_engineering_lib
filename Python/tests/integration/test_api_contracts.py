@@ -39,7 +39,6 @@ from structural_lib.models import (
     SectionProperties,
 )
 
-
 # =============================================================================
 # Schema Contract Fixtures
 # =============================================================================
@@ -586,7 +585,9 @@ class TestCrossModelIntegration:
         ]
 
         forces_list = [
-            BeamForces(id=f"B{i}", load_case="LC1", mu_knm=100 + i * 20, vu_kn=50 + i * 10)
+            BeamForces(
+                id=f"B{i}", load_case="LC1", mu_knm=100 + i * 20, vu_kn=50 + i * 10
+            )
             for i in range(3)
         ]
 

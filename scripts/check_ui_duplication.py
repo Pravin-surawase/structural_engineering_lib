@@ -564,10 +564,6 @@ def main() -> int:
 
     args = parser.parse_args()
 
-    # Use args values directly (not modifying globals)
-    similarity_threshold = args.threshold
-    min_function_lines = args.min_lines
-
     # Determine directories to scan
     base_path = Path(__file__).parent.parent
     if args.utils_only:
