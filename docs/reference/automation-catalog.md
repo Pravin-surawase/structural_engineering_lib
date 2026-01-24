@@ -2652,6 +2652,14 @@ chmod +x scripts/*.sh
 
 ---
 
+## See Also
+
+- [scripts/index.json](../../scripts/index.json) — full script registry
+- [scripts/automation-map.json](../../scripts/automation-map.json) — task → script routing
+- [automation-audit-readiness-research.md](../research/automation-audit-readiness-research.md) — audit & CI evidence research
+
+---
+
 **Last Updated:** 2026-01-24
 **Maintained By:** Project automation
 **Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../.github/SUPPORT.md)

@@ -3,7 +3,7 @@
 > **For AI Agents:** This index uses semantic tags and complexity ratings.
 > Use **Tags** to filter by topic, **Complexity** to gauge reading time.
 
-**Last Updated:** 2026-01-11 (Session 9)
+**Last Updated:** 2026-01-24 (Session 68)
 
 ---
 
@@ -89,6 +89,7 @@
 
 | Doc | Type | Complexity | Purpose |
 |-----|------|------------|---------|
+| [automation-audit-readiness-research.md](automation-audit-readiness-research.md) | research | 🟡 Medium | Audit evidence + CI readiness |
 | [security-best-practices-part1.md](security-best-practices-part1.md) | research | 🔴 High | Security practices |
 | [security-best-practices-part2.md](security-best-practices-part2.md) | research | 🔴 High | Security practices |
 | [professional-liability-disclaimers.md](../_archive/research-completed/professional-liability-disclaimers.md) | research | 🟡 Medium | Legal disclaimers |
