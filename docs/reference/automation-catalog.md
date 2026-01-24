@@ -64,6 +64,19 @@
 - A secondary venv `.venv-1` was auto-created when the interpreter wasn’t pinned.
 - Fix applied: workspace now pins `.venv` and auto-activates in terminals.
 
+**Observed Testing & CI Snapshot (2026-01-24)**
+- **Testing strategy:** Python tests in `Python/tests` via `pytest` with 85% branch coverage gate (see testing strategy guide).
+- **CI matrix:** Full cross-OS matrix runs on merge to main; PRs use fast checks (see `python-tests.yml`).
+- **Lint/typecheck:** `black`, `ruff`, `mypy` run in CI.
+- **Packaging smoke:** build + import validation on 3.12.
+- **Doc validators:** multiple doc checks run in parallel (doc versions, API docs sync, session docs).
+
+**Potential Issues to Investigate (Initial List)**
+1. PR checks may miss regressions only caught by full matrix (merge-only coverage).
+2. Doc validators are numerous; candidates for nightly or path-based gating.
+3. Lack of automated VBA parity tests (manual gap).
+4. No duplication scanner for Python code (only doc similarity today).
+
 ### 2) What the Project Still Needs (Gaps)
 
 **Testing Infrastructure**
