@@ -20,7 +20,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_app import __version__
-from fastapi_app.routers import design, detailing, optimization, analysis, geometry, health, websocket
+from fastapi_app.routers import design, detailing, optimization, analysis, geometry, health, websocket, streaming
 
 # =============================================================================
 # Application Metadata for OpenAPI
@@ -84,6 +84,10 @@ API_TAGS_METADATA = [
     {
         "name": "websocket",
         "description": "WebSocket endpoints for live design updates.",
+    },
+    {
+        "name": "streaming",
+        "description": "Server-Sent Events (SSE) for batch processing and progress.",
     },
 ]
 
@@ -166,6 +170,9 @@ app.include_router(
 
 # WebSocket router (no prefix - ws://host/ws/...)
 app.include_router(websocket.router)
+
+# Streaming router (SSE for batch processing)
+app.include_router(streaming.router)
 
 # =============================================================================
 # Root Endpoint
