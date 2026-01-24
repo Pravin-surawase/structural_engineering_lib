@@ -18,6 +18,7 @@ Requirements:
 from __future__ import annotations
 
 import asyncio
+import os
 import statistics
 import time
 from typing import Any
@@ -26,6 +27,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from fastapi_app.main import app
+
+# Thresholds are configurable via environment variables to reduce CI flakiness.
+LOAD_SUCCESS_RATE = float(os.getenv("LOAD_SUCCESS_RATE", "95"))
+LOAD_P95_MS = float(os.getenv("LOAD_P95_MS", "100"))
+LOAD_HEALTH_MAX_MS = float(os.getenv("LOAD_HEALTH_MAX_MS", "50"))
+LOAD_DEGRADATION_PCT = float(os.getenv("LOAD_DEGRADATION_PCT", "100"))
+LOAD_AVG_MS = float(os.getenv("LOAD_AVG_MS", "100"))
 
 
 @pytest.fixture
@@ -48,6 +56,8 @@ def valid_beam_data() -> dict[str, Any]:
     }
 
 
+@pytest.mark.performance
+@pytest.mark.slow
 class TestSequentialLoad:
     """Tests for sequential request load patterns."""
 
@@ -67,10 +77,14 @@ class TestSequentialLoad:
                 errors += 1
 
         success_rate = (num_requests - errors) / num_requests * 100
-        assert success_rate >= 95, f"Expected 95%+ success rate, got {success_rate:.1f}%"
+        assert success_rate >= LOAD_SUCCESS_RATE, (
+            f"Expected {LOAD_SUCCESS_RATE:.1f}%+ success rate, got {success_rate:.1f}%"
+        )
 
         p95 = sorted(latencies)[int(len(latencies) * 0.95)]
-        assert p95 < 100, f"P95 latency {p95:.1f}ms exceeds 100ms threshold"
+        assert p95 < LOAD_P95_MS, (
+            f"P95 latency {p95:.1f}ms exceeds {LOAD_P95_MS:.1f}ms threshold"
+        )
 
     def test_health_endpoint_under_sequential_load(self, client: TestClient):
         """Health endpoint should remain responsive under load."""
@@ -83,9 +97,13 @@ class TestSequentialLoad:
             latencies.append((time.perf_counter() - start) * 1000)
             assert response.status_code == 200
 
-        assert max(latencies) < 50, f"Max latency {max(latencies):.1f}ms exceeds 50ms"
+        assert max(latencies) < LOAD_HEALTH_MAX_MS, (
+            f"Max latency {max(latencies):.1f}ms exceeds {LOAD_HEALTH_MAX_MS:.1f}ms"
+        )
 
 
+@pytest.mark.performance
+@pytest.mark.slow
 class TestSustainedLoad:
     """Tests for sustained load over time."""
 
@@ -112,11 +130,14 @@ class TestSustainedLoad:
         last_batch = batch_latencies[-1]
         degradation = (last_batch - first_batch) / first_batch * 100
 
-        assert degradation < 100, (
-            f"Performance degraded {degradation:.1f}% over sustained load"
+        assert degradation < LOAD_DEGRADATION_PCT, (
+            f"Performance degraded {degradation:.1f}% over sustained load "
+            f"(threshold {LOAD_DEGRADATION_PCT:.1f}%)"
         )
 
 
+@pytest.mark.performance
+@pytest.mark.slow
 class TestMixedEndpoints:
     """Tests for mixed endpoint patterns."""
 
@@ -155,6 +176,8 @@ class TestMixedEndpoints:
             )
 
 
+@pytest.mark.performance
+@pytest.mark.slow
 class TestErrorHandlingUnderLoad:
     """Tests for error handling under load."""
 
@@ -175,6 +198,8 @@ class TestErrorHandlingUnderLoad:
         )
 
 
+@pytest.mark.performance
+@pytest.mark.slow
 class TestResourceUsage:
     """Tests for resource consumption."""
 
@@ -191,6 +216,8 @@ class TestResourceUsage:
         assert response.status_code == 200
 
 
+@pytest.mark.performance
+@pytest.mark.slow
 class TestAsyncConcurrentLoad:
     """Async load tests for true concurrent testing."""
 
@@ -226,7 +253,10 @@ class TestAsyncConcurrentLoad:
         if successful:
             latencies = [t for _, t in successful]
             avg_latency = statistics.mean(latencies)
-            assert avg_latency < 100, f"Average latency {avg_latency:.1f}ms too high"
+            assert avg_latency < LOAD_AVG_MS, (
+                f"Average latency {avg_latency:.1f}ms too high "
+                f"(threshold {LOAD_AVG_MS:.1f}ms)"
+            )
 
     @pytest.mark.asyncio
     async def test_async_mixed_endpoints(self, valid_beam_data: dict):

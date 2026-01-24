@@ -29,6 +29,17 @@
 
 **Scope:** Beams only (IS 456 focus) - complete vertical slice before expansion.
 
+### Docker Quickstart (FastAPI)
+
+```bash
+# Build + run API
+docker build -f Dockerfile.fastapi -t structeng-api:latest .
+docker run -p 8000:8000 structeng-api:latest
+
+# Dev (hot reload)
+docker compose -f docker-compose.dev.yml up --build
+```
+
 ---
 
 ## 🎯 The Bigger Picture

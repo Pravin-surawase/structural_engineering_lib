@@ -7,7 +7,8 @@
  * - SSE for batch design streaming
  *
  * Usage:
- *   # With Node.js (requires 'ws' package):
+ *   # With Node.js (requires 'ws' + types):
+ *   npm install ws @types/ws
  *   npx ts-node test_client.ts
  *
  *   # Or compile and run:
@@ -15,6 +16,8 @@
  *
  * Week 3 Implementation - V3 Migration
  */
+
+import WebSocket from 'ws';
 
 // Types
 interface BeamDesignRequest {
@@ -28,15 +31,54 @@ interface BeamDesignRequest {
 
 interface FlexureResult {
   ast_required: number;
-  ast_provided: number;
-  is_safe: boolean;
-  utilization_ratio: number;
+  ast_min: number;
+  ast_max: number;
+  xu: number;
+  xu_max: number;
+  is_under_reinforced: boolean;
+  moment_capacity: number;
+  asc_required: number;
 }
 
-interface DesignResult {
-  status: 'PASS' | 'FAIL';
+interface ShearResult {
+  tau_v: number;
+  tau_c: number;
+  tau_c_max: number;
+  asv_required: number;
+  stirrup_spacing: number;
+  sv_max: number;
+  shear_capacity: number;
+}
+
+interface BeamDesignResponse {
+  success: boolean;
+  message: string;
   flexure: FlexureResult;
-  shear?: object;
+  shear?: ShearResult;
+  ast_total: number;
+  asc_total: number;
+  utilization_ratio: number;
+  warnings?: string[];
+}
+
+interface LiveFlexureResult {
+  ast_required: number;
+  mu_lim: number;
+  xu: number;
+  xu_max: number;
+  is_safe: boolean;
+}
+
+interface LiveShearResult {
+  tv: number | null;
+  tc: number | null;
+  spacing: number | null;
+  is_safe: boolean | null;
+}
+
+interface LiveDesignResult {
+  flexure: LiveFlexureResult;
+  shear?: LiveShearResult | null;
 }
 
 interface HealthResponse {
@@ -74,7 +116,7 @@ export class StructuralDesignClient {
   /**
    * Design a reinforced concrete beam.
    */
-  async designBeam(params: BeamDesignRequest): Promise<DesignResult> {
+  async designBeam(params: BeamDesignRequest): Promise<BeamDesignResponse> {
     const response = await fetch(`${this.baseUrl}/api/v1/design/beam`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -147,7 +189,7 @@ export class LiveDesignClient {
   /**
    * Send a design request and wait for response.
    */
-  async designBeam(params: BeamDesignRequest): Promise<DesignResult> {
+  async designBeam(params: BeamDesignRequest): Promise<LiveDesignResult> {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       throw new Error('WebSocket not connected');
     }
@@ -161,7 +203,7 @@ export class LiveDesignClient {
         clearTimeout(timeout);
         const data = JSON.parse(event.data);
         if (data.type === 'design_result') {
-          resolve(data.data);
+          resolve(data.data as LiveDesignResult);
         } else if (data.type === 'error') {
           reject(new Error(data.message));
         }
@@ -247,9 +289,9 @@ export class BatchDesignClient {
 // =============================================================================
 
 async function main() {
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
   console.log('🧪 TypeScript FastAPI Client Demo');
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
   console.log(`\nServer: ${BASE_URL}`);
 
   const client = new StructuralDesignClient();
@@ -275,7 +317,8 @@ async function main() {
       fck: 25,
       fy: 500,
     });
-    console.log(`📥 Status: ${result.status}`);
+    console.log(`📥 Success: ${result.success}`);
+    console.log(`   Message: ${result.message}`);
     console.log(`   Ast required: ${result.flexure.ast_required.toFixed(1)} mm²`);
   } catch (e) {
     console.log(`❌ ${e}`);

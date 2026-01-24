@@ -364,7 +364,7 @@ Expand each script into its proper category section with:
 2. [ ] Create `docs/api/rate-limiting.md`
 3. [ ] Create `docs/api/websocket-protocol.md`
 4. [ ] Create `docs/api/sse-events.md`
-5. [ ] Create `docs/deployment/fastapi-docker.md`
+5. [x] Document Docker deployment in `docs/guides/fastapi-deployment-guide.md`
 6. [ ] Add TypeScript client examples
 
 ---
