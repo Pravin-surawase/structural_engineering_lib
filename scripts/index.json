@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "updated": "2026-01-24",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 144,
+  "total_scripts": 148,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -57,6 +57,7 @@
         "git_automation_health.sh": "Check all git automation systems",
         "install_git_hooks.sh": "Install hook enforcement",
         "cleanup_stale_branches.py": "Remove old task branches (dry run + delete)",
+        "cleanup_stale_branches.sh": "Shell wrapper for branch cleanup",
         "worktree_manager.sh": "Manage git worktrees for parallel work",
         "check_not_main.sh": "Verify not on main branch",
         "quick_push.sh": "Quick push (use ai_commit.sh instead)"
@@ -113,6 +114,7 @@
         "check_docs_index.py": "Validate docs index structure",
         "check_docs_index_links.py": "Validate docs index links",
         "check_duplicate_docs.py": "Find duplicate documentation",
+        "check_doc_similarity.py": "Find similar docs before creating new ones",
         "check_readme_quality.py": "Assess README quality",
         "check_folder_readmes.py": "Verify README presence in folders",
         "generate_docs_index.py": "Generate docs-index.json",
@@ -120,7 +122,8 @@
         "generate_all_indexes.sh": "Generate all index files",
         "create_doc.py": "Create new document with metadata",
         "enhance_readme.py": "Enhance README content",
-        "analyze_doc_redundancy.py": "Analyze doc redundancy"
+        "analyze_doc_redundancy.py": "Analyze doc redundancy",
+        "find_automation.py": "Search automation scripts by task description"
       }
     },
     "file_operations": {
@@ -164,7 +167,8 @@
         "validate_stub_exports.py": "Validate stub module exports",
         "create_reexport_stub.py": "Create re-export stub module",
         "update_is456_init.py": "Update IS456 __init__.py exports",
-        "generate_api_manifest.py": "Generate API manifest JSON"
+        "generate_api_manifest.py": "Generate API manifest JSON",
+        "generate_api_routes.py": "Generate FastAPI route stubs for V3 migration"
       }
     },
     "testing": {
