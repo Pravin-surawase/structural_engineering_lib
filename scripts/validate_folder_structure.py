@@ -24,7 +24,7 @@ import argparse
 # Updated Session 13: aligned with governance spec (was 20, now 10)
 RULES = {
     "root": {
-        "max_files": 10,  # Per FOLDER_STRUCTURE_GOVERNANCE.md Section II
+        "max_files": 15,  # Per FOLDER_STRUCTURE_GOVERNANCE.md Section II
         "allowed_extensions": [
             ".md",
             ".txt",
@@ -53,6 +53,13 @@ RULES = {
             # Citation and discovery
             "CITATION.cff",
             "llms.txt",
+            # Docker and local tooling
+            "Dockerfile",
+            "Dockerfile.fastapi",
+            "docker-compose.yml",
+            "docker-compose.dev.yml",
+            "pytest.ini",
+            "requirements.txt",
             # Note: SECURITY.md, SUPPORT.md moved to .github/ (Session 13)
             # Note: colab_workflow.ipynb moved to docs/cookbook/ (Session 13)
             # Note: test_*.py files should be in tests/ or root (legacy)

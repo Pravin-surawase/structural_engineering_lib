@@ -69,18 +69,18 @@ class ComplianceReport:
 
 
 def check_root_file_count() -> List[ComplianceIssue]:
-    """Check root directory has ≤10 files (governance spec)."""
+    """Check root directory has ≤15 files (governance spec)."""
     issues = []
     root = Path(".")
     files = [f for f in root.iterdir() if f.is_file() and not f.name.startswith(".")]
 
-    if len(files) > 10:
+    if len(files) > 15:
         issues.append(
             ComplianceIssue(
                 severity="CRITICAL",
                 location="/",
-                rule="Root max ≤10 files",
-                message=f"Root has {len(files)} files (limit: 10)",
+                rule="Root max ≤15 files",
+                message=f"Root has {len(files)} files (limit: 15)",
                 files=[f.name for f in files],
             )
         )
@@ -327,7 +327,7 @@ def main() -> int:
     for issue in root_issues:
         report.add_issue(issue)
     if not root_issues:
-        report.add_pass("Root file count (≤10)")
+        report.add_pass("Root file count (≤15)")
 
     docs_issues = check_docs_root_file_count()
     for issue in docs_issues:

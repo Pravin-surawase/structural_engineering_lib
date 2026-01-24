@@ -125,7 +125,10 @@ class TestDesignWorkflow:
 
         # Verify consistency
         for i in range(1, len(results)):
-            assert results[i]["flexure"]["ast_required"] == results[0]["flexure"]["ast_required"]
+            assert (
+                results[i]["flexure"]["ast_required"]
+                == results[0]["flexure"]["ast_required"]
+            )
             assert results[i]["success"] == results[0]["success"]
 
 

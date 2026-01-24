@@ -77,14 +77,14 @@ class TestSequentialLoad:
                 errors += 1
 
         success_rate = (num_requests - errors) / num_requests * 100
-        assert success_rate >= LOAD_SUCCESS_RATE, (
-            f"Expected {LOAD_SUCCESS_RATE:.1f}%+ success rate, got {success_rate:.1f}%"
-        )
+        assert (
+            success_rate >= LOAD_SUCCESS_RATE
+        ), f"Expected {LOAD_SUCCESS_RATE:.1f}%+ success rate, got {success_rate:.1f}%"
 
         p95 = sorted(latencies)[int(len(latencies) * 0.95)]
-        assert p95 < LOAD_P95_MS, (
-            f"P95 latency {p95:.1f}ms exceeds {LOAD_P95_MS:.1f}ms threshold"
-        )
+        assert (
+            p95 < LOAD_P95_MS
+        ), f"P95 latency {p95:.1f}ms exceeds {LOAD_P95_MS:.1f}ms threshold"
 
     def test_health_endpoint_under_sequential_load(self, client: TestClient):
         """Health endpoint should remain responsive under load."""
@@ -97,9 +97,9 @@ class TestSequentialLoad:
             latencies.append((time.perf_counter() - start) * 1000)
             assert response.status_code == 200
 
-        assert max(latencies) < LOAD_HEALTH_MAX_MS, (
-            f"Max latency {max(latencies):.1f}ms exceeds {LOAD_HEALTH_MAX_MS:.1f}ms"
-        )
+        assert (
+            max(latencies) < LOAD_HEALTH_MAX_MS
+        ), f"Max latency {max(latencies):.1f}ms exceeds {LOAD_HEALTH_MAX_MS:.1f}ms"
 
 
 @pytest.mark.performance
@@ -171,9 +171,9 @@ class TestMixedEndpoints:
         # Validate all endpoints succeeded
         for endpoint, data in results.items():
             successes = sum(1 for status, _ in data if status == 200)
-            assert successes == num_iterations, (
-                f"{endpoint}: {successes}/{num_iterations} succeeded"
-            )
+            assert (
+                successes == num_iterations
+            ), f"{endpoint}: {successes}/{num_iterations} succeeded"
 
 
 @pytest.mark.performance
@@ -193,9 +193,9 @@ class TestErrorHandlingUnderLoad:
             if response.status_code in [400, 422]:
                 graceful_errors += 1
 
-        assert graceful_errors == num_requests, (
-            f"Expected all {num_requests} invalid requests to be handled gracefully"
-        )
+        assert (
+            graceful_errors == num_requests
+        ), f"Expected all {num_requests} invalid requests to be handled gracefully"
 
 
 @pytest.mark.performance
@@ -246,9 +246,9 @@ class TestAsyncConcurrentLoad:
             results = await asyncio.gather(*tasks)
 
         successful = [(s, t) for s, t in results if s == 200]
-        assert len(successful) >= num_requests * 0.95, (
-            f"Expected 95%+ success, got {len(successful)}/{num_requests}"
-        )
+        assert (
+            len(successful) >= num_requests * 0.95
+        ), f"Expected 95%+ success, got {len(successful)}/{num_requests}"
 
         if successful:
             latencies = [t for _, t in successful]
