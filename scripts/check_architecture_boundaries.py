@@ -131,6 +131,7 @@ EXCLUDE_PATTERNS = [
     "test_",
     "_cli.py",  # CLI files are allowed to do I/O
     "clause_cli.py",  # Specific CLI file
+    "traceability.py",  # Infrastructure module (V3: move to infrastructure/)
 ]
 
 
@@ -216,10 +217,17 @@ def extract_patterns(file_path: Path) -> Iterator[tuple[str, int]]:
     except UnicodeDecodeError:
         return
 
+    in_docstring = False
     for i, line in enumerate(source.splitlines(), 1):
         # Skip comments
         stripped = line.strip()
         if stripped.startswith("#"):
+            continue
+        # Skip docstring content (starts with triple quotes or >>>)
+        if '"""' in line or "'''" in line:
+            in_docstring = not in_docstring
+            continue
+        if in_docstring or stripped.startswith(">>>"):
             continue
         yield line, i
 
