@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** Critical
 **Created:** 2025-12-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-24
 
 ---
 
@@ -29,9 +29,12 @@
 | [Streamlit QA](#streamlit-qa) | 6 | Streamlit linting, AST validation, page checks |
 | [Governance & Monitoring](#governance--monitoring) | 7 | Metrics, dashboards, repo health |
 | [Specialized](#specialized) | 8 | DXF rendering, CLI testing, automation helpers |
-| [Other](#other) | ~32 | Additional utility scripts |
+| [API Validation & Migration](#api-validation--migration) | 7 | V3-critical API and migration validation |
+| [Agent Discovery & Diagnostics](#agent-discovery--diagnostics) | 3 | Script discovery, diagnostics, session start |
+| [Documentation Quality (Extended)](#documentation-quality-extended) | 8 | Doc creation, similarity, cleanup |
+| [Code Quality (Extended)](#code-quality-extended) | 4 | Type checks, imports, circular deps |
 
-**Total: ~103 files in scripts/** (59 Python `.py` + 43 Shell `.sh` + README)
+**Total: 143 files in scripts/** (75 Python `.py` + 68 Shell `.sh` + README)
 
 ---
 
@@ -1965,6 +1968,528 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
+## API Validation & Migration
+
+### 72. `generate_api_manifest.py`
+
+**Purpose:** Generate or validate the public API manifest for structural_lib.api.
+
+**When to Use:**
+- ✅ After adding new API functions
+- ✅ Before V3 migration to document stable APIs
+- ✅ For FastAPI wrapper generation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/generate_api_manifest.py
+.venv/bin/python scripts/generate_api_manifest.py --validate
+.venv/bin/python scripts/generate_api_manifest.py --output docs/reference/api-manifest.json
+```
+
+**What It Does:**
+1. Introspects `structural_lib.api` module
+2. Extracts function signatures and docstrings
+3. Generates JSON manifest of public API
+4. Validates existing manifest against code
+
+**V3 Relevance:** **Critical** — Documents API surface for FastAPI wrapper generation.
+
+**Related:** [check_api_signatures.py](#73-check_api_signaturespy), [check_api_docs_sync.py](#24-check_api_docs_syncpy)
+
+---
+
+### 73. `check_api_signatures.py`
+
+**Purpose:** Validate that Streamlit pages use correct API signatures and response keys.
+
+**When to Use:**
+- ✅ Before committing UI code that calls library
+- ✅ Part of pre-commit hooks
+- ✅ Ensuring API contract compliance
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_api_signatures.py              # Check all pages
+.venv/bin/python scripts/check_api_signatures.py --fix        # Show suggested fixes
+.venv/bin/python scripts/check_api_signatures.py page.py      # Check specific file
+```
+
+**What It Checks:**
+- API function call signatures match library
+- Response key access matches actual return types
+- Type compatibility between UI and library
+
+**V3 Relevance:** **Critical** — Ensures API stability for React migration.
+
+**Related:** [generate_api_manifest.py](#72-generate_api_manifestpy)
+
+---
+
+### 74. `validate_migration.py`
+
+**Purpose:** Validate IS 456 module migration status and correctness.
+
+**When to Use:**
+- ✅ After module refactoring
+- ✅ Before releases with structural changes
+- ✅ V3 migration validation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/validate_migration.py
+.venv/bin/python scripts/validate_migration.py --verbose
+.venv/bin/python scripts/validate_migration.py --run-tests
+```
+
+**What It Checks:**
+1. All expected modules are migrated
+2. Re-export stubs work correctly
+3. Old import paths still work
+4. New import paths work
+5. Tests pass
+
+**V3 Relevance:** **Critical** — Module migration validation for V3.
+
+**Related:** [pre_migration_check.py](#75-pre_migration_checkpy), [migrate_module.py](#76-migrate_modulepy)
+
+---
+
+### 75. `pre_migration_check.py`
+
+**Purpose:** Pre-migration validation before making structural changes.
+
+**When to Use:**
+- ✅ Before starting migration work
+- ✅ Safety checks before refactoring
+- ✅ V3 prerequisite validation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/pre_migration_check.py
+.venv/bin/python scripts/pre_migration_check.py --strict
+```
+
+**What It Checks:**
+- Clean git state
+- All tests passing
+- No uncommitted changes
+- Dependencies stable
+
+**V3 Relevance:** **Critical** — Safety checks before V3 migration.
+
+**Related:** [validate_migration.py](#74-validate_migrationpy)
+
+---
+
+### 76. `migrate_module.py`
+
+**Purpose:** Migrate module to new location with link and import updates.
+
+**When to Use:**
+- ✅ Relocating library modules
+- ✅ Reorganizing package structure
+- ✅ V3 module restructuring
+
+**Usage:**
+```bash
+.venv/bin/python scripts/migrate_module.py old/path.py new/path.py
+.venv/bin/python scripts/migrate_module.py --dry-run old/path.py new/path.py
+```
+
+**What It Does:**
+1. Moves module to new location
+2. Updates all imports across codebase
+3. Creates re-export stub at old location
+4. Updates documentation links
+
+**V3 Relevance:** **High** — Automates module restructuring for V3.
+
+**Related:** [validate_migration.py](#74-validate_migrationpy)
+
+---
+
+### 77. `validate_stub_exports.py`
+
+**Purpose:** Validate stub module exports for backward compatibility.
+
+**When to Use:**
+- ✅ After creating re-export stubs
+- ✅ Ensuring backward compatibility
+- ✅ V3 export path validation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/validate_stub_exports.py
+```
+
+**Related:** [create_reexport_stub.py](#78-create_reexport_stubpy)
+
+---
+
+### 78. `create_reexport_stub.py`
+
+**Purpose:** Create re-export stub module for backward compatibility.
+
+**When to Use:**
+- ✅ After moving modules
+- ✅ Maintaining old import paths
+- ✅ Migration transition period
+
+**Usage:**
+```bash
+.venv/bin/python scripts/create_reexport_stub.py old/path.py new/path.py
+```
+
+**Related:** [migrate_module.py](#76-migrate_modulepy)
+
+---
+
+## Agent Discovery & Diagnostics
+
+### 79. `find_automation.py`
+
+**Purpose:** Find automation scripts for a given task description.
+
+**When to Use:**
+- ✅ Before doing any task manually
+- ✅ Agent onboarding / discovery
+- ✅ Finding the right script for a job
+
+**Usage:**
+```bash
+.venv/bin/python scripts/find_automation.py "your task"
+.venv/bin/python scripts/find_automation.py --list
+.venv/bin/python scripts/find_automation.py --category git_workflow
+```
+
+**What It Does:**
+1. Searches automation-map.json for matching tasks
+2. Returns relevant scripts with usage examples
+3. Shows context docs for the task
+
+**V3 Relevance:** **High** — Essential for agent onboarding.
+
+**Related:** [automation-map.json](../../scripts/automation-map.json)
+
+---
+
+### 80. `collect_diagnostics.py`
+
+**Purpose:** Bundle debug context (environment, git state, logs) for troubleshooting.
+
+**When to Use:**
+- ✅ When debugging issues
+- ✅ Before asking for help
+- ✅ CI failure analysis
+
+**Usage:**
+```bash
+.venv/bin/python scripts/collect_diagnostics.py
+.venv/bin/python scripts/collect_diagnostics.py --output diagnostics.json
+```
+
+**What It Collects:**
+- Python version and environment
+- Git state and recent commits
+- Recent error logs
+- Dependency versions
+
+**Related:** [repo_health_check.sh](#59-repo_health_checksh)
+
+---
+
+### 81. `agent_start.sh`
+
+**Purpose:** Unified session start combining setup, preflight, and session initialization.
+
+**When to Use:**
+- ✅ **EVERY session start** (first command)
+- ✅ Quick onboarding (30 seconds)
+
+**Usage:**
+```bash
+./scripts/agent_start.sh --quick     # Fast mode (recommended)
+./scripts/agent_start.sh             # Full validation
+./scripts/agent_start.sh --agent 9   # Agent-specific guidance
+```
+
+**What It Does:**
+1. Installs git hooks
+2. Runs environment setup
+3. Runs pre-flight checks
+4. Starts session tracking
+5. Shows active tasks and blockers
+
+**V3 Relevance:** **High** — Tier 0 daily script.
+
+**Related:** [end_session.py](#2-end_sessionpy)
+
+---
+
+## Documentation Quality (Extended)
+
+### 82. `create_doc.py`
+
+**Purpose:** Create new document with proper metadata headers.
+
+**When to Use:**
+- ✅ Creating any new documentation file
+- ✅ Ensures consistent metadata format
+- ✅ Prevents duplicate document creation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/create_doc.py docs/path/file.md "Document Title"
+.venv/bin/python scripts/create_doc.py docs/research/topic.md "Topic Research" --type=Research --status=Draft
+```
+
+**Options:**
+- `--type`: Research, Guide, Reference, Architecture, Decision
+- `--status`: Draft, Approved, Deprecated
+- `--importance`: Critical, High, Medium, Low
+- `--tasks`: Related task IDs
+
+**What It Does:**
+1. Checks for similar existing documents
+2. Creates file with proper metadata header
+3. Updates docs-index.json if needed
+
+**Related:** [check_doc_similarity.py](#83-check_doc_similaritypy)
+
+---
+
+### 83. `check_doc_similarity.py`
+
+**Purpose:** Find similar documents before creating new ones (prevents duplicates).
+
+**When to Use:**
+- ✅ Before creating any new document
+- ✅ Part of create_doc.py workflow
+- ✅ Finding canonical docs for a topic
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_doc_similarity.py "your topic"
+```
+
+**What It Does:**
+1. Checks docs-canonical.json for existing topic
+2. Searches for similar document titles
+3. Returns potential duplicates to review
+
+**Related:** [create_doc.py](#82-create_docpy), [docs-canonical.json](../docs-canonical.json)
+
+---
+
+### 84. `check_doc_metadata.py`
+
+**Purpose:** Validate document metadata headers are complete and correct.
+
+**When to Use:**
+- ✅ Pre-commit hooks
+- ✅ Documentation quality audits
+- ✅ Before releases
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_doc_metadata.py
+.venv/bin/python scripts/check_doc_metadata.py --fix
+```
+
+**What It Checks:**
+- Type, Audience, Status, Importance fields
+- Created/Last Updated dates
+- Proper format and values
+
+**Related:** [check_doc_frontmatter.py](#85-check_doc_frontmatterpy)
+
+---
+
+### 85. `check_doc_frontmatter.py`
+
+**Purpose:** Check document frontmatter format and completeness.
+
+**When to Use:**
+- ✅ Documentation validation
+- ✅ Pre-commit hooks
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_doc_frontmatter.py
+```
+
+**Related:** [check_doc_metadata.py](#84-check_doc_metadatapy)
+
+---
+
+### 86. `fix_broken_links.py`
+
+**Purpose:** Find and auto-fix broken internal markdown links.
+
+**When to Use:**
+- ✅ After moving/renaming files
+- ✅ Regular documentation maintenance
+- ✅ Before releases
+
+**Usage:**
+```bash
+.venv/bin/python scripts/fix_broken_links.py           # Check only
+.venv/bin/python scripts/fix_broken_links.py --fix     # Auto-fix
+.venv/bin/python scripts/fix_broken_links.py --dry-run # Preview fixes
+```
+
+**What It Does:**
+1. Scans all markdown files for links
+2. Identifies broken internal links
+3. Attempts to find correct target
+4. Updates links automatically with --fix
+
+**Related:** [check_links.py](#20-check_linkspy)
+
+---
+
+### 87. `find_orphan_files.py`
+
+**Purpose:** Find files that are not referenced from any other document.
+
+**When to Use:**
+- ✅ Documentation cleanup
+- ✅ Identifying unused files
+- ✅ Before archiving
+
+**Usage:**
+```bash
+.venv/bin/python scripts/find_orphan_files.py
+.venv/bin/python scripts/find_orphan_files.py --dir docs/research
+```
+
+**Related:** [consolidate_docs.py](#88-consolidate_docspy)
+
+---
+
+### 88. `consolidate_docs.py`
+
+**Purpose:** Consolidate similar or redundant documentation files.
+
+**When to Use:**
+- ✅ Documentation cleanup
+- ✅ Reducing doc sprawl
+- ✅ Archiving completed research
+
+**Usage:**
+```bash
+.venv/bin/python scripts/consolidate_docs.py analyze    # Find redundancy
+.venv/bin/python scripts/consolidate_docs.py archive    # Move completed to archive
+.venv/bin/python scripts/consolidate_docs.py merge      # Merge similar docs
+```
+
+**Related:** [analyze_doc_redundancy.py](#89-analyze_doc_redundancypy)
+
+---
+
+### 89. `analyze_doc_redundancy.py`
+
+**Purpose:** Analyze documentation for redundant content.
+
+**When to Use:**
+- ✅ Documentation audits
+- ✅ Cleanup planning
+
+**Usage:**
+```bash
+.venv/bin/python scripts/analyze_doc_redundancy.py
+```
+
+**Related:** [consolidate_docs.py](#88-consolidate_docspy)
+
+---
+
+## Code Quality (Extended)
+
+### 90. `check_circular_imports.py`
+
+**Purpose:** Detect circular import issues in the codebase.
+
+**When to Use:**
+- ✅ After adding new modules
+- ✅ Debugging import errors
+- ✅ Architecture validation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_circular_imports.py
+.venv/bin/python scripts/check_circular_imports.py --verbose
+```
+
+**V3 Relevance:** **High** — Clean architecture is essential for FastAPI.
+
+**Related:** [check_type_annotations.py](#91-check_type_annotationspy)
+
+---
+
+### 91. `check_type_annotations.py`
+
+**Purpose:** Validate type annotations across the codebase.
+
+**When to Use:**
+- ✅ Before V3 migration
+- ✅ Type safety audits
+- ✅ FastAPI requires good types
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_type_annotations.py
+.venv/bin/python scripts/check_type_annotations.py --strict
+```
+
+**V3 Relevance:** **High** — FastAPI relies on type annotations for validation.
+
+**Related:** [check_circular_imports.py](#90-check_circular_importspy)
+
+---
+
+### 92. `check_fragment_violations.py`
+
+**Purpose:** Detect Streamlit fragment API violations.
+
+**When to Use:**
+- ✅ After using @st.fragment decorator
+- ✅ Preventing runtime errors
+- ✅ Pre-commit hooks
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_fragment_violations.py
+```
+
+**What It Checks:**
+- st.sidebar usage inside @st.fragment
+- st.tabs usage inside @st.fragment
+- Other forbidden patterns
+
+**Related:** [streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md)
+
+---
+
+### 93. `check_streamlit_imports.py`
+
+**Purpose:** Validate Streamlit page imports are correct.
+
+**When to Use:**
+- ✅ Before committing Streamlit changes
+- ✅ Debugging import errors
+- ✅ Pre-commit hooks
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_streamlit_imports.py
+.venv/bin/python scripts/check_streamlit_imports.py --all-pages
+```
+
+**Related:** [check_streamlit_issues.py](#51-check_streamlit_issuespy)
+
+---
+
 ## Best Practices
 
 ### When Starting Work
@@ -2033,6 +2558,6 @@ chmod +x scripts/*.sh
 
 ---
 
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-01-24
 **Maintained By:** Project automation
 **Questions?** See [troubleshooting.md](troubleshooting.md) or [SUPPORT.md](../../.github/SUPPORT.md)
