@@ -10,16 +10,32 @@ import { designBeam } from '../api/client';
 import './BeamForm.css';
 
 export function BeamForm() {
-  const { inputs, length, setInputs, setLength, setResult, setError, isLoading } =
+  const {
+    inputs,
+    length,
+    setInputs,
+    setLength,
+    setResult,
+    setLoading,
+    setError,
+    isLoading,
+  } =
     useDesignStore();
 
   const designMutation = useMutation({
     mutationFn: designBeam,
+    onMutate: () => {
+      setLoading(true);
+      setError(null);
+    },
     onSuccess: (data) => {
       setResult(data);
     },
     onError: (error: Error) => {
       setError(error.message);
+    },
+    onSettled: () => {
+      setLoading(false);
     },
   });
 

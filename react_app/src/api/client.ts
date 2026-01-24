@@ -52,24 +52,56 @@ export interface HealthResponse {
   timestamp: string;
 }
 
-export interface GeometryResult {
-  volume: number;
-  surface_area: number;
-  weight: number;
-}
-
-export interface Beam3DGeometry {
+export interface Geometry3DRequest {
   width: number;
   depth: number;
   length: number;
-  main_bars?: {
-    diameter: number;
-    positions: [number, number, number][];
-  };
-  stirrups?: {
-    spacing: number;
-    diameter: number;
-  };
+  tension_bars?: Array<Record<string, unknown>>;
+  compression_bars?: Array<Record<string, unknown>>;
+  stirrup_diameter?: number;
+  stirrup_spacing?: number;
+  clear_cover?: number;
+  include_rebars?: boolean;
+  include_stirrups?: boolean;
+  mesh_resolution?: 'low' | 'medium' | 'high';
+  output_format?: 'vertices_faces' | 'stl' | 'gltf';
+}
+
+export interface MeshData {
+  vertices: number[][];
+  faces: number[][];
+  normals?: number[][] | null;
+}
+
+export interface GeometryComponent {
+  name: string;
+  type: string;
+  mesh: MeshData;
+  color: number[];
+  material_hint?: string;
+}
+
+export interface BoundingBox {
+  min_x: number;
+  max_x: number;
+  min_y: number;
+  max_y: number;
+  min_z: number;
+  max_z: number;
+}
+
+export interface Geometry3DResponse {
+  success: boolean;
+  message: string;
+  components: GeometryComponent[];
+  bounding_box: BoundingBox;
+  center: number[];
+  suggested_camera_distance: number;
+  total_vertices: number;
+  total_faces: number;
+  stl_base64?: string | null;
+  gltf_json?: Record<string, unknown> | null;
+  warnings?: string[];
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -106,30 +138,36 @@ export async function designBeam(
 }
 
 /**
- * Calculate beam geometry metrics.
+ * Generate 3D beam geometry for visualization.
  */
-export async function calculateGeometry(
-  width: number,
-  depth: number,
-  length: number
-): Promise<GeometryResult> {
-  const params = new URLSearchParams({
-    width: String(width),
-    depth: String(depth),
-    length: String(length),
+export async function generateBeamGeometry(
+  request: Geometry3DRequest
+): Promise<Geometry3DResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/geometry/beam/3d`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(request),
   });
 
-  const response = await fetch(`${API_BASE_URL}/api/v1/geometry/beam?${params}`);
-
   if (!response.ok) {
-    throw new Error(`Geometry calculation failed: ${response.status}`);
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(`Geometry generation failed: ${error.detail || response.status}`);
   }
 
   return response.json();
 }
 
+export async function calculateGeometry(
+  width: number,
+  depth: number,
+  length: number
+): Promise<Geometry3DResponse> {
+  return generateBeamGeometry({ width, depth, length });
+}
+
 export default {
   checkHealth,
   designBeam,
+  generateBeamGeometry,
   calculateGeometry,
 };

@@ -4,6 +4,39 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-24 — Session 75: React Frontend API Alignment + Compatibility Guidance
+
+**Focus:** Fix React client API mismatches and document React/R3F/Drei/Dockview compatibility checks
+
+### Key Accomplishments
+
+1. **PR #409 Opened (React API + Compatibility Docs)**
+   - Aligned React geometry client with FastAPI `POST /api/v1/geometry/beam/3d`
+   - Added stack compatibility checklist (React/R3F/Drei/Dockview)
+   - Fixed React README to reflect current stack and endpoints
+
+2. **Frontend UX Fix**
+   - Wired loading state to mutation lifecycle for accurate "Calculating..." status
+
+### Commits/PRs
+
+| Item | Status | Description |
+|------|--------|-------------|
+| PR #409 | 🔄 OPEN | React API alignment + stack compatibility guidance |
+
+### Test Results
+
+```
+Not run (docs + frontend changes only)
+```
+
+### Next Session Priorities
+
+1. Monitor PR #409 CI and merge
+2. If needed, validate React 19 compatibility with smoke tests
+
+---
+
 ## 2026-01-24 — Session 74: OpenAPI Baseline + Docker Dev Workflow
 
 **Focus:** OpenAPI baseline refresh, SDK alignment, Docker dev workflows

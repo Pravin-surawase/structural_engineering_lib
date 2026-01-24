@@ -75,6 +75,20 @@ If information is likely to change, verify it online before using it:
 - Library/framework versions
 - CLI flags and API endpoints
 
+## ⚠️ Frontend Compatibility (React + R3F + Drei + Dockview)
+
+Before setting up the React UI stack, confirm dependency alignment:
+- R3F v9 is the React 19 compatibility release; if you are on React 18, use the prior major (v8) and verify peer deps.
+- Drei 10.7.x peers React ^19 and @react-three/fiber ^9.
+- Dockview peer range allows React >=16.8, but still run a smoke test.
+
+Quick check:
+```bash
+npm ls react react-dom @react-three/fiber @react-three/drei dockview
+```
+
+Smoke test: render a Dockview layout plus a basic R3F `<Canvas>` scene in dev and production builds.
+
 ---
 
 ## 📚 Duplication Prevention

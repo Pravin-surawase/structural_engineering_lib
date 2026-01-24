@@ -94,6 +94,13 @@ Use this as a checklist to avoid common mistakes when implementing or reviewing 
 - **Symptoms**: `ModuleNotFoundError: No module named 'package.types'` even though the file exists.
 - **Prevention**: Always use descriptive module names unlikely to conflict with stdlib (e.g., `data_types.py` instead of `types.py`), or alias stdlib imports.
 
+## Frontend Stack Compatibility (React/R3F/Drei/Dockview)
+- **R3F v9 is the React 19 compatibility release**: if you are on React 18, use the prior major (v8) and verify peer deps.
+- **Drei peers React 19 + fiber 9**: if you are on React 18, choose a Drei version that peers with fiber v8.
+- **Dockview peers are loose** (React >=16.8), but still run a smoke test to catch runtime issues.
+- **Common failure signs**: "Invalid hook call" or duplicate React copies from mismatched peer deps.
+- **Quick check**: `npm ls react react-dom @react-three/fiber @react-three/drei dockview`
+
 ## CI Testing (CRITICAL for Pull Requests)
 - **ALWAYS run checks exactly as CI does** - Don't check only the files you changed.
 - **CI checks ENTIRE Python/ directory** - Not just `structural_lib/`, but also `examples/`, `tests/`, `scripts/`.

@@ -11,7 +11,7 @@ React-based IDE for structural beam design with 3D visualization.
 
 ## Tech Stack
 
-- **React 18** + TypeScript
+- **React 19** + TypeScript
 - **Vite** - Fast dev server and build
 - **React Three Fiber** - 3D rendering
 - **Dockview** - IDE-style panel layout
@@ -69,7 +69,7 @@ src/
 This app connects to the FastAPI backend (`fastapi_app/`) which provides:
 
 - `POST /api/v1/design/beam` - Design calculation
-- `GET /api/v1/geometry/beam` - Geometry metrics
+- `POST /api/v1/geometry/beam/3d` - 3D geometry generation
 - `GET /health` - Health check
 
 ## Roadmap
