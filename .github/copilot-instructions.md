@@ -68,6 +68,7 @@
 6. [TASKS.md](docs/TASKS.md) - Current work items
 7. [git-automation/README.md](docs/git-automation/README.md) - Git automation hub
 8. [folder-structure-governance.md](docs/guidelines/folder-structure-governance.md) - Project structure
+9. [docker-fundamentals-guide.md](docs/learning/docker-fundamentals-guide.md) - Docker basics
 
 ---
 
@@ -651,6 +652,11 @@ instead of reusing the proven adapter system from multi-format import page:
 ./scripts/agent_start.sh --quick              # Start (6s)
 ./scripts/ai_commit.sh "message"              # Commit (5s)
 .venv/bin/python scripts/end_session.py       # End (3s)
+
+# FastAPI with Docker
+docker compose up --build                     # Run API (production)
+docker compose -f docker-compose.dev.yml up   # Run API (dev with hot reload)
+docker compose down                           # Stop containers
 
 # Streamlit app
 ./scripts/launch_streamlit.sh                 # Launch app
