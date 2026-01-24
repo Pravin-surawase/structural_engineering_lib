@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-24 (Session 66)
+**Updated:** 2026-01-24 (Session 73)
 
 ---
 
@@ -34,6 +34,38 @@
 
 ---
 
+## Session 73 In Progress (2026-01-24)
+
+**Focus:** Week 2 FastAPI Skeleton + Week 3 WebSocket + API Integration Tooling
+
+| Task | Status | Commit/PR |
+|------|--------|-----------|
+| Create fastapi_app/ structure (19 files) | ✅ Done | PR #404 |
+| Implement 20 API routes | ✅ Done | PR #404 |
+| Write 24 integration tests (100% pass) | ✅ Done | PR #404 |
+| Fix API signature issues (7 → 0 errors) | ✅ Done | PR #404 |
+| Create discover_api_signatures.py | ✅ Done | `0a5c4f1` |
+| Create api-integration-mistakes-analysis.md | ✅ Done | `0a5c4f1` |
+| Update automation-map.json | ✅ Done | `0a5c4f1` |
+| Update copilot-instructions.md | ✅ Done | `70ef4fe` |
+| Update agent-essentials.md | ✅ Done | `0a5c4f1` |
+| **Week 3: WebSocket endpoint** | ✅ Done | Session 73 |
+| **Week 3: Connection manager** | ✅ Done | Session 73 |
+| **Week 3: 7 WebSocket tests** | ✅ Done | Session 73 |
+
+**Key Learning:** API signature guessing caused 35+ min debug loops. New tooling enforces discovery-first approach.
+
+**Week 3 Progress:**
+- Created `/ws/design/{session_id}` WebSocket endpoint
+- Implemented DesignConnectionManager for client tracking
+- Added design_beam and check_beam handlers
+- 7 new tests: connect, design, latency, check, error handling
+- All 31 FastAPI tests passing (24 + 7)
+
+**PR #404:** Merged with all 8 CI checks SUCCESS.
+
+---
+
 ## Session 66 In Progress (2026-01-24)
 
 **Focus:** V3 Automation Foundation + Scripts Audit
@@ -58,22 +90,25 @@
 
 ## V3 Migration Preparation Checklist
 
-**Phase 1: Automation Foundation (Current)**
+**Phase 1: Automation Foundation** ✅ COMPLETE
 - [x] Audit scripts coverage (73/143 undocumented → documented)
 - [x] Create V3 automation research doc
 - [x] Add v3_migration category to automation-map.json
 - [x] Create validate_fastapi_schema.py (API validation)
 - [x] Create test_api_parity.py (serialization parity)
 - [x] Create benchmark_api_latency.py (performance validation)
-- [ ] Add V3 scripts to scripts/index.json
-- [ ] Update automation-catalog.md with V3 scripts
-- [ ] Create generate_api_routes.py (FastAPI scaffolding)
+- [x] Add V3 scripts to scripts/index.json
+- [x] Update automation-catalog.md with V3 scripts
+- [x] Create generate_api_routes.py (FastAPI scaffolding)
 
-**Phase 2: API Layer (v0.20)**
-- [ ] Create FastAPI app skeleton
-- [ ] Generate routes from API manifest
-- [ ] Add WebSocket support for live results
-- [ ] Implement SSE for streaming calculations
+**Phase 2: API Layer (v0.20)** 🚧 IN PROGRESS (Week 2 Priority 1 ✅)
+- [x] Create FastAPI app skeleton (`fastapi_app/main.py`)
+- [x] Generate routes from API manifest (20 routes)
+- [x] Create Pydantic request/response models
+- [x] Write integration tests (24 tests, 100% pass)
+- [x] Create discover_api_signatures.py (prevent guessing)
+- [ ] Add WebSocket support for live results (Week 3)
+- [ ] Implement SSE for streaming calculations (Week 3)
 - [ ] Create OpenAPI schema generation
 
 **Phase 3: Frontend Foundation (After v0.20)**
