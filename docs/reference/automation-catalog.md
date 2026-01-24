@@ -2584,6 +2584,86 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
+### 97. `check_architecture_boundaries.py`
+
+**Purpose:** Enforces 3-layer architecture by detecting import violations between Core, Application, and UI layers.
+
+**When to Use:**
+- ✅ Before committing Python code
+- ✅ During code review
+- ✅ CI pipeline validation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_architecture_boundaries.py           # Full check
+.venv/bin/python scripts/check_architecture_boundaries.py --fix     # Show fix hints
+.venv/bin/python scripts/check_architecture_boundaries.py --json    # JSON output
+```
+
+**Related:** [docs/adr/0001-three-layer-architecture.md](../adr/0001-three-layer-architecture.md)
+
+---
+
+### 98. `check_ui_duplication.py`
+
+**Purpose:** AST-based scanner that detects code duplication in Streamlit UI code.
+
+**When to Use:**
+- ✅ Finding duplicate utility functions
+- ✅ Identifying refactoring opportunities
+- ✅ Reducing code maintenance burden
+
+**Usage:**
+```bash
+.venv/bin/python scripts/check_ui_duplication.py                    # Full scan
+.venv/bin/python scripts/check_ui_duplication.py --utils-only       # Just utils/
+.venv/bin/python scripts/check_ui_duplication.py --show-similar     # Show code snippets
+.venv/bin/python scripts/check_ui_duplication.py --json             # JSON output
+```
+
+**Related:** Shared utilities in [streamlit_app/utils/](../../streamlit_app/utils/)
+
+---
+
+### 99. `validate_schema_snapshots.py`
+
+**Purpose:** Compares Pydantic model schemas against stored snapshots to detect breaking API changes.
+
+**When to Use:**
+- ✅ Before V3 migration changes
+- ✅ After modifying API models
+- ✅ CI contract testing validation
+
+**Usage:**
+```bash
+.venv/bin/python scripts/validate_schema_snapshots.py           # Validate
+.venv/bin/python scripts/validate_schema_snapshots.py --update  # Update snapshots
+.venv/bin/python scripts/validate_schema_snapshots.py --json    # JSON output
+```
+
+**Related:** [docs/adr/0003-contract-testing-for-v3.md](../adr/0003-contract-testing-for-v3.md)
+
+---
+
+### 100. `generate_api_routes.py`
+
+**Purpose:** Auto-generates FastAPI route definitions from structural_lib API functions.
+
+**When to Use:**
+- ✅ V3 FastAPI migration
+- ✅ After adding new API functions
+- ✅ Generating OpenAPI scaffolding
+
+**Usage:**
+```bash
+.venv/bin/python scripts/generate_api_routes.py --dry-run       # Preview output
+.venv/bin/python scripts/generate_api_routes.py --output api/routes.py  # Generate file
+```
+
+**Related:** [docs/research/websocket-live-updates-research.md](../research/websocket-live-updates-research.md)
+
+---
+
 ## Best Practices
 
 ### When Starting Work

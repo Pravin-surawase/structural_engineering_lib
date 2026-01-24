@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-24
-- Focus: Session 71 - PR #403 Merge & ADR Documentation
+- Focus: Session 72 - Contract Testing & V3 Learning Documentation
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,29 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 71 | **Focus:** PR #403 Merge & ADR Documentation
+**Last Session:** 72 | **Focus:** Contract Testing & V3 Learning Documentation
+
+---
+
+## 🔑 Session 72 Summary
+
+**Documentation & Learning:**
+1. **Contract testing verified** — 41 tests pass, schema snapshots created
+2. **WebSocket research complete** — Hybrid approach documented
+3. **Deprecated pages archived** — 2 duplicate files moved to `_archived/`
+4. **Learning guides created** — 2 comprehensive docs for onboarding
+
+**New Tools:**
+| Script | Purpose |
+|--------|---------|
+| `validate_schema_snapshots.py` | Detect unintended schema changes |
+
+**New Docs:**
+| Document | Purpose |
+|----------|---------|
+| `automation-foundation-learning-guide.md` | Deep dive into Sessions 69-72 |
+| `v3-fastapi-learning-guide.md` | V3 migration from basics |
+| `websocket-live-updates-research.md` | WebSocket architecture research |
 
 ---
 
@@ -296,46 +318,46 @@ Fixed in **06_multi_format_import.py**:
 
 ## 🔥 Next Session Priorities
 
-### Priority 1: V3 FastAPI Preparation
+### Priority 1: Create FastAPI Application Skeleton
 
-**Goal:** Continue building FastAPI foundation for React migration
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Review `generate_api_routes.py` output | 1h | Verify FastAPI route generation |
-| Add WebSocket support research | 2h | Live design results streaming |
-| Create OpenSSF Scorecard baseline | 1h | Run scorecard.yml workflow |
-| Add `generate_openapi_spec.py` | 2h | Export OpenAPI v3 spec for frontend |
-
-### Priority 2: Clean Up Remaining UI Duplicates
-
-**Goal:** Archive deprecated hidden pages, consolidate remaining duplicates
+**Goal:** Set up the foundation for V3 backend
 
 | Task | Est | Notes |
 |------|-----|-------|
-| Archive `_06_📐_dxf_export.py` | 30m | Duplicate of `_08` |
-| Review `_report_generator` files | 30m | Likely deprecated |
-| Update pages to use `utils/openai_helpers.py` | 1h | AI pages consolidation |
+| Create `fastapi_app/main.py` | 1h | Basic FastAPI setup |
+| Generate routes from `api.py` | 1h | Use `generate_api_routes.py` |
+| Add health check endpoint | 30m | `/api/health` |
+| Add OpenAPI docs | 30m | Auto-generated at `/docs` |
 
-### Priority 3: Contract Testing Enhancement
+### Priority 2: WebSocket Implementation
 
-**Goal:** Expand contract tests for V3 migration confidence
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Run contract tests locally | 30m | `pytest test_api_contracts.py -v` |
-| Add snapshot testing for schemas | 2h | `schema_snapshot.json` for drift detection |
-| Add computed field coverage | 1h | Test `effective_depth_mm`, `length_m` |
-
-### Priority 4: Documentation Polish
-
-**Goal:** Ensure all docs ready for V3 phase
+**Goal:** Enable live design updates
 
 | Task | Est | Notes |
 |------|-----|-------|
-| Update automation-catalog.md | 1h | Add new scripts |
-| Create ADR index page | 30m | `docs/adr/README.md` update |
-| Review V3 migration checklist | 1h | Update TASKS.md |
+| Create `/ws/live-design` endpoint | 2h | Basic WebSocket |
+| Add connection manager | 1h | Track connected clients |
+| Test with simple client | 1h | Verify round-trip |
+
+### Priority 3: React Project Setup
+
+**Goal:** Initialize frontend project
+
+| Task | Est | Notes |
+|------|-----|-------|
+| Create Vite + React + TS project | 1h | `npm create vite@latest` |
+| Add API client hooks | 2h | `useDesignAPI()`, `useWebSocket()` |
+| Create basic design form | 2h | Moment, width, depth inputs |
+
+### Priority 4: OpenSSF Scorecard Baseline
+
+**Goal:** Establish security baseline
+
+| Task | Est | Notes |
+|------|-----|-------|
+| Trigger scorecard workflow | 30m | Manual trigger |
+| Review results | 1h | Identify improvements |
+| Document baseline score | 30m | Add to security docs |
 
 ---
 

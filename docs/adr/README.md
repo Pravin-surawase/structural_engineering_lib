@@ -2,7 +2,7 @@
 
 Use ADRs to capture **non-trivial decisions** in a way that is easy for humans and AI agents to find later.
 
-**Updated:** 2026-01-11
+**Updated:** 2026-01-24
 
 ---
 

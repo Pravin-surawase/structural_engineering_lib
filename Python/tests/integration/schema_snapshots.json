@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Schema snapshots for API contract testing - auto-generated, do not edit manually",
+  "generated": "2026-01-24",
+  "version": "1.0.0",
+  "models": {
+    "Point3D": {
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "properties": [
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    "SectionProperties": {
+      "required": [
+        "depth_mm",
+        "width_mm"
+      ],
+      "properties": [
+        "cover_mm",
+        "depth_mm",
+        "fck_mpa",
+        "fy_mpa",
+        "width_mm"
+      ],
+      "computed": [
+        "effective_depth_mm"
+      ]
+    },
+    "BeamGeometry": {
+      "required": [
+        "id",
+        "label",
+        "point1",
+        "point2",
+        "section",
+        "story"
+      ],
+      "properties": [
+        "angle",
+        "frame_type",
+        "id",
+        "label",
+        "point1",
+        "point2",
+        "section",
+        "source_id",
+        "story"
+      ],
+      "computed": [
+        "is_vertical",
+        "length_m"
+      ]
+    },
+    "BeamForces": {
+      "required": [
+        "id",
+        "load_case",
+        "mu_knm",
+        "vu_kn"
+      ],
+      "properties": [
+        "id",
+        "load_case",
+        "mu_knm",
+        "pu_kn",
+        "station_count",
+        "vu_kn"
+      ]
+    },
+    "BeamDesignResult": {
+      "required": [
+        "ast_mm2",
+        "asv_mm2_m",
+        "id",
+        "load_case",
+        "mu_knm",
+        "status",
+        "utilization",
+        "vu_kn"
+      ],
+      "properties": [
+        "asc_mm2",
+        "ast_mm2",
+        "asv_mm2_m",
+        "id",
+        "load_case",
+        "messages",
+        "moment_capacity_knm",
+        "mu_knm",
+        "shear_capacity_kn",
+        "status",
+        "utilization",
+        "vu_kn"
+      ],
+      "computed": [
+        "is_acceptable"
+      ]
+    },
+    "DesignStatus": {
+      "values": [
+        "PASS",
+        "FAIL",
+        "WARNING",
+        "NOT_CHECKED"
+      ]
+    },
+    "FrameType": {
+      "values": [
+        "beam",
+        "column",
+        "brace"
+      ]
+    }
+  }
+}
