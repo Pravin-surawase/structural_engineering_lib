@@ -89,6 +89,17 @@
 - **Data-driven test suites** for CSV import, adapters, and edge-case geometry.
 - **Negative test coverage** for invalid inputs and error messaging consistency.
 
+**Testing Gap Analysis (Enterprise View)**
+
+| Layer | Current State | Gap | Proposed Automation |
+|---|---|---|---|
+| Unit tests | Strong core coverage; 85% branch gate | Uneven style, some cleanup | Standardize pytest patterns |
+| Integration | Core integration exists | Limited API contract tests | Add schema contract suite |
+| UI/Streamlit | AST + AppTest smoke checks | Limited regression traces | Add critical path snapshots |
+| Performance | Benchmarks exist (V3) | No CI baseline enforcement | Add p95/p99 regression gate |
+| Cross-system parity | Python parity only | No VBA parity automation | Add parity harness (planned) |
+| Negative testing | Minimal explicit cases | Error consistency gaps | Add invalid input suites |
+
 **Audit Readiness**
 - Formal **evidence checklist** (tests run, scanners run, dependency status, linting, coverage).
 - **Security posture summary** (dependencies, policies, secrets scanning, SBOM).
