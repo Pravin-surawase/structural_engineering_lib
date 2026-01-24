@@ -531,6 +531,8 @@ def format_json_report(report: DuplicationReport) -> str:
 
 def main() -> int:
     """Main entry point."""
+    global SIMILARITY_THRESHOLD, MIN_FUNCTION_LINES
+
     parser = argparse.ArgumentParser(
         description="Scan Streamlit UI code for duplication"
     )
@@ -563,6 +565,10 @@ def main() -> int:
     )
 
     args = parser.parse_args()
+
+    # Apply CLI overrides to configuration
+    SIMILARITY_THRESHOLD = args.threshold
+    MIN_FUNCTION_LINES = args.min_lines
 
     # Determine directories to scan
     base_path = Path(__file__).parent.parent

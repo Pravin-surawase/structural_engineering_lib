@@ -141,7 +141,7 @@ jobs:
           if [ -f scorecard-results.sarif ]; then
             python3 -c "
           import json
-          from datetime import datetime
+          from datetime import datetime, timezone
 
           with open('scorecard-results.sarif') as f:
               data = json.load(f)
@@ -157,7 +157,7 @@ jobs:
               'label': 'OpenSSF Scorecard',
               'message': f'{len(results)} checks',
               'color': 'green' if high == 0 else ('yellow' if high <= 2 else 'red'),
-              'generated': datetime.utcnow().isoformat() + 'Z'
+              'generated': datetime.now(timezone.utc).isoformat()
           }
 
           with open('scorecard-badge.json', 'w') as f:

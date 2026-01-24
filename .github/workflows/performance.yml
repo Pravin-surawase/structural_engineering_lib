@@ -197,7 +197,8 @@ jobs:
             --benchmark-json=benchmark_results.json \
             --benchmark-columns=min,max,mean,stddev \
             --benchmark-sort=name \
-            -v || true
+            -v
+        continue-on-error: true  # Allow comparison step to run even if tests fail
 
       - name: Upload benchmark results
         uses: actions/upload-artifact@v6

@@ -107,7 +107,9 @@ LAYERS = {
 BAD_PATTERNS = {
     "core_io": {
         "description": "Core layer should not do I/O",
-        "patterns": ["open(", "Path(", "read_text", "write_text", "print("],
+        # Note: Removed "Path(" and "print(" - too many false positives
+        # (type annotations, debug output). Use AST analysis for these in future.
+        "patterns": ["open(", "read_text", "write_text"],
         "layers": ["core"],
     },
     "core_state": {
