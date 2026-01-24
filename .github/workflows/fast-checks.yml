@@ -7,15 +7,52 @@ on:
 
 # Quick checks for PRs - run only essential validations
 # Full test matrix runs after merge to main
+#
+# EFFICIENCY OPTIMIZATION (added 2026-01-24):
+# - Uses dorny/paths-filter to detect what changed
+# - Docs-only changes skip Python tests
+# - Python changes skip doc checks (separate workflow)
+# - Keeps PR feedback under 3-5 minutes
+
 permissions:
   contents: read
 
 jobs:
-  quick-validation:
-    name: Quick Validation (Python 3.11 only)
+  # Detect what files changed to optimize job selection
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      python: ${{ steps.filter.outputs.python }}
+      docs: ${{ steps.filter.outputs.docs }}
+      scripts: ${{ steps.filter.outputs.scripts }}
+      streamlit: ${{ steps.filter.outputs.streamlit }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            python:
+              - 'Python/**'
+              - 'pyproject.toml'
+              - 'setup.cfg'
+            docs:
+              - 'docs/**'
+              - '*.md'
+              - 'agents/**'
+            scripts:
+              - 'scripts/**'
+            streamlit:
+              - 'streamlit_app/**'
+
+  # Python validation - only when Python code changes
+  python-validation:
+    name: Python Validation
+    needs: changes
+    if: needs.changes.outputs.python == 'true' || needs.changes.outputs.streamlit == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -53,6 +90,31 @@ jobs:
         working-directory: Python
         run: python -m pytest tests/integration/test_flexure_edges_additional.py tests/unit/test_shear.py tests/unit/test_detailing.py -v
 
+      - name: Code quality checks
+        run: |
+          python scripts/check_type_annotations.py --fail-threshold 50 --json > /dev/null || \
+            (echo "❌ Type annotation rate below 50%" && exit 1)
+          python scripts/check_circular_imports.py || \
+            (echo "❌ Circular imports detected" && exit 1)
+          python scripts/check_performance_issues.py || true
+          echo "✅ Code quality checks passed"
+
+  # Doc validation - only when docs/scripts change
+  docs-validation:
+    name: Docs Validation
+    needs: changes
+    if: needs.changes.outputs.docs == 'true' || needs.changes.outputs.scripts == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
       - name: Doc checks (parallel)
         run: |
           python scripts/check_doc_versions.py --ci &
@@ -68,17 +130,30 @@ jobs:
           python scripts/validate_folder_structure.py
           python scripts/check_governance_compliance.py
 
-      - name: Code quality checks (Streamlit scanner suite)
+  # Always-run minimal check (for status reporting)
+  quick-validation:
+    name: Quick Validation (Python 3.11 only)
+    needs: changes
+    # Run if nothing specific triggered, or as a safety net
+    if: |
+      needs.changes.outputs.python != 'true' &&
+      needs.changes.outputs.docs != 'true' &&
+      needs.changes.outputs.scripts != 'true' &&
+      needs.changes.outputs.streamlit != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Minimal validation
         run: |
-          # Type annotation audit (fail if <50% annotated)
-          python scripts/check_type_annotations.py --fail-threshold 50 --json > /dev/null || \
-            (echo "❌ Type annotation rate below 50%" && exit 1)
-          # Circular import detection (fail on any cycles)
-          python scripts/check_circular_imports.py || \
-            (echo "❌ Circular imports detected" && exit 1)
-          # Performance issues (warn only, don't fail)
-          python scripts/check_performance_issues.py || true
-          echo "✅ Code quality checks passed"
+          echo "✅ No code/docs changes detected"
+          echo "📝 Running minimal checks..."
+          # Just verify repo is healthy
+          python --version
+          test -f README.md
+          echo "✅ Minimal validation passed"
 
   full-tests-notification:
     name: Full Test Info
