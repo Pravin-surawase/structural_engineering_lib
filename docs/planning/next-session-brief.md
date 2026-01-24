@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-24
-- Focus: OpenAPI baseline refresh + Docker dev workflow (PR #408)
+- Focus: Fix React client API mismatches and document React/R3F/Drei/Dockview compatibility checks
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,19 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + WebSocket) |
 
-**Last Session:** 74 | **Focus:** OpenAPI baseline refresh + Docker dev workflow
+**Last Session:** 75 | **Focus:** React API alignment + stack compatibility guidance
+
+---
+
+## 🔑 Session 75 Summary
+
+**PR #409 Opened:**
+1. **React API alignment** — geometry client now uses `POST /api/v1/geometry/beam/3d`
+2. **Compatibility checklist** — React/R3F/Drei/Dockview guidance added to key docs
+3. **UX fix** — loading state wired to mutation lifecycle
+
+**Notes:**
+- CI not run yet (docs + frontend changes only).
 
 ---
 
