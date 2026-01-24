@@ -3,7 +3,7 @@
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 > **Owner:** All contributors
 > **Last Updated:** 2026-01-24
-> **Total Scripts:** 143
+> **Total Scripts:** 152
 
 ## 🤖 For AI Agents: Quick Discovery
 
@@ -11,12 +11,12 @@
 
 ```python
 # In your context, load this file for full script catalog:
-# scripts/index.json - Contains all 128 scripts organized by category
+# scripts/index.json - Contains all 152 scripts organized by category
 ```
 
 **Key categories in index.json:**
 - `tier0` - 5 essential scripts (use 95% of the time)
-- `categories` - All scripts grouped by purpose (14 categories)
+- `categories` - All scripts grouped by purpose (15 categories)
 - `quick_reference` - Copy-paste commands
 - `workflows` - Common workflow patterns
 - `deprecated` - Scripts NOT to use

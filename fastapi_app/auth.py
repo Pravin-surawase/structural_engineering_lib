@@ -2,7 +2,7 @@
 Authentication and Authorization Module.
 
 Provides JWT-based authentication for WebSocket and REST endpoints.
-Includes rate limiting middleware for abuse prevention.
+Includes rate limiting helpers for abuse prevention.
 
 Week 3 Implementation - V3 Migration
 
@@ -16,7 +16,7 @@ Usage:
         user = await verify_ws_token(token)
         ...
 
-    # Rate limiting is applied via middleware in main.py
+    # Rate limiting is applied via dependency injection (see check_rate_limit)
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from fastapi import Depends, HTTPException, Query, Request, WebSocket, status
+from fastapi import Depends, HTTPException, Query, Request, Response, WebSocket, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
@@ -284,7 +284,7 @@ class RateLimiter:
 rate_limiter = RateLimiter()
 
 
-async def check_rate_limit(request: Request) -> None:
+async def check_rate_limit(request: Request, response: Response) -> None:
     """
     Dependency to check rate limit.
 
@@ -294,6 +294,7 @@ async def check_rate_limit(request: Request) -> None:
             ...
     """
     allowed, headers = rate_limiter.is_allowed(request)
+    response.headers.update(headers)
 
     if not allowed:
         raise HTTPException(

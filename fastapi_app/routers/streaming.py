@@ -25,11 +25,12 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, AsyncGenerator
 
-from fastapi import APIRouter, Query, Request
+from fastapi import APIRouter, Depends, Query, Request
 from sse_starlette.sse import EventSourceResponse
 
 # Import structural_lib API with proper signature discovery
 from structural_lib import api
+from fastapi_app.auth import check_rate_limit
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +116,7 @@ job_manager = BatchJobManager()
 async def stream_batch_design(
     request: Request,
     beams: str = Query(..., description="JSON array of beam parameters"),
+    _: None = Depends(check_rate_limit),
 ) -> EventSourceResponse:
     """
     Stream batch beam design results.
@@ -276,7 +278,10 @@ async def stream_batch_design(
 
 
 @router.get("/job/{job_id}")
-async def get_job_status(job_id: str) -> dict:
+async def get_job_status(
+    job_id: str,
+    _: None = Depends(check_rate_limit),
+) -> dict:
     """
     Get status of a batch job.
 

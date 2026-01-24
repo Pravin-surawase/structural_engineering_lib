@@ -22,6 +22,7 @@ import asyncio
 import json
 import sys
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -135,7 +136,7 @@ async def test_sse_batch_design():
     ]
 
     beams_json = json.dumps(beams)
-    url = f"{BASE_URL}/stream/batch-design?beams={beams_json}"
+    url = f"{BASE_URL}/stream/batch-design?beams={quote(beams_json)}"
 
     print(f"📤 Designing {len(beams)} beams via SSE...")
     print()

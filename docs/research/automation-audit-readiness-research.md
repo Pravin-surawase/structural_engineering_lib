@@ -49,7 +49,7 @@ Key takeaways:
 ## Current State Snapshot (Repo Reality)
 
 **Automation Coverage (internal):**
-- 143 scripts (per `scripts/index.json` updated 2026-01-21).
+- 152 scripts (per `scripts/index.json` updated 2026-01-24).
 - Task discovery: `scripts/automation-map.json` + `scripts/find_automation.py`.
 - Automation catalog: `docs/reference/automation-catalog.md`.
 

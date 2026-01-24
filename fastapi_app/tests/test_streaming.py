@@ -19,7 +19,7 @@ class TestSSEBatchDesign:
         client = TestClient(app)
         beams = json.dumps([{"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500}])
 
-        with client.stream("GET", f"/stream/batch-design?beams={beams}") as response:
+        with client.stream("GET", "/stream/batch-design", params={"beams": beams}) as response:
             events = list(response.iter_lines())
 
         # Should have start, design_result, progress, complete events
@@ -44,7 +44,7 @@ class TestSSEBatchDesign:
             {"id": "B3", "width": 400, "depth": 700, "moment": 300, "fck": 25, "fy": 500},
         ])
 
-        with client.stream("GET", f"/stream/batch-design?beams={beams}") as response:
+        with client.stream("GET", "/stream/batch-design", params={"beams": beams}) as response:
             events = list(response.iter_lines())
 
         # Count design_result events
@@ -55,7 +55,7 @@ class TestSSEBatchDesign:
         """Test batch design with invalid JSON."""
         client = TestClient(app)
 
-        with client.stream("GET", "/stream/batch-design?beams=not_valid_json") as response:
+        with client.stream("GET", "/stream/batch-design", params={"beams": "not_valid_json"}) as response:
             events = list(response.iter_lines())
 
         # Should have error event
@@ -66,7 +66,7 @@ class TestSSEBatchDesign:
         """Test batch design with empty array."""
         client = TestClient(app)
 
-        with client.stream("GET", "/stream/batch-design?beams=[]") as response:
+        with client.stream("GET", "/stream/batch-design", params={"beams": "[]"}) as response:
             events = list(response.iter_lines())
 
         has_error = any("error" in line for line in events)
@@ -80,7 +80,7 @@ class TestSSEBatchDesign:
             {"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500},
         ])
 
-        with client.stream("GET", f"/stream/batch-design?beams={beams}") as response:
+        with client.stream("GET", "/stream/batch-design", params={"beams": beams}) as response:
             events = list(response.iter_lines())
 
         progress_count = sum(1 for line in events if "progress" in line)
@@ -107,7 +107,7 @@ class TestJobStatus:
 
         # First run batch to get job_id from start event
         job_id = None
-        with client.stream("GET", f"/stream/batch-design?beams={beams}") as response:
+        with client.stream("GET", "/stream/batch-design", params={"beams": beams}) as response:
             for line in response.iter_lines():
                 if "start" in line:
                     # Next line should have the data

@@ -11,6 +11,7 @@
 
 > **Purpose:** Complete reference of all automation scripts in this project.
 > **For AI Agents:** Use this to discover available automation before implementing manually.
+> **Source of truth:** `scripts/index.json` (updated 2026-01-24, 152 scripts). If this catalog lags, use the index.
 >
 > **⚠️ IMPORTANT:** See [Agent Automation Pitfalls](agent-automation-pitfalls.md) for common issues when running automation scripts (git pager lockup, interactive prompts, etc.)
 
@@ -34,7 +35,7 @@
 | [Documentation Quality (Extended)](#documentation-quality-extended) | 8 | Doc creation, similarity, cleanup |
 | [Code Quality (Extended)](#code-quality-extended) | 4 | Type checks, imports, circular deps |
 
-**Total: 143 files in scripts/** (75 Python `.py` + 68 Shell `.sh` + README)
+**Total: 152 scripts in `scripts/`** (99 Python `.py` + 53 Shell `.sh`). Metadata files: `README.md`, `index.json`, `automation-map.json`.
 
 ---
 
@@ -46,6 +47,93 @@ and roadmaps belong in dedicated research or planning docs.
 For automation strategy research, see:
 - [docs/research/ai-agent-effectiveness-research.md](../research/ai-agent-effectiveness-research.md)
 - [docs/TASKS.md](../TASKS.md)
+
+---
+
+## Recently Added Scripts (Not Yet Expanded in Catalog)
+
+This appendix lists scripts present in `scripts/` but not yet expanded into the detailed catalog sections. Use `scripts/index.json` for the latest descriptions.
+
+### api_validation
+- `update_is456_init.py` — Update IS456 __init__.py exports
+
+### ci_cd
+- `install_enforcement_hook.sh` — Install enforcement hooks
+
+### code_migration
+- `add_future_annotations.py` — Add future annotations to modules
+
+### code_validation
+- `audit_input_validation.py` — Audit input validation
+- `check_performance_issues.py` — Detect performance issues
+- `check_python_version.py` — Check Python version compatibility
+- `profile_streamlit_page.py` — Profile page performance
+- `streamlit_preflight.sh` — Streamlit pre-flight checks
+- `validate_session_state.py` — Validate session state usage
+
+### documentation
+- `check_duplicate_docs.py` — Find duplicate documentation
+- `check_folder_readmes.py` — Verify README presence in folders
+- `check_readme_quality.py` — Assess README quality
+- `enhance_readme.py` — Enhance README content
+- `generate_all_indexes.sh` — Generate all index files
+- `generate_docs_index.py` — Generate docs-index.json
+- `generate_folder_index.py` — Generate folder index files
+
+### file_operations
+- `archive_deprecated_docs.py` — Archive deprecated docs
+- `batch_archive.py` — Batch archive operations
+- `rename_folder_safe.py` — Safely rename folder
+- `safe_file_delete.py` — Delete file with reference check
+- `safe_file_move.py` — Move file with link updates
+- `update_redirect_refs.py` — Update redirect references
+
+### git_workflow
+- `cleanup_stale_branches.py` — Remove old task branches (dry run + delete)
+- `git_automation_health.sh` — Check all git automation systems
+- `git_ops.sh` — State-aware router and recommendation
+- `install_git_hooks.sh` — Install hook enforcement
+- `pr_async_merge.sh` — Monitor and merge PR asynchronously
+
+### governance
+- `analyze_release_cadence.py` — Analyze and recommend optimal release cadence (TASK-288)
+- `copilot_setup.sh` — Setup copilot instructions
+- `governance_health_score.py` — Calculate governance health score 0-100 (TASK-289)
+- `lint_docs_git_examples.sh` — Lint git examples in docs
+- `predict_velocity.py` — Predict development velocity and burnout risk (TASK-287)
+- `weekly_governance_check.sh` — Weekly governance audit
+
+### project_structure
+- `audit_readiness_report.py` — Generate audit evidence bundle (NIST SSDF aligned)
+- `check_folder_structure.py` — Validate folder architecture
+- `check_governance_compliance.py` — Check governance rules
+- `check_redirect_stubs.py` — Check redirect stubs
+- `check_scripts_index.py` — Ensure scripts/index.json is in sync
+- `check_wip_limits.sh` — Check WIP limits
+
+### release
+- `check_version_consistency.sh` — Check version consistency
+
+### session_management
+- `agent_mistakes_report.sh` — Show common mistakes reminder
+- `install_hooks.sh` — Install git hooks (commit-msg validation)
+- `launch_streamlit.sh` — Launch Streamlit app with env checks
+
+### streamlit_dev
+- `analyze_navigation_data.py` — Analyze navigation patterns
+- `generate_streamlit_page.py` — Generate new Streamlit page
+- `measure_agent_navigation.sh` — Measure agent navigation efficiency
+
+### testing
+- `run_vba_smoke_tests.py` — Run VBA smoke tests via Excel automation (macOS)
+- `test_import_3d_pipeline.py` — Integration test for import → design → 3D pipeline
+- `test_setup.py` — Quick test of structural_lib installation
+- `test_vba_adapter.py` — Test ETABSAdapter with VBA ETABS export data
+- `validate_trial_data.py` — Validate trial/test data
+- `vba_validator.py` — VBA syntax validator (no Excel/Office required)
+
+### v3_migration
+- `discover_api_signatures.py` — Discover API signatures BEFORE implementing wrappers (CRITICAL)
 
 ---
 

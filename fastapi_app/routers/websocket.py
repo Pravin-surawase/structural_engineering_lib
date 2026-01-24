@@ -20,11 +20,12 @@ import logging
 from datetime import datetime, timezone
 from typing import Any
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
 
 # Import structural_lib API with proper signature discovery
 # See: scripts/discover_api_signatures.py design_beam_is456
 from structural_lib import api
+from fastapi_app.auth import verify_ws_token
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +85,11 @@ manager = DesignConnectionManager()
 
 
 @router.websocket("/ws/design/{session_id}")
-async def design_websocket(websocket: WebSocket, session_id: str) -> None:
+async def design_websocket(
+    websocket: WebSocket,
+    session_id: str,
+    token: str | None = Query(None),
+) -> None:
     """
     WebSocket endpoint for live beam design.
 
@@ -115,6 +120,10 @@ async def design_websocket(websocket: WebSocket, session_id: str) -> None:
         }));
         ```
     """
+    user = await verify_ws_token(websocket, token)
+    if token and not user:
+        return
+
     await manager.connect(session_id, websocket)
 
     try:

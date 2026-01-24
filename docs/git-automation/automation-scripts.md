@@ -6,14 +6,14 @@
 **Importance:** High
 **Version:** 0.16.6
 **Created:** 2026-01-11
-**Last Updated:** 2026-01-11
+**Last Updated:** 2026-01-24
 **Related Tasks:** Documentation consolidation
 
 ---
 
 ## Overview
 
-Complete reference for all 103 git automation scripts. Organized by use case for quick lookup.
+Reference for core git automation scripts (subset). For the full automation registry, use `scripts/index.json`.
 
 **Script Location:** All scripts are in `scripts/` (project root)
 

@@ -5,7 +5,7 @@
 **Status:** Active (V3 IN PROGRESS)
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-24 (Session 73 - Week 2 FastAPI Complete)
+**Last Updated:** 2026-01-24 (Session 74 - Week 3 Real-time Features Complete)
 **Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
 **Timeline:** 7 weeks (Jan 24 - March 15, 2026)
 **Release Target:** March 15, 2026 (V3 Beta Launch)
@@ -45,7 +45,7 @@
 
 ---
 
-## 📊 Current Status (Session 73, Jan 24, 2026)
+## 📊 Current Status (Session 74, Jan 24, 2026)
 
 ### Streamlit v0.19.0 — ✅ COMPLETE (Shipped Ahead of Schedule!)
 
@@ -65,7 +65,7 @@
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1 | Automation Foundation | ✅ DONE (Sessions 69-72) |
-| **Phase 2** | 2-3 | FastAPI Backend + Routes | 🚧 IN PROGRESS (Week 2 Priority 1 ✅) |
+| **Phase 2** | 2-3 | FastAPI Backend + Routes | ✅ DONE (Sessions 73-74) |
 | **Phase 3** | 3-4 | React Shell + 3D Viewport | 📋 TODO |
 | **Phase 4** | 5 | WebSocket + Live Updates | 📋 TODO |
 | **Phase 5** | 6-7 | Multi-Beam Intelligence | 📋 TODO |
@@ -87,6 +87,19 @@
 Use `inspect.signature()` BEFORE wrapping library functions.
 
 **PR #404:** Merged with all 8 CI checks passing.
+
+### Session 74 Accomplishments (Week 3 - Real-time Features)
+
+| Category | Deliverable | Status |
+|----------|-------------|--------|
+| **WebSocket** | `/ws/design/{session}` live design endpoint | ✅ Complete |
+| **SSE** | `/stream/batch-design` streaming endpoint | ✅ Complete |
+| **Auth** | JWT helpers + token verification | ✅ Complete |
+| **Rate Limit** | Request limiting helpers | ✅ Complete |
+| **Docs** | Week 3 real-time learning guide | ✅ Complete |
+| **Tests** | Auth + streaming tests | ✅ Complete |
+
+**PR #406:** Merged with CI green.
 
 ### Session 69-72 Accomplishments (V3 Foundation)
 
@@ -188,7 +201,7 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 
 ---
 
-### **Week 2-3: FastAPI Backend (Jan 27 - Feb 7)** � IN PROGRESS
+### **Week 2-3: FastAPI Backend (Jan 27 - Feb 7)** ✅ COMPLETE (Sessions 73-74)
 
 **Goal:** Create FastAPI wrapper for all 43 structural_lib functions
 
@@ -204,22 +217,22 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 
 **Evidence:** PR #404 merged, all 8 CI checks SUCCESS.
 
-**Priority 2: WebSocket Live Design (Week 3)** 📋 NEXT
-| Task | Est | Priority | Deliverable |
-|------|-----|----------|------------|
-| Create `/ws/design/{session}` endpoint | 4h | 🔴 Critical | Native WebSocket |
-| Add connection manager | 2h | 🟡 High | Track connected clients |
-| Implement design request handler | 4h | 🔴 Critical | Call structural_lib |
-| Test with simple client (Python) | 2h | 🟡 High | Verify round-trip |
-| Add authentication (JWT) | 3h | 🟡 High | Secure WebSocket |
-| Add rate limiting | 2h | 🟡 High | Prevent abuse |
+**Priority 2: WebSocket Live Design (Week 3)** ✅ COMPLETE (PR #406)
+| Task | Est | Priority | Status |
+|------|-----|----------|--------|
+| Create `/ws/design/{session}` endpoint | 4h | 🔴 Critical | ✅ Done - Native WebSocket |
+| Add connection manager | 2h | 🟡 High | ✅ Done - Session tracking |
+| Implement design request handler | 4h | 🔴 Critical | ✅ Done - structural_lib calls |
+| Test with simple client (Python) | 2h | 🟡 High | ✅ Done - `fastapi_app/examples/test_client.py` |
+| Add authentication (JWT) | 3h | 🟡 High | ✅ Done - `fastapi_app/auth.py` |
+| Add rate limiting | 2h | 🟡 High | ✅ Done - `check_rate_limit` |
 
-**Priority 3: Batch Processing (Week 3)**
-| Task | Est | Priority | Deliverable |
-|------|-----|----------|------------|
-| Create `/stream/batch-design` SSE endpoint | 4h | 🟡 High | Server-Sent Events |
-| Stream progress updates | 2h | 🟡 High | Real-time progress % |
-| Add error streaming | 2h | 🟡 High | Stream validation errors |
+**Priority 3: Batch Processing (Week 3)** ✅ COMPLETE (PR #406)
+| Task | Est | Priority | Status |
+|------|-----|----------|--------|
+| Create `/stream/batch-design` SSE endpoint | 4h | 🟡 High | ✅ Done - SSE stream |
+| Stream progress updates | 2h | 🟡 High | ✅ Done - progress events |
+| Add error streaming | 2h | 🟡 High | ✅ Done - error events |
 
 **Deliverables Week 2-3:**
 - `fastapi_app/main.py` (200+ lines)
@@ -227,6 +240,11 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 - `fastapi_app/models/` (Pydantic models)
 - Integration tests (100+ tests)
 - OpenAPI spec at `/docs`
+ - WebSocket + SSE endpoints (live + batch)
+ - Auth + rate limiting helpers
+ - Learning guide: `docs/guides/week3-realtime-features-guide.md`
+
+**Evidence:** PR #404 + PR #406 merged, CI checks green.
 
 **Demo Ready:** Postman collection calling all 43 functions via FastAPI
 
