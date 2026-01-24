@@ -151,6 +151,11 @@ jobs:
           fi
           echo "✅ FastAPI validation passed"
 
+      - name: API performance benchmarks
+        run: |
+          python scripts/benchmark_api.py --quick --threshold 50
+          echo "✅ FastAPI performance benchmarks passed"
+
   # Doc validation - only when docs/scripts change
   docs-validation:
     name: Docs Validation
