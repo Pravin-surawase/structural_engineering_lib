@@ -168,6 +168,57 @@
 4. Create **duplication scanner** (code + docs).
 5. Add **architecture boundary lint** for 3-layer enforcement.
 
+### 10) Research Plan (No Implementation Until Complete)
+
+**Research Objectives**
+- Validate testing infrastructure maturity vs enterprise expectations.
+- Identify duplication and quality hotspots with quantifiable evidence.
+- Define audit-ready evidence bundles and automation coverage.
+- Propose CI/CD efficiency improvements without reducing safety.
+
+**Primary Evidence Sources (Read First)**
+- [docs/contributing/testing-strategy.md](../contributing/testing-strategy.md)
+- [docs/git-automation/README.md](../git-automation/README.md)
+- [docs/guidelines/streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md)
+- [docs/reference/api.md](../reference/api.md)
+- [scripts/index.json](../../scripts/index.json)
+- [scripts/automation-map.json](../../scripts/automation-map.json)
+
+**Research Task Map (Automation-First)**
+
+| Research Task | Automation to Use | Output Artifact | Notes |
+|---|---|---|---|
+| Test coverage posture | `pytest --cov` + `collect_metrics.sh` | coverage summary | Establish baseline and trend |
+| CI bottleneck profiling | CI logs + `ci_monitor_daemon.sh` | timing report | Identify longest jobs |
+| Duplication inventory | (new) duplication scanner | duplication report | Token/AST similarity |
+| API stability review | `check_api_docs_sync.py`, `generate_api_manifest.py` | API diff summary | Track breaking risk |
+| Streamlit risk scan | `check_streamlit_issues.py`, `check_fragment_violations.py` | scanner report | Focus on runtime errors |
+| Audit evidence set | (new) `audit_readiness_report.py` | audit pack | Evidence bundle for reviewers |
+
+**Key Research Questions**
+1. Which tests are **missing for enterprise audit** (contract tests, negative tests, parity)?
+2. Where does CI spend the most time, and what can be safely parallelized or cached?
+3. Which modules show **duplication risk** or inconsistent error handling?
+4. Are audit artifacts **traceable per release** (logs, coverage, scanner outputs)?
+
+### 11) Implementation Gates (Must Pass Before Coding)
+
+**Gate A — Research Complete**
+- Documented findings with references and measurable evidence.
+- Clear prioritized backlog with estimated impact and effort.
+
+**Gate B — Audit Readiness Definition**
+- Evidence checklist defined and mapped to automation scripts.
+- Proposed audit pack structure approved.
+
+**Gate C — CI Efficiency Plan**
+- Safe path-based filters identified.
+- Candidate jobs for nightly vs PR checks agreed.
+
+**Gate D — Quality & Duplication Plan**
+- Duplication detection approach chosen (token vs AST).
+- Architecture boundary lint rule specification defined.
+
 ---
 
 ## Session Management
