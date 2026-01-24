@@ -287,6 +287,19 @@ echo "  3) ./scripts/git_ops.sh --status"
 echo "  Docs: docs/git-automation/README.md"
 echo ""
 
+# Docker status check
+echo -e "${BOLD}🐳 Docker (FastAPI Backend)${NC}"
+if command -v docker &> /dev/null && docker info &> /dev/null; then
+    echo -e "  ${GREEN}✓${NC} Docker available"
+    echo "  docker compose up --build          # Production"
+    echo "  docker compose -f docker-compose.dev.yml up  # Dev (hot reload)"
+    echo "  API: http://localhost:8000/docs"
+else
+    echo -e "  ${YELLOW}⊘${NC} Docker not running (optional for local dev)"
+    echo "  Start Docker Desktop or: brew install --cask docker"
+fi
+echo ""
+
 # Mistake review (quick refresher)
 if [ -f "$SCRIPT_DIR/agent_mistakes_report.sh" ]; then
     echo -e "${BOLD}Mistake Review${NC}"

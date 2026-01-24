@@ -1,0 +1,5 @@
+/* App-level styles - minimal since Dockview handles layout */
+#root {
+  width: 100%;
+  height: 100%;
+}

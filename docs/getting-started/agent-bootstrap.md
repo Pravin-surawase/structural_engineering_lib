@@ -107,6 +107,31 @@ commands, API touchpoints, scanner usage, and emergency workflows.
 - **Known pitfalls:** [../reference/known-pitfalls.md](../reference/known-pitfalls.md)
 - **Session issues:** [../contributing/session-issues.md](../contributing/session-issues.md)
 - **API docs:** [../reference/api.md](../reference/api.md)
+- **FastAPI REST API:** [../reference/fastapi-rest-api.md](../reference/fastapi-rest-api.md) 🚀
+- **Docker guide:** [../learning/docker-fundamentals-guide.md](../learning/docker-fundamentals-guide.md) 🐳
+
+---
+
+## 🐳 Docker Quick Start (FastAPI Backend)
+
+```bash
+# Check Docker is running
+docker --version
+
+# Run FastAPI in container (production)
+docker compose up --build
+
+# Run with hot reload (development)
+docker compose -f docker-compose.dev.yml up --build
+
+# Stop containers
+docker compose down
+
+# Validate Docker config
+.venv/bin/python scripts/check_docker_config.py
+```
+
+**API at:** http://localhost:8000/docs
 
 ---
 
