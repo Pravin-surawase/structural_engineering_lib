@@ -292,6 +292,11 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 | Add command palette (`cmdk`) | 3h | 🟡 High | Cmd+Shift+P shortcuts |
 | Set up API client (Axios + React Query) | 4h | 🔴 Critical | Type-safe API calls |
 
+**Compatibility check (must do before coding):**
+- R3F v9 is the React 19 compatibility release (React 18 should stay on v8 and verify peer deps).
+- Drei peers React 19 + fiber 9 (choose a compatible Drei version if staying on React 18).
+- Run a smoke test that mounts Dockview + a basic R3F `<Canvas>`.
+
 **Priority 2: 3D Viewport (Week 4)**
 | Task | Est | Priority | Deliverable |
 |------|-----|----------|------------|
