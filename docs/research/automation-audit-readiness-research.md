@@ -2,12 +2,29 @@
 
 **Type:** Research
 **Audience:** All Agents
-**Status:** Draft
+**Status:** Implemented ✅
 **Importance:** High
 **Created:** 2026-01-24
 **Last Updated:** 2026-01-24
 **Related Tasks:** TASK-AUTOMATION-AUDIT
 **Abstract:** Audit readiness and CI evidence practices for automation scripts, plus a concrete roadmap for this repo.
+
+---
+
+## Implementation Status (2026-01-24)
+
+✅ **Phase 1 — Evidence Baseline** (Complete)
+- Created `docs/audit/` folder with audit-readiness.md and evidence-bundle-template.md
+- Added `audit_readiness_report.py` (25-check evidence collector)
+- Added CI evidence bundle job to `python-tests.yml`
+
+✅ **Phase 2 — SBOM + Provenance** (Complete)
+- Added `.github/workflows/sbom.yml` (CycloneDX + SPDX generation)
+
+✅ **Phase 3 — CI Efficiency** (Complete)
+- Added path-based filtering to `fast-checks.yml` (dorny/paths-filter)
+- Python tests skip for docs-only changes
+- Docs checks skip for Python-only changes
 
 ---
 

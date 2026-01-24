@@ -74,6 +74,20 @@
         "docs/guidelines/folder-structure-governance.md"
       ]
     },
+    "generate audit report": {
+      "script": ".venv/bin/python scripts/audit_readiness_report.py",
+      "description": "Generate audit evidence bundle (NIST SSDF aligned)",
+      "context_docs": [
+        "docs/audit/audit-readiness.md",
+        "docs/audit/evidence-bundle-template.md",
+        "docs/research/automation-audit-readiness-research.md"
+      ],
+      "options": {
+        "--check-only": "Quick pass/fail for CI",
+        "--json": "Export as JSON",
+        "--export md": "Export as Markdown"
+      }
+    },
     "check for duplicates": {
       "script": ".venv/bin/python scripts/check_doc_similarity.py \"topic\"",
       "description": "Find similar documents before creating new ones",
