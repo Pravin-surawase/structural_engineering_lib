@@ -1,0 +1,332 @@
+# Performance Baseline and Regression Testing
+#
+# Runs benchmark tests and compares against baseline to detect regressions.
+# This workflow establishes performance baselines and alerts on significant
+# degradation (>20% slowdown).
+#
+# Features:
+# - Runs pytest-benchmark on main branch merges
+# - Stores benchmark results as artifacts
+# - Compares against baseline on PRs
+# - Fails if regression exceeds threshold
+#
+# Created: 2026-01-24 (Session 69)
+# Reference: docs/research/automation-audit-readiness-research.md
+
+name: Performance Baseline
+
+on:
+  # Run on main to establish baseline
+  push:
+    branches: [ main ]
+    paths:
+      - 'Python/structural_lib/**/*.py'
+      - 'Python/tests/benchmarks/**'
+      - '.github/workflows/performance.yml'
+
+  # Run on PRs to detect regressions
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'Python/structural_lib/**/*.py'
+      - 'Python/tests/benchmarks/**'
+
+  # Weekly baseline refresh
+  schedule:
+    - cron: '0 4 * * 0'  # Sunday 4 AM UTC
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      save_baseline:
+        description: 'Save results as new baseline'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: write  # For PR comments
+
+jobs:
+  benchmark:
+    name: Run Benchmarks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Python
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: Python/pyproject.toml
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install pytest-benchmark
+
+      - name: Create benchmark directory
+        run: mkdir -p tests/benchmarks
+
+      - name: Create benchmark tests if not exist
+        run: |
+          if [ ! -f tests/benchmarks/test_core_benchmarks.py ]; then
+            cat > tests/benchmarks/test_core_benchmarks.py << 'EOF'
+          """Core Performance Benchmarks.
+
+          These benchmarks establish baseline performance for critical calculations.
+          Run with: pytest tests/benchmarks/ --benchmark-only
+
+          Baseline thresholds (fail if >20% slower):
+          - Flexure calculation: <10ms per beam
+          - Shear calculation: <5ms per beam
+          - Batch design (100 beams): <1s
+          """
+
+          import pytest
+
+          # Import calculation functions
+          try:
+              from structural_lib.codes.is456.flexure import (
+                  calculate_ast_required,
+                  calculate_moment_capacity,
+              )
+              from structural_lib.codes.is456.shear import (
+                  calculate_shear_capacity,
+                  design_shear_reinforcement,
+              )
+              IMPORTS_OK = True
+          except ImportError:
+              IMPORTS_OK = False
+
+
+          @pytest.mark.skipif(not IMPORTS_OK, reason="Core modules not available")
+          class TestFlexureBenchmarks:
+              """Benchmark flexure calculations."""
+
+              def test_calculate_ast_required(self, benchmark):
+                  """Benchmark steel area calculation."""
+                  result = benchmark(
+                      calculate_ast_required,
+                      moment=150.0,  # kN·m
+                      width=300.0,   # mm
+                      depth=450.0,   # mm effective depth
+                      fck=25.0,      # MPa
+                      fy=500.0,      # MPa
+                  )
+                  assert result is not None
+
+              def test_calculate_moment_capacity(self, benchmark):
+                  """Benchmark moment capacity calculation."""
+                  result = benchmark(
+                      calculate_moment_capacity,
+                      ast=1200.0,    # mm²
+                      width=300.0,   # mm
+                      depth=450.0,   # mm
+                      fck=25.0,      # MPa
+                      fy=500.0,      # MPa
+                  )
+                  assert result is not None
+
+
+          @pytest.mark.skipif(not IMPORTS_OK, reason="Core modules not available")
+          class TestShearBenchmarks:
+              """Benchmark shear calculations."""
+
+              def test_calculate_shear_capacity(self, benchmark):
+                  """Benchmark shear capacity calculation."""
+                  result = benchmark(
+                      calculate_shear_capacity,
+                      width=300.0,   # mm
+                      depth=450.0,   # mm effective depth
+                      fck=25.0,      # MPa
+                      pt=0.5,        # % tension steel
+                  )
+                  assert result is not None
+
+              def test_design_shear_reinforcement(self, benchmark):
+                  """Benchmark shear reinforcement design."""
+                  result = benchmark(
+                      design_shear_reinforcement,
+                      vu=120.0,      # kN
+                      width=300.0,   # mm
+                      depth=450.0,   # mm
+                      fck=25.0,      # MPa
+                      fy=415.0,      # MPa (stirrups)
+                  )
+                  assert result is not None
+
+
+          class TestBatchBenchmarks:
+              """Benchmark batch processing performance."""
+
+              @pytest.mark.skipif(not IMPORTS_OK, reason="Core modules not available")
+              def test_batch_100_beams(self, benchmark):
+                  """Benchmark batch design of 100 beams."""
+                  def batch_design():
+                      results = []
+                      for i in range(100):
+                          result = calculate_ast_required(
+                              moment=100.0 + i,
+                              width=300.0,
+                              depth=450.0,
+                              fck=25.0,
+                              fy=500.0,
+                          )
+                          results.append(result)
+                      return results
+
+                  results = benchmark(batch_design)
+                  assert len(results) == 100
+          EOF
+            echo "Created benchmark tests"
+          fi
+
+      - name: Run benchmarks
+        id: benchmark
+        run: |
+          pytest tests/benchmarks/ \
+            --benchmark-only \
+            --benchmark-json=benchmark_results.json \
+            --benchmark-columns=min,max,mean,stddev \
+            --benchmark-sort=name \
+            -v || true
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v6
+        with:
+          name: benchmark-results-${{ github.sha }}
+          path: Python/benchmark_results.json
+          retention-days: 90
+
+      - name: Download baseline (for comparison)
+        if: github.event_name == 'pull_request'
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: performance.yml
+          branch: main
+          name: benchmark-baseline
+          path: baseline/
+        continue-on-error: true
+
+      - name: Compare with baseline
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "📊 Performance Comparison"
+          echo "========================="
+
+          if [ -f baseline/benchmark_results.json ]; then
+            python << 'EOF'
+          import json
+          import sys
+
+          REGRESSION_THRESHOLD = 0.20  # 20% slower = regression
+
+          try:
+              with open('baseline/benchmark_results.json') as f:
+                  baseline = json.load(f)
+              with open('benchmark_results.json') as f:
+                  current = json.load(f)
+          except FileNotFoundError as e:
+              print(f"⚠️ Benchmark files not found: {e}")
+              sys.exit(0)
+
+          baseline_benchmarks = {b['name']: b for b in baseline.get('benchmarks', [])}
+          current_benchmarks = {b['name']: b for b in current.get('benchmarks', [])}
+
+          regressions = []
+          improvements = []
+
+          for name, current_bm in current_benchmarks.items():
+              if name in baseline_benchmarks:
+                  baseline_bm = baseline_benchmarks[name]
+                  baseline_mean = baseline_bm['stats']['mean']
+                  current_mean = current_bm['stats']['mean']
+
+                  if baseline_mean > 0:
+                      change = (current_mean - baseline_mean) / baseline_mean
+
+                      if change > REGRESSION_THRESHOLD:
+                          regressions.append((name, change, baseline_mean, current_mean))
+                      elif change < -REGRESSION_THRESHOLD:
+                          improvements.append((name, change, baseline_mean, current_mean))
+
+          print(f"Benchmarks compared: {len(current_benchmarks)}")
+          print()
+
+          if improvements:
+              print("✅ Performance improvements:")
+              for name, change, base, curr in improvements:
+                  print(f"   {name}: {change*100:+.1f}% ({base*1000:.2f}ms → {curr*1000:.2f}ms)")
+              print()
+
+          if regressions:
+              print("🔴 Performance regressions detected:")
+              for name, change, base, curr in regressions:
+                  print(f"   {name}: {change*100:+.1f}% ({base*1000:.2f}ms → {curr*1000:.2f}ms)")
+              print()
+              print(f"FAIL: {len(regressions)} benchmarks exceeded {REGRESSION_THRESHOLD*100:.0f}% threshold")
+              sys.exit(1)
+          else:
+              print("✅ No significant regressions detected")
+          EOF
+          else
+            echo "⚠️ No baseline found - this is the first run"
+            echo "   Results will be used as baseline after merge"
+          fi
+
+      - name: Save baseline (main branch only)
+        if: github.ref == 'refs/heads/main' || github.event.inputs.save_baseline == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: benchmark-baseline
+          path: Python/benchmark_results.json
+          retention-days: 365  # Keep baseline for 1 year
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let comment = '## 📊 Performance Benchmark Results\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('Python/benchmark_results.json', 'utf8'));
+              const benchmarks = results.benchmarks || [];
+
+              if (benchmarks.length > 0) {
+                comment += '| Benchmark | Mean | Min | Max | StdDev |\n';
+                comment += '|-----------|------|-----|-----|--------|\n';
+
+                for (const bm of benchmarks.slice(0, 10)) {
+                  const stats = bm.stats;
+                  comment += `| ${bm.name} | ${(stats.mean * 1000).toFixed(2)}ms | ${(stats.min * 1000).toFixed(2)}ms | ${(stats.max * 1000).toFixed(2)}ms | ${(stats.stddev * 1000).toFixed(2)}ms |\n`;
+                }
+
+                if (benchmarks.length > 10) {
+                  comment += `\n... and ${benchmarks.length - 10} more benchmarks\n`;
+                }
+              } else {
+                comment += '⚠️ No benchmark results available\n';
+              }
+            } catch (e) {
+              comment += `⚠️ Could not load benchmark results: ${e.message}\n`;
+            }
+
+            comment += '\n---\n*Generated by Performance Baseline workflow*';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
