@@ -1,0 +1,118 @@
+# Docker Build & Validation Workflow
+#
+# Validates Docker configuration and builds on PRs that modify:
+# - Dockerfile.fastapi
+# - docker-compose*.yml
+# - requirements.txt
+# - FastAPI application code
+#
+# This ensures Docker builds don't break silently.
+
+name: Docker Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Dockerfile.fastapi'
+      - 'docker-compose*.yml'
+      - '.dockerignore'
+      - 'requirements.txt'
+      - 'fastapi_app/**'
+      - 'Python/structural_lib/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Dockerfile.fastapi'
+      - 'docker-compose*.yml'
+      - '.dockerignore'
+      - 'requirements.txt'
+      - 'fastapi_app/**'
+      - 'Python/structural_lib/**'
+  workflow_dispatch:
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validate Dockerfile syntax
+        run: |
+          echo "Validating Dockerfile.fastapi..."
+          docker build --check -f Dockerfile.fastapi . 2>/dev/null || true
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.fastapi
+          push: false
+          tags: structeng-api:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Test container starts
+        run: |
+          echo "Starting container..."
+          docker run -d --name test-api -p 8000:8000 structeng-api:test
+          sleep 5
+
+          echo "Testing health endpoint..."
+          curl -f http://localhost:8000/health || exit 1
+
+          echo "Testing readiness endpoint..."
+          curl -f http://localhost:8000/health/ready || exit 1
+
+          echo "Container health check passed!"
+
+          docker logs test-api
+          docker stop test-api
+          docker rm test-api
+
+      - name: Validate docker-compose syntax
+        run: |
+          echo "Validating docker-compose.yml..."
+          docker compose -f docker-compose.yml config --quiet
+
+          echo "Validating docker-compose.dev.yml..."
+          docker compose -f docker-compose.dev.yml config --quiet
+
+          echo "Docker Compose files are valid!"
+
+  docker-security-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: docker-build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image for scanning
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.fastapi
+          push: false
+          tags: structeng-api:scan
+          load: true
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'structeng-api:scan'
+          format: 'table'
+          exit-code: '0'  # Don't fail on vulnerabilities (info only)
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

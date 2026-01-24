@@ -1,11 +1,24 @@
+# Git
 .git
+.gitignore
+.github/
+
+# Python build/cache
 .venv
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.pytest_cache/
+*.egg-info/
+
+# Node.js (for React frontend)
+node_modules/
+.npm/
+
+# Project-specific exclusions
 .git_operations_log/
+git_operations_log/
 logs/
 tmp/
 docs/
@@ -16,3 +29,19 @@ Excel/
 VBA/
 metrics/
 clients/
+
+# Documentation/metadata
+*.md
+LICENSE*
+CITATION.cff
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+AUTHORS.md
+CHANGELOG.md
+llms.txt
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo

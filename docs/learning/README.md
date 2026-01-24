@@ -2,7 +2,7 @@
 
 A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the Python/VBA implementation.
 
-**Files:** 9 | **Updated:** 2026-01-11
+**Files:** 9 | **Updated:** 2026-01-25
 
 ---
 
@@ -14,6 +14,7 @@ A guided learning path for engineers new to this codebase. Written for those who
 | **Python developer** | [concepts-map.md](concepts-map.md) then [../architecture/](../architecture/README.md) | 2-3 days |
 | **Structural engineer** | [../getting-started/beginners-guide.md](../getting-started/beginners-guide.md) | 1-2 hours |
 | **Project owner** | [learning-plan.md](learning-plan.md) (follow advanced exercises) | 1 week |
+| **V3 Developer** | [v3-fastapi-learning-guide.md](v3-fastapi-learning-guide.md) | 1-2 days |
 
 ---
 
@@ -26,6 +27,16 @@ A guided learning path for engineers new to this codebase. Written for those who
 | 3 | [glossary.md](glossary.md) | Terminology definitions | All |
 | 4 | [exercises.md](exercises.md) | Practice exercises with solutions | Learners |
 | 5 | [guides.md](guides.md) | Additional learning resources | All |
+
+---
+
+## 🚀 V3 Infrastructure Guides (NEW)
+
+| # | File | Description | Audience |
+|---|------|-------------|----------|
+| 1 | [docker-fundamentals-guide.md](docker-fundamentals-guide.md) | Docker basics, setup, commands | Developers |
+| 2 | [v3-fastapi-learning-guide.md](v3-fastapi-learning-guide.md) | FastAPI patterns, WebSocket, SSE | V3 Developers |
+| 3 | [automation-foundation-learning-guide.md](automation-foundation-learning-guide.md) | Automation scripts, CI/CD | All Agents |
 
 ---
 

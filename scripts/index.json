@@ -1,9 +1,9 @@
 {
   "$schema": "scripts-index-schema",
   "version": "1.0.0",
-  "updated": "2026-01-24",
+  "updated": "2026-01-25",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 155,
+  "total_scripts": 157,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -270,7 +270,9 @@
         "check_fastapi_issues.py": "AST scanner for FastAPI anti-patterns (NEW)",
         "generate_api_routes.py": "Auto-generate FastAPI route definitions from API functions",
         "validate_schema_snapshots.py": "Validate Pydantic schemas against snapshots for contract testing",
-        "discover_api_signatures.py": "Discover API signatures BEFORE implementing wrappers (CRITICAL)"
+        "discover_api_signatures.py": "Discover API signatures BEFORE implementing wrappers (CRITICAL)",
+        "check_docker_config.py": "Validate Docker configuration (Dockerfile, compose, .dockerignore)",
+        "generate_client_sdks.py": "Generate Python + TypeScript client SDKs from OpenAPI spec"
       }
     }
   },
@@ -286,6 +288,10 @@
     "fix_links": ".venv/bin/python scripts/fix_broken_links.py --fix",
     "check_streamlit": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
     "check_fastapi": ".venv/bin/python scripts/check_fastapi_issues.py",
+    "check_docker": ".venv/bin/python scripts/check_docker_config.py",
+    "docker_up": "docker compose up --build",
+    "docker_dev": "docker compose -f docker-compose.dev.yml up --build",
+    "docker_down": "docker compose down",
     "benchmark_api": ".venv/bin/python scripts/benchmark_api.py --quick",
     "validate_contracts": ".venv/bin/python scripts/validate_api_contracts.py",
     "validate_docs": ".venv/bin/python scripts/check_doc_metadata.py",
