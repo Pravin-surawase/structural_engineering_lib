@@ -12,9 +12,6 @@ Week 3 Implementation - V3 Migration
 
 from __future__ import annotations
 
-import json
-from typing import Any
-
 import pytest
 from fastapi.testclient import TestClient
 
