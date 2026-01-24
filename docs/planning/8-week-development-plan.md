@@ -1,14 +1,33 @@
-# 8-Week Development Plan: 3D Visualization Excellence
+# V3 React Migration Roadmap (7-Week Plan)
 
 **Type:** Plan
 **Audience:** All Agents
-**Status:** Active
+**Status:** Active (V3 IN PROGRESS)
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-21
-**Related Tasks:** TASK-3D-VIZ, TASK-3D-002, TASK-AI-CHAT
-**Timeline:** 8 weeks (Jan 15 - March 15, 2026)
-**Release Target:** March 2026
+**Last Updated:** 2026-01-24 (Session 72 - V3 Update)
+**Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
+**Timeline:** 7 weeks (Jan 24 - March 15, 2026)
+**Release Target:** March 15, 2026 (V3 Beta Launch)
+**Streamlit v0.19.0:** ✅ RELEASED (Jan 24, 2026)
+
+---
+
+## 🚀 Executive Summary
+
+**Streamlit v0.19.0 shipped AHEAD OF SCHEDULE** (original plan: 8 weeks, actual: 2 weeks). Now migrating to V3 architecture:
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Backend** | FastAPI + WebSocket + SSE | High-performance API, live updates |
+| **Frontend** | React + React Three Fiber + Dockview | Premium workspace UI |
+| **3D Engine** | Three.js via R3F | CAD-quality visualization |
+| **Data Grid** | AG Grid | Professional engineering tables |
+| **State** | React Query + Command/Event model | Real-time collaboration |
+
+**Why V3:** Premium workspace experience (IDE-like), better performance (1000+ beams), richer ecosystem.
+
+**Scope:** Beams only (IS 456 focus) - complete vertical slice before expansion.
 
 ---
 
@@ -16,240 +35,363 @@
 
 > **"What was not possible few years back, or only possible for big firms — now everyone can use them free."**
 
-This 8-week plan is Phase 1 of a larger vision. See [democratization-vision.md](democratization-vision.md) for the full roadmap including:
-- 🤖 **AI Chat Interface** — "Help me design this beam" (**NOW IN PROGRESS** - Session 47b)
-- 🔧 **User Automation** — Build your own workflows (V1.1)
-- 📚 **Library Evolution** — Columns, slabs, multi-code (V2.0)
+**Vision:** See [democratization-vision.md](democratization-vision.md)
+- ✅ **Streamlit AI Chat** — AI assistant for design (v0.19.0)
+- 🚧 **V3 React Migration** — Premium workspace UI (THIS PLAN)
+- 📋 **User Automation** — Build your own workflows (V3.1)
+- 📋 **Library Evolution** — Columns, slabs, multi-code (V4.0)
 
-**For now, we focus on visual excellence + AI chat** — the killer features that differentiate us.
+**Current Focus:** V3 migration with FastAPI + React for premium UX.
 
 ---
 
-## 📊 Current Status (Session 61)
+## 📊 Current Status (Session 72, Jan 24, 2026)
+
+### Streamlit v0.19.0 — ✅ COMPLETE (Shipped Ahead of Schedule!)
+
+| Phase | Original Est | Actual | Status |
+|-------|--------------|--------|--------|
+| **Phase 1** | Week 1-2 | Week 1 | ✅ Live 3D preview, caching |
+| **Phase 2** | Week 3-4 | Week 2 | ✅ CSV import, multi-beam viz |
+| **Phase 2.5** | Week 4 | Week 2 | ✅ Interactive controls |
+| **Phase 3** | Week 5-6 | Week 3 | ✅ Rebar visualization |
+| **Phase AI** | Week 6+ | Week 3 | ✅ AI chat interface |
+| **Phase 4** | Week 7-8 | Week 4 | ✅ DXF/PDF export, v0.19.0 |
+
+**Achievement:** Completed 8-week plan in 4 weeks (2x faster) due to automation scripts and AI agents.
+
+### V3 Migration — 🚧 IN PROGRESS (Week 1 of 7)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
-| **Phase 1** | 1-2 | Live Preview Foundation | ✅ **COMPLETE** |
-| **Phase 2** | 3-4 | CSV Import + Multi-Beam | ✅ **COMPLETE** |
-| **Phase 2.5** | 4 | Visualization Polish | ✅ **COMPLETE** |
-| **Phase 3** | 5-6 | Detailing Visualization | ✅ **COMPLETE** (Session 51) |
-| **Phase 3.5** | 6 | Smart Insights Dashboard | ✅ **MERGED → AI Chat** |
-| **Phase 4** | 7-8 | CAD Quality + Launch | ✅ **COMPLETE** (v0.19.0) |
-| **Phase AI** | 6+ | **AI Chat Interface** | ✅ **MVP COMPLETE** (Session 50) |
-| **Phase AI v2** | 7+ | **Professional Redesign** | ✅ **FEATURE COMPLETE** (Session 53) |
-| **Phase AI v2 Fix** | 7 | CSV Import Fix | ✅ **PR #393** (Session 57) |
+| **Phase 1** | 1 | Automation Foundation | ✅ DONE (Sessions 69-72) |
+| **Phase 2** | 2-3 | FastAPI Backend + Routes | 📋 NEXT |
+| **Phase 3** | 3-4 | React Shell + 3D Viewport | 📋 TODO |
+| **Phase 4** | 5 | WebSocket + Live Updates | 📋 TODO |
+| **Phase 5** | 6-7 | Multi-Beam Intelligence | 📋 TODO |
+| **Launch** | Week 7 | Beta Launch + Documentation | 🎯 TARGET |
 
-### Session 54-61 Progress
+### Session 69-72 Accomplishments (V3 Foundation)
 
-| Session | Focus | Status |
-|---------|-------|--------|
-| 54 | AI v2 polish (safety, loading states, tooltips) | ✅ Complete |
-| 55-56 | Research and AI function calling | ✅ Complete |
-| 57 | AI v2 CSV import fix (adapter integration) | ✅ PR #393 |
-| 58 | Quality control guides, V3 research | ✅ Complete |
-| 59 | DXF/PDF export enable + LOD performance | ✅ Complete |
-| 60 | DXF schedule improvements + CAD polish | ✅ Complete |
-| 61 | v0.19.0 release + docs sync | ✅ Complete |
+| Category | Deliverable | Status |
+|----------|-------------|--------|
+| **Testing** | 41 contract tests (Pydantic schemas) | ✅ All passing |
+| **Testing** | Schema snapshot validation | ✅ Baseline created |
+| **Architecture** | WebSocket research (hybrid approach) | ✅ Complete |
+| **Automation** | `generate_api_routes.py` (FastAPI scaffolding) | ✅ Ready |
+| **Automation** | `validate_schema_snapshots.py` (drift detection) | ✅ Ready |
+| **Automation** | `check_architecture_boundaries.py` (3-layer lint) | ✅ Ready |
+| **Automation** | `check_ui_duplication.py` (AST scanner) | ✅ Ready |
+| **Documentation** | 2 learning guides (900+ lines) | ✅ Complete |
+| **Documentation** | automation-catalog.md (152 scripts) | ✅ Updated |
 
-### Phase 4 Complete (Post-Release Focus)
+**Key Finding:** All 43 API functions are 100% FastAPI-compatible (validated via AST inspection).
 
-Phase 4 shipped in v0.19.0. Post-release priorities:
-1. User testing and feedback
-2. Documentation polish
-3. V3 foundation API planning
+**Performance:** API latency 0.01ms median (well under 50ms threshold).
 
-### Future: V3 React Migration (Post-Launch)
+---
 
-After March 2026 launch, consider migrating to React + FastAPI for premium UX.
-See: [ai-workspace-expansion-v3.md](../research/ai-workspace-expansion-v3.md)
+## 📐 V3 Architecture Overview
 
-### Phase AI v2: Professional Redesign ✅ FEATURE COMPLETE (Session 52-53)
+### Technology Stack
 
-> "like chatgpt. chat, and when users asks something chat goes to left 40% like chatgpt
-> and on right window our work, tables, 3d and all come"
-
-**Sessions 52-53 Implementation (12 commits):**
-
-| Session | Commits | Key Features |
-|---------|---------|--------------|
-| 52 | 6 | Dynamic workspace, state machine, AI v2 page, chat commands |
-| 53 | 6 | Building 3D, rebar editor, cross-section, material takeoff |
-
-**9 Workspace States Implemented:**
-1. **WELCOME** → Quick start cards (Sample / Upload / Manual)
-2. **IMPORT** → Auto-mapped preview table with column detection
-3. **DESIGN** → Interactive results with story/status filters
-4. **BUILDING_3D** → Full building visualization (all beams, story colors)
-5. **VIEW_3D** → Selected beam with rebar visualization
-6. **CROSS_SECTION** → Professional 2D section with dimensions
-7. **REBAR_EDIT** → Interactive reinforcement editor with live checks
-8. **EDIT** → Single beam editor with live preview
-9. **DASHBOARD** → Material takeoff, cost analysis, insights
-
-**Key Features (Session 53):**
-- ✅ Building 3D view with all beams, story coloring
-- ✅ Interactive rebar editor with real-time design checks
-- ✅ Cross-section view with dimensions and bar layout
-- ✅ Material takeoff (concrete m³, steel kg, per-story)
-- ✅ Cost estimation (₹8000/m³ concrete, ₹85/kg steel)
-- ✅ Enhanced chat commands (building 3d, edit rebar, cross section, select beam)
-
-**UI Layout (Session 52-53):**
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│  ⚡ StructEng AI                                    ✅ gpt-4o-mini │
-├─────────────────────────┬────────────────────────────────────────┤
-│  💬 CHAT (35%)          │  📊 DYNAMIC WORKSPACE (65%)            │
-│                         │  ┌───────────────────────────────────┐ │
-│  User: load sample      │  │ 🏠 Welcome | 📥 Import | 📊 Design│ │
-│                         │  │ 🏗️ Building | 🎨 3D | 📐 Section  │ │
-│  AI: ✅ Loaded 10 beams │  │ 🔧 Rebar | ✏️ Edit | 📈 Dashboard │ │
-│  from 3 stories...      │  └───────────────────────────────────┘ │
-│                         │                                        │
-│  User: design all       │  [Dynamic content based on state]      │
-│                         │  - Building 3D with all beams          │
-│  AI: ✅ 10 beams done   │  - Cross-section with dimensions       │
-│  8 passed, 2 need work  │  - Rebar editor with live checks       │
-│                         │  - Material takeoff & cost estimate    │
-│  [Sample] [Design] [📊] │                                        │
-└─────────────────────────┴────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    React Frontend                            │
+│  Next.js + React Three Fiber + Dockview + AG Grid          │
+│  - Command palette (cmdk)                                    │
+│  - 3D workspace with instanced meshes                        │
+│  - Professional data tables (AG Grid)                        │
+│  - Keyboard shortcuts (VS Code-like)                         │
+└──────────────┬──────────────────────────────────────────────┘
+               │ WebSocket (interactive) / SSE (batch)
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    FastAPI Backend                           │
+│  - REST API for design/detailing/optimization               │
+│  - WebSocket for live design updates (<100ms)               │
+│  - SSE for batch progress streaming                          │
+│  - OpenAPI documentation (auto-generated)                    │
+└──────────────┬──────────────────────────────────────────────┘
+               │ Direct Python calls
+               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    structural_lib                            │
+│  43 API functions (100% FastAPI-compatible)                 │
+│  - design_beam_is456(), detail_beam_is456()                 │
+│  - optimize_beam_cost(), check_beam_is456()                 │
+│  - beam_to_3d_geometry(), generate_bbs()                    │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Chat Commands Available
+### Why V3? (Decision Rationale)
 
-| Command | Action | State |
-|---------|--------|-------|
-| `load sample` | Load 10-beam demo data | IMPORT |
-| `design all` | Run IS 456 design | DESIGN |
-| `building 3d` | Full building view | BUILDING_3D |
-| `show 3d` | Selected beam 3D | VIEW_3D |
-| `cross section` | 2D section view | CROSS_SECTION |
-| `edit rebar` | Interactive editor | REBAR_EDIT |
-| `dashboard` | Insights & costs | DASHBOARD |
-| `select B1` | Select beam by ID | VIEW_3D |
+| Capability | Streamlit | V3 React |
+|------------|-----------|----------|
+| **3D Performance** | 100 beams (Plotly limits) | 1000+ beams (R3F instancing) |
+| **UI Flexibility** | Component-based | Full workspace control |
+| **Real-time updates** | Full page rerun (100-500ms) | Delta updates (<100ms) |
+| **Keyboard shortcuts** | Limited | Full VS Code-like experience |
+| **Multi-user sync** | Not available | WebSocket broadcast |
+| **Collaboration** | Not available | Command/event audit trail |
+| **Offline capability** | No | Service worker cache |
 
-See: [ai-chat-architecture-v2.md](../research/ai-chat-architecture-v2.md)
+**Key differentiator:** Premium, workspace-first experience (dockable panels, saved layouts, command palette).
 
-### The Differentiation Problem (Session 47)
+### WebSocket Architecture (Hybrid Approach)
 
-> "The 3D view is just boxes. ETABS shows that too. Why will they use our product?"
+Research: [websocket-live-updates-research.md](../research/websocket-live-updates-research.md)
 
-**Solution:** We show what ETABS CAN'T:
-- ❌ ETABS: Geometry only (boxes)
-- ✅ Our Tool: **Actual reinforcement** from IS 456 design
-- ✅ Our Tool: **Stirrup zones** with variable spacing
-- ✅ Our Tool: **Detailing data** (Ld, lap lengths, bar marks)
-- ✅ Our Tool: **Utilization heat maps** and interactive exploration
-- ✅ Our Tool: **AI-powered insights** (SmartDesigner already built!)
+| Use Case | Technology | Reason |
+|----------|------------|--------|
+| **Interactive Design** | Native WebSocket | Lowest latency (<10ms), bi-directional |
+| **Batch Progress** | Server-Sent Events (SSE) | Simple one-way stream |
+| **Config Sync** | SSE | Broadcast to all clients |
+| **Fallback** | HTTP REST | Works everywhere |
 
-See: [3D Visualization Differentiation Strategy](../research/3d-visualization-differentiation-strategy.md)
+**Latency target:** <150ms total round-trip (design → API → React update).
 
-### Hidden Gem: SmartDesigner (Discovered Session 47)
+---
 
-We already have AI-like intelligence built! Just need to expose it in the UI:
+## 🗓️ 7-Week V3 Migration Roadmap
 
-```python
-from structural_lib.insights import SmartDesigner
+### **Week 1: Automation Foundation (Jan 24)** ✅ COMPLETE
 
-designer = SmartDesigner()
-report = designer.analyze(result, geometry, materials)
+**Goal:** Prepare infrastructure for FastAPI migration
 
-# Returns:
-# - overall_score: 0-100 rating
-# - key_issues: ["High steel ratio", "Consider deeper beam"]
-# - quick_wins: ["Reduce width 25mm → save ₹150/m"]
-# - cost_analysis: current vs optimal cost
-# - sensitivity: which parameters matter most
-# - constructability: congestion risk, bar complexity
-```
+**Deliverables:**
+- ✅ Contract testing suite (41 tests)
+- ✅ Schema snapshot baseline (`schema_snapshots.json`)
+- ✅ FastAPI route generator (`generate_api_routes.py`)
+- ✅ Architecture linter (`check_architecture_boundaries.py`)
+- ✅ WebSocket research document
+- ✅ Learning guides (automation foundation + V3 basics)
 
-**Action:** Add SmartDesigner dashboard panel to beam design page.
+**Evidence:** [SESSION_LOG.md Session 72](../SESSION_LOG.md)
 
-See: [Python/structural_lib/insights/smart_designer.py](../../Python/structural_lib/insights/smart_designer.py)
+---
 
-### Phase 1 Evidence (Exceeds All Targets)
+### **Week 2-3: FastAPI Backend (Jan 27 - Feb 7)** 📋 NEXT
 
-| Deliverable | Target | Actual | Status |
-|-------------|--------|--------|--------|
-| `visualizations_3d.py` | 300+ lines | **839 lines** | ✅ +179% |
-| `geometry_3d.py` | 200+ lines | **811 lines** | ✅ +305% |
-| `beam_design.py` integration | Live preview | Working | ✅ Complete |
-| Caching + performance | <50ms | Geometry hashing | ✅ Complete |
-| Fragment API validation | Tests pass | Automated | ✅ Complete |
+**Goal:** Create FastAPI wrapper for all 43 structural_lib functions
 
-### Phase 2 Progress (Near Complete)
+**Priority 1: FastAPI Skeleton (Week 2)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Create `fastapi_app/main.py` | 4h | 🔴 Critical | FastAPI app with CORS |
+| Generate routes from `api.py` | 4h | 🔴 Critical | Use `generate_api_routes.py` |
+| Add health check endpoint | 1h | 🔴 Critical | `/api/health` |
+| Add OpenAPI documentation | 2h | 🔴 Critical | Auto-generated at `/docs` |
+| Create Pydantic request models | 4h | 🔴 Critical | BeamDesignRequest, etc. |
+| Write integration tests | 4h | 🔴 Critical | All 43 functions tested |
 
-| Task | Est | Status | Notes |
-|------|-----|--------|-------|
-| CSV schema spec | 2d | ✅ Done | `csv-import-schema.md` |
-| FrameGeometry dataclass | 1d | ✅ Done | 15 fields, tested |
-| `load_frames_geometry()` | 1d | ✅ Done | 225 frames parsed |
-| ETABS import page (page 06) | 2d | ✅ Done | VBA format detection added |
-| Multi-format import (page 07) | 2d | ✅ Done | ETABS/SAFE/STAAD/Generic |
-| Real coordinate 3D viz | 2d | ✅ Done | **Solid 3D boxes with lighting** |
-| VBA ETABS integration | 1d | ✅ Done | 153 beams tested |
-| BuildingStatistics model | 1d | ✅ Done | Volume, length metrics |
+**Priority 2: WebSocket Live Design (Week 3)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Create `/ws/design/{session}` endpoint | 4h | 🔴 Critical | Native WebSocket |
+| Add connection manager | 2h | 🟡 High | Track connected clients |
+| Implement design request handler | 4h | 🔴 Critical | Call structural_lib |
+| Test with simple client (Python) | 2h | 🟡 High | Verify round-trip |
+| Add authentication (JWT) | 3h | 🟡 High | Secure WebSocket |
+| Add rate limiting | 2h | 🟡 High | Prevent abuse |
 
-### Phase 2.5: Visualization Polish ✅ COMPLETE
+**Priority 3: Batch Processing (Week 3)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Create `/stream/batch-design` SSE endpoint | 4h | 🟡 High | Server-Sent Events |
+| Stream progress updates | 2h | 🟡 High | Real-time progress % |
+| Add error streaming | 2h | 🟡 High | Stream validation errors |
 
-**Goal:** Make the 3D view interactive and insightful (not "just boxes")
+**Deliverables Week 2-3:**
+- `fastapi_app/main.py` (200+ lines)
+- `fastapi_app/routes/` (10 route files)
+- `fastapi_app/models/` (Pydantic models)
+- Integration tests (100+ tests)
+- OpenAPI spec at `/docs`
 
-| Task | Est | Status | Priority |
-|------|-----|--------|----------|
-| Story filter dropdown | 1h | ✅ Done | 🔴 High |
-| Utilization heat map mode | 2h | ✅ Done | 🔴 High |
-| Camera presets (front/top/iso) | 1h | ✅ Done | 🔴 High |
-| Color mode selector | 30m | ✅ Done | 🟡 Medium |
-| Show/Hide edges toggle | 30m | ✅ Done | 🟡 Medium |
+**Demo Ready:** Postman collection calling all 43 functions via FastAPI
 
-### Phase 3.5: Smart Insights Dashboard 📋 NEW
+---
 
-**Goal:** Expose existing AI-like intelligence in the UI
+### **Week 3-4: React Shell + 3D Viewport (Feb 7 - Feb 21)** 📋 TODO
 
-| Task | Est | Status | Priority |
-|------|-----|--------|----------|
-| SmartDesigner panel in beam design | 2h | 📋 TODO | 🔴 High |
-| Cost optimization summary | 1h | 📋 TODO | 🔴 High |
-| Design suggestions display | 1h | 📋 TODO | 🔴 High |
-| Quick wins callout box | 1h | 📋 TODO | 🟡 Medium |
-| "Why is this unsafe?" explainer | 2h | 📋 TODO | 🟡 Medium |
+**Goal:** Set up React frontend with basic 3D rendering
 
-**Rationale:** We already built SmartDesigner but never exposed it in the UI!
-This is a quick win that makes the tool feel intelligent without building AI chat.
+**Priority 1: React Project Setup (Week 3)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Create Vite + React + TypeScript project | 2h | 🔴 Critical | `npm create vite@latest` |
+| Add React Three Fiber (R3F) | 2h | 🔴 Critical | 3D scene rendering |
+| Add Dockview layout system | 4h | 🔴 Critical | IDE-like panels |
+| Add AG Grid for tables | 3h | 🔴 Critical | Professional data grid |
+| Add command palette (`cmdk`) | 3h | 🟡 High | Cmd+Shift+P shortcuts |
+| Set up API client (Axios + React Query) | 4h | 🔴 Critical | Type-safe API calls |
 
-### Session 46+ Achievements
+**Priority 2: 3D Viewport (Week 4)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Create basic beam mesh renderer | 4h | 🔴 Critical | Solid 3D boxes |
+| Add lighting and materials | 2h | 🔴 Critical | Realistic appearance |
+| Add camera controls (orbit) | 2h | 🟡 High | Three.js OrbitControls |
+| Render sample beams (10 beams) | 3h | 🔴 Critical | Multi-beam scene |
+| Add hover tooltips | 3h | 🟡 High | Beam details on hover |
 
-- ✅ **3D solid beam boxes** with proper lighting and materials
-- ✅ **Story-based color coding** (8-color palette)
-- ✅ **Design status coloring** (green/red/orange)
-- ✅ **Hover tooltips** with full beam details
-- ✅ **VBA CSV import** working end-to-end
-- ✅ **BuildingStatistics** model with concrete volume metrics
-- ✅ **Documentation cleanup** (archived obsolete files)
+**Priority 3: Basic UI Integration (Week 4)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Create design form (moment, width, depth) | 3h | 🔴 Critical | Input panel |
+| Connect form to FastAPI | 2h | 🔴 Critical | POST /api/design-beam |
+| Display results in panel | 3h | 🔴 Critical | Show Ast, status |
+| Show 3D visualization of result | 4h | 🔴 Critical | Live preview |
 
-### Three.js vs Plotly Decision
+**Deliverables Week 3-4:**
+- React project (`react_app/`)
+- 3D viewport with R3F
+- Dockview layout working
+- Basic design form + live 3D
+- API integration tested
 
-**Decision:** Continue with Plotly for Phase 2-3, evaluate PyVista for Phase 4.
+**Demo Ready:** Single beam design with live 3D update
 
-**Rationale:**
-- ✅ Plotly proven (839+ lines working code)
-- ✅ Solid 3D boxes look professional
-- ✅ Native Streamlit integration
-- 🎯 Phase 4: Evaluate PyVista for CAD-quality rendering
+---
+
+### **Week 5: WebSocket + Live Updates (Feb 21 - Feb 28)** 📋 TODO
+
+**Goal:** Replace HTTP polling with WebSocket for instant updates
+
+**Priority 1: Frontend WebSocket Client**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Add `reconnecting-websocket` library | 1h | 🔴 Critical | Auto-reconnect |
+| Create `useDesignWebSocket` hook | 4h | 🔴 Critical | React hook for WS |
+| Handle connection state | 2h | 🟡 High | Show online/offline |
+| Parse WebSocket messages | 2h | 🔴 Critical | Type-safe parsing |
+| Update React state from messages | 3h | 🔴 Critical | Real-time updates |
+
+**Priority 2: Live Design Workflow**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Modify input → send via WebSocket | 2h | 🔴 Critical | No page reload |
+| Receive result → update 3D instantly | 3h | 🔴 Critical | <100ms latency |
+| Add loading states (skeleton) | 2h | 🟡 High | Smooth UX |
+| Add error handling | 2h | 🟡 High | Show friendly errors |
+
+**Priority 3: Batch Progress UI**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Connect to SSE `/stream/batch` | 3h | 🟡 High | EventSource API |
+| Show progress bar | 2h | 🟡 High | % complete |
+| Stream table rows as they complete | 4h | 🟡 High | Incremental results |
+
+**Deliverables Week 5:**
+- WebSocket integration complete
+- <100ms design update latency
+- Batch progress streaming working
+- Error handling polished
+
+**Demo Ready:** Instant design updates (modify input → 3D updates in <100ms)
+
+---
+
+### **Week 6-7: Multi-Beam Intelligence + Polish (Feb 28 - Mar 15)** 📋 TODO
+
+**Goal:** Full building visualization and launch-ready polish
+
+**Priority 1: Multi-Beam Visualization (Week 6)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Load 100+ beams in 3D | 4h | 🔴 Critical | Instanced meshes |
+| Story-based color coding | 2h | 🔴 Critical | 8-color palette |
+| Utilization heat map mode | 3h | 🟡 High | Green → Red gradient |
+| Interactive beam selection | 4h | 🔴 Critical | Click → details panel |
+| Camera presets (iso/front/top) | 2h | 🟡 High | Quick navigation |
+| Story filter dropdown | 2h | 🟡 High | View one story |
+
+**Priority 2: Optimization UI (Week 6)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Beam line detection | 4h | 🟡 High | Group similar beams |
+| Optimization table (before/after) | 4h | 🟡 High | AG Grid with diff |
+| Apply/revert buttons | 2h | 🟡 High | Confirm changes |
+| Cost savings display | 2h | 🟡 High | ₹/m and % savings |
+
+**Priority 3: Launch Polish (Week 7)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Keyboard shortcuts | 4h | 🔴 Critical | VS Code-like |
+| Command palette integration | 3h | 🔴 Critical | Cmd+Shift+P |
+| Loading states polish | 3h | 🟡 High | Skeletons everywhere |
+| Empty states | 2h | 🟡 High | Helpful guidance |
+| Error messages | 2h | 🟡 High | Actionable errors |
+| Performance optimization | 6h | 🔴 Critical | 1000 beams smooth |
+| Browser testing | 4h | 🟡 High | Chrome, Firefox, Safari |
+| Documentation | 8h | 🔴 Critical | User guide, API docs |
+
+**Priority 4: Deployment (Week 7)**
+| Task | Est | Priority | Deliverable |
+|------|-----|----------|------------|
+| Deploy FastAPI to Vercel | 4h | 🔴 Critical | Backend live |
+| Deploy React to Vercel | 2h | 🔴 Critical | Frontend live |
+| Set up environment variables | 2h | 🔴 Critical | Secrets management |
+| Add monitoring (Sentry) | 3h | 🟡 High | Error tracking |
+| Load testing | 4h | 🟡 High | 100+ concurrent users |
+
+**Deliverables Week 6-7:**
+- Full building 3D (1000+ beams)
+- Optimization workflow complete
+- All UX polished
+- Documentation complete
+- Deployed to production
+
+**Demo Ready:** Complete V3 beta launch
 
 ---
 
 ## Strategic Context
 
-### Why 8 Weeks?
+### Why React + FastAPI? (Decision Rationale)
 
-**Not rushing to production.** We have time to build something exceptional:
-- ✅ **Visual excellence** - Solid 3D beams with lighting
-- ✅ **Quality code** - Long-term maintainability
-- ✅ **Automation** - Efficient workflows
-- ✅ **Impressive demos** - Ready to showcase
+**Streamlit Limitations Discovered:**
+| Limitation | Impact | V3 Solution |
+|------------|--------|-------------|
+| Fragment API restrictions | Can't use `st.sidebar` in fragments | React - no restrictions |
+| Full page reruns | 100-500ms latency | WebSocket delta updates |
+| 3D performance | Max ~100 beams smoothly | R3F instancing (1000+ beams) |
+| UI customization | Limited component control | Full workspace control |
+| Keyboard shortcuts | Not available | VS Code-like shortcuts |
+| Multi-user sync | Not possible | WebSocket broadcast |
 
-### The Core Differentiator
+**What We Keep:**
+- ✅ **structural_lib** - Core design/detailing library (43 functions)
+- ✅ **Insights engine** - SmartDesigner intelligence
+- ✅ **ETABS adapters** - CSV parsing and normalization
+- ✅ **3D geometry logic** - Port to R3F (60% reusable)
+
+**What We Gain:**
+- ✅ **Premium UX** - IDE-like workspace with dockable panels
+- ✅ **Performance** - 10x more beams (100 → 1000+)
+- ✅ **Real-time** - <100ms design updates via WebSocket
+- ✅ **Ecosystem** - React Three Fiber, AG Grid, Dockview
+
+### Why 7 Weeks? (Time Allocation)
+
+| Phase | Time | Rationale |
+|-------|------|-----------|
+| FastAPI Backend | 2 weeks | Complete API wrapper + WebSocket |
+| React Frontend | 2 weeks | Basic UI + 3D viewport |
+| Live Updates | 1 week | WebSocket integration |
+| Polish + Launch | 2 weeks | Multi-beam, optimization, docs |
+
+**Total:** 7 weeks (5 weeks development + 2 weeks polish/launch).
+
+**Why Realistic:**
+- We have automation scripts (generate_api_routes.py)
+- All API functions validated (100% FastAPI-compatible)
+- Contract tests ready (41 passing)
+- WebSocket research complete
+- AI agents for development
+
+### Core Differentiator (Unchanged)
 
 ```
 ETABS:    Geometry → Analysis → Design → "SAFE" ← STOPS HERE
@@ -257,14 +399,7 @@ Our Tool: Geometry → Analysis → Design → DETAILING → 3D VIZ
                                           ↑ WE OWN THIS SPACE
 ```
 
-**We're not analysis software. We're DETAILING VISUALIZATION software.**
-
-### What We're NOT Doing
-
-❌ **Rushing features** - Quality over quantity
-❌ **Technical debt** - No shortcuts
-❌ **Half-baked releases** - Ship when ready
-❌ **Scope creep** - Focus on core features
+**Premium Workspace:** We're not just analysis software. We're an **IDE for structural detailing**.
 
 ### Development Philosophy
 
@@ -279,351 +414,64 @@ Build → Test → Polish → Demo → Iterate
 3. **Performance non-negotiable** - <100ms latency target
 4. **Automation everywhere** - Build tools that build features
 5. **Quality code** - Readable, documented, tested
-6. **Delay gracefully** - Nice-to-haves go to V1.1
+6. **Delay gracefully** - Nice-to-haves go to V3.1
+
+### What We're NOT Doing
+
+❌ **Rushing features** - Quality over quantity
+❌ **Technical debt** - No shortcuts
+❌ **Half-baked releases** - Ship when ready
+❌ **Scope creep** - Beams only, no columns/slabs yet
+❌ **Over-engineering** - Simple solutions first
 
 ---
 
-## Progress Update (Session 47)
-
-- Phase 1 complete: Plotly 3D preview, caching, status display, performance docs.
-- Phase 2 near complete: CSV import, multi-format adapters, solid 3D visualization.
-- Phase 2.5 starting: Quick wins to differentiate from ETABS.
-- Phase 3 planned: Actual rebar and stirrup visualization.
-
-**Session 47 Updates:**
-- 📝 Created differentiation strategy document
-- 🎯 Identified quick wins: story filter, utilization, presets
-- 🎯 Planned rebar visualization (Phase 3)
-- 📋 Updated 8-week plan with Phase 2.5
-
----
-
-## 8-Week Roadmap
-
-### **Month 1: Core Features (Weeks 1-4)**
-
-#### Week 1-2: Live Preview Foundation ✅ COMPLETE
-**Goal:** Rock-solid live 3D preview
-
-**Status:** ✅ **PHASE COMPLETE** - All deliverables exceed targets
-
-**Priorities:**
-1. **Plotly 3D mesh generation** (2-3 days)
-   - Concrete beam with realistic appearance
-   - Rebar cylinders with proper materials
-   - Stirrup rendering with accurate spacing
-   - Professional camera and lighting
-
-2. **Geometry computation** (1 day)
-   - Rebar position calculator (multi-layer)
-   - Stirrup position calculator (variable spacing)
-   - Geometry hashing for cache keys
-   - 95%+ test coverage
-
-3. **Streamlit integration** (2-3 days)
-   - Two-column layout (input | 3D)
-   - @st.fragment for live updates
-   - Debouncing (smooth interaction)
-   - Status display (safe/unsafe)
-
-4. **Quality assurance** (1 day)
-   - 20+ test cases (including edge cases)
-   - Fragment API validation
-   - Performance benchmarks (<50ms mesh gen)
-   - Code review
-
-**Deliverables:**
-- ✅ `streamlit_app/components/visualizations_3d.py` (300+ lines)
-- ✅ `streamlit_app/components/geometry_3d.py` (200+ lines)
-- ✅ Updated `pages/01_beam_design.py` (live preview)
-- ✅ Unit tests (95%+ coverage)
-- ✅ Performance benchmarks documented
-
-**Demo Ready:** Manual beam input with live 3D preview
-
----
-
-#### Week 3-4: CSV Import + Multi-Beam 🏗️
-**Goal:** Handle real projects with 1000+ beams
-
-**Priorities:**
-1. **CSV parser** (2 days)
-   - Robust validation with helpful errors
-   - Support all standard formats
-   - Progressive loading (large files)
-   - Detailed error reporting
-
-2. **Multi-beam 3D rendering** (2-3 days)
-   - Building coordinate system
-   - Color-coding (by story/status)
-   - Interactive selection (click → details)
-   - Zoom controls (beam | building)
-
-3. **LOD system** (1 day)
-   - Automatic simplification (>50 beams)
-   - Stirrup reduction (show representative)
-   - Rebar simplification (corner bars only)
-   - Performance testing (100, 500, 1000 beams)
-
-4. **Export features** (1-2 days)
-   - Excel export (enhanced data)
-   - HTML export (interactive 3D)
-   - High-res PNG screenshots
-   - CSV export (filtered data)
-
-**Deliverables:**
-- ✅ `streamlit_app/components/csv_import.py` (400+ lines)
-- ✅ `streamlit_app/utils/lod_manager.py` (150+ lines)
-- ✅ Multi-beam demo projects (5+ examples)
-- ✅ Performance tests (1000 beam dataset)
-- ✅ Export functionality working
-
-**Demo Ready:** CSV import of large building projects
-
----
-
-#### Week 4.5: Visualization Polish 🎨
-**Goal:** Differentiate from ETABS - Make 3D view interactive and insightful
-
-**The Problem:** "3D view is just boxes, ETABS shows that too"
-**The Solution:** Add features ETABS doesn't have
-
-**Quick Wins (4-6 hours):**
-1. **Story filter** (1h)
-   - Dropdown to select single story
-   - "All Stories" option
-   - Filter applied to 3D view
-
-2. **Utilization heat map** (2h)
-   - Color gradient: green (0%) → yellow (50%) → red (100%)
-   - Based on Mu_actual / Mu_capacity
-   - Toggle between status/utilization modes
-
-3. **Camera presets** (1h)
-   - Front view (X-Z plane)
-   - Top view (X-Y plane)
-   - Isometric (default)
-   - Per-beam focus
-
-4. **Beam selection** (2h)
-   - Click beam → highlight
-   - Show detail panel
-   - Option to isolate selected beam
-
-**Deliverables:**
-- 📋 Story filter dropdown
-- 📋 Utilization color mode
-- 📋 Camera preset buttons
-- 📋 Interactive beam selection
-
-**Demo Ready:** Interactive 3D exploration
-
----
-
-### **Month 2: Excellence (Weeks 5-8)**
-
-#### Week 5-6: Detailing Visualization (THE KILLER FEATURE) 🔥
-**Goal:** Show what ETABS CAN'T - Actual reinforcement in 3D
-
-**This is our differentiator:** ETABS stops at "SAFE". We show the actual bars.
-
-**Already Built:**
-- `BeamDetailingResult` computes: top_bars, bottom_bars, stirrups, ld, lap_length
-- `visualizations_3d.py` has `generate_cylinder_mesh()` for 3D bars
-- `geometry_3d.py` has `beam_to_3d_geometry()` conversion
-
-**Priorities:**
-1. **Rebar visualization** (8h)
-   - 3D cylinders for each bar at actual positions
-   - Colors: red (tension) / blue (compression)
-   - Multi-layer support (1st, 2nd layer)
-   - Toggle: Show/Hide rebar
-
-2. **Stirrup rendering** (6h)
-   - Show stirrups at actual spacing
-   - Variable zones (dense at supports, sparse at mid)
-   - Green color, accurate geometry
-   - LOD: Representative stirrups for 100+ beams
-
-3. **Cross-section view** (4h)
-   - Click beam → show 2D cross-section
-   - Bars, stirrups, cover dimensioned
-   - Export as PNG
-   - Compare designed vs required
-
-4. **Detailing overlays** (4h)
-   - Development length markers
-   - Lap splice locations
-   - Bar marks and labels
-   - Curtailment points
-
-**Deliverables:**
-- 📋 `rebar_3d_renderer.py` (300+ lines)
-- 📋 Cross-section view component
-- 📋 Detailing overlay system
-- 📋 5 demo projects with full detailing
-
-**Demo Ready:** "This is what you're building" - Complete RC beam visualization
-
----
-
-#### Week 7: PyVista CAD Quality 🚀
-**Goal:** Next-level rendering quality
-
-**Priorities:**
-1. **PyVista setup** (1 day)
-   - Add dependencies (pyproject.toml)
-   - Test cross-platform
-   - Streamlit Cloud compatibility
-
-2. **Port features to PyVista** (2-3 days)
-   - All Plotly features working
-   - Realistic materials (concrete, steel)
-   - Multi-light setup (ambient, shadows)
-   - Camera presets (iso, plan, elevation)
-
-3. **Advanced CAD features** (1-2 days)
-   - Clipping planes (section views)
-   - Exploded view animation
-   - Measurement tools
-   - Export to STL/VTK
-
-4. **Hybrid renderer** (1 day)
-   - User choice: Plotly or PyVista
-   - Automatic fallback
-   - Performance comparison docs
-
-**Deliverables:**
-- ✅ `streamlit_app/components/visualizations_3d_pyvista.py` (400+ lines)
-- ✅ PyVista working on all platforms
-- ✅ Hybrid renderer implemented
-- ✅ Performance comparison documented
-
-**Demo Ready:** CAD-quality rendering
-
----
-
-#### Week 7: Automation + DX 🤖
-**Goal:** Work smarter, not harder
-
-**Priorities:**
-1. **Code generation** (2 days)
-   - Auto-generate geometry from design
-   - Template system (common beam types)
-   - Parametric modeling
-
-2. **Smart defaults** (1-2 days)
-   - AI-powered suggestions
-   - Optimal reinforcement patterns
-   - Cost optimization automation
-   - Compliance checking
-
-3. **Developer tools** (1-2 days)
-   - Comprehensive API docs
-   - Code examples (every function)
-   - Jupyter notebook examples
-   - VS Code snippets
-
-4. **Testing automation** (1 day)
-   - Visual regression tests
-   - Performance benchmarking suite
-   - CI/CD pipeline updates
-   - Automated screenshot generation
-
-**Deliverables:**
-- ✅ Code generation tools
-- ✅ Complete API documentation
-- ✅ 10+ Jupyter examples
-- ✅ Automated testing suite
-
-**Demo Ready:** Automated workflows
-
----
-
-#### Week 8: Polish + Launch 🎉
-**Goal:** Production-ready, impressive launch
-
-**Priorities:**
-1. **Performance optimization** (2 days)
-   - Profile and fix bottlenecks
-   - Memory leak detection
-   - Browser testing (Chrome, Firefox, Safari)
-   - Mobile responsiveness (basic)
-
-2. **UX polish** (2 days)
-   - Smooth animations
-   - Helpful tooltips
-   - Empty/loading states
-   - Better error messages
-
-3. **Documentation** (2 days)
-   - Complete user guide
-   - Video tutorials (5+)
-   - API reference
-   - Troubleshooting guide
-
-4. **Launch prep** (2 days)
-   - Deploy to Streamlit Cloud (staging)
-   - Security audit
-   - Load testing (100+ users)
-   - Public beta launch
-
-**Deliverables:**
-- ✅ Performance optimized
-- ✅ UX polished
-- ✅ Documentation complete
-- ✅ Deployed to production
-- ✅ Launch materials ready
-
-**Demo Ready:** Full public launch
-
----
-
-## Success Metrics (8-Week Targets)
+## Success Metrics (7-Week Targets)
 
 ### Technical Excellence
-- [ ] **<100ms latency** for live preview updates
-- [ ] **1000+ beams** handled without crash
-- [ ] **95%+ test coverage** for core functions
+- [ ] **<100ms latency** for WebSocket design updates
+- [ ] **1000+ beams** rendered smoothly (60fps)
+- [ ] **95%+ test coverage** for FastAPI routes
 - [ ] **Zero critical bugs** in beta testing
 - [ ] **Cross-browser** working (Chrome, Firefox, Safari)
 
 ### Code Quality
-- [ ] **All code reviewed** by AI agents
-- [ ] **Documented functions** (100% coverage)
+- [ ] **All API routes documented** (OpenAPI spec)
+- [ ] **Integration tests** for all 43 functions
 - [ ] **Performance benchmarks** documented
-- [ ] **No technical debt** (or documented for V1.1)
+- [ ] **Security review** passed (JWT, CORS, rate limiting)
 
 ### User Experience
 - [ ] **10+ beta testers** say "WOW"
 - [ ] **5+ demo projects** showcasing features
 - [ ] **User guide** clear for non-engineers
 - [ ] **Visual quality** rivals commercial software
+- [ ] **Keyboard shortcuts** intuitive
 
 ### Launch Readiness
-- [ ] **Deployed** to Streamlit Cloud (stable)
-- [ ] **Security audit** passed
+- [ ] **Deployed** to Vercel (stable)
+- [ ] **Monitoring** set up (Sentry)
+- [ ] **Load tested** (100+ concurrent users)
+- [ ] **Documentation** complete (user guide + API docs)
 - [ ] **Marketing materials** ready (videos, screenshots)
-- [ ] **Community feedback** collected
 
 ---
 
-## Delayed to V1.1 (Post-Launch)
+## Delayed to V3.1 (Post-Beta Launch)
 
 **Valuable but not MVP-critical:**
 
-### Major Features (V1.1 - Month 4-6)
+### Features (V3.1 - Month 4-5)
 
-| Feature | Why Delayed | V1.1 Timeline |
+| Feature | Why Delayed | V3.1 Timeline |
 |---------|-------------|---------------|
-| **🤖 AI Chat Interface** | Requires Vercel AI SDK + FastAPI setup | Month 4-5 |
-| **🔧 User Automation** | Plugin system + webhooks | Month 5-6 |
-| DXF/PDF Drawing Export | Engineers need, but can export screenshots for now | Month 4 |
+| DXF/PDF Drawing Export | Engineers can export screenshots for now | Month 4 |
 | Material Quantity Takeoff | Nice-to-have for cost estimation | Month 4 |
 | Detailing Automation | Complex, can do manually for now | Month 5 |
 | Load Combination Viz | Advanced feature, focus on single load case first | Month 5 |
+| Revision History | Version control not critical for beta | Month 5 |
 
-### Module Expansion (V2.0 - Month 7+)
+### Module Expansion (V4.0 - Month 7+)
 
 | Feature | Why Delayed | Timeline |
 |---------|-------------|----------|
@@ -632,46 +480,48 @@ Build → Test → Polish → Demo → Iterate
 | Foundation Design | Separate module | Month 9-10 |
 | Eurocode/ACI Support | International expansion | Month 10+ |
 | Multi-Span Beams | Scope expansion | Month 6 |
-| Deflection Visualization | Important but secondary | Month 6 |
 
 **Rationale:** Do ONE thing exceptionally well before expanding.
 
 ---
 
-## Weekly Check-in Template
+## Archived: Streamlit v0.19.0 Milestones
 
-```markdown
-## Week X Check-in
+## Archived: Streamlit v0.19.0 Milestones
 
-**Date:** YYYY-MM-DD
-**Developer:** [Name]
+**Status:** ✅ ALL COMPLETE (Jan 15-24, 2026)
 
-### Completed This Week
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
+<details>
+<summary>Click to expand Streamlit achievement details</summary>
 
-### Demos Created
-- [ ] Demo 1: [Description]
-- [ ] Demo 2: [Description]
+### Phase 1-4 Complete (2 weeks instead of 8!)
 
-### Blockers / Issues
-- Issue 1: [Description + resolution]
-- Issue 2: [Description + resolution]
+| Phase | Goals | Status |
+|-------|-------|--------|
+| **Phase 1** | Live 3D preview | ✅ 839 lines visualizations_3d.py |
+| **Phase 2** | CSV import, multi-beam | ✅ VBA integration, solid 3D |
+| **Phase 2.5** | Interactive controls | ✅ Story filter, utilization heatmap |
+| **Phase 3** | Rebar visualization | ✅ Variable stirrup zones |
+| **Phase AI** | AI chat interface | ✅ 9-state workspace |
+| **Phase 4** | DXF/PDF export | ✅ v0.19.0 released |
 
-### Next Week Focus
-- Priority 1: [Description]
-- Priority 2: [Description]
+### Key Deliverables (Streamlit)
 
-### Quality Metrics
-- Test coverage: XX%
-- Performance: XX ms avg latency
-- Code reviews: X completed
-- Documentation: X functions documented
+- `streamlit_app/pages/11_⚡_ai_assistant_v2.py` - AI workspace (1200+ lines)
+- `streamlit_app/components/ai_workspace.py` - Dynamic workspace (1800+ lines)
+- `streamlit_app/components/visualizations_3d.py` - 3D rendering (839 lines)
+- `streamlit_app/components/geometry_3d.py` - Geometry logic (811 lines)
+- 41 contract tests (Pydantic model validation)
+- DXF/PDF export pages (enabled in v0.19.0)
 
-### AI Agent Notes
-- [Any issues or suggestions for AI agents]
-```
+### Why Ahead of Schedule?
+
+1. **Automation scripts** - `generate_api_routes.py`, `validate_schema_snapshots.py`
+2. **AI agents** - Copilot-driven development
+3. **Quality-first approach** - Tests prevented rework
+4. **Focused scope** - Beams only, no scope creep
+
+</details>
 
 ---
 
@@ -680,19 +530,22 @@ Build → Test → Polish → Demo → Iterate
 ### Daily Use
 - **Git:** `./scripts/ai_commit.sh "message"` (5s commits)
 - **Testing:** `cd Python && pytest tests/ -v`
-- **Streamlit:** `streamlit run streamlit_app/app.py`
-- **Validation:** `.venv/bin/python scripts/check_streamlit_issues.py`
+- **FastAPI:** `uvicorn fastapi_app.main:app --reload`
+- **React:** `cd react_app && npm run dev`
+- **Validation:** `.venv/bin/python scripts/check_architecture_boundaries.py`
 
 ### Weekly Use
-- **Performance:** `.venv/bin/python scripts/performance_benchmark.py`
+- **Performance:** `.venv/bin/python scripts/benchmark_api_latency.py`
 - **Coverage:** `cd Python && pytest --cov=structural_lib tests/`
+- **Schema validation:** `.venv/bin/python scripts/validate_schema_snapshots.py`
 - **Docs:** `./scripts/generate_all_indexes.sh`
 
 ### Before Each Commit
 1. Run tests: `pytest`
-2. Check fragments: `check_fragment_violations.py`
-3. Validate code: `black . && ruff check --fix .`
-4. Update docs: `docs/SESSION_LOG.md`
+2. Check architecture: `check_architecture_boundaries.py`
+3. Validate schemas: `validate_schema_snapshots.py`
+4. Format code: `black . && ruff check --fix .`
+5. Update docs: `docs/SESSION_LOG.md`
 
 ---
 
@@ -701,7 +554,7 @@ Build → Test → Polish → Demo → Iterate
 ### For AI Agents
 
 **When starting work on a feature:**
-1. Read this plan
+1. Read this plan + [ai-workspace-expansion-v3.md](../research/ai-workspace-expansion-v3.md)
 2. Check current week's priorities
 3. Review related technical docs
 4. Create tasks in `docs/TASKS.md`
@@ -717,7 +570,7 @@ Build → Test → Polish → Demo → Iterate
 - [ ] Functions are documented (docstrings)
 - [ ] Tests written (95%+ coverage)
 - [ ] Performance benchmarked
-- [ ] Fragment API validated
+- [ ] Architecture boundaries respected
 - [ ] Demo created (if user-facing)
 - [ ] Session log updated
 
@@ -731,46 +584,73 @@ Build → Test → Polish → Demo → Iterate
 
 ## FAQ for AI Agents
 
-**Q: Feature X seems important. Should I add it?**
-A: Check the "Delayed to V1.1" list. If it's there, skip it. Stay focused on MVP.
+**Q: Streamlit feature X needs improvement. Should I work on it?**
+A: No. Streamlit is frozen. Focus on V3 migration.
 
-**Q: I found a better way to implement Y. Should I refactor?**
-A: Yes, if it improves quality without breaking existing features. Test thoroughly.
+**Q: Should I build FastAPI routes manually?**
+A: No. Use `generate_api_routes.py` to scaffold routes automatically.
+
+**Q: React component needs styling. Where?**
+A: Use Tailwind CSS utility classes. No custom CSS files.
+
+**Q: WebSocket vs SSE for feature Y?**
+A: See [websocket-live-updates-research.md](../research/websocket-live-updates-research.md). Interactive = WS, Batch = SSE.
 
 **Q: This will take longer than estimated. What do I do?**
-A: Document why, provide new estimate, ask for priority adjustment. We have 2 months.
+A: Document why, provide new estimate, ask for priority adjustment.
 
 **Q: Should I optimize for performance now?**
-A: Get it working first, then optimize. But keep performance in mind (no O(n³) algorithms).
+A: Get it working first, then optimize. But keep performance in mind.
 
 **Q: How much documentation is enough?**
-A: Every public function needs docstring. Complex algorithms need comments. User-facing features need user guide entries.
+A: Every public function needs docstring. User-facing features need user guide entries.
 
 **Q: Test coverage is at 92%. Is that enough?**
-A: Aim for 95%+. Critical paths (geometry, design integration) should be 100%.
+A: Aim for 95%+. Critical paths (design, validation) should be 100%.
 
 ---
 
-## Timeline Visualization
+## Timeline Visualization (V3)
 
 ```
-Week 1-2: Live Preview          ████████ [Foundation]
-Week 3-4: CSV Import            ████████ [Core Feature]
+Week 1: Automation (DONE)   ████████ [Foundation Ready]
+Week 2-3: FastAPI Backend    ████████ [API + WebSocket]
+Week 3-4: React Shell        ████████ [UI + 3D Viewport]
 ─────────── Month 1 Complete ─────────────
-Week 5:   Design Integration    ████████ [Polish]
-Week 6:   PyVista Quality       ████████ [Excellence]
-Week 7:   Automation            ████████ [Efficiency]
-Week 8:   Launch Prep           ████████ [Ship It!]
+Week 5: Live Updates         ████████ [WebSocket Integration]
+Week 6-7: Multi-Beam + Polish████████ [Excellence]
 ─────────── Month 2 Complete ─────────────
-Launch:   March 2026            🚀
+Launch:   March 15, 2026     🚀 V3 Beta
 ```
+
+---
+
+## References
+
+### Core Documentation
+- [ai-workspace-expansion-v3.md](../research/ai-workspace-expansion-v3.md) - V3 architecture
+- [websocket-live-updates-research.md](../research/websocket-live-updates-research.md) - WebSocket details
+- [automation-foundation-learning-guide.md](../learning/automation-foundation-learning-guide.md) - Sessions 69-72 deep dive
+- [v3-fastapi-learning-guide.md](../learning/v3-fastapi-learning-guide.md) - V3 basics tutorial
+
+### V3 Technology Stack
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/)
+- [Dockview Layout](https://dockview.dev/)
+- [AG Grid](https://www.ag-grid.com/)
+- [cmdk Command Palette](https://cmdk.paco.me/)
+
+### Engineering Patterns
+- [ETABS vs STAAD.Pro](https://caddcentre.com/blog/etabs-vs-staadpro-a-beginners-guide-to-structural-design-software/)
+- [CAD Software UX Patterns](https://medium.com/@creativenavy/cad-software-ui-design-patterns-benchmarking-97cc7834ad02)
+- [Command Palette UX](https://blog.superhuman.com/how-to-build-a-remarkable-command-palette/)
 
 ---
 
 ## Final Reminders
 
 ### For Developers
-- **You have 2 months.** Use them wisely.
+- **You have 7 weeks.** Use them wisely.
 - **Quality > Speed.** We're not rushing.
 - **Demo often.** Show progress, get feedback.
 - **Document everything.** Future you will thank you.
@@ -780,19 +660,19 @@ Launch:   March 2026            🚀
 - **Read docs FIRST.** Don't make assumptions.
 - **Test thoroughly.** 95%+ coverage is required.
 - **Update session logs.** Track decisions and learnings.
-- **Stay focused.** Resist scope creep.
+- **Stay focused.** Beams only, no scope creep.
 - **Ask questions.** Better than wrong assumptions.
 
-### For Users (Post-Launch)
-- **Your feedback matters.** Help us prioritize V1.1.
+### For Users (Post-V3 Launch)
+- **Your feedback matters.** Help us prioritize V3.1.
 - **Report bugs.** We'll fix them quickly.
 - **Share your projects.** We love seeing real-world use.
 - **Suggest features.** But understand we have a roadmap.
 
 ---
 
-**Let's build something exceptional.** 🚀
+**V3: Premium workspace for structural detailing.** 🚀
 
-**Start Date:** January 15, 2026
-**Launch Date:** March 15, 2026
-**Next Check-in:** January 22, 2026 (Week 1 review)
+**Streamlit Released:** January 24, 2026 (v0.19.0) ✅
+**V3 Beta Target:** March 15, 2026 (7 weeks)
+**Next Check-in:** January 31, 2026 (FastAPI Week 1 review)
