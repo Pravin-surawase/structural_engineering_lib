@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-23 (Session 65)
+**Updated:** 2026-01-24 (Session 66)
 
 ---
 
@@ -16,7 +16,7 @@
 ## Current Focus
 
 - **Version:** v0.19.0 ✅ RELEASED → v0.20 (V3 Foundation)
-- **Focus:** Library API additions for React V3 migration
+- **Focus:** V3 Automation Preparation + Library API for React migration
 - **Target:** March 2026 Launch → V3 React migration
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 
@@ -29,8 +29,61 @@
 | **v0.18.1** | AI v2 Bugfix | ✅ DONE | PR #393 (CSV import fix) |
 | **v0.19.0** | Phase 4 + Launch | ✅ RELEASED | DXF polish, AI model fix, Streamlit API index |
 | **v0.19.1** | AI Tools + UX | 🚧 IN PROGRESS | DXF/report export fixes, manual export buttons |
-| **v0.20** | V3 Foundation | 📋 NEXT | Library API additions for React migration |
+| **v0.20** | V3 Foundation | 📋 NEXT | Library API additions, V3 automation scripts |
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
+
+---
+
+## Session 66 In Progress (2026-01-24)
+
+**Focus:** V3 Automation Foundation + Scripts Audit
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Audit all 143 scripts vs docs | ✅ Done | - |
+| Create v3-automation-foundation-research.md | ✅ Done | `5e3f9e7` |
+| Update automation-catalog.md (+22 scripts) | ✅ Done | `5e3f9e7` |
+| Create validate_fastapi_schema.py | ✅ Done | `1275157` |
+| Create test_api_parity.py | ✅ Done | `1275157` |
+| Create benchmark_api_latency.py | ✅ Done | `1275157` |
+| Update automation-map.json for V3 | 🔄 In Progress | - |
+
+**Key Findings:**
+- 73 of 143 scripts (51%) were undocumented
+- All 43 API functions are 100% FastAPI-compatible
+- API latency: 0.01ms median (well under 50ms threshold)
+- V3 automation readiness: ✅ VALIDATED
+
+---
+
+## V3 Migration Preparation Checklist
+
+**Phase 1: Automation Foundation (Current)**
+- [x] Audit scripts coverage (73/143 undocumented → documented)
+- [x] Create V3 automation research doc
+- [x] Add v3_migration category to automation-map.json
+- [x] Create validate_fastapi_schema.py (API validation)
+- [x] Create test_api_parity.py (serialization parity)
+- [x] Create benchmark_api_latency.py (performance validation)
+- [ ] Add V3 scripts to scripts/index.json
+- [ ] Update automation-catalog.md with V3 scripts
+- [ ] Create generate_api_routes.py (FastAPI scaffolding)
+
+**Phase 2: API Layer (v0.20)**
+- [ ] Create FastAPI app skeleton
+- [ ] Generate routes from API manifest
+- [ ] Add WebSocket support for live results
+- [ ] Implement SSE for streaming calculations
+- [ ] Create OpenAPI schema generation
+
+**Phase 3: Frontend Foundation (After v0.20)**
+- [ ] React + TypeScript project setup
+- [ ] React Three Fiber integration
+- [ ] Dockview layout system
+- [ ] AG Grid for beam tables
+- [ ] API client with React Query
+
+**Reference:** [ai-workspace-expansion-v3.md](research/ai-workspace-expansion-v3.md)
 
 ---
 

@@ -251,6 +251,14 @@
         "copilot_setup.sh": "Setup copilot instructions",
         "lint_docs_git_examples.sh": "Lint git examples in docs"
       }
+    },
+    "v3_migration": {
+      "description": "V3 React + FastAPI migration automation",
+      "scripts": {
+        "validate_fastapi_schema.py": "Validate all API functions are FastAPI-compatible",
+        "test_api_parity.py": "Test library ↔ FastAPI serialization parity",
+        "benchmark_api_latency.py": "Benchmark API latency against V3 thresholds (<50ms)"
+      }
     }
   },
   "quick_reference": {
@@ -264,7 +272,8 @@
     "validate_links": ".venv/bin/python scripts/check_links.py",
     "fix_links": ".venv/bin/python scripts/fix_broken_links.py --fix",
     "check_streamlit": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
-    "validate_docs": ".venv/bin/python scripts/check_doc_metadata.py"
+    "validate_docs": ".venv/bin/python scripts/check_doc_metadata.py",
+    "v3_readiness": ".venv/bin/python scripts/validate_fastapi_schema.py && .venv/bin/python scripts/test_api_parity.py && .venv/bin/python scripts/benchmark_api_latency.py"
   },
   "workflows": {
     "simple_doc_edit": [

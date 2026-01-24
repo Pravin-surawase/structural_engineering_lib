@@ -1,6 +1,6 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-01-23",
+  "_updated": "2026-01-24",
   "_usage": "Before doing a task manually, check this file to find an automation script",
 
   "tasks": {
@@ -161,6 +161,43 @@
     "launch streamlit": {
       "script": "./scripts/launch_streamlit.sh",
       "description": "Start the Streamlit development server"
+    },
+    "validate fastapi schema": {
+      "script": ".venv/bin/python scripts/validate_fastapi_schema.py",
+      "description": "Check all API functions are FastAPI-compatible for V3",
+      "context_docs": [
+        "docs/research/ai-workspace-expansion-v3.md",
+        "docs/research/v3-automation-foundation-research.md",
+        "docs/reference/api.md"
+      ],
+      "v3_critical": true
+    },
+    "test api parity": {
+      "script": ".venv/bin/python scripts/test_api_parity.py",
+      "description": "Verify library and FastAPI return identical results",
+      "context_docs": [
+        "docs/research/ai-workspace-expansion-v3.md",
+        "docs/research/v3-automation-foundation-research.md"
+      ],
+      "v3_critical": true
+    },
+    "benchmark api latency": {
+      "script": ".venv/bin/python scripts/benchmark_api_latency.py",
+      "description": "Benchmark API performance against V3 thresholds (<50ms)",
+      "context_docs": [
+        "docs/research/ai-workspace-expansion-v3.md",
+        "docs/research/v3-automation-foundation-research.md"
+      ],
+      "v3_critical": true
+    },
+    "v3 readiness check": {
+      "script": ".venv/bin/python scripts/validate_fastapi_schema.py && .venv/bin/python scripts/test_api_parity.py && .venv/bin/python scripts/benchmark_api_latency.py",
+      "description": "Run all V3 validation scripts in sequence",
+      "context_docs": [
+        "docs/research/ai-workspace-expansion-v3.md",
+        "docs/research/v3-automation-foundation-research.md"
+      ],
+      "v3_critical": true
     }
   },
 
@@ -198,6 +235,12 @@
       "fix broken links",
       "archive old files",
       "generate api manifest"
+    ],
+    "v3_migration": [
+      "validate fastapi schema",
+      "test api parity",
+      "benchmark api latency",
+      "v3 readiness check"
     ]
   }
 }
