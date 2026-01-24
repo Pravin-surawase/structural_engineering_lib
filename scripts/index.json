@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "updated": "2026-01-24",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 148,
+  "total_scripts": 150,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -97,6 +97,8 @@
         "check_cost_optimizer_issues.py": "Check cost optimizer issues",
         "auto_fix_page.py": "Auto-fix common page issues",
         "autonomous_fixer.py": "Autonomous issue fixer",
+        "check_ui_duplication.py": "Detect code duplication in Streamlit UI",
+        "check_architecture_boundaries.py": "Enforce 3-layer architecture boundaries",
         "profile_streamlit_page.py": "Profile page performance",
         "test_page.sh": "Test a Streamlit page",
         "streamlit_preflight.sh": "Streamlit pre-flight checks",

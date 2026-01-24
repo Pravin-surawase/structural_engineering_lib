@@ -107,25 +107,15 @@ initialize_session_state()
 
 
 # =============================================================================
-# Helper Functions
+# Shared Utilities (consolidated from duplicated functions)
 # =============================================================================
+from utils.type_helpers import safe_int
+from utils.session_helpers import get_beam_design_from_session
 
 
-def safe_int(value, default=0):
-    """Safely cast value to int with fallback."""
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return default
-
-
-def get_beam_design_from_session() -> Optional[Dict]:
-    """Get beam design inputs from beam_design page if available."""
-    if "beam_inputs" in st.session_state:
-        beam = st.session_state.beam_inputs
-        if beam.get("design_computed") and beam.get("design_result"):
-            return {"inputs": beam, "result": beam["design_result"]}
-    return None
+# =============================================================================
+# DXF-Specific Helper Functions
+# =============================================================================
 
 
 def create_detailing_from_beam_design(beam_data: Dict) -> BeamDetailingResult:

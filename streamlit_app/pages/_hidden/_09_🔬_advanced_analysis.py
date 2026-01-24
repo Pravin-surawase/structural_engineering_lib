@@ -55,24 +55,14 @@ if "parametric_results" not in st.session_state:
 
 
 # =============================================================================
-# Helper Functions
+# Shared Utilities (consolidated from duplicated functions)
 # =============================================================================
+from utils.type_helpers import safe_int, safe_float
 
 
-def safe_int(value, default=0):
-    """Safely cast value to int with fallback."""
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return default
-
-
-def safe_float(value, default=0.0):
-    """Safely cast value to float with fallback."""
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return default
+# =============================================================================
+# Analysis-Specific Helper Functions
+# =============================================================================
 
 
 def build_design_params(
