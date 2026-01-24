@@ -13,15 +13,41 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-24
-- Focus: Session 72 - Contract Testing & V3 Learning Documentation
+- Focus: Session 73 - Week 2-3 FastAPI & WebSocket Implementation
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.19.0 | ✅ Released |
-| **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
+| **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + WebSocket) |
 
-**Last Session:** 72 | **Focus:** Contract Testing & V3 Learning Documentation
+**Last Session:** 73 | **Focus:** Week 2-3 FastAPI & WebSocket Implementation
+
+---
+
+## 🔑 Session 73 Summary
+
+**Week 2 Complete (PR #404 Merged):**
+1. **FastAPI skeleton complete** — 19 files, 20 routes
+2. **All 24 integration tests passing** — REST endpoints validated
+3. **OpenAPI documentation** at `/docs`
+
+**Week 3 Started (PR #405 Pending):**
+1. **WebSocket endpoint** — `/ws/design/{session_id}`
+2. **Connection manager** — Client tracking
+3. **7 WebSocket tests** — All passing
+4. **Latency verified** — <100ms design response
+
+**Key Learning (API Signature Discovery):**
+- Created `discover_api_signatures.py` to prevent guessing
+- API uses `b_mm`, `D_mm`, `mu_knm` (not `width`, `depth`, `moment`)
+- Always run discovery script BEFORE implementing API wrappers
+
+**PRs:**
+| PR | Status | Description |
+|----|--------|-------------|
+| #404 | ✅ MERGED | Week 2 FastAPI skeleton |
+| #405 | 🔄 PENDING | Week 3 WebSocket endpoint |
 
 ---
 
