@@ -10,6 +10,10 @@ from fastapi.testclient import TestClient
 from fastapi_app.main import app
 
 
+# Configure pytest-asyncio
+pytest_plugins = ["pytest_asyncio"]
+
+
 @pytest.fixture(scope="module")
 def client():
     """
