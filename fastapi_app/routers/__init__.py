@@ -11,6 +11,7 @@ from fastapi_app.routers import (
     geometry,
     health,
     optimization,
+    websocket,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "geometry",
     "health",
     "optimization",
+    "websocket",
 ]

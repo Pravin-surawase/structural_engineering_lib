@@ -5,7 +5,7 @@
 **Status:** Active (V3 IN PROGRESS)
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-24 (Session 72 - V3 Update)
+**Last Updated:** 2026-01-24 (Session 73 - Week 2 FastAPI Complete)
 **Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
 **Timeline:** 7 weeks (Jan 24 - March 15, 2026)
 **Release Target:** March 15, 2026 (V3 Beta Launch)
@@ -45,7 +45,7 @@
 
 ---
 
-## 📊 Current Status (Session 72, Jan 24, 2026)
+## 📊 Current Status (Session 73, Jan 24, 2026)
 
 ### Streamlit v0.19.0 — ✅ COMPLETE (Shipped Ahead of Schedule!)
 
@@ -60,16 +60,33 @@
 
 **Achievement:** Completed 8-week plan in 4 weeks (2x faster) due to automation scripts and AI agents.
 
-### V3 Migration — 🚧 IN PROGRESS (Week 1 of 7)
+### V3 Migration — 🚧 IN PROGRESS (Week 2 of 7)
 
 | Phase | Week | Goal | Status |
 |-------|------|------|--------|
 | **Phase 1** | 1 | Automation Foundation | ✅ DONE (Sessions 69-72) |
-| **Phase 2** | 2-3 | FastAPI Backend + Routes | 📋 NEXT |
+| **Phase 2** | 2-3 | FastAPI Backend + Routes | 🚧 IN PROGRESS (Week 2 Priority 1 ✅) |
 | **Phase 3** | 3-4 | React Shell + 3D Viewport | 📋 TODO |
 | **Phase 4** | 5 | WebSocket + Live Updates | 📋 TODO |
 | **Phase 5** | 6-7 | Multi-Beam Intelligence | 📋 TODO |
 | **Launch** | Week 7 | Beta Launch + Documentation | 🎯 TARGET |
+
+### Session 73 Accomplishments (Week 2 - FastAPI Skeleton)
+
+| Category | Deliverable | Status |
+|----------|-------------|--------|
+| **FastAPI App** | `fastapi_app/` with 19 files, 20 routes | ✅ Complete |
+| **Testing** | 24 integration tests (100% passing) | ✅ Complete |
+| **Routes** | design, check, optimize, analyze, health | ✅ Complete |
+| **OpenAPI** | Auto-docs at `/docs` | ✅ Complete |
+| **CORS** | Configured for React frontend | ✅ Complete |
+| **Tooling** | `discover_api_signatures.py` | ✅ NEW |
+| **Documentation** | API integration analysis doc | ✅ NEW |
+
+**Key Learning:** Created `discover_api_signatures.py` to prevent API signature guessing.
+Use `inspect.signature()` BEFORE wrapping library functions.
+
+**PR #404:** Merged with all 8 CI checks passing.
 
 ### Session 69-72 Accomplishments (V3 Foundation)
 
@@ -171,21 +188,23 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 
 ---
 
-### **Week 2-3: FastAPI Backend (Jan 27 - Feb 7)** 📋 NEXT
+### **Week 2-3: FastAPI Backend (Jan 27 - Feb 7)** � IN PROGRESS
 
 **Goal:** Create FastAPI wrapper for all 43 structural_lib functions
 
-**Priority 1: FastAPI Skeleton (Week 2)**
-| Task | Est | Priority | Deliverable |
-|------|-----|----------|------------|
-| Create `fastapi_app/main.py` | 4h | 🔴 Critical | FastAPI app with CORS |
-| Generate routes from `api.py` | 4h | 🔴 Critical | Use `generate_api_routes.py` |
-| Add health check endpoint | 1h | 🔴 Critical | `/api/health` |
-| Add OpenAPI documentation | 2h | 🔴 Critical | Auto-generated at `/docs` |
-| Create Pydantic request models | 4h | 🔴 Critical | BeamDesignRequest, etc. |
-| Write integration tests | 4h | 🔴 Critical | All 43 functions tested |
+**Priority 1: FastAPI Skeleton (Week 2)** ✅ COMPLETE (Session 73, PR #404)
+| Task | Est | Priority | Status |
+|------|-----|----------|--------|
+| Create `fastapi_app/main.py` | 4h | 🔴 Critical | ✅ Done - CORS, middleware |
+| Generate routes from `api.py` | 4h | 🔴 Critical | ✅ Done - 20 routes |
+| Add health check endpoint | 1h | 🔴 Critical | ✅ Done - `/api/health` |
+| Add OpenAPI documentation | 2h | 🔴 Critical | ✅ Done - `/docs` |
+| Create Pydantic request models | 4h | 🔴 Critical | ✅ Done - BeamDesignRequest, etc. |
+| Write integration tests | 4h | 🔴 Critical | ✅ Done - 24 tests, 100% passing |
 
-**Priority 2: WebSocket Live Design (Week 3)**
+**Evidence:** PR #404 merged, all 8 CI checks SUCCESS.
+
+**Priority 2: WebSocket Live Design (Week 3)** 📋 NEXT
 | Task | Est | Priority | Deliverable |
 |------|-----|----------|------------|
 | Create `/ws/design/{session}` endpoint | 4h | 🔴 Critical | Native WebSocket |
@@ -533,6 +552,7 @@ Build → Test → Polish → Demo → Iterate
 - **FastAPI:** `uvicorn fastapi_app.main:app --reload`
 - **React:** `cd react_app && npm run dev`
 - **Validation:** `.venv/bin/python scripts/check_architecture_boundaries.py`
+- **API Discovery:** `.venv/bin/python scripts/discover_api_signatures.py <function>` (REQUIRED before wrapping)
 
 ### Weekly Use
 - **Performance:** `.venv/bin/python scripts/benchmark_api_latency.py`
