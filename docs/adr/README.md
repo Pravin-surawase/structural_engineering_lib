@@ -10,7 +10,9 @@ Use ADRs to capture **non-trivial decisions** in a way that is easy for humans a
 
 | ADR | Title | Status |
 |-----|-------|--------|
-| *(none yet)* | Create ADRs as needed | - |
+| [0001](0001-three-layer-architecture.md) | 3-Layer Architecture | Accepted |
+| [0002](0002-pydantic-models-for-api.md) | Pydantic Models for API Contracts | Accepted |
+| [0003](0003-contract-testing-for-v3.md) | Contract Testing for V3 Migration | Accepted |
 
 ---
 
