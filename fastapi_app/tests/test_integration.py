@@ -12,9 +12,6 @@ Week 3 Implementation - V3 Migration
 
 from __future__ import annotations
 
-import json
-from typing import Any
-
 import pytest
 from fastapi.testclient import TestClient
 
@@ -125,7 +122,10 @@ class TestDesignWorkflow:
 
         # Verify consistency
         for i in range(1, len(results)):
-            assert results[i]["flexure"]["ast_required"] == results[0]["flexure"]["ast_required"]
+            assert (
+                results[i]["flexure"]["ast_required"]
+                == results[0]["flexure"]["ast_required"]
+            )
             assert results[i]["success"] == results[0]["success"]
 
 

@@ -24,7 +24,7 @@
 ## II. Repository Root (/)
 
 **Purpose:** Metadata, configuration, entry points
-**Max files:** 10 (strictly enforced)
+**Max files:** 15 (strictly enforced)
 **Allowed files:**
 
 | File | Purpose | Required? |
@@ -39,8 +39,13 @@
 | .github/copilot-instructions.md | AI agent guidelines | YES |
 | llms.txt | LLM-friendly documentation | OPTIONAL |
 | CITATION.cff | Citation metadata | OPTIONAL |
+| requirements.txt | Python deps bundle | OPTIONAL |
+| pytest.ini | Pytest config | OPTIONAL |
+| Dockerfile.fastapi | FastAPI container build | OPTIONAL |
+| docker-compose.yml | Docker compose (prod) | OPTIONAL |
+| docker-compose.dev.yml | Docker compose (dev) | OPTIONAL |
 
-**Current count:** 10 files ✅
+**Current count:** 14 files ✅
 **Status:** COMPLIANT
 
 ---

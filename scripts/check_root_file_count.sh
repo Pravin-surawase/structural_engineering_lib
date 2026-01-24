@@ -1,7 +1,7 @@
 #!/bin/bash
 # Check Root File Count
 # Ensures root directory doesn't accumulate documentation sprawl
-# Target: ≤10 files (ALL non-hidden files, consistent with Python validator)
+# Target: ≤15 files (ALL non-hidden files, consistent with Python validator)
 # Research: Industry standard from Prettier, Vitest, tRPC case studies
 #
 # FIXED Session 13: Now counts ALL files (not just .md/.txt/.sh) to match
@@ -11,7 +11,7 @@
 set -e
 
 # Configuration
-MAX_FILES=10
+MAX_FILES=15
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 

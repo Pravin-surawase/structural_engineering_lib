@@ -15,15 +15,34 @@ export interface BeamDesignRequest {
 
 export interface FlexureResult {
   ast_required: number;
-  ast_provided: number;
-  is_safe: boolean;
-  utilization_ratio: number;
+  ast_min: number;
+  ast_max: number;
+  xu: number;
+  xu_max: number;
+  is_under_reinforced: boolean;
+  moment_capacity: number;
+  asc_required: number;
 }
 
-export interface DesignResult {
-  status: 'PASS' | 'FAIL';
+export interface ShearResult {
+  tau_v: number;
+  tau_c: number;
+  tau_c_max: number;
+  asv_required: number;
+  stirrup_spacing: number;
+  sv_max: number;
+  shear_capacity: number;
+}
+
+export interface BeamDesignResponse {
+  success: boolean;
+  message: string;
   flexure: FlexureResult;
-  shear?: Record<string, unknown>;
+  shear?: ShearResult;
+  ast_total: number;
+  asc_total: number;
+  utilization_ratio: number;
+  warnings?: string[];
 }
 
 export interface HealthResponse {
@@ -59,7 +78,7 @@ export class StructuralDesignClient {
   /**
    * Design a reinforced concrete beam.
    */
-  async designBeam(params: BeamDesignRequest): Promise<DesignResult> {
+  async designBeam(params: BeamDesignRequest): Promise<BeamDesignResponse> {
     const response = await fetch(`${this.baseUrl}/api/v1/design/beam`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

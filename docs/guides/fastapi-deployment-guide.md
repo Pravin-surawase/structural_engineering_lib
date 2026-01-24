@@ -73,46 +73,27 @@ pytest fastapi_app/tests/ --cov=fastapi_app --cov-report=html
 Create `Dockerfile.fastapi` in project root:
 
 ```dockerfile
-# Multi-stage build for smaller image
-FROM python:3.11-slim as builder
-
-WORKDIR /app
-
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy and install Python dependencies
-COPY Python/pyproject.toml Python/setup.cfg ./Python/
-COPY requirements.txt ./
-RUN pip install --no-cache-dir --user -e "Python/[prod]"
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# Final stage
 FROM python:3.11-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Copy installed packages
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+# Install runtime dependencies
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY fastapi_app/ ./fastapi_app/
-COPY Python/structural_lib/ ./Python/structural_lib/
+# Install structural_lib package (located under Python/)
+COPY Python/pyproject.toml Python/setup.cfg Python/README.md ./Python/
+COPY Python/structural_lib ./Python/structural_lib
+RUN pip install --no-cache-dir ./Python
 
-# Create non-root user
-RUN useradd -m appuser && chown -R appuser:appuser /app
-USER appuser
+# Copy FastAPI app
+COPY fastapi_app ./fastapi_app
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
-
-# Run with gunicorn for production
 EXPOSE 8000
-CMD ["gunicorn", "fastapi_app.main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8000"]
+CMD ["uvicorn", "fastapi_app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 ### Docker Compose
@@ -120,45 +101,17 @@ CMD ["gunicorn", "fastapi_app.main:app", "-w", "4", "-k", "uvicorn.workers.Uvico
 Create `docker-compose.yml`:
 
 ```yaml
-version: '3.8'
-
 services:
-  api:
+  fastapi:
     build:
       context: .
       dockerfile: Dockerfile.fastapi
     ports:
       - "8000:8000"
     environment:
-      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 1G
-        reservations:
-          cpus: '0.5'
-          memory: 256M
-
-  # Optional: Redis for rate limiting persistence
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
-
-volumes:
-  redis_data:
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-change-me-in-production}
+      - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}
+      - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-60}
 ```
 
 ### Building and Running
@@ -169,8 +122,7 @@ docker build -f Dockerfile.fastapi -t structeng-api:latest .
 
 # Run container
 docker run -d -p 8000:8000 \
-  -e SECRET_KEY="$(openssl rand -hex 32)" \
-  -e ALLOWED_ORIGINS="https://your-frontend.com" \
+  -e JWT_SECRET_KEY="$(openssl rand -hex 32)" \
   --name structeng-api \
   structeng-api:latest
 
@@ -178,26 +130,15 @@ docker run -d -p 8000:8000 \
 docker compose up -d
 
 # View logs
-docker compose logs -f api
+docker compose logs -f fastapi
 ```
 
 ## Production Configuration
 
-### Gunicorn Settings
+### Production Notes
 
-Create `gunicorn.conf.py`:
-
-```python
-"""Gunicorn configuration for production."""
-
-import multiprocessing
-
-# Binding
-bind = "0.0.0.0:8000"
-
-# Workers
-workers = multiprocessing.cpu_count() * 2 + 1
-worker_class = "uvicorn.workers.UvicornWorker"
+- For higher throughput, consider a Gunicorn + Uvicorn worker setup, but add `gunicorn` to `requirements.txt` first.
+- CORS origins are currently set in `fastapi_app/main.py`; update that list or wire in env-based settings if needed.
 worker_connections = 1000
 max_requests = 10000
 max_requests_jitter = 1000
@@ -467,4 +408,4 @@ curl http://localhost:8000/health/info | jq
 
 - [Live 3D Visualization Architecture](../research/live-3d-visualization-architecture.md)
 - [API Reference](../reference/api.md)
-- [V3 Architecture Overview](../architecture/v3-architecture.md)
+- [Architecture Overview](../architecture/project-overview.md)
