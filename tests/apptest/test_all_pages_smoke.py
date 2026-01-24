@@ -35,6 +35,11 @@ skip_if_no_apptest = pytest.mark.skipif(
     reason="streamlit.testing.v1.AppTest not available (requires Streamlit >= 1.28.0)",
 )
 
+# Pages that are known to be slow/heavy and should be skipped in smoke tests
+SKIP_PAGES = {
+    "05_3d_viewer_demo.py",  # PyVista/VTK rendering is too heavy for smoke tests
+}
+
 
 def get_all_page_files() -> list[Path]:
     """Get all Python page files from the pages directory."""
@@ -66,6 +71,10 @@ class TestAllPagesSmokeTest:
         This is the most basic smoke test - just verify the page renders
         without crashing. More detailed tests are in individual test files.
         """
+        # Skip known heavy pages
+        if page_path.name in SKIP_PAGES:
+            pytest.skip(f"Skipping {page_path.name} - heavy page (PyVista/VTK)")
+
         at = AppTest.from_file(str(page_path))
 
         # Run with timeout to catch infinite loops
