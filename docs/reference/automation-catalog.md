@@ -112,6 +112,12 @@
 - Consolidated **shared UI utilities** to prevent repeated logic across Streamlit pages.
 - **Single source of truth** enforcement for adapters/import pipelines.
 
+**Duplication & Quality Research Plan**
+- **Code duplication scan:** token-based first pass, AST-based confirm for false positives.
+- **UI utility audit:** identify repeated calculations in Streamlit pages for consolidation.
+- **Adapter consistency check:** verify all import paths use the same adapter pipeline.
+- **Quality hotspots:** rank modules by churn + defect density to prioritize refactors.
+
 ### 3) What Should Be Updated (High Impact)
 
 **Testing & Validation (Priority)**
