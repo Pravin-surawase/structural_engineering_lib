@@ -70,6 +70,8 @@
 - **Lint/typecheck:** `black`, `ruff`, `mypy` run in CI.
 - **Packaging smoke:** build + import validation on 3.12.
 - **Doc validators:** multiple doc checks run in parallel (doc versions, API docs sync, session docs).
+- **PR fast checks:** Python 3.11 only, contract tests, core test subset, governance checks (`fast-checks.yml`).
+- **Streamlit validation:** fragment rules, AST scanner, pylint, critical journeys, AppTest smoke, API signature checks (`streamlit-validation.yml`).
 
 **Potential Issues to Investigate (Initial List)**
 1. PR checks may miss regressions only caught by full matrix (merge-only coverage).
@@ -213,6 +215,18 @@
 2. Where does CI spend the most time, and what can be safely parallelized or cached?
 3. Which modules show **duplication risk** or inconsistent error handling?
 4. Are audit artifacts **traceable per release** (logs, coverage, scanner outputs)?
+
+**Efficiency Strategy (Automation-First Execution)**
+- Prefer **single-command** automation (audit pack, CI profiling, duplication scans).
+- Avoid manual file ops; use safe scripts to preserve link integrity.
+- Split heavy validators into **nightly** runs; keep PR checks under 5–7 minutes.
+- Use **path filters** to avoid running Streamlit checks when core library only changes.
+- Automate report generation to reduce human error in audit evidence.
+
+**Best-Solution Principles**
+- Choose solutions that are **measurable** (latency targets, coverage targets, SLA thresholds).
+- Prefer **deterministic tests** with fixed seeds and canonical fixtures.
+- Make **audit evidence reproducible** with automation, not manual steps.
 
 ### 11) Implementation Gates (Must Pass Before Coding)
 
