@@ -60,21 +60,31 @@
 - Streamlit runtime guards: `check_streamlit_issues.py`, `check_fragment_violations.py`.
 - Git safety: `ai_commit.sh` (conflict-minimized workflow), PR decision script.
 
+**Recent Finding (Environment Drift)**
+- A secondary venv `.venv-1` was auto-created when the interpreter wasn’t pinned.
+- Fix applied: workspace now pins `.venv` and auto-activates in terminals.
+
 ### 2) What the Project Still Needs (Gaps)
 
 **Testing Infrastructure**
 - **Contract tests** for API request/response models (beyond serialization parity).
 - **Performance regression baselines** with thresholds enforced in CI.
 - **Coverage-driven test matrix** (unit + integration + API-level tests).
+- **Test environment parity** (dev/stage/prod config checks + deterministic seeds).
+- **Data-driven test suites** for CSV import, adapters, and edge-case geometry.
+- **Negative test coverage** for invalid inputs and error messaging consistency.
 
 **Audit Readiness**
 - Formal **evidence checklist** (tests run, scanners run, dependency status, linting, coverage).
 - **Security posture summary** (dependencies, policies, secrets scanning, SBOM).
 - **Traceable change control** summary per release (links to CI artifacts and validations).
+- **Risk register** (open defects, mitigations, known limitations).
+- **Release evidence bundle** (CI logs + benchmark reports + scanner reports).
 
 **Duplication & Quality**
 - Automated **duplication detection** in Python + docs (not just doc similarity).
 - Consolidated **shared UI utilities** to prevent repeated logic across Streamlit pages.
+- **Single source of truth** enforcement for adapters/import pipelines.
 
 ### 3) What Should Be Updated (High Impact)
 
@@ -82,16 +92,20 @@
 1. Add **API contract tests** (request/response model validation).
 2. Add **benchmark baselines** (p95/p99 thresholds; fail CI on regressions).
 3. Add **snapshot tests** for response stability on key API endpoints.
+4. Add **test data packs** for import adapters (ETABS, SAFE, CSV).
+5. Add **property-based tests** for geometry and load edge cases.
 
 **Audit Readiness**
 1. Add `audit_readiness_report.py` (single report output: versions, tests, scanners, coverage).
 2. Create **evidence pack** in `docs/audit/` for external reviewers.
 3. Add **dependency risk check** into CI (pinning + vulnerability scan summary).
+4. Add **release evidence checklist** as part of `end_session.py --fix`.
 
 **Quality & Duplication**
 1. Add **duplication scanner** for Python (tokens or AST-level similarity).
 2. Add **lint gate** for architectural boundaries (core/app/ui layer rules).
 3. Extend Streamlit checks for **dataframe key safety** in UI transformations.
+4. Add **adapter contract tests** to prevent regressions in import mapping.
 
 ### 4) Audit Readiness (Big Firm Perspective)
 
@@ -115,6 +129,7 @@
 - Auto-attach **CI artifacts** to releases.
 - Enforced **conventional commit** types across all commits.
 - Add **release gate** checklist script (one command to verify release readiness).
+- Add **change impact report** (API surface diff + doc sync check) per PR.
 
 ### 6) Scanner Research Priorities
 
@@ -124,6 +139,7 @@
 - AST-based detection for **unsafe dataframe access** and **zero-division** risks.
 - Scanner rules for **architecture boundary violations** (core/app/ui).
 - Auto-suppression rules that require explicit justification.
+- Add **unit-aware validation** (mm, kN, kN·m, N/mm²) for API parameter checks.
 
 ### 7) CI/CD Efficiency (Time Reduction)
 
@@ -133,12 +149,16 @@
 - Split CI by **changed paths** (docs vs core vs UI).
 - Cache Python dependencies and test artifacts.
 - Parallelize `pytest`, scanner checks, and doc validators.
+- Add **incremental test selection** based on dependency graph.
+- Move heavy validators to **nightly** and keep PR checks fast.
 
 ### 8) Additional Points (Audit-Driven)
 
 - Formal **versioned API manifest** with change tracking.
 - Track **breaking change risk** in release notes.
 - Maintain **performance SLAs** for V3 APIs.
+- Define **data retention & privacy** policy for logs/exports.
+- Add **access control policy** for generated reports and artifacts.
 
 ### 9) Recommended Next Actions
 
