@@ -79,28 +79,36 @@ async def smart_analyze_beam(
         if request.include_code_checks:
             # Create a basic compliance check based on safety_score
             safety_passed = summary_data.get("safety_score", 0) < 1.0
-            code_checks.append(CodeCheck(
-                clause="IS 456 Cl. 38.1",
-                description="Flexural capacity check",
-                passed=safety_passed,
-                calculated_value=summary_data.get("safety_score"),
-                limit_value=1.0,
-                message="Section is adequate" if safety_passed else "Section overstressed",
-            ))
+            code_checks.append(
+                CodeCheck(
+                    clause="IS 456 Cl. 38.1",
+                    description="Flexural capacity check",
+                    passed=safety_passed,
+                    calculated_value=summary_data.get("safety_score"),
+                    limit_value=1.0,
+                    message=(
+                        "Section is adequate"
+                        if safety_passed
+                        else "Section overstressed"
+                    ),
+                )
+            )
 
         # Parse suggestions from result.suggestions dict
         suggestions = []
         if request.include_suggestions and result.suggestions:
             sug_data = result.suggestions
             for sug in sug_data.get("suggestions", []):
-                suggestions.append(Suggestion(
-                    category=sug.get("category", "general"),
-                    priority=sug.get("impact", "medium"),
-                    title=sug.get("title", ""),
-                    description=sug.get("description", ""),
-                    potential_savings=sug.get("savings_percent"),
-                    action_required=sug.get("impact") == "high",
-                ))
+                suggestions.append(
+                    Suggestion(
+                        category=sug.get("category", "general"),
+                        priority=sug.get("impact", "medium"),
+                        title=sug.get("title", ""),
+                        description=sug.get("description", ""),
+                        potential_savings=sug.get("savings_percent"),
+                        action_required=sug.get("impact") == "high",
+                    )
+                )
 
         # Parse efficiency metrics from summary_data
         efficiency = None
@@ -110,7 +118,9 @@ async def smart_analyze_beam(
                 steel_efficiency=1.0 - summary_data.get("safety_score", 0.0),
                 concrete_efficiency=summary_data.get("cost_efficiency", 0.0),
                 overall_efficiency=summary_data.get("overall_score", 0.0),
-                efficiency_grade="A" if summary_data.get("overall_score", 0) > 0.85 else "B",
+                efficiency_grade=(
+                    "A" if summary_data.get("overall_score", 0) > 0.85 else "B"
+                ),
                 efficiency_comment=summary_data.get("design_status", ""),
             )
 
@@ -119,10 +129,18 @@ async def smart_analyze_beam(
         if result.cost:
             cost_data = result.cost
             cost_estimate = CostEstimate(
-                relative_cost=cost_data.get("current_cost", 0) / cost_data.get("optimal_cost", 1) if cost_data.get("optimal_cost") else 1.0,
-                estimated_concrete=request.width * request.depth / 1e6,  # Approximate m³/m
+                relative_cost=(
+                    cost_data.get("current_cost", 0) / cost_data.get("optimal_cost", 1)
+                    if cost_data.get("optimal_cost")
+                    else 1.0
+                ),
+                estimated_concrete=request.width
+                * request.depth
+                / 1e6,  # Approximate m³/m
                 estimated_steel=0.0,  # Would need detailed calc
-                cost_rating="optimal" if cost_data.get("savings_percent", 0) < 5 else "moderate",
+                cost_rating=(
+                    "optimal" if cost_data.get("savings_percent", 0) < 5 else "moderate"
+                ),
             )
 
         all_passed = all(c.passed for c in code_checks) if code_checks else True

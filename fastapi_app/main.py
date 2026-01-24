@@ -20,7 +20,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_app import __version__
-from fastapi_app.routers import design, detailing, optimization, analysis, geometry, health, websocket, streaming
+from fastapi_app.routers import (
+    design,
+    detailing,
+    optimization,
+    analysis,
+    geometry,
+    health,
+    websocket,
+    streaming,
+)
 
 # =============================================================================
 # Application Metadata for OpenAPI
@@ -119,9 +128,9 @@ app = FastAPI(
 
 # Allow all origins in development; restrict in production
 ALLOWED_ORIGINS = [
-    "http://localhost:3000",     # React dev server
-    "http://localhost:5173",     # Vite dev server
-    "http://localhost:8080",     # Alternative dev server
+    "http://localhost:3000",  # React dev server
+    "http://localhost:5173",  # Vite dev server
+    "http://localhost:8080",  # Alternative dev server
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:8080",

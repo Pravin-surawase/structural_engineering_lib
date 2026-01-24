@@ -47,7 +47,9 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
         from structural_lib.api import detail_beam_is456
 
         # Default span if not provided
-        span = request.span_length if request.span_length else request.depth * 12  # L/d = 12 typical
+        span = (
+            request.span_length if request.span_length else request.depth * 12
+        )  # L/d = 12 typical
 
         result = detail_beam_is456(
             units="IS456",
@@ -74,32 +76,58 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
 
         # Parse tension bar arrangement from result
         tension_bars = []
-        if hasattr(result, 'regions'):
+        if hasattr(result, "regions"):
             # Use start region for main bar info
-            start_region = result.regions.get('start', result.regions.get(list(result.regions.keys())[0]))
-            if hasattr(start_region, 'bottom_bars'):
+            start_region = result.regions.get(
+                "start", result.regions.get(list(result.regions.keys())[0])
+            )
+            if hasattr(start_region, "bottom_bars"):
                 for i, bar_info in enumerate(start_region.bottom_bars):
-                    tension_bars.append(BarArrangement(
-                        layer=i + 1,
-                        bar_count=bar_info.count if hasattr(bar_info, 'count') else 3,
-                        bar_diameter=int(bar_info.diameter_mm) if hasattr(bar_info, 'diameter_mm') else 16,
-                        area_provided=bar_info.area_mm2 if hasattr(bar_info, 'area_mm2') else 0.0,
-                        spacing=bar_info.spacing_mm if hasattr(bar_info, 'spacing_mm') else 50.0,
-                    ))
+                    tension_bars.append(
+                        BarArrangement(
+                            layer=i + 1,
+                            bar_count=(
+                                bar_info.count if hasattr(bar_info, "count") else 3
+                            ),
+                            bar_diameter=(
+                                int(bar_info.diameter_mm)
+                                if hasattr(bar_info, "diameter_mm")
+                                else 16
+                            ),
+                            area_provided=(
+                                bar_info.area_mm2
+                                if hasattr(bar_info, "area_mm2")
+                                else 0.0
+                            ),
+                            spacing=(
+                                bar_info.spacing_mm
+                                if hasattr(bar_info, "spacing_mm")
+                                else 50.0
+                            ),
+                        )
+                    )
 
         # Default tension bars if parsing failed
         if not tension_bars:
             import math
+
             bar_dia = 16  # Default bar diameter
             bar_area = math.pi * bar_dia**2 / 4
             num_bars = max(2, int(math.ceil(request.ast_required / bar_area)))
-            tension_bars.append(BarArrangement(
-                layer=1,
-                bar_count=num_bars,
-                bar_diameter=bar_dia,
-                area_provided=num_bars * bar_area,
-                spacing=(request.width - 2 * request.clear_cover - num_bars * bar_dia) / (num_bars - 1) if num_bars > 1 else 0,
-            ))
+            tension_bars.append(
+                BarArrangement(
+                    layer=1,
+                    bar_count=num_bars,
+                    bar_diameter=bar_dia,
+                    area_provided=num_bars * bar_area,
+                    spacing=(
+                        (request.width - 2 * request.clear_cover - num_bars * bar_dia)
+                        / (num_bars - 1)
+                        if num_bars > 1
+                        else 0
+                    ),
+                )
+            )
 
         # Calculate provided areas
         ast_provided = sum(b.area_provided for b in tension_bars)
@@ -109,16 +137,24 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
         asc_provided = 0.0
         if request.asc_required > 0:
             import math
+
             bar_dia = 12
             bar_area = math.pi * bar_dia**2 / 4
             num_bars = max(2, int(math.ceil(request.asc_required / bar_area)))
-            compression_bars.append(BarArrangement(
-                layer=1,
-                bar_count=num_bars,
-                bar_diameter=bar_dia,
-                area_provided=num_bars * bar_area,
-                spacing=(request.width - 2 * request.clear_cover - num_bars * bar_dia) / (num_bars - 1) if num_bars > 1 else 0,
-            ))
+            compression_bars.append(
+                BarArrangement(
+                    layer=1,
+                    bar_count=num_bars,
+                    bar_diameter=bar_dia,
+                    area_provided=num_bars * bar_area,
+                    spacing=(
+                        (request.width - 2 * request.clear_cover - num_bars * bar_dia)
+                        / (num_bars - 1)
+                        if num_bars > 1
+                        else 0
+                    ),
+                )
+            )
             asc_provided = num_bars * bar_area
 
         # Stirrup arrangement
@@ -131,6 +167,7 @@ async def detail_beam(request: BeamDetailingRequest) -> BeamDetailingResponse:
 
         # Development length calculation
         import math
+
         tau_bd = 1.4 * 1.6  # M25, deformed bars
         ld_tension = 16 * 0.87 * request.fy / (4 * tau_bd)  # For 16mm bar
 
@@ -235,18 +272,25 @@ async def calculate_development_length(
             "bar_type": bar_type,
             "tau_bd": result.get("tau_bd", 0.0),
             "ld": result.get("ld", 0.0),
-            "ld_in_diameters": result.get("ld", 0.0) / bar_diameter if bar_diameter > 0 else 0,
+            "ld_in_diameters": (
+                result.get("ld", 0.0) / bar_diameter if bar_diameter > 0 else 0
+            ),
             "clause": "IS 456:2000 Cl. 26.2.1",
         }
 
     except ImportError:
         # Fallback calculation if structural_lib not available
-        import math
 
         # Bond stress per IS 456 Table 26.2.1.1
         tau_bd_table = {
-            15: 1.0, 20: 1.2, 25: 1.4, 30: 1.5,
-            35: 1.7, 40: 1.9, 45: 2.0, 50: 2.2,
+            15: 1.0,
+            20: 1.2,
+            25: 1.4,
+            30: 1.5,
+            35: 1.7,
+            40: 1.9,
+            45: 2.0,
+            50: 2.2,
         }
 
         # Get tau_bd for nearest grade

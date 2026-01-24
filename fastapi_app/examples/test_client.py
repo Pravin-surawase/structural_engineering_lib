@@ -20,8 +20,6 @@ from __future__ import annotations
 
 import asyncio
 import json
-import sys
-from typing import Any
 from urllib.parse import quote
 
 import httpx
@@ -75,13 +73,10 @@ async def test_websocket_design():
                 "moment": 150,
                 "shear": 75,
                 "fck": 25,
-                "fy": 500
+                "fy": 500,
             }
             print(f"\n📤 Designing beam: {beam_params}")
-            await ws.send(json.dumps({
-                "type": "design_beam",
-                "params": beam_params
-            }))
+            await ws.send(json.dumps({"type": "design_beam", "params": beam_params}))
             response = await ws.recv()
             data = json.loads(response)
 
@@ -91,11 +86,10 @@ async def test_websocket_design():
 
             # Test 3: Another design with higher moment
             beam_params["moment"] = 250
-            print(f"\n📤 Designing beam with higher moment: {beam_params['moment']} kN·m")
-            await ws.send(json.dumps({
-                "type": "design_beam",
-                "params": beam_params
-            }))
+            print(
+                f"\n📤 Designing beam with higher moment: {beam_params['moment']} kN·m"
+            )
+            await ws.send(json.dumps({"type": "design_beam", "params": beam_params}))
             response = await ws.recv()
             data = json.loads(response)
 
@@ -106,7 +100,9 @@ async def test_websocket_design():
 
     except ConnectionRefusedError:
         print(f"❌ Could not connect to {uri}")
-        print("   Make sure the server is running: uvicorn fastapi_app.main:app --reload")
+        print(
+            "   Make sure the server is running: uvicorn fastapi_app.main:app --reload"
+        )
 
 
 # =============================================================================
@@ -153,11 +149,15 @@ async def test_sse_batch_design():
                         data = json.loads(line[5:].strip())
 
                         if current_event == "start":
-                            print(f"🚀 Job started: {data['job_id']} ({data['total']} beams)")
+                            print(
+                                f"🚀 Job started: {data['job_id']} ({data['total']} beams)"
+                            )
 
                         elif current_event == "design_result":
                             status = "✅" if data["status"] == "PASS" else "❌"
-                            print(f"   {status} {data['beam_id']}: Ast={data['flexure']['ast_required']:.0f} mm²")
+                            print(
+                                f"   {status} {data['beam_id']}: Ast={data['flexure']['ast_required']:.0f} mm²"
+                            )
 
                         elif current_event == "progress":
                             pct = data["percent"]
@@ -166,13 +166,15 @@ async def test_sse_batch_design():
 
                         elif current_event == "complete":
                             print()
-                            print(f"\n✅ Batch complete!")
+                            print("\n✅ Batch complete!")
                             print(f"   Total: {data['completed']}/{data['total']}")
                             print(f"   Failed: {data['failed']}")
                             print(f"   Duration: {data['duration_seconds']:.2f}s")
 
                         elif current_event == "error":
-                            print(f"   ❌ Error: {data.get('message', 'Unknown error')}")
+                            print(
+                                f"   ❌ Error: {data.get('message', 'Unknown error')}"
+                            )
 
                         current_event = None
 
@@ -180,7 +182,9 @@ async def test_sse_batch_design():
 
     except httpx.ConnectError:
         print(f"❌ Could not connect to {BASE_URL}")
-        print("   Make sure the server is running: uvicorn fastapi_app.main:app --reload")
+        print(
+            "   Make sure the server is running: uvicorn fastapi_app.main:app --reload"
+        )
 
 
 # =============================================================================
@@ -205,11 +209,13 @@ async def test_rest_endpoints():
             print("\n📤 POST /api/v1/design/beam")
             response = await client.post(
                 f"{BASE_URL}/api/v1/design/beam",
-                json={"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500}
+                json={"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500},
             )
             if response.status_code == 200:
                 data = response.json()
-                print(f"📥 {response.status_code}: Ast={data['flexure']['ast_required']:.1f} mm²")
+                print(
+                    f"📥 {response.status_code}: Ast={data['flexure']['ast_required']:.1f} mm²"
+                )
             else:
                 print(f"📥 {response.status_code}: {response.json()}")
 
@@ -217,7 +223,9 @@ async def test_rest_endpoints():
 
         except httpx.ConnectError:
             print(f"❌ Could not connect to {BASE_URL}")
-            print("   Make sure the server is running: uvicorn fastapi_app.main:app --reload")
+            print(
+                "   Make sure the server is running: uvicorn fastapi_app.main:app --reload"
+            )
 
 
 # =============================================================================

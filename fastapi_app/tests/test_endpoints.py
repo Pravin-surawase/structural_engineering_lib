@@ -4,7 +4,6 @@ Integration Tests for FastAPI Endpoints.
 Tests all API endpoints using FastAPI TestClient.
 """
 
-import pytest
 from fastapi import status
 
 
@@ -93,7 +92,9 @@ class TestDesignEndpoints:
 
     def test_check_beam(self, client, sample_beam_check_request):
         """Test beam adequacy check."""
-        response = client.post("/api/v1/design/beam/check", json=sample_beam_check_request)
+        response = client.post(
+            "/api/v1/design/beam/check", json=sample_beam_check_request
+        )
         assert response.status_code == status.HTTP_200_OK
 
         data = response.json()

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import time
 from datetime import timedelta
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 from fastapi import HTTPException
@@ -111,6 +111,7 @@ class TestJWTSecurity:
         # This is a common attack vector
         header = '{"alg":"none","typ":"JWT"}'
         import base64
+
         header_b64 = base64.urlsafe_b64encode(header.encode()).decode().rstrip("=")
         payload = '{"sub":"admin"}'
         payload_b64 = base64.urlsafe_b64encode(payload.encode()).decode().rstrip("=")
@@ -335,7 +336,7 @@ class TestSecurityHeaders:
 
     def test_cors_headers_appropriate(self, client: TestClient):
         """CORS headers should be configured appropriately."""
-        response = client.options(
+        _ = client.options(
             "/",
             headers={"Origin": "https://malicious-site.com"},
         )
@@ -399,7 +400,7 @@ class TestConfigurationSecurity:
 
     def test_debug_mode_disabled(self, client: TestClient):
         """Debug mode should be disabled in production."""
-        response = client.get("/", headers={"X-Debug": "true"})
+        _ = client.get("/", headers={"X-Debug": "true"})
         # Debug endpoints should not be accessible
         # This depends on app configuration
         pass

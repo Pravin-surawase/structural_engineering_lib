@@ -83,13 +83,15 @@ async def generate_beam_geometry(
         )
 
         # Parse components from result - if not available, use fallback
-        if not hasattr(geometry_result, 'vertices') or not geometry_result.vertices:
+        if not hasattr(geometry_result, "vertices") or not geometry_result.vertices:
             return _generate_fallback_geometry(request)
 
         # Build mesh from geometry result
         mesh = MeshData(
-            vertices=geometry_result.vertices if hasattr(geometry_result, 'vertices') else [],
-            faces=geometry_result.faces if hasattr(geometry_result, 'faces') else [],
+            vertices=(
+                geometry_result.vertices if hasattr(geometry_result, "vertices") else []
+            ),
+            faces=geometry_result.faces if hasattr(geometry_result, "faces") else [],
             normals=None,
         )
 
@@ -102,10 +104,14 @@ async def generate_beam_geometry(
         )
 
         import math
+
         bounding_box = BoundingBox(
-            min_x=0, max_x=request.width,
-            min_y=0, max_y=request.depth,
-            min_z=0, max_z=request.length,
+            min_x=0,
+            max_x=request.width,
+            min_y=0,
+            max_y=request.depth,
+            min_z=0,
+            max_z=request.length,
         )
 
         center = [request.width / 2, request.depth / 2, request.length / 2]
@@ -142,22 +148,34 @@ def _generate_fallback_geometry(request: Geometry3DRequest) -> Geometry3DRespons
     """Generate simple box geometry as fallback."""
     import math
 
-    w, d, l = request.width, request.depth, request.length
+    w, d, length_val = request.width, request.depth, request.length
 
     # Simple box vertices (8 corners)
     vertices = [
-        [0, 0, 0], [w, 0, 0], [w, d, 0], [0, d, 0],  # Front face
-        [0, 0, l], [w, 0, l], [w, d, l], [0, d, l],  # Back face
+        [0, 0, 0],
+        [w, 0, 0],
+        [w, d, 0],
+        [0, d, 0],  # Front face
+        [0, 0, length_val],
+        [w, 0, length_val],
+        [w, d, length_val],
+        [0, d, length_val],  # Back face
     ]
 
     # Box faces (12 triangles for 6 faces)
     faces = [
-        [0, 1, 2], [0, 2, 3],  # Front
-        [4, 6, 5], [4, 7, 6],  # Back
-        [0, 4, 5], [0, 5, 1],  # Bottom
-        [2, 6, 7], [2, 7, 3],  # Top
-        [0, 3, 7], [0, 7, 4],  # Left
-        [1, 5, 6], [1, 6, 2],  # Right
+        [0, 1, 2],
+        [0, 2, 3],  # Front
+        [4, 6, 5],
+        [4, 7, 6],  # Back
+        [0, 4, 5],
+        [0, 5, 1],  # Bottom
+        [2, 6, 7],
+        [2, 7, 3],  # Top
+        [0, 3, 7],
+        [0, 7, 4],  # Left
+        [1, 5, 6],
+        [1, 6, 2],  # Right
     ]
 
     mesh = MeshData(vertices=vertices, faces=faces, normals=None)
@@ -171,13 +189,16 @@ def _generate_fallback_geometry(request: Geometry3DRequest) -> Geometry3DRespons
     )
 
     bounding_box = BoundingBox(
-        min_x=0, max_x=w,
-        min_y=0, max_y=d,
-        min_z=0, max_z=l,
+        min_x=0,
+        max_x=w,
+        min_y=0,
+        max_y=d,
+        min_z=0,
+        max_z=length_val,
     )
 
-    center = [w/2, d/2, l/2]
-    diagonal = math.sqrt(w**2 + d**2 + l**2)
+    center = [w / 2, d / 2, length_val / 2]
+    diagonal = math.sqrt(w**2 + d**2 + length_val**2)
 
     return Geometry3DResponse(
         success=True,

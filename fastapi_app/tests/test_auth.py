@@ -14,17 +14,13 @@ from fastapi import HTTPException
 from jose import jwt
 
 from fastapi_app.auth import (
-    ACCESS_TOKEN_EXPIRE_MINUTES,
     ALGORITHM,
-    RATE_LIMIT_REQUESTS,
     SECRET_KEY,
     RateLimiter,
     create_access_token,
     decode_token,
     TokenData,
-    User,
 )
-
 
 # =============================================================================
 # JWT Token Tests
@@ -224,8 +220,6 @@ def test_auth_module_imports():
         require_auth,
         verify_ws_token,
         check_rate_limit,
-        rate_limiter,
-        create_dev_token,
     )
 
     assert callable(create_access_token)

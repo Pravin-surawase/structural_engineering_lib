@@ -42,8 +42,12 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Rate limiting settings
-RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "100"))  # requests per window
-RATE_LIMIT_WINDOW_SECONDS = int(os.getenv("RATE_LIMIT_WINDOW", "60"))  # window in seconds
+RATE_LIMIT_REQUESTS = int(
+    os.getenv("RATE_LIMIT_REQUESTS", "100")
+)  # requests per window
+RATE_LIMIT_WINDOW_SECONDS = int(
+    os.getenv("RATE_LIMIT_WINDOW", "60")
+)  # window in seconds
 
 
 # =============================================================================
@@ -53,6 +57,7 @@ RATE_LIMIT_WINDOW_SECONDS = int(os.getenv("RATE_LIMIT_WINDOW", "60"))  # window 
 
 class TokenData(BaseModel):
     """JWT token payload data."""
+
     user_id: str | None = None
     email: str | None = None
     scopes: list[str] = []
@@ -61,6 +66,7 @@ class TokenData(BaseModel):
 
 class User(BaseModel):
     """Authenticated user model."""
+
     id: str
     email: str
     is_active: bool = True
@@ -91,7 +97,9 @@ def create_access_token(
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + timedelta(
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        )
 
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
