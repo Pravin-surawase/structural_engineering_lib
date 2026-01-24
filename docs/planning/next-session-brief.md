@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-24
-- Focus: Session 69 - V3 Automation Foundation
+- Focus: Session 71 - PR #403 Merge & ADR Documentation
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,38 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (library APIs) |
 
-**Last Session:** 69 | **Focus:** V3 Automation Foundation
+**Last Session:** 71 | **Focus:** PR #403 Merge & ADR Documentation
+
+---
+
+## 🔑 Session 71 Summary
+
+**PR #403 Merged Successfully:**
+1. **All 20 CI checks passed** after fixing AppTest failures
+2. **5 PR reviewer comments addressed** (false-positive patterns, error handling, deprecated APIs)
+3. **3 ADRs created** for architecture decisions documentation
+
+**Key Accomplishments:**
+- Fixed AppTest smoke tests (3D viewer skip, chat_input assertion)
+- Created shared utilities to reduce UI duplication (`utils/openai_helpers.py`, `utils/type_helpers.py`, `utils/session_helpers.py`)
+- Added Architecture Decision Records (ADRs):
+  - `0001-three-layer-architecture.md`
+  - `0002-pydantic-models-for-api.md`
+  - `0003-contract-testing-for-v3.md`
+
+**New Automation Tools:**
+| Script | Purpose |
+|--------|---------|
+| `check_ui_duplication.py` | AST-based code duplication scanner |
+| `check_architecture_boundaries.py` | 3-layer architecture linter |
+
+**Commits:**
+| Commit | Description |
+|--------|-------------|
+| `25e5072` | fix: skip 3D viewer in smoke tests, fix chat_input assertion |
+| `962d287` | fix: address PR reviewer comments (5 items) |
+| `3af301b` | feat: add openai_helpers.py shared utility |
+| `a435b5d` | docs: add 3 ADRs for architecture decisions |
 
 ---
 
@@ -265,35 +296,46 @@ Fixed in **06_multi_format_import.py**:
 
 ## 🔥 Next Session Priorities
 
-### Priority 1: Migrate Pages to Use Shared Wrappers
+### Priority 1: V3 FastAPI Preparation
 
-**Goal:** Update pages to use new `rebar_optimization.py` module
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Update `ai_workspace.py` | 2h | Replace `suggest_optimal_rebar()` with shared |
-| Update `11_ai_assistant_v2.py` | 1h | If it uses rebar suggestions |
-| Verify end-to-end | 1h | Test `select_bar_arrangement()` integration |
-
-### Priority 2: Address Scanner Warnings
-
-**Goal:** Reduce remaining medium-severity issues
-
-| File | Issues | Priority |
-|------|--------|----------|
-| `06_multi_format_import.py` | 153 medium | IndexError guards |
-| `ai_workspace.py` | 103 medium | Mixed issues |
-
-### Priority 3: V3 Foundation APIs (v0.20)
-
-**Goal:** Prepare library APIs for React migration
+**Goal:** Continue building FastAPI foundation for React migration
 
 | Task | Est | Notes |
 |------|-----|-------|
-| `modify_beam_reinforcement()` | 4h | Edit rebar API |
-| `validate_beam_design()` | 4h | Real-time validation |
-| `compare_beam_designs()` | 4h | Before/after diff |
-| `compute_beam_cost()` | 4h | Standardized cost calc |
+| Review `generate_api_routes.py` output | 1h | Verify FastAPI route generation |
+| Add WebSocket support research | 2h | Live design results streaming |
+| Create OpenSSF Scorecard baseline | 1h | Run scorecard.yml workflow |
+| Add `generate_openapi_spec.py` | 2h | Export OpenAPI v3 spec for frontend |
+
+### Priority 2: Clean Up Remaining UI Duplicates
+
+**Goal:** Archive deprecated hidden pages, consolidate remaining duplicates
+
+| Task | Est | Notes |
+|------|-----|-------|
+| Archive `_06_📐_dxf_export.py` | 30m | Duplicate of `_08` |
+| Review `_report_generator` files | 30m | Likely deprecated |
+| Update pages to use `utils/openai_helpers.py` | 1h | AI pages consolidation |
+
+### Priority 3: Contract Testing Enhancement
+
+**Goal:** Expand contract tests for V3 migration confidence
+
+| Task | Est | Notes |
+|------|-----|-------|
+| Run contract tests locally | 30m | `pytest test_api_contracts.py -v` |
+| Add snapshot testing for schemas | 2h | `schema_snapshot.json` for drift detection |
+| Add computed field coverage | 1h | Test `effective_depth_mm`, `length_m` |
+
+### Priority 4: Documentation Polish
+
+**Goal:** Ensure all docs ready for V3 phase
+
+| Task | Est | Notes |
+|------|-----|-------|
+| Update automation-catalog.md | 1h | Add new scripts |
+| Create ADR index page | 30m | `docs/adr/README.md` update |
+| Review V3 migration checklist | 1h | Update TASKS.md |
 
 ---
 
