@@ -4,6 +4,72 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-24 — Session 73: Week 2-3 FastAPI & WebSocket Implementation
+
+**Focus:** Week 2 FastAPI backend completion, Week 3 WebSocket live design
+
+### Key Accomplishments
+
+1. **PR #404 Merged (Week 2 FastAPI Skeleton)**
+   - All 8 CI checks passed (CodeQL, Quick Validation, etc.)
+   - 24 integration tests covering all routes
+   - OpenAPI documentation at `/docs`
+
+2. **API Integration Tooling (Lessons Learned)**
+   - Created `discover_api_signatures.py` - Prevents API signature guessing
+   - Created `api-integration-mistakes-analysis.md` - Root cause analysis
+   - Updated `automation-map.json` with API wrapper tasks
+   - Updated `copilot-instructions.md` Common Mistakes table
+
+3. **Week 3 WebSocket Implementation (PR #405)**
+   - Created `/ws/design/{session_id}` WebSocket endpoint
+   - Implemented `DesignConnectionManager` for client tracking
+   - Added `design_beam` and `check_beam` message handlers
+   - Created 7 WebSocket tests (all passing)
+   - Total: 31 FastAPI tests (24 REST + 7 WebSocket)
+
+4. **Documentation Updates**
+   - Updated 8-week plan with Week 2 completion
+   - Updated TASKS.md with Session 73 progress
+   - Marked Week 2 Priority 1 as complete
+
+### Key Learning
+
+**API Signature Discovery:** Session 73 identified that guessing API signatures caused 35+ min debug loops. The new `discover_api_signatures.py` script uses `inspect.signature()` to reveal exact parameter names (`b_mm`, `D_mm`, `mu_knm` vs. `width`, `depth`, `moment`) BEFORE implementation.
+
+### Commits/PRs
+
+| Item | Status | Description |
+|------|--------|-------------|
+| PR #404 | ✅ MERGED | Week 2 FastAPI skeleton (24 tests) |
+| `0a5c4f1` | main | API signature discovery tooling |
+| `70ef4fe` | main | Update copilot-instructions (API mistakes) |
+| PR #405 | 🔄 PENDING | Week 3 WebSocket endpoint (7 tests) |
+
+### Test Results
+
+```
+FastAPI REST tests: 24 passed
+WebSocket tests: 7 passed
+Total: 31 passed
+Week 2 latency: <100ms per design
+```
+
+### Week 3 Deliverables
+
+- `fastapi_app/routers/websocket.py` - 270 lines
+- `fastapi_app/tests/test_websocket.py` - 140 lines
+- WebSocket design latency: <100ms (verified)
+
+### Next Session Priorities
+
+1. **Monitor PR #405** for merge
+2. **Week 3 Priority 3: SSE for batch processing**
+3. **React project setup** (Vite + TypeScript + R3F)
+4. **Create WebSocket client demo** (Python test client)
+
+---
+
 ## 2026-01-24 — Session 72: Comprehensive Documentation & V3 Learning
 
 **Focus:** Contract testing, WebSocket research, learning documentation
