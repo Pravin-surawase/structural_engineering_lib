@@ -93,10 +93,16 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
                 tau_v=shear.tv,
                 tau_c=shear.tc,
                 tau_c_max=shear.tc_max,
-                asv_required=shear.vus / (0.87 * request.fy) * 1000 if shear.vus > 0 else 0.0,
+                asv_required=(
+                    shear.vus / (0.87 * request.fy) * 1000 if shear.vus > 0 else 0.0
+                ),
                 stirrup_spacing=shear.spacing,
                 sv_max=300.0,
-                shear_capacity=shear.tc * request.width * effective_depth / 1000 + shear.vus if shear.vus > 0 else request.shear,
+                shear_capacity=(
+                    shear.tc * request.width * effective_depth / 1000 + shear.vus
+                    if shear.vus > 0
+                    else request.shear
+                ),
             )
 
         # Calculate utilization
@@ -106,7 +112,9 @@ async def design_beam(request: BeamDesignRequest) -> BeamDesignResponse:
         # Collect warnings
         warnings = []
         if utilization > 1.0:
-            warnings.append("Section is overstressed - increase section or use compression steel")
+            warnings.append(
+                "Section is overstressed - increase section or use compression steel"
+            )
         if flexure_result.xu > flexure_result.xu_max:
             warnings.append("Section is over-reinforced - consider increasing depth")
 
@@ -163,12 +171,14 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
 
         # Build cases list for check_beam_is456
         # API expects: label, mu_knm, vu_kn, ast_provided
-        cases = [{
-            "label": "CHECK-1",
-            "mu_knm": request.moment,
-            "vu_kn": request.shear,
-            "ast_provided": request.ast_provided,
-        }]
+        cases = [
+            {
+                "label": "CHECK-1",
+                "mu_knm": request.moment,
+                "vu_kn": request.shear,
+                "ast_provided": request.ast_provided,
+            }
+        ]
 
         result = check_beam_is456(
             units="IS456",
@@ -193,7 +203,11 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
         shear = case_result.shear
 
         moment_capacity = flexure.mu_lim
-        shear_capacity = shear.tc * request.width * effective_depth / 1000 if shear else request.shear * 1.5
+        shear_capacity = (
+            shear.tc * request.width * effective_depth / 1000
+            if shear
+            else request.shear * 1.5
+        )
 
         moment_util = request.moment / moment_capacity if moment_capacity > 0 else 1.0
         shear_util = request.shear / shear_capacity if shear_capacity > 0 else 0.0
@@ -210,7 +224,11 @@ async def check_beam(request: BeamCheckRequest) -> BeamCheckResponse:
         return BeamCheckResponse(
             is_adequate=flexure_ok and shear_ok,
             success=True,
-            message="Beam is adequate" if (flexure_ok and shear_ok) else "Beam is NOT adequate",
+            message=(
+                "Beam is adequate"
+                if (flexure_ok and shear_ok)
+                else "Beam is NOT adequate"
+            ),
             moment_capacity=moment_capacity,
             shear_capacity=shear_capacity,
             moment_utilization=min(moment_util, 2.0),

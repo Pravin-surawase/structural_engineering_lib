@@ -29,6 +29,10 @@ repos:
       - id: black
         language_version: python3
         files: ^Python/
+      - id: black
+        name: black (fastapi)
+        language_version: python3
+        files: ^fastapi_app/
 
   # Python linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -37,6 +41,10 @@ repos:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
         files: ^Python/
+      - id: ruff
+        name: ruff (fastapi)
+        args: [--fix, --exit-non-zero-on-fix]
+        files: ^fastapi_app/
 
   # Python type checking (local hook with correct working directory)
   - repo: local
@@ -57,6 +65,10 @@ repos:
       - id: isort
         files: ^Python/
         args: ["--profile", "black"]
+      - id: isort
+        name: isort (fastapi)
+        files: ^fastapi_app/
+        args: ["--profile", "black"]
 
   # Security linting
   - repo: https://github.com/PyCQA/bandit
@@ -65,6 +77,10 @@ repos:
       - id: bandit
         args: [--skip, B101]
         files: ^Python/structural_lib/
+      - id: bandit
+        name: bandit (fastapi)
+        args: [--skip, B101]
+        files: ^fastapi_app/
 
   # API contract testing (prevent breaking changes)
   - repo: local

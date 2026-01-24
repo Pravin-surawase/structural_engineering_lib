@@ -6,7 +6,6 @@ Models for 3D geometry generation API endpoints for visualization.
 
 from pydantic import BaseModel, Field
 
-
 # =============================================================================
 # Request Models
 # =============================================================================

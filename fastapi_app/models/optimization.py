@@ -6,7 +6,6 @@ Models for beam cost optimization API endpoints.
 
 from pydantic import BaseModel, Field
 
-
 # =============================================================================
 # Request Models
 # =============================================================================
@@ -195,9 +194,7 @@ class CostOptimizationResponse(BaseModel):
     total_combinations_evaluated: int = Field(
         description="Number of combinations evaluated"
     )
-    valid_solutions_found: int = Field(
-        description="Number of valid solutions found"
-    )
+    valid_solutions_found: int = Field(description="Number of valid solutions found")
 
     # Savings comparison
     savings_vs_min_section: float = Field(
@@ -206,4 +203,6 @@ class CostOptimizationResponse(BaseModel):
     )
 
     # Warnings
-    warnings: list[str] = Field(default_factory=list, description="Optimization warnings")
+    warnings: list[str] = Field(
+        default_factory=list, description="Optimization warnings"
+    )

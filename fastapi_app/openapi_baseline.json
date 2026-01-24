@@ -1,0 +1,779 @@
+{
+  "endpoints": {
+    "/": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Root"
+      }
+    },
+    "/api/v1/analysis/beam/smart": {
+      "post": {
+        "parameters": [],
+        "request_body_required": true,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Smart Beam Analysis"
+      }
+    },
+    "/api/v1/analysis/code-clauses": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Get Code Clause References"
+      }
+    },
+    "/api/v1/design/beam": {
+      "post": {
+        "parameters": [],
+        "request_body_required": true,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Design Beam Section"
+      }
+    },
+    "/api/v1/design/beam/check": {
+      "post": {
+        "parameters": [],
+        "request_body_required": true,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Check Beam Adequacy"
+      }
+    },
+    "/api/v1/design/limits": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Get Design Limits"
+      }
+    },
+    "/api/v1/detailing/bar-areas": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Get Standard Bar Areas"
+      }
+    },
+    "/api/v1/detailing/beam": {
+      "post": {
+        "parameters": [],
+        "request_body_required": true,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Detail Beam Reinforcement"
+      }
+    },
+    "/api/v1/detailing/development-length/{bar_diameter}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bar_diameter",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "fck",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "fy",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "bar_type",
+            "required": false
+          }
+        ],
+        "request_body_required": null,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Calculate Development Length"
+      }
+    },
+    "/api/v1/geometry/beam/3d": {
+      "post": {
+        "parameters": [],
+        "request_body_required": true,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Generate 3D Beam Geometry"
+      }
+    },
+    "/api/v1/geometry/materials": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Get Material Appearance"
+      }
+    },
+    "/api/v1/optimization/beam/cost": {
+      "post": {
+        "parameters": [],
+        "request_body_required": true,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Optimize Beam Cost"
+      }
+    },
+    "/api/v1/optimization/cost-rates": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Get Default Cost Rates"
+      }
+    },
+    "/health": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Health Check"
+      }
+    },
+    "/health/info": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "System Information"
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "parameters": [],
+        "request_body_required": null,
+        "response_codes": [
+          "200"
+        ],
+        "summary": "Readiness Check"
+      }
+    },
+    "/stream/batch-design": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "beams",
+            "required": true
+          }
+        ],
+        "request_body_required": null,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Stream Batch Design"
+      }
+    },
+    "/stream/job/{job_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true
+          }
+        ],
+        "request_body_required": null,
+        "response_codes": [
+          "200",
+          "422"
+        ],
+        "summary": "Get Job Status"
+      }
+    }
+  },
+  "schemas": {
+    "BarArrangement": {
+      "properties": [
+        "area_provided",
+        "bar_count",
+        "bar_diameter",
+        "layer",
+        "spacing"
+      ],
+      "required": [
+        "area_provided",
+        "bar_count",
+        "bar_diameter",
+        "layer",
+        "spacing"
+      ]
+    },
+    "BeamCheckRequest": {
+      "properties": [
+        "asc_provided",
+        "ast_provided",
+        "clear_cover",
+        "depth",
+        "fck",
+        "fy",
+        "moment",
+        "shear",
+        "stirrup_area",
+        "stirrup_spacing",
+        "width"
+      ],
+      "required": [
+        "ast_provided",
+        "depth",
+        "moment",
+        "width"
+      ]
+    },
+    "BeamCheckResponse": {
+      "properties": [
+        "flexure_adequate",
+        "is_adequate",
+        "message",
+        "moment_capacity",
+        "moment_utilization",
+        "shear_adequate",
+        "shear_capacity",
+        "shear_utilization",
+        "success",
+        "warnings"
+      ],
+      "required": [
+        "flexure_adequate",
+        "is_adequate",
+        "message",
+        "moment_capacity",
+        "moment_utilization",
+        "shear_adequate",
+        "shear_capacity",
+        "shear_utilization",
+        "success"
+      ]
+    },
+    "BeamDesignRequest": {
+      "properties": [
+        "clear_cover",
+        "depth",
+        "effective_depth",
+        "fck",
+        "fy",
+        "moment",
+        "shear",
+        "width"
+      ],
+      "required": [
+        "depth",
+        "moment",
+        "width"
+      ]
+    },
+    "BeamDesignResponse": {
+      "properties": [
+        "asc_total",
+        "ast_total",
+        "flexure",
+        "message",
+        "shear",
+        "success",
+        "utilization_ratio",
+        "warnings"
+      ],
+      "required": [
+        "ast_total",
+        "flexure",
+        "message",
+        "success",
+        "utilization_ratio"
+      ]
+    },
+    "BeamDetailingRequest": {
+      "properties": [
+        "asc_required",
+        "ast_required",
+        "asv_required",
+        "clear_cover",
+        "depth",
+        "fck",
+        "fy",
+        "is_continuous",
+        "max_layers",
+        "preferred_bar_dia",
+        "span_length",
+        "width"
+      ],
+      "required": [
+        "ast_required",
+        "depth",
+        "width"
+      ]
+    },
+    "BeamDetailingResponse": {
+      "properties": [
+        "anchorage_length",
+        "asc_provided",
+        "ast_provided",
+        "compression_bars",
+        "curtailment_points",
+        "ld_compression",
+        "ld_tension",
+        "message",
+        "stirrups",
+        "success",
+        "tension_bars",
+        "warnings"
+      ],
+      "required": [
+        "anchorage_length",
+        "ast_provided",
+        "ld_tension",
+        "message",
+        "success",
+        "tension_bars"
+      ]
+    },
+    "BoundingBox": {
+      "properties": [
+        "max_x",
+        "max_y",
+        "max_z",
+        "min_x",
+        "min_y",
+        "min_z"
+      ],
+      "required": [
+        "max_x",
+        "max_y",
+        "max_z",
+        "min_x",
+        "min_y",
+        "min_z"
+      ]
+    },
+    "CodeCheck": {
+      "properties": [
+        "calculated_value",
+        "clause",
+        "description",
+        "limit_value",
+        "message",
+        "passed"
+      ],
+      "required": [
+        "clause",
+        "description",
+        "passed"
+      ]
+    },
+    "CostBreakdown": {
+      "properties": [
+        "concrete_cost",
+        "cost_per_meter",
+        "formwork_cost",
+        "steel_cost",
+        "total_cost"
+      ],
+      "required": [
+        "concrete_cost",
+        "cost_per_meter",
+        "formwork_cost",
+        "steel_cost",
+        "total_cost"
+      ]
+    },
+    "CostEstimate": {
+      "properties": [
+        "cost_rating",
+        "estimated_concrete",
+        "estimated_steel",
+        "relative_cost"
+      ],
+      "required": [
+        "cost_rating",
+        "estimated_concrete",
+        "estimated_steel",
+        "relative_cost"
+      ]
+    },
+    "CostOptimizationRequest": {
+      "properties": [
+        "constraints",
+        "cost_params",
+        "fck",
+        "fy",
+        "include_alternatives",
+        "max_alternatives",
+        "moment",
+        "optimize_for",
+        "shear",
+        "span_length"
+      ],
+      "required": [
+        "moment",
+        "span_length"
+      ]
+    },
+    "CostOptimizationResponse": {
+      "properties": [
+        "alternatives",
+        "message",
+        "optimal",
+        "savings_vs_min_section",
+        "success",
+        "total_combinations_evaluated",
+        "valid_solutions_found",
+        "warnings"
+      ],
+      "required": [
+        "message",
+        "optimal",
+        "success",
+        "total_combinations_evaluated",
+        "valid_solutions_found"
+      ]
+    },
+    "CostParameters": {
+      "properties": [
+        "concrete_cost",
+        "formwork_cost",
+        "steel_cost"
+      ],
+      "required": []
+    },
+    "DesignConstraints": {
+      "properties": [
+        "depth_step",
+        "max_depth",
+        "max_width",
+        "min_depth",
+        "min_utilization",
+        "min_width",
+        "width_step"
+      ],
+      "required": []
+    },
+    "EfficiencyMetrics": {
+      "properties": [
+        "concrete_efficiency",
+        "efficiency_comment",
+        "efficiency_grade",
+        "overall_efficiency",
+        "steel_efficiency",
+        "utilization_ratio"
+      ],
+      "required": [
+        "concrete_efficiency",
+        "efficiency_comment",
+        "efficiency_grade",
+        "overall_efficiency",
+        "steel_efficiency",
+        "utilization_ratio"
+      ]
+    },
+    "FlexureResult": {
+      "properties": [
+        "asc_required",
+        "ast_max",
+        "ast_min",
+        "ast_required",
+        "is_under_reinforced",
+        "moment_capacity",
+        "xu",
+        "xu_max"
+      ],
+      "required": [
+        "ast_max",
+        "ast_min",
+        "ast_required",
+        "is_under_reinforced",
+        "moment_capacity",
+        "xu",
+        "xu_max"
+      ]
+    },
+    "Geometry3DRequest": {
+      "properties": [
+        "clear_cover",
+        "compression_bars",
+        "depth",
+        "include_rebars",
+        "include_stirrups",
+        "length",
+        "mesh_resolution",
+        "output_format",
+        "stirrup_diameter",
+        "stirrup_spacing",
+        "tension_bars",
+        "width"
+      ],
+      "required": [
+        "depth",
+        "length",
+        "width"
+      ]
+    },
+    "Geometry3DResponse": {
+      "properties": [
+        "bounding_box",
+        "center",
+        "components",
+        "gltf_json",
+        "message",
+        "stl_base64",
+        "success",
+        "suggested_camera_distance",
+        "total_faces",
+        "total_vertices",
+        "warnings"
+      ],
+      "required": [
+        "bounding_box",
+        "center",
+        "components",
+        "message",
+        "success",
+        "suggested_camera_distance",
+        "total_faces",
+        "total_vertices"
+      ]
+    },
+    "GeometryComponent": {
+      "properties": [
+        "color",
+        "material_hint",
+        "mesh",
+        "name",
+        "type"
+      ],
+      "required": [
+        "color",
+        "mesh",
+        "name",
+        "type"
+      ]
+    },
+    "HTTPValidationError": {
+      "properties": [
+        "detail"
+      ],
+      "required": []
+    },
+    "HealthStatus": {
+      "properties": [
+        "status",
+        "timestamp",
+        "uptime_seconds",
+        "version"
+      ],
+      "required": [
+        "status",
+        "timestamp",
+        "uptime_seconds",
+        "version"
+      ]
+    },
+    "MeshData": {
+      "properties": [
+        "faces",
+        "normals",
+        "vertices"
+      ],
+      "required": [
+        "faces",
+        "vertices"
+      ]
+    },
+    "OptimalDesign": {
+      "properties": [
+        "asc_required",
+        "ast_required",
+        "concrete_volume",
+        "cost_breakdown",
+        "depth",
+        "formwork_area",
+        "ld_ratio",
+        "rank",
+        "score",
+        "steel_weight",
+        "utilization",
+        "width"
+      ],
+      "required": [
+        "ast_required",
+        "concrete_volume",
+        "cost_breakdown",
+        "depth",
+        "formwork_area",
+        "ld_ratio",
+        "rank",
+        "score",
+        "steel_weight",
+        "utilization",
+        "width"
+      ]
+    },
+    "ReadinessStatus": {
+      "properties": [
+        "checks",
+        "ready"
+      ],
+      "required": [
+        "checks",
+        "ready"
+      ]
+    },
+    "ShearResult": {
+      "properties": [
+        "asv_required",
+        "shear_capacity",
+        "stirrup_spacing",
+        "sv_max",
+        "tau_c",
+        "tau_c_max",
+        "tau_v"
+      ],
+      "required": [
+        "asv_required",
+        "shear_capacity",
+        "stirrup_spacing",
+        "sv_max",
+        "tau_c",
+        "tau_c_max",
+        "tau_v"
+      ]
+    },
+    "SmartAnalysisRequest": {
+      "properties": [
+        "analyze_efficiency",
+        "depth",
+        "exposure_class",
+        "fck",
+        "fy",
+        "include_code_checks",
+        "include_suggestions",
+        "moment",
+        "seismic_zone",
+        "shear",
+        "span_length",
+        "width"
+      ],
+      "required": [
+        "depth",
+        "moment",
+        "width"
+      ]
+    },
+    "SmartAnalysisResponse": {
+      "properties": [
+        "all_checks_passed",
+        "code_checks",
+        "cost_estimate",
+        "critical_suggestions",
+        "design_summary",
+        "efficiency",
+        "message",
+        "success",
+        "suggestions",
+        "warnings"
+      ],
+      "required": [
+        "all_checks_passed",
+        "design_summary",
+        "message",
+        "success"
+      ]
+    },
+    "StirrupArrangement": {
+      "properties": [
+        "area_per_meter",
+        "diameter",
+        "legs",
+        "spacing"
+      ],
+      "required": [
+        "area_per_meter",
+        "diameter",
+        "legs",
+        "spacing"
+      ]
+    },
+    "Suggestion": {
+      "properties": [
+        "action_required",
+        "category",
+        "description",
+        "potential_savings",
+        "priority",
+        "title"
+      ],
+      "required": [
+        "category",
+        "description",
+        "priority",
+        "title"
+      ]
+    },
+    "SystemInfo": {
+      "properties": [
+        "api_version",
+        "platform",
+        "python_version",
+        "structural_lib_available"
+      ],
+      "required": [
+        "api_version",
+        "platform",
+        "python_version",
+        "structural_lib_available"
+      ]
+    },
+    "ValidationError": {
+      "properties": [
+        "loc",
+        "msg",
+        "type"
+      ],
+      "required": [
+        "loc",
+        "msg",
+        "type"
+      ]
+    }
+  },
+  "version": "0.1.0"
+}

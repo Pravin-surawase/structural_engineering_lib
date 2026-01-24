@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "updated": "2026-01-24",
   "description": "Comprehensive index of all automation scripts for AI agent discovery",
-  "total_scripts": 152,
+  "total_scripts": 155,
   "usage_guide": "AI agents should use this file to discover available scripts. Start with 'tier0' scripts for most operations.",
   "tier0": {
     "description": "PRIMARY SCRIPTS - Use these 95% of the time",
@@ -265,6 +265,9 @@
         "validate_fastapi_schema.py": "Validate all API functions are FastAPI-compatible",
         "test_api_parity.py": "Test library ↔ FastAPI serialization parity",
         "benchmark_api_latency.py": "Benchmark API latency against V3 thresholds (<50ms)",
+        "benchmark_api.py": "FastAPI performance benchmarks with p95/p99 latencies (NEW)",
+        "validate_api_contracts.py": "Detect breaking API changes vs OpenAPI baseline (NEW)",
+        "check_fastapi_issues.py": "AST scanner for FastAPI anti-patterns (NEW)",
         "generate_api_routes.py": "Auto-generate FastAPI route definitions from API functions",
         "validate_schema_snapshots.py": "Validate Pydantic schemas against snapshots for contract testing",
         "discover_api_signatures.py": "Discover API signatures BEFORE implementing wrappers (CRITICAL)"
@@ -282,6 +285,9 @@
     "validate_links": ".venv/bin/python scripts/check_links.py",
     "fix_links": ".venv/bin/python scripts/fix_broken_links.py --fix",
     "check_streamlit": ".venv/bin/python scripts/check_streamlit_issues.py --all-pages",
+    "check_fastapi": ".venv/bin/python scripts/check_fastapi_issues.py",
+    "benchmark_api": ".venv/bin/python scripts/benchmark_api.py --quick",
+    "validate_contracts": ".venv/bin/python scripts/validate_api_contracts.py",
     "validate_docs": ".venv/bin/python scripts/check_doc_metadata.py",
     "v3_readiness": ".venv/bin/python scripts/validate_fastapi_schema.py && .venv/bin/python scripts/test_api_parity.py && .venv/bin/python scripts/benchmark_api_latency.py"
   },

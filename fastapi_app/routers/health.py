@@ -77,6 +77,7 @@ def _check_structural_lib() -> bool:
     """Check if structural_lib is available and importable."""
     try:
         from structural_lib import api  # noqa: F401
+
         return True
     except ImportError:
         return False

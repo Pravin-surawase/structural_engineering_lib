@@ -54,12 +54,16 @@ class DesignConnectionManager:
         """Accept and register a new WebSocket connection."""
         await websocket.accept()
         self.active_connections[session_id] = websocket
-        logger.info(f"Client connected: {session_id} (total: {len(self.active_connections)})")
+        logger.info(
+            f"Client connected: {session_id} (total: {len(self.active_connections)})"
+        )
 
     def disconnect(self, session_id: str) -> None:
         """Remove a disconnected client."""
         self.active_connections.pop(session_id, None)
-        logger.info(f"Client disconnected: {session_id} (total: {len(self.active_connections)})")
+        logger.info(
+            f"Client disconnected: {session_id} (total: {len(self.active_connections)})"
+        )
 
     async def send_json(self, session_id: str, data: dict[str, Any]) -> None:
         """Send JSON data to a specific session."""
@@ -140,27 +144,32 @@ async def design_websocket(
                     await handle_check_beam(session_id, data.get("params", {}))
 
                 elif message_type == "ping":
-                    await manager.send_json(session_id, {
-                        "type": "pong",
-                        "timestamp": datetime.now(timezone.utc).isoformat()
-                    })
+                    await manager.send_json(
+                        session_id,
+                        {
+                            "type": "pong",
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                        },
+                    )
 
                 else:
-                    await manager.send_json(session_id, {
-                        "type": "error",
-                        "message": f"Unknown message type: {message_type}"
-                    })
+                    await manager.send_json(
+                        session_id,
+                        {
+                            "type": "error",
+                            "message": f"Unknown message type: {message_type}",
+                        },
+                    )
 
             except Exception as e:
                 logger.exception(f"Error handling message type {message_type}")
-                await manager.send_json(session_id, {
-                    "type": "error",
-                    "message": str(e)
-                })
+                await manager.send_json(
+                    session_id, {"type": "error", "message": str(e)}
+                )
 
     except WebSocketDisconnect:
         manager.disconnect(session_id)
-    except Exception as e:
+    except Exception:
         logger.exception(f"WebSocket error for session {session_id}")
         manager.disconnect(session_id)
 
@@ -217,25 +226,28 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     latency_ms = (end_time - start_time).total_seconds() * 1000
 
     # Send result with structure matching ComplianceCaseResult
-    await manager.send_json(session_id, {
-        "type": "design_result",
-        "latency_ms": round(latency_ms, 2),
-        "data": {
-            "flexure": {
-                "ast_required": result.flexure.ast_required,
-                "mu_lim": result.flexure.mu_lim,
-                "xu": result.flexure.xu,
-                "xu_max": result.flexure.xu_max,
-                "is_safe": result.flexure.is_safe,
+    await manager.send_json(
+        session_id,
+        {
+            "type": "design_result",
+            "latency_ms": round(latency_ms, 2),
+            "data": {
+                "flexure": {
+                    "ast_required": result.flexure.ast_required,
+                    "mu_lim": result.flexure.mu_lim,
+                    "xu": result.flexure.xu,
+                    "xu_max": result.flexure.xu_max,
+                    "is_safe": result.flexure.is_safe,
+                },
+                "shear": {
+                    "tv": result.shear.tv if result.shear else None,
+                    "tc": result.shear.tc if result.shear else None,
+                    "spacing": result.shear.spacing if result.shear else None,
+                    "is_safe": result.shear.is_safe if result.shear else None,
+                },
             },
-            "shear": {
-                "tv": result.shear.tv if result.shear else None,
-                "tc": result.shear.tc if result.shear else None,
-                "spacing": result.shear.spacing if result.shear else None,
-                "is_safe": result.shear.is_safe if result.shear else None,
-            },
-        }
-    })
+        },
+    )
 
 
 async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
@@ -255,10 +267,9 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
     cases = params.get("cases", [])
 
     if not cases:
-        await manager.send_json(session_id, {
-            "type": "error",
-            "message": "No load cases provided"
-        })
+        await manager.send_json(
+            session_id, {"type": "error", "message": "No load cases provided"}
+        )
         return
 
     d_mm = depth - cover - 8
@@ -278,14 +289,17 @@ async def handle_check_beam(session_id: str, params: dict[str, Any]) -> None:
     end_time = datetime.now(timezone.utc)
     latency_ms = (end_time - start_time).total_seconds() * 1000
 
-    await manager.send_json(session_id, {
-        "type": "check_result",
-        "latency_ms": round(latency_ms, 2),
-        "data": {
-            "is_ok": result.is_ok,
-            "governing_case_id": result.governing_case_id,
-            "governing_utilization": result.governing_utilization,
-            "summary": result.summary,
-            "num_cases": len(result.cases),
-        }
-    })
+    await manager.send_json(
+        session_id,
+        {
+            "type": "check_result",
+            "latency_ms": round(latency_ms, 2),
+            "data": {
+                "is_ok": result.is_ok,
+                "governing_case_id": result.governing_case_id,
+                "governing_utilization": result.governing_utilization,
+                "summary": result.summary,
+                "num_cases": len(result.cases),
+            },
+        },
+    )

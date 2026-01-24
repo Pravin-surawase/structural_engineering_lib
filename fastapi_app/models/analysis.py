@@ -8,7 +8,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 # =============================================================================
 # Request Models
 # =============================================================================
@@ -122,9 +121,7 @@ class EfficiencyMetrics(BaseModel):
 class CostEstimate(BaseModel):
     """Rough cost estimate for analysis."""
 
-    relative_cost: float = Field(
-        description="Relative cost index (1.0 = baseline)"
-    )
+    relative_cost: float = Field(description="Relative cost index (1.0 = baseline)")
     estimated_concrete: float = Field(description="Estimated concrete (m³/m)")
     estimated_steel: float = Field(description="Estimated steel (kg/m)")
     cost_rating: str = Field(

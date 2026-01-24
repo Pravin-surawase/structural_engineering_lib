@@ -79,7 +79,9 @@ async def optimize_beam_cost(
             "ast_required": 0.0,  # Not directly available
             "asc_required": 0.0,
             "utilization": 0.9,  # Assumed near-optimal
-            "ld_ratio": request.span_length / opt_design.D_mm if opt_design.D_mm > 0 else 0,
+            "ld_ratio": (
+                request.span_length / opt_design.D_mm if opt_design.D_mm > 0 else 0
+            ),
             "concrete_volume": opt_design.b_mm * opt_design.D_mm / 1e6,  # m³/m
             "steel_weight": 0.0,  # Would need detailed calc
             "formwork_area": (opt_design.b_mm + 2 * opt_design.D_mm) / 1000,  # m²/m
@@ -98,7 +100,9 @@ async def optimize_beam_cost(
         # Parse alternatives if available
         alternatives = []
         if request.include_alternatives and result.alternatives:
-            for i, alt in enumerate(result.alternatives[:request.max_alternatives], start=2):
+            for i, alt in enumerate(
+                result.alternatives[: request.max_alternatives], start=2
+            ):
                 alt_cost = alt.cost_breakdown
                 alt_data = {
                     "width": alt.b_mm,

@@ -68,7 +68,13 @@ class BatchJobManager:
         }
         return job_id
 
-    def update_progress(self, job_id: str, success: bool, result: dict | None = None, error: str | None = None) -> None:
+    def update_progress(
+        self,
+        job_id: str,
+        success: bool,
+        result: dict | None = None,
+        error: str | None = None,
+    ) -> None:
         """Update job progress."""
         if job_id not in self.jobs:
             return
@@ -96,7 +102,9 @@ class BatchJobManager:
         to_remove = []
         for job_id, job in self.jobs.items():
             if job.get("completed_at"):
-                completed = datetime.fromisoformat(job["completed_at"].replace("Z", "+00:00"))
+                completed = datetime.fromisoformat(
+                    job["completed_at"].replace("Z", "+00:00")
+                )
                 if (now - completed).total_seconds() > max_age_seconds:
                     to_remove.append(job_id)
         for job_id in to_remove:
@@ -152,13 +160,23 @@ async def stream_batch_design(
     try:
         beam_list = json.loads(beams)
     except json.JSONDecodeError:
+
         async def error_generator():
-            yield {"event": "error", "data": json.dumps({"message": "Invalid JSON in beams parameter"})}
+            yield {
+                "event": "error",
+                "data": json.dumps({"message": "Invalid JSON in beams parameter"}),
+            }
+
         return EventSourceResponse(error_generator())
 
     if not isinstance(beam_list, list) or len(beam_list) == 0:
+
         async def error_generator():
-            yield {"event": "error", "data": json.dumps({"message": "beams must be a non-empty array"})}
+            yield {
+                "event": "error",
+                "data": json.dumps({"message": "beams must be a non-empty array"}),
+            }
+
         return EventSourceResponse(error_generator())
 
     async def event_generator() -> AsyncGenerator[dict, None]:
@@ -168,11 +186,13 @@ async def stream_batch_design(
         # Send start event
         yield {
             "event": "start",
-            "data": json.dumps({
-                "job_id": job_id,
-                "total": len(beam_list),
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            })
+            "data": json.dumps(
+                {
+                    "job_id": job_id,
+                    "total": len(beam_list),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                }
+            ),
         }
 
         for idx, beam_params in enumerate(beam_list):
@@ -217,20 +237,21 @@ async def stream_batch_design(
                         "xu": result.flexure.xu,
                         "is_safe": result.flexure.is_safe,
                     },
-                    "shear": {
-                        "tv": result.shear.tv if result.shear else None,
-                        "tc": result.shear.tc if result.shear else None,
-                        "is_safe": result.shear.is_safe if result.shear else None,
-                    } if result.shear else None,
+                    "shear": (
+                        {
+                            "tv": result.shear.tv if result.shear else None,
+                            "tc": result.shear.tc if result.shear else None,
+                            "is_safe": result.shear.is_safe if result.shear else None,
+                        }
+                        if result.shear
+                        else None
+                    ),
                     "status": "PASS" if result.flexure.is_safe else "FAIL",
                 }
 
                 job_manager.update_progress(job_id, success=True, result=result_data)
 
-                yield {
-                    "event": "design_result",
-                    "data": json.dumps(result_data)
-                }
+                yield {"event": "design_result", "data": json.dumps(result_data)}
 
             except Exception as e:
                 logger.exception(f"Error designing beam {idx}")
@@ -239,39 +260,53 @@ async def stream_batch_design(
 
                 yield {
                     "event": "error",
-                    "data": json.dumps({
-                        "beam_id": beam_params.get("id", f"beam_{idx + 1}"),
-                        "index": idx,
-                        "message": error_msg
-                    })
+                    "data": json.dumps(
+                        {
+                            "beam_id": beam_params.get("id", f"beam_{idx + 1}"),
+                            "index": idx,
+                            "message": error_msg,
+                        }
+                    ),
                 }
 
             # Send progress update
             job = job_manager.get_job(job_id)
             yield {
                 "event": "progress",
-                "data": json.dumps({
-                    "completed": job["completed"],
-                    "total": job["total"],
-                    "failed": job["failed"],
-                    "percent": round(job["completed"] / job["total"] * 100, 1)
-                })
+                "data": json.dumps(
+                    {
+                        "completed": job["completed"],
+                        "total": job["total"],
+                        "failed": job["failed"],
+                        "percent": round(job["completed"] / job["total"] * 100, 1),
+                    }
+                ),
             }
 
         # Send complete event
         job = job_manager.get_job(job_id)
         yield {
             "event": "complete",
-            "data": json.dumps({
-                "job_id": job_id,
-                "total": job["total"],
-                "completed": job["completed"],
-                "failed": job["failed"],
-                "duration_seconds": (
-                    datetime.fromisoformat(job["completed_at"].replace("Z", "+00:00")) -
-                    datetime.fromisoformat(job["started_at"].replace("Z", "+00:00"))
-                ).total_seconds() if job.get("completed_at") else None
-            })
+            "data": json.dumps(
+                {
+                    "job_id": job_id,
+                    "total": job["total"],
+                    "completed": job["completed"],
+                    "failed": job["failed"],
+                    "duration_seconds": (
+                        (
+                            datetime.fromisoformat(
+                                job["completed_at"].replace("Z", "+00:00")
+                            )
+                            - datetime.fromisoformat(
+                                job["started_at"].replace("Z", "+00:00")
+                            )
+                        ).total_seconds()
+                        if job.get("completed_at")
+                        else None
+                    ),
+                }
+            ),
         }
 
     return EventSourceResponse(event_generator())
@@ -298,7 +333,11 @@ async def get_job_status(
             "completed": job["completed"],
             "total": job["total"],
             "failed": job["failed"],
-            "percent": round(job["completed"] / job["total"] * 100, 1) if job["total"] > 0 else 0,
+            "percent": (
+                round(job["completed"] / job["total"] * 100, 1)
+                if job["total"] > 0
+                else 0
+            ),
         },
         "started_at": job["started_at"],
         "completed_at": job["completed_at"],

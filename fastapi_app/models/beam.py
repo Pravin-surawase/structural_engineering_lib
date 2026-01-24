@@ -9,7 +9,6 @@ from typing import Any
 
 from pydantic import BaseModel, Field, model_validator
 
-
 # =============================================================================
 # Design Request Models
 # =============================================================================
@@ -199,7 +198,9 @@ class FlexureResult(BaseModel):
     xu_max: float = Field(description="Limiting neutral axis depth (mm)")
     is_under_reinforced: bool = Field(description="Whether section is under-reinforced")
     moment_capacity: float = Field(description="Moment capacity Mu,cap (kN·m)")
-    asc_required: float = Field(default=0.0, description="Compression steel if needed (mm²)")
+    asc_required: float = Field(
+        default=0.0, description="Compression steel if needed (mm²)"
+    )
 
 
 class ShearResult(BaseModel):
@@ -293,10 +294,14 @@ class BeamDetailingResponse(BaseModel):
     compression_bars: list[BarArrangement] = Field(
         default_factory=list, description="Compression bar arrangement"
     )
-    asc_provided: float = Field(default=0.0, description="Compression steel provided (mm²)")
+    asc_provided: float = Field(
+        default=0.0, description="Compression steel provided (mm²)"
+    )
 
     # Shear reinforcement
-    stirrups: StirrupArrangement | None = Field(default=None, description="Stirrup details")
+    stirrups: StirrupArrangement | None = Field(
+        default=None, description="Stirrup details"
+    )
 
     # Development lengths
     ld_tension: float = Field(description="Development length for tension bars (mm)")
