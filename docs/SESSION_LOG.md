@@ -4,6 +4,47 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-24 — Session 74: OpenAPI Baseline + Docker Dev Workflow
+
+**Focus:** OpenAPI baseline refresh, SDK alignment, Docker dev workflows
+
+### Key Accomplishments
+
+1. **PR #408 Merged (Docker + OpenAPI + SDK Regen)**
+   - Regenerated `fastapi_app/openapi_baseline.json` from live FastAPI server
+   - Re-generated Python + TypeScript SDKs to match `BeamDesignResponse`
+   - Added Docker quickstart in 8-week plan
+   - Added `docker-compose.dev.yml` for hot reload
+
+2. **Governance + CI Fixes**
+   - Updated root file governance limits to allow Docker artifacts
+   - Fixed docs link in deployment guide
+   - Cleaned FastAPI test lint issues (ruff) and black formatting
+
+3. **Developer Experience**
+   - Added `Dockerfile.fastapi`, `.dockerignore`, `docker-compose.yml`
+   - Added `pytest.ini` for shared markers (performance/slow)
+
+### Commits/PRs
+
+| Item | Status | Description |
+|------|--------|-------------|
+| PR #408 | ✅ MERGED | OpenAPI baseline refresh + Docker dev workflow |
+
+### Test Results
+
+```
+FastAPI load tests: 8 passed
+FastAPI integration tests: 17 passed
+```
+
+### Next Session Priorities
+
+1. Validate OpenAPI → SDK alignment with real server responses
+2. Decide on Docker image strategy (dev vs prod)
+
+---
+
 ## 2026-01-24 — Session 73: Week 2-3 FastAPI & WebSocket Implementation
 
 **Focus:** Week 2 FastAPI backend completion, Week 3 WebSocket live design

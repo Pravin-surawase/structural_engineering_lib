@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-24
-- Focus: Session 73 - Week 2-3 FastAPI & WebSocket Implementation
+- Focus: OpenAPI baseline refresh + Docker dev workflow (PR #408)
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,7 +21,22 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + WebSocket) |
 
-**Last Session:** 73 | **Focus:** Week 2-3 FastAPI & WebSocket Implementation
+**Last Session:** 74 | **Focus:** OpenAPI baseline refresh + Docker dev workflow
+
+---
+
+## 🔑 Session 74 Summary
+
+**PR #408 Merged:**
+1. **OpenAPI baseline regenerated** — `fastapi_app/openapi_baseline.json`
+2. **SDKs updated** — Python + TypeScript aligned to `BeamDesignResponse`
+3. **Docker dev workflow** — `Dockerfile.fastapi`, `docker-compose.dev.yml`
+4. **Quickstart added** — Docker commands in 8-week plan
+5. **Governance fixes** — Root file limits updated for Docker artifacts
+
+**Notes:**
+- FastAPI lint/format issues resolved (black + ruff).
+- Docs link fix in deployment guide.
 
 ---
 
