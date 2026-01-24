@@ -31,6 +31,7 @@ venv/
 ENV/
 env/
 .venv/
+.venv-*/
 
 # pytest / coverage
 .pytest_cache/

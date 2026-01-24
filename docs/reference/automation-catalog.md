@@ -38,6 +38,118 @@
 
 ---
 
+## AI Automation Audit Readiness Report (2026-01-24)
+
+**Purpose:** Single source report for automation health, testing gaps, quality risks, audit readiness, and next steps.
+
+### 1) Current State — What We Have
+
+**Automation Coverage**
+- **143 scripts total** covering git workflow, validation, docs governance, Streamlit QA, CI/CD helpers, and V3 migration.
+- **Discovery:** `find_automation.py` + `automation-map.json` provides task→script routing.
+- **Catalog:** This file serves as the authoritative reference for all scripts.
+
+**V3 Migration Automation (Validated)**
+- `validate_fastapi_schema.py` — 43/43 API functions FastAPI-compatible.
+- `test_api_parity.py` — JSON round-trip parity tests pass (3/3).
+- `benchmark_api_latency.py` — 0.01ms median, under V3 thresholds.
+- `generate_api_routes.py` — scaffolds FastAPI routes + app skeleton.
+
+**Quality & Safety Gates**
+- Doc integrity: `check_doc_metadata.py`, `check_doc_similarity.py`, `check_links.py`.
+- Streamlit runtime guards: `check_streamlit_issues.py`, `check_fragment_violations.py`.
+- Git safety: `ai_commit.sh` (conflict-minimized workflow), PR decision script.
+
+### 2) What the Project Still Needs (Gaps)
+
+**Testing Infrastructure**
+- **Contract tests** for API request/response models (beyond serialization parity).
+- **Performance regression baselines** with thresholds enforced in CI.
+- **Coverage-driven test matrix** (unit + integration + API-level tests).
+
+**Audit Readiness**
+- Formal **evidence checklist** (tests run, scanners run, dependency status, linting, coverage).
+- **Security posture summary** (dependencies, policies, secrets scanning, SBOM).
+- **Traceable change control** summary per release (links to CI artifacts and validations).
+
+**Duplication & Quality**
+- Automated **duplication detection** in Python + docs (not just doc similarity).
+- Consolidated **shared UI utilities** to prevent repeated logic across Streamlit pages.
+
+### 3) What Should Be Updated (High Impact)
+
+**Testing & Validation (Priority)**
+1. Add **API contract tests** (request/response model validation).
+2. Add **benchmark baselines** (p95/p99 thresholds; fail CI on regressions).
+3. Add **snapshot tests** for response stability on key API endpoints.
+
+**Audit Readiness**
+1. Add `audit_readiness_report.py` (single report output: versions, tests, scanners, coverage).
+2. Create **evidence pack** in `docs/audit/` for external reviewers.
+3. Add **dependency risk check** into CI (pinning + vulnerability scan summary).
+
+**Quality & Duplication**
+1. Add **duplication scanner** for Python (tokens or AST-level similarity).
+2. Add **lint gate** for architectural boundaries (core/app/ui layer rules).
+3. Extend Streamlit checks for **dataframe key safety** in UI transformations.
+
+### 4) Audit Readiness (Big Firm Perspective)
+
+**Evidence required by auditors:**
+- Test results with pass/fail logs, coverage metrics, and CI proof.
+- Code quality reports (lint, static analysis, duplication).
+- Dependency list + vulnerabilities (SBOM + advisory scan).
+- Change history with PR linkage + validation evidence per release.
+
+**Expected artifacts (proposed):**
+- `docs/audit/audit-readiness.md` (summary)
+- `docs/audit/audit-evidence-YYYY-MM-DD.md` (checklist with tool outputs)
+- `scripts/audit_readiness_report.py` (machine-generated report)
+
+### 5) Git Workflow Upgrade (World-Class)
+
+**Goal:** Faster + safer workflow with auditable traceability.
+
+**Improvements to implement:**
+- Standardized **PR templates** with validation checklist.
+- Auto-attach **CI artifacts** to releases.
+- Enforced **conventional commit** types across all commits.
+- Add **release gate** checklist script (one command to verify release readiness).
+
+### 6) Scanner Research Priorities
+
+**Scope:** Define quality gates aligned to architecture + Streamlit rules.
+
+**Research topics:**
+- AST-based detection for **unsafe dataframe access** and **zero-division** risks.
+- Scanner rules for **architecture boundary violations** (core/app/ui).
+- Auto-suppression rules that require explicit justification.
+
+### 7) CI/CD Efficiency (Time Reduction)
+
+**Current risk:** Validation is comprehensive but time-heavy.
+
+**Optimizations:**
+- Split CI by **changed paths** (docs vs core vs UI).
+- Cache Python dependencies and test artifacts.
+- Parallelize `pytest`, scanner checks, and doc validators.
+
+### 8) Additional Points (Audit-Driven)
+
+- Formal **versioned API manifest** with change tracking.
+- Track **breaking change risk** in release notes.
+- Maintain **performance SLAs** for V3 APIs.
+
+### 9) Recommended Next Actions
+
+1. Add **audit readiness automation** (report + evidence pack).
+2. Add **contract tests** for FastAPI models.
+3. Implement **CI path-based optimization**.
+4. Create **duplication scanner** (code + docs).
+5. Add **architecture boundary lint** for 3-layer enforcement.
+
+---
+
 ## Session Management
 
 ### 1. `start_session.py`
