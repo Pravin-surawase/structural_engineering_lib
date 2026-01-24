@@ -29,7 +29,7 @@
 | [Streamlit QA](#streamlit-qa) | 6 | Streamlit linting, AST validation, page checks |
 | [Governance & Monitoring](#governance--monitoring) | 7 | Metrics, dashboards, repo health |
 | [Specialized](#specialized) | 8 | DXF rendering, CLI testing, automation helpers |
-| [API Validation & Migration](#api-validation--migration) | 7 | V3-critical API and migration validation |
+| [API Validation & Migration](#api-validation--migration) | 10 | V3-critical API and migration validation |
 | [Agent Discovery & Diagnostics](#agent-discovery--diagnostics) | 3 | Script discovery, diagnostics, session start |
 | [Documentation Quality (Extended)](#documentation-quality-extended) | 8 | Doc creation, similarity, cleanup |
 | [Code Quality (Extended)](#code-quality-extended) | 4 | Type checks, imports, circular deps |
@@ -2144,9 +2144,92 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
+### 79. `validate_fastapi_schema.py` 🆕
+
+**Purpose:** Validate all API functions are FastAPI-compatible for V3 migration.
+
+**When to Use:**
+- ✅ Before V3 FastAPI implementation starts
+- ✅ After adding new API functions
+- ✅ V3 readiness checks
+
+**Usage:**
+```bash
+.venv/bin/python scripts/validate_fastapi_schema.py
+.venv/bin/python scripts/validate_fastapi_schema.py --verbose
+.venv/bin/python scripts/validate_fastapi_schema.py --generate-stubs
+```
+
+**What It Checks:**
+1. All API functions have type hints
+2. Parameters are JSON-serializable types
+3. Return types are dataclasses (serializable)
+4. No incompatible types (e.g., untyped Any)
+
+**V3 Relevance:** **CRITICAL** — Must pass before FastAPI wrapper generation.
+
+**Related:** [test_api_parity.py](#80-test_api_paritypy), [benchmark_api_latency.py](#81-benchmark_api_latencypy)
+
+---
+
+### 80. `test_api_parity.py` 🆕
+
+**Purpose:** Test that FastAPI endpoints return identical results to direct library calls.
+
+**When to Use:**
+- ✅ After FastAPI wrapper changes
+- ✅ V3 serialization validation
+- ✅ Regression testing before releases
+
+**Usage:**
+```bash
+.venv/bin/python scripts/test_api_parity.py
+.venv/bin/python scripts/test_api_parity.py --verbose
+.venv/bin/python scripts/test_api_parity.py --function design_beam_is456
+```
+
+**What It Does:**
+1. Calls library function directly
+2. Simulates FastAPI JSON round-trip (serialize → deserialize)
+3. Compares results with tolerance for floats
+4. Handles Enum↔string and dataclass conversion
+
+**V3 Relevance:** **CRITICAL** — Ensures React frontend gets same results as Streamlit.
+
+**Related:** [validate_fastapi_schema.py](#79-validate_fastapi_schemapy)
+
+---
+
+### 81. `benchmark_api_latency.py` 🆕
+
+**Purpose:** Benchmark API function latency against V3 thresholds.
+
+**When to Use:**
+- ✅ V3 performance validation
+- ✅ After optimization changes
+- ✅ CI performance regression checks
+
+**Usage:**
+```bash
+.venv/bin/python scripts/benchmark_api_latency.py
+.venv/bin/python scripts/benchmark_api_latency.py --iterations 100
+.venv/bin/python scripts/benchmark_api_latency.py --detailed
+```
+
+**What It Measures:**
+- Min/max/mean/median/p95/p99 latency
+- V3 threshold validation (<50ms for simple, <75ms for complex)
+- Warmup runs to exclude JIT effects
+
+**V3 Relevance:** **CRITICAL** — V3 requires <100ms for smooth 3D preview.
+
+**Related:** [validate_fastapi_schema.py](#79-validate_fastapi_schemapy)
+
+---
+
 ## Agent Discovery & Diagnostics
 
-### 79. `find_automation.py`
+### 82. `find_automation.py`
 
 **Purpose:** Find automation scripts for a given task description.
 
@@ -2173,7 +2256,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 80. `collect_diagnostics.py`
+### 83. `collect_diagnostics.py`
 
 **Purpose:** Bundle debug context (environment, git state, logs) for troubleshooting.
 
@@ -2198,7 +2281,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 81. `agent_start.sh`
+### 84. `agent_start.sh`
 
 **Purpose:** Unified session start combining setup, preflight, and session initialization.
 
@@ -2228,7 +2311,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ## Documentation Quality (Extended)
 
-### 82. `create_doc.py`
+### 85. `create_doc.py`
 
 **Purpose:** Create new document with proper metadata headers.
 
@@ -2258,7 +2341,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 83. `check_doc_similarity.py`
+### 86. `check_doc_similarity.py`
 
 **Purpose:** Find similar documents before creating new ones (prevents duplicates).
 
@@ -2281,7 +2364,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 84. `check_doc_metadata.py`
+### 87. `check_doc_metadata.py`
 
 **Purpose:** Validate document metadata headers are complete and correct.
 
@@ -2305,7 +2388,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 85. `check_doc_frontmatter.py`
+### 88. `check_doc_frontmatter.py`
 
 **Purpose:** Check document frontmatter format and completeness.
 
@@ -2322,7 +2405,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 86. `fix_broken_links.py`
+### 89. `fix_broken_links.py`
 
 **Purpose:** Find and auto-fix broken internal markdown links.
 
@@ -2348,7 +2431,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 87. `find_orphan_files.py`
+### 90. `find_orphan_files.py`
 
 **Purpose:** Find files that are not referenced from any other document.
 
@@ -2367,7 +2450,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 88. `consolidate_docs.py`
+### 91. `consolidate_docs.py`
 
 **Purpose:** Consolidate similar or redundant documentation files.
 
@@ -2387,7 +2470,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 89. `analyze_doc_redundancy.py`
+### 92. `analyze_doc_redundancy.py`
 
 **Purpose:** Analyze documentation for redundant content.
 
@@ -2406,7 +2489,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ## Code Quality (Extended)
 
-### 90. `check_circular_imports.py`
+### 93. `check_circular_imports.py`
 
 **Purpose:** Detect circular import issues in the codebase.
 
@@ -2427,7 +2510,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 91. `check_type_annotations.py`
+### 94. `check_type_annotations.py`
 
 **Purpose:** Validate type annotations across the codebase.
 
@@ -2448,7 +2531,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 92. `check_fragment_violations.py`
+### 95. `check_fragment_violations.py`
 
 **Purpose:** Detect Streamlit fragment API violations.
 
@@ -2471,7 +2554,7 @@ ln -s ../../scripts/pre-push-hook.sh .git/hooks/pre-push
 
 ---
 
-### 93. `check_streamlit_imports.py`
+### 96. `check_streamlit_imports.py`
 
 **Purpose:** Validate Streamlit page imports are correct.
 
