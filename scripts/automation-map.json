@@ -212,6 +212,38 @@
         "docs/research/v3-automation-foundation-research.md"
       ],
       "v3_critical": true
+    },
+    "implement api wrapper": {
+      "prereq": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
+      "script": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
+      "description": "ALWAYS discover signatures BEFORE implementing API wrappers (FastAPI, etc.)",
+      "context_docs": [
+        "docs/reference/api.md",
+        "docs/research/api-integration-mistakes-analysis.md"
+      ],
+      "never_use": ["guess parameter names", "assume return types", "trial-and-error debugging"],
+      "v3_critical": true
+    },
+    "create fastapi endpoint": {
+      "prereq": ".venv/bin/python scripts/discover_api_signatures.py --filter <category>",
+      "script": ".venv/bin/python scripts/discover_api_signatures.py --all",
+      "description": "Discover ALL API signatures before creating FastAPI routes",
+      "context_docs": [
+        "docs/reference/api.md",
+        "docs/research/api-integration-mistakes-analysis.md"
+      ],
+      "never_use": ["guess parameter names", "assume return types"],
+      "v3_critical": true
+    },
+    "wrap library function": {
+      "prereq": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
+      "script": ".venv/bin/python scripts/discover_api_signatures.py <function_name>",
+      "description": "Discover signature before wrapping structural_lib functions",
+      "context_docs": [
+        "docs/reference/api.md",
+        "docs/research/api-integration-mistakes-analysis.md"
+      ],
+      "never_use": ["guess", "assume"]
     }
   },
 
@@ -254,7 +286,10 @@
       "validate fastapi schema",
       "test api parity",
       "benchmark api latency",
-      "v3 readiness check"
+      "v3 readiness check",
+      "implement api wrapper",
+      "create fastapi endpoint",
+      "wrap library function"
     ]
   }
 }

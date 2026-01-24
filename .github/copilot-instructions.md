@@ -519,6 +519,7 @@ cat scripts/index.json
 | **Creating duplicate docs** | Clutter, confusion | Check canonical registry first | `check_doc_similarity.py` |
 | **Using outdated AI model names** | API errors | Verify online before using | `fetch_webpage` |
 | **Manual file operations** | Broken links | Use safe_file scripts | `safe_file_move.py` |
+| **Guessing API signatures** | Failed tests, debug loops | Discover signatures first | `discover_api_signatures.py` |
 
 ---
 

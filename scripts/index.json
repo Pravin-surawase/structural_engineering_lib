@@ -266,7 +266,8 @@
         "test_api_parity.py": "Test library ↔ FastAPI serialization parity",
         "benchmark_api_latency.py": "Benchmark API latency against V3 thresholds (<50ms)",
         "generate_api_routes.py": "Auto-generate FastAPI route definitions from API functions",
-        "validate_schema_snapshots.py": "Validate Pydantic schemas against snapshots for contract testing"
+        "validate_schema_snapshots.py": "Validate Pydantic schemas against snapshots for contract testing",
+        "discover_api_signatures.py": "Discover API signatures BEFORE implementing wrappers (CRITICAL)"
       }
     }
   },

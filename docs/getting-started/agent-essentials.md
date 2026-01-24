@@ -35,6 +35,16 @@
 | Create doc | `.venv/bin/python scripts/create_doc.py path/file.md "Title"` |
 | Fix links | `.venv/bin/python scripts/fix_broken_links.py --fix` |
 | Check Streamlit | `.venv/bin/python scripts/check_streamlit_issues.py --all-pages` |
+| **Wrap API function** | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
+
+## 🔌 API Wrapper Rule
+
+**BEFORE wrapping ANY `structural_lib.api` function:**
+```bash
+.venv/bin/python scripts/discover_api_signatures.py design_beam_is456
+```
+**NEVER guess** parameter names (`b_mm` not `width`) or return types.
+See: [api-integration-mistakes-analysis.md](../research/api-integration-mistakes-analysis.md)
 
 ## 🎯 Golden Rules
 
