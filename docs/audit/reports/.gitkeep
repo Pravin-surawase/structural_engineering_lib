@@ -1,0 +1,22 @@
+# Audit Reports
+
+This folder contains generated audit evidence bundles for each release.
+
+**Structure:**
+```
+reports/
+├── v0.5.0/          # Evidence bundle for v0.5.0
+│   ├── evidence-bundle.md
+│   ├── coverage.xml
+│   ├── sbom.json
+│   └── scanner-summary.json
+├── v0.6.0/          # Evidence bundle for v0.6.0 (upcoming)
+│   └── ...
+```
+
+**Generation:**
+```bash
+.venv/bin/python scripts/audit_readiness_report.py --release v0.6.0
+```
+
+**Note:** This folder is auto-managed by `audit_readiness_report.py`. Do not manually create report files.
