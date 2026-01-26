@@ -3,12 +3,17 @@
  *
  * 3D visualization of beam using React Three Fiber.
  * Renders concrete beam mesh with reinforcement bars and stirrups.
+ *
+ * Uses library API via useBeamGeometry hook for accurate bar positions
+ * instead of manual calculations.
  */
 import { useMemo, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Grid, Environment, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { useDesignStore } from '../store/designStore';
+import { useBeamGeometry } from '../hooks/useBeamGeometry';
+import type { RebarPath, StirrupLoop } from '../hooks/useBeamGeometry';
 import './Viewport3D.css';
 
 // Constants
@@ -46,48 +51,16 @@ function BeamMesh({ width, depth, length, isDesigned }: BeamMeshProps) {
 }
 
 interface RebarProps {
-  width: number;
-  depth: number;
-  length: number;
-  astRequired: number;
-  ascRequired?: number;
+  rebars: RebarPath[];
 }
 
-function RebarVisualization({ width, depth, length, astRequired, ascRequired = 0 }: RebarProps) {
-  const cover = 40 * SCALE;
-  const stirrupDia = 8 * SCALE;
-
-  // Calculate tension bar layout
-  const { tensionBars, compressionBars } = useMemo(() => {
-    const barDiameter = 16 * SCALE;
-    const barArea = Math.PI * Math.pow(8, 2); // mm² for 16mm bar
-
-    const numTension = Math.max(2, Math.min(6, Math.ceil(astRequired / barArea)));
-    const numCompression = ascRequired > 0 ? Math.max(2, Math.min(4, Math.ceil(ascRequired / barArea))) : 0;
-
-    const w = width * SCALE;
-    const d = depth * SCALE;
-    const effectiveWidth = w - 2 * (cover + stirrupDia) - barDiameter;
-
-    const tension: [number, number, number][] = [];
-    for (let i = 0; i < numTension; i++) {
-      const x = 0;
-      const y = cover + stirrupDia + barDiameter / 2;
-      const z = -effectiveWidth / 2 + (i / Math.max(numTension - 1, 1)) * effectiveWidth;
-      tension.push([x, y, z]);
-    }
-
-    const compression: [number, number, number][] = [];
-    for (let i = 0; i < numCompression; i++) {
-      const x = 0;
-      const y = d - cover - stirrupDia - barDiameter / 2;
-      const z = -effectiveWidth / 2 + (i / Math.max(numCompression - 1, 1)) * effectiveWidth;
-      compression.push([x, y, z]);
-    }
-
-    return { tensionBars: tension, compressionBars: compression, barDiameter };
-  }, [width, depth, astRequired, ascRequired, cover, stirrupDia]);
-
+/**
+ * RebarVisualization - Renders rebars from API geometry.
+ *
+ * Uses accurate bar positions from library's geometry_3d module
+ * instead of manual calculations.
+ */
+function RebarVisualization({ rebars }: RebarProps) {
   const rebarMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -98,55 +71,57 @@ function RebarVisualization({ width, depth, length, astRequired, ascRequired = 0
     []
   );
 
-  const barDiameter = 16 * SCALE;
-
   return (
     <group>
-      {/* Tension bars (bottom) */}
-      {tensionBars.map((pos, i) => (
-        <mesh key={`t-${i}`} position={pos} rotation={[0, 0, Math.PI / 2]} material={rebarMaterial}>
-          <cylinderGeometry args={[barDiameter / 2, barDiameter / 2, length * SCALE * 0.98, 12]} />
-        </mesh>
-      ))}
-      {/* Compression bars (top) */}
-      {compressionBars.map((pos, i) => (
-        <mesh key={`c-${i}`} position={pos} rotation={[0, 0, Math.PI / 2]} material={rebarMaterial}>
-          <cylinderGeometry args={[barDiameter / 2, barDiameter / 2, length * SCALE * 0.98, 12]} />
-        </mesh>
-      ))}
+      {rebars.map((rebar) =>
+        rebar.segments.map((segment, segIdx) => {
+          // Convert mm to meters
+          const start: [number, number, number] = [
+            segment.start.x * SCALE,
+            segment.start.z * SCALE, // Z in library = Y in Three.js (up)
+            segment.start.y * SCALE, // Y in library = Z in Three.js (depth)
+          ];
+          const end: [number, number, number] = [
+            segment.end.x * SCALE,
+            segment.end.z * SCALE,
+            segment.end.y * SCALE,
+          ];
+
+          // Calculate bar position (midpoint) and length
+          const midpoint: [number, number, number] = [
+            (start[0] + end[0]) / 2,
+            (start[1] + end[1]) / 2,
+            (start[2] + end[2]) / 2,
+          ];
+          const length = segment.length * SCALE;
+          const radius = (segment.diameter / 2) * SCALE;
+
+          return (
+            <mesh
+              key={`${rebar.barId}-${segIdx}`}
+              position={midpoint}
+              rotation={[0, 0, Math.PI / 2]}
+              material={rebarMaterial}
+            >
+              <cylinderGeometry args={[radius, radius, length, 12]} />
+            </mesh>
+          );
+        })
+      )}
     </group>
   );
 }
 
 interface StirrupsProps {
-  width: number;
-  depth: number;
-  length: number;
-  spacing: number;
+  stirrups: StirrupLoop[];
 }
 
-function StirrupVisualization({ width, depth, length, spacing }: StirrupsProps) {
-  const cover = 40 * SCALE;
-  const stirrupDia = 8 * SCALE;
-  const halfDia = stirrupDia / 2;
-
-  const stirrups = useMemo(() => {
-    const w = width * SCALE - 2 * cover;
-    const d = depth * SCALE - 2 * cover;
-    const l = length * SCALE;
-    const spacingM = spacing * SCALE;
-
-    const numStirrups = Math.floor(l / spacingM);
-    const startX = -l / 2 + spacingM / 2;
-
-    const positions: number[] = [];
-    for (let i = 0; i < numStirrups; i++) {
-      positions.push(startX + i * spacingM);
-    }
-
-    return { positions, w, d };
-  }, [width, depth, length, spacing, cover]);
-
+/**
+ * StirrupVisualization - Renders stirrups from API geometry.
+ *
+ * Uses accurate stirrup positions and paths from library.
+ */
+function StirrupVisualization({ stirrups }: StirrupsProps) {
   const stirrupMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -157,30 +132,65 @@ function StirrupVisualization({ width, depth, length, spacing }: StirrupsProps) 
     []
   );
 
-  const { positions, w, d } = stirrups;
-
   return (
     <group>
-      {positions.map((xPos, i) => (
-        <group key={i} position={[xPos, depth * SCALE / 2, 0]}>
-          {/* Bottom horizontal */}
-          <mesh position={[0, -d / 2 + halfDia, 0]} rotation={[0, Math.PI / 2, 0]} material={stirrupMaterial}>
-            <cylinderGeometry args={[halfDia, halfDia, w - stirrupDia, 8]} />
-          </mesh>
-          {/* Top horizontal */}
-          <mesh position={[0, d / 2 - halfDia, 0]} rotation={[0, Math.PI / 2, 0]} material={stirrupMaterial}>
-            <cylinderGeometry args={[halfDia, halfDia, w - stirrupDia, 8]} />
-          </mesh>
-          {/* Left vertical */}
-          <mesh position={[0, 0, -w / 2 + halfDia]} rotation={[Math.PI / 2, 0, 0]} material={stirrupMaterial}>
-            <cylinderGeometry args={[halfDia, halfDia, d - stirrupDia, 8]} />
-          </mesh>
-          {/* Right vertical */}
-          <mesh position={[0, 0, w / 2 - halfDia]} rotation={[Math.PI / 2, 0, 0]} material={stirrupMaterial}>
-            <cylinderGeometry args={[halfDia, halfDia, d - stirrupDia, 8]} />
-          </mesh>
-        </group>
-      ))}
+      {stirrups.map((stirrup, i) => {
+        // Stirrup path is a closed loop of 4 corners in Y-Z plane at position X
+        const path = stirrup.path;
+        const xPos = stirrup.positionX * SCALE;
+        const radius = (stirrup.diameter / 2) * SCALE;
+
+        // Render each edge of the stirrup loop
+        return (
+          <group key={i}>
+            {path.map((point, j) => {
+              const nextPoint = path[(j + 1) % path.length];
+
+              // Convert library coordinates to Three.js
+              // Library: X=span, Y=width, Z=height
+              // Three.js: X=span, Y=height, Z=width
+              const start: [number, number, number] = [
+                xPos,
+                point.z * SCALE, // Z->Y (height)
+                point.y * SCALE, // Y->Z (width)
+              ];
+              const end: [number, number, number] = [
+                xPos,
+                nextPoint.z * SCALE,
+                nextPoint.y * SCALE,
+              ];
+
+              // Calculate segment properties
+              const dx = end[0] - start[0];
+              const dy = end[1] - start[1];
+              const dz = end[2] - start[2];
+              const segmentLength = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+              if (segmentLength < 0.001) return null;
+
+              const midpoint: [number, number, number] = [
+                (start[0] + end[0]) / 2,
+                (start[1] + end[1]) / 2,
+                (start[2] + end[2]) / 2,
+              ];
+
+              // Calculate rotation to align cylinder with segment
+              const isVertical = Math.abs(dy) > Math.abs(dz);
+
+              return (
+                <mesh
+                  key={`${i}-${j}`}
+                  position={midpoint}
+                  rotation={isVertical ? [Math.PI / 2, 0, 0] : [0, Math.PI / 2, 0]}
+                  material={stirrupMaterial}
+                >
+                  <cylinderGeometry args={[radius, radius, segmentLength, 8]} />
+                </mesh>
+              );
+            })}
+          </group>
+        );
+      })}
     </group>
   );
 }
@@ -188,8 +198,24 @@ function StirrupVisualization({ width, depth, length, spacing }: StirrupsProps) 
 function Scene() {
   const { inputs, length, result } = useDesignStore();
 
-  // Get stirrup spacing from result or use default
-  const stirrupSpacing = result?.shear?.stirrup_spacing ?? 150;
+  // Fetch geometry from library API when design is complete
+  const { data: geometry } = useBeamGeometry(
+    result
+      ? {
+          width: inputs.width,
+          depth: inputs.depth,
+          span: length,
+          ast_start: result.flexure?.ast_required ?? 500,
+          ast_mid: result.flexure?.ast_required ?? 400,
+          ast_end: result.flexure?.ast_required ?? 500,
+          stirrup_spacing_start: result.shear?.stirrup_spacing ?? 100,
+          stirrup_spacing_mid: result.shear?.stirrup_spacing ?? 150,
+          stirrup_spacing_end: result.shear?.stirrup_spacing ?? 100,
+          cover: 40,
+        }
+      : null,
+    { enabled: result !== null }
+  );
 
   return (
     <>
@@ -226,26 +252,11 @@ function Scene() {
         isDesigned={result !== null}
       />
 
-      {/* Reinforcement (only if designed) */}
-      {result && result.flexure && (
+      {/* Reinforcement from API geometry */}
+      {geometry && geometry.rebars.length > 0 && (
         <>
-          {/* Rebar */}
-          <RebarVisualization
-            width={inputs.width}
-            depth={inputs.depth}
-            length={length}
-            astRequired={result.flexure.ast_required}
-            ascRequired={result.flexure.asc_required}
-          />
-          {/* Stirrups (if shear result available) */}
-          {result.shear && (
-            <StirrupVisualization
-              width={inputs.width}
-              depth={inputs.depth}
-              length={length}
-              spacing={stirrupSpacing}
-            />
-          )}
+          <RebarVisualization rebars={geometry.rebars} />
+          <StirrupVisualization stirrups={geometry.stirrups} />
         </>
       )}
 

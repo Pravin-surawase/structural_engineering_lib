@@ -111,7 +111,7 @@ export function CSVImportPanel() {
               >
                 <span className="beam-id">{beam.id}</span>
                 <span className="beam-dims">
-                  {beam.width}×{beam.depth}mm
+                  {beam.b}×{beam.D}mm
                 </span>
               </div>
             ))}
