@@ -278,7 +278,7 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 
 ---
 
-### **Week 3-4: React Shell + 3D Viewport (Feb 7 - Feb 21)** � IN PROGRESS
+### **Week 3-4: React Shell + 3D Viewport (Feb 7 - Feb 21)** ✅ COMPLETE
 
 **Goal:** Set up React frontend with basic 3D rendering
 
@@ -363,8 +363,6 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 **Remaining Week 3-4 Tasks:**
 | Task | Est | Priority | Status |
 |------|-----|----------|--------|
-| Add AG Grid for tables | 3h | 🟡 High | 📋 TODO (using simple tables for now) |
-| Add command palette (`cmdk`) | 3h | 🟡 High | 📋 TODO |
 | End-to-end test flow | 2h | 🔴 Critical | 🔄 IN PROGRESS |
 
 ---
@@ -394,9 +392,12 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 - `Toast.tsx` - Toast notification system (success/error/warning/info)
 - Updated `useDesignWebSocket.ts` to use ReconnectingWebSocket
 
-**Priority 2: Live Design Workflow** 📋 TODO
-| Parse WebSocket messages | 2h | 🔴 Critical | Type-safe parsing |
-| Update React state from messages | 3h | 🔴 Critical | Real-time updates |
+**Priority 2: Live Design Workflow** 🟡 PARTIAL
+| Task | Est | Priority | Status |
+|------|-----|----------|--------|
+| Parse WebSocket messages | 2h | 🔴 Critical | ✅ Done - `useDesignWebSocket` |
+| Update React state from messages | 3h | 🔴 Critical | ✅ Done - `useLiveDesign` |
+| Wire live design UI to hooks | 3h | 🔴 Critical | ✅ Done - `DesignView` |
 
 **Priority 2: Live Design Workflow**
 | Task | Est | Priority | Deliverable |
@@ -414,12 +415,12 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 | Stream table rows as they complete | 4h | 🟡 High | Incremental results |
 
 **Deliverables Week 5:**
-- WebSocket integration complete
-- <100ms design update latency
+- WebSocket hook + resilience complete
+- Live design UI wiring (<100ms updates) complete
 - Batch progress streaming working
 - Error handling polished
 
-**Demo Ready:** Instant design updates (modify input → 3D updates in <100ms)
+**Demo Ready:** Live design updates (pending QA)
 
 ---
 

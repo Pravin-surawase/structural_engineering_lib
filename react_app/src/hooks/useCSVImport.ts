@@ -13,6 +13,7 @@
  */
 import { useMutation } from "@tanstack/react-query";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
+import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materialOverrides";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
@@ -153,13 +154,13 @@ export function useCSVFileImport() {
   const { setBeams, setImporting, setError } = useImportedBeamsStore();
 
   const mutation = useMutation({
-    mutationFn: ({ file, format }: { file: File; format?: string }) =>
+    mutationFn: ({ file, format }: { file: File; format?: string; overrides?: MaterialOverrides }) =>
       importCSVFile(file, format),
     onMutate: () => {
       setImporting(true);
       setError(null);
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       setImporting(false);
       if (data.success) {
         // Convert to store format
@@ -178,7 +179,8 @@ export function useCSVFileImport() {
           Vu_end: b.shear_end_kn,
           cover: b.cover_mm,
         }));
-        setBeams(beams as any); // Type cast for compatibility
+        const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
+        setBeams(overrideBeams as any); // Type cast for compatibility
       } else {
         setError(data.message);
       }
@@ -190,8 +192,8 @@ export function useCSVFileImport() {
   });
 
   return {
-    importFile: (file: File, format?: string) =>
-      mutation.mutate({ file, format }),
+    importFile: (file: File, format?: string, overrides?: MaterialOverrides) =>
+      mutation.mutate({ file, format, overrides }),
     isImporting: mutation.isPending,
     error: mutation.error,
     data: mutation.data,
@@ -215,13 +217,13 @@ export function useCSVTextImport() {
   const { setBeams, setImporting, setError } = useImportedBeamsStore();
 
   const mutation = useMutation({
-    mutationFn: ({ text, format }: { text: string; format?: string }) =>
+    mutationFn: ({ text, format }: { text: string; format?: string; overrides?: MaterialOverrides }) =>
       importCSVText(text, format),
     onMutate: () => {
       setImporting(true);
       setError(null);
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       setImporting(false);
       if (data.success) {
         const beams = data.beams.map((b) => ({
@@ -239,7 +241,8 @@ export function useCSVTextImport() {
           Vu_end: b.shear_end_kn,
           cover: b.cover_mm,
         }));
-        setBeams(beams as any);
+        const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
+        setBeams(overrideBeams as any);
       } else {
         setError(data.message);
       }
@@ -251,8 +254,8 @@ export function useCSVTextImport() {
   });
 
   return {
-    importText: (text: string, format?: string) =>
-      mutation.mutate({ text, format }),
+    importText: (text: string, format?: string, overrides?: MaterialOverrides) =>
+      mutation.mutate({ text, format, overrides }),
     isImporting: mutation.isPending,
     error: mutation.error,
     data: mutation.data,

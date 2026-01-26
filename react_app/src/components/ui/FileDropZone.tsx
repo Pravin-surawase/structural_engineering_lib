@@ -7,6 +7,7 @@
  */
 import React, { useCallback, useState } from "react";
 import { useCSVFileImport } from "../../hooks/useCSVImport";
+import type { MaterialOverrides } from "../../utils/materialOverrides";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 
 interface FileDropZoneProps {
@@ -20,6 +21,8 @@ interface FileDropZoneProps {
   onError?: (error: string) => void;
   /** Custom class name */
   className?: string;
+  /** Material overrides applied after import */
+  materialOverrides?: MaterialOverrides;
 }
 
 export function FileDropZone({
@@ -28,6 +31,7 @@ export function FileDropZone({
   onSuccess,
   onError,
   className = "",
+  materialOverrides,
 }: FileDropZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const { importFile, isImporting, data, error: importError } = useCSVFileImport();
@@ -78,9 +82,9 @@ export function FileDropZone({
         return;
       }
 
-      importFile(file);
+      importFile(file, undefined, materialOverrides);
     },
-    [importFile, validateFile, onError]
+    [importFile, validateFile, onError, materialOverrides]
   );
 
   const handleDrop = useCallback(

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-01-24 (Session 73)
+**Updated:** 2026-01-26 (Session 80)
 
 ---
 
@@ -31,6 +31,20 @@
 | **v0.19.1** | AI Tools + UX | 🚧 IN PROGRESS | DXF/report export fixes, manual export buttons |
 | **v0.20** | V3 Foundation | 📋 NEXT | Library API additions, V3 automation scripts |
 | **v0.21+** | V3 React | 📋 PLANNED | React + R3F + FastAPI (6-week migration) |
+
+---
+
+## Active
+
+- **TASK-V3-REACT-UI:** Live design UI wired to `useLiveDesign` + ConnectionStatus (DesignView + 3D preview) — 🔄 QA + fallback
+- **TASK-V3-IMPORT-OVERRIDES:** Material settings overrides applied to CSV + sample import — 🔄 Verify with real CSV
+
+## Up Next
+
+- Add SSE batch progress UI for batch design
+- Add REST fallback when WebSocket is unavailable (DesignView)
+- Extend material overrides into batch design + export flows
+- Add React E2E smoke test (import → 3D view)
 
 ---
 
@@ -193,7 +207,7 @@
 
 ---
 
-## Active Tasks
+## Resolved Tasks (Legacy)
 
 ### TASK-354: Scanner Critical Fixes - ai_workspace.py ✅ RESOLVED (via ignore config)
 
