@@ -2,6 +2,7 @@
 3D Geometry Router.
 
 Endpoints for geometry generation for visualization.
+Uses structural_lib.visualization.geometry_3d for accurate calculations.
 """
 
 from fastapi import APIRouter, HTTPException, status
@@ -12,6 +13,13 @@ from fastapi_app.models.geometry import (
     MeshData,
     BoundingBox,
     GeometryComponent,
+    BeamGeometryRequest,
+    BeamGeometryResponse,
+    Beam3DGeometryModel,
+    Point3DModel,
+    RebarPathModel,
+    RebarSegmentModel,
+    StirrupLoopModel,
 )
 
 router = APIRouter(
@@ -213,6 +221,149 @@ def _generate_fallback_geometry(request: Geometry3DRequest) -> Geometry3DRespons
         gltf_json=None,
         warnings=["Using fallback geometry - structural_lib not available"],
     )
+
+
+# =============================================================================
+# Full 3D Geometry from Library (Recommended for React)
+# =============================================================================
+
+
+@router.post(
+    "/beam/full",
+    response_model=BeamGeometryResponse,
+    summary="Generate Full Beam 3D Geometry",
+    description="""
+Generate complete 3D geometry with rebars and stirrups using structural_lib.
+
+This endpoint returns rich geometry data including:
+- Concrete outline (8 corner points)
+- Rebar paths with segments (position, diameter, length)
+- Stirrup loops with corner positions
+
+Ideal for React Three Fiber rendering with cylinder/tube primitives.
+""",
+)
+async def generate_full_beam_geometry(
+    request: BeamGeometryRequest,
+) -> BeamGeometryResponse:
+    """
+    Generate complete 3D geometry for beam visualization.
+
+    Uses structural_lib.visualization.geometry_3d.beam_to_3d_geometry()
+    to compute accurate rebar and stirrup positions based on:
+    - IS 456:2000 detailing rules
+    - Bar spacing requirements
+    - Zone-based stirrup calculations
+
+    Returns geometry suitable for:
+    - React Three Fiber (cylinders, tubes)
+    - Three.js BufferGeometry
+    - CAD visualization
+
+    Note: This is the recommended endpoint for modern 3D visualization.
+    """
+    try:
+        from structural_lib.api import detail_beam_is456, beam_to_3d_geometry
+
+        # Create detailing result from design parameters
+        detailing_result = detail_beam_is456(
+            units="IS456",
+            beam_id=request.beam_id,
+            story=request.story,
+            b_mm=request.width,
+            D_mm=request.depth,
+            span_mm=request.span,
+            cover_mm=request.cover,
+            fck_nmm2=request.fck,
+            fy_nmm2=request.fy,
+            ast_start_mm2=request.ast_start,
+            ast_mid_mm2=request.ast_mid,
+            ast_end_mm2=request.ast_end,
+            stirrup_dia_mm=request.stirrup_dia,
+            stirrup_spacing_start_mm=request.stirrup_spacing_start,
+            stirrup_spacing_mid_mm=request.stirrup_spacing_mid,
+            stirrup_spacing_end_mm=request.stirrup_spacing_end,
+            is_seismic=request.is_seismic,
+        )
+
+        # Generate 3D geometry from detailing
+        geometry = beam_to_3d_geometry(
+            detailing=detailing_result,
+            is_seismic=request.is_seismic,
+        )
+
+        # Convert library dataclass to Pydantic model
+        geometry_dict = geometry.to_dict()
+
+        # Convert to Pydantic models
+        concrete_outline = [
+            Point3DModel(**pt) for pt in geometry_dict["concreteOutline"]
+        ]
+
+        rebars = []
+        for rb in geometry_dict["rebars"]:
+            segments = [RebarSegmentModel(**seg) for seg in rb["segments"]]
+            rebars.append(
+                RebarPathModel(
+                    barId=rb["barId"],
+                    segments=segments,
+                    diameter=rb["diameter"],
+                    barType=rb["barType"],
+                    zone=rb["zone"],
+                    totalLength=rb["totalLength"],
+                )
+            )
+
+        stirrups = []
+        for st in geometry_dict["stirrups"]:
+            path = [Point3DModel(**pt) for pt in st["path"]]
+            stirrups.append(
+                StirrupLoopModel(
+                    positionX=st["positionX"],
+                    path=path,
+                    diameter=st["diameter"],
+                    legs=st["legs"],
+                    hookType=st["hookType"],
+                    perimeter=st["perimeter"],
+                )
+            )
+
+        geometry_model = Beam3DGeometryModel(
+            beamId=geometry_dict["beamId"],
+            story=geometry_dict["story"],
+            dimensions=geometry_dict["dimensions"],
+            concreteOutline=concrete_outline,
+            rebars=rebars,
+            stirrups=stirrups,
+            metadata=geometry_dict["metadata"],
+            version=geometry_dict.get("version", "1.0.0"),
+        )
+
+        return BeamGeometryResponse(
+            success=True,
+            message=(
+                f"Generated geometry with {len(rebars)} rebars "
+                f"and {len(stirrups)} stirrups"
+            ),
+            geometry=geometry_model,
+            warnings=[],
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"structural_lib not available: {e}",
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Invalid parameters: {e}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Geometry generation failed: {e}",
+        )
 
 
 @router.get(

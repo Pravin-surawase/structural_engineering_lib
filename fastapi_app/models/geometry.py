@@ -7,6 +7,127 @@ Models for 3D geometry generation API endpoints for visualization.
 from pydantic import BaseModel, Field
 
 # =============================================================================
+# Point/Segment Models (matching library's geometry_3d.py)
+# =============================================================================
+
+
+class Point3DModel(BaseModel):
+    """3D point in millimeters."""
+
+    x: float = Field(description="X-coordinate along span (mm)")
+    y: float = Field(description="Y-coordinate across width (mm)")
+    z: float = Field(description="Z-coordinate height (mm)")
+
+
+class RebarSegmentModel(BaseModel):
+    """A single straight segment of a reinforcement bar."""
+
+    start: Point3DModel = Field(description="Start point")
+    end: Point3DModel = Field(description="End point")
+    diameter: float = Field(description="Bar diameter (mm)")
+    type: str = Field(default="straight", description="Segment type")
+    length: float = Field(description="Segment length (mm)")
+
+
+class RebarPathModel(BaseModel):
+    """Complete path of a reinforcement bar with segments."""
+
+    barId: str = Field(description="Unique bar identifier")
+    segments: list[RebarSegmentModel] = Field(description="Bar segments")
+    diameter: float = Field(description="Bar diameter (mm)")
+    barType: str = Field(description="Bar type: bottom, top, side")
+    zone: str = Field(description="Zone: start, mid, end, full")
+    totalLength: float = Field(description="Total cutting length (mm)")
+
+
+class StirrupLoopModel(BaseModel):
+    """A stirrup closed loop at a specific X position."""
+
+    positionX: float = Field(description="X position along span (mm)")
+    path: list[Point3DModel] = Field(description="Corner points of loop")
+    diameter: float = Field(description="Stirrup bar diameter (mm)")
+    legs: int = Field(default=2, description="Number of legs")
+    hookType: str = Field(default="90", description="Hook angle")
+    perimeter: float = Field(description="Stirrup perimeter (mm)")
+
+
+class Beam3DGeometryModel(BaseModel):
+    """Complete 3D geometry for beam visualization (matches library output)."""
+
+    beamId: str = Field(description="Beam identifier")
+    story: str = Field(description="Story/floor identifier")
+    dimensions: dict[str, float] = Field(
+        description="Beam dimensions {b, D, span} in mm"
+    )
+    concreteOutline: list[Point3DModel] = Field(
+        description="8 corner points of beam box"
+    )
+    rebars: list[RebarPathModel] = Field(description="All rebar paths")
+    stirrups: list[StirrupLoopModel] = Field(description="All stirrup loops")
+    metadata: dict = Field(default_factory=dict, description="Additional metadata")
+    version: str = Field(default="1.0.0", description="Schema version")
+
+
+class BeamGeometryRequest(BaseModel):
+    """Request model for beam 3D geometry generation using library API."""
+
+    # Core beam identification
+    beam_id: str = Field(default="B1", description="Beam identifier")
+    story: str = Field(default="GF", description="Story/floor name")
+
+    # Section dimensions
+    width: float = Field(gt=0, le=2000.0, description="Beam width b (mm)")
+    depth: float = Field(gt=0, le=3000.0, description="Beam depth D (mm)")
+    span: float = Field(gt=0, description="Beam span L (mm)")
+
+    # Material properties
+    fck: float = Field(default=25.0, ge=15.0, le=80.0, description="fck (N/mm²)")
+    fy: float = Field(default=500.0, ge=250.0, le=600.0, description="fy (N/mm²)")
+
+    # Reinforcement areas (from design)
+    ast_start: float = Field(
+        default=500.0, ge=0, description="Tension steel at start (mm²)"
+    )
+    ast_mid: float = Field(
+        default=400.0, ge=0, description="Tension steel at mid-span (mm²)"
+    )
+    ast_end: float = Field(
+        default=500.0, ge=0, description="Tension steel at end (mm²)"
+    )
+
+    # Stirrups
+    stirrup_dia: float = Field(
+        default=8.0, ge=6.0, le=16.0, description="Stirrup diameter (mm)"
+    )
+    stirrup_spacing_start: float = Field(
+        default=100.0, gt=0, le=300.0, description="Stirrup spacing at start (mm)"
+    )
+    stirrup_spacing_mid: float = Field(
+        default=150.0, gt=0, le=300.0, description="Stirrup spacing at mid (mm)"
+    )
+    stirrup_spacing_end: float = Field(
+        default=100.0, gt=0, le=300.0, description="Stirrup spacing at end (mm)"
+    )
+
+    # Cover
+    cover: float = Field(default=40.0, ge=20.0, le=75.0, description="Clear cover (mm)")
+
+    # Options
+    is_seismic: bool = Field(default=False, description="Use seismic detailing")
+
+
+class BeamGeometryResponse(BaseModel):
+    """Response model for full beam 3D geometry."""
+
+    success: bool = Field(description="Whether generation succeeded")
+    message: str = Field(description="Summary message")
+    geometry: Beam3DGeometryModel | None = Field(
+        default=None, description="Full 3D geometry"
+    )
+    warnings: list[str] = Field(default_factory=list, description="Any warnings")
+
+
+# =============================================================================
 # Request Models
 # =============================================================================
 

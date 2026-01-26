@@ -29,6 +29,7 @@ from fastapi_app.routers import (
     health,
     websocket,
     streaming,
+    imports,
 )
 
 # =============================================================================
@@ -97,6 +98,10 @@ API_TAGS_METADATA = [
     {
         "name": "streaming",
         "description": "Server-Sent Events (SSE) for batch processing and progress.",
+    },
+    {
+        "name": "import",
+        "description": "CSV import using structural_lib adapters (ETABS, SAFE, STAAD, Generic).",
     },
 ]
 
@@ -174,6 +179,10 @@ app.include_router(
 )
 app.include_router(
     geometry.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    imports.router,
     prefix=API_V1_PREFIX,
 )
 
