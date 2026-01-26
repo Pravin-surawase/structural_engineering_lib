@@ -176,7 +176,7 @@ jobs:
           python -m pip install -e ".[dev]"
 
       - name: Download coverage artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: coverage-xml-ubuntu-latest-py3.12
           path: evidence/
