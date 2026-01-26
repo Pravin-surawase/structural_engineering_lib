@@ -9,7 +9,7 @@
  * Uses library API via useBeamGeometry hook for accurate bar positions
  * instead of manual calculations.
  */
-import { useMemo, Suspense } from 'react';
+import { useMemo, useCallback, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Grid, Environment, PerspectiveCamera, Line } from '@react-three/drei';
 import * as THREE from 'three';
@@ -203,6 +203,7 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
  *
  * Shows beams from the imported CSV data with 3D positions,
  * allowing users to visualize the building structure.
+ * Supports color-coding by design status.
  */
 function BuildingFrame() {
   const { beams, selectedId, selectBeam } = useImportedBeamsStore();
@@ -248,6 +249,26 @@ function BuildingFrame() {
     return Math.max(maxDist * 2, 10);
   }, [beamsWithGeometry, buildingCenter]);
 
+  // Get beam color based on design status
+  const getBeamColor = useCallback((beam: typeof beams[0], isSelected: boolean) => {
+    if (isSelected) return '#00ff88'; // Selected - green
+
+    // Check for design status (from design result)
+    const status = beam.status;
+    switch (status) {
+      case 'pass':
+        return '#22c55e'; // Emerald - safe
+      case 'fail':
+        return '#ef4444'; // Red - failed
+      case 'warning':
+        return '#f59e0b'; // Amber - warning
+      case 'designing':
+        return '#3b82f6'; // Blue - in progress
+      default:
+        return '#4aa3ff'; // Default blue - pending
+    }
+  }, []);
+
   return (
     <>
       {/* Camera positioned to view building */}
@@ -283,7 +304,7 @@ function BuildingFrame() {
         infiniteGrid
       />
 
-      {/* Render each beam as a line */}
+      {/* Render each beam as a line with status color */}
       {beamsWithGeometry.map((beam) => {
         if (!beam.point1 || !beam.point2) return null;
 
@@ -301,12 +322,13 @@ function BuildingFrame() {
         ];
 
         const isSelected = beam.id === selectedId;
+        const color = getBeamColor(beam, isSelected);
 
         return (
           <Line
             key={beam.id}
             points={[start, end]}
-            color={isSelected ? '#00ff88' : '#4aa3ff'}
+            color={color}
             lineWidth={isSelected ? 4 : 2}
             onClick={() => selectBeam(beam.id)}
           />

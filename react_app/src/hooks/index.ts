@@ -4,6 +4,7 @@
 export { useAutoDesign } from './useAutoDesign';
 export { useDesignWebSocket } from './useDesignWebSocket';
 export { useBeamGeometry } from './useBeamGeometry';
+export { useLiveDesign } from './useLiveDesign';
 export {
   useCSVFileImport,
   useCSVTextImport,

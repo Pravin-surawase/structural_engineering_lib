@@ -289,7 +289,8 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 | Add React Three Fiber (R3F) | 2h | 🔴 Critical | ✅ Done - R3F 9 + Drei 10.7 |
 | Add Dockview layout system | 4h | 🔴 Critical | ✅ Done (replaced with BentoGrid) |
 | Add modern UI system | 3h | 🔴 Critical | ✅ Done - Tailwind 4 + framer-motion |
-| Add command palette (`cmdk`) | 3h | 🟡 High | 📋 TODO |
+| Add command palette (`cmdk`) | 3h | 🟡 High | ✅ Done - `CommandPalette.tsx` (Session 80) |
+| Add AG Grid for tables | 3h | 🟡 High | ✅ Done - `BeamTable.tsx` (Session 80) |
 | Set up API client (React Query) | 4h | 🔴 Critical | ✅ Done - React Query 5 + hooks |
 
 **Current React Stack (verified Jan 26, 2026):**
@@ -297,6 +298,7 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 - React Three Fiber 9.5 + Drei 10.7.7 (perfect compatibility ✅)
 - Tailwind CSS 4.1 + framer-motion 12
 - React Query 5.90 + Zustand 5
+- AG Grid 32.3 + cmdk (Session 80)
 - lucide-react icons
 
 **Priority 2: 3D Viewport (Week 4)** ✅ COMPLETE
@@ -307,6 +309,7 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 | Add camera controls (orbit) | 2h | 🟡 High | ✅ Done - OrbitControls |
 | Render rebar visualization | 3h | 🔴 Critical | ✅ Done - `RebarVisualization` |
 | Render stirrup visualization | 3h | 🔴 Critical | ✅ Done - `StirrupVisualization` |
+| Multi-beam status colors | 2h | 🟡 High | ✅ Done - (Session 80) |
 
 **Priority 3: API Integration Hooks** ✅ COMPLETE
 | Task | Est | Priority | Status |
@@ -315,6 +318,7 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 | `useCSVFileImport` hook | 3h | 🔴 Critical | ✅ Done - CSV via library adapters |
 | `useCSVTextImport` hook | 2h | 🔴 Critical | ✅ Done - Clipboard paste |
 | `useBatchDesign` hook | 2h | 🔴 Critical | ✅ Done - Batch design all beams |
+| `useLiveDesign` hook | 2h | 🔴 Critical | ✅ Done - Live WebSocket workflow (Session 80) |
 | `FileDropZone` component | 2h | 🟡 High | ✅ Done - Drag-drop CSV upload |
 
 **Priority 4: Basic UI Components** ✅ COMPLETE
@@ -330,9 +334,12 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 - ✅ React project (`react_app/`) - Full Vite 7 + React 19 setup
 - ✅ 3D viewport with R3F - `Viewport3D.tsx` with rebars/stirrups
 - ✅ Modern Gen Z UI - BentoGrid + FloatingDock (replaced Dockview)
-- ✅ API integration hooks - 4 hooks connecting to FastAPI
+- ✅ API integration hooks - 5 hooks connecting to FastAPI
 - ✅ Basic design form + live 3D preview
 - ✅ Building frame 3D visualization (Session 78)
+- ✅ AG Grid data table - `BeamTable.tsx` (Session 80)
+- ✅ Command palette - `CommandPalette.tsx` (Session 80)
+- ✅ Live design workflow - `useLiveDesign.ts` (Session 80)
 - ✅ Real CSV sample data loading (Session 78)
 
 **Evidence:** Commits `f335c22`, `d1b79ef`, `fc3c4ad`, `bb3b2e0`, `d0f968e`, `36c04ea`, `d98a12b`

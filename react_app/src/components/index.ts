@@ -6,3 +6,7 @@ export { Viewport3D } from './Viewport3D';
 export { ResultsPanel } from './ResultsPanel';
 export { WorkspaceLayout } from './WorkspaceLayout';
 export { CSVImportPanel } from './CSVImportPanel';
+export { BeamTable } from './BeamTable';
+export type { BeamRowData } from './BeamTable';
+export { CommandPalette, useCommandPalette } from './CommandPalette';
+export type { CommandItem } from './CommandPalette';

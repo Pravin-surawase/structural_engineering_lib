@@ -38,6 +38,14 @@ export interface BeamCSVRow {
   // 3D position for building visualization (optional)
   point1?: Point3D;   // start point (from ETABS geometry)
   point2?: Point3D;   // end point (from ETABS geometry)
+
+  // Design status for color-coding in 3D view
+  status?: 'pending' | 'designing' | 'pass' | 'fail' | 'warning';
+
+  // Design results (added after batch design)
+  ast_required?: number;    // Required steel area mm²
+  ast_provided?: number;    // Provided steel area mm²
+  utilization?: number;     // Utilization ratio (0-1+)
 }
 
 export interface ImportedBeamsState {
