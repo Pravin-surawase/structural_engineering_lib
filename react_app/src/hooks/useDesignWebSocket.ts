@@ -3,57 +3,95 @@
  *
  * Real-time WebSocket connection for live beam design updates.
  * Provides <100ms latency for design calculations.
+ * Uses reconnecting-websocket for robust auto-reconnection.
  */
 import { useEffect, useRef, useCallback, useState } from 'react';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useDesignStore } from '../store/designStore';
 
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
 
+export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error';
+
 export interface WebSocketState {
   isConnected: boolean;
+  status: ConnectionStatus;
   latency: number | null;
   error: string | null;
+  retryCount: number;
+  lastConnectedAt: Date | null;
 }
+
+// ReconnectingWebSocket options for robust connection
+const RWS_OPTIONS = {
+  connectionTimeout: 4000,
+  maxRetries: 10,
+  maxReconnectionDelay: 10000,
+  minReconnectionDelay: 1000,
+  reconnectionDelayGrowFactor: 1.3,
+};
 
 export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
   const { inputs, setResult, setLoading, setError, length } = useDesignStore();
-  const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wsRef = useRef<ReconnectingWebSocket | null>(null);
+  const retryCountRef = useRef(0);
   const [state, setState] = useState<WebSocketState>({
     isConnected: false,
+    status: 'disconnected',
     latency: null,
     error: null,
+    retryCount: 0,
+    lastConnectedAt: null,
   });
 
-  // Connect to WebSocket
+  // Connect to WebSocket using ReconnectingWebSocket
   const connect = useCallback(() => {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
 
     try {
-      const ws = new WebSocket(`${WS_URL}/ws/design/${sessionId}`);
+      setState((s) => ({ ...s, status: 'connecting', error: null }));
+
+      const ws = new ReconnectingWebSocket(
+        `${WS_URL}/ws/design/${sessionId}`,
+        [],
+        RWS_OPTIONS
+      );
 
       ws.onopen = () => {
-        setState((s) => ({ ...s, isConnected: true, error: null }));
+        retryCountRef.current = 0;
+        setState((s) => ({
+          ...s,
+          isConnected: true,
+          status: 'connected',
+          error: null,
+          retryCount: 0,
+          lastConnectedAt: new Date(),
+        }));
         console.log('WebSocket connected');
       };
 
       ws.onclose = () => {
-        setState((s) => ({ ...s, isConnected: false }));
+        setState((s) => ({
+          ...s,
+          isConnected: false,
+          status: enabled ? 'reconnecting' : 'disconnected',
+        }));
         console.log('WebSocket disconnected');
-
-        // Auto-reconnect after 3 seconds
-        if (enabled) {
-          reconnectTimeoutRef.current = setTimeout(connect, 3000);
-        }
       };
 
       ws.onerror = () => {
-        setState((s) => ({ ...s, error: 'WebSocket connection error' }));
+        retryCountRef.current++;
+        setState((s) => ({
+          ...s,
+          status: 'error',
+          error: `Connection error (retry ${retryCountRef.current}/${RWS_OPTIONS.maxRetries})`,
+          retryCount: retryCountRef.current,
+        }));
       };
 
       ws.onmessage = (event) => {
         try {
-          const message = JSON.parse(event.data);
+          const message = JSON.parse(event.data as string);
           handleMessage(message);
         } catch {
           console.error('Failed to parse WebSocket message');
@@ -62,7 +100,11 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
 
       wsRef.current = ws;
     } catch (err) {
-      setState((s) => ({ ...s, error: (err as Error).message }));
+      setState((s) => ({
+        ...s,
+        status: 'error',
+        error: (err as Error).message,
+      }));
     }
   }, [sessionId, enabled]);
 
@@ -165,9 +207,6 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
     }
 
     return () => {
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-      }
       if (wsRef.current) {
         wsRef.current.close();
       }
@@ -181,9 +220,17 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
     }
   }, [enabled, state.isConnected, inputs, sendDesign]);
 
+  // Reconnect function for manual retry
+  const reconnect = useCallback(() => {
+    if (wsRef.current) {
+      wsRef.current.reconnect();
+    }
+  }, []);
+
   return {
     ...state,
     sendDesign,
+    reconnect,
     disconnect: () => wsRef.current?.close(),
   };
 }
