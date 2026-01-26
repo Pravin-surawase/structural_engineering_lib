@@ -4,6 +4,85 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-26 — Session 76: React Viewport Wiring + Agent Bootstrap Update
+
+### Summary
+Wired Viewport3D to use library geometry API instead of manual calculations.
+Added FileDropZone component for drag-drop CSV import.
+Updated agent bootstrap docs to prevent code duplication.
+Updated V3 React Roadmap to reflect actual progress.
+
+### Key Accomplishments
+
+1. **Viewport3D Refactoring**
+   - Replaced manual bar position calculations with `useBeamGeometry` hook
+   - `RebarVisualization` now uses API geometry (RebarPath[])
+   - `StirrupVisualization` now uses API geometry (StirrupLoop[])
+   - Proper coordinate mapping: Library (X,Y,Z) → Three.js (X,Z,Y)
+
+2. **FileDropZone Component**
+   - New `components/ui/FileDropZone.tsx` for drag-drop CSV upload
+   - Wired to `useCSVFileImport` hook → API → GenericCSVAdapter
+   - Supports ETABS, SAFE, STAAD, Generic CSV formats
+
+3. **CSV Parser Deprecation**
+   - Deprecated `parseBeamCSV()` in `types/csv.ts`
+   - Now throws error directing to useCSVFileImport hooks
+   - Library adapters handle 40+ column name variations
+
+4. **Agent Bootstrap Update**
+   - Updated `agent-essentials.md` with V3 stack reference
+   - Updated `agent-bootstrap.md` with architecture diagram
+   - Updated `agent_start.sh` to display V3 stack info
+   - **Goal:** Prevent agents from duplicating existing code
+
+5. **V3 Roadmap Update**
+   - Week 3-4 React Shell marked ✅ COMPLETE
+   - Updated current stack versions (React 19, R3F 9, Tailwind 4)
+   - Documented all completed hooks and components
+
+### Commits
+| Hash | Description |
+|------|-------------|
+| d0f968e | feat(react): wire Viewport3D to useBeamGeometry, add FileDropZone |
+
+### React App Status (Jan 26, 2026)
+
+**Hooks:**
+- `useBeamGeometry` — Fetches 3D geometry from `/api/v1/geometry/beam/full`
+- `useCSVFileImport` — Imports CSV via `/api/v1/import/csv`
+- `useCSVTextImport` — Imports CSV text via `/api/v1/import/csv/text`
+- `useBatchDesign` — Batch design via `/api/v1/import/batch-design`
+- `useDesignWebSocket` — WebSocket connection (partial)
+
+**Components:**
+- `Viewport3D` — 3D beam with rebars/stirrups (R3F)
+- `BeamForm` — Design input form
+- `ResultsPanel` — Design results display
+- `CSVImportPanel` — Import management
+- `FileDropZone` — Drag-drop upload
+- `BentoGrid` — Modern card layout
+- `FloatingDock` — Bottom navigation
+
+### V3 Migration Progress
+
+| Phase | Status |
+|-------|--------|
+| Phase 1: Automation Foundation | ✅ COMPLETE |
+| Phase 2: FastAPI Backend | ✅ COMPLETE |
+| Phase 3: React Shell + 3D | ✅ COMPLETE |
+| Phase 4: WebSocket Live Updates | 🟡 PARTIAL |
+| Phase 5-6: Multi-Beam + Polish | 📋 TODO |
+
+### Next Session Priorities
+1. End-to-end test: FastAPI + React running together
+2. Add AG Grid for professional data tables (optional)
+3. Add command palette (cmdk) for keyboard shortcuts
+4. Polish WebSocket live updates (reconnection, error states)
+5. Multi-beam visualization (Week 5-6)
+
+---
+
 ## 2026-01-26 — Session: React Library Integration + Gen Z UI
 
 ### Summary

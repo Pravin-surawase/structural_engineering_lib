@@ -272,10 +272,33 @@ fi
 
 # Common guidance
 echo -e "${BOLD}📚 Essential Docs${NC}"
+echo "  • docs/getting-started/agent-essentials.md (V3 stack reference)"
 echo "  • docs/getting-started/agent-bootstrap.md (quick start)"
 echo "  • docs/TASKS.md (current work)"
 echo "  • .github/copilot-instructions.md (all rules)"
 echo ""
+
+# V3 Stack Overview - CRITICAL TO PREVENT DUPLICATE CODE
+echo -e "${BOLD}🏗️ V3 Stack — DON'T REINVENT!${NC}"
+echo ""
+echo -e "  ${YELLOW}Before writing code, check what exists:${NC}"
+echo ""
+echo "  React Hooks (react_app/src/hooks/):"
+echo "    useBeamGeometry     → 3D rebar/stirrup positions from API"
+echo "    useCSVFileImport    → CSV import via library adapters (40+ columns)"
+echo "    useBatchDesign      → Batch design all imported beams"
+echo ""
+echo "  FastAPI Endpoints (http://localhost:8000/docs):"
+echo "    POST /api/v1/import/csv        → CSV file import"
+echo "    POST /api/v1/geometry/beam/full → Full 3D geometry"
+echo "    POST /api/v1/design/beam       → Beam design"
+echo ""
+echo "  Library (Python/structural_lib/):"
+echo "    api.py              → 43 public functions"
+echo "    adapters.py         → GenericCSVAdapter, ETABSAdapter"
+echo "    geometry_3d.py      → beam_to_3d_geometry()"
+echo ""
+
 echo -e "${BOLD}⚡ THE ONE RULE${NC}"
 echo -e "  ${RED}NEVER use manual git commands!${NC}"
 echo "  ALWAYS use: ./scripts/ai_commit.sh \"message\""

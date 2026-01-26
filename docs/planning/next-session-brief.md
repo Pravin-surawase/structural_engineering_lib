@@ -13,7 +13,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-01-26
-- Focus: React Library Integration + Gen Z UI Overhaul
+- Focus: React Library Integration Complete, Agent Bootstrap Updated
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
@@ -21,124 +21,125 @@
 | **Current** | v0.19.0 | ✅ Released |
 | **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** React Refactor | **Focus:** Eliminate React duplicates, add modern Gen Z UI
+**Last Session:** Session 76 | **Focus:** Viewport3D wiring, agent bootstrap update
 
 ---
 
-## 🔑 Session 2026-01-26 Summary
+## 🔑 Session 76 Summary (Jan 26, 2026)
 
-**Major React Refactor Accomplished:**
+### ✅ Completed This Session
 
-1. **FastAPI Library Integration Endpoints** (3 new endpoints)
-   - `POST /api/v1/import/csv` — CSV file import using GenericCSVAdapter
-   - `POST /api/v1/import/csv/text` — CSV text import (clipboard paste)
-   - `POST /api/v1/import/batch-design` — Batch design all imported beams
-   - `POST /api/v1/geometry/beam/full` — Full 3D geometry with rebars/stirrups
+1. **Viewport3D Wired to Library API**
+   - Replaced manual bar calculations with `useBeamGeometry` hook
+   - 3D rebars/stirrups now use accurate positions from `geometry_3d.beam_to_3d_geometry()`
 
-2. **Gen Z UI Components** (replaces Dockview sidebar)
-   - `BentoGrid` — 12-column glassmorphism card layout
-   - `FloatingDock` — macOS-style animated bottom navigation
-   - `ModernAppLayout` — Main app shell with floating dock
-   - Tailwind CSS + Vite plugin + framer-motion
+2. **FileDropZone Component Added**
+   - Drag-and-drop CSV upload in `components/ui/FileDropZone.tsx`
+   - Wired to `useCSVFileImport` → API → GenericCSVAdapter
 
-3. **React Hooks for Library API** (eliminates duplicate code)
-   - `useBeamGeometry` — Fetches 3D geometry from library API
-   - `useCSVFileImport` — Imports CSV via API (not duplicate parsing)
-   - `useCSVTextImport` — Imports CSV text via API
-   - `useBatchDesign` — Batch design operations
+3. **CSV Parser Deprecated**
+   - `parseBeamCSV()` in `types/csv.ts` now throws deprecation error
+   - Directs to useCSVFileImport hooks
 
-**Commits:**
+4. **Agent Bootstrap Updated**
+   - `agent-essentials.md` now has V3 stack reference table
+   - `agent-bootstrap.md` now has architecture diagram
+   - `agent_start.sh` displays V3 stack info on startup
+   - **Purpose:** Stop agents from duplicating existing hooks/components
+
+5. **V3 Roadmap Updated**
+   - Week 3-4 React Shell marked ✅ COMPLETE
+   - Technology stack updated (React 19, R3F 9, Tailwind 4)
+
+### Commit
 | Hash | Description |
 |------|-------------|
-| b59048c | feat(api): add CSV import and full 3D geometry endpoints |
-| fc3c4ad | feat(react): add modern Gen Z UI with BentoGrid layout |
-| bb3b2e0 | feat(react): add hooks for library API integration |
+| d0f968e | feat(react): wire Viewport3D to useBeamGeometry, add FileDropZone |
 
-**Key Issues Found in React App:**
-1. `types/csv.ts` has `parseBeamCSV()` duplicating library's 40+ column adapter
-2. `Viewport3D.tsx` calculates bar positions manually (should use API)
-3. Old Dockview sidebar layout — now replaced with BentoGrid/FloatingDock
+---
+
+## 🏗️ V3 Stack Reference — DON'T REINVENT!
+
+**Before writing code, check what exists:**
+
+### React Hooks (`react_app/src/hooks/`)
+| Hook | Purpose |
+|------|---------|
+| `useBeamGeometry` | 3D rebar/stirrup positions from API |
+| `useCSVFileImport` | CSV import via library adapters |
+| `useCSVTextImport` | Clipboard CSV import |
+| `useBatchDesign` | Batch design all beams |
+| `useDesignWebSocket` | WebSocket live design (partial) |
+
+### FastAPI Endpoints
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/v1/import/csv` | CSV file import |
+| `POST /api/v1/import/csv/text` | CSV text import |
+| `POST /api/v1/geometry/beam/full` | Full 3D geometry |
+| `POST /api/v1/design/beam` | Beam design |
+| `/ws/design/{session}` | WebSocket live updates |
+
+### Library Functions
+| Module | Key Functions |
+|--------|---------------|
+| `api.py` | `design_beam_is456()`, `detail_beam_is456()` |
+| `adapters.py` | `GenericCSVAdapter`, `ETABSAdapter` |
+| `geometry_3d.py` | `beam_to_3d_geometry()` |
 
 ---
 
 ## 🔥 Next Session Priorities
 
-### Priority 1: Wire Viewport3D to New Geometry API
+### Priority 1: End-to-End Test (Required)
 
-**Goal:** Replace manual bar calculations with API geometry
+**Goal:** Verify FastAPI + React work together
 
-```typescript
-// Current (WRONG): Manual calculation in Viewport3D.tsx
-const barPositions = useMemo(() => {
-  const bars = [];
-  for (let i = 0; i < barCount; i++) {
-    bars.push(/* manual calculation */);
-  }
-  return bars;
-}, [barCount]);
+```bash
+# Terminal 1: Start FastAPI
+docker compose -f docker-compose.dev.yml up --build
 
-// Target (CORRECT): Use library geometry
-const { data: geometry } = useBeamGeometry({
-  width: 300,
-  depth: 450,
-  span: 4000,
-  ast_start: 500,
-});
-// geometry.rebars has accurate positions from library
+# Terminal 2: Start React
+cd react_app && npm run dev
+
+# Test: Open http://localhost:5173
+# 1. Design a beam → View 3D
+# 2. Import CSV → View multiple beams
 ```
 
-| Task | Est | Notes |
-|------|-----|-------|
-| Update Viewport3D to use useBeamGeometry | 1h | Replace manual calculations |
-| Map geometry.rebars to cylinder meshes | 1h | Use RebarPath segments |
-| Map geometry.stirrups to tube meshes | 1h | Use StirrupLoop positions |
+### Priority 2: WebSocket Polish
 
-### Priority 2: Remove Duplicate CSV Parser
+**Goal:** Complete live design updates
 
-**Goal:** Delete `types/csv.ts` parseBeamCSV()
+| Task | Status |
+|------|--------|
+| Add reconnecting-websocket library | 📋 TODO |
+| Handle connection state (online/offline) | 📋 TODO |
+| Add loading skeleton states | 📋 TODO |
+| Error handling | 📋 TODO |
 
-| Task | Est | Notes |
-|------|-----|-------|
-| Replace parseBeamCSV() usages with useCSVFileImport | 30m | Search for imports |
-| Delete types/csv.ts or remove parseBeamCSV() | 15m | Clean up |
+### Priority 3: AG Grid (Optional)
 
-### Priority 3: Add File Drop Zone
+**Goal:** Professional data tables for beam list
 
-**Goal:** Enable drag-and-drop CSV import
+### Priority 4: Command Palette (Optional)
 
-| Task | Est | Notes |
-|------|-----|-------|
-| Create FileDropZone component | 1h | Tailwind styled |
-| Wire to useCSVFileImport hook | 30m | Call importFile(file) |
-| Add to Import panel in BentoGrid | 30m | Replace placeholder |
-
-### Priority 4: Test Full Flow
-
-**Goal:** Verify design → geometry → visualization works
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Start FastAPI server | 5m | `docker compose up` |
-| Start React dev server | 5m | `npm run dev` |
-| Import CSV, run design, view 3D | 30m | End-to-end test |
+**Goal:** Keyboard shortcuts (Cmd+Shift+P)
 
 ---
 
-## 🎯 The Big Picture
+## 📊 V3 Migration Progress
 
-> **"What was not possible few years back, or only possible for big firms — now everyone can use them free."**
+| Phase | Week | Goal | Status |
+|-------|------|------|--------|
+| **Phase 1** | 1 | Automation Foundation | ✅ DONE |
+| **Phase 2** | 2-3 | FastAPI Backend | ✅ DONE |
+| **Phase 3** | 3-4 | React Shell + 3D | ✅ DONE |
+| **Phase 4** | 5 | WebSocket Live Updates | 🟡 PARTIAL |
+| **Phase 5-6** | 6-7 | Multi-Beam + Polish | 📋 TODO |
+| **Launch** | 7 | Beta Launch | 🎯 TARGET |
 
-**4 Pillars of Democratization:**
-| Pillar | Description | Timeline |
-|--------|-------------|----------|
-| 🎨 Visual Excellence | Rebar 3D, CAD quality | 8-week MVP |
-| 🤖 AI Chat Interface | ✅ **MVP COMPLETE** (Page 11) | 8-week MVP |
-| 🔧 User Automation | Build your own workflows | V1.1 |
-| 📚 Library Evolution | Columns, slabs, multi-code | V2.0 |
-
-**Strategic Docs:**
-- [democratization-vision.md](democratization-vision.md) — Full vision
-- [8-week-development-plan.md](8-week-development-plan.md) — Current roadmap
+**Target:** March 15, 2026 (V3 Beta)
 
 ---
 
@@ -153,141 +154,20 @@ const { data: geometry } = useBeamGeometry({
 
 ---
 
-## Latest Handoff
-
-**Session 61 (2026-01-21) — v0.19.0 Release**
-
-**Completed:**
-1. ✅ Tagged and released v0.19.0
-2. ✅ DXF schedule polish (column widths, text height, smart truncation)
-3. ✅ Fixed invalid model name to `gpt-4o-mini`
-4. ✅ Added Streamlit API index for component reuse
-5. ✅ Updated SESSION_LOG.md + TASKS.md
-
-**Release Tag:** `v0.19.0`
-
----
-
-**Session 59 Phase 2 (2026-01-21) — PyVista Evaluation & Automation**
-
-**Completed:**
-1. ✅ PR #393 confirmed merged (2026-01-20)
-2. ✅ PyVista evaluation - comprehensive research document
-3. ✅ CAD export prototype - `visualization_export.py` module
-4. ✅ Branch cleanup automation - `cleanup_stale_branches.py`
-5. ✅ Governance health check - 92/100 (A+)
-
-**PyVista Decision:** Hybrid approach
-- **Keep Plotly:** Interactive web visualization (current)
-- **Add PyVista:** CAD export (STL, VTK, 4K screenshots)
-
-**New Files Created:**
-| File | Purpose |
-|------|---------|
-| `docs/research/pyvista-evaluation.md` | Full technology comparison |
-| `streamlit_app/components/visualization_export.py` | CAD export module |
-| `scripts/cleanup_stale_branches.py` | Branch hygiene automation |
-
-**New Dependency:** `cad = ["pyvista>=0.43", "stpyvista>=0.1.4"]` (optional)
-
-**Commits:**
-| Commit | Description |
-|--------|-------------|
-| `b5bbbd3f` | docs: add v0.19/v0.20 release roadmap |
-| `06feb7ad` | feat(viz): add PyVista CAD export module |
-| `2312af41` | chore(scripts): add branch cleanup script |
-
----
-
-## Current Status
-
-### What Works ✅
-- **Page 11:** ⚡ AI Assistant v2 with 9-state dynamic workspace
-- **Page 07:** 📥 Multi-format import with ETABS/SAFE adapters
-- **Adapter System:** Proven infrastructure for CSV parsing
-- **PyVista Export:** Module ready for CAD-quality output
-- Story filter, color modes, camera presets
-- Interactive rebar editor, cross-section view
-
-### 8-Week Plan Progress
-- **Phase 1:** ✅ Complete (Live Preview)
-- **Phase 2:** ✅ Complete (Data Import)
-- **Phase 2.5:** ✅ Complete (Visualization Polish)
-- **Phase 3:** ✅ Complete (Rebar Visualization)
-- **Phase 3.5:** ✅ Complete (Smart Insights Dashboard)
-- **Phase AI:** ✅ **MVP COMPLETE** (AI Assistant v2)
-- **Phase 4:** ✅ **COMPLETE** (CAD Quality + DXF Export)
-
-### Phase 4 Sub-task Status (Post-Release)
-| Task | Status |
-|------|--------|
-| Merge PR #393 | ✅ Done |
-| PyVista evaluation | ✅ Done |
-| DXF/PDF export | ✅ Done |
-| Print-ready reports | ✅ Done |
-| Performance optimization | ✅ Done |
-| User testing + feedback | 📋 Next |
-| Documentation polish | 📋 Next |
-
----
-
-## 🔥 Next Session Priorities
-
-### Priority 1: Create FastAPI Application Skeleton
-
-**Goal:** Set up the foundation for V3 backend
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Create `fastapi_app/main.py` | 1h | Basic FastAPI setup |
-| Generate routes from `api.py` | 1h | Use `generate_api_routes.py` |
-| Add health check endpoint | 30m | `/api/health` |
-| Add OpenAPI docs | 30m | Auto-generated at `/docs` |
-
-### Priority 2: WebSocket Implementation
-
-**Goal:** Enable live design updates
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Create `/ws/live-design` endpoint | 2h | Basic WebSocket |
-| Add connection manager | 1h | Track connected clients |
-| Test with simple client | 1h | Verify round-trip |
-
-### Priority 3: React Project Setup
-
-**Goal:** Initialize frontend project
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Create Vite + React + TS project | 1h | `npm create vite@latest` |
-| Add API client hooks | 2h | `useDesignAPI()`, `useWebSocket()` |
-| Create basic design form | 2h | Moment, width, depth inputs |
-
-### Priority 4: OpenSSF Scorecard Baseline
-
-**Goal:** Establish security baseline
-
-| Task | Est | Notes |
-|------|-----|-------|
-| Trigger scorecard workflow | 30m | Manual trigger |
-| Review results | 1h | Identify improvements |
-| Document baseline score | 30m | Add to security docs |
-
----
-
 ## Quick Commands
 
 ```bash
+# Run FastAPI
+docker compose -f docker-compose.dev.yml up --build
+
+# Run React
+cd react_app && npm run dev
+
 # Run tests
-.venv/bin/python -m pytest Python/tests -v
-.venv/bin/python -m pytest streamlit_app/tests -v
+cd Python && .venv/bin/pytest tests/ -v
 
-# Check Streamlit issues
-.venv/bin/python scripts/check_streamlit_issues.py --all-pages
-
-# Launch app
-./scripts/launch_streamlit.sh
+# Build React
+cd react_app && npm run build
 
 # Commit changes
 ./scripts/ai_commit.sh "type: description"
@@ -301,8 +181,7 @@ const { data: geometry } = useBeamGeometry({
 |---------|----------|
 | Task tracking | [docs/TASKS.md](../TASKS.md) |
 | Session history | [docs/SESSION_LOG.md](../SESSION_LOG.md) |
-| **PyVista research** | [docs/research/pyvista-evaluation.md](../research/pyvista-evaluation.md) |
-| **CAD export module** | [streamlit_app/components/visualization_export.py](../../streamlit_app/components/visualization_export.py) |
-| **8-week plan** | [docs/planning/8-week-development-plan.md](8-week-development-plan.md) |
-| 3D visualization | [streamlit_app/pages/06_📥_multi_format_import.py](../../streamlit_app/pages/06_📥_multi_format_import.py) |
-| API reference | [docs/reference/api.md](../reference/api.md) |
+| **V3 Roadmap** | [docs/planning/8-week-development-plan.md](8-week-development-plan.md) |
+| **Agent essentials** | [docs/getting-started/agent-essentials.md](../getting-started/agent-essentials.md) |
+| 3D visualization | [react_app/src/components/Viewport3D.tsx](../../react_app/src/components/Viewport3D.tsx) |
+| API hooks | [react_app/src/hooks/](../../react_app/src/hooks/) |

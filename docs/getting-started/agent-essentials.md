@@ -1,11 +1,11 @@
-# Agent Essentials — Critical Rules (50 Lines)
+# Agent Essentials — Critical Rules
 
 **Type:** Guide
 **Audience:** All Agents
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-01-23
-**Last Updated:** 2026-01-23
+**Last Updated:** 2026-01-26
 
 ---
 
@@ -24,6 +24,39 @@
 ```bash
 ./scripts/agent_start.sh --quick         # 6 seconds, validates everything
 ```
+
+## 🏗️ V3 Architecture — Know What Exists Before Coding!
+
+**STOP duplicating code!** We have a mature stack:
+
+### FastAPI Backend (`fastapi_app/`)
+| Endpoint | Purpose | Use Instead Of |
+|----------|---------|----------------|
+| `POST /api/v1/import/csv` | CSV import via adapters (40+ columns) | Manual CSV parsing |
+| `POST /api/v1/import/csv/text` | Clipboard CSV import | Parsing in React |
+| `POST /api/v1/geometry/beam/full` | 3D rebar/stirrup geometry | Manual bar calculations |
+| `POST /api/v1/design/beam` | Beam design (Mu/Vu) | Calling library directly |
+| `/docs` | OpenAPI documentation | Guessing API schemas |
+
+### React App (`react_app/src/`)
+| Component/Hook | Purpose | File |
+|----------------|---------|------|
+| `useBeamGeometry` | Fetch 3D geometry from API | `hooks/useBeamGeometry.ts` |
+| `useCSVFileImport` | Import CSV via API adapters | `hooks/useCSVImport.ts` |
+| `useCSVTextImport` | Import CSV text via API | `hooks/useCSVImport.ts` |
+| `useBatchDesign` | Batch design all beams | `hooks/useCSVImport.ts` |
+| `FileDropZone` | Drag-drop CSV upload | `components/ui/FileDropZone.tsx` |
+| `Viewport3D` | 3D beam visualization (R3F) | `components/Viewport3D.tsx` |
+| `BentoGrid` | Modern card layout | `components/ui/BentoGrid.tsx` |
+| `FloatingDock` | Bottom navigation dock | `components/ui/FloatingDock.tsx` |
+
+### Library (`Python/structural_lib/`)
+| Module | Purpose | Key Functions |
+|--------|---------|---------------|
+| `api.py` | Main entry - 43 functions | `design_beam_is456()`, `detail_beam_is456()` |
+| `adapters.py` | CSV parsing (ETABS, SAFE, Generic) | `GenericCSVAdapter`, `ETABSAdapter` |
+| `geometry_3d.py` | 3D rebar/stirrup positions | `beam_to_3d_geometry()` |
+| `codes/is456/` | IS 456 design code | `flexure.py`, `shear.py`, `detailing.py` |
 
 ## 📋 Before Manual Work — Use Scripts Instead
 
@@ -48,15 +81,18 @@ See: [api-integration-mistakes-analysis.md](../research/api-integration-mistakes
 
 ## 🎯 Golden Rules
 
-1. **Never create duplicate docs** — Check [docs-canonical.json](../docs-canonical.json) first
-2. **Verify outdated info online** — AI models, library versions, frameworks
-3. **Use existing infrastructure** — Check `scripts/index.json` before writing new code
-4. **Test before commit** — `.venv/bin/python -m pytest Python/tests -q`
+1. **NEVER duplicate React code** — Check `react_app/src/hooks/` and `components/` first
+2. **NEVER parse CSV manually** — Use `useCSVFileImport` hook → API → adapters
+3. **NEVER calculate bar positions** — Use `useBeamGeometry` hook → API → geometry_3d
+4. **Never create duplicate docs** — Check [docs-canonical.json](../docs-canonical.json) first
+5. **Verify outdated info online** — AI models, library versions, frameworks
+6. **Test before commit** — `cd react_app && npm run build` or `pytest Python/tests`
 
 ## 📖 Load More Context When Needed
 
 | Task | Load This |
 |------|-----------|
+| React hooks | `react_app/src/hooks/` directory |
 | Git decisions | [git-automation/workflow-guide.md](../git-automation/workflow-guide.md) |
 | Streamlit UI | [guidelines/streamlit-fragment-best-practices.md](../guidelines/streamlit-fragment-best-practices.md) |
 | API changes | [reference/api.md](../reference/api.md) |
@@ -69,7 +105,7 @@ See: [api-integration-mistakes-analysis.md](../research/api-integration-mistakes
 - Library versions → Check actual `pyproject.toml`
 - Framework APIs → Verify current documentation
 
-**Verified (2026-01-23):** `gpt-4o`, `gpt-4o-mini`, `claude-sonnet-4-20250514`
+**Verified (2026-01-26):** `gpt-4o`, `gpt-4o-mini`, `claude-sonnet-4-20250514`
 
 ---
 
