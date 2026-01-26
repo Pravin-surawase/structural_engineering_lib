@@ -166,8 +166,17 @@ export async function calculateGeometry(
 }
 
 /**
+ * Point in 3D space (meters, from ETABS/structural model).
+ */
+export interface Point3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
+/**
  * Load sample beam data for demo/testing.
- * Returns 80 beams from an 8-story building.
+ * Returns 153 beams from ETABS export with 3D positions.
  */
 export interface SampleBeam {
   id: string;
@@ -180,6 +189,8 @@ export interface SampleBeam {
   fck_mpa: number;
   fy_mpa: number;
   cover_mm: number;
+  point1: Point3D;  // 3D start position
+  point2: Point3D;  // 3D end position
 }
 
 export interface SampleDataResponse {

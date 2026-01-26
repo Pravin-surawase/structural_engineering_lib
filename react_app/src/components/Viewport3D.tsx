@@ -2,16 +2,19 @@
  * Viewport3D Component
  *
  * 3D visualization of beam using React Three Fiber.
- * Renders concrete beam mesh with reinforcement bars and stirrups.
+ * Renders:
+ * - Single beam with reinforcement for design mode
+ * - Building frame with all beams for import mode
  *
  * Uses library API via useBeamGeometry hook for accurate bar positions
  * instead of manual calculations.
  */
 import { useMemo, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Grid, Environment, PerspectiveCamera } from '@react-three/drei';
+import { OrbitControls, Grid, Environment, PerspectiveCamera, Line } from '@react-three/drei';
 import * as THREE from 'three';
 import { useDesignStore } from '../store/designStore';
+import { useImportedBeamsStore } from '../store/importedBeamsStore';
 import { useBeamGeometry } from '../hooks/useBeamGeometry';
 import type { RebarPath, StirrupLoop } from '../hooks/useBeamGeometry';
 import './Viewport3D.css';
@@ -195,6 +198,133 @@ function StirrupVisualization({ stirrups }: StirrupsProps) {
   );
 }
 
+/**
+ * BuildingFrame - Renders all imported beams as a wireframe.
+ *
+ * Shows beams from the imported CSV data with 3D positions,
+ * allowing users to visualize the building structure.
+ */
+function BuildingFrame() {
+  const { beams, selectedId, selectBeam } = useImportedBeamsStore();
+
+  // Filter beams that have 3D positions
+  const beamsWithGeometry = useMemo(
+    () => beams.filter((b) => b.point1 && b.point2),
+    [beams]
+  );
+
+  // Calculate center of building for camera target
+  const buildingCenter = useMemo(() => {
+    if (beamsWithGeometry.length === 0) return [0, 5, 0];
+    let sumX = 0, sumY = 0, sumZ = 0;
+    beamsWithGeometry.forEach((b) => {
+      if (b.point1 && b.point2) {
+        sumX += (b.point1.x + b.point2.x) / 2;
+        sumY += (b.point1.y + b.point2.y) / 2;
+        sumZ += (b.point1.z + b.point2.z) / 2;
+      }
+    });
+    const n = beamsWithGeometry.length;
+    return [sumX / n, sumZ / n, -sumY / n]; // Transform to Three.js coords
+  }, [beamsWithGeometry]);
+
+  // Calculate building bounds for camera distance
+  const buildingSize = useMemo(() => {
+    if (beamsWithGeometry.length === 0) return 10;
+    let maxDist = 0;
+    beamsWithGeometry.forEach((b) => {
+      if (b.point1 && b.point2) {
+        const dist = Math.max(
+          Math.abs(b.point1.x - buildingCenter[0]),
+          Math.abs(b.point2.x - buildingCenter[0]),
+          Math.abs(b.point1.y + buildingCenter[2]),
+          Math.abs(b.point2.y + buildingCenter[2]),
+          Math.abs(b.point1.z - buildingCenter[1]),
+          Math.abs(b.point2.z - buildingCenter[1])
+        );
+        maxDist = Math.max(maxDist, dist);
+      }
+    });
+    return Math.max(maxDist * 2, 10);
+  }, [beamsWithGeometry, buildingCenter]);
+
+  return (
+    <>
+      {/* Camera positioned to view building */}
+      <PerspectiveCamera
+        makeDefault
+        position={[
+          buildingCenter[0] + buildingSize * 1.5,
+          buildingCenter[1] + buildingSize * 0.8,
+          buildingCenter[2] + buildingSize * 1.5,
+        ]}
+        fov={50}
+      />
+
+      {/* Lighting */}
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[10, 20, 10]} intensity={1.0} />
+      <directionalLight position={[-10, 10, -10]} intensity={0.3} />
+
+      {/* Environment */}
+      <Environment preset="city" />
+
+      {/* Grid */}
+      <Grid
+        args={[50, 50]}
+        cellSize={1}
+        cellThickness={0.5}
+        cellColor="#3a3a3a"
+        sectionSize={5}
+        sectionThickness={1}
+        sectionColor="#5a5a5a"
+        fadeDistance={50}
+        fadeStrength={1}
+        infiniteGrid
+      />
+
+      {/* Render each beam as a line */}
+      {beamsWithGeometry.map((beam) => {
+        if (!beam.point1 || !beam.point2) return null;
+
+        // Transform from ETABS coords (X, Y horizontal, Z vertical)
+        // to Three.js coords (X, Z horizontal, Y vertical)
+        const start: [number, number, number] = [
+          beam.point1.x,
+          beam.point1.z, // Z in ETABS = Y in Three.js (up)
+          -beam.point1.y, // Y in ETABS = -Z in Three.js
+        ];
+        const end: [number, number, number] = [
+          beam.point2.x,
+          beam.point2.z,
+          -beam.point2.y,
+        ];
+
+        const isSelected = beam.id === selectedId;
+
+        return (
+          <Line
+            key={beam.id}
+            points={[start, end]}
+            color={isSelected ? '#00ff88' : '#4aa3ff'}
+            lineWidth={isSelected ? 4 : 2}
+            onClick={() => selectBeam(beam.id)}
+          />
+        );
+      })}
+
+      {/* Controls */}
+      <OrbitControls
+        enableDamping
+        dampingFactor={0.1}
+        minDistance={5}
+        maxDistance={100}
+        target={buildingCenter as [number, number, number]}
+      />
+    </>
+  );
+}
+
 function Scene() {
   const { inputs, length, result } = useDesignStore();
 
@@ -272,16 +402,40 @@ function Scene() {
   );
 }
 
-export function Viewport3D() {
+export type Viewport3DMode = 'design' | 'building';
+
+interface Viewport3DProps {
+  mode?: Viewport3DMode;
+}
+
+/**
+ * Viewport3D - 3D visualization component.
+ *
+ * @param mode - 'design' for single beam with rebar, 'building' for imported beams frame
+ */
+export function Viewport3D({ mode = 'design' }: Viewport3DProps) {
+  const { beams } = useImportedBeamsStore();
+
+  // Auto-detect mode: use building view if there are imported beams with 3D positions
+  const effectiveMode =
+    mode === 'building' ||
+    (beams.length > 0 && beams.some((b) => b.point1 && b.point2))
+      ? 'building'
+      : 'design';
+
   return (
     <div className="viewport3d">
       <Canvas shadows>
         <Suspense fallback={null}>
-          <Scene />
+          {effectiveMode === 'building' ? <BuildingFrame /> : <Scene />}
         </Suspense>
       </Canvas>
       <div className="viewport-overlay">
-        <span>3D Viewport • Scroll to zoom • Drag to rotate</span>
+        <span>
+          {effectiveMode === 'building'
+            ? `Building Frame (${beams.length} beams) • Click to select`
+            : '3D Viewport • Scroll to zoom • Drag to rotate'}
+        </span>
       </div>
     </div>
   );

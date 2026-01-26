@@ -36,7 +36,7 @@ export function ModernAppLayout() {
     try {
       const data = await loadSampleData();
       if (data.success) {
-        // Convert to store format
+        // Convert to store format with 3D positions
         const storeBeams = data.beams.map((b) => ({
           id: b.id,
           story: b.story,
@@ -48,6 +48,8 @@ export function ModernAppLayout() {
           Mu_mid: b.mu_knm,
           Vu_start: b.vu_kn,
           cover: b.cover_mm,
+          point1: b.point1,
+          point2: b.point2,
         }));
         setBeams(storeBeams as any);
         setViewMode("results");

@@ -10,6 +10,16 @@
  * @see hooks/useCSVImport.ts
  */
 
+/**
+ * 3D Point for beam endpoint positions.
+ * Coordinates are in meters (from ETABS/structural model).
+ */
+export interface Point3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
 export interface BeamCSVRow {
   id: string;
   story?: string;
@@ -24,6 +34,10 @@ export interface BeamCSVRow {
   Vu_start?: number;  // shear at start kN
   Vu_end?: number;    // shear at end kN
   cover?: number;     // cover in mm
+
+  // 3D position for building visualization (optional)
+  point1?: Point3D;   // start point (from ETABS geometry)
+  point2?: Point3D;   // end point (from ETABS geometry)
 }
 
 export interface ImportedBeamsState {
