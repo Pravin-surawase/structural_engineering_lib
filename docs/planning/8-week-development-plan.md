@@ -5,7 +5,7 @@
 **Status:** Active (V3 IN PROGRESS)
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-26 (Session 76 - React Shell + 3D Viewport Complete)
+**Last Updated:** 2026-01-26 (Session 78 - Building Frame 3D + Real CSV Sample)
 **Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
 **Timeline:** 7 weeks (Jan 24 - March 15, 2026)
 **Release Target:** March 15, 2026 (V3 Beta Launch)
@@ -332,17 +332,33 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 - ✅ Modern Gen Z UI - BentoGrid + FloatingDock (replaced Dockview)
 - ✅ API integration hooks - 4 hooks connecting to FastAPI
 - ✅ Basic design form + live 3D preview
+- ✅ Building frame 3D visualization (Session 78)
+- ✅ Real CSV sample data loading (Session 78)
 
-**Evidence:** Commits `f335c22`, `d1b79ef`, `fc3c4ad`, `bb3b2e0`, `d0f968e`
+**Evidence:** Commits `f335c22`, `d1b79ef`, `fc3c4ad`, `bb3b2e0`, `d0f968e`, `36c04ea`, `d98a12b`
 
-**Demo Ready:** ✅ Single beam design with live 3D + CSV import
+**Demo Ready:** ✅ Single beam design with live 3D + CSV import + Building frame visualization
+
+### Session 78 Accomplishments (Jan 26, 2026)
+
+| Category | Deliverable | Status |
+|----------|-------------|--------|
+| **Sample Endpoint** | Load real CSV files (beam_forces + frames_geometry) | ✅ Done |
+| **3D Positions** | Merge ETABS forces with 3D geometry (Point1/Point2) | ✅ Done |
+| **BuildingFrame** | New component for imported beams visualization | ✅ Done |
+| **Auto-detect Mode** | Viewport3D switches to building view automatically | ✅ Done |
+| **Click Selection** | Click beams in 3D to select them | ✅ Done |
+
+**Commits Session 78:**
+- `36c04ea` - feat(api): replace hardcoded sample data with real CSV loading
+- `d98a12b` - feat(react): add 3D building frame visualization for imported beams
 
 **Remaining Week 3-4 Tasks:**
 | Task | Est | Priority | Status |
 |------|-----|----------|--------|
 | Add AG Grid for tables | 3h | 🟡 High | 📋 TODO (using simple tables for now) |
 | Add command palette (`cmdk`) | 3h | 🟡 High | 📋 TODO |
-| End-to-end test flow | 2h | 🔴 Critical | 📋 TODO |
+| End-to-end test flow | 2h | 🔴 Critical | 🔄 IN PROGRESS |
 
 ---
 
