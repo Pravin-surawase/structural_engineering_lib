@@ -13,6 +13,7 @@ import { ImportView } from "../ImportView";
 import { DesignView } from "../DesignView";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { loadSampleData } from "../../api/client";
+import { mapSampleBeamsToRows } from "../../utils/sampleData";
 
 type ViewMode = "home" | "design" | "import" | "results" | "settings";
 
@@ -36,21 +37,7 @@ export function ModernAppLayout() {
     try {
       const data = await loadSampleData();
       if (data.success) {
-        // Convert to store format with 3D positions
-        const storeBeams = data.beams.map((b) => ({
-          id: b.id,
-          story: b.story,
-          b: b.width_mm,
-          D: b.depth_mm,
-          span: b.span_mm,
-          fck: b.fck_mpa,
-          fy: b.fy_mpa,
-          Mu_mid: b.mu_knm,
-          Vu_start: b.vu_kn,
-          cover: b.cover_mm,
-          point1: b.point1,
-          point2: b.point2,
-        }));
+        const storeBeams = mapSampleBeamsToRows(data.beams);
         setBeams(storeBeams as any);
         setViewMode("results");
       } else {

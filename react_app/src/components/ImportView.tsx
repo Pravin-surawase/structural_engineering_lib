@@ -5,6 +5,9 @@ import { useState } from "react";
 import { FileDropZone } from "./ui/FileDropZone";
 import { Upload, FileSpreadsheet, ChevronDown, Play, ArrowLeft } from "lucide-react";
 import { useImportedBeamsStore } from "../store/importedBeamsStore";
+import { loadSampleData } from "../api/client";
+import { mapSampleBeamsToRows } from "../utils/sampleData";
+import { applyMaterialOverrides } from "../utils/materialOverrides";
 
 interface ImportViewProps {
   onBack: () => void;
@@ -15,7 +18,30 @@ export function ImportView({ onBack, onImportComplete }: ImportViewProps) {
   const [fck, setFck] = useState(25);
   const [fy, setFy] = useState(500);
   const [cover, setCover] = useState(40);
-  const { beams, isImporting, error } = useImportedBeamsStore();
+  const { beams, isImporting, error, setBeams, setError, setImporting } = useImportedBeamsStore();
+  const materialOverrides = { fck, fy, cover };
+
+  const handleLoadSample = async () => {
+    setImporting(true);
+    setError(null);
+    try {
+      const data = await loadSampleData();
+      if (data.success) {
+        const storeBeams = applyMaterialOverrides(
+          mapSampleBeamsToRows(data.beams),
+          materialOverrides
+        );
+        setBeams(storeBeams as any);
+        onImportComplete();
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load sample data");
+    } finally {
+      setImporting(false);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full p-8">
@@ -44,6 +70,7 @@ export function ImportView({ onBack, onImportComplete }: ImportViewProps) {
               if (count > 0) onImportComplete();
             }}
             onError={(err) => console.error(err)}
+            materialOverrides={materialOverrides}
           />
 
           {/* Sample Data Button */}
@@ -59,10 +86,7 @@ export function ImportView({ onBack, onImportComplete }: ImportViewProps) {
                 </div>
               </div>
               <button
-                onClick={() => {
-                  // TODO: Load sample data
-                  console.log("Load sample data");
-                }}
+                onClick={handleLoadSample}
                 disabled={isImporting}
                 className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
               >

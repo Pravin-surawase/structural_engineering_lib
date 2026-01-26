@@ -1,98 +1,100 @@
 /**
  * DesignView - Single beam design form with live results.
  */
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { ArrowLeft, Calculator, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
-import { designBeam } from "../api/client";
 import type { BeamDesignResponse } from "../api/client";
+import { useDesignStore } from "../store/designStore";
+import { useLiveDesign } from "../hooks/useLiveDesign";
+import { ConnectionStatus } from "./ui/ConnectionStatus";
+import { Viewport3D } from "./Viewport3D";
 
 interface DesignViewProps {
   onBack: () => void;
 }
 
 export function DesignView({ onBack }: DesignViewProps) {
-  // Beam dimensions
-  const [width, setWidth] = useState(300);
-  const [depth, setDepth] = useState(600);
-  const [span, setSpan] = useState(6);
-  const [cover, setCover] = useState(40);
+  const { inputs, length } = useDesignStore();
+  const [autoDesign, setAutoDesign] = useState(true);
 
-  // Material
-  const [fck, setFck] = useState(25);
-  const [fy, setFy] = useState(500);
-
-  // Loads
-  const [mu, setMu] = useState(150);
-  const [vu, setVu] = useState(100);
-
-  const designMutation = useMutation({
-    mutationFn: designBeam,
-    onSuccess: (data) => {
-      console.log("Design result:", data);
-    },
-    onError: (err) => {
-      console.error("Design failed:", err);
-    },
+  const { state, actions } = useLiveDesign({
+    autoDesign,
+    enabled: true,
   });
 
-  const handleDesign = () => {
-    designMutation.mutate({
-      width: width,
-      depth: depth,
-      moment: mu,
-      shear: vu,
-      fck: fck,
-      fy: fy,
-    });
-  };
-
-  const result = designMutation.data;
-  const isLoading = designMutation.isPending;
-  const hasError = designMutation.isError;
+  const spanMeters = useMemo(() => Number((length / 1000).toFixed(2)), [length]);
 
   return (
     <div className="flex flex-col h-full p-8">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <button
-          onClick={onBack}
-          className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 text-white/60" />
-        </button>
-        <div>
-          <h2 className="text-2xl font-bold text-white">Single Beam Design</h2>
-          <p className="text-white/50">
-            IS 456:2000 flexure and shear design
-          </p>
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onBack}
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-white/60" />
+          </button>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Single Beam Design</h2>
+            <p className="text-white/50">
+              IS 456:2000 flexure and shear design
+            </p>
+          </div>
         </div>
+        <ConnectionStatus
+          status={state.connectionStatus}
+          latency={state.latency}
+          error={state.error}
+          onReconnect={actions.reconnect}
+        />
       </div>
 
       <div className="grid grid-cols-12 gap-6 flex-1">
         {/* Left: Inputs */}
         <div className="col-span-5 space-y-6">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+            <label className="flex items-center gap-2 text-sm text-white/70">
+              <input
+                type="checkbox"
+                checked={autoDesign}
+                onChange={(e) => setAutoDesign(e.target.checked)}
+                className="accent-blue-500"
+              />
+              Auto Design
+            </label>
+            {!autoDesign && (
+              <button
+                onClick={actions.triggerDesign}
+                disabled={!state.isConnected || state.isDesigning}
+                className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors disabled:opacity-50"
+              >
+                {state.isDesigning ? "Designing..." : "Design Beam"}
+              </button>
+            )}
+          </div>
+
           <InputSection title="Beam Dimensions">
             <InputField
               label="Width"
-              value={width}
-              onChange={setWidth}
+              value={inputs.width}
+              onChange={(value) => actions.updateInputs({ width: value })}
               unit="mm"
               min={150}
               max={600}
             />
             <InputField
               label="Depth"
-              value={depth}
-              onChange={setDepth}
+              value={inputs.depth}
+              onChange={(value) => actions.updateInputs({ depth: value })}
               unit="mm"
               min={300}
               max={1200}
             />
             <InputField
               label="Span"
-              value={span}
-              onChange={setSpan}
+              value={spanMeters}
+              onChange={(value) => actions.updateLength(value * 1000)}
               unit="m"
               min={1}
               max={15}
@@ -100,26 +102,27 @@ export function DesignView({ onBack }: DesignViewProps) {
             />
             <InputField
               label="Clear Cover"
-              value={cover}
-              onChange={setCover}
+              value={40}
+              onChange={() => {}}
               unit="mm"
               min={25}
               max={75}
+              disabled
             />
           </InputSection>
 
           <InputSection title="Material Properties">
             <DropdownField
               label="Concrete Grade"
-              value={fck}
-              onChange={setFck}
+              value={inputs.fck}
+              onChange={(value) => actions.updateInputs({ fck: value })}
               options={[20, 25, 30, 35, 40, 45, 50]}
               format={(v) => `M${v} (${v} MPa)`}
             />
             <DropdownField
               label="Steel Grade"
-              value={fy}
-              onChange={setFy}
+              value={inputs.fy}
+              onChange={(value) => actions.updateInputs({ fy: value })}
               options={[415, 500, 550]}
               format={(v) => `Fe ${v} (${v} MPa)`}
             />
@@ -128,16 +131,16 @@ export function DesignView({ onBack }: DesignViewProps) {
           <InputSection title="Design Forces">
             <InputField
               label="Moment (Mu)"
-              value={mu}
-              onChange={setMu}
+              value={inputs.moment}
+              onChange={(value) => actions.updateInputs({ moment: value })}
               unit="kN·m"
               min={0}
               max={2000}
             />
             <InputField
               label="Shear (Vu)"
-              value={vu}
-              onChange={setVu}
+              value={inputs.shear ?? 0}
+              onChange={(value) => actions.updateInputs({ shear: value })}
               unit="kN"
               min={0}
               max={1000}
@@ -145,11 +148,11 @@ export function DesignView({ onBack }: DesignViewProps) {
           </InputSection>
 
           <button
-            onClick={handleDesign}
-            disabled={isLoading}
+            onClick={actions.triggerDesign}
+            disabled={!state.isConnected || state.isDesigning}
             className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            {isLoading ? (
+            {state.isDesigning ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
                 Calculating...
@@ -163,24 +166,38 @@ export function DesignView({ onBack }: DesignViewProps) {
           </button>
         </div>
 
-        {/* Right: Results */}
-        <div className="col-span-7">
-          {result ? (
-            <ResultsPanel result={result} />
-          ) : hasError ? (
+        {/* Right: Preview + Results */}
+        <div className="col-span-7 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Live 3D Preview</h3>
+              <p className="text-xs text-white/50">WebSocket-driven updates</p>
+            </div>
+            {state.isConnected && state.latency !== null && (
+              <span className="text-xs text-white/40">{state.latency}ms</span>
+            )}
+          </div>
+
+          <div className="h-[300px] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900">
+            <Viewport3D mode="design" />
+          </div>
+
+          {state.result ? (
+            <ResultsPanel result={state.result} />
+          ) : state.error ? (
             <div className="p-6 rounded-xl bg-red-500/10 border border-red-500/30">
               <div className="flex items-center gap-3">
                 <AlertCircle className="w-6 h-6 text-red-400" />
                 <div>
                   <p className="text-red-400 font-medium">Design Failed</p>
                   <p className="text-sm text-red-400/70">
-                    {designMutation.error?.message || "Check input values"}
+                    {state.error}
                   </p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-8 rounded-xl bg-white/5 border border-white/10 h-full flex flex-col items-center justify-center text-center">
+            <div className="p-8 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center">
               <Calculator className="w-12 h-12 text-white/20 mb-4" />
               <p className="text-white/40">
                 Enter beam parameters and click "Design Beam"
@@ -218,9 +235,19 @@ interface InputFieldProps {
   min?: number;
   max?: number;
   step?: number;
+  disabled?: boolean;
 }
 
-function InputField({ label, value, onChange, unit, min, max, step = 1 }: InputFieldProps) {
+function InputField({
+  label,
+  value,
+  onChange,
+  unit,
+  min,
+  max,
+  step = 1,
+  disabled = false,
+}: InputFieldProps) {
   return (
     <div>
       <label className="block text-xs text-white/50 mb-1">{label}</label>
@@ -232,6 +259,7 @@ function InputField({ label, value, onChange, unit, min, max, step = 1 }: InputF
           min={min}
           max={max}
           step={step}
+          disabled={disabled}
           className="w-full px-3 py-2 pr-12 text-sm text-white bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50"
         />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/40">
