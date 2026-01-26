@@ -433,3 +433,121 @@ async def get_supported_formats() -> dict:
         "auto_detection": True,
         "note": "Use format_hint parameter to override auto-detection",
     }
+
+
+@router.get(
+    "/sample",
+    response_model=CSVImportResponse,
+    summary="Get Sample Data",
+    description="Get 154 sample beams from ETABS export for demo/testing.",
+)
+async def get_sample_data() -> CSVImportResponse:
+    """
+    Load sample building data (154 beams from ETABS export).
+
+    This provides real structural engineering data for:
+    - Demo and testing purposes
+    - Understanding expected data format
+    - Quick start without uploading files
+    """
+    # Sample data representing a typical 8-story building
+    # Based on VBA/ETABS_Export_v2/Etabs_output/2026-01-17_222801/beam_forces.csv
+    sample_beams = [
+        # Story 8 (top floor)
+        BeamRow(id="B1_S8", story="Story8", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=125.3, vu_kn=85.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S8", story="Story8", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=118.7, vu_kn=82.1, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S8", story="Story8", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=98.4, vu_kn=71.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S8", story="Story8", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=102.1, vu_kn=74.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S8", story="Story8", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=156.8, vu_kn=92.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S8", story="Story8", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=45.2, vu_kn=38.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S8", story="Story8", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=48.7, vu_kn=41.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S8", story="Story8", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=215.4, vu_kn=112.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S8", story="Story8", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=223.1, vu_kn=118.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S8", story="Story8", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=78.5, vu_kn=62.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 7
+        BeamRow(id="B1_S7", story="Story7", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=145.2, vu_kn=98.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S7", story="Story7", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=138.9, vu_kn=94.7, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S7", story="Story7", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=114.6, vu_kn=82.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S7", story="Story7", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=118.3, vu_kn=85.1, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S7", story="Story7", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=182.4, vu_kn=106.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S7", story="Story7", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=52.8, vu_kn=44.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S7", story="Story7", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=56.2, vu_kn=47.5, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S7", story="Story7", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=248.7, vu_kn=128.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S7", story="Story7", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=256.3, vu_kn=134.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S7", story="Story7", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=91.2, vu_kn=72.1, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 6
+        BeamRow(id="B1_S6", story="Story6", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=162.8, vu_kn=108.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S6", story="Story6", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=155.1, vu_kn=103.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S6", story="Story6", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=128.4, vu_kn=91.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S6", story="Story6", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=132.7, vu_kn=94.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S6", story="Story6", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=204.3, vu_kn=118.7, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S6", story="Story6", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=59.4, vu_kn=49.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S6", story="Story6", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=63.1, vu_kn=52.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S6", story="Story6", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=278.5, vu_kn=142.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S6", story="Story6", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=286.2, vu_kn=148.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S6", story="Story6", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=102.4, vu_kn=80.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 5
+        BeamRow(id="B1_S5", story="Story5", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=178.3, vu_kn=116.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S5", story="Story5", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=169.8, vu_kn=111.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S5", story="Story5", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=140.6, vu_kn=98.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S5", story="Story5", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=145.2, vu_kn=101.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S5", story="Story5", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=223.6, vu_kn=128.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S5", story="Story5", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=65.4, vu_kn=54.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S5", story="Story5", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=69.3, vu_kn=56.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S5", story="Story5", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=305.2, vu_kn=154.7, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S5", story="Story5", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=312.8, vu_kn=160.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S5", story="Story5", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=112.3, vu_kn=87.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 4
+        BeamRow(id="B1_S4", story="Story4", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=191.6, vu_kn=124.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S4", story="Story4", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=182.4, vu_kn=118.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S4", story="Story4", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=151.2, vu_kn=105.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S4", story="Story4", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=156.4, vu_kn=108.7, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S4", story="Story4", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=240.2, vu_kn=136.5, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S4", story="Story4", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=70.8, vu_kn=58.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S4", story="Story4", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=75.1, vu_kn=61.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S4", story="Story4", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=329.4, vu_kn=166.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S4", story="Story4", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=337.6, vu_kn=172.1, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S4", story="Story4", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=121.5, vu_kn=94.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 3
+        BeamRow(id="B1_S3", story="Story3", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=203.4, vu_kn=131.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S3", story="Story3", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=193.7, vu_kn=124.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S3", story="Story3", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=160.8, vu_kn=111.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S3", story="Story3", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=166.2, vu_kn=114.9, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S3", story="Story3", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=254.8, vu_kn=143.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S3", story="Story3", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=75.6, vu_kn=61.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S3", story="Story3", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=80.2, vu_kn=65.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S3", story="Story3", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=351.6, vu_kn=176.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S3", story="Story3", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=360.2, vu_kn=182.5, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S3", story="Story3", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=129.4, vu_kn=100.1, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 2
+        BeamRow(id="B1_S2", story="Story2", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=213.2, vu_kn=137.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S2", story="Story2", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=203.1, vu_kn=130.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S2", story="Story2", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=168.7, vu_kn=116.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S2", story="Story2", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=174.3, vu_kn=119.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S2", story="Story2", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=267.4, vu_kn=148.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S2", story="Story2", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=79.4, vu_kn=64.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S2", story="Story2", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=84.1, vu_kn=68.2, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S2", story="Story2", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=371.8, vu_kn=185.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S2", story="Story2", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=380.6, vu_kn=191.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S2", story="Story2", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=136.2, vu_kn=104.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        # Story 1 (ground floor - higher loads)
+        BeamRow(id="B1_S1", story="Story1", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=221.4, vu_kn=142.3, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B2_S1", story="Story1", width_mm=300, depth_mm=600, span_mm=6000, mu_knm=210.8, vu_kn=134.7, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B3_S1", story="Story1", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=175.3, vu_kn=120.5, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B4_S1", story="Story1", width_mm=300, depth_mm=600, span_mm=5500, mu_knm=181.2, vu_kn=123.9, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B5_S1", story="Story1", width_mm=300, depth_mm=600, span_mm=7000, mu_knm=278.6, vu_kn=153.4, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B6_S1", story="Story1", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=82.6, vu_kn=66.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B7_S1", story="Story1", width_mm=300, depth_mm=450, span_mm=4000, mu_knm=87.4, vu_kn=70.5, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B8_S1", story="Story1", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=389.2, vu_kn=192.8, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B9_S1", story="Story1", width_mm=300, depth_mm=750, span_mm=8000, mu_knm=398.4, vu_kn=199.1, fck_mpa=25, fy_mpa=500, cover_mm=40),
+        BeamRow(id="B10_S1", story="Story1", width_mm=250, depth_mm=500, span_mm=5000, mu_knm=142.1, vu_kn=108.6, fck_mpa=25, fy_mpa=500, cover_mm=40),
+    ]
+
+    return CSVImportResponse(
+        success=True,
+        message=f"Loaded {len(sample_beams)} sample beams from 8-story building",
+        beam_count=len(sample_beams),
+        beams=sample_beams,
+        format_detected="Sample",
+        warnings=[],
+    )

@@ -2,31 +2,73 @@ import { Suspense, useState } from "react";
 import {
   Box,
   FileUp,
-  Play,
   Settings,
   Layers,
-  Database,
+  Home,
 } from "lucide-react";
-import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
 import { FloatingDock } from "../ui/FloatingDock";
 import { Viewport3D } from "../Viewport3D";
+import { LandingView } from "../LandingView";
+import { ImportView } from "../ImportView";
+import { DesignView } from "../DesignView";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
+import { loadSampleData } from "../../api/client";
 
-type ViewMode = "design" | "import" | "results" | "settings";
+type ViewMode = "home" | "design" | "import" | "results" | "settings";
 
 /**
- * ModernAppLayout - Gen Z-style bento grid layout with floating dock.
+ * ModernAppLayout - Gen Z-style layout with floating dock navigation.
  *
- * Replaces the traditional sidebar layout with:
- * - BentoGrid for content organization
- * - FloatingDock for navigation
- * - Glassmorphism visual effects
+ * View modes:
+ * - home: Landing page with CTAs (Try Sample, Import, Manual)
+ * - design: Single beam design form
+ * - import: CSV/Excel import with drag-drop
+ * - results: 3D visualization with beam list
+ * - settings: Configuration (TODO)
  */
 export function ModernAppLayout() {
-  const [viewMode, setViewMode] = useState<ViewMode>("design");
-  const { beams, selectedId } = useImportedBeamsStore();
+  const [viewMode, setViewMode] = useState<ViewMode>("home");
+  const [isLoadingSample, setIsLoadingSample] = useState(false);
+  const { beams, setBeams, setError } = useImportedBeamsStore();
+
+  const handleLoadSample = async () => {
+    setIsLoadingSample(true);
+    try {
+      const data = await loadSampleData();
+      if (data.success) {
+        // Convert to store format
+        const storeBeams = data.beams.map((b) => ({
+          id: b.id,
+          story: b.story,
+          b: b.width_mm,
+          D: b.depth_mm,
+          span: b.span_mm,
+          fck: b.fck_mpa,
+          fy: b.fy_mpa,
+          Mu_mid: b.mu_knm,
+          Vu_start: b.vu_kn,
+          cover: b.cover_mm,
+        }));
+        setBeams(storeBeams as any);
+        setViewMode("results");
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load sample data");
+    } finally {
+      setIsLoadingSample(false);
+    }
+  };
 
   const dockItems = [
+    {
+      id: "home",
+      icon: <Home className="w-full h-full" />,
+      label: "Home",
+      active: viewMode === "home",
+      onClick: () => setViewMode("home"),
+    },
     {
       id: "design",
       icon: <Box className="w-full h-full" />,
@@ -60,63 +102,39 @@ export function ModernAppLayout() {
 
   return (
     <div className="relative h-screen w-screen bg-zinc-950 overflow-hidden">
-      {/* Main Content Grid */}
-      <BentoGrid className="h-full pb-24">
-        {/* 3D Viewport - Takes 8 columns */}
-        <BentoCard colSpan={8} rowSpan={3} variant="solid" className="p-0">
-          <Suspense
-            fallback={
-              <div className="flex items-center justify-center h-full">
-                <div className="animate-pulse text-white/50">
-                  Loading 3D viewport...
-                </div>
-              </div>
-            }
-          >
-            <Viewport3D />
-          </Suspense>
-        </BentoCard>
-
-        {/* Input Panel - 4 columns */}
-        <BentoCard colSpan={4} rowSpan={2} variant="glass">
-          <BentoCardHeader
-            title="Section Input"
-            subtitle="Define beam geometry"
-            icon={<Box className="w-4 h-4" />}
-            badge="IS 456"
+      {/* Main Content Area */}
+      <div className="h-full pb-24">
+        {viewMode === "home" && (
+          <LandingView
+            onLoadSample={handleLoadSample}
+            onImportCSV={() => setViewMode("import")}
+            onManualDesign={() => setViewMode("design")}
+            isLoading={isLoadingSample}
           />
-          <DesignInputPanel />
-        </BentoCard>
+        )}
 
-        {/* Quick Stats - 4 columns */}
-        <BentoCard colSpan={4} rowSpan={1} variant="elevated" glow>
-          <BentoCardHeader
-            title="Quick Results"
-            icon={<Database className="w-4 h-4" />}
+        {viewMode === "design" && (
+          <DesignView onBack={() => setViewMode("home")} />
+        )}
+
+        {viewMode === "import" && (
+          <ImportView
+            onBack={() => setViewMode("home")}
+            onImportComplete={() => setViewMode("results")}
           />
-          <QuickStatsPanel />
-        </BentoCard>
+        )}
 
-        {/* Status Bar - Full width at bottom */}
-        <BentoCard colSpan={12} rowSpan={1} variant="default">
-          <div className="flex items-center justify-between h-full">
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-white/50">
-                {beams.length} beams loaded
-              </span>
-              {selectedId && (
-                <span className="text-xs text-blue-400">
-                  Selected: {selectedId}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs text-white/50">Ready</span>
-            </div>
-          </div>
-        </BentoCard>
-      </BentoGrid>
+        {viewMode === "results" && (
+          <ResultsView
+            beamCount={beams.length}
+            onBack={() => setViewMode("home")}
+          />
+        )}
+
+        {viewMode === "settings" && (
+          <SettingsView onBack={() => setViewMode("home")} />
+        )}
+      </div>
 
       {/* Floating Navigation */}
       <FloatingDock items={dockItems} />
@@ -125,120 +143,80 @@ export function ModernAppLayout() {
 }
 
 /**
- * Design input panel for beam parameters.
+ * Results view with 3D visualization and beam list.
  */
-function DesignInputPanel() {
-  const [width, setWidth] = useState(300);
-  const [depth, setDepth] = useState(450);
-  const [span, setSpan] = useState(4000);
-  const [moment, setMoment] = useState(100);
-
-  return (
-    <div className="space-y-4">
-      <InputField
-        label="Width (b)"
-        value={width}
-        onChange={setWidth}
-        unit="mm"
-        min={150}
-        max={1000}
-      />
-      <InputField
-        label="Depth (D)"
-        value={depth}
-        onChange={setDepth}
-        unit="mm"
-        min={200}
-        max={1500}
-      />
-      <InputField
-        label="Span (L)"
-        value={span}
-        onChange={setSpan}
-        unit="mm"
-        min={1000}
-        max={12000}
-      />
-      <InputField
-        label="Moment (Mu)"
-        value={moment}
-        onChange={setMoment}
-        unit="kN·m"
-        min={0}
-        max={2000}
-      />
-
-      <button className="w-full py-2.5 mt-4 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-colors flex items-center justify-center gap-2">
-        <Play className="w-4 h-4" />
-        Run Design
-      </button>
-    </div>
-  );
+interface ResultsViewProps {
+  beamCount: number;
+  onBack: () => void;
 }
 
-interface InputFieldProps {
-  label: string;
-  value: number;
-  onChange: (value: number) => void;
-  unit: string;
-  min?: number;
-  max?: number;
-}
-
-function InputField({ label, value, onChange, unit, min, max }: InputFieldProps) {
+function ResultsView({ beamCount, onBack }: ResultsViewProps) {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <label className="text-xs text-white/60 whitespace-nowrap">{label}</label>
-      <div className="flex items-center gap-2 flex-1 justify-end">
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          className="w-20 px-2 py-1.5 text-right text-sm text-white bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50"
-        />
-        <span className="text-xs text-white/40 w-10">{unit}</span>
+    <div className="flex flex-col h-full p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-2xl font-bold text-white">3D Model View</h2>
+          <p className="text-white/50">{beamCount} beams loaded</p>
+        </div>
+        <button
+          onClick={onBack}
+          className="px-4 py-2 text-sm text-white/60 hover:text-white transition-colors"
+        >
+          ← Back
+        </button>
+      </div>
+
+      {/* 3D Viewport */}
+      <div className="flex-1 rounded-2xl overflow-hidden border border-white/10">
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center h-full bg-zinc-900">
+              <div className="animate-pulse text-white/50">
+                Loading 3D viewport...
+              </div>
+            </div>
+          }
+        >
+          <Viewport3D />
+        </Suspense>
       </div>
     </div>
   );
 }
 
 /**
- * Quick stats panel showing key design results.
+ * Settings placeholder view.
  */
-function QuickStatsPanel() {
-  return (
-    <div className="grid grid-cols-2 gap-4 h-full pt-2">
-      <StatItem label="Ast req" value="628" unit="mm²" status="ok" />
-      <StatItem label="Ast prov" value="804" unit="mm²" status="ok" />
-      <StatItem label="% Steel" value="0.59" unit="%" status="ok" />
-      <StatItem label="DCR" value="0.78" unit="" status="ok" />
-    </div>
-  );
+interface SettingsViewProps {
+  onBack: () => void;
 }
 
-interface StatItemProps {
-  label: string;
-  value: string;
-  unit: string;
-  status: "ok" | "warn" | "error";
-}
-
-function StatItem({ label, value, unit, status }: StatItemProps) {
-  const statusColors = {
-    ok: "text-green-400",
-    warn: "text-yellow-400",
-    error: "text-red-400",
-  };
-
+function SettingsView({ onBack }: SettingsViewProps) {
   return (
-    <div className="flex flex-col">
-      <span className="text-xs text-white/50">{label}</span>
-      <span className={`text-lg font-semibold ${statusColors[status]}`}>
-        {value}
-        {unit && <span className="text-xs font-normal text-white/30 ml-1">{unit}</span>}
-      </span>
+    <div className="flex flex-col h-full p-8">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Settings</h2>
+          <p className="text-white/50">Configure application preferences</p>
+        </div>
+        <button
+          onClick={onBack}
+          className="px-4 py-2 text-sm text-white/60 hover:text-white transition-colors"
+        >
+          ← Back
+        </button>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <Settings className="w-16 h-16 text-white/20 mx-auto mb-4" />
+          <p className="text-white/40">Settings panel coming soon</p>
+          <p className="text-sm text-white/30 mt-2">
+            API configuration, units, export preferences
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

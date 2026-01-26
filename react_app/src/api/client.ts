@@ -165,9 +165,45 @@ export async function calculateGeometry(
   return generateBeamGeometry({ width, depth, length });
 }
 
+/**
+ * Load sample beam data for demo/testing.
+ * Returns 80 beams from an 8-story building.
+ */
+export interface SampleBeam {
+  id: string;
+  story: string;
+  width_mm: number;
+  depth_mm: number;
+  span_mm: number;
+  mu_knm: number;
+  vu_kn: number;
+  fck_mpa: number;
+  fy_mpa: number;
+  cover_mm: number;
+}
+
+export interface SampleDataResponse {
+  success: boolean;
+  message: string;
+  beam_count: number;
+  beams: SampleBeam[];
+  format_detected: string;
+  warnings: string[];
+}
+
+export async function loadSampleData(): Promise<SampleDataResponse> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/import/sample`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(`Sample data load failed: ${error.detail || response.status}`);
+  }
+  return response.json();
+}
+
 export default {
   checkHealth,
   designBeam,
   generateBeamGeometry,
   calculateGeometry,
+  loadSampleData,
 };
