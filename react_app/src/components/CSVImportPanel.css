@@ -1,0 +1,144 @@
+.csv-import-panel {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  overflow-y: auto;
+  background: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.csv-import-panel h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.drop-zone {
+  border: 2px dashed #444;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.drop-zone.dragging {
+  border-color: #0078d4;
+  background: rgba(0, 120, 212, 0.1);
+}
+
+.drop-zone span {
+  color: #888;
+  font-size: 13px;
+}
+
+.drop-zone .or {
+  font-size: 11px;
+  color: #666;
+}
+
+.file-input-label {
+  color: #0078d4;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.file-input-label:hover {
+  text-decoration: underline;
+}
+
+.file-input-label input {
+  display: none;
+}
+
+.loading {
+  color: #0078d4;
+  text-align: center;
+  font-size: 13px;
+}
+
+.error {
+  color: #f44336;
+  padding: 8px;
+  background: rgba(244, 67, 54, 0.1);
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.beams-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: #f44336;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.clear-btn:hover {
+  text-decoration: underline;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.beam-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px;
+  background: #2d2d2d;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.15s;
+}
+
+.beam-item:hover {
+  background: #3a3a3a;
+}
+
+.beam-item.selected {
+  background: rgba(0, 120, 212, 0.3);
+  border: 1px solid #0078d4;
+}
+
+.beam-id {
+  font-weight: 500;
+  color: #fff;
+}
+
+.beam-dims {
+  color: #888;
+}
+
+.more-items {
+  text-align: center;
+  font-size: 11px;
+  color: #666;
+  padding: 4px;
+}

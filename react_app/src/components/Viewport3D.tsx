@@ -2,14 +2,17 @@
  * Viewport3D Component
  *
  * 3D visualization of beam using React Three Fiber.
- * Renders concrete beam mesh with basic material.
+ * Renders concrete beam mesh with reinforcement bars and stirrups.
  */
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useMemo, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Grid, Environment, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { useDesignStore } from '../store/designStore';
 import './Viewport3D.css';
+
+// Constants
+const SCALE = 0.001; // mm to meters
 
 interface BeamMeshProps {
   width: number; // mm
@@ -19,87 +22,164 @@ interface BeamMeshProps {
 }
 
 function BeamMesh({ width, depth, length, isDesigned }: BeamMeshProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  // Convert mm to meters for Three.js units
-  const scale = 0.001;
-  const w = width * scale;
-  const d = depth * scale;
-  const l = length * scale;
-
-  // Subtle animation when designed
-  useFrame(() => {
-    if (meshRef.current && isDesigned) {
-      // Small pulse effect when newly designed
-    }
-  });
+  const w = width * SCALE;
+  const d = depth * SCALE;
+  const l = length * SCALE;
 
   const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: isDesigned ? '#a0a0a0' : '#808080',
+        color: isDesigned ? '#b0b0b0' : '#909090',
         metalness: 0.1,
-        roughness: 0.8,
+        roughness: 0.85,
+        transparent: true,
+        opacity: isDesigned ? 0.7 : 0.9, // Semi-transparent when designed to show rebar
       }),
     [isDesigned]
   );
 
   return (
-    <mesh ref={meshRef} position={[0, d / 2, 0]} material={material}>
+    <mesh position={[0, d / 2, 0]} material={material}>
       <boxGeometry args={[l, d, w]} />
     </mesh>
   );
 }
 
-function RebarVisualization({
-  width,
-  length,
-  astRequired,
-}: {
+interface RebarProps {
   width: number;
+  depth: number;
   length: number;
   astRequired: number;
-}) {
-  const scale = 0.001;
-  const cover = 40 * scale; // 40mm cover
+  ascRequired?: number;
+}
 
-  // Calculate number of bars (simplified: assume 16mm bars)
-  const barDiameter = 16 * scale;
-  const barArea = Math.PI * Math.pow(8, 2); // mm² for 16mm bar
-  const numBars = Math.max(2, Math.ceil(astRequired / barArea));
+function RebarVisualization({ width, depth, length, astRequired, ascRequired = 0 }: RebarProps) {
+  const cover = 40 * SCALE;
+  const stirrupDia = 8 * SCALE;
 
-  // Generate bar positions
-  const barPositions = useMemo(() => {
-    const positions: [number, number, number][] = [];
-    const w = width * scale;
-    const effectiveWidth = w - 2 * cover - barDiameter;
+  // Calculate tension bar layout
+  const { tensionBars, compressionBars } = useMemo(() => {
+    const barDiameter = 16 * SCALE;
+    const barArea = Math.PI * Math.pow(8, 2); // mm² for 16mm bar
 
-    for (let i = 0; i < Math.min(numBars, 6); i++) {
+    const numTension = Math.max(2, Math.min(6, Math.ceil(astRequired / barArea)));
+    const numCompression = ascRequired > 0 ? Math.max(2, Math.min(4, Math.ceil(ascRequired / barArea))) : 0;
+
+    const w = width * SCALE;
+    const d = depth * SCALE;
+    const effectiveWidth = w - 2 * (cover + stirrupDia) - barDiameter;
+
+    const tension: [number, number, number][] = [];
+    for (let i = 0; i < numTension; i++) {
       const x = 0;
-      const y = cover + barDiameter / 2;
-      const z = -effectiveWidth / 2 + (i / Math.max(numBars - 1, 1)) * effectiveWidth;
-      positions.push([x, y, z]);
+      const y = cover + stirrupDia + barDiameter / 2;
+      const z = -effectiveWidth / 2 + (i / Math.max(numTension - 1, 1)) * effectiveWidth;
+      tension.push([x, y, z]);
     }
 
-    return positions;
-  }, [width, numBars, cover, barDiameter, scale]);
+    const compression: [number, number, number][] = [];
+    for (let i = 0; i < numCompression; i++) {
+      const x = 0;
+      const y = d - cover - stirrupDia - barDiameter / 2;
+      const z = -effectiveWidth / 2 + (i / Math.max(numCompression - 1, 1)) * effectiveWidth;
+      compression.push([x, y, z]);
+    }
+
+    return { tensionBars: tension, compressionBars: compression, barDiameter };
+  }, [width, depth, astRequired, ascRequired, cover, stirrupDia]);
 
   const rebarMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: '#b87333', // Copper/rebar color
+        color: '#c87533',
+        metalness: 0.7,
+        roughness: 0.35,
+      }),
+    []
+  );
+
+  const barDiameter = 16 * SCALE;
+
+  return (
+    <group>
+      {/* Tension bars (bottom) */}
+      {tensionBars.map((pos, i) => (
+        <mesh key={`t-${i}`} position={pos} rotation={[0, 0, Math.PI / 2]} material={rebarMaterial}>
+          <cylinderGeometry args={[barDiameter / 2, barDiameter / 2, length * SCALE * 0.98, 12]} />
+        </mesh>
+      ))}
+      {/* Compression bars (top) */}
+      {compressionBars.map((pos, i) => (
+        <mesh key={`c-${i}`} position={pos} rotation={[0, 0, Math.PI / 2]} material={rebarMaterial}>
+          <cylinderGeometry args={[barDiameter / 2, barDiameter / 2, length * SCALE * 0.98, 12]} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+interface StirrupsProps {
+  width: number;
+  depth: number;
+  length: number;
+  spacing: number;
+}
+
+function StirrupVisualization({ width, depth, length, spacing }: StirrupsProps) {
+  const cover = 40 * SCALE;
+  const stirrupDia = 8 * SCALE;
+  const halfDia = stirrupDia / 2;
+
+  const stirrups = useMemo(() => {
+    const w = width * SCALE - 2 * cover;
+    const d = depth * SCALE - 2 * cover;
+    const l = length * SCALE;
+    const spacingM = spacing * SCALE;
+
+    const numStirrups = Math.floor(l / spacingM);
+    const startX = -l / 2 + spacingM / 2;
+
+    const positions: number[] = [];
+    for (let i = 0; i < numStirrups; i++) {
+      positions.push(startX + i * spacingM);
+    }
+
+    return { positions, w, d };
+  }, [width, depth, length, spacing, cover]);
+
+  const stirrupMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: '#a06020',
         metalness: 0.6,
         roughness: 0.4,
       }),
     []
   );
 
+  const { positions, w, d } = stirrups;
+
   return (
     <group>
-      {barPositions.map((pos, i) => (
-        <mesh key={i} position={pos} rotation={[0, 0, Math.PI / 2]} material={rebarMaterial}>
-          <cylinderGeometry args={[barDiameter / 2, barDiameter / 2, length * scale, 16]} />
-        </mesh>
+      {positions.map((xPos, i) => (
+        <group key={i} position={[xPos, depth * SCALE / 2, 0]}>
+          {/* Bottom horizontal */}
+          <mesh position={[0, -d / 2 + halfDia, 0]} rotation={[0, Math.PI / 2, 0]} material={stirrupMaterial}>
+            <cylinderGeometry args={[halfDia, halfDia, w - stirrupDia, 8]} />
+          </mesh>
+          {/* Top horizontal */}
+          <mesh position={[0, d / 2 - halfDia, 0]} rotation={[0, Math.PI / 2, 0]} material={stirrupMaterial}>
+            <cylinderGeometry args={[halfDia, halfDia, w - stirrupDia, 8]} />
+          </mesh>
+          {/* Left vertical */}
+          <mesh position={[0, 0, -w / 2 + halfDia]} rotation={[Math.PI / 2, 0, 0]} material={stirrupMaterial}>
+            <cylinderGeometry args={[halfDia, halfDia, d - stirrupDia, 8]} />
+          </mesh>
+          {/* Right vertical */}
+          <mesh position={[0, 0, w / 2 - halfDia]} rotation={[Math.PI / 2, 0, 0]} material={stirrupMaterial}>
+            <cylinderGeometry args={[halfDia, halfDia, d - stirrupDia, 8]} />
+          </mesh>
+        </group>
       ))}
     </group>
   );
@@ -108,15 +188,18 @@ function RebarVisualization({
 function Scene() {
   const { inputs, length, result } = useDesignStore();
 
+  // Get stirrup spacing from result or use default
+  const stirrupSpacing = result?.shear?.stirrup_spacing ?? 150;
+
   return (
     <>
       {/* Camera */}
       <PerspectiveCamera makeDefault position={[3, 2, 3]} fov={50} />
 
       {/* Lighting */}
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 10, 5]} intensity={1} castShadow />
-      <directionalLight position={[-5, 5, -5]} intensity={0.3} />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow />
+      <directionalLight position={[-5, 5, -5]} intensity={0.4} />
 
       {/* Environment for reflections */}
       <Environment preset="city" />
@@ -143,13 +226,27 @@ function Scene() {
         isDesigned={result !== null}
       />
 
-      {/* Rebar (only if designed) */}
+      {/* Reinforcement (only if designed) */}
       {result && result.flexure && (
-        <RebarVisualization
-          width={inputs.width}
-          length={length}
-          astRequired={result.flexure.ast_required}
-        />
+        <>
+          {/* Rebar */}
+          <RebarVisualization
+            width={inputs.width}
+            depth={inputs.depth}
+            length={length}
+            astRequired={result.flexure.ast_required}
+            ascRequired={result.flexure.asc_required}
+          />
+          {/* Stirrups (if shear result available) */}
+          {result.shear && (
+            <StirrupVisualization
+              width={inputs.width}
+              depth={inputs.depth}
+              length={length}
+              spacing={stirrupSpacing}
+            />
+          )}
+        </>
       )}
 
       {/* Controls */}
@@ -168,7 +265,9 @@ export function Viewport3D() {
   return (
     <div className="viewport3d">
       <Canvas shadows>
-        <Scene />
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
       </Canvas>
       <div className="viewport-overlay">
         <span>3D Viewport • Scroll to zoom • Drag to rotate</span>
