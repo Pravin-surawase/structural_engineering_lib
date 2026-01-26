@@ -8,6 +8,7 @@ export { useLiveDesign } from './useLiveDesign';
 export {
   useCSVFileImport,
   useCSVTextImport,
+  useDualCSVImport,
   useBatchDesign,
 } from './useCSVImport';
 

@@ -14,7 +14,7 @@ import math
 from pathlib import Path
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, HTTPException, UploadFile, File, Query, status
 from pydantic import BaseModel, Field
 
 router = APIRouter(
@@ -81,6 +81,21 @@ class CSVImportResponse(BaseModel):
     warnings: list[str] = Field(default_factory=list)
 
 
+class DualCSVImportResponse(BaseModel):
+    """Response from dual CSV import endpoint."""
+
+    success: bool
+    message: str
+    beam_count: int
+    beams: list[BeamWith3D]
+    format_detected: str = Field(
+        ..., description="Detected format: ETABS, SAFE, STAAD, Generic, AUTO"
+    )
+    warnings: list[str] = Field(default_factory=list)
+    unmatched_beams: list[str] = Field(default_factory=list)
+    unmatched_forces: list[str] = Field(default_factory=list)
+
+
 class BatchDesignResult(BaseModel):
     """Result for a single beam in batch design."""
 
@@ -117,7 +132,9 @@ class BatchDesignResponse(BaseModel):
 )
 async def import_csv(
     file: UploadFile = File(..., description="CSV file to import"),
-    format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = "auto",
+    format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
+        "auto", description="Optional format override for CSV import"
+    ),
 ) -> CSVImportResponse:
     """
     Import beam data from CSV file.
@@ -281,6 +298,148 @@ async def import_csv(
 
 
 @router.post(
+    "/dual-csv",
+    response_model=DualCSVImportResponse,
+    summary="Import Dual CSV Files",
+    description="Import beam geometry + forces from separate CSV files.",
+)
+async def import_dual_csv(
+    geometry_file: UploadFile = File(..., description="Geometry CSV file"),
+    forces_file: UploadFile = File(..., description="Forces CSV file"),
+    format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
+        "auto", description="Optional format override for dual CSV import"
+    ),
+) -> DualCSVImportResponse:
+    """
+    Import beam data from two CSV files (geometry + forces).
+
+    Uses structural_lib.imports.parse_dual_csv to build canonical models and
+    merges them into BeamWith3D responses for React visualization.
+    """
+    if not geometry_file.filename or not geometry_file.filename.lower().endswith(
+        ".csv"
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Geometry file must be a CSV file",
+        )
+    if not forces_file.filename or not forces_file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Forces file must be a CSV file",
+        )
+
+    try:
+        import tempfile
+
+        from structural_lib.imports import parse_dual_csv, validate_import
+
+        geometry_path = None
+        forces_path = None
+        geometry_text = (await geometry_file.read()).decode("utf-8-sig")
+        forces_text = (await forces_file.read()).decode("utf-8-sig")
+
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".csv", delete=False, encoding="utf-8"
+        ) as geom_tmp:
+            geom_tmp.write(geometry_text)
+            geometry_path = geom_tmp.name
+
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".csv", delete=False, encoding="utf-8"
+        ) as force_tmp:
+            force_tmp.write(forces_text)
+            forces_path = force_tmp.name
+
+        try:
+            try:
+                batch, import_warnings = parse_dual_csv(
+                    geometry_path,
+                    forces_path,
+                    format_hint=format_hint,
+                )
+            except Exception as exc:
+                if format_hint != "generic":
+                    batch, import_warnings = parse_dual_csv(
+                        geometry_path,
+                        forces_path,
+                        format_hint="generic",
+                    )
+                else:
+                    raise exc
+            report = validate_import(batch)
+
+            if not report.ok:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail="; ".join(report.errors),
+                )
+
+            forces_by_id = {f.id: f for f in batch.forces}
+            beams_out: list[BeamWith3D] = []
+
+            for beam in batch.beams:
+                forces = forces_by_id.get(beam.id)
+                beams_out.append(
+                    BeamWith3D(
+                        id=beam.id,
+                        story=beam.story,
+                        width_mm=beam.section.width_mm,
+                        depth_mm=beam.section.depth_mm,
+                        span_mm=beam.length_m * 1000.0,
+                        mu_knm=forces.mu_knm if forces else 0.0,
+                        vu_kn=forces.vu_kn if forces else 0.0,
+                        fck_mpa=beam.section.fck_mpa,
+                        fy_mpa=beam.section.fy_mpa,
+                        cover_mm=beam.section.cover_mm,
+                        point1=Point3D(
+                            x=beam.point1.x,
+                            y=beam.point1.y,
+                            z=beam.point1.z,
+                        ),
+                        point2=Point3D(
+                            x=beam.point2.x,
+                            y=beam.point2.y,
+                            z=beam.point2.z,
+                        ),
+                    )
+                )
+
+            merged_warnings = list(
+                dict.fromkeys(report.warnings + import_warnings.warnings)
+            )
+
+            detected = (
+                format_hint.upper() if format_hint and format_hint != "auto" else "AUTO"
+            )
+
+            return DualCSVImportResponse(
+                success=True,
+                message=f"Imported {len(beams_out)} beams from dual CSV files",
+                beam_count=len(beams_out),
+                beams=beams_out,
+                format_detected=detected,
+                warnings=merged_warnings,
+                unmatched_beams=import_warnings.unmatched_beams,
+                unmatched_forces=import_warnings.unmatched_forces,
+            )
+        finally:
+            import os
+
+            if geometry_path:
+                os.unlink(geometry_path)
+            if forces_path:
+                os.unlink(forces_path)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Could not parse dual CSV: {e}",
+        )
+
+@router.post(
     "/csv/text",
     response_model=CSVImportResponse,
     summary="Import CSV Text",
@@ -288,7 +447,9 @@ async def import_csv(
 )
 async def import_csv_text(
     csv_text: str,
-    format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = "auto",
+    format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
+        "auto", description="Optional format override for CSV text import"
+    ),
 ) -> CSVImportResponse:
     """
     Import beam data from CSV text content.
