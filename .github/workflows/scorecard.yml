@@ -45,7 +45,7 @@ jobs:
           persist-credentials: false
 
       - name: Run OpenSSF Scorecard
-        uses: ossf/scorecard-action@v2.4.0
+        uses: ossf/scorecard-action@v2.4.3
         with:
           results_file: scorecard-results.sarif
           results_format: sarif
@@ -54,7 +54,7 @@ jobs:
           publish_results: true
 
       - name: Upload Scorecard SARIF to Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: scorecard-results.sarif
 
@@ -76,7 +76,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download Scorecard results
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: scorecard-results
           path: .
