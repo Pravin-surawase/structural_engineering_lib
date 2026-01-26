@@ -61,12 +61,16 @@ __all__ = [
     "RebarPath",
     "StirrupLoop",
     "Beam3DGeometry",
+    "Building3DGeometry",
+    "CrossSectionGeometry",
     # Computation functions
     "compute_rebar_positions",
     "compute_stirrup_path",
     "compute_stirrup_positions",
     "compute_beam_outline",
     "beam_to_3d_geometry",
+    "building_to_3d_geometry",
+    "cross_section_geometry",
 ]
 
 
@@ -808,4 +812,407 @@ def beam_to_3d_geometry(
         rebars=rebars,
         stirrups=stirrups,
         metadata=metadata,
+    )
+
+
+# =============================================================================
+# Building-Level 3D Geometry
+# =============================================================================
+
+
+@dataclass
+class BeamInstance:
+    """Instance data for a single beam in the building view.
+
+    Optimized for GPU instancing in Three.js/R3F where the same
+    box geometry can be reused with different transforms.
+
+    Attributes:
+        beam_id: Unique beam identifier
+        story: Story/floor name
+        position: Center position of beam (world coordinates)
+        dimensions: (width, depth, length) in mm
+        rotation: Rotation around Y axis in radians (0 = X-aligned)
+        color: RGB color as hex string (e.g., "#4CAF50")
+        status: Design status for coloring ("pass", "fail", "warning", "pending")
+        metadata: Additional beam data for tooltips
+    """
+
+    beam_id: str
+    story: str
+    position: Point3D
+    dimensions: tuple[float, float, float]  # width, depth, length
+    rotation: float = 0.0  # radians around Y axis
+    color: str = "#808080"
+    status: str = "pending"
+    metadata: dict = field(default_factory=dict)
+
+    def to_dict(self) -> dict:
+        """Convert to JSON-serializable dict for Three.js."""
+        return {
+            "id": self.beam_id,
+            "story": self.story,
+            "position": [self.position.x, self.position.y, self.position.z],
+            "dimensions": list(self.dimensions),
+            "rotation": self.rotation,
+            "color": self.color,
+            "status": self.status,
+            "metadata": self.metadata,
+        }
+
+
+@dataclass
+class Building3DGeometry:
+    """Complete 3D geometry for building visualization.
+
+    Designed for efficient rendering in React Three Fiber using
+    GPU instancing for beams. Includes metadata for filtering,
+    highlighting, and tooltips.
+
+    Attributes:
+        beam_instances: List of beam instance data for instancing
+        stories: List of unique story names in Z order
+        bounds: Bounding box as ((min_x, min_y, min_z), (max_x, max_y, max_z))
+        camera_target: Suggested camera look-at point
+        metadata: Building-level metadata (beam count, stories, etc.)
+    """
+
+    beam_instances: list[BeamInstance] = field(default_factory=list)
+    stories: list[str] = field(default_factory=list)
+    bounds: tuple[tuple[float, float, float], tuple[float, float, float]] = (
+        (0, 0, 0),
+        (1000, 1000, 1000),
+    )
+    camera_target: Point3D = field(default_factory=lambda: Point3D(0, 0, 0))
+    metadata: dict = field(default_factory=dict)
+
+    @property
+    def beam_count(self) -> int:
+        """Return total number of beams."""
+        return len(self.beam_instances)
+
+    def to_dict(self) -> dict:
+        """Convert to JSON-serializable dict for React."""
+        return {
+            "beams": [b.to_dict() for b in self.beam_instances],
+            "stories": self.stories,
+            "bounds": {
+                "min": list(self.bounds[0]),
+                "max": list(self.bounds[1]),
+            },
+            "cameraTarget": self.camera_target.to_dict(),
+            "metadata": {
+                **self.metadata,
+                "beamCount": self.beam_count,
+                "storyCount": len(self.stories),
+            },
+        }
+
+    def get_beams_by_story(self, story: str) -> list[BeamInstance]:
+        """Filter beams by story name."""
+        return [b for b in self.beam_instances if b.story == story]
+
+    def get_beams_by_status(self, status: str) -> list[BeamInstance]:
+        """Filter beams by design status."""
+        return [b for b in self.beam_instances if b.status == status]
+
+
+@dataclass
+class CrossSectionGeometry:
+    """2D cross-section geometry for beam editor view.
+
+    Provides simplified geometry for displaying beam cross-section
+    with rebar positions in a 2D canvas/SVG view.
+
+    Attributes:
+        width: Beam width in mm
+        depth: Beam depth in mm
+        cover: Clear cover in mm
+        rebar_positions: List of (y, z, diameter) for each bar
+        stirrup_path: Closed path for stirrup outline
+    """
+
+    width: float
+    depth: float
+    cover: float
+    rebar_positions: list[tuple[float, float, float]] = field(default_factory=list)
+    stirrup_path: list[Point3D] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        """Convert to JSON-serializable dict."""
+        return {
+            "width": self.width,
+            "depth": self.depth,
+            "cover": self.cover,
+            "rebars": [
+                {"y": y, "z": z, "diameter": d}
+                for y, z, d in self.rebar_positions
+            ],
+            "stirrupPath": [p.to_dict() for p in self.stirrup_path],
+        }
+
+
+# Status color mapping
+_STATUS_COLORS = {
+    "pass": "#4CAF50",      # Green
+    "fail": "#F44336",      # Red
+    "warning": "#FF9800",   # Orange
+    "pending": "#9E9E9E",   # Gray
+    "selected": "#FFEB3B",  # Yellow (highlight)
+}
+
+
+def building_to_3d_geometry(
+    beams: list,  # List of BeamGeometry or dicts
+    *,
+    design_results: list | None = None,
+    lod: str = "medium",
+    story_height: float = 3000.0,
+) -> Building3DGeometry:
+    """Generate 3D geometry for entire building from beam list.
+
+    Creates instancing-friendly geometry data for React Three Fiber.
+    Beams are positioned based on their Point3D coordinates if available,
+    or auto-arranged by story if not.
+
+    Args:
+        beams: List of BeamGeometry models or dicts with beam data
+        design_results: Optional list of design results for status coloring
+        lod: Level of detail ("low", "medium", "high")
+        story_height: Default story height for auto-positioning (mm)
+
+    Returns:
+        Building3DGeometry with all beam instances and metadata
+
+    Example:
+        >>> from structural_lib.visualization.geometry_3d import building_to_3d_geometry
+        >>> building = building_to_3d_geometry(beams, design_results=results)
+        >>> print(f"Building has {building.beam_count} beams")
+        >>> json_data = building.to_dict()  # Ready for React
+    """
+    from structural_lib.models import BeamGeometry as BeamGeometryModel
+
+    instances: list[BeamInstance] = []
+    stories_set: set[str] = set()
+
+    # Build design result lookup
+    status_map: dict[str, str] = {}
+    if design_results:
+        for result in design_results:
+            beam_id = getattr(result, "beam_id", None) or result.get("beam_id", "")
+            status = getattr(result, "status", None) or result.get("status", "pending")
+            if hasattr(status, "value"):
+                status = status.value.lower()
+            status_map[beam_id] = str(status).lower()
+
+    # Track bounds
+    min_x, min_y, min_z = float("inf"), float("inf"), float("inf")
+    max_x, max_y, max_z = float("-inf"), float("-inf"), float("-inf")
+
+    # Story height tracking for auto-positioning
+    story_z_map: dict[str, float] = {}
+    story_counter = 0
+
+    for beam in beams:
+        # Extract data from BeamGeometry or dict
+        if isinstance(beam, BeamGeometryModel):
+            beam_id = beam.id
+            story = beam.story or "Floor"
+            width = beam.section.width_mm
+            depth = beam.section.depth_mm
+            length = beam.length_mm
+            point1 = beam.point1
+            point2 = beam.point2
+        else:
+            # Dict format
+            beam_id = beam.get("id", beam.get("beam_id", ""))
+            story = beam.get("story", "Floor")
+            section = beam.get("section", beam)
+            width = section.get("width_mm", 300)
+            depth = section.get("depth_mm", 500)
+            length = beam.get("length_mm", beam.get("span_mm", 5000))
+            p1 = beam.get("point1", {})
+            p2 = beam.get("point2", {})
+            point1 = Point3D(p1.get("x", 0), p1.get("y", 0), p1.get("z", 0)) if p1 else None
+            point2 = Point3D(p2.get("x", length), p2.get("y", 0), p2.get("z", 0)) if p2 else None
+
+        stories_set.add(story)
+
+        # Determine Z position by story
+        if story not in story_z_map:
+            story_z_map[story] = story_counter * story_height
+            story_counter += 1
+        base_z = story_z_map[story]
+
+        # Calculate beam center position
+        if point1 and point2 and (point1.x != 0 or point1.y != 0 or point2.x != 0):
+            # Use actual coordinates
+            center_x = (point1.x + point2.x) / 2
+            center_y = (point1.y + point2.y) / 2
+            center_z = base_z + depth / 2
+
+            # Calculate rotation from points
+            dx = point2.x - point1.x
+            dy = point2.y - point1.y
+            rotation = math.atan2(dy, dx) if (dx != 0 or dy != 0) else 0.0
+
+            # Recalculate length from points
+            length = math.sqrt(dx * dx + dy * dy) or length
+        else:
+            # Auto-position (simple grid layout)
+            beam_index = len(instances)
+            center_x = (beam_index % 5) * 6000 + length / 2
+            center_y = (beam_index // 5) * 4000
+            center_z = base_z + depth / 2
+            rotation = 0.0
+
+        position = Point3D(center_x, center_y, center_z)
+
+        # Determine status and color
+        status = status_map.get(beam_id, "pending")
+        color = _STATUS_COLORS.get(status, _STATUS_COLORS["pending"])
+
+        # Create instance
+        instance = BeamInstance(
+            beam_id=beam_id,
+            story=story,
+            position=position,
+            dimensions=(width, depth, length),
+            rotation=rotation,
+            color=color,
+            status=status,
+            metadata={
+                "width_mm": width,
+                "depth_mm": depth,
+                "span_mm": length,
+            },
+        )
+        instances.append(instance)
+
+        # Update bounds
+        half_len = length / 2
+        min_x = min(min_x, center_x - half_len)
+        max_x = max(max_x, center_x + half_len)
+        min_y = min(min_y, center_y - width / 2)
+        max_y = max(max_y, center_y + width / 2)
+        min_z = min(min_z, center_z - depth / 2)
+        max_z = max(max_z, center_z + depth / 2)
+
+    # Handle empty case
+    if not instances:
+        return Building3DGeometry()
+
+    # Sort stories by Z position
+    sorted_stories = sorted(story_z_map.keys(), key=lambda s: story_z_map[s])
+
+    # Calculate camera target (center of bounding box)
+    center = Point3D(
+        (min_x + max_x) / 2,
+        (min_y + max_y) / 2,
+        (min_z + max_z) / 2,
+    )
+
+    return Building3DGeometry(
+        beam_instances=instances,
+        stories=sorted_stories,
+        bounds=((min_x, min_y, min_z), (max_x, max_y, max_z)),
+        camera_target=center,
+        metadata={
+            "lod": lod,
+            "storyHeight": story_height,
+        },
+    )
+
+
+def cross_section_geometry(
+    width: float,
+    depth: float,
+    cover: float,
+    *,
+    bottom_bars: list[tuple[int, float]] | None = None,
+    top_bars: list[tuple[int, float]] | None = None,
+    stirrup_dia: float = 8.0,
+) -> CrossSectionGeometry:
+    """Generate 2D cross-section geometry for editor view.
+
+    Creates simplified geometry for displaying beam cross-section
+    with rebar positions, suitable for 2D canvas or SVG rendering.
+
+    Args:
+        width: Beam width in mm
+        depth: Beam depth in mm
+        cover: Clear cover in mm
+        bottom_bars: List of (count, diameter) for bottom layers
+        top_bars: List of (count, diameter) for top layers
+        stirrup_dia: Stirrup diameter in mm
+
+    Returns:
+        CrossSectionGeometry with rebar positions and stirrup path
+
+    Example:
+        >>> cs = cross_section_geometry(
+        ...     width=300, depth=500, cover=40,
+        ...     bottom_bars=[(4, 16)],
+        ...     top_bars=[(2, 12)],
+        ... )
+        >>> print(f"Has {len(cs.rebar_positions)} bars")
+    """
+    rebar_positions: list[tuple[float, float, float]] = []
+
+    # Calculate positions for bottom bars
+    if bottom_bars:
+        z_offset = cover + stirrup_dia
+        for count, dia in bottom_bars:
+            positions = compute_rebar_positions(
+                beam_width=width,
+                beam_depth=depth,
+                cover=cover,
+                bar_count=count,
+                bar_dia=dia,
+                stirrup_dia=stirrup_dia,
+                is_top=False,
+            )
+            for p in positions:
+                rebar_positions.append((p.y, p.z, dia))
+            z_offset += dia + 25  # Next layer
+
+    # Calculate positions for top bars
+    if top_bars:
+        z_offset = depth - cover - stirrup_dia
+        for count, dia in top_bars:
+            positions = compute_rebar_positions(
+                beam_width=width,
+                beam_depth=depth,
+                cover=cover,
+                bar_count=count,
+                bar_dia=dia,
+                stirrup_dia=stirrup_dia,
+                is_top=True,
+            )
+            for p in positions:
+                rebar_positions.append((p.y, p.z, dia))
+            z_offset -= dia + 25  # Next layer up
+
+    # Generate stirrup outline path (rectangular)
+    inner_width = width - 2 * cover - stirrup_dia
+    inner_depth = depth - 2 * cover - stirrup_dia
+    y_min = -inner_width / 2
+    y_max = inner_width / 2
+    z_min = cover + stirrup_dia / 2
+    z_max = depth - cover - stirrup_dia / 2
+
+    stirrup_path = [
+        Point3D(0, y_min, z_min),
+        Point3D(0, y_max, z_min),
+        Point3D(0, y_max, z_max),
+        Point3D(0, y_min, z_max),
+        Point3D(0, y_min, z_min),  # Close the loop
+    ]
+
+    return CrossSectionGeometry(
+        width=width,
+        depth=depth,
+        cover=cover,
+        rebar_positions=rebar_positions,
+        stirrup_path=stirrup_path,
     )

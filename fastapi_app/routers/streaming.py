@@ -343,3 +343,126 @@ async def get_job_status(
         "completed_at": job["completed_at"],
         "error_count": len(job["errors"]),
     }
+
+
+# =============================================================================
+# V2 Streaming Endpoint (Using Library design_beams_iter)
+# =============================================================================
+
+
+@router.get("/batch-design/v2")
+async def stream_batch_design_v2(
+    request: Request,
+    beams: str = Query(..., description="JSON array of beam parameters"),
+    _: None = Depends(check_rate_limit),
+) -> EventSourceResponse:
+    """
+    Stream batch beam design results using library design_beams_iter.
+
+    This is the V2 endpoint that uses the canonical library batch function.
+    Provides cleaner events and better progress tracking.
+
+    Events:
+        - start: Job started with total count
+        - result: Individual beam design result
+        - progress: Periodic progress updates
+        - complete: All beams processed with summary
+
+    Example:
+        ```javascript
+        const beams = JSON.stringify([
+            {id: "B1", width_mm: 300, depth_mm: 500, mu_knm: 100, vu_kn: 50},
+            {id: "B2", width_mm: 300, depth_mm: 500, mu_knm: 150, vu_kn: 60}
+        ]);
+        const es = new EventSource(`/stream/batch-design/v2?beams=${beams}`);
+
+        es.addEventListener('result', (e) => {
+            const data = JSON.parse(e.data);
+            console.log(`Beam ${data.beam_id}: ${data.result.status}`);
+        });
+        ```
+    """
+    try:
+        beam_list = json.loads(beams)
+    except json.JSONDecodeError:
+        async def error_gen():
+            yield {"event": "error", "data": json.dumps({"message": "Invalid JSON"})}
+        return EventSourceResponse(error_gen())
+
+    if not isinstance(beam_list, list) or len(beam_list) == 0:
+        async def error_gen():
+            yield {"event": "error", "data": json.dumps({"message": "Empty beam list"})}
+        return EventSourceResponse(error_gen())
+
+    async def event_generator() -> AsyncGenerator[dict, None]:
+        """Generate SSE events using library design_beams_iter."""
+        try:
+            from structural_lib.batch import design_beams_iter
+            from structural_lib.models import (
+                BeamBatchInput,
+                BeamForces,
+                BeamGeometry,
+                DesignDefaults,
+                SectionProperties,
+            )
+
+            # Convert input to BeamBatchInput
+            geometry_list = []
+            forces_list = []
+            defaults = DesignDefaults()
+
+            for idx, beam in enumerate(beam_list):
+                beam_id = beam.get("id", beam.get("beam_id", f"B{idx + 1}"))
+
+                geom = BeamGeometry(
+                    id=beam_id,
+                    story=beam.get("story", "Floor"),
+                    section=SectionProperties(
+                        width_mm=float(beam.get("width_mm", beam.get("width", 300))),
+                        depth_mm=float(beam.get("depth_mm", beam.get("depth", 500))),
+                        fck_mpa=float(beam.get("fck_mpa", beam.get("fck", 25))),
+                        fy_mpa=float(beam.get("fy_mpa", beam.get("fy", 500))),
+                    ),
+                    length_mm=float(beam.get("span_mm", beam.get("span", 5000))),
+                )
+                geometry_list.append(geom)
+
+                forces = BeamForces(
+                    id=beam_id,
+                    mu_knm=float(beam.get("mu_knm", beam.get("moment", 100))),
+                    vu_kn=float(beam.get("vu_kn", beam.get("shear", 50))),
+                    case_id=beam.get("case_id", "CASE-1"),
+                )
+                forces_list.append(forces)
+
+            batch_input = BeamBatchInput(
+                beams=geometry_list,
+                forces=forces_list,
+                defaults=defaults,
+            )
+
+            # Stream using library async generator
+            async for event in design_beams_iter(batch_input):
+                # Check for client disconnect
+                if await request.is_disconnected():
+                    logger.info("Client disconnected during V2 batch design")
+                    break
+
+                yield {
+                    "event": event.event_type,
+                    "data": json.dumps(event.to_dict()),
+                }
+
+        except ImportError as e:
+            yield {
+                "event": "error",
+                "data": json.dumps({"message": f"Library import error: {e}"}),
+            }
+        except Exception as e:
+            logger.exception("Error in V2 batch design stream")
+            yield {
+                "event": "error",
+                "data": json.dumps({"message": str(e)}),
+            }
+
+    return EventSourceResponse(event_generator())

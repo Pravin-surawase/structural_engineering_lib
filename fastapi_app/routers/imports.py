@@ -585,3 +585,89 @@ async def get_sample_data() -> SampleDataResponse:
         format_detected="ETABS",
         warnings=warnings_list,
     )
+
+
+# =============================================================================
+# Dual CSV Import (V2 - Uses Library Functions)
+# =============================================================================
+
+
+class DualCSVImportResponse(BaseModel):
+    """Response from dual-CSV import endpoint."""
+
+    success: bool
+    message: str
+    beam_count: int
+    beams: list[dict]
+    warnings: list[dict]
+    metadata: dict
+
+
+@router.post(
+    "/dual-csv",
+    response_model=DualCSVImportResponse,
+    summary="Import Dual CSV Files",
+    description="Import geometry + forces CSVs and merge into beam data.",
+)
+async def import_dual_csv(
+    geometry_file: UploadFile = File(..., description="Geometry CSV file"),
+    forces_file: UploadFile = File(..., description="Forces CSV file"),
+    format: Literal["ram_concept", "etabs", "safe", "auto"] = "auto",
+    default_fck: float = 25.0,
+    default_fy: float = 500.0,
+) -> DualCSVImportResponse:
+    """
+    Import two CSV files and merge them.
+
+    Uses the library's csv_import module for parsing:
+    - Auto-detects format (ETABS, SAFE, RAM Concept)
+    - Merges geometry + forces by beam ID
+    - Returns warnings for unmatched beams
+
+    The beams list can be passed directly to batch design.
+    """
+    try:
+        from structural_lib.csv_import import parse_dual_csv
+
+        # Read file contents
+        geometry_content = await geometry_file.read()
+        forces_content = await forces_file.read()
+
+        # Parse using library function
+        result = parse_dual_csv(
+            geometry_content=geometry_content.decode("utf-8"),
+            forces_content=forces_content.decode("utf-8"),
+            format=format,
+            default_fck=default_fck,
+            default_fy=default_fy,
+        )
+
+        # Convert to response format
+        beams = [beam.to_dict() for beam in result.beams]
+        warnings = [w.to_dict() for w in result.warnings]
+
+        return DualCSVImportResponse(
+            success=result.success,
+            message=f"Imported {result.beam_count} beams",
+            beam_count=result.beam_count,
+            beams=beams,
+            warnings=warnings,
+            metadata={
+                "geometry_format": result.metadata.get("geometry_format", "unknown"),
+                "forces_format": result.metadata.get("forces_format", "unknown"),
+                "merged_count": result.metadata.get("merged_count", 0),
+                "unmatched_geometry": result.metadata.get("unmatched_geometry", []),
+                "unmatched_forces": result.metadata.get("unmatched_forces", []),
+            },
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"structural_lib not available: {e}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"CSV parsing failed: {e}",
+        )

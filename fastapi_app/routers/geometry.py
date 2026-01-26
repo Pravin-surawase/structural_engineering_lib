@@ -403,3 +403,280 @@ async def get_materials() -> dict:
             "description": "Highlight color for selection",
         },
     }
+
+
+# =============================================================================
+# Building 3D Geometry (V2)
+# =============================================================================
+
+
+from pydantic import BaseModel, Field
+from typing import Any
+
+
+class BuildingGeometryRequest(BaseModel):
+    """Request for building 3D geometry."""
+
+    beams: list[dict[str, Any]] = Field(
+        ...,
+        description="List of beam data with id, story, section, coordinates",
+    )
+    design_results: list[dict[str, Any]] | None = Field(
+        None,
+        description="Optional design results for status coloring",
+    )
+    lod: str = Field(
+        "medium",
+        description="Level of detail: low, medium, high",
+    )
+    story_height: float = Field(
+        3000.0,
+        description="Default story height in mm for auto-positioning",
+    )
+
+
+class BuildingGeometryResponse(BaseModel):
+    """Response with building 3D geometry."""
+
+    success: bool
+    message: str
+    beam_count: int
+    story_count: int
+    bounds: dict[str, list[float]]
+    camera_target: dict[str, float]
+    beams: list[dict[str, Any]]
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+@router.post(
+    "/building",
+    response_model=BuildingGeometryResponse,
+    summary="Generate Building 3D Geometry",
+    description="Generate 3D geometry for entire building (multi-beam view).",
+)
+async def generate_building_geometry(
+    request: BuildingGeometryRequest,
+) -> BuildingGeometryResponse:
+    """
+    Generate 3D geometry for building visualization.
+
+    Creates instancing-ready geometry for React Three Fiber:
+    - Beam instances with position, rotation, dimensions
+    - Color by design status (pass/fail/warning)
+    - Camera target and bounds for framing
+
+    Useful for:
+    - Building overview in React workspace
+    - Multi-beam visualization
+    - Story filtering and navigation
+    """
+    try:
+        from structural_lib.visualization.geometry_3d import building_to_3d_geometry
+
+        # Call library function
+        result = building_to_3d_geometry(
+            beams=request.beams,
+            design_results=request.design_results,
+            lod=request.lod,
+            story_height=request.story_height,
+        )
+
+        # Convert to response format
+        result_dict = result.to_dict()
+
+        return BuildingGeometryResponse(
+            success=True,
+            message=f"Generated geometry for {result.beam_count} beams",
+            beam_count=result.beam_count,
+            story_count=len(result.stories),
+            bounds=result_dict["bounds"],
+            camera_target=result_dict["cameraTarget"],
+            beams=result_dict["beams"],
+            metadata=result_dict["metadata"],
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"structural_lib not available: {e}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Building geometry generation failed: {e}",
+        )
+
+
+# =============================================================================
+# Cross-Section Geometry
+# =============================================================================
+
+
+class CrossSectionRequest(BaseModel):
+    """Request for 2D cross-section geometry."""
+
+    width: float = Field(..., description="Beam width in mm")
+    depth: float = Field(..., description="Beam depth in mm")
+    cover: float = Field(40.0, description="Clear cover in mm")
+    bottom_bars: list[tuple[int, float]] = Field(
+        default_factory=list,
+        description="Bottom bars as [(count, diameter), ...]",
+    )
+    top_bars: list[tuple[int, float]] = Field(
+        default_factory=list,
+        description="Top bars as [(count, diameter), ...]",
+    )
+    stirrup_dia: float = Field(8.0, description="Stirrup diameter in mm")
+
+
+class CrossSectionResponse(BaseModel):
+    """Response with 2D cross-section geometry."""
+
+    success: bool
+    width: float
+    depth: float
+    cover: float
+    rebars: list[dict[str, float]]
+    stirrup_path: list[dict[str, float]]
+
+
+@router.post(
+    "/cross-section",
+    response_model=CrossSectionResponse,
+    summary="Generate Cross-Section Geometry",
+    description="Generate 2D cross-section for beam editor view.",
+)
+async def generate_cross_section(
+    request: CrossSectionRequest,
+) -> CrossSectionResponse:
+    """
+    Generate 2D cross-section geometry for editor.
+
+    Creates geometry data for canvas/SVG rendering:
+    - Rebar positions (y, z, diameter)
+    - Stirrup outline path
+
+    Useful for:
+    - React rebar editor
+    - Cross-section overlay in 3D view
+    """
+    try:
+        from structural_lib.visualization.geometry_3d import cross_section_geometry
+
+        result = cross_section_geometry(
+            width=request.width,
+            depth=request.depth,
+            cover=request.cover,
+            bottom_bars=request.bottom_bars,
+            top_bars=request.top_bars,
+            stirrup_dia=request.stirrup_dia,
+        )
+
+        result_dict = result.to_dict()
+
+        return CrossSectionResponse(
+            success=True,
+            width=result.width,
+            depth=result.depth,
+            cover=result.cover,
+            rebars=result_dict["rebars"],
+            stirrup_path=result_dict["stirrupPath"],
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Cross-section generation failed: {e}",
+        )
+
+
+# =============================================================================
+# Rebar Validation
+# =============================================================================
+
+
+class RebarConfigRequest(BaseModel):
+    """Request for rebar validation."""
+
+    beam_width: float = Field(..., description="Beam width in mm")
+    beam_depth: float = Field(..., description="Beam depth in mm")
+    cover: float = Field(40.0, description="Clear cover in mm")
+    bottom_bars: list[tuple[int, float]] = Field(
+        default_factory=list,
+        description="Bottom bars as [(count, diameter), ...]",
+    )
+    top_bars: list[tuple[int, float]] = Field(
+        default_factory=list,
+        description="Top bars as [(count, diameter), ...]",
+    )
+    stirrup_dia: float = Field(8.0, description="Stirrup diameter in mm")
+    stirrup_spacing: float = Field(150.0, description="Stirrup spacing in mm")
+    is_seismic: bool = Field(False, description="Apply seismic detailing rules")
+    ast_required: float | None = Field(None, description="Required steel area for check")
+
+
+class RebarValidationResponse(BaseModel):
+    """Response from rebar validation."""
+
+    success: bool
+    is_valid: bool
+    errors: list[dict[str, Any]]
+    warnings: list[dict[str, Any]]
+    computed: dict[str, Any]
+
+
+@router.post(
+    "/rebar/validate",
+    response_model=RebarValidationResponse,
+    summary="Validate Rebar Configuration",
+    description="Validate rebar layout against IS 456 requirements.",
+)
+async def validate_rebar(
+    request: RebarConfigRequest,
+) -> RebarValidationResponse:
+    """
+    Validate rebar configuration against code requirements.
+
+    Checks:
+    - Bar spacing (horizontal clearance)
+    - Cover requirements
+    - Seismic stirrup rules (if is_seismic)
+    - Steel area vs required (if ast_required provided)
+
+    Returns structured errors and warnings for UI display.
+    """
+    try:
+        from structural_lib.rebar import validate_rebar_config, RebarConfig
+
+        config = RebarConfig(
+            bottom_bars=request.bottom_bars,
+            top_bars=request.top_bars,
+            stirrup_dia=request.stirrup_dia,
+            stirrup_spacing=request.stirrup_spacing,
+            is_seismic=request.is_seismic,
+            cover_mm=request.cover,
+        )
+
+        result = validate_rebar_config(
+            beam_width=request.beam_width,
+            beam_depth=request.beam_depth,
+            cover=request.cover,
+            config=config,
+            ast_required=request.ast_required,
+        )
+
+        result_dict = result.to_dict()
+
+        return RebarValidationResponse(
+            success=True,
+            is_valid=result.is_valid,
+            errors=result_dict["errors"],
+            warnings=result_dict["warnings"],
+            computed=result_dict["computed"],
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Rebar validation failed: {e}",
+        )
