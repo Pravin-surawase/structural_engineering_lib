@@ -1,10 +1,10 @@
 /**
  * Structural Engineering App
  *
- * React Three Fiber + Dockview based IDE for beam design.
+ * Modern Gen Z-style UI with BentoGrid layout and 3D visualization.
  */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WorkspaceLayout } from './components/WorkspaceLayout';
+import { ModernAppLayout } from './components/layout/ModernAppLayout';
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <WorkspaceLayout />
+      <ModernAppLayout />
     </QueryClientProvider>
   );
 }
