@@ -2,11 +2,13 @@
  * BeamForm Component
  *
  * Input form for beam design parameters with live validation.
+ * Supports auto-design mode with debounced updates.
  */
 import { useCallback } from 'react';
 import { useDesignStore } from '../store/designStore';
 import { useMutation } from '@tanstack/react-query';
 import { designBeam } from '../api/client';
+import { useAutoDesign } from '../hooks/useAutoDesign';
 import './BeamForm.css';
 
 export function BeamForm() {
@@ -19,8 +21,13 @@ export function BeamForm() {
     setLoading,
     setError,
     isLoading,
-  } =
-    useDesignStore();
+    autoDesign,
+    setAutoDesign,
+    wsLatency,
+  } = useDesignStore();
+
+  // Auto-design hook (debounced REST calls)
+  useAutoDesign(autoDesign);
 
   const designMutation = useMutation({
     mutationFn: designBeam,
@@ -57,6 +64,22 @@ export function BeamForm() {
   return (
     <div className="beam-form">
       <h2>Beam Design</h2>
+
+      {/* Live Update Toggle */}
+      <div className="form-section settings">
+        <label className="toggle-label">
+          <input
+            type="checkbox"
+            checked={autoDesign}
+            onChange={(e) => setAutoDesign(e.target.checked)}
+          />
+          <span>Live Preview</span>
+          {isLoading && <span className="loading-indicator">...</span>}
+          {wsLatency !== null && (
+            <span className="latency">{wsLatency.toFixed(0)}ms</span>
+          )}
+        </label>
+      </div>
 
       <div className="form-section">
         <h3>Geometry</h3>
@@ -163,13 +186,16 @@ export function BeamForm() {
         </div>
       </div>
 
-      <button
-        className="design-button"
-        onClick={handleDesign}
-        disabled={isLoading || designMutation.isPending}
-      >
-        {designMutation.isPending ? 'Designing...' : 'Design Beam'}
-      </button>
+      {/* Manual design button (hidden in auto mode) */}
+      {!autoDesign && (
+        <button
+          className="design-button"
+          onClick={handleDesign}
+          disabled={isLoading || designMutation.isPending}
+        >
+          {designMutation.isPending ? 'Designing...' : 'Design Beam'}
+        </button>
+      )}
     </div>
   );
 }
