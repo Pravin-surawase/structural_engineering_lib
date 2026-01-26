@@ -4,21 +4,56 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
-## 2026-01-26 — Session
+## 2026-01-26 — Session: React Library Integration + Gen Z UI
 
 ### Summary
--
+Major refactor of React app to eliminate duplicate code and add modern Gen Z UI.
+Created FastAPI endpoints that expose library functionality (adapters, geometry_3d).
+Replaced old Dockview sidebar layout with BentoGrid + FloatingDock.
 
-### PRs Merged
-| PR | Summary |
-|----|---------|
-| #XX | - |
+### Key Accomplishments
 
-### Key Deliverables
--
+1. **FastAPI Library Integration Endpoints**
+   - `POST /import/csv` - CSV file import using GenericCSVAdapter
+   - `POST /import/csv/text` - CSV text import (clipboard paste)
+   - `POST /import/batch-design` - Batch design all imported beams
+   - `POST /geometry/beam/full` - Full 3D geometry with rebars/stirrups
+   - Added `python-multipart` dependency for file uploads
 
-### Notes
--
+2. **Modern Gen Z UI Components**
+   - BentoGrid: 12-column glassmorphism card layout
+   - FloatingDock: macOS-style animated bottom navigation
+   - ModernAppLayout: Replaces Dockview sidebar layout
+   - Tailwind CSS + Vite plugin integration
+   - framer-motion for spring animations
+
+3. **React Hooks for API Integration**
+   - `useBeamGeometry` - Fetch 3D geometry from library
+   - `useCSVFileImport` - Import CSV files via API
+   - `useCSVTextImport` - Import CSV text via API
+   - `useBatchDesign` - Run batch design operations
+
+### Commits
+| Hash | Description |
+|------|-------------|
+| b59048c | feat(api): add CSV import and full 3D geometry endpoints |
+| fc3c4ad | feat(react): add modern Gen Z UI with BentoGrid layout |
+| bb3b2e0 | feat(react): add hooks for library API integration |
+
+### Critical Issues Identified (React)
+1. `types/csv.ts` parseBeamCSV() duplicates library's GenericCSVAdapter (40+ column mappings)
+2. `Viewport3D.tsx` calculates bar positions manually instead of using API
+3. Old Dockview sidebar layout now replaced with modern BentoGrid
+
+### Test Results
+- FastAPI: 99 tests passed
+- React build: Success (3.21s)
+
+### Next Session Priorities
+1. Wire Viewport3D to use `useBeamGeometry` hook instead of manual calculations
+2. Remove duplicate `parseBeamCSV()` function from types/csv.ts
+3. Add file drop zone component for CSV import
+4. Test full design → geometry → visualization flow
 
 
 ## 2026-01-24 — Session 75: React Frontend API Alignment + Compatibility Guidance

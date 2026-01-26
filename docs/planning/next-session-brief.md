@@ -5,260 +5,122 @@
 **Status:** Active
 **Importance:** Critical
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-24
+**Last Updated:** 2026-01-26
 
 ---
 
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-01-24
-- Focus: Fix React client API mismatches and document React/R3F/Drei/Dockview compatibility checks
+- Date: 2026-01-26
+- Focus: React Library Integration + Gen Z UI Overhaul
 <!-- HANDOFF:END -->
 
 | Release | Version | Status |
 |---------|---------|--------|
 | **Current** | v0.19.0 | ✅ Released |
-| **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + WebSocket) |
+| **Next** | v0.20.0 | 🚧 V3 Foundation (FastAPI + React + WebSocket) |
 
-**Last Session:** 75 | **Focus:** React API alignment + stack compatibility guidance
-
----
-
-## 🔑 Session 75 Summary
-
-**PR #409 Opened:**
-1. **React API alignment** — geometry client now uses `POST /api/v1/geometry/beam/3d`
-2. **Compatibility checklist** — React/R3F/Drei/Dockview guidance added to key docs
-3. **UX fix** — loading state wired to mutation lifecycle
-
-**Notes:**
-- CI not run yet (docs + frontend changes only).
+**Last Session:** React Refactor | **Focus:** Eliminate React duplicates, add modern Gen Z UI
 
 ---
 
-## 🔑 Session 74 Summary
+## 🔑 Session 2026-01-26 Summary
 
-**PR #408 Merged:**
-1. **OpenAPI baseline regenerated** — `fastapi_app/openapi_baseline.json`
-2. **SDKs updated** — Python + TypeScript aligned to `BeamDesignResponse`
-3. **Docker dev workflow** — `Dockerfile.fastapi`, `docker-compose.dev.yml`
-4. **Quickstart added** — Docker commands in 8-week plan
-5. **Governance fixes** — Root file limits updated for Docker artifacts
+**Major React Refactor Accomplished:**
 
-**Notes:**
-- FastAPI lint/format issues resolved (black + ruff).
-- Docs link fix in deployment guide.
+1. **FastAPI Library Integration Endpoints** (3 new endpoints)
+   - `POST /api/v1/import/csv` — CSV file import using GenericCSVAdapter
+   - `POST /api/v1/import/csv/text` — CSV text import (clipboard paste)
+   - `POST /api/v1/import/batch-design` — Batch design all imported beams
+   - `POST /api/v1/geometry/beam/full` — Full 3D geometry with rebars/stirrups
 
----
+2. **Gen Z UI Components** (replaces Dockview sidebar)
+   - `BentoGrid` — 12-column glassmorphism card layout
+   - `FloatingDock` — macOS-style animated bottom navigation
+   - `ModernAppLayout` — Main app shell with floating dock
+   - Tailwind CSS + Vite plugin + framer-motion
 
-## 🔑 Session 73 Summary
-
-**Week 2 Complete (PR #404 Merged):**
-1. **FastAPI skeleton complete** — 19 files, 20 routes
-2. **All 24 integration tests passing** — REST endpoints validated
-3. **OpenAPI documentation** at `/docs`
-
-**Week 3 Started (PR #405 Pending):**
-1. **WebSocket endpoint** — `/ws/design/{session_id}`
-2. **Connection manager** — Client tracking
-3. **7 WebSocket tests** — All passing
-4. **Latency verified** — <100ms design response
-
-**Key Learning (API Signature Discovery):**
-- Created `discover_api_signatures.py` to prevent guessing
-- API uses `b_mm`, `D_mm`, `mu_knm` (not `width`, `depth`, `moment`)
-- Always run discovery script BEFORE implementing API wrappers
-
-**PRs:**
-| PR | Status | Description |
-|----|--------|-------------|
-| #404 | ✅ MERGED | Week 2 FastAPI skeleton |
-| #405 | 🔄 PENDING | Week 3 WebSocket endpoint |
-
----
-
-## 🔑 Session 72 Summary
-
-**Documentation & Learning:**
-1. **Contract testing verified** — 41 tests pass, schema snapshots created
-2. **WebSocket research complete** — Hybrid approach documented
-3. **Deprecated pages archived** — 2 duplicate files moved to `_archived/`
-4. **Learning guides created** — 2 comprehensive docs for onboarding
-
-**New Tools:**
-| Script | Purpose |
-|--------|---------|
-| `validate_schema_snapshots.py` | Detect unintended schema changes |
-
-**New Docs:**
-| Document | Purpose |
-|----------|---------|
-| `automation-foundation-learning-guide.md` | Deep dive into Sessions 69-72 |
-| `v3-fastapi-learning-guide.md` | V3 migration from basics |
-| `websocket-live-updates-research.md` | WebSocket architecture research |
-
----
-
-## 🔑 Session 71 Summary
-
-**PR #403 Merged Successfully:**
-1. **All 20 CI checks passed** after fixing AppTest failures
-2. **5 PR reviewer comments addressed** (false-positive patterns, error handling, deprecated APIs)
-3. **3 ADRs created** for architecture decisions documentation
-
-**Key Accomplishments:**
-- Fixed AppTest smoke tests (3D viewer skip, chat_input assertion)
-- Created shared utilities to reduce UI duplication (`utils/openai_helpers.py`, `utils/type_helpers.py`, `utils/session_helpers.py`)
-- Added Architecture Decision Records (ADRs):
-  - `0001-three-layer-architecture.md`
-  - `0002-pydantic-models-for-api.md`
-  - `0003-contract-testing-for-v3.md`
-
-**New Automation Tools:**
-| Script | Purpose |
-|--------|---------|
-| `check_ui_duplication.py` | AST-based code duplication scanner |
-| `check_architecture_boundaries.py` | 3-layer architecture linter |
+3. **React Hooks for Library API** (eliminates duplicate code)
+   - `useBeamGeometry` — Fetches 3D geometry from library API
+   - `useCSVFileImport` — Imports CSV via API (not duplicate parsing)
+   - `useCSVTextImport` — Imports CSV text via API
+   - `useBatchDesign` — Batch design operations
 
 **Commits:**
-| Commit | Description |
-|--------|-------------|
-| `25e5072` | fix: skip 3D viewer in smoke tests, fix chat_input assertion |
-| `962d287` | fix: address PR reviewer comments (5 items) |
-| `3af301b` | feat: add openai_helpers.py shared utility |
-| `a435b5d` | docs: add 3 ADRs for architecture decisions |
+| Hash | Description |
+|------|-------------|
+| b59048c | feat(api): add CSV import and full 3D geometry endpoints |
+| fc3c4ad | feat(react): add modern Gen Z UI with BentoGrid layout |
+| bb3b2e0 | feat(react): add hooks for library API integration |
+
+**Key Issues Found in React App:**
+1. `types/csv.ts` has `parseBeamCSV()` duplicating library's 40+ column adapter
+2. `Viewport3D.tsx` calculates bar positions manually (should use API)
+3. Old Dockview sidebar layout — now replaced with BentoGrid/FloatingDock
 
 ---
 
-## 🔑 Session 69 Summary
+## 🔥 Next Session Priorities
 
-**V3 Automation Infrastructure:**
-1. **Scripts Audit:** 143 total scripts, 73 (51%) were undocumented → now documented
-2. **Created V3-critical automation:**
-   - `validate_fastapi_schema.py` — All 43 API functions 100% FastAPI-compatible
-   - `test_api_parity.py` — Library↔FastAPI parity (3/3 tests pass)
-   - `benchmark_api_latency.py` — 0.01ms median (well under 50ms threshold)
+### Priority 1: Wire Viewport3D to New Geometry API
 
-**Key Updates:**
-- Added `v3_migration` category to `automation-map.json`
-- Added `v3_migration` section to `scripts/index.json`
-- Added V3 scripts to `automation-catalog.md` (#79-81)
-- Created V3 Migration Preparation Checklist in TASKS.md
+**Goal:** Replace manual bar calculations with API geometry
 
-**V3 Readiness: ✅ VALIDATED**
-```bash
-# Run V3 readiness check
-.venv/bin/python scripts/validate_fastapi_schema.py
-.venv/bin/python scripts/test_api_parity.py
-.venv/bin/python scripts/benchmark_api_latency.py
+```typescript
+// Current (WRONG): Manual calculation in Viewport3D.tsx
+const barPositions = useMemo(() => {
+  const bars = [];
+  for (let i = 0; i < barCount; i++) {
+    bars.push(/* manual calculation */);
+  }
+  return bars;
+}, [barCount]);
+
+// Target (CORRECT): Use library geometry
+const { data: geometry } = useBeamGeometry({
+  width: 300,
+  depth: 450,
+  span: 4000,
+  ast_start: 500,
+});
+// geometry.rebars has accurate positions from library
 ```
 
----
+| Task | Est | Notes |
+|------|-----|-------|
+| Update Viewport3D to use useBeamGeometry | 1h | Replace manual calculations |
+| Map geometry.rebars to cylinder meshes | 1h | Use RebarPath segments |
+| Map geometry.stirrups to tube meshes | 1h | Use StirrupLoop positions |
 
-## 🔑 Session 68 Summary
+### Priority 2: Remove Duplicate CSV Parser
 
-**Merged PRs:**
-- #401: create_doc duplicate guard + lifecycle defaults + task→context quick start
-- #402: task context routing + start_session automation reminders
+**Goal:** Delete `types/csv.ts` parseBeamCSV()
 
-**Governance Fix:**
-- Root files reduced to pass folder-structure CI
-- `INSTALLATION_NOTES.md` → `docs/getting-started/installation-notes.md`
-- Root `SECURITY.md` removed (policy kept in `.github/SECURITY.md`)
+| Task | Est | Notes |
+|------|-----|-------|
+| Replace parseBeamCSV() usages with useCSVFileImport | 30m | Search for imports |
+| Delete types/csv.ts or remove parseBeamCSV() | 15m | Clean up |
 
----
+### Priority 3: Add File Drop Zone
 
-## 🔑 Session 67 Summary
+**Goal:** Enable drag-and-drop CSV import
 
-**Bootstrap Reduction:**
-- `agent-bootstrap.md` reduced from 202 → 123 lines
-- API touchpoints + scanner details moved to quick reference
+| Task | Est | Notes |
+|------|-----|-------|
+| Create FileDropZone component | 1h | Tailwind styled |
+| Wire to useCSVFileImport hook | 30m | Call importFile(file) |
+| Add to Import panel in BentoGrid | 30m | Replace placeholder |
 
-**Task Context Routing (PR #402):**
-- `scripts/automation-map.json` now includes `context_docs`
-- `find_automation.py` prints context docs per task
-- `start_session.py` surfaces automation lookup + context routing
+### Priority 4: Test Full Flow
 
----
+**Goal:** Verify design → geometry → visualization works
 
-## 🔑 Session 66 Summary
-
-**Hardening Improvements:**
-1. **Research refresh:** Updated AI agent effectiveness research with repo reality + external references
-2. **Naming conventions:** Added [doc-naming-conventions.md](../guidelines/doc-naming-conventions.md)
-3. **Metadata enforcement:** Naming warnings added to `check_doc_metadata.py`
-4. **Duplication gate:** `create_doc.py` now checks canonical + similarity (PR #401)
-5. **Onboarding updates:** Online verification rule + automation table in copilot instructions
-
-**PR:** #401 — guard `create_doc.py` against duplicates
-
----
-
-## 🔑 Session 65 Summary
-
-**New AI Agent Infrastructure:**
-1. **50-line essentials:** [agent-essentials.md](../getting-started/agent-essentials.md) — fits in any context
-2. **Canonical registry:** [docs-canonical.json](../docs-canonical.json) — prevents duplication
-3. **Duplicate checker:** `scripts/check_doc_similarity.py` — fuzzy match before creating
-4. **Automation finder:** `scripts/find_automation.py` — task → script lookup
-
-**Key Additions:**
-```bash
-# Check before creating new doc
-.venv/bin/python scripts/check_doc_similarity.py "your topic"
-
-# Find automation for a task
-.venv/bin/python scripts/find_automation.py "commit code"
-```
-
-**Research:** [ai-agent-effectiveness-research.md](../research/ai-agent-effectiveness-research.md) (677 lines)
-- Analyzed 7 problem categories with evidence
-- Proposed solutions with implementation roadmap
-- Documented industry best practices
-
----
-
-## 🔑 Session 64 Summary
-
-**Migration Complete:** iCloud → local storage verified working:
-- Performance: 0.46s (vs 9+ minutes on iCloud) = ~1200x faster
-- All 3146 tests pass
-- Dependencies installed, requirements.txt created
-- Duplicate docs consolidated (817 lines removed)
-
-**Key Improvements:**
-- `agent_start.sh` now verifies critical deps (Step 2.5)
-- Root `requirements.txt` consolidates all dependencies
-- README updated with "Full Development Setup" section
-
-**Pending (1 week):**
-- Delete old iCloud copy (2026-01-30) after verification period
-
----
-
-## Session 63 Completed Work
-
-| Part | Commits | Key Deliverables |
-|------|---------|------------------|
-| Part 1 | 6 | `rebar_layout.py`, `batch_design.py`, 227 lines removed |
-| Part 2 | 4 | `rebar_optimization.py`, critical fixes, TASK-352 invalidation |
-| **Total** | **10** | ~450 lines of code reduction potential |
-
-### New Shared Modules
-
-| Module | Purpose |
-|--------|---------|
-| `utils/rebar_layout.py` | Bar layout calculation, Ld, stirrup zones |
-| `utils/batch_design.py` | Batch design with progress callbacks |
-| `utils/rebar_optimization.py` | Library wrapper for bar selection |
-
-### Critical Issues Fixed
-
-Fixed in **06_multi_format_import.py**:
-- 2 ZeroDivisionError risks → guards added
-- 3 KeyError risks → `.get()` with defaults
-- Scanner: 0 critical, 0 high (was 2 critical, 3 high)
+| Task | Est | Notes |
+|------|-----|-------|
+| Start FastAPI server | 5m | `docker compose up` |
+| Start React dev server | 5m | `npm run dev` |
+| Import CSV, run design, view 3D | 30m | End-to-end test |
 
 ---
 
