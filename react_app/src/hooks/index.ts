@@ -23,3 +23,7 @@ export type {
   ImportedBeam,
   DesignedBeam,
 } from './useCSVImport';
+export type {
+  ConnectionStatus as WebSocketConnectionStatus,
+  WebSocketState,
+} from './useDesignWebSocket';
