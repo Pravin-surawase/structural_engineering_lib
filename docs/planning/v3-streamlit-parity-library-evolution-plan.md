@@ -5,7 +5,7 @@
 **Status:** In Progress
 **Importance:** High
 **Created:** 2026-01-26
-**Last Updated:** 2026-01-26
+**Last Updated:** 2026-01-27
 **Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
 **Abstract:** Compact, forward-looking plan to evolve the library + API so React can reach Streamlit parity and exceed it with a premium 3D editing workflow.
 
@@ -88,9 +88,9 @@ Result: React features (live 3D, dynamic rebar, code checks) ship faster, with f
 
 Each phase is structured so **library work lands first**, then **FastAPI wrappers**, then **React UX**, with tests and automation at every step.
 
-## Progress Update (Jan 26, 2026)
+## Progress Update (Jan 27, 2026)
 
-**Phase 1 (Partial)**
+**Phase 1 (Complete)**
 - ✅ FastAPI import + batch endpoints already exist (`/api/v1/import/csv`, `/api/v1/import/batch-design`).
 - ✅ SSE batch streaming endpoint exists (`/stream/batch-design`).
 - ✅ Library dual‑CSV wrapper added: `structural_lib.imports.parse_dual_csv` + validation helpers.
@@ -105,6 +105,8 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 **Phase 3 (Not Started)**
 - ⏳ Dashboard wrapper + live code checks + rebar suggestions (library + API + React).
+
+**Commit:** `6ee623f` — feat: add dual-csv import + building geometry + rebar helpers
 
 ### Phase 1 — Canonical Inputs + Batch Foundations (Weeks 4–5)
 

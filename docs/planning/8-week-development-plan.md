@@ -5,7 +5,7 @@
 **Status:** Active (V3 IN PROGRESS)
 **Importance:** Critical
 **Created:** 2026-01-15
-**Last Updated:** 2026-01-26 (Session 78 - Building Frame 3D + Real CSV Sample)
+**Last Updated:** 2026-01-27 (Session 81 - Dual CSV + Building Geometry + Rebar Helpers)
 **Related Tasks:** TASK-V3-FOUNDATION, TASK-V3-REACT
 **Timeline:** 7 weeks (Jan 24 - March 15, 2026)
 **Release Target:** March 15, 2026 (V3 Beta Launch)
@@ -56,7 +56,7 @@ docker compose -f docker-compose.dev.yml up --build
 
 ---
 
-## 📊 Current Status (Session 76, Jan 26, 2026)
+## 📊 Current Status (Session 81, Jan 27, 2026)
 
 ### Streamlit v0.19.0 — ✅ COMPLETE (Shipped Ahead of Schedule!)
 
@@ -364,6 +364,21 @@ Research: [websocket-live-updates-research.md](../research/websocket-live-update
 | Task | Est | Priority | Status |
 |------|-----|----------|--------|
 | End-to-end test flow | 2h | 🔴 Critical | 🔄 IN PROGRESS |
+
+---
+
+### Session 81 Accomplishments (Jan 27, 2026)
+
+| Category | Deliverable | Status |
+|----------|-------------|--------|
+| **Library** | `batch`, `imports`, `rebar` modules added | ✅ Done |
+| **Geometry** | `building_to_3d_geometry` added | ✅ Done |
+| **FastAPI** | `/api/v1/import/dual-csv` + SSE uses `design_beams_iter` | ✅ Done |
+| **React** | `useDualCSVImport` hook + point1/point2 mapping | ✅ Done |
+| **Tests** | Unit tests + dual CSV endpoint test | ✅ Done |
+
+**Commit Session 81:**
+- `6ee623f` - feat: add dual-csv import + building geometry + rebar helpers
 
 ---
 
