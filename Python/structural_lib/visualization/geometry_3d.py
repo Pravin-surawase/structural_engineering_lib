@@ -64,6 +64,7 @@ __all__ = [
     "Beam3DGeometry",
     "BuildingBeam3D",
     "Building3DGeometry",
+    "CrossSectionGeometry",
     # Computation functions
     "compute_rebar_positions",
     "compute_stirrup_path",
@@ -71,6 +72,7 @@ __all__ = [
     "compute_beam_outline",
     "beam_to_3d_geometry",
     "building_to_3d_geometry",
+    "cross_section_geometry",
 ]
 
 
@@ -934,5 +936,113 @@ def beam_to_3d_geometry(
         concrete_outline=concrete_outline,
         rebars=rebars,
         stirrups=stirrups,
+        metadata=metadata,
+    )
+
+
+# =============================================================================
+# Cross-Section Geometry (2D Slice)
+# =============================================================================
+
+
+@dataclass
+class CrossSectionGeometry:
+    """
+    2D cross-section geometry for beam visualization.
+
+    Provides bar positions and stirrup outline in the Y-Z plane,
+    useful for section cut views in React.
+
+    Attributes:
+        bars: List of Point3D for bar center positions (x=0)
+        stirrup_path: List of Point3D for stirrup corners (closed loop)
+        metadata: Section parameters (width, depth, cover, etc.)
+    """
+
+    bars: list[Point3D]
+    stirrup_path: list[Point3D]
+    metadata: dict = field(default_factory=dict)
+
+    def to_dict(self) -> dict:
+        """Return JSON-serializable dict."""
+        return {
+            "bars": [p.to_dict() for p in self.bars],
+            "stirrupPath": [p.to_dict() for p in self.stirrup_path],
+            "metadata": self.metadata,
+        }
+
+
+def cross_section_geometry(
+    beam_width: float,
+    beam_depth: float,
+    cover: float = 40.0,
+    bar_count: int = 4,
+    bar_dia: float = 16.0,
+    stirrup_dia: float = 8.0,
+    is_top: bool = False,
+    layers: int = 1,
+) -> CrossSectionGeometry:
+    """
+    Compute 2D cross-section geometry for visualization.
+
+    Returns bar positions and stirrup outline in the Y-Z plane.
+    Useful for section cut views in React/Three.js.
+
+    Args:
+        beam_width: Beam width b (mm)
+        beam_depth: Beam depth D (mm)
+        cover: Clear cover (mm)
+        bar_count: Number of bars
+        bar_dia: Main bar diameter (mm)
+        stirrup_dia: Stirrup diameter (mm)
+        is_top: True for top bars
+        layers: Number of layers
+
+    Returns:
+        CrossSectionGeometry with bars and stirrup_path
+
+    Example:
+        >>> section = cross_section_geometry(300, 450, 40, 4, 16, 8)
+        >>> len(section.bars)
+        4
+        >>> len(section.stirrup_path)
+        4
+    """
+    # Compute bar positions in cross-section
+    bar_positions = compute_rebar_positions(
+        beam_width=beam_width,
+        beam_depth=beam_depth,
+        cover=cover,
+        bar_count=bar_count,
+        bar_dia=bar_dia,
+        stirrup_dia=stirrup_dia,
+        is_top=is_top,
+        layers=layers,
+    )
+
+    # Compute stirrup path (closed loop)
+    stirrup_path = compute_stirrup_path(
+        beam_width=beam_width,
+        beam_depth=beam_depth,
+        cover=cover,
+        stirrup_dia=stirrup_dia,
+        position_x=0.0,  # At section cut
+        legs=2,
+    )
+
+    metadata = {
+        "width": beam_width,
+        "depth": beam_depth,
+        "cover": cover,
+        "barCount": bar_count,
+        "barDia": bar_dia,
+        "stirrupDia": stirrup_dia,
+        "isTop": is_top,
+        "layers": layers,
+    }
+
+    return CrossSectionGeometry(
+        bars=bar_positions,
+        stirrup_path=stirrup_path,
         metadata=metadata,
     )

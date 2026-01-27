@@ -11,6 +11,14 @@ export {
   useDualCSVImport,
   useBatchDesign,
 } from './useCSVImport';
+export {
+  useBuildingGeometry,
+  useBuildingGeometryMutation,
+} from './useBuildingGeometry';
+export {
+  useRebarValidation,
+  useRebarApply,
+} from './useRebarValidation';
 
 // Type exports
 export type {
@@ -21,6 +29,18 @@ export type {
   Beam3DGeometry,
   BeamGeometryRequest,
 } from './useBeamGeometry';
+export type {
+  Building3DGeometry,
+  BuildingBeam,
+  BuildingGeometryRequest,
+  BoundingBox,
+} from './useBuildingGeometry';
+export type {
+  BeamParams,
+  RebarConfig,
+  ValidationResult,
+  ApplyResult,
+} from './useRebarValidation';
 export type {
   ImportedBeam,
   DesignedBeam,

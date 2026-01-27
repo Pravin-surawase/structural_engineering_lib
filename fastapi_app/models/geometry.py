@@ -244,6 +244,121 @@ class GeometryComponent(BaseModel):
     )
 
 
+# =============================================================================
+# Building Geometry Models
+# =============================================================================
+
+
+class BuildingBeamModel(BaseModel):
+    """Line representation of a beam in building context."""
+
+    beamId: str = Field(description="Unique beam identifier")
+    story: str = Field(description="Story/floor identifier")
+    frameType: str = Field(description="Frame type: beam, column, brace")
+    start: Point3DModel = Field(description="Start point")
+    end: Point3DModel = Field(description="End point")
+
+
+class BuildingGeometryRequest(BaseModel):
+    """Request model for building geometry generation."""
+
+    beams: list[dict] = Field(
+        description="List of beam geometry dicts with id, story, point1, point2"
+    )
+    unit_scale: float = Field(
+        default=1000.0,
+        description="Scale factor (default: 1000 converts m to mm)",
+    )
+    include_frame_types: list[str] | None = Field(
+        default=None,
+        description="Filter by frame types: beam, column, brace",
+    )
+
+
+class BuildingGeometryResponse(BaseModel):
+    """Response model for building geometry."""
+
+    success: bool = Field(description="Whether generation succeeded")
+    message: str = Field(description="Summary message")
+    beams: list[BuildingBeamModel] = Field(
+        default_factory=list, description="All beam line segments"
+    )
+    boundingBox: dict[str, float] = Field(
+        default_factory=dict, description="Building bounding box"
+    )
+    center: Point3DModel | None = Field(default=None, description="Building center")
+    metadata: dict = Field(default_factory=dict, description="Additional metadata")
+    warnings: list[str] = Field(default_factory=list, description="Any warnings")
+
+
+# =============================================================================
+# Rebar Configuration Models
+# =============================================================================
+
+
+class RebarConfigRequest(BaseModel):
+    """Request model for rebar validation/apply."""
+
+    beam: dict = Field(description="Beam parameters (width, depth, cover, etc.)")
+    config: dict = Field(
+        description="Rebar config (bar_count, bar_dia, stirrup_dia, etc.)"
+    )
+
+
+class RebarValidationResponse(BaseModel):
+    """Response model for rebar validation."""
+
+    success: bool = Field(description="Whether validation passed")
+    ok: bool = Field(description="True if config is valid")
+    errors: list[str] = Field(default_factory=list, description="Error messages")
+    warnings: list[str] = Field(default_factory=list, description="Warning messages")
+    details: dict = Field(default_factory=dict, description="Validation details")
+
+
+class RebarApplyResponse(BaseModel):
+    """Response model for rebar apply."""
+
+    success: bool = Field(description="Whether apply succeeded")
+    message: str = Field(description="Result message")
+    ast_provided_mm2: float | None = Field(
+        default=None, description="Steel area provided"
+    )
+    validation: dict = Field(default_factory=dict, description="Validation report")
+    geometry: dict | None = Field(default=None, description="Geometry output")
+
+
+# =============================================================================
+# Cross-Section Geometry Models
+# =============================================================================
+
+
+class CrossSectionRequest(BaseModel):
+    """Request for cross-section geometry."""
+
+    width: float = Field(gt=0, description="Beam width b (mm)")
+    depth: float = Field(gt=0, description="Beam depth D (mm)")
+    cover: float = Field(default=40.0, ge=20, description="Clear cover (mm)")
+    bar_count: int = Field(ge=2, description="Number of bars")
+    bar_dia: float = Field(default=16.0, gt=0, description="Bar diameter (mm)")
+    stirrup_dia: float = Field(default=8.0, gt=0, description="Stirrup diameter (mm)")
+    is_top: bool = Field(default=False, description="Top bars or bottom")
+    layers: int = Field(default=1, ge=1, description="Number of layers")
+
+
+class CrossSectionResponse(BaseModel):
+    """Response with cross-section geometry."""
+
+    success: bool = Field(description="Whether generation succeeded")
+    message: str = Field(description="Summary message")
+    bars: list[Point3DModel] = Field(
+        default_factory=list, description="Bar positions in Y-Z plane"
+    )
+    stirrup_path: list[Point3DModel] = Field(
+        default_factory=list, description="Stirrup corners"
+    )
+    metadata: dict = Field(default_factory=dict, description="Section metadata")
+
+
 class Geometry3DResponse(BaseModel):
     """Response model for 3D geometry generation."""
 

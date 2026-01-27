@@ -20,6 +20,14 @@ from fastapi_app.models.geometry import (
     RebarPathModel,
     RebarSegmentModel,
     StirrupLoopModel,
+    BuildingBeamModel,
+    BuildingGeometryRequest,
+    BuildingGeometryResponse,
+    RebarConfigRequest,
+    RebarValidationResponse,
+    RebarApplyResponse,
+    CrossSectionRequest,
+    CrossSectionResponse,
 )
 
 router = APIRouter(
@@ -403,3 +411,310 @@ async def get_materials() -> dict:
             "description": "Highlight color for selection",
         },
     }
+
+
+# =============================================================================
+# Building Geometry Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/building",
+    response_model=BuildingGeometryResponse,
+    summary="Generate Building 3D Geometry",
+    description="""
+Generate building-level 3D geometry from imported beam data.
+
+Returns line segments for all beams/columns suitable for wireframe rendering.
+Ideal for React Three Fiber Line components for building overview.
+""",
+)
+async def generate_building_geometry(
+    request: BuildingGeometryRequest,
+) -> BuildingGeometryResponse:
+    """
+    Generate building geometry from imported beams.
+
+    Uses structural_lib.visualization.geometry_3d.building_to_3d_geometry()
+    to compute line geometry for multi-beam building visualization.
+    """
+    try:
+        from structural_lib.models import BeamGeometry, Point3D, FrameType
+        from structural_lib.visualization.geometry_3d import building_to_3d_geometry
+
+        # Convert request dicts to BeamGeometry instances
+        beam_models: list[BeamGeometry] = []
+        warnings_list: list[str] = []
+
+        for beam_dict in request.beams:
+            try:
+                # Extract points
+                p1 = beam_dict.get("point1") or beam_dict.get("start") or {}
+                p2 = beam_dict.get("point2") or beam_dict.get("end") or {}
+
+                if not p1 or not p2:
+                    warnings_list.append(
+                        f"Beam {beam_dict.get('id', '?')}: missing point1/point2"
+                    )
+                    continue
+
+                point1 = Point3D(
+                    x=float(p1.get("x", 0)),
+                    y=float(p1.get("y", 0)),
+                    z=float(p1.get("z", 0)),
+                )
+                point2 = Point3D(
+                    x=float(p2.get("x", 0)),
+                    y=float(p2.get("y", 0)),
+                    z=float(p2.get("z", 0)),
+                )
+
+                # Determine frame type
+                frame_type_str = beam_dict.get("frame_type", "beam").lower()
+                if frame_type_str == "column":
+                    frame_type = FrameType.COLUMN
+                elif frame_type_str == "brace":
+                    frame_type = FrameType.BRACE
+                else:
+                    frame_type = FrameType.BEAM
+
+                beam_models.append(
+                    BeamGeometry(
+                        id=beam_dict.get("id", f"B{len(beam_models) + 1}"),
+                        story=beam_dict.get("story", "GF"),
+                        point1=point1,
+                        point2=point2,
+                        frame_type=frame_type,
+                    )
+                )
+            except (ValueError, TypeError, KeyError) as e:
+                warnings_list.append(
+                    f"Beam {beam_dict.get('id', '?')}: parse error - {e}"
+                )
+
+        if not beam_models:
+            return BuildingGeometryResponse(
+                success=False,
+                message="No valid beams with geometry",
+                beams=[],
+                warnings=warnings_list,
+            )
+
+        # Filter by frame types if specified
+        include_types = None
+        if request.include_frame_types:
+            include_types = tuple(request.include_frame_types)
+
+        # Generate building geometry
+        building_geom = building_to_3d_geometry(
+            beam_models,
+            unit_scale=request.unit_scale,
+            include_frame_types=include_types,
+        )
+
+        # Convert to response models
+        beam_list = [
+            BuildingBeamModel(
+                beamId=b.beam_id,
+                story=b.story,
+                frameType=b.frame_type,
+                start=Point3DModel(x=b.start.x, y=b.start.y, z=b.start.z),
+                end=Point3DModel(x=b.end.x, y=b.end.y, z=b.end.z),
+            )
+            for b in building_geom.beams
+        ]
+
+        center_model = Point3DModel(
+            x=building_geom.center.x,
+            y=building_geom.center.y,
+            z=building_geom.center.z,
+        )
+
+        return BuildingGeometryResponse(
+            success=True,
+            message=f"Generated {len(beam_list)} beam segments",
+            beams=beam_list,
+            boundingBox=building_geom.bounding_box,
+            center=center_model,
+            metadata=building_geom.metadata,
+            warnings=warnings_list,
+        )
+
+    except ImportError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"structural_lib not available: {e}",
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Invalid parameters: {e}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Building geometry failed: {e}",
+        )
+
+
+# =============================================================================
+# Cross-Section Geometry Endpoint
+# =============================================================================
+
+
+@router.post(
+    "/cross-section",
+    response_model=CrossSectionResponse,
+    summary="Generate Cross-Section Geometry",
+    description="""
+Generate 2D cross-section geometry for beam visualization.
+
+Returns bar positions and stirrup path in the Y-Z plane.
+Useful for section cut views in React.
+""",
+)
+async def generate_cross_section(
+    request: CrossSectionRequest,
+) -> CrossSectionResponse:
+    """Generate cross-section geometry for visualization."""
+    try:
+        from structural_lib.visualization.geometry_3d import (
+            compute_rebar_positions,
+            compute_stirrup_path,
+        )
+
+        # Compute bar positions
+        bar_positions = compute_rebar_positions(
+            beam_width=request.width,
+            beam_depth=request.depth,
+            cover=request.cover,
+            bar_count=request.bar_count,
+            bar_dia=request.bar_dia,
+            stirrup_dia=request.stirrup_dia,
+            is_top=request.is_top,
+            layers=request.layers,
+        )
+
+        # Compute stirrup path
+        stirrup_path = compute_stirrup_path(
+            beam_width=request.width,
+            beam_depth=request.depth,
+            cover=request.cover,
+            stirrup_dia=request.stirrup_dia,
+            position_x=0.0,  # At section cut
+            legs=2,
+        )
+
+        bars = [
+            Point3DModel(x=p.x, y=p.y, z=p.z) for p in bar_positions
+        ]
+        path = [
+            Point3DModel(x=p.x, y=p.y, z=p.z) for p in stirrup_path
+        ]
+
+        return CrossSectionResponse(
+            success=True,
+            message=f"Generated cross-section with {len(bars)} bars",
+            bars=bars,
+            stirrup_path=path,
+            metadata={
+                "width": request.width,
+                "depth": request.depth,
+                "cover": request.cover,
+                "bar_count": request.bar_count,
+                "bar_dia": request.bar_dia,
+                "is_top": request.is_top,
+            },
+        )
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Cross-section generation failed: {e}",
+        )
+
+
+# =============================================================================
+# Rebar Configuration Endpoints
+# =============================================================================
+
+
+@router.post(
+    "/rebar/validate",
+    response_model=RebarValidationResponse,
+    summary="Validate Rebar Configuration",
+    description="""
+Validate a rebar configuration against beam geometry.
+
+Checks bar count, diameter, spacing per IS 456 rules.
+Returns detailed errors and warnings for UI consumption.
+""",
+)
+async def validate_rebar(
+    request: RebarConfigRequest,
+) -> RebarValidationResponse:
+    """Validate rebar configuration."""
+    try:
+        from structural_lib.rebar import validate_rebar_config
+
+        report = validate_rebar_config(request.beam, request.config)
+
+        return RebarValidationResponse(
+            success=True,
+            ok=report.ok,
+            errors=report.errors,
+            warnings=report.warnings,
+            details=report.details,
+        )
+
+    except Exception as e:
+        return RebarValidationResponse(
+            success=False,
+            ok=False,
+            errors=[str(e)],
+            warnings=[],
+            details={},
+        )
+
+
+@router.post(
+    "/rebar/apply",
+    response_model=RebarApplyResponse,
+    summary="Apply Rebar Configuration",
+    description="""
+Apply a rebar configuration and return geometry preview.
+
+Validates config first, then generates rebar/stirrup geometry
+for UI preview before final commit.
+""",
+)
+async def apply_rebar(
+    request: RebarConfigRequest,
+) -> RebarApplyResponse:
+    """Apply rebar configuration and return geometry."""
+    try:
+        from structural_lib.rebar import apply_rebar_config
+
+        result = apply_rebar_config(request.beam, request.config)
+
+        return RebarApplyResponse(
+            success=result.get("success", False),
+            message=result.get("message", "Unknown"),
+            ast_provided_mm2=result.get("ast_provided_mm2"),
+            validation=result.get("validation", {}),
+            geometry=result.get("geometry"),
+        )
+
+    except Exception as e:
+        return RebarApplyResponse(
+            success=False,
+            message=str(e),
+            ast_provided_mm2=None,
+            validation={},
+            geometry=None,
+        )

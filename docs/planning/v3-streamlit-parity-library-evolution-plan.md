@@ -62,10 +62,25 @@ We already have a strong library core (design, adapters, smart analysis, 3D sing
 
 ### ⏳ Remaining Gaps (Still Open)
 
-1. **FastAPI** building geometry endpoint (`/api/v1/geometry/building`) + React hook
-2. **FastAPI** rebar validate/apply endpoints (`/api/v1/rebar/validate`, `/api/v1/rebar/apply`)
-3. **Library** cross-section geometry helper (`geometry_3d.cross_section_geometry`)
-4. **Insights** dashboard + live code checks wrappers
+1. ✅ **FastAPI** building geometry endpoint (`/api/v1/geometry/building`) + React hook — **Done Jan 27**
+2. ✅ **FastAPI** rebar validate/apply endpoints (`/api/v1/rebar/validate`, `/api/v1/rebar/apply`) — **Done Jan 27**
+3. ✅ **Library** cross-section geometry helper (`geometry_3d.cross_section_geometry`) — **Done Jan 27**
+4. ⏳ **Insights** dashboard + live code checks wrappers — **Still Open**
+
+### ✅ Session Progress (Jan 27, 2026 - Session 2)
+
+**New endpoints added:**
+- `POST /api/v1/geometry/building` — Building-level 3D geometry for wireframe
+- `POST /api/v1/geometry/cross-section` — 2D cross-section for section cuts
+- `POST /api/v1/geometry/rebar/validate` — Rebar config validation
+- `POST /api/v1/geometry/rebar/apply` — Rebar apply with geometry preview
+
+**New React hooks:**
+- `useBuildingGeometry` / `useBuildingGeometryMutation`
+- `useRebarValidation` / `useRebarApply`
+
+**New library function:**
+- `cross_section_geometry()` in `geometry_3d.py`
 
 ### Verdict
 
@@ -99,11 +114,16 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 - ✅ Library batch generator + batch helper added: `structural_lib.batch.design_beams_iter` / `design_beams`.
 - ✅ FastAPI dual CSV endpoint added (`/api/v1/import/dual-csv`) + React hook (`useDualCSVImport`).
 
-**Phase 2 (Partial)**
+**Phase 2 (Complete)**
 - ✅ React building frame visualization exists (3D frame from import data).
 - ✅ Full single‑beam geometry endpoint exists (`/api/v1/geometry/beam/full`).
 - ✅ Library building geometry added (`building_to_3d_geometry`).
 - ✅ Rebar validation/apply helpers added (`validate_rebar_config`, `apply_rebar_config`).
+- ✅ FastAPI building geometry endpoint (`/api/v1/geometry/building`).
+- ✅ FastAPI rebar endpoints (`/api/v1/geometry/rebar/validate`, `/apply`).
+- ✅ FastAPI cross-section endpoint (`/api/v1/geometry/cross-section`).
+- ✅ React hooks: `useBuildingGeometry`, `useRebarValidation`, `useRebarApply`.
+- ✅ Library cross-section helper (`cross_section_geometry`).
 
 **Phase 3 (Not Started)**
 - ⏳ Dashboard wrapper + live code checks + rebar suggestions (library + API + React).
@@ -142,25 +162,28 @@ Each phase is structured so **library work lands first**, then **FastAPI wrapper
 
 ### Phase 2 — Geometry + Editor Foundations (Weeks 5–6)
 
-**Goal:** Make React’s 3D workspace dynamic and trustworthy.
+**Status:** ✅ Complete (Jan 27, 2026)
+
+**Goal:** Make React's 3D workspace dynamic and trustworthy.
 
 **Library Tasks**
 1. ✅ `structural_lib.geometry_3d.building_to_3d_geometry(models, lod="auto")`
-2. ⏳ `structural_lib.geometry_3d.cross_section_geometry(beam, rebar_config)`
+2. ✅ `structural_lib.geometry_3d.cross_section_geometry(beam_width, beam_depth, ...)` — **Added Jan 27**
 3. ✅ `structural_lib.rebar.validate_rebar_config(beam, config)`
 4. ✅ `structural_lib.rebar.apply_rebar_config(beam, config)` (returns updated design + geometry)
 
 **FastAPI Tasks**
-1. ⏳ `POST /api/v1/geometry/building` (returns instancing-ready meshes)
-2. ⏳ `POST /api/v1/geometry/cross-section`
-3. ⏳ `POST /api/v1/rebar/validate` + `POST /api/v1/rebar/apply`
+1. ✅ `POST /api/v1/geometry/building` (returns line segments for wireframe) — **Added Jan 27**
+2. ✅ `POST /api/v1/geometry/cross-section` — **Added Jan 27**
+3. ✅ `POST /api/v1/geometry/rebar/validate` + `POST /api/v1/geometry/rebar/apply` — **Added Jan 27**
 
 **React Tasks**
 1. ✅ Building frame visualization exists (import-driven)
-2. ⏳ Building view: new `useBuildingGeometry` hook with LOD controls
-3. ⏳ Editor mode: live rebar validation + cross-section update
-4. ⏳ Dynamic focus: when editing beam row, 3D view filters + zooms to beam
-5. ✅ `ConnectionStatus` + `useLiveDesign` already available for live updates
+2. ✅ Building view: `useBuildingGeometry` + `useBuildingGeometryMutation` hooks — **Added Jan 27**
+3. ✅ Rebar hooks: `useRebarValidation` + `useRebarApply` — **Added Jan 27**
+4. ⏳ Editor mode: live rebar validation + cross-section update (UI integration)
+5. ⏳ Dynamic focus: when editing beam row, 3D view filters + zooms to beam
+6. ✅ `ConnectionStatus` + `useLiveDesign` already available for live updates
 
 **Quality + Automation**
 - Snapshot tests for geometry schema (single + building)
