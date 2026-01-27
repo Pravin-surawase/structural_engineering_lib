@@ -4,6 +4,51 @@ Append-only record of decisions, PRs, and next actions. For detailed task tracki
 
 ---
 
+## 2026-01-27 — Session 83: Phase 4 UI Integration + UI Flow Documentation
+
+### Summary
+Reviewed and committed Phase 4 UI integration work from previous agent, including optimization endpoints, cross-section geometry, rebar tools, and complete React editor wiring. Created comprehensive UI flow documentation consolidating all UX research.
+
+### Key Accomplishments
+
+1. **Phase 4 Implementation** (28 files, 2174+ lines)
+   - **Library:** `insights/wrappers.py`, enhanced `optimization.py`, `cross_section_geometry()`
+   - **FastAPI:** `/insights/*`, `/optimization/rebar/suggest`, `/rebar/*` endpoints
+   - **React Hooks:** `useInsights`, `useRebarTools`, `useBuildingGeometry`
+   - **React UI:** `DesignView` wired with code checks, rebar validation, optimizer panel
+
+2. **UI Flow Documentation**
+   - Created [react-ui-user-flow.md](guides/react-ui-user-flow.md) - Single source of truth
+   - Consolidated from STREAMLIT-RESEARCH-009 (1,081 lines) + v3 parity plan
+   - Documented 3 user personas: Junior, Mid-level, Senior engineer
+   - Covered 3 flow scenarios: Single design, Batch import, Validation review
+
+3. **PR Created**
+   - PR #417: Phase 4 UI integration (async monitored)
+
+### PRs Status
+| Number | Description | Status |
+|--------|-------------|--------|
+| #417 | TASK-V3-PHASE4: Phase 4 UI integration | 🟢 Created, CI running |
+| #416 | TASK-090: Phase 3 insights API endpoints | 🟡 CI fixed, awaiting merge |
+| #415 | TASK-V3-PHASE2: Phase 2 geometry + rebar | 🟡 CI fixed, awaiting merge |
+| #414 | TASK-DUALCSV: Dual CSV import | 🟡 Open |
+| #413 | TASK-V3PARITY: Phase 1-2 library modules | 🟡 Open |
+
+### Test Results
+```
+✅ pytest tests/ - 3195 passed
+✅ npm run build - React app builds successfully (4.24s)
+```
+
+### Next Session Priorities
+1. Monitor PRs for CI pass → auto-merge
+2. Wire remaining UI integration: focus/zoom on active beam
+3. Add export buttons (BBS/DXF) to React UI
+4. Add SSE stream ordering integration test
+
+---
+
 ## 2026-01-27 — Session 82: Phase 2 Geometry + Rebar + Cross-Section Endpoints + React Hooks
 
 ### Summary
